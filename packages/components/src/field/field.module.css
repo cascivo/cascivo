@@ -15,6 +15,36 @@
     &[data-disabled] {
       opacity: 0.5;
     }
+
+    /*
+      A Field can only dim itself when `disabled` was passed to the FIELD. Pass it to the
+      control instead — `<Field label="Name"><Input disabled /></Field>`, which is the
+      shorter and more obvious spelling — and the attribute above is never set, so the label
+      and hint stayed at full strength beside a greyed-out input.
+
+      `:has()` closes that without another prop: the field reacts to the control's real
+      state, whoever set it. The `[data-disabled]` rule stays because `Field`'s own
+      `disabled` also clones onto the control, so both paths converge here.
+    */
+    &:has(:disabled) {
+      opacity: 0.5;
+    }
+
+    /*
+      `:user-invalid`, NOT `:invalid`. `:invalid` matches a `required` field the moment it
+      renders, so every untouched form would open painted red; `:user-invalid` waits until
+      the user has actually interacted. This is the single most common mistake with the
+      feature and the reason it is written down rather than left to the next reader.
+
+      Native constraint validation therefore reaches the label with no `error` prop at all.
+      The `error` prop still owns the message and the aria wiring — this is the styling half
+      only, which is exactly the half that did not need to travel through React.
+    */
+    /* `label`, the element — `Label` is a separate component with its own CSS module, so
+       there is no class here to hang this on. */
+    &:has(:user-invalid) label {
+      color: var(--cascivo-color-destructive);
+    }
   }
 
   .description {

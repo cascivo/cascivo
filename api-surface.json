@@ -1268,7 +1268,7 @@
           },
           "fuzzyScore": "declare function fuzzyScore(query: string, text: string): number",
           "getLinkComponent": "re-export getLinkComponent from \"@cascivo/core\"",
-          "Grid": "declare function Grid({ cols, gap, align, justify, className, style, children, ...props }: GridProps): import(\"react\").JSX.Element",
+          "Grid": "declare function Grid({ cols, gap, align, justify, alignRows, className, style, children, ...props }: GridProps): import(\"react\").JSX.Element",
           "GridAlign": "type = 'start' | 'center' | 'end' | 'stretch'",
           "GridItem": "declare function GridItem({ span, className, style, ...props }: GridItemProps): import(\"react\").JSX.Element",
           "GridItemProps": {
@@ -1280,7 +1280,8 @@
             "cols?": "Responsive<number>",
             "gap?": "SpaceStep",
             "align?": "GridAlign",
-            "justify?": "GridAlign"
+            "justify?": "GridAlign",
+            "alignRows?": "boolean"
           },
           "Header": "declare function Header({ brand, links, actions, sticky, labels, className, ...props }: HeaderProps): import(\"react\").JSX.Element",
           "HeaderLabels": {
@@ -2292,7 +2293,8 @@
             "label?": "string",
             "hint?": "string",
             "error?": "string",
-            "resize?": "'none' | 'vertical' | 'both'"
+            "resize?": "'none' | 'vertical' | 'both'",
+            "autosize?": "boolean"
           },
           "TextProps": {
             "(extends)": "extends HTMLAttributes<HTMLElement>",

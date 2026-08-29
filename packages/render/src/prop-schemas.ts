@@ -3211,6 +3211,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       enum: ['start', 'center', 'end', 'stretch'],
     },
     {
+      name: 'alignRows',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
       name: 'span',
       required: false,
     },
@@ -6534,6 +6539,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'resize',
       required: false,
       enum: ['none', 'vertical', 'both'],
+    },
+    {
+      name: 'autosize',
+      required: false,
+      primitives: ['boolean'],
     },
     {
       name: 'disabled',

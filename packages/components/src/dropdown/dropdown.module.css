@@ -49,15 +49,20 @@
       position: fixed;
       inset: auto;
       position-anchor: var(--cascivo-dropdown-anchor, --dropdown-trigger);
+      /* A menu under a wide trigger used to sit at its own content width, so a full-width
+         select-style button opened a narrow panel hanging off one edge. `anchor-size` reads
+         the trigger; `max()` keeps the 10rem floor for an icon-sized one. The static
+         `min-inline-size: 10rem` on `.menu` above is the fallback. */
+      min-inline-size: max(10rem, anchor-size(self-inline));
     }
 
     .menu[data-placement='bottom-start'] {
-      inset-area: block-end span-inline-start;
+      position-area: block-end span-inline-start;
       inset-inline-start: 0;
     }
 
     .menu[data-placement='bottom-end'] {
-      inset-area: block-end span-inline-end;
+      position-area: block-end span-inline-end;
       inset-inline-end: 0;
     }
 

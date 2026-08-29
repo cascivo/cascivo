@@ -67,6 +67,18 @@ describe('Grid', () => {
     expect(outer.style.getPropertyValue('--_grid-cols-sm')).toBe('')
     expect(outer.style.getPropertyValue('--_grid-cols-xl')).toBe('')
   })
+
+  it('alignRows flags the inner grid, and is off by default', () => {
+    const { container: off } = render(<Grid cols={3} />)
+    expect((off.firstChild as HTMLElement).firstChild).not.toHaveAttribute('data-align-rows')
+
+    const { container: on } = render(
+      <Grid cols={3} alignRows>
+        <div />
+      </Grid>,
+    )
+    expect((on.firstChild as HTMLElement).firstChild).toHaveAttribute('data-align-rows')
+  })
 })
 
 describe('GridItem', () => {

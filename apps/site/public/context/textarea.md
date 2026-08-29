@@ -40,6 +40,7 @@ Renders a native <textarea> with aria-multiline; hint and error text are associa
 | `error`     | `string`                         | No       | —        | Error message shown when the value is invalid.                                                                                                                                                                                                                                                                                                                                                       |
 | `rows`      | `number`                         | No       | 4        | Number of visible text rows.                                                                                                                                                                                                                                                                                                                                                                         |
 | `resize`    | `'none' \| 'vertical' \| 'both'` | No       | vertical | Which directions the textarea can be resized ('none' \| 'vertical' \| 'both').                                                                                                                                                                                                                                                                                                                       |
+| `autosize`  | `boolean`                        | No       | false    | Grow the control with its content instead of holding the fixed rows height. rows becomes the minimum and --cascivo-textarea-max-block-size (default 20lh) the ceiling. Pure CSS (field-sizing: content) — no measurement and no listener; where unsupported the fixed rows height is kept.                                                                                                           |
 | `disabled`  | `boolean`                        | No       | false    | When true, disables the control and removes it from the tab order.                                                                                                                                                                                                                                                                                                                                   |
 | `ariaLabel` | `string`                         | No       | —        | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
@@ -51,6 +52,7 @@ Renders a native <textarea> with aria-multiline; hint and error text are associa
 - `--cascivo-color-destructive`
 - `--cascivo-radius-input`
 - `--cascivo-focus-ring`
+- `--cascivo-textarea-max-block-size`
 
 ## Examples
 
@@ -89,7 +91,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Textarea is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-radius-input, --cascivo-focus-ring
+  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-radius-input, --cascivo-focus-ring, --cascivo-textarea-max-block-size
 
 Accessibility: role "textbox", WCAG 2.2-AA, keyboard: Tab/Shift+Tab. Keep it AA.
 

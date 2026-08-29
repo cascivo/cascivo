@@ -7,6 +7,53 @@
     color: var(--cascivo-color-text);
     text-wrap: balance;
 
+    /*
+      Optical trim. `line-height: 1.25` puts half of the extra quarter-em above the cap and
+      half below the baseline, so a heading's BOX is taller than the text anyone can see.
+      Every gap measured from that box is then larger than the number that produced it: set
+      `gap: var(--cascivo-space-4)` between a Heading and the paragraph under it and you get
+      space-4 plus two slivers of leading, which is why hand-tuned negative margins keep
+      appearing above headings in adopter code.
+
+      `text-box-trim` removes exactly those slivers, so `docs/specs/spacing.md` becomes true
+      optically and not just numerically.
+
+      `text text`, NOT the usual `cap alphabetic`, and the numbers are why. Measured on a
+      four-element heading/paragraph stack in Chromium 141:
+
+        none             171px   (today)
+        text text        157px   -8%
+        text alphabetic  139px  -19%
+        cap alphabetic   125px  -27%
+        ex alphabetic    113px  -34%
+
+      `cap alphabetic` is the textbook pairing and it is the wrong choice HERE. cascivo's
+      space scale was tuned by eye against untrimmed boxes, so the chosen gaps already
+      contain the leading; cropping to cap-and-baseline makes every text stack a quarter
+      tighter than it was designed to be. That is a redesign of the vertical rhythm, not an
+      enhancement of it — and since this is Chromium/Safari-only, it would ship as a 27%
+      layout split against Firefox.
+
+      `text text` trims only the half-leading — the part that is purely a `line-height`
+      artifact and changes whenever the leading token does — and leaves the font's own
+      ascender and descender, which are constant. Two headings on different leading tokens
+      get proportional boxes, and the cross-engine difference stays inside normal
+      font-rendering variance.
+
+      Scoped deliberately to `Heading` and `Text`, the two primitives whose text box IS the
+      layout box. Component-internal text (a CardHeader title, a Field label) sits inside a
+      box whose padding is already explicit, so trimming there would move pixels without
+      making any spacing token truer. `cascivo.reset` is not the place either — it says in
+      as many words that typography is an opinion belonging to the consumer.
+
+      Progressive enhancement (Chrome 133+, Safari 18.2+). Untrimmed elsewhere, which is
+      today's rendering.
+    */
+    @supports (text-box-trim: trim-both) {
+      text-box-trim: trim-both;
+      text-box-edge: text text;
+    }
+
     &[data-size='sm'] {
       font-size: var(--cascivo-text-base);
     }

@@ -52,6 +52,46 @@
     }
   }
 
+  /*
+    Row-band alignment (`alignRows`). Two cards side by side fill the row because
+    `.grid-item` stretches — but their internal bands land wherever their own content puts
+    them, so a one-line title sits beside a two-line title and every footer below is off by
+    a row. That is the single most-reported card-grid defect and CSS had no answer before
+    subgrid.
+
+    Each direct child spans the same three implicit row tracks and adopts them with
+    `grid-template-rows: subgrid`, so band N of every card in a row resolves to ONE shared
+    track sized to the tallest occupant. Three because that is Card's published anatomy —
+    header, content, footer. A card with only two of them leaves the third track empty and
+    still aligns; a card whose bands are raw children rather than CardHeader/CardContent/
+    CardFooter has nothing to align and is unaffected.
+
+    The whole block is inside `@supports` because it is not decomposable: `grid-row: span 3`
+    without a working `subgrid` would leave two empty tracks under every card.
+  */
+  @supports (grid-template-rows: subgrid) {
+    .grid[data-align-rows] > * {
+      grid-row: span 3;
+      display: grid;
+      grid-template-rows: subgrid;
+      /* A subgrid inherits its parent's gap, so the grid's own `gap` would be re-applied
+         BETWEEN a card's header, content and footer — measured at 16px of dead space per
+         seam with `gap={4}`. The bands are the card's business; only the columns and the
+         rows between cards get the grid gap. */
+      row-gap: 0;
+    }
+
+    /* One level deeper — a Card inside a GridItem has to pass the tracks through, or the
+       bands stop at the item and nothing is gained. `data-cascivo-card` is Card's published
+       style hook (docs/STYLING-INTERNALS.md). */
+    .grid[data-align-rows] > * > [data-cascivo-card] {
+      grid-row: span 3;
+      display: grid;
+      grid-template-rows: subgrid;
+      row-gap: 0;
+    }
+  }
+
   .grid-item {
     grid-column: span var(--_span, 1);
 

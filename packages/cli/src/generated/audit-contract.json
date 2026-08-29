@@ -470,6 +470,7 @@
     { "name": "--cascivo-skeleton-width", "resolvedDefault": "100%" },
     { "name": "--cascivo-stack-index", "resolvedDefault": "0" },
     { "name": "--cascivo-stack-offset", "resolvedDefault": "4px" },
+    { "name": "--cascivo-textarea-max-block-size", "resolvedDefault": "20lh" },
     { "name": "--cascivo-tooltip-anchor", "resolvedDefault": "attr(data-anchor)" },
     { "name": "--cascivo-tree-indent", "resolvedDefault": "var(--cascivo-space-5)" },
     { "name": "--cascivo-z-dock", "resolvedDefault": "40" }
@@ -1939,6 +1940,7 @@
         { "name": "error", "type": "string", "required": false },
         { "name": "rows", "type": "number", "required": false },
         { "name": "resize", "type": "'none' | 'vertical' | 'both'", "required": false },
+        { "name": "autosize", "type": "boolean", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false }
       ]
@@ -2213,6 +2215,7 @@
         { "name": "gap", "type": "1|2|3|4|5|6|8|10|12", "required": false },
         { "name": "align", "type": "'start' | 'center' | 'end' | 'stretch'", "required": false },
         { "name": "justify", "type": "'start' | 'center' | 'end' | 'stretch'", "required": false },
+        { "name": "alignRows", "type": "boolean", "required": false },
         {
           "name": "span",
           "type": "number | { base?: number; sm?: number; md?: number; lg?: number; xl?: number }",

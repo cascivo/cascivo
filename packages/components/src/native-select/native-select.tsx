@@ -25,6 +25,10 @@ export interface NativeSelectProps extends Omit<SelectHTMLAttributes<HTMLSelectE
  * A styled native `<select>` — keeps the platform's open/close, keyboard, and form behavior, and
  * layers on a custom chevron and focus/invalid rings via CSS only. No JS interactivity, so no
  * signals: the browser owns all state. Distinct from the custom-rendered `Select` listbox.
+ *
+ * Where `appearance: base-select` is supported the dropdown surface is themed from
+ * `[data-theme]` too, matching `Dropdown` — see the `@supports` block in the stylesheet. It is
+ * progressive enhancement: elsewhere the OS draws the option list, exactly as before.
  */
 /**
  * `forwardRef` so `ref` reaches the underlying `<select>` — and so it is TYPED. See

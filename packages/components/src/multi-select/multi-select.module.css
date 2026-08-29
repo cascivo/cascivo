@@ -81,10 +81,18 @@
   }
 
   .panel {
-    position-area: block-end span-inline-end;
-    position-try-fallbacks:
-      --bottom-start,
-      block-start span-inline-end;
+    /* Anchored placement, gated like every other anchored surface in the catalog. It was
+       unguarded, which read as "this always applies" — it never did: the declaration is
+       simply dropped without anchor positioning and the popover falls back to the UA's
+       top-layer default. Behaviour is unchanged either way; the gate states the fact.
+       (`inset-area`, the old spelling used elsewhere in this repo, has been REMOVED from
+       Chromium — see dropdown/tooltip. This file already had the current name.) */
+    @supports (anchor-name: --a) {
+      position-area: block-end span-inline-end;
+      position-try-fallbacks:
+        --bottom-start,
+        block-start span-inline-end;
+    }
     margin-block-start: var(--cascivo-space-1);
     padding: var(--cascivo-space-1);
     min-width: 12rem;

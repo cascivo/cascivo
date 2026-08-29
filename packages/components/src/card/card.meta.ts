@@ -52,6 +52,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core'],
+  styleHooks: ['data-cascivo-card'],
   tags: ['container', 'layout', 'surface'],
   intent: {
     whenToUse: [

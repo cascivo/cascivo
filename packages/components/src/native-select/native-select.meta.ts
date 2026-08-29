@@ -78,8 +78,15 @@ export const meta: ComponentMeta = {
     '--cascivo-color-border-strong',
     '--cascivo-color-accent',
     '--cascivo-color-destructive',
+    '--cascivo-color-text',
     '--cascivo-color-text-muted',
+    '--cascivo-color-bg-subtle',
     '--cascivo-radius-field',
+    '--cascivo-radius-overlay',
+    '--cascivo-radius-item',
+    '--cascivo-shadow-md',
+    '--cascivo-motion-enter',
+    '--cascivo-motion-exit',
     '--cascivo-focus-ring',
   ],
   accessibility: {
@@ -144,7 +151,7 @@ export const meta: ComponentMeta = {
       },
     ],
     a11yRationale:
-      'It is a real <select>, so the browser provides the combobox role, keyboard interaction, and announcement. aria-invalid is set when invalid; the placeholder is a disabled hidden first option so it shows but is not selectable.',
+      'It is a real <select>, so the browser provides the combobox role, keyboard interaction, and announcement. aria-invalid is set when invalid; the placeholder is a disabled hidden first option so it shows but is not selectable. Where `appearance: base-select` is supported the option list is themed from CSS instead of the OS, and the browser still owns open/close, keyboard interaction, typeahead and form submission — nothing is re-implemented, so the accessibility story is identical on both paths.',
     flexibility: [
       {
         area: 'options',

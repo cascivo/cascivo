@@ -50,6 +50,7 @@ keeps your intent explicit and survives later refactors of your own stylesheet.
 | `data-cascivo-drawer-body` | `Drawer` | the scrollable content region |
 | `data-cascivo-sheet-body` | `Sheet` | the scrollable content region |
 | `data-cascivo-logo` | `Logo` | the lockup wrapper, valued with the active variant (`mark`, `mark-accent`, `horizontal`, `stacked`, `nav`) |
+| `data-cascivo-card` | `Card` | the card surface itself — also what `Grid`'s `alignRows` targets to pass its subgrid row tracks down to CardHeader/CardContent/CardFooter |
 
 ## Prefer a token, then a prop, then a hook
 

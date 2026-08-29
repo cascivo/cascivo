@@ -22,6 +22,9 @@
         flip-block flip-inline;
       inset-block-start: anchor(end);
       inset-inline-start: anchor(start);
+      /* Top-layer elements escape their trigger's scroller, so a card whose anchor scrolls
+         away stays painted over unrelated content. See tooltip.module.css. */
+      position-visibility: anchors-visible;
     }
 
     opacity: 1;

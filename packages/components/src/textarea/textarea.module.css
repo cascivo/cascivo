@@ -15,6 +15,35 @@
     }
   }
 
+  /*
+    Autosize. `rows` sets the height and nothing has ever grown it, so every adopter who
+    wanted a comment box that follows its content re-implemented the `scrollHeight` dance —
+    read the scroll height, write it back as an inline style, repeat on every keystroke, and
+    get it wrong on paste and on font load.
+
+    `field-sizing: content` is the platform's answer: the textarea sizes to what is typed.
+    The floor and ceiling are not optional — without `min-block-size` an empty box collapses
+    to a single line, and without `max-block-size` a pasted essay pushes the submit button
+    off screen. The floor is exactly the `rows` height, so the control starts where it starts
+    today and only ever grows.
+
+    Progressive enhancement: where `field-sizing` is unsupported the declaration is dropped
+    and `rows` governs, which is the current behaviour in full.
+  */
+  .wrapper[data-autosize] .textarea {
+    /* `lh` is the computed line height of this very element, so N rows is literally
+       `N * 1lh` — no re-deriving it from the font tokens, which drift. */
+    /* `+ 2px` is the 1px border on each block edge — without it the floor lands 2px under
+       the height the same `rows` produces without `autosize`, so turning the prop on nudged
+       the layout. */
+    min-block-size: calc(var(--_rows, 4) * 1lh + var(--cascivo-space-3) * 2 + 2px);
+    max-block-size: var(--cascivo-textarea-max-block-size, 20lh);
+
+    @supports (field-sizing: content) {
+      field-sizing: content;
+    }
+  }
+
   .label {
     font-family: var(--cascivo-font-sans);
     font-size: var(--cascivo-text-sm);

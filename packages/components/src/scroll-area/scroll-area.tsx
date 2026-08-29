@@ -4,6 +4,15 @@ import { useRef } from 'react'
 import type { CSSProperties, HTMLAttributes, ReactNode } from 'react'
 import styles from './scroll-area.module.css'
 
+/** Whether the browser can answer `scrollable: top/bottom` in CSS. SSR-safe. */
+function supportsScrollState(): boolean {
+  return (
+    typeof CSS !== 'undefined' &&
+    typeof CSS.supports === 'function' &&
+    CSS.supports('container-type', 'scroll-state')
+  )
+}
+
 export interface ScrollAreaProps extends HTMLAttributes<HTMLDivElement> {
   /** Max block size of the scroll container (any CSS length). */
   height?: string
@@ -41,7 +50,13 @@ export function ScrollArea({
 
   // Drive scroll-shadow data attributes from the scroll position. No useEffect —
   // useSignalEffect runs the subscription once on mount and cleans up on unmount.
+  //
+  // Skipped entirely where `scroll-state` container queries can answer the same question in
+  // CSS (see the @supports block in the stylesheet): a supporting browser ships no scroll
+  // listener at all rather than running one whose output nothing reads. `edges="mask"` still
+  // needs it — a mask paints on the scroller itself, which a container query cannot reach.
   useSignalEffect(() => {
+    if (edges === 'shadow' && supportsScrollState()) return
     const node = nodeRef.current
     if (!node) return
 

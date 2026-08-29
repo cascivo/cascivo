@@ -75,6 +75,143 @@
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3E%3C/svg%3E")
       no-repeat center / contain;
   }
+
+  /*
+    Customizable native select. Everything above is the fallback: `appearance: none` plus a
+    hand-drawn `.chevron`, with the dropdown surface left to the OS — which is why a
+    `terminal`- or `warm`-themed app has always opened a grey system listbox.
+
+    `appearance: base-select` opts the select AND its picker into a UA stylesheet that author
+    CSS can reach, so the option list finally reads from `[data-theme]` like every other
+    surface in the catalog. The browser keeps ownership of open/close, keyboard interaction,
+    typeahead and form submission — nothing here re-implements behaviour.
+
+    Progressive enhancement only (Chrome 135+). Off-Chromium the block does not apply and the
+    control renders exactly as it did before.
+  */
+  @supports (appearance: base-select) {
+    .select {
+      appearance: base-select;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--cascivo-space-2);
+      /* `::picker-icon` is a real in-flow child, so the fallback's reserved
+         `padding-inline-end: space-10` for the absolutely-positioned chevron is now dead
+         space. */
+      padding-inline-end: var(--_select-px, var(--cascivo-space-4));
+      text-align: start;
+
+      &:focus-visible {
+        border-color: var(--cascivo-color-accent);
+        box-shadow: var(--cascivo-focus-ring);
+      }
+    }
+
+    /* The UA supplies `::picker-icon`; the hand-drawn one would be a second chevron. */
+    .chevron {
+      display: none;
+    }
+
+    .select::picker-icon {
+      color: var(--cascivo-color-text-muted);
+      margin-inline-start: auto;
+      transition: rotate var(--cascivo-duration-150) var(--cascivo-ease-out);
+    }
+
+    .select:open::picker-icon {
+      rotate: 180deg;
+    }
+
+    /*
+      The picker surface. Tokens are deliberately the same ones `menu.module.css` uses for its
+      panel, so a NativeSelect and a Dropdown opened side by side are indistinguishable.
+    */
+    .select::picker(select) {
+      appearance: base-select;
+      box-sizing: border-box;
+      margin-block: var(--cascivo-space-1);
+      padding: var(--cascivo-space-1);
+      max-block-size: 18rem;
+      overflow-y: auto;
+      background: var(--cascivo-color-surface);
+      border: 1px solid var(--cascivo-color-border);
+      border-radius: var(--cascivo-radius-overlay);
+      box-shadow: var(--cascivo-shadow-md);
+      /* Match the trigger instead of the UA's content-derived width. Static fallback first,
+         per the progressive-enhancement contract in CLAUDE.md. */
+      min-inline-size: 10rem;
+      min-inline-size: anchor-size(self-inline);
+      position-try-fallbacks: flip-block;
+
+      opacity: 1;
+      translate: 0 0;
+      transition:
+        opacity var(--cascivo-motion-enter),
+        translate var(--cascivo-motion-enter),
+        display var(--cascivo-motion-enter) allow-discrete,
+        overlay var(--cascivo-motion-enter) allow-discrete;
+
+      @starting-style {
+        opacity: 0;
+        translate: 0 calc(-1 * var(--cascivo-space-2));
+      }
+    }
+
+    .select:not(:open)::picker(select) {
+      opacity: 0;
+      translate: 0 calc(-1 * var(--cascivo-space-2));
+      transition:
+        opacity var(--cascivo-motion-exit),
+        translate var(--cascivo-motion-exit),
+        display var(--cascivo-motion-exit) allow-discrete,
+        overlay var(--cascivo-motion-exit) allow-discrete;
+    }
+
+    .select option {
+      display: flex;
+      align-items: center;
+      gap: var(--cascivo-space-2);
+      padding: var(--cascivo-space-2) var(--cascivo-space-3);
+      border-radius: var(--cascivo-radius-item);
+      font-family: var(--cascivo-font-sans);
+      font-size: var(--_select-font, var(--cascivo-text-sm));
+      color: var(--cascivo-color-text);
+      background: transparent;
+      cursor: pointer;
+      user-select: none;
+
+      &:hover,
+      &:focus {
+        background: var(--cascivo-color-bg-subtle);
+        outline: none;
+      }
+
+      &:checked {
+        color: var(--cascivo-color-accent);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    /* Reserve the checkmark column on every row so labels stay aligned as the
+       selection moves. */
+    .select option::checkmark {
+      content: '';
+      inline-size: 0.75rem;
+      block-size: 0.75rem;
+      flex-shrink: 0;
+      background-color: currentColor;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M3 8.5l3.5 3.5L13 4.5'/%3E%3C/svg%3E")
+        no-repeat center / contain;
+    }
+
+    .select option:not(:checked)::checkmark {
+      visibility: hidden;
+    }
+  }
 }
 
 @media (forced-colors: active) {

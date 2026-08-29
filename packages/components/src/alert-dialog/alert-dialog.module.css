@@ -88,6 +88,9 @@
     margin-block-start: var(--cascivo-space-4);
   }
 
+  /* viewport-query: the dialog is in the top layer, so no ancestor contains it and a
+     @container query would match nothing. The bottom-sheet form is a property of the
+     screen, not of any slot. */
   @media (max-width: 40rem) {
     .dialog {
       /* Pin to bottom viewport edge — bottom-sheet */

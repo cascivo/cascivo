@@ -89,8 +89,15 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 - `--cascivo-color-border-strong`
 - `--cascivo-color-accent`
 - `--cascivo-color-destructive`
+- `--cascivo-color-text`
 - `--cascivo-color-text-muted`
+- `--cascivo-color-bg-subtle`
 - `--cascivo-radius-field`
+- `--cascivo-radius-overlay`
+- `--cascivo-radius-item`
+- `--cascivo-shadow-md`
+- `--cascivo-motion-enter`
+- `--cascivo-motion-exit`
 - `--cascivo-focus-ring`
 
 ## Accessibility
@@ -109,4 +116,4 @@ inputs, select, native, form, dropdown
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-26. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

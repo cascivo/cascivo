@@ -204,7 +204,10 @@ export function Header() {
   const progressRef = useRef<HTMLDivElement>(null)
 
   // Scroll progress — write to a CSS custom property directly to avoid re-renders.
+  // Skipped where a scroll timeline in landing.css computes the same ratio off the main
+  // thread; running both would just have JS fight the compositor for the same transform.
   useSignalEffect(() => {
+    if (CSS.supports('animation-timeline', 'scroll()')) return
     const update = () => {
       const el = progressRef.current
       if (!el) return

@@ -4518,6 +4518,9 @@
                     "type": "string",
                     "enum": ["none", "vertical", "both"]
                   },
+                  "autosize": {
+                    "type": "boolean"
+                  },
                   "disabled": {
                     "type": "boolean"
                   },
@@ -5285,6 +5288,9 @@
                   "justify": {
                     "type": "string",
                     "enum": ["start", "center", "end", "stretch"]
+                  },
+                  "alignRows": {
+                    "type": "boolean"
                   }
                 }
               }

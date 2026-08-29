@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/styling-internals.md
-  registry v1.0.0 · generated 2026-08-26
+  registry v1.0.0 · generated 2026-08-29
 -->
 
 # Styling a component's internals
@@ -47,15 +47,16 @@ keeps your intent explicit and survives later refactors of your own stylesheet.
 
 ## The hooks
 
-| Attribute                    | Component  | Element                                                                                                    |
-| ---------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------- |
-| `data-cascivo-appshell-nav`  | `AppShell` | the sidebar wrapper — the flex item that owns the sidebar's width                                          |
-| `data-cascivo-appshell-main` | `AppShell` | the `<main>` scroll container                                                                              |
-| `data-cascivo-modal-body`    | `Modal`    | the scrollable content region between header and footer                                                    |
-| `data-cascivo-modal-footer`  | `Modal`    | the right-aligned action row (rendered only when `footer` is passed)                                       |
-| `data-cascivo-drawer-body`   | `Drawer`   | the scrollable content region                                                                              |
-| `data-cascivo-sheet-body`    | `Sheet`    | the scrollable content region                                                                              |
-| `data-cascivo-logo`          | `Logo`     | the lockup wrapper, valued with the active variant (`mark`, `mark-accent`, `horizontal`, `stacked`, `nav`) |
+| Attribute                    | Component  | Element                                                                                                                                   |
+| ---------------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `data-cascivo-appshell-nav`  | `AppShell` | the sidebar wrapper — the flex item that owns the sidebar's width                                                                         |
+| `data-cascivo-appshell-main` | `AppShell` | the `<main>` scroll container                                                                                                             |
+| `data-cascivo-modal-body`    | `Modal`    | the scrollable content region between header and footer                                                                                   |
+| `data-cascivo-modal-footer`  | `Modal`    | the right-aligned action row (rendered only when `footer` is passed)                                                                      |
+| `data-cascivo-drawer-body`   | `Drawer`   | the scrollable content region                                                                                                             |
+| `data-cascivo-sheet-body`    | `Sheet`    | the scrollable content region                                                                                                             |
+| `data-cascivo-logo`          | `Logo`     | the lockup wrapper, valued with the active variant (`mark`, `mark-accent`, `horizontal`, `stacked`, `nav`)                                |
+| `data-cascivo-card`          | `Card`     | the card surface itself — also what `Grid`'s `alignRows` targets to pass its subgrid row tracks down to CardHeader/CardContent/CardFooter |
 
 ## Prefer a token, then a prop, then a hook
 

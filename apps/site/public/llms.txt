@@ -1,6 +1,6 @@
 # cascivo — The CSS-native, signal-driven, AI-first React design system
 
-_registry v1.0.0 · generated 2026-08-26 · docs track `main`; compare with https://cascivo.com/registry.json `.version` for staleness, and https://cascivo.com/breaking-changes.json for installed-vs-documented API drift._
+_registry v1.0.0 · generated 2026-08-29 · docs track `main`; compare with https://cascivo.com/registry.json `.version` for staleness, and https://cascivo.com/breaking-changes.json for installed-vs-documented API drift._
 
 _Describes: @cascivo/ai@1.0.0 · @cascivo/charts@1.0.0 · @cascivo/core@1.0.0 · @cascivo/docs@0.2.7 · @cascivo/docspack@0.2.1 · @cascivo/editor@1.0.0 · @cascivo/eslint-config@0.3.0 · @cascivo/eslint-plugin@0.1.1 · @cascivo/flow@1.0.0 · @cascivo/i18n@1.0.0 · @cascivo/icons@1.0.0 · @cascivo/mcp@0.7.0 · @cascivo/platform@0.0.5 · @cascivo/react@1.0.0 · @cascivo/registry@0.2.9 · @cascivo/storage@1.0.0 · @cascivo/themes@1.0.0 · @cascivo/tokens@1.0.0 · @cascivo/vite-plugin@0.1.9 · cascivo@1.0.0. If your installed versions are lower, a documented behaviour may not have shipped yet._
 
@@ -842,4 +842,4 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [VisuallyHidden](https://cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 - [WheelPicker](https://cascivo.com/context/wheel-picker.md) — Use when: Touch surfaces picking one value from a short, ordered, homogeneous range — an hour, a minute, a unit
 
-_Generated: 2026-08-26 from registry v1.0.0_
+_Generated: 2026-08-29 from registry v1.0.0_

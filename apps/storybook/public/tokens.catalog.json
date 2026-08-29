@@ -9,8 +9,8 @@
     "packages/editor/src/**/*.css (per-component author hooks)"
   ],
   "resolutionTheme": "light",
-  "generatedAt": "2026-08-26",
-  "count": 337,
+  "generatedAt": "2026-08-29",
+  "count": 338,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -3024,6 +3024,15 @@
       "layer": "component",
       "group": "stack",
       "resolvedDefault": "4px",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-textarea-max-block-size",
+      "value": "20lh",
+      "layer": "component",
+      "group": "textarea",
+      "resolvedDefault": "20lh",
       "resolvesPerTheme": false,
       "canonical": true
     },

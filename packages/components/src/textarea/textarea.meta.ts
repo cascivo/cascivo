@@ -44,6 +44,14 @@ export const meta: ComponentMeta = {
       default: 'vertical',
     },
     {
+      name: 'autosize',
+      description:
+        'Grow the control with its content instead of holding the fixed rows height. rows becomes the minimum and --cascivo-textarea-max-block-size (default 20lh) the ceiling. Pure CSS (field-sizing: content) — no measurement and no listener; where unsupported the fixed rows height is kept.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
       name: 'disabled',
       description: 'When true, disables the control and removes it from the tab order.',
       type: 'boolean',
@@ -66,6 +74,7 @@ export const meta: ComponentMeta = {
     '--cascivo-color-destructive',
     '--cascivo-radius-input',
     '--cascivo-focus-ring',
+    '--cascivo-textarea-max-block-size',
   ],
   accessibility: {
     role: 'textbox',
