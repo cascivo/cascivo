@@ -1853,6 +1853,21 @@ kbd {
   color: var(--cascivo-color-text-subtle);
 }
 
+/* The lens switcher is @cascivo/components' SegmentedControl. Its selected
+   segment is a raised white tile, and under the poster theme the track behind
+   it is white too — so the selection is restated here in the page's own idiom:
+   acid fill, ink label, hard rule. */
+.perf-lens-toggle {
+  margin-block-start: var(--cascivo-space-5);
+  border-width: var(--cascivo-landing-rule-weight, 1px);
+}
+
+.perf-lens-toggle [data-selected] {
+  background-color: var(--cascivo-color-accent);
+  color: var(--cascivo-color-accent-content);
+  font-weight: var(--cascivo-font-bold);
+}
+
 .perf-meta {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));

@@ -53,8 +53,8 @@
     color: var(--cascivo-color-text-muted);
     flex-shrink: 0;
     transition:
-      background-color 150ms var(--cascivo-ease-out),
-      border-color 150ms var(--cascivo-ease-out);
+      background-color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      border-color var(--cascivo-duration-150) var(--cascivo-ease-out);
   }
 
   .step[data-state='active'] .circle {

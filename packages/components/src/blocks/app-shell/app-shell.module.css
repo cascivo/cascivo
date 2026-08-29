@@ -36,7 +36,7 @@
     inline-size: 16rem;
     z-index: var(--cascivo-z-overlay);
     transform: translateX(-100%);
-    transition: transform 200ms ease;
+    transition: transform var(--cascivo-duration-200) ease;
     box-shadow: var(--cascivo-shadow-lg);
   }
 
@@ -68,8 +68,8 @@
     text-decoration: none;
     color: var(--cascivo-color-foreground-muted);
     transition:
-      background 150ms ease,
-      color 150ms ease;
+      background var(--cascivo-duration-150) ease,
+      color var(--cascivo-duration-150) ease;
   }
 
   .navLink:hover {

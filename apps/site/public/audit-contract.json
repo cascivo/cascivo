@@ -191,12 +191,21 @@
     { "name": "--cascivo-ease-in", "resolvedDefault": "cubic-bezier(0.4, 0, 1, 1)" },
     { "name": "--cascivo-ease-out", "resolvedDefault": "cubic-bezier(0, 0, 0.2, 1)" },
     { "name": "--cascivo-ease-in-out", "resolvedDefault": "cubic-bezier(0.4, 0, 0.2, 1)" },
+    { "name": "--cascivo-ease-decel", "resolvedDefault": "cubic-bezier(0.16, 1, 0.3, 1)" },
+    {
+      "name": "--cascivo-ease-spring",
+      "resolvedDefault": "linear( 0, 0.006, 0.083 5.5%, 0.244, 0.564 16.5%, 0.727, 0.867, 0.962, 1.017 32%, 1.041, 1.05, 1.048, 1.039, 1.026, 1.014 50.5%, 0.997, 0.991, 0.989, 0.991, 0.996 71.5%, 1.003, 1.005, 1.003, 1 )"
+    },
+    { "name": "--cascivo-ease-emphasized", "resolvedDefault": "cubic-bezier(0.2, 0, 0, 1)" },
     { "name": "--cascivo-duration-75", "resolvedDefault": "75ms" },
     { "name": "--cascivo-duration-100", "resolvedDefault": "100ms" },
     { "name": "--cascivo-duration-150", "resolvedDefault": "150ms" },
     { "name": "--cascivo-duration-200", "resolvedDefault": "200ms" },
     { "name": "--cascivo-duration-300", "resolvedDefault": "300ms" },
     { "name": "--cascivo-duration-500", "resolvedDefault": "500ms" },
+    { "name": "--cascivo-duration-loop-fast", "resolvedDefault": "1s" },
+    { "name": "--cascivo-duration-loop", "resolvedDefault": "1.4s" },
+    { "name": "--cascivo-duration-loop-slow", "resolvedDefault": "2s" },
     {
       "name": "--cascivo-motion-enter",
       "resolvedDefault": "var(--cascivo-duration-200) var(--cascivo-ease-out)"
@@ -208,6 +217,14 @@
     {
       "name": "--cascivo-motion-emphasis",
       "resolvedDefault": "var(--cascivo-duration-300) var(--cascivo-ease-in-out)"
+    },
+    {
+      "name": "--cascivo-motion-drawer",
+      "resolvedDefault": "var(--cascivo-duration-300) var(--cascivo-ease-decel)"
+    },
+    {
+      "name": "--cascivo-motion-attention",
+      "resolvedDefault": "var(--cascivo-duration-500) var(--cascivo-ease-out)"
     },
     { "name": "--cascivo-chart-1", "resolvedDefault": "oklch(0.62 0.13 70)" },
     { "name": "--cascivo-chart-2", "resolvedDefault": "oklch(0.62 0.11 240)" },

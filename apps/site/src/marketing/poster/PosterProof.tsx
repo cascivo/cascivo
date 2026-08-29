@@ -1,16 +1,19 @@
 import { BarChart } from '@cascivo/charts'
 import { Stat } from '@cascivo/components/stat'
 import { axeViolations, gzip, kb } from './figures'
+import { LIB_COLOR } from '../lib-colors'
 
 const BUNDLE_SERIES = gzip
   ? [
       {
         id: 'gzip',
         label: 'Total gzip (KB)',
+        // One bar per library, each in that library's site-wide colour.
+        color: (d: { color: string }) => d.color,
         data: [
-          { x: 'cascivo', y: gzip.cascivo },
-          { x: 'shadcn/ui', y: gzip.shadcn },
-          { x: 'Carbon', y: gzip.carbon },
+          { x: 'cascivo', y: gzip.cascivo, color: LIB_COLOR.cascade },
+          { x: 'shadcn/ui', y: gzip.shadcn, color: LIB_COLOR.shadcn },
+          { x: 'Carbon', y: gzip.carbon, color: LIB_COLOR.carbon },
         ],
       },
     ]

@@ -54,6 +54,7 @@ for pasting into an agent's context window.
 | ----- | -------------- |
 | [THEMING.md](THEMING.md) | The `data-theme` model, runtime switching (`ThemeProvider`/`useTheme`, SSR no-FOUC), the specificity footgun, and authoring a brand theme. |
 | [TOKENS.md](TOKENS.md) | The three-tier token catalog (primitive → semantic → component), by group. |
+| [MOTION.md](MOTION.md) | The motion contract — the shared keyframe catalogue, duration/easing tokens, the `global()` rule for cross-file keyframe references, and the three reduced-motion paths. |
 | [BRAND.md](BRAND.md) | cascivo's own brand reference — colours, voice, and usage. |
 
 ## Quality & operations

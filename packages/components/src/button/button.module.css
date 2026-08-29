@@ -30,8 +30,17 @@
     transition:
       background-color var(--cascivo-duration-150) var(--cascivo-ease-out),
       color var(--cascivo-duration-150) var(--cascivo-ease-out),
-      box-shadow var(--cascivo-duration-150) var(--cascivo-ease-out);
+      box-shadow var(--cascivo-duration-150) var(--cascivo-ease-out),
+      scale var(--cascivo-duration-75) var(--cascivo-ease-out);
     border-radius: var(--cascivo-button-radius, var(--cascivo-radius-control));
+
+    /* Tactile press. `scale` is composited, so this costs nothing, and it reads as physical
+       depression rather than as a colour change alone. Excluded on a disabled control,
+       which must not appear to respond. Collapses with the duration token under
+       prefers-reduced-motion. */
+    &:active:not(:disabled):not([aria-disabled='true']) {
+      scale: 0.97;
+    }
 
     &:focus-visible {
       outline: none;

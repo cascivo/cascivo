@@ -33,6 +33,14 @@
     --cascivo-motion-exit: var(--cascivo-duration-150) var(--cascivo-ease-in);
     --cascivo-motion-emphasis: var(--cascivo-duration-300) var(--cascivo-ease-in-out);
 
+    /* Off-canvas surfaces — drawer, sheet, side-nav. Longer than `enter` and on the
+       deceleration curve, because a surface crossing the whole viewport needs the distance. */
+    --cascivo-motion-drawer: var(--cascivo-duration-300) var(--cascivo-ease-decel);
+
+    /* Attention feedback — shake, flash, bounce. One-shot, so it collapses under the
+       reduced-motion rule below like any other token-timed motion. */
+    --cascivo-motion-attention: var(--cascivo-duration-500) var(--cascivo-ease-out);
+
     /* ── Interaction affordance ─────────────────────────
        Minimum comfortable touch target under a coarse pointer. */
     --cascivo-target-min-coarse: 2.75rem; /* 44px */

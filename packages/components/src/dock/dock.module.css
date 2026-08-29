@@ -35,7 +35,7 @@
     cursor: pointer;
     color: var(--cascivo-color-text-muted);
     text-decoration: none;
-    transition: color 100ms var(--cascivo-ease-out);
+    transition: color var(--cascivo-duration-100) var(--cascivo-ease-out);
   }
 
   .item[data-active] {

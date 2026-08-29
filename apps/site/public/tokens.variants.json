@@ -1,6 +1,6 @@
 {
   "generatedFrom": ["packages/tokens/src/index.css", "packages/themes/src/*.css"],
-  "generatedAt": "2026-08-26",
+  "generatedAt": "2026-08-29",
   "themes": [
     "arcade",
     "brutalist",
@@ -1725,6 +1725,69 @@
       }
     },
     {
+      "name": "--cascivo-duration-loop",
+      "layer": "semantic",
+      "group": "duration",
+      "byTheme": {
+        "arcade": "1.4s",
+        "brutalist": "1.4s",
+        "corporate": "1.4s",
+        "cyberpunk": "1.4s",
+        "dark": "1.4s",
+        "flat": "1.4s",
+        "light-dark": "1.4s",
+        "light": "1.4s",
+        "midnight": "1.4s",
+        "minimal": "1.4s",
+        "pastel": "1.4s",
+        "tailwind": "1.4s",
+        "terminal": "1.4s",
+        "warm": "1.4s"
+      }
+    },
+    {
+      "name": "--cascivo-duration-loop-fast",
+      "layer": "semantic",
+      "group": "duration",
+      "byTheme": {
+        "arcade": "1s",
+        "brutalist": "1s",
+        "corporate": "1s",
+        "cyberpunk": "1s",
+        "dark": "1s",
+        "flat": "1s",
+        "light-dark": "1s",
+        "light": "1s",
+        "midnight": "1s",
+        "minimal": "1s",
+        "pastel": "1s",
+        "tailwind": "1s",
+        "terminal": "1s",
+        "warm": "1s"
+      }
+    },
+    {
+      "name": "--cascivo-duration-loop-slow",
+      "layer": "semantic",
+      "group": "duration",
+      "byTheme": {
+        "arcade": "2s",
+        "brutalist": "2s",
+        "corporate": "2s",
+        "cyberpunk": "2s",
+        "dark": "2s",
+        "flat": "2s",
+        "light-dark": "2s",
+        "light": "2s",
+        "midnight": "2s",
+        "minimal": "2s",
+        "pastel": "2s",
+        "tailwind": "2s",
+        "terminal": "2s",
+        "warm": "2s"
+      }
+    },
+    {
       "name": "--cascivo-editor-bg",
       "layer": "semantic",
       "group": "editor",
@@ -2583,6 +2646,48 @@
         "tailwind": null,
         "terminal": "oklch(0.82 0.2 145)",
         "warm": "oklch(0.52 0.14 70)"
+      }
+    },
+    {
+      "name": "--cascivo-motion-attention",
+      "layer": "semantic",
+      "group": "motion",
+      "byTheme": {
+        "arcade": "var(--cascivo-duration-500) var(--cascivo-ease-out)",
+        "brutalist": "var(--cascivo-duration-500) var(--cascivo-ease-out)",
+        "corporate": "var(--cascivo-duration-500) var(--cascivo-ease-out)",
+        "cyberpunk": "var(--cascivo-duration-500) var(--cascivo-ease-out)",
+        "dark": "var(--cascivo-duration-500) var(--cascivo-ease-out)",
+        "flat": "var(--cascivo-duration-500) var(--cascivo-ease-out)",
+        "light-dark": "var(--cascivo-duration-500) var(--cascivo-ease-out)",
+        "light": "var(--cascivo-duration-500) var(--cascivo-ease-out)",
+        "midnight": "var(--cascivo-duration-500) var(--cascivo-ease-out)",
+        "minimal": "var(--cascivo-duration-500) var(--cascivo-ease-out)",
+        "pastel": "var(--cascivo-duration-500) var(--cascivo-ease-out)",
+        "tailwind": "var(--cascivo-duration-500) var(--cascivo-ease-out)",
+        "terminal": "var(--cascivo-duration-500) var(--cascivo-ease-out)",
+        "warm": "var(--cascivo-duration-500) var(--cascivo-ease-out)"
+      }
+    },
+    {
+      "name": "--cascivo-motion-drawer",
+      "layer": "semantic",
+      "group": "motion",
+      "byTheme": {
+        "arcade": "var(--cascivo-duration-300) var(--cascivo-ease-decel)",
+        "brutalist": "var(--cascivo-duration-300) var(--cascivo-ease-decel)",
+        "corporate": "var(--cascivo-duration-300) var(--cascivo-ease-decel)",
+        "cyberpunk": "var(--cascivo-duration-300) var(--cascivo-ease-decel)",
+        "dark": "var(--cascivo-duration-300) var(--cascivo-ease-decel)",
+        "flat": "var(--cascivo-duration-300) var(--cascivo-ease-decel)",
+        "light-dark": "var(--cascivo-duration-300) var(--cascivo-ease-decel)",
+        "light": "var(--cascivo-duration-300) var(--cascivo-ease-decel)",
+        "midnight": "var(--cascivo-duration-300) var(--cascivo-ease-decel)",
+        "minimal": "var(--cascivo-duration-300) var(--cascivo-ease-decel)",
+        "pastel": "var(--cascivo-duration-300) var(--cascivo-ease-decel)",
+        "tailwind": "var(--cascivo-duration-300) var(--cascivo-ease-decel)",
+        "terminal": "var(--cascivo-duration-300) var(--cascivo-ease-decel)",
+        "warm": "var(--cascivo-duration-300) var(--cascivo-ease-decel)"
       }
     },
     {

@@ -123,4 +123,4 @@ inputs, picker, wheel, drum, scroll-snap, mobile, ios
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-26. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

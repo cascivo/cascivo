@@ -1,0 +1,241 @@
+/* packages/tokens/src/motion.css */
+/* cascivo Design System — Canonical keyframes */
+
+/*
+ * The shared keyframe catalogue. Before this file, motion was authored per component: three
+ * separate shimmers (`cascade-shimmer`, `cascade-image-shimmer`, a bare `shimmer`), two
+ * indeterminate sweeps under different names, and three naming conventions across fifteen
+ * files. Same animation, divergent implementations — including divergent *performance*, since
+ * one shimmer translated a pseudo-element (compositor-safe) while two repainted
+ * `background-position` every frame.
+ *
+ * ── How to reference these from a component ─────────────────────────────────────────────
+ *
+ * Component CSS is `.module.css`, and CSS Modules localises `animation-name` by default. A
+ * bare reference is silently rewritten to a hashed name that resolves to nothing:
+ *
+ *     animation: cascivo-spin 1s linear infinite;     ->  _cascivo-spin_8in1i_1   BROKEN
+ *     animation: global(cascivo-spin) 1s linear infinite;  ->  cascivo-spin       correct
+ *
+ * So every reference from a module MUST wrap the name in `global(…)`. `animation-audit`
+ * enforces this; there is no diagnostic from the bundler if you forget, the animation just
+ * never runs. Plain (non-module) stylesheets — themes, platform — reference the name directly.
+ *
+ * ── Reduced motion ──────────────────────────────────────────────────────────────────────
+ *
+ * Nothing here is guarded, because a keyframe definition is inert until something references
+ * it. The obligation sits at the call site, and `reduced-motion:check` enforces it there:
+ *   · finite animations time off `--cascivo-duration-*` and collapse globally;
+ *   · decorative loops sit inside `@media (prefers-reduced-motion: no-preference)`;
+ *   · indicator loops are slowed by an explicit `reduce` guard.
+ * See docs/MOTION.md.
+ *
+ * ── Compositor safety ───────────────────────────────────────────────────────────────────
+ *
+ * Every keyframe below animates `transform`/`translate`/`rotate`/`scale`/`opacity`/`filter`
+ * only, with two deliberate exceptions that are called out at their definition. Note that
+ * `background-position` is NOT compositor-safe — it repaints each frame — which is why the
+ * canonical shimmer translates an overlay instead.
+ */
+
+/* ── Loading & progress ──────────────────────────────────────────────────── */
+
+/** Continuous rotation. Spinners, refresh affordances, in-progress glyphs. */
+@keyframes cascivo-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+/**
+ * Skeleton / placeholder sheen. Expects an absolutely-positioned overlay inside an
+ * `overflow: hidden` host — translate a `::after`, do not slide a `background-position`:
+ *
+ *   .placeholder { position: relative; overflow: hidden; }
+ *   .placeholder::after {
+ *     content: ''; position: absolute; inset: 0; translate: -100% 0;
+ *     background: linear-gradient(90deg, transparent, <sheen>, transparent);
+ *     animation: global(cascivo-shimmer) var(--cascivo-duration-loop) linear infinite;
+ *   }
+ */
+@keyframes cascivo-shimmer {
+  from {
+    translate: -100% 0;
+  }
+  to {
+    translate: 100% 0;
+  }
+}
+
+/**
+ * Indeterminate progress sweep — a block crossing its track and back out.
+ * Translates rather than animating `inset-inline-start`, so it stays off the layout path.
+ * The host must be `overflow: hidden`; the bar itself is sized ~40% of the track.
+ */
+@keyframes cascivo-progress-sweep {
+  from {
+    translate: -100% 0;
+  }
+  to {
+    translate: 250% 0;
+  }
+}
+
+/** Terminal / streaming cursor. `step-end` timing at the call site, not here. */
+@keyframes cascivo-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/**
+ * Typing indicator. Apply to each of three dots with a staggered `animation-delay`
+ * (0, 160ms, 320ms) so they bounce in sequence.
+ */
+@keyframes cascivo-dots {
+  0%,
+  60%,
+  100% {
+    translate: 0 0;
+    opacity: 0.4;
+  }
+  30% {
+    translate: 0 -35%;
+    opacity: 1;
+  }
+}
+
+/**
+ * Material-style SVG spinner, part one: the stroke grows and shrinks as it travels.
+ * Pair with `cascivo-spin` on the parent. Requires `stroke-dasharray` ≈ the path length.
+ *
+ * DELIBERATE EXCEPTION to compositor safety: `stroke-dashoffset` is not a composited
+ * property. There is no transform-based way to express a stroke that changes length, and
+ * the alternative — a masked overlay — costs more than it saves on a 24px glyph.
+ */
+@keyframes cascivo-dash-grow {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 200;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 200;
+    stroke-dashoffset: -125;
+  }
+}
+
+/* ── Attention & feedback ────────────────────────────────────────────────── */
+
+/**
+ * Opacity pulse for "live" affordances — recording dots, streaming labels, status beacons.
+ * Deliberately does NOT drop below 0.4: a decorative dot that fades to transparent is fine,
+ * but this same keyframe on a text label would cross below the WCAG contrast floor mid-cycle.
+ * Animate a decorative pseudo-element, not the label (see `ai-label`).
+ */
+@keyframes cascivo-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/** Scale pulse — a breathing call-to-action or a live badge that should read as physical. */
+@keyframes cascivo-pulse-scale {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.05;
+  }
+}
+
+/**
+ * Radar ping — a pseudo-element expanding out of a marker and fading.
+ * Apply to a `::after` layered under the dot itself, never to the dot.
+ */
+@keyframes cascivo-ping {
+  from {
+    scale: 1;
+    opacity: 0.7;
+  }
+  to {
+    scale: 2.4;
+    opacity: 0;
+  }
+}
+
+/**
+ * Failed validation / rejected input. Finite (`1` iteration) and short by construction —
+ * time it off `--cascivo-duration-500` so it collapses under reduced motion like any
+ * one-shot. Symmetric, so the element ends exactly where it started.
+ */
+@keyframes cascivo-shake {
+  10%,
+  90% {
+    translate: -0.15rem 0;
+  }
+  30%,
+  70% {
+    translate: 0.3rem 0;
+  }
+  50% {
+    translate: -0.3rem 0;
+  }
+  0%,
+  100% {
+    translate: 0 0;
+  }
+}
+
+/** Edit-mode jiggle — reorderable or deletable items, iOS-style. */
+@keyframes cascivo-wiggle {
+  0%,
+  100% {
+    rotate: -1.5deg;
+  }
+  50% {
+    rotate: 1.5deg;
+  }
+}
+
+/** Vertical attention bounce — scroll affordances, floating action buttons. */
+@keyframes cascivo-bounce {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -25%;
+  }
+}
+
+/**
+ * Transient row highlight — a newly inserted table row, or the element a URL fragment
+ * points at. Fades a tint back to transparent.
+ *
+ * DELIBERATE EXCEPTION to compositor safety: `background-color` repaints, and there is no
+ * transform equivalent for "tint this element". It is a one-shot on a single element, so
+ * the cost is bounded — do not loop it.
+ *
+ * `--cascivo-flash-tint` lets a call site pick the tint; the default is the accent wash.
+ */
+@keyframes cascivo-flash {
+  from {
+    background-color: var(--cascivo-flash-tint, var(--cascivo-color-accent-subtle));
+  }
+  to {
+    background-color: transparent;
+  }
+}

@@ -9,8 +9,8 @@
     background: var(--cascivo-color-bg);
     cursor: pointer;
     transition:
-      border-color 120ms ease,
-      background-color 120ms ease;
+      border-color var(--cascivo-duration-100) ease,
+      background-color var(--cascivo-duration-100) ease;
   }
 
   .card:hover:not([data-disabled]) {
@@ -50,7 +50,7 @@
     border: 1px solid var(--cascivo-color-border-strong);
     border-radius: var(--cascivo-radius-indicator);
     color: transparent;
-    transition: all 120ms ease;
+    transition: all var(--cascivo-duration-100) ease;
   }
 
   .card:has(input:checked) .glyph {

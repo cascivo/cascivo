@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/compatibility.md
-  registry v1.0.0 · generated 2026-08-26
+  registry v1.0.0 · generated 2026-08-29
 -->
 
 # Compatibility & support matrix

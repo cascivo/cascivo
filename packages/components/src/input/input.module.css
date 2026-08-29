@@ -72,6 +72,13 @@
     .wrapper[data-state='error'] & {
       border-color: var(--cascivo-color-destructive);
 
+      /* Failed validation had no motion at all, which made a rejected submit easy to miss
+         when the error text rendered below the fold. The shake runs once, when the error
+         state is applied — CSS restarts an animation as the selector starts matching, so
+         no JS is needed to trigger it, and it does not re-run while the error persists.
+         Finite and token-timed, so the global reduced-motion collapse disables it. */
+      animation: global(cascivo-shake) var(--cascivo-motion-attention) 1;
+
       &:focus {
         box-shadow: 0 0 0 3px rgb(from var(--cascivo-color-destructive) r g b / 0.3);
       }
