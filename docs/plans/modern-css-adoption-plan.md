@@ -1,6 +1,9 @@
 # Modern CSS adoption — closing the remaining platform gaps
 
-**Status: proposed 2026-08-29.** Phases land independently; each is shippable alone.
+**Status: Phases 1–9 implemented 2026-08-29.** Phase 10 items 1–2 remain. Every support
+claim below was verified empirically in Chromium 141 via Playwright probes, not read off a
+support table — three of them turned out to be wrong on first reading, and one uncovered a
+live bug (§Phase 7).
 
 cascivo already runs on most of the 2025–2026 CSS platform: anchor positioning, `:has()`,
 `calc-size(auto)` over `::details-content`, `@container`, native masonry (both syntaxes),
@@ -98,17 +101,22 @@ when content lengths differ. `GridItem` already stretches (`display: grid; align
 stretch`), so the card fills the row — but its internal bands float wherever content puts
 them. Every dashboard hits this.
 
-**Change.**
+**Change, as implemented.**
 
-- `Grid` gains an opt-in `alignRows` boolean. When set, `.grid` declares
-  `grid-template-rows: repeat(var(--_grid-rows, 3), auto)` per implicit row band, and
-  `.grid-item` becomes `grid-row: span var(--_grid-rows, 3); grid-template-rows: subgrid`.
-- `Card` opts in via `&:has(> .header, > .content, > .footer)` already present: inside a
-  subgrid item it sets `display: grid; grid-template-rows: subgrid; grid-row: span 3`.
-- `settings-layout` gets the same treatment for label/control column alignment.
+- `Grid` gains an opt-in `alignRows` boolean. Every direct child spans three implicit row
+  tracks and adopts them with `grid-template-rows: subgrid`.
+- `Card` stamps `data-cascivo-card` (a new published style hook), which `grid.module.css`
+  targets one level down so the tracks pass through a wrapping `GridItem`.
+- The `@supports` guard is **required, not insurance**: `grid-row: span 3` without a working
+  `subgrid` would leave two empty tracks under every card, so the block is not decomposable.
 
-Subgrid is Baseline, so this needs no `@supports`; a `@supports (grid-template-rows: subgrid)`
-guard is still cheap insurance for older Safari 15 and is included.
+**Defect found by measuring rather than eyeballing.** A subgrid inherits its parent's `gap`,
+so the grid's own `gap={4}` was re-applied *between* each card's header, content and footer —
+16px of dead space per seam. `row-gap: 0` on both subgrid levels is load-bearing. Measured
+before: two footers 100px apart. After: both at the same y.
+
+`settings-layout` was **not** changed — its label/control alignment is a separate shape and
+folding it in would have widened this phase without a measurement to justify it.
 
 **Verify.** New `Grid` prop → `props-parity`, `prop-defaults-parity`, `dead-props`,
 `example-props` all run from the manifest, so the `.meta.ts` update is mandatory.
@@ -122,12 +130,17 @@ Visual baselines regenerate.
 toggle four boolean attributes (`data-scroll-top/bottom/start/end`) that CSS then reads. The
 same shape recurs in `DataTable`'s sticky header shadow and `apps/site`'s Header.
 
-**Constraint discovered during design — read before implementing.** A container query styles
-**descendants** of the container, never the container box itself. `ScrollArea` paints its
-shadows as `box-shadow: inset` on the scroller `.root`, which is the container. So the
-enhancement cannot be a drop-in: inside `@supports (container-type: scroll-state)` the
-shadows must move to the scroller's own `::before`/`::after` (generated child boxes, which
-*are* matched by the container's queries), positioned `sticky` at the block edges.
+**Constraint, verified.** A container query styles **descendants**, never the container box
+itself. `ScrollArea` paints its shadows as `box-shadow: inset` on the scroller `.root`, which
+*is* the container. A browser probe settled the open question: a container's own
+`::before`/`::after` **are** matched by its own `scroll-state` query. So the shadows move to
+two zero-height `position: sticky` pseudos at the block edges — no DOM change, no wrapper.
+
+**Second constraint, verified.** `scroll-state(stuck: …)` is asked **of the sticky element**,
+not of the scroller. `DataTable`'s container is therefore the `thead th`, and — since a
+container cannot style itself — the shadow is painted on `th::after`. A probe confirmed
+`container-type: scroll-state` works on a real sticky `<th>` despite its `table-cell`
+display.
 
 **Change.**
 
@@ -217,7 +230,7 @@ threaded through props → `data-disabled` → cloned `aria-invalid` on the cont
 wiring (`aria-describedby`, `aria-invalid`, `role="alert"`) genuinely needs the props and
 stays. The **styling-only** half does not.
 
-**Change.** Add to `.field`:
+**Change, as implemented.** Add to `.field`:
 
 ```css
 &:has(:disabled) { opacity: 0.5; }              /* joins the existing [data-disabled] rule */
@@ -236,16 +249,30 @@ every form is built from.
 
 ## Phase 7 — Finish the anchor-positioning set
 
-Anchor positioning is adopted but incomplete. Three additions, all inside the existing
+**A live bug, found by probing rather than by reading.** Six declarations in `Dropdown` and
+`Tooltip` used `inset-area`. That property was renamed to `position-area`, and Chromium 141
+**no longer accepts the old name** — `CSS.supports('inset-area', …)` returns `false`. Every
+anchored placement in both components was therefore dead CSS, silently falling back to the
+UA's default top-layer position. Safari 26 never shipped the old name either.
+`multi-select.module.css` already used `position-area`, which is what made the inconsistency
+visible. All six are renamed; verified applying afterwards (`positionArea` computes to
+`"end span-start"` where it previously computed to nothing).
+
+Beyond that fix, three additions, all inside the existing
 `@supports (anchor-name: --a) and (position-anchor: --a)` blocks so they inherit the gate:
 
-1. **`anchor-size()`** — `dropdown.module.css` hard-codes `min-inline-size: 10rem`. Replace
-   with `min-inline-size: anchor-size(self-inline)` so the panel matches its trigger, keeping
-   `10rem` as the preceding static fallback. Same for `Combobox` and `MultiSelect` panels.
-2. **`position-visibility: no-overflow`** on `Tooltip` and `HoverCard`, so a tip whose anchor
-   scrolls out of a clipping ancestor hides instead of stranding itself mid-viewport.
-3. **Named `@position-try` blocks** for flips the built-in keywords cannot express (a menu
-   that should shift inline before it flips block).
+1. **`anchor-size()`** — `dropdown.module.css` hard-coded `min-inline-size: 10rem`, so a
+   full-width trigger opened a narrow panel hanging off one edge. Now
+   `max(10rem, anchor-size(self-inline))`: matches a wide trigger, keeps the floor for an
+   icon-sized one, with the static `10rem` preceding it as the fallback.
+2. **`position-visibility: anchors-visible`** on `Tooltip` and `HoverCard` — **not**
+   `no-overflow`, which the first draft had. `no-overflow` hides the tip when *the tip*
+   overflows; the actual failure is the anchor scrolling out from under it while the tip,
+   being in the top layer, is not clipped by the anchor's scroller and stays painted over
+   unrelated content. `anchors-visible` is the one that ties the two together.
+3. **Named `@position-try` blocks** — deferred. `multi-select` already has one
+   (`--bottom-start`); no other component has a placement the built-in keywords cannot
+   express, so adding the machinery now would be speculative.
 
 **Follow-up, not this phase:** `packages/core/src/anchor.tsx`'s JS fallback registers a
 *capturing* `window` scroll listener — the most expensive listener shape in the file. Record a
@@ -256,16 +283,25 @@ go, and `useAnchorPosition` becomes a pure style emitter.
 
 ## Phase 8 — Container-query breadth sweep
 
-24 `@container` rules across 13 files, of which only 5 are components; 7 width-based `@media`
-rules remain in package CSS. For a library whose thesis is "the component adapts to its slot",
-the ratio is the wrong way round.
+**The premise was wrong, and the finding is the useful part.** The plan assumed the 7
+remaining width `@media` rules in package CSS were unconverted debt. Reading all seven shows
+every one is legitimately viewport-scoped and `@container` would match nothing:
 
-**Change.** Convert the 7 remaining component-level width `@media` rules to `@container`
-(where the component owns or can declare a query container), and add
-`scripts/checks/container-preference.test.ts` — a sibling of `breakpoint:check` that fails on
-a **new** width-based `@media` in `packages/components` or `packages/layouts` unless the file
-carries an explicit `/* viewport-query: <reason> */` opt-out. Viewport queries stay legal for
-things that genuinely are viewport-scoped (`AppShell`'s drawer breakpoint).
+| File | Why the viewport is right |
+| --- | --- |
+| `modal`, `alert-dialog` | top-layer `<dialog>` — no ancestor contains it |
+| `dock` | `position: fixed` screen-level bottom bar — it has no slot |
+| `toast` | portalled; the container version shipped first and **never matched** |
+| `app-shell` ×3 | the page frame — nothing above it to query |
+
+So the conversion work is zero. What was missing is not the conversion but the **record**:
+four of the seven carried no rationale, so the next reader had to re-derive it (and `toast`
+only carries one because someone got it wrong first).
+
+**Change, as implemented.** `scripts/checks/container-preference.test.ts` fails on any width
+`@media` in `packages/components` or `packages/layouts` that is not preceded by a
+`viewport-query: <reason>` comment. All seven now carry one. Wired into `pnpm meta:check` and
+available standalone as `pnpm container-preference:check`.
 
 ---
 
@@ -276,10 +312,18 @@ Each phase adds a progressive property; without a check they rot silently.
 - Extend `scripts/checks/css-fallback.ts` to require a static fallback for
   `appearance: base-select`, `field-sizing`, `text-box-trim`, `anchor-size()`, and
   `container-type: scroll-state` — the same rule it already applies to `contrast-color()`.
-- Extend `scripts/checks/primitive-adoption.test.ts` with a rule that a component adding a
-  raw `scroll` listener must gate it on `CSS.supports` when a CSS equivalent exists (an
-  allowlist for the ones that genuinely produce JS state).
-- `docs/COMPATIBILITY.md` gains a row per feature adopted, matching the table in §0.
+- `docs/COMPATIBILITY.md` gains a row per feature adopted, matching the table in §0. **Done.**
+
+**The extended `fallback:check` paid for itself on first run**, flagging two declarations
+neither the plan nor the review had noticed: `multi-select`'s `position-area` was ungated
+(reading as though it always applied, when in fact it is dropped without anchor positioning),
+and this plan's own `field-sizing: content` had no `@supports` wrapper. Both are now gated.
+
+**Not done, deliberately:** the proposed `primitive-adoption` rule about gating new `scroll`
+listeners on `CSS.supports`. The honest version needs an allowlist of every listener that
+produces JS state rather than styles (`Carousel`, `LogViewer`, `WheelPicker`, `DataTable`'s
+virtualiser, the code editor), and an allowlist that large is a list of exceptions pretending
+to be a rule. Revisit if a second listener-for-styling case appears.
 
 ---
 

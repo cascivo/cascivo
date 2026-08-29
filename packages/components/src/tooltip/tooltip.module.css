@@ -70,25 +70,30 @@
       inset: auto;
       position-anchor: var(--cascivo-tooltip-anchor, attr(data-anchor));
       margin: var(--cascivo-space-2);
+      /* An anchored element lives in the top layer, so it is not clipped by the scroller its
+         trigger sits in: scroll the trigger out of a panel and the tip stays painted over
+         unrelated content, pointing at nothing. `anchors-visible` ties its visibility to the
+         anchor's. Ignored where unsupported, which is the behaviour today. */
+      position-visibility: anchors-visible;
     }
 
     .tooltip[data-placement='top'] {
-      inset-area: block-start span-inline-start;
+      position-area: block-start span-inline-start;
       translate: 0 0;
     }
 
     .tooltip[data-placement='bottom'] {
-      inset-area: block-end span-inline-start;
+      position-area: block-end span-inline-start;
       translate: 0 0;
     }
 
     .tooltip[data-placement='left'] {
-      inset-area: inline-start span-block-start;
+      position-area: inline-start span-block-start;
       translate: 0 0;
     }
 
     .tooltip[data-placement='right'] {
-      inset-area: inline-end span-block-start;
+      position-area: inline-end span-block-start;
       translate: 0 0;
     }
 

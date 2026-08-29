@@ -65,6 +65,9 @@
   }
 
   /* Canonical lg breakpoint (64rem = SCREEN.lg). Below this: mobile drawer mode. */
+  /* viewport-query: AppShell is the page frame, so nothing contains it to query against —
+     the drawer breakpoint is named in CLAUDE.md as the standing example of a query that is
+     legitimately viewport-scoped. */
   @media (max-width: 64rem) {
     .shell {
       grid-template:

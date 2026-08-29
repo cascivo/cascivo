@@ -220,6 +220,10 @@ git diff --exit-code
 # Breakpoint literal check (off-scale @media/@container widths)
 pnpm breakpoint:check
 
+# Every width @media inside a component declares why the viewport (not the slot) is the
+# right axis — a `viewport-query: <reason>` comment above it. Part of `meta:check`.
+pnpm container-preference:check
+
 # APG conformance (a declared apgPattern matches the manifest's role + required keys)
 pnpm apg:check
 

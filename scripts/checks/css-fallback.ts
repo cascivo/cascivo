@@ -27,6 +27,41 @@ function isContrastColor(value: string): boolean {
   return /\bcontrast-color\s*\(/.test(value)
 }
 
+/**
+ * Progressive properties adopted in the 2026-08 modern-CSS pass. Each is Chromium-only or
+ * near-it, each changes layout or appearance, and each therefore owes the same debt as
+ * `contrast-color()`: a static value for the same property immediately before it, or an
+ * enclosing `@supports`.
+ *
+ * `anchor-size()` is here rather than in `isFunctionCall` because it reads as an ordinary
+ * function call, and a panel silently losing its width floor is not an obvious failure.
+ */
+const PROGRESSIVE_PROPERTIES = new Set([
+  'appearance',
+  'field-sizing',
+  'text-box-trim',
+  'text-box-edge',
+  'container-type',
+  'position-area',
+  'position-visibility',
+  'reading-flow',
+  'reading-order',
+])
+
+/** Values that are only progressive for an otherwise-ordinary property. */
+const PROGRESSIVE_VALUES: Record<string, RegExp> = {
+  appearance: /\bbase-select\b/,
+  'field-sizing': /\bcontent\b/,
+  'container-type': /\bscroll-state\b/,
+}
+
+function isProgressive(property: string, value: string): boolean {
+  if (/\banchor-size\s*\(/.test(value)) return true
+  if (!PROGRESSIVE_PROPERTIES.has(property)) return false
+  const guard = PROGRESSIVE_VALUES[property]
+  return guard ? guard.test(value) : true
+}
+
 export function auditFallbacks(cssSource: string, filename: string): FallbackViolation[] {
   const violations: FallbackViolation[] = []
   const lines = cssSource.split('\n')
@@ -74,7 +109,12 @@ export function auditFallbacks(cssSource: string, filename: string): FallbackVio
 
     const [, property, value] = declMatch
 
-    if (isFunctionCall(value) || isIfExpression(value) || isContrastColor(value)) {
+    if (
+      isFunctionCall(value) ||
+      isIfExpression(value) ||
+      isContrastColor(value) ||
+      isProgressive(property, value)
+    ) {
       // Check if current or parent block has a preceding static declaration for this property
       let hasFallback = false
 
@@ -96,7 +136,7 @@ export function auditFallbacks(cssSource: string, filename: string): FallbackVio
           line: lineNum,
           property,
           value,
-          reason: `No static fallback for '${property}' before @function/if()/contrast-color() call`,
+          reason: `No static fallback for '${property}', and it is not inside an @supports block`,
         })
       }
     } else {

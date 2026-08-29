@@ -38,14 +38,19 @@ in an SPA — no aggregate stylesheet in either recipe. The
 cascivo targets the **last 2 versions of Chrome, Firefox, and Safari**. It relies
 on modern CSS that is broadly shipped as of 2025:
 
-| Feature                         | Min support                     | Used for                                 |
-| ------------------------------- | ------------------------------- | ---------------------------------------- |
-| `@layer`                        | Chrome 99, FF 97, Saf 15.4      | predictable cascade ordering             |
-| `@container`                    | Chrome 105, FF 110, Saf 16      | slot-aware responsive components         |
-| `:has()`                        | Chrome 105, FF 121, Saf 15.4    | stateful styling without JS              |
-| `oklch()`                       | Chrome 111, FF 113, Saf 15.4    | the entire color system                  |
-| Popover API / `@starting-style` | Chrome 114+, FF 125+, Saf 17.4+ | overlays (Sheet, Drawer, Popover)        |
-| CSS `@function` / `if()`        | Chrome 133+ only                | **progressive enhancement only** (below) |
+| Feature                                 | Min support                     | Used for                                                         |
+| --------------------------------------- | ------------------------------- | ---------------------------------------------------------------- |
+| `@layer`                                | Chrome 99, FF 97, Saf 15.4      | predictable cascade ordering                                     |
+| `@container`                            | Chrome 105, FF 110, Saf 16      | slot-aware responsive components                                 |
+| `:has()`                                | Chrome 105, FF 121, Saf 15.4    | stateful styling without JS                                      |
+| `oklch()`                               | Chrome 111, FF 113, Saf 15.4    | the entire color system                                          |
+| Popover API / `@starting-style`         | Chrome 114+, FF 125+, Saf 17.4+ | overlays (Sheet, Drawer, Popover)                                |
+| `subgrid`                               | Chrome 117, FF 71, Saf 16       | `Grid`'s `alignRows` — cross-card band alignment                 |
+| `field-sizing: content`                 | Chrome 123, FF 121, Saf 26      | `Textarea`'s `autosize` — **progressive**                        |
+| `anchor-size()` / `position-visibility` | Chrome 125+, Saf 26+            | panel widths and anchor-tied visibility — **progressive**        |
+| `scroll-state` container queries        | Chrome 133+ only                | `ScrollArea` shadows, `DataTable` stuck header — **progressive** |
+| `appearance: base-select`               | Chrome 135+ only                | `NativeSelect`'s themed option list — **progressive**            |
+| CSS `@function` / `if()`                | Chrome 133+ only                | **progressive enhancement only** (below)                         |
 
 ### CSS `@function` is opt-in
 

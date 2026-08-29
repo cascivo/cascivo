@@ -14,6 +14,7 @@
        containing element, so this must be a viewport @media query. As an unnamed
        @container query it never matched (nothing establishes containment around the
        portal root), so the narrow-screen edge-to-edge layout never applied. */
+    /* viewport-query: see the note above — the portal root has no containing element. */
     @media (max-width: 30rem) {
       inset-inline: var(--cascivo-space-4);
       inline-size: auto;

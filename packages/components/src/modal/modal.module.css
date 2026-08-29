@@ -172,6 +172,8 @@
     border-block-start: 1px solid var(--cascivo-color-border);
   }
 
+  /* viewport-query: same as alert-dialog — a top-layer <dialog> has no containing element
+     to query, and the bottom-sheet form is a screen-size decision. */
   @media (max-width: 40rem) {
     .dialog {
       /* Pin to bottom viewport edge — bottom-sheet */

@@ -122,6 +122,8 @@
   }
 
   /* Desktop: two-column layout, sidebar in flow */
+  /* viewport-query: the app shell IS the page frame — it is the outermost layout element,
+     so there is no container above it to query. Same call as layouts/app-shell. */
   @media (min-width: 40rem) {
     .root {
       grid-template-columns: 16rem 1fr;

@@ -2,6 +2,12 @@ export function initReveal(): () => void {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     return () => {}
   }
+  // A view timeline in landing.css does all of this in CSS where it is supported — including
+  // the late-mount case the MutationObserver below exists for. Registering both would run two
+  // mechanisms against the same elements.
+  if (CSS.supports('animation-timeline', 'view()')) {
+    return () => {}
+  }
   // threshold: 0 + rootMargin shrinks the effective viewport by 60px at the bottom,
   // so sections reveal when ~60px is visible — viewport-relative, not element-size-relative.
   // threshold: 0.15 breaks for very tall elements (e.g. the 5500px a11y matrix table)

@@ -38,7 +38,10 @@
        the layout. */
     min-block-size: calc(var(--_rows, 4) * 1lh + var(--cascivo-space-3) * 2 + 2px);
     max-block-size: var(--cascivo-textarea-max-block-size, 20lh);
-    field-sizing: content;
+
+    @supports (field-sizing: content) {
+      field-sizing: content;
+    }
   }
 
   .label {

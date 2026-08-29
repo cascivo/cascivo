@@ -39,6 +39,11 @@ on modern CSS that is broadly shipped as of 2025:
 | `:has()`                      | Chrome 105, FF 121, Saf 15.4 | stateful styling without JS               |
 | `oklch()`                     | Chrome 111, FF 113, Saf 15.4 | the entire color system                   |
 | Popover API / `@starting-style` | Chrome 114+, FF 125+, Saf 17.4+ | overlays (Sheet, Drawer, Popover)     |
+| `subgrid`                     | Chrome 117, FF 71, Saf 16 | `Grid`'s `alignRows` — cross-card band alignment |
+| `field-sizing: content`       | Chrome 123, FF 121, Saf 26 | `Textarea`'s `autosize` — **progressive**  |
+| `anchor-size()` / `position-visibility` | Chrome 125+, Saf 26+ | panel widths and anchor-tied visibility — **progressive** |
+| `scroll-state` container queries | Chrome 133+ only      | `ScrollArea` shadows, `DataTable` stuck header — **progressive** |
+| `appearance: base-select`     | Chrome 135+ only         | `NativeSelect`'s themed option list — **progressive** |
 | CSS `@function` / `if()`      | Chrome 133+ only         | **progressive enhancement only** (below)  |
 
 ### CSS `@function` is opt-in

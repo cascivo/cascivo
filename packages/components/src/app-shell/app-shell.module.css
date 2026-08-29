@@ -132,7 +132,10 @@
   /* Desktop (>= lg, 64rem): the nav becomes an in-flow column. Full-hide
      animates the wrapper's inline-size between its open width and 0 (explicit
      lengths — never the grid 1fr→0fr trick, which silently fails on an
-     auto-width flex item). The pinned navInner clips as the wrapper closes. */
+     auto-width flex item). The pinned navInner clips as the wrapper closes.
+
+     viewport-query: AppShell is the page frame — nothing contains it to query against, and
+     drawer-vs-column is a device decision, not a slot one. */
   @media (min-width: 64rem) {
     .navWrapper {
       position: static;

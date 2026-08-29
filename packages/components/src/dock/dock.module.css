@@ -11,6 +11,9 @@
     z-index: var(--cascivo-z-dock, 40);
   }
 
+  /* viewport-query: the dock is position: fixed to the bottom of the screen. Whether a
+     screen-level bottom bar belongs on this device is a viewport question by definition —
+     it has no slot. */
   @media (min-width: 64rem) {
     .dock {
       display: none;
