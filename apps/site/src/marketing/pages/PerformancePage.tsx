@@ -4,6 +4,7 @@ import { BarChart } from '@cascivo/charts'
 import { DataTable, type Column } from '@cascivo/components/data-table'
 import { Stat } from '@cascivo/components/stat'
 import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
+import { SegmentedControl } from '@cascivo/components/segmented-control'
 import { Header } from '../sections/Header'
 import { Footer } from '../sections/Footer'
 import { SignalsDemo } from '../sections/SignalsDemo'
@@ -125,7 +126,7 @@ function BundleSection() {
         mode="grouped"
         height={300}
         title="Production bundle size by library (KB, min+gzip)"
-        description="Grouped bars compare gzipped JS and CSS totals for the identical cascade, shadcn/ui, and Carbon bench apps. Lower is better."
+        description="Grouped bars compare the identical cascade, shadcn/ui, and Carbon bench apps on gzipped JS and on gzipped CSS. Lower is better."
       />
       {treeshake && (
         <p className="perf-note">
@@ -143,6 +144,11 @@ const LENS_LABELS: Record<Lens, string> = {
   standalone: 'Standalone',
   amortized: 'Amortized',
 }
+
+const LENS_OPTIONS = (['incremental', 'standalone', 'amortized'] as const).map((value) => ({
+  value,
+  label: LENS_LABELS[value],
+}))
 
 function MatrixSection() {
   useSignals()
@@ -199,20 +205,16 @@ function MatrixSection() {
       <p className="section-sub">
         There is more than one honest answer. Choose the lens that fits your situation:
       </p>
-      <div className="perf-lens-toggle" role="group" aria-label="Cost lens">
-        {(['incremental', 'standalone', 'amortized'] as const).map((l) => (
-          <button
-            key={l}
-            onClick={() => {
-              lens.value = l
-            }}
-            aria-pressed={activeLens === l}
-            className={activeLens === l ? 'active' : undefined}
-          >
-            {LENS_LABELS[l]}
-          </button>
-        ))}
-      </div>
+      <SegmentedControl
+        className="perf-lens-toggle"
+        aria-label="Cost lens"
+        options={LENS_OPTIONS}
+        value={activeLens}
+        onValueChange={(v) => {
+          const next = LENS_OPTIONS.find((o) => o.value === v)
+          if (next) lens.value = next.value
+        }}
+      />
       <p className="perf-lens-desc">
         {activeLens === 'incremental' && (
           <>
