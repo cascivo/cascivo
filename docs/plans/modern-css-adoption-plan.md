@@ -1,6 +1,7 @@
 # Modern CSS adoption — closing the remaining platform gaps
 
-**Status: Phases 1–9 implemented 2026-08-29.** Phase 10 items 1–2 remain. Every support
+**Status: Phases 1–9 and Phase 10 item 2 implemented 2026-08-29.** Item 1 investigated and
+dropped (no call site); items 3–6 remain deferred. Every support
 claim below was verified empirically in Chromium 141 via Playwright probes, not read off a
 support table — three of them turned out to be wrong on first reading, and one uncovered a
 live bug (§Phase 7).
@@ -346,16 +347,42 @@ Ordered by value, all small:
    `reading-flow` is worth revisiting the day a masonry syntax actually ships, and not before
    — adding it now would be guarding a path with a feature nobody has.
 
-2. **`text-box-trim: trim-both` / `text-box-edge: cap alphabetic`** — **open decision, not an
-   implementation detail.** Measured against the built stylesheet: `Button` and `Badge` do not
-   move at all (both have explicit `block-size`/padding, so trimming the half-leading changes
-   nothing). The effect lands entirely on auto-height text — headings, card titles, stacked
-   paragraphs — where it tightens vertical rhythm across the whole catalog at once.
+2. **`text-box-trim` on `Heading` and `Text`** — **implemented, with the pairing corrected by
+   measurement.** The plan proposed the textbook `cap alphabetic`. Measuring a four-element
+   heading/paragraph stack in Chromium 141 showed why that is wrong here:
 
-   That makes it a typographic decision about the system's rhythm, with a Chromium-only
-   split (supporting browsers would render slightly tighter than the rest), rather than a
-   defect being fixed. It wants a human signing off on the look and a visual-baseline
-   regeneration, so it is deliberately left unimplemented here.
+   | `text-box-edge` | stack height | vs today |
+   | --- | --- | --- |
+   | `none` (today) | 171px | — |
+   | `text text` | 157px | **−8%** |
+   | `text alphabetic` | 139px | −19% |
+   | `cap alphabetic` | 125px | −27% |
+   | `ex alphabetic` | 113px | −34% |
+
+   cascivo's space scale was tuned by eye against untrimmed boxes, so the chosen gaps already
+   contain the leading. Cropping to cap-and-baseline makes every text stack a quarter tighter
+   than it was designed to be — a redesign of the vertical rhythm, not an enhancement of it,
+   and one that would ship as a 27% layout split against Firefox since this is
+   Chromium/Safari-only.
+
+   `text text` trims only the half-leading — the part that is purely a `line-height` artifact
+   and moves whenever the leading token does — and keeps the font's own ascender and
+   descender, which are constant. Measured at −7.9% on the real components. That is inside
+   normal cross-platform font-rendering variance, which is the bar a progressive enhancement
+   has to clear.
+
+   **Scope: `Heading` and `Text` only** — the two primitives whose text box *is* the layout
+   box. Component-internal text (a `CardHeader` title, a `Field` label) sits in a box whose
+   padding is already explicit, so trimming there moves pixels without making any spacing
+   token truer. `cascivo.reset` is not the place either: it states in as many words that
+   typography is an opinion belonging to the consumer.
+
+   **Baseline follow-up.** No component imports `Heading`/`Text`, so the blast radius is four
+   registry components whose *examples* render them — `code`, `heading`, `list`, `text` — 12
+   PNGs. They are **not** regenerated here: baselines must come from the CI font stack, and
+   `.github/workflows/visual.yml` has a `workflow_dispatch` `update: true` input for exactly
+   this. Run it once after merge, or the nightly goes red on these four.
+
 3. **`::scroll-marker` / `::scroll-marker-group` / `::scroll-button()`** — the CSS-native
    carousel. `carousel.tsx` currently syncs its index from a `scroll` listener **plus a
    400 ms `setTimeout` guard** against programmatic scrolls; that guard is a real race, not a

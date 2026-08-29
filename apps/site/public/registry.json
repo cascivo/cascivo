@@ -7502,7 +7502,7 @@
       "fileHashes": {
         "heading.tsx": "sha256-605008ea4ccca86e6b2268227a1c5c48279536544685e79ac49f675867940d5e",
         "index.ts": "sha256-8b10c70f2daf8fa5199445e0d9fbf4e080d224937f68bde022963deb2c2a4361",
-        "heading.module.css": "sha256-c875b4b9398b9c50e9e911741c21836678687beef9483cbdc1a8f9ebc54966c5"
+        "heading.module.css": "sha256-59d9e1ed9471ef9fb413e534cc55569a150f5c07c3fdfc04b51a425a634a6a67"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -17697,7 +17697,7 @@
       "fileHashes": {
         "text.tsx": "sha256-efd00d23f509cf7152cd5ce71a5638abd34341a2f8363428016fdbb4752a0ed5",
         "index.ts": "sha256-f95252720c83969d779056af603457df6ee0ebf5aaf9707cede576035ddcf3e4",
-        "text.module.css": "sha256-5d7d11e88320100b61c66160ec1bb43006a1c5e995280e47aa4a73dd8788c24e"
+        "text.module.css": "sha256-f1cccbe7e621fc0592d3e07553d7ae2bba6c35e694ef74822b1c19b75d61a6ce"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
