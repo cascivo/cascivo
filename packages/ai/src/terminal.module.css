@@ -30,7 +30,7 @@
   /* Decorative loop — opt-in, so a user who expresses no preference gets no motion. */
   @media (prefers-reduced-motion: no-preference) {
     .cursor {
-      animation: cascade-cursor-blink var(--cascivo-duration-loop-fast) step-end infinite;
+      animation: global(cascivo-blink) var(--cascivo-duration-loop-fast) step-end infinite;
     }
   }
   .line[data-type='command'] .text {
@@ -41,14 +41,5 @@
   }
   .line[data-type='comment'] .text {
     color: oklch(0.6 0.02 145);
-  }
-}
-@keyframes cascade-cursor-blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
   }
 }

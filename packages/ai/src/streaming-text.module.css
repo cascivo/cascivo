@@ -14,17 +14,7 @@
   /* Decorative loop — opt-in, so a user who expresses no preference gets no motion. */
   @media (prefers-reduced-motion: no-preference) {
     .cursor {
-      animation: cascade-cursor-blink var(--cascivo-duration-loop-fast) step-end infinite;
+      animation: global(cascivo-blink) var(--cascivo-duration-loop-fast) step-end infinite;
     }
-  }
-}
-
-@keyframes cascade-cursor-blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
   }
 }

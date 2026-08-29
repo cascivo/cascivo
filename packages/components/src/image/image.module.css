@@ -41,21 +41,37 @@
   .wrapper[data-state='loaded'] .image,
   .wrapper[data-state='error'] .image {
     opacity: 1;
-    transition: opacity 0.3s ease;
+    transition: opacity var(--cascivo-duration-300) var(--cascivo-ease-out);
   }
 
   .placeholder {
     position: absolute;
     inset: 0;
+    overflow: hidden;
     background-color: var(--cascivo-color-border);
+  }
+
+  /* Sheen travels on an overlay rather than sliding `background-position` on the
+     placeholder itself: `background-position` repaints the element every frame, while
+     translating a pseudo-element stays on the compositor. */
+  .placeholder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    translate: -100% 0;
     background-image: linear-gradient(
       90deg,
-      var(--cascivo-color-border) 25%,
-      var(--cascivo-color-bg-subtle) 50%,
-      var(--cascivo-color-border) 75%
+      transparent,
+      var(--cascivo-color-bg-subtle),
+      transparent
     );
-    background-size: 200% 100%;
-    animation: cascade-image-shimmer 1.5s linear infinite;
+  }
+
+  /* Decorative loop — opt-in, so a user who expresses no preference gets no motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    .placeholder::after {
+      animation: global(cascivo-shimmer) var(--cascivo-duration-loop) linear infinite;
+    }
   }
 
   /* Blur-up: soften the placeholder while the real image streams in. */
@@ -83,20 +99,7 @@
     transform: scale(1.05);
   }
 
-  @keyframes cascade-image-shimmer {
-    from {
-      background-position: 200% 0;
-    }
-    to {
-      background-position: -200% 0;
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .placeholder {
-      animation: none;
-      background-image: none;
-    }
     .wrapper[data-state='loaded'] .image,
     .wrapper[data-state='error'] .image,
     .wrapper[data-zoom] .image,

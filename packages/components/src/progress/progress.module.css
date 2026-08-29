@@ -67,6 +67,13 @@
     }
   }
 
+  /* Deliberately NOT the shared `cascivo-progress-sweep`.
+     ProgressBar is a div-in-a-div and translates its fill, which keeps the loop off the
+     layout path. This component styles the native `<progress>` element, whose
+     `::-webkit-progress-value` / `::-moz-progress-bar` pseudo-elements support only a
+     narrow, engine-specific property set — `translate` on them is not dependable, while
+     sizing them is. So the layout-animating form stays, scoped to the one place the
+     platform forces it. Reach for ProgressBar when the loop cost matters. */
   @keyframes cascivo-progress-indeterminate {
     0% {
       inline-size: 0%;

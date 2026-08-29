@@ -26,7 +26,8 @@
   /* Decorative loop — opt-in, so a user who expresses no preference gets no motion. */
   @media (prefers-reduced-motion: no-preference) {
     .root[data-variant='generating']::before {
-      animation: cascade-ai-pulse var(--cascivo-duration-loop) var(--cascivo-ease-in-out) infinite;
+      animation: global(cascivo-pulse) var(--cascivo-duration-loop) var(--cascivo-ease-in-out)
+        infinite;
     }
   }
   .root[data-variant='done'] {
@@ -36,14 +37,5 @@
   .root[data-variant='error'] {
     background: var(--cascivo-color-destructive-subtle);
     color: var(--cascivo-color-destructive-foreground);
-  }
-}
-@keyframes cascade-ai-pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.6;
   }
 }

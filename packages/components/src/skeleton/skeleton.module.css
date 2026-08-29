@@ -32,38 +32,43 @@
     }
   }
 
-  /* Continuous shimmer — literal duration; a static fallback below
-     replaces the duration-token opt-out used for one-shot motion. */
+  /* The shimmering surfaces. Position + clip here so the sheen overlay below has a
+     containing block to travel inside; the resting appearance is a flat block, which is
+     also exactly what a reduced-motion user sees. */
   .skeleton[data-variant='circle'],
   .skeleton[data-variant='rect'],
   .line {
+    position: relative;
+    overflow: hidden;
     background-color: var(--cascivo-color-border);
+  }
+
+  /* Sheen travels on an overlay rather than sliding `background-position` on the bar
+     itself: `background-position` repaints the element every frame, while translating a
+     pseudo-element stays on the compositor. */
+  .skeleton[data-variant='circle']::after,
+  .skeleton[data-variant='rect']::after,
+  .line::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    translate: -100% 0;
     background-image: linear-gradient(
       90deg,
-      var(--cascivo-color-border) 25%,
-      var(--cascivo-color-bg-subtle) 50%,
-      var(--cascivo-color-border) 75%
+      transparent,
+      var(--cascivo-color-bg-subtle),
+      transparent
     );
-    background-size: 200% 100%;
-    animation: cascade-shimmer 1.5s linear infinite;
   }
 
-  @keyframes cascade-shimmer {
-    from {
-      background-position: 200% 0;
-    }
-
-    to {
-      background-position: -200% 0;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .skeleton[data-variant='circle'],
-    .skeleton[data-variant='rect'],
-    .line {
-      animation: none;
-      background-image: none;
+  /* Decorative loop — opt-in, so a user who expresses no preference gets no motion.
+     A skeleton already reads as "loading" from its shape alone, so unlike Spinner there
+     is nothing to preserve by slowing it instead of stopping it. */
+  @media (prefers-reduced-motion: no-preference) {
+    .skeleton[data-variant='circle']::after,
+    .skeleton[data-variant='rect']::after,
+    .line::after {
+      animation: global(cascivo-shimmer) var(--cascivo-duration-loop) linear infinite;
     }
   }
 }
