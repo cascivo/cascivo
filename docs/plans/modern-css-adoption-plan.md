@@ -331,14 +331,31 @@ to be a rule. Revisit if a second listener-for-styling case appears.
 
 Ordered by value, all small:
 
-1. **`reading-flow: grid-order` / `reading-order`** — an **accessibility** item, not a
-   flourish. `Masonry` and any reordering `Grid` currently have visual order ≠ DOM/tab order
-   with no fix available at all. Chromium-only, but the fallback is today's behaviour, so
-   this is strictly an improvement where supported.
-2. **`text-box-trim: trim-both` / `text-box-edge: cap alphabetic`** — removes optical padding
-   drift on `Button`, `Badge` and card headings. Meaningful for a system that ships a written
-   spacing spec (`docs/specs/spacing.md`); pairs with it as the mechanism that makes the spec
-   true optically, not just numerically.
+1. **`reading-flow`** — **investigated, then dropped: it has no call site here.** The premise
+   was that `Masonry` diverges visual order from DOM order. It does not, in any browser
+   shipping today:
+   - Chromium 141 supports **neither** masonry syntax (`CSS.supports('grid-template-rows',
+     'masonry')` and `('display','masonry')` are both `false`), so `Masonry` always takes its
+     multi-column fallback — and that fallback is column-major, where DOM order and visual
+     order agree by construction. Both `@supports` blocks in `masonry.module.css` are
+     currently inert in Chrome.
+   - The only other `order`/`*-reverse` sites are `input-group`'s addon (`pointer-events:
+     none`, not focusable), `fab`'s icon-and-label inside one button, and `chat-bubble`'s
+     avatar. None is a focus-order divergence.
+
+   `reading-flow` is worth revisiting the day a masonry syntax actually ships, and not before
+   — adding it now would be guarding a path with a feature nobody has.
+
+2. **`text-box-trim: trim-both` / `text-box-edge: cap alphabetic`** — **open decision, not an
+   implementation detail.** Measured against the built stylesheet: `Button` and `Badge` do not
+   move at all (both have explicit `block-size`/padding, so trimming the half-leading changes
+   nothing). The effect lands entirely on auto-height text — headings, card titles, stacked
+   paragraphs — where it tightens vertical rhythm across the whole catalog at once.
+
+   That makes it a typographic decision about the system's rhythm, with a Chromium-only
+   split (supporting browsers would render slightly tighter than the rest), rather than a
+   defect being fixed. It wants a human signing off on the look and a visual-baseline
+   regeneration, so it is deliberately left unimplemented here.
 3. **`::scroll-marker` / `::scroll-marker-group` / `::scroll-button()`** — the CSS-native
    carousel. `carousel.tsx` currently syncs its index from a `scroll` listener **plus a
    400 ms `setTimeout` guard** against programmatic scrolls; that guard is a real race, not a
