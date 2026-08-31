@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { createLineIndex } from '../../engine/line-index.ts'
 import { matchBracket, toBracketDecorations } from './brackets.ts'
 
 describe('matchBracket', () => {
@@ -23,7 +24,7 @@ describe('matchBracket', () => {
 describe('toBracketDecorations', () => {
   it('emits single-column decorations for the pair on their lines', () => {
     const text = '(\n)'
-    const decos = toBracketDecorations(text, { open: 0, close: 2 }, 'bm')
+    const decos = toBracketDecorations(createLineIndex(text), { open: 0, close: 2 }, 'bm')
     expect(decos).toEqual([
       { line: 0, start: 0, end: 1, className: 'bm' },
       { line: 1, start: 0, end: 1, className: 'bm' },

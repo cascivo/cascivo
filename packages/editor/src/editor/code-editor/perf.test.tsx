@@ -1,6 +1,7 @@
 import { act, fireEvent, render } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { makeMarkdownDoc } from '../../engine/large-doc.fixture.ts'
+import { __lineIndexStats, __resetLineIndexStats } from '../../engine/line-index.ts'
 import { __resetTokenizeCount, __tokenizeCount, clearTokenizeCache } from '../../engine/tokenize.ts'
 import { CodeEditor, INITIAL_WINDOW_ROWS, OVERSCAN, WALK_BUDGET } from './code-editor.tsx'
 
@@ -285,5 +286,134 @@ describe('CodeEditor performance', () => {
     expect(__tokenizeCount()).toBeLessThanOrEqual(8)
     // All rows still render after the edit (no hidden content).
     expect(container.querySelectorAll('pre code > span').length).toBe(N)
+  })
+
+  // ── Document line structure ────────────────────────────────────────────────
+  // The current-line marker is the only cue for where an edit will land, and it is
+  // recomputed on `input`, `keyup` AND `selectionchange` — three times per keystroke,
+  // plus once per caret move. Each of those used to be
+  // `value.slice(0, caret).split('\n').length`: O(n) with one string allocation per
+  // line. At 50k lines that is ~2 ms and 50k allocations apiece, so under sustained
+  // typing the marker fell behind the caret and the edit surface stopped feeling
+  // attached to the text. These guards keep every line lookup off the document size.
+
+  it('keeps the current-line marker exact deep inside a large document', () => {
+    stubLineHeight(20)
+    const N = 20000
+    const doc = Array.from({ length: N }, (_, i) => `const value_${i} = ${i};`).join('\n')
+    const { container } = render(<CodeEditor defaultValue={doc} lineNumbers={false} />)
+    const root = container.firstChild as HTMLElement
+    const ta = container.querySelector('textarea') as HTMLTextAreaElement
+
+    // Line starts, computed independently of the component's own index.
+    const starts = [0]
+    for (let i = doc.indexOf('\n'); i !== -1; i = doc.indexOf('\n', i + 1)) starts.push(i + 1)
+
+    for (const line of [0, 1, 9999, N - 2, N - 1]) {
+      const offset = starts[line] as number
+      ta.focus()
+      ta.setSelectionRange(offset, offset)
+      act(() => {
+        document.dispatchEvent(new Event('selectionchange'))
+      })
+      expect(
+        root.style.getPropertyValue('--cascivo-editor-caret-line'),
+        `caret at line ${line}`,
+      ).toBe(String(line))
+    }
+  })
+
+  it('does not re-read the document structure when only the caret moves', () => {
+    stubLineHeight(20)
+    const doc = Array.from({ length: 20000 }, (_, i) => `const value_${i} = ${i};`).join('\n')
+    const { container } = render(<CodeEditor defaultValue={doc} lineNumbers={false} />)
+    const ta = container.querySelector('textarea') as HTMLTextAreaElement
+    ta.focus()
+
+    // Walk the caret across the document. The text never changes, so no lookup here
+    // may cost more than a binary search.
+    __resetLineIndexStats()
+    for (let i = 0; i < 50; i++) {
+      const offset = i * 137
+      ta.setSelectionRange(offset, offset)
+      act(() => {
+        document.dispatchEvent(new Event('selectionchange'))
+      })
+    }
+    const { builds, lookups } = __lineIndexStats()
+    expect(builds).toBe(0)
+    // Asserted together: a regression to `value.slice(0, caret).split('\n')` would
+    // route around the index entirely and report zero rebuilds too.
+    expect(lookups).toBeGreaterThanOrEqual(50)
+  })
+
+  it('reads the document structure at most once per keystroke', () => {
+    stubLineHeight(20)
+    const frames: FrameRequestCallback[] = []
+    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => frames.push(cb))
+    vi.stubGlobal('cancelAnimationFrame', () => {})
+    const flush = (): void =>
+      act(() => {
+        for (const f of frames.splice(0)) f(0)
+      })
+
+    const doc = Array.from({ length: 20000 }, (_, i) => `const value_${i} = ${i};`).join('\n')
+    const { container } = render(<CodeEditor defaultValue={doc} lineNumbers={false} />)
+    const ta = container.querySelector('textarea') as HTMLTextAreaElement
+    Object.defineProperty(ta, 'clientHeight', { configurable: true, value: 400 })
+    Object.defineProperty(ta, 'scrollTop', { configurable: true, writable: true, value: 0 })
+    flush()
+
+    // Type five characters. The live textarea text and the rAF-lagged highlight text
+    // are one frame apart, which is why the memo holds two slots: one build per
+    // keystroke, not one per read.
+    __resetLineIndexStats()
+    let text = doc
+    for (let i = 0; i < 5; i++) {
+      text = `x${text}`
+      act(() => {
+        fireEvent.change(ta, { target: { value: text } })
+      })
+      flush()
+    }
+    const { builds, arraySplits } = __lineIndexStats()
+    expect(builds).toBeLessThanOrEqual(5)
+    expect(arraySplits).toBeLessThanOrEqual(5)
+  })
+
+  it('does not re-split or re-scan the document on a scroll frame', () => {
+    stubLineHeight(20)
+    const frames: FrameRequestCallback[] = []
+    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => frames.push(cb))
+    vi.stubGlobal('cancelAnimationFrame', () => {})
+    const flush = (): void =>
+      act(() => {
+        for (const f of frames.splice(0)) f(0)
+      })
+
+    const doc = Array.from({ length: 20000 }, (_, i) => `const value_${i} = ${i};`).join('\n')
+    const { container } = render(<CodeEditor defaultValue={doc} lineNumbers={false} />)
+    const ta = container.querySelector('textarea') as HTMLTextAreaElement
+    Object.defineProperty(ta, 'clientHeight', { configurable: true, value: 400 })
+    Object.defineProperty(ta, 'scrollTop', { configurable: true, writable: true, value: 0 })
+    flush()
+
+    // The render reads `scrollTop`, so it re-runs on every scroll frame. Nothing
+    // about the document changed, so nothing about it may be recomputed.
+    __resetLineIndexStats()
+    for (let i = 1; i <= 30; i++) {
+      act(() => {
+        ;(ta as unknown as { scrollTop: number }).scrollTop = i * 400
+        fireEvent.scroll(ta)
+      })
+      flush()
+    }
+    const { builds, arrayReads, arraySplits } = __lineIndexStats()
+    // The render asked for the lines on every frame (so it really does go through
+    // the index — a direct `text.split('\n')` would read zero here)…
+    expect(arrayReads).toBeGreaterThanOrEqual(30)
+    // …and got the memoized array every time.
+    expect(builds).toBe(0)
+    expect(arraySplits).toBe(0)
   })
 })

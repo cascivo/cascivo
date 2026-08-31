@@ -18,6 +18,7 @@ import {
   type TextareaHTMLAttributes,
 } from 'react'
 import { getGrammar } from '../../engine/registry.ts'
+import { createLineIndexCache, type LineIndex } from '../../engine/line-index.ts'
 import { createLineStateIndex, type LineStateIndex } from '../../engine/line-state.ts'
 import { tokenizeRange, tokenizeWindowFrom } from '../../engine/tokenize.ts'
 import type { Token } from '../../engine/types.ts'
@@ -26,7 +27,7 @@ import { Gutter, renderRows, type Decoration } from '../view.tsx'
 import hl from '../highlight/highlight.module.css'
 import styles from './code-editor.module.css'
 import { FindPanel } from './find-panel.tsx'
-import { offsetToLineCol, replaceAll, scan, toDecorations, type Match } from './find.ts'
+import { createScanCache, replaceAll, toDecorations, type Match } from './find.ts'
 import { matchBracket, toBracketDecorations } from './brackets.ts'
 import { createHistory, type History, type Snapshot } from './history.ts'
 import { createIndentCommands, dispatch, mergeKeymap, type KeyMap } from './keymap.ts'
@@ -203,13 +204,27 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     onChange: onValueChange,
   })
 
+  // Line structure of a given text, memoized by string identity — mutable
+  // infrastructure like the history handle. Every offset-to-line question in this
+  // component (the caret marker, the edit's invalidation point, find decorations)
+  // goes through it, so none of them re-scan the document.
+  const lineIndexCacheRef = useRef<((text: string) => LineIndex) | null>(null)
+  lineIndexCacheRef.current ??= createLineIndexCache()
+  const linesOf = lineIndexCacheRef.current
+
+  // Same idea for the find scan, which the render would otherwise repeat on every
+  // scroll frame while the panel is open.
+  const scanCacheRef = useRef<ReturnType<typeof createScanCache> | null>(null)
+  scanCacheRef.current ??= createScanCache()
+  const scanFor = scanCacheRef.current
+
   const rootRef = useRef<HTMLDivElement>(null)
   const preRef = useRef<HTMLPreElement>(null)
   const gutterRef = useRef<HTMLDivElement>(null)
   const taRef = useRef<HTMLTextAreaElement>(null)
   // Latest split lines, shared with the catch-up effect (which threads grammar
   // state toward a far-jumped window) so it never re-splits the document.
-  const linesRef = useRef<string[]>([])
+  const linesRef = useRef<readonly string[]>([])
 
   // Owned undo/redo history (survives programmatic `value` writes, unlike native
   // textarea undo). Seeded once with the initial state.
@@ -267,7 +282,7 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     prevTextRef.current = snap.text
     selRef.current = { start: snap.selectionStart, end: snap.selectionEnd }
     caretOffset.value = snap.selectionStart
-    const line = snap.text.slice(0, snap.selectionStart).split('\n').length - 1
+    const line = linesOf(snap.text).lineAt(snap.selectionStart)
     rootRef.current?.style.setProperty('--cascivo-editor-caret-line', String(line))
     applyingRef.current = false
   }
@@ -385,7 +400,12 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
       if (gutterRef.current) gutterRef.current.scrollTop = ta.scrollTop
     }
     const syncCaret = (): void => {
-      const line = ta.value.slice(0, ta.selectionStart).split('\n').length - 1
+      // O(log n) against the line index. This runs three times per keystroke
+      // (`input`, `keyup`, `selectionchange`) and on every caret move; the old
+      // `slice(0, caret).split('\n')` was O(n) plus one string allocation per
+      // line, which is what left the marker trailing the caret on a large
+      // document — and the marker is the only cue for where an edit will land.
+      const line = linesOf(ta.value).lineAt(ta.selectionStart)
       rootRef.current?.style.setProperty('--cascivo-editor-caret-line', String(line))
       selRef.current = { start: ta.selectionStart, end: ta.selectionEnd }
       caretOffset.value = ta.selectionStart
@@ -533,9 +553,13 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
   }
   const index = indexRef.current
 
-  // Split for the line COUNT only — no token arrays built for the whole document.
-  const allLines = highlightText.value.split('\n')
-  const total = allLines.length
+  // Line structure of the text the highlighter renders. `count` is a field, and
+  // `toArray()` splits once per text and memoizes — so a scroll frame, which
+  // re-renders on every `scrollTop` write, no longer re-splits the whole document
+  // (50k string allocations per frame at 50k lines).
+  const doc = linesOf(highlightText.value)
+  const allLines = doc.toArray()
+  const total = doc.count
   linesRef.current = allLines
 
   // Keep the index consistent with the current text by invalidating only from the
@@ -547,13 +571,10 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
   const indexText = highlightText.value
   const lastText = lastIndexedTextRef.current
   if (indexText !== lastText) {
-    const changedLine =
-      lastText === undefined
-        ? 0
-        : (() => {
-            const change = diff(lastText, indexText)
-            return lastText.slice(0, change.from).split('\n').length - 1
-          })()
+    // `diff.from` is the length of the common prefix, so the two texts agree on
+    // everything before it — the changed line is the same number in either, and
+    // the index we already have for the new text answers it in O(log n).
+    const changedLine = lastText === undefined ? 0 : doc.lineAt(diff(lastText, indexText).from)
     index.invalidateFrom(changedLine)
     lastIndexedTextRef.current = indexText
   }
@@ -631,13 +652,16 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
   })
 
   // ── Find / replace ──────────────────────────────────────────────────────────
-  const matches: Match[] = findOpen.value
-    ? scan(highlightText.value, findQuery.value, { caseSensitive: caseSensitive.value })
+  // Memoized on (text, query, case): the render runs on every scroll frame too, and
+  // a case-insensitive `scan` lowercases the whole document — a multi-megabyte
+  // allocation that has nothing to do with having scrolled.
+  const matches: readonly Match[] = findOpen.value
+    ? scanFor(highlightText.value, findQuery.value, caseSensitive.value)
     : []
   if (currentMatch.value >= matches.length) currentMatch.value = Math.max(0, matches.length - 1)
   const findDecorations: Decoration[] =
     matches.length > 0
-      ? toDecorations(highlightText.value, matches, currentMatch.value, {
+      ? toDecorations(doc, matches, currentMatch.value, {
           match: hl['match'] as string,
           current: hl['matchCurrent'] as string,
         })
@@ -648,11 +672,7 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
   if (bracketMatching) {
     const m = matchBracket(highlightText.value, caretOffset.value)
     if (m) {
-      bracketDecorations = toBracketDecorations(
-        highlightText.value,
-        m,
-        hl['bracketMatch'] as string,
-      )
+      bracketDecorations = toBracketDecorations(doc, m, hl['bracketMatch'] as string)
     }
   }
   const allDecorations = [...userDecorations, ...bracketDecorations, ...findDecorations]
@@ -666,8 +686,7 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     ta.setSelectionRange(m.start, m.end)
     selRef.current = { start: m.start, end: m.end }
     if (lh > 0) {
-      const { line } = offsetToLineCol(ta.value, m.start)
-      const top = line * lh
+      const top = linesOf(ta.value).lineAt(m.start) * lh
       if (top < ta.scrollTop || top > ta.scrollTop + ta.clientHeight - lh) {
         ta.scrollTop = Math.max(0, top - ta.clientHeight / 2)
       }

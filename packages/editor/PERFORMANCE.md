@@ -47,9 +47,9 @@ the next frame. Resizes and late web-font loads re-measure (via `ResizeObserver`
 Since v47, tokenization is windowed too. On every render `CodeEditor`:
 
 ```ts
-const allLines = highlightText.value.split('\n') // count only — no token arrays
+const doc = linesOf(highlightText.value) // memoized line index — see below
 // …compute the visible window [start, end) from scrollTop / lineHeight / viewport…
-const rows = tokenizeRange(getGrammar(language), allLines, start, end, index)
+const rows = tokenizeRange(getGrammar(language), doc.toArray(), start, end, index)
 ```
 
 `tokenizeRange` tokenizes **only `[start, end)`**, using a persistent `LineStateIndex`
@@ -81,6 +81,48 @@ lines actually viewed and never evicts a line a later render still needs.
 
 The highlight pass is `requestAnimationFrame`-debounced, so typing is never synchronously
 blocked.
+
+## Document line structure (the second O(n))
+
+Windowing the tokenizer left a second, separate O(document) cost around it: the plain
+string work the component did to answer _"which line is this offset on?"_ and _"how many
+lines are there?"_. Both were computed by scanning or splitting the whole text, so they
+scaled with the document even though the tokenizer no longer did:
+
+| Where                             | Old cost                                           | How often                                                                          |
+| --------------------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Current-line marker (`syncCaret`) | `value.slice(0, caret).split('\n').length`         | **3x per keystroke** (`input`, `keyup`, `selectionchange`) and once per caret move |
+| Line count for windowing + gutter | `text.split('\n')`                                 | **every render — including every scroll frame**                                    |
+| Invalidation point of an edit     | `slice(0, diff.from).split('\n').length`           | every edit                                                                         |
+| Find decorations                  | one scanning `offsetToLineCol` **per match**       | every render with the panel open                                                   |
+| Find matches                      | full `scan` (+ a lowercase copy of the whole text) | every render with the panel open                                                   |
+
+Every one of those also allocated **one string per line**. At 50,000 lines that is
+~150,000 transient strings per keystroke, so the GC pressure alone dropped frames — and
+the visible symptom was the **current-line marker lagging the caret**, which on a
+transparent textarea is the only cue for where an edit will land.
+
+`src/engine/line-index.ts` replaces the scanning with a `LineIndex`: one `Int32Array` of
+line-start offsets built by a vectorized `indexOf` sweep. `count` becomes a field,
+`lineAt`/`locate` become binary searches, and the `string[]` the tokenizer needs is
+materialized by `toArray()` **once per text** and memoized. Indexes are memoized by
+string identity in a two-slot cache — two because the live textarea value and the
+rAF-debounced highlight text are one frame apart, and a single slot would rebuild on
+every alternation. Find matches get the same treatment (`createScanCache`).
+
+Measured on a 50,000-line / 2.7 MB document:
+
+| Operation                                        | Before                    | After            |
+| ------------------------------------------------ | ------------------------- | ---------------- |
+| Caret move (3 lookups per keystroke)             | ~6.4 ms                   | **~0.001 ms**    |
+| Line count on a scroll frame                     | ~2.6 ms + 50k allocations | **0** (memo hit) |
+| Building the offset table (once per text change) | —                         | ~1.2 ms          |
+| Find decorations, 50,000 matches                 | ~258 s (quadratic)        | **~7.5 ms**      |
+
+Guarded by `code-editor/perf.test.tsx`, using the same test-only counter idea as the
+tokenizer: the guards assert on **pairs** ("the seam was used" _and_ "nothing was
+rebuilt"), because a regression that scans the document directly would route around the
+index and report zero work through it.
 
 ## Measured: whole-document vs. windowed
 
@@ -125,8 +167,11 @@ The two pre-v47 ceilings are gone:
 
 2. **The O(n) per-render floor is now O(viewport).** Per render the tokenizer builds
    `Token[]` arrays only for the visible window, not the whole document, so the cost is
-   independent of document length. The remaining O(n) cost is the **`wrap` render path**
-   (below) and the native `<textarea>` holding the full multi-MB string (secondary).
+   independent of document length. Caret and line-count lookups are O(log n) against the
+   line index, and a scroll frame recomputes neither. The remaining O(n) costs are the
+   **`wrap` render path** (below), one offset-table build plus one `split` per text change
+   (~3.8 ms at 50k lines, off the caret path), and the native `<textarea>` holding the
+   full multi-MB string (secondary).
 
 ### `wrap` mode (soft-wrap)
 

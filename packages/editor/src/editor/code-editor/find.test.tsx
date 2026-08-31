@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { replaceAll, scan, toDecorations } from './find.ts'
+import { createLineIndex } from '../../engine/line-index.ts'
+import { createScanCache, replaceAll, scan, toDecorations } from './find.ts'
 
 describe('scan', () => {
   it('finds all case-insensitive matches by default', () => {
@@ -30,7 +31,7 @@ describe('toDecorations', () => {
   it('maps matches to per-line column decorations and marks the current', () => {
     const text = 'foo\nbar foo'
     const matches = scan(text, 'foo')
-    const decos = toDecorations(text, matches, 1, { match: 'm', current: 'c' })
+    const decos = toDecorations(createLineIndex(text), matches, 1, { match: 'm', current: 'c' })
     expect(decos).toEqual([
       { line: 0, start: 0, end: 3, className: 'm' },
       { line: 1, start: 4, end: 7, className: 'c' },
@@ -49,5 +50,24 @@ describe('replaceAll', () => {
     const text = 'cat cat'
     const matches = scan(text, 'cat')
     expect(replaceAll(text, matches, 'tiger')).toBe('tiger tiger')
+  })
+})
+
+describe('createScanCache', () => {
+  it('reuses the previous result for the same (text, query, case)', () => {
+    const scanFor = createScanCache()
+    const text = 'a A a'
+    expect(scanFor(text, 'a', false)).toBe(scanFor(text, 'a', false))
+  })
+
+  it('rescans when the text, the query, or the case flag changes', () => {
+    const scanFor = createScanCache()
+    const first = scanFor('a A a', 'a', false)
+    expect(scanFor('a A a', 'a', true)).not.toBe(first)
+    expect(scanFor('a A a', 'a', true)).toEqual([
+      { start: 0, end: 1 },
+      { start: 4, end: 5 },
+    ])
+    expect(scanFor('b', 'a', true)).toEqual([])
   })
 })
