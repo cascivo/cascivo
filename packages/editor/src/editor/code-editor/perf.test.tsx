@@ -1,4 +1,4 @@
-import { act, fireEvent, render } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { makeMarkdownDoc } from '../../engine/large-doc.fixture.ts'
 import { __lineIndexStats, __resetLineIndexStats } from '../../engine/line-index.ts'
@@ -415,5 +415,49 @@ describe('CodeEditor performance', () => {
     // …and got the memoized array every time.
     expect(builds).toBe(0)
     expect(arraySplits).toBe(0)
+  })
+  it('decorates only the find matches inside the rendered window', () => {
+    stubLineHeight(20)
+    const frames: FrameRequestCallback[] = []
+    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => frames.push(cb))
+    vi.stubGlobal('cancelAnimationFrame', () => {})
+    const flush = (): void =>
+      act(() => {
+        for (const f of frames.splice(0)) f(0)
+      })
+
+    // A hit on every one of 20k lines.
+    const N = 20000
+    const doc = Array.from({ length: N }, (_, i) => `const value_${i} = ${i};`).join('\n')
+    const { container } = render(<CodeEditor defaultValue={doc} lineNumbers={false} />)
+    const ta = container.querySelector('textarea') as HTMLTextAreaElement
+    Object.defineProperty(ta, 'clientHeight', { configurable: true, value: 400 })
+    Object.defineProperty(ta, 'scrollTop', { configurable: true, writable: true, value: 0 })
+    flush()
+    fireEvent.keyDown(ta, { key: 'f', ctrlKey: true })
+    const input = screen.getByRole('search').querySelector('input') as HTMLInputElement
+    act(() => {
+      fireEvent.change(input, { target: { value: 'value' } })
+    })
+    act(() => {
+      ;(ta as unknown as { scrollTop: number }).scrollTop = 10000 * 20
+      fireEvent.scroll(ta)
+    })
+    for (let i = 0; i < 10; i++) flush()
+
+    // One more scroll frame: the matches on screen are decorated…
+    __resetLineIndexStats()
+    act(() => {
+      ;(ta as unknown as { scrollTop: number }).scrollTop = 10000 * 20 + 400
+      fireEvent.scroll(ta)
+    })
+    flush()
+    const decorated = container.querySelectorAll('pre code [class*="match"]').length
+    expect(decorated).toBeGreaterThan(0)
+    // …and only those were located — not all 20,000 (one `locate` per decorated
+    // match; the bound is the window, which is ~20 visible rows + overscan).
+    const { lookups } = __lineIndexStats()
+    expect(lookups).toBeGreaterThan(0)
+    expect(lookups).toBeLessThan(200)
   })
 })

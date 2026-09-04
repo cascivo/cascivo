@@ -86,6 +86,22 @@ export function toDecorations(
   })
 }
 
+/**
+ * Index of the first match starting at or after `offset` — `matches.length` when
+ * none does. Matches come out of {@link scan} in document order, so a window of
+ * lines maps to a contiguous slice found by two binary searches.
+ */
+export function firstMatchFrom(matches: readonly Match[], offset: number): number {
+  let lo = 0
+  let hi = matches.length
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1
+    if ((matches[mid] as Match).start < offset) lo = mid + 1
+    else hi = mid
+  }
+  return lo
+}
+
 /** Replace a single match, returning the new text. */
 export function replaceOne(text: string, match: Match, replacement: string): string {
   return text.slice(0, match.start) + replacement + text.slice(match.end)

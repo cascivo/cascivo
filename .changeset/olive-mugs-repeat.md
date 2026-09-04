@@ -19,4 +19,11 @@ A new internal `LineIndex` (an `Int32Array` of line-start offsets, memoized by t
 identity) makes line count a field and offset-to-line a binary search. On a
 50,000-line document a caret move goes from ~6.4 ms to ~0.001 ms, a scroll frame
 recomputes nothing, and find decorations over 50,000 matches go from ~258 s to
-~7.5 ms. No public API change.
+~7.5 ms — and are now built only for the rendered window.
+
+Profiling real keystrokes in Chromium then surfaced three more document-scale costs,
+fixed in the same release: the per-character `diff` that runs twice per keystroke
+(~12 ms → ~0.4 ms via block compares), an undo history that stored a full copy of
+the document per step (200 edits to a 2.7 MB file retained ~547 MB; stored as the
+changed span they retain ~3 MB), and find decorations built for off-screen matches.
+No public API change.

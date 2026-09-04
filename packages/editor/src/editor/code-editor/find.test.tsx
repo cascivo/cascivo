@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { createLineIndex } from '../../engine/line-index.ts'
-import { createScanCache, replaceAll, scan, toDecorations } from './find.ts'
+import { createScanCache, firstMatchFrom, replaceAll, scan, toDecorations } from './find.ts'
 
 describe('scan', () => {
   it('finds all case-insensitive matches by default', () => {
@@ -69,5 +69,17 @@ describe('createScanCache', () => {
       { start: 4, end: 5 },
     ])
     expect(scanFor('b', 'a', true)).toEqual([])
+  })
+})
+
+describe('firstMatchFrom', () => {
+  it('finds the first match at or after an offset, or the length when none', () => {
+    const matches = scan('a..a..a..a', 'a') // starts 0, 3, 6, 9
+    expect(firstMatchFrom(matches, 0)).toBe(0)
+    expect(firstMatchFrom(matches, 1)).toBe(1)
+    expect(firstMatchFrom(matches, 3)).toBe(1)
+    expect(firstMatchFrom(matches, 7)).toBe(3)
+    expect(firstMatchFrom(matches, 10)).toBe(4)
+    expect(firstMatchFrom([], 5)).toBe(0)
   })
 })

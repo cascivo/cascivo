@@ -27,7 +27,7 @@ import { Gutter, renderRows, type Decoration } from '../view.tsx'
 import hl from '../highlight/highlight.module.css'
 import styles from './code-editor.module.css'
 import { FindPanel } from './find-panel.tsx'
-import { createScanCache, replaceAll, toDecorations, type Match } from './find.ts'
+import { createScanCache, firstMatchFrom, replaceAll, toDecorations, type Match } from './find.ts'
 import { matchBracket, toBracketDecorations } from './brackets.ts'
 import { createHistory, type History, type Snapshot } from './history.ts'
 import { createIndentCommands, dispatch, mergeKeymap, type KeyMap } from './keymap.ts'
@@ -659,13 +659,19 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     ? scanFor(highlightText.value, findQuery.value, caseSensitive.value)
     : []
   if (currentMatch.value >= matches.length) currentMatch.value = Math.max(0, matches.length - 1)
-  const findDecorations: Decoration[] =
-    matches.length > 0
-      ? toDecorations(doc, matches, currentMatch.value, {
-          match: hl['match'] as string,
-          current: hl['matchCurrent'] as string,
-        })
-      : []
+  // Decorate only the matches inside the rendered window. Every match in the
+  // document became a decoration on every render before — ~7.5 ms per scroll frame
+  // at 50k hits, all for rows that were not on screen. Matches are in document
+  // order, so the window is a contiguous slice.
+  let findDecorations: Decoration[] = []
+  if (matches.length > 0) {
+    const lo = firstMatchFrom(matches, doc.startOf(start))
+    const hi = end >= total ? matches.length : firstMatchFrom(matches, doc.startOf(end))
+    findDecorations = toDecorations(doc, matches.slice(lo, hi), currentMatch.value - lo, {
+      match: hl['match'] as string,
+      current: hl['matchCurrent'] as string,
+    })
+  }
   const userDecorations: readonly Decoration[] =
     typeof decorations === 'function' ? decorations(highlightText.value) : (decorations ?? [])
   let bracketDecorations: Decoration[] = []

@@ -40,6 +40,16 @@ describe('createLineIndex', () => {
     }
   })
 
+  it('maps a line back to its start offset, clamped to the document', () => {
+    const index = createLineIndex('ab\ncd\n\nef')
+    expect([0, 1, 2, 3].map((l) => index.startOf(l))).toEqual([0, 3, 6, 7])
+    expect(index.startOf(-1)).toBe(0)
+    expect(index.startOf(99)).toBe(7)
+    for (let line = 0; line < index.count; line++) {
+      expect(index.lineAt(index.startOf(line))).toBe(line)
+    }
+  })
+
   it('clamps out-of-range offsets to the first and last line', () => {
     const index = createLineIndex('a\nb\nc')
     expect(index.lineAt(-5)).toBe(0)

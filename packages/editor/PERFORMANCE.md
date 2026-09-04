@@ -124,6 +124,58 @@ tokenizer: the guards assert on **pairs** ("the seam was used" _and_ "nothing wa
 rebuilt"), because a regression that scans the document directly would route around the
 index and report zero work through it.
 
+### The diff, the history, and the find decorations
+
+Profiling real keystrokes in Chromium after the line index landed showed three more
+document-scale costs, each fixed in the same pass:
+
+- **`diff(prev, next)`** (`sync.ts`) walked both strings **one character at a time** to
+  find the common prefix and suffix — ~12 ms per keystroke on a 2.7 MB document, and it
+  runs twice per key (the render's invalidation point and the history step). It now
+  compares 1 KB blocks with native string equality (a `slice` is a view, and comparing two
+  views is one `memcmp`) and refines per character only inside the differing block:
+  **~0.4 ms**, with a boundary-straddling test against the per-character oracle.
+- **Undo history** (`history.ts`) stored a full copy of the document per step. Two hundred
+  non-coalesced edits to a 2.7 MB file retained **~547 MB**. Steps are now stored as the
+  span they changed (`from`, `removed`, `inserted`, both selections), so undo/redo
+  reconstruct the text and the stack grows with what was edited: the same 200 edits retain
+  **~3 MB**. The spans are copied out with `structuredClone` on purpose — V8 keeps a
+  `slice` as a view onto its source, so a stored span would otherwise pin the whole
+  document it was cut from.
+- **Find decorations** were built for **every match in the document on every render** —
+  ~7.5 ms per scroll frame at 50k hits, for rows not on screen. Matches are in document
+  order, so the rendered window is a binary-searched slice and only those become
+  decorations (the `lookups` guard: hundreds per frame, not tens of thousands).
+
+### What the browser itself costs
+
+The overlay architecture keeps the full text in one native `<textarea>`, and Chrome's own
+editing of that element is the floor nothing in this package can lower. Measured with real
+key events (`Input.dispatchKeyEvent`) against a **bare, unstyled** `<textarea>` in headless
+Chromium: **~5 ms per key at 2k lines, ~25–40 ms at 10k lines (625 KB)**, with a forced
+layout after a value change at ~90 ms. The editor build measures the same p50 per key
+(~31 ms at 10k lines) — the JS on top of it is now a few milliseconds. Above ~10k lines the
+native textarea, not the highlighter, is what a user feels; that is the ceiling to document,
+and the reason a worker or a custom text model would not help without also replacing the
+`<textarea>`.
+
+Before/after of the whole component under the same harness — 40 real keys typed at 80% depth,
+the current-line marker checked against an independent line count after every one of them
+(correct 40/40 in every run):
+
+| document          | keystroke p50 / max (before) | keystroke p50 / max (after) | frames > 50 ms (before → after) | bare `<textarea>` |
+| ----------------- | ---------------------------- | --------------------------- | ------------------------------- | ----------------- |
+| 10k lines, 625 KB | 33 / 46 ms                   | **28 / 40 ms**              | 0 → 0                           | ~25–40 ms         |
+| 50k lines, 3.3 MB | 166 / 443 ms                 | **133 / 220 ms**            | 51 → 46                         | ~120–200 ms       |
+
+At 10k lines the editor now sits on the browser's floor. At 50k the floor itself is over
+100 ms per key — the bare textarea, with no highlighter at all, costs that much to edit —
+so the honest ceiling for comfortable typing in this architecture is on the order of 10k
+lines, and the JS above it is no longer where the time goes.
+
+(Do not measure this with `Input.insertText`: it takes an IME-style path that costs ~1 s per
+call at 10k lines and ~47 s at 50k in headless Chromium, and does not reflect typing.)
+
 ## Measured: whole-document vs. windowed
 
 Markdown grammar, mostly-unique lines, measured on the bench harness above. The
@@ -169,9 +221,10 @@ The two pre-v47 ceilings are gone:
    `Token[]` arrays only for the visible window, not the whole document, so the cost is
    independent of document length. Caret and line-count lookups are O(log n) against the
    line index, and a scroll frame recomputes neither. The remaining O(n) costs are the
-   **`wrap` render path** (below), one offset-table build plus one `split` per text change
-   (~3.8 ms at 50k lines, off the caret path), and the native `<textarea>` holding the
-   full multi-MB string (secondary).
+   **`wrap` render path** (below), one offset-table build plus one `split` plus two
+   block-compared diffs per text change (~4.5 ms at 50k lines, off the caret path), and
+   the native `<textarea>` holding — and, on every key, re-editing — the full multi-MB
+   string, which is the real floor (see "What the browser itself costs").
 
 ### `wrap` mode (soft-wrap)
 

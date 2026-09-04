@@ -56,6 +56,8 @@ export interface LineIndex {
   readonly text: string
   /** Line count. Always ≥ 1: the empty document is one empty line. */
   readonly count: number
+  /** Offset of the first character of `line` (clamped to the last line). O(1). */
+  startOf(line: number): number
   /** Zero-based line containing `offset`. O(log n). */
   lineAt(offset: number): number
   /** Zero-based `{ line, col }` for `offset`. O(log n). */
@@ -96,6 +98,7 @@ export function createLineIndex(text: string): LineIndex {
   return {
     text,
     count,
+    startOf: (line) => starts[Math.max(0, Math.min(line, count - 1))] as number,
     lineAt,
     locate: (offset) => {
       const line = lineAt(offset)
