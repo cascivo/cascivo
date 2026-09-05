@@ -1937,6 +1937,90 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
     {
+      name: 'filters',
+      required: false,
+    },
+    {
+      name: 'defaultFilters',
+      required: false,
+    },
+    {
+      name: 'onFiltersChange',
+      required: false,
+    },
+    {
+      name: 'noResultsState',
+      required: false,
+    },
+    {
+      name: 'toolbar',
+      required: false,
+    },
+    {
+      name: 'rowActions',
+      required: false,
+    },
+    {
+      name: 'columnState',
+      required: false,
+    },
+    {
+      name: 'defaultColumnState',
+      required: false,
+    },
+    {
+      name: 'onColumnStateChange',
+      required: false,
+    },
+    {
+      name: 'columnSettings',
+      required: false,
+    },
+    {
+      name: 'server',
+      required: false,
+    },
+    {
+      name: 'multiSort',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'stateKey',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'keyboardNavigation',
+      required: false,
+      enum: ['row', 'grid'],
+    },
+    {
+      name: 'onCellEdit',
+      required: false,
+    },
+    {
+      name: 'groupBy',
+      required: false,
+    },
+    {
+      name: 'totals',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'pinnedRows',
+      required: false,
+    },
+    {
+      name: 'columnGroups',
+      required: false,
+    },
+    {
+      name: 'exportable',
+      required: false,
+    },
+    {
       name: 'renderExpandedRow',
       required: false,
     },
@@ -4550,6 +4634,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'disabled',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'tabIndex',
+      required: false,
+      primitives: ['number'],
     },
     {
       name: 'className',

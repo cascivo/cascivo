@@ -1493,6 +1493,51 @@
                   "searchable": {
                     "type": "boolean"
                   },
+                  "filters": {
+                    "type": "string",
+                    "enum": ["ColumnFilters"]
+                  },
+                  "defaultFilters": {
+                    "type": "string",
+                    "enum": ["ColumnFilters"]
+                  },
+                  "noResultsState": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "toolbar": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "columnState": {
+                    "type": "string",
+                    "enum": ["ColumnState"]
+                  },
+                  "defaultColumnState": {
+                    "type": "string",
+                    "enum": ["ColumnState"]
+                  },
+                  "columnSettings": {
+                    "type": "string",
+                    "enum": ["ColumnSettings"]
+                  },
+                  "server": {
+                    "type": "string",
+                    "enum": ["DataTableServer"]
+                  },
+                  "multiSort": {
+                    "type": "boolean"
+                  },
+                  "stateKey": {
+                    "type": "string"
+                  },
+                  "keyboardNavigation": {
+                    "type": "string",
+                    "enum": ["row", "grid"]
+                  },
+                  "totals": {
+                    "type": "boolean"
+                  },
                   "density": {
                     "type": "string",
                     "enum": ["compact", "normal", "relaxed"]
@@ -3035,6 +3080,9 @@
                   },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "tabIndex": {
+                    "type": "number"
                   },
                   "className": {
                     "type": "string"

@@ -75,6 +75,63 @@
     }
   }
 
+  /* Search, filter reset, caller toolbar controls and the Columns menu, as one cluster. */
+  .toolbarActions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--cascivo-space-2);
+  }
+
+  /* Column-visibility and facet menus: a checklist in a popover. */
+  .menu {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-1);
+    min-inline-size: 12rem;
+    max-block-size: 20rem;
+    overflow: auto;
+    padding: var(--cascivo-space-2);
+  }
+
+  /* Per-column filter row under the header: same band as the header, plain text. */
+  .filterRow th {
+    padding-block: var(--cascivo-space-1);
+    font-weight: var(--cascivo-font-medium);
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  .filterInput {
+    appearance: none;
+    inline-size: 100%;
+    min-inline-size: 4rem;
+    block-size: 1.75rem;
+    padding-inline: var(--cascivo-space-2);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text);
+    background-color: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-field);
+    outline: none;
+
+    &:focus-visible {
+      border-color: var(--cascivo-color-accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--cascivo-color-accent) 20%, transparent);
+    }
+  }
+
+  .rangeInputs {
+    display: flex;
+    gap: var(--cascivo-space-1);
+
+    .filterInput {
+      min-inline-size: 3.5rem;
+    }
+  }
+
   /* Batch bar */
   .batchBar {
     display: flex;
@@ -222,6 +279,96 @@
     background-color: var(--cascivo-color-surface);
   }
 
+  /* With a column-group row above it, the header row sticks under that; `--_group-h` is
+     measured (0 without groups). */
+  .root[data-sticky-header='true'] .table thead tr:not([data-group-header]) th {
+    inset-block-start: var(--_group-h, 0px);
+  }
+
+  /* The filter row sticks just under the header row; `--_head-h` is measured. */
+  .root[data-sticky-header='true'] .table thead .filterRow th {
+    inset-block-start: calc(var(--_group-h, 0px) + var(--_head-h, 2.5rem));
+  }
+
+  /* Pinned top rows stack under the whole head; each row's `--_pin-index` is its slot. */
+  .root[data-sticky-header='true'] .table tbody tr[data-pinned-row='top'] td {
+    position: sticky;
+    inset-block-start: calc(var(--_thead-h, 0px) + var(--_pin-index, 0) * var(--_row-height));
+    z-index: var(--cascivo-z-raised, 10);
+  }
+
+  .table tbody tr[data-pinned-row] td {
+    background-color: var(--cascivo-color-bg-subtle);
+    font-weight: var(--cascivo-font-medium);
+  }
+
+  /* The totals row sticks to the bottom of the scroller as one block. */
+  .table .totals {
+    position: sticky;
+    inset-block-end: 0;
+    z-index: var(--cascivo-z-raised, 10);
+  }
+
+  /* `.table td` already sizes and pads these cells. */
+  .table .totals td {
+    background-color: var(--cascivo-color-bg-subtle);
+    border-block-start: 2px solid var(--cascivo-color-border);
+    font-weight: var(--cascivo-font-semibold);
+  }
+
+  .table .totals td[data-align='end'] {
+    text-align: end;
+  }
+
+  /* Column-group header: a band label centred over its columns. */
+  .table thead th.groupHeader {
+    text-align: center;
+    border-block-end: none;
+    border-inline-end: 1px solid var(--cascivo-color-border);
+    color: var(--cascivo-color-text);
+  }
+
+  .table thead th.groupHeader:empty {
+    border-inline-end: none;
+  }
+
+  /* Group rows: a toggle with the group's value and count, aggregates in the other cells. */
+  .table .groupRow td {
+    background-color: var(--cascivo-color-bg-subtle);
+    font-weight: var(--cascivo-font-semibold);
+  }
+
+  .table .groupRow td[data-align='end'] {
+    text-align: end;
+  }
+
+  .groupToggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascivo-space-2);
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: 2px solid var(--cascivo-color-accent);
+      outline-offset: 2px;
+      border-radius: var(--cascivo-radius-sm);
+    }
+  }
+
+  .groupToggle[data-state='open'] .chevron {
+    transform: rotate(-135deg);
+  }
+
+  .groupCount {
+    font-weight: var(--cascivo-font-normal);
+    color: var(--cascivo-color-text-muted);
+  }
+
   /*
     A stuck header needs to say it is stuck. Until `scroll-state` there was no way to know:
     the header looks identical whether it is sitting in normal flow at the top of the table
@@ -278,6 +425,77 @@
     );
   }
 
+  /* Header cells hold a label, optionally a column menu and a resize handle. */
+  .headerCell {
+    position: relative;
+  }
+
+  .headerInner {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascivo-space-1);
+    max-inline-size: 100%;
+  }
+
+  /* Drag handle on the trailing edge of a resizable header; a focusable separator so the
+     keyboard gets the same control (arrows nudge, Home resets). */
+  .resizeHandle {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    inline-size: 0.5rem;
+    cursor: col-resize;
+    touch-action: none;
+    user-select: none;
+    outline: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset-block: 25%;
+      inset-inline-end: 0.125rem;
+      inline-size: 2px;
+      border-radius: 1px;
+      background-color: transparent;
+      transition: background-color var(--cascivo-duration-150) var(--cascivo-ease-out);
+    }
+
+    &:hover::after,
+    &:focus-visible::after,
+    &[data-state='resizing']::after {
+      background-color: var(--cascivo-color-accent);
+    }
+  }
+
+  /* A user-resized table keeps its column widths exactly: fixed layout, no redistribution
+     back to content weight. */
+  .root[data-resized='true'] .table {
+    table-layout: fixed;
+  }
+
+  /* Pinned columns stick to an edge; insets are measured and set inline. The scroller's
+     shadows already mark cut-off content, so the pinned edge only needs a hairline. */
+  .table th[data-pinned],
+  .table td[data-pinned] {
+    position: sticky;
+    z-index: 1;
+    background-color: var(--cascivo-color-surface);
+  }
+
+  .table thead th[data-pinned] {
+    z-index: calc(var(--cascivo-z-raised, 10) + 1);
+  }
+
+  .table th[data-pinned='start'][data-pinned-edge],
+  .table td[data-pinned='start'][data-pinned-edge] {
+    box-shadow: inset -1px 0 0 var(--cascivo-color-border);
+  }
+
+  .table th[data-pinned='end'][data-pinned-edge],
+  .table td[data-pinned='end'][data-pinned-edge] {
+    box-shadow: inset 1px 0 0 var(--cascivo-color-border);
+  }
+
   /* Control columns (expand button / checkbox) */
   .controlCol {
     inline-size: 3rem;
@@ -324,6 +542,14 @@
       content: '↓';
       opacity: 0.9;
     }
+  }
+
+  /* Multi-sort level badge (1, 2, 3…) next to a sorted header. */
+  .sortIndex {
+    font-size: 0.65em;
+    line-height: 1;
+    margin-inline-start: 0.125rem;
+    color: var(--cascivo-color-text-muted);
   }
 
   /* Row */
@@ -497,6 +723,21 @@
       color: var(--cascivo-color-text-muted);
       cursor: not-allowed;
     }
+  }
+
+  /* Grid keyboard mode: the focused cell, not a control inside it, carries the ring. Inset
+     so it is not clipped by the neighbouring cells or the scroller. */
+  .table[role='grid'] :is(th, td):focus-visible {
+    outline: 2px solid var(--cascivo-color-accent);
+    outline-offset: -2px;
+  }
+
+  /* An editable cell hosts an Editable whose preview button has its own padding; the cell
+     gives that padding back so the row keeps its density height. */
+  .table td[data-editable] {
+    padding-inline: calc(
+      var(--cascivo-data-table-cell-gap, var(--cascivo-space-4)) - var(--cascivo-space-1)
+    );
   }
 
   /* Screen-reader only utility */
