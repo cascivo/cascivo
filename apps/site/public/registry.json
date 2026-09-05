@@ -4741,6 +4741,7 @@
       "version": "1.0.0",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/data-table.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/column-filter.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/index.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/row-search.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/row-sort.ts",
@@ -4748,12 +4749,13 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/data-table.module.css"
       ],
       "fileHashes": {
-        "data-table.tsx": "sha256-ea52bacd62e818c6dc09f971a3272a3a399cf175e31120f6e9cc97dfcb28b164",
-        "index.ts": "sha256-d7f89f94e2927e7542b9571db391ce98dee7b6ce5a2152978586e4bd13d6768b",
+        "data-table.tsx": "sha256-aa0065389586c3754ef75ded33c496a6a1df2f3a13ba6f9595375a231c13d12f",
+        "column-filter.ts": "sha256-dc062cef69abba1fb3c374a0c800a8488d8f43f324a543afc4ba9d3f9723c839",
+        "index.ts": "sha256-b485c4cb3f545c3483d24947e2208b85e298af46b87717aad856c4e05dd05e2d",
         "row-search.ts": "sha256-b31f1040151bd258c9947740714ea810df45c80c7c1e52779e613e48a5bab562",
         "row-sort.ts": "sha256-f895589ee968243f03c75459d0ae3a02db5eea1851b38f27de401787b6fd0965",
         "virtual-window.ts": "sha256-86cedfff0ba9225ecd00fec4128eca823c471e6d7504098b28523a085a1ba091",
-        "data-table.module.css": "sha256-bdbbf535eeb3389bae97fc63315b12a94385e40d7071955928a91844620418ae"
+        "data-table.module.css": "sha256-170ebf89e6de5905d33b6dd327f757afa79e09341c05bc103259cb25fa340d62"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -4849,8 +4851,8 @@
           },
           {
             "name": "pagination",
-            "description": "Pagination configuration (page size and options).",
-            "type": "{ pageSize: number; pageSizeOptions?: number[] }",
+            "description": "Paging config: pageSize, optional pageSizeOptions, and page/onPageChange to control the current page. With `server`, it is the pager for server-side paging.",
+            "type": "{ pageSize: number; pageSizeOptions?: number[]; page?: number; onPageChange?: (page: number) => void }",
             "required": false
           },
           {
@@ -4863,6 +4865,72 @@
             "name": "batchActions",
             "description": "Actions applied to the currently selected rows.",
             "type": "{ label: string; onClick: (selectedIds: string[]) => void }[]",
+            "required": false
+          },
+          {
+            "name": "filters",
+            "description": "Per-column filter values (controlled), keyed by column key. Columns opt in with `Column.filter`: `text` (substring), `select` (faceted checklist with counts), `range` (numeric min/max).",
+            "type": "ColumnFilters",
+            "required": false
+          },
+          {
+            "name": "defaultFilters",
+            "description": "Initial per-column filter values (uncontrolled).",
+            "type": "ColumnFilters",
+            "required": false
+          },
+          {
+            "name": "onFiltersChange",
+            "description": "Called with the full filter map whenever any column filter changes.",
+            "type": "(filters: ColumnFilters) => void",
+            "required": false
+          },
+          {
+            "name": "noResultsState",
+            "description": "Shown instead of emptyState when there are rows but the search or filters match none of them.",
+            "type": "ReactNode",
+            "required": false
+          },
+          {
+            "name": "toolbar",
+            "description": "Extra controls rendered in the toolbar next to the search box — exports, primary actions.",
+            "type": "ReactNode",
+            "required": false
+          },
+          {
+            "name": "rowActions",
+            "description": "Per-row actions. Returns the menu entries for a row; rendered as a trailing overflow-menu column. Each entry has id, label, onSelect(row), and optional destructive/disabled/icon.",
+            "type": "(row: Row) => RowAction<Row>[]",
+            "required": false
+          },
+          {
+            "name": "columnState",
+            "description": "User-adjustable column layout (controlled): `hidden` keys. One object, so it round-trips through storage or a URL as a unit.",
+            "type": "ColumnState",
+            "required": false
+          },
+          {
+            "name": "defaultColumnState",
+            "description": "Initial column layout (uncontrolled).",
+            "type": "ColumnState",
+            "required": false
+          },
+          {
+            "name": "onColumnStateChange",
+            "description": "Called with the full column layout whenever the user changes it.",
+            "type": "(state: ColumnState) => void",
+            "required": false
+          },
+          {
+            "name": "columnSettings",
+            "description": "Which column-layout controls to offer: `visibility` adds a \"Columns\" menu to the toolbar. All off by default.",
+            "type": "ColumnSettings",
+            "required": false
+          },
+          {
+            "name": "server",
+            "description": "Server-driven mode: rows are rendered as the current page verbatim and `onQueryChange({ sort, search, filters, page, pageSize })` fires whenever any of them changes (not on mount). `totalItems` drives the pager. One switch turns off client sort, search, filters and paging together.",
+            "type": "DataTableServer",
             "required": false
           },
           {
@@ -4973,6 +5041,18 @@
                 "description": "Cell/text alignment. Use 'end' for numbers and timestamps."
               },
               {
+                "name": "filter",
+                "type": "'text' | 'select' | 'range'",
+                "required": false,
+                "description": "Offer a per-column filter under the header: a substring input, a faceted checklist of distinct values with counts, or a numeric min/max pair. Values surface through the `filters` props."
+              },
+              {
+                "name": "minWidth",
+                "type": "string",
+                "required": false,
+                "description": "Floor for the column width, any CSS length."
+              },
+              {
                 "name": "width",
                 "type": "string",
                 "required": false,
@@ -4995,6 +5075,126 @@
                 "type": "'asc' | 'desc'",
                 "required": true,
                 "description": "Sort direction."
+              }
+            ]
+          },
+          {
+            "name": "DataTableServer",
+            "description": "Server-driven mode. The table renders `rows` as the current page and reports every change to sort, search, filters, page or page size through `onQueryChange`; nothing runs on the client.",
+            "fields": [
+              {
+                "name": "totalItems",
+                "type": "number",
+                "required": false,
+                "description": "Total rows across every page; drives the pager and the range label."
+              },
+              {
+                "name": "onQueryChange",
+                "type": "(query: TableQuery) => void",
+                "required": true,
+                "description": "Called with the full query whenever it changes. Not called on mount — the rows passed initially are the first page."
+              }
+            ]
+          },
+          {
+            "name": "TableQuery",
+            "description": "What the server is asked to apply.",
+            "fields": [
+              {
+                "name": "sort",
+                "type": "SortState | undefined",
+                "required": true,
+                "description": "Active sort."
+              },
+              {
+                "name": "search",
+                "type": "string",
+                "required": true,
+                "description": "Trimmed global search text."
+              },
+              {
+                "name": "filters",
+                "type": "ColumnFilters",
+                "required": true,
+                "description": "Per-column filter values keyed by column key."
+              },
+              {
+                "name": "page",
+                "type": "number",
+                "required": true,
+                "description": "1-based page."
+              },
+              {
+                "name": "pageSize",
+                "type": "number",
+                "required": true,
+                "description": "Rows per page."
+              }
+            ]
+          },
+          {
+            "name": "ColumnState",
+            "description": "User-adjustable column layout, used by `columnState`, `defaultColumnState`, `onColumnStateChange`.",
+            "fields": [
+              {
+                "name": "hidden",
+                "type": "string[]",
+                "required": false,
+                "description": "Keys of hidden columns. At least one column always stays visible."
+              }
+            ]
+          },
+          {
+            "name": "ColumnSettings",
+            "description": "Which column-layout controls the table offers. All off by default.",
+            "fields": [
+              {
+                "name": "visibility",
+                "type": "boolean",
+                "required": false,
+                "description": "A \"Columns\" menu in the toolbar that shows and hides columns."
+              }
+            ]
+          },
+          {
+            "name": "RowAction<Row>",
+            "description": "One entry in a row actions menu.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true,
+                "description": "Stable id (menu key)."
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "required": true,
+                "description": "Menu entry text."
+              },
+              {
+                "name": "onSelect",
+                "type": "(row: Row) => void",
+                "required": true,
+                "description": "Activation handler; receives the row the menu belongs to."
+              },
+              {
+                "name": "destructive",
+                "type": "boolean",
+                "required": false,
+                "description": "Style as a destructive action."
+              },
+              {
+                "name": "disabled",
+                "type": "boolean",
+                "required": false,
+                "description": "Disable the entry."
+              },
+              {
+                "name": "icon",
+                "type": "ReactNode",
+                "required": false,
+                "description": "Leading icon."
               }
             ]
           }
@@ -5044,13 +5244,23 @@
             "code": "<DataTable\n  columns={columns}\n  rows={rows}\n  getRowId={(r) => r.id}\n  searchable\n  pagination={{ pageSize: 10, pageSizeOptions: [10, 25, 50] }}\n  selection={{ mode: 'multi', onChange: setSelected }}\n  batchActions={[{ label: 'Delete', onClick: deleteRows }]}\n  stickyHeader\n  zebra\n/>"
           },
           {
+            "title": "Filters, row actions and a columns menu",
+            "description": "Per-column filters under the header (a text input, a faceted checklist with counts, a numeric range), a row actions menu, and a toolbar Columns menu to hide columns.",
+            "code": "<DataTable\n  columns={[\n    { key: 'name', header: 'Name', sortable: true, filter: 'text' },\n    { key: 'status', header: 'Status', filter: 'select' },\n    { key: 'amount', header: 'Amount', align: 'end', filter: 'range' },\n  ]}\n  rows={rows}\n  getRowId={(r) => r.id}\n  columnSettings={{ visibility: true }}\n  rowActions={(row) => [\n    { id: 'edit', label: 'Edit', onSelect: () => edit(row) },\n    { id: 'delete', label: 'Delete', destructive: true, onSelect: () => remove(row) },\n  ]}\n  toolbar={<Button size=\"sm\">Export</Button>}\n  ariaLabel=\"Invoices\"\n/>"
+          },
+          {
+            "title": "Server-driven",
+            "description": "The server applies sort, search, filters and paging; the table renders the page it is given and reports the query whenever it changes.",
+            "code": "<DataTable\n  columns={columns}\n  rows={page.rows}\n  getRowId={(r) => r.id}\n  searchable\n  pagination={{ pageSize: 50 }}\n  server={{ totalItems: page.total, onQueryChange: load }}\n  ariaLabel=\"Orders\"\n/>"
+          },
+          {
             "title": "A million rows",
             "description": "Virtualized: only the visible rows are in the DOM, the scrollbar reaches the last row at any count, and search and sort stay usable. Row height and viewport are measured, so nothing else is needed.",
             "code": "<DataTable\n  columns={columns}\n  rows={millionRows}\n  getRowId={(r) => r.id}\n  virtualized\n  searchable\n  ariaLabel=\"Events\"\n/>"
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
-        "registryDependencies": ["button", "checkbox"],
+        "registryDependencies": ["button", "checkbox", "overflow-menu", "popover"],
         "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
         "intent": {
           "whenToUse": [
@@ -5096,7 +5306,7 @@
           ]
         }
       },
-      "registryDependencies": ["button", "checkbox"],
+      "registryDependencies": ["button", "checkbox", "overflow-menu", "popover"],
       "channels": ["npm:@cascivo/react", "copy"]
     },
     {

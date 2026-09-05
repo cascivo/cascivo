@@ -1803,6 +1803,10 @@
           "type": "registry:component"
         },
         {
+          "path": "data-table/column-filter.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "data-table/index.ts",
           "type": "registry:component"
         },
@@ -1827,7 +1831,9 @@
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "registryDependencies": [
         "https://cascivo.com/r/shadcn/button.json",
-        "https://cascivo.com/r/shadcn/checkbox.json"
+        "https://cascivo.com/r/shadcn/checkbox.json",
+        "https://cascivo.com/r/shadcn/overflow-menu.json",
+        "https://cascivo.com/r/shadcn/popover.json"
       ],
       "categories": ["display"],
       "meta": {

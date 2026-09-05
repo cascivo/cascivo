@@ -1937,6 +1937,50 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
     {
+      name: 'filters',
+      required: false,
+    },
+    {
+      name: 'defaultFilters',
+      required: false,
+    },
+    {
+      name: 'onFiltersChange',
+      required: false,
+    },
+    {
+      name: 'noResultsState',
+      required: false,
+    },
+    {
+      name: 'toolbar',
+      required: false,
+    },
+    {
+      name: 'rowActions',
+      required: false,
+    },
+    {
+      name: 'columnState',
+      required: false,
+    },
+    {
+      name: 'defaultColumnState',
+      required: false,
+    },
+    {
+      name: 'onColumnStateChange',
+      required: false,
+    },
+    {
+      name: 'columnSettings',
+      required: false,
+    },
+    {
+      name: 'server',
+      required: false,
+    },
+    {
       name: 'renderExpandedRow',
       required: false,
     },

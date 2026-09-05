@@ -87,8 +87,9 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'pagination',
-      description: 'Pagination configuration (page size and options).',
-      type: '{ pageSize: number; pageSizeOptions?: number[] }',
+      description:
+        'Paging config: pageSize, optional pageSizeOptions, and page/onPageChange to control the current page. With `server`, it is the pager for server-side paging.',
+      type: '{ pageSize: number; pageSizeOptions?: number[]; page?: number; onPageChange?: (page: number) => void }',
       required: false,
     },
     {
@@ -101,6 +102,79 @@ export const meta: ComponentMeta = {
       name: 'batchActions',
       description: 'Actions applied to the currently selected rows.',
       type: '{ label: string; onClick: (selectedIds: string[]) => void }[]',
+      required: false,
+    },
+    {
+      name: 'filters',
+      description:
+        'Per-column filter values (controlled), keyed by column key. Columns opt in with `Column.filter`: `text` (substring), `select` (faceted checklist with counts), `range` (numeric min/max).',
+      type: 'ColumnFilters',
+      required: false,
+    },
+    {
+      name: 'defaultFilters',
+      description: 'Initial per-column filter values (uncontrolled).',
+      type: 'ColumnFilters',
+      required: false,
+    },
+    {
+      name: 'onFiltersChange',
+      description: 'Called with the full filter map whenever any column filter changes.',
+      type: '(filters: ColumnFilters) => void',
+      required: false,
+    },
+    {
+      name: 'noResultsState',
+      description:
+        'Shown instead of emptyState when there are rows but the search or filters match none of them.',
+      type: 'ReactNode',
+      required: false,
+    },
+    {
+      name: 'toolbar',
+      description:
+        'Extra controls rendered in the toolbar next to the search box — exports, primary actions.',
+      type: 'ReactNode',
+      required: false,
+    },
+    {
+      name: 'rowActions',
+      description:
+        'Per-row actions. Returns the menu entries for a row; rendered as a trailing overflow-menu column. Each entry has id, label, onSelect(row), and optional destructive/disabled/icon.',
+      type: '(row: Row) => RowAction<Row>[]',
+      required: false,
+    },
+    {
+      name: 'columnState',
+      description:
+        'User-adjustable column layout (controlled): `hidden` keys. One object, so it round-trips through storage or a URL as a unit.',
+      type: 'ColumnState',
+      required: false,
+    },
+    {
+      name: 'defaultColumnState',
+      description: 'Initial column layout (uncontrolled).',
+      type: 'ColumnState',
+      required: false,
+    },
+    {
+      name: 'onColumnStateChange',
+      description: 'Called with the full column layout whenever the user changes it.',
+      type: '(state: ColumnState) => void',
+      required: false,
+    },
+    {
+      name: 'columnSettings',
+      description:
+        'Which column-layout controls to offer: `visibility` adds a "Columns" menu to the toolbar. All off by default.',
+      type: 'ColumnSettings',
+      required: false,
+    },
+    {
+      name: 'server',
+      description:
+        'Server-driven mode: rows are rendered as the current page verbatim and `onQueryChange({ sort, search, filters, page, pageSize })` fires whenever any of them changes (not on mount). `totalItems` drives the pager. One switch turns off client sort, search, filters and paging together.',
+      type: 'DataTableServer',
       required: false,
     },
     {
@@ -214,6 +288,19 @@ export const meta: ComponentMeta = {
           description: "Cell/text alignment. Use 'end' for numbers and timestamps.",
         },
         {
+          name: 'filter',
+          type: "'text' | 'select' | 'range'",
+          required: false,
+          description:
+            'Offer a per-column filter under the header: a substring input, a faceted checklist of distinct values with counts, or a numeric min/max pair. Values surface through the `filters` props.',
+        },
+        {
+          name: 'minWidth',
+          type: 'string',
+          required: false,
+          description: 'Floor for the column width, any CSS length.',
+        },
+        {
           name: 'width',
           type: 'string',
           required: false,
@@ -239,6 +326,99 @@ export const meta: ComponentMeta = {
           required: true,
           description: 'Sort direction.',
         },
+      ],
+    },
+    {
+      name: 'DataTableServer',
+      description:
+        'Server-driven mode. The table renders `rows` as the current page and reports every change to sort, search, filters, page or page size through `onQueryChange`; nothing runs on the client.',
+      fields: [
+        {
+          name: 'totalItems',
+          type: 'number',
+          required: false,
+          description: 'Total rows across every page; drives the pager and the range label.',
+        },
+        {
+          name: 'onQueryChange',
+          type: '(query: TableQuery) => void',
+          required: true,
+          description:
+            'Called with the full query whenever it changes. Not called on mount — the rows passed initially are the first page.',
+        },
+      ],
+    },
+    {
+      name: 'TableQuery',
+      description: 'What the server is asked to apply.',
+      fields: [
+        {
+          name: 'sort',
+          type: 'SortState | undefined',
+          required: true,
+          description: 'Active sort.',
+        },
+        {
+          name: 'search',
+          type: 'string',
+          required: true,
+          description: 'Trimmed global search text.',
+        },
+        {
+          name: 'filters',
+          type: 'ColumnFilters',
+          required: true,
+          description: 'Per-column filter values keyed by column key.',
+        },
+        { name: 'page', type: 'number', required: true, description: '1-based page.' },
+        { name: 'pageSize', type: 'number', required: true, description: 'Rows per page.' },
+      ],
+    },
+    {
+      name: 'ColumnState',
+      description:
+        'User-adjustable column layout, used by `columnState`, `defaultColumnState`, `onColumnStateChange`.',
+      fields: [
+        {
+          name: 'hidden',
+          type: 'string[]',
+          required: false,
+          description: 'Keys of hidden columns. At least one column always stays visible.',
+        },
+      ],
+    },
+    {
+      name: 'ColumnSettings',
+      description: 'Which column-layout controls the table offers. All off by default.',
+      fields: [
+        {
+          name: 'visibility',
+          type: 'boolean',
+          required: false,
+          description: 'A "Columns" menu in the toolbar that shows and hides columns.',
+        },
+      ],
+    },
+    {
+      name: 'RowAction<Row>',
+      description: 'One entry in a row actions menu.',
+      fields: [
+        { name: 'id', type: 'string', required: true, description: 'Stable id (menu key).' },
+        { name: 'label', type: 'string', required: true, description: 'Menu entry text.' },
+        {
+          name: 'onSelect',
+          type: '(row: Row) => void',
+          required: true,
+          description: 'Activation handler; receives the row the menu belongs to.',
+        },
+        {
+          name: 'destructive',
+          type: 'boolean',
+          required: false,
+          description: 'Style as a destructive action.',
+        },
+        { name: 'disabled', type: 'boolean', required: false, description: 'Disable the entry.' },
+        { name: 'icon', type: 'ReactNode', required: false, description: 'Leading icon.' },
       ],
     },
   ],
@@ -327,6 +507,41 @@ export const meta: ComponentMeta = {
 />`,
     },
     {
+      title: 'Filters, row actions and a columns menu',
+      description:
+        'Per-column filters under the header (a text input, a faceted checklist with counts, a numeric range), a row actions menu, and a toolbar Columns menu to hide columns.',
+      code: `<DataTable
+  columns={[
+    { key: 'name', header: 'Name', sortable: true, filter: 'text' },
+    { key: 'status', header: 'Status', filter: 'select' },
+    { key: 'amount', header: 'Amount', align: 'end', filter: 'range' },
+  ]}
+  rows={rows}
+  getRowId={(r) => r.id}
+  columnSettings={{ visibility: true }}
+  rowActions={(row) => [
+    { id: 'edit', label: 'Edit', onSelect: () => edit(row) },
+    { id: 'delete', label: 'Delete', destructive: true, onSelect: () => remove(row) },
+  ]}
+  toolbar={<Button size="sm">Export</Button>}
+  ariaLabel="Invoices"
+/>`,
+    },
+    {
+      title: 'Server-driven',
+      description:
+        'The server applies sort, search, filters and paging; the table renders the page it is given and reports the query whenever it changes.',
+      code: `<DataTable
+  columns={columns}
+  rows={page.rows}
+  getRowId={(r) => r.id}
+  searchable
+  pagination={{ pageSize: 50 }}
+  server={{ totalItems: page.total, onQueryChange: load }}
+  ariaLabel="Orders"
+/>`,
+    },
+    {
       title: 'A million rows',
       description:
         'Virtualized: only the visible rows are in the DOM, the scrollbar reaches the last row at any count, and search and sort stay usable. Row height and viewport are measured, so nothing else is needed.',
@@ -341,7 +556,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
-  registryDependencies: ['button', 'checkbox'],
+  registryDependencies: ['button', 'checkbox', 'overflow-menu', 'popover'],
   tags: ['table', 'data', 'grid', 'sort', 'filter', 'pagination', 'selection'],
   intent: {
     whenToUse: [

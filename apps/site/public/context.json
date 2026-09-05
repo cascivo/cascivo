@@ -10124,11 +10124,11 @@
         },
         {
           "name": "pagination",
-          "description": "Pagination configuration (page size and options).",
-          "type": "{ pageSize: number; pageSizeOptions?: number[] }",
+          "description": "Paging config: pageSize, optional pageSizeOptions, and page/onPageChange to control the current page. With `server`, it is the pager for server-side paging.",
+          "type": "{ pageSize: number; pageSizeOptions?: number[]; page?: number; onPageChange?: (page: number) => void }",
           "required": false,
           "schema": {
-            "kind": "other"
+            "kind": "function"
           }
         },
         {
@@ -10147,6 +10147,105 @@
           "required": false,
           "schema": {
             "kind": "function"
+          }
+        },
+        {
+          "name": "filters",
+          "description": "Per-column filter values (controlled), keyed by column key. Columns opt in with `Column.filter`: `text` (substring), `select` (faceted checklist with counts), `range` (numeric min/max).",
+          "type": "ColumnFilters",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "defaultFilters",
+          "description": "Initial per-column filter values (uncontrolled).",
+          "type": "ColumnFilters",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "onFiltersChange",
+          "description": "Called with the full filter map whenever any column filter changes.",
+          "type": "(filters: ColumnFilters) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "noResultsState",
+          "description": "Shown instead of emptyState when there are rows but the search or filters match none of them.",
+          "type": "ReactNode",
+          "required": false,
+          "schema": {
+            "kind": "node"
+          }
+        },
+        {
+          "name": "toolbar",
+          "description": "Extra controls rendered in the toolbar next to the search box — exports, primary actions.",
+          "type": "ReactNode",
+          "required": false,
+          "schema": {
+            "kind": "node"
+          }
+        },
+        {
+          "name": "rowActions",
+          "description": "Per-row actions. Returns the menu entries for a row; rendered as a trailing overflow-menu column. Each entry has id, label, onSelect(row), and optional destructive/disabled/icon.",
+          "type": "(row: Row) => RowAction<Row>[]",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "columnState",
+          "description": "User-adjustable column layout (controlled): `hidden` keys. One object, so it round-trips through storage or a URL as a unit.",
+          "type": "ColumnState",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "defaultColumnState",
+          "description": "Initial column layout (uncontrolled).",
+          "type": "ColumnState",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "onColumnStateChange",
+          "description": "Called with the full column layout whenever the user changes it.",
+          "type": "(state: ColumnState) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "columnSettings",
+          "description": "Which column-layout controls to offer: `visibility` adds a \"Columns\" menu to the toolbar. All off by default.",
+          "type": "ColumnSettings",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "server",
+          "description": "Server-driven mode: rows are rendered as the current page verbatim and `onQueryChange({ sort, search, filters, page, pageSize })` fires whenever any of them changes (not on mount). `totalItems` drives the pager. One switch turns off client sort, search, filters and paging together.",
+          "type": "DataTableServer",
+          "required": false,
+          "schema": {
+            "kind": "other"
           }
         },
         {

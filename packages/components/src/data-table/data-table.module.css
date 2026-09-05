@@ -75,6 +75,63 @@
     }
   }
 
+  /* Search, filter reset, caller toolbar controls and the Columns menu, as one cluster. */
+  .toolbarActions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--cascivo-space-2);
+  }
+
+  /* Column-visibility and facet menus: a checklist in a popover. */
+  .menu {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-1);
+    min-inline-size: 12rem;
+    max-block-size: 20rem;
+    overflow: auto;
+    padding: var(--cascivo-space-2);
+  }
+
+  /* Per-column filter row under the header: same band as the header, plain text. */
+  .filterRow th {
+    padding-block: var(--cascivo-space-1);
+    font-weight: var(--cascivo-font-medium);
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  .filterInput {
+    appearance: none;
+    inline-size: 100%;
+    min-inline-size: 4rem;
+    block-size: 1.75rem;
+    padding-inline: var(--cascivo-space-2);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text);
+    background-color: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-field);
+    outline: none;
+
+    &:focus-visible {
+      border-color: var(--cascivo-color-accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--cascivo-color-accent) 20%, transparent);
+    }
+  }
+
+  .rangeInputs {
+    display: flex;
+    gap: var(--cascivo-space-1);
+
+    .filterInput {
+      min-inline-size: 3.5rem;
+    }
+  }
+
   /* Batch bar */
   .batchBar {
     display: flex;
@@ -220,6 +277,11 @@
     inset-block-start: 0;
     z-index: var(--cascivo-z-raised, 10);
     background-color: var(--cascivo-color-surface);
+  }
+
+  /* The filter row sticks just under the header row; `--_head-h` is measured. */
+  .root[data-sticky-header='true'] .table thead .filterRow th {
+    inset-block-start: var(--_head-h, 2.5rem);
   }
 
   /*

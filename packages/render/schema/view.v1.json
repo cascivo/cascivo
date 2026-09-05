@@ -1493,6 +1493,38 @@
                   "searchable": {
                     "type": "boolean"
                   },
+                  "filters": {
+                    "type": "string",
+                    "enum": ["ColumnFilters"]
+                  },
+                  "defaultFilters": {
+                    "type": "string",
+                    "enum": ["ColumnFilters"]
+                  },
+                  "noResultsState": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "toolbar": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "columnState": {
+                    "type": "string",
+                    "enum": ["ColumnState"]
+                  },
+                  "defaultColumnState": {
+                    "type": "string",
+                    "enum": ["ColumnState"]
+                  },
+                  "columnSettings": {
+                    "type": "string",
+                    "enum": ["ColumnSettings"]
+                  },
+                  "server": {
+                    "type": "string",
+                    "enum": ["DataTableServer"]
+                  },
                   "density": {
                     "type": "string",
                     "enum": ["compact", "normal", "relaxed"]

@@ -7666,9 +7666,20 @@ import { DataTable } from '@cascivo/react'
 | `sortMode` | `'client' \| 'server'` | no | `'client'` | Whether sorting is handled client-side or by the server ('client' \| 'server'). |
 | `onSortChange` | `(sort: SortState \| undefined) => void` | no | — | Called with the new sort state when it changes. |
 | `searchable` | `boolean` | no | `false` | When true, shows a search/filter input. |
-| `pagination` | `{ pageSize: number; pageSizeOptions?: number[] }` | no | — | Pagination configuration (page size and options). |
+| `pagination` | `{ pageSize: number; pageSizeOptions?: number[]; page?: number; onPageChange?: (page: number) => void }` | no | — | Paging config: pageSize, optional pageSizeOptions, and page/onPageChange to control the current page. With `server`, it is the pager for server-side paging. |
 | `selection` | `{ mode: 'single' \| 'multi'; selected?: string[]; onChange?: (ids: string[]) => void }` | no | — | Row-selection configuration (mode and selected ids). |
 | `batchActions` | `{ label: string; onClick: (selectedIds: string[]) => void }[]` | no | — | Actions applied to the currently selected rows. |
+| `filters` | `ColumnFilters` | no | — | Per-column filter values (controlled), keyed by column key. Columns opt in with `Column.filter`: `text` (substring), `select` (faceted checklist with counts), `range` (numeric min/max). |
+| `defaultFilters` | `ColumnFilters` | no | — | Initial per-column filter values (uncontrolled). |
+| `onFiltersChange` | `(filters: ColumnFilters) => void` | no | — | Called with the full filter map whenever any column filter changes. |
+| `noResultsState` | `ReactNode` | no | — | Shown instead of emptyState when there are rows but the search or filters match none of them. |
+| `toolbar` | `ReactNode` | no | — | Extra controls rendered in the toolbar next to the search box — exports, primary actions. |
+| `rowActions` | `(row: Row) => RowAction<Row>[]` | no | — | Per-row actions. Returns the menu entries for a row; rendered as a trailing overflow-menu column. Each entry has id, label, onSelect(row), and optional destructive/disabled/icon. |
+| `columnState` | `ColumnState` | no | — | User-adjustable column layout (controlled): `hidden` keys. One object, so it round-trips through storage or a URL as a unit. |
+| `defaultColumnState` | `ColumnState` | no | — | Initial column layout (uncontrolled). |
+| `onColumnStateChange` | `(state: ColumnState) => void` | no | — | Called with the full column layout whenever the user changes it. |
+| `columnSettings` | `ColumnSettings` | no | — | Which column-layout controls to offer: `visibility` adds a "Columns" menu to the toolbar. All off by default. |
+| `server` | `DataTableServer` | no | — | Server-driven mode: rows are rendered as the current page verbatim and `onQueryChange({ sort, search, filters, page, pageSize })` fires whenever any of them changes (not on mount). `totalItems` drives the pager. One switch turns off client sort, search, filters and paging together. |
 | `renderExpandedRow` | `(row: Row) => ReactNode` | no | — | Renders the expanded content for a row. |
 | `density` | `'compact' \| 'normal' \| 'relaxed'` | no | `'normal'` | Row density — 'compact', 'normal', or 'relaxed'. ⚠ It sets a row **height floor**, so it is invisible whenever the cell content is already taller: a two-line cell or a Badge stack looks identical at every density. Reported as "barely distinguishable" — the prop works, the content is winning. Shrink the cell content, or set `--cascivo-data-table-cell-gap` to tighten the horizontal rhythm too. |
 | `zebra` | `boolean` | no | `false` | When true, applies alternating row striping. |
@@ -7694,6 +7705,8 @@ A single column definition. `render` is the escape hatch for custom cell content
 | `sortable` | `boolean` | no | When true, the header toggles sort on this column. |
 | `render` | `(row: Row) => ReactNode` | no | Custom cell renderer. Return a Badge, icon + link, or formatted value. Omit to render `String(row[key])`. |
 | `align` | `'start' \| 'end'` | no | Cell/text alignment. Use 'end' for numbers and timestamps. |
+| `filter` | `'text' \| 'select' \| 'range'` | no | Offer a per-column filter under the header: a substring input, a faceted checklist of distinct values with counts, or a numeric min/max pair. Values surface through the `filters` props. |
+| `minWidth` | `string` | no | Floor for the column width, any CSS length. |
 | `width` | `string` | no | Preferred column width (any CSS length, e.g. `120px`), with an automatic content floor. ⚠ Sizing EVERY column switches the table to `table-layout: fixed`. ⚠ "Leave one unsized" is necessary but NOT sufficient: the leftover width is split by content weight, so if the sized columns nearly fill the table the remainder can be narrower than the content needs and long tokens wrap mid-word. Leave the widest free-form column unsized, keep sized columns to ~2/3 of the table, and give the free-form one a `minWidth` when the data has long unbreakable tokens. |
 
 ### `SortState`
@@ -7704,6 +7717,56 @@ Controlled/initial sort state, used by `sort`, `defaultSort`, `onSortChange`.
 |-------|------|----------|-------------|
 | `key` | `string` | yes | The sorted column key. |
 | `direction` | `'asc' \| 'desc'` | yes | Sort direction. |
+
+### `DataTableServer`
+
+Server-driven mode. The table renders `rows` as the current page and reports every change to sort, search, filters, page or page size through `onQueryChange`; nothing runs on the client.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `totalItems` | `number` | no | Total rows across every page; drives the pager and the range label. |
+| `onQueryChange` | `(query: TableQuery) => void` | yes | Called with the full query whenever it changes. Not called on mount — the rows passed initially are the first page. |
+
+### `TableQuery`
+
+What the server is asked to apply.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `sort` | `SortState \| undefined` | yes | Active sort. |
+| `search` | `string` | yes | Trimmed global search text. |
+| `filters` | `ColumnFilters` | yes | Per-column filter values keyed by column key. |
+| `page` | `number` | yes | 1-based page. |
+| `pageSize` | `number` | yes | Rows per page. |
+
+### `ColumnState`
+
+User-adjustable column layout, used by `columnState`, `defaultColumnState`, `onColumnStateChange`.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `hidden` | `string[]` | no | Keys of hidden columns. At least one column always stays visible. |
+
+### `ColumnSettings`
+
+Which column-layout controls the table offers. All off by default.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `visibility` | `boolean` | no | A "Columns" menu in the toolbar that shows and hides columns. |
+
+### `RowAction<Row>`
+
+One entry in a row actions menu.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `id` | `string` | yes | Stable id (menu key). |
+| `label` | `string` | yes | Menu entry text. |
+| `onSelect` | `(row: Row) => void` | yes | Activation handler; receives the row the menu belongs to. |
+| `destructive` | `boolean` | no | Style as a destructive action. |
+| `disabled` | `boolean` | no | Disable the entry. |
+| `icon` | `ReactNode` | no | Leading icon. |
 
 ## Examples
 
@@ -7763,6 +7826,45 @@ Use Column.render to return any ReactNode per cell — a Badge for status, an ic
   batchActions={[{ label: 'Delete', onClick: deleteRows }]}
   stickyHeader
   zebra
+/>
+```
+
+### Filters, row actions and a columns menu
+
+Per-column filters under the header (a text input, a faceted checklist with counts, a numeric range), a row actions menu, and a toolbar Columns menu to hide columns.
+
+```tsx
+<DataTable
+  columns={[
+    { key: 'name', header: 'Name', sortable: true, filter: 'text' },
+    { key: 'status', header: 'Status', filter: 'select' },
+    { key: 'amount', header: 'Amount', align: 'end', filter: 'range' },
+  ]}
+  rows={rows}
+  getRowId={(r) => r.id}
+  columnSettings={{ visibility: true }}
+  rowActions={(row) => [
+    { id: 'edit', label: 'Edit', onSelect: () => edit(row) },
+    { id: 'delete', label: 'Delete', destructive: true, onSelect: () => remove(row) },
+  ]}
+  toolbar={<Button size="sm">Export</Button>}
+  ariaLabel="Invoices"
+/>
+```
+
+### Server-driven
+
+The server applies sort, search, filters and paging; the table renders the page it is given and reports the query whenever it changes.
+
+```tsx
+<DataTable
+  columns={columns}
+  rows={page.rows}
+  getRowId={(r) => r.id}
+  searchable
+  pagination={{ pageSize: 50 }}
+  server={{ totalItems: page.total, onQueryChange: load }}
+  ariaLabel="Orders"
 />
 ```
 

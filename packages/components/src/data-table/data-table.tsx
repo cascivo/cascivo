@@ -14,7 +14,17 @@ import type { KeyboardEvent, ReactNode } from 'react'
 import { flushSync } from 'react-dom'
 import { Button } from '../button/button'
 import { Checkbox } from '../checkbox/checkbox'
+import { OverflowMenu } from '../overflow-menu/overflow-menu'
+import { Popover, PopoverContent, PopoverTrigger } from '../popover/popover'
 import styles from './data-table.module.css'
+import {
+  applyColumnFilters,
+  countActiveFilters,
+  facetValues,
+  isFilterActive,
+  numericExtent,
+} from './column-filter'
+import type { ColumnFilterKind, ColumnFilters, ColumnFilterValue, Facet } from './column-filter'
 import { createRowSearch } from './row-search'
 import { sortRows } from './row-sort'
 import { computeWindow } from './virtual-window'
@@ -25,6 +35,13 @@ export interface Column<Row> {
   sortable?: boolean
   render?: (row: Row) => ReactNode
   align?: 'start' | 'end'
+  /**
+   * Offer a per-column filter in a row under the header: `'text'` is a substring input,
+   * `'select'` a faceted checklist of the column's distinct values with counts, `'range'` a
+   * numeric min/max pair. Filters AND together and combine with the global search; the
+   * current values are readable and controllable through the `filters` props.
+   */
+  filter?: ColumnFilterKind
   /**
    * Preferred column width, any CSS length (`'8rem'`, `'120px'`, `'12%'`). Set it on
    * identifier-shaped columns (ids, statuses, dates) so they stop stealing space from the
@@ -69,6 +86,59 @@ export interface SortState {
   direction: SortDirection
 }
 
+/** One entry in a row's actions menu (`rowActions`). */
+export interface RowAction<Row> {
+  id: string
+  label: string
+  /** Activation handler; receives the row the menu belongs to. */
+  onSelect: (row: Row) => void
+  destructive?: boolean
+  disabled?: boolean
+  icon?: ReactNode
+}
+
+/** Everything the table needs the server to apply, when `server` is set. */
+export interface TableQuery {
+  sort: SortState | undefined
+  /** Trimmed global search text; empty when the box is blank. */
+  search: string
+  filters: ColumnFilters
+  /** 1-based page. */
+  page: number
+  pageSize: number
+}
+
+/**
+ * Server-driven mode: the table renders `rows` as the current page verbatim and asks the
+ * server for anything that would change them. Sort, search, per-column filters and paging
+ * all stop running on the client at once — one switch, not four.
+ */
+export interface DataTableServer {
+  /** Total rows across every page; drives the pager and the range label. */
+  totalItems?: number
+  /**
+   * Called with the full query whenever sort, search, a filter, the page or the page size
+   * changes. Not called on mount: the rows you passed for the initial render are the first
+   * page.
+   */
+  onQueryChange: (query: TableQuery) => void
+}
+
+/**
+ * User-adjustable column layout — what a "Columns" menu, a header menu or a persisted
+ * preference changes. One object so it round-trips through storage or a URL as a unit.
+ */
+export interface ColumnState {
+  /** Keys of hidden columns. At least one column always stays visible. */
+  hidden?: string[]
+}
+
+/** Which column-layout controls the table offers. All off by default. */
+export interface ColumnSettings {
+  /** A "Columns" menu in the toolbar that shows and hides columns. */
+  visibility?: boolean
+}
+
 export interface DataTableLabels {
   search?: string
   empty?: string
@@ -78,6 +148,14 @@ export interface DataTableLabels {
   expandRow?: string
   previousPage?: string
   nextPage?: string
+  columns?: string
+  actions?: string
+  noResults?: string
+  clearFilters?: string
+  filterColumn?: (column: string) => string
+  min?: string
+  max?: string
+  all?: string
 }
 
 export interface DataTableProps<Row> {
@@ -95,10 +173,47 @@ export interface DataTableProps<Row> {
    * @see the component manifest
    */
   searchable?: boolean
-  pagination?: { pageSize: number; pageSizeOptions?: number[] }
+  /**
+   * Client-side paging, or the pager for a `server`-driven table. `page` makes the current
+   * page controlled; with `server`, `pageSize`/`page` are echoed back in every `TableQuery`.
+   */
+  pagination?: {
+    pageSize: number
+    pageSizeOptions?: number[]
+    page?: number
+    onPageChange?: (page: number) => void
+  }
   selection?: { mode: 'single' | 'multi'; selected?: string[]; onChange?: (ids: string[]) => void }
   batchActions?: { id?: string; label: string; onClick: (selectedIds: string[]) => void }[]
   renderExpandedRow?: (row: Row) => ReactNode
+  /** Per-column filter values (controlled). Columns opt in with `Column.filter`. */
+  filters?: ColumnFilters
+  /** Initial per-column filter values (uncontrolled). */
+  defaultFilters?: ColumnFilters
+  /** Called with the full filter map whenever any column filter changes. */
+  onFiltersChange?: (filters: ColumnFilters) => void
+  /**
+   * Shown instead of `emptyState` when there ARE rows but the search or filters match none
+   * of them — a different message from "no data", and the moment to offer a reset.
+   */
+  noResultsState?: ReactNode
+  /** Extra controls rendered in the toolbar, next to the search box (exports, primary actions). */
+  toolbar?: ReactNode
+  /**
+   * Per-row actions. Returns the menu entries for a row; the table renders them as a
+   * trailing "⋯" overflow menu column, keyboard-reachable like every other cell control.
+   */
+  rowActions?: (row: Row) => RowAction<Row>[]
+  /** Column layout (controlled): hidden columns. See {@link ColumnState}. */
+  columnState?: ColumnState
+  /** Initial column layout (uncontrolled). */
+  defaultColumnState?: ColumnState
+  /** Called with the full column layout whenever the user changes it. */
+  onColumnStateChange?: (state: ColumnState) => void
+  /** Which column-layout controls to offer; see {@link ColumnSettings}. */
+  columnSettings?: ColumnSettings
+  /** Hand sort, search, filters and paging to the server; see {@link DataTableServer}. */
+  server?: DataTableServer
   /**
    * Row height preset.
    *
@@ -260,6 +375,17 @@ export function DataTable<Row>({
   selection,
   batchActions,
   renderExpandedRow,
+  filters,
+  defaultFilters,
+  onFiltersChange,
+  noResultsState,
+  toolbar,
+  rowActions,
+  columnState,
+  defaultColumnState,
+  onColumnStateChange,
+  columnSettings,
+  server,
   density = 'normal',
   zebra = false,
   stickyHeader = false,
@@ -287,6 +413,15 @@ export function DataTable<Row>({
     expandRow: labels?.expandRow ?? t(builtin.dataTable.expandRow),
     previousPage: labels?.previousPage ?? t(builtin.dataTable.previousPage),
     nextPage: labels?.nextPage ?? t(builtin.dataTable.nextPage),
+    columns: labels?.columns ?? t(builtin.dataTable.columns),
+    actions: labels?.actions ?? t(builtin.dataTable.actions),
+    noResults: labels?.noResults ?? t(builtin.dataTable.noResults),
+    clearFilters: labels?.clearFilters ?? t(builtin.dataTable.clearFilters),
+    filterColumn: (column: string) =>
+      labels?.filterColumn?.(column) ?? t(builtin.dataTable.filterColumn, { column }),
+    min: labels?.min ?? t(builtin.dataTable.min),
+    max: labels?.max ?? t(builtin.dataTable.max),
+    all: labels?.all ?? t(builtin.dataTable.all),
   }
   const l = resolvedLabels
 
@@ -328,7 +463,29 @@ export function DataTable<Row>({
   }
 
   const querySignal = useSignal('')
-  const pageSignal = useSignal(1)
+  // Page, filters and hidden columns are all controllable the same way sort is.
+  const [pageSignal, setPage] = useControllableSignal<number>({
+    value: pagination?.page,
+    defaultValue: 1,
+    onChange: pagination?.onPageChange,
+  })
+  const [filtersSignal, setFilters] = useControllableSignal<ColumnFilters>({
+    value: filters,
+    defaultValue: defaultFilters ?? {},
+    onChange: onFiltersChange,
+  })
+  const [columnStateSignal, setColumnState] = useControllableSignal<ColumnState>({
+    value: columnState,
+    defaultValue: defaultColumnState ?? {},
+    onChange: onColumnStateChange,
+  })
+  // The columns actually rendered. Never empty: hiding the last one is refused, so a
+  // stray persisted state cannot produce a table with no columns.
+  const visibleColumns = useComputed<Column<Row>[]>(() => {
+    const hidden = new Set(columnStateSignal.value.hidden ?? [])
+    const shown = columnsSignal.value.filter((col) => !hidden.has(col.key))
+    return shown.length > 0 ? shown : columnsSignal.value
+  })
   const pageSizeSignal = useSignal(pagination?.pageSize ?? 0)
   const expandedSignal = useSignal<ReadonlySet<string>>(new Set())
 
@@ -351,7 +508,14 @@ export function DataTable<Row>({
     let frame = 0
     const observer = new ResizeObserver(() => {
       cancelAnimationFrame(frame)
-      frame = requestAnimationFrame(() => warnIfOverflowing(el, sized, key))
+      frame = requestAnimationFrame(() => {
+        warnIfOverflowing(el, sized, key)
+        // The sticky filter row sits under the header row, whose height depends on font
+        // and density; measured here so it never overlaps.
+        const headRow = el.querySelector<HTMLElement>('thead tr')
+        if (headRow)
+          el.style.setProperty('--_head-h', `${headRow.getBoundingClientRect().height}px`)
+      })
     })
     observer.observe(el)
     return () => {
@@ -399,9 +563,9 @@ export function DataTable<Row>({
   })
 
   const entries = useComputed<Entry<Row>[]>(() => {
-    // Entries cache their search haystack, which is a function of the columns, so a new
-    // column set means new entries. Columns change rarely; rows are the common case.
-    void columnsSignal.value
+    // Entries cache their search haystack, which is a function of the visible columns, so
+    // a new column set means new entries. Columns change rarely; rows are the common case.
+    void visibleColumns.value
     return rowsSignal.value.map((row, index) => ({
       row,
       id: getRowId ? getRowId(row) : String(index),
@@ -416,15 +580,26 @@ export function DataTable<Row>({
    */
   const sorted = useComputed<readonly Entry<Row>[]>(() => {
     const current = sortSignal.value
-    if (!current || sortMode === 'server') return entries.value
+    if (!current || sortMode === 'server' || server) return entries.value
     return sortRows(entries.value, (entry) => cellValue(entry.row, current.key), current.direction)
   })
+
+  // Per-column filters run on the sorted rows (order-preserving), before the global search
+  // narrows further. Nothing runs when no filter is active — `applyColumnFilters` hands
+  // back the same array, so the memos below keep their identity.
+  const columnFiltered = useComputed<readonly Entry<Row>[]>(() =>
+    server
+      ? sorted.value
+      : applyColumnFilters(sorted.value, filtersSignal.value, (entry, key) =>
+          cellValue(entry.row, key),
+        ),
+  )
 
   // One lower-cased haystack per row, cached on the entry (a field read per row per
   // keystroke, where a `Map` lookup measured ~3x slower); the search narrows an extended
   // query from the previous result.
   const search = useComputed(() => {
-    const cols = columnsSignal.value
+    const cols = visibleColumns.value
     return createRowSearch<Entry<Row>>((entry) => {
       if (entry.haystack === undefined) {
         let hay = ''
@@ -465,19 +640,100 @@ export function DataTable<Row>({
   })
 
   const filtered = useComputed<readonly Entry<Row>[]>(() => {
+    if (server) return sorted.value
     const query = querySignal.value.trim().toLowerCase()
-    return query ? search.value.filter(sorted.value, query) : sorted.value
+    return query ? search.value.filter(columnFiltered.value, query) : columnFiltered.value
   })
 
-  const pageCount = useComputed(() =>
+  const clientPageCount = useComputed(() =>
     pagination ? Math.max(1, Math.ceil(filtered.value.length / pageSizeSignal.value)) : 1,
   )
-  const currentPage = useComputed(() => Math.min(pageSignal.value, pageCount.value))
+  const clientPage = useComputed(() => Math.min(pageSignal.value, clientPageCount.value))
   const paged = useComputed<readonly Entry<Row>[]>(() => {
-    if (!pagination) return filtered.value
-    const start = (currentPage.value - 1) * pageSizeSignal.value
+    // In server mode `rows` already IS the page.
+    if (!pagination || server) return filtered.value
+    const start = (clientPage.value - 1) * pageSizeSignal.value
     return filtered.value.slice(start, start + pageSizeSignal.value)
   })
+
+  // Server mode: report the query whenever any part of it changes. The effect's first run
+  // only subscribes — the rows passed for the initial render are the first page — and the
+  // callback is read through a ref so a new closure per render never re-triggers it.
+  const serverRef = useRef(server)
+  serverRef.current = server
+  const querySubscribedRef = useRef(false)
+  useSignalEffect(() => {
+    const query: TableQuery = {
+      sort: sortSignal.value,
+      search: querySignal.value.trim(),
+      filters: filtersSignal.value,
+      page: pageSignal.value,
+      pageSize: pageSizeSignal.value,
+    }
+    if (!querySubscribedRef.current) {
+      querySubscribedRef.current = true
+      return
+    }
+    serverRef.current?.onQueryChange(query)
+  })
+
+  const setColumnFilter = (key: string, value: ColumnFilterValue | undefined) => {
+    const next: ColumnFilters = { ...filtersSignal.value }
+    if (value && isFilterActive(value)) next[key] = value
+    else delete next[key]
+    batch(() => {
+      setFilters(next)
+      setPage(1)
+    })
+  }
+  const clearFilters = () =>
+    batch(() => {
+      setFilters({})
+      setPage(1)
+    })
+  const toggleColumn = (key: string) => {
+    const state = columnStateSignal.value
+    const hidden = state.hidden ?? []
+    setColumnState({
+      ...state,
+      hidden: hidden.includes(key) ? hidden.filter((k) => k !== key) : [...hidden, key],
+    })
+  }
+
+  // Facets and extents are one pass over every row, so they are computed on first use per
+  // (rows, column) and kept until the rows change — never per keystroke or per render.
+  const facetOpen = useSignal<string | null>(null)
+  const facetCacheRef = useRef<{
+    entries: readonly Entry<Row>[]
+    facets: Map<string, Facet[]>
+    extents: Map<string, { min: number; max: number } | undefined>
+  } | null>(null)
+  const facetCache = () => {
+    const all = entries.value
+    if (facetCacheRef.current?.entries !== all) {
+      facetCacheRef.current = { entries: all, facets: new Map(), extents: new Map() }
+    }
+    return facetCacheRef.current
+  }
+  const facetsOf = (key: string): Facet[] => {
+    const cache = facetCache()
+    let f = cache.facets.get(key)
+    if (!f) {
+      f = facetValues(cache.entries, (entry) => cellValue(entry.row, key))
+      cache.facets.set(key, f)
+    }
+    return f
+  }
+  const extentOf = (key: string) => {
+    const cache = facetCache()
+    if (!cache.extents.has(key)) {
+      cache.extents.set(
+        key,
+        numericExtent(cache.entries, (entry) => cellValue(entry.row, key)),
+      )
+    }
+    return cache.extents.get(key)
+  }
 
   const cycleSort = (key: string) => {
     const current = sortSignal.value
@@ -487,7 +743,7 @@ export function DataTable<Row>({
     else next = undefined
     batch(() => {
       setSort(next)
-      pageSignal.value = 1
+      setPage(1)
     })
     onSortChange?.(next)
   }
@@ -609,7 +865,20 @@ export function DataTable<Row>({
     }
   }
 
-  const colCount = columns.length + (selection ? 1 : 0) + (renderExpandedRow ? 1 : 0)
+  const cols = visibleColumns.value
+  const hiddenSet = new Set(columnStateSignal.value.hidden ?? [])
+  const showColumnsMenu = columnSettings?.visibility === true
+  const activeFilterCount = countActiveFilters(filtersSignal.value)
+  const hasFilterRow = cols.some((col) => col.filter !== undefined)
+  const colCount =
+    cols.length + (selection ? 1 : 0) + (renderExpandedRow ? 1 : 0) + (rowActions ? 1 : 0)
+  // "No matching rows" is a different message from "no data": there are rows, the query
+  // just excludes them all — and the moment to offer a reset.
+  const isNoResults =
+    (querySignal.value.trim() !== '' || activeFilterCount > 0) && (server ? true : rows.length > 0)
+  const totalRows = server ? (server.totalItems ?? rows.length) : filtered.value.length
+  const pageCount = pagination ? Math.max(1, Math.ceil(totalRows / pageSizeSignal.value)) : 1
+  const currentPage = Math.min(pageSignal.value, pageCount)
   // Pad partial pages with a spacer row so the table keeps a constant height —
   // the pagination controls stay put as the user pages through.
   const fillerCount =
@@ -619,10 +888,109 @@ export function DataTable<Row>({
   warnIfUnnamed(title, ariaLabel, columns.map((c) => c.key).join(','))
   const titleId = `${baseId}-title`
   const descriptionId = `${baseId}-description`
-  const totalRows = filtered.value.length
-  const rangeStart = totalRows === 0 ? 0 : (currentPage.value - 1) * pageSizeSignal.value + 1
+  const rangeStart = totalRows === 0 ? 0 : (currentPage - 1) * pageSizeSignal.value + 1
   const rangeEnd = totalRows === 0 ? 0 : rangeStart + pageEntries.length - 1
   const showBatchBar = !!batchActions && batchActions.length > 0 && selectedIds.length > 0
+
+  const renderFilter = (col: Column<Row>): ReactNode => {
+    const current = filtersSignal.value[col.key]
+    const label = l.filterColumn(col.header)
+    switch (col.filter) {
+      case 'text':
+        return (
+          <input
+            type="search"
+            className={styles['filterInput']}
+            aria-label={label}
+            value={current?.kind === 'text' ? current.value : ''}
+            onChange={(event) =>
+              setColumnFilter(col.key, { kind: 'text', value: event.target.value })
+            }
+          />
+        )
+      case 'range': {
+        const min = current?.kind === 'range' ? current.min : undefined
+        const max = current?.kind === 'range' ? current.max : undefined
+        const extent = extentOf(col.key)
+        const parse = (raw: string) => (raw === '' ? undefined : Number(raw))
+        return (
+          <div className={styles['rangeInputs']}>
+            <input
+              type="number"
+              className={styles['filterInput']}
+              aria-label={`${label}: ${l.min}`}
+              placeholder={extent ? String(extent.min) : l.min}
+              value={min ?? ''}
+              onChange={(event) => {
+                const next: ColumnFilterValue = { kind: 'range' }
+                const v = parse(event.target.value)
+                if (v !== undefined && !Number.isNaN(v)) next.min = v
+                if (max !== undefined) next.max = max
+                setColumnFilter(col.key, next)
+              }}
+            />
+            <input
+              type="number"
+              className={styles['filterInput']}
+              aria-label={`${label}: ${l.max}`}
+              placeholder={extent ? String(extent.max) : l.max}
+              value={max ?? ''}
+              onChange={(event) => {
+                const next: ColumnFilterValue = { kind: 'range' }
+                if (min !== undefined) next.min = min
+                const v = parse(event.target.value)
+                if (v !== undefined && !Number.isNaN(v)) next.max = v
+                setColumnFilter(col.key, next)
+              }}
+            />
+          </div>
+        )
+      }
+      case 'select': {
+        const selected = current?.kind === 'select' ? current.values : []
+        const open = facetOpen.value === col.key
+        return (
+          <Popover
+            placement="bottom"
+            open={open}
+            onOpenChange={(next) => {
+              facetOpen.value = next ? col.key : null
+            }}
+          >
+            <PopoverTrigger asChild>
+              <Button size="sm" variant="secondary" aria-label={label}>
+                {selected.length > 0 ? l.itemsSelected(selected.length) : l.all}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className={styles['menu'] as string}>
+              {/* Facets are computed on first open, not on mount: one pass over every row. */}
+              {open &&
+                facetsOf(col.key).map((facet) => {
+                  const checked = selected.includes(facet.value)
+                  return (
+                    <Checkbox
+                      key={facet.value}
+                      label={`${facet.value === '' ? '—' : facet.value} (${facet.count})`}
+                      checked={checked}
+                      onChange={() =>
+                        setColumnFilter(col.key, {
+                          kind: 'select',
+                          values: checked
+                            ? selected.filter((v) => v !== facet.value)
+                            : [...selected, facet.value],
+                        })
+                      }
+                    />
+                  )
+                })}
+            </PopoverContent>
+          </Popover>
+        )
+      }
+      default:
+        return null
+    }
+  }
 
   return (
     <div
@@ -636,12 +1004,17 @@ export function DataTable<Row>({
       // seven collapsed the seventh to ~50px and wrapped it one character per line. The
       // page-stability guarantee is only honourable when the caller has sized everything,
       // so that is exactly when it is applied.
-      data-fixed-layout={columns.every((col) => col.width !== undefined) || undefined}
+      data-fixed-layout={cols.every((col) => col.width !== undefined) || undefined}
     >
       <span aria-live="polite" className={styles['srOnly']}>
         {selectedIds.length > 0 ? l.itemsSelected(selectedIds.length) : ''}
       </span>
-      {(title !== undefined || description !== undefined || searchable) && (
+      {(title !== undefined ||
+        description !== undefined ||
+        searchable ||
+        toolbar !== undefined ||
+        showColumnsMenu ||
+        activeFilterCount > 0) && (
         <div className={styles['toolbar']}>
           {(title !== undefined || description !== undefined) && (
             <div className={styles['heading']}>
@@ -657,19 +1030,53 @@ export function DataTable<Row>({
               )}
             </div>
           )}
-          {searchable && (
-            <input
-              type="search"
-              className={styles['search']}
-              aria-label={l.search}
-              placeholder={l.search}
-              value={querySignal.value}
-              onChange={(event) => {
-                querySignal.value = event.target.value
-                pageSignal.value = 1
-              }}
-            />
-          )}
+          <div className={styles['toolbarActions']}>
+            {searchable && (
+              <input
+                type="search"
+                className={styles['search']}
+                aria-label={l.search}
+                placeholder={l.search}
+                value={querySignal.value}
+                onChange={(event) => {
+                  batch(() => {
+                    querySignal.value = event.target.value
+                    setPage(1)
+                  })
+                }}
+              />
+            )}
+            {activeFilterCount > 0 && (
+              <Button size="sm" variant="ghost" onClick={clearFilters}>
+                {l.clearFilters} ({activeFilterCount})
+              </Button>
+            )}
+            {toolbar}
+            {showColumnsMenu && (
+              <Popover placement="bottom">
+                <PopoverTrigger asChild>
+                  <Button size="sm" variant="secondary">
+                    {l.columns}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className={styles['menu'] as string}>
+                  {columns.map((col) => {
+                    const shown = !hiddenSet.has(col.key)
+                    return (
+                      <Checkbox
+                        key={col.key}
+                        label={col.header}
+                        checked={shown}
+                        // The last visible column cannot be hidden.
+                        disabled={shown && cols.length === 1}
+                        onChange={() => toggleColumn(col.key)}
+                      />
+                    )
+                  })}
+                </PopoverContent>
+              </Popover>
+            )}
+          </div>
         </div>
       )}
       {showBatchBar && (
@@ -705,7 +1112,7 @@ export function DataTable<Row>({
           <colgroup>
             {renderExpandedRow && <col className={styles['controlCol']} />}
             {selection && <col className={styles['controlCol']} />}
-            {columns.map((col) => (
+            {cols.map((col) => (
               <col
                 key={col.key}
                 style={
@@ -718,6 +1125,7 @@ export function DataTable<Row>({
                 }
               />
             ))}
+            {rowActions && <col className={styles['controlCol']} />}
           </colgroup>
           <thead>
             <tr>
@@ -740,7 +1148,7 @@ export function DataTable<Row>({
                   )}
                 </th>
               )}
-              {columns.map((col) => {
+              {cols.map((col) => {
                 const direction =
                   sortSignal.value?.key === col.key ? sortSignal.value.direction : undefined
                 const ariaSort =
@@ -768,7 +1176,24 @@ export function DataTable<Row>({
                   </th>
                 )
               })}
+              {rowActions && (
+                <th scope="col" className={styles['controlCell']}>
+                  <span className={styles['srOnly']}>{l.actions}</span>
+                </th>
+              )}
             </tr>
+            {hasFilterRow && (
+              <tr className={styles['filterRow']}>
+                {renderExpandedRow && <th />}
+                {selection && <th />}
+                {cols.map((col) => (
+                  <th key={col.key} data-align={col.align ?? 'start'}>
+                    {col.filter !== undefined && renderFilter(col)}
+                  </th>
+                ))}
+                {rowActions && <th />}
+              </tr>
+            )}
           </thead>
           <tbody>
             {loading &&
@@ -784,7 +1209,7 @@ export function DataTable<Row>({
             {!loading && pageEntries.length === 0 && (
               <tr data-empty-row>
                 <td colSpan={colCount} className={styles['emptyCell']}>
-                  {emptyState ?? l.empty}
+                  {isNoResults ? (noResultsState ?? l.noResults) : (emptyState ?? l.empty)}
                 </td>
               </tr>
             )}
@@ -827,7 +1252,7 @@ export function DataTable<Row>({
                           />
                         </td>
                       )}
-                      {columns.map((col) => (
+                      {cols.map((col) => (
                         <td
                           key={col.key}
                           data-align={col.align ?? 'start'}
@@ -838,6 +1263,34 @@ export function DataTable<Row>({
                             : String(cellValue(entry.row, col.key) ?? '')}
                         </td>
                       ))}
+                      {rowActions && (
+                        <td className={styles['controlCell']}>
+                          {(() => {
+                            const actions = rowActions(entry.row)
+                            if (actions.length === 0) return null
+                            return (
+                              <OverflowMenu
+                                size="sm"
+                                ariaLabel={l.actions}
+                                items={actions.map((action) => ({
+                                  id: action.id,
+                                  label: action.label,
+                                  ...(action.destructive !== undefined && {
+                                    destructive: action.destructive,
+                                  }),
+                                  ...(action.disabled !== undefined && {
+                                    disabled: action.disabled,
+                                  }),
+                                  ...(action.icon !== undefined && { icon: action.icon }),
+                                }))}
+                                onSelect={(id) =>
+                                  actions.find((action) => action.id === id)?.onSelect(entry.row)
+                                }
+                              />
+                            )
+                          })()}
+                        </td>
+                      )}
                     </tr>
                     {renderExpandedRow && (
                       <tr
@@ -881,8 +1334,10 @@ export function DataTable<Row>({
               <select
                 value={pageSizeSignal.value}
                 onChange={(event) => {
-                  pageSizeSignal.value = Number(event.target.value)
-                  pageSignal.value = 1
+                  batch(() => {
+                    pageSizeSignal.value = Number(event.target.value)
+                    setPage(1)
+                  })
                 }}
               >
                 {pagination.pageSizeOptions.map((option) => (
@@ -901,10 +1356,8 @@ export function DataTable<Row>({
               type="button"
               className={styles['pageButton']}
               aria-label={l.previousPage}
-              disabled={currentPage.value <= 1}
-              onClick={() => {
-                pageSignal.value = currentPage.value - 1
-              }}
+              disabled={currentPage <= 1}
+              onClick={() => setPage(currentPage - 1)}
             >
               <span aria-hidden="true">‹</span>
             </button>
@@ -912,10 +1365,8 @@ export function DataTable<Row>({
               type="button"
               className={styles['pageButton']}
               aria-label={l.nextPage}
-              disabled={currentPage.value >= pageCount.value}
-              onClick={() => {
-                pageSignal.value = currentPage.value + 1
-              }}
+              disabled={currentPage >= pageCount}
+              onClick={() => setPage(currentPage + 1)}
             >
               <span aria-hidden="true">›</span>
             </button>

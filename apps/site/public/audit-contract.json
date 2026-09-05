@@ -877,7 +877,7 @@
         { "name": "searchable", "type": "boolean", "required": false },
         {
           "name": "pagination",
-          "type": "{ pageSize: number; pageSizeOptions?: number[] }",
+          "type": "{ pageSize: number; pageSizeOptions?: number[]; page?: number; onPageChange?: (page: number) => void }",
           "required": false
         },
         {
@@ -890,6 +890,25 @@
           "type": "{ label: string; onClick: (selectedIds: string[]) => void }[]",
           "required": false
         },
+        { "name": "filters", "type": "ColumnFilters", "required": false },
+        { "name": "defaultFilters", "type": "ColumnFilters", "required": false },
+        {
+          "name": "onFiltersChange",
+          "type": "(filters: ColumnFilters) => void",
+          "required": false
+        },
+        { "name": "noResultsState", "type": "ReactNode", "required": false },
+        { "name": "toolbar", "type": "ReactNode", "required": false },
+        { "name": "rowActions", "type": "(row: Row) => RowAction<Row>[]", "required": false },
+        { "name": "columnState", "type": "ColumnState", "required": false },
+        { "name": "defaultColumnState", "type": "ColumnState", "required": false },
+        {
+          "name": "onColumnStateChange",
+          "type": "(state: ColumnState) => void",
+          "required": false
+        },
+        { "name": "columnSettings", "type": "ColumnSettings", "required": false },
+        { "name": "server", "type": "DataTableServer", "required": false },
         { "name": "renderExpandedRow", "type": "(row: Row) => ReactNode", "required": false },
         { "name": "density", "type": "'compact' | 'normal' | 'relaxed'", "required": false },
         { "name": "zebra", "type": "boolean", "required": false },

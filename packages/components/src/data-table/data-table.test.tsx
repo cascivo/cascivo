@@ -418,6 +418,236 @@ describe('DataTable at a million rows', () => {
   }, 30_000)
 })
 
+describe('DataTable filters, toolbar, row actions, column visibility', () => {
+  const invoices = [
+    { id: 'i1', name: 'Acme', status: 'paid', amount: 120 },
+    { id: 'i2', name: 'Globex', status: 'open', amount: 80 },
+    { id: 'i3', name: 'Initech', status: 'paid', amount: 300 },
+    { id: 'i4', name: 'Umbrella', status: 'overdue', amount: 45 },
+  ]
+  const filterColumns: Column<(typeof invoices)[number]>[] = [
+    { key: 'name', header: 'Name', filter: 'text' },
+    { key: 'status', header: 'Status', filter: 'select' },
+    { key: 'amount', header: 'Amount', filter: 'range' },
+  ]
+  const bodyNames = () =>
+    [
+      ...document.querySelectorAll(
+        'tbody tr.row td:first-child, tbody tr[class*="row"] td:first-child',
+      ),
+    ].map((td) => td.textContent)
+
+  it('filters by text, range and faceted select, ANDed, and reports the filter map', async () => {
+    const user = userEvent.setup()
+    const onFiltersChange = vi.fn()
+    render(
+      <DataTable
+        columns={filterColumns}
+        rows={invoices}
+        getRowId={(r) => r.id}
+        onFiltersChange={onFiltersChange}
+      />,
+    )
+    // Text filter narrows by substring.
+    const nameFilter = screen.getByRole('searchbox', { name: 'Filter Name' })
+    fireEvent.change(nameFilter, { target: { value: 'e' } })
+    expect(bodyNames()).toEqual(['Acme', 'Globex', 'Initech', 'Umbrella'])
+    fireEvent.change(nameFilter, { target: { value: 'in' } })
+    expect(bodyNames()).toEqual(['Initech'])
+    expect(onFiltersChange).toHaveBeenLastCalledWith({ name: { kind: 'text', value: 'in' } })
+    fireEvent.change(nameFilter, { target: { value: '' } })
+    expect(onFiltersChange).toHaveBeenLastCalledWith({})
+
+    // Range filter: min 100 keeps 120 and 300.
+    fireEvent.change(screen.getByRole('spinbutton', { name: 'Filter Amount: Min' }), {
+      target: { value: '100' },
+    })
+    expect(bodyNames()).toEqual(['Acme', 'Initech'])
+
+    // Faceted select: opening the menu lists distinct values with counts; ticking one ANDs
+    // with the range filter.
+    await user.click(screen.getByRole('button', { name: 'Filter Status' }))
+    const paid = screen.getByRole('checkbox', { name: 'paid (2)' })
+    expect(screen.getByRole('checkbox', { name: 'overdue (1)' })).toBeInTheDocument()
+    await user.click(paid)
+    expect(bodyNames()).toEqual(['Acme', 'Initech'])
+    expect(onFiltersChange).toHaveBeenLastCalledWith({
+      amount: { kind: 'range', min: 100 },
+      status: { kind: 'select', values: ['paid'] },
+    })
+
+    // Clear filters button resets everything.
+    await user.click(screen.getByRole('button', { name: /Clear filters/ }))
+    expect(bodyNames()).toHaveLength(4)
+  })
+
+  it('accepts controlled filters', () => {
+    render(
+      <DataTable
+        columns={filterColumns}
+        rows={invoices}
+        getRowId={(r) => r.id}
+        filters={{ status: { kind: 'select', values: ['overdue'] } }}
+      />,
+    )
+    expect(bodyNames()).toEqual(['Umbrella'])
+  })
+
+  it('shows noResultsState — not emptyState — when filters exclude every row', () => {
+    render(
+      <DataTable
+        columns={filterColumns}
+        rows={invoices}
+        getRowId={(r) => r.id}
+        searchable
+        emptyState="Nothing here"
+        noResultsState="Nothing matches"
+      />,
+    )
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Search' }), {
+      target: { value: 'zzz' },
+    })
+    expect(screen.getByRole('cell', { name: 'Nothing matches' })).toBeInTheDocument()
+  })
+
+  it('renders the toolbar slot and a row actions menu that receives the row', async () => {
+    const user = userEvent.setup()
+    const onEdit = vi.fn()
+    render(
+      <DataTable
+        columns={columns}
+        rows={people}
+        getRowId={(p) => p.id}
+        toolbar={<button type="button">Export</button>}
+        rowActions={() => [
+          { id: 'edit', label: 'Edit', onSelect: onEdit },
+          { id: 'delete', label: 'Delete', destructive: true, onSelect: () => {} },
+        ]}
+      />,
+    )
+    expect(screen.getByRole('button', { name: 'Export' })).toBeInTheDocument()
+    expect(screen.getByRole('columnheader', { name: 'Actions' })).toBeInTheDocument()
+    const menus = screen.getAllByRole('button', { name: 'Actions' })
+    expect(menus).toHaveLength(people.length)
+    await user.click(menus[0]!)
+    // Every row's menu is in the DOM (popovers); the first is the one just opened.
+    await user.click((await screen.findAllByRole('menuitem', { name: 'Edit' }))[0]!)
+    expect(onEdit).toHaveBeenCalledWith(people[0])
+  })
+
+  it('hides columns through the Columns menu and never the last one', async () => {
+    const user = userEvent.setup()
+    const onColumnStateChange = vi.fn()
+    render(
+      <DataTable
+        columns={columns}
+        rows={people}
+        getRowId={(p) => p.id}
+        columnSettings={{ visibility: true }}
+        onColumnStateChange={onColumnStateChange}
+      />,
+    )
+    const headers = () => screen.getAllByRole('columnheader').map((th) => th.textContent)
+    expect(headers()).toEqual(['Name', 'Age'])
+    await user.click(screen.getByRole('button', { name: 'Columns' }))
+    await user.click(screen.getByRole('checkbox', { name: 'Age' }))
+    expect(headers()).toEqual(['Name'])
+    expect(onColumnStateChange).toHaveBeenLastCalledWith({ hidden: ['age'] })
+    // The remaining column's toggle is disabled.
+    expect(screen.getByRole('checkbox', { name: 'Name' })).toBeDisabled()
+    await user.click(screen.getByRole('checkbox', { name: 'Age' }))
+    expect(headers()).toEqual(['Name', 'Age'])
+  })
+
+  it('respects a controlled columnState and searches only visible columns', () => {
+    render(
+      <DataTable
+        columns={columns}
+        rows={people}
+        getRowId={(p) => p.id}
+        columnState={{ hidden: ['age'] }}
+        searchable
+      />,
+    )
+    expect(screen.queryByRole('columnheader', { name: 'Age' })).toBeNull()
+    // people[2] is 34; no name contains "34" (names run Person 00–29).
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Search' }), {
+      target: { value: String(people[2]!.age) },
+    })
+    // The age is hidden, so a query on it matches nothing.
+    expect(screen.getByRole('cell', { name: 'No matching rows' })).toBeInTheDocument()
+  })
+})
+
+describe('DataTable server mode', () => {
+  it('renders rows verbatim, pages from totalItems, and reports the query on each change', () => {
+    const onQueryChange = vi.fn()
+    const rows = people.slice(0, 2)
+    render(
+      <DataTable
+        columns={[
+          { key: 'name', header: 'Name', sortable: true, filter: 'text' },
+          { key: 'age', header: 'Age' },
+        ]}
+        rows={rows}
+        getRowId={(p) => p.id}
+        searchable
+        pagination={{ pageSize: 2 }}
+        server={{ totalItems: 7, onQueryChange }}
+      />,
+    )
+    // Not called on mount: the rows given are the first page.
+    expect(onQueryChange).not.toHaveBeenCalled()
+    expect(screen.getByText('1–2 of 7')).toBeInTheDocument()
+
+    // Search does not filter on the client; it is reported.
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Search' }), {
+      target: { value: 'zzz' },
+    })
+    expect(screen.getAllByRole('row')).toHaveLength(1 + 1 + rows.length) // header, filter row, rows
+    expect(onQueryChange).toHaveBeenLastCalledWith({
+      sort: undefined,
+      search: 'zzz',
+      filters: {},
+      page: 1,
+      pageSize: 2,
+    })
+
+    // Sorting is reported, not applied.
+    fireEvent.click(screen.getByRole('button', { name: 'Name' }))
+    expect(onQueryChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ sort: { key: 'name', direction: 'asc' } }),
+    )
+    // Column filters are reported, not applied.
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Filter Name' }), {
+      target: { value: 'q' },
+    })
+    expect(onQueryChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ filters: { name: { kind: 'text', value: 'q' } } }),
+    )
+    // Paging: next page is enabled by totalItems (4 pages of 2), and reported.
+    fireEvent.click(screen.getByRole('button', { name: 'Next page' }))
+    expect(onQueryChange).toHaveBeenLastCalledWith(expect.objectContaining({ page: 2 }))
+  })
+
+  it('lets the page be controlled', () => {
+    const onPageChange = vi.fn()
+    render(
+      <DataTable
+        columns={columns}
+        rows={people}
+        getRowId={(p) => p.id}
+        pagination={{ pageSize: 1, page: 2, onPageChange }}
+      />,
+    )
+    expect(screen.getByRole('cell', { name: people[1]!.name })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Next page' }))
+    expect(onPageChange).toHaveBeenCalledWith(3)
+    // Still controlled at page 2 until the parent updates.
+    expect(screen.getByRole('cell', { name: people[1]!.name })).toBeInTheDocument()
+  })
+})
+
 describe('DataTable re-render budget', () => {
   it('table interactions do not re-render the parent app', async () => {
     const user = userEvent.setup()
