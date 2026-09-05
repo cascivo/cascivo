@@ -1807,7 +1807,19 @@
           "type": "registry:component"
         },
         {
+          "path": "data-table/column-layout.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "data-table/grid-keys.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "data-table/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "data-table/row-group.ts",
           "type": "registry:component"
         },
         {
@@ -1816,6 +1828,10 @@
         },
         {
           "path": "data-table/row-sort.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "data-table/to-csv.ts",
           "type": "registry:component"
         },
         {
@@ -1832,6 +1848,7 @@
       "registryDependencies": [
         "https://cascivo.com/r/shadcn/button.json",
         "https://cascivo.com/r/shadcn/checkbox.json",
+        "https://cascivo.com/r/shadcn/editable.json",
         "https://cascivo.com/r/shadcn/overflow-menu.json",
         "https://cascivo.com/r/shadcn/popover.json"
       ],

@@ -147,7 +147,7 @@ export const meta: ComponentMeta = {
     {
       name: 'columnState',
       description:
-        'User-adjustable column layout (controlled): `hidden` keys. One object, so it round-trips through storage or a URL as a unit.',
+        'User-adjustable column layout (controlled): `hidden` keys, display `order`, explicit `widths` in px, and `pinned` sides. One object, so it round-trips through storage or a URL as a unit.',
       type: 'ColumnState',
       required: false,
     },
@@ -166,7 +166,7 @@ export const meta: ComponentMeta = {
     {
       name: 'columnSettings',
       description:
-        'Which column-layout controls to offer: `visibility` adds a "Columns" menu to the toolbar. All off by default.',
+        'Which column-layout controls to offer: `visibility` (a "Columns" menu in the toolbar), `resizable` (a drag handle per header; arrows nudge, Home resets), `reorderable` (Move left/right in the header menu), `pinnable` (Pin to start/end in the header menu). All off by default.',
       type: 'ColumnSettings',
       required: false,
     },
@@ -176,6 +176,73 @@ export const meta: ComponentMeta = {
         'Server-driven mode: rows are rendered as the current page verbatim and `onQueryChange({ sort, search, filters, page, pageSize })` fires whenever any of them changes (not on mount). `totalItems` drives the pager. One switch turns off client sort, search, filters and paging together.',
       type: 'DataTableServer',
       required: false,
+    },
+    {
+      name: 'multiSort',
+      description:
+        'Allow sorting by more than one column: Shift-click a header adds it as a tie-breaker (`SortState.thenBy`); a plain click replaces the whole sort. Sorted headers show their level.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'stateKey',
+      description:
+        "Remember the user's column layout and sort across reloads, in local storage under this key. Applies to uncontrolled `columnState`/`sort`; controlled props still win. Tables sharing a key share the preference.",
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'keyboardNavigation',
+      description:
+        "How the keyboard moves through the table. 'row' keeps every control in the Tab order with the arrows stepping between them. 'grid' is the APG data-grid pattern: one Tab stop, arrows move a focused cell, Home/End within the row, Ctrl+Home/End to the corners, PageUp/PageDown by a screenful, Enter/F2 enters the cell's control, Escape returns to the cell; rows outside the virtualized window are scrolled to.",
+      type: "'row' | 'grid'",
+      required: false,
+      default: 'row',
+    },
+    {
+      name: 'onCellEdit',
+      description:
+        'Commits an inline edit with the row, the column key and the new text. Enables editing for every column marked `editable`; the table does not mutate `rows` itself.',
+      type: '(row: Row, key: string, value: string) => void',
+      required: false,
+    },
+    {
+      name: 'groupBy',
+      description:
+        "Group the rows by one or more columns, in order. Each group is a collapsible row showing its value, its row count and every `aggregate` column's reduction; leaves keep the current sort inside their group. Groups appear in order of first occurrence — sort by the grouped column to order them.",
+      type: 'string | string[]',
+      required: false,
+    },
+    {
+      name: 'totals',
+      description:
+        "Show a totals row under the body with each `aggregate` column's reduction over every row passing the search and filters (not just the page). Sticks to the bottom of the scroller.",
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'pinnedRows',
+      description:
+        'Rows kept in view outside sort, search, filters, paging and the virtual window: `top` rows sit under the header (stuck there with `stickyHeader`), `bottom` rows above the totals.',
+      type: '{ top?: Row[]; bottom?: Row[] }',
+      required: false,
+    },
+    {
+      name: 'columnGroups',
+      description:
+        "Bands of columns under a shared header, rendered as a row above the column headers. Keep a band's columns adjacent; reordering them apart splits the band.",
+      type: 'ColumnGroup[]',
+      required: false,
+    },
+    {
+      name: 'exportable',
+      description:
+        'An "Export CSV" button in the toolbar: every row passing the search and filters (all pages; with `server`, the rows given), in the current sort, visible columns as headers, raw cell values as fields (RFC 4180, UTF-8 with BOM). Pass `{ filename }` to name the file; it defaults to the `title`.',
+      type: 'boolean | { filename?: string }',
+      required: false,
+      default: 'false',
     },
     {
       name: 'renderExpandedRow',
@@ -295,6 +362,20 @@ export const meta: ComponentMeta = {
             'Offer a per-column filter under the header: a substring input, a faceted checklist of distinct values with counts, or a numeric min/max pair. Values surface through the `filters` props.',
         },
         {
+          name: 'aggregate',
+          type: "'sum' | 'avg' | 'min' | 'max' | 'count' | ((rows: Row[]) => ReactNode)",
+          required: false,
+          description:
+            'What group rows and the `totals` row show for this column: a built-in reduction over the numeric cell values (`count` counts rows), or a function of the rows.',
+        },
+        {
+          name: 'editable',
+          type: 'boolean',
+          required: false,
+          description:
+            'Edit cells in place: each renders an Editable (click, Enter or F2 to start; Enter commits, Escape cancels) that commits through `onCellEdit`. Ignored with a custom `render` or without `onCellEdit`.',
+        },
+        {
           name: 'minWidth',
           type: 'string',
           required: false,
@@ -325,6 +406,12 @@ export const meta: ComponentMeta = {
           type: "'asc' | 'desc'",
           required: true,
           description: 'Sort direction.',
+        },
+        {
+          name: 'thenBy',
+          type: '{ key: string; direction: "asc" | "desc" }[]',
+          required: false,
+          description: 'Secondary columns that break ties, in order (multi-sort).',
         },
       ],
     },
@@ -385,6 +472,39 @@ export const meta: ComponentMeta = {
           required: false,
           description: 'Keys of hidden columns. At least one column always stays visible.',
         },
+        {
+          name: 'order',
+          type: 'string[]',
+          required: false,
+          description: 'Display order of column keys; keys not listed follow in definition order.',
+        },
+        {
+          name: 'widths',
+          type: 'Record<string, number>',
+          required: false,
+          description:
+            'Explicit widths in px by key — what the resize handle writes. Any set width switches the table to a fixed layout.',
+        },
+        {
+          name: 'pinned',
+          type: "Record<string, 'start' | 'end'>",
+          required: false,
+          description:
+            'Pinned columns by key. Pinned-start columns render first and stick to the leading edge; pinned-end last, to the trailing edge.',
+        },
+      ],
+    },
+    {
+      name: 'ColumnGroup',
+      description: 'A band of columns under one shared header (`columnGroups`).',
+      fields: [
+        { name: 'header', type: 'string', required: true, description: 'The band label.' },
+        {
+          name: 'columns',
+          type: 'string[]',
+          required: true,
+          description: 'Column keys in the band. Non-adjacent keys render as separate spans.',
+        },
       ],
     },
     {
@@ -396,6 +516,26 @@ export const meta: ComponentMeta = {
           type: 'boolean',
           required: false,
           description: 'A "Columns" menu in the toolbar that shows and hides columns.',
+        },
+        {
+          name: 'resizable',
+          type: 'boolean',
+          required: false,
+          description:
+            'A drag handle on each header; arrow keys nudge by 16px (Shift: 64px), Home returns to auto, double-click too.',
+        },
+        {
+          name: 'reorderable',
+          type: 'boolean',
+          required: false,
+          description:
+            '"Move left" / "Move right" in each column\'s header menu (within its pin group).',
+        },
+        {
+          name: 'pinnable',
+          type: 'boolean',
+          required: false,
+          description: '"Pin to start" / "Pin to end" / "Unpin" in each column\'s header menu.',
         },
       ],
     },
@@ -450,7 +590,21 @@ export const meta: ComponentMeta = {
   accessibility: {
     role: 'table',
     wcag: '2.2-AA',
-    keyboard: ['Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', 'Space'],
+    keyboard: [
+      'Tab',
+      'ArrowUp',
+      'ArrowDown',
+      'ArrowLeft',
+      'ArrowRight',
+      'Enter',
+      'Space',
+      'Home',
+      'End',
+      'PageUp',
+      'PageDown',
+      'F2',
+      'Escape',
+    ],
   },
   examples: [
     {
@@ -518,13 +672,48 @@ export const meta: ComponentMeta = {
   ]}
   rows={rows}
   getRowId={(r) => r.id}
-  columnSettings={{ visibility: true }}
+  columnSettings={{ visibility: true, resizable: true, reorderable: true, pinnable: true }}
+  defaultColumnState={{ pinned: { name: 'start' } }}
   rowActions={(row) => [
     { id: 'edit', label: 'Edit', onSelect: () => edit(row) },
     { id: 'delete', label: 'Delete', destructive: true, onSelect: () => remove(row) },
   ]}
-  toolbar={<Button size="sm">Export</Button>}
+  exportable={{ filename: 'invoices' }}
   ariaLabel="Invoices"
+/>`,
+    },
+    {
+      title: 'Grid keyboard mode with inline editing',
+      description:
+        'One Tab stop; the arrows move a focused cell and Enter or F2 opens the cell for editing. Commit the edit into your own state — the table never mutates `rows`.',
+      code: `<DataTable
+  columns={[
+    { key: 'name', header: 'Name', editable: true },
+    { key: 'qty', header: 'Qty', editable: true, align: 'end' },
+  ]}
+  rows={items}
+  getRowId={(r) => r.id}
+  keyboardNavigation="grid"
+  onCellEdit={(row, key, value) => update(row.id, { [key]: value })}
+  ariaLabel="Line items"
+/>`,
+    },
+    {
+      title: 'Grouped, with totals and a column band',
+      description:
+        'Rows grouped by region with a count and a sum on each group row, a sticky totals row over everything that passes the filters, and two columns under one "Order" header.',
+      code: `<DataTable
+  columns={[
+    { key: 'region', header: 'Region', sortable: true },
+    { key: 'status', header: 'Status', aggregate: 'count' },
+    { key: 'amount', header: 'Amount', align: 'end', aggregate: 'sum' },
+  ]}
+  rows={orders}
+  getRowId={(o) => o.id}
+  groupBy="region"
+  totals
+  columnGroups={[{ header: 'Order', columns: ['status', 'amount'] }]}
+  ariaLabel="Orders by region"
 />`,
     },
     {
@@ -556,7 +745,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
-  registryDependencies: ['button', 'checkbox', 'overflow-menu', 'popover'],
+  registryDependencies: ['button', 'checkbox', 'editable', 'overflow-menu', 'popover'],
   tags: ['table', 'data', 'grid', 'sort', 'filter', 'pagination', 'selection'],
   intent: {
     whenToUse: [

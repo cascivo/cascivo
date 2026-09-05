@@ -7675,11 +7675,20 @@ import { DataTable } from '@cascivo/react'
 | `noResultsState` | `ReactNode` | no | — | Shown instead of emptyState when there are rows but the search or filters match none of them. |
 | `toolbar` | `ReactNode` | no | — | Extra controls rendered in the toolbar next to the search box — exports, primary actions. |
 | `rowActions` | `(row: Row) => RowAction<Row>[]` | no | — | Per-row actions. Returns the menu entries for a row; rendered as a trailing overflow-menu column. Each entry has id, label, onSelect(row), and optional destructive/disabled/icon. |
-| `columnState` | `ColumnState` | no | — | User-adjustable column layout (controlled): `hidden` keys. One object, so it round-trips through storage or a URL as a unit. |
+| `columnState` | `ColumnState` | no | — | User-adjustable column layout (controlled): `hidden` keys, display `order`, explicit `widths` in px, and `pinned` sides. One object, so it round-trips through storage or a URL as a unit. |
 | `defaultColumnState` | `ColumnState` | no | — | Initial column layout (uncontrolled). |
 | `onColumnStateChange` | `(state: ColumnState) => void` | no | — | Called with the full column layout whenever the user changes it. |
-| `columnSettings` | `ColumnSettings` | no | — | Which column-layout controls to offer: `visibility` adds a "Columns" menu to the toolbar. All off by default. |
+| `columnSettings` | `ColumnSettings` | no | — | Which column-layout controls to offer: `visibility` (a "Columns" menu in the toolbar), `resizable` (a drag handle per header; arrows nudge, Home resets), `reorderable` (Move left/right in the header menu), `pinnable` (Pin to start/end in the header menu). All off by default. |
 | `server` | `DataTableServer` | no | — | Server-driven mode: rows are rendered as the current page verbatim and `onQueryChange({ sort, search, filters, page, pageSize })` fires whenever any of them changes (not on mount). `totalItems` drives the pager. One switch turns off client sort, search, filters and paging together. |
+| `multiSort` | `boolean` | no | `false` | Allow sorting by more than one column: Shift-click a header adds it as a tie-breaker (`SortState.thenBy`); a plain click replaces the whole sort. Sorted headers show their level. |
+| `stateKey` | `string` | no | — | Remember the user's column layout and sort across reloads, in local storage under this key. Applies to uncontrolled `columnState`/`sort`; controlled props still win. Tables sharing a key share the preference. |
+| `keyboardNavigation` | `'row' \| 'grid'` | no | `row` | How the keyboard moves through the table. 'row' keeps every control in the Tab order with the arrows stepping between them. 'grid' is the APG data-grid pattern: one Tab stop, arrows move a focused cell, Home/End within the row, Ctrl+Home/End to the corners, PageUp/PageDown by a screenful, Enter/F2 enters the cell's control, Escape returns to the cell; rows outside the virtualized window are scrolled to. |
+| `onCellEdit` | `(row: Row, key: string, value: string) => void` | no | — | Commits an inline edit with the row, the column key and the new text. Enables editing for every column marked `editable`; the table does not mutate `rows` itself. |
+| `groupBy` | `string \| string[]` | no | — | Group the rows by one or more columns, in order. Each group is a collapsible row showing its value, its row count and every `aggregate` column's reduction; leaves keep the current sort inside their group. Groups appear in order of first occurrence — sort by the grouped column to order them. |
+| `totals` | `boolean` | no | `false` | Show a totals row under the body with each `aggregate` column's reduction over every row passing the search and filters (not just the page). Sticks to the bottom of the scroller. |
+| `pinnedRows` | `{ top?: Row[]; bottom?: Row[] }` | no | — | Rows kept in view outside sort, search, filters, paging and the virtual window: `top` rows sit under the header (stuck there with `stickyHeader`), `bottom` rows above the totals. |
+| `columnGroups` | `ColumnGroup[]` | no | — | Bands of columns under a shared header, rendered as a row above the column headers. Keep a band's columns adjacent; reordering them apart splits the band. |
+| `exportable` | `boolean \| { filename?: string }` | no | `false` | An "Export CSV" button in the toolbar: every row passing the search and filters (all pages; with `server`, the rows given), in the current sort, visible columns as headers, raw cell values as fields (RFC 4180, UTF-8 with BOM). Pass `{ filename }` to name the file; it defaults to the `title`. |
 | `renderExpandedRow` | `(row: Row) => ReactNode` | no | — | Renders the expanded content for a row. |
 | `density` | `'compact' \| 'normal' \| 'relaxed'` | no | `'normal'` | Row density — 'compact', 'normal', or 'relaxed'. ⚠ It sets a row **height floor**, so it is invisible whenever the cell content is already taller: a two-line cell or a Badge stack looks identical at every density. Reported as "barely distinguishable" — the prop works, the content is winning. Shrink the cell content, or set `--cascivo-data-table-cell-gap` to tighten the horizontal rhythm too. |
 | `zebra` | `boolean` | no | `false` | When true, applies alternating row striping. |
@@ -7706,6 +7715,8 @@ A single column definition. `render` is the escape hatch for custom cell content
 | `render` | `(row: Row) => ReactNode` | no | Custom cell renderer. Return a Badge, icon + link, or formatted value. Omit to render `String(row[key])`. |
 | `align` | `'start' \| 'end'` | no | Cell/text alignment. Use 'end' for numbers and timestamps. |
 | `filter` | `'text' \| 'select' \| 'range'` | no | Offer a per-column filter under the header: a substring input, a faceted checklist of distinct values with counts, or a numeric min/max pair. Values surface through the `filters` props. |
+| `aggregate` | `'sum' \| 'avg' \| 'min' \| 'max' \| 'count' \| ((rows: Row[]) => ReactNode)` | no | What group rows and the `totals` row show for this column: a built-in reduction over the numeric cell values (`count` counts rows), or a function of the rows. |
+| `editable` | `boolean` | no | Edit cells in place: each renders an Editable (click, Enter or F2 to start; Enter commits, Escape cancels) that commits through `onCellEdit`. Ignored with a custom `render` or without `onCellEdit`. |
 | `minWidth` | `string` | no | Floor for the column width, any CSS length. |
 | `width` | `string` | no | Preferred column width (any CSS length, e.g. `120px`), with an automatic content floor. ⚠ Sizing EVERY column switches the table to `table-layout: fixed`. ⚠ "Leave one unsized" is necessary but NOT sufficient: the leftover width is split by content weight, so if the sized columns nearly fill the table the remainder can be narrower than the content needs and long tokens wrap mid-word. Leave the widest free-form column unsized, keep sized columns to ~2/3 of the table, and give the free-form one a `minWidth` when the data has long unbreakable tokens. |
 
@@ -7717,6 +7728,7 @@ Controlled/initial sort state, used by `sort`, `defaultSort`, `onSortChange`.
 |-------|------|----------|-------------|
 | `key` | `string` | yes | The sorted column key. |
 | `direction` | `'asc' \| 'desc'` | yes | Sort direction. |
+| `thenBy` | `{ key: string; direction: "asc" \| "desc" }[]` | no | Secondary columns that break ties, in order (multi-sort). |
 
 ### `DataTableServer`
 
@@ -7746,6 +7758,18 @@ User-adjustable column layout, used by `columnState`, `defaultColumnState`, `onC
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `hidden` | `string[]` | no | Keys of hidden columns. At least one column always stays visible. |
+| `order` | `string[]` | no | Display order of column keys; keys not listed follow in definition order. |
+| `widths` | `Record<string, number>` | no | Explicit widths in px by key — what the resize handle writes. Any set width switches the table to a fixed layout. |
+| `pinned` | `Record<string, 'start' \| 'end'>` | no | Pinned columns by key. Pinned-start columns render first and stick to the leading edge; pinned-end last, to the trailing edge. |
+
+### `ColumnGroup`
+
+A band of columns under one shared header (`columnGroups`).
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `header` | `string` | yes | The band label. |
+| `columns` | `string[]` | yes | Column keys in the band. Non-adjacent keys render as separate spans. |
 
 ### `ColumnSettings`
 
@@ -7754,6 +7778,9 @@ Which column-layout controls the table offers. All off by default.
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `visibility` | `boolean` | no | A "Columns" menu in the toolbar that shows and hides columns. |
+| `resizable` | `boolean` | no | A drag handle on each header; arrow keys nudge by 16px (Shift: 64px), Home returns to auto, double-click too. |
+| `reorderable` | `boolean` | no | "Move left" / "Move right" in each column's header menu (within its pin group). |
+| `pinnable` | `boolean` | no | "Pin to start" / "Pin to end" / "Unpin" in each column's header menu. |
 
 ### `RowAction<Row>`
 
@@ -7842,13 +7869,52 @@ Per-column filters under the header (a text input, a faceted checklist with coun
   ]}
   rows={rows}
   getRowId={(r) => r.id}
-  columnSettings={{ visibility: true }}
+  columnSettings={{ visibility: true, resizable: true, reorderable: true, pinnable: true }}
+  defaultColumnState={{ pinned: { name: 'start' } }}
   rowActions={(row) => [
     { id: 'edit', label: 'Edit', onSelect: () => edit(row) },
     { id: 'delete', label: 'Delete', destructive: true, onSelect: () => remove(row) },
   ]}
-  toolbar={<Button size="sm">Export</Button>}
+  exportable={{ filename: 'invoices' }}
   ariaLabel="Invoices"
+/>
+```
+
+### Grid keyboard mode with inline editing
+
+One Tab stop; the arrows move a focused cell and Enter or F2 opens the cell for editing. Commit the edit into your own state — the table never mutates `rows`.
+
+```tsx
+<DataTable
+  columns={[
+    { key: 'name', header: 'Name', editable: true },
+    { key: 'qty', header: 'Qty', editable: true, align: 'end' },
+  ]}
+  rows={items}
+  getRowId={(r) => r.id}
+  keyboardNavigation="grid"
+  onCellEdit={(row, key, value) => update(row.id, { [key]: value })}
+  ariaLabel="Line items"
+/>
+```
+
+### Grouped, with totals and a column band
+
+Rows grouped by region with a count and a sum on each group row, a sticky totals row over everything that passes the filters, and two columns under one "Order" header.
+
+```tsx
+<DataTable
+  columns={[
+    { key: 'region', header: 'Region', sortable: true },
+    { key: 'status', header: 'Status', aggregate: 'count' },
+    { key: 'amount', header: 'Amount', align: 'end', aggregate: 'sum' },
+  ]}
+  rows={orders}
+  getRowId={(o) => o.id}
+  groupBy="region"
+  totals
+  columnGroups={[{ header: 'Order', columns: ['status', 'amount'] }]}
+  ariaLabel="Orders by region"
 />
 ```
 
@@ -7917,7 +7983,7 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `table`
-- **Keyboard:** Tab, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Enter, Space
+- **Keyboard:** Tab, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Enter, Space, Home, End, PageUp, PageDown, F2, Escape
 
 ## Dependencies
 
@@ -14275,6 +14341,7 @@ import { OverflowMenu } from '@cascivo/react'
 | `ariaLabel` | `string` | no | `More actions` | Accessible label for the component. Not rendered — screen readers only. |
 | `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `tabIndex` | `number` | no | — | Tab-order position of the trigger. Composite widgets that manage their own focus (a DataTable in grid keyboard mode) pass -1 so the menu is reachable by Enter on its cell without being an extra Tab stop. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples

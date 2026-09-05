@@ -1525,6 +1525,19 @@
                     "type": "string",
                     "enum": ["DataTableServer"]
                   },
+                  "multiSort": {
+                    "type": "boolean"
+                  },
+                  "stateKey": {
+                    "type": "string"
+                  },
+                  "keyboardNavigation": {
+                    "type": "string",
+                    "enum": ["row", "grid"]
+                  },
+                  "totals": {
+                    "type": "boolean"
+                  },
                   "density": {
                     "type": "string",
                     "enum": ["compact", "normal", "relaxed"]
@@ -3067,6 +3080,9 @@
                   },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "tabIndex": {
+                    "type": "number"
                   },
                   "className": {
                     "type": "string"

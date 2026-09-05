@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { sortRows } from './row-sort'
+import { sortRows, sortRowsBy } from './row-sort'
 
 describe('sortRows', () => {
   it('sorts numbers numerically, both directions', () => {
@@ -42,5 +42,38 @@ describe('sortRows', () => {
     expect(rows.map((r) => r.n)).toEqual([2, 1])
     expect(sortRows([], (r: { n: number }) => r.n, 'asc')).toEqual([])
     expect(sortRows([{ n: 1 }], (r) => r.n, 'asc')).toEqual([{ n: 1 }])
+  })
+  describe('sortRowsBy (multi-column)', () => {
+    const rows = [
+      { city: 'B', age: 30, i: 0 },
+      { city: 'A', age: 40, i: 1 },
+      { city: 'B', age: 20, i: 2 },
+      { city: 'A', age: 40, i: 3 },
+      { city: 'A', age: 10, i: 4 },
+    ]
+    it('breaks first-level ties with the next level, and stays stable after that', () => {
+      const out = sortRowsBy(rows, [
+        { keyOf: (r) => r.city, direction: 'asc' },
+        { keyOf: (r) => r.age, direction: 'desc' },
+      ])
+      expect(out.map((r) => r.i)).toEqual([1, 3, 4, 0, 2])
+    })
+    it('matches a nested single-key sort applied in reverse', () => {
+      const nested = sortRows(
+        sortRows(rows, (r) => r.age, 'asc'),
+        (r) => r.city,
+        'desc',
+      )
+      const multi = sortRowsBy(rows, [
+        { keyOf: (r) => r.city, direction: 'desc' },
+        { keyOf: (r) => r.age, direction: 'asc' },
+      ])
+      expect(multi).toEqual(nested)
+    })
+    it('returns a copy for no levels', () => {
+      const out = sortRowsBy(rows, [])
+      expect(out).toEqual(rows)
+      expect(out).not.toBe(rows)
+    })
   })
 })

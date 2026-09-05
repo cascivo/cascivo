@@ -79,3 +79,20 @@ export function computeWindow(input: WindowInput): RowWindow {
   const bottomPad = Math.max(0, canvasHeight - topPad - (end - start) * rowHeight)
   return { start, end, topPad, bottomPad, canvasHeight, scale }
 }
+
+/**
+ * The `scrollTop` that centres `row` in the viewport — the inverse of {@link computeWindow}'s
+ * mapping, so a keyboard user landing on a row outside the rendered window is scrolled to
+ * it under the same canvas cap. Clamped to the scrollable range.
+ */
+export function scrollTopForRow(row: number, input: Omit<WindowInput, 'scrollTop'>): number {
+  const { viewportHeight, rowHeight, count } = input
+  const maxCanvas = input.maxCanvas ?? MAX_CANVAS_PX
+  const contentHeight = count * rowHeight
+  const canvasHeight = Math.min(contentHeight, maxCanvas)
+  const scrollable = Math.max(0, canvasHeight - viewportHeight)
+  if (scrollable === 0) return 0
+  const scale = Math.max(0, contentHeight - viewportHeight) / scrollable
+  const contentTop = Math.max(0, row * rowHeight - (viewportHeight - rowHeight) / 2)
+  return Math.max(0, Math.min(scrollable, Math.round(contentTop / scale)))
+}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { computeWindow, MAX_CANVAS_PX } from './virtual-window'
+import { computeWindow, MAX_CANVAS_PX, scrollTopForRow } from './virtual-window'
 
 const base = { viewportHeight: 600, rowHeight: 49, overscan: 3 }
 
@@ -92,6 +92,24 @@ describe('computeWindow', () => {
         expect(w.start).toBeGreaterThanOrEqual(prev)
         prev = w.start
       }
+    })
+  })
+  describe('scrollTopForRow', () => {
+    it('lands the row inside the window it produces, below and above the cap', () => {
+      for (const count of [1000, 1_000_000]) {
+        for (const row of [0, 1, 500, count - 1, Math.floor(count / 2)]) {
+          const input = { viewportHeight: 600, rowHeight: 49, count, overscan: 3 }
+          const scrollTop = scrollTopForRow(row, input)
+          const w = computeWindow({ ...input, scrollTop })
+          expect(w.start, `row ${row} of ${count}`).toBeLessThanOrEqual(row)
+          expect(w.end, `row ${row} of ${count}`).toBeGreaterThan(row)
+        }
+      }
+    })
+    it('is zero when everything fits', () => {
+      expect(
+        scrollTopForRow(3, { viewportHeight: 600, rowHeight: 49, count: 5, overscan: 3 }),
+      ).toBe(0)
     })
   })
 })

@@ -10205,7 +10205,7 @@
         },
         {
           "name": "columnState",
-          "description": "User-adjustable column layout (controlled): `hidden` keys. One object, so it round-trips through storage or a URL as a unit.",
+          "description": "User-adjustable column layout (controlled): `hidden` keys, display `order`, explicit `widths` in px, and `pinned` sides. One object, so it round-trips through storage or a URL as a unit.",
           "type": "ColumnState",
           "required": false,
           "schema": {
@@ -10232,7 +10232,7 @@
         },
         {
           "name": "columnSettings",
-          "description": "Which column-layout controls to offer: `visibility` adds a \"Columns\" menu to the toolbar. All off by default.",
+          "description": "Which column-layout controls to offer: `visibility` (a \"Columns\" menu in the toolbar), `resizable` (a drag handle per header; arrows nudge, Home resets), `reorderable` (Move left/right in the header menu), `pinnable` (Pin to start/end in the header menu). All off by default.",
           "type": "ColumnSettings",
           "required": false,
           "schema": {
@@ -10244,6 +10244,92 @@
           "description": "Server-driven mode: rows are rendered as the current page verbatim and `onQueryChange({ sort, search, filters, page, pageSize })` fires whenever any of them changes (not on mount). `totalItems` drives the pager. One switch turns off client sort, search, filters and paging together.",
           "type": "DataTableServer",
           "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "multiSort",
+          "description": "Allow sorting by more than one column: Shift-click a header adds it as a tie-breaker (`SortState.thenBy`); a plain click replaces the whole sort. Sorted headers show their level.",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "stateKey",
+          "description": "Remember the user's column layout and sort across reloads, in local storage under this key. Applies to uncontrolled `columnState`/`sort`; controlled props still win. Tables sharing a key share the preference.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "keyboardNavigation",
+          "description": "How the keyboard moves through the table. 'row' keeps every control in the Tab order with the arrows stepping between them. 'grid' is the APG data-grid pattern: one Tab stop, arrows move a focused cell, Home/End within the row, Ctrl+Home/End to the corners, PageUp/PageDown by a screenful, Enter/F2 enters the cell's control, Escape returns to the cell; rows outside the virtualized window are scrolled to.",
+          "type": "'row' | 'grid'",
+          "required": false,
+          "default": "row",
+          "schema": {
+            "kind": "enum",
+            "values": ["row", "grid"]
+          }
+        },
+        {
+          "name": "onCellEdit",
+          "description": "Commits an inline edit with the row, the column key and the new text. Enables editing for every column marked `editable`; the table does not mutate `rows` itself.",
+          "type": "(row: Row, key: string, value: string) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "groupBy",
+          "description": "Group the rows by one or more columns, in order. Each group is a collapsible row showing its value, its row count and every `aggregate` column's reduction; leaves keep the current sort inside their group. Groups appear in order of first occurrence — sort by the grouped column to order them.",
+          "type": "string | string[]",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "totals",
+          "description": "Show a totals row under the body with each `aggregate` column's reduction over every row passing the search and filters (not just the page). Sticks to the bottom of the scroller.",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "pinnedRows",
+          "description": "Rows kept in view outside sort, search, filters, paging and the virtual window: `top` rows sit under the header (stuck there with `stickyHeader`), `bottom` rows above the totals.",
+          "type": "{ top?: Row[]; bottom?: Row[] }",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "columnGroups",
+          "description": "Bands of columns under a shared header, rendered as a row above the column headers. Keep a band's columns adjacent; reordering them apart splits the band.",
+          "type": "ColumnGroup[]",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "exportable",
+          "description": "An \"Export CSV\" button in the toolbar: every row passing the search and filters (all pages; with `server`, the rows given), in the current sort, visible columns as headers, raw cell values as fields (RFC 4180, UTF-8 with BOM). Pass `{ filename }` to name the file; it defaults to the `title`.",
+          "type": "boolean | { filename?: string }",
+          "required": false,
+          "default": "false",
           "schema": {
             "kind": "other"
           }
@@ -10355,7 +10441,7 @@
         }
       ],
       "contextUrl": "/context/data-table.md",
-      "aiPrompt": "I am modifying the cascivo DataTable component (display). Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nDataTable is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-accent, --cascivo-font-sans, --cascivo-text-sm, --cascivo-text-xs, --cascivo-font-semibold, --cascivo-font-medium, --cascivo-radius-lg, --cascivo-radius-sm, --cascivo-space-2, --cascivo-space-3, --cascivo-space-4, --cascivo-data-table-max-height, --cascivo-data-table-cell-gap, --cascivo-duration-150, --cascivo-duration-500, --cascivo-ease-out, --cascivo-ease-in-out\n\nAccessibility: role \"table\", WCAG 2.2-AA, keyboard: Tab/ArrowUp/ArrowDown/ArrowLeft/ArrowRight/Enter/Space. Keep it AA.\n\nDo not change (strict): token names — All surfaces, borders, and spacing must resolve to --cascivo-* tokens\nFlexible: sortMode and density.\n\nDo not invent props, tokens, or global viewport media queries."
+      "aiPrompt": "I am modifying the cascivo DataTable component (display). Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nDataTable is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-accent, --cascivo-font-sans, --cascivo-text-sm, --cascivo-text-xs, --cascivo-font-semibold, --cascivo-font-medium, --cascivo-radius-lg, --cascivo-radius-sm, --cascivo-space-2, --cascivo-space-3, --cascivo-space-4, --cascivo-data-table-max-height, --cascivo-data-table-cell-gap, --cascivo-duration-150, --cascivo-duration-500, --cascivo-ease-out, --cascivo-ease-in-out\n\nAccessibility: role \"table\", WCAG 2.2-AA, keyboard: Tab/ArrowUp/ArrowDown/ArrowLeft/ArrowRight/Enter/Space/Home/End/PageUp/PageDown/F2/Escape. Keep it AA.\n\nDo not change (strict): token names — All surfaces, borders, and spacing must resolve to --cascivo-* tokens\nFlexible: sortMode and density.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "DatePicker",
@@ -18176,6 +18262,15 @@
           "default": "false",
           "schema": {
             "kind": "boolean"
+          }
+        },
+        {
+          "name": "tabIndex",
+          "description": "Tab-order position of the trigger. Composite widgets that manage their own focus (a DataTable in grid keyboard mode) pass -1 so the menu is reachable by Enter on its cell without being an extra Tab stop.",
+          "type": "number",
+          "required": false,
+          "schema": {
+            "kind": "number"
           }
         },
         {

@@ -909,6 +909,19 @@
         },
         { "name": "columnSettings", "type": "ColumnSettings", "required": false },
         { "name": "server", "type": "DataTableServer", "required": false },
+        { "name": "multiSort", "type": "boolean", "required": false },
+        { "name": "stateKey", "type": "string", "required": false },
+        { "name": "keyboardNavigation", "type": "'row' | 'grid'", "required": false },
+        {
+          "name": "onCellEdit",
+          "type": "(row: Row, key: string, value: string) => void",
+          "required": false
+        },
+        { "name": "groupBy", "type": "string | string[]", "required": false },
+        { "name": "totals", "type": "boolean", "required": false },
+        { "name": "pinnedRows", "type": "{ top?: Row[]; bottom?: Row[] }", "required": false },
+        { "name": "columnGroups", "type": "ColumnGroup[]", "required": false },
+        { "name": "exportable", "type": "boolean | { filename?: string }", "required": false },
         { "name": "renderExpandedRow", "type": "(row: Row) => ReactNode", "required": false },
         { "name": "density", "type": "'compact' | 'normal' | 'relaxed'", "required": false },
         { "name": "zebra", "type": "boolean", "required": false },
@@ -1457,6 +1470,7 @@
         { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "size", "type": "'sm' | 'md'", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
+        { "name": "tabIndex", "type": "number", "required": false },
         { "name": "className", "type": "string", "required": false }
       ]
     },

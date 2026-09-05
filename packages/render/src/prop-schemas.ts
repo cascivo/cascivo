@@ -1981,6 +1981,46 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
     {
+      name: 'multiSort',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'stateKey',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'keyboardNavigation',
+      required: false,
+      enum: ['row', 'grid'],
+    },
+    {
+      name: 'onCellEdit',
+      required: false,
+    },
+    {
+      name: 'groupBy',
+      required: false,
+    },
+    {
+      name: 'totals',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'pinnedRows',
+      required: false,
+    },
+    {
+      name: 'columnGroups',
+      required: false,
+    },
+    {
+      name: 'exportable',
+      required: false,
+    },
+    {
       name: 'renderExpandedRow',
       required: false,
     },
@@ -4594,6 +4634,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'disabled',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'tabIndex',
+      required: false,
+      primitives: ['number'],
     },
     {
       name: 'className',
