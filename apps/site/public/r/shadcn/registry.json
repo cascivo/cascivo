@@ -1807,6 +1807,18 @@
           "type": "registry:component"
         },
         {
+          "path": "data-table/row-search.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "data-table/row-sort.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "data-table/virtual-window.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "data-table/data-table.module.css",
           "type": "registry:component"
         }

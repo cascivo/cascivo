@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createLocale } from '@cascivo/i18n'
@@ -6,6 +6,7 @@ import { createRenderProbe } from '../test-utils/render-count'
 import { readFileSync } from 'node:fs'
 import { DataTable, type Column } from './data-table'
 import styles from './data-table.module.css'
+import { MAX_CANVAS_PX } from './virtual-window'
 
 interface Person {
   id: string
@@ -285,6 +286,136 @@ describe('DataTable virtualized', () => {
     const firstDataRow = document.querySelector('tbody tr[aria-rowindex="1"]') as HTMLElement
     expect(firstDataRow).toHaveAttribute('data-state', 'selected')
   })
+})
+
+describe('DataTable at a million rows', () => {
+  // Built once: a million objects is ~350 ms, and it is the size the component claims.
+  const million = Array.from({ length: 1_000_000 }, (_, i) => ({
+    id: `r${i}`,
+    name: `Row ${i}`,
+    age: i % 100,
+  }))
+  const rowHeight = 49
+  const viewport = 600
+  // jsdom has no layout, so the scroller's height is given as a row count.
+  const windowSize = Math.ceil(viewport / rowHeight)
+
+  it('renders a bounded window, with spacers that never exceed the canvas cap', () => {
+    render(
+      <DataTable
+        columns={columns}
+        rows={million}
+        getRowId={(r) => r.id}
+        virtualized
+        rowHeight={rowHeight}
+        windowSize={windowSize}
+        overscan={3}
+      />,
+    )
+    const tbody = document.querySelector('tbody')!
+    expect(tbody.querySelectorAll('tr[aria-rowindex]').length).toBeLessThanOrEqual(
+      windowSize + 1 + 6,
+    )
+    expect(screen.getByRole('table')).toHaveAttribute('aria-rowcount', '1000000')
+    const spacers = [...tbody.querySelectorAll('tr[aria-hidden="true"]')]
+    const spacerPx = spacers.reduce((sum, tr) => sum + Number.parseFloat(tr.style.height), 0)
+    // 1,000,000 × 49 px is 49 M px, past Chromium's 33.5 M px element clamp; the canvas
+    // is capped instead, so the scrollbar's bottom really is the last row.
+    expect(spacerPx).toBeLessThanOrEqual(MAX_CANVAS_PX)
+    expect(spacerPx).toBeGreaterThan(MAX_CANVAS_PX * 0.99)
+  })
+
+  it('reaches the last row at the bottom of the scrollbar', () => {
+    render(
+      <DataTable
+        columns={columns}
+        rows={million}
+        getRowId={(r) => r.id}
+        virtualized
+        rowHeight={rowHeight}
+        windowSize={windowSize}
+        overscan={3}
+      />,
+    )
+    const scroller = document.querySelector(`.${styles['scroller']}`) as HTMLDivElement
+    Object.defineProperty(scroller, 'scrollTop', {
+      writable: true,
+      value: MAX_CANVAS_PX - windowSize * rowHeight,
+    })
+    scroller.dispatchEvent(new Event('scroll'))
+    expect(screen.getByRole('cell', { name: 'Row 999999' })).toBeInTheDocument()
+    expect(document.querySelector('tbody tr[aria-rowindex="1000000"]')).not.toBeNull()
+    // …and the middle of the scrollbar is the middle of the data.
+    Object.defineProperty(scroller, 'scrollTop', {
+      writable: true,
+      value: Math.floor((MAX_CANVAS_PX - windowSize * rowHeight) / 2),
+    })
+    scroller.dispatchEvent(new Event('scroll'))
+    const first = Number(
+      document.querySelector('tbody tr[aria-rowindex]')!.getAttribute('aria-rowindex'),
+    )
+    expect(Math.abs(first - 500_000)).toBeLessThan(20)
+  })
+
+  it('selecting every row keeps the render bounded', async () => {
+    const onChange = vi.fn()
+    render(
+      <DataTable
+        columns={columns}
+        rows={million}
+        getRowId={(r) => r.id}
+        virtualized
+        rowHeight={rowHeight}
+        windowSize={windowSize}
+        selection={{ mode: 'multi', onChange }}
+      />,
+    )
+    // Select all via the header checkbox, then scroll: neither may walk the selection per
+    // rendered row. (Behavioral guard — the Set-based membership is what makes this pass in
+    // a reasonable time; the O(rows × selected) version took seconds per render.)
+    fireEvent.click(screen.getAllByRole('checkbox')[0]!)
+    expect(onChange).toHaveBeenCalledWith(expect.arrayContaining(['r0', 'r999999']))
+    expect(onChange.mock.calls[0]![0]).toHaveLength(1_000_000)
+    const scroller = document.querySelector(`.${styles['scroller']}`) as HTMLDivElement
+    for (let i = 1; i <= 20; i++) {
+      Object.defineProperty(scroller, 'scrollTop', { writable: true, value: i * 50_000 })
+      scroller.dispatchEvent(new Event('scroll'))
+    }
+    const rows = document.querySelectorAll('tbody tr[aria-rowindex]')
+    expect(rows.length).toBeGreaterThan(0)
+    for (const row of rows) expect(row).toHaveAttribute('data-state', 'selected')
+  }, 30_000)
+
+  it('searches a million rows one keystroke at a time', () => {
+    render(
+      <DataTable
+        columns={columns}
+        rows={million}
+        getRowId={(r) => r.id}
+        virtualized
+        rowHeight={rowHeight}
+        windowSize={windowSize}
+        searchable
+      />,
+    )
+    const input = screen.getByRole('searchbox')
+    for (const q of [
+      'R',
+      'Ro',
+      'Row',
+      'Row ',
+      'Row 9',
+      'Row 99',
+      'Row 999',
+      'Row 9999',
+      'Row 99999',
+    ]) {
+      fireEvent.change(input, { target: { value: q } })
+    }
+    // 99999 and 999990–999999
+    expect(screen.getByRole('table')).toHaveAttribute('aria-rowcount', '11')
+    expect(screen.getByRole('cell', { name: 'Row 99999' })).toBeInTheDocument()
+  }, 30_000)
 })
 
 describe('DataTable re-render budget', () => {

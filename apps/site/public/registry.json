@@ -4742,11 +4742,17 @@
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/data-table.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/index.ts",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/row-search.ts",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/row-sort.ts",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/virtual-window.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/data-table.module.css"
       ],
       "fileHashes": {
-        "data-table.tsx": "sha256-b01f1796baeb48af568d8e4208f1dc508bed4b008380e1ee0b3bbf102dcd1598",
-        "index.ts": "sha256-c80f45d421cd7701697b4d4df9641a323a710143f2e78c9596f3c1e63b0e316f",
+        "data-table.tsx": "sha256-ea52bacd62e818c6dc09f971a3272a3a399cf175e31120f6e9cc97dfcb28b164",
+        "index.ts": "sha256-d7f89f94e2927e7542b9571db391ce98dee7b6ce5a2152978586e4bd13d6768b",
+        "row-search.ts": "sha256-b31f1040151bd258c9947740714ea810df45c80c7c1e52779e613e48a5bab562",
+        "row-sort.ts": "sha256-f895589ee968243f03c75459d0ae3a02db5eea1851b38f27de401787b6fd0965",
+        "virtual-window.ts": "sha256-86cedfff0ba9225ecd00fec4128eca823c471e6d7504098b28523a085a1ba091",
         "data-table.module.css": "sha256-bdbbf535eeb3389bae97fc63315b12a94385e40d7071955928a91844620418ae"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -4776,15 +4782,13 @@
             "name": "rowHeight",
             "type": "number",
             "required": false,
-            "description": "Fixed row height in px, used to compute the virtualized window.",
-            "default": "40"
+            "description": "Row height in px for the virtualized window. Measured from the first rendered row when omitted, so the density presets stay correct; set it only for custom-sized rows."
           },
           {
             "name": "windowSize",
             "type": "number",
             "required": false,
-            "description": "Number of rows rendered in the virtualized window.",
-            "default": "20"
+            "description": "Rows rendered per window. Derived from the scroller height when omitted; set it only to render a fixed count regardless of height."
           },
           {
             "name": "overscan",
@@ -5038,6 +5042,11 @@
           {
             "title": "Full-featured: selection, pagination, search",
             "code": "<DataTable\n  columns={columns}\n  rows={rows}\n  getRowId={(r) => r.id}\n  searchable\n  pagination={{ pageSize: 10, pageSizeOptions: [10, 25, 50] }}\n  selection={{ mode: 'multi', onChange: setSelected }}\n  batchActions={[{ label: 'Delete', onClick: deleteRows }]}\n  stickyHeader\n  zebra\n/>"
+          },
+          {
+            "title": "A million rows",
+            "description": "Virtualized: only the visible rows are in the DOM, the scrollbar reaches the last row at any count, and search and sort stay usable. Row height and viewport are measured, so nothing else is needed.",
+            "code": "<DataTable\n  columns={columns}\n  rows={millionRows}\n  getRowId={(r) => r.id}\n  virtualized\n  searchable\n  ariaLabel=\"Events\"\n/>"
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],

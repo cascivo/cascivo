@@ -15,6 +15,9 @@ import { flushSync } from 'react-dom'
 import { Button } from '../button/button'
 import { Checkbox } from '../checkbox/checkbox'
 import styles from './data-table.module.css'
+import { createRowSearch } from './row-search'
+import { sortRows } from './row-sort'
+import { computeWindow } from './virtual-window'
 
 export interface Column<Row> {
   key: string
@@ -152,17 +155,16 @@ export interface DataTableProps<Row> {
    */
   virtualized?: boolean
   /**
-   * Fixed row height in px, used to compute the virtualized window.
+   * Row height in px for the virtualized window.
    *
-   * @defaultValue `40`
-   * @see the component manifest
+   * Measured from the first rendered row when omitted, so the density presets stay correct
+   * — the old fixed default of 40 never matched them (rows are 36/48/60 px plus a border),
+   * and a wrong value scales the whole scrollbar. Set it only for custom-sized rows.
    */
   rowHeight?: number
   /**
-   * Number of rows rendered in the virtualized window.
-   *
-   * @defaultValue `20`
-   * @see the component manifest
+   * Rows rendered per window. Derived from the scroller's height when omitted; set it only
+   * to render a fixed count regardless of height.
    */
   windowSize?: number
   /**
@@ -177,6 +179,8 @@ export interface DataTableProps<Row> {
 interface Entry<Row> {
   row: Row
   id: string
+  /** Lower-cased searchable text, built on first use (see `search` below). */
+  haystack?: string
 }
 
 const warnedUnnamedTable = new Set<string>()
@@ -243,11 +247,6 @@ function cellValue<Row>(row: Row, key: string): unknown {
   return (row as Record<string, unknown>)[key]
 }
 
-function compareValues(a: unknown, b: unknown): number {
-  if (typeof a === 'number' && typeof b === 'number') return a - b
-  return String(a ?? '').localeCompare(String(b ?? ''))
-}
-
 export function DataTable<Row>({
   columns,
   rows,
@@ -272,8 +271,8 @@ export function DataTable<Row>({
   labels,
   className,
   virtualized = false,
-  rowHeight = 40,
-  windowSize = 20,
+  rowHeight,
+  windowSize,
   overscan = 3,
 }: DataTableProps<Row>) {
   useSignals()
@@ -336,6 +335,8 @@ export function DataTable<Row>({
   // Virtualization
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const scrollTop = useSignal(0)
+  const viewportHeight = useSignal(0)
+  const measuredRowHeight = useSignal(0)
 
   /**
    * Measure overflow whenever the container resizes. A trailing rAF keeps a mid-resize
@@ -372,59 +373,111 @@ export function DataTable<Row>({
     return () => el.removeEventListener('scroll', onScroll)
   })
 
-  const entries = useComputed<Entry<Row>[]>(() =>
-    rowsSignal.value.map((row, index) => ({
-      row,
-      id: getRowId ? getRowId(row) : String(index),
-    })),
-  )
-
-  const filtered = useComputed<Entry<Row>[]>(() => {
-    const query = querySignal.value.trim().toLowerCase()
-    if (!query) return entries.value
-    const cols = columnsSignal.value
-    return entries.value.filter((entry) =>
-      cols.some((col) =>
-        String(cellValue(entry.row, col.key) ?? '')
-          .toLowerCase()
-          .includes(query),
-      ),
-    )
+  /**
+   * Measure what the window math needs instead of trusting props for it: the scroller's
+   * height (so a taller table renders more rows rather than blank canvas) and the real row
+   * height (the density presets size rows in rem, plus a border). The table is observed as
+   * well as the scroller so a density change, which re-sizes rows without resizing the
+   * scroller, is picked up too.
+   */
+  useSignalEffect(() => {
+    if (!virtualized) return
+    const el = scrollContainerRef.current
+    if (!el || typeof ResizeObserver === 'undefined') return
+    const measure = () => {
+      viewportHeight.value = el.clientHeight
+      const row = el.querySelector<HTMLElement>('tbody tr[aria-rowindex]')
+      const height = row?.getBoundingClientRect().height ?? 0
+      if (height > 0) measuredRowHeight.value = height
+    }
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(el)
+    const table = el.querySelector('table')
+    if (table) observer.observe(table)
+    return () => observer.disconnect()
   })
 
-  const sorted = useComputed<Entry<Row>[]>(() => {
+  const entries = useComputed<Entry<Row>[]>(() => {
+    // Entries cache their search haystack, which is a function of the columns, so a new
+    // column set means new entries. Columns change rarely; rows are the common case.
+    void columnsSignal.value
+    return rowsSignal.value.map((row, index) => ({
+      row,
+      id: getRowId ? getRowId(row) : String(index),
+    }))
+  })
+
+  /*
+   * Sort first, filter second. Filtering preserves order, so the sort runs once per sort
+   * change and a search keystroke only filters — the old filter-then-sort order re-sorted
+   * the whole filtered set on every key, which under an active sort was the bulk of the
+   * ~300–800 ms a keystroke cost at a million rows.
+   */
+  const sorted = useComputed<readonly Entry<Row>[]>(() => {
     const current = sortSignal.value
-    if (!current || sortMode === 'server') return filtered.value
-    const indexed = filtered.value.map((entry, index) => [entry, index] as const)
-    indexed.sort((a, b) => {
-      let result = compareValues(cellValue(a[0].row, current.key), cellValue(b[0].row, current.key))
-      if (current.direction === 'desc') result = -result
-      return result !== 0 ? result : a[1] - b[1]
+    if (!current || sortMode === 'server') return entries.value
+    return sortRows(entries.value, (entry) => cellValue(entry.row, current.key), current.direction)
+  })
+
+  // One lower-cased haystack per row, cached on the entry (a field read per row per
+  // keystroke, where a `Map` lookup measured ~3x slower); the search narrows an extended
+  // query from the previous result.
+  const search = useComputed(() => {
+    const cols = columnsSignal.value
+    return createRowSearch<Entry<Row>>((entry) => {
+      if (entry.haystack === undefined) {
+        let hay = ''
+        for (const col of cols) {
+          // A control character between cells so a query cannot match across the boundary.
+          hay += String(cellValue(entry.row, col.key) ?? '') + '\u0000'
+        }
+        entry.haystack = hay.toLowerCase()
+      }
+      return entry.haystack
     })
-    return indexed.map(([entry]) => entry)
+  })
+
+  // Prime the haystacks in idle time so the first keystroke does not build the whole
+  // index at once (~1.5 s at a million rows). Chunked, and abandoned the moment the rows
+  // or columns change (a new `entries`) or the table unmounts.
+  useSignalEffect(() => {
+    if (!searchable) return
+    const rows = entries.value
+    const index = search.value
+    // `requestIdleCallback` where it exists (not Safari); a short timeout otherwise. The
+    // handle is typed loosely because the two APIs, and Node's `setTimeout`, disagree.
+    const hasIdle = typeof requestIdleCallback === 'function'
+    let handle: unknown
+    let next = 0
+    const step = () => {
+      next = index.prime(rows, next, 20_000)
+      if (next < rows.length) schedule()
+    }
+    const schedule = () => {
+      handle = hasIdle ? requestIdleCallback(step, { timeout: 500 }) : setTimeout(step, 16)
+    }
+    schedule()
+    return () => {
+      if (hasIdle) cancelIdleCallback(handle as number)
+      else clearTimeout(handle as ReturnType<typeof setTimeout>)
+    }
+  })
+
+  const filtered = useComputed<readonly Entry<Row>[]>(() => {
+    const query = querySignal.value.trim().toLowerCase()
+    return query ? search.value.filter(sorted.value, query) : sorted.value
   })
 
   const pageCount = useComputed(() =>
     pagination ? Math.max(1, Math.ceil(filtered.value.length / pageSizeSignal.value)) : 1,
   )
   const currentPage = useComputed(() => Math.min(pageSignal.value, pageCount.value))
-  const paged = useComputed<Entry<Row>[]>(() => {
-    if (!pagination) return sorted.value
+  const paged = useComputed<readonly Entry<Row>[]>(() => {
+    if (!pagination) return filtered.value
     const start = (currentPage.value - 1) * pageSizeSignal.value
-    return sorted.value.slice(start, start + pageSizeSignal.value)
+    return filtered.value.slice(start, start + pageSizeSignal.value)
   })
-
-  const visibleStart = useComputed(() =>
-    virtualized ? Math.floor(scrollTop.value / rowHeight) : 0,
-  )
-  const visibleEnd = useComputed(() =>
-    virtualized
-      ? Math.min(visibleStart.value + windowSize + overscan * 2, paged.value.length)
-      : paged.value.length,
-  )
-  const visibleEntries = useComputed<Entry<Row>[]>(() =>
-    virtualized ? paged.value.slice(visibleStart.value, visibleEnd.value) : paged.value,
-  )
 
   const cycleSort = (key: string) => {
     const current = sortSignal.value
@@ -467,12 +520,25 @@ export function DataTable<Row>({
     next?.focus()
   }
 
+  /*
+   * Selection membership as a Set, rebuilt only when the `selectedIds` array changes
+   * identity. `selectedIds.includes` per rendered row is O(selected), and with every row of
+   * a million selected that was ~300 ms per render — per scroll frame. A ref holds the memo
+   * because selection is deliberately not a signal (see above), so `useComputed` cannot
+   * key on it; this is a cache keyed by identity, not component state.
+   */
+  const selectedSetRef = useRef<{ ids: string[]; set: ReadonlySet<string> } | null>(null)
+  if (selectedSetRef.current?.ids !== selectedIds) {
+    selectedSetRef.current = { ids: selectedIds, set: new Set(selectedIds) }
+  }
+  const selectedSet = selectedSetRef.current.set
+
   const toggleRow = (id: string) => {
     const current = selectedIds
     if (selection?.mode === 'single') {
-      setSelected(current.includes(id) ? [] : [id])
+      setSelected(selectedSet.has(id) ? [] : [id])
     } else {
-      setSelected(current.includes(id) ? current.filter((x) => x !== id) : [...current, id])
+      setSelected(selectedSet.has(id) ? current.filter((x) => x !== id) : [...current, id])
     }
   }
 
@@ -485,19 +551,61 @@ export function DataTable<Row>({
 
   const pageEntries = paged.value
   const expanded = expandedSignal.value
-  const allPageSelected =
-    pageEntries.length > 0 && pageEntries.every((entry) => selectedIds.includes(entry.id))
-  const somePageSelected = pageEntries.some((entry) => selectedIds.includes(entry.id))
-  const renderedEntries = visibleEntries.value
-  const vStart = visibleStart.value
-  const vEnd = visibleEnd.value
+
+  // The header checkbox state is a walk over the whole page — a million rows without
+  // pagination — so it is recomputed only when the page or the selection changes, never
+  // on a scroll frame. Same identity-keyed cache as `selectedSet`.
+  const pageSelectionRef = useRef<{
+    page: readonly Entry<Row>[]
+    set: ReadonlySet<string>
+    all: boolean
+    some: boolean
+  } | null>(null)
+  if (
+    pageSelectionRef.current?.page !== pageEntries ||
+    pageSelectionRef.current.set !== selectedSet
+  ) {
+    pageSelectionRef.current = {
+      page: pageEntries,
+      set: selectedSet,
+      all: pageEntries.length > 0 && pageEntries.every((entry) => selectedSet.has(entry.id)),
+      some: pageEntries.some((entry) => selectedSet.has(entry.id)),
+    }
+  }
+  const allPageSelected = pageSelectionRef.current.all
+  const somePageSelected = pageSelectionRef.current.some
+
+  // Row window. Row height and viewport come from measurement unless overridden; the
+  // fallbacks only matter where nothing can be measured (SSR, jsdom).
+  const rowPx = rowHeight ?? (measuredRowHeight.value > 0 ? measuredRowHeight.value : 40)
+  const viewportPx =
+    windowSize !== undefined
+      ? windowSize * rowPx
+      : viewportHeight.value > 0
+        ? viewportHeight.value
+        : 20 * rowPx
+  const rowWindow = virtualized
+    ? computeWindow({
+        scrollTop: scrollTop.value,
+        viewportHeight: viewportPx,
+        rowHeight: rowPx,
+        count: pageEntries.length,
+        overscan,
+      })
+    : undefined
+  const renderedEntries = rowWindow
+    ? pageEntries.slice(rowWindow.start, rowWindow.end)
+    : pageEntries
+  const vStart = rowWindow?.start ?? 0
 
   const toggleAll = () => {
-    const pageIds = pageEntries.map((entry) => entry.id)
     if (allPageSelected) {
-      setSelected(selectedIds.filter((id) => !pageIds.includes(id)))
+      const pageIds = new Set(pageEntries.map((entry) => entry.id))
+      setSelected(selectedIds.filter((id) => !pageIds.has(id)))
     } else {
-      setSelected([...new Set([...selectedIds, ...pageIds])])
+      const merged = new Set(selectedIds)
+      for (const entry of pageEntries) merged.add(entry.id)
+      setSelected([...merged])
     }
   }
 
@@ -680,13 +788,13 @@ export function DataTable<Row>({
                 </td>
               </tr>
             )}
-            {!loading && virtualized && vStart > 0 && (
-              <tr aria-hidden="true" style={{ height: vStart * rowHeight }} />
+            {!loading && rowWindow && rowWindow.topPad > 0 && (
+              <tr aria-hidden="true" style={{ height: rowWindow.topPad }} />
             )}
             {!loading &&
               renderedEntries.map((entry, index) => {
                 const absoluteIndex = virtualized ? vStart + index : index
-                const isSelected = selectedIds.includes(entry.id)
+                const isSelected = selectedSet.has(entry.id)
                 const isExpanded = expanded.has(entry.id)
                 return (
                   <Fragment key={entry.id}>
@@ -751,8 +859,8 @@ export function DataTable<Row>({
                   </Fragment>
                 )
               })}
-            {!loading && virtualized && vEnd < pageEntries.length && (
-              <tr aria-hidden="true" style={{ height: (pageEntries.length - vEnd) * rowHeight }} />
+            {!loading && rowWindow && rowWindow.bottomPad > 0 && (
+              <tr aria-hidden="true" style={{ height: rowWindow.bottomPad }} />
             )}
             {fillerCount > 0 && (
               <tr aria-hidden="true" data-filler-row>

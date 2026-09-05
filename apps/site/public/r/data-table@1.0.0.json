@@ -12,6 +12,15 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/index.ts"
     },
     {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/row-search.ts"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/row-sort.ts"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/virtual-window.ts"
+    },
+    {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/data-table.module.css"
     }
   ],
@@ -39,15 +48,13 @@
         "name": "rowHeight",
         "type": "number",
         "required": false,
-        "description": "Fixed row height in px, used to compute the virtualized window.",
-        "default": "40"
+        "description": "Row height in px for the virtualized window. Measured from the first rendered row when omitted, so the density presets stay correct; set it only for custom-sized rows."
       },
       {
         "name": "windowSize",
         "type": "number",
         "required": false,
-        "description": "Number of rows rendered in the virtualized window.",
-        "default": "20"
+        "description": "Rows rendered per window. Derived from the scroller height when omitted; set it only to render a fixed count regardless of height."
       },
       {
         "name": "overscan",
@@ -301,6 +308,11 @@
       {
         "title": "Full-featured: selection, pagination, search",
         "code": "<DataTable\n  columns={columns}\n  rows={rows}\n  getRowId={(r) => r.id}\n  searchable\n  pagination={{ pageSize: 10, pageSizeOptions: [10, 25, 50] }}\n  selection={{ mode: 'multi', onChange: setSelected }}\n  batchActions={[{ label: 'Delete', onClick: deleteRows }]}\n  stickyHeader\n  zebra\n/>"
+      },
+      {
+        "title": "A million rows",
+        "description": "Virtualized: only the visible rows are in the DOM, the scrollbar reaches the last row at any count, and search and sort stay usable. Row height and viewport are measured, so nothing else is needed.",
+        "code": "<DataTable\n  columns={columns}\n  rows={millionRows}\n  getRowId={(r) => r.id}\n  virtualized\n  searchable\n  ariaLabel=\"Events\"\n/>"
       }
     ],
     "dependencies": ["@cascivo/core", "@cascivo/i18n"],

@@ -23,15 +23,15 @@ export const meta: ComponentMeta = {
       name: 'rowHeight',
       type: 'number',
       required: false,
-      description: 'Fixed row height in px, used to compute the virtualized window.',
-      default: '40',
+      description:
+        'Row height in px for the virtualized window. Measured from the first rendered row when omitted, so the density presets stay correct; set it only for custom-sized rows.',
     },
     {
       name: 'windowSize',
       type: 'number',
       required: false,
-      description: 'Number of rows rendered in the virtualized window.',
-      default: '20',
+      description:
+        'Rows rendered per window. Derived from the scroller height when omitted; set it only to render a fixed count regardless of height.',
     },
     {
       name: 'overscan',
@@ -324,6 +324,19 @@ export const meta: ComponentMeta = {
   batchActions={[{ label: 'Delete', onClick: deleteRows }]}
   stickyHeader
   zebra
+/>`,
+    },
+    {
+      title: 'A million rows',
+      description:
+        'Virtualized: only the visible rows are in the DOM, the scrollbar reaches the last row at any count, and search and sort stay usable. Row height and viewport are measured, so nothing else is needed.',
+      code: `<DataTable
+  columns={columns}
+  rows={millionRows}
+  getRowId={(r) => r.id}
+  virtualized
+  searchable
+  ariaLabel="Events"
 />`,
     },
   ],

@@ -9882,6 +9882,15 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/index.ts"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/row-search.ts"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/row-sort.ts"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/virtual-window.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/data-table.module.css"
         }
       ],
@@ -9909,15 +9918,13 @@
             "name": "rowHeight",
             "type": "number",
             "required": false,
-            "description": "Fixed row height in px, used to compute the virtualized window.",
-            "default": "40"
+            "description": "Row height in px for the virtualized window. Measured from the first rendered row when omitted, so the density presets stay correct; set it only for custom-sized rows."
           },
           {
             "name": "windowSize",
             "type": "number",
             "required": false,
-            "description": "Number of rows rendered in the virtualized window.",
-            "default": "20"
+            "description": "Rows rendered per window. Derived from the scroller height when omitted; set it only to render a fixed count regardless of height."
           },
           {
             "name": "overscan",

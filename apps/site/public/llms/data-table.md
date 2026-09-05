@@ -37,8 +37,8 @@ import { DataTable } from '@cascivo/react'
 | Prop                | Type                                                                                     | Required | Default    | Description                                                                                                                                                                                                                                                                                                                                                                                                |
 | ------------------- | ---------------------------------------------------------------------------------------- | -------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `virtualized`       | `boolean`                                                                                | no       | `false`    | Render only the visible row window for large datasets.                                                                                                                                                                                                                                                                                                                                                     |
-| `rowHeight`         | `number`                                                                                 | no       | `40`       | Fixed row height in px, used to compute the virtualized window.                                                                                                                                                                                                                                                                                                                                            |
-| `windowSize`        | `number`                                                                                 | no       | `20`       | Number of rows rendered in the virtualized window.                                                                                                                                                                                                                                                                                                                                                         |
+| `rowHeight`         | `number`                                                                                 | no       | —          | Row height in px for the virtualized window. Measured from the first rendered row when omitted, so the density presets stay correct; set it only for custom-sized rows.                                                                                                                                                                                                                                    |
+| `windowSize`        | `number`                                                                                 | no       | —          | Rows rendered per window. Derived from the scroller height when omitted; set it only to render a fixed count regardless of height.                                                                                                                                                                                                                                                                         |
 | `overscan`          | `number`                                                                                 | no       | `3`        | Extra rows rendered above/below the window to smooth scrolling.                                                                                                                                                                                                                                                                                                                                            |
 | `columns`           | `Column<Row>[]`                                                                          | yes      | —          | The column definitions describing each table column.                                                                                                                                                                                                                                                                                                                                                       |
 | `rows`              | `Row[]`                                                                                  | yes      | —          | The row objects to render — one table row per array element.                                                                                                                                                                                                                                                                                                                                               |
@@ -145,6 +145,21 @@ Use Column.render to return any ReactNode per cell — a Badge for status, an ic
   batchActions={[{ label: 'Delete', onClick: deleteRows }]}
   stickyHeader
   zebra
+/>
+```
+
+### A million rows
+
+Virtualized: only the visible rows are in the DOM, the scrollbar reaches the last row at any count, and search and sort stay usable. Row height and viewport are measured, so nothing else is needed.
+
+```tsx
+<DataTable
+  columns={columns}
+  rows={millionRows}
+  getRowId={(r) => r.id}
+  virtualized
+  searchable
+  ariaLabel="Events"
 />
 ```
 
