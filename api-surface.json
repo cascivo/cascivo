@@ -873,6 +873,7 @@
             "placeholder?": "string",
             "empty?": "string",
             "clear?": "string",
+            "search?": "string",
             "loading?": "string",
             "create?": "string"
           },
