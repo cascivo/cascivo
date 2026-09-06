@@ -263,6 +263,7 @@ export const builtin = {
     previousMonth: 'Previous month',
     nextMonth: 'Next month',
     today: 'Today',
+    weekNumber: 'Week',
   }),
   colorPicker: defineMessages('cascade.colorPicker', {
     hue: 'Hue',
@@ -606,6 +607,7 @@ defineCatalog(builtin.calendar, 'de', {
   previousMonth: 'Vorheriger Monat',
   nextMonth: 'Nächster Monat',
   today: 'Heute',
+  weekNumber: 'Woche',
 })
 defineCatalog(builtin.colorPicker, 'de', {
   hue: 'Farbton',

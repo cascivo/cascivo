@@ -3345,6 +3345,10 @@ import { Calendar } from '@cascivo/react'
 | `year` | `number` | no | — | Controlled view year |
 | `onViewChange` | `(view: { month: number; year: number }) => void` | no | — | Called when the visible month changes |
 | `hideNav` | `boolean` | no | `false` | Hides the prev/next nav so a parent can drive navigation |
+| `showToday` | `boolean` | no | `false` | When true, shows a button that jumps the view to the current month and focuses today. |
+| `showWeekNumbers` | `boolean` | no | `false` | When true, prefixes each row with its ISO-8601 week number. |
+| `ariaLabel` | `string` | no | — | Accessible name for the grid. Defaults to the visible month label. Calendar has no visible label slot — the month heading is its own — so `label` and `ariaLabel` are aliases for the same invisible name. Not rendered — screen readers only. |
+| `label` | `string` | no | — | Alias for `ariaLabel`; both set the grid’s invisible accessible name. Not rendered — screen readers only. |
 
 ## Examples
 

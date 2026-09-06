@@ -932,6 +932,26 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['boolean'],
     },
+    {
+      name: 'showToday',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'showWeekNumbers',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
   ],
   CalendarHeatmap: [
     {

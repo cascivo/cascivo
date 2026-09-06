@@ -659,7 +659,11 @@
           "type": "(view: { month: number; year: number }) => void",
           "required": false
         },
-        { "name": "hideNav", "type": "boolean", "required": false }
+        { "name": "hideNav", "type": "boolean", "required": false },
+        { "name": "showToday", "type": "boolean", "required": false },
+        { "name": "showWeekNumbers", "type": "boolean", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false },
+        { "name": "label", "type": "string", "required": false }
       ]
     },
     {

@@ -945,6 +945,10 @@
           "type": "registry:component"
         },
         {
+          "path": "calendar/calendar-date.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "calendar/index.ts",
           "type": "registry:component"
         },

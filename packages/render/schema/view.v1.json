@@ -840,6 +840,18 @@
                   },
                   "hideNav": {
                     "type": "boolean"
+                  },
+                  "showToday": {
+                    "type": "boolean"
+                  },
+                  "showWeekNumbers": {
+                    "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
                   }
                 }
               }

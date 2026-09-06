@@ -2028,13 +2028,15 @@
       "version": "1.0.0",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/calendar/calendar.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/calendar/calendar-date.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/calendar/index.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/calendar/calendar.module.css"
       ],
       "fileHashes": {
-        "calendar.tsx": "sha256-5a65d71e1f9a90ede81cdea2b6cd9308fec1f188857c2dceabb7b54d166918c6",
-        "index.ts": "sha256-ae3b2f525ef2bd6b9234b69a7823b7eafcc9dbef7fa351fadca8e2d7b7d6f016",
-        "calendar.module.css": "sha256-7aa886b60d982a5c71fec3625d4e6baa7a000079a21bc9a2cefefe69696a72db"
+        "calendar.tsx": "sha256-f89d8eeab042292d0e41ca4c5c6440f434b8fb80b75d3d93f00a0155798d0679",
+        "calendar-date.ts": "sha256-5709e0ae245751b7d28a3c0cb79eed0d5dd88bfe75bc9c047ad50cc98ec3465a",
+        "index.ts": "sha256-afc64f5df9822c7a7696d95cb4c3ef69f831e420a04ae358f36b879736933ba4",
+        "calendar.module.css": "sha256-f2b63f7440f795873a14efb767d31fc23f9b510e271df7cb5d3487777f7aced2"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -2154,6 +2156,34 @@
             "type": "boolean",
             "required": false,
             "description": "Hides the prev/next nav so a parent can drive navigation"
+          },
+          {
+            "name": "showToday",
+            "description": "When true, shows a button that jumps the view to the current month and focuses today.",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "showWeekNumbers",
+            "description": "When true, prefixes each row with its ISO-8601 week number.",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "ariaLabel",
+            "description": "Accessible name for the grid. Defaults to the visible month label. Calendar has no visible label slot — the month heading is its own — so `label` and `ariaLabel` are aliases for the same invisible name.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
+          },
+          {
+            "name": "label",
+            "description": "Alias for `ariaLabel`; both set the grid’s invisible accessible name.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
           }
         ],
         "tokens": [
@@ -2169,6 +2199,8 @@
         "accessibility": {
           "role": "grid",
           "wcag": "2.2-AA",
+          "forcedColors": true,
+          "reducedMotion": true,
           "keyboard": [
             "ArrowLeft",
             "ArrowRight",
@@ -2229,7 +2261,7 @@
               "reason": "The range picker renders two Calendar instances side-by-side"
             }
           ],
-          "a11yRationale": "Renders an APG-compliant role=\"grid\" table with role=\"row\"/role=\"gridcell\"; a roving tabindex keeps exactly one day focusable (the focused date) so arrow keys move focus per APG, Home/End jump to the week edges, PageUp/PageDown change month (with Shift for year), today exposes aria-current=\"date\", selection sets data-selected with aria-selected on the cell, and out-of-range or predicate-disabled days get aria-disabled and are skipped by selection",
+          "a11yRationale": "A role=\"grid\" table with role=\"row\"/role=\"gridcell\" and a roving tabindex keeping exactly one day focusable. Navigation moves *real DOM focus*, not just the tabindex: the previous build only rotated the index, so focus stayed on the old button and the moment an arrow crossed a month boundary that button unmounted and focus fell to <body>, ejecting the user from the widget mid-navigation. React reuses the day buttons positionally across months, so the focus move is deferred a task and re-queried by date — landing on the reused node would silently focus whatever date now occupies that grid slot. Arrows move a day or a week, Home/End reach the week edges, PageUp/PageDown change month (Shift for year), and every move is clamped to min/max and skips predicate-disabled days rather than parking the cursor where Enter does nothing; the prev/next buttons disable at the bounds for the same reason. aria-selected sits on the button that takes focus, not the enclosing <td>, and is omitted rather than serialised as \"false\" on the other thirty cells. Today is computed from the *local* calendar rather than the UTC instant, so aria-current=\"date\" no longer lands a day early east of UTC+12. The month is announced through a separate visually-hidden status region: the visible label is also the grid's accessible name, so announcing there would mutate the name of the container focus sits inside.",
           "flexibility": [
             {
               "area": "date type",
