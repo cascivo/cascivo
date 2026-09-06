@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createLocale } from '@cascivo/i18n'
@@ -6,6 +6,7 @@ import { createRenderProbe } from '../test-utils/render-count'
 import { readFileSync } from 'node:fs'
 import { DataTable, type Column } from './data-table'
 import styles from './data-table.module.css'
+import { MAX_CANVAS_PX } from './virtual-window'
 
 interface Person {
   id: string
@@ -287,6 +288,601 @@ describe('DataTable virtualized', () => {
   })
 })
 
+describe('DataTable at a million rows', () => {
+  // Built once: a million objects is ~350 ms, and it is the size the component claims.
+  const million = Array.from({ length: 1_000_000 }, (_, i) => ({
+    id: `r${i}`,
+    name: `Row ${i}`,
+    age: i % 100,
+  }))
+  const rowHeight = 49
+  const viewport = 600
+  // jsdom has no layout, so the scroller's height is given as a row count.
+  const windowSize = Math.ceil(viewport / rowHeight)
+
+  it('renders a bounded window, with spacers that never exceed the canvas cap', () => {
+    render(
+      <DataTable
+        columns={columns}
+        rows={million}
+        getRowId={(r) => r.id}
+        virtualized
+        rowHeight={rowHeight}
+        windowSize={windowSize}
+        overscan={3}
+      />,
+    )
+    const tbody = document.querySelector('tbody')!
+    expect(tbody.querySelectorAll('tr[aria-rowindex]').length).toBeLessThanOrEqual(
+      windowSize + 1 + 6,
+    )
+    expect(screen.getByRole('table')).toHaveAttribute('aria-rowcount', '1000000')
+    const spacers = [...tbody.querySelectorAll('tr[aria-hidden="true"]')]
+    const spacerPx = spacers.reduce((sum, tr) => sum + Number.parseFloat(tr.style.height), 0)
+    // 1,000,000 × 49 px is 49 M px, past Chromium's 33.5 M px element clamp; the canvas
+    // is capped instead, so the scrollbar's bottom really is the last row.
+    expect(spacerPx).toBeLessThanOrEqual(MAX_CANVAS_PX)
+    expect(spacerPx).toBeGreaterThan(MAX_CANVAS_PX * 0.99)
+  })
+
+  it('reaches the last row at the bottom of the scrollbar', () => {
+    render(
+      <DataTable
+        columns={columns}
+        rows={million}
+        getRowId={(r) => r.id}
+        virtualized
+        rowHeight={rowHeight}
+        windowSize={windowSize}
+        overscan={3}
+      />,
+    )
+    const scroller = document.querySelector(`.${styles['scroller']}`) as HTMLDivElement
+    Object.defineProperty(scroller, 'scrollTop', {
+      writable: true,
+      value: MAX_CANVAS_PX - windowSize * rowHeight,
+    })
+    scroller.dispatchEvent(new Event('scroll'))
+    expect(screen.getByRole('cell', { name: 'Row 999999' })).toBeInTheDocument()
+    expect(document.querySelector('tbody tr[aria-rowindex="1000000"]')).not.toBeNull()
+    // …and the middle of the scrollbar is the middle of the data.
+    Object.defineProperty(scroller, 'scrollTop', {
+      writable: true,
+      value: Math.floor((MAX_CANVAS_PX - windowSize * rowHeight) / 2),
+    })
+    scroller.dispatchEvent(new Event('scroll'))
+    const first = Number(
+      document.querySelector('tbody tr[aria-rowindex]')!.getAttribute('aria-rowindex'),
+    )
+    expect(Math.abs(first - 500_000)).toBeLessThan(20)
+  })
+
+  it('selecting every row keeps the render bounded', async () => {
+    const onChange = vi.fn()
+    render(
+      <DataTable
+        columns={columns}
+        rows={million}
+        getRowId={(r) => r.id}
+        virtualized
+        rowHeight={rowHeight}
+        windowSize={windowSize}
+        selection={{ mode: 'multi', onChange }}
+      />,
+    )
+    // Select all via the header checkbox, then scroll: neither may walk the selection per
+    // rendered row. (Behavioral guard — the Set-based membership is what makes this pass in
+    // a reasonable time; the O(rows × selected) version took seconds per render.)
+    fireEvent.click(screen.getAllByRole('checkbox')[0]!)
+    expect(onChange).toHaveBeenCalledWith(expect.arrayContaining(['r0', 'r999999']))
+    expect(onChange.mock.calls[0]![0]).toHaveLength(1_000_000)
+    const scroller = document.querySelector(`.${styles['scroller']}`) as HTMLDivElement
+    for (let i = 1; i <= 20; i++) {
+      Object.defineProperty(scroller, 'scrollTop', { writable: true, value: i * 50_000 })
+      scroller.dispatchEvent(new Event('scroll'))
+    }
+    const rows = document.querySelectorAll('tbody tr[aria-rowindex]')
+    expect(rows.length).toBeGreaterThan(0)
+    for (const row of rows) expect(row).toHaveAttribute('data-state', 'selected')
+  }, 30_000)
+
+  it('searches a million rows one keystroke at a time', () => {
+    render(
+      <DataTable
+        columns={columns}
+        rows={million}
+        getRowId={(r) => r.id}
+        virtualized
+        rowHeight={rowHeight}
+        windowSize={windowSize}
+        searchable
+      />,
+    )
+    const input = screen.getByRole('searchbox')
+    for (const q of [
+      'R',
+      'Ro',
+      'Row',
+      'Row ',
+      'Row 9',
+      'Row 99',
+      'Row 999',
+      'Row 9999',
+      'Row 99999',
+    ]) {
+      fireEvent.change(input, { target: { value: q } })
+    }
+    // 99999 and 999990–999999
+    expect(screen.getByRole('table')).toHaveAttribute('aria-rowcount', '11')
+    expect(screen.getByRole('cell', { name: 'Row 99999' })).toBeInTheDocument()
+  }, 30_000)
+})
+
+// A header cell's own label: the first node of its inner span (the header menu's popover
+// content also lives inside the cell, so `textContent` would include every menu item).
+const headerLabels = () =>
+  screen
+    .getAllByRole('columnheader')
+    .map((th) =>
+      (
+        th.querySelector('[class*="headerInner"]')?.childNodes[0]?.textContent ?? th.textContent
+      )?.trim(),
+    )
+
+describe('DataTable filters, toolbar, row actions, column visibility', () => {
+  const invoices = [
+    { id: 'i1', name: 'Acme', status: 'paid', amount: 120 },
+    { id: 'i2', name: 'Globex', status: 'open', amount: 80 },
+    { id: 'i3', name: 'Initech', status: 'paid', amount: 300 },
+    { id: 'i4', name: 'Umbrella', status: 'overdue', amount: 45 },
+  ]
+  const filterColumns: Column<(typeof invoices)[number]>[] = [
+    { key: 'name', header: 'Name', filter: 'text' },
+    { key: 'status', header: 'Status', filter: 'select' },
+    { key: 'amount', header: 'Amount', filter: 'range' },
+  ]
+  const bodyNames = () =>
+    [
+      ...document.querySelectorAll(
+        'tbody tr.row td:first-child, tbody tr[class*="row"] td:first-child',
+      ),
+    ].map((td) => td.textContent)
+
+  it('filters by text, range and faceted select, ANDed, and reports the filter map', async () => {
+    const user = userEvent.setup()
+    const onFiltersChange = vi.fn()
+    render(
+      <DataTable
+        columns={filterColumns}
+        rows={invoices}
+        getRowId={(r) => r.id}
+        onFiltersChange={onFiltersChange}
+      />,
+    )
+    // Text filter narrows by substring.
+    const nameFilter = screen.getByRole('searchbox', { name: 'Filter Name' })
+    fireEvent.change(nameFilter, { target: { value: 'e' } })
+    expect(bodyNames()).toEqual(['Acme', 'Globex', 'Initech', 'Umbrella'])
+    fireEvent.change(nameFilter, { target: { value: 'in' } })
+    expect(bodyNames()).toEqual(['Initech'])
+    expect(onFiltersChange).toHaveBeenLastCalledWith({ name: { kind: 'text', value: 'in' } })
+    fireEvent.change(nameFilter, { target: { value: '' } })
+    expect(onFiltersChange).toHaveBeenLastCalledWith({})
+
+    // Range filter: min 100 keeps 120 and 300.
+    fireEvent.change(screen.getByRole('spinbutton', { name: 'Filter Amount: Min' }), {
+      target: { value: '100' },
+    })
+    expect(bodyNames()).toEqual(['Acme', 'Initech'])
+
+    // Faceted select: opening the menu lists distinct values with counts; ticking one ANDs
+    // with the range filter.
+    await user.click(screen.getByRole('button', { name: 'Filter Status' }))
+    const paid = screen.getByRole('checkbox', { name: 'paid (2)' })
+    expect(screen.getByRole('checkbox', { name: 'overdue (1)' })).toBeInTheDocument()
+    await user.click(paid)
+    expect(bodyNames()).toEqual(['Acme', 'Initech'])
+    expect(onFiltersChange).toHaveBeenLastCalledWith({
+      amount: { kind: 'range', min: 100 },
+      status: { kind: 'select', values: ['paid'] },
+    })
+
+    // Clear filters button resets everything.
+    await user.click(screen.getByRole('button', { name: /Clear filters/ }))
+    expect(bodyNames()).toHaveLength(4)
+  })
+
+  it('accepts controlled filters', () => {
+    render(
+      <DataTable
+        columns={filterColumns}
+        rows={invoices}
+        getRowId={(r) => r.id}
+        filters={{ status: { kind: 'select', values: ['overdue'] } }}
+      />,
+    )
+    expect(bodyNames()).toEqual(['Umbrella'])
+  })
+
+  it('shows noResultsState — not emptyState — when filters exclude every row', () => {
+    render(
+      <DataTable
+        columns={filterColumns}
+        rows={invoices}
+        getRowId={(r) => r.id}
+        searchable
+        emptyState="Nothing here"
+        noResultsState="Nothing matches"
+      />,
+    )
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Search' }), {
+      target: { value: 'zzz' },
+    })
+    expect(screen.getByRole('cell', { name: 'Nothing matches' })).toBeInTheDocument()
+  })
+
+  it('renders the toolbar slot and a row actions menu that receives the row', async () => {
+    const user = userEvent.setup()
+    const onEdit = vi.fn()
+    render(
+      <DataTable
+        columns={columns}
+        rows={people}
+        getRowId={(p) => p.id}
+        toolbar={<button type="button">Export</button>}
+        rowActions={() => [
+          { id: 'edit', label: 'Edit', onSelect: onEdit },
+          { id: 'delete', label: 'Delete', destructive: true, onSelect: () => {} },
+        ]}
+      />,
+    )
+    expect(screen.getByRole('button', { name: 'Export' })).toBeInTheDocument()
+    expect(screen.getByRole('columnheader', { name: 'Actions' })).toBeInTheDocument()
+    const menus = screen.getAllByRole('button', { name: 'Actions' })
+    expect(menus).toHaveLength(people.length)
+    await user.click(menus[0]!)
+    // Every row's menu is in the DOM (popovers); the first is the one just opened.
+    await user.click((await screen.findAllByRole('menuitem', { name: 'Edit' }))[0]!)
+    expect(onEdit).toHaveBeenCalledWith(people[0])
+  })
+
+  it('hides columns through the Columns menu and never the last one', async () => {
+    const user = userEvent.setup()
+    const onColumnStateChange = vi.fn()
+    render(
+      <DataTable
+        columns={columns}
+        rows={people}
+        getRowId={(p) => p.id}
+        columnSettings={{ visibility: true }}
+        onColumnStateChange={onColumnStateChange}
+      />,
+    )
+    const headers = headerLabels
+    expect(headers()).toEqual(['Name', 'Age'])
+    await user.click(screen.getByRole('button', { name: 'Columns' }))
+    await user.click(screen.getByRole('checkbox', { name: 'Age' }))
+    expect(headers()).toEqual(['Name'])
+    expect(onColumnStateChange).toHaveBeenLastCalledWith({ hidden: ['age'] })
+    // The remaining column's toggle is disabled.
+    expect(screen.getByRole('checkbox', { name: 'Name' })).toBeDisabled()
+    await user.click(screen.getByRole('checkbox', { name: 'Age' }))
+    expect(headers()).toEqual(['Name', 'Age'])
+  })
+
+  it('respects a controlled columnState and searches only visible columns', () => {
+    render(
+      <DataTable
+        columns={columns}
+        rows={people}
+        getRowId={(p) => p.id}
+        columnState={{ hidden: ['age'] }}
+        searchable
+      />,
+    )
+    expect(screen.queryByRole('columnheader', { name: 'Age' })).toBeNull()
+    // people[2] is 34; no name contains "34" (names run Person 00–29).
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Search' }), {
+      target: { value: String(people[2]!.age) },
+    })
+    // The age is hidden, so a query on it matches nothing.
+    expect(screen.getByRole('cell', { name: 'No matching rows' })).toBeInTheDocument()
+  })
+})
+
+describe('DataTable column layout: menu, reorder, pin, resize', () => {
+  const layoutColumns: Column<Person>[] = [
+    { key: 'name', header: 'Name', sortable: true },
+    { key: 'age', header: 'Age' },
+  ]
+  const headers = headerLabels
+
+  it('reorders, pins and hides through the header menu and reports the layout', async () => {
+    const user = userEvent.setup()
+    const onColumnStateChange = vi.fn()
+    render(
+      <DataTable
+        columns={layoutColumns}
+        rows={people.slice(0, 3)}
+        getRowId={(p) => p.id}
+        columnSettings={{ reorderable: true, pinnable: true, visibility: true }}
+        onColumnStateChange={onColumnStateChange}
+      />,
+    )
+    expect(headers()).toEqual(['Name', 'Age'])
+
+    // Move Age left of Name.
+    await user.click(screen.getByRole('button', { name: 'Options for Age' }))
+    await user.click((await screen.findAllByRole('menuitem', { name: 'Move left' }))[1]!)
+    expect(headers()).toEqual(['Age', 'Name'])
+    expect(onColumnStateChange).toHaveBeenLastCalledWith({ order: ['age', 'name'] })
+
+    // Pin Name to the start: it renders first again, and its cells are sticky.
+    await user.click(screen.getByRole('button', { name: 'Options for Name' }))
+    await user.click((await screen.findAllByRole('menuitem', { name: 'Pin to start' }))[1]!)
+    expect(headers()).toEqual(['Name', 'Age'])
+    expect(onColumnStateChange).toHaveBeenLastCalledWith({
+      order: ['age', 'name'],
+      pinned: { name: 'start' },
+    })
+    const nameHeader = screen.getByRole('columnheader', { name: /Name/ })
+    expect(nameHeader).toHaveAttribute('data-pinned', 'start')
+    expect(nameHeader).toHaveAttribute('data-pinned-edge')
+    expect(document.querySelectorAll('tbody td[data-pinned="start"]')).toHaveLength(3)
+
+    // Sorting is offered in the menu too.
+    await user.click(screen.getByRole('button', { name: 'Options for Name' }))
+    await user.click((await screen.findAllByRole('menuitem', { name: 'Sort descending' }))[0]!)
+    expect(nameHeader).toHaveAttribute('aria-sort', 'descending')
+
+    // Hide Age from its menu; the last remaining column's Hide is disabled.
+    await user.click(screen.getByRole('button', { name: 'Options for Age' }))
+    await user.click((await screen.findAllByRole('menuitem', { name: 'Hide column' }))[1]!)
+    expect(headers()).toEqual(['Name'])
+    expect(onColumnStateChange).toHaveBeenLastCalledWith({
+      order: ['age', 'name'],
+      pinned: { name: 'start' },
+      hidden: ['age'],
+    })
+  })
+
+  it('resizes with the keyboard handle, switches to a fixed layout, and resets with Home', () => {
+    const onColumnStateChange = vi.fn()
+    const { container } = render(
+      <DataTable
+        columns={layoutColumns}
+        rows={people.slice(0, 3)}
+        getRowId={(p) => p.id}
+        columnSettings={{ resizable: true }}
+        defaultColumnState={{ widths: { name: 200 } }}
+        onColumnStateChange={onColumnStateChange}
+      />,
+    )
+    const root = container.firstChild as HTMLElement
+    const col = () => container.querySelector('colgroup col') as HTMLTableColElement
+    expect(col().style.width).toBe('200px')
+    expect(root).toHaveAttribute('data-resized', 'true')
+
+    const handle = screen.getByRole('separator', { name: 'Resize Name' })
+    expect(handle).toHaveAttribute('aria-valuenow', '200')
+    fireEvent.keyDown(handle, { key: 'ArrowRight' })
+    expect(col().style.width).toBe('216px')
+    fireEvent.keyDown(handle, { key: 'ArrowLeft', shiftKey: true })
+    expect(col().style.width).toBe('152px')
+    expect(onColumnStateChange).toHaveBeenLastCalledWith({ widths: { name: 152 } })
+    // Cannot go below the minimum.
+    for (let i = 0; i < 10; i++) fireEvent.keyDown(handle, { key: 'ArrowLeft', shiftKey: true })
+    expect(col().style.width).toBe('48px')
+    // Home returns to auto and the fixed layout is dropped with the last width.
+    fireEvent.keyDown(handle, { key: 'Home' })
+    expect(col().style.width).toBe('')
+    expect(root).not.toHaveAttribute('data-resized')
+  })
+
+  it('honours a controlled columnState order and pins', () => {
+    render(
+      <DataTable
+        columns={layoutColumns}
+        rows={people.slice(0, 2)}
+        getRowId={(p) => p.id}
+        columnState={{ order: ['age', 'name'], pinned: { name: 'end' } }}
+      />,
+    )
+    // Pinned-end renders last even though `order` puts it first among unpinned.
+    expect(screen.getAllByRole('columnheader').map((th) => th.textContent)).toEqual(['Age', 'Name'])
+    expect(screen.getByRole('columnheader', { name: 'Name' })).toHaveAttribute('data-pinned', 'end')
+  })
+})
+
+describe('DataTable multi-sort and persisted state', () => {
+  const rows = [
+    { id: 'r1', city: 'B', age: 30 },
+    { id: 'r2', city: 'A', age: 40 },
+    { id: 'r3', city: 'B', age: 20 },
+    { id: 'r4', city: 'A', age: 10 },
+  ]
+  const twoColumns: Column<(typeof rows)[number]>[] = [
+    { key: 'city', header: 'City', sortable: true },
+    { key: 'age', header: 'Age', sortable: true },
+  ]
+  const cities = () =>
+    [...document.querySelectorAll('tbody td:first-child')].map((td) => td.textContent)
+
+  it('adds a tie-breaker on Shift-click and reports it as thenBy', () => {
+    const onSortChange = vi.fn()
+    render(
+      <DataTable
+        columns={twoColumns}
+        rows={rows}
+        getRowId={(r) => r.id}
+        multiSort
+        onSortChange={onSortChange}
+      />,
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'City' }))
+    // Primary only: stable within the city groups.
+    expect(cities()).toEqual(['A', 'A', 'B', 'B'])
+    fireEvent.click(screen.getByRole('button', { name: /Age/ }), { shiftKey: true })
+    expect(onSortChange).toHaveBeenLastCalledWith({
+      key: 'city',
+      direction: 'asc',
+      thenBy: [{ key: 'age', direction: 'asc' }],
+    })
+    const ages = () =>
+      [...document.querySelectorAll('tbody td:nth-child(2)')].map((td) => td.textContent)
+    expect(ages()).toEqual(['10', '40', '20', '30'])
+    // Both sorted headers expose their direction; the level badges read 1 and 2.
+    expect(screen.getByRole('columnheader', { name: /City/ })).toHaveAttribute(
+      'aria-sort',
+      'ascending',
+    )
+    expect(screen.getByRole('columnheader', { name: /Age/ })).toHaveAttribute(
+      'aria-sort',
+      'ascending',
+    )
+    expect([...document.querySelectorAll('thead sup')].map((s) => s.textContent)).toEqual([
+      '1',
+      '2',
+    ])
+    // Shift-click the tie-breaker again flips it; a plain click replaces the whole sort.
+    fireEvent.click(screen.getByRole('button', { name: /Age/ }), { shiftKey: true })
+    expect(ages()).toEqual(['40', '10', '30', '20'])
+    fireEvent.click(screen.getByRole('button', { name: /Age/ }))
+    expect(onSortChange).toHaveBeenLastCalledWith({ key: 'age', direction: 'asc' })
+    expect(document.querySelectorAll('thead sup')).toHaveLength(0)
+  })
+
+  it('ignores Shift without multiSort', () => {
+    const onSortChange = vi.fn()
+    render(
+      <DataTable
+        columns={twoColumns}
+        rows={rows}
+        getRowId={(r) => r.id}
+        onSortChange={onSortChange}
+      />,
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'City' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Age' }), { shiftKey: true })
+    expect(onSortChange).toHaveBeenLastCalledWith({ key: 'age', direction: 'asc' })
+  })
+
+  it('remembers column layout and sort under stateKey across mounts', async () => {
+    const user = userEvent.setup()
+    window.localStorage.removeItem('cascivo.data-table.people-test')
+    const first = render(
+      <DataTable
+        columns={twoColumns}
+        rows={rows}
+        getRowId={(r) => r.id}
+        stateKey="people-test"
+        columnSettings={{ visibility: true }}
+      />,
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Age' }))
+    await user.click(screen.getByRole('button', { name: 'Columns' }))
+    await user.click(screen.getByRole('checkbox', { name: 'City' }))
+    expect(headerLabels()).toEqual(['Age'])
+    expect(JSON.parse(window.localStorage.getItem('cascivo.data-table.people-test')!)).toEqual({
+      v: 1,
+      value: { columnState: { hidden: ['city'] }, sort: { key: 'age', direction: 'asc' } },
+    })
+    first.unmount()
+
+    // A fresh mount with the same key comes back sorted and with the column hidden…
+    render(
+      <DataTable columns={twoColumns} rows={rows} getRowId={(r) => r.id} stateKey="people-test" />,
+    )
+    expect(headerLabels()).toEqual(['Age'])
+    expect(screen.getByRole('columnheader', { name: /Age/ })).toHaveAttribute(
+      'aria-sort',
+      'ascending',
+    )
+    // …while a controlled prop still wins over the stored value.
+    cleanup()
+    render(
+      <DataTable
+        columns={twoColumns}
+        rows={rows}
+        getRowId={(r) => r.id}
+        stateKey="people-test"
+        columnState={{}}
+      />,
+    )
+    expect(headerLabels()).toEqual(['City', 'Age'])
+    window.localStorage.removeItem('cascivo.data-table.people-test')
+  })
+})
+
+describe('DataTable server mode', () => {
+  it('renders rows verbatim, pages from totalItems, and reports the query on each change', () => {
+    const onQueryChange = vi.fn()
+    const rows = people.slice(0, 2)
+    render(
+      <DataTable
+        columns={[
+          { key: 'name', header: 'Name', sortable: true, filter: 'text' },
+          { key: 'age', header: 'Age' },
+        ]}
+        rows={rows}
+        getRowId={(p) => p.id}
+        searchable
+        pagination={{ pageSize: 2 }}
+        server={{ totalItems: 7, onQueryChange }}
+      />,
+    )
+    // Not called on mount: the rows given are the first page.
+    expect(onQueryChange).not.toHaveBeenCalled()
+    expect(screen.getByText('1–2 of 7')).toBeInTheDocument()
+
+    // Search does not filter on the client; it is reported.
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Search' }), {
+      target: { value: 'zzz' },
+    })
+    expect(screen.getAllByRole('row')).toHaveLength(1 + 1 + rows.length) // header, filter row, rows
+    expect(onQueryChange).toHaveBeenLastCalledWith({
+      sort: undefined,
+      search: 'zzz',
+      filters: {},
+      page: 1,
+      pageSize: 2,
+    })
+
+    // Sorting is reported, not applied.
+    fireEvent.click(screen.getByRole('button', { name: 'Name' }))
+    expect(onQueryChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ sort: { key: 'name', direction: 'asc' } }),
+    )
+    // Column filters are reported, not applied.
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Filter Name' }), {
+      target: { value: 'q' },
+    })
+    expect(onQueryChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ filters: { name: { kind: 'text', value: 'q' } } }),
+    )
+    // Paging: next page is enabled by totalItems (4 pages of 2), and reported.
+    fireEvent.click(screen.getByRole('button', { name: 'Next page' }))
+    expect(onQueryChange).toHaveBeenLastCalledWith(expect.objectContaining({ page: 2 }))
+  })
+
+  it('lets the page be controlled', () => {
+    const onPageChange = vi.fn()
+    render(
+      <DataTable
+        columns={columns}
+        rows={people}
+        getRowId={(p) => p.id}
+        pagination={{ pageSize: 1, page: 2, onPageChange }}
+      />,
+    )
+    expect(screen.getByRole('cell', { name: people[1]!.name })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Next page' }))
+    expect(onPageChange).toHaveBeenCalledWith(3)
+    // Still controlled at page 2 until the parent updates.
+    expect(screen.getByRole('cell', { name: people[1]!.name })).toBeInTheDocument()
+  })
+})
+
 describe('DataTable re-render budget', () => {
   it('table interactions do not re-render the parent app', async () => {
     const user = userEvent.setup()
@@ -426,5 +1022,348 @@ describe('DataTable overflow warning', () => {
     ).not.toContain('overflows its container')
     warn.mockRestore()
     restoreRO()
+  })
+})
+
+describe('DataTable grid keyboard mode and inline editing', () => {
+  const rows = Array.from({ length: 12 }, (_, i) => ({ id: `g${i}`, name: `Row ${i}`, qty: i }))
+  type Item = (typeof rows)[number]
+  const gridColumns: Column<Item>[] = [
+    { key: 'name', header: 'Name', sortable: true },
+    { key: 'qty', header: 'Qty' },
+  ]
+  const cellAt = (row: number, col: number) =>
+    document.querySelector<HTMLElement>(`[data-cell="${row},${col}"]`)!
+  const active = () => (document.activeElement as HTMLElement).dataset['cell']
+
+  it('is one Tab stop: the first header cell, with every control out of the tab order', () => {
+    render(
+      <DataTable
+        columns={gridColumns}
+        rows={rows}
+        getRowId={(r) => r.id}
+        keyboardNavigation="grid"
+        selection={{ mode: 'multi' }}
+        rowActions={() => [{ id: 'x', label: 'X', onSelect: () => {} }]}
+      />,
+    )
+    const table = screen.getByRole('grid')
+    const stops = [...table.querySelectorAll('[tabindex="0"]')]
+    expect(stops).toHaveLength(1)
+    expect(stops[0]).toHaveAttribute('data-cell', '-1,0')
+    expect(screen.getByRole('button', { name: 'Name' })).toHaveAttribute('tabindex', '-1')
+    for (const box of screen.getAllByRole('checkbox')) expect(box).toHaveAttribute('tabindex', '-1')
+    for (const menu of screen.getAllByRole('button', { name: 'Actions' }))
+      expect(menu).toHaveAttribute('tabindex', '-1')
+  })
+
+  it('moves the focused cell with the arrows, Home/End, Ctrl+Home/End and PageDown', () => {
+    render(
+      <DataTable
+        columns={gridColumns}
+        rows={rows}
+        getRowId={(r) => r.id}
+        keyboardNavigation="grid"
+        windowSize={5}
+      />,
+    )
+    const start = cellAt(-1, 0)
+    start.focus()
+    fireEvent.keyDown(start, { key: 'ArrowDown' })
+    expect(active()).toBe('0,0')
+    fireEvent.keyDown(document.activeElement!, { key: 'ArrowRight' })
+    expect(active()).toBe('0,1')
+    fireEvent.keyDown(document.activeElement!, { key: 'ArrowRight' })
+    expect(active()).toBe('0,1')
+    fireEvent.keyDown(document.activeElement!, { key: 'Home' })
+    expect(active()).toBe('0,0')
+    fireEvent.keyDown(document.activeElement!, { key: 'PageDown' })
+    expect(active()).toBe('5,0')
+    fireEvent.keyDown(document.activeElement!, { key: 'End', ctrlKey: true })
+    expect(active()).toBe('11,1')
+    fireEvent.keyDown(document.activeElement!, { key: 'Home', ctrlKey: true })
+    expect(active()).toBe('0,0')
+    fireEvent.keyDown(document.activeElement!, { key: 'ArrowUp' })
+    expect(active()).toBe('-1,0')
+    // The Tab stop followed the focus.
+    expect(document.querySelectorAll('[role="grid"] [tabindex="0"]')).toHaveLength(1)
+    expect(cellAt(-1, 0)).toHaveAttribute('tabindex', '0')
+  })
+
+  it("Enter moves into the cell's control and Escape comes back out", () => {
+    render(
+      <DataTable
+        columns={gridColumns}
+        rows={rows}
+        getRowId={(r) => r.id}
+        keyboardNavigation="grid"
+      />,
+    )
+    const header = cellAt(-1, 0)
+    header.focus()
+    fireEvent.keyDown(header, { key: 'Enter' })
+    const sortButton = screen.getByRole('button', { name: 'Name' })
+    expect(document.activeElement).toBe(sortButton)
+    fireEvent.keyDown(sortButton, { key: 'Escape' })
+    expect(document.activeElement).toBe(header)
+    // Clicking into another cell's control moves the Tab stop there.
+    fireEvent.focus(cellAt(2, 1))
+    expect(cellAt(2, 1)).toHaveAttribute('tabindex', '0')
+    expect(header).toHaveAttribute('tabindex', '-1')
+  })
+
+  it('scrolls a virtualized table to a row outside the window, then focuses it', () => {
+    render(
+      <DataTable
+        columns={gridColumns}
+        rows={Array.from({ length: 1000 }, (_, i) => ({ id: `v${i}`, name: `Row ${i}`, qty: i }))}
+        getRowId={(r) => r.id}
+        keyboardNavigation="grid"
+        virtualized
+        rowHeight={40}
+        windowSize={10}
+      />,
+    )
+    const scroller = document.querySelector(`.${styles['scroller']}`) as HTMLDivElement
+    Object.defineProperty(scroller, 'scrollTop', { writable: true, value: 0 })
+    const header = cellAt(-1, 1)
+    header.focus()
+    fireEvent.keyDown(header, { key: 'End', ctrlKey: true })
+    expect(document.querySelector('[data-cell="999,1"]')).toBeNull()
+    expect(scroller.scrollTop).toBe(1000 * 40 - 10 * 40)
+    // The scroll lands the last row in the window and the pending focus finds it.
+    scroller.dispatchEvent(new Event('scroll'))
+    expect(active()).toBe('999,1')
+  })
+
+  it('edits a cell in place and commits through onCellEdit', async () => {
+    const user = userEvent.setup()
+    const onCellEdit = vi.fn()
+    render(
+      <DataTable
+        columns={[
+          { key: 'name', header: 'Name', editable: true },
+          { key: 'qty', header: 'Qty', editable: true, render: (r) => <b>{r.qty}</b> },
+        ]}
+        rows={rows.slice(0, 3)}
+        getRowId={(r) => r.id}
+        onCellEdit={onCellEdit}
+      />,
+    )
+    // A custom `render` wins over `editable`.
+    expect(screen.queryAllByRole('button', { name: 'Edit Qty' })).toHaveLength(0)
+    const previews = screen.getAllByRole('button', { name: 'Edit Name' })
+    expect(previews).toHaveLength(3)
+    await user.click(previews[1]!)
+    const input = screen.getByRole('textbox', { name: 'Edit Name' })
+    await user.clear(input)
+    await user.type(input, 'Renamed{Enter}')
+    expect(onCellEdit).toHaveBeenCalledWith(rows[1], 'name', 'Renamed')
+    // Nothing is editable without a commit handler.
+    cleanup()
+    render(
+      <DataTable
+        columns={[{ key: 'name', header: 'Name', editable: true }]}
+        rows={rows.slice(0, 3)}
+        getRowId={(r) => r.id}
+      />,
+    )
+    expect(screen.queryAllByRole('button', { name: 'Edit Name' })).toHaveLength(0)
+  })
+
+  it('in grid mode, Enter on an editable cell opens the editor and Escape returns to the cell', () => {
+    render(
+      <DataTable
+        columns={[{ key: 'name', header: 'Name', editable: true }]}
+        rows={rows.slice(0, 3)}
+        getRowId={(r) => r.id}
+        keyboardNavigation="grid"
+        onCellEdit={() => {}}
+      />,
+    )
+    const cell = cellAt(1, 0)
+    cell.focus()
+    fireEvent.keyDown(cell, { key: 'Enter' })
+    const input = screen.getByRole('textbox', { name: 'Edit Name' })
+    expect(document.activeElement).toBe(input)
+    fireEvent.keyDown(input, { key: 'Escape' })
+    expect(screen.queryByRole('textbox')).toBeNull()
+    expect(document.activeElement).toBe(cellAt(1, 0))
+  })
+})
+
+describe('DataTable grouping, totals, pinned rows and column groups', () => {
+  const orders = [
+    { id: 'o1', region: 'EU', status: 'open', amount: 10 },
+    { id: 'o2', region: 'US', status: 'open', amount: 20 },
+    { id: 'o3', region: 'EU', status: 'closed', amount: 5 },
+    { id: 'o4', region: 'EU', status: 'open', amount: 7 },
+  ]
+  type Order = (typeof orders)[number]
+  const orderColumns: Column<Order>[] = [
+    { key: 'region', header: 'Region' },
+    { key: 'status', header: 'Status', aggregate: 'count' },
+    { key: 'amount', header: 'Amount', align: 'end', aggregate: 'sum' },
+  ]
+  const bodyRows = () =>
+    [...document.querySelectorAll('tbody tr')].map((tr) =>
+      [...tr.querySelectorAll('td')].map((td) => td.textContent?.trim()).join('|'),
+    )
+
+  it('interleaves collapsible group rows with counts and aggregates', () => {
+    render(
+      <DataTable columns={orderColumns} rows={orders} getRowId={(o) => o.id} groupBy="region" />,
+    )
+    expect(bodyRows()).toEqual([
+      'EU(3)|3|22',
+      'EU|open|10',
+      'EU|closed|5',
+      'EU|open|7',
+      'US(1)|1|20',
+      'US|open|20',
+    ])
+    const eu = screen.getByRole('button', { name: /EU/ })
+    expect(eu).toHaveAttribute('aria-expanded', 'true')
+    fireEvent.click(eu)
+    expect(eu).toHaveAttribute('aria-expanded', 'false')
+    expect(bodyRows()).toEqual(['EU(3)|3|22', 'US(1)|1|20', 'US|open|20'])
+  })
+
+  it('nests two levels, keeps the sort inside groups and selects only leaves', () => {
+    const onChange = vi.fn()
+    render(
+      <DataTable
+        columns={[{ ...orderColumns[0]!, sortable: true }, orderColumns[1]!, orderColumns[2]!]}
+        rows={orders}
+        getRowId={(o) => o.id}
+        groupBy={['region', 'status']}
+        defaultSort={{ key: 'amount', direction: 'asc' }}
+        selection={{ mode: 'multi', onChange }}
+      />,
+    )
+    const groups = [...document.querySelectorAll('tbody tr[data-depth]')].map(
+      (tr) => `${tr.getAttribute('data-depth')}:${tr.querySelector('button')?.textContent}`,
+    )
+    expect(groups).toEqual(['0:EU(3)', '1:closed(1)', '1:open(2)', '0:US(1)', '1:open(1)'])
+    fireEvent.click(screen.getByRole('checkbox', { name: /select all/i }))
+    expect(onChange).toHaveBeenLastCalledWith(['o3', 'o4', 'o1', 'o2'])
+  })
+
+  it('renders a totals row over the filtered rows, not the page', () => {
+    render(
+      <DataTable
+        columns={orderColumns}
+        rows={orders}
+        getRowId={(o) => o.id}
+        totals
+        searchable
+        pagination={{ pageSize: 2 }}
+      />,
+    )
+    const totalsRow = () =>
+      [...document.querySelectorAll('tfoot td')].map((td) => td.textContent?.trim()).join('|')
+    expect(totalsRow()).toBe('Total|4|42')
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'EU' } })
+    expect(totalsRow()).toBe('Total|3|22')
+  })
+
+  it('renders pinned rows outside sort, filters and the virtual window', () => {
+    const many = Array.from({ length: 500 }, (_, i) => ({
+      id: `m${i}`,
+      region: 'EU',
+      status: 'open',
+      amount: i,
+    }))
+    render(
+      <DataTable
+        columns={orderColumns}
+        rows={many}
+        getRowId={(o) => o.id}
+        pinnedRows={{
+          top: [{ id: 'top', region: 'Pinned top', status: '', amount: 0 }],
+          bottom: [{ id: 'bottom', region: 'Pinned bottom', status: '', amount: 0 }],
+        }}
+        virtualized
+        rowHeight={40}
+        windowSize={10}
+        searchable
+      />,
+    )
+    const first = () => document.querySelector('tbody tr')
+    const last = () => document.querySelector('tbody tr:last-child')
+    expect(first()).toHaveAttribute('data-pinned-row', 'top')
+    expect(last()).toHaveAttribute('data-pinned-row', 'bottom')
+    // Pinned rows are not counted as body rows and survive a search that excludes them.
+    expect(screen.getByRole('table')).toHaveAttribute('aria-rowcount', '500')
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: '49' } })
+    expect(document.querySelectorAll('tbody tr[aria-rowindex]').length).toBeLessThan(500)
+    expect(first()?.textContent).toContain('Pinned top')
+    expect(last()?.textContent).toContain('Pinned bottom')
+  })
+
+  it('spans a column-group header over adjacent columns', () => {
+    render(
+      <DataTable
+        columns={orderColumns}
+        rows={orders}
+        getRowId={(o) => o.id}
+        selection={{ mode: 'multi' }}
+        columnGroups={[{ header: 'Order', columns: ['status', 'amount'] }]}
+      />,
+    )
+    const groupRow = document.querySelector('thead tr[data-group-header]')!
+    const spans = [...groupRow.querySelectorAll('th')].map(
+      (th) => `${th.textContent}:${th.colSpan}`,
+    )
+    expect(spans).toEqual([':1', ':1', 'Order:2'])
+    expect(screen.getByRole('columnheader', { name: 'Order' })).toHaveAttribute('scope', 'colgroup')
+    // The real header row still has one cell per column.
+    expect(screen.getByRole('columnheader', { name: 'Region' })).toBeInTheDocument()
+  })
+})
+
+describe('DataTable CSV export', () => {
+  it('downloads the filtered, sorted rows with the visible columns as headers', async () => {
+    const blobs: Blob[] = []
+    const clicks: string[] = []
+    Object.defineProperty(URL, 'createObjectURL', {
+      configurable: true,
+      value: (blob: Blob) => {
+        blobs.push(blob)
+        return 'blob:test'
+      },
+    })
+    Object.defineProperty(URL, 'revokeObjectURL', { configurable: true, value: () => {} })
+    const click = vi
+      .spyOn(HTMLAnchorElement.prototype, 'click')
+      .mockImplementation(function (this: HTMLAnchorElement) {
+        clicks.push(this.download)
+      })
+    render(
+      <DataTable
+        columns={[
+          { key: 'name', header: 'Name, full' },
+          { key: 'age', header: 'Age', render: (p) => <b>{p.age}</b> },
+        ]}
+        rows={people.slice(0, 4)}
+        getRowId={(p) => p.id}
+        title="People"
+        searchable
+        pagination={{ pageSize: 2 }}
+        defaultSort={{ key: 'age', direction: 'desc' }}
+        exportable
+      />,
+    )
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'Person 0' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Export CSV' }))
+    expect(clicks).toEqual(['People.csv'])
+    // A UTF-8 byte-order mark leads, so spreadsheet apps decode the file as UTF-8.
+    const bytes = new Uint8Array(await blobs[0]!.arrayBuffer())
+    expect(Array.from(bytes.slice(0, 3))).toEqual([0xef, 0xbb, 0xbf])
+    const sorted = people.slice(0, 4).sort((a, b) => b.age - a.age)
+    expect(new TextDecoder().decode(bytes)).toBe(
+      '"Name, full",Age\r\n' + sorted.map((p) => `${p.name},${p.age}\r\n`).join(''),
+    )
+    click.mockRestore()
   })
 })

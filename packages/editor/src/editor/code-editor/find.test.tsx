@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { replaceAll, scan, toDecorations } from './find.ts'
+import { createLineIndex } from '../../engine/line-index.ts'
+import { createScanCache, firstMatchFrom, replaceAll, scan, toDecorations } from './find.ts'
 
 describe('scan', () => {
   it('finds all case-insensitive matches by default', () => {
@@ -30,7 +31,7 @@ describe('toDecorations', () => {
   it('maps matches to per-line column decorations and marks the current', () => {
     const text = 'foo\nbar foo'
     const matches = scan(text, 'foo')
-    const decos = toDecorations(text, matches, 1, { match: 'm', current: 'c' })
+    const decos = toDecorations(createLineIndex(text), matches, 1, { match: 'm', current: 'c' })
     expect(decos).toEqual([
       { line: 0, start: 0, end: 3, className: 'm' },
       { line: 1, start: 4, end: 7, className: 'c' },
@@ -49,5 +50,36 @@ describe('replaceAll', () => {
     const text = 'cat cat'
     const matches = scan(text, 'cat')
     expect(replaceAll(text, matches, 'tiger')).toBe('tiger tiger')
+  })
+})
+
+describe('createScanCache', () => {
+  it('reuses the previous result for the same (text, query, case)', () => {
+    const scanFor = createScanCache()
+    const text = 'a A a'
+    expect(scanFor(text, 'a', false)).toBe(scanFor(text, 'a', false))
+  })
+
+  it('rescans when the text, the query, or the case flag changes', () => {
+    const scanFor = createScanCache()
+    const first = scanFor('a A a', 'a', false)
+    expect(scanFor('a A a', 'a', true)).not.toBe(first)
+    expect(scanFor('a A a', 'a', true)).toEqual([
+      { start: 0, end: 1 },
+      { start: 4, end: 5 },
+    ])
+    expect(scanFor('b', 'a', true)).toEqual([])
+  })
+})
+
+describe('firstMatchFrom', () => {
+  it('finds the first match at or after an offset, or the length when none', () => {
+    const matches = scan('a..a..a..a', 'a') // starts 0, 3, 6, 9
+    expect(firstMatchFrom(matches, 0)).toBe(0)
+    expect(firstMatchFrom(matches, 1)).toBe(1)
+    expect(firstMatchFrom(matches, 3)).toBe(1)
+    expect(firstMatchFrom(matches, 7)).toBe(3)
+    expect(firstMatchFrom(matches, 10)).toBe(4)
+    expect(firstMatchFrom([], 5)).toBe(0)
   })
 })

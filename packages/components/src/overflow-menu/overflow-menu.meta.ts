@@ -61,6 +61,13 @@ export const meta: ComponentMeta = {
       default: 'false',
     },
     {
+      name: 'tabIndex',
+      description:
+        'Tab-order position of the trigger. Composite widgets that manage their own focus (a DataTable in grid keyboard mode) pass -1 so the menu is reachable by Enter on its cell without being an extra Tab stop.',
+      type: 'number',
+      required: false,
+    },
+    {
       name: 'className',
       description: 'Additional CSS class names merged onto the root element.',
       type: 'string',

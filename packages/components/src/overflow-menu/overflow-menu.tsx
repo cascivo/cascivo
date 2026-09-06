@@ -73,6 +73,12 @@ export interface OverflowMenuProps {
   label?: string
   size?: 'sm' | 'md'
   disabled?: boolean
+  /**
+   * Tab-order position of the trigger. A composite widget that manages its own focus (a
+   * `DataTable` in grid keyboard mode) passes `-1` so the menu stays reachable by Enter on
+   * its cell without becoming an extra Tab stop.
+   */
+  tabIndex?: number
   className?: string
 }
 
@@ -94,6 +100,7 @@ export function OverflowMenu({
   label,
   size = 'md',
   disabled = false,
+  tabIndex,
   className,
 }: OverflowMenuProps) {
   useSignals()
@@ -128,6 +135,7 @@ export function OverflowMenu({
             className={styles['trigger']}
             data-size={size}
             disabled={disabled}
+            tabIndex={tabIndex}
             aria-label={resolvedAriaLabel}
           >
             <KebabIcon />

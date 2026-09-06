@@ -1,5 +1,5 @@
 'use client'
-import { useSignal, useSignalEffect, useSignals, cn } from '@cascivo/core'
+import { useSignal, useSignals, cn } from '@cascivo/core'
 import { useRef } from 'react'
 import type { HTMLAttributes } from 'react'
 import styles from './editable.module.css'
@@ -37,6 +37,18 @@ export interface EditableProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onC
   'aria-invalid'?: boolean
 }
 
+/**
+ * Focus and select the editor the moment it mounts. A module-level callback ref, not a
+ * signal effect: an effect keyed on `isEditing` runs synchronously on the write, before
+ * the input exists, so the editor opened without focus.
+ */
+function focusOnMount(el: HTMLInputElement | null) {
+  if (el) {
+    el.focus()
+    el.select()
+  }
+}
+
 export function Editable({
   value,
   onValueChange,
@@ -46,15 +58,16 @@ export function Editable({
   onCancel,
   className,
   id,
+  'aria-label': ariaLabel,
   'aria-labelledby': ariaLabelledBy,
   'aria-describedby': ariaDescribedBy,
   'aria-invalid': ariaInvalid,
+  tabIndex,
   ...props
 }: EditableProps) {
   useSignals()
   const isEditing = useSignal(false)
   const editValue = useSignal(value)
-  const inputRef = useRef<HTMLInputElement>(null)
   const onCancelRef = useRef(onCancel)
   onCancelRef.current = onCancel
   const onValueChangeRef = useRef(onValueChange)
@@ -68,27 +81,17 @@ export function Editable({
    */
   const controlAria = {
     id,
+    'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledBy,
     'aria-describedby': ariaDescribedBy,
     'aria-invalid': ariaInvalid,
+    tabIndex,
   }
 
   // Sync value into editValue when not editing
   if (!isEditing.value) {
     editValue.value = value
   }
-
-  // Focus input when editing starts
-  useSignalEffect(() => {
-    if (isEditing.value) {
-      // Use a microtask to focus after render
-      const input = inputRef.current
-      if (input) {
-        input.focus()
-        input.select()
-      }
-    }
-  })
 
   function confirm() {
     onValueChangeRef.current(editValue.value)
@@ -105,7 +108,7 @@ export function Editable({
     return (
       <div className={cn(styles['wrapper'], styles['editing'], className)} {...props}>
         <input
-          ref={inputRef}
+          ref={focusOnMount}
           className={styles['input']}
           {...controlAria}
           value={editValue.value}

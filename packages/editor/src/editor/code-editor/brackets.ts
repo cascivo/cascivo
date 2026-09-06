@@ -1,4 +1,4 @@
-import { offsetToLineCol } from './find.ts'
+import type { LineIndex } from '../../engine/line-index.ts'
 import type { Decoration } from '../view.tsx'
 
 const OPENERS: Record<string, string> = { '(': ')', '[': ']', '{': '}' }
@@ -57,12 +57,12 @@ export function matchBracket(
 
 /** Convert a matched bracket pair to two single-column {@link Decoration}s. */
 export function toBracketDecorations(
-  text: string,
+  index: LineIndex,
   match: { open: number; close: number },
   className: string,
 ): Decoration[] {
   return [match.open, match.close].map((offset) => {
-    const { line, col } = offsetToLineCol(text, offset)
+    const { line, col } = index.locate(offset)
     return { line, start: col, end: col + 1, className }
   })
 }
