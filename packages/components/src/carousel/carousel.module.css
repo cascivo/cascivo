@@ -70,11 +70,75 @@
     inset-inline-end: var(--cascivo-space-2);
   }
 
+  .controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cascivo-space-3);
+  }
+
   .dots {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: var(--cascivo-space-2);
+  }
+
+  .chevron {
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    border-inline-end: 2px solid currentcolor;
+    border-block-end: 2px solid currentcolor;
+  }
+
+  .chevronPrev {
+    rotate: 135deg;
+    translate: 0.1rem 0;
+  }
+
+  .chevronNext {
+    rotate: -45deg;
+    translate: -0.1rem 0;
+  }
+
+  .playPause {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: 1.75rem;
+    min-block-size: 1.75rem;
+    padding: 0;
+    color: var(--cascivo-color-text);
+    background: none;
+    border: none;
+    border-radius: var(--cascivo-radius-full);
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+    }
+  }
+
+  .playGlyph,
+  .pauseGlyph {
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+    background-color: currentcolor;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+  }
+
+  .playGlyph {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E");
+  }
+
+  .pauseGlyph {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 5h4v14H6zM14 5h4v14h-4z'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 5h4v14H6zM14 5h4v14h-4z'/%3E%3C/svg%3E");
   }
 
   .dot {
@@ -94,6 +158,34 @@
     &:focus-visible {
       outline: none;
       box-shadow: var(--cascivo-focus-ring);
+    }
+
+    /* The visible mark stays 10px; the hit area is what has to reach the target minimum.
+       WCAG 2.2 SC 2.5.8 needs 24px, and the repo's own rule needs 44px on coarse pointers. */
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 50% auto auto 50%;
+      translate: -50% -50%;
+      inline-size: var(--cascivo-target-min, 1.5rem);
+      block-size: var(--cascivo-target-min, 1.5rem);
+    }
+  }
+
+  .dot {
+    position: relative;
+  }
+
+  @media (pointer: coarse) {
+    .nav,
+    .playPause {
+      min-inline-size: var(--cascivo-target-min-coarse, 2.75rem);
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+
+    .dot::after {
+      inline-size: var(--cascivo-target-min-coarse, 2.75rem);
+      block-size: var(--cascivo-target-min-coarse, 2.75rem);
     }
   }
 }

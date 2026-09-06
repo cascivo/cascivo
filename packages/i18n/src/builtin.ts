@@ -259,6 +259,9 @@ export const builtin = {
     next: 'Next slide',
     slide: '{n} of {total}',
     goTo: 'Go to slide {n}',
+    choose: 'Choose slide to display',
+    play: 'Start automatic slide show',
+    pause: 'Stop automatic slide show',
   }),
   calendar: defineMessages('cascade.calendar', {
     previousMonth: 'Previous month',
@@ -604,6 +607,9 @@ defineCatalog(builtin.carousel, 'de', {
   next: 'Nächste Folie',
   slide: '{n} von {total}',
   goTo: 'Zu Folie {n}',
+  choose: 'Anzuzeigende Folie wählen',
+  play: 'Automatische Diashow starten',
+  pause: 'Automatische Diashow anhalten',
 })
 defineCatalog(builtin.calendar, 'de', {
   previousMonth: 'Vorheriger Monat',
