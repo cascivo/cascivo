@@ -1152,6 +1152,13 @@
                   "alpha": {
                     "type": "boolean"
                   },
+                  "format": {
+                    "type": "string",
+                    "enum": ["hex", "rgb", "hsl"]
+                  },
+                  "name": {
+                    "type": "string"
+                  },
                   "label": {
                     "type": "string"
                   },

@@ -2686,20 +2686,20 @@
       "canonical": true
     },
     {
+      "name": "--cascivo-color-picker-alpha-to",
+      "value": "#000",
+      "layer": "component",
+      "group": "color",
+      "resolvedDefault": "#000",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
       "name": "--cascivo-color-picker-area-size",
       "value": "9rem",
       "layer": "component",
       "group": "color",
       "resolvedDefault": "9rem",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-color-picker-solid",
-      "value": "#000",
-      "layer": "component",
-      "group": "color",
-      "resolvedDefault": "#000",
       "resolvesPerTheme": false,
       "canonical": true
     },

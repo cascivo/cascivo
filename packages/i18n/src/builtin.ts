@@ -267,8 +267,13 @@ export const builtin = {
   colorPicker: defineMessages('cascade.colorPicker', {
     hue: 'Hue',
     alpha: 'Alpha',
-    colorArea: 'Saturation and lightness',
+    colorArea: 'Saturation and brightness',
+    saturation: 'Saturation',
+    brightness: 'Brightness',
     eyedropper: 'Pick a color from the screen',
+    presets: 'Preset colors',
+    hex: 'Color value',
+    value: 'Selected color {color}',
   }),
   drawer: defineMessages('cascade.drawer', {
     close: 'Close',
@@ -606,7 +611,12 @@ defineCatalog(builtin.colorPicker, 'de', {
   hue: 'Farbton',
   alpha: 'Alpha',
   colorArea: 'Sättigung und Helligkeit',
+  saturation: 'Sättigung',
+  brightness: 'Helligkeit',
   eyedropper: 'Farbe vom Bildschirm wählen',
+  presets: 'Vordefinierte Farben',
+  hex: 'Farbwert',
+  value: 'Ausgewählte Farbe {color}',
 })
 defineCatalog(builtin.drawer, 'de', {
   close: 'Schließen',

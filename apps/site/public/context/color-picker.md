@@ -29,7 +29,7 @@
 
 ## Accessibility rationale
 
-The saturation/lightness area is a focusable role="slider" with arrow-key nudging and an aria-valuetext reporting the current hex; hue and alpha are native range inputs that inherit platform slider semantics and announcements.
+The picking area is a role="group" holding one native range input per axis — saturation on x, brightness on y — rather than a single role="slider", which cannot describe two dimensions and in the previous build carried no aria-valuenow at all. Real inputs also mean arrow stepping, Home/End and PageUp/PageDown are the platform's rather than a hand-rolled key switch, and each axis announces its own percentage. Hue and alpha are native range inputs for the same reason. The preset swatches are a labelled role="group" of toggle buttons with roving focus, so the arrows move focus between swatches and Enter or Space selects — the previous build labelled that group "Saturation and lightness" and made the arrows change the value instead. The hex field commits on blur, Enter or a valid paste and rejects anything unparseable, so a half-typed value never reaches onValueChange. A polite live region reports the current colour, mounted before the first change so that change is announced too. Selection and focus each carry a non-colour channel under forced-colors, and every control reaches the coarse-pointer target minimum.
 
 ## Props
 
@@ -41,6 +41,8 @@ The saturation/lightness area is a focusable role="slider" with arrow-key nudgin
 | `onValueChange`    | `(value: string) => void` | No       | —       | Called with the new value when it changes.                                                                                                                                                                                                                                                                                                                                                           |
 | `presets`          | `string[]`                | No       | —       | Preset swatch colors                                                                                                                                                                                                                                                                                                                                                                                 |
 | `alpha`            | `boolean`                 | No       | true    | When true, enables alpha (opacity) selection.                                                                                                                                                                                                                                                                                                                                                        |
+| `format`           | `'hex' \| 'rgb' \| 'hsl'` | No       | 'hex'   | Notation for the emitted value. Alpha is included whenever alpha is on, so the emitted string has a stable width.                                                                                                                                                                                                                                                                                    |
+| `name`             | `string`                  | No       | —       | Submitted with a surrounding form — a hidden input carrying the current value.                                                                                                                                                                                                                                                                                                                       |
 | `label`            | `string`                  | No       | —       | Text label for the control. Rendered on screen.                                                                                                                                                                                                                                                                                                                                                      |
 | `disabled`         | `boolean`                 | No       | false   | When true, disables the control and removes it from the tab order.                                                                                                                                                                                                                                                                                                                                   |
 | `size`             | `'sm' \| 'md' \| 'lg'`    | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                                                                                                                                                                                                                                |
@@ -76,10 +78,11 @@ The saturation/lightness area is a focusable role="slider" with arrow-key nudgin
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                       |
-| ----------- | -------- | -------------------------------------------------------------------------- |
-| color model | flexible | Values are stored as hex; consumers can convert to rgb/hsl/oklch as needed |
-| token names | strict   | Surfaces, borders and focus ring must resolve to --cascivo-\* tokens       |
+| Area          | Level    | Note                                                                                          |
+| ------------- | -------- | --------------------------------------------------------------------------------------------- |
+| output format | flexible | format switches between hex, rgb() and hsl(); alpha is included whenever the alpha prop is on |
+| color model   | flexible | Values are stored as hex; consumers can convert to rgb/hsl/oklch as needed                    |
+| token names   | strict   | Surfaces, borders and focus ring must resolve to --cascivo-\* tokens                          |
 
 ## AI context prompt
 
@@ -99,10 +102,10 @@ Architecture constraints — follow exactly:
 ColorPicker is strictly bound to these tokens — use only these, do not invent token names:
   --cascivo-color-accent, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-radius-md, --cascivo-radius-full, --cascivo-focus-ring
 
-Accessibility: role "slider", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/ArrowUp/ArrowDown. Keep it AA.
+Accessibility: role "group", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/ArrowUp/ArrowDown/Home/End/PageUp/PageDown/Enter/Escape. Keep it AA.
 
 Do not change (strict): token names — Surfaces, borders and focus ring must resolve to --cascivo-* tokens
-Flexible: color model.
+Flexible: output format, color model.
 
 Do not invent props, tokens, or global viewport media queries.
 ```

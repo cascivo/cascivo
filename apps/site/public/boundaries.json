@@ -350,6 +350,11 @@
     ],
     "ColorPicker": [
       {
+        "area": "output format",
+        "level": "flexible",
+        "note": "format switches between hex, rgb() and hsl(); alpha is included whenever the alpha prop is on"
+      },
+      {
         "area": "color model",
         "level": "flexible",
         "note": "Values are stored as hex; consumers can convert to rgb/hsl/oklch as needed"

@@ -1,16 +1,30 @@
 'use client'
-import { cn, useControllableSignal, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import {
+  cn,
+  useControllableSignal,
+  useRovingFocus,
+  useSignal,
+  useSignalEffect,
+  useSignals,
+} from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { useId, useRef } from 'react'
-import type { KeyboardEvent } from 'react'
+import { clamp, formatColor, hsvToRgb, parseColor, sameColor, toHex } from './color'
+import type { ColorFormat, Hsv } from './color'
 import styles from './color-picker.module.css'
+
+export type { ColorFormat } from './color'
 
 export interface ColorPickerLabels {
   hue?: string
   /** Accessible name for the alpha slider. */
   alpha?: string
   colorArea?: string
+  saturation?: string
+  brightness?: string
   eyedropper?: string
+  presets?: string
+  hex?: string
 }
 
 export interface ColorPickerProps {
@@ -45,6 +59,14 @@ export interface ColorPickerProps {
    * @see the component manifest
    */
   alpha?: boolean
+  /**
+   * Notation for the emitted value. Alpha is included whenever `alpha` is on, so the width
+   * of the emitted string is stable.
+   *
+   * @defaultValue `'hex'`
+   * @see the component manifest
+   */
+  format?: ColorFormat
   label?: string
   /**
    * Invisible accessible name, for when a visible element outside this component already
@@ -63,89 +85,11 @@ export interface ColorPickerProps {
    * @see the component manifest
    */
   disabled?: boolean
+  /** Submitted with a surrounding form — a hidden input carrying the current value. */
+  name?: string
   size?: 'sm' | 'md' | 'lg'
   className?: string
   labels?: ColorPickerLabels
-}
-
-interface Rgb {
-  r: number
-  g: number
-  b: number
-  a: number
-}
-
-interface Hsl {
-  h: number
-  s: number
-  l: number
-  a: number
-}
-
-function clamp(n: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, n))
-}
-
-function parseHex(hex: string): Rgb {
-  let h = hex.trim().replace(/^#/, '')
-  if (h.length === 3) h = h[0]! + h[0]! + h[1]! + h[1]! + h[2]! + h[2]!
-  if (h.length === 4) h = h[0]! + h[0]! + h[1]! + h[1]! + h[2]! + h[2]! + h[3]! + h[3]!
-  const r = parseInt(h.slice(0, 2), 16)
-  const g = parseInt(h.slice(2, 4), 16)
-  const b = parseInt(h.slice(4, 6), 16)
-  const a = h.length >= 8 ? parseInt(h.slice(6, 8), 16) / 255 : 1
-  if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) return { r: 0, g: 0, b: 0, a: 1 }
-  return { r, g, b, a }
-}
-
-function toHex({ r, g, b, a }: Rgb, withAlpha: boolean): string {
-  const part = (n: number): string => clamp(Math.round(n), 0, 255).toString(16).padStart(2, '0')
-  const base = `#${part(r)}${part(g)}${part(b)}`
-  if (!withAlpha || a >= 1) return base
-  return base + part(a * 255)
-}
-
-function rgbToHsl({ r, g, b, a }: Rgb): Hsl {
-  const rn = r / 255
-  const gn = g / 255
-  const bn = b / 255
-  const max = Math.max(rn, gn, bn)
-  const min = Math.min(rn, gn, bn)
-  const d = max - min
-  let h = 0
-  if (d !== 0) {
-    if (max === rn) h = ((gn - bn) / d) % 6
-    else if (max === gn) h = (bn - rn) / d + 2
-    else h = (rn - gn) / d + 4
-    h *= 60
-    if (h < 0) h += 360
-  }
-  const l = (max + min) / 2
-  const s = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1))
-  return { h, s: s * 100, l: l * 100, a }
-}
-
-function hslToRgb({ h, s, l, a }: Hsl): Rgb {
-  const sn = s / 100
-  const ln = l / 100
-  const c = (1 - Math.abs(2 * ln - 1)) * sn
-  const x = c * (1 - Math.abs(((h / 60) % 2) - 1))
-  const m = ln - c / 2
-  let rn = 0
-  let gn = 0
-  let bn = 0
-  if (h < 60) [rn, gn, bn] = [c, x, 0]
-  else if (h < 120) [rn, gn, bn] = [x, c, 0]
-  else if (h < 180) [rn, gn, bn] = [0, c, x]
-  else if (h < 240) [rn, gn, bn] = [0, x, c]
-  else if (h < 300) [rn, gn, bn] = [x, 0, c]
-  else [rn, gn, bn] = [c, 0, x]
-  return {
-    r: (rn + m) * 255,
-    g: (gn + m) * 255,
-    b: (bn + m) * 255,
-    a,
-  }
 }
 
 interface EyeDropperResult {
@@ -155,47 +99,85 @@ interface EyeDropperCtor {
   new (): { open: () => Promise<EyeDropperResult> }
 }
 
+const DEFAULT_COLOR = '#3b82f6'
+
 export function ColorPicker({
+  id,
   value,
   defaultValue,
   onValueChange,
   presets,
   alpha = true,
+  format = 'hex',
   label,
   ariaLabel,
-  disabled,
+  disabled = false,
+  name,
   size = 'md',
   className,
   labels,
-  id,
   'aria-labelledby': ariaLabelledBy,
   'aria-describedby': ariaDescribedBy,
   'aria-invalid': ariaInvalid,
 }: ColorPickerProps) {
   useSignals()
   const baseId = useId()
-  const [color, setColor] = useControllableSignal<string>({
-    value,
-    defaultValue: defaultValue ?? '#3b82f6',
-    onChange: onValueChange,
-  })
-
+  const inputId = id ?? `${baseId}-hex`
   const areaRef = useRef<HTMLDivElement>(null)
   const dragging = useSignal(false)
 
-  const hsl = rgbToHsl(parseHex(color.value))
+  const [color, setColor] = useControllableSignal<string>({
+    value,
+    defaultValue: defaultValue ?? DEFAULT_COLOR,
+    onChange: onValueChange,
+  })
 
-  const commit = (next: Hsl): void => {
-    setColor(toHex(hslToRgb(next), alpha))
+  /**
+   * HSV is the stored state, not hex. Hex is 8-bit, so hue→hex→hue loses precision on every
+   * nudge and repeated arrow presses bleed saturation away. The prop only re-seeds this when
+   * it names a different colour, so the component's own edits are never round-tripped.
+   */
+  const hsv = useSignal<Hsv>(parseColor(color.peek()) ?? { h: 217, s: 76, v: 96, a: 1 })
+  const lastEmitted = useRef<string>(color.peek())
+  const current = color.value
+  if (current !== lastEmitted.current && !sameColor(current, lastEmitted.current)) {
+    const parsed = parseColor(current)
+    if (parsed) hsv.value = parsed
+    lastEmitted.current = current
   }
 
-  const setFromPointer = (clientX: number, clientY: number): void => {
+  const hsvValue = hsv.value
+  const swatch = formatColor(hsvValue, format, alpha)
+  const opaqueHex = toHex(hsvToRgb({ ...hsvValue, a: 1 }), false)
+  const hueHex = toHex(hsvToRgb({ h: hsvValue.h, s: 100, v: 100, a: 1 }), false)
+
+  const resolved = {
+    hue: labels?.hue ?? t(builtin.colorPicker.hue),
+    alpha: labels?.alpha ?? t(builtin.colorPicker.alpha),
+    colorArea: labels?.colorArea ?? t(builtin.colorPicker.colorArea),
+    saturation: labels?.saturation ?? t(builtin.colorPicker.saturation),
+    brightness: labels?.brightness ?? t(builtin.colorPicker.brightness),
+    eyedropper: labels?.eyedropper ?? t(builtin.colorPicker.eyedropper),
+    presets: labels?.presets ?? t(builtin.colorPicker.presets),
+    hex: labels?.hex ?? t(builtin.colorPicker.hex),
+  }
+
+  function commit(next: Hsv): void {
+    hsv.value = next
+    const out = formatColor(next, format, alpha)
+    lastEmitted.current = out
+    setColor(out)
+  }
+
+  function setFromPointer(clientX: number, clientY: number): void {
     const el = areaRef.current
     if (!el) return
     const rect = el.getBoundingClientRect()
+    if (rect.width === 0 || rect.height === 0) return
     const sx = clamp((clientX - rect.left) / rect.width, 0, 1)
     const sy = clamp((clientY - rect.top) / rect.height, 0, 1)
-    commit({ h: hsl.h, s: sx * 100, l: (1 - sy) * 100, a: hsl.a })
+    // x is saturation, y is value — matching the gradient the area actually paints.
+    commit({ ...hsv.peek(), s: sx * 100, v: (1 - sy) * 100 })
   }
 
   useSignalEffect(() => {
@@ -212,205 +194,222 @@ export function ColorPicker({
     }
   })
 
-  const onAreaKeyDown = (e: KeyboardEvent<HTMLDivElement>): void => {
-    const step = e.shiftKey ? 10 : 2
-    let { s, l } = hsl
-    if (e.key === 'ArrowLeft') s -= step
-    else if (e.key === 'ArrowRight') s += step
-    else if (e.key === 'ArrowUp') l += step
-    else if (e.key === 'ArrowDown') l -= step
-    else return
-    e.preventDefault()
-    commit({ h: hsl.h, s: clamp(s, 0, 100), l: clamp(l, 0, 100), a: hsl.a })
+  /**
+   * Read on the client only. Reading `window.EyeDropper` during render made the server emit
+   * no button and the first client render emit one, which is a hydration mismatch on a
+   * component that is server-rendered despite `clientJs: 'required'`.
+   */
+  const hasEyeDropper = useSignal(false)
+  useSignalEffect(() => {
+    hasEyeDropper.value =
+      typeof window !== 'undefined' &&
+      typeof (window as unknown as { EyeDropper?: EyeDropperCtor }).EyeDropper === 'function'
+  })
+
+  async function pickFromScreen(): Promise<void> {
+    const ctor = (window as unknown as { EyeDropper?: EyeDropperCtor }).EyeDropper
+    if (!ctor) return
+    try {
+      const result = await new ctor().open()
+      const parsed = parseColor(result.sRGBHex)
+      if (parsed) commit({ ...parsed, a: hsv.peek().a })
+    } catch {
+      // The user dismissed the picker; nothing to do.
+    }
   }
 
-  const cyclePreset = (delta: number, current: number): void => {
-    if (!presets || presets.length === 0) return
-    const next = (current + delta + presets.length) % presets.length
-    setColor(presets[next]!)
+  // The hex field keeps its own draft so a half-typed value never reaches onValueChange.
+  // The old build called setColor on every keystroke, and an unparseable prefix fell back to
+  // black, so the area and thumb thrashed while the user typed.
+  const draft = useSignal<string | null>(null)
+  const hexText = draft.value ?? (format === 'hex' ? swatch : toHex(hsvToRgb(hsvValue), alpha))
+
+  function commitDraft(): void {
+    const text = draft.peek()
+    draft.value = null
+    if (text === null) return
+    const parsed = parseColor(text)
+    if (parsed) commit(alpha ? parsed : { ...parsed, a: 1 })
   }
 
-  const eyeDropper =
-    typeof window !== 'undefined'
-      ? (window as unknown as { EyeDropper?: EyeDropperCtor }).EyeDropper
-      : undefined
-
-  const openEyeDropper = (): void => {
-    if (!eyeDropper) return
-    void new eyeDropper().open().then((res) => setColor(res.sRGBHex))
-  }
-
-  const resolved = {
-    hue: labels?.hue ?? t(builtin.colorPicker.hue),
-    alpha: labels?.alpha ?? t(builtin.colorPicker.alpha),
-    colorArea: labels?.colorArea ?? t(builtin.colorPicker.colorArea),
-    eyedropper: labels?.eyedropper ?? t(builtin.colorPicker.eyedropper),
-  }
-
-  const swatch = toHex(parseHex(color.value), false)
-  const areaBg = `hsl(${hsl.h} 100% 50%)`
+  const presetList = presets ?? []
+  const roving = useRovingFocus({ orientation: 'horizontal', loop: true })
 
   return (
     <div
-      className={cn(styles['picker'], className)}
+      className={cn(styles['wrapper'], className)}
       data-size={size}
       data-disabled={disabled || undefined}
     >
       {label && (
-        <span className={styles['label']} id={`${baseId}-label`}>
+        <label className={styles['label']} htmlFor={inputId}>
           {label}
-        </span>
+        </label>
       )}
 
+      {/* Two real range inputs carry the slider semantics for the two axes. A single
+          role="slider" cannot describe a 2-D area — the old one had no aria-valuenow at all,
+          which is an invalid slider — and the native inputs bring Home/End/PageUp/PageDown
+          and arrow stepping with them instead of a hand-rolled key switch. */}
       <div
         ref={areaRef}
-        className={styles['area']}
-        role="slider"
+        role="group"
         aria-label={resolved.colorArea}
-        aria-valuetext={swatch}
-        aria-disabled={disabled || undefined}
-        tabIndex={disabled ? -1 : 0}
-        style={{ background: areaBg }}
+        className={styles['area']}
+        style={{ background: hueHex }}
         onPointerDown={(e) => {
           if (disabled) return
           e.preventDefault()
           dragging.value = true
           setFromPointer(e.clientX, e.clientY)
         }}
-        onKeyDown={onAreaKeyDown}
       >
+        <input
+          type="range"
+          className={styles['axis']}
+          aria-label={resolved.saturation}
+          min={0}
+          max={100}
+          step={1}
+          value={Math.round(hsvValue.s)}
+          disabled={disabled}
+          aria-valuetext={`${Math.round(hsvValue.s)}%`}
+          onChange={(e) => commit({ ...hsv.peek(), s: Number(e.currentTarget.value) })}
+        />
+        <input
+          type="range"
+          className={styles['axis']}
+          aria-label={resolved.brightness}
+          min={0}
+          max={100}
+          step={1}
+          value={Math.round(hsvValue.v)}
+          disabled={disabled}
+          aria-valuetext={`${Math.round(hsvValue.v)}%`}
+          onChange={(e) => commit({ ...hsv.peek(), v: Number(e.currentTarget.value) })}
+        />
         <span
           className={styles['thumb']}
           style={{
-            insetInlineStart: `${hsl.s}%`,
-            insetBlockStart: `${100 - hsl.l}%`,
-            backgroundColor: swatch,
+            insetInlineStart: `${hsvValue.s}%`,
+            insetBlockStart: `${100 - hsvValue.v}%`,
+            backgroundColor: opaqueHex,
           }}
+          aria-hidden="true"
         />
       </div>
 
       <div className={styles['sliders']}>
-        <label className={styles['srOnly']} htmlFor={`${baseId}-hue`}>
-          {resolved.hue}
-        </label>
         <input
-          id={`${baseId}-hue`}
-          className={styles['hue']}
           type="range"
+          className={cn(styles['slider'], styles['hue'])}
+          aria-label={resolved.hue}
           min={0}
           max={360}
           step={1}
-          value={Math.round(hsl.h)}
+          value={Math.round(hsvValue.h)}
           disabled={disabled}
-          aria-label={resolved.hue}
-          onChange={(e) =>
-            commit({
-              h: Number((e.target as HTMLInputElement).value),
-              s: hsl.s,
-              l: hsl.l,
-              a: hsl.a,
-            })
-          }
+          onChange={(e) => commit({ ...hsv.peek(), h: Number(e.currentTarget.value) })}
         />
-
         {alpha && (
-          <>
-            <label className={styles['srOnly']} htmlFor={`${baseId}-alpha`}>
-              {resolved.alpha}
-            </label>
-            <input
-              id={`${baseId}-alpha`}
-              className={styles['alpha']}
-              type="range"
-              min={0}
-              max={1}
-              step={0.01}
-              value={hsl.a}
-              disabled={disabled}
-              aria-label={resolved.alpha}
-              style={{ '--cascivo-color-picker-solid': swatch } as Record<string, string>}
-              onChange={(e) =>
-                commit({
-                  h: hsl.h,
-                  s: hsl.s,
-                  l: hsl.l,
-                  a: Number((e.target as HTMLInputElement).value),
-                })
-              }
-            />
-          </>
+          <input
+            type="range"
+            className={cn(styles['slider'], styles['alpha'])}
+            aria-label={resolved.alpha}
+            min={0}
+            max={100}
+            step={1}
+            value={Math.round(hsvValue.a * 100)}
+            disabled={disabled}
+            aria-valuetext={`${Math.round(hsvValue.a * 100)}%`}
+            style={{ '--cascivo-color-picker-alpha-to': opaqueHex } as React.CSSProperties}
+            onChange={(e) => commit({ ...hsv.peek(), a: Number(e.currentTarget.value) / 100 })}
+          />
         )}
       </div>
-
-      {presets && presets.length > 0 && (
-        <div className={styles['presets']} role="group" aria-label={resolved.colorArea}>
-          {presets.map((preset, i) => (
-            <button
-              key={preset}
-              type="button"
-              className={styles['preset']}
-              style={{ backgroundColor: preset }}
-              aria-label={preset}
-              aria-pressed={preset.toLowerCase() === color.value.toLowerCase()}
-              disabled={disabled}
-              onClick={() => setColor(preset)}
-              onKeyDown={(e) => {
-                if (e.key === 'ArrowRight') {
-                  e.preventDefault()
-                  cyclePreset(1, i)
-                } else if (e.key === 'ArrowLeft') {
-                  e.preventDefault()
-                  cyclePreset(-1, i)
-                }
-              }}
-            />
-          ))}
-        </div>
-      )}
 
       <div className={styles['row']}>
         <span
           className={styles['preview']}
-          style={{ backgroundColor: color.value }}
+          style={{ backgroundColor: swatch }}
           aria-hidden="true"
         />
         <input
-          className={styles['text']}
+          id={inputId}
           type="text"
-          value={color.value}
+          className={styles['hex']}
+          value={hexText}
           disabled={disabled}
-          id={id}
+          spellCheck={false}
+          autoComplete="off"
+          // aria-labelledby from a Field outranks a name of our own; only fall back when the
+          // Field has not supplied one.
+          aria-label={ariaLabelledBy ? undefined : (ariaLabel ?? resolved.hex)}
           aria-labelledby={ariaLabelledBy}
           aria-describedby={ariaDescribedBy}
           aria-invalid={ariaInvalid}
-          // A wrapping Field names this input via `aria-labelledby`, which outranks
-          // `aria-label` — so applying the built-in fallback here would be inert at best and
-          // is dropped instead of competing with it.
-          aria-label={
-            ariaLabelledBy !== undefined ? undefined : (ariaLabel ?? label ?? resolved.colorArea)
-          }
-          onChange={(e) => setColor((e.target as HTMLInputElement).value)}
+          onChange={(e) => {
+            draft.value = e.currentTarget.value
+          }}
+          onBlur={commitDraft}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault()
+              commitDraft()
+            } else if (e.key === 'Escape') {
+              draft.value = null
+            }
+          }}
         />
-        {eyeDropper && (
+        {hasEyeDropper.value && (
           <button
             type="button"
             className={styles['eyedropper']}
             aria-label={resolved.eyedropper}
             disabled={disabled}
-            onClick={openEyeDropper}
+            onClick={() => void pickFromScreen()}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="m2 22 1-1h3l9-9M3 21v-3l9-9m1.5 1.5-2-2M19 2l3 3-9 9-3-3z"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <span className={styles['eyedropperGlyph']} aria-hidden="true" />
           </button>
         )}
       </div>
+
+      {presetList.length > 0 && (
+        <div role="group" aria-label={resolved.presets} className={styles['presets']}>
+          {presetList.map((preset, i) => {
+            const itemProps = roving.getItemProps(i)
+            const selected = sameColor(preset, swatch)
+            return (
+              <button
+                key={preset}
+                ref={itemProps.ref as (el: HTMLButtonElement | null) => void}
+                type="button"
+                className={styles['preset']}
+                style={{ backgroundColor: preset }}
+                aria-label={preset}
+                aria-pressed={selected}
+                disabled={disabled}
+                // Arrows move focus between swatches; they used to change the value instead,
+                // which is the inverse of what a group of buttons should do.
+                tabIndex={itemProps.tabIndex}
+                onKeyDown={itemProps.onKeyDown}
+                onFocus={itemProps.onFocus}
+                onClick={() => {
+                  const parsed = parseColor(preset)
+                  if (parsed) commit(alpha ? parsed : { ...parsed, a: 1 })
+                }}
+              />
+            )
+          })}
+        </div>
+      )}
+
+      {name !== undefined && <input type="hidden" name={name} value={swatch} />}
+
+      {/* Mounted unconditionally so the first change is announced too. */}
+      <span className={styles['srOnly']} role="status" aria-live="polite">
+        {t(builtin.colorPicker.value, { color: swatch })}
+      </span>
     </div>
   )
 }

@@ -1452,6 +1452,16 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['boolean'],
     },
     {
+      name: 'format',
+      required: false,
+      enum: ['hex', 'rgb', 'hsl'],
+    },
+    {
+      name: 'name',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'label',
       required: false,
       primitives: ['string'],

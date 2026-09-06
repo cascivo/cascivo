@@ -465,6 +465,11 @@
       ],
       "ColorPicker": [
         {
+          "area": "output format",
+          "level": "flexible",
+          "note": "format switches between hex, rgb() and hsl(); alpha is included whenever the alpha prop is on"
+        },
+        {
           "area": "color model",
           "level": "flexible",
           "note": "Values are stored as hex; consumers can convert to rgb/hsl/oklch as needed"
@@ -8929,8 +8934,13 @@
             "reason": "The hex text field lets users paste an exact value"
           }
         ],
-        "a11yRationale": "The saturation/lightness area is a focusable role=\"slider\" with arrow-key nudging and an aria-valuetext reporting the current hex; hue and alpha are native range inputs that inherit platform slider semantics and announcements.",
+        "a11yRationale": "The picking area is a role=\"group\" holding one native range input per axis — saturation on x, brightness on y — rather than a single role=\"slider\", which cannot describe two dimensions and in the previous build carried no aria-valuenow at all. Real inputs also mean arrow stepping, Home/End and PageUp/PageDown are the platform's rather than a hand-rolled key switch, and each axis announces its own percentage. Hue and alpha are native range inputs for the same reason. The preset swatches are a labelled role=\"group\" of toggle buttons with roving focus, so the arrows move focus between swatches and Enter or Space selects — the previous build labelled that group \"Saturation and lightness\" and made the arrows change the value instead. The hex field commits on blur, Enter or a valid paste and rejects anything unparseable, so a half-typed value never reaches onValueChange. A polite live region reports the current colour, mounted before the first change so that change is announced too. Selection and focus each carry a non-colour channel under forced-colors, and every control reaches the coarse-pointer target minimum.",
         "flexibility": [
+          {
+            "area": "output format",
+            "level": "flexible",
+            "note": "format switches between hex, rgb() and hsl(); alpha is included whenever the alpha prop is on"
+          },
           {
             "area": "color model",
             "level": "flexible",
@@ -8998,6 +9008,26 @@
           "default": "true",
           "schema": {
             "kind": "boolean"
+          }
+        },
+        {
+          "name": "format",
+          "description": "Notation for the emitted value. Alpha is included whenever alpha is on, so the emitted string has a stable width.",
+          "type": "'hex' | 'rgb' | 'hsl'",
+          "required": false,
+          "default": "'hex'",
+          "schema": {
+            "kind": "enum",
+            "values": ["hex", "rgb", "hsl"]
+          }
+        },
+        {
+          "name": "name",
+          "description": "Submitted with a surrounding form — a hidden input carrying the current value.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
           }
         },
         {
@@ -9079,7 +9109,7 @@
         }
       ],
       "contextUrl": "/context/color-picker.md",
-      "aiPrompt": "I am modifying the cascivo ColorPicker component (inputs). Interactive color selection widget with saturation/lightness area, hue and alpha sliders\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nColorPicker is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-radius-md, --cascivo-radius-full, --cascivo-focus-ring\n\nAccessibility: role \"slider\", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/ArrowUp/ArrowDown. Keep it AA.\n\nDo not change (strict): token names — Surfaces, borders and focus ring must resolve to --cascivo-* tokens\nFlexible: color model.\n\nDo not invent props, tokens, or global viewport media queries."
+      "aiPrompt": "I am modifying the cascivo ColorPicker component (inputs). Interactive color selection widget with saturation/lightness area, hue and alpha sliders\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nColorPicker is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-radius-md, --cascivo-radius-full, --cascivo-focus-ring\n\nAccessibility: role \"group\", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/ArrowUp/ArrowDown/Home/End/PageUp/PageDown/Enter/Escape. Keep it AA.\n\nDo not change (strict): token names — Surfaces, borders and focus ring must resolve to --cascivo-* tokens\nFlexible: output format, color model.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Combobox",

@@ -1575,6 +1575,10 @@
           "type": "registry:component"
         },
         {
+          "path": "color-picker/color.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "color-picker/index.ts",
           "type": "registry:component"
         },
