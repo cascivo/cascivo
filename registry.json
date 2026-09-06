@@ -20213,9 +20213,9 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tree-view/tree-view.module.css"
       ],
       "fileHashes": {
-        "tree-view.tsx": "sha256-e0dcca1ce7d4b9f0427ee58db60b6fe566ecb54bee35380765477fbdfffb7896",
+        "tree-view.tsx": "sha256-45eb53de933d7348cd4b98ee6d9760eff5d6ff571e26255e7e97d5ab09683e73",
         "index.ts": "sha256-a8f9ad6089ec199ec174465a1867f5731056f5ce6ba4dda2e41e2c75370b3951",
-        "tree-view.module.css": "sha256-88580b0ad4ee242e5a32187b3f1565425b6dd42356ba0369f529cc40ea50a193"
+        "tree-view.module.css": "sha256-2f64952ac258cb23ed44f61c74cb94818ec6fc2e3ead845c8d6a911941df2ef0"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -20284,6 +20284,12 @@
             "required": false
           },
           {
+            "name": "onValueChange",
+            "description": "Called with the new selection. Preferred over `onSelectChange`, which is the catalog’s only value-carrying handler not named onValueChange and is deprecated.",
+            "type": "(selected: string | string[]) => void",
+            "required": false
+          },
+          {
             "name": "expanded",
             "description": "The controlled set of expanded node ids.",
             "type": "string[]",
@@ -20317,6 +20323,7 @@
           "role": "tree",
           "wcag": "2.2-AA",
           "keyboard": [
+            "*",
             "ArrowDown",
             "ArrowUp",
             "ArrowRight",
@@ -20372,7 +20379,7 @@
               "reason": "StructuredList is flat tabular rows; TreeView is nested with expand/collapse"
             }
           ],
-          "a11yRationale": "Implements the WAI-ARIA TreeView pattern: role=tree on the root, role=treeitem with aria-level/posinset/setsize and aria-expanded on each node, a single roving tabindex, and full APG keyboard support (arrows expand/collapse and move, Home/End, Enter/Space select, printable-character typeahead)",
+          "a11yRationale": "A role=\"tree\" of role=\"treeitem\" nodes carrying aria-level, aria-posinset, aria-setsize, aria-selected and aria-expanded, with aria-multiselectable on the tree in multi mode — multi-select was previously unannounced. Each item is named by aria-labelledby pointing at its own label: the <li> also contains the child <ul>, so without it an expanded node's accessible name absorbed its entire subtree. A roving tabindex keeps one node focusable, and the candidate is validated against the *visible* set — the old build never invalidated the focused id when its node stopped being visible, so collapsing a branch after focusing a child left the only tabIndex=0 on a hidden node and Tab skipped the whole widget. Collapsed subtrees are not rendered, which is what the clientJs justification has always claimed and was not true: recursion ran on hasChildren alone and CSS merely hid the result. Enter and Space perform the same action as a click (toggle a branch, then select) rather than only selecting; arrows, Home/End and type-to-select all skip disabled nodes; and * expands every sibling at the level. Type-to-select uses the shared useTypeahead primitive and matches a node's textValue, so a JSX label no longer makes it silently inert.",
           "flexibility": [
             {
               "area": "selectionMode",

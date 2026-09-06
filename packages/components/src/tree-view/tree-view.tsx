@@ -1,5 +1,12 @@
 'use client'
-import { cn, useControllableSignal, useSignal, useSignals } from '@cascivo/core'
+import {
+  cn,
+  useControllableSignal,
+  useId,
+  useSignal,
+  useSignals,
+  useTypeahead,
+} from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { useRef } from 'react'
 import type { CSSProperties, KeyboardEvent, ReactNode } from 'react'
@@ -10,6 +17,21 @@ export interface TreeNode {
   label: ReactNode
   icon?: ReactNode
   children?: TreeNode[]
+  /**
+   * When true, the node cannot be selected and is skipped by keyboard navigation and
+   * type-to-select.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
+  disabled?: boolean
+  /**
+   * Plain-text form of `label`, for type-to-select when the label is JSX.
+   *
+   * Typeahead matched `typeof label === 'string'`, so it silently did nothing for any node
+   * rendering an icon beside its text — the common case.
+   */
+  textValue?: string
 }
 
 export interface TreeViewProps {
@@ -17,7 +39,13 @@ export interface TreeViewProps {
   selectionMode?: 'single' | 'multi'
   selected?: string | string[]
   defaultSelected?: string | string[]
+  /**
+   * @deprecated Use `onValueChange`. The catalog names a value-carrying handler
+   * `onValueChange`; `onSelectChange` appears on this component alone. Still honoured.
+   */
   onSelectChange?: (selected: string | string[]) => void
+  /** Called with the new selection. */
+  onValueChange?: (selected: string | string[]) => void
   expanded?: string[]
   defaultExpanded?: string[]
   onExpandedChange?: (expanded: string[]) => void
@@ -72,6 +100,7 @@ export function TreeView({
   selected,
   defaultSelected,
   onSelectChange,
+  onValueChange,
   expanded,
   defaultExpanded,
   onExpandedChange,
@@ -90,7 +119,10 @@ export function TreeView({
   const [selectedSig, setSelected] = useControllableSignal<string | string[]>({
     value: selected,
     defaultValue: defaultSelected ?? (selectionMode === 'multi' ? [] : ''),
-    onChange: onSelectChange,
+    onChange: (next) => {
+      onValueChange?.(next)
+      onSelectChange?.(next)
+    },
   })
 
   const focusedId = useSignal<string | null>(null)
@@ -102,8 +134,18 @@ export function TreeView({
   const selectionArray = toSelectionArray(selectedSig.value)
   const selectionSet = new Set(selectionArray)
 
-  // The single tabbable item: focused node, else first selected, else first visible node.
-  const tabbableId = focusedId.value ?? selectionArray[0] ?? visible[0]?.id ?? null
+  /*
+   * The single tabbable item: focused node, else first selected, else first visible node —
+   * but each candidate has to still BE visible. `focusedId` was never invalidated when the
+   * node it named stopped being visible, so expanding a branch, focusing a child and
+   * collapsing the branch again left the tabindex on a hidden node and Tab skipped the whole
+   * tree.
+   */
+  const firstVisible = (...ids: (string | null | undefined)[]): string | null => {
+    for (const id of ids) if (id && visibleIndex.has(id)) return id
+    return visible[0]?.id ?? null
+  }
+  const tabbableId = firstVisible(focusedId.value, selectionArray[0])
 
   const commitExpanded = (next: Set<string>) => setExpanded([...next])
 
@@ -126,7 +168,22 @@ export function TreeView({
     itemRefs.current.get(id)?.focus()
   }
 
+  /** The next visible, non-disabled node from `index` in the direction of travel. */
+  const step = (index: number, delta: number): FlatNode | undefined => {
+    const byId = collectVisibleNodes(items, expandedSet)
+    for (let i = index + delta; i >= 0 && i < visible.length; i += delta) {
+      const entry = visible[i]
+      if (entry && !byId.get(entry.id)?.disabled) return entry
+    }
+    return undefined
+  }
+
+  /** First and last selectable visible nodes, for Home/End. */
+  const edge = (from: 'start' | 'end'): FlatNode | undefined =>
+    from === 'start' ? step(-1, 1) : step(visible.length, -1)
+
   const select = (id: string) => {
+    if (collectVisibleNodes(items, expandedSet).get(id)?.disabled) return
     if (selectionMode === 'multi') {
       const next = new Set(selectionSet)
       if (next.has(id)) next.delete(id)
@@ -137,7 +194,27 @@ export function TreeView({
     }
   }
 
-  const typeahead = useRef({ buffer: '', at: 0 })
+  /** Text a node can be matched by: an explicit `textValue`, else a string label. */
+  const nodeText = (node: TreeNode): string | null => {
+    if (node.textValue !== undefined) return node.textValue
+    return typeof node.label === 'string' ? node.label : null
+  }
+
+  const typeahead = useTypeahead({
+    onMatch: (query) => {
+      const from = focusedId.peek()
+      const index = from !== null ? (visibleIndex.get(from) ?? -1) : -1
+      const byId = collectVisibleNodes(items, expandedSet)
+      const ordered = [...visible.slice(index + 1), ...visible.slice(0, index + 1)]
+      const hit = ordered.find((f) => {
+        const node = byId.get(f.id)
+        if (!node || node.disabled) return false
+        const text = nodeText(node)
+        return text !== null && text.toLowerCase().startsWith(query)
+      })
+      if (hit) focusNode(hit.id)
+    },
+  })
 
   const handleKeyDown = (event: KeyboardEvent<HTMLLIElement>, node: TreeNode) => {
     const index = visibleIndex.get(node.id)
@@ -148,13 +225,13 @@ export function TreeView({
     switch (event.key) {
       case 'ArrowDown': {
         event.preventDefault()
-        const next = visible[index + 1]
+        const next = step(index, 1)
         if (next) focusNode(next.id)
         break
       }
       case 'ArrowUp': {
         event.preventDefault()
-        const prev = visible[index - 1]
+        const prev = step(index, -1)
         if (prev) focusNode(prev.id)
         break
       }
@@ -179,43 +256,42 @@ export function TreeView({
       }
       case 'Home': {
         event.preventDefault()
-        if (visible[0]) focusNode(visible[0].id)
+        const first = edge('start')
+        if (first) focusNode(first.id)
         break
       }
       case 'End': {
         event.preventDefault()
-        const last = visible[visible.length - 1]
+        const last = edge('end')
         if (last) focusNode(last.id)
+        break
+      }
+      case '*': {
+        // APG: expand every sibling at the current level.
+        event.preventDefault()
+        const next = new Set(expandedSet)
+        for (const f of visible) {
+          if (f.level === level && f.parentId === parentId && f.hasChildren) next.add(f.id)
+        }
+        commitExpanded(next)
         break
       }
       case 'Enter':
       case ' ': {
         event.preventDefault()
+        // Click toggled expansion *and* selected; the keys only selected, so a branch node
+        // behaved differently depending on how it was activated. APG's default action for a
+        // parent node is the toggle.
+        if (node.disabled) break
+        if (hasChildren) (isExpanded ? collapse : expand)(node.id)
         select(node.id)
         break
       }
       default: {
-        if (event.key.length === 1 && !event.metaKey && !event.ctrlKey && !event.altKey) {
-          const ta = typeahead.current
-          // TODO: migrate this hand-rolled key buffer to `useTypeahead` from
-          // @cascivo/core, which CLAUDE.md requires for type-to-select and which the
-          // sibling menus already use; the disable below goes away with it.
-          // eslint-disable-next-line react-hooks/purity -- keydown handler, not render; the rule cannot tell a handler defined during render from render itself.
-          const now = Date.now()
-          ta.buffer = now - ta.at > 500 ? event.key : ta.buffer + event.key
-          ta.at = now
-          const needle = ta.buffer.toLowerCase()
-          const matches = (n: TreeNode): boolean =>
-            typeof n.label === 'string' && n.label.toLowerCase().startsWith(needle)
-          // Search visible nodes after the current one, then wrap.
-          const visibleNodeById = collectVisibleNodes(items, expandedSet)
-          const ordered = [...visible.slice(index + 1), ...visible.slice(0, index + 1)]
-          const hit = ordered.find((f) => {
-            const n = visibleNodeById.get(f.id)
-            return n ? matches(n) : false
-          })
-          if (hit) focusNode(hit.id)
-        }
+        // Type-to-select via the shared primitive; the hand-rolled Date.now() buffer it
+        // replaces also only matched string labels, so it did nothing for any node with a
+        // JSX label.
+        typeahead.onKeyDown(event)
         break
       }
     }
@@ -231,6 +307,7 @@ export function TreeView({
     const isExpanded = expandedSet.has(node.id)
     const isSelected = selectionSet.has(node.id)
     const isTabbable = tabbableId === node.id
+    const isDisabled = node.disabled ?? false
     const childCount = node.children?.length ?? 0
     return (
       <TreeItem
@@ -243,16 +320,19 @@ export function TreeView({
         isExpanded={isExpanded}
         isSelected={isSelected}
         isTabbable={isTabbable}
+        isDisabled={isDisabled}
         itemRefs={itemRefs}
         onFocusNode={() => (focusedId.value = node.id)}
         onKeyDown={(e) => handleKeyDown(e, node)}
         onActivate={() => {
+          if (isDisabled) return
           focusNode(node.id)
           if (hasChildren) (isExpanded ? collapse : expand)(node.id)
           select(node.id)
         }}
       >
         {hasChildren &&
+          isExpanded &&
           (node.children as TreeNode[]).map((child, i) =>
             renderNode(child, level + 1, i + 1, childCount),
           )}
@@ -263,6 +343,7 @@ export function TreeView({
   return (
     <ul
       role="tree"
+      aria-multiselectable={selectionMode === 'multi' || undefined}
       aria-label={ariaLabel ?? ariaLabelDom ?? label}
       className={cn(styles['tree'], className)}
     >
@@ -295,6 +376,7 @@ interface TreeItemProps {
   isExpanded: boolean
   isSelected: boolean
   isTabbable: boolean
+  isDisabled: boolean
   itemRefs: React.MutableRefObject<Map<string, HTMLLIElement>>
   onFocusNode: () => void
   onKeyDown: (event: KeyboardEvent<HTMLLIElement>) => void
@@ -311,20 +393,27 @@ function TreeItem({
   isExpanded,
   isSelected,
   isTabbable,
+  isDisabled,
   itemRefs,
   onFocusNode,
   onKeyDown,
   onActivate,
   children,
 }: TreeItemProps) {
+  // Names the item from its own label rather than from everything inside it, which once
+  // expanded meant the entire subtree.
+  const labelId = useId(`cascivo-tree-${node.id}`)
   return (
     <li
       role="treeitem"
+      aria-labelledby={labelId}
       aria-level={level}
       aria-posinset={posInSet}
       aria-setsize={setSize}
       aria-selected={isSelected}
       aria-expanded={hasChildren ? isExpanded : undefined}
+      aria-disabled={isDisabled || undefined}
+      data-disabled={isDisabled || undefined}
       tabIndex={isTabbable ? 0 : -1}
       data-selected={isSelected || undefined}
       data-state={hasChildren ? (isExpanded ? 'open' : 'closed') : undefined}
@@ -358,10 +447,16 @@ function TreeItem({
             {node.icon}
           </span>
         )}
-        <span className={styles['label']}>{node.label}</span>
+        <span id={labelId} className={styles['label']}>
+          {node.label}
+        </span>
       </span>
       {hasChildren && (
-        <div className={styles['groupWrap']} data-state={isExpanded ? 'open' : 'closed'}>
+        <div
+          role="presentation"
+          className={styles['groupWrap']}
+          data-state={isExpanded ? 'open' : 'closed'}
+        >
           <ul role="group" className={styles['group']}>
             {children}
           </ul>
