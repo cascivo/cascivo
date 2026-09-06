@@ -87,6 +87,17 @@ const THEME_BUNDLE = [
  * client build — reached via the `import`/`browser` conditions — still carries
  * per-component CSS and tree-shakes it. The relative import graph is preserved,
  * so the copied tree resolves within itself.
+ *
+ * The `module` condition must stay AHEAD of `node` in package.json. Export
+ * conditions match in key order, and a Vite-based SSR framework (Astro, Nuxt,
+ * SvelteKit) resolves with `node` active — so with `node` first, the framework's
+ * SERVER module graph gets this CSS-free twin, and any framework that collects a
+ * page's CSS by walking that graph emits none. That is exactly how Astro shipped
+ * unstyled `client:load` / `client:visible` islands for two majors while
+ * `client:only` (client graph only) worked: it read as an Astro bug and was
+ * documented as unfixable upstream. `module` is a bundler-only convention that
+ * Node's ESM resolver does not implement, so listing it first hands bundlers the
+ * CSS-bearing build while bare Node still falls through to this twin.
  */
 function cssImportEdges() {
   const directive = /^\s*(['"])use [\w-]+\1;?\s*$/

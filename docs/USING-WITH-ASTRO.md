@@ -1,71 +1,84 @@
 # Using cascivo with Astro
 
-**Status: partial.** cascivo works in an Astro island, but **which client directive you use
-changes whether the styling arrives**. That is not something any consumer would think to
-vary, and nothing warns, so read this before you start.
+**Status: supported** as of `@cascivo/react` 1.0.1. Every client directive —
+`client:load`, `client:visible`, `client:only` — server-renders and styles correctly with a
+vanilla `astro.config.mjs`. No aggregate stylesheet, no `ssr.noExternal`, no tuning.
 
-If you have a choice of framework for a cascivo app, plain Vite + React (or Vite + Preact)
-is the better-supported path and has none of the caveats below.
+If you are pinned below 1.0.1, read [Older versions](#older-versions-below-101) — SSR'd
+islands render unstyled there, and the workaround is not obvious.
 
 ---
 
-## The problem: SSR'd islands lose their CSS
+## Setup
 
-`@cascivo/react` ships each component's styling as a side-effect import inside that
-component's module:
-
-```js
-// dist/button/button.module.js
-import './button.css'
-var e = { button: '_button_131qn_2' }
+```sh
+npx astro add react
+pnpm add @cascivo/react @cascivo/themes @preact/signals-react
 ```
 
-Every bundler that honors `sideEffects` pulls that CSS in for the components you actually
-import, and tree-shakes the rest. Astro's island build does it for one directive and not the
-others:
-
-| Directive | Component CSS emitted | Result |
-| --- | --- | --- |
-| `client:load` / `client:visible` (SSR'd island) | **none** | renders unstyled |
-| `client:only` | only what is used (~58 KB measured) | renders correctly |
-
-Under `client:load` the hashed class names survive into the HTML — `class="_button_131qn_2"` —
-with no matching rule anywhere in the output. `sideEffects: ["**/*.css"]` is declared
-correctly and does not help.
-
-It reads as a theming problem, which sends you down entirely the wrong path.
-
-**This is Astro-specific.** The identical components in a Vite + React SPA emit their
-per-component CSS with no configuration at all. A 2026-07-28 adopter reproduced it both
-ways, changing only the directive, then migrated the app off Astro — which took total CSS
-from 461 KB (48 KB gzip) to 238 KB (18 KB gzip).
-
-### Workaround: import the aggregate stylesheet
+Import the theme once in a shared layout. Component CSS is **not** in this list — each
+component chunk carries its own stylesheet and Astro emits only what your islands use:
 
 ```astro
 ---
 // src/layouts/Layout.astro
-import '@cascivo/react/styles.css'
+import '@cascivo/themes/light-dark.css'
+---
+<html lang="en">
+  <body><slot /></body>
+</html>
+```
+
+Then use components in islands as normal:
+
+```astro
+---
+import { Card } from '@cascivo/react'
+---
+<Card client:load title="Revenue">…</Card>
+```
+
+## Choosing a client directive
+
+This is now an ordinary performance decision, not a styling constraint — all three emit
+per-component CSS:
+
+| Directive | Server-rendered HTML | Reach for it when |
+| --- | --- | --- |
+| `client:load` | yes | the island is above the fold and interactive immediately |
+| `client:visible` | yes | the island is below the fold |
+| `client:only="react"` | **no** | the island is app-shaped (a console, a dashboard) and you do not need it indexed |
+
+Prefer an SSR'd directive for anything that should be indexed or visible before hydration.
+
+## Older versions (below 1.0.1)
+
+Under `client:load` / `client:visible`, Astro emitted the hashed class names into the HTML —
+`class="_card_ipz9f_2"` — with no matching rule anywhere in the output. `client:only` worked.
+Nothing warned, and it read as a theming problem.
+
+The cause was cascivo's, not Astro's. Export conditions match in **declaration order**, and
+`@cascivo/react` listed its CSS-free `node` twin (which exists so a bare Node ESM loader
+does not throw `ERR_UNKNOWN_FILE_EXTENSION`) ahead of `import`. Astro's SSR build resolves
+with `node` active, so its *server* module graph got the CSS-free build — and Astro collects
+a page's CSS by walking that graph. `client:only` escaped because it never server-renders.
+
+Two things that look like they should help, and do not: `sideEffects: ["**/*.css"]` is
+declared correctly (the edges simply are not in the server graph to preserve), and
+`vite.ssr.noExternal` — what [`USING-WITH-VITE-SSR.md`](./USING-WITH-VITE-SSR.md)
+recommends — does not change which condition wins, so it leaves the islands unstyled.
+
+**Upgrade to 1.0.1+.** If you cannot, import the aggregate stylesheet in a shared layout:
+
+```astro
+---
+import '@cascivo/react/styles.css'   // every component's CSS, ~308 KB source
 import '@cascivo/themes/light-dark.css'
 ---
 ```
 
-This always works, on every directive. The cost is real: `styles.css` carries **every**
-component's CSS (~308 KB source), so a page using a dozen components ships all of them.
-Measured on the reporter's app: 461 KB total against 234 KB on the `client:only` path.
-
-### Alternative: use `client:only`
-
-```astro
-<Console client:only="react" />
-```
-
-Keeps per-component CSS and tree-shaking, at the cost of no server-rendered HTML for that
-island — so it is right for an interactive console or dashboard and wrong for content you
-need indexed.
-
-Pick by what the island is: **`client:only` for app-shaped islands, the aggregate stylesheet
-for content-shaped ones.**
+That works on every directive, at the cost of shipping the whole catalog's CSS. Measured on
+the reporting app: 461 KB total against 234 KB on the `client:only` path.
 
 ---
 
@@ -109,30 +122,33 @@ Astro's compat layer.
 
 Honest scope, so this page does not repeat the mistake it documents:
 
-- **The CSS drop is now reproduced in CI**, not just reported.
+- **The fix is verified in CI, on a vanilla config.**
   [`apps/examples/astro-islands`](../apps/examples/astro-islands/) builds a real Astro app
-  with **one client directive per page** and checks, per page, whether the component CSS its
-  markup references was actually emitted. Current result on **Astro 7.1.5**:
+  with **one client directive per page** and asserts, per page, that every component class
+  its markup references has a matching rule. Current result on **Astro 7.1.4**:
 
   ```
-  load/index.html      4 classes  ->  UNSTYLED  (4 with no rule, e.g. ._card_ssezx_2)
-  visible/index.html   4 classes  ->  UNSTYLED  (4 with no rule, e.g. ._card_ssezx_2)
+  load/index.html      5 classes  ->  styled
+  visible/index.html   5 classes  ->  styled
   only/index.html      0 classes  ->  (no SSR'd markup — client:only renders on the client)
   ```
 
-  So C2 still reproduces two majors after the report (which was filed against Astro 6.4.8).
+  That fixture is now a **regression test**: it exits non-zero if an SSR'd island ever again
+  references a class with no rule. It used to exit 0 on that case, back when the drop was
+  believed to be upstream behaviour cascivo could not fix.
 
   One directive per page matters: a single page carrying all three passes trivially, because
   `client:only` emits the component CSS and the SSR'd islands on the same page then appear
   covered by it. The first version of that fixture did exactly this and reported "does not
   reproduce".
-- Whether the `client:load` CSS drop is fixable from cascivo's side (a build change) or is
-  purely an Astro island-build behaviour is **not yet determined**. Until it is, the
-  compatibility matrix grades Astro ⚠️ Partial rather than ✅.
+
+- The **export-condition ordering** the fix depends on is separately enforced by
+  `pnpm css-contract:check`, across every package that ships a `node` twin — so it cannot
+  regress silently in a package the Astro fixture does not exercise.
 
 - The **Preact-under-Astro** section is NOT reproduced in CI — it comes from the adopter's
   report plus reading `@astrojs/preact`. Treat that section as a report, not a tested
-  contract.
+  contract. It is a separate issue from the CSS drop and is **not** fixed by 1.0.1.
 
 If you hit something here that does not match, please
 [open an issue](https://github.com/cascivo/cascivo/issues).

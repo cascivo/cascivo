@@ -7,20 +7,23 @@
  * for `client:only` — so a page renders with hashed class names and no matching rules, with
  * nothing warning. `docs/COMPATIBILITY.md` had listed Astro as ✅ supported, unqualified.
  *
- * The check is deliberately about *evidence*, not about passing. It reads the built HTML,
- * collects every `_<name>_<hash>_<line>` CSS-module class Astro emitted, and asks whether
- * the emitted CSS actually defines them. Then it reports:
+ * **C2 is FIXED, and this is now a regression test.** The cause was never Astro: export
+ * conditions match in key order, and `@cascivo/react` listed its CSS-free `node` twin ahead
+ * of `import`. Astro's SSR build resolves with `node` active, so its SERVER module graph got
+ * the CSS-free build -- and Astro collects a page's CSS by walking that graph, so it emitted
+ * none. `client:only` worked because it never server-renders. Adding a `module` condition
+ * ahead of `node` (a bundler-only convention Node's ESM resolver ignores, so the bare-Node
+ * guarantee the twin exists for is untouched) fixes every directive with a vanilla
+ * `astro.config.mjs`. See docs/plans/framework-templates-astro-ghost-research.md.
  *
- *   - all classes matched  -> Astro emits component CSS; C2 no longer reproduces here, and
- *                             `COMPATIBILITY.md` should be re-graded (the script says so).
- *   - classes unmatched    -> C2 reproduces; the script prints which, and exits 0 because
- *                             this is a KNOWN, DOCUMENTED limitation
- *                             (`docs/USING-WITH-ASTRO.md`), not a regression in cascivo.
+ * So this script now EXITS NON-ZERO when an SSR'd island references a class with no rule.
+ * It used to exit 0 on that case, when the drop was believed to be upstream behaviour
+ * cascivo could not fix; keeping that leniency would let the regression this fixture exists
+ * to catch sail straight through CI.
  *
- * Exiting 0 on the known-bad case is deliberate: this app exists to keep the claim honest
- * and observable in CI, not to block every build on an upstream Astro behaviour cascivo
- * cannot fix. What it must never do is silently pass while the underlying fact changes —
- * hence the loud, specific output either way.
+ * It reads the built HTML, collects every `_<name>_<hash>_<line>` CSS-module class Astro
+ * emitted, and asserts the emitted CSS actually defines them -- per page, one client
+ * directive each.
  */
 import { readFileSync, readdirSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
@@ -96,23 +99,18 @@ if (results.length === 0 || results.every((r) => r.used.length === 0)) {
 
 const broken = results.filter((r) => r.used.length > 0 && r.unmatched.length > 0)
 if (broken.length === 0) {
-  console.log(
-    '\nastro-islands: every directive emits the CSS its markup references.\n' +
-      '\n' +
-      `C2 DOES NOT REPRODUCE on astro@${process.env.npm_package_dependencies_astro ?? '7.x'}.\n` +
-      'The 2026-07-28 report was filed against Astro 6.4.8. If this keeps holding, re-grade\n' +
-      'Astro in docs/COMPATIBILITY.md (currently ⚠️ Partial) and update\n' +
-      'docs/USING-WITH-ASTRO.md, which still tells adopters their SSR islands render unstyled.',
-  )
+  console.log('\nastro-islands: every directive emits the CSS its markup references.')
   process.exit(0)
 }
 
-console.log(
-  `\nC2 REPRODUCES on ${broken.map((b) => b.page).join(', ')}: Astro emitted markup\n` +
-    'referencing cascivo component classes without emitting the rules, so those islands\n' +
-    'render unstyled. This is the documented limitation in docs/USING-WITH-ASTRO.md and the\n' +
-    'reason docs/COMPATIBILITY.md grades Astro ⚠️ Partial, so this exits 0 rather than\n' +
-    'failing a build over upstream behaviour cascivo cannot fix.\n' +
-    'Workarounds: import `@cascivo/react/styles.css` in a shared layout, or use `client:only`.',
+console.error(
+  `\nastro-islands: REGRESSION on ${broken.map((b) => b.page).join(', ')}.\n` +
+    'Astro emitted markup referencing cascivo component classes without emitting the rules,\n' +
+    'so those islands render unstyled.\n' +
+    '\n' +
+    'First thing to check: the `module` export condition must still be listed BEFORE `node`\n' +
+    'in packages/react/package.json. Astro resolves with `node` active, so if `node` wins,\n' +
+    "Astro's server module graph gets the CSS-free twin and collects no CSS. That ordering\n" +
+    'is guarded by scripts/checks/css-contract.test.ts (`pnpm css-contract:check`).',
 )
-process.exit(0)
+process.exit(1)

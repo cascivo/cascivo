@@ -34,12 +34,14 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./dist/index.d.ts",
+      "module": "./dist/index.js",
       "node": "./dist/node/index.js",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./sparkline": {
       "types": "./dist/sparkline.d.ts",
+      "module": "./dist/sparkline.js",
       "node": "./dist/node/sparkline.js",
       "import": "./dist/sparkline.js",
       "default": "./dist/sparkline.js"

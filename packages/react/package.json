@@ -34,6 +34,7 @@
     ".": {
       "types": "./dist/index.d.ts",
       "react-server": "./dist/index.js",
+      "module": "./dist/index.js",
       "node": "./dist/node/index.js",
       "import": "./dist/index.js",
       "default": "./dist/index.js"

@@ -1,5 +1,9 @@
 # Framework templates for Astro and Ghost — research findings
 
+> **Status:** recommendation 1 (the export-condition fix) and 2 (the Astro re-grade) are
+> **implemented**. Astro is now ✅ in the compatibility matrix. Recommendations 3
+> (`create --framework astro`) and 4 (the Ghost guide) are still open.
+
 **Question asked:** does it make sense to ship special templates for existing frameworks
 like Astro or Ghost, to make cascivo easier to adopt there?
 
@@ -160,9 +164,15 @@ pnpm css-contract:check                     -> 4/4 pass
 identical latent bug; the fix must cover both. `layouts`, `themes`, `icons` and `core` do
 not declare a `node` condition and are unaffected.
 
-**Not yet run** (this was scoped as research): `isolated:check` and `pack:check`, the two
-gates that compile the packed tarballs the way an adopter receives them. An `exports` change
-on a published package must clear both before it ships.
+**Gates, since run:** `isolated:check` (4/4) and `pack:check` (20/20 packages clean under
+publint + attw) both pass with the change, as do `css-contract:check` (5/5) and
+`meta:check` (393/393).
+
+**Three more packages were affected than this research found by hand.** The guard added to
+`scripts/checks/css-contract.test.ts` immediately flagged `@cascivo/ai`, `@cascivo/editor`
+and `@cascivo/flow` — all shipping a `node` twin with no `module` condition. The manual
+sweep above checked only `charts`, `layouts`, `icons`, `themes` and `core` and missed them,
+which is the argument for the guard rather than a one-off edit.
 
 ---
 
@@ -195,15 +205,15 @@ machinery at all.
 
 **Do, in order:**
 
-1. **Fix the export-condition ordering** in `@cascivo/react` and `@cascivo/charts`. One line
-   each. This is worth doing entirely on its own merits — it silently affects every
-   Vite-based SSR framework that resolves `node` before `import`, not just Astro. Gate it on
-   `isolated:check` + `pack:check`.
-2. **Re-grade Astro** ⚠️ Partial → ✅ in `COMPATIBILITY.md`, and rewrite
-   `USING-WITH-ASTRO.md` — the workaround section (aggregate stylesheet, +308 KB) and the
-   "cascivo cannot fix" framing both become wrong the moment step 1 lands. The
-   `astro-islands` fixture already prints the re-grade instruction when it passes; keep the
-   fixture, it becomes the regression test.
+1. ~~**Fix the export-condition ordering.**~~ **Done** — one line each in `@cascivo/react`,
+   `@cascivo/charts`, `@cascivo/ai`, `@cascivo/editor` and `@cascivo/flow`, plus a guard in
+   `css-contract.test.ts` so it cannot regress. Worth doing on its own merits: it silently
+   affected every Vite-based SSR framework that resolves `node` before `import`, not just
+   Astro.
+2. ~~**Re-grade Astro** ⚠️ Partial → ✅.~~ **Done** — `COMPATIBILITY.md` re-graded with a
+   footnote on the mechanism, `USING-WITH-ASTRO.md` rewritten (the aggregate-stylesheet
+   workaround is now an "older versions" note), and the `astro-islands` fixture converted
+   from an evidence probe that exited 0 on failure into a regression test that exits 1.
 3. **Then** consider Astro scaffolding — and prefer `cascivo create --framework astro` over a
    registry template. What an Astro adopter is missing is a *correct project skeleton*
    (integration wiring, where the theme CSS import goes, which client directive to reach

@@ -14,7 +14,7 @@ baseline. If an integration surprises you, start here.
 | Vite + React (CSR/SPA)     | ✅ Yes    | Reference setup. See `apps/examples/react-vite`.                                         |
 | Vite SSR / TanStack Start  | ✅ Yes¹   | Requires `ssr.noExternal: [/^@cascivo\//]` (or the `cascivoSsr()` plugin). Working example: [`apps/examples/react-vite-ssr`](../apps/examples/react-vite-ssr/). See [`USING-WITH-VITE-SSR.md`](./USING-WITH-VITE-SSR.md). |
 | Preact 10 (`preact/compat`) | ✅ **CSR only** | Verified on Vite CSR (`@preact/preset-vite`) — components, signals, overlays and charts all behave as on React, at roughly half the JS. **Not verified under SSR/prerender**, and known to fail under Astro's compat aliasing. See [`USING-WITH-PREACT.md`](./USING-WITH-PREACT.md). |
-| Astro (React islands)      | ⚠️ **Partial** | `client:only` ✅. Under `client:load` / `client:visible` Astro drops the per-component CSS, so islands render unstyled — import the aggregate `@cascivo/react/styles.css` in a shared layout as a workaround (+308 KB). See [`USING-WITH-ASTRO.md`](./USING-WITH-ASTRO.md). |
+| Astro (React islands)      | ✅ Yes    | Every client directive (`client:load`, `client:visible`, `client:only`) emits per-component CSS, with a vanilla `astro.config.mjs`. Needs `@cascivo/react` ≥ 1.0.1 — before that, SSR'd islands rendered unstyled (see footnote²). Working example: [`apps/examples/astro-islands`](../apps/examples/astro-islands/). See [`USING-WITH-ASTRO.md`](./USING-WITH-ASTRO.md). |
 | Vue / Svelte / Angular     | ⚠️ Tokens/themes only | `@cascivo/tokens` + `@cascivo/themes` are framework-agnostic CSS; the components are React. |
 
 ¹ The published `@cascivo/react` bundle ships per-component CSS as static
@@ -26,6 +26,19 @@ pinned older versions. Since 0.18.0 a `react-server` condition points RSC back a
 the CSS-bearing build, so component CSS tree-shakes under SSR the same way it does
 in an SPA — no aggregate stylesheet in either recipe. The
 [Vite SSR guide](./USING-WITH-VITE-SSR.md) has the measurements.
+
+² Export conditions match in **declaration order**, and until 1.0.1 the CSS-free
+`node` twin was listed ahead of `import`. A Vite-based SSR framework resolves with
+`node` active and `react-server` inactive, so its *server* module graph got the
+CSS-free build — and Astro collects a page's CSS by walking that graph, so it
+emitted none. That is why `client:only` (client graph only) rendered correctly
+while `client:load` / `client:visible` did not, and why it read as an Astro bug.
+Since 1.0.1 a `module` condition sits ahead of `node`: bundlers match it and get
+the CSS-bearing build, while Node's ESM resolver — which does not implement
+`module` — still falls through to the twin, so footnote ¹'s guarantee is
+unchanged. This affected `@cascivo/react`, `@cascivo/charts`, `@cascivo/ai`,
+`@cascivo/editor` and `@cascivo/flow`; the ordering is now enforced by
+`pnpm css-contract:check`.
 
 ## Browsers
 
