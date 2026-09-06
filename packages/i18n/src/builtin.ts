@@ -53,6 +53,7 @@ export const builtin = {
     previousMonth: 'Previous month',
     nextMonth: 'Next month',
     clear: 'Clear date',
+    open: 'Open calendar',
   }),
   combobox: defineMessages('cascade.combobox', {
     placeholder: 'Select an option',
@@ -397,6 +398,7 @@ defineCatalog(builtin.datePicker, 'de', {
   previousMonth: 'Vorheriger Monat',
   nextMonth: 'Nächster Monat',
   clear: 'Datum löschen',
+  open: 'Kalender öffnen',
 })
 defineCatalog(builtin.combobox, 'de', {
   placeholder: 'Option auswählen',

@@ -1890,6 +1890,10 @@
           "type": "registry:component"
         },
         {
+          "path": "date-picker/parse-date.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "date-picker/date-picker.module.css",
           "type": "registry:component"
         }

@@ -10744,6 +10744,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/index.ts"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/parse-date.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/date-picker.module.css"
         }
       ],
@@ -10801,6 +10804,56 @@
             "type": "boolean",
             "required": false,
             "description": "Shows a clear button"
+          },
+          {
+            "name": "typeable",
+            "description": "When true, the field accepts a typed date as well as one picked from the calendar.",
+            "type": "boolean",
+            "required": false,
+            "default": "true"
+          },
+          {
+            "name": "disabledDate",
+            "description": "Rejects individual dates the bounds allow — holidays, weekends, taken slots.",
+            "type": "(date: Date) => boolean",
+            "required": false
+          },
+          {
+            "name": "format",
+            "description": "Formatting options for the displayed date. Defaults to the locale's numeric form.",
+            "type": "Intl.DateTimeFormatOptions",
+            "required": false
+          },
+          {
+            "name": "showToday",
+            "description": "When true, the calendar offers a button that jumps to the current month.",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "name",
+            "description": "Submitted with a surrounding form — a hidden input carrying the ISO value.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "required",
+            "description": "Marks the control as required for assistive technology.",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "open",
+            "description": "Controlled open state of the calendar popup.",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "onOpenChange",
+            "description": "Called when the popup opens or closes.",
+            "type": "(open: boolean) => void",
+            "required": false
           },
           {
             "name": "label",
@@ -10885,14 +10938,21 @@
         "accessibility": {
           "role": "combobox",
           "wcag": "2.2-AA",
+          "forcedColors": true,
+          "reducedMotion": true,
           "keyboard": [
+            "ArrowDown",
+            "ArrowUp",
+            "ArrowLeft",
+            "ArrowRight",
+            "Home",
+            "End",
+            "PageUp",
+            "PageDown",
             "Enter",
             "Space",
             "Escape",
-            "ArrowUp",
-            "ArrowDown",
-            "ArrowLeft",
-            "ArrowRight"
+            "Delete"
           ]
         },
         "examples": [],
@@ -10931,7 +10991,7 @@
               "reason": "Typically a field within a form with label/hint/error"
             }
           ],
-          "a11yRationale": "The trigger is role=\"combobox\" with aria-haspopup=\"dialog\"/aria-expanded; the calendar is a role=\"dialog\" containing a role=\"grid\" with roving tabindex so arrow keys move a single focusable day, days expose aria-pressed for selection, aria-current=\"date\" for today, and aria-disabled past min/max, and errors are wired via aria-invalid + aria-describedby with role=\"alert\"",
+          "a11yRationale": "The field is an <input role=\"combobox\"> with aria-expanded, aria-controls and aria-haspopup=\"dialog\" that accepts a typed date — the previous build had no text field at all, so a date already known could only be reached by paging a grid. ArrowDown and Alt+ArrowDown open the popup (the combobox pattern's required key, listed in the old manifest but never implemented), opening moves focus into the grid and Escape closes and returns it to the field; the old build did neither, leaving the grid unreachable on open and focus on <body> on close. The grid itself is a composed Calendar rather than a second hand-rolled copy, so its real-focus navigation, min/max clamping, disabled-day skipping, aria-selected placement and month announcements all apply here; the duplicate had none of them and its arrow keys did nothing at all until a value was set. Dismissal comes from the shared DismissableLayer instead of a raw document listener. Typed input is parsed at commit, not per keystroke, and rejected rather than coerced when unreadable or out of bounds.",
           "flexibility": [
             {
               "area": "value format",

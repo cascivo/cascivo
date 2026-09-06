@@ -54,11 +54,6 @@ const SCAN_ROOTS = ['packages/components/src', 'packages/layouts/src']
 // already touches their markup, rather than as a standalone DOM churn.
 const OUTSIDE_CLICK_ALLOWLIST: { file: string; reason: string }[] = [
   {
-    file: 'packages/components/src/date-picker/date-picker.tsx',
-    reason:
-      'deferred to 2.0: DismissableLayer migration changes markup; needs a visual layout review',
-  },
-  {
     file: 'packages/components/src/date-range-picker/date-range-picker.tsx',
     reason:
       'deferred to 2.0: DismissableLayer migration changes markup; needs a visual layout review',
