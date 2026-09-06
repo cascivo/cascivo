@@ -340,7 +340,6 @@ export function ColorPicker({
           className={styles['hex']}
           value={hexText}
           disabled={disabled}
-          spellCheck={false}
           autoComplete="off"
           // aria-labelledby from a Field outranks a name of our own; only fall back when the
           // Field has not supplied one.

@@ -33,10 +33,20 @@ const PACKAGES = join(ROOT, 'packages')
  * raise deliberately with a note, never to make a red run green.
  */
 const BUDGETS: Record<string, number> = {
-  // Code-split barrel: the figure is the WHOLE library (every component chunk), which is
-  // what an app importing all of it would pay. Real apps tree-shake to a fraction — see
-  // docs/GETTING-STARTED.md. Measured 160.6 KB.
-  '@cascivo/react': 200,
+  // Code-split barrel: the figure is the WHOLE library (every component chunk, plus the
+  // CSS-free `node/` twin of each), which is what an app importing all of it would pay. Real
+  // apps tree-shake to a fraction — see docs/GETTING-STARTED.md.
+  //
+  // Measured 202.8 KB. The 160.6 KB in the previous note was long stale: the library had
+  // already grown to 187.6 KB against a 200 ceiling, so the headroom was 6%, not the 25% the
+  // note implied. Raised after the 2026-09 accessibility pass on eight interactive components
+  // (multi-select, combobox, color-picker, calendar, date-picker, carousel, tree-view,
+  // file-uploader) added 15 KB: real keyboard models, the extracted pure helpers those are
+  // tested through, and — for multi-select and combobox — a second copy of `option-list`/
+  // `list-nav`, which is the price of registry folders that stay self-contained under
+  // copy-paste. Both directions are in that figure: date-picker and color-picker each got
+  // *smaller*, date-picker by composing Calendar instead of duplicating its month maths.
+  '@cascivo/react': 230,
   '@cascivo/charts': 55, // measured 40.6
   '@cascivo/icons': 55, // measured 39.6 (~440 icons; consumers tree-shake per icon)
   '@cascivo/mcp': 30, // measured 19.2

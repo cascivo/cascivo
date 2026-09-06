@@ -3443,7 +3443,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/color-picker/color-picker.module.css"
       ],
       "fileHashes": {
-        "color-picker.tsx": "sha256-202d0a4d6a5fc8770270a92d6b5e3c54b433a63bb23775e86105176a6081af65",
+        "color-picker.tsx": "sha256-d7149a24479219e5fa12f81a39d0f7754bee5c2cb919a27176145e2ad143b2d6",
         "color.ts": "sha256-1bc572843880e93d5df3dc7ca0c7f704e32833d07cc5a2bdda9d768b969594ae",
         "index.ts": "sha256-120305c1bb7f369a90401d00c51b72b88b325c69693760f07fc84e2ee8df4c1e",
         "color-picker.module.css": "sha256-fda41b8535be08f4a2edac344dbd683dc826b013c5c13bb3349656f6d445560b"
@@ -7330,7 +7330,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/file-uploader/file-uploader.module.css"
       ],
       "fileHashes": {
-        "file-uploader.tsx": "sha256-be87063385ca435e0a33f7881beeba500d973637f0ec45d8fd62a89bdffb19dd",
+        "file-uploader.tsx": "sha256-2607c857123a0fc18d826ad18c4a4822df5149bb3b806a7b63502ffec6cd0a77",
         "index.ts": "sha256-d06d12dc06b4a333c7971a58c8d0df4a3231cfa7c5f37b9887e0058310534f06",
         "file-uploader.module.css": "sha256-35bd0ec527994470c72a5ac6c867a7772fbea1bf3f7434e4324c7d278ed5a9df"
       },
