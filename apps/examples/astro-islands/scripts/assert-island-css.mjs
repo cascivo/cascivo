@@ -24,6 +24,15 @@
  * It reads the built HTML, collects every `_<name>_<hash>_<line>` CSS-module class Astro
  * emitted, and asserts the emitted CSS actually defines them -- per page, one client
  * directive each.
+ *
+ * WHAT THIS FIXTURE CANNOT CATCH. It depends on `@cascivo/react` as `workspace:*`, and Vite
+ * never externalizes a linked package -- so the package is always in the server module graph
+ * here. A real adopter installs from npm, gets an EXTERNALIZED package whose graph Vite does
+ * not walk, and needs `vite.resolve.noExternal: [/^@cascivo\//]` in astro.config.mjs on top
+ * of the export-condition fix. This fixture passes without that config and therefore proves
+ * only the export-condition half. Do not read a green run here as "an npm install works" --
+ * that is verified by scaffolding `cascivo create --framework astro` against packed
+ * tarballs. See docs/USING-WITH-ASTRO.md "Verification status".
  */
 import { readFileSync, readdirSync, existsSync } from 'node:fs'
 import { join } from 'node:path'

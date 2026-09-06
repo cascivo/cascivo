@@ -21,7 +21,14 @@ A `module` condition now sits ahead of `node`. Bundlers match it and get the CSS
 build; Node's ESM resolver does not implement `module`, so bare Node still falls through to
 the twin and the `ERR_UNKNOWN_FILE_EXTENSION` guarantee that twin exists for is unchanged.
 
-Astro now works with a vanilla `astro.config.mjs` on every client directive — no aggregate
-`styles.css`, no `ssr.noExternal` (which never helped here). `apps/examples/astro-islands`
-asserts this per-directive in CI and now fails on regression; `pnpm css-contract:check`
-enforces the ordering across every package shipping a `node` twin.
+This is **necessary but not sufficient** for Astro. Vite also externalizes `node_modules`
+packages in its server build, so an adopter installing from npm additionally needs
+`vite.resolve.noExternal: [/^@cascivo\//]` in `astro.config.mjs` (note `resolve.`, not
+`ssr.` — Astro's prerender environment does not read `ssr.*`). With both in place every
+client directive server-renders and styles correctly, verified against packed tarballs
+outside the monorepo. `cascivo create --framework astro` emits that config wired up.
+
+`pnpm css-contract:check` enforces the condition ordering across every package shipping a
+`node` twin, and `apps/examples/astro-islands` now fails on regression rather than
+reporting and exiting 0 — though note that fixture uses a `workspace:*` link and so covers
+only the export-condition half.

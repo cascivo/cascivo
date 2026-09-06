@@ -46,6 +46,7 @@ const GUIDES: { src: string; slug: string }[] = [
   { src: 'USING-WITH-TAILWIND.md', slug: 'using-with-tailwind' },
   { src: 'USING-WITH-PREACT.md', slug: 'using-with-preact' },
   { src: 'USING-WITH-ASTRO.md', slug: 'using-with-astro' },
+  { src: 'USING-WITH-GHOST.md', slug: 'using-with-ghost' },
   { src: 'STYLING-INTERNALS.md', slug: 'styling-internals' },
   { src: 'MOTION.md', slug: 'motion' },
   { src: 'CSS-LAYERS-PITFALL.md', slug: 'css-layers-pitfall' },

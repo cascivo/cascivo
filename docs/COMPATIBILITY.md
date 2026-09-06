@@ -14,8 +14,9 @@ baseline. If an integration surprises you, start here.
 | Vite + React (CSR/SPA)     | ✅ Yes    | Reference setup. See `apps/examples/react-vite`.                                         |
 | Vite SSR / TanStack Start  | ✅ Yes¹   | Requires `ssr.noExternal: [/^@cascivo\//]` (or the `cascivoSsr()` plugin). Working example: [`apps/examples/react-vite-ssr`](../apps/examples/react-vite-ssr/). See [`USING-WITH-VITE-SSR.md`](./USING-WITH-VITE-SSR.md). |
 | Preact 10 (`preact/compat`) | ✅ **CSR only** | Verified on Vite CSR (`@preact/preset-vite`) — components, signals, overlays and charts all behave as on React, at roughly half the JS. **Not verified under SSR/prerender**, and known to fail under Astro's compat aliasing. See [`USING-WITH-PREACT.md`](./USING-WITH-PREACT.md). |
-| Astro (React islands)      | ✅ Yes    | Every client directive (`client:load`, `client:visible`, `client:only`) emits per-component CSS, with a vanilla `astro.config.mjs`. Needs `@cascivo/react` ≥ 1.0.1 — before that, SSR'd islands rendered unstyled (see footnote²). Working example: [`apps/examples/astro-islands`](../apps/examples/astro-islands/). See [`USING-WITH-ASTRO.md`](./USING-WITH-ASTRO.md). |
+| Astro (React islands)      | ✅ Yes²   | Requires `@cascivo/react` ≥ 1.0.1 **and** `vite.resolve.noExternal: [/^@cascivo\//]` in `astro.config.mjs` — without both, SSR'd islands render unstyled. `npx cascivo create --framework astro` emits it wired up. Working example: [`apps/examples/astro-islands`](../apps/examples/astro-islands/). See [`USING-WITH-ASTRO.md`](./USING-WITH-ASTRO.md). |
 | Vue / Svelte / Angular     | ⚠️ Tokens/themes only | `@cascivo/tokens` + `@cascivo/themes` are framework-agnostic CSS; the components are React. |
+| Ghost (Handlebars themes)  | ⚠️ Tokens/themes only | Themes are Handlebars rendered server-side with no JS framework layer, so React components cannot mount. The token + theme CSS works once flattened (bare `@import`s, no build step in Ghost). See [`USING-WITH-GHOST.md`](./USING-WITH-GHOST.md). |
 
 ¹ The published `@cascivo/react` bundle ships per-component CSS as static
 side-effect imports. Bundlers resolve these; a bare server-side ESM loader
@@ -27,18 +28,21 @@ the CSS-bearing build, so component CSS tree-shakes under SSR the same way it do
 in an SPA — no aggregate stylesheet in either recipe. The
 [Vite SSR guide](./USING-WITH-VITE-SSR.md) has the measurements.
 
-² Export conditions match in **declaration order**, and until 1.0.1 the CSS-free
-`node` twin was listed ahead of `import`. A Vite-based SSR framework resolves with
-`node` active and `react-server` inactive, so its *server* module graph got the
-CSS-free build — and Astro collects a page's CSS by walking that graph, so it
-emitted none. That is why `client:only` (client graph only) rendered correctly
-while `client:load` / `client:visible` did not, and why it read as an Astro bug.
-Since 1.0.1 a `module` condition sits ahead of `node`: bundlers match it and get
-the CSS-bearing build, while Node's ESM resolver — which does not implement
-`module` — still falls through to the twin, so footnote ¹'s guarantee is
-unchanged. This affected `@cascivo/react`, `@cascivo/charts`, `@cascivo/ai`,
-`@cascivo/editor` and `@cascivo/flow`; the ordering is now enforced by
-`pnpm css-contract:check`.
+² Astro's unstyled-island problem had **two independent causes**, and both must be
+addressed. (a) Export conditions match in **declaration order**, and until 1.0.1 the
+CSS-free `node` twin was listed ahead of `import`; a Vite-based SSR framework resolves
+with `node` active and `react-server` inactive, so it got the CSS-free build. Since
+1.0.1 a `module` condition sits ahead of `node` — bundlers match it, while Node's ESM
+resolver, which does not implement `module`, still falls through to the twin, so
+footnote ¹'s guarantee is unchanged. This affected `@cascivo/react`, `@cascivo/charts`,
+`@cascivo/ai`, `@cascivo/editor` and `@cascivo/flow`; the ordering is enforced by
+`pnpm css-contract:check`. (b) Vite externalizes `node_modules` packages in its server
+build, so the package's module graph is never walked and Astro — which collects a page's
+CSS from that graph — emits none; `vite.resolve.noExternal` puts it back. It must be
+`resolve.noExternal`, not `ssr.noExternal`, which Astro's prerender environment does not
+read. Cause (b) does not appear in the monorepo's own Astro fixture, because a
+`workspace:*` link is never externalized — see the verification notes in
+[`USING-WITH-ASTRO.md`](./USING-WITH-ASTRO.md).
 
 ## Browsers
 

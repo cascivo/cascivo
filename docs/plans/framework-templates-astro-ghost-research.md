@@ -1,8 +1,12 @@
 # Framework templates for Astro and Ghost — research findings
 
-> **Status:** recommendation 1 (the export-condition fix) and 2 (the Astro re-grade) are
-> **implemented**. Astro is now ✅ in the compatibility matrix. Recommendations 3
-> (`create --framework astro`) and 4 (the Ghost guide) are still open.
+> **Status: all four recommendations implemented.** Astro is ✅ in the compatibility matrix,
+> `cascivo create --framework astro` exists, and `USING-WITH-GHOST.md` is written.
+>
+> **One finding in §2 was wrong and is corrected in §2.5.** The export-condition fix alone
+> does NOT make a real npm install work — it was verified only against the monorepo's
+> `workspace:*` fixture, which Vite never externalizes. An adopter also needs
+> `vite.resolve.noExternal` in `astro.config.mjs`. Both are required; neither suffices.
 
 **Question asked:** does it make sense to ship special templates for existing frameworks
 like Astro or Ghost, to make cascivo easier to adopt there?
@@ -144,6 +148,9 @@ Insert `module` **before** `node`:
 `module` is a bundler-only convention. Vite's SSR resolve matches it; **Node's ESM resolver
 does not implement it at all**, so the bare-Node guarantee the twin exists for is untouched.
 
+⚠️ The "zero adopter config" claim below held only for the workspace-linked fixture. See
+§2.5.
+
 Verified, both properties simultaneously:
 
 ```
@@ -173,6 +180,47 @@ publint + attw) both pass with the change, as do `css-contract:check` (5/5) and
 and `@cascivo/flow` — all shipping a `node` twin with no `module` condition. The manual
 sweep above checked only `charts`, `layouts`, `icons`, `themes` and `core` and missed them,
 which is the argument for the guard rather than a one-off edit.
+
+---
+
+## 2.5 Correction: the fix is necessary, not sufficient
+
+Building the actual `create --framework astro` scaffold and installing it from **packed
+tarballs, outside the monorepo**, exposed a second, independent cause. The scaffold rendered
+unstyled with the export-condition fix in place.
+
+The byte-identical fixture page that passes in `apps/examples/astro-islands` **fails** in a
+real install. So the difference is the environment, not the app code:
+
+| Setup | Result |
+| --- | --- |
+| monorepo fixture, `workspace:*`, vanilla config | styled |
+| real install from tarball, vanilla config | **UNSTYLED** |
+| real install + `vite.ssr.noExternal` | **UNSTYLED** — Astro's prerender env never reads `ssr.*` |
+| real install + `vite.resolve.noExternal` | styled |
+| real install + `resolve.noExternal`, export fix reverted | **UNSTYLED** |
+
+**Cause (b):** Vite externalizes `node_modules` packages in its server build, so the package
+is imported by Node at runtime and its module graph is never walked — and Astro collects a
+page's CSS by walking that graph. A `workspace:*` link is never externalized, which is
+exactly why the in-repo fixture cannot see this and passes without the config.
+
+So both are required:
+
+- **(a)** `module` ahead of `node` in the exports map — else `noExternal` merely bundles the
+  CSS-free twin.
+- **(b)** `vite.resolve.noExternal: [/^@cascivo\//]` in `astro.config.mjs` — note
+  `resolve.`, not `ssr.`.
+
+The lesson generalizes past Astro: **a workspace-linked example app cannot validate
+packaging behaviour that depends on externalization.** `isolated:check` and `pack:check`
+both passed the export fix and neither could catch this, because neither builds an Astro
+app. The gap is a packed-install framework smoke test; the scaffold verification below is
+the manual stand-in.
+
+Verified after the correction: `cascivo create --framework astro`, installed from packed
+tarballs, builds three routes with every referenced class matched, the canonical cascade
+layer order in the built CSS, and exactly one island per page.
 
 ---
 
@@ -214,13 +262,15 @@ machinery at all.
    footnote on the mechanism, `USING-WITH-ASTRO.md` rewritten (the aggregate-stylesheet
    workaround is now an "older versions" note), and the `astro-islands` fixture converted
    from an evidence probe that exited 0 on failure into a regression test that exits 1.
-3. **Then** consider Astro scaffolding — and prefer `cascivo create --framework astro` over a
-   registry template. What an Astro adopter is missing is a *correct project skeleton*
-   (integration wiring, where the theme CSS import goes, which client directive to reach
-   for). That is the `create` command's job. Templates are page compositions; they answer
-   "what does this app look like", not "how do I wire cascivo into Astro".
-4. **Ghost: write `USING-WITH-GHOST.md`** (tokens + themes in a Handlebars theme). Optionally
-   a headless-Ghost cookbook. No template, no framework enum entry.
+3. ~~**Astro scaffolding via `create --framework astro`.**~~ **Done** — and the reasoning
+   held up better than expected: what the adopter was missing turned out to be exactly a
+   *correct project skeleton*, since the `resolve.noExternal` line is undiscoverable and
+   decides whether the app renders at all. A registry template could not have carried it —
+   templates are page compositions, not project config.
+4. ~~**Ghost: write `USING-WITH-GHOST.md`.**~~ **Done** — tokens + themes in a Handlebars
+   theme, with a verified flatten recipe (the shipped CSS uses bare `@import` specifiers and
+   Ghost has no build step), plus the headless-Ghost alternative. No template, no framework
+   enum entry.
 
 **Do not:** add `'astro'` to `TemplateMeta['framework']` before step 1. Every template
 carrying that value would render unstyled under the two directives adopters reach for first.

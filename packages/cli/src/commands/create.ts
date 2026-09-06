@@ -33,9 +33,16 @@ function runScriptCommand(pm: PackageManager, script: string): string {
   return pm === 'npm' ? `npm run ${script}` : `${pm} ${script}`
 }
 
+/** Project shape `create` emits. */
+export type Framework = 'react-vite' | 'astro'
+
+export const FRAMEWORKS = ['react-vite', 'astro'] as const
+
 export interface ScaffoldOptions {
   /** Project directory + package name. */
   name: string
+  /** Project shape. Defaults to `react-vite`. */
+  framework?: Framework
   /** Theme imported in the entry CSS and set on `<html data-theme>`. */
   theme: ThemeName
   /** Display labels for the side-nav sections (one section component each). */
@@ -609,8 +616,344 @@ More: cascivo's machine-readable guide is at https://cascivo.com/llms.txt.
 }
 
 /** Build the full set of files for a new cascivo app. Pure — no filesystem I/O. */
+/* ------------------------------------------------------------------------- *
+ * Astro scaffold (`--framework astro`)
+ *
+ * Shaped around what Astro is actually for, rather than transliterating the Vite SPA:
+ * pages are real routes (no router to add later), page CONTENT is cascivo components
+ * rendered with no client directive at all — server HTML, zero JS — and the only island
+ * is the shell, which needs JS for its mobile nav drawer.
+ *
+ * The `astro.config.mjs` this emits carries one non-obvious required line —
+ * `vite.resolve.noExternal` — without which SSR'd islands render unstyled. Baking that in
+ * is most of why this scaffold is worth having; see the comment on `astroConfig` and
+ * docs/USING-WITH-ASTRO.md.
+ * ------------------------------------------------------------------------- */
+
+/** Route for a section. The first section owns the index route. */
+function sectionPath(section: Section, index: number): string {
+  return index === 0 ? '/' : `/${section.key}`
+}
+
+/** Page file for a section, relative to `src/pages/`. */
+function sectionPageFile(section: Section, index: number): string {
+  return index === 0 ? 'index.astro' : `${section.key}.astro`
+}
+
+function astroPackageJson(opts: ScaffoldOptions): string {
+  const pkg = {
+    name: packageName(opts.name),
+    private: true,
+    version: '0.0.0',
+    type: 'module',
+    scripts: {
+      dev: 'astro dev',
+      build: 'astro build',
+      preview: 'astro preview',
+      typecheck: 'astro check',
+      lint: 'eslint .',
+      format: 'prettier --write .',
+      'format:check': 'prettier --check .',
+    },
+    // Same prebuilt-path rule as the Vite scaffold: `@cascivo/react` + `@cascivo/themes`
+    // only. `@cascivo/core` and `@cascivo/tokens` are transitive and must not be declared.
+    dependencies: {
+      '@astrojs/react': '^5.0.0',
+      '@cascivo/react': V['@cascivo/react']!,
+      '@cascivo/themes': V['@cascivo/themes']!,
+      '@preact/signals-react': SIGNALS_PEER,
+      astro: '^7.0.0',
+      react: '^19.0.0',
+      'react-dom': '^19.0.0',
+    },
+    devDependencies: {
+      '@astrojs/check': '^0.9.0',
+      '@cascivo/eslint-config': V['@cascivo/eslint-config']!,
+      '@eslint/js': '^9.0.0',
+      '@types/react': '^19.0.0',
+      '@types/react-dom': '^19.0.0',
+      eslint: '^9.0.0',
+      'eslint-plugin-react-hooks': '^7.0.0',
+      prettier: '^3.0.0',
+      typescript: '^5.7.0',
+      'typescript-eslint': '^8.0.0',
+    },
+  }
+  return JSON.stringify(pkg, null, 2) + '\n'
+}
+
+function astroConfig(): string {
+  return `// @ts-check
+import { defineConfig } from 'astro/config'
+import react from '@astrojs/react'
+
+export default defineConfig({
+  integrations: [react()],
+  vite: {
+    resolve: {
+      // REQUIRED, and the single least obvious line in this app.
+      //
+      // Vite externalizes node_modules packages in its server build, so an externalized
+      // @cascivo/react is imported by Node at runtime and its module graph is never walked
+      // — and Astro collects a page's CSS by walking that graph. Without this, SSR'd
+      // islands (client:load, client:visible) render with correct class names and no rules
+      // anywhere in the output. Nothing warns; it reads as a theming problem.
+      //
+      // It must be \`resolve.noExternal\`, NOT \`ssr.noExternal\`: Astro prerenders static
+      // routes in its own Vite environment, which \`ssr.*\` does not reach.
+      // https://cascivo.com/docs/using-with-astro.md
+      noExternal: [/^@cascivo\\//],
+    },
+  },
+})
+`
+}
+
+function astroTsconfig(): string {
+  const cfg = {
+    extends: 'astro/tsconfigs/strict',
+    include: ['.astro/types.d.ts', '**/*'],
+    exclude: ['dist'],
+    compilerOptions: { jsx: 'react-jsx' },
+  }
+  return JSON.stringify(cfg, null, 2) + '\n'
+}
+
+/**
+ * The cascade layer order plus this app's own slot.
+ *
+ * A standalone CSS file imported BEFORE the theme, rather than a `<style>` in the layout:
+ * layers take their order from first appearance, so a statement that lands after the
+ * theme's CSS cannot reorder anything, and `vendor` would end up winning over every
+ * cascivo layer instead of losing to all of them.
+ */
+function astroLayersCss(): string {
+  return `/* Cascade layer order. Must load before any cascivo CSS — see the note in
+   src/layouts/Layout.astro. Later layers beat earlier ones regardless of specificity.
+
+   cascivo.example is this app's own slot: above the component and blocks layers so your
+   page styles win, below cascivo.override which stays free for one-off hotfixes.
+   Third-party CSS goes in vendor so it cannot beat cascivo:
+     @import url('some-lib/styles.css') layer(vendor);
+   See https://cascivo.com/docs/third-party-css.md */
+@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component,
+  cascivo.platform, cascivo.theme, cascivo.blocks, cascivo.example, cascivo.override;
+
+@layer cascivo.reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@layer cascivo.base {
+  html,
+  body {
+    block-size: 100%;
+  }
+}
+`
+}
+
+function astroLayout(opts: ScaffoldOptions): string {
+  return `---
+// Import order matters: the layer statement must be established before any cascivo CSS.
+import '../styles/layers.css'
+import '@cascivo/themes/${opts.theme}.css'
+
+// No '@cascivo/react/styles.css'. Each component brings its own CSS through the module
+// graph, so you ship only what your pages use. Import the aggregate ONLY if you drop the
+// bundler entirely. The theme import above is always required — themes are never automatic.
+
+interface Props {
+  title: string
+}
+
+const { title } = Astro.props
+---
+
+<!doctype html>
+<html lang="en" data-theme="${opts.theme}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} · ${brandName(opts.name)}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+`
+}
+
+/**
+ * The app shell — the ONLY island in the scaffold.
+ *
+ * It is hydrated because AppShell's nav drawer is interactive on small screens. Page
+ * content is slotted in as children and stays server-rendered HTML, so a page costs the
+ * shell's JS and nothing more.
+ */
+function astroShellTsx(opts: ScaffoldOptions, sections: Section[]): string {
+  const navItems = sections
+    .map((s, i) => `  { label: '${s.label.replace(/'/g, "\\'")}', href: '${sectionPath(s, i)}' },`)
+    .join('\n')
+
+  return `import { AppShell, ShellHeader, SideNav, type SideNavItem } from '@cascivo/react'
+import type { ReactNode } from 'react'
+
+const NAV: { label: string; href: string }[] = [
+${navItems}
+]
+
+export interface ShellProps {
+  /** Current route, e.g. \`Astro.url.pathname\`. Marks the matching nav item active. */
+  activePath: string
+  children: ReactNode
+}
+
+/**
+ * Header + side nav + a content slot.
+ *
+ * Nav items carry \`href\`, so navigation is a real page load and Astro's router handles
+ * it — there is no client router to register and no \`setLinkComponent\` call to make.
+ */
+export function Shell({ activePath, children }: ShellProps) {
+  const items: SideNavItem[] = NAV.map((item) => ({
+    ...item,
+    active: item.href === activePath,
+  }))
+
+  return (
+    <AppShell
+      header={<ShellHeader brand={{ name: '${brandName(opts.name).replace(/'/g, "\\'")}' }} />}
+      nav={<SideNav items={items} />}
+    >
+      {children}
+    </AppShell>
+  )
+}
+`
+}
+
+/**
+ * A section's content as a plain React component with NO \`'use client'\`.
+ *
+ * Astro renders it on the server and ships no JavaScript for it. Add a client directive at
+ * the call site in the page only when a section actually needs interactivity.
+ */
+function astroSectionTsx(section: Section): string {
+  return `import { Card, CardContent, CardHeader, CardTitle, Flex, Heading, Text } from '@cascivo/react'
+
+export function ${section.component}() {
+  return (
+    <Flex gap={6}>
+      <Flex gap={2}>
+        <Heading level={1}>${section.label}</Heading>
+        <Text muted>
+          Edit <code>src/components/${section.component}.tsx</code> to build out this page.
+        </Text>
+      </Flex>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Get started</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Text>
+            This page is server-rendered — no JavaScript ships for it. Add components with{' '}
+            <code>npx cascivo add &lt;component&gt;</code>.
+          </Text>
+        </CardContent>
+      </Card>
+    </Flex>
+  )
+}
+`
+}
+
+function astroPage(section: Section, index: number): string {
+  return `---
+import Layout from '../layouts/Layout.astro'
+import { Shell } from '../components/Shell'
+import { ${section.component} } from '../components/${section.component}'
+---
+
+<Layout title="${section.label}">
+  {/* client:load hydrates the shell for its mobile nav drawer. The section below stays
+      server-rendered HTML — it is slotted in as children and ships no JS. */}
+  <Shell client:load activePath="${sectionPath(section, index)}">
+    <${section.component} />
+  </Shell>
+</Layout>
+`
+}
+
+function astroGitignore(): string {
+  return `node_modules
+dist
+.astro
+*.local
+.DS_Store
+`
+}
+
+function astroReadme(opts: ScaffoldOptions, sections: Section[]): string {
+  const pm = opts.pm ?? 'npm'
+  const routes = sections
+    .map((s, i) => `- \`${sectionPath(s, i)}\` — \`src/pages/${sectionPageFile(s, i)}\``)
+    .join('\n')
+
+  return `# ${opts.name}
+
+A [cascivo](https://cascivo.com) app — Astro + React islands + TypeScript, pre-wired with
+the cascivo app shell, side navigation, and the \`${opts.theme}\` theme.
+
+## Develop
+
+\`\`\`sh
+${installAllCommand(pm)}
+${runScriptCommand(pm, 'dev')}
+\`\`\`
+
+## Routes
+
+${routes}
+
+Add a page by dropping a new \`.astro\` file in \`src/pages/\` — Astro routes it by filename.
+Add it to \`NAV\` in \`src/components/Shell.tsx\` to get a nav entry.
+
+## What hydrates, and what doesn't
+
+Only \`Shell\` carries a client directive (\`client:load\`), because its nav drawer is
+interactive on small screens. Everything inside it is slotted in as children and stays
+server-rendered HTML, so a page ships the shell's JavaScript and nothing else.
+
+Need a section to be interactive? Give it a directive at the call site in the page:
+
+\`\`\`astro
+<${sections[0]!.component} client:visible />
+\`\`\`
+
+A component that reads \`signal.value\` during render must also call \`useSignals()\` from
+\`@cascivo/react\` as its first statement — Astro applies no signals transform.
+
+## Styling
+
+\`src/styles/layers.css\` declares the cascade layer order and this app's own
+\`cascivo.example\` slot. It is imported **before** the theme in \`src/layouts/Layout.astro\`,
+and that order matters: layers take their position from first appearance, so a statement
+loaded after the theme cannot reorder anything.
+
+Add more components with \`npx cascivo add <component>\`.
+`
+}
+
 export function buildScaffold(opts: ScaffoldOptions): ScaffoldFile[] {
   const sections = resolveSections(opts.sections)
+  if (opts.framework === 'astro') return buildAstroScaffold(opts, sections)
   return [
     { path: 'package.json', contents: packageJson(opts) },
     { path: 'tsconfig.json', contents: tsconfig() },
@@ -638,6 +981,31 @@ export function buildScaffold(opts: ScaffoldOptions): ScaffoldFile[] {
   ]
 }
 
+function buildAstroScaffold(opts: ScaffoldOptions, sections: Section[]): ScaffoldFile[] {
+  return [
+    { path: 'package.json', contents: astroPackageJson(opts) },
+    { path: 'tsconfig.json', contents: astroTsconfig() },
+    { path: 'astro.config.mjs', contents: astroConfig() },
+    { path: 'eslint.config.js', contents: eslintConfig() },
+    { path: '.prettierrc', contents: prettierrc() },
+    { path: '.prettierignore', contents: prettierIgnore() },
+    { path: '.gitignore', contents: astroGitignore() },
+    { path: 'README.md', contents: astroReadme(opts, sections) },
+    { path: 'AGENTS.md', contents: agentsMd(opts) },
+    { path: 'src/styles/layers.css', contents: astroLayersCss() },
+    { path: 'src/layouts/Layout.astro', contents: astroLayout(opts) },
+    { path: 'src/components/Shell.tsx', contents: astroShellTsx(opts, sections) },
+    ...sections.map((s, i) => ({
+      path: `src/pages/${sectionPageFile(s, i)}`,
+      contents: astroPage(s, i),
+    })),
+    ...sections.map((s) => ({
+      path: `src/components/${s.component}.tsx`,
+      contents: astroSectionTsx(s),
+    })),
+  ]
+}
+
 const DEFAULT_SECTIONS = ['Dashboard', 'Reports', 'Settings']
 
 export async function create(args: string[], cwd: string = process.cwd()): Promise<void> {
@@ -650,9 +1018,17 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
     'theme',
     'sections',
     'template',
+    'framework',
   ])[0]
   const themeArg = flagValue(args, 'theme')
   const sectionsArg = flagValue(args, 'sections')
+
+  const frameworkArg = (flagValue(args, 'framework') ?? '').toLowerCase()
+  if (frameworkArg && !(FRAMEWORKS as readonly string[]).includes(frameworkArg)) {
+    console.error(`Unknown framework "${frameworkArg}". Expected one of: ${FRAMEWORKS.join(', ')}.`)
+    process.exitCode = 1
+    return
+  }
 
   const pmFlag = resolvePackageManagerFlag(args)
   if ('error' in pmFlag) {
@@ -699,8 +1075,19 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
       .map((s) => s.trim())
       .filter(Boolean)
 
+    let framework = frameworkArg
+    if (!framework && rl) {
+      framework = (await rl.question(`Framework? (${FRAMEWORKS.join('/')}) [react-vite]: `))
+        .trim()
+        .toLowerCase()
+    }
+    const resolvedFramework: Framework = (FRAMEWORKS as readonly string[]).includes(framework)
+      ? (framework as Framework)
+      : 'react-vite'
+
     const opts: ScaffoldOptions = {
       name,
+      framework: resolvedFramework,
       theme: resolvedTheme,
       sections: sections.length > 0 ? sections : DEFAULT_SECTIONS,
       pm,
@@ -718,7 +1105,10 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
       await writeFileSafe(join(targetDir, file.path), file.contents)
     }
 
-    console.log(`\nCreated ${name} with the ${resolvedTheme} theme (${files.length} files).`)
+    console.log(
+      `\nCreated ${name} (${resolvedFramework}) with the ${resolvedTheme} theme ` +
+        `(${files.length} files).`,
+    )
 
     const templateSpec = flagValue(args, 'template')
     if (templateSpec) {
@@ -737,9 +1127,16 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
     console.log('  No cascivo.config.ts is written — this app uses the prebuilt @cascivo/react')
     console.log('  packages and never copies source. `cascivo add <component>` writes the')
     console.log('  config itself the first time you vendor a component.')
-    console.log('\n  Adding a router? Keep src/Shell.tsx, delete src/App.tsx + src/sections/,')
-    console.log('  and register your Link once with setLinkComponent — see')
-    console.log('  https://cascivo.com/docs/using-with-a-router.md')
+    if (resolvedFramework === 'astro') {
+      console.log('\n  Pages are real Astro routes — no client router to add. Only src/')
+      console.log('  components/Shell.tsx hydrates (client:load, for the mobile nav drawer);')
+      console.log('  page content is server-rendered and ships no JS. See')
+      console.log('  https://cascivo.com/docs/using-with-astro.md')
+    } else {
+      console.log('\n  Adding a router? Keep src/Shell.tsx, delete src/App.tsx + src/sections/,')
+      console.log('  and register your Link once with setLinkComponent — see')
+      console.log('  https://cascivo.com/docs/using-with-a-router.md')
+    }
   } finally {
     rl?.close()
   }
