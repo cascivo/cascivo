@@ -919,6 +919,9 @@
                   },
                   "loop": {
                     "type": "boolean"
+                  },
+                  "autoplay": {
+                    "type": "number"
                   }
                 }
               }
@@ -1644,6 +1647,21 @@
                     "type": "string"
                   },
                   "clearable": {
+                    "type": "boolean"
+                  },
+                  "typeable": {
+                    "type": "boolean"
+                  },
+                  "showToday": {
+                    "type": "boolean"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "required": {
+                    "type": "boolean"
+                  },
+                  "open": {
                     "type": "boolean"
                   },
                   "label": {

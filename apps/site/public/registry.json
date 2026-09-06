@@ -2028,13 +2028,15 @@
       "version": "1.0.0",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/calendar/calendar.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/calendar/calendar-date.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/calendar/index.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/calendar/calendar.module.css"
       ],
       "fileHashes": {
-        "calendar.tsx": "sha256-5a65d71e1f9a90ede81cdea2b6cd9308fec1f188857c2dceabb7b54d166918c6",
-        "index.ts": "sha256-ae3b2f525ef2bd6b9234b69a7823b7eafcc9dbef7fa351fadca8e2d7b7d6f016",
-        "calendar.module.css": "sha256-7aa886b60d982a5c71fec3625d4e6baa7a000079a21bc9a2cefefe69696a72db"
+        "calendar.tsx": "sha256-f89d8eeab042292d0e41ca4c5c6440f434b8fb80b75d3d93f00a0155798d0679",
+        "calendar-date.ts": "sha256-5709e0ae245751b7d28a3c0cb79eed0d5dd88bfe75bc9c047ad50cc98ec3465a",
+        "index.ts": "sha256-afc64f5df9822c7a7696d95cb4c3ef69f831e420a04ae358f36b879736933ba4",
+        "calendar.module.css": "sha256-f2b63f7440f795873a14efb767d31fc23f9b510e271df7cb5d3487777f7aced2"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -2154,6 +2156,34 @@
             "type": "boolean",
             "required": false,
             "description": "Hides the prev/next nav so a parent can drive navigation"
+          },
+          {
+            "name": "showToday",
+            "description": "When true, shows a button that jumps the view to the current month and focuses today.",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "showWeekNumbers",
+            "description": "When true, prefixes each row with its ISO-8601 week number.",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "ariaLabel",
+            "description": "Accessible name for the grid. Defaults to the visible month label. Calendar has no visible label slot — the month heading is its own — so `label` and `ariaLabel` are aliases for the same invisible name.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
+          },
+          {
+            "name": "label",
+            "description": "Alias for `ariaLabel`; both set the grid’s invisible accessible name.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
           }
         ],
         "tokens": [
@@ -2169,6 +2199,8 @@
         "accessibility": {
           "role": "grid",
           "wcag": "2.2-AA",
+          "forcedColors": true,
+          "reducedMotion": true,
           "keyboard": [
             "ArrowLeft",
             "ArrowRight",
@@ -2229,7 +2261,7 @@
               "reason": "The range picker renders two Calendar instances side-by-side"
             }
           ],
-          "a11yRationale": "Renders an APG-compliant role=\"grid\" table with role=\"row\"/role=\"gridcell\"; a roving tabindex keeps exactly one day focusable (the focused date) so arrow keys move focus per APG, Home/End jump to the week edges, PageUp/PageDown change month (with Shift for year), today exposes aria-current=\"date\", selection sets data-selected with aria-selected on the cell, and out-of-range or predicate-disabled days get aria-disabled and are skipped by selection",
+          "a11yRationale": "A role=\"grid\" table with role=\"row\"/role=\"gridcell\" and a roving tabindex keeping exactly one day focusable. Navigation moves *real DOM focus*, not just the tabindex: the previous build only rotated the index, so focus stayed on the old button and the moment an arrow crossed a month boundary that button unmounted and focus fell to <body>, ejecting the user from the widget mid-navigation. React reuses the day buttons positionally across months, so the focus move is deferred a task and re-queried by date — landing on the reused node would silently focus whatever date now occupies that grid slot. Arrows move a day or a week, Home/End reach the week edges, PageUp/PageDown change month (Shift for year), and every move is clamped to min/max and skips predicate-disabled days rather than parking the cursor where Enter does nothing; the prev/next buttons disable at the bounds for the same reason. aria-selected sits on the button that takes focus, not the enclosing <td>, and is omitted rather than serialised as \"false\" on the other thirty cells. Today is computed from the *local* calendar rather than the UTC instant, so aria-current=\"date\" no longer lands a day early east of UTC+12. The month is announced through a separate visually-hidden status region: the visible label is also the grid's accessible name, so announcing there would mutate the name of the container focus sits inside.",
           "flexibility": [
             {
               "area": "date type",
@@ -2375,9 +2407,9 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/carousel/carousel.module.css"
       ],
       "fileHashes": {
-        "carousel.tsx": "sha256-0fab4fb01cf11c9f61a76523e7257145d56a271ac1470f73347c1c9ee2bbcdc0",
+        "carousel.tsx": "sha256-a9de2b53b7da22ec1f350e0be62bc9e9cdeed0f562c3bd7e9b41e09aa045979a",
         "index.ts": "sha256-0daa6ff3317b8eee63dfbf7b70069ccb88a4b5c163431b0b06a7e5aca63faff6",
-        "carousel.module.css": "sha256-54bffbc1b857a12c34064c4f673931e66508a51c638ccca42c6d201ede8ccfdf"
+        "carousel.module.css": "sha256-3b2083cbc117b5377eada3ecd319abd709618dfa661baca7cce3c71038db6021"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -2437,6 +2469,12 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "autoplay",
+            "description": "Milliseconds between automatic advances. Omit or set 0 to leave rotation off. Pauses on hover, on focus within, while the tab is hidden and under prefers-reduced-motion, and always renders a play/pause control.",
+            "type": "number",
+            "required": false
           }
         ],
         "tokens": [
@@ -2491,7 +2529,7 @@
               "reason": "Use tabs when sections are distinct and should be directly addressable"
             }
           ],
-          "a11yRationale": "The container is a labelled region with aria-roledescription=\"carousel\"; each slide is a labelled group (\"n of total\"); prev/next are real buttons and the dot indicators use roving tabindex with arrow-key navigation. Scrolling honours prefers-reduced-motion.",
+          "a11yRationale": "A section with aria-roledescription=\"carousel\" holding one role=\"group\" per slide. Inactive slides are `inert`, not `aria-hidden`: they stay in the layout and remain scroll-reachable, so aria-hidden alone declared them non-existent to assistive technology while every link and button inside them was still tabbable — the canonical aria-hidden-focus violation. The track is aria-live=\"polite\" when the user drives the carousel and \"off\" while it rotates on its own, per APG; a rotating carousel always renders a play/pause control, and rotation additionally pauses on hover, on focus within, while the tab is hidden and under prefers-reduced-motion. Reduced motion is read in JS as well as CSS because a scrollTo `behavior` option overrides the stylesheet, which is why the previous build's stylesheet rule could never take effect. Arrow keys on the indicator row move the slide, not merely the roving tabindex, and the indicators are named as their own group rather than repeating the region's name. The indicator hit area reaches the target minimum through a pseudo-element, leaving the 10px visual mark unchanged.",
           "flexibility": [
             {
               "area": "transition",
@@ -3400,13 +3438,15 @@
       "version": "1.0.0",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/color-picker/color-picker.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/color-picker/color.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/color-picker/index.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/color-picker/color-picker.module.css"
       ],
       "fileHashes": {
-        "color-picker.tsx": "sha256-ec5159148fced1a1d063e699e384d00099e5efd0309f4e1441a39908e62f3308",
-        "index.ts": "sha256-584a3bdd04fd3e25e5c0c28be9d07fda4bc3411cff307517dfd54816f2bec3d7",
-        "color-picker.module.css": "sha256-77b085a0afb2e106ecdb4dc6e2c6ec80fb202e6c545120b41dfddcb59733188f"
+        "color-picker.tsx": "sha256-202d0a4d6a5fc8770270a92d6b5e3c54b433a63bb23775e86105176a6081af65",
+        "color.ts": "sha256-1bc572843880e93d5df3dc7ca0c7f704e32833d07cc5a2bdda9d768b969594ae",
+        "index.ts": "sha256-120305c1bb7f369a90401d00c51b72b88b325c69693760f07fc84e2ee8df4c1e",
+        "color-picker.module.css": "sha256-fda41b8535be08f4a2edac344dbd683dc826b013c5c13bb3349656f6d445560b"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -3419,7 +3459,7 @@
         "description": "Interactive color selection widget with saturation/lightness area, hue and alpha sliders",
         "category": "inputs",
         "clientJs": "required",
-        "states": [],
+        "states": ["default", "disabled"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
         "props": [
@@ -3460,6 +3500,19 @@
             "type": "boolean",
             "required": false,
             "default": "true"
+          },
+          {
+            "name": "format",
+            "description": "Notation for the emitted value. Alpha is included whenever alpha is on, so the emitted string has a stable width.",
+            "type": "'hex' | 'rgb' | 'hsl'",
+            "required": false,
+            "default": "'hex'"
+          },
+          {
+            "name": "name",
+            "description": "Submitted with a surrounding form — a hidden input carrying the current value.",
+            "type": "string",
+            "required": false
           },
           {
             "name": "label",
@@ -3524,10 +3577,22 @@
           "--cascivo-focus-ring"
         ],
         "accessibility": {
-          "role": "slider",
+          "role": "group",
           "wcag": "2.2-AA",
-          "keyboard": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"],
-          "forcedColors": true
+          "forcedColors": true,
+          "reducedMotion": true,
+          "keyboard": [
+            "ArrowLeft",
+            "ArrowRight",
+            "ArrowUp",
+            "ArrowDown",
+            "Home",
+            "End",
+            "PageUp",
+            "PageDown",
+            "Enter",
+            "Escape"
+          ]
         },
         "examples": [
           {
@@ -3570,8 +3635,13 @@
               "reason": "The hex text field lets users paste an exact value"
             }
           ],
-          "a11yRationale": "The saturation/lightness area is a focusable role=\"slider\" with arrow-key nudging and an aria-valuetext reporting the current hex; hue and alpha are native range inputs that inherit platform slider semantics and announcements.",
+          "a11yRationale": "The picking area is a role=\"group\" holding one native range input per axis — saturation on x, brightness on y — rather than a single role=\"slider\", which cannot describe two dimensions and in the previous build carried no aria-valuenow at all. Real inputs also mean arrow stepping, Home/End and PageUp/PageDown are the platform's rather than a hand-rolled key switch, and each axis announces its own percentage. Hue and alpha are native range inputs for the same reason. The preset swatches are a labelled role=\"group\" of toggle buttons with roving focus, so the arrows move focus between swatches and Enter or Space selects — the previous build labelled that group \"Saturation and lightness\" and made the arrows change the value instead. The hex field commits on blur, Enter or a valid paste and rejects anything unparseable, so a half-typed value never reaches onValueChange. A polite live region reports the current colour, mounted before the first change so that change is announced too. Selection and focus each carry a non-colour channel under forced-colors, and every control reaches the coarse-pointer target minimum.",
           "flexibility": [
+            {
+              "area": "output format",
+              "level": "flexible",
+              "note": "format switches between hex, rgb() and hsl(); alpha is included whenever the alpha prop is on"
+            },
             {
               "area": "color model",
               "level": "flexible",
@@ -5586,12 +5656,14 @@
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/date-picker.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/index.ts",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/parse-date.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/date-picker.module.css"
       ],
       "fileHashes": {
-        "date-picker.tsx": "sha256-9155f042953dbfc86ec9ecfa38157cb735223b822c419b5a9ada3fc1490fdd8d",
-        "index.ts": "sha256-6cb1709f7c2b98a82a3951dd8facba6bdefe2f491efd6f4808661b6d6ff5da4d",
-        "date-picker.module.css": "sha256-a1921f62c1b17c68e3b2a980daef737e4994db167cc20bf8910d3edb19d2881f"
+        "date-picker.tsx": "sha256-d276af49da3323191400c55d817ec691bfe485a01ef420c8734323550ee4f493",
+        "index.ts": "sha256-c2a3bcd044d58eb42f4673851759a1f3e1af3036d8f2a7268979c81d2c640bb4",
+        "parse-date.ts": "sha256-36f5bac66c71d46302212155b4d9652aa67be7fad1020f4760dd5d5b6be32a50",
+        "date-picker.module.css": "sha256-f890fa54079953deb7944822a5cf6340f38934053afcb530f029ffea01abcef4"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -5650,6 +5722,56 @@
             "type": "boolean",
             "required": false,
             "description": "Shows a clear button"
+          },
+          {
+            "name": "typeable",
+            "description": "When true, the field accepts a typed date as well as one picked from the calendar.",
+            "type": "boolean",
+            "required": false,
+            "default": "true"
+          },
+          {
+            "name": "disabledDate",
+            "description": "Rejects individual dates the bounds allow — holidays, weekends, taken slots.",
+            "type": "(date: Date) => boolean",
+            "required": false
+          },
+          {
+            "name": "format",
+            "description": "Formatting options for the displayed date. Defaults to the locale's numeric form.",
+            "type": "Intl.DateTimeFormatOptions",
+            "required": false
+          },
+          {
+            "name": "showToday",
+            "description": "When true, the calendar offers a button that jumps to the current month.",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "name",
+            "description": "Submitted with a surrounding form — a hidden input carrying the ISO value.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "required",
+            "description": "Marks the control as required for assistive technology.",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "open",
+            "description": "Controlled open state of the calendar popup.",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "onOpenChange",
+            "description": "Called when the popup opens or closes.",
+            "type": "(open: boolean) => void",
+            "required": false
           },
           {
             "name": "label",
@@ -5734,14 +5856,21 @@
         "accessibility": {
           "role": "combobox",
           "wcag": "2.2-AA",
+          "forcedColors": true,
+          "reducedMotion": true,
           "keyboard": [
+            "ArrowDown",
+            "ArrowUp",
+            "ArrowLeft",
+            "ArrowRight",
+            "Home",
+            "End",
+            "PageUp",
+            "PageDown",
             "Enter",
             "Space",
             "Escape",
-            "ArrowUp",
-            "ArrowDown",
-            "ArrowLeft",
-            "ArrowRight"
+            "Delete"
           ]
         },
         "examples": [
@@ -5762,6 +5891,7 @@
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["calendar"],
         "tags": ["date", "calendar", "picker", "input", "form"],
         "intent": {
           "whenToUse": [
@@ -5796,7 +5926,7 @@
               "reason": "Typically a field within a form with label/hint/error"
             }
           ],
-          "a11yRationale": "The trigger is role=\"combobox\" with aria-haspopup=\"dialog\"/aria-expanded; the calendar is a role=\"dialog\" containing a role=\"grid\" with roving tabindex so arrow keys move a single focusable day, days expose aria-pressed for selection, aria-current=\"date\" for today, and aria-disabled past min/max, and errors are wired via aria-invalid + aria-describedby with role=\"alert\"",
+          "a11yRationale": "The field is an <input role=\"combobox\"> with aria-expanded, aria-controls and aria-haspopup=\"dialog\" that accepts a typed date — the previous build had no text field at all, so a date already known could only be reached by paging a grid. ArrowDown and Alt+ArrowDown open the popup (the combobox pattern's required key, listed in the old manifest but never implemented), opening moves focus into the grid and Escape closes and returns it to the field; the old build did neither, leaving the grid unreachable on open and focus on <body> on close. The grid itself is a composed Calendar rather than a second hand-rolled copy, so its real-focus navigation, min/max clamping, disabled-day skipping, aria-selected placement and month announcements all apply here; the duplicate had none of them and its arrow keys did nothing at all until a value was set. Dismissal comes from the shared DismissableLayer instead of a raw document listener. Typed input is parsed at commit, not per keystroke, and rejected rather than coerced when unreadable or out of bounds.",
           "flexibility": [
             {
               "area": "value format",
@@ -5816,6 +5946,7 @@
           ]
         }
       },
+      "registryDependencies": ["calendar"],
       "channels": ["npm:@cascivo/react", "copy"]
     },
     {
@@ -7199,9 +7330,9 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/file-uploader/file-uploader.module.css"
       ],
       "fileHashes": {
-        "file-uploader.tsx": "sha256-e2f3be3ddaab70c689059a1987f4ae559168d46fbedfda4e56bd0446b9d66ff8",
+        "file-uploader.tsx": "sha256-be87063385ca435e0a33f7881beeba500d973637f0ec45d8fd62a89bdffb19dd",
         "index.ts": "sha256-d06d12dc06b4a333c7971a58c8d0df4a3231cfa7c5f37b9887e0058310534f06",
-        "file-uploader.module.css": "sha256-ecb8fd3d4bd32b9661a0e9e90394801056c19ba1b693ddefa4969db78aac5719"
+        "file-uploader.module.css": "sha256-35bd0ec527994470c72a5ac6c867a7772fbea1bf3f7434e4324c7d278ed5a9df"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -7299,9 +7430,10 @@
         "tokens": [
           "--cascivo-color-accent",
           "--cascivo-color-accent-subtle",
-          "--cascivo-color-success",
+          "--cascivo-color-success-foreground",
           "--cascivo-color-destructive",
-          "--cascivo-color-destructive-subtle"
+          "--cascivo-color-destructive-subtle",
+          "--cascivo-target-min-coarse"
         ],
         "accessibility": {
           "role": "button",
@@ -7362,7 +7494,7 @@
               "reason": "Use a plain text Input when capturing a value rather than a file"
             }
           ],
-          "a11yRationale": "The drop zone is a real <button> so it is keyboard-operable (Enter/Space open the native file picker), the hidden file input is removed from the tab order and labelled via aria-describedby, and the file list uses aria-live=\"polite\" so status changes are announced; each remove control carries an aria-label naming its file.",
+          "a11yRationale": "The drop zone is a real <button> so it is keyboard-operable (Enter/Space open the native file picker); it is named by the visible label via aria-labelledby (or by ariaLabel) and described by the hint only, so the name is the field rather than the generic drop instruction. Ids come from useId, so two uploaders on a page never collide. A single aria-live=\"polite\" region is mounted unconditionally — a region added in the same commit as its first file announces nothing — and reports the file count plus the list-wide state. Per-file glyphs carry role=\"img\" so their aria-label is honoured, a failed file's message is a role=\"alert\", the file input stays in the accessibility tree because it is programmatically focused, disabled reaches the remove controls too, and remove targets meet the 44px floor under a coarse pointer. Drag-over, disabled and error states each get a forced-colors treatment, since colour alone disappears there.",
           "content": {
             "tone": "Plain, instructive labels and hints",
             "notes": "Defaults come from the i18n catalog; hint should state accepted types/size limits, e.g. \"PDF up to 5 MB\""
@@ -20084,9 +20216,9 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tree-view/tree-view.module.css"
       ],
       "fileHashes": {
-        "tree-view.tsx": "sha256-e0dcca1ce7d4b9f0427ee58db60b6fe566ecb54bee35380765477fbdfffb7896",
+        "tree-view.tsx": "sha256-45eb53de933d7348cd4b98ee6d9760eff5d6ff571e26255e7e97d5ab09683e73",
         "index.ts": "sha256-a8f9ad6089ec199ec174465a1867f5731056f5ce6ba4dda2e41e2c75370b3951",
-        "tree-view.module.css": "sha256-88580b0ad4ee242e5a32187b3f1565425b6dd42356ba0369f529cc40ea50a193"
+        "tree-view.module.css": "sha256-2f64952ac258cb23ed44f61c74cb94818ec6fc2e3ead845c8d6a911941df2ef0"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -20155,6 +20287,12 @@
             "required": false
           },
           {
+            "name": "onValueChange",
+            "description": "Called with the new selection. Preferred over `onSelectChange`, which is the catalog’s only value-carrying handler not named onValueChange and is deprecated.",
+            "type": "(selected: string | string[]) => void",
+            "required": false
+          },
+          {
             "name": "expanded",
             "description": "The controlled set of expanded node ids.",
             "type": "string[]",
@@ -20188,6 +20326,7 @@
           "role": "tree",
           "wcag": "2.2-AA",
           "keyboard": [
+            "*",
             "ArrowDown",
             "ArrowUp",
             "ArrowRight",
@@ -20243,7 +20382,7 @@
               "reason": "StructuredList is flat tabular rows; TreeView is nested with expand/collapse"
             }
           ],
-          "a11yRationale": "Implements the WAI-ARIA TreeView pattern: role=tree on the root, role=treeitem with aria-level/posinset/setsize and aria-expanded on each node, a single roving tabindex, and full APG keyboard support (arrows expand/collapse and move, Home/End, Enter/Space select, printable-character typeahead)",
+          "a11yRationale": "A role=\"tree\" of role=\"treeitem\" nodes carrying aria-level, aria-posinset, aria-setsize, aria-selected and aria-expanded, with aria-multiselectable on the tree in multi mode — multi-select was previously unannounced. Each item is named by aria-labelledby pointing at its own label: the <li> also contains the child <ul>, so without it an expanded node's accessible name absorbed its entire subtree. A roving tabindex keeps one node focusable, and the candidate is validated against the *visible* set — the old build never invalidated the focused id when its node stopped being visible, so collapsing a branch after focusing a child left the only tabIndex=0 on a hidden node and Tab skipped the whole widget. Collapsed subtrees are not rendered, which is what the clientJs justification has always claimed and was not true: recursion ran on hasChildren alone and CSS merely hid the result. Enter and Space perform the same action as a click (toggle a branch, then select) rather than only selecting; arrows, Home/End and type-to-select all skip disabled nodes; and * expands every sibling at the level. Type-to-select uses the shared useTypeahead primitive and matches a node's textValue, so a JSX label no longer makes it silently inert.",
           "flexibility": [
             {
               "area": "selectionMode",

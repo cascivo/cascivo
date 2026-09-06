@@ -21,6 +21,7 @@
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["date", "calendar", "picker", "input", "form"],
   "category": "inputs",
+  "registryDependencies": ["calendar"],
   "meta": {
     "name": "DatePicker",
     "description": "An accessible date-picker with a calendar popover.",
@@ -241,6 +242,7 @@
       }
     ],
     "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "registryDependencies": ["calendar"],
     "tags": ["date", "calendar", "picker", "input", "form"],
     "intent": {
       "whenToUse": [

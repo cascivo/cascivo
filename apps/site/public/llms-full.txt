@@ -3522,6 +3522,7 @@ import { Carousel } from '@cascivo/react'
 | `defaultIndex` | `number` | no | `0` | The initial slide index when uncontrolled. |
 | `onIndexChange` | `(index: number) => void` | no | — | Called with the new slide index when it changes. |
 | `loop` | `boolean` | no | `false` | When true, navigation wraps around from end to start. |
+| `autoplay` | `number` | no | — | Milliseconds between automatic advances. Omit or set 0 to leave rotation off. Pauses on hover, on focus within, while the tab is hidden and under prefers-reduced-motion, and always renders a play/pause control. |
 
 ## Examples
 
@@ -8095,6 +8096,14 @@ import { DatePicker } from '@cascivo/react'
 | `min` | `string` | no | — | Minimum ISO date |
 | `max` | `string` | no | — | Maximum ISO date |
 | `clearable` | `boolean` | no | `false` | Shows a clear button |
+| `typeable` | `boolean` | no | `true` | When true, the field accepts a typed date as well as one picked from the calendar. |
+| `disabledDate` | `(date: Date) => boolean` | no | — | Rejects individual dates the bounds allow — holidays, weekends, taken slots. |
+| `format` | `Intl.DateTimeFormatOptions` | no | — | Formatting options for the displayed date. Defaults to the locale's numeric form. |
+| `showToday` | `boolean` | no | `false` | When true, the calendar offers a button that jumps to the current month. |
+| `name` | `string` | no | — | Submitted with a surrounding form — a hidden input carrying the ISO value. |
+| `required` | `boolean` | no | — | Marks the control as required for assistive technology. |
+| `open` | `boolean` | no | — | Controlled open state of the calendar popup. |
+| `onOpenChange` | `(open: boolean) => void` | no | — | Called when the popup opens or closes. |
 | `label` | `string` | no | — | Visible field label rendered above the input; it also names the control. Rendered on screen. |
 | `hint` | `string` | no | — | Hint text |
 | `error` | `string` | no | — | Error message |
@@ -8156,7 +8165,7 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `combobox`
-- **Keyboard:** Enter, Space, Escape, ArrowUp, ArrowDown, ArrowLeft, ArrowRight
+- **Keyboard:** ArrowDown, ArrowUp, ArrowLeft, ArrowRight, Home, End, PageUp, PageDown, Enter, Space, Escape, Delete
 
 ## Dependencies
 
@@ -9277,9 +9286,10 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-subtle`
-- `--cascivo-color-success`
+- `--cascivo-color-success-foreground`
 - `--cascivo-color-destructive`
 - `--cascivo-color-destructive-subtle`
+- `--cascivo-target-min-coarse`
 
 ## Accessibility
 
@@ -19818,6 +19828,7 @@ import { TreeView } from '@cascivo/react'
 | `selected` | `string \| string[]` | no | — | The controlled selected node id(s). |
 | `defaultSelected` | `string \| string[]` | no | — | The initially selected node id(s) when uncontrolled. |
 | `onSelectChange` | `(selected: string \| string[]) => void` | no | — | Called with the new selection when it changes. |
+| `onValueChange` | `(selected: string \| string[]) => void` | no | — | Called with the new selection. Preferred over `onSelectChange`, which is the catalog’s only value-carrying handler not named onValueChange and is deprecated. |
 | `expanded` | `string[]` | no | — | The controlled set of expanded node ids. |
 | `defaultExpanded` | `string[]` | no | — | The initially expanded node ids when uncontrolled. |
 | `onExpandedChange` | `(expanded: string[]) => void` | no | — | Called with the new expanded set when it changes. |
@@ -19856,7 +19867,7 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `tree`
-- **Keyboard:** ArrowDown, ArrowUp, ArrowRight, ArrowLeft, Home, End, Enter, Space, Typeahead
+- **Keyboard:** *, ArrowDown, ArrowUp, ArrowRight, ArrowLeft, Home, End, Enter, Space, Typeahead
 
 ## Dependencies
 

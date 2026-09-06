@@ -470,6 +470,7 @@
     { "name": "--cascivo-skeleton-width", "resolvedDefault": "100%" },
     { "name": "--cascivo-stack-index", "resolvedDefault": "0" },
     { "name": "--cascivo-stack-offset", "resolvedDefault": "4px" },
+    { "name": "--cascivo-target-min", "resolvedDefault": "1.5rem" },
     { "name": "--cascivo-textarea-max-block-size", "resolvedDefault": "20lh" },
     { "name": "--cascivo-tooltip-anchor", "resolvedDefault": "attr(data-anchor)" },
     { "name": "--cascivo-tree-indent", "resolvedDefault": "var(--cascivo-space-5)" },
@@ -683,7 +684,8 @@
         { "name": "index", "type": "number", "required": false },
         { "name": "defaultIndex", "type": "number", "required": false },
         { "name": "onIndexChange", "type": "(index: number) => void", "required": false },
-        { "name": "loop", "type": "boolean", "required": false }
+        { "name": "loop", "type": "boolean", "required": false },
+        { "name": "autoplay", "type": "number", "required": false }
       ]
     },
     {
@@ -969,6 +971,14 @@
         { "name": "min", "type": "string", "required": false },
         { "name": "max", "type": "string", "required": false },
         { "name": "clearable", "type": "boolean", "required": false },
+        { "name": "typeable", "type": "boolean", "required": false },
+        { "name": "disabledDate", "type": "(date: Date) => boolean", "required": false },
+        { "name": "format", "type": "Intl.DateTimeFormatOptions", "required": false },
+        { "name": "showToday", "type": "boolean", "required": false },
+        { "name": "name", "type": "string", "required": false },
+        { "name": "required", "type": "boolean", "required": false },
+        { "name": "open", "type": "boolean", "required": false },
+        { "name": "onOpenChange", "type": "(open: boolean) => void", "required": false },
         { "name": "label", "type": "string", "required": false },
         { "name": "hint", "type": "string", "required": false },
         { "name": "error", "type": "string", "required": false },
@@ -2168,6 +2178,11 @@
         { "name": "defaultSelected", "type": "string | string[]", "required": false },
         {
           "name": "onSelectChange",
+          "type": "(selected: string | string[]) => void",
+          "required": false
+        },
+        {
+          "name": "onValueChange",
           "type": "(selected: string | string[]) => void",
           "required": false
         },

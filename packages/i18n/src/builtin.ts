@@ -171,6 +171,7 @@ export const builtin = {
     uploading: 'Uploading',
     complete: 'Upload complete',
     error: 'Upload failed',
+    status: { one: '{count} file: {state}', other: '{count} files: {state}' },
   }),
   passwordInput: defineMessages('cascade.passwordInput', {
     reveal: 'Show password',
@@ -519,6 +520,7 @@ defineCatalog(builtin.fileUploader, 'de', {
   uploading: 'Wird hochgeladen',
   complete: 'Hochladen abgeschlossen',
   error: 'Hochladen fehlgeschlagen',
+  status: { one: '{count} Datei: {state}', other: '{count} Dateien: {state}' },
 })
 defineCatalog(builtin.passwordInput, 'de', {
   reveal: 'Passwort anzeigen',

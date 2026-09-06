@@ -206,6 +206,8 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  // The popup grid is Calendar itself now, rather than a second copy of its month maths.
+  registryDependencies: ['calendar'],
   tags: ['date', 'calendar', 'picker', 'input', 'form'],
   intent: {
     whenToUse: [

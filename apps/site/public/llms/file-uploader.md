@@ -80,9 +80,10 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-subtle`
-- `--cascivo-color-success`
+- `--cascivo-color-success-foreground`
 - `--cascivo-color-destructive`
 - `--cascivo-color-destructive-subtle`
+- `--cascivo-target-min-coarse`
 
 ## Accessibility
 

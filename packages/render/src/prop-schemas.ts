@@ -1153,6 +1153,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['boolean'],
     },
+    {
+      name: 'autoplay',
+      required: false,
+      primitives: ['number'],
+    },
   ],
   Center: [
     {
@@ -2183,6 +2188,43 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'clearable',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'typeable',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'disabledDate',
+      required: false,
+    },
+    {
+      name: 'format',
+      required: false,
+    },
+    {
+      name: 'showToday',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'name',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'required',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'open',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onOpenChange',
+      required: false,
     },
     {
       name: 'label',
@@ -7165,6 +7207,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'onSelectChange',
+      required: false,
+    },
+    {
+      name: 'onValueChange',
       required: false,
     },
     {
