@@ -35,6 +35,12 @@ export interface ToggleGroupProps extends Omit<
    */
   orientation?: 'horizontal' | 'vertical'
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
 }
 

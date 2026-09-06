@@ -31,6 +31,12 @@ export interface MenuButtonProps {
   items: MenuButtonItem[]
   variant?: 'primary' | 'secondary' | 'ghost'
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * Disables the trigger
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
   align?: 'start' | 'end'
   labels?: { open?: string }

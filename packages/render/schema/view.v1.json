@@ -1211,6 +1211,24 @@
                   "searchable": {
                     "type": "boolean"
                   },
+                  "loading": {
+                    "type": "boolean"
+                  },
+                  "creatable": {
+                    "type": "boolean"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "required": {
+                    "type": "boolean"
+                  },
+                  "open": {
+                    "type": "boolean"
+                  },
+                  "defaultOpen": {
+                    "type": "boolean"
+                  },
                   "label": {
                     "type": "string"
                   },

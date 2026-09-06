@@ -1615,6 +1615,52 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['boolean'],
     },
     {
+      name: 'loading',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onSearchChange',
+      required: false,
+    },
+    {
+      name: 'filter',
+      required: false,
+    },
+    {
+      name: 'creatable',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onCreate',
+      required: false,
+    },
+    {
+      name: 'name',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'required',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'open',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'defaultOpen',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onOpenChange',
+      required: false,
+    },
+    {
       name: 'label',
       required: false,
       primitives: ['string'],

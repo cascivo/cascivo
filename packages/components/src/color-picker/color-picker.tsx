@@ -7,12 +7,7 @@ import styles from './color-picker.module.css'
 
 export interface ColorPickerLabels {
   hue?: string
-  /**
-   * When true, enables alpha (opacity) selection.
-   *
-   * @defaultValue `true`
-   * @see the component manifest
-   */
+  /** Accessible name for the alpha slider. */
   alpha?: string
   colorArea?: string
   eyedropper?: string
@@ -43,6 +38,12 @@ export interface ColorPickerProps {
   defaultValue?: string
   onValueChange?: (value: string) => void
   presets?: string[]
+  /**
+   * When true, enables alpha (opacity) selection.
+   *
+   * @defaultValue `true`
+   * @see the component manifest
+   */
   alpha?: boolean
   label?: string
   /**

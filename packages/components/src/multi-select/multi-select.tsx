@@ -30,22 +30,11 @@ export interface MultiSelectLabels {
   selected?: (count: number) => string
   search?: string
   noResults?: string
-  /**
-   * When true, the list reports itself as busy and shows a loading row instead of the
-   * no-results message.
-   *
-   * @defaultValue `false`
-   * @see the component manifest
-   */
+  /** Text shown in place of the no-results message while `loading` is true. */
   loading?: string
   clear?: string
   remove?: string
-  /**
-   * When true, shows a row that selects or clears every enabled option at once.
-   *
-   * @defaultValue `false`
-   * @see the component manifest
-   */
+  /** Text on the select-all row while nothing is selected. */
   selectAll?: string
   clearAll?: string
   create?: string
@@ -141,7 +130,7 @@ export interface MultiSelectProps extends Omit<
   onCreate?: (label: string) => void
   /**
    * When true, the list reports itself as busy and shows a loading row instead of the
-   * no-results message — the state a remote search is in between keystroke and response.
+   * no-results message.
    *
    * @defaultValue `false`
    * @see the component manifest

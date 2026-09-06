@@ -58,7 +58,9 @@ export const builtin = {
     placeholder: 'Select an option',
     empty: 'No options found',
     clear: 'Clear selection',
-    search: 'Search options',
+    loading: 'Loading options…',
+    create: 'Add “{label}”',
+    resultCount: '{count} options available',
   }),
   dataTable: defineMessages('cascade.dataTable', {
     search: 'Search',
@@ -394,7 +396,9 @@ defineCatalog(builtin.combobox, 'de', {
   placeholder: 'Option auswählen',
   empty: 'Keine Optionen gefunden',
   clear: 'Auswahl löschen',
-  search: 'Optionen durchsuchen',
+  loading: 'Optionen werden geladen…',
+  create: '„{label}“ hinzufügen',
+  resultCount: '{count} Optionen verfügbar',
 })
 defineCatalog(builtin.dataTable, 'de', {
   search: 'Suchen',

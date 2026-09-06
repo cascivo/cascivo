@@ -36,6 +36,12 @@ export interface ScatterChartProps {
   series: readonly ScatterChartSeries[]
   title: string
   description?: string
+  /**
+   * Point radius or accessor
+   *
+   * @defaultValue `4`
+   * @see the component manifest
+   */
   r?: number | ((d: ScatterDatum) => number)
   /**
    * Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks

@@ -1607,6 +1607,14 @@
           "type": "registry:component"
         },
         {
+          "path": "combobox/list-nav.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "combobox/option-list.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "combobox/combobox.module.css",
           "type": "registry:component"
         }

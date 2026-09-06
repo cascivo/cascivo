@@ -9103,7 +9103,13 @@
           },
           {
             "bad": "Setting searchable={false} on a 200-item list",
-            "why": "Without filtering the list becomes an unusable scroll; either keep search on or switch to a different selection pattern"
+            "good": "Keep the default searchable so the user can filter",
+            "why": "Type-to-select still jumps to a matching option, but without a visible filter a 200-row list is an unusable scroll; searchable={false} is for short lists"
+          },
+          {
+            "bad": "<Combobox options={remote} onSearchChange={search} />",
+            "good": "<Combobox options={remote} onSearchChange={search} filter={() => true} />",
+            "why": "The built-in matcher still runs over the server’s results and filters them a second time against the same query, hiding rows the server deliberately returned"
           }
         ],
         "related": [
@@ -9123,7 +9129,7 @@
             "reason": "Use the Cmd+K palette for command/navigation search rather than value selection"
           }
         ],
-        "a11yRationale": "Trigger exposes role=\"combobox\" with aria-expanded, aria-controls, aria-haspopup=\"listbox\", and aria-activedescendant pointing at the active option so screen readers track focus through arrow navigation without moving DOM focus off the input; error state is wired via aria-invalid + aria-describedby and announced with role=\"alert\"",
+        "a11yRationale": "Two APG combobox shapes, chosen by `searchable`. With searchable (the default) the field is an <input role=\"combobox\"> with aria-autocomplete=\"list\" that filters as the user types — the APG editable combobox. With searchable={false} it is a <button role=\"combobox\"> and printable characters type-to-select — the APG select-only combobox. Either way the field itself keeps DOM focus and owns aria-expanded, aria-controls and aria-activedescendant, so assistive technology tracks the active option as the arrows move it; the previous build put aria-activedescendant on a trigger while focus had moved into a separate search input, so nothing was tracked. The listbox holds only role=\"option\" rows (with aria-selected and aria-disabled) and role=\"group\" headings — the loading and no-results messages are siblings of it, as role=\"listbox\" owns no other children. ArrowUp/ArrowDown skip disabled rows and wrap, PageUp/PageDown move by ten, Alt+ArrowDown opens without moving the active option and Alt+ArrowUp closes keeping the value, Enter selects, Escape closes and returns focus to the field, and Tab closes without stealing focus back. Home/End jump the list only in the select-only variant, because in the editable one they belong to the text caret. Outside-pointer and Escape dismissal come from the shared DismissableLayer rather than a hand-rolled document listener. A polite live region reports the result count as the filter narrows. Selection, the active row and the focus ring each carry a non-colour channel under forced-colors, and every control reaches the coarse-pointer target minimum.",
         "flexibility": [
           {
             "area": "searchable",
@@ -9200,12 +9206,105 @@
         },
         {
           "name": "searchable",
-          "description": "When true, shows a search/filter input.",
+          "description": "When true the field is a text input that filters the list as the user types (the APG editable combobox). When false it is a button that opens the list, and type-to-select jumps to a matching option (the APG select-only combobox).",
           "type": "boolean",
           "required": false,
           "default": "true",
           "schema": {
             "kind": "boolean"
+          }
+        },
+        {
+          "name": "loading",
+          "description": "When true, the list reports itself as busy and shows a loading row instead of the empty message.",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onSearchChange",
+          "description": "Called with the search text on every keystroke. Pair it with filter={() => true} for a server-driven list.",
+          "type": "(query: string) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "filter",
+          "description": "Replaces the built-in diacritic-insensitive matcher.",
+          "type": "(option: ComboboxOption, query: string) => boolean",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "creatable",
+          "description": "When true, offers the current search text as a new option.",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onCreate",
+          "description": "Called with the typed label when the user picks the \"create\" row.",
+          "type": "(label: string) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "name",
+          "description": "Submitted with a surrounding form — a hidden input carrying the selected value.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "required",
+          "description": "Marks the control as required for assistive technology.",
+          "type": "boolean",
+          "required": false,
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "open",
+          "description": "Controlled open state of the listbox.",
+          "type": "boolean",
+          "required": false,
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "defaultOpen",
+          "description": "The initial open state when uncontrolled.",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onOpenChange",
+          "description": "Called when the listbox opens or closes.",
+          "type": "(open: boolean) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
           }
         },
         {
@@ -9314,7 +9413,7 @@
         }
       ],
       "contextUrl": "/context/combobox.md",
-      "aiPrompt": "I am modifying the cascivo Combobox component (inputs). Filterable single-select with an animated custom listbox, built on the dropdown open/close machine\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nCombobox is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent-text, --cascivo-color-surface, --cascivo-color-surface-overlay, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-text-subtle, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-radius-input, --cascivo-radius-md, --cascivo-radius-sm, --cascivo-shadow-lg, --cascivo-motion-enter, --cascivo-z-dropdown\n\nAccessibility: role \"combobox\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Enter/Escape/Tab. Keep it AA.\n\nDo not change (strict): token names — Listbox/field styling resolves to semantic --cascivo-color-* / --cascivo-radius-* tokens\nFlexible: searchable, controlled vs uncontrolled.\n\nDo not invent props, tokens, or global viewport media queries."
+      "aiPrompt": "I am modifying the cascivo Combobox component (inputs). Filterable single-select with an animated custom listbox, built on the dropdown open/close machine\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nCombobox is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent-text, --cascivo-color-surface, --cascivo-color-surface-overlay, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-text-subtle, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-font-medium, --cascivo-font-bold, --cascivo-radius-field, --cascivo-radius-overlay, --cascivo-radius-item, --cascivo-radius-control, --cascivo-shadow-overlay, --cascivo-motion-enter, --cascivo-z-dropdown, --cascivo-target-min-coarse\n\nAccessibility: role \"combobox\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Home/End/PageUp/PageDown/Enter/Space/Escape/Tab. Keep it AA.\n\nDo not change (strict): token names — Listbox/field styling resolves to semantic --cascivo-color-* / --cascivo-radius-* tokens\nFlexible: searchable, controlled vs uncontrolled.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "CommandMenu",
