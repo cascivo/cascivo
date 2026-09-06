@@ -4753,7 +4753,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/data-table.module.css"
       ],
       "fileHashes": {
-        "data-table.tsx": "sha256-0b675c8ac60fb56d69d5c7b57f6fa6c639797da3fcb86876c52e7bdbbeed5466",
+        "data-table.tsx": "sha256-6a9aa7947d79bb6e6d6c1802568e4f8cbd2a63f819f9923fe6bf0f2c81f9c65b",
         "column-filter.ts": "sha256-dc062cef69abba1fb3c374a0c800a8488d8f43f324a543afc4ba9d3f9723c839",
         "column-layout.ts": "sha256-02a18b8fda408cf2f88709c127f99f9f3365dc2b929844cd6ac9400c5842591e",
         "grid-keys.ts": "sha256-c5064f632e8be232a6fd20e4a480724b4b061b3c17e0bcc0217678473b5ff704",

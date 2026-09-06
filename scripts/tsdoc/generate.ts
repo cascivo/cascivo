@@ -25,6 +25,17 @@
  *   - **Idempotent.** Regenerating produces a byte-identical file, so the drift check passes.
  *   - **Only `…Props` interfaces**, only props the manifest documents.
  *
+ * ## It must run BEFORE any generator that embeds component source
+ *
+ * This one REWRITES `.tsx` files, so anything that copies a component's source into an
+ * artifact — `registry:generate`, which embeds whole files in `r/shadcn/*.json` and hashes
+ * them in `registry.json` — has to see the post-sync text. Ordered after them, a single
+ * `pnpm regen` emits the registry from the pre-sync source and then rewrites that source,
+ * so the two disagree until a SECOND pass and CI's drift job fails on a tree its own
+ * remedy ("run `pnpm regen` and commit the result") does not fix. Hence its position right
+ * after `barrels:generate` in the `regen` chain: it reads only hand-written `.meta.ts` and
+ * `.tsx` files, so nothing else has to precede it.
+ *
  * Run with: `pnpm tsdoc:generate` (part of `pnpm regen`).
  */
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs'
