@@ -65,6 +65,7 @@
     "type-exports:check": "node --experimental-strip-types --test scripts/checks/type-exports-parity.test.ts",
     "cold-adopter:check": "node --experimental-strip-types --test scripts/checks/cold-adopter.test.ts",
     "isolated:check": "node --experimental-strip-types --test scripts/checks/isolated-install.test.ts",
+    "framework:check": "node --experimental-strip-types --test --test-timeout=900000 scripts/checks/framework-install.test.ts",
     "brand:check": "node scripts/brand-guard.mjs",
     "demos:storage:check": "node --experimental-strip-types --test scripts/checks/demo-storage-keys.test.ts",
     "deps:check": "node scripts/registry/deps-check.ts",

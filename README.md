@@ -277,22 +277,23 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 
 ### Examples
 
-| Example                                                           | Description                                                                                         |
-| ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| [`@cascivo/example-astro-islands`](apps/examples/astro-islands)   |                                                                                                     |
-| [`@cascivo/example-deploy`](apps/examples/deploy)                 | Example app — a Vercel-style deployment platform built with cascivo                                 |
-| [`@cascivo/example-flow`](apps/examples/flow)                     | Example app — a Camunda-style process orchestration dashboard built with cascivo                    |
-| [`@cascivo/json-playground`](apps/examples/json-playground)       | Live JSON → UI renderer playground using @cascivo/render                                            |
-| [`@cascivo/example-kit`](apps/examples/kit)                       | Shared utilities for the cascivo example dashboards (internal)                                      |
-| [`@cascivo/example-pay`](apps/examples/pay)                       | Example app — a Stripe-style payments and revenue dashboard built with cascivo                      |
-| [`@cascivo/example-pulse`](apps/examples/pulse)                   | Example app — a Datadog-style real-time observability dashboard built with cascivo                  |
-| [`@cascivo/example-react-next`](apps/examples/react-next)         | Next.js App Router example using cascivo                                                            |
-| [`@cascivo/example-react-vite`](apps/examples/react-vite)         | Vite + React example app using cascivo                                                              |
-| [`@cascivo/example-react-vite-ssr`](apps/examples/react-vite-ssr) | Vite SSR (TanStack Start / Remix / workerd) example — server-renders cascivo through the built dist |
-| [`@cascivo/registry-starter`](apps/examples/registry-starter)     | Starter template for publishing a third-party cascivo component registry                            |
-| [`@cascivo/template-starter`](apps/examples/template-starter)     | Starter template for publishing a cascivo template to the marketplace                               |
-| [`@cascivo/example-track`](apps/examples/track)                   | Example app — a Linear-style keyboard-first issue tracker built with cascivo                        |
-| [`@cascivo/example-trade`](apps/examples/trade)                   | Example app — a Trade Republic-style brokerage trading workspace built with cascivo                 |
+| Example                                                           | Description                                                                                                           |
+| ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| [`@cascivo/example-astro-islands`](apps/examples/astro-islands)   |                                                                                                                       |
+| [`@cascivo/example-deploy`](apps/examples/deploy)                 | Example app — a Vercel-style deployment platform built with cascivo                                                   |
+| [`@cascivo/example-flow`](apps/examples/flow)                     | Example app — a Camunda-style process orchestration dashboard built with cascivo                                      |
+| [`@cascivo/example-ghost-theme`](apps/examples/ghost-theme)       | A real Ghost (Handlebars) theme styled with cascivo tokens + themes — the executable form of docs/USING-WITH-GHOST.md |
+| [`@cascivo/json-playground`](apps/examples/json-playground)       | Live JSON → UI renderer playground using @cascivo/render                                                              |
+| [`@cascivo/example-kit`](apps/examples/kit)                       | Shared utilities for the cascivo example dashboards (internal)                                                        |
+| [`@cascivo/example-pay`](apps/examples/pay)                       | Example app — a Stripe-style payments and revenue dashboard built with cascivo                                        |
+| [`@cascivo/example-pulse`](apps/examples/pulse)                   | Example app — a Datadog-style real-time observability dashboard built with cascivo                                    |
+| [`@cascivo/example-react-next`](apps/examples/react-next)         | Next.js App Router example using cascivo                                                                              |
+| [`@cascivo/example-react-vite`](apps/examples/react-vite)         | Vite + React example app using cascivo                                                                                |
+| [`@cascivo/example-react-vite-ssr`](apps/examples/react-vite-ssr) | Vite SSR (TanStack Start / Remix / workerd) example — server-renders cascivo through the built dist                   |
+| [`@cascivo/registry-starter`](apps/examples/registry-starter)     | Starter template for publishing a third-party cascivo component registry                                              |
+| [`@cascivo/template-starter`](apps/examples/template-starter)     | Starter template for publishing a cascivo template to the marketplace                                                 |
+| [`@cascivo/example-track`](apps/examples/track)                   | Example app — a Linear-style keyboard-first issue tracker built with cascivo                                          |
+| [`@cascivo/example-trade`](apps/examples/trade)                   | Example app — a Trade Republic-style brokerage trading workspace built with cascivo                                   |
 
 ## Components
 

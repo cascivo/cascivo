@@ -1,7 +1,10 @@
 # Framework templates for Astro and Ghost — research findings
 
-> **Status: all four recommendations implemented.** Astro is ✅ in the compatibility matrix,
-> `cascivo create --framework astro` exists, and `USING-WITH-GHOST.md` is written.
+> **Status: all four recommendations implemented, and both verification gaps closed.**
+> Astro is ✅ in the compatibility matrix, `cascivo create --framework astro` exists,
+> `USING-WITH-GHOST.md` is written and backed by a real gscan-validated theme
+> (`apps/examples/ghost-theme`), and `pnpm framework:check` now builds scaffolded apps from
+> packed tarballs in CI.
 >
 > **One finding in §2 was wrong and is corrected in §2.5.** The export-condition fix alone
 > does NOT make a real npm install work — it was verified only against the monorepo's
@@ -215,8 +218,14 @@ So both are required:
 The lesson generalizes past Astro: **a workspace-linked example app cannot validate
 packaging behaviour that depends on externalization.** `isolated:check` and `pack:check`
 both passed the export fix and neither could catch this, because neither builds an Astro
-app. The gap is a packed-install framework smoke test; the scaffold verification below is
-the manual stand-in.
+app.
+
+That gap is now closed by `pnpm framework:check`
+(`scripts/checks/framework-install.test.ts`): it packs the tarballs, runs the real
+`cascivo create` scaffolder for each framework, installs outside the monorepo, builds, and
+asserts the emitted HTML's cascivo classes have rules. Each arm also breaks its own wiring
+on purpose and requires the check to fail, so it cannot quietly stop measuring anything —
+the failure mode that produced this correction in the first place.
 
 Verified after the correction: `cascivo create --framework astro`, installed from packed
 tarballs, builds three routes with every referenced class matched, the canonical cascade
@@ -270,7 +279,9 @@ machinery at all.
 4. ~~**Ghost: write `USING-WITH-GHOST.md`.**~~ **Done** — tokens + themes in a Handlebars
    theme, with a verified flatten recipe (the shipped CSS uses bare `@import` specifiers and
    Ghost has no build step), plus the headless-Ghost alternative. No template, no framework
-   enum entry.
+   enum entry. Backed by `apps/examples/ghost-theme`, validated in CI by Ghost's own
+   `gscan` — which immediately caught two required Koenig classes the hand-written snippets
+   had missed, vindicating the decision not to ship prose alone.
 
 **Do not:** add `'astro'` to `TemplateMeta['framework']` before step 1. Every template
 carrying that value would render unstyled under the two directives adopters reach for first.

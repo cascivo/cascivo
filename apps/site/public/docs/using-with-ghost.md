@@ -55,10 +55,15 @@ echo "@import '@cascivo/themes/light-dark.css';" > cascivo.css
 npx esbuild cascivo.css --bundle --outfile=cascivo.flat.css
 ```
 
-`light-dark.css` produces **~28 KB** unminified — tokens, the base layer, and the light and
+`light-dark.css` produces **~27 KB** unminified — tokens, the base layer, and the light and
 dark themes, with every `@import` resolved and the cascade layer order intact. Add
 `--minify` if you like. For all twelve themes use `@cascivo/themes/all.css` instead; for one
 theme, import that theme's file (each self-imports the tokens it needs).
+
+One cosmetic detail: concatenation leaves the leading `@layer a, b, c;` statement re-listing
+some names it already contains. That is harmless — a layer keeps the position of its first
+appearance — but if you want the canonical statement back, collapse the duplicates, as
+[`scripts/build-css.mjs`](https://github.com/cascivo/cascivo/blob/main/apps/examples/ghost-theme/scripts/build-css.mjs) does.
 
 ### 2. Drop it in
 
@@ -171,12 +176,41 @@ used with no client directive render to HTML with zero JavaScript. See
 
 ---
 
+## A working theme
+
+Everything on this page is implemented as a real theme in
+[`apps/examples/ghost-theme`](https://github.com/cascivo/cascivo/tree/main/apps/examples/ghost-theme) — templates, the flatten step,
+and a stylesheet whose every value is a `--cascivo-*` token. Copy it as a starting point:
+
+```
+apps/examples/ghost-theme/
+├── scripts/build-css.mjs   # the flatten step, as a script
+├── scripts/check-theme.mjs # the assertions below
+└── theme/                  # the Ghost theme itself — this is what you zip and upload
+    ├── package.json        # Ghost's theme manifest
+    ├── default.hbs  index.hbs  post.hbs
+    └── assets/css/{cascivo.css (generated), screen.css}
+```
+
 ## Verification status
 
-- The flatten recipe is **verified**: `esbuild --bundle` over
-  `@import '@cascivo/themes/light-dark.css'` resolves every bare specifier, emits ~28 KB,
-  and preserves the canonical `@layer` order and both `[data-theme]` scopes.
-- The Ghost side (template structure, `{{asset}}`, no build step, no server JS in themes)
-  comes from [Ghost's own theme documentation](https://docs.ghost.org/themes/), not from a
-  cascivo-built Ghost theme. There is no Ghost example app in this repo and no CI job
-  exercising one — treat the `.hbs` snippets as a documented recipe, not a tested contract.
+`pnpm --filter @cascivo/example-ghost-theme run check` runs in CI and asserts:
+
+- **The flatten resolves every bare `@import`.** ~27 KB out, no surviving specifier. A
+  survivor would be a silent 404 in Ghost and every `--cascivo-*` undefined.
+- **The canonical `@layer` order survives flattening**, and both `[data-theme]` scopes are
+  present — this page tells you to rely on both.
+- **`screen.css` hard-codes no color.** The example's claim is a theme built entirely on
+  tokens; a raw color would not follow `data-theme`.
+- **[`gscan`](https://github.com/TryGhost/gscan), Ghost's own theme validator, reports zero
+  errors.** This is what makes the theme real rather than plausible-looking Handlebars — and
+  it earned its place immediately: the first version of this guide's snippets was missing the
+  `.kg-width-wide` / `.kg-width-full` Koenig classes that Ghost _requires_ a theme to style,
+  and gscan is what caught it.
+
+Each of those fails when deliberately broken; that was checked rather than assumed.
+
+**Not covered:** nothing here runs Ghost and renders a page. There is no headless Ghost in
+CI, so the templates are a _validated_ recipe, not a _rendered_ one. Theme structure,
+`{{asset}}`, and the absence of a build step come from
+[Ghost's own documentation](https://docs.ghost.org/themes/).

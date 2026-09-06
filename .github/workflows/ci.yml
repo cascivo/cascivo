@@ -217,12 +217,32 @@ jobs:
       - name: No-JS disclosure canary (static markup, real keyboard)
         run: pnpm run no-js:check
 
-      # Executable form of the C2 report: builds a real Astro app with one client directive
-      # per page and reports, per directive, whether the component CSS its markup references
-      # was actually emitted. Exits 0 either way — it keeps the compatibility grade honest,
-      # it does not gate on upstream Astro behaviour. See docs/USING-WITH-ASTRO.md.
-      - name: Astro island CSS probe (keeps the ⚠️ Partial grade evidence-backed)
+      # Builds a real Astro app with one client directive per page and asserts, per
+      # directive, that the component CSS its markup references was actually emitted. Now a
+      # REGRESSION TEST (it used to exit 0 on failure, back when the drop was believed to be
+      # unfixable upstream). Note it depends on @cascivo/react as workspace:* — Vite never
+      # externalizes a linked package — so it covers only the export-condition half. The
+      # adopter-shaped half is framework:check below. See docs/USING-WITH-ASTRO.md.
+      - name: Astro island CSS regression test (workspace-linked half)
         run: pnpm --filter @cascivo/example-astro-islands run build
+
+      # The adopter-shaped half: packs the tarballs, runs the real `cascivo create`
+      # scaffolder for each framework, installs OUTSIDE the monorepo, builds, and asserts
+      # the emitted HTML's cascivo classes have rules. This is the only gate that sees
+      # Vite's externalization of a real node_modules package — the cause the workspace
+      # fixture above structurally cannot reproduce, and which shipped an unstyled Astro
+      # experience once already. Each arm also breaks its wiring on purpose and requires
+      # the check to fail, so the canary cannot silently stop measuring anything.
+      - name: Framework-install canary (scaffolded apps render styled from tarballs)
+        run: pnpm run framework:check
+
+      # Ghost themes are Handlebars with no React and no build step, so the components can
+      # never apply — but the token/theme CSS does, once flattened past its bare @import
+      # specifiers. This builds that flatten and runs GSCAN, Ghost's own theme validator,
+      # so docs/USING-WITH-GHOST.md is a tested contract rather than plausible-looking
+      # snippets. gscan caught two required Koenig classes the hand-written guide missed.
+      - name: Ghost theme canary (tokens flatten + gscan validates the theme)
+        run: pnpm --filter @cascivo/example-ghost-theme run check
 
       - name: Bundle budgets
         run: pnpm run audit:bundle
