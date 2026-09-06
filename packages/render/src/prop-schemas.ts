@@ -4348,11 +4348,15 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'value',
-      required: true,
+      required: false,
+    },
+    {
+      name: 'defaultValue',
+      required: false,
     },
     {
       name: 'onValueChange',
-      required: true,
+      required: false,
     },
     {
       name: 'placeholder',
@@ -4360,13 +4364,110 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
     {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'aria-labelledby',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'aria-describedby',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'aria-invalid',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'hint',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'error',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'display',
+      required: false,
+      enum: ['count', 'chips'],
+    },
+    {
       name: 'disabled',
       required: false,
       primitives: ['boolean'],
     },
     {
+      name: 'clearable',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'selectAll',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'max',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'creatable',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onCreate',
+      required: false,
+    },
+    {
+      name: 'loading',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onSearchChange',
+      required: false,
+    },
+    {
+      name: 'filter',
+      required: false,
+    },
+    {
+      name: 'searchable',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'size',
+      required: false,
+      enum: ['sm', 'md', 'lg'],
+    },
+    {
+      name: 'name',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'labels',
       required: false,
+    },
+    {
+      name: 'id',
+      required: false,
+      primitives: ['string'],
     },
   ],
   NativeSelect: [

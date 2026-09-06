@@ -258,7 +258,7 @@ routing break after adding one of these, check that the import resolves to
 - **Input** — Text input field with optional label, hint, and error state
 - **InputGroup** — Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders
 - **Label** — Accessible caption for a form control
-- **MultiSelect** — Searchable multi-value select with popover listbox
+- **MultiSelect** — Searchable multi-value select with a popover listbox, chips and grouping
 - **NativeSelect** — A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring
 - **NumberInput** — Numeric input with stepper buttons, clamping, precision, and locale formatting
 - **OtpInput** — Segmented one-time code input

@@ -1371,11 +1371,36 @@
       "name": "MultiSelect",
       "props": [
         { "name": "options", "type": "MultiSelectOption[]", "required": true },
-        { "name": "value", "type": "string[]", "required": true },
-        { "name": "onValueChange", "type": "(v: string[]) => void", "required": true },
+        { "name": "value", "type": "string[]", "required": false },
+        { "name": "defaultValue", "type": "string[]", "required": false },
+        { "name": "onValueChange", "type": "(value: string[]) => void", "required": false },
         { "name": "placeholder", "type": "string", "required": false },
+        { "name": "label", "type": "string", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false },
+        { "name": "aria-labelledby", "type": "string", "required": false },
+        { "name": "aria-describedby", "type": "string", "required": false },
+        { "name": "aria-invalid", "type": "boolean", "required": false },
+        { "name": "hint", "type": "string", "required": false },
+        { "name": "error", "type": "string", "required": false },
+        { "name": "display", "type": "'count' | 'chips'", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
-        { "name": "labels", "type": "MultiSelectLabels", "required": false }
+        { "name": "clearable", "type": "boolean", "required": false },
+        { "name": "selectAll", "type": "boolean", "required": false },
+        { "name": "max", "type": "number", "required": false },
+        { "name": "creatable", "type": "boolean", "required": false },
+        { "name": "onCreate", "type": "(label: string) => void", "required": false },
+        { "name": "loading", "type": "boolean", "required": false },
+        { "name": "onSearchChange", "type": "(query: string) => void", "required": false },
+        {
+          "name": "filter",
+          "type": "(option: MultiSelectOption, query: string) => boolean",
+          "required": false
+        },
+        { "name": "searchable", "type": "boolean", "required": false },
+        { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
+        { "name": "name", "type": "string", "required": false },
+        { "name": "labels", "type": "MultiSelectLabels", "required": false },
+        { "name": "id", "type": "string", "required": false }
       ]
     },
     {

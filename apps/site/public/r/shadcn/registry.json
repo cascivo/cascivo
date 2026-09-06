@@ -3439,11 +3439,19 @@
           "type": "registry:component"
         },
         {
+          "path": "multi-select/list-nav.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "multi-select/option-list.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "multi-select/multi-select.module.css",
           "type": "registry:component"
         }
       ],
-      "description": "Searchable multi-value select with popover listbox",
+      "description": "Searchable multi-value select with a popover listbox, chips and grouping",
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "registryDependencies": ["https://cascivo.com/r/shadcn/popover.json"],
       "categories": ["inputs"],
