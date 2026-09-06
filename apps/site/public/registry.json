@@ -10896,7 +10896,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/multi-select/multi-select.module.css"
       ],
       "fileHashes": {
-        "multi-select.tsx": "sha256-9945d09a1b1ef72988963b584bef96f69bd9c6b729274806342e175247bda91d",
+        "multi-select.tsx": "sha256-e21f6eab7353bb9bc488b61d9dee307b10b84a09fb3ee183f2e52d0bb67895d0",
         "index.ts": "sha256-a96401ec06d10d50661e72c64f097005706954a00cad748780e7e5a63f1f5a10",
         "list-nav.ts": "sha256-23970f965d7d83662ccc0e030294f9dd4d80daabe9304fb00c441d1d3dd35b9d",
         "option-list.ts": "sha256-93e2cebe41e01449b50f4f1bb7c32a41f80a88fdabae2f4609eac8953f1a5308",
