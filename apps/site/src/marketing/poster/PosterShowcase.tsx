@@ -21,9 +21,19 @@ const FRAMEWORKS = [
     href: `${REPO}/react-vite`,
   },
   {
+    name: 'Astro',
+    note: 'Islands server-render styled; page content ships zero JS. Scaffold one with cascivo create --framework astro.',
+    // The guide, not apps/examples/astro-islands: that fixture is workspace-linked, so its
+    // config omits the `vite.resolve.noExternal` line a real install requires. Pointing
+    // adopters at it would hand them a config that does not work.
+    href: `${DOCS_REPO}/USING-WITH-ASTRO.md`,
+    linkLabel: 'Read the Astro guide ↗',
+  },
+  {
     name: 'Preact',
     note: 'Signals are natively reactive — no adapter, via preact/compat.',
     href: `${DOCS_REPO}/USING-WITH-PREACT.md`,
+    linkLabel: 'Read the Preact guide ↗',
   },
 ]
 
@@ -67,17 +77,27 @@ export function PosterShowcase() {
         ))}
       </ul>
 
-      <ul className="pg-tiles pg-tiles--3 pg-frameworks">
+      <ul className="pg-tiles pg-tiles--4 pg-frameworks">
         {FRAMEWORKS.map((fw) => (
           <li key={fw.name} className="pg-pad pg-framework">
             <p className="pg-display pg-display--sub">{fw.name}</p>
             <p className="pg-note">{fw.note}</p>
             <a className="pg-link" href={fw.href} target="_blank" rel="noopener noreferrer">
-              See the example ↗
+              {fw.linkLabel ?? 'See the example ↗'}
             </a>
           </li>
         ))}
       </ul>
+
+      <p className="pg-pad pg-note pg-frameworks-aside">
+        Not a React app? <code>@cascivo/tokens</code> and <code>@cascivo/themes</code> are
+        framework-agnostic CSS — the colour system, type scale and twelve themes work anywhere,
+        components or not. There&apos;s a{' '}
+        <a href={`${DOCS_REPO}/USING-WITH-GHOST.md`} target="_blank" rel="noopener noreferrer">
+          Ghost (Handlebars) theme
+        </a>{' '}
+        built entirely on them.
+      </p>
 
       <p className="pg-pad pg-note pg-showcase-more">
         <a href="/showcase">See all {SHOWCASE.length} products built with cascivo →</a>

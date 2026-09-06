@@ -769,6 +769,22 @@
   align-items: flex-start;
 }
 
+/* The non-React aside: tokens + themes are plain CSS, so they work where the components
+   cannot. Ruled off from the framework tiles above so it does not read as a fifth tile. */
+.pg-frameworks-aside {
+  border-block-start: var(--cascivo-landing-rule-weight) solid var(--cascivo-color-border);
+}
+
+.pg-frameworks-aside code {
+  font-size: 0.9em;
+}
+
+/* Same treatment as .pg-showcase-more's link, so the two ruled-off lines that close this
+   section read as a pair rather than one link and one dead-looking phrase. */
+.pg-frameworks-aside a {
+  color: var(--cascivo-color-destructive);
+}
+
 .pg-showcase-more {
   border-block-start: var(--cascivo-landing-rule-weight) solid var(--cascivo-color-border);
 }
