@@ -12601,7 +12601,7 @@ Without FlexItem the Search takes the whole row and pushes the Select onto the n
 ```tsx
 <Flex direction="horizontal" gap={2}>
   <FlexItem size="grow" basis="0"><Search ariaLabel="Filter deployments" /></FlexItem>
-  <FlexItem size="fixed"><NativeSelect options={states} ariaLabel="State" /></FlexItem>
+  <FlexItem size="fixed"><Select options={states} ariaLabel="State" /></FlexItem>
 </Flex>
 ```
 
@@ -16842,8 +16842,8 @@ import { SegmentedControl } from '@cascivo/react'
 | `onValueChange` | `(v: string) => void` | yes | — | Called with the new value when it changes. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
-| `ariaLabel` | `string` | no | — | Accessible name for the group. Invisible — it names the role="group" and renders nothing. The raw DOM `aria-label` still wins over this. |
-| `label` | `string` | no | — | Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered. |
+| `ariaLabel` | `string` | no | — | Accessible name for the group. Invisible — it names the role="group" and renders nothing. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
+| `label` | `string` | no | — | Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered. Not rendered — screen readers only. |
 
 ## Examples
 

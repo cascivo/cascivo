@@ -15444,12 +15444,14 @@
           },
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "description": "Accessible name for the group. Invisible — it names the role=\"group\" and renders nothing. The raw DOM `aria-label` still wins over this.",
             "type": "string",
             "required": false
           },
           {
             "name": "label",
+            "nameVisibility": "invisible",
             "description": "Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered.",
             "type": "string",
             "required": false
@@ -16203,7 +16205,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/side-nav/side-nav.module.css"
       ],
       "fileHashes": {
-        "side-nav.tsx": "sha256-b855e63c2ec3d81a417b21822b0e6b7b788fe2f526758526438064b5719f3ece",
+        "side-nav.tsx": "sha256-0e2a7608ebce25e7c3e5909a08367c3d3729b4cd21c97ddd07d3a1113c73a242",
         "index.ts": "sha256-2c4c28ca1ec620b0e05a118ce458eed465026fa548102eebd4f450c260d7e157",
         "side-nav.module.css": "sha256-be7981a930bdf3a19250c229e96db1bd9ad1cd282970ca22b53b6dbfb0cd189a"
       },
@@ -21843,7 +21845,7 @@
           },
           {
             "title": "Toolbar: one field absorbs the row, the rest keep their width",
-            "code": "<Flex direction=\"horizontal\" gap={2}>\n  <FlexItem size=\"grow\" basis=\"0\"><Search ariaLabel=\"Filter deployments\" /></FlexItem>\n  <FlexItem size=\"fixed\"><NativeSelect options={states} ariaLabel=\"State\" /></FlexItem>\n</Flex>",
+            "code": "<Flex direction=\"horizontal\" gap={2}>\n  <FlexItem size=\"grow\" basis=\"0\"><Search ariaLabel=\"Filter deployments\" /></FlexItem>\n  <FlexItem size=\"fixed\"><Select options={states} ariaLabel=\"State\" /></FlexItem>\n</Flex>",
             "description": "Without FlexItem the Search takes the whole row and pushes the Select onto the next line"
           },
           {

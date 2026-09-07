@@ -257,7 +257,8 @@ export default [...yourConfig, ...cascivo] // spread LAST
 }
 ```
 
-Both rules are the same rule: it reports every `signal.value = next` as
+Both are the same rule — ESLint's `react-hooks/immutability` and oxlint's port of it,
+`react/immutability` — and it reports every `signal.value = next` as
 `This value cannot be modified`. Without the fix you get a lint warning on every
 piece of state you write — 8 across 3 files in one reported build, and nothing
 else. The oxlint half was missing entirely until the 2026-08-31 report (§13)

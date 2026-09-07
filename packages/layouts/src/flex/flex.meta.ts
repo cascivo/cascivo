@@ -83,7 +83,7 @@ export const meta: ComponentMeta = {
     },
     {
       title: 'Toolbar: one field absorbs the row, the rest keep their width',
-      code: '<Flex direction="horizontal" gap={2}>\n  <FlexItem size="grow" basis="0"><Search ariaLabel="Filter deployments" /></FlexItem>\n  <FlexItem size="fixed"><NativeSelect options={states} ariaLabel="State" /></FlexItem>\n</Flex>',
+      code: '<Flex direction="horizontal" gap={2}>\n  <FlexItem size="grow" basis="0"><Search ariaLabel="Filter deployments" /></FlexItem>\n  <FlexItem size="fixed"><Select options={states} ariaLabel="State" /></FlexItem>\n</Flex>',
       description:
         'Without FlexItem the Search takes the whole row and pushes the Select onto the next line',
     },

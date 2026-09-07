@@ -67,7 +67,7 @@ Without FlexItem the Search takes the whole row and pushes the Select onto the n
     <Search ariaLabel="Filter deployments" />
   </FlexItem>
   <FlexItem size="fixed">
-    <NativeSelect options={states} ariaLabel="State" />
+    <Select options={states} ariaLabel="State" />
   </FlexItem>
 </Flex>
 ```
