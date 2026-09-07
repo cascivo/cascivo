@@ -34,13 +34,15 @@ Wraps role="radio" buttons in a role="group" with aria-checked marking the selec
 
 ## Props
 
-| Name            | Type                       | Required | Default | Description                                                        |
-| --------------- | -------------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `options`       | `SegmentedControlOption[]` | Yes      | —       | The selectable options.                                            |
-| `value`         | `string`                   | Yes      | —       | The controlled value.                                              |
-| `onValueChange` | `(v: string) => void`      | Yes      | —       | Called with the new value when it changes.                         |
-| `size`          | `'sm' \| 'md' \| 'lg'`     | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
-| `disabled`      | `boolean`                  | No       | false   | When true, disables the control and removes it from the tab order. |
+| Name            | Type                       | Required | Default | Description                                                                                                                              |
+| --------------- | -------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `options`       | `SegmentedControlOption[]` | Yes      | —       | The selectable options.                                                                                                                  |
+| `value`         | `string`                   | Yes      | —       | The controlled value.                                                                                                                    |
+| `onValueChange` | `(v: string) => void`      | Yes      | —       | Called with the new value when it changes.                                                                                               |
+| `size`          | `'sm' \| 'md' \| 'lg'`     | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                    |
+| `disabled`      | `boolean`                  | No       | false   | When true, disables the control and removes it from the tab order.                                                                       |
+| `ariaLabel`     | `string`                   | No       | —       | Accessible name for the group. Invisible — it names the role="group" and renders nothing. The raw DOM `aria-label` still wins over this. |
+| `label`         | `string`                   | No       | —       | Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered.                                                 |
 
 ## Tokens
 

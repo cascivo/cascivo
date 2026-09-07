@@ -1,5 +1,29 @@
 # Getting started with cascivo
 
+## Step 0 — don't read this linearly if you don't have to
+
+This page plus the guides it links is ~2,000 lines, and three hands-on reports have now
+said the linear read is a real cost even when it pays off (2026-08-31 report §30). If you
+are working with an agent, or you just want an answer rather than an education, index the
+docs first and ask them questions instead:
+
+```sh
+pnpm add -D --save-exact @cascivo/docspack docspack
+npx docspack sync                                     # once per machine
+npx docspack ask "how do I wire a theme"              # ~3,000 tokens, offline
+```
+
+`sync` builds a local SQLite index; `ask`, `search` and `list` then make **no network
+requests**, and every answer is scoped to the versions in *your* lockfile rather than to
+whatever cascivo.com documents today. Details, timings, and the agent-instruction snippet
+are in [Searching the docs](#searching-the-docs-instead-of-reading-them).
+
+Two things are still worth reading in full, whichever way you get here: **[the two install
+paths](#path-a--copy-paste-via-the-cli)** and **[the theme wiring](#the-critical-wiring-themes--data-theme)**,
+because skipping the second is what makes components render uncolored.
+
+---
+
 There are two ways to adopt cascivo. Both consume the same tokens and themes,
 and they can coexist in one project.
 
@@ -127,6 +151,8 @@ npx cascivo init
 npx cascivo add button card dialog
 ```
 
+`init` pins exact versions for you — no carets to clean up afterwards.
+
 `init` writes `cascivo.config.ts` and installs everything copied source needs in
 one step: the runtime packages `@cascivo/core`, `@cascivo/tokens`,
 `@cascivo/themes`, and the `@preact/signals-react` peer, plus `cascivo` as a dev
@@ -187,17 +213,29 @@ resolve by hand. See [UPGRADING.md](./UPGRADING.md) for the full story.
 ## Path B — prebuilt dependency
 
 ```sh
-pnpm add @cascivo/react @cascivo/themes @preact/signals-react
+pnpm add --save-exact @cascivo/react @cascivo/themes @preact/signals-react
 ```
 
 (`@cascivo/tokens` comes with `@cascivo/themes` automatically — it is a direct
 dependency, not a peer, so you never install it by hand.)
 
-**If you lint with `eslint-plugin-react-hooks@7`, add one more dev dependency now:**
+`--save-exact` is not optional decoration: this page tells you to pin exact
+versions below, and a bare `pnpm add` writes `^1.0.0` for all three. Following
+the command left one adopter with carets, contrary to the instruction two
+paragraphs later (2026-08-31 report §26). npm and yarn take `--save-exact` too;
+bun uses `--exact`. To make it the default for the project, put
+`save-exact=true` in `.npmrc`.
 
-```sh
-pnpm add -D @cascivo/eslint-config
-```
+### Your linter and the `signal.value = next` idiom
+
+Whichever linter you use, it will flag cascivo's mandatory state idiom until you
+tell it not to. **Pick the row that matches your project:**
+
+| Your linter | What to add |
+| --- | --- |
+| **oxlint** (what `pnpm create vite --template react-ts` scaffolds in 2026) | `"extends": ["./node_modules/@cascivo/eslint-config/src/oxlintrc.json"]` in your `.oxlintrc.json`, or just `"react/immutability": "off"` in its `rules` |
+| **ESLint** with `eslint-plugin-react-hooks@7` | `pnpm add -D --save-exact @cascivo/eslint-config`, then spread it **last** |
+| Neither / an older linter | nothing — the rule does not exist to fire |
 
 ```js
 // eslint.config.js
@@ -205,11 +243,22 @@ import cascivo from '@cascivo/eslint-config'
 export default [...yourConfig, ...cascivo] // spread LAST
 ```
 
-Its `recommended-latest` enables `react-hooks/immutability`, which reports every
-`signal.value = next` — cascivo's mandatory state idiom — as
-`Error: This value cannot be modified`. Without this you get a lint error on
-every piece of state you write. See
-[USING-WITH-STRICT-ESLINT.md](./USING-WITH-STRICT-ESLINT.md) §1.
+```jsonc
+// .oxlintrc.json
+{
+  "extends": ["./node_modules/@cascivo/eslint-config/src/oxlintrc.json"],
+  "categories": { "correctness": "error" }
+}
+```
+
+Both rules are the same rule: it reports every `signal.value = next` as
+`This value cannot be modified`. Without the fix you get a lint warning on every
+piece of state you write — 8 across 3 files in one reported build, and nothing
+else. The oxlint half was missing entirely until the 2026-08-31 report (§13)
+pointed out that the library which lints itself with oxlint shipped no oxlint
+story for its adopters. See
+[USING-WITH-STRICT-ESLINT.md](./USING-WITH-STRICT-ESLINT.md) §1 for what turning
+the rule off costs.
 
 Peer dependencies: `react >=18`, `react-dom >=18`, and `@preact/signals-react`
 (cascivo components are signal-driven, so the signals runtime is required).

@@ -13,4 +13,29 @@
       flex-wrap: wrap;
     }
   }
+
+  /* Main-axis sizing for one child. `flex-basis` stays on the element's own style so a CSS
+     length can be passed through without a rule per value. */
+  .flex-item {
+    &[data-size='auto'] {
+      flex: 1 1 auto;
+    }
+    &[data-size='fixed'] {
+      flex: 0 0 auto;
+    }
+    &[data-size='grow'] {
+      flex: 1 0 auto;
+    }
+    &[data-size='shrink'] {
+      flex: 0 1 auto;
+    }
+
+    /* A flex item's `min-width: auto` floor is what stops a long unbreakable string from
+       shrinking; releasing it is the prerequisite for any `text-overflow: ellipsis` inside. */
+    &[data-truncate] {
+      min-inline-size: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 }

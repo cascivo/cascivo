@@ -347,6 +347,85 @@ describe('SideNav slots share one padding context', () => {
   })
 })
 
+describe('AppShell and SideNav rail collapse compose (2026-08-31 report §14)', () => {
+  const items = [
+    { id: 'projects', label: 'Projects', href: '/projects' },
+    { id: 'deployments', label: 'Deployments', href: '/deployments' },
+  ]
+
+  /*
+   * `AppShellProps` promises the two never fight: AppShell owns the full show/hide, the
+   * SideNav it is handed owns its own rail. They fought, and AppShell won — `.navInner` was
+   * pinned to the shell's aside width and `.navInner > * { flex: 1 1 auto }` stretched a
+   * collapsed 4rem nav back to 18rem. The adopter measured 288 -> 288 across the collapse and
+   * had to retune `--cascivo-shell-aside-inline-size` by hand to get a usable rail.
+   *
+   * Only a real browser sees this: the rule that loses is present and correct in the
+   * stylesheet, and jsdom resolves no widths at all.
+   */
+  async function navWidth(collapsed: boolean): Promise<number> {
+    await mount(
+      h(
+        AppShell,
+        { header: h('div', null, 'Header'), nav: h(SideNav, { items, collapsed }) } as never,
+        'Body',
+      ),
+      'light',
+      1280,
+    )
+    return page.evaluate(() => {
+      const nav = document.querySelector('nav')
+      if (!nav) throw new Error('AppShell rendered no nav')
+      // The shell column, not the nav itself: the nav shrank correctly all along; the
+      // column around it did not.
+      const column = nav.parentElement?.parentElement
+      if (!column) throw new Error('AppShell rendered no nav column')
+      return column.getBoundingClientRect().width
+    })
+  }
+
+  it('the shell column follows the nav onto the rail', async () => {
+    const expanded = await navWidth(false)
+    const collapsed = await navWidth(true)
+    assert.ok(
+      expanded > 200,
+      `expanded shell column measured ${expanded}px — the fixture is not laying out at all`,
+    )
+    assert.ok(
+      collapsed < expanded / 2,
+      `AppShell's nav column measured ${expanded}px expanded and ${collapsed}px collapsed. The ` +
+        'column must follow the rail, or the collapse toggle shrinks the icons and leaves them ' +
+        'floating in an 18rem gutter — which is what makes the control look inert.',
+    )
+  })
+
+  /* §17: at 4rem an uppercase, letter-spaced group heading renders clipped mid-word. */
+  it('group headings are not painted on the rail', async () => {
+    await mount(
+      h(SideNav, { groups: [{ id: 'team', label: 'TEAM', items }], collapsed: true } as never),
+    )
+    const visibility = await page.evaluate(() => {
+      const heading = document.querySelector('nav h3')
+      if (!heading) throw new Error('SideNav rendered no group heading')
+      return getComputedStyle(heading).visibility
+    })
+    assert.equal(
+      visibility,
+      'hidden',
+      'A group heading must not paint on the 4rem rail — it clips mid-word. It stays in the ' +
+        'a11y tree (visibility, not removal) so it keeps naming its group.',
+    )
+  })
+
+  it('the same heading is legible once the nav is expanded', async () => {
+    await mount(h(SideNav, { groups: [{ id: 'team', label: 'TEAM', items }] } as never))
+    const visibility = await page.evaluate(
+      () => getComputedStyle(document.querySelector('nav h3') as Element).visibility,
+    )
+    assert.equal(visibility, 'visible')
+  })
+})
+
 describe('Checkbox decoration does not intercept pointer events', () => {
   it('hit-testing the control resolves to the input or its label', async () => {
     await mount(h(Checkbox, { label: 'Select row', id: 'cb' } as never))

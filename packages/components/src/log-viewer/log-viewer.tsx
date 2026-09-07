@@ -24,6 +24,19 @@ export interface LogLine {
   text: string
   /** Semantic level driving the row color when `ansi` is off. */
   level?: LogLevel
+  /**
+   * Timestamp for the line, rendered in its own dimmed, column-aligned gutter.
+   *
+   * Pass it here rather than prefixing `text` by hand. A timestamp inside `text` cannot be
+   * dimmed or aligned independently and pollutes the built-in search — typing `08:59` matched
+   * every line of a build log (2026-08-31 report §23). This gutter is excluded from both
+   * search and the match count, and from the text the copy button writes; `timestampWidth`
+   * sizes it.
+   *
+   * Pre-formatted on purpose: every console formats its clock differently (relative offsets,
+   * ISO, locale time), and `@cascivo/i18n`'s formatters already cover that.
+   */
+  timestamp?: string
 }
 
 export interface LogViewerLabels {
@@ -68,6 +81,14 @@ export interface LogViewerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'ch
   search?: string
   /** Max block size of the scroll region (CSS length). Default '24rem'. */
   maxHeight?: string
+  /**
+   * Width of the `LogLine.timestamp` gutter (CSS length). Widen it for an ISO stamp, narrow
+   * it for a relative offset.
+   *
+   * @defaultValue `'6.5rem'`
+   * @see the component manifest
+   */
+  timestampWidth?: string
   labels?: LogViewerLabels
 }
 
@@ -148,16 +169,23 @@ function highlight(text: string, query: string, keyBase: string): ReactNode {
 
 function renderLine(line: LogLine, ansi: boolean, query: string): ReactNode {
   const segments = ansi ? parseAnsi(line.text) : [{ text: line.text }]
-  return segments.map((seg, i) => (
-    <span
-      key={i}
-      data-ansi={seg.color}
-      style={seg.bold ? { fontWeight: 700 } : undefined}
-      className={seg.color ? styles['ansi'] : undefined}
-    >
-      {highlight(seg.text, query, `${String(line.id)}-${i}`)}
-    </span>
-  ))
+  return (
+    <>
+      {line.timestamp !== undefined && (
+        <span className={styles['timestamp']}>{line.timestamp}</span>
+      )}
+      {segments.map((seg, i) => (
+        <span
+          key={i}
+          data-ansi={seg.color}
+          style={seg.bold ? { fontWeight: 700 } : undefined}
+          className={seg.color ? styles['ansi'] : undefined}
+        >
+          {highlight(seg.text, query, `${String(line.id)}-${i}`)}
+        </span>
+      ))}
+    </>
+  )
 }
 
 /**
@@ -175,6 +203,7 @@ export function LogViewer({
   ansi = false,
   search,
   maxHeight = '24rem',
+  timestampWidth = '6.5rem',
   labels,
   className,
   ...props
@@ -249,7 +278,11 @@ export function LogViewer({
   const query = querySig.value.trim()
 
   return (
-    <div className={cn(styles['root'], className as string | undefined)} {...props}>
+    <div
+      className={cn(styles['root'], className as string | undefined)}
+      style={{ ['--_timestamp-width' as string]: timestampWidth }}
+      {...props}
+    >
       <div className={styles['toolbar']}>
         <input
           type="search"

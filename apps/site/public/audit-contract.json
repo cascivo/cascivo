@@ -868,14 +868,11 @@
     {
       "name": "DataList",
       "props": [
-        {
-          "name": "items",
-          "type": "{ id?: string; label: ReactNode; value: ReactNode }[]",
-          "required": true
-        },
+        { "name": "items", "type": "DataListEntry[]", "required": false },
         { "name": "orientation", "type": "'horizontal' | 'vertical'", "required": false },
         { "name": "dividers", "type": "boolean", "required": false },
-        { "name": "size", "type": "'sm' | 'md'", "required": false }
+        { "name": "size", "type": "'sm' | 'md'", "required": false },
+        { "name": "children", "type": "ReactNode", "required": false }
       ]
     },
     {
@@ -1357,6 +1354,7 @@
         { "name": "ansi", "type": "boolean", "required": false },
         { "name": "search", "type": "string", "required": false },
         { "name": "maxHeight", "type": "string", "required": false },
+        { "name": "timestampWidth", "type": "string", "required": false },
         { "name": "labels", "type": "LogViewerLabels", "required": false }
       ]
     },
@@ -1775,7 +1773,9 @@
         { "name": "value", "type": "string", "required": true },
         { "name": "onValueChange", "type": "(v: string) => void", "required": true },
         { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
-        { "name": "disabled", "type": "boolean", "required": false }
+        { "name": "disabled", "type": "boolean", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false },
+        { "name": "label", "type": "string", "required": false }
       ]
     },
     {
@@ -1839,8 +1839,16 @@
         { "name": "collapseLabel", "type": "string", "required": false },
         { "name": "expandLabel", "type": "string", "required": false },
         { "name": "expandOnHover", "type": "boolean", "required": false },
-        { "name": "header", "type": "ReactNode", "required": false },
-        { "name": "footer", "type": "ReactNode", "required": false },
+        {
+          "name": "header",
+          "type": "ReactNode | ((ctx: SideNavSlotContext) => ReactNode)",
+          "required": false
+        },
+        {
+          "name": "footer",
+          "type": "ReactNode | ((ctx: SideNavSlotContext) => ReactNode)",
+          "required": false
+        },
         { "name": "className", "type": "string", "required": false }
       ]
     },
@@ -2294,7 +2302,10 @@
         { "name": "gap", "type": "1|2|3|4|5|6|8|10|12", "required": false },
         { "name": "align", "type": "'start'|'center'|'end'|'stretch'", "required": false },
         { "name": "justify", "type": "'start'|'center'|'end'|'between'", "required": false },
-        { "name": "wrap", "type": "boolean", "required": false }
+        { "name": "wrap", "type": "boolean", "required": false },
+        { "name": "size", "type": "'auto' | 'fixed' | 'grow' | 'shrink'", "required": false },
+        { "name": "basis", "type": "string", "required": false },
+        { "name": "truncate", "type": "boolean", "required": false }
       ]
     },
     {

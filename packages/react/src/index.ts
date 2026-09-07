@@ -271,7 +271,7 @@ export * from '../../components/src/swipe-item/swipe-item'
 // layout primitives from @cascivo/layouts (see docs/plans/layout-state-audit-vendor-plan.md).
 // These import only @cascivo/core, so exporting them here creates no dependency cycle.
 export * from '../../layouts/src/grid/grid' // Grid, GridItem, Responsive<T>
-export * from '../../layouts/src/flex/flex' // Flex (gap-based flex container)
+export * from '../../layouts/src/flex/flex' // Flex, FlexItem (gap-based flex container)
 export * from '../../layouts/src/columns/columns' // Columns
 export * from '../../layouts/src/center/center' // Center
 export * from '../../layouts/src/spacer/spacer' // Spacer

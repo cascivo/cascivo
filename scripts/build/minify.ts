@@ -30,7 +30,20 @@
  * is the guard.
  */
 export const MINIFY = {
-  mangle: true,
+  /*
+   * `keepNames` is the difference between a usable React warning and a dead end. React names
+   * components in its dev messages from `fn.name`, and a bare `mangle: true` renames the
+   * function declarations behind every export — so an adopter who tripped a render-phase
+   * update inside cascivo got `Cannot update a component (\`x\`) while rendering a different
+   * component (\`x\`)` and had nothing at all to go on (2026-08-31 report §16). The same
+   * applies to every error boundary, profiler row and devtools tree that shows a cascivo
+   * component.
+   *
+   * Measured cost on the react tree: 88.5 KB -> 90.5 KB gzip, +2.3%. The alternative ask —
+   * a second, unminified `development` export condition — would roughly double the published
+   * tree for the same information, and the part an adopter can actually act on is the name.
+   */
+  mangle: { keepNames: { function: true, class: true } },
   compress: true,
   codegen: { removeWhitespace: true },
 } as const

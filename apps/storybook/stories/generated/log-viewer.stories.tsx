@@ -19,3 +19,15 @@ export const StaticLogWithLevels: Story = {
     />
   ),
 }
+
+export const TimestampedBuildLog: Story = {
+  name: 'Timestamped build log',
+  render: () => (
+    <LogViewer
+      lines={[
+        { id: 1, timestamp: '08:59:12', text: 'Build started' },
+        { id: 2, timestamp: '08:59:41', text: 'Type error', level: 'error' },
+      ]}
+    />
+  ),
+}

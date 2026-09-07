@@ -28,17 +28,18 @@ import { LogViewer } from '@cascivo/react'
 
 ## Props
 
-| Prop             | Type                                                       | Required | Default   | Description                                                     |
-| ---------------- | ---------------------------------------------------------- | -------- | --------- | --------------------------------------------------------------- |
-| `lines`          | `ReadonlySignal<readonly LogLine[]> \| readonly LogLine[]` | yes      | —         | The log lines to display (a signal or array).                   |
-| `rowHeight`      | `number`                                                   | no       | `20`      | Height of each row in pixels, used for virtualization.          |
-| `overscan`       | `number`                                                   | no       | `8`       | Number of extra rows rendered above and below the viewport.     |
-| `follow`         | `boolean`                                                  | no       | —         | Whether the view auto-scrolls to follow new lines (controlled). |
-| `onFollowChange` | `(follow: boolean) => void`                                | no       | —         | Called with the new follow state when it changes.               |
-| `ansi`           | `boolean`                                                  | no       | `false`   | When true, parses ANSI color escape codes into colored spans.   |
-| `search`         | `string`                                                   | no       | —         | Query used to filter and highlight matching lines.              |
-| `maxHeight`      | `string`                                                   | no       | `'24rem'` | Maximum height of the scroll viewport (CSS length).             |
-| `labels`         | `LogViewerLabels`                                          | no       | —         | Overrides for the component’s user-visible strings (i18n).      |
+| Prop             | Type                                                       | Required | Default    | Description                                                                                                       |
+| ---------------- | ---------------------------------------------------------- | -------- | ---------- | ----------------------------------------------------------------------------------------------------------------- |
+| `lines`          | `ReadonlySignal<readonly LogLine[]> \| readonly LogLine[]` | yes      | —          | The log lines to display (a signal or array).                                                                     |
+| `rowHeight`      | `number`                                                   | no       | `20`       | Height of each row in pixels, used for virtualization.                                                            |
+| `overscan`       | `number`                                                   | no       | `8`        | Number of extra rows rendered above and below the viewport.                                                       |
+| `follow`         | `boolean`                                                  | no       | —          | Whether the view auto-scrolls to follow new lines (controlled).                                                   |
+| `onFollowChange` | `(follow: boolean) => void`                                | no       | —          | Called with the new follow state when it changes.                                                                 |
+| `ansi`           | `boolean`                                                  | no       | `false`    | When true, parses ANSI color escape codes into colored spans.                                                     |
+| `search`         | `string`                                                   | no       | —          | Query used to filter and highlight matching lines.                                                                |
+| `maxHeight`      | `string`                                                   | no       | `'24rem'`  | Maximum height of the scroll viewport (CSS length).                                                               |
+| `timestampWidth` | `string`                                                   | no       | `'6.5rem'` | Width of the `LogLine.timestamp` gutter (CSS length). Widen it for an ISO stamp, narrow it for a relative offset. |
+| `labels`         | `LogViewerLabels`                                          | no       | —          | Overrides for the component’s user-visible strings (i18n).                                                        |
 
 ## Examples
 
@@ -67,6 +68,19 @@ const logs = useStreamBuffer<LogLine>({ capacity: 1000 })
 
 ```tsx
 <LogViewer ansi lines={ansiLines} maxHeight="32rem" />
+```
+
+### Timestamped build log
+
+Pass the clock as `timestamp`, not prefixed into `text` — the gutter is dimmed, column-aligned, and excluded from search and copy
+
+```tsx
+<LogViewer
+  lines={[
+    { id: 1, timestamp: '08:59:12', text: 'Build started' },
+    { id: 2, timestamp: '08:59:41', text: 'Type error', level: 'error' },
+  ]}
+/>
 ```
 
 ## Client JavaScript
