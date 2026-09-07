@@ -35,7 +35,7 @@
 
 ## Accessibility rationale
 
-The drop zone is a real <button> so it is keyboard-operable (Enter/Space open the native file picker), the hidden file input is removed from the tab order and labelled via aria-describedby, and the file list uses aria-live="polite" so status changes are announced; each remove control carries an aria-label naming its file.
+The drop zone is a real <button> so it is keyboard-operable (Enter/Space open the native file picker); it is named by the visible label via aria-labelledby (or by ariaLabel) and described by the hint only, so the name is the field rather than the generic drop instruction. Ids come from useId, so two uploaders on a page never collide. A single aria-live="polite" region is mounted unconditionally — a region added in the same commit as its first file announces nothing — and reports the file count plus the list-wide state. Per-file glyphs carry role="img" so their aria-label is honoured, a failed file's message is a role="alert", the file input stays in the accessibility tree (aria-hidden on a node that is programmatically focused and clicked is the aria-hidden-focus violation) and carries the field label as its own name, since an exposed form control without one fails the axe label rule, disabled reaches the remove controls too, and remove targets meet the 44px floor under a coarse pointer. Drag-over, disabled and error states each get a forced-colors treatment, since colour alone disappears there.
 
 ## Props
 
@@ -58,9 +58,10 @@ The drop zone is a real <button> so it is keyboard-operable (Enter/Space open th
 
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-subtle`
-- `--cascivo-color-success`
+- `--cascivo-color-success-foreground`
 - `--cascivo-color-destructive`
 - `--cascivo-color-destructive-subtle`
+- `--cascivo-target-min-coarse`
 
 ## Examples
 
@@ -112,7 +113,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 FileUploader is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-color-success, --cascivo-color-destructive, --cascivo-color-destructive-subtle
+  --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-color-success-foreground, --cascivo-color-destructive, --cascivo-color-destructive-subtle, --cascivo-target-min-coarse
 
 Accessibility: role "button", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.
 

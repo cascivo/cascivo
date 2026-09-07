@@ -945,6 +945,10 @@
           "type": "registry:component"
         },
         {
+          "path": "calendar/calendar-date.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "calendar/index.ts",
           "type": "registry:component"
         },
@@ -1575,6 +1579,10 @@
           "type": "registry:component"
         },
         {
+          "path": "color-picker/color.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "color-picker/index.ts",
           "type": "registry:component"
         },
@@ -1604,6 +1612,14 @@
         },
         {
           "path": "combobox/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "combobox/list-nav.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "combobox/option-list.ts",
           "type": "registry:component"
         },
         {
@@ -1874,12 +1890,17 @@
           "type": "registry:component"
         },
         {
+          "path": "date-picker/parse-date.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "date-picker/date-picker.module.css",
           "type": "registry:component"
         }
       ],
       "description": "An accessible date-picker with a calendar popover.",
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "registryDependencies": ["https://cascivo.com/r/shadcn/calendar.json"],
       "categories": ["inputs"],
       "meta": {
         "cascivo": {
@@ -3439,11 +3460,19 @@
           "type": "registry:component"
         },
         {
+          "path": "multi-select/list-nav.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "multi-select/option-list.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "multi-select/multi-select.module.css",
           "type": "registry:component"
         }
       ],
-      "description": "Searchable multi-value select with popover listbox",
+      "description": "Searchable multi-value select with a popover listbox, chips and grouping",
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "registryDependencies": ["https://cascivo.com/r/shadcn/popover.json"],
       "categories": ["inputs"],

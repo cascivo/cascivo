@@ -522,7 +522,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [input](https://cascivo.com/llms/input.md) — Text input field with optional label, hint, and error state _(npm @cascivo/react · or copy-paste)_
 - [input-group](https://cascivo.com/llms/input-group.md) — Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders _(npm @cascivo/react · or copy-paste)_
 - [label](https://cascivo.com/llms/label.md) — Accessible caption for a form control _(npm @cascivo/react · or copy-paste)_
-- [multi-select](https://cascivo.com/llms/multi-select.md) — Searchable multi-value select with popover listbox _(npm @cascivo/react · or copy-paste)_
+- [multi-select](https://cascivo.com/llms/multi-select.md) — Searchable multi-value select with a popover listbox, chips and grouping _(npm @cascivo/react · or copy-paste)_
 - [native-select](https://cascivo.com/llms/native-select.md) — A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring _(npm @cascivo/react · or copy-paste)_
 - [number-input](https://cascivo.com/llms/number-input.md) — Numeric input with stepper buttons, clamping, precision, and locale formatting _(npm @cascivo/react · or copy-paste)_
 - [otp-input](https://cascivo.com/llms/otp-input.md) — Segmented one-time code input _(npm @cascivo/react · or copy-paste)_
@@ -3345,6 +3345,10 @@ import { Calendar } from '@cascivo/react'
 | `year` | `number` | no | — | Controlled view year |
 | `onViewChange` | `(view: { month: number; year: number }) => void` | no | — | Called when the visible month changes |
 | `hideNav` | `boolean` | no | `false` | Hides the prev/next nav so a parent can drive navigation |
+| `showToday` | `boolean` | no | `false` | When true, shows a button that jumps the view to the current month and focuses today. |
+| `showWeekNumbers` | `boolean` | no | `false` | When true, prefixes each row with its ISO-8601 week number. |
+| `ariaLabel` | `string` | no | — | Accessible name for the grid. Defaults to the visible month label. Calendar has no visible label slot — the month heading is its own — so `label` and `ariaLabel` are aliases for the same invisible name. Not rendered — screen readers only. |
+| `label` | `string` | no | — | Alias for `ariaLabel`; both set the grid’s invisible accessible name. Not rendered — screen readers only. |
 
 ## Examples
 
@@ -3518,6 +3522,7 @@ import { Carousel } from '@cascivo/react'
 | `defaultIndex` | `number` | no | `0` | The initial slide index when uncontrolled. |
 | `onIndexChange` | `(index: number) => void` | no | — | Called with the new slide index when it changes. |
 | `loop` | `boolean` | no | `false` | When true, navigation wraps around from end to start. |
+| `autoplay` | `number` | no | — | Milliseconds between automatic advances. Omit or set 0 to leave rotation off. Pauses on hover, on focus within, while the tab is hidden and under prefers-reduced-motion, and always renders a play/pause control. |
 
 ## Examples
 
@@ -6804,6 +6809,11 @@ import { ColorPicker } from '@cascivo/react'
 - `md`
 - `lg`
 
+## States
+
+- `default`
+- `disabled`
+
 ## Props
 
 | Prop | Type | Required | Default | Description |
@@ -6814,6 +6824,8 @@ import { ColorPicker } from '@cascivo/react'
 | `onValueChange` | `(value: string) => void` | no | — | Called with the new value when it changes. |
 | `presets` | `string[]` | no | — | Preset swatch colors |
 | `alpha` | `boolean` | no | `true` | When true, enables alpha (opacity) selection. |
+| `format` | `'hex' \| 'rgb' \| 'hsl'` | no | `'hex'` | Notation for the emitted value. Alpha is included whenever alpha is on, so the emitted string has a stable width. |
+| `name` | `string` | no | — | Submitted with a surrounding form — a hidden input carrying the current value. |
 | `label` | `string` | no | — | Text label for the control. Rendered on screen. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
@@ -6854,8 +6866,8 @@ Required. The component's primary job needs client JavaScript, so do not render 
 ## Accessibility
 
 - **WCAG level:** 2.2-AA
-- **ARIA role:** `slider`
-- **Keyboard:** ArrowLeft, ArrowRight, ArrowUp, ArrowDown
+- **ARIA role:** `group`
+- **Keyboard:** ArrowLeft, ArrowRight, ArrowUp, ArrowDown, Home, End, PageUp, PageDown, Enter, Escape
 
 ## Dependencies
 
@@ -6916,7 +6928,17 @@ import { Combobox } from '@cascivo/react'
 | `defaultValue` | `string` | no | — | The initial value when uncontrolled. |
 | `onValueChange` | `(value: string \| undefined) => void` | no | — | Called with the selected option value (or undefined when cleared). |
 | `clearable` | `boolean` | no | `false` | When true, shows a control to clear the selected value. |
-| `searchable` | `boolean` | no | `true` | When true, shows a search/filter input. |
+| `searchable` | `boolean` | no | `true` | When true the field is a text input that filters the list as the user types (the APG editable combobox). When false it is a button that opens the list, and type-to-select jumps to a matching option (the APG select-only combobox). |
+| `loading` | `boolean` | no | `false` | When true, the list reports itself as busy and shows a loading row instead of the empty message. |
+| `onSearchChange` | `(query: string) => void` | no | — | Called with the search text on every keystroke. Pair it with filter={() => true} for a server-driven list. |
+| `filter` | `(option: ComboboxOption, query: string) => boolean` | no | — | Replaces the built-in diacritic-insensitive matcher. |
+| `creatable` | `boolean` | no | `false` | When true, offers the current search text as a new option. |
+| `onCreate` | `(label: string) => void` | no | — | Called with the typed label when the user picks the "create" row. |
+| `name` | `string` | no | — | Submitted with a surrounding form — a hidden input carrying the selected value. |
+| `required` | `boolean` | no | — | Marks the control as required for assistive technology. |
+| `open` | `boolean` | no | — | Controlled open state of the listbox. |
+| `defaultOpen` | `boolean` | no | `false` | The initial open state when uncontrolled. |
+| `onOpenChange` | `(open: boolean) => void` | no | — | Called when the listbox opens or closes. |
 | `label` | `string` | no | — | Text label for the control. Rendered on screen. |
 | `hint` | `string` | no | — | Supplementary hint text shown with the control. |
 | `error` | `string` | no | — | Error message shown when the value is invalid. |
@@ -6930,6 +6952,30 @@ import { Combobox } from '@cascivo/react'
 | `ariaLabel` | `string` | no | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
 ## Examples
+
+### Grouped options
+
+Options carrying a group render under a labelled role="group" heading.
+
+```tsx
+<Combobox options={[{value:'de',label:'Germany',group:'Europe'},{value:'jp',label:'Japan',group:'Asia'}]} />
+```
+
+### Remote search
+
+filter={() => true} hands filtering to the server; loading marks the list busy between keystroke and response.
+
+```tsx
+<Combobox options={results} loading={pending} onSearchChange={search} filter={() => true} />
+```
+
+### Select-only
+
+A button rather than a text field; printable characters type-to-select, and Home/End jump the list.
+
+```tsx
+<Combobox options={options} searchable={false} />
+```
 
 ### Basic combobox
 
@@ -6962,18 +7008,22 @@ Required. The component's primary job needs client JavaScript, so do not render 
 - `--cascivo-color-text-subtle`
 - `--cascivo-color-accent`
 - `--cascivo-color-destructive`
-- `--cascivo-radius-input`
-- `--cascivo-radius-md`
-- `--cascivo-radius-sm`
-- `--cascivo-shadow-lg`
+- `--cascivo-font-medium`
+- `--cascivo-font-bold`
+- `--cascivo-radius-field`
+- `--cascivo-radius-overlay`
+- `--cascivo-radius-item`
+- `--cascivo-radius-control`
+- `--cascivo-shadow-overlay`
 - `--cascivo-motion-enter`
 - `--cascivo-z-dropdown`
+- `--cascivo-target-min-coarse`
 
 ## Accessibility
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `combobox`
-- **Keyboard:** ArrowDown, ArrowUp, Enter, Escape, Tab
+- **Keyboard:** ArrowDown, ArrowUp, Home, End, PageUp, PageDown, Enter, Space, Escape, Tab
 
 ## Dependencies
 
@@ -8046,6 +8096,14 @@ import { DatePicker } from '@cascivo/react'
 | `min` | `string` | no | — | Minimum ISO date |
 | `max` | `string` | no | — | Maximum ISO date |
 | `clearable` | `boolean` | no | `false` | Shows a clear button |
+| `typeable` | `boolean` | no | `true` | When true, the field accepts a typed date as well as one picked from the calendar. |
+| `disabledDate` | `(date: Date) => boolean` | no | — | Rejects individual dates the bounds allow — holidays, weekends, taken slots. |
+| `format` | `Intl.DateTimeFormatOptions` | no | — | Formatting options for the displayed date. Defaults to the locale's numeric form. |
+| `showToday` | `boolean` | no | `false` | When true, the calendar offers a button that jumps to the current month. |
+| `name` | `string` | no | — | Submitted with a surrounding form — a hidden input carrying the ISO value. |
+| `required` | `boolean` | no | — | Marks the control as required for assistive technology. |
+| `open` | `boolean` | no | — | Controlled open state of the calendar popup. |
+| `onOpenChange` | `(open: boolean) => void` | no | — | Called when the popup opens or closes. |
 | `label` | `string` | no | — | Visible field label rendered above the input; it also names the control. Rendered on screen. |
 | `hint` | `string` | no | — | Hint text |
 | `error` | `string` | no | — | Error message |
@@ -8107,7 +8165,7 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `combobox`
-- **Keyboard:** Enter, Space, Escape, ArrowUp, ArrowDown, ArrowLeft, ArrowRight
+- **Keyboard:** ArrowDown, ArrowUp, ArrowLeft, ArrowRight, Home, End, PageUp, PageDown, Enter, Space, Escape, Delete
 
 ## Dependencies
 
@@ -9228,9 +9286,10 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-subtle`
-- `--cascivo-color-success`
+- `--cascivo-color-success-foreground`
 - `--cascivo-color-destructive`
 - `--cascivo-color-destructive-subtle`
+- `--cascivo-target-min-coarse`
 
 ## Accessibility
 
@@ -13720,7 +13779,7 @@ _Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with h
 
 # MultiSelect
 
-Searchable multi-value select with popover listbox
+Searchable multi-value select with a popover listbox, chips and grouping
 
 ## Install
 
@@ -13740,28 +13799,88 @@ import { MultiSelect } from '@cascivo/react'
 
 `inputs`
 
+## Sizes
+
+- `sm`
+- `md`
+- `lg`
+
 ## States
 
 - `closed`
 - `open`
+- `error`
 
 ## Props
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `options` | `MultiSelectOption[]` | yes | — | The selectable options. |
-| `value` | `string[]` | yes | — | The controlled value. |
-| `onValueChange` | `(v: string[]) => void` | yes | — | Called with the new value when it changes. |
+| `value` | `string[]` | no | — | The controlled value. Omit it and pass defaultValue to let the component own the selection. |
+| `defaultValue` | `string[]` | no | `[]` | The initial value when uncontrolled. |
+| `onValueChange` | `(value: string[]) => void` | no | — | Called with the new value when it changes. |
 | `placeholder` | `string` | no | — | Placeholder text shown when the field is empty. |
+| `label` | `string` | no | — | Visible field label, rendered above the trigger. Rendered on screen. |
+| `ariaLabel` | `string` | no | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. Not rendered — screen readers only. |
+| `aria-labelledby` | `string` | no | — | Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it. |
+| `aria-describedby` | `string` | no | — | Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced. |
+| `aria-invalid` | `boolean` | no | — | Wired automatically by a wrapping `Field` when it is in an error state. |
+| `hint` | `string` | no | — | Helper text below the field. |
+| `error` | `string` | no | — | Error text below the field; also marks the control invalid. |
+| `display` | `'count' \| 'chips'` | no | `'count'` | How the trigger summarises the selection: a count, or one removable chip per value. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `clearable` | `boolean` | no | `false` | When true, shows a control that clears every selected value. |
+| `selectAll` | `boolean` | no | `false` | When true, shows a row that selects or clears every enabled option at once. |
+| `max` | `number` | no | — | Maximum number of values that may be selected. Further options become unselectable once reached. |
+| `creatable` | `boolean` | no | `false` | When true, offers the current search text as a new option. |
+| `onCreate` | `(label: string) => void` | no | — | Called with the typed label when the user picks the "create" row. |
+| `loading` | `boolean` | no | `false` | When true, the list reports itself as busy and shows a loading row instead of the no-results message. |
+| `onSearchChange` | `(query: string) => void` | no | — | Called with the search text on every keystroke. Pair it with filter={() => true} for a server-driven list. |
+| `filter` | `(option: MultiSelectOption, query: string) => boolean` | no | — | Replaces the built-in diacritic-insensitive matcher. |
+| `searchable` | `boolean` | no | `true` | When true, shows the search field. The list is keyboard-navigable either way. |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | `'md'` | Field height. |
+| `name` | `string` | no | — | Submitted with a surrounding form — one hidden input per selected value. |
 | `labels` | `MultiSelectLabels` | no | — | Overrides for the component’s user-visible strings (i18n). |
+| `id` | `string` | no | — | Id for the trigger control. |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<MultiSelect options={[{label:'One',value:'1'},{label:'Two',value:'2'}]} value={[]} onValueChange={() => {}} />
+<MultiSelect options={[{label:'One',value:'1'},{label:'Two',value:'2'}]} defaultValue={[]} />
+```
+
+### Chips with a clear control
+
+Each selection renders as a chip with its own remove button.
+
+```tsx
+<MultiSelect options={options} display="chips" clearable defaultValue={['1']} />
+```
+
+### Grouped options
+
+Options carrying a group render under a labelled role="group" heading.
+
+```tsx
+<MultiSelect options={[{label:'Apple',value:'a',group:'Pome'},{label:'Cherry',value:'c',group:'Stone'}]} />
+```
+
+### Remote search
+
+filter={() => true} hands filtering to the server; loading marks the list busy between keystroke and response.
+
+```tsx
+<MultiSelect options={results} loading={pending} onSearchChange={search} filter={() => true} />
+```
+
+### Bounded selection
+
+Options past the limit report aria-disabled; select-all stops at the limit.
+
+```tsx
+<MultiSelect options={options} max={3} selectAll />
 ```
 
 ## Client JavaScript
@@ -13771,19 +13890,29 @@ Required. The component's primary job needs client JavaScript, so do not render 
 ## Design tokens
 
 - `--cascivo-color-surface`
+- `--cascivo-color-bg-subtle`
 - `--cascivo-color-border`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
 - `--cascivo-color-accent`
-- `--cascivo-radius-input`
-- `--cascivo-radius-md`
+- `--cascivo-color-destructive`
+- `--cascivo-font-medium`
+- `--cascivo-font-bold`
+- `--cascivo-radius-field`
+- `--cascivo-radius-overlay`
+- `--cascivo-radius-item`
+- `--cascivo-radius-indicator`
 - `--cascivo-shadow-md`
 - `--cascivo-focus-ring`
 - `--cascivo-motion-enter`
+- `--cascivo-target-min-coarse`
 
 ## Accessibility
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `listbox`
-- **Keyboard:** ArrowDown, ArrowUp, Space, Enter, Escape
+- **Keyboard:** ArrowDown, ArrowUp, Home, End, PageUp, PageDown, Enter, Space, Escape, Backspace
 
 ## Dependencies
 
@@ -13792,7 +13921,7 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 ## Tags
 
-form, select, multi, input, popover
+form, select, multi, input, popover, combobox, tags
 
 ---
 
@@ -19699,6 +19828,7 @@ import { TreeView } from '@cascivo/react'
 | `selected` | `string \| string[]` | no | — | The controlled selected node id(s). |
 | `defaultSelected` | `string \| string[]` | no | — | The initially selected node id(s) when uncontrolled. |
 | `onSelectChange` | `(selected: string \| string[]) => void` | no | — | Called with the new selection when it changes. |
+| `onValueChange` | `(selected: string \| string[]) => void` | no | — | Called with the new selection. Preferred over `onSelectChange`, which is the catalog’s only value-carrying handler not named onValueChange and is deprecated. |
 | `expanded` | `string[]` | no | — | The controlled set of expanded node ids. |
 | `defaultExpanded` | `string[]` | no | — | The initially expanded node ids when uncontrolled. |
 | `onExpandedChange` | `(expanded: string[]) => void` | no | — | Called with the new expanded set when it changes. |
@@ -19737,7 +19867,7 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `tree`
-- **Keyboard:** ArrowDown, ArrowUp, ArrowRight, ArrowLeft, Home, End, Enter, Space, Typeahead
+- **Keyboard:** *, ArrowDown, ArrowUp, ArrowRight, ArrowLeft, Home, End, Enter, Space, Typeahead
 
 ## Dependencies
 

@@ -932,6 +932,26 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['boolean'],
     },
+    {
+      name: 'showToday',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'showWeekNumbers',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
   ],
   CalendarHeatmap: [
     {
@@ -1132,6 +1152,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'loop',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'autoplay',
+      required: false,
+      primitives: ['number'],
     },
   ],
   Center: [
@@ -1452,6 +1477,16 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['boolean'],
     },
     {
+      name: 'format',
+      required: false,
+      enum: ['hex', 'rgb', 'hsl'],
+    },
+    {
+      name: 'name',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'label',
       required: false,
       primitives: ['string'],
@@ -1613,6 +1648,52 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'searchable',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'loading',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onSearchChange',
+      required: false,
+    },
+    {
+      name: 'filter',
+      required: false,
+    },
+    {
+      name: 'creatable',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onCreate',
+      required: false,
+    },
+    {
+      name: 'name',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'required',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'open',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'defaultOpen',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onOpenChange',
+      required: false,
     },
     {
       name: 'label',
@@ -2107,6 +2188,43 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'clearable',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'typeable',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'disabledDate',
+      required: false,
+    },
+    {
+      name: 'format',
+      required: false,
+    },
+    {
+      name: 'showToday',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'name',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'required',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'open',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onOpenChange',
+      required: false,
     },
     {
       name: 'label',
@@ -4348,11 +4466,15 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'value',
-      required: true,
+      required: false,
+    },
+    {
+      name: 'defaultValue',
+      required: false,
     },
     {
       name: 'onValueChange',
-      required: true,
+      required: false,
     },
     {
       name: 'placeholder',
@@ -4360,13 +4482,110 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
     {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'aria-labelledby',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'aria-describedby',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'aria-invalid',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'hint',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'error',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'display',
+      required: false,
+      enum: ['count', 'chips'],
+    },
+    {
       name: 'disabled',
       required: false,
       primitives: ['boolean'],
     },
     {
+      name: 'clearable',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'selectAll',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'max',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'creatable',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onCreate',
+      required: false,
+    },
+    {
+      name: 'loading',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onSearchChange',
+      required: false,
+    },
+    {
+      name: 'filter',
+      required: false,
+    },
+    {
+      name: 'searchable',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'size',
+      required: false,
+      enum: ['sm', 'md', 'lg'],
+    },
+    {
+      name: 'name',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'labels',
       required: false,
+    },
+    {
+      name: 'id',
+      required: false,
+      primitives: ['string'],
     },
   ],
   NativeSelect: [
@@ -6988,6 +7207,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'onSelectChange',
+      required: false,
+    },
+    {
+      name: 'onValueChange',
       required: false,
     },
     {

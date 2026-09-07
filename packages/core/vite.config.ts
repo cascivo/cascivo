@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite-plus'
+import { MINIFY } from '../../scripts/build/minify.ts'
 
 export default defineConfig({
   build: {
@@ -9,6 +10,7 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
+        minify: MINIFY,
         // 23 source modules carry `'use client'`; the bundler collapses them into one entry
         // and drops per-module directives, so without this banner Next.js RSC treats every
         // hook and Portal/Slot as a SERVER component. Every sibling lib build carries it.

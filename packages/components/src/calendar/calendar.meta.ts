@@ -100,6 +100,36 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Hides the prev/next nav so a parent can drive navigation',
     },
+    {
+      name: 'showToday',
+      description:
+        'When true, shows a button that jumps the view to the current month and focuses today.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'showWeekNumbers',
+      description: 'When true, prefixes each row with its ISO-8601 week number.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'ariaLabel',
+      description:
+        'Accessible name for the grid. Defaults to the visible month label. Calendar has no visible label slot — the month heading is its own — so `label` and `ariaLabel` are aliases for the same invisible name.',
+      type: 'string',
+      required: false,
+      nameVisibility: 'invisible',
+    },
+    {
+      name: 'label',
+      description: 'Alias for `ariaLabel`; both set the grid’s invisible accessible name.',
+      type: 'string',
+      required: false,
+      nameVisibility: 'invisible',
+    },
   ],
   tokens: [
     '--cascivo-color-accent-text',
@@ -114,6 +144,8 @@ export const meta: ComponentMeta = {
   accessibility: {
     role: 'grid',
     wcag: '2.2-AA',
+    forcedColors: true,
+    reducedMotion: true,
     keyboard: [
       'ArrowLeft',
       'ArrowRight',
@@ -175,7 +207,7 @@ export const meta: ComponentMeta = {
       },
     ],
     a11yRationale:
-      'Renders an APG-compliant role="grid" table with role="row"/role="gridcell"; a roving tabindex keeps exactly one day focusable (the focused date) so arrow keys move focus per APG, Home/End jump to the week edges, PageUp/PageDown change month (with Shift for year), today exposes aria-current="date", selection sets data-selected with aria-selected on the cell, and out-of-range or predicate-disabled days get aria-disabled and are skipped by selection',
+      'A role="grid" table with role="row"/role="gridcell" and a roving tabindex keeping exactly one day focusable. Navigation moves *real DOM focus*, not just the tabindex: the previous build only rotated the index, so focus stayed on the old button and the moment an arrow crossed a month boundary that button unmounted and focus fell to <body>, ejecting the user from the widget mid-navigation. React reuses the day buttons positionally across months, so the focus move is deferred a task and re-queried by date — landing on the reused node would silently focus whatever date now occupies that grid slot. Arrows move a day or a week, Home/End reach the week edges, PageUp/PageDown change month (Shift for year), and every move is clamped to min/max and skips predicate-disabled days rather than parking the cursor where Enter does nothing; the prev/next buttons disable at the bounds for the same reason. aria-selected sits on the button that takes focus, not the enclosing <td>, and is omitted rather than serialised as "false" on the other thirty cells. Today is computed from the *local* calendar rather than the UTC instant, so aria-current="date" no longer lands a day early east of UTC+12. The month is announced through a separate visually-hidden status region: the visible label is also the grid\'s accessible name, so announcing there would mutate the name of the container focus sits inside.',
     flexibility: [
       {
         area: 'date type',

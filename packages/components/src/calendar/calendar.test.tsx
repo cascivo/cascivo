@@ -21,8 +21,10 @@ describe('Calendar', () => {
 
   it('marks the selected day', () => {
     render(<Calendar defaultValue={JUN_15} />)
-    const cell = screen.getByRole('gridcell', { name: /15/ })
-    expect(cell).toHaveAttribute('aria-selected', 'true')
+    // aria-selected belongs on the element that takes focus. It used to sit on the <td>
+    // while focus landed on the inner button, so the state was never announced.
+    const day = screen.getByRole('button', { name: /15/ })
+    expect(day).toHaveAttribute('aria-selected', 'true')
   })
 
   it('only the focused date is tabbable (roving tabindex)', () => {

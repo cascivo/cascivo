@@ -267,6 +267,7 @@
           "CodeProps",
           "CodeSnippetProps",
           "CollapsibleProps",
+          "ColorFormat",
           "ColorPickerLabels",
           "ColorPickerProps",
           "Column",
@@ -685,10 +686,12 @@
             "loading?": "boolean",
             "asChild?": "boolean"
           },
-          "Calendar": "declare function Calendar({ value, defaultValue, onValueChange, min, max, disabled, locale: localeProp, size, labels, className, isInRange, isRangeStart, isRangeEnd, onDayHover, month, year, onViewChange, hideNav }: CalendarProps): import(\"react\").JSX.Element",
+          "Calendar": "declare function Calendar({ value, defaultValue, onValueChange, min, max, disabled, locale: localeProp, size, labels, className, ariaLabel, label, isInRange, isRangeStart, isRangeEnd, onDayHover, month, year, onViewChange, hideNav, showToday, showWeekNumbers }: CalendarProps): import(\"react\").JSX.Element",
           "CalendarLabels": {
             "previousMonth?": "string",
-            "nextMonth?": "string"
+            "nextMonth?": "string",
+            "today?": "string",
+            "weekNumber?": "string"
           },
           "CalendarProps": {
             "value?": "Date | null",
@@ -701,6 +704,8 @@
             "size?": "'sm' | 'md' | 'lg'",
             "labels?": "CalendarLabels",
             "className?": "string",
+            "ariaLabel?": "string",
+            "label?": "string",
             "isInRange?": "(date: Date) => boolean",
             "isRangeStart?": "(date: Date) => boolean",
             "isRangeEnd?": "(date: Date) => boolean",
@@ -708,7 +713,9 @@
             "month?": "number",
             "year?": "number",
             "onViewChange?": "(view: { month: number; year: number; }) => void",
-            "hideNav?": "boolean"
+            "hideNav?": "boolean",
+            "showToday?": "boolean",
+            "showWeekNumbers?": "boolean"
           },
           "Card": "declare function Card({ variant, padding, className, children, ...props }: CardProps): import(\"react\").JSX.Element",
           "CardContent": "declare function CardContent({ className, children, ...props }: CardContentProps): import(\"react\").JSX.Element",
@@ -733,11 +740,13 @@
           "CardTitleProps": {
             "(extends)": "extends HTMLAttributes<HTMLHeadingElement>"
           },
-          "Carousel": "declare function Carousel({ children, slides, index, defaultIndex, onIndexChange, loop, className, labels }: CarouselProps): import(\"react\").JSX.Element",
+          "Carousel": "declare function Carousel({ children, slides, index, defaultIndex, onIndexChange, loop, autoplay, className, labels }: CarouselProps): import(\"react\").JSX.Element",
           "CarouselLabels": {
             "region?": "string",
             "previous?": "string",
-            "next?": "string"
+            "next?": "string",
+            "play?": "string",
+            "pause?": "string"
           },
           "CarouselProps": {
             "children?": "ReactNode",
@@ -746,6 +755,7 @@
             "defaultIndex?": "number",
             "onIndexChange?": "(index: number) => void",
             "loop?": "boolean",
+            "autoplay?": "number",
             "className?": "string",
             "labels?": "CarouselLabels"
           },
@@ -809,12 +819,17 @@
             "className?": "string",
             "children?": "ReactNode"
           },
-          "ColorPicker": "declare function ColorPicker({ value, defaultValue, onValueChange, presets, alpha, label, ariaLabel, disabled, size, className, labels, id, 'aria-labelledby': ariaLabelledBy, 'aria-describedby': ariaDescribedBy, 'aria-invalid': ariaInvalid }: ColorPickerProps): import(\"react\").JSX.Element",
+          "ColorFormat": "type = 'hex' | 'rgb' | 'hsl'",
+          "ColorPicker": "declare function ColorPicker({ id, value, defaultValue, onValueChange, presets, alpha, format, label, ariaLabel, disabled, name, size, className, labels, 'aria-labelledby': ariaLabelledBy, 'aria-describedby': ariaDescribedBy, 'aria-invalid': ariaInvalid }: ColorPickerProps): import(\"react\").JSX.Element",
           "ColorPickerLabels": {
             "hue?": "string",
             "alpha?": "string",
             "colorArea?": "string",
-            "eyedropper?": "string"
+            "saturation?": "string",
+            "brightness?": "string",
+            "eyedropper?": "string",
+            "presets?": "string",
+            "hex?": "string"
           },
           "ColorPickerProps": {
             "'aria-labelledby'?": "string",
@@ -826,9 +841,11 @@
             "onValueChange?": "(value: string) => void",
             "presets?": "string[]",
             "alpha?": "boolean",
+            "format?": "ColorFormat",
             "label?": "string",
             "ariaLabel?": "string",
             "disabled?": "boolean",
+            "name?": "string",
             "size?": "'sm' | 'md' | 'lg'",
             "className?": "string",
             "labels?": "ColorPickerLabels"
@@ -868,17 +885,20 @@
             "widths?": "Record<string, number>",
             "pinned?": "Record<string, PinSide>"
           },
-          "Combobox": "declare function Combobox({ options, value, defaultValue, onValueChange, clearable, searchable, label, ariaLabel, hint, error, size, disabled, labels, className, id, 'aria-labelledby': ariaLabelledBy, 'aria-describedby': ariaDescribedBy, 'aria-invalid': ariaInvalid }: ComboboxProps): import(\"react\").JSX.Element",
+          "Combobox": "declare function Combobox({ options, value, defaultValue, onValueChange, clearable, searchable, label, ariaLabel, hint, error, size, disabled, loading, onSearchChange, filter, creatable, onCreate, name, required, open, defaultOpen, onOpenChange, labels, className, id, 'aria-labelledby': ariaLabelledBy, 'aria-describedby': ariaDescribedBy, 'aria-invalid': ariaInvalid }: ComboboxProps): import(\"react\").JSX.Element",
           "ComboboxLabels": {
             "placeholder?": "string",
             "empty?": "string",
             "clear?": "string",
-            "search?": "string"
+            "search?": "string",
+            "loading?": "string",
+            "create?": "string"
           },
           "ComboboxOption": {
-            "value": "string",
             "label": "string",
-            "disabled?": "boolean"
+            "value": "string",
+            "disabled?": "boolean",
+            "group?": "string"
           },
           "ComboboxProps": {
             "'aria-labelledby'?": "string",
@@ -896,6 +916,16 @@
             "error?": "string",
             "size?": "'sm' | 'md' | 'lg'",
             "disabled?": "boolean",
+            "loading?": "boolean",
+            "onSearchChange?": "(query: string) => void",
+            "filter?": "(option: ComboboxOption, query: string) => boolean",
+            "creatable?": "boolean",
+            "onCreate?": "(label: string) => void",
+            "name?": "string",
+            "required?": "boolean",
+            "open?": "boolean",
+            "defaultOpen?": "boolean",
+            "onOpenChange?": "(open: boolean) => void",
             "labels?": "ComboboxLabels",
             "className?": "string",
             "id?": "string"
@@ -1100,12 +1130,14 @@
             "totalItems?": "number",
             "onQueryChange": "(query: TableQuery) => void"
           },
-          "DatePicker": "declare function DatePicker({ value, defaultValue, onValueChange, min, max, clearable, label, ariaLabel, hint, error, size, disabled, labels, className, id, 'aria-labelledby': ariaLabelledBy, 'aria-describedby': ariaDescribedBy, 'aria-invalid': ariaInvalid }: DatePickerProps): import(\"react\").JSX.Element",
+          "DatePicker": "declare function DatePicker({ value, defaultValue, onValueChange, min, max, disabledDate, clearable, label, ariaLabel, hint, error, size, disabled, typeable, format, showToday, name, required, open, onOpenChange, labels, className, id, 'aria-labelledby': ariaLabelledBy, 'aria-describedby': ariaDescribedBy, 'aria-invalid': ariaInvalid }: DatePickerProps): import(\"react\").JSX.Element",
           "DatePickerLabels": {
             "placeholder?": "string",
             "previousMonth?": "string",
             "nextMonth?": "string",
-            "clear?": "string"
+            "clear?": "string",
+            "open?": "string",
+            "today?": "string"
           },
           "DatePickerProps": {
             "'aria-labelledby'?": "string",
@@ -1116,6 +1148,7 @@
             "onValueChange?": "(value: string | undefined) => void",
             "min?": "string",
             "max?": "string",
+            "disabledDate?": "(date: Date) => boolean",
             "clearable?": "boolean",
             "label?": "string",
             "ariaLabel?": "string",
@@ -1123,6 +1156,13 @@
             "error?": "string",
             "size?": "'sm' | 'md' | 'lg'",
             "disabled?": "boolean",
+            "typeable?": "boolean",
+            "format?": "Intl.DateTimeFormatOptions",
+            "showToday?": "boolean",
+            "name?": "string",
+            "required?": "boolean",
+            "open?": "boolean",
+            "onOpenChange?": "(open: boolean) => void",
             "labels?": "DatePickerLabels",
             "className?": "string",
             "id?": "string"
@@ -1651,27 +1691,55 @@
             "size?": "'sm' | 'md' | 'lg'",
             "draggable?": "boolean"
           },
-          "MultiSelect": "declare function MultiSelect({ options, value, onValueChange, placeholder, disabled, labels, className, ...props }: MultiSelectProps): import(\"react\").JSX.Element",
+          "MultiSelect": "declare function MultiSelect({ options, value, defaultValue, onValueChange, placeholder, label, ariaLabel, hint, error, display, disabled, clearable, selectAll, max, creatable, onCreate, loading, onSearchChange, filter, searchable, size, name, labels, className, id, 'aria-labelledby': ariaLabelledBy, 'aria-describedby': ariaDescribedBy, 'aria-invalid': ariaInvalid, ...props }: MultiSelectProps): import(\"react\").JSX.Element",
           "MultiSelectLabels": {
             "label?": "string",
             "placeholder?": "string",
             "selected?": "(count: number) => string",
             "search?": "string",
-            "noResults?": "string"
+            "noResults?": "string",
+            "loading?": "string",
+            "clear?": "string",
+            "remove?": "string",
+            "selectAll?": "string",
+            "clearAll?": "string",
+            "create?": "string"
           },
           "MultiSelectOption": {
             "label": "string",
             "value": "string",
-            "disabled?": "boolean"
+            "disabled?": "boolean",
+            "group?": "string"
           },
           "MultiSelectProps": {
-            "(extends)": "extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'>",
+            "(extends)": "extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'>",
+            "'aria-labelledby'?": "string",
+            "'aria-describedby'?": "string",
+            "'aria-invalid'?": "boolean",
             "options": "MultiSelectOption[]",
-            "value": "string[]",
-            "onValueChange": "(v: string[]) => void",
+            "value?": "string[]",
+            "defaultValue?": "string[]",
+            "onValueChange?": "(value: string[]) => void",
             "placeholder?": "string",
+            "label?": "string",
+            "ariaLabel?": "string",
+            "hint?": "string",
+            "error?": "string",
+            "display?": "'count' | 'chips'",
             "disabled?": "boolean",
-            "labels?": "MultiSelectLabels"
+            "clearable?": "boolean",
+            "selectAll?": "boolean",
+            "max?": "number",
+            "creatable?": "boolean",
+            "onCreate?": "(label: string) => void",
+            "loading?": "boolean",
+            "onSearchChange?": "(query: string) => void",
+            "filter?": "(option: MultiSelectOption, query: string) => boolean",
+            "searchable?": "boolean",
+            "size?": "'sm' | 'md' | 'lg'",
+            "name?": "string",
+            "labels?": "MultiSelectLabels",
+            "id?": "string"
           },
           "NativeSelect": "declare const NativeSelect: import(\"react\").ForwardRefExoticComponent<NativeSelectProps & import(\"react\").RefAttributes<HTMLSelectElement>>",
           "NativeSelectOption": {
@@ -2519,9 +2587,11 @@
             "id": "string",
             "label": "ReactNode",
             "icon?": "ReactNode",
-            "children?": "TreeNode[]"
+            "children?": "TreeNode[]",
+            "disabled?": "boolean",
+            "textValue?": "string"
           },
-          "TreeView": "declare function TreeView({ items, selectionMode, selected, defaultSelected, onSelectChange, expanded, defaultExpanded, onExpandedChange, className, 'aria-label': ariaLabelDom, ariaLabel, label }: TreeViewProps): import(\"react\").JSX.Element",
+          "TreeView": "declare function TreeView({ items, selectionMode, selected, defaultSelected, onSelectChange, onValueChange, expanded, defaultExpanded, onExpandedChange, className, 'aria-label': ariaLabelDom, ariaLabel, label }: TreeViewProps): import(\"react\").JSX.Element",
           "treeViewMessages": "declare const treeViewMessages: { loading: () => string; expand: () => string; collapse: () => string; }",
           "TreeViewProps": {
             "items": "TreeNode[]",
@@ -2529,6 +2599,7 @@
             "selected?": "string | string[]",
             "defaultSelected?": "string | string[]",
             "onSelectChange?": "(selected: string | string[]) => void",
+            "onValueChange?": "(selected: string | string[]) => void",
             "expanded?": "string[]",
             "defaultExpanded?": "string[]",
             "onExpandedChange?": "(expanded: string[]) => void",
@@ -5084,7 +5155,7 @@
         ],
         "types": ["FormatBytesOptions", "LocaleStore", "Message", "MessageValue", "PluralForms"],
         "declarations": {
-          "builtin": "declare const builtin: { pagination: { readonly itemsPerPage: Message<\"Items per page\">; readonly pageOf: Message<\"Page {page} of {total}\">; readonly range: Message<\"{start}–{end} of {total} items\">; readonly previous: Message<\"Previous page\">; readonly next: Message<\"Next page\">; readonly nav: Message<\"Pagination\">; }; toast: { readonly dismiss: Message<\"Dismiss notification\">; readonly region: Message<\"Notifications\">; }; modal: { readonly close: Message<\"Close modal\">; }; alert: { readonly dismiss: Message<\"Dismiss\">; }; header: { readonly nav: Message<\"Main\">; }; search: { readonly label: Message<\"Search\">; readonly placeholder: Message<\"Search\">; readonly clear: Message<\"Clear search\">; }; commandMenu: { readonly label: Message<\"Command menu\">; readonly placeholder: Message<\"Type a command or search…\">; readonly empty: Message<\"No results found\">; readonly back: Message<\"Back\">; readonly loading: Message<\"Loading…\">; readonly matches: Message<\"{count} matches\">; readonly scopeLabel: Message<\"Scope\">; readonly clearScope: Message<\"Clear scope\">; }; breadcrumb: { readonly nav: Message<\"Breadcrumb\">; }; toc: { readonly nav: Message<\"On this page\">; }; datePicker: { readonly placeholder: Message<\"Select a date\">; readonly previousMonth: Message<\"Previous month\">; readonly nextMonth: Message<\"Next month\">; readonly clear: Message<\"Clear date\">; }; combobox: { readonly placeholder: Message<\"Select an option\">; readonly empty: Message<\"No options found\">; readonly clear: Message<\"Clear selection\">; readonly search: Message<\"Search options\">; }; dataTable: { readonly search: Message<\"Search\">; readonly empty: Message<\"No data\">; readonly selectAll: Message<\"Select all rows\">; readonly selectRow: Message<\"Select row\">; readonly itemsSelected: Message<\"{count} selected\">; readonly expandRow: Message<\"Expand row\">; readonly previousPage: Message<\"Previous page\">; readonly nextPage: Message<\"Next page\">; readonly columns: Message<\"Columns\">; readonly actions: Message<\"Actions\">; readonly noResults: Message<\"No matching rows\">; readonly clearFilters: Message<\"Clear filters\">; readonly filterColumn: Message<\"Filter {column}\">; readonly min: Message<\"Min\">; readonly max: Message<\"Max\">; readonly all: Message<\"All\">; readonly columnMenu: Message<\"Options for {column}\">; readonly sortAscending: Message<\"Sort ascending\">; readonly sortDescending: Message<\"Sort descending\">; readonly clearSort: Message<\"Clear sort\">; readonly moveLeft: Message<\"Move left\">; readonly moveRight: Message<\"Move right\">; readonly pinStart: Message<\"Pin to start\">; readonly pinEnd: Message<\"Pin to end\">; readonly unpin: Message<\"Unpin\">; readonly hideColumn: Message<\"Hide column\">; readonly resizeColumn: Message<\"Resize {column}\">; readonly editCell: Message<\"Edit {column}\">; readonly totals: Message<\"Total\">; readonly exportCsv: Message<\"Export CSV\">; }; dock: { readonly nav: Message<\"Main navigation\">; }; steps: { readonly label: Message<\"Steps\">; }; overflowMenu: { readonly trigger: Message<\"More actions\">; }; sideNav: { readonly nav: Message<\"Side navigation\">; readonly collapse: Message<\"Collapse navigation\">; readonly expand: Message<\"Expand navigation\">; }; spinner: { readonly label: Message<\"Loading\">; }; numberInput: { readonly increment: Message<\"Increment\">; readonly decrement: Message<\"Decrement\">; }; tag: { readonly dismiss: Message<\"Remove\">; }; appShell: { readonly collapse: Message<\"Collapse navigation\">; readonly expand: Message<\"Expand navigation\">; readonly dismissError: Message<\"Dismiss error\">; }; charts: { readonly legendToggle: Message<\"Toggle series {name}\">; readonly noData: Message<\"No data\">; readonly resetZoom: Message<\"Reset zoom\">; readonly exportPng: Message<\"Export PNG\">; readonly exportSvg: Message<\"Export SVG\">; readonly dataView: Message<\"Data view\">; readonly restore: Message<\"Restore\">; }; alertDialog: { readonly confirm: Message<\"Confirm\">; readonly cancel: Message<\"Cancel\">; }; sheet: { readonly close: Message<\"Close panel\">; }; bottomSheet: { readonly close: Message<\"Close\">; readonly handle: Message<\"Drag to resize\">; }; actionSheet: { readonly label: Message<\"Actions\">; readonly cancel: Message<\"Cancel\">; }; reorderList: { readonly handle: Message<\"Reorder {name}\">; readonly grabbed: Message<\"Picked up {name}. Position {position} of {total}.\">; readonly moved: Message<\"Moved {name} to position {position} of {total}.\">; readonly dropped: Message<\"Dropped {name} at position {position} of {total}.\">; readonly cancelled: Message<\"Reordering cancelled. {name} returned to its original position.\">; }; infiniteScroll: { readonly loadMore: Message<\"Load more\">; readonly loading: Message<\"Loading more\">; }; pullToRefresh: { readonly pull: Message<\"Pull to refresh\">; readonly release: Message<\"Release to refresh\">; readonly refreshing: Message<\"Refreshing\">; }; fileUploader: { readonly label: Message<\"Upload files\">; readonly drop: Message<\"Drag and drop files here or click to upload\">; readonly remove: Message<\"Remove {name}\">; readonly uploading: Message<\"Uploading\">; readonly complete: Message<\"Upload complete\">; readonly error: Message<\"Upload failed\">; }; passwordInput: { readonly reveal: Message<\"Show password\">; readonly hide: Message<\"Hide password\">; readonly strengthWeak: Message<\"weak\">; readonly strengthFair: Message<\"fair\">; readonly strengthGood: Message<\"good\">; readonly strengthStrong: Message<\"strong\">; readonly strengthLabel: Message<\"Password strength: {level}\">; }; multiSelect: { readonly label: Message<\"Options\">; readonly placeholder: Message<\"Select options\">; readonly selected: Message<\"{count} selected\">; readonly search: Message<\"Search options\">; readonly noResults: Message<\"No options found\">; }; tagsInput: { readonly label: Message<\"Tags\">; readonly remove: Message<\"Remove {tag}\">; readonly placeholder: Message<\"Add tag…\">; }; otpInput: { readonly label: Message<\"One-time code\">; readonly digit: Message<\"Digit {n}\">; }; ai: { readonly generating: Message<\"Generating…\">; readonly done: Message<\"Done\">; readonly error: Message<\"Error\">; readonly send: Message<\"Send\">; readonly placeholder: Message<\"Type a message…\">; readonly you: Message<\"You\">; readonly assistant: Message<\"Assistant\">; }; shellHeader: { readonly skipToContent: Message<\"Skip to main content\">; readonly nav: Message<\"Main\">; readonly openMenu: Message<\"Open navigation\">; readonly closeMenu: Message<\"Close navigation\">; }; headerPanel: { readonly close: Message<\"Close panel\">; }; switcher: { readonly label: Message<\"Switch application\">; }; copyButton: { readonly copy: Message<\"Copy\">; readonly copied: Message<\"Copied\">; }; skipNav: { readonly label: Message<\"Skip to content\">; }; form: { readonly required: Message<\"Required\">; readonly invalid: Message<\"Invalid value\">; }; label: { readonly required: Message<\"Required\">; }; inlineLoading: { readonly active: Message<\"Loading\">; readonly finished: Message<\"Loaded\">; readonly error: Message<\"Error\">; }; notification: { readonly dismiss: Message<\"Dismiss\">; }; treeView: { readonly loading: Message<\"Loading…\">; readonly expand: Message<\"Expand\">; readonly collapse: Message<\"Collapse\">; }; carousel: { readonly region: Message<\"Carousel\">; readonly previous: Message<\"Previous slide\">; readonly next: Message<\"Next slide\">; readonly slide: Message<\"{n} of {total}\">; readonly goTo: Message<\"Go to slide {n}\">; }; calendar: { readonly previousMonth: Message<\"Previous month\">; readonly nextMonth: Message<\"Next month\">; readonly today: Message<\"Today\">; }; colorPicker: { readonly hue: Message<\"Hue\">; readonly alpha: Message<\"Alpha\">; readonly colorArea: Message<\"Saturation and lightness\">; readonly eyedropper: Message<\"Pick a color from the screen\">; }; drawer: { readonly close: Message<\"Close\">; }; menuButton: { readonly open: Message<\"Open menu\">; }; resizable: { readonly handle: Message<\"Resize panels\">; }; codeSnippet: { readonly copy: Message<\"Copy code\">; readonly copied: Message<\"Copied\">; }; dateRangePicker: { readonly label: Message<\"Date range\">; readonly placeholder: Message<\"Select a date range\">; readonly start: Message<\"Start date\">; readonly end: Message<\"End date\">; readonly apply: Message<\"Apply\">; readonly clear: Message<\"Clear\">; }; toggletip: { readonly label: Message<\"More information\">; }; avatarGroup: { readonly more: Message<\"{count} more\">; }; comparison: { readonly label: Message<\"Comparison slider\">; }; qrCode: { readonly label: Message<\"QR code\">; }; flow: { readonly zoomIn: Message<\"Zoom in\">; readonly zoomOut: Message<\"Zoom out\">; readonly fitView: Message<\"Fit view\">; readonly minimap: Message<\"Minimap\">; readonly play: Message<\"Play\">; readonly pause: Message<\"Pause\">; readonly next: Message<\"Next step\">; readonly previous: Message<\"Previous step\">; readonly restart: Message<\"Restart\">; readonly step: Message<\"Step {current} of {total}\">; }; logViewer: { readonly label: Message<\"Log output\">; readonly search: Message<\"Search log\">; readonly follow: Message<\"Following\">; readonly paused: Message<\"Jump to latest\">; readonly copy: Message<\"Copy\">; readonly copied: Message<\"Copied\">; readonly empty: Message<\"No log output\">; readonly matches: Message<\"{count} matches\">; readonly lines: Message<\"{count} lines\">; }; editor: { readonly label: Message<\"Code editor\">; readonly code: Message<\"Code\">; readonly find: Message<\"Find\">; readonly replace: Message<\"Replace\">; readonly findPlaceholder: Message<\"Find\">; readonly replacePlaceholder: Message<\"Replace with\">; readonly next: Message<\"Next match\">; readonly previous: Message<\"Previous match\">; readonly replaceOne: Message<\"Replace\">; readonly replaceAll: Message<\"Replace all\">; readonly close: Message<\"Close\">; readonly matchCase: Message<\"Match case\">; readonly toggleReplace: Message<\"Toggle replace\">; readonly noMatches: Message<\"No results\">; readonly findCount: Message<\"{current} of {total}\">; readonly commandMenu: Message<\"Command menu\">; readonly commandMenuEmpty: Message<\"No commands\">; }; }",
+          "builtin": "declare const builtin: { pagination: { readonly itemsPerPage: Message<\"Items per page\">; readonly pageOf: Message<\"Page {page} of {total}\">; readonly range: Message<\"{start}–{end} of {total} items\">; readonly previous: Message<\"Previous page\">; readonly next: Message<\"Next page\">; readonly nav: Message<\"Pagination\">; }; toast: { readonly dismiss: Message<\"Dismiss notification\">; readonly region: Message<\"Notifications\">; }; modal: { readonly close: Message<\"Close modal\">; }; alert: { readonly dismiss: Message<\"Dismiss\">; }; header: { readonly nav: Message<\"Main\">; }; search: { readonly label: Message<\"Search\">; readonly placeholder: Message<\"Search\">; readonly clear: Message<\"Clear search\">; }; commandMenu: { readonly label: Message<\"Command menu\">; readonly placeholder: Message<\"Type a command or search…\">; readonly empty: Message<\"No results found\">; readonly back: Message<\"Back\">; readonly loading: Message<\"Loading…\">; readonly matches: Message<\"{count} matches\">; readonly scopeLabel: Message<\"Scope\">; readonly clearScope: Message<\"Clear scope\">; }; breadcrumb: { readonly nav: Message<\"Breadcrumb\">; }; toc: { readonly nav: Message<\"On this page\">; }; datePicker: { readonly placeholder: Message<\"Select a date\">; readonly previousMonth: Message<\"Previous month\">; readonly nextMonth: Message<\"Next month\">; readonly clear: Message<\"Clear date\">; readonly open: Message<\"Open calendar\">; }; combobox: { readonly placeholder: Message<\"Select an option\">; readonly empty: Message<\"No options found\">; readonly clear: Message<\"Clear selection\">; readonly loading: Message<\"Loading options…\">; readonly create: Message<\"Add “{label}”\">; readonly resultCount: Message<\"{count} options available\">; }; dataTable: { readonly search: Message<\"Search\">; readonly empty: Message<\"No data\">; readonly selectAll: Message<\"Select all rows\">; readonly selectRow: Message<\"Select row\">; readonly itemsSelected: Message<\"{count} selected\">; readonly expandRow: Message<\"Expand row\">; readonly previousPage: Message<\"Previous page\">; readonly nextPage: Message<\"Next page\">; readonly columns: Message<\"Columns\">; readonly actions: Message<\"Actions\">; readonly noResults: Message<\"No matching rows\">; readonly clearFilters: Message<\"Clear filters\">; readonly filterColumn: Message<\"Filter {column}\">; readonly min: Message<\"Min\">; readonly max: Message<\"Max\">; readonly all: Message<\"All\">; readonly columnMenu: Message<\"Options for {column}\">; readonly sortAscending: Message<\"Sort ascending\">; readonly sortDescending: Message<\"Sort descending\">; readonly clearSort: Message<\"Clear sort\">; readonly moveLeft: Message<\"Move left\">; readonly moveRight: Message<\"Move right\">; readonly pinStart: Message<\"Pin to start\">; readonly pinEnd: Message<\"Pin to end\">; readonly unpin: Message<\"Unpin\">; readonly hideColumn: Message<\"Hide column\">; readonly resizeColumn: Message<\"Resize {column}\">; readonly editCell: Message<\"Edit {column}\">; readonly totals: Message<\"Total\">; readonly exportCsv: Message<\"Export CSV\">; }; dock: { readonly nav: Message<\"Main navigation\">; }; steps: { readonly label: Message<\"Steps\">; }; overflowMenu: { readonly trigger: Message<\"More actions\">; }; sideNav: { readonly nav: Message<\"Side navigation\">; readonly collapse: Message<\"Collapse navigation\">; readonly expand: Message<\"Expand navigation\">; }; spinner: { readonly label: Message<\"Loading\">; }; numberInput: { readonly increment: Message<\"Increment\">; readonly decrement: Message<\"Decrement\">; }; tag: { readonly dismiss: Message<\"Remove\">; }; appShell: { readonly collapse: Message<\"Collapse navigation\">; readonly expand: Message<\"Expand navigation\">; readonly dismissError: Message<\"Dismiss error\">; }; charts: { readonly legendToggle: Message<\"Toggle series {name}\">; readonly noData: Message<\"No data\">; readonly resetZoom: Message<\"Reset zoom\">; readonly exportPng: Message<\"Export PNG\">; readonly exportSvg: Message<\"Export SVG\">; readonly dataView: Message<\"Data view\">; readonly restore: Message<\"Restore\">; }; alertDialog: { readonly confirm: Message<\"Confirm\">; readonly cancel: Message<\"Cancel\">; }; sheet: { readonly close: Message<\"Close panel\">; }; bottomSheet: { readonly close: Message<\"Close\">; readonly handle: Message<\"Drag to resize\">; }; actionSheet: { readonly label: Message<\"Actions\">; readonly cancel: Message<\"Cancel\">; }; reorderList: { readonly handle: Message<\"Reorder {name}\">; readonly grabbed: Message<\"Picked up {name}. Position {position} of {total}.\">; readonly moved: Message<\"Moved {name} to position {position} of {total}.\">; readonly dropped: Message<\"Dropped {name} at position {position} of {total}.\">; readonly cancelled: Message<\"Reordering cancelled. {name} returned to its original position.\">; }; infiniteScroll: { readonly loadMore: Message<\"Load more\">; readonly loading: Message<\"Loading more\">; }; pullToRefresh: { readonly pull: Message<\"Pull to refresh\">; readonly release: Message<\"Release to refresh\">; readonly refreshing: Message<\"Refreshing\">; }; fileUploader: { readonly label: Message<\"Upload files\">; readonly drop: Message<\"Drag and drop files here or click to upload\">; readonly remove: Message<\"Remove {name}\">; readonly uploading: Message<\"Uploading\">; readonly complete: Message<\"Upload complete\">; readonly error: Message<\"Upload failed\">; readonly status: Message<{ readonly one: \"{count} file: {state}\"; readonly other: \"{count} files: {state}\"; }>; }; passwordInput: { readonly reveal: Message<\"Show password\">; readonly hide: Message<\"Hide password\">; readonly strengthWeak: Message<\"weak\">; readonly strengthFair: Message<\"fair\">; readonly strengthGood: Message<\"good\">; readonly strengthStrong: Message<\"strong\">; readonly strengthLabel: Message<\"Password strength: {level}\">; }; multiSelect: { readonly label: Message<\"Options\">; readonly placeholder: Message<\"Select options\">; readonly selected: Message<\"{count} selected\">; readonly search: Message<\"Search options\">; readonly noResults: Message<\"No options found\">; readonly loading: Message<\"Loading options…\">; readonly clear: Message<\"Clear selection\">; readonly remove: Message<\"Remove {label}\">; readonly selectAll: Message<\"Select all\">; readonly clearAll: Message<\"Clear all\">; readonly create: Message<\"Add “{label}”\">; readonly selectionChanged: Message<\"{count} of {total} selected\">; readonly maxReached: Message<\"Maximum of {max} selected\">; }; tagsInput: { readonly label: Message<\"Tags\">; readonly remove: Message<\"Remove {tag}\">; readonly placeholder: Message<\"Add tag…\">; }; otpInput: { readonly label: Message<\"One-time code\">; readonly digit: Message<\"Digit {n}\">; }; ai: { readonly generating: Message<\"Generating…\">; readonly done: Message<\"Done\">; readonly error: Message<\"Error\">; readonly send: Message<\"Send\">; readonly placeholder: Message<\"Type a message…\">; readonly you: Message<\"You\">; readonly assistant: Message<\"Assistant\">; }; shellHeader: { readonly skipToContent: Message<\"Skip to main content\">; readonly nav: Message<\"Main\">; readonly openMenu: Message<\"Open navigation\">; readonly closeMenu: Message<\"Close navigation\">; }; headerPanel: { readonly close: Message<\"Close panel\">; }; switcher: { readonly label: Message<\"Switch application\">; }; copyButton: { readonly copy: Message<\"Copy\">; readonly copied: Message<\"Copied\">; }; skipNav: { readonly label: Message<\"Skip to content\">; }; form: { readonly required: Message<\"Required\">; readonly invalid: Message<\"Invalid value\">; }; label: { readonly required: Message<\"Required\">; }; inlineLoading: { readonly active: Message<\"Loading\">; readonly finished: Message<\"Loaded\">; readonly error: Message<\"Error\">; }; notification: { readonly dismiss: Message<\"Dismiss\">; }; treeView: { readonly loading: Message<\"Loading…\">; readonly expand: Message<\"Expand\">; readonly collapse: Message<\"Collapse\">; }; carousel: { readonly region: Message<\"Carousel\">; readonly previous: Message<\"Previous slide\">; readonly next: Message<\"Next slide\">; readonly slide: Message<\"{n} of {total}\">; readonly goTo: Message<\"Go to slide {n}\">; readonly choose: Message<\"Choose slide to display\">; readonly play: Message<\"Start automatic slide show\">; readonly pause: Message<\"Stop automatic slide show\">; }; calendar: { readonly previousMonth: Message<\"Previous month\">; readonly nextMonth: Message<\"Next month\">; readonly today: Message<\"Today\">; readonly weekNumber: Message<\"Week\">; }; colorPicker: { readonly hue: Message<\"Hue\">; readonly alpha: Message<\"Alpha\">; readonly colorArea: Message<\"Saturation and brightness\">; readonly saturation: Message<\"Saturation\">; readonly brightness: Message<\"Brightness\">; readonly eyedropper: Message<\"Pick a color from the screen\">; readonly presets: Message<\"Preset colors\">; readonly hex: Message<\"Color value\">; readonly value: Message<\"Selected color {color}\">; }; drawer: { readonly close: Message<\"Close\">; }; menuButton: { readonly open: Message<\"Open menu\">; }; resizable: { readonly handle: Message<\"Resize panels\">; }; codeSnippet: { readonly copy: Message<\"Copy code\">; readonly copied: Message<\"Copied\">; }; dateRangePicker: { readonly label: Message<\"Date range\">; readonly placeholder: Message<\"Select a date range\">; readonly start: Message<\"Start date\">; readonly end: Message<\"End date\">; readonly apply: Message<\"Apply\">; readonly clear: Message<\"Clear\">; }; toggletip: { readonly label: Message<\"More information\">; }; avatarGroup: { readonly more: Message<\"{count} more\">; }; comparison: { readonly label: Message<\"Comparison slider\">; }; qrCode: { readonly label: Message<\"QR code\">; }; flow: { readonly zoomIn: Message<\"Zoom in\">; readonly zoomOut: Message<\"Zoom out\">; readonly fitView: Message<\"Fit view\">; readonly minimap: Message<\"Minimap\">; readonly play: Message<\"Play\">; readonly pause: Message<\"Pause\">; readonly next: Message<\"Next step\">; readonly previous: Message<\"Previous step\">; readonly restart: Message<\"Restart\">; readonly step: Message<\"Step {current} of {total}\">; }; logViewer: { readonly label: Message<\"Log output\">; readonly search: Message<\"Search log\">; readonly follow: Message<\"Following\">; readonly paused: Message<\"Jump to latest\">; readonly copy: Message<\"Copy\">; readonly copied: Message<\"Copied\">; readonly empty: Message<\"No log output\">; readonly matches: Message<\"{count} matches\">; readonly lines: Message<\"{count} lines\">; }; editor: { readonly label: Message<\"Code editor\">; readonly code: Message<\"Code\">; readonly find: Message<\"Find\">; readonly replace: Message<\"Replace\">; readonly findPlaceholder: Message<\"Find\">; readonly replacePlaceholder: Message<\"Replace with\">; readonly next: Message<\"Next match\">; readonly previous: Message<\"Previous match\">; readonly replaceOne: Message<\"Replace\">; readonly replaceAll: Message<\"Replace all\">; readonly close: Message<\"Close\">; readonly matchCase: Message<\"Match case\">; readonly toggleReplace: Message<\"Toggle replace\">; readonly noMatches: Message<\"No results\">; readonly findCount: Message<\"{current} of {total}\">; readonly commandMenu: Message<\"Command menu\">; readonly commandMenuEmpty: Message<\"No commands\">; }; }",
           "createLocale": "declare function createLocale<const L extends string>(options: { default: L; supported: readonly L[]; }): LocaleStore<L>",
           "currentLocale": "declare function currentLocale(): string",
           "defineCatalog": "declare function defineCatalog<T extends Record<string, Message>>(messages: T, locale: string, dict: { [K in keyof T]: T[K]['value'] extends PluralForms ? PluralForms : string }): void",

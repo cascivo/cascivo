@@ -10,7 +10,7 @@
   ],
   "resolutionTheme": "light",
   "generatedAt": "2026-08-29",
-  "count": 338,
+  "count": 339,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -2686,20 +2686,20 @@
       "canonical": true
     },
     {
+      "name": "--cascivo-color-picker-alpha-to",
+      "value": "#000",
+      "layer": "component",
+      "group": "color",
+      "resolvedDefault": "#000",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
       "name": "--cascivo-color-picker-area-size",
       "value": "9rem",
       "layer": "component",
       "group": "color",
       "resolvedDefault": "9rem",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-color-picker-solid",
-      "value": "#000",
-      "layer": "component",
-      "group": "color",
-      "resolvedDefault": "#000",
       "resolvesPerTheme": false,
       "canonical": true
     },
@@ -3024,6 +3024,15 @@
       "layer": "component",
       "group": "stack",
       "resolvedDefault": "4px",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-target-min",
+      "value": "1.5rem",
+      "layer": "component",
+      "group": "target",
+      "resolvedDefault": "1.5rem",
       "resolvesPerTheme": false,
       "canonical": true
     },

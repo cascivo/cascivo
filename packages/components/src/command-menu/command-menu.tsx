@@ -81,6 +81,12 @@ export interface CommandMenuProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   groups: CommandGroup[]
+  /**
+   * Placeholder text shown when the field is empty.
+   *
+   * @defaultValue `Type a command or search…`
+   * @see the component manifest
+   */
   placeholder?: string
   /**
    * Text shown when no commands match the query.

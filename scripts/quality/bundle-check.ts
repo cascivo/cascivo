@@ -22,7 +22,7 @@
  */
 import { gzipSync } from 'node:zlib'
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
-import { dirname, join } from 'node:path'
+import { dirname, join, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = fileURLToPath(new URL('../..', import.meta.url))
@@ -32,29 +32,48 @@ const PACKAGES = join(ROOT, 'packages')
  * Gzipped-KB ceilings, keyed by package name. Set from measured reality with headroom;
  * raise deliberately with a note, never to make a red run green.
  */
+/*
+ * Every published package's output is compacted, by one of two mechanisms depending on how
+ * it builds: `scripts/build/minify.ts` on the rolldown output for the `vp build` packages,
+ * `vp pack --minify` in the build script for the rest. The figures below are all minified
+ * and comparable.
+ */
 const BUDGETS: Record<string, number> = {
-  // Code-split barrel: the figure is the WHOLE library (every component chunk), which is
-  // what an app importing all of it would pay. Real apps tree-shake to a fraction — see
-  // docs/GETTING-STARTED.md. Measured 160.6 KB.
-  '@cascivo/react': 200,
-  '@cascivo/charts': 55, // measured 40.6
-  '@cascivo/icons': 55, // measured 39.6 (~440 icons; consumers tree-shake per icon)
-  '@cascivo/mcp': 30, // measured 19.2
-  '@cascivo/editor': 20, // measured 11.2
-  '@cascivo/flow': 16, // measured 8.9
-  '@cascivo/core': 12, // measured 6.3
-  '@cascivo/i18n': 10, // measured 5.2
-  '@cascivo/registry': 10, // measured 5.7
-  '@cascivo/ai': 6, // measured 1.7
-  '@cascivo/storage': 5, // measured 1.1
-  '@cascivo/vite-plugin': 5, // measured 1.8
+  // Code-split barrel: the figure is the whole library in ONE environment (see measureTree —
+  // it used to sum the browser tree and its `node/` twin, which no app loads together), so it
+  // is what an app importing every component would pay. Real apps tree-shake to a fraction —
+  // see docs/GETTING-STARTED.md.
+  //
+  // Measured 86.8 KB, 2026-09, after the emitted chunks started being minified properly (see
+  // packages/react/vite.config.ts — they used to ship with every newline and indent intact).
+  // Every earlier note on this line was wrong in the same direction: 160.6 KB was stale, the
+  // 200 that replaced it was set against a double-counted number, and the 130 after that was
+  // set against un-minified output.
+  //
+  // For reference against the next change: the 2026-09 accessibility pass on eight
+  // interactive components (multi-select, combobox, color-picker, calendar, date-picker,
+  // carousel, tree-view, file-uploader) cost 7.4 KB of this — keyboard models, the pure
+  // helpers they are tested through, and a second copy of `option-list`/`list-nav`, which is
+  // what registry folders staying self-contained under copy-paste costs.
+  '@cascivo/react': 110,
+  '@cascivo/charts': 55, // measured 32.5
+  '@cascivo/icons': 55, // measured 38.2 (~440 icons; consumers tree-shake per icon)
+  '@cascivo/mcp': 30, // measured 13.7
+  '@cascivo/editor': 20, // measured 10.4
+  '@cascivo/flow': 16, // measured 7.7
+  '@cascivo/core': 12, // measured 6.7
+  '@cascivo/i18n': 10, // measured 5.8
+  '@cascivo/registry': 10, // measured 4.1
+  '@cascivo/ai': 6, // measured 1.3
+  '@cascivo/storage': 5, // measured 0.4
+  '@cascivo/vite-plugin': 5, // measured 0.6
   '@cascivo/eslint-config': 5, // measured 2.0 — plain config data, but still worth a ceiling
   // Lints, never ships to a browser. The ceiling is for the generated data file: a
   // near-misses list that grew to hundreds of rows would be a design problem, not a size one.
   '@cascivo/eslint-plugin': 8,
   // The CLI runs in Node, so its size is not an adopter's browser cost. It gets a budget
   // anyway: a measured number beats an exemption, and a runaway CLI bundle is still a
-  // regression worth catching. Measured 30.8 KB.
+  // regression worth catching. Measured 25.0 KB.
   cascivo: 45,
 }
 
@@ -172,6 +191,36 @@ function gzipKB(files: string[]): number {
   return gzipSync(joined).length / 1024
 }
 
+/**
+ * The size of a code-split tree, counting each byte once per *environment*.
+ *
+ * A CSS-shipping package ships its browser chunks plus a CSS-free `node/` twin of every one
+ * of them, selected by the `node` export condition. No app ever loads both: a browser
+ * resolves `import`/`default` to the browser tree, an SSR/RSC render resolves `node` to the
+ * twin, on the server, where browser bytes are not the cost anyway. Summing the two budgeted
+ * a payload nobody receives — and, being roughly 2x the truth, it read as a plausible number
+ * rather than an obviously wrong one for as long as it existed. It first bit in 2026-09, when
+ * a 7.5 KB change presented as 15 KB and blew a ceiling it was nowhere near.
+ *
+ * Take the larger of the two, so the ceiling still binds whichever tree grows.
+ */
+function measureTree(distDir: string, treeFiles: string[]): { kb: number; scope: string } {
+  const twinPrefix = join(distDir, 'node') + sep
+  const twin = treeFiles.filter((f) => f.startsWith(twinPrefix))
+  if (twin.length === 0) {
+    return { kb: gzipKB(treeFiles), scope: `whole tree, ${treeFiles.length} chunks` }
+  }
+  const browser = treeFiles.filter((f) => !f.startsWith(twinPrefix))
+  const browserKB = gzipKB(browser)
+  const twinKB = gzipKB(twin)
+  return {
+    kb: Math.max(browserKB, twinKB),
+    scope:
+      `larger tree of ${browser.length} browser / ${twin.length} node chunks — ` +
+      `browser ${browserKB.toFixed(1)} KB, node ${twinKB.toFixed(1)} KB`,
+  }
+}
+
 const failures: string[] = []
 const measured: string[] = []
 
@@ -219,13 +268,12 @@ for (const { dir, pkg } of readPackages()) {
 
   // A barrel that re-exports per-component chunks gzips to ~100 bytes on its own, which is a
   // meaningless number to budget. When the entry is that small next to its own directory,
-  // measure the whole tree instead.
+  // measure the tree instead.
   const distDir = dirname(entryPath)
   const entryKB = gzipKB([entryPath])
   const treeFiles = allJs(distDir)
   const codeSplit = entryKB < 1 && treeFiles.length > 1
-  const kb = codeSplit ? gzipKB(treeFiles) : entryKB
-  const scope = codeSplit ? `whole tree, ${treeFiles.length} chunks` : entry
+  const { kb, scope } = codeSplit ? measureTree(distDir, treeFiles) : { kb: entryKB, scope: entry }
 
   if (kb > budget) {
     failures.push(`${name}: ${kb.toFixed(1)} KB gzip > budget ${budget} KB (${scope})`)

@@ -1,8 +1,11 @@
-import { render, screen } from '@testing-library/react'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it, vi } from 'vitest'
 import { createLocale } from '@cascivo/i18n'
-import { Combobox, type ComboboxOption } from './combobox'
+import { Combobox } from './combobox'
+import type { ComboboxOption } from './option-list'
+
+afterEach(cleanup)
 
 const options: ComboboxOption[] = [
   { value: 'us', label: 'United States' },
@@ -11,11 +14,18 @@ const options: ComboboxOption[] = [
   { value: 'jp', label: 'Japan', disabled: true },
 ]
 
+/** The popup, not the listbox, carries the open/closed state — a listbox may own only options. */
+function popupState(): string | null {
+  return (
+    document.querySelector('[role="listbox"]')?.parentElement?.getAttribute('data-state') ?? null
+  )
+}
+
 describe('Combobox', () => {
   it('renders with label and shows placeholder', () => {
     render(<Combobox label="Country" options={options} />)
-    expect(screen.getByRole('combobox', { name: 'Country' })).toBeInTheDocument()
-    expect(screen.getByRole('combobox')).toHaveTextContent('Select an option')
+    const field = screen.getByRole('combobox', { name: 'Country' })
+    expect(field).toHaveAttribute('placeholder', 'Select an option')
   })
 
   it('opens listbox on click and shows options', async () => {
@@ -33,14 +43,13 @@ describe('Combobox', () => {
     await user.click(screen.getByRole('combobox'))
     await user.click(screen.getByRole('option', { name: 'Germany' }))
     expect(onValueChange).toHaveBeenCalledWith('de')
-    expect(screen.getByRole('listbox', { hidden: true })).toHaveAttribute('data-state', 'closed')
+    expect(popupState()).toBe('closed')
   })
 
-  it('filters options when typing in the search field', async () => {
+  it('filters options as the user types in the field', async () => {
     const user = userEvent.setup()
     render(<Combobox label="Country" options={options} />)
-    await user.click(screen.getByRole('combobox'))
-    await user.type(screen.getByRole('textbox', { name: 'Search options' }), 'ger')
+    await user.type(screen.getByRole('combobox'), 'ger')
     expect(screen.getByRole('option', { name: 'Germany' })).toBeInTheDocument()
     expect(screen.queryByRole('option', { name: 'United States' })).not.toBeInTheDocument()
   })
@@ -50,25 +59,23 @@ describe('Combobox', () => {
     const onValueChange = vi.fn()
     render(<Combobox label="Country" options={options} onValueChange={onValueChange} />)
     await user.click(screen.getByRole('combobox'))
-    await user.keyboard('{ArrowDown}')
-    await user.keyboard('{Enter}')
-    expect(onValueChange).toHaveBeenCalledWith(expect.any(String))
+    await user.keyboard('{ArrowDown}{Enter}')
+    expect(onValueChange).toHaveBeenCalledWith('de')
   })
 
   it('Escape closes the listbox', async () => {
     const user = userEvent.setup()
     render(<Combobox label="Country" options={options} />)
     await user.click(screen.getByRole('combobox'))
-    screen.getByRole('textbox', { name: 'Search options' }).focus()
+    expect(popupState()).toBe('open')
     await user.keyboard('{Escape}')
-    expect(screen.getByRole('listbox', { hidden: true })).toHaveAttribute('data-state', 'closed')
+    expect(popupState()).toBe('closed')
   })
 
-  it('shows empty state when no options match search', async () => {
+  it('shows empty state when no options match', async () => {
     const user = userEvent.setup()
     render(<Combobox label="Country" options={options} />)
-    await user.click(screen.getByRole('combobox'))
-    await user.type(screen.getByRole('textbox', { name: 'Search options' }), 'zzz')
+    await user.type(screen.getByRole('combobox'), 'zzz')
     expect(screen.getByText('No options found')).toBeInTheDocument()
   })
 
@@ -84,8 +91,7 @@ describe('Combobox', () => {
         onValueChange={onValueChange}
       />,
     )
-    const clearBtn = screen.getByRole('button', { name: 'Clear selection' })
-    await user.click(clearBtn)
+    await user.click(screen.getByRole('button', { name: 'Clear selection' }))
     expect(onValueChange).toHaveBeenCalledWith(undefined)
   })
 
@@ -93,7 +99,7 @@ describe('Combobox', () => {
     const user = userEvent.setup()
     render(<Combobox label="Country" options={options} disabled />)
     await user.click(screen.getByRole('combobox'))
-    expect(screen.getByRole('listbox', { hidden: true })).toHaveAttribute('data-state', 'closed')
+    expect(popupState()).toBe('closed')
   })
 
   it('renders error and hint text', () => {
@@ -113,7 +119,7 @@ describe('Combobox', () => {
     const store = createLocale({ default: 'en', supported: ['en', 'de'] })
     await store.set('de')
     render(<Combobox label="Country" options={options} />)
-    expect(screen.getByRole('combobox')).toHaveTextContent('Option auswählen')
+    expect(screen.getByRole('combobox')).toHaveAttribute('placeholder', 'Option auswählen')
     await store.set('en')
   })
 })

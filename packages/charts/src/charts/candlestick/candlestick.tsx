@@ -53,7 +53,12 @@ export interface CandlestickProps {
   upColor?: string
   /** Colour for down candles (close < open). */
   downColor?: string
-  /** Render volume bars beneath the candles. */
+  /**
+   * Render volume bars beneath the candles.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   volume?: boolean
   tooltip?: boolean
   className?: string

@@ -1,5 +1,5 @@
 @layer cascivo.component {
-  .picker {
+  .wrapper {
     display: flex;
     flex-direction: column;
     gap: var(--cascivo-space-3);
@@ -54,10 +54,24 @@
       linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, transparent);
     background-color: var(--cascivo-color-border);
 
-    &:focus-visible {
+    &:has(.axis:focus-visible) {
       outline: none;
       box-shadow: var(--cascivo-focus-ring);
     }
+  }
+
+  /* Real range inputs carrying the two axes' slider semantics. Sized to the area and made
+     transparent rather than `display: none`, because a hidden input is not focusable and the
+     whole point is that the platform supplies arrows, Home/End and PageUp/PageDown. */
+  .axis {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: crosshair;
+    appearance: none;
   }
 
   .thumb {
@@ -77,8 +91,7 @@
     gap: var(--cascivo-space-2);
   }
 
-  .hue,
-  .alpha {
+  .slider {
     appearance: none;
     inline-size: 100%;
     block-size: 0.75rem;
@@ -126,7 +139,7 @@
   .alpha {
     background-color: #fff;
     background-image:
-      linear-gradient(to right, transparent, var(--cascivo-color-picker-solid, #000)),
+      linear-gradient(to right, transparent, var(--cascivo-color-picker-alpha-to, #000)),
       conic-gradient(#0000 0.25turn, #ccc 0 0.5turn, #0000 0 0.75turn, #ccc 0);
     background-size:
       100% 100%,
@@ -172,7 +185,7 @@
     flex-shrink: 0;
   }
 
-  .text {
+  .hex {
     flex: 1;
     min-inline-size: 0;
     font-family: var(--cascivo-font-mono);
@@ -212,10 +225,37 @@
       box-shadow: var(--cascivo-focus-ring);
     }
   }
+
+  /* Coarse pointers get the 44px effective target the repo mandates; the swatches, the
+     eyedropper and the two tracks were all well under it and had no block at all. */
+  @media (pointer: coarse) {
+    .preset,
+    .eyedropper,
+    .preview {
+      min-inline-size: var(--cascivo-target-min-coarse, 2.75rem);
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+
+    .slider {
+      block-size: 1.5rem;
+    }
+
+    .hex {
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumb,
+  .preset,
+  .eyedropper {
+    transition-duration: 1ms;
+  }
 }
 
 @media (forced-colors: active) {
-  .area:focus-visible,
+  .area:has(.axis:focus-visible),
   .preset:focus-visible,
   .eyedropper:focus-visible {
     outline: 2px solid Highlight;

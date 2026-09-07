@@ -840,6 +840,18 @@
                   },
                   "hideNav": {
                     "type": "boolean"
+                  },
+                  "showToday": {
+                    "type": "boolean"
+                  },
+                  "showWeekNumbers": {
+                    "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
                   }
                 }
               }
@@ -907,6 +919,9 @@
                   },
                   "loop": {
                     "type": "boolean"
+                  },
+                  "autoplay": {
+                    "type": "number"
                   }
                 }
               }
@@ -1152,6 +1167,13 @@
                   "alpha": {
                     "type": "boolean"
                   },
+                  "format": {
+                    "type": "string",
+                    "enum": ["hex", "rgb", "hsl"]
+                  },
+                  "name": {
+                    "type": "string"
+                  },
                   "label": {
                     "type": "string"
                   },
@@ -1209,6 +1231,24 @@
                     "type": "boolean"
                   },
                   "searchable": {
+                    "type": "boolean"
+                  },
+                  "loading": {
+                    "type": "boolean"
+                  },
+                  "creatable": {
+                    "type": "boolean"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "required": {
+                    "type": "boolean"
+                  },
+                  "open": {
+                    "type": "boolean"
+                  },
+                  "defaultOpen": {
                     "type": "boolean"
                   },
                   "label": {
@@ -1607,6 +1647,21 @@
                     "type": "string"
                   },
                   "clearable": {
+                    "type": "boolean"
+                  },
+                  "typeable": {
+                    "type": "boolean"
+                  },
+                  "showToday": {
+                    "type": "boolean"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "required": {
+                    "type": "boolean"
+                  },
+                  "open": {
                     "type": "boolean"
                   },
                   "label": {
@@ -2821,15 +2876,68 @@
                   "placeholder": {
                     "type": "string"
                   },
+                  "label": {
+                    "type": "string"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
+                  },
+                  "aria-labelledby": {
+                    "type": "string"
+                  },
+                  "aria-describedby": {
+                    "type": "string"
+                  },
+                  "aria-invalid": {
+                    "type": "boolean"
+                  },
+                  "hint": {
+                    "type": "string"
+                  },
+                  "error": {
+                    "type": "string"
+                  },
+                  "display": {
+                    "type": "string",
+                    "enum": ["count", "chips"]
+                  },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "clearable": {
+                    "type": "boolean"
+                  },
+                  "selectAll": {
+                    "type": "boolean"
+                  },
+                  "max": {
+                    "type": "number"
+                  },
+                  "creatable": {
+                    "type": "boolean"
+                  },
+                  "loading": {
+                    "type": "boolean"
+                  },
+                  "searchable": {
+                    "type": "boolean"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md", "lg"]
+                  },
+                  "name": {
+                    "type": "string"
                   },
                   "labels": {
                     "type": "string",
                     "enum": ["MultiSelectLabels"]
+                  },
+                  "id": {
+                    "type": "string"
                   }
                 },
-                "required": ["options", "value", "onValueChange"]
+                "required": ["options"]
               }
             }
           }

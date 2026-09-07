@@ -423,8 +423,8 @@
     { "name": "--cascivo-chart-anim-dur", "resolvedDefault": "320ms" },
     { "name": "--cascivo-chart-anim-ease", "resolvedDefault": "ease-out" },
     { "name": "--cascivo-chart-anim-props", "resolvedDefault": "opacity, fill, fill-opacity" },
+    { "name": "--cascivo-color-picker-alpha-to", "resolvedDefault": "#000" },
     { "name": "--cascivo-color-picker-area-size", "resolvedDefault": "9rem" },
-    { "name": "--cascivo-color-picker-solid", "resolvedDefault": "#000" },
     { "name": "--cascivo-color-scrim", "resolvedDefault": "oklch(0 0 0 / 40%)" },
     { "name": "--cascivo-context-x", "resolvedDefault": "0" },
     { "name": "--cascivo-context-y", "resolvedDefault": "0" },
@@ -470,6 +470,7 @@
     { "name": "--cascivo-skeleton-width", "resolvedDefault": "100%" },
     { "name": "--cascivo-stack-index", "resolvedDefault": "0" },
     { "name": "--cascivo-stack-offset", "resolvedDefault": "4px" },
+    { "name": "--cascivo-target-min", "resolvedDefault": "1.5rem" },
     { "name": "--cascivo-textarea-max-block-size", "resolvedDefault": "20lh" },
     { "name": "--cascivo-tooltip-anchor", "resolvedDefault": "attr(data-anchor)" },
     { "name": "--cascivo-tree-indent", "resolvedDefault": "var(--cascivo-space-5)" },
@@ -659,7 +660,11 @@
           "type": "(view: { month: number; year: number }) => void",
           "required": false
         },
-        { "name": "hideNav", "type": "boolean", "required": false }
+        { "name": "hideNav", "type": "boolean", "required": false },
+        { "name": "showToday", "type": "boolean", "required": false },
+        { "name": "showWeekNumbers", "type": "boolean", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false },
+        { "name": "label", "type": "string", "required": false }
       ]
     },
     {
@@ -679,7 +684,8 @@
         { "name": "index", "type": "number", "required": false },
         { "name": "defaultIndex", "type": "number", "required": false },
         { "name": "onIndexChange", "type": "(index: number) => void", "required": false },
-        { "name": "loop", "type": "boolean", "required": false }
+        { "name": "loop", "type": "boolean", "required": false },
+        { "name": "autoplay", "type": "number", "required": false }
       ]
     },
     {
@@ -755,6 +761,8 @@
         { "name": "onValueChange", "type": "(value: string) => void", "required": false },
         { "name": "presets", "type": "string[]", "required": false },
         { "name": "alpha", "type": "boolean", "required": false },
+        { "name": "format", "type": "'hex' | 'rgb' | 'hsl'", "required": false },
+        { "name": "name", "type": "string", "required": false },
         { "name": "label", "type": "string", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
         { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
@@ -779,6 +787,20 @@
         },
         { "name": "clearable", "type": "boolean", "required": false },
         { "name": "searchable", "type": "boolean", "required": false },
+        { "name": "loading", "type": "boolean", "required": false },
+        { "name": "onSearchChange", "type": "(query: string) => void", "required": false },
+        {
+          "name": "filter",
+          "type": "(option: ComboboxOption, query: string) => boolean",
+          "required": false
+        },
+        { "name": "creatable", "type": "boolean", "required": false },
+        { "name": "onCreate", "type": "(label: string) => void", "required": false },
+        { "name": "name", "type": "string", "required": false },
+        { "name": "required", "type": "boolean", "required": false },
+        { "name": "open", "type": "boolean", "required": false },
+        { "name": "defaultOpen", "type": "boolean", "required": false },
+        { "name": "onOpenChange", "type": "(open: boolean) => void", "required": false },
         { "name": "label", "type": "string", "required": false },
         { "name": "hint", "type": "string", "required": false },
         { "name": "error", "type": "string", "required": false },
@@ -949,6 +971,14 @@
         { "name": "min", "type": "string", "required": false },
         { "name": "max", "type": "string", "required": false },
         { "name": "clearable", "type": "boolean", "required": false },
+        { "name": "typeable", "type": "boolean", "required": false },
+        { "name": "disabledDate", "type": "(date: Date) => boolean", "required": false },
+        { "name": "format", "type": "Intl.DateTimeFormatOptions", "required": false },
+        { "name": "showToday", "type": "boolean", "required": false },
+        { "name": "name", "type": "string", "required": false },
+        { "name": "required", "type": "boolean", "required": false },
+        { "name": "open", "type": "boolean", "required": false },
+        { "name": "onOpenChange", "type": "(open: boolean) => void", "required": false },
         { "name": "label", "type": "string", "required": false },
         { "name": "hint", "type": "string", "required": false },
         { "name": "error", "type": "string", "required": false },
@@ -1371,11 +1401,36 @@
       "name": "MultiSelect",
       "props": [
         { "name": "options", "type": "MultiSelectOption[]", "required": true },
-        { "name": "value", "type": "string[]", "required": true },
-        { "name": "onValueChange", "type": "(v: string[]) => void", "required": true },
+        { "name": "value", "type": "string[]", "required": false },
+        { "name": "defaultValue", "type": "string[]", "required": false },
+        { "name": "onValueChange", "type": "(value: string[]) => void", "required": false },
         { "name": "placeholder", "type": "string", "required": false },
+        { "name": "label", "type": "string", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false },
+        { "name": "aria-labelledby", "type": "string", "required": false },
+        { "name": "aria-describedby", "type": "string", "required": false },
+        { "name": "aria-invalid", "type": "boolean", "required": false },
+        { "name": "hint", "type": "string", "required": false },
+        { "name": "error", "type": "string", "required": false },
+        { "name": "display", "type": "'count' | 'chips'", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
-        { "name": "labels", "type": "MultiSelectLabels", "required": false }
+        { "name": "clearable", "type": "boolean", "required": false },
+        { "name": "selectAll", "type": "boolean", "required": false },
+        { "name": "max", "type": "number", "required": false },
+        { "name": "creatable", "type": "boolean", "required": false },
+        { "name": "onCreate", "type": "(label: string) => void", "required": false },
+        { "name": "loading", "type": "boolean", "required": false },
+        { "name": "onSearchChange", "type": "(query: string) => void", "required": false },
+        {
+          "name": "filter",
+          "type": "(option: MultiSelectOption, query: string) => boolean",
+          "required": false
+        },
+        { "name": "searchable", "type": "boolean", "required": false },
+        { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
+        { "name": "name", "type": "string", "required": false },
+        { "name": "labels", "type": "MultiSelectLabels", "required": false },
+        { "name": "id", "type": "string", "required": false }
       ]
     },
     {
@@ -2123,6 +2178,11 @@
         { "name": "defaultSelected", "type": "string | string[]", "required": false },
         {
           "name": "onSelectChange",
+          "type": "(selected: string | string[]) => void",
+          "required": false
+        },
+        {
+          "name": "onValueChange",
           "type": "(selected: string | string[]) => void",
           "required": false
         },

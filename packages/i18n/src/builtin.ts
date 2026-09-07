@@ -53,12 +53,15 @@ export const builtin = {
     previousMonth: 'Previous month',
     nextMonth: 'Next month',
     clear: 'Clear date',
+    open: 'Open calendar',
   }),
   combobox: defineMessages('cascade.combobox', {
     placeholder: 'Select an option',
     empty: 'No options found',
     clear: 'Clear selection',
-    search: 'Search options',
+    loading: 'Loading options…',
+    create: 'Add “{label}”',
+    resultCount: '{count} options available',
   }),
   dataTable: defineMessages('cascade.dataTable', {
     search: 'Search',
@@ -168,6 +171,7 @@ export const builtin = {
     uploading: 'Uploading',
     complete: 'Upload complete',
     error: 'Upload failed',
+    status: { one: '{count} file: {state}', other: '{count} files: {state}' },
   }),
   passwordInput: defineMessages('cascade.passwordInput', {
     reveal: 'Show password',
@@ -184,6 +188,14 @@ export const builtin = {
     selected: '{count} selected',
     search: 'Search options',
     noResults: 'No options found',
+    loading: 'Loading options…',
+    clear: 'Clear selection',
+    remove: 'Remove {label}',
+    selectAll: 'Select all',
+    clearAll: 'Clear all',
+    create: 'Add “{label}”',
+    selectionChanged: '{count} of {total} selected',
+    maxReached: 'Maximum of {max} selected',
   }),
   tagsInput: defineMessages('cascade.tagsInput', {
     label: 'Tags',
@@ -248,17 +260,26 @@ export const builtin = {
     next: 'Next slide',
     slide: '{n} of {total}',
     goTo: 'Go to slide {n}',
+    choose: 'Choose slide to display',
+    play: 'Start automatic slide show',
+    pause: 'Stop automatic slide show',
   }),
   calendar: defineMessages('cascade.calendar', {
     previousMonth: 'Previous month',
     nextMonth: 'Next month',
     today: 'Today',
+    weekNumber: 'Week',
   }),
   colorPicker: defineMessages('cascade.colorPicker', {
     hue: 'Hue',
     alpha: 'Alpha',
-    colorArea: 'Saturation and lightness',
+    colorArea: 'Saturation and brightness',
+    saturation: 'Saturation',
+    brightness: 'Brightness',
     eyedropper: 'Pick a color from the screen',
+    presets: 'Preset colors',
+    hex: 'Color value',
+    value: 'Selected color {color}',
   }),
   drawer: defineMessages('cascade.drawer', {
     close: 'Close',
@@ -381,12 +402,15 @@ defineCatalog(builtin.datePicker, 'de', {
   previousMonth: 'Vorheriger Monat',
   nextMonth: 'Nächster Monat',
   clear: 'Datum löschen',
+  open: 'Kalender öffnen',
 })
 defineCatalog(builtin.combobox, 'de', {
   placeholder: 'Option auswählen',
   empty: 'Keine Optionen gefunden',
   clear: 'Auswahl löschen',
-  search: 'Optionen durchsuchen',
+  loading: 'Optionen werden geladen…',
+  create: '„{label}“ hinzufügen',
+  resultCount: '{count} Optionen verfügbar',
 })
 defineCatalog(builtin.dataTable, 'de', {
   search: 'Suchen',
@@ -496,6 +520,7 @@ defineCatalog(builtin.fileUploader, 'de', {
   uploading: 'Wird hochgeladen',
   complete: 'Hochladen abgeschlossen',
   error: 'Hochladen fehlgeschlagen',
+  status: { one: '{count} Datei: {state}', other: '{count} Dateien: {state}' },
 })
 defineCatalog(builtin.passwordInput, 'de', {
   reveal: 'Passwort anzeigen',
@@ -512,6 +537,14 @@ defineCatalog(builtin.multiSelect, 'de', {
   selected: '{count} ausgewählt',
   search: 'Optionen durchsuchen',
   noResults: 'Keine Optionen gefunden',
+  loading: 'Optionen werden geladen…',
+  clear: 'Auswahl löschen',
+  remove: '{label} entfernen',
+  selectAll: 'Alle auswählen',
+  clearAll: 'Alle entfernen',
+  create: '„{label}“ hinzufügen',
+  selectionChanged: '{count} von {total} ausgewählt',
+  maxReached: 'Maximal {max} ausgewählt',
 })
 defineCatalog(builtin.tagsInput, 'de', {
   label: 'Schlagwörter',
@@ -576,17 +609,26 @@ defineCatalog(builtin.carousel, 'de', {
   next: 'Nächste Folie',
   slide: '{n} von {total}',
   goTo: 'Zu Folie {n}',
+  choose: 'Anzuzeigende Folie wählen',
+  play: 'Automatische Diashow starten',
+  pause: 'Automatische Diashow anhalten',
 })
 defineCatalog(builtin.calendar, 'de', {
   previousMonth: 'Vorheriger Monat',
   nextMonth: 'Nächster Monat',
   today: 'Heute',
+  weekNumber: 'Woche',
 })
 defineCatalog(builtin.colorPicker, 'de', {
   hue: 'Farbton',
   alpha: 'Alpha',
   colorArea: 'Sättigung und Helligkeit',
+  saturation: 'Sättigung',
+  brightness: 'Helligkeit',
   eyedropper: 'Farbe vom Bildschirm wählen',
+  presets: 'Vordefinierte Farben',
+  hex: 'Farbwert',
+  value: 'Ausgewählte Farbe {color}',
 })
 defineCatalog(builtin.drawer, 'de', {
   close: 'Schließen',

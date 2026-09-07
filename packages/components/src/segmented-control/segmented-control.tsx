@@ -20,6 +20,12 @@ export interface SegmentedControlProps extends Omit<HTMLAttributes<HTMLDivElemen
   value: string
   onValueChange: (v: string) => void
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
 }
 

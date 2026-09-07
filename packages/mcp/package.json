@@ -44,7 +44,7 @@
     "provenance": true
   },
   "scripts": {
-    "build": "vp pack && node scripts/postbuild.mjs",
+    "build": "vp pack --minify && node scripts/postbuild.mjs",
     "check": "tsc --noEmit",
     "test": "vp test"
   },

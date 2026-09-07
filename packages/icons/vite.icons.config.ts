@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite-plus'
+import { MINIFY } from '../../scripts/build/minify.ts'
 
 /**
  * Second, ADDITIVE build: one output module per icon, for `@cascivo/icons/icons/<Name>`.
@@ -34,6 +35,7 @@ export default defineConfig({
       fileName: (_format, name) => `${name}.js`,
     },
     rollupOptions: {
+      output: { minify: MINIFY },
       external: [/^react($|\/)/, /^react-dom($|\/)/],
     },
   },

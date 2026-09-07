@@ -34,19 +34,20 @@ import { TreeView } from '@cascivo/react'
 
 ## Props
 
-| Prop               | Type                                                                          | Required | Default  | Description                                                                                                                                       |
-| ------------------ | ----------------------------------------------------------------------------- | -------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `label`            | `string`                                                                      | no       | —        | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only.    |
-| `ariaLabel`        | `string`                                                                      | no       | —        | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
-| `aria-label`       | `string`                                                                      | no       | —        | Accessible label for the tree.                                                                                                                    |
-| `items`            | `{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]` | yes      | —        | The items to render.                                                                                                                              |
-| `selectionMode`    | `'single' \| 'multi'`                                                         | no       | `single` | Whether one or multiple nodes can be selected ('single' \| 'multi').                                                                              |
-| `selected`         | `string \| string[]`                                                          | no       | —        | The controlled selected node id(s).                                                                                                               |
-| `defaultSelected`  | `string \| string[]`                                                          | no       | —        | The initially selected node id(s) when uncontrolled.                                                                                              |
-| `onSelectChange`   | `(selected: string \| string[]) => void`                                      | no       | —        | Called with the new selection when it changes.                                                                                                    |
-| `expanded`         | `string[]`                                                                    | no       | —        | The controlled set of expanded node ids.                                                                                                          |
-| `defaultExpanded`  | `string[]`                                                                    | no       | —        | The initially expanded node ids when uncontrolled.                                                                                                |
-| `onExpandedChange` | `(expanded: string[]) => void`                                                | no       | —        | Called with the new expanded set when it changes.                                                                                                 |
+| Prop               | Type                                                                          | Required | Default  | Description                                                                                                                                                   |
+| ------------------ | ----------------------------------------------------------------------------- | -------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`            | `string`                                                                      | no       | —        | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only.                |
+| `ariaLabel`        | `string`                                                                      | no       | —        | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only.             |
+| `aria-label`       | `string`                                                                      | no       | —        | Accessible label for the tree.                                                                                                                                |
+| `items`            | `{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]` | yes      | —        | The items to render.                                                                                                                                          |
+| `selectionMode`    | `'single' \| 'multi'`                                                         | no       | `single` | Whether one or multiple nodes can be selected ('single' \| 'multi').                                                                                          |
+| `selected`         | `string \| string[]`                                                          | no       | —        | The controlled selected node id(s).                                                                                                                           |
+| `defaultSelected`  | `string \| string[]`                                                          | no       | —        | The initially selected node id(s) when uncontrolled.                                                                                                          |
+| `onSelectChange`   | `(selected: string \| string[]) => void`                                      | no       | —        | Called with the new selection when it changes.                                                                                                                |
+| `onValueChange`    | `(selected: string \| string[]) => void`                                      | no       | —        | Called with the new selection. Preferred over `onSelectChange`, which is the catalog’s only value-carrying handler not named onValueChange and is deprecated. |
+| `expanded`         | `string[]`                                                                    | no       | —        | The controlled set of expanded node ids.                                                                                                                      |
+| `defaultExpanded`  | `string[]`                                                                    | no       | —        | The initially expanded node ids when uncontrolled.                                                                                                            |
+| `onExpandedChange` | `(expanded: string[]) => void`                                                | no       | —        | Called with the new expanded set when it changes.                                                                                                             |
 
 ## Examples
 
@@ -85,7 +86,7 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `tree`
-- **Keyboard:** ArrowDown, ArrowUp, ArrowRight, ArrowLeft, Home, End, Enter, Space, Typeahead
+- **Keyboard:** \*, ArrowDown, ArrowUp, ArrowRight, ArrowLeft, Home, End, Enter, Space, Typeahead
 
 ## Dependencies
 

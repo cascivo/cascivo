@@ -465,6 +465,11 @@
       ],
       "ColorPicker": [
         {
+          "area": "output format",
+          "level": "flexible",
+          "note": "format switches between hex, rgb() and hsl(); alpha is included whenever the alpha prop is on"
+        },
+        {
           "area": "color model",
           "level": "flexible",
           "note": "Values are stored as hex; consumers can convert to rgb/hsl/oklch as needed"
@@ -1100,12 +1105,17 @@
         {
           "area": "labels",
           "level": "flexible",
-          "note": "placeholder, selected(count), search, and noResults are overridable"
+          "note": "Every user-visible string is overridable through labels"
         },
         {
           "area": "options",
           "level": "flexible",
-          "note": "Caller supplies the option list and may mark individual options disabled"
+          "note": "Caller supplies the option list and may mark options disabled or assign them a group"
+        },
+        {
+          "area": "filtering",
+          "level": "flexible",
+          "note": "The default matcher folds diacritics and searches label then value; filter replaces it entirely"
         }
       ],
       "NativeSelect": [
@@ -3903,7 +3913,7 @@
             "reason": "The range picker renders two Calendar instances side-by-side"
           }
         ],
-        "a11yRationale": "Renders an APG-compliant role=\"grid\" table with role=\"row\"/role=\"gridcell\"; a roving tabindex keeps exactly one day focusable (the focused date) so arrow keys move focus per APG, Home/End jump to the week edges, PageUp/PageDown change month (with Shift for year), today exposes aria-current=\"date\", selection sets data-selected with aria-selected on the cell, and out-of-range or predicate-disabled days get aria-disabled and are skipped by selection",
+        "a11yRationale": "A role=\"grid\" table with role=\"row\"/role=\"gridcell\" and a roving tabindex keeping exactly one day focusable. Navigation moves *real DOM focus*, not just the tabindex: the previous build only rotated the index, so focus stayed on the old button and the moment an arrow crossed a month boundary that button unmounted and focus fell to <body>, ejecting the user from the widget mid-navigation. React reuses the day buttons positionally across months, so the focus move is deferred a task and re-queried by date — landing on the reused node would silently focus whatever date now occupies that grid slot. Arrows move a day or a week, Home/End reach the week edges, PageUp/PageDown change month (Shift for year), and every move is clamped to min/max and skips predicate-disabled days rather than parking the cursor where Enter does nothing; the prev/next buttons disable at the bounds for the same reason. aria-selected sits on the button that takes focus, not the enclosing <td>, and is omitted rather than serialised as \"false\" on the other thirty cells. Today is computed from the *local* calendar rather than the UTC instant, so aria-current=\"date\" no longer lands a day early east of UTC+12. The month is announced through a separate visually-hidden status region: the visible label is also the grid's accessible name, so announcing there would mutate the name of the container focus sits inside.",
         "flexibility": [
           {
             "area": "date type",
@@ -4078,6 +4088,46 @@
           "schema": {
             "kind": "boolean"
           }
+        },
+        {
+          "name": "showToday",
+          "description": "When true, shows a button that jumps the view to the current month and focuses today.",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "showWeekNumbers",
+          "description": "When true, prefixes each row with its ISO-8601 week number.",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "ariaLabel",
+          "description": "Accessible name for the grid. Defaults to the visible month label. Calendar has no visible label slot — the month heading is its own — so `label` and `ariaLabel` are aliases for the same invisible name.",
+          "type": "string",
+          "required": false,
+          "nameVisibility": "invisible",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "label",
+          "description": "Alias for `ariaLabel`; both set the grid’s invisible accessible name.",
+          "type": "string",
+          "required": false,
+          "nameVisibility": "invisible",
+          "schema": {
+            "kind": "string"
+          }
         }
       ],
       "contextUrl": "/context/calendar.md",
@@ -4189,7 +4239,7 @@
             "reason": "Use tabs when sections are distinct and should be directly addressable"
           }
         ],
-        "a11yRationale": "The container is a labelled region with aria-roledescription=\"carousel\"; each slide is a labelled group (\"n of total\"); prev/next are real buttons and the dot indicators use roving tabindex with arrow-key navigation. Scrolling honours prefers-reduced-motion.",
+        "a11yRationale": "A section with aria-roledescription=\"carousel\" holding one role=\"group\" per slide. Inactive slides are `inert`, not `aria-hidden`: they stay in the layout and remain scroll-reachable, so aria-hidden alone declared them non-existent to assistive technology while every link and button inside them was still tabbable — the canonical aria-hidden-focus violation. The track is aria-live=\"polite\" when the user drives the carousel and \"off\" while it rotates on its own, per APG; a rotating carousel always renders a play/pause control, and rotation additionally pauses on hover, on focus within, while the tab is hidden and under prefers-reduced-motion. Reduced motion is read in JS as well as CSS because a scrollTo `behavior` option overrides the stylesheet, which is why the previous build's stylesheet rule could never take effect. Arrow keys on the indicator row move the slide, not merely the roving tabindex, and the indicators are named as their own group rather than repeating the region's name. The indicator hit area reaches the target minimum through a pseudo-element, leaving the 10px visual mark unchanged.",
         "flexibility": [
           {
             "area": "transition",
@@ -4267,6 +4317,15 @@
           "default": "false",
           "schema": {
             "kind": "boolean"
+          }
+        },
+        {
+          "name": "autoplay",
+          "description": "Milliseconds between automatic advances. Omit or set 0 to leave rotation off. Pauses on hover, on focus within, while the tab is hidden and under prefers-reduced-motion, and always renders a play/pause control.",
+          "type": "number",
+          "required": false,
+          "schema": {
+            "kind": "number"
           }
         }
       ],
@@ -8924,8 +8983,13 @@
             "reason": "The hex text field lets users paste an exact value"
           }
         ],
-        "a11yRationale": "The saturation/lightness area is a focusable role=\"slider\" with arrow-key nudging and an aria-valuetext reporting the current hex; hue and alpha are native range inputs that inherit platform slider semantics and announcements.",
+        "a11yRationale": "The picking area is a role=\"group\" holding one native range input per axis — saturation on x, brightness on y — rather than a single role=\"slider\", which cannot describe two dimensions and in the previous build carried no aria-valuenow at all. Real inputs also mean arrow stepping, Home/End and PageUp/PageDown are the platform's rather than a hand-rolled key switch, and each axis announces its own percentage. Hue and alpha are native range inputs for the same reason. The preset swatches are a labelled role=\"group\" of toggle buttons with roving focus, so the arrows move focus between swatches and Enter or Space selects — the previous build labelled that group \"Saturation and lightness\" and made the arrows change the value instead. The hex field commits on blur, Enter or a valid paste and rejects anything unparseable, so a half-typed value never reaches onValueChange. A polite live region reports the current colour, mounted before the first change so that change is announced too. Selection and focus each carry a non-colour channel under forced-colors, and every control reaches the coarse-pointer target minimum.",
         "flexibility": [
+          {
+            "area": "output format",
+            "level": "flexible",
+            "note": "format switches between hex, rgb() and hsl(); alpha is included whenever the alpha prop is on"
+          },
           {
             "area": "color model",
             "level": "flexible",
@@ -8993,6 +9057,26 @@
           "default": "true",
           "schema": {
             "kind": "boolean"
+          }
+        },
+        {
+          "name": "format",
+          "description": "Notation for the emitted value. Alpha is included whenever alpha is on, so the emitted string has a stable width.",
+          "type": "'hex' | 'rgb' | 'hsl'",
+          "required": false,
+          "default": "'hex'",
+          "schema": {
+            "kind": "enum",
+            "values": ["hex", "rgb", "hsl"]
+          }
+        },
+        {
+          "name": "name",
+          "description": "Submitted with a surrounding form — a hidden input carrying the current value.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
           }
         },
         {
@@ -9074,7 +9158,7 @@
         }
       ],
       "contextUrl": "/context/color-picker.md",
-      "aiPrompt": "I am modifying the cascivo ColorPicker component (inputs). Interactive color selection widget with saturation/lightness area, hue and alpha sliders\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nColorPicker is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-radius-md, --cascivo-radius-full, --cascivo-focus-ring\n\nAccessibility: role \"slider\", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/ArrowUp/ArrowDown. Keep it AA.\n\nDo not change (strict): token names — Surfaces, borders and focus ring must resolve to --cascivo-* tokens\nFlexible: color model.\n\nDo not invent props, tokens, or global viewport media queries."
+      "aiPrompt": "I am modifying the cascivo ColorPicker component (inputs). Interactive color selection widget with saturation/lightness area, hue and alpha sliders\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nColorPicker is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-radius-md, --cascivo-radius-full, --cascivo-focus-ring\n\nAccessibility: role \"group\", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/ArrowUp/ArrowDown/Home/End/PageUp/PageDown/Enter/Escape. Keep it AA.\n\nDo not change (strict): token names — Surfaces, borders and focus ring must resolve to --cascivo-* tokens\nFlexible: output format, color model.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Combobox",
@@ -9098,7 +9182,13 @@
           },
           {
             "bad": "Setting searchable={false} on a 200-item list",
-            "why": "Without filtering the list becomes an unusable scroll; either keep search on or switch to a different selection pattern"
+            "good": "Keep the default searchable so the user can filter",
+            "why": "Type-to-select still jumps to a matching option, but without a visible filter a 200-row list is an unusable scroll; searchable={false} is for short lists"
+          },
+          {
+            "bad": "<Combobox options={remote} onSearchChange={search} />",
+            "good": "<Combobox options={remote} onSearchChange={search} filter={() => true} />",
+            "why": "The built-in matcher still runs over the server’s results and filters them a second time against the same query, hiding rows the server deliberately returned"
           }
         ],
         "related": [
@@ -9118,7 +9208,7 @@
             "reason": "Use the Cmd+K palette for command/navigation search rather than value selection"
           }
         ],
-        "a11yRationale": "Trigger exposes role=\"combobox\" with aria-expanded, aria-controls, aria-haspopup=\"listbox\", and aria-activedescendant pointing at the active option so screen readers track focus through arrow navigation without moving DOM focus off the input; error state is wired via aria-invalid + aria-describedby and announced with role=\"alert\"",
+        "a11yRationale": "Two APG combobox shapes, chosen by `searchable`. With searchable (the default) the field is an <input role=\"combobox\"> with aria-autocomplete=\"list\" that filters as the user types — the APG editable combobox. With searchable={false} it is a <button role=\"combobox\"> and printable characters type-to-select — the APG select-only combobox. Either way the field itself keeps DOM focus and owns aria-expanded, aria-controls and aria-activedescendant, so assistive technology tracks the active option as the arrows move it; the previous build put aria-activedescendant on a trigger while focus had moved into a separate search input, so nothing was tracked. The listbox holds only role=\"option\" rows (with aria-selected and aria-disabled) and role=\"group\" headings — the loading and no-results messages are siblings of it, as role=\"listbox\" owns no other children. ArrowUp/ArrowDown skip disabled rows and wrap, PageUp/PageDown move by ten, Alt+ArrowDown opens without moving the active option and Alt+ArrowUp closes keeping the value, Enter selects, Escape closes and returns focus to the field, and Tab closes without stealing focus back. Home/End jump the list only in the select-only variant, because in the editable one they belong to the text caret. Outside-pointer and Escape dismissal come from the shared DismissableLayer rather than a hand-rolled document listener. A polite live region reports the result count as the filter narrows. Selection, the active row and the focus ring each carry a non-colour channel under forced-colors, and every control reaches the coarse-pointer target minimum.",
         "flexibility": [
           {
             "area": "searchable",
@@ -9195,12 +9285,105 @@
         },
         {
           "name": "searchable",
-          "description": "When true, shows a search/filter input.",
+          "description": "When true the field is a text input that filters the list as the user types (the APG editable combobox). When false it is a button that opens the list, and type-to-select jumps to a matching option (the APG select-only combobox).",
           "type": "boolean",
           "required": false,
           "default": "true",
           "schema": {
             "kind": "boolean"
+          }
+        },
+        {
+          "name": "loading",
+          "description": "When true, the list reports itself as busy and shows a loading row instead of the empty message.",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onSearchChange",
+          "description": "Called with the search text on every keystroke. Pair it with filter={() => true} for a server-driven list.",
+          "type": "(query: string) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "filter",
+          "description": "Replaces the built-in diacritic-insensitive matcher.",
+          "type": "(option: ComboboxOption, query: string) => boolean",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "creatable",
+          "description": "When true, offers the current search text as a new option.",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onCreate",
+          "description": "Called with the typed label when the user picks the \"create\" row.",
+          "type": "(label: string) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "name",
+          "description": "Submitted with a surrounding form — a hidden input carrying the selected value.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "required",
+          "description": "Marks the control as required for assistive technology.",
+          "type": "boolean",
+          "required": false,
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "open",
+          "description": "Controlled open state of the listbox.",
+          "type": "boolean",
+          "required": false,
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "defaultOpen",
+          "description": "The initial open state when uncontrolled.",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onOpenChange",
+          "description": "Called when the listbox opens or closes.",
+          "type": "(open: boolean) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
           }
         },
         {
@@ -9309,7 +9492,7 @@
         }
       ],
       "contextUrl": "/context/combobox.md",
-      "aiPrompt": "I am modifying the cascivo Combobox component (inputs). Filterable single-select with an animated custom listbox, built on the dropdown open/close machine\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nCombobox is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent-text, --cascivo-color-surface, --cascivo-color-surface-overlay, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-text-subtle, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-radius-input, --cascivo-radius-md, --cascivo-radius-sm, --cascivo-shadow-lg, --cascivo-motion-enter, --cascivo-z-dropdown\n\nAccessibility: role \"combobox\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Enter/Escape/Tab. Keep it AA.\n\nDo not change (strict): token names — Listbox/field styling resolves to semantic --cascivo-color-* / --cascivo-radius-* tokens\nFlexible: searchable, controlled vs uncontrolled.\n\nDo not invent props, tokens, or global viewport media queries."
+      "aiPrompt": "I am modifying the cascivo Combobox component (inputs). Filterable single-select with an animated custom listbox, built on the dropdown open/close machine\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nCombobox is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent-text, --cascivo-color-surface, --cascivo-color-surface-overlay, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-text-subtle, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-font-medium, --cascivo-font-bold, --cascivo-radius-field, --cascivo-radius-overlay, --cascivo-radius-item, --cascivo-radius-control, --cascivo-shadow-overlay, --cascivo-motion-enter, --cascivo-z-dropdown, --cascivo-target-min-coarse\n\nAccessibility: role \"combobox\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Home/End/PageUp/PageDown/Enter/Space/Escape/Tab. Keep it AA.\n\nDo not change (strict): token names — Listbox/field styling resolves to semantic --cascivo-color-* / --cascivo-radius-* tokens\nFlexible: searchable, controlled vs uncontrolled.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "CommandMenu",
@@ -10480,7 +10663,7 @@
             "reason": "Typically a field within a form with label/hint/error"
           }
         ],
-        "a11yRationale": "The trigger is role=\"combobox\" with aria-haspopup=\"dialog\"/aria-expanded; the calendar is a role=\"dialog\" containing a role=\"grid\" with roving tabindex so arrow keys move a single focusable day, days expose aria-pressed for selection, aria-current=\"date\" for today, and aria-disabled past min/max, and errors are wired via aria-invalid + aria-describedby with role=\"alert\"",
+        "a11yRationale": "The field is an <input role=\"combobox\"> with aria-expanded, aria-controls and aria-haspopup=\"dialog\" that accepts a typed date — the previous build had no text field at all, so a date already known could only be reached by paging a grid. ArrowDown and Alt+ArrowDown open the popup (the combobox pattern's required key, listed in the old manifest but never implemented), opening moves focus into the grid and Escape closes and returns it to the field; the old build did neither, leaving the grid unreachable on open and focus on <body> on close. The grid itself is a composed Calendar rather than a second hand-rolled copy, so its real-focus navigation, min/max clamping, disabled-day skipping, aria-selected placement and month announcements all apply here; the duplicate had none of them and its arrow keys did nothing at all until a value was set. Dismissal comes from the shared DismissableLayer instead of a raw document listener. Typed input is parsed at commit, not per keystroke, and rejected rather than coerced when unreadable or out of bounds.",
         "flexibility": [
           {
             "area": "value format",
@@ -10562,6 +10745,80 @@
           "description": "Shows a clear button",
           "schema": {
             "kind": "boolean"
+          }
+        },
+        {
+          "name": "typeable",
+          "description": "When true, the field accepts a typed date as well as one picked from the calendar.",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "disabledDate",
+          "description": "Rejects individual dates the bounds allow — holidays, weekends, taken slots.",
+          "type": "(date: Date) => boolean",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "format",
+          "description": "Formatting options for the displayed date. Defaults to the locale's numeric form.",
+          "type": "Intl.DateTimeFormatOptions",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "showToday",
+          "description": "When true, the calendar offers a button that jumps to the current month.",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "name",
+          "description": "Submitted with a surrounding form — a hidden input carrying the ISO value.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "required",
+          "description": "Marks the control as required for assistive technology.",
+          "type": "boolean",
+          "required": false,
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "open",
+          "description": "Controlled open state of the calendar popup.",
+          "type": "boolean",
+          "required": false,
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onOpenChange",
+          "description": "Called when the popup opens or closes.",
+          "type": "(open: boolean) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
           }
         },
         {
@@ -10661,7 +10918,7 @@
         }
       ],
       "contextUrl": "/context/date-picker.md",
-      "aiPrompt": "I am modifying the cascivo DatePicker component (inputs). An accessible date-picker with a calendar popover.\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nDatePicker is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent-text, --cascivo-color-surface, --cascivo-color-surface-overlay, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-accent, --cascivo-color-text-on-accent, --cascivo-date-picker-day-today-color, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-text-subtle, --cascivo-color-bg-subtle, --cascivo-color-destructive\n\nAccessibility: role \"combobox\", WCAG 2.2-AA, keyboard: Enter/Space/Escape/ArrowUp/ArrowDown/ArrowLeft/ArrowRight. Keep it AA.\n\nDo not change (strict): value format — All date props are ISO YYYY-MM-DD strings; token names — Styling resolves to --cascivo-date-picker-* component tokens\nFlexible: locale formatting.\n\nDo not invent props, tokens, or global viewport media queries."
+      "aiPrompt": "I am modifying the cascivo DatePicker component (inputs). An accessible date-picker with a calendar popover.\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nDatePicker is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent-text, --cascivo-color-surface, --cascivo-color-surface-overlay, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-accent, --cascivo-color-text-on-accent, --cascivo-date-picker-day-today-color, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-text-subtle, --cascivo-color-bg-subtle, --cascivo-color-destructive\n\nAccessibility: role \"combobox\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/ArrowLeft/ArrowRight/Home/End/PageUp/PageDown/Enter/Space/Escape/Delete. Keep it AA.\n\nDo not change (strict): value format — All date props are ISO YYYY-MM-DD strings; token names — Styling resolves to --cascivo-date-picker-* component tokens\nFlexible: locale formatting.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "DateRangePicker",
@@ -12166,7 +12423,7 @@
             "reason": "Use a plain text Input when capturing a value rather than a file"
           }
         ],
-        "a11yRationale": "The drop zone is a real <button> so it is keyboard-operable (Enter/Space open the native file picker), the hidden file input is removed from the tab order and labelled via aria-describedby, and the file list uses aria-live=\"polite\" so status changes are announced; each remove control carries an aria-label naming its file.",
+        "a11yRationale": "The drop zone is a real <button> so it is keyboard-operable (Enter/Space open the native file picker); it is named by the visible label via aria-labelledby (or by ariaLabel) and described by the hint only, so the name is the field rather than the generic drop instruction. Ids come from useId, so two uploaders on a page never collide. A single aria-live=\"polite\" region is mounted unconditionally — a region added in the same commit as its first file announces nothing — and reports the file count plus the list-wide state. Per-file glyphs carry role=\"img\" so their aria-label is honoured, a failed file's message is a role=\"alert\", the file input stays in the accessibility tree (aria-hidden on a node that is programmatically focused and clicked is the aria-hidden-focus violation) and carries the field label as its own name, since an exposed form control without one fails the axe label rule, disabled reaches the remove controls too, and remove targets meet the 44px floor under a coarse pointer. Drag-over, disabled and error states each get a forced-colors treatment, since colour alone disappears there.",
         "content": {
           "tone": "Plain, instructive labels and hints",
           "notes": "Defaults come from the i18n catalog; hint should state accepted types/size limits, e.g. \"PDF up to 5 MB\""
@@ -12305,7 +12562,7 @@
         }
       ],
       "contextUrl": "/context/file-uploader.md",
-      "aiPrompt": "I am modifying the cascivo FileUploader component (inputs). Drag-and-drop file upload zone with file list and status indicators.\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nFileUploader is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-color-success, --cascivo-color-destructive, --cascivo-color-destructive-subtle\n\nAccessibility: role \"button\", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.\n\nDo not change (strict): token names — Status colors must resolve to --cascivo-color-accent/success/danger tokens\nFlexible: label and hint copy, accept / maxSize constraints.\n\nDo not invent props, tokens, or global viewport media queries."
+      "aiPrompt": "I am modifying the cascivo FileUploader component (inputs). Drag-and-drop file upload zone with file list and status indicators.\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nFileUploader is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-color-success-foreground, --cascivo-color-destructive, --cascivo-color-destructive-subtle, --cascivo-target-min-coarse\n\nAccessibility: role \"button\", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.\n\nDo not change (strict): token names — Status colors must resolve to --cascivo-color-accent/success/danger tokens\nFlexible: label and hint copy, accept / maxSize constraints.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Filter",
@@ -17314,23 +17571,29 @@
     {
       "name": "MultiSelect",
       "category": "inputs",
-      "description": "Searchable multi-value select with popover listbox",
+      "description": "Searchable multi-value select with a popover listbox, chips and grouping",
       "intent": {
         "whenToUse": [
           "Selecting several values at once from a known list of options",
           "Lists long enough that the built-in search/filter helps the user find options",
-          "Cases needing a compact trigger that summarizes the selected count"
+          "Cases needing a compact trigger that summarizes the selected count, or chips per value",
+          "Server-driven option lists, via onSearchChange plus filter={() => true}"
         ],
         "whenNotToUse": [
           "Choosing exactly one value — use Select",
-          "Allowing free-text entries not in a predefined list — use Combobox or TagsInput",
+          "Free-text entries with no option list behind them — use TagsInput",
           "A handful of always-visible options — use a Checkbox group"
         ],
         "antiPatterns": [
           {
-            "bad": "<MultiSelect value={value} onValueChange={...} /> without keeping value in sync",
-            "good": "Store the selected string[] and update it from onValueChange every toggle",
-            "why": "Selection is fully controlled; the listbox reflects value, so dropping the update leaves checkboxes out of sync with state"
+            "bad": "<MultiSelect value={value} /> with no onValueChange",
+            "good": "<MultiSelect defaultValue={value} onValueChange={setValue} />",
+            "why": "Passing value makes the component controlled for its whole life; without onValueChange the selection can never change. Use defaultValue when the component should own the state."
+          },
+          {
+            "bad": "<MultiSelect options={remote} onSearchChange={search} />",
+            "good": "<MultiSelect options={remote} onSearchChange={search} filter={() => true} />",
+            "why": "The built-in matcher still runs over the server’s results and filters them a second time against the same query, hiding rows the server deliberately returned."
           }
         ],
         "related": [
@@ -17342,7 +17605,12 @@
           {
             "name": "Combobox",
             "relationship": "alternative",
-            "reason": "Use Combobox when users may type values not in the list"
+            "reason": "Use Combobox for a single value chosen from a searchable list"
+          },
+          {
+            "name": "TagsInput",
+            "relationship": "alternative",
+            "reason": "Use TagsInput for free-text values with no option list"
           },
           {
             "name": "Checkbox",
@@ -17350,10 +17618,10 @@
             "reason": "Use a Checkbox group for a small set of always-visible options"
           }
         ],
-        "a11yRationale": "The trigger advertises aria-haspopup=\"listbox\" and aria-expanded, the panel is role=\"listbox\" with aria-multiselectable, each option is role=\"option\" with aria-selected reflecting membership and aria-disabled for unavailable ones; ArrowUp/ArrowDown move the active option, Space/Enter toggle it, and Escape closes the popover.",
+        "a11yRationale": "The trigger is a button with aria-haspopup=\"listbox\", aria-expanded and aria-controls pointing at the panel. Inside the panel the search field carries role=\"combobox\" with aria-expanded, aria-controls and aria-autocomplete=\"list\", and owns aria-activedescendant — it is the element that holds DOM focus, so assistive technology tracks the active option as the arrows move it. With searchable={false} the listbox itself takes focus and the same attributes. The listbox is aria-multiselectable with role=\"option\" rows carrying aria-selected, aria-disabled for unavailable ones and role=\"group\" headings for grouped options; the search field, the select-all row and the loading/no-results message are siblings of the listbox rather than children, because a listbox owns only option and group children. ArrowUp/ArrowDown move the active option and skip disabled rows, Home/End jump to the ends, PageUp/PageDown move by ten, Enter toggles (Space too when there is no search field), Backspace removes the last chip from an empty search, and Escape closes the panel and returns focus to the trigger. A permanently mounted polite live region reports the selection count, so the first selection is announced as well as later ones. Selection, the active row and the focus ring each carry a non-colour channel under forced-colors, and every control reaches the coarse-pointer target minimum.",
         "content": {
           "tone": "Plain placeholder and count summary",
-          "notes": "Defaults from the i18n catalog; the selected-count and no-results strings are overridable via labels"
+          "notes": "Defaults from the i18n catalog; placeholder, selected(count), search, no-results, loading, clear, remove, select-all, clear-all and create strings are overridable via labels"
         },
         "flexibility": [
           {
@@ -17364,12 +17632,17 @@
           {
             "area": "labels",
             "level": "flexible",
-            "note": "placeholder, selected(count), search, and noResults are overridable"
+            "note": "Every user-visible string is overridable through labels"
           },
           {
             "area": "options",
             "level": "flexible",
-            "note": "Caller supplies the option list and may mark individual options disabled"
+            "note": "Caller supplies the option list and may mark options disabled or assign them a group"
+          },
+          {
+            "area": "filtering",
+            "level": "flexible",
+            "note": "The default matcher folds diacritics and searches label then value; filter replaces it entirely"
           }
         ]
       },
@@ -17385,9 +17658,19 @@
         },
         {
           "name": "value",
-          "description": "The controlled value.",
+          "description": "The controlled value. Omit it and pass defaultValue to let the component own the selection.",
           "type": "string[]",
-          "required": true,
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "defaultValue",
+          "description": "The initial value when uncontrolled.",
+          "type": "string[]",
+          "required": false,
+          "default": "[]",
           "schema": {
             "kind": "other"
           }
@@ -17395,8 +17678,8 @@
         {
           "name": "onValueChange",
           "description": "Called with the new value when it changes.",
-          "type": "(v: string[]) => void",
-          "required": true,
+          "type": "(value: string[]) => void",
+          "required": false,
           "schema": {
             "kind": "function"
           }
@@ -17411,6 +17694,82 @@
           }
         },
         {
+          "name": "label",
+          "description": "Visible field label, rendered above the trigger.",
+          "type": "string",
+          "required": false,
+          "nameVisibility": "visible",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "ariaLabel",
+          "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label.",
+          "type": "string",
+          "required": false,
+          "nameVisibility": "invisible",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "aria-labelledby",
+          "description": "Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "aria-describedby",
+          "description": "Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "aria-invalid",
+          "description": "Wired automatically by a wrapping `Field` when it is in an error state.",
+          "type": "boolean",
+          "required": false,
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "hint",
+          "description": "Helper text below the field.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "error",
+          "description": "Error text below the field; also marks the control invalid.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "display",
+          "description": "How the trigger summarises the selection: a count, or one removable chip per value.",
+          "type": "'count' | 'chips'",
+          "required": false,
+          "default": "'count'",
+          "schema": {
+            "kind": "enum",
+            "values": ["count", "chips"]
+          }
+        },
+        {
           "name": "disabled",
           "description": "When true, disables the control and removes it from the tab order.",
           "type": "boolean",
@@ -17421,6 +17780,112 @@
           }
         },
         {
+          "name": "clearable",
+          "description": "When true, shows a control that clears every selected value.",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "selectAll",
+          "description": "When true, shows a row that selects or clears every enabled option at once.",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "max",
+          "description": "Maximum number of values that may be selected. Further options become unselectable once reached.",
+          "type": "number",
+          "required": false,
+          "schema": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "creatable",
+          "description": "When true, offers the current search text as a new option.",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onCreate",
+          "description": "Called with the typed label when the user picks the \"create\" row.",
+          "type": "(label: string) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "loading",
+          "description": "When true, the list reports itself as busy and shows a loading row instead of the no-results message.",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onSearchChange",
+          "description": "Called with the search text on every keystroke. Pair it with filter={() => true} for a server-driven list.",
+          "type": "(query: string) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "filter",
+          "description": "Replaces the built-in diacritic-insensitive matcher.",
+          "type": "(option: MultiSelectOption, query: string) => boolean",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "searchable",
+          "description": "When true, shows the search field. The list is keyboard-navigable either way.",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "size",
+          "description": "Field height.",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'",
+          "schema": {
+            "kind": "enum",
+            "values": ["sm", "md", "lg"]
+          }
+        },
+        {
+          "name": "name",
+          "description": "Submitted with a surrounding form — one hidden input per selected value.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "labels",
           "description": "Overrides for the component’s user-visible strings (i18n).",
           "type": "MultiSelectLabels",
@@ -17428,10 +17893,19 @@
           "schema": {
             "kind": "other"
           }
+        },
+        {
+          "name": "id",
+          "description": "Id for the trigger control.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
         }
       ],
       "contextUrl": "/context/multi-select.md",
-      "aiPrompt": "I am modifying the cascivo MultiSelect component (inputs). Searchable multi-value select with popover listbox\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nMultiSelect is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-radius-input, --cascivo-radius-md, --cascivo-shadow-md, --cascivo-focus-ring, --cascivo-motion-enter\n\nAccessibility: role \"listbox\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Space/Enter/Escape. Keep it AA.\n\nDo not change (strict): token names — Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascivo-* tokens\nFlexible: labels, options.\n\nDo not invent props, tokens, or global viewport media queries."
+      "aiPrompt": "I am modifying the cascivo MultiSelect component (inputs). Searchable multi-value select with a popover listbox, chips and grouping\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nMultiSelect is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-font-medium, --cascivo-font-bold, --cascivo-radius-field, --cascivo-radius-overlay, --cascivo-radius-item, --cascivo-radius-indicator, --cascivo-shadow-md, --cascivo-focus-ring, --cascivo-motion-enter, --cascivo-target-min-coarse\n\nAccessibility: role \"listbox\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Home/End/PageUp/PageDown/Enter/Space/Escape/Backspace. Keep it AA.\n\nDo not change (strict): token names — Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascivo-* tokens\nFlexible: labels, options, filtering.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "NativeSelect",
@@ -24590,7 +25064,7 @@
             "reason": "StructuredList is flat tabular rows; TreeView is nested with expand/collapse"
           }
         ],
-        "a11yRationale": "Implements the WAI-ARIA TreeView pattern: role=tree on the root, role=treeitem with aria-level/posinset/setsize and aria-expanded on each node, a single roving tabindex, and full APG keyboard support (arrows expand/collapse and move, Home/End, Enter/Space select, printable-character typeahead)",
+        "a11yRationale": "A role=\"tree\" of role=\"treeitem\" nodes carrying aria-level, aria-posinset, aria-setsize, aria-selected and aria-expanded, with aria-multiselectable on the tree in multi mode — multi-select was previously unannounced. Each item is named by aria-labelledby pointing at its own label: the <li> also contains the child <ul>, so without it an expanded node's accessible name absorbed its entire subtree. A roving tabindex keeps one node focusable, and the candidate is validated against the *visible* set — the old build never invalidated the focused id when its node stopped being visible, so collapsing a branch after focusing a child left the only tabIndex=0 on a hidden node and Tab skipped the whole widget. Collapsed subtrees are not rendered, which is what the clientJs justification has always claimed and was not true: recursion ran on hasChildren alone and CSS merely hid the result. Enter and Space perform the same action as a click (toggle a branch, then select) rather than only selecting; arrows, Home/End and type-to-select all skip disabled nodes; and * expands every sibling at the level. Type-to-select uses the shared useTypeahead primitive and matches a node's textValue, so a JSX label no longer makes it silently inert.",
         "flexibility": [
           {
             "area": "selectionMode",
@@ -24687,6 +25161,15 @@
           }
         },
         {
+          "name": "onValueChange",
+          "description": "Called with the new selection. Preferred over `onSelectChange`, which is the catalog’s only value-carrying handler not named onValueChange and is deprecated.",
+          "type": "(selected: string | string[]) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
           "name": "expanded",
           "description": "The controlled set of expanded node ids.",
           "type": "string[]",
@@ -24715,7 +25198,7 @@
         }
       ],
       "contextUrl": "/context/tree-view.md",
-      "aiPrompt": "I am modifying the cascivo TreeView component (display). Hierarchical, expandable tree of nodes with keyboard navigation and selection\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nTreeView is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-tree-indent, --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-radius-control, --cascivo-focus-ring, --cascivo-duration-200, --cascivo-ease-out\n\nAccessibility: role \"tree\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/ArrowRight/ArrowLeft/Home/End/Enter/Space/Typeahead. Keep it AA.\n\nDo not change (strict): keyboard model — Arrow/Home/End/typeahead behavior follows the APG tree pattern and must not be re-mapped\nFlexible: selectionMode, indent token.\n\nDo not invent props, tokens, or global viewport media queries."
+      "aiPrompt": "I am modifying the cascivo TreeView component (display). Hierarchical, expandable tree of nodes with keyboard navigation and selection\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nTreeView is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-tree-indent, --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-radius-control, --cascivo-focus-ring, --cascivo-duration-200, --cascivo-ease-out\n\nAccessibility: role \"tree\", WCAG 2.2-AA, keyboard: */ArrowDown/ArrowUp/ArrowRight/ArrowLeft/Home/End/Enter/Space/Typeahead. Keep it AA.\n\nDo not change (strict): keyboard model — Arrow/Home/End/typeahead behavior follows the APG tree pattern and must not be re-mapped\nFlexible: selectionMode, indent token.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "User",

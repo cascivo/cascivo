@@ -26,6 +26,11 @@ import { ColorPicker } from '@cascivo/react'
 - `md`
 - `lg`
 
+## States
+
+- `default`
+- `disabled`
+
 ## Props
 
 | Prop               | Type                      | Required | Default   | Description                                                                                                                                                                                                                                                                                                                                                                                          |
@@ -36,6 +41,8 @@ import { ColorPicker } from '@cascivo/react'
 | `onValueChange`    | `(value: string) => void` | no       | —         | Called with the new value when it changes.                                                                                                                                                                                                                                                                                                                                                           |
 | `presets`          | `string[]`                | no       | —         | Preset swatch colors                                                                                                                                                                                                                                                                                                                                                                                 |
 | `alpha`            | `boolean`                 | no       | `true`    | When true, enables alpha (opacity) selection.                                                                                                                                                                                                                                                                                                                                                        |
+| `format`           | `'hex' \| 'rgb' \| 'hsl'` | no       | `'hex'`   | Notation for the emitted value. Alpha is included whenever alpha is on, so the emitted string has a stable width.                                                                                                                                                                                                                                                                                    |
+| `name`             | `string`                  | no       | —         | Submitted with a surrounding form — a hidden input carrying the current value.                                                                                                                                                                                                                                                                                                                       |
 | `label`            | `string`                  | no       | —         | Text label for the control. Rendered on screen.                                                                                                                                                                                                                                                                                                                                                      |
 | `disabled`         | `boolean`                 | no       | `false`   | When true, disables the control and removes it from the tab order.                                                                                                                                                                                                                                                                                                                                   |
 | `size`             | `'sm' \| 'md' \| 'lg'`    | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                                                                                                                                                                                                                                |
@@ -76,8 +83,8 @@ Required. The component's primary job needs client JavaScript, so do not render 
 ## Accessibility
 
 - **WCAG level:** 2.2-AA
-- **ARIA role:** `slider`
-- **Keyboard:** ArrowLeft, ArrowRight, ArrowUp, ArrowDown
+- **ARIA role:** `group`
+- **Keyboard:** ArrowLeft, ArrowRight, ArrowUp, ArrowDown, Home, End, PageUp, PageDown, Enter, Escape
 
 ## Dependencies
 
