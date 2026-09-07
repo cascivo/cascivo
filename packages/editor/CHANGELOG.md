@@ -1,5 +1,83 @@
 # @cascivo/editor
 
+## 1.1.0
+
+### Patch Changes
+
+- 58c165e: Fix the current-line marker lagging the caret on large documents, and take the
+  remaining O(document) work out of the editor's hot paths.
+
+  Windowing the tokenizer left a second document-scale cost around it: every
+  offset-to-line question was answered by scanning or splitting the whole text.
+  `syncCaret` ran `value.slice(0, caret).split('\n').length` **three times per
+  keystroke** (`input`, `keyup`, `selectionchange`); the render re-split the document
+  on **every scroll frame**; and find decorations did one scanning lookup **per match**,
+  which is quadratic. Each also allocated one string per line — ~150,000 transient
+  strings per keystroke at 50k lines. The visible result was the current-line marker
+  trailing the caret, which on a transparent textarea is the only cue for where an edit
+  will land.
+
+  A new internal `LineIndex` (an `Int32Array` of line-start offsets, memoized by text
+  identity) makes line count a field and offset-to-line a binary search. On a
+  50,000-line document a caret move goes from ~6.4 ms to ~0.001 ms, a scroll frame
+  recomputes nothing, and find decorations over 50,000 matches go from ~258 s to
+  ~7.5 ms — and are now built only for the rendered window.
+
+  Profiling real keystrokes in Chromium then surfaced three more document-scale costs,
+  fixed in the same release: the per-character `diff` that runs twice per keystroke
+  (~12 ms → ~0.4 ms via block compares), an undo history that stored a full copy of
+  the document per step (200 edits to a 2.7 MB file retained ~547 MB; stored as the
+  changed span they retain ~3 MB), and find decorations built for off-screen matches.
+  No public API change.
+
+- 2050fe5: The remaining browser packages get the same output minification `@cascivo/react` just did —
+  their chunks shipped mangled but with every newline and indent intact.
+
+  ```
+  charts   39.8 → 32.5 KB gzip
+  icons    39.5 → 38.2
+  editor   12.0 → 10.4
+  flow      9.0 →  7.7
+  core      7.6 →  6.7
+  i18n      6.2 →  5.8
+  ai        1.6 →  1.3
+  storage   0.5 →  0.4
+  ```
+
+  With `@cascivo/react`'s 15.6 KB that is 28.8 KB gzip off the published surface, from build
+  configuration alone.
+
+  The setting lives in one place now (`scripts/build/minify.ts`) rather than as a boolean in
+  each config, because two things about it are easy to get wrong: `build.minify: true` is
+  already the default and does not reach codegen, and `vp pack` ignores `rollupOptions`
+  entirely. The packages on the `vp pack` path take `vp pack --minify` in their build script
+  instead.
+
+  **Fixed on the way, and the more important half of this change:** removing the whitespace
+  broke three separate directive scanners that all assumed `'use client'` would be alone on a
+  line. The single-entry CSS plugin then spliced `import './charts.css';` _ahead_ of the
+  directive in charts, editor, flow and ai — and a `'use client'` that is not a module's first
+  statement is not a directive, so those four silently stopped being client modules. The RSC
+  guard that exists to catch exactly this had the same line-based assumption, concluded nothing
+  in the library was a client module, and passed with nothing left to check.
+
+  All three now scan the code as a string (`scripts/lib/directives.ts`, unit-tested), and
+  `rsc-boundary` gained the counter-assertion that would have caught it: that it still
+  recognises client modules at all.
+
+- Updated dependencies [2050fe5]
+- Updated dependencies [58c165e]
+- Updated dependencies [2050fe5]
+- Updated dependencies [58c165e]
+- Updated dependencies [2050fe5]
+- Updated dependencies [2050fe5]
+- Updated dependencies [2050fe5]
+- Updated dependencies [2050fe5]
+- Updated dependencies [2050fe5]
+- Updated dependencies [2050fe5]
+  - @cascivo/i18n@1.1.0
+  - @cascivo/core@1.1.0
+
 ## 1.0.0
 
 ### Major Changes

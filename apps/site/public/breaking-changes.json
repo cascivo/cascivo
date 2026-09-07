@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-08-29",
+  "generatedAt": "2026-09-07",
   "description": "Major and minor releases per published package, parsed from changesets CHANGELOGs. Compare against your installed versions to detect API drift; patch releases are excluded.",
   "packages": [
     {
       "name": "@cascivo/ai",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -27,7 +27,7 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -115,7 +115,7 @@
     },
     {
       "name": "cascivo",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "releases": [
         {
           "version": "1.0.0",
@@ -190,7 +190,7 @@
     },
     {
       "name": "@cascivo/core",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -307,7 +307,7 @@
     },
     {
       "name": "@cascivo/editor",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -371,7 +371,7 @@
     },
     {
       "name": "@cascivo/flow",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -403,8 +403,23 @@
     },
     {
       "name": "@cascivo/i18n",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "releases": [
+        {
+          "version": "1.1.0",
+          "level": "minor",
+          "notes": [
+            "`ColorPicker`'s picking area returned a colour different from the one under the pointer. All",
+            "`DataTable` grows the toolbar-level features every adopter app was hand-rolling around it,",
+            "`FileUploader`'s announcements, identity and touch targets. Every prop keeps its shape; the",
+            "`DataTable` becomes a full data grid: column layout the user controls, a real keyboard",
+            "`Combobox` is rebuilt on the two APG combobox patterns, fixing a configuration that no",
+            "`DatePicker` is rebuilt as a typed field plus a composed `Calendar`, replacing a weaker",
+            "`Carousel` stops hiding focusable content from assistive technology, and honours the",
+            "`MultiSelect` gets a keyboard model that works, an ARIA contract that is true, and the",
+            "`Calendar`'s keyboard navigation never moved focus. All existing props keep their shape."
+          ]
+        },
         {
           "version": "1.0.0",
           "level": "major",
@@ -431,7 +446,7 @@
     },
     {
       "name": "@cascivo/icons",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "releases": [
         {
           "version": "1.0.0",
@@ -457,7 +472,7 @@
     },
     {
       "name": "@cascivo/mcp",
-      "version": "0.7.0",
+      "version": "0.7.1",
       "releases": [
         {
           "version": "0.7.0",
@@ -511,8 +526,24 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "releases": [
+        {
+          "version": "1.1.0",
+          "level": "minor",
+          "notes": [
+            "`ColorPicker`'s picking area returned a colour different from the one under the pointer. All",
+            "`DataTable` grows the toolbar-level features every adopter app was hand-rolling around it,",
+            "`FileUploader`'s announcements, identity and touch targets. Every prop keeps its shape; the",
+            "`DataTable` becomes a full data grid: column layout the user controls, a real keyboard",
+            "`Combobox` is rebuilt on the two APG combobox patterns, fixing a configuration that no",
+            "`DatePicker` is rebuilt as a typed field plus a composed `Calendar`, replacing a weaker",
+            "`Carousel` stops hiding focusable content from assistive technology, and honours the",
+            "`MultiSelect` gets a keyboard model that works, an ARIA contract that is true, and the",
+            "`TreeView` could become entirely untabbable, and its collapsed branches were rendered anyway.",
+            "`Calendar`'s keyboard navigation never moved focus. All existing props keep their shape."
+          ]
+        },
         {
           "version": "1.0.0",
           "level": "major",
@@ -651,7 +682,7 @@
     },
     {
       "name": "@cascivo/registry",
-      "version": "0.2.9",
+      "version": "0.2.10",
       "releases": [
         {
           "version": "0.2.0",
@@ -667,7 +698,7 @@
     },
     {
       "name": "@cascivo/storage",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -757,7 +788,7 @@
     },
     {
       "name": "@cascivo/vite-plugin",
-      "version": "0.1.9",
+      "version": "0.1.10",
       "releases": [
         {
           "version": "0.1.0",
