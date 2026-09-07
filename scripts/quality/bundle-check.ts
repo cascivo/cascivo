@@ -22,7 +22,7 @@
  */
 import { gzipSync } from 'node:zlib'
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
-import { dirname, join } from 'node:path'
+import { dirname, join, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = fileURLToPath(new URL('../..', import.meta.url))
@@ -33,20 +33,21 @@ const PACKAGES = join(ROOT, 'packages')
  * raise deliberately with a note, never to make a red run green.
  */
 const BUDGETS: Record<string, number> = {
-  // Code-split barrel: the figure is the WHOLE library (every component chunk, plus the
-  // CSS-free `node/` twin of each), which is what an app importing all of it would pay. Real
-  // apps tree-shake to a fraction — see docs/GETTING-STARTED.md.
+  // Code-split barrel: the figure is the whole library in ONE environment (see measureTree —
+  // it used to sum the browser tree and its `node/` twin, which no app loads together), so it
+  // is what an app importing every component would pay. Real apps tree-shake to a fraction —
+  // see docs/GETTING-STARTED.md.
   //
-  // Measured 202.8 KB. The 160.6 KB in the previous note was long stale: the library had
-  // already grown to 187.6 KB against a 200 ceiling, so the headroom was 6%, not the 25% the
-  // note implied. Raised after the 2026-09 accessibility pass on eight interactive components
+  // Measured 102.3 KB, 2026-09. Both earlier notes on this line were wrong in the same
+  // direction: 160.6 KB was stale, and the 200 that replaced it was set against a
+  // double-counted number. The 2026-09 accessibility pass on eight interactive components
   // (multi-select, combobox, color-picker, calendar, date-picker, carousel, tree-view,
-  // file-uploader) added 15 KB: real keyboard models, the extracted pure helpers those are
-  // tested through, and — for multi-select and combobox — a second copy of `option-list`/
-  // `list-nav`, which is the price of registry folders that stay self-contained under
-  // copy-paste. Both directions are in that figure: date-picker and color-picker each got
-  // *smaller*, date-picker by composing Calendar instead of duplicating its month maths.
-  '@cascivo/react': 230,
+  // file-uploader) moved this from 94.9 → 102.3 KB — keyboard models, the pure helpers they
+  // are tested through, and a second copy of `option-list`/`list-nav`, which is what registry
+  // folders staying self-contained under copy-paste costs. Both directions are in that
+  // figure: date-picker and color-picker each got *smaller*, date-picker by composing
+  // Calendar instead of duplicating its month maths.
+  '@cascivo/react': 130,
   '@cascivo/charts': 55, // measured 40.6
   '@cascivo/icons': 55, // measured 39.6 (~440 icons; consumers tree-shake per icon)
   '@cascivo/mcp': 30, // measured 19.2
@@ -182,6 +183,36 @@ function gzipKB(files: string[]): number {
   return gzipSync(joined).length / 1024
 }
 
+/**
+ * The size of a code-split tree, counting each byte once per *environment*.
+ *
+ * A CSS-shipping package ships its browser chunks plus a CSS-free `node/` twin of every one
+ * of them, selected by the `node` export condition. No app ever loads both: a browser
+ * resolves `import`/`default` to the browser tree, an SSR/RSC render resolves `node` to the
+ * twin, on the server, where browser bytes are not the cost anyway. Summing the two budgeted
+ * a payload nobody receives — and, being roughly 2x the truth, it read as a plausible number
+ * rather than an obviously wrong one for as long as it existed. It first bit in 2026-09, when
+ * a 7.5 KB change presented as 15 KB and blew a ceiling it was nowhere near.
+ *
+ * Take the larger of the two, so the ceiling still binds whichever tree grows.
+ */
+function measureTree(distDir: string, treeFiles: string[]): { kb: number; scope: string } {
+  const twinPrefix = join(distDir, 'node') + sep
+  const twin = treeFiles.filter((f) => f.startsWith(twinPrefix))
+  if (twin.length === 0) {
+    return { kb: gzipKB(treeFiles), scope: `whole tree, ${treeFiles.length} chunks` }
+  }
+  const browser = treeFiles.filter((f) => !f.startsWith(twinPrefix))
+  const browserKB = gzipKB(browser)
+  const twinKB = gzipKB(twin)
+  return {
+    kb: Math.max(browserKB, twinKB),
+    scope:
+      `larger tree of ${browser.length} browser / ${twin.length} node chunks — ` +
+      `browser ${browserKB.toFixed(1)} KB, node ${twinKB.toFixed(1)} KB`,
+  }
+}
+
 const failures: string[] = []
 const measured: string[] = []
 
@@ -229,13 +260,12 @@ for (const { dir, pkg } of readPackages()) {
 
   // A barrel that re-exports per-component chunks gzips to ~100 bytes on its own, which is a
   // meaningless number to budget. When the entry is that small next to its own directory,
-  // measure the whole tree instead.
+  // measure the tree instead.
   const distDir = dirname(entryPath)
   const entryKB = gzipKB([entryPath])
   const treeFiles = allJs(distDir)
   const codeSplit = entryKB < 1 && treeFiles.length > 1
-  const kb = codeSplit ? gzipKB(treeFiles) : entryKB
-  const scope = codeSplit ? `whole tree, ${treeFiles.length} chunks` : entry
+  const { kb, scope } = codeSplit ? measureTree(distDir, treeFiles) : { kb: entryKB, scope: entry }
 
   if (kb > budget) {
     failures.push(`${name}: ${kb.toFixed(1)} KB gzip > budget ${budget} KB (${scope})`)
