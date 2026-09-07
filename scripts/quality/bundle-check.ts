@@ -32,6 +32,13 @@ const PACKAGES = join(ROOT, 'packages')
  * Gzipped-KB ceilings, keyed by package name. Set from measured reality with headroom;
  * raise deliberately with a note, never to make a red run green.
  */
+/*
+ * Whitespace note: the packages built with `vp build` have their output compacted (see
+ * scripts/build/minify.ts). The `vp pack` ones — cascivo, mcp, registry, vite-plugin — do
+ * not, deliberately: every one of them runs in Node, none is browser payload, and readable
+ * identifiers in a CLI's stack trace are worth more than the install bytes. Their figures
+ * below are therefore un-minified and not comparable with the rest.
+ */
 const BUDGETS: Record<string, number> = {
   // Code-split barrel: the figure is the whole library in ONE environment (see measureTree —
   // it used to sum the browser tree and its `node/` twin, which no app loads together), so it
@@ -50,16 +57,16 @@ const BUDGETS: Record<string, number> = {
   // helpers they are tested through, and a second copy of `option-list`/`list-nav`, which is
   // what registry folders staying self-contained under copy-paste costs.
   '@cascivo/react': 110,
-  '@cascivo/charts': 55, // measured 40.6
-  '@cascivo/icons': 55, // measured 39.6 (~440 icons; consumers tree-shake per icon)
-  '@cascivo/mcp': 30, // measured 19.2
-  '@cascivo/editor': 20, // measured 11.2
-  '@cascivo/flow': 16, // measured 8.9
-  '@cascivo/core': 12, // measured 6.3
-  '@cascivo/i18n': 10, // measured 5.2
-  '@cascivo/registry': 10, // measured 5.7
-  '@cascivo/ai': 6, // measured 1.7
-  '@cascivo/storage': 5, // measured 1.1
+  '@cascivo/charts': 55, // measured 32.5
+  '@cascivo/icons': 55, // measured 38.2 (~440 icons; consumers tree-shake per icon)
+  '@cascivo/mcp': 30, // measured 19.3
+  '@cascivo/editor': 20, // measured 10.4
+  '@cascivo/flow': 16, // measured 7.7
+  '@cascivo/core': 12, // measured 6.7
+  '@cascivo/i18n': 10, // measured 5.8
+  '@cascivo/registry': 10, // measured 6.5
+  '@cascivo/ai': 6, // measured 1.3
+  '@cascivo/storage': 5, // measured 0.4
   '@cascivo/vite-plugin': 5, // measured 1.8
   '@cascivo/eslint-config': 5, // measured 2.0 — plain config data, but still worth a ceiling
   // Lints, never ships to a browser. The ceiling is for the generated data file: a
@@ -67,7 +74,7 @@ const BUDGETS: Record<string, number> = {
   '@cascivo/eslint-plugin': 8,
   // The CLI runs in Node, so its size is not an adopter's browser cost. It gets a budget
   // anyway: a measured number beats an exemption, and a runaway CLI bundle is still a
-  // regression worth catching. Measured 30.8 KB.
+  // regression worth catching. Measured 36.0 KB.
   cascivo: 45,
 }
 

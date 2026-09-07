@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite-plus'
+import { dedupeDirectives, insertAfterDirectives } from '../../scripts/lib/directives.ts'
+import { MINIFY } from '../../scripts/build/minify.ts'
 
 // The canonical @layer order statement (single source of truth). Prepended to the
 // aggregate styles.css so a consumer who imports only '@cascivo/react/styles.css'
@@ -89,7 +91,6 @@ const THEME_BUNDLE = [
  * so the copied tree resolves within itself.
  */
 function cssImportEdges() {
-  const directive = /^\s*(['"])use [\w-]+\1;?\s*$/
   // A bare relative CSS side-effect import, e.g. `import './spinner.css';`.
   const cssImportLine = /^\s*import\s+['"][^'"]*\.css['"];?\s*$/
 
@@ -99,31 +100,6 @@ function cssImportEdges() {
       .split('\n')
       .filter((line) => !cssImportLine.test(line))
       .join('\n')
-  }
-
-  // Re-emit the leading directive prologue with duplicates collapsed, then
-  // splice `inject` in immediately after it. Directives ('use client') must
-  // stay at the very top of the module, so injected imports cannot precede them.
-  function spliceAfterDirectives(code: string, inject: string): string {
-    const lines = code.split('\n')
-    const prologue: string[] = []
-    const seen = new Set<string>()
-    let i = 0
-    for (; i < lines.length; i++) {
-      const line = lines[i]
-      if (line.trim() === '') {
-        prologue.push(line)
-        continue
-      }
-      if (!directive.test(line)) break
-      const key = line.trim().replace(/['"]/g, '')
-      if (!seen.has(key)) {
-        seen.add(key)
-        prologue.push(line)
-      }
-    }
-    const body = lines.slice(i).join('\n')
-    return [...prologue, inject, body].join('\n')
   }
 
   return {
@@ -146,7 +122,11 @@ function cssImportEdges() {
         const chunk = bundle[jsName]
         if (!chunk || chunk.type !== 'chunk' || typeof chunk.code !== 'string') continue
         const basename = fileName.slice(fileName.lastIndexOf('/') + 1)
-        chunk.code = spliceAfterDirectives(chunk.code, `import './${basename}';`)
+        // After the directive prologue, never before it: a 'use client' that is not the
+        // module's first statement is not a directive. Found by scanning the code as a
+        // string — the previous line-based walk found nothing once the chunks started
+        // being whitespace-minified onto one line. See scripts/lib/directives.ts.
+        chunk.code = insertAfterDirectives(chunk.code, `import './${basename}';`)
       }
       // Aggregate stylesheet for consumers without a bundler (CDN / plain
       // <link>) and for those who prefer a single explicit import. Bundler
@@ -179,7 +159,7 @@ function cssImportEdges() {
         const chunk = bundle[fileName]
         if (chunk.type !== 'chunk' || typeof chunk.code !== 'string') continue
         if (!chunk.code.includes('use client')) continue
-        chunk.code = spliceAfterDirectives(chunk.code, '').replace(/\n\n\n+/g, '\n\n')
+        chunk.code = dedupeDirectives(chunk.code)
       }
       // SSR-safe twin under dist/node/: every chunk copied verbatim with its
       // `.css` side-effect imports stripped, plus a matching flat entry. The
@@ -226,26 +206,9 @@ export default defineConfig({
         /^@cascivo\/i18n($|\/)/,
       ],
       output: {
-        /*
-         * Minify the emitted chunks properly.
-         *
-         * The published chunks were mangled but still carried every newline, every level of
-         * indentation and rolldown's own `//#region` markers — `data-table.js` was 38.6 KB of
-         * which 12 KB was whitespace. Gzip hides most of that, not all of it: the library
-         * measured 102.4 KB gzip and is 86.8 KB with the whitespace gone, a 15% cut across
-         * every package consumer.
-         *
-         * It has to be set HERE, on the rolldown output. `build.minify: true` is already the
-         * default and changes nothing — it does not reach codegen, so setting it produces a
-         * byte-identical build and reads like the box is already ticked.
-         *
-         * The one thing this gives up is the `@__PURE__` annotations, which oxc cannot place
-         * without whitespace. Checked before enabling: of 1093 in the previous output,
-         * 1088 sat inside function bodies (`jsx(...)` calls), where a purity annotation buys
-         * a downstream bundler nothing. The 5 at module scope were `new Map()`/`new Set()`
-         * caches in data-table and field that every consumer of those files uses anyway.
-         */
-        minify: { mangle: true, compress: true, codegen: { removeWhitespace: true } },
+        // Compact the emitted chunks — see the helper for what this is worth and why
+        // `build.minify` does not do it.
+        minify: MINIFY,
         // One file per component so consumers tree-shake unused components +
         // their CSS, instead of pulling the whole library from a single bundle.
         preserveModules: true,
