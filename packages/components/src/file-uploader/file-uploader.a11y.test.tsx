@@ -102,12 +102,17 @@ describe('identity and naming', () => {
     expect(document.getElementById(described!)).toHaveTextContent('Max 10 MB')
   })
 
-  it('does not hide the focusable file input from the tree', () => {
-    render(<FileUploader />)
+  it('does not hide the focusable file input from the tree, and names it', () => {
+    render(<FileUploader label="Import CSV" />)
     const input = document.querySelector('input[type="file"]')
     // aria-hidden on a node that is programmatically focusable and is .click()ed is an ARIA
-    // violation.
+    // violation. Taking it off puts a real form control back in the tree, so it needs a name
+    // of its own — an unnamed one is a critical axe `label` failure, which is how the first
+    // version of this change reached CI.
     expect(input).not.toHaveAttribute('aria-hidden')
+    const labelledBy = input?.getAttribute('aria-labelledby')
+    expect(labelledBy).toBeTruthy()
+    expect(document.getElementById(labelledBy!)).toHaveTextContent('Import CSV')
   })
 })
 

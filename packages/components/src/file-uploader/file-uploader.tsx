@@ -197,11 +197,19 @@ export function FileUploader({
       <span id={labelId} className={styles['label']}>
         {resolvedLabel}
       </span>
+      {/*
+        Named, not hidden. `aria-hidden` on a node that is programmatically focused and
+        `.click()`ed is the aria-hidden-focus violation — but taking it off puts a real form
+        control back in the accessibility tree, and an unnamed one fails axe's `label` rule
+        (critical). It carries the field's own label: a screen-reader user who reaches it in
+        forms mode gets the native picker, which is the most reliable way to choose a file.
+      */}
       <input
         ref={inputRef}
         type="file"
         className={styles['input']}
         tabIndex={-1}
+        aria-labelledby={labelId}
         multiple={multiple}
         accept={accept}
         disabled={disabled}

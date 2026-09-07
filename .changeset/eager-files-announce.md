@@ -31,7 +31,10 @@ Also fixed:
 
 - **`aria-hidden` on the focusable file input.** The input is programmatically `.click()`ed and
   is a focusable node, which makes `aria-hidden` on it the canonical `aria-hidden-focus`
-  violation. Removed; it stays out of the tab order via `tabIndex={-1}`.
+  violation. Removed; it stays out of the tab order via `tabIndex={-1}`. Taking it off puts a
+  real form control back in the accessibility tree, so it is named by the field's label —
+  without that it is a critical `label` failure instead, which is the trade the first version
+  of this change missed.
 - **`disabled` did not reach the remove buttons**, so a disabled uploader could still have its
   files removed.
 - **File sizes were hardcoded English.** `"2.5 MB"` reads wrong in every comma-decimal locale.

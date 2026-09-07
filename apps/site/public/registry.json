@@ -7330,7 +7330,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/file-uploader/file-uploader.module.css"
       ],
       "fileHashes": {
-        "file-uploader.tsx": "sha256-2607c857123a0fc18d826ad18c4a4822df5149bb3b806a7b63502ffec6cd0a77",
+        "file-uploader.tsx": "sha256-c80fed89403b2e6dbad94d17528fbb8d66ef89a6fa27bc857c6ed6a634d5b147",
         "index.ts": "sha256-d06d12dc06b4a333c7971a58c8d0df4a3231cfa7c5f37b9887e0058310534f06",
         "file-uploader.module.css": "sha256-35bd0ec527994470c72a5ac6c867a7772fbea1bf3f7434e4324c7d278ed5a9df"
       },
@@ -7494,7 +7494,7 @@
               "reason": "Use a plain text Input when capturing a value rather than a file"
             }
           ],
-          "a11yRationale": "The drop zone is a real <button> so it is keyboard-operable (Enter/Space open the native file picker); it is named by the visible label via aria-labelledby (or by ariaLabel) and described by the hint only, so the name is the field rather than the generic drop instruction. Ids come from useId, so two uploaders on a page never collide. A single aria-live=\"polite\" region is mounted unconditionally — a region added in the same commit as its first file announces nothing — and reports the file count plus the list-wide state. Per-file glyphs carry role=\"img\" so their aria-label is honoured, a failed file's message is a role=\"alert\", the file input stays in the accessibility tree because it is programmatically focused, disabled reaches the remove controls too, and remove targets meet the 44px floor under a coarse pointer. Drag-over, disabled and error states each get a forced-colors treatment, since colour alone disappears there.",
+          "a11yRationale": "The drop zone is a real <button> so it is keyboard-operable (Enter/Space open the native file picker); it is named by the visible label via aria-labelledby (or by ariaLabel) and described by the hint only, so the name is the field rather than the generic drop instruction. Ids come from useId, so two uploaders on a page never collide. A single aria-live=\"polite\" region is mounted unconditionally — a region added in the same commit as its first file announces nothing — and reports the file count plus the list-wide state. Per-file glyphs carry role=\"img\" so their aria-label is honoured, a failed file's message is a role=\"alert\", the file input stays in the accessibility tree (aria-hidden on a node that is programmatically focused and clicked is the aria-hidden-focus violation) and carries the field label as its own name, since an exposed form control without one fails the axe label rule, disabled reaches the remove controls too, and remove targets meet the 44px floor under a coarse pointer. Drag-over, disabled and error states each get a forced-colors treatment, since colour alone disappears there.",
           "content": {
             "tone": "Plain, instructive labels and hints",
             "notes": "Defaults come from the i18n catalog; hint should state accepted types/size limits, e.g. \"PDF up to 5 MB\""
