@@ -38,16 +38,18 @@ const BUDGETS: Record<string, number> = {
   // is what an app importing every component would pay. Real apps tree-shake to a fraction —
   // see docs/GETTING-STARTED.md.
   //
-  // Measured 102.3 KB, 2026-09. Both earlier notes on this line were wrong in the same
-  // direction: 160.6 KB was stale, and the 200 that replaced it was set against a
-  // double-counted number. The 2026-09 accessibility pass on eight interactive components
-  // (multi-select, combobox, color-picker, calendar, date-picker, carousel, tree-view,
-  // file-uploader) moved this from 94.9 → 102.3 KB — keyboard models, the pure helpers they
-  // are tested through, and a second copy of `option-list`/`list-nav`, which is what registry
-  // folders staying self-contained under copy-paste costs. Both directions are in that
-  // figure: date-picker and color-picker each got *smaller*, date-picker by composing
-  // Calendar instead of duplicating its month maths.
-  '@cascivo/react': 130,
+  // Measured 86.8 KB, 2026-09, after the emitted chunks started being minified properly (see
+  // packages/react/vite.config.ts — they used to ship with every newline and indent intact).
+  // Every earlier note on this line was wrong in the same direction: 160.6 KB was stale, the
+  // 200 that replaced it was set against a double-counted number, and the 130 after that was
+  // set against un-minified output.
+  //
+  // For reference against the next change: the 2026-09 accessibility pass on eight
+  // interactive components (multi-select, combobox, color-picker, calendar, date-picker,
+  // carousel, tree-view, file-uploader) cost 7.4 KB of this — keyboard models, the pure
+  // helpers they are tested through, and a second copy of `option-list`/`list-nav`, which is
+  // what registry folders staying self-contained under copy-paste costs.
+  '@cascivo/react': 110,
   '@cascivo/charts': 55, // measured 40.6
   '@cascivo/icons': 55, // measured 39.6 (~440 icons; consumers tree-shake per icon)
   '@cascivo/mcp': 30, // measured 19.2

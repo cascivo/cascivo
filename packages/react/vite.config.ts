@@ -226,6 +226,26 @@ export default defineConfig({
         /^@cascivo\/i18n($|\/)/,
       ],
       output: {
+        /*
+         * Minify the emitted chunks properly.
+         *
+         * The published chunks were mangled but still carried every newline, every level of
+         * indentation and rolldown's own `//#region` markers — `data-table.js` was 38.6 KB of
+         * which 12 KB was whitespace. Gzip hides most of that, not all of it: the library
+         * measured 102.4 KB gzip and is 86.8 KB with the whitespace gone, a 15% cut across
+         * every package consumer.
+         *
+         * It has to be set HERE, on the rolldown output. `build.minify: true` is already the
+         * default and changes nothing — it does not reach codegen, so setting it produces a
+         * byte-identical build and reads like the box is already ticked.
+         *
+         * The one thing this gives up is the `@__PURE__` annotations, which oxc cannot place
+         * without whitespace. Checked before enabling: of 1093 in the previous output,
+         * 1088 sat inside function bodies (`jsx(...)` calls), where a purity annotation buys
+         * a downstream bundler nothing. The 5 at module scope were `new Map()`/`new Set()`
+         * caches in data-table and field that every consumer of those files uses anyway.
+         */
+        minify: { mangle: true, compress: true, codegen: { removeWhitespace: true } },
         // One file per component so consumers tree-shake unused components +
         // their CSS, instead of pulling the whole library from a single bundle.
         preserveModules: true,
