@@ -13,9 +13,11 @@
  *  1. `build.minify: true` is already the default and does NOT reach codegen. Setting it
  *     produces a byte-identical build, so the box reads as ticked when it is not. The knob
  *     is here, on the rolldown *output*.
- *  2. It only applies to packages built with `vp build`. `vp pack` (cli, mcp, registry,
- *     render, vite-plugin) ignores `rollupOptions` entirely — the same warning the
- *     subpath-external comments in these configs carry.
+ *  2. It only applies to packages built with `vp build`. `vp pack` ignores `rollupOptions`
+ *     entirely — the same warning the subpath-external comments in these configs carry — so
+ *     the packages on that path (cascivo, mcp, registry, vite-plugin) take `vp pack
+ *     --minify` in their build script instead. Keep the two in step: a package that moves
+ *     between `vp build` and `vp pack` silently loses this otherwise.
  *
  * What it gives up is the `@__PURE__` annotations, which oxc cannot place without
  * whitespace. Measured before enabling, on the react tree: of 1093 annotations, 1088 sat

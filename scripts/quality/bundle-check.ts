@@ -33,11 +33,10 @@ const PACKAGES = join(ROOT, 'packages')
  * raise deliberately with a note, never to make a red run green.
  */
 /*
- * Whitespace note: the packages built with `vp build` have their output compacted (see
- * scripts/build/minify.ts). The `vp pack` ones — cascivo, mcp, registry, vite-plugin — do
- * not, deliberately: every one of them runs in Node, none is browser payload, and readable
- * identifiers in a CLI's stack trace are worth more than the install bytes. Their figures
- * below are therefore un-minified and not comparable with the rest.
+ * Every published package's output is compacted, by one of two mechanisms depending on how
+ * it builds: `scripts/build/minify.ts` on the rolldown output for the `vp build` packages,
+ * `vp pack --minify` in the build script for the rest. The figures below are all minified
+ * and comparable.
  */
 const BUDGETS: Record<string, number> = {
   // Code-split barrel: the figure is the whole library in ONE environment (see measureTree —
@@ -59,22 +58,22 @@ const BUDGETS: Record<string, number> = {
   '@cascivo/react': 110,
   '@cascivo/charts': 55, // measured 32.5
   '@cascivo/icons': 55, // measured 38.2 (~440 icons; consumers tree-shake per icon)
-  '@cascivo/mcp': 30, // measured 19.3
+  '@cascivo/mcp': 30, // measured 13.7
   '@cascivo/editor': 20, // measured 10.4
   '@cascivo/flow': 16, // measured 7.7
   '@cascivo/core': 12, // measured 6.7
   '@cascivo/i18n': 10, // measured 5.8
-  '@cascivo/registry': 10, // measured 6.5
+  '@cascivo/registry': 10, // measured 4.1
   '@cascivo/ai': 6, // measured 1.3
   '@cascivo/storage': 5, // measured 0.4
-  '@cascivo/vite-plugin': 5, // measured 1.8
+  '@cascivo/vite-plugin': 5, // measured 0.6
   '@cascivo/eslint-config': 5, // measured 2.0 — plain config data, but still worth a ceiling
   // Lints, never ships to a browser. The ceiling is for the generated data file: a
   // near-misses list that grew to hundreds of rows would be a design problem, not a size one.
   '@cascivo/eslint-plugin': 8,
   // The CLI runs in Node, so its size is not an adopter's browser cost. It gets a budget
   // anyway: a measured number beats an exemption, and a runaway CLI bundle is still a
-  // regression worth catching. Measured 36.0 KB.
+  // regression worth catching. Measured 25.0 KB.
   cascivo: 45,
 }
 

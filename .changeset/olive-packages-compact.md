@@ -29,9 +29,8 @@ configuration alone.
 The setting lives in one place now (`scripts/build/minify.ts`) rather than as a boolean in
 each config, because two things about it are easy to get wrong: `build.minify: true` is
 already the default and does not reach codegen, and `vp pack` ignores `rollupOptions`
-entirely. The `vp pack` packages — `cascivo`, `@cascivo/mcp`, `@cascivo/registry`,
-`@cascivo/vite-plugin` — are left un-minified on purpose: all four run in Node, none is
-browser payload, and readable identifiers in a CLI stack trace beat the install bytes.
+entirely. The packages on the `vp pack` path take `vp pack --minify` in their build script
+instead.
 
 **Fixed on the way, and the more important half of this change:** removing the whitespace
 broke three separate directive scanners that all assumed `'use client'` would be alone on a
