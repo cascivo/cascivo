@@ -1,6 +1,11 @@
 import assert from 'node:assert/strict'
 import { describe, it } from 'node:test'
-import cascivo, { cascivoPropVocabulary, cascivoSignals, cascivoVendoredSource } from './index.js'
+import cascivo, {
+  cascivoPropVocabulary,
+  cascivoSignals,
+  cascivoTokenValues,
+  cascivoVendoredSource,
+} from './index.js'
 
 describe('@cascivo/eslint-config', () => {
   it('turns off react-hooks/immutability', () => {
@@ -25,7 +30,12 @@ describe('@cascivo/eslint-config', () => {
     assert.ok(Array.isArray(cascivo))
     assert.deepEqual(
       cascivo.map((c) => c.name),
-      ['cascivo/signals', 'cascivo/prop-vocabulary', 'cascivo/vendored-source'],
+      [
+        'cascivo/signals',
+        'cascivo/prop-vocabulary',
+        'cascivo/token-values',
+        'cascivo/vendored-source',
+      ],
     )
   })
 
@@ -37,6 +47,16 @@ describe('@cascivo/eslint-config', () => {
   it('prop-vocabulary is enabled at warn, with the plugin it needs', () => {
     assert.equal(cascivoPropVocabulary.rules['cascivo/prop-vocabulary'], 'warn')
     assert.ok(cascivoPropVocabulary.plugins?.cascivo?.rules?.['prop-vocabulary'])
+  })
+
+  /*
+   * Same reasoning as `prop-vocabulary`, and it matters more here: this rule reads every
+   * `style` prop in the app, so an `error` would be a build failure in somebody's
+   * prototyping. `cascivo audit --ai` is where the same finding is a gate.
+   */
+  it('token-values is enabled at warn, with the plugin it needs', () => {
+    assert.equal(cascivoTokenValues.rules['cascivo/token-values'], 'warn')
+    assert.ok(cascivoTokenValues.plugins?.cascivo?.rules?.['token-values'])
   })
 
   it('every fragment is a plain object ESLint can consume', () => {

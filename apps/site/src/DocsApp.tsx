@@ -109,6 +109,11 @@ const exploreItems = [
   { label: 'Built on the platform', href: '/docs/platform', icon: <Check size={16} /> },
   { label: 'Parity', href: '/docs/parity', icon: <Grid size={16} /> },
   { label: 'Migrating from shadcn', href: '/docs/migrating', icon: <Grid size={16} /> },
+  {
+    label: 'Compared to StyleX',
+    href: '/docs/compared-to-stylex.md',
+    icon: <Layers size={16} />,
+  },
   { label: 'Changelog', href: '/docs/changelog', icon: <Grid size={16} /> },
   { label: 'Upgrading', href: '/docs/upgrading', icon: <Check size={16} /> },
   { label: 'Brand', href: '/docs/brand', icon: <Eye size={16} /> },

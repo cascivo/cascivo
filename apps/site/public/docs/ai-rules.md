@@ -369,6 +369,30 @@ your own layer** — override the tokens (`--cascivo-link-color`) instead.
 
 Full guide: [USING-WITH-A-ROUTER.md](/docs/using-with-a-router.md).
 
+## No styling at a distance
+
+**Every style on an element comes from that element.** A component's own CSS never reaches
+down into somebody else's subtree, and nothing outside a component reaches into its
+internals except through a name that is published, versioned and checked.
+
+This is a property cascivo has, not an aspiration. It is enforced three ways:
+
+- **CSS Modules hash internal class names** (`_navWrapper_1r5fv_83`, different on every
+  build), so there is no selector for a component's internals to accidentally depend on.
+- **`data-cascivo-*` style hooks are the sanctioned exception**, and they are public API:
+  semver'd, declared in each component's manifest, present in `registry.json` and the
+  `llms/*.md` files, and checked in both directions by CI — a hook cannot be renamed
+  without the manifest changing, and a manifest cannot promise a hook the component does
+  not stamp. See [STYLING-INTERNALS.md](/docs/styling-internals.md).
+- **`@layer` decides who wins**, not selector specificity. You never need a descendant
+  selector to out-rank cascivo, because `cascivo.override` already does.
+
+The point is not tidiness. `.card > div > nav` is a rule that works until the day somebody
+adds a wrapper, and then fails **silently** — no error, no warning, just a component that
+stopped being styled. Structural selectors are load-bearing dependencies on markup nobody
+promised to keep. Write against a hook, a token, or a prop instead; all three are checked,
+and all three survive a refactor.
+
 ## Overriding styles the sanctioned way
 
 Every cascivo component spreads `{...props}` onto its root element, so `style` and
@@ -381,7 +405,24 @@ climb this ladder in order and stop at the first rung that works:
 2. **`className` + a rule in `cascivo.override`** — for a reusable override. The
    `cascivo.override` layer beats everything cascivo ships.
 3. **Inline `style` with `var(--cascivo-*)` values** — for a fast one-off. This stays
-   `cascivo audit --ai`-clean because the values are tokens.
+   `cascivo audit --ai`-clean because the values are tokens. Type it and the token names
+   are checked too:
+
+   ```tsx
+   import type { CSSProperties } from 'react'
+   import type { CascivoTokenStyle } from '@cascivo/tokens/style-contract'
+
+   const brand = {
+     '--cascivo-link-color': 'var(--cascivo-color-accent)',
+   } satisfies CascivoTokenStyle
+
+   <Link style={brand as CSSProperties}>Docs</Link>
+   ```
+
+   The cast is unavoidable — React's `CSSProperties` has no index signature for `--*`
+   keys — but `satisfies` runs before it, so a misspelled token is a compile error instead
+   of a declaration that silently does nothing.
+
 4. **`/* cascivo-audit: allow <rule> */`** — the rare remainder. A comment on the same
    line as, or the line above, a flagged line downgrades that finding so the audit no
    longer fails on it (e.g. `allow unknown-prop`, `allow hardcoded-value`, or `allow all`).
@@ -391,6 +432,29 @@ climb this ladder in order and stop at the first rung that works:
 gentle **warning**, not an error — it never blocks a build on a fast-prototyping override.
 Genuinely invented props (`sx`, `elevation`, …) remain errors; use rung 4 only when you
 mean it.
+
+### A name that does not exist is an error, everywhere
+
+Two mistakes are **silent in CSS itself** and therefore checked for you, because nothing
+else in the stack will ever mention them:
+
+- **An unknown custom property is dropped.** `--cascivo-color-acent: red` does not warn,
+  does not fail the build, does not appear in DevTools, and does not throw. It has no
+  effect, and the hunt for the cause starts in the component.
+- **A selector that matches nothing is not an error.** `[data-cascivo-modl-body] { … }`
+  styles zero elements forever, and because CSS Modules hash the real class names you
+  cannot tell a typo from a component that changed shape.
+
+So the shipped name sets are enforced, not merely published:
+
+| Where you are | What checks it                                                                |
+| ------------- | ----------------------------------------------------------------------------- |
+| Your editor   | `cascivo/token-values` (in `@cascivo/eslint-config`, at `warn`)               |
+| Your types    | `CascivoTokenStyle` + `satisfies`, as in rung 3                               |
+| Your CI       | `cascivo audit --ai` — `unknown-token` and `unknown-style-hook`, at **error** |
+
+All three read the same generated set, so they cannot disagree with each other or with
+the CSS. The names live in [`@cascivo/tokens/style-contract.json`](/docs/tokens.md).
 
 ### Running the audit
 

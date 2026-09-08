@@ -26,6 +26,9 @@ const PosterProof = lazy(() =>
 const PosterComparison = lazy(() =>
   import('./poster/PosterComparison').then((m) => ({ default: m.PosterComparison })),
 )
+const PosterColocation = lazy(() =>
+  import('./poster/PosterColocation').then((m) => ({ default: m.PosterColocation })),
+)
 // The gallery mounts two dozen live components and a chart; the themes section
 // pulls in the nine deferred theme sheets. Both are far below the fold.
 const PosterGallery = lazy(() =>
@@ -154,6 +157,9 @@ function HomePage() {
           </Suspense>
           <Suspense fallback={<SectionFallback height={560} />}>
             <PosterComparison />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={420} />}>
+            <PosterColocation />
           </Suspense>
           <Suspense fallback={<SectionFallback height={640} />}>
             <PosterGallery />

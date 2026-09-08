@@ -8,6 +8,8 @@ import type { RawStringFinding } from '../audit-ai/raw-strings.js'
 import { findRawStringViolations } from '../audit-ai/raw-strings.js'
 import type { RequiredPropFinding } from '../audit-ai/required-props.js'
 import { findRequiredPropViolations } from '../audit-ai/required-props.js'
+import type { UnknownNameFinding } from '../audit-ai/unknown-names.js'
+import { findUnknownNameViolations } from '../audit-ai/unknown-names.js'
 import type { UnlayeredFinding } from '../audit-ai/unlayered.js'
 import { findUnlayeredViolations } from '../audit-ai/unlayered.js'
 import type { VendorCssFinding } from '../audit-ai/vendor-css.js'
@@ -23,6 +25,7 @@ export type Finding =
   | PropFinding
   | RequiredPropFinding
   | RawStringFinding
+  | UnknownNameFinding
   | UnlayeredFinding
   | VendorCssFinding
   | DirectiveFinding
@@ -55,9 +58,11 @@ function findingsFor(file: string, source: string, contract: Contract): Finding[
   const findings: Finding[] = []
   if (ext === '.css') {
     findings.push(...findCssLiteralViolations(source, file, contract))
+    findings.push(...findUnknownNameViolations(source, file, contract))
     findings.push(...findUnlayeredViolations(source, file))
   } else if (ext === '.tsx' || ext === '.ts') {
     findings.push(...findCssLiteralViolations(source, file, contract))
+    findings.push(...findUnknownNameViolations(source, file, contract))
     findings.push(...findJsxPropViolations(source, file, contract))
     findings.push(...findRequiredPropViolations(source, file, contract))
     findings.push(...findRawStringViolations(source, file, contract))
@@ -79,6 +84,14 @@ function detail(f: Finding): string {
       return `<${f.component}> requires "${f.prop}"`
     case 'raw-string':
       return `"${f.text}" → use labels prop / i18n`
+    case 'unknown-token':
+      return f.suggestion
+        ? `${f.name} does not exist → ${f.suggestion}`
+        : `${f.name} does not exist (CSS drops it silently)`
+    case 'unknown-style-hook':
+      return f.suggestion
+        ? `[${f.name}] is not a shipped hook → [${f.suggestion}]`
+        : `[${f.name}] is not a shipped hook (matches nothing)`
     case 'unlayered-css':
       return `${f.selector} { … } → wrap in @layer`
     case 'vendor-css-import':

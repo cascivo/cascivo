@@ -36,6 +36,7 @@ const GUIDES: { src: string; slug: string }[] = [
   { src: 'TOKENS.md', slug: 'tokens' },
   { src: 'RECIPE-DASHBOARD.md', slug: 'recipe-dashboard' },
   { src: 'MIGRATING-FROM-SHADCN.md', slug: 'migrating-from-shadcn' },
+  { src: 'COMPARED-TO-STYLEX.md', slug: 'compared-to-stylex' },
   { src: 'ENTERPRISE-READINESS.md', slug: 'enterprise-readiness' },
   { src: 'AI-RULES.md', slug: 'ai-rules' },
   { src: 'TROUBLESHOOTING.md', slug: 'troubleshooting' },

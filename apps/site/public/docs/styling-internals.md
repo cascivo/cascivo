@@ -64,8 +64,20 @@ A hook is the third choice, not the first:
 
 1. **A component token.** Most spacing and colour is already a custom property you can
    re-point — `--cascivo-dialog-body-gap`, `--cascivo-shell-aside-inline-size`,
-   `--cascivo-button-bg`. Set it on any ancestor and it cascades. See
+   `--cascivo-button-primary-bg`. Set it on any ancestor and it cascades. See
    [`TOKENS.md`](/docs/tokens.md).
+
+   Reach for these before the semantic tier when the change is scoped to one component
+   family: setting `--cascivo-color-primary` recolours primary buttons _and_ every other
+   primary surface in the subtree, which is right for a brand and wrong for one dialog's
+   confirm button.
+
+   > **A background knob does not move the foreground.** `--cascivo-button-primary-bg` and
+   > its siblings change the background only; `color` stays on the semantic
+   > `--cascivo-color-primary-fg`. If your new background needs dark text, set that too, or
+   > the button fails contrast. The complete list of knobs per component is in each
+   > component's manifest and in `@cascivo/tokens/style-contract.json`.
+
 2. **A prop.** If the component exposes one (`size`, `footer`, `padding`), use it — props
    are typed and survive everything.
 3. **A style hook**, for the layout facts neither of the above reaches.
@@ -73,6 +85,27 @@ A hook is the third choice, not the first:
 If you need a hook that isn't listed, [open an issue](https://github.com/cascivo/cascivo/issues).
 Adding one is cheap; discovering after the fact that everyone is depending on a hashed class
 name is not.
+
+## A hook that does not exist is silent — so it is checked
+
+`[data-cascivo-modl-body] { … }` is not an error. It is a rule that matches zero elements,
+forever, with no warning from CSS, your bundler, or your browser — and because the real class
+names are hashed, you cannot tell a typo from a component that changed shape.
+
+So the hook set is enforced from the same generated source as the table above:
+
+```sh
+npx cascivo audit --ai src
+# styles.css:12  error  unknown-style-hook  [data-cascivo-modl-body] is not a shipped hook → [data-cascivo-modal-body]
+```
+
+If you build tooling or write `querySelector` against a hook, the set is a type too:
+
+```ts
+import type { CascivoStyleHook } from '@cascivo/tokens/style-contract'
+
+const hook: CascivoStyleHook = 'data-cascivo-modal-body' // a typo here is a compile error
+```
 
 ## What is _not_ a contract
 

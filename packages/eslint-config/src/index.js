@@ -47,8 +47,8 @@
  * Prefer the pieces individually when you only vendor source, or only use the package:
  *
  * ```js
- * import { cascivoSignals, cascivoPropVocabulary, cascivoVendoredSource } from '@cascivo/eslint-config'
- * export default [...yourConfig, cascivoSignals, cascivoPropVocabulary, cascivoVendoredSource()]
+ * import { cascivoSignals, cascivoPropVocabulary, cascivoTokenValues, cascivoVendoredSource } from '@cascivo/eslint-config'
+ * export default [...yourConfig, cascivoSignals, cascivoPropVocabulary, cascivoTokenValues, cascivoVendoredSource()]
  * ```
  */
 import cascivoPlugin from '@cascivo/eslint-plugin'
@@ -168,7 +168,29 @@ export const cascivoPropVocabulary = {
   rules: { 'cascivo/prop-vocabulary': 'warn' },
 }
 
-/** All three fragments, in the order flat config wants them. Spread last. */
-const cascivo = [cascivoSignals, cascivoPropVocabulary, cascivoVendoredSource()]
+/**
+ * The unknown-token messages, at `warn`.
+ *
+ * `--cascivo-color-acent` is not a type error, not a build error, and not a runtime error:
+ * CSS drops an unknown custom property silently, so a misspelled token simply has no effect
+ * and the search for the cause starts in the component. React's `CSSProperties` has no index
+ * signature for `--*` keys either, so every custom property in a `style` prop reaches the DOM
+ * through a cast the adopter wrote — and a cast launders a typo by definition.
+ *
+ * This rule is the editor-time half of that gap; `CascivoTokenStyle` + `satisfies` (from
+ * `@cascivo/tokens/style-contract`) is the compile-time half, and `cascivo audit --ai` is the
+ * gate. See `@cascivo/eslint-plugin`'s `token-values.js` for the full rationale.
+ *
+ * **`warn`, never `error`**, for the same reason as `prop-vocabulary`: a rule that fails a
+ * build gets this config deleted, and that takes `react-hooks/immutability` with it.
+ */
+export const cascivoTokenValues = {
+  name: 'cascivo/token-values',
+  plugins: { cascivo: cascivoPlugin },
+  rules: { 'cascivo/token-values': 'warn' },
+}
+
+/** Every fragment, in the order flat config wants them. Spread last. */
+const cascivo = [cascivoSignals, cascivoPropVocabulary, cascivoTokenValues, cascivoVendoredSource()]
 
 export default cascivo

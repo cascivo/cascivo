@@ -218,7 +218,7 @@ Your app's layer slot sits **above** `cascivo.component` in the cascade, so an a
 wins over the component's own — including parts you did not mean to override. If you add
 `color: inherit` next to a `Button asChild`, you also override the button's own foreground
 colour and can end up with near-white text on a near-white background. Override the
-**component tokens** (`--cascivo-button-bg`, `--cascivo-link-color`, …) rather than the
+**component tokens** (`--cascivo-link-color`, `--cascivo-button-primary-bg`, …) rather than the
 properties, and the cascade stays on your side. See
 [CSS-LAYERS-PITFALL.md](/docs/css-layers-pitfall.md).
 

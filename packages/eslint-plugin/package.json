@@ -42,6 +42,7 @@
     "test": "node --test src/*.test.js"
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "8.66.0",
     "eslint": "10.8.0"
   },
   "peerDependencies": {

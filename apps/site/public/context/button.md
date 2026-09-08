@@ -43,6 +43,16 @@ Renders a native <button> so Enter/Space activation, focus, and role come from t
 
 ## Tokens
 
+- `--cascivo-button-primary-bg`
+- `--cascivo-button-primary-bg-hover`
+- `--cascivo-button-primary-bg-active`
+- `--cascivo-button-secondary-bg`
+- `--cascivo-button-secondary-bg-hover`
+- `--cascivo-button-ghost-bg`
+- `--cascivo-button-ghost-bg-hover`
+- `--cascivo-button-destructive-bg`
+- `--cascivo-button-destructive-bg-hover`
+- `--cascivo-button-radius`
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-hover`
 - `--cascivo-color-accent-active`
@@ -107,7 +117,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Button is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-accent, --cascivo-color-accent-hover, --cascivo-color-accent-active, --cascivo-color-text-on-accent, --cascivo-color-destructive, --cascivo-radius-button, --cascivo-focus-ring, --cascivo-disabled-opacity, --cascivo-text-ui, --cascivo-text-body
+  --cascivo-button-primary-bg, --cascivo-button-primary-bg-hover, --cascivo-button-primary-bg-active, --cascivo-button-secondary-bg, --cascivo-button-secondary-bg-hover, --cascivo-button-ghost-bg, --cascivo-button-ghost-bg-hover, --cascivo-button-destructive-bg, --cascivo-button-destructive-bg-hover, --cascivo-button-radius, --cascivo-color-accent, --cascivo-color-accent-hover, --cascivo-color-accent-active, --cascivo-color-text-on-accent, --cascivo-color-destructive, --cascivo-radius-button, --cascivo-focus-ring, --cascivo-disabled-opacity, --cascivo-text-ui, --cascivo-text-body
 
 Accessibility: role "button", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.
 

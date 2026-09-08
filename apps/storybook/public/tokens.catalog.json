@@ -10,7 +10,7 @@
   ],
   "resolutionTheme": "light",
   "generatedAt": "2026-09-07",
-  "count": 339,
+  "count": 348,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -2587,11 +2587,92 @@
       "canonical": true
     },
     {
+      "name": "--cascivo-button-destructive-bg",
+      "value": "var(--cascivo-color-destructive)",
+      "layer": "component",
+      "group": "button",
+      "resolvedDefault": "var(--cascivo-color-destructive)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-button-destructive-bg-hover",
+      "value": "var(--cascivo-color-destructive-hover)",
+      "layer": "component",
+      "group": "button",
+      "resolvedDefault": "var(--cascivo-color-destructive-hover)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-button-ghost-bg",
+      "value": "transparent",
+      "layer": "component",
+      "group": "button",
+      "resolvedDefault": "transparent",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-button-ghost-bg-hover",
+      "value": "var(--cascivo-color-bg-subtle)",
+      "layer": "component",
+      "group": "button",
+      "resolvedDefault": "var(--cascivo-color-bg-subtle)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-button-primary-bg",
+      "value": "var(--cascivo-color-primary)",
+      "layer": "component",
+      "group": "button",
+      "resolvedDefault": "var(--cascivo-color-primary)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-button-primary-bg-active",
+      "value": "var(--cascivo-color-primary-active)",
+      "layer": "component",
+      "group": "button",
+      "resolvedDefault": "var(--cascivo-color-primary-active)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-button-primary-bg-hover",
+      "value": "var(--cascivo-color-primary-hover)",
+      "layer": "component",
+      "group": "button",
+      "resolvedDefault": "var(--cascivo-color-primary-hover)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
       "name": "--cascivo-button-radius",
       "value": "var(--cascivo-radius-control)",
       "layer": "component",
       "group": "button",
       "resolvedDefault": "var(--cascivo-radius-control)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-button-secondary-bg",
+      "value": "var(--cascivo-color-secondary)",
+      "layer": "component",
+      "group": "button",
+      "resolvedDefault": "var(--cascivo-color-secondary)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-button-secondary-bg-hover",
+      "value": "var(--cascivo-color-secondary-hover)",
+      "layer": "component",
+      "group": "button",
+      "resolvedDefault": "var(--cascivo-color-secondary-hover)",
       "resolvesPerTheme": false,
       "canonical": true
     },

@@ -31,6 +31,14 @@ export declare const cascivoSignals: CascadeFlatConfig
 export declare const cascivoPropVocabulary: CascadeFlatConfig
 
 /**
+ * Enables `cascivo/token-values` at **warn** — the rule that reports a `--cascivo-*` custom
+ * property that does not exist. CSS drops an unknown custom property silently, so a
+ * misspelled token is not an error anywhere: it simply has no effect. Kept at `warn` for the
+ * same reason as `cascivoPropVocabulary`.
+ */
+export declare const cascivoTokenValues: CascadeFlatConfig
+
+/**
  * Scopes host stylistic rules off source vendored by `cascivo add`. Copy-paste path only.
  *
  * @param glob Your `outputDir` from `cascivo.config.ts`. Defaults to `src/components/ui/**`.
