@@ -10,6 +10,7 @@ import {
   Bell,
   Grid,
   Layers,
+  Mail,
   Menu as MenuIcon,
   Server,
   Terminal,
@@ -28,6 +29,7 @@ import { DocsNotFound } from './pages/DocsNotFound'
 import { AiPage } from './pages/AiPage'
 import { ChartsPage } from './pages/ChartsPage'
 import { EditorPage } from './pages/EditorPage'
+import { EmailPage } from './pages/EmailPage'
 import { FlowPage } from './pages/FlowPage'
 import { ComponentPage } from './pages/ComponentPage'
 import { ComponentsIndexPage } from './pages/ComponentsIndexPage'
@@ -71,6 +73,7 @@ const DOCS_ROUTES: Record<string, ComponentType> = {
   '/docs/ai': AiPage,
   '/docs/charts': ChartsPage,
   '/docs/editor': EditorPage,
+  '/docs/email': EmailPage,
   '/docs/flow': FlowPage,
   '/docs/playground': PlaygroundPage,
   '/docs/benchmarks': Benchmarks,
@@ -112,6 +115,7 @@ const exploreItems = [
   { label: 'Benchmarks', href: '/docs/benchmarks', icon: <BarChart size={16} /> },
   { label: 'Charts', href: '/docs/charts', icon: <BarChart size={16} /> },
   { label: 'Editor', href: '/docs/editor', icon: <Edit size={16} /> },
+  { label: 'Email', href: '/docs/email', icon: <Mail size={16} /> },
   { label: 'Flow', href: '/docs/flow', icon: <Grid size={16} /> },
   { label: 'Directory', href: '/docs/directory', icon: <Grid size={16} /> },
   { label: 'Marketplace', href: '/docs/marketplace', icon: <Grid size={16} /> },

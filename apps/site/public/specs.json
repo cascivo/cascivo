@@ -62,6 +62,12 @@
       "summary": "When guidance conflicts, resolve it in this order:"
     },
     {
+      "id": "email-target",
+      "title": "email-target",
+      "path": "/docs/specs/email-target.md",
+      "summary": "**Status: implemented, Phases 1–4** (Phase 4 less the registry and MCP integration; Phase 5 is a release-time manual pass by nature). Shipped: `@cascivo/email` — the token resolver, the vendored conformance oracle, twenty table-based primitives, `renderEmail`, three templates, the client simulator, React Email interop — plus `apps/email-preview`, twelve visual baselines, and the guards behind `pnpm email:check`."
+    },
+    {
       "id": "legal-mapping",
       "title": "legal-mapping",
       "path": "/docs/specs/legal-mapping.md",

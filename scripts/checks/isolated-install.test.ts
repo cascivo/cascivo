@@ -69,14 +69,24 @@ import { fileURLToPath } from 'node:url'
 const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url))
 
 /** Packages the app under test installs. */
-const PACKAGES = ['react', 'core', 'themes', 'tokens', 'i18n', 'storage', 'icons', 'charts']
+const PACKAGES = [
+  'react',
+  'core',
+  'themes',
+  'tokens',
+  'i18n',
+  'storage',
+  'icons',
+  'charts',
+  'email',
+]
 
 /**
  * Only these build to `dist/`. `@cascivo/themes` and `@cascivo/tokens` are CSS-only and
  * publish `src/` directly, so requiring a dist for them would make this fixture skip
  * forever — silently, which is the failure mode a canary must never have.
  */
-const NEEDS_DIST = ['react', 'core', 'i18n', 'storage', 'icons', 'charts']
+const NEEDS_DIST = ['react', 'core', 'i18n', 'storage', 'icons', 'charts', 'email']
 
 const built = NEEDS_DIST.every((p) => existsSync(join(REPO_ROOT, 'packages', p, 'dist')))
 
@@ -118,6 +128,24 @@ import { useSignal, useSignals } from '@cascivo/core'
 // declaring, so if this subpath does not resolve there is no supported import at all
 // (2026-08-14 §3).
 import type { SpaceStep, Tone } from '@cascivo/react/types'
+// @cascivo/email is a SERVER-side package — an adopter imports it in a route handler, not a
+// component — but it is published, so its types must resolve in a real consumer install like
+// any other. It also declares \`@types/react\` as an optional peer, and that declaration is
+// exactly what this fixture's hoisting-off twin exists to verify: without it, pnpm leaves
+// React's types unreachable and every \`children\` prop below silently disappears.
+import {
+  Body,
+  Button as EmailButton,
+  Container,
+  Head,
+  Heading,
+  Html,
+  Preview,
+  renderEmail,
+  Section,
+  Text as EmailText,
+  type EmailTheme,
+} from '@cascivo/email'
 
 // The assignability that makes the subpath worth having: a Tone named here must satisfy the
 // main entry's prop types. Two separate entry points declaring the same nominal type is
@@ -129,6 +157,31 @@ const DEPLOY_TONE: Record<DeployState, Tone> = {
   error: 'danger',
 }
 const CARD_GAP: SpaceStep = 4
+
+/**
+ * The email path an adopter actually writes: compose primitives, render to a message.
+ *
+ * Never called — this file is type-checked, not run. That is the whole point: it proves the
+ * published \`.d.ts\` admits this code, which is the only thing a consumer install can break.
+ */
+export function renderNotification(link: string, theme: EmailTheme) {
+  return renderEmail(
+    <Html>
+      <Head title="Deploy finished" />
+      <Body>
+        <Preview>Your deploy finished successfully</Preview>
+        <Container>
+          <Section padding={32}>
+            <Heading level={1}>Deploy finished</Heading>
+            <EmailText variant="muted">Your changes are live.</EmailText>
+            <EmailButton href={link}>View the deploy</EmailButton>
+          </Section>
+        </Container>
+      </Body>
+    </Html>,
+    { theme, subject: 'Deploy finished', tier: 'strict' },
+  )
+}
 
 export function App() {
   useSignals()

@@ -641,3 +641,50 @@ body {
   font-size: var(--cascivo-text-xs);
   opacity: 0.8;
 }
+
+/* Twelve theme chips do not fit one line at any realistic width, and a
+   ToggleGroup does not wrap on its own — unwrapped, "Arcade" sat outside the
+   viewport with no way to reach it. */
+.doc-email-chips {
+  flex-wrap: wrap;
+}
+
+/* ── /docs/email ────────────────────────────────────────────────────────────
+   The frames hold real `@cascivo/email` output. They are iframes rather than
+   divs because an email is a whole document, and this stylesheet must not reach
+   into it — a preview that inherited the docs CSS would show something the
+   recipient will never see. */
+.doc-email-grid {
+  display: grid;
+  gap: var(--cascivo-space-4);
+  margin-block: var(--cascivo-space-4);
+}
+
+.doc-email-figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-2);
+  margin: 0;
+  min-inline-size: 0;
+}
+
+.doc-email-frame {
+  inline-size: 100%;
+  block-size: 32rem;
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-md);
+  background: #fff;
+}
+
+.doc-email-figure figcaption {
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-text-muted);
+}
+
+/* Two frames side by side only where both stay wide enough to read. Below
+   that they stack, which is also the order they should be read in. */
+@media (min-width: 64rem) {
+  .doc-email-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

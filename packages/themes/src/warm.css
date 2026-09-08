@@ -33,7 +33,11 @@
     --cascivo-color-foreground-muted: oklch(0.52 0.03 60);
     --cascivo-color-text: var(--cascivo-color-foreground);
     --cascivo-color-text-subtle: var(--cascivo-color-foreground-muted);
-    --cascivo-color-text-muted: oklch(0.64 0.025 65);
+    /* L adjusted 0.64 → 0.525 so muted text clears WCAG 2.2 AA (4.5:1) on this
+       theme's background, surface AND surface-2 — it was 2.93:1 on the worst of the
+       three. Hue and chroma are untouched, so the theme's character is unchanged.
+       Guarded by scripts/checks/muted-text-contrast.test.ts. */
+    --cascivo-color-text-muted: oklch(0.525 0.025 65);
     --cascivo-color-text-on-accent: oklch(0.18 0.015 50); /* static fallback */
     --cascivo-color-text-on-destructive: oklch(1 0 0); /* static fallback */
     /* Progressive auto-contrast: contrast-color() stored in a custom property

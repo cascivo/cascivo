@@ -855,3 +855,87 @@
   color: inherit;
   border-color: currentcolor;
 }
+
+/* ── 13 / email ─────────────────────────────────────────────────────────────
+   The frames hold real `@cascivo/email` output in an iframe. The iframe is not
+   a stylistic choice: an email is a whole document, and this page's stylesheet
+   must not reach into it or the preview would be showing something the
+   recipient will never see. */
+.pg-email-stage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+}
+
+.pg-email-body {
+  max-width: 46ch;
+}
+
+.pg-email-facts {
+  margin-block: var(--cascivo-space-3) var(--cascivo-space-2);
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-text-muted);
+}
+
+.pg-email-frames {
+  display: flex;
+  justify-content: center;
+}
+
+.pg-email-figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-2);
+  margin: 0;
+  inline-size: 100%;
+  max-inline-size: 600px;
+}
+
+.pg-email-frame {
+  inline-size: 100%;
+  /* Tall enough for the longest sample without an inner scrollbar, which would
+     read as a broken email rather than a preview. */
+  block-size: 34rem;
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-md);
+  background: #fff;
+}
+
+.pg-email-caption,
+.pg-email-meta {
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-text-muted);
+}
+
+.pg-email-caption {
+  text-align: center;
+}
+
+.pg-email-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.pg-email-toggle {
+  display: flex;
+  gap: var(--cascivo-space-2);
+  align-items: start;
+  font-size: var(--cascivo-text-xs);
+  line-height: 1.4;
+  color: var(--cascivo-color-text-muted);
+  cursor: pointer;
+}
+
+.pg-email-toggle input {
+  margin-block-start: 2px;
+  flex: none;
+}
+
+@media (min-width: 40rem) {
+  .pg-email-frame {
+    block-size: 38rem;
+  }
+}
