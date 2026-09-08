@@ -247,6 +247,14 @@ jobs:
       - name: Bundle budgets
         run: pnpm run audit:bundle
 
+      # What a visitor to / actually downloads, measured in a real browser after scrolling
+      # the page so every lazily-mounted section fetches. It used to sum every .js and .css
+      # in apps/site/dist — the whole multi-route SPA — and so reported 661 KB against a
+      # 135 KB budget and failed on every clean tree, which is why it was never wired in
+      # here. The landing itself is ~130 KB and fits.
+      - name: Landing performance budget (real browser, landing route only)
+        run: pnpm run audit:landing
+
       - name: Type check (vp run -r check)
         run: pnpm exec vp run -r check
 

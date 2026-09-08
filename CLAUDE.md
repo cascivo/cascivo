@@ -187,7 +187,7 @@ installs, and covers React-Compiler-backed rules oxlint cannot express. Do not r
 one as coverage for the real one — that mistake shipped 117 real errors
 (`scripts/checks/host-lint/eslint/README.md`).
 
-**`ready` is not yet a strict superset of CI.** These CI steps are still absent from it, mostly because they need a build, the network, or minutes rather than seconds: `audit:animation`, `audit:signals`, `audit:stories`, `demos:storage:check`, `deps:check`, `deps:smoke`, `docs:coverage`, `links:check`, `isolated:check`, `pack:check`, `bare-page:check`, `no-js:check`. Run them directly if you touched what they cover — `isolated:check` and `pack:check` in particular whenever you change a **published** package, since they are the only gates that compile and lint the packed tarballs the way an adopter receives them. Build runs before type check because some apps (the `apps/examples/*` demos) type-check against built `dist/` types. Commit any files that `regen` or `--fix` modified alongside your changes.
+**`ready` is not yet a strict superset of CI.** These CI steps are still absent from it, mostly because they need a build, the network, or minutes rather than seconds: `audit:animation`, `audit:signals`, `audit:stories`, `demos:storage:check`, `deps:check`, `deps:smoke`, `docs:coverage`, `links:check`, `isolated:check`, `pack:check`, `bare-page:check`, `no-js:check`, `framework:check`, `audit:landing`. Run them directly if you touched what they cover — `isolated:check` and `pack:check` in particular whenever you change a **published** package, since they are the only gates that compile and lint the packed tarballs the way an adopter receives them. Build runs before type check because some apps (the `apps/examples/*` demos) type-check against built `dist/` types. Commit any files that `regen` or `--fix` modified alongside your changes.
 
 To simulate the exact CI environment (cold cache, sequential builds — catches build-ordering bugs that only surface when no dist files exist):
 
@@ -270,6 +270,20 @@ pnpm css-contract:check
 # Consumer-shaped canary: pack the tarballs, type-check them in a strict, non-hoisted
 # pnpm WORKSPACE outside the repo, with skipLibCheck OFF (needs a build; ~90s)
 pnpm isolated:check
+
+# Scaffolded apps built from PACKED TARBALLS outside the monorepo — the only gate that
+# sees Vite externalizing a real node_modules package. A workspace-linked example app
+# cannot reproduce that, which is how Astro shipped unstyled SSR islands once already.
+pnpm framework:check
+
+# What a visitor to / actually downloads, in a real browser after scrolling so every lazy
+# section fetches (needs a build + Chromium). Measures the landing ROUTE, not the sum of
+# every chunk in apps/site/dist — that reported the whole multi-route SPA and always failed.
+pnpm audit:landing
+
+# A real Ghost (Handlebars) theme: flattens the token/theme CSS past its bare @import
+# specifiers, then validates the theme with Ghost's own gscan.
+pnpm --filter @cascivo/example-ghost-theme run check
 
 # Bare page: shipped styles.css and NOTHING else, full viewport, stacked components,
 # real hit-testing (needs a build + Chromium). Catches what computed:check structurally
