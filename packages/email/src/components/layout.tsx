@@ -169,16 +169,17 @@ export interface SpacerProps {
  * and `font-size`/`line-height` pinned to the same height is the shape that survives —
  * without the font-size pin, Outlook gives the cell the minimum line box of its inherited
  * font and the gap is wrong by several pixels.
+ *
+ * The height is carried by the `height` **attribute** only. A CSS `height` alongside it
+ * would be redundant everywhere and is blocked in Yahoo, so it is bytes that buy nothing;
+ * the attribute plus the pinned line box is what actually reserves the space.
  */
 export function Spacer({ height }: SpacerProps) {
   return (
     <table {...TABLE_RESET} width="100%" style={{ width: '100%' }}>
       <tbody>
         <tr>
-          <td
-            height={height}
-            style={{ height: `${height}px`, fontSize: `${height}px`, lineHeight: `${height}px` }}
-          >
+          <td height={height} style={{ fontSize: `${height}px`, lineHeight: `${height}px` }}>
             &nbsp;
           </td>
         </tr>

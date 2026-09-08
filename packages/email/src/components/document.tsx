@@ -101,10 +101,16 @@ export interface PreviewProps {
 /**
  * The inbox preview text — the grey line beside the subject.
  *
- * Two parts, both necessary. The text itself is hidden with the belt-and-braces rule set
- * every client respects in a different way. The trailing whitespace run then pushes the
- * *body's* first words out of the preview window; without it a client appends whatever
- * follows, and the preview reads "Reset your password Reset your password Hi Sam".
+ * Two parts, both necessary. The text is hidden, and the trailing whitespace run then
+ * pushes the *body's* first words out of the preview window; without it a client appends
+ * whatever follows, and the preview reads "Reset your password Reset your password Hi Sam".
+ *
+ * The hide is built only from properties that are actually supported, which is narrower
+ * than the rule set usually copied around for this. `overflow`, `max-height` and `opacity`
+ * are all `n` in Outlook Windows — the very client the belt-and-braces was meant to cover —
+ * so they cost bytes and buy nothing. `display: none` carries it everywhere it is honoured,
+ * `mso-hide: all` is Outlook's own directive for the case where it is not, and the pinned
+ * 1px line box keeps the text from reserving space in anything that ignores both.
  *
  * The padding characters are word-joiners rather than `&nbsp;` because a joiner is
  * zero-width — `&nbsp;` renders as a run of visible blanks in clients that ignore the hide.
@@ -112,11 +118,10 @@ export interface PreviewProps {
 export function Preview({ children }: PreviewProps) {
   const hidden: Style = {
     display: 'none',
-    overflow: 'hidden',
+    msoHide: 'all',
+    fontSize: '1px',
     lineHeight: '1px',
-    opacity: 0,
-    maxHeight: 0,
-    maxWidth: 0,
+    color: token('--cascivo-color-background'),
   }
   return (
     <div style={px(hidden)}>

@@ -13,6 +13,15 @@ import { toPlainText } from './plaintext.ts'
 import { minify } from './minify.ts'
 
 /**
+ * `TextEncoder`, not `Buffer`.
+ *
+ * `Buffer` is Node-only, and this package is rendered in a browser too — the preview app
+ * calls `renderEmail` client-side for instant feedback. Using `Buffer` here threw
+ * "Buffer is not defined" and took the whole preview down with it.
+ */
+const UTF8 = new TextEncoder()
+
+/**
  * XHTML 1.0 Transitional.
  *
  * Not a stylistic choice: Outlook Windows switches to a quirks-mode box model without it,
@@ -82,7 +91,7 @@ export interface RenderOptions {
  * over-report for the mostly-ASCII HTML an email actually contains.
  */
 function quotedPrintableLength(html: string): number {
-  const bytes = Buffer.from(html, 'utf8')
+  const bytes = UTF8.encode(html)
   let length = 0
   let column = 0
   for (const byte of bytes) {
@@ -130,7 +139,7 @@ export function renderEmail(element: ReactElement, options: RenderOptions = {}):
   )
 
   const html = `${DOCTYPE}${pretty ? '\n' : ''}${pretty ? body : minify(body)}`
-  const bytes = Buffer.byteLength(html, 'utf8')
+  const bytes = UTF8.encode(html).length
   const encodedBytes = quotedPrintableLength(html)
   const budget = CLIP_BUDGETS[tier]
 

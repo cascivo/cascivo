@@ -9,6 +9,7 @@
  * styles in `style="…"` attributes and a small set of tags. A full CSS/HTML parser would be
  * a dependency this package does not have and would not find anything more.
  */
+import { parseDeclarations, styleAttributes } from './css-attr.ts'
 import { atRuleSlug, elementSlug, propertySlug, valueSlugs } from './slugs.ts'
 import { DEFAULT_FLOOR, verdict, type ClientRef, type Feature, type Level } from './support.ts'
 
@@ -59,13 +60,7 @@ export const CASCIVO_ALLOW: Readonly<Record<string, string>> = {
 function declarations(html: string): { property: string; value: string }[] {
   const out: { property: string; value: string }[] = []
 
-  for (const m of html.matchAll(/\sstyle="([^"]*)"/gi)) {
-    for (const decl of m[1]!.split(';')) {
-      const at = decl.indexOf(':')
-      if (at === -1) continue
-      out.push({ property: decl.slice(0, at).trim(), value: decl.slice(at + 1).trim() })
-    }
-  }
+  for (const css of styleAttributes(html)) out.push(...parseDeclarations(css))
 
   for (const block of html.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)) {
     for (const decl of block[1]!.matchAll(/([a-z-]+)\s*:\s*([^;{}]+)[;}]/gi)) {

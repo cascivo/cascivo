@@ -7,17 +7,8 @@
  */
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import {
-  Body,
-  Button,
-  Card,
-  Container,
-  Head,
-  Heading,
-  Html,
-  Section,
-  Text,
-} from '../components/index.ts'
+import { PasswordReset, Receipt, Welcome } from '../templates/index.ts'
+import { EMAIL_THEMES } from '../tokens/palettes.generated.ts'
 import { renderEmail } from '../render/render.tsx'
 import { CASCIVO_ALLOW, lint } from './lint.ts'
 import { indexFeatures, type CanIEmailData } from './support.ts'
@@ -27,25 +18,19 @@ const data = JSON.parse(
 ) as CanIEmailData
 const features = indexFeatures(data)
 
-function Fixture() {
-  return (
-    <Html>
-      <Head title="Welcome" />
-      <Body>
-        <Container>
-          <Section padding={32}>
-            <Heading level={1}>Welcome</Heading>
-            <Text>Thanks for signing up.</Text>
-            <Card>
-              <Text>Your account is ready.</Text>
-            </Card>
-            <Button href="https://example.com/start">Get started</Button>
-          </Section>
-        </Container>
-      </Body>
-    </Html>
-  )
-}
+/**
+ * The shipped templates, not a hand-made subset.
+ *
+ * An earlier revision linted a fixture built from five primitives and reported the set
+ * clean, while the real templates carried five blocked findings — `Spacer`'s CSS height and
+ * four properties in `Preview`'s hide, none of which the fixture used. A conformance check
+ * that does not lint what actually ships is not a conformance check.
+ */
+const TEMPLATES = [
+  ['welcome', <Welcome />],
+  ['password-reset', <PasswordReset />],
+  ['receipt', <Receipt />],
+] as const
 
 describe('lint — detects what it should', () => {
   it('blocks a custom property', () => {
@@ -95,19 +80,17 @@ describe('lint — detects what it should', () => {
   })
 })
 
-describe('lint — the primitive set is clean', () => {
-  const findings = lint(renderEmail(<Fixture />, { theme: 'light' }).html, features, {
-    allow: CASCIVO_ALLOW,
-  })
-
-  it('produces no blocked finding in any theme', () => {
-    for (const theme of ['light', 'dark', 'cyberpunk'] as const) {
-      const out = lint(renderEmail(<Fixture />, { theme }).html, features, { allow: CASCIVO_ALLOW })
-      const blocked = out.filter((f) => f.level === 'blocked')
-      expect(
-        blocked,
-        `${theme}: ${blocked.map((f) => `${f.slug} (${f.source})`).join(', ')}`,
-      ).toEqual([])
+describe('lint — every shipped template is clean', () => {
+  it('produces no blocked finding, in any template, in any theme', () => {
+    for (const [name, element] of TEMPLATES) {
+      for (const theme of EMAIL_THEMES) {
+        const out = lint(renderEmail(element, { theme }).html, features, { allow: CASCIVO_ALLOW })
+        const blocked = out.filter((f) => f.level === 'blocked')
+        expect(
+          blocked,
+          `${name} / ${theme}: ${blocked.map((f) => `${f.slug} (${f.source})`).join(', ')}`,
+        ).toEqual([])
+      }
     }
   })
 
@@ -120,12 +103,15 @@ describe('lint — the primitive set is clean', () => {
 
   it('still blocks border-radius when the allowlist is not passed', () => {
     // Proves the finding is real and the allowlist is a deliberate waiver, not a bug.
-    const out = lint(renderEmail(<Fixture />, { theme: 'light' }).html, features)
+    const out = lint(renderEmail(<Welcome />, { theme: 'light' }).html, features)
     expect(out.some((f) => f.slug === 'css-border-radius' && f.level === 'blocked')).toBe(true)
   })
 
   it('reports its caveats, so the constraints stay visible', () => {
     // Not an assertion about a number — a record that the caveats are surfaced at all.
+    const findings = lint(renderEmail(<Welcome />, { theme: 'light' }).html, features, {
+      allow: CASCIVO_ALLOW,
+    })
     const caveats = findings.filter((f) => f.level === 'caveat')
     expect(caveats.length).toBeGreaterThan(0)
     for (const c of caveats) expect(c.clients.length).toBeGreaterThan(0)

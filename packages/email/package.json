@@ -24,18 +24,13 @@
     "dist"
   ],
   "type": "module",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.mts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
-    },
-    "./tokens": {
-      "types": "./dist/tokens/index.d.ts",
-      "import": "./dist/tokens/index.js",
-      "default": "./dist/tokens/index.js"
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
     }
   },
   "publishConfig": {
@@ -43,7 +38,7 @@
     "provenance": true
   },
   "scripts": {
-    "build": "vp pack",
+    "build": "vp pack --minify",
     "check": "tsc --noEmit",
     "test": "vp test",
     "dev": "vp pack --watch"
