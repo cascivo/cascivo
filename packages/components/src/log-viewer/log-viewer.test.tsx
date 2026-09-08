@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { LogViewer, type LogLine } from './log-viewer.tsx'
 
@@ -82,5 +83,35 @@ describe('LogViewer', () => {
     render(<LogViewer lines={sig} />)
     expect(screen.getByRole('log')).toBeInTheDocument()
     expect(screen.getByText('line 0')).toBeInTheDocument()
+  })
+})
+
+describe('LogLine.timestamp (2026-08-31 report §23)', () => {
+  const lines = [
+    { id: 1, timestamp: '08:59:12', text: 'Build started' },
+    { id: 2, timestamp: '08:59:41', text: 'Compiled 42 modules' },
+  ]
+
+  it('renders the timestamp in its own element, not inside the message', () => {
+    const { container } = render(<LogViewer lines={lines} />)
+    const gutters = [...container.querySelectorAll('[class*="timestamp"]')].map(
+      (el) => el.textContent,
+    )
+    expect(gutters).toEqual(['08:59:12', '08:59:41'])
+  })
+
+  it('does not match timestamps in the search — the reason the field exists', async () => {
+    const user = userEvent.setup()
+    const { container } = render(<LogViewer lines={lines} />)
+    await user.type(screen.getByRole('searchbox'), '08:59')
+    expect(container.querySelectorAll('mark')).toHaveLength(0)
+    expect(screen.getByText('0 matches')).toBeInTheDocument()
+  })
+
+  it('still matches text in the message', async () => {
+    const user = userEvent.setup()
+    render(<LogViewer lines={lines} />)
+    await user.type(screen.getByRole('searchbox'), 'Compiled')
+    expect(screen.getByText('1 matches')).toBeInTheDocument()
   })
 })

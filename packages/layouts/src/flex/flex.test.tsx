@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
-import { Flex } from './flex'
+import { Flex, FlexItem } from './flex'
 
 describe('Flex', () => {
   it('renders children', () => {
@@ -42,5 +42,37 @@ describe('Flex', () => {
   it('forwards className', () => {
     const { container } = render(<Flex className="custom" />)
     expect(container.firstChild).toHaveClass('custom')
+  })
+})
+
+describe('FlexItem (2026-08-31 report §24)', () => {
+  it('maps each size onto a main-axis behaviour', () => {
+    const { container } = render(
+      <Flex direction="horizontal">
+        <FlexItem size="fixed">a</FlexItem>
+        <FlexItem size="grow">b</FlexItem>
+        <FlexItem size="shrink">c</FlexItem>
+        <FlexItem>d</FlexItem>
+      </Flex>,
+    )
+    const sizes = [...container.querySelectorAll('[data-size]')].map((el) =>
+      el.getAttribute('data-size'),
+    )
+    expect(sizes).toEqual(['fixed', 'grow', 'shrink', 'auto'])
+  })
+
+  it('passes basis through as flex-basis', () => {
+    const { container } = render(<FlexItem basis="0" size="grow" />)
+    expect((container.firstElementChild as HTMLElement).style.flexBasis).toBe('0px')
+  })
+
+  it('flags truncate so the item can shrink below its content width', () => {
+    const { container } = render(<FlexItem truncate>a-very-long-unbreakable-url</FlexItem>)
+    expect(container.firstElementChild).toHaveAttribute('data-truncate')
+  })
+
+  it('does not flag truncate by default', () => {
+    const { container } = render(<FlexItem>a</FlexItem>)
+    expect(container.firstElementChild).not.toHaveAttribute('data-truncate')
   })
 })

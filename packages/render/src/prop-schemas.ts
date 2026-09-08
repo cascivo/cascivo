@@ -1932,7 +1932,7 @@ export const propSchemas: Record<string, PropSchema[]> = {
   DataList: [
     {
       name: 'items',
-      required: true,
+      required: false,
     },
     {
       name: 'orientation',
@@ -1948,6 +1948,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'size',
       required: false,
       enum: ['sm', 'md'],
+    },
+    {
+      name: 'children',
+      required: false,
     },
   ],
   DataTable: [
@@ -2747,6 +2751,21 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'wrap',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'size',
+      required: false,
+      enum: ['auto', 'fixed', 'grow', 'shrink'],
+    },
+    {
+      name: 'basis',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'truncate',
       required: false,
       primitives: ['boolean'],
     },
@@ -4258,6 +4277,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'maxHeight',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'timestampWidth',
       required: false,
       primitives: ['string'],
     },
@@ -5973,6 +5997,16 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'disabled',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
     },
   ],
   Select: [

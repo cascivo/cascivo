@@ -18,6 +18,45 @@ export default [
 
 That covers both problems on this page. Read on for what it does and why.
 
+## If you lint with oxlint, not ESLint
+
+**Read this first if you started with `pnpm create vite --template react-ts`.** That
+scaffold ships **oxlint** and a `.oxlintrc.json` in 2026 — there is no `eslint.config.js`
+to spread anything into, so the block above does not apply to you. oxlint reimplements
+`react-hooks/immutability` as `react/immutability`, and it reports the same thing about
+cascivo's state idiom:
+
+```
+src/routes/shell.tsx:93:13: warning react(immutability): This value cannot be modified
+```
+
+The fix is one rule. Extend the fragment this package ships:
+
+```jsonc
+// .oxlintrc.json
+{
+  "extends": ["./node_modules/@cascivo/eslint-config/src/oxlintrc.json"],
+  "categories": { "correctness": "error" }
+}
+```
+
+…or copy the rule, which is all the fragment contains:
+
+```jsonc
+{ "rules": { "react/immutability": "off" } }
+```
+
+⚠ oxlint **rejects a config naming a rule its build does not implement**
+(`Rule 'immutability' not found in plugin 'react'`), so add this only on an oxlint recent
+enough to ship the rule. On an older one the rule does not fire, so you need neither.
+
+Everything below about *what turning the rule off costs* applies identically — it is the
+same rule, ported.
+
+Until the 2026-08-31 report (§13) this page mentioned oxlint three times, all of them
+describing cascivo's **own internal** linter, and shipped no oxlint story for the linter its
+most common scaffold now installs.
+
 ### If your `outputDir` is not `src/components/ui`
 
 `...cascivo` scopes its vendored-source rules to `src/components/ui/**`. If `cascivo add`

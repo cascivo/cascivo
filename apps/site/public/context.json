@@ -10106,11 +10106,11 @@
       "props": [
         {
           "name": "items",
-          "description": "The items to render.",
-          "type": "{ id?: string; label: ReactNode; value: ReactNode }[]",
-          "required": true,
+          "description": "The label/value pairs to render. Optional: pass `<DataListItem label=\"…\">value</DataListItem>` children instead when a value needs surrounding JSX.",
+          "type": "DataListEntry[]",
+          "required": false,
           "schema": {
-            "kind": "node"
+            "kind": "other"
           }
         },
         {
@@ -10143,6 +10143,15 @@
           "schema": {
             "kind": "enum",
             "values": ["sm", "md"]
+          }
+        },
+        {
+          "name": "children",
+          "description": "`<DataListItem>` rows, as an alternative to `items`.",
+          "type": "ReactNode",
+          "required": false,
+          "schema": {
+            "kind": "node"
           }
         }
       ],
@@ -16336,6 +16345,36 @@
           "schema": {
             "kind": "boolean"
           }
+        },
+        {
+          "name": "size",
+          "default": "auto",
+          "type": "'auto' | 'fixed' | 'grow' | 'shrink'",
+          "required": false,
+          "description": "FlexItem: main-axis sizing. 'fixed' (flex: 0 0 auto) is what a fixed-width child like Sparkline needs; 'grow' takes the leftover width without shrinking; 'shrink' gives way but never grows.",
+          "schema": {
+            "kind": "enum",
+            "values": ["auto", "fixed", "grow", "shrink"]
+          }
+        },
+        {
+          "name": "basis",
+          "type": "string",
+          "required": false,
+          "description": "FlexItem: flex-basis — the child's size before free space is distributed. Any CSS length.",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "truncate",
+          "default": "false",
+          "type": "boolean",
+          "required": false,
+          "description": "FlexItem: allow the child to shrink below its content width (releases the flex item's `min-width: auto` floor and ellipsizes). Without it a long unbreakable string pushes its siblings out of the row.",
+          "schema": {
+            "kind": "boolean"
+          }
         }
       ],
       "contextUrl": "/context/layout/flex.md",
@@ -17116,6 +17155,16 @@
           "type": "string",
           "required": false,
           "default": "'24rem'",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "timestampWidth",
+          "description": "Width of the `LogLine.timestamp` gutter (CSS length). Widen it for an ISO stamp, narrow it for a relative offset.",
+          "type": "string",
+          "required": false,
+          "default": "'6.5rem'",
           "schema": {
             "kind": "string"
           }
@@ -20955,7 +21004,7 @@
         },
         {
           "name": "ariaLabel",
-          "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+          "description": "Accessible name set through `aria-label` instead of a rendered `<label>` element. ⚠ On Search **both** props give an invisible name — `label` renders a real `<label>` the stylesheet visually hides. They differ in mechanism, not in what you see: use `ariaLabel` when a visible element outside the component already names the field, `label` otherwise. The raw DOM `aria-label` still wins over this.",
           "type": "string",
           "required": false,
           "nameVisibility": "invisible",
@@ -21533,6 +21582,26 @@
           "default": "false",
           "schema": {
             "kind": "boolean"
+          }
+        },
+        {
+          "name": "ariaLabel",
+          "nameVisibility": "invisible",
+          "description": "Accessible name for the group. Invisible — it names the role=\"group\" and renders nothing. The raw DOM `aria-label` still wins over this.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "label",
+          "nameVisibility": "invisible",
+          "description": "Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
           }
         }
       ],
@@ -22123,20 +22192,20 @@
         },
         {
           "name": "header",
-          "type": "ReactNode",
+          "type": "ReactNode | ((ctx: SideNavSlotContext) => ReactNode)",
           "required": false,
-          "description": "Content rendered above the items, inside the item padding context (e.g. app-context pickers)",
+          "description": "Content rendered above the items, inside the item padding context (e.g. app-context pickers). Pass a `({ collapsed }) => …` function to shrink it to a rail icon.",
           "schema": {
-            "kind": "node"
+            "kind": "function"
           }
         },
         {
           "name": "footer",
-          "type": "ReactNode",
+          "type": "ReactNode | ((ctx: SideNavSlotContext) => ReactNode)",
           "required": false,
-          "description": "Content rendered above the collapse toggle, inside the item padding context so it lines up with the nav items (e.g. version string, user info)",
+          "description": "Content rendered above the collapse toggle, inside the item padding context so it lines up with the nav items (e.g. version string, user info). Pass a `({ collapsed }) => …` function to shrink it to a rail icon.",
           "schema": {
-            "kind": "node"
+            "kind": "function"
           }
         },
         {

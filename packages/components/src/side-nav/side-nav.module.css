@@ -29,6 +29,27 @@
       & .groupIndicator {
         display: none;
       }
+
+      /* Group headings are the normal way to structure a console nav, so they are
+         not an edge case: at 4rem an uppercase, letter-spaced "DEPLOYMENTS" renders
+         clipped mid-word (2026-08-31 report §17). The heading stays in the a11y tree
+         and keeps naming its group — only the ink is withheld, so the rail's tooltips
+         and flyouts still read correctly. The separator rule below restores the
+         between-group border the hidden heading would otherwise have carried. */
+      & .groupLabel {
+        visibility: hidden;
+        block-size: 0;
+        padding-block: 0;
+        margin-block: 0;
+        overflow: hidden;
+      }
+
+      & .group + .group > .groupLabel + .groupItems,
+      & .group + .group > .groupItems:first-child {
+        margin-block-start: var(--cascivo-space-2);
+        padding-block-start: var(--cascivo-space-2);
+        border-block-start: 1px solid var(--cascivo-color-border);
+      }
     }
 
     &[data-expand-on-hover][data-state='collapsed'] {
@@ -45,6 +66,14 @@
         & .label[data-rail-hidden],
         & .trailing[data-rail-hidden] {
           display: initial;
+        }
+
+        /* Hover-expanded back to full width: the heading is legible again. */
+        & .groupLabel {
+          visibility: visible;
+          block-size: auto;
+          padding-block: var(--cascivo-space-2) var(--cascivo-space-1);
+          overflow: visible;
         }
 
         & .link,

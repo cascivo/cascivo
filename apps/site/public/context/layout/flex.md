@@ -34,13 +34,16 @@ Pure layout primitive with no semantic role; does not affect the accessibility t
 
 ## Props
 
-| Name        | Type                                  | Required | Default  | Description                                                                                                                                                                                               |
-| ----------- | ------------------------------------- | -------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `direction` | `'vertical' \| 'horizontal'`          | No       | vertical | Flex direction. ⚠ Defaults to `vertical`, unlike CSS `flex-direction` (and unlike Chakra/MUI/Radix `Flex`, which default to a row) — `<Flex justify="between">` alone produces a centered vertical stack. |
-| `gap`       | `1\|2\|3\|4\|5\|6\|8\|10\|12`         | No       | 4        | Spacing token step                                                                                                                                                                                        |
-| `align`     | `'start'\|'center'\|'end'\|'stretch'` | No       | —        | align-items                                                                                                                                                                                               |
-| `justify`   | `'start'\|'center'\|'end'\|'between'` | No       | —        | justify-content                                                                                                                                                                                           |
-| `wrap`      | `boolean`                             | No       | false    | Allow wrapping                                                                                                                                                                                            |
+| Name        | Type                                      | Required | Default  | Description                                                                                                                                                                                               |
+| ----------- | ----------------------------------------- | -------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `direction` | `'vertical' \| 'horizontal'`              | No       | vertical | Flex direction. ⚠ Defaults to `vertical`, unlike CSS `flex-direction` (and unlike Chakra/MUI/Radix `Flex`, which default to a row) — `<Flex justify="between">` alone produces a centered vertical stack. |
+| `gap`       | `1\|2\|3\|4\|5\|6\|8\|10\|12`             | No       | 4        | Spacing token step                                                                                                                                                                                        |
+| `align`     | `'start'\|'center'\|'end'\|'stretch'`     | No       | —        | align-items                                                                                                                                                                                               |
+| `justify`   | `'start'\|'center'\|'end'\|'between'`     | No       | —        | justify-content                                                                                                                                                                                           |
+| `wrap`      | `boolean`                                 | No       | false    | Allow wrapping                                                                                                                                                                                            |
+| `size`      | `'auto' \| 'fixed' \| 'grow' \| 'shrink'` | No       | auto     | FlexItem: main-axis sizing. 'fixed' (flex: 0 0 auto) is what a fixed-width child like Sparkline needs; 'grow' takes the leftover width without shrinking; 'shrink' gives way but never grows.             |
+| `basis`     | `string`                                  | No       | —        | FlexItem: flex-basis — the child's size before free space is distributed. Any CSS length.                                                                                                                 |
+| `truncate`  | `boolean`                                 | No       | false    | FlexItem: allow the child to shrink below its content width (releases the flex item's `min-width: auto` floor and ellipsizes). Without it a long unbreakable string pushes its siblings out of the row.   |
 
 ## Tokens
 
@@ -67,6 +70,34 @@ Row layout
 <Flex direction="horizontal" gap={2}>
   <div>A</div>
   <div>B</div>
+</Flex>
+```
+
+### Toolbar: one field absorbs the row, the rest keep their width
+
+Without FlexItem the Search takes the whole row and pushes the Select onto the next line
+
+```jsx
+<Flex direction="horizontal" gap={2}>
+  <FlexItem size="grow" basis="0">
+    <Search ariaLabel="Filter deployments" />
+  </FlexItem>
+  <FlexItem size="fixed">
+    <Select options={states} ariaLabel="State" />
+  </FlexItem>
+</Flex>
+```
+
+### Protecting a fixed-width child
+
+Sparkline is fixed-width and will not shrink; `size="fixed"` keeps it out of flex sizing, `truncate` lets the URL beside it ellipsize instead of pushing it out
+
+```jsx
+<Flex direction="horizontal" gap={3} align="center">
+  <FlexItem truncate>{deployment.url}</FlexItem>
+  <FlexItem size="fixed">
+    <Sparkline data={points} label="Requests" />
+  </FlexItem>
 </Flex>
 ```
 
