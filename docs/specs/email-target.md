@@ -1,7 +1,13 @@
 # An email render target for cascivo
 
-**Status: proposal.** Nothing below is implemented. The findings in §1 were measured against
-the tree at `claude/react-email-analysis-c0xenz` on 2026-09-08; everything after §1 is design.
+**Status: implemented, Phases 1–4** (Phase 4 less the registry and MCP integration; Phase 5
+is a release-time manual pass by nature). Shipped: `@cascivo/email` — the token resolver, the
+vendored conformance oracle, twenty table-based primitives, `renderEmail`, three templates,
+the client simulator, React Email interop — plus `apps/email-preview`, twelve visual
+baselines, and the guards behind `pnpm email:check`.
+
+The findings in §1 were measured against the tree on 2026-09-08 and are unchanged. §11 records
+what building it corrected in the design below, and what is still outstanding.
 
 **Origin:** [React Email](https://react.email/) (Resend, MIT) — "build and send emails using
 React". An adopter using it alongside cascivo asked whether cascivo could render email content
@@ -426,3 +432,79 @@ Authoring rules established before the first component:
 - Gmail 102 KB clipping — <https://github.com/hteumeuleu/email-bugs/issues/41>
 - Mobile clipping thresholds —
   <https://www.beehiiv.com/support/article/4413255394583-ways-to-manage-email-weight-and-avoid-gmail-clipping>
+
+
+---
+
+## 11. What implementation changed
+
+The design in §1–§10 stood up, with four corrections worth recording. Each was found by
+building the thing, not by reasoning about it.
+
+### 11.1 The lint's strictness was wrong at first [corrected]
+
+§5.1 proposed blocking anything not `y` in every floor client. That rejected `font-size`,
+`padding`, `text-align` and `width` — the four most basic declarations in any email — because
+Can I email uses `a` plus a prose footnote for "works, with a caveat": `padding` is `a #1 #2`
+in Outlook Windows precisely because it applies to `<td>` and not to `<div>`.
+
+**Only `n` blocks.** The caveats are enforced instead by structural assertions over our own
+output ("layout padding appears only on `<td>`"), which can be precise where an attempt to
+interpret footnote #1 cannot. `untested` is silent — `<td>`, `<a>` and `<h1>` are absent from
+the matrix because they are foundational, and reporting them as unsupported would be false.
+
+### 11.2 §9.1's risk was real, and was two risks [corrected]
+
+Resolving to sRGB did surface contrast failures, in two distinct classes:
+
+- **A resolver bug.** `--cascivo-color-text-on-accent` was taking the static `oklch(1 0 0)`
+  fallback rather than the `contrast-color()` upgrade the themes declare inside `@supports`,
+  giving white labels on light accents (2.66:1 on dark, midnight, pastel). Resolving
+  `contrast-color()` at build time fixes it, and is strictly better than any client could
+  manage — no email client will ever compute it.
+- **Pre-existing product debt.** `--cascivo-color-text-muted` already fails AA against its
+  own background in eight of twelve themes, in the shipped oklch source.
+  `scripts/checks/color/contrast.ts` — an independent implementation — agrees to within 0.02.
+  Recorded as a baseline that blocks regression and must be removed once fixed, rather than
+  changed here: it is a design decision across eight palettes and their visual baselines.
+
+A third finding was mine, not the themes': the guard first read `--cascivo-color-accent` for
+link contrast. That is the **fill** token; `--cascivo-color-accent-text` is the one four
+themes restate for type, and `accent-text-contrast.test.ts` already guarantees it.
+
+### 11.3 §5.6's coverage estimate held, but not for the reason given [confirmed with a caveat]
+
+The offline layers did catch the great majority of defects. What the estimate understated is
+how many were found by **driving the preview in a browser** rather than by the unit layers:
+
+- `renderEmail` used `Buffer`, which is Node-only, and took the whole preview down.
+- The lint fixture was a hand-made subset and reported the primitive set clean while the real
+  templates carried five blocked findings.
+- Both the linter and the simulator split style attributes on `;`, which cuts through the
+  `&#x27;` entity React emits around quoted font names. Every simulated preview rendered in
+  Times New Roman. Seventy-seven unit tests were green throughout, because they asserted on
+  slug values and never on reconstructed CSS.
+
+The lesson generalises: a conformance layer that inspects its own intermediate values, rather
+than the artifact a client receives, can be thoroughly green and thoroughly wrong. Layer 3 is
+worth more than §5.3 credited it with — not as a client approximation, but as the only layer
+that exercises the pipeline end to end.
+
+### 11.4 §9.4 was right to doubt the shared-spec story [outstanding]
+
+`ViewConfig` → email is **not implemented**, and the doubt recorded in §9.4 is why. The
+112-entry `componentMap` is overwhelmingly interactive components with no email counterpart,
+so the mapping would be thin enough that claiming "one spec, two targets" would oversell it.
+It stays a design option, not a shipped capability, until a content-shaped subset earns it.
+
+### 11.5 Registry and MCP integration [outstanding]
+
+Phase 4's `cascivo add email/*` and MCP `scaffold_email` are not implemented. Adding email
+entries to `registry.json` activates twenty-odd guards that assume a DOM component with a
+docs route, an APG pattern and a site visual baseline. Doing it properly means extending the
+registry schema and those guards to understand an entry that has none of those — its own
+change, and not one to make halfway.
+
+The AI surfaces that do not need the registry are shipped: `skills/cascivo-email`,
+`docs/RECIPE-EMAIL.md`, and `docs/EMAIL-CLIENT-SUPPORT.md` generated from the same data the
+lint reads.
