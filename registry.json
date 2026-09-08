@@ -624,7 +624,7 @@
       "fileHashes": {
         "app-shell.tsx": "sha256-ac0b9d9738874858a23ba6714e54b59bd09161dbb5dd206d90fbfb330af0d95a",
         "index.ts": "sha256-62a878a63857df7eac4e7176389932ece54eca36fad54def65fcd6153ef8d22a",
-        "app-shell.module.css": "sha256-326df14627d4ace0603da24be8bd0baa36aedd7fd95b8604c69fc94adc817231"
+        "app-shell.module.css": "sha256-0892b0033ef3e91d01840e2d5a4a99cd2898e5475704f82bc711ccf233d4b52c"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -4793,7 +4793,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-list/data-list.module.css"
       ],
       "fileHashes": {
-        "data-list.tsx": "sha256-4a1be9a925a15c46f3ce8636e578b3986e5a16c733708df13ae2e60eeaf90723",
+        "data-list.tsx": "sha256-b0f8e6944da93ab33cf55a66793df64a292fe5a76163190aa85a9a1efcda88f3",
         "index.ts": "sha256-e66b774146ac0f07c45044fc335f97290bd3ee96df1764ca00f0cd0a1cd804a2",
         "data-list.module.css": "sha256-2543d44f539a0b05d7f4ee26b3d5b481797444173fe4d9f5e5f14ceaeea7242d"
       },
@@ -4813,9 +4813,9 @@
         "props": [
           {
             "name": "items",
-            "description": "The items to render.",
-            "type": "{ id?: string; label: ReactNode; value: ReactNode }[]",
-            "required": true
+            "description": "The label/value pairs to render. Optional: pass `<DataListItem label=\"…\">value</DataListItem>` children instead when a value needs surrounding JSX.",
+            "type": "DataListEntry[]",
+            "required": false
           },
           {
             "name": "orientation",
@@ -4837,6 +4837,12 @@
             "type": "'sm' | 'md'",
             "required": false,
             "default": "md"
+          },
+          {
+            "name": "children",
+            "description": "`<DataListItem>` rows, as an alternative to `items`.",
+            "type": "ReactNode",
+            "required": false
           }
         ],
         "tokens": [
@@ -10347,9 +10353,9 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/log-viewer/log-viewer.module.css"
       ],
       "fileHashes": {
-        "log-viewer.tsx": "sha256-e316a2de0e3af622d44faf830b558b28af86029c90d812955c15ccb3ec6f32b9",
+        "log-viewer.tsx": "sha256-113e1bc51c6b8f2970c039c77cc210dc199e855de4767fd9cd1ee2e18e9f4427",
         "index.ts": "sha256-08f1ea684b997cacab1d1500ec97465123a96d0d01fecd706861e556bf6852a7",
-        "log-viewer.module.css": "sha256-af6c608fe9f12943f0bfe77a8394b53b360a5f092d8db26ebd001967edd53db9"
+        "log-viewer.module.css": "sha256-880cc1528f2514005d53c4a5f84ca8f02dc29d4f56d8b81ad7be40664f1f075c"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -10419,6 +10425,13 @@
             "default": "'24rem'"
           },
           {
+            "name": "timestampWidth",
+            "description": "Width of the `LogLine.timestamp` gutter (CSS length). Widen it for an ISO stamp, narrow it for a relative offset.",
+            "type": "string",
+            "required": false,
+            "default": "'6.5rem'"
+          },
+          {
             "name": "labels",
             "description": "Overrides for the component’s user-visible strings (i18n).",
             "type": "LogViewerLabels",
@@ -10458,6 +10471,11 @@
           {
             "title": "ANSI colored output",
             "code": "<LogViewer ansi lines={ansiLines} maxHeight=\"32rem\" />"
+          },
+          {
+            "title": "Timestamped build log",
+            "code": "<LogViewer lines={[{ id: 1, timestamp: \"08:59:12\", text: \"Build started\" }, { id: 2, timestamp: \"08:59:41\", text: \"Type error\", level: \"error\" }]} />",
+            "description": "Pass the clock as `timestamp`, not prefixed into `text` — the gutter is dimmed, column-aligned, and excluded from search and copy"
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -15153,7 +15171,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/search/search.module.css"
       ],
       "fileHashes": {
-        "search.tsx": "sha256-29d35bb73aa2b77049d243ed813c597345244ea59dc904b116ad9ec15cf2d488",
+        "search.tsx": "sha256-31e25bbd7476b91a8ad6b42e7db417e6618f0f851a967aab5c0dbb7a1f357d0f",
         "index.ts": "sha256-47249a52c6a441ee459d54591b48acc65feafdc50ecb7e6ab3eb3a05e292b8a7",
         "search.module.css": "sha256-bb8b8f5650d1f3623aed5b21b05f5bc6894a82c8399ed8ab7ce53cd213b7c709"
       },
@@ -15272,7 +15290,7 @@
           },
           {
             "name": "ariaLabel",
-            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+            "description": "Accessible name set through `aria-label` instead of a rendered `<label>` element. ⚠ On Search **both** props give an invisible name — `label` renders a real `<label>` the stylesheet visually hides. They differ in mechanism, not in what you see: use `ariaLabel` when a visible element outside the component already names the field, `label` otherwise. The raw DOM `aria-label` still wins over this.",
             "type": "string",
             "required": false,
             "nameVisibility": "invisible"
@@ -15373,7 +15391,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/segmented-control/segmented-control.module.css"
       ],
       "fileHashes": {
-        "segmented-control.tsx": "sha256-e9757dedce09d38e40d2bc53c0dc199b9e377bcf0b74bea9156e277b2317f5aa",
+        "segmented-control.tsx": "sha256-d1bc6374ea6bffb5fd6069be73af6f398f4ed97dfa1c104a759a261cc6286b0e",
         "index.ts": "sha256-6bd3417b2a023b81f9df64462b5d9e7b3dd42f6c6728c0f4e222adfdfa677417",
         "segmented-control.module.css": "sha256-75f43302c357675012e3a15115355fe07dd9030bb61f7193f595cb92c27a3cb0"
       },
@@ -15423,6 +15441,20 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Accessible name for the group. Invisible — it names the role=\"group\" and renders nothing. The raw DOM `aria-label` still wins over this.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered.",
+            "type": "string",
+            "required": false
           }
         ],
         "tokens": [
@@ -16173,9 +16205,9 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/side-nav/side-nav.module.css"
       ],
       "fileHashes": {
-        "side-nav.tsx": "sha256-edbd1bc1cc486971670f6c76696d66d63fb194fc19e72413e42fb32238789482",
+        "side-nav.tsx": "sha256-0e2a7608ebce25e7c3e5909a08367c3d3729b4cd21c97ddd07d3a1113c73a242",
         "index.ts": "sha256-2c4c28ca1ec620b0e05a118ce458eed465026fa548102eebd4f450c260d7e157",
-        "side-nav.module.css": "sha256-a680fbee4f99265cea275f1f1ebf1fe06032e6a6052d430f36eaa331437a4860"
+        "side-nav.module.css": "sha256-be7981a930bdf3a19250c229e96db1bd9ad1cd282970ca22b53b6dbfb0cd189a"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -16269,15 +16301,15 @@
           },
           {
             "name": "header",
-            "type": "ReactNode",
+            "type": "ReactNode | ((ctx: SideNavSlotContext) => ReactNode)",
             "required": false,
-            "description": "Content rendered above the items, inside the item padding context (e.g. app-context pickers)"
+            "description": "Content rendered above the items, inside the item padding context (e.g. app-context pickers). Pass a `({ collapsed }) => …` function to shrink it to a rail icon."
           },
           {
             "name": "footer",
-            "type": "ReactNode",
+            "type": "ReactNode | ((ctx: SideNavSlotContext) => ReactNode)",
             "required": false,
-            "description": "Content rendered above the collapse toggle, inside the item padding context so it lines up with the nav items (e.g. version string, user info)"
+            "description": "Content rendered above the collapse toggle, inside the item padding context so it lines up with the nav items (e.g. version string, user info). Pass a `({ collapsed }) => …` function to shrink it to a rail icon."
           },
           {
             "name": "className",
@@ -21722,9 +21754,9 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/flex.module.css"
       ],
       "fileHashes": {
-        "flex.tsx": "sha256-c3a1108c6e6f14ccd0196f2dfc9d1330cd0633fad3e61db0a855cb4690396c74",
+        "flex.tsx": "sha256-5e7b831f678ef3ff6c3652ef9db9dd21d5927f3f6440773e54ce30d8ffe971d2",
         "index.ts": "sha256-866e136d307ce28ddd698039d7c2234f14aeadeaa877ec2afaaf40b9634bed94",
-        "flex.module.css": "sha256-0dc986fb37d2cb6a657d40f879f26ee28a1795f1b626e4fd32052528994ea090"
+        "flex.module.css": "sha256-cb5c86471738605bfa5fc3e043e84b4ac8f93bc9f4096e7a3542d4c72130d5df"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -21772,6 +21804,26 @@
             "type": "boolean",
             "required": false,
             "description": "Allow wrapping"
+          },
+          {
+            "name": "size",
+            "default": "auto",
+            "type": "'auto' | 'fixed' | 'grow' | 'shrink'",
+            "required": false,
+            "description": "FlexItem: main-axis sizing. 'fixed' (flex: 0 0 auto) is what a fixed-width child like Sparkline needs; 'grow' takes the leftover width without shrinking; 'shrink' gives way but never grows."
+          },
+          {
+            "name": "basis",
+            "type": "string",
+            "required": false,
+            "description": "FlexItem: flex-basis — the child's size before free space is distributed. Any CSS length."
+          },
+          {
+            "name": "truncate",
+            "default": "false",
+            "type": "boolean",
+            "required": false,
+            "description": "FlexItem: allow the child to shrink below its content width (releases the flex item's `min-width: auto` floor and ellipsizes). Without it a long unbreakable string pushes its siblings out of the row."
           }
         ],
         "tokens": ["--cascivo-space-*"],
@@ -21790,6 +21842,16 @@
             "title": "Horizontal",
             "code": "<Flex direction=\"horizontal\" gap={2}><div>A</div><div>B</div></Flex>",
             "description": "Row layout"
+          },
+          {
+            "title": "Toolbar: one field absorbs the row, the rest keep their width",
+            "code": "<Flex direction=\"horizontal\" gap={2}>\n  <FlexItem size=\"grow\" basis=\"0\"><Search ariaLabel=\"Filter deployments\" /></FlexItem>\n  <FlexItem size=\"fixed\"><Select options={states} ariaLabel=\"State\" /></FlexItem>\n</Flex>",
+            "description": "Without FlexItem the Search takes the whole row and pushes the Select onto the next line"
+          },
+          {
+            "title": "Protecting a fixed-width child",
+            "code": "<Flex direction=\"horizontal\" gap={3} align=\"center\">\n  <FlexItem truncate>{deployment.url}</FlexItem>\n  <FlexItem size=\"fixed\"><Sparkline data={points} label=\"Requests\" /></FlexItem>\n</Flex>",
+            "description": "Sparkline is fixed-width and will not shrink; `size=\"fixed\"` keeps it out of flex sizing, `truncate` lets the URL beside it ellipsize instead of pushing it out"
           }
         ],
         "dependencies": ["@cascivo/core"],

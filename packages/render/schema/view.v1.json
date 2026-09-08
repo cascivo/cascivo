@@ -1485,9 +1485,12 @@
                   "size": {
                     "type": "string",
                     "enum": ["sm", "md"]
+                  },
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
                   }
-                },
-                "required": ["items"]
+                }
               }
             }
           }
@@ -2723,6 +2726,9 @@
                   "maxHeight": {
                     "type": "string"
                   },
+                  "timestampWidth": {
+                    "type": "string"
+                  },
                   "labels": {
                     "type": "string",
                     "enum": ["LogViewerLabels"]
@@ -3930,6 +3936,12 @@
                   },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
                   }
                 },
                 "required": ["options", "value", "onValueChange"]
@@ -4111,14 +4123,6 @@
                   },
                   "expandOnHover": {
                     "type": "boolean"
-                  },
-                  "header": {
-                    "type": "string",
-                    "enum": ["ReactNode"]
-                  },
-                  "footer": {
-                    "type": "string",
-                    "enum": ["ReactNode"]
                   },
                   "className": {
                     "type": "string"
@@ -5416,6 +5420,16 @@
                     "enum": ["start", "center", "end", "between"]
                   },
                   "wrap": {
+                    "type": "boolean"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": ["auto", "fixed", "grow", "shrink"]
+                  },
+                  "basis": {
+                    "type": "string"
+                  },
+                  "truncate": {
                     "type": "boolean"
                   }
                 }

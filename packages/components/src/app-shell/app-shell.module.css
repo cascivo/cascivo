@@ -66,6 +66,20 @@
     min-block-size: 0;
   }
 
+  /* Rail collapse: the nav's own `data-state` drives the column, so AppShell's
+     show/hide and SideNav's rail genuinely compose on different axes instead of
+     AppShell always winning. Without this, `.navInner`'s pinned width plus the
+     `flex: 1 1 auto` above stretched a collapsed 4rem SideNav back to the full
+     18rem, leaving 24px icons in dead space and making the collapse control look
+     inert (2026-08-31 report §14, measured 288 -> 288).
+
+     The child selector is deliberate — only the nav AppShell was handed sits at
+     `.navInner > *`, so a Collapsible *inside* the nav can carry the same
+     `data-state="collapsed"` without resizing the column. */
+  .navInner:has(> [data-state='collapsed']) {
+    inline-size: var(--cascivo-sidenav-rail-inline-size, 4rem);
+  }
+
   /* Scrim: only visible behind the open drawer on small screens. */
   .scrim {
     position: absolute;
@@ -154,12 +168,21 @@
       transition: inline-size var(--cascivo-motion-emphasis);
     }
 
-    .navWrapper[data-open='false'] {
+    .navWrapper:has(> .navInner > [data-state='collapsed']) {
+      inline-size: var(--cascivo-sidenav-rail-inline-size, 4rem);
+    }
+
+    /* Full-hide always wins over the rail width. Both selectors are needed: `:has()`
+       takes the specificity of its most specific argument, so the rule above outranks a
+       bare `[data-open='false']` no matter where it sits in source order. */
+    .navWrapper[data-open='false'],
+    .navWrapper[data-open='false']:has(> .navInner > [data-state='collapsed']) {
       inline-size: 0;
     }
 
     .navInner {
       inline-size: var(--cascivo-shell-aside-inline-size, 18rem);
+      transition: inline-size var(--cascivo-motion-emphasis);
     }
 
     :dir(rtl) .navWrapper,

@@ -109,7 +109,7 @@ export const meta: ComponentMeta = {
     {
       name: 'ariaLabel',
       description:
-        'Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.',
+        'Accessible name set through `aria-label` instead of a rendered `<label>` element. ⚠ On Search **both** props give an invisible name — `label` renders a real `<label>` the stylesheet visually hides. They differ in mechanism, not in what you see: use `ariaLabel` when a visible element outside the component already names the field, `label` otherwise. The raw DOM `aria-label` still wins over this.',
       type: 'string',
       required: false,
       nameVisibility: 'invisible',
