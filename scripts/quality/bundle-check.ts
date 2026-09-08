@@ -57,6 +57,16 @@ const BUDGETS: Record<string, number> = {
   // what registry folders staying self-contained under copy-paste costs.
   '@cascivo/react': 110,
   '@cascivo/charts': 55, // measured 32.5
+  /*
+   * Almost entirely data, not code. Twelve themes are resolved to literal palettes at build
+   * time (~290 tokens each) so an email never has to carry a custom property, and that table
+   * is the bulk of the module. The primitives and the renderer are a few KB.
+   *
+   * It is also a **server-side** package: an email is rendered where it is sent, so this
+   * never reaches a browser bundle. The budget exists to catch the palettes growing
+   * unnoticed, not to protect a page load.
+   */
+  '@cascivo/email': 30,
   '@cascivo/icons': 55, // measured 38.2 (~440 icons; consumers tree-shake per icon)
   '@cascivo/mcp': 30, // measured 13.7
   '@cascivo/editor': 20, // measured 10.4

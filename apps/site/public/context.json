@@ -68,6 +68,11 @@
       "path": "/docs/specs/decision-hierarchy.md"
     },
     {
+      "id": "email-target",
+      "title": "email-target",
+      "path": "/docs/specs/email-target.md"
+    },
+    {
       "id": "legal-mapping",
       "title": "legal-mapping",
       "path": "/docs/specs/legal-mapping.md"

@@ -76,6 +76,8 @@ for pasting into an agent's context window.
 | [CONTRIBUTING-REGISTRY.md](CONTRIBUTING-REGISTRY.md) | Publish and host a third-party component registry. |
 | [CONTRIBUTING-TEMPLATES.md](CONTRIBUTING-TEMPLATES.md) | Author a template and submit it to the marketplace. |
 | [CHART-LIBRARIES.md](CHART-LIBRARIES.md) | `@cascivo/charts` compared to Chart.js and Apache ECharts. |
+| [RECIPE-EMAIL.md](RECIPE-EMAIL.md) | Send transactional email with `@cascivo/email` — themed, table-based, plain-text part included. |
+| [EMAIL-CLIENT-SUPPORT.md](EMAIL-CLIENT-SUPPORT.md) | What email clients support, generated from the vendored Can I email matrix. |
 
 ## Cookbooks
 

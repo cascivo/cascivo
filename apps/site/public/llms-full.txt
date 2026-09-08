@@ -2,7 +2,7 @@
 
 _registry v1.1.0 · generated 2026-09-07 · docs track `main`; compare with https://cascivo.com/registry.json `.version` for staleness, and https://cascivo.com/breaking-changes.json for installed-vs-documented API drift._
 
-_Describes: @cascivo/ai@1.1.0 · @cascivo/charts@1.1.0 · @cascivo/core@1.1.0 · @cascivo/docs@0.2.7 · @cascivo/docspack@0.2.1 · @cascivo/editor@1.1.0 · @cascivo/eslint-config@0.3.0 · @cascivo/eslint-plugin@0.1.1 · @cascivo/flow@1.1.0 · @cascivo/i18n@1.1.0 · @cascivo/icons@1.0.1 · @cascivo/mcp@0.7.1 · @cascivo/platform@0.0.5 · @cascivo/react@1.1.0 · @cascivo/registry@0.2.10 · @cascivo/storage@1.1.0 · @cascivo/themes@1.0.0 · @cascivo/tokens@1.0.0 · @cascivo/vite-plugin@0.1.10 · cascivo@1.0.1. If your installed versions are lower, a documented behaviour may not have shipped yet._
+_Describes: @cascivo/ai@1.1.0 · @cascivo/charts@1.1.0 · @cascivo/core@1.1.0 · @cascivo/docs@0.2.7 · @cascivo/docspack@0.2.1 · @cascivo/editor@1.1.0 · @cascivo/email@0.1.0 · @cascivo/eslint-config@0.3.0 · @cascivo/eslint-plugin@0.1.1 · @cascivo/flow@1.1.0 · @cascivo/i18n@1.1.0 · @cascivo/icons@1.0.1 · @cascivo/mcp@0.7.1 · @cascivo/platform@0.0.5 · @cascivo/react@1.1.0 · @cascivo/registry@0.2.10 · @cascivo/storage@1.1.0 · @cascivo/themes@1.0.0 · @cascivo/tokens@1.0.0 · @cascivo/vite-plugin@0.1.10 · cascivo@1.0.1. If your installed versions are lower, a documented behaviour may not have shipped yet._
 
 cascivo is a React design system you can consume two ways: copy-paste the source
 (`npx cascivo add <name>` — shadcn model, you own the code) or install the prebuilt
