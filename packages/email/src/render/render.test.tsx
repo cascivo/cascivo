@@ -30,7 +30,21 @@ import {
   Text,
 } from '../components/index.ts'
 import { EMAIL_THEMES } from '../tokens/palettes.generated.ts'
-import { renderEmail } from './render.tsx'
+import {
+  PasswordReset,
+  passwordResetSubject,
+  Receipt,
+  receiptSubject,
+  Welcome,
+  welcomeSubject,
+} from '../templates/index.ts'
+import { assertSendable, renderEmail } from './render.tsx'
+
+const TEMPLATES = [
+  ['welcome', <Welcome />, welcomeSubject],
+  ['password-reset', <PasswordReset />, passwordResetSubject],
+  ['receipt', <Receipt />, receiptSubject],
+] as const
 
 function Fixture() {
   return (
@@ -194,6 +208,20 @@ describe('renderEmail — structural invariants', () => {
   })
 })
 
+describe('renderEmail — every shipped template is sendable', () => {
+  it('declares a subject and a preheader and fits the strict tier', () => {
+    /*
+     * The three ways an email fails after it has already been sent, none of which the HTML
+     * itself reveals. Asserted per template rather than on a fixture, because a template
+     * that forgets `<Preview>` is exactly the case worth catching.
+     */
+    for (const [name, element, subject] of TEMPLATES) {
+      const out = renderEmail(element, { theme: 'light', subject: subject(), tier: 'strict' })
+      expect(() => assertSendable(out), name).not.toThrow()
+    }
+  })
+})
+
 describe('renderEmail — plain text', () => {
   it('carries the headline and the link target', () => {
     expect(text).toContain('Reset your password')
@@ -206,6 +234,12 @@ describe('renderEmail — plain text', () => {
 
   it('leaves no markup behind', () => {
     expect(text).not.toMatch(/<[a-z/]/i)
+  })
+
+  it('does not open with the <title> restated above the heading', () => {
+    // `<head>` used to survive the strip, so every text part began with the subject, a
+    // blank line, and then the same words again as the underlined heading.
+    expect(text.startsWith('Reset your password\n=')).toBe(true)
   })
 })
 

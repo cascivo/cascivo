@@ -9,16 +9,20 @@
  */
 import { useComputed, useSignals } from '@cascivo/core'
 import {
+  buildMessage,
   CASCIVO_ALLOW,
   EMAIL_THEMES,
   indexFeatures,
   lint,
+  passwordResetSubject,
   PasswordReset,
   Receipt,
+  receiptSubject,
   renderEmail,
   simulate,
   SIMULATED_CLIENTS,
   Welcome,
+  welcomeSubject,
   type CanIEmailData,
   type EmailTheme,
 } from '@cascivo/email'
@@ -39,10 +43,20 @@ import {
 
 const FEATURES = indexFeatures(caniemail as unknown as CanIEmailData)
 
-const TEMPLATES: { id: string; name: string; element: () => ReactElement }[] = [
-  { id: 'welcome', name: 'Welcome', element: () => <Welcome /> },
-  { id: 'password-reset', name: 'Password reset', element: () => <PasswordReset /> },
-  { id: 'receipt', name: 'Receipt', element: () => <Receipt /> },
+const TEMPLATES: {
+  id: string
+  name: string
+  element: () => ReactElement
+  subject: () => string
+}[] = [
+  { id: 'welcome', name: 'Welcome', element: () => <Welcome />, subject: welcomeSubject },
+  {
+    id: 'password-reset',
+    name: 'Password reset',
+    element: () => <PasswordReset />,
+    subject: passwordResetSubject,
+  },
+  { id: 'receipt', name: 'Receipt', element: () => <Receipt />, subject: receiptSubject },
 ]
 
 /**
@@ -59,7 +73,11 @@ export function App() {
 
   const result = useComputed(() => {
     const template = TEMPLATES.find((t) => t.id === templateId.value) ?? TEMPLATES[0]!
-    return renderEmail(template.element(), { theme: theme.value, tier: 'strict' })
+    return renderEmail(template.element(), {
+      theme: theme.value,
+      subject: template.subject(),
+      tier: 'strict',
+    })
   })
 
   const shown = useComputed(() => {
@@ -70,29 +88,12 @@ export function App() {
   const findings = useComputed(() => lint(result.value.html, FEATURES, { allow: CASCIVO_ALLOW }))
 
   const download = () => {
-    const { html, text } = result.value
-    const boundary = `cascivo-${Date.now().toString(36)}`
-    const eml = [
-      'MIME-Version: 1.0',
-      `Subject: ${templateId.value} (${theme.value})`,
-      'From: preview@cascivo.local',
-      'To: you@example.com',
-      `Content-Type: multipart/alternative; boundary="${boundary}"`,
-      '',
-      `--${boundary}`,
-      'Content-Type: text/plain; charset=UTF-8',
-      '',
-      text,
-      '',
-      `--${boundary}`,
-      'Content-Type: text/html; charset=UTF-8',
-      '',
-      html,
-      '',
-      `--${boundary}--`,
-      '',
-    ].join('\r\n')
-
+    // `buildMessage` rather than a hand-rolled envelope: this one is tested, orders the
+    // alternatives correctly, encodes a non-ASCII subject, and refuses header injection.
+    const eml = buildMessage(result.value, {
+      from: 'preview@cascivo.local',
+      to: 'you@example.com',
+    })
     const url = URL.createObjectURL(new Blob([eml], { type: 'message/rfc822' }))
     const a = document.createElement('a')
     a.href = url
@@ -119,6 +120,20 @@ export function App() {
             </button>
           ))}
         </nav>
+
+        <section className="panel">
+          <h2>Message</h2>
+          <dl>
+            <dt>Subject</dt>
+            <dd className="wrap">{result.value.subject}</dd>
+            <dt>Preheader</dt>
+            <dd className="wrap">
+              {result.value.preheader ?? (
+                <span className="bad">none — the client will invent one</span>
+              )}
+            </dd>
+          </dl>
+        </section>
 
         <SizeGauge stats={result.value.stats} html={result.value.html} />
         <CompatibilityPanel findings={findings.value} />

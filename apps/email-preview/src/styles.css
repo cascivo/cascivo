@@ -324,3 +324,8 @@ dd {
   overflow-wrap: anywhere;
   color: #4b5563;
 }
+
+dd.wrap {
+  text-align: left;
+  overflow-wrap: anywhere;
+}

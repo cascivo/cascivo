@@ -9,7 +9,8 @@ import type { ReactElement } from 'react'
 import { withPalette } from '../runtime/palette.ts'
 import { PALETTES, type EmailTheme } from '../tokens/palettes.generated.ts'
 import type { Palette } from '../tokens/resolve.ts'
-import { toPlainText } from './plaintext.ts'
+import { extractPreheader, toPlainText, type PlainTextOptions } from './plaintext.ts'
+import { quotedPrintable, type EmailMessage } from './message.ts'
 import { minify } from './minify.ts'
 
 /**
@@ -66,44 +67,42 @@ export interface RenderStats {
   maxTableDepth: number
 }
 
-export interface RenderResult {
-  html: string
-  text: string
+export interface RenderResult extends EmailMessage {
   stats: RenderStats
 }
 
 export interface RenderOptions {
   theme?: EmailTheme | Palette
+  /**
+   * The subject line.
+   *
+   * Part of the render rather than the send because it belongs to the template: the subject,
+   * the `<title>` and the preheader are three facets of the same message, and splitting them
+   * across two call sites is how they drift apart. Defaults to the empty string, which
+   * `assertSendable` rejects.
+   */
+  subject?: string
   /** Which clip threshold `stats.clipRisk` is judged against. */
   tier?: ClipTier
   /** Keep the output readable. Costs bytes; for debugging and the preview's source view. */
   pretty?: boolean
   /** Supply the plain-text part yourself instead of deriving it. */
   plainText?: string
+  /** How the plain-text alternative is derived, when it is not supplied. */
+  text?: PlainTextOptions
 }
 
 /**
- * Quoted-printable encoded length.
+ * Quoted-printable encoded length — by encoding, not by estimating.
  *
- * Every byte outside the printable ASCII range becomes three characters (`=XX`), and lines
- * are wrapped at 76 characters with a soft break costing one more. Approximating this as
- * "raw length" is what makes a size check lie; approximating it as base64 (+33% flat) would
- * over-report for the mostly-ASCII HTML an email actually contains.
+ * This was briefly a second, hand-rolled cost model that agreed with the real encoder to
+ * within 3%. Two implementations of one number is one too many: a budget that is checked
+ * against an estimate and delivered against an encoder is not a budget. `message.ts` owns
+ * the encoding; this measures its output.
  */
 function quotedPrintableLength(html: string): number {
-  const bytes = UTF8.encode(html)
-  let length = 0
-  let column = 0
-  for (const byte of bytes) {
-    const cost = byte === 0x09 || (byte >= 0x20 && byte <= 0x7e && byte !== 0x3d) ? 1 : 3
-    if (column + cost > 75) {
-      length += 1 // soft line break
-      column = 0
-    }
-    length += cost
-    column += cost
-  }
-  return length
+  // QP output is ASCII by construction, so character length is byte length.
+  return quotedPrintable(html).length
 }
 
 /** Deepest run of nested `<table>` elements — the metric that predicts Outlook layout pain. */
@@ -132,7 +131,14 @@ function countNodes(html: string): number {
  * why it is safe.
  */
 export function renderEmail(element: ReactElement, options: RenderOptions = {}): RenderResult {
-  const { theme = 'light', tier = 'standard', pretty = false, plainText } = options
+  const {
+    theme = 'light',
+    tier = 'standard',
+    pretty = false,
+    plainText,
+    subject = '',
+    text,
+  } = options
 
   const body = withPalette(typeof theme === 'string' ? PALETTES[theme] : theme, () =>
     renderToStaticMarkup(element),
@@ -145,7 +151,9 @@ export function renderEmail(element: ReactElement, options: RenderOptions = {}):
 
   return {
     html,
-    text: plainText ?? toPlainText(html),
+    subject,
+    text: plainText ?? toPlainText(html, text),
+    preheader: extractPreheader(html),
     stats: {
       bytes,
       encodedBytes,
@@ -155,5 +163,33 @@ export function renderEmail(element: ReactElement, options: RenderOptions = {}):
       nodeCount: countNodes(html),
       maxTableDepth: maxTableDepth(html),
     },
+  }
+}
+
+/**
+ * Throw unless the message is actually sendable.
+ *
+ * Four things go wrong often enough to be worth a gate, and all four are invisible until
+ * someone opens the mail: no subject, no text alternative, no preheader (the client then
+ * shows the opening words of the body), and a body over the clip threshold.
+ *
+ * Deliberately a separate call rather than something `renderEmail` does. A preview renders
+ * a half-finished template on every keystroke and must not throw; a send path wants to fail
+ * loudly. Making that the caller's choice keeps both honest.
+ */
+export function assertSendable(result: RenderResult): void {
+  const problems: string[] = []
+  if (!result.subject.trim()) problems.push('no subject')
+  if (!result.text.trim()) problems.push('no plain-text alternative')
+  if (!result.preheader) {
+    problems.push('no preheader — add <Preview>, or the client shows the first words of the body')
+  }
+  if (result.stats.clipRisk === 'over') {
+    problems.push(
+      `${result.stats.encodedBytes} encoded bytes exceeds the ${result.stats.tier} clip threshold of ${result.stats.budget}`,
+    )
+  }
+  if (problems.length > 0) {
+    throw new Error(`Email is not sendable: ${problems.join('; ')}`)
   }
 }

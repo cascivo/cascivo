@@ -15,6 +15,17 @@ export interface ReceiptLine {
   amount: string
 }
 
+/**
+ * The subject that belongs with this template.
+ *
+ * Exported next to the component on purpose. The subject, the `<title>` and the preheader
+ * are three facets of one message; keeping the subject at the send site is how it ends up
+ * saying something the body does not.
+ */
+export function receiptSubject({ orderId = 'INV-2043' }: ReceiptProps = {}): string {
+  return `Your receipt ${orderId}`
+}
+
 export interface ReceiptProps {
   productName?: string
   orderId?: string

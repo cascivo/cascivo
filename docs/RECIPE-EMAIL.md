@@ -19,18 +19,77 @@ required — the package has no runtime dependencies of its own.
 ## Send one
 
 ```tsx
-import { renderEmail, PasswordReset } from '@cascivo/email'
+import { assertSendable, renderEmail, PasswordReset, passwordResetSubject } from '@cascivo/email'
 
-const { html, text, stats } = renderEmail(<PasswordReset resetHref={link} />, {
+const message = renderEmail(<PasswordReset resetHref={link} />, {
   theme: 'dark',
+  subject: passwordResetSubject(),
   tier: 'strict',
 })
 
-await mailer.send({ to, subject: 'Reset your password', html, text })
+assertSendable(message)
+await mailer.send({ to, ...message })
 ```
+
+`renderEmail` returns the whole message — `subject`, `html`, `text` and `preheader` — not
+just a document. The subject comes from the template rather than the call site on purpose:
+the subject, the `<title>` and the preheader are three facets of one message, and splitting
+them across two files is how they drift apart.
 
 Always send `text` alongside `html`. Some clients are text-only, some readers prefer it, and
 a missing text part is a documented spam-filter signal.
+
+`assertSendable` catches the four things that only reveal themselves once the mail has
+arrived: no subject, no text part, no preheader (the client then shows the first words of the
+body), and a body over the clip threshold. It is a separate call rather than something
+`renderEmail` does, because a preview renders half-finished templates on every keystroke and
+must not throw.
+
+### The preheader
+
+`<Preview>` is the grey line beside the subject in the inbox. Without it the client shows the
+opening words of your body, which usually reads as the subject said twice.
+
+```tsx
+<Preview>{`Reset your password — the link expires in ${minutes} minutes`}</Preview>
+```
+
+It is extracted back out of the rendered HTML as `message.preheader`, so you can assert on it
+rather than trust it.
+
+### The plain-text part
+
+Derived automatically, and structured rather than tag-stripped: headings are underlined, list
+items keep a marker, rules survive as rules, and link destinations are carried inline.
+
+```tsx
+renderEmail(<Digest />, { text: { links: 'footnote', width: 72 } })
+```
+
+- `links` — `'inline'` (default, `label (url)`), `'footnote'` (`label [1]` plus a numbered
+  list at the end, better for link-heavy prose), or `'strip'`.
+- `width` — wrap column, default 78. `0` disables wrapping.
+- `bullet`, `headings` — list marker and heading underlines.
+
+Mark anything that only makes sense visually with `data-skip-in-text` and it will be left out
+of the text part, the same escape hatch React Email offers.
+
+Supply `plainText` instead if you would rather write it by hand.
+
+### Sending it yourself, or opening it in a real client
+
+```tsx
+import { buildMessage } from '@cascivo/email'
+
+const eml = buildMessage(message, { from: 'noreply@acme.com', to: recipient })
+```
+
+A `multipart/alternative` message: text part first (RFC 2046 orders alternatives least- to
+most-faithful, and clients take the last they can render), quoted-printable encoded, non-ASCII
+subjects RFC 2047 encoded, and header injection refused rather than silently neutralised.
+
+Write it to a `.eml` file and drag it into Outlook or Apple Mail — the cheapest way to see the
+mail in a real client, with no service involved.
 
 ## Write one
 

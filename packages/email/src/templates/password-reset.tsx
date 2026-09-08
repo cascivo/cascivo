@@ -4,6 +4,17 @@ import { Container, Section, Spacer } from '../components/layout.tsx'
 import { Footer, Heading, Link, Text } from '../components/typography.tsx'
 import { Alert, Button } from '../components/content.tsx'
 
+/**
+ * The subject that belongs with this template.
+ *
+ * Exported next to the component on purpose. The subject, the `<title>` and the preheader
+ * are three facets of one message; keeping the subject at the send site is how it ends up
+ * saying something the body does not.
+ */
+export function passwordResetSubject(_props: PasswordResetProps = {}): string {
+  return 'Reset your password'
+}
+
 export interface PasswordResetProps {
   productName?: string
   resetHref?: string

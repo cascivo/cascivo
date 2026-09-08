@@ -37,9 +37,19 @@ node -e "require.resolve('@cascivo/email')" 2>/dev/null || pnpm add @cascivo/ema
 those, import and pass props rather than writing a new file.
 
 ```tsx
-import { renderEmail, PasswordReset } from '@cascivo/email'
-const { html, text } = renderEmail(<PasswordReset resetHref={link} />, { theme: 'dark' })
+import { assertSendable, renderEmail, PasswordReset, passwordResetSubject } from '@cascivo/email'
+
+const message = renderEmail(<PasswordReset resetHref={link} />, {
+  theme: 'dark',
+  subject: passwordResetSubject(),
+})
+assertSendable(message)
+await mailer.send({ to, ...message })
 ```
+
+`renderEmail` returns the whole message — `subject`, `html`, `text`, `preheader`. Each
+template exports its own subject function; use it rather than writing the subject at the call
+site, or the two drift.
 
 ### 3. Otherwise compose the primitives
 
@@ -48,7 +58,10 @@ Layout: `Section`, `Row`, `Column`, `Spacer`, `Hr`.
 Content: `Heading`, `Text`, `Link`, `List`, `Button`, `Img`, `Card`, `Badge`, `Alert`, `Footer`.
 
 Always include `Preview` — it is the grey line beside the subject in the inbox, and without
-it the client shows the first words of the body instead.
+it the client shows the first words of the body instead. `assertSendable` fails on a template
+that forgets it.
+
+If you add a template, export a matching `<name>Subject()` beside it.
 
 ### 4. Verify before you claim it works
 
@@ -84,6 +97,14 @@ Knowing them saves a round trip:
 - **`Img` needs `alt` and `width`, and must be PNG or JPEG.** SVG does not render.
 - **Absolute URLs everywhere.**
 - **No interactivity.** No hover states, no disclosure, no forms.
+
+## The message, not just the document
+
+- `assertSendable(message)` before sending — catches a missing subject, missing text part,
+  missing preheader, and a clipped body.
+- `buildMessage(message, { from, to })` produces a `.eml` the user can open in a real client.
+- Plain text is derived and structured. Tune with `{ text: { links, width, bullet } }`, or
+  pass `plainText` to write it by hand. Mark visual-only content `data-skip-in-text`.
 
 ## Size
 
