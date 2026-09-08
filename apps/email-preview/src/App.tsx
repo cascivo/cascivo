@@ -120,7 +120,7 @@ export function App() {
           ))}
         </nav>
 
-        <SizeGauge stats={result.value.stats} />
+        <SizeGauge stats={result.value.stats} html={result.value.html} />
         <CompatibilityPanel findings={findings.value} />
       </aside>
 

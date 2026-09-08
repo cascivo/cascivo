@@ -5,7 +5,7 @@
  * reading raw bytes would show green on a template that arrives clipped — the exact failure
  * `docs/specs/email-target.md` §6.3 warns about.
  */
-import { CLIP_BUDGETS, type RenderStats } from '@cascivo/email'
+import { analyze, CLIP_BUDGETS, type RenderStats } from '@cascivo/email'
 
 const TIERS = [
   { key: 'strict', label: 'iOS Gmail', bytes: CLIP_BUDGETS.strict },
@@ -17,7 +17,8 @@ function kb(bytes: number): string {
   return `${(bytes / 1024).toFixed(1)} KB`
 }
 
-export function SizeGauge({ stats }: { stats: RenderStats }) {
+export function SizeGauge({ stats, html }: { stats: RenderStats; html: string }) {
+  const breakdown = analyze(html)
   const worst = CLIP_BUDGETS.standard
   const pct = Math.min(100, (stats.encodedBytes / worst) * 100)
 
@@ -51,6 +52,30 @@ export function SizeGauge({ stats }: { stats: RenderStats }) {
       <p className="hint">
         Clip lines: {TIERS.map((t) => `${t.label} ${kb(t.bytes)}`).join(' · ')}
       </p>
+
+      <h2>Where the bytes are</h2>
+      <dl>
+        <dt>Inline CSS</dt>
+        <dd>{kb(breakdown.inlineStyles)}</dd>
+        <dt>Markup</dt>
+        <dd>{kb(breakdown.markup)}</dd>
+        <dt>Text</dt>
+        <dd>{kb(breakdown.text)}</dd>
+      </dl>
+      {breakdown.repeatedDeclarations.length > 0 ? (
+        <>
+          <p className="hint">Most repeated declarations — usually where a saving is.</p>
+          <ul className="repeats">
+            {breakdown.repeatedDeclarations.slice(0, 4).map((d) => (
+              <li key={d.declaration}>
+                <span className="count">×{d.count}</span>
+                <span className="cost">{kb(d.bytes)}</span>
+                <code>{d.declaration}</code>
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : null}
     </section>
   )
 }

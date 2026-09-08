@@ -297,3 +297,30 @@ dd {
   display: block;
   color: #8b919c;
 }
+
+.repeats {
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.repeats li {
+  padding: 4px 0;
+  font-size: 11px;
+  border-top: 1px solid #eef0f3;
+}
+
+.repeats .count,
+.repeats .cost {
+  display: inline-block;
+  margin-right: 8px;
+  color: #6b7280;
+  font-variant-numeric: tabular-nums;
+}
+
+.repeats code {
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  overflow-wrap: anywhere;
+  color: #4b5563;
+}

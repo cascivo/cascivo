@@ -24,13 +24,13 @@
     "dist"
   ],
   "type": "module",
-  "types": "./dist/index.d.mts",
+  "types": "./dist/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "types": "./dist/index.d.mts",
-      "import": "./dist/index.mjs",
-      "default": "./dist/index.mjs"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     }
   },
   "publishConfig": {
@@ -38,7 +38,7 @@
     "provenance": true
   },
   "scripts": {
-    "build": "vp pack --minify",
+    "build": "vp build && node scripts/flatten-types.mjs && node scripts/check-types-flat.mjs",
     "check": "tsc --noEmit",
     "test": "vp test",
     "dev": "vp pack --watch"
@@ -53,7 +53,13 @@
     "vite-plus": "catalog:"
   },
   "peerDependencies": {
+    "@types/react": ">=18.0.0",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    }
   }
 }
