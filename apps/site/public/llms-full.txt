@@ -2,7 +2,7 @@
 
 _registry v1.1.0 · generated 2026-09-07 · docs track `main`; compare with https://cascivo.com/registry.json `.version` for staleness, and https://cascivo.com/breaking-changes.json for installed-vs-documented API drift._
 
-_Describes: @cascivo/ai@1.1.0 · @cascivo/charts@1.1.0 · @cascivo/core@1.1.0 · @cascivo/docs@0.2.7 · @cascivo/docspack@0.2.1 · @cascivo/editor@1.1.0 · @cascivo/eslint-config@0.3.0 · @cascivo/eslint-plugin@0.1.1 · @cascivo/flow@1.1.0 · @cascivo/i18n@1.1.0 · @cascivo/icons@1.0.1 · @cascivo/mcp@0.7.1 · @cascivo/platform@0.0.5 · @cascivo/react@1.1.0 · @cascivo/registry@0.2.10 · @cascivo/storage@1.1.0 · @cascivo/themes@1.0.0 · @cascivo/tokens@1.0.0 · @cascivo/vite-plugin@0.1.10 · cascivo@1.0.1. If your installed versions are lower, a documented behaviour may not have shipped yet._
+_Describes: @cascivo/ai@1.1.0 · @cascivo/charts@1.1.0 · @cascivo/core@1.1.0 · @cascivo/docs@0.2.7 · @cascivo/docspack@0.2.1 · @cascivo/editor@1.1.0 · @cascivo/email@0.1.0 · @cascivo/eslint-config@0.3.0 · @cascivo/eslint-plugin@0.1.1 · @cascivo/flow@1.1.0 · @cascivo/i18n@1.1.0 · @cascivo/icons@1.0.1 · @cascivo/mcp@0.7.1 · @cascivo/platform@0.0.5 · @cascivo/react@1.1.0 · @cascivo/registry@0.2.10 · @cascivo/storage@1.1.0 · @cascivo/themes@1.0.0 · @cascivo/tokens@1.0.0 · @cascivo/vite-plugin@0.1.10 · cascivo@1.0.1. If your installed versions are lower, a documented behaviour may not have shipped yet._
 
 cascivo is a React design system you can consume two ways: copy-paste the source
 (`npx cascivo add <name>` — shadcn model, you own the code) or install the prebuilt
@@ -7603,10 +7603,11 @@ import { DataList } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `items` | `{ id?: string; label: ReactNode; value: ReactNode }[]` | yes | — | The items to render. |
+| `items` | `DataListEntry[]` | no | — | The label/value pairs to render. Optional: pass `<DataListItem label="…">value</DataListItem>` children instead when a value needs surrounding JSX. |
 | `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Where each value sits relative to its own label: 'horizontal' beside it, 'vertical' underneath. Items are stacked vertically in both modes — this does not change the list's own axis. |
 | `dividers` | `boolean` | no | `false` | When true, shows dividers between items. |
 | `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `children` | `ReactNode` | no | — | `<DataListItem>` rows, as an alternative to `items`. |
 
 ## Examples
 
@@ -12581,6 +12582,9 @@ import { Flex } from '@cascivo/react'
 | `align` | `'start'\|'center'\|'end'\|'stretch'` | no | — | align-items |
 | `justify` | `'start'\|'center'\|'end'\|'between'` | no | — | justify-content |
 | `wrap` | `boolean` | no | `false` | Allow wrapping |
+| `size` | `'auto' \| 'fixed' \| 'grow' \| 'shrink'` | no | `auto` | FlexItem: main-axis sizing. 'fixed' (flex: 0 0 auto) is what a fixed-width child like Sparkline needs; 'grow' takes the leftover width without shrinking; 'shrink' gives way but never grows. |
+| `basis` | `string` | no | — | FlexItem: flex-basis — the child's size before free space is distributed. Any CSS length. |
+| `truncate` | `boolean` | no | `false` | FlexItem: allow the child to shrink below its content width (releases the flex item's `min-width: auto` floor and ellipsizes). Without it a long unbreakable string pushes its siblings out of the row. |
 
 ## Examples
 
@@ -12598,6 +12602,28 @@ Row layout
 
 ```tsx
 <Flex direction="horizontal" gap={2}><div>A</div><div>B</div></Flex>
+```
+
+### Toolbar: one field absorbs the row, the rest keep their width
+
+Without FlexItem the Search takes the whole row and pushes the Select onto the next line
+
+```tsx
+<Flex direction="horizontal" gap={2}>
+  <FlexItem size="grow" basis="0"><Search ariaLabel="Filter deployments" /></FlexItem>
+  <FlexItem size="fixed"><Select options={states} ariaLabel="State" /></FlexItem>
+</Flex>
+```
+
+### Protecting a fixed-width child
+
+Sparkline is fixed-width and will not shrink; `size="fixed"` keeps it out of flex sizing, `truncate` lets the URL beside it ellipsize instead of pushing it out
+
+```tsx
+<Flex direction="horizontal" gap={3} align="center">
+  <FlexItem truncate>{deployment.url}</FlexItem>
+  <FlexItem size="fixed"><Sparkline data={points} label="Requests" /></FlexItem>
+</Flex>
 ```
 
 ## Client JavaScript
@@ -13338,6 +13364,7 @@ import { LogViewer } from '@cascivo/react'
 | `ansi` | `boolean` | no | `false` | When true, parses ANSI color escape codes into colored spans. |
 | `search` | `string` | no | — | Query used to filter and highlight matching lines. |
 | `maxHeight` | `string` | no | `'24rem'` | Maximum height of the scroll viewport (CSS length). |
+| `timestampWidth` | `string` | no | `'6.5rem'` | Width of the `LogLine.timestamp` gutter (CSS length). Widen it for an ISO stamp, narrow it for a relative offset. |
 | `labels` | `LogViewerLabels` | no | — | Overrides for the component’s user-visible strings (i18n). |
 
 ## Examples
@@ -13362,6 +13389,14 @@ const logs = useStreamBuffer<LogLine>({ capacity: 1000 })
 
 ```tsx
 <LogViewer ansi lines={ansiLines} maxHeight="32rem" />
+```
+
+### Timestamped build log
+
+Pass the clock as `timestamp`, not prefixed into `text` — the gutter is dimmed, column-aligned, and excluded from search and copy
+
+```tsx
+<LogViewer lines={[{ id: 1, timestamp: "08:59:12", text: "Build started" }, { id: 2, timestamp: "08:59:41", text: "Type error", level: "error" }]} />
 ```
 
 ## Client JavaScript
@@ -16248,7 +16283,7 @@ import { Search } from '@cascivo/react'
 | `aria-labelledby` | `string` | no | — | Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it. |
 | `aria-describedby` | `string` | no | — | Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced. |
 | `aria-invalid` | `boolean` | no | — | Wired automatically by a wrapping `Field` when it is in an error state. |
-| `ariaLabel` | `string` | no | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
+| `ariaLabel` | `string` | no | — | Accessible name set through `aria-label` instead of a rendered `<label>` element. ⚠ On Search **both** props give an invisible name — `label` renders a real `<label>` the stylesheet visually hides. They differ in mechanism, not in what you see: use `ariaLabel` when a visible element outside the component already names the field, `label` otherwise. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
 ## Examples
 
@@ -16817,6 +16852,8 @@ import { SegmentedControl } from '@cascivo/react'
 | `onValueChange` | `(v: string) => void` | yes | — | Called with the new value when it changes. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `ariaLabel` | `string` | no | — | Accessible name for the group. Invisible — it names the role="group" and renders nothing. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
+| `label` | `string` | no | — | Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered. Not rendered — screen readers only. |
 
 ## Examples
 
@@ -17301,8 +17338,8 @@ import { SideNav } from '@cascivo/react'
 | `collapseLabel` | `string` | no | `Collapse navigation` | Accessible label for the collapse control. |
 | `expandLabel` | `string` | no | `Expand navigation` | Accessible label for the expand control. |
 | `expandOnHover` | `boolean` | no | `false` | Widens the rail as an overlay on hover/focus-within; suppresses tooltips/flyouts |
-| `header` | `ReactNode` | no | — | Content rendered above the items, inside the item padding context (e.g. app-context pickers) |
-| `footer` | `ReactNode` | no | — | Content rendered above the collapse toggle, inside the item padding context so it lines up with the nav items (e.g. version string, user info) |
+| `header` | `ReactNode \| ((ctx: SideNavSlotContext) => ReactNode)` | no | — | Content rendered above the items, inside the item padding context (e.g. app-context pickers). Pass a `({ collapsed }) => …` function to shrink it to a rail icon. |
+| `footer` | `ReactNode \| ((ctx: SideNavSlotContext) => ReactNode)` | no | — | Content rendered above the collapse toggle, inside the item padding context so it lines up with the nav items (e.g. version string, user info). Pass a `({ collapsed }) => …` function to shrink it to a rail icon. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples

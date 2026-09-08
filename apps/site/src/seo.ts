@@ -38,6 +38,11 @@ const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       'Every cascivo component, grouped by category, each linking to its full API docs. The machine-readable index is /docs/components.md and /llms.txt.',
   },
+  '/email': {
+    title: `Email${SUFFIX}`,
+    description:
+      'Render cascivo-themed transactional email with @cascivo/email — table-based, inline-styled HTML that survives Outlook, twelve themes resolved to sRGB, a derived plain-text part, and a byte budget checked against Gmail clipping.',
+  },
   '/editor': {
     title: `Editor${SUFFIX}`,
     description:

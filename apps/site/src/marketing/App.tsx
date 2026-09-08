@@ -49,6 +49,12 @@ const PosterTemplates = lazy(() =>
 const PosterShowcase = lazy(() =>
   import('./poster/PosterShowcase').then((m) => ({ default: m.PosterShowcase })),
 )
+// The email section carries ~240 KB of pre-rendered sample HTML (8 KB gzipped — the 36
+// samples are near-identical, so it compresses hard). Lazy, like every section below the
+// fold, so it never lands in the home entry.
+const PosterEmail = lazy(() =>
+  import('./poster/PosterEmail').then((m) => ({ default: m.PosterEmail })),
+)
 const PosterCta = lazy(() => import('./poster/PosterCta').then((m) => ({ default: m.PosterCta })))
 const Footer = lazy(() => import('./sections/Footer').then((m) => ({ default: m.Footer })))
 
@@ -172,6 +178,9 @@ function HomePage() {
           </Suspense>
           <Suspense fallback={<SectionFallback height={520} />}>
             <PosterShowcase />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={640} />}>
+            <PosterEmail />
           </Suspense>
           <Suspense fallback={<SectionFallback height={320} />}>
             <PosterCta />

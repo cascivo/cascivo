@@ -1,0 +1,331 @@
+/*
+ * Preview chrome only. Deliberately plain CSS and deliberately NOT cascivo's stylesheet:
+ * the emails render inside an iframe, and the surest way to keep the preview honest is for
+ * this page to have no styles that could ever reach them.
+ */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font:
+    14px/1.5 ui-sans-serif,
+    system-ui,
+    sans-serif;
+  color: #17181c;
+  background: #f6f7f9;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  height: 100vh;
+}
+
+.sidebar {
+  overflow-y: auto;
+  padding: 16px;
+  background: #fff;
+  border-right: 1px solid #e4e6ea;
+}
+
+.sidebar h1 {
+  margin: 0 0 16px;
+  font-size: 15px;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 24px;
+}
+
+.sidebar nav button {
+  padding: 8px 10px;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+}
+
+.sidebar nav button:hover {
+  background: #f1f2f4;
+}
+
+.sidebar nav button.active {
+  font-weight: 600;
+  background: #eaf2fd;
+  border-color: #c6dcfa;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 16px;
+  background: #fff;
+  border-bottom: 1px solid #e4e6ea;
+}
+
+.toolbar label {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+  color: #5b6270;
+}
+
+.toolbar label.check {
+  gap: 4px;
+}
+
+.toolbar select {
+  padding: 4px 6px;
+  font: inherit;
+  border: 1px solid #d6d9de;
+  border-radius: 6px;
+}
+
+.tabs {
+  display: flex;
+  margin-left: auto;
+  overflow: hidden;
+  border: 1px solid #d6d9de;
+  border-radius: 6px;
+}
+
+.tabs button {
+  padding: 5px 12px;
+  font: inherit;
+  cursor: pointer;
+  background: #fff;
+  border: 0;
+}
+
+.tabs button.active {
+  color: #fff;
+  background: #2563eb;
+}
+
+.download {
+  padding: 6px 12px;
+  font: inherit;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #d6d9de;
+  border-radius: 6px;
+}
+
+.approximation {
+  margin: 0;
+  padding: 8px 16px;
+  font-size: 12px;
+  color: #6b4b00;
+  background: #fff8e6;
+  border-bottom: 1px solid #f0e2bd;
+}
+
+.stage {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  padding: 24px;
+  overflow: auto;
+}
+
+.frame {
+  height: 100%;
+  min-height: 600px;
+  background: #fff;
+  border: 1px solid #d6d9de;
+  border-radius: 8px;
+}
+
+.source {
+  width: 100%;
+  margin: 0;
+  padding: 16px;
+  overflow: auto;
+  font:
+    12px/1.6 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: #fff;
+  border: 1px solid #d6d9de;
+  border-radius: 8px;
+}
+
+.panel {
+  margin-bottom: 24px;
+}
+
+.panel h2 {
+  margin: 0 0 8px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6b7280;
+}
+
+.size {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.size span {
+  font-size: 12px;
+  font-weight: 400;
+  color: #6b7280;
+}
+
+.size.ok {
+  color: #15803d;
+}
+
+.size.warn {
+  color: #b45309;
+}
+
+.size.over {
+  color: #b91c1c;
+}
+
+.bar {
+  position: relative;
+  height: 8px;
+  margin-bottom: 12px;
+  background: #eef0f3;
+  border-radius: 999px;
+}
+
+.bar .fill {
+  height: 100%;
+  background: #2563eb;
+  border-radius: 999px;
+}
+
+.bar .clip {
+  position: absolute;
+  top: -3px;
+  width: 2px;
+  height: 14px;
+  background: #9ca3af;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 8px;
+  margin: 0 0 8px;
+  font-size: 12px;
+}
+
+dt {
+  color: #6b7280;
+}
+
+dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.hint {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #8b919c;
+}
+
+.ok {
+  margin: 0 0 8px;
+  color: #15803d;
+}
+
+.bad {
+  margin: 0 0 8px;
+  font-weight: 600;
+  color: #b91c1c;
+}
+
+.findings {
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.findings li {
+  padding: 6px 8px;
+  margin-bottom: 4px;
+  font-size: 11px;
+  border-left: 3px solid #d6d9de;
+  border-radius: 0 4px 4px 0;
+  background: #fafbfc;
+}
+
+.findings li.blocked {
+  border-left-color: #dc2626;
+}
+
+.findings li.caveat {
+  border-left-color: #d97706;
+}
+
+.findings code {
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  overflow-wrap: anywhere;
+}
+
+.findings .slug,
+.findings .clients {
+  display: block;
+  color: #8b919c;
+}
+
+.repeats {
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.repeats li {
+  padding: 4px 0;
+  font-size: 11px;
+  border-top: 1px solid #eef0f3;
+}
+
+.repeats .count,
+.repeats .cost {
+  display: inline-block;
+  margin-right: 8px;
+  color: #6b7280;
+  font-variant-numeric: tabular-nums;
+}
+
+.repeats code {
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  overflow-wrap: anywhere;
+  color: #4b5563;
+}
+
+dd.wrap {
+  text-align: left;
+  overflow-wrap: anywhere;
+}

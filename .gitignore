@@ -42,3 +42,5 @@ cascivo.lock
 
 tmppackages/*/.types-tmp/
 tmp
+# Throwaway Playwright configs used to point at a locally-installed browser.
+pw.local.config.ts

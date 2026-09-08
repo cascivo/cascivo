@@ -44,6 +44,29 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Allow wrapping',
     },
+    {
+      name: 'size',
+      default: 'auto',
+      type: "'auto' | 'fixed' | 'grow' | 'shrink'",
+      required: false,
+      description:
+        "FlexItem: main-axis sizing. 'fixed' (flex: 0 0 auto) is what a fixed-width child like Sparkline needs; 'grow' takes the leftover width without shrinking; 'shrink' gives way but never grows.",
+    },
+    {
+      name: 'basis',
+      type: 'string',
+      required: false,
+      description:
+        "FlexItem: flex-basis — the child's size before free space is distributed. Any CSS length.",
+    },
+    {
+      name: 'truncate',
+      default: 'false',
+      type: 'boolean',
+      required: false,
+      description:
+        "FlexItem: allow the child to shrink below its content width (releases the flex item's `min-width: auto` floor and ellipsizes). Without it a long unbreakable string pushes its siblings out of the row.",
+    },
   ],
   tokens: ['--cascivo-space-*'],
   accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
@@ -57,6 +80,18 @@ export const meta: ComponentMeta = {
       title: 'Horizontal',
       code: '<Flex direction="horizontal" gap={2}><div>A</div><div>B</div></Flex>',
       description: 'Row layout',
+    },
+    {
+      title: 'Toolbar: one field absorbs the row, the rest keep their width',
+      code: '<Flex direction="horizontal" gap={2}>\n  <FlexItem size="grow" basis="0"><Search ariaLabel="Filter deployments" /></FlexItem>\n  <FlexItem size="fixed"><Select options={states} ariaLabel="State" /></FlexItem>\n</Flex>',
+      description:
+        'Without FlexItem the Search takes the whole row and pushes the Select onto the next line',
+    },
+    {
+      title: 'Protecting a fixed-width child',
+      code: '<Flex direction="horizontal" gap={3} align="center">\n  <FlexItem truncate>{deployment.url}</FlexItem>\n  <FlexItem size="fixed"><Sparkline data={points} label="Requests" /></FlexItem>\n</Flex>',
+      description:
+        'Sparkline is fixed-width and will not shrink; `size="fixed"` keeps it out of flex sizing, `truncate` lets the URL beside it ellipsize instead of pushing it out',
     },
   ],
   dependencies: ['@cascivo/core'],

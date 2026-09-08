@@ -32,12 +32,13 @@ Rendered as semantic dl with dt/dd pairs so the label-to-value association is na
 
 ## Props
 
-| Name          | Type                                                    | Required | Default    | Description                                                                                                                                                                            |
-| ------------- | ------------------------------------------------------- | -------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `items`       | `{ id?: string; label: ReactNode; value: ReactNode }[]` | Yes      | —          | The items to render.                                                                                                                                                                   |
-| `orientation` | `'horizontal' \| 'vertical'`                            | No       | horizontal | Where each value sits relative to its own label: 'horizontal' beside it, 'vertical' underneath. Items are stacked vertically in both modes — this does not change the list's own axis. |
-| `dividers`    | `boolean`                                               | No       | false      | When true, shows dividers between items.                                                                                                                                               |
-| `size`        | `'sm' \| 'md'`                                          | No       | md         | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                  |
+| Name          | Type                         | Required | Default    | Description                                                                                                                                                                            |
+| ------------- | ---------------------------- | -------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`       | `DataListEntry[]`            | No       | —          | The label/value pairs to render. Optional: pass `<DataListItem label="…">value</DataListItem>` children instead when a value needs surrounding JSX.                                    |
+| `orientation` | `'horizontal' \| 'vertical'` | No       | horizontal | Where each value sits relative to its own label: 'horizontal' beside it, 'vertical' underneath. Items are stacked vertically in both modes — this does not change the list's own axis. |
+| `dividers`    | `boolean`                    | No       | false      | When true, shows dividers between items.                                                                                                                                               |
+| `size`        | `'sm' \| 'md'`               | No       | md         | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                  |
+| `children`    | `ReactNode`                  | No       | —          | `<DataListItem>` rows, as an alternative to `items`.                                                                                                                                   |
 
 ## Tokens
 

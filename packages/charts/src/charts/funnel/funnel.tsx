@@ -27,6 +27,15 @@ export interface FunnelProps {
    * @see the component manifest
    */
   width?: number
+  /**
+   * Fixed plot-area height in px — the SVG only; the title, description and legend render
+   * outside it. ⚠ **Omit for a responsive chart**, exactly like `width`: height tracks the
+   * container via the same `ResizeObserver`, so in a `Card` that stretches to a taller
+   * sibling the plot fills the space left over (and falls back to 300px in an auto-height
+   * parent). A pinned `height={280}` is what leaves dead space at the bottom of the taller
+   * card in a `Grid` (2026-08-31 report §29).
+   * @see the component manifest
+   */
   height?: number
   /**
    * Append each stage’s % of the first stage to its label.

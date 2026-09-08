@@ -1702,3 +1702,252 @@ export const ZoomOut = createIcon(
   'ZoomOut',
   <path d="M10.1,3A7.1,7.1,0,1,1,5.08,5.08,7.074,7.074,0,0,1,10.1,3Zm3,7.1h-6M21,21l-2.9-2.9-2.9-2.9" />,
 )
+
+// Aliases — the familiar name from another icon set, same geometry.
+export const Adjustments = createIcon(
+  'Adjustments',
+  <path d="M15.492,15.842H21m-2.754,0V21m0-18v9.16M3,13.871H8.508m-2.754,0V21m0-18v7.189m9-2.031H9.246m2.754,0V3m0,18V11.84" />,
+)
+export const Backend = createIcon(
+  'Backend',
+  <>
+    <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
+    <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
+    <line x1="6" y1="6" x2="6.01" y2="6" />
+    <line x1="6" y1="18" x2="6.01" y2="18" />
+  </>,
+)
+export const BarChart3 = createIcon(
+  'BarChart3',
+  <>
+    <line x1="18" y1="20" x2="18" y2="10" />
+    <line x1="12" y1="20" x2="12" y2="4" />
+    <line x1="6" y1="20" x2="6" y2="14" />
+    <line x1="2" y1="20" x2="22" y2="20" />
+  </>,
+)
+export const BarChartBig = createIcon(
+  'BarChartBig',
+  <>
+    <line x1="18" y1="20" x2="18" y2="10" />
+    <line x1="12" y1="20" x2="12" y2="4" />
+    <line x1="6" y1="20" x2="6" y2="14" />
+    <line x1="2" y1="20" x2="22" y2="20" />
+  </>,
+)
+export const Bolt = createIcon('Bolt', <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />)
+export const Branch = createIcon(
+  'Branch',
+  <>
+    <line x1="6" y1="3" x2="6" y2="15" />
+    <circle cx="18" cy="6" r="3" />
+    <circle cx="6" cy="18" r="3" />
+    <path d="M18 9a9 9 0 0 1-9 9" />
+  </>,
+)
+export const ChartPie = createIcon(
+  'ChartPie',
+  <path d="M19.9,16.3a9.493,9.493,0,0,1-3.275,3.4A8.819,8.819,0,0,1,12,21,8.989,8.989,0,0,1,4.288,7.375,9.544,9.544,0,0,1,7.6,4.1M21,12a8.963,8.963,0,0,0-9-9v8.9l4.5.05Z" />,
+)
+export const Cmd = createIcon(
+  'Cmd',
+  <path d="M12,9.023H6a3,3,0,0,1-3-3V6A3,3,0,0,1,6,3h.023a3,3,0,0,1,3,3v8M12,9.023h6a3,3,0,0,0,3-3V6a3,3,0,0,0-3-3h-.023a3,3,0,0,0-3,3v8M12,14.977H6a3,3,0,0,0-3,3V18a3,3,0,0,0,3,3h.023a3,3,0,0,0,3-3V10m5.954,0v8a3,3,0,0,0,3,3H18a3,3,0,0,0,3-3v-.023a3,3,0,0,0-3-3H12" />,
+)
+export const Cog = createIcon(
+  'Cog',
+  <>
+    <circle cx="12" cy="12" r="3" />
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+  </>,
+)
+export const Cog6Tooth = createIcon(
+  'Cog6Tooth',
+  <>
+    <circle cx="12" cy="12" r="3" />
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+  </>,
+)
+export const Console = createIcon(
+  'Console',
+  <>
+    <polyline points="4 17 10 11 4 5" />
+    <line x1="12" y1="19" x2="20" y2="19" />
+  </>,
+)
+export const Cube = createIcon(
+  'Cube',
+  <path d="M12,21,7.8,19.2,3.6,17.4V6.6L7.8,8.4,12,10.2V21Zm0,0,4.2-1.8,4.2-1.8V6.6L16.2,8.4,12,10.2V21ZM20.4,6.6l-2.25-.95L15.9,4.7l-1.95-.85L12,3,7.8,4.8,3.6,6.6M7.8,8.4l3.9-1.7L15.6,5" />,
+)
+export const Datastore = createIcon(
+  'Datastore',
+  <>
+    <ellipse cx="12" cy="5" rx="9" ry="3" />
+    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+  </>,
+)
+export const Db = createIcon(
+  'Db',
+  <>
+    <ellipse cx="12" cy="5" rx="9" ry="3" />
+    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+  </>,
+)
+export const Flash = createIcon(
+  'Flash',
+  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />,
+)
+export const Gear = createIcon(
+  'Gear',
+  <>
+    <circle cx="12" cy="12" r="3" />
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+  </>,
+)
+export const Grid3x3 = createIcon(
+  'Grid3x3',
+  <>
+    <rect x="3" y="3" width="7" height="7" />
+    <rect x="14" y="3" width="7" height="7" />
+    <rect x="14" y="14" width="7" height="7" />
+    <rect x="3" y="14" width="7" height="7" />
+  </>,
+)
+export const House = createIcon(
+  'House',
+  <>
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+    <polyline points="9 22 9 12 15 12 15 22" />
+  </>,
+)
+export const Keyboard = createIcon(
+  'Keyboard',
+  <path d="M12,9.023H6a3,3,0,0,1-3-3V6A3,3,0,0,1,6,3h.023a3,3,0,0,1,3,3v8M12,9.023h6a3,3,0,0,0,3-3V6a3,3,0,0,0-3-3h-.023a3,3,0,0,0-3,3v8M12,14.977H6a3,3,0,0,0-3,3V18a3,3,0,0,0,3,3h.023a3,3,0,0,0,3-3V10m5.954,0v8a3,3,0,0,0,3,3H18a3,3,0,0,0,3-3v-.023a3,3,0,0,0-3-3H12" />,
+)
+export const LayoutDashboard = createIcon(
+  'LayoutDashboard',
+  <>
+    <rect x="3" y="3" width="7" height="9" />
+    <rect x="14" y="3" width="7" height="5" />
+    <rect x="14" y="12" width="7" height="9" />
+    <rect x="3" y="16" width="7" height="5" />
+  </>,
+)
+export const LayoutGrid = createIcon(
+  'LayoutGrid',
+  <>
+    <rect x="3" y="3" width="7" height="7" />
+    <rect x="14" y="3" width="7" height="7" />
+    <rect x="14" y="14" width="7" height="7" />
+    <rect x="3" y="14" width="7" height="7" />
+  </>,
+)
+export const LayoutPanelLeft = createIcon(
+  'LayoutPanelLeft',
+  <path d="M19,21H5a2.006,2.006,0,0,1-2-2V5A2.008,2.008,0,0,1,5,3H19a2.006,2.006,0,0,1,2,2V19a2,2,0,0,1-2,2ZM21,8.7H3m6.5,0V21" />,
+)
+export const LayoutSidebar = createIcon(
+  'LayoutSidebar',
+  <path d="M3,5c0-1.1.9-2,2-2h14.1c1.1,0,2,.9,2,2v14.1c0,1.1-.9,2-2,2H5c-1.1,0-2-.9-2-2V5ZM9.7,3v18.1" />,
+)
+export const LayoutTemplate = createIcon(
+  'LayoutTemplate',
+  <path d="M19,21H5a2.006,2.006,0,0,1-2-2V5A2.008,2.008,0,0,1,5,3H19a2.006,2.006,0,0,1,2,2V19a2,2,0,0,1-2,2ZM21,8.7H3m6.5,0V21" />,
+)
+export const Lightning = createIcon(
+  'Lightning',
+  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />,
+)
+export const Magnifier = createIcon(
+  'Magnifier',
+  <>
+    <circle cx="11" cy="11" r="8" />
+    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+  </>,
+)
+export const MagnifyingGlass = createIcon(
+  'MagnifyingGlass',
+  <>
+    <circle cx="11" cy="11" r="8" />
+    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+  </>,
+)
+export const PanelLeft = createIcon(
+  'PanelLeft',
+  <path d="M3,5c0-1.1.9-2,2-2h14.1c1.1,0,2,.9,2,2v14.1c0,1.1-.9,2-2,2H5c-1.1,0-2-.9-2-2V5ZM9.7,3v18.1" />,
+)
+export const Photo = createIcon(
+  'Photo',
+  <path d="M19,21H5a2.006,2.006,0,0,1-2-2V5A2.008,2.008,0,0,1,5,3H19a2.006,2.006,0,0,1,2,2V19a2,2,0,0,1-2,2ZM6.2,21l4.2-4.85,4.2-4.85,3.2,3.4L21,18.1M8.8,6.4a2.3,2.3,0,1,1-1.626.674A2.289,2.289,0,0,1,8.8,6.4Z" />,
+)
+export const Picture = createIcon(
+  'Picture',
+  <path d="M19,21H5a2.006,2.006,0,0,1-2-2V5A2.008,2.008,0,0,1,5,3H19a2.006,2.006,0,0,1,2,2V19a2,2,0,0,1-2,2ZM6.2,21l4.2-4.85,4.2-4.85,3.2,3.4L21,18.1M8.8,6.4a2.3,2.3,0,1,1-1.626.674A2.289,2.289,0,0,1,8.8,6.4Z" />,
+)
+export const PR = createIcon(
+  'PR',
+  <>
+    <circle cx="18" cy="18" r="3" />
+    <circle cx="6" cy="6" r="3" />
+    <path d="M13 6h3a2 2 0 0 1 2 2v7" />
+    <line x1="6" y1="9" x2="6" y2="21" />
+  </>,
+)
+export const PullRequest = createIcon(
+  'PullRequest',
+  <>
+    <circle cx="18" cy="18" r="3" />
+    <circle cx="6" cy="6" r="3" />
+    <path d="M13 6h3a2 2 0 0 1 2 2v7" />
+    <line x1="6" y1="9" x2="6" y2="21" />
+  </>,
+)
+export const Pulse = createIcon('Pulse', <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />)
+export const Rocket = createIcon(
+  'Rocket',
+  <path d="M21.457 1.14l-2.891.16a1.335 1.335 0 00-.871.389l-4.833 4.828a2.029 2.029 0 01-1.436.594H8.384c-1.531.041-2.068.96-3.055 1.946l-.613.613a.289.289 0 000 .409L6.05 11.41a1.883 1.883 0 01.408 2.031c-.078.2-.11.364-.038.436l1.852 1.851 1.851 1.852c.072.072.238.04.436-.038a1.883 1.883 0 012.031.408l1.334 1.334a.289.289 0 00.409 0l.613-.613c.986-.987 1.9-1.524 1.946-3.055v-3.042a2.029 2.029 0 01.594-1.436l4.833-4.833a1.335 1.335 0 00.389-.871l.155-2.891a1.333 1.333 0 00-1.406-1.403zM11.31 12.69l-3.038 3.038M19.08 4.92h0M6.795 22.862l2.121-2.121M2.552 21.448l3.536-3.536M1.138 17.205l2.121-2.121" />,
+)
+export const ServerCog = createIcon(
+  'ServerCog',
+  <>
+    <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
+    <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
+    <line x1="6" y1="6" x2="6.01" y2="6" />
+    <line x1="6" y1="18" x2="6.01" y2="18" />
+  </>,
+)
+export const Settings2 = createIcon(
+  'Settings2',
+  <>
+    <circle cx="12" cy="12" r="3" />
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+  </>,
+)
+export const Shell = createIcon(
+  'Shell',
+  <>
+    <polyline points="4 17 10 11 4 5" />
+    <line x1="12" y1="19" x2="20" y2="19" />
+  </>,
+)
+export const SlidersHorizontal = createIcon(
+  'SlidersHorizontal',
+  <path d="M15.492,15.842H21m-2.754,0V21m0-18v9.16M3,13.871H8.508m-2.754,0V21m0-18v7.189m9-2.031H9.246m2.754,0V3m0,18V11.84" />,
+)
+export const SlidersVertical = createIcon(
+  'SlidersVertical',
+  <path d="M15.492,15.842H21m-2.754,0V21m0-18v9.16M3,13.871H8.508m-2.754,0V21m0-18v7.189m9-2.031H9.246m2.754,0V3m0,18V11.84" />,
+)
+export const Storage = createIcon(
+  'Storage',
+  <>
+    <ellipse cx="12" cy="5" rx="9" ry="3" />
+    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+  </>,
+)
+export const Waveform = createIcon(
+  'Waveform',
+  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />,
+)

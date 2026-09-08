@@ -1,12 +1,5 @@
 'use client'
-import {
-  cn,
-  focusElement,
-  getLinkComponent,
-  useControllableSignal,
-  useSignal,
-  useSignals,
-} from '@cascivo/core'
+import { cn, focusElement, getLinkComponent, useSignal, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { Fragment, useId } from 'react'
 import type { CSSProperties, KeyboardEvent, MouseEvent, ReactNode, RefObject } from 'react'
@@ -108,6 +101,12 @@ export interface SideNavGroup {
   items: SideNavItem[]
 }
 
+/** What the `header` / `footer` render functions receive. */
+export interface SideNavSlotContext {
+  /** `true` while the nav is collapsed to its icon rail. */
+  collapsed: boolean
+}
+
 export interface SideNavProps {
   items?: SideNavItem[]
   groups?: SideNavGroup[]
@@ -163,16 +162,33 @@ export interface SideNavProps {
    * @see the component manifest
    */
   showCollapseToggle?: boolean
-  /** Content rendered above the items, inside the item padding context. */
-  header?: ReactNode
+  /**
+   * Content rendered above the items, inside the item padding context.
+   *
+   * Accepts a render function as well as a node: `header={({ collapsed }) => …}` receives
+   * the live rail state, so a team switcher can shrink to its avatar on the rail instead of
+   * being clipped. `SideNavItem.render` already worked this way; the slots did not, which is
+   * what forced an adopter to control `collapsed` from outside purely to read it
+   * (2026-08-31 report §18).
+   */
+  header?: ReactNode | ((ctx: SideNavSlotContext) => ReactNode)
   /** Content rendered above the collapse toggle, inside the item padding context —
-   * it lines up with the nav items above it, exactly as `header` does. */
-  footer?: ReactNode
+   * it lines up with the nav items above it, exactly as `header` does. Accepts the same
+   * `({ collapsed }) => …` render function. */
+  footer?: ReactNode | ((ctx: SideNavSlotContext) => ReactNode)
   className?: string
 }
 
 function isLinkSubItem(sub: SideNavSubItem): sub is SideNavLinkSubItem {
   return !('type' in sub)
+}
+
+/** Resolve a `header`/`footer` slot, which may be a node or a `({ collapsed }) => node`. */
+function renderSlot(
+  slot: ReactNode | ((ctx: SideNavSlotContext) => ReactNode),
+  collapsed: boolean,
+): ReactNode {
+  return typeof slot === 'function' ? slot({ collapsed }) : slot
 }
 
 function CheckMark() {
@@ -399,13 +415,21 @@ export function SideNav({
   const resolvedExpandLabel = expandLabel ?? t(builtin.sideNav.expand)
   const baseId = useId()
 
-  // Controlled mirror goes through the shared primitive: a bare `sig.value = prop` in render
-  // notifies the previous render's subscriptions, which React 19 reports as a setState during
-  // render (2026-08-08 report A). The primitive skips the write when the value is unchanged.
-  const [isCollapsed] = useControllableSignal<boolean>({
-    value: collapsed,
-    defaultValue: defaultCollapsed,
-  })
+  /*
+   * The rail state is read ONLY during render (it drives `data-state`, the toggle's label and
+   * the per-item branches) — never through a `useComputed` chain and never inside a
+   * `useSignalEffect`. So the controlled prop is read directly and only the uncontrolled case
+   * owns a signal.
+   *
+   * Mirroring it through `useControllableSignal` instead cost a render-phase write on every
+   * genuine change, which notifies the PREVIOUS render's subscriptions and makes React 19
+   * report "Cannot update a component while rendering a different component" on every
+   * collapse — reproducible with `useState` on the consumer side too, so no adopter could
+   * work around it (2026-08-31 report §15). This is the read-the-prop-directly case that
+   * `useControllableSignal`'s own docblock points at.
+   */
+  const uncontrolledCollapsed = useSignal(defaultCollapsed)
+  const rail = collapsed ?? uncontrolledCollapsed.value
 
   const effectiveGroups: SideNavGroup[] = groups ?? (items ? [{ items }] : [{ items: [] }])
 
@@ -424,12 +448,10 @@ export function SideNav({
   }
 
   const toggleCollapsed = () => {
-    const next = !isCollapsed.value
-    if (collapsed === undefined) isCollapsed.value = next
+    const next = !rail
+    if (collapsed === undefined) uncontrolledCollapsed.value = next
     onCollapsedChange?.(next)
   }
-
-  const rail = isCollapsed.value
 
   return (
     <nav
@@ -438,7 +460,9 @@ export function SideNav({
       data-expand-on-hover={rail && expandOnHover ? '' : undefined}
       className={cn(styles['sideNav'], className)}
     >
-      {header && <div className={styles['header']}>{header}</div>}
+      {header !== undefined && header !== null && header !== false && (
+        <div className={styles['header']}>{renderSlot(header, rail)}</div>
+      )}
       <ul className={styles['list']}>
         {effectiveGroups.map((group, gi) => (
           <li key={group.id ?? gi} className={styles['group']}>
@@ -616,7 +640,9 @@ export function SideNav({
           </li>
         ))}
       </ul>
-      {footer && <div className={styles['footer']}>{footer}</div>}
+      {footer !== undefined && footer !== null && footer !== false && (
+        <div className={styles['footer']}>{renderSlot(footer, rail)}</div>
+      )}
       {showCollapseToggle && (
         <button
           type="button"
