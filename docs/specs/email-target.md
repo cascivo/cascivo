@@ -462,11 +462,18 @@ Resolving to sRGB did surface contrast failures, in two distinct classes:
   giving white labels on light accents (2.66:1 on dark, midnight, pastel). Resolving
   `contrast-color()` at build time fixes it, and is strictly better than any client could
   manage — no email client will ever compute it.
-- **Pre-existing product debt.** `--cascivo-color-text-muted` already fails AA against its
-  own background in eight of twelve themes, in the shipped oklch source.
-  `scripts/checks/color/contrast.ts` — an independent implementation — agrees to within 0.02.
-  Recorded as a baseline that blocks regression and must be removed once fixed, rather than
-  changed here: it is a design decision across eight palettes and their visual baselines.
+- **Pre-existing product debt, since fixed.** `--cascivo-color-text-muted` failed AA in the
+  shipped oklch source. Recorded as a baseline at first, then fixed at source once the scope
+  was measured. It was worse than the email guard could see: checking `surface` and
+  `surface-2` as well as `background` — a caption in a `Card` sits on one, a nested one on
+  the other — put ten of twelve themes below AA, pastel at 2.37:1, and caught two themes
+  (arcade, flat) that pass against the background and fail on a surface.
+
+  Lightness only was adjusted, so no theme changed character.
+  `scripts/checks/muted-text-contrast.test.ts` is the lasting guard and covers all twelve
+  themes on all three surfaces. Blast radius on the web product was small and measured: 319
+  of 326 dark/warm site baselines were unchanged, and the 7 that moved are the components
+  that render muted text prominently.
 
 A third finding was mine, not the themes': the guard first read `--cascivo-color-accent` for
 link contrast. That is the **fill** token; `--cascivo-color-accent-text` is the one four
@@ -497,7 +504,21 @@ that exercises the pipeline end to end.
 so the mapping would be thin enough that claiming "one spec, two targets" would oversell it.
 It stays a design option, not a shipped capability, until a content-shaped subset earns it.
 
-### 11.5 Registry and MCP integration [outstanding]
+### 11.5 An email is a message, not a document [added]
+
+§8's phase table stopped at rendering HTML, which was short by everything a mailer actually
+needs. `renderEmail` now returns `{ subject, html, text, preheader, stats }`, templates export
+their own subject, and `assertSendable` gates the four failures that only appear once the mail
+has arrived. `buildMessage` produces a real `multipart/alternative` envelope, which is also
+what makes the `.eml` escape hatch in §5.5 a tested code path rather than UI glue.
+
+Deriving the text part properly turned up two defects the HTML-only view could not see: the
+whole `<head>` survived into it, so every text alternative opened with the `<title>` and then
+the same words again as the heading; and quoted-printable existed twice — a hand-rolled cost
+model in the size accounting and the real encoder — agreeing to within 3%. A budget checked
+against an estimate and delivered against an encoder is not a budget.
+
+### 11.6 Registry and MCP integration [outstanding]
 
 Phase 4's `cascivo add email/*` and MCP `scaffold_email` are not implemented. Adding email
 entries to `registry.json` activates twenty-odd guards that assume a DOM component with a
