@@ -125,7 +125,10 @@
     "email:caniemail:refresh": "node --experimental-strip-types scripts/email/refresh-caniemail.ts",
     "email:tokens:check": "node --experimental-strip-types --test scripts/checks/email-tokens.test.ts",
     "email:caniemail:check": "node --experimental-strip-types --test scripts/checks/email-caniemail.test.ts",
-    "email:check": "pnpm email:tokens:check && pnpm email:caniemail:check"
+    "email:check": "pnpm email:tokens:check && pnpm email:caniemail:check && pnpm email:visual:baselines:check && pnpm email:size:check",
+    "email:size:check": "vp run @cascivo/email#test",
+    "email:visual:baselines:check": "node --experimental-strip-types --test scripts/checks/email-visual-baselines.test.ts",
+    "email:visual": "vp run @cascivo/email-preview#test:visual"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "catalog:",
