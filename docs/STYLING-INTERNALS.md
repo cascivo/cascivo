@@ -58,7 +58,7 @@ A hook is the third choice, not the first:
 
 1. **A component token.** Most spacing and colour is already a custom property you can
    re-point — `--cascivo-dialog-body-gap`, `--cascivo-shell-aside-inline-size`,
-   `--cascivo-button-bg`. Set it on any ancestor and it cascades. See
+   `--cascivo-link-color`. Set it on any ancestor and it cascades. See
    [`TOKENS.md`](./TOKENS.md).
 2. **A prop.** If the component exposes one (`size`, `footer`, `padding`), use it — props
    are typed and survive everything.
@@ -67,6 +67,27 @@ A hook is the third choice, not the first:
 If you need a hook that isn't listed, [open an issue](https://github.com/cascivo/cascivo/issues).
 Adding one is cheap; discovering after the fact that everyone is depending on a hashed class
 name is not.
+
+## A hook that does not exist is silent — so it is checked
+
+`[data-cascivo-modl-body] { … }` is not an error. It is a rule that matches zero elements,
+forever, with no warning from CSS, your bundler, or your browser — and because the real class
+names are hashed, you cannot tell a typo from a component that changed shape.
+
+So the hook set is enforced from the same generated source as the table above:
+
+```sh
+npx cascivo audit --ai src
+# styles.css:12  error  unknown-style-hook  [data-cascivo-modl-body] is not a shipped hook → [data-cascivo-modal-body]
+```
+
+If you build tooling or write `querySelector` against a hook, the set is a type too:
+
+```ts
+import type { CascivoStyleHook } from '@cascivo/tokens/style-contract'
+
+const hook: CascivoStyleHook = 'data-cascivo-modal-body' // a typo here is a compile error
+```
 
 ## What is *not* a contract
 

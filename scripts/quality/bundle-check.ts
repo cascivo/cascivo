@@ -68,9 +68,17 @@ const BUDGETS: Record<string, number> = {
   '@cascivo/storage': 5, // measured 0.4
   '@cascivo/vite-plugin': 5, // measured 0.6
   '@cascivo/eslint-config': 5, // measured 2.0 — plain config data, but still worth a ceiling
-  // Lints, never ships to a browser. The ceiling is for the generated data file: a
+  // Lints, never ships to a browser. The ceiling is for the generated data files: a
   // near-misses list that grew to hundreds of rows would be a design problem, not a size one.
-  '@cascivo/eslint-plugin': 8,
+  //
+  // Raised 8 → 12 when `cascivo/token-values` landed (measured 8.2 KB). The growth is two
+  // rules where there was one, plus `token-catalog.json`'s 342 token names — intended, and
+  // the data half is already minimal: names are stored without the shared `--cascivo-`
+  // prefix, and the rule carries no value→token map (that overlaps `cascivo audit --ai`'s
+  // `hardcoded-value`, which can scope by CSS property). What is left is mostly the rules'
+  // own rationale comments, which this repo requires and which no adopter downloads over a
+  // slow connection. Headroom is deliberately small so unbounded data growth still trips.
+  '@cascivo/eslint-plugin': 12,
   // The CLI runs in Node, so its size is not an adopter's browser cost. It gets a budget
   // anyway: a measured number beats an exemption, and a runaway CLI bundle is still a
   // regression worth catching. Measured 25.0 KB.

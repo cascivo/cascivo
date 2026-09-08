@@ -433,11 +433,11 @@ pnpm workspaces (`pnpm-workspace.yaml`) remain the underlying monorepo mechanism
 Three-level CSS custom property system:
 
 ```
-Primitive tokens:  --cascivo-color-blue-500: #3b82f6
+Primitive tokens:  --cascivo-blue-500: oklch(0.623 0.214 250)
         ↓ (theme maps primitive → semantic)
-Semantic tokens:   --cascivo-color-accent: var(--cascivo-color-blue-500)
+Semantic tokens:   --cascivo-color-accent: var(--cascivo-blue-500)
         ↓ (component maps semantic → usage)
-Component tokens:  --cascivo-button-bg: var(--cascivo-color-accent)
+Component tokens:  --cascivo-link-color: var(--cascivo-color-accent-text)
 ```
 
 Themes override the semantic layer only. Users override component tokens for per-component brand adaptation. Applied via `data-theme="light|dark|warm"` on any DOM element.

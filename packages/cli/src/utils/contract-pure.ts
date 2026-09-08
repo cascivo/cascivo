@@ -45,6 +45,16 @@ export interface Contract {
    * hand-listed. Empty when reading an older contract that predates the field.
    */
   domAttributes: Set<string>
+  /**
+   * Every `--cascivo-*` custom property that exists — declared tokens plus the knobs a
+   * stylesheet only ever reads (`--cascivo-flash-tint`). Empty when reading a contract cut
+   * before the field existed, which the `unknown-token` rule treats as "cannot check".
+   */
+  tokenNames: Set<string>
+  /**
+   * Every `data-cascivo-*` styling hook. Empty on an older contract, same handling.
+   */
+  styleHooks: Set<string>
 }
 
 interface TokenEntry {
@@ -92,6 +102,10 @@ export interface BuildContractInput {
   domAttributes?: string[]
   /** Typography-primitive names, from the shipped contract. Absent in older contracts. */
   contentPrimitives?: string[]
+  /** Knobs read but never declared, from the shipped contract. Absent in older contracts. */
+  consumedTokens?: string[]
+  /** `data-cascivo-*` styling hooks, from the shipped contract. Absent in older contracts. */
+  styleHooks?: string[]
 }
 
 /** Normalize a color/size value for catalog comparison: lowercase, strip spaces. */
@@ -167,5 +181,14 @@ export function buildContract(input: BuildContractInput): Contract {
     })
   }
 
-  return { tokensByValue, components, domAttributes: new Set(input.domAttributes ?? []) }
+  return {
+    tokensByValue,
+    components,
+    domAttributes: new Set(input.domAttributes ?? []),
+    tokenNames: new Set([
+      ...input.catalog.tokens.map((t) => t.name),
+      ...(input.consumedTokens ?? []),
+    ]),
+    styleHooks: new Set(input.styleHooks ?? []),
+  }
 }

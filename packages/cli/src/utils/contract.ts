@@ -77,6 +77,10 @@ interface BundledContract {
   content: string[]
   /** Absent in contracts cut before typography primitives were distinguished. */
   contentPrimitives?: string[]
+  /** Absent in contracts cut before the unknown-name rules existed. */
+  consumedTokens?: string[]
+  /** Absent in contracts cut before the unknown-name rules existed. */
+  styleHooks?: string[]
 }
 
 /** Adapt the bundled shape to `buildContract`'s three-artifact input. */
@@ -87,6 +91,8 @@ function fromBundled(bundled: BundledContract): Contract {
     context: { components: bundled.content.map((name) => ({ name, intent: { content: true } })) },
     ...(bundled.domAttributes ? { domAttributes: bundled.domAttributes } : {}),
     ...(bundled.contentPrimitives ? { contentPrimitives: bundled.contentPrimitives } : {}),
+    ...(bundled.consumedTokens ? { consumedTokens: bundled.consumedTokens } : {}),
+    ...(bundled.styleHooks ? { styleHooks: bundled.styleHooks } : {}),
   })
 }
 
@@ -178,15 +184,26 @@ export async function loadContract(options?: {
   // so even the monorepo path reads it from the generated artifact rather than recomputing.
   let domAttributes: string[] | undefined
   let contentPrimitives: string[] | undefined
+  let consumedTokens: string[] | undefined
+  let styleHooks: string[] | undefined
   try {
     const generated = JSON.parse(
       readFileSync(join(docsPublic!, 'audit-contract.json'), 'utf8'),
-    ) as { domAttributes?: string[]; contentPrimitives?: string[] }
+    ) as {
+      domAttributes?: string[]
+      contentPrimitives?: string[]
+      consumedTokens?: string[]
+      styleHooks?: string[]
+    }
     domAttributes = generated.domAttributes
     contentPrimitives = generated.contentPrimitives
+    consumedTokens = generated.consumedTokens
+    styleHooks = generated.styleHooks
   } catch {
     domAttributes = undefined
     contentPrimitives = undefined
+    consumedTokens = undefined
+    styleHooks = undefined
   }
 
   return buildContract({
@@ -195,5 +212,7 @@ export async function loadContract(options?: {
     context,
     ...(domAttributes ? { domAttributes } : {}),
     ...(contentPrimitives ? { contentPrimitives } : {}),
+    ...(consumedTokens ? { consumedTokens } : {}),
+    ...(styleHooks ? { styleHooks } : {}),
   })
 }

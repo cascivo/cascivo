@@ -19,11 +19,11 @@
 A three-level system of CSS custom properties that every cascivo component, theme, and chart reads from.
 
 ```
-Primitive  --cascivo-color-blue-500: #3b82f6         the raw scale
+Primitive  --cascivo-blue-500: oklch(0.623 0.214 250) the raw scale
     ↓
 Semantic   --cascivo-color-accent: var(--…-blue-500)  intent (themes remap this layer)
     ↓
-Component  --cascivo-button-bg: var(--…-accent)       usage (override per-brand)
+Component  --cascivo-link-color: var(--…-accent-text) usage (override per-brand)
 ```
 
 ## Usage
@@ -48,7 +48,7 @@ Then reference tokens anywhere in your CSS:
 
 - **Primitive** tokens define the raw palette, spacing, radius, and type scales. They never change between themes.
 - **Semantic** tokens map intent (`--cascivo-color-accent`, `--cascivo-color-surface`). [`@cascivo/themes`](https://github.com/cascivo/cascivo/tree/main/packages/themes) overrides **only** this layer via `data-theme`.
-- **Component** tokens map usage (`--cascivo-button-bg`). Override these to adapt a single component to your brand — no rebuild, no theme fork.
+- **Component** tokens map usage (`--cascivo-link-color`). Override these to adapt a single component to your brand — no rebuild, no theme fork.
 
 A machine-readable catalog of every token, its layer, and its resolved default ships as `tokens.catalog.json`, so AI agents select from a closed set rather than inventing values.
 

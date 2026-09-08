@@ -94,6 +94,22 @@ It is `warn` on purpose — a lint error over a naming opinion is a reason to de
 config, which would take `react-hooks/immutability` with it. Raise it yourself if you want it
 enforced. Full list: [`@cascivo/eslint-plugin`](../packages/eslint-plugin/README.md).
 
+### What `cascivoTokenValues` adds
+
+`cascivo/token-values`, also at `warn`. It reports a `--cascivo-*` custom property that does
+not exist — the one styling mistake nothing else in your stack will ever mention, because CSS
+drops an unknown custom property silently and React's `CSSProperties` has no index signature
+for `--*` keys to type-check them against.
+
+```tsx
+<div style={{ '--cascivo-color-acent': 'red' }} />
+//            ^ warns: did you mean `--cascivo-color-accent`?
+```
+
+Only the `--cascivo-` namespace is checked; your own custom properties are ignored. For the
+CSS half — and for `data-cascivo-*` selectors that match nothing — run `cascivo audit --ai`,
+which reports the same class at error level.
+
 ### Formatting: exclude vendored source from your formatter
 
 Owning the code means your formatter will reformat it, and `cascivo update` will then

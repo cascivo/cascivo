@@ -126,7 +126,7 @@ nothing, and right now it is free marketing being collected by someone else.
 ### Consider — medium value
 
 **5.4 A typed inline-style escape hatch.** Rung 3 of the override ladder
-(`style={{ '--cascivo-button-bg': … }}`) is the fastest path adopters take and the only one with
+(`style={{ '--cascivo-link-color': … }}`) is the fastest path adopters take and the only one with
 no checking at all. Typing it as `Partial<Record<CascivoToken, string>>` makes it
 compiler-checked. Small, surgical, fits the existing ladder.
 

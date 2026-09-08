@@ -174,4 +174,41 @@ describe('loadContract — resolution tiers (2026-07-25 plan, WS-5)', () => {
     })
     expect(contract.components.get('Button')).toBeDefined()
   })
+
+  it('the bundled contract carries the styling-contract name sets', async () => {
+    // `unknown-token` and `unknown-style-hook` are the only audit rules whose finding is
+    // invisible everywhere else in the stack — CSS reports neither a dropped custom property
+    // nor a selector that matches nothing. Both go quiet if these fields stop being emitted,
+    // and going quiet is indistinguishable from "your code is clean", so assert them here
+    // rather than trusting the generator.
+    const { readFileSync, existsSync } = await import('node:fs')
+    const { join, dirname } = await import('node:path')
+    const { fileURLToPath } = await import('node:url')
+    const here = dirname(fileURLToPath(import.meta.url))
+    const bundled = [
+      join(here, 'generated', 'audit-contract.json'),
+      join(here, '..', 'generated', 'audit-contract.json'),
+    ].find((c) => existsSync(c))
+
+    const parsed = JSON.parse(readFileSync(bundled!, 'utf8')) as {
+      tokens: { name: string; resolvedDefault: string | null }[]
+      consumedTokens?: string[]
+      styleHooks?: string[]
+    }
+    expect(parsed.styleHooks, 'audit-contract.json lost its styleHooks').toBeDefined()
+    expect(parsed.styleHooks!).toContain('data-cascivo-appshell-nav')
+    expect(parsed.consumedTokens, 'audit-contract.json lost its consumedTokens').toBeDefined()
+
+    const contract = buildContract({
+      catalog: { tokens: parsed.tokens },
+      registry: { components: [] },
+      context: { components: [] },
+      consumedTokens: parsed.consumedTokens!,
+      styleHooks: parsed.styleHooks!,
+    })
+    expect(contract.tokenNames.has('--cascivo-color-accent')).toBe(true)
+    // Read but never declared — invisible to a catalog built from declarations.
+    expect(contract.tokenNames.has('--cascivo-flash-tint')).toBe(true)
+    expect(contract.styleHooks.has('data-cascivo-modal-body')).toBe(true)
+  })
 })

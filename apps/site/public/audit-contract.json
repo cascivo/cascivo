@@ -3580,6 +3580,17 @@
     "width",
     "wrap"
   ],
+  "consumedTokens": ["--cascivo-flash-tint", "--cascivo-table-zebra-bg", "--cascivo-tree-level"],
+  "styleHooks": [
+    "data-cascivo-appshell-main",
+    "data-cascivo-appshell-nav",
+    "data-cascivo-card",
+    "data-cascivo-drawer-body",
+    "data-cascivo-logo",
+    "data-cascivo-modal-body",
+    "data-cascivo-modal-footer",
+    "data-cascivo-sheet-body"
+  ],
   "content": [
     "Alert",
     "AlertDialog",

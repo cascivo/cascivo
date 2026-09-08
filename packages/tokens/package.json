@@ -26,6 +26,7 @@
     "src/**/*.css",
     "src/**/*.ts",
     "tokens.json",
+    "style-contract.json",
     "!src/**/*.test.ts"
   ],
   "exports": {
@@ -45,7 +46,11 @@
     "./tokens.json": "./tokens.json",
     "./tokens": {
       "types": "./src/tokens.d.ts"
-    }
+    },
+    "./style-contract": {
+      "types": "./src/style-contract.d.ts"
+    },
+    "./style-contract.json": "./style-contract.json"
   },
   "publishConfig": {
     "access": "public",
