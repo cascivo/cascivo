@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-09-07",
+  "generatedAt": "2026-09-08",
   "description": "Major and minor releases per published package, parsed from changesets CHANGELOGs. Compare against your installed versions to detect API drift; patch releases are excluded.",
   "packages": [
     {
       "name": "@cascivo/ai",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -27,7 +27,7 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -115,8 +115,15 @@
     },
     {
       "name": "cascivo",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "releases": [
+        {
+          "version": "1.1.0",
+          "level": "minor",
+          "notes": [
+            "Enforce the styling contract: a `--cascivo-*` token or `data-cascivo-*` hook that does not"
+          ]
+        },
         {
           "version": "1.0.0",
           "level": "major",
@@ -190,7 +197,7 @@
     },
     {
       "name": "@cascivo/core",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -307,7 +314,7 @@
     },
     {
       "name": "@cascivo/editor",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -346,8 +353,16 @@
     },
     {
       "name": "@cascivo/eslint-config",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "releases": [
+        {
+          "version": "0.4.0",
+          "level": "minor",
+          "notes": [
+            "Enforce the styling contract: a `--cascivo-*` token or `data-cascivo-*` hook that does not",
+            "Act on the 2026-08-31 deploy-console experience report — a collapsible rail that"
+          ]
+        },
         {
           "version": "0.3.0",
           "level": "minor",
@@ -366,12 +381,20 @@
     },
     {
       "name": "@cascivo/eslint-plugin",
-      "version": "0.1.1",
-      "releases": []
+      "version": "0.2.0",
+      "releases": [
+        {
+          "version": "0.2.0",
+          "level": "minor",
+          "notes": [
+            "Enforce the styling contract: a `--cascivo-*` token or `data-cascivo-*` hook that does not"
+          ]
+        }
+      ]
     },
     {
       "name": "@cascivo/flow",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -403,7 +426,7 @@
     },
     {
       "name": "@cascivo/i18n",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "releases": [
         {
           "version": "1.1.0",
@@ -446,8 +469,15 @@
     },
     {
       "name": "@cascivo/icons",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "releases": [
+        {
+          "version": "1.1.0",
+          "level": "minor",
+          "notes": [
+            "Act on the 2026-08-31 deploy-console experience report — a collapsible rail that"
+          ]
+        },
         {
           "version": "1.0.0",
           "level": "major",
@@ -526,8 +556,15 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "releases": [
+        {
+          "version": "1.2.0",
+          "level": "minor",
+          "notes": [
+            "Enforce the styling contract: a `--cascivo-*` token or `data-cascivo-*` hook that does not"
+          ]
+        },
         {
           "version": "1.1.0",
           "level": "minor",
@@ -698,7 +735,7 @@
     },
     {
       "name": "@cascivo/storage",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -752,8 +789,15 @@
     },
     {
       "name": "@cascivo/tokens",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "releases": [
+        {
+          "version": "1.1.0",
+          "level": "minor",
+          "notes": [
+            "Enforce the styling contract: a `--cascivo-*` token or `data-cascivo-*` hook that does not"
+          ]
+        },
         {
           "version": "1.0.0",
           "level": "major",

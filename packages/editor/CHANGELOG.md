@@ -1,5 +1,12 @@
 # @cascivo/editor
 
+## 1.2.0
+
+### Patch Changes
+
+- @cascivo/core@1.2.0
+- @cascivo/i18n@1.2.0
+
 ## 1.1.0
 
 ### Patch Changes

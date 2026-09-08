@@ -174,4 +174,4 @@ flow, animation, storyline, walkthrough, sequence
 
 ---
 
-_Generated from registry v1.1.0 on 2026-09-07. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.2.0 on 2026-09-08. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

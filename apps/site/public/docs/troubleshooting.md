@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/troubleshooting.md
-  registry v1.1.0 · generated 2026-09-07
+  registry v1.2.0 · generated 2026-09-08
 -->
 
 # Troubleshooting cascivo
