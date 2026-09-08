@@ -85,6 +85,16 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 
 ## Design tokens
 
+- `--cascivo-button-primary-bg`
+- `--cascivo-button-primary-bg-hover`
+- `--cascivo-button-primary-bg-active`
+- `--cascivo-button-secondary-bg`
+- `--cascivo-button-secondary-bg-hover`
+- `--cascivo-button-ghost-bg`
+- `--cascivo-button-ghost-bg-hover`
+- `--cascivo-button-destructive-bg`
+- `--cascivo-button-destructive-bg-hover`
+- `--cascivo-button-radius`
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-hover`
 - `--cascivo-color-accent-active`

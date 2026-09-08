@@ -437,7 +437,7 @@ Primitive tokens:  --cascivo-blue-500: oklch(0.623 0.214 250)
         ↓ (theme maps primitive → semantic)
 Semantic tokens:   --cascivo-color-accent: var(--cascivo-blue-500)
         ↓ (component maps semantic → usage)
-Component tokens:  --cascivo-link-color: var(--cascivo-color-accent-text)
+Component tokens:  --cascivo-button-primary-bg: var(--cascivo-color-primary)
 ```
 
 Themes override the semantic layer only. Users override component tokens for per-component brand adaptation. Applied via `data-theme="light|dark|warm"` on any DOM element.

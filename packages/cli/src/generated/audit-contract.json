@@ -400,7 +400,37 @@
     { "name": "--cascivo-color-secondary-hover", "resolvedDefault": "oklch(0.86 0.006 264)" },
     { "name": "--cascivo-color-secondary-subtle", "resolvedDefault": "oklch(0.967 0.002 264)" },
     { "name": "--cascivo-aspect-ratio", "resolvedDefault": "1" },
+    {
+      "name": "--cascivo-button-destructive-bg",
+      "resolvedDefault": "var(--cascivo-color-destructive)"
+    },
+    {
+      "name": "--cascivo-button-destructive-bg-hover",
+      "resolvedDefault": "var(--cascivo-color-destructive-hover)"
+    },
+    { "name": "--cascivo-button-ghost-bg", "resolvedDefault": "transparent" },
+    {
+      "name": "--cascivo-button-ghost-bg-hover",
+      "resolvedDefault": "var(--cascivo-color-bg-subtle)"
+    },
+    { "name": "--cascivo-button-primary-bg", "resolvedDefault": "var(--cascivo-color-primary)" },
+    {
+      "name": "--cascivo-button-primary-bg-active",
+      "resolvedDefault": "var(--cascivo-color-primary-active)"
+    },
+    {
+      "name": "--cascivo-button-primary-bg-hover",
+      "resolvedDefault": "var(--cascivo-color-primary-hover)"
+    },
     { "name": "--cascivo-button-radius", "resolvedDefault": "var(--cascivo-radius-control)" },
+    {
+      "name": "--cascivo-button-secondary-bg",
+      "resolvedDefault": "var(--cascivo-color-secondary)"
+    },
+    {
+      "name": "--cascivo-button-secondary-bg-hover",
+      "resolvedDefault": "var(--cascivo-color-secondary-hover)"
+    },
     { "name": "--cascivo-calendar-bg", "resolvedDefault": "var(--cascivo-color-surface)" },
     { "name": "--cascivo-calendar-cell-size", "resolvedDefault": "2.25rem" },
     {

@@ -1731,7 +1731,7 @@
       "fileHashes": {
         "button.tsx": "sha256-b030a070e63464a0c099f418b240f579484974e48bdc0dc3ff35fc7d4f47f2e7",
         "index.ts": "sha256-7979b137663ece5f57327ba1c8f891ed0d3882d1da13d9424d6d8bfdc1d1aeaf",
-        "button.module.css": "sha256-b07813994f62aeb128c5f99c491687bf755dad4b8a93f3e9b9d3ad21ec30e4f4"
+        "button.module.css": "sha256-77bf1cb5537e72e4f36f0ee5add12c8437a9db73cec2ad725ebf2b809c6976ee"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -1790,6 +1790,16 @@
           }
         ],
         "tokens": [
+          "--cascivo-button-primary-bg",
+          "--cascivo-button-primary-bg-hover",
+          "--cascivo-button-primary-bg-active",
+          "--cascivo-button-secondary-bg",
+          "--cascivo-button-secondary-bg-hover",
+          "--cascivo-button-ghost-bg",
+          "--cascivo-button-ghost-bg-hover",
+          "--cascivo-button-destructive-bg",
+          "--cascivo-button-destructive-bg-hover",
+          "--cascivo-button-radius",
           "--cascivo-color-accent",
           "--cascivo-color-accent-hover",
           "--cascivo-color-accent-active",

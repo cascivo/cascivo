@@ -2,6 +2,7 @@
 '@cascivo/eslint-plugin': minor
 '@cascivo/eslint-config': minor
 '@cascivo/tokens': minor
+'@cascivo/react': minor
 'cascivo': minor
 ---
 
@@ -26,3 +27,11 @@ in four guides and defined by no stylesheet in the repo.
 
 All four read one generated name set, so they cannot disagree with each other or with the
 shipped CSS.
+
+**Button gains the per-variant background tokens the docs had been promising.**
+`--cascivo-button-{primary,secondary,ghost,destructive}-bg`, plus `-bg-hover` for each and
+`-bg-active` for primary, each falling back to the semantic default it replaced — so nothing
+changes until you set one. This is the rung-1 lever for restyling one button family without
+moving `--cascivo-color-primary` under every other primary surface in the subtree. The
+foreground deliberately stays on the semantic tier: a background light enough to need dark
+text still needs `--cascivo-color-primary-fg` set alongside it.

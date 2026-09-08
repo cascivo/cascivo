@@ -64,8 +64,20 @@ A hook is the third choice, not the first:
 
 1. **A component token.** Most spacing and colour is already a custom property you can
    re-point — `--cascivo-dialog-body-gap`, `--cascivo-shell-aside-inline-size`,
-   `--cascivo-link-color`. Set it on any ancestor and it cascades. See
+   `--cascivo-button-primary-bg`. Set it on any ancestor and it cascades. See
    [`TOKENS.md`](/docs/tokens.md).
+
+   Reach for these before the semantic tier when the change is scoped to one component
+   family: setting `--cascivo-color-primary` recolours primary buttons _and_ every other
+   primary surface in the subtree, which is right for a brand and wrong for one dialog's
+   confirm button.
+
+   > **A background knob does not move the foreground.** `--cascivo-button-primary-bg` and
+   > its siblings change the background only; `color` stays on the semantic
+   > `--cascivo-color-primary-fg`. If your new background needs dark text, set that too, or
+   > the button fails contrast. The complete list of knobs per component is in each
+   > component's manifest and in `@cascivo/tokens/style-contract.json`.
+
 2. **A prop.** If the component exposes one (`size`, `footer`, `padding`), use it — props
    are typed and survive everything.
 3. **A style hook**, for the layout facts neither of the above reaches.
