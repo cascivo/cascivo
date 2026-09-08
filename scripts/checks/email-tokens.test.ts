@@ -12,17 +12,15 @@
  *   2. The generated file is current — regenerating produces no diff.
  *   3. Body and muted text clear WCAG 2.2 AA against the surfaces they are used on.
  *
- * **On the baseline.** Eight themes ship a `--cascivo-color-text-muted` that already fails
- * AA against their own background — pastel 2.6:1, terminal 3.0:1, minimal 3.1:1, and so on.
- * That is not a conversion artifact: `scripts/checks/color/contrast.ts`, reading the oklch
- * source directly with an independent implementation, agrees to within 0.02. It is
- * pre-existing debt in the themes, visible in the web product today, and fixing it means
- * changing eight palettes and their visual baselines — a design decision, not an email one.
+ * There was a baseline here. Ten themes shipped a `--cascivo-color-text-muted` that failed
+ * AA — pastel at 2.37:1 against `surface-2`, terminal 2.41, minimal 2.81 — and it was
+ * recorded rather than fixed, because changing ten palettes is a design decision rather than
+ * an email one. It has since been fixed at source by adjusting lightness only, and the
+ * baseline is gone with it.
  *
- * So those pairs are recorded in `MUTED_BASELINE` with their measured ratio, and this guard
- * blocks anything *worse* or *new* while leaving the known state visible. Remove an entry
- * when its theme is fixed; the guard fails if a recorded pair starts passing, so the
- * baseline cannot rot into a permanent excuse.
+ * The lasting guard is `scripts/checks/muted-text-contrast.test.ts`, which checks the oklch
+ * source on every surface in every theme. This one keeps checking the **resolved sRGB**,
+ * which is the thing gamut mapping can still move.
  *
  * Run: `pnpm email:tokens:check`.
  */
@@ -157,52 +155,20 @@ describe('email palettes — freshness', () => {
   })
 })
 
-/**
- * Themes whose muted text already fails AA in the shipped oklch source, with the ratio
- * measured at the time of recording. Pre-existing product debt — see the header.
- */
-const MUTED_BASELINE: Record<string, number> = {
-  dark: 4.15,
-  warm: 3.34,
-  minimal: 3.07,
-  midnight: 3.53,
-  pastel: 2.62,
-  corporate: 3.13,
-  terminal: 2.97,
-  cyberpunk: 3.94,
-}
-
 describe('email palettes — WCAG 2.2 AA after sRGB resolution', () => {
   for (const theme of EMAIL_THEMES) {
     for (const pair of CONTRAST_PAIRS) {
-      const baseline = pair.what === 'muted text' ? MUTED_BASELINE[theme] : undefined
-
-      it(`${theme}: ${pair.what} ${baseline === undefined ? `clears ${pair.min}:1` : `holds its ${baseline}:1 baseline`}`, () => {
+      it(`${theme}: ${pair.what} clears ${pair.min}:1`, () => {
         const palette = PALETTES[theme] as Record<string, string>
         const fg = parseHex(palette[pair.fg] ?? '')
         const bg = parseHex(palette[pair.bg] ?? '')
         assert.ok(fg, `${theme} ${pair.fg} is not an opaque hex: ${palette[pair.fg]}`)
         assert.ok(bg, `${theme} ${pair.bg} is not an opaque hex: ${palette[pair.bg]}`)
         const ratio = contrastRatio(fg, bg)
-
-        if (baseline === undefined) {
-          assert.ok(
-            ratio >= pair.min,
-            `${theme}: ${pair.what} is ${ratio.toFixed(2)}:1 (${toHex(fg)} on ${toHex(bg)}), needs ${pair.min}:1. ` +
-              'The oklch source may pass while the gamut-mapped sRGB does not — adjust the theme, not this threshold.',
-          )
-          return
-        }
-
-        // Recorded as failing. It may improve, but never regress, and once it clears AA
-        // the entry must go — otherwise the baseline outlives the debt it documents.
         assert.ok(
-          ratio >= baseline - 0.01,
-          `${theme}: ${pair.what} regressed to ${ratio.toFixed(2)}:1 from a recorded ${baseline}:1`,
-        )
-        assert.ok(
-          ratio < pair.min,
-          `${theme}: ${pair.what} now clears AA at ${ratio.toFixed(2)}:1 — remove it from MUTED_BASELINE`,
+          ratio >= pair.min,
+          `${theme}: ${pair.what} is ${ratio.toFixed(2)}:1 (${toHex(fg)} on ${toHex(bg)}), needs ${pair.min}:1. ` +
+            'The oklch source may pass while the gamut-mapped sRGB does not — adjust the theme, not this threshold.',
         )
       })
     }
