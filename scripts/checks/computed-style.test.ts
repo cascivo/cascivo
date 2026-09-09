@@ -579,3 +579,130 @@ describe('WS-8 — reported but unreproduced', () => {
     )
   })
 })
+
+/*
+ * DataTable's scrolling shadows — both halves of the contract.
+ *
+ * The shadows are the only thing that says a table is cut off at its inline edge, and they
+ * are made of four background layers whose alignment is a LAYOUT fact, not a source fact:
+ * the covers are placed against the scrollable overflow area (`local`), the shadows against
+ * the padding box (`scroll`). Nothing that greps the stylesheet can see whether those two
+ * boxes still coincide — and while a `scrollbar-gutter: stable` held them apart, every table
+ * that FIT painted a right-edge shadow for a column that was not there, with the stylesheet
+ * still reading as correct (landing-page review, 2026-09, item 02).
+ *
+ * So this measures pixels, and it measures DISTANCE from the interior rather than darkness:
+ * the shadow is ink on cream in the light themes and light on ink in the dark one, so "is
+ * the edge darker" is only half the catalogue. Cell values are deliberately empty — the
+ * probe is a one-pixel scanline through the middle of a row, and a glyph in the way would be
+ * indistinguishable from a shadow.
+ */
+describe('DataTable scrolling shadows', () => {
+  const columns = [
+    { key: 'deployment', header: 'Deployment identifier' },
+    { key: 'status', header: 'Status' },
+    { key: 'duration', header: 'Duration' },
+  ]
+  const rows = Array.from({ length: 4 }, (_, i) => ({
+    id: `r${i}`,
+    deployment: '',
+    status: '',
+    duration: '',
+  }))
+
+  /** How far the edge bands stray from the clean interior, in luminance. */
+  const SHADOW = 8
+
+  const probe = () =>
+    h(DataTable, {
+      columns,
+      rows,
+      getRowId: (r: { id: string }) => r.id,
+      ariaLabel: 'Deployments',
+    } as never)
+
+  /**
+   * Luminance along one horizontal scanline through the scroller, taken at the vertical
+   * middle of the second body row so no row divider crosses it.
+   */
+  async function scanline(scrollLeft?: number | 'max'): Promise<number[]> {
+    const clip = await page.evaluate((sl: number | 'max' | undefined) => {
+      const el = document.querySelector('[class*="scroller"]') as HTMLElement
+      if (sl !== undefined) el.scrollLeft = sl === 'max' ? el.scrollWidth : sl
+      const row = el.querySelectorAll('tbody tr')[1]!.getBoundingClientRect()
+      const box = el.getBoundingClientRect()
+      return {
+        x: Math.round(box.x),
+        y: Math.round(row.y + row.height / 2),
+        width: Math.round(box.width),
+        height: 1,
+      }
+    }, scrollLeft)
+    const shot = await page.screenshot({ clip })
+    return page.evaluate(async (b64: string) => {
+      const img = new Image()
+      img.src = `data:image/png;base64,${b64}`
+      await img.decode()
+      const canvas = document.createElement('canvas')
+      canvas.width = img.width
+      canvas.height = 1
+      const ctx = canvas.getContext('2d')!
+      ctx.drawImage(img, 0, 0)
+      const px = ctx.getImageData(0, 0, img.width, 1).data
+      return [...Array(img.width).keys()].map(
+        (i) => (px[i * 4]! * 0.2126 + px[i * 4 + 1]! * 0.7152 + px[i * 4 + 2]! * 0.0722) | 0,
+      )
+    }, shot.toString('base64'))
+  }
+
+  /** Widest departure from the interior within `band` px of each edge, either direction. */
+  function edges(line: number[], band = 16): { left: number; right: number } {
+    const interior = line.slice(band * 4, -band * 4)
+    const mid = interior.reduce((a, b) => a + b, 0) / interior.length
+    const stray = (px: number[]) => Math.max(...px.map((v) => Math.abs(v - mid)))
+    return { left: stray(line.slice(0, band)), right: stray(line.slice(-band)) }
+  }
+
+  for (const theme of ['light', 'dark', 'warm']) {
+    it(`a table that fits paints no edge shadow in the ${theme} theme`, async () => {
+      await mount(probe(), theme, 640)
+      const fits = await page.$eval(
+        '[class*="scroller"]',
+        (el: HTMLElement) => el.scrollWidth <= el.clientWidth,
+      )
+      assert.ok(fits, 'The probe table was meant to fit its container; widen the mount.')
+      const { left, right } = edges(await scanline())
+      assert.ok(
+        left < SHADOW && right < SHADOW,
+        `A table with nothing to scroll to strays from its own interior by ${left} on the ` +
+          `left and ${right} on the right. The scrolling shadows may only appear when there ` +
+          'is more table to reach: anything that reserves inline space inside the scroller ' +
+          'pushes the `scroll` shadow clear of the `local` cover that hides it, and the ' +
+          'shadow becomes a phantom column edge on every table in the catalogue.',
+      )
+    })
+  }
+
+  it('a table that overflows marks the side there is more to reach', async () => {
+    await mount(probe(), 'light', 220)
+    const overflows = await page.$eval(
+      '[class*="scroller"]',
+      (el: HTMLElement) => el.scrollWidth > el.clientWidth,
+    )
+    assert.ok(overflows, 'The probe table was meant to overflow its container; narrow the mount.')
+
+    const start = edges(await scanline(0))
+    assert.ok(
+      start.right >= SHADOW && start.left < SHADOW,
+      `Scrolled to the start the edges stray by ${start.left} (left) and ${start.right} ` +
+        '(right). There is more table to the right and only that side may say so.',
+    )
+
+    const end = edges(await scanline('max'))
+    assert.ok(
+      end.left >= SHADOW && end.right < SHADOW,
+      `Scrolled to the end the edges stray by ${end.left} (left) and ${end.right} (right). ` +
+        'The table scrolled past is to the left and only that side may say so.',
+    )
+  })
+})
