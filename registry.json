@@ -4955,7 +4955,7 @@
         "row-sort.ts": "sha256-7d2b3e52e4249bb9f5856d43c0f95ddc8dac4c4f2b81e590ca7182a82b5d7d9d",
         "to-csv.ts": "sha256-8e26da77c73c415b6c7e128174463b8ad2f29036fda2df44e8b152953e9c3b0b",
         "virtual-window.ts": "sha256-7c96f234d62d0d0610cf05c5d99abf6cf10afbebbcbfd528e0202f385a0e1d0f",
-        "data-table.module.css": "sha256-416fe9551fdcd334365ce7d2da71539152fed9cdaaf97fd66c6ca29f6fdcac1e"
+        "data-table.module.css": "sha256-7070640c26f49ca2b19ed570f72315a5aa1cb05da1321e72850a756ec8dd06f7"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {

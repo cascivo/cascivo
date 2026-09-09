@@ -1,5 +1,6 @@
 'use client'
 import { useComputed, useSignal, useSignals } from '@cascivo/core'
+import { Checkbox } from '@cascivo/components/checkbox'
 import { ToggleGroup } from '@cascivo/components/toggle-group'
 import { EMAIL_OUTLOOK, EMAIL_SAMPLES, EMAIL_TEMPLATES } from '../email-samples.generated'
 
@@ -42,10 +43,17 @@ export function PosterEmail() {
     outlook.value ? EMAIL_OUTLOOK[templateId.value]! : sample.value.html,
   )
 
+  // The frame is sized from the mail it holds. One height tall enough for the
+  // longest of the thirty-six samples left ~140px of dead panel under the short
+  // ones; measuring on load costs nothing (an `srcdoc` document is same-origin)
+  // and re-fires whenever the template, theme or Outlook toggle swaps the doc.
+  // Zero means "not measured yet" — the stylesheet's own block-size stands.
+  const frameHeight = useSignal(0)
+
   return (
     <section className="pg-section pg-cols pg-cols--4-8" id="email" aria-label="Email">
       <div className="pg-pad">
-        <p className="pg-eyebrow">13 / email</p>
+        <p className="pg-eyebrow">15 / email</p>
         <h2 className="pg-display pg-display--section pg-email-head">
           The same system
           <br />
@@ -97,6 +105,15 @@ export function PosterEmail() {
               title={`${sample.value.subject} — as sent`}
               srcDoc={srcDoc.value}
               loading="lazy"
+              {...(frameHeight.value > 0 ? { style: { blockSize: `${frameHeight.value}px` } } : {})}
+              onLoad={(e) => {
+                const doc = e.currentTarget.contentDocument
+                if (!doc) return
+                frameHeight.value = Math.max(
+                  doc.documentElement.scrollHeight,
+                  doc.body?.scrollHeight ?? 0,
+                )
+              }}
             />
             <figcaption className="pg-email-caption pg-mono">
               {outlook.value ? 'Outlook (Windows) — unsupported CSS removed' : 'As sent'}
@@ -104,19 +121,16 @@ export function PosterEmail() {
           </figure>
         </div>
 
-        <label className="pg-email-toggle">
-          <input
-            type="checkbox"
-            checked={outlook.value}
-            onChange={(e) => {
-              outlook.value = e.currentTarget.checked
-            }}
-          />
-          <span>
-            Show what Outlook (Windows) supports — the client that fails the most modern CSS, and
-            the one nobody can emulate offline
-          </span>
-        </label>
+        {/* The page's own Checkbox, not a browser default — this sits four bands
+            below a gallery that demos the styled one. */}
+        <Checkbox
+          className="pg-email-toggle"
+          label="Show what Outlook (Windows) supports — the client that fails the most modern CSS, and the one nobody can emulate offline"
+          checked={outlook.value}
+          onChange={(e) => {
+            outlook.value = e.currentTarget.checked
+          }}
+        />
 
         <p className="pg-email-meta pg-mono">
           <span>Subject: {sample.value.subject}</span>

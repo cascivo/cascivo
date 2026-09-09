@@ -115,7 +115,7 @@ export function PosterComparison() {
     >
       <div className="pg-pad pg-head">
         <h2 className="pg-display pg-display--section">Same model, no tax</h2>
-        <p className="pg-eyebrow">05 / vs shadcn/ui</p>
+        <p className="pg-eyebrow">06 / vs shadcn/ui</p>
       </div>
       <div className="pg-pad pg-compare-pad">
         <p className="pg-body pg-compare-lede">
@@ -156,7 +156,7 @@ export function PosterComparison() {
           adoption today; cascivo&apos;s bet is the architecture.
         </p>
 
-        <h3 className="pg-display pg-display--tile">And versus StyleX</h3>
+        <h3 className="pg-display pg-display--tile pg-compare-sub">And versus StyleX</h3>
         <p className="pg-body pg-compare-lede">
           Meta&apos;s StyleX compiles JavaScript style objects into atomic CSS, and it is right
           about the destination: build-time styles, typed tokens, a predictable cascade, constraints
@@ -189,10 +189,12 @@ export function PosterComparison() {
             </tbody>
           </table>
         </div>
+        {/* Unlinked on purpose: the colocation band directly below closes on the
+            same "the full comparison" link, and two identical links one section
+            apart read as one CTA repeated. */}
         <p className="pg-note pg-compare-foot">
-          The last row is StyleX&apos;s, not ours — see{' '}
-          <a href="/docs/compared-to-stylex.md">the full comparison</a> for why cascivo takes that
-          trade, and where StyleX is the better pick.
+          The last row is StyleX&apos;s, not ours — the full comparison below says why cascivo takes
+          that trade, and where StyleX is the better pick.
         </p>
       </div>
     </section>
