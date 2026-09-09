@@ -15,17 +15,6 @@
   gap: 1.5rem;
 }
 
-.pg-hero-badge {
-  background: var(--cascivo-landing-invert-bg);
-  color: var(--cascivo-landing-invert-fg);
-  border-color: var(--cascivo-landing-invert-bg);
-  font-family: var(--cascivo-font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  padding: 0.4375rem 0.75rem;
-}
-
 .pg-hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -196,6 +185,14 @@
   color: var(--cascivo-color-destructive);
 }
 
+/* One- and two-line titles in the same row started their body copy at different
+   heights ("Themes built in" wraps, "Owned code" does not). Reserving the taller
+   wrap on the title block lines the bodies up across the row; the meta rule was
+   already pinned by `margin-block-start: auto`. */
+.pg-diff .pg-display--tile {
+  min-block-size: 2.1em;
+}
+
 .pg-diff-tag {
   margin-block-start: auto;
   padding-block-start: 0.5rem;
@@ -334,6 +331,18 @@
 
 /* ── 05 Proof ──────────────────────────────────────────────────────────── */
 
+/* The two halves of the proof band are mirrored, so their closing links have to
+   land on one baseline; content height alone left them 9px apart. */
+.pg-proof-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.pg-proof-col > .pg-link {
+  margin-block-start: auto;
+  align-self: flex-start;
+}
+
 .pg-proof-head {
   margin-block: 0.875rem 0.75rem;
 }
@@ -378,11 +387,33 @@
   margin-block-end: 1.5rem;
 }
 
+/* "And versus StyleX" opens the second table; with no margin of its own it read
+   as the last line of the paragraph above it. Space above roughly 3× the space
+   below, over a hairline, makes it a sub-section. */
+.pg-compare-sub {
+  margin-block: 3rem 1rem;
+  padding-block-start: 1.25rem;
+  border-block-start: 1px solid var(--cascivo-landing-hatch);
+}
+
+/* One grid for both tables. Auto layout sized each from its own content, so the
+   shadcn table ran 277/544/281 and the StyleX one 262/462/379 — the two things
+   being compared got different room in the two tables that exist to compare
+   them. Fixed layout, 0.8fr / 1fr / 1fr. */
 .pg-table {
   inline-size: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
   font-size: 0.875rem;
   text-align: start;
+}
+
+.pg-table thead th {
+  inline-size: 35.71%;
+}
+
+.pg-table thead th:first-child {
+  inline-size: 28.58%;
 }
 
 .pg-table thead tr {
@@ -436,7 +467,7 @@
   color: var(--cascivo-color-destructive);
 }
 
-/* ── 07 Gallery ────────────────────────────────────────────────────────── */
+/* ── 08 Gallery ────────────────────────────────────────────────────────── */
 
 .pg-gallery-lede {
   padding-block-start: 0;
@@ -485,7 +516,17 @@
   inline-size: 100%;
 }
 
-/* ── 08 Themes ─────────────────────────────────────────────────────────── */
+/* The gallery chart runs on ink tints so it stays inside the page's palette —
+   orange was the only warm hue anywhere on it, and it sat beside acid yellow.
+   The acid marks the peak bar; on cream that fill is 1.3:1 on its own, so every
+   bar carries the ink rule the rest of the grid does and the highlight gets a
+   real boundary. `data-series` is BarChart's own per-bar styling hook. */
+.pg-tile-chart rect[data-series] {
+  stroke: var(--cascivo-color-border);
+  stroke-width: 1.5;
+}
+
+/* ── 09 Themes ─────────────────────────────────────────────────────────── */
 
 .pg-themes-head {
   margin-block: 0.875rem;
@@ -501,10 +542,16 @@
 }
 
 /* The chips are a real ToggleGroup; the poster only takes away its radius and
-   spacing so the twelve read as one ruled strip. */
+   spacing so the twelve read as one ruled strip.
+
+   A grid, not a wrapping flex row: `flex: 1 0 auto` stretched whatever landed on
+   the last line, so twelve themes wrapped 10 + 2 and the two orphans each took
+   half the strip. `auto-fit` tracks are equal on every row, and an all-empty
+   track collapses — so the three-item template strip fills its row too, rather
+   than sitting in three of six columns. */
 .pg-theme-chips {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
   gap: 0;
   padding: 0;
   border: 0;
@@ -513,7 +560,6 @@
 }
 
 .pg-theme-chips > * {
-  flex: 1 0 auto;
   min-block-size: 2.75rem;
   border-radius: 0;
   border-inline-end: 1px solid var(--cascivo-color-border);
@@ -565,7 +611,7 @@
   color: var(--cascivo-color-text-subtle);
 }
 
-/* ── 09 AI layer + primitives ──────────────────────────────────────────── */
+/* ── 10 AI layer + 11 primitives ───────────────────────────────────────── */
 
 .pg-ai-head {
   margin-block: 0.875rem;
@@ -633,7 +679,7 @@
   color: var(--cascivo-color-text-subtle);
 }
 
-/* ── 10 Quick start ────────────────────────────────────────────────────── */
+/* ── 12 Quick start ────────────────────────────────────────────────────── */
 
 .pg-steps {
   margin: 0;
@@ -689,7 +735,7 @@
   gap: 0.5rem;
 }
 
-/* ── 11 Templates ──────────────────────────────────────────────────────── */
+/* ── 13 Templates ──────────────────────────────────────────────────────── */
 
 .pg-template {
   display: flex;
@@ -714,7 +760,17 @@
   margin-block-start: auto;
 }
 
-/* ── 12 Showcase + frameworks ──────────────────────────────────────────── */
+/* One marketplace link for the row, not the same one three times. */
+.pg-template-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  border-block-start: var(--cascivo-landing-rule-weight) solid var(--cascivo-color-border);
+}
+
+/* ── 14 Showcase + frameworks ──────────────────────────────────────────── */
 
 .pg-showcase,
 .pg-frameworks {
@@ -752,6 +808,12 @@
   gap: 0.375rem;
 }
 
+/* A two-line product name pushed its category and host below the one-line names
+   beside it; reserving the taller wrap lines the row up. */
+.pg-showcase-meta .pg-display--sub {
+  min-block-size: 1.9em;
+}
+
 .pg-showcase-cat {
   color: var(--cascivo-color-text-subtle);
 }
@@ -771,10 +833,6 @@
 
 .pg-showcase-more {
   border-block-start: var(--cascivo-landing-rule-weight) solid var(--cascivo-color-border);
-}
-
-.pg-showcase-more a {
-  color: var(--cascivo-color-destructive);
 }
 
 /* ── CTA ───────────────────────────────────────────────────────────────── */
@@ -807,29 +865,65 @@
  * Its <pre> scrolls but its root box is content-sized, so a long command widens
  * the page at 320px unless the root is capped — that is what put 80px of
  * horizontal scroll on the phone layout.
+ *
+ * And the copy button is absolutely positioned OVER that <pre>, which does not
+ * wrap: `padding-inline-end` reserves its gutter at the end of the scrollable
+ * content, not at the visible edge, so any command longer than the box ran under
+ * the button and stopped — `npx cascivo add @cascivo/dashboa`, on a page whose
+ * whole pitch is that you copy the command. So the rule moves to the root, which
+ * becomes a two-column grid: the code takes a `minmax(0, 1fr)` column and wraps
+ * inside it, the button gets a column of its own. A taller block, and the whole
+ * command.
  */
 
 .pg-ai-code,
 .pg-step-code,
 .pg-template-install,
 .pg-prebuilt-code {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2.5rem;
   max-inline-size: 100%;
   min-inline-size: 0;
-}
-
-.pg-ai-code pre,
-.pg-step-code pre,
-.pg-template-install pre,
-.pg-prebuilt-code pre {
-  border-width: 2px;
+  border: 2px solid var(--cascivo-color-border);
   background: var(--cascivo-color-surface);
 }
 
-.pg-invert .pg-ai-code pre {
+.pg-ai-code > pre,
+.pg-step-code > pre,
+.pg-template-install > pre,
+.pg-prebuilt-code > pre {
+  border: 0;
+  background: transparent;
+  overflow-x: visible;
+  padding-inline-end: var(--cascivo-space-3);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.pg-ai-code > button,
+.pg-step-code > button,
+.pg-template-install > button,
+.pg-prebuilt-code > button {
+  position: static;
+  inline-size: auto;
+  block-size: auto;
+  align-self: stretch;
+  border: 0;
+  border-inline-start: 2px solid var(--cascivo-color-border);
+  border-radius: 0;
+  background: transparent;
+}
+
+.pg-invert .pg-ai-code {
   background: transparent;
   color: inherit;
   border-color: var(--cascivo-landing-invert-fg);
   border-width: var(--cascivo-landing-rule-weight);
+}
+
+/* CodeSnippet's <pre> paints the PAGE foreground, which is ink on an ink band. */
+.pg-invert .pg-ai-code > pre {
+  color: inherit;
 }
 
 /*
@@ -856,7 +950,7 @@
   border-color: currentcolor;
 }
 
-/* ── 13 / email ─────────────────────────────────────────────────────────────
+/* ── 15 / email ─────────────────────────────────────────────────────────────
    The frames hold real `@cascivo/email` output in an iframe. The iframe is not
    a stylistic choice: an email is a whole document, and this page's stylesheet
    must not reach into it or the preview would be showing something the
@@ -893,9 +987,12 @@
 
 .pg-email-frame {
   inline-size: 100%;
-  /* Tall enough for the longest sample without an inner scrollbar, which would
-     read as a broken email rather than a preview. */
-  block-size: 34rem;
+  /* Height comes from the mail itself — the frame measures its own document on
+     load and writes it back as an inline `block-size`. A single figure tall
+     enough for the longest sample left ~140px of dead panel under the short
+     ones. This is the pre-measurement floor, and the fallback if the frame's own
+     document is ever unreadable. */
+  block-size: 24rem;
   border: 1px solid var(--cascivo-color-border);
   border-radius: var(--cascivo-radius-md);
   background: #fff;
@@ -907,8 +1004,9 @@
   color: var(--cascivo-color-text-muted);
 }
 
+/* Left, like every other meta line on the page — it was the only centred one. */
 .pg-email-caption {
-  text-align: center;
+  text-align: start;
 }
 
 .pg-email-meta {
@@ -927,15 +1025,4 @@
   line-height: 1.4;
   color: var(--cascivo-color-text-muted);
   cursor: pointer;
-}
-
-.pg-email-toggle input {
-  margin-block-start: 2px;
-  flex: none;
-}
-
-@media (min-width: 40rem) {
-  .pg-email-frame {
-    block-size: 38rem;
-  }
 }

@@ -36,8 +36,8 @@ const A11Y_STATS: { value: string; label: string }[] = [
 export function PosterProof() {
   return (
     <section className="pg-section pg-cols" id="proof" aria-label="Proof">
-      <div className="pg-pad">
-        <p className="pg-eyebrow">04 / proof</p>
+      <div className="pg-pad pg-proof-col">
+        <p className="pg-eyebrow">05 / proof</p>
         <h2 className="pg-display pg-display--section pg-proof-head">
           Numbers,
           <br />
@@ -70,7 +70,7 @@ export function PosterProof() {
         </a>
       </div>
 
-      <div className="pg-pad pg-surface">
+      <div className="pg-pad pg-surface pg-proof-col">
         <p className="pg-eyebrow">accessibility</p>
         <h2 className="pg-display pg-display--section pg-proof-head">
           WCAG 2.2 AA,

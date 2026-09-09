@@ -32,7 +32,7 @@ export function PosterShowcase() {
     <section className="pg-section" id="showcase" aria-label="In the wild">
       <div className="pg-pad pg-head">
         <h2 className="pg-display pg-display--section">Shipped, in production</h2>
-        <p className="pg-eyebrow">12 / in the wild</p>
+        <p className="pg-eyebrow">14 / in the wild</p>
       </div>
 
       <ul className="pg-tiles pg-tiles--4 pg-showcase">
@@ -79,8 +79,13 @@ export function PosterShowcase() {
         ))}
       </ul>
 
-      <p className="pg-pad pg-note pg-showcase-more">
-        <a href="/showcase">See all {SHOWCASE.length} products built with cascivo →</a>
+      {/* Mono caps like every other link on the page — this was the one
+          sentence-case sans CTA, sitting directly under three mono-caps ones.
+          Arrow convention kept: → internal, ↗ external. */}
+      <p className="pg-pad pg-showcase-more">
+        <a className="pg-link" href="/showcase">
+          All {SHOWCASE.length} products →
+        </a>
       </p>
     </section>
   )

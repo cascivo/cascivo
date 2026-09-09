@@ -22,12 +22,14 @@ const POINTS: Point[] = [
     body: 'A CSS file is already the artifact. Colocating styles into the component means compiling them back out again — and that compiler is the thing cascivo does not want to own, or ask you to install.',
   },
   {
-    title: 'Markup stays readable as markup',
+    // Two lines, like the other three titles in the row — at three lines this
+    // one started its body copy below theirs.
+    title: 'Markup stays readable',
     body: 'The structure/style split is the point, not a side effect. You read JSX to find the DOM, not through a layer of style objects.',
   },
   {
     title: 'It survives copy-paste',
-    body: 'cascivo add button copies both files into your repo and they keep working — no plugin in your bundler, nothing to configure.',
+    body: 'Running cascivo add button copies both files into your repo and they keep working — no plugin in your bundler, nothing to configure.',
   },
 ]
 
@@ -36,10 +38,7 @@ export function PosterColocation() {
     <section className="pg-section" id="colocation" aria-label="Why styles live in a second file">
       <div className="pg-pad pg-head">
         <h2 className="pg-display pg-display--section">Two files, on purpose</h2>
-        {/* Unnumbered, like the accessibility band: this is a rider on the comparison
-            above it, not a thirteenth act — and renumbering six downstream sections to
-            insert one is churn nobody asked for. */}
-        <p className="pg-eyebrow">the tradeoff</p>
+        <p className="pg-eyebrow">07 / the tradeoff</p>
       </div>
       <div className="pg-pad pg-compare-pad">
         <p className="pg-body pg-compare-lede">

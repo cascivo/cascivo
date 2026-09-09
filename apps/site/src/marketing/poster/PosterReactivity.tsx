@@ -177,7 +177,7 @@ export function PosterReactivity() {
       aria-label="Reactivity — interactions commit once"
     >
       <div className="pg-pad">
-        <p className="pg-eyebrow">03 / reactivity</p>
+        <p className="pg-eyebrow">04 / reactivity</p>
         <h2 className="pg-display pg-display--section pg-reactivity-head">
           Interactions
           <br />

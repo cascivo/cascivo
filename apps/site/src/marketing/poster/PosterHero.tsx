@@ -1,7 +1,6 @@
-import { Badge } from '@cascivo/components/badge'
 import { Stat } from '@cascivo/components/stat'
 import { CopyButton } from '@cascivo/components/copy-button'
-import { componentCount, themeCount, axeViolations, gzip, kb, partial } from './figures'
+import { axeViolations, gzip, kb, partial } from './figures'
 
 const INIT = 'npx cascivo init'
 
@@ -26,9 +25,11 @@ export function PosterHero() {
   return (
     <section className="pg-section pg-cols pg-cols--8-4" id="hero" aria-label="cascivo">
       <div className="pg-pad pg-hero-lead">
-        <Badge className="pg-hero-badge" variant="outline">
-          {componentCount} components · {themeCount} themes · MIT
-        </Badge>
+        {/* The eyebrow every other band already carries. It replaced a badge
+            reading "N components · N themes · MIT" — the ticker directly below
+            it and the footer both say that, so the hero said it a third time and
+            pushed the headline down for the privilege. */}
+        <p className="pg-eyebrow">01 / the pitch</p>
         <h1 className="pg-display pg-display--hero">
           Own
           <br />

@@ -46,7 +46,7 @@ export function PosterThemes() {
   return (
     <section className="pg-section pg-cols pg-cols--4-8" id="themes" aria-label="Themes">
       <div className="pg-pad">
-        <p className="pg-eyebrow">07 / themes</p>
+        <p className="pg-eyebrow">09 / themes</p>
         <h2 className="pg-display pg-display--section pg-themes-head">
           One attribute,
           <br />
@@ -82,9 +82,13 @@ export function PosterThemes() {
             <Field label="Email">
               <Input defaultValue="you@example.com" readOnly />
             </Field>
+            {/* `secondary` maps to the accent in the brutalist family, so Save and
+                Cancel rendered as two identical primaries. `ghost` is the
+                catalogue's quiet variant and reads as the secondary action under
+                every one of the twelve themes this card previews. */}
             <div className="pg-theme-card-actions">
               <Button variant="primary">Save</Button>
-              <Button variant="secondary">Cancel</Button>
+              <Button variant="ghost">Cancel</Button>
             </div>
           </Card>
           <p className="pg-theme-caption pg-mono">
