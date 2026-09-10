@@ -91,6 +91,7 @@ remains canonical.
 | **`--cascivo-chart-7`** | `oklch(0.62 0.12 350)` |  |
 | **`--cascivo-chart-8`** | `oklch(0.5 0.12 200)` |  |
 | **`--cascivo-chart-axis`** | `oklch(0.5 0.016 264)` |  |
+| **`--cascivo-chart-bar-radius`** | `2px` |  |
 | **`--cascivo-chart-fill-opacity`** | `0.25` |  |
 | **`--cascivo-chart-fill-opacity-overlap`** | `0.125` |  |
 | **`--cascivo-chart-grid`** | `var(--cascivo-gray-200)` |  |

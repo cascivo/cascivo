@@ -3886,7 +3886,8 @@
           "--cascivo-chart-5",
           "--cascivo-chart-6",
           "--cascivo-chart-7",
-          "--cascivo-chart-8"
+          "--cascivo-chart-8",
+          "--cascivo-chart-bar-radius"
         ],
         "accessibility": {
           "role": "img",

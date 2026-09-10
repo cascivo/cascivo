@@ -10,7 +10,7 @@
   ],
   "resolutionTheme": "light",
   "generatedAt": "2026-09-08",
-  "count": 348,
+  "count": 349,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -1620,6 +1620,15 @@
       "layer": "semantic",
       "group": "chart",
       "resolvedDefault": "0.25",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-chart-bar-radius",
+      "value": "2px",
+      "layer": "semantic",
+      "group": "chart",
+      "resolvedDefault": "2px",
       "resolvesPerTheme": false,
       "canonical": true
     },

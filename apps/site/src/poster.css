@@ -163,6 +163,8 @@
     --cascivo-chart-axis: oklch(0.3 0 0);
     --cascivo-chart-fill-opacity: 0.25;
     --cascivo-chart-fill-opacity-overlap: 0.125;
+    /* Zero radius has to reach the data marks too — see tokens/index.css. */
+    --cascivo-chart-bar-radius: 0;
 
     /* ── -content tokens ── */
     --cascivo-color-primary-content: var(--cascivo-color-primary-fg);
@@ -316,6 +318,8 @@
     --cascivo-chart-axis: oklch(0.707 0.015 264);
     --cascivo-chart-fill-opacity: 0.4;
     --cascivo-chart-fill-opacity-overlap: 0.2;
+    /* Zero radius has to reach the data marks too — see tokens/index.css. */
+    --cascivo-chart-bar-radius: 0;
 
     /* ── -content tokens ── */
     --cascivo-color-primary-content: var(--cascivo-color-primary-fg);

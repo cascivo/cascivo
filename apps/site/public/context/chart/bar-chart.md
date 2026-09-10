@@ -104,6 +104,7 @@ Argument passed to the `tooltipFormat` callback.
 - `--cascivo-chart-6`
 - `--cascivo-chart-7`
 - `--cascivo-chart-8`
+- `--cascivo-chart-bar-radius`
 
 ## Examples
 
@@ -172,7 +173,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 BarChart is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-chart-1, --cascivo-chart-2, --cascivo-chart-3, --cascivo-chart-4, --cascivo-chart-5, --cascivo-chart-6, --cascivo-chart-7, --cascivo-chart-8
+  --cascivo-chart-1, --cascivo-chart-2, --cascivo-chart-3, --cascivo-chart-4, --cascivo-chart-5, --cascivo-chart-6, --cascivo-chart-7, --cascivo-chart-8, --cascivo-chart-bar-radius
 
 Accessibility: role "img", WCAG 2.1-AA. Keep it AA.
 

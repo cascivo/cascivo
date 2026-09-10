@@ -335,6 +335,13 @@
        fill keeps its hue instead of muddying into the dark surface. */
     --cascivo-chart-fill-opacity: 0.25;
 
+    /* Corner radius of a bar mark. Its own token rather than the theme's control
+       radius: a data mark is a few pixels tall, so a theme's 1rem control radius
+       would round a bar into a pill (SVG clamps `rx` to half the rect). The five
+       zero-radius themes restate this as 0 — without it a brutalist chart drew
+       rounded bars under square everything else. */
+    --cascivo-chart-bar-radius: 2px;
+
     /* ── Accent as TYPE ─────────────────────────────────────────
        The accent is defined for a FILL — a button, a chip, a highlight — and a
        theme is free to pick a hue that only works that way. Four of the shipped
