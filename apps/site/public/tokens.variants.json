@@ -313,6 +313,27 @@
       }
     },
     {
+      "name": "--cascivo-chart-bar-radius",
+      "layer": "semantic",
+      "group": "chart",
+      "byTheme": {
+        "arcade": "0",
+        "brutalist": "0",
+        "corporate": "2px",
+        "cyberpunk": "0",
+        "dark": "2px",
+        "flat": "0",
+        "light-dark": "2px",
+        "light": "2px",
+        "midnight": "2px",
+        "minimal": "2px",
+        "pastel": "2px",
+        "tailwind": "2px",
+        "terminal": "0",
+        "warm": "2px"
+      }
+    },
+    {
       "name": "--cascivo-chart-fill-opacity",
       "layer": "semantic",
       "group": "chart",

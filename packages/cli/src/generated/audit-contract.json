@@ -237,6 +237,7 @@
     { "name": "--cascivo-chart-grid", "resolvedDefault": "oklch(0.928 0.006 264)" },
     { "name": "--cascivo-chart-axis", "resolvedDefault": "oklch(0.5 0.016 264)" },
     { "name": "--cascivo-chart-fill-opacity", "resolvedDefault": "0.25" },
+    { "name": "--cascivo-chart-bar-radius", "resolvedDefault": "2px" },
     { "name": "--cascivo-color-accent-text", "resolvedDefault": "oklch(0.52 0.2 250)" },
     { "name": "--cascivo-color-accent-text-hover", "resolvedDefault": "oklch(0.45 0.2 250)" },
     {

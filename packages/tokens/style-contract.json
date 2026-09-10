@@ -51,6 +51,7 @@
     "--cascivo-chart-anim-ease",
     "--cascivo-chart-anim-props",
     "--cascivo-chart-axis",
+    "--cascivo-chart-bar-radius",
     "--cascivo-chart-fill-opacity",
     "--cascivo-chart-fill-opacity-overlap",
     "--cascivo-chart-grid",

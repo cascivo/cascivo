@@ -133,6 +133,8 @@
     --cascivo-chart-fill-opacity: 0.4;
     /* Overlapping (non-stacked) areas — lower so series stay distinguishable. */
     --cascivo-chart-fill-opacity-overlap: 0.2;
+    /* Zero radius has to reach the data marks too — see tokens/index.css. */
+    --cascivo-chart-bar-radius: 0;
 
     /* ── -content tokens (foreground ≥4.5:1 on paired background) ── */
     --cascivo-color-primary-content: var(--cascivo-color-primary-fg);

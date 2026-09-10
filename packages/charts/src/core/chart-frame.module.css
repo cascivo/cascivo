@@ -75,6 +75,15 @@
     }
   }
 
+  /* A bar's corner radius, from the theme rather than from the `rx={2}` the rects
+     carry. That attribute stays as the no-stylesheet value — a presentation
+     attribute sits below every author layer, so this wins wherever the CSS lands —
+     and it is what a browser without CSS geometry properties keeps. `data-x` is
+     bar-chart's own per-bar hook, so this reaches bars and no other mark. */
+  .frame svg rect[data-series][data-x] {
+    rx: var(--cascivo-chart-bar-radius, 2px);
+  }
+
   .fallback {
     position: absolute;
     inset-inline-start: -9999px;

@@ -51,6 +51,7 @@
     "chart-anim-ease",
     "chart-anim-props",
     "chart-axis",
+    "chart-bar-radius",
     "chart-fill-opacity",
     "chart-fill-opacity-overlap",
     "chart-grid",

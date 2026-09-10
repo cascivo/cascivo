@@ -162,6 +162,7 @@ Enhancement only. The component still does its job with JavaScript disabled — 
 - `--cascivo-chart-6`
 - `--cascivo-chart-7`
 - `--cascivo-chart-8`
+- `--cascivo-chart-bar-radius`
 
 ## Accessibility
 
