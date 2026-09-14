@@ -37,7 +37,7 @@ catalog:
   '@storybook/addon-themes': ^10.4.2
   'fast-check': ^4.0.0
   '@tsdown/css': ^0.22.2
-  '@changesets/cli': ^2.31.0
+  '@changesets/cli': ^2.31.1
   '@playwright/test': ^1.61.0
   # Must stay on the same version as '@playwright/test' above. apps/bench/runner
   # imports `chromium` from bare `playwright` for its own browser control AND runs
@@ -111,4 +111,4 @@ minimumReleaseAgeExclude:
   - vite-plus@0.2.1
 
 patchedDependencies:
-  '@changesets/cli@2.31.0': patches/@changesets__cli@2.31.0.patch
+  '@changesets/cli@2.31.1': patches/@changesets__cli@2.31.1.patch
