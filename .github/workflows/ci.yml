@@ -6,6 +6,12 @@ on:
       - 'apps/**'
       - 'packages/**'
       - 'pnpm-lock.yaml'
+      # The gates themselves. A PR that edits a guard, the script that wires it, or this
+      # workflow used to match no path here and so ran NO jobs — `verify` never reported,
+      # and a change to a check merged without that check ever running against it.
+      - 'scripts/**'
+      - 'package.json'
+      - '.github/workflows/**'
   push:
     branches: [main]
 
