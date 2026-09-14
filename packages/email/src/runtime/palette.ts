@@ -59,3 +59,16 @@ export function token(name: string, fallback?: string): string {
   if (value === undefined) throw new Error(`Token ${name} is not defined in this theme`)
   return value
 }
+
+/**
+ * Read one token without requiring a palette to be in scope.
+ *
+ * `token()` throws outside a render on purpose, and that is right for a colour: a primitive
+ * asking for one has no sane answer without a theme. It is wrong for a lookup whose caller
+ * has a real built-in default and is documented as usable standalone — `fontStack()` is
+ * called from templates and from test fixtures with no render around them, and should
+ * return the email-safe stack there rather than explode.
+ */
+export function optionalToken(name: string): string | undefined {
+  return current?.[name]
+}

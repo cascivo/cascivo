@@ -18,6 +18,8 @@ export type {
   SectionProps,
   SpacerProps,
 } from './layout.tsx'
+export { Markdown } from './markdown.tsx'
+export type { MarkdownProps } from './markdown.tsx'
 export { Footer, Heading, Link, List, Text } from './typography.tsx'
 export type {
   FooterProps,

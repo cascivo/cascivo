@@ -76,6 +76,21 @@ function findGuide(dir, slug) {
   return null
 }
 
+/**
+ * Docs whose slug contains `term`, as the names a user would type them back as.
+ *
+ * For the error message. An adopter looking for the email package typed
+ * `cascivo-docs email` and got "no doc for \"email\"" — which is true of the component
+ * index and useless, because `guide recipe-email` was sitting right there. A dead end that
+ * knows the answer is worse than one that does not.
+ */
+function suggest(dir, term) {
+  const t = term.toLowerCase()
+  return listPaths(dir)
+    .filter((p) => !p.endsWith('.txt') && !p.includes('(--full)') && p.toLowerCase().includes(t))
+    .slice(0, 6)
+}
+
 /** List every doc path a user can ask for. */
 function listPaths(dir) {
   const out = ['llms.txt', 'llms-full.txt (--full)']
@@ -168,9 +183,16 @@ export function run(argv, opts = {}) {
     return 0
   }
 
-  const p = findComponentDoc(dir, positional[0])
+  // A bare topic means a component doc, and falls back to a guide of the same slug: a
+  // reader who types `cascivo-docs theming` means the theming guide, and making them know
+  // which of the two shelves a name lives on is a distinction only this CLI cares about.
+  const p = findComponentDoc(dir, positional[0]) ?? findGuide(dir, positional[0])
   if (!p) {
-    err(`cascivo-docs: no doc for "${positional[0]}". Run \`cascivo-docs --list\` to see all.\n`)
+    const near = suggest(dir, positional[0])
+    const hint = near.length > 0 ? ` Did you mean: ${near.join(', ')}?` : ''
+    err(
+      `cascivo-docs: no doc for "${positional[0]}".${hint} Run \`cascivo-docs --list\` to see all.\n`,
+    )
     return 1
   }
   out(read(p))

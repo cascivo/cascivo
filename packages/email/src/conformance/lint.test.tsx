@@ -7,6 +7,29 @@
  */
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
+import {
+  Alert,
+  Badge,
+  Body,
+  Button,
+  Card,
+  Column,
+  Container,
+  Footer,
+  Head,
+  Heading,
+  Hr,
+  Html,
+  Img,
+  Link,
+  List,
+  Markdown,
+  Preview,
+  Row,
+  Section,
+  Spacer,
+  Text,
+} from '../components/index.ts'
 import { PasswordReset, Receipt, Welcome } from '../templates/index.ts'
 import { EMAIL_THEMES } from '../tokens/palettes.generated.ts'
 import { renderEmail } from '../render/render.tsx'
@@ -26,10 +49,78 @@ const features = indexFeatures(data)
  * four properties in `Preview`'s hide, none of which the fixture used. A conformance check
  * that does not lint what actually ships is not a conformance check.
  */
+/**
+ * Every exported primitive, in one document.
+ *
+ * The three templates between them never render `Img`, and `Img` carried a blocked
+ * `css-outline` for as long as that was true — the reset every email codebase copies, in a
+ * primitive nothing linted. Templates are what ships, so they stay in the list, but they
+ * are a sample of the primitive set and not a cover of it. This is the cover.
+ */
+function EveryPrimitive() {
+  return (
+    <Html>
+      <Head title="Every primitive" />
+      <Body>
+        <Preview>Every primitive, once</Preview>
+        <Container>
+          <Section padding={24}>
+            <Heading level={1}>Heading</Heading>
+            <Spacer height={16} />
+            <Text>
+              Body copy with a <Link href="https://example.com">link</Link> in it.
+            </Text>
+            <Text variant="muted" size="14px">
+              Muted copy.
+            </Text>
+            <Img src="https://example.com/a.png" alt="An image" width={120} height={60} />
+            <Img
+              src="https://example.com/b.png"
+              alt="A linked image"
+              width={120}
+              href="https://example.com"
+            />
+            <List items={['one', 'two']} />
+            <List ordered items={['one', 'two']} />
+            <Button href="https://example.com">Primary</Button>
+            <Button href="https://example.com" variant="secondary" block>
+              Secondary
+            </Button>
+            <Button href="https://example.com" variant="destructive">
+              Destructive
+            </Button>
+            <Card>
+              <Row>
+                <Column width="50%">
+                  <Badge tone="success">Success</Badge>
+                </Column>
+                <Column width="50%">
+                  <Badge tone="destructive">Destructive</Badge>
+                </Column>
+              </Row>
+            </Card>
+            <Alert tone="warning" title="Careful">
+              <Text style={{ margin: 0 }}>Something to know.</Text>
+            </Alert>
+            <Markdown>
+              {
+                '## From Markdown\n\n**Bold**, `code`, [a link](https://example.com).\n\n- one\n- two\n\n> quoted\n\n```ts\nconst a = 1\n```\n\n---\n\n![alt](https://example.com/c.png)'
+              }
+            </Markdown>
+            <Hr spacing={24} />
+          </Section>
+          <Footer>Footer</Footer>
+        </Container>
+      </Body>
+    </Html>
+  )
+}
+
 const TEMPLATES = [
   ['welcome', <Welcome />],
   ['password-reset', <PasswordReset />],
   ['receipt', <Receipt />],
+  ['every-primitive', <EveryPrimitive />],
 ] as const
 
 describe('lint — detects what it should', () => {

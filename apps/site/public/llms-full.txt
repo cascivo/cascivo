@@ -85,6 +85,33 @@ or the class form `<span class="cascivo-glyph" data-glyph="chevron-down">`. Glyp
 (Chrome 135+, Safari 18.4+, Firefox 148+) — painting is gated behind `@supports`;
 prefer the SVG icons for a wider browser floor or for print.
 
+## Email (@cascivo/email)
+
+HTML email is a separate render target with its own primitives — do NOT send
+`@cascivo/react` components through an email. Clients strip `<style>`, ignore `rem`,
+and Outlook Windows renders through Word: no flex, no grid, no custom properties.
+
+`import { renderEmail, Html, Head, Body, Preview, Container, Section, Text } from '@cascivo/email'`
+— table-based, inline-styled, no client JS, no runtime dependencies. Themed from the
+same twelve themes, resolved to literal hex at render time.
+
+- `renderEmail(element, { theme, subject, tier })` -> `{ html, text, preheader, stats }`.
+  `assertSendable(result)` throws on a missing subject/preheader/text or a body over
+  the Gmail clip budget. `analyze(html)` says where the bytes went.
+- `Markdown` renders runtime-fetched prose (an allowlisted node set, straight to the
+  primitives — raw HTML in the source stays literal text, and only `http:`/`https:`/
+  `mailto:` URLs are emitted).
+- `lint(html, features)` checks a render against the Can I email matrix. The matrix is
+  NOT bundled (it is ~483 KB) — fetch https://www.caniemail.com/api/data.json and pass
+  it through `indexFeatures(data)`.
+- `planMigration(importedNames)` maps a React Email template onto the cascivo set and
+  names every gap with its reason.
+- Fonts repeat inline on every text element because Outlook does not inherit them into
+  table content. Shorten or rebrand the stack with `--cascivo-email-font-{sans,serif,mono}`
+  on the palette passed to `renderEmail({ theme })`.
+
+Full recipe: https://cascivo.com/docs/recipe-email.md. Client support: https://cascivo.com/docs/email-client-support.md.
+
 ## How to use it
 
 Two consumption paths — they share the same tokens/themes and can coexist:
@@ -293,6 +320,8 @@ All guides are fetchable as plain markdown at https://cascivo.com/docs/<slug>.md
 - Using cascivo with Vite SSR / TanStack Start: https://cascivo.com/docs/using-with-vite-ssr.md
 - Using cascivo with Tailwind v4 (@layer order + dark bridge): https://cascivo.com/docs/using-with-tailwind.md
 - Strict host ESLint (scope stylistic rules off your components dir): https://cascivo.com/docs/using-with-strict-eslint.md
+- Transactional & newsletter email (@cascivo/email): https://cascivo.com/docs/recipe-email.md
+- Email client support matrix (what the conformance lint enforces): https://cascivo.com/docs/email-client-support.md
 - Compatibility & support matrix: https://cascivo.com/docs/compatibility.md
 - Migrating from shadcn/ui: https://cascivo.com/docs/migrating-from-shadcn.md
 - Token reference: https://cascivo.com/docs/tokens.md

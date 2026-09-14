@@ -19,6 +19,8 @@ export interface ButtonProps {
   align?: 'left' | 'center' | 'right'
   /** Full-width call to action. */
   block?: boolean
+  /** Click-beacon URLs, space-separated — the `ping` attribute. Same caveats as `Link`'s. */
+  ping?: string
   style?: Style
 }
 
@@ -42,6 +44,7 @@ export function Button({
   variant = 'primary',
   align = 'left',
   block = false,
+  ping,
   style,
 }: ButtonProps) {
   const palette = {
@@ -85,6 +88,7 @@ export function Button({
               href={href}
               target="_blank"
               rel="noopener noreferrer"
+              {...(ping === undefined ? {} : { ping })}
               style={px(merge(anchor, style))}
             >
               {children}
@@ -102,6 +106,13 @@ export interface ImgProps {
   /** Required. An image with no alt text is unreadable in the ~40% of clients that block images by default. */
   alt: string
   width: number
+  /**
+   * Fixed height, in pixels, emitted as the `height` attribute only.
+   *
+   * Omit it for an image that must scale: with no height stated, every client derives one
+   * from the intrinsic aspect ratio and the image stays undistorted when `max-width: 100%`
+   * shrinks it below `width`. Supply it only when the box must be reserved at a known size.
+   */
   height?: number
   href?: string
   style?: Style
@@ -115,6 +126,18 @@ export interface ImgProps {
  * required by the type: images are blocked by default in a large share of clients, and an
  * unlabelled image is simply missing content there.
  *
+ * Height is carried by the attribute alone, the same rule `Spacer` states: `css-height` is
+ * `n` in Yahoo and `a` in Outlook Windows, and a CSS copy of a number the attribute already
+ * gives is bytes that buy nothing. The omitted `height: auto` is the initial value, so its
+ * absence is not a change either — an image with no stated height has always been sized
+ * from its intrinsic ratio.
+ *
+ * `outline: none` is gone for the same reason, and is worth naming because it appears in
+ * every copied-around email image reset: `css-outline` is `n` in Outlook Windows, the
+ * `border: 0` beside it already removes the link border it was meant to suppress, and an
+ * `<img>` takes no focus ring to begin with. It survived this long only because no shipped
+ * template used `Img`, so the conformance lint never saw it.
+ *
  * SVG is not usable — `html-svg` is blocked in every floor client except Apple Mail. Callers
  * must supply PNG or JPEG.
  */
@@ -123,9 +146,7 @@ export function Img({ src, alt, width, height, href, style }: ImgProps) {
     display: 'block',
     width: `${width}px`,
     maxWidth: '100%',
-    height: height ? `${height}px` : 'auto',
     border: 0,
-    outline: 'none',
     textDecoration: 'none',
     msInterpolationMode: 'bicubic',
   }

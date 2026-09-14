@@ -79,6 +79,25 @@ function functionNames(): Set<string> {
   return new Set([...css.matchAll(/@function\s+(--cascivo-[a-z0-9-]+)/g)].map((m) => m[1]!))
 }
 
+/**
+ * The email palette's own `--cascivo-*` keys.
+ *
+ * A second, smaller namespace with a different resolver. `@cascivo/email` renders for
+ * clients that do not support custom properties at all, so its palette is a plain object
+ * and `fontStack()` reads these keys off it — they are never declared in a stylesheet, and
+ * declaring them there would ship three inert declarations to every adopter (it was tried,
+ * and it broke the tokens package's gzip budget).
+ *
+ * Read from the module that declares them, the same way {@link functionNames} reads
+ * `functions.css`, so a rename needs one edit and a typo in a guide is still an error.
+ */
+function emailPaletteTokens(): Set<string> {
+  const source = readFileSync(join(REPO_ROOT, 'packages/email/src/runtime/fonts.ts'), 'utf8')
+  const block = /export const EMAIL_FONT_TOKENS = \{([\s\S]*?)\} as const/.exec(source)
+  assert.ok(block, 'EMAIL_FONT_TOKENS not found in packages/email/src/runtime/fonts.ts')
+  return new Set([...block[1]!.matchAll(/'(--cascivo-[a-z0-9-]+)'/g)].map((m) => m[1]!))
+}
+
 function knownTokens(): Set<string> {
   const contract = JSON.parse(
     readFileSync(join(REPO_ROOT, 'packages/tokens/style-contract.json'), 'utf8'),
@@ -90,6 +109,7 @@ describe('doc-tokens — every --cascivo-* name in the guides resolves', () => {
   it('names a token that exists', () => {
     const known = knownTokens()
     const functions = functionNames()
+    const emailPalette = emailPaletteTokens()
     const bad: string[] = []
 
     for (const file of surfaces()) {
@@ -107,7 +127,7 @@ describe('doc-tokens — every --cascivo-* name in the guides resolves', () => {
           const name = match[0].replace('(', '')
           if (match[1] === '(') continue
           if (name.endsWith('-')) continue
-          if (known.has(name) || functions.has(name)) continue
+          if (known.has(name) || functions.has(name) || emailPalette.has(name)) continue
           if (RESERVED_COUNTEREXAMPLES.has(name)) continue
           bad.push(`${file}:${index + 1}  ${name}`)
         }
@@ -121,7 +141,9 @@ describe('doc-tokens — every --cascivo-* name in the guides resolves', () => {
         'CSS drops an unknown custom property silently, so anyone following the example ' +
         'writes a declaration that does nothing and gets no error from anywhere. Use a real ' +
         'token (`packages/tokens/style-contract.json` is the generated set) or, if the ' +
-        'example needs a knob that ought to exist, add the token to the component CSS.' +
+        'example needs a knob that ought to exist, add the token to the component CSS. ' +
+        "(`@cascivo/email`'s palette keys are the one other real namespace; they come from " +
+        'EMAIL_FONT_TOKENS in packages/email/src/runtime/fonts.ts.)' +
         `\n  ${bad.join('\n  ')}`,
     )
   })

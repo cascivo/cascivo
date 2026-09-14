@@ -1,10 +1,16 @@
+<!--
+  Generated from docs/ — do not edit here; run `pnpm regen`.
+  Canonical: https://cascivo.com/docs/recipe-email.md
+  registry v1.2.0 · generated 2026-09-08
+-->
+
 # Recipe: transactional email
 
 Render cascivo-themed email with `@cascivo/email`. Your product UI and the mail it sends
 share one design system: the same twelve themes, the same tokens, resolved for clients that
 have never heard of `oklch()`.
 
-For what the clients actually support, see [EMAIL-CLIENT-SUPPORT.md](./EMAIL-CLIENT-SUPPORT.md)
+For what the clients actually support, see [EMAIL-CLIENT-SUPPORT.md](/docs/email-client-support.md)
 — generated from the same data the conformance lint reads, so the two cannot disagree.
 
 ## Install
@@ -96,7 +102,17 @@ mail in a real client, with no service involved.
 Templates are ordinary compositions of the primitives:
 
 ```tsx
-import { Body, Button, Container, Head, Heading, Html, Preview, Section, Text } from '@cascivo/email'
+import {
+  Body,
+  Button,
+  Container,
+  Head,
+  Heading,
+  Html,
+  Preview,
+  Section,
+  Text,
+} from '@cascivo/email'
 
 export function Invite({ href, team }: { href: string; team: string }) {
   return (
@@ -125,25 +141,24 @@ there is nothing to compose at build time. `Markdown` covers that case:
 
 ```tsx
 import { Markdown, Section } from '@cascivo/email'
-
-<Section padding={24}>
+;<Section padding={24}>
   <Markdown imageWidth={552}>{issue.preamble}</Markdown>
 </Section>
 ```
 
-| Markdown                   | Renders as                              |
-| -------------------------- | --------------------------------------- |
-| `# …` — `###### …`         | `Heading` at that level                 |
-| paragraph                  | `Text`                                  |
-| `**bold**`, `__bold__`     | `<strong>`                              |
-| `*italic*`, `_italic_`     | `<em>`                                  |
-| `` `code` ``               | `<code>` in the mono stack              |
-| ` ```fenced``` `           | `<pre>` in a padded cell                |
-| `[text](https://…)`, `<url>`     | `Link`                                  |
-| `![alt](https://…)`              | `Img`, at the `imageWidth` prop's width |
-| `- item`, `1. item`        | `List`                                  |
-| `> quote`                  | an accented block, nestable             |
-| `---`                      | `Hr`                                    |
+| Markdown                     | Renders as                              |
+| ---------------------------- | --------------------------------------- |
+| `# …` — `###### …`           | `Heading` at that level                 |
+| paragraph                    | `Text`                                  |
+| `**bold**`, `__bold__`       | `<strong>`                              |
+| `*italic*`, `_italic_`       | `<em>`                                  |
+| `` `code` ``                 | `<code>` in the mono stack              |
+| ` ```fenced``` `             | `<pre>` in a padded cell                |
+| `[text](https://…)`, `<url>` | `Link`                                  |
+| `![alt](https://…)`          | `Img`, at the `imageWidth` prop's width |
+| `- item`, `1. item`          | `List`                                  |
+| `> quote`                    | an accented block, nestable             |
+| `---`                        | `Hr`                                    |
 
 The allowlist is the point rather than a limitation. The reason there was no Markdown
 component for so long is that arbitrary Markdown produces arbitrary HTML, and the conformance
@@ -190,7 +205,7 @@ Viewport switcher, all twelve themes, per-client simulation, a live encoded-byte
 the clip thresholds drawn on it, the same conformance findings CI reports, and an `.eml`
 download.
 
-That last one is the cheapest way to see an email in a *real* client: download it and drag it
+That last one is the cheapest way to see an email in a _real_ client: download it and drag it
 into Outlook, Apple Mail, or anything else on any device. No service, no account.
 
 ## Keep it under the clip threshold
