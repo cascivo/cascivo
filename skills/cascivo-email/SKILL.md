@@ -56,6 +56,13 @@ site, or the two drift.
 Document shell: `Html` → `Head` → `Body` → `Preview` → `Container`.
 Layout: `Section`, `Row`, `Column`, `Spacer`, `Hr`.
 Content: `Heading`, `Text`, `Link`, `List`, `Button`, `Img`, `Card`, `Badge`, `Alert`, `Footer`.
+Runtime prose: `Markdown`.
+
+Compose the primitives whenever you know the copy — it is smaller and it is typed. Reach for
+`Markdown` only when the copy is genuinely not available until send time (a newsletter
+preamble, a CMS-driven letter). It renders an allowlisted node set through the primitives, so
+raw HTML in the source stays literal text and only `http:`/`https:`/`mailto:` URLs are
+emitted; pass `imageWidth` because Markdown carries no dimensions and `Img` requires a width.
 
 Always include `Preview` — it is the grey line beside the subject in the inbox, and without
 it the client shows the first words of the body instead. `assertSendable` fails on a template
@@ -128,6 +135,12 @@ console.log(formatAnalysis(analyze(html)))
 theme switching in an email and there cannot be. Dark mode is client-controlled; the preview
 approximates it and labels the approximation.
 
+The font stack is restated inline on every text element because Outlook Windows does not
+inherit `font-family` into table content. Do not try to remove the repetition — shorten the
+stack instead, with `--cascivo-email-font-{sans,serif,mono}` on the palette. On a long
+newsletter it is typically the single largest repeated declaration; `analyze(html)` will say
+so.
+
 ## Migrating from React Email
 
 ```tsx
@@ -135,8 +148,10 @@ import { formatMigration, planMigration } from '@cascivo/email'
 console.log(formatMigration(planMigration(imported)))
 ```
 
-Most primitives map one to one. `Font`, `Markdown`, `CodeBlock` and `Tailwind` have no
-equivalent, each for a stated reason — read them out rather than inventing a substitute.
+Most primitives map one to one. `Font`, `CodeBlock` and `Tailwind` have no equivalent, each
+for a stated reason — read them out rather than inventing a substitute. `Markdown` maps to
+cascivo's own `Markdown`, but onto an allowlisted node set: check the table in
+`docs/RECIPE-EMAIL.md` before promising a one-to-one port.
 
 ## Do not
 

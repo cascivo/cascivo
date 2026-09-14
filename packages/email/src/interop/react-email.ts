@@ -47,14 +47,17 @@ export const REACT_EMAIL_MAP: Readonly<Record<string, { cascivo: string | null; 
       note: 'No equivalent, deliberately. `@font-face` does not load in Gmail or Outlook, so cascivo ships email-safe stacks (`EMAIL_FONTS`) instead of a component that promises a web font it cannot deliver.',
     },
     Markdown: {
-      cascivo: null,
-      note: 'No equivalent. Rendering arbitrary Markdown produces arbitrary HTML, which the conformance lint cannot vouch for; compose the primitives instead.',
+      cascivo: 'Markdown',
+      note: 'Renders an allowlisted node set straight to the primitives rather than to HTML, so the conformance lint still covers the subtree. Tables, footnotes and raw HTML are not in that set and render as their own literal text. For copy that is known at build time, composing the primitives is still better.',
     },
     CodeBlock: {
       cascivo: null,
       note: 'No equivalent yet. Syntax highlighting means many spans of inline colour, which is a real byte cost worth designing for rather than inheriting.',
     },
-    CodeInline: { cascivo: null, note: 'Use `Text` with a `fontFamily` of `EMAIL_FONTS.mono`.' },
+    CodeInline: {
+      cascivo: null,
+      note: 'Use `Text` with a `fontFamily` of `EMAIL_FONTS.mono`, or `Markdown` with a backtick span.',
+    },
     Tailwind: {
       cascivo: null,
       note: 'Not applicable. cascivo emits resolved theme tokens directly, so there is no class-to-inline-style step to perform.',

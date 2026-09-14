@@ -10,10 +10,18 @@ describe('planMigration', () => {
   })
 
   it('explains the ones that do not, rather than omitting them', () => {
-    const report = planMigration(['Font', 'Tailwind', 'Markdown'])
+    const report = planMigration(['Font', 'Tailwind', 'CodeBlock'])
     expect(report.mapped).toEqual([])
     expect(report.unmapped).toHaveLength(3)
     for (const u of report.unmapped) expect(u.note.length).toBeGreaterThan(20)
+  })
+
+  it('maps Markdown, and says what the allowlisted subset costs', () => {
+    // It was the reported blocker: a newsletter's prose is fetched at send time, so there
+    // is nothing to compose it into. The note has to set expectations, not just point.
+    const [entry] = planMigration(['Markdown']).mapped
+    expect(entry?.to).toBe('Markdown')
+    expect(entry?.note).toMatch(/literal text/)
   })
 
   it('reports an unrecognised name instead of guessing', () => {

@@ -131,6 +131,27 @@ describe('renderEmail — structural invariants', () => {
     expect(html).not.toMatch(/<style/i)
   })
 
+  it('carries no resource hint, which React 19 emits for every image by itself', () => {
+    // `html-link` is `n` in every Gmail and Yahoo platform plus Outlook.com and Outlook
+    // mobile, and no client would act on the hint anywhere it does survive.
+    expect(html).not.toMatch(/<link\b/i)
+  })
+
+  it('writes an apostrophe as itself rather than as an entity', () => {
+    // React escapes `'` to `&#x27;` in every attribute value. Attributes here are
+    // double-quoted, so that is 5 wasted bytes per quote on a stack repeated everywhere.
+    expect(html).not.toContain('&#x27;')
+    expect(html).toContain("'Segoe UI'")
+  })
+
+  it('states an image height as an attribute only, never in CSS', () => {
+    // Same rule as Spacer: `css-height` is `n` in Yahoo and `a` in Outlook Windows, and a
+    // CSS copy of the attribute's own number is bytes that buy nothing.
+    for (const tag of [...html.matchAll(/<img\b[^>]*>/gi)].map((m) => m[0])) {
+      expect(tag, tag).not.toMatch(/[;"]\s*height:/)
+    }
+  })
+
   it('leaks no custom property, oklch, or rem into the output', () => {
     for (const banned of ['var(--', 'oklch(', 'color-mix(']) {
       expect(html).not.toContain(banned)

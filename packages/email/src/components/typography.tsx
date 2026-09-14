@@ -80,6 +80,18 @@ export function Text({ children, size = '16px', variant = 'default', align, styl
 export interface LinkProps {
   children?: ReactNode
   href: string
+  /**
+   * Click-beacon URLs, space-separated — the `ping` attribute.
+   *
+   * Named rather than spread, which is the rule across this package: props are an
+   * allowlist, so an attribute that reaches the output was chosen for email rather than
+   * inherited from the DOM. The cost of that rule is that an attribute nobody listed goes
+   * missing silently, and `ping` was one — a real tracking beacon that vanished on a port.
+   *
+   * Treat it as the secondary channel it is: `ping` is fire-and-forget, several clients
+   * strip it, and a redirect in `href` is what actually survives everywhere.
+   */
+  ping?: string
   style?: Style
 }
 
@@ -91,13 +103,19 @@ export interface LinkProps {
  * 2.1:1 as type, brutalist's acid 1.3:1). `-accent-text` is the token those themes restate,
  * and `scripts/checks/accent-text-contrast.test.ts` guarantees it clears AA.
  */
-export function Link({ children, href, style }: LinkProps) {
+export function Link({ children, href, ping, style }: LinkProps) {
   const base: Style = {
     color: token('--cascivo-color-accent-text', token('--cascivo-color-accent')),
     textDecoration: 'underline',
   }
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" style={px(merge(base, style))}>
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      {...(ping === undefined ? {} : { ping })}
+      style={px(merge(base, style))}
+    >
       {children}
     </a>
   )
