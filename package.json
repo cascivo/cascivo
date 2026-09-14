@@ -44,7 +44,7 @@
     "unlayered:check": "node --experimental-strip-types --test scripts/checks/unlayered.test.ts",
     "primitives:check": "node --experimental-strip-types --test scripts/checks/primitive-adoption.test.ts scripts/checks/render-phase-mirror.test.ts",
     "claims:check": "node --experimental-strip-types --test scripts/checks/claims.test.ts scripts/checks/version-pins.test.ts scripts/checks/bench-stats.test.ts scripts/checks/md-tables.test.ts",
-    "release:check": "node --experimental-strip-types --test scripts/checks/release-filter.test.ts",
+    "release:check": "node --experimental-strip-types --test scripts/checks/release-filter.test.ts scripts/checks/changeset-publish-idempotence.test.ts",
     "regen:check": "node --experimental-strip-types --test scripts/checks/regen-determinism.test.ts",
     "pack:check": "node scripts/checks/pack-lint.mjs --all",
     "npm-bootstrap:check": "node scripts/checks/npm-bootstrap.mjs",
