@@ -190,6 +190,25 @@ pnpm changeset
 
 Commit the generated `.changeset/<random-name>.md` alongside your PR.
 
+`pnpm release:check` fails the PR if a published package changed and no changeset names
+it — the work would merge to `main` and never reach npm, which for an adopter is the same
+as not shipping it. Two routes implicate a package beyond its own directory, and both are
+real, so read the failure rather than pattern-matching on the path it names:
+
+- **Bundled content.** `@cascivo/docs`, `@cascivo/docspack` and `@cascivo/mcp` bake
+  `apps/site/public/` and the root `registry.json` into their published artifact at build
+  time. Regenerating the docs surface changes their shipped bytes without touching their
+  directory — this is what #235 hit, releasing `@cascivo/email` while the docs half stayed
+  on `main`.
+- **Compiled source.** `@cascivo/react` compiles from `packages/components/src` and
+  `packages/layouts/src`, whose packages are private. A component fix ships as
+  `@cascivo/react` or it does not ship.
+
+Naming any member of a `fixed` group in `.changeset/config.json` releases the whole group,
+so one name covers all of them. The changesets release PR is exempt — it consumes
+changesets rather than adding them. If a change genuinely reaches no adopter, add its path
+to `NON_SHIPPING` in `scripts/checks/changeset-coverage.test.ts` with a reason.
+
 ## Troubleshooting
 
 ### Release fails with "Generated docs are stale at release time"

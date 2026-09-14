@@ -6,6 +6,12 @@ on:
       - 'apps/**'
       - 'packages/**'
       - 'pnpm-lock.yaml'
+      # The gates themselves. A PR that edits a guard, the script that wires it, or this
+      # workflow used to match no path here and so ran NO jobs — `verify` never reported,
+      # and a change to a check merged without that check ever running against it.
+      - 'scripts/**'
+      - 'package.json'
+      - '.github/workflows/**'
   push:
     branches: [main]
 
@@ -66,7 +72,12 @@ jobs:
   guards:
     runs-on: ubuntu-latest
     steps:
+      # Full history: release:check's changeset-coverage guard diffs against the merge base
+      # with the base branch. Under the default shallow clone there is no merge base, and a
+      # diff-based guard with no base does not fail — it passes having checked nothing.
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: pnpm/action-setup@v4
 
