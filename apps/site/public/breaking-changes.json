@@ -288,7 +288,7 @@
     },
     {
       "name": "@cascivo/docs",
-      "version": "0.2.7",
+      "version": "0.2.8",
       "releases": [
         {
           "version": "0.2.0",
@@ -301,7 +301,7 @@
     },
     {
       "name": "@cascivo/docspack",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "releases": [
         {
           "version": "0.2.0",
@@ -353,8 +353,14 @@
     },
     {
       "name": "@cascivo/email",
-      "version": "0.1.0",
-      "releases": []
+      "version": "0.2.0",
+      "releases": [
+        {
+          "version": "0.2.0",
+          "level": "minor",
+          "notes": ["Email: a `Markdown` primitive, a themeable font stack, and three render fixes"]
+        }
+      ]
     },
     {
       "name": "@cascivo/eslint-config",
