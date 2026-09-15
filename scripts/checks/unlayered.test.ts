@@ -23,8 +23,23 @@ import { findUnlayeredRules } from '../../packages/cli/src/utils/css-layers.ts'
 
 const REPO_ROOT = join(import.meta.dirname, '../..')
 
-// Files that are unlayered on purpose (relative to REPO_ROOT).
-const ALLOWLIST = new Set(['packages/themes/src/tailwind.css'])
+/**
+ * Files that are unlayered on purpose (relative to REPO_ROOT).
+ *
+ * The bar is that the CSS never enters a page that has cascivo layers to beat — not that
+ * layering it would be inconvenient.
+ *
+ *  - `themes/src/tailwind.css` — the Tailwind v4 bridge, unlayered by design.
+ *  - `email-preview/src/styles.css` — the preview tool's own chrome. It is published (the
+ *    tool ships its source and Vite serves it) but it is never *copied*: `cascivo add` does
+ *    not know it, and it only ever styles the preview's own page, which imports no cascivo
+ *    stylesheet. There are no cascivo layers there for it to win against. It landed in this
+ *    check's scope when the app moved from `apps/` to `packages/` to be published.
+ */
+const ALLOWLIST = new Set([
+  'packages/themes/src/tailwind.css',
+  'packages/email-preview/src/styles.css',
+])
 
 function collectCss(dir: string): string[] {
   const results: string[] = []

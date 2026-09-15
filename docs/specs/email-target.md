@@ -3,7 +3,7 @@
 **Status: implemented, Phases 1–4** (Phase 4 less the registry and MCP integration; Phase 5
 is a release-time manual pass by nature). Shipped: `@cascivo/email` — the token resolver, the
 vendored conformance oracle, twenty table-based primitives, `renderEmail`, three templates,
-the client simulator, React Email interop — plus `apps/email-preview`, twelve visual
+the client simulator, React Email interop — plus `@cascivo/email-preview`, twelve visual
 baselines, and the guards behind `pnpm email:check`.
 
 The findings in §1 were measured against the tree on 2026-09-08 and are unchanged. §11 records
@@ -14,7 +14,7 @@ React". An adopter using it alongside cascivo asked whether cascivo could render
 itself. This document answers: yes, but not by any transform of the existing components.
 
 **Scope:** a new `@cascivo/email` package (authored primitives + renderer), a resolved-token
-pipeline, an `apps/email-preview` dev app that doubles as the test fixture, and four offline
+pipeline, a published `@cascivo/email-preview` dev tool that doubles as the test fixture, and four offline
 test layers. Explicitly **out of scope**: charts in email, a send/provider integration, and any
 paid rendering service.
 
@@ -344,7 +344,7 @@ Three budget tiers, not one; templates default to the strict tier.
 
 ## 7. Preview app
 
-`apps/email-preview` → package name `@cascivo/email-preview` (satisfies the
+`packages/email-preview` → package name `@cascivo/email-preview` (satisfies the
 name-ends-with-directory rule enforced by `scripts/checks/app-package-names.test.ts`). Vite app,
 watches a template directory, HMR.
 

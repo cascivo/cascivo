@@ -1,7 +1,7 @@
 /**
  * Email visual baselines stay in step with the templates.
  *
- * `apps/email-preview/test/visual.spec.ts` derives one screenshot per (template × theme)
+ * `packages/email-preview/test/visual.spec.ts` derives one screenshot per (template × theme)
  * plus one simulated-Outlook pass. The baselines are committed PNGs, and nothing in the
  * normal PR gate looks at them — so a template added or renamed without its baselines just
  * rots into a failing visual run that nobody owns. That is exactly how three orphaned PNGs
@@ -19,8 +19,8 @@ import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
 
 const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url))
-const SPEC = join(REPO_ROOT, 'apps/email-preview/test/visual.spec.ts')
-const SNAPSHOTS = join(REPO_ROOT, 'apps/email-preview/test/snapshots')
+const SPEC = join(REPO_ROOT, 'packages/email-preview/test/visual.spec.ts')
+const SNAPSHOTS = join(REPO_ROOT, 'packages/email-preview/test/snapshots')
 const TEMPLATES_INDEX = join(REPO_ROOT, 'packages/email/src/templates/index.ts')
 
 const spec = readFileSync(SPEC, 'utf8')
@@ -81,7 +81,7 @@ describe('email visual baselines', () => {
       missing,
       [],
       'missing baselines — run `pnpm exec playwright test --update-snapshots` in ' +
-        'apps/email-preview and commit the PNGs',
+        'packages/email-preview and commit the PNGs',
     )
   })
 

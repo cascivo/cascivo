@@ -8,9 +8,31 @@
  */
 import type { Finding } from '@cascivo/email'
 
-export function CompatibilityPanel({ findings }: { findings: Finding[] }) {
+export function CompatibilityPanel({
+  findings,
+  available,
+}: {
+  findings: Finding[]
+  /** False when no Can I email matrix was supplied. */
+  available: boolean
+}) {
   const blocked = findings.filter((f) => f.level === 'blocked')
   const caveats = findings.filter((f) => f.level === 'caveat')
+
+  // Without the dataset there are no findings, which looks exactly like a clean template.
+  // Saying so is the whole point: a silent pass here would be worse than no panel at all.
+  if (!available) {
+    return (
+      <section className="panel">
+        <h2>Compatibility</h2>
+        <p className="hint">
+          Not checked — no Can I email matrix supplied. Download{' '}
+          <code>https://www.caniemail.com/api/data.json</code> and pass it with{' '}
+          <code>--caniemail &lt;file&gt;</code>.
+        </p>
+      </section>
+    )
+  }
 
   return (
     <section className="panel">

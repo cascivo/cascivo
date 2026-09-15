@@ -231,11 +231,16 @@ export function EmailPage() {
       <section class="doc-section">
         <h2>Preview locally</h2>
         <p>
-          <code>pnpm --filter @cascivo/email-preview dev</code> gives you viewport switching, all
-          twelve themes, per-client simulation, a live byte gauge with the clip thresholds drawn on
-          it, and an <code>.eml</code> download — the cheapest way to see the mail in a{' '}
-          <em>real</em> client, with no service involved: download it and drag it into Outlook or
-          Apple Mail.
+          <code>npx @cascivo/email-preview ./emails</code> gives you viewport switching, all twelve
+          themes, per-client simulation, a live byte gauge with the clip thresholds drawn on it, and
+          an <code>.eml</code> download — the cheapest way to see the mail in a <em>real</em>{' '}
+          client, with no service involved: download it and drag it into Outlook or Apple Mail.
+        </p>
+        <p>
+          Every <code>.tsx</code> in the directory is a template: its default export is rendered,
+          with optional <code>subject</code> and <code>previewProps</code> named exports. Edits
+          hot-reload. Pass <code>--caniemail</code> a copy of{' '}
+          <code>caniemail.com/api/data.json</code> to get the conformance findings CI reports.
         </p>
       </section>
 

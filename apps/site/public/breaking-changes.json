@@ -363,6 +363,11 @@
       ]
     },
     {
+      "name": "@cascivo/email-preview",
+      "version": "0.1.0",
+      "releases": []
+    },
+    {
       "name": "@cascivo/eslint-config",
       "version": "0.4.0",
       "releases": [

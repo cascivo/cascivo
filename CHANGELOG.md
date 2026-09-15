@@ -17,6 +17,7 @@ history: [breaking-changes.json](https://cascivo.com/breaking-changes.json).
 | `@cascivo/docspack`      | 0.2.2   | 0.2.0 — New package: `@cascivo/docspack` — cascivo's documentation in the [docspack](htt | [CHANGELOG](packages/docspack/CHANGELOG.md)      |
 | `@cascivo/editor`        | 1.2.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/editor/CHANGELOG.md)        |
 | `@cascivo/email`         | 0.2.0   | 0.2.0 — Email: a `Markdown` primitive, a themeable font stack, and three render fixes    | [CHANGELOG](packages/email/CHANGELOG.md)         |
+| `@cascivo/email-preview` | 0.1.0   | —                                                                                        | [CHANGELOG](packages/email-preview/CHANGELOG.md) |
 | `@cascivo/eslint-config` | 0.4.0   | 0.4.0 — Enforce the styling contract: a `--cascivo-*` token or `data-cascivo-*` hook tha | [CHANGELOG](packages/eslint-config/CHANGELOG.md) |
 | `@cascivo/eslint-plugin` | 0.2.0   | 0.2.0 — Enforce the styling contract: a `--cascivo-*` token or `data-cascivo-*` hook tha | [CHANGELOG](packages/eslint-plugin/CHANGELOG.md) |
 | `@cascivo/flow`          | 1.2.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/flow/CHANGELOG.md)          |

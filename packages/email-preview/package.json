@@ -1,0 +1,71 @@
+{
+  "name": "@cascivo/email-preview",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Preview cascivo email templates in a browser — every theme, a viewport switcher, per-client simulation, the encoded-byte gauge, conformance findings, and an .eml download. Run: npx @cascivo/email-preview ./emails",
+  "keywords": [
+    "cascivo",
+    "email",
+    "email-preview",
+    "html-email",
+    "transactional-email"
+  ],
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/email-preview#readme",
+  "bugs": "https://github.com/cascivo/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
+    "directory": "packages/email-preview"
+  },
+  "bin": {
+    "cascivo-email-preview": "./bin/cascivo-email-preview.mjs"
+  },
+  "files": [
+    "bin",
+    "index.html",
+    "src",
+    "vendor"
+  ],
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "node scripts/copy-caniemail.mjs && vp build",
+    "prepack": "node scripts/copy-caniemail.mjs",
+    "preview": "vp preview",
+    "check": "tsc --noEmit",
+    "dev": "node bin/cascivo-email-preview.mjs",
+    "test:visual": "playwright test"
+  },
+  "dependencies": {
+    "vite": "^8.0.0"
+  },
+  "devDependencies": {
+    "@cascivo/email": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "peerDependencies": {
+    "@cascivo/email": "workspace:^",
+    "@types/react": ">=18.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    }
+  }
+}
