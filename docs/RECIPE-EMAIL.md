@@ -174,7 +174,9 @@ min-content width of what is inside it.
 Two rules do handle it, and they are not interchangeable.
 
 **`Container` is responsive by default.** It emits a width override below its own width, so
-the wrapper goes fluid on a phone. Pass `responsive={false}` if you are supplying your own.
+the wrapper goes fluid on a phone. Pass `responsive={false}` if you are supplying your own,
+or `breakpoint={620}` when a design spec names a number of its own and you would rather the
+markup said the same one.
 
 **Columns have to be told to stack.** A `Row` keeps the min-content width of its columns
 however fluid its container is, so a two-column layout still overflows until each column
@@ -205,7 +207,8 @@ enhancement whose absence costs nothing.
 
 Media queries and pseudo-classes are the two things an inline style genuinely cannot
 express, which is the only reason a `<style>` block exists here at all. `Container`,
-`Section`, `Row`, `Column` and `Card` take a `className` to give a rule something to select,
+`Container`, `Section`, `Row`, `Column`, `Card` and `Text` take a `className` to give a rule
+something to select,
 and `Style` puts the rule somewhere — wherever you write it, it is hoisted into `<head>`
 and merged with every other one:
 
@@ -218,6 +221,11 @@ import { Column, Row, Style } from '@cascivo/email'
   </Row>
 </>
 ```
+
+`Card` and `Text` are on that list because they are the two the common cases need: a panel
+whose padding shrinks below the breakpoint, and a hero line that comes down a size. The first
+cut gave classes to the layout primitives only, which read as a principled split and left out
+both.
 
 Use a class, not the `[style*='--flag']` attribute-selector trick: `css-selector-attribute`
 is `n` in Outlook Windows where `css-selector-class` is merely partial in two Gmail apps, so
@@ -259,6 +267,18 @@ You get a viewport switcher, all twelve themes, per-client simulation, a live en
 gauge with the clip thresholds drawn on it, and an `.eml` download. That last one is the
 cheapest way to see an email in a *real* client: download it and drag it into Outlook, Apple
 Mail, or anything else on any device. No service, no account.
+
+A template can declare the palette it was designed in, beside `subject` and `previewProps`:
+
+```tsx
+export const theme = { ...PALETTES.light, '--cascivo-color-accent': '#b4381e' }
+```
+
+Do it even with one brand. `renderEmail`'s `theme` takes a `Palette`, which is how you
+rebrand — so without this every render in the preview is somebody else's email, and the byte
+gauge is wrong by whatever your palette costs. `--theme <file>` adds shared palettes to the
+dropdown for a whole directory, and `--allow <file>` lines the conformance panel up with
+whatever your CI waives.
 
 For the conformance findings — the same ones CI reports — hand it the Can I email matrix,
 which is not bundled because it is ~483 KB of test data:

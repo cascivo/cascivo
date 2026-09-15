@@ -25,7 +25,9 @@ import { createElement, useMemo, useState } from 'react'
 // is not known until someone runs the command, the matrix because its path inside this repo
 // is not a path a published package has.
 import caniemail from 'virtual:cascivo-caniemail'
+import extraAllow from 'virtual:cascivo-email-allow'
 import { source, templates } from 'virtual:cascivo-email-templates'
+import { custom as customThemes } from 'virtual:cascivo-email-themes'
 import { CompatibilityPanel } from './CompatibilityPanel.tsx'
 import { SizeGauge } from './SizeGauge.tsx'
 import { clientFor, VIEWPORTS, type Tab } from './state.ts'
@@ -40,6 +42,27 @@ import { clientFor, VIEWPORTS, type Tab } from './state.ts'
 const FEATURES = caniemail === null ? null : indexFeatures(caniemail as unknown as CanIEmailData)
 
 const TEMPLATES = templates
+
+/**
+ * The value the theme control carries when the template's own palette should be used.
+ *
+ * A sentinel rather than a separate boolean so the whole control stays one `<select>`: the
+ * dropdown is what someone reaches for, and "the one this template was designed in" is just
+ * another entry in it.
+ */
+const OWN = '\u0000own'
+
+/** Shipped themes, plus any named palettes from `--theme`. */
+const THEME_OPTIONS: { value: string; label: string }[] = [
+  ...EMAIL_THEMES.map((t) => ({ value: t, label: t })),
+  ...Object.keys(customThemes).map((name) => ({ value: name, label: `${name} (yours)` })),
+]
+
+/** Resolve a theme choice to what `renderEmail` wants. */
+function resolveTheme(choice: string, template: (typeof TEMPLATES)[number]) {
+  if (choice === OWN && template.theme !== null) return template.theme
+  return customThemes[choice] ?? (choice as EmailTheme)
+}
 
 /**
  * Approximate the forced dark-mode inversion Gmail and Outlook.com apply.
@@ -87,7 +110,16 @@ export function App() {
 
 function Preview() {
   const [templateId, setTemplateId] = useState<string>(TEMPLATES[0]?.id ?? '')
-  const [theme, setTheme] = useState<EmailTheme>('light')
+  /**
+   * `OWN` while the template's declared palette should win.
+   *
+   * It resets to `OWN` on every template change rather than persisting a chosen theme,
+   * which is the whole point of the template-level export: with a global dropdown and a
+   * per-template design the two can disagree, and a wrong render reads as a styling bug in
+   * the template rather than as a wrong dropdown. Switching theme by hand is still allowed
+   * — comparing a design against `dark` is worth having — it just is not the default.
+   */
+  const [themeChoice, setThemeChoice] = useState<string>(OWN)
   const [viewport, setViewport] = useState<number>(600)
   /** `null` renders the email untouched; otherwise the named client's support is simulated. */
   const [clientLabel, setClientLabel] = useState<string | null>(null)
@@ -96,23 +128,33 @@ function Preview() {
 
   // Memoised because each is a full render or a full lint of the document, and they run on
   // every keystroke in the toolbar otherwise.
-  const result = useMemo(() => {
-    const template = TEMPLATES.find((t) => t.id === templateId) ?? TEMPLATES[0]!
-    return renderEmail(createElement(template.Component, template.props), {
-      theme,
-      subject: template.subject,
-      tier: 'strict',
-    })
-  }, [templateId, theme])
+  const template = TEMPLATES.find((t) => t.id === templateId) ?? TEMPLATES[0]!
+  // With no declared palette there is nothing for `OWN` to mean, so it falls back to light.
+  const effectiveChoice = themeChoice === OWN && template.theme === null ? 'light' : themeChoice
+
+  const result = useMemo(
+    () =>
+      renderEmail(createElement(template.Component, template.props), {
+        theme: resolveTheme(effectiveChoice, template),
+        subject: template.subject,
+        tier: 'strict',
+      }),
+    [template, effectiveChoice],
+  )
 
   const shown = useMemo(() => {
     const client = clientFor(clientLabel)
     return client && FEATURES ? simulate(result.html, FEATURES, client) : result.html
   }, [result, clientLabel])
 
+  // The panel has to agree with the project's own lint, or it reports findings CI does not
+  // and the preview is the one that looks wrong. `--allow` is the project-wide waiver;
+  // a template's `allow` export covers one template.
+  const allow = useMemo(() => ({ ...CASCIVO_ALLOW, ...extraAllow, ...template.allow }), [template])
+
   const findings = useMemo<Finding[]>(
-    () => (FEATURES ? lint(result.html, FEATURES, { allow: CASCIVO_ALLOW }) : []),
-    [result],
+    () => (FEATURES ? lint(result.html, FEATURES, { allow }) : []),
+    [result, allow],
   )
 
   const download = () => {
@@ -125,7 +167,7 @@ function Preview() {
     const url = URL.createObjectURL(new Blob([eml], { type: 'message/rfc822' }))
     const a = document.createElement('a')
     a.href = url
-    a.download = `${templateId}-${theme}.eml`
+    a.download = `${templateId}-${effectiveChoice === OWN ? 'own' : effectiveChoice}.eml`
     a.click()
     URL.revokeObjectURL(url)
   }
@@ -142,6 +184,9 @@ function Preview() {
               className={t.id === templateId ? 'active' : ''}
               onClick={() => {
                 setTemplateId(t.id)
+                // Back to the new template's own palette. Carrying the previous choice over
+                // is exactly the mismatch the `theme` export exists to prevent.
+                setThemeChoice(OWN)
               }}
             >
               {t.name}
@@ -170,14 +215,21 @@ function Preview() {
           <label>
             Theme
             <select
-              value={theme}
+              value={themeChoice === OWN && template.theme === null ? 'light' : themeChoice}
               onChange={(e) => {
-                setTheme(e.currentTarget.value as EmailTheme)
+                setThemeChoice(e.currentTarget.value)
               }}
             >
-              {EMAIL_THEMES.map((t) => (
-                <option key={t} value={t}>
-                  {t}
+              {template.theme === null ? null : (
+                <option value={OWN}>
+                  {typeof template.theme === 'string'
+                    ? `${template.theme} (this template)`
+                    : "this template's own palette"}
+                </option>
+              )}
+              {THEME_OPTIONS.map((t) => (
+                <option key={t.value} value={t.value}>
+                  {t.label}
                 </option>
               ))}
             </select>

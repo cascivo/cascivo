@@ -325,3 +325,34 @@ describe('renderEmail — themes', () => {
     expect(() => Text({ children: 'x' })).toThrow(/No palette in scope/)
   })
 })
+
+describe('Container — breakpoint', () => {
+  it('goes fluid below its own width by default', () => {
+    const { html } = renderEmail(
+      <Html>
+        <Head />
+        <Body>
+          <Container width={480}>x</Container>
+        </Body>
+      </Html>,
+      { subject: 's' },
+    )
+    expect(html).toContain('max-width:480px')
+  })
+
+  it('takes a breakpoint of its own, so a design spec and the markup can agree', () => {
+    const { html } = renderEmail(
+      <Html>
+        <Head />
+        <Body>
+          <Container width={600} breakpoint={620}>
+            x
+          </Container>
+        </Body>
+      </Html>,
+      { subject: 's' },
+    )
+    expect(html).toContain('max-width:620px')
+    expect(html).not.toContain('max-width:600px')
+  })
+})
