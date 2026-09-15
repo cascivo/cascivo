@@ -16,6 +16,14 @@
  *    precisely because it applies to table cells and not to `<div>`.
  *  - Widths are set as an attribute *and* in CSS. Outlook reads the attribute; everything
  *    else reads the style.
+ *  - **Alignment is the exception to that rule: attribute only.** `align="right"` on a cell
+ *    is a legacy presentational hint, and browsers implement it as a `text-align` value that
+ *    also moves *block-level* children — a nested `<table>`, which is what every button,
+ *    card and alert here is. A plain `text-align: right` does not. Setting both therefore
+ *    loses: the explicit declaration wins the cascade and the nested table snaps back to the
+ *    left. Measured in Chromium at each of the three alignments; `center` and `right` are
+ *    both affected, `left` happens to look the same either way. This is what made a
+ *    `<Column align="right">` full of a `Button` render hard left.
  */
 import type { ReactNode } from 'react'
 import { token } from '../runtime/palette.ts'
@@ -79,6 +87,15 @@ export interface ContainerProps {
    * not layout. Pass `false` for a template that supplies its own rule.
    */
   responsive?: boolean
+  /**
+   * Viewport width, in pixels, below which the container goes fluid.
+   *
+   * Defaults to `width`, which is the precise answer to "is the viewport narrower than this
+   * table". Set it when a design spec names its own — a newsletter whose breakpoint is
+   * 620px against a 600px body is a hair wider than the container, so the two never
+   * disagree visibly, but the spec and the markup should still say the same number.
+   */
+  breakpoint?: number
   /** Extra class, for a rule of your own in a {@link StyleBlock}. */
   className?: string
   style?: Style
@@ -99,7 +116,8 @@ export interface ContainerProps {
  * `clientWidth=320, scrollWidth=600` — every mobile reader scrolling sideways, and invisible
  * in a desktop preview.
  *
- * So `responsive` emits an actual width override below {@link FLUID_BELOW}. `css-at-media`
+ * So `responsive` emits an actual width override below `breakpoint`, which defaults to the
+ * container's own `width`. `css-at-media`
  * is `n` in exactly one floor client, Outlook Windows — which is desktop-only and renders at
  * a width where the fixed 600px is already right, so the rule is progressive enhancement
  * whose absence costs nothing.
@@ -115,6 +133,7 @@ export function Container({
   children,
   width = CONTENT_WIDTH,
   responsive = true,
+  breakpoint,
   className,
   style,
 }: ContainerProps) {
@@ -123,7 +142,7 @@ export function Container({
     <>
       {responsive ? (
         <StyleBlock>
-          {`@media only screen and (max-width:${fluidBelow(width)}){.${CONTAINER_CLASS}{width:100%!important}}`}
+          {`@media only screen and (max-width:${fluidBelow(breakpoint ?? width)}){.${CONTAINER_CLASS}{width:100%!important}}`}
         </StyleBlock>
       ) : null}
       <table
@@ -173,7 +192,8 @@ export function Section({
   const cell: Style = {
     padding: typeof padding === 'number' ? `${padding}px` : padding,
     backgroundColor: background,
-    textAlign: align,
+    // No `textAlign` — the `align` attribute below carries it, and duplicating it here
+    // would stop nested tables following. See the alignment rule in the file header.
   }
   return (
     <table
@@ -281,7 +301,8 @@ export function Column({
   const cell: Style = {
     width: typeof width === 'number' ? `${width}px` : width,
     padding: typeof padding === 'number' ? `${padding}px` : padding,
-    textAlign: align,
+    // No `textAlign` — see the alignment rule in the file header. `verticalAlign` keeps its
+    // style twin: `valign` has no such legacy block behaviour to be defeated.
     verticalAlign: valign,
   }
   return (

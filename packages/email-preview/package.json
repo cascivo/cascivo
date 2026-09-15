@@ -42,7 +42,8 @@
     "preview": "vp preview",
     "check": "tsc --noEmit",
     "dev": "node bin/cascivo-email-preview.mjs",
-    "test:visual": "playwright test"
+    "test:visual": "playwright test",
+    "test": "vp test"
   },
   "dependencies": {
     "vite": "^8.0.0"
@@ -55,7 +56,8 @@
     "react": "catalog:",
     "react-dom": "catalog:",
     "typescript": "catalog:",
-    "vite-plus": "catalog:"
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
   },
   "peerDependencies": {
     "@cascivo/email": "workspace:^",

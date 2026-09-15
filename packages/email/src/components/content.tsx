@@ -19,14 +19,22 @@ export interface ButtonProps {
   /**
    * Horizontal placement. Omit it to follow the cell the button sits in.
    *
-   * There is no default, and that is the fix for a bug this shipped: `align` used to
+   * There is no default, and that is half the fix for a bug this shipped: `align` used to
    * default to `'left'`, and because a button is its own table carrying its own `align`
    * attribute, that default beat the `align` of any `Column` around it. A feedback row
    * written as `<Column align="right"><Button/></Column>` rendered hard left, and the two
    * buttons of a pair ended up splayed to opposite edges of the message.
    *
-   * With no attribute emitted, a nested table follows its containing cell — verified in a
-   * browser, not assumed. Set this only to override that.
+   * Removing the default was not enough on its own, and this docstring claimed otherwise
+   * for a release — an adopter deleted their explicit `align` props on the strength of it
+   * and the pair splayed again. The other half was in `Column`, which stated its alignment
+   * twice: once as the `align` attribute, which moves a nested table, and once as
+   * `text-align` in the style, which does not and which won the cascade. See the alignment
+   * rule in `layout.tsx`'s header for the measurements.
+   *
+   * So a button now does follow its cell — but only a cell whose alignment comes from
+   * `Column`/`Section`'s `align` prop. A cell given `style={{ textAlign }}` by hand is back
+   * to the old behaviour, and a button in one needs this prop set.
    */
   align?: 'left' | 'center' | 'right'
   /** Full-width call to action. */
@@ -183,6 +191,15 @@ export function Img({ src, alt, width, height, href, style }: ImgProps) {
 export interface CardProps {
   children?: ReactNode
   padding?: number
+  /**
+   * Extra class, for a rule of your own in a `Style` block.
+   *
+   * A `Card` is a panel whose padding usually wants to shrink below the breakpoint, which
+   * is a media query, which needs a selector — so this is here for the same reason the
+   * layout primitives have one. The first cut gave classes to the layout primitives only;
+   * the split read as principled and left out two of the three cases anybody actually has.
+   */
+  className?: string
   style?: Style
 }
 
@@ -192,12 +209,13 @@ export interface CardProps {
  * One table, one cell, border and padding both on the cell — the only arrangement Outlook
  * Windows renders with the border in the right place.
  */
-export function Card({ children, padding = 24, style }: CardProps) {
+export function Card({ children, padding = 24, className, style }: CardProps) {
   return (
     <table {...TABLE_RESET} width="100%" style={{ width: '100%' }}>
       <tbody>
         <tr>
           <td
+            className={className}
             style={px(
               merge(
                 {

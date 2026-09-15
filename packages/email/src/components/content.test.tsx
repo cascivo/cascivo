@@ -8,8 +8,9 @@
  */
 import { describe, expect, it } from 'vitest'
 import { renderEmail } from '../render/render.tsx'
-import { Button } from './content.tsx'
+import { Button, Card } from './content.tsx'
 import { Column, Row } from './layout.tsx'
+import { Text } from './typography.tsx'
 
 const render = (element: Parameters<typeof renderEmail>[0]) =>
   renderEmail(element, { subject: 's' }).html
@@ -34,6 +35,23 @@ describe('Button — alignment', () => {
     expect(aligned).toEqual(['right'])
   })
 
+  it('leaves the cell stating its alignment once, as the attribute', () => {
+    // The bug this replaced: `Column` emitted `align="right"` *and* `text-align:right`. The
+    // attribute is a legacy hint that also moves block-level children — a button is a nested
+    // <table>, so that is the one that matters — and the explicit declaration beat it. Two
+    // statements of the same intent, and the weaker one won.
+    const html = render(
+      <Row>
+        <Column width="50%" align="right">
+          <Button href="https://example.com">Loved it</Button>
+        </Column>
+      </Row>,
+    )
+    const cell = /<td[^>]*align="right"[^>]*>/.exec(html)?.[0] ?? ''
+    expect(cell).toContain('align="right"')
+    expect(cell, cell).not.toMatch(/text-align/)
+  })
+
   it('still overrides the cell when asked', () => {
     const html = render(
       <Row>
@@ -49,5 +67,25 @@ describe('Button — alignment', () => {
       'left',
       'left',
     ])
+  })
+})
+
+describe('className on the content primitives', () => {
+  it('gives Card and Text a media-query hook', () => {
+    // The two shapes a responsive email actually needs one for: a panel whose padding
+    // shrinks, and a hero that comes down a size. The first cut shipped classes on the
+    // layout primitives only, and an adopter kept their `[style*="--flag"]` workaround.
+    const html = render(
+      <Card className="panel">
+        <Text className="hero">Big</Text>
+      </Card>,
+    )
+    expect(html).toMatch(/<td[^>]*class="panel"/)
+    expect(html).toMatch(/<p[^>]*class="hero"/)
+  })
+
+  it('emits no class attribute when none was asked for', () => {
+    const html = render(<Text>Plain</Text>)
+    expect(html).not.toMatch(/<p[^>]*class=/)
   })
 })

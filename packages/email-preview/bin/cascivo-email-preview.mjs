@@ -36,14 +36,38 @@ Options:
   --caniemail <file>  Can I email matrix for the conformance panel, as downloaded from
                       https://www.caniemail.com/api/data.json. Without it the panel
                       explains where to get one; everything else works.
+  --theme <file>      A module whose default export is a \`Palette\`, or a record of named
+                      ones. They join the theme dropdown beside the shipped twelve, so a
+                      brand palette can be previewed without registering it anywhere. A
+                      template can also name its own with \`export const theme\`, which is
+                      better when templates differ — see --help's note below.
+  --allow <file>      JSON of slug -> reason, merged into the conformance panel's
+                      allowlist. Point it at whatever your CI lint passes to \`lint()\` and
+                      the two stop disagreeing.
   -h, --help          Show this message
 
 What you get: every shipped theme, a viewport switcher, per-client simulation, the
 encoded-byte gauge with Gmail's clip thresholds drawn on it, the same conformance findings
-CI reports, and an .eml download.`
+CI reports, and an .eml download.
+
+Per-template exports (all optional, beside the default export):
+  subject        string
+  previewProps   props to render the template with
+  theme          an EmailTheme name or a Palette — the template renders in it by default,
+                 so a directory of differently-branded templates each looks right without
+                 anyone picking the matching entry from a dropdown
+  allow          slug -> reason, waived in the conformance panel for this template`
 
 function parse(args) {
-  const options = { dir: null, port: 4190, host: false, open: false, caniemail: null }
+  const options = {
+    dir: null,
+    port: 4190,
+    host: false,
+    open: false,
+    caniemail: null,
+    themes: null,
+    allow: null,
+  }
   for (let i = 0; i < args.length; i += 1) {
     const arg = args[i]
     if (arg === '-h' || arg === '--help') return 'help'
@@ -60,6 +84,12 @@ function parse(args) {
     } else if (arg === '--caniemail') {
       options.caniemail = args[(i += 1)]
       if (!options.caniemail) return { error: '--caniemail needs a file path' }
+    } else if (arg === '--theme') {
+      options.themes = args[(i += 1)]
+      if (!options.themes) return { error: '--theme needs a file path' }
+    } else if (arg === '--allow') {
+      options.allow = args[(i += 1)]
+      if (!options.allow) return { error: '--allow needs a file path' }
     } else if (arg.startsWith('-')) return { error: `unknown option ${arg}` }
     else if (options.dir === null) options.dir = arg
     else return { error: `unexpected argument ${arg}` }
@@ -86,13 +116,14 @@ if (parsed.dir !== null) {
   parsed.dir = dir
 }
 
-if (parsed.caniemail !== null) {
-  const file = resolve(cwd(), parsed.caniemail)
+for (const key of ['caniemail', 'themes', 'allow']) {
+  if (parsed[key] === null) continue
+  const file = resolve(cwd(), parsed[key])
   if (!existsSync(file)) {
-    stderr.write(`cascivo-email-preview: no such file: ${parsed.caniemail}\n`)
+    stderr.write(`cascivo-email-preview: no such file: ${parsed[key]}\n`)
     exit(1)
   }
-  parsed.caniemail = file
+  parsed[key] = file
 }
 
 // The matrix that ships beside this package, when one does. In the monorepo the build step
@@ -118,7 +149,14 @@ const server = await createServer({
     // would replace this one wholesale rather than merge with it.
     fs: { allow: parsed.dir ? [PKG_ROOT, parsed.dir, cwd()] : [PKG_ROOT] },
   },
-  plugins: [cascivoEmailPreview({ dir: parsed.dir, caniemail: parsed.caniemail })],
+  plugins: [
+    cascivoEmailPreview({
+      dir: parsed.dir,
+      caniemail: parsed.caniemail,
+      themes: parsed.themes,
+      allow: parsed.allow,
+    }),
+  ],
   resolve: {
     // The adopter's templates import react and @cascivo/email from their own node_modules
     // while the UI imports them from ours. Two copies of React is a blank screen and a
@@ -133,6 +171,9 @@ const url = server.resolvedUrls?.local?.[0] ?? `http://localhost:${parsed.port}/
 stdout.write(
   `\n  cascivo email preview  ${url}\n` +
     `  templates              ${parsed.dir ?? 'built-in (@cascivo/email)'}\n` +
-    `  conformance matrix     ${parsed.caniemail ? 'loaded' : 'not supplied — see --help'}\n\n`,
+    `  conformance matrix     ${parsed.caniemail ? 'loaded' : 'not supplied — see --help'}\n` +
+    (parsed.themes ? `  extra themes           ${parsed.themes}\n` : '') +
+    (parsed.allow ? `  extra allowlist        ${parsed.allow}\n` : '') +
+    '\n',
 )
 if (env.CASCIVO_PREVIEW_EXIT === '1') await server.close()

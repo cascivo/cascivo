@@ -21,6 +21,10 @@ const caniemail = existsSync(vendored)
   : resolve(root, 'scripts/email/vendor/caniemail.json')
 
 export default defineConfig({
+  // `test/` holds Playwright specs — visual baselines, the mobile-overflow sweep, button
+  // alignment — which need a browser and their own runner. Vitest owns `src/` only, or it
+  // collects them and fails on `@playwright/test`'s `test()`.
+  test: { include: ['src/**/*.test.ts'] },
   server: { port: 4190, strictPort: true },
   plugins: [cascivoEmailPreview({ caniemail: existsSync(caniemail) ? caniemail : null })],
   resolve: {

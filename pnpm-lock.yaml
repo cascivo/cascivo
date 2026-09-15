@@ -1510,6 +1510,9 @@ importers:
       vite-plus:
         specifier: 'catalog:'
         version: 0.2.1(@arethetypeswrong/core@0.18.5)(@types/node@25.9.2)(@voidzero-dev/vite-plus-core@0.2.1(@arethetypeswrong/core@0.18.5)(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(publint@0.3.21)(sass@1.100.0)(terser@5.48.0)(typescript@5.9.3))(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1)(publint@0.3.21)(sass@1.100.0)(terser@5.48.0)(typescript@5.9.3)
+      vitest:
+        specifier: 4.1.9
+        version: 4.1.9(@types/node@25.9.2)(@vitest/browser-preview@4.1.9)(@voidzero-dev/vite-plus-core@0.2.1(@arethetypeswrong/core@0.18.5)(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(publint@0.3.21)(sass@1.100.0)(terser@5.48.0)(typescript@5.9.3))(jsdom@29.1.1)
 
   packages/eslint-config:
     dependencies:

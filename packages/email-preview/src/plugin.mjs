@@ -15,6 +15,8 @@ import { join, relative, resolve } from 'node:path'
 
 const TEMPLATES_ID = 'virtual:cascivo-email-templates'
 const CANIEMAIL_ID = 'virtual:cascivo-caniemail'
+const THEMES_ID = 'virtual:cascivo-email-themes'
+const ALLOW_ID = 'virtual:cascivo-email-allow'
 
 /** Files that can hold a template. `.jsx` included: not every project is TypeScript. */
 const TEMPLATE_FILE = /\.(tsx|jsx)$/
@@ -40,10 +42,18 @@ function idFor(root, file) {
 /**
  * Generate the templates module.
  *
- * Each file contributes its default export as the element to render, plus two optional
- * named exports: `subject` (string) and `previewProps` (props to render it with). That is
- * React Email's convention, and an adopter porting a directory of templates should not have
- * to learn a second one.
+ * Each file contributes its default export as the element to render, plus optional named
+ * exports: `subject` (string), `previewProps` (props to render it with), `theme` (an
+ * `EmailTheme` name or a `Palette`), and `allow` (slugs to waive in the conformance panel).
+ * `subject` and `previewProps` are React Email's convention, and the other two follow the
+ * same shape rather than inventing a second one.
+ *
+ * `theme` is the one that closes a real gap. `RenderOptions.theme` is `EmailTheme | Palette`
+ * and the token docs say passing a `Palette` is how you rebrand — so before this the
+ * package's own answer to "how do I use my brand" was the one thing its preview could not
+ * express, and every render an adopter looked at was somebody else's email. Declaring it on
+ * the template rather than only as a global flag is also what keeps a per-template design
+ * from disagreeing with a dropdown, which is a wrong render that looks like a template bug.
  */
 function templatesModule(dir) {
   if (!dir) {
@@ -53,9 +63,9 @@ function templatesModule(dir) {
 import { PasswordReset, passwordResetSubject, Receipt, receiptSubject, Welcome, welcomeSubject } from '@cascivo/email'
 export const source = null
 export const templates = [
-  { id: 'welcome', name: 'Welcome', Component: Welcome, subject: welcomeSubject(), props: {} },
-  { id: 'password-reset', name: 'Password reset', Component: PasswordReset, subject: passwordResetSubject(), props: {} },
-  { id: 'receipt', name: 'Receipt', Component: Receipt, subject: receiptSubject(), props: {} },
+  { id: 'welcome', name: 'Welcome', Component: Welcome, subject: welcomeSubject(), props: {}, theme: null, allow: null },
+  { id: 'password-reset', name: 'Password reset', Component: PasswordReset, subject: passwordResetSubject(), props: {}, theme: null, allow: null },
+  { id: 'receipt', name: 'Receipt', Component: Receipt, subject: receiptSubject(), props: {}, theme: null, allow: null },
 ]
 `
   }
@@ -68,7 +78,8 @@ export const templates = [
     .map(
       (file, i) =>
         `  { id: ${JSON.stringify(idFor(dir, file))}, name: ${JSON.stringify(idFor(dir, file))},` +
-        ` Component: m${i}.default, subject: m${i}.subject ?? '', props: m${i}.previewProps ?? {} }`,
+        ` Component: m${i}.default, subject: m${i}.subject ?? '', props: m${i}.previewProps ?? {},` +
+        ` theme: m${i}.theme ?? null, allow: m${i}.allow ?? null }`,
     )
     .join(',\n')
 
@@ -76,19 +87,53 @@ export const templates = [
 }
 
 /**
+ * Generate the custom-themes module for `--theme <file>`.
+ *
+ * The file's default export is either one `Palette` or a record of named ones, and the two
+ * are told apart by shape rather than by a flag: a `Palette` is `--token` → string, so its
+ * values are strings, while a record of palettes has objects for values. Guessing wrong is
+ * visible immediately (an empty or a one-entry dropdown), and asking for a wrapper object
+ * would be ceremony for the common case of exporting a single brand.
+ */
+function themesModule(file) {
+  if (!file) return 'export const custom = {}\n'
+  const fallbackName = file.replace(/^.*[\\/]/, '').replace(/\.[^.]+$/, '')
+  return `import * as mod from ${JSON.stringify(file)}
+const raw = mod.default ?? mod
+const isPalette = (v) =>
+  v !== null && typeof v === 'object' && !Array.isArray(v) &&
+  Object.keys(v).length > 0 && Object.values(v).every((x) => typeof x === 'string')
+export const custom = isPalette(raw)
+  ? { ${JSON.stringify(fallbackName)}: raw }
+  : raw !== null && typeof raw === 'object'
+    ? Object.fromEntries(Object.entries(raw).filter(([, v]) => isPalette(v)))
+    : {}
+`
+}
+
+/**
  * Serve the templates and the conformance matrix as virtual modules.
  *
- * @param {{ dir?: string | null, caniemail?: string | null }} options
+ * @param {{ dir?: string | null, caniemail?: string | null, themes?: string | null, allow?: string | null }} options
  */
-export function cascivoEmailPreview({ dir = null, caniemail = null } = {}) {
+export function cascivoEmailPreview({
+  dir = null,
+  caniemail = null,
+  themes = null,
+  allow = null,
+} = {}) {
   const templatesDir = dir ? resolve(dir) : null
+  const themesFile = themes ? resolve(themes) : null
   return {
     name: 'cascivo-email-preview',
     resolveId(id) {
-      if (id === TEMPLATES_ID || id === CANIEMAIL_ID) return `\0${id}`
+      if (id === TEMPLATES_ID || id === CANIEMAIL_ID || id === THEMES_ID || id === ALLOW_ID) {
+        return `\0${id}`
+      }
       return null
     },
     load(id) {
+      if (id === `\0${THEMES_ID}`) return themesModule(themesFile)
       if (id === `\0${TEMPLATES_ID}`) return templatesModule(templatesDir)
       if (id === `\0${CANIEMAIL_ID}`) {
         // Absent rather than fatal: the conformance panel is the best thing in the preview,
@@ -96,6 +141,12 @@ export function cascivoEmailPreview({ dir = null, caniemail = null } = {}) {
         // The UI shows how to supply it instead.
         if (!caniemail) return 'export default null'
         return `export default ${readFileSync(caniemail, 'utf8')}`
+      }
+      if (id === `\0${ALLOW_ID}`) {
+        // A project that waives a slug in CI should not see the panel report it. Without
+        // this the preview and the project's own lint disagree, and the preview is the one
+        // that looks wrong.
+        return `export default ${allow ? readFileSync(allow, 'utf8') : '{}'}`
       }
       return null
     },
