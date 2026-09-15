@@ -66,12 +66,12 @@ function Fixture() {
             <Spacer height={24} />
             <Card>
               <Row>
-                <Column width="50%">
+                <Column width="50%" stack>
                   <Text variant="muted" size="14px">
                     Requested from
                   </Text>
                 </Column>
-                <Column width="50%">
+                <Column width="50%" stack>
                   <Badge tone="warning">Pending</Badge>
                 </Column>
               </Row>
@@ -122,13 +122,35 @@ describe('renderEmail — document', () => {
 })
 
 describe('renderEmail — structural invariants', () => {
-  it('emits no class attribute anywhere', () => {
-    // Everything is inlined; a class would depend on a stylesheet Gmail may strip.
-    expect(html).not.toMatch(/\sclass="/)
+  it('uses a class only as a media-query target, never to carry style', () => {
+    // Every visual declaration stays inline, because Gmail's mobile app strips <style> for
+    // non-Gmail accounts. The only classes in the output are the hooks the responsive rules
+    // select on — losing the stylesheet must cost the breakpoint and nothing else.
+    const classes = [...html.matchAll(/\sclass="([^"]*)"/g)].flatMap((m) => m[1]!.split(/\s+/))
+    expect(classes.length).toBeGreaterThan(0)
+    for (const name of new Set(classes)) {
+      expect(['cascivo-container', 'cascivo-stack'], name).toContain(name)
+    }
   })
 
-  it('emits no <style> block', () => {
-    expect(html).not.toMatch(/<style/i)
+  it('emits exactly one <style>, in <head>, holding only media queries', () => {
+    // Hoisted and merged from wherever the components declared them. Anything in here that
+    // is not a media query could have been an inline style, and should have been.
+    const blocks = [...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)]
+    expect(blocks).toHaveLength(1)
+    expect(html.indexOf('<style')).toBeLessThan(html.indexOf('</head>'))
+    expect(blocks[0]![1]!.replace(/@media[^{]*\{(?:[^{}]*\{[^{}]*\})*\}/g, '').trim()).toBe('')
+  })
+
+  it('never leaves a hoist marker in the delivered HTML', () => {
+    expect(html).not.toContain('data-cascivo-hoist')
+  })
+
+  it('states the same responsive rule once however many components asked for it', () => {
+    // Four Containers emit four identical overrides; an email pays for each one twice over
+    // after quoted-printable encoding.
+    const overrides = [...html.matchAll(/cascivo-container\{/g)]
+    expect(overrides).toHaveLength(1)
   })
 
   it('carries no resource hint, which React 19 emits for every image by itself', () => {

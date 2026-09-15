@@ -179,6 +179,69 @@ Images carry no dimensions in Markdown and `Img` requires a width, so `imageWidt
 one — pass the inner width of your container. A fenced block does not wrap, because
 `css-white-space` is unsupported in Outlook Windows; keep those lines short.
 
+## It has to survive a phone
+
+A 600px email in a 320px viewport is the most common way a template ships broken, and the
+one the conformance lint cannot catch — it reads CSS _feature support_, and this is layout.
+`max-width: 100%` looks like it handles it and does not: a table will not lay out below the
+min-content width of what is inside it.
+
+Two rules do handle it, and they are not interchangeable.
+
+**`Container` is responsive by default.** It emits a width override below its own width, so
+the wrapper goes fluid on a phone. Pass `responsive={false}` if you are supplying your own.
+
+**Columns have to be told to stack.** A `Row` keeps the min-content width of its columns
+however fluid its container is, so a two-column layout still overflows until each column
+opts in:
+
+```tsx
+<Row>
+  <Column width="50%" stack>
+    …
+  </Column>
+  <Column width="50%" stack>
+    …
+  </Column>
+</Row>
+```
+
+It is opt-in because not every row should reflow — a logo beside a date is meant to stay on
+one line at any width.
+
+Measured at 320px, a two-column newsletter overflowed by 280px with the container override
+alone, and by nothing once the columns stacked.
+
+**A fixed-width image still sets a floor.** A 240px image in a 24px-padded section cannot go
+below 304px however fluid its ancestors are, because a sized replaced element contributes
+its own width to min-content. Size images for the narrowest column they will occupy.
+
+`@media` is `n` in exactly one floor client, Outlook Windows — which is desktop-only and
+renders at a width where the fixed layout is already right, so these rules are progressive
+enhancement whose absence costs nothing.
+
+### Rules of your own
+
+Media queries and pseudo-classes are the two things an inline style genuinely cannot
+express, which is the only reason a `<style>` block exists here at all. `Container`,
+`Section`, `Row`, `Column` and `Card` take a `className` to give a rule something to select,
+and `Style` puts the rule somewhere — wherever you write it, it is hoisted into `<head>`
+and merged with every other one:
+
+```tsx
+import { Column, Row, Style } from '@cascivo/email'
+;<>
+  <Style>{`@media only screen and (max-width:600px){.hide-sm{display:none!important}}`}</Style>
+  <Row>
+    <Column className="hide-sm">…</Column>
+  </Row>
+</>
+```
+
+Use a class, not the `[style*='--flag']` attribute-selector trick: `css-selector-attribute`
+is `n` in Outlook Windows where `css-selector-class` is merely partial in two Gmail apps, so
+the workaround is worse supported than the plain thing it stands in for.
+
 ## The rules that are not negotiable
 
 These are enforced, not advisory. The conformance lint fails the build on the first, and the
@@ -187,6 +250,8 @@ structural invariants in `packages/email/src/render/render.test.tsx` on the rest
 - **Layout is tables.** Flexbox, Grid and `gap` are all unsupported in Outlook Windows. The
   layout primitives (`Section`, `Row`, `Column`, `Container`) are presentational tables and
   there is no non-table alternative.
+- **A phone gets a media query, and only a media query.** See above — it is the one thing
+  inline styles cannot do, and the only reason this package emits a `<style>` block.
 - **Padding goes on a cell.** `padding` on a `<div>` is dropped by Outlook Windows.
 - **No `rem`.** Every length is converted to `px` at render time; write `'16px'`.
 - **Images need `alt` and `width`, and must be raster.** Both are required by the type.
@@ -198,15 +263,76 @@ structural invariants in `packages/email/src/render/render.test.tsx` on the rest
 ## Preview it
 
 ```sh
-pnpm --filter @cascivo/email-preview dev
+npx @cascivo/email-preview ./emails
 ```
 
-Viewport switcher, all twelve themes, per-client simulation, a live encoded-byte gauge with
-the clip thresholds drawn on it, the same conformance findings CI reports, and an `.eml`
-download.
+Point it at a directory and every `.tsx` or `.jsx` file in it becomes a template: the default
+export is rendered, and the optional named exports `subject` (a string) and `previewProps`
+(the props to preview with) are used if present. Files matching `.test.`, `.spec.`,
+`.stories.` or a leading `_` are skipped. Run it with no directory to browse the templates
+that ship with the package.
 
-That last one is the cheapest way to see an email in a _real_ client: download it and drag it
-into Outlook, Apple Mail, or anything else on any device. No service, no account.
+Your templates go through Vite, so edits hot-reload — the loop is edit, look, edit.
+
+You get a viewport switcher, all twelve themes, per-client simulation, a live encoded-byte
+gauge with the clip thresholds drawn on it, and an `.eml` download. That last one is the
+cheapest way to see an email in a _real_ client: download it and drag it into Outlook, Apple
+Mail, or anything else on any device. No service, no account.
+
+For the conformance findings — the same ones CI reports — hand it the Can I email matrix,
+which is not bundled because it is ~483 KB of test data:
+
+```sh
+curl -o caniemail.json https://www.caniemail.com/api/data.json
+npx @cascivo/email-preview ./emails --caniemail caniemail.json
+```
+
+Without it everything else still works and the panel says where to get one, rather than
+showing a clean bill of health it has not checked.
+
+`--port`, `--host` and `--open` do what you would expect; `--help` lists them.
+
+## Check it against the clients
+
+`lint()` reads a finished render and reports anything a floor client cannot support. It
+needs the [Can I email](https://www.caniemail.com) matrix, which is not bundled (~483 KB of
+test data), so the CLI does the fetching, caching and wiring for you:
+
+```sh
+cascivo email lint dist/emails/*.html
+node render.js | cascivo email lint -
+```
+
+It exits non-zero on a **blocked** finding — a floor client genuinely cannot do it — and
+never on a **caveat**, which is partial support worth knowing about. `--data <file>` uses a
+local copy instead of fetching, which is what you want in CI or offline.
+
+The programmatic form is the same check, if you would rather wire it in yourself:
+
+```ts
+import { CASCIVO_ALLOW, indexFeatures, lint } from '@cascivo/email'
+
+const findings = lint(html, indexFeatures(matrix), { allow: CASCIVO_ALLOW })
+```
+
+### See what a specific client sees
+
+`simulate()` is the other half, and the more interesting one. It takes a render and strips
+the declarations a named client does not support, so you get the document _that client_
+would lay out — which is how you find a layout that only holds together because of a feature
+Outlook lacks:
+
+```ts
+import { simulate, SIMULATED_CLIENTS } from '@cascivo/email'
+
+const outlook = SIMULATED_CLIENTS.find((c) => c.label === 'Outlook (Windows)')!
+const degraded = simulate(html, indexFeatures(matrix), outlook)
+```
+
+`SIMULATED_CLIENTS` is the list you can pass. This is what the preview's client switcher
+does, and what the visual baselines screenshot — a template is captured both as written and
+as Outlook Windows would reduce it, so a layout that depends on an unsupported feature shows
+up as a diff rather than in an inbox.
 
 ## Keep it under the clip threshold
 

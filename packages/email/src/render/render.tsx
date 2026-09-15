@@ -12,6 +12,7 @@ import type { Palette } from '../tokens/resolve.ts'
 import { extractPreheader, toPlainText, type PlainTextOptions } from './plaintext.ts'
 import { quotedPrintable, type EmailMessage } from './message.ts'
 import { minify } from './minify.ts'
+import { hoistStyles } from './hoist.ts'
 import { correctReactOutput } from './react-output.ts'
 
 /**
@@ -141,9 +142,11 @@ export function renderEmail(element: ReactElement, options: RenderOptions = {}):
     text,
   } = options
 
-  const body = correctReactOutput(
-    withPalette(typeof theme === 'string' ? PALETTES[theme] : theme, () =>
-      renderToStaticMarkup(element),
+  const body = hoistStyles(
+    correctReactOutput(
+      withPalette(typeof theme === 'string' ? PALETTES[theme] : theme, () =>
+        renderToStaticMarkup(element),
+      ),
     ),
   )
 

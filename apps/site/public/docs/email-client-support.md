@@ -72,6 +72,10 @@ A blocked feature may still be used when its absence **degrades rather than brea
 email stays legible, correct and actionable in the client that lacks it. This is the whole
 list:
 
+### `css-at-media`
+
+Outlook Windows is the only floor client that reports `n`, and it is the one client that never needs the rule: it is desktop-only, and every media query this package emits narrows a fixed-width layout below a phone breakpoint. Absence there degrades to the same fixed 600px layout Outlook rendered before the rule existed. The alternative — no media query — is a 600px table in a 320px viewport, which is a measured 280px of sideways scroll for every mobile reader, so the trade is not close.
+
 ### `css-border-radius`
 
 Outlook Windows and Yahoo render square corners. Buttons, cards and badges stay fully legible and clickable — only the corner shape is lost. The alternative is a VML `v:roundrect` per button: ~400 bytes each, unable to inherit the anchor styles, and a second implementation of every button to keep in sync. Square corners in two clients is the better trade.

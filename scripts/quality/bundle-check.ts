@@ -129,6 +129,10 @@ const NO_JS_BUDGET: Record<string, string> = {
   '@cascivo/docs': 'content-only — markdown + JSON reference bundle, no JS entry',
   '@cascivo/docspack':
     'content-only — .llms/ chunk markdown + manifest for the docspack indexer, no JS entry',
+  '@cascivo/email-preview':
+    'bin-only — a dev server reached through `npx`, never imported. Its JS is the CLI and ' +
+    'the UI Vite serves at dev time, neither of which lands in an adopter bundle, so a ' +
+    'gzip budget would measure nothing an adopter ships.',
 }
 
 interface PackageJson {

@@ -48,6 +48,13 @@ export interface LintOptions {
  * carrying its own idea of what is acceptable.
  */
 export const CASCIVO_ALLOW: Readonly<Record<string, string>> = {
+  'css-at-media':
+    'Outlook Windows is the only floor client that reports `n`, and it is the one client ' +
+    'that never needs the rule: it is desktop-only, and every media query this package ' +
+    'emits narrows a fixed-width layout below a phone breakpoint. Absence there degrades ' +
+    'to the same fixed 600px layout Outlook rendered before the rule existed. The ' +
+    'alternative — no media query — is a 600px table in a 320px viewport, which is a ' +
+    'measured 280px of sideways scroll for every mobile reader, so the trade is not close.',
   'css-border-radius':
     'Outlook Windows and Yahoo render square corners. Buttons, cards and badges stay ' +
     'fully legible and clickable — only the corner shape is lost. The alternative is a ' +

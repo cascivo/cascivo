@@ -19,6 +19,8 @@ export type {
   SpacerProps,
 } from './layout.tsx'
 export { Markdown } from './markdown.tsx'
+export { Style } from './style.tsx'
+export type { StyleProps } from './style.tsx'
 export type { MarkdownProps } from './markdown.tsx'
 export { Footer, Heading, Link, List, Text } from './typography.tsx'
 export type {

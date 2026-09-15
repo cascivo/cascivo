@@ -16,6 +16,18 @@ export interface ButtonProps {
   children?: ReactNode
   href: string
   variant?: 'primary' | 'secondary' | 'destructive'
+  /**
+   * Horizontal placement. Omit it to follow the cell the button sits in.
+   *
+   * There is no default, and that is the fix for a bug this shipped: `align` used to
+   * default to `'left'`, and because a button is its own table carrying its own `align`
+   * attribute, that default beat the `align` of any `Column` around it. A feedback row
+   * written as `<Column align="right"><Button/></Column>` rendered hard left, and the two
+   * buttons of a pair ended up splayed to opposite edges of the message.
+   *
+   * With no attribute emitted, a nested table follows its containing cell — verified in a
+   * browser, not assumed. Set this only to override that.
+   */
   align?: 'left' | 'center' | 'right'
   /** Full-width call to action. */
   block?: boolean
@@ -42,7 +54,7 @@ export function Button({
   children,
   href,
   variant = 'primary',
-  align = 'left',
+  align,
   block = false,
   ping,
   style,

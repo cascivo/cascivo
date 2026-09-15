@@ -85,18 +85,32 @@ pnpm email:check
 ### 5. Offer the preview
 
 ```sh
-pnpm --filter @cascivo/email-preview dev
+npx @cascivo/email-preview ./emails          # an adopter's own templates
+pnpm --filter @cascivo/email-preview dev     # inside this repo
 ```
 
+The `--filter` form is a workspace filter and works only inside this monorepo; never give it
+to an adopter, which the recipe used to do. Every `.tsx` in the directory is a template: its
+default export is rendered, with optional `subject` and `previewProps` named exports.
+
 Viewport switcher, twelve themes, per-client simulation, live byte gauge, `.eml` download.
-The `.eml` is the cheapest way to see the mail in a real client — download and drag it into
-Outlook or Apple Mail.
+Conformance findings need the matrix: `--caniemail <file>` from
+`https://www.caniemail.com/api/data.json`. The `.eml` is the cheapest way to see the mail in
+a real client — download and drag it into Outlook or Apple Mail.
 
 ## Rules the lint will enforce anyway
 
 Knowing them saves a round trip:
 
 - **No flexbox, grid or `gap`.** Unsupported in Outlook Windows. Use `Row`/`Column`.
+- **A `Row` needs `stack` on its columns to survive a phone.** `Container` is responsive by
+  default, but a row keeps its columns' min-content width until each one opts in with
+  `<Column stack>`. Measured: 280px of sideways scroll at 320px without it. A fixed-width
+  image still floors its column, so size images for the narrowest column they occupy.
+- **`className` + `Style` for anything else responsive.** `Container`, `Section`, `Row`,
+  `Column` and `Card` take a `className`; `Style` holds the rule and is hoisted into
+  `<head>`. Never reach for the `[style*='--flag']` trick — an attribute selector is `n` in
+  Outlook Windows, where a class is not.
 - **No `rem`.** Write `'16px'`. Lengths are converted at render time; a `rem` you introduce
   in a raw style will be too.
 - **No custom properties.** Read tokens through `token()`, which resolves to a literal.
