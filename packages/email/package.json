@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/email",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": false,
   "description": "Render cascivo-themed transactional email — table-based, inline-styled HTML, no client JS, zero runtime dependencies. Conformance-linted against the Can I email matrix. Docs offline: npx @cascivo/docs",
   "keywords": [
