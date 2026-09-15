@@ -115,8 +115,15 @@
     },
     {
       "name": "cascivo",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "releases": [
+        {
+          "version": "1.2.0",
+          "level": "minor",
+          "notes": [
+            "Email: a publishable preview, responsive layout primitives, and `cascivo email lint`"
+          ]
+        },
         {
           "version": "1.1.0",
           "level": "minor",
@@ -288,7 +295,7 @@
     },
     {
       "name": "@cascivo/docs",
-      "version": "0.2.8",
+      "version": "0.2.9",
       "releases": [
         {
           "version": "0.2.0",
@@ -301,7 +308,7 @@
     },
     {
       "name": "@cascivo/docspack",
-      "version": "0.2.2",
+      "version": "0.2.3",
       "releases": [
         {
           "version": "0.2.0",
@@ -353,8 +360,15 @@
     },
     {
       "name": "@cascivo/email",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "releases": [
+        {
+          "version": "0.3.0",
+          "level": "minor",
+          "notes": [
+            "Email: a publishable preview, responsive layout primitives, and `cascivo email lint`"
+          ]
+        },
         {
           "version": "0.2.0",
           "level": "minor",
@@ -364,8 +378,16 @@
     },
     {
       "name": "@cascivo/email-preview",
-      "version": "0.1.0",
-      "releases": []
+      "version": "1.0.0",
+      "releases": [
+        {
+          "version": "1.0.0",
+          "level": "minor",
+          "notes": [
+            "Email: a publishable preview, responsive layout primitives, and `cascivo email lint`"
+          ]
+        }
+      ]
     },
     {
       "name": "@cascivo/eslint-config",
