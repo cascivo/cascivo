@@ -52,6 +52,14 @@ export interface TextProps {
   /** `muted` for secondary copy — reads from `--cascivo-color-text-muted`. */
   variant?: 'default' | 'muted'
   align?: 'left' | 'center' | 'right'
+  /**
+   * Extra class, for a rule of your own in a `Style` block.
+   *
+   * The other case a media query reaches for: a hero line that has to come down a size on a
+   * phone. `font-size` is the one thing a breakpoint most often changes, and there was no
+   * way to target it.
+   */
+  className?: string
   style?: Style
 }
 
@@ -62,7 +70,14 @@ export interface TextProps {
  * the layout shifts under it, which is why the size prop is a string rather than a scale
  * step — a caller that wants smaller must say so explicitly and see it in review.
  */
-export function Text({ children, size = '16px', variant = 'default', align, style }: TextProps) {
+export function Text({
+  children,
+  size = '16px',
+  variant = 'default',
+  align,
+  className,
+  style,
+}: TextProps) {
   const base: Style = {
     margin: 0,
     fontFamily: fontStack('sans'),
@@ -74,7 +89,11 @@ export function Text({ children, size = '16px', variant = 'default', align, styl
         : token('--cascivo-color-foreground'),
     textAlign: align,
   }
-  return <p style={px(merge(base, style))}>{children}</p>
+  return (
+    <p className={className} style={px(merge(base, style))}>
+      {children}
+    </p>
+  )
 }
 
 export interface LinkProps {
@@ -182,7 +201,8 @@ export function Footer({ children, style }: FooterProps) {
                   fontSize: '14px',
                   lineHeight: '1.5',
                   color: token('--cascivo-color-text-muted'),
-                  textAlign: 'center',
+                  // No `textAlign` — `align="center"` on the cell carries it, and stating it
+                  // twice would stop a nested table centring. See `layout.tsx`'s header.
                 },
                 style,
               ),
