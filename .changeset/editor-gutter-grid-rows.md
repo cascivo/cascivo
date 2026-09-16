@@ -5,6 +5,7 @@
 'cascivo': patch
 '@cascivo/docs': patch
 '@cascivo/docspack': patch
+'@cascivo/mcp': patch
 ---
 
 Editor: line numbers, the current-line highlight and the left gutter all survive a soft wrap
