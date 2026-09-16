@@ -1,7 +1,7 @@
 @layer cascivo.component {
   .root {
-    display: flex;
-    overflow: auto;
+    position: relative;
+    overflow: hidden;
     max-block-size: 100%;
     background: var(--cascivo-editor-bg);
     color: var(--cascivo-editor-fg);
@@ -11,57 +11,19 @@
     font-size: var(--cascivo-text-sm);
     line-height: var(--cascivo-leading-normal);
     tab-size: var(--cascivo-editor-tab-size, 2);
+
+    /* Gutter geometry lives in the grid TRACK, not in padding: a host reset such as
+       Tailwind Preflight's `* { padding: 0 }` cannot collapse a track size or a gap,
+       and that reset is exactly what left adopters with line numbers jammed against
+       the code. `--cascivo-editor-gutter-digits` is set inline from the line count. */
+    --cascivo-editor-gutter-gap: var(--cascivo-space-3);
+    --cascivo-editor-gutter-width: calc(
+      var(--cascivo-editor-gutter-digits, 2) * 1ch + var(--cascivo-space-3) + var(--cascivo-space-2)
+    );
   }
 
-  /* Line-number gutter — decorative, scroll-locked, never in the a11y tree. */
-  .gutter {
-    flex: 0 0 auto;
-    padding-block: var(--cascivo-space-3);
-    padding-inline-start: var(--cascivo-space-3);
-    padding-inline-end: var(--cascivo-space-2);
-    background: var(--cascivo-editor-gutter-bg);
-    color: var(--cascivo-editor-gutter-fg);
-    text-align: end;
-    user-select: none;
-  }
-
-  .gutterLine {
-    display: block;
-    min-block-size: 1lh;
-  }
-
-  /* Active-line marker — positioned imperatively via --cascivo-editor-caret-line,
-     mirroring the editor's current-line row highlight. */
-  .gutterActive {
-    position: absolute;
-    inset-inline: 0;
-    top: var(--cascivo-space-3);
-    block-size: 1lh;
-    transform: translateY(calc(var(--cascivo-editor-caret-line, 0) * 1lh));
-    background: var(--cascivo-editor-gutter-active, var(--cascivo-editor-current-line));
-    pointer-events: none;
-  }
-
-  .pre {
-    flex: 1 1 auto;
-    min-inline-size: 0;
-    margin-block: 0;
-    margin-inline: 0;
-    padding-block: var(--cascivo-space-3);
-    padding-inline: var(--cascivo-space-3);
-    white-space: pre;
-    font: inherit;
-    tab-size: inherit;
-  }
-
-  .code {
-    font: inherit;
-  }
-
-  /* Each source line is its own row so wrapping and line-numbers stay aligned. */
-  .line {
-    display: block;
-    min-block-size: 1lh;
+  .root[data-line-numbers='false'] {
+    --cascivo-editor-gutter-width: 0px;
   }
 
   .root[data-wrap='true'] .pre {
@@ -69,8 +31,83 @@
     word-break: break-word;
   }
 
-  .root[data-line-numbers='false'] .gutter {
+  /* Opaque backdrop behind the line-number column. The numbers themselves are grid
+     cells that only span the rows that exist, so the strip is what keeps the gutter
+     colour running to the bottom of a container taller than the document. */
+  .gutterBg {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: var(--cascivo-editor-gutter-width);
+    background: var(--cascivo-editor-gutter-bg);
+    pointer-events: none;
+  }
+
+  .pre {
+    overflow: auto;
+    max-block-size: 100%;
+    margin-block: 0;
+    margin-inline: 0;
+    padding-block: var(--cascivo-space-3);
+    padding-inline: 0;
+    white-space: pre;
+    font: inherit;
+    tab-size: inherit;
+  }
+
+  .root[data-line-numbers='false'] .gutterBg {
     display: none;
+  }
+
+  /* ── The row grid — shared by Highlight and CodeEditor ──────────────────────
+     Column 1 is the line-number gutter, column 2 the code. Pairing each number
+     with its own line in ONE grid row is what keeps them aligned when a line soft
+     wraps: the row grows to fit the code and the number grows with it.
+     `position: relative` makes the grid the containing block for the editor's
+     absolutely-positioned current-line marker, which is placed by `grid-row`. */
+  .code {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--cascivo-editor-gutter-width) minmax(0, 1fr);
+    column-gap: var(--cascivo-editor-gutter-gap);
+    font: inherit;
+  }
+
+  /* The code cell. `grid-column: 2` is explicit so a `lineNumbers={false}` render —
+     which emits no number cells at all — still lays the code out in column 2 rather
+     than auto-flowing every other line into the (zero-width) gutter column. */
+  .line {
+    grid-column: 2;
+    min-block-size: 1lh;
+    padding-inline-end: var(--cascivo-space-3);
+  }
+
+  /* The line number. Sticky so it survives the horizontal scroll a non-wrapping
+     document has, and opaque so code scrolled underneath it does not show through.
+     Decorative: `aria-hidden` in the markup, unselectable so it is never copied. */
+  .num {
+    position: sticky;
+    inset-inline-start: 0;
+    z-index: 1;
+    min-block-size: 1lh;
+    padding-inline-end: var(--cascivo-space-2);
+    background: var(--cascivo-editor-gutter-bg);
+    color: var(--cascivo-editor-gutter-fg);
+    text-align: end;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  /* A virtualization spacer stands in for the rows outside the rendered window. */
+  .spacer {
+    grid-column: 1 / -1;
+  }
+
+  /* Marks the grid as CodeEditor's decorative overlay (a real `<textarea>` carries
+     the text underneath) rather than Highlight's only copy of the code. Read by the
+     forced-colors rule at the end of this file. */
+  .overlay {
+    font: inherit;
   }
 
   /* ── Syntax palette — one class per TokenKind, colored by tokens (T3). ── */
@@ -133,5 +170,15 @@
   .bracketMatch {
     border-radius: 2px;
     outline: 1px solid var(--cascivo-editor-bracket, currentColor);
+  }
+}
+
+/* Deliberately unlayered: an accessibility guarantee must outrank every cascivo layer.
+   High-contrast mode flattens the syntax palette, so the editor shows its textarea's own
+   text instead. Hiding only the code cells — not the whole grid — keeps the line numbers
+   visible and keeps the rows at the heights those numbers are aligned to. */
+@media (forced-colors: active) {
+  .overlay .line {
+    visibility: hidden;
   }
 }

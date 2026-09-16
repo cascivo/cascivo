@@ -118,6 +118,8 @@ Required. The component's primary job needs client JavaScript, so do not render 
 - `--cascivo-editor-gutter-bg`
 - `--cascivo-editor-gutter-fg`
 - `--cascivo-editor-gutter-active`
+- `--cascivo-editor-gutter-width`
+- `--cascivo-editor-gutter-gap`
 - `--cascivo-editor-current-line`
 - `--cascivo-editor-selection`
 - `--cascivo-editor-border`
