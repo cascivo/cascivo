@@ -473,9 +473,13 @@
     { "name": "--cascivo-dropdown-anchor", "resolvedDefault": "--dropdown-trigger" },
     { "name": "--cascivo-editor-bracket", "resolvedDefault": "currentColor" },
     { "name": "--cascivo-editor-caret-line", "resolvedDefault": "0" },
+    { "name": "--cascivo-editor-caret-row", "resolvedDefault": "1 / 2" },
+    { "name": "--cascivo-editor-gutter-active", "resolvedDefault": "transparent" },
+    { "name": "--cascivo-editor-gutter-digits", "resolvedDefault": "2" },
+    { "name": "--cascivo-editor-gutter-gap", "resolvedDefault": "var(--cascivo-space-3)" },
     {
-      "name": "--cascivo-editor-gutter-active",
-      "resolvedDefault": "var(--cascivo-editor-current-line)"
+      "name": "--cascivo-editor-gutter-width",
+      "resolvedDefault": "calc(\n      var(--cascivo-editor-gutter-digits, 2) * 1ch + var(--cascivo-space-3) + var(--cascivo-space-2)\n    )"
     },
     { "name": "--cascivo-editor-match", "resolvedDefault": "rgba(125, 211, 252, 0.28)" },
     { "name": "--cascivo-editor-match-current", "resolvedDefault": "rgba(250, 204, 21, 0.5)" },

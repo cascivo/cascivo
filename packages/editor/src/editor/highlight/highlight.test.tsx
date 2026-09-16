@@ -16,9 +16,29 @@ describe('Highlight', () => {
 
   it('renders the gutter when lineNumbers is set', () => {
     const { container } = render(<Highlight value={'a\nb\nc'} lineNumbers />)
-    const gutter = container.querySelector('[aria-hidden="true"]')
-    expect(gutter).not.toBeNull()
-    expect(gutter!.textContent).toBe('123')
+    expect(container.querySelector(`.${hl['gutterBg']}`)).not.toBeNull()
+    const numbers = [...container.querySelectorAll(`code > .${hl['num']}`)]
+    expect(numbers.map((n) => n.textContent)).toEqual(['1', '2', '3'])
+  })
+
+  // The regression this structure exists for: a separate gutter column numbers its
+  // rows one line box at a time, so one soft-wrapped line pushes every number below
+  // it out of step with the code. Pairing each number with its own line as adjacent
+  // cells of ONE grid row makes that impossible — jsdom has no layout, so what is
+  // asserted here is the pairing the grid row depends on.
+  it('pairs every line number with its own line, in order', () => {
+    const { container } = render(<Highlight value={'a\nb\nc'} lineNumbers wrap />)
+    const cells = [...(container.querySelector('code') as HTMLElement).children]
+    expect(cells.map((c) => c.textContent)).toEqual(['1', 'a', '2', 'b', '3', 'c'])
+    // Numbers are decorative: never announced, never copied with the code.
+    expect(cells[0]!.getAttribute('aria-hidden')).toBe('true')
+    expect(cells[1]!.getAttribute('aria-hidden')).toBeNull()
+  })
+
+  it('emits no gutter cells when lineNumbers is off', () => {
+    const { container } = render(<Highlight value={'a\nb'} />)
+    expect(container.querySelectorAll(`.${hl['num']}`)).toHaveLength(0)
+    expect(container.querySelector(`.${hl['gutterBg']}`)).toBeNull()
   })
 
   it('keeps a row for blank lines', () => {

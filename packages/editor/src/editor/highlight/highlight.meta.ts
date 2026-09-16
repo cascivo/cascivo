@@ -66,7 +66,7 @@ export const meta: ComponentMeta = {
       name: 'gutterRef',
       type: 'Ref<HTMLDivElement>',
       required: false,
-      description: 'Ref to the gutter column (used by `CodeEditor` for scroll-sync).',
+      description: "Ref to the line-number gutter's backdrop strip.",
     },
     {
       name: 'preRef',
@@ -80,6 +80,8 @@ export const meta: ComponentMeta = {
     '--cascivo-editor-fg',
     '--cascivo-editor-gutter-bg',
     '--cascivo-editor-gutter-fg',
+    '--cascivo-editor-gutter-width',
+    '--cascivo-editor-gutter-gap',
     '--cascivo-editor-border',
   ],
   accessibility: {

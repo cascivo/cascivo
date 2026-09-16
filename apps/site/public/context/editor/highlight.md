@@ -33,7 +33,7 @@ Renders a read-only <pre><code>; the line-number gutter is aria-hidden and an op
 | `ariaLabel`   | `string`              | No       | —         | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `label`       | `string`              | No       | —         | Accessible label for the code block. Not rendered — screen readers only.                                                                     |
 | `className`   | `string`              | No       | —         | Additional CSS class names merged onto the root element.                                                                                     |
-| `gutterRef`   | `Ref<HTMLDivElement>` | No       | —         | Ref to the gutter column (used by `CodeEditor` for scroll-sync).                                                                             |
+| `gutterRef`   | `Ref<HTMLDivElement>` | No       | —         | Ref to the line-number gutter's backdrop strip.                                                                                              |
 | `preRef`      | `Ref<HTMLPreElement>` | No       | —         | Ref to the scrollable `<pre>` (used by `CodeEditor` for scroll-sync).                                                                        |
 
 ## Tokens
@@ -42,6 +42,8 @@ Renders a read-only <pre><code>; the line-number gutter is aria-hidden and an op
 - `--cascivo-editor-fg`
 - `--cascivo-editor-gutter-bg`
 - `--cascivo-editor-gutter-fg`
+- `--cascivo-editor-gutter-width`
+- `--cascivo-editor-gutter-gap`
 - `--cascivo-editor-border`
 
 ## Examples
@@ -70,7 +72,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Highlight is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-editor-bg, --cascivo-editor-fg, --cascivo-editor-gutter-bg, --cascivo-editor-gutter-fg, --cascivo-editor-border
+  --cascivo-editor-bg, --cascivo-editor-fg, --cascivo-editor-gutter-bg, --cascivo-editor-gutter-fg, --cascivo-editor-gutter-width, --cascivo-editor-gutter-gap, --cascivo-editor-border
 
 Accessibility: role "group", WCAG 2.1-AA, keyboard: Scroll (no interactive controls). Keep it AA.
 

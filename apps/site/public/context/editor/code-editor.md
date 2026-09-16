@@ -83,6 +83,8 @@ A slash-command entry.
 - `--cascivo-editor-gutter-bg`
 - `--cascivo-editor-gutter-fg`
 - `--cascivo-editor-gutter-active`
+- `--cascivo-editor-gutter-width`
+- `--cascivo-editor-gutter-gap`
 - `--cascivo-editor-current-line`
 - `--cascivo-editor-selection`
 - `--cascivo-editor-border`
@@ -155,7 +157,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 CodeEditor is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-editor-bg, --cascivo-editor-fg, --cascivo-editor-gutter-bg, --cascivo-editor-gutter-fg, --cascivo-editor-gutter-active, --cascivo-editor-current-line, --cascivo-editor-selection, --cascivo-editor-border, --cascivo-editor-match, --cascivo-editor-match-current, --cascivo-editor-bracket
+  --cascivo-editor-bg, --cascivo-editor-fg, --cascivo-editor-gutter-bg, --cascivo-editor-gutter-fg, --cascivo-editor-gutter-active, --cascivo-editor-gutter-width, --cascivo-editor-gutter-gap, --cascivo-editor-current-line, --cascivo-editor-selection, --cascivo-editor-border, --cascivo-editor-match, --cascivo-editor-match-current, --cascivo-editor-bracket
 
 Accessibility: role "textbox", WCAG 2.1-AA, keyboard: Tab (indent)/Shift+Tab (dedent)/Mod+Z / Mod+Shift+Z (undo / redo)/Mod+F (find)/Mod+Alt+F (replace)/Mod+S (save)// (open slash-command menu when commands are provided)/Up/Down + Enter/Tab (navigate + insert a command), Escape (dismiss)/Standard textarea editing. Keep it AA.
 Flexible: languages, large documents.

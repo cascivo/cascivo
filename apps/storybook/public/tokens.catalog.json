@@ -10,7 +10,7 @@
   ],
   "resolutionTheme": "light",
   "generatedAt": "2026-09-08",
-  "count": 349,
+  "count": 353,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -2893,11 +2893,47 @@
       "canonical": true
     },
     {
-      "name": "--cascivo-editor-gutter-active",
-      "value": "var(--cascivo-editor-current-line)",
+      "name": "--cascivo-editor-caret-row",
+      "value": "1 / 2",
       "layer": "component",
       "group": "editor",
-      "resolvedDefault": "var(--cascivo-editor-current-line)",
+      "resolvedDefault": "1 / 2",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-gutter-active",
+      "value": "transparent",
+      "layer": "component",
+      "group": "editor",
+      "resolvedDefault": "transparent",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-gutter-digits",
+      "value": "2",
+      "layer": "component",
+      "group": "editor",
+      "resolvedDefault": "2",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-gutter-gap",
+      "value": "var(--cascivo-space-3)",
+      "layer": "component",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-space-3)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-gutter-width",
+      "value": "calc(\n      var(--cascivo-editor-gutter-digits, 2) * 1ch + var(--cascivo-space-3) + var(--cascivo-space-2)\n    )",
+      "layer": "component",
+      "group": "editor",
+      "resolvedDefault": "calc(\n      var(--cascivo-editor-gutter-digits, 2) * 1ch + var(--cascivo-space-3) + var(--cascivo-space-2)\n    )",
       "resolvesPerTheme": false,
       "canonical": true
     },

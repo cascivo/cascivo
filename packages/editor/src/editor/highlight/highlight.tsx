@@ -5,7 +5,7 @@ import { getGrammar } from '../../engine/registry.ts'
 import { createLineStateIndex } from '../../engine/line-state.ts'
 import { tokenizeRange } from '../../engine/tokenize.ts'
 import '../../grammars/builtins.ts'
-import { Gutter, renderRows } from '../view.tsx'
+import { renderRows } from '../view.tsx'
 import styles from './highlight.module.css'
 
 export interface HighlightProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
@@ -31,7 +31,7 @@ export interface HighlightProps extends Omit<HTMLAttributes<HTMLDivElement>, 'ch
   ariaLabel?: string
   /** Ref to the scrollable `<pre>` (used by `CodeEditor` for scroll-sync). */
   preRef?: Ref<HTMLPreElement>
-  /** Ref to the gutter column (used by `CodeEditor` for scroll-sync). */
+  /** Ref to the line-number gutter's backdrop strip. */
   gutterRef?: Ref<HTMLDivElement>
 }
 
@@ -61,22 +61,26 @@ export function Highlight({
   const grammar = getGrammar(language)
   const allLines = value.split('\n')
   const lines = tokenizeRange(grammar, allLines, 0, allLines.length, createLineStateIndex(grammar))
-  const tabStyle = { '--cascivo-editor-tab-size': tabSize, ...style } as CSSProperties
+  const rootStyle = {
+    '--cascivo-editor-tab-size': tabSize,
+    '--cascivo-editor-gutter-digits': String(lines.length).length,
+    ...style,
+  } as CSSProperties
 
   return (
     <div
       className={cn(styles['root'], className)}
       data-wrap={wrap}
       data-line-numbers={lineNumbers}
-      style={tabStyle}
+      style={rootStyle}
       aria-label={ariaLabel ?? label}
       {...rest}
     >
-      {lineNumbers && (
-        <Gutter count={lines.length} className={styles['gutter']} gutterRef={gutterRef} />
-      )}
+      {lineNumbers && <div ref={gutterRef} className={styles['gutterBg']} aria-hidden="true" />}
       <pre ref={preRef} className={styles['pre']}>
-        <code className={styles['code']}>{renderRows(lines)}</code>
+        <code className={styles['code']}>
+          {renderRows(lines, 0, lines.length, undefined, lineNumbers)}
+        </code>
       </pre>
     </div>
   )
