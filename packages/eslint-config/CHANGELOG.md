@@ -1,5 +1,12 @@
 # @cascivo/eslint-config
 
+## 0.4.1
+
+### Patch Changes
+
+- Updated dependencies [a076a68]
+  - @cascivo/eslint-plugin@0.2.1
+
 ## 0.4.0
 
 ### Minor Changes

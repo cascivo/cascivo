@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/migrating-from-shadcn.md
-  registry v1.2.0 · generated 2026-09-08
+  registry v1.3.0 · generated 2026-09-16
 -->
 
 # Migrating from shadcn/ui to cascivo

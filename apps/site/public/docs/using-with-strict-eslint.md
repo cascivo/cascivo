@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/using-with-strict-eslint.md
-  registry v1.2.0 · generated 2026-09-08
+  registry v1.3.0 · generated 2026-09-16
 -->
 
 # Using cascivo with a strict host ESLint config
