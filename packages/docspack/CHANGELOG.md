@@ -1,5 +1,78 @@
 # @cascivo/docspack
 
+## 0.2.4
+
+### Patch Changes
+
+- a076a68: Editor: line numbers, the current-line highlight and the left gutter all survive a soft wrap
+
+  Reported from an adopter running `CodeEditor` with `wrap` over markdown, and reproduced in
+  Chromium against the shipped CSS: with soft wrap on, a single long line broke the whole left
+  edge of the editor.
+
+  - **Line numbers drifted one row per wrap.** The gutter was a separate column whose rows were
+    one line box each, while the code column's rows grew with the text. A line that wrapped to two
+    visual rows put `6` next to the continuation of line 5, and the last line got no number at all.
+    The number and its line are now adjacent cells of **one CSS grid row**, so the row grows once
+    and both grow with it — there is nothing left to keep in sync.
+  - **The current-line highlight lit only the first visual row** of a wrapped line: it was
+    positioned by `caretLine * 1lh` and was `1lh` tall. Under wrap it is now placed on the caret's
+    grid row and takes that row's height, so it covers every visual row of the line. Not wrapping,
+    where rows are uniform and large documents window to a slice, keeps the arithmetic.
+  - **The gap between the border and the code could collapse to nothing.** It was padding on the
+    gutter and on the highlight/edit layers, and a host reset — Tailwind Preflight's
+    `* { padding: 0 }` is the one that hit — outranks `@layer cascivo.component`. The gutter's
+    width is now a grid track, the gap after it a `column-gap`, and the textarea's alignment an
+    `inset-inline-start`. A `padding: 0` reset can collapse none of the three, so the editing
+    surface also cannot drift off the layer it is overlaid on.
+
+  Two new override points come with it, both documented on `CodeEditor` and `Highlight`:
+  `--cascivo-editor-gutter-width` (default: as wide as the widest line number) and
+  `--cascivo-editor-gutter-gap`. Line numbers stay `aria-hidden` and unselectable, so they are
+  neither announced nor copied with the code, and they now stay visible in forced-colors mode,
+  where the highlight layer used to be hidden wholesale.
+
+- ccab95a: Email: a button really does follow its cell now, and the preview can render your brand
+
+  Two open items from the weeklyfoo newsletter's second report, both measured.
+
+  - **`Column` and `Section` were defeating their own `align` attribute.** They stated
+    alignment twice — as the `align` attribute and again as `text-align` in the style — and
+    the two do different things. `align` on a cell is a legacy presentational hint that also
+    moves _block-level_ children, which is what every button, card and alert here is; a plain
+    `text-align` does not, and being the explicit declaration it won. So `<Column
+align="right">` full of a `Button` rendered hard left. The attribute is now the only
+    statement of it. Measured in Chromium at all three alignments: `center` and `right` were
+    both affected.
+
+            `ButtonProps.align` claimed a button with no `align` follows its cell. Removing the old
+            `'left'` default was only half of that, and the docstring shipped a release ahead of the
+            behaviour — an adopter deleted their explicit props on the strength of it and their
+            feedback row splayed again. It is true now, and the docstring says exactly when it is not
+            (a cell aligned by hand with `style={{ textAlign }}`).
+
+  - **The preview can render a brand palette.** `renderEmail`'s `theme` takes `EmailTheme |
+Palette` and the token docs call a `Palette` the way to rebrand, but the preview's dropdown
+    only listed the shipped twelve — so the package's own answer to "how do I use my brand" was
+    the one thing its preview could not express, and the byte gauge was wrong by whatever the
+    palette costs (a measured 10% on a newsletter whose font stack is repeated 124 times).
+
+            A template can now `export const theme`, beside `subject` and `previewProps`. It is the
+            selected entry by default and resets on every template change, so a directory of
+            differently-branded templates each renders right without anyone matching a global dropdown
+            to a per-template design. `--theme <file>` adds shared palettes for a whole directory.
+
+  - **`--allow <file>` and a template-level `export const allow`** merge into the conformance
+    panel's allowlist, so a project that waives a slug in CI stops seeing a finding its own
+    lint does not report.
+
+  - **`className` on `Card` and `Text`**, the two elements the common responsive cases need a
+    hook on — a panel that changes padding, a hero that changes size. The first cut gave
+    classes to the layout primitives only.
+
+  - **`Container` takes a `breakpoint`**, defaulting to its own width, so a design spec that
+    names 620px and the markup can say the same number.
+
 ## 0.2.3
 
 ### Patch Changes
