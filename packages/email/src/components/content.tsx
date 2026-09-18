@@ -14,7 +14,9 @@ import { TABLE_RESET } from './layout.tsx'
 
 export interface ButtonProps {
   children?: ReactNode
+  /** Absolute URL. A relative path resolves against the mail client's own host. */
   href: string
+  /** `primary` for the main action, `secondary` for a supporting one, `destructive` for anything that deletes. */
   variant?: 'primary' | 'secondary' | 'destructive'
   /**
    * Horizontal placement. Omit it to follow the cell the button sits in.
@@ -125,6 +127,7 @@ export interface ImgProps {
   src: string
   /** Required. An image with no alt text is unreadable in the ~40% of clients that block images by default. */
   alt: string
+  /** Intrinsic display width in pixels. Required: Outlook sizes from the attribute and renders at intrinsic size without it. */
   width: number
   /**
    * Fixed height, in pixels, emitted as the `height` attribute only.
@@ -134,6 +137,7 @@ export interface ImgProps {
    * shrinks it below `width`. Supply it only when the box must be reserved at a known size.
    */
   height?: number
+  /** Wrap the image in a link. */
   href?: string
   style?: Style
 }
@@ -190,6 +194,7 @@ export function Img({ src, alt, width, height, href, style }: ImgProps) {
 
 export interface CardProps {
   children?: ReactNode
+  /** Inset in pixels, applied to the cell — padding on a `<div>` is dropped in Outlook Windows. */
   padding?: number
   /**
    * Extra class, for a rule of your own in a `Style` block.
@@ -238,6 +243,7 @@ export function Card({ children, padding = 24, className, style }: CardProps) {
 
 export interface BadgeProps {
   children?: ReactNode
+  /** Carried by colour alone, so pair it with a label that says the same thing. */
   tone?: 'neutral' | 'success' | 'warning' | 'destructive' | 'info'
   style?: Style
 }
@@ -309,6 +315,7 @@ export function Badge({ children, tone = 'neutral', style }: BadgeProps) {
 
 export interface AlertProps {
   children?: ReactNode
+  /** Drawn as a border and a tint, never an icon — images are blocked by default in a large share of clients. */
   tone?: 'info' | 'success' | 'warning' | 'destructive'
   /** Optional bold lead-in above the body copy. */
   title?: string

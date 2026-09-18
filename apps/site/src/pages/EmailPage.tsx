@@ -157,6 +157,34 @@ export function EmailPage() {
       </section>
 
       <section class="doc-section">
+        <h2>The components</h2>
+        <p>
+          Twenty-two primitives, each previewed on its own page as a real email document, with its
+          props and the exact JSX that produced the frame:{' '}
+          <a href="/docs/email/components">Email components</a>. The same reference as one fetchable
+          file is at <a href="/docs/email-primitives.md">/docs/email-primitives.md</a>.
+        </p>
+        <ul>
+          <li>
+            <strong>Document</strong> — <code>Html</code>, <code>Head</code>, <code>Body</code>,{' '}
+            <code>Preview</code>, <code>Style</code>
+          </li>
+          <li>
+            <strong>Layout</strong> — <code>Container</code>, <code>Section</code>, <code>Row</code>
+            , <code>Column</code>, <code>Spacer</code>, <code>Hr</code>
+          </li>
+          <li>
+            <strong>Typography</strong> — <code>Heading</code>, <code>Text</code>, <code>Link</code>
+            , <code>List</code>, <code>Footer</code>
+          </li>
+          <li>
+            <strong>Content</strong> — <code>Button</code>, <code>Card</code>, <code>Alert</code>,{' '}
+            <code>Badge</code>, <code>Img</code>, <code>Markdown</code>
+          </li>
+        </ul>
+      </section>
+
+      <section class="doc-section">
         <h2>Send one</h2>
         <p>
           <code>renderEmail</code> returns the whole message — <code>subject</code>,{' '}
@@ -248,10 +276,12 @@ export function EmailPage() {
         <h2>Coming from React Email</h2>
         <p>
           Most primitives map one to one, and <code>planMigration</code> will tell you which. The
-          gaps are deliberate: no <code>Font</code> (web fonts do not load in Gmail or Outlook), no{' '}
-          <code>Markdown</code> (arbitrary Markdown produces HTML the lint cannot vouch for), no{' '}
-          <code>Tailwind</code> (cascivo emits resolved tokens directly, so there is no
-          class-to-inline-style step to perform).
+          gaps are deliberate: no <code>Font</code> (web fonts do not load in Gmail or Outlook) and
+          no <code>Tailwind</code> (cascivo emits resolved tokens directly, so there is no
+          class-to-inline-style step to perform). <code>Markdown</code> does have an equivalent,
+          over an allowlisted node set rather than arbitrary Markdown — every node renders through
+          the primitives, so the conformance lint covers a Markdown subtree exactly as it covers a
+          hand-composed one.
         </p>
       </section>
     </article>

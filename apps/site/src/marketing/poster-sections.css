@@ -1017,6 +1017,12 @@
   overflow-wrap: anywhere;
 }
 
+.pg-email-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cascivo-space-4);
+}
+
 .pg-email-toggle {
   display: flex;
   gap: var(--cascivo-space-2);

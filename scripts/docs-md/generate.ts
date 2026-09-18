@@ -36,6 +36,7 @@ const GUIDES: { src: string; slug: string }[] = [
   { src: 'TOKENS.md', slug: 'tokens' },
   { src: 'RECIPE-DASHBOARD.md', slug: 'recipe-dashboard' },
   { src: 'RECIPE-EMAIL.md', slug: 'recipe-email' },
+  { src: 'EMAIL-PRIMITIVES.md', slug: 'email-primitives' },
   { src: 'EMAIL-CLIENT-SUPPORT.md', slug: 'email-client-support' },
   { src: 'MIGRATING-FROM-SHADCN.md', slug: 'migrating-from-shadcn' },
   { src: 'COMPARED-TO-STYLEX.md', slug: 'compared-to-stylex' },

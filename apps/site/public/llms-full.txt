@@ -95,6 +95,16 @@ and Outlook Windows renders through Word: no flex, no grid, no custom properties
 — table-based, inline-styled, no client JS, no runtime dependencies. Themed from the
 same twelve themes, resolved to literal hex at render time.
 
+The whole component set, and the ONLY components valid inside an email:
+
+- Document: `Html`, `Head`, `Body`, `Preview`, `Style`
+- Layout: `Container`, `Section`, `Row`, `Column`, `Spacer`, `Hr`
+- Typography: `Heading`, `Text`, `Link`, `List`, `Footer`
+- Content: `Button`, `Card`, `Alert`, `Badge`, `Img`, `Markdown`
+
+Props, defaults and a worked example for each, with rendered previews:
+https://cascivo.com/docs/email-primitives.md (https://cascivo.com/docs/email/components).
+
 - `renderEmail(element, { theme, subject, tier })` -> `{ html, text, preheader, stats }`.
   `assertSendable(result)` throws on a missing subject/preheader/text or a body over
   the Gmail clip budget. `analyze(html)` says where the bytes went.
@@ -110,7 +120,7 @@ same twelve themes, resolved to literal hex at render time.
   table content. Shorten or rebrand the stack with `--cascivo-email-font-{sans,serif,mono}`
   on the palette passed to `renderEmail({ theme })`.
 
-Full recipe: https://cascivo.com/docs/recipe-email.md. Client support: https://cascivo.com/docs/email-client-support.md.
+Full recipe: https://cascivo.com/docs/recipe-email.md. Components: https://cascivo.com/docs/email-primitives.md. Client support: https://cascivo.com/docs/email-client-support.md.
 
 ## How to use it
 
@@ -321,6 +331,7 @@ All guides are fetchable as plain markdown at https://cascivo.com/docs/<slug>.md
 - Using cascivo with Tailwind v4 (@layer order + dark bridge): https://cascivo.com/docs/using-with-tailwind.md
 - Strict host ESLint (scope stylistic rules off your components dir): https://cascivo.com/docs/using-with-strict-eslint.md
 - Transactional & newsletter email (@cascivo/email): https://cascivo.com/docs/recipe-email.md
+- Every @cascivo/email component, with props and examples: https://cascivo.com/docs/email-primitives.md
 - Email client support matrix (what the conformance lint enforces): https://cascivo.com/docs/email-client-support.md
 - Compatibility & support matrix: https://cascivo.com/docs/compatibility.md
 - Migrating from shadcn/ui: https://cascivo.com/docs/migrating-from-shadcn.md

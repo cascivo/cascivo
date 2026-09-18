@@ -96,7 +96,7 @@ export interface ContainerProps {
    * disagree visibly, but the spec and the markup should still say the same number.
    */
   breakpoint?: number
-  /** Extra class, for a rule of your own in a {@link StyleBlock}. */
+  /** Extra class, for a rule of your own in a `Style` block. */
   className?: string
   style?: Style
 }
@@ -166,9 +166,11 @@ export interface SectionProps {
   children?: ReactNode
   /** Vertical padding in pixels, applied to the cell. */
   padding?: number | string
+  /** Band colour. A literal — no client resolves a custom property, so pass a hex or call `token()`. */
   background?: string
+  /** Horizontal alignment of the cell's content, emitted as the `align` attribute so nested tables follow it too. */
   align?: 'left' | 'center' | 'right'
-  /** Extra class, for a rule of your own in a {@link StyleBlock}. */
+  /** Extra class, for a rule of your own in a `Style` block. */
   className?: string
   style?: Style
 }
@@ -215,7 +217,7 @@ export function Section({
 
 export interface RowProps {
   children?: ReactNode
-  /** Extra class, for a rule of your own in a {@link StyleBlock}. */
+  /** Extra class, for a rule of your own in a `Style` block. */
   className?: string
   style?: Style
 }
@@ -248,8 +250,11 @@ export interface ColumnProps {
   children?: ReactNode
   /** Width as a percentage or pixel count. Set both attribute and style. */
   width?: number | string
+  /** Horizontal alignment of the cell's content. A `Button` with no `align` of its own follows this. */
   align?: 'left' | 'center' | 'right'
+  /** Vertical alignment within the row. */
   valign?: 'top' | 'middle' | 'bottom'
+  /** Cell padding in pixels, or any CSS padding shorthand. */
   padding?: number | string
   /**
    * Become a full-width block below the breakpoint, so a row reflows into a stack.
@@ -259,7 +264,7 @@ export interface ColumnProps {
    * never inspects its children, which is the bug class it was built to avoid.
    */
   stack?: boolean
-  /** Extra class, for a rule of your own in a {@link StyleBlock}. */
+  /** Extra class, for a rule of your own in a `Style` block. */
   className?: string
   style?: Style
 }
@@ -286,7 +291,7 @@ export interface ColumnProps {
  *
  * The breakpoint is {@link CONTENT_WIDTH}, because a column has no way to know which
  * `Container` it ended up in. A narrower container that wants to stack sooner can say so
- * with a `className` and a {@link StyleBlock} of its own.
+ * with a `className` and a `Style` block of its own.
  */
 export function Column({
   children,

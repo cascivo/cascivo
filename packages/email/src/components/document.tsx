@@ -14,6 +14,7 @@ export interface HtmlProps {
   children?: ReactNode
   /** BCP 47 language tag. Also set on `<body>`, because some clients strip `<html>`. */
   lang?: string
+  /** Text direction. `rtl` flips the reading order; the primitives use no physical properties that would fight it. */
   dir?: 'ltr' | 'rtl'
 }
 
@@ -134,7 +135,9 @@ export function Preview({ children }: PreviewProps) {
 export interface BodyProps {
   children?: ReactNode
   style?: Style
+  /** Repeated from `Html` — several clients strip `<html>` and graft the body into their own document. */
   lang?: string
+  /** Repeated from `Html`, for the same reason `lang` is. */
   dir?: 'ltr' | 'rtl'
 }
 

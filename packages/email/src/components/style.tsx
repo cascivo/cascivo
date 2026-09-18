@@ -23,6 +23,13 @@ export interface StyleProps {
   children: string
 }
 
+/**
+ * A `<style>` block, hoisted into `<head>` by the renderer.
+ *
+ * The escape hatch for the two things an inline `style` attribute cannot express — a media
+ * query and a pseudo-class. Declare it beside the component that needs it; identical blocks
+ * collapse to one copy in the delivered document.
+ */
 export function Style({ children }: StyleProps) {
   return (
     <style

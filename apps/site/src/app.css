@@ -688,3 +688,52 @@ body {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* ── /docs/email/components ─────────────────────────────────────────────────
+   The primitive reference. Same iframe rule as above, plus a frame that sizes
+   itself: these examples run from one badge row to a five-block Markdown
+   render, and a single height tall enough for the tallest leaves the short ones
+   in a panel of dead space. The block-size here is the pre-measurement floor
+   and the fallback if a frame's own document is ever unreadable. */
+.doc-primitive-frame {
+  display: block;
+  inline-size: 100%;
+  block-size: 12rem;
+  margin-block: var(--cascivo-space-3);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-md);
+  background: #fff;
+}
+
+.doc-primitive {
+  padding-block-start: var(--cascivo-space-4);
+  border-block-start: 1px solid var(--cascivo-color-border);
+}
+
+/* The group's own `h2` already draws one; two stacked rules read as a mistake. */
+.doc-primitive:first-of-type {
+  border-block-start: none;
+}
+
+.doc-primitive-example {
+  margin-block-end: var(--cascivo-space-5);
+}
+
+/* A flat multi-column index, so the whole primitive set is one glance rather
+   than a scroll. `auto-fill` keeps it a single column at 320px. */
+.doc-primitive-index {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  gap: var(--cascivo-space-4);
+  margin-block: var(--cascivo-space-4);
+}
+
+.doc-primitive-index ul {
+  margin-block: var(--cascivo-space-2) 0;
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+.doc-primitive-index li {
+  margin-block-end: 2px;
+}
