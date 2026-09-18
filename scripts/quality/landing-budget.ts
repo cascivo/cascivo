@@ -8,11 +8,24 @@
  * on every clean tree, which is why it is not wired into CI: a check that always fails is a
  * check nobody reads. The real landing payload is ~130 KB and fits the budget it was given.
  *
- * So the budget is now measured the only way that cannot drift as routes are added: load
- * the built site in a real browser, scroll the whole page so every lazily-mounted section
- * actually fetches, and sum the gzipped bytes of the JS and CSS that came over the wire.
- * A new docs route cannot inflate this number; a heavier landing section can, which is what
- * a landing budget is for.
+ * So the budget is measured the only way that cannot drift as routes are added: load the
+ * built site in a real browser and sum the gzipped bytes of the JS and CSS that came over
+ * the wire. A new docs route cannot inflate that number.
+ *
+ * TWO numbers, and only one of them gates:
+ *
+ *   - INITIAL — everything fetched to render the page, before any scrolling. This is the
+ *     budget. It is what decides how fast the landing becomes usable, and it is the only
+ *     figure a visitor who bounces ever pays.
+ *   - TOTAL — initial plus every chunk that arrives as you scroll to the bottom. Reported,
+ *     not gated: a section held back until it nears the viewport genuinely does not cost
+ *     what an eagerly-loaded one costs, and charging it the same rate would price in a
+ *     visitor who may never scroll that far.
+ *
+ * The two were identical until the gallery was put behind an IntersectionObserver, because
+ * `lazy()` alone defers nothing when every section renders on mount. Gating TOTAL would
+ * have reported that change as worth 0 KB, which is how a budget ends up discouraging the
+ * optimisation it exists to encourage.
  *
  * Needs a prior `pnpm build` and Chromium. Run: `pnpm audit:landing`.
  */
@@ -75,9 +88,9 @@ async function waitForServer(url: string, tries = 60): Promise<void> {
 }
 
 let server: ChildProcess | undefined
-let jsGzBytes = 0
-let cssGzBytes = 0
 const perFile = new Map<string, number>()
+/** Paths already fetched when the page had rendered but nothing had been scrolled. */
+let initialPaths = new Set<string>()
 
 try {
   server = spawn('pnpm', ['exec', 'vite', 'preview', '--port', String(PORT), '--strictPort'], {
@@ -108,8 +121,12 @@ try {
   })
 
   await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'networkidle' })
-  // The landing mounts its below-the-fold sections lazily. They are part of what a visitor
-  // downloads, so scroll the page to completion before measuring.
+  // Snapshot before scrolling: this set IS the budget. Settle the bodies first, or which
+  // requests counted would depend on how fast the event loop drained.
+  await Promise.all(pending)
+  initialPaths = new Set(perFile.keys())
+
+  // Then scroll to the bottom so intersection-gated sections fetch too, for the TOTAL line.
   await page.evaluate(async () => {
     for (let y = 0; y < document.body.scrollHeight; y += 600) {
       window.scrollTo(0, y)
@@ -137,10 +154,21 @@ try {
   server?.kill()
 }
 
-for (const [path, bytes] of perFile) {
-  if (path.endsWith('.css')) cssGzBytes += bytes
-  else jsGzBytes += bytes
+function totals(paths: Iterable<string>): { js: number; css: number; files: number } {
+  let js = 0
+  let css = 0
+  let files = 0
+  for (const path of paths) {
+    const bytes = perFile.get(path) ?? 0
+    if (path.endsWith('.css')) css += bytes
+    else js += bytes
+    files++
+  }
+  return { js, css, files }
 }
+
+const initial = totals(initialPaths)
+const total = totals(perFile.keys())
 
 // Fonts stay a dist-wide invariant: cascivo self-hosts none, and one appearing anywhere in
 // the build is a regression regardless of which route pulls it.
@@ -152,13 +180,19 @@ for (const f of walkDir(distDir)) {
   }
 }
 
-const jsKb = jsGzBytes / 1024
-const cssKb = cssGzBytes / 1024
+const jsKb = initial.js / 1024
+const cssKb = initial.css / 1024
 const failures: string[] = []
 
-console.log(`Landing JS gz:  ${jsKb.toFixed(1)} KB (budget ${JS_BUDGET_KB} KB)`)
-console.log(`Landing CSS gz: ${cssKb.toFixed(1)} KB (budget ${CSS_BUDGET_KB} KB)`)
-console.log(`Files over the wire: ${perFile.size}`)
+const kb = (bytes: number): string => (bytes / 1024).toFixed(1).padStart(6)
+console.log(
+  `INITIAL (budgeted)  JS ${kb(initial.js)} KB / ${JS_BUDGET_KB}   ` +
+    `CSS ${kb(initial.css)} KB / ${CSS_BUDGET_KB}   (${initial.files} files)`,
+)
+console.log(
+  `TOTAL   (reported)  JS ${kb(total.js)} KB         ` +
+    `CSS ${kb(total.css)} KB         (${total.files} files, after scrolling to the bottom)`,
+)
 console.log(`Font files in dist: ${fontFiles}`)
 
 if (jsKb > JS_BUDGET_KB) failures.push(`JS ${jsKb.toFixed(1)} KB > ${JS_BUDGET_KB} KB budget`)
@@ -167,10 +201,17 @@ if (fontFiles > 0) failures.push(`${fontFiles} font file(s) found in dist`)
 
 if (failures.length > 0) {
   for (const f of failures) console.error(`FAIL ${f}`)
-  console.error('\nLargest assets on the landing:')
-  for (const [path, bytes] of [...perFile].sort((a, b) => b[1] - a[1]).slice(0, 10)) {
+  console.error('\nLargest assets in the INITIAL payload:')
+  const initialSorted = [...initialPaths]
+    .map((path) => [path, perFile.get(path) ?? 0] as const)
+    .sort((a, b) => b[1] - a[1])
+  for (const [path, bytes] of initialSorted.slice(0, 10)) {
     console.error(`  ${(bytes / 1024).toFixed(1).padStart(7)} KB  ${path}`)
   }
+  console.error(
+    '\nA section that is far below the fold can be held back with WhenNearViewport in\n' +
+      'apps/site/src/marketing/App.tsx, which moves its chunk out of this payload.',
+  )
   process.exit(1)
 }
 

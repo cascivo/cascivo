@@ -1,5 +1,5 @@
-import { type ComponentType, Suspense, lazy } from 'react'
-import { useSignals } from '@cascivo/core'
+import { type ComponentType, type ReactNode, type Ref, Suspense, lazy, useRef } from 'react'
+import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from './sections/Header'
 import { PosterHero } from './poster/PosterHero'
@@ -115,14 +115,67 @@ const BlockPreviewPage = lazy(() =>
 )
 
 /** Reserved-height placeholder for a lazy section/route (avoids CLS on load). */
-function SectionFallback({ tall = false, height }: { tall?: boolean; height?: number }) {
+function SectionFallback({
+  tall = false,
+  height,
+  // Defaults to `null` rather than staying undefined: `exactOptionalPropertyTypes` rejects
+  // an explicit `ref={undefined}` on a DOM element, and `Ref<T>` already admits null.
+  elementRef = null,
+}: {
+  tall?: boolean
+  height?: number
+  /** Named, not `ref`: preact/compat strips a bare `ref` from a function component. */
+  elementRef?: Ref<HTMLDivElement>
+}) {
   return (
     <div
+      ref={elementRef}
       className={tall ? 'lazy-fallback lazy-fallback--tall' : 'lazy-fallback'}
       style={height !== undefined ? { minBlockSize: height } : undefined}
       aria-hidden
     />
   )
+}
+
+/**
+ * Hold a section's chunk back until its placeholder nears the viewport.
+ *
+ * `lazy()` on its own defers nothing here: every section below is rendered on mount, so
+ * every chunk is requested during initial load and the landing pays for all of them before
+ * first paint. This gate makes the import start on intersection instead.
+ *
+ * Applied to the gallery, which is the expensive one — DataTable, BarChart and a dozen live
+ * components, ~25 KB gz of JS and ~4 KB of CSS, sitting six screens down.
+ */
+function WhenNearViewport({ height, children }: { height: number; children: ReactNode }) {
+  useSignals()
+  const shown = useSignal(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useSignalEffect(() => {
+    const el = ref.current
+    if (!el) return
+    // No IntersectionObserver (an old browser, or a crawler running a partial DOM): render
+    // immediately rather than leaving the section permanently absent.
+    if (typeof IntersectionObserver === 'undefined') {
+      shown.value = true
+      return
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return
+        shown.value = true
+        observer.disconnect()
+      },
+      // Roughly a viewport of lead time, so the chunk is usually resolved before the
+      // placeholder is actually on screen and the section does not visibly pop in.
+      { rootMargin: '600px 0px' },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  })
+
+  return shown.value ? <>{children}</> : <SectionFallback height={height} elementRef={ref} />
 }
 
 function HomePage() {
@@ -149,9 +202,11 @@ function HomePage() {
           <Suspense fallback={<SectionFallback height={560} />}>
             <PosterComparison />
           </Suspense>
-          <Suspense fallback={<SectionFallback height={640} />}>
-            <PosterGallery />
-          </Suspense>
+          <WhenNearViewport height={640}>
+            <Suspense fallback={<SectionFallback height={640} />}>
+              <PosterGallery />
+            </Suspense>
+          </WhenNearViewport>
           <Suspense fallback={<SectionFallback height={480} />}>
             <PosterThemes />
           </Suspense>

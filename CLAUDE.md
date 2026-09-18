@@ -276,9 +276,11 @@ pnpm isolated:check
 # cannot reproduce that, which is how Astro shipped unstyled SSR islands once already.
 pnpm framework:check
 
-# What a visitor to / actually downloads, in a real browser after scrolling so every lazy
-# section fetches (needs a build + Chromium). Measures the landing ROUTE, not the sum of
-# every chunk in apps/site/dist — that reported the whole multi-route SPA and always failed.
+# What a visitor to / actually downloads, in a real browser (needs a build + Chromium).
+# Measures the landing ROUTE, not the sum of every chunk in apps/site/dist — that reported
+# the whole multi-route SPA and always failed. Gates the INITIAL payload (before any
+# scrolling) and reports the post-scroll TOTAL: a section held behind WhenNearViewport
+# genuinely does not cost what an eagerly-loaded one does.
 pnpm audit:landing
 
 # A real Ghost (Handlebars) theme: flattens the token/theme CSS past its bare @import
