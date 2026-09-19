@@ -1,7 +1,7 @@
 <!--
   Generated component index — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/components.md
-  registry v1.0.0 · generated 2026-08-29
+  registry v1.3.0 · generated 2026-09-16
 -->
 
 # cascivo component index
@@ -151,7 +151,7 @@ Every component, chart, block, and layout in the registry, with its distribution
 | **MenuButton** — A button that opens an anchored action menu of one-shot commands                                                                                                                                                                           | npm @cascivo/react · or copy-paste | `/llms/menu-button.md`                |
 | **Menubar** — Horizontal application menu bar with keyboard-navigable dropdown menus                                                                                                                                                                        | npm @cascivo/react · or copy-paste | `/llms/menubar.md`                    |
 | **Modal** — Accessible dialog overlay using native <dialog> element                                                                                                                                                                                         | npm @cascivo/react · or copy-paste | `/llms/modal.md`                      |
-| **MultiSelect** — Searchable multi-value select with popover listbox                                                                                                                                                                                        | npm @cascivo/react · or copy-paste | `/llms/multi-select.md`               |
+| **MultiSelect** — Searchable multi-value select with a popover listbox, chips and grouping                                                                                                                                                                  | npm @cascivo/react · or copy-paste | `/llms/multi-select.md`               |
 | **NativeSelect** — A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring                                                                                                                                 | npm @cascivo/react · or copy-paste | `/llms/native-select.md`              |
 | **NavigationMenu** — Site navigation bar with links and dropdown flyout panels                                                                                                                                                                              | npm @cascivo/react · or copy-paste | `/llms/navigation-menu.md`            |
 | **Notification** — Inline, actionable notification banner that surfaces a titled message with an optional recovery action                                                                                                                                   | npm @cascivo/react · or copy-paste | `/llms/notification.md`               |
@@ -221,4 +221,4 @@ Every component, chart, block, and layout in the registry, with its distribution
 | **VisuallyHidden** — Hides content visually while keeping it available to screen readers                                                                                                                                                                    | npm @cascivo/react · or copy-paste | `/llms/visually-hidden.md`            |
 | **WheelPicker** — iOS-style drum picker — a column of options that scrolls and snaps to a selection                                                                                                                                                         | npm @cascivo/react · or copy-paste | `/llms/wheel-picker.md`               |
 
-_registry v1.0.0 · generated 2026-08-29_
+_registry v1.3.0 · generated 2026-09-16_

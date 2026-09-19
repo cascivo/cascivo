@@ -6,6 +6,12 @@ on:
       - 'apps/**'
       - 'packages/**'
       - 'pnpm-lock.yaml'
+      # The gates themselves. A PR that edits a guard, the script that wires it, or this
+      # workflow used to match no path here and so ran NO jobs — `verify` never reported,
+      # and a change to a check merged without that check ever running against it.
+      - 'scripts/**'
+      - 'package.json'
+      - '.github/workflows/**'
   push:
     branches: [main]
 
@@ -13,8 +19,27 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+# The gates below used to be one serial `verify` job. Every step still runs, with the
+# same command and the same relative order inside its group — they are just spread over
+# jobs that run concurrently, because the job was ~9-12 min of which the test step alone
+# was ~50% (measured: 4m26s of 9m09s on run 34746543370, 6m06s of 12m00s on 34730064236).
+#
+# The split line is `dist`: a check that ran BEFORE the old Build step reads source only
+# and lives in `lint`/`guards`; a check that ran AFTER it reads the built output and so
+# lives in a job that builds first. Keep that invariant when adding a step — a dist-reading
+# guard placed in `guards` does not fail, it passes VACUOUSLY, which is the failure mode
+# the ssr:check comment below was written about.
+#
+# `build-guards`, `typecheck` and `test` each run `vp run -r build` rather than sharing one
+# artifact. That is deliberate and measured: the build is ~60s while the test step is ~270s,
+# so a build job plus upload/download (~90s before any consumer starts, ~20s to pull) puts
+# the test job's finish LATER than simply rebuilding in parallel does.
+#
+# `verify` at the bottom is the aggregator. It is the single check to require in branch
+# protection — it passes only if every job below passed.
+
 jobs:
-  verify:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -42,6 +67,27 @@ jobs:
 
       - name: Host lint fixture self-tests (no vacuous pass, no dead scope-offs)
         run: pnpm run lint:host-eslint:test
+
+  # Every guard here reads SOURCE, never `dist` — see the dist invariant above.
+  guards:
+    runs-on: ubuntu-latest
+    steps:
+      # Full history: release:check's changeset-coverage guard diffs against the merge base
+      # with the base branch. Under the default shallow clone there is no merge base, and a
+      # diff-based guard with no base does not fail — it passes having checked nothing.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
 
       - name: Brand guard (no cascade→cascivo regression)
         run: pnpm run brand:check
@@ -114,6 +160,23 @@ jobs:
 
       - name: Landing link check (no broken internal routes)
         run: pnpm run links:check
+
+  # Everything that reads the BUILT output. Each step below kept the comment explaining
+  # why it cannot run before the build.
+  build-guards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
 
       # Parallel build: vp orders by the dependency graph, so independent
       # packages build concurrently while dependents still wait for their deps.
@@ -247,16 +310,54 @@ jobs:
       - name: Bundle budgets
         run: pnpm run audit:bundle
 
-      # What a visitor to / actually downloads, measured in a real browser after scrolling
-      # the page so every lazily-mounted section fetches. It used to sum every .js and .css
-      # in apps/site/dist — the whole multi-route SPA — and so reported 661 KB against a
-      # 135 KB budget and failed on every clean tree, which is why it was never wired in
-      # here. The landing itself is ~130 KB and fits.
+      # What a visitor to / actually downloads, measured in a real browser. It used to sum
+      # every .js and .css in apps/site/dist — the whole multi-route SPA — and so reported
+      # 661 KB against a 135 KB budget and failed on every clean tree, which is why it was
+      # never wired in here. Gates the INITIAL payload and reports the post-scroll total.
+      # Needs the Chromium installed earlier in this job.
       - name: Landing performance budget (real browser, landing route only)
         run: pnpm run audit:landing
 
+  # Builds first: some apps (the apps/examples/* demos) type-check against built dist types.
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build (vp run -r build)
+        run: pnpm exec vp run -r build
+
       - name: Type check (vp run -r check)
         run: pnpm exec vp run -r check
+
+  # The long pole (~4-6 min). It gets its own job so nothing else waits behind it.
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build (vp run -r build)
+        run: pnpm exec vp run -r build
 
       - name: Test (vp run -r test)
         run: pnpm run test
@@ -318,3 +419,26 @@ jobs:
             exit 1
           fi
           echo "Registry count: $COUNT (>= 185)"
+
+  # Aggregator. `verify` was the name of the single job this workflow used to have, so
+  # keeping it means an existing "require the verify check" branch-protection rule keeps
+  # working and keeps meaning the same thing.
+  #
+  # `needs` alone is not enough: a skipped or failed dependency leaves this job skipped,
+  # and GitHub reports a skipped required check as PASSING. Hence the explicit result test.
+  verify:
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [lint, guards, build-guards, typecheck, test, drift]
+    steps:
+      - name: Every CI job succeeded
+        run: |
+          RESULTS='${{ join(needs.*.result, ' ') }}'
+          echo "Job results: $RESULTS"
+          for r in $RESULTS; do
+            if [ "$r" != "success" ]; then
+              echo "::error::A CI job did not succeed (results: $RESULTS)"
+              exit 1
+            fi
+          done
+          echo "All CI jobs succeeded."

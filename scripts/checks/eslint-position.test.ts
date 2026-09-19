@@ -25,6 +25,19 @@ import { fileURLToPath } from 'node:url'
 
 const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url))
 const RULE = 'react-hooks/immutability'
+/**
+ * oxlint's port of the same rule. `pnpm create vite --template react-ts` scaffolds oxlint,
+ * not ESLint, so an adopter starting the most common way meets THIS id — and the whole
+ * remedy above was ESLint-shaped until the 2026-08-31 report (§13).
+ */
+const OXLINT_RULE = 'react/immutability'
+
+/** Surfaces that must name the oxlint spelling too — the ones an adopter reaches for a fix. */
+const OXLINT_SURFACES = [
+  ['docs/GETTING-STARTED.md', 'the install page — the scaffold that ships oxlint starts here'],
+  ['docs/USING-WITH-STRICT-ESLINT.md', 'the long-form rationale'],
+  ['docs/TROUBLESHOOTING.md', 'the error-text index they will search'],
+] as const
 
 /** Every surface an adopter could be reading when the rule bites. */
 const SURFACES = [
@@ -53,6 +66,41 @@ describe('eslint-position — the immutability stance is stated where it bites',
         'The adopter hits this rule from any of these surfaces. A stance stated in only one\n' +
         'place is the failure mode that let it go undocumented entirely — the docs corpus had\n' +
         'zero hits for "immutability" when it was first reported.',
+    )
+  })
+
+  it('names the oxlint spelling where an adopter looks for the fix', () => {
+    const missing = OXLINT_SURFACES.filter(([file]) => !read(file).includes(OXLINT_RULE)).map(
+      ([file, why]) => `  ${file} — ${why}`,
+    )
+    assert.deepEqual(
+      missing,
+      [],
+      `\`${OXLINT_RULE}\` is not mentioned on:\n${missing.join('\n')}\n\n` +
+        'oxlint is what the default Vite React scaffold installs, so its rule id is the one ' +
+        'most new adopters see. An ESLint-only remedy does not reach them.',
+    )
+  })
+
+  it('@cascivo/eslint-config ships the oxlint fragment, and it turns the rule off', () => {
+    const raw = read('packages/eslint-config/src/oxlintrc.json')
+    assert.match(
+      raw,
+      new RegExp(`"${OXLINT_RULE.replace('/', '\\/')}":\\s*"off"`),
+      'packages/eslint-config/src/oxlintrc.json must set the rule off — the docs point at it.',
+    )
+    const pkg = JSON.parse(read('packages/eslint-config/package.json')) as {
+      exports: Record<string, unknown>
+      files: string[]
+    }
+    assert.equal(
+      pkg.exports['./oxlintrc.json'],
+      './src/oxlintrc.json',
+      'the fragment must be reachable as `@cascivo/eslint-config/oxlintrc.json`',
+    )
+    assert.ok(
+      pkg.files.some((f) => f.endsWith('.json') && !f.startsWith('!')),
+      'the published `files` list must carry the .json fragment, or it ships empty',
     )
   })
 

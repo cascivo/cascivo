@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 2,
+  "name": "chart/heatmap",
+  "type": "chart",
+  "description": "Two-dimensional heatmap with band scales and color-mix cell interpolation.",
+  "version": "1.2.0",
+  "files": [],
+  "dependencies": ["@cascivo/charts"],
+  "tags": ["chart", "heatmap", "matrix", "data-viz"],
+  "category": "chart",
+  "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
+  "meta": {
+    "name": "Heatmap",
+    "description": "Two-dimensional heatmap with band scales and color-mix cell interpolation.",
+    "category": "chart",
+    "clientJs": "enhancement",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "data",
+        "type": "{ x: string; y: string; value: number }[]",
+        "required": true,
+        "description": "Array of x/y/value triples"
+      },
+      {
+        "name": "title",
+        "description": "Title text for the component.",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "description",
+        "description": "Supporting description text.",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "width",
+        "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "height",
+        "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
+        "type": "number",
+        "required": false,
+        "default": "320"
+      },
+      {
+        "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "plain",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+      },
+      {
+        "name": "visualMap",
+        "type": "VisualMapOptions",
+        "required": false,
+        "description": "Map cell value → CVD-safe colour (continuous or piecewise) via a keyboard-operable legend that filters the visible range."
+      },
+      {
+        "name": "toolbox",
+        "type": "boolean | ToolboxOptions",
+        "required": false,
+        "description": "Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter)."
+      },
+      {
+        "name": "format",
+        "type": "(value: number | string | Date) => string",
+        "required": false,
+        "description": "Format each category/x-axis tick label."
+      }
+    ],
+    "typeDefs": [
+      {
+        "name": "HeatmapDatum",
+        "description": "Shape of the `data` prop.",
+        "fields": [
+          {
+            "name": "x",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "y",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "VisualMapOptions",
+        "description": "Shape of the `visualMap` prop.",
+        "fields": [
+          {
+            "name": "min",
+            "type": "number",
+            "required": true,
+            "description": "Domain minimum (value mapped to ramp t=0)."
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": true,
+            "description": "Domain maximum (value mapped to ramp t=1)."
+          },
+          {
+            "name": "mode",
+            "type": "VisualMode",
+            "required": false,
+            "description": "`continuous` ramp (default) or `piecewise` buckets."
+          },
+          {
+            "name": "channel",
+            "type": "VisualChannel",
+            "required": false,
+            "description": "Which visual channel(s) the value drives."
+          },
+          {
+            "name": "ramp",
+            "type": "RampKind",
+            "required": false,
+            "description": "Ramp family — CVD-safe `sequential` (default) or `diverging`."
+          },
+          {
+            "name": "pieces",
+            "type": "number",
+            "required": false,
+            "description": "Bucket count for `piecewise` (default 5)."
+          },
+          {
+            "name": "sizeRange",
+            "type": "[number, number]",
+            "required": false,
+            "description": "[min, max] mark radius in px for the `size` channel (default [3, 14])."
+          }
+        ]
+      }
+    ],
+    "tokens": ["--cascivo-chart-1", "--cascivo-gray-100"],
+    "accessibility": {
+      "role": "img",
+      "wcag": "2.1-AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Basic heatmap",
+        "code": "import { Heatmap } from '@cascivo/charts'\n\nconst data = [\n  {x:'Mon',y:'AM',value:10},{x:'Mon',y:'PM',value:20},\n  {x:'Tue',y:'AM',value:15},{x:'Tue',y:'PM',value:5},\n]\n<Heatmap data={data} title=\"Activity\" />"
+      }
+    ],
+    "dependencies": ["@cascivo/charts"],
+    "tags": ["chart", "heatmap", "matrix", "data-viz"],
+    "intent": {
+      "whenToUse": [
+        "Showing magnitude across two categorical dimensions as a color-coded matrix",
+        "Spotting patterns, clusters, or hotspots in dense grid data"
+      ],
+      "whenNotToUse": [
+        "Reading precise values — color encoding is approximate",
+        "A single-dimension comparison — use BarChart"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "Treemap",
+          "relationship": "alternative",
+          "reason": "Use for part-to-whole hierarchical magnitude rather than a grid"
+        }
+      ],
+      "a11yRationale": "Renders with role=\"img\" and requires a title prop for screen reader labeling.",
+      "flexibility": []
+    }
+  }
+}

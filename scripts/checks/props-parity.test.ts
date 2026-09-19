@@ -48,6 +48,15 @@ const ALLOWLIST: Record<string, string> = {
   'layout/grid.span':
     'documented on the sibling GridItem component (GridItemProps) in the same file; ' +
     'the manifest covers the Grid/GridItem compound under one entry',
+  'layout/flex.size':
+    'documented on the sibling FlexItem component (FlexItemProps) in the same file; ' +
+    'the manifest covers the Flex/FlexItem compound under one entry, as Grid/GridItem does',
+  'layout/flex.basis':
+    'documented on the sibling FlexItem component (FlexItemProps) in the same file; ' +
+    'the manifest covers the Flex/FlexItem compound under one entry, as Grid/GridItem does',
+  'layout/flex.truncate':
+    'documented on the sibling FlexItem component (FlexItemProps) in the same file; ' +
+    'the manifest covers the Flex/FlexItem compound under one entry, as Grid/GridItem does',
   'card.actions':
     'lives on CardHeaderProps, not CardProps; the manifest covers the ' +
     'Card/CardHeader/CardTitle/CardContent/CardFooter compound under one entry',

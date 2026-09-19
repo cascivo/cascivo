@@ -63,6 +63,14 @@ export const meta: ComponentMeta = {
       default: "'24rem'",
     },
     {
+      name: 'timestampWidth',
+      description:
+        'Width of the `LogLine.timestamp` gutter (CSS length). Widen it for an ISO stamp, narrow it for a relative offset.',
+      type: 'string',
+      required: false,
+      default: "'6.5rem'",
+    },
+    {
       name: 'labels',
       description: 'Overrides for the component’s user-visible strings (i18n).',
       type: 'LogViewerLabels',
@@ -102,6 +110,12 @@ export const meta: ComponentMeta = {
     {
       title: 'ANSI colored output',
       code: '<LogViewer ansi lines={ansiLines} maxHeight="32rem" />',
+    },
+    {
+      title: 'Timestamped build log',
+      code: '<LogViewer lines={[{ id: 1, timestamp: "08:59:12", text: "Build started" }, { id: 2, timestamp: "08:59:41", text: "Type error", level: "error" }]} />',
+      description:
+        'Pass the clock as `timestamp`, not prefixed into `text` — the gutter is dimmed, column-aligned, and excluded from search and copy',
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],

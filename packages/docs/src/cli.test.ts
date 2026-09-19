@@ -20,6 +20,7 @@ beforeAll(() => {
   writeFileSync(join(fixture, 'llms', 'chart', 'area-chart.md'), '# AreaChart\n')
   mkdirSync(join(fixture, 'guides'))
   writeFileSync(join(fixture, 'guides', 'theming.md'), '# Theming guide\n')
+  writeFileSync(join(fixture, 'guides', 'recipe-email.md'), '# Recipe: transactional email\n')
 })
 
 afterAll(() => {
@@ -68,6 +69,21 @@ describe('cascivo-docs CLI', () => {
     const r = capture(['area-chart'])
     expect(r.code).toBe(0)
     expect(r.out).toContain('# AreaChart')
+  })
+
+  it('falls back to a guide when a bare topic is not a component', () => {
+    // `cascivo-docs theming` means the theming guide. Which shelf a name lives on is a
+    // distinction only this CLI cares about.
+    const r = capture(['theming'])
+    expect(r.code).toBe(0)
+    expect(r.out).toContain('# Theming guide')
+  })
+
+  it('names the near matches when a topic resolves to nothing', () => {
+    // Reported: `cascivo-docs email` answered "no doc" while `guide recipe-email` existed.
+    const r = capture(['email'])
+    expect(r.code).toBe(1)
+    expect(r.err).toContain('guide recipe-email')
   })
 
   it('prints a guide by slug', () => {

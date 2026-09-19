@@ -36,6 +36,7 @@ import assert from 'node:assert/strict'
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { describe, it } from 'node:test'
+import { isClientCode } from '../lib/directives.ts'
 
 const REPO_ROOT = join(import.meta.dirname, '../..')
 const PACKAGES = join(REPO_ROOT, 'packages')
@@ -52,13 +53,14 @@ const WORKSPACE_ENTRIES: Record<string, string> = {
   '@cascivo/i18n': 'i18n/dist/index.js',
 }
 
-const USE_CLIENT = /^\s*(['"])use client\1;?\s*$/
-
+/**
+ * Read as a string, not as a first line. The line-based version answered "no" for every
+ * module in the library the moment the published chunks were whitespace-minified onto one
+ * line — so this whole guard had nothing left to check and passed while four packages had
+ * genuinely lost their client boundary. See scripts/lib/directives.ts.
+ */
 function isClientModule(file: string): boolean {
-  const firstLine = readFileSync(file, 'utf8')
-    .split('\n')
-    .find((l) => l.trim() !== '')
-  return USE_CLIENT.test(firstLine ?? '')
+  return isClientCode(readFileSync(file, 'utf8'))
 }
 
 interface ImportEdge {
@@ -189,6 +191,25 @@ describe('RSC boundary — server-renderable components stay server-safe', () =>
           !isClientModule(f),
       )
     : []
+
+  /*
+   * The counter-guard. `serverRenderable` grows when client detection breaks, so its own
+   * "> 20" check keeps passing — and `unsafeChainFrom` then finds no client module to land
+   * on, so the whole suite goes green while measuring nothing. That is exactly what happened
+   * when the published chunks were first whitespace-minified onto one line: the detector was
+   * line-based, answered "no" for every module, and four packages had genuinely lost their
+   * client boundary underneath it.
+   */
+  it('still recognises client modules at all', { skip: !built }, () => {
+    const clientChunks = walk(REACT_DIST).filter(
+      (f) => f.endsWith('.js') && !f.includes(`${join('dist', 'node')}`) && isClientModule(f),
+    )
+    assert.ok(
+      clientChunks.length > 20,
+      `only ${clientChunks.length} chunk(s) read as 'use client' — the directive moved, or ` +
+        'the detector stopped seeing it, and everything below this passes vacuously',
+    )
+  })
 
   it('finds server-renderable chunks to check', { skip: !built }, () => {
     assert.ok(

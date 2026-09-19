@@ -32,15 +32,15 @@ The reveal control is a real <button> whose aria-label switches between reveal/h
 
 ## Props
 
-| Name                | Type                                               | Required | Default | Description                                                        |
-| ------------------- | -------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `showStrengthMeter` | `boolean`                                          | No       | false   | When true, shows a password-strength meter.                        |
-| `size`              | `'sm' \| 'md' \| 'lg'`                             | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
-| `labels`            | `PasswordInputLabels`                              | No       | —       | Overrides for the component’s user-visible strings (i18n).         |
-| `disabled`          | `boolean`                                          | No       | false   | When true, disables the control and removes it from the tab order. |
-| `placeholder`       | `string`                                           | No       | —       | Placeholder text shown when the field is empty.                    |
-| `value`             | `string`                                           | No       | —       | The controlled value.                                              |
-| `onChange`          | `(e: React.ChangeEvent<HTMLInputElement>) => void` | No       | —       | Called when the value changes.                                     |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `showStrengthMeter` | `boolean` | No | false | When true, shows a password-strength meter. |
+| `size` | `'sm' \| 'md' \| 'lg'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `labels` | `PasswordInputLabels` | No | — | Overrides for the component’s user-visible strings (i18n). |
+| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
+| `placeholder` | `string` | No | — | Placeholder text shown when the field is empty. |
+| `value` | `string` | No | — | The controlled value. |
+| `onChange` | `(e: React.ChangeEvent<HTMLInputElement>) => void` | No | — | Called when the value changes. |
 
 ## Tokens
 
@@ -69,10 +69,10 @@ The reveal control is a real <button> whose aria-label switches between reveal/h
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                                     |
-| ----------- | -------- | ---------------------------------------------------------------------------------------- |
-| token names | strict   | Field, toggle, and strength-meter styling must resolve to the listed --cascivo-\* tokens |
-| labels      | flexible | reveal, hide, and strengthLabel can be overridden via the labels prop                    |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Field, toggle, and strength-meter styling must resolve to the listed --cascivo-* tokens |
+| labels | flexible | reveal, hide, and strengthLabel can be overridden via the labels prop |
 
 ## AI context prompt
 

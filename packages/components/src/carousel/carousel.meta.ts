@@ -40,6 +40,13 @@ export const meta: ComponentMeta = {
       required: false,
       default: 'false',
     },
+    {
+      name: 'autoplay',
+      description:
+        'Milliseconds between automatic advances. Omit or set 0 to leave rotation off. Pauses on hover, on focus within, while the tab is hidden and under prefers-reduced-motion, and always renders a play/pause control.',
+      type: 'number',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-accent',
@@ -94,7 +101,7 @@ export const meta: ComponentMeta = {
       },
     ],
     a11yRationale:
-      'The container is a labelled region with aria-roledescription="carousel"; each slide is a labelled group ("n of total"); prev/next are real buttons and the dot indicators use roving tabindex with arrow-key navigation. Scrolling honours prefers-reduced-motion.',
+      'A section with aria-roledescription="carousel" holding one role="group" per slide. Inactive slides are `inert`, not `aria-hidden`: they stay in the layout and remain scroll-reachable, so aria-hidden alone declared them non-existent to assistive technology while every link and button inside them was still tabbable — the canonical aria-hidden-focus violation. The track is aria-live="polite" when the user drives the carousel and "off" while it rotates on its own, per APG; a rotating carousel always renders a play/pause control, and rotation additionally pauses on hover, on focus within, while the tab is hidden and under prefers-reduced-motion. Reduced motion is read in JS as well as CSS because a scrollTo `behavior` option overrides the stylesheet, which is why the previous build\'s stylesheet rule could never take effect. Arrow keys on the indicator row move the slide, not merely the roving tabindex, and the indicators are named as their own group rather than repeating the region\'s name. The indicator hit area reaches the target minimum through a pseudo-element, leaving the 10px visual mark unchanged.',
     flexibility: [
       {
         area: 'transition',

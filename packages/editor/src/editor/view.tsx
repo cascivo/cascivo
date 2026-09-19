@@ -1,5 +1,4 @@
 import { cn } from '@cascivo/core'
-import type { Ref } from 'react'
 import type { Token } from '../engine/types.ts'
 import hl from './highlight/highlight.module.css'
 
@@ -73,17 +72,33 @@ function renderToken(tok: Token, col: number, decos: readonly Decoration[], key:
  * `decorations` (optional) tags column ranges with extra CSS classes (matched on the
  * **absolute** line); lines without any decoration take the original fast path, so
  * `Highlight` is unaffected.
+ *
+ * `lineNumbers` emits the gutter number as a sibling cell *in the same CSS grid row*
+ * as its line. The number and the code it labels are then one grid row, so a soft-wrapped
+ * line that occupies three visual rows keeps its number pinned to the first of them and
+ * every following number stays aligned. A separate gutter column cannot do this: its rows
+ * are one line-box tall each and desynchronise by one row per wrap. Numbers are
+ * `aria-hidden` (decorative) and `user-select: none`, so they are neither announced nor
+ * copied with the code.
  */
 export function renderRows(
   lines: readonly Token[][],
   start = 0,
   end = start + lines.length,
   decorations?: readonly Decoration[],
+  lineNumbers = false,
 ) {
   const rows = []
   for (let i = start; i < end; i++) {
     const tokens = lines[i - start] as Token[]
     const lineDecos = decorations?.filter((d) => d.line === i)
+    if (lineNumbers) {
+      rows.push(
+        <span key={`n${i}`} className={hl['num']} aria-hidden="true">
+          {i + 1}
+        </span>,
+      )
+    }
     rows.push(
       <span key={i} className={hl['line']}>
         {tokens.length === 0
@@ -107,47 +122,4 @@ export function renderRows(
     )
   }
   return rows
-}
-
-interface GutterProps {
-  /** Total line count (the gutter always numbers 1…count). */
-  count: number
-  className: string | undefined
-  gutterRef?: Ref<HTMLDivElement> | undefined
-  /** Windowed range — render only [start, end) with spacers (CodeEditor). */
-  start?: number
-  end?: number
-  topPad?: number
-  bottomPad?: number
-  /** Render the active-line marker (keyed off `--cascivo-editor-caret-line`). */
-  activeLine?: boolean
-}
-
-/** The `aria-hidden` line-number column, optionally windowed with spacers. */
-export function Gutter({
-  count,
-  className,
-  gutterRef,
-  start = 0,
-  end = count,
-  topPad = 0,
-  bottomPad = 0,
-  activeLine = false,
-}: GutterProps) {
-  const numbers = []
-  for (let n = start + 1; n <= end; n++) {
-    numbers.push(
-      <span key={n} className={hl['gutterLine']}>
-        {n}
-      </span>,
-    )
-  }
-  return (
-    <div ref={gutterRef} className={className} aria-hidden="true">
-      {activeLine && <div className={hl['gutterActive']} />}
-      {topPad > 0 && <div style={{ blockSize: topPad }} />}
-      {numbers}
-      {bottomPad > 0 && <div style={{ blockSize: bottomPad }} />}
-    </div>
-  )
 }

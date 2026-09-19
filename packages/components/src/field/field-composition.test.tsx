@@ -47,6 +47,7 @@ import { Search } from '../search/search'
 import { NumberInput } from '../number-input/number-input'
 import { PasswordInput } from '../password-input/password-input'
 import { Combobox } from '../combobox/combobox'
+import { MultiSelect } from '../multi-select/multi-select'
 import { TagsInput } from '../tags-input/tags-input'
 import { DatePicker } from '../date-picker/date-picker'
 import { TimePicker } from '../time-picker/time-picker'
@@ -73,6 +74,7 @@ const FIXTURES: Record<string, () => ReactElement> = {
   NumberInput: () => <NumberInput />,
   PasswordInput: () => <PasswordInput />,
   Combobox: () => <Combobox options={[{ value: 'a', label: 'A' }]} />,
+  MultiSelect: () => <MultiSelect options={[{ value: 'a', label: 'A' }]} />,
   TagsInput: () => <TagsInput value={[]} onValueChange={() => {}} />,
   DatePicker: () => <DatePicker />,
   TimePicker: () => <TimePicker />,
@@ -103,7 +105,6 @@ const NOT_FIELD_WRAPPED: Record<string, string> = {
   SegmentedControl: 'a radiogroup; named via its own `ariaLabel`, not a `<label for>`',
   ToggleGroup: 'a group; named via its own `ariaLabel`, not a `<label for>`',
   Filter: 'a disclosure button plus a listbox; names itself via `ariaLabel`',
-  MultiSelect: 'a listbox popup; names itself via its own trigger text',
   Calendar: 'a composite grid widget; named via `ariaLabel` on the grid',
   DateRangePicker: 'two linked fields; each names itself',
   ReorderList: 'a reorderable list, not a value-entry control',

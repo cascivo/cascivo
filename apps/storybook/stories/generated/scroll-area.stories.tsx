@@ -3,13 +3,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ScrollArea } from '@cascivo/react'
 
 const meta: Meta = {
-  title: 'Layout/ScrollArea',
+  title: "Layout/ScrollArea",
 }
 export default meta
 type Story = StoryObj
 
 export const VerticalScroll: Story = {
-  name: 'Vertical scroll',
+  name: "Vertical scroll",
   render: () => (
     <ScrollArea height="12rem">
       <p>Long content…</p>
@@ -18,10 +18,11 @@ export const VerticalScroll: Story = {
 }
 
 export const BothAxes: Story = {
-  name: 'Both axes',
+  name: "Both axes",
   render: () => (
     <ScrollArea height="12rem" width="20rem" orientation="both">
       <table>…</table>
     </ScrollArea>
   ),
 }
+

@@ -190,6 +190,25 @@ pnpm changeset
 
 Commit the generated `.changeset/<random-name>.md` alongside your PR.
 
+`pnpm release:check` fails the PR if a published package changed and no changeset names
+it — the work would merge to `main` and never reach npm, which for an adopter is the same
+as not shipping it. Two routes implicate a package beyond its own directory, and both are
+real, so read the failure rather than pattern-matching on the path it names:
+
+- **Bundled content.** `@cascivo/docs`, `@cascivo/docspack` and `@cascivo/mcp` bake
+  `apps/site/public/` and the root `registry.json` into their published artifact at build
+  time. Regenerating the docs surface changes their shipped bytes without touching their
+  directory — this is what #235 hit, releasing `@cascivo/email` while the docs half stayed
+  on `main`.
+- **Compiled source.** `@cascivo/react` compiles from `packages/components/src` and
+  `packages/layouts/src`, whose packages are private. A component fix ships as
+  `@cascivo/react` or it does not ship.
+
+Naming any member of a `fixed` group in `.changeset/config.json` releases the whole group,
+so one name covers all of them. The changesets release PR is exempt — it consumes
+changesets rather than adding them. If a change genuinely reaches no adopter, add its path
+to `NON_SHIPPING` in `scripts/checks/changeset-coverage.test.ts` with a reason.
+
 ## Troubleshooting
 
 ### Release fails with "Generated docs are stale at release time"
@@ -269,15 +288,50 @@ unguarded `output.includes(...)` throws instead of skipping. One crashed publish
 leaves versions half-published, so every subsequent run hits the same
 already-published package first and crashes again (a partial-publish loop).
 
-This is an upstream bug in `@changesets/cli@2.31.0` (the latest release). We carry
-a `pnpm patch` (`patches/@changesets__cli@2.31.0.patch`, wired in
-`pnpm-workspace.yaml` under `patchedDependencies`) that:
+This is an upstream bug in `@changesets/cli` (still present in 2.31.1, the latest
+2.x release). We carry a `pnpm patch` (`patches/@changesets__cli@2.31.1.patch`,
+wired in `pnpm-workspace.yaml` under `patchedDependencies`) that:
 
-- guards `isAlreadyPublishedError` against a non-string argument, and
+- guards `isAlreadyPublishedError` against a non-string argument,
 - detects the "already published" message from `error.summary`, `error.detail`,
-  **or** the raw publish `stderr` — so an already-published version is skipped
-  gracefully and the release continues publishing the packages that are behind.
+  `error.message`, **or** the raw publish `stdout`/`stderr`, and
+- accepts pnpm's `ERR_PNPM_FAILED_TO_PUBLISH` error code alongside npm's `E403`.
+  changesets shells out to **pnpm** here, and pnpm reports the registry's 403 under
+  its own code — so gating the skip on `E403` alone left it dead code for every
+  publish this repo actually runs. That gap is what turned the duplicate-publish
+  rejections in the next entry into a failed release instead of a skip.
 
-When bumping `@changesets/cli`, re-check whether the upstream `isAlreadyPublishedError`
-crash is fixed; if so, drop the patch. Otherwise regenerate it with
+Together these let an already-published version be skipped gracefully so the release
+continues publishing the packages that are behind.
+
+`scripts/checks/changeset-publish-idempotence.test.ts` (run by `pnpm release:check`)
+asserts both halves of that skip are still in the resolved CLI. When bumping
+`@changesets/cli`, re-check whether the upstream `isAlreadyPublishedError` crash is
+fixed; if so, drop the patch. Otherwise regenerate it with
 `pnpm patch @changesets/cli@<version>`.
+
+### Release fails with "You cannot publish over the previously published versions"
+
+Every publishable package 403s at once, each on the version `main` already carries,
+and the log above the errors says `<pkg> is being published because our local version
+(X) has not been published on npm` for **all** of them — including packages npm
+demonstrably has. changesets is not confused about one package; its published-version
+lookup returned nothing for every package.
+
+That lookup is `npm info <pkg> --json`. npm 12 wraps a successful payload in an
+**array**; npm 11 and earlier returned the bare packument. `@changesets/cli@2.31.0`
+read `.versions` off the parsed object, got `undefined`, and concluded nothing had
+ever been published. The workflow installs `npm@latest` (trusted publishing needs
+npm >= 11.5.1), so the release broke the moment npm's `latest` tag moved to 12.x —
+run 34857463319 on 2026-09-14, with 21 packages 403ing.
+
+Fixed upstream in `@changesets/cli@2.31.1` (`normalizeInfoJson`). If this returns
+after a future npm output change, the shape is easy to confirm:
+
+```sh
+npm info @cascivo/core --registry=https://registry.npmjs.org --json | head -c 1
+# '{' → changesets reads it directly;  '[' → it must unwrap first
+```
+
+Nothing is published when this happens — every request is rejected — so recovery is
+just re-running the release once the CLI understands the registry output again.

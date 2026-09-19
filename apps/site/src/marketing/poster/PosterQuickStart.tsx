@@ -32,7 +32,7 @@ export function PosterQuickStart() {
     <section className="pg-section" id="quickstart" aria-label="Quick start">
       <div className="pg-pad pg-head">
         <h2 className="pg-display pg-display--section">Three steps in</h2>
-        <p className="pg-eyebrow">10 / quick start</p>
+        <p className="pg-eyebrow">12 / quick start</p>
       </div>
       <ol className="pg-tiles pg-tiles--3 pg-steps">
         {STEPS.map((step, i) => (

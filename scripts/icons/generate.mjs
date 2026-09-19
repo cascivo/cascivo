@@ -169,6 +169,17 @@ function renderChildren(elements) {
   return `<>\n    ${elements.join('\n    ')}\n  </>`
 }
 
+/**
+ * Split a hand-authored icon's inner JSX into its top-level elements, so an alias can be
+ * emitted through the same `renderChildren` path as a generated icon (and therefore in the
+ * shape oxfmt already produces — a differently-formatted alias would make `pnpm regen`
+ * non-idempotent and fail the drift check). Every icon body here is a flat list of
+ * self-closing SVG elements, so a tag scan is enough; there is no nesting to track.
+ */
+function splitElements(svg) {
+  return svg.match(/<[A-Za-z][^>]*\/>/g) ?? [svg]
+}
+
 /** `AlertCircle` → `alert-circle`. */
 function toKebabCase(pascal) {
   return pascal
@@ -226,6 +237,40 @@ function aliasTokens(alias) {
   return [alias.toLowerCase(), ...parts.map((p) => p.toLowerCase())]
 }
 
+/**
+ * Alias names that stay search-only, with the export they would shadow.
+ *
+ * An alias becomes a REAL export (see `aliasExports`) so the familiar guess just works —
+ * `import { Rocket } from '@cascivo/icons'` after the reporter burned a lookup finding
+ * `Spaceship`, and the recipe doc's headline use case is a deploy console (2026-08-31 report
+ * §19). The exception is a name already claimed elsewhere in the three packages a dashboard
+ * imports together: `Kbd` is a component, `LineChart` is a chart, and `Box`/`Delete`/`Trash2`
+ * are icons in their own right. Exporting those would turn a documented aliasing convention
+ * into a silent wrong resolution — the exact hazard `scripts/checks/export-collisions.test.ts`
+ * exists to cap.
+ */
+const ALIAS_EXPORT_DENYLIST = new Set(['Box', 'Delete', 'Kbd', 'LineChart', 'Trash2'])
+
+/**
+ * PascalCase aliases that are safe to export, as `[aliasName, targetName]` pairs.
+ *
+ * Lowercase intent words from aliases.json ('deploy', 'launch', 'tune') stay search-only —
+ * they are keywords, not identifiers.
+ */
+function aliasExports(aliases, iconNames) {
+  const pairs = []
+  for (const [pascal, list] of Object.entries(aliases)) {
+    if (!iconNames.has(pascal)) continue
+    for (const alias of list) {
+      if (!/^[A-Z][A-Za-z0-9]*$/.test(alias)) continue
+      if (iconNames.has(alias) || ALIAS_EXPORT_DENYLIST.has(alias)) continue
+      pairs.push([alias, pascal])
+    }
+  }
+  pairs.sort((a, b) => a[0].localeCompare(b[0]))
+  return pairs
+}
+
 /** Build the deduped keyword list for an icon (name tokens + synonyms + aliases). */
 function buildKeywords(kebab, metaKeywords, aliases = []) {
   const tokens = new Set(kebab.split('-').filter(Boolean))
@@ -262,10 +307,13 @@ function parseExistingIcons(src) {
     const nameMatch = args.match(/^\s*'([^']+)'\s*,/)
     if (!nameMatch) continue
     let children = args.slice(nameMatch[0].length).trim().replace(/,\s*$/, '')
+    // `jsx` keeps the children expression exactly as authored (fragment and all) so it can be
+    // re-emitted verbatim for an alias; `svg` is the fragment-unwrapped form the catalog wants.
+    const jsx = children.replace(/\s+/g, ' ').trim()
     const frag = children.match(/^<>([\s\S]*)<\/>$/)
     if (frag) children = frag[1]
     children = children.replace(/\s+/g, ' ').trim()
-    out.push({ pascal: nameMatch[1], svg: children })
+    out.push({ pascal: nameMatch[1], svg: children, jsx })
   }
   return out
 }
@@ -317,6 +365,35 @@ function main() {
       lines.push(')')
     }
   }
+  /*
+   * Alias exports — the familiar name from another set resolves to the cascivo icon, so
+   * `import { Rocket }` and `import { LayoutDashboard }` just work.
+   *
+   * Each alias re-DEFINES its target's geometry rather than re-binding it. A re-binding is
+   * what you would write by hand, and it cannot work here: nearly every alias target is one
+   * of the hand-authored icons in index.tsx, and index.tsx ends with `export * from
+   * './generated'` — so a `from './index'` import in this file makes the cycle evaluate
+   * generated.tsx first and every alias reads its target in the temporal dead zone. Repeating
+   * ~40 short geometry strings is the cheaper problem, and each one still tree-shakes on its
+   * own.
+   */
+  const existingIcons = parseExistingIcons(readFileSync(INDEX_TSX, 'utf8'))
+  const geometry = new Map(existingIcons.map((i) => [i.pascal, splitElements(i.svg)]))
+  for (const { pascal, elements } of icons) geometry.set(pascal, elements)
+  const aliasPairs = aliasExports(aliases, new Set(geometry.keys()))
+  lines.push('')
+  lines.push('// Aliases — the familiar name from another icon set, same geometry.')
+  for (const [alias, target] of aliasPairs) {
+    const elements = geometry.get(target)
+    if (elements.length === 1) {
+      lines.push(`export const ${alias} = createIcon('${alias}', ${elements[0]})`)
+    } else {
+      lines.push(`export const ${alias} = createIcon(`)
+      lines.push(`  '${alias}',`)
+      lines.push(`  ${renderChildren(elements)},`)
+      lines.push(')')
+    }
+  }
   writeFileSync(OUT_TSX, lines.join('\n') + '\n')
 
   // 1b. Emit one entry module per icon, for `@cascivo/icons/icons/<Name>` subpaths.
@@ -352,11 +429,7 @@ function main() {
   // The hand-written icons in index.tsx keep their single definition there; their subpath
   // modules re-export, so the subpath surface still covers the whole barrel. They are few
   // (60) and small, so the shared-chunk cost that rules out re-exports above is negligible.
-  const handWritten = [
-    ...readFileSync(join(ROOT, 'packages/icons/src/index.tsx'), 'utf8').matchAll(
-      /^export const (\w+) = createIcon\(/gm,
-    ),
-  ].map((m) => m[1])
+  const handWritten = existingIcons.map((i) => i.pascal)
   for (const name of handWritten) {
     writeFileSync(
       join(singleDir, `${name}.tsx`),
@@ -364,6 +437,17 @@ function main() {
         `export { ${name} } from '../index'\n`,
     )
     subpathEntries.push(name)
+  }
+  // Aliases get subpath modules too, so the narrow-import surface covers the whole barrel.
+  // A re-export is right here (unlike for the generated icons above): the alias is one
+  // binding in generated.tsx, not a definition worth duplicating a third time.
+  for (const [alias] of aliasPairs) {
+    writeFileSync(
+      join(singleDir, `${alias}.tsx`),
+      '// GENERATED by scripts/icons/generate.mjs — do not edit by hand.\n' +
+        `export { ${alias} } from '../generated'\n`,
+    )
+    subpathEntries.push(alias)
   }
   subpathEntries.sort()
   writeFileSync(join(singleDir, 'entries.json'), JSON.stringify(subpathEntries, null, 2) + '\n')

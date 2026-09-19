@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite-plus'
+import { MINIFY } from '../../scripts/build/minify.ts'
 
 export default defineConfig({
   build: {
@@ -8,6 +9,7 @@ export default defineConfig({
       fileName: 'index',
     },
     rollupOptions: {
+      output: { minify: MINIFY },
       // Subpath-AWARE externals. Exact strings miss subpath imports like
       // `@preact/signals-react/runtime`; bundling those drags in CJS shims whose
       // `require()` crashes Next.js RSC prerendering. Harmless while a package built with

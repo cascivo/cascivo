@@ -162,6 +162,7 @@ Enhancement only. The component still does its job with JavaScript disabled — 
 - `--cascivo-chart-6`
 - `--cascivo-chart-7`
 - `--cascivo-chart-8`
+- `--cascivo-chart-bar-radius`
 
 ## Accessibility
 
@@ -178,4 +179,4 @@ chart, bar, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

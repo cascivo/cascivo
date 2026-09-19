@@ -13,7 +13,7 @@ export function PosterWedge() {
   return (
     <section className="pg-section pg-cols" id="wedge" aria-label="A stylesheet, not a string">
       <div className="pg-pad">
-        <p className="pg-eyebrow">01 / the wedge</p>
+        <p className="pg-eyebrow">02 / the wedge</p>
         <h2 className="pg-display pg-display--section pg-wedge-head">
           A stylesheet,
           <br />

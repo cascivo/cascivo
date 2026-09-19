@@ -23,17 +23,17 @@ Renders role="img" with a title and a fallback from/to/value table.
 
 ## Props
 
-| Name          | Type           | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                   |
-| ------------- | -------------- | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `nodes`       | `SankeyNode[]` | Yes      | —       | Nodes: { id, label, color? }.                                                                                                                                                                                                                                                                                                                                                                 |
-| `links`       | `SankeyLink[]` | Yes      | —       | Links: { source, target, value }.                                                                                                                                                                                                                                                                                                                                                             |
-| `title`       | `string`       | Yes      | —       | Title text for the component.                                                                                                                                                                                                                                                                                                                                                                 |
-| `description` | `string`       | No       | —       | Supporting description text.                                                                                                                                                                                                                                                                                                                                                                  |
-| `width`       | `number`       | No       | —       | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
-| `height`      | `number`       | No       | 320     | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
-| `tooltip`     | `boolean`      | No       | —       | Whether to show tooltips on hover.                                                                                                                                                                                                                                                                                                                                                            |
-| `className`   | `string`       | No       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
-| `plain`       | `boolean`      | No       | false   | When true, renders a minimal variant without chart chrome.                                                                                                                                                                                                                                                                                                                                    |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `nodes` | `SankeyNode[]` | Yes | — | Nodes: { id, label, color? }. |
+| `links` | `SankeyLink[]` | Yes | — | Links: { source, target, value }. |
+| `title` | `string` | Yes | — | Title text for the component. |
+| `description` | `string` | No | — | Supporting description text. |
+| `width` | `number` | No | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | No | 320 | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
+| `tooltip` | `boolean` | No | — | Whether to show tooltips on hover. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| `plain` | `boolean` | No | false | When true, renders a minimal variant without chart chrome. |
 
 ## Object types
 
@@ -41,21 +41,21 @@ Renders role="img" with a title and a fallback from/to/value table.
 
 Shape of the `links` prop.
 
-| Field    | Type     | Required | Description |
-| -------- | -------- | -------- | ----------- |
-| `source` | `string` | Yes      | —           |
-| `target` | `string` | Yes      | —           |
-| `value`  | `number` | Yes      | —           |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `source` | `string` | Yes | — |
+| `target` | `string` | Yes | — |
+| `value` | `number` | Yes | — |
 
 ### `SankeyNode`
 
 Shape of the `nodes` prop.
 
-| Field   | Type     | Required | Description |
-| ------- | -------- | -------- | ----------- |
-| `id`    | `string` | Yes      | —           |
-| `label` | `string` | Yes      | —           |
-| `color` | `string` | No       | —           |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `id` | `string` | Yes | — |
+| `label` | `string` | Yes | — |
+| `color` | `string` | No | — |
 
 ## Tokens
 
@@ -74,17 +74,11 @@ Shape of the `nodes` prop.
 
 ```jsx
 import { Sankey } from '@cascivo/charts'
-;<Sankey
+
+<Sankey
   title="Traffic flow"
-  nodes={[
-    { id: 'a', label: 'Search' },
-    { id: 'b', label: 'Home' },
-    { id: 'c', label: 'Signup' },
-  ]}
-  links={[
-    { source: 'a', target: 'b', value: 30 },
-    { source: 'b', target: 'c', value: 12 },
-  ]}
+  nodes={[{ id: 'a', label: 'Search' }, { id: 'b', label: 'Home' }, { id: 'c', label: 'Signup' }]}
+  links={[{ source: 'a', target: 'b', value: 30 }, { source: 'b', target: 'c', value: 12 }]}
 />
 ```
 

@@ -72,6 +72,12 @@ export interface OverflowMenuProps {
    */
   label?: string
   size?: 'sm' | 'md'
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
   /**
    * Tab-order position of the trigger. A composite widget that manages its own focus (a

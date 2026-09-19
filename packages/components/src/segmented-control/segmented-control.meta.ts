@@ -38,6 +38,22 @@ export const meta: ComponentMeta = {
       required: false,
       default: 'false',
     },
+    {
+      name: 'ariaLabel',
+      nameVisibility: 'invisible',
+      description:
+        'Accessible name for the group. Invisible — it names the role="group" and renders nothing. The raw DOM `aria-label` still wins over this.',
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'label',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-bg-subtle',

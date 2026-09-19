@@ -31,20 +31,20 @@ Focusable group; Enter/Space select. Visual states (hover/focus/selected) are CS
 
 ## Props
 
-| Name               | Type                             | Required | Default | Description                                                                                                                              |
-| ------------------ | -------------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`               | `string`                         | Yes      | —       | Stable node id.                                                                                                                          |
-| `position`         | `{ x: number; y: number }`       | No       | —       | Position in flow coords (controllable).                                                                                                  |
-| `defaultPosition`  | `XYPosition`                     | No       | —       | Initial position for an uncontrolled node — the node then owns its own position as it is dragged. Pass `position` instead to control it. |
-| `onPositionChange` | `(position: XYPosition) => void` | No       | —       | Fired while dragging.                                                                                                                    |
-| `zoom`             | `number`                         | No       | 1       | Current zoom (drag deltas are divided by it).                                                                                            |
-| `selected`         | `boolean`                        | No       | false   | Whether the node is rendered as selected.                                                                                                |
-| `draggable`        | `boolean`                        | No       | true    | Whether the node can be dragged.                                                                                                         |
-| `interactive`      | `boolean`                        | No       | true    | When false, the node is view-only: not draggable, selectable, or focusable.                                                              |
-| `onSelect`         | `(id: string) => void`           | No       | —       | Called with the selected value.                                                                                                          |
-| `children`         | `ReactNode`                      | No       | —       | Any cascivo content.                                                                                                                     |
-| `className`        | `string`                         | No       | —       | Additional CSS class names merged onto the root element.                                                                                 |
-| `onMeasure`        | `(size: NodeSize) => void`       | No       | —       | Reports the rendered box size so edges can anchor to the real node bounds.                                                               |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `id` | `string` | Yes | — | Stable node id. |
+| `position` | `{ x: number; y: number }` | No | — | Position in flow coords (controllable). |
+| `defaultPosition` | `XYPosition` | No | — | Initial position for an uncontrolled node — the node then owns its own position as it is dragged. Pass `position` instead to control it. |
+| `onPositionChange` | `(position: XYPosition) => void` | No | — | Fired while dragging. |
+| `zoom` | `number` | No | 1 | Current zoom (drag deltas are divided by it). |
+| `selected` | `boolean` | No | false | Whether the node is rendered as selected. |
+| `draggable` | `boolean` | No | true | Whether the node can be dragged. |
+| `interactive` | `boolean` | No | true | When false, the node is view-only: not draggable, selectable, or focusable. |
+| `onSelect` | `(id: string) => void` | No | — | Called with the selected value. |
+| `children` | `ReactNode` | No | — | Any cascivo content. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| `onMeasure` | `(size: NodeSize) => void` | No | — | Reports the rendered box size so edges can anchor to the real node bounds. |
 
 ## Object types
 
@@ -52,10 +52,10 @@ Focusable group; Enter/Space select. Visual states (hover/focus/selected) are CS
 
 Shared geometry + graph types for the flow engine.
 
-| Field | Type     | Required | Description |
-| ----- | -------- | -------- | ----------- |
-| `x`   | `number` | Yes      | —           |
-| `y`   | `number` | Yes      | —           |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `x` | `number` | Yes | — |
+| `y` | `number` | Yes | — |
 
 ## Tokens
 
@@ -70,20 +70,18 @@ Shared geometry + graph types for the flow engine.
 ### A draggable node
 
 ```jsx
-;() => (
+() => (
   <div style={{ position: 'relative', height: 160 }}>
-    <FlowNode id="a" defaultPosition={{ x: 40, y: 50 }}>
-      Service A
-    </FlowNode>
+    <FlowNode id="a" defaultPosition={{ x: 40, y: 50 }}>Service A</FlowNode>
   </div>
 )
 ```
 
 ## Boundaries
 
-| Area     | Level    | Note                                |
-| -------- | -------- | ----------------------------------- |
-| content  | flexible | Renders any children.               |
+| Area | Level | Note |
+|------|-------|------|
+| content | flexible | Renders any children. |
 | position | flexible | Controllable; draggable toggleable. |
 
 ## AI context prompt

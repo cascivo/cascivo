@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
-import { DataList } from './data-list'
+import { DataList, DataListItem } from './data-list'
 
 afterEach(cleanup)
 
@@ -55,5 +55,41 @@ describe('DataList', () => {
     const dl = container.querySelector('dl')!
     expect(dl.classList.contains('custom')).toBe(true)
     expect(dl.getAttribute('aria-label')).toBe('Details')
+  })
+})
+
+describe('DataListItem (2026-08-31 report §22)', () => {
+  it('renders a dt/dd pair inside DataList', () => {
+    const { container } = render(
+      <DataList>
+        <DataListItem label="Domain">storefront.example.com</DataListItem>
+        <DataListItem label="Region">fra1</DataListItem>
+      </DataList>,
+    )
+    const terms = [...container.querySelectorAll('dt')].map((el) => el.textContent)
+    const details = [...container.querySelectorAll('dd')].map((el) => el.textContent)
+    expect(terms).toEqual(['Domain', 'Region'])
+    expect(details).toEqual(['storefront.example.com', 'fra1'])
+  })
+
+  it('renders the same markup as the equivalent `items` array', () => {
+    const fromItems = render(
+      <DataList items={[{ id: 'domain', label: 'Domain', value: 'example.com' }]} />,
+    ).container.innerHTML
+    const fromChildren = render(
+      <DataList>
+        <DataListItem label="Domain">example.com</DataListItem>
+      </DataList>,
+    ).container.innerHTML
+    expect(fromChildren).toBe(fromItems)
+  })
+
+  it('accepts items and children together', () => {
+    const { container } = render(
+      <DataList items={[{ id: 'a', label: 'A', value: '1' }]}>
+        <DataListItem label="B">2</DataListItem>
+      </DataList>,
+    )
+    expect(container.querySelectorAll('dt')).toHaveLength(2)
   })
 })

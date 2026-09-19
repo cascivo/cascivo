@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-29",
+  "generatedAt": "2026-09-16",
   "specs": [
     {
       "id": "at-matrix",
@@ -60,6 +60,12 @@
       "title": "Decision Hierarchy",
       "path": "/docs/specs/decision-hierarchy.md",
       "summary": "When guidance conflicts, resolve it in this order:"
+    },
+    {
+      "id": "email-target",
+      "title": "email-target",
+      "path": "/docs/specs/email-target.md",
+      "summary": "**Status: implemented, Phases 1–4** (Phase 4 less the registry and MCP integration; Phase 5 is a release-time manual pass by nature). Shipped: `@cascivo/email` — the token resolver, the vendored conformance oracle, twenty table-based primitives, `renderEmail`, three templates, the client simulator, React Email interop — plus `@cascivo/email-preview`, twelve visual baselines, and the guards behind `pnpm email:check`."
     },
     {
       "id": "legal-mapping",

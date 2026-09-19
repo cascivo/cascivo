@@ -32,17 +32,27 @@ Renders a native <button> so Enter/Space activation, focus, and role come from t
 
 ## Props
 
-| Name       | Type                                                   | Required | Default | Description                                                                                                                                            |
-| ---------- | ------------------------------------------------------ | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `variant`  | `'primary' \| 'secondary' \| 'ghost' \| 'destructive'` | No       | primary | `primary` for the main action, `secondary` for a supporting one, `ghost` for a borderless action in dense UI, `destructive` for anything that deletes. |
-| `size`     | `'sm' \| 'md' \| 'lg'`                                 | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                  |
-| `loading`  | `boolean`                                              | No       | false   | When true, shows a loading state.                                                                                                                      |
-| `disabled` | `boolean`                                              | No       | false   | When true, disables the control and removes it from the tab order.                                                                                     |
-| `asChild`  | `boolean`                                              | No       | false   | When true, renders the child element as the root via Slot, merging props (polymorphic rendering).                                                      |
-| `onClick`  | `React.MouseEventHandler<HTMLButtonElement>`           | No       | —       | Called when the element is clicked.                                                                                                                    |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'primary' \| 'secondary' \| 'ghost' \| 'destructive'` | No | primary | `primary` for the main action, `secondary` for a supporting one, `ghost` for a borderless action in dense UI, `destructive` for anything that deletes. |
+| `size` | `'sm' \| 'md' \| 'lg'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `loading` | `boolean` | No | false | When true, shows a loading state. |
+| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
+| `asChild` | `boolean` | No | false | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
+| `onClick` | `React.MouseEventHandler<HTMLButtonElement>` | No | — | Called when the element is clicked. |
 
 ## Tokens
 
+- `--cascivo-button-primary-bg`
+- `--cascivo-button-primary-bg-hover`
+- `--cascivo-button-primary-bg-active`
+- `--cascivo-button-secondary-bg`
+- `--cascivo-button-secondary-bg-hover`
+- `--cascivo-button-ghost-bg`
+- `--cascivo-button-ghost-bg-hover`
+- `--cascivo-button-destructive-bg`
+- `--cascivo-button-destructive-bg-hover`
+- `--cascivo-button-radius`
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-hover`
 - `--cascivo-color-accent-active`
@@ -79,17 +89,15 @@ Renders a native <button> so Enter/Space activation, focus, and role come from t
 Render button styling on a real anchor (keeps middle-click / open-in-new-tab).
 
 ```jsx
-<Button asChild>
-  <a href="/pricing">View pricing</a>
-</Button>
+<Button asChild><a href="/pricing">View pricing</a></Button>
 ```
 
 ## Boundaries
 
-| Area        | Level    | Note                                                               |
-| ----------- | -------- | ------------------------------------------------------------------ |
-| token names | strict   | Visual props must resolve to --cascivo-button-\* / semantic tokens |
-| label copy  | flexible | Free, within tone guidance                                         |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Visual props must resolve to --cascivo-button-* / semantic tokens |
+| label copy | flexible | Free, within tone guidance |
 
 ## AI context prompt
 
@@ -107,7 +115,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Button is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-accent, --cascivo-color-accent-hover, --cascivo-color-accent-active, --cascivo-color-text-on-accent, --cascivo-color-destructive, --cascivo-radius-button, --cascivo-focus-ring, --cascivo-disabled-opacity, --cascivo-text-ui, --cascivo-text-body
+  --cascivo-button-primary-bg, --cascivo-button-primary-bg-hover, --cascivo-button-primary-bg-active, --cascivo-button-secondary-bg, --cascivo-button-secondary-bg-hover, --cascivo-button-ghost-bg, --cascivo-button-ghost-bg-hover, --cascivo-button-destructive-bg, --cascivo-button-destructive-bg-hover, --cascivo-button-radius, --cascivo-color-accent, --cascivo-color-accent-hover, --cascivo-color-accent-active, --cascivo-color-text-on-accent, --cascivo-color-destructive, --cascivo-radius-button, --cascivo-focus-ring, --cascivo-disabled-opacity, --cascivo-text-ui, --cascivo-text-body
 
 Accessibility: role "button", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.
 

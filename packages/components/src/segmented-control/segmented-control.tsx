@@ -20,6 +20,24 @@ export interface SegmentedControlProps extends Omit<HTMLAttributes<HTMLDivElemen
   value: string
   onValueChange: (v: string) => void
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * Accessible name for the group. Invisible — it names the `role="group"`, it renders
+   * nothing.
+   *
+   * This component extended `HTMLAttributes` and nothing else, so it took the raw DOM
+   * `aria-label` while every sibling in the catalog took `ariaLabel` — the one control in an
+   * adopter's filter toolbar where the catalog spelling was a type error (2026-08-31 report
+   * §21). Both spellings work now; the raw `aria-label` still wins if you pass both.
+   */
+  ariaLabel?: string
+  /** Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered. */
+  label?: string
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
 }
 
@@ -29,6 +47,8 @@ export function SegmentedControl({
   onValueChange,
   size = 'md',
   disabled = false,
+  ariaLabel,
+  label,
   className,
   ...props
 }: SegmentedControlProps) {
@@ -50,6 +70,7 @@ export function SegmentedControl({
   return (
     <div
       role="group"
+      aria-label={ariaLabel ?? label}
       className={cn(styles['wrapper'], className)}
       data-size={size}
       data-disabled={disabled ? '' : undefined}

@@ -1,72 +1,29 @@
 'use client'
-import { batch, cn, useControllableSignal, useSignal, useSignals } from '@cascivo/core'
+import { batch, cn, focusElement, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, currentLocale, t } from '@cascivo/i18n'
+import { useRef } from 'react'
 import type { KeyboardEvent } from 'react'
+import {
+  addDays,
+  dayKey,
+  getMonthGrid,
+  getWeekStart,
+  isoWeek,
+  localToday,
+  moveByDays,
+  moveByMonths,
+  outOfRange,
+  sameDay,
+  startOfWeek,
+  viewStepBlocked,
+} from './calendar-date'
 import styles from './calendar.module.css'
-
-function getWeekStart(locale: string): number {
-  try {
-    const info = (new Intl.Locale(locale) as Intl.Locale & { weekInfo?: { firstDay: number } })
-      .weekInfo
-    if (info) return info.firstDay % 7
-  } catch {}
-  return 1 // Monday fallback
-}
-
-function getMonthGrid(year: number, month: number, weekStart: number): (Date | null)[][] {
-  const first = new Date(Date.UTC(year, month, 1))
-  const last = new Date(Date.UTC(year, month + 1, 0))
-  const startDow = first.getUTCDay()
-  const offset = (startDow - weekStart + 7) % 7
-  const days: (Date | null)[] = []
-  for (let i = 0; i < offset; i++) days.push(null)
-  for (let d = 1; d <= last.getUTCDate(); d++) days.push(new Date(Date.UTC(year, month, d)))
-  while (days.length % 7 !== 0) days.push(null)
-  const rows: (Date | null)[][] = []
-  for (let i = 0; i < days.length; i += 7) rows.push(days.slice(i, i + 7))
-  return rows
-}
-
-/** UTC-safe day-key, used for equality comparisons. */
-function dayKey(date: Date): string {
-  return `${date.getUTCFullYear()}-${date.getUTCMonth()}-${date.getUTCDate()}`
-}
-
-function sameDay(a: Date | null | undefined, b: Date | null | undefined): boolean {
-  if (!a || !b) return false
-  return dayKey(a) === dayKey(b)
-}
-
-function addDays(date: Date, days: number): Date {
-  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + days))
-}
-
-function addMonths(date: Date, months: number): Date {
-  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + months, date.getUTCDate()))
-}
-
-function startOfWeek(date: Date, weekStart: number): Date {
-  const dow = date.getUTCDay()
-  const diff = (dow - weekStart + 7) % 7
-  return addDays(date, -diff)
-}
-
-/** True when `date` is outside the [min, max] inclusive bounds (compared at day granularity). */
-function outOfRange(date: Date, min?: Date, max?: Date): boolean {
-  if (min) {
-    const minDay = new Date(Date.UTC(min.getUTCFullYear(), min.getUTCMonth(), min.getUTCDate()))
-    if (date.getTime() < minDay.getTime()) return true
-  }
-  if (max) {
-    const maxDay = new Date(Date.UTC(max.getUTCFullYear(), max.getUTCMonth(), max.getUTCDate()))
-    if (date.getTime() > maxDay.getTime()) return true
-  }
-  return false
-}
 
 export interface CalendarLabels {
   previousMonth?: string
   nextMonth?: string
+  today?: string
+  weekNumber?: string
 }
 
 export interface CalendarProps {
@@ -86,6 +43,15 @@ export interface CalendarProps {
   size?: 'sm' | 'md' | 'lg'
   labels?: CalendarLabels
   className?: string
+  /**
+   * Accessible name for the grid. Defaults to the visible month label.
+   *
+   * Calendar has no visible label slot — the month heading is its own — so `label` and
+   * `ariaLabel` are aliases for the same invisible name. `ariaLabel` wins if both are given.
+   */
+  ariaLabel?: string
+  /** Alias for `ariaLabel`. See the note there. */
+  label?: string
   /** Highlight predicate for range previews (date-range-picker). */
   isInRange?: (date: Date) => boolean
   /** Range endpoint markers for styling. */
@@ -106,6 +72,20 @@ export interface CalendarProps {
    * @see the component manifest
    */
   hideNav?: boolean
+  /**
+   * When true, shows a button that jumps the view to the current month and focuses today.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
+  showToday?: boolean
+  /**
+   * When true, prefixes each row with its ISO-8601 week number.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
+  showWeekNumbers?: boolean
 }
 
 export function Calendar({
@@ -119,6 +99,8 @@ export function Calendar({
   size = 'md',
   labels,
   className,
+  ariaLabel,
+  label,
   isInRange,
   isRangeStart,
   isRangeEnd,
@@ -127,29 +109,50 @@ export function Calendar({
   year,
   onViewChange,
   hideNav = false,
+  showToday = false,
+  showWeekNumbers = false,
 }: CalendarProps) {
   useSignals()
   const locale = localeProp ?? currentLocale()
+  const gridRef = useRef<HTMLTableElement>(null)
 
   const resolvedPrev = labels?.previousMonth ?? t(builtin.calendar.previousMonth)
   const resolvedNext = labels?.nextMonth ?? t(builtin.calendar.nextMonth)
+  const resolvedToday = labels?.today ?? t(builtin.calendar.today)
+  const resolvedWeek = labels?.weekNumber ?? t(builtin.calendar.weekNumber)
 
   const selected = value !== undefined ? value : (defaultValue ?? null)
-  const today = new Date()
-
+  const today = localToday()
   const initial = selected ?? defaultValue ?? today
-  // Controlled mirror goes through the shared primitive: a bare `sig.value = prop` in render
-  // notifies the previous render's subscriptions, which React 19 reports as a setState during
-  // render (2026-08-08 report A). The primitive skips the write when the value is unchanged.
-  const [viewYear] = useControllableSignal<number>({
-    value: year,
-    defaultValue: initial.getUTCFullYear(),
-  })
-  const [viewMonth] = useControllableSignal<number>({
-    value: month,
-    defaultValue: initial.getUTCMonth(),
-  })
+
+  const viewYear = useSignal(initial.getUTCFullYear())
+  const viewMonth = useSignal(initial.getUTCMonth())
   const focusedDate = useSignal<Date>(initial)
+  // Set when the keyboard or a nav button moves the cursor, so the effect below knows to take
+  // DOM focus with it. A render caused by anything else must not steal focus.
+  const pendingFocus = useSignal<string | null>(null)
+
+  const isViewControlled = month !== undefined || year !== undefined
+  if (year !== undefined && viewYear.peek() !== year) viewYear.value = year
+  if (month !== undefined && viewMonth.peek() !== month) viewMonth.value = month
+
+  /**
+   * Follow a changed controlled `value` into view. `useControllableSignal`'s `defaultValue`
+   * only reads at mount, so `<Calendar value={july15} />` after rendering June used to stay
+   * on June with the selection off-screen.
+   */
+  const lastSelectedKey = useRef<string | null>(selected ? dayKey(selected) : null)
+  const selectedKey = selected ? dayKey(selected) : null
+  if (selectedKey !== lastSelectedKey.current) {
+    lastSelectedKey.current = selectedKey
+    if (selected && !isViewControlled) {
+      batch(() => {
+        viewYear.value = selected.getUTCFullYear()
+        viewMonth.value = selected.getUTCMonth()
+        focusedDate.value = selected
+      })
+    }
+  }
 
   const weekStart = getWeekStart(locale)
   const grid = getMonthGrid(viewYear.value, viewMonth.value, weekStart)
@@ -172,31 +175,61 @@ export function Calendar({
   const isDayDisabled = (date: Date): boolean =>
     outOfRange(date, min, max) || (disabled ? disabled(date) : false)
 
-  const isViewControlled = month !== undefined || year !== undefined
+  const bounds = { min, max, isDisabled: disabled }
 
-  const setView = (date: Date) => {
+  /**
+   * Move the cursor and take DOM focus with it. Setting `tabIndex` alone was the whole of the
+   * old implementation: the roving index moved but real focus stayed on the previous button,
+   * and once an arrow crossed a month boundary that button unmounted and focus fell to
+   * `<body>` — the user was ejected from the widget mid-navigation.
+   */
+  const moveCursor = (next: Date): void => {
+    const changedMonth =
+      next.getUTCMonth() !== viewMonth.peek() || next.getUTCFullYear() !== viewYear.peek()
     if (!isViewControlled) {
       batch(() => {
-        viewYear.value = date.getUTCFullYear()
-        viewMonth.value = date.getUTCMonth()
-        focusedDate.value = date
+        viewYear.value = next.getUTCFullYear()
+        viewMonth.value = next.getUTCMonth()
+        focusedDate.value = next
       })
     } else {
-      focusedDate.value = date
+      focusedDate.value = next
     }
-    onViewChange?.({ month: date.getUTCMonth(), year: date.getUTCFullYear() })
+    pendingFocus.value = dayKey(next)
+    if (changedMonth) onViewChange?.({ month: next.getUTCMonth(), year: next.getUTCFullYear() })
   }
 
-  const select = (date: Date) => {
+  /**
+   * Deferred by a task, not run inline: Preact signal effects fire synchronously on write, so
+   * reading the DOM here during the write would find the *previous* month still rendered.
+   * React also reuses the day buttons positionally across months, so doing nothing is not
+   * neutral — focus stays on the reused node and silently lands on whatever date now occupies
+   * that grid slot (paging from 18 March put focus on 22 April, the same cell index).
+   */
+  useSignalEffect(() => {
+    const key = pendingFocus.value
+    if (!key) return
+    const timer = setTimeout(() => {
+      pendingFocus.value = null
+      focusElement(gridRef.current?.querySelector<HTMLElement>(`[data-day="${key}"]`) ?? null)
+    }, 0)
+    return () => clearTimeout(timer)
+  })
+
+  const select = (date: Date): void => {
     if (isDayDisabled(date)) return
+    // Keep the cursor with the selection, so a click followed by an arrow continues from
+    // where the user clicked rather than from wherever the roving index had been left.
+    focusedDate.value = date
     onValueChange?.(date)
   }
 
-  const stepMonth = (delta: number) => {
-    const base = new Date(Date.UTC(viewYear.value, viewMonth.value, 1))
-    const target = addMonths(base, delta)
-    const nextMonthIdx = target.getUTCMonth()
-    const nextYear = target.getUTCFullYear()
+  const stepView = (delta: number): void => {
+    const y = viewYear.peek()
+    const m = viewMonth.peek()
+    if (viewStepBlocked(y, m, delta, min, max)) return
+    const nextMonthIdx = (((m + delta) % 12) + 12) % 12
+    const nextYear = y + Math.floor((m + delta) / 12)
     if (!isViewControlled) {
       batch(() => {
         viewMonth.value = nextMonthIdx
@@ -206,36 +239,42 @@ export function Calendar({
     onViewChange?.({ month: nextMonthIdx, year: nextYear })
   }
 
-  const prevMonth = () => stepMonth(-1)
-  const nextMonth = () => stepMonth(1)
+  const goToToday = (): void => {
+    if (isDayDisabled(today)) return
+    moveCursor(today)
+  }
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLTableElement>): void => {
     const current = focusedDate.value
-    let next: Date | undefined
+    let next: Date | null | undefined
     switch (e.key) {
       case 'ArrowRight':
-        next = addDays(current, 1)
+        next = moveByDays(current, 1, bounds)
         break
       case 'ArrowLeft':
-        next = addDays(current, -1)
+        next = moveByDays(current, -1, bounds)
         break
       case 'ArrowDown':
-        next = addDays(current, 7)
+        next = moveByDays(current, 7, bounds)
         break
       case 'ArrowUp':
-        next = addDays(current, -7)
+        next = moveByDays(current, -7, bounds)
         break
-      case 'Home':
-        next = startOfWeek(current, weekStart)
+      case 'Home': {
+        const start = startOfWeek(current, weekStart)
+        next = isDayDisabled(start) ? moveByDays(start, 1, bounds) : start
         break
-      case 'End':
-        next = addDays(startOfWeek(current, weekStart), 6)
+      }
+      case 'End': {
+        const end = addDays(startOfWeek(current, weekStart), 6)
+        next = isDayDisabled(end) ? moveByDays(end, -1, bounds) : end
         break
+      }
       case 'PageUp':
-        next = addMonths(current, e.shiftKey ? -12 : -1)
+        next = moveByMonths(current, e.shiftKey ? -12 : -1, bounds)
         break
       case 'PageDown':
-        next = addMonths(current, e.shiftKey ? 12 : 1)
+        next = moveByMonths(current, e.shiftKey ? 12 : 1, bounds)
         break
       case 'Enter':
       case ' ':
@@ -246,9 +285,15 @@ export function Calendar({
         return
     }
     e.preventDefault()
-    setView(next)
+    // `null` means the move would leave the allowed range; stay put rather than navigating
+    // into a month where every day is disabled.
+    if (!next) return
+    moveCursor(next)
     onDayHover?.(next)
   }
+
+  const prevBlocked = viewStepBlocked(viewYear.value, viewMonth.value, -1, min, max)
+  const nextBlocked = viewStepBlocked(viewYear.value, viewMonth.value, 1, min, max)
 
   return (
     <div
@@ -262,37 +307,47 @@ export function Calendar({
             type="button"
             className={styles['navButton']}
             aria-label={resolvedPrev}
-            onClick={prevMonth}
+            disabled={prevBlocked}
+            onClick={() => stepView(-1)}
           >
-            ‹
+            <span aria-hidden="true">‹</span>
           </button>
         ) : (
           <span className={styles['navSpacer']} />
         )}
-        <span className={styles['monthLabel']} aria-live="polite">
-          {monthLabel}
-        </span>
+        {/* Not a live region: this text is also the grid's accessible name, so announcing it
+            here would mutate the name of the container focus sits inside. The month change is
+            announced by the separate status region below. */}
+        <span className={styles['monthLabel']}>{monthLabel}</span>
         {!hideNav ? (
           <button
             type="button"
             className={styles['navButton']}
             aria-label={resolvedNext}
-            onClick={nextMonth}
+            disabled={nextBlocked}
+            onClick={() => stepView(1)}
           >
-            ›
+            <span aria-hidden="true">›</span>
           </button>
         ) : (
           <span className={styles['navSpacer']} />
         )}
       </div>
+
       <table
+        ref={gridRef}
         role="grid"
-        aria-label={monthLabel}
+        aria-label={ariaLabel ?? label ?? monthLabel}
         className={styles['grid']}
         onKeyDown={handleKeyDown}
       >
         <thead>
           <tr role="row">
+            {showWeekNumbers && (
+              <th className={styles['weekday']} scope="col">
+                <span className={styles['srOnly']}>{resolvedWeek}</span>
+              </th>
+            )}
             {weekdays.map((wd) => (
               <th key={wd} className={styles['weekday']} abbr={wd} scope="col">
                 {wd}
@@ -301,51 +356,75 @@ export function Calendar({
           </tr>
         </thead>
         <tbody>
-          {grid.map((week, wi) => (
-            <tr role="row" key={wi}>
-              {week.map((day, di) => {
-                if (!day) return <td key={di} role="gridcell" className={styles['empty']} />
-                const isSelected = sameDay(day, selected)
-                const isToday = sameDay(day, today)
-                const isFocused = sameDay(day, focusedDate.value)
-                const dayDisabled = isDayDisabled(day)
-                const inRange = isInRange ? isInRange(day) : false
-                const rangeStart = isRangeStart ? isRangeStart(day) : false
-                const rangeEnd = isRangeEnd ? isRangeEnd(day) : false
-                return (
-                  <td
-                    key={di}
-                    role="gridcell"
-                    className={styles['cell']}
-                    aria-selected={isSelected}
-                  >
-                    <button
-                      type="button"
-                      className={styles['day']}
-                      tabIndex={isFocused ? 0 : -1}
-                      aria-label={dayLabelFmt.format(day)}
-                      aria-current={isToday ? 'date' : undefined}
-                      aria-disabled={dayDisabled || undefined}
-                      data-selected={isSelected || undefined}
-                      data-today={isToday || undefined}
-                      data-in-range={inRange || undefined}
-                      data-range-start={rangeStart || undefined}
-                      data-range-end={rangeEnd || undefined}
-                      onClick={() => select(day)}
-                      onFocus={() => {
-                        focusedDate.value = day
-                      }}
-                      onMouseEnter={() => onDayHover?.(day)}
-                    >
-                      {day.getUTCDate()}
-                    </button>
-                  </td>
-                )
-              })}
-            </tr>
-          ))}
+          {grid.map((week, wi) => {
+            const firstDay = week.find(Boolean)
+            return (
+              <tr role="row" key={wi}>
+                {showWeekNumbers && (
+                  <th scope="row" className={styles['weekNumber']}>
+                    {firstDay ? isoWeek(firstDay) : ''}
+                  </th>
+                )}
+                {week.map((day, di) => {
+                  if (!day) return <td key={di} role="gridcell" className={styles['empty']} />
+                  const isSelected = sameDay(day, selected)
+                  const isToday = sameDay(day, today)
+                  const isFocused = sameDay(day, focusedDate.value)
+                  const dayDisabled = isDayDisabled(day)
+                  return (
+                    <td key={di} role="gridcell" className={styles['cell']}>
+                      <button
+                        type="button"
+                        className={styles['day']}
+                        data-day={dayKey(day)}
+                        tabIndex={isFocused ? 0 : -1}
+                        aria-label={dayLabelFmt.format(day)}
+                        // On the button, not the <td>: focus lands here, so this is the
+                        // element whose selected state assistive technology reads. Omitted
+                        // rather than "false" so 30 cells do not each announce a negative.
+                        aria-selected={isSelected || undefined}
+                        aria-current={isToday ? 'date' : undefined}
+                        aria-disabled={dayDisabled || undefined}
+                        data-selected={isSelected || undefined}
+                        data-today={isToday || undefined}
+                        data-in-range={(isInRange?.(day) ?? false) || undefined}
+                        data-range-start={(isRangeStart?.(day) ?? false) || undefined}
+                        data-range-end={(isRangeEnd?.(day) ?? false) || undefined}
+                        onClick={() => select(day)}
+                        onFocus={() => {
+                          focusedDate.value = day
+                        }}
+                        onMouseEnter={() => onDayHover?.(day)}
+                      >
+                        {day.getUTCDate()}
+                      </button>
+                    </td>
+                  )
+                })}
+              </tr>
+            )
+          })}
         </tbody>
       </table>
+
+      {showToday && (
+        <div className={styles['footer']}>
+          <button
+            type="button"
+            className={styles['todayButton']}
+            disabled={isDayDisabled(today)}
+            onClick={goToToday}
+          >
+            {resolvedToday}
+          </button>
+        </div>
+      )}
+
+      {/* A separate announcer, mounted up front, so paging the month is spoken without
+          rewriting the grid's own accessible name. */}
+      <span className={styles['srOnly']} role="status" aria-live="polite">
+        {monthLabel}
+      </span>
     </div>
   )
 }

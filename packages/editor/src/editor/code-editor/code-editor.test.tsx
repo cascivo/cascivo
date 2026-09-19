@@ -12,6 +12,18 @@ function getTextarea(): HTMLTextAreaElement {
   return screen.getByRole('combobox') as HTMLTextAreaElement
 }
 
+/**
+ * The code the highlight layer is currently showing. The line-number cells live in
+ * the same `<code>` grid as the code (that is what keeps them aligned through a soft
+ * wrap), so they have to be filtered out of a text assertion — they are the
+ * `aria-hidden` cells.
+ */
+function highlightText(container: HTMLElement): string {
+  return [...container.querySelectorAll('pre code > span:not([aria-hidden])')]
+    .map((row) => row.textContent)
+    .join('\n')
+}
+
 afterEach(() => {
   vi.unstubAllGlobals()
   vi.restoreAllMocks()
@@ -82,16 +94,15 @@ describe('CodeEditor', () => {
 
     const { container } = render(<CodeEditor language="javascript" defaultValue="a" />)
     const ta = getTextarea()
-    const pre = container.querySelector('pre') as HTMLPreElement
 
     fireEvent.change(ta, { target: { value: 'ab' } })
     expect(ta.value).toBe('ab') // textarea is always current
-    expect(pre.textContent).toBe('a') // highlight not yet repainted
+    expect(highlightText(container)).toBe('a') // highlight not yet repainted
 
     act(() => {
       for (const frame of frames) frame(0)
     })
-    expect(pre.textContent).toBe('ab') // converges after the frame
+    expect(highlightText(container)).toBe('ab') // converges after the frame
 
     vi.unstubAllGlobals()
   })
@@ -294,6 +305,66 @@ describe('CodeEditor', () => {
       document.dispatchEvent(new Event('selectionchange'))
     })
     expect(root.style.getPropertyValue('--cascivo-editor-caret-line')).toBe('2')
+  })
+
+  // Under soft wrap a line is as many visual rows as it needs, so the marker cannot be
+  // positioned by `caretLine * 1lh` — that lit only the first row of a wrapped line and
+  // left the rest untinted. It is placed on the caret's GRID ROW instead, and both grid
+  // lines have to be resolved: an out-of-flow grid child treats an `auto` (or `span`)
+  // end edge as the grid's own padding edge, which ran the marker to the last line.
+  it('places the current-line marker on the caret row, as a closed grid-row pair', () => {
+    const { container } = render(<CodeEditor defaultValue={'a\nb\nc\nd'} wrap />)
+    const ta = getTextarea()
+    const root = container.firstChild as HTMLElement
+    expect(root.style.getPropertyValue('--cascivo-editor-caret-row')).toBe('1 / 2')
+
+    ta.focus()
+    ta.setSelectionRange(4, 4) // offset 4 = start of line index 2
+    act(() => {
+      document.dispatchEvent(new Event('selectionchange'))
+    })
+    expect(root.style.getPropertyValue('--cascivo-editor-caret-row')).toBe('3 / 4')
+  })
+
+  // A separate gutter column numbers its rows one line box at a time, so a single
+  // soft-wrapped line pushes every number below it out of step with its code. The
+  // number and its line are adjacent cells of ONE grid row instead; jsdom has no
+  // layout, so what is asserted is the pairing that the grid row rests on.
+  it('pairs every line number with its own line, in order', () => {
+    const { container } = render(<CodeEditor defaultValue={'a\nb\nc'} wrap />)
+    const cells = [...(container.querySelector('pre code') as HTMLElement).children]
+    // The two current-line markers lead; the rows follow in number/line pairs.
+    expect(cells.slice(2).map((c) => c.textContent)).toEqual(['1', 'a', '2', 'b', '3', 'c'])
+    expect(cells[2]!.getAttribute('aria-hidden')).toBe('true')
+    expect(cells[3]!.getAttribute('aria-hidden')).toBeNull()
+  })
+
+  // The gutter's width is a grid track and the textarea's inset, not padding on either
+  // — a host reset (`* { padding: 0 }`, e.g. Tailwind Preflight) collapses padding but
+  // can touch neither, so the numbers cannot end up jammed against the code and the
+  // editing surface cannot drift off the layer it is overlaid on.
+  it('sizes the gutter track from the line count, not from padding', () => {
+    const nine = Array.from({ length: 9 }, () => 'x').join('\n')
+    const { container } = render(<CodeEditor defaultValue={nine} />)
+    expect(
+      (container.firstChild as HTMLElement).style.getPropertyValue(
+        '--cascivo-editor-gutter-digits',
+      ),
+    ).toBe('1')
+
+    const wide = render(<CodeEditor defaultValue={`${nine}\nx`} />)
+    expect(
+      (wide.container.firstChild as HTMLElement).style.getPropertyValue(
+        '--cascivo-editor-gutter-digits',
+      ),
+    ).toBe('2')
+  })
+
+  it('emits no gutter cells when lineNumbers is off', () => {
+    const { container } = render(<CodeEditor defaultValue={'a\nb'} lineNumbers={false} />)
+    expect(container.querySelectorAll(`.${hl['num']}`)).toHaveLength(0)
+    const cells = [...(container.querySelector('pre code') as HTMLElement).children]
+    expect(cells.slice(2).map((c) => c.textContent)).toEqual(['a', 'b'])
   })
 
   it('undoes and redoes an edit with Mod-Z / Mod-Shift-Z', () => {

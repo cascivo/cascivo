@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite-plus'
+import { MINIFY } from '../../scripts/build/minify.ts'
 import { cssImportEdge } from '../../scripts/build/css-import-edge.ts'
 
 export default defineConfig({
@@ -23,6 +24,7 @@ export default defineConfig({
         /^@cascivo\/i18n($|\/)/,
       ],
       output: {
+        minify: MINIFY,
         // The editor surfaces are signal-driven client components; preserve the
         // directive for RSC consumers.
         banner: "'use client';",

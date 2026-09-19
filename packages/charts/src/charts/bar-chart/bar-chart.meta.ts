@@ -258,6 +258,7 @@ export const meta: ComponentMeta = {
     '--cascivo-chart-6',
     '--cascivo-chart-7',
     '--cascivo-chart-8',
+    '--cascivo-chart-bar-radius',
   ],
   accessibility: { role: 'img', wcag: '2.1-AA', keyboard: [] },
   examples: [

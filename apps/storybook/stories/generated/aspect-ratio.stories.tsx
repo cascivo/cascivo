@@ -3,13 +3,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { AspectRatio } from '@cascivo/react'
 
 const meta: Meta = {
-  title: 'Layout/AspectRatio',
+  title: "Layout/AspectRatio",
 }
 export default meta
 type Story = StoryObj
 
 export const ImageAt169: Story = {
-  name: 'Image at 16:9',
+  name: "Image at 16:9",
   render: () => (
     <AspectRatio ratio={16 / 9}>
       <img src="/cover.jpg" alt="Cover" />
@@ -18,10 +18,11 @@ export const ImageAt169: Story = {
 }
 
 export const Square: Story = {
-  name: 'Square',
+  name: "Square",
   render: () => (
     <AspectRatio ratio={1}>
       <img src="/avatar.jpg" alt="Avatar" />
     </AspectRatio>
   ),
 }
+

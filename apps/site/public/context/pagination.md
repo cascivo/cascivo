@@ -33,16 +33,16 @@ Wrapped in <nav> with an accessible label; page controls are real buttons with c
 
 ## Props
 
-| Name               | Type                     | Required | Default           | Description                                                     |
-| ------------------ | ------------------------ | -------- | ----------------- | --------------------------------------------------------------- |
-| `page`             | `number`                 | Yes      | —                 | Current page (1-based)                                          |
-| `pageSize`         | `number`                 | Yes      | —                 | Items per page                                                  |
-| `totalItems`       | `number`                 | Yes      | —                 | Total number of items                                           |
-| `onPageChange`     | `(page: number) => void` | Yes      | —                 | Called with the new page number when it changes.                |
-| `onPageSizeChange` | `(size: number) => void` | No       | —                 | Called with the new page size when it changes.                  |
-| `pageSizeOptions`  | `number[]`               | No       | [10, 25, 50, 100] | Options for the page size select                                |
-| `labels`           | `PaginationLabels`       | No       | —                 | Overridable English strings for all visible and accessible text |
-| `className`        | `string`                 | No       | —                 | Additional CSS class names merged onto the root element.        |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `page` | `number` | Yes | — | Current page (1-based) |
+| `pageSize` | `number` | Yes | — | Items per page |
+| `totalItems` | `number` | Yes | — | Total number of items |
+| `onPageChange` | `(page: number) => void` | Yes | — | Called with the new page number when it changes. |
+| `onPageSizeChange` | `(size: number) => void` | No | — | Called with the new page size when it changes. |
+| `pageSizeOptions` | `number[]` | No | [10, 25, 50, 100] | Options for the page size select |
+| `labels` | `PaginationLabels` | No | — | Overridable English strings for all visible and accessible text |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -69,33 +69,21 @@ Wrapped in <nav> with an accessible label; page controls are real buttons with c
 ### With page size select
 
 ```jsx
-<Pagination
-  page={page}
-  pageSize={size}
-  totalItems={103}
-  onPageChange={setPage}
-  onPageSizeChange={setSize}
-/>
+<Pagination page={page} pageSize={size} totalItems={103} onPageChange={setPage} onPageSizeChange={setSize} />
 ```
 
 ### Custom labels
 
 ```jsx
-<Pagination
-  page={1}
-  pageSize={10}
-  totalItems={42}
-  onPageChange={setPage}
-  labels={{ previous: 'Zurück', next: 'Weiter' }}
-/>
+<Pagination page={1} pageSize={10} totalItems={42} onPageChange={setPage} labels={{ previous: 'Zurück', next: 'Weiter' }} />
 ```
 
 ## Boundaries
 
-| Area              | Level    | Note                                                              |
-| ----------------- | -------- | ----------------------------------------------------------------- |
-| page size options | flexible | pageSizeOptions and the size select are optional                  |
-| token names       | strict   | Surfaces, borders, and accent must resolve to --cascivo-\* tokens |
+| Area | Level | Note |
+|------|-------|------|
+| page size options | flexible | pageSizeOptions and the size select are optional |
+| token names | strict | Surfaces, borders, and accent must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

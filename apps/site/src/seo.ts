@@ -38,6 +38,16 @@ const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       'Every cascivo component, grouped by category, each linking to its full API docs. The machine-readable index is /docs/components.md and /llms.txt.',
   },
+  '/email': {
+    title: `Email${SUFFIX}`,
+    description:
+      'Render cascivo-themed transactional email with @cascivo/email — table-based, inline-styled HTML that survives Outlook, twelve themes resolved to sRGB, a derived plain-text part, and a byte budget checked against Gmail clipping.',
+  },
+  '/email/components': {
+    title: `Email components${SUFFIX}`,
+    description:
+      'Every @cascivo/email primitive previewed as a real email document — Button, Card, Alert, Badge, Row/Column, Markdown and the rest — with its props and the exact JSX that rendered the frame.',
+  },
   '/editor': {
     title: `Editor${SUFFIX}`,
     description:

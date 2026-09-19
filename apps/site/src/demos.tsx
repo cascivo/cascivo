@@ -1352,13 +1352,15 @@ export const demos: Record<string, () => JSX.Element> = {
   'multi-select': () => (
     <MultiSelect
       options={[
-        { label: 'React', value: 'react' },
-        { label: 'Vue', value: 'vue' },
-        { label: 'Svelte', value: 'svelte' },
-        { label: 'Angular', value: 'angular' },
+        { label: 'React', value: 'react', group: 'Libraries' },
+        { label: 'Preact', value: 'preact', group: 'Libraries' },
+        { label: 'Vue', value: 'vue', group: 'Frameworks' },
+        { label: 'Svelte', value: 'svelte', group: 'Frameworks' },
+        { label: 'Angular', value: 'angular', group: 'Frameworks' },
       ]}
-      value={['react']}
-      onValueChange={() => {}}
+      defaultValue={['react']}
+      display="chips"
+      clearable
       placeholder="Select frameworks"
     />
   ),

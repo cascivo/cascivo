@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite-plus'
+import { MINIFY } from '../../scripts/build/minify.ts'
 import { cssImportEdge } from '../../scripts/build/css-import-edge.ts'
 
 // Built with `vp build` (an explicit lib config) rather than `vp pack`, so it can carry
@@ -30,6 +31,7 @@ export default defineConfig({
         '@cascivo/tokens',
       ],
       output: {
+        minify: MINIFY,
         // AI surfaces are signal-driven client components; preserve the directive
         // for RSC consumers.
         banner: "'use client';",

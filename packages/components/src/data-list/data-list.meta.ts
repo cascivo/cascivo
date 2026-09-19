@@ -11,9 +11,10 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'items',
-      description: 'The items to render.',
-      type: '{ id?: string; label: ReactNode; value: ReactNode }[]',
-      required: true,
+      description:
+        'The label/value pairs to render. Optional: pass `<DataListItem label="…">value</DataListItem>` children instead when a value needs surrounding JSX.',
+      type: 'DataListEntry[]',
+      required: false,
     },
     {
       name: 'orientation',
@@ -36,6 +37,12 @@ export const meta: ComponentMeta = {
       type: "'sm' | 'md'",
       required: false,
       default: 'md',
+    },
+    {
+      name: 'children',
+      description: '`<DataListItem>` rows, as an alternative to `items`.',
+      type: 'ReactNode',
+      required: false,
     },
   ],
   tokens: [

@@ -158,20 +158,31 @@
   .scroller {
     overflow: auto;
     max-block-size: var(--cascivo-data-table-max-height, none);
-    /* Reserve the gutter so a horizontally-scrollable table SAYS so. With an overlay
-       scrollbar (the default on macOS and Android) columns past the fold simply vanish and
-       it reads as "the table dropped my columns" — one adopter measured clientWidth 1052
-       against scrollWidth 1360 before working out the rows were scrollable at all. */
-    scrollbar-gutter: stable;
 
     /* Scrolling shadows: a soft edge appears only on the side there is more table to reach.
-       `scrollbar-gutter` above says "this scrolls"; this says WHICH WAY and that content is
-       cut off right now — the missing affordance behind a reported "the Created column was
-       cut off at the right edge with no visible scrollbar" (2026-08-22 report item 17).
+       They say THAT this scrolls, WHICH WAY, and that content is cut off right now — the
+       missing affordance behind a reported "the Created column was cut off at the right edge
+       with no visible scrollbar" (2026-08-22 report item 17).
 
        Pure CSS, no JS and no scroll listener: the cover gradients scroll WITH the content
        (`local`) and hide the shadows when the table is flush against an edge, while the
-       shadows are fixed to the box (`scroll`). A table that fits shows neither. */
+       shadows are fixed to the box (`scroll`). A table that fits shows neither.
+
+       That last sentence is why there is no `scrollbar-gutter: stable` here any more. The
+       trick needs the scrollport and the padding box to coincide: `local` layers are placed
+       against the scrollable overflow area, `scroll` layers against the padding box. A
+       reserved gutter widens the padding box past the scrollport, so the right-hand COVER
+       landed a gutter's width short of the shadow it exists to hide and every table that fit
+       painted a right-edge shadow for a column that was not there (the landing page's
+       deployments table, review item 02). No background-origin or -clip escapes it: the
+       gutter is inside the content box as far as background painting is concerned.
+
+       Dropping it costs nothing the gutter was actually delivering. It reserves space for
+       the VERTICAL scrollbar, so it never made horizontal scrollability visible — the thing
+       its comment claimed, and the thing these shadows do deliver, on classic and overlay
+       scrollbars alike. What remains is a real scrollbar taking real space when the table is
+       height-capped and scrolls vertically; the browser paints that scrollbar over the same
+       strip, so the shadow behind it stays covered. */
     background-image:
       linear-gradient(to right, var(--cascivo-color-surface) 30%, transparent),
       linear-gradient(to left, var(--cascivo-color-surface) 30%, transparent),

@@ -161,18 +161,18 @@ describe('isPackageManager', () => {
 
 describe('installCommand', () => {
   it('uses "install" for npm and "add" otherwise', () => {
-    expect(installCommand('npm', ['react'])).toEqual(['npm', ['install', 'react']])
-    expect(installCommand('pnpm', ['react'])).toEqual(['pnpm', ['add', 'react']])
+    expect(installCommand('npm', ['react'])).toEqual(['npm', ['install', '--save-exact', 'react']])
+    expect(installCommand('pnpm', ['react'])).toEqual(['pnpm', ['add', '--save-exact', 'react']])
   })
 
   it('adds the dev flag per package manager', () => {
     expect(installCommand('npm', ['cascivo'], { dev: true })).toEqual([
       'npm',
-      ['install', '--save-dev', 'cascivo@latest'],
+      ['install', '--save-dev', '--save-exact', 'cascivo@latest'],
     ])
     expect(installCommand('pnpm', ['cascivo'], { dev: true })).toEqual([
       'pnpm',
-      ['add', '-D', 'cascivo@latest'],
+      ['add', '-D', '--save-exact', 'cascivo@latest'],
     ])
   })
 
@@ -181,7 +181,7 @@ describe('installCommand', () => {
     // pnpm workspace a sibling's lockfile entry won and @cascivo/i18n resolved to 0.2.14
     // while latest was 0.16.0 — then cascivo warned about the version it had just installed.
     const [, args] = installCommand('pnpm', ['@cascivo/core', '@cascivo/tokens'])
-    for (const arg of args.slice(1)) {
+    for (const arg of args.slice(2)) {
       expect(arg, `${arg} must carry a version specifier`).toMatch(/@cascivo\/[a-z-]+@.+/)
     }
   })
@@ -189,7 +189,7 @@ describe('installCommand', () => {
   it("leaves non-cascivo packages bare — their version is the app's business", () => {
     expect(installCommand('pnpm', ['@preact/signals-react'])).toEqual([
       'pnpm',
-      ['add', '@preact/signals-react'],
+      ['add', '--save-exact', '@preact/signals-react'],
     ])
   })
 
@@ -198,12 +198,30 @@ describe('installCommand', () => {
       floors: { '@cascivo/i18n': '>=0.2.1' },
     })
     // `>=x.y.z` is not installable on its own, so it is widened to a real range.
-    expect(args).toEqual(['add', '@cascivo/i18n@0.2.1 - x'])
+    expect(args).toEqual(['add', '--save-exact', '@cascivo/i18n@0.2.1 - x'])
+  })
+
+  /*
+   * Every cascivo doc says "pin exact versions (no ^)" and no documented command did it —
+   * `pkg@latest` still gets recorded with a caret, so an adopter ended up with carets by
+   * following the instruction (2026-08-31 report §26). yarn and bun spell the flag
+   * differently, which is the part that is easy to get wrong.
+   */
+  it('writes exact versions, using each package manager’s own spelling of the flag', () => {
+    for (const [pm, flag] of [
+      ['npm', '--save-exact'],
+      ['pnpm', '--save-exact'],
+      ['yarn', '--exact'],
+      ['bun', '--exact'],
+    ] as const) {
+      const [, args] = installCommand(pm, ['@cascivo/core'])
+      expect(args, `${pm} must pin exactly`).toContain(flag)
+    }
   })
 
   it('respects an explicit --pin', () => {
     const [, args] = installCommand('pnpm', ['@cascivo/core'], { pin: '0.16.0' })
-    expect(args).toEqual(['add', '@cascivo/core@0.16.0'])
+    expect(args).toEqual(['add', '--save-exact', '@cascivo/core@0.16.0'])
   })
 })
 
@@ -212,10 +230,10 @@ describe('installHint', () => {
     // Delegates to installCommand, so the hint is exactly what the CLI itself runs —
     // a recovery command that differs from the failed one is a trap.
     expect(installHint('pnpm', ['@cascivo/core', '@cascivo/tokens'])).toBe(
-      'pnpm add @cascivo/core@latest @cascivo/tokens@latest',
+      'pnpm add --save-exact @cascivo/core@latest @cascivo/tokens@latest',
     )
     expect(installHint('npm', ['cascivo'], { dev: true })).toBe(
-      'npm install --save-dev cascivo@latest',
+      'npm install --save-dev --save-exact cascivo@latest',
     )
   })
 })

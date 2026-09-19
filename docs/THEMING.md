@@ -20,7 +20,7 @@ Primitive  --cascivo-blue-500: oklch(…)            raw scale (rarely override)
     ↓
 Semantic   --cascivo-color-accent: var(--…-blue-500)  intent — themes remap THIS tier
     ↓
-Component  --cascivo-button-bg: var(--…-accent)      per-component usage (brand exceptions)
+Component  --cascivo-button-primary-bg: var(--…-primary)  per-component usage (brand exceptions)
 ```
 
 **Override the semantic tier for a brand.** Drop to the component tier only for

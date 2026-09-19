@@ -32,7 +32,7 @@ cascivo is calm, modern, and technical. It ships beautiful-by-default components
 | `--cascivo-brand-accent`   | `oklch(0.72 0.13 195)`  | Gradient end, accents, highlights    |
 | `--cascivo-brand-ink`      | `oklch(0.22 0.03 250)`  | Wordmark, body text on brand surface |
 | `--cascivo-brand-paper`    | `oklch(0.99 0.005 250)` | Brand background                     |
-| `--cascivo-brand-gradient` | primary → accent        | Hero fill, OG, logo                  |
+| `--cascivo-brand-gradient-start` / `-end` | primary → accent | Hero fill, OG, logo    |
 
 All contrast-checked. Full spec: [docs/specs/brand-color.md](specs/brand-color.md)
 

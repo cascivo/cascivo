@@ -33,6 +33,7 @@ You own the code. Like shadcn/ui, components are copy-pasted into your project v
 - **198 components, 7 categories** — inputs, display, overlay, navigation, layout, feedback, and 25 charts, all from a single token system.
 - **Interactive behavior included, not DIY** — dropdowns, menus, context menus, comboboxes, command palettes (⌘K), multi-selects, and tabs ship with keyboard navigation (arrow keys, Home/End, typeahead), focus trapping, and outside-click dismissal already wired, via native `<dialog>`/Popover APIs and `@cascivo/core` primitives (`useRovingFocus`, `FocusScope`, `DismissableLayer`, `useTypeahead`). Nothing to hand-roll or pair with a separate headless library.
 - **Data viz out of the box** — `@cascivo/charts` ships 25 chart types (line, area, bar, sparkline, KPI, heatmap, and more) on a shared scale/shape/decimation engine, token-scaled to match your theme. Pre-built dashboard blocks (`dashboard-charts`, `stats-cards`) and five full example apps (deploy/pulse/trade/pay/track) show them composed into real consoles.
+- **Email that matches your product** — `@cascivo/email` renders transactional mail from the same 12 themes, resolved to literal sRGB because no email client supports a custom property. Table-based layout, inline styles, a derived plain-text part, and a conformance lint that reads the rendered document against a vendored Can I email matrix and fails the build on anything Outlook Windows cannot render.
 - **Modern CSS only** — `@layer` for predictable cascade, `@container` for slot-aware responsiveness, `:has()` for stateful styling. No Tailwind, no runtime style injection.
 - **Signal-driven interactivity** — fine-grained Preact Signals + a micro-FSM update precise DOM nodes with zero unnecessary React re-renders. RSC-compatible (`"use client"` preserved).
 - **Beautiful by default** — 12 first-party themes (light, dark, warm, midnight, pastel, brutalist, corporate, terminal, cyberpunk, and more), applied via `data-theme` on any container, scoped to any subtree.
@@ -132,6 +133,7 @@ cascivo/
 │   ├── react/        # @cascivo/react   — prebuilt distribution of all components
 │   ├── charts/       # @cascivo/charts  — accessible, signal-driven charts
 │   ├── editor/       # @cascivo/editor  — lightweight CSS-native code editor
+│   ├── email/        # @cascivo/email   — transactional email: tables, inline styles, no JS
 │   ├── components/   # registry source — copy-paste component TSX + CSS + manifests
 │   ├── layouts/      # registry source — app shells and page layouts
 │   ├── registry/     # @cascivo/registry — registry schema, validation, shadcn interop
@@ -154,15 +156,25 @@ cascivo/
 
 ### Prerequisites
 
-| Tool                                 | Version                   |
-| ------------------------------------ | ------------------------- |
-| [Node.js](https://nodejs.org/)       | 22.12+                    |
-| [pnpm](https://pnpm.io/)             | 10+ (repo pins 11.8.0)    |
-| [vite+ (`vp`)](https://viteplus.dev) | bundled toolchain (alpha) |
+| Tool                                 | Version                                       |
+| ------------------------------------ | --------------------------------------------- |
+| [Node.js](https://nodejs.org/)       | 22.12+                                        |
+| [pnpm](https://pnpm.io/)             | 12.4.1 (pinned; install it first — see below) |
+| [vite+ (`vp`)](https://viteplus.dev) | bundled toolchain (alpha)                     |
+
+pnpm has to be installed **before** the first `pnpm install`. Normally the
+`packageManager` pin lets whatever pnpm you have provision the right version on its own,
+but pnpm 12.4.1 cannot be provisioned that way: the bootstrap runs
+`pnpm add pnpm@12.4.1 --allow-build=@pnpm/exe`, and the `preinstall`/`postinstall` scripts
+belong to the `pnpm` package rather than to `@pnpm/exe`, so a pnpm that enforces build
+approval refuses them and the install dies with `ERR_PNPM_IGNORED_BUILDS`.
 
 ### Setup
 
 ```sh
+corepack enable              # reads the packageManager pin, fetches the right binary
+# or: npm install -g pnpm@12.4.1
+
 git clone https://github.com/cascivo/cascivo.git
 cd cascivo
 pnpm install
@@ -244,16 +256,18 @@ Published packages install from npm. Components themselves are copy-pasted into 
 
 ### More
 
-| Package                                            | Version                                                                                                                                                | Description                                                                                                                                                       |
-| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`@cascivo/ai`](packages/ai)                       | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fai?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/ai)                       | AI-native components for cascivo — StreamingText, AiLabel, Terminal, AiChat                                                                                       |
-| [`@cascivo/docs`](packages/docs)                   | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fdocs?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/docs)                   | The complete cascivo documentation as an npm package — read it offline with `npx @cascivo/docs`, no website needed. Components: @cascivo/react                    |
-| [`@cascivo/docspack`](packages/docspack)           | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fdocspack?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/docspack)           | cascivo's documentation as a docspack package — `docspack sync` once, then `docspack ask` answers offline from the version you installed                          |
-| [`@cascivo/eslint-config`](packages/eslint-config) | [![npm](https://img.shields.io/npm/v/%40cascivo%2Feslint-config?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/eslint-config) | Flat ESLint config for apps using cascivo — reconciles the signal-based reactivity contract with eslint-plugin-react-hooks 7                                      |
-| [`@cascivo/eslint-plugin`](packages/eslint-plugin) | [![npm](https://img.shields.io/npm/v/%40cascivo%2Feslint-plugin?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/eslint-plugin) | ESLint rule that turns cascivo's near-miss prop names into an actionable message — the wrong guess, the prop that exists, and why                                 |
-| [`@cascivo/flow`](packages/flow)                   | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fflow?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/flow)                   | Flow & diagram components — CSS-native, signal-driven node/edge graphs with pan/zoom, draggable nodes, animated edges, and scripted storylines, zero dependencies |
-| [`@cascivo/platform`](packages/platform)           | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fplatform?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/platform)           | Platform-idiomatic geometry and motion for cascivo, selected with data-platform. Orthogonal to @cascivo/themes, which owns colour.                                |
-| [`@cascivo/vite-plugin`](packages/vite-plugin)     | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fvite-plugin?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/vite-plugin)     | Vite plugin — wrap JS-imported third-party stylesheets into a low-priority CSS @layer                                                                             |
+| Package                                            | Version                                                                                                                                                | Description                                                                                                                                                                                                          |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`@cascivo/ai`](packages/ai)                       | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fai?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/ai)                       | AI-native components for cascivo — StreamingText, AiLabel, Terminal, AiChat                                                                                                                                          |
+| [`@cascivo/docs`](packages/docs)                   | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fdocs?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/docs)                   | The complete cascivo documentation as an npm package — read it offline with `npx @cascivo/docs`, no website needed. Components: @cascivo/react                                                                       |
+| [`@cascivo/docspack`](packages/docspack)           | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fdocspack?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/docspack)           | cascivo's documentation as a docspack package — `docspack sync` once, then `docspack ask` answers offline from the version you installed                                                                             |
+| [`@cascivo/email`](packages/email)                 | [![npm](https://img.shields.io/npm/v/%40cascivo%2Femail?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/email)                 | Render cascivo-themed transactional email — table-based, inline-styled HTML, no client JS, zero runtime dependencies. Conformance-linted against the Can I email matrix. Docs offline: npx @cascivo/docs             |
+| [`@cascivo/email-preview`](packages/email-preview) | [![npm](https://img.shields.io/npm/v/%40cascivo%2Femail-preview?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/email-preview) | Preview cascivo email templates in a browser — every theme, a viewport switcher, per-client simulation, the encoded-byte gauge, conformance findings, and an .eml download. Run: npx @cascivo/email-preview ./emails |
+| [`@cascivo/eslint-config`](packages/eslint-config) | [![npm](https://img.shields.io/npm/v/%40cascivo%2Feslint-config?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/eslint-config) | Flat ESLint config for apps using cascivo — reconciles the signal-based reactivity contract with eslint-plugin-react-hooks 7                                                                                         |
+| [`@cascivo/eslint-plugin`](packages/eslint-plugin) | [![npm](https://img.shields.io/npm/v/%40cascivo%2Feslint-plugin?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/eslint-plugin) | ESLint rule that turns cascivo's near-miss prop names into an actionable message — the wrong guess, the prop that exists, and why                                                                                    |
+| [`@cascivo/flow`](packages/flow)                   | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fflow?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/flow)                   | Flow & diagram components — CSS-native, signal-driven node/edge graphs with pan/zoom, draggable nodes, animated edges, and scripted storylines, zero dependencies                                                    |
+| [`@cascivo/platform`](packages/platform)           | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fplatform?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/platform)           | Platform-idiomatic geometry and motion for cascivo, selected with data-platform. Orthogonal to @cascivo/themes, which owns colour.                                                                                   |
+| [`@cascivo/vite-plugin`](packages/vite-plugin)     | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fvite-plugin?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/vite-plugin)     | Vite plugin — wrap JS-imported third-party stylesheets into a low-priority CSS @layer                                                                                                                                |
 
 ### Registry sources & internal packages
 

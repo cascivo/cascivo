@@ -55,6 +55,17 @@ function readJson<T>(rel: string): T {
 
 const catalog = readJson<{ tokens: TokenEntry[] }>('apps/site/public/tokens.catalog.json')
 const registry = readJson<{ version: string; components: ComponentEntry[] }>('registry.json')
+/**
+ * The styling-contract slice: knobs a stylesheet only reads (so the catalog, built from
+ * declarations, cannot see them) and the `data-cascivo-*` hooks. Both are name sets the
+ * audit needs in order to say "that name does not exist" — the one finding CSS itself will
+ * never report, because an unknown custom property and a selector that matches nothing are
+ * both silent. See `scripts/style-contract/generate.ts`.
+ */
+const styleContract = readJson<{
+  consumedTokens: string[]
+  styleHooks: { hook: string }[]
+}>('packages/tokens/style-contract.json')
 const context = readJson<{ components: ContextEntry[] }>('apps/site/public/context.json')
 
 /**
@@ -116,6 +127,10 @@ const contract = {
    * a hand-maintained 48-name list that produced false `unknown-prop` errors.
    */
   domAttributes,
+  /** Knobs read but never declared — real names the catalog structurally cannot list. */
+  consumedTokens: styleContract.consumedTokens,
+  /** `data-cascivo-*` styling hooks, for the unknown-style-hook rule. */
+  styleHooks: styleContract.styleHooks.map((h) => h.hook),
   /** Components declaring user-facing chrome text, for the i18n rule. */
   content: (context.components ?? []).filter((c) => c.intent?.content).map((c) => c.name),
   /**
@@ -142,6 +157,7 @@ console.log(
   `Wrote audit-contract.json (${Math.round(json.length / 1024)} KB): ` +
     `${contract.tokens.length} tokens, ${contract.components.length} components, ` +
     `${contract.domAttributes.length} inherited DOM attributes, ` +
+    `${contract.styleHooks.length} style hooks, ` +
     `${contract.content.length} with chrome text ` +
     `(${contract.contentPrimitives.length} typography primitives)`,
 )

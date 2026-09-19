@@ -1,44 +1,44 @@
 'use client'
 import {
   cn,
-  createMachine,
+  DismissableLayer,
   focusElement,
   useControllableSignal,
-  useMachine,
   useSignal,
   useSignalEffect,
   useSignals,
+  useTypeahead,
 } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { useId, useRef } from 'react'
 import type { KeyboardEvent } from 'react'
+import { activeForValue, firstActive, lastActive, moveActive, pageActive } from './list-nav'
+import {
+  filterOptions,
+  groupOptions,
+  highlightSegments,
+  isNewLabel,
+  orderByGroup,
+  typeaheadIndex,
+} from './option-list'
+import type { ComboboxOption } from './option-list'
 import styles from './combobox.module.css'
 
-const machine = createMachine({
-  initial: 'closed' as const,
-  states: {
-    closed: { on: { OPEN: 'open' } },
-    open: { on: { CLOSE: 'closed' } },
-  },
-})
-
-export interface ComboboxOption {
-  value: string
-  label: string
-  /**
-   * When true, disables the control and removes it from the tab order.
-   *
-   * @defaultValue `false`
-   * @see the component manifest
-   */
-  disabled?: boolean
-}
+export type { ComboboxOption } from './option-list'
 
 export interface ComboboxLabels {
   placeholder?: string
   empty?: string
   clear?: string
+  /**
+   * @deprecated Named the in-popup search input, which no longer exists — the field itself is
+   * the combobox. Ignored; removed in 2.0.
+   */
   search?: string
+  /** Text shown in place of the empty message while `loading` is true. */
+  loading?: string
+  /** Template for the "create" row; `{label}` is replaced with the typed text. */
+  create?: string
 }
 
 /** Join own + inherited `aria-describedby` ids; `undefined` when there are none. */
@@ -73,7 +73,9 @@ export interface ComboboxProps {
    */
   clearable?: boolean
   /**
-   * When true, shows a search/filter input.
+   * When true the field is a text input that filters the list as the user types (the APG
+   * editable combobox). When false it is a button that opens the list, and type-to-select
+   * jumps to a matching option (the APG select-only combobox).
    *
    * @defaultValue `true`
    * @see the component manifest
@@ -93,7 +95,49 @@ export interface ComboboxProps {
   hint?: string
   error?: string
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
+  /**
+   * When true, the list reports itself as busy and shows a loading row instead of the empty
+   * message.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
+  loading?: boolean
+  /** Called with the search text on every keystroke. Pair it with `filter={() => true}` for a server-driven list. */
+  onSearchChange?: (query: string) => void
+  /** Replaces the built-in diacritic-insensitive matcher. */
+  filter?: (option: ComboboxOption, query: string) => boolean
+  /**
+   * When true, offers the current search text as a new option.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
+  creatable?: boolean
+  /** Called with the typed label when the user picks the "create" row. */
+  onCreate?: (label: string) => void
+  /** Submitted with a surrounding form — a hidden input carrying the selected value. */
+  name?: string
+  /** Marks the control as required for assistive technology. */
+  required?: boolean
+  /** Controlled open state of the listbox. */
+  open?: boolean
+  /**
+   * The initial open state when uncontrolled.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
+  defaultOpen?: boolean
+  /** Called when the listbox opens or closes. */
+  onOpenChange?: (open: boolean) => void
   labels?: ComboboxLabels
   className?: string
   id?: string
@@ -112,6 +156,16 @@ export function Combobox({
   error,
   size = 'md',
   disabled = false,
+  loading = false,
+  onSearchChange,
+  filter,
+  creatable = false,
+  onCreate,
+  name,
+  required,
+  open,
+  defaultOpen,
+  onOpenChange,
   labels,
   className,
   id,
@@ -120,233 +174,406 @@ export function Combobox({
   'aria-invalid': ariaInvalid,
 }: ComboboxProps) {
   useSignals()
-  const [state, send] = useMachine(machine)
   const baseId = useId()
-  const inputId = id ?? (label ? `cascade-combobox-${baseId}` : `cascade-combobox-${baseId}`)
+  // Both branches were byte-identical before, so the `label ?` test decided nothing.
+  const fieldId = id ?? `cascade-combobox-${baseId}`
   const listboxId = `${baseId}-listbox`
-  const inputRef = useRef<HTMLInputElement>(null)
-  const resolvedPlaceholder = labels?.placeholder ?? t(builtin.combobox.placeholder)
-  const resolvedEmpty = labels?.empty ?? t(builtin.combobox.empty)
-  const resolvedClear = labels?.clear ?? t(builtin.combobox.clear)
-  const resolvedSearch = labels?.search ?? t(builtin.combobox.search)
+  const statusId = `${baseId}-status`
+  const optionId = (index: number): string => `${baseId}-option-${index}`
 
-  // Controlled vs. uncontrolled selected value
-  // Controlled mirror goes through the shared primitive: a bare `sig.value = prop` in render
-  // notifies the previous render's subscriptions, which React 19 reports as a setState during
-  // render (2026-08-08 report A). The primitive skips the write when the value is unchanged.
-  const [selectedSignal] = useControllableSignal<string | undefined>({
+  const fieldRef = useRef<HTMLInputElement | HTMLButtonElement>(null)
+  const listboxRef = useRef<HTMLDivElement>(null)
+
+  const [selected, setSelected] = useControllableSignal<string | undefined>({
     value,
     defaultValue,
+    onChange: onValueChange,
+  })
+  const [isOpen, setOpen] = useControllableSignal<boolean>({
+    value: open,
+    defaultValue: defaultOpen ?? false,
+    onChange: onOpenChange,
   })
 
   const query = useSignal('')
-  const activeIndex = useSignal(0)
+  const activeIndex = useSignal(-1)
 
-  const isOpen = state.value === 'open'
+  const opened = isOpen.value
+  const selectedValue = selected.value
 
-  const filtered = options.filter((opt) => {
-    if (!searchable || !query.value) return true
-    return opt.label.toLowerCase().includes(query.value.toLowerCase())
-  })
+  // Plain render-time derivations. `useComputed` would cache until a *signal* dependency
+  // changed and would go stale the moment a parent swapped `options` — which is exactly what
+  // a remote-search list does on every response.
+  const typed = query.value
+  const filtered = orderByGroup(filterOptions(options, searchable ? typed : '', filter))
+  const showCreate = creatable && typed.trim() !== '' && isNewLabel(options, typed.trim())
+  const createIndex = showCreate ? filtered.length : -1
+  const groups = groupOptions(filtered)
+  const selectedOption = options.find((opt) => opt.value === selectedValue)
 
-  const selectedOption = options.find((opt) => opt.value === selectedSignal.value)
+  const resolvedPlaceholder = labels?.placeholder ?? t(builtin.combobox.placeholder)
+  const resolvedEmpty = labels?.empty ?? t(builtin.combobox.empty)
+  const resolvedClear = labels?.clear ?? t(builtin.combobox.clear)
+  const resolvedLoading = labels?.loading ?? t(builtin.combobox.loading)
+  const createLabel = (optionLabel: string): string =>
+    labels?.create
+      ? labels.create.replaceAll('{label}', optionLabel)
+      : t(builtin.combobox.create, { label: optionLabel })
 
-  // Close on outside click
-  useSignalEffect(() => {
-    if (!isOpen) return
-    const handler = (e: MouseEvent) => {
-      const root = document.getElementById(`${baseId}-root`)
-      if (root && !root.contains(e.target as Node)) send('CLOSE')
-    }
-    document.addEventListener('mousedown', handler)
-    return () => document.removeEventListener('mousedown', handler)
-  })
+  const describedBy = mergeDescribedBy(
+    error ? `${baseId}-error` : hint ? `${baseId}-hint` : undefined,
+    ariaDescribedBy,
+  )
 
-  const open = () => {
+  function openList(seed: 'value' | 'none' = 'value'): void {
     if (disabled) return
+    activeIndex.value = seed === 'value' ? activeForValue(filtered, selectedValue) : -1
+    setOpen(true)
+  }
+
+  function closeList(restoreFocus = true): void {
+    setOpen(false)
     query.value = ''
-    activeIndex.value = 0
-    send('OPEN')
-    setTimeout(() => focusElement(inputRef.current), 0)
+    activeIndex.value = -1
+    if (restoreFocus) focusElement(fieldRef.current)
   }
 
-  const close = () => {
-    send('CLOSE')
+  function select(optValue: string): void {
+    setSelected(optValue)
+    closeList()
+  }
+
+  function clear(): void {
+    setSelected(undefined)
     query.value = ''
+    onSearchChange?.('')
+    // The old build left the listbox open, the query stale and focus on a button that had
+    // just been removed from the DOM.
+    focusElement(fieldRef.current)
   }
 
-  const emitValue = onValueChange
-
-  const select = (optValue: string) => {
-    if (value === undefined) selectedSignal.value = optValue
-    emitValue?.(optValue)
-    close()
-  }
-
-  const clear = () => {
-    if (value === undefined) selectedSignal.value = undefined
-    emitValue?.(undefined)
-  }
-
-  const enabledIndexes = filtered.flatMap((opt, i) => (opt.disabled ? [] : [i]))
-
-  const moveActive = (delta: number) => {
-    if (enabledIndexes.length === 0) return
-    const pos = enabledIndexes.indexOf(activeIndex.value)
-    const next = enabledIndexes[(pos + delta + enabledIndexes.length) % enabledIndexes.length]
-    if (next !== undefined) activeIndex.value = next
-  }
-
-  const handleTriggerKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
-    if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
-      e.preventDefault()
-      open()
+  function activate(index: number): void {
+    if (index === createIndex && showCreate) {
+      onCreate?.(typed.trim())
+      closeList()
+      return
     }
+    const opt = filtered[index]
+    if (opt && !opt.disabled) select(opt.value)
   }
 
-  const handleInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    switch (e.key) {
+  // Type-to-select for the select-only variant, which has no text field to type into.
+  const typeahead = useTypeahead({
+    onMatch: (buffer) => {
+      const pool = opened ? filtered : options
+      const at = typeaheadIndex(pool, buffer, opened ? activeIndex.value : -1)
+      if (at === -1) return
+      if (opened) activeIndex.value = at
+      else {
+        const opt = pool[at]
+        if (opt) setSelected(opt.value)
+      }
+    },
+  })
+
+  // Keep the active row in view as the keyboard moves it; the listbox is a scroll container.
+  useSignalEffect(() => {
+    const index = activeIndex.value
+    if (!isOpen.value || index < 0) return
+    const row = listboxRef.current?.querySelector(`#${CSS.escape(optionId(index))}`)
+    // jsdom implements neither scrollIntoView nor layout, so the guard is what keeps the
+    // keyboard tests honest rather than crashing on the first ArrowDown.
+    if (row && typeof row.scrollIntoView === 'function') row.scrollIntoView({ block: 'nearest' })
+  })
+
+  function handleKeyDown(event: KeyboardEvent<HTMLElement>): void {
+    if (disabled) return
+    const navigable = showCreate ? [...filtered, { value: '', label: typed }] : filtered
+
+    // Alt+ArrowDown opens without moving the active option; Alt+ArrowUp closes keeping the value.
+    if (event.altKey && event.key === 'ArrowDown') {
+      event.preventDefault()
+      if (!opened) openList('none')
+      return
+    }
+    if (event.altKey && event.key === 'ArrowUp') {
+      event.preventDefault()
+      if (opened) closeList()
+      return
+    }
+
+    switch (event.key) {
       case 'ArrowDown':
-        e.preventDefault()
-        moveActive(1)
+        event.preventDefault()
+        if (!opened) openList()
+        else activeIndex.value = moveActive(activeIndex.value, 1, navigable)
         break
       case 'ArrowUp':
-        e.preventDefault()
-        moveActive(-1)
+        event.preventDefault()
+        if (!opened) openList()
+        else activeIndex.value = moveActive(activeIndex.value, -1, navigable)
         break
-      case 'Enter': {
-        e.preventDefault()
-        const opt = filtered[activeIndex.value]
-        if (opt && !opt.disabled) select(opt.value)
+      case 'Home':
+        // In the editable variant Home/End belong to the text caret, per the APG editable
+        // combobox; only the select-only variant uses them to jump the list.
+        if (searchable || !opened) break
+        event.preventDefault()
+        activeIndex.value = firstActive(navigable)
         break
-      }
+      case 'End':
+        if (searchable || !opened) break
+        event.preventDefault()
+        activeIndex.value = lastActive(navigable)
+        break
+      case 'PageDown':
+        if (!opened) break
+        event.preventDefault()
+        activeIndex.value = pageActive(activeIndex.value, 1, navigable)
+        break
+      case 'PageUp':
+        if (!opened) break
+        event.preventDefault()
+        activeIndex.value = pageActive(activeIndex.value, -1, navigable)
+        break
+      case 'Enter':
+        if (!opened) break
+        event.preventDefault()
+        if (activeIndex.value >= 0) activate(activeIndex.value)
+        break
+      case ' ':
+        // The editable variant needs Space to type a literal space.
+        if (searchable) break
+        event.preventDefault()
+        if (opened && activeIndex.value >= 0) activate(activeIndex.value)
+        else openList()
+        break
       case 'Escape':
-        e.preventDefault()
-        close()
+        if (!opened) break
+        event.preventDefault()
+        event.stopPropagation()
+        closeList()
         break
       case 'Tab':
-        close()
+        if (opened) closeList(false)
         break
     }
+    // Space is activation on the select-only variant, so it never reaches the buffer — a
+    // label containing a space is reached by typing across it, not by including it.
+    if (!searchable && event.key !== ' ') typeahead.onKeyDown(event)
   }
 
-  const optionId = (i: number) => `${baseId}-option-${i}`
+  function renderOption(opt: ComboboxOption, index: number) {
+    const isSelected = opt.value === selectedValue
+    return (
+      <div
+        key={opt.value}
+        id={optionId(index)}
+        role="option"
+        aria-selected={isSelected}
+        aria-disabled={opt.disabled || undefined}
+        data-state={index === activeIndex.value ? 'active' : undefined}
+        data-disabled={opt.disabled || undefined}
+        className={styles['option']}
+        // preventDefault on mousedown keeps focus on the field; the selection happens on
+        // click, which is also what assistive technology synthesises when it activates a row.
+        onMouseDown={(e) => e.preventDefault()}
+        onClick={() => {
+          if (!opt.disabled) select(opt.value)
+        }}
+        onMouseEnter={() => {
+          if (!opt.disabled) activeIndex.value = index
+        }}
+      >
+        <span className={styles['optionLabel']}>
+          {highlightSegments(opt.label, searchable ? typed : '').map((segment, i) =>
+            segment.match ? (
+              <mark key={i} className={styles['match']}>
+                {segment.text}
+              </mark>
+            ) : (
+              <span key={i}>{segment.text}</span>
+            ),
+          )}
+        </span>
+        <span className={styles['check']} aria-hidden="true" />
+      </div>
+    )
+  }
+
+  const activeDescendant =
+    opened && activeIndex.value >= 0 ? optionId(activeIndex.value) : undefined
+
+  /** Shared between the input and the button variant, so both are named and wired alike. */
+  const fieldAria = {
+    id: fieldId,
+    role: 'combobox' as const,
+    'aria-expanded': opened,
+    'aria-controls': listboxId,
+    'aria-haspopup': 'listbox' as const,
+    'aria-activedescendant': activeDescendant,
+    'aria-labelledby': ariaLabelledBy,
+    'aria-label': ariaLabel,
+    'aria-invalid': error ? true : ariaInvalid,
+    'aria-describedby': describedBy,
+    'aria-required': required || undefined,
+    disabled,
+    onKeyDown: handleKeyDown,
+  }
 
   return (
-    <div
-      id={`${baseId}-root`}
-      className={cn(styles['wrapper'], className)}
-      data-state={error ? 'error' : state.value}
-      data-size={size}
-    >
-      {label && (
-        <label className={styles['label']} htmlFor={inputId}>
-          {label}
-        </label>
-      )}
-      <div className={styles['field']}>
-        <button
-          id={inputId}
-          type="button"
-          role="combobox"
-          aria-expanded={isOpen}
-          aria-controls={listboxId}
-          aria-haspopup="listbox"
-          aria-labelledby={ariaLabelledBy}
-          aria-label={ariaLabel}
-          aria-activedescendant={
-            isOpen && activeIndex.value >= 0 ? optionId(activeIndex.value) : undefined
-          }
-          aria-invalid={error ? true : ariaInvalid}
-          aria-describedby={mergeDescribedBy(
-            error ? `${baseId}-error` : hint ? `${baseId}-hint` : undefined,
-            ariaDescribedBy,
-          )}
-          className={styles['trigger']}
-          disabled={disabled}
-          onKeyDown={handleTriggerKeyDown}
-          onClick={isOpen ? close : open}
-        >
-          <span
-            className={cn(styles['value'], !selectedOption ? styles['placeholder'] : undefined)}
-          >
-            {selectedOption?.label ?? resolvedPlaceholder}
-          </span>
-          <span className={styles['chevron']} aria-hidden="true" />
-        </button>
-        {clearable && selectedSignal.value !== undefined && (
-          <button
-            type="button"
-            className={styles['clear']}
-            aria-label={resolvedClear}
-            onClick={(e) => {
-              e.stopPropagation()
-              clear()
-            }}
-          >
-            ✕
-          </button>
-        )}
-      </div>
+    <DismissableLayer onDismiss={() => opened && closeList(false)}>
       <div
-        role="listbox"
-        id={listboxId}
-        className={styles['listbox']}
-        data-state={isOpen ? 'open' : 'closed'}
-        aria-label={label}
+        className={cn(styles['wrapper'], className)}
+        data-state={error ? 'error' : opened ? 'open' : 'closed'}
+        data-size={size}
       >
-        {searchable && isOpen && (
-          <div className={styles['searchWrapper']}>
-            <input
-              ref={inputRef}
-              type="text"
-              className={styles['search']}
-              value={query.value}
-              onChange={(e) => {
-                query.value = e.target.value
-                activeIndex.value = 0
-              }}
-              onKeyDown={handleInputKeyDown}
-              aria-label={resolvedSearch}
-              autoComplete="off"
-            />
-          </div>
+        {label && (
+          <label className={styles['label']} htmlFor={fieldId}>
+            {label}
+          </label>
         )}
-        {filtered.length === 0 ? (
-          <div className={styles['empty']}>{resolvedEmpty}</div>
-        ) : (
-          filtered.map((opt, i) => (
-            <div
-              key={opt.value}
-              id={optionId(i)}
-              role="option"
-              aria-selected={opt.value === selectedSignal.value}
-              aria-disabled={opt.disabled || undefined}
-              data-state={i === activeIndex.value ? 'active' : undefined}
-              data-disabled={opt.disabled || undefined}
-              className={styles['option']}
-              onMouseEnter={() => {
-                if (!opt.disabled) activeIndex.value = i
+
+        <div className={styles['field']}>
+          {searchable ? (
+            <input
+              {...fieldAria}
+              ref={fieldRef as React.RefObject<HTMLInputElement>}
+              type="text"
+              className={styles['trigger']}
+              autoComplete="off"
+              aria-autocomplete="list"
+              placeholder={resolvedPlaceholder}
+              // Closed, the field shows the chosen label; open, it shows what is being typed,
+              // so the list and the field never disagree.
+              value={opened ? typed : (selectedOption?.label ?? '')}
+              onChange={(e) => {
+                const next = e.currentTarget.value
+                query.value = next
+                onSearchChange?.(next)
+                if (!opened) setOpen(true)
+                const nextFiltered = orderByGroup(filterOptions(options, next, filter))
+                const at = firstActive(nextFiltered)
+                // With nothing left to match, the create row (index `nextFiltered.length`) is
+                // the only thing to land on, so Enter completes the typed label.
+                activeIndex.value =
+                  at === -1 && creatable && next.trim() !== '' && isNewLabel(options, next.trim())
+                    ? nextFiltered.length
+                    : at
               }}
               onClick={() => {
-                if (!opt.disabled) select(opt.value)
+                if (!opened) openList()
+              }}
+            />
+          ) : (
+            <button
+              {...fieldAria}
+              ref={fieldRef as React.RefObject<HTMLButtonElement>}
+              type="button"
+              className={styles['trigger']}
+              onClick={() => (opened ? closeList() : openList())}
+            >
+              <span
+                className={cn(styles['value'], !selectedOption ? styles['placeholder'] : undefined)}
+              >
+                {selectedOption?.label ?? resolvedPlaceholder}
+              </span>
+            </button>
+          )}
+
+          {clearable && selectedValue !== undefined && !disabled && (
+            <button
+              type="button"
+              className={styles['clear']}
+              aria-label={resolvedClear}
+              onClick={(e) => {
+                e.stopPropagation()
+                clear()
               }}
             >
-              {opt.label}
+              <span className={styles['clearGlyph']} aria-hidden="true" />
+            </button>
+          )}
+
+          <span className={styles['chevron']} aria-hidden="true" />
+        </div>
+
+        {name !== undefined && <input type="hidden" name={name} value={selectedValue ?? ''} />}
+
+        <div className={styles['popup']} data-state={opened ? 'open' : 'closed'}>
+          <div
+            ref={listboxRef}
+            role="listbox"
+            id={listboxId}
+            className={styles['listbox']}
+            aria-label={ariaLabel ?? label ?? resolvedPlaceholder}
+            aria-busy={loading || undefined}
+          >
+            {groups.map((group) =>
+              group.label === undefined ? (
+                group.entries.map(({ option, index }) => renderOption(option, index))
+              ) : (
+                <div
+                  key={group.label}
+                  role="group"
+                  aria-label={group.label}
+                  className={styles['group']}
+                >
+                  <span className={styles['groupLabel']} aria-hidden="true">
+                    {group.label}
+                  </span>
+                  {group.entries.map(({ option, index }) => renderOption(option, index))}
+                </div>
+              ),
+            )}
+
+            {showCreate && (
+              <div
+                id={optionId(createIndex)}
+                role="option"
+                aria-selected={false}
+                data-state={createIndex === activeIndex.value ? 'active' : undefined}
+                className={cn(styles['option'], styles['create'])}
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => activate(createIndex)}
+                onMouseEnter={() => {
+                  activeIndex.value = createIndex
+                }}
+              >
+                {createLabel(typed.trim())}
+              </div>
+            )}
+          </div>
+
+          {/* Outside the listbox: `role="listbox"` owns only `option` and `group` children. */}
+          {loading ? (
+            <div className={styles['empty']} role="status">
+              {resolvedLoading}
             </div>
-          ))
+          ) : filtered.length === 0 && !showCreate ? (
+            <div className={styles['empty']} role="status">
+              {resolvedEmpty}
+            </div>
+          ) : null}
+        </div>
+
+        {/* Mounted unconditionally so the first result count is announced too. */}
+        <span id={statusId} className={styles['srOnly']} role="status" aria-live="polite">
+          {opened && !loading
+            ? t(builtin.combobox.resultCount, { count: String(filtered.length) })
+            : ''}
+        </span>
+
+        {error && (
+          <span id={`${baseId}-error`} className={styles['error']} role="alert">
+            {error}
+          </span>
+        )}
+        {!error && hint && (
+          <span id={`${baseId}-hint`} className={styles['hint']}>
+            {hint}
+          </span>
         )}
       </div>
-      {error && (
-        <span id={`${baseId}-error`} className={styles['error']} role="alert">
-          {error}
-        </span>
-      )}
-      {!error && hint && (
-        <span id={`${baseId}-hint`} className={styles['hint']}>
-          {hint}
-        </span>
-      )}
-    </div>
+    </DismissableLayer>
   )
 }

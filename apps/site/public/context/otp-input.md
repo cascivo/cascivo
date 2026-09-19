@@ -34,13 +34,13 @@ Wraps the slots in role="group" with a localized aria-label and labels each slot
 
 ## Props
 
-| Name            | Type                          | Required | Default | Description                                                        |
-| --------------- | ----------------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `length`        | `number`                      | No       | 6       | Number of input cells.                                             |
-| `value`         | `string`                      | Yes      | —       | The controlled value.                                              |
-| `onValueChange` | `(v: string) => void`         | Yes      | —       | Called with the new value when it changes.                         |
-| `disabled`      | `boolean`                     | No       | false   | When true, disables the control and removes it from the tab order. |
-| `type`          | `'numeric' \| 'alphanumeric'` | No       | numeric | Accepted characters ('numeric' \| 'alphanumeric').                 |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `length` | `number` | No | 6 | Number of input cells. |
+| `value` | `string` | Yes | — | The controlled value. |
+| `onValueChange` | `(v: string) => void` | Yes | — | Called with the new value when it changes. |
+| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
+| `type` | `'numeric' \| 'alphanumeric'` | No | numeric | Accepted characters ('numeric' \| 'alphanumeric'). |
 
 ## Tokens
 
@@ -67,9 +67,9 @@ Wraps the slots in role="group" with a localized aria-label and labels each slot
 
 ## Boundaries
 
-| Area            | Level    | Note                                                                          |
-| --------------- | -------- | ----------------------------------------------------------------------------- |
-| token names     | strict   | Slot styling must resolve to the listed --cascivo-\* tokens                   |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Slot styling must resolve to the listed --cascivo-* tokens |
 | length and type | flexible | length and numeric/alphanumeric type are free to match the issued code format |
 
 ## AI context prompt

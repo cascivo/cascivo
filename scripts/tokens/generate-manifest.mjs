@@ -170,6 +170,17 @@ are the **light** theme's; theme-scoped tokens (colors, shadows) differ per
 \`@cascivo/tokens/tokens.json\`, and a \`CascivoToken\` union for editor autocomplete
 at \`@cascivo/tokens/tokens\`.
 
+**This page covers the primitive and semantic layers only.** Per-component knobs
+(\`--cascivo-link-color\`, \`--cascivo-calendar-cell-size\`) live in the component
+stylesheets; the complete set — every layer, plus the \`data-cascivo-*\` styling hooks — is
+generated to \`@cascivo/tokens/style-contract.json\`, with \`CascivoComponentToken\`,
+\`CascivoStyleHook\` and \`CascivoTokenStyle\` types at \`@cascivo/tokens/style-contract\`.
+
+A name outside that set is **not** an error CSS will report — an unknown custom property is
+dropped silently. Three things check it for you against the generated set: the
+\`cascivo/token-values\` lint rule, \`satisfies CascivoTokenStyle\` on an inline style, and
+\`cascivo audit --ai\` in CI.
+
 ## Canonical names vs aliases
 
 Some roles have more than one token name for historical reasons (#7). The

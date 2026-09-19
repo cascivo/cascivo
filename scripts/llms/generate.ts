@@ -747,6 +747,60 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('(Chrome 135+, Safari 18.4+, Firefox 148+) — painting is gated behind `@supports`;')
   lines.push('prefer the SVG icons for a wider browser floor or for print.')
   lines.push('')
+  lines.push('## Email (@cascivo/email)')
+  lines.push('')
+  lines.push('HTML email is a separate render target with its own primitives — do NOT send')
+  lines.push('`@cascivo/react` components through an email. Clients strip `<style>`, ignore `rem`,')
+  lines.push('and Outlook Windows renders through Word: no flex, no grid, no custom properties.')
+  lines.push('')
+  lines.push(
+    "`import { renderEmail, Html, Head, Body, Preview, Container, Section, Text } from '@cascivo/email'`",
+  )
+  lines.push('— table-based, inline-styled, no client JS, no runtime dependencies. Themed from the')
+  lines.push('same twelve themes, resolved to literal hex at render time.')
+  lines.push('')
+  lines.push('The whole component set, and the ONLY components valid inside an email:')
+  lines.push('')
+  lines.push('- Document: `Html`, `Head`, `Body`, `Preview`, `Style`')
+  lines.push('- Layout: `Container`, `Section`, `Row`, `Column`, `Spacer`, `Hr`')
+  lines.push('- Typography: `Heading`, `Text`, `Link`, `List`, `Footer`')
+  lines.push('- Content: `Button`, `Card`, `Alert`, `Badge`, `Img`, `Markdown`')
+  lines.push('')
+  lines.push('Props, defaults and a worked example for each, with rendered previews:')
+  lines.push(`${SITE}/docs/email-primitives.md (${SITE}/docs/email/components).`)
+  lines.push('')
+  lines.push(
+    '- `renderEmail(element, { theme, subject, tier })` -> `{ html, text, preheader, stats }`.',
+  )
+  lines.push('  `assertSendable(result)` throws on a missing subject/preheader/text or a body over')
+  lines.push('  the Gmail clip budget. `analyze(html)` says where the bytes went.')
+  lines.push('- `Markdown` renders runtime-fetched prose (an allowlisted node set, straight to the')
+  lines.push('  primitives — raw HTML in the source stays literal text, and only `http:`/`https:`/')
+  lines.push('  `mailto:` URLs are emitted).')
+  lines.push(
+    '- `lint(html, features)` checks a render against the Can I email matrix. The matrix is',
+  )
+  lines.push(
+    '  NOT bundled (it is ~483 KB) — fetch https://www.caniemail.com/api/data.json and pass',
+  )
+  lines.push('  it through `indexFeatures(data)`.')
+  lines.push(
+    '- `planMigration(importedNames)` maps a React Email template onto the cascivo set and',
+  )
+  lines.push('  names every gap with its reason.')
+  lines.push(
+    '- Fonts repeat inline on every text element because Outlook does not inherit them into',
+  )
+  lines.push(
+    '  table content. Shorten or rebrand the stack with `--cascivo-email-font-{sans,serif,mono}`',
+  )
+  lines.push('  on the palette passed to `renderEmail({ theme })`.')
+  lines.push('')
+  lines.push(
+    `Full recipe: ${SITE}/docs/recipe-email.md. Components: ${SITE}/docs/email-primitives.md. ` +
+      `Client support: ${SITE}/docs/email-client-support.md.`,
+  )
+  lines.push('')
   lines.push('## How to use it')
   lines.push('')
   lines.push('Two consumption paths — they share the same tokens/themes and can coexist:')
@@ -1122,6 +1176,13 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   )
   lines.push(
     `- Strict host ESLint (scope stylistic rules off your components dir): ${SITE}/docs/using-with-strict-eslint.md`,
+  )
+  lines.push(`- Transactional & newsletter email (@cascivo/email): ${SITE}/docs/recipe-email.md`)
+  lines.push(
+    `- Every @cascivo/email component, with props and examples: ${SITE}/docs/email-primitives.md`,
+  )
+  lines.push(
+    `- Email client support matrix (what the conformance lint enforces): ${SITE}/docs/email-client-support.md`,
   )
   lines.push(`- Compatibility & support matrix: ${SITE}/docs/compatibility.md`)
   lines.push(`- Migrating from shadcn/ui: ${SITE}/docs/migrating-from-shadcn.md`)

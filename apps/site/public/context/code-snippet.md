@@ -32,18 +32,18 @@ Code is rendered in semantic <code>/<pre>. The copy button is a real button with
 
 ## Props
 
-| Name              | Type                                 | Required | Default | Description                                                                                                                                                                                                                                                        |
-| ----------------- | ------------------------------------ | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `code`            | `string`                             | No       | —       | The code to display (and copy). Equivalent to passing a plain string as `children`; `code` wins if both are given, and one of the two is required. A string rather than a ReactNode because the content is tokenized for highlighting and handed to the clipboard. |
-| `children`        | `string`                             | No       | —       | The code, as children — `<CodeSnippet>npm i foo</CodeSnippet>`. Must be a plain string (interpolation is fine, arbitrary elements are not).                                                                                                                        |
-| `variant`         | `'inline' \| 'single' \| 'multi'`    | No       | single  | inline = a <code> span; single = one-line <pre>; multi = multi-line <pre>.                                                                                                                                                                                         |
-| `language`        | `'bash' \| 'css' \| 'js' \| 'ts'`    | No       | —       | Enables built-in syntax highlighting for the block variants; inline is never highlighted.                                                                                                                                                                          |
-| `terminal`        | `boolean`                            | No       | false   | Renders terminal-window chrome (title bar with dots). Block variants only.                                                                                                                                                                                         |
-| `title`           | `string`                             | No       | —       | Optional label shown in the terminal title bar.                                                                                                                                                                                                                    |
-| `showLineNumbers` | `boolean`                            | No       | —       | Show line numbers (multi only; ignored when language is set).                                                                                                                                                                                                      |
-| `showCopyButton`  | `boolean`                            | No       | —       | Show the copy-to-clipboard button. Defaults true for single/multi, false for inline.                                                                                                                                                                               |
-| `labels`          | `{ copy?: string; copied?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n).                                                                                                                                                                                                         |
-| `className`       | `string`                             | No       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                           |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `code` | `string` | No | — | The code to display (and copy). Equivalent to passing a plain string as `children`; `code` wins if both are given, and one of the two is required. A string rather than a ReactNode because the content is tokenized for highlighting and handed to the clipboard. |
+| `children` | `string` | No | — | The code, as children — `<CodeSnippet>npm i foo</CodeSnippet>`. Must be a plain string (interpolation is fine, arbitrary elements are not). |
+| `variant` | `'inline' \| 'single' \| 'multi'` | No | single | inline = a <code> span; single = one-line <pre>; multi = multi-line <pre>. |
+| `language` | `'bash' \| 'css' \| 'js' \| 'ts'` | No | — | Enables built-in syntax highlighting for the block variants; inline is never highlighted. |
+| `terminal` | `boolean` | No | false | Renders terminal-window chrome (title bar with dots). Block variants only. |
+| `title` | `string` | No | — | Optional label shown in the terminal title bar. |
+| `showLineNumbers` | `boolean` | No | — | Show line numbers (multi only; ignored when language is set). |
+| `showCopyButton` | `boolean` | No | — | Show the copy-to-clipboard button. Defaults true for single/multi, false for inline. |
+| `labels` | `{ copy?: string; copied?: string }` | No | — | Overrides for the component’s user-visible strings (i18n). |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -67,9 +67,7 @@ Code is rendered in semantic <code>/<pre>. The copy button is a real button with
 ### Inline
 
 ```jsx
-<p>
-  Run <CodeSnippet variant="inline" code="pnpm build" /> first.
-</p>
+<p>Run <CodeSnippet variant="inline" code="pnpm build" /> first.</p>
 ```
 
 ### Terminal block
@@ -88,10 +86,10 @@ Multi-line shell transcript with terminal-window chrome.
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                 |
-| ----------- | -------- | -------------------------------------------------------------------- |
-| variant     | strict   | inline \| single \| multi — controls the wrapping element and layout |
-| copy button | flexible | Shown by default for single/multi; togglable via showCopyButton      |
+| Area | Level | Note |
+|------|-------|------|
+| variant | strict | inline \| single \| multi — controls the wrapping element and layout |
+| copy button | flexible | Shown by default for single/multi; togglable via showCopyButton |
 
 ## AI context prompt
 

@@ -125,4 +125,10 @@
     background-color: Highlight;
     color: HighlightText;
   }
+
+  @media (pointer: coarse) {
+    .row {
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
 }

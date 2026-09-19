@@ -1,4 +1,10 @@
 @layer cascivo.component {
+  /* DismissableLayer renders an unstyled <div> around its children; without this it, not
+     .wrapper, becomes the grid/flex item and the field spills out of its track. */
+  div:has(> .wrapper) {
+    display: contents;
+  }
+
   .wrapper {
     /* The ink the "today" cell takes — Calendar publishes the same knob as
        --cascivo-calendar-day-today-color, and this one was missing, so it could
@@ -93,10 +99,6 @@
   .placeholder {
     color: var(--cascivo-color-text-subtle);
   }
-  .icon {
-    color: var(--cascivo-color-text-muted);
-    font-style: normal;
-  }
 
   .clear {
     position: absolute;
@@ -123,7 +125,7 @@
   }
 
   /* Calendar popover */
-  .calendar {
+  .popup {
     position: absolute;
     inset-block-start: calc(100% + var(--cascivo-space-1));
     inset-inline-start: 0;
@@ -155,98 +157,6 @@
     }
   }
 
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-block-end: var(--cascivo-space-2);
-  }
-
-  .monthLabel {
-    font-size: var(--cascivo-text-sm);
-    font-weight: var(--cascivo-font-semibold);
-    color: var(--cascivo-color-text);
-  }
-
-  .navButton {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    inline-size: 2rem;
-    block-size: 2rem;
-    background: none;
-    border: 1px solid transparent;
-    border-radius: var(--cascivo-radius-control);
-    cursor: pointer;
-    color: var(--cascivo-color-text-muted);
-    font-size: var(--cascivo-text-base);
-    outline: none;
-    &:hover {
-      background-color: var(--cascivo-color-bg-subtle);
-      color: var(--cascivo-color-text);
-    }
-    &:focus-visible {
-      border-color: var(--cascivo-color-accent);
-    }
-  }
-
-  .grid {
-    border-collapse: collapse;
-    inline-size: 100%;
-  }
-
-  .weekday {
-    padding-block: var(--cascivo-space-1);
-    font-size: var(--cascivo-text-xs);
-    font-weight: var(--cascivo-font-medium);
-    color: var(--cascivo-color-text-muted);
-    text-align: center;
-    inline-size: 2.25rem;
-  }
-
-  .cell {
-    padding: 2px;
-    text-align: center;
-  }
-  .empty {
-    inline-size: 2.25rem;
-  }
-
-  .day {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    inline-size: 2.25rem;
-    block-size: 2.25rem;
-    font-family: var(--cascivo-font-sans);
-    font-size: var(--cascivo-text-sm);
-    color: var(--cascivo-color-text);
-    background: none;
-    border: none;
-    border-radius: var(--cascivo-radius-control);
-    cursor: pointer;
-    outline: none;
-
-    &:hover:not([aria-disabled]) {
-      background-color: var(--cascivo-color-bg-subtle);
-    }
-    &:focus-visible {
-      box-shadow: 0 0 0 2px var(--cascivo-color-accent);
-    }
-    &[data-today] {
-      font-weight: var(--cascivo-font-semibold);
-      color: var(--cascivo-date-picker-day-today-color);
-    }
-    &[data-selected] {
-      background-color: var(--cascivo-color-accent);
-      color: var(--cascivo-color-accent-foreground, var(--cascivo-color-text-on-accent));
-    }
-    &[aria-disabled] {
-      opacity: 0.35;
-      cursor: not-allowed;
-    }
-  }
-
   .error {
     font-size: var(--cascivo-text-xs);
     color: var(--cascivo-color-destructive);
@@ -254,5 +164,87 @@
   .hint {
     font-size: var(--cascivo-text-xs);
     color: var(--cascivo-color-text-muted);
+  }
+
+  .openButton {
+    position: absolute;
+    inset-inline-end: var(--cascivo-space-1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: 1.75rem;
+    min-block-size: 1.75rem;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: var(--cascivo-radius-control);
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  .calendarGlyph,
+  .clearGlyph {
+    inline-size: 1rem;
+    block-size: 1rem;
+    background-color: var(--cascivo-color-text-muted);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+  }
+
+  .calendarGlyph {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Crect x='3' y='5' width='18' height='16' rx='2'/%3E%3Cpath d='M3 10h18M8 3v4M16 3v4'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Crect x='3' y='5' width='18' height='16' rx='2'/%3E%3Cpath d='M3 10h18M8 3v4M16 3v4'/%3E%3C/svg%3E");
+  }
+
+  .clearGlyph {
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E");
+  }
+
+  /* Coarse pointers get the 44px effective target the repo mandates; the field and its two
+     buttons were all under it, with no block at all. */
+  @media (pointer: coarse) {
+    .trigger,
+    .clear,
+    .openButton {
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+
+    .clear,
+    .openButton {
+      min-inline-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popup {
+    transition-duration: 1ms;
+  }
+}
+
+@media (forced-colors: active) {
+  .popup {
+    border: 1px solid CanvasText;
+  }
+
+  .trigger:focus-visible,
+  .clear:focus-visible,
+  .openButton:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 1px;
   }
 }

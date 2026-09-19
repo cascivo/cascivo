@@ -68,17 +68,25 @@ function main(): void {
   for (const entry of readdirSync(packagesDir).sort()) {
     const pkgPath = join(packagesDir, entry, 'package.json')
     const changelogPath = join(packagesDir, entry, 'CHANGELOG.md')
-    if (!existsSync(pkgPath) || !existsSync(changelogPath)) continue
+    if (!existsSync(pkgPath)) continue
     const pkg = JSON.parse(readFileSync(pkgPath, 'utf8')) as {
       name: string
       version: string
       private?: boolean
     }
     if (pkg.private === true) continue
+    // A missing CHANGELOG is not a reason to omit the package. `@cascivo/email` shipped at
+    // 0.1.0 with no release notes yet and therefore no CHANGELOG, and skipping it here
+    // dropped it out of the one feed llms.txt tells adopters to watch for API drift — so
+    // the package an adopter most needed a drift signal for was the only one with none.
+    // A published package always appears; an empty `releases` says "nothing breaking yet",
+    // which is information, where absence said nothing at all.
     packages.push({
       name: pkg.name,
       version: pkg.version,
-      releases: parseChangelog(readFileSync(changelogPath, 'utf8')),
+      releases: existsSync(changelogPath)
+        ? parseChangelog(readFileSync(changelogPath, 'utf8'))
+        : [],
     })
   }
 

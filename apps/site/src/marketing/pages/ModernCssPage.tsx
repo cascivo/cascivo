@@ -2,6 +2,7 @@ import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from '../sections/Header'
 import { Footer } from '../sections/Footer'
 import { TechDeepDive } from '../sections/TechDeepDive'
+import { PosterColocation } from '../poster/PosterColocation'
 
 export function ModernCssPage() {
   return (
@@ -23,6 +24,9 @@ export function ModernCssPage() {
             </p>
           </section>
           <TechDeepDive />
+          {/* The honest counterweight to everything above it: the platform-CSS argument
+              costs colocation, and the page that makes the argument should say so. */}
+          <PosterColocation />
         </main>
       </SkipNavTarget>
       <Footer />

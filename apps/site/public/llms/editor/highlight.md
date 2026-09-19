@@ -31,7 +31,7 @@ import '@cascivo/editor/styles.css' // bundler: automatic. Needed only for no-bu
 | `ariaLabel`   | `string`              | no       | —           | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `label`       | `string`              | no       | —           | Accessible label for the code block. Not rendered — screen readers only.                                                                     |
 | `className`   | `string`              | no       | —           | Additional CSS class names merged onto the root element.                                                                                     |
-| `gutterRef`   | `Ref<HTMLDivElement>` | no       | —           | Ref to the gutter column (used by `CodeEditor` for scroll-sync).                                                                             |
+| `gutterRef`   | `Ref<HTMLDivElement>` | no       | —           | Ref to the line-number gutter's backdrop strip.                                                                                              |
 | `preRef`      | `Ref<HTMLPreElement>` | no       | —           | Ref to the scrollable `<pre>` (used by `CodeEditor` for scroll-sync).                                                                        |
 
 ## Examples
@@ -54,6 +54,8 @@ Enhancement only. The component still does its job with JavaScript disabled — 
 - `--cascivo-editor-fg`
 - `--cascivo-editor-gutter-bg`
 - `--cascivo-editor-gutter-fg`
+- `--cascivo-editor-gutter-width`
+- `--cascivo-editor-gutter-gap`
 - `--cascivo-editor-border`
 
 ## Accessibility
@@ -73,4 +75,4 @@ editor, code, syntax-highlighting, display, read-only
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

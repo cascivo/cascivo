@@ -35,32 +35,33 @@
 
 ## Accessibility rationale
 
-The drop zone is a real <button> so it is keyboard-operable (Enter/Space open the native file picker), the hidden file input is removed from the tab order and labelled via aria-describedby, and the file list uses aria-live="polite" so status changes are announced; each remove control carries an aria-label naming its file.
+The drop zone is a real <button> so it is keyboard-operable (Enter/Space open the native file picker); it is named by the visible label via aria-labelledby (or by ariaLabel) and described by the hint only, so the name is the field rather than the generic drop instruction. Ids come from useId, so two uploaders on a page never collide. A single aria-live="polite" region is mounted unconditionally — a region added in the same commit as its first file announces nothing — and reports the file count plus the list-wide state. Per-file glyphs carry role="img" so their aria-label is honoured, a failed file's message is a role="alert", the file input stays in the accessibility tree (aria-hidden on a node that is programmatically focused and clicked is the aria-hidden-focus violation) and carries the field label as its own name, since an exposed form control without one fails the axe label rule, disabled reaches the remove controls too, and remove targets meet the 44px floor under a coarse pointer. Drag-over, disabled and error states each get a forced-colors treatment, since colour alone disappears there.
 
 ## Props
 
-| Name           | Type                                                | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                          |
-| -------------- | --------------------------------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `files`        | `UploaderFile[]`                                    | No       | []      | Controlled file list                                                                                                                                                                                                                                                                                                                                                                                 |
-| `onFilesAdded` | `(files: File[]) => void`                           | No       | —       | Called with accepted files                                                                                                                                                                                                                                                                                                                                                                           |
-| `onRemove`     | `(id: string) => void`                              | No       | —       | Called when a file is removed                                                                                                                                                                                                                                                                                                                                                                        |
-| `multiple`     | `boolean`                                           | No       | false   | Allow multiple files                                                                                                                                                                                                                                                                                                                                                                                 |
-| `accept`       | `string`                                            | No       | —       | Accepted file types (MIME or extension)                                                                                                                                                                                                                                                                                                                                                              |
-| `maxSize`      | `number`                                            | No       | —       | Maximum file size in bytes                                                                                                                                                                                                                                                                                                                                                                           |
-| `onRejected`   | `(files: File[], reason: 'size' \| 'type') => void` | No       | —       | Called with rejected files                                                                                                                                                                                                                                                                                                                                                                           |
-| `label`        | `string`                                            | No       | —       | Visible field label rendered above the drop zone; it also names the control. Rendered on screen.                                                                                                                                                                                                                                                                                                     |
-| `hint`         | `string`                                            | No       | —       | Hint text below the drop zone                                                                                                                                                                                                                                                                                                                                                                        |
-| `labels`       | `FileUploaderLabels`                                | No       | —       | i18n label overrides                                                                                                                                                                                                                                                                                                                                                                                 |
-| `disabled`     | `boolean`                                           | No       | false   | Disables the upload zone                                                                                                                                                                                                                                                                                                                                                                             |
-| `ariaLabel`    | `string`                                            | No       | —       | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `files` | `UploaderFile[]` | No | [] | Controlled file list |
+| `onFilesAdded` | `(files: File[]) => void` | No | — | Called with accepted files |
+| `onRemove` | `(id: string) => void` | No | — | Called when a file is removed |
+| `multiple` | `boolean` | No | false | Allow multiple files |
+| `accept` | `string` | No | — | Accepted file types (MIME or extension) |
+| `maxSize` | `number` | No | — | Maximum file size in bytes |
+| `onRejected` | `(files: File[], reason: 'size' \| 'type') => void` | No | — | Called with rejected files |
+| `label` | `string` | No | — | Visible field label rendered above the drop zone; it also names the control. Rendered on screen. |
+| `hint` | `string` | No | — | Hint text below the drop zone |
+| `labels` | `FileUploaderLabels` | No | — | i18n label overrides |
+| `disabled` | `boolean` | No | false | Disables the upload zone |
+| `ariaLabel` | `string` | No | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
 ## Tokens
 
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-subtle`
-- `--cascivo-color-success`
+- `--cascivo-color-success-foreground`
 - `--cascivo-color-destructive`
 - `--cascivo-color-destructive-subtle`
+- `--cascivo-target-min-coarse`
 
 ## Examples
 
@@ -85,16 +86,16 @@ Accept multiple files
 Shows file list
 
 ```jsx
-<FileUploader files={[{ id: '1', name: 'report.pdf', size: 102400, status: 'complete' }]} />
+<FileUploader files={[{ id:'1', name:'report.pdf', size:102400, status:'complete' }]} />
 ```
 
 ## Boundaries
 
-| Area                         | Level    | Note                                                                       |
-| ---------------------------- | -------- | -------------------------------------------------------------------------- |
-| token names                  | strict   | Status colors must resolve to --cascivo-color-accent/success/danger tokens |
-| label and hint copy          | flexible | Overridable via label/hint props or the labels object                      |
-| accept / maxSize constraints | flexible | Configure freely; rejected files surface through onRejected                |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Status colors must resolve to --cascivo-color-accent/success/danger tokens |
+| label and hint copy | flexible | Overridable via label/hint props or the labels object |
+| accept / maxSize constraints | flexible | Configure freely; rejected files surface through onRejected |
 
 ## AI context prompt
 
@@ -112,7 +113,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 FileUploader is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-color-success, --cascivo-color-destructive, --cascivo-color-destructive-subtle
+  --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-color-success-foreground, --cascivo-color-destructive, --cascivo-color-destructive-subtle, --cascivo-target-min-coarse
 
 Accessibility: role "button", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.
 

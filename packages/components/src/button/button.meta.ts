@@ -54,6 +54,20 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
+    // Per-variant background knobs. Re-point one of these to restyle a button family
+    // without moving the semantic tier under every other component that reads it.
+    // NOTE: `color` is NOT paired to these — a background light enough to need dark text
+    // fails contrast until you also set the semantic `--cascivo-color-*-fg`.
+    '--cascivo-button-primary-bg',
+    '--cascivo-button-primary-bg-hover',
+    '--cascivo-button-primary-bg-active',
+    '--cascivo-button-secondary-bg',
+    '--cascivo-button-secondary-bg-hover',
+    '--cascivo-button-ghost-bg',
+    '--cascivo-button-ghost-bg-hover',
+    '--cascivo-button-destructive-bg',
+    '--cascivo-button-destructive-bg-hover',
+    '--cascivo-button-radius',
     '--cascivo-color-accent',
     '--cascivo-color-accent-hover',
     '--cascivo-color-accent-active',

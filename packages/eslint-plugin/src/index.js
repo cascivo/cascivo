@@ -7,8 +7,9 @@
  * who already installed the config gets the messages without changing anything.
  */
 import propVocabulary from './prop-vocabulary.js'
+import tokenValues from './token-values.js'
 
 export default {
   meta: { name: '@cascivo/eslint-plugin', version: '0.1.0' },
-  rules: { 'prop-vocabulary': propVocabulary },
+  rules: { 'prop-vocabulary': propVocabulary, 'token-values': tokenValues },
 }

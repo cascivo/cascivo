@@ -14,20 +14,23 @@ Modifying a value returned from a hook is not allowed.
                          ^^^ `env` cannot be modified
 ```
 
-Also seen as `react-hooks/immutability`, and on `open.value = !open.value`,
-`count.value++`, or any other `signal.value = …` assignment.
+Also seen as `react-hooks/immutability`, as oxlint's
+`warning react(immutability): This value cannot be modified`, and on
+`open.value = !open.value`, `count.value++`, or any other `signal.value = …`
+assignment.
 
 **Cause:** `eslint-plugin-react-hooks@7` enables `react-hooks/immutability` in
-`recommended-latest` — the config a stock 2026 React app gets. The rule reports
-writes to values returned from hooks, and `useSignal()` returns one. cascivo's
-reactivity contract mandates signals over `useState`, so the rule fires on the
-documented idiom, in your own page code, on both install paths. Your code is
-correct.
+`recommended-latest` — the config a stock 2026 React app gets — and **oxlint**
+ports the same rule as `react/immutability`, which is what
+`pnpm create vite --template react-ts` scaffolds. The rule reports writes to
+values returned from hooks, and `useSignal()` returns one. cascivo's reactivity
+contract mandates signals over `useState`, so the rule fires on the documented
+idiom, in your own page code, on both install paths. Your code is correct.
 
-**Fix:**
+**Fix — ESLint:**
 
 ```sh
-pnpm add -D @cascivo/eslint-config
+pnpm add -D --save-exact @cascivo/eslint-config
 ```
 
 ```js
@@ -37,6 +40,15 @@ export default [...yourConfig, ...cascivo] // spread LAST
 ```
 
 Or set it directly: `{ rules: { 'react-hooks/immutability': 'off' } }`.
+
+**Fix — oxlint** (no `eslint.config.js` to spread into):
+
+```jsonc
+// .oxlintrc.json
+{ "extends": ["./node_modules/@cascivo/eslint-config/src/oxlintrc.json"] }
+```
+
+Or set it directly: `{ "rules": { "react/immutability": "off" } }`.
 
 **Not** fixable by scoping the rule to `src/components/ui/**` — signal writes are
 in your own pages, and on the prebuilt path that directory doesn't exist.

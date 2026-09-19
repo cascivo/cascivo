@@ -56,13 +56,18 @@ export interface SearchProps {
    */
   label?: string
   /**
-   * Invisible accessible name, for when a visible element outside this component already
-   * labels it and `label` would render that text a second time.
+   * Accessible name set through `aria-label` instead of a rendered `<label>` element.
    *
-   * `label` on this component is **visible**. `IconButton.label` and `Sparkline.label` are
-   * invisible names, so an adopter arriving with that prior writes `label` here and gets the
-   * text twice (2026-08-22 report item 13). Both props are listed side by side, each saying
-   * which it is.
+   * ⚠ On `Search`, **both** props give an invisible name — `label` renders a real `<label>`
+   * that the stylesheet visually hides (see it above). The two differ in mechanism, not in
+   * what you see: `label` names the control through a `<label for>` association, `ariaLabel`
+   * through the attribute. Use `ariaLabel` when a visible element outside the component
+   * already labels the field, so nothing is announced twice; use `label` otherwise.
+   *
+   * This docblock previously read "`label` on this component is **visible**", copied from
+   * `Input`/`Select`/`Toggle` where that is true. It is not true here, and the contradiction
+   * sat inside the `.d.ts` the docs tell you to trust over everything else (2026-08-31
+   * report §20).
    */
   ariaLabel?: string
   /**

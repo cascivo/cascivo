@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/using-with-strict-eslint.md
-  registry v1.0.0 · generated 2026-08-29
+  registry v1.3.0 · generated 2026-09-16
 -->
 
 # Using cascivo with a strict host ESLint config
@@ -23,6 +23,45 @@ export default [
 ```
 
 That covers both problems on this page. Read on for what it does and why.
+
+## If you lint with oxlint, not ESLint
+
+**Read this first if you started with `pnpm create vite --template react-ts`.** That
+scaffold ships **oxlint** and a `.oxlintrc.json` in 2026 — there is no `eslint.config.js`
+to spread anything into, so the block above does not apply to you. oxlint reimplements
+`react-hooks/immutability` as `react/immutability`, and it reports the same thing about
+cascivo's state idiom:
+
+```
+src/routes/shell.tsx:93:13: warning react(immutability): This value cannot be modified
+```
+
+The fix is one rule. Extend the fragment this package ships:
+
+```jsonc
+// .oxlintrc.json
+{
+  "extends": ["./node_modules/@cascivo/eslint-config/src/oxlintrc.json"],
+  "categories": { "correctness": "error" },
+}
+```
+
+…or copy the rule, which is all the fragment contains:
+
+```jsonc
+{ "rules": { "react/immutability": "off" } }
+```
+
+⚠ oxlint **rejects a config naming a rule its build does not implement**
+(`Rule 'immutability' not found in plugin 'react'`), so add this only on an oxlint recent
+enough to ship the rule. On an older one the rule does not fire, so you need neither.
+
+Everything below about _what turning the rule off costs_ applies identically — it is the
+same rule, ported.
+
+Until the 2026-08-31 report (§13) this page mentioned oxlint three times, all of them
+describing cascivo's **own internal** linter, and shipped no oxlint story for the linter its
+most common scaffold now installs.
 
 ### If your `outputDir` is not `src/components/ui`
 
@@ -99,6 +138,22 @@ go looking for the docs. The rule also autofixes `gap="4"` → `gap={4}` and fla
 It is `warn` on purpose — a lint error over a naming opinion is a reason to delete the whole
 config, which would take `react-hooks/immutability` with it. Raise it yourself if you want it
 enforced. Full list: [`@cascivo/eslint-plugin`](https://github.com/cascivo/cascivo/blob/main/packages/eslint-plugin/README.md).
+
+### What `cascivoTokenValues` adds
+
+`cascivo/token-values`, also at `warn`. It reports a `--cascivo-*` custom property that does
+not exist — the one styling mistake nothing else in your stack will ever mention, because CSS
+drops an unknown custom property silently and React's `CSSProperties` has no index signature
+for `--*` keys to type-check them against.
+
+```tsx
+<div style={{ '--cascivo-color-acent': 'red' }} />
+//            ^ warns: did you mean `--cascivo-color-accent`?
+```
+
+Only the `--cascivo-` namespace is checked; your own custom properties are ignored. For the
+CSS half — and for `data-cascivo-*` selectors that match nothing — run `cascivo audit --ai`,
+which reports the same class at error level.
 
 ### Formatting: exclude vendored source from your formatter
 

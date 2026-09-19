@@ -1,4 +1,5 @@
 import { afterEach, describe, it, expect, vi } from 'vitest'
+import { useState } from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { setLinkComponent } from '@cascivo/core'
@@ -454,5 +455,64 @@ describe('SideNav stable keys', () => {
     const dupKeyWarning = spy.mock.calls.find((c) => String(c[0]).includes('same key'))
     expect(dupKeyWarning).toBeUndefined()
     spy.mockRestore()
+  })
+})
+
+describe('SideNav controlled collapse (2026-08-31 report §15)', () => {
+  it('does not update a component during another component render when collapse is controlled', async () => {
+    const user = userEvent.setup()
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    function Host() {
+      const [collapsed, setCollapsed] = useState(false)
+      return <SideNav items={[]} collapsed={collapsed} onCollapsedChange={setCollapsed} />
+    }
+    render(<Host />)
+
+    await user.click(screen.getByRole('button', { name: 'Collapse navigation' }))
+    expect(screen.getByRole('navigation')).toHaveAttribute('data-state', 'collapsed')
+    await user.click(screen.getByRole('button', { name: 'Expand navigation' }))
+    expect(screen.getByRole('navigation')).toHaveAttribute('data-state', 'expanded')
+
+    const renderPhaseWarning = spy.mock.calls.find((c) =>
+      String(c[0]).includes('while rendering a different component'),
+    )
+    expect(renderPhaseWarning).toBeUndefined()
+    spy.mockRestore()
+  })
+
+  it('honours the controlled prop over its own toggle (parent rejects the change)', async () => {
+    const user = userEvent.setup()
+    const onCollapsedChange = vi.fn()
+    render(<SideNav items={[]} collapsed={false} onCollapsedChange={onCollapsedChange} />)
+
+    await user.click(screen.getByRole('button', { name: 'Collapse navigation' }))
+    expect(onCollapsedChange).toHaveBeenCalledWith(true)
+    expect(screen.getByRole('navigation')).toHaveAttribute('data-state', 'expanded')
+  })
+})
+
+describe('SideNav slot render functions (2026-08-31 report §18)', () => {
+  it('passes the live collapsed state to header and footer', async () => {
+    const user = userEvent.setup()
+    render(
+      <SideNav
+        items={[]}
+        header={({ collapsed }) => <span>{collapsed ? 'AC' : 'Acme Inc.'}</span>}
+        footer={({ collapsed }) => <span>{collapsed ? '+' : 'New project'}</span>}
+      />,
+    )
+    expect(screen.getByText('Acme Inc.')).toBeInTheDocument()
+    expect(screen.getByText('New project')).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Collapse navigation' }))
+    expect(screen.getByText('AC')).toBeInTheDocument()
+    expect(screen.getByText('+')).toBeInTheDocument()
+  })
+
+  it('still accepts a plain node in both slots', () => {
+    render(<SideNav items={[]} header={<span>Workspace</span>} footer={<span>v2.1.0</span>} />)
+    expect(screen.getByText('Workspace')).toBeInTheDocument()
+    expect(screen.getByText('v2.1.0')).toBeInTheDocument()
   })
 })

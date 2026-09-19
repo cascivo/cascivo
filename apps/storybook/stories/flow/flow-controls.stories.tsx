@@ -17,12 +17,11 @@ export default meta
 type Story = StoryObj
 
 export const CanvasControls: Story = {
-  name: 'Canvas controls',
+  name: "Canvas controls",
   render: () => (
-    <div
-      style={{ position: 'relative', height: 200, border: '1px solid var(--cascivo-color-border)' }}
-    >
-      <FlowControls onZoomIn={() => {}} onZoomOut={() => {}} onFitView={() => {}} />
-    </div>
-  ),
+  <div style={{ position: 'relative', height: 200, border: '1px solid var(--cascivo-color-border)' }}>
+    <FlowControls onZoomIn={() => {}} onZoomOut={() => {}} onFitView={() => {}} />
+  </div>
+),
 }
+

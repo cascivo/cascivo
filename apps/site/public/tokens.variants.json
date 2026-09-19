@@ -1,6 +1,9 @@
 {
-  "generatedFrom": ["packages/tokens/src/index.css", "packages/themes/src/*.css"],
-  "generatedAt": "2026-08-29",
+  "generatedFrom": [
+    "packages/tokens/src/index.css",
+    "packages/themes/src/*.css"
+  ],
+  "generatedAt": "2026-09-16",
   "themes": [
     "arcade",
     "brutalist",
@@ -310,6 +313,27 @@
         "tailwind": "oklch(0.707 0.015 264)",
         "terminal": "oklch(0.65 0.05 148)",
         "warm": "oklch(0.64 0.025 65)"
+      }
+    },
+    {
+      "name": "--cascivo-chart-bar-radius",
+      "layer": "semantic",
+      "group": "chart",
+      "byTheme": {
+        "arcade": "0",
+        "brutalist": "0",
+        "corporate": "2px",
+        "cyberpunk": "0",
+        "dark": "2px",
+        "flat": "0",
+        "light-dark": "2px",
+        "light": "2px",
+        "midnight": "2px",
+        "minimal": "2px",
+        "pastel": "2px",
+        "tailwind": "2px",
+        "terminal": "0",
+        "warm": "2px"
       }
     },
     {
@@ -1461,20 +1485,20 @@
       "layer": "semantic",
       "group": "color",
       "byTheme": {
-        "arcade": "oklch(0.52 0.02 265)",
+        "arcade": "oklch(0.51 0.02 265)",
         "brutalist": "oklch(0.5 0 0)",
-        "corporate": "oklch(0.65 0.012 255)",
-        "cyberpunk": "oklch(0.55 0.05 300)",
-        "dark": "oklch(0.554 0.018 264)",
-        "flat": "oklch(0.55 0 0)",
+        "corporate": "oklch(0.525 0.012 255)",
+        "cyberpunk": "oklch(0.64 0.05 300)",
+        "dark": "oklch(0.614 0.018 264)",
+        "flat": "oklch(0.52 0 0)",
         "light-dark": null,
         "light": "oklch(0.5 0.016 264)",
-        "midnight": "oklch(0.52 0.02 280)",
-        "minimal": "oklch(0.65 0.012 80)",
-        "pastel": "oklch(0.7 0.02 325)",
+        "midnight": "oklch(0.625 0.02 280)",
+        "minimal": "oklch(0.525 0.012 80)",
+        "pastel": "oklch(0.535 0.02 325)",
         "tailwind": null,
-        "terminal": "oklch(0.48 0.04 148)",
-        "warm": "oklch(0.64 0.025 65)"
+        "terminal": "oklch(0.635 0.04 148)",
+        "warm": "oklch(0.525 0.025 65)"
       },
       "role": "text",
       "slot": "muted"

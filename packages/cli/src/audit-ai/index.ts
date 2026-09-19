@@ -20,6 +20,9 @@ export { findRequiredPropViolations } from './required-props.js'
 export type { RawStringFinding } from './raw-strings.js'
 export { findRawStringViolations } from './raw-strings.js'
 
+export type { UnknownNameFinding } from './unknown-names.js'
+export { findUnknownNameViolations } from './unknown-names.js'
+
 export type {
   BuildContractInput,
   ComponentInfo,

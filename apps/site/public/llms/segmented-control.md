@@ -34,13 +34,15 @@ import { SegmentedControl } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                       | Required | Default | Description                                                        |
-| --------------- | -------------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `options`       | `SegmentedControlOption[]` | yes      | —       | The selectable options.                                            |
-| `value`         | `string`                   | yes      | —       | The controlled value.                                              |
-| `onValueChange` | `(v: string) => void`      | yes      | —       | Called with the new value when it changes.                         |
-| `size`          | `'sm' \| 'md' \| 'lg'`     | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
-| `disabled`      | `boolean`                  | no       | `false` | When true, disables the control and removes it from the tab order. |
+| Prop            | Type                       | Required | Default | Description                                                                                                                                                                  |
+| --------------- | -------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `options`       | `SegmentedControlOption[]` | yes      | —       | The selectable options.                                                                                                                                                      |
+| `value`         | `string`                   | yes      | —       | The controlled value.                                                                                                                                                        |
+| `onValueChange` | `(v: string) => void`      | yes      | —       | Called with the new value when it changes.                                                                                                                                   |
+| `size`          | `'sm' \| 'md' \| 'lg'`     | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                        |
+| `disabled`      | `boolean`                  | no       | `false` | When true, disables the control and removes it from the tab order.                                                                                                           |
+| `ariaLabel`     | `string`                   | no       | —       | Accessible name for the group. Invisible — it names the role="group" and renders nothing. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
+| `label`         | `string`                   | no       | —       | Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered. Not rendered — screen readers only.                                                 |
 
 ## Examples
 
@@ -88,4 +90,4 @@ form, toggle, group, segmented, input
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

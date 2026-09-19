@@ -185,6 +185,32 @@ function tsdocBlock(prop: MetaProp, indent: string): string {
  * own indentation starts versus where the member's does, and getting that wrong grows the
  * indentation on every run instead of converging.
  */
+/**
+ * Line indices that sit inside an `export interface …Props { … }` block.
+ *
+ * Without this the member search below is a whole-file `findIndex`, so a sibling interface
+ * declared *above* the props one wins whenever it happens to share a member name — which put
+ * the boolean `loading` prop's "@defaultValue false" block onto `ComboboxLabels.loading` and
+ * `MultiSelectLabels.loading`, both of which are strings. The file's contract has always been
+ * "only …Props interfaces"; this makes the code agree with it.
+ */
+function propsInterfaceLines(lines: string[]): Set<number> {
+  const inside = new Set<number>()
+  let depth = 0
+  let active = false
+  lines.forEach((line, i) => {
+    if (!active && /^export interface \w*Props\b/.test(line)) {
+      active = true
+      depth = 0
+    }
+    if (!active) return
+    inside.add(i)
+    depth += (line.match(/\{/g) ?? []).length - (line.match(/\}/g) ?? []).length
+    if (depth <= 0 && inside.size > 1 && line.includes('}')) active = false
+  })
+  return inside
+}
+
 function applyTsdoc(source: string, props: MetaProp[]): string | null {
   let lines = source.split('\n')
 
@@ -196,7 +222,9 @@ function applyTsdoc(source: string, props: MetaProp[]): string | null {
     if (!prop.description) continue
 
     const memberRe = new RegExp(`^([ \\t]+)${escapeRe(prop.name)}\\?\\s*:`)
-    const memberLine = lines.findIndex((l) => memberRe.test(l))
+    // Recomputed each iteration: an insertion above shifts every later line index.
+    const propsLines = propsInterfaceLines(lines)
+    const memberLine = lines.findIndex((l, i) => propsLines.has(i) && memberRe.test(l))
     if (memberLine === -1) continue
     const indent = memberRe.exec(lines[memberLine]!)![1]!
 

@@ -24,17 +24,17 @@ Renders with role="img" and requires a label prop for screen reader labeling.
 
 ## Props
 
-| Name        | Type       | Required | Default | Description                                                                                                                                                                                                                                                                                                                          |
-| ----------- | ---------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `value`     | `number`   | Yes      | —       | Current measure value                                                                                                                                                                                                                                                                                                                |
-| `target`    | `number`   | Yes      | —       | Target marker value                                                                                                                                                                                                                                                                                                                  |
-| `ranges`    | `number[]` | Yes      | —       | Qualitative range breakpoints (sorted ascending)                                                                                                                                                                                                                                                                                     |
-| `label`     | `string`   | Yes      | —       | Text label for the control. Rendered on screen.                                                                                                                                                                                                                                                                                      |
-| `min`       | `number`   | No       | 0       | Minimum allowed value.                                                                                                                                                                                                                                                                                                               |
-| `max`       | `number`   | No       | —       | Domain maximum (defaults to last range)                                                                                                                                                                                                                                                                                              |
-| `width`     | `number`   | No       | 300     | SVG width in px. **This chart is fixed-width by default** — it is a compact, inline chart meant to sit in a table cell or beside a label, so omitting `width` gives you 300px rather than a container-filling chart. Pass a number to change it. The catalogue-wide "omit for a responsive chart" note does not apply to this chart. |
-| `height`    | `number`   | No       | 40      | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                       |
-| `className` | `string`   | No       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                             |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `number` | Yes | — | Current measure value |
+| `target` | `number` | Yes | — | Target marker value |
+| `ranges` | `number[]` | Yes | — | Qualitative range breakpoints (sorted ascending) |
+| `label` | `string` | Yes | — | Text label for the control. Rendered on screen. |
+| `min` | `number` | No | 0 | Minimum allowed value. |
+| `max` | `number` | No | — | Domain maximum (defaults to last range) |
+| `width` | `number` | No | 300 | SVG width in px. **This chart is fixed-width by default** — it is a compact, inline chart meant to sit in a table cell or beside a label, so omitting `width` gives you 300px rather than a container-filling chart. Pass a number to change it. The catalogue-wide "omit for a responsive chart" note does not apply to this chart. |
+| `height` | `number` | No | 40 | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -49,7 +49,8 @@ Renders with role="img" and requires a label prop for screen reader labeling.
 
 ```jsx
 import { Bullet } from '@cascivo/charts'
-;<Bullet value={72} target={80} ranges={[40, 70, 100]} label="Revenue %" />
+
+<Bullet value={72} target={80} ranges={[40, 70, 100]} label="Revenue %" />
 ```
 
 ## AI context prompt

@@ -10,12 +10,13 @@
  * narrow and deliberate: **fail on a NEW collision.** Renaming the current ones is a breaking
  * change and is tracked separately (07-26 plan WS-13); shipping a *fourth* one is not.
  */
-import { existsSync, readFileSync } from 'node:fs'
+import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { strict as assert } from 'node:assert'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { exportedNamesOf, reactExportedNames } from '../registry/react-exports.ts'
+import { reactExportedNames } from '../registry/react-exports.ts'
+import { BEGIN, collidingIconNames, componentNames, packageExports } from './lib/collisions.ts'
 
 const ROOT = fileURLToPath(new URL('../..', import.meta.url))
 
@@ -39,34 +40,14 @@ const KNOWN: Record<string, string> = {
  */
 const ICON_OVERLAP_CEILING = 20
 
-/** Top-level export names of a package's entry module (one level of `export *` followed). */
-function packageExports(entry: string): Set<string> {
-  const file = join(ROOT, entry)
-  const src = readFileSync(file, 'utf8')
-  const names = new Set(exportedNamesOf(file))
-  for (const m of src.matchAll(/export\s+\*\s+from\s+'(\.[^']+)'/g)) {
-    const spec = m[1]!.replace(/\.(ts|tsx)$/, '')
-    for (const ext of ['.ts', '.tsx', '/index.ts', '/index.tsx']) {
-      const resolved = join(file, '..', spec + ext)
-      if (!existsSync(resolved)) continue
-      for (const name of exportedNamesOf(resolved)) names.add(name)
-      break
-    }
-  }
-  return names
-}
-
-/** Only value exports matter for a JSX name clash; type-only names never collide at runtime. */
-function componentNames(names: Set<string>): Set<string> {
-  return new Set([...names].filter((n) => /^[A-Z]/.test(n) && !/Props$|Options$|Config$/.test(n)))
-}
-
 /**
- * `@cascivo/icons` is deliberately out of scope. An icon set of ~440 nouns will always share
- * names with a component set (`Search`, `Filter`, `Grid`, `User`) and with a chart set
- * (`BarChart`, `PieChart`, `Gauge`, `Heatmap`, `Radar`) — Lucide and Heroicons have the same
- * property, and the convention is `import { Search as SearchIcon }`. Enumerating those would
- * be noise that buries the real signal.
+ * `@cascivo/icons` is out of scope for the fail-on-any rule. An icon set of ~440 nouns will
+ * always share names with a component set (`Search`, `Filter`, `Grid`, `User`) and with a
+ * chart set (`BarChart`, `PieChart`, `Gauge`, `Heatmap`, `Radar`) — Lucide and Heroicons have
+ * the same property, and the convention is `import { Search as SearchIcon }`. It gets a
+ * ratchet on the count plus a PUBLISHED list instead: saying the names "share by nature"
+ * without ever saying WHICH left an adopter one refactor away from a silent wrong import
+ * (2026-08-31 report §25), so the list is generated into RECIPE-DASHBOARD.md and checked here.
  *
  * What is NOT inherent is two *component* packages claiming one name, where a wrong
  * resolution is silent: `Text` from `@cascivo/charts` is an SVG `<text>` primitive and
@@ -74,8 +55,8 @@ function componentNames(names: Set<string>): Set<string> {
  */
 describe('cross-package export collisions', () => {
   const react = componentNames(reactExportedNames(ROOT))
-  const charts = componentNames(packageExports('packages/charts/src/index.ts'))
-  const icons = componentNames(packageExports('packages/icons/src/index.tsx'))
+  const charts = componentNames(packageExports(ROOT, 'packages/charts/src/index.ts'))
+  const icons = componentNames(packageExports(ROOT, 'packages/icons/src/index.tsx'))
 
   it('resolves a plausible number of exports from each package', () => {
     assert.ok(react.size > 100, `@cascivo/react resolved only ${react.size} exports`)
@@ -118,6 +99,22 @@ describe('cross-package export collisions', () => {
       overlap.length >= ICON_OVERLAP_CEILING - 3,
       `The overlap dropped to ${overlap.length}, well under the ${ICON_OVERLAP_CEILING} ` +
         'ceiling — lower the ceiling so it keeps its grip.',
+    )
+  })
+
+  /*
+   * The published list must be the one CI enforces. Both read `lib/collisions.ts`, so this
+   * only has to catch a stale doc — i.e. someone added a colliding name and skipped `regen`.
+   */
+  it('the published icons ↔ components list is current', () => {
+    const doc = readFileSync(join(ROOT, 'docs/RECIPE-DASHBOARD.md'), 'utf8')
+    assert.ok(doc.includes(BEGIN), 'RECIPE-DASHBOARD.md lost its icon-collision markers')
+    const listed = [...doc.matchAll(/^\| `(\w+)` \| `import \{/gm)].map((m) => m[1]!)
+    assert.deepEqual(
+      listed,
+      collidingIconNames(ROOT),
+      'The react ↔ icons collision table in docs/RECIPE-DASHBOARD.md is stale. ' +
+        'Run `pnpm collisions:generate` (or `pnpm regen`) and commit the result.',
     )
   })
 

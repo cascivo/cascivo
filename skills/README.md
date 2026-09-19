@@ -11,6 +11,7 @@ Claude Code skills for working with the cascivo design system.
 | `cascivo:design-page`  | `skills/cascivo-design-page/SKILL.md`  | Natural language → scaffold_view → validate_view → cascivo generate               |
 | `cascivo:create-theme` | `skills/cascivo-create-theme/SKILL.md` | Brand colors → semantic token overrides → WCAG AA contrast check                  |
 | `cascivo:extend`       | `skills/cascivo-extend/SKILL.md`       | Scaffold a new component following cascivo authoring rules (signals, CSS tokens)  |
+| `cascivo:email`        | `skills/cascivo-email/SKILL.md`        | Build a transactional email — table-based primitives, themed tokens, byte budget  |
 
 ## Installation
 

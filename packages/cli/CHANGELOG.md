@@ -1,5 +1,207 @@
 # cascivo
 
+## 1.2.1
+
+### Patch Changes
+
+- a076a68: Editor: line numbers, the current-line highlight and the left gutter all survive a soft wrap
+
+  Reported from an adopter running `CodeEditor` with `wrap` over markdown, and reproduced in
+  Chromium against the shipped CSS: with soft wrap on, a single long line broke the whole left
+  edge of the editor.
+
+  - **Line numbers drifted one row per wrap.** The gutter was a separate column whose rows were
+    one line box each, while the code column's rows grew with the text. A line that wrapped to two
+    visual rows put `6` next to the continuation of line 5, and the last line got no number at all.
+    The number and its line are now adjacent cells of **one CSS grid row**, so the row grows once
+    and both grow with it — there is nothing left to keep in sync.
+  - **The current-line highlight lit only the first visual row** of a wrapped line: it was
+    positioned by `caretLine * 1lh` and was `1lh` tall. Under wrap it is now placed on the caret's
+    grid row and takes that row's height, so it covers every visual row of the line. Not wrapping,
+    where rows are uniform and large documents window to a slice, keeps the arithmetic.
+  - **The gap between the border and the code could collapse to nothing.** It was padding on the
+    gutter and on the highlight/edit layers, and a host reset — Tailwind Preflight's
+    `* { padding: 0 }` is the one that hit — outranks `@layer cascivo.component`. The gutter's
+    width is now a grid track, the gap after it a `column-gap`, and the textarea's alignment an
+    `inset-inline-start`. A `padding: 0` reset can collapse none of the three, so the editing
+    surface also cannot drift off the layer it is overlaid on.
+
+  Two new override points come with it, both documented on `CodeEditor` and `Highlight`:
+  `--cascivo-editor-gutter-width` (default: as wide as the widest line number) and
+  `--cascivo-editor-gutter-gap`. Line numbers stay `aria-hidden` and unselectable, so they are
+  neither announced nor copied with the code, and they now stay visible in forced-colors mode,
+  where the highlight layer used to be hidden wholesale.
+
+## 1.2.0
+
+### Minor Changes
+
+- fc01c42: Email: a publishable preview, responsive layout primitives, and `cascivo email lint`
+
+  Reported by the weeklyfoo newsletter after migrating four templates.
+
+  - **`@cascivo/email-preview` is published, with a bin.** `npx @cascivo/email-preview ./emails`
+    serves a directory of templates — default export rendered, optional `subject` and
+    `previewProps` named exports, hot reload through Vite. The recipe used to document
+    `pnpm --filter @cascivo/email-preview dev`, which is a workspace filter and worked only
+    inside this monorepo; everyone else got "No projects matched the filters" and wrote their
+    own preview server. The package moves from `apps/` to `packages/` so it reaches the drift
+    feed and the packaging gates like every other published package.
+  - **`Container` is responsive by default** and **`Column` takes `stack`.** A 600px table
+    will not lay out below its contents' min-content width, so `max-width: 100%` never
+    prevented the sideways scroll every mobile reader was getting. Measured at 320px: 280px of
+    overflow before, none after. Both halves are needed — a fluid container does nothing for a
+    `Row` until its columns stack, which is why `stack` exists rather than being implied.
+  - **`className` on the layout primitives, and a `Style` primitive.** A media query needs
+    something to select and somewhere to live; `Style` blocks are hoisted into `<head>` and
+    deduplicated. This replaces the `[style*='--flag']` attribute-selector workaround an
+    adopter had to invent, which is worse supported than a plain class.
+  - **`Button` no longer defaults `align` to `'left'`.** A button is its own table carrying its
+    own `align`, so that default beat the `align` of any `Column` around it and
+    `<Column align="right"><Button/></Column>` rendered hard left. With no attribute emitted it
+    follows the cell, verified in a browser.
+  - **`cascivo email lint <file...>`** runs the conformance check on rendered HTML, fetching
+    and caching the Can I email matrix so every adopter stops writing the same twelve lines.
+    Reads stdin with `-`, takes a local matrix with `--data`, exits non-zero only on a blocked
+    finding.
+  - A Playwright suite now asserts no shipped template scrolls sideways at 320/360/390/414,
+    with a negative control proving the rule is what prevents it. Nothing caught this class of
+    bug before: the conformance lint reads CSS feature support, not layout.
+  - `@cascivo/docs` and `@cascivo/docspack` carry the rewritten email recipe — the preview
+    command that now works outside this repo, the responsive rules, and `simulate()`, which
+    was exported and useful but documented nowhere outside the `.d.ts`.
+
+## 1.1.0
+
+### Minor Changes
+
+- 00c1a9e: Enforce the styling contract: a `--cascivo-*` token or `data-cascivo-*` hook that does not
+  exist is now reported instead of silently doing nothing.
+
+  CSS drops an unknown custom property without a word, and a selector that matches nothing is
+  not an error either — so a misspelled token had no diagnostic anywhere in the toolchain. It
+  found `--cascivo-button-bg`, taught as the worked example of the override ladder's first rung
+  in four guides and defined by no stylesheet in the repo.
+
+  - **`@cascivo/eslint-plugin`** adds `cascivo/token-values`, which reports an unknown
+    `--cascivo-*` custom property in a JSX `style` prop (through the `as CSSProperties` cast
+    React forces) and names the token that exists, including when the words are in the wrong
+    order (`--cascivo-text-color` → `--cascivo-color-text`).
+  - **`@cascivo/eslint-config`** enables it at `warn` as `cascivoTokenValues`.
+  - **`@cascivo/tokens`** publishes `./style-contract` and `./style-contract.json`:
+    `CascivoComponentToken`, `CascivoAnyToken`, `CascivoStyleHook`, and `CascivoTokenStyle` for
+    `satisfies`-checking an inline style before the cast erases the name.
+  - **`cascivo`** adds the `unknown-token` and `unknown-style-hook` audit rules at error level,
+    covering CSS files as well as TSX.
+
+  All four read one generated name set, so they cannot disagree with each other or with the
+  shipped CSS.
+
+  **Button gains the per-variant background tokens the docs had been promising.**
+  `--cascivo-button-{primary,secondary,ghost,destructive}-bg`, plus `-bg-hover` for each and
+  `-bg-active` for primary, each falling back to the semantic default it replaced — so nothing
+  changes until you set one. This is the rung-1 lever for restyling one button family without
+  moving `--cascivo-color-primary` under every other primary surface in the subtree. The
+  foreground deliberately stays on the semantic tier: a background light enough to need dark
+  text still needs `--cascivo-color-primary-fg` set alongside it.
+
+### Patch Changes
+
+- a8292df: Act on the 2026-08-31 deploy-console experience report — a collapsible rail that
+  was broken end to end, plus fourteen smaller API and docs fixes.
+
+  **The rail.** `AppShell` and `SideNav` fought over the nav column and `AppShell`
+  won. `AppShell` pinned its inner wrapper to `--cascivo-shell-aside-inline-size` and
+  stretched the nav back out with `flex: 1 1 auto`, so collapsing to the rail shrank
+  the items to icons and left the column at its full width — measured 288px → 288px.
+  `AppShellProps`' own docblock promised the two "compose on different axes and never
+  fight". The column now follows the nav's `data-state` via `:has()`, full-hide still
+  takes precedence over the rail width, and the composition is asserted in a real
+  browser by `computed:check`.
+
+  Two defects rode on top of it. Controlling `SideNav.collapsed` — the only workaround
+  while the rail was broken — emitted `Cannot update a component while rendering a
+different component` on every collapse, with signals or with `useState`, because the
+  prop was mirrored into a signal during render. The rail state is read only during
+  render, so it now reads the prop directly and the write is gone. And group headings
+  kept painting on the 4rem rail, clipped mid-word; they are now hidden there (still
+  in the a11y tree) and legible again on hover-expand.
+
+  `SideNav.header` and `SideNav.footer` accept `({ collapsed }) => node`, so a team
+  switcher or a "New project" button can shrink to a rail icon — the thing that forced
+  the controlled-collapse workaround in the first place.
+
+  **Diagnosability.** The published bundles keep function and class names, so React
+  names cascivo components in its warnings instead of `x`. 88.5 KB → 90.5 KB gzip
+  across the whole react tree.
+
+  **Linting.** `@cascivo/eslint-config` now ships an oxlint fragment at
+  `@cascivo/eslint-config/oxlintrc.json`. `pnpm create vite --template react-ts`
+  scaffolds oxlint, not ESLint, and it reports the mandatory `signal.value = next`
+  idiom as `react(immutability)` — the documented remedy was ESLint-only and did not
+  apply to the most common way to start a project.
+
+  **API.**
+
+  - `FlexItem` (`size`, `basis`, `truncate`) — the counterpart to `GridItem`. Every raw
+    `style={}` escape in the reported app was a missing flex item prop.
+  - `DataListItem` is a component. The pair shape is now `DataListEntry`;
+    `DataListItem` stays as a deprecated type alias so existing annotations compile.
+  - `LogLine.timestamp` renders in its own dimmed, column-aligned gutter, excluded from
+    the built-in search and from the copy button. Formatting a clock into `text` made
+    `08:59` match every line.
+  - `SegmentedControl` accepts `ariaLabel` / `label`, like the rest of the catalog.
+  - `AreaChart`/`LineChart` thread the `x` accessor's return type into `format`, so a
+    `Date` series gets `format: (value: Date) => string` with no `instanceof` guard.
+  - `@cascivo/icons` exports the familiar names from other sets — `Rocket`,
+    `LayoutDashboard`, `MagnifyingGlass`, `Gear`, `Bolt` and ~35 more — as real
+    exports, minus the five that would collide with a component, chart or icon.
+  - `cascivo init` / `cascivo add` pin exact versions, in each package manager's own
+    spelling of the flag.
+
+  **Docs.** `Search.ariaLabel` no longer claims `label` is visible (on `Search` both
+  names are invisible; they differ in mechanism). Every framed chart documents that
+  `height` tracks its container. `@cascivo/react`'s `.d.ts` carries `@cascivo/core`'s
+  docblocks for the 56 names it re-exports, so it stays grep-complete on the path where
+  `node_modules/@cascivo/core` does not exist. The react↔icons collision list is
+  generated into `RECIPE-DASHBOARD.md` and enforced. Getting-started opens with the
+  docspack index rather than a 2,000-line linear read.
+
+## 1.0.1
+
+### Patch Changes
+
+- 2050fe5: The four packages that build with `vp pack` are minified too. These were not merely
+  whitespace-heavy like the rest — they were never minified at all, shipping full identifiers
+  and every comment, so they had the most to give:
+
+  ```
+  cascivo              36.0 → 25.0 KB gzip   (-31%)
+  @cascivo/mcp         19.3 → 13.7           (-29%)
+  @cascivo/registry     6.5 →  4.1           (-37%)
+  @cascivo/vite-plugin  1.8 →  0.6           (-64%)
+  ```
+
+  That is 20.2 KB more, and 49 KB gzip off the published surface across the whole sweep.
+
+  `vp pack` ignores `rollupOptions`, so these take the `--minify` flag in their build script
+  rather than the shared rolldown option the other packages use. `scripts/build/minify.ts`
+  documents both halves — a package that moves between the two build paths loses this silently
+  otherwise.
+
+  None of the four is browser payload, so this is install size rather than runtime cost. The
+  reason to do it anyway is that the debuggability argument for leaving them readable does not
+  hold: all four already publish sourcemaps with `sourcesContent` embedded, so a stack trace
+  out of the minified CLI still resolves to the original TypeScript.
+
+  Exercised after the change, not just built: `cascivo --help`, the MCP server answering
+  `initialize` and `tools/list` over stdio (23 tools), both packages keeping their shebang and
+  executable bit, and the `cold-adopter`, `npm-bootstrap`, `deps:smoke`, `scaffold-contract`
+  and `pack:check` gates that run the packed CLI for real.
+
+- Updated dependencies [2050fe5]
+  - @cascivo/registry@0.2.10
+
 ## 1.0.0
 
 ### Major Changes

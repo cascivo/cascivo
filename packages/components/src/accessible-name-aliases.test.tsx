@@ -13,6 +13,7 @@ import { Breadcrumb } from './breadcrumb/breadcrumb'
 import { CommandMenu } from './command-menu/command-menu'
 import { DataTable } from './data-table/data-table'
 import { OverflowMenu } from './overflow-menu/overflow-menu'
+import { SegmentedControl } from './segmented-control/segmented-control'
 import { SideNav } from './side-nav/side-nav'
 import { Steps } from './steps/steps'
 import { Switcher } from './switcher/switcher'
@@ -36,6 +37,30 @@ describe('`label` is accepted where the catalog spells it `ariaLabel`', () => {
   it('Steps', () => {
     render(<Steps steps={[{ label: 'Queued' }]} label="Build pipeline" />)
     expect(screen.getByRole('list', { name: 'Build pipeline' })).toBeInTheDocument()
+  })
+
+  it('SegmentedControl — extended HTMLAttributes only, so `ariaLabel` used to be a type error', () => {
+    render(
+      <SegmentedControl
+        options={[{ label: 'All', value: 'all' }]}
+        value="all"
+        onValueChange={() => {}}
+        label="Deploy state"
+      />,
+    )
+    expect(screen.getByRole('group', { name: 'Deploy state' })).toBeInTheDocument()
+  })
+
+  it('SegmentedControl accepts the catalog spelling too', () => {
+    render(
+      <SegmentedControl
+        options={[{ label: 'All', value: 'all' }]}
+        value="all"
+        onValueChange={() => {}}
+        ariaLabel="Deploy state"
+      />,
+    )
+    expect(screen.getByRole('group', { name: 'Deploy state' })).toBeInTheDocument()
   })
 
   it('`ariaLabel` still wins when both are passed', () => {

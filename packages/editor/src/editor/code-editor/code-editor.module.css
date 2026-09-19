@@ -12,6 +12,20 @@
     line-height: var(--cascivo-leading-normal);
     tab-size: var(--cascivo-editor-tab-size, 2);
     transition: box-shadow var(--cascivo-duration-150) var(--cascivo-ease-out);
+
+    /* Gutter geometry lives in the grid TRACK and the textarea's inset, never in
+       padding: a host reset such as Tailwind Preflight's `* { padding: 0 }` cannot
+       collapse a track size, a gap or an offset — and that reset is exactly what left
+       adopters with the line numbers jammed against the code. `…-gutter-digits` is set
+       inline from the line count so the column is exactly as wide as it needs to be. */
+    --cascivo-editor-gutter-gap: var(--cascivo-space-3);
+    --cascivo-editor-gutter-width: calc(
+      var(--cascivo-editor-gutter-digits, 2) * 1ch + var(--cascivo-space-3) + var(--cascivo-space-2)
+    );
+  }
+
+  .root[data-line-numbers='false'] {
+    --cascivo-editor-gutter-width: 0px;
   }
 
   /* Focus ring driven by the textarea's focus (it is the real control). */
@@ -20,26 +34,25 @@
     border-color: var(--cascivo-color-accent);
   }
 
-  .gutter {
-    position: relative;
-    flex: 0 0 auto;
-    overflow: hidden;
-    padding-block: var(--cascivo-space-3);
-    padding-inline-start: var(--cascivo-space-3);
-    padding-inline-end: var(--cascivo-space-2);
-    background: var(--cascivo-editor-gutter-bg);
-    color: var(--cascivo-editor-gutter-fg);
-    text-align: end;
-    user-select: none;
-  }
-
   .codeArea {
     position: relative;
     flex: 1 1 auto;
     min-inline-size: 0;
   }
 
-  /* Highlight layer — visual only, behind the transparent textarea. */
+  /* Opaque backdrop behind the line-number column. It sits OUTSIDE the scrolling
+     `.pre`, so it neither scrolls away horizontally nor stops at the last line. */
+  .gutterBg {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: var(--cascivo-editor-gutter-width);
+    background: var(--cascivo-editor-gutter-bg);
+    pointer-events: none;
+  }
+
+  /* Highlight layer — visual only, behind the transparent textarea. It spans the
+     gutter column too, because the line numbers are cells of its row grid. */
   .pre {
     position: absolute;
     inset: 0;
@@ -47,34 +60,78 @@
     margin-block: 0;
     margin-inline: 0;
     padding-block: var(--cascivo-space-3);
-    padding-inline: var(--cascivo-space-3);
+    padding-inline: 0;
     white-space: pre;
     pointer-events: none;
     font: inherit;
     tab-size: inherit;
   }
 
-  /* Current-line marker — positioned imperatively via --cascivo-editor-caret-line. */
-  .currentLine {
+  /* Current-line marker — an out-of-flow child of the row grid, so it neither
+     occupies a cell nor affects sizing, while grid placement still resolves its
+     containing block. Placement is imperative (two custom properties written on the
+     root when the caret moves) because a caret move must not re-render the document:
+
+       - not wrapping: every row is exactly one line box, so `1lh` arithmetic is exact
+         and — unlike a grid row — stays correct when windowing renders only a slice;
+       - wrapping: rows are variable-height (windowing is off there), so the marker is
+         placed ON the caret's grid row and therefore covers ALL of its visual rows.
+         The old `block-size: 1lh` marker lit only the first row of a wrapped line. */
+  .currentLine,
+  .currentLineGutter {
     position: absolute;
+    inset-block: 0;
     inset-inline: 0;
-    top: var(--cascivo-space-3);
-    block-size: 1lh;
-    transform: translateY(calc(var(--cascivo-editor-caret-line, 0) * 1lh));
-    background: var(--cascivo-editor-current-line);
     pointer-events: none;
   }
 
+  .currentLine {
+    grid-column: 1 / -1;
+    z-index: 2;
+    background: var(--cascivo-editor-current-line);
+  }
+
+  /* The gutter half of the marker, so `--cascivo-editor-gutter-active` can tint the
+     line number differently. Transparent by default: the row marker shows through. */
+  .currentLineGutter {
+    /* `1 / 2`, not `1`: see the `grid-row` note below — an `auto` end edge on an
+       out-of-flow grid child resolves to the grid's padding edge, which would stretch
+       this across the code as well. */
+    grid-column: 1 / 2;
+    z-index: 3;
+    background: var(--cascivo-editor-gutter-active, transparent);
+  }
+
+  .root[data-wrap='false'] .currentLine,
+  .root[data-wrap='false'] .currentLineGutter {
+    inset-block: 0 auto;
+    block-size: 1lh;
+    transform: translateY(calc(var(--cascivo-editor-caret-line, 0) * 1lh));
+  }
+
+  /* Both grid lines must be explicit: for an out-of-flow grid child an `auto` end
+     edge means the grid container's padding edge, not "span one row", so the marker
+     would run from the caret's row to the bottom of the document. `span 1` is
+     likewise ignored for out-of-flow children, hence the resolved `N / N+1` pair. */
+  .root[data-wrap='true'] .currentLine,
+  .root[data-wrap='true'] .currentLineGutter {
+    grid-row: var(--cascivo-editor-caret-row, 1 / 2);
+  }
+
+  /* The editing surface. It starts AFTER the gutter column so its text sits exactly
+     on the highlight layer's code column; using `inset-inline-start` rather than
+     padding keeps that alignment even under a host `* { padding: 0 }` reset. */
   .textarea {
     position: absolute;
-    inset: 0;
-    inline-size: 100%;
-    block-size: 100%;
+    inset-block: 0;
+    inset-inline-start: calc(var(--cascivo-editor-gutter-width) + var(--cascivo-editor-gutter-gap));
+    inset-inline-end: 0;
     overflow: auto;
     margin-block: 0;
     margin-inline: 0;
     padding-block: var(--cascivo-space-3);
-    padding-inline: var(--cascivo-space-3);
+    padding-inline-start: 0;
+    padding-inline-end: var(--cascivo-space-3);
     border: 0;
     resize: none;
     background: transparent;
@@ -105,7 +162,7 @@
     word-break: break-word;
   }
 
-  .root[data-line-numbers='false'] .gutter {
+  .root[data-line-numbers='false'] .gutterBg {
     display: none;
   }
 
@@ -128,10 +185,9 @@
     border: 1px solid FieldText;
   }
   /* High-contrast mode flattens syntax colors — show the textarea's own text
-     and hide the highlight layer so the result stays legible. */
-  .pre {
-    display: none;
-  }
+     instead of the highlight layer's (the code rows are hidden by the `overlay`
+     rule in highlight.module.css, which keeps the line numbers and the row heights
+     the numbers are aligned to). */
   .textarea {
     color: CanvasText;
     caret-color: CanvasText;

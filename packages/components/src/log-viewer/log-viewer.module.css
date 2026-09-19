@@ -106,6 +106,15 @@
     display: flex;
     align-items: center;
 
+    /* Timestamp gutter: fixed width so stamps column-align down the buffer, dimmed so the
+       message stays the thing you read, and never shrunk by a long line (the row is a flex
+       container and `pre` text is intrinsically wide). */
+    & .timestamp {
+      flex: 0 0 var(--_timestamp-width, 6.5rem);
+      color: var(--cascivo-color-text-subtle);
+      user-select: none;
+    }
+
     &[data-level='warn'] {
       color: var(--cascivo-color-warning-foreground);
     }

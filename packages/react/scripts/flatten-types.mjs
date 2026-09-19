@@ -11,7 +11,7 @@
 // banner), strip vp's cosmetic //#region source-path comments, and write the
 // result to dist/index.d.ts.
 import { execFileSync } from 'node:child_process'
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -37,6 +37,96 @@ function explodeSpecifierList(line) {
   const names = body.split(', ')
   if (names.length < 4) return line
   return head + '{\n' + names.map((n) => '  ' + n + ',').join('\n') + '\n}' + tail
+}
+
+/**
+ * Build a commented appendix carrying `@cascivo/core`'s own docblocks for the names this
+ * entry re-exports.
+ *
+ * The docs tell adopters to read the `.d.ts` first, and for these ~60 names that advice was
+ * much harder to follow than for the rest: `@cascivo/core` is a transitive dependency on the
+ * prebuilt path (the docs are firm you must not add it directly), so under pnpm's strict
+ * layout `node_modules/@cascivo/core` does not exist and reading `ThemeProviderProps` meant
+ * digging into `node_modules/.pnpm/@cascivo+core@1.0.0_…_46295b8bf08639ad/node_modules/…`
+ * (2026-08-31 report §27).
+ *
+ * Line comments, not declarations and not a block comment: re-declaring the types here would
+ * fork them from core's, which is what `check-styles-complete`'s `$N`-alias rule exists to
+ * prevent — and a docblock reproduced inside a block comment ends it at the first nested
+ * `*​/`. TypeScript still resolves and Ctrl-clicks through to core; this makes the file
+ * grep-complete, which is how an agent reads it.
+ */
+function coreDocAppendix(bundled) {
+  const coreDts = join(pkgRoot, '..', 'core', 'dist', 'index.d.ts')
+  if (!existsSync(coreDts)) return ''
+  const importBlock = /import \{([^}]*)\} from "@cascivo\/core";/.exec(bundled)
+  if (!importBlock) return ''
+  const wanted = new Set(
+    importBlock[1]
+      .split(/[\n,]/)
+      .map((n) => n.trim())
+      .filter(Boolean),
+  )
+
+  /*
+   * Walk core's declarations and take the block comment immediately above each one. Line-based
+   * and exact, rather than one regex over the whole file: a `/** … *​/ … <decl>` pattern is
+   * non-greedy from the WRONG end and happily spans several unrelated declarations.
+   */
+  const lines = readFileSync(coreDts, 'utf8').split('\n')
+  const declRe =
+    /^(?:declare )?(?:export )?(?:declare )?(?:type|interface|const|function|class|enum) (\w+)/
+  const found = new Map()
+  for (let i = 0; i < lines.length; i++) {
+    const m = declRe.exec(lines[i])
+    if (!m || !wanted.has(m[1]) || found.has(m[1])) continue
+
+    // A leading `/** … */`, when there is one.
+    let start = i
+    if (i > 0 && lines[i - 1].trim().startsWith('*/')) {
+      let open = i - 1
+      while (open > 0 && !lines[open].trim().startsWith('/**')) open--
+      if (lines[open].trim().startsWith('/**')) start = open
+    }
+
+    /*
+     * Interfaces and object types carry their documentation on their MEMBERS, not above the
+     * declaration — `ThemeProviderProps`, the name the report named, has no leading docblock
+     * at all — so take the whole body through its closing brace at column 0. Functions and
+     * consts are one line and their docblock is above them.
+     */
+    let end = i
+    if (/^(?:declare )?(?:export )?(?:type|interface) /.test(lines[i]) && lines[i].includes('{')) {
+      while (end < lines.length - 1 && lines[end] !== '}') end++
+    }
+    found.set(
+      m[1],
+      lines.slice(start, end + 1).map((line) => line.replace(/\s*\{\s*$/, ' {')),
+    )
+  }
+  if (found.size === 0) return ''
+
+  const body = [...found.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .flatMap(([name, block]) => [
+      `// ── ${name} ${'─'.repeat(Math.max(0, 76 - name.length))}`,
+      // `$N` are the dts bundler's private renames of names that ARE public here, so leaving
+      // them would print a name no adopter can import.
+      ...block.map((line) => `// ${line}`.replace(/\b(\w+)\$\d+\b/g, '$1').trimEnd()),
+      '//',
+    ])
+
+  return [
+    '',
+    '// ════ Re-exported from `@cascivo/core` ═══════════════════════════════════════════',
+    '//',
+    '// The declarations below live in `@cascivo/core`, a TRANSITIVE dependency on this path —',
+    '// do not add it to your package.json. Their docblocks are reproduced here so this file',
+    '// stays the one place to read, and to grep, for every name it exports.',
+    '//',
+    ...body,
+    '',
+  ].join('\n')
 }
 
 const isWin = process.platform === 'win32'
@@ -105,7 +195,10 @@ try {
  */
 `
 
-  writeFileSync(join(pkgRoot, 'dist', 'index.d.ts'), `${BANNER}${cleaned}`)
+  writeFileSync(
+    join(pkgRoot, 'dist', 'index.d.ts'),
+    `${BANNER}${cleaned}${coreDocAppendix(cleaned)}`,
+  )
 
   // `@cascivo/react/types` — the catalog vocabulary types (Tone, SpaceStep, …), which are
   // the types of published props but live in @cascivo/core, a transitive dep a prebuilt

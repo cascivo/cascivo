@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 2,
+  "name": "editor/highlight",
+  "type": "editor",
+  "description": "Read-only syntax-highlighted code block — the same owned tokenizer as CodeEditor, without the textarea.",
+  "version": "1.2.0",
+  "files": [],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["editor", "code", "syntax-highlighting", "display", "read-only"],
+  "category": "display",
+  "install": "@cascivo/editor",
+  "styles": "@cascivo/editor/styles.css",
+  "meta": {
+    "name": "Highlight",
+    "description": "Read-only syntax-highlighted code block — the same owned tokenizer as CodeEditor, without the textarea.",
+    "category": "display",
+    "clientJs": "enhancement",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "description": "Code to render"
+      },
+      {
+        "name": "language",
+        "type": "string",
+        "required": false,
+        "default": "plaintext",
+        "description": "Grammar name (plaintext/json/javascript/typescript/css/html/markdown/bash)"
+      },
+      {
+        "name": "lineNumbers",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Show the line-number gutter"
+      },
+      {
+        "name": "wrap",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Soft-wrap long lines"
+      },
+      {
+        "name": "tabSize",
+        "type": "number",
+        "required": false,
+        "default": "2",
+        "description": "Spaces per tab stop"
+      },
+      {
+        "name": "ariaLabel",
+        "nameVisibility": "invisible",
+        "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "label",
+        "nameVisibility": "invisible",
+        "type": "string",
+        "required": false,
+        "description": "Accessible label for the code block"
+      },
+      {
+        "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "gutterRef",
+        "type": "Ref<HTMLDivElement>",
+        "required": false,
+        "description": "Ref to the line-number gutter's backdrop strip."
+      },
+      {
+        "name": "preRef",
+        "type": "Ref<HTMLPreElement>",
+        "required": false,
+        "description": "Ref to the scrollable `<pre>` (used by `CodeEditor` for scroll-sync)."
+      }
+    ],
+    "tokens": [
+      "--cascivo-editor-bg",
+      "--cascivo-editor-fg",
+      "--cascivo-editor-gutter-bg",
+      "--cascivo-editor-gutter-fg",
+      "--cascivo-editor-gutter-width",
+      "--cascivo-editor-gutter-gap",
+      "--cascivo-editor-border"
+    ],
+    "accessibility": {
+      "role": "group",
+      "wcag": "2.1-AA",
+      "keyboard": ["Scroll (no interactive controls)"]
+    },
+    "examples": [
+      {
+        "title": "Read-only snippet",
+        "code": "import { Highlight } from '@cascivo/editor'\nimport '@cascivo/editor/styles.css'\n\n<Highlight language=\"json\" value={'{ \"ok\": true }'} />"
+      }
+    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "tags": ["editor", "code", "syntax-highlighting", "display", "read-only"],
+    "intent": {
+      "whenToUse": [
+        "Displaying non-editable code or config with syntax colors — docs, snippets, examples",
+        "A lightweight highlighter that themes via the cascivo token system"
+      ],
+      "whenNotToUse": [
+        "The code must be editable — use CodeEditor",
+        "You need copy-to-clipboard chrome around a snippet — pair with a code-snippet surface"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "CodeEditor",
+          "relationship": "pairs-with",
+          "reason": "The editable surface sharing the same tokenizer"
+        }
+      ],
+      "a11yRationale": "Renders a read-only <pre><code>; the line-number gutter is aria-hidden and an optional label names the block.",
+      "flexibility": []
+    }
+  }
+}

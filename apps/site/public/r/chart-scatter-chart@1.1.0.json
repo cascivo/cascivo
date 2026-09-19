@@ -1,0 +1,273 @@
+{
+  "schemaVersion": 2,
+  "name": "chart/scatter-chart",
+  "type": "chart",
+  "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
+  "version": "1.1.0",
+  "files": [],
+  "dependencies": ["@cascivo/charts"],
+  "tags": ["chart", "scatter", "plot", "data-viz"],
+  "category": "chart",
+  "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
+  "meta": {
+    "name": "ScatterChart",
+    "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
+    "category": "chart",
+    "clientJs": "enhancement",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "series",
+        "description": "The data series to plot.",
+        "type": "ScatterChartSeries[]",
+        "required": true
+      },
+      {
+        "name": "title",
+        "description": "Title text for the component.",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "description",
+        "description": "Supporting description text.",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "r",
+        "type": "number | ((d: ScatterDatum) => number)",
+        "required": false,
+        "default": "4",
+        "description": "Point radius or accessor"
+      },
+      {
+        "name": "width",
+        "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "height",
+        "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
+        "type": "number",
+        "required": false,
+        "default": "300"
+      },
+      {
+        "name": "xTicks",
+        "description": "Approximate number of ticks on the x-axis.",
+        "type": "number",
+        "required": false,
+        "default": "5"
+      },
+      {
+        "name": "yTicks",
+        "description": "Approximate number of ticks on the y-axis.",
+        "type": "number",
+        "required": false,
+        "default": "5"
+      },
+      {
+        "name": "legend",
+        "description": "Whether to show the legend.",
+        "type": "boolean",
+        "required": false
+      },
+      {
+        "name": "tooltip",
+        "type": "boolean",
+        "required": false,
+        "description": "Enable hover/keyboard tooltip"
+      },
+      {
+        "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "plain",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+      },
+      {
+        "name": "annotations",
+        "type": "Annotation[]",
+        "required": false,
+        "description": "Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line)."
+      },
+      {
+        "name": "onSelect",
+        "type": "(point: ChartPoint) => void",
+        "required": false,
+        "description": "Fired when a point is clicked or activated (Enter/Space) — for drill-down."
+      },
+      {
+        "name": "glyph",
+        "type": "GlyphShape | ((d, seriesId) => GlyphShape)",
+        "required": false,
+        "description": "Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape."
+      },
+      {
+        "name": "renderer",
+        "type": "'svg' | 'canvas' | 'auto'",
+        "required": false,
+        "default": "svg",
+        "description": "Renderer — svg (default), canvas (force), or auto (canvas past ~2000 points). Canvas keeps the full a11y fallback table + keyboard layer."
+      },
+      {
+        "name": "visualMap",
+        "type": "VisualMapOptions",
+        "required": false,
+        "description": "Map each point’s y → CVD-safe colour and/or size via a keyboard-operable legend that filters the visible range."
+      },
+      {
+        "name": "toolbox",
+        "type": "boolean | ToolboxOptions",
+        "required": false,
+        "description": "Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter)."
+      },
+      {
+        "name": "format",
+        "type": "(value: number | string | Date) => string",
+        "required": false,
+        "description": "Format each X-axis tick label."
+      }
+    ],
+    "typeDefs": [
+      {
+        "name": "ScatterChartSeries",
+        "description": "Shape of the `series` prop.",
+        "fields": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "data",
+            "type": "readonly ScatterDatum[]",
+            "required": true
+          },
+          {
+            "name": "color",
+            "type": "string",
+            "required": false
+          }
+        ]
+      },
+      {
+        "name": "VisualMapOptions",
+        "description": "Shape of the `visualMap` prop.",
+        "fields": [
+          {
+            "name": "min",
+            "type": "number",
+            "required": true,
+            "description": "Domain minimum (value mapped to ramp t=0)."
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": true,
+            "description": "Domain maximum (value mapped to ramp t=1)."
+          },
+          {
+            "name": "mode",
+            "type": "VisualMode",
+            "required": false,
+            "description": "`continuous` ramp (default) or `piecewise` buckets."
+          },
+          {
+            "name": "channel",
+            "type": "VisualChannel",
+            "required": false,
+            "description": "Which visual channel(s) the value drives."
+          },
+          {
+            "name": "ramp",
+            "type": "RampKind",
+            "required": false,
+            "description": "Ramp family — CVD-safe `sequential` (default) or `diverging`."
+          },
+          {
+            "name": "pieces",
+            "type": "number",
+            "required": false,
+            "description": "Bucket count for `piecewise` (default 5)."
+          },
+          {
+            "name": "sizeRange",
+            "type": "[number, number]",
+            "required": false,
+            "description": "[min, max] mark radius in px for the `size` channel (default [3, 14])."
+          }
+        ]
+      }
+    ],
+    "tokens": [
+      "--cascivo-chart-1",
+      "--cascivo-chart-2",
+      "--cascivo-chart-3",
+      "--cascivo-chart-4",
+      "--cascivo-chart-5",
+      "--cascivo-chart-6",
+      "--cascivo-chart-7",
+      "--cascivo-chart-8"
+    ],
+    "accessibility": {
+      "role": "img",
+      "wcag": "2.1-AA",
+      "keyboard": [
+        "Tab (focus chart)",
+        "ArrowLeft/ArrowRight (navigate points)",
+        "Home/End (first/last point)",
+        "Escape (clear focus)"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic scatter chart",
+        "code": "import { ScatterChart } from '@cascivo/charts'\n\nconst series = [{ id: 'a', label: 'Group A', data: [{x:1,y:2},{x:3,y:4}] }]\n<ScatterChart series={series} title=\"Scatter\" />"
+      }
+    ],
+    "dependencies": ["@cascivo/charts"],
+    "tags": ["chart", "scatter", "plot", "data-viz"],
+    "intent": {
+      "whenToUse": [
+        "Revealing correlation or clustering between two numeric variables",
+        "Plotting many individual observations across a 2D space"
+      ],
+      "whenNotToUse": [
+        "Encoding a third magnitude dimension — use BubbleChart",
+        "Showing a trend over ordered time — use LineChart"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "BubbleChart",
+          "relationship": "alternative",
+          "reason": "Use when a third size dimension must be encoded"
+        },
+        {
+          "name": "LineChart",
+          "relationship": "alternative",
+          "reason": "Use when points form an ordered trend over time"
+        }
+      ],
+      "a11yRationale": "Renders with role=\"img\" and requires a title prop for screen reader labeling.",
+      "flexibility": []
+    }
+  }
+}

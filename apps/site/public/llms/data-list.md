@@ -32,12 +32,13 @@ import { DataList } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                                                    | Required | Default      | Description                                                                                                                                                                            |
-| ------------- | ------------------------------------------------------- | -------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `items`       | `{ id?: string; label: ReactNode; value: ReactNode }[]` | yes      | —            | The items to render.                                                                                                                                                                   |
-| `orientation` | `'horizontal' \| 'vertical'`                            | no       | `horizontal` | Where each value sits relative to its own label: 'horizontal' beside it, 'vertical' underneath. Items are stacked vertically in both modes — this does not change the list's own axis. |
-| `dividers`    | `boolean`                                               | no       | `false`      | When true, shows dividers between items.                                                                                                                                               |
-| `size`        | `'sm' \| 'md'`                                          | no       | `md`         | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                  |
+| Prop          | Type                         | Required | Default      | Description                                                                                                                                                                            |
+| ------------- | ---------------------------- | -------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`       | `DataListEntry[]`            | no       | —            | The label/value pairs to render. Optional: pass `<DataListItem label="…">value</DataListItem>` children instead when a value needs surrounding JSX.                                    |
+| `orientation` | `'horizontal' \| 'vertical'` | no       | `horizontal` | Where each value sits relative to its own label: 'horizontal' beside it, 'vertical' underneath. Items are stacked vertically in both modes — this does not change the list's own axis. |
+| `dividers`    | `boolean`                    | no       | `false`      | When true, shows dividers between items.                                                                                                                                               |
+| `size`        | `'sm' \| 'md'`               | no       | `md`         | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                  |
+| `children`    | `ReactNode`                  | no       | —            | `<DataListItem>` rows, as an alternative to `items`.                                                                                                                                   |
 
 ## Examples
 
@@ -99,4 +100,4 @@ key-value, description, metadata, details
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

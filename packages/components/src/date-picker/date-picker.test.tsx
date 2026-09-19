@@ -3,10 +3,10 @@ import { describe, it, expect, vi } from 'vitest'
 import { DatePicker } from './date-picker'
 
 describe('DatePicker', () => {
-  it('renders trigger with placeholder', () => {
+  it('renders a typeable field carrying the placeholder', () => {
     render(<DatePicker />)
-    expect(screen.getByRole('combobox')).toBeInTheDocument()
-    expect(screen.getByText('Select a date')).toBeInTheDocument()
+    // The field is a text input now, not a button, so the placeholder is an attribute.
+    expect(screen.getByRole('combobox')).toHaveAttribute('placeholder', 'Select a date')
   })
 
   it('renders with label', () => {
@@ -14,12 +14,12 @@ describe('DatePicker', () => {
     expect(screen.getByText('Appointment')).toBeInTheDocument()
   })
 
-  it('opens calendar on trigger click', () => {
+  it('opens calendar from the calendar button', () => {
     render(<DatePicker />)
-    const trigger = screen.getByRole('combobox')
-    expect(trigger).toHaveAttribute('aria-expanded', 'false')
-    fireEvent.click(trigger)
-    expect(trigger).toHaveAttribute('aria-expanded', 'true')
+    const field = screen.getByRole('combobox')
+    expect(field).toHaveAttribute('aria-expanded', 'false')
+    fireEvent.click(screen.getByRole('button', { name: 'Open calendar' }))
+    expect(field).toHaveAttribute('aria-expanded', 'true')
     expect(screen.getByRole('dialog')).toHaveAttribute('data-state', 'open')
   })
 
@@ -92,6 +92,8 @@ describe('DatePicker', () => {
 
   it('applies size data attribute', () => {
     const { container } = render(<DatePicker size="lg" />)
-    expect(container.firstChild).toHaveAttribute('data-size', 'lg')
+    // DismissableLayer wraps the root, and the composed Calendar carries its own data-size,
+    // so address the picker's own wrapper rather than the first child or a bare query.
+    expect(container.querySelector('[class*="wrapper"]')).toHaveAttribute('data-size', 'lg')
   })
 })

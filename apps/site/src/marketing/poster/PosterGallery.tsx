@@ -67,6 +67,17 @@ const TRAFFIC = [
   { x: 'Sun', y: 46 },
 ]
 
+/*
+ * The chart palette default (`--cascivo-chart-1`) is an orange — the only warm
+ * hue on a page of ink, cream and acid, and it landed right beside the acid. Ink
+ * tints carry the series instead and the acid marks the peak, so the difference
+ * is a lightness step rather than a hue step and stays CVD-safe. Both values are
+ * mixed from theme tokens, so the chart repaints with the rest of the page when
+ * the header switches theme. Red stays reserved for destructive actions.
+ */
+const INK_BAR = 'color-mix(in oklch, var(--cascivo-color-foreground) 72%, var(--cascivo-color-bg))'
+const PEAK = TRAFFIC.reduce((a, b) => (b.y > a.y ? b : a)).x
+
 const SPARK = [12, 19, 14, 22, 27, 21, 33, 29, 38, 44, 41, 52]
 
 export function PosterGallery() {
@@ -86,7 +97,7 @@ export function PosterGallery() {
     <section className="pg-section" id="gallery" aria-label="Component gallery">
       <div className="pg-pad pg-head">
         <h2 className="pg-display pg-display--section">Real components, live</h2>
-        <p className="pg-eyebrow">06 / gallery</p>
+        <p className="pg-eyebrow">08 / gallery</p>
       </div>
       <p className="pg-pad pg-body pg-gallery-lede">
         Everything below is a cascivo component under the active theme — zero radius, hard shadows,
@@ -162,16 +173,28 @@ export function PosterGallery() {
           </div>
         </div>
 
-        <div className="pg-pad pg-tile">
+        <div className="pg-pad pg-tile pg-tile-chart">
           <p className="pg-tile-label">chart/bar-chart · sparkline</p>
           <BarChart
             title={`Requests per day — this ${range.value}`}
-            series={[{ id: 'traffic', label: 'Requests', data: TRAFFIC }]}
+            series={[
+              {
+                id: 'traffic',
+                label: 'Requests',
+                color: (d) => (d.x === PEAK ? 'var(--cascivo-color-accent)' : INK_BAR),
+                data: TRAFFIC,
+              },
+            ]}
             x={(d) => d.x}
             y={(d) => d.y}
             height={140}
           />
-          <Sparkline data={SPARK} label="Requests trend, twelve points, rising" width={180} />
+          <Sparkline
+            data={SPARK}
+            label="Requests trend, twelve points, rising"
+            width={180}
+            color={INK_BAR}
+          />
         </div>
       </div>
     </section>

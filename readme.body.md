@@ -9,6 +9,7 @@ You own the code. Like shadcn/ui, components are copy-pasted into your project v
 - **{{count.components}} components, 7 categories** — inputs, display, overlay, navigation, layout, feedback, and {{count.charts}} charts, all from a single token system.
 - **Interactive behavior included, not DIY** — dropdowns, menus, context menus, comboboxes, command palettes (⌘K), multi-selects, and tabs ship with keyboard navigation (arrow keys, Home/End, typeahead), focus trapping, and outside-click dismissal already wired, via native `<dialog>`/Popover APIs and `@cascivo/core` primitives (`useRovingFocus`, `FocusScope`, `DismissableLayer`, `useTypeahead`). Nothing to hand-roll or pair with a separate headless library.
 - **Data viz out of the box** — `@cascivo/charts` ships {{count.charts}} chart types (line, area, bar, sparkline, KPI, heatmap, and more) on a shared scale/shape/decimation engine, token-scaled to match your theme. Pre-built dashboard blocks (`dashboard-charts`, `stats-cards`) and five full example apps (deploy/pulse/trade/pay/track) show them composed into real consoles.
+- **Email that matches your product** — `@cascivo/email` renders transactional mail from the same {{count.themes}} themes, resolved to literal sRGB because no email client supports a custom property. Table-based layout, inline styles, a derived plain-text part, and a conformance lint that reads the rendered document against a vendored Can I email matrix and fails the build on anything Outlook Windows cannot render.
 - **Modern CSS only** — `@layer` for predictable cascade, `@container` for slot-aware responsiveness, `:has()` for stateful styling. No Tailwind, no runtime style injection.
 - **Signal-driven interactivity** — fine-grained Preact Signals + a micro-FSM update precise DOM nodes with zero unnecessary React re-renders. RSC-compatible (`"use client"` preserved).
 - **Beautiful by default** — {{count.themes}} first-party themes (light, dark, warm, midnight, pastel, brutalist, corporate, terminal, cyberpunk, and more), applied via `data-theme` on any container, scoped to any subtree.
@@ -108,6 +109,7 @@ cascivo/
 │   ├── react/        # @cascivo/react   — prebuilt distribution of all components
 │   ├── charts/       # @cascivo/charts  — accessible, signal-driven charts
 │   ├── editor/       # @cascivo/editor  — lightweight CSS-native code editor
+│   ├── email/        # @cascivo/email   — transactional email: tables, inline styles, no JS
 │   ├── components/   # registry source — copy-paste component TSX + CSS + manifests
 │   ├── layouts/      # registry source — app shells and page layouts
 │   ├── registry/     # @cascivo/registry — registry schema, validation, shadcn interop
@@ -130,15 +132,25 @@ cascivo/
 
 ### Prerequisites
 
-| Tool                                 | Version                   |
-| ------------------------------------ | ------------------------- |
-| [Node.js](https://nodejs.org/)       | 22.12+                    |
-| [pnpm](https://pnpm.io/)             | 10+ (repo pins 11.8.0)    |
-| [vite+ (`vp`)](https://viteplus.dev) | bundled toolchain (alpha) |
+| Tool                                 | Version                                       |
+| ------------------------------------ | --------------------------------------------- |
+| [Node.js](https://nodejs.org/)       | 22.12+                                        |
+| [pnpm](https://pnpm.io/)             | 12.4.1 (pinned; install it first — see below) |
+| [vite+ (`vp`)](https://viteplus.dev) | bundled toolchain (alpha)                     |
+
+pnpm has to be installed **before** the first `pnpm install`. Normally the
+`packageManager` pin lets whatever pnpm you have provision the right version on its own,
+but pnpm 12.4.1 cannot be provisioned that way: the bootstrap runs
+`pnpm add pnpm@12.4.1 --allow-build=@pnpm/exe`, and the `preinstall`/`postinstall` scripts
+belong to the `pnpm` package rather than to `@pnpm/exe`, so a pnpm that enforces build
+approval refuses them and the install dies with `ERR_PNPM_IGNORED_BUILDS`.
 
 ### Setup
 
 ```sh
+corepack enable              # reads the packageManager pin, fetches the right binary
+# or: npm install -g pnpm@12.4.1
+
 git clone https://github.com/cascivo/cascivo.git
 cd cascivo
 pnpm install

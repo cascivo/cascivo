@@ -896,7 +896,10 @@
   font-weight: 900;
   font-size: 1.25rem;
   letter-spacing: -0.04em;
-  text-transform: uppercase;
+  /* Lowercase, like the nav lockup: the wordmark IS the package name, and
+     shipping it as `cascivo` in one place and `CASCIVO` in the other read as two
+     marks. The display face still carries it. */
+  text-transform: lowercase;
   background: var(--cascivo-color-accent);
   color: var(--cascivo-color-accent-content);
   padding-inline: 0.2em;

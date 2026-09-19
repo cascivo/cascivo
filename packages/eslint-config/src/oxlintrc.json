@@ -1,0 +1,30 @@
+{
+  // oxlint fragment for apps that use cascivo — the oxlint half of this package.
+  //
+  // `pnpm create vite --template react-ts` scaffolds oxlint with a `.oxlintrc.json`, not
+  // ESLint, so the documented remedy for the signals idiom ("add @cascivo/eslint-config and
+  // spread it into eslint.config.js") did not apply to the most common way to start a
+  // project in 2026 — the adopter had no eslint.config.js to spread into and worked the rule
+  // id out themselves (2026-08-31 report §13).
+  //
+  // Extend it from your own config:
+  //
+  //   {
+  //     "extends": ["./node_modules/@cascivo/eslint-config/src/oxlintrc.json"],
+  //     "categories": { "correctness": "error" }
+  //   }
+  //
+  // Or copy the one rule below — that is all this file is.
+  //
+  // ⚠ oxlint REJECTS a config that names a rule its build does not implement
+  // ("Rule 'immutability' not found in plugin 'react'"), so this fragment needs an oxlint
+  // recent enough to ship `react/immutability`. On an older oxlint the rule does not fire in
+  // the first place, so you need neither the fragment nor the rule.
+  "rules": {
+    // oxlint's port of `react-hooks/immutability`. It reports every `signal.value = next` —
+    // cascivo's mandatory state idiom — as "This value cannot be modified". See
+    // docs/USING-WITH-STRICT-ESLINT.md §1 for what turning it off costs; the reasoning is
+    // identical to the ESLint half of this package.
+    "react/immutability": "off"
+  }
+}

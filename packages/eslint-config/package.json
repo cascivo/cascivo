@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/eslint-config",
-  "version": "0.3.0",
+  "version": "0.4.1",
   "private": false,
   "description": "Flat ESLint config for apps using cascivo — reconciles the signal-based reactivity contract with eslint-plugin-react-hooks 7",
   "keywords": [
@@ -24,6 +24,7 @@
   "files": [
     "src/**/*.js",
     "src/**/*.d.ts",
+    "src/**/*.json",
     "!src/**/*.test.js"
   ],
   "type": "module",
@@ -32,7 +33,8 @@
     ".": {
       "types": "./src/index.d.ts",
       "default": "./src/index.js"
-    }
+    },
+    "./oxlintrc.json": "./src/oxlintrc.json"
   },
   "publishConfig": {
     "access": "public",

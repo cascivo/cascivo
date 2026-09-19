@@ -215,6 +215,18 @@ export function pinSpecifier(pkg: string, floors: Record<string, string> = {}): 
   return `${pkg}@latest`
 }
 
+/**
+ * The flag that makes each package manager write `1.2.3` rather than `^1.2.3`.
+ *
+ * Every cascivo doc tells adopters to pin exact versions, and no documented command did it:
+ * the CLI resolved `pkg@latest`, which the package manager still records with a caret, so an
+ * adopter ended up with carets *by following the instruction* (2026-08-31 report §26).
+ * yarn and bun spell the flag `--exact`; npm and pnpm spell it `--save-exact`.
+ */
+function exactFlag(pm: PackageManager): string {
+  return pm === 'yarn' || pm === 'bun' ? '--exact' : '--save-exact'
+}
+
 /** The install subcommand each package manager uses to add dependencies. */
 export function installCommand(
   pm: PackageManager,
@@ -228,7 +240,7 @@ export function installCommand(
       ? `${p}@${opts.pin}`
       : pinSpecifier(p, opts.floors ?? {}),
   )
-  return [pm, [verb, ...devFlag, ...specs]]
+  return [pm, [verb, ...devFlag, exactFlag(pm), ...specs]]
 }
 
 /** Human-readable install command a user can copy-paste, e.g. `pnpm add -D cascivo`. */

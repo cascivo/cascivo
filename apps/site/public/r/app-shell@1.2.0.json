@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 2,
+  "name": "app-shell",
+  "type": "component",
+  "description": "Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.",
+  "version": "1.2.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/app-shell/app-shell.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/app-shell/index.ts"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/app-shell/app-shell.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["shell", "layout", "sidebar", "navigation", "drawer", "responsive", "sticky"],
+  "category": "layout",
+  "meta": {
+    "name": "AppShell",
+    "description": "Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.",
+    "category": "layout",
+    "clientJs": "enhancement",
+    "states": ["open", "closed"],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "header",
+        "type": "ReactNode",
+        "required": true,
+        "description": "Top bar (typically a ShellHeader). If a React element, its onMenuClick/menuExpanded are bound to the nav toggle."
+      },
+      {
+        "name": "nav",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Side navigation (typically a SideNav). Fills full height and scrolls internally."
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": true,
+        "description": "Main content, rendered inside the single scroll container."
+      },
+      {
+        "name": "footer",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Optional footer pinned below the content area."
+      },
+      {
+        "name": "open",
+        "type": "boolean",
+        "required": false,
+        "description": "Controlled nav open/visible state. Omit for uncontrolled."
+      },
+      {
+        "name": "defaultOpen",
+        "type": "boolean",
+        "required": false,
+        "description": "Initial open state when uncontrolled. Defaults open on desktop, closed on small screens."
+      },
+      {
+        "name": "onOpenChange",
+        "type": "(open: boolean) => void",
+        "required": false,
+        "description": "Fired when the nav requests open/close (burger, Escape, scrim)."
+      },
+      {
+        "name": "padding",
+        "type": "SpaceStep | 'none'",
+        "required": false,
+        "default": "6",
+        "description": "Inset around the main content area, as a space-scale step. Defaults to 6 — `<main>` shipped unpadded for three releases and every adopter wrote the same wrapper div. Pass 'none' for a full-bleed layout that owns its own insets."
+      }
+    ],
+    "tokens": [
+      "--cascivo-shell-aside-inline-size",
+      "--cascivo-shell-panel-inline-size",
+      "--cascivo-motion-emphasis",
+      "--cascivo-z-raised",
+      "--cascivo-z-overlay",
+      "--cascivo-color-foreground",
+      "--cascivo-color-background"
+    ],
+    "accessibility": {
+      "role": "none",
+      "wcag": "2.2-AA",
+      "keyboard": ["Escape"]
+    },
+    "examples": [
+      {
+        "title": "Header + SideNav + content",
+        "code": "<AppShell\n  header={<ShellHeader brand={{ name: 'Acme' }} />}\n  nav={<SideNav items={items} />}\n>\n  <h1>Dashboard</h1>\n</AppShell>",
+        "description": "The burger in ShellHeader toggles the SideNav automatically."
+      },
+      {
+        "title": "Controlled open",
+        "code": "<AppShell header={header} nav={nav} open={open.value} onOpenChange={(v) => (open.value = v)}>\n  …\n</AppShell>"
+      }
+    ],
+    "dependencies": ["@cascivo/core"],
+    "styleHooks": ["data-cascivo-appshell-nav", "data-cascivo-appshell-main"],
+    "tags": ["shell", "layout", "sidebar", "navigation", "drawer", "responsive", "sticky"],
+    "intent": {
+      "whenToUse": [
+        "Building an application screen with a persistent header and side navigation",
+        "You want the header burger to toggle the side nav with an animated, accessible show/hide out of the box",
+        "You need one scroll container (the main area) with a fixed header and full-height nav"
+      ],
+      "whenNotToUse": [
+        "Marketing/document pages where the whole page should scroll — use a plain Header instead",
+        "A single, always-visible sidebar with no toggle — compose SideNav directly",
+        "You need a persisted collapsible sidebar, a top progress bar, or a right aside — that is the richer copy-paste `layout/app-shell` (different props: `sideNav`/`aside`/`persistKey`/`state`), not this drop-in."
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Animating the nav collapse with grid-template-columns: 1fr → 0fr on an auto-width sidebar",
+          "good": "AppShell animates an explicit inline-size (desktop) / transform (mobile drawer)",
+          "why": "fr units have no definite size to resolve against on a shrink-to-fit flex item, so the track never animates"
+        }
+      ],
+      "related": [
+        {
+          "name": "layout/app-shell",
+          "relationship": "alternative",
+          "reason": "A richer, copy-paste-only app shell with a persisted collapsible sidebar, a signal-driven top progress bar, an error strip, and a right aside. Same `AppShell` name, different prop surface (`sideNav`/`aside`/`persistKey`/`state`). Choose this npm drop-in for a simple header + toggleable nav; choose layout/app-shell when you need persistence/progress/aside."
+        },
+        {
+          "name": "ShellHeader",
+          "relationship": "pairs-with",
+          "reason": "Provides the top bar and burger AppShell binds to the nav"
+        },
+        {
+          "name": "SideNav",
+          "relationship": "pairs-with",
+          "reason": "The side navigation AppShell lays out full-height"
+        }
+      ],
+      "a11yRationale": "The hidden nav uses transform/inline-size + inert (never display:none alone), so it stays in the a11y tree and is keyboard-reachable when open while leaving the tab order when closed; Escape and a scrim close the mobile drawer and focus returns to the toggle.",
+      "flexibility": []
+    }
+  }
+}

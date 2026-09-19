@@ -91,14 +91,20 @@ export interface AreaChartSeries<Datum> {
   y?: (d: Datum) => number
 }
 
-export interface AreaChartProps<Datum = { x: number; y: number }> {
+export interface AreaChartProps<
+  Datum = { x: number; y: number },
+  XValue extends number | Date = number | Date,
+> {
   series: readonly AreaChartSeries<Datum>[]
   /**
    * X-value accessor. Return a `number` for a numeric axis, or a `Date` for a
    * time axis — when the values are Dates the chart uses a time scale and formats
    * ticks as dates (parity with `LineChart`). One x-domain per chart.
+   *
+   * Its return type is inferred and threaded into `format`, so an `x` that returns `Date`
+   * gives you `format: (value: Date) => string` with no `instanceof` guard to write.
    */
-  x: (d: Datum) => number | Date
+  x: (d: Datum) => XValue
   /**
    * Y-value accessor, applied to **every** series' data unless a series provides
    * its own `y`. There is one x-domain per chart, so `x` is chart-level only; to
@@ -149,6 +155,15 @@ export interface AreaChartProps<Datum = { x: number; y: number }> {
    * @see the component manifest
    */
   width?: number
+  /**
+   * Fixed plot-area height in px — the SVG only; the title, description and legend render
+   * outside it. ⚠ **Omit for a responsive chart**, exactly like `width`: height tracks the
+   * container via the same `ResizeObserver`, so in a `Card` that stretches to a taller
+   * sibling the plot fills the space left over (and falls back to 300px in an auto-height
+   * parent). A pinned `height={280}` is what leaves dead space at the bottom of the taller
+   * card in a `Grid` (2026-08-31 report §29).
+   * @see the component manifest
+   */
   height?: number
   /**
    * Approximate number of ticks on the x-axis.
@@ -219,22 +234,30 @@ export interface AreaChartProps<Datum = { x: number; y: number }> {
   /** Render a toolbox (PNG/SVG export, data-view toggle, restore). `true` enables all tools. */
   toolbox?: boolean | ToolboxOptions
   /**
-   * Format each X-axis tick label. Receives the datum's raw `x` value — a number, a string,
-   * or a `Date`, whichever the series carries.
+   * Format each X-axis tick label. Receives the datum's raw `x` value, typed as whatever
+   * your `x` accessor returns — a `Date` when the series is a time series, a `number`
+   * otherwise.
    *
    * Without it a numeric x renders raw: a `Date.now()`-scale value (the natural shape for a
    * time series) renders as `1,785,217,000,000`. Passing `Date` objects switches the axis to
    * a time scale, but that format is fixed, so every bucket narrower than a day collapses to
    * the same label. Threads through `Axis`'s own `format` (2026-07-28 report C16).
+   *
+   * The parameter used to be widened to `number | string | Date` regardless, so every
+   * consumer wrote the same `v instanceof Date ? v : new Date(v)` guard against a value the
+   * chart already knew the type of (2026-08-31 report §28).
    */
-  format?: (value: number | string | Date) => string
+  format?: (value: XValue) => string
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
 
-export function AreaChart<Datum = { x: number; y: number }>({
+export function AreaChart<
+  Datum = { x: number; y: number },
+  XValue extends number | Date = number | Date,
+>({
   series: rawSeries,
-  x,
+  x: xProp,
   y,
   title,
   description,
@@ -262,7 +285,14 @@ export function AreaChart<Datum = { x: number; y: number }>({
   decimate,
   toolbox,
   format: xFormat,
-}: AreaChartProps<Datum>) {
+}: AreaChartProps<Datum, XValue>) {
+  /*
+   * `x` is generic on the PROPS so `format` can infer its parameter type, but every
+   * internal consumer below (domain building, scale selection, the epoch warning) works on
+   * the open `number | Date` union — narrowing a `T extends number | Date` is not the same
+   * thing to the compiler. Widen once, here, and the generic stays a purely public concern.
+   */
+  const x: (d: Datum) => number | Date = xProp
   useSignals()
   const defsId = useId()
   const hidden = useSignal(new Set<string>())
@@ -684,7 +714,16 @@ export function AreaChart<Datum = { x: number; y: number }>({
                       length={innerW}
                       tickCount={xTicks}
                       transform={`translate(0,${innerH})`}
-                      {...(xFormat ? { format: xFormat } : {})}
+                      {...(xFormat
+                        ? {
+                            /* `Axis.format` is the untyped, chart-agnostic signature; every
+                               value it passes here comes from this chart's own `x` accessor,
+                               so it is an `XValue` by construction. The cast is the whole
+                               cost of letting the consumer write `(v: Date) => …` instead of
+                               re-narrowing a union the chart already resolved. */
+                            format: (v: number | string | Date) => xFormat(v as XValue),
+                          }
+                        : {})}
                     />
                     <Axis scale={yScale} orientation="y" length={innerH} tickCount={yTicks} />
                     {hasRight && (

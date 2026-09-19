@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 2,
+  "name": "layout/flex",
+  "type": "layout",
+  "description": "Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction=\"horizontal\"` for a row.",
+  "version": "1.1.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/flex.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/index.ts"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/flex.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["layout", "flex", "stack", "spacing"],
+  "category": "layout",
+  "meta": {
+    "name": "Flex",
+    "description": "Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction=\"horizontal\"` for a row.",
+    "category": "layout",
+    "clientJs": "none",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "direction",
+        "default": "vertical",
+        "type": "'vertical' | 'horizontal'",
+        "required": false,
+        "description": "Flex direction. ⚠ Defaults to `vertical`, unlike CSS `flex-direction` (and unlike Chakra/MUI/Radix `Flex`, which default to a row) — `<Flex justify=\"between\">` alone produces a centered vertical stack."
+      },
+      {
+        "name": "gap",
+        "default": "4",
+        "type": "1|2|3|4|5|6|8|10|12",
+        "required": false,
+        "description": "Spacing token step"
+      },
+      {
+        "name": "align",
+        "type": "'start'|'center'|'end'|'stretch'",
+        "required": false,
+        "description": "align-items"
+      },
+      {
+        "name": "justify",
+        "type": "'start'|'center'|'end'|'between'",
+        "required": false,
+        "description": "justify-content"
+      },
+      {
+        "name": "wrap",
+        "default": "false",
+        "type": "boolean",
+        "required": false,
+        "description": "Allow wrapping"
+      },
+      {
+        "name": "size",
+        "default": "auto",
+        "type": "'auto' | 'fixed' | 'grow' | 'shrink'",
+        "required": false,
+        "description": "FlexItem: main-axis sizing. 'fixed' (flex: 0 0 auto) is what a fixed-width child like Sparkline needs; 'grow' takes the leftover width without shrinking; 'shrink' gives way but never grows."
+      },
+      {
+        "name": "basis",
+        "type": "string",
+        "required": false,
+        "description": "FlexItem: flex-basis — the child's size before free space is distributed. Any CSS length."
+      },
+      {
+        "name": "truncate",
+        "default": "false",
+        "type": "boolean",
+        "required": false,
+        "description": "FlexItem: allow the child to shrink below its content width (releases the flex item's `min-width: auto` floor and ellipsizes). Without it a long unbreakable string pushes its siblings out of the row."
+      }
+    ],
+    "tokens": ["--cascivo-space-*"],
+    "accessibility": {
+      "role": "generic",
+      "wcag": "2.1-AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Vertical",
+        "code": "<Flex gap={4}><div>A</div><div>B</div></Flex>",
+        "description": "Default vertical stack"
+      },
+      {
+        "title": "Horizontal",
+        "code": "<Flex direction=\"horizontal\" gap={2}><div>A</div><div>B</div></Flex>",
+        "description": "Row layout"
+      },
+      {
+        "title": "Toolbar: one field absorbs the row, the rest keep their width",
+        "code": "<Flex direction=\"horizontal\" gap={2}>\n  <FlexItem size=\"grow\" basis=\"0\"><Search ariaLabel=\"Filter deployments\" /></FlexItem>\n  <FlexItem size=\"fixed\"><Select options={states} ariaLabel=\"State\" /></FlexItem>\n</Flex>",
+        "description": "Without FlexItem the Search takes the whole row and pushes the Select onto the next line"
+      },
+      {
+        "title": "Protecting a fixed-width child",
+        "code": "<Flex direction=\"horizontal\" gap={3} align=\"center\">\n  <FlexItem truncate>{deployment.url}</FlexItem>\n  <FlexItem size=\"fixed\"><Sparkline data={points} label=\"Requests\" /></FlexItem>\n</Flex>",
+        "description": "Sparkline is fixed-width and will not shrink; `size=\"fixed\"` keeps it out of flex sizing, `truncate` lets the URL beside it ellipsize instead of pushing it out"
+      }
+    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["layout", "flex", "stack", "spacing"],
+    "intent": {
+      "whenToUse": [
+        "Arranging children vertically or horizontally with a consistent gap",
+        "The default primitive for spacing a small set of elements in one direction"
+      ],
+      "whenNotToUse": [
+        "Two-dimensional layouts — use Grid",
+        "Responsive auto-wrapping card collections — use AutoGrid",
+        "A visual card-pile / overlapping avatars — that is `Stack` in @cascivo/react (an `offset` prop), a different component."
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Expecting import { Stack } from '@cascivo/react' to gap items",
+          "good": "Use Flex for gap-based layout (import { Flex } from \"@cascivo/react\", or `npx cascivo add flex`)",
+          "why": "The published `Stack` export is a card-pile that overlaps children by an offset — it does not do gap-based layout. Flex is the flex container."
+        }
+      ],
+      "related": [
+        {
+          "name": "Stack",
+          "relationship": "alternative",
+          "reason": "The `@cascivo/react` `Stack` overlaps children with an offset (card-pile) — a different component for visual overlap, not gap-based layout."
+        },
+        {
+          "name": "Grid",
+          "relationship": "alternative",
+          "reason": "Use for two-dimensional row-and-column layouts"
+        },
+        {
+          "name": "Columns",
+          "relationship": "alternative",
+          "reason": "Use for equal-width multi-column content"
+        }
+      ],
+      "a11yRationale": "Pure layout primitive with no semantic role; does not affect the accessibility tree.",
+      "flexibility": []
+    }
+  }
+}

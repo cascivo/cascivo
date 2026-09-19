@@ -26,6 +26,9 @@ const PosterProof = lazy(() =>
 const PosterComparison = lazy(() =>
   import('./poster/PosterComparison').then((m) => ({ default: m.PosterComparison })),
 )
+const PosterColocation = lazy(() =>
+  import('./poster/PosterColocation').then((m) => ({ default: m.PosterColocation })),
+)
 // The gallery mounts two dozen live components and a chart; the themes section
 // pulls in the nine deferred theme sheets. Both are far below the fold.
 const PosterGallery = lazy(() =>
@@ -45,6 +48,12 @@ const PosterTemplates = lazy(() =>
 )
 const PosterShowcase = lazy(() =>
   import('./poster/PosterShowcase').then((m) => ({ default: m.PosterShowcase })),
+)
+// The email section carries ~240 KB of pre-rendered sample HTML (8 KB gzipped — the 36
+// samples are near-identical, so it compresses hard). Lazy, like every section below the
+// fold, so it never lands in the home entry.
+const PosterEmail = lazy(() =>
+  import('./poster/PosterEmail').then((m) => ({ default: m.PosterEmail })),
 )
 const PosterCta = lazy(() => import('./poster/PosterCta').then((m) => ({ default: m.PosterCta })))
 const Footer = lazy(() => import('./sections/Footer').then((m) => ({ default: m.Footer })))
@@ -203,6 +212,9 @@ function HomePage() {
           <Suspense fallback={<SectionFallback height={560} />}>
             <PosterComparison />
           </Suspense>
+          <Suspense fallback={<SectionFallback height={420} />}>
+            <PosterColocation />
+          </Suspense>
           <WhenNearViewport height={640}>
             <Suspense fallback={<SectionFallback height={640} />}>
               <PosterGallery />
@@ -224,6 +236,9 @@ function HomePage() {
           </Suspense>
           <Suspense fallback={<SectionFallback height={520} />}>
             <PosterShowcase />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={640} />}>
+            <PosterEmail />
           </Suspense>
           <Suspense fallback={<SectionFallback height={320} />}>
             <PosterCta />

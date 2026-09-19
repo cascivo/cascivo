@@ -9,8 +9,8 @@
     "packages/editor/src/**/*.css (per-component author hooks)"
   ],
   "resolutionTheme": "light",
-  "generatedAt": "2026-08-29",
-  "count": 338,
+  "generatedAt": "2026-09-16",
+  "count": 353,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -1624,6 +1624,15 @@
       "canonical": true
     },
     {
+      "name": "--cascivo-chart-bar-radius",
+      "value": "2px",
+      "layer": "semantic",
+      "group": "chart",
+      "resolvedDefault": "2px",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
       "name": "--cascivo-color-accent-text",
       "value": "var(--cascivo-color-accent)",
       "layer": "semantic",
@@ -2587,11 +2596,92 @@
       "canonical": true
     },
     {
+      "name": "--cascivo-button-destructive-bg",
+      "value": "var(--cascivo-color-destructive)",
+      "layer": "component",
+      "group": "button",
+      "resolvedDefault": "var(--cascivo-color-destructive)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-button-destructive-bg-hover",
+      "value": "var(--cascivo-color-destructive-hover)",
+      "layer": "component",
+      "group": "button",
+      "resolvedDefault": "var(--cascivo-color-destructive-hover)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-button-ghost-bg",
+      "value": "transparent",
+      "layer": "component",
+      "group": "button",
+      "resolvedDefault": "transparent",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-button-ghost-bg-hover",
+      "value": "var(--cascivo-color-bg-subtle)",
+      "layer": "component",
+      "group": "button",
+      "resolvedDefault": "var(--cascivo-color-bg-subtle)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-button-primary-bg",
+      "value": "var(--cascivo-color-primary)",
+      "layer": "component",
+      "group": "button",
+      "resolvedDefault": "var(--cascivo-color-primary)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-button-primary-bg-active",
+      "value": "var(--cascivo-color-primary-active)",
+      "layer": "component",
+      "group": "button",
+      "resolvedDefault": "var(--cascivo-color-primary-active)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-button-primary-bg-hover",
+      "value": "var(--cascivo-color-primary-hover)",
+      "layer": "component",
+      "group": "button",
+      "resolvedDefault": "var(--cascivo-color-primary-hover)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
       "name": "--cascivo-button-radius",
       "value": "var(--cascivo-radius-control)",
       "layer": "component",
       "group": "button",
       "resolvedDefault": "var(--cascivo-radius-control)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-button-secondary-bg",
+      "value": "var(--cascivo-color-secondary)",
+      "layer": "component",
+      "group": "button",
+      "resolvedDefault": "var(--cascivo-color-secondary)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-button-secondary-bg-hover",
+      "value": "var(--cascivo-color-secondary-hover)",
+      "layer": "component",
+      "group": "button",
+      "resolvedDefault": "var(--cascivo-color-secondary-hover)",
       "resolvesPerTheme": false,
       "canonical": true
     },
@@ -2686,20 +2776,20 @@
       "canonical": true
     },
     {
+      "name": "--cascivo-color-picker-alpha-to",
+      "value": "#000",
+      "layer": "component",
+      "group": "color",
+      "resolvedDefault": "#000",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
       "name": "--cascivo-color-picker-area-size",
       "value": "9rem",
       "layer": "component",
       "group": "color",
       "resolvedDefault": "9rem",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-color-picker-solid",
-      "value": "#000",
-      "layer": "component",
-      "group": "color",
-      "resolvedDefault": "#000",
       "resolvesPerTheme": false,
       "canonical": true
     },
@@ -2803,11 +2893,47 @@
       "canonical": true
     },
     {
-      "name": "--cascivo-editor-gutter-active",
-      "value": "var(--cascivo-editor-current-line)",
+      "name": "--cascivo-editor-caret-row",
+      "value": "1 / 2",
       "layer": "component",
       "group": "editor",
-      "resolvedDefault": "var(--cascivo-editor-current-line)",
+      "resolvedDefault": "1 / 2",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-gutter-active",
+      "value": "transparent",
+      "layer": "component",
+      "group": "editor",
+      "resolvedDefault": "transparent",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-gutter-digits",
+      "value": "2",
+      "layer": "component",
+      "group": "editor",
+      "resolvedDefault": "2",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-gutter-gap",
+      "value": "var(--cascivo-space-3)",
+      "layer": "component",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-space-3)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-gutter-width",
+      "value": "calc(\n      var(--cascivo-editor-gutter-digits, 2) * 1ch + var(--cascivo-space-3) + var(--cascivo-space-2)\n    )",
+      "layer": "component",
+      "group": "editor",
+      "resolvedDefault": "calc(\n      var(--cascivo-editor-gutter-digits, 2) * 1ch + var(--cascivo-space-3) + var(--cascivo-space-2)\n    )",
       "resolvesPerTheme": false,
       "canonical": true
     },
@@ -3024,6 +3150,15 @@
       "layer": "component",
       "group": "stack",
       "resolvedDefault": "4px",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-target-min",
+      "value": "1.5rem",
+      "layer": "component",
+      "group": "target",
+      "resolvedDefault": "1.5rem",
       "resolvesPerTheme": false,
       "canonical": true
     },

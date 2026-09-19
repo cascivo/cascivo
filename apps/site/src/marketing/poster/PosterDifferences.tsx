@@ -47,7 +47,7 @@ export function PosterDifferences() {
     <section className="pg-section" id="why" aria-label="Why cascivo">
       <div className="pg-pad pg-head">
         <h2 className="pg-display pg-display--section">Five differences</h2>
-        <p className="pg-eyebrow">02 / why cascivo</p>
+        <p className="pg-eyebrow">03 / why cascivo</p>
       </div>
       <div className="pg-tiles pg-tiles--5">
         {DIFFERENCES.map((d, i) => (

@@ -33,8 +33,7 @@
  * is one stylesheet imported by every entry, not per-component side-effect imports.
  */
 
-/** Matches a directive prologue line (`'use client';`) — these must stay at the top. */
-const DIRECTIVE = /^\s*(['"])use [\w-]+\1;?\s*$/
+import { insertAfterDirectives } from '../lib/directives.ts'
 
 interface Chunk {
   type: string
@@ -59,11 +58,7 @@ export function cssImportEdge(cssFileName: string) {
 
         if (!chunk.isEntry) continue
 
-        const lines = chunk.code.split('\n')
-        let i = 0
-        while (i < lines.length && (lines[i]!.trim() === '' || DIRECTIVE.test(lines[i]!))) i++
-        lines.splice(i, 0, `import './${cssFileName}';`)
-        chunk.code = lines.join('\n')
+        chunk.code = insertAfterDirectives(chunk.code, `import './${cssFileName}';`)
       }
     },
   }

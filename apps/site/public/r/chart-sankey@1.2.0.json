@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 2,
+  "name": "chart/sankey",
+  "type": "chart",
+  "description": "Flow diagram — ranked nodes connected by throughput-sized link ribbons.",
+  "version": "1.2.0",
+  "files": [],
+  "dependencies": ["@cascivo/charts"],
+  "tags": ["chart", "sankey", "flow", "network", "data-viz"],
+  "category": "chart",
+  "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
+  "meta": {
+    "name": "Sankey",
+    "description": "Flow diagram — ranked nodes connected by throughput-sized link ribbons.",
+    "category": "chart",
+    "clientJs": "enhancement",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "nodes",
+        "type": "SankeyNode[]",
+        "required": true,
+        "description": "Nodes: { id, label, color? }."
+      },
+      {
+        "name": "links",
+        "type": "SankeyLink[]",
+        "required": true,
+        "description": "Links: { source, target, value }."
+      },
+      {
+        "name": "title",
+        "description": "Title text for the component.",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "description",
+        "description": "Supporting description text.",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "width",
+        "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "height",
+        "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
+        "type": "number",
+        "required": false,
+        "default": "320"
+      },
+      {
+        "name": "tooltip",
+        "description": "Whether to show tooltips on hover.",
+        "type": "boolean",
+        "required": false
+      },
+      {
+        "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "plain",
+        "description": "When true, renders a minimal variant without chart chrome.",
+        "type": "boolean",
+        "required": false,
+        "default": "false"
+      }
+    ],
+    "typeDefs": [
+      {
+        "name": "SankeyLink",
+        "description": "Shape of the `links` prop.",
+        "fields": [
+          {
+            "name": "source",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "target",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "SankeyNode",
+        "description": "Shape of the `nodes` prop.",
+        "fields": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "color",
+            "type": "string",
+            "required": false
+          }
+        ]
+      }
+    ],
+    "tokens": [
+      "--cascivo-chart-1",
+      "--cascivo-chart-2",
+      "--cascivo-chart-3",
+      "--cascivo-chart-4",
+      "--cascivo-chart-5",
+      "--cascivo-chart-6",
+      "--cascivo-chart-7",
+      "--cascivo-chart-8"
+    ],
+    "accessibility": {
+      "role": "img",
+      "wcag": "2.1-AA",
+      "keyboard": [
+        "Tab (focus chart)",
+        "ArrowLeft/ArrowRight (navigate nodes)",
+        "Escape (clear focus)"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Sankey flow",
+        "code": "import { Sankey } from '@cascivo/charts'\n\n<Sankey\n  title=\"Traffic flow\"\n  nodes={[{ id: 'a', label: 'Search' }, { id: 'b', label: 'Home' }, { id: 'c', label: 'Signup' }]}\n  links={[{ source: 'a', target: 'b', value: 30 }, { source: 'b', target: 'c', value: 12 }]}\n/>"
+      }
+    ],
+    "dependencies": ["@cascivo/charts"],
+    "tags": ["chart", "sankey", "flow", "network", "data-viz"],
+    "intent": {
+      "whenToUse": [
+        "Showing flow/throughput between stages or categories",
+        "Visualizing where volume splits and merges"
+      ],
+      "whenNotToUse": [
+        "Strict ordered stages with one path — use Funnel",
+        "Arbitrary node/edge graphs — use @cascivo/flow"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "Funnel",
+          "relationship": "alternative",
+          "reason": "Use for a single decreasing path"
+        }
+      ],
+      "a11yRationale": "Renders role=\"img\" with a title and a fallback from/to/value table.",
+      "flexibility": []
+    }
+  }
+}

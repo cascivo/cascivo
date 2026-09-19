@@ -43,7 +43,7 @@ export function PosterAiLayer() {
   return (
     <section className="pg-section pg-cols" id="ai" aria-label="The AI and primitive layers">
       <div className="pg-pad pg-invert">
-        <p className="pg-eyebrow pg-eyebrow--quiet">08 / ai layer</p>
+        <p className="pg-eyebrow pg-eyebrow--quiet">10 / ai layer</p>
         <h2 className="pg-display pg-display--section pg-ai-head">
           Your agent
           <br />
@@ -74,7 +74,7 @@ export function PosterAiLayer() {
       </div>
 
       <div className="pg-pad">
-        <p className="pg-eyebrow">09 / primitives</p>
+        <p className="pg-eyebrow">11 / primitives</p>
         <h2 className="pg-display pg-display--section pg-ai-head">
           State is a
           <br />

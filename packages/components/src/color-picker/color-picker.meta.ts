@@ -8,7 +8,7 @@ export const meta: ComponentMeta = {
   // A color is produced only by dragging the saturation area; with JS off there is no value
   // to submit.
   clientJs: 'required',
-  states: [],
+  states: ['default', 'disabled'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],
   props: [
@@ -39,6 +39,20 @@ export const meta: ComponentMeta = {
       type: 'boolean',
       required: false,
       default: 'true',
+    },
+    {
+      name: 'format',
+      description:
+        'Notation for the emitted value. Alpha is included whenever alpha is on, so the emitted string has a stable width.',
+      type: "'hex' | 'rgb' | 'hsl'",
+      required: false,
+      default: "'hex'",
+    },
+    {
+      name: 'name',
+      description: 'Submitted with a surrounding form — a hidden input carrying the current value.',
+      type: 'string',
+      required: false,
     },
     {
       name: 'label',
@@ -107,10 +121,22 @@ export const meta: ComponentMeta = {
     '--cascivo-focus-ring',
   ],
   accessibility: {
-    role: 'slider',
+    role: 'group',
     wcag: '2.2-AA',
-    keyboard: ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'],
     forcedColors: true,
+    reducedMotion: true,
+    keyboard: [
+      'ArrowLeft',
+      'ArrowRight',
+      'ArrowUp',
+      'ArrowDown',
+      'Home',
+      'End',
+      'PageUp',
+      'PageDown',
+      'Enter',
+      'Escape',
+    ],
   },
   examples: [
     { title: 'Basic', code: '<ColorPicker defaultValue="#3b82f6" onValueChange={setColor} />' },
@@ -151,8 +177,13 @@ export const meta: ComponentMeta = {
       },
     ],
     a11yRationale:
-      'The saturation/lightness area is a focusable role="slider" with arrow-key nudging and an aria-valuetext reporting the current hex; hue and alpha are native range inputs that inherit platform slider semantics and announcements.',
+      'The picking area is a role="group" holding one native range input per axis — saturation on x, brightness on y — rather than a single role="slider", which cannot describe two dimensions and in the previous build carried no aria-valuenow at all. Real inputs also mean arrow stepping, Home/End and PageUp/PageDown are the platform\'s rather than a hand-rolled key switch, and each axis announces its own percentage. Hue and alpha are native range inputs for the same reason. The preset swatches are a labelled role="group" of toggle buttons with roving focus, so the arrows move focus between swatches and Enter or Space selects — the previous build labelled that group "Saturation and lightness" and made the arrows change the value instead. The hex field commits on blur, Enter or a valid paste and rejects anything unparseable, so a half-typed value never reaches onValueChange. A polite live region reports the current colour, mounted before the first change so that change is announced too. Selection and focus each carry a non-colour channel under forced-colors, and every control reaches the coarse-pointer target minimum.',
     flexibility: [
+      {
+        area: 'output format',
+        level: 'flexible',
+        note: 'format switches between hex, rgb() and hsl(); alpha is included whenever the alpha prop is on',
+      },
       {
         area: 'color model',
         level: 'flexible',

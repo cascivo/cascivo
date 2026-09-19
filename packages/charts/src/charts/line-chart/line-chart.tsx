@@ -54,9 +54,16 @@ export interface LineChartSeries<Datum> {
   y?: (d: Datum) => number
 }
 
-export interface LineChartProps<Datum = { x: number; y: number }> {
+export interface LineChartProps<
+  Datum = { x: number; y: number },
+  XValue extends number | Date = number | Date,
+> {
   series: readonly LineChartSeries<Datum>[]
-  x: (d: Datum) => number | Date
+  /**
+   * X-value accessor. Its return type is inferred and threaded into `format`, so an `x` that
+   * returns `Date` gives you `format: (value: Date) => string` with no `instanceof` guard.
+   */
+  x: (d: Datum) => XValue
   /**
    * Y-value accessor, applied to **every** series' data unless a series provides
    * its own `y`. There is one x-domain per chart, so `x` is chart-level only; to
@@ -126,7 +133,7 @@ export interface LineChartProps<Datum = { x: number; y: number }> {
    * />
    * ```
    */
-  format?: (value: number | string | Date) => string
+  format?: (value: XValue) => string
   legend?: boolean
   tooltip?: boolean
   formatTooltip?: (datum: Datum, series: LineChartSeries<Datum>) => string
@@ -204,9 +211,12 @@ function yDomain(ys: readonly number[]): [number, number] {
   return [Math.min(0, ...ys), Math.max(...ys)]
 }
 
-export function LineChart<Datum = { x: number; y: number }>({
+export function LineChart<
+  Datum = { x: number; y: number },
+  XValue extends number | Date = number | Date,
+>({
   series: rawSeries,
-  x,
+  x: xProp,
   y,
   title,
   description,
@@ -236,7 +246,14 @@ export function LineChart<Datum = { x: number; y: number }>({
   transition,
   onBeforeDraw,
   onAfterDraw,
-}: LineChartProps<Datum>) {
+}: LineChartProps<Datum, XValue>) {
+  /*
+   * `x` is generic on the PROPS so `format` can infer its parameter type, but every
+   * internal consumer below (domain building, scale selection, the epoch warning) works on
+   * the open `number | Date` union — narrowing a `T extends number | Date` is not the same
+   * thing to the compiler. Widen once, here, and the generic stays a purely public concern.
+   */
+  const x: (d: Datum) => number | Date = xProp
   useSignals()
   const hidden = useSignal(new Set<string>())
   const resolvedLabels = plain ? null : resolveLabels(labels)
@@ -610,7 +627,16 @@ export function LineChart<Datum = { x: number; y: number }>({
                       length={innerW}
                       tickCount={xTicks}
                       transform={`translate(0,${innerH})`}
-                      {...(xFormat ? { format: xFormat } : {})}
+                      {...(xFormat
+                        ? {
+                            /* `Axis.format` is the untyped, chart-agnostic signature; every
+                               value it passes here comes from this chart's own `x` accessor,
+                               so it is an `XValue` by construction. The cast is the whole
+                               cost of letting the consumer write `(v: Date) => …` instead of
+                               re-narrowing a union the chart already resolved. */
+                            format: (v: number | string | Date) => xFormat(v as XValue),
+                          }
+                        : {})}
                     />
                     <Axis scale={yScale} orientation="y" length={innerH} tickCount={yTicks} />
                     {hasRight && (

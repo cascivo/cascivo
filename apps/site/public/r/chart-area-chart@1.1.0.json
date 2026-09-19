@@ -1,0 +1,312 @@
+{
+  "schemaVersion": 2,
+  "name": "chart/area-chart",
+  "type": "chart",
+  "description": "Area chart with optional stacking, multi-series support, and hover tooltip.",
+  "version": "1.1.0",
+  "files": [],
+  "dependencies": ["@cascivo/charts"],
+  "tags": ["chart", "area", "data-viz"],
+  "category": "chart",
+  "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
+  "meta": {
+    "name": "AreaChart",
+    "description": "Area chart with optional stacking, multi-series support, and hover tooltip.",
+    "category": "chart",
+    "clientJs": "enhancement",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "series",
+        "type": "AreaChartSeries<Datum>[]",
+        "required": true,
+        "description": "Array of data series"
+      },
+      {
+        "name": "x",
+        "type": "(d: Datum) => number | Date",
+        "required": true,
+        "description": "X-value accessor. Return a number for a numeric axis or a Date for a time axis (ticks format as dates, parity with LineChart). This is a continuous scale — unlike BarChart, whose `x` returns a category `string` (band scale). For discrete categories, use BarChart."
+      },
+      {
+        "name": "y",
+        "type": "(d: Datum) => number",
+        "required": true,
+        "description": "Y-value accessor, applied to every series unless a series sets its own `y`. One x-domain per chart, so `x` is chart-level only; give each series a `y` to plot different fields from one shared data row."
+      },
+      {
+        "name": "title",
+        "description": "Title text for the component.",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "description",
+        "description": "Supporting description text.",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "stacked",
+        "type": "boolean",
+        "required": false,
+        "description": "Stack series areas"
+      },
+      {
+        "name": "curve",
+        "type": "'linear' | 'monotone' | 'step' | 'stepBefore' | 'stepAfter' | 'natural' | 'basis' | 'cardinal' | 'catmullRom'",
+        "required": false,
+        "default": "monotone",
+        "description": "Line/area interpolation curve."
+      },
+      {
+        "name": "fill",
+        "type": "'solid' | 'gradient' | 'pattern'",
+        "required": false,
+        "default": "gradient for one non-stacked series, solid otherwise",
+        "description": "Area fill style — solid, a top→bottom gradient, or a pattern. A single non-stacked series defaults to `gradient` (a lone solid area reads as a heavy block); stacked and overlapping series default to `solid`."
+      },
+      {
+        "name": "patternKind",
+        "type": "'dots' | 'lines' | 'cross'",
+        "required": false,
+        "description": "Pattern motif when fill=\"pattern\"."
+      },
+      {
+        "name": "width",
+        "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "height",
+        "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
+        "type": "number",
+        "required": false,
+        "default": "300"
+      },
+      {
+        "name": "xTicks",
+        "description": "Approximate number of ticks on the x-axis.",
+        "type": "number",
+        "required": false,
+        "default": "5"
+      },
+      {
+        "name": "yTicks",
+        "description": "Approximate number of ticks on the y-axis.",
+        "type": "number",
+        "required": false,
+        "default": "5"
+      },
+      {
+        "name": "legend",
+        "description": "Whether to show the legend.",
+        "type": "boolean",
+        "required": false
+      },
+      {
+        "name": "tooltip",
+        "type": "boolean",
+        "required": false,
+        "description": "Enable hover/keyboard tooltip"
+      },
+      {
+        "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "plain",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+      },
+      {
+        "name": "annotations",
+        "type": "Annotation[]",
+        "required": false,
+        "description": "Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line)."
+      },
+      {
+        "name": "labels",
+        "type": "boolean | { format?: (v: number) => string; position?: string }",
+        "required": false,
+        "description": "Print each value as a label on the mark (collision-aware, decorative/aria-hidden)."
+      },
+      {
+        "name": "onSelect",
+        "type": "(point: ChartPoint) => void",
+        "required": false,
+        "description": "Fired when a point is clicked or activated (Enter/Space) — for drill-down."
+      },
+      {
+        "name": "brush",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Show a keyboard-operable Brush below the plot to subset the series to a window."
+      },
+      {
+        "name": "dataZoom",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Show a DataZoom slider below the plot — a Brush whose body also pans the window."
+      },
+      {
+        "name": "zoom",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Enable in-plot wheel/drag/keyboard zoom-pan (+/-/0) over the series index window, with a reset control and re-ticked axes."
+      },
+      {
+        "name": "syncId",
+        "type": "string",
+        "required": false,
+        "description": "Connect this chart to others sharing the same id — they mirror the zoom window and hovered x."
+      },
+      {
+        "name": "tooltipMode",
+        "type": "'item' | 'axis'",
+        "required": false,
+        "default": "item",
+        "description": "Tooltip trigger — item (nearest point) or axis (a crosshair + a shared tooltip listing every series at the hovered x)."
+      },
+      {
+        "name": "decimate",
+        "type": "boolean | { method?: 'lttb' | 'minmax'; threshold?: number }",
+        "required": false,
+        "description": "Downsample dense non-stacked series before drawing (LTTB or min-max). Visual only — the fallback table keeps the full data."
+      },
+      {
+        "name": "toolbox",
+        "type": "boolean | ToolboxOptions",
+        "required": false,
+        "description": "Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset zoom)."
+      },
+      {
+        "name": "format",
+        "type": "(value: number | string | Date) => string",
+        "required": false,
+        "description": "Format each X-axis tick label."
+      },
+      {
+        "name": "secondAxis",
+        "type": "{ label?: string; format?: (value: number) => string }",
+        "required": false,
+        "description": "Add a right-hand y-axis for series with `axis: 'right'` (non-stacked only)."
+      }
+    ],
+    "typeDefs": [
+      {
+        "name": "AreaChartSeries",
+        "description": "One series. Pass via the `series` prop; set `type: 'line'` to draw it unfilled.",
+        "fields": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "data",
+            "type": "readonly Datum[]",
+            "required": true
+          },
+          {
+            "name": "color",
+            "type": "string",
+            "required": false,
+            "description": "Series colour."
+          },
+          {
+            "name": "axis",
+            "type": "'left' | 'right'",
+            "required": false,
+            "description": "Which y-axis this series is measured against (ignored when `stacked`)."
+          },
+          {
+            "name": "y",
+            "type": "(d: Datum) => number",
+            "required": false,
+            "description": "Per-series Y accessor."
+          }
+        ]
+      }
+    ],
+    "tokens": [
+      "--cascivo-chart-1",
+      "--cascivo-chart-2",
+      "--cascivo-chart-3",
+      "--cascivo-chart-4",
+      "--cascivo-chart-5",
+      "--cascivo-chart-6",
+      "--cascivo-chart-7",
+      "--cascivo-chart-8"
+    ],
+    "accessibility": {
+      "role": "img",
+      "wcag": "2.1-AA",
+      "keyboard": [
+        "Tab (focus chart)",
+        "ArrowLeft/ArrowRight (navigate points)",
+        "Home/End (first/last point)",
+        "Escape (clear focus)"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic area chart",
+        "code": "import { AreaChart } from '@cascivo/charts'\n\nconst series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20}] }]\n<AreaChart series={series} x={d => d.x} y={d => d.y} title=\"Revenue\" />"
+      },
+      {
+        "title": "Multiple fields from one row (per-series y)",
+        "description": "The chart-level x/y apply to every series. To plot two fields from the same rows, give each series its own y — no need to reshape the data into separate {x,y} arrays.",
+        "code": "import { AreaChart } from '@cascivo/charts'\n\nconst rows = [{ t: 0, requests: 100, errors: 5 }, { t: 1, requests: 120, errors: 9 }]\n<AreaChart\n  title=\"Traffic\"\n  series={[\n    { id: 'req', label: 'Requests', data: rows, y: d => d.requests },\n    { id: 'err', label: 'Errors', data: rows, y: d => d.errors },\n  ]}\n  x={d => d.t}\n  y={d => d.requests}\n/>"
+      },
+      {
+        "title": "Time axis (Date x)",
+        "description": "Return a Date from x for a time axis — ticks render as dates (e.g. \"Jul 10\"), no need to encode day-of-month as an integer.",
+        "code": "import { AreaChart } from '@cascivo/charts'\n\nconst data = [\n  { day: new Date('2026-07-10'), y: 120 },\n  { day: new Date('2026-07-20'), y: 180 },\n  { day: new Date('2026-07-30'), y: 150 },\n]\n<AreaChart\n  title=\"Daily signups\"\n  series={[{ id: 's', label: 'Signups', data }]}\n  x={d => d.day}\n  y={d => d.y}\n/>"
+      }
+    ],
+    "dependencies": ["@cascivo/charts"],
+    "tags": ["chart", "area", "data-viz"],
+    "intent": {
+      "whenToUse": [
+        "Showing cumulative volume or magnitude of a trend over continuous time",
+        "Emphasising the total of stacked multi-series values across a range"
+      ],
+      "whenNotToUse": [
+        "Reading precise individual values — use LineChart",
+        "Comparing discrete categories — use BarChart"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "LineChart",
+          "relationship": "alternative",
+          "reason": "Use when precise values matter more than filled volume"
+        },
+        {
+          "name": "BarChart",
+          "relationship": "alternative",
+          "reason": "Use for discrete categorical comparison"
+        }
+      ],
+      "a11yRationale": "Renders with role=\"img\" and requires a title prop for screen reader labeling.",
+      "flexibility": []
+    }
+  }
+}

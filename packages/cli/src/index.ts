@@ -45,12 +45,40 @@ Commands:
   registry build           Build a static registry from a cascivo-registry.json file
   template init <name>     Scaffold a new template (source + manifest + registry entry)
   tokens import <file>     Import external design tokens as cascivo overrides
+  email lint <file...>     Check rendered email HTML against the Can I email matrix
 
 Run "cascivo <command> --help" for details.`
 
 const THEME_LIST = THEMES.join(' | ')
 
 const COMMAND_HELP: Record<string, string> = {
+  email: `Usage: cascivo email lint <file...> [options]
+
+Check rendered email HTML against the Can I email support matrix — the same
+conformance lint @cascivo/email exposes as \`lint()\`, with the setup done for you.
+
+It lints rendered HTML, not templates: render in your own build and pass the
+output, or pipe it in.
+
+Arguments:
+  <file...>                 One or more rendered .html files, or \`-\` for stdin
+
+Options:
+  --data <file>             Use a local copy of the matrix instead of fetching
+  --refresh                 Re-fetch the matrix even if the cache is fresh
+  --no-allowlist            Report findings CASCIVO_ALLOW waives, too
+
+The matrix is fetched from https://www.caniemail.com/api/data.json and cached for
+a day. It is not bundled with @cascivo/email because it is ~483 KB of test data.
+
+Exits non-zero when a floor client genuinely cannot support something. A caveat is
+partial support worth knowing about and never fails the command.
+
+Examples:
+  cascivo email lint dist/emails/*.html
+  node render.js | cascivo email lint -
+  cascivo email lint dist/welcome.html --data caniemail.json`,
+
   create: `Usage: cascivo create [name] [options]
 
 Scaffold a new ready-to-run app — Vite + React + TypeScript, pre-wired with the
@@ -383,6 +411,11 @@ export async function run(args: string[]): Promise<void> {
     case 'audit': {
       const { audit } = await import('./commands/audit.js')
       await audit(rest, await loadConfig())
+      break
+    }
+    case 'email': {
+      const { email } = await import('./commands/email.js')
+      await email(rest)
       break
     }
     case 'tokens':

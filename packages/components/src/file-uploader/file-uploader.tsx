@@ -1,6 +1,6 @@
 'use client'
-import { cn, useSignal, useSignals } from '@cascivo/core'
-import { builtin, t } from '@cascivo/i18n'
+import { cn, useId, useSignal, useSignals } from '@cascivo/core'
+import { builtin, currentLocale, t } from '@cascivo/i18n'
 import { useRef } from 'react'
 import type { ChangeEvent, DragEvent } from 'react'
 import { Spinner } from '../spinner/spinner'
@@ -83,10 +83,43 @@ function matchesAccept(file: File, accept: string): boolean {
   })
 }
 
-function formatSize(bytes: number): string {
-  if (bytes >= 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
-  if (bytes >= 1024) return `${(bytes / 1024).toFixed(1)} KB`
-  return `${bytes} B`
+/**
+ * Byte size in the reader's locale. The unit strings and the decimal separator were both
+ * hardcoded English before ("1.5 MB" reads wrong in every comma-decimal locale), which the
+ * component checklist forbids. `Intl.NumberFormat`'s `unit` style supplies both.
+ */
+function formatSize(bytes: number, locale: string): string {
+  const [value, unit] =
+    bytes >= 1024 * 1024
+      ? [bytes / (1024 * 1024), 'megabyte' as const]
+      : bytes >= 1024
+        ? [bytes / 1024, 'kilobyte' as const]
+        : [bytes, 'byte' as const]
+  try {
+    return new Intl.NumberFormat(locale, {
+      style: 'unit',
+      unit,
+      unitDisplay: 'short',
+      maximumFractionDigits: unit === 'byte' ? 0 : 1,
+    }).format(value)
+  } catch {
+    // `style: 'unit'` is widely supported but not universal; fall back to a plain number.
+    return new Intl.NumberFormat(locale, {
+      maximumFractionDigits: unit === 'byte' ? 0 : 1,
+    }).format(value)
+  }
+}
+
+/** One word describing the list as a whole, for the live region. */
+function statusSummary(
+  files: UploaderFile[],
+  uploading: string,
+  complete: string,
+  error: string,
+): string {
+  if (files.some((f) => f.status === 'error')) return error
+  if (files.some((f) => f.status === 'uploading')) return uploading
+  return complete
 }
 
 export function FileUploader({
@@ -105,6 +138,7 @@ export function FileUploader({
   className,
 }: FileUploaderProps) {
   useSignals()
+  const locale = currentLocale()
   const inputRef = useRef<HTMLInputElement>(null)
   const dragOver = useSignal(false)
 
@@ -115,12 +149,16 @@ export function FileUploader({
   const resolvedError = labels?.error ?? t(builtin.fileUploader.error)
   const resolveRemove = (name: string) =>
     labels?.remove
-      ? labels.remove.replace('{name}', name)
+      ? labels.remove.replaceAll('{name}', name)
       : t(builtin.fileUploader.remove, { name })
 
-  const baseId = `cascade-uploader-${resolvedLabel.toLowerCase().replace(/\s+/g, '-')}`
+  // useId, not a slug of the label: the default label is the same string for every instance,
+  // so two uploaders on one page emitted duplicate ids and aria-describedby resolved to
+  // whichever came first. A non-ASCII label also produced ids containing arbitrary characters.
+  const baseId = useId('cascivo-uploader')
   const labelId = `${baseId}-label`
   const hintId = `${baseId}-hint`
+  const statusId = `${baseId}-status`
 
   const processFiles = (list: FileList | null) => {
     if (!list || list.length === 0) return
@@ -159,12 +197,19 @@ export function FileUploader({
       <span id={labelId} className={styles['label']}>
         {resolvedLabel}
       </span>
+      {/*
+        Named, not hidden. `aria-hidden` on a node that is programmatically focused and
+        `.click()`ed is the aria-hidden-focus violation — but taking it off puts a real form
+        control back in the accessibility tree, and an unnamed one fails axe's `label` rule
+        (critical). It carries the field's own label: a screen-reader user who reaches it in
+        forms mode gets the native picker, which is the most reliable way to choose a file.
+      */}
       <input
         ref={inputRef}
         type="file"
         className={styles['input']}
         tabIndex={-1}
-        aria-hidden="true"
+        aria-labelledby={labelId}
         multiple={multiple}
         accept={accept}
         disabled={disabled}
@@ -175,57 +220,81 @@ export function FileUploader({
         className={styles['zone']}
         data-state={dragOver.value ? 'dragover' : 'idle'}
         disabled={disabled}
+        aria-labelledby={ariaLabel ? undefined : labelId}
         aria-label={ariaLabel}
-        aria-describedby={hint ? `${labelId} ${hintId}` : labelId}
+        aria-describedby={hint ? hintId : undefined}
         onClick={() => inputRef.current?.click()}
         onDragEnter={(e) => {
           e.preventDefault()
           if (!disabled) dragOver.value = true
         }}
-        onDragOver={(e) => e.preventDefault()}
-        onDragLeave={() => {
-          dragOver.value = false
+        onDragOver={(e) => {
+          e.preventDefault()
+          if (!disabled) e.dataTransfer.dropEffect = 'copy'
+        }}
+        onDragLeave={(e) => {
+          // dragleave fires on the zone every time the pointer crosses onto a descendant, so
+          // the unguarded version dropped the drag-over state mid-drag. `.zoneText` is
+          // pointer-events: none for the browsers that report a null relatedTarget here.
+          if (!e.currentTarget.contains(e.relatedTarget as Node)) dragOver.value = false
         }}
         onDrop={handleDrop}
       >
-        {resolvedDrop}
+        <span className={styles['zoneText']}>{resolvedDrop}</span>
       </button>
       {hint && (
         <span id={hintId} className={styles['hint']}>
           {hint}
         </span>
       )}
+      {/* Mounted unconditionally: a live region added in the same commit as its first
+          content announces nothing, which is why the first upload was always silent. */}
+      <span id={statusId} className={styles['srOnly']} role="status" aria-live="polite">
+        {files.length > 0
+          ? t(builtin.fileUploader.status, {
+              count: files.length,
+              state: statusSummary(files, resolvedUploading, resolvedComplete, resolvedError),
+            })
+          : ''}
+      </span>
       {files.length > 0 && (
-        <ul className={styles['list']} aria-live="polite">
+        <ul className={styles['list']}>
           {files.map((file) => (
             <li key={file.id} className={styles['file']} data-state={file.status}>
               <span className={styles['status']}>
                 {file.status === 'uploading' && <Spinner size="sm" label={resolvedUploading} />}
                 {file.status === 'complete' && (
-                  <span className={styles['glyph-complete']} aria-label={resolvedComplete}>
+                  <span
+                    className={styles['glyph-complete']}
+                    role="img"
+                    aria-label={resolvedComplete}
+                  >
                     ✓
                   </span>
                 )}
                 {file.status === 'error' && (
-                  <span className={styles['glyph-error']} aria-label={resolvedError}>
+                  <span className={styles['glyph-error']} role="img" aria-label={resolvedError}>
                     ✕
                   </span>
                 )}
               </span>
               <span className={styles['name']}>{file.name}</span>
               {file.size !== undefined && (
-                <span className={styles['size']}>{formatSize(file.size)}</span>
+                <span className={styles['size']}>{formatSize(file.size, locale)}</span>
               )}
               <button
                 type="button"
                 className={styles['remove']}
                 aria-label={resolveRemove(file.name)}
+                disabled={disabled}
                 onClick={() => onRemove?.(file.id)}
               >
                 ✕
               </button>
               {file.status === 'error' && file.errorMessage && (
-                <span className={styles['error-message']}>{file.errorMessage}</span>
+                <span className={styles['error-message']} role="alert">
+                  {file.errorMessage}
+                </span>
               )}
             </li>
           ))}

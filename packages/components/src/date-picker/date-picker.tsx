@@ -1,10 +1,9 @@
 'use client'
 import {
-  batch,
   cn,
-  createMachine,
+  DismissableLayer,
+  focusElement,
   useControllableSignal,
-  useMachine,
   useSignal,
   useSignalEffect,
   useSignals,
@@ -12,57 +11,17 @@ import {
 import { builtin, currentLocale, t } from '@cascivo/i18n'
 import { useId, useRef } from 'react'
 import type { KeyboardEvent } from 'react'
+import { Calendar } from '../calendar/calendar'
+import { formatDate, formatHint, fromISO, parseTypedDate, toISO } from './parse-date'
 import styles from './date-picker.module.css'
-
-const machine = createMachine({
-  initial: 'closed' as const,
-  states: {
-    closed: { on: { OPEN: 'open' } },
-    open: { on: { CLOSE: 'closed' } },
-  },
-})
-
-function getWeekStart(locale: string): number {
-  try {
-    const info = (new Intl.Locale(locale) as Intl.Locale & { weekInfo?: { firstDay: number } })
-      .weekInfo
-    if (info) return info.firstDay % 7
-  } catch {}
-  return 1 // Monday fallback
-}
-
-function getMonthGrid(year: number, month: number, weekStart: number): (Date | null)[][] {
-  const first = new Date(Date.UTC(year, month, 1))
-  const last = new Date(Date.UTC(year, month + 1, 0))
-  const startDow = first.getUTCDay()
-  const offset = (startDow - weekStart + 7) % 7
-  const days: (Date | null)[] = []
-  for (let i = 0; i < offset; i++) days.push(null)
-  for (let d = 1; d <= last.getUTCDate(); d++) days.push(new Date(Date.UTC(year, month, d)))
-  while (days.length % 7 !== 0) days.push(null)
-  const rows: (Date | null)[][] = []
-  for (let i = 0; i < days.length; i += 7) rows.push(days.slice(i, i + 7))
-  return rows
-}
-
-function formatDate(date: Date, locale: string): string {
-  return new Intl.DateTimeFormat(locale).format(date)
-}
-
-function toISO(date: Date): string {
-  return date.toISOString().slice(0, 10)
-}
-
-function fromISO(iso: string): Date {
-  const [y, m, d] = iso.split('-').map(Number) as [number, number, number]
-  return new Date(Date.UTC(y, m - 1, d))
-}
 
 export interface DatePickerLabels {
   placeholder?: string
   previousMonth?: string
   nextMonth?: string
   clear?: string
+  open?: string
+  today?: string
 }
 
 /** Join own + inherited `aria-describedby` ids; `undefined` when there are none. */
@@ -90,6 +49,8 @@ export interface DatePickerProps {
   onValueChange?: (value: string | undefined) => void
   min?: string
   max?: string
+  /** Rejects individual dates the bounds allow — holidays, weekends, taken slots. */
+  disabledDate?: (date: Date) => boolean
   /**
    * Shows a clear button
    *
@@ -124,6 +85,30 @@ export interface DatePickerProps {
    * @see the component manifest
    */
   disabled?: boolean
+  /**
+   * When true, the field accepts a typed date as well as one picked from the calendar.
+   *
+   * @defaultValue `true`
+   * @see the component manifest
+   */
+  typeable?: boolean
+  /** Formatting options for the displayed date. Defaults to the locale's numeric form. */
+  format?: Intl.DateTimeFormatOptions
+  /**
+   * When true, the calendar offers a button that jumps to the current month.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
+  showToday?: boolean
+  /** Submitted with a surrounding form — a hidden input carrying the ISO value. */
+  name?: string
+  /** Marks the control as required for assistive technology. */
+  required?: boolean
+  /** Controlled open state of the calendar popup. */
+  open?: boolean
+  /** Called when the popup opens or closes. */
+  onOpenChange?: (open: boolean) => void
   labels?: DatePickerLabels
   className?: string
   id?: string
@@ -135,6 +120,7 @@ export function DatePicker({
   onValueChange,
   min,
   max,
+  disabledDate,
   clearable = false,
   label,
   ariaLabel,
@@ -142,6 +128,13 @@ export function DatePicker({
   error,
   size = 'md',
   disabled = false,
+  typeable = true,
+  format,
+  showToday = false,
+  name,
+  required,
+  open,
+  onOpenChange,
   labels,
   className,
   id,
@@ -150,277 +143,273 @@ export function DatePicker({
   'aria-invalid': ariaInvalid,
 }: DatePickerProps) {
   useSignals()
-  const [state, send] = useMachine(machine)
   const baseId = useId()
   const inputId = id ?? `cascade-date-picker-${baseId}`
-  const gridId = `${baseId}-grid`
+  const dialogId = `${baseId}-dialog`
   const locale = currentLocale()
 
   const resolvedPlaceholder = labels?.placeholder ?? t(builtin.datePicker.placeholder)
-  const resolvedPrev = labels?.previousMonth ?? t(builtin.datePicker.previousMonth)
-  const resolvedNext = labels?.nextMonth ?? t(builtin.datePicker.nextMonth)
   const resolvedClear = labels?.clear ?? t(builtin.datePicker.clear)
+  const resolvedOpen = labels?.open ?? t(builtin.datePicker.open)
 
-  const today = new Date()
-  const todayISO = toISO(today)
+  const fieldRef = useRef<HTMLInputElement>(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const dialogRef = useRef<HTMLDivElement>(null)
 
-  // Controlled mirror goes through the shared primitive: a bare `sig.value = prop` in render
-  // notifies the previous render's subscriptions, which React 19 reports as a setState during
-  // render (2026-08-08 report A). The primitive skips the write when the value is unchanged.
-  const [selectedISO] = useControllableSignal<string | undefined>({
+  const [selectedISO, setSelectedISO] = useControllableSignal<string | undefined>({
     value,
     defaultValue,
+    onChange: onValueChange,
+  })
+  const [isOpen, setOpen] = useControllableSignal<boolean>({
+    value: open,
+    defaultValue: false,
+    onChange: onOpenChange,
   })
 
-  const viewYear = useSignal(
-    selectedISO.value ? fromISO(selectedISO.value).getUTCFullYear() : today.getUTCFullYear(),
-  )
-  const viewMonth = useSignal(
-    selectedISO.value ? fromISO(selectedISO.value).getUTCMonth() : today.getUTCMonth(),
-  )
-  const activeISO = useSignal<string | undefined>(selectedISO.value)
+  const opened = isOpen.value
+  const selected = selectedISO.value ? fromISO(selectedISO.value) : null
+  const minDate = min ? fromISO(min) : null
+  const maxDate = max ? fromISO(max) : null
 
-  const rootRef = useRef<HTMLDivElement>(null)
+  const displayValue = selected ? formatDate(selected, locale, format) : ''
+  // The field keeps its own draft while being typed into, so a half-entered date never
+  // reaches onValueChange and the calendar does not jump on every keystroke.
+  const draft = useSignal<string | null>(null)
+  const fieldText = draft.value ?? displayValue
 
-  // Close on outside click
-  useSignalEffect(() => {
-    if (state.value !== 'open') return
-    const handler = (e: MouseEvent) => {
-      if (rootRef.current && !rootRef.current.contains(e.target as Node)) send('CLOSE')
-    }
-    document.addEventListener('mousedown', handler)
-    return () => document.removeEventListener('mousedown', handler)
-  })
-
-  const open = () => {
+  function openPopup(): void {
     if (disabled) return
-    send('OPEN')
+    setOpen(true)
   }
 
-  const close = () => send('CLOSE')
-
-  const emitValue = onValueChange
-
-  const select = (iso: string) => {
-    if (min && iso < min) return
-    if (max && iso > max) return
-    if (value === undefined) selectedISO.value = iso
-    emitValue?.(iso)
-    close()
+  function closePopup(restoreFocus = true): void {
+    setOpen(false)
+    if (restoreFocus) focusElement(typeable ? fieldRef.current : triggerRef.current)
   }
 
-  const clear = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    if (value === undefined) selectedISO.value = undefined
-    emitValue?.(undefined)
-  }
-
-  const prevMonth = () => {
-    if (viewMonth.value === 0) {
-      batch(() => {
-        viewYear.value--
-        viewMonth.value = 11
-      })
-    } else viewMonth.value--
-  }
-
-  const nextMonth = () => {
-    if (viewMonth.value === 11) {
-      batch(() => {
-        viewYear.value++
-        viewMonth.value = 0
-      })
-    } else viewMonth.value++
-  }
-
-  const weekStart = getWeekStart(locale)
-  const grid = getMonthGrid(viewYear.value, viewMonth.value, weekStart)
-
-  // Weekday header labels
-  const weekdayFmt = new Intl.DateTimeFormat(locale, { weekday: 'short' })
-  const weekdays = Array.from({ length: 7 }, (_, i) => {
-    const day = new Date(Date.UTC(2024, 0, 7 + weekStart + i)) // Sunday Jan 7 2024 = DOW 0
-    return weekdayFmt.format(day)
+  /**
+   * Move focus into the calendar when it opens and back out when it closes. The old build did
+   * neither: opening left focus on the trigger, so the grid's keyboard model was unreachable
+   * without tabbing into it, and closing dropped focus on `<body>` (WCAG 2.4.3).
+   */
+  const wasOpen = useRef(false)
+  useSignalEffect(() => {
+    const nowOpen = isOpen.value
+    if (nowOpen) {
+      wasOpen.current = true
+      const timer = setTimeout(() => {
+        focusElement(dialogRef.current?.querySelector<HTMLElement>('[tabindex="0"]') ?? null)
+      }, 0)
+      return () => clearTimeout(timer)
+    }
+    wasOpen.current = false
+    return undefined
   })
 
-  // Month/year header
-  const monthFmt = new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' })
-  const monthLabel = monthFmt.format(new Date(Date.UTC(viewYear.value, viewMonth.value, 1)))
+  function commit(date: Date | null): void {
+    draft.value = null
+    setSelectedISO(date ? toISO(date) : undefined)
+  }
 
-  const handleGridKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    const current = activeISO.value
-    if (!current) return
-    const d = fromISO(current)
-    let next: Date | undefined
-    if (e.key === 'ArrowRight')
-      next = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + 1))
-    else if (e.key === 'ArrowLeft')
-      next = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - 1))
-    else if (e.key === 'ArrowDown')
-      next = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + 7))
-    else if (e.key === 'ArrowUp')
-      next = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - 7))
-    else if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault()
-      select(current)
+  function commitDraft(): void {
+    const text = draft.peek()
+    if (text === null) return
+    if (text.trim() === '') {
+      commit(null)
       return
-    } else if (e.key === 'Escape') {
-      close()
+    }
+    const parsed = parseTypedDate(text, locale, selected?.getUTCFullYear())
+    // Reject rather than coerce: a value the parser cannot read leaves the previous date in
+    // place and the field reverts to showing it.
+    if (parsed && !outside(parsed)) commit(parsed)
+    else draft.value = null
+  }
+
+  function outside(date: Date): boolean {
+    if (minDate && date.getTime() < minDate.getTime()) return true
+    if (maxDate && date.getTime() > maxDate.getTime()) return true
+    return disabledDate?.(date) ?? false
+  }
+
+  function handleFieldKeyDown(event: KeyboardEvent<HTMLElement>): void {
+    if (disabled) return
+    if (event.altKey && event.key === 'ArrowDown') {
+      event.preventDefault()
+      openPopup()
       return
-    } else return
-    e.preventDefault()
-    if (next) {
-      const nextISO = toISO(next)
-      if (min && nextISO < min) return
-      if (max && nextISO > max) return
-      activeISO.value = nextISO
-      batch(() => {
-        viewYear.value = next!.getUTCFullYear()
-        viewMonth.value = next!.getUTCMonth()
-      })
+    }
+    switch (event.key) {
+      case 'ArrowDown':
+        // ArrowDown opens the popup — the combobox pattern's required key, listed in the
+        // manifest but never implemented.
+        event.preventDefault()
+        openPopup()
+        break
+      case 'Enter':
+        if (typeable) {
+          event.preventDefault()
+          commitDraft()
+        }
+        break
+      case 'Escape':
+        if (opened) {
+          event.preventDefault()
+          event.stopPropagation()
+          closePopup()
+        } else if (draft.peek() !== null) {
+          draft.value = null
+        }
+        break
+      case 'Backspace':
+      case 'Delete':
+        // Clearing from the keyboard, which the button-only trigger made impossible.
+        if (!typeable && clearable && selectedISO.peek() !== undefined) {
+          event.preventDefault()
+          commit(null)
+        }
+        break
     }
   }
 
-  const displayValue = selectedISO.value ? formatDate(fromISO(selectedISO.value), locale) : ''
+  const describedBy = mergeDescribedBy(
+    error ? `${baseId}-error` : hint ? `${baseId}-hint` : undefined,
+    ariaDescribedBy,
+  )
+
+  const fieldAria = {
+    id: inputId,
+    role: 'combobox' as const,
+    'aria-expanded': opened,
+    'aria-controls': dialogId,
+    'aria-haspopup': 'dialog' as const,
+    'aria-labelledby': ariaLabelledBy,
+    'aria-label': ariaLabel,
+    'aria-invalid': error ? true : ariaInvalid,
+    'aria-describedby': describedBy,
+    'aria-required': required || undefined,
+    disabled,
+    onKeyDown: handleFieldKeyDown,
+  }
 
   return (
-    <div
-      ref={rootRef}
-      className={cn(styles['wrapper'], className)}
-      data-state={error ? 'error' : state.value}
-      data-size={size}
-    >
-      {label && (
-        <label className={styles['label']} htmlFor={inputId}>
-          {label}
-        </label>
-      )}
-      <div className={styles['field']}>
-        <button
-          id={inputId}
-          type="button"
-          role="combobox"
-          aria-expanded={state.value === 'open'}
-          aria-controls={gridId}
-          aria-haspopup="dialog"
-          aria-labelledby={ariaLabelledBy}
-          aria-label={ariaLabel}
-          aria-invalid={error ? true : ariaInvalid}
-          aria-describedby={mergeDescribedBy(
-            error ? `${baseId}-error` : hint ? `${baseId}-hint` : undefined,
-            ariaDescribedBy,
-          )}
-          className={styles['trigger']}
-          disabled={disabled}
-          onClick={state.value === 'open' ? close : open}
-        >
-          <span className={cn(styles['value'], !displayValue ? styles['placeholder'] : undefined)}>
-            {displayValue || resolvedPlaceholder}
-          </span>
-          <span className={styles['icon']} aria-hidden="true">
-            📅
-          </span>
-        </button>
-        {clearable && selectedISO.value !== undefined && (
-          <button
-            type="button"
-            className={styles['clear']}
-            aria-label={resolvedClear}
-            onClick={clear}
-          >
-            ✕
-          </button>
-        )}
-      </div>
+    <DismissableLayer onDismiss={() => opened && closePopup(false)}>
       <div
-        id={gridId}
-        role="dialog"
-        aria-label={monthLabel}
-        className={styles['calendar']}
-        data-state={state.value}
-        onKeyDown={handleGridKeyDown}
+        className={cn(styles['wrapper'], className)}
+        data-state={error ? 'error' : opened ? 'open' : 'closed'}
+        data-size={size}
       >
-        <div className={styles['header']}>
+        {label && (
+          <label className={styles['label']} htmlFor={inputId}>
+            {label}
+          </label>
+        )}
+
+        <div className={styles['field']}>
+          {typeable ? (
+            <input
+              {...fieldAria}
+              ref={fieldRef}
+              type="text"
+              className={styles['trigger']}
+              autoComplete="off"
+              inputMode="numeric"
+              placeholder={resolvedPlaceholder || formatHint(locale)}
+              value={fieldText}
+              onChange={(e) => {
+                draft.value = e.currentTarget.value
+              }}
+              onBlur={commitDraft}
+            />
+          ) : (
+            <button {...fieldAria} ref={triggerRef} type="button" className={styles['trigger']}>
+              <span
+                className={cn(styles['value'], !displayValue ? styles['placeholder'] : undefined)}
+              >
+                {displayValue || resolvedPlaceholder}
+              </span>
+            </button>
+          )}
+
+          {clearable && selectedISO.value !== undefined && !disabled && (
+            <button
+              type="button"
+              className={styles['clear']}
+              aria-label={resolvedClear}
+              onClick={() => {
+                commit(null)
+                focusElement(typeable ? fieldRef.current : triggerRef.current)
+              }}
+            >
+              <span className={styles['clearGlyph']} aria-hidden="true" />
+            </button>
+          )}
+
           <button
+            ref={typeable ? triggerRef : undefined}
             type="button"
-            className={styles['navButton']}
-            aria-label={resolvedPrev}
-            onClick={prevMonth}
+            className={styles['openButton']}
+            aria-label={resolvedOpen}
+            aria-expanded={opened}
+            aria-controls={dialogId}
+            disabled={disabled}
+            onClick={() => (opened ? closePopup() : openPopup())}
           >
-            ‹
-          </button>
-          <span className={styles['monthLabel']} aria-live="polite">
-            {monthLabel}
-          </span>
-          <button
-            type="button"
-            className={styles['navButton']}
-            aria-label={resolvedNext}
-            onClick={nextMonth}
-          >
-            ›
+            <span className={styles['calendarGlyph']} aria-hidden="true" />
           </button>
         </div>
-        <table role="grid" className={styles['grid']}>
-          <thead>
-            <tr>
-              {weekdays.map((wd) => (
-                <th key={wd} className={styles['weekday']} abbr={wd} scope="col">
-                  {wd}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {grid.map((week, wi) => (
-              <tr key={wi}>
-                {week.map((day, di) => {
-                  if (!day) return <td key={di} className={styles['empty']} />
-                  const iso = toISO(day)
-                  const isSelected = iso === selectedISO.value
-                  const isToday = iso === todayISO
-                  const isActive = iso === activeISO.value
-                  const isDisabled =
-                    (min !== undefined && iso < min) || (max !== undefined && iso > max)
-                  return (
-                    <td key={di} className={styles['cell']}>
-                      <button
-                        type="button"
-                        className={styles['day']}
-                        tabIndex={isActive ? 0 : -1}
-                        aria-pressed={isSelected}
-                        aria-label={formatDate(day, locale)}
-                        aria-current={isToday ? 'date' : undefined}
-                        aria-disabled={isDisabled || undefined}
-                        data-selected={isSelected || undefined}
-                        data-today={isToday || undefined}
-                        onClick={() => {
-                          if (!isDisabled) select(iso)
-                        }}
-                        onFocus={() => {
-                          activeISO.value = iso
-                        }}
-                      >
-                        {day.getUTCDate()}
-                      </button>
-                    </td>
-                  )
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+
+        {name !== undefined && <input type="hidden" name={name} value={selectedISO.value ?? ''} />}
+
+        <div
+          ref={dialogRef}
+          id={dialogId}
+          role="dialog"
+          aria-label={label ?? ariaLabel ?? resolvedPlaceholder}
+          className={styles['popup']}
+          data-state={opened ? 'open' : 'closed'}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') {
+              e.preventDefault()
+              e.stopPropagation()
+              closePopup()
+            }
+          }}
+        >
+          {/* Composed, not reimplemented. The grid, its focus model, its bounds handling and
+              its announcements were all duplicated here in a weaker copy; every fix to
+              Calendar had to be made twice, and in practice was not. */}
+          <Calendar
+            value={selected}
+            onValueChange={(date) => {
+              commit(date)
+              closePopup()
+            }}
+            {...(minDate ? { min: minDate } : {})}
+            {...(maxDate ? { max: maxDate } : {})}
+            {...(disabledDate ? { disabled: disabledDate } : {})}
+            labels={{
+              ...(labels?.previousMonth ? { previousMonth: labels.previousMonth } : {}),
+              ...(labels?.nextMonth ? { nextMonth: labels.nextMonth } : {}),
+              ...(labels?.today ? { today: labels.today } : {}),
+            }}
+            showToday={showToday}
+            size={size}
+            locale={locale}
+          />
+        </div>
+
+        {error && (
+          <span id={`${baseId}-error`} className={styles['error']} role="alert">
+            {error}
+          </span>
+        )}
+        {!error && hint && (
+          <span id={`${baseId}-hint`} className={styles['hint']}>
+            {hint}
+          </span>
+        )}
       </div>
-      {error && (
-        <span id={`${baseId}-error`} className={styles['error']} role="alert">
-          {error}
-        </span>
-      )}
-      {!error && hint && (
-        <span id={`${baseId}-hint`} className={styles['hint']}>
-          {hint}
-        </span>
-      )}
-    </div>
+    </DismissableLayer>
   )
 }

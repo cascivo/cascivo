@@ -23,7 +23,7 @@ import { createLineStateIndex, type LineStateIndex } from '../../engine/line-sta
 import { tokenizeRange, tokenizeWindowFrom } from '../../engine/tokenize.ts'
 import type { Token } from '../../engine/types.ts'
 import '../../grammars/builtins.ts'
-import { Gutter, renderRows, type Decoration } from '../view.tsx'
+import { renderRows, type Decoration } from '../view.tsx'
 import hl from '../highlight/highlight.module.css'
 import styles from './code-editor.module.css'
 import { FindPanel } from './find-panel.tsx'
@@ -220,11 +220,27 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
 
   const rootRef = useRef<HTMLDivElement>(null)
   const preRef = useRef<HTMLPreElement>(null)
-  const gutterRef = useRef<HTMLDivElement>(null)
   const taRef = useRef<HTMLTextAreaElement>(null)
   // Latest split lines, shared with the catch-up effect (which threads grammar
   // state toward a far-jumped window) so it never re-splits the document.
   const linesRef = useRef<readonly string[]>([])
+
+  /**
+   * Move the current-line marker to `line`, imperatively — a caret move must not
+   * re-render a document that can be 50k rows. Two properties because the marker is
+   * placed two ways: `…-caret-line` drives the `1lh` transform used when rows are
+   * uniform (and when windowing renders only a slice), `…-caret-row` is the `grid-row`
+   * that puts it on the caret's row when soft wrap makes rows variable-height, so the
+   * highlight covers every visual row of a wrapped line rather than just the first.
+   * Both grid lines are resolved here because an out-of-flow grid child treats an
+   * `auto` (or `span`) end edge as the grid's own padding edge.
+   */
+  const setCaretLine = (line: number): void => {
+    const root = rootRef.current
+    if (!root) return
+    root.style.setProperty('--cascivo-editor-caret-line', String(line))
+    root.style.setProperty('--cascivo-editor-caret-row', `${line + 1} / ${line + 2}`)
+  }
 
   // Owned undo/redo history (survives programmatic `value` writes, unlike native
   // textarea undo). Seeded once with the initial state.
@@ -282,8 +298,7 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     prevTextRef.current = snap.text
     selRef.current = { start: snap.selectionStart, end: snap.selectionEnd }
     caretOffset.value = snap.selectionStart
-    const line = linesOf(snap.text).lineAt(snap.selectionStart)
-    rootRef.current?.style.setProperty('--cascivo-editor-caret-line', String(line))
+    setCaretLine(linesOf(snap.text).lineAt(snap.selectionStart))
     applyingRef.current = false
   }
 
@@ -397,7 +412,6 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
         preRef.current.scrollTop = ta.scrollTop
         preRef.current.scrollLeft = ta.scrollLeft
       }
-      if (gutterRef.current) gutterRef.current.scrollTop = ta.scrollTop
     }
     const syncCaret = (): void => {
       // O(log n) against the line index. This runs three times per keystroke
@@ -406,7 +420,7 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
       // line, which is what left the marker trailing the caret on a large
       // document — and the marker is the only cue for where an edit will land.
       const line = linesOf(ta.value).lineAt(ta.selectionStart)
-      rootRef.current?.style.setProperty('--cascivo-editor-caret-line', String(line))
+      setCaretLine(line)
       selRef.current = { start: ta.selectionStart, end: ta.selectionEnd }
       caretOffset.value = ta.selectionStart
     }
@@ -533,8 +547,10 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
         lineHeight: lineHeight.value,
         scrollTop: ta.scrollTop,
         scrollLeft: ta.scrollLeft,
-        padTop: Number.parseFloat(cs.paddingTop) || 0,
-        padLeft: Number.parseFloat(cs.paddingLeft) || 0,
+        // The textarea is inset past the gutter column, so its own offset within
+        // `.codeArea` is part of the caret's position, not just its padding.
+        padTop: ta.offsetTop + (Number.parseFloat(cs.paddingTop) || 0),
+        padLeft: ta.offsetLeft + (Number.parseFloat(cs.paddingLeft) || 0),
         tabSize,
       })
       top = coords.top + lineHeight.value // below the caret line
@@ -873,6 +889,9 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
 
   const rootStyle = {
     '--cascivo-editor-tab-size': tabSize,
+    // Sizes the gutter track (and with it the textarea's inset) to the widest line
+    // number, so nothing has to be measured to keep the two layers aligned.
+    '--cascivo-editor-gutter-digits': String(total).length,
     ...theme,
     ...style,
   } as CSSProperties
@@ -885,24 +904,16 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
       data-line-numbers={lineNumbers}
       style={rootStyle}
     >
-      {lineNumbers && (
-        <Gutter
-          count={total}
-          className={styles['gutter']}
-          gutterRef={gutterRef}
-          start={start}
-          end={end}
-          topPad={topPad}
-          bottomPad={bottomPad}
-          activeLine
-        />
-      )}
       <div className={styles['codeArea']}>
+        {lineNumbers && <div className={styles['gutterBg']} />}
         <pre ref={preRef} className={styles['pre']} aria-hidden="true">
-          <div className={styles['currentLine']} />
-          {topPad > 0 && <div style={{ blockSize: topPad }} />}
-          <code>{renderRows(rows, start, end, decorationList)}</code>
-          {bottomPad > 0 && <div style={{ blockSize: bottomPad }} />}
+          <code className={cn(hl['code'], hl['overlay'])}>
+            <div className={styles['currentLine']} />
+            <div className={styles['currentLineGutter']} />
+            {topPad > 0 && <div className={hl['spacer']} style={{ blockSize: topPad }} />}
+            {renderRows(rows, start, end, decorationList, lineNumbers)}
+            {bottomPad > 0 && <div className={hl['spacer']} style={{ blockSize: bottomPad }} />}
+          </code>
         </pre>
         <textarea
           ref={taRef}

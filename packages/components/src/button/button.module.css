@@ -88,44 +88,75 @@
       }
     }
 
-    /* Variants */
+    /*
+     * Variants.
+     *
+     * Each background is a per-variant component token over its semantic default, so one
+     * button family can be re-pointed without moving the semantic tier underneath every
+     * other component that reads it. Setting `--cascivo-color-primary` recolours primary
+     * buttons AND every other primary surface in the subtree; that is the right lever for a
+     * brand and the wrong one for "this dialog's confirm button is green".
+     *
+     * `docs/STYLING-INTERNALS.md` used to name a `--cascivo-button-bg` for exactly this job.
+     * It never existed — the ladder's first rung pointed at a token that silently did
+     * nothing on the component people restyle most. These are that rung, made real.
+     *
+     * **The foreground does not follow.** `color` stays on the semantic token, so a
+     * background light enough to need dark text will fail contrast until you set the paired
+     * `--cascivo-color-*-fg` too. Deliberate: a per-variant foreground knob is a separate
+     * decision, and inventing one here would be guessing at an API nobody asked for. The
+     * manifest and the docs both say so.
+     */
     &[data-variant='primary'] {
-      background-color: var(--cascivo-color-primary);
+      background-color: var(--cascivo-button-primary-bg, var(--cascivo-color-primary));
       color: var(--cascivo-color-primary-fg);
 
       &:hover:not(:disabled) {
-        background-color: var(--cascivo-color-primary-hover);
+        background-color: var(
+          --cascivo-button-primary-bg-hover,
+          var(--cascivo-color-primary-hover)
+        );
       }
 
       &:active:not(:disabled) {
-        background-color: var(--cascivo-color-primary-active);
+        background-color: var(
+          --cascivo-button-primary-bg-active,
+          var(--cascivo-color-primary-active)
+        );
       }
     }
 
     &[data-variant='secondary'] {
-      background-color: var(--cascivo-color-secondary);
+      background-color: var(--cascivo-button-secondary-bg, var(--cascivo-color-secondary));
       color: var(--cascivo-color-secondary-content);
 
       &:hover:not(:disabled) {
-        background-color: var(--cascivo-color-secondary-hover);
+        background-color: var(
+          --cascivo-button-secondary-bg-hover,
+          var(--cascivo-color-secondary-hover)
+        );
       }
     }
 
+    /* Ghost's default is `transparent`, not a token — the knob is for tinting it. */
     &[data-variant='ghost'] {
-      background-color: transparent;
+      background-color: var(--cascivo-button-ghost-bg, transparent);
       color: var(--cascivo-color-text);
 
       &:hover:not(:disabled) {
-        background-color: var(--cascivo-color-bg-subtle);
+        background-color: var(--cascivo-button-ghost-bg-hover, var(--cascivo-color-bg-subtle));
       }
     }
 
     &[data-variant='destructive'] {
-      background-color: var(--cascivo-color-destructive);
+      background-color: var(--cascivo-button-destructive-bg, var(--cascivo-color-destructive));
       color: var(--cascivo-color-text-on-destructive);
 
       &:hover:not(:disabled) {
-        background-color: var(--cascivo-color-destructive-hover);
+        background-color: var(
+          --cascivo-button-destructive-bg-hover,
+          var(--cascivo-color-destructive-hover)
+        );
       }
     }
   }

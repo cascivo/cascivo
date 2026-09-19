@@ -41,13 +41,13 @@ The trigger is a real button, not a bare sentinel, so the next page is reachable
 
 ## Props
 
-| Name         | Type                                      | Required | Default | Description                                                                                              |
-| ------------ | ----------------------------------------- | -------- | ------- | -------------------------------------------------------------------------------------------------------- |
-| `onLoadMore` | `() => Promise<unknown> \| unknown`       | Yes      | —       | Called when the sentinel comes into view, or the button is activated; the spinner shows until it settles |
-| `disabled`   | `boolean`                                 | No       | false   | When true, stops observing and renders nothing — there are no more pages.                                |
-| `rootMargin` | `string`                                  | No       | '200px' | How far ahead of the end to start loading, as an IntersectionObserver root margin.                       |
-| `labels`     | `{ loadMore?: string; loading?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n).                                               |
-| `className`  | `string`                                  | No       | —       | Additional CSS class names merged onto the root element.                                                 |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `onLoadMore` | `() => Promise<unknown> \| unknown` | Yes | — | Called when the sentinel comes into view, or the button is activated; the spinner shows until it settles |
+| `disabled` | `boolean` | No | false | When true, stops observing and renders nothing — there are no more pages. |
+| `rootMargin` | `string` | No | '200px' | How far ahead of the end to start loading, as an IntersectionObserver root margin. |
+| `labels` | `{ loadMore?: string; loading?: string }` | No | — | Overrides for the component’s user-visible strings (i18n). |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -89,11 +89,11 @@ Starts the next page well before the user reaches the end.
 
 ## Boundaries
 
-| Area       | Level    | Note                                                                  |
-| ---------- | -------- | --------------------------------------------------------------------- |
-| rootMargin | flexible | How far ahead of the end loading starts (default 200px)               |
-| onLoadMore | flexible | May return a promise; the spinner persists until it settles           |
-| trigger    | strict   | Always renders an activatable button — there is no sentinel-only mode |
+| Area | Level | Note |
+|------|-------|------|
+| rootMargin | flexible | How far ahead of the end loading starts (default 200px) |
+| onLoadMore | flexible | May return a promise; the spinner persists until it settles |
+| trigger | strict | Always renders an activatable button — there is no sentinel-only mode |
 
 ## AI context prompt
 

@@ -27,7 +27,7 @@ describe('FileUploader', () => {
 
   it('disables zone when disabled', () => {
     render(<FileUploader disabled />)
-    expect(screen.getByRole('button', { name: /drag and drop/i })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /upload files/i })).toBeDisabled()
   })
 
   it('renders file list', () => {
@@ -47,7 +47,8 @@ describe('FileUploader', () => {
 
   it('shows uploading spinner', () => {
     render(<FileUploader files={[{ id: '1', name: 'file.txt', status: 'uploading' }]} />)
-    expect(screen.getByRole('status')).toBeInTheDocument()
+    // The always-mounted announcer is also role="status", so name the spinner's own one.
+    expect(screen.getByRole('status', { name: 'Uploading' })).toBeInTheDocument()
   })
 
   it('shows error message for failed files', () => {
@@ -73,7 +74,7 @@ describe('FileUploader', () => {
 
   it('handles drag-over state', () => {
     render(<FileUploader />)
-    const zone = screen.getByRole('button', { name: /drag and drop/i })
+    const zone = screen.getByRole('button', { name: /upload files/i })
     expect(zone).toHaveAttribute('data-state', 'idle')
     fireEvent.dragEnter(zone)
     expect(zone).toHaveAttribute('data-state', 'dragover')
@@ -84,7 +85,7 @@ describe('FileUploader', () => {
   it('calls onFilesAdded on drop', () => {
     const onFilesAdded = vi.fn()
     render(<FileUploader onFilesAdded={onFilesAdded} />)
-    const zone = screen.getByRole('button', { name: /drag and drop/i })
+    const zone = screen.getByRole('button', { name: /upload files/i })
     const file = new File(['data'], 'drop.txt', { type: 'text/plain' })
     fireEvent.drop(zone, {
       dataTransfer: {

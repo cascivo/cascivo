@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/tokens.md
-  registry v1.0.0 · generated 2026-08-29
+  registry v1.3.0 · generated 2026-09-16
 -->
 
 # cascivo Design Tokens
@@ -15,6 +15,17 @@ are the **light** theme's; theme-scoped tokens (colors, shadows) differ per
 `[data-theme]`. A machine-readable manifest is published at
 `@cascivo/tokens/tokens.json`, and a `CascivoToken` union for editor autocomplete
 at `@cascivo/tokens/tokens`.
+
+**This page covers the primitive and semantic layers only.** Per-component knobs
+(`--cascivo-link-color`, `--cascivo-calendar-cell-size`) live in the component
+stylesheets; the complete set — every layer, plus the `data-cascivo-*` styling hooks — is
+generated to `@cascivo/tokens/style-contract.json`, with `CascivoComponentToken`,
+`CascivoStyleHook` and `CascivoTokenStyle` types at `@cascivo/tokens/style-contract`.
+
+A name outside that set is **not** an error CSS will report — an unknown custom property is
+dropped silently. Three things check it for you against the generated set: the
+`cascivo/token-values` lint rule, `satisfies CascivoTokenStyle` on an inline style, and
+`cascivo audit --ai` in CI.
 
 ## Canonical names vs aliases
 
@@ -86,6 +97,7 @@ remains canonical.
 | **`--cascivo-chart-7`**                      | `oklch(0.62 0.12 350)`                                              |                                                   |
 | **`--cascivo-chart-8`**                      | `oklch(0.5 0.12 200)`                                               |                                                   |
 | **`--cascivo-chart-axis`**                   | `oklch(0.5 0.016 264)`                                              |                                                   |
+| **`--cascivo-chart-bar-radius`**             | `2px`                                                               |                                                   |
 | **`--cascivo-chart-fill-opacity`**           | `0.25`                                                              |                                                   |
 | **`--cascivo-chart-fill-opacity-overlap`**   | `0.125`                                                             |                                                   |
 | **`--cascivo-chart-grid`**                   | `var(--cascivo-gray-200)`                                           |                                                   |

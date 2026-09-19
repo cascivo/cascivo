@@ -1,8 +1,8 @@
 # cascivo — The CSS-native, signal-driven, AI-first React design system
 
-_registry v1.0.0 · generated 2026-08-29 · docs track `main`; compare with https://cascivo.com/registry.json `.version` for staleness, and https://cascivo.com/breaking-changes.json for installed-vs-documented API drift._
+_registry v1.3.0 · generated 2026-09-16 · docs track `main`; compare with https://cascivo.com/registry.json `.version` for staleness, and https://cascivo.com/breaking-changes.json for installed-vs-documented API drift._
 
-_Describes: @cascivo/ai@1.0.0 · @cascivo/charts@1.0.0 · @cascivo/core@1.0.0 · @cascivo/docs@0.2.7 · @cascivo/docspack@0.2.1 · @cascivo/editor@1.0.0 · @cascivo/eslint-config@0.3.0 · @cascivo/eslint-plugin@0.1.1 · @cascivo/flow@1.0.0 · @cascivo/i18n@1.0.0 · @cascivo/icons@1.0.0 · @cascivo/mcp@0.7.0 · @cascivo/platform@0.0.5 · @cascivo/react@1.0.0 · @cascivo/registry@0.2.9 · @cascivo/storage@1.0.0 · @cascivo/themes@1.0.0 · @cascivo/tokens@1.0.0 · @cascivo/vite-plugin@0.1.9 · cascivo@1.0.0. If your installed versions are lower, a documented behaviour may not have shipped yet._
+_Describes: @cascivo/ai@1.3.0 · @cascivo/charts@1.3.0 · @cascivo/core@1.3.0 · @cascivo/docs@0.2.10 · @cascivo/docspack@0.2.4 · @cascivo/editor@1.3.0 · @cascivo/email@0.4.0 · @cascivo/email-preview@2.0.0 · @cascivo/eslint-config@0.4.1 · @cascivo/eslint-plugin@0.2.1 · @cascivo/flow@1.3.0 · @cascivo/i18n@1.3.0 · @cascivo/icons@1.1.0 · @cascivo/mcp@0.7.2 · @cascivo/platform@0.0.5 · @cascivo/react@1.3.0 · @cascivo/registry@0.2.10 · @cascivo/storage@1.3.0 · @cascivo/themes@1.0.0 · @cascivo/tokens@1.1.1 · @cascivo/vite-plugin@0.1.10 · cascivo@1.2.1. If your installed versions are lower, a documented behaviour may not have shipped yet._
 
 cascivo is a React design system you can consume two ways: copy-paste the source
 (`npx cascivo add <name>` — shadcn model, you own the code) or install the prebuilt
@@ -84,6 +84,43 @@ or the class form `<span class="cascivo-glyph" data-glyph="chevron-down">`. Glyp
 `arrow-{right,left,up,down}`, and the `chevron-toggle` morph. Baseline-2026 only
 (Chrome 135+, Safari 18.4+, Firefox 148+) — painting is gated behind `@supports`;
 prefer the SVG icons for a wider browser floor or for print.
+
+## Email (@cascivo/email)
+
+HTML email is a separate render target with its own primitives — do NOT send
+`@cascivo/react` components through an email. Clients strip `<style>`, ignore `rem`,
+and Outlook Windows renders through Word: no flex, no grid, no custom properties.
+
+`import { renderEmail, Html, Head, Body, Preview, Container, Section, Text } from '@cascivo/email'`
+— table-based, inline-styled, no client JS, no runtime dependencies. Themed from the
+same twelve themes, resolved to literal hex at render time.
+
+The whole component set, and the ONLY components valid inside an email:
+
+- Document: `Html`, `Head`, `Body`, `Preview`, `Style`
+- Layout: `Container`, `Section`, `Row`, `Column`, `Spacer`, `Hr`
+- Typography: `Heading`, `Text`, `Link`, `List`, `Footer`
+- Content: `Button`, `Card`, `Alert`, `Badge`, `Img`, `Markdown`
+
+Props, defaults and a worked example for each, with rendered previews:
+https://cascivo.com/docs/email-primitives.md (https://cascivo.com/docs/email/components).
+
+- `renderEmail(element, { theme, subject, tier })` -> `{ html, text, preheader, stats }`.
+  `assertSendable(result)` throws on a missing subject/preheader/text or a body over
+  the Gmail clip budget. `analyze(html)` says where the bytes went.
+- `Markdown` renders runtime-fetched prose (an allowlisted node set, straight to the
+  primitives — raw HTML in the source stays literal text, and only `http:`/`https:`/
+  `mailto:` URLs are emitted).
+- `lint(html, features)` checks a render against the Can I email matrix. The matrix is
+  NOT bundled (it is ~483 KB) — fetch https://www.caniemail.com/api/data.json and pass
+  it through `indexFeatures(data)`.
+- `planMigration(importedNames)` maps a React Email template onto the cascivo set and
+  names every gap with its reason.
+- Fonts repeat inline on every text element because Outlook does not inherit them into
+  table content. Shorten or rebrand the stack with `--cascivo-email-font-{sans,serif,mono}`
+  on the palette passed to `renderEmail({ theme })`.
+
+Full recipe: https://cascivo.com/docs/recipe-email.md. Components: https://cascivo.com/docs/email-primitives.md. Client support: https://cascivo.com/docs/email-client-support.md.
 
 ## How to use it
 
@@ -293,6 +330,9 @@ All guides are fetchable as plain markdown at https://cascivo.com/docs/<slug>.md
 - Using cascivo with Vite SSR / TanStack Start: https://cascivo.com/docs/using-with-vite-ssr.md
 - Using cascivo with Tailwind v4 (@layer order + dark bridge): https://cascivo.com/docs/using-with-tailwind.md
 - Strict host ESLint (scope stylistic rules off your components dir): https://cascivo.com/docs/using-with-strict-eslint.md
+- Transactional & newsletter email (@cascivo/email): https://cascivo.com/docs/recipe-email.md
+- Every @cascivo/email component, with props and examples: https://cascivo.com/docs/email-primitives.md
+- Email client support matrix (what the conformance lint enforces): https://cascivo.com/docs/email-client-support.md
 - Compatibility & support matrix: https://cascivo.com/docs/compatibility.md
 - Migrating from shadcn/ui: https://cascivo.com/docs/migrating-from-shadcn.md
 - Token reference: https://cascivo.com/docs/tokens.md
@@ -522,7 +562,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [input](https://cascivo.com/llms/input.md) — Text input field with optional label, hint, and error state _(npm @cascivo/react · or copy-paste)_
 - [input-group](https://cascivo.com/llms/input-group.md) — Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders _(npm @cascivo/react · or copy-paste)_
 - [label](https://cascivo.com/llms/label.md) — Accessible caption for a form control _(npm @cascivo/react · or copy-paste)_
-- [multi-select](https://cascivo.com/llms/multi-select.md) — Searchable multi-value select with popover listbox _(npm @cascivo/react · or copy-paste)_
+- [multi-select](https://cascivo.com/llms/multi-select.md) — Searchable multi-value select with a popover listbox, chips and grouping _(npm @cascivo/react · or copy-paste)_
 - [native-select](https://cascivo.com/llms/native-select.md) — A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring _(npm @cascivo/react · or copy-paste)_
 - [number-input](https://cascivo.com/llms/number-input.md) — Numeric input with stepper buttons, clamping, precision, and locale formatting _(npm @cascivo/react · or copy-paste)_
 - [otp-input](https://cascivo.com/llms/otp-input.md) — Segmented one-time code input _(npm @cascivo/react · or copy-paste)_
@@ -842,7 +882,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [VisuallyHidden](https://cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 - [WheelPicker](https://cascivo.com/context/wheel-picker.md) — Use when: Touch surfaces picking one value from a short, ordered, homogeneous range — an hour, a minute, a unit
 
-_Generated: 2026-08-29 from registry v1.0.0_
+_Generated: 2026-09-16 from registry v1.3.0_
 
 ---
 
@@ -925,7 +965,7 @@ navigation, collapse, disclosure
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1030,7 +1070,7 @@ overlay, action-sheet, menu, mobile, sheet
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1124,7 +1164,7 @@ notification, message, feedback
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1232,7 +1272,7 @@ overlay, dialog, confirm, destructive
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1329,7 +1369,7 @@ shell, layout, sidebar, navigation, drawer, responsive, sticky
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1403,7 +1443,7 @@ layout, ratio, image, video, responsive
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1508,7 +1548,7 @@ user, profile, image
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1595,7 +1635,7 @@ avatar, group, stack, overflow, display
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1710,7 +1750,7 @@ label, status, tag
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1746,7 +1786,7 @@ shell, layout, sidebar, navigation, responsive
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1782,7 +1822,7 @@ auth, login, form, email, password
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1818,7 +1858,7 @@ auth, signup, register, form
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1886,7 +1926,7 @@ block, console, shell, navigation, carbon-parity
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1944,7 +1984,7 @@ block, dashboard, charts, kpi
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1980,7 +2020,7 @@ dashboard, stats, kpi, cards, overview
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2016,7 +2056,7 @@ dashboard, table, data, search, sort, pagination
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2073,7 +2113,7 @@ block, dashboard, empty-state, page
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2109,7 +2149,7 @@ marketing, faq, accordion, questions
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2166,7 +2206,7 @@ block, login, auth, form, page
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2202,7 +2242,7 @@ marketing, features, grid, icons
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2238,7 +2278,7 @@ marketing, hero, landing, cta
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2296,7 +2336,7 @@ block, notifications, alerts
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2351,7 +2391,7 @@ block, breadcrumb, page, navigation
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2387,7 +2427,7 @@ marketing, pricing, plans, cards
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2444,7 +2484,7 @@ block, settings, form, page
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2480,7 +2520,7 @@ settings, profile, form, toggles, preferences
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2535,7 +2575,7 @@ block, sidebar, navigation, app-shell
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2571,7 +2611,7 @@ marketing, footer, navigation, links
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2628,7 +2668,7 @@ block, stats, kpi, cards
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2664,7 +2704,7 @@ marketing, testimonials, social-proof, cards
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2722,7 +2762,7 @@ block, users, table, page
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2800,7 +2840,7 @@ typography, quote, blockquote, citation
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2901,7 +2941,7 @@ overlay, sheet, bottom-sheet, mobile, drag, detent, gesture
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -3002,7 +3042,7 @@ logo, brand, mark, wordmark, lockup, identity
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -3083,7 +3123,7 @@ breadcrumb, navigation, hierarchy
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -3172,6 +3212,16 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 
 ## Design tokens
 
+- `--cascivo-button-primary-bg`
+- `--cascivo-button-primary-bg-hover`
+- `--cascivo-button-primary-bg-active`
+- `--cascivo-button-secondary-bg`
+- `--cascivo-button-secondary-bg-hover`
+- `--cascivo-button-ghost-bg`
+- `--cascivo-button-ghost-bg-hover`
+- `--cascivo-button-destructive-bg`
+- `--cascivo-button-destructive-bg-hover`
+- `--cascivo-button-radius`
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-hover`
 - `--cascivo-color-accent-active`
@@ -3199,7 +3249,7 @@ action, form, interactive
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -3285,7 +3335,7 @@ action, segmented, toolbar, layout
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -3345,6 +3395,10 @@ import { Calendar } from '@cascivo/react'
 | `year` | `number` | no | — | Controlled view year |
 | `onViewChange` | `(view: { month: number; year: number }) => void` | no | — | Called when the visible month changes |
 | `hideNav` | `boolean` | no | `false` | Hides the prev/next nav so a parent can drive navigation |
+| `showToday` | `boolean` | no | `false` | When true, shows a button that jumps the view to the current month and focuses today. |
+| `showWeekNumbers` | `boolean` | no | `false` | When true, prefixes each row with its ISO-8601 week number. |
+| `ariaLabel` | `string` | no | — | Accessible name for the grid. Defaults to the visible month label. Calendar has no visible label slot — the month heading is its own — so `label` and `ariaLabel` are aliases for the same invisible name. Not rendered — screen readers only. |
+| `label` | `string` | no | — | Alias for `ariaLabel`; both set the grid’s invisible accessible name. Not rendered — screen readers only. |
 
 ## Examples
 
@@ -3404,7 +3458,7 @@ calendar, date, month, grid, picker, input
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -3481,7 +3535,7 @@ container, layout, surface
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -3518,6 +3572,7 @@ import { Carousel } from '@cascivo/react'
 | `defaultIndex` | `number` | no | `0` | The initial slide index when uncontrolled. |
 | `onIndexChange` | `(index: number) => void` | no | — | Called with the new slide index when it changes. |
 | `loop` | `boolean` | no | `false` | When true, navigation wraps around from end to start. |
+| `autoplay` | `number` | no | — | Milliseconds between automatic advances. Omit or set 0 to leave rotation off. Pauses on hover, on focus within, while the tab is hidden and under prefers-reduced-motion, and always renders a play/pause control. |
 
 ## Examples
 
@@ -3567,7 +3622,7 @@ slider, gallery, slideshow, deck, scroll-snap
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -3722,7 +3777,7 @@ chart, area, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -3890,6 +3945,7 @@ Enhancement only. The component still does its job with JavaScript disabled — 
 - `--cascivo-chart-6`
 - `--cascivo-chart-7`
 - `--cascivo-chart-8`
+- `--cascivo-chart-bar-radius`
 
 ## Accessibility
 
@@ -3906,7 +3962,7 @@ chart, bar, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -4000,7 +4056,7 @@ chart, boxplot, box-whisker, statistics, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -4093,7 +4149,7 @@ chart, bubble, scatter, three-dimensional, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -4168,7 +4224,7 @@ chart, bullet, kpi, progress, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -4272,7 +4328,7 @@ chart, calendar, heatmap, time, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -4394,7 +4450,7 @@ chart, candlestick, ohlc, financial, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -4497,7 +4553,7 @@ chart, combo, bar, line, dual-axis, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -4599,7 +4655,7 @@ chart, funnel, conversion, flow, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -4698,7 +4754,7 @@ chart, gauge, speedometer, kpi, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -4802,7 +4858,7 @@ chart, heatmap, matrix, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -4876,7 +4932,7 @@ chart, histogram, distribution, frequency, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -4948,7 +5004,7 @@ chart, kpi, metric, dashboard, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -5078,7 +5134,7 @@ chart, line, time-series, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -5165,7 +5221,7 @@ chart, meter, gauge, progress, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -5316,7 +5372,7 @@ chart, pie, donut, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -5421,7 +5477,7 @@ chart, polar, rose, radial, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -5514,7 +5570,7 @@ chart, radar, spider, polar, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -5624,7 +5680,7 @@ chart, radial, gauge, progress, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -5730,7 +5786,7 @@ chart, sankey, flow, network, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -5848,7 +5904,7 @@ chart, scatter, plot, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -5918,7 +5974,7 @@ chart, sparkline, inline, trend, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -6022,7 +6078,7 @@ chart, stream, streamgraph, area, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -6122,7 +6178,7 @@ chart, sunburst, hierarchy, radial, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -6217,7 +6273,7 @@ chart, treemap, hierarchy, part-to-whole, data-viz
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -6311,7 +6367,7 @@ chat, message, conversation, messaging
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -6397,7 +6453,7 @@ form, toggle, boolean
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -6480,7 +6536,7 @@ checkbox, card, selectable, form
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -6568,7 +6624,7 @@ typography, code, inline, mono
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -6680,7 +6736,7 @@ display, code, snippet, copy, pre, syntax-highlighting, terminal, bash, css, js,
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -6772,7 +6828,7 @@ disclosure, collapse, expand, toggle, show-hide
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -6804,6 +6860,11 @@ import { ColorPicker } from '@cascivo/react'
 - `md`
 - `lg`
 
+## States
+
+- `default`
+- `disabled`
+
 ## Props
 
 | Prop | Type | Required | Default | Description |
@@ -6814,6 +6875,8 @@ import { ColorPicker } from '@cascivo/react'
 | `onValueChange` | `(value: string) => void` | no | — | Called with the new value when it changes. |
 | `presets` | `string[]` | no | — | Preset swatch colors |
 | `alpha` | `boolean` | no | `true` | When true, enables alpha (opacity) selection. |
+| `format` | `'hex' \| 'rgb' \| 'hsl'` | no | `'hex'` | Notation for the emitted value. Alpha is included whenever alpha is on, so the emitted string has a stable width. |
+| `name` | `string` | no | — | Submitted with a surrounding form — a hidden input carrying the current value. |
 | `label` | `string` | no | — | Text label for the control. Rendered on screen. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
@@ -6854,8 +6917,8 @@ Required. The component's primary job needs client JavaScript, so do not render 
 ## Accessibility
 
 - **WCAG level:** 2.2-AA
-- **ARIA role:** `slider`
-- **Keyboard:** ArrowLeft, ArrowRight, ArrowUp, ArrowDown
+- **ARIA role:** `group`
+- **Keyboard:** ArrowLeft, ArrowRight, ArrowUp, ArrowDown, Home, End, PageUp, PageDown, Enter, Escape
 
 ## Dependencies
 
@@ -6868,7 +6931,7 @@ color, input, form, picker, hue, alpha
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -6916,7 +6979,17 @@ import { Combobox } from '@cascivo/react'
 | `defaultValue` | `string` | no | — | The initial value when uncontrolled. |
 | `onValueChange` | `(value: string \| undefined) => void` | no | — | Called with the selected option value (or undefined when cleared). |
 | `clearable` | `boolean` | no | `false` | When true, shows a control to clear the selected value. |
-| `searchable` | `boolean` | no | `true` | When true, shows a search/filter input. |
+| `searchable` | `boolean` | no | `true` | When true the field is a text input that filters the list as the user types (the APG editable combobox). When false it is a button that opens the list, and type-to-select jumps to a matching option (the APG select-only combobox). |
+| `loading` | `boolean` | no | `false` | When true, the list reports itself as busy and shows a loading row instead of the empty message. |
+| `onSearchChange` | `(query: string) => void` | no | — | Called with the search text on every keystroke. Pair it with filter={() => true} for a server-driven list. |
+| `filter` | `(option: ComboboxOption, query: string) => boolean` | no | — | Replaces the built-in diacritic-insensitive matcher. |
+| `creatable` | `boolean` | no | `false` | When true, offers the current search text as a new option. |
+| `onCreate` | `(label: string) => void` | no | — | Called with the typed label when the user picks the "create" row. |
+| `name` | `string` | no | — | Submitted with a surrounding form — a hidden input carrying the selected value. |
+| `required` | `boolean` | no | — | Marks the control as required for assistive technology. |
+| `open` | `boolean` | no | — | Controlled open state of the listbox. |
+| `defaultOpen` | `boolean` | no | `false` | The initial open state when uncontrolled. |
+| `onOpenChange` | `(open: boolean) => void` | no | — | Called when the listbox opens or closes. |
 | `label` | `string` | no | — | Text label for the control. Rendered on screen. |
 | `hint` | `string` | no | — | Supplementary hint text shown with the control. |
 | `error` | `string` | no | — | Error message shown when the value is invalid. |
@@ -6930,6 +7003,30 @@ import { Combobox } from '@cascivo/react'
 | `ariaLabel` | `string` | no | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
 ## Examples
+
+### Grouped options
+
+Options carrying a group render under a labelled role="group" heading.
+
+```tsx
+<Combobox options={[{value:'de',label:'Germany',group:'Europe'},{value:'jp',label:'Japan',group:'Asia'}]} />
+```
+
+### Remote search
+
+filter={() => true} hands filtering to the server; loading marks the list busy between keystroke and response.
+
+```tsx
+<Combobox options={results} loading={pending} onSearchChange={search} filter={() => true} />
+```
+
+### Select-only
+
+A button rather than a text field; printable characters type-to-select, and Home/End jump the list.
+
+```tsx
+<Combobox options={options} searchable={false} />
+```
 
 ### Basic combobox
 
@@ -6962,18 +7059,22 @@ Required. The component's primary job needs client JavaScript, so do not render 
 - `--cascivo-color-text-subtle`
 - `--cascivo-color-accent`
 - `--cascivo-color-destructive`
-- `--cascivo-radius-input`
-- `--cascivo-radius-md`
-- `--cascivo-radius-sm`
-- `--cascivo-shadow-lg`
+- `--cascivo-font-medium`
+- `--cascivo-font-bold`
+- `--cascivo-radius-field`
+- `--cascivo-radius-overlay`
+- `--cascivo-radius-item`
+- `--cascivo-radius-control`
+- `--cascivo-shadow-overlay`
 - `--cascivo-motion-enter`
 - `--cascivo-z-dropdown`
+- `--cascivo-target-min-coarse`
 
 ## Accessibility
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `combobox`
-- **Keyboard:** ArrowDown, ArrowUp, Enter, Escape, Tab
+- **Keyboard:** ArrowDown, ArrowUp, Home, End, PageUp, PageDown, Enter, Space, Escape, Tab
 
 ## Dependencies
 
@@ -6986,7 +7087,7 @@ select, combobox, dropdown, filter, search
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -7131,7 +7232,7 @@ overlay, command, palette, search, cmdk, keyboard, scope, fuzzy
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -7226,7 +7327,7 @@ comparison, before-after, image, slider, display
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -7314,7 +7415,7 @@ list, container, rows, group
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -7403,7 +7504,7 @@ overlay, menu, context, right-click
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -7503,7 +7604,7 @@ clipboard, copy, button, snippet
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -7543,10 +7644,11 @@ import { DataList } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `items` | `{ id?: string; label: ReactNode; value: ReactNode }[]` | yes | — | The items to render. |
+| `items` | `DataListEntry[]` | no | — | The label/value pairs to render. Optional: pass `<DataListItem label="…">value</DataListItem>` children instead when a value needs surrounding JSX. |
 | `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Where each value sits relative to its own label: 'horizontal' beside it, 'vertical' underneath. Items are stacked vertically in both modes — this does not change the list's own axis. |
 | `dividers` | `boolean` | no | `false` | When true, shows dividers between items. |
 | `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `children` | `ReactNode` | no | — | `<DataListItem>` rows, as an alternative to `items`. |
 
 ## Examples
 
@@ -7612,7 +7714,7 @@ key-value, description, metadata, details
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -7996,7 +8098,7 @@ table, data, grid, sort, filter, pagination, selection
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -8046,6 +8148,14 @@ import { DatePicker } from '@cascivo/react'
 | `min` | `string` | no | — | Minimum ISO date |
 | `max` | `string` | no | — | Maximum ISO date |
 | `clearable` | `boolean` | no | `false` | Shows a clear button |
+| `typeable` | `boolean` | no | `true` | When true, the field accepts a typed date as well as one picked from the calendar. |
+| `disabledDate` | `(date: Date) => boolean` | no | — | Rejects individual dates the bounds allow — holidays, weekends, taken slots. |
+| `format` | `Intl.DateTimeFormatOptions` | no | — | Formatting options for the displayed date. Defaults to the locale's numeric form. |
+| `showToday` | `boolean` | no | `false` | When true, the calendar offers a button that jumps to the current month. |
+| `name` | `string` | no | — | Submitted with a surrounding form — a hidden input carrying the ISO value. |
+| `required` | `boolean` | no | — | Marks the control as required for assistive technology. |
+| `open` | `boolean` | no | — | Controlled open state of the calendar popup. |
+| `onOpenChange` | `(open: boolean) => void` | no | — | Called when the popup opens or closes. |
 | `label` | `string` | no | — | Visible field label rendered above the input; it also names the control. Rendered on screen. |
 | `hint` | `string` | no | — | Hint text |
 | `error` | `string` | no | — | Error message |
@@ -8107,7 +8217,7 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `combobox`
-- **Keyboard:** Enter, Space, Escape, ArrowUp, ArrowDown, ArrowLeft, ArrowRight
+- **Keyboard:** ArrowDown, ArrowUp, ArrowLeft, ArrowRight, Home, End, PageUp, PageDown, Enter, Space, Escape, Delete
 
 ## Dependencies
 
@@ -8120,7 +8230,7 @@ date, calendar, picker, input, form
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -8228,7 +8338,7 @@ date, range, calendar, picker, input, form
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -8335,7 +8445,7 @@ dock, tab-bar, bottom-nav, mobile, navigation, app-shell
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -8433,7 +8543,7 @@ overlay, drawer, panel, slide, dialog
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -8532,7 +8642,7 @@ overlay, menu, actions
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -8624,7 +8734,7 @@ form, editable, inline, input, text
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -8749,6 +8859,8 @@ Required. The component's primary job needs client JavaScript, so do not render 
 - `--cascivo-editor-gutter-bg`
 - `--cascivo-editor-gutter-fg`
 - `--cascivo-editor-gutter-active`
+- `--cascivo-editor-gutter-width`
+- `--cascivo-editor-gutter-gap`
 - `--cascivo-editor-current-line`
 - `--cascivo-editor-selection`
 - `--cascivo-editor-border`
@@ -8773,7 +8885,7 @@ editor, code, syntax-highlighting, textarea, inputs
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -8810,7 +8922,7 @@ import '@cascivo/editor/styles.css' // bundler: automatic. Needed only for no-bu
 | `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `label` | `string` | no | — | Accessible label for the code block. Not rendered — screen readers only. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
-| `gutterRef` | `Ref<HTMLDivElement>` | no | — | Ref to the gutter column (used by `CodeEditor` for scroll-sync). |
+| `gutterRef` | `Ref<HTMLDivElement>` | no | — | Ref to the line-number gutter's backdrop strip. |
 | `preRef` | `Ref<HTMLPreElement>` | no | — | Ref to the scrollable `<pre>` (used by `CodeEditor` for scroll-sync). |
 
 ## Examples
@@ -8834,6 +8946,8 @@ Enhancement only. The component still does its job with JavaScript disabled — 
 - `--cascivo-editor-fg`
 - `--cascivo-editor-gutter-bg`
 - `--cascivo-editor-gutter-fg`
+- `--cascivo-editor-gutter-width`
+- `--cascivo-editor-gutter-gap`
 - `--cascivo-editor-border`
 
 ## Accessibility
@@ -8853,7 +8967,7 @@ editor, code, syntax-highlighting, display, read-only
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -8935,7 +9049,7 @@ empty, placeholder, zero-state, no-data
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -9047,7 +9161,7 @@ inputs, fab, floating-action-button, mobile, speed-dial
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -9142,7 +9256,7 @@ form, layout, validation, accessibility
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -9228,9 +9342,10 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-subtle`
-- `--cascivo-color-success`
+- `--cascivo-color-success-foreground`
 - `--cascivo-color-destructive`
 - `--cascivo-color-destructive-subtle`
+- `--cascivo-target-min-coarse`
 
 ## Accessibility
 
@@ -9249,7 +9364,7 @@ upload, file, drop, drag, input, form
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -9375,7 +9490,7 @@ filter, chip, tag, pill, facet, category
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -9534,7 +9649,7 @@ flow, graph, declarative, diagram, ai-first
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -9629,7 +9744,7 @@ flow, background, grid, dots, canvas
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -9751,7 +9866,7 @@ flow, canvas, viewport, pan, zoom
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -9827,7 +9942,7 @@ flow, controls, zoom, chrome
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -9941,7 +10056,7 @@ flow, edge, connector, animated, svg
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -10029,7 +10144,7 @@ flow, handle, port, connect
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -10141,7 +10256,7 @@ flow, minimap, overview, chrome
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -10241,7 +10356,7 @@ flow, node, draggable, graph
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -10309,7 +10424,7 @@ flow, panel, slot, chrome
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -10484,7 +10599,7 @@ flow, animation, storyline, walkthrough, sequence
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -10574,7 +10689,7 @@ form, validation, signals, input
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -10667,7 +10782,7 @@ navigation, app-shell, top-bar, banner
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -10751,7 +10866,7 @@ navigation, panel, shell, console, overlay, notifications
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -10846,7 +10961,7 @@ typography, heading, title
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -10937,7 +11052,7 @@ overlay, hover, preview, floating
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -11046,7 +11161,7 @@ action, icon, compact, toolbar
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -11148,7 +11263,7 @@ image, media, display, loading
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -11224,7 +11339,7 @@ badge, indicator, overlay, notification, layout
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -11325,7 +11440,7 @@ feedback, infinite-scroll, pagination, list, scroll, mobile, lazy
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -11414,7 +11529,7 @@ loading, status, progress, feedback, spinner
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -11507,7 +11622,7 @@ form, text, input
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -11593,7 +11708,7 @@ form, input, addon, group, layout
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -11689,7 +11804,7 @@ row, primitive, list-item, layout
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -11764,7 +11879,7 @@ group, join, segmented, layout
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -11850,7 +11965,7 @@ keyboard, shortcut, hotkey
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -11945,7 +12060,7 @@ form, caption, accessibility
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -12060,7 +12175,7 @@ navigation, header, title, mobile, scroll, sticky, ios
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -12148,7 +12263,7 @@ layout, shell, sidebar, navigation
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -12216,7 +12331,7 @@ layout, auth, login, page
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -12282,7 +12397,7 @@ layout, grid, responsive
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -12347,7 +12462,7 @@ layout, center, wrapper
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -12413,7 +12528,7 @@ layout, grid, columns
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -12477,7 +12592,7 @@ layout, dashboard, page
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -12512,6 +12627,9 @@ import { Flex } from '@cascivo/react'
 | `align` | `'start'\|'center'\|'end'\|'stretch'` | no | — | align-items |
 | `justify` | `'start'\|'center'\|'end'\|'between'` | no | — | justify-content |
 | `wrap` | `boolean` | no | `false` | Allow wrapping |
+| `size` | `'auto' \| 'fixed' \| 'grow' \| 'shrink'` | no | `auto` | FlexItem: main-axis sizing. 'fixed' (flex: 0 0 auto) is what a fixed-width child like Sparkline needs; 'grow' takes the leftover width without shrinking; 'shrink' gives way but never grows. |
+| `basis` | `string` | no | — | FlexItem: flex-basis — the child's size before free space is distributed. Any CSS length. |
+| `truncate` | `boolean` | no | `false` | FlexItem: allow the child to shrink below its content width (releases the flex item's `min-width: auto` floor and ellipsizes). Without it a long unbreakable string pushes its siblings out of the row. |
 
 ## Examples
 
@@ -12529,6 +12647,28 @@ Row layout
 
 ```tsx
 <Flex direction="horizontal" gap={2}><div>A</div><div>B</div></Flex>
+```
+
+### Toolbar: one field absorbs the row, the rest keep their width
+
+Without FlexItem the Search takes the whole row and pushes the Select onto the next line
+
+```tsx
+<Flex direction="horizontal" gap={2}>
+  <FlexItem size="grow" basis="0"><Search ariaLabel="Filter deployments" /></FlexItem>
+  <FlexItem size="fixed"><Select options={states} ariaLabel="State" /></FlexItem>
+</Flex>
+```
+
+### Protecting a fixed-width child
+
+Sparkline is fixed-width and will not shrink; `size="fixed"` keeps it out of flex sizing, `truncate` lets the URL beside it ellipsize instead of pushing it out
+
+```tsx
+<Flex direction="horizontal" gap={3} align="center">
+  <FlexItem truncate>{deployment.url}</FlexItem>
+  <FlexItem size="fixed"><Sparkline data={points} label="Requests" /></FlexItem>
+</Flex>
 ```
 
 ## Client JavaScript
@@ -12554,7 +12694,7 @@ layout, flex, stack, spacing
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -12640,7 +12780,7 @@ layout, grid, columns
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -12702,7 +12842,7 @@ layout, masonry, gallery
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -12777,7 +12917,7 @@ layout, header, page
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -12839,7 +12979,7 @@ layout, section, page
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -12901,7 +13041,7 @@ layout, settings, page
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -12966,7 +13106,7 @@ layout, spacer, spacing
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -13037,7 +13177,7 @@ layout, split, resizable, pane
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -13136,7 +13276,7 @@ link, anchor, navigation
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -13225,7 +13365,7 @@ typography, list, ul, ol
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -13269,6 +13409,7 @@ import { LogViewer } from '@cascivo/react'
 | `ansi` | `boolean` | no | `false` | When true, parses ANSI color escape codes into colored spans. |
 | `search` | `string` | no | — | Query used to filter and highlight matching lines. |
 | `maxHeight` | `string` | no | `'24rem'` | Maximum height of the scroll viewport (CSS length). |
+| `timestampWidth` | `string` | no | `'6.5rem'` | Width of the `LogLine.timestamp` gutter (CSS length). Widen it for an ISO stamp, narrow it for a relative offset. |
 | `labels` | `LogViewerLabels` | no | — | Overrides for the component’s user-visible strings (i18n). |
 
 ## Examples
@@ -13293,6 +13434,14 @@ const logs = useStreamBuffer<LogLine>({ capacity: 1000 })
 
 ```tsx
 <LogViewer ansi lines={ansiLines} maxHeight="32rem" />
+```
+
+### Timestamped build log
+
+Pass the clock as `timestamp`, not prefixed into `text` — the gutter is dimmed, column-aligned, and excluded from search and copy
+
+```tsx
+<LogViewer lines={[{ id: 1, timestamp: "08:59:12", text: "Build started" }, { id: 2, timestamp: "08:59:41", text: "Type error", level: "error" }]} />
 ```
 
 ## Client JavaScript
@@ -13332,7 +13481,7 @@ log, stream, virtual, console, terminal, monospace
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -13422,7 +13571,7 @@ overlay, menu, dropdown, floating
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -13547,7 +13696,7 @@ navigation, menu, actions, dropdown, floating
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -13625,7 +13774,7 @@ navigation, menubar, menu, application
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -13714,13 +13863,13 @@ overlay, dialog, popup
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
 # MultiSelect
 
-Searchable multi-value select with popover listbox
+Searchable multi-value select with a popover listbox, chips and grouping
 
 ## Install
 
@@ -13740,28 +13889,88 @@ import { MultiSelect } from '@cascivo/react'
 
 `inputs`
 
+## Sizes
+
+- `sm`
+- `md`
+- `lg`
+
 ## States
 
 - `closed`
 - `open`
+- `error`
 
 ## Props
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `options` | `MultiSelectOption[]` | yes | — | The selectable options. |
-| `value` | `string[]` | yes | — | The controlled value. |
-| `onValueChange` | `(v: string[]) => void` | yes | — | Called with the new value when it changes. |
+| `value` | `string[]` | no | — | The controlled value. Omit it and pass defaultValue to let the component own the selection. |
+| `defaultValue` | `string[]` | no | `[]` | The initial value when uncontrolled. |
+| `onValueChange` | `(value: string[]) => void` | no | — | Called with the new value when it changes. |
 | `placeholder` | `string` | no | — | Placeholder text shown when the field is empty. |
+| `label` | `string` | no | — | Visible field label, rendered above the trigger. Rendered on screen. |
+| `ariaLabel` | `string` | no | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. Not rendered — screen readers only. |
+| `aria-labelledby` | `string` | no | — | Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it. |
+| `aria-describedby` | `string` | no | — | Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced. |
+| `aria-invalid` | `boolean` | no | — | Wired automatically by a wrapping `Field` when it is in an error state. |
+| `hint` | `string` | no | — | Helper text below the field. |
+| `error` | `string` | no | — | Error text below the field; also marks the control invalid. |
+| `display` | `'count' \| 'chips'` | no | `'count'` | How the trigger summarises the selection: a count, or one removable chip per value. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `clearable` | `boolean` | no | `false` | When true, shows a control that clears every selected value. |
+| `selectAll` | `boolean` | no | `false` | When true, shows a row that selects or clears every enabled option at once. |
+| `max` | `number` | no | — | Maximum number of values that may be selected. Further options become unselectable once reached. |
+| `creatable` | `boolean` | no | `false` | When true, offers the current search text as a new option. |
+| `onCreate` | `(label: string) => void` | no | — | Called with the typed label when the user picks the "create" row. |
+| `loading` | `boolean` | no | `false` | When true, the list reports itself as busy and shows a loading row instead of the no-results message. |
+| `onSearchChange` | `(query: string) => void` | no | — | Called with the search text on every keystroke. Pair it with filter={() => true} for a server-driven list. |
+| `filter` | `(option: MultiSelectOption, query: string) => boolean` | no | — | Replaces the built-in diacritic-insensitive matcher. |
+| `searchable` | `boolean` | no | `true` | When true, shows the search field. The list is keyboard-navigable either way. |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | `'md'` | Field height. |
+| `name` | `string` | no | — | Submitted with a surrounding form — one hidden input per selected value. |
 | `labels` | `MultiSelectLabels` | no | — | Overrides for the component’s user-visible strings (i18n). |
+| `id` | `string` | no | — | Id for the trigger control. |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<MultiSelect options={[{label:'One',value:'1'},{label:'Two',value:'2'}]} value={[]} onValueChange={() => {}} />
+<MultiSelect options={[{label:'One',value:'1'},{label:'Two',value:'2'}]} defaultValue={[]} />
+```
+
+### Chips with a clear control
+
+Each selection renders as a chip with its own remove button.
+
+```tsx
+<MultiSelect options={options} display="chips" clearable defaultValue={['1']} />
+```
+
+### Grouped options
+
+Options carrying a group render under a labelled role="group" heading.
+
+```tsx
+<MultiSelect options={[{label:'Apple',value:'a',group:'Pome'},{label:'Cherry',value:'c',group:'Stone'}]} />
+```
+
+### Remote search
+
+filter={() => true} hands filtering to the server; loading marks the list busy between keystroke and response.
+
+```tsx
+<MultiSelect options={results} loading={pending} onSearchChange={search} filter={() => true} />
+```
+
+### Bounded selection
+
+Options past the limit report aria-disabled; select-all stops at the limit.
+
+```tsx
+<MultiSelect options={options} max={3} selectAll />
 ```
 
 ## Client JavaScript
@@ -13771,19 +13980,29 @@ Required. The component's primary job needs client JavaScript, so do not render 
 ## Design tokens
 
 - `--cascivo-color-surface`
+- `--cascivo-color-bg-subtle`
 - `--cascivo-color-border`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
 - `--cascivo-color-accent`
-- `--cascivo-radius-input`
-- `--cascivo-radius-md`
+- `--cascivo-color-destructive`
+- `--cascivo-font-medium`
+- `--cascivo-font-bold`
+- `--cascivo-radius-field`
+- `--cascivo-radius-overlay`
+- `--cascivo-radius-item`
+- `--cascivo-radius-indicator`
 - `--cascivo-shadow-md`
 - `--cascivo-focus-ring`
 - `--cascivo-motion-enter`
+- `--cascivo-target-min-coarse`
 
 ## Accessibility
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `listbox`
-- **Keyboard:** ArrowDown, ArrowUp, Space, Enter, Escape
+- **Keyboard:** ArrowDown, ArrowUp, Home, End, PageUp, PageDown, Enter, Space, Escape, Backspace
 
 ## Dependencies
 
@@ -13792,11 +14011,11 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 ## Tags
 
-form, select, multi, input, popover
+form, select, multi, input, popover, combobox, tags
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -13918,7 +14137,7 @@ inputs, select, native, form, dropdown
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -13998,7 +14217,7 @@ navigation, menu, flyout, site-nav
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -14096,7 +14315,7 @@ notification, banner, message, feedback, actionable
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -14207,7 +14426,7 @@ form, number, input, spinbutton, stepper
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -14294,7 +14513,7 @@ form, otp, code, input, verification
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -14389,7 +14608,7 @@ overlay, menu, actions, kebab, table
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -14483,7 +14702,7 @@ pagination, navigation, table, data, pages
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -14578,7 +14797,7 @@ form, password, input, security
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -14670,7 +14889,7 @@ overlay, floating, anchor, popover
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -14780,7 +14999,7 @@ progress, loading, upload, bar
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -14883,7 +15102,7 @@ progress, loading, status, feedback
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -14971,7 +15190,7 @@ progress, loading, circle, feedback
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -15063,7 +15282,7 @@ steps, wizard, stepper, progress, navigation
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -15150,7 +15369,7 @@ typography, prose, content, markdown, article
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -15241,7 +15460,7 @@ feedback, pull-to-refresh, mobile, gesture, scroll, refresh
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -15328,7 +15547,7 @@ qr, qr-code, barcode, encode, display
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -15434,7 +15653,7 @@ progress, circular, gauge, meter, kpi, dashboard
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -15512,7 +15731,7 @@ form, choice, group
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -15595,7 +15814,7 @@ radio, card, selectable, form
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -15686,7 +15905,7 @@ form, rating, stars, input, feedback
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -15773,7 +15992,7 @@ time, date, relative, i18n, display
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -15881,7 +16100,7 @@ inputs, reorder, sortable, drag, list, mobile, keyboard
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -15969,7 +16188,7 @@ splitter, panes, layout, resize, divider
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -16053,7 +16272,7 @@ scroll, overflow, scrollbar, container, layout
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -16109,7 +16328,7 @@ import { Search } from '@cascivo/react'
 | `aria-labelledby` | `string` | no | — | Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it. |
 | `aria-describedby` | `string` | no | — | Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced. |
 | `aria-invalid` | `boolean` | no | — | Wired automatically by a wrapping `Field` when it is in an error state. |
-| `ariaLabel` | `string` | no | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
+| `ariaLabel` | `string` | no | — | Accessible name set through `aria-label` instead of a rendered `<label>` element. ⚠ On Search **both** props give an invisible name — `label` renders a real `<label>` the stylesheet visually hides. They differ in mechanism, not in what you see: use `ariaLabel` when a visible element outside the component already names the field, `label` otherwise. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
 ## Examples
 
@@ -16165,7 +16384,7 @@ search, input, filter, form
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -16235,7 +16454,7 @@ section, cta, marketing
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -16317,7 +16536,7 @@ section, features, grid
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -16403,7 +16622,7 @@ section, hero, marketing
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -16473,7 +16692,7 @@ section, gallery, masonry
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -16551,7 +16770,7 @@ section, footer, navigation
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -16631,7 +16850,7 @@ section, stats, kpi, charts
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -16678,6 +16897,8 @@ import { SegmentedControl } from '@cascivo/react'
 | `onValueChange` | `(v: string) => void` | yes | — | Called with the new value when it changes. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `ariaLabel` | `string` | no | — | Accessible name for the group. Invisible — it names the role="group" and renders nothing. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
+| `label` | `string` | no | — | Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered. Not rendered — screen readers only. |
 
 ## Examples
 
@@ -16717,7 +16938,7 @@ form, toggle, group, segmented, input
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -16811,7 +17032,7 @@ form, dropdown, menu
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -16881,7 +17102,7 @@ divider, rule, layout
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -16970,7 +17191,7 @@ overlay, drawer, panel, slide
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -17116,7 +17337,7 @@ navigation, header, shell, console, menu, app-shell
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -17162,8 +17383,8 @@ import { SideNav } from '@cascivo/react'
 | `collapseLabel` | `string` | no | `Collapse navigation` | Accessible label for the collapse control. |
 | `expandLabel` | `string` | no | `Expand navigation` | Accessible label for the expand control. |
 | `expandOnHover` | `boolean` | no | `false` | Widens the rail as an overlay on hover/focus-within; suppresses tooltips/flyouts |
-| `header` | `ReactNode` | no | — | Content rendered above the items, inside the item padding context (e.g. app-context pickers) |
-| `footer` | `ReactNode` | no | — | Content rendered above the collapse toggle, inside the item padding context so it lines up with the nav items (e.g. version string, user info) |
+| `header` | `ReactNode \| ((ctx: SideNavSlotContext) => ReactNode)` | no | — | Content rendered above the items, inside the item padding context (e.g. app-context pickers). Pass a `({ collapsed }) => …` function to shrink it to a rail icon. |
+| `footer` | `ReactNode \| ((ctx: SideNavSlotContext) => ReactNode)` | no | — | Content rendered above the collapse toggle, inside the item padding context so it lines up with the nav items (e.g. version string, user info). Pass a `({ collapsed }) => …` function to shrink it to a rail icon. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
@@ -17240,7 +17461,7 @@ navigation, sidebar, app-shell, collapsible
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -17328,7 +17549,7 @@ loading, placeholder, shimmer
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -17407,7 +17628,7 @@ accessibility, skip-link, keyboard, navigation
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -17488,7 +17709,7 @@ form, range, input
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -17566,7 +17787,7 @@ loading, progress, feedback
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -17633,7 +17854,7 @@ stack, pile, overlap, layered, z-axis, card-pile, layout
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -17727,7 +17948,7 @@ stat, kpi, metric, number
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -17819,7 +18040,7 @@ status, indicator, dot, badge
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -17961,7 +18182,7 @@ steps, wizard, stepper, progress, navigation, onboarding, checkout
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -18055,7 +18276,7 @@ display, list, table, data
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -18150,7 +18371,7 @@ toggle, icon, animate, switch, flip, rotate
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -18247,7 +18468,7 @@ display, swipe, list, mobile, gesture, actions
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -18333,7 +18554,7 @@ navigation, switcher, shell, console, app-switcher
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -18408,7 +18629,7 @@ navigation, tabs, sections
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -18514,7 +18735,7 @@ chip, label, filter, category
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -18600,7 +18821,7 @@ form, tags, chips, multi, input
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -18712,7 +18933,7 @@ typography, text, paragraph, body
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -18801,7 +19022,7 @@ form, text, multiline
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -18907,7 +19128,7 @@ inputs, tile, card, selectable, choice
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -19004,7 +19225,7 @@ time, input, form
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -19108,7 +19329,7 @@ timeline, steps, history, progress, events
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -19195,7 +19416,7 @@ overlay, notification, feedback
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -19278,7 +19499,7 @@ toc, table-of-contents, navigation, scroll-spy, anchor
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -19368,7 +19589,7 @@ switch, form, boolean
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -19470,7 +19691,7 @@ selection, segmented, toolbar, choice
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -19574,7 +19795,7 @@ overlay, toggletip, info, popover, floating
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -19649,7 +19870,7 @@ overlay, hint, popover
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -19699,6 +19920,7 @@ import { TreeView } from '@cascivo/react'
 | `selected` | `string \| string[]` | no | — | The controlled selected node id(s). |
 | `defaultSelected` | `string \| string[]` | no | — | The initially selected node id(s) when uncontrolled. |
 | `onSelectChange` | `(selected: string \| string[]) => void` | no | — | Called with the new selection when it changes. |
+| `onValueChange` | `(selected: string \| string[]) => void` | no | — | Called with the new selection. Preferred over `onSelectChange`, which is the catalog’s only value-carrying handler not named onValueChange and is deprecated. |
 | `expanded` | `string[]` | no | — | The controlled set of expanded node ids. |
 | `defaultExpanded` | `string[]` | no | — | The initially expanded node ids when uncontrolled. |
 | `onExpandedChange` | `(expanded: string[]) => void` | no | — | Called with the new expanded set when it changes. |
@@ -19737,7 +19959,7 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `tree`
-- **Keyboard:** ArrowDown, ArrowUp, ArrowRight, ArrowLeft, Home, End, Enter, Space, Typeahead
+- **Keyboard:** *, ArrowDown, ArrowUp, ArrowRight, ArrowLeft, Home, End, Enter, Space, Typeahead
 
 ## Dependencies
 
@@ -19750,7 +19972,7 @@ display, tree, hierarchy, navigation, files
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -19829,7 +20051,7 @@ user, avatar, identity, display
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -19920,7 +20142,7 @@ display, virtual, virtualization, list, performance, scroll
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -19987,7 +20209,7 @@ accessibility, screen-reader, sr-only, hidden
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -20110,6 +20332,6 @@ inputs, picker, wheel, drum, scroll-snap, mobile, ios
 
 ---
 
-_Generated from registry v1.0.0 on 2026-08-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
-_Generated: 2026-08-29 from registry v1.0.0_
+_Generated: 2026-09-16 from registry v1.3.0_
