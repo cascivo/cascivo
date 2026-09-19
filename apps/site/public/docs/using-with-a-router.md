@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/using-with-a-router.md
-  registry v1.3.0 · generated 2026-09-16
+  registry v1.3.1 · generated 2026-09-19
 -->
 
 # Using cascivo with a router (TanStack Router, React Router, Next.js)

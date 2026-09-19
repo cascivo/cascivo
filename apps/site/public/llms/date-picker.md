@@ -126,4 +126,4 @@ date, calendar, picker, input, form
 
 ---
 
-_Generated from registry v1.3.0 on 2026-09-16. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.3.1 on 2026-09-19. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

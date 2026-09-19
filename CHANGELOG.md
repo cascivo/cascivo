@@ -9,25 +9,25 @@ history: [breaking-changes.json](https://cascivo.com/breaking-changes.json).
 
 | Package                  | Version | Latest feature release                                                                   | Changelog                                        |
 | ------------------------ | ------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| `@cascivo/ai`            | 1.3.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/ai/CHANGELOG.md)            |
-| `@cascivo/charts`        | 1.3.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/charts/CHANGELOG.md)        |
-| `cascivo`                | 1.2.1   | 1.2.0 — Email: a publishable preview, responsive layout primitives, and `cascivo email l | [CHANGELOG](packages/cli/CHANGELOG.md)           |
-| `@cascivo/core`          | 1.3.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/core/CHANGELOG.md)          |
-| `@cascivo/docs`          | 0.2.10  | 0.2.0 — Ship the entire docs surface as an npm package so it's reachable with no website | [CHANGELOG](packages/docs/CHANGELOG.md)          |
-| `@cascivo/docspack`      | 0.2.4   | 0.2.0 — New package: `@cascivo/docspack` — cascivo's documentation in the [docspack](htt | [CHANGELOG](packages/docspack/CHANGELOG.md)      |
-| `@cascivo/editor`        | 1.3.0   | 1.3.0 — Editor: line numbers, the current-line highlight and the left gutter all survive | [CHANGELOG](packages/editor/CHANGELOG.md)        |
-| `@cascivo/email`         | 0.4.0   | 0.4.0 — Email: a button really does follow its cell now, and the preview can render your | [CHANGELOG](packages/email/CHANGELOG.md)         |
+| `@cascivo/ai`            | 1.3.1   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/ai/CHANGELOG.md)            |
+| `@cascivo/charts`        | 1.3.1   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/charts/CHANGELOG.md)        |
+| `cascivo`                | 1.3.0   | 1.3.0 — `create` gains `--framework astro`, alongside the default `react-vite`.          | [CHANGELOG](packages/cli/CHANGELOG.md)           |
+| `@cascivo/core`          | 1.3.1   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/core/CHANGELOG.md)          |
+| `@cascivo/docs`          | 0.2.11  | 0.2.0 — Ship the entire docs surface as an npm package so it's reachable with no website | [CHANGELOG](packages/docs/CHANGELOG.md)          |
+| `@cascivo/docspack`      | 0.2.5   | 0.2.0 — New package: `@cascivo/docspack` — cascivo's documentation in the [docspack](htt | [CHANGELOG](packages/docspack/CHANGELOG.md)      |
+| `@cascivo/editor`        | 1.3.1   | 1.3.0 — Editor: line numbers, the current-line highlight and the left gutter all survive | [CHANGELOG](packages/editor/CHANGELOG.md)        |
+| `@cascivo/email`         | 0.4.1   | 0.4.0 — Email: a button really does follow its cell now, and the preview can render your | [CHANGELOG](packages/email/CHANGELOG.md)         |
 | `@cascivo/email-preview` | 2.0.0   | 2.0.0 — Email: a button really does follow its cell now, and the preview can render your | [CHANGELOG](packages/email-preview/CHANGELOG.md) |
 | `@cascivo/eslint-config` | 0.4.1   | 0.4.0 — Enforce the styling contract: a `--cascivo-*` token or `data-cascivo-*` hook tha | [CHANGELOG](packages/eslint-config/CHANGELOG.md) |
 | `@cascivo/eslint-plugin` | 0.2.1   | 0.2.0 — Enforce the styling contract: a `--cascivo-*` token or `data-cascivo-*` hook tha | [CHANGELOG](packages/eslint-plugin/CHANGELOG.md) |
-| `@cascivo/flow`          | 1.3.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/flow/CHANGELOG.md)          |
-| `@cascivo/i18n`          | 1.3.0   | 1.1.0 — `ColorPicker`'s picking area returned a colour different from the one under the  | [CHANGELOG](packages/i18n/CHANGELOG.md)          |
+| `@cascivo/flow`          | 1.3.1   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/flow/CHANGELOG.md)          |
+| `@cascivo/i18n`          | 1.3.1   | 1.1.0 — `ColorPicker`'s picking area returned a colour different from the one under the  | [CHANGELOG](packages/i18n/CHANGELOG.md)          |
 | `@cascivo/icons`         | 1.1.0   | 1.1.0 — Act on the 2026-08-31 deploy-console experience report — a collapsible rail that | [CHANGELOG](packages/icons/CHANGELOG.md)         |
 | `@cascivo/mcp`           | 0.7.2   | 0.7.0 — One accessible-name spelling that always works, plus foreign component names tha | [CHANGELOG](packages/mcp/CHANGELOG.md)           |
 | `@cascivo/platform`      | 0.0.5   | —                                                                                        | [CHANGELOG](packages/platform/CHANGELOG.md)      |
-| `@cascivo/react`         | 1.3.0   | 1.2.0 — Enforce the styling contract: a `--cascivo-*` token or `data-cascivo-*` hook tha | [CHANGELOG](packages/react/CHANGELOG.md)         |
+| `@cascivo/react`         | 1.3.1   | 1.2.0 — Enforce the styling contract: a `--cascivo-*` token or `data-cascivo-*` hook tha | [CHANGELOG](packages/react/CHANGELOG.md)         |
 | `@cascivo/registry`      | 0.2.10  | 0.2.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                       | [CHANGELOG](packages/registry/CHANGELOG.md)      |
-| `@cascivo/storage`       | 1.3.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/storage/CHANGELOG.md)       |
+| `@cascivo/storage`       | 1.3.1   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/storage/CHANGELOG.md)       |
 | `@cascivo/themes`        | 1.0.0   | 1.0.0 — Join the `1.x` line.                                                             | [CHANGELOG](packages/themes/CHANGELOG.md)        |
 | `@cascivo/tokens`        | 1.1.1   | 1.1.0 — Enforce the styling contract: a `--cascivo-*` token or `data-cascivo-*` hook tha | [CHANGELOG](packages/tokens/CHANGELOG.md)        |
 | `@cascivo/vite-plugin`   | 0.1.10  | 0.1.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                       | [CHANGELOG](packages/vite-plugin/CHANGELOG.md)   |
