@@ -33,17 +33,17 @@ Static lists use table/row/cell roles so columns are announced; selectable lists
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `string` | No | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
-| `ariaLabel` | `string` | No | — | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. Not rendered — screen readers only. |
-| `aria-label` | `string` | No | — | Accessible label for the list table. |
-| `items` | `{ id: string; cells: ReactNode[]; selected?: boolean }[]` | Yes | — | The items to render. |
-| `headers` | `ReactNode[]` | No | — | The column header cells. |
-| `selectable` | `boolean` | No | false | When true, rows can be selected. |
-| `value` | `string` | No | — | The controlled value. |
-| `defaultValue` | `string` | No | — | The initial value when uncontrolled. |
-| `onSelect` | `(id: string) => void` | No | — | Called with the selected value. |
+| Name           | Type                                                       | Required | Default | Description                                                                                                                                                            |
+| -------------- | ---------------------------------------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`        | `string`                                                   | No       | —       | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only.                         |
+| `ariaLabel`    | `string`                                                   | No       | —       | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. Not rendered — screen readers only. |
+| `aria-label`   | `string`                                                   | No       | —       | Accessible label for the list table.                                                                                                                                   |
+| `items`        | `{ id: string; cells: ReactNode[]; selected?: boolean }[]` | Yes      | —       | The items to render.                                                                                                                                                   |
+| `headers`      | `ReactNode[]`                                              | No       | —       | The column header cells.                                                                                                                                               |
+| `selectable`   | `boolean`                                                  | No       | false   | When true, rows can be selected.                                                                                                                                       |
+| `value`        | `string`                                                   | No       | —       | The controlled value.                                                                                                                                                  |
+| `defaultValue` | `string`                                                   | No       | —       | The initial value when uncontrolled.                                                                                                                                   |
+| `onSelect`     | `(id: string) => void`                                     | No       | —       | Called with the selected value.                                                                                                                                        |
 
 ## Tokens
 
@@ -60,21 +60,29 @@ Static lists use table/row/cell roles so columns are announced; selectable lists
 ### Static
 
 ```jsx
-<StructuredList headers={["Name", "Role"]} items={[{ id: "a", cells: ["Ada", "Engineer"] }]} />
+<StructuredList headers={['Name', 'Role']} items={[{ id: 'a', cells: ['Ada', 'Engineer'] }]} />
 ```
 
 ### Selectable
 
 ```jsx
-<StructuredList selectable defaultValue="a" items={[{ id: "a", cells: ["Ada"] }, { id: "b", cells: ["Grace"] }]} onSelect={(id) => set(id)} />
+<StructuredList
+  selectable
+  defaultValue="a"
+  items={[
+    { id: 'a', cells: ['Ada'] },
+    { id: 'b', cells: ['Grace'] },
+  ]}
+  onSelect={(id) => set(id)}
+/>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
+| Area       | Level    | Note                                                                                |
+| ---------- | -------- | ----------------------------------------------------------------------------------- |
 | selectable | flexible | Toggle selectable based on whether the list is interactive or purely presentational |
-| roles | strict | Static uses table semantics; selectable uses radiogroup — do not mix |
+| roles      | strict   | Static uses table semantics; selectable uses radiogroup — do not mix                |
 
 ## AI context prompt
 

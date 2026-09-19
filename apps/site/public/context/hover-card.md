@@ -34,11 +34,11 @@ The trigger opens on both mouseenter and focus (and closes on mouseleave/blur) s
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `children` | `React.ReactNode` | Yes | — | A HoverCardTrigger and HoverCardContent pair. |
-| `openDelay` | `number` | No | 300 | Delay (ms) before the card opens on hover/focus. |
-| `closeDelay` | `number` | No | 100 | Delay (ms) before the card closes after hover/focus leaves. |
+| Name         | Type              | Required | Default | Description                                                 |
+| ------------ | ----------------- | -------- | ------- | ----------------------------------------------------------- |
+| `children`   | `React.ReactNode` | Yes      | —       | A HoverCardTrigger and HoverCardContent pair.               |
+| `openDelay`  | `number`          | No       | 300     | Delay (ms) before the card opens on hover/focus.            |
+| `closeDelay` | `number`          | No       | 100     | Delay (ms) before the card closes after hover/focus leaves. |
 
 ## Tokens
 
@@ -55,7 +55,9 @@ The trigger opens on both mouseenter and focus (and closes on mouseleave/blur) s
 
 ```jsx
 <HoverCard>
-  <HoverCardTrigger><a href="/users/ada">@ada</a></HoverCardTrigger>
+  <HoverCardTrigger>
+    <a href="/users/ada">@ada</a>
+  </HoverCardTrigger>
   <HoverCardContent>
     <Avatar name="Ada Lovelace" />
     <p>Wrote the first program.</p>
@@ -74,11 +76,11 @@ The trigger opens on both mouseenter and focus (and closes on mouseleave/blur) s
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Surface, border, radius, shadow, and motion must resolve to the listed --cascivo-* tokens |
-| open/close delay | flexible | openDelay and closeDelay are tunable per instance (defaults 300/100ms) |
-| content | flexible | HoverCardContent accepts arbitrary children |
+| Area             | Level    | Note                                                                                       |
+| ---------------- | -------- | ------------------------------------------------------------------------------------------ |
+| token names      | strict   | Surface, border, radius, shadow, and motion must resolve to the listed --cascivo-\* tokens |
+| open/close delay | flexible | openDelay and closeDelay are tunable per instance (defaults 300/100ms)                     |
+| content          | flexible | HoverCardContent accepts arbitrary children                                                |
 
 ## AI context prompt
 

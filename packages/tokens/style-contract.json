@@ -455,11 +455,7 @@
     "--cascivo-z-modal",
     "--cascivo-z-overlay"
   ],
-  "consumedTokens": [
-    "--cascivo-flash-tint",
-    "--cascivo-table-zebra-bg",
-    "--cascivo-tree-level"
-  ],
+  "consumedTokens": ["--cascivo-flash-tint", "--cascivo-table-zebra-bg", "--cascivo-tree-level"],
   "styleHooks": [
     {
       "hook": "data-cascivo-appshell-main",

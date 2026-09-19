@@ -34,15 +34,15 @@ Wraps role="radio" buttons in a role="group" with aria-checked marking the selec
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `options` | `SegmentedControlOption[]` | Yes | — | The selectable options. |
-| `value` | `string` | Yes | — | The controlled value. |
-| `onValueChange` | `(v: string) => void` | Yes | — | Called with the new value when it changes. |
-| `size` | `'sm' \| 'md' \| 'lg'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
-| `ariaLabel` | `string` | No | — | Accessible name for the group. Invisible — it names the role="group" and renders nothing. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
-| `label` | `string` | No | — | Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered. Not rendered — screen readers only. |
+| Name            | Type                       | Required | Default | Description                                                                                                                                                                  |
+| --------------- | -------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `options`       | `SegmentedControlOption[]` | Yes      | —       | The selectable options.                                                                                                                                                      |
+| `value`         | `string`                   | Yes      | —       | The controlled value.                                                                                                                                                        |
+| `onValueChange` | `(v: string) => void`      | Yes      | —       | Called with the new value when it changes.                                                                                                                                   |
+| `size`          | `'sm' \| 'md' \| 'lg'`     | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                        |
+| `disabled`      | `boolean`                  | No       | false   | When true, disables the control and removes it from the tab order.                                                                                                           |
+| `ariaLabel`     | `string`                   | No       | —       | Accessible name for the group. Invisible — it names the role="group" and renders nothing. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
+| `label`         | `string`                   | No       | —       | Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered. Not rendered — screen readers only.                                                 |
 
 ## Tokens
 
@@ -59,14 +59,22 @@ Wraps role="radio" buttons in a role="group" with aria-checked marking the selec
 ### Basic
 
 ```jsx
-<SegmentedControl options={[{label:'Day',value:'day'},{label:'Week',value:'week'},{label:'Month',value:'month'}]} value="day" onValueChange={() => {}} />
+<SegmentedControl
+  options={[
+    { label: 'Day', value: 'day' },
+    { label: 'Week', value: 'week' },
+    { label: 'Month', value: 'month' },
+  ]}
+  value="day"
+  onValueChange={() => {}}
+/>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Segment styling must resolve to the listed --cascivo-* tokens |
+| Area          | Level    | Note                                                                    |
+| ------------- | -------- | ----------------------------------------------------------------------- |
+| token names   | strict   | Segment styling must resolve to the listed --cascivo-\* tokens          |
 | option labels | flexible | option label and value are free, and individual options may be disabled |
 
 ## AI context prompt

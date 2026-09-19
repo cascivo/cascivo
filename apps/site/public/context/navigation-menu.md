@@ -33,14 +33,14 @@ Wrapped in a navigation landmark with a roving-tabindex row of links and disclos
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `string` | No | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
-| `ariaLabel` | `string` | No | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
-| `items` | `NavigationMenuItem[]` | Yes | — | The items to render. |
-| `aria-label` | `string` | No | — | Accessible label used when no visible label is present. |
-| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | No | horizontal | Which arrow keys move focus, and the axis the items lay out on: `horizontal` (Left/Right), `vertical` (Up/Down), or `both` (all four). |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| Name          | Type                                   | Required | Default    | Description                                                                                                                                       |
+| ------------- | -------------------------------------- | -------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`       | `string`                               | No       | —          | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only.    |
+| `ariaLabel`   | `string`                               | No       | —          | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
+| `items`       | `NavigationMenuItem[]`                 | Yes      | —          | The items to render.                                                                                                                              |
+| `aria-label`  | `string`                               | No       | —          | Accessible label used when no visible label is present.                                                                                           |
+| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | No       | horizontal | Which arrow keys move focus, and the axis the items lay out on: `horizontal` (Left/Right), `vertical` (Up/Down), or `both` (all four).            |
+| `className`   | `string`                               | No       | —          | Additional CSS class names merged onto the root element.                                                                                          |
 
 ## Tokens
 
@@ -57,14 +57,20 @@ Wrapped in a navigation landmark with a roving-tabindex row of links and disclos
 ### Basic
 
 ```jsx
-<NavigationMenu aria-label="Main" items={[{ id: "home", label: "Home", href: "/" }, { id: "products", label: "Products", content: <ul>…</ul> }]} />
+<NavigationMenu
+  aria-label="Main"
+  items={[
+    { id: 'home', label: 'Home', href: '/' },
+    { id: 'products', label: 'Products', content: <ul>…</ul> },
+  ]}
+/>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| orientation | flexible | horizontal (default) or vertical roving navigation |
+| Area          | Level    | Note                                                                          |
+| ------------- | -------- | ----------------------------------------------------------------------------- |
+| orientation   | flexible | horizontal (default) or vertical roving navigation                            |
 | panel content | flexible | content is arbitrary ReactNode; links without content render as plain anchors |
 
 ## AI context prompt

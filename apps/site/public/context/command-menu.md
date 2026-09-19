@@ -40,20 +40,20 @@ The search input is role="combobox" with aria-controls, aria-expanded, aria-auto
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `open` | `boolean` | Yes | — | Whether the component is open (controlled). |
-| `onOpenChange` | `(open: boolean) => void` | Yes | — | Called with the next open state when it changes. |
-| `groups` | `CommandGroup[]` | Yes | — | The grouped commands to display. |
-| `placeholder` | `string` | No | Type a command or search… | Placeholder text shown when the field is empty. |
-| `emptyLabel` | `string` | No | No results found | Text shown when no commands match the query. |
-| `hotkey` | `boolean` | No | true | Global Cmd/Ctrl+K toggles the menu via onOpenChange |
-| `ariaLabel` | `string` | No | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
-| `label` | `string` | No | Command menu | Accessible name for the command dialog. Not rendered — screen readers only. |
-| `loading` | `boolean` | No | false | Shows a loading spinner in place of the empty state (for async items) |
-| `onQueryChange` | `(query: string) => void` | No | — | Fires on every query keystroke — use to fetch async items |
-| `scopes` | `CommandScope[]` | No | [] | Selectable filter scopes. Renders a scope bar + chip; a scope activates by clicking its pill, typing its prefix (c:/c ), or cycling with Tab, and filters to groups tagged with a matching scope (plus untagged groups). |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| Name            | Type                      | Required | Default                   | Description                                                                                                                                                                                                              |
+| --------------- | ------------------------- | -------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `open`          | `boolean`                 | Yes      | —                         | Whether the component is open (controlled).                                                                                                                                                                              |
+| `onOpenChange`  | `(open: boolean) => void` | Yes      | —                         | Called with the next open state when it changes.                                                                                                                                                                         |
+| `groups`        | `CommandGroup[]`          | Yes      | —                         | The grouped commands to display.                                                                                                                                                                                         |
+| `placeholder`   | `string`                  | No       | Type a command or search… | Placeholder text shown when the field is empty.                                                                                                                                                                          |
+| `emptyLabel`    | `string`                  | No       | No results found          | Text shown when no commands match the query.                                                                                                                                                                             |
+| `hotkey`        | `boolean`                 | No       | true                      | Global Cmd/Ctrl+K toggles the menu via onOpenChange                                                                                                                                                                      |
+| `ariaLabel`     | `string`                  | No       | —                         | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only.                                                                             |
+| `label`         | `string`                  | No       | Command menu              | Accessible name for the command dialog. Not rendered — screen readers only.                                                                                                                                              |
+| `loading`       | `boolean`                 | No       | false                     | Shows a loading spinner in place of the empty state (for async items)                                                                                                                                                    |
+| `onQueryChange` | `(query: string) => void` | No       | —                         | Fires on every query keystroke — use to fetch async items                                                                                                                                                                |
+| `scopes`        | `CommandScope[]`          | No       | []                        | Selectable filter scopes. Renders a scope bar + chip; a scope activates by clicking its pill, typing its prefix (c:/c ), or cycling with Tab, and filters to groups tagged with a matching scope (plus untagged groups). |
+| `className`     | `string`                  | No       | —                         | Additional CSS class names merged onto the root element.                                                                                                                                                                 |
 
 ## Tokens
 
@@ -122,7 +122,12 @@ A scope chip filters to Clusters, matched glyphs are highlighted, each row carri
           status: { label: 'Healthy', tone: 'healthy' },
           actions: [
             { id: 'open', label: 'Open', shortcut: ['↵'], onSelect: () => open('prod-eu') },
-            { id: 'tab', label: 'New tab', shortcut: ['⌘', '↵'], onSelect: () => openInTab('prod-eu') },
+            {
+              id: 'tab',
+              label: 'New tab',
+              shortcut: ['⌘', '↵'],
+              onSelect: () => openInTab('prod-eu'),
+            },
           ],
         },
       ],
@@ -133,13 +138,13 @@ A scope chip filters to Clusters, matched glyphs are highlighted, each row carri
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| hotkey | flexible | Global Cmd/Ctrl+K binding can be disabled via hotkey={false} for custom triggering |
-| async items | flexible | onQueryChange + loading allow fetching items per keystroke |
-| scopes | flexible | Optional scopes prop adds a filter bar/chip + typed prefixes; groups opt in via a scope id, untagged groups stay visible under any scope |
+| Area           | Level    | Note                                                                                                                                                               |
+| -------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| hotkey         | flexible | Global Cmd/Ctrl+K binding can be disabled via hotkey={false} for custom triggering                                                                                 |
+| async items    | flexible | onQueryChange + loading allow fetching items per keystroke                                                                                                         |
+| scopes         | flexible | Optional scopes prop adds a filter bar/chip + typed prefixes; groups opt in via a scope id, untagged groups stay visible under any scope                           |
 | inline actions | flexible | Items may declare actions[]; the first is Enter, the second Cmd/Ctrl+Enter, and each is clickable. Rows also support a description metadata line and a status pill |
-| token names | strict | Palette styling resolves to semantic --cascivo-color-* / --cascivo-radius-modal tokens |
+| token names    | strict   | Palette styling resolves to semantic --cascivo-color-\* / --cascivo-radius-modal tokens                                                                            |
 
 ## AI context prompt
 

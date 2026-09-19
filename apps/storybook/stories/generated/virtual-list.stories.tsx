@@ -3,13 +3,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { VirtualList } from '@cascivo/react'
 
 const meta: Meta = {
-  title: "Display/VirtualList",
+  title: 'Display/VirtualList',
 }
 export default meta
 type Story = StoryObj
 
 export const Basic: Story = {
-  name: "Basic",
+  name: 'Basic',
   render: () => (
     <VirtualList
       items={Array.from({ length: 10000 }, (_, i) => i)}
@@ -20,4 +20,3 @@ export const Basic: Story = {
     />
   ),
 }
-

@@ -24,10 +24,10 @@ Provides a navigation region for the menu and a main region for content.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `menu` | `ReactNode` | Yes | — | Side navigation menu |
-| `children` | `ReactNode` | Yes | — | Settings content area |
+| Name       | Type        | Required | Default | Description           |
+| ---------- | ----------- | -------- | ------- | --------------------- |
+| `menu`     | `ReactNode` | Yes      | —       | Side navigation menu  |
+| `children` | `ReactNode` | Yes      | —       | Settings content area |
 
 ## Tokens
 
@@ -40,7 +40,9 @@ Provides a navigation region for the menu and a main region for content.
 Menu + content layout
 
 ```jsx
-<SettingsLayout menu={<nav>Menu</nav>}><div>Settings</div></SettingsLayout>
+<SettingsLayout menu={<nav>Menu</nav>}>
+  <div>Settings</div>
+</SettingsLayout>
 ```
 
 ## AI context prompt

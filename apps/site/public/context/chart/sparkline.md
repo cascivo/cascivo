@@ -24,15 +24,15 @@ Renders with role="img" and requires a label prop for screen reader labeling.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `data` | `number[]` | Yes | — | Array of numeric values |
-| `label` | `string` | No | — | Accessible name for the chart (invisible — rendered as the SVG `<title>`). Not rendered — screen readers only. |
-| `ariaLabel` | `string` | No | — | Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one. Not rendered — screen readers only. |
-| `width` | `number` | No | 120 | SVG width in px. **This chart is fixed-width by default** — it is a compact, inline chart meant to sit in a table cell or beside a label, so omitting `width` gives you 120px rather than a container-filling chart. Pass a number to change it. The catalogue-wide "omit for a responsive chart" note does not apply to this chart. |
-| `height` | `number` | No | 32 | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
-| `color` | `string` | No | 'var(--cascivo-chart-1)' | Stroke color (CSS value) |
-| `endDot` | `boolean` | No | true | Show dot at last data point |
+| Name        | Type       | Required | Default                  | Description                                                                                                                                                                                                                                                                                                                          |
+| ----------- | ---------- | -------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `data`      | `number[]` | Yes      | —                        | Array of numeric values                                                                                                                                                                                                                                                                                                              |
+| `label`     | `string`   | No       | —                        | Accessible name for the chart (invisible — rendered as the SVG `<title>`). Not rendered — screen readers only.                                                                                                                                                                                                                       |
+| `ariaLabel` | `string`   | No       | —                        | Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one. Not rendered — screen readers only.                                                                                                                                                                                        |
+| `width`     | `number`   | No       | 120                      | SVG width in px. **This chart is fixed-width by default** — it is a compact, inline chart meant to sit in a table cell or beside a label, so omitting `width` gives you 120px rather than a container-filling chart. Pass a number to change it. The catalogue-wide "omit for a responsive chart" note does not apply to this chart. |
+| `height`    | `number`   | No       | 32                       | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                       |
+| `color`     | `string`   | No       | 'var(--cascivo-chart-1)' | Stroke color (CSS value)                                                                                                                                                                                                                                                                                                             |
+| `endDot`    | `boolean`  | No       | true                     | Show dot at last data point                                                                                                                                                                                                                                                                                                          |
 
 ## Tokens
 
@@ -44,8 +44,7 @@ Renders with role="img" and requires a label prop for screen reader labeling.
 
 ```jsx
 import { Sparkline } from '@cascivo/charts'
-
-<Sparkline data={[10, 20, 15, 30, 25]} label="Trend" endDot />
+;<Sparkline data={[10, 20, 15, 30, 25]} label="Trend" endDot />
 ```
 
 ## AI context prompt

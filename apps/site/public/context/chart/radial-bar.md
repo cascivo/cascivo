@@ -24,23 +24,23 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `data` | `RadialBarDatum[]` | Yes | — | One ring per datum: { id, label, value, color? }. |
-| `title` | `string` | Yes | — | Chart title (also used as aria-label). |
-| `description` | `string` | No | — | Subtitle below the title. |
-| `size` | `number` | No | — | Square shorthand (width === height). Explicit width/height win. |
-| `width` | `number` | No | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
-| `height` | `number` | No | 300 | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
-| `max` | `number` | No | — | Domain top — the value a full sweep represents. Defaults to the largest datum. |
-| `sweep` | `number` | No | 270 | Sweep angle in degrees (270 = a gauge arc; 360 = a full ring). |
-| `centerValue` | `string` | No | — | Text in the hole. |
-| `centerLabel` | `string` | No | — | Caption below centerValue. |
-| `centerSlot` | `ReactNode` | No | — | Arbitrary hole content; wins over centerValue/centerLabel. |
-| `tooltip` | `boolean` | No | — | Enable hover tooltip. |
-| `legend` | `boolean` | No | — | Show ring legend. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
-| `plain` | `boolean` | No | false | Marks only — no legend. For micro/inline charts. |
+| Name          | Type               | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------- | ------------------ | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`        | `RadialBarDatum[]` | Yes      | —       | One ring per datum: { id, label, value, color? }.                                                                                                                                                                                                                                                                                                                                             |
+| `title`       | `string`           | Yes      | —       | Chart title (also used as aria-label).                                                                                                                                                                                                                                                                                                                                                        |
+| `description` | `string`           | No       | —       | Subtitle below the title.                                                                                                                                                                                                                                                                                                                                                                     |
+| `size`        | `number`           | No       | —       | Square shorthand (width === height). Explicit width/height win.                                                                                                                                                                                                                                                                                                                               |
+| `width`       | `number`           | No       | —       | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height`      | `number`           | No       | 300     | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
+| `max`         | `number`           | No       | —       | Domain top — the value a full sweep represents. Defaults to the largest datum.                                                                                                                                                                                                                                                                                                                |
+| `sweep`       | `number`           | No       | 270     | Sweep angle in degrees (270 = a gauge arc; 360 = a full ring).                                                                                                                                                                                                                                                                                                                                |
+| `centerValue` | `string`           | No       | —       | Text in the hole.                                                                                                                                                                                                                                                                                                                                                                             |
+| `centerLabel` | `string`           | No       | —       | Caption below centerValue.                                                                                                                                                                                                                                                                                                                                                                    |
+| `centerSlot`  | `ReactNode`        | No       | —       | Arbitrary hole content; wins over centerValue/centerLabel.                                                                                                                                                                                                                                                                                                                                    |
+| `tooltip`     | `boolean`          | No       | —       | Enable hover tooltip.                                                                                                                                                                                                                                                                                                                                                                         |
+| `legend`      | `boolean`          | No       | —       | Show ring legend.                                                                                                                                                                                                                                                                                                                                                                             |
+| `className`   | `string`           | No       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
+| `plain`       | `boolean`          | No       | false   | Marks only — no legend. For micro/inline charts.                                                                                                                                                                                                                                                                                                                                              |
 
 ## Object types
 
@@ -48,12 +48,12 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 Shape of the `data` prop.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | `string` | Yes | — |
-| `label` | `string` | Yes | — |
-| `value` | `number` | Yes | — |
-| `color` | `string` | No | CSS color overriding the positional palette for this ring. |
+| Field   | Type     | Required | Description                                                |
+| ------- | -------- | -------- | ---------------------------------------------------------- |
+| `id`    | `string` | Yes      | —                                                          |
+| `label` | `string` | Yes      | —                                                          |
+| `value` | `number` | Yes      | —                                                          |
+| `color` | `string` | No       | CSS color overriding the positional palette for this ring. |
 
 ## Tokens
 
@@ -73,8 +73,7 @@ Shape of the `data` prop.
 
 ```jsx
 import { RadialBar } from '@cascivo/charts'
-
-<RadialBar
+;<RadialBar
   title="Quarterly goals"
   max={100}
   centerValue="72%"

@@ -3,13 +3,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Carousel } from '@cascivo/react'
 
 const meta: Meta = {
-  title: "Display/Carousel",
+  title: 'Display/Carousel',
 }
 export default meta
 type Story = StoryObj
 
 export const Basic: Story = {
-  name: "Basic",
+  name: 'Basic',
   render: () => (
     <Carousel>
       <img src="/1.jpg" alt="" />
@@ -17,4 +17,3 @@ export const Basic: Story = {
     </Carousel>
   ),
 }
-

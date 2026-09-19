@@ -33,25 +33,25 @@ role="application" canvas; nodes are focusable groups; controls are real i18n-la
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `nodes` | `FlowNode[]` | Yes | — | Initial nodes (serializable). |
-| `edges` | `FlowEdge[]` | Yes | — | Initial edges (serializable). |
-| `onNodesChange` | `(nodes: FlowNode[]) => void` | No | — | Called with the next nodes when they change (drag, add, remove). |
-| `onEdgesChange` | `(edges: FlowEdge[]) => void` | No | — | Called with the next edges when they change. |
-| `onConnect` | `(connection: Connection) => void` | No | — | Called when two handles are connected to form a new edge. |
-| `nodeTypes` | `Record<string, NodeRenderer>` | No | — | Custom node renderers keyed by node.type. |
-| `fitView` | `boolean` | No | true | When true, fits the graph to the viewport on mount. |
-| `background` | `boolean \| FlowBackgroundProps` | No | false | Background pattern — true for the default dots, or a config object. |
-| `controls` | `boolean` | No | false | Whether to show the controls. |
-| `minimap` | `boolean` | No | false | When true, shows the minimap overlay. |
-| `layout` | `'grid' \| 'layered' \| ((nodes, edges) => FlowNode[])` | No | — | Optional dependency-free layout. |
-| `interactive` | `boolean` | No | true | When false (view mode), nodes cannot be selected, dragged, or connected and handles are hidden; pan/zoom still work. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
-| `activeDirection` | `'forward' \| 'reverse' \| undefined` | No | — | Direction the active edge's dash travels. |
-| `activeEdgeId` | `string \| undefined` | No | — | Highlight + animate a single edge (used by FlowStory's active step). |
-| `maxZoom` | `number` | No | — | Maximum zoom scale the viewport can reach. |
-| `minZoom` | `number` | No | — | Minimum zoom scale the viewport can reach. |
+| Name              | Type                                                    | Required | Default | Description                                                                                                          |
+| ----------------- | ------------------------------------------------------- | -------- | ------- | -------------------------------------------------------------------------------------------------------------------- |
+| `nodes`           | `FlowNode[]`                                            | Yes      | —       | Initial nodes (serializable).                                                                                        |
+| `edges`           | `FlowEdge[]`                                            | Yes      | —       | Initial edges (serializable).                                                                                        |
+| `onNodesChange`   | `(nodes: FlowNode[]) => void`                           | No       | —       | Called with the next nodes when they change (drag, add, remove).                                                     |
+| `onEdgesChange`   | `(edges: FlowEdge[]) => void`                           | No       | —       | Called with the next edges when they change.                                                                         |
+| `onConnect`       | `(connection: Connection) => void`                      | No       | —       | Called when two handles are connected to form a new edge.                                                            |
+| `nodeTypes`       | `Record<string, NodeRenderer>`                          | No       | —       | Custom node renderers keyed by node.type.                                                                            |
+| `fitView`         | `boolean`                                               | No       | true    | When true, fits the graph to the viewport on mount.                                                                  |
+| `background`      | `boolean \| FlowBackgroundProps`                        | No       | false   | Background pattern — true for the default dots, or a config object.                                                  |
+| `controls`        | `boolean`                                               | No       | false   | Whether to show the controls.                                                                                        |
+| `minimap`         | `boolean`                                               | No       | false   | When true, shows the minimap overlay.                                                                                |
+| `layout`          | `'grid' \| 'layered' \| ((nodes, edges) => FlowNode[])` | No       | —       | Optional dependency-free layout.                                                                                     |
+| `interactive`     | `boolean`                                               | No       | true    | When false (view mode), nodes cannot be selected, dragged, or connected and handles are hidden; pan/zoom still work. |
+| `className`       | `string`                                                | No       | —       | Additional CSS class names merged onto the root element.                                                             |
+| `activeDirection` | `'forward' \| 'reverse' \| undefined`                   | No       | —       | Direction the active edge's dash travels.                                                                            |
+| `activeEdgeId`    | `string \| undefined`                                   | No       | —       | Highlight + animate a single edge (used by FlowStory's active step).                                                 |
+| `maxZoom`         | `number`                                                | No       | —       | Maximum zoom scale the viewport can reach.                                                                           |
+| `minZoom`         | `number`                                                | No       | —       | Minimum zoom scale the viewport can reach.                                                                           |
 
 ## Object types
 
@@ -59,33 +59,33 @@ role="application" canvas; nodes are focusable groups; controls are real i18n-la
 
 A graph node. Positioned in flow coordinates; renders as themed HTML.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | `string` | Yes | — |
-| `position` | `XYPosition` | Yes | — |
-| `data` | `Data` | No | — |
-| `type` | `string` | No | Custom renderer key resolved via `nodeTypes`. |
-| `selected` | `boolean` | No | — |
-| `width` | `number` | No | Explicit/measured size used for handle anchors + bounding boxes. |
-| `height` | `number` | No | — |
+| Field      | Type         | Required | Description                                                      |
+| ---------- | ------------ | -------- | ---------------------------------------------------------------- |
+| `id`       | `string`     | Yes      | —                                                                |
+| `position` | `XYPosition` | Yes      | —                                                                |
+| `data`     | `Data`       | No       | —                                                                |
+| `type`     | `string`     | No       | Custom renderer key resolved via `nodeTypes`.                    |
+| `selected` | `boolean`    | No       | —                                                                |
+| `width`    | `number`     | No       | Explicit/measured size used for handle anchors + bounding boxes. |
+| `height`   | `number`     | No       | —                                                                |
 
 ### `FlowEdge`
 
 A directed connection between two nodes' handles.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | `string` | Yes | — |
-| `source` | `string` | Yes | — |
-| `target` | `string` | Yes | — |
-| `sourceHandle` | `string` | No | — |
-| `targetHandle` | `string` | No | — |
-| `type` | `EdgePathType \| string` | No | Custom renderer key resolved via `edgeTypes`. |
-| `animated` | `boolean` | No | — |
-| `label` | `string` | No | — |
-| `selected` | `boolean` | No | — |
-| `markerStart` | `boolean` | No | Arrowhead at the source end (points back toward the source). Default false. |
-| `markerEnd` | `boolean` | No | Arrowhead at the target end (points at the target). Default true. |
+| Field          | Type                     | Required | Description                                                                 |
+| -------------- | ------------------------ | -------- | --------------------------------------------------------------------------- |
+| `id`           | `string`                 | Yes      | —                                                                           |
+| `source`       | `string`                 | Yes      | —                                                                           |
+| `target`       | `string`                 | Yes      | —                                                                           |
+| `sourceHandle` | `string`                 | No       | —                                                                           |
+| `targetHandle` | `string`                 | No       | —                                                                           |
+| `type`         | `EdgePathType \| string` | No       | Custom renderer key resolved via `edgeTypes`.                               |
+| `animated`     | `boolean`                | No       | —                                                                           |
+| `label`        | `string`                 | No       | —                                                                           |
+| `selected`     | `boolean`                | No       | —                                                                           |
+| `markerStart`  | `boolean`                | No       | Arrowhead at the source end (points back toward the source). Default false. |
+| `markerEnd`    | `boolean`                | No       | Arrowhead at the target end (points at the target). Default true.           |
 
 ## Tokens
 
@@ -100,7 +100,7 @@ A directed connection between two nodes' handles.
 A flow from plain serializable data, with background, controls, and an animated edge.
 
 ```jsx
-() => (
+;() => (
   <Flow
     style={{ height: 280 }}
     background
@@ -123,7 +123,7 @@ A flow from plain serializable data, with background, controls, and an animated 
 Let the dependency-free layered layout arrange a small DAG.
 
 ```jsx
-() => (
+;() => (
   <Flow
     style={{ height: 300 }}
     layout="layered"
@@ -147,11 +147,11 @@ Let the dependency-free layered layout arrange a small DAG.
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| rendering | flexible | Custom node renderers via nodeTypes. |
-| layout | flexible | grid \| layered \| bring-your-own positions. |
-| chrome | flexible | Optional background / controls / minimap. |
+| Area      | Level    | Note                                         |
+| --------- | -------- | -------------------------------------------- |
+| rendering | flexible | Custom node renderers via nodeTypes.         |
+| layout    | flexible | grid \| layered \| bring-your-own positions. |
+| chrome    | flexible | Optional background / controls / minimap.    |
 
 ## AI context prompt
 

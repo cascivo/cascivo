@@ -33,17 +33,17 @@ The typing surface is a real <input> and each tag exposes a dedicated remove but
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `string[]` | Yes | — | The controlled value. |
-| `onValueChange` | `(v: string[]) => void` | Yes | — | Called with the new value when it changes. |
-| `placeholder` | `string` | No | — | Placeholder text shown when the field is empty. |
-| `validate` | `(tag: string) => boolean` | No | — | Returns whether a candidate tag is allowed. |
-| `max` | `number` | No | — | Maximum allowed value. |
-| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
-| `id` | `string` | No | — | Id for the **inner text input** — the focusable control, so a `<label for>` names the thing that actually takes focus. `Field` supplies this automatically. |
-| `ariaLabel` | `string` | No | — | Invisible accessible name for the tag entry field. Use when no visible label names it; inside a `Field` it is not needed, as the Field label is wired through automatically. Not rendered — screen readers only. |
-| `label` | `string` | No | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Not rendered. Not rendered — screen readers only. |
+| Name            | Type                       | Required | Default | Description                                                                                                                                                                                                      |
+| --------------- | -------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`         | `string[]`                 | Yes      | —       | The controlled value.                                                                                                                                                                                            |
+| `onValueChange` | `(v: string[]) => void`    | Yes      | —       | Called with the new value when it changes.                                                                                                                                                                       |
+| `placeholder`   | `string`                   | No       | —       | Placeholder text shown when the field is empty.                                                                                                                                                                  |
+| `validate`      | `(tag: string) => boolean` | No       | —       | Returns whether a candidate tag is allowed.                                                                                                                                                                      |
+| `max`           | `number`                   | No       | —       | Maximum allowed value.                                                                                                                                                                                           |
+| `disabled`      | `boolean`                  | No       | false   | When true, disables the control and removes it from the tab order.                                                                                                                                               |
+| `id`            | `string`                   | No       | —       | Id for the **inner text input** — the focusable control, so a `<label for>` names the thing that actually takes focus. `Field` supplies this automatically.                                                      |
+| `ariaLabel`     | `string`                   | No       | —       | Invisible accessible name for the tag entry field. Use when no visible label names it; inside a `Field` it is not needed, as the Field label is wired through automatically. Not rendered — screen readers only. |
+| `label`         | `string`                   | No       | —       | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Not rendered. Not rendered — screen readers only.                                                                            |
 
 ## Tokens
 
@@ -66,10 +66,10 @@ The typing surface is a real <input> and each tag exposes a dedicated remove but
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| tag values | flexible | Free text, optionally constrained by the validate predicate and max count |
-| commit keys | strict | Enter and comma commit a tag; Backspace on empty removes the last — fixed interaction contract |
+| Area        | Level    | Note                                                                                           |
+| ----------- | -------- | ---------------------------------------------------------------------------------------------- |
+| tag values  | flexible | Free text, optionally constrained by the validate predicate and max count                      |
+| commit keys | strict   | Enter and comma commit a tag; Backspace on empty removes the last — fixed interaction contract |
 
 ## AI context prompt
 

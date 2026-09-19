@@ -32,17 +32,17 @@ The divider is a focusable role="separator" with aria-orientation and aria-value
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `ariaLabel` | `string` | No | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
-| `label` | `string` | No | — | Accessible label for the resize handle. Not rendered — screen readers only. |
-| `children` | `ReactNode` | Yes | — | Exactly two panes |
-| `orientation` | `'horizontal' \| 'vertical'` | No | horizontal | Axis the panes are split along. `horizontal` puts them side by side with a handle you drag left and right; `vertical` stacks them with a handle you drag up and down. |
-| `defaultRatio` | `number` | No | 0.5 | The initial split ratio when uncontrolled. |
-| `ratio` | `number` | No | — | Controlled ratio (0–1) |
-| `minRatio` | `number` | No | 0.1 | Minimum allowed split ratio. |
-| `maxRatio` | `number` | No | 0.9 | Maximum allowed split ratio. |
-| `onRatioChange` | `(ratio: number) => void` | No | — | Called with the new split ratio when it changes. |
+| Name            | Type                         | Required | Default    | Description                                                                                                                                                           |
+| --------------- | ---------------------------- | -------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ariaLabel`     | `string`                     | No       | —          | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only.                          |
+| `label`         | `string`                     | No       | —          | Accessible label for the resize handle. Not rendered — screen readers only.                                                                                           |
+| `children`      | `ReactNode`                  | Yes      | —          | Exactly two panes                                                                                                                                                     |
+| `orientation`   | `'horizontal' \| 'vertical'` | No       | horizontal | Axis the panes are split along. `horizontal` puts them side by side with a handle you drag left and right; `vertical` stacks them with a handle you drag up and down. |
+| `defaultRatio`  | `number`                     | No       | 0.5        | The initial split ratio when uncontrolled.                                                                                                                            |
+| `ratio`         | `number`                     | No       | —          | Controlled ratio (0–1)                                                                                                                                                |
+| `minRatio`      | `number`                     | No       | 0.1        | Minimum allowed split ratio.                                                                                                                                          |
+| `maxRatio`      | `number`                     | No       | 0.9        | Maximum allowed split ratio.                                                                                                                                          |
+| `onRatioChange` | `(ratio: number) => void`    | No       | —          | Called with the new split ratio when it changes.                                                                                                                      |
 
 ## Tokens
 
@@ -73,10 +73,10 @@ The divider is a focusable role="separator" with aria-orientation and aria-value
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| sizing | strict | Pane sizes derive from a single --cascivo-resizable-ratio custom property via flex |
-| min/max ratio | flexible | Consumer-defined clamp range |
+| Area          | Level    | Note                                                                               |
+| ------------- | -------- | ---------------------------------------------------------------------------------- |
+| sizing        | strict   | Pane sizes derive from a single --cascivo-resizable-ratio custom property via flex |
+| min/max ratio | flexible | Consumer-defined clamp range                                                       |
 
 ## AI context prompt
 

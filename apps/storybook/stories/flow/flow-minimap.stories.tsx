@@ -17,18 +17,17 @@ export default meta
 type Story = StoryObj
 
 export const GraphOverview: Story = {
-  name: "Graph overview",
+  name: 'Graph overview',
   render: () => (
-  <FlowMiniMap
-    nodes={[
-      { id: 'a', position: { x: 0, y: 0 } },
-      { id: 'b', position: { x: 220, y: 120 } },
-      { id: 'c', position: { x: 440, y: 0 } },
-    ]}
-    viewport={{ x: 0, y: 0, zoom: 1 }}
-    containerWidth={400}
-    containerHeight={300}
-  />
-),
+    <FlowMiniMap
+      nodes={[
+        { id: 'a', position: { x: 0, y: 0 } },
+        { id: 'b', position: { x: 220, y: 120 } },
+        { id: 'c', position: { x: 440, y: 0 } },
+      ]}
+      viewport={{ x: 0, y: 0, zoom: 1 }}
+      containerWidth={400}
+      containerHeight={300}
+    />
+  ),
 }
-

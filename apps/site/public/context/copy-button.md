@@ -32,11 +32,11 @@ Renders a native <button> so Enter/Space, focus, and role come from the platform
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `string` | Yes | — | The text written to the clipboard on click |
-| `size` | `'sm' \| 'md'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `labels` | `{ copy?: string; copied?: string }` | No | — | Overrides the built-in i18n labels per instance |
+| Name     | Type                                 | Required | Default | Description                                           |
+| -------- | ------------------------------------ | -------- | ------- | ----------------------------------------------------- |
+| `value`  | `string`                             | Yes      | —       | The text written to the clipboard on click            |
+| `size`   | `'sm' \| 'md'`                       | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `labels` | `{ copy?: string; copied?: string }` | No       | —       | Overrides the built-in i18n labels per instance       |
 
 ## Tokens
 
@@ -75,10 +75,10 @@ Override the built-in copy/copied strings per instance
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| labels | flexible | copy/copied strings overridable via labels; default from i18n catalog |
-| token names | strict | Styling resolves to semantic --cascivo-color-* tokens; copied state uses --cascivo-color-success |
+| Area        | Level    | Note                                                                                              |
+| ----------- | -------- | ------------------------------------------------------------------------------------------------- |
+| labels      | flexible | copy/copied strings overridable via labels; default from i18n catalog                             |
+| token names | strict   | Styling resolves to semantic --cascivo-color-\* tokens; copied state uses --cascivo-color-success |
 
 ## AI context prompt
 

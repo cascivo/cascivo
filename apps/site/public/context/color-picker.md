@@ -33,24 +33,24 @@ The picking area is a role="group" holding one native range input per axis — s
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `labels` | `ColorPickerLabels` | No | — | Overrides for the component’s user-visible strings (i18n). |
-| `value` | `string` | No | — | Controlled hex color value |
-| `defaultValue` | `string` | No | #3b82f6 | The initial value when uncontrolled. |
-| `onValueChange` | `(value: string) => void` | No | — | Called with the new value when it changes. |
-| `presets` | `string[]` | No | — | Preset swatch colors |
-| `alpha` | `boolean` | No | true | When true, enables alpha (opacity) selection. |
-| `format` | `'hex' \| 'rgb' \| 'hsl'` | No | 'hex' | Notation for the emitted value. Alpha is included whenever alpha is on, so the emitted string has a stable width. |
-| `name` | `string` | No | — | Submitted with a surrounding form — a hidden input carrying the current value. |
-| `label` | `string` | No | — | Text label for the control. Rendered on screen. |
-| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
-| `size` | `'sm' \| 'md' \| 'lg'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `aria-labelledby` | `string` | No | — | Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it. |
-| `aria-describedby` | `string` | No | — | Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced. |
-| `aria-invalid` | `boolean` | No | — | Wired automatically by a wrapping `Field` when it is in an error state. |
-| `id` | `string` | No | — | Id for the **focusable control** (not the wrapper), so a `<label for>` names what actually takes focus. `Field` supplies this automatically. |
-| `ariaLabel` | `string` | No | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
+| Name               | Type                      | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                          |
+| ------------------ | ------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `labels`           | `ColorPickerLabels`       | No       | —       | Overrides for the component’s user-visible strings (i18n).                                                                                                                                                                                                                                                                                                                                           |
+| `value`            | `string`                  | No       | —       | Controlled hex color value                                                                                                                                                                                                                                                                                                                                                                           |
+| `defaultValue`     | `string`                  | No       | #3b82f6 | The initial value when uncontrolled.                                                                                                                                                                                                                                                                                                                                                                 |
+| `onValueChange`    | `(value: string) => void` | No       | —       | Called with the new value when it changes.                                                                                                                                                                                                                                                                                                                                                           |
+| `presets`          | `string[]`                | No       | —       | Preset swatch colors                                                                                                                                                                                                                                                                                                                                                                                 |
+| `alpha`            | `boolean`                 | No       | true    | When true, enables alpha (opacity) selection.                                                                                                                                                                                                                                                                                                                                                        |
+| `format`           | `'hex' \| 'rgb' \| 'hsl'` | No       | 'hex'   | Notation for the emitted value. Alpha is included whenever alpha is on, so the emitted string has a stable width.                                                                                                                                                                                                                                                                                    |
+| `name`             | `string`                  | No       | —       | Submitted with a surrounding form — a hidden input carrying the current value.                                                                                                                                                                                                                                                                                                                       |
+| `label`            | `string`                  | No       | —       | Text label for the control. Rendered on screen.                                                                                                                                                                                                                                                                                                                                                      |
+| `disabled`         | `boolean`                 | No       | false   | When true, disables the control and removes it from the tab order.                                                                                                                                                                                                                                                                                                                                   |
+| `size`             | `'sm' \| 'md' \| 'lg'`    | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                                                                                                                                                                                                                                |
+| `aria-labelledby`  | `string`                  | No       | —       | Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it.                                                                                                                                                                                                                                                                          |
+| `aria-describedby` | `string`                  | No       | —       | Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced.                                                                                                                                                                                                                                                  |
+| `aria-invalid`     | `boolean`                 | No       | —       | Wired automatically by a wrapping `Field` when it is in an error state.                                                                                                                                                                                                                                                                                                                              |
+| `id`               | `string`                  | No       | —       | Id for the **focusable control** (not the wrapper), so a `<label for>` names what actually takes focus. `Field` supplies this automatically.                                                                                                                                                                                                                                                         |
+| `ariaLabel`        | `string`                  | No       | —       | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
 ## Tokens
 
@@ -73,16 +73,16 @@ The picking area is a role="group" holding one native range input per axis — s
 ### With presets
 
 ```jsx
-<ColorPicker presets={["#ef4444", "#3b82f6", "#10b981"]} alpha={false} />
+<ColorPicker presets={['#ef4444', '#3b82f6', '#10b981']} alpha={false} />
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
+| Area          | Level    | Note                                                                                          |
+| ------------- | -------- | --------------------------------------------------------------------------------------------- |
 | output format | flexible | format switches between hex, rgb() and hsl(); alpha is included whenever the alpha prop is on |
-| color model | flexible | Values are stored as hex; consumers can convert to rgb/hsl/oklch as needed |
-| token names | strict | Surfaces, borders and focus ring must resolve to --cascivo-* tokens |
+| color model   | flexible | Values are stored as hex; consumers can convert to rgb/hsl/oklch as needed                    |
+| token names   | strict   | Surfaces, borders and focus ring must resolve to --cascivo-\* tokens                          |
 
 ## AI context prompt
 

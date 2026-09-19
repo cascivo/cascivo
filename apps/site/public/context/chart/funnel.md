@@ -23,17 +23,17 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `data` | `FunnelStage[]` | Yes | — | Ordered stages (descending): { id, label, value, color? }. |
-| `title` | `string` | Yes | — | Chart title (also used as aria-label). |
-| `description` | `string` | No | — | Subtitle below the title. |
-| `width` | `number` | No | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
-| `height` | `number` | No | 320 | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
-| `showConversion` | `boolean` | No | false | Append each stage’s % of the first stage to its label. |
-| `tooltip` | `boolean` | No | — | Enable hover tooltip. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
-| `plain` | `boolean` | No | false | Marks only — no labels. For micro/inline charts. |
+| Name             | Type            | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                   |
+| ---------------- | --------------- | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`           | `FunnelStage[]` | Yes      | —       | Ordered stages (descending): { id, label, value, color? }.                                                                                                                                                                                                                                                                                                                                    |
+| `title`          | `string`        | Yes      | —       | Chart title (also used as aria-label).                                                                                                                                                                                                                                                                                                                                                        |
+| `description`    | `string`        | No       | —       | Subtitle below the title.                                                                                                                                                                                                                                                                                                                                                                     |
+| `width`          | `number`        | No       | —       | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height`         | `number`        | No       | 320     | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
+| `showConversion` | `boolean`       | No       | false   | Append each stage’s % of the first stage to its label.                                                                                                                                                                                                                                                                                                                                        |
+| `tooltip`        | `boolean`       | No       | —       | Enable hover tooltip.                                                                                                                                                                                                                                                                                                                                                                         |
+| `className`      | `string`        | No       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
+| `plain`          | `boolean`       | No       | false   | Marks only — no labels. For micro/inline charts.                                                                                                                                                                                                                                                                                                                                              |
 
 ## Object types
 
@@ -41,12 +41,12 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 Shape of the `data` prop.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | `string` | Yes | — |
-| `label` | `string` | Yes | — |
-| `value` | `number` | Yes | — |
-| `color` | `string` | No | CSS color overriding the positional palette for this stage. |
+| Field   | Type     | Required | Description                                                 |
+| ------- | -------- | -------- | ----------------------------------------------------------- |
+| `id`    | `string` | Yes      | —                                                           |
+| `label` | `string` | Yes      | —                                                           |
+| `value` | `number` | Yes      | —                                                           |
+| `color` | `string` | No       | CSS color overriding the positional palette for this stage. |
 
 ## Tokens
 
@@ -65,8 +65,7 @@ Shape of the `data` prop.
 
 ```jsx
 import { Funnel } from '@cascivo/charts'
-
-<Funnel
+;<Funnel
   title="Signup funnel"
   showConversion
   data={[

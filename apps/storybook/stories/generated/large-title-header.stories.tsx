@@ -3,13 +3,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { LargeTitleHeader, List, ListItem } from '@cascivo/react'
 
 const meta: Meta = {
-  title: "Navigation/LargeTitleHeader",
+  title: 'Navigation/LargeTitleHeader',
 }
 export default meta
 type Story = StoryObj
 
 export const Basic: Story = {
-  name: "Basic",
+  name: 'Basic',
   render: () => (
     <LargeTitleHeader title="Library">
       <List>
@@ -20,4 +20,3 @@ export const Basic: Story = {
     </LargeTitleHeader>
   ),
 }
-

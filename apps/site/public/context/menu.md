@@ -35,9 +35,9 @@ The trigger exposes aria-haspopup="menu" and aria-expanded, the panel is role="m
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `children` | `React.ReactNode` | Yes | — | The MenuTrigger first, followed by MenuItem/MenuSeparator children. |
+| Name       | Type              | Required | Default | Description                                                         |
+| ---------- | ----------------- | -------- | ------- | ------------------------------------------------------------------- |
+| `children` | `React.ReactNode` | Yes      | —       | The MenuTrigger first, followed by MenuItem/MenuSeparator children. |
 
 ## Tokens
 
@@ -68,17 +68,19 @@ The trigger exposes aria-haspopup="menu" and aria-expanded, the panel is role="m
   <MenuTrigger aria-label="More actions">…</MenuTrigger>
   <MenuItem onSelect={share}>Share</MenuItem>
   <MenuSeparator />
-  <MenuItem onSelect={remove} disabled>Delete</MenuItem>
+  <MenuItem onSelect={remove} disabled>
+    Delete
+  </MenuItem>
 </Menu>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Surface, border, radius, shadow, and motion must resolve to the listed --cascivo-* tokens |
-| item content | flexible | MenuItem accepts arbitrary children; onSelect defines the action |
-| composition | flexible | MenuItem and MenuSeparator can be mixed freely under the trigger |
+| Area         | Level    | Note                                                                                       |
+| ------------ | -------- | ------------------------------------------------------------------------------------------ |
+| token names  | strict   | Surface, border, radius, shadow, and motion must resolve to the listed --cascivo-\* tokens |
+| item content | flexible | MenuItem accepts arbitrary children; onSelect defines the action                           |
+| composition  | flexible | MenuItem and MenuSeparator can be mixed freely under the trigger                           |
 
 ## AI context prompt
 

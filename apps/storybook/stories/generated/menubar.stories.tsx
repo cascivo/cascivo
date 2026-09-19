@@ -3,15 +3,19 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Menubar } from '@cascivo/react'
 
 const meta: Meta = {
-  title: "Navigation/Menubar",
+  title: 'Navigation/Menubar',
 }
 export default meta
 type Story = StoryObj
 
 export const Basic: Story = {
-  name: "Basic",
+  name: 'Basic',
   render: () => (
-    <Menubar aria-label="Main" menus={[{ id: "file", label: "File", items: [{ id: "new", label: "New", onSelect: () => {} }] }]} />
+    <Menubar
+      aria-label="Main"
+      menus={[
+        { id: 'file', label: 'File', items: [{ id: 'new', label: 'New', onSelect: () => {} }] },
+      ]}
+    />
   ),
 }
-
