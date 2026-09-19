@@ -29,16 +29,16 @@
  *
  * Needs a prior `pnpm build` and Chromium. Run: `pnpm audit:landing`.
  */
-import { spawn, type ChildProcess } from 'node:child_process'
-import { existsSync, readdirSync } from 'node:fs'
-import { join, extname } from 'node:path'
+import { createServer, type Server } from 'node:http'
+import type { AddressInfo } from 'node:net'
+import { createReadStream, existsSync, readdirSync, statSync } from 'node:fs'
+import { join, extname, normalize } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { gzipSync } from 'node:zlib'
 import { chromium } from '@playwright/test'
 
 const root = fileURLToPath(new URL('../..', import.meta.url))
-const siteDir = join(root, 'apps/site')
-const distDir = join(siteDir, 'dist')
+const distDir = join(root, 'apps/site/dist')
 
 // CascadeView (@cascivo/render) loads all cascade components for its runtime component map;
 // tree-shaking cannot eliminate them. Budget raised from 120 to 135 KB to accommodate.
@@ -57,8 +57,6 @@ const CSS_BUDGET_KB = 60
  */
 const REQUIRED_SECTIONS = ['#quickstart', '#showcase']
 
-const PORT = 4390
-
 if (!existsSync(distDir)) {
   console.error('landing-budget: no apps/site/dist — run `pnpm build` first.')
   process.exit(1)
@@ -73,31 +71,63 @@ function walkDir(dir: string): string[] {
   return files
 }
 
-/** Wait for the preview server to answer, or give up. */
-async function waitForServer(url: string, tries = 60): Promise<void> {
-  for (let i = 0; i < tries; i++) {
-    try {
-      const res = await fetch(url)
-      if (res.ok) return
-    } catch {
-      // not up yet
-    }
-    await new Promise((r) => setTimeout(r, 500))
-  }
-  throw new Error(`landing-budget: preview server never came up at ${url}`)
+const CONTENT_TYPES: Record<string, string> = {
+  '.html': 'text/html; charset=utf-8',
+  // Module scripts are refused outright under any other type, which would leave the page
+  // blank and the byte count meaningless.
+  '.js': 'text/javascript; charset=utf-8',
+  '.mjs': 'text/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.svg': 'image/svg+xml',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.webp': 'image/webp',
+  '.woff2': 'font/woff2',
+  '.ico': 'image/x-icon',
 }
 
-let server: ChildProcess | undefined
+/**
+ * Serve `dist/` from this process, rather than spawning `vite preview`.
+ *
+ * The spawned form failed on CI: apps/site does not depend on `vite` (it depends on
+ * `vite-plus`), so `pnpm exec vite` resolves only through a hoisted root bin — present
+ * locally, absent under CI's strict pnpm layout. The server never came up, and because the
+ * spawn used `stdio: 'ignore'` the real reason was swallowed entirely.
+ *
+ * Serving the directory here needs no package manager, no bin resolution and no port race,
+ * and a static file server is all `vite preview` was ever providing for this check.
+ */
+function serveDist(): Promise<Server> {
+  const server = createServer((req, res) => {
+    const urlPath = new URL(req.url ?? '/', 'http://localhost').pathname
+    const rel = urlPath === '/' ? 'index.html' : normalize(urlPath).replace(/^(\.\.[/\\])+/, '')
+    const file = join(distDir, rel)
+    if (!file.startsWith(distDir) || !existsSync(file) || !statSync(file).isFile()) {
+      res.writeHead(404).end()
+      return
+    }
+    res.writeHead(200, { 'content-type': CONTENT_TYPES[extname(file)] ?? 'application/octet-stream' })
+    createReadStream(file).pipe(res)
+  })
+  // Port 0: the OS assigns a free one. A fixed port makes the check die with EADDRINUSE
+  // whenever anything else happens to hold it, which is a failure mode the check should not
+  // have at all.
+  return new Promise((resolve, reject) => {
+    server.on('error', reject)
+    server.listen(0, '127.0.0.1', () => resolve(server))
+  })
+}
+
+let server: Server | undefined
 const perFile = new Map<string, number>()
 /** Paths already fetched when the page had rendered but nothing had been scrolled. */
 let initialPaths = new Set<string>()
 
 try {
-  server = spawn('pnpm', ['exec', 'vite', 'preview', '--port', String(PORT), '--strictPort'], {
-    cwd: siteDir,
-    stdio: 'ignore',
-  })
-  await waitForServer(`http://localhost:${PORT}/`)
+  server = await serveDist()
+  const origin = `http://127.0.0.1:${(server.address() as AddressInfo).port}`
 
   const browser = await chromium.launch()
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } })
@@ -120,7 +150,7 @@ try {
     )
   })
 
-  await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'networkidle' })
+  await page.goto(`${origin}/`, { waitUntil: 'networkidle' })
   // Snapshot before scrolling: this set IS the budget. Settle the bodies first, or which
   // requests counted would depend on how fast the event loop drained.
   await Promise.all(pending)
@@ -151,7 +181,7 @@ try {
     process.exit(1)
   }
 } finally {
-  server?.kill()
+  server?.close()
 }
 
 function totals(paths: Iterable<string>): { js: number; css: number; files: number } {
