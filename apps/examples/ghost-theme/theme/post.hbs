@@ -1,0 +1,21 @@
+{{!< default}}
+
+{{#post}}
+  <article class='post'>
+    <header class='post-header'>
+      <h1 class='post-title'>{{title}}</h1>
+      <div class='post-meta'>
+        <time datetime='{{date format='YYYY-MM-DD'}}'>{{date format='D MMMM YYYY'}}</time>
+        {{#if primary_author}}<span class='post-author'>{{primary_author.name}}</span>{{/if}}
+      </div>
+    </header>
+
+    {{#if feature_image}}
+      <img class='post-image' src='{{img_url feature_image size='l'}}' alt='{{title}}' />
+    {{/if}}
+
+    <div class='post-content'>
+      {{content}}
+    </div>
+  </article>
+{{/post}}

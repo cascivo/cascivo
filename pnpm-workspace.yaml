@@ -97,6 +97,9 @@ allowBuilds:
   '@parcel/watcher': true
   esbuild: true
   sharp: true
+  # Optional DTrace bindings for bunyan, gscan's logger (apps/examples/ghost-theme).
+  # gscan runs fine without them and they need a compiler, so: no.
+  dtrace-provider: false
 
 minimumReleaseAgeExclude:
   - '@voidzero-dev/vite-plus-core@0.2.1'

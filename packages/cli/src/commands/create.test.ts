@@ -154,3 +154,99 @@ describe('buildScaffold', () => {
     expect(numeric.has('src/sections/Section2024Review.tsx')).toBe(true)
   })
 })
+
+describe('buildScaffold — astro', () => {
+  const files = buildScaffold({
+    name: 'My App',
+    framework: 'astro',
+    theme: 'dark',
+    sections: ['Dashboard', 'Reports', 'Settings'],
+  })
+  const map = fileMap(files)
+
+  it('emits an Astro project, not a Vite SPA', () => {
+    for (const path of [
+      'package.json',
+      'tsconfig.json',
+      'astro.config.mjs',
+      'src/layouts/Layout.astro',
+      'src/components/Shell.tsx',
+      'src/styles/layers.css',
+    ]) {
+      expect(map.has(path)).toBe(true)
+    }
+    // The Vite SPA entry points must not leak into the Astro shape.
+    expect(map.has('vite.config.ts')).toBe(false)
+    expect(map.has('index.html')).toBe(false)
+    expect(map.has('src/main.tsx')).toBe(false)
+    expect(map.has('src/App.tsx')).toBe(false)
+  })
+
+  it('routes the first section at / and the rest by name', () => {
+    expect(map.has('src/pages/index.astro')).toBe(true)
+    expect(map.has('src/pages/reports.astro')).toBe(true)
+    expect(map.has('src/pages/settings.astro')).toBe(true)
+    expect(map.get('src/pages/index.astro')).toContain('activePath="/"')
+    expect(map.get('src/pages/reports.astro')).toContain('activePath="/reports"')
+  })
+
+  /**
+   * The single line that decides whether the app renders styled at all.
+   *
+   * Vite externalizes node_modules packages in its server build, so without this the
+   * package's module graph is never walked and Astro — which collects a page's CSS from
+   * that graph — emits none. It must be `resolve.noExternal`: Astro prerenders in its own
+   * Vite environment, which `ssr.*` does not reach.
+   */
+  it('sets resolve.noExternal in the Astro config', () => {
+    const config = map.get('astro.config.mjs')!
+    expect(config).toContain('noExternal')
+    expect(config).toContain('resolve')
+    expect(config).not.toMatch(/ssr:\s*\{[^}]*noExternal/)
+  })
+
+  it('hydrates only the shell, leaving page content server-rendered', () => {
+    const page = map.get('src/pages/index.astro')!
+    expect(page).toContain('<Shell client:load')
+    // The section is rendered with no client directive — static HTML, zero JS.
+    expect(page).toMatch(/<Dashboard \/>/)
+    expect(map.get('src/components/Dashboard.tsx')).not.toContain('client:')
+  })
+
+  it('imports the layer order before the theme, so vendor cannot outrank cascivo', () => {
+    const layout = map.get('src/layouts/Layout.astro')!
+    const layers = layout.indexOf('styles/layers.css')
+    const theme = layout.indexOf('@cascivo/themes/')
+    expect(layers).toBeGreaterThan(-1)
+    expect(theme).toBeGreaterThan(-1)
+    expect(layers).toBeLessThan(theme)
+    expect(map.get('src/styles/layers.css')).toContain('@layer vendor, cascivo.reset')
+  })
+
+  it('nav items carry href, so Astro routing needs no client router', () => {
+    const shell = map.get('src/components/Shell.tsx')!
+    expect(shell).toContain("href: '/'")
+    expect(shell).toContain("href: '/reports'")
+    // No router registration call — Astro's file routing handles the hrefs.
+    expect(shell).not.toContain('setLinkComponent(')
+  })
+
+  it('depends on astro and the prebuilt cascivo packages — and no others', () => {
+    const pkg = JSON.parse(map.get('package.json')!) as {
+      dependencies: Record<string, string>
+    }
+    expect(pkg.dependencies['astro']).toBeDefined()
+    expect(pkg.dependencies['@astrojs/react']).toBeDefined()
+    expect(pkg.dependencies['@cascivo/react']).toBeDefined()
+    expect(pkg.dependencies['@cascivo/themes']).toBeDefined()
+    // Same prebuilt-path rule as the Vite scaffold: these are transitive, never declared.
+    expect(pkg.dependencies['@cascivo/core']).toBeUndefined()
+    expect(pkg.dependencies['@cascivo/tokens']).toBeUndefined()
+  })
+
+  it('defaults to the vite scaffold when no framework is given', () => {
+    const dflt = fileMap(buildScaffold({ name: 'x', theme: 'light', sections: ['Home'] }))
+    expect(dflt.has('vite.config.ts')).toBe(true)
+    expect(dflt.has('astro.config.mjs')).toBe(false)
+  })
+})

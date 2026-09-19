@@ -1,0 +1,39 @@
+<html lang='{{@site.locale}}' data-theme='light'>
+  <head>
+    <meta charset='utf-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+    <title>{{meta_title}}</title>
+
+    {{! cascivo FIRST. Everything it ships lives in @layer blocks, and this theme's own
+          CSS is unlayered — so screen.css wins without needing specificity tricks.
+          assets/css/cascivo.css is generated: see ../scripts/build-css.mjs. }}
+    <link rel='stylesheet' href='{{asset "css/cascivo.css"}}' />
+    <link rel='stylesheet' href='{{asset "css/screen.css"}}' />
+
+    {{! Follow the reader's OS setting before first paint, so there is no flash. cascivo
+          themes are scoped to [data-theme] and carry no prefers-color-scheme rule of their
+          own, so nothing switches unless you set the attribute. }}
+    <script>
+      document.documentElement.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches ?
+      'dark' : 'light'
+    </script>
+
+    {{ghost_head}}
+  </head>
+  <body class='{{body_class}}'>
+    <header class='site-header'>
+      <a class='site-title' href='{{@site.url}}'>{{@site.title}}</a>
+      {{#if @site.description}}<p class='site-description'>{{@site.description}}</p>{{/if}}
+    </header>
+
+    <main class='site-main'>
+      {{{body}}}
+    </main>
+
+    <footer class='site-footer'>
+      <p>{{@site.title}} &copy; {{date format='YYYY'}}</p>
+    </footer>
+
+    {{ghost_foot}}
+  </body>
+</html>

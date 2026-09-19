@@ -831,6 +831,22 @@
   align-items: flex-start;
 }
 
+/* The non-React aside: tokens + themes are plain CSS, so they work where the components
+   cannot. Ruled off from the framework tiles above so it does not read as a fifth tile. */
+.pg-frameworks-aside {
+  border-block-start: var(--cascivo-landing-rule-weight) solid var(--cascivo-color-border);
+}
+
+.pg-frameworks-aside code {
+  font-size: 0.9em;
+}
+
+/* An inline link inside a prose sentence, so it cannot take .pg-link (uppercase mono with
+   a border — a CTA treatment). It still needs to look like a link, hence the accent colour. */
+.pg-frameworks-aside a {
+  color: var(--cascivo-color-destructive);
+}
+
 .pg-showcase-more {
   border-block-start: var(--cascivo-landing-rule-weight) solid var(--cascivo-color-border);
 }

@@ -1,0 +1,18 @@
+{
+  "name": "@cascivo/example-ghost-theme",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A real Ghost (Handlebars) theme styled with cascivo tokens + themes — the executable form of docs/USING-WITH-GHOST.md",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-css.mjs",
+    "check": "node scripts/build-css.mjs && node scripts/check-theme.mjs"
+  },
+  "dependencies": {
+    "@cascivo/themes": "workspace:*"
+  },
+  "devDependencies": {
+    "esbuild": "catalog:",
+    "gscan": "^6.5.0"
+  }
+}

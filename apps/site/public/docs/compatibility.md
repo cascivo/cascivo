@@ -13,15 +13,16 @@ baseline. If an integration surprises you, start here.
 
 ## Frameworks
 
-| Framework                   | Supported             | Notes                                                                                                                                                                                                                                                                                    |
-| --------------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| React 18 / 19               | ✅ Yes                | Primary target. Components ship `'use client'` preserved.                                                                                                                                                                                                                                |
-| Next.js App Router (RSC)    | ✅ Yes                | Import the CSS once in a Server Component (e.g. `app/layout.tsx`); components are client. Working example: [`apps/examples/react-next`](https://github.com/cascivo/cascivo/tree/main/apps/examples/react-next). See [`USING-WITH-NEXTJS.md`](/docs/using-with-nextjs.md).                |
-| Vite + React (CSR/SPA)      | ✅ Yes                | Reference setup. See `apps/examples/react-vite`.                                                                                                                                                                                                                                         |
-| Vite SSR / TanStack Start   | ✅ Yes¹               | Requires `ssr.noExternal: [/^@cascivo\//]` (or the `cascivoSsr()` plugin). Working example: [`apps/examples/react-vite-ssr`](https://github.com/cascivo/cascivo/tree/main/apps/examples/react-vite-ssr). See [`USING-WITH-VITE-SSR.md`](/docs/using-with-vite-ssr.md).                   |
-| Preact 10 (`preact/compat`) | ✅ **CSR only**       | Verified on Vite CSR (`@preact/preset-vite`) — components, signals, overlays and charts all behave as on React, at roughly half the JS. **Not verified under SSR/prerender**, and known to fail under Astro's compat aliasing. See [`USING-WITH-PREACT.md`](/docs/using-with-preact.md). |
-| Astro (React islands)       | ⚠️ **Partial**        | `client:only` ✅. Under `client:load` / `client:visible` Astro drops the per-component CSS, so islands render unstyled — import the aggregate `@cascivo/react/styles.css` in a shared layout as a workaround (+308 KB). See [`USING-WITH-ASTRO.md`](/docs/using-with-astro.md).          |
-| Vue / Svelte / Angular      | ⚠️ Tokens/themes only | `@cascivo/tokens` + `@cascivo/themes` are framework-agnostic CSS; the components are React.                                                                                                                                                                                              |
+| Framework                   | Supported             | Notes                                                                                                                                                                                                                                                                                                                                                                                                                |
+| --------------------------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| React 18 / 19               | ✅ Yes                | Primary target. Components ship `'use client'` preserved.                                                                                                                                                                                                                                                                                                                                                            |
+| Next.js App Router (RSC)    | ✅ Yes                | Import the CSS once in a Server Component (e.g. `app/layout.tsx`); components are client. Working example: [`apps/examples/react-next`](https://github.com/cascivo/cascivo/tree/main/apps/examples/react-next). See [`USING-WITH-NEXTJS.md`](/docs/using-with-nextjs.md).                                                                                                                                            |
+| Vite + React (CSR/SPA)      | ✅ Yes                | Reference setup. See `apps/examples/react-vite`.                                                                                                                                                                                                                                                                                                                                                                     |
+| Vite SSR / TanStack Start   | ✅ Yes¹               | Requires `ssr.noExternal: [/^@cascivo\//]` (or the `cascivoSsr()` plugin). Working example: [`apps/examples/react-vite-ssr`](https://github.com/cascivo/cascivo/tree/main/apps/examples/react-vite-ssr). See [`USING-WITH-VITE-SSR.md`](/docs/using-with-vite-ssr.md).                                                                                                                                               |
+| Preact 10 (`preact/compat`) | ✅ **CSR only**       | Verified on Vite CSR (`@preact/preset-vite`) — components, signals, overlays and charts all behave as on React, at roughly half the JS. **Not verified under SSR/prerender**, and known to fail under Astro's compat aliasing. See [`USING-WITH-PREACT.md`](/docs/using-with-preact.md).                                                                                                                             |
+| Astro (React islands)       | ✅ Yes²               | Requires `@cascivo/react` ≥ 1.0.1 **and** `vite.resolve.noExternal: [/^@cascivo\//]` in `astro.config.mjs` — without both, SSR'd islands render unstyled. `npx cascivo create --framework astro` emits it wired up. Working example: [`apps/examples/astro-islands`](https://github.com/cascivo/cascivo/tree/main/apps/examples/astro-islands). See [`USING-WITH-ASTRO.md`](/docs/using-with-astro.md).              |
+| Vue / Svelte / Angular      | ⚠️ Tokens/themes only | `@cascivo/tokens` + `@cascivo/themes` are framework-agnostic CSS; the components are React.                                                                                                                                                                                                                                                                                                                          |
+| Ghost (Handlebars themes)   | ⚠️ Tokens/themes only | Themes are Handlebars rendered server-side with no JS framework layer, so React components cannot mount. The token + theme CSS works once flattened (bare `@import`s, no build step in Ghost). Working theme, validated by Ghost's own `gscan` in CI: [`apps/examples/ghost-theme`](https://github.com/cascivo/cascivo/tree/main/apps/examples/ghost-theme). See [`USING-WITH-GHOST.md`](/docs/using-with-ghost.md). |
 
 ¹ The published `@cascivo/react` bundle ships per-component CSS as static
 side-effect imports. Bundlers resolve these; a bare server-side ESM loader
@@ -32,6 +33,22 @@ pinned older versions. Since 0.18.0 a `react-server` condition points RSC back a
 the CSS-bearing build, so component CSS tree-shakes under SSR the same way it does
 in an SPA — no aggregate stylesheet in either recipe. The
 [Vite SSR guide](/docs/using-with-vite-ssr.md) has the measurements.
+
+² Astro's unstyled-island problem had **two independent causes**, and both must be
+addressed. (a) Export conditions match in **declaration order**, and until 1.0.1 the
+CSS-free `node` twin was listed ahead of `import`; a Vite-based SSR framework resolves
+with `node` active and `react-server` inactive, so it got the CSS-free build. Since
+1.0.1 a `module` condition sits ahead of `node` — bundlers match it, while Node's ESM
+resolver, which does not implement `module`, still falls through to the twin, so
+footnote ¹'s guarantee is unchanged. This affected `@cascivo/react`, `@cascivo/charts`,
+`@cascivo/ai`, `@cascivo/editor` and `@cascivo/flow`; the ordering is enforced by
+`pnpm css-contract:check`. (b) Vite externalizes `node_modules` packages in its server
+build, so the package's module graph is never walked and Astro — which collects a page's
+CSS from that graph — emits none; `vite.resolve.noExternal` puts it back. It must be
+`resolve.noExternal`, not `ssr.noExternal`, which Astro's prerender environment does not
+read. Cause (b) does not appear in the monorepo's own Astro fixture, because a
+`workspace:*` link is never externalized — see the verification notes in
+[`USING-WITH-ASTRO.md`](/docs/using-with-astro.md).
 
 ## Browsers
 

@@ -29,6 +29,11 @@ export function InstallationPage() {
         <h2>Scaffold a new app</h2>
         <p>A complete Vite + React app with the shell, side navigation, and a theme wired up.</p>
         <CodeBlock lang="bash" code="npx cascivo create my-app" />
+        <p style={{ marginBlockStart: 'var(--cascivo-space-4)' }}>
+          Or an Astro site — file-routed pages, zero JS for page content, and the Vite config Astro
+          requires already written.
+        </p>
+        <CodeBlock lang="bash" code="npx cascivo create my-app --framework astro" />
       </section>
 
       <section style={cardStyle}>

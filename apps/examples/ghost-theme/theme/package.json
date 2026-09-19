@@ -1,0 +1,16 @@
+{
+  "name": "cascivo-ghost-example",
+  "version": "1.0.0",
+  "description": "A minimal Ghost theme styled entirely with cascivo design tokens",
+  "license": "MIT",
+  "author": {
+    "name": "cascivo",
+    "email": "hello@cascivo.com"
+  },
+  "config": {
+    "posts_per_page": 10
+  },
+  "engines": {
+    "ghost": ">=5.0.0"
+  }
+}

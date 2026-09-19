@@ -32,6 +32,17 @@ export function GettingStartedPage() {
           Open it and start building.
         </p>
         <CodeBlock lang="bash" code="npx cascivo create my-app" />
+        <p style={{ marginBlockStart: 'var(--cascivo-space-4)' }}>
+          Building a content site instead? <code>--framework astro</code> scaffolds an Astro app:
+          pages are real file routes, page content renders to static HTML with no JavaScript, and
+          only the app shell hydrates. It also writes the one line of Vite config Astro needs for
+          component CSS to be emitted at all — see{' '}
+          <a href="https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-ASTRO.md">
+            Using cascivo with Astro
+          </a>
+          .
+        </p>
+        <CodeBlock lang="bash" code="npx cascivo create my-app --framework astro" />
       </section>
 
       <section style={cardStyle}>

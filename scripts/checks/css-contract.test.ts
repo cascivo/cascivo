@@ -30,6 +30,18 @@
  *      emitted CSS — all six from server-rendered components. The workaround was to import
  *      the 328 KB aggregate `styles.css`, which is why an SSR page shipped ~384 KB of CSS
  *      to render one card. See docs/plans/ssr-css-and-client-js-plan.md.
+ *   4. Every entry point offering a `node` twin must ALSO offer a `module` condition, ahead
+ *      of `node`, resolving to the CSS-bearing build. This is invariant 3's sibling for the
+ *      non-RSC half of the ecosystem: a Vite-based SSR framework (Astro, Nuxt, SvelteKit)
+ *      resolves with `node` active but NOT `react-server`, so with `node` first its server
+ *      module graph gets the CSS-free twin — and a framework that collects a page's CSS by
+ *      walking that graph emits none. Astro shipped unstyled `client:load`/`client:visible`
+ *      islands this way for two majors while `client:only` (client graph only) rendered
+ *      correctly, which read as an upstream Astro bug and was documented as unfixable.
+ *      `module` is a bundler-only convention Node's ESM resolver does not implement, so it
+ *      steers bundlers to the CSS-bearing build while bare Node still falls through to the
+ *      twin — invariant 2 is preserved. See
+ *      docs/plans/framework-templates-astro-ghost-research.md.
  *
  * Needs a prior `pnpm build` — it reads `dist/`, i.e. what an adopter actually installs.
  * Skips cleanly when dist is absent so `pnpm ready`'s pre-build stages stay runnable.
@@ -229,6 +241,58 @@ describe('css-contract — a package that declares CSS side effects imports its 
       )
     },
   )
+
+  it('every node twin is preceded by a module condition', { skip: !built }, () => {
+    const offenders: string[] = []
+    for (const c of candidates()) {
+      // Every subpath, not just '.': @cascivo/charts ships a second node twin at
+      // './sparkline', and a subpath resolves through its own condition list.
+      for (const [subpath, entry] of Object.entries(c.pkg.exports ?? {})) {
+        if (typeof entry !== 'object' || entry === null) continue
+        const conditions = entry as Record<string, string>
+        if (conditions['node'] === undefined) continue
+        const label = `${c.name}${subpath === '.' ? '' : subpath.slice(1)}`
+
+        const target = conditions['module']
+        if (target === undefined) {
+          offenders.push(
+            `${label}: has a "node" twin but no "module" condition, so every Vite-based SSR ` +
+              'framework resolves the CSS-free build and collects no component CSS',
+          )
+          continue
+        }
+        if (target.includes('/node/')) {
+          offenders.push(
+            `${label}: "module" points at the CSS-free node twin (${target}) — it must ` +
+              'resolve to the CSS-bearing build',
+          )
+          continue
+        }
+        if (!existsSync(join(c.dir, target))) {
+          offenders.push(`${label}: "module" points at ${target}, which is missing`)
+          continue
+        }
+        const order = Object.keys(conditions)
+        if (order.indexOf('module') > order.indexOf('node')) {
+          offenders.push(
+            `${label}: "module" is listed after "node" — export conditions match in ` +
+              'declaration order, so "node" would win and the CSS-free twin would be used',
+          )
+        }
+      }
+    }
+    assert.deepEqual(
+      offenders,
+      [],
+      'A Vite-based SSR framework (Astro, Nuxt, SvelteKit) resolves with `node` active and ' +
+        '`react-server` inactive, so a `node` twin listed ahead of `import` hands its SERVER ' +
+        "module graph the CSS-free build. Frameworks that collect a page's CSS from that " +
+        'graph then emit none, and SSR-rendered components render unstyled with no warning ' +
+        '— reproduced on Astro for two majors. `module` ahead of `node` fixes it without ' +
+        "weakening invariant 2, because Node's ESM resolver ignores `module`.\n  " +
+        offenders.join('\n  '),
+    )
+  })
 
   it(
     'finds the packages it is meant to cover (guards against silent skips)',
