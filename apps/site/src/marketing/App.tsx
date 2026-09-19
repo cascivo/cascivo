@@ -144,8 +144,9 @@ function SectionFallback({
  * every chunk is requested during initial load and the landing pays for all of them before
  * first paint. This gate makes the import start on intersection instead.
  *
- * Applied to the gallery, which is the expensive one — DataTable, BarChart and a dozen live
- * components, ~25 KB gz of JS and ~4 KB of CSS, sitting six screens down.
+ * Applied to the two expensive sections, both many screens down: the gallery (DataTable,
+ * BarChart and a dozen live components) and the themes section (which fetches the nine
+ * deferred theme stylesheets on mount).
  */
 function WhenNearViewport({ height, children }: { height: number; children: ReactNode }) {
   useSignals()
@@ -207,9 +208,11 @@ function HomePage() {
               <PosterGallery />
             </Suspense>
           </WhenNearViewport>
-          <Suspense fallback={<SectionFallback height={480} />}>
-            <PosterThemes />
-          </Suspense>
+          <WhenNearViewport height={480}>
+            <Suspense fallback={<SectionFallback height={480} />}>
+              <PosterThemes />
+            </Suspense>
+          </WhenNearViewport>
           <Suspense fallback={<SectionFallback height={520} />}>
             <PosterAiLayer />
           </Suspense>
