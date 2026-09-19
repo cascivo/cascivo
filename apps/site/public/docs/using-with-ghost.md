@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/using-with-ghost.md
-  registry v1.0.0 · generated 2026-08-29
+  registry v1.3.0 · generated 2026-09-16
 -->
 
 # Using cascivo with Ghost
