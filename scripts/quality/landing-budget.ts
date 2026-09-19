@@ -108,7 +108,8 @@ function serveDist(): Promise<Server> {
       res.writeHead(404).end()
       return
     }
-    res.writeHead(200, { 'content-type': CONTENT_TYPES[extname(file)] ?? 'application/octet-stream' })
+    const type = CONTENT_TYPES[extname(file)] ?? 'application/octet-stream'
+    res.writeHead(200, { 'content-type': type })
     createReadStream(file).pipe(res)
   })
   // Port 0: the OS assigns a free one. A fixed port makes the check die with EADDRINUSE
