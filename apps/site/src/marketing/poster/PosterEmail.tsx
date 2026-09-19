@@ -3,6 +3,7 @@ import { useComputed, useSignal, useSignals } from '@cascivo/core'
 import { Checkbox } from '@cascivo/components/checkbox'
 import { ToggleGroup } from '@cascivo/components/toggle-group'
 import { EMAIL_OUTLOOK, EMAIL_SAMPLES, EMAIL_TEMPLATES } from '../email-samples.generated'
+import { EMAIL_SHOWCASE, EMAIL_SHOWCASE_OUTLOOK } from '../email-showcase.generated'
 
 /*
  * The email target demonstrating itself.
@@ -16,6 +17,10 @@ import { EMAIL_OUTLOOK, EMAIL_SAMPLES, EMAIL_TEMPLATES } from '../email-samples.
  * The second frame is the same email with every declaration Outlook Windows cannot support
  * removed, derived from the Can I email matrix. Square button corners are the real
  * degradation; that nothing else moves is the point.
+ *
+ * "All primitives" is a fourth chip in the same picker rather than a second frame: one
+ * message built from nearly every primitive the package exports, so the section answers both
+ * "what does it look like" and "what is in the box" without growing a second control.
  */
 
 const THEMES = ['light', 'dark', 'warm', 'midnight', 'corporate', 'cyberpunk'] as const
@@ -23,7 +28,13 @@ type PreviewTheme = (typeof THEMES)[number]
 
 const titleCase = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 const THEME_ITEMS = THEMES.map((t) => ({ value: t, label: titleCase(t) }))
-const TEMPLATE_ITEMS = EMAIL_TEMPLATES.map((t) => ({ value: t.id, label: t.name }))
+
+/** The composed every-primitive message, alongside the three shipped templates. */
+const SHOWCASE_ID = 'showcase'
+const TEMPLATE_ITEMS = [
+  ...EMAIL_TEMPLATES.map((t) => ({ value: t.id, label: t.name })),
+  { value: SHOWCASE_ID, label: 'All primitives' },
+]
 
 const SNIPPET = `import { renderEmail, PasswordReset } from '@cascivo/email'
 
@@ -38,10 +49,14 @@ export function PosterEmail() {
   const templateId = useSignal<string>('password-reset')
   const outlook = useSignal(false)
 
-  const sample = useComputed(() => EMAIL_SAMPLES[templateId.value]![theme.value]!)
-  const srcDoc = useComputed(() =>
-    outlook.value ? EMAIL_OUTLOOK[templateId.value]! : sample.value.html,
+  const showcase = useComputed(() => templateId.value === SHOWCASE_ID)
+  const sample = useComputed(() =>
+    showcase.value ? EMAIL_SHOWCASE[theme.value]! : EMAIL_SAMPLES[templateId.value]![theme.value]!,
   )
+  const srcDoc = useComputed(() => {
+    if (!outlook.value) return sample.value.html
+    return showcase.value ? EMAIL_SHOWCASE_OUTLOOK : EMAIL_OUTLOOK[templateId.value]!
+  })
 
   // The frame is sized from the mail it holds. One height tall enough for the
   // longest of the thirty-six samples left ~140px of dead panel under the short
@@ -71,9 +86,16 @@ export function PosterEmail() {
           {(sample.value.encodedBytes / 1024).toFixed(1)} KB encoded · no client JS · plain-text
           part included
         </p>
-        <a className="pg-link" href="/docs/email">
-          See the email docs →
-        </a>
+        {/* JSX drops the newline between two inline-block links, so they need an
+            explicit gap rather than the word space they would have in HTML. */}
+        <div className="pg-email-links">
+          <a className="pg-link" href="/docs/email">
+            See the email docs →
+          </a>
+          <a className="pg-link" href="/docs/email/components">
+            Preview every component →
+          </a>
+        </div>
       </div>
 
       <div className="pg-email-stage">

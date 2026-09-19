@@ -48,6 +48,7 @@ const DOCS_STATIC_ROUTES: { path: string; priority: string }[] = [
   { path: '/docs/context', priority: '0.8' },
   { path: '/docs/charts', priority: '0.7' },
   { path: '/docs/email', priority: '0.8' },
+  { path: '/docs/email/components', priority: '0.8' },
   { path: '/docs/flow', priority: '0.7' },
   { path: '/docs/icons', priority: '0.7' },
   { path: '/docs/editor', priority: '0.7' },

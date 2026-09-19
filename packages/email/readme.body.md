@@ -11,6 +11,22 @@ tokens, resolved to literal hex for clients that have never heard of `oklch()`.
 pnpm add @cascivo/email react react-dom
 ```
 
+## The components
+
+Twenty-two primitives, grouped by what they do:
+
+| Group          | Components                                              |
+| -------------- | ------------------------------------------------------- |
+| **Document**   | `Html`, `Head`, `Body`, `Preview`, `Style`              |
+| **Layout**     | `Container`, `Section`, `Row`, `Column`, `Spacer`, `Hr` |
+| **Typography** | `Heading`, `Text`, `Link`, `List`, `Footer`             |
+| **Content**    | `Button`, `Card`, `Alert`, `Badge`, `Img`, `Markdown`   |
+
+Each one previewed as a real email document, in four themes, with its props and the exact JSX
+that produced the frame: [cascivo.com/docs/email/components](https://cascivo.com/docs/email/components).
+The same reference as one fetchable file:
+[cascivo.com/docs/email-primitives.md](https://cascivo.com/docs/email-primitives.md).
+
 ## Send one
 
 ```tsx

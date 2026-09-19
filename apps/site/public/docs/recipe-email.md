@@ -10,6 +10,11 @@ Render cascivo-themed email with `@cascivo/email`. Your product UI and the mail 
 share one design system: the same twelve themes, the same tokens, resolved for clients that
 have never heard of `oklch()`.
 
+This is the workflow end to end. For the components themselves — every primitive with its
+props, its defaults and a worked example — see
+[EMAIL-PRIMITIVES.md](/docs/email-primitives.md), or the rendered previews at
+[cascivo.com/docs/email/components](https://cascivo.com/docs/email/components).
+
 For what the clients actually support, see [EMAIL-CLIENT-SUPPORT.md](/docs/email-client-support.md)
 — generated from the same data the conformance lint reads, so the two cannot disagree.
 

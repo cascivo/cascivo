@@ -759,6 +759,16 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('— table-based, inline-styled, no client JS, no runtime dependencies. Themed from the')
   lines.push('same twelve themes, resolved to literal hex at render time.')
   lines.push('')
+  lines.push('The whole component set, and the ONLY components valid inside an email:')
+  lines.push('')
+  lines.push('- Document: `Html`, `Head`, `Body`, `Preview`, `Style`')
+  lines.push('- Layout: `Container`, `Section`, `Row`, `Column`, `Spacer`, `Hr`')
+  lines.push('- Typography: `Heading`, `Text`, `Link`, `List`, `Footer`')
+  lines.push('- Content: `Button`, `Card`, `Alert`, `Badge`, `Img`, `Markdown`')
+  lines.push('')
+  lines.push('Props, defaults and a worked example for each, with rendered previews:')
+  lines.push(`${SITE}/docs/email-primitives.md (${SITE}/docs/email/components).`)
+  lines.push('')
   lines.push(
     '- `renderEmail(element, { theme, subject, tier })` -> `{ html, text, preheader, stats }`.',
   )
@@ -787,7 +797,8 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('  on the palette passed to `renderEmail({ theme })`.')
   lines.push('')
   lines.push(
-    `Full recipe: ${SITE}/docs/recipe-email.md. Client support: ${SITE}/docs/email-client-support.md.`,
+    `Full recipe: ${SITE}/docs/recipe-email.md. Components: ${SITE}/docs/email-primitives.md. ` +
+      `Client support: ${SITE}/docs/email-client-support.md.`,
   )
   lines.push('')
   lines.push('## How to use it')
@@ -1167,6 +1178,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     `- Strict host ESLint (scope stylistic rules off your components dir): ${SITE}/docs/using-with-strict-eslint.md`,
   )
   lines.push(`- Transactional & newsletter email (@cascivo/email): ${SITE}/docs/recipe-email.md`)
+  lines.push(
+    `- Every @cascivo/email component, with props and examples: ${SITE}/docs/email-primitives.md`,
+  )
   lines.push(
     `- Email client support matrix (what the conformance lint enforces): ${SITE}/docs/email-client-support.md`,
   )

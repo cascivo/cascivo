@@ -17,6 +17,7 @@ export interface HeadingProps {
   children?: ReactNode
   /** Semantic level. Drives the element, and the default size unless `size` overrides it. */
   level?: HeadingLevel
+  /** Font size, overriding the one `level` implies. A CSS length — `rem` is unsupported in two floor clients, so use `px`. */
   size?: string
   align?: 'left' | 'center' | 'right'
   style?: Style
@@ -32,6 +33,14 @@ const HEADING_SIZES: Record<HeadingLevel, string> = {
   6: '14px',
 }
 
+/**
+ * A section heading.
+ *
+ * The element follows `level`, and so does the size unless `size` overrides it — an email
+ * often needs an `<h2>` that looks like an `<h1>`, and the two should not be the same knob.
+ * Sizes are fixed pixels because the type scale is in `rem`, which Outlook Windows and
+ * Yahoo do not support.
+ */
 export function Heading({ children, level = 1, size, align, style }: HeadingProps) {
   const Tag = `h${level}` as 'h1'
   const base: Style = {
@@ -48,6 +57,7 @@ export function Heading({ children, level = 1, size, align, style }: HeadingProp
 
 export interface TextProps {
   children?: ReactNode
+  /** Font size as a CSS length. Never below `14px`: iOS Mail inflates smaller text to its own minimum and the layout shifts under it. */
   size?: string
   /** `muted` for secondary copy — reads from `--cascivo-color-text-muted`. */
   variant?: 'default' | 'muted'
@@ -98,6 +108,7 @@ export function Text({
 
 export interface LinkProps {
   children?: ReactNode
+  /** Absolute URL. A relative path resolves against the mail client's own host. */
   href: string
   /**
    * Click-beacon URLs, space-separated — the `ping` attribute.
@@ -141,7 +152,9 @@ export function Link({ children, href, ping, style }: LinkProps) {
 }
 
 export interface ListProps {
+  /** One entry per list item. */
   items: ReactNode[]
+  /** Render `<ol>` rather than `<ul>`. */
   ordered?: boolean
   style?: Style
 }
