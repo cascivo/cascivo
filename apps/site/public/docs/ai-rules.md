@@ -571,7 +571,7 @@ No CSS, no hydration, no interactivity. Affordances come through named —
 chart arrives as a Markdown table. In the browser, `elementToMarkdown(element)` reads the
 live DOM, so it reports what someone has actually typed, checked and opened.
 
-See [MACHINE-MODE.md](https://github.com/cascivo/cascivo/blob/main/docs/MACHINE-MODE.md).
+See [MACHINE-MODE.md](/docs/machine-mode.md).
 
 ## See also
 
@@ -585,4 +585,4 @@ See [MACHINE-MODE.md](https://github.com/cascivo/cascivo/blob/main/docs/MACHINE-
 - [USING-WITH-TAILWIND.md](/docs/using-with-tailwind.md) — running cascivo alongside an
   existing Tailwind v4 setup.
 - [TOKENS.md](/docs/tokens.md) — the full token catalog.
-- [MACHINE-MODE.md](https://github.com/cascivo/cascivo/blob/main/docs/MACHINE-MODE.md) — a rendered UI as a Markdown document.
+- [MACHINE-MODE.md](/docs/machine-mode.md) — a rendered UI as a Markdown document.

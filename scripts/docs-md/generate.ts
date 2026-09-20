@@ -42,6 +42,7 @@ const GUIDES: { src: string; slug: string }[] = [
   { src: 'COMPARED-TO-STYLEX.md', slug: 'compared-to-stylex' },
   { src: 'ENTERPRISE-READINESS.md', slug: 'enterprise-readiness' },
   { src: 'AI-RULES.md', slug: 'ai-rules' },
+  { src: 'MACHINE-MODE.md', slug: 'machine-mode' },
   { src: 'TROUBLESHOOTING.md', slug: 'troubleshooting' },
   { src: 'TESTING.md', slug: 'testing' },
   { src: 'USING-WITH-A-ROUTER.md', slug: 'using-with-a-router' },

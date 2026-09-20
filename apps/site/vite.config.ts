@@ -980,7 +980,13 @@ export default defineConfig({
       '@cascivo/storage': resolve(root, 'packages/storage/src/index.ts'),
       '@cascivo/i18n': resolve(root, 'packages/i18n/src/index.ts'),
       '@cascivo/ai': resolve(root, 'packages/ai/src/index.ts'),
+      // Must precede the bare '@cascivo/render' entry: a string alias replaces by
+      // prefix, so without this '@cascivo/render/text' resolves to 'index.ts/text'.
+      '@cascivo/render/text': resolve(root, 'packages/render/src/view-text.ts'),
       '@cascivo/render': resolve(root, 'packages/render/src/index.ts'),
+      // Subpath first, for the same prefix-replacement reason as '@cascivo/core/pure'.
+      '@cascivo/text/react': resolve(root, 'packages/text/src/react.tsx'),
+      '@cascivo/text': resolve(root, 'packages/text/src/index.ts'),
       '@cascivo/icons': resolve(root, 'packages/icons/src/index.tsx'),
       '@cascivo/charts/sparkline': resolve(root, 'packages/charts/src/sparkline.ts'),
       '@cascivo/charts': resolve(root, 'packages/charts/src/index.ts'),

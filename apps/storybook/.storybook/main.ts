@@ -30,6 +30,9 @@ const config: StorybookConfig = {
         '@cascivo/ai': resolve(root, 'packages/ai/src/index.ts'),
         '@cascivo/icons': resolve(root, 'packages/icons/src/index.tsx'),
         '@cascivo/registry': resolve(root, 'packages/registry/src/index.ts'),
+        // Subpath first, for the same prefix-replacement reason as '@cascivo/core/pure'.
+        '@cascivo/text/react': resolve(root, 'packages/text/src/react.tsx'),
+        '@cascivo/text': resolve(root, 'packages/text/src/index.ts'),
       },
     },
   }),

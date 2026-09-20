@@ -10,10 +10,15 @@
       "import": "./dist/index.mjs",
       "types": "./dist/index.d.mts",
       "default": "./dist/index.mjs"
+    },
+    "./text": {
+      "import": "./dist/view-text.mjs",
+      "types": "./dist/view-text.d.mts",
+      "default": "./dist/view-text.mjs"
     }
   },
   "scripts": {
-    "build": "vp pack",
+    "build": "vp pack src/index.ts src/view-text.ts",
     "check": "tsc --noEmit",
     "test": "vp test",
     "dev": "vp pack --watch"

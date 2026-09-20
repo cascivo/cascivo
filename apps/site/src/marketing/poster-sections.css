@@ -1048,3 +1048,90 @@
   color: var(--cascivo-color-text-muted);
   cursor: pointer;
 }
+
+/* ── 16 Machine mode ───────────────────────────────────────────────────────
+   Two panels of the same thing. The document panel is `@cascivo/text` running
+   against the DOM of the UI panel, so it must be able to grow and scroll on its
+   own — the text is longer than the UI is tall, and clipping it would hide the
+   affordance annotations that are the whole point. */
+.pg-mm-stage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-4);
+  /* The band's own padding, so the panel captions are not flush against the
+     rule that closes the cell above them. */
+  padding: var(--pg-pad-block) var(--pg-pad-inline);
+}
+
+.pg-mm-body {
+  max-width: 46ch;
+}
+
+.pg-mm-facts {
+  margin-block: var(--cascivo-space-3) var(--cascivo-space-2);
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-text-muted);
+}
+
+.pg-mm-figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-2);
+  margin: 0;
+  min-inline-size: 0;
+}
+
+.pg-mm-caption {
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-text-muted);
+}
+
+.pg-mm-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+  padding: var(--cascivo-space-4);
+  border: var(--pg-rule);
+  background: var(--cascivo-color-surface);
+}
+
+.pg-mm-demo-head {
+  display: flex;
+  gap: var(--cascivo-space-2);
+  align-items: center;
+  margin: 0;
+  font-size: var(--cascivo-text-lg);
+}
+
+.pg-mm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cascivo-space-2);
+}
+
+/* The document panel IS a code block — it carries `pg-pre` for the band's own
+   surface, rule and mono face, and adds only what differs. */
+.pg-mm-doc {
+  /* The document runs longer than the UI beside it; scroll rather than clip. */
+  max-block-size: 26rem;
+  overflow: auto;
+}
+
+.pg-mm-hint {
+  margin: 0;
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-text-muted);
+}
+
+/* Side by side once there is room for two columns of prose. */
+@media (min-width: 64rem) {
+  .pg-mm-stage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
+  .pg-mm-hint {
+    grid-column: 1 / -1;
+  }
+}

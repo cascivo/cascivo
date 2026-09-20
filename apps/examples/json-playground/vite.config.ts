@@ -12,6 +12,9 @@ export default defineConfig({
       '@cascivo/i18n': resolve(__dirname, '../../../packages/i18n/src/index.ts'),
       '@cascivo/ai': resolve(__dirname, '../../../packages/ai/src/index.ts'),
       '@cascivo/react': resolve(__dirname, '../../../packages/react/src/index.ts'),
+      // Must precede the bare '@cascivo/render' entry: a string alias replaces by
+      // prefix, so without this '@cascivo/render/text' resolves to 'index.ts/text'.
+      '@cascivo/render/text': resolve(__dirname, '../../../packages/render/src/view-text.ts'),
       '@cascivo/render': resolve(__dirname, '../../../packages/render/src/index.ts'),
     },
   },
