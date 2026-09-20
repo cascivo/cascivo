@@ -28,6 +28,7 @@ history: [breaking-changes.json](https://cascivo.com/breaking-changes.json).
 | `@cascivo/react`         | 1.3.1   | 1.2.0 — Enforce the styling contract: a `--cascivo-*` token or `data-cascivo-*` hook tha | [CHANGELOG](packages/react/CHANGELOG.md)         |
 | `@cascivo/registry`      | 0.2.10  | 0.2.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                       | [CHANGELOG](packages/registry/CHANGELOG.md)      |
 | `@cascivo/storage`       | 1.3.1   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/storage/CHANGELOG.md)       |
+| `@cascivo/text`          | 1.3.1   | —                                                                                        | [CHANGELOG](packages/text/CHANGELOG.md)          |
 | `@cascivo/themes`        | 1.0.0   | 1.0.0 — Join the `1.x` line.                                                             | [CHANGELOG](packages/themes/CHANGELOG.md)        |
 | `@cascivo/tokens`        | 1.1.1   | 1.1.0 — Enforce the styling contract: a `--cascivo-*` token or `data-cascivo-*` hook tha | [CHANGELOG](packages/tokens/CHANGELOG.md)        |
 | `@cascivo/vite-plugin`   | 0.1.10  | 0.1.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                       | [CHANGELOG](packages/vite-plugin/CHANGELOG.md)   |

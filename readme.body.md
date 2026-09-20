@@ -114,6 +114,7 @@ cascivo/
 │   ├── layouts/      # registry source — app shells and page layouts
 │   ├── registry/     # @cascivo/registry — registry schema, validation, shadcn interop
 │   ├── render/       # JSON → UI runtime renderer (CascadeView)
+│   ├── text/         # @cascivo/text    — machine mode: a rendered UI as Markdown
 │   ├── ai/           # AI-native UI components (StreamingText, AiChat, Terminal)
 │   ├── search/       # registry search index
 │   ├── cli/          # cascivo CLI — init / add / list / update / audit

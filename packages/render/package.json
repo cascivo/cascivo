@@ -21,12 +21,14 @@
   "dependencies": {
     "@cascivo/core": "workspace:^",
     "@cascivo/i18n": "workspace:^",
-    "@cascivo/react": "workspace:^"
+    "@cascivo/react": "workspace:^",
+    "@cascivo/text": "workspace:^"
   },
   "devDependencies": {
     "@testing-library/react": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
     "jsdom": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",

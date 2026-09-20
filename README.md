@@ -138,6 +138,7 @@ cascivo/
 │   ├── layouts/      # registry source — app shells and page layouts
 │   ├── registry/     # @cascivo/registry — registry schema, validation, shadcn interop
 │   ├── render/       # JSON → UI runtime renderer (CascadeView)
+│   ├── text/         # @cascivo/text    — machine mode: a rendered UI as Markdown
 │   ├── ai/           # AI-native UI components (StreamingText, AiChat, Terminal)
 │   ├── search/       # registry search index
 │   ├── cli/          # cascivo CLI — init / add / list / update / audit
@@ -267,6 +268,7 @@ Published packages install from npm. Components themselves are copy-pasted into 
 | [`@cascivo/eslint-plugin`](packages/eslint-plugin) | [![npm](https://img.shields.io/npm/v/%40cascivo%2Feslint-plugin?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/eslint-plugin) | ESLint rule that turns cascivo's near-miss prop names into an actionable message — the wrong guess, the prop that exists, and why                                                                                    |
 | [`@cascivo/flow`](packages/flow)                   | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fflow?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/flow)                   | Flow & diagram components — CSS-native, signal-driven node/edge graphs with pan/zoom, draggable nodes, animated edges, and scripted storylines, zero dependencies                                                    |
 | [`@cascivo/platform`](packages/platform)           | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fplatform?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/platform)           | Platform-idiomatic geometry and motion for cascivo, selected with data-platform. Orthogonal to @cascivo/themes, which owns colour.                                                                                   |
+| [`@cascivo/text`](packages/text)                   | [![npm](https://img.shields.io/npm/v/%40cascivo%2Ftext?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/text)                   | Machine mode for cascivo — serialize a rendered UI to Markdown for agents. Docs offline: npx @cascivo/docs                                                                                                           |
 | [`@cascivo/vite-plugin`](packages/vite-plugin)     | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fvite-plugin?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/vite-plugin)     | Vite plugin — wrap JS-imported third-party stylesheets into a low-priority CSS @layer                                                                                                                                |
 
 ### Registry sources & internal packages

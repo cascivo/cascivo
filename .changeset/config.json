@@ -13,7 +13,8 @@
       "@cascivo/flow",
       "@cascivo/i18n",
       "@cascivo/storage",
-      "@cascivo/ai"
+      "@cascivo/ai",
+      "@cascivo/text"
     ]
   ],
   "updateInternalDependencies": "patch",
