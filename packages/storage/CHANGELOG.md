@@ -1,5 +1,11 @@
 # @cascivo/storage
 
+## 1.3.1
+
+### Patch Changes
+
+- @cascivo/core@1.3.1
+
 ## 1.3.0
 
 ### Patch Changes
