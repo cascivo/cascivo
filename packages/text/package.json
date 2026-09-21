@@ -1,0 +1,77 @@
+{
+  "name": "@cascivo/text",
+  "version": "1.3.1",
+  "private": false,
+  "description": "Machine mode for cascivo — serialize a rendered UI to Markdown for agents. Docs offline: npx @cascivo/docs",
+  "keywords": [
+    "accessibility",
+    "agent",
+    "ai",
+    "cascivo",
+    "design-system",
+    "html-to-markdown",
+    "markdown"
+  ],
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/text#readme",
+  "bugs": "https://github.com/cascivo/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
+    "directory": "packages/text"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "default": "./dist/react.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "vp build && node scripts/flatten-types.mjs && node scripts/check-types-flat.mjs",
+    "check": "tsc --noEmit",
+    "test": "vp test",
+    "dev": "vp pack --watch"
+  },
+  "dependencies": {
+    "@cascivo/core": "workspace:^"
+  },
+  "devDependencies": {
+    "@preact/signals-react": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "jsdom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "peerDependencies": {
+    "@preact/signals-react": ">=3.0.0",
+    "@types/react": ">=18.0.0",
+    "react": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    }
+  }
+}

@@ -554,6 +554,25 @@ of it either — only Vite _SSR_ runtimes do. Full recipe:
 `/// <reference types="vite/client" />`, or `declare module '*.css'`. This is a
 type-only declaration — no runtime effect.
 
+## Reading a UI instead of looking at it
+
+An agent that needs to know what a rendered page currently says — not what its source
+says — can serialize it to Markdown with `@cascivo/text`:
+
+```ts
+import { renderToStaticMarkup } from 'react-dom/server'
+import { toMarkdown } from '@cascivo/text'
+
+const doc = toMarkdown(renderToStaticMarkup(<Dashboard />))
+```
+
+No CSS, no hydration, no interactivity. Affordances come through named —
+`[button: Save]`, `[input: Email = "ada@example.com"]`, `[tab: Overview (selected)]` — and a
+chart arrives as a Markdown table. In the browser, `elementToMarkdown(element)` reads the
+live DOM, so it reports what someone has actually typed, checked and opened.
+
+See [MACHINE-MODE.md](/docs/machine-mode.md).
+
 ## See also
 
 - [`@cascivo/docspack`](https://github.com/cascivo/cascivo/tree/main/packages/docspack) —
@@ -566,3 +585,4 @@ type-only declaration — no runtime effect.
 - [USING-WITH-TAILWIND.md](/docs/using-with-tailwind.md) — running cascivo alongside an
   existing Tailwind v4 setup.
 - [TOKENS.md](/docs/tokens.md) — the full token catalog.
+- [MACHINE-MODE.md](/docs/machine-mode.md) — a rendered UI as a Markdown document.

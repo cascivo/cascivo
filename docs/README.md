@@ -76,6 +76,7 @@ for pasting into an agent's context window.
 | ----- | -------------- |
 | [CONTRIBUTING-REGISTRY.md](CONTRIBUTING-REGISTRY.md) | Publish and host a third-party component registry. |
 | [CONTRIBUTING-TEMPLATES.md](CONTRIBUTING-TEMPLATES.md) | Author a template and submit it to the marketplace. |
+| [MACHINE-MODE.md](MACHINE-MODE.md) | Render a UI as a Markdown document with `@cascivo/text` — for agents, no CSS or interactivity. |
 | [CHART-LIBRARIES.md](CHART-LIBRARIES.md) | `@cascivo/charts` compared to Chart.js and Apache ECharts. |
 | [RECIPE-EMAIL.md](RECIPE-EMAIL.md) | Send transactional email with `@cascivo/email` — themed, table-based, plain-text part included. |
 | [EMAIL-PRIMITIVES.md](EMAIL-PRIMITIVES.md) | Every `@cascivo/email` component — props, defaults, and a worked example each. Generated from the source. |

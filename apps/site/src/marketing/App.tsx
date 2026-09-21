@@ -55,6 +55,11 @@ const PosterShowcase = lazy(() =>
 const PosterEmail = lazy(() =>
   import('./poster/PosterEmail').then((m) => ({ default: m.PosterEmail })),
 )
+// The machine-mode section mounts a live demo and the serializer that reads it; lazy, like
+// every section below the fold, so neither lands in the home entry.
+const PosterMachineMode = lazy(() =>
+  import('./poster/PosterMachineMode').then((m) => ({ default: m.PosterMachineMode })),
+)
 const PosterCta = lazy(() => import('./poster/PosterCta').then((m) => ({ default: m.PosterCta })))
 const Footer = lazy(() => import('./sections/Footer').then((m) => ({ default: m.Footer })))
 
@@ -240,6 +245,11 @@ function HomePage() {
           <Suspense fallback={<SectionFallback height={640} />}>
             <PosterEmail />
           </Suspense>
+          <WhenNearViewport height={560}>
+            <Suspense fallback={<SectionFallback height={560} />}>
+              <PosterMachineMode />
+            </Suspense>
+          </WhenNearViewport>
           <Suspense fallback={<SectionFallback height={320} />}>
             <PosterCta />
           </Suspense>
