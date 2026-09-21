@@ -1102,6 +1102,9 @@ importers:
       '@cascivo/storage':
         specifier: workspace:^
         version: link:../../packages/storage
+      '@cascivo/text':
+        specifier: workspace:*
+        version: link:../../packages/text
       '@cascivo/theme-kit':
         specifier: workspace:*
         version: link:../../packages/theme-kit

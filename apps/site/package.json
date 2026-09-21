@@ -35,6 +35,7 @@
     "@cascivo/render": "workspace:*",
     "@cascivo/search": "workspace:*",
     "@cascivo/storage": "workspace:^",
+    "@cascivo/text": "workspace:*",
     "@cascivo/theme-kit": "workspace:*",
     "@cascivo/themes": "workspace:*",
     "@cascivo/tokens": "workspace:*",

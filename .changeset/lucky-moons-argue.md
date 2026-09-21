@@ -1,5 +1,7 @@
 ---
 '@cascivo/text': minor
+'@cascivo/docs': patch
+'@cascivo/docspack': patch
 ---
 
 Machine mode — render a cascivo UI as a Markdown document.
@@ -17,5 +19,8 @@ already renders that table for screen readers.
 
 cascivo.com's landing page carries a live demo of it: the document panel is the serializer
 running in the visitor's browser against the DOM of the UI panel beside it.
+
+`@cascivo/docs` and `@cascivo/docspack` bake `apps/site/public/` into what they publish, so
+the new guide and the refreshed registry reach an adopter only if they ship too.
 
 See `docs/MACHINE-MODE.md`.
