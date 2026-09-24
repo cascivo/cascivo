@@ -3,7 +3,7 @@
 <div align="center">
   <a href="https://cascivo.com"><img src="https://cascivo.com/logo-mark-img-accent.svg" width="72" height="72" alt="cascivo logo"></a>
   <h1>@cascivo/example-astro-islands</h1>
-  <p><strong>The CSS-native, signal-driven, AI-first React design system</strong></p>
+  <p><strong>Astro islands probe — one client directive per page, reports whether cascivo component CSS survives an SSR-rendered island</strong></p>
 
 ![workspace](https://img.shields.io/badge/workspace-private-64748b?style=flat-square)
 ![types](https://img.shields.io/badge/types-included-0079bf?style=flat-square&logo=typescript&logoColor=white)

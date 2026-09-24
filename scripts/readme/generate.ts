@@ -65,7 +65,11 @@ const NON_THEME_CSS = new Set(['all.css', 'light-dark.css', 'base.css', 'tailwin
 
 interface Counts {
   components: number
+  // Registry entries of type `component` — the standalone UI pieces, without charts,
+  // layouts, blocks, sections and flow parts, which `components` also counts.
+  standalone: number
   charts: number
+  layouts: number
   themes: number
 }
 
@@ -78,12 +82,15 @@ function readCounts(): Counts {
   ).length
   return {
     components: registry.components.length,
+    standalone: registry.components.filter((c) => c.type === 'component').length,
     charts: registry.components.filter((c) => c.type === 'chart').length,
+    layouts: registry.components.filter((c) => c.type === 'layout').length,
     themes,
   }
 }
 
-// Replace {{count.components}} / {{count.charts}} / {{count.themes}} in
+// Replace {{count.components}} / {{count.standalone}} / {{count.charts}} /
+// {{count.layouts}} / {{count.themes}} in
 // readme.body.md content so hand-written prose can never drift from the
 // registry again. Fails hard on unknown placeholders.
 function substituteCounts(body: string, counts: Counts, source: string): string {

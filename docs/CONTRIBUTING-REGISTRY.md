@@ -1,15 +1,15 @@
 # Contributing a Third-Party Registry
 
-This guide covers the full loop for publishing a cascade component registry and getting it listed in the cascade directory.
+This guide covers the full loop for publishing a cascivo component registry and getting it listed in the cascivo directory.
 
 ## Overview
 
-The cascade registry model lets anyone publish components that users can install with:
+The cascivo registry model lets anyone publish components that users can install with:
 
 ```sh
-cascade add owner/repo/component-name
+cascivo add owner/repo/component-name
 # or
-cascade add https://your-host.com/r/component-name.json
+cascivo add https://your-host.com/r/component-name.json
 ```
 
 You don't need approval to publish. The `directory/registries.json` listing is optional but recommended for discoverability.
@@ -19,15 +19,15 @@ You don't need approval to publish. The `directory/registries.json` listing is o
 ## 1. Start from the starter template
 
 ```sh
-# Clone the starter
-git clone https://github.com/urbanisierung/cascade-ui apps/examples/registry-starter my-registry
+# Copy the starter out of the cascivo repo
+npx degit cascivo/cascivo/apps/examples/registry-starter my-registry
 cd my-registry
-rm -rf .git && git init
+git init
 ```
 
 Or create from scratch — you need only two things:
 
-1. A `cascade-registry.json` manifest
+1. A `cascivo-registry.json` manifest
 2. Component source files referenced by that manifest
 
 ---
@@ -38,7 +38,7 @@ Or create from scratch — you need only two things:
 
 ```
 my-registry/
-├── cascade-registry.json
+├── cascivo-registry.json
 └── src/
     └── my-component/
         ├── my-component.tsx
@@ -48,7 +48,7 @@ my-registry/
 
 ### Component rules
 
-Follow the cascade house rules for any component intended to work inside cascade projects:
+Follow the cascivo house rules for any component intended to work inside cascivo projects:
 
 - **No `useState`, `useContext`, `useEffect`, `useLayoutEffect`, `useReducer`** in components that use signals. For simple presentational components (no interactivity), plain React props are fine.
 - **CSS custom properties only** — no Tailwind, no CSS-in-JS. Use `@layer components { … }` to scope styles.
@@ -96,7 +96,7 @@ export function Callout({ type = 'info', title, children }: CalloutProps) {
 
 ## 3. Write the registry manifest
 
-`cascade-registry.json` is a `RegistryIndex` at schema version 2:
+`cascivo-registry.json` is a `RegistryIndex` at schema version 2:
 
 ```json
 {
@@ -143,7 +143,7 @@ export function Callout({ type = 'info', title, children }: CalloutProps) {
 ## 4. Build
 
 ```sh
-cascade registry build --in cascade-registry.json --out public/r
+cascivo registry build --in cascivo-registry.json --out public/r
 ```
 
 This reads your manifest and writes one JSON artifact per item into `public/r/`:
@@ -166,7 +166,7 @@ Any static host works. Pick the simplest option for your workflow:
 Enable Pages on your repo pointing at the `main` branch `/` root (or a `gh-pages` branch). Your components are then addressable as:
 
 ```sh
-cascade add your-org/my-registry/callout
+cascivo add your-org/my-registry/callout
 # resolves to https://your-org.github.io/my-registry/r/callout.json
 ```
 
@@ -175,12 +175,12 @@ cascade add your-org/my-registry/callout
 Set publish directory to `public`. Use the deployed URL directly:
 
 ```sh
-cascade add https://my-registry.vercel.app/r/callout.json
+cascivo add https://my-registry.vercel.app/r/callout.json
 ```
 
 **Raw GitHub URLs**
 
-Reference `raw.githubusercontent.com` URLs directly in `cascade-registry.json` files entries. No build step needed if you point at source files — but users get the raw source, not a resolved artifact.
+Reference `raw.githubusercontent.com` URLs directly in `cascivo-registry.json` files entries. No build step needed if you point at source files — but users get the raw source, not a resolved artifact.
 
 ---
 
@@ -190,24 +190,24 @@ Before publishing, verify the built artifact installs correctly:
 
 ```sh
 # Build
-cascade registry build --in cascade-registry.json --out public/r
+cascivo registry build --in cascivo-registry.json --out public/r
 
 # Install from local path into a test project
-cd /tmp && npx cascade init test-project && cd test-project
-cascade add /path/to/my-registry/public/r/callout.json
+cd /tmp && npx cascivo init test-project && cd test-project
+cascivo add /path/to/my-registry/public/r/callout.json
 ```
 
 Check that the files land in `src/components/callout/` and that the component imports resolve.
 
 ---
 
-## 7. Submit to the cascade directory
+## 7. Submit to the cascivo directory
 
-The `directory/registries.json` file is an index of known third-party registries. Being listed here makes your registry discoverable via `cascade search` and the cascade MCP server.
+The `directory/registries.json` file is an index of known third-party registries. Being listed here makes your registry discoverable via `cascivo search` and the cascivo MCP server.
 
 ### Add your entry
 
-Open a PR against [urbanisierung/cascade-ui](https://github.com/urbanisierung/cascade-ui) adding your registry to `directory/registries.json`:
+Open a PR against [cascivo/cascivo](https://github.com/cascivo/cascivo) adding your registry to `directory/registries.json`:
 
 ```json
 {
@@ -235,10 +235,10 @@ The CI pipeline for directory PRs verifies:
 
 ### What `verified` means
 
-`"verified": true` is set by the cascade maintainers after manual review:
+`"verified": true` is set by the cascivo maintainers after manual review:
 
 - Component source reviewed for malicious code
-- Styles follow cascade CSS conventions (no Tailwind, `@layer` scoping)
+- Styles follow cascivo CSS conventions (no Tailwind, `@layer` scoping)
 - Accessibility spot-checked (roles, keyboard nav)
 - Maintainer has agreed to respond to security reports
 
@@ -248,9 +248,9 @@ Verification is optional. Unverified registries are listed but shown with a warn
 
 ## Updating your registry
 
-1. Bump `version` in the item inside `cascade-registry.json`
-2. Rebuild: `cascade registry build --in cascade-registry.json --out public/r`
-3. Push — users who run `cascade update callout` will get the new version
+1. Bump `version` in the item inside `cascivo-registry.json`
+2. Rebuild: `cascivo registry build --in cascivo-registry.json --out public/r`
+3. Push — users who run `cascivo update callout` will get the new version
 
 ---
 
@@ -258,6 +258,6 @@ Verification is optional. Unverified registries are listed but shown with a warn
 
 - [Contributing a Template](./CONTRIBUTING-TEMPLATES.md) — publish a whole-page composition (the registry's higher-level sibling)
 - [Registry starter example](../apps/examples/registry-starter/) — copy-paste starting point
-- [`cascade registry` CLI reference](../packages/cli/README.md)
+- [`cascivo registry` CLI reference](../packages/cli/README.md)
 - [Component manifest schema](../packages/core/src/types.ts)
-- [cascade house rules](../CLAUDE.md) — authoring rules for components
+- [cascivo house rules](../CLAUDE.md) — authoring rules for components

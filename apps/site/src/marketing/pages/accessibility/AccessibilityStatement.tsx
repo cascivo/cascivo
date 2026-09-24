@@ -1,8 +1,12 @@
-import { A11Y_ROWS } from './data'
+import { A11Y_ROWS, AT_COMPONENTS, AT_GENERATED_AT, AT_STACKS } from './data'
 
 const WCAG22_COUNT = A11Y_ROWS.filter((r) => r.wcag === '2.2-AA').length
 const APG_COUNT = A11Y_ROWS.filter((r) => r.apgPattern !== null).length
 const TOTAL = A11Y_ROWS.length
+const AT_CELLS = AT_COMPONENTS.flatMap((c) => Object.values(c.results))
+const AT_PASS = AT_CELLS.filter((r) => r === 'pass').length
+const AT_PARTIAL = AT_CELLS.filter((r) => r === 'partial').length
+const AT_FAIL = AT_CELLS.filter((r) => r === 'fail').length
 
 const LEGAL_ROWS: { responsibility: string; cascivo: boolean; integrator: boolean }[] = [
   { responsibility: 'Component-level WCAG conformance', cascivo: true, integrator: false },
@@ -120,9 +124,19 @@ export function AccessibilityStatement() {
       <ul className="a11y-stmt-limits">
         <li>Conformance is at the component level, not the application level.</li>
         <li>
-          AT testing is planned as representative (12 components × 4 stacks), not exhaustive —
-          manual sessions are pending, and every matrix cell currently reads &quot;not tested&quot;.
-          Automated axe coverage is separate and is enforced on every pull request.
+          Screen-reader testing is representative, not exhaustive.{' '}
+          {AT_GENERATED_AT ? (
+            <>
+              The automated NVDA and VoiceOver run ({AT_COMPONENTS.length} components ×{' '}
+              {AT_STACKS.length} stacks, last run {AT_GENERATED_AT}) reports {AT_PASS} pass,{' '}
+              {AT_PARTIAL} partial and {AT_FAIL} fail — &quot;partial&quot; means one noted
+              announcement or key quirk.
+            </>
+          ) : (
+            <>No automated screen-reader run has landed yet, so treat that row as untested.</>
+          )}{' '}
+          Manual sessions, including JAWS, are still pending. Automated axe coverage is separate and
+          is enforced on every pull request.
         </li>
         <li>No third-party VPAT has been issued for cascivo.</li>
         <li>

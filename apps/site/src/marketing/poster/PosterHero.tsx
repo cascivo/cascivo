@@ -38,8 +38,9 @@ export function PosterHero() {
           <span className="pg-mark">stylesheet.</span>
         </h1>
         <p className="pg-lede">
-          A React design system with no Tailwind, no runtime, and no utility soup. The CLI copies
-          the source into your repo — plain CSS and tokens you can read, and so can your agent.
+          A React design system with no Tailwind, no CSS-in-JS runtime, and no utility soup. The CLI
+          copies the source into your repo — plain CSS and tokens you can read, and so can your
+          agent.
         </p>
         <div className="pg-hero-actions">
           <a className="pg-btn pg-btn--primary" href="/docs/getting-started">

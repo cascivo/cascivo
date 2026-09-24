@@ -1,7 +1,7 @@
 # cascivo — Roadmap
 
-The project has shipped its v1 scope: 192 registry entries across 7 categories,
-12 themes, the CLI copy-paste flow, the prebuilt `@cascivo/react` distribution,
+The project has shipped its v1 scope: the component registry (current counts are
+generated into the [README](../README.md)), 12 themes, the CLI copy-paste flow, the prebuilt `@cascivo/react` distribution,
 and the AI context layer (manifests, MCP server, `llms.txt`, `context.json`,
 token catalog, `audit --ai`).
 
@@ -19,6 +19,6 @@ token catalog, `audit --ai`).
 
 Development ran as 58 versioned implementation plans; they are preserved
 verbatim in [`docs/internal/`](./internal/) (`ROADMAP-V2.md` …
-`ROADMAP-V58.md`) together with the original project blueprint
+`ROADMAP-V59.md`) together with the original project blueprint
 (`FEATURES.md`), working audits, and migration feedback. They are internal
 working documents — commands and paths in them may be stale.

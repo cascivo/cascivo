@@ -556,8 +556,8 @@ minimumReleaseAgeExclude:
 attribution requirement.
 
 **Do I have to adopt all of it, or can I add one component?** Add exactly what
-you need. Components are copied into your repo one at a time — no runtime, no
-provider, nothing to buy into. Start with a single button.
+you need. Components are copied into your repo one at a time — no required provider,
+nothing to buy into. Start with a single button.
 
 **Do I need Tailwind?** No. Styling is modern platform CSS — `@layer`, custom
 properties, container queries — driven by a three-tier token system. Using

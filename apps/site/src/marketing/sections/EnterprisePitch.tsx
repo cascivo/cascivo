@@ -145,8 +145,8 @@ export function EnterprisePitch() {
       <section className="section" id="enterprise-cta" data-reveal="">
         <h2>Adopt it in an afternoon.</h2>
         <p className="section-sub">
-          Initialize, own the code, and ship. Nothing to license, no runtime to trust — just source
-          in your repo and a machine-readable layer your agents already understand.
+          Initialize, own the code, and ship. Nothing to license, no black box to trust — just
+          source in your repo and a machine-readable layer your agents already understand.
         </p>
         <CopyCommand command="npx cascivo init" />
         <div className="hero-ctas">

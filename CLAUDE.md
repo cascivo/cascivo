@@ -1,4 +1,4 @@
-# native-ui
+# cascivo
 
 ## Part 1 — Behavioral Guidelines
 
@@ -373,7 +373,7 @@ Packages that export source directly (components, layouts, charts, themes, token
 2. **Owned code** — components are copy-pasted into user projects (shadcn model). Users own what they use.
 3. **Modern CSS only** — `@layer`, `@container`, `:has()`, CSS custom properties. No Tailwind, no CSS-in-JS.
 4. **Signal-driven** — custom micro-FSM + Preact Signals in `@cascivo/core`. No `useState`/`useContext` for component interactivity. Zero unnecessary re-renders.
-5. **Beautiful by default** — three first-party themes (light, dark, warm). Theming via `data-theme` attribute + CSS custom properties. Scoped to any container.
+5. **Beautiful by default** — twelve first-party themes (light, dark, warm, and nine more). Theming via `data-theme` attribute + CSS custom properties. Scoped to any container.
 6. **AI-first** — every component has a machine-readable manifest. MCP server, Claude Code skills, and auto-generated docs all derive from it.
 
 ### Dependency Policy
@@ -382,7 +382,7 @@ Packages that export source directly (components, layouts, charts, themes, token
 - Peer dependencies must be explicit and version-ranged (`>=18.0.0`).
 - Runtime dependencies in `@cascivo/core`: none beyond `@preact/signals-react`.
 - Dev tooling: use vite+ (`vp`) as the single CLI — it bundles Oxlint, Oxfmt, Rolldown, Vitest (all Rust-backed).
-- vite+ is alpha (v0.1.24) — accepted risk. On `vp` breaking changes, check https://viteplus.dev before updating.
+- vite+ is alpha (v0.2.x) — accepted risk. On `vp` breaking changes, check https://viteplus.dev before updating.
 
 ### Monorepo Structure
 
@@ -395,7 +395,7 @@ the monorepo, and the cause is invisible from inside the app that triggered it (
 report, repo-level note). Enforced by `scripts/checks/app-package-names.test.ts`.
 
 ```
-cascade/
+cascivo/
 ├── packages/
 │   ├── core/           # @cascivo/core — micro-FSM, Preact Signals integration, base utilities
 │   ├── tokens/         # @cascivo/tokens — CSS design tokens (primitive → semantic → component)
@@ -488,7 +488,7 @@ export const meta: ComponentMeta = {
 | Surface            | Package                        | Purpose                                                                                                                       |
 | ------------------ | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
 | Component manifest | `<name>.meta.ts` per component | Ground truth for all AI surfaces                                                                                              |
-| MCP server         | `@cascivo/mcp`                 | Tools: `list_components`, `get_component`, `create_theme`, `scaffold_page`, `add_to_project`                                  |
+| MCP server         | `@cascivo/mcp`                 | 23 tools, e.g. `list_components`, `get_component`, `scaffold_view`, `validate_view`, `add_to_project`                         |
 | Claude Code skills | `skills/`                      | `cascivo:add`, `cascivo:design-page`, `cascivo:create-theme`, `cascivo:extend`                                                |
 | Data-driven docs   | `apps/site/` (docs routes)     | Hand-authored TSX pages render props/tokens/examples live from `registry.json` at runtime — no markdown/HTML is pre-generated |
 | Registry manifest  | `registry.json`                | Machine-readable index — CLI + MCP + docs all read from this                                                                  |
@@ -527,7 +527,10 @@ Tiered automation:
 - **Trigger**: `scripts/factory/backlog.json` — queue of component specs the factory works through
 - **Loop**: generate → lint → type-check → test → if pass: open PR; if fail: self-heal (max 5 attempts) → escalate
 
-### v1 Component List (~20)
+### Original v1 Component List (~20, historical)
+
+The starting scope, kept for context. The registry has long outgrown it — `registry.json` is the
+current list.
 
 `inputs`: Button, Input, Textarea, Select, Checkbox, Radio, Toggle, Slider
 `overlay`: Modal/Dialog, Dropdown, Tooltip, Toast

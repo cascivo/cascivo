@@ -30,7 +30,7 @@ You own the code. Like shadcn/ui, components are copy-pasted into your project v
 
 ## Highlights
 
-- **198 components, 7 categories** — inputs, display, overlay, navigation, layout, feedback, and 25 charts, all from a single token system.
+- **198 registry entries, one token system** — 131 standalone components (inputs, display, overlay, navigation, layout, feedback), 25 charts, 14 layouts, plus page blocks, sections and flow-diagram parts. Every entry installs with `cascivo add`.
 - **Interactive behavior included, not DIY** — dropdowns, menus, context menus, comboboxes, command palettes (⌘K), multi-selects, and tabs ship with keyboard navigation (arrow keys, Home/End, typeahead), focus trapping, and outside-click dismissal already wired, via native `<dialog>`/Popover APIs and `@cascivo/core` primitives (`useRovingFocus`, `FocusScope`, `DismissableLayer`, `useTypeahead`). Nothing to hand-roll or pair with a separate headless library.
 - **Data viz out of the box** — `@cascivo/charts` ships 25 chart types (line, area, bar, sparkline, KPI, heatmap, and more) on a shared scale/shape/decimation engine, token-scaled to match your theme. Pre-built dashboard blocks (`dashboard-charts`, `stats-cards`) and five full example apps (deploy/pulse/trade/pay/track) show them composed into real consoles.
 - **Email that matches your product** — `@cascivo/email` renders transactional mail from the same 12 themes, resolved to literal sRGB because no email client supports a custom property. Table-based layout, inline styles, a derived plain-text part, and a conformance lint that reads the rendered document against a vendored Can I email matrix and fails the build on anything Outlook Windows cannot render.
@@ -39,7 +39,7 @@ You own the code. Like shadcn/ui, components are copy-pasted into your project v
 - **Beautiful by default** — 12 first-party themes (light, dark, warm, midnight, pastel, brutalist, corporate, terminal, cyberpunk, and more), applied via `data-theme` on any container, scoped to any subtree.
 - **Three-level tokens** — primitive → semantic → component. Themes remap the semantic layer; you override component tokens for per-brand adaptation with no rebuild.
 - **AI-first context layer** — every component ships a `<name>.meta.ts` manifest (e.g. `button.meta.ts`); an MCP server, Claude Code skills, a closed-set token catalog, and `cascivo audit --ai` let agents generate against real props and have their output checked.
-- **Earned accessibility** — WCAG 2.2 AA + APG-conformant, verified by an axe sweep over every story that gates each pull request; CVD-safe chart palettes (Okabe-Ito, oklch); keyboard-navigable chart tooltips with `aria-live`; an AT test plan (NVDA / JAWS / VoiceOver — manual results pending).
+- **Earned accessibility** — WCAG 2.2 AA + APG-conformant, verified by an axe sweep over every story that gates each pull request; CVD-safe chart palettes (Okabe-Ito, oklch); keyboard-navigable chart tooltips with `aria-live`; screen-reader announcements checked nightly in CI with NVDA and VoiceOver, results published per component on the [accessibility page](https://cascivo.com/accessibility) (manual sessions, including JAWS, still pending).
 - **Mobile-first & RTL-ready** — fluid type, container queries, CSS logical properties, ≥44px touch targets, and zero overflow from 320–414px.
 - **Open registry** — publish your own components and host your own registry; install from any registry with `cascivo add owner/repo/component`.
 - **Templates & marketplace** — install whole-page compositions (a page + its components + fixtures) you own and adapt with `cascivo add @ns/<template>`; a backend-free, GitHub-hosted, community-contributed catalog.
@@ -76,7 +76,7 @@ Prefer a prebuilt dependency? `pnpm add @cascivo/react @cascivo/themes @preact/s
 
 ### Versioning and stability
 
-Every package is `0.x` and they version **independently** via [changesets](https://github.com/changesets/changesets), so your install list will mix numbers — `@cascivo/react@0.18.x` next to `@cascivo/platform@0.0.x`. A low number means **fewer releases, not less finished**: `@cascivo/platform` is new, not immature. Compatibility is per-entry `peerVersions` in `registry.json`, not version equality, so nothing has to move in lockstep.
+The runtime packages are on **`1.x` and covered by semver** — no covered API is removed or changed outside a major ([the contract](docs/UPGRADING.md#the-stability-contract)). The packages that share `@cascivo/core` (`core`, `react`, `charts`, `editor`, `flow`, `i18n`, `storage`, `ai`, `text`) release **in lockstep** at one version; pin them all to the same number. `tokens`, `themes`, `icons` and the `cascivo` CLI are also `1.x` on their own version lines. Tooling that is still settling — `@cascivo/mcp`, `registry`, `docspack`, `email`, the ESLint packages, `vite-plugin`, `platform` — stays on `0.x` and says so on npm.
 
 Pin exact versions (no `^`). Before any upgrade run **`cascivo doctor --drift`** — it reads [`breaking-changes.json`](https://cascivo.com/breaking-changes.json), published per package and machine-readable, and reports what changed under you. Details in [UPGRADING.md](docs/UPGRADING.md).
 
@@ -84,12 +84,17 @@ Pin exact versions (no `^`). Before any upgrade run **`cascivo doctor --drift`**
 
 cascivo ships both the **WHAT** (manifests, tokens, MCP) and the **WHY** (intent, boundaries, anti-patterns) so agents select from closed sets and their output is checkable:
 
-- **`llms.txt`** — start here. [`https://cascivo.com/llms.txt`](https://cascivo.com/llms.txt) is the AI entry point: how to install (both paths + trade-offs), the guides, the MCP tools, and a categorized index linking each component's machine-readable docs. Mirrored at `https://cascivo.com/llms.txt`.
+- **`llms.txt`** — start here. [`https://cascivo.com/llms.txt`](https://cascivo.com/llms.txt) is the AI entry point: how to install (both paths + trade-offs), the guides, the MCP tools, and a categorized index linking each component's machine-readable docs.
 - **Per-component AI docs** — `https://cascivo.com/llms/<name>.md` (props, examples, a11y, tokens) and `…/context/<name>.md` (when-to-use / when-not-to-use).
 - **`context.json`** — intent, design boundaries, specs, and authoring rules in one machine-readable bundle.
 - **`tokens.catalog.json`** — closed-set token catalog; every `--cascivo-*` property with its layer and resolved default.
 - **`cascivo audit --ai`** — flags hard-coded values, invented props, and missing required wiring in generated code.
-- **MCP server** ([`@cascivo/mcp`](packages/mcp)) — tools: `list_components`, `get_component`, `get_tokens`, `get_context`, `select_component`, `scaffold_view`, `validate_view`.
+- **MCP server** ([`@cascivo/mcp`](packages/mcp)) — 23 tools:
+  - _discover:_ `list_registries`, `list_components`, `search_components`, `get_component`, `select_component`, `get_context`, `list_guides`, `get_guide`
+  - _tokens & icons:_ `get_tokens`, `search_icons`
+  - _scaffold:_ `create_app`, `create_theme`, `scaffold_page`, `scaffold_view`, `scaffold_flow`, `get_view_grammar`
+  - _verify:_ `validate_view`, `validate_component`, `get_variant_matrix`
+  - _install:_ `add_to_project`, `list_templates`, `get_template`, `add_template`
 
 Point any MCP client at the server:
 
@@ -144,7 +149,7 @@ cascivo/
 │   ├── cli/          # cascivo CLI — init / add / list / update / audit
 │   └── mcp/          # @cascivo/mcp     — MCP server over the registry
 ├── apps/
-│   ├── site/         # cascivo.com + cascivo.com — landing + docs, generated from manifests (dogfood)
+│   ├── site/         # cascivo.com — landing + docs, generated from manifests (dogfood)
 │   ├── storybook/    # storybook.cascivo.com — stories from manifests
 │   ├── bench/        # performance benchmarks
 │   └── examples/     # runnable example apps (Vite, Next.js, registry starter, demos)
@@ -293,23 +298,23 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 
 ### Examples
 
-| Example                                                           | Description                                                                                                           |
-| ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| [`@cascivo/example-astro-islands`](apps/examples/astro-islands)   |                                                                                                                       |
-| [`@cascivo/example-deploy`](apps/examples/deploy)                 | Example app — a Vercel-style deployment platform built with cascivo                                                   |
-| [`@cascivo/example-flow`](apps/examples/flow)                     | Example app — a Camunda-style process orchestration dashboard built with cascivo                                      |
-| [`@cascivo/example-ghost-theme`](apps/examples/ghost-theme)       | A real Ghost (Handlebars) theme styled with cascivo tokens + themes — the executable form of docs/USING-WITH-GHOST.md |
-| [`@cascivo/json-playground`](apps/examples/json-playground)       | Live JSON → UI renderer playground using @cascivo/render                                                              |
-| [`@cascivo/example-kit`](apps/examples/kit)                       | Shared utilities for the cascivo example dashboards (internal)                                                        |
-| [`@cascivo/example-pay`](apps/examples/pay)                       | Example app — a Stripe-style payments and revenue dashboard built with cascivo                                        |
-| [`@cascivo/example-pulse`](apps/examples/pulse)                   | Example app — a Datadog-style real-time observability dashboard built with cascivo                                    |
-| [`@cascivo/example-react-next`](apps/examples/react-next)         | Next.js App Router example using cascivo                                                                              |
-| [`@cascivo/example-react-vite`](apps/examples/react-vite)         | Vite + React example app using cascivo                                                                                |
-| [`@cascivo/example-react-vite-ssr`](apps/examples/react-vite-ssr) | Vite SSR (TanStack Start / Remix / workerd) example — server-renders cascivo through the built dist                   |
-| [`@cascivo/registry-starter`](apps/examples/registry-starter)     | Starter template for publishing a third-party cascivo component registry                                              |
-| [`@cascivo/template-starter`](apps/examples/template-starter)     | Starter template for publishing a cascivo template to the marketplace                                                 |
-| [`@cascivo/example-track`](apps/examples/track)                   | Example app — a Linear-style keyboard-first issue tracker built with cascivo                                          |
-| [`@cascivo/example-trade`](apps/examples/trade)                   | Example app — a Trade Republic-style brokerage trading workspace built with cascivo                                   |
+| Example                                                           | Description                                                                                                                |
+| ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| [`@cascivo/example-astro-islands`](apps/examples/astro-islands)   | Astro islands probe — one client directive per page, reports whether cascivo component CSS survives an SSR-rendered island |
+| [`@cascivo/example-deploy`](apps/examples/deploy)                 | Example app — a Vercel-style deployment platform built with cascivo                                                        |
+| [`@cascivo/example-flow`](apps/examples/flow)                     | Example app — a Camunda-style process orchestration dashboard built with cascivo                                           |
+| [`@cascivo/example-ghost-theme`](apps/examples/ghost-theme)       | A real Ghost (Handlebars) theme styled with cascivo tokens + themes — the executable form of docs/USING-WITH-GHOST.md      |
+| [`@cascivo/json-playground`](apps/examples/json-playground)       | Live JSON → UI renderer playground using @cascivo/render                                                                   |
+| [`@cascivo/example-kit`](apps/examples/kit)                       | Shared utilities for the cascivo example dashboards (internal)                                                             |
+| [`@cascivo/example-pay`](apps/examples/pay)                       | Example app — a Stripe-style payments and revenue dashboard built with cascivo                                             |
+| [`@cascivo/example-pulse`](apps/examples/pulse)                   | Example app — a Datadog-style real-time observability dashboard built with cascivo                                         |
+| [`@cascivo/example-react-next`](apps/examples/react-next)         | Next.js App Router example using cascivo                                                                                   |
+| [`@cascivo/example-react-vite`](apps/examples/react-vite)         | Vite + React example app using cascivo                                                                                     |
+| [`@cascivo/example-react-vite-ssr`](apps/examples/react-vite-ssr) | Vite SSR (TanStack Start / Remix / workerd) example — server-renders cascivo through the built dist                        |
+| [`@cascivo/registry-starter`](apps/examples/registry-starter)     | Starter template for publishing a third-party cascivo component registry                                                   |
+| [`@cascivo/template-starter`](apps/examples/template-starter)     | Starter template for publishing a cascivo template to the marketplace                                                      |
+| [`@cascivo/example-track`](apps/examples/track)                   | Example app — a Linear-style keyboard-first issue tracker built with cascivo                                               |
+| [`@cascivo/example-trade`](apps/examples/trade)                   | Example app — a Trade Republic-style brokerage trading workspace built with cascivo                                        |
 
 ## Components
 

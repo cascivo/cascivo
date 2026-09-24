@@ -262,9 +262,10 @@ React re-render of the whole form. `Field` wires the label, description, and `ar
 
 ---
 
-## 7 — For a procurement reviewer: the 0.x question
+## 7 — For a procurement reviewer: the version-number question
 
-The question comes up before any of the above, and it comes up looking at an install list:
+The question comes up before any of the above, and it comes up looking at an install list.
+Before 1.0 it looked like this:
 
 ```
 @cascivo/react@0.18.0   @cascivo/themes@0.4.13   @cascivo/icons@0.3.10
@@ -272,18 +273,26 @@ The question comes up before any of the above, and it comes up looking at an ins
 ```
 
 A 2026-08-21 evaluator put it plainly: a `0.0.4` next to a `0.18.0` "reads as _half of this
-is pre-alpha_. A procurement reviewer will ask." Here is the answer, in the order it is
-usually asked.
+is pre-alpha_. A procurement reviewer will ask." Here is the answer as it stands today, in
+the order it is usually asked.
 
-**Why the numbers differ.** Packages version independently via
-[changesets](https://github.com/changesets/changesets). The number counts releases of that
-package, not maturity of the system: `@cascivo/platform` is the newest package, not the
-least finished. Compatibility is expressed per registry entry as `peerVersions` in
-`registry.json` — a real constraint the CLI checks — rather than by keeping every number in
-lockstep, which would make each version meaningless.
+**What is stable.** Every package an application depends on at runtime is on `1.x` and
+covered by semver — see the [stability contract](/docs/upgrading.md#the-stability-contract) for
+exactly what that promise covers and what it does not. The nine packages that share
+`@cascivo/core` (`core`, `react`, `charts`, `editor`, `flow`, `i18n`, `storage`, `ai`,
+`text`) release in lockstep at one version, so a mismatched pair cannot be installed by
+accident; `cascivo doctor` flags one if it happens anyway.
 
-**What 0.x costs you, honestly.** Semver gives no stability promise below 1.0, and that is
-the real exposure. Three things bound it:
+**Why some numbers still differ.** `@cascivo/tokens`, `@cascivo/themes`, `@cascivo/icons` and
+the `cascivo` CLI are `1.x` on their own version lines — none of them link against the
+signal registry, so they do not need to move with it. Tooling that is still settling
+(`@cascivo/mcp`, `@cascivo/registry`, `@cascivo/docspack`, `@cascivo/email`, the ESLint
+packages, `@cascivo/vite-plugin`, `@cascivo/platform`) stays on `0.x`, where semver gives no
+stability promise; the [coverage table](/docs/upgrading.md#which-packages-are-covered) lists
+them. Compatibility between entries is expressed per registry entry as `peerVersions` in
+`registry.json` — a real constraint the CLI checks.
+
+**What bounds the remaining exposure.**
 
 - **[`breaking-changes.json`](https://cascivo.com/breaking-changes.json)** — every
   major/minor release of every package, with notes, machine-readable. Published, not a
@@ -296,9 +305,8 @@ add` (warned before the copy), the MCP tools, the docs site and `llms.txt` all r
   it reaches you before the source is vendored rather than after.
 
 **What you own.** On the copy-paste path the component source is in your repository, under
-your review, and upgrades are a diff you accept. That is the strongest answer to the 0.x
-question available: the worst case for a component you have already copied is that you stop
-upgrading it.
+your review, and upgrades are a diff you accept. The worst case for a component you have
+already copied is that you stop upgrading it.
 
 ---
 

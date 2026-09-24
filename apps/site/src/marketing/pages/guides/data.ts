@@ -223,7 +223,7 @@ export const FAQ: FaqEntry[] = [
   {
     id: 'all-or-one',
     q: 'Do I have to adopt all of it, or can I add one component?',
-    a: 'Add exactly what you need. Components are copied into your repo one at a time — there is no runtime, no provider, and nothing to buy into. Start with a single button if you like.',
+    a: 'Add exactly what you need. Components are copied into your repo one at a time — there is no required provider and nothing to buy into. Start with a single button if you like.',
     next: { label: 'Three-step quickstart', href: '/docs' },
   },
   {

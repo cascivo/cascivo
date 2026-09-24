@@ -486,6 +486,10 @@ These findings come from reading `README.md`/`readme.body.md`, `apps/site/src/ma
 
 ### 7.1 Claims that contradict the repo (fix first; they cost trust)
 
+> **Status (2026-09-24):** addressed in a follow-up commit. The exceptions are:
+> - #4: timings still need a re-run on the disclosed bench machine; only the labels were fixed.
+> - #10: the exported `CascadeView` and internal file/app names were left as they are, because renaming them is an API change.
+
 | # | Where | Problem |
 |---|---|---|
 | 1 | `apps/site/src/marketing/poster/PosterHero.tsx:41` and `sections/EnterprisePitch.tsx:148` | "**no runtime**". `@preact/signals-react` plus the FSM *is* a runtime. A sceptic will spot it in one `npm ls`. Say "no styling runtime" / "no CSS-in-JS runtime". |
