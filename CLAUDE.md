@@ -172,7 +172,7 @@ Run the single command that covers everything:
 pnpm ready
 ```
 
-This runs: `pnpm regen` → `vp check --fix` → both host-lint gates (`lint:host-strict`, `lint:host-eslint`, `lint:host-eslint:test`) → the pre-build guard suite (brand, claims, recurrence, release, regen, meta, i18n, docs-routes, llms, layers, unlayered, reset, popover, dead-props, doc-urls, primitives, apg, visual-baselines) → build → the post-build guard suite (scaffold, audit:bundle, ssr, css-contract, sparkline:size, rsc, dts-tsdoc, api, shims, docspack, type-exports, computed, rtl) → type check → tests.
+This runs: `pnpm regen` → `vp check --fix` → both host-lint gates (`lint:host-strict`, `lint:host-eslint`, `lint:host-eslint:test`) → the pre-build guard suite (brand, claims, recurrence, release, regen, meta, i18n, docs-routes, llms, layers, unlayered, reset, popover, dead-props, doc-urls, primitives, apg, visual-baselines) → build → the post-build guard suite (scaffold, audit:bundle, ssr, css-contract, sparkline:size, rsc, dts-tsdoc, api, shims, docspack, type-exports, computed, rtl) → type check → tests → the React Compiler leg (`compiler:check`).
 
 The post-build half needs `dist/`, which is why it sits after the build: `api:check` diffs the
 published `.d.ts` surface against `api-surface.json`, `shims:check` regenerates

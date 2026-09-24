@@ -28,6 +28,9 @@ catalog:
   vite-plus: ^0.2.1
   '@modelcontextprotocol/sdk': ^1.29.0
   zod: ^4.4.3
+  # React Compiler 1.0 is built on Babel 7 (@babel/types ^7), so core stays on the 7 line.
+  '@babel/core': ^7
+  babel-plugin-react-compiler: ^1.0.0
   valibot: ^1.0.0
   preact-iso: ^2.12.0
   shiki: ^4.2.0

@@ -1,4 +1,4 @@
-import { useSignal, useSignals } from '@cascivo/core'
+import { useControllableSignal, useSignals } from '@cascivo/core'
 import { Button, Card, CardContent, CardHeader, CardTitle, Toggle } from '@cascivo/react'
 
 const THEMES = ['light', 'dark', 'warm'] as const
@@ -9,8 +9,11 @@ export default function App() {
   // component that reads `signal.value` during render must call useSignals() first.
   useSignals()
 
-  const theme = useSignal<Theme>('light')
-  const notifications = useSignal(true)
+  // Writes go through a setter, not `signal.value = …`: the React Compiler refuses to compile a
+  // component that assigns to a value returned from a hook. test:compiler runs this app under
+  // the compiler to keep that true.
+  const [theme, setTheme] = useControllableSignal<Theme>({ defaultValue: 'light' })
+  const [notifications, setNotifications] = useControllableSignal({ defaultValue: true })
 
   return (
     // Load-bearing line 3: data-theme activates a cascivo theme for this subtree.
@@ -24,14 +27,12 @@ export default function App() {
           <Toggle
             label="Notifications"
             checked={notifications.value}
-            onValueChange={(checked) => {
-              notifications.value = checked
-            }}
+            onValueChange={setNotifications}
           />
           <p>Notifications are {notifications.value ? 'on' : 'off'}.</p>
           <Button
             onClick={() => {
-              notifications.value = !notifications.value
+              setNotifications(!notifications.value)
             }}
           >
             Toggle notifications
@@ -46,7 +47,7 @@ export default function App() {
             variant={theme.value === name ? 'primary' : 'secondary'}
             size="sm"
             onClick={() => {
-              theme.value = name
+              setTheme(name)
             }}
           >
             {name}

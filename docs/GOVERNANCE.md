@@ -15,7 +15,8 @@ That is a real risk for an adopter, so here is what bounds it rather than a reas
 - **Every change passes the same gates, whoever wrote it.** `pnpm ready` runs formatting,
   both host-lint configurations, more than a hundred guard scripts, the build, type checks
   and the test suites; CI adds axe on every pull request, a packed-tarball install under
-  strict settings, and nightly visual-regression and screen-reader runs. An agent cannot merge
+  strict settings, a React Compiler build of an example app, visual regression on every pull
+  request that touches a component (all components nightly), and a nightly screen-reader run. An agent cannot merge
   what a human could not.
 - **MIT, and the code you copied is yours.** On the copy-paste path the component source lives
   in your repository. If the project stopped tomorrow, those components would keep working and

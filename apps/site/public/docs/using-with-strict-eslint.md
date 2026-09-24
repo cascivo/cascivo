@@ -214,15 +214,29 @@ signal writes live in your own page and component code, and on the prebuilt path
 
 ### React Compiler
 
-The React Compiler ecosystem is tightening around mutation analysis, and
-`react-hooks/immutability` is the leading edge of it. cascivo's position: signals
-are a deliberate escape from the compiler's memoization model — a signal cell is
-_meant_ to be mutated, and its reads are tracked at runtime rather than inferred
-at compile time. We expect to keep this rule off for the foreseeable future
-rather than reshape the reactivity contract around it. If you enable the React
-Compiler itself, cascivo components are unaffected (they ship `'use client'` and
-do not rely on compiler memoization), but your own signal-writing components
-should be excluded from compilation or written with the disable directive above.
+Measured, not assumed — `apps/examples/react-vite` runs its tests a second time with its own
+source compiled by `babel-plugin-react-compiler` 1.x (`pnpm compiler:check`, in CI):
+
+- **`signal.value = next` does not compile.** The compiler rejects a component that assigns to
+  a value returned from a hook ("This value cannot be modified") and, with
+  `panicThreshold: 'all_errors'`, fails the build. With the default threshold it skips the
+  component instead, so the component runs uncompiled — correct, but not optimized.
+- **Writing through a setter compiles, and updates correctly.** Take the pair from
+  `useControllableSignal` and call the setter; reading `signal.value` in render is fine:
+
+  ```tsx
+  const [open, setOpen] = useControllableSignal({ defaultValue: false })
+  // render: open.value · handlers: setOpen(!open.value)
+  ```
+
+  The compiler tracks `open.value` as a dependency, so memoized output re-renders when the
+  value changes — the example's interaction tests pass under it.
+
+- **The same form satisfies `react-hooks/immutability`**, so with setters you can keep that
+  rule on instead of using the override above.
+
+cascivo's own components are unaffected either way: they ship `'use client'` and do not rely
+on compiler memoization. The rule applies to the signal-writing components _you_ write.
 
 ---
 

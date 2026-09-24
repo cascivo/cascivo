@@ -27,7 +27,15 @@ values returned from hooks, and `useSignal()` returns one. cascivo's reactivity
 contract mandates signals over `useState`, so the rule fires on the documented
 idiom, in your own page code, on both install paths. Your code is correct.
 
-**Fix — ESLint:**
+**Fix without turning anything off:** write through a setter instead of assigning. The
+setter form passes this rule *and* compiles under the React Compiler (checked in CI):
+
+```tsx
+const [open, setOpen] = useControllableSignal({ defaultValue: false })
+// read open.value in render; in handlers call setOpen(next) instead of open.value = next
+```
+
+**Or turn the rule off — ESLint:**
 
 ```sh
 pnpm add -D --save-exact @cascivo/eslint-config
@@ -41,7 +49,7 @@ export default [...yourConfig, ...cascivo] // spread LAST
 
 Or set it directly: `{ rules: { 'react-hooks/immutability': 'off' } }`.
 
-**Fix — oxlint** (no `eslint.config.js` to spread into):
+**Or turn the rule off — oxlint** (no `eslint.config.js` to spread into):
 
 ```jsonc
 // .oxlintrc.json
