@@ -219,7 +219,7 @@ interface PageProps ${propsType}
 
 export function GeneratedPage({ ${hasData ? 'data, ' : ''}${hasActions ? 'actions' : ''} }: PageProps) {
 ${stateDecls}  return (
-    <div className="cascade-view">
+    <div className="cascivo-view">
 ${regionBlocks}
     </div>
   )

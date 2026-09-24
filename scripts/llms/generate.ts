@@ -693,6 +693,10 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     `- Icon catalog (every @cascivo/icons icon + keywords/category): ${DOCS}/icons.catalog.json`,
   )
   lines.push(
+    `- Tokens as W3C Design Tokens (DTCG 2025.10, for Figma variables / Tokens Studio / Style Dictionary; themes via the resolver): ${DOCS}/tokens/dtcg/cascivo.resolver.json`,
+  )
+  lines.push(`- DESIGN.md (single-file design summary for prompt-to-UI tools): ${DOCS}/DESIGN.md`)
+  lines.push(
     `- Breaking/feature changes (major+minor releases per package — detect API drift): ${DOCS}/breaking-changes.json`,
   )
   lines.push('')
@@ -1084,10 +1088,10 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('statement, or it never re-renders. When you do own reactive state, use these:')
   lines.push('')
   lines.push(
-    '- Local state -> `useSignal(initial)`; derived -> `useComputed(fn)`. The signal IS the state.',
+    '- Local state -> `const [count, setCount] = useSignalState(initial)`: read `count.value` in render, write `setCount(next)` / `setCount((n) => n + 1)`. Derived -> `useComputed(fn)`. The signal IS the state.',
   )
   lines.push(
-    "  ⚠ LINT: `eslint-plugin-react-hooks@7` (`recommended-latest`) enables `react-hooks/immutability`, which reports EVERY `signal.value = next` as `Error: This value cannot be modified`. It fires on this documented idiom, in the app's own page code, on both install paths — one reported build hit it 8 times and had no doc to reach for. Fix: `pnpm add -D @cascivo/eslint-config` and spread `...cascivo` LAST in `eslint.config.js`, or set `'react-hooks/immutability': 'off'`. Scoping it to a vendored-source glob does NOT work. See /docs/using-with-strict-eslint.md.",
+    "  ⚠ WRITE THROUGH THE SETTER: never `count.value = next` on a signal a hook returned. That assignment fails the React Compiler build ('This value cannot be modified') and is reported by `react-hooks/immutability`, which `eslint-plugin-react-hooks@7` (`recommended-latest`) enables by default. The setter form passes both (checked by `pnpm compiler:check`). Writing `.value` on a MODULE-LEVEL `signal()` is fine. Existing code full of `x.value = …` writes: install `@cascivo/eslint-config` (spread `...cascivo` LAST) or set `'react-hooks/immutability': 'off'`, and keep it out of the Compiler. See /docs/using-with-strict-eslint.md.",
     "  ⚠ FLAT CONFIG ENTRY POINT: the plugin exports BOTH `configs['recommended-latest']` (legacy eslintrc) and `configs.flat['recommended-latest']`. In an `eslint.config.js` you MUST use `reactHooks.configs.flat['recommended-latest']` — the other one is accepted silently and applies no rules at all, so lint passes while checking nothing.",
     "  ⚠ VENDORED-SOURCE GLOB: `...cascivo` scopes its vendored-source rules to `src/components/ui/**`. If your `outputDir` differs, call `cascivoVendoredSource('<your-outputDir>/**')` instead — with the default glob every rule it scopes off silently stays on. cascivo runs real ESLint over every file `cascivo add` copies in CI (scripts/checks/host-lint/eslint), so the published config is executed, not asserted.",
   )
@@ -1238,6 +1242,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('- `select_component` — rank components by a natural-language need')
   lines.push('- `scaffold_view` — natural language -> JSON view config')
   lines.push('- `validate_view` — validate a view config against the schema')
+  lines.push(
+    '- `render_view_as_markdown` — render a view config and read back what it says (needs `@cascivo/render`)',
+  )
   lines.push('- `add_to_project` — install components into the user project')
   lines.push('')
   lines.push('Two MCP servers, two jobs — run both if your client allows it:')
@@ -1256,7 +1263,7 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   )
   lines.push(`fetch ${DOCS}/context/<name>.md for the full when-to-use / when-not-to-use of each.`)
   lines.push('')
-  lines.push('## Component authoring rules (for cascivo:extend / custom components)')
+  lines.push('## Component authoring rules (for cascivo-extend / custom components)')
   lines.push('')
   lines.push(
     'These constrain code you write INSIDE a component you author or copy-paste-and-edit — not the app',
@@ -1369,17 +1376,11 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     lines.push('')
   }
 
-  lines.push('## Component intent summaries (use when…)')
-  lines.push('')
-  for (const entry of sorted) {
-    const firstWhenToUse = entry.meta?.intent?.whenToUse?.[0]
-    if (firstWhenToUse) {
-      lines.push(
-        `- [${entry.meta?.name ?? entry.name}](${DOCS}/context/${entry.name}.md) — Use when: ${firstWhenToUse}`,
-      )
-    }
-  }
-
+  // The one-line "use when" summaries live in llms-full.txt, not here: they repeated every
+  // index entry and were a third of this file, which is meant to be the cheap first fetch.
+  lines.push(
+    `When-to-use / when-not-to-use for any entry: ${DOCS}/context/<name>.md (all of them inline in llms-full.txt).`,
+  )
   lines.push('')
   lines.push(`_Generated: ${registry.generatedAt} from registry v${registry.version}_`)
   lines.push('')
@@ -1401,6 +1402,19 @@ function generateLlmsFullTxt(
 ): string {
   const sorted = [...entries].sort((a, b) => a.name.localeCompare(b.name))
   const parts: string[] = [llmsTxt.trimEnd(), '']
+  parts.push('---')
+  parts.push('')
+  parts.push('## Component intent summaries (use when…)')
+  parts.push('')
+  for (const entry of sorted) {
+    const firstWhenToUse = entry.meta?.intent?.whenToUse?.[0]
+    if (firstWhenToUse) {
+      parts.push(
+        `- [${entry.meta?.name ?? entry.name}](https://cascivo.com/context/${entry.name}.md) — Use when: ${firstWhenToUse}`,
+      )
+    }
+  }
+  parts.push('')
   parts.push('---')
   parts.push('')
   parts.push('# Full component reference (inlined)')

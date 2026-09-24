@@ -6,7 +6,13 @@
     "paths": {
       "@cascivo/react": ["../../packages/react/src/index.ts"],
       "@cascivo/editor": ["../../packages/editor/src/index.ts"],
-      "@cascivo/core": ["../../packages/core/src/index.ts"]
+      "@cascivo/core": ["../../packages/core/src/index.ts"],
+      "@cascivo/components/*": ["../../packages/components/src/*/index.ts"],
+      "@cascivo/layouts/*": ["../../packages/layouts/src/*/index.ts"],
+      "@cascivo/charts": ["../../packages/charts/src/index.ts"],
+      "@cascivo/flow": ["../../packages/flow/src/index.ts"],
+      "@cascivo/ai": ["../../packages/ai/src/index.ts"],
+      "@cascivo/icons": ["../../packages/icons/src/index.tsx"]
     }
   },
   "include": [

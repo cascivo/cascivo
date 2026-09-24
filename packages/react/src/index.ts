@@ -128,6 +128,7 @@ export {
   effect,
   batch,
   // Controlled-prop bridges and local state.
+  useSignalState,
   useControllableSignal,
   useEffectPropSignal,
   useDisclosure,

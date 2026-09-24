@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@cascivo/components/tabs'
-import { CascadeView } from '@cascivo/render'
+import { CascivoView } from '@cascivo/render'
 import type { ViewConfig } from '@cascivo/render'
 import buttonMetaSource from '../../../../../packages/components/src/button/button.meta.ts?raw'
 import { CopyCommand } from './CopyCommand'
@@ -210,7 +210,7 @@ export function AgentLayer() {
                 dangerouslySetInnerHTML={{ __html: highlightJSON(RELAY_SLICE_JSON) }}
               />
               <div className="agent-render-preview">
-                <CascadeView config={RELAY_SLICE} onInvalid="render" />
+                <CascivoView config={RELAY_SLICE} onInvalid="render" />
               </div>
             </div>
           </div>

@@ -1,9 +1,9 @@
 ---
-name: cascivo:extend
+name: cascivo-extend
 description: Scaffold a new component in a user project following cascivo authoring rules — signals not hooks, tokens-only CSS, FSM only when justified.
 ---
 
-# cascivo:extend
+# cascivo-extend
 
 ## When to use
 
@@ -53,7 +53,7 @@ Create the files at the user's chosen location (e.g. `src/components/<name>/`).
 - Import `useSignal`, `useComputed`, `useSignalEffect` from `@cascivo/core` — not React hooks
 - Use `useRef<HTMLElement>(null)` only for DOM element references
 - Use `useMachine` only if the component itself drives transitions (user interaction inside the component causes state changes — not external props)
-- Sync controlled props into signals during render: `signal.value = prop`
+- Controlled props: `useControllableSignal({ value, defaultValue, onChange })` when the value is read in render, `useEffectPropSignal(prop)` when it is read only inside `useSignalEffect` — never hand-roll `signal.value = prop`
 - DOM side effects via `useSignalEffect`, never `useEffect`
 - `data-state` attribute only for non-CSS-expressible states
 - Logical CSS properties in className / style (none — all styling in the CSS module)

@@ -79,9 +79,13 @@ export function AiPage() {
 
       <section class="doc-section">
         <h2>MCP server setup</h2>
-        <p>Add the cascivo MCP server to your Claude Code (or any MCP-compatible agent) config:</p>
+        <p>
+          From your project root, <code>npx cascivo mcp init</code> writes the config for Claude
+          Code (<code>--client cursor</code> or <code>--client vscode</code> for those editors). Or
+          add the server to any MCP-compatible agent&apos;s config by hand:
+        </p>
         <CodeBlock code={MCP_SETUP} lang="bash" />
-        <p>Key MCP tools (20 in total — browse, select, scaffold, validate, theme, install):</p>
+        <p>Key MCP tools (24 in total — browse, select, scaffold, validate, theme, install):</p>
         <ul>
           <li>
             <code>list_components</code> / <code>search_components</code> — browse by category, tag,
@@ -100,6 +104,10 @@ export function AiPage() {
           <li>
             <code>validate_view</code> / <code>validate_component</code> — check generated output
             against the manifests and closed token set
+          </li>
+          <li>
+            <code>render_view_as_markdown</code> — render a view with the real components and read
+            back what it says (needs <code>@cascivo/render</code> in the project)
           </li>
           <li>
             <code>get_tokens</code> / <code>get_context</code> / <code>create_theme</code> — tokens,
@@ -152,23 +160,28 @@ export function AiPage() {
       <section class="doc-section">
         <h2>Claude Code skills</h2>
         <p>
-          Install the cascivo skills from the{' '}
+          Install the cascivo skills in one command — <code>npx skills add cascivo/cascivo</code> —
+          or copy them from the{' '}
           <a href="https://github.com/cascivo/cascivo/tree/main/skills">skills/ directory</a>:
         </p>
         <ul>
           <li>
-            <code>cascivo:add</code> — add components, resolve fuzzy names, verify imports compile
+            <code>cascivo-add</code> — add components, resolve fuzzy names, verify imports compile
           </li>
           <li>
-            <code>cascivo:design-page</code> — natural language → scaffold_view → validate →
+            <code>cascivo-design-page</code> — natural language → scaffold_view → validate →
             generate
           </li>
           <li>
-            <code>cascivo:create-theme</code> — brand colors → semantic token overrides → WCAG AA
+            <code>cascivo-create-theme</code> — brand colors → semantic token overrides → WCAG AA
             check
           </li>
           <li>
-            <code>cascivo:extend</code> — scaffold a new component following cascivo authoring rules
+            <code>cascivo-extend</code> — scaffold a new component following cascivo authoring rules
+          </li>
+          <li>
+            <code>cascivo-migrate-from-shadcn</code> — move a shadcn/ui app over one file at a time,
+            each file checked with <code>cascivo audit --ai</code>
           </li>
         </ul>
       </section>

@@ -42,6 +42,7 @@ Commands:
   generate <config.json>   Generate TSX from a ViewConfig JSON file
   doctor [--ci]            Check components for rule violations
   audit --ai <paths...>    Audit AI-generated code against the cascivo contract
+  mcp init                 Add the cascivo MCP server to your agent's config
   registry build           Build a static registry from a cascivo-registry.json file
   template init <name>     Scaffold a new template (source + manifest + registry entry)
   tokens import <file>     Import external design tokens as cascivo overrides
@@ -52,6 +53,19 @@ Run "cascivo <command> --help" for details.`
 const THEME_LIST = THEMES.join(' | ')
 
 const COMMAND_HELP: Record<string, string> = {
+  mcp: `Usage: cascivo mcp init [options]
+
+Add the cascivo MCP server (npx -y @cascivo/mcp) to your coding agent's project config.
+Other servers in the file are kept; an existing cascivo entry is left as it is.
+
+Options:
+  --client <name>           claude (default, .mcp.json) | cursor (.cursor/mcp.json)
+                            | vscode (.vscode/mcp.json)
+  --dry-run                 Print the file instead of writing it
+
+Examples:
+  npx cascivo mcp init
+  npx cascivo mcp init --client cursor`,
   email: `Usage: cascivo email lint <file...> [options]
 
 Check rendered email HTML against the Can I email support matrix — the same
@@ -406,6 +420,11 @@ export async function run(args: string[]): Promise<void> {
           }
         }
       }
+      break
+    }
+    case 'mcp': {
+      const { mcp } = await import('./commands/mcp.js')
+      await mcp(rest)
       break
     }
     case 'audit': {

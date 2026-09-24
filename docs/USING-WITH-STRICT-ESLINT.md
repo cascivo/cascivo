@@ -180,13 +180,16 @@ Modifying a value returned from a hook is not allowed.
                          ^^^ `env` cannot be modified
 ```
 
-Your code is fine. cascivo's reactivity contract mandates `useSignal` over
-`useState` ([AI-RULES.md](./AI-RULES.md)), and writing a signal means assigning
-to `.value` — the rule fires on the exact idiom the docs tell you to use. The
-canonical example in [HEADLESS.md](./HEADLESS.md),
-`onClick={() => (open.value = !open.value)}`, is a reported error under this rule.
+The rule fires on assignments to a signal a hook returned — `open.value = !open.value` —
+which older cascivo docs taught as the way to write state.
 
-**Fix:** install `@cascivo/eslint-config` as above, or set the rule yourself:
+**Preferred fix: write through a setter.** Hold state with `useSignalState` and call its
+setter (`setOpen(!open.value)`); that is not a mutation, so the rule passes, and the same code
+compiles under the React Compiler (see [React Compiler](#react-compiler) below).
+[AI-RULES.md](./AI-RULES.md) and [HEADLESS.md](./HEADLESS.md) teach this form.
+
+**If you have many existing assignments:** install `@cascivo/eslint-config` as above, or set
+the rule yourself:
 
 ```js
 { rules: { 'react-hooks/immutability': 'off' } }
@@ -208,15 +211,31 @@ signal writes live in your own page and component code, and on the prebuilt path
 
 ### React Compiler
 
-The React Compiler ecosystem is tightening around mutation analysis, and
-`react-hooks/immutability` is the leading edge of it. cascivo's position: signals
-are a deliberate escape from the compiler's memoization model — a signal cell is
-*meant* to be mutated, and its reads are tracked at runtime rather than inferred
-at compile time. We expect to keep this rule off for the foreseeable future
-rather than reshape the reactivity contract around it. If you enable the React
-Compiler itself, cascivo components are unaffected (they ship `'use client'` and
-do not rely on compiler memoization), but your own signal-writing components
-should be excluded from compilation or written with the disable directive above.
+Measured, not assumed — `apps/examples/react-vite` runs its tests a second time with its own
+source compiled by `babel-plugin-react-compiler` 1.x (`pnpm compiler:check`, in CI):
+
+- **`signal.value = next` does not compile.** The compiler rejects a component that assigns to
+  a value returned from a hook ("This value cannot be modified") and, with
+  `panicThreshold: 'all_errors'`, fails the build. With the default threshold it skips the
+  component instead, so the component runs uncompiled — correct, but not optimized.
+- **Writing through a setter compiles, and updates correctly.** Hold state with
+  `useSignalState` and call its setter; reading `signal.value` in render is fine:
+
+  ```tsx
+  const [open, setOpen] = useSignalState(false)
+  // render: open.value · handlers: setOpen(!open.value)
+  ```
+
+  A controlled prop bridged with `useControllableSignal` returns the same `[signal, setter]`
+  pair and works the same way. Module-level `signal()`s can be assigned directly.
+
+  The compiler tracks `open.value` as a dependency, so memoized output re-renders when the
+  value changes — the example's interaction tests pass under it.
+- **The same form satisfies `react-hooks/immutability`**, so with setters you can keep that
+  rule on instead of using the override above.
+
+cascivo's own components are unaffected either way: they ship `'use client'` and do not rely
+on compiler memoization. The rule applies to the signal-writing components *you* write.
 
 ---
 

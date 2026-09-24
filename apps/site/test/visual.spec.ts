@@ -22,8 +22,14 @@ const UNSTABLE_PREFIXES = ['chart/', 'flow/']
 // on the same calendar day on a dev box as it does on the runner.
 const FROZEN_NOW = new Date('2026-01-15T12:00:00Z')
 
+// Pull requests snapshot a subset (scripts/visual/select.ts → VISUAL_ONLY); nightly runs all.
+const ONLY = process.env['VISUAL_ONLY']
+  ? new Set(process.env['VISUAL_ONLY'].split(',').filter(Boolean))
+  : undefined
+
 for (const { name } of registry.components) {
   if (UNSTABLE_PREFIXES.some((prefix) => name.startsWith(prefix))) continue
+  if (ONLY && !ONLY.has(name)) continue
   for (const theme of THEMES) {
     test(`${name} renders in ${theme}`, async ({ page }) => {
       await page.clock.setFixedTime(FROZEN_NOW)

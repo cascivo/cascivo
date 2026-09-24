@@ -27,9 +27,13 @@ function coerceEventValue(arg: unknown): unknown {
   return arg
 }
 
-export interface CascadeViewProps {
+/** Props for {@link CascivoView}. */
+export interface CascivoViewProps {
+  /** The view to render — a {@link ViewConfig}, or a signal of one to re-render on change. */
   config: ViewConfig | Signal<ViewConfig>
+  /** Host data that `$data.<path>` references and `bind`s resolve against. */
   data?: Record<string, unknown>
+  /** Host callbacks that `$actions.<name>` event references call. */
   actions?: Record<string, (...args: unknown[]) => unknown>
   /** 'throw' (default) | 'render' — render mode shows errors inline for the playground. */
   onInvalid?: 'throw' | 'render'
@@ -135,12 +139,18 @@ function renderNode(
   return React.createElement(Comp, { ...props, key }, children)
 }
 
-export function CascadeView({
+/**
+ * Render a JSON {@link ViewConfig} with real cascivo components.
+ *
+ * The config is validated first (see `validateView`); an invalid config throws, or — with
+ * `onInvalid="render"` — renders its errors inline.
+ */
+export function CascivoView({
   config,
   data,
   actions,
   onInvalid = 'throw',
-}: CascadeViewProps): React.ReactElement | null {
+}: CascivoViewProps): React.ReactElement | null {
   useSignals()
 
   const resolvedConfig = isSignal(config) ? config.value : config
@@ -167,13 +177,13 @@ export function CascadeView({
         </div>
       )
     }
-    throw new Error(`CascadeView: invalid config\n${msg}`)
+    throw new Error(`CascivoView: invalid config\n${msg}`)
   }
 
   const { regions } = resolvedConfig.view
 
   return (
-    <div className="cascade-view">
+    <div className="cascivo-view">
       {Object.entries(regions).map(([regionName, nodes]) => (
         <div key={regionName} className={`cascade-region cascade-region--${regionName}`}>
           {nodes.map((node, i) => renderNode(node, data, actions, state, `${regionName}-${i}`))}
@@ -182,3 +192,13 @@ export function CascadeView({
     </div>
   )
 }
+
+/**
+ * @deprecated Renamed to {@link CascivoView}; this alias is removed in 2.0.0.
+ */
+export const CascadeView = CascivoView
+
+/**
+ * @deprecated Renamed to {@link CascivoViewProps}; this alias is removed in 2.0.0.
+ */
+export type CascadeViewProps = CascivoViewProps

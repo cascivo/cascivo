@@ -31,4 +31,5 @@ Packages still on `0.x` — the tooling packages listed in
 [`docs/UPGRADING.md`](docs/UPGRADING.md#which-packages-are-covered) — ship from
 `main`, and fixes target their latest published version only.
 
-Run `cascivo doctor --drift` to see where your installed versions sit.
+Run `cascivo doctor --drift` to see where your installed versions sit. Release cadence,
+support windows and how to verify provenance are in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md).

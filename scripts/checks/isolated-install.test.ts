@@ -79,6 +79,8 @@ const PACKAGES = [
   'icons',
   'charts',
   'email',
+  'text',
+  'render',
 ]
 
 /**
@@ -86,7 +88,17 @@ const PACKAGES = [
  * publish `src/` directly, so requiring a dist for them would make this fixture skip
  * forever — silently, which is the failure mode a canary must never have.
  */
-const NEEDS_DIST = ['react', 'core', 'i18n', 'storage', 'icons', 'charts', 'email']
+const NEEDS_DIST = [
+  'react',
+  'core',
+  'i18n',
+  'storage',
+  'icons',
+  'charts',
+  'email',
+  'text',
+  'render',
+]
 
 const built = NEEDS_DIST.every((p) => existsSync(join(REPO_ROOT, 'packages', p, 'dist')))
 
@@ -146,6 +158,17 @@ import {
   Text as EmailText,
   type EmailTheme,
 } from '@cascivo/email'
+// @cascivo/render — the JSON view runtime an agent's scaffold_view output feeds, and its
+// machine-mode subpath. Both entries are exercised because each ships its own flattened .d.ts.
+import { CascivoView, type ViewConfig } from '@cascivo/render'
+import { viewToMarkdown } from '@cascivo/render/text'
+
+const VIEW: ViewConfig = {
+  version: 1,
+  view: { regions: { main: [{ component: 'Button', props: { variant: 'primary' }, children: 'Deploy' }] } },
+}
+export const viewText: string = viewToMarkdown(VIEW, { data: {} })
+export const viewElement = <CascivoView config={VIEW} onInvalid="render" />
 
 // The assignability that makes the subpath worth having: a Tone named here must satisfy the
 // main entry's prop types. Two separate entry points declaring the same nominal type is

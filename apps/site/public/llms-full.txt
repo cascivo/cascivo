@@ -2,7 +2,7 @@
 
 _registry v1.3.1 · generated 2026-09-19 · docs track `main`; compare with https://cascivo.com/registry.json `.version` for staleness, and https://cascivo.com/breaking-changes.json for installed-vs-documented API drift._
 
-_Describes: @cascivo/ai@1.3.1 · @cascivo/charts@1.3.1 · @cascivo/core@1.3.1 · @cascivo/docs@0.2.11 · @cascivo/docspack@0.2.5 · @cascivo/editor@1.3.1 · @cascivo/email@0.4.1 · @cascivo/email-preview@2.0.0 · @cascivo/eslint-config@0.4.1 · @cascivo/eslint-plugin@0.2.1 · @cascivo/flow@1.3.1 · @cascivo/i18n@1.3.1 · @cascivo/icons@1.1.0 · @cascivo/mcp@0.7.2 · @cascivo/platform@0.0.5 · @cascivo/react@1.3.1 · @cascivo/registry@0.2.10 · @cascivo/storage@1.3.1 · @cascivo/text@1.3.1 · @cascivo/themes@1.0.0 · @cascivo/tokens@1.1.1 · @cascivo/vite-plugin@0.1.10 · cascivo@1.3.0. If your installed versions are lower, a documented behaviour may not have shipped yet._
+_Describes: @cascivo/ai@1.3.1 · @cascivo/charts@1.3.1 · @cascivo/core@1.3.1 · @cascivo/docs@0.2.11 · @cascivo/docspack@0.2.5 · @cascivo/editor@1.3.1 · @cascivo/email@0.4.1 · @cascivo/email-preview@2.0.0 · @cascivo/eslint-config@0.4.1 · @cascivo/eslint-plugin@0.2.1 · @cascivo/flow@1.3.1 · @cascivo/i18n@1.3.1 · @cascivo/icons@1.1.0 · @cascivo/mcp@0.7.2 · @cascivo/platform@0.0.5 · @cascivo/react@1.3.1 · @cascivo/registry@0.2.10 · @cascivo/render@1.3.1 · @cascivo/storage@1.3.1 · @cascivo/text@1.3.1 · @cascivo/themes@1.0.0 · @cascivo/tokens@1.1.1 · @cascivo/vite-plugin@0.1.10 · cascivo@1.3.0. If your installed versions are lower, a documented behaviour may not have shipped yet._
 
 cascivo is a React design system you can consume two ways: copy-paste the source
 (`npx cascivo add <name>` — shadcn model, you own the code) or install the prebuilt
@@ -55,6 +55,8 @@ see `select_component`/`list_components` below before generating custom SVG or A
 - Context bundle (all intent + boundaries + rules): https://cascivo.com/context.json
 - Token catalog (closed set: every --cascivo-* the system declares OR reads as an author hook, incl. per-component knobs like --cascivo-sidenav-inline-size, + layer + default): https://cascivo.com/tokens.catalog.json
 - Icon catalog (every @cascivo/icons icon + keywords/category): https://cascivo.com/icons.catalog.json
+- Tokens as W3C Design Tokens (DTCG 2025.10, for Figma variables / Tokens Studio / Style Dictionary; themes via the resolver): https://cascivo.com/tokens/dtcg/cascivo.resolver.json
+- DESIGN.md (single-file design summary for prompt-to-UI tools): https://cascivo.com/DESIGN.md
 - Breaking/feature changes (major+minor releases per package — detect API drift): https://cascivo.com/breaking-changes.json
 
 ## Icons
@@ -286,8 +288,8 @@ bugs. And in any app WITHOUT the Babel signals transform (every consumer app), a
 reads `signal.value` in render MUST call `useSignals()` (from `@cascivo/core`) as its first
 statement, or it never re-renders. When you do own reactive state, use these:
 
-- Local state -> `useSignal(initial)`; derived -> `useComputed(fn)`. The signal IS the state.
-  ⚠ LINT: `eslint-plugin-react-hooks@7` (`recommended-latest`) enables `react-hooks/immutability`, which reports EVERY `signal.value = next` as `Error: This value cannot be modified`. It fires on this documented idiom, in the app's own page code, on both install paths — one reported build hit it 8 times and had no doc to reach for. Fix: `pnpm add -D @cascivo/eslint-config` and spread `...cascivo` LAST in `eslint.config.js`, or set `'react-hooks/immutability': 'off'`. Scoping it to a vendored-source glob does NOT work. See /docs/using-with-strict-eslint.md.
+- Local state -> `const [count, setCount] = useSignalState(initial)`: read `count.value` in render, write `setCount(next)` / `setCount((n) => n + 1)`. Derived -> `useComputed(fn)`. The signal IS the state.
+  ⚠ WRITE THROUGH THE SETTER: never `count.value = next` on a signal a hook returned. That assignment fails the React Compiler build ('This value cannot be modified') and is reported by `react-hooks/immutability`, which `eslint-plugin-react-hooks@7` (`recommended-latest`) enables by default. The setter form passes both (checked by `pnpm compiler:check`). Writing `.value` on a MODULE-LEVEL `signal()` is fine. Existing code full of `x.value = …` writes: install `@cascivo/eslint-config` (spread `...cascivo` LAST) or set `'react-hooks/immutability': 'off'`, and keep it out of the Compiler. See /docs/using-with-strict-eslint.md.
   ⚠ FLAT CONFIG ENTRY POINT: the plugin exports BOTH `configs['recommended-latest']` (legacy eslintrc) and `configs.flat['recommended-latest']`. In an `eslint.config.js` you MUST use `reactHooks.configs.flat['recommended-latest']` — the other one is accepted silently and applies no rules at all, so lint passes while checking nothing.
   ⚠ VENDORED-SOURCE GLOB: `...cascivo` scopes its vendored-source rules to `src/components/ui/**`. If your `outputDir` differs, call `cascivoVendoredSource('<your-outputDir>/**')` instead — with the default glob every rule it scopes off silently stays on. cascivo runs real ESLint over every file `cascivo add` copies in CI (scripts/checks/host-lint/eslint), so the published config is executed, not asserted.
 - Controlled/uncontrolled prop bridged to a signal -> `useControllableSignal({ value, defaultValue, onChange })`.
@@ -371,6 +373,7 @@ Tools:
 - `select_component` — rank components by a natural-language need
 - `scaffold_view` — natural language -> JSON view config
 - `validate_view` — validate a view config against the schema
+- `render_view_as_markdown` — render a view config and read back what it says (needs `@cascivo/render`)
 - `add_to_project` — install components into the user project
 
 Two MCP servers, two jobs — run both if your client allows it:
@@ -381,7 +384,7 @@ Two MCP servers, two jobs — run both if your client allows it:
 To pick a component without MCP, read the intent summaries below (grouped by need) or
 fetch https://cascivo.com/context/<name>.md for the full when-to-use / when-not-to-use of each.
 
-## Component authoring rules (for cascivo:extend / custom components)
+## Component authoring rules (for cascivo-extend / custom components)
 
 These constrain code you write INSIDE a component you author or copy-paste-and-edit — not the app
 code that merely renders cascivo components (that code uses React normally).
@@ -669,6 +672,12 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [block/app-shell](https://cascivo.com/llms/block/app-shell.md) — Two-column layout with collapsible sidebar, nav links, and content area. _(copy-paste)_
 - [block/settings-profile](https://cascivo.com/llms/block/settings-profile.md) — Two-section settings form: personal info fields + preference toggles. _(copy-paste)_
 
+When-to-use / when-not-to-use for any entry: https://cascivo.com/context/<name>.md (all of them inline in llms-full.txt).
+
+_Generated: 2026-09-19 from registry v1.3.1_
+
+---
+
 ## Component intent summaries (use when…)
 
 - [Accordion](https://cascivo.com/context/accordion.md) — Use when: Progressively disclosing sections of related content the user reads top to bottom
@@ -881,8 +890,6 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [VirtualList](https://cascivo.com/context/virtual-list.md) — Use when: Lists long enough that rendering every row costs noticeable time or memory (roughly a thousand rows and up)
 - [VisuallyHidden](https://cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 - [WheelPicker](https://cascivo.com/context/wheel-picker.md) — Use when: Touch surfaces picking one value from a short, ordered, homogeneous range — an hour, a minute, a unit
-
-_Generated: 2026-09-19 from registry v1.3.1_
 
 ---
 
@@ -1334,7 +1341,9 @@ The burger in ShellHeader toggles the SideNav automatically.
 ### Controlled open
 
 ```tsx
-<AppShell header={header} nav={nav} open={open.value} onOpenChange={(v) => (open.value = v)}>
+const [open, setOpen] = useSignalState(false)
+
+<AppShell header={header} nav={nav} open={open.value} onOpenChange={setOpen}>
   …
 </AppShell>
 ```

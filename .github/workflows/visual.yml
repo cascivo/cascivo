@@ -1,9 +1,17 @@
 name: Visual regression
 
-# Nightly + manual only (not PR-blocking): a stale baseline should alert,
-# not block unrelated PRs. Use the workflow_dispatch `update` input to
-# regenerate baselines when rendering legitimately changes.
+# Two jobs. The nightly one snapshots every component in three themes and alerts on drift.
+# The pull-request one snapshots only what the PR touches plus a fixed sample of
+# layout-sensitive components (scripts/visual/select.ts), so a layout regression is caught
+# before merge without a stale baseline blocking unrelated PRs. When rendering legitimately
+# changes, run this workflow by hand on the PR branch with `update` ticked to refresh baselines.
 on:
+  pull_request:
+    paths:
+      - 'packages/components/src/**'
+      - 'packages/layouts/src/**'
+      - 'packages/tokens/src/**'
+      - 'packages/themes/src/**'
   schedule:
     - cron: '17 3 * * *'
   workflow_dispatch:
@@ -17,7 +25,54 @@ permissions:
   contents: write
 
 jobs:
+  visual-pr:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Pick components to snapshot
+        id: select
+        run: |
+          only=$(node scripts/visual/select.ts $(git diff --name-only "origin/${{ github.base_ref }}...HEAD"))
+          echo "Snapshotting: $only"
+          echo "only=$only" >> "$GITHUB_OUTPUT"
+
+      - name: Install Chromium
+        run: pnpm --filter @cascivo/site exec playwright install chromium --with-deps
+
+      - name: Build docs
+        run: pnpm exec vp run @cascivo/site#build
+
+      - name: Screenshot selected components (3 themes)
+        run: pnpm --filter @cascivo/site run test:visual
+        env:
+          VISUAL_ONLY: ${{ steps.select.outputs.only }}
+
+      - name: Upload diff report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-pr
+          path: apps/site/test-results
+          retention-days: 7
+
   visual:
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -1,0 +1,91 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/resolver.json",
+  "version": "2025.10",
+  "name": "cascivo",
+  "description": "Base tokens, then one of the twelve first-party themes.",
+  "sets": {
+    "base": {
+      "sources": [
+        {
+          "$ref": "cascivo.tokens.json"
+        }
+      ]
+    }
+  },
+  "modifiers": {
+    "theme": {
+      "description": "First-party theme — the value of the data-theme attribute.",
+      "contexts": {
+        "arcade": [
+          {
+            "$ref": "themes/arcade.tokens.json"
+          }
+        ],
+        "brutalist": [
+          {
+            "$ref": "themes/brutalist.tokens.json"
+          }
+        ],
+        "corporate": [
+          {
+            "$ref": "themes/corporate.tokens.json"
+          }
+        ],
+        "cyberpunk": [
+          {
+            "$ref": "themes/cyberpunk.tokens.json"
+          }
+        ],
+        "dark": [
+          {
+            "$ref": "themes/dark.tokens.json"
+          }
+        ],
+        "flat": [
+          {
+            "$ref": "themes/flat.tokens.json"
+          }
+        ],
+        "light": [
+          {
+            "$ref": "themes/light.tokens.json"
+          }
+        ],
+        "midnight": [
+          {
+            "$ref": "themes/midnight.tokens.json"
+          }
+        ],
+        "minimal": [
+          {
+            "$ref": "themes/minimal.tokens.json"
+          }
+        ],
+        "pastel": [
+          {
+            "$ref": "themes/pastel.tokens.json"
+          }
+        ],
+        "terminal": [
+          {
+            "$ref": "themes/terminal.tokens.json"
+          }
+        ],
+        "warm": [
+          {
+            "$ref": "themes/warm.tokens.json"
+          }
+        ]
+      },
+      "default": "light"
+    }
+  },
+  "resolutionOrder": [
+    {
+      "$ref": "#/sets/base"
+    },
+    {
+      "$ref": "#/modifiers/theme"
+    }
+  ]
+}

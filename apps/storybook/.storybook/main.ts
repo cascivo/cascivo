@@ -10,6 +10,9 @@ const config: StorybookConfig = {
   stories: ['../stories/**/*.stories.tsx'],
   staticDirs: ['../public'],
   addons: ['@storybook/addon-a11y', '@storybook/addon-themes'],
+  // Publishes manifests/components.json (props, stories, snippets) next to the built
+  // Storybook, the interface Storybook's MCP and Chromatic-hosted MCP servers read.
+  features: { componentsManifest: true },
   viteFinal: (cfg) => ({
     ...cfg,
     resolve: {

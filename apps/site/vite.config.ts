@@ -47,6 +47,14 @@ export function componentCount(): number {
   return registry.components.length
 }
 
+/** Chart entries in the registry — the "N chart types" figure on the landing page. */
+export function chartCount(): number {
+  const registry = JSON.parse(readFileSync(resolve(root, 'registry.json'), 'utf8')) as {
+    components: { type?: string }[]
+  }
+  return registry.components.filter((c) => c.type === 'chart').length
+}
+
 // `all.css` (light+dark bundle), `base.css` (typography reset), and
 // `tailwind.css` (interop sheet) are not user-facing themes — exclude them so
 // the injected count tracks selectable themes. Keep in sync with NON_THEME_CSS
@@ -954,6 +962,7 @@ export default defineConfig({
   define: {
     __CASCIVO_COMPONENT_COUNT__: componentCount(),
     __CASCIVO_THEME_COUNT__: themeCount(),
+    __CASCIVO_CHART_COUNT__: chartCount(),
   },
   // Emit source maps for the production bundle. The project is public (MIT), so
   // there is nothing to hide, and Lighthouse's "valid source maps" best-practices

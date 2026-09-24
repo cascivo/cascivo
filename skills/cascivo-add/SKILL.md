@@ -1,9 +1,9 @@
 ---
-name: cascivo:add
+name: cascivo-add
 description: Add cascivo components to the current project. Resolves component names against the registry (fuzzy match), runs the CLI, and verifies imports compile.
 ---
 
-# cascivo:add
+# cascivo-add
 
 ## When to use
 

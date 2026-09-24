@@ -29,11 +29,19 @@ assignment.
 `recommended-latest` — the config a stock 2026 React app gets — and **oxlint**
 ports the same rule as `react/immutability`, which is what
 `pnpm create vite --template react-ts` scaffolds. The rule reports writes to
-values returned from hooks, and `useSignal()` returns one. cascivo's reactivity
-contract mandates signals over `useState`, so the rule fires on the documented
-idiom, in your own page code, on both install paths. Your code is correct.
+values returned from hooks, and `useSignal()` / `useSignalState()` return one. Assigning
+`.value` works at runtime — older cascivo docs taught it — but the rule flags it, and the React
+Compiler refuses to compile it.
 
-**Fix — ESLint:**
+**Fix without turning anything off:** write through a setter instead of assigning. The
+setter form passes this rule _and_ compiles under the React Compiler (checked in CI):
+
+```tsx
+const [open, setOpen] = useSignalState(false)
+// read open.value in render; in handlers call setOpen(next) instead of open.value = next
+```
+
+**Or turn the rule off — ESLint:**
 
 ```sh
 pnpm add -D --save-exact @cascivo/eslint-config
@@ -47,7 +55,7 @@ export default [...yourConfig, ...cascivo] // spread LAST
 
 Or set it directly: `{ rules: { 'react-hooks/immutability': 'off' } }`.
 
-**Fix — oxlint** (no `eslint.config.js` to spread into):
+**Or turn the rule off — oxlint** (no `eslint.config.js` to spread into):
 
 ```jsonc
 // .oxlintrc.json
@@ -201,11 +209,11 @@ from somewhere.
 
 **Fix — it depends where the signal came from:**
 
-| Where your signal came from                                                               | What you need                                                                                                                                       |
-| ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A cascivo hook — `useSignal`, `useComputed`, `useDisclosure`, `useMachine`, `useTheme`, … | **Nothing.** These subscribe you automatically. (On `@cascivo/core` < 0.6, `useSignal`/`useComputed` did **not** — upgrade, or add `useSignals()`.) |
-| A module-level `signal()`, or a signal passed in as a prop                                | `useSignals()` as the component's first statement                                                                                                   |
-| `currentLocale()` from `@cascivo/i18n` (a plain function, so it can't subscribe you)      | `useSignals()` as the component's first statement                                                                                                   |
+| Where your signal came from                                                                                 | What you need                                                                                                                                       |
+| ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A cascivo hook — `useSignalState`, `useSignal`, `useComputed`, `useDisclosure`, `useMachine`, `useTheme`, … | **Nothing.** These subscribe you automatically. (On `@cascivo/core` < 0.6, `useSignal`/`useComputed` did **not** — upgrade, or add `useSignals()`.) |
+| A module-level `signal()`, or a signal passed in as a prop                                                  | `useSignals()` as the component's first statement                                                                                                   |
+| `currentLocale()` from `@cascivo/i18n` (a plain function, so it can't subscribe you)                        | `useSignals()` as the component's first statement                                                                                                   |
 
 ```tsx
 import { signal } from '@cascivo/core'
@@ -222,13 +230,17 @@ function MyPanel() {
 With a hook-created signal, no `useSignals()` is needed at all:
 
 ```tsx
-import { useSignal } from '@cascivo/react'
+import { useSignalState } from '@cascivo/react'
 
 function MyPanel() {
-  const isOpen = useSignal(false) // subscribes this component for you
-  return <Modal open={isOpen.value} onClose={() => (isOpen.value = false)} />
+  const [isOpen, setIsOpen] = useSignalState(false) // subscribes this component for you
+  return <Modal open={isOpen.value} onClose={() => setIsOpen(false)} />
 }
 ```
+
+Write a hook-created signal through its setter, as here, rather than `isOpen.value = false`:
+the assignment is what the React Compiler and `react-hooks/immutability` reject (see the
+first entry on this page). Assigning a module-level signal, as above, is fine.
 
 **Which package do I import from?** `@cascivo/react` on the prebuilt path (Path B) —
 every primitive is re-exported there, so you never add `@cascivo/core` to your
@@ -562,8 +574,8 @@ minimumReleaseAgeExclude:
 attribution requirement.
 
 **Do I have to adopt all of it, or can I add one component?** Add exactly what
-you need. Components are copied into your repo one at a time — no runtime, no
-provider, nothing to buy into. Start with a single button.
+you need. Components are copied into your repo one at a time — no required provider,
+nothing to buy into. Start with a single button.
 
 **Do I need Tailwind?** No. Styling is modern platform CSS — `@layer`, custom
 properties, container queries — driven by a three-tier token system. Using

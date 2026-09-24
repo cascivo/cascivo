@@ -1,6 +1,7 @@
 {
   "name": "@cascivo/example-astro-islands",
   "private": true,
+  "description": "Astro islands probe — one client directive per page, reports whether cascivo component CSS survives an SSR-rendered island",
   "type": "module",
   "scripts": {
     "build": "astro build && node scripts/assert-island-css.mjs",

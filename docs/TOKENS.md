@@ -21,6 +21,13 @@ dropped silently. Three things check it for you against the generated set: the
 `cascivo/token-values` lint rule, `satisfies CascivoTokenStyle` on an inline style, and
 `cascivo audit --ai` in CI.
 
+**Design tools.** The same tokens ship as W3C Design Tokens (DTCG 2025.10) for Figma
+variables, Tokens Studio, Style Dictionary and Terrazzo: `@cascivo/tokens/dtcg/cascivo.tokens.json`
+(semantic tokens kept as aliases of the primitives), one `themes/<theme>.tokens.json` per theme,
+and `cascivo.resolver.json` to select a theme. Also served at
+<https://cascivo.com/tokens/dtcg/cascivo.resolver.json>. Values DTCG cannot express (`calc()`,
+`em`) are listed under `$extensions["com.cascivo"].notExported` — read those from the CSS.
+
 ## Canonical names vs aliases
 
 Some roles have more than one token name for historical reasons (#7). The

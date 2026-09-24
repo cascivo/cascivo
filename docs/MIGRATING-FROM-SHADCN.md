@@ -20,18 +20,18 @@ _Generated from the [parity matrix](https://cascivo.com/docs/parity) — 58 of 5
 | Accordion | [`accordion`](https://cascivo.com/docs/components/accordion) |  |
 | Alert | [`alert`](https://cascivo.com/docs/components/alert) |  |
 | Alert Dialog | [`alert-dialog`](https://cascivo.com/docs/components/alert-dialog) |  |
-| Aspect Ratio | [`aspect-ratio`](https://cascivo.com/docs/components/aspect-ratio) | Queued (v18-t5) |
+| Aspect Ratio | [`aspect-ratio`](https://cascivo.com/docs/components/aspect-ratio) |  |
 | Avatar | [`avatar`](https://cascivo.com/docs/components/avatar) |  |
 | Badge | [`badge`](https://cascivo.com/docs/components/badge) |  |
 | Breadcrumb | [`breadcrumb`](https://cascivo.com/docs/components/breadcrumb) |  |
 | Button | [`button`](https://cascivo.com/docs/components/button) |  |
-| Button Group | [`button-group`](https://cascivo.com/docs/components/button-group) | Queued (v18-t5) |
-| Calendar | [`calendar`](https://cascivo.com/docs/components/calendar) | Queued (v18-t6) |
+| Button Group | [`button-group`](https://cascivo.com/docs/components/button-group) |  |
+| Calendar | [`calendar`](https://cascivo.com/docs/components/calendar) |  |
 | Card | [`card`](https://cascivo.com/docs/components/card) |  |
-| Carousel | [`carousel`](https://cascivo.com/docs/components/carousel) | Queued (v18-t6) |
+| Carousel | [`carousel`](https://cascivo.com/docs/components/carousel) |  |
 | Chart | `chart` | chart family via @cascivo/charts |
 | Checkbox | [`checkbox`](https://cascivo.com/docs/components/checkbox) |  |
-| Collapsible | [`collapsible`](https://cascivo.com/docs/components/collapsible) | Queued (v18-t5) |
+| Collapsible | [`collapsible`](https://cascivo.com/docs/components/collapsible) |  |
 | Combobox | [`combobox`](https://cascivo.com/docs/components/combobox) |  |
 | Command | [`command-menu`](https://cascivo.com/docs/components/command-menu) |  |
 | Context Menu | [`context-menu`](https://cascivo.com/docs/components/context-menu) |  |
@@ -42,23 +42,23 @@ _Generated from the [parity matrix](https://cascivo.com/docs/parity) — 58 of 5
 | Drawer | [`sheet`](https://cascivo.com/docs/components/sheet) | sheet covers the panel; no mobile swipe gesture. drawer queued (v18-t6) |
 | Dropdown Menu | [`dropdown`](https://cascivo.com/docs/components/dropdown) |  |
 | Empty | [`empty-state`](https://cascivo.com/docs/components/empty-state) |  |
-| Field | [`field`](https://cascivo.com/docs/components/field) | Queued (v18-t5) |
+| Field | [`field`](https://cascivo.com/docs/components/field) |  |
 | Hover Card | [`hover-card`](https://cascivo.com/docs/components/hover-card) |  |
 | Input | [`input`](https://cascivo.com/docs/components/input) |  |
 | Input Group | [`input-group`](https://cascivo.com/docs/components/input-group) |  |
 | Input OTP | [`otp-input`](https://cascivo.com/docs/components/otp-input) |  |
-| Item | [`item`](https://cascivo.com/docs/components/item) | Queued (v18-t6) |
+| Item | [`item`](https://cascivo.com/docs/components/item) |  |
 | Kbd | [`kbd`](https://cascivo.com/docs/components/kbd) |  |
-| Label | [`label`](https://cascivo.com/docs/components/label) | Queued (v18-t5) |
-| Menubar | [`menubar`](https://cascivo.com/docs/components/menubar) | Queued (v18-t6) |
-| Native Select | [`native-select`](https://cascivo.com/docs/components/native-select) | cascivo select is a custom listbox, not the native control. Queued (v18-t6) |
-| Navigation Menu | [`navigation-menu`](https://cascivo.com/docs/components/navigation-menu) | Queued (v18-t6) |
+| Label | [`label`](https://cascivo.com/docs/components/label) |  |
+| Menubar | [`menubar`](https://cascivo.com/docs/components/menubar) |  |
+| Native Select | [`native-select`](https://cascivo.com/docs/components/native-select) | Wraps the native control; cascivo `select` is the custom listbox. |
+| Navigation Menu | [`navigation-menu`](https://cascivo.com/docs/components/navigation-menu) |  |
 | Pagination | [`pagination`](https://cascivo.com/docs/components/pagination) |  |
 | Popover | [`popover`](https://cascivo.com/docs/components/popover) |  |
 | Progress | [`progress-bar`](https://cascivo.com/docs/components/progress-bar) | progress-bar + progress-circle |
 | Radio Group | [`radio`](https://cascivo.com/docs/components/radio) |  |
-| Resizable | [`resizable`](https://cascivo.com/docs/components/resizable) | Queued (v18-t6, a.k.a. splitter) |
-| Scroll Area | [`scroll-area`](https://cascivo.com/docs/components/scroll-area) | Queued (v18-t5) |
+| Resizable | [`resizable`](https://cascivo.com/docs/components/resizable) | a.k.a. splitter |
+| Scroll Area | [`scroll-area`](https://cascivo.com/docs/components/scroll-area) |  |
 | Select | [`select`](https://cascivo.com/docs/components/select) |  |
 | Separator | [`separator`](https://cascivo.com/docs/components/separator) |  |
 | Sheet | [`sheet`](https://cascivo.com/docs/components/sheet) |  |
@@ -73,7 +73,7 @@ _Generated from the [parity matrix](https://cascivo.com/docs/parity) — 58 of 5
 | Textarea | [`textarea`](https://cascivo.com/docs/components/textarea) |  |
 | Toast | [`toast`](https://cascivo.com/docs/components/toast) |  |
 | Toggle | [`toggle`](https://cascivo.com/docs/components/toggle) |  |
-| Toggle Group | [`toggle-group`](https://cascivo.com/docs/components/toggle-group) | Queued (v18-t5) |
+| Toggle Group | [`toggle-group`](https://cascivo.com/docs/components/toggle-group) |  |
 | Tooltip | [`tooltip`](https://cascivo.com/docs/components/tooltip) |  |
 | Typography | [`prose`](https://cascivo.com/docs/components/prose) | prose + text + heading |
 

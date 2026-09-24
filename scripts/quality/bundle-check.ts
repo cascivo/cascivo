@@ -79,6 +79,9 @@ const BUDGETS: Record<string, number> = {
   // Measured 5.5 across three chunks: the serializer entry is ~0.9 KB on its own, so the
   // tree is what gets measured (code-split) — most of it is the emitter.
   '@cascivo/text': 10,
+  // Measured ~10.5 across the entry + its shared chunk. Most of it is the generated prop-schema
+  // table the validator checks every view against; components come from @cascivo/react.
+  '@cascivo/render': 16,
   '@cascivo/vite-plugin': 5, // measured 0.6
   '@cascivo/eslint-config': 5, // measured 2.0 — plain config data, but still worth a ceiling
   // Lints, never ships to a browser. The ceiling is for the generated data files: a

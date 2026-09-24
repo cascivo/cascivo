@@ -362,6 +362,11 @@ jobs:
       - name: Test (vp run -r test)
         run: pnpm run test
 
+      # The example app's tests again, with its source compiled by the React Compiler — proves
+      # the setter idiom docs/USING-WITH-STRICT-ESLINT.md recommends compiles and stays reactive.
+      - name: React Compiler leg
+        run: pnpm run compiler:check
+
       - name: Doctor (component rule violations)
         run: node packages/cli/dist/index.mjs doctor --ci
 

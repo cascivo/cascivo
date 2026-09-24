@@ -59,7 +59,7 @@ export function Metrics() {
           <LineChart<LatencyDatum>
             title={t(msg.seriesP50)}
             series={[{ id: 'p50', label: t(msg.seriesP50), data: p50Data }]}
-            x={(d) => d.t}
+            x={(d) => new Date(d.t)}
             y={(d) => d.y}
             height={220}
             tooltip
@@ -67,7 +67,7 @@ export function Metrics() {
           <LineChart<LatencyDatum>
             title={t(msg.seriesP95)}
             series={[{ id: 'p95', label: t(msg.seriesP95), data: p95Data }]}
-            x={(d) => d.t}
+            x={(d) => new Date(d.t)}
             y={(d) => d.y}
             height={220}
             tooltip
@@ -75,7 +75,7 @@ export function Metrics() {
           <LineChart<LatencyDatum>
             title={t(msg.seriesP99)}
             series={[{ id: 'p99', label: t(msg.seriesP99), data: p99Data }]}
-            x={(d) => d.t}
+            x={(d) => new Date(d.t)}
             y={(d) => d.y}
             height={220}
             tooltip

@@ -3,8 +3,8 @@ import { createLocale, defineCatalog, defineMessages } from '@cascivo/i18n'
 import { cleanup, fireEvent, render } from '@testing-library/react'
 import React from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { CascadeView } from './cascade-view'
-import { getPath } from './cascade-view'
+import { CascivoView } from './cascivo-view'
+import { getPath } from './cascivo-view'
 import { validateView } from './validate'
 
 afterEach(() => cleanup())
@@ -25,7 +25,7 @@ describe('getPath()', () => {
   })
 })
 
-describe('<CascadeView />', () => {
+describe('<CascivoView />', () => {
   it('renders a Badge with correct variant', () => {
     const config = {
       view: {
@@ -34,7 +34,7 @@ describe('<CascadeView />', () => {
         },
       },
     }
-    const { container } = render(<CascadeView config={config} />)
+    const { container } = render(<CascivoView config={config} />)
     expect(
       container.querySelector('[data-variant]') ??
         container.querySelector('.badge') ??
@@ -51,7 +51,7 @@ describe('<CascadeView />', () => {
         },
       },
     }
-    const { container } = render(<CascadeView config={config} />)
+    const { container } = render(<CascivoView config={config} />)
     expect(container.textContent).toContain('Hello World')
   })
 
@@ -69,7 +69,7 @@ describe('<CascadeView />', () => {
       },
     }
     const { container } = render(
-      <CascadeView config={config} data={{ ui: { testId: 'my-badge' } }} />,
+      <CascivoView config={config} data={{ ui: { testId: 'my-badge' } }} />,
     )
     expect(container.querySelector('[data-testid="my-badge"]')).toBeTruthy()
   })
@@ -83,7 +83,7 @@ describe('<CascadeView />', () => {
         },
       },
     }
-    const { container } = render(<CascadeView config={config} actions={{ handleClick: spy }} />)
+    const { container } = render(<CascivoView config={config} actions={{ handleClick: spy }} />)
     const btn = container.querySelector('button')
     btn?.click()
     expect(spy).toHaveBeenCalled()
@@ -92,14 +92,14 @@ describe('<CascadeView />', () => {
   it('throws on invalid config', () => {
     expect(() =>
       render(
-        <CascadeView config={{ view: { regions: { main: [{ component: 'NoSuchThing' }] } } }} />,
+        <CascivoView config={{ view: { regions: { main: [{ component: 'NoSuchThing' }] } } }} />,
       ),
-    ).toThrow('CascadeView: invalid config')
+    ).toThrow('CascivoView: invalid config')
   })
 
   it('renders error panel in onInvalid=render mode', () => {
     const { container } = render(
-      <CascadeView
+      <CascivoView
         config={{ view: { regions: { main: [{ component: 'NoSuchThing' }] } } }}
         onInvalid="render"
       />,
@@ -114,7 +114,7 @@ describe('<CascadeView />', () => {
         regions: { main: [{ component: 'Input', bind: { value: '$state.query' } }] },
       },
     }
-    const { container } = render(<CascadeView config={config} />)
+    const { container } = render(<CascivoView config={config} />)
     expect(container.querySelector('input')?.value).toBe('hello')
   })
 
@@ -133,7 +133,7 @@ describe('<CascadeView />', () => {
         },
       },
     }
-    const { container } = render(<CascadeView config={config} />)
+    const { container } = render(<CascivoView config={config} />)
     const input = container.querySelector('input')!
     fireEvent.change(input, { target: { value: 'vercel' } })
     expect(container.querySelector('input')?.value).toBe('vercel')
@@ -155,7 +155,7 @@ describe('<CascadeView />', () => {
         },
       },
     }
-    const { container } = render(<CascadeView config={config} />)
+    const { container } = render(<CascivoView config={config} />)
     const btn = container.querySelector('button')!
     expect(btn.disabled).toBe(false)
     fireEvent.click(btn)
@@ -198,7 +198,7 @@ describe('<CascadeView />', () => {
         regions: { main: [{ component: 'Badge', props: { variant: 'secondary' } }] },
       },
     })
-    const { container } = render(<CascadeView config={configSignal} />)
+    const { container } = render(<CascivoView config={configSignal} />)
     const before = container.textContent
 
     configSignal.value = {

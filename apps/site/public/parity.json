@@ -31,7 +31,7 @@
           "competitor": "Aspect Ratio",
           "status": "covered",
           "cascivo": "aspect-ratio",
-          "note": "Queued (v18-t5)"
+          "note": ""
         },
         {
           "competitor": "Avatar",
@@ -61,13 +61,13 @@
           "competitor": "Button Group",
           "status": "covered",
           "cascivo": "button-group",
-          "note": "Queued (v18-t5)"
+          "note": ""
         },
         {
           "competitor": "Calendar",
           "status": "covered",
           "cascivo": "calendar",
-          "note": "Queued (v18-t6)"
+          "note": ""
         },
         {
           "competitor": "Card",
@@ -79,7 +79,7 @@
           "competitor": "Carousel",
           "status": "covered",
           "cascivo": "carousel",
-          "note": "Queued (v18-t6)"
+          "note": ""
         },
         {
           "competitor": "Chart",
@@ -97,7 +97,7 @@
           "competitor": "Collapsible",
           "status": "covered",
           "cascivo": "collapsible",
-          "note": "Queued (v18-t5)"
+          "note": ""
         },
         {
           "competitor": "Combobox",
@@ -163,7 +163,7 @@
           "competitor": "Field",
           "status": "covered",
           "cascivo": "field",
-          "note": "Queued (v18-t5)"
+          "note": ""
         },
         {
           "competitor": "Hover Card",
@@ -193,7 +193,7 @@
           "competitor": "Item",
           "status": "covered",
           "cascivo": "item",
-          "note": "Queued (v18-t6)"
+          "note": ""
         },
         {
           "competitor": "Kbd",
@@ -205,25 +205,25 @@
           "competitor": "Label",
           "status": "covered",
           "cascivo": "label",
-          "note": "Queued (v18-t5)"
+          "note": ""
         },
         {
           "competitor": "Menubar",
           "status": "covered",
           "cascivo": "menubar",
-          "note": "Queued (v18-t6)"
+          "note": ""
         },
         {
           "competitor": "Native Select",
           "status": "covered",
           "cascivo": "native-select",
-          "note": "cascivo select is a custom listbox, not the native control. Queued (v18-t6)"
+          "note": "Wraps the native control; cascivo `select` is the custom listbox."
         },
         {
           "competitor": "Navigation Menu",
           "status": "covered",
           "cascivo": "navigation-menu",
-          "note": "Queued (v18-t6)"
+          "note": ""
         },
         {
           "competitor": "Pagination",
@@ -253,13 +253,13 @@
           "competitor": "Resizable",
           "status": "covered",
           "cascivo": "resizable",
-          "note": "Queued (v18-t6, a.k.a. splitter)"
+          "note": "a.k.a. splitter"
         },
         {
           "competitor": "Scroll Area",
           "status": "covered",
           "cascivo": "scroll-area",
-          "note": "Queued (v18-t5)"
+          "note": ""
         },
         {
           "competitor": "Select",
@@ -349,7 +349,7 @@
           "competitor": "Toggle Group",
           "status": "covered",
           "cascivo": "toggle-group",
-          "note": "Queued (v18-t5)"
+          "note": ""
         },
         {
           "competitor": "Tooltip",
@@ -401,7 +401,7 @@
           "competitor": "Button set",
           "status": "covered",
           "cascivo": "button-group",
-          "note": "= Button Group. Queued (v18-t5)"
+          "note": "= Button Group."
         },
         {
           "competitor": "Checkbox",
@@ -413,7 +413,7 @@
           "competitor": "Code snippet",
           "status": "covered",
           "cascivo": "code-snippet",
-          "note": "Queued (v18-t6)"
+          "note": ""
         },
         {
           "competitor": "Combo box",
@@ -425,7 +425,7 @@
           "competitor": "Contained list",
           "status": "covered",
           "cascivo": "contained-list",
-          "note": "Queued (v18-t6)"
+          "note": ""
         },
         {
           "competitor": "Content switcher",
@@ -473,13 +473,13 @@
           "competitor": "Icon button",
           "status": "covered",
           "cascivo": "icon-button",
-          "note": "Queued (v18-t5)"
+          "note": ""
         },
         {
           "competitor": "Inline loading",
           "status": "covered",
           "cascivo": "inline-loading",
-          "note": "Queued (v18-t5)"
+          "note": ""
         },
         {
           "competitor": "Link",
@@ -509,7 +509,7 @@
           "competitor": "Menu buttons",
           "status": "covered",
           "cascivo": "menu-button",
-          "note": "Queued (v18-t6)"
+          "note": ""
         },
         {
           "competitor": "Modal",
@@ -593,7 +593,7 @@
           "competitor": "Structured list",
           "status": "covered",
           "cascivo": "structured-list",
-          "note": "Queued (v18-t6)"
+          "note": ""
         },
         {
           "competitor": "Tabs",
@@ -623,7 +623,7 @@
           "competitor": "Tile",
           "status": "covered",
           "cascivo": "tile",
-          "note": "Queued (v18-t6)"
+          "note": ""
         },
         {
           "competitor": "Toggle",
@@ -635,7 +635,7 @@
           "competitor": "Toggletip",
           "status": "covered",
           "cascivo": "toggletip",
-          "note": "Distinct from hover tooltip. Queued (v18-t6)"
+          "note": "Distinct from hover tooltip."
         },
         {
           "competitor": "Tooltip",
@@ -647,7 +647,7 @@
           "competitor": "Tree view",
           "status": "covered",
           "cascivo": "tree-view",
-          "note": "Queued (v18-t6)"
+          "note": ""
         },
         {
           "competitor": "UI shell",

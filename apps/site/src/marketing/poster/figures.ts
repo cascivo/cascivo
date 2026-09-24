@@ -45,6 +45,7 @@ export const shadcnParity = (
 
 export const componentCount = __CASCIVO_COMPONENT_COUNT__
 export const themeCount = __CASCIVO_THEME_COUNT__
+export const chartCount = __CASCIVO_CHART_COUNT__
 
 /** One decimal, the way every bundle figure on the site is written. */
 export const kb = (n: number) => `${n.toFixed(1)} KB`

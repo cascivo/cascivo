@@ -78,7 +78,7 @@ for (const pkg of readdirSync(PACKAGES_DIR)) {
 // This is the exact surface the boringtools feedback cited ("the prebuilt
 // distribution of every cascade component"). Scoped narrowly to the published
 // distribution package's entry so it can't regress; broader internal mentions
-// (i18n catalog keys, the CascadeView render export, CLI output) are pre-existing
+// (i18n catalog keys, CLI output) are pre-existing
 // API/identifiers, not in v37's rename scope.
 const BRAND_PHRASE = /\bcascade\b/i
 const EXEMPT_PHRASE = /css cascade|cascade layer|@layer\s+cascade|cascading/i

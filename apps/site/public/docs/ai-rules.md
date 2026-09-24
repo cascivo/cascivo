@@ -88,15 +88,16 @@ package, or from `@cascivo/core` if you copied component source in with the CLI.
 `@cascivo/core` to a prebuilt-path app's package.json — it is only a transitive dependency
 there, and everything is re-exported from `@cascivo/react`.
 
-1. Local state -> `useSignal(initial)`; derived -> `useComputed(fn)`. Never `useState`.
-   The signal IS the state.
-   > ⚠ **Your linter will reject this rule by default.** `eslint-plugin-react-hooks@7`'s
-   > `recommended-latest` enables `react-hooks/immutability`, which reports every
-   > `signal.value = next` as `Error: This value cannot be modified`. It fires on the idiom
-   > this line mandates, in your own page code, on both install paths. Install
-   > `@cascivo/eslint-config` (`...cascivo` spread last in `eslint.config.js`) or set
-   > `'react-hooks/immutability': 'off'` yourself. Full rationale and what it costs:
-   > [USING-WITH-STRICT-ESLINT.md](/docs/using-with-strict-eslint.md).
+1. Local state -> `const [count, setCount] = useSignalState(initial)`: read `count.value` in
+   render, write with `setCount(next)` or `setCount((n) => n + 1)`. Derived ->
+   `useComputed(fn)`. Never `useState`. The signal IS the state.
+   > **Write through the setter, never `count.value = next` in a component.** Assigning to a
+   > value returned from a hook fails the React Compiler build ("This value cannot be
+   > modified") and is reported by `react-hooks/immutability`, which
+   > `eslint-plugin-react-hooks@7` turns on by default. The setter form passes both — checked
+   > by `pnpm compiler:check`. Plain `useSignal` still works, but its writes carry that cost;
+   > see [USING-WITH-STRICT-ESLINT.md](/docs/using-with-strict-eslint.md). Writing
+   > `.value` on a **module-level** `signal()` (rule 3) is fine — it is not a hook value.
 2. Side effects (DOM, listeners, `showModal()`) -> `useSignalEffect(fn)`. Never `useEffect`.
 3. Shared/app-wide state -> a module-level `signal` imported anywhere. Never `useContext`.
 4. A controlled/uncontrolled prop bridged to a signal ->
@@ -118,7 +119,7 @@ there, and everything is re-exported from `@cascivo/react`.
 '@cascivo/tokens/tokens'` (generated union — no CSS-file lookup).
 9. `useSignals()` is needed ONLY for a signal you did not get from a cascivo hook: a
    module-level `signal()`, a signal passed in as a prop, or `currentLocale()`. Call it as
-   the component's first statement. Signals returned by `useSignal`, `useComputed`,
+   the component's first statement. Signals returned by `useSignalState`, `useSignal`, `useComputed`,
    `useDisclosure`, `useMachine`, `useTheme` and the rest subscribe you already — do not
    sprinkle `useSignals()` everywhere. Symptom of getting this wrong: handlers fire, the
    UI never moves, no error.

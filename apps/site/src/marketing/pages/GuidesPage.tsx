@@ -27,8 +27,14 @@ const GUIDE_LINKS = [
   {
     title: 'When not to use cascivo',
     teaser:
-      'Candid limits — Chrome-leading CSS pilots, alpha tooling, React/Preact only — with honest receipts.',
+      'Candid limits — a young project, a lint exception for signals, two locales, no Figma kit — with honest receipts.',
     href: '/guides/when-not-to-use',
+  },
+  {
+    title: 'cascivo and the alternatives',
+    teaser:
+      'Base UI, React Aria, MUI, Mantine, Astryx, shadcn — a real reason to pick each one, and when cascivo fits better.',
+    href: '/guides/alternatives',
   },
   {
     title: 'Quick questions',

@@ -1,4 +1,4 @@
-# native-ui
+# cascivo
 
 ## Part 1 — Behavioral Guidelines
 
@@ -172,7 +172,7 @@ Run the single command that covers everything:
 pnpm ready
 ```
 
-This runs: `pnpm regen` → `vp check --fix` → both host-lint gates (`lint:host-strict`, `lint:host-eslint`, `lint:host-eslint:test`) → the pre-build guard suite (brand, claims, recurrence, release, regen, meta, i18n, docs-routes, llms, layers, unlayered, reset, popover, dead-props, doc-urls, primitives, apg, visual-baselines) → build → the post-build guard suite (scaffold, audit:bundle, ssr, css-contract, sparkline:size, rsc, dts-tsdoc, api, shims, docspack, type-exports, computed, rtl) → type check → tests.
+This runs: `pnpm regen` → `vp check --fix` → both host-lint gates (`lint:host-strict`, `lint:host-eslint`, `lint:host-eslint:test`) → the pre-build guard suite (brand, claims, recurrence, release, regen, meta, i18n, docs-routes, llms, layers, unlayered, reset, popover, dead-props, doc-urls, primitives, apg, visual-baselines) → build → the post-build guard suite (scaffold, audit:bundle, ssr, css-contract, sparkline:size, rsc, dts-tsdoc, api, shims, docspack, type-exports, computed, rtl) → type check → tests → the React Compiler leg (`compiler:check`).
 
 The post-build half needs `dist/`, which is why it sits after the build: `api:check` diffs the
 published `.d.ts` surface against `api-surface.json`, `shims:check` regenerates
@@ -373,7 +373,7 @@ Packages that export source directly (components, layouts, charts, themes, token
 2. **Owned code** — components are copy-pasted into user projects (shadcn model). Users own what they use.
 3. **Modern CSS only** — `@layer`, `@container`, `:has()`, CSS custom properties. No Tailwind, no CSS-in-JS.
 4. **Signal-driven** — custom micro-FSM + Preact Signals in `@cascivo/core`. No `useState`/`useContext` for component interactivity. Zero unnecessary re-renders.
-5. **Beautiful by default** — three first-party themes (light, dark, warm). Theming via `data-theme` attribute + CSS custom properties. Scoped to any container.
+5. **Beautiful by default** — twelve first-party themes (light, dark, warm, and nine more). Theming via `data-theme` attribute + CSS custom properties. Scoped to any container.
 6. **AI-first** — every component has a machine-readable manifest. MCP server, Claude Code skills, and auto-generated docs all derive from it.
 
 ### Dependency Policy
@@ -382,7 +382,7 @@ Packages that export source directly (components, layouts, charts, themes, token
 - Peer dependencies must be explicit and version-ranged (`>=18.0.0`).
 - Runtime dependencies in `@cascivo/core`: none beyond `@preact/signals-react`.
 - Dev tooling: use vite+ (`vp`) as the single CLI — it bundles Oxlint, Oxfmt, Rolldown, Vitest (all Rust-backed).
-- vite+ is alpha (v0.1.24) — accepted risk. On `vp` breaking changes, check https://viteplus.dev before updating.
+- vite+ is alpha (v0.2.x) — accepted risk. On `vp` breaking changes, check https://viteplus.dev before updating.
 
 ### Monorepo Structure
 
@@ -395,7 +395,7 @@ the monorepo, and the cause is invisible from inside the app that triggered it (
 report, repo-level note). Enforced by `scripts/checks/app-package-names.test.ts`.
 
 ```
-cascade/
+cascivo/
 ├── packages/
 │   ├── core/           # @cascivo/core — micro-FSM, Preact Signals integration, base utilities
 │   ├── tokens/         # @cascivo/tokens — CSS design tokens (primitive → semantic → component)
@@ -414,7 +414,7 @@ cascade/
 │   └── examples/
 │       ├── react-vite/ # Vite + React example app
 │       └── react-next/ # Next.js App Router example (RSC demo)
-├── skills/             # Claude Code skills — cascivo:add, cascivo:design-page, cascivo:create-theme, cascivo:extend
+├── skills/             # Claude Code skills — cascivo-add, cascivo-design-page, cascivo-create-theme, cascivo-extend
 ├── scripts/
 │   ├── factory/        # Dark factory — in-session agent loop + backlog.json (component spec queue)
 │   └── registry/       # registry.json generation + GitHub raw URL map
@@ -488,8 +488,8 @@ export const meta: ComponentMeta = {
 | Surface            | Package                        | Purpose                                                                                                                       |
 | ------------------ | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
 | Component manifest | `<name>.meta.ts` per component | Ground truth for all AI surfaces                                                                                              |
-| MCP server         | `@cascivo/mcp`                 | Tools: `list_components`, `get_component`, `create_theme`, `scaffold_page`, `add_to_project`                                  |
-| Claude Code skills | `skills/`                      | `cascivo:add`, `cascivo:design-page`, `cascivo:create-theme`, `cascivo:extend`                                                |
+| MCP server         | `@cascivo/mcp`                 | 24 tools, e.g. `list_components`, `get_component`, `scaffold_view`, `validate_view`, `add_to_project`                         |
+| Claude Code skills | `skills/`                      | `cascivo-add`, `cascivo-design-page`, `cascivo-create-theme`, `cascivo-extend`                                                |
 | Data-driven docs   | `apps/site/` (docs routes)     | Hand-authored TSX pages render props/tokens/examples live from `registry.json` at runtime — no markdown/HTML is pre-generated |
 | Registry manifest  | `registry.json`                | Machine-readable index — CLI + MCP + docs all read from this                                                                  |
 
@@ -527,7 +527,10 @@ Tiered automation:
 - **Trigger**: `scripts/factory/backlog.json` — queue of component specs the factory works through
 - **Loop**: generate → lint → type-check → test → if pass: open PR; if fail: self-heal (max 5 attempts) → escalate
 
-### v1 Component List (~20)
+### Original v1 Component List (~20, historical)
+
+The starting scope, kept for context. The registry has long outgrown it — `registry.json` is the
+current list.
 
 `inputs`: Button, Input, Textarea, Select, Checkbox, Radio, Toggle, Slider
 `overlay`: Modal/Dialog, Dropdown, Tooltip, Toast
@@ -595,6 +598,12 @@ React apps — `apps/examples/*`, `apps/bench/*` — get NO Babel signals transf
 (from `@cascivo/core`) as its first statement**, or it will never re-render on
 signal writes. Symptom: handlers fire, UI freezes (toggles that don't toggle, modals
 that don't open).
+
+In app code (the examples, and everything the docs show adopters), hold local state with
+`const [x, setX] = useSignalState(initial)` and write through `setX` — it subscribes for you,
+and unlike `x.value = …` it compiles under the React Compiler and passes
+`react-hooks/immutability` (`pnpm compiler:check`). Assigning a **module-level** `signal()`
+is fine. Library component source is exempt: it may keep writing `.value` in handlers.
 
 `useEffect` is banned in cascade components without exception. Any async DOM side effect (adding event listeners, calling imperative DOM methods like `showModal()`) must use `useSignalEffect` instead.
 

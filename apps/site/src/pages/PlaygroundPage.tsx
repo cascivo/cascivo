@@ -1,5 +1,5 @@
 import { signal, useSignals } from '@cascivo/core'
-import { CascadeView } from '@cascivo/render'
+import { CascivoView } from '@cascivo/render'
 import type { ViewConfig } from '@cascivo/render'
 
 const EXAMPLE_CONFIG: ViewConfig = {
@@ -19,7 +19,7 @@ const EXAMPLE_CONFIG: ViewConfig = {
         {
           component: 'Alert',
           props: { variant: 'info', title: 'AI-generated layout' },
-          children: 'This UI was described in JSON and rendered live by CascadeView.',
+          children: 'This UI was described in JSON and rendered live by CascivoView.',
         },
         { component: 'Separator' },
         {
@@ -89,7 +89,7 @@ export function PlaygroundPage() {
             margin: 'var(--cascivo-space-1) 0 0',
           }}
         >
-          Describe a UI in JSON — CascadeView renders it live using cascade components.
+          Describe a UI in JSON — CascivoView renders it live using cascade components.
         </p>
       </div>
 
@@ -169,7 +169,7 @@ export function PlaygroundPage() {
             PREVIEW
           </div>
           <div style={{ flex: 1, padding: 'var(--cascivo-space-6)', overflowY: 'auto' }}>
-            {configSignal.value && <CascadeView config={configSignal.value} onInvalid="render" />}
+            {configSignal.value && <CascivoView config={configSignal.value} onInvalid="render" />}
           </div>
         </div>
       </div>

@@ -174,18 +174,20 @@ export function PosterReactivity() {
     <section
       className="pg-section pg-cols pg-cols--5-7"
       id="signals"
-      aria-label="Reactivity — interactions commit once"
+      aria-label="Signals — change one cell, render one cell"
     >
       <div className="pg-pad">
-        <p className="pg-eyebrow">04 / reactivity</p>
+        <p className="pg-eyebrow">02 / signals</p>
         <h2 className="pg-display pg-display--section pg-reactivity-head">
-          Interactions
+          Change one cell,
           <br />
-          commit once
+          render one cell
         </h2>
         <p className="pg-body pg-reactivity-body">
-          Fine-grained signals write state past React&apos;s reconciler. A component re-renders only
-          when its own data changes — measured on the benchmark page, not claimed.
+          In the <em>signals</em> grid each cell holds its own signal, so a change re-renders that
+          cell and nothing else. The <em>re-render</em> grid keeps the same data in{' '}
+          <code>useState</code>, so every change re-renders all thirty. Press the button and watch
+          the counters.
         </p>
         {partial && (
           <p className="pg-figure">

@@ -69,6 +69,8 @@ These may change in any release, including a patch:
 - Older majors are unsupported. `cascivo doctor --drift` compares your installed versions
   against [`breaking-changes.json`](#breaking-changesjson--for-machines) and tells you where
   you stand.
+- Minors are batched (at most one every two weeks) and a major ships only after a four-week
+  release candidate — the full release policy is in [`GOVERNANCE.md`](./GOVERNANCE.md).
 
 ### Which packages are covered
 
@@ -77,11 +79,12 @@ runtime. Tooling packages stay on `0.x` until their own surfaces settle, and say
 
 | Line  | Packages                                                                                                                            |
 | ----- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `1.x` | `@cascivo/react`, `@cascivo/core`, `@cascivo/charts`, `@cascivo/editor`, `@cascivo/flow`, `@cascivo/i18n`, `@cascivo/storage`, `@cascivo/ai` (the lockstep family below), plus `@cascivo/tokens`, `@cascivo/themes`, `@cascivo/icons` and the `cascivo` CLI |
-| `0.x` | `@cascivo/mcp`, `@cascivo/registry`, `@cascivo/docs`, `@cascivo/docspack`, `@cascivo/eslint-config`, `@cascivo/eslint-plugin`, `@cascivo/vite-plugin`, `@cascivo/platform`                                                                                 |
+| `1.x` | `@cascivo/react`, `@cascivo/core`, `@cascivo/charts`, `@cascivo/editor`, `@cascivo/flow`, `@cascivo/i18n`, `@cascivo/storage`, `@cascivo/ai`, `@cascivo/text`, `@cascivo/render` (the lockstep family below), plus `@cascivo/tokens`, `@cascivo/themes`, `@cascivo/icons` and the `cascivo` CLI |
+| `0.x` | `@cascivo/mcp`, `@cascivo/registry`, `@cascivo/docs`, `@cascivo/docspack`, `@cascivo/eslint-config`, `@cascivo/eslint-plugin`, `@cascivo/vite-plugin`, `@cascivo/platform`, `@cascivo/email`                                                                                 |
 
 `@cascivo/platform` in particular is an early experiment in platform-idiomatic geometry and
-motion; treat its API as unsettled.
+motion; treat its API as unsettled. `@cascivo/email-preview` is a development-only preview
+server on its own version line (currently `2.x`); it is not part of the application runtime.
 
 ## Where changes are recorded
 
@@ -122,12 +125,12 @@ release in that package's `releases` array newer than `0.2.1`.
 
 ## The `@cascivo/core` family versions in lockstep
 
-Eight packages release together at one version: **`@cascivo/core`, `@cascivo/react`,
+Ten packages release together at one version: **`@cascivo/core`, `@cascivo/react`,
 `@cascivo/charts`, `@cascivo/editor`, `@cascivo/flow`, `@cascivo/i18n`, `@cascivo/storage`,
-`@cascivo/ai`**. Seven of them depend on `@cascivo/core`.
+`@cascivo/ai`, `@cascivo/text`, `@cascivo/render`**.
 
 **What this means for you: pin them all to the same version.** If `@cascivo/react` is
-`0.15.0`, so is `@cascivo/charts`. A mismatched pair is not a supported combination, and
+`1.3.1`, so is `@cascivo/charts`. A mismatched pair is not a supported combination, and
 `cascivo doctor` will tell you if your install ended up with one.
 
 **Why it is enforced rather than advised.** Independently-versioned 0.x packages could

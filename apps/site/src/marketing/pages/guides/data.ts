@@ -30,7 +30,7 @@ export const MIGRATION = {
   changes: [
     { from: 'useState / useEffect', to: 'signals (useSignal / useSignalEffect)' },
     { from: 'Tailwind utility classes', to: 'CSS custom-property tokens + @layer' },
-    { from: 'Ad-hoc / config-driven theming', to: 'data-theme + 10 shipped themes' },
+    { from: 'Ad-hoc / config-driven theming', to: 'data-theme + twelve shipped themes' },
     { from: 'Hand-rolled accessibility', to: 'built-in WCAG 2.2 AA' },
     { from: 'No machine-readable context', to: 'MCP + component manifests + audit --ai' },
     { from: 'Hardcoded English strings', to: 'built-in i18n catalog' },
@@ -223,7 +223,7 @@ export const FAQ: FaqEntry[] = [
   {
     id: 'all-or-one',
     q: 'Do I have to adopt all of it, or can I add one component?',
-    a: 'Add exactly what you need. Components are copied into your repo one at a time — there is no runtime, no provider, and nothing to buy into. Start with a single button if you like.',
+    a: 'Add exactly what you need. Components are copied into your repo one at a time — there is no required provider and nothing to buy into. Start with a single button if you like.',
     next: { label: 'Three-step quickstart', href: '/docs' },
   },
   {
@@ -316,6 +316,48 @@ export const BOUNDARIES: Boundary[] = [
     },
   },
   {
+    limit: 'A young project with one maintainer',
+    framing:
+      'cascivo started in June 2026 and reached 1.0 in September 2026. One person maintains it, with agents doing much of the implementation work. The 1.x semver contract, the per-release breaking-changes file and the copy-paste path (the code you copied keeps working even if you stop upgrading) limit the risk — but if your organisation needs a vendor, a support contract or a multi-year support window, cascivo does not offer one today.',
+    receipt: {
+      label: 'The stability contract',
+      href: 'https://github.com/cascivo/cascivo/blob/main/docs/UPGRADING.md#the-stability-contract',
+    },
+  },
+  {
+    limit: 'Signals inside React need one lint exception',
+    framing:
+      "React's own hooks lint (react-hooks/immutability) flags every signal write, and the React Compiler expects components not to mutate values during render. The shipped ESLint config turns that one rule off, and components that write signals stay outside the Compiler or carry a disable directive. If your team treats that rule as non-negotiable, weigh it before adopting.",
+    receipt: {
+      label: 'Using cascivo with strict ESLint',
+      href: 'https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-STRICT-ESLINT.md',
+    },
+  },
+  {
+    limit: 'Two built-in locales',
+    framing:
+      'Every user-visible string comes from the @cascivo/i18n catalog, but only English and German ship today. Other languages mean writing your own catalog — typed, and overridable per instance through labels — before you launch.',
+    receipt: {
+      label: '@cascivo/i18n',
+      href: 'https://github.com/cascivo/cascivo/tree/main/packages/i18n',
+    },
+  },
+  {
+    limit: 'No Figma kit yet',
+    framing:
+      'Design teams get the tokens as CSS and a machine-readable catalog, not a Figma library. If your process starts in Figma and hands off by component, you will be mapping by hand until a kit ships.',
+    receipt: {
+      label: 'Roadmap',
+      href: 'https://github.com/cascivo/cascivo/blob/main/ROADMAP.md',
+    },
+  },
+  {
+    limit: 'Screen-reader results are mostly partial, and there is no VPAT',
+    framing:
+      'axe runs on every pull request and finds nothing, but automated NVDA and VoiceOver runs grade most components partial — each quirk is listed. Manual sessions, JAWS and a third-party VPAT are still to come. If procurement needs a conformance report today, cascivo cannot supply one.',
+    receipt: { label: 'Accessibility evidence', href: '/accessibility' },
+  },
+  {
     limit: 'Modern browsers only',
     framing:
       'cascivo relies on :has() and @container — the last two versions of Chrome, Firefox, and Safari. No IE, no deep legacy support.',
@@ -323,5 +365,50 @@ export const BOUNDARIES: Boundary[] = [
       label: 'Browser targets',
       href: 'https://github.com/cascivo/cascivo/blob/main/CLAUDE.md',
     },
+  },
+]
+
+export interface Alternative {
+  /** The library, or family of libraries, being compared. */
+  name: string
+  what: string
+  pickThem: string
+  pickCascivo: string
+}
+
+// Written to be fair to each alternative: facts that hold across releases, no scores, no
+// counts that go stale. Each "pick them" is a real reason to choose them over cascivo.
+export const ALTERNATIVES: Alternative[] = [
+  {
+    name: 'Headless primitives — Base UI, React Aria, Radix',
+    what: 'Behaviour and accessibility without styling. You bring the design, often in Tailwind. shadcn/ui is built on them.',
+    pickThem:
+      'You already have a design language and want the most widely used behaviour layer, backed by a company (MUI for Base UI, Adobe for React Aria). React Aria in particular goes deep on screen-reader and internationalisation support.',
+    pickCascivo:
+      'You want the styled components, themes, charts and email in one system, and overlays built on native <dialog> and the Popover API instead of a JavaScript positioning layer.',
+  },
+  {
+    name: 'Styled suites — MUI, Mantine, Chakra, Ant Design',
+    what: 'Large, mature component libraries installed from npm, each with its own theming system and a big ecosystem around it.',
+    pickThem:
+      'You need a long support window, a commercial data grid, an official Figma kit or paid support — or you want the library the most engineers already know.',
+    pickCascivo:
+      'You want to own the source instead of a dependency, style with plain layered CSS and tokens rather than a theme object, and have agent-written code checked against the real props and tokens.',
+  },
+  {
+    name: 'Astryx (Meta)',
+    what: 'A React component library styled with StyleX, compiled through its own build plugins, with a CLI that serves agent-ready docs. MIT, pre-1.0.',
+    pickThem:
+      'StyleX is already in your stack, you want atomic CSS at very large scale, or you prefer a library with a large company behind it.',
+    pickCascivo:
+      'You want no compiler step for styles — CSS files you can read — plus copy-paste ownership, charts, email and an audit that checks generated code.',
+  },
+  {
+    name: 'shadcn/ui',
+    what: 'The same owned-code model: a CLI copies components into your repo. Styled with Tailwind, on Base UI or Radix.',
+    pickThem:
+      'Your team already writes Tailwind, you want the largest ecosystem of third-party blocks and registries, or you want what AI tools generate by default.',
+    pickCascivo:
+      'You want no Tailwind dependency, signals instead of re-renders, twelve themes, charts and i18n included, and upgrades that merge into code you edited.',
   },
 ]

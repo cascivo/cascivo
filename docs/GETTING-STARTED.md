@@ -1,5 +1,56 @@
 # Getting started with cascivo
 
+## Two minutes: a component on screen
+
+The fastest path is the prebuilt package. In any React 18+ app built with a bundler (Vite,
+Next.js, webpack):
+
+```sh
+pnpm add --save-exact @cascivo/react @cascivo/themes @preact/signals-react
+```
+
+```tsx
+import '@cascivo/themes/light-dark.css'
+import { Button, Card, CardContent } from '@cascivo/react'
+
+export function App() {
+  return (
+    <main data-theme="light">
+      <Card>
+        <CardContent>
+          <Button>It works</Button>
+        </CardContent>
+      </Card>
+    </main>
+  )
+}
+```
+
+That is the whole setup. The theme import and the `data-theme` attribute are the only
+required wiring — without them components render uncolored. Component CSS comes in with
+each import.
+
+When that renders, decide the rest:
+
+- **Want to own and edit the source?** Switch to [Path A (copy-paste via the CLI)](#path-a--copy-paste-via-the-cli).
+- **Components need state?** Read [State in your own components](#state-in-your-own-components-usesignalstate-and-usesignals) — hold it with `useSignalState` and write through the setter.
+- **Strict ESLint or the React Compiler?** Read [Your linter and the `signal.value = next` idiom](#your-linter-and-the-signalvalue--next-idiom) before your first lint run.
+
+### Which versions go together
+
+- The packages that share `@cascivo/core` — `core`, `react`, `charts`, `editor`, `flow`,
+  `i18n`, `storage`, `ai`, `text`, `render` — release together. **Install them all at the same
+  version.**
+- `@cascivo/themes`, `@cascivo/tokens`, `@cascivo/icons` and the `cascivo` CLI have their own
+  version numbers. Any current `1.x` works with the rest.
+- Packages still on `0.x` (`@cascivo/mcp`, `@cascivo/email`, the ESLint packages, …) are
+  tooling; they are not covered by the 1.x stability contract.
+
+The current pairs are in the [compatibility table](./COMPATIBILITY.md#package-compatibility),
+and `cascivo doctor` reports a mismatched install.
+
+---
+
 ## Step 0 — don't read this linearly if you don't have to
 
 This page plus the guides it links is ~2,000 lines, and three hands-on reports have now
@@ -126,7 +177,7 @@ component, and docspack to answer a "how do I…" question about one.
   `track` — Vercel/Datadog/Trade-Republic/Stripe/Linear-style consoles).
 
 If you're building a dashboard/console page specifically, the
-`cascivo:design-page` Claude Code skill and its component recipe are the
+`cascivo-design-page` Claude Code skill and its component recipe are the
 fastest path — see [Where to go next](#where-to-go-next).
 
 ---
@@ -228,8 +279,14 @@ bun uses `--exact`. To make it the default for the project, put
 
 ### Your linter and the `signal.value = next` idiom
 
-Whichever linter you use, it will flag cascivo's mandatory state idiom until you
-tell it not to. **Pick the row that matches your project:**
+**Write state through a setter and this section does not apply to you.** Both linters
+below report `signal.value = next` on a signal a hook returned; the setter from
+`useSignalState` (`setCount(next)`) is not a mutation, so it passes with every rule on — and
+it is also the form the React Compiler can compile. See
+[State in your own components](#state-in-your-own-components-usesignalstate-and-usesignals).
+
+If your code already assigns `.value` in components, the rule will flag it until you tell it
+not to. **Pick the row that matches your project:**
 
 | Your linter | What to add |
 | --- | --- |
@@ -570,46 +627,58 @@ Full guide, including active-item matching and URL-driven tabs:
 
 ---
 
-## State: call `useSignals()` in your own components
+## State in your own components: `useSignalState` and `useSignals()`
 
-**Read this before you write a component that holds state.** It is the single most likely
-first-day bug, it produces no error and no warning, and it looks like a cascivo bug.
+**Read this before you write a component that holds state.** Two rules, and breaking either
+one fails quietly.
 
-cascivo's own components call `useSignals()` internally, so everything above works with no
-setup. But components **you** write are not compiled by cascivo's build — so in a React app
-with no Babel signals transform (the normal case: Vite + React, Next.js, CRA), a component
-that reads `signal.value` during render never re-renders when that signal changes.
+**1. Hold local state with `useSignalState`, and write through the setter.**
+
+```tsx
+import { useSignalState } from '@cascivo/core' // prebuilt path: from '@cascivo/react'
+
+function Counter() {
+  const [count, setCount] = useSignalState(0)
+  return <Button onClick={() => setCount((n) => n + 1)}>Clicked {count.value} times</Button>
+}
+```
+
+Read `count.value` in render; write with `setCount(next)` or `setCount((n) => n + 1)`.
+Do not assign `count.value = …` in a component: the React Compiler refuses to compile a
+component that assigns to a value a hook returned, and `react-hooks/immutability` reports it.
+The setter form passes both — see
+[Your linter and the `signal.value = next` idiom](#your-linter-and-the-signalvalue--next-idiom).
+
+**2. A signal you did not get from a cascivo hook needs `useSignals()`.** cascivo's hooks —
+`useSignalState`, `useSignal`, `useComputed` and the rest — subscribe the component for you.
+A module-level `signal()`, or one passed in as a prop, does not: in a React app with no Babel
+signals transform (the normal case: Vite + React, Next.js), a component that reads it during
+render never re-renders when it changes.
 
 The symptom is distinctive: **handlers fire, the UI freezes.** Toggles that don't toggle,
 modals that don't open, a counter stuck at 0. Everything logs correctly.
 
 ```tsx
-import { useSignal } from '@cascivo/core'
+import { signal, useSignals } from '@cascivo/core'
 
-// ✗ Broken — reads count.value during render, never re-renders.
+const count = signal(0) // shared, module-level — assigning its .value is fine
+
+// ✗ Broken — reads count.value during render without subscribing, never re-renders.
 function Counter() {
-  const count = useSignal(0)
-  return <Button onClick={() => count.value++}>Clicked {count} times</Button>
+  return <Button onClick={() => { count.value++ }}>Clicked {count.value} times</Button>
 }
-```
-
-```tsx
-import { useSignal, useSignals } from '@cascivo/core'
 
 // ✓ Correct — useSignals() first, before anything else in the body.
 function Counter() {
   useSignals()
-  const count = useSignal(0)
-  return <Button onClick={() => count.value++}>Clicked {count} times</Button>
+  return <Button onClick={() => { count.value++ }}>Clicked {count.value} times</Button>
 }
 ```
 
-The rule: **`useSignals()` is the first statement in any component of yours that reads
-`signal.value` during render.** It is a no-op where a transform is already active (Preact
-apps, or React with the Babel plugin), so adding it is always safe.
-
-You do *not* need it to pass signals into a cascivo component, or in an event handler, or
-inside `useSignalEffect` — only for a read that happens during render.
+`useSignals()` is a no-op where a transform is already active (Preact apps, or React with the
+Babel plugin), so adding it is always safe. You do *not* need it to pass signals into a
+cascivo component, in an event handler, or inside `useSignalEffect` — only for a read that
+happens during render.
 
 Full reactivity model, including which React hooks map to which cascivo primitive:
 [HEADLESS.md](./HEADLESS.md). Symptom-first version:

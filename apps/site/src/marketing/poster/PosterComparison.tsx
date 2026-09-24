@@ -115,7 +115,7 @@ export function PosterComparison() {
     >
       <div className="pg-pad pg-head">
         <h2 className="pg-display pg-display--section">Same model, no tax</h2>
-        <p className="pg-eyebrow">06 / vs shadcn/ui</p>
+        <p className="pg-eyebrow">04 / vs shadcn/ui</p>
       </div>
       <div className="pg-pad pg-compare-pad">
         <p className="pg-body pg-compare-lede">

@@ -58,6 +58,11 @@ export const SELF_SUBSCRIBING_HOOKS: readonly SelfSubscribingHook[] = [
     test: 'packages/core/src/self-subscribe.test.tsx',
   },
   {
+    name: 'useSignalState',
+    source: 'packages/core/src/signal-state.ts',
+    test: 'packages/core/src/signal-state.test.tsx',
+  },
+  {
     name: 'useDisclosure',
     source: 'packages/core/src/controllable.ts',
     bodyOf: 'useControllableSignal', // useDisclosure subscribes by delegating to it

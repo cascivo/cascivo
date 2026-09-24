@@ -1,24 +1,53 @@
 {
   "name": "@cascivo/render",
-  "version": "0.0.0",
-  "private": true,
-  "description": "Runtime JSON → UI renderer for cascivo",
+  "version": "1.3.1",
+  "private": false,
+  "description": "Render a JSON view config with real cascivo components — the runtime behind the MCP scaffold_view / validate_view tools, plus machine mode for views. Docs offline: npx @cascivo/docs",
+  "keywords": [
+    "agent",
+    "ai",
+    "cascivo",
+    "design-system",
+    "generative-ui",
+    "json",
+    "react",
+    "renderer"
+  ],
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/render#readme",
+  "bugs": "https://github.com/cascivo/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
+    "directory": "packages/render"
+  },
+  "files": [
+    "dist",
+    "schema"
+  ],
   "type": "module",
-  "types": "./dist/index.d.mts",
+  "types": "./dist/index.d.ts",
   "exports": {
+    "./package.json": "./package.json",
     ".": {
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.mts",
-      "default": "./dist/index.mjs"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     },
     "./text": {
-      "import": "./dist/view-text.mjs",
-      "types": "./dist/view-text.d.mts",
-      "default": "./dist/view-text.mjs"
-    }
+      "types": "./dist/view-text.d.ts",
+      "import": "./dist/view-text.js",
+      "default": "./dist/view-text.js"
+    },
+    "./schema/view.v1.json": "./schema/view.v1.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
-    "build": "vp pack src/index.ts src/view-text.ts",
+    "build": "vp build && node scripts/flatten-types.mjs && node scripts/check-types-flat.mjs",
     "check": "tsc --noEmit",
     "test": "vp test",
     "dev": "vp pack --watch"
@@ -42,7 +71,13 @@
   },
   "peerDependencies": {
     "@preact/signals-react": ">=3.0.0",
+    "@types/react": ">=18.0.0",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    }
   }
 }

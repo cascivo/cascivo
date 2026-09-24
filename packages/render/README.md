@@ -3,25 +3,27 @@
 <div align="center">
   <a href="https://cascivo.com"><img src="https://cascivo.com/logo-mark-img-accent.svg" width="72" height="72" alt="cascivo logo"></a>
   <h1>@cascivo/render</h1>
-  <p><strong>Runtime JSON → UI renderer for cascivo</strong></p>
+  <p><strong>Render a JSON view config with real cascivo components — the runtime behind the MCP scaffold_view / validate_view tools, plus machine mode for views. Docs offline: npx @cascivo/docs</strong></p>
 
-![workspace](https://img.shields.io/badge/workspace-private-64748b?style=flat-square)
+[![npm](https://img.shields.io/npm/v/%40cascivo%2Frender?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/render)
+[![downloads](https://img.shields.io/npm/dm/%40cascivo%2Frender?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/render)
+[![license](https://img.shields.io/npm/l/%40cascivo%2Frender?style=flat-square&color=0079bf)](https://github.com/cascivo/cascivo/blob/main/LICENSE)
 ![types](https://img.shields.io/badge/types-included-0079bf?style=flat-square&logo=typescript&logoColor=white)
 
-[cascivo.com](https://cascivo.com) · [Docs](https://cascivo.com/docs) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
+[npm](https://www.npmjs.com/package/@cascivo/render) · [cascivo.com](https://cascivo.com) · [Docs](https://cascivo.com/docs) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
 
 </div>
 
 ---
 
-A runtime that turns a plain **JSON config into live cascivo UI**. `CascadeView` takes a `ViewConfig` object and renders the real components — so AI agents (and no-code tooling) can emit data instead of writing TSX.
+A runtime that turns a plain **JSON config into live cascivo UI**. `CascivoView` takes a `ViewConfig` object and renders the real components — so AI agents (and no-code tooling) can emit data instead of writing TSX.
 
 ## Usage
 
 A `ViewConfig` is named regions of component nodes; each node names a component (`component`), plus optional `props`, `children`, data bindings, and event wiring:
 
 ```tsx
-import { CascadeView, type ViewConfig } from '@cascivo/render'
+import { CascivoView, type ViewConfig } from '@cascivo/render'
 
 const view: ViewConfig = {
   view: {
@@ -50,7 +52,7 @@ const view: ViewConfig = {
 
 export function App() {
   return (
-    <CascadeView
+    <CascivoView
       config={view}
       data={{ count: 42 }}
       actions={{ invite: () => console.log('invite') }}
@@ -76,6 +78,12 @@ const { valid, errors } = validateView(view) // errors: { path, message }[]
 Unknown components (with a did-you-mean hint), malformed nodes, and prop values that don't match the generated per-component prop schemas are reported with exact paths, so generated views fail loudly rather than rendering garbage.
 
 Pair it with the MCP server's bound-vocabulary grammar (`get_view_grammar`) and `scaffold_view` for the full anti-hallucination loop: the model can only emit components and props that exist, and `validateView` is the enforcement backstop. `cascivo generate <config.json>` converts a validated `ViewConfig` into owned TSX when you want to graduate from JSON to source.
+
+## Install
+
+```sh
+pnpm add @cascivo/render
+```
 
 ---
 

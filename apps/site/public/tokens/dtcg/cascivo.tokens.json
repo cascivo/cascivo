@@ -1,0 +1,2465 @@
+{
+  "$description": "cascivo design tokens, exported from the CSS custom properties. Theme values live in themes/*.tokens.json, selected by cascivo.resolver.json.",
+  "gray": {
+    "gray-0": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [1, 0, 0],
+        "hex": "#ffffff"
+      },
+      "$description": "CSS: --cascivo-gray-0 (primitive)"
+    },
+    "gray-50": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.985, 0.002, 264],
+        "hex": "#f9fafb"
+      },
+      "$description": "CSS: --cascivo-gray-50 (primitive)"
+    },
+    "gray-100": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.967, 0.003, 264],
+        "hex": "#f3f4f6"
+      },
+      "$description": "CSS: --cascivo-gray-100 (primitive)"
+    },
+    "gray-200": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.928, 0.006, 264],
+        "hex": "#e5e7eb"
+      },
+      "$description": "CSS: --cascivo-gray-200 (primitive)"
+    },
+    "gray-300": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.872, 0.008, 264],
+        "hex": "#d2d5da"
+      },
+      "$description": "CSS: --cascivo-gray-300 (primitive)"
+    },
+    "gray-400": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.707, 0.015, 264],
+        "hex": "#9ca1aa"
+      },
+      "$description": "CSS: --cascivo-gray-400 (primitive)"
+    },
+    "gray-500": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.554, 0.018, 264],
+        "hex": "#6d737e"
+      },
+      "$description": "CSS: --cascivo-gray-500 (primitive)"
+    },
+    "gray-600": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.446, 0.018, 264],
+        "hex": "#4f545e"
+      },
+      "$description": "CSS: --cascivo-gray-600 (primitive)"
+    },
+    "gray-700": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.373, 0.015, 264],
+        "hex": "#3c4149"
+      },
+      "$description": "CSS: --cascivo-gray-700 (primitive)"
+    },
+    "gray-800": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.269, 0.01, 264],
+        "hex": "#24262b"
+      },
+      "$description": "CSS: --cascivo-gray-800 (primitive)"
+    },
+    "gray-900": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.205, 0.007, 264],
+        "hex": "#16171a"
+      },
+      "$description": "CSS: --cascivo-gray-900 (primitive)"
+    },
+    "gray-950": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.145, 0.005, 264],
+        "hex": "#090a0c"
+      },
+      "$description": "CSS: --cascivo-gray-950 (primitive)"
+    }
+  },
+  "blue": {
+    "blue-50": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.97, 0.025, 250],
+        "hex": "#e9f7ff"
+      },
+      "$description": "CSS: --cascivo-blue-50 (primitive)"
+    },
+    "blue-100": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.932, 0.055, 250],
+        "hex": "#ceecff"
+      },
+      "$description": "CSS: --cascivo-blue-100 (primitive)"
+    },
+    "blue-200": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.882, 0.095, 250],
+        "hex": "#a8ddff"
+      },
+      "$description": "CSS: --cascivo-blue-200 (primitive)"
+    },
+    "blue-300": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.808, 0.14, 250],
+        "hex": "#75c6ff"
+      },
+      "$description": "CSS: --cascivo-blue-300 (primitive)"
+    },
+    "blue-400": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.707, 0.18, 250],
+        "hex": "#30a5ff"
+      },
+      "$description": "CSS: --cascivo-blue-400 (primitive)"
+    },
+    "blue-500": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.623, 0.214, 250],
+        "hex": "#0087ff"
+      },
+      "$description": "CSS: --cascivo-blue-500 (primitive)"
+    },
+    "blue-600": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.546, 0.224, 250],
+        "hex": "#006deb"
+      },
+      "$description": "CSS: --cascivo-blue-600 (primitive)"
+    },
+    "blue-700": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.452, 0.196, 250],
+        "hex": "#0052bc"
+      },
+      "$description": "CSS: --cascivo-blue-700 (primitive)"
+    },
+    "blue-800": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.373, 0.155, 250],
+        "hex": "#003e8d"
+      },
+      "$description": "CSS: --cascivo-blue-800 (primitive)"
+    },
+    "blue-900": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.29, 0.105, 250],
+        "hex": "#002b5c"
+      },
+      "$description": "CSS: --cascivo-blue-900 (primitive)"
+    },
+    "blue-950": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.205, 0.065, 250],
+        "hex": "#001833"
+      },
+      "$description": "CSS: --cascivo-blue-950 (primitive)"
+    }
+  },
+  "green": {
+    "green-50": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.982, 0.018, 145],
+        "hex": "#f2fdf2"
+      },
+      "$description": "CSS: --cascivo-green-50 (primitive)"
+    },
+    "green-100": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.962, 0.044, 145],
+        "hex": "#e1fbe1"
+      },
+      "$description": "CSS: --cascivo-green-100 (primitive)"
+    },
+    "green-200": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.925, 0.084, 145],
+        "hex": "#c4f6c4"
+      },
+      "$description": "CSS: --cascivo-green-200 (primitive)"
+    },
+    "green-400": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.75, 0.15, 145],
+        "hex": "#6bc670"
+      },
+      "$description": "CSS: --cascivo-green-400 (primitive)"
+    },
+    "green-500": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.648, 0.15, 145],
+        "hex": "#4aa651"
+      },
+      "$description": "CSS: --cascivo-green-500 (primitive)"
+    },
+    "green-600": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.548, 0.14, 145],
+        "hex": "#308538"
+      },
+      "$description": "CSS: --cascivo-green-600 (primitive)"
+    },
+    "green-700": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.448, 0.12, 145],
+        "hex": "#1d6525"
+      },
+      "$description": "CSS: --cascivo-green-700 (primitive)"
+    },
+    "green-900": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.28, 0.075, 145],
+        "hex": "#0a320f"
+      },
+      "$description": "CSS: --cascivo-green-900 (primitive)"
+    }
+  },
+  "red": {
+    "red-50": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.971, 0.013, 22],
+        "hex": "#fef2f1"
+      },
+      "$description": "CSS: --cascivo-red-50 (primitive)"
+    },
+    "red-100": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.936, 0.032, 22],
+        "hex": "#ffe2e0"
+      },
+      "$description": "CSS: --cascivo-red-100 (primitive)"
+    },
+    "red-200": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.885, 0.062, 22],
+        "hex": "#ffcac7"
+      },
+      "$description": "CSS: --cascivo-red-200 (primitive)"
+    },
+    "red-400": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.72, 0.16, 22],
+        "hex": "#f97676"
+      },
+      "$description": "CSS: --cascivo-red-400 (primitive)"
+    },
+    "red-500": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.628, 0.188, 22],
+        "hex": "#e44c52"
+      },
+      "$description": "CSS: --cascivo-red-500 (primitive)"
+    },
+    "red-600": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.54, 0.188, 22],
+        "hex": "#c42b39"
+      },
+      "$description": "CSS: --cascivo-red-600 (primitive)"
+    },
+    "red-700": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.448, 0.17, 22],
+        "hex": "#9d1225"
+      },
+      "$description": "CSS: --cascivo-red-700 (primitive)"
+    },
+    "red-900": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.28, 0.1, 22],
+        "hex": "#4f0910"
+      },
+      "$description": "CSS: --cascivo-red-900 (primitive)"
+    }
+  },
+  "orange": {
+    "orange-50": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.98, 0.02, 75],
+        "hex": "#fff7ea"
+      },
+      "$description": "CSS: --cascivo-orange-50 (primitive)"
+    },
+    "orange-100": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.96, 0.045, 75],
+        "hex": "#ffeed1"
+      },
+      "$description": "CSS: --cascivo-orange-100 (primitive)"
+    },
+    "orange-400": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.82, 0.13, 60],
+        "hex": "#ffaf68"
+      },
+      "$description": "CSS: --cascivo-orange-400 (primitive)"
+    },
+    "orange-500": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.768, 0.145, 55],
+        "hex": "#f99850"
+      },
+      "$description": "CSS: --cascivo-orange-500 (primitive)"
+    },
+    "orange-600": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.68, 0.155, 50],
+        "hex": "#e27731"
+      },
+      "$description": "CSS: --cascivo-orange-600 (primitive)"
+    }
+  },
+  "yellow": {
+    "yellow-50": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.987, 0.026, 95],
+        "hex": "#fffbe8"
+      },
+      "$description": "CSS: --cascivo-yellow-50 (primitive)"
+    },
+    "yellow-100": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.973, 0.05, 95],
+        "hex": "#fff7d1"
+      },
+      "$description": "CSS: --cascivo-yellow-100 (primitive)"
+    },
+    "yellow-400": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.868, 0.145, 80],
+        "hex": "#ffc857"
+      },
+      "$description": "CSS: --cascivo-yellow-400 (primitive)"
+    },
+    "yellow-500": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.768, 0.145, 75],
+        "hex": "#e9a534"
+      },
+      "$description": "CSS: --cascivo-yellow-500 (primitive)"
+    }
+  },
+  "warm": {
+    "warm-50": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.982, 0.008, 80],
+        "hex": "#fcf9f3"
+      },
+      "$description": "CSS: --cascivo-warm-50 (primitive)"
+    },
+    "warm-100": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.962, 0.016, 80],
+        "hex": "#f8f2e7"
+      },
+      "$description": "CSS: --cascivo-warm-100 (primitive)"
+    },
+    "warm-200": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.92, 0.025, 78],
+        "hex": "#eee3d3"
+      },
+      "$description": "CSS: --cascivo-warm-200 (primitive)"
+    },
+    "warm-300": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.87, 0.035, 75],
+        "hex": "#e2d2bb"
+      },
+      "$description": "CSS: --cascivo-warm-300 (primitive)"
+    },
+    "warm-400": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.76, 0.045, 70],
+        "hex": "#c4ad93"
+      },
+      "$description": "CSS: --cascivo-warm-400 (primitive)"
+    },
+    "warm-500": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.64, 0.045, 65],
+        "hex": "#a08770"
+      },
+      "$description": "CSS: --cascivo-warm-500 (primitive)"
+    },
+    "warm-600": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.52, 0.04, 60],
+        "hex": "#7b6452"
+      },
+      "$description": "CSS: --cascivo-warm-600 (primitive)"
+    },
+    "warm-700": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.42, 0.03, 55],
+        "hex": "#5a493e"
+      },
+      "$description": "CSS: --cascivo-warm-700 (primitive)"
+    },
+    "warm-800": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.31, 0.022, 50],
+        "hex": "#3a2d26"
+      },
+      "$description": "CSS: --cascivo-warm-800 (primitive)"
+    },
+    "warm-900": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.21, 0.015, 50],
+        "hex": "#1e1612"
+      },
+      "$description": "CSS: --cascivo-warm-900 (primitive)"
+    }
+  },
+  "space": {
+    "space-0": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0,
+        "unit": "px"
+      },
+      "$description": "CSS: --cascivo-space-0 (primitive)"
+    },
+    "space-1": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0.25,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-space-1 (primitive)"
+    },
+    "space-2": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0.5,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-space-2 (primitive)"
+    },
+    "space-3": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0.75,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-space-3 (primitive)"
+    },
+    "space-4": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-space-4 (primitive)"
+    },
+    "space-5": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1.25,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-space-5 (primitive)"
+    },
+    "space-6": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1.5,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-space-6 (primitive)"
+    },
+    "space-8": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-space-8 (primitive)"
+    },
+    "space-10": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2.5,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-space-10 (primitive)"
+    },
+    "space-12": {
+      "$type": "dimension",
+      "$value": {
+        "value": 3,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-space-12 (primitive)"
+    },
+    "space-16": {
+      "$type": "dimension",
+      "$value": {
+        "value": 4,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-space-16 (primitive)"
+    },
+    "space-20": {
+      "$type": "dimension",
+      "$value": {
+        "value": 5,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-space-20 (primitive)"
+    },
+    "space-24": {
+      "$type": "dimension",
+      "$value": {
+        "value": 6,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-space-24 (primitive)"
+    }
+  },
+  "font": {
+    "font-sans": {
+      "$type": "fontFamily",
+      "$value": [
+        "ui-sans-serif",
+        "system-ui",
+        "-apple-system",
+        "BlinkMacSystemFont",
+        "Segoe UI",
+        "sans-serif"
+      ],
+      "$description": "CSS: --cascivo-font-sans (primitive)"
+    },
+    "font-mono": {
+      "$type": "fontFamily",
+      "$value": ["ui-monospace", "SFMono-Regular", "SF Mono", "Menlo", "Consolas", "monospace"],
+      "$description": "CSS: --cascivo-font-mono (primitive)"
+    },
+    "font-normal": {
+      "$type": "fontWeight",
+      "$value": 400,
+      "$description": "CSS: --cascivo-font-normal (semantic)"
+    },
+    "font-medium": {
+      "$type": "fontWeight",
+      "$value": 500,
+      "$description": "CSS: --cascivo-font-medium (semantic)"
+    },
+    "font-semibold": {
+      "$type": "fontWeight",
+      "$value": 600,
+      "$description": "CSS: --cascivo-font-semibold (semantic)"
+    },
+    "font-bold": {
+      "$type": "fontWeight",
+      "$value": 700,
+      "$description": "CSS: --cascivo-font-bold (semantic)"
+    },
+    "font-display": {
+      "$type": "fontFamily",
+      "$value": "{font.font-sans}",
+      "$description": "CSS: --cascivo-font-display (semantic) = var(--cascivo-font-sans)"
+    },
+    "font-size-xs": {
+      "$type": "dimension",
+      "$value": "{text.text-xs}",
+      "$description": "CSS: --cascivo-font-size-xs (semantic) = var(--cascivo-text-xs)"
+    },
+    "font-size-sm": {
+      "$type": "dimension",
+      "$value": "{text.text-sm}",
+      "$description": "CSS: --cascivo-font-size-sm (semantic) = var(--cascivo-text-sm)"
+    },
+    "font-size-base": {
+      "$type": "dimension",
+      "$value": "{text.text-base}",
+      "$description": "CSS: --cascivo-font-size-base (semantic) = var(--cascivo-text-base)"
+    },
+    "font-size-lg": {
+      "$type": "dimension",
+      "$value": "{text.text-lg}",
+      "$description": "CSS: --cascivo-font-size-lg (semantic) = var(--cascivo-text-lg)"
+    },
+    "font-size-xl": {
+      "$type": "dimension",
+      "$value": "{text.text-xl}",
+      "$description": "CSS: --cascivo-font-size-xl (semantic) = var(--cascivo-text-xl)"
+    },
+    "font-size-2xl": {
+      "$type": "dimension",
+      "$value": "{text.text-2xl}",
+      "$description": "CSS: --cascivo-font-size-2xl (semantic) = var(--cascivo-text-2xl)"
+    },
+    "font-size-3xl": {
+      "$type": "dimension",
+      "$value": "{text.text-3xl}",
+      "$description": "CSS: --cascivo-font-size-3xl (semantic) = var(--cascivo-text-3xl)"
+    },
+    "font-size-4xl": {
+      "$type": "dimension",
+      "$value": "{text.text-4xl}",
+      "$description": "CSS: --cascivo-font-size-4xl (semantic) = var(--cascivo-text-4xl)"
+    }
+  },
+  "text": {
+    "text-xs": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0.75,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-text-xs (primitive)"
+    },
+    "text-sm": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0.875,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-text-sm (primitive)"
+    },
+    "text-base": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-text-base (semantic)"
+    },
+    "text-lg": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1.125,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-text-lg (primitive)"
+    },
+    "text-xl": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1.25,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-text-xl (primitive)"
+    },
+    "text-2xl": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1.5,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-text-2xl (primitive)"
+    },
+    "text-3xl": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1.875,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-text-3xl (primitive)"
+    },
+    "text-4xl": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2.25,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-text-4xl (semantic)"
+    },
+    "text-display": {
+      "$type": "dimension",
+      "$value": "{text.text-4xl}",
+      "$description": "CSS: --cascivo-text-display (semantic) = var(--cascivo-text-4xl)"
+    },
+    "text-heading-lg": {
+      "$type": "dimension",
+      "$value": "{text.text-3xl}",
+      "$description": "CSS: --cascivo-text-heading-lg (semantic) = var(--cascivo-text-3xl)"
+    },
+    "text-heading-md": {
+      "$type": "dimension",
+      "$value": "{text.text-2xl}",
+      "$description": "CSS: --cascivo-text-heading-md (semantic) = var(--cascivo-text-2xl)"
+    },
+    "text-heading-sm": {
+      "$type": "dimension",
+      "$value": "{text.text-xl}",
+      "$description": "CSS: --cascivo-text-heading-sm (semantic) = var(--cascivo-text-xl)"
+    },
+    "text-body": {
+      "$type": "dimension",
+      "$value": "{text.text-base}",
+      "$description": "CSS: --cascivo-text-body (semantic) = var(--cascivo-text-base)"
+    },
+    "text-body-sm": {
+      "$type": "dimension",
+      "$value": "{text.text-sm}",
+      "$description": "CSS: --cascivo-text-body-sm (semantic) = var(--cascivo-text-sm)"
+    },
+    "text-label": {
+      "$type": "dimension",
+      "$value": "{text.text-sm}",
+      "$description": "CSS: --cascivo-text-label (semantic) = var(--cascivo-text-sm)"
+    },
+    "text-caption": {
+      "$type": "dimension",
+      "$value": "{text.text-xs}",
+      "$description": "CSS: --cascivo-text-caption (semantic) = var(--cascivo-text-xs)"
+    }
+  },
+  "leading": {
+    "leading-none": {
+      "$type": "number",
+      "$value": 1,
+      "$description": "CSS: --cascivo-leading-none (primitive)"
+    },
+    "leading-tight": {
+      "$type": "number",
+      "$value": 1.25,
+      "$description": "CSS: --cascivo-leading-tight (semantic)"
+    },
+    "leading-snug": {
+      "$type": "number",
+      "$value": 1.375,
+      "$description": "CSS: --cascivo-leading-snug (semantic)"
+    },
+    "leading-normal": {
+      "$type": "number",
+      "$value": 1.5,
+      "$description": "CSS: --cascivo-leading-normal (semantic)"
+    },
+    "leading-relaxed": {
+      "$type": "number",
+      "$value": 1.625,
+      "$description": "CSS: --cascivo-leading-relaxed (semantic)"
+    }
+  },
+  "radius": {
+    "radius-none": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0,
+        "unit": "px"
+      },
+      "$description": "CSS: --cascivo-radius-none (primitive)"
+    },
+    "radius-sm": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0.25,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-radius-sm (primitive)"
+    },
+    "radius-md": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0.375,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-radius-md (primitive)"
+    },
+    "radius-lg": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0.5,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-radius-lg (primitive)"
+    },
+    "radius-xl": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0.75,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-radius-xl (primitive)"
+    },
+    "radius-2xl": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-radius-2xl (primitive)"
+    },
+    "radius-full": {
+      "$type": "dimension",
+      "$value": {
+        "value": 9999,
+        "unit": "px"
+      },
+      "$description": "CSS: --cascivo-radius-full (primitive)"
+    },
+    "radius-base": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0.375,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-radius-base (semantic)"
+    },
+    "radius-pill": {
+      "$type": "dimension",
+      "$value": {
+        "value": 9999,
+        "unit": "px"
+      },
+      "$description": "CSS: --cascivo-radius-pill (component)"
+    },
+    "radius-control": {
+      "$type": "dimension",
+      "$value": "{radius.radius-base}",
+      "$description": "CSS: --cascivo-radius-control (component) = var(--cascivo-radius-base)"
+    },
+    "radius-field": {
+      "$type": "dimension",
+      "$value": "{radius.radius-base}",
+      "$description": "CSS: --cascivo-radius-field (semantic) = var(--cascivo-radius-base)"
+    },
+    "radius-component": {
+      "$type": "dimension",
+      "$value": "{radius.radius-base}",
+      "$description": "CSS: --cascivo-radius-component (semantic) = var(--cascivo-radius-base)"
+    },
+    "radius-button": {
+      "$type": "dimension",
+      "$value": "{radius.radius-base}",
+      "$description": "CSS: --cascivo-radius-button (component) = var(--cascivo-radius-base)"
+    },
+    "radius-input": {
+      "$type": "dimension",
+      "$value": "{radius.radius-base}",
+      "$description": "CSS: --cascivo-radius-input (component) = var(--cascivo-radius-base)"
+    },
+    "radius-badge": {
+      "$type": "dimension",
+      "$value": "{radius.radius-full}",
+      "$description": "CSS: --cascivo-radius-badge (component) = var(--cascivo-radius-full)"
+    }
+  },
+  "disabled": {
+    "disabled-opacity": {
+      "$type": "number",
+      "$value": 0.5,
+      "$description": "CSS: --cascivo-disabled-opacity (semantic)"
+    }
+  },
+  "hover": {
+    "hover-opacity": {
+      "$type": "number",
+      "$value": 0.8,
+      "$description": "CSS: --cascivo-hover-opacity (semantic)"
+    }
+  },
+  "shadow": {
+    "shadow-xs": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": {
+            "colorSpace": "oklch",
+            "components": [0, 0, 0],
+            "alpha": 0.05,
+            "hex": "#000000"
+          },
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 1,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 2,
+            "unit": "px"
+          },
+          "spread": {
+            "value": 0,
+            "unit": "px"
+          }
+        }
+      ],
+      "$description": "CSS: --cascivo-shadow-xs (primitive)"
+    },
+    "shadow-sm": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": {
+            "colorSpace": "oklch",
+            "components": [0, 0, 0],
+            "alpha": 0.07,
+            "hex": "#000000"
+          },
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 1,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 3,
+            "unit": "px"
+          },
+          "spread": {
+            "value": 0,
+            "unit": "px"
+          }
+        },
+        {
+          "color": {
+            "colorSpace": "oklch",
+            "components": [0, 0, 0],
+            "alpha": 0.04,
+            "hex": "#000000"
+          },
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 1,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 2,
+            "unit": "px"
+          },
+          "spread": {
+            "value": 0,
+            "unit": "px"
+          }
+        }
+      ],
+      "$description": "CSS: --cascivo-shadow-sm (primitive)"
+    },
+    "shadow-md": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": {
+            "colorSpace": "oklch",
+            "components": [0, 0, 0],
+            "alpha": 0.07,
+            "hex": "#000000"
+          },
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 2,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 8,
+            "unit": "px"
+          },
+          "spread": {
+            "value": 0,
+            "unit": "px"
+          }
+        },
+        {
+          "color": {
+            "colorSpace": "oklch",
+            "components": [0, 0, 0],
+            "alpha": 0.04,
+            "hex": "#000000"
+          },
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 1,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 2,
+            "unit": "px"
+          },
+          "spread": {
+            "value": 0,
+            "unit": "px"
+          }
+        }
+      ],
+      "$description": "CSS: --cascivo-shadow-md (primitive)"
+    },
+    "shadow-overlay": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": {
+            "colorSpace": "oklch",
+            "components": [0, 0, 0],
+            "alpha": 0.16,
+            "hex": "#000000"
+          },
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 4,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 32,
+            "unit": "px"
+          },
+          "spread": {
+            "value": 0,
+            "unit": "px"
+          }
+        },
+        {
+          "color": {
+            "colorSpace": "oklch",
+            "components": [0, 0, 0],
+            "alpha": 0.04,
+            "hex": "#000000"
+          },
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 0,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 0,
+            "unit": "px"
+          },
+          "spread": {
+            "value": 1,
+            "unit": "px"
+          }
+        }
+      ],
+      "$description": "CSS: --cascivo-shadow-overlay (component)"
+    },
+    "shadow-lg": {
+      "$type": "shadow",
+      "$value": "{shadow.shadow-overlay}",
+      "$description": "CSS: --cascivo-shadow-lg (primitive) = var(--cascivo-shadow-overlay)"
+    },
+    "shadow-xl": {
+      "$type": "shadow",
+      "$value": "{shadow.shadow-overlay}",
+      "$description": "CSS: --cascivo-shadow-xl (primitive) = var(--cascivo-shadow-overlay)"
+    }
+  },
+  "ring": {
+    "ring-width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$description": "CSS: --cascivo-ring-width (component)"
+    },
+    "ring-offset": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0,
+        "unit": "px"
+      },
+      "$description": "CSS: --cascivo-ring-offset (component)"
+    }
+  },
+  "color": {
+    "color-primary": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.205, 0, 0],
+        "hex": "#171717"
+      },
+      "$description": "CSS: --cascivo-color-primary (semantic)"
+    },
+    "color-primary-fg": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.985, 0, 0],
+        "hex": "#fafafa"
+      },
+      "$description": "CSS: --cascivo-color-primary-fg (semantic)"
+    },
+    "color-primary-hover": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.27, 0, 0],
+        "hex": "#262626"
+      },
+      "$description": "CSS: --cascivo-color-primary-hover (semantic)"
+    },
+    "color-primary-active": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.32, 0, 0],
+        "hex": "#333333"
+      },
+      "$description": "CSS: --cascivo-color-primary-active (semantic)"
+    },
+    "color-active-bg": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.145, 0.005, 264],
+        "alpha": 0.06,
+        "hex": "#090a0c"
+      },
+      "$description": "CSS: --cascivo-color-active-bg (semantic)"
+    },
+    "color-background": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [1, 0, 0],
+        "hex": "#ffffff"
+      },
+      "$description": "CSS: --cascivo-color-background (semantic)"
+    },
+    "color-surface": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.985, 0.002, 264],
+        "hex": "#f9fafb"
+      },
+      "$description": "CSS: --cascivo-color-surface (semantic)"
+    },
+    "color-surface-2": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.967, 0.003, 264],
+        "hex": "#f3f4f6"
+      },
+      "$description": "CSS: --cascivo-color-surface-2 (semantic)"
+    },
+    "color-foreground": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.145, 0.005, 264],
+        "hex": "#090a0c"
+      },
+      "$description": "CSS: --cascivo-color-foreground (semantic)"
+    },
+    "color-foreground-muted": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.5, 0.018, 264],
+        "hex": "#5e636e"
+      },
+      "$description": "CSS: --cascivo-color-foreground-muted (semantic)"
+    },
+    "color-text-muted": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.5, 0.016, 264],
+        "hex": "#5f636d"
+      },
+      "$description": "CSS: --cascivo-color-text-muted (semantic)"
+    },
+    "color-text-on-accent": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [1, 0, 0],
+        "hex": "#ffffff"
+      },
+      "$description": "CSS: --cascivo-color-text-on-accent (semantic)"
+    },
+    "color-text-on-destructive": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [1, 0, 0],
+        "hex": "#ffffff"
+      },
+      "$description": "CSS: --cascivo-color-text-on-destructive (semantic)"
+    },
+    "color-accent": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.52, 0.2, 250],
+        "hex": "#0067d5"
+      },
+      "$description": "CSS: --cascivo-color-accent (semantic)"
+    },
+    "color-accent-foreground": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [1, 0, 0],
+        "hex": "#ffffff"
+      },
+      "$description": "CSS: --cascivo-color-accent-foreground (semantic)"
+    },
+    "color-accent-hover": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.45, 0.2, 250],
+        "hex": "#0051bd"
+      },
+      "$description": "CSS: --cascivo-color-accent-hover (semantic)"
+    },
+    "color-error": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.628, 0.188, 22],
+        "hex": "#e44c52"
+      },
+      "$description": "CSS: --cascivo-color-error (semantic)"
+    },
+    "color-warning": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.768, 0.145, 75],
+        "hex": "#e9a534"
+      },
+      "$description": "CSS: --cascivo-color-warning (semantic)"
+    },
+    "color-success": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.648, 0.15, 145],
+        "hex": "#4aa651"
+      },
+      "$description": "CSS: --cascivo-color-success (semantic)"
+    },
+    "color-success-foreground": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.45, 0.14, 145],
+        "hex": "#036819"
+      },
+      "$description": "CSS: --cascivo-color-success-foreground (semantic)"
+    },
+    "color-warning-foreground": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.5, 0.14, 75],
+        "hex": "#905300"
+      },
+      "$description": "CSS: --cascivo-color-warning-foreground (semantic)"
+    },
+    "color-destructive-foreground": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.448, 0.17, 22],
+        "hex": "#9d1225"
+      },
+      "$description": "CSS: --cascivo-color-destructive-foreground (semantic)"
+    },
+    "color-info-foreground": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.45, 0.19, 250],
+        "hex": "#0052b8"
+      },
+      "$description": "CSS: --cascivo-color-info-foreground (semantic)"
+    },
+    "color-info-content": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [1, 0, 0],
+        "hex": "#ffffff"
+      },
+      "$description": "CSS: --cascivo-color-info-content (semantic)"
+    },
+    "color-success-content": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [1, 0, 0],
+        "hex": "#ffffff"
+      },
+      "$description": "CSS: --cascivo-color-success-content (semantic)"
+    },
+    "color-warning-content": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.145, 0, 0],
+        "hex": "#0a0a0a"
+      },
+      "$description": "CSS: --cascivo-color-warning-content (semantic)"
+    },
+    "color-error-content": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [1, 0, 0],
+        "hex": "#ffffff"
+      },
+      "$description": "CSS: --cascivo-color-error-content (semantic)"
+    },
+    "color-secondary": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.92, 0.004, 264],
+        "hex": "#e3e4e7"
+      },
+      "$description": "CSS: --cascivo-color-secondary (semantic)"
+    },
+    "color-secondary-content": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.27, 0.01, 264],
+        "hex": "#24262b"
+      },
+      "$description": "CSS: --cascivo-color-secondary-content (semantic)"
+    },
+    "color-secondary-hover": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.86, 0.006, 264],
+        "hex": "#cfd1d5"
+      },
+      "$description": "CSS: --cascivo-color-secondary-hover (semantic)"
+    },
+    "color-secondary-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.967, 0.002, 264],
+        "hex": "#f3f4f5"
+      },
+      "$description": "CSS: --cascivo-color-secondary-subtle (semantic)"
+    },
+    "color-picker-alpha-to": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0, 0, 0],
+        "hex": "#000000"
+      },
+      "$description": "CSS: --cascivo-color-picker-alpha-to (component)"
+    },
+    "color-picker-area-size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 9,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-color-picker-area-size (component)"
+    },
+    "color-scrim": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0, 0, 0],
+        "alpha": 0.4,
+        "hex": "#000000"
+      },
+      "$description": "CSS: --cascivo-color-scrim (component)"
+    },
+    "color-accent-text": {
+      "$type": "color",
+      "$value": "{color.color-accent}",
+      "$description": "CSS: --cascivo-color-accent-text (semantic) = var(--cascivo-color-accent)"
+    },
+    "color-accent-text-hover": {
+      "$type": "color",
+      "$value": "{color.color-accent-hover}",
+      "$description": "CSS: --cascivo-color-accent-text-hover (semantic) = var(--cascivo-color-accent-hover)"
+    },
+    "color-bg": {
+      "$type": "color",
+      "$value": "{color.color-background}",
+      "$description": "CSS: --cascivo-color-bg (semantic) = var(--cascivo-color-background)"
+    },
+    "color-bg-subtle": {
+      "$type": "color",
+      "$value": "{color.color-surface}",
+      "$description": "CSS: --cascivo-color-bg-subtle (semantic) = var(--cascivo-color-surface)"
+    },
+    "color-surface-raised": {
+      "$type": "color",
+      "$value": "{color.color-surface}",
+      "$description": "CSS: --cascivo-color-surface-raised (semantic) = var(--cascivo-color-surface)"
+    },
+    "color-surface-overlay": {
+      "$type": "color",
+      "$value": "{color.color-background}",
+      "$description": "CSS: --cascivo-color-surface-overlay (component) = var(--cascivo-color-background)"
+    },
+    "color-border": {
+      "$type": "color",
+      "$value": "{gray.gray-200}",
+      "$description": "CSS: --cascivo-color-border (semantic) = var(--cascivo-gray-200)"
+    },
+    "color-border-strong": {
+      "$type": "color",
+      "$value": "{gray.gray-300}",
+      "$description": "CSS: --cascivo-color-border-strong (semantic) = var(--cascivo-gray-300)"
+    },
+    "color-text": {
+      "$type": "color",
+      "$value": "{color.color-foreground}",
+      "$description": "CSS: --cascivo-color-text (semantic) = var(--cascivo-color-foreground)"
+    },
+    "color-text-subtle": {
+      "$type": "color",
+      "$value": "{gray.gray-600}",
+      "$description": "CSS: --cascivo-color-text-subtle (semantic) = var(--cascivo-gray-600)"
+    },
+    "color-accent-active": {
+      "$type": "color",
+      "$value": "{blue.blue-800}",
+      "$description": "CSS: --cascivo-color-accent-active (semantic) = var(--cascivo-blue-800)"
+    },
+    "color-accent-subtle": {
+      "$type": "color",
+      "$value": "{blue.blue-50}",
+      "$description": "CSS: --cascivo-color-accent-subtle (semantic) = var(--cascivo-blue-50)"
+    },
+    "color-accent-muted": {
+      "$type": "color",
+      "$value": "{blue.blue-100}",
+      "$description": "CSS: --cascivo-color-accent-muted (semantic) = var(--cascivo-blue-100)"
+    },
+    "color-destructive": {
+      "$type": "color",
+      "$value": "{red.red-600}",
+      "$description": "CSS: --cascivo-color-destructive (semantic) = var(--cascivo-red-600)"
+    },
+    "color-destructive-hover": {
+      "$type": "color",
+      "$value": "{red.red-700}",
+      "$description": "CSS: --cascivo-color-destructive-hover (semantic) = var(--cascivo-red-700)"
+    },
+    "color-destructive-subtle": {
+      "$type": "color",
+      "$value": "{red.red-50}",
+      "$description": "CSS: --cascivo-color-destructive-subtle (semantic) = var(--cascivo-red-50)"
+    },
+    "color-success-subtle": {
+      "$type": "color",
+      "$value": "{green.green-50}",
+      "$description": "CSS: --cascivo-color-success-subtle (semantic) = var(--cascivo-green-50)"
+    },
+    "color-warning-subtle": {
+      "$type": "color",
+      "$value": "{orange.orange-50}",
+      "$description": "CSS: --cascivo-color-warning-subtle (semantic) = var(--cascivo-orange-50)"
+    },
+    "color-info": {
+      "$type": "color",
+      "$value": "{blue.blue-600}",
+      "$description": "CSS: --cascivo-color-info (semantic) = var(--cascivo-blue-600)"
+    },
+    "color-info-subtle": {
+      "$type": "color",
+      "$value": "{blue.blue-50}",
+      "$description": "CSS: --cascivo-color-info-subtle (semantic) = var(--cascivo-blue-50)"
+    },
+    "color-focus-ring": {
+      "$type": "color",
+      "$value": "{blue.blue-500}",
+      "$description": "CSS: --cascivo-color-focus-ring (component) = var(--cascivo-blue-500)"
+    },
+    "color-primary-content": {
+      "$type": "color",
+      "$value": "{color.color-primary-fg}",
+      "$description": "CSS: --cascivo-color-primary-content (semantic) = var(--cascivo-color-primary-fg)"
+    },
+    "color-accent-content": {
+      "$type": "color",
+      "$value": "{color.color-text-on-accent}",
+      "$description": "CSS: --cascivo-color-accent-content (semantic) = var(--cascivo-color-text-on-accent)"
+    },
+    "color-destructive-content": {
+      "$type": "color",
+      "$value": "{color.color-text-on-destructive}",
+      "$description": "CSS: --cascivo-color-destructive-content (semantic) = var(--cascivo-color-text-on-destructive)"
+    }
+  },
+  "control": {
+    "control-height-sm": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-control-height-sm (component)"
+    },
+    "control-height-md": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2.5,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-control-height-md (component)"
+    },
+    "control-height-lg": {
+      "$type": "dimension",
+      "$value": {
+        "value": 3,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-control-height-lg (component)"
+    }
+  },
+  "border": {
+    "border-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.928, 0.006, 264],
+        "hex": "#e5e7eb"
+      },
+      "$description": "CSS: --cascivo-border-subtle (semantic)"
+    },
+    "border-default": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.872, 0.008, 264],
+        "hex": "#d2d5da"
+      },
+      "$description": "CSS: --cascivo-border-default (semantic)"
+    },
+    "border-strong": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.707, 0.015, 264],
+        "hex": "#9ca1aa"
+      },
+      "$description": "CSS: --cascivo-border-strong (semantic)"
+    }
+  },
+  "ease": {
+    "ease-in": {
+      "$type": "cubicBezier",
+      "$value": [0.4, 0, 1, 1],
+      "$description": "CSS: --cascivo-ease-in (primitive)"
+    },
+    "ease-out": {
+      "$type": "cubicBezier",
+      "$value": [0, 0, 0.2, 1],
+      "$description": "CSS: --cascivo-ease-out (primitive)"
+    },
+    "ease-in-out": {
+      "$type": "cubicBezier",
+      "$value": [0.4, 0, 0.2, 1],
+      "$description": "CSS: --cascivo-ease-in-out (primitive)"
+    },
+    "ease-decel": {
+      "$type": "cubicBezier",
+      "$value": [0.16, 1, 0.3, 1],
+      "$description": "CSS: --cascivo-ease-decel (primitive)"
+    },
+    "ease-emphasized": {
+      "$type": "cubicBezier",
+      "$value": [0.2, 0, 0, 1],
+      "$description": "CSS: --cascivo-ease-emphasized (primitive)"
+    }
+  },
+  "duration": {
+    "duration-75": {
+      "$type": "duration",
+      "$value": {
+        "value": 75,
+        "unit": "ms"
+      },
+      "$description": "CSS: --cascivo-duration-75 (primitive)"
+    },
+    "duration-100": {
+      "$type": "duration",
+      "$value": {
+        "value": 100,
+        "unit": "ms"
+      },
+      "$description": "CSS: --cascivo-duration-100 (primitive)"
+    },
+    "duration-150": {
+      "$type": "duration",
+      "$value": {
+        "value": 150,
+        "unit": "ms"
+      },
+      "$description": "CSS: --cascivo-duration-150 (primitive)"
+    },
+    "duration-200": {
+      "$type": "duration",
+      "$value": {
+        "value": 200,
+        "unit": "ms"
+      },
+      "$description": "CSS: --cascivo-duration-200 (primitive)"
+    },
+    "duration-300": {
+      "$type": "duration",
+      "$value": {
+        "value": 300,
+        "unit": "ms"
+      },
+      "$description": "CSS: --cascivo-duration-300 (primitive)"
+    },
+    "duration-500": {
+      "$type": "duration",
+      "$value": {
+        "value": 500,
+        "unit": "ms"
+      },
+      "$description": "CSS: --cascivo-duration-500 (primitive)"
+    },
+    "duration-loop-fast": {
+      "$type": "duration",
+      "$value": {
+        "value": 1,
+        "unit": "s"
+      },
+      "$description": "CSS: --cascivo-duration-loop-fast (semantic)"
+    },
+    "duration-loop": {
+      "$type": "duration",
+      "$value": {
+        "value": 1.4,
+        "unit": "s"
+      },
+      "$description": "CSS: --cascivo-duration-loop (semantic)"
+    },
+    "duration-loop-slow": {
+      "$type": "duration",
+      "$value": {
+        "value": 2,
+        "unit": "s"
+      },
+      "$description": "CSS: --cascivo-duration-loop-slow (semantic)"
+    }
+  },
+  "chart": {
+    "chart-1": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.62, 0.13, 70],
+        "hex": "#b77610"
+      },
+      "$description": "CSS: --cascivo-chart-1 (primitive)"
+    },
+    "chart-2": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.62, 0.11, 240],
+        "hex": "#3e8ec1"
+      },
+      "$description": "CSS: --cascivo-chart-2 (primitive)"
+    },
+    "chart-3": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.6, 0.13, 135],
+        "hex": "#5d913c"
+      },
+      "$description": "CSS: --cascivo-chart-3 (primitive)"
+    },
+    "chart-4": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.6, 0.18, 55],
+        "hex": "#cd5900"
+      },
+      "$description": "CSS: --cascivo-chart-4 (primitive)"
+    },
+    "chart-5": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.5, 0.13, 270],
+        "hex": "#475cad"
+      },
+      "$description": "CSS: --cascivo-chart-5 (primitive)"
+    },
+    "chart-6": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.58, 0.16, 30],
+        "hex": "#c74c3d"
+      },
+      "$description": "CSS: --cascivo-chart-6 (primitive)"
+    },
+    "chart-7": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.62, 0.12, 350],
+        "hex": "#bb6690"
+      },
+      "$description": "CSS: --cascivo-chart-7 (primitive)"
+    },
+    "chart-8": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.5, 0.12, 200],
+        "hex": "#00767e"
+      },
+      "$description": "CSS: --cascivo-chart-8 (primitive)"
+    },
+    "chart-axis": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.5, 0.016, 264],
+        "hex": "#5f636d"
+      },
+      "$description": "CSS: --cascivo-chart-axis (semantic)"
+    },
+    "chart-fill-opacity": {
+      "$type": "number",
+      "$value": 0.25,
+      "$description": "CSS: --cascivo-chart-fill-opacity (semantic)"
+    },
+    "chart-bar-radius": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$description": "CSS: --cascivo-chart-bar-radius (semantic)"
+    },
+    "chart-fill-opacity-overlap": {
+      "$type": "number",
+      "$value": 0.125,
+      "$description": "CSS: --cascivo-chart-fill-opacity-overlap (semantic)"
+    },
+    "chart-anim-dur": {
+      "$type": "duration",
+      "$value": {
+        "value": 320,
+        "unit": "ms"
+      },
+      "$description": "CSS: --cascivo-chart-anim-dur (component)"
+    },
+    "chart-grid": {
+      "$type": "color",
+      "$value": "{gray.gray-200}",
+      "$description": "CSS: --cascivo-chart-grid (semantic) = var(--cascivo-gray-200)"
+    }
+  },
+  "editor": {
+    "editor-syntax-string": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.53, 0.13, 135],
+        "hex": "#487c25"
+      },
+      "$description": "CSS: --cascivo-editor-syntax-string (semantic)"
+    },
+    "editor-syntax-number": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.54, 0.15, 40],
+        "hex": "#b4481e"
+      },
+      "$description": "CSS: --cascivo-editor-syntax-number (semantic)"
+    },
+    "editor-syntax-type": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.54, 0.12, 350],
+        "hex": "#a14e78"
+      },
+      "$description": "CSS: --cascivo-editor-syntax-type (semantic)"
+    },
+    "editor-syntax-attr": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.54, 0.15, 40],
+        "hex": "#b4481e"
+      },
+      "$description": "CSS: --cascivo-editor-syntax-attr (semantic)"
+    },
+    "editor-syntax-regexp": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.53, 0.13, 135],
+        "hex": "#487c25"
+      },
+      "$description": "CSS: --cascivo-editor-syntax-regexp (semantic)"
+    },
+    "editor-syntax-boolean": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.54, 0.15, 40],
+        "hex": "#b4481e"
+      },
+      "$description": "CSS: --cascivo-editor-syntax-boolean (semantic)"
+    },
+    "editor-syntax-property": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.53, 0.12, 240],
+        "hex": "#0573aa"
+      },
+      "$description": "CSS: --cascivo-editor-syntax-property (semantic)"
+    },
+    "editor-caret-line": {
+      "$type": "number",
+      "$value": 0,
+      "$description": "CSS: --cascivo-editor-caret-line (component)"
+    },
+    "editor-gutter-digits": {
+      "$type": "number",
+      "$value": 2,
+      "$description": "CSS: --cascivo-editor-gutter-digits (component)"
+    },
+    "editor-tab-size": {
+      "$type": "number",
+      "$value": 2,
+      "$description": "CSS: --cascivo-editor-tab-size (component)"
+    },
+    "editor-gutter-gap": {
+      "$type": "dimension",
+      "$value": "{space.space-3}",
+      "$description": "CSS: --cascivo-editor-gutter-gap (component) = var(--cascivo-space-3)"
+    }
+  },
+  "brand": {
+    "brand-primary": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.55, 0.15, 240],
+        "hex": "#0079bf"
+      },
+      "$description": "CSS: --cascivo-brand-primary (semantic)"
+    },
+    "brand-accent": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.72, 0.13, 195],
+        "hex": "#00bdbe"
+      },
+      "$description": "CSS: --cascivo-brand-accent (semantic)"
+    },
+    "brand-ink": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.22, 0.03, 250],
+        "hex": "#101c28"
+      },
+      "$description": "CSS: --cascivo-brand-ink (semantic)"
+    },
+    "brand-paper": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.99, 0.005, 250],
+        "hex": "#f9fcff"
+      },
+      "$description": "CSS: --cascivo-brand-paper (semantic)"
+    },
+    "brand-gradient-start": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.55, 0.15, 240],
+        "hex": "#0079bf"
+      },
+      "$description": "CSS: --cascivo-brand-gradient-start (semantic)"
+    },
+    "brand-gradient-end": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.72, 0.13, 195],
+        "hex": "#00bdbe"
+      },
+      "$description": "CSS: --cascivo-brand-gradient-end (semantic)"
+    }
+  },
+  "z": {
+    "z-base": {
+      "$type": "number",
+      "$value": 0,
+      "$description": "CSS: --cascivo-z-base (semantic)"
+    },
+    "z-raised": {
+      "$type": "number",
+      "$value": 10,
+      "$description": "CSS: --cascivo-z-raised (semantic)"
+    },
+    "z-dropdown": {
+      "$type": "number",
+      "$value": 100,
+      "$description": "CSS: --cascivo-z-dropdown (semantic)"
+    },
+    "z-overlay": {
+      "$type": "number",
+      "$value": 200,
+      "$description": "CSS: --cascivo-z-overlay (component)"
+    },
+    "z-modal": {
+      "$type": "number",
+      "$value": 300,
+      "$description": "CSS: --cascivo-z-modal (component)"
+    },
+    "z-toast": {
+      "$type": "number",
+      "$value": 400,
+      "$description": "CSS: --cascivo-z-toast (semantic)"
+    },
+    "z-tooltip": {
+      "$type": "number",
+      "$value": 500,
+      "$description": "CSS: --cascivo-z-tooltip (semantic)"
+    },
+    "z-dock": {
+      "$type": "number",
+      "$value": 40,
+      "$description": "CSS: --cascivo-z-dock (component)"
+    }
+  },
+  "shell": {
+    "shell-header-block-size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 3,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-shell-header-block-size (component)"
+    },
+    "shell-panel-inline-size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 20,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-shell-panel-inline-size (component)"
+    },
+    "shell-aside-inline-size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 18,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-shell-aside-inline-size (component)"
+    }
+  },
+  "screen": {
+    "screen-sm": {
+      "$type": "dimension",
+      "$value": {
+        "value": 30,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-screen-sm (semantic)"
+    },
+    "screen-md": {
+      "$type": "dimension",
+      "$value": {
+        "value": 40,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-screen-md (semantic)"
+    },
+    "screen-lg": {
+      "$type": "dimension",
+      "$value": {
+        "value": 64,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-screen-lg (semantic)"
+    },
+    "screen-xl": {
+      "$type": "dimension",
+      "$value": {
+        "value": 80,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-screen-xl (semantic)"
+    }
+  },
+  "target": {
+    "target-min-coarse": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2.75,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-target-min-coarse (semantic)"
+    },
+    "target-min": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1.5,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-target-min (component)"
+    }
+  },
+  "aspect": {
+    "aspect-ratio": {
+      "$type": "number",
+      "$value": 1,
+      "$description": "CSS: --cascivo-aspect-ratio (component)"
+    }
+  },
+  "calendar": {
+    "calendar-cell-size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2.25,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-calendar-cell-size (component)"
+    },
+    "calendar-bg": {
+      "$type": "color",
+      "$value": "{color.color-surface}",
+      "$description": "CSS: --cascivo-calendar-bg (component) = var(--cascivo-color-surface)"
+    },
+    "calendar-day-selected-bg": {
+      "$type": "color",
+      "$value": "{color.color-accent}",
+      "$description": "CSS: --cascivo-calendar-day-selected-bg (component) = var(--cascivo-color-accent)"
+    },
+    "calendar-day-today-color": {
+      "$type": "color",
+      "$value": "{color.color-accent-text}",
+      "$description": "CSS: --cascivo-calendar-day-today-color (component) = var(--cascivo-color-accent-text)"
+    }
+  },
+  "context": {
+    "context-x": {
+      "$type": "number",
+      "$value": 0,
+      "$description": "CSS: --cascivo-context-x (component)"
+    },
+    "context-y": {
+      "$type": "number",
+      "$value": 0,
+      "$description": "CSS: --cascivo-context-y (component)"
+    }
+  },
+  "data": {
+    "data-table-height": {
+      "$type": "dimension",
+      "$value": {
+        "value": 400,
+        "unit": "px"
+      },
+      "$description": "CSS: --cascivo-data-table-height (component)"
+    },
+    "data-table-cell-gap": {
+      "$type": "dimension",
+      "$value": "{space.space-4}",
+      "$description": "CSS: --cascivo-data-table-cell-gap (component) = var(--cascivo-space-4)"
+    }
+  },
+  "logo": {
+    "logo-size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-logo-size (component)"
+    }
+  },
+  "radial": {
+    "radial-progress": {
+      "$type": "number",
+      "$value": 0,
+      "$description": "CSS: --cascivo-radial-progress (component)"
+    },
+    "radial-size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 5,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-radial-size (component)"
+    },
+    "radial-thickness": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0.375,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-radial-thickness (component)"
+    },
+    "radial-color": {
+      "$type": "color",
+      "$value": "{color.color-accent}",
+      "$description": "CSS: --cascivo-radial-color (component) = var(--cascivo-color-accent)"
+    }
+  },
+  "resizable": {
+    "resizable-ratio": {
+      "$type": "number",
+      "$value": 0.5,
+      "$description": "CSS: --cascivo-resizable-ratio (component)"
+    }
+  },
+  "sidenav": {
+    "sidenav-inline-size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 16,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-sidenav-inline-size (component)"
+    },
+    "sidenav-rail-inline-size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 4,
+        "unit": "rem"
+      },
+      "$description": "CSS: --cascivo-sidenav-rail-inline-size (component)"
+    },
+    "sidenav-bg": {
+      "$type": "color",
+      "$value": "{color.color-surface}",
+      "$description": "CSS: --cascivo-sidenav-bg (component) = var(--cascivo-color-surface)"
+    }
+  },
+  "stack": {
+    "stack-index": {
+      "$type": "number",
+      "$value": 0,
+      "$description": "CSS: --cascivo-stack-index (component)"
+    },
+    "stack-offset": {
+      "$type": "dimension",
+      "$value": {
+        "value": 4,
+        "unit": "px"
+      },
+      "$description": "CSS: --cascivo-stack-offset (component)"
+    }
+  },
+  "link": {
+    "link-color": {
+      "$type": "color",
+      "$value": "{color.color-accent-text}",
+      "$description": "CSS: --cascivo-link-color (component) = var(--cascivo-color-accent-text)"
+    }
+  },
+  "button": {
+    "button-destructive-bg": {
+      "$type": "color",
+      "$value": "{color.color-destructive}",
+      "$description": "CSS: --cascivo-button-destructive-bg (component) = var(--cascivo-color-destructive)"
+    },
+    "button-destructive-bg-hover": {
+      "$type": "color",
+      "$value": "{color.color-destructive-hover}",
+      "$description": "CSS: --cascivo-button-destructive-bg-hover (component) = var(--cascivo-color-destructive-hover)"
+    },
+    "button-ghost-bg-hover": {
+      "$type": "color",
+      "$value": "{color.color-bg-subtle}",
+      "$description": "CSS: --cascivo-button-ghost-bg-hover (component) = var(--cascivo-color-bg-subtle)"
+    },
+    "button-primary-bg": {
+      "$type": "color",
+      "$value": "{color.color-primary}",
+      "$description": "CSS: --cascivo-button-primary-bg (component) = var(--cascivo-color-primary)"
+    },
+    "button-primary-bg-active": {
+      "$type": "color",
+      "$value": "{color.color-primary-active}",
+      "$description": "CSS: --cascivo-button-primary-bg-active (component) = var(--cascivo-color-primary-active)"
+    },
+    "button-primary-bg-hover": {
+      "$type": "color",
+      "$value": "{color.color-primary-hover}",
+      "$description": "CSS: --cascivo-button-primary-bg-hover (component) = var(--cascivo-color-primary-hover)"
+    },
+    "button-radius": {
+      "$type": "dimension",
+      "$value": "{radius.radius-control}",
+      "$description": "CSS: --cascivo-button-radius (component) = var(--cascivo-radius-control)"
+    },
+    "button-secondary-bg": {
+      "$type": "color",
+      "$value": "{color.color-secondary}",
+      "$description": "CSS: --cascivo-button-secondary-bg (component) = var(--cascivo-color-secondary)"
+    },
+    "button-secondary-bg-hover": {
+      "$type": "color",
+      "$value": "{color.color-secondary-hover}",
+      "$description": "CSS: --cascivo-button-secondary-bg-hover (component) = var(--cascivo-color-secondary-hover)"
+    }
+  },
+  "date": {
+    "date-picker-day-today-color": {
+      "$type": "color",
+      "$value": "{color.color-accent-text}",
+      "$description": "CSS: --cascivo-date-picker-day-today-color (component) = var(--cascivo-color-accent-text)"
+    }
+  },
+  "header": {
+    "header-bg": {
+      "$type": "color",
+      "$value": "{color.color-surface}",
+      "$description": "CSS: --cascivo-header-bg (component) = var(--cascivo-color-surface)"
+    }
+  },
+  "kpi": {
+    "kpi-padding": {
+      "$type": "dimension",
+      "$value": "{space.space-4}",
+      "$description": "CSS: --cascivo-kpi-padding (component) = var(--cascivo-space-4)"
+    }
+  },
+  "progress": {
+    "progress-color": {
+      "$type": "color",
+      "$value": "{color.color-primary}",
+      "$description": "CSS: --cascivo-progress-color (component) = var(--cascivo-color-primary)"
+    }
+  },
+  "skeleton": {
+    "skeleton-height": {
+      "$type": "dimension",
+      "$value": "{space.space-10}",
+      "$description": "CSS: --cascivo-skeleton-height (component) = var(--cascivo-space-10)"
+    }
+  },
+  "tree": {
+    "tree-indent": {
+      "$type": "dimension",
+      "$value": "{space.space-5}",
+      "$description": "CSS: --cascivo-tree-indent (component) = var(--cascivo-space-5)"
+    }
+  },
+  "$extensions": {
+    "com.cascivo": {
+      "notExported": [
+        "--cascivo-button-ghost-bg",
+        "--cascivo-calendar-day-selected-fg",
+        "--cascivo-calendar-radius",
+        "--cascivo-calendar-range-bg",
+        "--cascivo-chart-anim-ease",
+        "--cascivo-chart-anim-props",
+        "--cascivo-data-table-max-height",
+        "--cascivo-dialog-body-gap",
+        "--cascivo-dropdown-anchor",
+        "--cascivo-ease-spring",
+        "--cascivo-editor-bg",
+        "--cascivo-editor-border",
+        "--cascivo-editor-bracket",
+        "--cascivo-editor-caret-row",
+        "--cascivo-editor-current-line",
+        "--cascivo-editor-fg",
+        "--cascivo-editor-gutter-active",
+        "--cascivo-editor-gutter-bg",
+        "--cascivo-editor-gutter-fg",
+        "--cascivo-editor-gutter-width",
+        "--cascivo-editor-match",
+        "--cascivo-editor-match-current",
+        "--cascivo-editor-selection",
+        "--cascivo-editor-syntax-comment",
+        "--cascivo-editor-syntax-function",
+        "--cascivo-editor-syntax-keyword",
+        "--cascivo-editor-syntax-operator",
+        "--cascivo-editor-syntax-punctuation",
+        "--cascivo-editor-syntax-tag",
+        "--cascivo-editor-syntax-variable",
+        "--cascivo-focus-ring",
+        "--cascivo-motion-attention",
+        "--cascivo-motion-drawer",
+        "--cascivo-motion-emphasis",
+        "--cascivo-motion-enter",
+        "--cascivo-motion-exit",
+        "--cascivo-popover-anchor",
+        "--cascivo-progress-value",
+        "--cascivo-radius-card",
+        "--cascivo-radius-indicator",
+        "--cascivo-radius-item",
+        "--cascivo-radius-modal",
+        "--cascivo-radius-overlay",
+        "--cascivo-radius-surface",
+        "--cascivo-ring-color",
+        "--cascivo-scroll-area-height",
+        "--cascivo-scroll-area-width",
+        "--cascivo-search-width",
+        "--cascivo-skeleton-width",
+        "--cascivo-text-2xl-fluid",
+        "--cascivo-text-3xl-fluid",
+        "--cascivo-text-4xl-fluid",
+        "--cascivo-text-code",
+        "--cascivo-text-ui",
+        "--cascivo-textarea-max-block-size",
+        "--cascivo-tooltip-anchor",
+        "--cascivo-tracking-normal",
+        "--cascivo-tracking-tight",
+        "--cascivo-tracking-wide"
+      ]
+    }
+  }
+}

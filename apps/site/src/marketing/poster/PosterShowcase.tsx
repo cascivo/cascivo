@@ -42,8 +42,21 @@ export function PosterShowcase() {
     <section className="pg-section" id="showcase" aria-label="In the wild">
       <div className="pg-pad pg-head">
         <h2 className="pg-display pg-display--section">Shipped, in production</h2>
-        <p className="pg-eyebrow">14 / in the wild</p>
+        <p className="pg-eyebrow">09 / built with cascivo</p>
       </div>
+      {/* Said plainly because it is true, and because a visitor who found it out on their
+          own would discount everything else on the page. */}
+      <p className="pg-pad pg-note">
+        So far these are all built by cascivo&apos;s maintainer — real products in production, but
+        not independent adopters yet. Shipped something with cascivo?{' '}
+        <a
+          href="https://github.com/cascivo/cascivo/issues/new?title=Showcase%3A%20"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Tell us and it goes here ↗
+        </a>
+      </p>
 
       <ul className="pg-tiles pg-tiles--4 pg-showcase">
         {FEATURED.map((site) => (

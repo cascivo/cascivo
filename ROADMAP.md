@@ -4,12 +4,13 @@ cascivo is a CSS-native, signal-driven, AI-first React design system. This is a
 forward-looking view of where the project is headed — not a changelog. For what
 has already shipped, see [CHANGELOG.md](CHANGELOG.md).
 
-_Last updated: 2026-07-05._
+_Last updated: 2026-09-24._
 
 ## Where we are today
 
-- **197 components** across inputs, display, overlay, navigation, layout, feedback,
-  plus a **25-type chart family** (`@cascivo/charts`) built from scratch with zero
+- **A registry of standalone components** across inputs, display, overlay, navigation,
+  layout, feedback, plus layouts, page blocks and flow-diagram parts (current counts are
+  generated into the [README](README.md)), and a **25-type chart family** (`@cascivo/charts`) built from scratch with zero
   runtime dependencies.
 - **12 first-party themes**, applied via a single `data-theme` attribute and
   overridable at the token layer.
@@ -25,14 +26,14 @@ _Last updated: 2026-07-05._
 
 ## Next (this quarter)
 
-- **Accessibility, on the record.** Promote the axe sweep from nightly to
-  PR-blocking once the finding backlog is triaged, and publish a standing
+- **Accessibility, on the record.** The axe sweep now blocks every pull request
+  (the finding backlog is burned down to zero). Remaining: publish a standing
   per-release conformance report (axe + APG keyboard matrix).
-- **Assistive-technology pass.** NVDA and VoiceOver now run in CI via guidepup
-  over the 12-component plan (`.github/workflows/a11y-at.yml`), publishing a
-  screen-reader announcement matrix on the accessibility page. Remaining: land
-  the first runs, human-confirm the automated grades, and cover JAWS manually
-  (it can't be driven on hosted runners).
+- **Assistive-technology pass.** NVDA and VoiceOver run nightly in CI via guidepup
+  over the 12-component plan (`.github/workflows/a11y-at.yml`), and the first
+  results are published on the accessibility page — most cells grade _partial_.
+  Remaining: fix the noted quirks, human-confirm the automated grades, and cover
+  JAWS manually (it can't be driven on hosted runners).
 - **Theme builder → project handoff.** Let the `/create` theme configurator hand
   its output directly to the CLI, so "design a theme in the browser" ends in an
   installable theme rather than a copy-paste.

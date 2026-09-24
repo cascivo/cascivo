@@ -1,9 +1,9 @@
 ---
-name: cascivo:add-template
+name: cascivo-add-template
 description: Install a cascivo marketplace template — a whole-page composition (page + its components + fixtures) the user owns and adapts. Browses the catalog, installs via the CLI, and verifies it compiles.
 ---
 
-# cascivo:add-template
+# cascivo-add-template
 
 ## When to use
 

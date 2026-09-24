@@ -1,9 +1,9 @@
 ---
-name: cascivo:create-theme
+name: cascivo-create-theme
 description: Create a custom cascivo theme from brand colors. Generates a @layer cascivo.theme stylesheet overriding semantic tokens, then verifies WCAG AA contrast.
 ---
 
-# cascivo:create-theme
+# cascivo-create-theme
 
 ## When to use
 

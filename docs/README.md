@@ -66,6 +66,7 @@ for pasting into an agent's context window.
 | [TESTING.md](TESTING.md) | How components are tested — unit, a11y, and visual regression. |
 | [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Symptom → cause → fix for the common failure modes (unstyled UI, frozen signals). |
 | [UPGRADING.md](UPGRADING.md) | Upgrade guidance and `cascivo update` for owned component code. |
+| [GOVERNANCE.md](GOVERNANCE.md) | Who maintains cascivo, release cadence, support windows, provenance and SBOMs — what an adopter can rely on. |
 | [RELEASING.md](RELEASING.md) | Release runbook — changesets, versioning, trusted publishing. |
 | [CSS-LAYERS-PITFALL.md](CSS-LAYERS-PITFALL.md) | The `@layer` ordering pitfall in example apps and how to avoid it. |
 | [THIRD-PARTY-CSS.md](THIRD-PARTY-CSS.md) | Tame a legacy library's global CSS with the native `@import … layer(vendor)` recipe. |

@@ -1,4 +1,4 @@
-// Hand-maintained: the subset of @cascivo/react components <CascadeView /> can render
+// Hand-maintained: the subset of @cascivo/react components <CascivoView /> can render
 // by name. Add an import + a `componentMap` entry to expose a new component to the
 // render engine. (No generator writes this file.)
 import type React from 'react'

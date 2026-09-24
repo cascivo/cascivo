@@ -102,7 +102,7 @@ const CLAIMS: Claim[] = [
     number: 24,
     title: 'AT test plan + legal mapping',
     substance:
-      'A representative assistive-technology matrix (NVDA, JAWS, VoiceOver) defines the manual test plan — components, OS/AT combos, and per-cell result tracking; manual sessions are pending. An EAA / EN 301 549 / Section 508 legal mapping traces each standard to the cascivo artifact that satisfies it. Both are browsable in the docs accessibility section.',
+      'A representative assistive-technology matrix (NVDA, JAWS, VoiceOver) defines the manual test plan — components, OS/AT combos, and per-cell result tracking. A nightly CI run drives NVDA and VoiceOver and publishes per-component results, quirks included; manual sessions, including JAWS, are still pending. An EAA / EN 301 549 / Section 508 legal mapping traces each standard to the cascivo artifact that satisfies it. Both are browsable in the docs accessibility section.',
     receipt: { label: 'Accessibility statement', href: '/accessibility' },
   },
   {

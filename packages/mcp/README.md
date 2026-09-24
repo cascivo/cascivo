@@ -18,7 +18,14 @@
 
 ## Usage
 
-Add it to your MCP client configuration:
+The quickest way is from your project root — it writes the config and keeps any other servers:
+
+```sh
+npx cascivo mcp init                  # Claude Code (.mcp.json)
+npx cascivo mcp init --client cursor  # .cursor/mcp.json   (also: --client vscode)
+```
+
+Or add it to your MCP client configuration by hand:
 
 ```json
 {
@@ -58,14 +65,15 @@ The server speaks the MCP stdio transport. It is **self-contained**: the registr
 
 ### Scaffold & validate
 
-| Tool                 | Input                              | Returns                                                                                                                                 |
-| -------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `scaffold_view`      | `{ description, components? }`     | A validated starter `ViewConfig` + the bound-vocabulary `grammar` for its components                                                    |
-| `validate_view`      | `{ config }`                       | Validation errors (component, prop type/enum, refs) with exact paths                                                                    |
-| `get_view_grammar`   | `{ components? }`                  | Bound-vocabulary grammar + generation prompt for valid `ViewConfig` JSON                                                                |
-| `validate_component` | `{ tsx?, css?, name? }`            | Static structural-invariant check of generated source (banned hooks, off-scale breakpoints, missing CSS fallbacks, hallucinated tokens) |
-| `scaffold_flow`      | `{ description, steps?, layout? }` | Starter nodes/edges + ready-to-paste `<Flow />` JSX (from `@cascivo/flow`) for a diagram                                                |
-| `scaffold_page`      | `{ description, components? }`     | **Deprecated** — use `scaffold_view`; still returns a JSX scaffold plus the `scaffold_view` output                                      |
+| Tool                      | Input                              | Returns                                                                                                                                 |
+| ------------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `scaffold_view`           | `{ description, components? }`     | A validated starter `ViewConfig` + the bound-vocabulary `grammar` for its components                                                    |
+| `validate_view`           | `{ config }`                       | Validation errors (component, prop type/enum, refs) with exact paths                                                                    |
+| `render_view_as_markdown` | `{ config, data? }`                | What the view says, as Markdown — rendered by the real components (needs `@cascivo/render` installed in the project)                    |
+| `get_view_grammar`        | `{ components? }`                  | Bound-vocabulary grammar + generation prompt for valid `ViewConfig` JSON                                                                |
+| `validate_component`      | `{ tsx?, css?, name? }`            | Static structural-invariant check of generated source (banned hooks, off-scale breakpoints, missing CSS fallbacks, hallucinated tokens) |
+| `scaffold_flow`           | `{ description, steps?, layout? }` | Starter nodes/edges + ready-to-paste `<Flow />` JSX (from `@cascivo/flow`) for a diagram                                                |
+| `scaffold_page`           | `{ description, components? }`     | **Deprecated** — use `scaffold_view`; still returns a JSX scaffold plus the `scaffold_view` output                                      |
 
 ### Templates
 
@@ -87,7 +95,7 @@ The server speaks the MCP stdio transport. It is **self-contained**: the registr
 `get_view_grammar` derives — from the `component.meta.ts` manifests — a **system
 prompt** plus a compact **allowed-vocabulary grammar** (each component → its
 props → enum/size/variant values) for emitting valid `ViewConfig` JSON rendered
-by `@cascivo/render` `<CascadeView />`. This is [OpenUI](https://openui.com)'s
+by `@cascivo/render` `<CascivoView />`. This is [OpenUI](https://openui.com)'s
 "generate the system prompt from the component library" mechanism (see
 [`ROADMAP-V40.md`](https://github.com/cascivo/cascivo/blob/main/docs/internal/ROADMAP-V40.md)):
 because the grammar is **derived**, not authored, an LLM is structurally

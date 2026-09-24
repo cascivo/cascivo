@@ -18,18 +18,17 @@ The catalogue below is the **a11y/behavior** layer; this is the **state** layer.
 components never use `useState`/`useContext`/`useEffect` — the signal _is_ the state. When
 you build on cascivo, reach for these, not the React hook you'd normally use:
 
-> ⚠ **Before you write your first signal, turn off one lint rule.** Every write below —
-> including this page's `onClick={() => (open.value = !open.value)}` — is reported as
-> `Error: This value cannot be modified` by `react-hooks/immutability`, which
-> `eslint-plugin-react-hooks@7` enables by default in `recommended-latest`. Add
-> `@cascivo/eslint-config` (`...cascivo`, spread last) or set
-> `'react-hooks/immutability': 'off'`. See
-> [USING-WITH-STRICT-ESLINT.md](/docs/using-with-strict-eslint.md) §1 for why it cannot be
-> narrowed and what turning it off costs.
+> **Write state through a setter.** In your own components, hold local state with
+> `const [open, setOpen] = useSignalState(false)` and write `setOpen(!open.value)` — not
+> `open.value = !open.value`. Assigning to a signal a hook returned fails the React Compiler
+> build and is reported by `react-hooks/immutability` (on by default in
+> `eslint-plugin-react-hooks@7`); the setter form passes both. Module-level signals can be
+> assigned directly. For existing code that assigns, see
+> [USING-WITH-STRICT-ESLINT.md](/docs/using-with-strict-eslint.md) §1.
 
 | You'd normally reach for…                            | Use instead                                                                                                                                                                  | Why                                                                                                                                                                                                                                  |
 | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `useState`                                           | `useSignal(initial)` (local) / `useComputed(fn)` (derived)                                                                                                                   | The signal is the state; fine-grained updates, no subtree re-render.                                                                                                                                                                 |
+| `useState`                                           | `useSignalState(initial)` → `[signal, setter]` (local) / `useComputed(fn)` (derived)                                                                                         | The signal is the state; fine-grained updates, no subtree re-render. The setter keeps the React Compiler and `react-hooks/immutability` happy.                                                                                       |
 | A controlled/uncontrolled prop wired to state        | `useControllableSignal({ value, defaultValue, onChange })`                                                                                                                   | Codifies the controlled↔uncontrolled bridge once, with no effect.                                                                                                                                                                    |
 | `useEffect` for a DOM side effect                    | `useSignalEffect(fn)`                                                                                                                                                        | Runs on signal change, SSR-safe; `useEffect` is banned in cascivo components.                                                                                                                                                        |
 | `useContext` for shared state                        | A module-level `signal` imported anywhere                                                                                                                                    | Signals are globally reactive — no provider or prop-drilling needed.                                                                                                                                                                 |
@@ -51,7 +50,7 @@ signal write if something subscribed it. The rule is short:
 > self-subscribe). Call it as the component's **first statement**.
 
 Everything a cascivo hook returns is already reactive on its own: `useSignal`,
-`useComputed`, `useControllableSignal`, `useDisclosure`, `useMediaQuery`, `useMachine`,
+`useComputed`, `useSignalState`, `useControllableSignal`, `useDisclosure`, `useMediaQuery`, `useMachine`,
 `useRovingFocus`, `useStreamBuffer`, `useScope`, `useTheme`, `useForm`, `useAnchorPosition`
 all call `useSignals()` for you.
 
@@ -238,11 +237,10 @@ focus. To build your own, the same three concerns compose directly:
 
 ```tsx
 'use client'
-import { useId, useTypeahead, useSignals, useSignal } from '@cascivo/core'
+import { useId, useTypeahead, useSignalState } from '@cascivo/core'
 
 export function Menu({ items }: { items: { label: string; onSelect: () => void }[] }) {
-  useSignals()
-  const open = useSignal(false)
+  const [open, setOpen] = useSignalState(false)
   const menuId = useId('menu')
 
   // Resolve enabled items from the DOM so disabled rows/separators are skipped.
@@ -284,7 +282,7 @@ export function Menu({ items }: { items: { label: string; onSelect: () => void }
         type="button"
         aria-haspopup="menu"
         aria-expanded={open.value}
-        onClick={() => (open.value = !open.value)}
+        onClick={() => setOpen(!open.value)}
       >
         Actions
       </button>
@@ -314,7 +312,7 @@ export function Menu({ items }: { items: { label: string; onSelect: () => void }
 }
 ```
 
-Wrap the panel in `<DismissableLayer onDismiss={() => (open.value = false)}>` to close
+Wrap the panel in `<DismissableLayer onDismiss={() => setOpen(false)}>` to close
 on outside click / Escape, and add `<FocusScope trapped>` for a modal menu. Every
 piece is independently testable and shared across components — no per-component aria
 or keyboard reimplementation.

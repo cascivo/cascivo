@@ -4,10 +4,9 @@
  *
  * The page is ink, cream and acid. The Okabe-Ito blue and vermillion these bars
  * used to take are a fine general-purpose chart palette, but they are the only
- * two hues on the poster grid and read as imported from another design system —
- * the same defect `PosterGallery`'s `INK_BAR` already fixed for the traffic
- * chart. So the libraries take an even ink ramp instead: the difference between
- * bars is a lightness step, not a hue step.
+ * two hues on the poster grid and read as imported from another design system.
+ * So the libraries take an even ink ramp instead: the difference between bars is
+ * a lightness step, not a hue step.
  *
  * cascade keeps the page's own ink (cream in the dark half) — the poster
  * palette's subject colour — and the competitors step back from it. The acid

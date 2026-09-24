@@ -2,32 +2,37 @@
 
 Code prerequisites completed in v15 T1–T4. External steps the owner must perform:
 
+_Status re-checked 2026-09-24 against the live registry, npm and GitHub. Items still open
+could not be confirmed from outside._
+
 ## npm
 
-- [ ] Create npm org **`cascivo`** at npmjs.com/org/cascivo
-- [ ] For each `@cascivo/*` package: `pnpm --filter @cascivo/<pkg> publish --access public`
+- [x] Create npm org **`cascivo`** at npmjs.com/org/cascivo
+- [x] For each `@cascivo/*` package: `pnpm --filter @cascivo/<pkg> publish --access public`
       (dry-run: `pnpm --filter @cascivo/<pkg> publish --dry-run --access public`)
-- [ ] Deprecate old `@cascade-ui/*` packages with migration note
+- [x] ~~Deprecate old `@cascade-ui/*` packages with migration note~~ — not needed: no
+      `@cascade-ui/*` package was ever published to npm
 
 ## Domain / hosting
 
-- [ ] Point `cascivo.com` DNS A record → landing host; provision TLS
-- [ ] Set up docs subdomain (e.g. `docs.cascivo.com`) if separate from main; provision TLS
+- [x] Point `cascivo.com` DNS A record → landing host; provision TLS
+- [x] Set up docs subdomain (e.g. `docs.cascivo.com`) if separate from main; provision TLS
+      — docs are served from `cascivo.com/docs`, no subdomain
 - [ ] Update hosting config with new domain; set CORS/CSP for the new origin
 
 ## GitHub
 
-- [ ] Rename repo: `urbanisierung/cascade-ui` → `cascivo/cascivo`
+- [x] Rename repo: `urbanisierung/cascade-ui` → `cascivo/cascivo`
   - GitHub automatically creates a redirect from the old path (safe — raw URLs still resolve)
-- [ ] Update local git remote: `git remote set-url origin git@github.com:cascivo/cascivo.git`
-- [ ] Verify `pnpm regen` still produces clean drift (registry.json URLs point at `cascivo/cascivo`)
+- [x] Update local git remote: `git remote set-url origin git@github.com:cascivo/cascivo.git`
+- [x] Verify `pnpm regen` still produces clean drift (registry.json URLs point at `cascivo/cascivo`)
 
 ## Verification (after infra is live)
 
-- [ ] `npx cascivo add button` fetches a component from `cascivo.com`/registry
-- [ ] Landing at `cascivo.com` loads with new OG tags
-- [ ] Docs at `docs.cascivo.com` (or `cascivo.com/docs`) load correctly
-- [ ] npm: `pnpm add @cascivo/react` resolves
+- [x] `npx cascivo add button` fetches a component from `cascivo.com`/registry
+- [x] Landing at `cascivo.com` loads with new OG tags
+- [x] Docs at `docs.cascivo.com` (or `cascivo.com/docs`) load correctly
+- [x] npm: `pnpm add @cascivo/react` resolves
 
 ## Code prerequisites (completed in v15)
 
