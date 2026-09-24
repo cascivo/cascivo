@@ -14,7 +14,8 @@
       "@cascivo/i18n",
       "@cascivo/storage",
       "@cascivo/ai",
-      "@cascivo/text"
+      "@cascivo/text",
+      "@cascivo/render"
     ]
   ],
   "updateInternalDependencies": "patch",

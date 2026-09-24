@@ -8,5 +8,5 @@ export type {
 } from './types'
 export { validateView } from './validate'
 export type { ValidationError } from './validate'
-export { CascadeView } from './cascade-view'
-export type { CascadeViewProps } from './cascade-view'
+export { CascadeView, CascivoView } from './cascivo-view'
+export type { CascadeViewProps, CascivoViewProps } from './cascivo-view'

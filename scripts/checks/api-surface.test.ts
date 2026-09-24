@@ -8,7 +8,7 @@
  * `meta:check` alone, plus the RSC boundary walk, the isolated-install canary and the
  * computed-style canary. The API surface itself had none, so a dropped export, a prop that
  * quietly became required, or a narrowed union could reach `main` with every check green.
- * At 1,497 exported names across nine packages, review does not reliably catch that.
+ * At 1,497 exported names across ten packages, review does not reliably catch that.
  *
  * ## How to respond when this fails
  *
@@ -78,7 +78,7 @@ describe('public API surface', () => {
         'extractor has probably gone blind to a declaration form rather than the surface ' +
         'having shrunk by a third',
     )
-    assert.ok(Object.keys(built).length >= 9, 'expected all nine 1.x packages')
+    assert.ok(Object.keys(built).length >= 10, 'expected all ten covered 1.x packages')
     // Three shapes that broke earlier revisions: a plain interface, a type alias re-exported
     // with no `type` modifier, and a name imported from core and re-exported.
     const react = built['@cascivo/react']?.['.']

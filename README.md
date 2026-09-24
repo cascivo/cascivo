@@ -87,7 +87,7 @@ Prefer a prebuilt dependency? `pnpm add @cascivo/react @cascivo/themes @preact/s
 
 ### Versioning and stability
 
-The runtime packages are on **`1.x` and covered by semver** — no covered API is removed or changed outside a major ([the contract](docs/UPGRADING.md#the-stability-contract)). The packages that share `@cascivo/core` (`core`, `react`, `charts`, `editor`, `flow`, `i18n`, `storage`, `ai`, `text`) release **in lockstep** at one version; pin them all to the same number. `tokens`, `themes`, `icons` and the `cascivo` CLI are also `1.x` on their own version lines. Tooling that is still settling — `@cascivo/mcp`, `registry`, `docspack`, `email`, the ESLint packages, `vite-plugin`, `platform` — stays on `0.x` and says so on npm.
+The runtime packages are on **`1.x` and covered by semver** — no covered API is removed or changed outside a major ([the contract](docs/UPGRADING.md#the-stability-contract)). The packages that share `@cascivo/core` (`core`, `react`, `charts`, `editor`, `flow`, `i18n`, `storage`, `ai`, `text`, `render`) release **in lockstep** at one version; pin them all to the same number. `tokens`, `themes`, `icons` and the `cascivo` CLI are also `1.x` on their own version lines. Tooling that is still settling — `@cascivo/mcp`, `registry`, `docspack`, `email`, the ESLint packages, `vite-plugin`, `platform` — stays on `0.x` and says so on npm.
 
 Pin exact versions (no `^`). Before any upgrade run **`cascivo doctor --drift`** — it reads [`breaking-changes.json`](https://cascivo.com/breaking-changes.json), published per package and machine-readable, and reports what changed under you. Details in [UPGRADING.md](docs/UPGRADING.md).
 
@@ -100,14 +100,21 @@ cascivo ships both the **WHAT** (manifests, tokens, MCP) and the **WHY** (intent
 - **`context.json`** — intent, design boundaries, specs, and authoring rules in one machine-readable bundle.
 - **`tokens.catalog.json`** — closed-set token catalog; every `--cascivo-*` property with its layer and resolved default.
 - **`cascivo audit --ai`** — flags hard-coded values, invented props, and missing required wiring in generated code.
-- **MCP server** ([`@cascivo/mcp`](packages/mcp)) — 23 tools:
+- **MCP server** ([`@cascivo/mcp`](packages/mcp)) — 24 tools:
   - _discover:_ `list_registries`, `list_components`, `search_components`, `get_component`, `select_component`, `get_context`, `list_guides`, `get_guide`
   - _tokens & icons:_ `get_tokens`, `search_icons`
   - _scaffold:_ `create_app`, `create_theme`, `scaffold_page`, `scaffold_view`, `scaffold_flow`, `get_view_grammar`
-  - _verify:_ `validate_view`, `validate_component`, `get_variant_matrix`
+  - _verify:_ `validate_view`, `render_view_as_markdown`, `validate_component`, `get_variant_matrix`
   - _install:_ `add_to_project`, `list_templates`, `get_template`, `add_template`
 
-Point any MCP client at the server:
+Set it up in one command — Claude Code by default, or `--client cursor` / `--client vscode`:
+
+```sh
+npx cascivo mcp init                 # writes .mcp.json, keeping any other servers
+npx skills add cascivo/cascivo       # the cascivo agent skills, for any supported agent
+```
+
+Or point any MCP client at the server by hand:
 
 ```json
 {
@@ -153,7 +160,7 @@ cascivo/
 │   ├── components/   # registry source — copy-paste component TSX + CSS + manifests
 │   ├── layouts/      # registry source — app shells and page layouts
 │   ├── registry/     # @cascivo/registry — registry schema, validation, shadcn interop
-│   ├── render/       # JSON → UI runtime renderer (CascadeView)
+│   ├── render/       # JSON → UI runtime renderer (CascivoView)
 │   ├── text/         # @cascivo/text    — machine mode: a rendered UI as Markdown
 │   ├── ai/           # AI-native UI components (StreamingText, AiChat, Terminal)
 │   ├── search/       # registry search index
@@ -164,7 +171,7 @@ cascivo/
 │   ├── storybook/    # storybook.cascivo.com — stories from manifests
 │   ├── bench/        # performance benchmarks
 │   └── examples/     # runnable example apps (Vite, Next.js, registry starter, demos)
-├── skills/           # Claude Code skills — cascivo:add, design-page, create-theme, extend
+├── skills/           # Claude Code skills — cascivo-add, design-page, create-theme, extend
 ├── scripts/          # registry/readme/context/token generators, quality gates, dark-factory backlog
 └── registry.json     # machine-readable component index (CLI + MCP + docs read this)
 ```
@@ -284,6 +291,7 @@ Published packages install from npm. Components themselves are copy-pasted into 
 | [`@cascivo/eslint-plugin`](packages/eslint-plugin) | [![npm](https://img.shields.io/npm/v/%40cascivo%2Feslint-plugin?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/eslint-plugin) | ESLint rule that turns cascivo's near-miss prop names into an actionable message — the wrong guess, the prop that exists, and why                                                                                    |
 | [`@cascivo/flow`](packages/flow)                   | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fflow?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/flow)                   | Flow & diagram components — CSS-native, signal-driven node/edge graphs with pan/zoom, draggable nodes, animated edges, and scripted storylines, zero dependencies                                                    |
 | [`@cascivo/platform`](packages/platform)           | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fplatform?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/platform)           | Platform-idiomatic geometry and motion for cascivo, selected with data-platform. Orthogonal to @cascivo/themes, which owns colour.                                                                                   |
+| [`@cascivo/render`](packages/render)               | [![npm](https://img.shields.io/npm/v/%40cascivo%2Frender?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/render)               | Render a JSON view config with real cascivo components — the runtime behind the MCP scaffold_view / validate_view tools, plus machine mode for views. Docs offline: npx @cascivo/docs                                |
 | [`@cascivo/text`](packages/text)                   | [![npm](https://img.shields.io/npm/v/%40cascivo%2Ftext?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/text)                   | Machine mode for cascivo — serialize a rendered UI to Markdown for agents. Docs offline: npx @cascivo/docs                                                                                                           |
 | [`@cascivo/vite-plugin`](packages/vite-plugin)     | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fvite-plugin?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/vite-plugin)     | Vite plugin — wrap JS-imported third-party stylesheets into a low-priority CSS @layer                                                                                                                                |
 
@@ -295,7 +303,6 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 | -------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | [`@cascivo/components`](packages/components) | Registry source — copy-paste component TSX + CSS + manifests (not published)                |
 | [`@cascivo/layouts`](packages/layouts)       | Registry source — copy-paste app shells and page layouts (not published)                    |
-| [`@cascivo/render`](packages/render)         | Runtime JSON → UI renderer for cascivo                                                      |
 | [`@cascivo/search`](packages/search)         | Experimental — registry search index for the cascivo ecosystem (API unstable)               |
 | [`@cascivo/theme-kit`](packages/theme-kit)   | Shared theme-config codec + CSS generator for the /create theme builder and the cascivo CLI |
 | [`@cascivo/video`](packages/video)           | Experimental — Remotion video studio for cascivo (animated explainers and launch films)     |

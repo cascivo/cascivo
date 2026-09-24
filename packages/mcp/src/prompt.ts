@@ -60,7 +60,7 @@ export function buildGenerationPrompt(
   const vocabulary = formatGrammar(grammar)
 
   const sections = [
-    'You generate UI as a cascivo ViewConfig — a JSON description rendered by @cascivo/render <CascadeView />.',
+    'You generate UI as a cascivo ViewConfig — a JSON description rendered by @cascivo/render <CascivoView />.',
     SCHEMA_DOC,
     'Registered components (allowed vocabulary — `name*` marks a required prop):',
     vocabulary,

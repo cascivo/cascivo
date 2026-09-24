@@ -1,9 +1,9 @@
 ---
-name: cascivo:design-page
+name: cascivo-design-page
 description: Generate a page layout from a natural language description using the cascivo view schema, MCP scaffold_view, and the cascivo generate CLI.
 ---
 
-# cascivo:design-page
+# cascivo-design-page
 
 ## When to use
 

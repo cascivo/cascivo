@@ -55,7 +55,7 @@ composing from scratch:
 | Carbon-parity console shell (icon-rail side nav) | `block/console-app`                         | `ShellHeader` + icon-rail `SideNav` + content area — denser, IDE-like console chrome. |
 
 Before scaffolding by hand, check `list_templates` (MCP) or `/docs/marketplace` for a
-whole-page `dashboard` template — see the `cascivo:design-page` skill's step 0.
+whole-page `dashboard` template — see the `cascivo-design-page` skill's step 0.
 
 ## Reference implementations
 

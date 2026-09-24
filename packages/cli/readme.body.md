@@ -14,6 +14,7 @@ cascivo view owner/repo/dashboard  # preview an item (or template) before instal
 cascivo list                       # list available components
 cascivo update                     # pull newer versions of copied components
 cascivo audit --ai                 # flag hard-coded values, invented props, missing wiring
+cascivo mcp init                   # add the cascivo MCP server to your agent's config
 cascivo search <query>             # search components across registries
 cascivo theme add <name>           # install a first-party theme (12 available)
 cascivo eject <component>          # eject tokens into a scoped local override file

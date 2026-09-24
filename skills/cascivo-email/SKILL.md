@@ -1,9 +1,9 @@
 ---
-name: cascivo:email
+name: cascivo-email
 description: Build or change a transactional email with @cascivo/email — table-based, inline-styled HTML themed from cascivo tokens. Use when the user wants to send email (welcome, password reset, receipt, invite, digest), asks to change an email template, or is migrating from React Email. Not for in-app UI.
 ---
 
-# cascivo:email
+# cascivo-email
 
 ## When to use
 

@@ -1,6 +1,9 @@
 ---
 name: factory
 description: Run the cascade dark factory — generate, verify, and integrate the next queued component(s) from scripts/factory/backlog.json. Use when the user asks to run the factory, build queued components, or work the backlog. Runs entirely inside this Claude Code session (no API key, no headless claude -p).
+# Repo-internal: keeps `npx skills add cascivo/cascivo` from offering it to adopters.
+metadata:
+  internal: true
 ---
 
 # Cascade Dark Factory

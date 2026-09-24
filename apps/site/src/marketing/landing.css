@@ -1427,8 +1427,8 @@ kbd {
   justify-content: center;
 }
 
-/* ── CascadeView layout ───────────────────────────────── */
-.cascade-view {
+/* ── CascivoView layout ───────────────────────────────── */
+.cascivo-view {
   display: flex;
   flex-direction: column;
   gap: var(--cascivo-space-3);

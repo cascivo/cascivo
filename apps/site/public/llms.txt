@@ -2,7 +2,7 @@
 
 _registry v1.3.1 · generated 2026-09-19 · docs track `main`; compare with https://cascivo.com/registry.json `.version` for staleness, and https://cascivo.com/breaking-changes.json for installed-vs-documented API drift._
 
-_Describes: @cascivo/ai@1.3.1 · @cascivo/charts@1.3.1 · @cascivo/core@1.3.1 · @cascivo/docs@0.2.11 · @cascivo/docspack@0.2.5 · @cascivo/editor@1.3.1 · @cascivo/email@0.4.1 · @cascivo/email-preview@2.0.0 · @cascivo/eslint-config@0.4.1 · @cascivo/eslint-plugin@0.2.1 · @cascivo/flow@1.3.1 · @cascivo/i18n@1.3.1 · @cascivo/icons@1.1.0 · @cascivo/mcp@0.7.2 · @cascivo/platform@0.0.5 · @cascivo/react@1.3.1 · @cascivo/registry@0.2.10 · @cascivo/storage@1.3.1 · @cascivo/text@1.3.1 · @cascivo/themes@1.0.0 · @cascivo/tokens@1.1.1 · @cascivo/vite-plugin@0.1.10 · cascivo@1.3.0. If your installed versions are lower, a documented behaviour may not have shipped yet._
+_Describes: @cascivo/ai@1.3.1 · @cascivo/charts@1.3.1 · @cascivo/core@1.3.1 · @cascivo/docs@0.2.11 · @cascivo/docspack@0.2.5 · @cascivo/editor@1.3.1 · @cascivo/email@0.4.1 · @cascivo/email-preview@2.0.0 · @cascivo/eslint-config@0.4.1 · @cascivo/eslint-plugin@0.2.1 · @cascivo/flow@1.3.1 · @cascivo/i18n@1.3.1 · @cascivo/icons@1.1.0 · @cascivo/mcp@0.7.2 · @cascivo/platform@0.0.5 · @cascivo/react@1.3.1 · @cascivo/registry@0.2.10 · @cascivo/render@1.3.1 · @cascivo/storage@1.3.1 · @cascivo/text@1.3.1 · @cascivo/themes@1.0.0 · @cascivo/tokens@1.1.1 · @cascivo/vite-plugin@0.1.10 · cascivo@1.3.0. If your installed versions are lower, a documented behaviour may not have shipped yet._
 
 cascivo is a React design system you can consume two ways: copy-paste the source
 (`npx cascivo add <name>` — shadcn model, you own the code) or install the prebuilt
@@ -371,6 +371,7 @@ Tools:
 - `select_component` — rank components by a natural-language need
 - `scaffold_view` — natural language -> JSON view config
 - `validate_view` — validate a view config against the schema
+- `render_view_as_markdown` — render a view config and read back what it says (needs `@cascivo/render`)
 - `add_to_project` — install components into the user project
 
 Two MCP servers, two jobs — run both if your client allows it:
@@ -381,7 +382,7 @@ Two MCP servers, two jobs — run both if your client allows it:
 To pick a component without MCP, read the intent summaries below (grouped by need) or
 fetch https://cascivo.com/context/<name>.md for the full when-to-use / when-not-to-use of each.
 
-## Component authoring rules (for cascivo:extend / custom components)
+## Component authoring rules (for cascivo-extend / custom components)
 
 These constrain code you write INSIDE a component you author or copy-paste-and-edit — not the app
 code that merely renders cascivo components (that code uses React normally).
@@ -669,217 +670,6 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [block/app-shell](https://cascivo.com/llms/block/app-shell.md) — Two-column layout with collapsible sidebar, nav links, and content area. _(copy-paste)_
 - [block/settings-profile](https://cascivo.com/llms/block/settings-profile.md) — Two-section settings form: personal info fields + preference toggles. _(copy-paste)_
 
-## Component intent summaries (use when…)
-
-- [Accordion](https://cascivo.com/context/accordion.md) — Use when: Progressively disclosing sections of related content the user reads top to bottom
-- [ActionSheet](https://cascivo.com/context/action-sheet.md) — Use when: A short list of discrete actions on a touch surface, rising from the bottom
-- [Alert](https://cascivo.com/context/alert.md) — Use when: Surfacing a persistent, contextual message inline within a view (warning, error, info, success)
-- [AlertDialog](https://cascivo.com/context/alert-dialog.md) — Use when: Confirming a destructive or irreversible action (delete, overwrite, sign out) before it happens
-- [AppShell](https://cascivo.com/context/app-shell.md) — Use when: Building an application screen with a persistent header and side navigation
-- [AspectRatio](https://cascivo.com/context/aspect-ratio.md) — Use when: Reserving a stable box for media that loads asynchronously, avoiding layout shift
-- [Avatar](https://cascivo.com/context/avatar.md) — Use when: Representing a person or entity with a thumbnail image and initials fallback
-- [AvatarGroup](https://cascivo.com/context/avatar-group.md) — Use when: Showing several people compactly as an overlapping stack (collaborators, attendees, reviewers)
-- [Badge](https://cascivo.com/context/badge.md) — Use when: Labeling an item with a short, static status or category (e.g. "New", "Beta")
-- [App Shell](https://cascivo.com/context/block/app-shell.md) — Use when: Frame for an authenticated app: persistent sidebar nav on desktop, drawer nav on mobile
-- [Login Form](https://cascivo.com/context/block/auth-login.md) — Use when: Sign-in page for returning users with email + password credentials
-- [Sign Up Form](https://cascivo.com/context/block/auth-signup.md) — Use when: Registration page collecting name, email, and password with confirmation
-- [ConsoleApp](https://cascivo.com/context/block/console-app.md) — Use when: A Carbon-parity console shell with icon-rail nav, header panels, and aside
-- [DashboardCharts](https://cascivo.com/context/block/dashboard-charts.md) — Use when: A prebuilt dashboard with KPI tiles, line, bar, and pie charts
-- [Dashboard Overview](https://cascivo.com/context/block/dashboard-overview.md) — Use when: Landing view of a dashboard summarizing headline KPIs (revenue, users, orders, conversion) at a glance
-- [Dashboard Table](https://cascivo.com/context/block/dashboard-table.md) — Use when: Admin views listing records (customers, orders) with text search, column sorting, and pagination
-- [EmptyDashboard](https://cascivo.com/context/block/empty-dashboard.md) — Use when: A first-run or zero-data dashboard with an empty state and primary CTA
-- [FAQ Accordion](https://cascivo.com/context/block/faq.md) — Use when: Pre-sales or support question sections on marketing and pricing pages
-- [LoginPage](https://cascivo.com/context/block/login-page.md) — Use when: A complete login page with email and password form
-- [Feature Grid](https://cascivo.com/context/block/marketing-features.md) — Use when: Landing-page section detailing product capabilities right after the hero
-- [Hero Section](https://cascivo.com/context/block/marketing-hero.md) — Use when: The opening section of a landing page: headline, supporting subtitle, and a primary/secondary CTA pair
-- [NotificationCenter](https://cascivo.com/context/block/notification-center.md) — Use when: A list of notification alerts with a mark-all-read action
-- [PageWithBreadcrumb](https://cascivo.com/context/block/page-with-breadcrumb.md) — Use when: A centered content page with breadcrumb navigation and a page header
-- [Pricing Tiers](https://cascivo.com/context/block/pricing.md) — Use when: Subscription products with a small number of tiers, each with a price, feature list, and its own CTA
-- [SettingsFormPage](https://cascivo.com/context/block/settings-form-page.md) — Use when: A settings page with a profile form inside a two-column settings layout
-- [Settings — Profile](https://cascivo.com/context/block/settings-profile.md) — Use when: Account settings page combining editable profile fields (name, email, bio) with notification toggles
-- [SidebarApp](https://cascivo.com/context/block/sidebar-app.md) — Use when: A ready-made app shell with opinionated collapsible sidebar and top header
-- [Site Footer](https://cascivo.com/context/block/site-footer.md) — Use when: Global footer for a marketing or docs site with grouped secondary navigation columns
-- [StatsCards](https://cascivo.com/context/block/stats-cards.md) — Use when: A grid of KPI stat cards with trend badges
-- [Testimonials](https://cascivo.com/context/block/testimonials.md) — Use when: Social-proof section on a landing or pricing page with short customer quotes
-- [UsersTablePage](https://cascivo.com/context/block/users-table-page.md) — Use when: A full user-management page with table, search, and invite action
-- [Blockquote](https://cascivo.com/context/blockquote.md) — Use when: Setting off a quoted passage from another source with visual emphasis
-- [BottomSheet](https://cascivo.com/context/bottom-sheet.md) — Use when: A mobile surface that rises from the bottom and can be resized between detents by dragging
-- [Logo](https://cascivo.com/context/brand/logo.md) — Use when: Placing the cascivo logo in a header, footer, auth screen or splash
-- [Breadcrumb](https://cascivo.com/context/breadcrumb.md) — Use when: Showing the user where the current page sits in a navigation hierarchy
-- [Button](https://cascivo.com/context/button.md) — Use when: Triggering an action or navigation the user initiates by click/press
-- [ButtonGroup](https://cascivo.com/context/button-group.md) — Use when: Presenting several related, independent actions that read as one control (e.g. an editor toolbar)
-- [Calendar](https://cascivo.com/context/calendar.md) — Use when: Showing an always-visible month grid for picking a single date (inline, not a popover)
-- [Card](https://cascivo.com/context/card.md) — Use when: Grouping related content into a visually distinct surface with border/shadow
-- [Carousel](https://cascivo.com/context/carousel.md) — Use when: Presenting a sequence of media or cards the user pages through one at a time
-- [AreaChart](https://cascivo.com/context/chart/area-chart.md) — Use when: Showing cumulative volume or magnitude of a trend over continuous time
-- [BarChart](https://cascivo.com/context/chart/bar-chart.md) — Use when: Comparing discrete categorical values across groups
-- [Boxplot](https://cascivo.com/context/chart/boxplot.md) — Use when: Comparing the distribution spread, median, and quartiles across groups
-- [BubbleChart](https://cascivo.com/context/chart/bubble-chart.md) — Use when: Plotting three dimensions at once — x, y, and a size-encoded magnitude
-- [Bullet](https://cascivo.com/context/chart/bullet.md) — Use when: Showing a single measure against a target with qualitative range bands
-- [CalendarHeatmap](https://cascivo.com/context/chart/calendar.md) — Use when: Showing a daily value over weeks/months (activity, contributions)
-- [Candlestick](https://cascivo.com/context/chart/candlestick.md) — Use when: Showing open/high/low/close price movement over time
-- [ComboChart](https://cascivo.com/context/chart/combo-chart.md) — Use when: Overlaying two related metrics with different scales (e.g. volume bars + rate line)
-- [Funnel](https://cascivo.com/context/chart/funnel.md) — Use when: Showing drop-off across the ordered stages of a process (signup, checkout)
-- [Gauge](https://cascivo.com/context/chart/gauge.md) — Use when: A single value against a range with a needle and threshold zones
-- [Heatmap](https://cascivo.com/context/chart/heatmap.md) — Use when: Showing magnitude across two categorical dimensions as a color-coded matrix
-- [Histogram](https://cascivo.com/context/chart/histogram.md) — Use when: Showing the frequency distribution of a single continuous variable
-- [Kpi](https://cascivo.com/context/chart/kpi.md) — Use when: Highlighting a single headline metric with an optional change delta
-- [LineChart](https://cascivo.com/context/chart/line-chart.md) — Use when: Showing trends and precise values over continuous time or a numeric range
-- [Meter](https://cascivo.com/context/chart/meter.md) — Use when: Showing a rated or gauged value within a known min/max range
-- [PieChart](https://cascivo.com/context/chart/pie-chart.md) — Use when: Showing part-of-whole proportions with five or fewer slices
-- [Polar](https://cascivo.com/context/chart/polar.md) — Use when: Cyclical/directional categories where the circle is meaningful (wind, hours, months)
-- [Radar](https://cascivo.com/context/chart/radar.md) — Use when: Comparing several entities across the same set of quantitative dimensions
-- [RadialBar](https://cascivo.com/context/chart/radial-bar.md) — Use when: Showing a few progress-to-goal values in a compact circular form
-- [Sankey](https://cascivo.com/context/chart/sankey.md) — Use when: Showing flow/throughput between stages or categories
-- [ScatterChart](https://cascivo.com/context/chart/scatter-chart.md) — Use when: Revealing correlation or clustering between two numeric variables
-- [Sparkline](https://cascivo.com/context/chart/sparkline.md) — Use when: Embedding a compact micro-trend inline in text, tables, or KPI cards
-- [Stream](https://cascivo.com/context/chart/stream.md) — Use when: Showing how several series ebb and flow over time as proportions of a whole
-- [Sunburst](https://cascivo.com/context/chart/sunburst.md) — Use when: Showing a part-of-whole hierarchy across multiple levels
-- [Treemap](https://cascivo.com/context/chart/treemap.md) — Use when: Showing part-to-whole proportions across many segments in a compact area
-- [ChatBubble](https://cascivo.com/context/chat-bubble.md) — Use when: Chat UIs and messaging features showing conversation history
-- [Checkbox](https://cascivo.com/context/checkbox.md) — Use when: Selecting zero or more options from a list where each choice is independent
-- [CheckboxCard](https://cascivo.com/context/checkbox-card.md) — Use when: Multi-select where each option needs a title and supporting description (feature toggles, add-ons)
-- [Code](https://cascivo.com/context/code.md) — Use when: Marking up an inline identifier, command, path, or token within prose
-- [CodeSnippet](https://cascivo.com/context/code-snippet.md) — Use when: Showing a command, token, or path the user is expected to copy
-- [Collapsible](https://cascivo.com/context/collapsible.md) — Use when: Hiding a single secondary block until the user asks for it
-- [ColorPicker](https://cascivo.com/context/color-picker.md) — Use when: Letting a user choose an arbitrary color via a visual saturation/lightness area plus hue control
-- [Combobox](https://cascivo.com/context/combobox.md) — Use when: Single-select from a long list where type-to-filter makes finding an option faster
-- [CommandMenu](https://cascivo.com/context/command-menu.md) — Use when: Giving power users a global Cmd/Ctrl+K palette to search and run actions or navigate
-- [Comparison](https://cascivo.com/context/comparison.md) — Use when: Showing the difference between two versions of similar content (before/after edits, original vs processed)
-- [ContainedList](https://cascivo.com/context/contained-list.md) — Use when: Grouping a short set of related rows under a visible heading in a bordered surface
-- [ContextMenu](https://cascivo.com/context/context-menu.md) — Use when: Offering actions contextual to an element via right-click (rename, delete, copy on a row or canvas item)
-- [CopyButton](https://cascivo.com/context/copy-button.md) — Use when: Letting users copy a short value to the clipboard — install commands, API keys, tokens, share links
-- [DataList](https://cascivo.com/context/data-list.md) — Use when: Displaying read-only key-value metadata (profile fields, record summaries)
-- [DataTable](https://cascivo.com/context/data-table.md) — Use when: Displaying tabular data with columns the user sorts, filters, or pages through
-- [DatePicker](https://cascivo.com/context/date-picker.md) — Use when: Picking a single calendar date in a form where a visual month grid helps (due dates, bookings)
-- [DateRangePicker](https://cascivo.com/context/date-range-picker.md) — Use when: Selecting a contiguous start–end date range (reporting windows, bookings, filters)
-- [Dock](https://cascivo.com/context/dock.md) — Use when: Mobile app-shell navigation with 3–5 top-level destinations
-- [Drawer](https://cascivo.com/context/drawer.md) — Use when: A side or edge panel for navigation, filters, or detail views that needs full-height space
-- [Dropdown](https://cascivo.com/context/dropdown.md) — Use when: Revealing a short menu of actions from a trigger button (row actions, "More" overflow, account menu)
-- [Editable](https://cascivo.com/context/editable.md) — Use when: Editing a single piece of text in place where the value is normally read-only — titles, names, labels
-- [CodeEditor](https://cascivo.com/context/editor/code-editor.md) — Use when: Editing code or config inline — JSON, snippets, web languages — with line numbers and syntax colors
-- [Highlight](https://cascivo.com/context/editor/highlight.md) — Use when: Displaying non-editable code or config with syntax colors — docs, snippets, examples
-- [EmptyState](https://cascivo.com/context/empty-state.md) — Use when: Filling a view that has no data with guidance and a primary next step
-- [Fab](https://cascivo.com/context/fab.md) — Use when: A single, high-emphasis primary action that floats above scrolling content (e.g. Compose, Add)
-- [Field](https://cascivo.com/context/field.md) — Use when: Pairing a single control with its label, helper text, and validation message
-- [FileUploader](https://cascivo.com/context/file-uploader.md) — Use when: Letting users attach one or more files via click-to-browse or drag-and-drop
-- [Filter](https://cascivo.com/context/filter.md) — Use when: Tag or category filtering on listing pages where the active filters must remain visible
-- [Flow](https://cascivo.com/context/flow/flow.md) — Use when: Rendering a graph from data — the common case and the agent-emittable surface
-- [FlowBackground](https://cascivo.com/context/flow/flow-background.md) — Use when: Giving a flow canvas a sense of space and scale with a dotted or grid backdrop
-- [FlowCanvas](https://cascivo.com/context/flow/flow-canvas.md) — Use when: Hosting a hand-composed flow from low-level FlowNode/FlowEdge primitives
-- [FlowControls](https://cascivo.com/context/flow/flow-controls.md) — Use when: Giving users explicit zoom/fit controls on a flow canvas
-- [FlowEdge](https://cascivo.com/context/flow/flow-edge.md) — Use when: Connecting two nodes with a directed path and arrowhead
-- [FlowHandle](https://cascivo.com/context/flow/flow-handle.md) — Use when: Marking where edges connect to a node
-- [FlowMiniMap](https://cascivo.com/context/flow/flow-minimap.md) — Use when: Orienting users in a large graph
-- [FlowNode](https://cascivo.com/context/flow/flow-node.md) — Use when: Representing a unit in a graph that holds arbitrary themed content
-- [FlowPanel](https://cascivo.com/context/flow/flow-panel.md) — Use when: Overlaying custom UI (a legend, a toolbar) on a flow canvas
-- [FlowStory](https://cascivo.com/context/flow/flow-story.md) — Use when: Explaining how a flow works step by step, not just showing a static diagram
-- [Form](https://cascivo.com/context/form.md) — Use when: Collecting and submitting a set of related field values together
-- [Header](https://cascivo.com/context/header.md) — Use when: Providing a simple marketing or app top bar with brand, links, and actions
-- [HeaderPanel](https://cascivo.com/context/header-panel.md) — Use when: Hosting a non-modal panel anchored under the shell header (notifications, switcher, settings)
-- [Heading](https://cascivo.com/context/heading.md) — Use when: Titling a page or section as part of the document outline
-- [HoverCard](https://cascivo.com/context/hover-card.md) — Use when: Showing a rich preview (avatar, summary, links) when a user hovers or focuses a trigger
-- [IconButton](https://cascivo.com/context/icon-button.md) — Use when: A compact, recognizable action where an icon alone communicates intent (close, edit, more)
-- [Image](https://cascivo.com/context/image.md) — Use when: Displaying a content image that should show a placeholder while loading and degrade gracefully on error
-- [Indicator](https://cascivo.com/context/indicator.md) — Use when: Notification counts on icon buttons
-- [InfiniteScroll](https://cascivo.com/context/infinite-scroll.md) — Use when: A long, page-fetched feed or list where the user should keep reading without a page break
-- [InlineLoading](https://cascivo.com/context/inline-loading.md) — Use when: Showing the progress of a single inline action — a Save button that becomes "Saving… / Saved / Failed"
-- [Input](https://cascivo.com/context/input.md) — Use when: Collecting a single line of free-form text from the user
-- [InputGroup](https://cascivo.com/context/input-group.md) — Use when: Attaching a prefix/suffix addon (protocol, currency, unit) to an Input so it reads as one field
-- [Item](https://cascivo.com/context/item.md) — Use when: Composing a single content row with leading media, a text block, and trailing actions
-- [Join](https://cascivo.com/context/join.md) — Use when: Input + button search groups where the two controls should appear as one unit
-- [Kbd](https://cascivo.com/context/kbd.md) — Use when: Showing a keyboard key or shortcut the user should press
-- [Label](https://cascivo.com/context/label.md) — Use when: Naming a single form control (input, select, checkbox) so clicking the text focuses it
-- [LargeTitleHeader](https://cascivo.com/context/large-title-header.md) — Use when: A scrolling screen that should keep its title reachable after the heading scrolls away
-- [AppFrame](https://cascivo.com/context/layout/app-shell.md) — Use when: A full-page application frame with header, collapsible sidebar, and content
-- [AuthLayout](https://cascivo.com/context/layout/auth-layout.md) — Use when: Centered card layout for authentication pages — login, register, reset
-- [AutoGrid](https://cascivo.com/context/layout/auto-grid.md) — Use when: Responsive card or tile grids that auto-fit columns to available width
-- [Center](https://cascivo.com/context/layout/center.md) — Use when: Horizontally centering content within a configurable max-width
-- [Columns](https://cascivo.com/context/layout/columns.md) — Use when: Equal-width multi-column content that collapses to one column when narrow
-- [DashboardLayout](https://cascivo.com/context/layout/dashboard-layout.md) — Use when: A dashboard page with a stats strip, main content area, and optional aside
-- [Flex](https://cascivo.com/context/layout/flex.md) — Use when: Arranging children vertically or horizontally with a consistent gap
-- [Grid](https://cascivo.com/context/layout/grid.md) — Use when: Two-dimensional layouts with an explicit column count
-- [Masonry](https://cascivo.com/context/layout/masonry.md) — Use when: Galleries of variable-height items packed into balanced columns
-- [PageHeader](https://cascivo.com/context/layout/page-header.md) — Use when: A page-level header with title, description, breadcrumb, and action slots
-- [Section](https://cascivo.com/context/layout/section.md) — Use when: Wrapping a page region with block padding and a centered inner width
-- [SettingsLayout](https://cascivo.com/context/layout/settings-layout.md) — Use when: A two-column settings page with a fixed-width menu and fluid content
-- [Spacer](https://cascivo.com/context/layout/spacer.md) — Use when: Inserting a fixed vertical gap between blocks using spacing token steps
-- [SplitView](https://cascivo.com/context/layout/split-view.md) — Use when: Two side-by-side panes the user can resize via pointer or keyboard
-- [Link](https://cascivo.com/context/link.md) — Use when: Navigating to another page, view, or resource via a real href
-- [List](https://cascivo.com/context/list.md) — Use when: Presenting a set of related items as a bulleted or numbered list
-- [LogViewer](https://cascivo.com/context/log-viewer.md) — Use when: Rendering continuous, high-volume log or stream output (build/deploy logs, server output)
-- [Menu](https://cascivo.com/context/menu.md) — Use when: Presenting a list of actions or commands triggered from a button
-- [MenuButton](https://cascivo.com/context/menu-button.md) — Use when: Exposing a small set of one-shot actions behind a single labeled button
-- [Menubar](https://cascivo.com/context/menubar.md) — Use when: A persistent application-style command bar (File / Edit / View) where each top-level entry opens a menu of actions
-- [Modal](https://cascivo.com/context/modal.md) — Use when: Presenting focused content or a task that must interrupt the current flow
-- [MultiSelect](https://cascivo.com/context/multi-select.md) — Use when: Selecting several values at once from a known list of options
-- [NativeSelect](https://cascivo.com/context/native-select.md) — Use when: A standard single-choice dropdown where native behavior and form integration matter most
-- [NavigationMenu](https://cascivo.com/context/navigation-menu.md) — Use when: Primary site navigation where some destinations are plain links and others reveal a flyout of grouped links
-- [Notification](https://cascivo.com/context/notification.md) — Use when: Surfacing a prominent, often actionable message in the page flow (sync result, failed upload, available update)
-- [NumberInput](https://cascivo.com/context/number-input.md) — Use when: Collecting a bounded numeric value where increment/decrement by a known step is natural (quantity, opacity, count)
-- [OtpInput](https://cascivo.com/context/otp-input.md) — Use when: Entering a fixed-length one-time code (2FA, SMS verification, email confirmation) split across per-character slots
-- [OverflowMenu](https://cascivo.com/context/overflow-menu.md) — Use when: Collapsing secondary row-level or item-level actions behind a kebab trigger in dense layouts like tables and lists
-- [Pagination](https://cascivo.com/context/pagination.md) — Use when: Navigating between pages of a paged dataset
-- [PasswordInput](https://cascivo.com/context/password-input.md) — Use when: Collecting a secret credential that should be masked by default with an opt-in reveal toggle
-- [Popover](https://cascivo.com/context/popover.md) — Use when: Showing rich, interactive content anchored to a trigger that the user must explicitly open by clicking
-- [Progress](https://cascivo.com/context/progress.md) — Use when: Tracked operations with a known total (file uploads, multi-step imports)
-- [ProgressBar](https://cascivo.com/context/progress-bar.md) — Use when: Showing linear determinate progress of a task with a known percentage (value)
-- [ProgressCircle](https://cascivo.com/context/progress-circle.md) — Use when: Showing determinate progress compactly as a circular arc
-- [ProgressIndicator](https://cascivo.com/context/progress-indicator.md) — Use when: Showing progress through the discrete steps of a multi-step flow (wizard, checkout)
-- [Prose](https://cascivo.com/context/prose.md) — Use when: Styling long-form authored content (articles, docs, CMS output)
-- [PullToRefresh](https://cascivo.com/context/pull-to-refresh.md) — Use when: A scrollable list or feed on touch devices that the user refreshes by pulling down from the top
-- [QrCode](https://cascivo.com/context/qr-code.md) — Use when: Letting users scan a URL, contact, or short token with a phone camera
-- [RadialProgress](https://cascivo.com/context/radial-progress.md) — Use when: Dashboard KPI metrics showing completion percentage
-- [Radio](https://cascivo.com/context/radio.md) — Use when: Choosing exactly one option from a small, mutually exclusive set (roughly 2–6) where all options should stay visible
-- [RadioCard](https://cascivo.com/context/radio-card.md) — Use when: Single-select from a few options where each choice needs a title plus supporting description (plans, tiers, shipping methods)
-- [RatingGroup](https://cascivo.com/context/rating-group.md) — Use when: Capturing a discrete subjective rating on a small fixed scale (e.g. 1–5 stars)
-- [RelativeTime](https://cascivo.com/context/relative-time.md) — Use when: Showing how long ago something happened in human terms ("3 minutes ago")
-- [ReorderList](https://cascivo.com/context/reorder-list.md) — Use when: A short, user-owned ordering such as playlist tracks, form fields, or dashboard cards
-- [Resizable](https://cascivo.com/context/resizable.md) — Use when: Letting users reallocate space between two adjacent regions, e.g. an editor and a preview
-- [ScrollArea](https://cascivo.com/context/scroll-area.md) — Use when: Constraining a region to a fixed height/width with overflow scrolling
-- [Search](https://cascivo.com/context/search.md) — Use when: A query field that filters or searches content, with a built-in clear button and debounced onSearch
-- [Cta](https://cascivo.com/context/section/cta.md) — Use when: A call-to-action band with title, description, and centered actions
-- [FeatureGrid](https://cascivo.com/context/section/feature-grid.md) — Use when: A feature section laying out items in an auto-fitting grid
-- [Hero](https://cascivo.com/context/section/hero.md) — Use when: The primary page intro with eyebrow, title, description, actions, and media
-- [MediaMasonry](https://cascivo.com/context/section/media-masonry.md) — Use when: A full-width media gallery section with masonry packing
-- [PageFooter](https://cascivo.com/context/section/page-footer.md) — Use when: A site footer with grouped link columns and a brand/meta bottom row
-- [StatsBand](https://cascivo.com/context/section/stats-band.md) — Use when: A horizontal KPI strip with optional deltas and inline sparkline trends
-- [SegmentedControl](https://cascivo.com/context/segmented-control.md) — Use when: A compact inline single choice among a few mutually exclusive options (2–5) such as view modes or time ranges
-- [Select](https://cascivo.com/context/select.md) — Use when: Choosing exactly one value from a known, finite list inside a form
-- [Separator](https://cascivo.com/context/separator.md) — Use when: Dividing groups of content within a section or menu
-- [Sheet](https://cascivo.com/context/sheet.md) — Use when: Showing secondary content or a form in a panel that slides in from a screen edge
-- [ShellHeader](https://cascivo.com/context/shell-header.md) — Use when: Building console/admin app chrome with brand, dropdown nav, and global icon actions
-- [SideNav](https://cascivo.com/context/side-nav.md) — Use when: Persistent primary navigation along the side of an app shell
-- [Skeleton](https://cascivo.com/context/skeleton.md) — Use when: Indicating loading by mirroring the shape of the content that will appear
-- [SkipNav](https://cascivo.com/context/skip-nav.md) — Use when: Letting keyboard users jump past repeated navigation to the main content
-- [Slider](https://cascivo.com/context/slider.md) — Use when: Selecting a value within a continuous or stepped numeric range where approximate adjustment is fine
-- [Spinner](https://cascivo.com/context/spinner.md) — Use when: Indicating indeterminate work where duration and progress are unknown
-- [Stack](https://cascivo.com/context/stack.md) — Use when: Card pile UI where depth and layering should be visible
-- [Stat](https://cascivo.com/context/stat.md) — Use when: Highlighting a single key metric with a clear label
-- [Status](https://cascivo.com/context/status.md) — Use when: Communicating the live state of a system or entity (operational, deploying, down)
-- [Steps](https://cascivo.com/context/steps.md) — Use when: Checkout flows where the user moves through a fixed sequence of screens
-- [StructuredList](https://cascivo.com/context/structured-list.md) — Use when: Presenting a set of related records in aligned columns the user scans top to bottom
-- [Swap](https://cascivo.com/context/swap.md) — Use when: Theme toggles where an icon animates between two states (sun/moon)
-- [SwipeItem](https://cascivo.com/context/swipe-item.md) — Use when: List rows on touch surfaces where secondary actions (archive, delete) should hide until swiped
-- [Switcher](https://cascivo.com/context/switcher.md) — Use when: Listing sibling apps/products the user can switch between
-- [Tabs](https://cascivo.com/context/tabs.md) — Use when: Switching between peer panels of related content in the same context
-- [Tag](https://cascivo.com/context/tag.md) — Use when: Labeling, categorizing, or filtering content with a compact chip
-- [TagsInput](https://cascivo.com/context/tags-input.md) — Use when: Collecting an open-ended set of free-text values the user types themselves (keywords, emails, labels)
-- [Text](https://cascivo.com/context/text.md) — Use when: Rendering body copy, paragraphs, and inline text in app UI
-- [Textarea](https://cascivo.com/context/textarea.md) — Use when: Capturing multi-line free text such as messages, descriptions, or comments
-- [Tile](https://cascivo.com/context/tile.md) — Use when: A visually rich, clickable choice card in a single- or multi-select group
-- [TimePicker](https://cascivo.com/context/time-picker.md) — Use when: Capturing a time of day (HH:mm) in a form, such as a meeting or reminder time
-- [Timeline](https://cascivo.com/context/timeline.md) — Use when: Showing an ordered sequence of events over time (activity feeds, order tracking)
-- [Toast](https://cascivo.com/context/toast.md) — Use when: Confirming that a background or just-completed action succeeded or failed (e.g. "Saved")
-- [Toc](https://cascivo.com/context/toc.md) — Use when: Long-form pages (docs, articles) that benefit from in-page jump links
-- [Toggle](https://cascivo.com/context/toggle.md) — Use when: Flipping a single binary setting that takes effect immediately (e.g. notifications on/off)
-- [ToggleGroup](https://cascivo.com/context/toggle-group.md) — Use when: Choosing one value from a small, mutually exclusive set that should stay visible (type="single")
-- [Toggletip](https://cascivo.com/context/toggletip.md) — Use when: Revealing brief supplementary information on demand when the user clicks an info affordance
-- [Tooltip](https://cascivo.com/context/tooltip.md) — Use when: Labeling an icon-only control or clarifying a terse element on hover or focus
-- [TreeView](https://cascivo.com/context/tree-view.md) — Use when: Showing nested, parent/child data the user expands and collapses (file trees, org charts, nav)
-- [User](https://cascivo.com/context/user.md) — Use when: Showing a person with their name and a secondary line (email, role) next to an avatar
-- [VirtualList](https://cascivo.com/context/virtual-list.md) — Use when: Lists long enough that rendering every row costs noticeable time or memory (roughly a thousand rows and up)
-- [VisuallyHidden](https://cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
-- [WheelPicker](https://cascivo.com/context/wheel-picker.md) — Use when: Touch surfaces picking one value from a short, ordered, homogeneous range — an hour, a minute, a unit
+When-to-use / when-not-to-use for any entry: https://cascivo.com/context/<name>.md (all of them inline in llms-full.txt).
 
 _Generated: 2026-09-19 from registry v1.3.1_

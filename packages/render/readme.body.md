@@ -1,11 +1,11 @@
-A runtime that turns a plain **JSON config into live cascivo UI**. `CascadeView` takes a `ViewConfig` object and renders the real components — so AI agents (and no-code tooling) can emit data instead of writing TSX.
+A runtime that turns a plain **JSON config into live cascivo UI**. `CascivoView` takes a `ViewConfig` object and renders the real components — so AI agents (and no-code tooling) can emit data instead of writing TSX.
 
 ## Usage
 
 A `ViewConfig` is named regions of component nodes; each node names a component (`component`), plus optional `props`, `children`, data bindings, and event wiring:
 
 ```tsx
-import { CascadeView, type ViewConfig } from '@cascivo/render'
+import { CascivoView, type ViewConfig } from '@cascivo/render'
 
 const view: ViewConfig = {
   view: {
@@ -34,7 +34,7 @@ const view: ViewConfig = {
 
 export function App() {
   return (
-    <CascadeView
+    <CascivoView
       config={view}
       data={{ count: 42 }}
       actions={{ invite: () => console.log('invite') }}

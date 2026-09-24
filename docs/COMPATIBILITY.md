@@ -97,7 +97,7 @@ import '@cascivo/tokens/functions.css' // Chrome 133+ progressive enhancement
 
 ## Package compatibility
 
-The runtime packages are `1.x` and covered by semver. The nine packages that share
+The runtime packages are `1.x` and covered by semver. The ten packages that share
 `@cascivo/core` release in lockstep — install them at the same version. See
 [UPGRADING.md](./UPGRADING.md#which-packages-are-covered) for which packages are `1.x` and which
 tooling packages are still `0.x`.

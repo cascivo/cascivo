@@ -278,9 +278,9 @@ the order it is usually asked.
 
 **What is stable.** Every package an application depends on at runtime is on `1.x` and
 covered by semver — see the [stability contract](/docs/upgrading.md#the-stability-contract) for
-exactly what that promise covers and what it does not. The nine packages that share
+exactly what that promise covers and what it does not. The ten packages that share
 `@cascivo/core` (`core`, `react`, `charts`, `editor`, `flow`, `i18n`, `storage`, `ai`,
-`text`) release in lockstep at one version, so a mismatched pair cannot be installed by
+`text`, `render`) release in lockstep at one version, so a mismatched pair cannot be installed by
 accident; `cascivo doctor` flags one if it happens anyway.
 
 **Why some numbers still differ.** `@cascivo/tokens`, `@cascivo/themes`, `@cascivo/icons` and

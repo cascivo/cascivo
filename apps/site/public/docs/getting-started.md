@@ -45,7 +45,7 @@ When that renders, decide the rest:
 ### Which versions go together
 
 - The packages that share `@cascivo/core` — `core`, `react`, `charts`, `editor`, `flow`,
-  `i18n`, `storage`, `ai`, `text` — release together. **Install them all at the same
+  `i18n`, `storage`, `ai`, `text`, `render` — release together. **Install them all at the same
   version.**
 - `@cascivo/themes`, `@cascivo/tokens`, `@cascivo/icons` and the `cascivo` CLI have their own
   version numbers. Any current `1.x` works with the rest.
@@ -183,7 +183,7 @@ component, and docspack to answer a "how do I…" question about one.
   `track` — Vercel/Datadog/Trade-Republic/Stripe/Linear-style consoles).
 
 If you're building a dashboard/console page specifically, the
-`cascivo:design-page` Claude Code skill and its component recipe are the
+`cascivo-design-page` Claude Code skill and its component recipe are the
 fastest path — see [Where to go next](#where-to-go-next).
 
 ---

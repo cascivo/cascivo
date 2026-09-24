@@ -382,7 +382,7 @@ because they are one code path. Building it later means building the harness twi
 | **1** | Token resolver (oklch → sRGB, `var()` flattening, per-theme JSON, subsuming §1.5) + vendored caniemail snapshot | Golden file per theme; `email:tokens:check`; contrast re-check against resolved hex |
 | **2** | ~20 primitives **and** the preview app, together. The iframe harness lands here. | HTML snapshot per component × theme; Layer 2 invariants |
 | **3** | `renderEmail()` + `stats` + `emailComponentMap` (`ViewConfig` → email) + all four test layers | `email:size:check`; Layers 1–4 green |
-| **4** | `cascivo add email/*`, templates (`welcome`, `password-reset`, `receipt`, `digest`, `invite`), MCP `scaffold_email`, `cascivo:email` skill, docs, React Email interop adapter | `docs-routes:check`, `meta:check`, `doc-urls:check` |
+| **4** | `cascivo add email/*`, templates (`welcome`, `password-reset`, `receipt`, `digest`, `invite`), MCP `scaffold_email`, `cascivo-email` skill, docs, React Email interop adapter | `docs-routes:check`, `meta:check`, `doc-urls:check` |
 | **5** | Release-time Outlook Windows checklist; quirk regressions as reported | Manual, per release |
 
 Primitive set for Phase 2:

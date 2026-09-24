@@ -6290,6 +6290,69 @@
           "ZoomOut": "declare const ZoomOut: { ({ size, color, ...props }: IconProps): import(\"react\").JSX.Element; displayName: string; }"
         }
       }
+    },
+    "@cascivo/render": {
+      ".": {
+        "values": ["CascadeView", "CascivoView", "validateView"],
+        "types": [
+          "ActionRef",
+          "CascadeViewProps",
+          "CascivoViewProps",
+          "ComponentNode",
+          "DataRef",
+          "PropValue",
+          "TranslationRef",
+          "ValidationError",
+          "ViewConfig"
+        ],
+        "declarations": {
+          "ActionRef": "type = `$actions.${string}`",
+          "CascadeView": "declare const CascadeView: typeof CascivoView",
+          "CascadeViewProps": "type = CascivoViewProps",
+          "CascivoView": "declare function CascivoView({ config, data, actions, onInvalid }: CascivoViewProps): React.ReactElement | null",
+          "CascivoViewProps": {
+            "config": "ViewConfig | Signal<ViewConfig>",
+            "data?": "Record<string, unknown>",
+            "actions?": "Record<string, (...args: unknown[]) => unknown>",
+            "onInvalid?": "'throw' | 'render'"
+          },
+          "ComponentNode": {
+            "component": "string",
+            "props?": "Record<string, PropValue>",
+            "bind?": "Record<string, DataRef | StateRef>",
+            "events?": "Record<string, ActionRef | StateActionRef>",
+            "children?": "ComponentNode[] | string | TranslationRef"
+          },
+          "DataRef": "type = `$data.${string}`",
+          "PropValue": "type = string | number | boolean | null | TranslationRef | PropValue[] | { [key: string]: PropValue; }",
+          "TranslationRef": {
+            "$t": "string",
+            "params?": "Record<string, string | number>"
+          },
+          "validateView": "declare function validateView(config: unknown): { valid: boolean; errors: ValidationError[]; }",
+          "ValidationError": {
+            "path": "string",
+            "message": "string"
+          },
+          "ViewConfig": {
+            "$schema?": "string",
+            "version?": "1",
+            "state?": "Record<string, StateValue>",
+            "view": "{ regions: Record<string, ComponentNode[]>; }"
+          }
+        }
+      },
+      "./text": {
+        "values": ["viewToMarkdown"],
+        "types": ["ViewToMarkdownOptions"],
+        "declarations": {
+          "viewToMarkdown": "declare function viewToMarkdown(config: ViewConfig, options?: ViewToMarkdownOptions): string",
+          "ViewToMarkdownOptions": {
+            "data?": "Record<string, unknown>",
+            "text?": "TextOptions"
+          }
+        }
+      }
     }
   }
 }

@@ -81,10 +81,10 @@ These may change in any release, including a patch:
 The `1.x` line covers the packages an application depends on directly or transitively at
 runtime. Tooling packages stay on `0.x` until their own surfaces settle, and say so on npm.
 
-| Line  | Packages                                                                                                                                                                                                                                                                     |
-| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `1.x` | `@cascivo/react`, `@cascivo/core`, `@cascivo/charts`, `@cascivo/editor`, `@cascivo/flow`, `@cascivo/i18n`, `@cascivo/storage`, `@cascivo/ai`, `@cascivo/text` (the lockstep family below), plus `@cascivo/tokens`, `@cascivo/themes`, `@cascivo/icons` and the `cascivo` CLI |
-| `0.x` | `@cascivo/mcp`, `@cascivo/registry`, `@cascivo/docs`, `@cascivo/docspack`, `@cascivo/eslint-config`, `@cascivo/eslint-plugin`, `@cascivo/vite-plugin`, `@cascivo/platform`, `@cascivo/email`                                                                                 |
+| Line  | Packages                                                                                                                                                                                                                                                                                        |
+| ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `1.x` | `@cascivo/react`, `@cascivo/core`, `@cascivo/charts`, `@cascivo/editor`, `@cascivo/flow`, `@cascivo/i18n`, `@cascivo/storage`, `@cascivo/ai`, `@cascivo/text`, `@cascivo/render` (the lockstep family below), plus `@cascivo/tokens`, `@cascivo/themes`, `@cascivo/icons` and the `cascivo` CLI |
+| `0.x` | `@cascivo/mcp`, `@cascivo/registry`, `@cascivo/docs`, `@cascivo/docspack`, `@cascivo/eslint-config`, `@cascivo/eslint-plugin`, `@cascivo/vite-plugin`, `@cascivo/platform`, `@cascivo/email`                                                                                                    |
 
 `@cascivo/platform` in particular is an early experiment in platform-idiomatic geometry and
 motion; treat its API as unsettled. `@cascivo/email-preview` is a development-only preview
@@ -127,9 +127,9 @@ release in that package's `releases` array newer than `0.2.1`.
 
 ## The `@cascivo/core` family versions in lockstep
 
-Nine packages release together at one version: **`@cascivo/core`, `@cascivo/react`,
+Ten packages release together at one version: **`@cascivo/core`, `@cascivo/react`,
 `@cascivo/charts`, `@cascivo/editor`, `@cascivo/flow`, `@cascivo/i18n`, `@cascivo/storage`,
-`@cascivo/ai`, `@cascivo/text`**.
+`@cascivo/ai`, `@cascivo/text`, `@cascivo/render`**.
 
 **What this means for you: pin them all to the same version.** If `@cascivo/react` is
 `1.3.1`, so is `@cascivo/charts`. A mismatched pair is not a supported combination, and

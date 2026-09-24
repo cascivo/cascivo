@@ -414,7 +414,7 @@ cascivo/
 │   └── examples/
 │       ├── react-vite/ # Vite + React example app
 │       └── react-next/ # Next.js App Router example (RSC demo)
-├── skills/             # Claude Code skills — cascivo:add, cascivo:design-page, cascivo:create-theme, cascivo:extend
+├── skills/             # Claude Code skills — cascivo-add, cascivo-design-page, cascivo-create-theme, cascivo-extend
 ├── scripts/
 │   ├── factory/        # Dark factory — in-session agent loop + backlog.json (component spec queue)
 │   └── registry/       # registry.json generation + GitHub raw URL map
@@ -488,8 +488,8 @@ export const meta: ComponentMeta = {
 | Surface            | Package                        | Purpose                                                                                                                       |
 | ------------------ | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
 | Component manifest | `<name>.meta.ts` per component | Ground truth for all AI surfaces                                                                                              |
-| MCP server         | `@cascivo/mcp`                 | 23 tools, e.g. `list_components`, `get_component`, `scaffold_view`, `validate_view`, `add_to_project`                         |
-| Claude Code skills | `skills/`                      | `cascivo:add`, `cascivo:design-page`, `cascivo:create-theme`, `cascivo:extend`                                                |
+| MCP server         | `@cascivo/mcp`                 | 24 tools, e.g. `list_components`, `get_component`, `scaffold_view`, `validate_view`, `add_to_project`                         |
+| Claude Code skills | `skills/`                      | `cascivo-add`, `cascivo-design-page`, `cascivo-create-theme`, `cascivo-extend`                                                |
 | Data-driven docs   | `apps/site/` (docs routes)     | Hand-authored TSX pages render props/tokens/examples live from `registry.json` at runtime — no markdown/HTML is pre-generated |
 | Registry manifest  | `registry.json`                | Machine-readable index — CLI + MCP + docs all read from this                                                                  |
 

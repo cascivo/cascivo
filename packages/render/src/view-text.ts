@@ -2,11 +2,11 @@ import { toMarkdown } from '@cascivo/text'
 import type { TextOptions } from '@cascivo/text'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { CascadeView } from './cascade-view'
+import { CascivoView } from './cascivo-view'
 import type { ViewConfig } from './types'
 
 export interface ViewToMarkdownOptions {
-  /** The host data a `$data.*` binding resolves against, exactly as `<CascadeView>` takes it. */
+  /** The host data a `$data.*` binding resolves against, exactly as `<CascivoView>` takes it. */
   data?: Record<string, unknown>
   /** Serialization options, forwarded to `@cascivo/text`. */
   text?: TextOptions
@@ -26,7 +26,7 @@ export interface ViewToMarkdownOptions {
  */
 export function viewToMarkdown(config: ViewConfig, options?: ViewToMarkdownOptions): string {
   const html = renderToStaticMarkup(
-    createElement(CascadeView, {
+    createElement(CascivoView, {
       config,
       ...(options?.data === undefined ? {} : { data: options.data }),
     }),

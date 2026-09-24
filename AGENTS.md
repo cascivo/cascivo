@@ -26,12 +26,12 @@ CSS-in-JS** — and made reactive with Preact Signals via `@cascivo/core` — **
   `apps/site/public/llms/`).
 - **`component.meta.ts`** — per-component manifest beside each component in
   `packages/components/src/<name>/`.
-- **`skills/`** — Claude Code skills (`cascivo:add`, `cascivo:design-page`,
-  `cascivo:create-theme`, `cascivo:extend`).
+- **`skills/`** — Claude Code skills (`cascivo-add`, `cascivo-design-page`,
+  `cascivo-create-theme`, `cascivo-extend`).
 
 ## Generating UI from JSON
 
-`@cascivo/render` renders a `ViewConfig` (JSON) via `<CascadeView />`. To produce
+`@cascivo/render` renders a `ViewConfig` (JSON) via `<CascivoView />`. To produce
 one reliably: call `get_view_grammar` for the system prompt + allowed vocabulary,
 emit JSON bounded to that vocabulary, then `validate_view` it (checks component
 names, prop types/enums, and `$data.`/`$actions.` refs) before rendering.

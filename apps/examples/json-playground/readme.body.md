@@ -1,1 +1,1 @@
-Cascade JSON Playground — live editor for `view.v1.json` configs with `CascadeView` rendering. Used to prototype agent-generated layouts interactively.
+Cascade JSON Playground — live editor for `view.v1.json` configs with `CascivoView` rendering. Used to prototype agent-generated layouts interactively.

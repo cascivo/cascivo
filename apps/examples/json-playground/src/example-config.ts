@@ -19,7 +19,7 @@ export const exampleConfig: ViewConfig = {
         {
           component: 'Alert',
           props: { variant: 'info', title: 'AI-generated layout' },
-          children: 'This UI was described in JSON and rendered live by CascadeView.',
+          children: 'This UI was described in JSON and rendered live by CascivoView.',
         },
         { component: 'Separator' },
         {

@@ -1238,6 +1238,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('- `select_component` — rank components by a natural-language need')
   lines.push('- `scaffold_view` — natural language -> JSON view config')
   lines.push('- `validate_view` — validate a view config against the schema')
+  lines.push(
+    '- `render_view_as_markdown` — render a view config and read back what it says (needs `@cascivo/render`)',
+  )
   lines.push('- `add_to_project` — install components into the user project')
   lines.push('')
   lines.push('Two MCP servers, two jobs — run both if your client allows it:')
@@ -1256,7 +1259,7 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   )
   lines.push(`fetch ${DOCS}/context/<name>.md for the full when-to-use / when-not-to-use of each.`)
   lines.push('')
-  lines.push('## Component authoring rules (for cascivo:extend / custom components)')
+  lines.push('## Component authoring rules (for cascivo-extend / custom components)')
   lines.push('')
   lines.push(
     'These constrain code you write INSIDE a component you author or copy-paste-and-edit — not the app',
@@ -1369,17 +1372,11 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     lines.push('')
   }
 
-  lines.push('## Component intent summaries (use when…)')
-  lines.push('')
-  for (const entry of sorted) {
-    const firstWhenToUse = entry.meta?.intent?.whenToUse?.[0]
-    if (firstWhenToUse) {
-      lines.push(
-        `- [${entry.meta?.name ?? entry.name}](${DOCS}/context/${entry.name}.md) — Use when: ${firstWhenToUse}`,
-      )
-    }
-  }
-
+  // The one-line "use when" summaries live in llms-full.txt, not here: they repeated every
+  // index entry and were a third of this file, which is meant to be the cheap first fetch.
+  lines.push(
+    `When-to-use / when-not-to-use for any entry: ${DOCS}/context/<name>.md (all of them inline in llms-full.txt).`,
+  )
   lines.push('')
   lines.push(`_Generated: ${registry.generatedAt} from registry v${registry.version}_`)
   lines.push('')
@@ -1401,6 +1398,19 @@ function generateLlmsFullTxt(
 ): string {
   const sorted = [...entries].sort((a, b) => a.name.localeCompare(b.name))
   const parts: string[] = [llmsTxt.trimEnd(), '']
+  parts.push('---')
+  parts.push('')
+  parts.push('## Component intent summaries (use when…)')
+  parts.push('')
+  for (const entry of sorted) {
+    const firstWhenToUse = entry.meta?.intent?.whenToUse?.[0]
+    if (firstWhenToUse) {
+      parts.push(
+        `- [${entry.meta?.name ?? entry.name}](https://cascivo.com/context/${entry.name}.md) — Use when: ${firstWhenToUse}`,
+      )
+    }
+  }
+  parts.push('')
   parts.push('---')
   parts.push('')
   parts.push('# Full component reference (inlined)')

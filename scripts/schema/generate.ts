@@ -128,8 +128,8 @@ const componentBranches = registry.components.map((entry) => {
 const schema = {
   $schema: 'https://json-schema.org/draft/2020-12/schema',
   $id: SCHEMA_ID,
-  title: 'CascadeView v1 Config',
-  description: 'JSON-configured UI layout for @cascivo/render <CascadeView />',
+  title: 'CascivoView v1 Config',
+  description: 'JSON-configured UI layout for @cascivo/render <CascivoView />',
   type: 'object',
   properties: {
     $schema: { type: 'string' },
@@ -191,7 +191,7 @@ console.log(`  Components: ${componentNames.length}`)
 
 // ---------------------------------------------------------------------------
 // Browser-safe per-component prop schemas for the render-time conformance
-// validator (v40 T2). `validateView` runs in the browser via <CascadeView />,
+// validator (v40 T2). `validateView` runs in the browser via <CascivoView />,
 // so it cannot read registry.json from disk — this emits a plain TS object.
 // ---------------------------------------------------------------------------
 

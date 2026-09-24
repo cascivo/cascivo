@@ -85,7 +85,7 @@ const doc = useLiveMarkdown(stage)
 
 The JSON view runtime exposes `viewToMarkdown(config, { data })` on its `/text` subpath, which
 turns a `ViewConfig`
-into the same document its `<CascadeView>` would produce on screen. It renders the real
+into the same document its `<CascivoView>` would produce on screen. It renders the real
 components and serializes their output rather than walking `ComponentNode`s, so it cannot
 drift from what the components actually render.
 

@@ -1,6 +1,6 @@
 'use client'
 import { signal, useSignals } from '@cascivo/core'
-import { CascadeView } from '@cascivo/render'
+import { CascivoView } from '@cascivo/render'
 import type { ViewConfig } from '@cascivo/render'
 import React, { useRef } from 'react'
 import { exampleConfigJson } from './example-config'
@@ -169,7 +169,7 @@ function App() {
             PREVIEW
           </div>
           <div style={{ flex: 1, padding: 'var(--cascivo-space-6)', overflowY: 'auto' }}>
-            {configSignal.value && <CascadeView config={configSignal.value} onInvalid="render" />}
+            {configSignal.value && <CascivoView config={configSignal.value} onInvalid="render" />}
           </div>
         </div>
       </div>

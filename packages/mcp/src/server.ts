@@ -16,6 +16,7 @@ import {
 import { generateThemeCss } from './theme.js'
 import { scaffoldPage } from './scaffold.js'
 import { validateView } from './validate.js'
+import { loadViewToMarkdown } from './view-markdown.js'
 import { scaffoldView } from './scaffold-view.js'
 import { buildGrammar, formatGrammar } from './grammar.js'
 import { buildGenerationPrompt } from './prompt.js'
@@ -356,7 +357,7 @@ export function createServer(options: ServerOptions = {}): McpServer {
     {
       title: 'Validate view config',
       description:
-        'Validate a CascadeView JSON config against the registry. Returns errors with exact paths.',
+        'Validate a CascivoView JSON config against the registry. Returns errors with exact paths.',
       inputSchema: {
         config: z.record(z.string(), z.unknown()).describe('The ViewConfig object to validate'),
       },
@@ -365,6 +366,34 @@ export function createServer(options: ServerOptions = {}): McpServer {
       const componentNames = new Set(registry.components.map((c) => c.meta.name))
       const result = validateView(config, componentNames)
       return json(result)
+    },
+  )
+
+  server.registerTool(
+    'render_view_as_markdown',
+    {
+      title: 'Render view as Markdown',
+      description:
+        'Render a ViewConfig with the real components and return what it says as Markdown — headings, labels, values, table rows, chart data — so you can check a generated view before showing it. Validates first. Needs @cascivo/render installed in the project.',
+      inputSchema: {
+        config: z.record(z.string(), z.unknown()).describe('The ViewConfig object to render'),
+        data: z
+          .record(z.string(), z.unknown())
+          .optional()
+          .describe('Host data for $data.* bindings, as <CascivoView data> takes it'),
+      },
+    },
+    async ({ config, data }) => {
+      const componentNames = new Set(registry.components.map((c) => c.meta.name))
+      const validation = validateView(config, componentNames)
+      if (!validation.valid) return json(validation)
+      const loaded = await loadViewToMarkdown(process.cwd())
+      if (!loaded.ok) return error(loaded.reason)
+      try {
+        return text(loaded.viewToMarkdown(config, data === undefined ? undefined : { data }))
+      } catch (err) {
+        return error(`Rendering the view failed: ${(err as Error).message}`)
+      }
     },
   )
 

@@ -1,9 +1,9 @@
 ---
-name: cascivo:extend
+name: cascivo-extend
 description: Scaffold a new component in a user project following cascivo authoring rules — signals not hooks, tokens-only CSS, FSM only when justified.
 ---
 
-# cascivo:extend
+# cascivo-extend
 
 ## When to use
 
