@@ -69,6 +69,8 @@ These may change in any release, including a patch:
 - Older majors are unsupported. `cascivo doctor --drift` compares your installed versions
   against [`breaking-changes.json`](#breaking-changesjson--for-machines) and tells you where
   you stand.
+- Minors are batched (at most one every two weeks) and a major ships only after a four-week
+  release candidate — the full release policy is in [`GOVERNANCE.md`](./GOVERNANCE.md).
 
 ### Which packages are covered
 

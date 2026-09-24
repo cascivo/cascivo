@@ -140,3 +140,20 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
+
+      # One CycloneDX SBOM per published package, attached to that package's GitHub release
+      # (changesets tags them `<name>@<version>`). Production dependencies only — what an
+      # adopter's install actually pulls in. npm provenance covers the build; this covers
+      # what went into it.
+      - name: Attach SBOMs to the GitHub releases
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISHED: ${{ steps.changesets.outputs.publishedPackages }}
+        run: |
+          mkdir -p sbom
+          echo "$PUBLISHED" | jq -r '.[] | "\(.name) \(.version)"' | while read -r name version; do
+            file="sbom/$(echo "$name" | tr -d '@' | tr '/' '-')-$version.cdx.json"
+            pnpm --filter "$name" sbom --sbom-format cyclonedx --prod --out "$file"
+            gh release upload "$name@$version" "$file" --clobber
+          done

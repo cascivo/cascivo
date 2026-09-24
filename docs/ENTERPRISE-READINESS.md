@@ -301,6 +301,11 @@ add` (warned before the copy), the MCP tools, the docs site and `llms.txt` all r
 your review, and upgrades are a diff you accept. The worst case for a component you have
 already copied is that you stop upgrading it.
 
+**The rest of the procurement checklist** — who maintains cascivo (one person, with AI agents
+under the same CI gates), the release cadence, support windows, npm provenance, SBOMs, and the
+fact that there is no VPAT or paid support yet — is answered in
+[`GOVERNANCE.md`](./GOVERNANCE.md).
+
 ---
 
 ## The meta-lesson
