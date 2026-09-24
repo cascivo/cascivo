@@ -1,19 +1,15 @@
-import { useControllableSignal, useSignals } from '@cascivo/core'
+import { useSignalState } from '@cascivo/core'
 import { Button, Card, CardContent, CardHeader, CardTitle, Toggle } from '@cascivo/react'
 
 const THEMES = ['light', 'dark', 'warm'] as const
 type Theme = (typeof THEMES)[number]
 
 export default function App() {
-  // Load-bearing line 2: React apps have no signals compiler transform, so any
-  // component that reads `signal.value` during render must call useSignals() first.
-  useSignals()
-
-  // Writes go through a setter, not `signal.value = …`: the React Compiler refuses to compile a
-  // component that assigns to a value returned from a hook. test:compiler runs this app under
-  // the compiler to keep that true.
-  const [theme, setTheme] = useControllableSignal<Theme>({ defaultValue: 'light' })
-  const [notifications, setNotifications] = useControllableSignal({ defaultValue: true })
+  // Load-bearing line 2: hold state with useSignalState and write through its setter. The
+  // hook subscribes this component (no useSignals() needed), and the setter — unlike
+  // `signal.value = …` — compiles under the React Compiler; test:compiler keeps that true.
+  const [theme, setTheme] = useSignalState<Theme>('light')
+  const [notifications, setNotifications] = useSignalState(true)
 
   return (
     // Load-bearing line 3: data-theme activates a cascivo theme for this subtree.

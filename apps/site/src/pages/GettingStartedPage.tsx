@@ -139,13 +139,27 @@ import '@cascivo/themes/dark.css'`}
       </section>
 
       <section style={cardStyle}>
-        <h2>State: call useSignals() in your own components</h2>
+        <h2>State in your own components</h2>
         <p>
-          cascivo's components call <code>useSignals()</code> internally, so everything above works
-          with no setup. Components <strong>you</strong> write are not compiled by cascivo's build —
-          so in a React app with no Babel signals transform (Vite + React, Next.js, CRA), a
-          component that reads <code>signal.value</code> during render never re-renders when that
-          signal changes.
+          Hold local state with <code>useSignalState</code> and write it through the setter. The
+          hook subscribes your component, and the setter — unlike assigning{' '}
+          <code>count.value = …</code> — compiles under the React Compiler and passes{' '}
+          <code>react-hooks/immutability</code>.
+        </p>
+        <CodeBlock
+          lang="tsx"
+          code={`import { useSignalState } from '@cascivo/core' // or '@cascivo/react'
+
+function Counter() {
+  const [count, setCount] = useSignalState(0)
+  return <Button onClick={() => setCount((n) => n + 1)}>Clicked {count.value} times</Button>
+}`}
+        />
+        <p>
+          A signal you did not get from a cascivo hook — a module-level <code>signal()</code>, or
+          one passed in as a prop — does not subscribe you. In a React app with no Babel signals
+          transform (Vite + React, Next.js), a component that reads it during render never
+          re-renders when it changes.
         </p>
         <p>
           There is no error and no warning. The symptom is distinctive:{' '}
@@ -154,12 +168,13 @@ import '@cascivo/themes/dark.css'`}
         </p>
         <CodeBlock
           lang="tsx"
-          code={`import { useSignal, useSignals } from '@cascivo/core'
+          code={`import { signal, useSignals } from '@cascivo/core'
+
+const count = signal(0) // module-level, so no hook subscribes you
 
 function Counter() {
   useSignals()          // ← first statement, or this never re-renders
-  const count = useSignal(0)
-  return <Button onClick={() => count.value++}>Clicked {count} times</Button>
+  return <Button onClick={() => { count.value++ }}>Clicked {count.value} times</Button>
 }`}
         />
         <p style={subtle}>

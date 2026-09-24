@@ -71,7 +71,9 @@ The burger in ShellHeader toggles the SideNav automatically.
 ### Controlled open
 
 ```jsx
-<AppShell header={header} nav={nav} open={open.value} onOpenChange={(v) => (open.value = v)}>
+const [open, setOpen] = useSignalState(false)
+
+<AppShell header={header} nav={nav} open={open.value} onOpenChange={setOpen}>
   …
 </AppShell>
 ```

@@ -599,6 +599,12 @@ React apps — `apps/examples/*`, `apps/bench/*` — get NO Babel signals transf
 signal writes. Symptom: handlers fire, UI freezes (toggles that don't toggle, modals
 that don't open).
 
+In app code (the examples, and everything the docs show adopters), hold local state with
+`const [x, setX] = useSignalState(initial)` and write through `setX` — it subscribes for you,
+and unlike `x.value = …` it compiles under the React Compiler and passes
+`react-hooks/immutability` (`pnpm compiler:check`). Assigning a **module-level** `signal()`
+is fine. Library component source is exempt: it may keep writing `.value` in handlers.
+
 `useEffect` is banned in cascade components without exception. Any async DOM side effect (adding event listeners, calling imperative DOM methods like `showModal()`) must use `useSignalEffect` instead.
 
 `useRef` is allowed only for direct DOM element references (`useRef<HTMLElement>(null)`). It is not a state workaround.

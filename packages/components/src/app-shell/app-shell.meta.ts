@@ -89,7 +89,7 @@ export const meta: ComponentMeta = {
     },
     {
       title: 'Controlled open',
-      code: '<AppShell header={header} nav={nav} open={open.value} onOpenChange={(v) => (open.value = v)}>\n  …\n</AppShell>',
+      code: 'const [open, setOpen] = useSignalState(false)\n\n<AppShell header={header} nav={nav} open={open.value} onOpenChange={setOpen}>\n  …\n</AppShell>',
     },
   ],
   dependencies: ['@cascivo/core'],

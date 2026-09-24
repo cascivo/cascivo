@@ -34,19 +34,21 @@ pnpm exec vp run @cascivo/example-react-vite#dev
    <main data-theme="dark">…</main>
    ```
 
-3. **`useSignals()` as the first statement of any React component that reads `signal.value`**
-   (`src/App.tsx`). React apps have no signals compiler transform — without it the component never
-   re-renders on signal writes:
+3. **State with `useSignalState`, written through its setter** (`src/App.tsx`). The hook subscribes
+   the component for you, and a setter — unlike `signal.value = …` — compiles under the React
+   Compiler and passes `react-hooks/immutability` (`pnpm test:compiler` proves it on this app):
 
    ```tsx
-   import { useSignal, useSignals } from '@cascivo/core'
+   import { useSignalState } from '@cascivo/core'
 
    function App() {
-     useSignals()
-     const on = useSignal(false)
-     …
+     const [on, setOn] = useSignalState(false)
+     return <Toggle label="Notifications" checked={on.value} onValueChange={setOn} />
    }
    ```
+
+   A module-level `signal()` you read in render still needs `useSignals()` as the component's first
+   statement; the hooks do it for you.
 
 Note: this app aliases `@cascivo/*` imports to workspace source in `vite.config.ts` so it builds
 inside the monorepo without prebuilt `dist/` files. In your own app (installing from npm) you don't

@@ -64,14 +64,26 @@ subscribes — in tests the symptom is that handlers fire (spies are called) but
 assertions on the rendered output keep seeing the old UI:
 
 ```tsx
-import { useSignal, useSignals } from '@cascivo/core'
+import { signal, useSignals } from '@cascivo/core'
+
+const count = signal(0) // module-level: no hook subscribes you
 
 function Counter() {
   useSignals() // ← without this, the count below never updates on screen
-  const count = useSignal(0)
-  return <button onClick={() => count.value++}>{count.value}</button>
+  return (
+    <button
+      onClick={() => {
+        count.value++
+      }}
+    >
+      {count.value}
+    </button>
+  )
 }
 ```
+
+State from a cascivo hook subscribes you on its own — `const [count, setCount] =
+useSignalState(0)` needs no `useSignals()`. Write it through `setCount`, not `count.value = …`.
 
 If a test shows a click handler being invoked but the DOM frozen at its initial
 state, check `useSignals()` before anything else. (The same bug reproduces in
