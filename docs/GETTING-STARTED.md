@@ -1,5 +1,56 @@
 # Getting started with cascivo
 
+## Two minutes: a component on screen
+
+The fastest path is the prebuilt package. In any React 18+ app built with a bundler (Vite,
+Next.js, webpack):
+
+```sh
+pnpm add --save-exact @cascivo/react @cascivo/themes @preact/signals-react
+```
+
+```tsx
+import '@cascivo/themes/light-dark.css'
+import { Button, Card, CardContent } from '@cascivo/react'
+
+export function App() {
+  return (
+    <main data-theme="light">
+      <Card>
+        <CardContent>
+          <Button>It works</Button>
+        </CardContent>
+      </Card>
+    </main>
+  )
+}
+```
+
+That is the whole setup. The theme import and the `data-theme` attribute are the only
+required wiring — without them components render uncolored. Component CSS comes in with
+each import.
+
+When that renders, decide the rest:
+
+- **Want to own and edit the source?** Switch to [Path A (copy-paste via the CLI)](#path-a--copy-paste-via-the-cli).
+- **Components need state?** Read [State: call `useSignals()`](#state-call-usesignals-in-your-own-components) — in a React app, a component that reads a signal must subscribe or it will not re-render.
+- **Strict ESLint or the React Compiler?** Read [Your linter and the `signal.value = next` idiom](#your-linter-and-the-signalvalue--next-idiom) before your first lint run.
+
+### Which versions go together
+
+- The packages that share `@cascivo/core` — `core`, `react`, `charts`, `editor`, `flow`,
+  `i18n`, `storage`, `ai`, `text` — release together. **Install them all at the same
+  version.**
+- `@cascivo/themes`, `@cascivo/tokens`, `@cascivo/icons` and the `cascivo` CLI have their own
+  version numbers. Any current `1.x` works with the rest.
+- Packages still on `0.x` (`@cascivo/mcp`, `@cascivo/email`, the ESLint packages, …) are
+  tooling; they are not covered by the 1.x stability contract.
+
+The current pairs are in the [compatibility table](./COMPATIBILITY.md#package-compatibility),
+and `cascivo doctor` reports a mismatched install.
+
+---
+
 ## Step 0 — don't read this linearly if you don't have to
 
 This page plus the guides it links is ~2,000 lines, and three hands-on reports have now

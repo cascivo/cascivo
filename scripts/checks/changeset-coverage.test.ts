@@ -72,6 +72,9 @@ const NON_SHIPPING = [
   /\.stories\.[jt]sx?$/,
   /(^|\/)tsconfig[^/]*\.json$/,
   /(^|\/)vitest\.config\./,
+  // The email primitive gallery and its generator write only into apps/site and docs/ —
+  // nothing under packages/email/dist, which is all the package publishes ("files": ["dist"]).
+  /^packages\/email\/scripts\/(generate-primitives\.ts|lib\/gallery\.ts)$/,
 ]
 
 type Pkg = { name: string; dir: string; private: boolean }

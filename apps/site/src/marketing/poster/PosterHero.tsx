@@ -26,10 +26,9 @@ export function PosterHero() {
     <section className="pg-section pg-cols pg-cols--8-4" id="hero" aria-label="cascivo">
       <div className="pg-pad pg-hero-lead">
         {/* The eyebrow every other band already carries. It replaced a badge
-            reading "N components · N themes · MIT" — the ticker directly below
-            it and the footer both say that, so the hero said it a third time and
-            pushed the headline down for the privilege. */}
-        <p className="pg-eyebrow">01 / the pitch</p>
+            reading "N components · N themes · MIT" — the footer says that, so the
+            hero said it again and pushed the headline down for the privilege. */}
+        <p className="pg-eyebrow">01 / what it is</p>
         <h1 className="pg-display pg-display--hero">
           Own
           <br />
@@ -66,6 +65,38 @@ export function PosterHero() {
           </a>
         </p>
       </div>
+
+      {/* Proof before any argument: a real app built only from cascivo components, in
+          both first-party modes. Two stacked screenshots rather than a live mount, so the
+          hero costs no JavaScript; the link goes to the running example. */}
+      <figure className="pg-hero-shot">
+        <a className="pg-hero-shot-link" href="/examples/pulse">
+          <img
+            className="pg-hero-shot-img pg-hero-shot-img--back"
+            src="/hero/pulse-dark.webp"
+            alt=""
+            width={1440}
+            height={620}
+            loading="lazy"
+            decoding="async"
+          />
+          <img
+            className="pg-hero-shot-img pg-hero-shot-img--front"
+            src="/hero/pulse-light.webp"
+            alt="The pulse example app — an observability dashboard with KPI cards, SLO meters and latency charts, built from cascivo components. The light theme sits in front of the dark one."
+            width={1440}
+            height={620}
+            decoding="async"
+          />
+        </a>
+        <figcaption className="pg-hero-shot-caption pg-mono">
+          pulse · an observability dashboard built only from cascivo components · light and dark are
+          one <code>data-theme</code> apart ·{' '}
+          <a className="pg-hero-aside-link" href="/examples/pulse">
+            open the live example →
+          </a>
+        </figcaption>
+      </figure>
     </section>
   )
 }

@@ -75,8 +75,14 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
   '/guides/when-not-to-use': {
     title: 'When not to use cascivo — cascivo',
     description:
-      'An honest list of where cascivo is the wrong tool or only a forward bet: Chrome-leading CSS pilots, alpha tooling, React/Preact only, and modern-browsers-only support.',
+      'An honest list of where cascivo is the wrong tool or only a forward bet: a young one-maintainer project, a React lint exception for signals, two built-in locales, no Figma kit or VPAT yet, alpha tooling, React/Preact only, and modern browsers only.',
     ogTitle: 'When not to use cascivo',
+  },
+  '/guides/alternatives': {
+    title: 'cascivo and the alternatives — cascivo',
+    description:
+      'How cascivo compares to headless primitives (Base UI, React Aria, Radix), styled suites (MUI, Mantine, Chakra, Ant Design), Astryx and shadcn/ui — with a real reason to pick each one over cascivo.',
+    ogTitle: 'cascivo and the alternatives',
   },
   '/guides/faq': {
     title: 'Questions before you adopt cascivo — cascivo',
@@ -142,7 +148,7 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
   '/showcase': {
     title: 'Showcase — products built with cascivo',
     description:
-      'Nine real, shipped products built with the cascivo design system — Pagome (SEPA payment links), BPMN Kit (a BPMN diagram SDK), the Weeklyfoo Directory, u11g, Sharu, AI & me, kaihuman, Lumen & Logic, and Beleggo — proof the library holds up in production.',
+      'Nine real, shipped products built with the cascivo design system by its maintainer — Pagome (SEPA payment links), BPMN Kit (a BPMN diagram SDK), the Weeklyfoo Directory, u11g, Sharu, AI & me, kaihuman, Lumen & Logic, and Beleggo.',
     ogTitle: 'Built with cascivo',
   },
   '/ai': {
@@ -177,6 +183,7 @@ export const PRERENDER_ROUTES = [
   'guides/customization',
   'guides/use-cases',
   'guides/when-not-to-use',
+  'guides/alternatives',
   'guides/faq',
   'modern-css',
   'highlights',

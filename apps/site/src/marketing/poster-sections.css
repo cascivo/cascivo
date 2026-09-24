@@ -127,48 +127,54 @@
   margin-inline-start: 0.375rem;
 }
 
-/* ── Ticker ────────────────────────────────────────────────────────────── */
-
-.pg-ticker {
-  display: flex;
-  flex-wrap: wrap;
+/* Hero screenshot: two app captures stacked on one grid cell, the dark one set
+   back and offset so both modes read at a glance. Spans the full band under the
+   lead + stats row. */
+.pg-hero-shot {
+  margin: 0;
+  padding: var(--pg-pad-block) var(--pg-pad-inline);
+  background: var(--cascivo-color-surface);
 }
 
-.pg-ticker-item {
-  padding: 0.6875rem 1.375rem;
-  border-inline-end: 1px solid var(--cascivo-landing-hatch);
-  font-family: var(--cascivo-font-mono);
+@media (min-width: 64rem) {
+  .pg-hero-shot {
+    grid-column: 1 / -1;
+  }
+}
+
+.pg-hero-shot-link {
+  display: grid;
+}
+
+.pg-hero-shot-img {
+  grid-area: 1 / 1;
+  display: block;
+  inline-size: 94%;
+  block-size: auto;
+  border: var(--cascivo-landing-rule-weight) solid var(--cascivo-color-border);
+}
+
+.pg-hero-shot-img--back {
+  justify-self: end;
+}
+
+.pg-hero-shot-img--front {
+  margin-block-start: 4%;
+}
+
+.pg-hero-shot-caption {
+  margin-block-start: 1rem;
   font-size: 0.71875rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
+  color: var(--cascivo-color-text-subtle);
 }
 
-/* ── 02 The wedge ──────────────────────────────────────────────────────── */
-
-.pg-wedge-head {
-  margin-block: 1rem 1.375rem;
-}
-
-.pg-wedge-line {
-  margin: 1.375rem 0 0;
-  max-inline-size: 38ch;
-  font-size: 1.0625rem;
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-.pg-wedge-eyebrow-quiet,
 .pg-eyebrow--quiet {
   opacity: 0.6;
 }
 
-/* The utility-class string is deliberately dimmed — it is the thing you are not
-   meant to read, only to look at. */
-.pg-pre--quiet {
-  opacity: 0.65;
-}
-
-/* ── 03 Five differences ───────────────────────────────────────────────── */
+/* ── 07 Beyond components (numbered tiles with a receipt link) ──────────── */
 
 .pg-diff {
   display: flex;
@@ -209,7 +215,7 @@
   color: var(--cascivo-color-destructive);
 }
 
-/* ── 04 Reactivity ─────────────────────────────────────────────────────── */
+/* ── 02 Signals ─────────────────────────────────────────────────────────── */
 
 .pg-reactivity-head {
   margin-block: 0.875rem;
@@ -329,7 +335,7 @@
   }
 }
 
-/* ── 05 Proof ──────────────────────────────────────────────────────────── */
+/* ── 03 Proof ───────────────────────────────────────────────────────────── */
 
 /* The two halves of the proof band are mirrored, so their closing links have to
    land on one baseline; content height alone left them 9px apart. */
@@ -376,7 +382,7 @@
   padding: 1rem 1.125rem;
 }
 
-/* ── 06 vs shadcn/ui ───────────────────────────────────────────────────── */
+/* ── 04 vs shadcn/ui ────────────────────────────────────────────────────── */
 
 .pg-compare-pad {
   padding-block-start: 0;
@@ -467,66 +473,7 @@
   color: var(--cascivo-color-destructive);
 }
 
-/* ── 08 Gallery ────────────────────────────────────────────────────────── */
-
-.pg-gallery-lede {
-  padding-block-start: 0;
-  max-inline-size: 90ch;
-}
-
-.pg-tile {
-  display: flex;
-  flex-direction: column;
-  gap: 1.125rem;
-  align-items: flex-start;
-}
-
-.pg-tile > * {
-  max-inline-size: 100%;
-}
-
-@media (min-width: 64rem) {
-  .pg-tile--wide {
-    grid-column: span 2;
-  }
-}
-
-.pg-tile-label {
-  margin: 0;
-  font-family: var(--cascivo-font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--cascivo-color-text-subtle);
-}
-
-.pg-tile-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.pg-tile-row--tight {
-  gap: 0.5rem;
-}
-
-.pg-tile-segmented,
-.pg-tile > .pg-scroll {
-  inline-size: 100%;
-}
-
-/* The gallery chart runs on ink tints so it stays inside the page's palette —
-   orange was the only warm hue anywhere on it, and it sat beside acid yellow.
-   The acid marks the peak bar; on cream that fill is 1.3:1 on its own, so every
-   bar carries the ink rule the rest of the grid does and the highlight gets a
-   real boundary. `data-series` is BarChart's own per-bar styling hook. */
-.pg-tile-chart rect[data-series] {
-  stroke: var(--cascivo-color-border);
-  stroke-width: 1.5;
-}
-
-/* ── 09 Themes ─────────────────────────────────────────────────────────── */
+/* ── 05 Themes ──────────────────────────────────────────────────────────── */
 
 .pg-themes-head {
   margin-block: 0.875rem;
@@ -611,7 +558,7 @@
   color: var(--cascivo-color-text-subtle);
 }
 
-/* ── 10 AI layer + 11 primitives ───────────────────────────────────────── */
+/* ── 06 The AI loop ─────────────────────────────────────────────────────── */
 
 .pg-ai-head {
   margin-block: 0.875rem;
@@ -624,6 +571,15 @@
 
 .pg-ai-code {
   margin-block-end: 1.25rem;
+}
+
+/* Labels over the before/after code blocks — the mono caption vocabulary. */
+.pg-ai-caption {
+  margin: 1.25rem 0 0.5rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.78;
 }
 
 .pg-ai-tags {
@@ -644,42 +600,7 @@
   text-transform: uppercase;
 }
 
-/* StructuredList lays its cells out as a row; the poster stacks them. Its row is
-   `align-items: center`, which in a column flex box centres the text — reset it
-   so title, API and line all read from the inline start. */
-.pg-primitives {
-  border: 0;
-  background: none;
-}
-
-.pg-primitives [role='row'] {
-  flex-direction: column;
-  align-items: stretch;
-  gap: 0.375rem;
-  padding-block: 1rem;
-  border-block-start: 2px solid var(--cascivo-color-border);
-  border-block-end: 0;
-}
-
-.pg-primitives [role='cell'] {
-  flex: none;
-  padding: 0;
-}
-
-.pg-primitive-api {
-  font-family: var(--cascivo-font-mono);
-  font-size: 0.71875rem;
-  color: var(--cascivo-color-destructive);
-}
-
-.pg-primitive-line {
-  font-size: 0.84375rem;
-  line-height: 1.55;
-  font-weight: 500;
-  color: var(--cascivo-color-text-subtle);
-}
-
-/* ── 12 Quick start ────────────────────────────────────────────────────── */
+/* ── 08 Quick start ─────────────────────────────────────────────────────── */
 
 .pg-steps {
   margin: 0;
@@ -735,42 +656,7 @@
   gap: 0.5rem;
 }
 
-/* ── 13 Templates ──────────────────────────────────────────────────────── */
-
-.pg-template {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  align-items: flex-start;
-}
-
-.pg-template-name {
-  margin: 0;
-  align-self: flex-start;
-  background: var(--cascivo-color-accent);
-  color: var(--cascivo-color-accent-content);
-  padding: 0.25rem 0.5rem;
-  font-family: var(--cascivo-font-mono);
-  font-size: 0.8125rem;
-  font-weight: 600;
-}
-
-.pg-template-install {
-  inline-size: 100%;
-  margin-block-start: auto;
-}
-
-/* One marketplace link for the row, not the same one three times. */
-.pg-template-foot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem 1.5rem;
-  border-block-start: var(--cascivo-landing-rule-weight) solid var(--cascivo-color-border);
-}
-
-/* ── 14 Showcase + frameworks ──────────────────────────────────────────── */
+/* ── 09 Built with cascivo + frameworks ─────────────────────────────────── */
 
 .pg-showcase,
 .pg-frameworks {
@@ -894,7 +780,6 @@
 
 .pg-ai-code,
 .pg-step-code,
-.pg-template-install,
 .pg-prebuilt-code {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 2.5rem;
@@ -906,7 +791,6 @@
 
 .pg-ai-code > pre,
 .pg-step-code > pre,
-.pg-template-install > pre,
 .pg-prebuilt-code > pre {
   border: 0;
   background: transparent;
@@ -918,7 +802,6 @@
 
 .pg-ai-code > button,
 .pg-step-code > button,
-.pg-template-install > button,
 .pg-prebuilt-code > button {
   position: static;
   inline-size: auto;
@@ -964,174 +847,4 @@
 .pg-invert .pg-ai-code button {
   color: inherit;
   border-color: currentcolor;
-}
-
-/* ── 15 / email ─────────────────────────────────────────────────────────────
-   The frames hold real `@cascivo/email` output in an iframe. The iframe is not
-   a stylistic choice: an email is a whole document, and this page's stylesheet
-   must not reach into it or the preview would be showing something the
-   recipient will never see. */
-.pg-email-stage {
-  display: flex;
-  flex-direction: column;
-  gap: var(--cascivo-space-3);
-}
-
-.pg-email-body {
-  max-width: 46ch;
-}
-
-.pg-email-facts {
-  margin-block: var(--cascivo-space-3) var(--cascivo-space-2);
-  font-size: var(--cascivo-text-xs);
-  color: var(--cascivo-color-text-muted);
-}
-
-.pg-email-frames {
-  display: flex;
-  justify-content: center;
-}
-
-.pg-email-figure {
-  display: flex;
-  flex-direction: column;
-  gap: var(--cascivo-space-2);
-  margin: 0;
-  inline-size: 100%;
-  max-inline-size: 600px;
-}
-
-.pg-email-frame {
-  inline-size: 100%;
-  /* Height comes from the mail itself — the frame measures its own document on
-     load and writes it back as an inline `block-size`. A single figure tall
-     enough for the longest sample left ~140px of dead panel under the short
-     ones. This is the pre-measurement floor, and the fallback if the frame's own
-     document is ever unreadable. */
-  block-size: 24rem;
-  border: 1px solid var(--cascivo-color-border);
-  border-radius: var(--cascivo-radius-md);
-  background: #fff;
-}
-
-.pg-email-caption,
-.pg-email-meta {
-  font-size: var(--cascivo-text-xs);
-  color: var(--cascivo-color-text-muted);
-}
-
-/* Left, like every other meta line on the page — it was the only centred one. */
-.pg-email-caption {
-  text-align: start;
-}
-
-.pg-email-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin: 0;
-  overflow-wrap: anywhere;
-}
-
-.pg-email-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--cascivo-space-4);
-}
-
-.pg-email-toggle {
-  display: flex;
-  gap: var(--cascivo-space-2);
-  align-items: start;
-  font-size: var(--cascivo-text-xs);
-  line-height: 1.4;
-  color: var(--cascivo-color-text-muted);
-  cursor: pointer;
-}
-
-/* ── 16 Machine mode ───────────────────────────────────────────────────────
-   Two panels of the same thing. The document panel is `@cascivo/text` running
-   against the DOM of the UI panel, so it must be able to grow and scroll on its
-   own — the text is longer than the UI is tall, and clipping it would hide the
-   affordance annotations that are the whole point. */
-.pg-mm-stage {
-  display: flex;
-  flex-direction: column;
-  gap: var(--cascivo-space-4);
-  /* The band's own padding, so the panel captions are not flush against the
-     rule that closes the cell above them. */
-  padding: var(--pg-pad-block) var(--pg-pad-inline);
-}
-
-.pg-mm-body {
-  max-width: 46ch;
-}
-
-.pg-mm-facts {
-  margin-block: var(--cascivo-space-3) var(--cascivo-space-2);
-  font-size: var(--cascivo-text-xs);
-  color: var(--cascivo-color-text-muted);
-}
-
-.pg-mm-figure {
-  display: flex;
-  flex-direction: column;
-  gap: var(--cascivo-space-2);
-  margin: 0;
-  min-inline-size: 0;
-}
-
-.pg-mm-caption {
-  font-size: var(--cascivo-text-xs);
-  color: var(--cascivo-color-text-muted);
-}
-
-.pg-mm-panel {
-  display: flex;
-  flex-direction: column;
-  gap: var(--cascivo-space-3);
-  padding: var(--cascivo-space-4);
-  border: var(--pg-rule);
-  background: var(--cascivo-color-surface);
-}
-
-.pg-mm-demo-head {
-  display: flex;
-  gap: var(--cascivo-space-2);
-  align-items: center;
-  margin: 0;
-  font-size: var(--cascivo-text-lg);
-}
-
-.pg-mm-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--cascivo-space-2);
-}
-
-/* The document panel IS a code block — it carries `pg-pre` for the band's own
-   surface, rule and mono face, and adds only what differs. */
-.pg-mm-doc {
-  /* The document runs longer than the UI beside it; scroll rather than clip. */
-  max-block-size: 26rem;
-  overflow: auto;
-}
-
-.pg-mm-hint {
-  margin: 0;
-  font-size: var(--cascivo-text-xs);
-  color: var(--cascivo-color-text-muted);
-}
-
-/* Side by side once there is room for two columns of prose. */
-@media (min-width: 64rem) {
-  .pg-mm-stage {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
-  }
-
-  .pg-mm-hint {
-    grid-column: 1 / -1;
-  }
 }

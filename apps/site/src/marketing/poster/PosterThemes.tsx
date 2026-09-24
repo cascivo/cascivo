@@ -46,7 +46,7 @@ export function PosterThemes() {
   return (
     <section className="pg-section pg-cols pg-cols--4-8" id="themes" aria-label="Themes">
       <div className="pg-pad">
-        <p className="pg-eyebrow">09 / themes</p>
+        <p className="pg-eyebrow">05 / themes</p>
         <h2 className="pg-display pg-display--section pg-themes-head">
           One attribute,
           <br />

@@ -18,8 +18,16 @@ export function ShowcasePage() {
             <h1>Built with cascivo.</h1>
             <p className="proof-hero-sub">
               Real, shipped products using the cascivo design system — from a one-tap payment-link
-              tool to a developer SDK and a content directory. Proof the library holds up beyond the
-              docs.
+              tool to a developer SDK and a content directory. So far every one of them is built by
+              cascivo&apos;s maintainer: proof the library holds up in production, not yet proof of
+              independent adoption. Shipped something with cascivo?{' '}
+              <a
+                href="https://github.com/cascivo/cascivo/issues/new?title=Showcase%3A%20"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Tell us ↗
+              </a>
             </p>
           </section>
 

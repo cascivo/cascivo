@@ -107,7 +107,7 @@ function levelLabel(level: Finding['level']): string {
 
 function renderFindings(findings: AuditedFinding[]): void {
   if (findings.length === 0) {
-    console.log('cascade audit --ai: no findings.')
+    console.log('cascivo audit --ai: no findings.')
     return
   }
   const rows = findings.map((f) => ({
@@ -226,7 +226,7 @@ export async function audit(args: string[], _config: CascadeConfig): Promise<voi
 
   if (fixMode) {
     const n = applyFixes(files, contract)
-    console.log(`cascade audit --ai --fix: rewrote ${n} literal${n === 1 ? '' : 's'} to tokens.`)
+    console.log(`cascivo audit --ai --fix: rewrote ${n} literal${n === 1 ? '' : 's'} to tokens.`)
   }
 
   const allFindings: AuditedFinding[] = []

@@ -1,3 +1,14 @@
+<p align="center">
+  <a href="https://cascivo.com/examples/pulse">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://cascivo.com/hero/pulse-dark.webp">
+      <img src="https://cascivo.com/hero/pulse-light.webp" width="880" alt="The pulse example app — an observability dashboard with KPI cards, SLO meters and latency charts, built only from cascivo components">
+    </picture>
+  </a>
+  <br>
+  <sub><a href="https://cascivo.com/examples/pulse">pulse</a> — an observability dashboard built only from cascivo components. More example apps — deployments, payments, trading, an issue tracker — live in <a href="apps/examples"><code>apps/examples</code></a>.</sub>
+</p>
+
 ## What is cascivo?
 
 cascivo is an open-source React design system built on **modern web standards** instead of build-time tooling. Components are styled with pure CSS (`@layer`, `@container`, `:has()`, custom properties — no Tailwind, no CSS-in-JS), made interactive with **Preact Signals + a micro-FSM** instead of `useState`/`useContext`, and shipped with a **machine-readable manifest** so AI agents can select, configure, and verify them.

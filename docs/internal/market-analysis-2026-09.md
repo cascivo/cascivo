@@ -507,6 +507,17 @@ These findings come from reading `README.md`/`readme.body.md`, `apps/site/src/ma
 
 ### 7.2 Structural presentation problems
 
+> **Status (2026-09-24):** addressed in a follow-up commit.
+> - Hero and README now show a screenshot of the pulse example in both themes.
+> - The landing page went from 17 bands to 9 plus the CTA, with plain-language headings.
+> - The AI band shows a real `cascivo audit --ai` before/after.
+> - A "More than components" band surfaces the previously unmarketed wins.
+> - The showcase discloses that the sites are the maintainer's own.
+> - `/guides/alternatives` is new, and `when-not-to-use` is expanded.
+> - Getting started opens with a two-minute path and a "which versions go together" rule.
+>
+> Still open: a recorded demo video (#8) and a single umbrella version (#10, deliberately docs-only).
+
 1. **There is no visual proof, anywhere.**
    - The README has zero images apart from the logo.
    - The landing hero is text plus three stats; nothing is interactive above the fold. The July review (`docs/specs/shadcn-comparison-2026-07.md`) flagged this, and it is still true.

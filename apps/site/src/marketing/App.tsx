@@ -3,20 +3,13 @@ import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from './sections/Header'
 import { PosterHero } from './poster/PosterHero'
-import { PosterTicker } from './poster/PosterTicker'
 import { currentPath } from '../router'
 import { applyNotFoundSeo, applyRouteSeo } from './seo'
 import { ROUTE_HEAD } from './route-head'
 import { DEMOS } from './pages/examples/data'
 
 // Below-the-fold poster sections — split into their own chunks so the initial
-// home JS shrinks. The hero and the ticker stay eager (they are the LCP band).
-const PosterWedge = lazy(() =>
-  import('./poster/PosterWedge').then((m) => ({ default: m.PosterWedge })),
-)
-const PosterDifferences = lazy(() =>
-  import('./poster/PosterDifferences').then((m) => ({ default: m.PosterDifferences })),
-)
+// home JS shrinks. The hero stays eager (it is the LCP band).
 const PosterReactivity = lazy(() =>
   import('./poster/PosterReactivity').then((m) => ({ default: m.PosterReactivity })),
 )
@@ -26,39 +19,21 @@ const PosterProof = lazy(() =>
 const PosterComparison = lazy(() =>
   import('./poster/PosterComparison').then((m) => ({ default: m.PosterComparison })),
 )
-const PosterColocation = lazy(() =>
-  import('./poster/PosterColocation').then((m) => ({ default: m.PosterColocation })),
-)
-// The gallery mounts two dozen live components and a chart; the themes section
-// pulls in the nine deferred theme sheets. Both are far below the fold.
-const PosterGallery = lazy(() =>
-  import('./poster/PosterGallery').then((m) => ({ default: m.PosterGallery })),
-)
+// The themes section pulls in the nine deferred theme sheets; far below the fold.
 const PosterThemes = lazy(() =>
   import('./poster/PosterThemes').then((m) => ({ default: m.PosterThemes })),
 )
 const PosterAiLayer = lazy(() =>
   import('./poster/PosterAiLayer').then((m) => ({ default: m.PosterAiLayer })),
 )
+const PosterBreadth = lazy(() =>
+  import('./poster/PosterBreadth').then((m) => ({ default: m.PosterBreadth })),
+)
 const PosterQuickStart = lazy(() =>
   import('./poster/PosterQuickStart').then((m) => ({ default: m.PosterQuickStart })),
 )
-const PosterTemplates = lazy(() =>
-  import('./poster/PosterTemplates').then((m) => ({ default: m.PosterTemplates })),
-)
 const PosterShowcase = lazy(() =>
   import('./poster/PosterShowcase').then((m) => ({ default: m.PosterShowcase })),
-)
-// The email section carries ~240 KB of pre-rendered sample HTML (8 KB gzipped — the 36
-// samples are near-identical, so it compresses hard). Lazy, like every section below the
-// fold, so it never lands in the home entry.
-const PosterEmail = lazy(() =>
-  import('./poster/PosterEmail').then((m) => ({ default: m.PosterEmail })),
-)
-// The machine-mode section mounts a live demo and the serializer that reads it; lazy, like
-// every section below the fold, so neither lands in the home entry.
-const PosterMachineMode = lazy(() =>
-  import('./poster/PosterMachineMode').then((m) => ({ default: m.PosterMachineMode })),
 )
 const PosterCta = lazy(() => import('./poster/PosterCta').then((m) => ({ default: m.PosterCta })))
 const Footer = lazy(() => import('./sections/Footer').then((m) => ({ default: m.Footer })))
@@ -88,6 +63,9 @@ const UseCasesPage = lazy(() =>
 )
 const WhenNotToUsePage = lazy(() =>
   import('./pages/guides/WhenNotToUsePage').then((m) => ({ default: m.WhenNotToUsePage })),
+)
+const AlternativesPage = lazy(() =>
+  import('./pages/guides/AlternativesPage').then((m) => ({ default: m.AlternativesPage })),
 )
 const GuidesFaqPage = lazy(() =>
   import('./pages/guides/GuidesFaqPage').then((m) => ({ default: m.GuidesFaqPage })),
@@ -201,13 +179,6 @@ function HomePage() {
       <SkipNavTarget>
         <main className="pg">
           <PosterHero />
-          <PosterTicker />
-          <Suspense fallback={<SectionFallback height={420} />}>
-            <PosterWedge />
-          </Suspense>
-          <Suspense fallback={<SectionFallback height={360} />}>
-            <PosterDifferences />
-          </Suspense>
           <Suspense fallback={<SectionFallback height={480} />}>
             <PosterReactivity />
           </Suspense>
@@ -217,39 +188,23 @@ function HomePage() {
           <Suspense fallback={<SectionFallback height={560} />}>
             <PosterComparison />
           </Suspense>
-          <Suspense fallback={<SectionFallback height={420} />}>
-            <PosterColocation />
-          </Suspense>
-          <WhenNearViewport height={640}>
-            <Suspense fallback={<SectionFallback height={640} />}>
-              <PosterGallery />
-            </Suspense>
-          </WhenNearViewport>
           <WhenNearViewport height={480}>
             <Suspense fallback={<SectionFallback height={480} />}>
               <PosterThemes />
             </Suspense>
           </WhenNearViewport>
-          <Suspense fallback={<SectionFallback height={520} />}>
+          <Suspense fallback={<SectionFallback height={640} />}>
             <PosterAiLayer />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={520} />}>
+            <PosterBreadth />
           </Suspense>
           <Suspense fallback={<SectionFallback height={480} />}>
             <PosterQuickStart />
           </Suspense>
-          <Suspense fallback={<SectionFallback height={360} />}>
-            <PosterTemplates />
-          </Suspense>
           <Suspense fallback={<SectionFallback height={520} />}>
             <PosterShowcase />
           </Suspense>
-          <Suspense fallback={<SectionFallback height={640} />}>
-            <PosterEmail />
-          </Suspense>
-          <WhenNearViewport height={560}>
-            <Suspense fallback={<SectionFallback height={560} />}>
-              <PosterMachineMode />
-            </Suspense>
-          </WhenNearViewport>
           <Suspense fallback={<SectionFallback height={320} />}>
             <PosterCta />
           </Suspense>
@@ -291,6 +246,10 @@ const ROUTES: Record<string, Route> = {
   '/guides/when-not-to-use': {
     Page: WhenNotToUsePage,
     title: ROUTE_HEAD['/guides/when-not-to-use']?.title ?? 'cascivo',
+  },
+  '/guides/alternatives': {
+    Page: AlternativesPage,
+    title: ROUTE_HEAD['/guides/alternatives']?.title ?? 'cascivo',
   },
   '/guides/faq': { Page: GuidesFaqPage, title: ROUTE_HEAD['/guides/faq']?.title ?? 'cascivo' },
   '/modern-css': { Page: ModernCssPage, title: ROUTE_HEAD['/modern-css']?.title ?? 'cascivo' },

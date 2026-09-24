@@ -37,6 +37,10 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/guides/alternatives</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/guides/faq</loc>
     <priority>0.7</priority>
   </url>

@@ -37,7 +37,7 @@ export function PosterProof() {
   return (
     <section className="pg-section pg-cols" id="proof" aria-label="Proof">
       <div className="pg-pad pg-proof-col">
-        <p className="pg-eyebrow">05 / proof</p>
+        <p className="pg-eyebrow">03 / proof</p>
         <h2 className="pg-display pg-display--section pg-proof-head">
           Numbers,
           <br />
