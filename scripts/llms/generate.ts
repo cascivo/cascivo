@@ -693,6 +693,10 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     `- Icon catalog (every @cascivo/icons icon + keywords/category): ${DOCS}/icons.catalog.json`,
   )
   lines.push(
+    `- Tokens as W3C Design Tokens (DTCG 2025.10, for Figma variables / Tokens Studio / Style Dictionary; themes via the resolver): ${DOCS}/tokens/dtcg/cascivo.resolver.json`,
+  )
+  lines.push(`- DESIGN.md (single-file design summary for prompt-to-UI tools): ${DOCS}/DESIGN.md`)
+  lines.push(
     `- Breaking/feature changes (major+minor releases per package — detect API drift): ${DOCS}/breaking-changes.json`,
   )
   lines.push('')

@@ -26,6 +26,7 @@
     "src/**/*.css",
     "src/**/*.ts",
     "tokens.json",
+    "dtcg",
     "style-contract.json",
     "!src/**/*.test.ts"
   ],
@@ -44,6 +45,7 @@
     "./functions.css": "./src/functions.css",
     "./screens": "./src/screens.ts",
     "./tokens.json": "./tokens.json",
+    "./dtcg/*": "./dtcg/*",
     "./tokens": {
       "types": "./src/tokens.d.ts"
     },

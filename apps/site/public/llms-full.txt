@@ -55,6 +55,8 @@ see `select_component`/`list_components` below before generating custom SVG or A
 - Context bundle (all intent + boundaries + rules): https://cascivo.com/context.json
 - Token catalog (closed set: every --cascivo-* the system declares OR reads as an author hook, incl. per-component knobs like --cascivo-sidenav-inline-size, + layer + default): https://cascivo.com/tokens.catalog.json
 - Icon catalog (every @cascivo/icons icon + keywords/category): https://cascivo.com/icons.catalog.json
+- Tokens as W3C Design Tokens (DTCG 2025.10, for Figma variables / Tokens Studio / Style Dictionary; themes via the resolver): https://cascivo.com/tokens/dtcg/cascivo.resolver.json
+- DESIGN.md (single-file design summary for prompt-to-UI tools): https://cascivo.com/DESIGN.md
 - Breaking/feature changes (major+minor releases per package — detect API drift): https://cascivo.com/breaking-changes.json
 
 ## Icons

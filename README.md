@@ -99,6 +99,7 @@ cascivo ships both the **WHAT** (manifests, tokens, MCP) and the **WHY** (intent
 - **Per-component AI docs** — `https://cascivo.com/llms/<name>.md` (props, examples, a11y, tokens) and `…/context/<name>.md` (when-to-use / when-not-to-use).
 - **`context.json`** — intent, design boundaries, specs, and authoring rules in one machine-readable bundle.
 - **`tokens.catalog.json`** — closed-set token catalog; every `--cascivo-*` property with its layer and resolved default.
+- **Design-tool formats** — the tokens as W3C Design Tokens ([`@cascivo/tokens/dtcg`](packages/tokens), DTCG 2025.10 with a theme resolver) for Figma variables, Tokens Studio and Style Dictionary; a generated [`DESIGN.md`](DESIGN.md) for single-file tools; and Storybook's components manifest at [storybook.cascivo.com/manifests/components.json](https://storybook.cascivo.com/manifests/components.json).
 - **`cascivo audit --ai`** — flags hard-coded values, invented props, and missing required wiring in generated code.
 - **MCP server** ([`@cascivo/mcp`](packages/mcp)) — 24 tools:
   - _discover:_ `list_registries`, `list_components`, `search_components`, `get_component`, `select_component`, `get_context`, `list_guides`, `get_guide`
