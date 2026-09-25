@@ -4940,6 +4940,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/row-group.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/row-search.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/row-sort.ts",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/tanstack.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/to-csv.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/virtual-window.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/data-table.module.css"
@@ -4949,10 +4950,11 @@
         "column-filter.ts": "sha256-dc062cef69abba1fb3c374a0c800a8488d8f43f324a543afc4ba9d3f9723c839",
         "column-layout.ts": "sha256-02a18b8fda408cf2f88709c127f99f9f3365dc2b929844cd6ac9400c5842591e",
         "grid-keys.ts": "sha256-c5064f632e8be232a6fd20e4a480724b4b061b3c17e0bcc0217678473b5ff704",
-        "index.ts": "sha256-1ad58193a6a77c800f170bd7fadaafa1d8db9f1698c43f44669e5a95c217a73b",
+        "index.ts": "sha256-81fdf2c2442faa7591477f30f239b77e3aeee9b9f359e97b3157f7edc99a2e7d",
         "row-group.ts": "sha256-65d136c376132627a3e924dd3ec2c2c425b09ee7d188d0b796ec90d28e412ab5",
         "row-search.ts": "sha256-b31f1040151bd258c9947740714ea810df45c80c7c1e52779e613e48a5bab562",
         "row-sort.ts": "sha256-7d2b3e52e4249bb9f5856d43c0f95ddc8dac4c4f2b81e590ca7182a82b5d7d9d",
+        "tanstack.ts": "sha256-c2e64a495dda65325f6f0c9c44c789be8ff10ffe624068d7ec249b57761c21dd",
         "to-csv.ts": "sha256-8e26da77c73c415b6c7e128174463b8ad2f29036fda2df44e8b152953e9c3b0b",
         "virtual-window.ts": "sha256-7c96f234d62d0d0610cf05c5d99abf6cf10afbebbcbfd528e0202f385a0e1d0f",
         "data-table.module.css": "sha256-7070640c26f49ca2b19ed570f72315a5aa1cb05da1321e72850a756ec8dd06f7"
@@ -5577,6 +5579,11 @@
           {
             "title": "Basic table",
             "code": "<DataTable\n  columns={[\n    { key: 'name', header: 'Name', sortable: true },\n    { key: 'role', header: 'Role' },\n  ]}\n  rows={[\n    { name: 'Alice', role: 'Engineer' },\n    { name: 'Bob', role: 'Designer' },\n  ]}\n  getRowId={(r) => r.name}\n/>"
+          },
+          {
+            "title": "Existing TanStack Table columns",
+            "description": "fromTanStack turns TanStack Table ColumnDef[] (accessorKey, accessorFn, cell, size, group columns) into DataTable columns and rows, with no TanStack dependency. toSortState / toTanStackSorting convert sort state both ways. A header function is not rendered; the column id is shown instead.",
+            "code": "import { DataTable, fromTanStack } from '@cascivo/react'\n\nconst { columns, rows } = fromTanStack(columnDefs, data)\n\n<DataTable columns={columns} rows={rows} getRowId={(r) => r.id} />"
           },
           {
             "title": "Custom cell content with Column.render",

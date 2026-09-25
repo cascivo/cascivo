@@ -298,6 +298,7 @@ statement, or it never re-renders. When you do own reactive state, use these:
 - Per-route / per-tenant effect disposal -> `useScope()` / `createScope()` (disposes on unmount; prevents signal leaks across navigation).
 - Genuine internal state machine -> `createMachine` / `useMachine`.
 - Forms -> `createForm` / `useForm` / `<Form>` / `field()` (`@cascivo/react`): a signal-backed store with sync/async + Standard Schema (zod/valibot) validation and optional `validateOnChange` — keystroke validation, zero re-renders.
+- Localized component strings -> `@cascivo/i18n`: `createLocale({ default: 'en', supported: [...] })`, then `registerCatalog('fr', () => import('@cascivo/i18n/locales/fr'))`. English and German are built in; fr, es, it, pt, nl, sv, pl, ja, zh, ko, ar, tr ship as subpath entries (AI-drafted, awaiting native review). `pt-BR` falls back to `pt`. Override single strings per instance with `labels`.
 - Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` — import from **`@cascivo/core`** on BOTH install paths (`@cascivo/react` re-exports the same names; before 0.17.0 it shipped only from `@cascivo/react`, which told copy-paste adopters to install all 197 components to get a theme signal): persists the choice and drives `data-theme`, SSR no-FOUC. `useTheme()` returns a TUPLE `[string, setTheme]` — the first element is the current theme **name** (a plain string; the component re-renders on change, no signal handling). Do NOT destructure `{ theme, setTheme }` (that is next-themes’ shape). Signal-native code (computed/effect/Preact) can grab the underlying signal via `themeSignal()`. ThemeProvider warns in dev if it sets a `data-theme` for which no `--cascivo-color-*` token resolves (you forgot the `@cascivo/themes` CSS import → grayscale app). `setTheme()` writes the SIGNAL; the mounted `<ThemeProvider>` writes the `data-theme` attribute — with no provider mounted the signal updates, `useTheme()` reports the new value, and nothing restyles (dev warns). Outside React (imperative shell, pre-hydration script) use `applyTheme(theme, target?)`, which writes the attribute directly and keeps the signal in sync. CSS bundles: `@cascivo/themes/light-dark.css` = light + dark (the common case); `@cascivo/themes/all.css` = all twelve themes; `@cascivo/themes/<name>.css` = one theme. Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS `prefers-color-scheme` > light; pass `defaultTheme` to override the OS. Controlled `<ThemeProvider value=…>` is SSR-safe by itself (emits an inline attribute setter); for the persisted flow add `suppressHydrationWarning` to the `<html>` the preload script writes to. Never write a `useEffect` that toggles a `.dark` class.
 - Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` (generated union of every `--cascivo-*` property — no CSS-file lookup).
 - Router links in config-driven navs (SideNav/ShellHeader/Breadcrumb/Dock/…) -> `setLinkComponent(YourLink)` once at startup. Import it (and the `LinkComponentProps` contract type) from `@cascivo/react` (re-exported there, so prebuilt-package users need NOT add `@cascivo/core`); copied source can import from `@cascivo/core`. Adapter: `setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href} {...rest} />)` — spread the bag; the link stays a real `<a>` so middle-click/new-tab work.
@@ -374,6 +375,7 @@ Tools:
 - `scaffold_view` — natural language -> JSON view config
 - `validate_view` — validate a view config against the schema
 - `render_view_as_markdown` — render a view config and read back what it says (needs `@cascivo/render`)
+- `show_view` — show a validated view to the user, rendered in the chat, in clients that support MCP Apps
 - `add_to_project` — install components into the user project
 
 Two MCP servers, two jobs — run both if your client allows it:
@@ -429,248 +431,250 @@ Not all ship in `@cascivo/react`: 25 in @cascivo/charts, 10 in @cascivo/flow, 2 
 
 Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical spacing — for a vertical/horizontal spacing layout use `Flex` (`layout/flex`; the aliases `vstack`/`hstack` resolve to it).
 
+Full reference for any entry: https://cascivo.com/llms/<name>.md (e.g. https://cascivo.com/llms/chart/line-chart.md).
+
 ### auth
 
-- [block/auth-login](https://cascivo.com/llms/block/auth-login.md) — Email + password login with remember-me checkbox and forgot-password link. _(copy-paste)_
-- [block/auth-signup](https://cascivo.com/llms/block/auth-signup.md) — Full-name, email, password, confirm-password sign-up form with terms checkbox. _(copy-paste)_
+- `block/auth-login` — Email + password login with remember-me checkbox and forgot-password link. _(copy-paste)_
+- `block/auth-signup` — Full-name, email, password, confirm-password sign-up form with terms checkbox. _(copy-paste)_
 
 ### chart
 
-- [chart/area-chart](https://cascivo.com/llms/chart/area-chart.md) — Area chart with optional stacking, multi-series support, and hover tooltip. _(npm @cascivo/charts)_
-- [chart/bar-chart](https://cascivo.com/llms/chart/bar-chart.md) — Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support. _(npm @cascivo/charts)_
-- [chart/boxplot](https://cascivo.com/llms/chart/boxplot.md) — Box-and-whisker plot with five-number summary and outlier dots per series. _(npm @cascivo/charts)_
-- [chart/bubble-chart](https://cascivo.com/llms/chart/bubble-chart.md) — Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale. _(npm @cascivo/charts)_
-- [chart/bullet](https://cascivo.com/llms/chart/bullet.md) — Bullet chart with background range bands, measure bar, and target tick. _(npm @cascivo/charts)_
-- [chart/calendar](https://cascivo.com/llms/chart/calendar.md) — Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style). _(npm @cascivo/charts)_
-- [chart/candlestick](https://cascivo.com/llms/chart/candlestick.md) — OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down. _(npm @cascivo/charts)_
-- [chart/combo-chart](https://cascivo.com/llms/chart/combo-chart.md) — Combination bar + line chart on shared or dual y-axes. _(npm @cascivo/charts)_
-- [chart/funnel](https://cascivo.com/llms/chart/funnel.md) — Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels. _(npm @cascivo/charts)_
-- [chart/gauge](https://cascivo.com/llms/chart/gauge.md) — A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle. _(npm @cascivo/charts)_
-- [chart/heatmap](https://cascivo.com/llms/chart/heatmap.md) — Two-dimensional heatmap with band scales and color-mix cell interpolation. _(npm @cascivo/charts)_
-- [chart/histogram](https://cascivo.com/llms/chart/histogram.md) — Frequency histogram using Freedman–Diaconis binning with hover tooltips. _(npm @cascivo/charts)_
-- [chart/kpi](https://cascivo.com/llms/chart/kpi.md) — KPI card showing a primary metric with optional delta indicator, icon, and sparkline. _(npm @cascivo/charts)_
-- [chart/line-chart](https://cascivo.com/llms/chart/line-chart.md) — Time-series or numeric line chart with multi-series support, hover tooltip, and legend. _(npm @cascivo/charts)_
-- [chart/meter](https://cascivo.com/llms/chart/meter.md) — Progress meter in bar or gauge variant with threshold coloring. _(npm @cascivo/charts)_
-- [chart/pie-chart](https://cascivo.com/llms/chart/pie-chart.md) — Pie or donut chart with hover segments and optional legend. _(npm @cascivo/charts)_
-- [chart/polar](https://cascivo.com/llms/chart/polar.md) — A polar coordinate plot — categories around the circle, value as radius. Bars (a rose), or a polar line/area. _(npm @cascivo/charts)_
-- [chart/radar](https://cascivo.com/llms/chart/radar.md) — Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays. _(npm @cascivo/charts)_
-- [chart/radial-bar](https://cascivo.com/llms/chart/radial-bar.md) — Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value. _(npm @cascivo/charts)_
-- [chart/sankey](https://cascivo.com/llms/chart/sankey.md) — Flow diagram — ranked nodes connected by throughput-sized link ribbons. _(npm @cascivo/charts)_
-- [chart/scatter-chart](https://cascivo.com/llms/chart/scatter-chart.md) — Scatter plot with variable point radius, multi-series, and hover tooltip. _(npm @cascivo/charts)_
-- [chart/sparkline](https://cascivo.com/llms/chart/sparkline.md) — Compact inline sparkline for embedding trend data in dashboards or KPI cards. _(npm @cascivo/charts)_
-- [chart/stream](https://cascivo.com/llms/chart/stream.md) — Streamgraph — stacked areas on a centered (silhouette) flowing baseline. _(npm @cascivo/charts)_
-- [chart/sunburst](https://cascivo.com/llms/chart/sunburst.md) — Radial hierarchy — concentric rings where each node is an annular segment sized by value. _(npm @cascivo/charts)_
-- [chart/treemap](https://cascivo.com/llms/chart/treemap.md) — Squarified treemap for visualizing part-to-whole hierarchical data. _(npm @cascivo/charts)_
+- `chart/area-chart` — Area chart with optional stacking, multi-series support, and hover tooltip. _(npm @cascivo/charts)_
+- `chart/bar-chart` — Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support. _(npm @cascivo/charts)_
+- `chart/boxplot` — Box-and-whisker plot with five-number summary and outlier dots per series. _(npm @cascivo/charts)_
+- `chart/bubble-chart` — Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale. _(npm @cascivo/charts)_
+- `chart/bullet` — Bullet chart with background range bands, measure bar, and target tick. _(npm @cascivo/charts)_
+- `chart/calendar` — Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style). _(npm @cascivo/charts)_
+- `chart/candlestick` — OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down. _(npm @cascivo/charts)_
+- `chart/combo-chart` — Combination bar + line chart on shared or dual y-axes. _(npm @cascivo/charts)_
+- `chart/funnel` — Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels. _(npm @cascivo/charts)_
+- `chart/gauge` — A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle. _(npm @cascivo/charts)_
+- `chart/heatmap` — Two-dimensional heatmap with band scales and color-mix cell interpolation. _(npm @cascivo/charts)_
+- `chart/histogram` — Frequency histogram using Freedman–Diaconis binning with hover tooltips. _(npm @cascivo/charts)_
+- `chart/kpi` — KPI card showing a primary metric with optional delta indicator, icon, and sparkline. _(npm @cascivo/charts)_
+- `chart/line-chart` — Time-series or numeric line chart with multi-series support, hover tooltip, and legend. _(npm @cascivo/charts)_
+- `chart/meter` — Progress meter in bar or gauge variant with threshold coloring. _(npm @cascivo/charts)_
+- `chart/pie-chart` — Pie or donut chart with hover segments and optional legend. _(npm @cascivo/charts)_
+- `chart/polar` — A polar coordinate plot — categories around the circle, value as radius. Bars (a rose), or a polar line/area. _(npm @cascivo/charts)_
+- `chart/radar` — Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays. _(npm @cascivo/charts)_
+- `chart/radial-bar` — Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value. _(npm @cascivo/charts)_
+- `chart/sankey` — Flow diagram — ranked nodes connected by throughput-sized link ribbons. _(npm @cascivo/charts)_
+- `chart/scatter-chart` — Scatter plot with variable point radius, multi-series, and hover tooltip. _(npm @cascivo/charts)_
+- `chart/sparkline` — Compact inline sparkline for embedding trend data in dashboards or KPI cards. _(npm @cascivo/charts)_
+- `chart/stream` — Streamgraph — stacked areas on a centered (silhouette) flowing baseline. _(npm @cascivo/charts)_
+- `chart/sunburst` — Radial hierarchy — concentric rings where each node is an annular segment sized by value. _(npm @cascivo/charts)_
+- `chart/treemap` — Squarified treemap for visualizing part-to-whole hierarchical data. _(npm @cascivo/charts)_
 
 ### dashboard
 
-- [block/dashboard-overview](https://cascivo.com/llms/block/dashboard-overview.md) — Welcome header with four KPI stat cards (revenue, users, orders, conversion). _(copy-paste)_
-- [block/dashboard-table](https://cascivo.com/llms/block/dashboard-table.md) — Searchable, sortable, paginated data table with export button. _(copy-paste)_
+- `block/dashboard-overview` — Welcome header with four KPI stat cards (revenue, users, orders, conversion). _(copy-paste)_
+- `block/dashboard-table` — Searchable, sortable, paginated data table with export button. _(copy-paste)_
 
 ### display
 
-- [alert](https://cascivo.com/llms/alert.md) — Highlights a short, important message inline _(npm @cascivo/react · or copy-paste)_
-- [avatar](https://cascivo.com/llms/avatar.md) — Displays a user image with initials fallback _(npm @cascivo/react · or copy-paste)_
-- [avatar-group](https://cascivo.com/llms/avatar-group.md) — Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip _(npm @cascivo/react · or copy-paste)_
-- [badge](https://cascivo.com/llms/badge.md) — Small status label or category indicator _(npm @cascivo/react · or copy-paste)_
-- [block/console-app](https://cascivo.com/llms/block/console-app.md) — Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content. _(copy-paste)_
-- [block/dashboard-charts](https://cascivo.com/llms/block/dashboard-charts.md) — Dashboard layout with KPI tiles, line chart, bar chart, and pie chart. _(copy-paste)_
-- [block/empty-dashboard](https://cascivo.com/llms/block/empty-dashboard.md) — Dashboard page showing an empty state with a call-to-action button. _(copy-paste)_
-- [block/login-page](https://cascivo.com/llms/block/login-page.md) — Authentication login page with email and password form. _(copy-paste)_
-- [block/notification-center](https://cascivo.com/llms/block/notification-center.md) — A list of notification alerts with a mark-all-read action. _(copy-paste)_
-- [block/page-with-breadcrumb](https://cascivo.com/llms/block/page-with-breadcrumb.md) — A centered content page with a breadcrumb navigation and page header. _(copy-paste)_
-- [block/settings-form-page](https://cascivo.com/llms/block/settings-form-page.md) — Settings page with profile form inside a two-column settings layout. _(copy-paste)_
-- [block/sidebar-app](https://cascivo.com/llms/block/sidebar-app.md) — Full app shell with collapsible side navigation and top header. _(copy-paste)_
-- [block/stats-cards](https://cascivo.com/llms/block/stats-cards.md) — Grid of KPI stat cards with trend badges. _(copy-paste)_
-- [block/users-table-page](https://cascivo.com/llms/block/users-table-page.md) — Full users management page with table, search, and invite action. _(copy-paste)_
-- [blockquote](https://cascivo.com/llms/blockquote.md) — Quoted passage with optional attribution footer _(npm @cascivo/react · or copy-paste)_
-- [brand/logo](https://cascivo.com/llms/brand/logo.md) — The cascivo mark and its sanctioned lockups, as inline SVG _(npm @cascivo/react · or copy-paste)_
-- [card](https://cascivo.com/llms/card.md) — Container for grouping related content _(npm @cascivo/react · or copy-paste)_
-- [carousel](https://cascivo.com/llms/carousel.md) — Scroll-snap slide deck with previous/next controls and dot indicators _(npm @cascivo/react · or copy-paste)_
-- [chat-bubble](https://cascivo.com/llms/chat-bubble.md) — Message bubble for chat and messaging UIs with avatar, name, and timestamp support _(npm @cascivo/react · or copy-paste)_
-- [code](https://cascivo.com/llms/code.md) — Inline code span for identifiers, commands, and short snippets _(npm @cascivo/react · or copy-paste)_
-- [code-snippet](https://cascivo.com/llms/code-snippet.md) — Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look _(npm @cascivo/react · or copy-paste)_
-- [collapsible](https://cascivo.com/llms/collapsible.md) — A single disclosure region toggled open and closed by its trigger _(npm @cascivo/react · or copy-paste)_
-- [comparison](https://cascivo.com/llms/comparison.md) — Reveals the difference between two layers with a draggable divider _(npm @cascivo/react · or copy-paste)_
-- [contained-list](https://cascivo.com/llms/contained-list.md) — Labelled list of rows inside a bordered container _(npm @cascivo/react · or copy-paste)_
-- [data-list](https://cascivo.com/llms/data-list.md) — Key-value pairs rendered as a description list _(npm @cascivo/react · or copy-paste)_
-- [data-table](https://cascivo.com/llms/data-table.md) — Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets _(npm @cascivo/react · or copy-paste)_
-- [editor/highlight](https://cascivo.com/llms/editor/highlight.md) — Read-only syntax-highlighted code block — the same owned tokenizer as CodeEditor, without the textarea. _(npm @cascivo/editor)_
-- [empty-state](https://cascivo.com/llms/empty-state.md) — Placeholder for views that have no data to display _(npm @cascivo/react · or copy-paste)_
-- [flow/flow](https://cascivo.com/llms/flow/flow.md) — The declarative, AI-first flow surface — render a node/edge graph from plain serializable data. _(npm @cascivo/flow)_
-- [flow/flow-background](https://cascivo.com/llms/flow/flow-background.md) — Decorative dots / grid / cross canvas background, drawn purely in CSS gradients. _(npm @cascivo/flow)_
-- [flow/flow-canvas](https://cascivo.com/llms/flow/flow-canvas.md) — The pan/zoom canvas pane — a single CSS-transformed layer driven by the viewport signal. _(npm @cascivo/flow)_
-- [flow/flow-controls](https://cascivo.com/llms/flow/flow-controls.md) — Zoom in / out / fit-view controls for a flow canvas — real, i18n-labeled buttons. _(npm @cascivo/flow)_
-- [flow/flow-edge](https://cascivo.com/llms/flow/flow-edge.md) — An SVG edge with bezier/straight/smoothstep paths, an arrowhead, an optional label, and animation. _(npm @cascivo/flow)_
-- [flow/flow-handle](https://cascivo.com/llms/flow/flow-handle.md) — A connection port on a node edge — where edges attach and interactive connect starts. _(npm @cascivo/flow)_
-- [flow/flow-minimap](https://cascivo.com/llms/flow/flow-minimap.md) — A scaled SVG overview of the graph with a draggable viewport rectangle. _(npm @cascivo/flow)_
-- [flow/flow-node](https://cascivo.com/llms/flow/flow-node.md) — An HTML node box positioned in the viewport pane — draggable, selectable, with arbitrary children. _(npm @cascivo/flow)_
-- [flow/flow-panel](https://cascivo.com/llms/flow/flow-panel.md) — An absolutely-positioned slot for custom flow-canvas UI (legend, toolbar). _(npm @cascivo/flow)_
-- [flow/flow-story](https://cascivo.com/llms/flow/flow-story.md) — A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions. _(npm @cascivo/flow)_
-- [heading](https://cascivo.com/llms/heading.md) — Section heading with semantic level decoupled from visual size _(npm @cascivo/react · or copy-paste)_
-- [image](https://cascivo.com/llms/image.md) — Image with load state, blur-up placeholder, graceful fallback, and optional zoom _(npm @cascivo/react · or copy-paste)_
-- [item](https://cascivo.com/llms/item.md) — Generic content row primitive with media, content, and action regions _(npm @cascivo/react · or copy-paste)_
-- [kbd](https://cascivo.com/llms/kbd.md) — Displays a keyboard key or shortcut _(npm @cascivo/react · or copy-paste)_
-- [list](https://cascivo.com/llms/list.md) — Styled unordered or ordered list with ListItem _(npm @cascivo/react · or copy-paste)_
-- [log-viewer](https://cascivo.com/llms/log-viewer.md) — Virtualized monospace console for high-frequency log and stream output _(npm @cascivo/react · or copy-paste)_
-- [prose](https://cascivo.com/llms/prose.md) — Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables _(npm @cascivo/react · or copy-paste)_
-- [qr-code](https://cascivo.com/llms/qr-code.md) — Encodes a URL or short text into a scannable SVG QR code _(npm @cascivo/react · or copy-paste)_
-- [relative-time](https://cascivo.com/llms/relative-time.md) — Displays a date as a localized phrase relative to now, auto-updating _(npm @cascivo/react · or copy-paste)_
-- [separator](https://cascivo.com/llms/separator.md) — Visual or semantic divider between content _(npm @cascivo/react · or copy-paste)_
-- [skeleton](https://cascivo.com/llms/skeleton.md) — Animated loading placeholder that mirrors the shape of pending content _(npm @cascivo/react · or copy-paste)_
-- [stat](https://cascivo.com/llms/stat.md) — Displays a key metric with optional delta, trend direction and help text _(npm @cascivo/react · or copy-paste)_
-- [status](https://cascivo.com/llms/status.md) — Colored dot with a label communicating the state of a system or entity _(npm @cascivo/react · or copy-paste)_
-- [structured-list](https://cascivo.com/llms/structured-list.md) — Tabular row list for scannable data, optionally single-selectable _(npm @cascivo/react · or copy-paste)_
-- [swipe-item](https://cascivo.com/llms/swipe-item.md) — List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity _(npm @cascivo/react · or copy-paste)_
-- [tag](https://cascivo.com/llms/tag.md) — Compact chip for labeling, categorizing, or filtering content _(npm @cascivo/react · or copy-paste)_
-- [text](https://cascivo.com/llms/text.md) — Body text with size, weight, and muted variants _(npm @cascivo/react · or copy-paste)_
-- [timeline](https://cascivo.com/llms/timeline.md) — Ordered sequence of events with status markers and a connector line _(npm @cascivo/react · or copy-paste)_
-- [tree-view](https://cascivo.com/llms/tree-view.md) — Hierarchical, expandable tree of nodes with keyboard navigation and selection _(npm @cascivo/react · or copy-paste)_
-- [user](https://cascivo.com/llms/user.md) — Identity composite: an avatar with a name, description, and optional action slot _(npm @cascivo/react · or copy-paste)_
-- [virtual-list](https://cascivo.com/llms/virtual-list.md) — Renders only the rows inside the viewport, so list length costs no extra DOM _(npm @cascivo/react · or copy-paste)_
-- [visually-hidden](https://cascivo.com/llms/visually-hidden.md) — Hides content visually while keeping it available to screen readers _(npm @cascivo/react · or copy-paste)_
+- `alert` — Highlights a short, important message inline _(npm @cascivo/react · or copy-paste)_
+- `avatar` — Displays a user image with initials fallback _(npm @cascivo/react · or copy-paste)_
+- `avatar-group` — Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip _(npm @cascivo/react · or copy-paste)_
+- `badge` — Small status label or category indicator _(npm @cascivo/react · or copy-paste)_
+- `block/console-app` — Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content. _(copy-paste)_
+- `block/dashboard-charts` — Dashboard layout with KPI tiles, line chart, bar chart, and pie chart. _(copy-paste)_
+- `block/empty-dashboard` — Dashboard page showing an empty state with a call-to-action button. _(copy-paste)_
+- `block/login-page` — Authentication login page with email and password form. _(copy-paste)_
+- `block/notification-center` — A list of notification alerts with a mark-all-read action. _(copy-paste)_
+- `block/page-with-breadcrumb` — A centered content page with a breadcrumb navigation and page header. _(copy-paste)_
+- `block/settings-form-page` — Settings page with profile form inside a two-column settings layout. _(copy-paste)_
+- `block/sidebar-app` — Full app shell with collapsible side navigation and top header. _(copy-paste)_
+- `block/stats-cards` — Grid of KPI stat cards with trend badges. _(copy-paste)_
+- `block/users-table-page` — Full users management page with table, search, and invite action. _(copy-paste)_
+- `blockquote` — Quoted passage with optional attribution footer _(npm @cascivo/react · or copy-paste)_
+- `brand/logo` — The cascivo mark and its sanctioned lockups, as inline SVG _(npm @cascivo/react · or copy-paste)_
+- `card` — Container for grouping related content _(npm @cascivo/react · or copy-paste)_
+- `carousel` — Scroll-snap slide deck with previous/next controls and dot indicators _(npm @cascivo/react · or copy-paste)_
+- `chat-bubble` — Message bubble for chat and messaging UIs with avatar, name, and timestamp support _(npm @cascivo/react · or copy-paste)_
+- `code` — Inline code span for identifiers, commands, and short snippets _(npm @cascivo/react · or copy-paste)_
+- `code-snippet` — Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look _(npm @cascivo/react · or copy-paste)_
+- `collapsible` — A single disclosure region toggled open and closed by its trigger _(npm @cascivo/react · or copy-paste)_
+- `comparison` — Reveals the difference between two layers with a draggable divider _(npm @cascivo/react · or copy-paste)_
+- `contained-list` — Labelled list of rows inside a bordered container _(npm @cascivo/react · or copy-paste)_
+- `data-list` — Key-value pairs rendered as a description list _(npm @cascivo/react · or copy-paste)_
+- `data-table` — Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets _(npm @cascivo/react · or copy-paste)_
+- `editor/highlight` — Read-only syntax-highlighted code block — the same owned tokenizer as CodeEditor, without the textarea. _(npm @cascivo/editor)_
+- `empty-state` — Placeholder for views that have no data to display _(npm @cascivo/react · or copy-paste)_
+- `flow/flow` — The declarative, AI-first flow surface — render a node/edge graph from plain serializable data. _(npm @cascivo/flow)_
+- `flow/flow-background` — Decorative dots / grid / cross canvas background, drawn purely in CSS gradients. _(npm @cascivo/flow)_
+- `flow/flow-canvas` — The pan/zoom canvas pane — a single CSS-transformed layer driven by the viewport signal. _(npm @cascivo/flow)_
+- `flow/flow-controls` — Zoom in / out / fit-view controls for a flow canvas — real, i18n-labeled buttons. _(npm @cascivo/flow)_
+- `flow/flow-edge` — An SVG edge with bezier/straight/smoothstep paths, an arrowhead, an optional label, and animation. _(npm @cascivo/flow)_
+- `flow/flow-handle` — A connection port on a node edge — where edges attach and interactive connect starts. _(npm @cascivo/flow)_
+- `flow/flow-minimap` — A scaled SVG overview of the graph with a draggable viewport rectangle. _(npm @cascivo/flow)_
+- `flow/flow-node` — An HTML node box positioned in the viewport pane — draggable, selectable, with arbitrary children. _(npm @cascivo/flow)_
+- `flow/flow-panel` — An absolutely-positioned slot for custom flow-canvas UI (legend, toolbar). _(npm @cascivo/flow)_
+- `flow/flow-story` — A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions. _(npm @cascivo/flow)_
+- `heading` — Section heading with semantic level decoupled from visual size _(npm @cascivo/react · or copy-paste)_
+- `image` — Image with load state, blur-up placeholder, graceful fallback, and optional zoom _(npm @cascivo/react · or copy-paste)_
+- `item` — Generic content row primitive with media, content, and action regions _(npm @cascivo/react · or copy-paste)_
+- `kbd` — Displays a keyboard key or shortcut _(npm @cascivo/react · or copy-paste)_
+- `list` — Styled unordered or ordered list with ListItem _(npm @cascivo/react · or copy-paste)_
+- `log-viewer` — Virtualized monospace console for high-frequency log and stream output _(npm @cascivo/react · or copy-paste)_
+- `prose` — Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables _(npm @cascivo/react · or copy-paste)_
+- `qr-code` — Encodes a URL or short text into a scannable SVG QR code _(npm @cascivo/react · or copy-paste)_
+- `relative-time` — Displays a date as a localized phrase relative to now, auto-updating _(npm @cascivo/react · or copy-paste)_
+- `separator` — Visual or semantic divider between content _(npm @cascivo/react · or copy-paste)_
+- `skeleton` — Animated loading placeholder that mirrors the shape of pending content _(npm @cascivo/react · or copy-paste)_
+- `stat` — Displays a key metric with optional delta, trend direction and help text _(npm @cascivo/react · or copy-paste)_
+- `status` — Colored dot with a label communicating the state of a system or entity _(npm @cascivo/react · or copy-paste)_
+- `structured-list` — Tabular row list for scannable data, optionally single-selectable _(npm @cascivo/react · or copy-paste)_
+- `swipe-item` — List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity _(npm @cascivo/react · or copy-paste)_
+- `tag` — Compact chip for labeling, categorizing, or filtering content _(npm @cascivo/react · or copy-paste)_
+- `text` — Body text with size, weight, and muted variants _(npm @cascivo/react · or copy-paste)_
+- `timeline` — Ordered sequence of events with status markers and a connector line _(npm @cascivo/react · or copy-paste)_
+- `tree-view` — Hierarchical, expandable tree of nodes with keyboard navigation and selection _(npm @cascivo/react · or copy-paste)_
+- `user` — Identity composite: an avatar with a name, description, and optional action slot _(npm @cascivo/react · or copy-paste)_
+- `virtual-list` — Renders only the rows inside the viewport, so list length costs no extra DOM _(npm @cascivo/react · or copy-paste)_
+- `visually-hidden` — Hides content visually while keeping it available to screen readers _(npm @cascivo/react · or copy-paste)_
 
 ### feedback
 
-- [infinite-scroll](https://cascivo.com/llms/infinite-scroll.md) — Loads the next page when the end of a list scrolls into view _(npm @cascivo/react · or copy-paste)_
-- [inline-loading](https://cascivo.com/llms/inline-loading.md) — Compact inline status indicator that pairs a label with a loading, success, or error state _(npm @cascivo/react · or copy-paste)_
-- [notification](https://cascivo.com/llms/notification.md) — Inline, actionable notification banner that surfaces a titled message with an optional recovery action _(npm @cascivo/react · or copy-paste)_
-- [progress](https://cascivo.com/llms/progress.md) — Horizontal bar showing the completion progress of a tracked operation _(npm @cascivo/react · or copy-paste)_
-- [progress-bar](https://cascivo.com/llms/progress-bar.md) — Shows determinate or indeterminate progress of a task _(npm @cascivo/react · or copy-paste)_
-- [progress-circle](https://cascivo.com/llms/progress-circle.md) — Circular determinate progress indicator rendered as an SVG arc _(npm @cascivo/react · or copy-paste)_
-- [pull-to-refresh](https://cascivo.com/llms/pull-to-refresh.md) — Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top _(npm @cascivo/react · or copy-paste)_
-- [radial-progress](https://cascivo.com/llms/radial-progress.md) — Circular progress indicator using conic-gradient, with percentage label and variant colors _(npm @cascivo/react · or copy-paste)_
-- [spinner](https://cascivo.com/llms/spinner.md) — Indeterminate loading indicator _(npm @cascivo/react · or copy-paste)_
+- `infinite-scroll` — Loads the next page when the end of a list scrolls into view _(npm @cascivo/react · or copy-paste)_
+- `inline-loading` — Compact inline status indicator that pairs a label with a loading, success, or error state _(npm @cascivo/react · or copy-paste)_
+- `notification` — Inline, actionable notification banner that surfaces a titled message with an optional recovery action _(npm @cascivo/react · or copy-paste)_
+- `progress` — Horizontal bar showing the completion progress of a tracked operation _(npm @cascivo/react · or copy-paste)_
+- `progress-bar` — Shows determinate or indeterminate progress of a task _(npm @cascivo/react · or copy-paste)_
+- `progress-circle` — Circular determinate progress indicator rendered as an SVG arc _(npm @cascivo/react · or copy-paste)_
+- `pull-to-refresh` — Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top _(npm @cascivo/react · or copy-paste)_
+- `radial-progress` — Circular progress indicator using conic-gradient, with percentage label and variant colors _(npm @cascivo/react · or copy-paste)_
+- `spinner` — Indeterminate loading indicator _(npm @cascivo/react · or copy-paste)_
 
 ### inputs
 
-- [button](https://cascivo.com/llms/button.md) — Triggers an action or event _(npm @cascivo/react · or copy-paste)_
-- [button-group](https://cascivo.com/llms/button-group.md) — Visually joins a set of related buttons into a single segmented control _(npm @cascivo/react · or copy-paste)_
-- [calendar](https://cascivo.com/llms/calendar.md) — An accessible standalone month-grid date picker. _(npm @cascivo/react · or copy-paste)_
-- [checkbox](https://cascivo.com/llms/checkbox.md) — Binary toggle for forms, with indeterminate support _(npm @cascivo/react · or copy-paste)_
-- [checkbox-card](https://cascivo.com/llms/checkbox-card.md) — Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios. _(npm @cascivo/react · or copy-paste)_
-- [color-picker](https://cascivo.com/llms/color-picker.md) — Interactive color selection widget with saturation/lightness area, hue and alpha sliders _(npm @cascivo/react · or copy-paste)_
-- [combobox](https://cascivo.com/llms/combobox.md) — Filterable single-select with an animated custom listbox, built on the dropdown open/close machine _(npm @cascivo/react · or copy-paste)_
-- [copy-button](https://cascivo.com/llms/copy-button.md) — Icon button that copies a value to the clipboard with copied feedback _(npm @cascivo/react · or copy-paste)_
-- [date-picker](https://cascivo.com/llms/date-picker.md) — An accessible date-picker with a calendar popover. _(npm @cascivo/react · or copy-paste)_
-- [date-range-picker](https://cascivo.com/llms/date-range-picker.md) — A dual-calendar picker for selecting a contiguous date range. _(npm @cascivo/react · or copy-paste)_
-- [editable](https://cascivo.com/llms/editable.md) — Inline click-to-edit text field _(npm @cascivo/react · or copy-paste)_
-- [editor/code-editor](https://cascivo.com/llms/editor/code-editor.md) — Lightweight code editor — a native textarea overlaid on a syntax-highlighted layer, with line numbers and Tab indent. _(npm @cascivo/editor)_
-- [fab](https://cascivo.com/llms/fab.md) — Floating action button anchored to a screen corner, with an optional speed-dial of secondary actions _(npm @cascivo/react · or copy-paste)_
-- [field](https://cascivo.com/llms/field.md) — Form-field wrapper composing label, control, description, and error _(npm @cascivo/react · or copy-paste)_
-- [file-uploader](https://cascivo.com/llms/file-uploader.md) — Drag-and-drop file upload zone with file list and status indicators. _(npm @cascivo/react · or copy-paste)_
-- [filter](https://cascivo.com/llms/filter.md) — A group of toggleable pill or outline buttons for filtering content by category _(npm @cascivo/react · or copy-paste)_
-- [form](https://cascivo.com/llms/form.md) — Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper _(npm @cascivo/react · or copy-paste)_
-- [icon-button](https://cascivo.com/llms/icon-button.md) — Square, icon-only button with a required accessible label _(npm @cascivo/react · or copy-paste)_
-- [input](https://cascivo.com/llms/input.md) — Text input field with optional label, hint, and error state _(npm @cascivo/react · or copy-paste)_
-- [input-group](https://cascivo.com/llms/input-group.md) — Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders _(npm @cascivo/react · or copy-paste)_
-- [label](https://cascivo.com/llms/label.md) — Accessible caption for a form control _(npm @cascivo/react · or copy-paste)_
-- [multi-select](https://cascivo.com/llms/multi-select.md) — Searchable multi-value select with a popover listbox, chips and grouping _(npm @cascivo/react · or copy-paste)_
-- [native-select](https://cascivo.com/llms/native-select.md) — A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring _(npm @cascivo/react · or copy-paste)_
-- [number-input](https://cascivo.com/llms/number-input.md) — Numeric input with stepper buttons, clamping, precision, and locale formatting _(npm @cascivo/react · or copy-paste)_
-- [otp-input](https://cascivo.com/llms/otp-input.md) — Segmented one-time code input _(npm @cascivo/react · or copy-paste)_
-- [password-input](https://cascivo.com/llms/password-input.md) — Password input with reveal toggle and optional strength meter _(npm @cascivo/react · or copy-paste)_
-- [radio](https://cascivo.com/llms/radio.md) — Single choice from a set, grouped with RadioGroup _(npm @cascivo/react · or copy-paste)_
-- [radio-card](https://cascivo.com/llms/radio-card.md) — Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups. _(npm @cascivo/react · or copy-paste)_
-- [rating-group](https://cascivo.com/llms/rating-group.md) — Star rating input with accessible radio group pattern _(npm @cascivo/react · or copy-paste)_
-- [reorder-list](https://cascivo.com/llms/reorder-list.md) — List whose rows can be reordered by pointer drag or entirely by keyboard _(npm @cascivo/react · or copy-paste)_
-- [search](https://cascivo.com/llms/search.md) — Search input with debounced search callback and clear button _(npm @cascivo/react · or copy-paste)_
-- [segmented-control](https://cascivo.com/llms/segmented-control.md) — Mutually exclusive toggle group _(npm @cascivo/react · or copy-paste)_
-- [select](https://cascivo.com/llms/select.md) — Native select menu styled to match the design system _(npm @cascivo/react · or copy-paste)_
-- [slider](https://cascivo.com/llms/slider.md) — Range input for selecting a value within bounds _(npm @cascivo/react · or copy-paste)_
-- [swap](https://cascivo.com/llms/swap.md) — Animated toggle between two icon/content states with rotate or flip transition _(npm @cascivo/react · or copy-paste)_
-- [tags-input](https://cascivo.com/llms/tags-input.md) — Free-form multi-value chip input _(npm @cascivo/react · or copy-paste)_
-- [textarea](https://cascivo.com/llms/textarea.md) — Multi-line text input with optional label, hint, and error state _(npm @cascivo/react · or copy-paste)_
-- [tile](https://cascivo.com/llms/tile.md) — A selectable card with radio (single) or checkbox (multi) semantics, toggled by click or keyboard _(npm @cascivo/react · or copy-paste)_
-- [time-picker](https://cascivo.com/llms/time-picker.md) — Native time input wrapper with label, hint, error, and size variants _(npm @cascivo/react · or copy-paste)_
-- [toggle](https://cascivo.com/llms/toggle.md) — On/off switch built as an accessible button _(npm @cascivo/react · or copy-paste)_
-- [toggle-group](https://cascivo.com/llms/toggle-group.md) — A set of toggle buttons for single or multiple selection _(npm @cascivo/react · or copy-paste)_
-- [wheel-picker](https://cascivo.com/llms/wheel-picker.md) — iOS-style drum picker — a column of options that scrolls and snaps to a selection _(npm @cascivo/react · or copy-paste)_
+- `button` — Triggers an action or event _(npm @cascivo/react · or copy-paste)_
+- `button-group` — Visually joins a set of related buttons into a single segmented control _(npm @cascivo/react · or copy-paste)_
+- `calendar` — An accessible standalone month-grid date picker. _(npm @cascivo/react · or copy-paste)_
+- `checkbox` — Binary toggle for forms, with indeterminate support _(npm @cascivo/react · or copy-paste)_
+- `checkbox-card` — Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios. _(npm @cascivo/react · or copy-paste)_
+- `color-picker` — Interactive color selection widget with saturation/lightness area, hue and alpha sliders _(npm @cascivo/react · or copy-paste)_
+- `combobox` — Filterable single-select with an animated custom listbox, built on the dropdown open/close machine _(npm @cascivo/react · or copy-paste)_
+- `copy-button` — Icon button that copies a value to the clipboard with copied feedback _(npm @cascivo/react · or copy-paste)_
+- `date-picker` — An accessible date-picker with a calendar popover. _(npm @cascivo/react · or copy-paste)_
+- `date-range-picker` — A dual-calendar picker for selecting a contiguous date range. _(npm @cascivo/react · or copy-paste)_
+- `editable` — Inline click-to-edit text field _(npm @cascivo/react · or copy-paste)_
+- `editor/code-editor` — Lightweight code editor — a native textarea overlaid on a syntax-highlighted layer, with line numbers and Tab indent. _(npm @cascivo/editor)_
+- `fab` — Floating action button anchored to a screen corner, with an optional speed-dial of secondary actions _(npm @cascivo/react · or copy-paste)_
+- `field` — Form-field wrapper composing label, control, description, and error _(npm @cascivo/react · or copy-paste)_
+- `file-uploader` — Drag-and-drop file upload zone with file list and status indicators. _(npm @cascivo/react · or copy-paste)_
+- `filter` — A group of toggleable pill or outline buttons for filtering content by category _(npm @cascivo/react · or copy-paste)_
+- `form` — Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper _(npm @cascivo/react · or copy-paste)_
+- `icon-button` — Square, icon-only button with a required accessible label _(npm @cascivo/react · or copy-paste)_
+- `input` — Text input field with optional label, hint, and error state _(npm @cascivo/react · or copy-paste)_
+- `input-group` — Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders _(npm @cascivo/react · or copy-paste)_
+- `label` — Accessible caption for a form control _(npm @cascivo/react · or copy-paste)_
+- `multi-select` — Searchable multi-value select with a popover listbox, chips and grouping _(npm @cascivo/react · or copy-paste)_
+- `native-select` — A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring _(npm @cascivo/react · or copy-paste)_
+- `number-input` — Numeric input with stepper buttons, clamping, precision, and locale formatting _(npm @cascivo/react · or copy-paste)_
+- `otp-input` — Segmented one-time code input _(npm @cascivo/react · or copy-paste)_
+- `password-input` — Password input with reveal toggle and optional strength meter _(npm @cascivo/react · or copy-paste)_
+- `radio` — Single choice from a set, grouped with RadioGroup _(npm @cascivo/react · or copy-paste)_
+- `radio-card` — Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups. _(npm @cascivo/react · or copy-paste)_
+- `rating-group` — Star rating input with accessible radio group pattern _(npm @cascivo/react · or copy-paste)_
+- `reorder-list` — List whose rows can be reordered by pointer drag or entirely by keyboard _(npm @cascivo/react · or copy-paste)_
+- `search` — Search input with debounced search callback and clear button _(npm @cascivo/react · or copy-paste)_
+- `segmented-control` — Mutually exclusive toggle group _(npm @cascivo/react · or copy-paste)_
+- `select` — Native select menu styled to match the design system _(npm @cascivo/react · or copy-paste)_
+- `slider` — Range input for selecting a value within bounds _(npm @cascivo/react · or copy-paste)_
+- `swap` — Animated toggle between two icon/content states with rotate or flip transition _(npm @cascivo/react · or copy-paste)_
+- `tags-input` — Free-form multi-value chip input _(npm @cascivo/react · or copy-paste)_
+- `textarea` — Multi-line text input with optional label, hint, and error state _(npm @cascivo/react · or copy-paste)_
+- `tile` — A selectable card with radio (single) or checkbox (multi) semantics, toggled by click or keyboard _(npm @cascivo/react · or copy-paste)_
+- `time-picker` — Native time input wrapper with label, hint, error, and size variants _(npm @cascivo/react · or copy-paste)_
+- `toggle` — On/off switch built as an accessible button _(npm @cascivo/react · or copy-paste)_
+- `toggle-group` — A set of toggle buttons for single or multiple selection _(npm @cascivo/react · or copy-paste)_
+- `wheel-picker` — iOS-style drum picker — a column of options that scrolls and snaps to a selection _(npm @cascivo/react · or copy-paste)_
 
 ### layout
 
-- [app-shell](https://cascivo.com/llms/app-shell.md) — Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle. _(npm @cascivo/react · or copy-paste)_
-- [aspect-ratio](https://cascivo.com/llms/aspect-ratio.md) — Constrains content to a fixed width-to-height ratio _(npm @cascivo/react · or copy-paste)_
-- [indicator](https://cascivo.com/llms/indicator.md) — Positions an overlay element (badge, dot, count) at a corner of its child _(npm @cascivo/react · or copy-paste)_
-- [join](https://cascivo.com/llms/join.md) — Groups adjacent children into a seamless joined element by removing interior borders and radii _(npm @cascivo/react · or copy-paste)_
-- [layout/app-shell](https://cascivo.com/llms/layout/app-shell.md) — Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip. _(copy-paste)_
-- [layout/auth-layout](https://cascivo.com/llms/layout/auth-layout.md) — Centered card layout for authentication pages (login, register, forgot password). _(copy-paste)_
-- [layout/auto-grid](https://cascivo.com/llms/layout/auto-grid.md) — Media-query-free responsive grid — columns auto-fill based on available space. _(npm @cascivo/react · or copy-paste)_
-- [layout/center](https://cascivo.com/llms/layout/center.md) — Horizontally centered container with a configurable max-width. _(npm @cascivo/react · or copy-paste)_
-- [layout/columns](https://cascivo.com/llms/layout/columns.md) — Equal-width multi-column layout that collapses to single column on narrow viewports. _(npm @cascivo/react · or copy-paste)_
-- [layout/dashboard-layout](https://cascivo.com/llms/layout/dashboard-layout.md) — Dashboard page layout with stats strip, main content area, and optional aside. _(copy-paste)_
-- [layout/flex](https://cascivo.com/llms/layout/flex.md) — Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction="horizontal"` for a row. _(npm @cascivo/react · or copy-paste)_
-- [layout/grid](https://cascivo.com/llms/layout/grid.md) — CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required. _(npm @cascivo/react · or copy-paste)_
-- [layout/masonry](https://cascivo.com/llms/layout/masonry.md) — Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column). _(copy-paste)_
-- [layout/page-header](https://cascivo.com/llms/layout/page-header.md) — Page-level header with title, description, breadcrumb, and actions slots. _(npm @cascivo/react · or copy-paste)_
-- [layout/section](https://cascivo.com/llms/layout/section.md) — Page-section shell with block padding, centered inner width, and stack gap. _(copy-paste)_
-- [layout/settings-layout](https://cascivo.com/llms/layout/settings-layout.md) — Two-column settings page layout with a fixed-width menu and fluid content area. _(copy-paste)_
-- [layout/spacer](https://cascivo.com/llms/layout/spacer.md) — Fixed-height spacing block using design token steps. _(npm @cascivo/react · or copy-paste)_
-- [layout/split-view](https://cascivo.com/llms/layout/split-view.md) — Resizable two-pane split layout with keyboard and pointer drag support. _(copy-paste)_
-- [resizable](https://cascivo.com/llms/resizable.md) — Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space _(npm @cascivo/react · or copy-paste)_
-- [scroll-area](https://cascivo.com/llms/scroll-area.md) — A scroll container with styled, slim scrollbars and overflow shadows _(npm @cascivo/react · or copy-paste)_
-- [section/cta](https://cascivo.com/llms/section/cta.md) — Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping. _(copy-paste)_
-- [section/feature-grid](https://cascivo.com/llms/section/feature-grid.md) — Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping. _(copy-paste)_
-- [section/hero](https://cascivo.com/llms/section/hero.md) — Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping. _(copy-paste)_
-- [section/media-masonry](https://cascivo.com/llms/section/media-masonry.md) — Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell. _(copy-paste)_
-- [section/page-footer](https://cascivo.com/llms/section/page-footer.md) — Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label="Footer"> wrapping the link columns. _(copy-paste)_
-- [section/stats-band](https://cascivo.com/llms/section/stats-band.md) — KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility. _(copy-paste)_
-- [stack](https://cascivo.com/llms/stack.md) — Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect _(npm @cascivo/react · or copy-paste)_
+- `app-shell` — Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle. _(npm @cascivo/react · or copy-paste)_
+- `aspect-ratio` — Constrains content to a fixed width-to-height ratio _(npm @cascivo/react · or copy-paste)_
+- `indicator` — Positions an overlay element (badge, dot, count) at a corner of its child _(npm @cascivo/react · or copy-paste)_
+- `join` — Groups adjacent children into a seamless joined element by removing interior borders and radii _(npm @cascivo/react · or copy-paste)_
+- `layout/app-shell` — Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip. _(copy-paste)_
+- `layout/auth-layout` — Centered card layout for authentication pages (login, register, forgot password). _(copy-paste)_
+- `layout/auto-grid` — Media-query-free responsive grid — columns auto-fill based on available space. _(npm @cascivo/react · or copy-paste)_
+- `layout/center` — Horizontally centered container with a configurable max-width. _(npm @cascivo/react · or copy-paste)_
+- `layout/columns` — Equal-width multi-column layout that collapses to single column on narrow viewports. _(npm @cascivo/react · or copy-paste)_
+- `layout/dashboard-layout` — Dashboard page layout with stats strip, main content area, and optional aside. _(copy-paste)_
+- `layout/flex` — Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction="horizontal"` for a row. _(npm @cascivo/react · or copy-paste)_
+- `layout/grid` — CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required. _(npm @cascivo/react · or copy-paste)_
+- `layout/masonry` — Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column). _(copy-paste)_
+- `layout/page-header` — Page-level header with title, description, breadcrumb, and actions slots. _(npm @cascivo/react · or copy-paste)_
+- `layout/section` — Page-section shell with block padding, centered inner width, and stack gap. _(copy-paste)_
+- `layout/settings-layout` — Two-column settings page layout with a fixed-width menu and fluid content area. _(copy-paste)_
+- `layout/spacer` — Fixed-height spacing block using design token steps. _(npm @cascivo/react · or copy-paste)_
+- `layout/split-view` — Resizable two-pane split layout with keyboard and pointer drag support. _(copy-paste)_
+- `resizable` — Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space _(npm @cascivo/react · or copy-paste)_
+- `scroll-area` — A scroll container with styled, slim scrollbars and overflow shadows _(npm @cascivo/react · or copy-paste)_
+- `section/cta` — Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping. _(copy-paste)_
+- `section/feature-grid` — Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping. _(copy-paste)_
+- `section/hero` — Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping. _(copy-paste)_
+- `section/media-masonry` — Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell. _(copy-paste)_
+- `section/page-footer` — Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label="Footer"> wrapping the link columns. _(copy-paste)_
+- `section/stats-band` — KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility. _(copy-paste)_
+- `stack` — Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect _(npm @cascivo/react · or copy-paste)_
 
 ### marketing
 
-- [block/faq](https://cascivo.com/llms/block/faq.md) — Frequently-asked-questions section composed from the Accordion component, with a centered, readable measure. _(copy-paste)_
-- [block/marketing-features](https://cascivo.com/llms/block/marketing-features.md) — Three-column responsive feature grid with icon, title, and description per cell. _(copy-paste)_
-- [block/marketing-hero](https://cascivo.com/llms/block/marketing-hero.md) — Full-width hero with headline, subtitle, CTA pair, and trust badges. _(copy-paste)_
-- [block/pricing](https://cascivo.com/llms/block/pricing.md) — Responsive three-tier pricing section composed from Card, Badge, and Button, with a highlighted featured plan. _(copy-paste)_
-- [block/site-footer](https://cascivo.com/llms/block/site-footer.md) — Multi-column site footer composed from Link and Separator, with a brand blurb, link columns, and a legal row. _(copy-paste)_
-- [block/testimonials](https://cascivo.com/llms/block/testimonials.md) — Responsive testimonial grid composed from Card and Avatar, with a quote and attribution per card. _(copy-paste)_
+- `block/faq` — Frequently-asked-questions section composed from the Accordion component, with a centered, readable measure. _(copy-paste)_
+- `block/marketing-features` — Three-column responsive feature grid with icon, title, and description per cell. _(copy-paste)_
+- `block/marketing-hero` — Full-width hero with headline, subtitle, CTA pair, and trust badges. _(copy-paste)_
+- `block/pricing` — Responsive three-tier pricing section composed from Card, Badge, and Button, with a highlighted featured plan. _(copy-paste)_
+- `block/site-footer` — Multi-column site footer composed from Link and Separator, with a brand blurb, link columns, and a legal row. _(copy-paste)_
+- `block/testimonials` — Responsive testimonial grid composed from Card and Avatar, with a quote and attribution per card. _(copy-paste)_
 
 ### navigation
 
-- [accordion](https://cascivo.com/llms/accordion.md) — Vertically stacked, collapsible content sections _(npm @cascivo/react · or copy-paste)_
-- [breadcrumb](https://cascivo.com/llms/breadcrumb.md) — Shows the current page location within a navigation hierarchy _(npm @cascivo/react · or copy-paste)_
-- [dock](https://cascivo.com/llms/dock.md) — Fixed bottom navigation bar for mobile app shells with up to 5 items _(npm @cascivo/react · or copy-paste)_
-- [header](https://cascivo.com/llms/header.md) — App top bar with brand, primary navigation links, and an actions slot _(npm @cascivo/react · or copy-paste)_
-- [header-panel](https://cascivo.com/llms/header-panel.md) — Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings _(npm @cascivo/react · or copy-paste)_
-- [large-title-header](https://cascivo.com/llms/large-title-header.md) — Scrolling region whose large title collapses into a compact sticky bar as it scrolls _(npm @cascivo/react · or copy-paste)_
-- [link](https://cascivo.com/llms/link.md) — Styled anchor for navigation, standalone or inline within prose _(npm @cascivo/react · or copy-paste)_
-- [menu-button](https://cascivo.com/llms/menu-button.md) — A button that opens an anchored action menu of one-shot commands _(npm @cascivo/react · or copy-paste)_
-- [menubar](https://cascivo.com/llms/menubar.md) — Horizontal application menu bar with keyboard-navigable dropdown menus _(npm @cascivo/react · or copy-paste)_
-- [navigation-menu](https://cascivo.com/llms/navigation-menu.md) — Site navigation bar with links and dropdown flyout panels _(npm @cascivo/react · or copy-paste)_
-- [pagination](https://cascivo.com/llms/pagination.md) — Controls for navigating paged data sets, with page size selection _(npm @cascivo/react · or copy-paste)_
-- [progress-indicator](https://cascivo.com/llms/progress-indicator.md) — Shows progress through the steps of a multi-step flow _(npm @cascivo/react · or copy-paste)_
-- [shell-header](https://cascivo.com/llms/shell-header.md) — Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content _(npm @cascivo/react · or copy-paste)_
-- [side-nav](https://cascivo.com/llms/side-nav.md) — Collapsible sidebar navigation with optional icons and one level of grouping _(npm @cascivo/react · or copy-paste)_
-- [skip-nav](https://cascivo.com/llms/skip-nav.md) — Skip link that jumps keyboard users past the navigation to the main content _(npm @cascivo/react (SkipNavLink, SkipNavLinkProps, SkipNavTarget, SkipNavTargetProps) · the SkipNav component itself is copy-paste)_
-- [steps](https://cascivo.com/llms/steps.md) — Visual progress indicator for multi-step flows with horizontal and vertical orientations _(npm @cascivo/react · or copy-paste)_
-- [switcher](https://cascivo.com/llms/switcher.md) — Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown. _(npm @cascivo/react · or copy-paste)_
-- [tabs](https://cascivo.com/llms/tabs.md) — Switch between related panels of content _(npm @cascivo/react · or copy-paste)_
-- [toc](https://cascivo.com/llms/toc.md) — Table of contents with scroll-spy highlighting of the active section _(npm @cascivo/react · or copy-paste)_
+- `accordion` — Vertically stacked, collapsible content sections _(npm @cascivo/react · or copy-paste)_
+- `breadcrumb` — Shows the current page location within a navigation hierarchy _(npm @cascivo/react · or copy-paste)_
+- `dock` — Fixed bottom navigation bar for mobile app shells with up to 5 items _(npm @cascivo/react · or copy-paste)_
+- `header` — App top bar with brand, primary navigation links, and an actions slot _(npm @cascivo/react · or copy-paste)_
+- `header-panel` — Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings _(npm @cascivo/react · or copy-paste)_
+- `large-title-header` — Scrolling region whose large title collapses into a compact sticky bar as it scrolls _(npm @cascivo/react · or copy-paste)_
+- `link` — Styled anchor for navigation, standalone or inline within prose _(npm @cascivo/react · or copy-paste)_
+- `menu-button` — A button that opens an anchored action menu of one-shot commands _(npm @cascivo/react · or copy-paste)_
+- `menubar` — Horizontal application menu bar with keyboard-navigable dropdown menus _(npm @cascivo/react · or copy-paste)_
+- `navigation-menu` — Site navigation bar with links and dropdown flyout panels _(npm @cascivo/react · or copy-paste)_
+- `pagination` — Controls for navigating paged data sets, with page size selection _(npm @cascivo/react · or copy-paste)_
+- `progress-indicator` — Shows progress through the steps of a multi-step flow _(npm @cascivo/react · or copy-paste)_
+- `shell-header` — Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content _(npm @cascivo/react · or copy-paste)_
+- `side-nav` — Collapsible sidebar navigation with optional icons and one level of grouping _(npm @cascivo/react · or copy-paste)_
+- `skip-nav` — Skip link that jumps keyboard users past the navigation to the main content _(npm @cascivo/react (SkipNavLink, SkipNavLinkProps, SkipNavTarget, SkipNavTargetProps) · the SkipNav component itself is copy-paste)_
+- `steps` — Visual progress indicator for multi-step flows with horizontal and vertical orientations _(npm @cascivo/react · or copy-paste)_
+- `switcher` — Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown. _(npm @cascivo/react · or copy-paste)_
+- `tabs` — Switch between related panels of content _(npm @cascivo/react · or copy-paste)_
+- `toc` — Table of contents with scroll-spy highlighting of the active section _(npm @cascivo/react · or copy-paste)_
 
 ### overlay
 
-- [action-sheet](https://cascivo.com/llms/action-sheet.md) — Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button _(npm @cascivo/react · or copy-paste)_
-- [alert-dialog](https://cascivo.com/llms/alert-dialog.md) — Confirmation dialog requiring explicit user action; no light-dismiss _(npm @cascivo/react · or copy-paste)_
-- [bottom-sheet](https://cascivo.com/llms/bottom-sheet.md) — Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss _(npm @cascivo/react · or copy-paste)_
-- [command-menu](https://cascivo.com/llms/command-menu.md) — Cmd+K command palette with fuzzy search over grouped commands _(npm @cascivo/react · or copy-paste)_
-- [context-menu](https://cascivo.com/llms/context-menu.md) — Right-click context menu anchored at pointer coordinates via CSS custom properties _(npm @cascivo/react · or copy-paste)_
-- [drawer](https://cascivo.com/llms/drawer.md) — Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion _(npm @cascivo/react · or copy-paste)_
-- [dropdown](https://cascivo.com/llms/dropdown.md) — Menu of actions revealed from a trigger _(npm @cascivo/react · or copy-paste)_
-- [hover-card](https://cascivo.com/llms/hover-card.md) — Hover-triggered popover with configurable open/close delay _(npm @cascivo/react · or copy-paste)_
-- [menu](https://cascivo.com/llms/menu.md) — Dropdown menu with keyboard navigation, built on usePopover _(npm @cascivo/react · or copy-paste)_
-- [modal](https://cascivo.com/llms/modal.md) — Accessible dialog overlay using native <dialog> element _(npm @cascivo/react · or copy-paste)_
-- [overflow-menu](https://cascivo.com/llms/overflow-menu.md) — Kebab icon button revealing a menu of row-level actions _(npm @cascivo/react · or copy-paste)_
-- [popover](https://cascivo.com/llms/popover.md) — Anchored floating panel built on CSS Anchor Positioning + Popover API _(npm @cascivo/react · or copy-paste)_
-- [sheet](https://cascivo.com/llms/sheet.md) — Slide-in panel from any edge, using popover=manual and @starting-style animations _(npm @cascivo/react · or copy-paste)_
-- [toast](https://cascivo.com/llms/toast.md) — Transient notification surfaced via the useToast hook _(npm @cascivo/react (ToastOptions, ToastProvider, ToastVariant, dismissAllToasts, useToast) · the Toast component itself is copy-paste)_
-- [toggletip](https://cascivo.com/llms/toggletip.md) — A click-triggered info popover for supplementary, selectable content _(npm @cascivo/react · or copy-paste)_
-- [tooltip](https://cascivo.com/llms/tooltip.md) — Contextual label shown on hover or focus _(npm @cascivo/react · or copy-paste)_
+- `action-sheet` — Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button _(npm @cascivo/react · or copy-paste)_
+- `alert-dialog` — Confirmation dialog requiring explicit user action; no light-dismiss _(npm @cascivo/react · or copy-paste)_
+- `bottom-sheet` — Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss _(npm @cascivo/react · or copy-paste)_
+- `command-menu` — Cmd+K command palette with fuzzy search over grouped commands _(npm @cascivo/react · or copy-paste)_
+- `context-menu` — Right-click context menu anchored at pointer coordinates via CSS custom properties _(npm @cascivo/react · or copy-paste)_
+- `drawer` — Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion _(npm @cascivo/react · or copy-paste)_
+- `dropdown` — Menu of actions revealed from a trigger _(npm @cascivo/react · or copy-paste)_
+- `hover-card` — Hover-triggered popover with configurable open/close delay _(npm @cascivo/react · or copy-paste)_
+- `menu` — Dropdown menu with keyboard navigation, built on usePopover _(npm @cascivo/react · or copy-paste)_
+- `modal` — Accessible dialog overlay using native <dialog> element _(npm @cascivo/react · or copy-paste)_
+- `overflow-menu` — Kebab icon button revealing a menu of row-level actions _(npm @cascivo/react · or copy-paste)_
+- `popover` — Anchored floating panel built on CSS Anchor Positioning + Popover API _(npm @cascivo/react · or copy-paste)_
+- `sheet` — Slide-in panel from any edge, using popover=manual and @starting-style animations _(npm @cascivo/react · or copy-paste)_
+- `toast` — Transient notification surfaced via the useToast hook _(npm @cascivo/react (ToastOptions, ToastProvider, ToastVariant, dismissAllToasts, useToast) · the Toast component itself is copy-paste)_
+- `toggletip` — A click-triggered info popover for supplementary, selectable content _(npm @cascivo/react · or copy-paste)_
+- `tooltip` — Contextual label shown on hover or focus _(npm @cascivo/react · or copy-paste)_
 
 ### shell
 
-- [block/app-shell](https://cascivo.com/llms/block/app-shell.md) — Two-column layout with collapsible sidebar, nav links, and content area. _(copy-paste)_
-- [block/settings-profile](https://cascivo.com/llms/block/settings-profile.md) — Two-section settings form: personal info fields + preference toggles. _(copy-paste)_
+- `block/app-shell` — Two-column layout with collapsible sidebar, nav links, and content area. _(copy-paste)_
+- `block/settings-profile` — Two-section settings form: personal info fields + preference toggles. _(copy-paste)_
 
 When-to-use / when-not-to-use for any entry: https://cascivo.com/context/<name>.md (all of them inline in llms-full.txt).
 

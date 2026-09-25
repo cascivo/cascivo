@@ -622,6 +622,16 @@ export const meta: ComponentMeta = {
 />`,
     },
     {
+      title: 'Existing TanStack Table columns',
+      description:
+        'fromTanStack turns TanStack Table ColumnDef[] (accessorKey, accessorFn, cell, size, group columns) into DataTable columns and rows, with no TanStack dependency. toSortState / toTanStackSorting convert sort state both ways. A header function is not rendered; the column id is shown instead.',
+      code: `import { DataTable, fromTanStack } from '@cascivo/react'
+
+const { columns, rows } = fromTanStack(columnDefs, data)
+
+<DataTable columns={columns} rows={rows} getRowId={(r) => r.id} />`,
+    },
+    {
       title: 'Custom cell content with Column.render',
       description:
         'Use Column.render to return any ReactNode per cell — a Badge for status, an icon + link for a repo, a right-aligned timestamp. Columns without render fall back to String(row[key]).',

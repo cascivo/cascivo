@@ -75,7 +75,7 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
   '/guides/when-not-to-use': {
     title: 'When not to use cascivo — cascivo',
     description:
-      'An honest list of where cascivo is the wrong tool or only a forward bet: a young one-maintainer project, a React lint exception for signals, two built-in locales, no Figma kit or VPAT yet, alpha tooling, React/Preact only, and modern browsers only.',
+      'An honest list of where cascivo is the wrong tool or only a forward bet: a young one-maintainer project, a lint exception for copied component source, translations still awaiting native review, no Figma kit or VPAT yet, alpha tooling, React/Preact only, and modern browsers only.',
     ogTitle: 'When not to use cascivo',
   },
   '/guides/alternatives': {

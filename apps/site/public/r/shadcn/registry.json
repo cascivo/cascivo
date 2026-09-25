@@ -1847,6 +1847,10 @@
           "type": "registry:component"
         },
         {
+          "path": "data-table/tanstack.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "data-table/to-csv.ts",
           "type": "registry:component"
         },

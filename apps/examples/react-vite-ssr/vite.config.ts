@@ -24,6 +24,7 @@ export default defineConfig(({ isSsrBuild }) => ({
       // prefix, so without this '@cascivo/core/pure' resolves to 'index.ts/pure'.
       '@cascivo/core/pure': resolve(root, 'packages/core/src/pure.ts'),
       '@cascivo/core': resolve(root, 'packages/core/src/index.ts'),
+      '@cascivo/i18n/locales': resolve(root, 'packages/i18n/src/locales'),
       '@cascivo/i18n': resolve(root, 'packages/i18n/src/index.ts'),
     },
   },

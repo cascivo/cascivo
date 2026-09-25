@@ -33,6 +33,12 @@ const DATA_FILES = [
   ['marketplace.json', join(REPO_ROOT, 'apps', 'site', 'public', 'marketplace.json')],
 ]
 
+// show_view's MCP App page, written by scripts/build-app.mjs just before this runs.
+if (!existsSync(join(DIST, 'view.html'))) {
+  console.error('postbuild: dist/view.html is missing — run scripts/build-app.mjs first')
+  process.exit(1)
+}
+
 for (const [name, src] of DATA_FILES) {
   if (!existsSync(src)) {
     console.error(`postbuild: missing ${src} — run \`pnpm regen\` first`)

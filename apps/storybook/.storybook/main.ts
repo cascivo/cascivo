@@ -29,6 +29,7 @@ const config: StorybookConfig = {
         '@cascivo/core/pure': resolve(root, 'packages/core/src/pure.ts'),
         '@cascivo/core': resolve(root, 'packages/core/src/index.ts'),
         '@cascivo/storage': resolve(root, 'packages/storage/src/index.ts'),
+        '@cascivo/i18n/locales': resolve(root, 'packages/i18n/src/locales'),
         '@cascivo/i18n': resolve(root, 'packages/i18n/src/index.ts'),
         '@cascivo/ai': resolve(root, 'packages/ai/src/index.ts'),
         '@cascivo/icons': resolve(root, 'packages/icons/src/index.tsx'),

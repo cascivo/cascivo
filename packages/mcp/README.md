@@ -65,15 +65,16 @@ The server speaks the MCP stdio transport. It is **self-contained**: the registr
 
 ### Scaffold & validate
 
-| Tool                      | Input                              | Returns                                                                                                                                 |
-| ------------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `scaffold_view`           | `{ description, components? }`     | A validated starter `ViewConfig` + the bound-vocabulary `grammar` for its components                                                    |
-| `validate_view`           | `{ config }`                       | Validation errors (component, prop type/enum, refs) with exact paths                                                                    |
-| `render_view_as_markdown` | `{ config, data? }`                | What the view says, as Markdown — rendered by the real components (needs `@cascivo/render` installed in the project)                    |
-| `get_view_grammar`        | `{ components? }`                  | Bound-vocabulary grammar + generation prompt for valid `ViewConfig` JSON                                                                |
-| `validate_component`      | `{ tsx?, css?, name? }`            | Static structural-invariant check of generated source (banned hooks, off-scale breakpoints, missing CSS fallbacks, hallucinated tokens) |
-| `scaffold_flow`           | `{ description, steps?, layout? }` | Starter nodes/edges + ready-to-paste `<Flow />` JSX (from `@cascivo/flow`) for a diagram                                                |
-| `scaffold_page`           | `{ description, components? }`     | **Deprecated** — use `scaffold_view`; still returns a JSX scaffold plus the `scaffold_view` output                                      |
+| Tool                      | Input                              | Returns                                                                                                                                       |
+| ------------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `scaffold_view`           | `{ description, components? }`     | A validated starter `ViewConfig` + the bound-vocabulary `grammar` for its components                                                          |
+| `validate_view`           | `{ config }`                       | Validation errors (component, prop type/enum, refs) with exact paths                                                                          |
+| `render_view_as_markdown` | `{ config, data? }`                | What the view says, as Markdown — rendered by the real components (needs `@cascivo/render` installed in the project)                          |
+| `show_view`               | `{ config, data? }`                | Validates, then shows the view rendered with the real components inside the chat, in clients that support MCP Apps (`ui://cascivo/view.html`) |
+| `get_view_grammar`        | `{ components? }`                  | Bound-vocabulary grammar + generation prompt for valid `ViewConfig` JSON                                                                      |
+| `validate_component`      | `{ tsx?, css?, name? }`            | Static structural-invariant check of generated source (banned hooks, off-scale breakpoints, missing CSS fallbacks, hallucinated tokens)       |
+| `scaffold_flow`           | `{ description, steps?, layout? }` | Starter nodes/edges + ready-to-paste `<Flow />` JSX (from `@cascivo/flow`) for a diagram                                                      |
+| `scaffold_page`           | `{ description, components? }`     | **Deprecated** — use `scaffold_view`; still returns a JSX scaffold plus the `scaffold_view` output                                            |
 
 ### Templates
 

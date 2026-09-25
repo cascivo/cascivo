@@ -17,6 +17,7 @@ import { generateThemeCss } from './theme.js'
 import { scaffoldPage } from './scaffold.js'
 import { validateView } from './validate.js'
 import { loadViewToMarkdown } from './view-markdown.js'
+import { MCP_APP_MIME_TYPE, VIEW_APP_TOOL_META, VIEW_APP_URI, loadViewApp } from './view-app.js'
 import { scaffoldView } from './scaffold-view.js'
 import { buildGrammar, formatGrammar } from './grammar.js'
 import { buildGenerationPrompt } from './prompt.js'
@@ -393,6 +394,51 @@ export function createServer(options: ServerOptions = {}): McpServer {
         return text(loaded.viewToMarkdown(config, data === undefined ? undefined : { data }))
       } catch (err) {
         return error(`Rendering the view failed: ${(err as Error).message}`)
+      }
+    },
+  )
+
+  server.registerResource(
+    'cascivo-view',
+    VIEW_APP_URI,
+    {
+      title: 'cascivo view',
+      description: 'Renders a ViewConfig with the real cascivo components (MCP App for show_view).',
+      mimeType: MCP_APP_MIME_TYPE,
+    },
+    (uri) => {
+      const html = loadViewApp()
+      if (html === undefined) {
+        throw new Error('view.html is missing — this @cascivo/mcp was not built with its app')
+      }
+      return { contents: [{ uri: uri.href, mimeType: MCP_APP_MIME_TYPE, text: html }] }
+    },
+  )
+
+  server.registerTool(
+    'show_view',
+    {
+      title: 'Show view',
+      description:
+        'Validate a ViewConfig and show it to the user rendered with the real components, in clients that support MCP Apps (the MCP UI extension). Other clients get the validation result as text. $actions.* events are not wired in the preview.',
+      inputSchema: {
+        config: z.record(z.string(), z.unknown()).describe('The ViewConfig object to show'),
+        data: z
+          .record(z.string(), z.unknown())
+          .optional()
+          .describe('Host data for $data.* bindings, as <CascivoView data> takes it'),
+      },
+      _meta: VIEW_APP_TOOL_META,
+    },
+    ({ config, data }) => {
+      const componentNames = new Set(registry.components.map((c) => c.meta.name))
+      const validation = validateView(config, componentNames)
+      if (!validation.valid) {
+        return { ...json(validation), structuredContent: { errors: validation.errors } }
+      }
+      return {
+        ...text('The view is valid and is shown to the user.'),
+        structuredContent: { config, ...(data === undefined ? {} : { data }) },
       }
     },
   )

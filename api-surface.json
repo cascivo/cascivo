@@ -195,6 +195,7 @@
           "createStreamBuffer",
           "dismissAllToasts",
           "effect",
+          "fromTanStack",
           "fuzzyMatch",
           "fuzzyScore",
           "getLinkComponent",
@@ -204,6 +205,8 @@
           "signal",
           "themePreloadScript",
           "themeSignal",
+          "toSortState",
+          "toTanStackSorting",
           "treeViewMessages",
           "useAnchorPosition",
           "useClipboard",
@@ -493,6 +496,9 @@
           "TabsTriggerProps",
           "TagProps",
           "TagsInputProps",
+          "TanStackCellContext",
+          "TanStackColumnDef",
+          "TanStackSort",
           "TextProps",
           "TextareaProps",
           "ThemeProviderProps",
@@ -1397,6 +1403,7 @@
             "submit": "(onValid: (values: T) => void | Promise<void>): Promise<void>",
             "reset": "(): void"
           },
+          "fromTanStack": "declare function fromTanStack<Row>(defs: readonly TanStackColumnDef<Row>[], data: readonly Row[]): { columns: Column<Row>[]; rows: Row[]; }",
           "fuzzyMatch": "declare function fuzzyMatch(query: string, text: string): FuzzyMatch | null",
           "FuzzyMatch": {
             "score": "number",
@@ -2478,6 +2485,29 @@
             "ariaLabel?": "string",
             "label?": "string"
           },
+          "TanStackCellContext": {
+            "(extends)": "<Row>",
+            "getValue": "() => unknown",
+            "renderValue": "() => unknown",
+            "row": "{ original: Row; id: string; index: number; }",
+            "column": "{ id: string; }"
+          },
+          "TanStackColumnDef": {
+            "(extends)": "<Row>",
+            "id?": "string",
+            "accessorKey?": "PropertyKey",
+            "accessorFn?": "(row: Row, index: number) => unknown",
+            "header?": "unknown",
+            "cell?": "unknown",
+            "enableSorting?": "boolean",
+            "size?": "number",
+            "minSize?": "number",
+            "columns?": "readonly TanStackColumnDef<Row>[]"
+          },
+          "TanStackSort": {
+            "id": "string",
+            "desc": "boolean"
+          },
           "Text": "declare function Text({ as: Component, size, weight, muted, className, children, ...props }: TextProps): import(\"react\").JSX.Element",
           "Textarea": "declare const Textarea: import(\"react\").ForwardRefExoticComponent<TextareaProps & import(\"react\").RefAttributes<HTMLTextAreaElement>>",
           "TextareaProps": {
@@ -2611,6 +2641,8 @@
             "children": "ReactElement",
             "delay?": "number"
           },
+          "toSortState": "declare function toSortState(sorting: readonly TanStackSort[]): SortState | undefined",
+          "toTanStackSorting": "declare function toTanStackSorting(sort: SortState | undefined): TanStackSort[]",
           "TreeNode": {
             "id": "string",
             "label": "ReactNode",
@@ -6297,19 +6329,34 @@
     },
     "@cascivo/render": {
       ".": {
-        "values": ["CascadeView", "CascivoView", "validateView"],
+        "values": [
+          "A2UI_CATALOG_ID",
+          "CascadeView",
+          "CascivoView",
+          "fromA2UI",
+          "validatePartialView",
+          "validateView"
+        ],
         "types": [
+          "A2uiComponent",
           "ActionRef",
           "CascadeViewProps",
           "CascivoViewProps",
           "ComponentNode",
           "DataRef",
+          "PartialValidation",
           "PropValue",
           "TranslationRef",
           "ValidationError",
           "ViewConfig"
         ],
         "declarations": {
+          "A2UI_CATALOG_ID": "declare const A2UI_CATALOG_ID = \"https://cascivo.com/a2ui/v0_9/catalog.json\"",
+          "A2uiComponent": {
+            "id": "string",
+            "component": "string",
+            "[prop: string]: unknown": ""
+          },
           "ActionRef": "type = `$actions.${string}`",
           "CascadeView": "declare const CascadeView: typeof CascivoView",
           "CascadeViewProps": "type = CascivoViewProps",
@@ -6328,11 +6375,19 @@
             "children?": "ComponentNode[] | string | TranslationRef"
           },
           "DataRef": "type = `$data.${string}`",
+          "fromA2UI": "declare function fromA2UI(components: readonly A2uiComponent[]): ViewConfig",
+          "PartialValidation": {
+            "complete": "boolean",
+            "valid": "boolean",
+            "errors": "ValidationError[]",
+            "view": "unknown"
+          },
           "PropValue": "type = string | number | boolean | null | TranslationRef | PropValue[] | { [key: string]: PropValue; }",
           "TranslationRef": {
             "$t": "string",
             "params?": "Record<string, string | number>"
           },
+          "validatePartialView": "declare function validatePartialView(text: string): PartialValidation",
           "validateView": "declare function validateView(config: unknown): { valid: boolean; errors: ValidationError[]; }",
           "ValidationError": {
             "path": "string",

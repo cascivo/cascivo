@@ -126,7 +126,6 @@ const exploreItems = [
   { label: 'Email components', href: '/docs/email/components', icon: <Mail size={16} /> },
   { label: 'Flow', href: '/docs/flow', icon: <Grid size={16} /> },
   { label: 'Directory', href: '/docs/directory', icon: <Grid size={16} /> },
-  { label: 'Marketplace', href: '/docs/marketplace', icon: <Grid size={16} /> },
   { label: 'Layouts', href: '/docs/layouts', icon: <Grid size={16} /> },
   { label: 'Playground', href: '/docs/playground', icon: <Terminal size={16} /> },
 ]

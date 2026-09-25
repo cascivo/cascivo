@@ -44,8 +44,8 @@
     "provenance": true
   },
   "scripts": {
-    "build": "vp pack --minify && node scripts/postbuild.mjs",
-    "check": "tsc --noEmit",
+    "build": "vp pack --minify && node scripts/build-app.mjs && node scripts/postbuild.mjs",
+    "check": "tsc --noEmit && tsc --noEmit -p app",
     "test": "vp test"
   },
   "dependencies": {
@@ -54,7 +54,17 @@
     "zod": "catalog:"
   },
   "devDependencies": {
+    "@cascivo/react": "workspace:^",
+    "@cascivo/render": "workspace:^",
+    "@cascivo/themes": "workspace:^",
+    "@cascivo/tokens": "workspace:^",
+    "@modelcontextprotocol/ext-apps": "1.7.5",
+    "@preact/signals-react": "catalog:",
     "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:"
   }

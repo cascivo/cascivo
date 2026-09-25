@@ -37,6 +37,19 @@ describe('t()', () => {
     expect(t(messages.plain)).toBe('Hello')
   })
 
+  it('falls back from a region-tagged locale to its language catalog', async () => {
+    const store = createLocale({ default: 'en', supported: ['en', 'de-AT'] })
+    await store.set('de-AT')
+    expect(t(messages.plain)).toBe('Hallo')
+    defineCatalog(messages, 'de-AT', {
+      plain: 'Servus',
+      greeting: 'Servus {name}',
+      items: { one: '{count} Eintrag', other: '{count} Einträge' },
+    })
+    expect(t(messages.plain)).toBe('Servus')
+    await store.set('en')
+  })
+
   it('leaves unknown placeholders intact', () => {
     expect(t(messages.greeting, {} as { name: string })).toBe('Hello {name}')
   })

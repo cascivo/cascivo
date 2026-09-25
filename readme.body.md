@@ -77,11 +77,11 @@ cascivo ships both the **WHAT** (manifests, tokens, MCP) and the **WHY** (intent
 - **`tokens.catalog.json`** — closed-set token catalog; every `--cascivo-*` property with its layer and resolved default.
 - **Design-tool formats** — the tokens as W3C Design Tokens ([`@cascivo/tokens/dtcg`](packages/tokens), DTCG 2025.10 with a theme resolver) for Figma variables, Tokens Studio and Style Dictionary; a generated [`DESIGN.md`](DESIGN.md) for single-file tools; and Storybook's components manifest at [storybook.cascivo.com/manifests/components.json](https://storybook.cascivo.com/manifests/components.json).
 - **`cascivo audit --ai`** — flags hard-coded values, invented props, and missing required wiring in generated code.
-- **MCP server** ([`@cascivo/mcp`](packages/mcp)) — 24 tools:
+- **MCP server** ([`@cascivo/mcp`](packages/mcp)) — 25 tools:
   - _discover:_ `list_registries`, `list_components`, `search_components`, `get_component`, `select_component`, `get_context`, `list_guides`, `get_guide`
   - _tokens & icons:_ `get_tokens`, `search_icons`
   - _scaffold:_ `create_app`, `create_theme`, `scaffold_page`, `scaffold_view`, `scaffold_flow`, `get_view_grammar`
-  - _verify:_ `validate_view`, `render_view_as_markdown`, `validate_component`, `get_variant_matrix`
+  - _verify:_ `validate_view`, `render_view_as_markdown`, `show_view`, `validate_component`, `get_variant_matrix`
   - _install:_ `add_to_project`, `list_templates`, `get_template`, `add_template`
 
 Set it up in one command — Claude Code by default, or `--client cursor` / `--client vscode`:

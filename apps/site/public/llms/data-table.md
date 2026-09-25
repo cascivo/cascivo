@@ -195,6 +195,18 @@ One entry in a row actions menu.
 />
 ```
 
+### Existing TanStack Table columns
+
+fromTanStack turns TanStack Table ColumnDef[] (accessorKey, accessorFn, cell, size, group columns) into DataTable columns and rows, with no TanStack dependency. toSortState / toTanStackSorting convert sort state both ways. A header function is not rendered; the column id is shown instead.
+
+```tsx
+import { DataTable, fromTanStack } from '@cascivo/react'
+
+const { columns, rows } = fromTanStack(columnDefs, data)
+
+<DataTable columns={columns} rows={rows} getRowId={(r) => r.id} />
+```
+
 ### Custom cell content with Column.render
 
 Use Column.render to return any ReactNode per cell — a Badge for status, an icon + link for a repo, a right-aligned timestamp. Columns without render fall back to String(row[key]).

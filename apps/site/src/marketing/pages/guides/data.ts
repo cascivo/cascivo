@@ -325,18 +325,18 @@ export const BOUNDARIES: Boundary[] = [
     },
   },
   {
-    limit: 'Signals inside React need one lint exception',
+    limit: 'Copied component source needs one lint exception',
     framing:
-      "React's own hooks lint (react-hooks/immutability) flags every signal write, and the React Compiler expects components not to mutate values during render. The shipped ESLint config turns that one rule off, and components that write signals stay outside the Compiler or carry a disable directive. If your team treats that rule as non-negotiable, weigh it before adopting.",
+      "Your own code can stay fully strict: useSignalState's setter passes React's hooks lint (react-hooks/immutability) and compiles under the React Compiler, and CI checks both — so on the npm path you need no exception at all. The component source that cascivo add copies in still writes signals directly, so that folder needs the rule off, and the React Compiler skips those components instead of optimising them. The shipped ESLint config turns the rule off everywhere by default; scope it to the copied folder if the rest of your code should stay strict. If your team allows no exception anywhere, weigh it before adopting.",
     receipt: {
       label: 'Using cascivo with strict ESLint',
       href: 'https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-STRICT-ESLINT.md',
     },
   },
   {
-    limit: 'Two built-in locales',
+    limit: 'Most built-in translations are not yet native-reviewed',
     framing:
-      'Every user-visible string comes from the @cascivo/i18n catalog, but only English and German ship today. Other languages mean writing your own catalog — typed, and overridable per instance through labels — before you launch.',
+      'Every user-visible string comes from the @cascivo/i18n catalog, and fourteen languages ship: English, German, and twelve more (French, Spanish, Italian, Portuguese, Dutch, Swedish, Polish, Japanese, Chinese, Korean, Arabic, Turkish) that were drafted with AI assistance and have not yet had a native-speaker review. If your product ships in one of those, have a speaker check the strings — any of them can be overridden per instance through labels, or wholesale with defineCatalog.',
     receipt: {
       label: '@cascivo/i18n',
       href: 'https://github.com/cascivo/cascivo/tree/main/packages/i18n',

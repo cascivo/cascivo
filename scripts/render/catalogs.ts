@@ -1,0 +1,194 @@
+/**
+ * Component catalogs for two other generative-UI formats, derived from the same manifests and
+ * prop schemas `<CascivoView>` validates against:
+ *
+ * - **A2UI v0.9** (Google's agent-to-UI protocol): one JSON Schema document, served at its own
+ *   `catalogId` URL. An agent that speaks A2UI generates against it; `fromA2UI` in
+ *   `@cascivo/render` turns the resulting components into a view `<CascivoView>` renders.
+ * - **json-render** (Vercel Labs): a TypeScript module, because its catalog takes Zod schemas.
+ *   It is a copy-in file, like a component: `@json-render/*` and `zod` are the adopter's
+ *   dependencies, not cascivo's.
+ *
+ * Only components `<CascivoView>` can render are listed (`component-map.ts`), so a catalog
+ * never offers what the renderer would reject.
+ */
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import type { PropSchema } from '../../packages/render/src/prop-schemas.ts'
+
+// Must equal `A2UI_CATALOG_ID` in packages/render/src/a2ui.ts (asserted by render-catalogs.test.ts).
+export const A2UI_CATALOG_ID = 'https://cascivo.com/a2ui/v0_9/catalog.json'
+const COMMON = 'https://a2ui.org/specification/v0_9/common_types.json#/$defs'
+
+export interface CatalogComponent {
+  name: string
+  description: string
+  /** `undefined` for a sub-part with no schema: its props are not constrained. */
+  props: PropSchema[] | undefined
+}
+
+/** Names `<CascivoView>` renders, read from `component-map.ts`'s object literal. */
+export function renderableNames(root: string): string[] {
+  const src = readFileSync(join(root, 'packages/render/src/component-map.ts'), 'utf8')
+  const body = src.slice(src.indexOf('export const componentMap'))
+  return [...body.matchAll(/^\s+(\w+): cast\(/gm)].map((m) => m[1]!).sort()
+}
+
+const isEvent = (name: string) => /^on[A-Z]/.test(name)
+
+function a2uiProp(prop: PropSchema): Record<string, unknown> {
+  if (isEvent(prop.name)) return { $ref: `${COMMON}/Action` }
+  if (prop.enum) return { type: 'string', enum: prop.enum }
+  const kinds = prop.primitives ?? []
+  if (kinds.length === 1 && kinds[0] === 'string') return { $ref: `${COMMON}/DynamicString` }
+  if (kinds.length === 1 && kinds[0] === 'number') return { $ref: `${COMMON}/DynamicNumber` }
+  if (kinds.length === 1 && kinds[0] === 'boolean') return { $ref: `${COMMON}/DynamicBoolean` }
+  return { $ref: `${COMMON}/DynamicValue` }
+}
+
+export function a2uiCatalog(components: CatalogComponent[]): Record<string, unknown> {
+  const entries = components.map((c) => {
+    const properties: Record<string, unknown> = { component: { const: c.name } }
+    for (const prop of c.props ?? []) {
+      if (prop.name !== 'children') properties[prop.name] = a2uiProp(prop)
+    }
+    properties['children'] = { $ref: `${COMMON}/ChildList` }
+    // A plain string, not DynamicString: a component's text content is its React children,
+    // which a data binding cannot reach.
+    properties['text'] = { type: 'string', description: 'Text content, instead of children.' }
+    const required = [
+      'component',
+      ...(c.props ?? []).filter((p) => p.required && p.name !== 'children').map((p) => p.name),
+    ]
+    const definition: Record<string, unknown> = {
+      type: 'object',
+      description: c.description,
+      allOf: [{ $ref: `${COMMON}/ComponentCommon` }, { type: 'object', properties, required }],
+    }
+    if (c.props) definition['unevaluatedProperties'] = false
+    return [c.name, definition] as const
+  })
+  return {
+    $schema: 'https://json-schema.org/draft/2020-12/schema',
+    $id: A2UI_CATALOG_ID,
+    title: 'cascivo',
+    description:
+      'cascivo components for A2UI v0.9. Event props (on*) take an A2UI Action; `text` is a ' +
+      'component’s text content. Render with fromA2UI + <CascivoView> from @cascivo/render.',
+    catalogId: A2UI_CATALOG_ID,
+    components: Object.fromEntries(entries),
+    functions: {},
+    $defs: {
+      theme: {
+        type: 'object',
+        description: 'cascivo themes are CSS: set data-theme on the host element instead.',
+        additionalProperties: true,
+      },
+      anyComponent: {
+        oneOf: entries.map(([name]) => ({ $ref: `#/components/${name}` })),
+        discriminator: { propertyName: 'component' },
+      },
+      // No catalog functions: an empty `oneOf` is not valid JSON Schema, so match nothing.
+      anyFunction: { not: {} },
+    },
+  }
+}
+
+function zodProp(prop: PropSchema): string {
+  let z: string
+  if (prop.enum) z = `z.enum(${JSON.stringify(prop.enum)})`
+  else if (prop.primitives?.length === 1) z = `z.${prop.primitives[0]}()`
+  else if (prop.primitives && prop.primitives.length > 1) {
+    z = `z.union([${prop.primitives.map((p) => `z.${p}()`).join(', ')}])`
+  } else z = 'z.unknown()'
+  return prop.required ? z : `${z}.optional()`
+}
+
+export function jsonRenderModule(components: CatalogComponent[]): string {
+  const lines: string[] = []
+  lines.push(
+    '// Generated by scripts/render/generate-catalogs.ts from cascivo’s manifests — do not edit.',
+  )
+  lines.push('//')
+  lines.push(
+    '// A json-render (https://github.com/vercel-labs/json-render) catalog and registry for',
+  )
+  lines.push('// cascivo components. Copy it into your app; it needs @json-render/core,')
+  lines.push(
+    '// @json-render/react, zod and @cascivo/react. Event props become json-render events:',
+  )
+  lines.push(
+    '// `onValueChange` is emitted as `valueChange`, so bind it with `on: { valueChange: … }`.',
+  )
+  lines.push(
+    '// Render: <JSONUIProvider registry={registry}><Renderer spec={spec} registry={registry} />',
+  )
+  lines.push('// </JSONUIProvider>. Prompt the model with catalog.prompt().')
+  lines.push("import { createElement, type ComponentType, type ReactNode } from 'react'")
+  lines.push("import { defineCatalog } from '@json-render/core'")
+  lines.push("import { defineRegistry } from '@json-render/react'")
+  lines.push("import { schema } from '@json-render/react/schema'")
+  lines.push("import { z } from 'zod'")
+  lines.push('import {')
+  for (const c of components) lines.push(`  ${c.name === 'Toast' ? 'ToastProvider' : c.name},`)
+  lines.push("} from '@cascivo/react'")
+  lines.push('')
+  lines.push('export const catalog = defineCatalog(schema, {')
+  lines.push('  components: {')
+  for (const c of components) {
+    const props = (c.props ?? []).filter((p) => p.name !== 'children' && !isEvent(p.name))
+    const events = (c.props ?? []).filter((p) => isEvent(p.name)).map((p) => eventName(p.name))
+    const description = events.length
+      ? `${c.description} Events: ${events.join(', ')}.`
+      : c.description
+    lines.push(`    ${c.name}: {`)
+    lines.push(`      description: ${JSON.stringify(description)},`)
+    if (c.props) {
+      lines.push('      props: z.object({')
+      for (const p of props) lines.push(`        ${JSON.stringify(p.name)}: ${zodProp(p)},`)
+      lines.push('      }),')
+    } else {
+      lines.push('      props: z.record(z.string(), z.unknown()),')
+    }
+    lines.push("      slots: ['default'],")
+    lines.push('    },')
+  }
+  lines.push('  },')
+  lines.push('  actions: {},')
+  lines.push('})')
+  lines.push('')
+  lines.push('type Rendered = ComponentType<Record<string, unknown>>')
+  lines.push('')
+  lines.push('interface RenderArgs {')
+  lines.push('  props: Record<string, unknown>')
+  lines.push('  children?: ReactNode')
+  lines.push('  emit: (event: string) => void')
+  lines.push('}')
+  lines.push('')
+  lines.push('function render(component: unknown, events: string[]) {')
+  lines.push('  const Component = component as Rendered')
+  lines.push('  return ({ props, children, emit }: RenderArgs) => {')
+  lines.push('    const handlers: Record<string, () => void> = {}')
+  lines.push('    for (const prop of events) {')
+  lines.push('      handlers[prop] = () => emit(prop.charAt(2).toLowerCase() + prop.slice(3))')
+  lines.push('    }')
+  lines.push('    return createElement(Component, { ...props, ...handlers }, children)')
+  lines.push('  }')
+  lines.push('}')
+  lines.push('')
+  lines.push('export const { registry } = defineRegistry(catalog, {')
+  lines.push('  components: {')
+  for (const c of components) {
+    const events = (c.props ?? []).filter((p) => isEvent(p.name)).map((p) => p.name)
+    const impl = c.name === 'Toast' ? 'ToastProvider' : c.name
+    lines.push(`    ${c.name}: render(${impl}, ${JSON.stringify(events)}),`)
+  }
+  lines.push('  },')
+  lines.push('})')
+  lines.push('')
+  return lines.join('\n')
+}
+
+function eventName(prop: string): string {
+  return prop.charAt(2).toLowerCase() + prop.slice(3)
+}

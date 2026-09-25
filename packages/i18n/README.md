@@ -33,6 +33,20 @@ t(builtin.button.loading) // resolves against the active locale
 
 Because the active locale is a signal, changing it updates every component that reads a catalog string — no context provider, no re-mount. Catalogs are registered lazily and loaded on demand.
 
+## Built-in languages
+
+English (the defaults) and German ship in the main entry. Twelve more ship as separate entries, so an app pays only for the languages it imports: `fr`, `es`, `it`, `pt`, `nl`, `sv`, `pl`, `ja`, `zh`, `ko`, `ar`, `tr`. Each one registers the translations of every built-in component string:
+
+```ts
+const i18n = createLocale({ default: 'en', supported: ['en', 'fr', 'ja'] })
+i18n.registerCatalog('fr', () => import('@cascivo/i18n/locales/fr'))
+i18n.registerCatalog('ja', () => import('@cascivo/i18n/locales/ja'))
+```
+
+A region-tagged locale falls back to its language: with `supported: ['pt-BR']`, the `pt` catalog answers. A catalog registered for the exact tag still wins.
+
+The twelve added languages were drafted with AI assistance and have not yet had a native-speaker review. Check the strings before you ship in one of them, and override any that read wrong through `labels` or `defineCatalog`.
+
 ## Overriding strings per instance
 
 Components default to the built-in catalog but accept a `labels` prop to override per-instance:

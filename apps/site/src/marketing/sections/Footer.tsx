@@ -22,7 +22,6 @@ const COLUMNS: { label: string; links: NavLink[] }[] = [
     links: [
       { label: 'Docs', href: '/docs' },
       { label: 'Storybook', href: 'https://storybook.cascivo.com' },
-      { label: 'Templates', href: '/docs/marketplace' },
       { label: 'Examples', href: '/examples' },
       { label: 'Showcase', href: '/showcase' },
       { label: 'GitHub', href: REPO },

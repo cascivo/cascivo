@@ -30,6 +30,9 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/row-sort.ts"
     },
     {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/tanstack.ts"
+    },
+    {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/to-csv.ts"
     },
     {
@@ -656,6 +659,11 @@
       {
         "title": "Basic table",
         "code": "<DataTable\n  columns={[\n    { key: 'name', header: 'Name', sortable: true },\n    { key: 'role', header: 'Role' },\n  ]}\n  rows={[\n    { name: 'Alice', role: 'Engineer' },\n    { name: 'Bob', role: 'Designer' },\n  ]}\n  getRowId={(r) => r.name}\n/>"
+      },
+      {
+        "title": "Existing TanStack Table columns",
+        "description": "fromTanStack turns TanStack Table ColumnDef[] (accessorKey, accessorFn, cell, size, group columns) into DataTable columns and rows, with no TanStack dependency. toSortState / toTanStackSorting convert sort state both ways. A header function is not rendered; the column id is shown instead.",
+        "code": "import { DataTable, fromTanStack } from '@cascivo/react'\n\nconst { columns, rows } = fromTanStack(columnDefs, data)\n\n<DataTable columns={columns} rows={rows} getRowId={(r) => r.id} />"
       },
       {
         "title": "Custom cell content with Column.render",

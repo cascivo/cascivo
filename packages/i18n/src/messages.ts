@@ -40,6 +40,17 @@ export function defineCatalog<T extends Record<string, Message>>(
 
 const pluralRules = new Map<string, Intl.PluralRules>()
 
+/**
+ * A region-tagged locale (`fr-CA`, `pt-BR`) falls back to its language's catalog, so the
+ * shipped `fr`/`pt` catalogs cover it without a copy per region. An exact catalog still wins.
+ */
+function lookup(locale: string, key: string): MessageValue | undefined {
+  const exact = catalogs.get(locale)?.get(key)
+  if (exact !== undefined) return exact
+  const dash = locale.indexOf('-')
+  return dash > 0 ? catalogs.get(locale.slice(0, dash))?.get(key) : undefined
+}
+
 function interpolate(template: string, params?: Record<string, string | number>): string {
   if (!params) return template
   return template.replace(/\{(\w+)\}/g, (match, name: string) =>
@@ -51,7 +62,7 @@ function interpolate(template: string, params?: Record<string, string | number>)
 export function translateKey(key: string, params?: Record<string, string | number>): string {
   void catalogVersion.value // subscribe signal-tracked callers to catalog updates
   const locale = currentLocale()
-  const value = catalogs.get(locale)?.get(key) ?? defaults.get(key)
+  const value = lookup(locale, key) ?? defaults.get(key)
   if (value === undefined) return key
   return resolve(locale, value, params)
 }
@@ -87,6 +98,6 @@ export function t<V extends MessageValue>(message: Message<V>, ...args: TArgs<V>
   // Degrade to '' rather than crash the render.
   if (message == null || typeof message.key !== 'string') return ''
   const locale = currentLocale()
-  const value = catalogs.get(locale)?.get(message.key) ?? message.value
+  const value = lookup(locale, message.key) ?? message.value
   return resolve(locale, value, args[0])
 }

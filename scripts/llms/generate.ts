@@ -1110,6 +1110,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     '- Forms -> `createForm` / `useForm` / `<Form>` / `field()` (`@cascivo/react`): a signal-backed store with sync/async + Standard Schema (zod/valibot) validation and optional `validateOnChange` — keystroke validation, zero re-renders.',
   )
   lines.push(
+    "- Localized component strings -> `@cascivo/i18n`: `createLocale({ default: 'en', supported: [...] })`, then `registerCatalog('fr', () => import('@cascivo/i18n/locales/fr'))`. English and German are built in; fr, es, it, pt, nl, sv, pl, ja, zh, ko, ar, tr ship as subpath entries (AI-drafted, awaiting native review). `pt-BR` falls back to `pt`. Override single strings per instance with `labels`.",
+  )
+  lines.push(
     '- Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` — import from **`@cascivo/core`** on BOTH install paths (`@cascivo/react` re-exports the same names; before 0.17.0 it shipped only from `@cascivo/react`, which told copy-paste adopters to install all 197 components to get a theme signal): persists the choice and drives `data-theme`, SSR no-FOUC. `useTheme()` returns a TUPLE `[string, setTheme]` — the first element is the current theme **name** (a plain string; the component re-renders on change, no signal handling). Do NOT destructure `{ theme, setTheme }` (that is next-themes’ shape). Signal-native code (computed/effect/Preact) can grab the underlying signal via `themeSignal()`. ThemeProvider warns in dev if it sets a `data-theme` for which no `--cascivo-color-*` token resolves (you forgot the `@cascivo/themes` CSS import → grayscale app). `setTheme()` writes the SIGNAL; the mounted `<ThemeProvider>` writes the `data-theme` attribute — with no provider mounted the signal updates, `useTheme()` reports the new value, and nothing restyles (dev warns). Outside React (imperative shell, pre-hydration script) use `applyTheme(theme, target?)`, which writes the attribute directly and keeps the signal in sync. CSS bundles: `@cascivo/themes/light-dark.css` = light + dark (the common case); `@cascivo/themes/all.css` = all twelve themes; `@cascivo/themes/<name>.css` = one theme. Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS `prefers-color-scheme` > light; pass `defaultTheme` to override the OS. Controlled `<ThemeProvider value=…>` is SSR-safe by itself (emits an inline attribute setter); for the persisted flow add `suppressHydrationWarning` to the `<html>` the preload script writes to. Never write a `useEffect` that toggles a `.dark` class.',
   )
   lines.push(
@@ -1245,6 +1248,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(
     '- `render_view_as_markdown` — render a view config and read back what it says (needs `@cascivo/render`)',
   )
+  lines.push(
+    '- `show_view` — show a validated view to the user, rendered in the chat, in clients that support MCP Apps',
+  )
   lines.push('- `add_to_project` — install components into the user project')
   lines.push('')
   lines.push('Two MCP servers, two jobs — run both if your client allows it:')
@@ -1365,13 +1371,17 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
       'vertical/horizontal spacing layout use `Flex` (`layout/flex`; the aliases `vstack`/`hstack` resolve to it).',
   )
   lines.push('')
+  // One URL pattern instead of a link per line: the 210 repeated absolute URLs were an eighth
+  // of this file, which is meant to be the cheap first fetch.
+  lines.push(
+    `Full reference for any entry: ${DOCS}/llms/<name>.md (e.g. ${DOCS}/llms/chart/line-chart.md).`,
+  )
+  lines.push('')
   for (const category of categories) {
     lines.push(`### ${category}`)
     lines.push('')
     for (const entry of sorted.filter((e) => e.category === category)) {
-      lines.push(
-        `- [${entry.name}](${DOCS}/llms/${entry.name}.md) — ${entry.description} _(${channelLabel(entry)})_`,
-      )
+      lines.push(`- \`${entry.name}\` — ${entry.description} _(${channelLabel(entry)})_`)
     }
     lines.push('')
   }

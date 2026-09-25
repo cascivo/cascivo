@@ -68,8 +68,8 @@ describe('llms channel + stylesheet guard', () => {
     const failures: string[] = []
     for (const e of registry()) {
       if (!e.install) continue
-      // Index line: `- [<name>](…/llms/<name>.md) — <desc> _(npm <pkg>)_`
-      const line = txt.split('\n').find((l) => l.startsWith(`- [${e.name}](`))
+      // Index line: `- `<name>` — <desc> _(npm <pkg>)_`
+      const line = txt.split('\n').find((l) => l.startsWith(`- \`${e.name}\` `))
       if (!line) {
         failures.push(`${e.name}: no index line in llms.txt`)
       } else if (!line.includes(`_(npm ${e.install})_`)) {

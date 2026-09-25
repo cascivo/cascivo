@@ -81,8 +81,11 @@ export function MarketplacePage() {
         <h1>Templates</h1>
         <p class="doc-lede">
           Whole-page compositions you own and adapt — install a template's components and page with{' '}
-          <code>npx cascivo add @ns/&lt;template&gt;</code>. Community-contributed, hosted on
-          GitHub, no backend.
+          <code>npx cascivo add @ns/&lt;template&gt;</code>. Hosted on GitHub, no backend.
+        </p>
+        <p class="doc-lede">
+          Early: the catalog holds the three first-party templates (auth, dashboard, landing) and is
+          open to community submissions through the <a href="/docs/directory">directory</a>.
         </p>
       </header>
 

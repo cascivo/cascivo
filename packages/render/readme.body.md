@@ -60,3 +60,30 @@ const { valid, errors } = validateView(view) // errors: { path, message }[]
 Unknown components (with a did-you-mean hint), malformed nodes, and prop values that don't match the generated per-component prop schemas are reported with exact paths, so generated views fail loudly rather than rendering garbage.
 
 Pair it with the MCP server's bound-vocabulary grammar (`get_view_grammar`) and `scaffold_view` for the full anti-hallucination loop: the model can only emit components and props that exist, and `validateView` is the enforcement backstop. `cascivo generate <config.json>` converts a validated `ViewConfig` into owned TSX when you want to graduate from JSON to source.
+
+## Validating while the view streams
+
+`validatePartialView(text)` checks a view as an agent emits it, token by token. It validates the longest finished prefix of the JSON text, so an unknown component or a bad prop value is reported as soon as it has fully arrived. Errors that only mean "not arrived yet", such as a node with no `component` key so far, are held back until the text is complete. It also returns the parsed prefix as `view`, which `CascivoView` can render as it grows:
+
+```ts
+import { validatePartialView } from '@cascivo/render'
+
+const { complete, valid, errors, view } = validatePartialView(streamedText)
+```
+
+## Other generative-UI formats
+
+cascivo's renderable components are also published as catalogs for two other formats. Both are generated from the same manifests and prop schemas the validator uses:
+
+- **A2UI v0.9** (Google's agent-to-UI protocol): [`https://cascivo.com/a2ui/v0_9/catalog.json`](https://cascivo.com/a2ui/v0_9/catalog.json), which is also its `catalogId`. An agent that speaks A2UI generates against it. `fromA2UI(components)` turns the surface's flat component list into a `ViewConfig`: `{ "path": "/…" }` values become `$data` bindings, and `{ "event": { "name": "save" } }` actions become `$actions.save`.
+
+  ```tsx
+  import { CascivoView, fromA2UI } from '@cascivo/render'
+  ;<CascivoView
+    config={fromA2UI(updateComponents.components)}
+    data={dataModel}
+    actions={handlers}
+  />
+  ```
+
+- **json-render** (Vercel Labs): [`https://cascivo.com/json-render/catalog.tsx`](https://cascivo.com/json-render/catalog.tsx) is a catalog and registry to copy into your app. It needs `@json-render/core`, `@json-render/react`, `zod` and `@cascivo/react`.

@@ -137,6 +137,7 @@
     "@cascivo/core": "workspace:*",
     "@cascivo/i18n": "workspace:*",
     "@preact/signals": "^2",
+    "@tanstack/table-core": "8.21.3",
     "@testing-library/jest-dom": "^6",
     "@testing-library/react": "catalog:",
     "@testing-library/user-event": "^14",

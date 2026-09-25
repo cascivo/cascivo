@@ -27,7 +27,7 @@ const GUIDE_LINKS = [
   {
     title: 'When not to use cascivo',
     teaser:
-      'Candid limits — a young project, a lint exception for signals, two locales, no Figma kit — with honest receipts.',
+      'Candid limits — a young project, a lint exception for copied source, unreviewed translations, no Figma kit — with honest receipts.',
     href: '/guides/when-not-to-use',
   },
   {

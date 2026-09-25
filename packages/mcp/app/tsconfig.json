@@ -1,0 +1,14 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "allowImportingTsExtensions": true,
+    "types": [],
+    "paths": {
+      "@cascivo/react": ["../../react/src/index.ts"],
+      "@cascivo/render": ["../../render/src/index.ts"]
+    }
+  },
+  "include": [".", "../../components/src/css-modules.d.ts", "../../react/src/css-modules.d.ts"]
+}

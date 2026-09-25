@@ -54,10 +54,10 @@ const TILES: Tile[] = [
     href: '/docs/machine-mode.md',
   },
   {
-    title: 'Templates',
-    body: 'Whole-page starting points — dashboard, auth, landing — that install like a component and are yours to edit.',
-    tag: '@cascivo/dashboard',
-    href: '/docs/marketplace',
+    title: 'Tokens in the open format',
+    body: 'Every token also ships as W3C DTCG JSON with a theme resolver, plus a DESIGN.md, so design tools and agents read the same values.',
+    tag: '@cascivo/tokens/dtcg',
+    href: '/docs/tokens',
   },
 ]
 

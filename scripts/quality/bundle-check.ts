@@ -22,7 +22,7 @@
  */
 import { gzipSync } from 'node:zlib'
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
-import { dirname, join, sep } from 'node:path'
+import { dirname, join, relative, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = fileURLToPath(new URL('../..', import.meta.url))
@@ -72,7 +72,7 @@ const BUDGETS: Record<string, number> = {
   '@cascivo/editor': 20, // measured 10.4
   '@cascivo/flow': 16, // measured 7.7
   '@cascivo/core': 12, // measured 6.7
-  '@cascivo/i18n': 10, // measured 5.8
+  '@cascivo/i18n': 10, // measured 6.5 — the entry and German; see OPT_IN_DIRS for the rest
   '@cascivo/registry': 10, // measured 4.1
   '@cascivo/ai': 6, // measured 1.3
   '@cascivo/storage': 5, // measured 0.4
@@ -249,6 +249,16 @@ function measureTree(distDir: string, treeFiles: string[]): { kb: number; scope:
   }
 }
 
+/**
+ * Subpath entries an app imports one at a time, kept out of the package's tree figure and
+ * budgeted per file instead. `@cascivo/i18n/locales/<code>` is the case: summing twelve
+ * languages measured a payload no app loads, while the one file an app does load went
+ * unmeasured. Measured: the largest locale (ja) is 3.2 KB.
+ */
+const OPT_IN_DIRS: Record<string, { dir: string; budget: number }> = {
+  '@cascivo/i18n': { dir: 'locales', budget: 4 },
+}
+
 const failures: string[] = []
 const measured: string[] = []
 
@@ -299,7 +309,19 @@ for (const { dir, pkg } of readPackages()) {
   // measure the tree instead.
   const distDir = dirname(entryPath)
   const entryKB = gzipKB([entryPath])
-  const treeFiles = allJs(distDir)
+  const optIn = OPT_IN_DIRS[name]
+  const optInPrefix = optIn && join(distDir, optIn.dir) + sep
+  const treeFiles = allJs(distDir).filter((f) => !optInPrefix || !f.startsWith(optInPrefix))
+  if (optIn && optInPrefix) {
+    for (const file of allJs(join(distDir, optIn.dir))) {
+      const fileKB = gzipKB([file])
+      if (fileKB > optIn.budget) {
+        failures.push(
+          `${name}: ${relative(dir, file)} ${fileKB.toFixed(1)} KB gzip > budget ${optIn.budget} KB`,
+        )
+      }
+    }
+  }
   const codeSplit = entryKB < 1 && treeFiles.length > 1
   const { kb, scope } = codeSplit ? measureTree(distDir, treeFiles) : { kb: entryKB, scope: entry }
 

@@ -85,7 +85,7 @@ export function AiPage() {
           add the server to any MCP-compatible agent&apos;s config by hand:
         </p>
         <CodeBlock code={MCP_SETUP} lang="bash" />
-        <p>Key MCP tools (24 in total — browse, select, scaffold, validate, theme, install):</p>
+        <p>Key MCP tools (25 in total — browse, select, scaffold, validate, theme, install):</p>
         <ul>
           <li>
             <code>list_components</code> / <code>search_components</code> — browse by category, tag,
@@ -108,6 +108,10 @@ export function AiPage() {
           <li>
             <code>render_view_as_markdown</code> — render a view with the real components and read
             back what it says (needs <code>@cascivo/render</code> in the project)
+          </li>
+          <li>
+            <code>show_view</code> — show a validated view to the user, rendered with the real
+            components inside the chat, in clients that support MCP Apps
           </li>
           <li>
             <code>get_tokens</code> / <code>get_context</code> / <code>create_theme</code> — tokens,

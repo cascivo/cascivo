@@ -1,12 +1,21 @@
+import { readdirSync } from 'node:fs'
 import { defineConfig } from 'vite-plus'
 import { MINIFY } from '../../scripts/build/minify.ts'
+
+// One entry per shipped locale (`@cascivo/i18n/locales/<code>`), so an app pays only for the
+// languages it imports. English is the message defaults and German ships in the core entry.
+const locales = Object.fromEntries(
+  readdirSync(new URL('./src/locales', import.meta.url))
+    .filter((f) => /^[a-z]{2}\.ts$/.test(f))
+    .map((f) => [`locales/${f.slice(0, -3)}`, `./src/locales/${f}`]),
+)
 
 export default defineConfig({
   build: {
     lib: {
-      entry: './src/index.ts',
+      entry: { index: './src/index.ts', ...locales },
       formats: ['es'],
-      fileName: 'index',
+      fileName: (_format, entryName) => `${entryName}.js`,
     },
     rollupOptions: {
       output: { minify: MINIFY },

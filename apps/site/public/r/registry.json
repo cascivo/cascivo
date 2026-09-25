@@ -10082,6 +10082,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/row-sort.ts"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/tanstack.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/to-csv.ts"
         },
         {

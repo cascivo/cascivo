@@ -9,7 +9,7 @@
 // 'use client' banner), strip vp's cosmetic //#region source-path comments, and
 // write the result to dist/index.d.ts.
 import { execFileSync } from 'node:child_process'
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -49,6 +49,15 @@ try {
     .join('\n')
 
   writeFileSync(join(pkgRoot, 'dist', 'index.d.ts'), cleaned)
+
+  // A locale entry only registers its catalog (`import '@cascivo/i18n/locales/fr'`), so its
+  // declaration is empty — but it must exist for the `./locales/*` export's `types` condition.
+  mkdirSync(join(pkgRoot, 'dist', 'locales'), { recursive: true })
+  for (const file of readdirSync(join(pkgRoot, 'src', 'locales'))) {
+    if (/^[a-z]{2}\.ts$/.test(file)) {
+      writeFileSync(join(pkgRoot, 'dist', 'locales', file.replace(/\.ts$/, '.d.ts')), 'export {}\n')
+    }
+  }
 } finally {
   rmSync(outDir, { recursive: true, force: true })
   // Remove any stale nested tree from a previous tsc-based build.
