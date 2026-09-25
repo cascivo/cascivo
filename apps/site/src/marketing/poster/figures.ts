@@ -25,9 +25,19 @@ export const gzip = bundle
     }
   : undefined
 
-/** Median wall-clock for "update every 10th row of 1,000", in ms. */
+/**
+ * Median wall-clock for "update every 10th row of 1,000", in ms — only when cascivo is
+ * measurably faster. The report calls p ≥ 0.05 (Mann-Whitney) a tie and claims no winner, so
+ * a tie must not print as a speed-up here either.
+ */
+const partialIsWin =
+  cascadeUpdateMs !== undefined &&
+  shadcnUpdateMs !== undefined &&
+  shadcnUpdateMs > cascadeUpdateMs &&
+  (partialUpdate?.pVsCascade?.shadcn ?? 1) < 0.05
+
 export const partial =
-  cascadeUpdateMs && shadcnUpdateMs
+  partialIsWin && cascadeUpdateMs && shadcnUpdateMs
     ? {
         cascivoMs: Math.round(cascadeUpdateMs),
         shadcnMs: Math.round(shadcnUpdateMs),

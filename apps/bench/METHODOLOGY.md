@@ -84,6 +84,15 @@ published table also derives ms/keystroke = value ÷ 20.
 `content-visibility: auto` on table rows (library-shipped, not an app-level optimization). This
 is not removed for benchmarking — we benchmark components as shipped.
 
+**Transition disclosure:** the trace ends at the _last_ paint before the quiet period, so a CSS
+transition the interaction starts is counted for its whole duration. cascivo's Checkbox and
+Modal animate their state change (150ms tokens), so their timings include that animation. The
+2026-09-25 run was repeated with `prefers-reduced-motion: reduce`, which turns the transitions
+off: open-dialog fell from ~300ms to ~88ms (shadcn ~205ms), toggle-50-checkboxes from ~254ms
+to ~176ms (shadcn ~57ms), and select-row barely moved (~564ms → ~500ms; shadcn ~133ms). The
+published table keeps the as-shipped numbers; the gap left under reduced motion is real
+rendering cost.
+
 ## Re-render counts
 
 **Methodology:** React Profiler root commit counts from instrumented **development builds**.

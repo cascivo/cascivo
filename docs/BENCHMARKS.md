@@ -5,102 +5,92 @@
 
 ## Environment
 
-|                          |                                                        |
-| ------------------------ | ------------------------------------------------------ |
-| Date                     | 2026-06-16                                             |
-| CPU                      | Intel(R) Core(TM) Ultra 9 185H (22 cores, 62GB)        |
-| OS / Node / Chrome       | linux 7.0.9-205.fc44.x86_64 / v24.16.0 / 148.0.7778.96 |
-| CPU throttle (timed ops) | 4×                                                     |
-| Lockfile                 | 57da3ccdfb54                                           |
-| Source                   | local                                                  |
+| | |
+| --- | --- |
+| Date | 2026-09-25 |
+| CPU | Intel(R) Xeon(R) Processor @ 2.80GHz (4 cores, 16GB) |
+| OS / Node / Chrome | linux 6.18.44-fc-v37 / v22.22.2 / 141.0.7390.37 |
+| CPU throttle (timed ops) | 4× |
+| Lockfile | e1a1ee331387 |
+| Source | local |
 
 ## Bundle size (min+gzip, level 6)
 
-| App     |       JS |     CSS |        Total |
-| ------- | -------: | ------: | -----------: |
-| cascivo |  71.61KB |     7KB |  **78.61KB** |
-| shadcn  |  93.07KB |  3.43KB |  **96.51KB** |
-| carbon  | 108.72KB | 81.02KB | **189.74KB** |
+| App | JS | CSS | Total |
+| --- | ---: | ---: | ---: |
+| cascivo | 82.3KB | 9.57KB | **91.88KB** |
+| shadcn | 93.07KB | 3.43KB | **96.51KB** |
+| carbon | 108.72KB | 81.02KB | **189.74KB** |
 
 ### Per-component incremental cost (min+gzip, vs baseline)
 
-| Component | cascivo |  shadcn |  carbon |
-| --------- | ------: | ------: | ------: |
-| button    |  8.02KB |  9.87KB | 16.73KB |
-| input     |  3.62KB |  8.71KB | 20.65KB |
-| checkbox  |  3.67KB | 12.85KB | 19.99KB |
-| select    |  4.06KB |  0.01KB | 20.58KB |
-| dialog    |  9.15KB | 19.77KB | 28.08KB |
-| table     | 14.46KB |    21KB | 40.77KB |
-| badge     |  0.83KB |  8.67KB | 19.44KB |
-| tabs      |  3.97KB | 13.46KB | 21.78KB |
+| Component | cascivo | shadcn | carbon |
+| --- | ---: | ---: | ---: |
+| button | 8.87KB | 9.87KB | 16.73KB |
+| input | 3.63KB | 8.71KB | 20.65KB |
+| checkbox | 3.66KB | 12.85KB | 19.99KB |
+| select | 4.05KB | 0.01KB | 20.58KB |
+| dialog | 9.99KB | 19.77KB | 28.08KB |
+| table | 27.39KB | 21KB | 40.77KB |
+| badge | 0.82KB | 8.67KB | 19.44KB |
+| tabs | 3.97KB | 13.46KB | 21.78KB |
 
 ### Treeshake (@cascivo/react)
 
 - Bare import: 20B gz
 - Button only: 0.89KB gz
-- Full bundle: 70.18KB gz
-
-### `@cascivo/charts` entry points (gzip, whole transitive closure of the built entry)
-
-| Entry | gzip | What you get |
-| --- | ---: | --- |
-| `@cascivo/charts` | 40.4KB | Every chart, plus the engine: tooltips, voronoi hit-testing, canvas layer, zoom/pan, toolbox, PNG/SVG export |
-| `@cascivo/charts/sparkline` | 3.5KB | `Sparkline` only, on a minimal frame. Same markup, no hover tooltip |
-
-Measured from `packages/charts/dist` after `pnpm build`, following static imports. The subpath
-is held to a budget by `scripts/checks/sparkline-subpath-size.test.ts` — a lite entry that
-quietly regains the engine is worse than none, because the docs keep promising the saving.
+- Full bundle: 85.74KB gz
 
 ## Interaction latency (Chrome trace, click→paint)
 
 Median of ≥12 samples at 4× CPU throttle; IQR in parentheses.
 Deltas vs cascivo with Mann-Whitney p ≥ 0.05 are reported as **tie** — no winner is claimed.
 
-| Scenario             |                      cascivo |                       shadcn |                       carbon |
-| -------------------- | ---------------------------: | ---------------------------: | ---------------------------: |
-| create-1k            |    344.9ms (319.5ms–383.0ms) |    418.2ms (412.0ms–432.4ms) |    726.9ms (711.0ms–763.5ms) |
-| create-10k           | 3375.0ms (3289.3ms–3580.6ms) | 3902.6ms (3797.0ms–3995.0ms) | 7504.6ms (7465.7ms–7571.8ms) |
-| update-every-10th    |    918.1ms (901.6ms–945.5ms) | 1764.6ms (1707.5ms–1774.0ms) | 3884.0ms (3827.5ms–3979.1ms) |
-| select-row           |       86.3ms (83.9ms–95.2ms) |       41.5ms (40.3ms–44.0ms) |    293.5ms (278.8ms–298.1ms) |
-| clear                |    308.6ms (289.0ms–332.4ms) |    228.4ms (224.3ms–234.9ms) | 1729.2ms (1695.1ms–1784.8ms) |
-| open-dialog          |        10.5ms (9.7ms–11.5ms) |    174.8ms (174.7ms–186.1ms) |    107.4ms (106.6ms–107.8ms) |
-| type-20-chars        |    138.8ms (130.0ms–155.6ms) |    175.0ms (159.8ms–181.4ms) |    124.4ms (114.1ms–131.7ms) |
-| toggle-50-checkboxes |          8.7ms (7.6ms–9.6ms) |       17.5ms (17.0ms–17.8ms) |    121.7ms (119.2ms–123.1ms) |
+| Scenario | cascivo | shadcn | carbon |
+| --- | ---: | ---: | ---: |
+| create-1k | 1659.8ms (1618.4ms–1740.8ms) | 1327.7ms (1237.8ms–1366.2ms) | 3764.6ms (3679.7ms–3818.1ms) |
+| create-10k | 15990.2ms (15827.7ms–16356.7ms) | 12606.1ms (12331.3ms–12969.1ms) | 37624.7ms (37223.1ms–37845.4ms) |
+| update-every-10th | 7795.9ms (7557.4ms–7901.7ms) | 8279.1ms (7211.3ms–8531.5ms) (tie) | 22375.4ms (17486.5ms–25002.1ms) |
+| select-row | 592.9ms (568.0ms–627.4ms) | 137.8ms (127.1ms–141.8ms) | 1099.6ms (1071.4ms–1167.7ms) |
+| clear | 1639.0ms (1565.9ms–1657.1ms) | 934.8ms (902.3ms–952.7ms) | 7215.1ms (6996.7ms–7380.5ms) |
+| open-dialog | 268.6ms (250.0ms–309.0ms) | 209.9ms (204.1ms–211.3ms) | 137.3ms (130.5ms–153.1ms) |
+| type-20-chars | 444.9ms (426.8ms–464.5ms) | 583.4ms (547.5ms–622.1ms) | 486.5ms (464.7ms–527.2ms) |
+| toggle-50-checkboxes | 256.5ms (245.8ms–263.5ms) | 56.7ms (53.1ms–59.8ms) | 56.6ms (51.3ms–61.2ms) |
 
 ## Re-render counts (React Profiler root commits)
 
 Deterministic integers from instrumented dev builds (Profiler is a production no-op).
 Timings above are NOT from these builds.
 
-| Scenario             | cascivo | shadcn | carbon |
-| -------------------- | ------: | -----: | -----: |
-| create-1k            |       2 |      2 |      2 |
-| create-10k           |       2 |      2 |      2 |
-| update-every-10th    |       2 |      2 |      2 |
-| select-row           |       1 |      1 |      2 |
-| clear                |       2 |      2 |      2 |
-| open-dialog          |       1 |      6 |      3 |
-| type-20-chars        |      21 |     20 |     33 |
-| toggle-50-checkboxes |       1 |      3 |      2 |
+| Scenario | cascivo | shadcn | carbon |
+| --- | ---: | ---: | ---: |
+| create-1k | 2 | 2 | 2 |
+| create-10k | 2 | 2 | 2 |
+| update-every-10th | 2 | 2 | 2 |
+| select-row | 2 | 1 | 2 |
+| clear | 2 | 2 | 2 |
+| open-dialog | 1 | 6 | 3 |
+| type-20-chars | 21 | 20 | 39 |
+| toggle-50-checkboxes | 1 | 3 | 2 |
 
 ## Lighthouse (median of 5 runs, desktop preset)
 
 TBT is a lab proxy for INP — INP itself cannot be measured in a lab.
 
-| App     |   FCP |   LCP | TBT | Transfer |
-| ------- | ----: | ----: | --: | -------: |
-| cascivo | 322ms | 322ms | 0ms |     74KB |
-| shadcn  | 361ms | 361ms | 0ms |     98KB |
-| carbon  | 442ms | 442ms | 0ms |    193KB |
+| App | FCP | LCP | TBT | Transfer |
+| --- | ---: | ---: | ---: | ---: |
+| cascivo | 1411ms | 1427ms | 0ms | 93KB |
+| shadcn | 1362ms | 1512ms | 14ms | 98KB |
+| carbon | 1864ms | 1883ms | 0ms | 193KB |
 
 ## Accessibility (axe-core sweep — parity gate, not a score)
 
 Automated tools detect roughly 57% of WCAG issues at best; these numbers are a floor,
 not a ranking. cascivo CI fails on any violation. Competitor numbers are context only.
 
-| App     | Violations | Rules |
-| ------- | ---------: | ----- |
-| cascivo |          0 | —     |
-| shadcn  |          0 | —     |
-| carbon  |          1 | label |
+| App | Violations | Rules |
+| --- | ---: | --- |
+| cascivo | 0 | — |
+| shadcn | 0 | — |
+| carbon | 1 | label |
+

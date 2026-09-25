@@ -14,6 +14,9 @@ const QUIET_MS = 300
 async function freshPage(browser: Browser, port: number, route: string): Promise<Page> {
   const context = await browser.newContext()
   const page = await context.newPage()
+  // A click resolves only when its handler's render ends, and a 10k-row render under the 4×
+  // throttle outlasts Playwright's 30s default on a small machine. Waiting is not measured.
+  page.setDefaultTimeout(120_000)
   await page.goto(`http://localhost:${port}${route}`)
   await page.waitForSelector('body[data-bench-ready="1"]')
   return page

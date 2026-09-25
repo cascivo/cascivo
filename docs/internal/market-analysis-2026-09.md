@@ -669,6 +669,39 @@ In rough order of leverage per unit of effort:
 
 ---
 
+### Status (2026-09-25)
+
+Done:
+
+- **1, 3, 4, 8, 9, 11:** the stale claims, the hero image, the labelled showcase, the shorter landing page, the comparison pages, and the release policy (#253).
+- **6, 10:** `cascivo mcp init`, the skills install, the React Compiler check in CI, and `useSignalState` (#253).
+- **12:** DTCG export, `DESIGN.md` and the Storybook manifest (#253).
+- **13:**
+  - `@cascivo/render` is published (#253).
+  - `render_view_as_markdown` added (#253).
+  - A2UI v0.9 and json-render catalogs, `fromA2UI`, streaming validation (`validatePartialView`), and the `show_view` MCP App (`ui://cascivo/view.html`).
+- **15:**
+  - Twelve more built-in languages, AI-drafted and awaiting native review.
+  - `fromTanStack`.
+  - Per-PR visual regression.
+  - DataTable already had virtualisation; §8.3 was wrong about that.
+- **17:** the marketplace is no longer promoted anywhere; the page stays reachable.
+
+Not done:
+
+- **§8.3 item 2 (SSR/CSS):** already addressed before this analysis. Per-component CSS, the CSS-free `node` twin, and one guide per framework all exist.
+- **llms.txt at 5–8 KB:** it is 66 KB.
+  - Several checks require it to be the single-fetch surface: zero-config SSR, prop vocabulary, and channel labels.
+  - The link-per-line index was compacted instead.
+- **§8.3 item 3:** deferred to 2.0 by the release policy.
+- **2:** re-run on 1.3 in a 4-core cloud container (June's run was a 22-core laptop).
+  - The bundle lead holds: 91.9 KB against shadcn's 96.5 KB.
+  - The runtime lead does not. cascivo now trails shadcn on create, select-row, clear, open-dialog and toggle-50-checkboxes, ties on update-every-10th, and leads only on type-20-chars.
+  - Part of the gap is the method: it counts CSS transitions (see METHODOLOGY.md). select-row and toggle-50-checkboxes are real regressions still to be bisected.
+  - The landing's "faster partial updates" figure now appears only when the result is statistically a win.
+- **5, 7, 14, 16, and the Figma kit (12):** these need accounts, a paid audit, or human adopters.
+- **"Consider a flat `parentId` wire format" (§8.4.5):** covered by `fromA2UI`, since A2UI's id-linked list is that format.
+
 ## Sources (selected)
 
 **Component libraries.**
