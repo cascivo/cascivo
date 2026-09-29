@@ -1,8 +1,10 @@
-`@cascivo/app` is the client-app layer for cascivo. It has three parts:
+`@cascivo/app` is the client-app layer for cascivo. It has these parts:
 
 - a router whose state is signals
 - a typed API contract shared by the browser and a Cloudflare Worker
 - file-based routes
+- multiplayer signals on a Durable Object
+- feature flags evaluated in the Worker
 
 It targets apps that render in the browser (dashboards, tools, editors, AI apps) and serve their API from a Worker. It has no server rendering.
 
@@ -206,3 +208,57 @@ How data is treated:
 - **Durable Objects work on a temporary Cloudflare account**, so a multiplayer app can be shared with `wrangler deploy --temporary` and no sign-up.
 
 `cascivo create --framework cloudflare --example board` scaffolds a working board with draggable notes and live cursors.
+
+## Feature flags — `@cascivo/app/flags`
+
+One definition, shared by the Worker and the browser like the API contract. The Worker
+evaluates it against its flag service, and the browser gets the result from an ordinary
+typed endpoint. Each flag's default is also its type: it is the value the flag falls back to,
+and the shape an evaluated value must have.
+
+```ts
+// src/flags.ts — imported by both sides
+import { defineFlags, themeFlag } from '@cascivo/app/flags'
+
+export const flags = defineFlags({
+  newCheckout: false,
+  headline: 'Welcome back',
+  theme: themeFlag(), // a theme experiment: { theme, tokens }
+})
+
+// src/api.ts — flags.parse is the endpoint's output parser
+flags: endpoint({ method: 'GET', path: '/api/flags', output: flags.parse }),
+
+// worker/index.ts — Cloudflare Flagship's binding has the shape `evaluate` takes
+flags: ({ env, request }) =>
+  flags.evaluate(env.FLAGS, { country: request.headers.get('cf-ipcountry') ?? 'XX' }),
+
+// the app — flags are a signal, at their defaults until the Worker answers
+export const values = signal(flags.defaults)
+values.value = await createClient(api).flags()
+```
+
+```jsonc
+// wrangler.jsonc
+"flagship": [{ "binding": "FLAGS", "app_id": "<your Flagship app id>" }]
+```
+
+How values are treated:
+
+- **A flag that fails to evaluate, is missing or has the wrong type keeps its default**, with
+  a warning. The check runs in the Worker and again in `flags.parse`, because the payload
+  crosses the network. One bad flag never breaks the app.
+- **An object flag takes a parser**, `objectFlag(defaultValue, parse)`, so its shape is checked
+  like any other payload. `themeFlag()` is one of these.
+- **The evaluator is typed by shape** (`getBooleanValue`, `getStringValue`, `getNumberValue`,
+  `getObjectValue`), so Flagship's binding fits, and so does any OpenFeature-style client.
+
+Theme experiments: `applyThemeOverride(document.documentElement, values.value.theme)` sets
+`data-theme` and the `--cascivo-*` tokens the flag carries, and returns a function that undoes
+it. `parseThemeOverride` accepts only a plain theme name and `--cascivo-*` properties whose
+values cannot escape a declaration or load a URL. A flag that fails this falls back to no
+override. The theme the flag picks must have its CSS imported: `data-theme="warm"` does
+nothing without `@cascivo/themes/warm.css`.
+
+In `vite dev`, Flagship runs a local simulator: an unset flag evaluates to its default, so the
+app works before any flag exists.

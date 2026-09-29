@@ -204,6 +204,18 @@ export const sharedRoom = connectRoom('/api/rooms/demo')
 export const sharedTitle = sharedRoom.signal('title', '', (raw) => String(raw))
 export const roomClass: typeof SyncRoom = SyncRoom
 export const forwardRoom = (request: Request, ns: RoomNamespace<string>) => roomResponse(request, ns, 'demo')
+import {
+  applyThemeOverride,
+  defineFlags,
+  themeFlag,
+  type FlagEvaluator,
+} from '@cascivo/app/flags'
+export const appFlags = defineFlags({ newCheckout: false, theme: themeFlag() })
+export const evaluateFlags = (evaluator: FlagEvaluator) => appFlags.evaluate(evaluator)
+export const undoTheme: () => void = applyThemeOverride(
+  document.documentElement,
+  appFlags.parse({}).theme,
+)
 
 const VIEW: ViewConfig = {
   version: 1,

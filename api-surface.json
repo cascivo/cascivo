@@ -6535,6 +6535,65 @@
           }
         }
       },
+      "./flags": {
+        "values": [
+          "NO_THEME_OVERRIDE",
+          "applyThemeOverride",
+          "defineFlags",
+          "objectFlag",
+          "parseThemeOverride",
+          "themeFlag"
+        ],
+        "types": [
+          "FlagContext",
+          "FlagDefault",
+          "FlagEvaluator",
+          "FlagValues",
+          "Flags",
+          "ObjectFlag",
+          "ThemeOverride",
+          "ThemeTarget"
+        ],
+        "declarations": {
+          "applyThemeOverride": "declare function applyThemeOverride(element: ThemeTarget, override: ThemeOverride): () => void",
+          "defineFlags": "declare function defineFlags<const D extends Record<string, FlagDefault>>(definition: D): Flags<D>",
+          "FlagContext": "type = Record<string, string | number | boolean>",
+          "FlagDefault": "type = boolean | string | number | ObjectFlag<object>",
+          "FlagEvaluator": {
+            "getBooleanValue": "(key: string, defaultValue: boolean, context?: FlagContext): Promise<boolean>",
+            "getStringValue": "(key: string, defaultValue: string, context?: FlagContext): Promise<string>",
+            "getNumberValue": "(key: string, defaultValue: number, context?: FlagContext): Promise<number>",
+            "getObjectValue<T extends object>(key: string, defaultValue: T, context?: FlagContext): Promise<T>": ""
+          },
+          "Flags": {
+            "(extends)": "<D extends Record<string, FlagDefault>>",
+            "readonly defaults": "FlagValues<D>",
+            "parse": "(raw: unknown): FlagValues<D>",
+            "evaluate": "(evaluator: FlagEvaluator, context?: FlagContext): Promise<FlagValues<D>>"
+          },
+          "FlagValues": "type<D extends Record<string, FlagDefault>> = { [K in keyof D]: D[K] extends ObjectFlag<infer T> ? T : D[K] extends boolean ? boolean : D[K] extends string ? string : number }",
+          "NO_THEME_OVERRIDE": "declare const NO_THEME_OVERRIDE: ThemeOverride",
+          "objectFlag": "declare function objectFlag<T extends object>(defaultValue: T, parse: (raw: unknown) => T): ObjectFlag<T>",
+          "ObjectFlag": {
+            "(extends)": "<T extends object>",
+            "readonly kind": "'object'",
+            "readonly default": "T",
+            "readonly parse": "(raw: unknown) => T"
+          },
+          "parseThemeOverride": "declare function parseThemeOverride(raw: unknown): ThemeOverride",
+          "themeFlag": "declare function themeFlag(): ObjectFlag<ThemeOverride>",
+          "ThemeOverride": {
+            "theme": "string | null",
+            "tokens": "Record<string, string>"
+          },
+          "ThemeTarget": {
+            "getAttribute": "(name: string): string | null",
+            "setAttribute": "(name: string, value: string): void",
+            "removeAttribute": "(name: string): void",
+            "readonly style": "{ getPropertyValue(name: string): string; setProperty(name: string, value: string): void; removeProperty(name: string): string; }"
+          }
+        }
+      },
       "./sync-server": {
         "values": ["SyncRoom", "roomResponse"],
         "types": ["HibernatableWebSocket", "RoomNamespace", "SyncRoomState"],

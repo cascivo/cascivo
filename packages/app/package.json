@@ -44,6 +44,11 @@
       "import": "./dist/sync.js",
       "default": "./dist/sync.js"
     },
+    "./flags": {
+      "types": "./dist/flags.d.ts",
+      "import": "./dist/flags.js",
+      "default": "./dist/flags.js"
+    },
     "./sync-server": {
       "types": "./dist/sync-server.d.ts",
       "import": "./dist/sync-server.js",

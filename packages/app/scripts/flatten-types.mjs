@@ -19,6 +19,7 @@ const ENTRIES = [
   { name: 'api', src: 'src/api.ts' },
   { name: 'sync', src: 'src/sync.ts' },
   { name: 'sync-server', src: 'src/sync-server.ts' },
+  { name: 'flags', src: 'src/flags.ts' },
   { name: 'vite', src: 'src/vite.ts' },
 ]
 
