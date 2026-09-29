@@ -77,6 +77,17 @@ const { valid, errors } = validateView(view) // errors: { path, message }[]
 
 Unknown components (with a did-you-mean hint), malformed nodes, and prop values that don't match the generated per-component prop schemas are reported with exact paths, so generated views fail loudly rather than rendering garbage.
 
+On a server, import it from `@cascivo/render/validate`. That entry has no React and no components, only the validator and the prop schemas it checks against, so it runs in a Cloudflare Worker, an edge function or a Node script:
+
+```ts
+import { validateView } from '@cascivo/render/validate'
+
+// In an AI tool: hand the errors back to the model, which fixes them and calls again.
+const { valid, errors } = validateView(modelOutput)
+```
+
+`cascivo create --framework cloudflare --example agent` builds an assistant around exactly this: the Worker validates each view the model produces, and the page renders it with `<CascivoView>`.
+
 Pair it with the MCP server's bound-vocabulary grammar (`get_view_grammar`) and `scaffold_view` for the full anti-hallucination loop: the model can only emit components and props that exist, and `validateView` is the enforcement backstop. `cascivo generate <config.json>` converts a validated `ViewConfig` into owned TSX when you want to graduate from JSON to source.
 
 ## Install

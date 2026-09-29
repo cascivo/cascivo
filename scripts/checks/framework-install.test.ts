@@ -58,8 +58,20 @@ const CLI = join(REPO_ROOT, 'packages', 'cli', 'dist', 'index.mjs')
  * Any inter-cascivo edge missing here resolves from the npm REGISTRY instead of this build —
  * which would silently test the last published copy. Asserted below, not assumed.
  */
-const PACKAGES = ['react', 'core', 'themes', 'tokens', 'i18n', 'storage', 'icons', 'data', 'app']
-const NEEDS_DIST = ['react', 'core', 'i18n', 'storage', 'icons', 'data', 'app']
+const PACKAGES = [
+  'react',
+  'core',
+  'themes',
+  'tokens',
+  'i18n',
+  'storage',
+  'icons',
+  'data',
+  'app',
+  'render',
+  'text',
+]
+const NEEDS_DIST = ['react', 'core', 'i18n', 'storage', 'icons', 'data', 'app', 'render', 'text']
 
 const built = NEEDS_DIST.every((p) => existsSync(join(REPO_ROOT, 'packages', p, 'dist')))
 const cliBuilt = existsSync(CLI)
@@ -96,9 +108,13 @@ function tarballFor(pkg: string): string {
  * Scaffolds with the real CLI, repoints every @cascivo/* dep at the packed tarballs, and
  * installs. Returns the app directory.
  */
-function scaffold(framework: string, name: string): string {
+function scaffold(framework: string, name: string, extra: string[] = []): string {
   const work = mkdtempSync(join(tmpdir(), `cascivo-fw-${framework}-`))
-  run('node', [CLI, 'create', name, '--framework', framework, '--yes', '--pm', 'pnpm'], work)
+  run(
+    'node',
+    [CLI, 'create', name, '--framework', framework, '--yes', '--pm', 'pnpm', ...extra],
+    work,
+  )
   const app = join(work, name)
 
   const manifestPath = join(app, 'package.json')
@@ -152,6 +168,14 @@ function scaffold(framework: string, name: string): string {
     )
   }
   return app
+}
+
+/**
+ * The app's own `format:check`, with its own Prettier and config. The files this harness
+ * rewrote (the workspace file and lock) are not the scaffold's, so they are left out.
+ */
+function assertFormatted(app: string): void {
+  run('pnpm', ['exec', 'prettier', '--check', '.', '!pnpm-workspace.yaml', '!pnpm-lock.yaml'], app)
 }
 
 /** Every `_name_hash_line` CSS-module class in a built HTML file that has no rule behind it. */
@@ -309,6 +333,10 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
           'The scaffold should ship only the components it uses.',
       )
     })
+
+    it('passes its own format:check', { skip: !ready }, () => {
+      assertFormatted(app)
+    })
   })
 
   /**
@@ -386,5 +414,53 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
         }
       },
     )
+
+    it('passes its own format:check', { skip: !ready }, () => {
+      assertFormatted(app)
+    })
+  })
+
+  /**
+   * `--example agent`: Cloudflare's Agents SDK, the AI SDK and `@cascivo/render/validate` in
+   * the Worker, the SDK's React hooks and `<CascivoView>` in the client. Only a real install
+   * shows that the SDK's current releases still type-check against the scaffold (the Worker
+   * under Cloudflare's runtime types) and still build — the hooks call React's `use()`, which
+   * is why this app is on React.
+   */
+  describe('cloudflare --example agent', () => {
+    let app: string
+
+    before(() => {
+      if (!ready) return
+      app = scaffold('cloudflare', 'cf-agent', ['--example', 'agent'])
+      run('pnpm', ['run', 'typecheck'], app)
+      run('pnpm', ['exec', 'vite', 'build'], app)
+    })
+
+    it(
+      'builds the assistant page and a Worker without the scripted model',
+      { skip: !ready },
+      () => {
+        const assets = readdirSync(join(app, 'dist', 'client', 'assets'))
+        assert.ok(
+          assets.some((f) => /^assistant-.*\.js$/.test(f)),
+          `no assistant route chunk in ${assets.join(', ')}`,
+        )
+        const dist = join(app, 'dist')
+        const dir = readdirSync(dist).find((d) => existsSync(join(dist, d, 'wrangler.json')))
+        assert.ok(dir, 'vite build emitted no Worker bundle.')
+        const worker = readFileSync(join(dist, dir, 'index.js'), 'utf8')
+        assert.match(worker, /show_view/, 'the Worker bundle does not contain the show_view tool')
+        assert.doesNotMatch(
+          worker,
+          /Scripted reply/,
+          'the dev-only scripted model reached the production Worker bundle',
+        )
+      },
+    )
+
+    it('passes its own format:check', { skip: !ready }, () => {
+      assertFormatted(app)
+    })
   })
 })

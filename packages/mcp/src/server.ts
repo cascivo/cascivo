@@ -308,10 +308,10 @@ export function createServer(options: ServerOptions = {}): McpServer {
             'Client runtime for framework "cloudflare" (default: preact; same source either way)',
           ),
         examples: z
-          .array(z.enum(['board']))
+          .array(z.enum(['board', 'agent']))
           .optional()
           .describe(
-            'Extra pages for framework "cloudflare": "board" is a multiplayer page (notes + live cursors) on a Durable Object — deployable with no account via deploy_preview',
+            'Extra pages for framework "cloudflare": "board" is a multiplayer page (notes + live cursors) on a Durable Object — deployable with no account via deploy_preview; "agent" is an AI assistant (Agents SDK + Workers AI) that answers with validated cascivo views — needs runtime "react" (the default with it) and a real Cloudflare account for the model',
           ),
         cwd: z
           .string()

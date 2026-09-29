@@ -6,6 +6,7 @@ import type { Tick } from '../src/api'
  * Add bindings (KV, D1, R2, Durable Objects, Workers AI) in wrangler.jsonc and type them
  * here; every handler receives them as `env`.
  */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))

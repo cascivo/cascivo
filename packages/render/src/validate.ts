@@ -1,5 +1,5 @@
 import type { ComponentNode } from './types'
-import { componentMap } from './component-map'
+import { componentNames } from './component-names'
 import { propSchemas, type PropPrimitive, type PropSchema } from './prop-schemas'
 
 export interface ValidationError {
@@ -127,8 +127,8 @@ function validateNode(
     return
   }
   const componentName = n['component'] as string
-  if (!(componentName in componentMap)) {
-    const suggestion = closestName(componentName, Object.keys(componentMap))
+  if (!componentNames.has(componentName)) {
+    const suggestion = closestName(componentName, [...componentNames])
     const hint = suggestion ? ` Did you mean "${suggestion}"?` : ''
     errors.push({
       path: `${path}.component`,

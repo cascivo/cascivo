@@ -1,5 +1,8 @@
-import { describe, expect, it } from 'vitest'
-import { buildScaffold, type ScaffoldFile } from './create.js'
+import { mkdtempSync, readdirSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { buildScaffold, create, type ScaffoldFile } from './create.js'
 
 function fileMap(files: ScaffoldFile[]): Map<string, string> {
   return new Map(files.map((f) => [f.path, f.contents]))
@@ -442,5 +445,129 @@ describe('buildScaffold — cloudflare --example board', () => {
     expect(plain.has('src/board.ts')).toBe(false)
     expect(plain.get('wrangler.jsonc')).not.toContain('durable_objects')
     expect(plain.get('worker/index.ts')).toContain('fetch: handleApi')
+  })
+})
+
+describe('buildScaffold — cloudflare --example agent', () => {
+  const build = (examples: ('board' | 'agent')[]) =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'dark',
+        sections: ['Dashboard'],
+        pm: 'pnpm',
+        examples,
+      }),
+    )
+  const map = build(['agent'])
+  const pkg = JSON.parse(map.get('package.json')!) as {
+    scripts: Record<string, string>
+    dependencies: Record<string, string>
+    devDependencies: Record<string, string>
+  }
+
+  it('adds an /assistant route on an AIChatAgent Durable Object', () => {
+    expect(map.get('src/routes.gen.ts')).toContain("lazyRoute('/assistant'")
+    expect(map.get('src/App.tsx')).toContain("href: '/assistant'")
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain("export { Assistant } from './assistant'")
+    expect(worker).toContain('await routeAgentRequest(request, env)')
+    expect(worker).toContain('AI: Ai')
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"run_worker_first": ["/api/*", "/agents/*"]')
+    expect(wrangler).toContain('{ "name": "Assistant", "class_name": "Assistant" }')
+    expect(wrangler).toContain('"new_sqlite_classes": ["Assistant"]')
+    expect(wrangler).toContain('"ai": { "binding": "AI" }')
+    expect(wrangler).toContain('"compatibility_flags": ["nodejs_compat"]')
+  })
+
+  it('validates every generated view on both sides of the wire', () => {
+    expect(map.get('src/assistant.ts')).toContain(
+      "import { validateView } from '@cascivo/render/validate'",
+    )
+    expect(map.get('worker/assistant.ts')).toContain(
+      'execute: async ({ title, view }) => checkView(',
+    )
+    // The stored message crossed the network: the page re-checks it rather than casting.
+    const page = map.get('src/routes/assistant.tsx')!
+    expect(page).toContain('checkView(output.title, output.view)')
+    expect(page).not.toMatch(/part\.output as /)
+  })
+
+  it('answers from a scripted model in vite dev, so it runs without an account', () => {
+    expect(map.get('worker/assistant.ts')).toContain('import.meta.env.DEV')
+    expect(map.get('vite.config.ts')).toContain(
+      "cloudflare({ remoteBindings: process.env['VITE_REAL_AI'] === '1' })",
+    )
+    expect(map.has('worker/scripted-model.ts')).toBe(true)
+  })
+
+  it('runs on React by default: the Agents SDK hooks need use()', () => {
+    expect(map.get('vite.config.ts')).toContain('react()')
+    expect(pkg.dependencies['react']).toBeDefined()
+    expect(pkg.dependencies['preact']).toBeUndefined()
+    expect(pkg.dependencies['agents']).toBeDefined()
+    expect(pkg.dependencies['@cascivo/render']).toMatch(/^\d/)
+  })
+
+  it('type-checks the Worker against the Workers runtime, apart from the DOM', () => {
+    expect(JSON.parse(map.get('tsconfig.json')!)).toMatchObject({ include: ['src'] })
+    expect(JSON.parse(map.get('tsconfig.worker.json')!)).toMatchObject({
+      compilerOptions: { types: ['@cloudflare/workers-types', 'vite/client'] },
+      include: ['worker'],
+    })
+    expect(pkg.devDependencies['@cloudflare/workers-types']).toBeDefined()
+    expect(pkg.scripts['typecheck']).toContain('tsc --noEmit -p tsconfig.worker.json')
+    expect(pkg.scripts['build']).toContain('tsc -p tsconfig.worker.json')
+  })
+
+  it('declares both Durable Objects in one migration alongside the board', () => {
+    const both = build(['board', 'agent'])
+    const wrangler = both.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"new_sqlite_classes": ["SyncRoom", "Assistant"]')
+    const worker = both.get('worker/index.ts')!
+    expect(worker).toContain('roomResponse(request, env.ROOMS')
+    expect(worker).toContain('routeAgentRequest(request, env)')
+  })
+})
+
+describe('buildScaffold — cloudflare format and lint hygiene', () => {
+  const plain = fileMap(
+    buildScaffold({ name: 'x', framework: 'cloudflare', theme: 'light', sections: ['Home'] }),
+  )
+
+  it('prints short tsconfig arrays on one line, as Prettier does', () => {
+    // JSON.stringify broke every array across lines, so a fresh app failed its own format:check.
+    expect(plain.get('tsconfig.json')).toContain('"lib": ["ES2022", "DOM", "DOM.Iterable"],')
+    expect(plain.get('tsconfig.json')).toContain('"include": ["src", "worker"]')
+  })
+
+  it('keeps an empty Env interface past no-empty-object-type', () => {
+    expect(plain.get('worker/index.ts')).toContain(
+      '// eslint-disable-next-line @typescript-eslint/no-empty-object-type',
+    )
+  })
+})
+
+describe('create --example agent', () => {
+  const dirs: string[] = []
+  afterEach(() => {
+    for (const dir of dirs.splice(0)) rmSync(dir, { recursive: true, force: true })
+    process.exitCode = 0
+    vi.restoreAllMocks()
+  })
+
+  it('refuses --runtime preact and writes nothing', async () => {
+    const cwd = mkdtempSync(join(tmpdir(), 'cascivo-create-'))
+    dirs.push(cwd)
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {})
+    await create(
+      ['app', '--yes', '--framework', 'cloudflare', '--runtime', 'preact', '--example', 'agent'],
+      cwd,
+    )
+    expect(process.exitCode).toBe(1)
+    expect(error.mock.calls.join(' ')).toContain('--example agent needs --runtime react')
+    expect(readdirSync(cwd)).toEqual([])
   })
 })

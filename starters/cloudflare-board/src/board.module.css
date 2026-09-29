@@ -25,7 +25,6 @@
     padding: var(--cascivo-space-1) var(--cascivo-space-2);
     cursor: grab;
     touch-action: none;
-    user-select: none;
   }
 
   .cursor {

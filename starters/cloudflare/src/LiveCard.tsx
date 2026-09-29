@@ -26,8 +26,8 @@ export function LiveCard() {
       <CardContent>
         <Flex gap={3}>
           <Text muted>
-            <code>worker/index.ts</code> streams events; <code>src/live.ts</code> reads them
-            through the typed client for <code>src/api.ts</code>.
+            <code>worker/index.ts</code> streams events; <code>src/live.ts</code> reads them through
+            the typed client for <code>src/api.ts</code>.
           </Text>
           <Flex direction="horizontal" align="center" gap={2}>
             <Badge variant={live ? 'success' : status.value === 'error' ? 'danger' : 'neutral'}>
@@ -41,7 +41,10 @@ export function LiveCard() {
           </Flex>
           {error.value !== null && <Text muted>{error.value}</Text>}
           <div>
-            <Button variant={live ? 'secondary' : 'primary'} onClick={live ? disconnect : () => void connect()}>
+            <Button
+              variant={live ? 'secondary' : 'primary'}
+              onClick={live ? disconnect : () => void connect()}
+            >
               {live ? 'Disconnect' : 'Connect'}
             </Button>
           </div>

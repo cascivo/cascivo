@@ -55,9 +55,9 @@ export type Runtime = 'preact' | 'react'
 export const RUNTIMES = ['preact', 'react'] as const
 
 /** Optional demo pages for `--framework cloudflare`. */
-export type Example = 'board'
+export type Example = 'board' | 'agent'
 
-export const EXAMPLES = ['board'] as const
+export const EXAMPLES = ['board', 'agent'] as const
 
 function isExample(value: string): value is Example {
   return (EXAMPLES as readonly string[]).includes(value)
@@ -78,7 +78,10 @@ export interface ScaffoldOptions {
   sections: string[]
   /** Package manager for the generated README's commands (default npm). */
   pm?: PackageManager
-  /** Client runtime for the `cloudflare` framework. Defaults to `preact`. */
+  /**
+   * Client runtime for the `cloudflare` framework. Defaults to `preact`, or `react` with the
+   * `agent` example, whose Agents SDK hooks need React (see {@link runtimeOf}).
+   */
   runtime?: Runtime
   /** Extra demo pages for the `cloudflare` framework. */
   examples?: Example[]
@@ -232,6 +235,18 @@ function packageJson(opts: ScaffoldOptions): string {
   return JSON.stringify(pkg, null, 2) + '\n'
 }
 
+/**
+ * JSON as Prettier prints it: an array of strings stays on one line. `JSON.stringify` breaks
+ * every array across lines, so a fresh app failed its own `format:check` on tsconfig.json.
+ */
+function formatJson(value: unknown): string {
+  const json = JSON.stringify(value, null, 2).replace(
+    /\[\n\s+("[^"\n]*"(?:,\n\s+"[^"\n]*")*)\n\s*\]/g,
+    (_, items: string) => `[${items.split(/,\n\s+/).join(', ')}]`,
+  )
+  return json + '\n'
+}
+
 function tsconfig(): string {
   const cfg = {
     compilerOptions: {
@@ -254,7 +269,7 @@ function tsconfig(): string {
     },
     include: ['src'],
   }
-  return JSON.stringify(cfg, null, 2) + '\n'
+  return formatJson(cfg)
 }
 
 function viteConfig(): string {
@@ -1020,7 +1035,8 @@ const COMPATIBILITY_DATE = '2026-09-01'
 
 function cfPackageJson(opts: ScaffoldOptions): string {
   const pm = opts.pm ?? 'npm'
-  const preact = (opts.runtime ?? 'preact') === 'preact'
+  const agent = hasExample(opts, 'agent')
+  const preact = runtimeOf(opts) === 'preact'
   const pkg = {
     name: packageName(opts.name),
     private: true,
@@ -1028,12 +1044,12 @@ function cfPackageJson(opts: ScaffoldOptions): string {
     type: 'module',
     scripts: {
       dev: 'vite',
-      build: 'tsc && vite build',
+      build: agent ? 'tsc && tsc -p tsconfig.worker.json && vite build' : 'tsc && vite build',
       preview: 'vite preview',
       deploy: `${runScriptCommand(pm, 'build')} && wrangler deploy`,
       // No account: a temporary one, live for 60 minutes unless claimed (see README).
       'deploy:preview': `${runScriptCommand(pm, 'build')} && wrangler deploy --temporary`,
-      typecheck: 'tsc --noEmit',
+      typecheck: agent ? 'tsc --noEmit && tsc --noEmit -p tsconfig.worker.json' : 'tsc --noEmit',
       lint: 'eslint .',
       format: 'prettier --write .',
       'format:check': 'prettier --check .',
@@ -1047,10 +1063,26 @@ function cfPackageJson(opts: ScaffoldOptions): string {
       '@cascivo/themes': V['@cascivo/themes']!,
       '@preact/signals-react': SIGNALS_PEER,
       ...(preact ? { preact: '^10.29.0' } : { react: '^19.0.0', 'react-dom': '^19.0.0' }),
+      // The /assistant page: Cloudflare's Agents SDK on the AI SDK, and @cascivo/render to
+      // draw (and validate) the views the model builds.
+      ...(agent
+        ? {
+            '@ai-sdk/react': '^4.0.0',
+            '@cascivo/render': V['@cascivo/render']!,
+            '@cloudflare/ai-chat': '^0.12.0',
+            agents: '^0.24.0',
+            ai: '^7.0.0',
+            'workers-ai-provider': '^4.0.0',
+            zod: '^4.0.0',
+          }
+        : {}),
     },
     devDependencies: {
       '@cascivo/eslint-config': V['@cascivo/eslint-config']!,
       '@cloudflare/vite-plugin': '^1.62.0',
+      // Types for worker/ (tsconfig.worker.json): the Agents SDK extends the runtime's
+      // DurableObject, which only these declare. Kept out of the app's DOM-typed tsconfig.
+      ...(agent ? { '@cloudflare/workers-types': '^5.0.0' } : {}),
       '@eslint/js': '^9.0.0',
       // The source is typed against React even when Preact runs it (see vite.config.ts), so
       // React's types are always installed. Under Preact, `react`/`react-dom` are dev-only:
@@ -1077,15 +1109,29 @@ function cfPackageJson(opts: ScaffoldOptions): string {
   return JSON.stringify(pkg, null, 2) + '\n'
 }
 
-function cfTsconfig(): string {
+function cfTsconfig(opts: ScaffoldOptions): string {
   const cfg = JSON.parse(tsconfig()) as { include: string[] }
-  // `worker/` is type-checked with the app: it imports `src/protocol.ts`, and a protocol
-  // change should fail `tsc` on whichever side was not updated.
-  cfg.include = ['src', 'worker']
-  return JSON.stringify(cfg, null, 2) + '\n'
+  // `worker/` is type-checked with the app: it imports `src/api.ts`, and a contract change
+  // should fail `tsc` on whichever side was not updated. With the agent example the Worker
+  // needs Cloudflare's runtime types, which clash with the DOM's, so it gets its own config
+  // (tsconfig.worker.json) and both run in `typecheck`.
+  cfg.include = hasExample(opts, 'agent') ? ['src'] : ['src', 'worker']
+  return formatJson(cfg)
 }
 
-function cfViteConfig(runtime: Runtime): string {
+function cfWorkerTsconfig(): string {
+  return formatJson({
+    extends: './tsconfig.json',
+    compilerOptions: {
+      lib: ['ES2022'],
+      types: ['@cloudflare/workers-types', 'vite/client'],
+    },
+    include: ['worker'],
+  })
+}
+
+function cfViteConfig(runtime: Runtime, opts: ScaffoldOptions): string {
+  const agent = hasExample(opts, 'agent')
   const plugin =
     runtime === 'preact'
       ? `import preact from '@preact/preset-vite'`
@@ -1097,7 +1143,10 @@ function cfViteConfig(runtime: Runtime): string {
 // react-dom to preact/compat, so the bundle runs on Preact (about a third of React's JS in
 // this starter: ~27 KB gzip against ~85 KB). To run on React instead, swap this plugin
 // for @vitejs/plugin-react — no source changes.`
-      : `// Runs on React. To ship Preact instead (about a third of the JS in this starter), swap
+      : agent
+        ? `// Runs on React: the /assistant page uses the Agents SDK's hooks, which call React 19's
+// use() — preact/compat does not implement it, so this app cannot switch to Preact.`
+        : `// Runs on React. To ship Preact instead (about a third of the JS in this starter), swap
 // this plugin for @preact/preset-vite — it aliases react/react-dom to preact/compat; no
 // source changes.`
   return `${plugin}
@@ -1109,14 +1158,50 @@ ${note}
 //
 // cascivoRoutes() writes src/routes.gen.ts from src/routes/ — one file per page.
 // cloudflare() runs worker/index.ts in workerd during \`vite dev\` and builds it with the
-// client, so dev and production execute the same runtime. Request routing is in wrangler.jsonc.
+// client, so dev and production execute the same runtime. Request routing is in wrangler.jsonc.${
+    agent
+      ? `
+//
+// Workers AI has no local mode: with remote bindings on, \`vite dev\` needs a Cloudflare login.
+// So they are off, and the assistant answers from worker/scripted-model.ts. Run
+// \`VITE_REAL_AI=1 vite dev\` (after \`wrangler login\`) to talk to the real model.`
+      : ''
+  }
 export default defineConfig({
-  plugins: [${call}, cascivoRoutes(), cloudflare()],
+${
+  agent
+    ? `  plugins: [
+    ${call},
+    cascivoRoutes(),
+    cloudflare({ remoteBindings: process.env['VITE_REAL_AI'] === '1' }),
+  ],`
+    : `  plugins: [${call}, cascivoRoutes(), cloudflare()],`
+}
 })
 `
 }
 
+/** A JSONC array property laid out as Prettier does: one line when it fits in 100 columns. */
+function jsoncArray(indent: string, key: string, items: string[]): string {
+  const line = `${indent}"${key}": [${items.join(', ')}],`
+  if (line.length <= 100) return line
+  return `${indent}"${key}": [\n${items.map((i) => `${indent}  ${i},`).join('\n')}\n${indent}],`
+}
+
 function wranglerJsonc(opts: ScaffoldOptions): string {
+  const board = hasExample(opts, 'board')
+  const agent = hasExample(opts, 'agent')
+  // One Durable Object class per example; a fresh app declares them all in one migration.
+  const objects = [
+    ...(board ? [{ name: 'ROOMS', className: 'SyncRoom' }] : []),
+    ...(agent ? [{ name: 'Assistant', className: 'Assistant' }] : []),
+  ]
+  const comments = [
+    ...(board ? ['// ROOMS: one SyncRoom per board room (@cascivo/app/sync-server).'] : []),
+    ...(agent
+      ? ['// Assistant: one AIChatAgent per conversation; it stores the messages in SQLite.']
+      : []),
+  ]
   return `// Cloudflare deploy config. \`${runExplicitCommand(opts.pm ?? 'npm', 'deploy')}\` builds and ships the SPA and
 // the Worker together. https://developers.cloudflare.com/workers/wrangler/configuration/
 {
@@ -1127,14 +1212,27 @@ function wranglerJsonc(opts: ScaffoldOptions): string {
     // Client-side app: an unknown path serves index.html, and the client renders it.
     "not_found_handling": "single-page-application",
     // Only the API reaches the Worker; static assets are served without invoking it.
-    "run_worker_first": ["/api/*"]
+    "run_worker_first": ${agent ? '["/api/*", "/agents/*"]' : '["/api/*"]'},
   },
-  "observability": { "enabled": true }${
-    hasExample(opts, 'board')
-      ? `,
-  // One SyncRoom Durable Object per board room (@cascivo/app/sync-server).
-  "durable_objects": { "bindings": [{ "name": "ROOMS", "class_name": "SyncRoom" }] },
-  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["SyncRoom"] }]`
+  "observability": { "enabled": true },${
+    objects.length > 0
+      ? `
+  ${comments.join('\n  ')}
+  "durable_objects": {
+${jsoncArray(
+  '    ',
+  'bindings',
+  objects.map((o) => `{ "name": "${o.name}", "class_name": "${o.className}" }`),
+)}
+  },
+${jsoncArray('  ', 'migrations', [`{ "tag": "v1", "new_sqlite_classes": [${objects.map((o) => `"${o.className}"`).join(', ')}] }`])}`
+      : ''
+  }${
+    agent
+      ? `
+  // Workers AI, which the assistant calls; the Agents SDK needs Node.js APIs.
+  "ai": { "binding": "AI" },
+  "compatibility_flags": ["nodejs_compat"],`
       : ''
   }
   // Add bindings here (KV, D1, R2, Durable Objects, Workers AI) and read them from the
@@ -1145,6 +1243,15 @@ function wranglerJsonc(opts: ScaffoldOptions): string {
 
 function hasExample(opts: ScaffoldOptions, example: Example): boolean {
   return opts.examples?.includes(example) ?? false
+}
+
+/**
+ * The client runtime. Preact by default; React with the `agent` example, because the Agents
+ * SDK's hooks (`useAgent`, `useAgentChat`) call React 19's `use()`, which preact/compat
+ * does not implement — the build fails on the missing export.
+ */
+function runtimeOf(opts: ScaffoldOptions): Runtime {
+  return opts.runtime ?? (hasExample(opts, 'agent') ? 'react' : 'preact')
 }
 
 function cfApiTs(): string {
@@ -1185,6 +1292,7 @@ export const api = defineApi({
 
 function cfWorkerTs(opts: ScaffoldOptions): string {
   const board = hasExample(opts, 'board')
+  const agent = hasExample(opts, 'agent')
   return `import { createHandler } from '@cascivo/app/api'
 ${
   board
@@ -1192,7 +1300,7 @@ ${
 import type { RoomNamespace } from '@cascivo/app/sync-server'
 `
     : ''
-}import { api, TICKS_PER_STREAM } from '../src/api'
+}${agent ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
 ${
   board
@@ -1202,12 +1310,25 @@ ${
 export { SyncRoom } from '@cascivo/app/sync-server'
 `
     : ''
-}
+}${
+    agent
+      ? `
+// The Durable Object behind /assistant: one per conversation (worker/assistant.ts).
+export { Assistant } from './assistant'
+`
+      : ''
+  }
 /**
  * Add bindings (KV, D1, R2, Durable Objects, Workers AI) in wrangler.jsonc and type them
  * here; every handler receives them as \`env\`.
  */
-export interface Env {${board ? '\n  ROOMS: RoomNamespace<unknown>\n' : ''}}
+${
+  board || agent
+    ? `export interface Env {${agent ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${board ? '\n  ROOMS: RoomNamespace<unknown>' : ''}
+}`
+    : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
+export interface Env {}`
+}
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -1226,13 +1347,24 @@ const handleApi = createHandler<typeof api, Env>(api, {
   },
 })
 
-// wrangler.jsonc routes only /api/* here; everything else is a static asset or index.html.
+// wrangler.jsonc routes only ${agent ? '/api/* and /agents/*' : '/api/*'} here; everything else is a static asset or index.html.
 export default {
 ${
-  board
-    ? `  fetch(request: Request, env: Env): Promise<Response> | Response {
+  board || agent
+    ? `  ${agent ? 'async ' : ''}fetch(request: Request, env: Env): Promise<Response>${agent ? '' : ' | Response'} {${
+        agent
+          ? `
+    // /agents/assistant/<conversation>: the WebSocket useAgent() opens.
+    const agent = await routeAgentRequest(request, env)
+    if (agent) return agent`
+          : ''
+      }${
+        board
+          ? `
     const room = /^\\/api\\/rooms\\/([^/]+)$/.exec(new URL(request.url).pathname)
-    if (room) return roomResponse(request, env.ROOMS, room[1]!)
+    if (room) return roomResponse(request, env.ROOMS, room[1]!)`
+          : ''
+      }
     return handleApi(request, env)
   },`
     : '  fetch: handleApi,'
@@ -1317,8 +1449,8 @@ export function LiveCard() {
       <CardContent>
         <Flex gap={3}>
           <Text muted>
-            <code>worker/index.ts</code> streams events; <code>src/live.ts</code> reads them
-            through the typed client for <code>src/api.ts</code>.
+            <code>worker/index.ts</code> streams events; <code>src/live.ts</code> reads them through
+            the typed client for <code>src/api.ts</code>.
           </Text>
           <Flex direction="horizontal" align="center" gap={2}>
             <Badge variant={live ? 'success' : status.value === 'error' ? 'danger' : 'neutral'}>
@@ -1332,7 +1464,10 @@ export function LiveCard() {
           </Flex>
           {error.value !== null && <Text muted>{error.value}</Text>}
           <div>
-            <Button variant={live ? 'secondary' : 'primary'} onClick={live ? disconnect : () => void connect()}>
+            <Button
+              variant={live ? 'secondary' : 'primary'}
+              onClick={live ? disconnect : () => void connect()}
+            >
               {live ? 'Disconnect' : 'Connect'}
             </Button>
           </div>
@@ -1366,6 +1501,7 @@ export const router = createRouter({ routes, notFound })
 
 function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
   const items = sections.map((s, i) => ({ label: s.label, href: cfSectionPath(s, i) }))
+  if (hasExample(opts, 'agent')) items.push({ label: 'Assistant', href: '/assistant' })
   if (hasExample(opts, 'board')) items.push({ label: 'Board', href: '/board' })
   const navItems = items
     .map(
@@ -1519,7 +1655,17 @@ export function addNote(): void {
 
 function cfBoardRouteTsx(): string {
   return `import type { PointerEvent } from 'react'
-import { Badge, Button, Card, CardContent, Flex, Heading, Text, Textarea, useSignals } from '@cascivo/react'
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  Flex,
+  Heading,
+  Text,
+  Textarea,
+  useSignals,
+} from '@cascivo/react'
 import { addNote, notes, parseCursor, room, roomName } from '../board'
 import type { Note } from '../board'
 import styles from '../board.module.css'
@@ -1529,7 +1675,10 @@ let frame = 0
 /** Shares this pointer's position on the board, at most once per frame. */
 function trackCursor(event: PointerEvent<HTMLDivElement>) {
   const rect = event.currentTarget.getBoundingClientRect()
-  const cursor = { x: Math.round(event.clientX - rect.left), y: Math.round(event.clientY - rect.top) }
+  const cursor = {
+    x: Math.round(event.clientX - rect.left),
+    y: Math.round(event.clientY - rect.top),
+  }
   cancelAnimationFrame(frame)
   frame = requestAnimationFrame(() => room.setPresence(cursor))
 }
@@ -1543,7 +1692,8 @@ function startDrag(event: PointerEvent<HTMLDivElement>, id: string, note: Note) 
   const dy = event.clientY - note.y
   const move = (e: globalThis.PointerEvent) => {
     const current = notes.value[id]
-    if (current) notes.set(id, { ...current, x: Math.max(0, e.clientX - dx), y: Math.max(0, e.clientY - dy) })
+    if (current)
+      notes.set(id, { ...current, x: Math.max(0, e.clientX - dx), y: Math.max(0, e.clientY - dy) })
   }
   const up = () => {
     handle.removeEventListener('pointermove', move)
@@ -1561,7 +1711,12 @@ function NoteCard({ id, note }: { id: string; note: Note }) {
           <Text size="sm" muted>
             Drag
           </Text>
-          <Button size="sm" variant="ghost" aria-label="Delete note" onClick={() => notes.delete(id)}>
+          <Button
+            size="sm"
+            variant="ghost"
+            aria-label="Delete note"
+            onClick={() => notes.delete(id)}
+          >
             ×
           </Button>
         </div>
@@ -1654,7 +1809,6 @@ function cfBoardCss(): string {
     padding: var(--cascivo-space-1) var(--cascivo-space-2);
     cursor: grab;
     touch-action: none;
-    user-select: none;
   }
 
   .cursor {
@@ -1666,6 +1820,374 @@ function cfBoardCss(): string {
     border-radius: 50%;
     background: var(--cascivo-color-accent);
     pointer-events: none;
+  }
+}
+`
+}
+
+/* --- `--example agent`: generative UI on Cloudflare's Agents SDK + @cascivo/render --- */
+
+function cfAssistantTs(): string {
+  return `import type { ViewConfig } from '@cascivo/render'
+import { validateView } from '@cascivo/render/validate'
+
+/**
+ * Shared by the Worker (worker/assistant.ts) and the page (src/routes/assistant.tsx): the
+ * name the agent is routed under, and the one check both sides run on a generated view.
+ */
+
+/** The Durable Object class, its wrangler binding and the \`useAgent({ agent })\` name. */
+export const AGENT = 'Assistant'
+
+export type CheckedView = { title: string; view: ViewConfig } | { errors: string[] }
+
+/**
+ * Validates a view the model produced against the component manifests — unknown components,
+ * invented props and out-of-range values all come back as errors the model can fix. It runs
+ * in the Worker before the result is stored, and again in the browser on the stored message,
+ * which crossed the network and is checked rather than trusted.
+ */
+export function checkView(title: unknown, view: unknown): CheckedView {
+  if (typeof title !== 'string' || title.length === 0) return { errors: ['title: expected text'] }
+  const result = validateView(view)
+  if (!result.valid) return { errors: result.errors.map((e) => \`\${e.path}: \${e.message}\`) }
+  // validateView has checked the whole shape, so the cast states a proven fact.
+  return { title, view: view as ViewConfig }
+}
+`
+}
+
+function cfAssistantWorkerTs(): string {
+  return `import { AIChatAgent } from '@cloudflare/ai-chat'
+import { convertToModelMessages, stepCountIs, streamText, tool } from 'ai'
+import type { LanguageModel } from 'ai'
+import { createWorkersAI } from 'workers-ai-provider'
+import { z } from 'zod'
+import { checkView } from '../src/assistant'
+import type { Env } from './index'
+import { scriptedModel } from './scripted-model'
+
+/** Any Workers AI model with tool calling. */
+const MODEL = '@cf/moonshotai/kimi-k2.7-code'
+
+const SYSTEM = \`You are an assistant inside a web app. When an answer is best shown as UI — a
+summary, a status overview, a list — call show_view instead of describing it in text.
+A view is { "view": { "regions": { "main": [nodes] } } }.
+A node is { "component": Name, "props": { ... }, "children": [nodes] or "text" }.
+Components: Flex (direction: "vertical" | "horizontal", gap: 1-8, wrap), Grid (cols: 1-4, gap),
+Card (padding: "sm" | "md" | "lg"; content as children), Badge (variant: "default" | "success" |
+"warning" | "destructive"; text as children), Alert (variant: "info" | "success" | "warning" |
+"destructive", title; text as children), ProgressBar (value, max, label), Separator,
+EmptyState (title, description).
+If show_view returns errors, fix exactly those and call it again. Keep text replies short.\`
+
+const showView = tool({
+  description: 'Show the user a view built from cascivo components. Returns errors to fix, or ok.',
+  inputSchema: z.object({
+    title: z.string().describe('A short title for the view'),
+    view: z.object({ view: z.object({ regions: z.record(z.string(), z.array(z.unknown())) }) }),
+  }),
+  execute: async ({ title, view }) => checkView(title, view),
+})
+
+/**
+ * One Durable Object per conversation: it stores the messages in its SQLite database and
+ * streams replies to every open tab over a WebSocket, resuming a stream after a reconnect.
+ */
+export class Assistant extends AIChatAgent<Env> {
+  async onChatMessage(_onFinish: unknown, options?: { abortSignal?: AbortSignal }) {
+    // \`vite dev\` answers from a scripted model, so the page works offline and without an
+    // account. A deployed Worker calls Workers AI, and so does \`VITE_REAL_AI=1 vite dev\`.
+    const scripted = import.meta.env.DEV && import.meta.env['VITE_REAL_AI'] !== '1'
+    const model: LanguageModel = scripted
+      ? scriptedModel()
+      : createWorkersAI({ binding: this.env.AI })(MODEL)
+    const result = streamText({
+      model,
+      system: SYSTEM,
+      messages: await convertToModelMessages(this.messages),
+      tools: { show_view: showView },
+      stopWhen: stepCountIs(4),
+      ...(options?.abortSignal ? { abortSignal: options.abortSignal } : {}),
+    })
+    return result.toUIMessageStreamResponse()
+  }
+}
+`
+}
+
+function cfScriptedModelTs(): string {
+  return `import { simulateReadableStream } from 'ai'
+import { MockLanguageModelV4 } from 'ai/test'
+
+/**
+ * A stand-in for Workers AI during \`vite dev\`: it answers every message by calling
+ * show_view with the view below, then replies with one line of text. It goes through the
+ * same tool, validation and streaming as the real model, so the page can be built offline.
+ * Production never imports it — worker/assistant.ts reaches it behind \`import.meta.env.DEV\`.
+ */
+const VIEW = {
+  view: {
+    regions: {
+      main: [
+        {
+          component: 'Flex',
+          props: { direction: 'vertical', gap: 3 },
+          children: [
+            {
+              component: 'Alert',
+              props: { variant: 'info', title: 'Scripted reply' },
+              children:
+                'vite dev answers from worker/scripted-model.ts. Deploy to talk to Workers AI.',
+            },
+            {
+              component: 'Grid',
+              props: { cols: 3, gap: 3 },
+              children: [
+                {
+                  component: 'Card',
+                  props: { padding: 'md' },
+                  children: [
+                    { component: 'Badge', props: { variant: 'success' }, children: 'API healthy' },
+                  ],
+                },
+                {
+                  component: 'Card',
+                  props: { padding: 'md' },
+                  children: [
+                    {
+                      component: 'Badge',
+                      props: { variant: 'warning' },
+                      children: '2 jobs queued',
+                    },
+                  ],
+                },
+                {
+                  component: 'Card',
+                  props: { padding: 'md' },
+                  children: [{ component: 'Badge', children: '14 users online' }],
+                },
+              ],
+            },
+            { component: 'ProgressBar', props: { value: 72, label: 'Sprint progress' } },
+          ],
+        },
+      ],
+    },
+  },
+}
+
+const usage = {
+  inputTokens: { total: 0, noCache: 0, cacheRead: 0, cacheWrite: 0 },
+  outputTokens: { total: 0, text: 0, reasoning: 0 },
+}
+
+export function scriptedModel(): MockLanguageModelV4 {
+  return new MockLanguageModelV4({
+    doStream: async ({ prompt }) => {
+      // After the tool has run, the last prompt message is its result: reply in text.
+      if (prompt.at(-1)?.role === 'tool') {
+        return {
+          stream: simulateReadableStream({
+            chunkDelayInMs: 40,
+            chunks: [
+              { type: 'stream-start', warnings: [] },
+              { type: 'text-start', id: 'reply' },
+              { type: 'text-delta', id: 'reply', delta: 'Here is the overview ' },
+              { type: 'text-delta', id: 'reply', delta: 'you asked for.' },
+              { type: 'text-end', id: 'reply' },
+              { type: 'finish', usage, finishReason: { unified: 'stop', raw: 'stop' } },
+            ],
+          }),
+        }
+      }
+      return {
+        stream: simulateReadableStream({
+          chunkDelayInMs: 40,
+          chunks: [
+            { type: 'stream-start', warnings: [] },
+            {
+              type: 'tool-call',
+              toolCallId: \`call-\${prompt.length}\`,
+              toolName: 'show_view',
+              input: JSON.stringify({ title: 'Team overview', view: VIEW }),
+            },
+            { type: 'finish', usage, finishReason: { unified: 'tool-calls', raw: 'tool_calls' } },
+          ],
+        }),
+      }
+    },
+  })
+}
+`
+}
+
+function cfAssistantRouteTsx(): string {
+  return `import type { FormEvent } from 'react'
+import { CascivoView } from '@cascivo/render'
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  Flex,
+  Heading,
+  Text,
+  Textarea,
+  useSignalState,
+} from '@cascivo/react'
+import { useAgentChat } from '@cloudflare/ai-chat/react'
+import { useAgent } from 'agents/react'
+import type { UIMessage } from 'ai'
+import { AGENT, checkView } from '../assistant'
+import styles from '../assistant.module.css'
+
+const STORAGE_KEY = 'assistant-conversation'
+
+/**
+ * The conversation this browser continues: its Durable Object's name. Kept in localStorage
+ * so a reload picks the conversation back up; a new one each visit where storage is blocked.
+ */
+function conversationName(): string {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (saved) return saved
+    const created = crypto.randomUUID()
+    localStorage.setItem(STORAGE_KEY, created)
+    return created
+  } catch {
+    return crypto.randomUUID()
+  }
+}
+
+const conversation = conversationName()
+
+function MessagePart({ part }: { part: UIMessage['parts'][number] }) {
+  if (part.type === 'text') return <Text>{part.text}</Text>
+  if (part.type !== 'tool-show_view') return null
+  if (part.state !== 'output-available') {
+    return (
+      <Badge variant="neutral">
+        {part.state === 'output-error' ? 'View failed' : 'Building a view…'}
+      </Badge>
+    )
+  }
+  // The stored message came over the network: check it again rather than trusting it.
+  const output: unknown = part.output
+  const shown =
+    typeof output === 'object' && output !== null && 'title' in output && 'view' in output
+      ? checkView(output.title, output.view)
+      : null
+  if (!shown || 'errors' in shown) {
+    // The model saw these errors as the tool result and tries again in the next step.
+    return (
+      <Badge variant="warning">Rejected a view with {shown?.errors.length ?? 1} problems</Badge>
+    )
+  }
+  return (
+    <Card>
+      <CardContent>
+        <Flex gap={3}>
+          <Heading level={3}>{shown.title}</Heading>
+          <CascivoView config={shown.view} onInvalid="render" />
+        </Flex>
+      </CardContent>
+    </Card>
+  )
+}
+
+export default function Assistant() {
+  const agent = useAgent({ agent: AGENT, name: conversation })
+  const { messages, sendMessage, status, clearHistory } = useAgentChat({ agent })
+  const [draft, setDraft] = useSignalState('')
+  const busy = status === 'submitted' || status === 'streaming'
+
+  const send = (event: FormEvent) => {
+    event.preventDefault()
+    const text = draft.value.trim()
+    if (!text || busy) return
+    void sendMessage({ role: 'user', parts: [{ type: 'text', text }] })
+    setDraft('')
+  }
+
+  return (
+    <Flex gap={4}>
+      <Flex direction="horizontal" align="center" justify="between" wrap gap={3}>
+        <Flex gap={1}>
+          <Heading level={1}>Assistant</Heading>
+          <Text muted>
+            Ask for an overview, a status page or a list: the agent answers with real components,
+            checked against their manifests before they reach you.
+          </Text>
+        </Flex>
+        <Button variant="secondary" onClick={clearHistory} disabled={messages.length === 0}>
+          New conversation
+        </Button>
+      </Flex>
+      <ol className={styles['messages']} aria-live="polite">
+        {messages.map((message) => (
+          <li key={message.id} className={styles[message.role === 'user' ? 'user' : 'assistant']}>
+            <Flex gap={2}>
+              {message.parts.map((part, index) => (
+                <MessagePart key={index} part={part} />
+              ))}
+            </Flex>
+          </li>
+        ))}
+      </ol>
+      <form className={styles['composer']} onSubmit={send}>
+        <Textarea
+          aria-label="Message"
+          rows={2}
+          value={draft.value}
+          placeholder="Show me the team's status"
+          onChange={(event) => setDraft(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' && !event.shiftKey) send(event)
+          }}
+        />
+        <Button type="submit" loading={busy}>
+          Send
+        </Button>
+      </form>
+    </Flex>
+  )
+}
+`
+}
+
+function cfAssistantCss(): string {
+  return `/* Your app's own styles live in the cascivo.example layer (declared in index.html). */
+@layer cascivo.example {
+  .messages {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .user {
+    align-self: end;
+    max-inline-size: 80%;
+    padding: var(--cascivo-space-2) var(--cascivo-space-3);
+    border-radius: var(--cascivo-radius-md);
+    background: var(--cascivo-color-bg-subtle);
+  }
+
+  .assistant {
+    max-inline-size: 100%;
+  }
+
+  .composer {
+    display: flex;
+    gap: var(--cascivo-space-2);
+    align-items: end;
+  }
+
+  .composer > :first-child {
+    flex: 1;
   }
 }
 `
@@ -1689,7 +2211,7 @@ dist
 
 function cfReadme(opts: ScaffoldOptions): string {
   const pm = opts.pm ?? 'npm'
-  const runtime = opts.runtime ?? 'preact'
+  const runtime = runtimeOf(opts)
   return `# ${opts.name}
 
 A [cascivo](https://cascivo.com) app on Cloudflare: a client-rendered
@@ -1727,7 +2249,11 @@ This builds the app, then deploys it to a temporary Cloudflare account with
 
 It works only while wrangler is logged out. If you are logged in, use \`deploy\` instead.
 A temporary account supports Workers, static assets, KV, D1 and Durable Objects. It does not
-support Workers AI or R2.
+support Workers AI or R2.${
+    hasExample(opts, 'agent')
+      ? ' So a preview serves the app, but its assistant cannot reach the model: deploy it\nto your own account for that.'
+      : ''
+  }
 
 ## Structure
 
@@ -1763,16 +2289,45 @@ editing the same note at once settle on one value; editing different notes never
 Durable Objects work on a temporary account, so \`deploy:preview\` shares a live board with
 no Cloudflare account.`
       : ''
+  }${
+    hasExample(opts, 'agent')
+      ? `
+
+## Assistant (generative UI)
+
+\`/assistant\` is a chat whose answers can be UI. The model calls a \`show_view\` tool with a view
+config; the Worker checks it against the component manifests (\`validateView\` from
+\`@cascivo/render/validate\`) and returns any errors to the model, which fixes them and calls
+again. The page renders the result with \`<CascivoView>\`: real components, no generated code.
+
+- \`worker/assistant.ts\` — \`Assistant\`, an \`AIChatAgent\` (Cloudflare's Agents SDK): one
+  Durable Object per conversation, which stores the messages and streams replies to every open
+  tab. The system prompt, the \`show_view\` tool and the model (\`MODEL\`, any Workers AI model
+  with tool calling) are here.
+- \`src/assistant.ts\` — \`checkView\`, the one check both sides run on a view.
+- \`src/routes/assistant.tsx\` — \`useAgent\` + \`useAgentChat\`; one conversation per browser.
+- \`worker/scripted-model.ts\` — \`vite dev\` answers from this scripted model, so the page works
+  offline and without an account. \`VITE_REAL_AI=1 ${runScriptCommand(pm, 'dev')}\` uses Workers AI instead
+  (after \`npx wrangler login\`); a deployed Worker always does.
+
+Workers AI bills per use beyond its free daily allocation.`
+      : ''
   }
 
 Add more components with \`npx cascivo add <component>\`.
 
 ## ${runtime === 'preact' ? 'Preact or React' : 'React or Preact'}
 
-The source is typed against React. The runtime is one plugin in \`vite.config.ts\`:
+${
+  hasExample(opts, 'agent')
+    ? `This app runs on React. The Agents SDK's hooks call React 19's \`use()\`, which
+Preact's compat layer does not implement, so the assistant page needs React. (The other pages
+would run on Preact unchanged: the source is typed against React either way.)`
+    : `The source is typed against React. The runtime is one plugin in \`vite.config.ts\`:
 \`@preact/preset-vite\` runs it on Preact, \`@vitejs/plugin-react\` on React. Switching
 needs no source changes; swap the plugin and the matching dependencies. For this starter,
-Preact ships about a third of the client JS (~27 KB gzip against ~85 KB).
+Preact ships about a third of the client JS (~27 KB gzip against ~85 KB).`
+}
 `
 }
 
@@ -1816,19 +2371,25 @@ function cfShellTsx(opts: ScaffoldOptions): string {
 }
 
 function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): ScaffoldFile[] {
-  const runtime = opts.runtime ?? 'preact'
+  const runtime = runtimeOf(opts)
   const routeFiles = [
     ...sections.map((s, i) => ({
       file: cfSectionFile(s, i),
       contents: i === 0 ? cfFirstRouteTsx(s) : cfRouteTsx(s, i),
     })),
     { file: '404.tsx', contents: cf404Tsx() },
+    ...(hasExample(opts, 'agent')
+      ? [{ file: 'assistant.tsx', contents: cfAssistantRouteTsx() }]
+      : []),
     ...(hasExample(opts, 'board') ? [{ file: 'board.tsx', contents: cfBoardRouteTsx() }] : []),
   ]
   return [
     { path: 'package.json', contents: cfPackageJson(opts) },
-    { path: 'tsconfig.json', contents: cfTsconfig() },
-    { path: 'vite.config.ts', contents: cfViteConfig(runtime) },
+    { path: 'tsconfig.json', contents: cfTsconfig(opts) },
+    ...(hasExample(opts, 'agent')
+      ? [{ path: 'tsconfig.worker.json', contents: cfWorkerTsconfig() }]
+      : []),
+    { path: 'vite.config.ts', contents: cfViteConfig(runtime, opts) },
     { path: 'wrangler.jsonc', contents: wranglerJsonc(opts) },
     { path: 'index.html', contents: indexHtml(opts) },
     { path: 'eslint.config.js', contents: eslintConfig() },
@@ -1846,6 +2407,14 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
     { path: 'src/router.ts', contents: cfRouterTs() },
     { path: 'src/App.tsx', contents: cfAppTsx(sections, opts) },
     { path: 'src/Shell.tsx', contents: cfShellTsx(opts) },
+    ...(hasExample(opts, 'agent')
+      ? [
+          { path: 'worker/assistant.ts', contents: cfAssistantWorkerTs() },
+          { path: 'worker/scripted-model.ts', contents: cfScriptedModelTs() },
+          { path: 'src/assistant.ts', contents: cfAssistantTs() },
+          { path: 'src/assistant.module.css', contents: cfAssistantCss() },
+        ]
+      : []),
     ...(hasExample(opts, 'board')
       ? [
           { path: 'src/board.ts', contents: cfBoardTs() },
@@ -2021,6 +2590,14 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
 
     if (exampleArgs.length > 0 && resolvedFramework !== 'cloudflare') {
       console.error('--example needs --framework cloudflare (it adds a Worker-backed page).')
+      process.exitCode = 1
+      return
+    }
+    if (exampleArgs.includes('agent') && runtimeArg === 'preact') {
+      console.error(
+        "--example agent needs --runtime react: the Agents SDK's hooks call React 19's use(), " +
+          'which Preact does not implement.',
+      )
       process.exitCode = 1
       return
     }

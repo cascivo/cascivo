@@ -40,6 +40,11 @@ export const STARTERS: Starter[] = [
     project: 'cascivo-board',
     args: ['--framework', 'cloudflare', '--example', 'board', '--pm', 'npm'],
   },
+  {
+    name: 'cloudflare-agent',
+    project: 'cascivo-agent',
+    args: ['--framework', 'cloudflare', '--example', 'agent', '--pm', 'npm'],
+  },
 ]
 
 /** Every file under `dir`, keyed by its `/`-separated relative path. */

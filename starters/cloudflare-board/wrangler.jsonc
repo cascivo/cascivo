@@ -8,12 +8,14 @@
     // Client-side app: an unknown path serves index.html, and the client renders it.
     "not_found_handling": "single-page-application",
     // Only the API reaches the Worker; static assets are served without invoking it.
-    "run_worker_first": ["/api/*"]
+    "run_worker_first": ["/api/*"],
   },
   "observability": { "enabled": true },
-  // One SyncRoom Durable Object per board room (@cascivo/app/sync-server).
-  "durable_objects": { "bindings": [{ "name": "ROOMS", "class_name": "SyncRoom" }] },
-  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["SyncRoom"] }]
+  // ROOMS: one SyncRoom per board room (@cascivo/app/sync-server).
+  "durable_objects": {
+    "bindings": [{ "name": "ROOMS", "class_name": "SyncRoom" }],
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["SyncRoom"] }],
   // Add bindings here (KV, D1, R2, Durable Objects, Workers AI) and read them from the
   // `env` argument of the Worker's fetch handler.
 }

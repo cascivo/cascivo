@@ -40,6 +40,11 @@
       "import": "./dist/view-text.js",
       "default": "./dist/view-text.js"
     },
+    "./validate": {
+      "types": "./dist/validate.d.ts",
+      "import": "./dist/validate.js",
+      "default": "./dist/validate.js"
+    },
     "./schema/view.v1.json": "./schema/view.v1.json"
   },
   "publishConfig": {

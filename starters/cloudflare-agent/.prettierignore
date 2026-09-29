@@ -1,0 +1,7 @@
+dist
+node_modules
+# Vendored cascivo source is formatted upstream — reformatting it makes every
+# `cascivo add` update a merge conflict.
+src/components/ui/
+# Rewritten by @cascivo/app/vite whenever a route file changes.
+src/routes.gen.ts

@@ -6356,6 +6356,17 @@
             "text?": "TextOptions"
           }
         }
+      },
+      "./validate": {
+        "values": ["validateView"],
+        "types": ["ValidationError"],
+        "declarations": {
+          "validateView": "declare function validateView(config: unknown): { valid: boolean; errors: ValidationError[]; }",
+          "ValidationError": {
+            "path": "string",
+            "message": "string"
+          }
+        }
       }
     },
     "@cascivo/app": {

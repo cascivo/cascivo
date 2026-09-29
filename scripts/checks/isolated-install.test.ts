@@ -163,9 +163,10 @@ import {
   type EmailTheme,
 } from '@cascivo/email'
 // @cascivo/render — the JSON view runtime an agent's scaffold_view output feeds, and its
-// machine-mode subpath. Both entries are exercised because each ships its own flattened .d.ts.
+// machine-mode and validator subpaths. Every entry is exercised because each ships its own flattened .d.ts.
 import { CascivoView, type ViewConfig } from '@cascivo/render'
 import { viewToMarkdown } from '@cascivo/render/text'
+import { validateView, type ValidationError } from '@cascivo/render/validate'
 // @cascivo/data — framework-free SSE primitives; typed against lib.dom's fetch/stream types
 // only, so this is the check that it needs no @types of any kind from the consumer.
 import { fetchSSE, formatSSE, HttpError, parseSSE, type ServerSentEvent } from '@cascivo/data'
@@ -208,6 +209,7 @@ const VIEW: ViewConfig = {
 }
 export const viewText: string = viewToMarkdown(VIEW, { data: {} })
 export const viewElement = <CascivoView config={VIEW} onInvalid="render" />
+export const viewErrors: ValidationError[] = validateView(VIEW).errors
 
 // The assignability that makes the subpath worth having: a Tone named here must satisfy the
 // main entry's prop types. Two separate entry points declaring the same nominal type is

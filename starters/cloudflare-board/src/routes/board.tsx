@@ -1,5 +1,15 @@
 import type { PointerEvent } from 'react'
-import { Badge, Button, Card, CardContent, Flex, Heading, Text, Textarea, useSignals } from '@cascivo/react'
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  Flex,
+  Heading,
+  Text,
+  Textarea,
+  useSignals,
+} from '@cascivo/react'
 import { addNote, notes, parseCursor, room, roomName } from '../board'
 import type { Note } from '../board'
 import styles from '../board.module.css'
@@ -9,7 +19,10 @@ let frame = 0
 /** Shares this pointer's position on the board, at most once per frame. */
 function trackCursor(event: PointerEvent<HTMLDivElement>) {
   const rect = event.currentTarget.getBoundingClientRect()
-  const cursor = { x: Math.round(event.clientX - rect.left), y: Math.round(event.clientY - rect.top) }
+  const cursor = {
+    x: Math.round(event.clientX - rect.left),
+    y: Math.round(event.clientY - rect.top),
+  }
   cancelAnimationFrame(frame)
   frame = requestAnimationFrame(() => room.setPresence(cursor))
 }
@@ -23,7 +36,8 @@ function startDrag(event: PointerEvent<HTMLDivElement>, id: string, note: Note) 
   const dy = event.clientY - note.y
   const move = (e: globalThis.PointerEvent) => {
     const current = notes.value[id]
-    if (current) notes.set(id, { ...current, x: Math.max(0, e.clientX - dx), y: Math.max(0, e.clientY - dy) })
+    if (current)
+      notes.set(id, { ...current, x: Math.max(0, e.clientX - dx), y: Math.max(0, e.clientY - dy) })
   }
   const up = () => {
     handle.removeEventListener('pointermove', move)
@@ -41,7 +55,12 @@ function NoteCard({ id, note }: { id: string; note: Note }) {
           <Text size="sm" muted>
             Drag
           </Text>
-          <Button size="sm" variant="ghost" aria-label="Delete note" onClick={() => notes.delete(id)}>
+          <Button
+            size="sm"
+            variant="ghost"
+            aria-label="Delete note"
+            onClick={() => notes.delete(id)}
+          >
             ×
           </Button>
         </div>
