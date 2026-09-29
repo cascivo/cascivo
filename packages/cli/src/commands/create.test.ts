@@ -376,8 +376,31 @@ describe('buildScaffold — cloudflare', () => {
     expect(pkg.scripts['deploy']).toBe('pnpm build && wrangler deploy')
   })
 
+  it('can share a no-account preview through a temporary Cloudflare account', () => {
+    expect(pkg.scripts['deploy:preview']).toBe('pnpm build && wrangler deploy --temporary')
+    const readme = map.get('README.md')!
+    expect(readme).toContain('pnpm run deploy:preview')
+    expect(readme).toContain('claim URL')
+    expect(readme).toContain('60 minutes')
+    expect(readme).toContain('not\nsupport Workers AI')
+    // An agent working in the app is told to hand both URLs back, and that it is public.
+    expect(map.get('AGENTS.md')).toContain('Give the user both URLs')
+  })
+
   it('ignores wrangler state and local secrets', () => {
     expect(map.get('.gitignore')).toContain('.wrangler')
     expect(map.get('.gitignore')).toContain('.dev.vars')
   })
+})
+
+describe('buildScaffold — sharing a static build', () => {
+  for (const framework of ['react-vite', 'astro'] as const) {
+    it(`${framework}: points at Cloudflare Drop, and the config-free CLI equivalent`, () => {
+      const readme = fileMap(
+        buildScaffold({ name: 'My App', framework, theme: 'light', sections: ['Home'] }),
+      ).get('README.md')!
+      expect(readme).toContain('https://www.cloudflare.com/drop/')
+      expect(readme).toContain('npx wrangler deploy --temporary --assets dist --name my-app')
+    })
+  }
 })

@@ -519,6 +519,25 @@ dist
 `
 }
 
+/**
+ * "Share a preview" for a static build: Cloudflare Drop takes the folder with no account, and
+ * `wrangler deploy --temporary --assets` is the same thing from a terminal (or an agent).
+ */
+function staticShareSection(opts: ScaffoldOptions): string {
+  const pm = opts.pm ?? 'npm'
+  return `
+## Share a preview
+
+No Cloudflare account needed. Run \`${runScriptCommand(pm, 'build')}\`, then either:
+
+- drag the \`dist/\` folder onto [Cloudflare Drop](https://www.cloudflare.com/drop/), or
+- from a terminal: \`npx wrangler deploy --temporary --assets dist --name ${packageName(opts.name)} --compatibility-date ${COMPATIBILITY_DATE}\`
+
+Either way you get a public URL that lasts 60 minutes. Sign in to Cloudflare within that hour
+to keep it.
+`
+}
+
 function readme(opts: ScaffoldOptions): string {
   const pm = opts.pm ?? 'npm'
   return `# ${opts.name}
@@ -563,7 +582,7 @@ setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href ?? '#
 That one call makes \`SideNav\`, \`ShellHeader\` and \`Breadcrumb\` render real router links.
 Links you write in page content use \`<Link asChild>\` instead — two kinds of link, two
 mechanisms. Full recipe: https://cascivo.com/docs/using-with-a-router.md
-`
+${staticShareSection(opts)}`
 }
 
 function agentsMd(opts: ScaffoldOptions): string {
@@ -970,7 +989,7 @@ and that order matters: layers take their position from first appearance, so a s
 loaded after the theme cannot reorder anything.
 
 Add more components with \`npx cascivo add <component>\`.
-`
+${staticShareSection(opts)}`
 }
 
 /* ------------------------------------------------------------------------- *
@@ -1001,6 +1020,8 @@ function cfPackageJson(opts: ScaffoldOptions): string {
       build: 'tsc && vite build',
       preview: 'vite preview',
       deploy: `${runScriptCommand(pm, 'build')} && wrangler deploy`,
+      // No account: a temporary one, live for 60 minutes unless claimed (see README).
+      'deploy:preview': `${runScriptCommand(pm, 'build')} && wrangler deploy --temporary`,
       typecheck: 'tsc --noEmit',
       lint: 'eslint .',
       format: 'prettier --write .',
@@ -1434,6 +1455,22 @@ npx wrangler login   # once
 ${runExplicitCommand(pm, 'deploy')}
 \`\`\`
 
+## Share a preview (no account)
+
+\`\`\`sh
+${runExplicitCommand(pm, 'deploy:preview')}
+\`\`\`
+
+This builds the app, then deploys it to a temporary Cloudflare account with
+\`wrangler deploy --temporary\`. You need no sign-up. It prints two URLs:
+
+- **A public \`workers.dev\` URL** for the app.
+- **A claim URL.** Open it and sign in within 60 minutes to keep the deployment; otherwise it is deleted.
+
+It works only while wrangler is logged out. If you are logged in, use \`deploy\` instead.
+A temporary account supports Workers, static assets, KV, D1 and Durable Objects. It does not
+support Workers AI or R2.
+
 ## Structure
 
 - \`src/routes/\` — one file per page. \`index.tsx\` is \`/\`, \`settings.tsx\` is
@@ -1478,6 +1515,13 @@ A page is a file in \`src/routes/\` with a default export: \`c/[id].tsx\` serves
 receives \`{ params }: RouteProps<'/c/:id'>\`. Never edit \`src/routes.gen.ts\`. Link with
 \`href\`s (SideNav items, \`router.Link\`); navigate from code with \`router.navigate(path)\`,
 and build a path with \`buildPath('/c/:id', { id })\`, both from \`@cascivo/app\`.
+
+## Sharing
+
+To show the user a running version, run \`${runExplicitCommand(opts.pm ?? 'npm', 'deploy:preview')}\`.
+It needs no Cloudflare account. Give the user both URLs it prints: the live one, and the
+claim URL. The deployment is public, and it is deleted after 60 minutes unless the user
+opens the claim URL and signs in.
 `
 }
 
@@ -1726,6 +1770,8 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
       console.log('\n  worker/index.ts is the API (wrangler.jsonc routes /api/* to it); `dev`')
       console.log('  runs it in workerd. Deploy with `npx wrangler login` once, then the')
       console.log(`  deploy script: ${runExplicitCommand(pm, 'deploy')}`)
+      console.log('\n  No account yet? Share a 60-minute preview, claimable into a free account:')
+      console.log(`  ${runExplicitCommand(pm, 'deploy:preview')}`)
     } else if (resolvedFramework === 'astro') {
       console.log('\n  Pages are real Astro routes — no client router to add. Only src/')
       console.log('  components/Shell.tsx hydrates (client:load, for the mobile nav drawer);')

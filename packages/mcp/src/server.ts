@@ -28,6 +28,7 @@ import { loadContext, loadComponentMarkdown } from './context.js'
 import { listGuides, loadGuide } from './guides.js'
 import { selectComponent } from './select.js'
 import { loadCatalog, listTemplates, getTemplate } from './templates.js'
+import { deployPreview } from './deploy-preview.js'
 
 type FetchFn = (url: string, init?: RequestInit) => Promise<Response>
 
@@ -283,7 +284,7 @@ export function createServer(options: ServerOptions = {}): McpServer {
     {
       title: 'Create app',
       description:
-        'Scaffold a complete, ready-to-run cascivo app (Vite + React + TypeScript) wired with the app shell, side navigation, header, and a theme — one page per nav section, with signal-driven section switching. Runs `cascivo create` as a child process, writing the project into a new <name> directory.',
+        'Scaffold a complete, ready-to-run cascivo app wired with the app shell, side navigation, header, and a theme — one page per nav section. `framework`: "react-vite" (default; a client-side Vite + React SPA), "astro" (static pages, only the shell hydrates), or "cloudflare" (a client app plus its API as one Cloudflare Worker, with file routes and a typed API; deploy it with no account via deploy_preview). Runs `cascivo create` as a child process, writing the project into a new <name> directory.',
       inputSchema: {
         name: z.string().describe('Project name and directory, e.g. "my-app"'),
         theme: z
@@ -296,14 +297,26 @@ export function createServer(options: ServerOptions = {}): McpServer {
           .describe(
             'Side-nav section labels; one page is generated per section (default: Dashboard, Reports, Settings)',
           ),
+        framework: z
+          .enum(['react-vite', 'astro', 'cloudflare'])
+          .optional()
+          .describe('Project shape (default: react-vite)'),
+        runtime: z
+          .enum(['preact', 'react'])
+          .optional()
+          .describe(
+            'Client runtime for framework "cloudflare" (default: preact; same source either way)',
+          ),
         cwd: z
           .string()
           .optional()
           .describe('Directory to create the app in (default: current directory)'),
       },
     },
-    ({ name, theme, sections, cwd }) => {
+    ({ name, theme, sections, framework, runtime, cwd }) => {
       const args = ['-y', 'cascivo', 'create', name, '--yes']
+      if (framework) args.push('--framework', framework)
+      if (runtime) args.push('--runtime', runtime)
       if (theme) args.push('--theme', theme)
       if (sections && sections.length > 0) args.push('--sections', sections.join(', '))
       const result = spawnSync('npx', args, { encoding: 'utf8', ...(cwd ? { cwd } : {}) })
@@ -311,6 +324,32 @@ export function createServer(options: ServerOptions = {}): McpServer {
         return error(result.stderr || result.error?.message || `Failed to create "${name}".`)
       }
       return text(result.stdout || `Created ${name}.`)
+    },
+  )
+
+  server.registerTool(
+    'deploy_preview',
+    {
+      title: 'Deploy preview (no Cloudflare account)',
+      description:
+        'Build and publish an app made with create_app framework "cloudflare" to a temporary Cloudflare account — no sign-up, no credentials — and return its live workers.dev URL and a claim URL. The deployment is PUBLIC on the internet and is deleted after 60 minutes unless the user opens the claim URL and signs in, which makes it theirs. Give the user both URLs. Fails if wrangler is already logged in. Temporary accounts support Workers, static assets, KV, D1 and Durable Objects, but not Workers AI or R2. For a static build (react-vite, astro), tell the user to drop dist/ on https://www.cloudflare.com/drop/ instead.',
+      inputSchema: {
+        cwd: z.string().describe('The app directory (the one containing its package.json)'),
+      },
+    },
+    ({ cwd }) => {
+      try {
+        const { url, claimUrl, output } = deployPreview(cwd)
+        if (!url) return error(`Deployed, but no URL was found in the output:\n${output}`)
+        return text(
+          `Live: ${url}\n` +
+            (claimUrl
+              ? `Claim within 60 minutes to keep it: ${claimUrl}\n`
+              : 'No claim URL was printed; this may have deployed to an existing account.\n'),
+        )
+      } catch (cause) {
+        return error(cause instanceof Error ? cause.message : String(cause))
+      }
     },
   )
 
