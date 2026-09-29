@@ -1,4 +1,4 @@
-import { parseSSE, formatSSE } from '../src/lib/sse'
+import { parseSSE, formatSSE } from '@cascivo/data'
 import { LIMITS, isModelId } from '../src/lib/protocol'
 import type { ChatRequest, ChatStreamEvents, ChatTurn } from '../src/lib/protocol'
 

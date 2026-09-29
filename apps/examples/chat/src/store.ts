@@ -1,6 +1,6 @@
 import { computed, signal } from '@cascivo/core'
 import { persistedSignal, indexedDBDriver } from '@cascivo/storage'
-import { parseSSE } from './lib/sse'
+import { fetchSSE } from '@cascivo/data'
 import { CHAT_ENDPOINT, DEFAULT_MODEL, LIMITS, isModelId } from './lib/protocol'
 import type { ChatRequest, ChatTurn, ModelId, Role } from './lib/protocol'
 
@@ -144,15 +144,13 @@ async function generate(id: string): Promise<void> {
   error.value = null
 
   try {
-    const response = await fetch(CHAT_ENDPOINT, {
+    const events = fetchSSE(CHAT_ENDPOINT, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(request),
       signal: abort.signal,
     })
-    if (!response.ok || !response.body) throw new Error(await failureMessage(response))
-
-    for await (const event of parseSSE(response.body)) {
+    for await (const event of events) {
       if (event.event === 'token') draft.value += readField(event.data, 'text')
       else if (event.event === 'error') throw new Error(readField(event.data, 'message'))
       else if (event.event === 'done') break
@@ -183,17 +181,4 @@ function readField(data: string, field: string): string {
     if (typeof value === 'string') return value
   }
   throw new Error(`Malformed stream event: missing "${field}"`)
-}
-
-async function failureMessage(response: Response): Promise<string> {
-  try {
-    const body: unknown = await response.json()
-    if (typeof body === 'object' && body !== null) {
-      const { error: message } = body as { error?: unknown }
-      if (typeof message === 'string') return message
-    }
-  } catch {
-    // Not JSON — fall through to the status line.
-  }
-  return `Request failed (${response.status})`
 }

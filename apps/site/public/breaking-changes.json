@@ -299,6 +299,11 @@
       ]
     },
     {
+      "name": "@cascivo/data",
+      "version": "0.0.0",
+      "releases": []
+    },
+    {
       "name": "@cascivo/docs",
       "version": "0.2.11",
       "releases": [

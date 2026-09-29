@@ -3,7 +3,7 @@ import worker from '../worker/index'
 import { parseChatRequest, BadRequest } from '../worker/chat'
 import type { AiBinding } from '../worker/chat'
 import { createMockAi } from '../worker/mock-ai'
-import { parseSSE } from '../src/lib/sse'
+import { parseSSE } from '@cascivo/data'
 import { DEFAULT_MODEL, LIMITS } from '../src/lib/protocol'
 
 const ai = createMockAi({ delayMs: 0 })

@@ -264,12 +264,13 @@ Published packages install from npm. Components themselves are copy-pasted into 
 | [`@cascivo/charts`](packages/charts) | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fcharts?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/charts) | Chart components built from scratch — scales, shapes, and signal-driven rendering, zero dependencies. Colors come from @cascivo/themes; components from @cascivo/react. Docs offline: npx @cascivo/docs |
 | [`@cascivo/editor`](packages/editor) | [![npm](https://img.shields.io/npm/v/%40cascivo%2Feditor?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/editor) | Lightweight CSS-native code editor — native textarea overlay + owned zero-dependency tokenizer                                                                                                          |
 
-### State & i18n
+### State, data & i18n
 
-| Package                                | Version                                                                                                                                    | Description                                                                               |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
-| [`@cascivo/i18n`](packages/i18n)       | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fi18n?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/i18n)       | Signal-driven locale store, typed message catalogs, and Intl-based formatting for cascivo |
-| [`@cascivo/storage`](packages/storage) | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fstorage?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/storage) | Persisted signals over localStorage/IndexedDB for cascivo — SSR-safe                      |
+| Package                                | Version                                                                                                                                    | Description                                                                                               |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| [`@cascivo/i18n`](packages/i18n)       | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fi18n?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/i18n)       | Signal-driven locale store, typed message catalogs, and Intl-based formatting for cascivo                 |
+| [`@cascivo/storage`](packages/storage) | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fstorage?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/storage) | Persisted signals over localStorage/IndexedDB for cascivo — SSR-safe                                      |
+| [`@cascivo/data`](packages/data)       | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fdata?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/data)       | Client data primitives for cascivo apps — server-sent events over fetch (POST-capable), zero dependencies |
 
 ### CLI, registry & AI
 

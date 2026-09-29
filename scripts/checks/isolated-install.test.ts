@@ -76,6 +76,7 @@ const PACKAGES = [
   'tokens',
   'i18n',
   'storage',
+  'data',
   'icons',
   'charts',
   'email',
@@ -93,6 +94,7 @@ const NEEDS_DIST = [
   'core',
   'i18n',
   'storage',
+  'data',
   'icons',
   'charts',
   'email',
@@ -162,6 +164,16 @@ import {
 // machine-mode subpath. Both entries are exercised because each ships its own flattened .d.ts.
 import { CascivoView, type ViewConfig } from '@cascivo/render'
 import { viewToMarkdown } from '@cascivo/render/text'
+// @cascivo/data — framework-free SSE primitives; typed against lib.dom's fetch/stream types
+// only, so this is the check that it needs no @types of any kind from the consumer.
+import { fetchSSE, formatSSE, HttpError, parseSSE, type ServerSentEvent } from '@cascivo/data'
+export const sseLine: string = formatSSE('ping', { ok: true })
+export async function firstEvent(url: string): Promise<ServerSentEvent | undefined> {
+  for await (const event of fetchSSE(url)) return event
+  return undefined
+}
+export const sseParser: typeof parseSSE = parseSSE
+export const httpStatus = (e: unknown): number | undefined => (e instanceof HttpError ? e.status : undefined)
 
 const VIEW: ViewConfig = {
   version: 1,

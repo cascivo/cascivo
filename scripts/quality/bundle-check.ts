@@ -76,6 +76,7 @@ const BUDGETS: Record<string, number> = {
   '@cascivo/registry': 10, // measured 4.1
   '@cascivo/ai': 6, // measured 1.3
   '@cascivo/storage': 5, // measured 0.4
+  '@cascivo/data': 3, // measured 1.0
   // Measured 5.5 across three chunks: the serializer entry is ~0.9 KB on its own, so the
   // tree is what gets measured (code-split) — most of it is the emitter.
   '@cascivo/text': 10,

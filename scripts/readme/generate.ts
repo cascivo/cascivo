@@ -163,7 +163,7 @@ const PUBLISHED_GROUPS: { title: string; names: string[] }[] = [
     names: ['@cascivo/core', '@cascivo/tokens', '@cascivo/themes', '@cascivo/icons'],
   },
   { title: 'Components & charts', names: ['@cascivo/react', '@cascivo/charts', '@cascivo/editor'] },
-  { title: 'State & i18n', names: ['@cascivo/i18n', '@cascivo/storage'] },
+  { title: 'State, data & i18n', names: ['@cascivo/i18n', '@cascivo/storage', '@cascivo/data'] },
   { title: 'CLI, registry & AI', names: ['cascivo', '@cascivo/registry', '@cascivo/mcp'] },
 ]
 

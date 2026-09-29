@@ -1,11 +1,4 @@
-/**
- * A spec-compliant Server-Sent Events parser over a byte stream.
- *
- * `EventSource` only does GET, so it cannot carry a chat request body. This parses the same
- * wire format from any `ReadableStream` — a `fetch` response in the browser, or a Workers AI
- * stream inside the Worker — so both ends of the app share one implementation.
- * https://html.spec.whatwg.org/multipage/server-sent-events.html#event-stream-interpretation
- */
+/** One dispatched server-sent event. */
 export interface ServerSentEvent {
   /** The `event:` field, `'message'` when absent. */
   event: string
@@ -17,6 +10,19 @@ export interface ServerSentEvent {
   retry?: number
 }
 
+/**
+ * Parse a server-sent event stream from any byte stream, following the WHATWG
+ * event-stream interpretation rules: CR, LF and CRLF line endings (even split across
+ * chunks), multi-line `data`, comments, `id` carried forward, numeric `retry`, a leading BOM,
+ * and an unterminated final event discarded.
+ *
+ * `EventSource` only does GET. This reads the same wire format from a `fetch` body, a
+ * Cloudflare Workers AI stream, or any `ReadableStream<Uint8Array>` — so a server that
+ * consumes an upstream stream and a browser that consumes the server can share one parser.
+ * Stopping iteration early (`break`, a throw) cancels the underlying stream.
+ *
+ * https://html.spec.whatwg.org/multipage/server-sent-events.html#event-stream-interpretation
+ */
 export async function* parseSSE(
   body: ReadableStream<Uint8Array>,
 ): AsyncGenerator<ServerSentEvent, void, undefined> {
@@ -94,7 +100,10 @@ export async function* parseSSE(
   }
 }
 
-/** Encodes one event in the SSE wire format. */
+/**
+ * Encode one event in the SSE wire format, with `data` serialised as JSON. The inverse of
+ * what `parseSSE` reads, for the server side of a stream.
+ */
 export function formatSSE(event: string, data: unknown): string {
   return `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`
 }

@@ -1,0 +1,50 @@
+{
+  "name": "@cascivo/data",
+  "version": "0.0.0",
+  "private": false,
+  "description": "Client data primitives for cascivo apps — server-sent events over fetch (POST-capable), zero dependencies",
+  "keywords": [
+    "cascivo",
+    "event-stream",
+    "fetch",
+    "server-sent-events",
+    "sse",
+    "streaming"
+  ],
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/data#readme",
+  "bugs": "https://github.com/cascivo/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
+    "directory": "packages/data"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "vp build && node scripts/flatten-types.mjs && node scripts/check-types-flat.mjs",
+    "check": "tsc --noEmit",
+    "test": "vp test"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  }
+}

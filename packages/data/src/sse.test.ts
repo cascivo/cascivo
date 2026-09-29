@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { formatSSE, parseSSE } from '../src/lib/sse'
-import type { ServerSentEvent } from '../src/lib/sse'
+import { formatSSE, parseSSE } from './sse'
+import type { ServerSentEvent } from './sse'
 
 function streamOf(...chunks: string[]): ReadableStream<Uint8Array> {
   const encoder = new TextEncoder()

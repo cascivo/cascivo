@@ -12,7 +12,7 @@ conversations ⇄ IndexedDB (persistedSignal)       validates every request (par
 ```
 
 - `src/lib/protocol.ts` is the wire contract. The client and the Worker both import it. If one side is not updated after a protocol change, the type checker reports an error.
-- `src/lib/sse.ts` is the SSE parser. The Worker uses it to read the Workers AI stream, and the browser uses it to read the Worker's stream. It follows the spec. It handles chunk splits, CR/LF/CRLF line endings, multi-line data, `id` and `retry`. It cancels the upstream when the consumer stops.
+- Both sides use [`@cascivo/data`](../../../packages/data). The Worker reads the Workers AI stream with `parseSSE` and writes events with `formatSSE`. The browser reads the Worker's POST response with `fetchSSE`. The parser started in this app and was extracted once the app proved it was needed.
 - The Worker re-encodes model output into `token` / `done` / `error` events. You can change the model or the provider in the Worker only; the client does not change.
 - The source is typed against React. `vite.config.ts` aliases `react` to `preact/compat`, so the bundle runs on Preact. The bundle is about 69 KB gzip in total. If you remove the aliases, the same code runs on React.
 
@@ -36,6 +36,7 @@ pnpm deploy
 - `Alert`, `Button`, `EmptyState`, `Select`, `Spinner` (`@cascivo/react`)
 - `AppShell` from `@cascivo/example-kit`
 - `persistedSignal` with `indexedDBDriver` (`@cascivo/storage`)
+- `fetchSSE`, `parseSSE` and `formatSSE` (`@cascivo/data`)
 
 ## Why this app exists
 
