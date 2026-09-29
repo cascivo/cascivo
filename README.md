@@ -320,6 +320,7 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 | Example                                                           | Description                                                                                                                |
 | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | [`@cascivo/example-astro-islands`](apps/examples/astro-islands)   | Astro islands probe — one client directive per page, reports whether cascivo component CSS survives an SSR-rendered island |
+| [`@cascivo/example-chat`](apps/examples/chat)                     | Example app — a streaming AI chat on Cloudflare Workers AI, built with Preact and cascivo                                  |
 | [`@cascivo/example-deploy`](apps/examples/deploy)                 | Example app — a Vercel-style deployment platform built with cascivo                                                        |
 | [`@cascivo/example-flow`](apps/examples/flow)                     | Example app — a Camunda-style process orchestration dashboard built with cascivo                                           |
 | [`@cascivo/example-ghost-theme`](apps/examples/ghost-theme)       | A real Ghost (Handlebars) theme styled with cascivo tokens + themes — the executable form of docs/USING-WITH-GHOST.md      |

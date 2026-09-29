@@ -1,6 +1,6 @@
 'use client'
 import { useRef } from 'react'
-import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { useEffectPropSignal, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import styles from './streaming-text.module.css'
 
 export interface StreamingTextProps {
@@ -13,6 +13,9 @@ export interface StreamingTextProps {
 export function StreamingText({ text, speed = 2, onComplete, className }: StreamingTextProps) {
   useSignals()
   const displayed = useSignal('')
+  // The effect must re-run when `text` grows mid-stream; a plain prop read inside it is not
+  // tracked, so it would stop at the first chunk.
+  const targetSignal = useEffectPropSignal(text)
   const onCompleteRef = useRef(onComplete)
   onCompleteRef.current = onComplete
 
@@ -20,7 +23,7 @@ export function StreamingText({ text, speed = 2, onComplete, className }: Stream
   displayed.value = displayed.value.length > text.length ? '' : displayed.value
 
   useSignalEffect(() => {
-    const target = text
+    const target = targetSignal.value
     if (displayed.value === target) {
       onCompleteRef.current?.()
       return
