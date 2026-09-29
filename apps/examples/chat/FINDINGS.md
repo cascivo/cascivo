@@ -36,16 +36,16 @@ phase 1.
 
 ## What the app needed, and where it now lives
 
-| Need                                                                                         | Size                         | Decision                                                                                                                                                                                      |
-| -------------------------------------------------------------------------------------------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| An SSE parser that works over **any** byte stream (`EventSource` cannot POST a request body) | ~90 lines                    | **Extracted to `@cascivo/data`** (phase 2). It is used on _both_ sides: the Worker parses the Workers AI stream, and the browser parses the Worker's stream.                                  |
-| `fetch` + status check + JSON error body + SSE parse                                         | ~25 lines                    | **Extracted** as `fetchSSE`. Every app that streams from its own API repeats this boilerplate.                                                                                                |
-| Encoding SSE events                                                                          | 3 lines                      | **Extracted** as `formatSSE`, the other half of the wire format.                                                                                                                              |
-| The stream lifecycle: abort controller, draft signal, commit on done/abort, error state      | ~50 lines in `store.ts`      | **Not extracted.** The commit semantics are app-specific (keep partial replies? mark them?). If a second app shows the same lifecycle, extract it then.                                       |
-| Persisted history in IndexedDB                                                               | 0 new lines                  | Already covered by `persistedSignal` + `indexedDBDriver`. It writes the whole array per change, which is fine at chat scale. A per-record `collection()` needs a second app with real volume. |
-| A router                                                                                     | none                         | **Not needed.** A chat app is one view plus a list. Deep links (`/c/:id`) are the first thing that would need one, so this app does not justify a router yet.                                 |
-| Typed client ↔ Worker contract                                                               | ~40 lines (`protocol.ts`)    | **Kept in the app.** One shared file is enough. Typed RPC is a framework-phase question.                                                                                                      |
-| Dev server running the Worker with a mock binding                                            | ~40 lines (`vite.config.ts`) | **Kept in the app.** It is the seed of a future `@cascivo/app` Vite plugin. Phase 4 decides whether that plugin should exist.                                                                 |
+| Need                                                                                         | Size                         | Decision                                                                                                                                                                                                                                                                                      |
+| -------------------------------------------------------------------------------------------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| An SSE parser that works over **any** byte stream (`EventSource` cannot POST a request body) | ~90 lines                    | **Extracted to `@cascivo/data`** (phase 2). It is used on _both_ sides: the Worker parses the Workers AI stream, and the browser parses the Worker's stream.                                                                                                                                  |
+| `fetch` + status check + JSON error body + SSE parse                                         | ~25 lines                    | **Extracted** as `fetchSSE`. Every app that streams from its own API repeats this boilerplate.                                                                                                                                                                                                |
+| Encoding SSE events                                                                          | 3 lines                      | **Extracted** as `formatSSE`, the other half of the wire format.                                                                                                                                                                                                                              |
+| The stream lifecycle: abort controller, draft signal, commit on done/abort, error state      | ~50 lines in `store.ts`      | **Not extracted.** The commit semantics are app-specific (keep partial replies? mark them?). If a second app shows the same lifecycle, extract it then.                                                                                                                                       |
+| Persisted history in IndexedDB                                                               | 0 new lines                  | Already covered by `persistedSignal` + `indexedDBDriver`. It writes the whole array per change, which is fine at chat scale. A per-record `collection()` needs a second app with real volume.                                                                                                 |
+| A router                                                                                     | none at first                | **Phase 4 (`@cascivo/app`).** At first a chat app is one view plus a list. Deep links (`/c/:id`) were the first thing that needed a router, and phase 4 added them. The open conversation is now the URL instead of stored state.                                                             |
+| Typed client ↔ Worker contract                                                               | ~40 lines (`protocol.ts`)    | **Phase 4 (`@cascivo/app/api`).** The same hand-written protocol file appeared in the cloudflare scaffold. So `src/api.ts` is now a `defineApi` contract. The Worker went from 163 lines to 92: the request validation, the SSE encoding and the 404/405 handling moved into `createHandler`. |
+| Dev server running the Worker with a mock binding                                            | ~40 lines (`vite.config.ts`) | **Kept in the app.** The cloudflare scaffold uses `@cloudflare/vite-plugin` (workerd in dev) instead. This app keeps the middleware only because Workers AI has no local runtime, so it needs a mock AI binding to run without an account.                                                    |
 
 ## Other observations
 
@@ -60,3 +60,19 @@ phase 1.
   to the Worker, and the AI binding. The Workers AI types were declared locally, about 10
   lines, rather than adding `@cloudflare/workers-types`. The repo convention of `npx wrangler`
   keeps wrangler out of the lockfile.
+
+## Phase 4: what moving onto `@cascivo/app` showed
+
+- **The URL replaced one piece of stored state.** Before, `activeId` was a persisted signal.
+  Now it is `computed(() => router.match.value?.params.id)`. Links, reloads and the back
+  button all agree on it.
+- **Errors had to become per-conversation.** A global `error` signal followed the user to
+  another conversation after they navigated. The store now keeps `{ conversationId, message }`.
+  A router exposes this kind of bug, which a single-view app hides.
+- **A lazy route unmounts its old view for one frame on first visit.** Playwright could type
+  into a textarea that was about to unmount. A person cannot, but a `fallback` that keeps the
+  same layout matters.
+- **`defineApi` inference trap (fixed in the package).** Constraining `defineApi<A extends Api>`
+  gave every inline `endpoint({...})` a contextual return type, and TypeScript then inferred
+  the path as `string`. Every handler lost its typed params, and all tests still passed.
+  Type-level tests (`expectTypeOf`, `@ts-expect-error`) now guard this.

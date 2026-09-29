@@ -1,8 +1,11 @@
+import { buildPath } from '@cascivo/app'
+import { createClient } from '@cascivo/app/api'
 import { computed, signal } from '@cascivo/core'
 import { persistedSignal, indexedDBDriver } from '@cascivo/storage'
-import { fetchSSE } from '@cascivo/data'
-import { CHAT_ENDPOINT, DEFAULT_MODEL, LIMITS, isModelId } from './lib/protocol'
+import { api } from './api'
+import { DEFAULT_MODEL, LIMITS, isModelId } from './lib/protocol'
 import type { ChatRequest, ChatTurn, ModelId, Role } from './lib/protocol'
+import { router } from './router'
 
 export interface Message {
   id: string
@@ -20,11 +23,15 @@ export interface Conversation {
   updatedAt: number
 }
 
+const client = createClient(api)
+
 // History lives in IndexedDB (unbounded, async); small UI preferences in localStorage.
 export const conversations = persistedSignal<Conversation[]>('chat.conversations', [], {
   driver: indexedDBDriver('cascivo-chat'),
 })
-export const activeId = persistedSignal<string | null>('chat.active', null)
+// The open conversation is the URL (`/c/:id`), not stored state: a link, a reload and the
+// back button all agree on it.
+export const activeId = computed(() => router.match.value?.params['id'] ?? null)
 const storedModel = persistedSignal<string>('chat.model', DEFAULT_MODEL)
 
 export const model = computed<ModelId>(() =>
@@ -46,7 +53,8 @@ export const sortedConversations = computed(() =>
 export const streamingId = signal<string | null>(null)
 /** Text received so far for the in-flight reply. Never persisted token-by-token. */
 export const draft = signal('')
-export const error = signal<string | null>(null)
+/** The last failed reply, scoped to its conversation so it does not follow you around. */
+export const error = signal<{ conversationId: string; message: string } | null>(null)
 
 let controller: AbortController | null = null
 
@@ -60,20 +68,20 @@ function appendMessage(id: string, message: Message): void {
   update(id, (c) => ({ ...c, messages: [...c.messages, message], updatedAt: Date.now() }))
 }
 
-export function newChat(): void {
-  activeId.value = null
-  error.value = null
+/** The URL of a conversation. Typed: the pattern's params are checked at compile time. */
+export function chatPath(id: string): string {
+  return buildPath('/c/:id', { id })
 }
 
-export function selectChat(id: string): void {
-  activeId.value = id
-  error.value = null
+export function newChat(): void {
+  router.navigate('/')
 }
 
 export function deleteChat(id: string): void {
   if (streamingId.value === id) stop()
   conversations.value = conversations.value.filter((c) => c.id !== id)
-  if (activeId.value === id) activeId.value = null
+  if (error.value?.conversationId === id) error.value = null
+  if (activeId.value === id) router.navigate('/', { replace: true })
 }
 
 export function stop(): void {
@@ -115,7 +123,8 @@ export async function send(text: string): Promise<void> {
       updatedAt: Date.now(),
     }
     conversations.value = [...conversations.value, conversation]
-    activeId.value = id
+    // Replace, not push: `/` was this conversation's draft, so Back should not return to it.
+    router.navigate(chatPath(id), { replace: true })
   }
   appendMessage(id, { id: crypto.randomUUID(), role: 'user', content })
   await generate(id)
@@ -141,24 +150,21 @@ async function generate(id: string): Promise<void> {
   controller = abort
   streamingId.value = id
   draft.value = ''
-  error.value = null
+  if (error.value?.conversationId === id) error.value = null
 
   try {
-    const events = fetchSSE(CHAT_ENDPOINT, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(request),
-      signal: abort.signal,
-    })
-    for await (const event of events) {
-      if (event.event === 'token') draft.value += readField(event.data, 'text')
-      else if (event.event === 'error') throw new Error(readField(event.data, 'message'))
-      else if (event.event === 'done') break
+    for await (const token of client.chat({ body: request, signal: abort.signal })) {
+      draft.value += token.text
     }
     commitDraft(id, false)
   } catch (cause) {
     if (abort.signal.aborted) commitDraft(id, true)
-    else error.value = cause instanceof Error ? cause.message : String(cause)
+    else {
+      error.value = {
+        conversationId: id,
+        message: cause instanceof Error ? cause.message : String(cause),
+      }
+    }
   } finally {
     if (controller === abort) controller = null
     streamingId.value = null
@@ -171,14 +177,4 @@ function commitDraft(id: string, stopped: boolean): void {
   const message: Message = { id: crypto.randomUUID(), role: 'assistant', content: draft.value }
   if (stopped) message.stopped = true
   appendMessage(id, message)
-}
-
-/** Reads one string field from a JSON event payload the Worker produced. */
-function readField(data: string, field: string): string {
-  const parsed: unknown = JSON.parse(data)
-  if (typeof parsed === 'object' && parsed !== null) {
-    const value = (parsed as Record<string, unknown>)[field]
-    if (typeof value === 'string') return value
-  }
-  throw new Error(`Malformed stream event: missing "${field}"`)
 }

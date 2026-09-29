@@ -35,11 +35,48 @@ export const LIMITS = {
   maxOutputTokens: 1_024,
 } as const
 
-/** Events the Worker streams back, one SSE `event:` name each. */
-export interface ChatStreamEvents {
-  token: { text: string }
-  done: Record<string, never>
-  error: { message: string }
+/** One streamed piece of the reply. */
+export interface ChatToken {
+  text: string
 }
 
-export const CHAT_ENDPOINT = '/api/chat'
+/**
+ * Parses an untrusted request body into a `ChatRequest`, or throws with a message the
+ * Worker returns as a 400. Runs on the server, inside `createHandler`.
+ */
+export function parseChatRequest(raw: unknown): ChatRequest {
+  if (typeof raw !== 'object' || raw === null) throw new Error('Body must be a JSON object')
+  const { model, messages } = raw as { model?: unknown; messages?: unknown }
+  if (!isModelId(model)) throw new Error('Unknown model')
+  if (!Array.isArray(messages) || messages.length === 0) {
+    throw new Error('messages must be a non-empty array')
+  }
+  if (messages.length > LIMITS.maxMessages) throw new Error('Too many messages')
+
+  let total = 0
+  const turns: ChatTurn[] = messages.map((m: unknown, i) => {
+    if (typeof m !== 'object' || m === null) throw new Error(`messages[${i}] is not an object`)
+    const { role, content } = m as { role?: unknown; content?: unknown }
+    if (role !== 'user' && role !== 'assistant') {
+      throw new Error(`messages[${i}].role must be "user" or "assistant"`)
+    }
+    if (typeof content !== 'string' || content.trim() === '') {
+      throw new Error(`messages[${i}].content must be a non-empty string`)
+    }
+    if (content.length > LIMITS.maxMessageChars) throw new Error(`messages[${i}] is too long`)
+    total += content.length
+    return { role, content }
+  })
+  if (total > LIMITS.maxTotalChars) throw new Error('Conversation is too long')
+  if (turns.at(-1)?.role !== 'user') throw new Error('The last message must be from the user')
+  return { model, messages: turns }
+}
+
+/** Parses one streamed event. Runs in the browser, inside the typed client. */
+export function parseToken(raw: unknown): ChatToken {
+  if (typeof raw === 'object' && raw !== null) {
+    const { text } = raw as { text?: unknown }
+    if (typeof text === 'string') return { text }
+  }
+  throw new Error('Malformed token event')
+}

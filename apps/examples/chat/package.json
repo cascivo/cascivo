@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@cascivo/ai": "workspace:*",
+    "@cascivo/app": "workspace:*",
     "@cascivo/core": "workspace:*",
     "@cascivo/data": "workspace:*",
     "@cascivo/example-kit": "workspace:*",

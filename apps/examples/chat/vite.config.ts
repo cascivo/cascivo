@@ -3,6 +3,8 @@ import { Readable } from 'node:stream'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite-plus'
 import type { Plugin } from 'vite-plus'
+// Imported from source so this config works before @cascivo/app is built (a fresh clone).
+import { cascivoRoutes } from '../../../packages/app/src/vite.ts'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const root = resolve(__dirname, '../../..')
@@ -56,7 +58,7 @@ function workerApi(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [workerApi()],
+  plugins: [cascivoRoutes(), workerApi()],
   server: {
     port: 4191,
     strictPort: true,
@@ -76,6 +78,9 @@ export default defineConfig({
       '@cascivo/core/pure': resolve(root, 'packages/core/src/pure.ts'),
       '@cascivo/core': resolve(root, 'packages/core/src/index.ts'),
       '@cascivo/data': resolve(root, 'packages/data/src/index.ts'),
+      // Subpaths before the bare entry: a string alias replaces by prefix.
+      '@cascivo/app/api': resolve(root, 'packages/app/src/api.ts'),
+      '@cascivo/app': resolve(root, 'packages/app/src/index.ts'),
       '@cascivo/storage': resolve(root, 'packages/storage/src/index.ts'),
       '@cascivo/i18n': resolve(root, 'packages/i18n/src/index.ts'),
       '@cascivo/react': resolve(root, 'packages/react/src/index.ts'),

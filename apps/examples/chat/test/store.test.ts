@@ -1,9 +1,11 @@
+// @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import worker from '../worker/index'
 import type { AiBinding } from '../worker/chat'
 import { createMockAi } from '../worker/mock-ai'
 import { LIMITS } from '../src/lib/protocol'
 import * as store from '../src/store'
+import { router } from '../src/router'
 
 /**
  * Routes `fetch` straight into the Worker. Like a real fetch, aborting the request's signal
@@ -43,8 +45,8 @@ async function until(check: () => boolean): Promise<void> {
 
 beforeEach(() => {
   store.conversations.value = []
-  store.activeId.value = null
   store.error.value = null
+  router.navigate('/', { replace: true })
 })
 
 afterEach(() => {
@@ -52,9 +54,12 @@ afterEach(() => {
 })
 
 describe('chat store', () => {
-  it('sends a message and commits the streamed reply', async () => {
+  it('sends a message, moves to the new conversation URL, and commits the reply', async () => {
     serve(createMockAi({ delayMs: 0 }))
     await store.send('Hello there')
+
+    const id = store.activeId.value
+    expect(window.location.pathname).toBe(`/c/${id}`)
 
     const conversation = store.activeConversation.value
     expect(conversation?.title).toBe('Hello there')
@@ -80,7 +85,7 @@ describe('chat store', () => {
   it('surfaces a Worker error and lets the user retry', async () => {
     serve({ run: () => Promise.reject(new Error('Capacity exceeded')) })
     await store.send('Hi')
-    expect(store.error.value).toBe('Capacity exceeded')
+    expect(store.error.value?.message).toBe('Capacity exceeded')
     expect(store.activeConversation.value?.messages).toHaveLength(1)
 
     serve(createMockAi({ delayMs: 0 }))
@@ -108,6 +113,23 @@ describe('chat store', () => {
     await pending
     expect(store.conversations.value).toEqual([])
     expect(store.activeId.value).toBeNull()
+    expect(window.location.pathname).toBe('/')
+  })
+})
+
+describe('errors are scoped to their conversation', () => {
+  it("does not show one chat's failure in another", async () => {
+    serve({ run: () => Promise.reject(new Error('Capacity exceeded')) })
+    await store.send('first chat')
+    const failed = store.activeId.value
+    expect(store.error.value).toEqual({ conversationId: failed, message: 'Capacity exceeded' })
+
+    store.newChat()
+    serve(createMockAi({ delayMs: 0 }))
+    await store.send('second chat')
+    expect(store.activeId.value).not.toBe(failed)
+    // The first chat's error is kept for when the user goes back to it, not cleared.
+    expect(store.error.value?.conversationId).toBe(failed)
   })
 })
 

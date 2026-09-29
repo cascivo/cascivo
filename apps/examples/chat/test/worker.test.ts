@@ -1,10 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import worker from '../worker/index'
-import { parseChatRequest, BadRequest } from '../worker/chat'
 import type { AiBinding } from '../worker/chat'
 import { createMockAi } from '../worker/mock-ai'
 import { parseSSE } from '@cascivo/data'
-import { DEFAULT_MODEL, LIMITS } from '../src/lib/protocol'
+import { DEFAULT_MODEL, LIMITS, parseChatRequest } from '../src/lib/protocol'
 
 const ai = createMockAi({ delayMs: 0 })
 
@@ -22,7 +21,7 @@ function post(body: unknown, env: { AI: AiBinding } = { AI: ai }): Promise<Respo
 const valid = { model: DEFAULT_MODEL, messages: [{ role: 'user', content: 'hi' }] }
 
 describe('POST /api/chat', () => {
-  it('streams token events and ends with done', async () => {
+  it('streams data events and ends with done', async () => {
     const response = await post(valid)
     expect(response.status).toBe(200)
     expect(response.headers.get('content-type')).toMatch(/^text\/event-stream/)
@@ -31,7 +30,7 @@ describe('POST /api/chat', () => {
     for await (const event of parseSSE(response.body!)) events.push(event)
     expect(events.at(-1)?.event).toBe('done')
     const text = events
-      .filter((e) => e.event === 'token')
+      .filter((e) => e.event === 'data')
       .map((e) => (JSON.parse(e.data) as { text: string }).text)
       .join('')
     expect(text).toContain('You said: "hi"')
@@ -56,6 +55,12 @@ describe('POST /api/chat', () => {
   it('rejects invalid JSON with 400', async () => {
     const response = await post('{not json')
     expect(response.status).toBe(400)
+  })
+
+  it("rejects an invalid body with 400 and the parser's message", async () => {
+    const response = await post({ model: '@cf/evil/model', messages: [] })
+    expect(response.status).toBe(400)
+    expect(await response.json()).toEqual({ error: 'Unknown model' })
   })
 
   it('rejects GET with 405', async () => {
@@ -101,7 +106,7 @@ describe('parseChatRequest', () => {
 
   for (const [name, input] of cases) {
     it(`rejects ${name}`, () => {
-      expect(() => parseChatRequest(input)).toThrow(BadRequest)
+      expect(() => parseChatRequest(input)).toThrow()
     })
   }
 

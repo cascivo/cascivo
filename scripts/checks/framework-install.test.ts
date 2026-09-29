@@ -58,8 +58,8 @@ const CLI = join(REPO_ROOT, 'packages', 'cli', 'dist', 'index.mjs')
  * Any inter-cascivo edge missing here resolves from the npm REGISTRY instead of this build —
  * which would silently test the last published copy. Asserted below, not assumed.
  */
-const PACKAGES = ['react', 'core', 'themes', 'tokens', 'i18n', 'storage', 'icons', 'data']
-const NEEDS_DIST = ['react', 'core', 'i18n', 'storage', 'icons', 'data']
+const PACKAGES = ['react', 'core', 'themes', 'tokens', 'i18n', 'storage', 'icons', 'data', 'app']
+const NEEDS_DIST = ['react', 'core', 'i18n', 'storage', 'icons', 'data', 'app']
 
 const built = NEEDS_DIST.every((p) => existsSync(join(REPO_ROOT, 'packages', p, 'dist')))
 const cliBuilt = existsSync(CLI)
@@ -313,8 +313,9 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
 
   /**
    * The client-app-on-Cloudflare scaffold. Two things only a real install can show: that
-   * `@cloudflare/vite-plugin` + `@preact/preset-vite` build the pair from packed tarballs, and
-   * that the BUILT Worker — with `@cascivo/data` bundled into it — still speaks SSE.
+   * `@cloudflare/vite-plugin` + `@preact/preset-vite` + `@cascivo/app/vite` build the pair
+   * from packed tarballs, and that the BUILT Worker — `createHandler` from `@cascivo/app/api`
+   * bundled into it — still serves the typed stream.
    */
   describe('cloudflare', () => {
     let app: string
@@ -354,7 +355,7 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
       const reader = response.body!.getReader()
       const { value } = await reader.read()
       await reader.cancel()
-      assert.match(new TextDecoder().decode(value), /^event: tick\ndata: \{"n":1,/)
+      assert.match(new TextDecoder().decode(value), /^event: data\ndata: \{"n":1,/)
     })
 
     it(
@@ -367,8 +368,9 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
           writeFileSync(
             config,
             "import preact from '@preact/preset-vite'\n" +
+              "import { cascivoRoutes } from '@cascivo/app/vite'\n" +
               "import { defineConfig } from 'vite'\n" +
-              'export default defineConfig({ plugins: [preact()] })\n',
+              'export default defineConfig({ plugins: [preact(), cascivoRoutes()] })\n',
           )
           execFileSync('pnpm', ['exec', 'vite', 'build', '--emptyOutDir'], {
             cwd: app,

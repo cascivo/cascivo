@@ -42,6 +42,7 @@ export const COVERED_PACKAGES = [
   'ai',
   'icons',
   'render',
+  'app',
 ] as const
 
 export interface EntrySurface {

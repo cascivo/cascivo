@@ -1,0 +1,83 @@
+{
+  "name": "@cascivo/app",
+  "version": "1.3.1",
+  "private": false,
+  "description": "Client-app layer for cascivo — a signal router, typed client/Worker APIs, and file-based routes",
+  "keywords": [
+    "cascivo",
+    "cloudflare",
+    "preact",
+    "react",
+    "router",
+    "rpc",
+    "signals",
+    "workers"
+  ],
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/app#readme",
+  "bugs": "https://github.com/cascivo/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
+    "directory": "packages/app"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./api": {
+      "types": "./dist/api.d.ts",
+      "import": "./dist/api.js",
+      "default": "./dist/api.js"
+    },
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "import": "./dist/vite.js",
+      "default": "./dist/vite.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "vp build && node scripts/flatten-types.mjs && node scripts/check-types-flat.mjs",
+    "check": "tsc --noEmit",
+    "test": "vp test"
+  },
+  "dependencies": {
+    "@cascivo/core": "workspace:^",
+    "@cascivo/data": "workspace:^"
+  },
+  "devDependencies": {
+    "@preact/signals-react": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "jsdom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "@preact/signals-react": ">=3.0.0",
+    "@types/react": ">=18.0.0",
+    "react": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    }
+  }
+}

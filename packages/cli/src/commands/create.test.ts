@@ -274,7 +274,9 @@ describe('buildScaffold — cloudflare', () => {
     for (const path of [
       'wrangler.jsonc',
       'worker/index.ts',
-      'src/protocol.ts',
+      'src/api.ts',
+      'src/router.ts',
+      'src/routes.gen.ts',
       'src/live.ts',
       'src/LiveCard.tsx',
       'src/App.tsx',
@@ -284,6 +286,7 @@ describe('buildScaffold — cloudflare', () => {
       expect(map.has(path)).toBe(true)
     }
     expect(map.get('vite.config.ts')).toContain('cloudflare()')
+    expect(map.has('src/sections/Dashboard.tsx')).toBe(false)
   })
 
   it('routes only /api/* to the Worker and falls back to the SPA', () => {
@@ -293,28 +296,56 @@ describe('buildScaffold — cloudflare', () => {
     expect(wrangler).toContain('"run_worker_first": ["/api/*"]')
   })
 
-  it('shares one protocol file between the Worker and the client', () => {
-    expect(map.get('worker/index.ts')).toContain("from '../src/protocol'")
-    expect(map.get('src/live.ts')).toContain("from './protocol'")
+  it('turns sections into file routes, first at /, plus a 404', () => {
+    expect(map.has('src/routes/index.tsx')).toBe(true)
+    expect(map.has('src/routes/reports.tsx')).toBe(true)
+    expect(map.has('src/routes/404.tsx')).toBe(true)
+    expect(map.get('src/routes/reports.tsx')).toContain('export default function Reports()')
+    expect(map.get('src/routes/reports.tsx')).toContain('src/routes/reports.tsx')
+    expect(map.get('vite.config.ts')).toContain('cascivoRoutes()')
+  })
+
+  it('writes routes.gen.ts up front, so tsc passes before the first vite run', () => {
+    const gen = map.get('src/routes.gen.ts')!
+    expect(gen).toContain("lazyRoute('/reports', () => import('./routes/reports'))")
+    expect(gen).toContain("lazyRoute('/', () => import('./routes/index'))")
+    expect(gen).toContain(
+      "export const notFound: Route | undefined = lazyRoute('*', () => import('./routes/404'))",
+    )
+    expect(map.get('.prettierignore')).toContain('src/routes.gen.ts')
+  })
+
+  it('navigates with real hrefs through the router Link', () => {
+    const app = map.get('src/App.tsx')!
+    expect(app).toContain("href: '/reports'")
+    expect(app).toContain('<RouterView router={router}')
+    expect(map.get('src/main.tsx')).toContain('setLinkComponent(router.Link)')
+    // The Vite scaffold's "adding a router" advice would be wrong here.
+    expect(map.get('src/Shell.tsx')).not.toContain('Adding a router')
+  })
+
+  it('shares one typed API contract between the Worker and the client', () => {
+    expect(map.get('src/api.ts')).toContain('defineApi(')
+    expect(map.get('worker/index.ts')).toContain('createHandler<typeof api, Env>(api')
+    expect(map.get('src/live.ts')).toContain('createClient(api)')
     expect(JSON.parse(map.get('tsconfig.json')!).include).toEqual(['src', 'worker'])
   })
 
-  it('streams with @cascivo/data on both sides, and parses rather than casts', () => {
-    expect(map.get('worker/index.ts')).toContain('formatSSE')
-    expect(map.get('src/live.ts')).toContain('fetchSSE')
-    expect(map.get('src/live.ts')).toContain('parseTick(event.data)')
-    expect(map.get('src/protocol.ts')).not.toMatch(/JSON\.parse\([^)]*\) as /)
+  it('parses what crosses the network rather than casting it', () => {
+    expect(map.get('src/api.ts')).toContain('event: parseTick')
+    expect(map.get('src/api.ts')).not.toMatch(/JSON\.parse\([^)]*\) as /)
   })
 
-  it('persists the active section with @cascivo/storage, with a fallback for stale keys', () => {
-    const app = map.get('src/App.tsx')!
-    expect(app).toContain("persistedSignal<string>('app.section', 'dashboard')")
-    expect(app).toContain("isSection(section.value) ? section.value : 'dashboard'")
+  it('renders the live demo on the first page only', () => {
+    expect(map.get('src/routes/index.tsx')).toContain('<LiveCard />')
+    expect(map.get('src/routes/reports.tsx')).not.toContain('LiveCard')
   })
 
-  it('renders the live demo in the first section only', () => {
-    expect(map.get('src/sections/Dashboard.tsx')).toContain('<LiveCard />')
-    expect(map.get('src/sections/Reports.tsx')).not.toContain('LiveCard')
+  it('declares the package it imports, and not the transitive core/tokens/data', () => {
+    expect(pkg.dependencies['@cascivo/app']).toBeDefined()
+    expect(pkg.dependencies['@cascivo/core']).toBeUndefined()
+    expect(pkg.dependencies['@cascivo/tokens']).toBeUndefined()
+    expect(pkg.dependencies['@cascivo/data']).toBeUndefined()
   })
 
   it('defaults to Preact, with React types and React as a dev-only peer', () => {
@@ -333,16 +364,9 @@ describe('buildScaffold — cloudflare', () => {
     }
     expect(reactPkg.dependencies['react']).toBeDefined()
     expect(reactPkg.dependencies['preact']).toBeUndefined()
-    for (const path of ['src/App.tsx', 'src/live.ts', 'src/LiveCard.tsx', 'worker/index.ts']) {
+    for (const path of ['src/App.tsx', 'src/live.ts', 'src/api.ts', 'worker/index.ts']) {
       expect(react.get(path)).toBe(map.get(path))
     }
-  })
-
-  it('declares the batteries it imports, and not the transitive core/tokens', () => {
-    expect(pkg.dependencies['@cascivo/data']).toBeDefined()
-    expect(pkg.dependencies['@cascivo/storage']).toBeDefined()
-    expect(pkg.dependencies['@cascivo/core']).toBeUndefined()
-    expect(pkg.dependencies['@cascivo/tokens']).toBeUndefined()
   })
 
   // `pnpm deploy` is pnpm's built-in workspace deploy — it never reaches the script.

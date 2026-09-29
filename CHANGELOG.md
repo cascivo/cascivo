@@ -10,6 +10,7 @@ history: [breaking-changes.json](https://cascivo.com/breaking-changes.json).
 | Package                  | Version | Latest feature release                                                                   | Changelog                                         |
 | ------------------------ | ------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------- |
 | `@cascivo/ai`            | 1.3.1   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/ai/CHANGELOG.md)             |
+| `@cascivo/app`           | 1.3.1   | —                                                                                        | [CHANGELOG](packages/app/CHANGELOG.md)            |
 | `@cascivo/charts`        | 1.3.1   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/charts/CHANGELOG.md)         |
 | `cascivo`                | 1.3.0   | 1.3.0 — `create` gains `--framework astro`, alongside the default `react-vite`.          | [CHANGELOG](packages/cli/CHANGELOG.md)            |
 | `@cascivo/core`          | 1.3.1   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/core/CHANGELOG.md)           |

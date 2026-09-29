@@ -41,6 +41,7 @@ const ORDER = [
   '@cascivo/i18n',
   '@cascivo/storage',
   '@cascivo/data',
+  '@cascivo/app',
   '@cascivo/mcp',
 ]
 

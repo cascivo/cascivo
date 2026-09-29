@@ -52,6 +52,7 @@
     "@cascivo/registry": "workspace:^"
   },
   "devDependencies": {
+    "@cascivo/app": "workspace:*",
     "@cascivo/email": "workspace:*",
     "@cascivo/theme-kit": "workspace:*",
     "@types/node": "catalog:",

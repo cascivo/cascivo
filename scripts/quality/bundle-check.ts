@@ -77,6 +77,9 @@ const BUDGETS: Record<string, number> = {
   '@cascivo/ai': 6, // measured 1.3
   '@cascivo/storage': 5, // measured 0.4
   '@cascivo/data': 3, // measured 1.0
+  // The router entry (index.js) plus its shared path chunk. `api` and `vite` are separate
+  // entries an app only pays for if it imports them.
+  '@cascivo/app': 5,
   // Measured 5.5 across three chunks: the serializer entry is ~0.9 KB on its own, so the
   // tree is what gets measured (code-split) — most of it is the emitter.
   '@cascivo/text': 10,

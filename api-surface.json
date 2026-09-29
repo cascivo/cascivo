@@ -6357,6 +6357,162 @@
           }
         }
       }
+    },
+    "@cascivo/app": {
+      ".": {
+        "values": ["RouterView", "buildPath", "createRouter", "lazyRoute", "route"],
+        "types": [
+          "LinkProps",
+          "NavigateOptions",
+          "PathParams",
+          "Route",
+          "RouteMatch",
+          "RouteProps",
+          "Router",
+          "RouterOptions",
+          "RouterViewProps"
+        ],
+        "declarations": {
+          "buildPath": "declare function buildPath<P extends string>(pattern: P, params: PathParams<P>): string",
+          "createRouter": "declare function createRouter(options: RouterOptions): Router",
+          "lazyRoute": "declare function lazyRoute<P extends string>(path: P, load: () => Promise<{ default: ComponentType<RouteProps<P>>; }>): Route",
+          "LinkProps": "type = LinkComponentProps & Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkComponentProps>",
+          "NavigateOptions": {
+            "replace?": "boolean"
+          },
+          "PathParams": "type<P extends string> = { [K in ParamName<Segments<P>>]: string }",
+          "route": "declare function route<P extends string>(path: P, component: ComponentType<RouteProps<P>>): Route",
+          "Route": {
+            "readonly path": "string",
+            "readonly component": "ErasedComponent | LazyExoticComponent<ErasedComponent>"
+          },
+          "RouteMatch": {
+            "readonly route": "Route",
+            "readonly params": "Readonly<Record<string, string>>"
+          },
+          "RouteProps": {
+            "(extends)": "<P extends string = string>",
+            "params": "PathParams<P>"
+          },
+          "Router": {
+            "readonly pathname": "ReadonlySignal<string>",
+            "readonly search": "ReadonlySignal<string>",
+            "readonly match": "ReadonlySignal<RouteMatch | null>",
+            "readonly notFound": "Route | null",
+            "navigate": "(to: string, options?: NavigateOptions): void",
+            "href": "(to: string): string",
+            "readonly Link": "ComponentType<LinkProps>",
+            "dispose": "(): void"
+          },
+          "RouterOptions": {
+            "routes": "readonly Route[]",
+            "notFound?": "Route | undefined",
+            "base?": "string",
+            "viewTransitions?": "boolean"
+          },
+          "RouterView": "declare function RouterView({ router, fallback }: RouterViewProps): import(\"react\").JSX.Element | null",
+          "RouterViewProps": {
+            "router": "Router",
+            "fallback?": "ReactNode"
+          }
+        }
+      },
+      "./api": {
+        "values": [
+          "HttpError",
+          "buildPath",
+          "createClient",
+          "createHandler",
+          "defineApi",
+          "endpoint",
+          "stream"
+        ],
+        "types": [
+          "AnyEndpoint",
+          "Api",
+          "CallArgs",
+          "CallArgsTuple",
+          "Client",
+          "ClientOptions",
+          "HandlerContext",
+          "Handlers",
+          "JsonEndpoint",
+          "Method",
+          "Parser",
+          "PathParams",
+          "StreamEndpoint"
+        ],
+        "declarations": {
+          "AnyEndpoint": "type = JsonEndpoint<string, unknown, unknown> | StreamEndpoint<string, unknown, unknown>",
+          "Api": "type = Readonly<Record<string, AnyEndpoint>>",
+          "buildPath": "declare function buildPath<P extends string>(pattern: P, params: PathParams<P>): string",
+          "CallArgs": "type<P extends string, I> = ParamsArg<P> & BodyArg<I> & { signal?: AbortSignal; headers?: HeadersInit; }",
+          "CallArgsTuple": "type<P extends string, I> = keyof PathParams<P> extends never ? [I] extends [undefined] ? [args?: CallArgs<P, I>] : [args: CallArgs<P, I>] : [args: CallArgs<P, I>]",
+          "Client": "type<A extends Api> = { readonly [K in keyof A]: A[K] extends JsonEndpoint<infer P, infer I, infer O> ? (...args: CallArgsTuple<P, I>) => Promise<O> : A[K] extends StreamEndpoint<infer P, infer I, infer E> ? (...args: CallArgsTuple<P, I>) => AsyncGenerator<E, void, undefined> : never }",
+          "ClientOptions": {
+            "baseUrl?": "string"
+          },
+          "createClient": "declare function createClient<A extends Api>(api: A, options?: ClientOptions): Client<A>",
+          "createHandler": "declare function createHandler<A extends Api, Env = unknown>(api: A, handlers: Handlers<A, Env>): (request: Request, env: Env) => Promise<Response>",
+          "defineApi": "declare function defineApi<A extends Readonly<Record<string, object>>>(api: A): A",
+          "endpoint": "declare function endpoint<P extends string, O, I = undefined>(definition: { method: Method; path: P; input?: Parser<I>; output: Parser<O>; }): JsonEndpoint<P, I, O>",
+          "HandlerContext": {
+            "(extends)": "<P extends string, I, Env>",
+            "params": "PathParams<P>",
+            "body": "I",
+            "request": "Request",
+            "env": "Env",
+            "signal": "AbortSignal"
+          },
+          "Handlers": "type<A extends Api, Env> = { readonly [K in keyof A]: A[K] extends JsonEndpoint<infer P, infer I, infer O> ? (context: HandlerContext<P, I, Env>) => HandlerResult<O> : A[K] extends StreamEndpoint<infer P, infer I, infer E> ? (context: HandlerContext<P, I, Env>) => AsyncIterable<E> | Promise<AsyncIterable<E>> : never }",
+          "HttpError": "re-export HttpError from \"@cascivo/data\"",
+          "JsonEndpoint": {
+            "(extends)": "<P extends string, I, O>",
+            "readonly kind": "'json'",
+            "readonly method": "Method",
+            "readonly path": "P",
+            "readonly input?": "Parser<I> | undefined",
+            "readonly output": "Parser<O>"
+          },
+          "Method": "type = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'",
+          "Parser": "type<T> = (raw: unknown) => T",
+          "PathParams": "type<P extends string> = { [K in ParamName<Segments<P>>]: string }",
+          "stream": "declare function stream<P extends string, E, I = undefined>(definition: { method: Method; path: P; input?: Parser<I>; event: Parser<E>; }): StreamEndpoint<P, I, E>",
+          "StreamEndpoint": {
+            "(extends)": "<P extends string, I, E>",
+            "readonly kind": "'stream'",
+            "readonly method": "Method",
+            "readonly path": "P",
+            "readonly input?": "Parser<I> | undefined",
+            "readonly event": "Parser<E>"
+          }
+        }
+      },
+      "./vite": {
+        "values": ["cascivoRoutes", "fileToRoutePath", "generateRoutes", "scanRoutes"],
+        "types": ["CascivoRoutesOptions", "CascivoRoutesPlugin", "RouteFile"],
+        "declarations": {
+          "cascivoRoutes": "declare function cascivoRoutes(options?: CascivoRoutesOptions): CascivoRoutesPlugin",
+          "CascivoRoutesOptions": {
+            "dir?": "string",
+            "out?": "string"
+          },
+          "CascivoRoutesPlugin": {
+            "name": "string",
+            "enforce": "'pre'",
+            "configResolved": "(config: { root: string; }): void",
+            "buildStart": "(): void",
+            "configureServer": "(server: { watcher: { add(path: string): unknown; on(event: string, listener: (file: string) => void): unknown; }; }): void"
+          },
+          "fileToRoutePath": "declare function fileToRoutePath(file: string): string | null | undefined",
+          "generateRoutes": "declare function generateRoutes(files: readonly string[], importPrefix: string): string",
+          "RouteFile": {
+            "file": "string",
+            "path": "string | null"
+          },
+          "scanRoutes": "declare function scanRoutes(dir: string): string[]"
+        }
+      }
     }
   }
 }

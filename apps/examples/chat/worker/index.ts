@@ -1,5 +1,6 @@
-import { CHAT_ENDPOINT } from '../src/lib/protocol'
-import { handleChat } from './chat'
+import { createHandler } from '@cascivo/app/api'
+import { api } from '../src/api'
+import { startChat } from './chat'
 import type { AiBinding } from './chat'
 
 export interface Env {
@@ -8,21 +9,16 @@ export interface Env {
   ASSETS?: { fetch(request: Request): Promise<Response> }
 }
 
+// Every endpoint in `api` must have a handler here, typed from the contract: `body` is the
+// already-parsed `ChatRequest`, and the stream must yield `ChatToken`s.
+const handleApi = createHandler<typeof api, Env>(api, {
+  chat: ({ body, env }) => startChat(env.AI, body),
+})
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const { pathname } = new URL(request.url)
-
-    if (pathname === CHAT_ENDPOINT) {
-      if (request.method !== 'POST') {
-        return new Response(null, { status: 405, headers: { allow: 'POST' } })
-      }
-      return handleChat(request, env.AI)
-    }
-
-    if (pathname.startsWith('/api/')) {
-      return Response.json({ error: `No route for ${pathname}` }, { status: 404 })
-    }
-
+    if (pathname.startsWith('/api/')) return handleApi(request, env)
     if (env.ASSETS) return env.ASSETS.fetch(request)
     return new Response('Not found', { status: 404 })
   },

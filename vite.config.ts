@@ -10,7 +10,9 @@ export default defineConfig({
   fmt: {
     semi: false,
     singleQuote: true,
-    ignorePatterns: ['docs/**'],
+    // Generated route tables (@cascivo/app/vite) are rewritten on every route change;
+    // formatting them would make the generator and the formatter fight.
+    ignorePatterns: ['docs/**', '**/routes.gen.ts'],
   },
   staged: {
     '*': 'vp check --fix',

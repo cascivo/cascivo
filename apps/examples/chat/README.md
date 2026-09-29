@@ -23,13 +23,22 @@ Cascivo Chat is a streaming AI chat app. It runs on **Cloudflare Workers AI** an
 ```
 browser (Preact + signals)                     Cloudflare Worker
 ──────────────────────────                     ─────────────────
-AiChat ← draft signal ← parseSSE(fetch body) ◄── toChatStream(parseSSE(AI.run(stream: true)))
-conversations ⇄ IndexedDB (persistedSignal)       validates every request (parseChatRequest)
+AiChat ← draft ← client.chat(…)  ◄── SSE ──  createHandler(api, { chat })
+          (createClient(api))                   └ tokens(parseSSE(AI.run(stream: true)))
+/c/:id ← router (src/routes/**)                 body parsed by parseChatRequest first
+conversations ⇄ IndexedDB (persistedSignal)
 ```
 
-- `src/lib/protocol.ts` is the wire contract. The client and the Worker both import it. If one side is not updated after a protocol change, the type checker reports an error.
-- Both sides use [`@cascivo/data`](../../../packages/data). The Worker reads the Workers AI stream with `parseSSE` and writes events with `formatSSE`. The browser reads the Worker's POST response with `fetchSSE`. The parser started in this app and was extracted once the app proved it was needed.
-- The Worker re-encodes model output into `token` / `done` / `error` events. You can change the model or the provider in the Worker only; the client does not change.
+- `src/api.ts` is the API contract, built with `defineApi` from [`@cascivo/app/api`](../../../packages/app):
+  - The Worker serves it with `createHandler`.
+  - The browser calls it with `createClient`.
+  - The Worker parses each request body with `parseChatRequest`, and the client parses each streamed token with `parseToken`. Both parsers live in `src/lib/protocol.ts`.
+  - Streaming runs over SSE, through [`@cascivo/data`](../../../packages/data).
+- The Worker re-encodes the model's output as `{ text }` tokens. You can change the model or the provider in the Worker only; the client does not change.
+- Routing is file-based:
+  - `src/routes/index.tsx` is a new chat, `src/routes/c/[id].tsx` is a conversation, and `src/routes/404.tsx` handles unknown paths.
+  - The open conversation is the URL, so links, reloads and the back button agree on it.
+  - SideNav items are real links; `main.tsx` passes `router.Link` to `setLinkComponent`.
 - The source is typed against React. `vite.config.ts` aliases `react` to `preact/compat`, so the bundle runs on Preact. The bundle is about 69 KB gzip in total. If you remove the aliases, the same code runs on React.
 
 ## Run
@@ -52,7 +61,8 @@ pnpm run deploy
 - `Alert`, `Button`, `EmptyState`, `Select`, `Spinner` (`@cascivo/react`)
 - `AppShell` from `@cascivo/example-kit`
 - `persistedSignal` with `indexedDBDriver` (`@cascivo/storage`)
-- `fetchSSE`, `parseSSE` and `formatSSE` (`@cascivo/data`)
+- The router, file routes and typed API (`@cascivo/app`)
+- `parseSSE` (`@cascivo/data`), used in the Worker to read Workers AI's own stream
 
 ## Why this app exists
 

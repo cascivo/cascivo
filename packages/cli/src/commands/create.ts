@@ -11,6 +11,9 @@ import {
 import { flagValue, positionalArgs, resolvePackageManagerFlag } from '../utils/args.js'
 import { writeFileSafe } from '../utils/fs.js'
 import { CASCIVO_VERSIONS, SIGNALS_PEER } from '../generated/versions.js'
+// Bundled into the CLI (a devDependency): the scaffold writes the same routes.gen.ts the
+// app's own Vite plugin will, so the two cannot drift.
+import { generateRoutes } from '@cascivo/app/vite'
 
 /**
  * Exact published versions, baked in at build time by `scripts/registry/cli-versions.ts`.
@@ -1004,12 +1007,11 @@ function cfPackageJson(opts: ScaffoldOptions): string {
       'format:check': 'prettier --check .',
     },
     // Same prebuilt-path rules as the Vite scaffold (see `packageJson`): no @cascivo/core,
-    // no @cascivo/tokens. `@cascivo/data` and `@cascivo/storage` are the two batteries this
-    // app uses directly, so they are declared.
+    // no @cascivo/tokens. `@cascivo/app` is the router + typed API this app imports;
+    // `@cascivo/data` arrives with it.
     dependencies: {
-      '@cascivo/data': V['@cascivo/data']!,
+      '@cascivo/app': V['@cascivo/app']!,
       '@cascivo/react': V['@cascivo/react']!,
-      '@cascivo/storage': V['@cascivo/storage']!,
       '@cascivo/themes': V['@cascivo/themes']!,
       '@preact/signals-react': SIGNALS_PEER,
       ...(preact ? { preact: '^10.29.0' } : { react: '^19.0.0', 'react-dom': '^19.0.0' }),
@@ -1067,15 +1069,17 @@ function cfViteConfig(runtime: Runtime): string {
 // this plugin for @preact/preset-vite — it aliases react/react-dom to preact/compat; no
 // source changes.`
   return `${plugin}
+import { cascivoRoutes } from '@cascivo/app/vite'
 import { cloudflare } from '@cloudflare/vite-plugin'
 import { defineConfig } from 'vite'
 
 ${note}
 //
+// cascivoRoutes() writes src/routes.gen.ts from src/routes/ — one file per page.
 // cloudflare() runs worker/index.ts in workerd during \`vite dev\` and builds it with the
-// client, so dev and production execute the same runtime. Routing is in wrangler.jsonc.
+// client, so dev and production execute the same runtime. Request routing is in wrangler.jsonc.
 export default defineConfig({
-  plugins: [${call}, cloudflare()],
+  plugins: [${call}, cascivoRoutes(), cloudflare()],
 })
 `
 }
@@ -1100,12 +1104,14 @@ function wranglerJsonc(opts: ScaffoldOptions): string {
 `
 }
 
-function cfProtocolTs(): string {
-  return `/**
- * The wire contract between the browser and the Worker. Both sides import this file, so
- * changing the protocol is a type error on whichever side was not updated.
+function cfApiTs(): string {
+  return `import { defineApi, stream } from '@cascivo/app/api'
+
+/**
+ * The contract between the browser and the Worker. Both import this file: the Worker serves
+ * it with \`createHandler\`, the app calls it with \`createClient\`, and a change that breaks
+ * either side is a type error. Add an endpoint here, then its handler in worker/index.ts.
  */
-export const TICKS_ENDPOINT = '/api/ticks'
 
 /** How many ticks one stream sends before it ends. */
 export const TICKS_PER_STREAM = 30
@@ -1117,83 +1123,65 @@ export interface Tick {
 }
 
 /**
- * Parses a tick event's data. The payload crosses the network, so it is checked rather
- * than cast — \`JSON.parse\` returns \`any\`, and \`as Tick\` would prove nothing.
+ * Parses one streamed tick. It crosses the network, so it is checked rather than cast —
+ * \`JSON.parse\` returns \`any\`, and \`as Tick\` would prove nothing.
  */
-export function parseTick(data: string): Tick {
-  const raw: unknown = JSON.parse(data)
+export function parseTick(raw: unknown): Tick {
   if (typeof raw === 'object' && raw !== null) {
     const { n, at } = raw as Record<string, unknown>
     if (typeof n === 'number' && typeof at === 'string') return { n, at }
   }
-  throw new Error('Malformed tick event')
+  throw new Error('Malformed tick')
 }
+
+export const api = defineApi({
+  ticks: stream({ method: 'GET', path: '/api/ticks', event: parseTick }),
+})
 `
 }
 
 function cfWorkerTs(): string {
-  return `import { formatSSE } from '@cascivo/data'
-import { TICKS_ENDPOINT, TICKS_PER_STREAM } from '../src/protocol'
-import type { Tick } from '../src/protocol'
-
-const encoder = new TextEncoder()
+  return `import { createHandler } from '@cascivo/app/api'
+import { api, TICKS_PER_STREAM } from '../src/api'
+import type { Tick } from '../src/api'
 
 /**
- * A server-sent event stream: one \`tick\` a second, then \`done\`. When the client
- * disconnects, the runtime cancels the stream and \`cancel\` stops the timer.
+ * Add bindings (KV, D1, R2, Durable Objects, Workers AI) in wrangler.jsonc and type them
+ * here; every handler receives them as \`env\`.
  */
-function ticks(): Response {
-  let timer: ReturnType<typeof setInterval> | undefined
-  let n = 0
-  const body = new ReadableStream<Uint8Array>({
-    start(controller) {
-      const send = () => {
-        n += 1
-        const tick: Tick = { n, at: new Date().toISOString() }
-        controller.enqueue(encoder.encode(formatSSE('tick', tick)))
-        if (n >= TICKS_PER_STREAM) {
-          clearInterval(timer)
-          controller.enqueue(encoder.encode(formatSSE('done', {})))
-          controller.close()
-        }
-      }
-      send()
-      timer = setInterval(send, 1000)
-    },
-    cancel() {
-      clearInterval(timer)
-    },
-  })
-  return new Response(body, {
-    headers: {
-      'content-type': 'text/event-stream; charset=utf-8',
-      'cache-control': 'no-cache, no-transform',
-    },
-  })
-}
+export interface Env {}
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 /**
- * The API. wrangler.jsonc routes only \`/api/*\` here; every other path is a static asset
- * or, for an unknown path, the SPA's index.html.
- *
- * To use a binding, declare it in wrangler.jsonc and take it as the second argument:
- * \`async fetch(request: Request, env: { DB: D1Database })\`.
+ * One handler per endpoint in src/api.ts, typed from it. A stream handler is an async
+ * generator: each \`yield\` is one server-sent event, and returning ends the stream. When the
+ * client disconnects, \`signal\` aborts.
  */
-export default {
-  async fetch(request: Request): Promise<Response> {
-    const { pathname } = new URL(request.url)
-    if (pathname === TICKS_ENDPOINT && request.method === 'GET') return ticks()
-    return Response.json({ error: \`No route for \${request.method} \${pathname}\` }, { status: 404 })
+const handleApi = createHandler<typeof api, Env>(api, {
+  ticks: async function* ({ signal }) {
+    for (let n = 1; n <= TICKS_PER_STREAM && !signal.aborted; n++) {
+      const tick: Tick = { n, at: new Date().toISOString() }
+      yield tick
+      await sleep(1000)
+    }
   },
+})
+
+// wrangler.jsonc routes only /api/* here; everything else is a static asset or index.html.
+export default {
+  fetch: handleApi,
 }
 `
 }
 
 function cfLiveTs(): string {
-  return `import { fetchSSE } from '@cascivo/data'
+  return `import { createClient } from '@cascivo/app/api'
 import { signal } from '@cascivo/react'
-import { TICKS_ENDPOINT, parseTick } from './protocol'
-import type { Tick } from './protocol'
+import { api } from './api'
+import type { Tick } from './api'
+
+const client = createClient(api)
 
 // Module-level signals: any component that reads them re-renders when they change, and
 // writing them from plain functions needs no hooks.
@@ -1212,9 +1200,8 @@ export async function connect(): Promise<void> {
   error.value = null
   status.value = 'live'
   try {
-    for await (const event of fetchSSE(TICKS_ENDPOINT, { signal: abort.signal })) {
-      if (event.event === 'tick') ticks.value = [...ticks.value, parseTick(event.data)]
-      else if (event.event === 'done') break
+    for await (const tick of client.ticks({ signal: abort.signal })) {
+      ticks.value = [...ticks.value, tick]
     }
     status.value = 'idle'
   } catch (cause) {
@@ -1247,7 +1234,7 @@ function cfLiveCardTsx(): string {
   Text,
   useSignals,
 } from '@cascivo/react'
-import { TICKS_PER_STREAM } from './protocol'
+import { TICKS_PER_STREAM } from './api'
 import { connect, disconnect, error, status, ticks } from './live'
 
 /** Streams server-sent events from worker/index.ts into signals via src/live.ts. */
@@ -1264,8 +1251,8 @@ export function LiveCard() {
       <CardContent>
         <Flex gap={3}>
           <Text muted>
-            <code>worker/index.ts</code> streams server-sent events; <code>src/live.ts</code>{' '}
-            reads them with <code>fetchSSE</code> from <code>@cascivo/data</code>.
+            <code>worker/index.ts</code> streams events; <code>src/live.ts</code> reads them
+            through the typed client for <code>src/api.ts</code>.
           </Text>
           <Flex direction="horizontal" align="center" gap={2}>
             <Badge variant={live ? 'success' : status.value === 'error' ? 'danger' : 'neutral'}>
@@ -1291,79 +1278,123 @@ export function LiveCard() {
 `
 }
 
-/** Like `appTsx`, but the active section survives a reload via `@cascivo/storage`. */
+/** Route pattern for a section: the first is `/`, the rest by key. */
+function cfSectionPath(section: Section, index: number): string {
+  return index === 0 ? '/' : `/${section.key}`
+}
+
+/** Route file for a section, relative to `src/routes/`. */
+function cfSectionFile(section: Section, index: number): string {
+  return index === 0 ? 'index.tsx' : `${section.key}.tsx`
+}
+
+function cfRouterTs(): string {
+  return `import { createRouter } from '@cascivo/app'
+import { notFound, routes } from './routes.gen'
+
+// \`routes.gen.ts\` is written by \`cascivoRoutes()\` (vite.config.ts) from \`src/routes/\`:
+// add, rename or delete a file there and the route table follows.
+export const router = createRouter({ routes, notFound })
+`
+}
+
 function cfAppTsx(sections: Section[]): string {
-  const sectionImports = sections
-    .map((s) => `import { ${s.component} } from './sections/${s.component}'`)
-    .join('\n')
-  const keys = sections.map((s) => `'${s.key}'`).join(', ')
   const navItems = sections
     .map(
-      (s) => `    {
+      (s, i) => `    {
       label: '${s.label.replace(/'/g, "\\'")}',
-      active: current === '${s.key}',
-      onClick: (e) => {
-        e.preventDefault()
-        section.value = '${s.key}'
-      },
+      href: '${cfSectionPath(s, i)}',
+      active: path === '${cfSectionPath(s, i)}',
     },`,
     )
     .join('\n')
-  const renderedSections = sections
-    .map((s) => `      {current === '${s.key}' && <${s.component} />}`)
-    .join('\n')
-
-  return `import { useSignals, type SideNavItem } from '@cascivo/react'
-import { persistedSignal } from '@cascivo/storage'
+  return `import { RouterView } from '@cascivo/app'
+import { Spinner, useSignals, type SideNavItem } from '@cascivo/react'
+import { router } from './router'
 import { Shell } from './Shell'
-${sectionImports}
-
-const SECTIONS = [${keys}] as const
-type Section = (typeof SECTIONS)[number]
-
-function isSection(value: string): value is Section {
-  return (SECTIONS as readonly string[]).includes(value)
-}
-
-// Persisted to localStorage, so a reload returns to the same section. A stored key from an
-// older build (a renamed section, say) falls back to the first one instead of rendering
-// nothing. For larger data, pass \`{ driver: indexedDBDriver() }\` from @cascivo/storage.
-const section = persistedSignal<string>('app.section', '${sections[0]!.key}')
 
 export default function App() {
   useSignals()
-  const current: Section = isSection(section.value) ? section.value : '${sections[0]!.key}'
+  const path = router.pathname.value
 
+  // \`href\`s, not click handlers: main.tsx registers the router's Link, so these navigate
+  // client-side while middle-click and "open in new tab" still work.
   const navItems: SideNavItem[] = [
 ${navItems}
   ]
 
   return (
     <Shell navItems={navItems}>
-${renderedSections}
+      <RouterView router={router} fallback={<Spinner label="Loading" />} />
     </Shell>
   )
 }
 `
 }
 
-function cfFirstSectionTsx(section: Section): string {
+function cfMainTsx(): string {
+  return `import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { setLinkComponent } from '@cascivo/react'
+import App from './App'
+import { router } from './router'
+
+// SideNav, ShellHeader and Breadcrumb render their links through the router from here on.
+setLinkComponent(router.Link)
+
+const root = document.getElementById('root')
+if (root) {
+  ReactDOM.createRoot(root).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
+  )
+}
+`
+}
+
+function cfFirstRouteTsx(section: Section): string {
   return `import { Flex, Heading, Text } from '@cascivo/react'
 import { LiveCard } from '../LiveCard'
 
-export function ${section.component}() {
+export default function ${section.component}() {
   return (
     <Flex gap={6}>
       <Flex gap={2}>
         <Heading level={1}>${section.label}</Heading>
         <Text muted>
-          Edit <code>src/sections/${section.component}.tsx</code> to build out this page.
+          Edit <code>src/routes/index.tsx</code> to build out this page.
         </Text>
       </Flex>
       <LiveCard />
     </Flex>
   )
 }
+`
+}
+
+function cfRouteTsx(section: Section, index: number): string {
+  // The Vite scaffold's section, as a route file: a default export, at its own URL.
+  return sectionTsx(section)
+    .replace(
+      `export function ${section.component}()`,
+      `export default function ${section.component}()`,
+    )
+    .replace(`src/sections/${section.component}.tsx`, `src/routes/${cfSectionFile(section, index)}`)
+}
+
+function cf404Tsx(): string {
+  return `import { EmptyState } from '@cascivo/react'
+
+export default function NotFound() {
+  return <EmptyState title="Page not found" description="There is nothing at this address." />
+}
+`
+}
+
+function cfPrettierIgnore(): string {
+  return `${prettierIgnore()}# Rewritten by @cascivo/app/vite whenever a route file changes.
+src/routes.gen.ts
 `
 }
 
@@ -1405,14 +1436,20 @@ ${runExplicitCommand(pm, 'deploy')}
 
 ## Structure
 
-- \`worker/index.ts\` — the API. Add routes here; add bindings (KV, D1, R2, Durable Objects,
-  Workers AI) in \`wrangler.jsonc\` and read them from \`env\`.
-- \`src/protocol.ts\` — types and parsers both sides import. Change the protocol here.
-- \`src/live.ts\` + \`src/LiveCard.tsx\` — a server-sent event stream read with \`fetchSSE\`
-  from \`@cascivo/data\`, into signals. Works with POST bodies too (an AI chat, say).
-- \`src/App.tsx\` — nav items; the active section persists via \`@cascivo/storage\`.
-- \`src/Shell.tsx\` — the app shell (header + side nav + content slot). Router-agnostic.
-- \`src/sections/\` — one component per nav item.
+- \`src/routes/\` — one file per page. \`index.tsx\` is \`/\`, \`settings.tsx\` is
+  \`/settings\`, \`c/[id].tsx\` is \`/c/:id\` (it receives \`params.id\`), \`404.tsx\` is
+  everything else. \`src/routes.gen.ts\` is rewritten from this folder; do not edit it.
+- \`src/api.ts\` — the API contract both sides import: endpoints, their paths, and parsers
+  for what crosses the network.
+- \`worker/index.ts\` — the API's handlers, typed from \`src/api.ts\`. Add bindings (KV,
+  D1, R2, Durable Objects, Workers AI) in \`wrangler.jsonc\`; handlers receive them as \`env\`.
+- \`src/live.ts\` + \`src/LiveCard.tsx\` — a streaming endpoint read through the typed
+  client into signals.
+- \`src/App.tsx\` — the nav (real \`href\`s) and the \`RouterView\`.
+- \`src/Shell.tsx\` — the app shell (header + side nav + content slot).
+
+Persist client state with \`persistedSignal\` from \`@cascivo/storage\` (localStorage or
+IndexedDB).
 
 Add more components with \`npx cascivo add <component>\`.
 
@@ -1429,15 +1466,43 @@ function cfAgentsMd(opts: ScaffoldOptions): string {
   return `${agentsMd(opts)}
 ## Server
 
-The API is \`worker/index.ts\`, a Cloudflare Worker. \`wrangler.jsonc\` routes only
-\`/api/*\` to it. Put request/response types in \`src/protocol.ts\`, which both sides
-import, and parse every payload that crosses the network instead of casting it. Stream with
-\`formatSSE\` in the Worker and \`fetchSSE\` in the browser, both from \`@cascivo/data\`.
+The API contract is \`src/api.ts\` (\`defineApi\` from \`@cascivo/app/api\`); its handlers are
+\`worker/index.ts\` (\`createHandler\`), and the app calls it through \`createClient\`. Add an
+endpoint to the contract first, with a parser for its input and output: parse every payload
+that crosses the network, never cast it. A streaming endpoint's handler is an async
+generator. \`wrangler.jsonc\` routes only \`/api/*\` to the Worker.
+
+## Pages
+
+A page is a file in \`src/routes/\` with a default export: \`c/[id].tsx\` serves \`/c/:id\` and
+receives \`{ params }: RouteProps<'/c/:id'>\`. Never edit \`src/routes.gen.ts\`. Link with
+\`href\`s (SideNav items, \`router.Link\`); navigate from code with \`router.navigate(path)\`,
+and build a path with \`buildPath('/c/:id', { id })\`, both from \`@cascivo/app\`.
 `
+}
+
+function cfShellTsx(opts: ScaffoldOptions): string {
+  const shell = shellTsx(opts)
+  const start = shell.indexOf(' * Adding a router?')
+  const end = shell.indexOf(' */\nexport function Shell')
+  // This app already routes, so the Vite scaffold's "adding a router" advice does not apply.
+  return (
+    shell.slice(0, start) +
+    ' * Routing lives in src/router.ts; nav items carry `href`s, and main.tsx registers the\n' +
+    " * router's Link so they navigate client-side.\n" +
+    shell.slice(end)
+  )
 }
 
 function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): ScaffoldFile[] {
   const runtime = opts.runtime ?? 'preact'
+  const routeFiles = [
+    ...sections.map((s, i) => ({
+      file: cfSectionFile(s, i),
+      contents: i === 0 ? cfFirstRouteTsx(s) : cfRouteTsx(s, i),
+    })),
+    { file: '404.tsx', contents: cf404Tsx() },
+  ]
   return [
     { path: 'package.json', contents: cfPackageJson(opts) },
     { path: 'tsconfig.json', contents: cfTsconfig() },
@@ -1446,22 +1511,28 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
     { path: 'index.html', contents: indexHtml(opts) },
     { path: 'eslint.config.js', contents: eslintConfig() },
     { path: '.prettierrc', contents: prettierrc() },
-    { path: '.prettierignore', contents: prettierIgnore() },
+    { path: '.prettierignore', contents: cfPrettierIgnore() },
     { path: '.gitignore', contents: cfGitignore() },
     { path: 'README.md', contents: cfReadme(opts) },
     { path: 'AGENTS.md', contents: cfAgentsMd(opts) },
     { path: 'worker/index.ts', contents: cfWorkerTs() },
-    { path: 'src/protocol.ts', contents: cfProtocolTs() },
+    { path: 'src/api.ts', contents: cfApiTs() },
     { path: 'src/live.ts', contents: cfLiveTs() },
     { path: 'src/LiveCard.tsx', contents: cfLiveCardTsx() },
-    { path: 'src/main.tsx', contents: mainTsx() },
+    { path: 'src/main.tsx', contents: cfMainTsx() },
     { path: 'src/vite-env.d.ts', contents: viteEnv() },
+    { path: 'src/router.ts', contents: cfRouterTs() },
     { path: 'src/App.tsx', contents: cfAppTsx(sections) },
-    { path: 'src/Shell.tsx', contents: shellTsx(opts) },
-    ...sections.map((s, i) => ({
-      path: `src/sections/${s.component}.tsx`,
-      contents: i === 0 ? cfFirstSectionTsx(s) : sectionTsx(s),
-    })),
+    { path: 'src/Shell.tsx', contents: cfShellTsx(opts) },
+    ...routeFiles.map(({ file, contents }) => ({ path: `src/routes/${file}`, contents })),
+    // Written now so \`tsc\` passes before the first \`vite\` run; the plugin keeps it current.
+    {
+      path: 'src/routes.gen.ts',
+      contents: generateRoutes(
+        routeFiles.map((r) => r.file),
+        './routes',
+      ),
+    },
   ]
 }
 

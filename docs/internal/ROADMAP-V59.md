@@ -433,6 +433,10 @@ are justified without reference to iOS or Android at all — they are gaps again
 the same collapse with JavaScript and an IntersectionObserver, and a scroll-driven animation does it on
 the compositor with `clientJs: 'none'`.
 
+> **Superseded for routing by [ROADMAP-V60](./ROADMAP-V60.md) (2026-09-29).** cascivo now ships a web
+> router as the versioned `@cascivo/app` package, not registry code. The native-runtime half of I3
+> below (page stacks, swipe-back, back button, Capacitor) still stands.
+
 **I3 — the app runtime: rejected, permanently.** Recorded here so `NavStack` scope creep has something to
 be measured against. cascivo already delegates navigation to the consumer's router via `setLinkComponent()`;
 I3 reverses a deliberate architectural stance rather than filling a gap. No routing, no page-stack memory

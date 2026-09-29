@@ -77,6 +77,7 @@ const PACKAGES = [
   'i18n',
   'storage',
   'data',
+  'app',
   'icons',
   'charts',
   'email',
@@ -95,6 +96,7 @@ const NEEDS_DIST = [
   'i18n',
   'storage',
   'data',
+  'app',
   'icons',
   'charts',
   'email',
@@ -174,6 +176,25 @@ export async function firstEvent(url: string): Promise<ServerSentEvent | undefin
 }
 export const sseParser: typeof parseSSE = parseSSE
 export const httpStatus = (e: unknown): number | undefined => (e instanceof HttpError ? e.status : undefined)
+// @cascivo/app — all three entries: the router (React), the API contract (no React; a Worker
+// imports it), and the Vite plugin (Node). Each ships its own flattened .d.ts.
+import { buildPath, createRouter, route, RouterView, type RouteProps } from '@cascivo/app'
+import { createClient, createHandler, defineApi, endpoint } from '@cascivo/app/api'
+import { cascivoRoutes, generateRoutes } from '@cascivo/app/vite'
+function NotePage({ params }: RouteProps<'/notes/:id'>) {
+  return <p>{params.id}</p>
+}
+export const appRouter = createRouter({ routes: [route('/notes/:id', NotePage)] })
+export const routerView = <RouterView router={appRouter} />
+export const notePath: string = buildPath('/notes/:id', { id: '1' })
+const notesApi = defineApi({
+  note: endpoint({ method: 'GET', path: '/api/notes/:id', output: (raw) => String(raw) }),
+})
+export const notesClient = createClient(notesApi)
+export const noteText: Promise<string> = notesClient.note({ params: { id: '1' } })
+export const notesHandler = createHandler(notesApi, { note: ({ params }) => params.id })
+export const routesPlugin = cascivoRoutes()
+export const routesSource: string = generateRoutes(['index.tsx'], './routes')
 
 const VIEW: ViewConfig = {
   version: 1,

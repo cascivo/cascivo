@@ -126,6 +126,7 @@ CI's drift check — it cannot go stale. (It once sat thirteen minors behind, cl
 | `@cascivo/i18n`    | 1.3.x   | `@preact/signals-react >=3.0.0`                                                                               |
 | `@cascivo/storage` | 1.3.x   | `@preact/signals-react >=3.0.0`                                                                               |
 | `@cascivo/data`    | 0.0.x   | none                                                                                                          |
+| `@cascivo/app`     | 1.3.x   | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`                       |
 | `@cascivo/mcp`     | 0.7.x   | (server; run via `npx`)                                                                                       |
 
 <!-- END GENERATED: package-compatibility -->
