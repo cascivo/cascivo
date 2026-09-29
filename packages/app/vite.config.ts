@@ -4,7 +4,13 @@ import { MINIFY } from '../../scripts/build/minify.ts'
 export default defineConfig({
   build: {
     lib: {
-      entry: { index: './src/index.ts', api: './src/api.ts', vite: './src/vite.ts' },
+      entry: {
+        index: './src/index.ts',
+        api: './src/api.ts',
+        sync: './src/sync.ts',
+        'sync-server': './src/sync-server.ts',
+        vite: './src/vite.ts',
+      },
       formats: ['es'],
       fileName: (_format, entryName) => `${entryName}.js`,
     },
@@ -20,8 +26,8 @@ export default defineConfig({
       output: {
         minify: MINIFY,
         // The bundler drops per-module directives. Only the router entry renders React, so
-        // only it is a client module; `api` runs in Workers and `vite` in Node, where a
-        // 'use client' marker would be wrong (see packages/core/vite.config.ts).
+        // only it is a client module; `api` and `sync-server` run in Workers, `sync` holds
+        // no components, and `vite` runs in Node (see packages/core/vite.config.ts).
         banner: (chunk: { name?: string; isEntry?: boolean }) =>
           chunk.isEntry && chunk.name === 'index' ? "'use client';" : '',
       },

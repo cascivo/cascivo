@@ -307,16 +307,23 @@ export function createServer(options: ServerOptions = {}): McpServer {
           .describe(
             'Client runtime for framework "cloudflare" (default: preact; same source either way)',
           ),
+        examples: z
+          .array(z.enum(['board']))
+          .optional()
+          .describe(
+            'Extra pages for framework "cloudflare": "board" is a multiplayer page (notes + live cursors) on a Durable Object — deployable with no account via deploy_preview',
+          ),
         cwd: z
           .string()
           .optional()
           .describe('Directory to create the app in (default: current directory)'),
       },
     },
-    ({ name, theme, sections, framework, runtime, cwd }) => {
+    ({ name, theme, sections, framework, runtime, examples, cwd }) => {
       const args = ['-y', 'cascivo', 'create', name, '--yes']
       if (framework) args.push('--framework', framework)
       if (runtime) args.push('--runtime', runtime)
+      if (examples && examples.length > 0) args.push('--example', examples.join(','))
       if (theme) args.push('--theme', theme)
       if (sections && sections.length > 0) args.push('--sections', sections.join(', '))
       const result = spawnSync('npx', args, { encoding: 'utf8', ...(cwd ? { cwd } : {}) })

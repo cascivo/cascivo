@@ -54,6 +54,15 @@ export type Runtime = 'preact' | 'react'
 
 export const RUNTIMES = ['preact', 'react'] as const
 
+/** Optional demo pages for `--framework cloudflare`. */
+export type Example = 'board'
+
+export const EXAMPLES = ['board'] as const
+
+function isExample(value: string): value is Example {
+  return (EXAMPLES as readonly string[]).includes(value)
+}
+
 function isRuntime(value: string): value is Runtime {
   return (RUNTIMES as readonly string[]).includes(value)
 }
@@ -71,6 +80,8 @@ export interface ScaffoldOptions {
   pm?: PackageManager
   /** Client runtime for the `cloudflare` framework. Defaults to `preact`. */
   runtime?: Runtime
+  /** Extra demo pages for the `cloudflare` framework. */
+  examples?: Example[]
 }
 
 export interface ScaffoldFile {
@@ -1118,11 +1129,22 @@ function wranglerJsonc(opts: ScaffoldOptions): string {
     // Only the API reaches the Worker; static assets are served without invoking it.
     "run_worker_first": ["/api/*"]
   },
-  "observability": { "enabled": true }
+  "observability": { "enabled": true }${
+    hasExample(opts, 'board')
+      ? `,
+  // One SyncRoom Durable Object per board room (@cascivo/app/sync-server).
+  "durable_objects": { "bindings": [{ "name": "ROOMS", "class_name": "SyncRoom" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["SyncRoom"] }]`
+      : ''
+  }
   // Add bindings here (KV, D1, R2, Durable Objects, Workers AI) and read them from the
   // \`env\` argument of the Worker's fetch handler.
 }
 `
+}
+
+function hasExample(opts: ScaffoldOptions, example: Example): boolean {
+  return opts.examples?.includes(example) ?? false
 }
 
 function cfApiTs(): string {
@@ -1161,16 +1183,31 @@ export const api = defineApi({
 `
 }
 
-function cfWorkerTs(): string {
+function cfWorkerTs(opts: ScaffoldOptions): string {
+  const board = hasExample(opts, 'board')
   return `import { createHandler } from '@cascivo/app/api'
-import { api, TICKS_PER_STREAM } from '../src/api'
+${
+  board
+    ? `import { roomResponse } from '@cascivo/app/sync-server'
+import type { RoomNamespace } from '@cascivo/app/sync-server'
+`
+    : ''
+}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-
+${
+  board
+    ? `
+// The Durable Object class behind /board. wrangler.jsonc binds it as ROOMS, and it must be
+// exported from the Worker's main module.
+export { SyncRoom } from '@cascivo/app/sync-server'
+`
+    : ''
+}
 /**
  * Add bindings (KV, D1, R2, Durable Objects, Workers AI) in wrangler.jsonc and type them
  * here; every handler receives them as \`env\`.
  */
-export interface Env {}
+export interface Env {${board ? '\n  ROOMS: RoomNamespace<unknown>\n' : ''}}
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -1191,7 +1228,15 @@ const handleApi = createHandler<typeof api, Env>(api, {
 
 // wrangler.jsonc routes only /api/* here; everything else is a static asset or index.html.
 export default {
-  fetch: handleApi,
+${
+  board
+    ? `  fetch(request: Request, env: Env): Promise<Response> | Response {
+    const room = /^\\/api\\/rooms\\/([^/]+)$/.exec(new URL(request.url).pathname)
+    if (room) return roomResponse(request, env.ROOMS, room[1]!)
+    return handleApi(request, env)
+  },`
+    : '  fetch: handleApi,'
+}
 }
 `
 }
@@ -1319,13 +1364,15 @@ export const router = createRouter({ routes, notFound })
 `
 }
 
-function cfAppTsx(sections: Section[]): string {
-  const navItems = sections
+function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
+  const items = sections.map((s, i) => ({ label: s.label, href: cfSectionPath(s, i) }))
+  if (hasExample(opts, 'board')) items.push({ label: 'Board', href: '/board' })
+  const navItems = items
     .map(
-      (s, i) => `    {
-      label: '${s.label.replace(/'/g, "\\'")}',
-      href: '${cfSectionPath(s, i)}',
-      active: path === '${cfSectionPath(s, i)}',
+      (item) => `    {
+      label: '${item.label.replace(/'/g, "\\'")}',
+      href: '${item.href}',
+      active: path === '${item.href}',
     },`,
     )
     .join('\n')
@@ -1413,6 +1460,217 @@ export default function NotFound() {
 `
 }
 
+/* --- `--example board`: a multiplayer board on @cascivo/app/sync + a SyncRoom DO --- */
+
+function cfBoardTs(): string {
+  return `import { connectRoom } from '@cascivo/app/sync'
+
+export interface Note {
+  text: string
+  x: number
+  y: number
+}
+
+export interface Cursor {
+  x: number
+  y: number
+}
+
+/** \`/board?room=team\` is its own board; the room name is what the Worker routes on. */
+export const roomName =
+  (new URLSearchParams(location.search).get('room') ?? '').replace(/[^\\w-]/g, '').slice(0, 64) ||
+  'lobby'
+
+// One WebSocket to the room's Durable Object. It connects when this module first loads (the
+// /board route is its own chunk) and reconnects on its own.
+export const room = connectRoom(\`/api/rooms/\${roomName}\`)
+
+/**
+ * Values in a room come from other people, so they are parsed, not cast. A note that fails
+ * this is ignored rather than breaking the board.
+ */
+export function parseNote(raw: unknown): Note {
+  if (typeof raw === 'object' && raw !== null) {
+    const { text, x, y } = raw as Record<string, unknown>
+    if (typeof text === 'string' && typeof x === 'number' && typeof y === 'number') {
+      return { text, x, y }
+    }
+  }
+  throw new Error('Malformed note')
+}
+
+export function parseCursor(raw: unknown): Cursor | null {
+  if (typeof raw === 'object' && raw !== null) {
+    const { x, y } = raw as Record<string, unknown>
+    if (typeof x === 'number' && typeof y === 'number') return { x, y }
+  }
+  return null
+}
+
+/** Notes by id. Each note is its own path, so two people editing two notes never collide. */
+export const notes = room.map('notes', parseNote)
+
+export function addNote(): void {
+  const offset = Object.keys(notes.value).length * 24
+  notes.set(crypto.randomUUID(), { text: '', x: 24 + (offset % 240), y: 24 + (offset % 160) })
+}
+`
+}
+
+function cfBoardRouteTsx(): string {
+  return `import type { PointerEvent } from 'react'
+import { Badge, Button, Card, CardContent, Flex, Heading, Text, Textarea, useSignals } from '@cascivo/react'
+import { addNote, notes, parseCursor, room, roomName } from '../board'
+import type { Note } from '../board'
+import styles from '../board.module.css'
+
+let frame = 0
+
+/** Shares this pointer's position on the board, at most once per frame. */
+function trackCursor(event: PointerEvent<HTMLDivElement>) {
+  const rect = event.currentTarget.getBoundingClientRect()
+  const cursor = { x: Math.round(event.clientX - rect.left), y: Math.round(event.clientY - rect.top) }
+  cancelAnimationFrame(frame)
+  frame = requestAnimationFrame(() => room.setPresence(cursor))
+}
+
+/** Drags a note by its handle; every move is a write the whole room sees. */
+function startDrag(event: PointerEvent<HTMLDivElement>, id: string, note: Note) {
+  if ((event.target as Element).closest('button')) return
+  const handle = event.currentTarget
+  handle.setPointerCapture(event.pointerId)
+  const dx = event.clientX - note.x
+  const dy = event.clientY - note.y
+  const move = (e: globalThis.PointerEvent) => {
+    const current = notes.value[id]
+    if (current) notes.set(id, { ...current, x: Math.max(0, e.clientX - dx), y: Math.max(0, e.clientY - dy) })
+  }
+  const up = () => {
+    handle.removeEventListener('pointermove', move)
+    handle.removeEventListener('pointerup', up)
+  }
+  handle.addEventListener('pointermove', move)
+  handle.addEventListener('pointerup', up)
+}
+
+function NoteCard({ id, note }: { id: string; note: Note }) {
+  return (
+    <div className={styles['note']} style={{ transform: \`translate(\${note.x}px, \${note.y}px)\` }}>
+      <Card>
+        <div className={styles['handle']} onPointerDown={(event) => startDrag(event, id, note)}>
+          <Text size="sm" muted>
+            Drag
+          </Text>
+          <Button size="sm" variant="ghost" aria-label="Delete note" onClick={() => notes.delete(id)}>
+            ×
+          </Button>
+        </div>
+        <CardContent>
+          <Textarea
+            aria-label="Note text"
+            rows={3}
+            value={note.text}
+            onChange={(event) => notes.set(id, { ...note, text: event.target.value })}
+          />
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+export default function Board() {
+  useSignals()
+  const connected = room.status.value === 'open'
+  const others = Object.entries(room.presence.value).flatMap(([id, raw]) => {
+    const cursor = parseCursor(raw)
+    return cursor ? [{ id, ...cursor }] : []
+  })
+
+  return (
+    <Flex gap={4}>
+      <Flex direction="horizontal" align="center" justify="between" wrap gap={3}>
+        <Flex gap={1}>
+          <Heading level={1}>Board</Heading>
+          <Text muted>
+            Room <code>{roomName}</code>. Open this page in a second window: notes, edits and
+            cursors sync live through a Durable Object.
+          </Text>
+        </Flex>
+        <Flex direction="horizontal" align="center" gap={2}>
+          <Badge variant={connected ? 'success' : 'neutral'}>
+            {connected ? \`\${Object.keys(room.presence.value).length + 1} here\` : 'Connecting…'}
+          </Badge>
+          <Button onClick={addNote}>Add note</Button>
+        </Flex>
+      </Flex>
+      <div
+        className={styles['board']}
+        onPointerMove={trackCursor}
+        onPointerLeave={() => room.setPresence(null)}
+      >
+        {Object.entries(notes.value).map(([id, note]) => (
+          <NoteCard key={id} id={id} note={note} />
+        ))}
+        {others.map((cursor) => (
+          <span
+            key={cursor.id}
+            className={styles['cursor']}
+            style={{ transform: \`translate(\${cursor.x}px, \${cursor.y}px)\` }}
+            aria-hidden="true"
+          />
+        ))}
+      </div>
+    </Flex>
+  )
+}
+`
+}
+
+function cfBoardCss(): string {
+  return `/* Your app's own styles live in the cascivo.example layer (declared in index.html). */
+@layer cascivo.example {
+  .board {
+    position: relative;
+    min-block-size: 32rem;
+    overflow: hidden;
+    border: 1px dashed var(--cascivo-border-default);
+    border-radius: var(--cascivo-radius-surface);
+    background: var(--cascivo-color-surface);
+  }
+
+  /* Positions are shared by everyone in the room, so they are physical (left/top), not
+     logical: an RTL visitor must see a note where an LTR one put it. */
+  .note {
+    position: absolute;
+    top: 0;
+    left: 0;
+    inline-size: 14rem;
+  }
+
+  .handle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--cascivo-space-1) var(--cascivo-space-2);
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+  }
+
+  .cursor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+    border-radius: 50%;
+    background: var(--cascivo-color-accent);
+    pointer-events: none;
+  }
+}
+`
+}
+
 function cfPrettierIgnore(): string {
   return `${prettierIgnore()}# Rewritten by @cascivo/app/vite whenever a route file changes.
 src/routes.gen.ts
@@ -1486,7 +1744,26 @@ support Workers AI or R2.
 - \`src/Shell.tsx\` — the app shell (header + side nav + content slot).
 
 Persist client state with \`persistedSignal\` from \`@cascivo/storage\` (localStorage or
-IndexedDB).
+IndexedDB).${
+    hasExample(opts, 'board')
+      ? `
+
+## Board (multiplayer)
+
+\`/board\` is a shared board. Open it in two windows: notes, edits and cursors sync live.
+
+- \`src/board.ts\` — \`connectRoom('/api/rooms/<name>')\` from \`@cascivo/app/sync\`; \`room.map('notes', parseNote)\`
+  is a signal every visitor shares, and \`room.presence\` carries cursors.
+- \`worker/index.ts\` — exports \`SyncRoom\`, one Durable Object per room, and routes
+  \`/api/rooms/:name\` to it (bound as \`ROOMS\` in \`wrangler.jsonc\`).
+- \`/board?room=team\` is a separate board.
+
+Each path (one note) is last-writer-wins in the order the room receives writes, so two people
+editing the same note at once settle on one value; editing different notes never collides.
+Durable Objects work on a temporary account, so \`deploy:preview\` shares a live board with
+no Cloudflare account.`
+      : ''
+  }
 
 Add more components with \`npx cascivo add <component>\`.
 
@@ -1546,6 +1823,7 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
       contents: i === 0 ? cfFirstRouteTsx(s) : cfRouteTsx(s, i),
     })),
     { file: '404.tsx', contents: cf404Tsx() },
+    ...(hasExample(opts, 'board') ? [{ file: 'board.tsx', contents: cfBoardRouteTsx() }] : []),
   ]
   return [
     { path: 'package.json', contents: cfPackageJson(opts) },
@@ -1559,15 +1837,21 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
     { path: '.gitignore', contents: cfGitignore() },
     { path: 'README.md', contents: cfReadme(opts) },
     { path: 'AGENTS.md', contents: cfAgentsMd(opts) },
-    { path: 'worker/index.ts', contents: cfWorkerTs() },
+    { path: 'worker/index.ts', contents: cfWorkerTs(opts) },
     { path: 'src/api.ts', contents: cfApiTs() },
     { path: 'src/live.ts', contents: cfLiveTs() },
     { path: 'src/LiveCard.tsx', contents: cfLiveCardTsx() },
     { path: 'src/main.tsx', contents: cfMainTsx() },
     { path: 'src/vite-env.d.ts', contents: viteEnv() },
     { path: 'src/router.ts', contents: cfRouterTs() },
-    { path: 'src/App.tsx', contents: cfAppTsx(sections) },
+    { path: 'src/App.tsx', contents: cfAppTsx(sections, opts) },
     { path: 'src/Shell.tsx', contents: cfShellTsx(opts) },
+    ...(hasExample(opts, 'board')
+      ? [
+          { path: 'src/board.ts', contents: cfBoardTs() },
+          { path: 'src/board.module.css', contents: cfBoardCss() },
+        ]
+      : []),
     ...routeFiles.map(({ file, contents }) => ({ path: `src/routes/${file}`, contents })),
     // Written now so \`tsc\` passes before the first \`vite\` run; the plugin keeps it current.
     {
@@ -1650,6 +1934,7 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
     'template',
     'framework',
     'runtime',
+    'example',
   ])[0]
   const themeArg = flagValue(args, 'theme')
   const sectionsArg = flagValue(args, 'sections')
@@ -1664,6 +1949,17 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
   const runtimeArg = (flagValue(args, 'runtime') ?? '').toLowerCase()
   if (runtimeArg && !isRuntime(runtimeArg)) {
     console.error(`Unknown runtime "${runtimeArg}". Expected one of: ${RUNTIMES.join(', ')}.`)
+    process.exitCode = 1
+    return
+  }
+
+  const exampleArgs = (flagValue(args, 'example') ?? '')
+    .split(',')
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean)
+  const badExample = exampleArgs.find((e) => !isExample(e))
+  if (badExample) {
+    console.error(`Unknown example "${badExample}". Expected one of: ${EXAMPLES.join(', ')}.`)
     process.exitCode = 1
     return
   }
@@ -1723,6 +2019,12 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
       ? (framework as Framework)
       : 'react-vite'
 
+    if (exampleArgs.length > 0 && resolvedFramework !== 'cloudflare') {
+      console.error('--example needs --framework cloudflare (it adds a Worker-backed page).')
+      process.exitCode = 1
+      return
+    }
+
     const opts: ScaffoldOptions = {
       name,
       framework: resolvedFramework,
@@ -1730,6 +2032,7 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
       sections: sections.length > 0 ? sections : DEFAULT_SECTIONS,
       pm,
       ...(isRuntime(runtimeArg) ? { runtime: runtimeArg } : {}),
+      ...(exampleArgs.length > 0 ? { examples: exampleArgs.filter(isExample) } : {}),
     }
 
     const targetDir = join(cwd, name)

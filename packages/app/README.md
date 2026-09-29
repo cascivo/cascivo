@@ -171,6 +171,60 @@ On the client, a non-2xx response throws `HttpError` with the server's message.
 
 Streaming uses [`@cascivo/data`](../data), which provides SSE over `fetch`, so a streaming request can carry a POST body.
 
+## Multiplayer — `@cascivo/app/sync` and `@cascivo/app/sync-server`
+
+These are signals that everyone in a room shares, over one WebSocket to a Durable Object.
+
+```ts
+// in the app
+import { connectRoom } from '@cascivo/app/sync'
+
+const room = connectRoom('/api/rooms/team')
+const title = room.signal('title', 'Untitled', parseString) // a signal every visitor shares
+const notes = room.map('notes', parseNote) // one path per entry
+
+title.set('Roadmap') // applied locally at once, then confirmed by the room
+notes.set(crypto.randomUUID(), { text: '' })
+room.setPresence({ x, y }) // cursors, selections; room.presence has everyone else
+room.status.value // 'connecting' | 'open' | 'closed'; it reconnects on its own
+```
+
+```ts
+// worker/index.ts
+import { roomResponse } from '@cascivo/app/sync-server'
+export { SyncRoom } from '@cascivo/app/sync-server' // the Durable Object class
+
+export default {
+  fetch(request: Request, env: Env) {
+    const room = /^\/api\/rooms\/([^/]+)$/.exec(new URL(request.url).pathname)
+    if (room) return roomResponse(request, env.ROOMS, room[1]!)
+    // …
+  },
+}
+```
+
+```jsonc
+// wrangler.jsonc
+"durable_objects": { "bindings": [{ "name": "ROOMS", "class_name": "SyncRoom" }] },
+"migrations": [{ "tag": "v1", "new_sqlite_classes": ["SyncRoom"] }]
+```
+
+How consistency works:
+
+- **Each path is last-writer-wins, in the order the room receives writes.** Your own write shows at once as pending. The room echoes every write to every client, including the writer, and each client applies the echo as authoritative. When two people write the same path at the same time, both briefly see their own value, then settle on the same one.
+- **Entries in a map never collide.** Two people editing two different notes are fine.
+- **Two people typing in the same note is last-writer-wins, not a merge.** For true co-editing of one text, use a CRDT such as `y-partyserver`.
+
+How data is treated:
+
+- **Values come from other people, so every `signal` and `map` takes a parser.** A value that fails the parser is ignored and logged once. It is never cast into your type.
+- **The room validates every message it receives.** It checks path grammar, value size and JSON. It rejects anything else with an `error` message and stores nothing.
+- **Values persist in Durable Object storage. Presence does not.** Every connection is present, with value `{}`, from the moment it joins until its socket closes.
+- **The room uses the WebSocket Hibernation API**, so an idle room costs nothing.
+- **Durable Objects work on a temporary Cloudflare account**, so a multiplayer app can be shared with `wrangler deploy --temporary` and no sign-up.
+
+`cascivo create --framework cloudflare --example board` scaffolds a working board with draggable notes and live cursors.
+
 ## Install
 
 ```sh

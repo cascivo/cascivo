@@ -404,3 +404,43 @@ describe('buildScaffold — sharing a static build', () => {
     })
   }
 })
+
+describe('buildScaffold — cloudflare --example board', () => {
+  const map = fileMap(
+    buildScaffold({
+      name: 'Edge App',
+      framework: 'cloudflare',
+      theme: 'dark',
+      sections: ['Dashboard'],
+      examples: ['board'],
+    }),
+  )
+
+  it('adds a /board route backed by a SyncRoom Durable Object', () => {
+    expect(map.has('src/routes/board.tsx')).toBe(true)
+    expect(map.has('src/board.ts')).toBe(true)
+    expect(map.get('src/routes.gen.ts')).toContain("lazyRoute('/board'")
+    expect(map.get('src/App.tsx')).toContain("href: '/board'")
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"class_name": "SyncRoom"')
+    expect(wrangler).toContain('"new_sqlite_classes": ["SyncRoom"]')
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain("export { SyncRoom } from '@cascivo/app/sync-server'")
+    expect(worker).toContain('roomResponse(request, env.ROOMS')
+  })
+
+  it('parses peer data instead of casting it', () => {
+    const board = map.get('src/board.ts')!
+    expect(board).toContain("room.map('notes', parseNote)")
+    expect(board).not.toMatch(/JSON\.parse\([^)]*\) as /)
+  })
+
+  it('leaves the default scaffold without a Durable Object', () => {
+    const plain = fileMap(
+      buildScaffold({ name: 'x', framework: 'cloudflare', theme: 'light', sections: ['Home'] }),
+    )
+    expect(plain.has('src/board.ts')).toBe(false)
+    expect(plain.get('wrangler.jsonc')).not.toContain('durable_objects')
+    expect(plain.get('worker/index.ts')).toContain('fetch: handleApi')
+  })
+})

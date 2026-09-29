@@ -6488,6 +6488,76 @@
           }
         }
       },
+      "./sync": {
+        "values": ["connectRoom"],
+        "types": ["Parser", "Room", "RoomOptions", "RoomStatus", "SharedMap", "SharedSignal"],
+        "declarations": {
+          "connectRoom": "declare function connectRoom(url: string, options?: RoomOptions): Room",
+          "Parser": "type<T> = (raw: unknown) => T",
+          "Room": {
+            "readonly status": "ReadonlySignal<RoomStatus>",
+            "readonly self": "ReadonlySignal<string | null>",
+            "readonly presence": "ReadonlySignal<Readonly<Record<string, unknown>>>",
+            "setPresence": "(value: Json): void",
+            "signal<T>(path: string, initial: T, parse: Parser<T>): SharedSignal<T>": "",
+            "map<T>(prefix: string, parse: Parser<T>): SharedMap<T>": "",
+            "close": "(): void"
+          },
+          "RoomOptions": {
+            "WebSocket?": "new (url: string) => WebSocket",
+            "minReconnectMs?": "number",
+            "maxReconnectMs?": "number"
+          },
+          "RoomStatus": "type = 'connecting' | 'open' | 'closed'",
+          "SharedMap": {
+            "(extends)": "<T>",
+            "readonly value": "Readonly<Record<string, T>>",
+            "readonly signal": "ReadonlySignal<Readonly<Record<string, T>>>",
+            "set": "(id: string, value: T): void",
+            "delete": "(id: string): void"
+          },
+          "SharedSignal": {
+            "(extends)": "<T>",
+            "readonly value": "T",
+            "readonly signal": "ReadonlySignal<T>",
+            "set": "(value: T): void"
+          }
+        }
+      },
+      "./sync-server": {
+        "values": ["SyncRoom", "roomResponse"],
+        "types": ["HibernatableWebSocket", "RoomNamespace", "SyncRoomState"],
+        "declarations": {
+          "HibernatableWebSocket": {
+            "send": "(message: string): void",
+            "close": "(code?: number, reason?: string): void",
+            "serializeAttachment": "(value: unknown): void",
+            "deserializeAttachment": "(): unknown"
+          },
+          "RoomNamespace": {
+            "(extends)": "<Id>",
+            "idFromName": "(name: string): Id",
+            "get": "(id: Id): { fetch(request: Request): Promise<Response>; }"
+          },
+          "roomResponse": "declare function roomResponse<Id>(request: Request, namespace: RoomNamespace<Id>, name: string): Promise<Response> | Response",
+          "SyncRoom": {
+            "private readonly ctx": "",
+            "constructor": "(ctx: SyncRoomState, _env?: unknown)",
+            "fetch": "(request: Request): Promise<Response>",
+            "accept": "(socket: HibernatableWebSocket): Promise<void>",
+            "webSocketMessage": "(socket: HibernatableWebSocket, raw: string | ArrayBuffer): Promise<void>",
+            "webSocketClose": "(socket: HibernatableWebSocket): Promise<void>",
+            "webSocketError": "(socket: HibernatableWebSocket): Promise<void>",
+            "private broadcast": "",
+            "(kind)": "class"
+          },
+          "SyncRoomState": {
+            "acceptWebSocket": "(socket: HibernatableWebSocket): void",
+            "getWebSockets": "(): HibernatableWebSocket[]",
+            "storage": "{ get<T = unknown>(key: string): Promise<T | undefined>; put(key: string, value: unknown): Promise<void>; delete(key: string): Promise<boolean>; list<T = unknown>(options: { prefix: string; }): Promise<Map<string, T>>; }"
+          }
+        }
+      },
       "./vite": {
         "values": ["cascivoRoutes", "fileToRoutePath", "generateRoutes", "scanRoutes"],
         "types": ["CascivoRoutesOptions", "CascivoRoutesPlugin", "RouteFile"],

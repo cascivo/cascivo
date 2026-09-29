@@ -17,6 +17,8 @@ const outDir = mkdtempSync(join(tmpdir(), 'cascivo-app-dts-'))
 const ENTRIES = [
   { name: 'index', src: 'src/index.ts' },
   { name: 'api', src: 'src/api.ts' },
+  { name: 'sync', src: 'src/sync.ts' },
+  { name: 'sync-server', src: 'src/sync-server.ts' },
   { name: 'vite', src: 'src/vite.ts' },
 ]
 

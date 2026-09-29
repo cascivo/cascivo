@@ -195,6 +195,12 @@ export const noteText: Promise<string> = notesClient.note({ params: { id: '1' } 
 export const notesHandler = createHandler(notesApi, { note: ({ params }) => params.id })
 export const routesPlugin = cascivoRoutes()
 export const routesSource: string = generateRoutes(['index.tsx'], './routes')
+import { connectRoom } from '@cascivo/app/sync'
+import { roomResponse, SyncRoom, type RoomNamespace } from '@cascivo/app/sync-server'
+export const sharedRoom = connectRoom('/api/rooms/demo')
+export const sharedTitle = sharedRoom.signal('title', '', (raw) => String(raw))
+export const roomClass: typeof SyncRoom = SyncRoom
+export const forwardRoom = (request: Request, ns: RoomNamespace<string>) => roomResponse(request, ns, 'demo')
 
 const VIEW: ViewConfig = {
   version: 1,

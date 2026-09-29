@@ -39,6 +39,16 @@
       "import": "./dist/api.js",
       "default": "./dist/api.js"
     },
+    "./sync": {
+      "types": "./dist/sync.d.ts",
+      "import": "./dist/sync.js",
+      "default": "./dist/sync.js"
+    },
+    "./sync-server": {
+      "types": "./dist/sync-server.d.ts",
+      "import": "./dist/sync-server.js",
+      "default": "./dist/sync-server.js"
+    },
     "./vite": {
       "types": "./dist/vite.d.ts",
       "import": "./dist/vite.js",
