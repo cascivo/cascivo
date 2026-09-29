@@ -1,6 +1,7 @@
 // Deploys the built SPA and the /api Worker as ONE Worker with static assets.
-// `pnpm deploy` builds and ships it; `pnpm dev:worker` runs it locally against the real
-// Workers AI binding (needs `wrangler login` — the AI binding always calls Cloudflare).
+// `pnpm run deploy` builds and ships it (plain `pnpm deploy` is a pnpm built-in).
+// `pnpm dev:worker` runs it locally against the real Workers AI binding (needs
+// `wrangler login` — the AI binding always calls Cloudflare).
 {
   "name": "cascivo-chat",
   "main": "worker/index.ts",

@@ -33,10 +33,27 @@ function runScriptCommand(pm: PackageManager, script: string): string {
   return pm === 'npm' ? `npm run ${script}` : `${pm} ${script}`
 }
 
-/** Project shape `create` emits. */
-export type Framework = 'react-vite' | 'astro'
+/**
+ * Like `runScriptCommand`, but always through `run`. A script named after a built-in
+ * command needs it: `pnpm deploy` is pnpm's own workspace deploy, not the `deploy` script.
+ */
+function runExplicitCommand(pm: PackageManager, script: string): string {
+  return `${pm} run ${script}`
+}
 
-export const FRAMEWORKS = ['react-vite', 'astro'] as const
+/** Project shape `create` emits. */
+export type Framework = 'react-vite' | 'astro' | 'cloudflare'
+
+export const FRAMEWORKS = ['react-vite', 'astro', 'cloudflare'] as const
+
+/** Client runtime for `--framework cloudflare`. The source is identical for both. */
+export type Runtime = 'preact' | 'react'
+
+export const RUNTIMES = ['preact', 'react'] as const
+
+function isRuntime(value: string): value is Runtime {
+  return (RUNTIMES as readonly string[]).includes(value)
+}
 
 export interface ScaffoldOptions {
   /** Project directory + package name. */
@@ -49,6 +66,8 @@ export interface ScaffoldOptions {
   sections: string[]
   /** Package manager for the generated README's commands (default npm). */
   pm?: PackageManager
+  /** Client runtime for the `cloudflare` framework. Defaults to `preact`. */
+  runtime?: Runtime
 }
 
 export interface ScaffoldFile {
@@ -951,9 +970,505 @@ Add more components with \`npx cascivo add <component>\`.
 `
 }
 
+/* ------------------------------------------------------------------------- *
+ * Cloudflare scaffold (`--framework cloudflare`)
+ *
+ * A client-rendered app and its API, deployed as ONE Worker with static assets. No SSR:
+ * the browser gets the SPA, `/api/*` reaches the Worker, and `@cloudflare/vite-plugin`
+ * runs that Worker in workerd during `vite dev`, so dev and production execute the same
+ * runtime. The shape comes from `apps/examples/chat` (its FINDINGS.md), not from a design
+ * exercise: the source is typed against React and the runtime is picked in the bundler,
+ * shared wire types live in one file both sides import, and streaming goes through
+ * `@cascivo/data`.
+ * ------------------------------------------------------------------------- */
+
+/** Workers runtime date the scaffold targets. Bump deliberately, never to "today". */
+const COMPATIBILITY_DATE = '2026-09-01'
+
+function cfPackageJson(opts: ScaffoldOptions): string {
+  const pm = opts.pm ?? 'npm'
+  const preact = (opts.runtime ?? 'preact') === 'preact'
+  const pkg = {
+    name: packageName(opts.name),
+    private: true,
+    version: '0.0.0',
+    type: 'module',
+    scripts: {
+      dev: 'vite',
+      build: 'tsc && vite build',
+      preview: 'vite preview',
+      deploy: `${runScriptCommand(pm, 'build')} && wrangler deploy`,
+      typecheck: 'tsc --noEmit',
+      lint: 'eslint .',
+      format: 'prettier --write .',
+      'format:check': 'prettier --check .',
+    },
+    // Same prebuilt-path rules as the Vite scaffold (see `packageJson`): no @cascivo/core,
+    // no @cascivo/tokens. `@cascivo/data` and `@cascivo/storage` are the two batteries this
+    // app uses directly, so they are declared.
+    dependencies: {
+      '@cascivo/data': V['@cascivo/data']!,
+      '@cascivo/react': V['@cascivo/react']!,
+      '@cascivo/storage': V['@cascivo/storage']!,
+      '@cascivo/themes': V['@cascivo/themes']!,
+      '@preact/signals-react': SIGNALS_PEER,
+      ...(preact ? { preact: '^10.29.0' } : { react: '^19.0.0', 'react-dom': '^19.0.0' }),
+    },
+    devDependencies: {
+      '@cascivo/eslint-config': V['@cascivo/eslint-config']!,
+      '@cloudflare/vite-plugin': '^1.62.0',
+      '@eslint/js': '^9.0.0',
+      // The source is typed against React even when Preact runs it (see vite.config.ts), so
+      // React's types are always installed. Under Preact, `react`/`react-dom` are dev-only:
+      // they satisfy cascivo's peer ranges and are aliased away at build time.
+      '@types/react': '^19.0.0',
+      '@types/react-dom': '^19.0.0',
+      ...(preact
+        ? {
+            '@babel/core': '^7.0.0',
+            '@preact/preset-vite': '^2.10.0',
+            react: '^19.0.0',
+            'react-dom': '^19.0.0',
+          }
+        : { '@vitejs/plugin-react': '^6.0.0' }),
+      eslint: '^9.0.0',
+      'eslint-plugin-react-hooks': '^7.0.0',
+      prettier: '^3.0.0',
+      typescript: '^5.7.0',
+      'typescript-eslint': '^8.0.0',
+      vite: '^8.0.0',
+      wrangler: '^4.143.0',
+    },
+  }
+  return JSON.stringify(pkg, null, 2) + '\n'
+}
+
+function cfTsconfig(): string {
+  const cfg = JSON.parse(tsconfig()) as { include: string[] }
+  // `worker/` is type-checked with the app: it imports `src/protocol.ts`, and a protocol
+  // change should fail `tsc` on whichever side was not updated.
+  cfg.include = ['src', 'worker']
+  return JSON.stringify(cfg, null, 2) + '\n'
+}
+
+function cfViteConfig(runtime: Runtime): string {
+  const plugin =
+    runtime === 'preact'
+      ? `import preact from '@preact/preset-vite'`
+      : `import react from '@vitejs/plugin-react'`
+  const call = runtime === 'preact' ? 'preact()' : 'react()'
+  const note =
+    runtime === 'preact'
+      ? `// The source is written against React's types; @preact/preset-vite aliases react and
+// react-dom to preact/compat, so the bundle runs on Preact (about a third of React's JS in
+// this starter: ~27 KB gzip against ~85 KB). To run on React instead, swap this plugin
+// for @vitejs/plugin-react — no source changes.`
+      : `// Runs on React. To ship Preact instead (about a third of the JS in this starter), swap
+// this plugin for @preact/preset-vite — it aliases react/react-dom to preact/compat; no
+// source changes.`
+  return `${plugin}
+import { cloudflare } from '@cloudflare/vite-plugin'
+import { defineConfig } from 'vite'
+
+${note}
+//
+// cloudflare() runs worker/index.ts in workerd during \`vite dev\` and builds it with the
+// client, so dev and production execute the same runtime. Routing is in wrangler.jsonc.
+export default defineConfig({
+  plugins: [${call}, cloudflare()],
+})
+`
+}
+
+function wranglerJsonc(opts: ScaffoldOptions): string {
+  return `// Cloudflare deploy config. \`${runExplicitCommand(opts.pm ?? 'npm', 'deploy')}\` builds and ships the SPA and
+// the Worker together. https://developers.cloudflare.com/workers/wrangler/configuration/
+{
+  "name": "${packageName(opts.name)}",
+  "main": "./worker/index.ts",
+  "compatibility_date": "${COMPATIBILITY_DATE}",
+  "assets": {
+    // Client-side app: an unknown path serves index.html, and the client renders it.
+    "not_found_handling": "single-page-application",
+    // Only the API reaches the Worker; static assets are served without invoking it.
+    "run_worker_first": ["/api/*"]
+  },
+  "observability": { "enabled": true }
+  // Add bindings here (KV, D1, R2, Durable Objects, Workers AI) and read them from the
+  // \`env\` argument of the Worker's fetch handler.
+}
+`
+}
+
+function cfProtocolTs(): string {
+  return `/**
+ * The wire contract between the browser and the Worker. Both sides import this file, so
+ * changing the protocol is a type error on whichever side was not updated.
+ */
+export const TICKS_ENDPOINT = '/api/ticks'
+
+/** How many ticks one stream sends before it ends. */
+export const TICKS_PER_STREAM = 30
+
+export interface Tick {
+  n: number
+  /** ISO timestamp, set by the Worker. */
+  at: string
+}
+
+/**
+ * Parses a tick event's data. The payload crosses the network, so it is checked rather
+ * than cast — \`JSON.parse\` returns \`any\`, and \`as Tick\` would prove nothing.
+ */
+export function parseTick(data: string): Tick {
+  const raw: unknown = JSON.parse(data)
+  if (typeof raw === 'object' && raw !== null) {
+    const { n, at } = raw as Record<string, unknown>
+    if (typeof n === 'number' && typeof at === 'string') return { n, at }
+  }
+  throw new Error('Malformed tick event')
+}
+`
+}
+
+function cfWorkerTs(): string {
+  return `import { formatSSE } from '@cascivo/data'
+import { TICKS_ENDPOINT, TICKS_PER_STREAM } from '../src/protocol'
+import type { Tick } from '../src/protocol'
+
+const encoder = new TextEncoder()
+
+/**
+ * A server-sent event stream: one \`tick\` a second, then \`done\`. When the client
+ * disconnects, the runtime cancels the stream and \`cancel\` stops the timer.
+ */
+function ticks(): Response {
+  let timer: ReturnType<typeof setInterval> | undefined
+  let n = 0
+  const body = new ReadableStream<Uint8Array>({
+    start(controller) {
+      const send = () => {
+        n += 1
+        const tick: Tick = { n, at: new Date().toISOString() }
+        controller.enqueue(encoder.encode(formatSSE('tick', tick)))
+        if (n >= TICKS_PER_STREAM) {
+          clearInterval(timer)
+          controller.enqueue(encoder.encode(formatSSE('done', {})))
+          controller.close()
+        }
+      }
+      send()
+      timer = setInterval(send, 1000)
+    },
+    cancel() {
+      clearInterval(timer)
+    },
+  })
+  return new Response(body, {
+    headers: {
+      'content-type': 'text/event-stream; charset=utf-8',
+      'cache-control': 'no-cache, no-transform',
+    },
+  })
+}
+
+/**
+ * The API. wrangler.jsonc routes only \`/api/*\` here; every other path is a static asset
+ * or, for an unknown path, the SPA's index.html.
+ *
+ * To use a binding, declare it in wrangler.jsonc and take it as the second argument:
+ * \`async fetch(request: Request, env: { DB: D1Database })\`.
+ */
+export default {
+  async fetch(request: Request): Promise<Response> {
+    const { pathname } = new URL(request.url)
+    if (pathname === TICKS_ENDPOINT && request.method === 'GET') return ticks()
+    return Response.json({ error: \`No route for \${request.method} \${pathname}\` }, { status: 404 })
+  },
+}
+`
+}
+
+function cfLiveTs(): string {
+  return `import { fetchSSE } from '@cascivo/data'
+import { signal } from '@cascivo/react'
+import { TICKS_ENDPOINT, parseTick } from './protocol'
+import type { Tick } from './protocol'
+
+// Module-level signals: any component that reads them re-renders when they change, and
+// writing them from plain functions needs no hooks.
+export const ticks = signal<Tick[]>([])
+export const status = signal<'idle' | 'live' | 'error'>('idle')
+export const error = signal<string | null>(null)
+
+let controller: AbortController | null = null
+
+/** Opens the Worker's event stream and appends each tick until it ends or is stopped. */
+export async function connect(): Promise<void> {
+  if (controller) return
+  const abort = new AbortController()
+  controller = abort
+  ticks.value = []
+  error.value = null
+  status.value = 'live'
+  try {
+    for await (const event of fetchSSE(TICKS_ENDPOINT, { signal: abort.signal })) {
+      if (event.event === 'tick') ticks.value = [...ticks.value, parseTick(event.data)]
+      else if (event.event === 'done') break
+    }
+    status.value = 'idle'
+  } catch (cause) {
+    if (abort.signal.aborted) {
+      status.value = 'idle'
+    } else {
+      status.value = 'error'
+      error.value = cause instanceof Error ? cause.message : String(cause)
+    }
+  } finally {
+    if (controller === abort) controller = null
+  }
+}
+
+export function disconnect(): void {
+  controller?.abort()
+}
+`
+}
+
+function cfLiveCardTsx(): string {
+  return `import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Flex,
+  Text,
+  useSignals,
+} from '@cascivo/react'
+import { TICKS_PER_STREAM } from './protocol'
+import { connect, disconnect, error, status, ticks } from './live'
+
+/** Streams server-sent events from worker/index.ts into signals via src/live.ts. */
+export function LiveCard() {
+  useSignals()
+  const live = status.value === 'live'
+  const latest = ticks.value.at(-1)
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Live from your Worker</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Flex gap={3}>
+          <Text muted>
+            <code>worker/index.ts</code> streams server-sent events; <code>src/live.ts</code>{' '}
+            reads them with <code>fetchSSE</code> from <code>@cascivo/data</code>.
+          </Text>
+          <Flex direction="horizontal" align="center" gap={2}>
+            <Badge variant={live ? 'success' : status.value === 'error' ? 'danger' : 'neutral'}>
+              {live ? 'Live' : status.value === 'error' ? 'Error' : 'Idle'}
+            </Badge>
+            <Text>
+              {latest
+                ? \`Tick \${latest.n} of \${TICKS_PER_STREAM} at \${new Date(latest.at).toLocaleTimeString()}\`
+                : 'No events yet'}
+            </Text>
+          </Flex>
+          {error.value !== null && <Text muted>{error.value}</Text>}
+          <div>
+            <Button variant={live ? 'secondary' : 'primary'} onClick={live ? disconnect : () => void connect()}>
+              {live ? 'Disconnect' : 'Connect'}
+            </Button>
+          </div>
+        </Flex>
+      </CardContent>
+    </Card>
+  )
+}
+`
+}
+
+/** Like `appTsx`, but the active section survives a reload via `@cascivo/storage`. */
+function cfAppTsx(sections: Section[]): string {
+  const sectionImports = sections
+    .map((s) => `import { ${s.component} } from './sections/${s.component}'`)
+    .join('\n')
+  const keys = sections.map((s) => `'${s.key}'`).join(', ')
+  const navItems = sections
+    .map(
+      (s) => `    {
+      label: '${s.label.replace(/'/g, "\\'")}',
+      active: current === '${s.key}',
+      onClick: (e) => {
+        e.preventDefault()
+        section.value = '${s.key}'
+      },
+    },`,
+    )
+    .join('\n')
+  const renderedSections = sections
+    .map((s) => `      {current === '${s.key}' && <${s.component} />}`)
+    .join('\n')
+
+  return `import { useSignals, type SideNavItem } from '@cascivo/react'
+import { persistedSignal } from '@cascivo/storage'
+import { Shell } from './Shell'
+${sectionImports}
+
+const SECTIONS = [${keys}] as const
+type Section = (typeof SECTIONS)[number]
+
+function isSection(value: string): value is Section {
+  return (SECTIONS as readonly string[]).includes(value)
+}
+
+// Persisted to localStorage, so a reload returns to the same section. A stored key from an
+// older build (a renamed section, say) falls back to the first one instead of rendering
+// nothing. For larger data, pass \`{ driver: indexedDBDriver() }\` from @cascivo/storage.
+const section = persistedSignal<string>('app.section', '${sections[0]!.key}')
+
+export default function App() {
+  useSignals()
+  const current: Section = isSection(section.value) ? section.value : '${sections[0]!.key}'
+
+  const navItems: SideNavItem[] = [
+${navItems}
+  ]
+
+  return (
+    <Shell navItems={navItems}>
+${renderedSections}
+    </Shell>
+  )
+}
+`
+}
+
+function cfFirstSectionTsx(section: Section): string {
+  return `import { Flex, Heading, Text } from '@cascivo/react'
+import { LiveCard } from '../LiveCard'
+
+export function ${section.component}() {
+  return (
+    <Flex gap={6}>
+      <Flex gap={2}>
+        <Heading level={1}>${section.label}</Heading>
+        <Text muted>
+          Edit <code>src/sections/${section.component}.tsx</code> to build out this page.
+        </Text>
+      </Flex>
+      <LiveCard />
+    </Flex>
+  )
+}
+`
+}
+
+function cfGitignore(): string {
+  return `node_modules
+dist
+.wrangler
+.dev.vars*
+*.local
+.DS_Store
+`
+}
+
+function cfReadme(opts: ScaffoldOptions): string {
+  const pm = opts.pm ?? 'npm'
+  const runtime = opts.runtime ?? 'preact'
+  return `# ${opts.name}
+
+A [cascivo](https://cascivo.com) app on Cloudflare: a client-rendered
+${runtime === 'preact' ? 'Preact' : 'React'} app and its API, deployed as one Worker.
+There is no server rendering; the browser gets the app, and \`/api/*\` reaches the Worker.
+
+## Develop
+
+\`\`\`sh
+${installAllCommand(pm)}
+${runScriptCommand(pm, 'dev')}
+\`\`\`
+
+\`vite dev\` runs \`worker/index.ts\` in workerd, the same runtime as production, via
+\`@cloudflare/vite-plugin\`.
+
+## Deploy
+
+\`\`\`sh
+npx wrangler login   # once
+${runExplicitCommand(pm, 'deploy')}
+\`\`\`
+
+## Structure
+
+- \`worker/index.ts\` — the API. Add routes here; add bindings (KV, D1, R2, Durable Objects,
+  Workers AI) in \`wrangler.jsonc\` and read them from \`env\`.
+- \`src/protocol.ts\` — types and parsers both sides import. Change the protocol here.
+- \`src/live.ts\` + \`src/LiveCard.tsx\` — a server-sent event stream read with \`fetchSSE\`
+  from \`@cascivo/data\`, into signals. Works with POST bodies too (an AI chat, say).
+- \`src/App.tsx\` — nav items; the active section persists via \`@cascivo/storage\`.
+- \`src/Shell.tsx\` — the app shell (header + side nav + content slot). Router-agnostic.
+- \`src/sections/\` — one component per nav item.
+
+Add more components with \`npx cascivo add <component>\`.
+
+## ${runtime === 'preact' ? 'Preact or React' : 'React or Preact'}
+
+The source is typed against React. The runtime is one plugin in \`vite.config.ts\`:
+\`@preact/preset-vite\` runs it on Preact, \`@vitejs/plugin-react\` on React. Switching
+needs no source changes; swap the plugin and the matching dependencies. For this starter,
+Preact ships about a third of the client JS (~27 KB gzip against ~85 KB).
+`
+}
+
+function cfAgentsMd(opts: ScaffoldOptions): string {
+  return `${agentsMd(opts)}
+## Server
+
+The API is \`worker/index.ts\`, a Cloudflare Worker. \`wrangler.jsonc\` routes only
+\`/api/*\` to it. Put request/response types in \`src/protocol.ts\`, which both sides
+import, and parse every payload that crosses the network instead of casting it. Stream with
+\`formatSSE\` in the Worker and \`fetchSSE\` in the browser, both from \`@cascivo/data\`.
+`
+}
+
+function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): ScaffoldFile[] {
+  const runtime = opts.runtime ?? 'preact'
+  return [
+    { path: 'package.json', contents: cfPackageJson(opts) },
+    { path: 'tsconfig.json', contents: cfTsconfig() },
+    { path: 'vite.config.ts', contents: cfViteConfig(runtime) },
+    { path: 'wrangler.jsonc', contents: wranglerJsonc(opts) },
+    { path: 'index.html', contents: indexHtml(opts) },
+    { path: 'eslint.config.js', contents: eslintConfig() },
+    { path: '.prettierrc', contents: prettierrc() },
+    { path: '.prettierignore', contents: prettierIgnore() },
+    { path: '.gitignore', contents: cfGitignore() },
+    { path: 'README.md', contents: cfReadme(opts) },
+    { path: 'AGENTS.md', contents: cfAgentsMd(opts) },
+    { path: 'worker/index.ts', contents: cfWorkerTs() },
+    { path: 'src/protocol.ts', contents: cfProtocolTs() },
+    { path: 'src/live.ts', contents: cfLiveTs() },
+    { path: 'src/LiveCard.tsx', contents: cfLiveCardTsx() },
+    { path: 'src/main.tsx', contents: mainTsx() },
+    { path: 'src/vite-env.d.ts', contents: viteEnv() },
+    { path: 'src/App.tsx', contents: cfAppTsx(sections) },
+    { path: 'src/Shell.tsx', contents: shellTsx(opts) },
+    ...sections.map((s, i) => ({
+      path: `src/sections/${s.component}.tsx`,
+      contents: i === 0 ? cfFirstSectionTsx(s) : sectionTsx(s),
+    })),
+  ]
+}
+
 export function buildScaffold(opts: ScaffoldOptions): ScaffoldFile[] {
   const sections = resolveSections(opts.sections)
   if (opts.framework === 'astro') return buildAstroScaffold(opts, sections)
+  if (opts.framework === 'cloudflare') return buildCloudflareScaffold(opts, sections)
   return [
     { path: 'package.json', contents: packageJson(opts) },
     { path: 'tsconfig.json', contents: tsconfig() },
@@ -1019,6 +1534,7 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
     'sections',
     'template',
     'framework',
+    'runtime',
   ])[0]
   const themeArg = flagValue(args, 'theme')
   const sectionsArg = flagValue(args, 'sections')
@@ -1026,6 +1542,13 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
   const frameworkArg = (flagValue(args, 'framework') ?? '').toLowerCase()
   if (frameworkArg && !(FRAMEWORKS as readonly string[]).includes(frameworkArg)) {
     console.error(`Unknown framework "${frameworkArg}". Expected one of: ${FRAMEWORKS.join(', ')}.`)
+    process.exitCode = 1
+    return
+  }
+
+  const runtimeArg = (flagValue(args, 'runtime') ?? '').toLowerCase()
+  if (runtimeArg && !isRuntime(runtimeArg)) {
+    console.error(`Unknown runtime "${runtimeArg}". Expected one of: ${RUNTIMES.join(', ')}.`)
     process.exitCode = 1
     return
   }
@@ -1091,6 +1614,7 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
       theme: resolvedTheme,
       sections: sections.length > 0 ? sections : DEFAULT_SECTIONS,
       pm,
+      ...(isRuntime(runtimeArg) ? { runtime: runtimeArg } : {}),
     }
 
     const targetDir = join(cwd, name)
@@ -1127,7 +1651,11 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
     console.log('  No cascivo.config.ts is written — this app uses the prebuilt @cascivo/react')
     console.log('  packages and never copies source. `cascivo add <component>` writes the')
     console.log('  config itself the first time you vendor a component.')
-    if (resolvedFramework === 'astro') {
+    if (resolvedFramework === 'cloudflare') {
+      console.log('\n  worker/index.ts is the API (wrangler.jsonc routes /api/* to it); `dev`')
+      console.log('  runs it in workerd. Deploy with `npx wrangler login` once, then the')
+      console.log(`  deploy script: ${runExplicitCommand(pm, 'deploy')}`)
+    } else if (resolvedFramework === 'astro') {
       console.log('\n  Pages are real Astro routes — no client router to add. Only src/')
       console.log('  components/Shell.tsx hydrates (client:load, for the mobile nav drawer);')
       console.log('  page content is server-rendered and ships no JS. See')

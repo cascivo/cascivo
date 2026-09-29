@@ -7,7 +7,7 @@ This file records what the app showed.
 **Not verified:** the app has not yet been run against **real** Workers AI. This environment
 has no Cloudflare account. The Worker is tested end-to-end against a mock binding that
 produces the documented Workers AI stream format: `data: {"response":"…"}` chunks, then
-`data: [DONE]`. Run `pnpm dev:worker` (after `npx wrangler login`) or `pnpm deploy` to close
+`data: [DONE]`. Run `pnpm dev:worker` (after `npx wrangler login`) or `pnpm run deploy` to close
 that gap.
 
 ## Bugs found in cascivo (fixed in this change)

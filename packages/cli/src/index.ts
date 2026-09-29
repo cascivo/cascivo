@@ -95,10 +95,13 @@ Examples:
 
   create: `Usage: cascivo create [name] [options]
 
-Scaffold a new ready-to-run app — Vite + React + TypeScript, pre-wired with the
-cascivo app shell, side navigation, header, and a theme.
+Scaffold a new ready-to-run app, pre-wired with the cascivo app shell, side
+navigation, header, and a theme.
 
 Options:
+  --framework <name>        react-vite (default), astro, or cloudflare (a client app and
+                            its API, deployed as one Cloudflare Worker)
+  --runtime <name>          preact (default) or react — for --framework cloudflare
   --template <spec>         Start from a marketplace template (@ns/name or owner/repo/name)
   --theme <name>            Theme to install (${THEME_LIST})
   --sections "<a, b>"       Comma-separated nav section labels (one component each)

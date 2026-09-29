@@ -136,6 +136,9 @@ const NO_JS_BUDGET: Record<string, string> = {
   '@cascivo/docs': 'content-only — markdown + JSON reference bundle, no JS entry',
   '@cascivo/docspack':
     'content-only — .llms/ chunk markdown + manifest for the docspack indexer, no JS entry',
+  'create-cascivo':
+    'bin-only — the `npm create cascivo` launcher. Three lines that call `cascivo create`, ' +
+    'whose size the `cascivo` budget already measures; nothing here lands in an app bundle.',
   '@cascivo/email-preview':
     'bin-only — a dev server reached through `npx`, never imported. Its JS is the CLI and ' +
     'the UI Vite serves at dev time, neither of which lands in an adopter bundle, so a ' +

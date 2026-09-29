@@ -299,6 +299,11 @@
       ]
     },
     {
+      "name": "create-cascivo",
+      "version": "0.0.0",
+      "releases": []
+    },
+    {
       "name": "@cascivo/data",
       "version": "0.0.0",
       "releases": []

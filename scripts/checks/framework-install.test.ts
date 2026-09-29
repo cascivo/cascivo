@@ -29,8 +29,8 @@
  * requires the check to fail — a canary that cannot fail is worth nothing, which is the
  * failure mode this whole directory documents.
  *
- * Cost: a pack + two installs + four builds — ~30s with a warm pnpm store, a few minutes
- * cold, and it needs network access. It runs in CI after the build, next to
+ * Cost: a pack + three installs + six builds — about a minute with a warm pnpm store, a
+ * few minutes cold, and it needs network access. It runs in CI after the build, next to
  * `isolated:check`; it is NOT in `pnpm ready`.
  *
  * Run: `pnpm framework:check` (requires a prior `pnpm build`; skips cleanly without one).
@@ -58,8 +58,8 @@ const CLI = join(REPO_ROOT, 'packages', 'cli', 'dist', 'index.mjs')
  * Any inter-cascivo edge missing here resolves from the npm REGISTRY instead of this build —
  * which would silently test the last published copy. Asserted below, not assumed.
  */
-const PACKAGES = ['react', 'core', 'themes', 'tokens', 'i18n', 'storage', 'icons']
-const NEEDS_DIST = ['react', 'core', 'i18n', 'storage', 'icons']
+const PACKAGES = ['react', 'core', 'themes', 'tokens', 'i18n', 'storage', 'icons', 'data']
+const NEEDS_DIST = ['react', 'core', 'i18n', 'storage', 'icons', 'data']
 
 const built = NEEDS_DIST.every((p) => existsSync(join(REPO_ROOT, 'packages', p, 'dist')))
 const cliBuilt = existsSync(CLI)
@@ -98,7 +98,7 @@ function tarballFor(pkg: string): string {
  */
 function scaffold(framework: string, name: string): string {
   const work = mkdtempSync(join(tmpdir(), `cascivo-fw-${framework}-`))
-  run('node', [CLI, 'create', name, '--framework', framework, '--yes'], work)
+  run('node', [CLI, 'create', name, '--framework', framework, '--yes', '--pm', 'pnpm'], work)
   const app = join(work, name)
 
   const manifestPath = join(app, 'package.json')
@@ -309,5 +309,80 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
           'The scaffold should ship only the components it uses.',
       )
     })
+  })
+
+  /**
+   * The client-app-on-Cloudflare scaffold. Two things only a real install can show: that
+   * `@cloudflare/vite-plugin` + `@preact/preset-vite` build the pair from packed tarballs, and
+   * that the BUILT Worker — with `@cascivo/data` bundled into it — still speaks SSE.
+   */
+  describe('cloudflare', () => {
+    let app: string
+
+    /** The Worker bundle: the `dist/` entry the plugin wrote a deploy-ready wrangler.json into. */
+    function workerEntry(): string | undefined {
+      const dist = join(app, 'dist')
+      const dir = readdirSync(dist).find((d) => existsSync(join(dist, d, 'wrangler.json')))
+      return dir ? join(dist, dir, 'index.js') : undefined
+    }
+
+    before(() => {
+      if (!ready) return
+      app = scaffold('cloudflare', 'cf-app')
+      run('pnpm', ['exec', 'tsc'], app)
+      run('pnpm', ['exec', 'vite', 'build'], app)
+    })
+
+    it('builds a styled client and a Worker bundle', { skip: !ready }, () => {
+      const assets = join(app, 'dist', 'client', 'assets')
+      const css = readdirSync(assets)
+        .filter((f) => f.endsWith('.css'))
+        .map((f) => readFileSync(join(assets, f), 'utf8'))
+        .join('\n')
+      assert.match(css, /\._shell_[a-z0-9]+_\d+/, 'AppShell CSS is missing from the client build.')
+      const worker = workerEntry()
+      assert.ok(worker && existsSync(worker), 'vite build emitted no Worker bundle.')
+    })
+
+    it('the built Worker streams server-sent events', { skip: !ready }, async () => {
+      const worker = (await import(workerEntry()!)) as {
+        default: { fetch(request: Request): Promise<Response> }
+      }
+      const response = await worker.default.fetch(new Request('http://localhost/api/ticks'))
+      assert.equal(response.status, 200)
+      assert.match(response.headers.get('content-type') ?? '', /^text\/event-stream/)
+      const reader = response.body!.getReader()
+      const { value } = await reader.read()
+      await reader.cancel()
+      assert.match(new TextDecoder().decode(value), /^event: tick\ndata: \{"n":1,/)
+    })
+
+    it(
+      'fails without the Cloudflare plugin (the canary can actually fail)',
+      { skip: !ready },
+      () => {
+        const config = join(app, 'vite.config.ts')
+        const original = readFileSync(config, 'utf8')
+        try {
+          writeFileSync(
+            config,
+            "import preact from '@preact/preset-vite'\n" +
+              "import { defineConfig } from 'vite'\n" +
+              'export default defineConfig({ plugins: [preact()] })\n',
+          )
+          execFileSync('pnpm', ['exec', 'vite', 'build', '--emptyOutDir'], {
+            cwd: app,
+            stdio: 'pipe',
+          })
+          assert.ok(
+            !existsSync(join(app, 'dist', 'client')) && workerEntry() === undefined,
+            'Without cloudflare() the build still produced a client/Worker pair, so the ' +
+              'assertions above are not measuring the plugin.',
+          )
+        } finally {
+          writeFileSync(config, original)
+        }
+      },
+    )
   })
 })

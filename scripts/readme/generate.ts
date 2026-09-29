@@ -164,7 +164,10 @@ const PUBLISHED_GROUPS: { title: string; names: string[] }[] = [
   },
   { title: 'Components & charts', names: ['@cascivo/react', '@cascivo/charts', '@cascivo/editor'] },
   { title: 'State, data & i18n', names: ['@cascivo/i18n', '@cascivo/storage', '@cascivo/data'] },
-  { title: 'CLI, registry & AI', names: ['cascivo', '@cascivo/registry', '@cascivo/mcp'] },
+  {
+    title: 'CLI, registry & AI',
+    names: ['cascivo', 'create-cascivo', '@cascivo/registry', '@cascivo/mcp'],
+  },
 ]
 
 function relDir(dir: string): string {

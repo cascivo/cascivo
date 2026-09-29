@@ -274,11 +274,12 @@ Published packages install from npm. Components themselves are copy-pasted into 
 
 ### CLI, registry & AI
 
-| Package                                  | Version                                                                                                                                      | Description                                                                      |
-| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| [`cascivo`](packages/cli)                | [![npm](https://img.shields.io/npm/v/cascivo?style=flat-square&color=0079bf)](https://www.npmjs.com/package/cascivo)                         | CLI — npx cascivo init / add / list / update                                     |
-| [`@cascivo/registry`](packages/registry) | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fregistry?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/registry) | Registry schema v2 types, validation, and static build for the cascivo ecosystem |
-| [`@cascivo/mcp`](packages/mcp)           | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fmcp?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/mcp)           | MCP server exposing the cascivo component registry to AI agents                  |
+| Package                                     | Version                                                                                                                                      | Description                                                                              |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| [`cascivo`](packages/cli)                   | [![npm](https://img.shields.io/npm/v/cascivo?style=flat-square&color=0079bf)](https://www.npmjs.com/package/cascivo)                         | CLI — npx cascivo init / add / list / update                                             |
+| [`create-cascivo`](packages/create-cascivo) | [![npm](https://img.shields.io/npm/v/create-cascivo?style=flat-square&color=0079bf)](https://www.npmjs.com/package/create-cascivo)           | npm create cascivo — scaffold a cascivo app (Vite, Astro, or a client app on Cloudflare) |
+| [`@cascivo/registry`](packages/registry)    | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fregistry?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/registry) | Registry schema v2 types, validation, and static build for the cascivo ecosystem         |
+| [`@cascivo/mcp`](packages/mcp)              | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fmcp?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/mcp)           | MCP server exposing the cascivo component registry to AI agents                          |
 
 ### More
 

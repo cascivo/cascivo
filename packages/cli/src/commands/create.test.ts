@@ -250,3 +250,110 @@ describe('buildScaffold — astro', () => {
     expect(dflt.has('astro.config.mjs')).toBe(false)
   })
 })
+
+describe('buildScaffold — cloudflare', () => {
+  const build = (runtime?: 'preact' | 'react') =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'dark',
+        sections: ['Dashboard', 'Reports'],
+        pm: 'pnpm',
+        ...(runtime ? { runtime } : {}),
+      }),
+    )
+  const map = build()
+  const pkg = JSON.parse(map.get('package.json')!) as {
+    scripts: Record<string, string>
+    dependencies: Record<string, string>
+    devDependencies: Record<string, string>
+  }
+
+  it('emits a client app plus a Worker, deployed as one', () => {
+    for (const path of [
+      'wrangler.jsonc',
+      'worker/index.ts',
+      'src/protocol.ts',
+      'src/live.ts',
+      'src/LiveCard.tsx',
+      'src/App.tsx',
+      'src/Shell.tsx',
+      'index.html',
+    ]) {
+      expect(map.has(path)).toBe(true)
+    }
+    expect(map.get('vite.config.ts')).toContain('cloudflare()')
+  })
+
+  it('routes only /api/* to the Worker and falls back to the SPA', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"main": "./worker/index.ts"')
+    expect(wrangler).toContain('"not_found_handling": "single-page-application"')
+    expect(wrangler).toContain('"run_worker_first": ["/api/*"]')
+  })
+
+  it('shares one protocol file between the Worker and the client', () => {
+    expect(map.get('worker/index.ts')).toContain("from '../src/protocol'")
+    expect(map.get('src/live.ts')).toContain("from './protocol'")
+    expect(JSON.parse(map.get('tsconfig.json')!).include).toEqual(['src', 'worker'])
+  })
+
+  it('streams with @cascivo/data on both sides, and parses rather than casts', () => {
+    expect(map.get('worker/index.ts')).toContain('formatSSE')
+    expect(map.get('src/live.ts')).toContain('fetchSSE')
+    expect(map.get('src/live.ts')).toContain('parseTick(event.data)')
+    expect(map.get('src/protocol.ts')).not.toMatch(/JSON\.parse\([^)]*\) as /)
+  })
+
+  it('persists the active section with @cascivo/storage, with a fallback for stale keys', () => {
+    const app = map.get('src/App.tsx')!
+    expect(app).toContain("persistedSignal<string>('app.section', 'dashboard')")
+    expect(app).toContain("isSection(section.value) ? section.value : 'dashboard'")
+  })
+
+  it('renders the live demo in the first section only', () => {
+    expect(map.get('src/sections/Dashboard.tsx')).toContain('<LiveCard />')
+    expect(map.get('src/sections/Reports.tsx')).not.toContain('LiveCard')
+  })
+
+  it('defaults to Preact, with React types and React as a dev-only peer', () => {
+    expect(map.get('vite.config.ts')).toContain("from '@preact/preset-vite'")
+    expect(pkg.dependencies['preact']).toBeDefined()
+    expect(pkg.dependencies['react']).toBeUndefined()
+    expect(pkg.devDependencies['react']).toBeDefined()
+    expect(pkg.devDependencies['@types/react']).toBeDefined()
+  })
+
+  it('switches to React with --runtime react, without changing the source', () => {
+    const react = build('react')
+    expect(react.get('vite.config.ts')).toContain("from '@vitejs/plugin-react'")
+    const reactPkg = JSON.parse(react.get('package.json')!) as {
+      dependencies: Record<string, string>
+    }
+    expect(reactPkg.dependencies['react']).toBeDefined()
+    expect(reactPkg.dependencies['preact']).toBeUndefined()
+    for (const path of ['src/App.tsx', 'src/live.ts', 'src/LiveCard.tsx', 'worker/index.ts']) {
+      expect(react.get(path)).toBe(map.get(path))
+    }
+  })
+
+  it('declares the batteries it imports, and not the transitive core/tokens', () => {
+    expect(pkg.dependencies['@cascivo/data']).toBeDefined()
+    expect(pkg.dependencies['@cascivo/storage']).toBeDefined()
+    expect(pkg.dependencies['@cascivo/core']).toBeUndefined()
+    expect(pkg.dependencies['@cascivo/tokens']).toBeUndefined()
+  })
+
+  // `pnpm deploy` is pnpm's built-in workspace deploy — it never reaches the script.
+  it('tells the user to run the deploy script through `run`', () => {
+    expect(map.get('README.md')).toContain('pnpm run deploy')
+    expect(map.get('README.md')).not.toMatch(/^pnpm deploy$/m)
+    expect(pkg.scripts['deploy']).toBe('pnpm build && wrangler deploy')
+  })
+
+  it('ignores wrangler state and local secrets', () => {
+    expect(map.get('.gitignore')).toContain('.wrangler')
+    expect(map.get('.gitignore')).toContain('.dev.vars')
+  })
+})

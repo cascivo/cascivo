@@ -43,7 +43,7 @@ pnpm dev
 pnpm dev:worker
 
 # Build and deploy the SPA and the Worker to your Cloudflare account
-pnpm deploy
+pnpm run deploy
 ```
 
 ## What it demos
