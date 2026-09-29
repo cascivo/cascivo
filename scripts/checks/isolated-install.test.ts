@@ -159,7 +159,9 @@ import {
   Preview,
   renderEmail,
   Section,
+  sendEmail,
   Text as EmailText,
+  type EmailSender,
   type EmailTheme,
 } from '@cascivo/email'
 // @cascivo/render — the JSON view runtime an agent's scaffold_view output feeds, and its
@@ -245,6 +247,15 @@ export function renderNotification(link: string, theme: EmailTheme) {
     </Html>,
     { theme, subject: 'Deploy finished', tier: 'strict' },
   )
+}
+
+/** …and send it through a binding typed by shape (Cloudflare's \`SendEmail\` is one). */
+export async function sendNotification(sender: EmailSender, to: string): Promise<string> {
+  const { messageId } = await sendEmail(sender, renderNotification('https://x.test', 'light'), {
+    from: { name: 'Deploys', email: 'deploys@x.test' },
+    to,
+  })
+  return messageId
 }
 
 export function App() {
