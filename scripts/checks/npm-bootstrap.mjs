@@ -17,43 +17,12 @@
  * evidence of anything — it is reported and does not fail the release.
  */
 
-import { readFileSync, readdirSync } from 'node:fs'
-import { join } from 'node:path'
+import { findMissing, listPublishable } from '../lib/npm-publishable.mjs'
 
-const REPO_ROOT = join(import.meta.dirname, '../..')
-const REGISTRY = 'https://registry.npmjs.org'
+const published = listPublishable()
+const { missing, unknown } = await findMissing(published)
 
-/** @type {{ name: string, dir: string, dependencies: Record<string, string> }[]} */
-const published = []
-for (const entry of readdirSync(join(REPO_ROOT, 'packages'))) {
-  let raw
-  try {
-    raw = readFileSync(join(REPO_ROOT, 'packages', entry, 'package.json'), 'utf8')
-  } catch {
-    continue
-  }
-  const pkg = JSON.parse(raw)
-  if (pkg.private === true) continue
-  published.push({ name: pkg.name, dir: entry, dependencies: pkg.dependencies ?? {} })
-}
-
-const missing = []
-const unknown = []
-
-await Promise.all(
-  published.map(async (pkg) => {
-    const url = `${REGISTRY}/${encodeURIComponent(pkg.name)}`
-    try {
-      const res = await fetch(url, { method: 'GET', headers: { accept: 'application/json' } })
-      if (res.status === 404) missing.push(pkg)
-      else if (!res.ok) unknown.push(`${pkg.name} (HTTP ${res.status})`)
-    } catch (error) {
-      unknown.push(`${pkg.name} (${error instanceof Error ? error.message : String(error)})`)
-    }
-  }),
-)
-
-for (const note of unknown.sort()) {
+for (const note of unknown) {
   console.log(`? could not check ${note} — not treated as missing`)
 }
 
@@ -62,7 +31,7 @@ if (missing.length === 0) {
   process.exit(0)
 }
 
-for (const pkg of missing.sort((a, b) => a.name.localeCompare(b.name))) {
+for (const pkg of missing) {
   const dependents = published
     .filter((other) => pkg.name in other.dependencies)
     .map((other) => other.name)
@@ -81,9 +50,8 @@ console.error(
     'attached to a package that already exists. Publish each name once by hand, then',
     'attach the publisher, and this workflow takes over again:',
     '',
-    '  pnpm build',
-    '  npm login   # or: NODE_AUTH_TOKEN=<short-lived granular token>',
-    '  NPM_CONFIG_PROVENANCE=false pnpm changeset publish   # ships only what npm lacks',
+    '  npm login',
+    '  pnpm release:bootstrap   # builds, dry-runs, confirms, then publishes only the missing names',
     '',
     '  # then, per package: npmjs.com/package/<name> → Settings → Trusted Publisher',
     '  #   org cascivo, repo cascivo, workflow release.yml, no environment',
