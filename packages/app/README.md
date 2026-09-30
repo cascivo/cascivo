@@ -514,6 +514,50 @@ return queryTable(env.DB, customers, body, parseCustomer) // { rows, total }
 `cascivo create --framework cloudflare --example crud` scaffolds a customers table with
 create, edit and delete.
 
+## Live dashboards — `@cascivo/app/live` and `@cascivo/app/live-server`
+
+Events go into a Queue. Its consumer adds them into per-second totals in a `LiveRoom` Durable
+Object, and every browser watching gets each second as it changes. The room keeps the window,
+so a new viewer, or one back from a dropped connection, starts with all of it.
+
+```ts
+// shared
+export const ops = defineLive({ metrics: ['orders', 'revenue', 'errors'], window: 120 })
+
+// the Worker
+export { LiveRoom } from '@cascivo/app/live-server'
+export default {
+  async fetch(request, env) {
+    // POST /api/events: env.EVENTS.sendBatch(events.map((e) => ({ body: e })))
+    // GET /api/live (WebSocket): roomResponse(request, env.LIVE, 'ops', { readOnly: true })
+  },
+  async queue(batch: LiveBatch, env: Env) {
+    await recordLive(ops, env.LIVE, 'ops', batch.messages.map((m) => m.body))
+  },
+}
+
+// the page
+const live = watchLive(ops, '/api/live')
+<LineChart series={[{ id: 'orders', label: 'Orders', data: live.points.value }]}
+  x={(p) => new Date(p.at)} y={(p) => p.values.orders} />
+```
+
+- `defineLive({ metrics, window, bucket })` names the metrics (each event adds to them) and
+  sets how many seconds are kept (default 120) in buckets of how many seconds (default 1).
+  `parseEvent`/`parseEvents` check what arrives; an unknown metric is refused.
+- `recordLive(live, namespace, room, bodies)` checks each message, drops the malformed ones
+  with a warning, and adds the rest in one request to the room. Events outside the window are
+  dropped, and buckets that leave it are deleted. It throws when the room cannot be reached,
+  so the Queue retries the batch. Delivery is at least once: a batch retried after a lost
+  reply counts twice.
+- `watchLive(live, url)` gives `points`, the whole window oldest first with a zero for each
+  empty bucket. It slides every bucket on this device's clock, with or without events.
+- `LiveRoom` is a `SyncRoom`, so browsers connect to it the same way. Only `recordLive` can
+  write: `roomResponse` strips the header it uses from any request it forwards.
+
+`cascivo create --framework cloudflare --example live` scaffolds an `/ops` dashboard with KPIs
+and charts, fed by simulated traffic from the page.
+
 ## Who may call the Worker — `@cascivo/app/guard`
 
 Three checks for the top of a Worker's `fetch`, or inside a `createHandler` handler. Each

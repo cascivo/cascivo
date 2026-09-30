@@ -67,6 +67,8 @@ const VALUE_PREFIX = 'v:'
 const READ_ONLY_HEADER = 'x-cascivo-room-read-only'
 /** Marks the request `writeRoom` sends; the only non-WebSocket request a room accepts. */
 const SERVER_WRITE_HEADER = 'x-cascivo-room-write'
+/** Every header a room trusts starts with this; `roomResponse` strips them all from a caller. */
+const ROOM_HEADER_PREFIX = 'x-cascivo-room-'
 
 /** One stored write, as `SyncRoom.onWrite` receives it. */
 export interface RoomWrite {
@@ -92,7 +94,7 @@ function attachmentOf(socket: HibernatableWebSocket): Attachment | null {
  */
 export class SyncRoom {
   constructor(
-    private readonly ctx: SyncRoomState,
+    protected readonly ctx: SyncRoomState,
     _env?: unknown,
   ) {}
 
@@ -198,6 +200,22 @@ export class SyncRoom {
 
   private serverWrites = 0
 
+  /** A stored value, for subclasses; `undefined` when the path is empty. */
+  protected read(path: string): Promise<Json | undefined> {
+    return this.ctx.storage.get<Json>(VALUE_PREFIX + path)
+  }
+
+  /** Every stored path under `prefix`, for subclasses. */
+  protected async paths(prefix: string): Promise<string[]> {
+    const stored = await this.ctx.storage.list({ prefix: VALUE_PREFIX + prefix })
+    return [...stored.keys()].map((key) => key.slice(VALUE_PREFIX.length))
+  }
+
+  /** A write from a subclass: stored and sent to every socket like a client's. `null` deletes. */
+  protected write(path: string, value: Json): Promise<void> {
+    return this.store(path, value, `server-${++this.serverWrites}`, 'server')
+  }
+
   /** A write from the Worker itself (`writeRoom`), checked like any client write. */
   private async serverWrite(request: Request): Promise<Response> {
     let body: unknown
@@ -217,7 +235,7 @@ export class SyncRoom {
       return Response.json({ error: 'Value is too large' }, { status: 413 })
     }
     // Parsed from JSON, so a JSON value by construction.
-    await this.store(path, value as Json, `server-${++this.serverWrites}`, 'server')
+    await this.write(path, value as Json)
     return new Response(null, { status: 204 })
   }
 
@@ -276,8 +294,9 @@ export function roomResponse<Id>(
   }
   // The room's own headers are set here and only here: a browser cannot send them through.
   const headers = new Headers(request.headers)
-  headers.delete(READ_ONLY_HEADER)
-  headers.delete(SERVER_WRITE_HEADER)
+  // Collected first: deleting while iterating a Headers object skips the entry after each delete.
+  const forged = Array.from(headers.keys()).filter((name) => name.startsWith(ROOM_HEADER_PREFIX))
+  for (const name of forged) headers.delete(name)
   if (options.readOnly) headers.set(READ_ONLY_HEADER, '1')
   return namespace.get(namespace.idFromName(name)).fetch(new Request(request, { headers }))
 }

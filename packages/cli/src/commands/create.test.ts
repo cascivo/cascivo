@@ -890,3 +890,54 @@ describe('create --auth', () => {
     expect(readdirSync(cwd)).toEqual([])
   })
 })
+
+describe('buildScaffold — cloudflare --example live', () => {
+  const map = fileMap(
+    buildScaffold({
+      name: 'Edge App',
+      framework: 'cloudflare',
+      theme: 'light',
+      sections: ['Dashboard'],
+      examples: ['live'],
+    }),
+  )
+
+  it('binds a queue both ways and the LiveRoom Durable Object', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"producers": [{ "binding": "EVENTS", "queue": "edge-app-events" }]')
+    expect(wrangler).toContain('"queue": "edge-app-events",\n        "max_batch_size": 100,')
+    expect(wrangler).toContain('{ "name": "LIVE", "class_name": "LiveRoom" }')
+    expect(wrangler).toContain('"new_sqlite_classes": ["LiveRoom"]')
+  })
+
+  it('consumes the queue into the room, which browsers may only watch', () => {
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain("export { LiveRoom } from '@cascivo/app/live-server'")
+    expect(worker).toContain('async queue(batch: LiveBatch, env: Env): Promise<void> {')
+    expect(worker).toContain('roomResponse(request, env.LIVE, OPS_ROOM, { readOnly: true })')
+    // The Worker's clock places events, not the sender's.
+    expect(worker).toContain('body: { at, values: event.values }')
+    expect(map.get('src/api.ts')).toContain('input: ops.parseEvents')
+  })
+
+  it('adds the /ops page with charts', () => {
+    expect(map.get('src/routes/ops.tsx')).toContain("watchLive(ops, '/api/live')")
+    expect(map.get('src/App.tsx')).toContain("href: '/ops'")
+    const pkg = JSON.parse(map.get('package.json')!) as { dependencies: Record<string, string> }
+    expect(pkg.dependencies['@cascivo/charts']).toMatch(/^\d/)
+    expect(map.get('README.md')).toContain('npx wrangler queues create edge-app-events')
+  })
+
+  it('lays out a long app name the way Prettier does', () => {
+    const long = fileMap(
+      buildScaffold({
+        name: 'a-rather-long-operations-dashboard-name',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        examples: ['live', 'crud', 'files'],
+      }),
+    ).get('wrangler.jsonc')!
+    for (const line of long.split('\n')) expect(line.length).toBeLessThanOrEqual(100)
+  })
+})

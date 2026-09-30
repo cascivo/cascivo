@@ -3,6 +3,8 @@ import type { StorageDriver } from '@cascivo/core'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { defineJob, watchJob } from './jobs'
 import { jobReporter } from './jobs-server'
+import { defineLive, watchLive } from './live'
+import { LiveRoom, recordLive } from './live-server'
 import { connectRoom, parseSnapshot } from './sync'
 import type { Room } from './sync'
 import { roomResponse, SyncRoom, writeRoom } from './sync-server'
@@ -619,5 +621,95 @@ describe('jobs', () => {
     expect(() => jobReporter(importJob, hub.namespace, 'abc').step(3)).toThrow(/out of range/)
     expect(() => importJob.roomName('../x')).toThrow(/Job ids/)
     expect(() => defineJob({ steps: [], output: parseSummary })).toThrow(/at least one step/)
+  })
+})
+
+describe('live dashboards', () => {
+  const ops = defineLive({ metrics: ['orders', 'errors'], window: 10 })
+  const liveHub = () => createHub((ctx) => new LiveRoom(ctx))
+  const second = (at: number) => Math.floor(at / 1000) * 1000
+
+  it('checks definitions and events', () => {
+    expect(() => defineLive({ metrics: [] })).toThrow(/at least one metric/)
+    expect(() => defineLive({ metrics: ['a b'] })).toThrow(/Metric names/)
+    expect(() => defineLive({ metrics: ['a'], window: 7200 })).toThrow(/window/)
+    expect(ops.parseEvent({ values: { orders: 2 } })).toEqual({ values: { orders: 2 } })
+    expect(() => ops.parseEvent({ values: { refunds: 1 } })).toThrow(/Unknown metric/)
+    expect(() => ops.parseEvent({ values: { orders: Number.NaN } })).toThrow(/not a number/)
+    expect(() => ops.parseEvent({ at: '5', values: {} })).toThrow(/time in ms/)
+    expect(() => ops.parseEvents(Array.from({ length: 101 }, () => ({ values: {} })))).toThrow(
+      /At most 100/,
+    )
+  })
+
+  it('fills the window with zeros where no event fell', () => {
+    const now = 1_000_000_500
+    const points = ops.points({ '999999': { orders: 3, errors: 1 } }, now)
+    expect(points).toHaveLength(10)
+    expect(points[0]!.at).toBe(999_991_000)
+    expect(points.at(-1)).toEqual({ at: 1_000_000_000, values: { orders: 0, errors: 0 } })
+    expect(points.at(-2)).toEqual({ at: 999_999_000, values: { orders: 3, errors: 1 } })
+  })
+
+  it('adds batches into per-second totals that every viewer sees, late joiners included', async () => {
+    const hub = liveHub()
+    const viewer = watchLive(ops, 'ws://test/live', { WebSocket: hub.FakeClient })
+    await settle()
+    const at = Date.now()
+    await recordLive(ops, hub.namespace, 'ops', [
+      { at, values: { orders: 1 } },
+      { at, values: { orders: 2, errors: 1 } },
+    ])
+    await recordLive(ops, hub.namespace, 'ops', [{ at, values: { orders: 4 } }])
+    await settle()
+    const bucket = viewer.points.value.find((p) => p.at === second(at))
+    expect(bucket?.values).toEqual({ orders: 7, errors: 1 })
+
+    const late = watchLive(ops, 'ws://test/live', { WebSocket: hub.FakeClient })
+    await settle()
+    expect(late.points.value.find((p) => p.at === second(at))?.values.orders).toBe(7)
+    viewer.close()
+    late.close()
+  })
+
+  it('drops events outside the window and malformed ones, and trims old buckets', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const hub = liveHub()
+    const now = Date.now()
+    await recordLive(ops, hub.namespace, 'ops', [
+      { at: now - 60_000, values: { orders: 1 } },
+      { values: { refunds: 1 } },
+      { values: { orders: 1 } },
+    ])
+    expect([...hub.storage.keys()]).toEqual([`v:b/${second(now) / 1000}`])
+    expect(warn.mock.calls.join(' ')).toContain('Unknown metric')
+    // A minute later the bucket has left the window, and the next record removes it.
+    const room = hub.room as LiveRoom
+    await room.record({ window: 10, bucket: 1, events: [] }, now + 60_000)
+    expect(hub.storage.size).toBe(0)
+  })
+
+  it('cannot be written through roomResponse', async () => {
+    const seen: Headers[] = []
+    const ns = {
+      idFromName: (name: string) => name,
+      get: () => ({
+        fetch: async (request: Request) => {
+          seen.push(request.headers)
+          return new Response(null, { status: 204 })
+        },
+      }),
+    }
+    await roomResponse(
+      new Request('http://x/api/live', {
+        method: 'POST',
+        headers: { upgrade: 'websocket', 'x-cascivo-room-live-record': '1' },
+      }),
+      ns,
+      'ops',
+      { readOnly: true },
+    )
+    expect(seen[0]!.get('x-cascivo-room-live-record')).toBeNull()
+    await expect(recordLive(ops, ns, '../ops', [{ values: {} }])).rejects.toThrow(/room name/)
   })
 })

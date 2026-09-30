@@ -6890,6 +6890,61 @@
           "verifyTurnstile": "declare function verifyTurnstile(token: string | null | undefined, options: TurnstileOptions): Promise<void>"
         }
       },
+      "./live": {
+        "values": ["MAX_EVENTS", "defineLive", "watchLive"],
+        "types": ["Live", "LiveEvent", "LivePoint", "WatchedLive"],
+        "declarations": {
+          "defineLive": "declare function defineLive<const M extends string>(definition: { metrics: readonly M[]; window?: number; bucket?: number; }): Live<M>",
+          "Live": {
+            "(extends)": "<M extends string>",
+            "readonly metrics": "readonly M[]",
+            "readonly window": "number",
+            "readonly bucket": "number",
+            "parseEvent": "(raw: unknown): LiveEvent<M>",
+            "parseEvents": "(raw: unknown): LiveEvent<M>[]",
+            "parseBucket": "(raw: unknown): Record<M, number>",
+            "bucketOf": "(at: number): number",
+            "points": "(buckets: Readonly<Record<string, Record<M, number>>>, now: number): LivePoint<M>[]"
+          },
+          "LiveEvent": {
+            "(extends)": "<M extends string>",
+            "at?": "number",
+            "values": "Partial<Record<M, number>>"
+          },
+          "LivePoint": {
+            "(extends)": "<M extends string>",
+            "at": "number",
+            "values": "Record<M, number>"
+          },
+          "MAX_EVENTS": "declare const MAX_EVENTS = 100",
+          "WatchedLive": {
+            "(extends)": "<M extends string>",
+            "readonly points": "ReadonlySignal<LivePoint<M>[]>",
+            "readonly connection": "ReadonlySignal<RoomStatus>",
+            "close": "(): void"
+          },
+          "watchLive": "declare function watchLive<M extends string>(live: Live<M>, url: string, options?: Pick<RoomOptions, 'WebSocket'>): WatchedLive<M>"
+        }
+      },
+      "./live-server": {
+        "values": ["LiveRoom", "recordLive"],
+        "types": ["LiveBatch", "LiveQueue"],
+        "declarations": {
+          "LiveBatch": {
+            "readonly messages": "readonly { readonly body: unknown; }[]"
+          },
+          "LiveQueue": {
+            "sendBatch": "(messages: Iterable<{ body: unknown; }>): Promise<void>"
+          },
+          "LiveRoom": {
+            "private recording": "",
+            "fetch": "(request: Request): Promise<Response>",
+            "record": "({ window, bucket, events }: RecordRequest, now: number): Promise<void>",
+            "(kind)": "class"
+          },
+          "recordLive": "declare function recordLive<M extends string, Id>(live: Live<M>, namespace: RoomNamespace<Id>, name: string, raw: readonly unknown[]): Promise<void>"
+        }
+      },
       "./turnstile": {
         "values": ["mountTurnstile"],
         "types": ["TurnstileWidget"],
@@ -6923,7 +6978,7 @@
             "value": "Json"
           },
           "SyncRoom": {
-            "private readonly ctx": "",
+            "protected readonly ctx: SyncRoomState": "",
             "constructor": "(ctx: SyncRoomState, _env?: unknown)",
             "protected onWrite(_write: RoomWrite): void | Promise<void>": "",
             "fetch": "(request: Request): Promise<Response>",
@@ -6931,6 +6986,9 @@
             "webSocketMessage": "(socket: HibernatableWebSocket, raw: string | ArrayBuffer): Promise<void>",
             "private store": "",
             "private serverWrites": "",
+            "protected read(path: string): Promise<Json | undefined>": "",
+            "protected paths(prefix: string): Promise<string[]>": "",
+            "protected write(path: string, value: Json): Promise<void>": "",
             "private serverWrite": "",
             "webSocketClose": "(socket: HibernatableWebSocket): Promise<void>",
             "webSocketError": "(socket: HibernatableWebSocket): Promise<void>",

@@ -263,6 +263,15 @@ import {
   type RateLimiter,
 } from '@cascivo/app/guard'
 import { mountTurnstile } from '@cascivo/app/turnstile'
+import { defineLive, watchLive, type LivePoint } from '@cascivo/app/live'
+import { LiveRoom, recordLive, type LiveBatch, type LiveQueue } from '@cascivo/app/live-server'
+export const opsLive = defineLive({ metrics: ['orders', 'errors'], window: 60 })
+export const watched = watchLive(opsLive, '/api/live')
+export const firstPoint = (): LivePoint<'orders' | 'errors'> | undefined => watched.points.value[0]
+export const consume = (batch: LiveBatch, rooms: RoomNamespace<unknown>) =>
+  recordLive(opsLive, rooms, 'ops', batch.messages.map((m) => m.body))
+export const produce = (queue: LiveQueue) => queue.sendBatch([{ body: { values: { orders: 1 } } }])
+export { LiveRoom }
 export const guarded = async (request: Request, limiter: RateLimiter): Promise<Response | null> => {
   try {
     const who = await requireAccess(request, { teamDomain: 'acme.cloudflareaccess.com', audience: 'aud' })

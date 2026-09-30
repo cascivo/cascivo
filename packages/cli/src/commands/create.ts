@@ -55,7 +55,16 @@ export type Runtime = 'preact' | 'react'
 export const RUNTIMES = ['preact', 'react'] as const
 
 /** Optional demo pages for `--framework cloudflare`. */
-export type Example = 'board' | 'agent' | 'notes' | 'import' | 'files' | 'export' | 'usage' | 'crud'
+export type Example =
+  | 'board'
+  | 'agent'
+  | 'notes'
+  | 'import'
+  | 'files'
+  | 'export'
+  | 'usage'
+  | 'crud'
+  | 'live'
 
 export const EXAMPLES = [
   'board',
@@ -66,6 +75,7 @@ export const EXAMPLES = [
   'export',
   'usage',
   'crud',
+  'live',
 ] as const
 
 function isExample(value: string): value is Example {
@@ -1080,8 +1090,10 @@ function cfPackageJson(opts: ScaffoldOptions): string {
       '@cascivo/themes': V['@cascivo/themes']!,
       '@preact/signals-react': SIGNALS_PEER,
       ...(preact ? { preact: '^10.29.0' } : { react: '^19.0.0', 'react-dom': '^19.0.0' }),
-      // The /usage page's charts.
-      ...(hasExample(opts, 'usage') ? { '@cascivo/charts': V['@cascivo/charts']! } : {}),
+      // The /usage and /ops pages' charts.
+      ...(hasExample(opts, 'usage') || hasExample(opts, 'live')
+        ? { '@cascivo/charts': V['@cascivo/charts']! }
+        : {}),
       // The /report page's PDF/PNG export drives Browser Run through Cloudflare's puppeteer.
       ...(hasExample(opts, 'export') ? { '@cloudflare/puppeteer': '^1.4.0' } : {}),
       // The /notes page keeps its room in IndexedDB.
@@ -1218,11 +1230,15 @@ function wranglerJsonc(opts: ScaffoldOptions): string {
   const objects = [
     ...(rooms ? [{ name: 'ROOMS', className: 'SyncRoom' }] : []),
     ...(agent ? [{ name: 'Assistant', className: 'Assistant' }] : []),
+    ...(hasExample(opts, 'live') ? [{ name: 'LIVE', className: 'LiveRoom' }] : []),
   ]
   const comments = [
     ...(rooms ? ['// ROOMS: one SyncRoom per room (@cascivo/app/sync-server).'] : []),
     ...(agent
       ? ['// Assistant: one AIChatAgent per conversation; it stores the messages in SQLite.']
+      : []),
+    ...(hasExample(opts, 'live')
+      ? ["// LIVE: the /ops dashboard's per-second totals (@cascivo/app/live-server)."]
       : []),
   ]
   return `// Cloudflare deploy config. \`${runExplicitCommand(opts.pm ?? 'npm', 'deploy')}\` builds and ships the SPA and
@@ -1254,7 +1270,7 @@ ${jsoncArray('  ', 'migrations', [`{ "tag": "v1", "new_sqlite_classes": [${objec
     hasExample(opts, 'files')
       ? `
   // Uploaded files, and Cloudflare Images for their resized previews.
-  "r2_buckets": [{ "binding": "FILES", "bucket_name": "${packageName(opts.name)}-files" }],
+${jsoncArray('  ', 'r2_buckets', [`{ "binding": "FILES", "bucket_name": "${packageName(opts.name)}-files" }`])}
   "images": { "binding": "IMAGES" },`
       : ''
   }${
@@ -1262,9 +1278,7 @@ ${jsoncArray('  ', 'migrations', [`{ "tag": "v1", "new_sqlite_classes": [${objec
       ? `
   // Uploads and exports per caller: 20 a minute. namespace_id is any number unique within
   // your account. https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/
-  "ratelimits": [
-    { "name": "LIMITER", "namespace_id": "1001", "simple": { "limit": 20, "period": 60 } },
-  ],`
+${jsoncArray('  ', 'ratelimits', ['{ "name": "LIMITER", "namespace_id": "1001", "simple": { "limit": 20, "period": 60 } }'])}`
       : ''
   }${
     opts.auth === 'access'
@@ -1277,13 +1291,29 @@ ${jsoncArray('  ', 'migrations', [`{ "tag": "v1", "new_sqlite_classes": [${objec
       ? `
   // The customers table. No database_id: wrangler creates the database on first deploy, and
   // the Worker applies its own schema (worker/migrations.ts) on its first query.
-  "d1_databases": [{ "binding": "DB", "database_name": "${packageName(opts.name)}-db" }],`
+${jsoncArray('  ', 'd1_databases', [`{ "binding": "DB", "database_name": "${packageName(opts.name)}-db" }`])}`
       : ''
   }${
     hasExample(opts, 'usage')
       ? `
   // Every API request is recorded here (worker/index.ts); /usage reads it back.
   "analytics_engine_datasets": [{ "binding": "USAGE", "dataset": "${usageDataset(opts)}" }],`
+      : ''
+  }${
+    hasExample(opts, 'live')
+      ? `
+  // Events for /ops: POST /api/events sends them, and the Worker's queue handler takes them in
+  // batches of up to 100, or whatever arrived within a second.
+  "queues": {
+${jsoncArray('    ', 'producers', [`{ "binding": "EVENTS", "queue": "${packageName(opts.name)}-events" }`])}
+    "consumers": [
+      {
+        "queue": "${packageName(opts.name)}-events",
+        "max_batch_size": 100,
+        "max_batch_timeout": 1,
+      },
+    ],
+  },`
       : ''
   }${
     hasExample(opts, 'import')
@@ -1363,8 +1393,9 @@ function cfApiTs(opts: ScaffoldOptions): string {
   const files = hasExample(opts, 'files')
   const usage = hasExample(opts, 'usage')
   const crud = hasExample(opts, 'crud')
-  return `import { defineApi, ${imports || files || usage || crud ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
-${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}
+  const live = hasExample(opts, 'live')
+  return `import { defineApi, ${imports || files || usage || crud || live ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
+${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}${live ? `import { ops, parseAccepted } from './ops'\n` : ''}
 /**
  * The contract between the browser and the Worker. Both import this file: the Worker serves
  * it with \`createHandler\`, the app calls it with \`createClient\`, and a change that breaks
@@ -1424,6 +1455,17 @@ export const api = defineApi({
   usage: endpoint({ method: 'GET', path: '/api/usage', output: parseUsageReport }),`
       : ''
   }${
+    live
+      ? `
+  // Events for the /ops dashboard, at most 100 at a time, onto the EVENTS queue.
+  sendEvents: endpoint({
+    method: 'POST',
+    path: '/api/events',
+    input: ops.parseEvents,
+    output: parseAccepted,
+  }),`
+      : ''
+  }${
     crud
       ? `
   // One page of customers for DataTable's query (sort, search, filters, page).
@@ -1460,13 +1502,14 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const exports = hasExample(opts, 'export')
   const usage = hasExample(opts, 'usage')
   const crud = hasExample(opts, 'crud')
+  const live = hasExample(opts, 'live')
   const limiter = usesLimiter(opts)
   const access = opts.auth === 'access'
   const guards = [
     ...(access ? ['requireAccess'] : []),
     ...(limiter ? ['clientIp', 'rateLimit'] : []),
   ]
-  const custom = rooms || agent || files || exports || access
+  const custom = rooms || agent || files || exports || access || live
   const isAsync = agent || files || exports || access
   return `${usage ? `import type { AnalyticsDataset } from '@cascivo/app/analytics'\n` : ''}${crud ? `import type { Database } from '@cascivo/app/db'\n` : ''}${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler } from '@cascivo/app/api'
 ${guards.length > 0 ? `import { ${[...guards, 'guardResponse'].sort().join(', ')} } from '@cascivo/app/guard'\n${limiter ? `import type { RateLimiter } from '@cascivo/app/guard'\n` : ''}` : ''}${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
@@ -1476,7 +1519,13 @@ import type { ImageResizer, UploadBucket } from '@cascivo/app/uploads-server'
 `
       : ''
   }${
-    rooms
+    live
+      ? `import { recordLive } from '@cascivo/app/live-server'
+import type { LiveBatch, LiveQueue } from '@cascivo/app/live-server'
+`
+      : ''
+  }${
+    rooms || live
       ? `import { roomResponse } from '@cascivo/app/sync-server'
 import type { RoomNamespace } from '@cascivo/app/sync-server'
 `
@@ -1489,7 +1538,7 @@ import type { BrowserWorker } from '@cloudflare/puppeteer'
       : ''
   }${agent ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${
+${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${
     rooms
       ? `
 // The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
@@ -1505,6 +1554,13 @@ export { Assistant } from './assistant'
 `
       : ''
   }${
+    live
+      ? `
+// The Durable Object behind /ops: the last two minutes, per second (src/ops.ts).
+export { LiveRoom } from '@cascivo/app/live-server'
+`
+      : ''
+  }${
     imports
       ? `
 // The Workflow behind /import (worker/import-job.ts), bound as IMPORT_JOB.
@@ -1517,8 +1573,8 @@ export { ImportJob } from './import-job'
  * here; every handler receives them as \`env\`.
  */
 ${
-  rooms || agent || files || exports || usage || crud || access
-    ? `export interface Env {${agent ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${crud ? '\n  DB: Database' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}
+  rooms || agent || files || exports || usage || crud || access || live
+    ? `export interface Env {${agent ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${crud ? '\n  DB: Database' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -1588,6 +1644,18 @@ const handleApi = createHandler<typeof api, Env>(api, {
   createCustomer: ({ body, env }) => customerStore.createCustomer(env.DB, body),
   updateCustomer: ({ params, body, env }) => customerStore.updateCustomer(env.DB, params.id, body),
   deleteCustomer: ({ params, env }) => customerStore.deleteCustomer(env.DB, params.id),`
+      : ''
+  }${
+    live
+      ? `
+  // Each event is placed by the Worker's clock: a browser's is not trusted to say when.
+  sendEvents: async ({ body, env }) => {
+    const at = Date.now()
+    if (body.length > 0) {
+      await env.EVENTS.sendBatch(body.map((event) => ({ body: { at, values: event.values } })))
+    }
+    return { accepted: body.length }
+  },`
       : ''
   }
 })
@@ -1662,6 +1730,14 @@ ${
     if (exported) return exported`
           : ''
       }${
+        live
+          ? `
+    // The /ops dashboard's room: browsers watch it, and only the queue handler writes to it.
+    if (new URL(request.url).pathname === '/api/live') {
+      return roomResponse(request, env.LIVE, OPS_ROOM, { readOnly: true })
+    }`
+          : ''
+      }${
         rooms
           ? `
     const room = /^\\/api\\/rooms\\/([^/]+)$/.exec(new URL(request.url).pathname)
@@ -1680,7 +1756,20 @@ ${
     return ${usage ? 'handleAndRecord' : 'handleApi'}(request, env)
   },`
     : `  fetch: ${usage ? 'handleAndRecord' : 'handleApi'},`
-}
+}${
+    live
+      ? `
+  // The EVENTS queue, a batch at a time, into the dashboard's room. A throw retries the batch.
+  async queue(batch: LiveBatch, env: Env): Promise<void> {
+    await recordLive(
+      ops,
+      env.LIVE,
+      OPS_ROOM,
+      batch.messages.map((message) => message.body),
+    )
+  },`
+      : ''
+  }
 }
 `
 }
@@ -1821,6 +1910,7 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
   if (hasExample(opts, 'export')) items.push({ label: 'Report', href: '/report' })
   if (hasExample(opts, 'usage')) items.push({ label: 'Usage', href: '/usage' })
   if (hasExample(opts, 'crud')) items.push({ label: 'Customers', href: '/customers' })
+  if (hasExample(opts, 'live')) items.push({ label: 'Ops', href: '/ops' })
   const navItems = items
     .map(
       (item) => `    {
@@ -3460,6 +3550,161 @@ export default function Usage() {
 `
 }
 
+/* --- `--example live`: an ops dashboard fed by a Queue (@cascivo/app/live) --- */
+
+function cfOpsTs(): string {
+  return `import { defineLive } from '@cascivo/app/live'
+
+/**
+ * The live dashboard's metrics, shared by the Worker (which records them) and the page (which
+ * charts them). Each event adds to its second's totals, and the room keeps two minutes.
+ */
+export const ops = defineLive({ metrics: ['orders', 'revenue', 'errors'], window: 120 })
+
+/** The dashboard's room. Name one per team or tenant if each needs its own. */
+export const OPS_ROOM = 'ops'
+
+export interface Accepted {
+  accepted: number
+}
+
+export function parseAccepted(raw: unknown): Accepted {
+  if (typeof raw === 'object' && raw !== null) {
+    const { accepted } = raw as Record<string, unknown>
+    if (typeof accepted === 'number') return { accepted }
+  }
+  throw new Error('Malformed reply')
+}
+`
+}
+
+function cfOpsRouteTsx(): string {
+  return `import { Kpi, LineChart } from '@cascivo/charts'
+import { createClient } from '@cascivo/app/api'
+import { watchLive } from '@cascivo/app/live'
+import type { LiveEvent, LivePoint } from '@cascivo/app/live'
+import {
+  Badge,
+  Card,
+  CardContent,
+  Flex,
+  Grid,
+  Heading,
+  Text,
+  Toggle,
+  computed,
+  signal,
+  useSignalEffect,
+  useSignals,
+} from '@cascivo/react'
+import { api } from '../api'
+import { ops } from '../ops'
+
+type Metric = (typeof ops.metrics)[number]
+
+const client = createClient(api)
+// One connection for the app's lifetime. The room sends the whole window when it opens, so a
+// reload or a dropped connection comes back with the last two minutes.
+const live = watchLive(ops, '/api/live')
+const lastMinute = computed(() => live.points.value.slice(-60))
+const total = (points: LivePoint<Metric>[], metric: Metric) =>
+  points.reduce((sum, point) => sum + point.values[metric], 0)
+
+const simulating = signal(true)
+
+/** Stand-in traffic: a few orders every half second, some of them failing. */
+function sendTraffic(): void {
+  const events: LiveEvent<Metric>[] = Array.from(
+    { length: 1 + Math.floor(Math.random() * 6) },
+    () =>
+      Math.random() < 0.05
+        ? { values: { errors: 1 } }
+        : { values: { orders: 1, revenue: Math.round(20 + Math.random() * 180) } },
+  )
+  client
+    .sendEvents({ body: events })
+    .catch((error: unknown) => console.warn('Could not send events', error))
+}
+
+export default function Ops() {
+  useSignals()
+  useSignalEffect(() => {
+    if (!simulating.value) return
+    const timer = setInterval(sendTraffic, 500)
+    return () => clearInterval(timer)
+  })
+  const points = live.points.value
+  const minute = lastMinute.value
+
+  return (
+    <Flex gap={4}>
+      <Flex direction="horizontal" align="center" justify="between" wrap gap={3}>
+        <Flex gap={1}>
+          <Heading level={1}>Ops</Heading>
+          <Text muted>
+            Events go through a Queue into a Durable Object, which sends each second to every open
+            dashboard.
+          </Text>
+        </Flex>
+        <Flex direction="horizontal" align="center" gap={3}>
+          <Badge variant={live.connection.value === 'open' ? 'success' : 'warning'}>
+            {live.connection.value === 'open' ? 'Live' : 'Reconnecting'}
+          </Badge>
+          <Toggle
+            label="Send simulated traffic"
+            checked={simulating.value}
+            onValueChange={(on) => {
+              simulating.value = on
+            }}
+          />
+        </Flex>
+      </Flex>
+      <Grid cols={3} gap={3}>
+        <Kpi
+          label="Orders, last minute"
+          value={total(minute, 'orders').toLocaleString()}
+          sparkline={minute.map((p) => p.values.orders)}
+        />
+        <Kpi
+          label="Revenue, last minute"
+          value={\`$\${total(minute, 'revenue').toLocaleString()}\`}
+          sparkline={minute.map((p) => p.values.revenue)}
+        />
+        <Kpi
+          label="Errors, last minute"
+          value={total(minute, 'errors').toLocaleString()}
+          sparkline={minute.map((p) => p.values.errors)}
+        />
+      </Grid>
+      <Card>
+        <CardContent>
+          <LineChart
+            title="Orders and errors per second"
+            series={[
+              { id: 'orders', label: 'Orders', data: points, y: (p) => p.values.orders },
+              { id: 'errors', label: 'Errors', data: points, y: (p) => p.values.errors },
+            ]}
+            x={(p) => new Date(p.at)}
+            y={(p) => p.values.orders}
+          />
+        </CardContent>
+      </Card>
+      <Card>
+        <CardContent>
+          <LineChart
+            title="Revenue per second"
+            series={[{ id: 'revenue', label: 'Revenue', data: points }]}
+            x={(p) => new Date(p.at)}
+            y={(p) => p.values.revenue}
+          />
+        </CardContent>
+      </Card>
+    </Flex>
+  )
+}
+`
+}
+
 /* --- `--example crud`: a D1 table behind DataTable's server mode (@cascivo/app/db) --- */
 
 function cfCustomersTs(): string {
@@ -4101,6 +4346,30 @@ renders signed out. Each export starts a browser session, which is billed, so ea
 first use); it does not run on a temporary account.`
       : ''
   }${
+    hasExample(opts, 'live')
+      ? `
+
+## Ops (live dashboard)
+
+\`/ops\` charts orders, revenue and errors per second, and every open copy of the page moves
+together as events arrive.
+
+- \`src/ops.ts\` — \`defineLive\` (\`@cascivo/app/live\`): the metrics, and two minutes of
+  per-second history.
+- \`worker/index.ts\` — \`POST /api/events\` puts events on the \`EVENTS\` queue. The \`queue\`
+  handler adds each batch into a \`LiveRoom\` Durable Object with \`recordLive\`, which keeps
+  per-second totals and sends each change to the browsers watching \`/api/live\` (read-only).
+- \`src/routes/ops.tsx\` — \`watchLive\` gives the window as a signal; the page sends simulated
+  traffic while its switch is on. Real producers are anything with the queue binding: another
+  Worker, a cron, a webhook handler.
+
+A new viewer, or one back from a dropped connection, starts with the whole window. Delivery is
+at least once: a batch retried after a lost reply counts twice. \`/api/events\` has no auth, so
+anyone can move the numbers: check who is sending before real use (\`--auth access\` puts
+Cloudflare Access in front of the Worker). Create the queue once before deploying:
+\`npx wrangler queues create ${packageName(opts.name)}-events\`.`
+      : ''
+  }${
     hasExample(opts, 'usage')
       ? `
 
@@ -4269,6 +4538,7 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
     ...(hasExample(opts, 'crud')
       ? [{ file: 'customers.tsx', contents: cfCustomersRouteTsx() }]
       : []),
+    ...(hasExample(opts, 'live') ? [{ file: 'ops.tsx', contents: cfOpsRouteTsx() }] : []),
   ]
   return [
     { path: 'package.json', contents: cfPackageJson(opts) },
@@ -4318,6 +4588,7 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
           { path: 'worker/migrations.ts', contents: cfMigrationsTs() },
         ]
       : []),
+    ...(hasExample(opts, 'live') ? [{ path: 'src/ops.ts', contents: cfOpsTs() }] : []),
     ...(hasExample(opts, 'usage')
       ? [
           {

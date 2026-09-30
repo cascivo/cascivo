@@ -29,6 +29,8 @@ const ENTRIES = [
   { name: 'db', src: 'src/db.ts' },
   { name: 'guard', src: 'src/guard.ts' },
   { name: 'turnstile', src: 'src/turnstile.ts' },
+  { name: 'live', src: 'src/live.ts' },
+  { name: 'live-server', src: 'src/live-server.ts' },
   { name: 'vite', src: 'src/vite.ts' },
 ]
 

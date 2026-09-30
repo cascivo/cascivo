@@ -89,6 +89,16 @@
       "import": "./dist/guard.js",
       "default": "./dist/guard.js"
     },
+    "./live": {
+      "types": "./dist/live.d.ts",
+      "import": "./dist/live.js",
+      "default": "./dist/live.js"
+    },
+    "./live-server": {
+      "types": "./dist/live-server.d.ts",
+      "import": "./dist/live-server.js",
+      "default": "./dist/live-server.js"
+    },
     "./turnstile": {
       "types": "./dist/turnstile.d.ts",
       "import": "./dist/turnstile.js",

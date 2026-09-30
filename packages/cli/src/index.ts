@@ -109,6 +109,7 @@ Options:
                             export — a report page downloadable as PDF/PNG via Browser Run (cloudflare)
                             usage — API usage charts from Workers Analytics Engine (cloudflare)
                             crud — a D1 table behind DataTable's server mode (cloudflare)
+                            live — an ops dashboard fed by a Queue, updating every second (cloudflare)
   --auth access             Refuse every Worker request Cloudflare Access did not let
                             through (cloudflare only)
   --template <spec>         Start from a marketplace template (@ns/name or owner/repo/name)
