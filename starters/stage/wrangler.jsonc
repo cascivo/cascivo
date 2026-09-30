@@ -1,0 +1,25 @@
+// Cloudflare deploy config. `npm run deploy` builds and ships the app and its Worker
+// together; @cloudflare/vite-plugin runs the same Worker, Durable Objects included,
+// inside `npm run dev`. https://developers.cloudflare.com/workers/wrangler/configuration/
+{
+  "name": "cascivo-stage",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    // Client-side app: any unknown path serves index.html.
+    "not_found_handling": "single-page-application",
+    // Only the API reaches the Worker; every asset request is served without invoking it.
+    "run_worker_first": ["/api/*"],
+  },
+  // STAGES: one StageRoom per session, named by its join code.
+  "durable_objects": {
+    "bindings": [{ "name": "STAGES", "class_name": "StageRoom" }],
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["StageRoom"] }],
+  // Each IP may start 10 sessions a minute. Only starting a session is limited: an audience
+  // behind one conference NAT shares an IP, so questions and votes are capped per session.
+  "ratelimits": [
+    { "name": "CREATE_LIMIT", "namespace_id": "1101", "simple": { "limit": 10, "period": 60 } },
+  ],
+  "observability": { "enabled": true },
+}

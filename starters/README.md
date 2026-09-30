@@ -1,8 +1,10 @@
 # Starters
 
-These are ready-to-deploy cascivo projects. `cascivo create` writes each one, and no one edits them by hand:
-`pnpm starters:generate` rewrites them from the built CLI. `scripts/checks/starters.test.ts` fails
-when a committed starter no longer matches what the scaffolder writes.
+These are ready-to-deploy cascivo projects, and no one edits them by hand. `pnpm starters:generate`
+rewrites them: the `cloudflare*` starters from the built CLI (`cascivo create`), and the example
+apps from their source in `apps/examples/` (`scripts/starters/examples.ts`).
+`scripts/checks/starters.test.ts` fails when a committed starter no longer matches what it is
+generated from.
 
 Each directory is self-contained: it has real npm versions and no workspace links. That lets
 the "Deploy to Cloudflare" button and `npm create cloudflare --template` use it straight from GitHub.
@@ -13,6 +15,7 @@ the "Deploy to Cloudflare" button and `npm create cloudflare --template` use it 
 | [`cloudflare-board`](cloudflare-board) | `cloudflare`, plus a multiplayer `/board` page. Notes and cursors sync live through a Durable Object (`@cascivo/app/sync`). | [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cascivo/cascivo/tree/main/starters/cloudflare-board) |
 | [`cloudflare-agent`](cloudflare-agent) | `cloudflare`, plus an `/assistant` page. An AI agent (Cloudflare's Agents SDK on Workers AI) answers with real cascivo components, validated against their manifests. Runs on React. | [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cascivo/cascivo/tree/main/starters/cloudflare-agent) |
 | [`cloudflare-crud`](cloudflare-crud) | `cloudflare`, plus a `/customers` page: a D1 table behind `DataTable`'s server mode, with create, edit and delete. The Worker creates its own schema, so it deploys with no setup. | [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cascivo/cascivo/tree/main/starters/cloudflare-crud) |
+| [`stage`](stage) | The [Stage](../apps/examples/stage) example app: live Q&A and polls for talks. The audience asks, upvotes and votes from their phones, the host moderates, and a projector view shows the spotlight. One Durable Object per session. | [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cascivo/cascivo/tree/main/starters/stage) |
 
 ```sh
 npm create cloudflare@latest my-app -- --template cascivo/cascivo/starters/cloudflare

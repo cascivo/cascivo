@@ -1,0 +1,103 @@
+.bar {
+  position: fixed;
+  inset-block-end: max(var(--cascivo-space-4), env(safe-area-inset-bottom));
+  inset-inline-start: 50%;
+  translate: -50% 0;
+  z-index: 20;
+  display: flex;
+  gap: var(--cascivo-space-1);
+  padding: var(--cascivo-space-1);
+  border-radius: var(--cascivo-radius-full);
+  background: var(--stage-glass);
+  backdrop-filter: blur(18px) saturate(1.5);
+  border: 1px solid var(--stage-hairline);
+  box-shadow:
+    var(--cascivo-shadow-lg),
+    0 0 40px -12px var(--stage-glow);
+}
+
+.reaction {
+  display: grid;
+  place-items: center;
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition:
+    transform 160ms var(--cascivo-ease-spring, ease-out),
+    background-color 160ms ease-out;
+}
+
+.reaction:hover {
+  background: color-mix(in oklch, var(--cascivo-color-accent) 16%, transparent);
+  transform: translateY(-3px) scale(1.12);
+}
+
+.reaction:active {
+  transform: scale(0.9);
+}
+
+.reaction:focus-visible {
+  outline: 2px solid var(--cascivo-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
+  overflow: hidden;
+  --float-size: 2rem;
+}
+
+.layer[data-size='xl'] {
+  --float-size: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.float {
+  position: absolute;
+  inset-block-end: -4rem;
+  inset-inline-start: calc(var(--x) * 100%);
+  font-size: var(--float-size);
+  animation: rise 2800ms cubic-bezier(0.22, 0.8, 0.36, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes rise {
+  0% {
+    transform: translate(0, 0) scale(0.6);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+    transform: translate(calc(var(--sway) * 8px), -12vh) scale(1.1);
+  }
+  55% {
+    transform: translate(calc(var(--sway) * -14px), -52vh) scale(1);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate(calc(var(--sway) * 10px), -92vh) scale(0.9);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float {
+    animation: fade 1200ms ease-out forwards;
+    inset-block-end: 20%;
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+}

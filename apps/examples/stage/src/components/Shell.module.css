@@ -1,0 +1,153 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100dvh;
+}
+
+.header {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-3);
+  padding-block: var(--cascivo-space-3);
+  padding-inline: var(--cascivo-space-4);
+  background: color-mix(in oklch, var(--cascivo-color-background) 70%, transparent);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border-block-end: 1px solid var(--stage-hairline);
+}
+
+@media (min-width: 40rem) {
+  .header {
+    padding-inline: var(--cascivo-space-6);
+  }
+}
+
+.home {
+  color: inherit;
+  text-decoration: none;
+  border-radius: var(--cascivo-radius-md);
+}
+
+.home:focus-visible {
+  outline: 2px solid var(--cascivo-color-focus-ring);
+  outline-offset: 4px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+  font-weight: var(--cascivo-font-bold);
+  font-size: var(--cascivo-font-size-lg);
+  letter-spacing: -0.02em;
+}
+
+.brand[data-size='lg'] {
+  font-size: var(--cascivo-font-size-2xl);
+  gap: var(--cascivo-space-3);
+}
+
+.mark {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  inline-size: 1.75em;
+  block-size: 1.75em;
+  border-radius: 0.5em;
+  background: color-mix(in oklch, var(--cascivo-color-accent) 18%, var(--cascivo-color-surface));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklch, var(--cascivo-color-accent) 40%, transparent),
+    0 0 24px -4px var(--stage-glow);
+  overflow: hidden;
+}
+
+/* A spotlight cone falling onto a stage. */
+.beam {
+  position: absolute;
+  inset: 12% 22% 26%;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklch, var(--cascivo-color-accent), white 45%),
+    var(--cascivo-color-accent)
+  );
+}
+
+.mark::after {
+  content: '';
+  position: absolute;
+  inset-inline: 18%;
+  inset-block-end: 16%;
+  block-size: 12%;
+  border-radius: 50%;
+  background: color-mix(in oklch, var(--cascivo-color-accent), white 55%);
+}
+
+.session {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+  min-inline-size: 0;
+  flex: 1;
+}
+
+.title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: var(--cascivo-font-semibold);
+  display: none;
+}
+
+@media (min-width: 40rem) {
+  .title {
+    display: inline;
+  }
+}
+
+.code {
+  flex: none;
+  padding-block: 0.15em;
+  padding-inline: 0.55em;
+  border-radius: var(--cascivo-radius-full);
+  font-family: var(--cascivo-font-mono);
+  font-size: var(--cascivo-font-size-sm);
+  letter-spacing: 0.12em;
+  background: color-mix(in oklch, var(--cascivo-color-accent) 14%, transparent);
+  color: var(--cascivo-color-accent-text);
+  border: 1px solid color-mix(in oklch, var(--cascivo-color-accent) 30%, transparent);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+  margin-inline-start: auto;
+}
+
+.live {
+  font-size: var(--cascivo-font-size-sm);
+  white-space: nowrap;
+}
+
+.main {
+  flex: 1;
+  inline-size: 100%;
+  max-inline-size: 72rem;
+  margin-inline: auto;
+  padding-block: var(--cascivo-space-6) var(--cascivo-space-16);
+  padding-inline: var(--cascivo-space-4);
+  container-type: inline-size;
+}
+
+@media (min-width: 40rem) {
+  .main {
+    padding-inline: var(--cascivo-space-6);
+  }
+}

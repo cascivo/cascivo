@@ -3,6 +3,7 @@ node_modules/
 
 # Build output
 dist/
+.wrangler/
 dist-matrix/
 # Astro's generated type shims — build output, regenerated on every `astro build`.
 .astro/

@@ -1,0 +1,71 @@
+.audience {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-6);
+  max-inline-size: 44rem;
+  margin-inline: auto;
+  /* Room for the floating reaction bar. */
+  padding-block-end: var(--cascivo-space-16);
+}
+
+.title {
+  font-size: clamp(1.75rem, 6cqi, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.ask {
+  padding: var(--cascivo-space-5);
+  border-radius: var(--cascivo-radius-2xl, 1.25rem);
+  background: var(--stage-glass);
+  border: 1px solid var(--stage-hairline);
+  box-shadow: var(--cascivo-shadow-md);
+}
+
+.questions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-4);
+}
+
+.sectionHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cascivo-space-3);
+}
+
+.sectionTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+  font-size: var(--cascivo-font-size-xl);
+  font-weight: var(--cascivo-font-semibold);
+  letter-spacing: -0.015em;
+}
+
+.count {
+  padding-inline: 0.5em;
+  border-radius: var(--cascivo-radius-full);
+  font-size: var(--cascivo-font-size-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--cascivo-color-text-muted);
+  background: color-mix(in oklch, var(--cascivo-color-text) 8%, transparent);
+}
+
+.subTitle {
+  margin-block-start: var(--cascivo-space-4);
+  font-size: var(--cascivo-font-size-sm);
+  font-weight: var(--cascivo-font-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--cascivo-color-text-muted);
+}
+
+.list {
+  display: grid;
+  gap: var(--cascivo-space-3);
+}

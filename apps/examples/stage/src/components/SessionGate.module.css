@@ -1,0 +1,12 @@
+.center {
+  display: grid;
+  place-items: center;
+  min-block-size: 60dvh;
+}
+
+.loading {
+  display: grid;
+  gap: var(--cascivo-space-4);
+  max-inline-size: 44rem;
+  margin-inline: auto;
+}

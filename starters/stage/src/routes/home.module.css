@@ -1,0 +1,271 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--cascivo-space-5);
+  padding-block: var(--cascivo-space-10) var(--cascivo-space-12);
+  text-align: center;
+}
+
+.eyebrow {
+  padding-block: var(--cascivo-space-1);
+  padding-inline: var(--cascivo-space-3);
+  border-radius: var(--cascivo-radius-full);
+  font-size: var(--cascivo-font-size-sm);
+  font-weight: var(--cascivo-font-medium);
+  color: var(--cascivo-color-accent-text);
+  background: color-mix(in oklch, var(--cascivo-color-accent) 12%, transparent);
+  border: 1px solid color-mix(in oklch, var(--cascivo-color-accent) 30%, transparent);
+  box-shadow: 0 0 30px -8px var(--stage-glow);
+}
+
+.title {
+  max-inline-size: 16ch;
+  font-size: clamp(2.6rem, 9cqi, 5.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.accent {
+  background: var(--stage-gradient-text);
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: shimmer 8s ease-in-out infinite alternate;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 100% 0;
+  }
+}
+
+.lead {
+  max-inline-size: 38rem;
+  font-size: var(--cascivo-font-size-lg);
+  line-height: var(--cascivo-leading-relaxed, 1.6);
+  color: var(--cascivo-color-text-muted);
+  text-wrap: pretty;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--cascivo-space-4);
+}
+
+@container (min-width: 40rem) {
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+  }
+
+  .card {
+    padding: var(--cascivo-space-6);
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-5);
+  padding: var(--cascivo-space-4);
+  border-radius: var(--cascivo-radius-2xl, 1.25rem);
+  background: var(--stage-glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--stage-hairline);
+  box-shadow: var(--cascivo-shadow-lg);
+}
+
+.card > :last-child {
+  margin-block-start: auto;
+  align-self: flex-start;
+}
+
+.card[data-primary] {
+  background:
+    radial-gradient(ellipse 100% 80% at 0% 0%, var(--stage-glow-soft), transparent 65%),
+    var(--stage-glass);
+  border-color: color-mix(in oklch, var(--cascivo-color-accent) 35%, transparent);
+  box-shadow:
+    var(--cascivo-shadow-lg),
+    0 30px 80px -40px var(--stage-glow);
+}
+
+.cardHead {
+  display: flex;
+  gap: var(--cascivo-space-3);
+  align-items: flex-start;
+}
+
+.cardIcon,
+.featureIcon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  border-radius: var(--cascivo-radius-lg);
+  background: color-mix(in oklch, var(--cascivo-color-accent) 16%, transparent);
+  color: var(--cascivo-color-accent-text);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--cascivo-color-accent) 28%, transparent);
+}
+
+.cardTitle {
+  font-size: var(--cascivo-font-size-lg);
+  font-weight: var(--cascivo-font-semibold);
+  letter-spacing: -0.01em;
+}
+
+.cardText {
+  color: var(--cascivo-color-text-muted);
+  font-size: var(--cascivo-font-size-sm);
+  line-height: var(--cascivo-leading-normal, 1.5);
+}
+
+.otp {
+  font-family: var(--cascivo-font-mono);
+  text-transform: uppercase;
+}
+
+/* OtpInput's cells are a fixed 2.75rem; six of them plus gaps outgrow a 320px card. Let
+   them share the row instead, up to their usual size. */
+.otp > * {
+  inline-size: 100%;
+}
+
+.otp input {
+  flex: 1 1 0;
+  inline-size: auto;
+  min-inline-size: 0;
+  max-inline-size: 3rem;
+}
+
+.yours {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-4);
+  margin-block-start: var(--cascivo-space-12);
+}
+
+.sectionHead {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-1);
+}
+
+.sectionTitle {
+  font-size: var(--cascivo-font-size-xl);
+  font-weight: var(--cascivo-font-semibold);
+  letter-spacing: -0.015em;
+}
+
+.sessionList {
+  display: grid;
+  gap: var(--cascivo-space-2);
+  list-style: none;
+}
+
+.sessionItem {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cascivo-space-3);
+  padding: var(--cascivo-space-3) var(--cascivo-space-4);
+  border-radius: var(--cascivo-radius-lg);
+  background: var(--stage-glass);
+  border: 1px solid var(--stage-hairline);
+}
+
+.sessionInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-1);
+  min-inline-size: 0;
+  flex: 1 1 12rem;
+}
+
+.sessionTitle {
+  font-weight: var(--cascivo-font-semibold);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sessionMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+  font-size: var(--cascivo-font-size-sm);
+  color: var(--cascivo-color-text-muted);
+}
+
+.codeChip {
+  font-family: var(--cascivo-font-mono);
+  letter-spacing: 0.12em;
+  color: var(--cascivo-color-accent-text);
+}
+
+.sessionActions {
+  display: flex;
+  gap: var(--cascivo-space-2);
+}
+
+.features {
+  display: grid;
+  gap: var(--cascivo-space-6);
+  margin-block-start: var(--cascivo-space-16);
+  list-style: none;
+}
+
+@container (min-width: 40rem) {
+  .features {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-2);
+}
+
+.featureTitle {
+  margin-block-start: var(--cascivo-space-2);
+  font-size: var(--cascivo-font-size-base);
+  font-weight: var(--cascivo-font-semibold);
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--cascivo-space-3);
+  margin-block-start: var(--cascivo-space-16);
+  padding-block-start: var(--cascivo-space-8);
+  border-block-start: 1px solid var(--stage-hairline);
+  text-align: center;
+}
+
+.deploy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cascivo-space-1);
+  font-size: var(--cascivo-font-size-sm);
+  font-weight: var(--cascivo-font-medium);
+  color: var(--cascivo-color-accent-text);
+  text-decoration: none;
+}
+
+.deploy:hover {
+  text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accent {
+    animation: none;
+  }
+}
