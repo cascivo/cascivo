@@ -69,6 +69,7 @@ export type Example =
   | 'publish'
   | 'webhooks'
   | 'digest'
+  | 'search'
 
 export const EXAMPLES = [
   'board',
@@ -84,6 +85,7 @@ export const EXAMPLES = [
   'publish',
   'webhooks',
   'digest',
+  'search',
 ] as const
 
 function isExample(value: string): value is Example {
@@ -1185,7 +1187,7 @@ function cfWorkerTsconfig(): string {
 
 function cfViteConfig(runtime: Runtime, opts: ScaffoldOptions): string {
   const agent = hasExample(opts, 'agent')
-  const ai = usesAgents(opts)
+  const ai = usesWorkersAi(opts)
   const plugin =
     runtime === 'preact'
       ? `import preact from '@preact/preset-vite'`
@@ -1218,12 +1220,23 @@ ${note}
 //
 // Workers AI has no local mode: with remote bindings on, \`vite dev\` needs a Cloudflare login.
 // So they are off, ${
-          agent && hasExample(opts, 'voice')
-            ? `the assistant answers from worker/scripted-model.ts, and the voice
+          hasExample(opts, 'search')
+            ? `and:${[
+                agent ? 'the assistant answers from worker/scripted-model.ts' : '',
+                hasExample(opts, 'voice')
+                  ? 'the voice page uses the stand-ins in worker/scripted-voice.ts'
+                  : '',
+                'search runs by keyword, on SQLite full-text search (worker/search.ts)',
+              ]
+                .filter(Boolean)
+                .map((clause) => `\n// - ${clause}`)
+                .join('')}`
+            : agent && hasExample(opts, 'voice')
+              ? `the assistant answers from worker/scripted-model.ts, and the voice
 // page uses the stand-ins in worker/scripted-voice.ts`
-            : agent
-              ? 'and the assistant answers from worker/scripted-model.ts'
-              : 'and the voice page uses the stand-ins in worker/scripted-voice.ts'
+              : agent
+                ? 'and the assistant answers from worker/scripted-model.ts'
+                : 'and the voice page uses the stand-ins in worker/scripted-voice.ts'
         }. Run
 // \`VITE_REAL_AI=1 vite dev\` (after \`wrangler login\`) to use Workers AI.`
       : ''
@@ -1330,6 +1343,7 @@ ${jsoncArray('  ', 'r2_buckets', [`{ "binding": "FILES", "bucket_name": "${packa
     hasExample(opts, 'export') ? 'exports' : '',
     hasExample(opts, 'publish') ? 'published pages' : '',
     hasExample(opts, 'digest') ? 'digests sent now' : '',
+    hasExample(opts, 'search') ? 'search indexing' : '',
     opts.auth === 'email' ? 'sign-in emails' : '',
   ]
     .filter(Boolean)
@@ -1353,6 +1367,7 @@ ${jsoncArray('  ', 'ratelimits', ['{ "name": "LIMITER", "namespace_id": "1001", 
     hasExample(opts, 'publish') ? 'published pages' : '',
     hasExample(opts, 'webhooks') ? 'webhook deliveries' : '',
     hasExample(opts, 'digest') ? 'digest runs' : '',
+    hasExample(opts, 'search') ? 'help articles' : '',
     opts.auth === 'email' ? 'accounts' : '',
   ]
     .filter(Boolean)
@@ -1390,10 +1405,16 @@ ${jsoncArray('    ', 'producers', [`{ "binding": "EVENTS", "queue": "${packageNa
   "workflows": [{ "name": "import-job", "binding": "IMPORT_JOB", "class_name": "ImportJob" }],`
       : ''
   }${
-    ai
+    usesWorkersAi(opts)
       ? `
-  // Workers AI, which the ${[agent ? 'assistant' : '', hasExample(opts, 'voice') ? 'voice agent' : ''].filter(Boolean).join(' and ')} call${agent && hasExample(opts, 'voice') ? '' : 's'}.
+  // Workers AI, which the ${[agent ? 'assistant' : '', hasExample(opts, 'voice') ? 'voice agent' : '', hasExample(opts, 'search') ? 'search page' : ''].filter(Boolean).join(' and ')} call${[agent, hasExample(opts, 'voice'), hasExample(opts, 'search')].filter(Boolean).length > 1 ? '' : 's'}.
   "ai": { "binding": "AI" },`
+      : ''
+  }${
+    hasExample(opts, 'search')
+      ? `
+  // The help articles' embeddings (worker/search.ts). Create it once before deploying (README).
+${jsoncArray('  ', 'vectorize', [`{ "binding": "ARTICLES_INDEX", "index_name": "${packageName(opts.name)}-articles" }`])}`
       : ''
   }${
     hasExample(opts, 'export')
@@ -1480,6 +1501,7 @@ function usesLimiter(opts: ScaffoldOptions): boolean {
     hasExample(opts, 'export') ||
     hasExample(opts, 'publish') ||
     hasExample(opts, 'digest') ||
+    hasExample(opts, 'search') ||
     opts.auth === 'email'
   )
 }
@@ -1491,8 +1513,14 @@ function usesD1(opts: ScaffoldOptions): boolean {
     hasExample(opts, 'publish') ||
     hasExample(opts, 'webhooks') ||
     hasExample(opts, 'digest') ||
+    hasExample(opts, 'search') ||
     opts.auth === 'email'
   )
+}
+
+/** Examples that call Workers AI: the Agents SDK ones, and search's embeddings. */
+function usesWorkersAi(opts: ScaffoldOptions): boolean {
+  return usesAgents(opts) || hasExample(opts, 'search')
 }
 
 /** Examples on Cloudflare's Agents SDK: routed under /agents/*, calling Workers AI. */
@@ -1536,8 +1564,9 @@ function cfApiTs(opts: ScaffoldOptions): string {
   const publish = hasExample(opts, 'publish')
   const webhooks = hasExample(opts, 'webhooks')
   const digest = hasExample(opts, 'digest')
-  return `import { defineApi, ${imports || files || usage || crud || live || publish || webhooks || digest ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
-${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}${live ? `import { ops, parseAccepted } from './ops'\n` : ''}${publish ? `import { parsePage, parsePageInput, parsePageSummary } from './pages'\n` : ''}${webhooks ? `import { parseDeliveries, parseTestResult } from './webhooks'\n` : ''}${digest ? `import { parseDigestRun, parseDigestRuns } from './digest'\n` : ''}
+  const search = hasExample(opts, 'search')
+  return `import { defineApi, ${imports || files || usage || crud || live || publish || webhooks || digest || search ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
+${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}${live ? `import { ops, parseAccepted } from './ops'\n` : ''}${publish ? `import { parsePage, parsePageInput, parsePageSummary } from './pages'\n` : ''}${webhooks ? `import { parseDeliveries, parseTestResult } from './webhooks'\n` : ''}${digest ? `import { parseDigestRun, parseDigestRuns } from './digest'\n` : ''}${search ? `import { parseIndexed, parseSearchQuery, parseSearchResult } from './search'\n` : ''}
 /**
  * The contract between the browser and the Worker. Both import this file: the Worker serves
  * it with \`createHandler\`, the app calls it with \`createClient\`, and a change that breaks
@@ -1639,6 +1668,19 @@ export const api = defineApi({
   runDigest: endpoint({ method: 'POST', path: '/api/digest/run', output: parseDigestRun }),`
       : ''
   }${
+    search
+      ? `
+  // Help articles by meaning (Vectorize), or by keyword in vite dev.
+  search: endpoint({
+    method: 'POST',
+    path: '/api/search',
+    input: parseSearchQuery,
+    output: parseSearchResult,
+  }),
+  // Embeds every article into the Vectorize index.
+  indexArticles: endpoint({ method: 'POST', path: '/api/search/index', output: parseIndexed }),`
+      : ''
+  }${
     crud
       ? `
   // One page of customers for DataTable's query (sort, search, filters, page).
@@ -1680,6 +1722,7 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const publish = hasExample(opts, 'publish')
   const webhooks = hasExample(opts, 'webhooks')
   const digest = hasExample(opts, 'digest')
+  const search = hasExample(opts, 'search')
   const d1 = usesD1(opts)
   const ai = usesAgents(opts)
   const limiter = usesLimiter(opts)
@@ -1720,7 +1763,7 @@ import type { BrowserWorker } from '@cloudflare/puppeteer'
       : ''
   }${ai ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\nimport { renderPageHtml } from './page-html'\nimport type { Assets } from './page-html'\n${exports ? `import { pagePreview } from './page-preview'\n` : ''}` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${
+${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\nimport { renderPageHtml } from './page-html'\nimport type { Assets } from './page-html'\n${exports ? `import { pagePreview } from './page-preview'\n` : ''}` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${search ? `import * as articleSearch from './search'\nimport type { ${ai ? '' : 'Embedder, '}VectorIndex } from './search'\n` : ''}${
     rooms
       ? `
 // The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
@@ -1772,8 +1815,9 @@ ${
   live ||
   emailAuth ||
   webhooks ||
-  digest
-    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}
+  digest ||
+  search
+    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -1788,6 +1832,7 @@ ${
 ${[
   emailAuth ? 'a sign-in email' : '',
   digest ? 'a digest sent now (it starts a browser)' : '',
+  search ? 'indexing the articles (it embeds every one)' : '',
   files ? 'a new upload (not each part of one)' : '',
   exports ? 'an export' : '',
   publish ? 'a published page' : '',
@@ -1798,6 +1843,11 @@ ${[
  */
 function countsAgainstLimit(request: Request): boolean {
   const url = new URL(request.url)${
+    search
+      ? `
+  if (url.pathname === '/api/search/index') return request.method === 'POST'`
+      : ''
+  }${
     digest
       ? `
   if (url.pathname === '/api/digest/run') return request.method === 'POST'`
@@ -1879,6 +1929,12 @@ const handleApi = createHandler<typeof api, Env>(api, {
       ? `
   listDeliveries: ({ env }) => webhookStore.listDeliveries(env.DB),
   sendTestDelivery: ({ request, env }) => webhookStore.sendTestDelivery(request.url, env),`
+      : ''
+  }${
+    search
+      ? `
+  search: ({ body, env }) => articleSearch.search(env, body.q),
+  indexArticles: ({ env }) => articleSearch.indexArticles(env),`
       : ''
   }${
     digest
@@ -2261,6 +2317,7 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
   if (hasExample(opts, 'publish')) items.push({ label: 'Publish', href: '/publish' })
   if (hasExample(opts, 'webhooks')) items.push({ label: 'Webhooks', href: '/webhooks' })
   if (hasExample(opts, 'digest')) items.push({ label: 'Digest', href: '/digest' })
+  if (hasExample(opts, 'search')) items.push({ label: 'Search', href: '/search' })
   if (opts.auth === 'email') items.push({ label: 'Account', href: '/account' })
   const navItems = items
     .map(
@@ -3895,6 +3952,488 @@ export default function Usage() {
           </Card>
         </>
       ) : null}
+    </Flex>
+  )
+}
+`
+}
+
+/* --- `--example search`: help articles by meaning (Vectorize + Workers AI) --- */
+
+function cfSearchTs(): string {
+  return `/**
+ * /search, shared by the Worker (which searches) and the page (which asks). \`semantic\` is
+ * Vectorize over Workers AI embeddings; \`keyword\` is the \`vite dev\` stand-in, SQLite's
+ * full-text search, because neither runs locally.
+ */
+export interface SearchHit {
+  id: string
+  title: string
+  body: string
+  /** Higher is closer. Cosine similarity when semantic; a rank when keyword. */
+  score: number
+}
+
+export interface SearchResult {
+  mode: 'semantic' | 'keyword'
+  hits: SearchHit[]
+  /** Articles in the vector index, when semantic: 0 until "Index articles" has run. */
+  indexed: number | null
+}
+
+export function parseSearchQuery(raw: unknown): { q: string } {
+  if (typeof raw === 'object' && raw !== null) {
+    const { q } = raw as Record<string, unknown>
+    if (typeof q === 'string' && q.trim() !== '' && q.length <= 200) return { q: q.trim() }
+  }
+  throw new Error('Expected { q }: 1–200 characters')
+}
+
+function parseHit(raw: unknown): SearchHit {
+  if (typeof raw === 'object' && raw !== null) {
+    const { id, title, body, score } = raw as Record<string, unknown>
+    if (
+      typeof id === 'string' &&
+      typeof title === 'string' &&
+      typeof body === 'string' &&
+      typeof score === 'number'
+    ) {
+      return { id, title, body, score }
+    }
+  }
+  throw new Error('Malformed search hit')
+}
+
+export function parseSearchResult(raw: unknown): SearchResult {
+  if (typeof raw === 'object' && raw !== null) {
+    const { mode, hits, indexed } = raw as Record<string, unknown>
+    if (
+      (mode === 'semantic' || mode === 'keyword') &&
+      Array.isArray(hits) &&
+      (indexed === null || typeof indexed === 'number')
+    ) {
+      return { mode, hits: hits.map(parseHit), indexed }
+    }
+  }
+  throw new Error('Malformed search result')
+}
+
+export function parseIndexed(raw: unknown): { indexed: number } {
+  if (typeof raw === 'object' && raw !== null) {
+    const { indexed } = raw as Record<string, unknown>
+    if (typeof indexed === 'number') return { indexed }
+  }
+  throw new Error('Malformed reply')
+}
+`
+}
+
+function cfSearchWorkerTs(): string {
+  return `import { HttpError } from '@cascivo/app/api'
+import { migrate, queryRows } from '@cascivo/app/db'
+import type { Database } from '@cascivo/app/db'
+import type { SearchHit, SearchResult } from '../src/search'
+import { articles } from './articles'
+
+/** A Workers AI embedding model; its dimensions (768) are the Vectorize index's. */
+const EMBEDDING_MODEL = '@cf/baai/bge-base-en-v1.5'
+
+// \`vite dev\` has neither Workers AI nor Vectorize, so it searches with SQLite's full-text
+// index instead: by words, not meaning. \`VITE_REAL_AI=1 vite dev\` uses the real ones.
+const keywordOnly = import.meta.env.DEV && import.meta.env['VITE_REAL_AI'] !== '1'
+
+/** What search needs of the Vectorize binding. */
+export interface VectorIndex {
+  query(
+    vector: number[],
+    options: { topK: number },
+  ): Promise<{ matches: { id: string; score: number }[] }>
+  upsert(vectors: { id: string; values: number[] }[]): Promise<unknown>
+  describe(): Promise<{ vectorCount: number }>
+}
+
+/** What search needs of the Workers AI binding. */
+export interface Embedder {
+  run(model: typeof EMBEDDING_MODEL, input: { text: string[] }): Promise<unknown>
+}
+
+export interface SearchEnv {
+  DB: Database
+  AI: Embedder
+  ARTICLES_INDEX: VectorIndex
+}
+
+const migrations = [
+  {
+    id: '0001_articles',
+    statements: [
+      'CREATE TABLE articles (id TEXT PRIMARY KEY, title TEXT NOT NULL, body TEXT NOT NULL)',
+      "CREATE VIRTUAL TABLE articles_fts USING fts5(title, body, content='articles', content_rowid='rowid')",
+    ],
+  },
+]
+
+/** The schema, then the articles (once: a second isolate's inserts are ignored). */
+async function ready(db: Database): Promise<void> {
+  await migrate(db, migrations)
+  const [seeded] = await queryRows(db, 'SELECT COUNT(*) AS n FROM articles', [], (row) =>
+    typeof row === 'object' && row !== null ? Number((row as Record<string, unknown>)['n']) : 0,
+  )
+  if (seeded) return
+  await db.batch([
+    ...articles.map((a) =>
+      db
+        .prepare('INSERT OR IGNORE INTO articles (id, title, body) VALUES (?, ?, ?)')
+        .bind(a.id, a.title, a.body),
+    ),
+    // The full-text index reads the articles table; rebuild it from what is there now.
+    db.prepare("INSERT INTO articles_fts (articles_fts) VALUES ('rebuild')"),
+  ])
+}
+
+function parseRow(raw: unknown): SearchHit {
+  if (typeof raw === 'object' && raw !== null) {
+    const { id, title, body, score } = raw as Record<string, unknown>
+    if (typeof id === 'string' && typeof title === 'string' && typeof body === 'string') {
+      return { id, title, body, score: typeof score === 'number' ? score : 0 }
+    }
+  }
+  throw new Error('Malformed article row')
+}
+
+/** Embeddings from Workers AI, checked: a model's reply is data like any other. */
+async function embed(ai: Embedder, texts: string[]): Promise<number[][]> {
+  const reply = await ai.run(EMBEDDING_MODEL, { text: texts })
+  const data =
+    typeof reply === 'object' && reply !== null ? (reply as Record<string, unknown>)['data'] : null
+  if (
+    !Array.isArray(data) ||
+    data.length !== texts.length ||
+    !data.every((v) => Array.isArray(v) && v.every((n) => typeof n === 'number'))
+  ) {
+    throw new Error('Workers AI returned no embeddings')
+  }
+  return data as number[][]
+}
+
+/** Every word as a quoted FTS5 term, OR-ed: user input never reaches FTS5's query syntax. */
+function keywordQuery(q: string): string | null {
+  const words = q.toLowerCase().match(/[\\p{L}\\p{N}]+/gu) ?? []
+  return words.length > 0 ? words.map((w) => \`"\${w}"\`).join(' OR ') : null
+}
+
+export async function search(env: SearchEnv, q: string): Promise<SearchResult> {
+  await ready(env.DB)
+  if (keywordOnly) {
+    const match = keywordQuery(q)
+    const hits = match
+      ? await queryRows(
+          env.DB,
+          \`SELECT a.id, a.title, a.body, -bm25(articles_fts) AS score
+           FROM articles_fts JOIN articles a ON a.rowid = articles_fts.rowid
+           WHERE articles_fts MATCH ? ORDER BY score DESC LIMIT 5\`,
+          [match],
+          parseRow,
+        )
+      : []
+    return { mode: 'keyword', hits, indexed: null }
+  }
+  const { vectorCount } = await env.ARTICLES_INDEX.describe()
+  const [vector] = await embed(env.AI, [q])
+  const { matches } = await env.ARTICLES_INDEX.query(vector!, { topK: 5 })
+  if (matches.length === 0) return { mode: 'semantic', hits: [], indexed: vectorCount }
+  const rows = await queryRows(
+    env.DB,
+    \`SELECT id, title, body FROM articles WHERE id IN (\${matches.map(() => '?').join(', ')})\`,
+    matches.map((m) => m.id),
+    parseRow,
+  )
+  const byId = new Map(rows.map((row) => [row.id, row]))
+  const hits = matches.flatMap((m) => {
+    const row = byId.get(m.id)
+    return row ? [{ ...row, score: m.score }] : []
+  })
+  return { mode: 'semantic', hits, indexed: vectorCount }
+}
+
+/**
+ * Embeds every article and upserts it into the Vectorize index. Vectorize applies writes a few
+ * seconds later, so \`indexed\` counts what it had already applied when this finished.
+ */
+export async function indexArticles(env: SearchEnv): Promise<{ indexed: number }> {
+  if (keywordOnly)
+    throw new HttpError(400, 'vite dev searches by keyword: there is nothing to index')
+  await ready(env.DB)
+  const rows = await queryRows(env.DB, 'SELECT id, title, body FROM articles', [], parseRow)
+  for (let i = 0; i < rows.length; i += 50) {
+    const batch = rows.slice(i, i + 50)
+    const vectors = await embed(
+      env.AI,
+      batch.map((row) => \`\${row.title}\\n\${row.body}\`),
+    )
+    await env.ARTICLES_INDEX.upsert(batch.map((row, j) => ({ id: row.id, values: vectors[j]! })))
+  }
+  return { indexed: (await env.ARTICLES_INDEX.describe()).vectorCount }
+}
+`
+}
+
+function cfArticlesTs(): string {
+  return `/**
+ * The help articles /search looks through, seeded into D1 on the first query. Replace them with
+ * your own content: anything with an id, a title and a body can be indexed the same way.
+ */
+export const articles: { id: string; title: string; body: string }[] = [
+  {
+    id: 'refunds',
+    title: 'Refunds',
+    body: 'We refund any charge within 30 days of the invoice. Open Billing, pick the invoice and choose Request refund; the amount returns to the card that paid it within five business days.',
+  },
+  {
+    id: 'cancel',
+    title: 'Cancelling a subscription',
+    body: 'Cancel from Billing at any time. The plan stays active until the end of the period you paid for, and nothing is charged after that.',
+  },
+  {
+    id: 'invoices',
+    title: 'Invoices and receipts',
+    body: 'Every charge produces an invoice in Billing. Add a tax number and a billing address there, and they appear on every invoice from then on.',
+  },
+  {
+    id: 'change-plan',
+    title: 'Changing plans',
+    body: 'Upgrade or downgrade from Billing. An upgrade is prorated and charged at once; a downgrade takes effect at the next renewal.',
+  },
+  {
+    id: 'payment-failed',
+    title: 'When a payment fails',
+    body: 'If a card is declined we retry three times over a week and email the account owner each time. Update the card in Billing to settle the balance.',
+  },
+  {
+    id: 'sso',
+    title: 'Single sign-on with SAML',
+    body: 'Enterprise workspaces can require sign-in through an identity provider such as Okta or Entra ID. Upload the provider metadata under Security, then test with one account before enforcing it.',
+  },
+  {
+    id: 'two-factor',
+    title: 'Two-step verification',
+    body: 'Turn on an authenticator app under Profile, Security. Keep the recovery codes somewhere safe: they are the only way back in if the phone is lost.',
+  },
+  {
+    id: 'password-reset',
+    title: 'Resetting a password',
+    body: 'Choose Forgot password on the sign-in page. The link we email works once and expires after an hour.',
+  },
+  {
+    id: 'invite',
+    title: 'Inviting teammates',
+    body: 'Admins invite people from Members by email. Each invitation expires after seven days and can be resent.',
+  },
+  {
+    id: 'roles',
+    title: 'Roles and permissions',
+    body: 'Owners manage billing and security, admins manage members and projects, and members work inside the projects they are added to.',
+  },
+  {
+    id: 'remove-member',
+    title: 'Removing someone from the workspace',
+    body: 'An admin removes a member from Members. Their projects stay, reassigned to the admin, and their access ends immediately.',
+  },
+  {
+    id: 'export-data',
+    title: 'Exporting your data',
+    body: 'Download every project as CSV or JSON from Settings, Data. Large workspaces receive an email with a download link when the archive is ready.',
+  },
+  {
+    id: 'delete-account',
+    title: 'Deleting a workspace',
+    body: 'The owner deletes the workspace under Settings. Data is kept for 30 days in case of a mistake, then erased permanently.',
+  },
+  {
+    id: 'api-keys',
+    title: 'API keys',
+    body: 'Create keys under Settings, API. A key is shown once; store it as a secret, and rotate it by creating a new key before revoking the old one.',
+  },
+  {
+    id: 'rate-limits',
+    title: 'API rate limits',
+    body: 'Each key may make 600 requests a minute. A request over the limit receives status 429 with a Retry-After header saying when to try again.',
+  },
+  {
+    id: 'webhooks',
+    title: 'Webhooks',
+    body: 'Subscribe a URL to events under Settings, Webhooks. Each delivery is signed with your secret; verify the signature before trusting the body.',
+  },
+  {
+    id: 'uptime',
+    title: 'Status and incidents',
+    body: 'Live service status and past incidents are on the status page. Subscribe there to hear about outages and maintenance by email.',
+  },
+  {
+    id: 'data-region',
+    title: 'Where data is stored',
+    body: 'Choose the EU or US region when creating a workspace. Data at rest stays in that region, and it cannot be moved later.',
+  },
+  {
+    id: 'gdpr',
+    title: 'Privacy and GDPR requests',
+    body: 'Request a copy of personal data, or its deletion, from Profile, Privacy. We answer within 30 days, as the regulation requires.',
+  },
+  {
+    id: 'dark-mode',
+    title: 'Dark mode and themes',
+    body: 'Switch between light and dark themes under Profile, Appearance, or follow the operating system setting automatically.',
+  },
+  {
+    id: 'keyboard',
+    title: 'Keyboard shortcuts',
+    body: 'Press the question mark anywhere to list shortcuts. Command K opens the command menu to jump to any page or action.',
+  },
+  {
+    id: 'notifications',
+    title: 'Email notifications',
+    body: 'Choose which updates arrive by email under Profile, Notifications, or pause them all for a while.',
+  },
+  {
+    id: 'mobile',
+    title: 'Using the mobile app',
+    body: 'The iOS and Android apps sign in with the same account and receive push notifications for mentions and assignments.',
+  },
+  {
+    id: 'import',
+    title: 'Importing from a spreadsheet',
+    body: 'Upload a CSV under Settings, Data, Import. Map each column to a field, preview the first rows, then run the import; errors are listed per row.',
+  },
+]
+`
+}
+
+function cfSearchRouteTsx(): string {
+  return `import { createClient } from '@cascivo/app/api'
+import {
+  Alert,
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  EmptyState,
+  Flex,
+  Heading,
+  Search,
+  Text,
+  signal,
+  useSignals,
+} from '@cascivo/react'
+import { api } from '../api'
+import type { SearchResult } from '../search'
+
+const client = createClient(api)
+const result = signal<SearchResult | null>(null)
+const failure = signal<string | null>(null)
+const indexing = signal(false)
+
+let latest = 0
+
+/** Runs a search (Search debounces typing); an older answer never replaces a newer one. */
+function onQuery(q: string): void {
+  const ticket = ++latest
+  if (q.trim() === '') {
+    result.value = null
+    return
+  }
+  client
+    .search({ body: { q } })
+    .then((answer) => {
+      if (ticket === latest) {
+        result.value = answer
+        failure.value = null
+      }
+    })
+    .catch((error: unknown) => {
+      if (ticket === latest)
+        failure.value = error instanceof Error ? error.message : 'Search failed'
+    })
+}
+
+async function indexArticles(): Promise<void> {
+  indexing.value = true
+  failure.value = null
+  try {
+    const { indexed } = await client.indexArticles()
+    result.value = result.value ? { ...result.value, indexed } : null
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Indexing failed'
+  } finally {
+    indexing.value = false
+  }
+}
+
+export default function SearchPage() {
+  useSignals()
+  const current = result.value
+
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Search</Heading>
+        <Text muted>
+          Help articles, searched by meaning once deployed: ask “how do I get my money back” and
+          Refunds comes first, though it shares no words with the question. vite dev searches by
+          keyword instead.
+        </Text>
+      </Flex>
+      <Search label="Search the help articles" placeholder="Ask a question" onSearch={onQuery} />
+      {failure.value ? (
+        <Alert variant="destructive" title="Search failed">
+          {failure.value}
+        </Alert>
+      ) : null}
+      {current ? (
+        <Flex direction="horizontal" align="center" gap={2} wrap>
+          <Badge variant={current.mode === 'semantic' ? 'success' : 'warning'}>
+            {current.mode === 'semantic'
+              ? 'By meaning (Vectorize)'
+              : 'By keyword (vite dev stand-in)'}
+          </Badge>
+          {current.mode === 'semantic' ? (
+            <>
+              <Text size="sm" muted>
+                {current.indexed ?? 0} articles indexed
+              </Text>
+              <Button
+                size="sm"
+                variant="secondary"
+                loading={indexing.value}
+                onClick={() => void indexArticles()}
+              >
+                Index articles
+              </Button>
+            </>
+          ) : null}
+        </Flex>
+      ) : null}
+      {current && current.hits.length === 0 ? (
+        <EmptyState
+          title="Nothing found"
+          description={
+            current.mode === 'semantic' && !current.indexed
+              ? 'The index is empty: press Index articles, then search again in a few seconds.'
+              : 'Try other words.'
+          }
+        />
+      ) : null}
+      {current?.hits.map((hit) => (
+        <Card key={hit.id}>
+          <CardContent>
+            <Flex gap={1}>
+              <Text weight="semibold">{hit.title}</Text>
+              <Text size="sm" muted>
+                {hit.body}
+              </Text>
+            </Flex>
+          </CardContent>
+        </Card>
+      ))}
     </Flex>
   )
 }
@@ -6401,6 +6940,28 @@ dataset, so in development the charts show what your deployed app recorded. Unti
 exist, the page says what to set.`
       : ''
   }${
+    hasExample(opts, 'search')
+      ? `
+
+## Search (by meaning)
+
+\`/search\` finds help articles by what a question means: "how do I get my money back" finds
+Refunds, though they share no words. Each article is embedded with Workers AI
+(\`@cf/baai/bge-base-en-v1.5\`) into a Vectorize index; a question is embedded the same way
+and matched against it.
+
+- \`worker/articles.ts\` — the articles, seeded into D1. Replace them with your own content.
+- \`worker/search.ts\` — \`search\` and \`indexArticles\`. "Index articles" on the page embeds
+  every article; Vectorize applies writes a few seconds later.
+
+Create the index once before deploying, with the embedding model's dimensions:
+\`npx wrangler vectorize create ${packageName(opts.name)}-articles --dimensions=768 --metric=cosine\`.
+Neither Vectorize nor Workers AI runs locally, so \`vite dev\` searches by keyword with SQLite's
+full-text search instead, and the page says so. \`VITE_REAL_AI=1 ${runScriptCommand(pm, 'dev')}\` uses the real ones
+(after \`npx wrangler login\`). Workers AI and Vectorize bill per use beyond their free
+allocations, and a temporary account has neither.`
+      : ''
+  }${
     hasExample(opts, 'digest')
       ? `
 
@@ -6683,6 +7244,7 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
       ? [{ file: 'webhooks.tsx', contents: cfWebhooksRouteTsx() }]
       : []),
     ...(hasExample(opts, 'digest') ? [{ file: 'digest.tsx', contents: cfDigestRouteTsx() }] : []),
+    ...(hasExample(opts, 'search') ? [{ file: 'search.tsx', contents: cfSearchRouteTsx() }] : []),
     ...(opts.auth === 'email'
       ? [
           { file: 'account.tsx', contents: cfAccountRouteTsx() },
@@ -6739,6 +7301,13 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
         ]
       : []),
     ...(hasExample(opts, 'live') ? [{ path: 'src/ops.ts', contents: cfOpsTs() }] : []),
+    ...(hasExample(opts, 'search')
+      ? [
+          { path: 'src/search.ts', contents: cfSearchTs() },
+          { path: 'worker/search.ts', contents: cfSearchWorkerTs() },
+          { path: 'worker/articles.ts', contents: cfArticlesTs() },
+        ]
+      : []),
     ...(hasExample(opts, 'digest')
       ? [
           { path: 'src/digest.ts', contents: cfDigestTs() },

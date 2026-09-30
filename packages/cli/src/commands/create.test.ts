@@ -1229,3 +1229,55 @@ describe('buildScaffold — published pages rendered by the Worker', () => {
     expect(both.get('worker/index.ts')).toContain('/preview.png')
   })
 })
+
+describe('buildScaffold — cloudflare --example search', () => {
+  const build = (examples: Example[]) =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        examples,
+      }),
+    )
+  const map = build(['search'])
+
+  it('binds Workers AI and a Vectorize index, without the Agents SDK wiring', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"ai": { "binding": "AI" }')
+    expect(wrangler).toContain(
+      '"vectorize": [{ "binding": "ARTICLES_INDEX", "index_name": "edge-app-articles" }]',
+    )
+    expect(wrangler).toContain('"run_worker_first": ["/api/*"]')
+    expect(wrangler).not.toContain('nodejs_compat')
+    expect(map.get('vite.config.ts')).toContain(
+      "remoteBindings: process.env['VITE_REAL_AI'] === '1'",
+    )
+    expect(map.get('worker/index.ts')).toContain('AI: Embedder')
+    expect(map.get('README.md')).toContain(
+      'npx wrangler vectorize create edge-app-articles --dimensions=768 --metric=cosine',
+    )
+  })
+
+  it('keeps user input out of the full-text query syntax, and checks what the model returns', () => {
+    const search = map.get('worker/search.ts')!
+    expect(search).toContain('.map((w) => `"${w}"`)')
+    expect(search).toContain("throw new Error('Workers AI returned no embeddings')")
+    expect(search).toContain(
+      ".prepare('INSERT OR IGNORE INTO articles (id, title, body) VALUES (?, ?, ?)')",
+    )
+  })
+
+  it('rate-limits indexing, which embeds every article', () => {
+    expect(map.get('worker/index.ts')).toContain(
+      "if (url.pathname === '/api/search/index') return request.method === 'POST'",
+    )
+  })
+
+  it('shares Workers AI with the assistant', () => {
+    const both = build(['agent', 'search'])
+    expect(both.get('wrangler.jsonc')!.match(/"ai": \{/g)).toHaveLength(1)
+    expect(both.get('worker/index.ts')).toContain('AI: Ai')
+  })
+})
