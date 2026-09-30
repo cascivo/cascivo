@@ -17,6 +17,8 @@ export default defineConfig({
         export: './src/export.ts',
         analytics: './src/analytics.ts',
         db: './src/db.ts',
+        guard: './src/guard.ts',
+        turnstile: './src/turnstile.ts',
         vite: './src/vite.ts',
       },
       formats: ['es'],
@@ -37,7 +39,8 @@ export default defineConfig({
         // only it is a client module; `api` and `sync-server` run in Workers, `sync` holds
         // no components, `flags` runs on both sides, `jobs` and `uploads` run in the browser
         // and their `-server` twins in the Worker,
-        // `export` in both, `analytics` and `db` in the Worker, and `vite` runs in Node (see packages/core/vite.config.ts).
+        // `export` in both, `analytics`, `db` and `guard` in the Worker,
+        // `turnstile` in the browser, and `vite` runs in Node (see packages/core/vite.config.ts).
         banner: (chunk: { name?: string; isEntry?: boolean }) =>
           chunk.isEntry && chunk.name === 'index' ? "'use client';" : '',
       },

@@ -2,7 +2,7 @@ import { mkdtempSync, readdirSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { buildScaffold, create, type ScaffoldFile } from './create.js'
+import { buildScaffold, create, type ScaffoldFile, type ScaffoldOptions } from './create.js'
 
 function fileMap(files: ScaffoldFile[]): Map<string, string> {
   return new Map(files.map((f) => [f.path, f.contents]))
@@ -813,5 +813,80 @@ describe('buildScaffold — cloudflare --example crud', () => {
     for (const line of store.split('\n').filter((l) => /(INSERT|UPDATE|DELETE)/.test(l))) {
       expect(line).not.toContain('${')
     }
+  })
+})
+
+describe('buildScaffold — cloudflare guards', () => {
+  const build = (opts: Partial<ScaffoldOptions>) =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        ...opts,
+      }),
+    )
+
+  it('rate-limits starting an upload or an export, not every request', () => {
+    const map = build({ examples: ['files', 'export'] })
+    expect(map.get('wrangler.jsonc')).toContain('"name": "LIMITER"')
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain('LIMITER: RateLimiter')
+    expect(worker).toContain('if (startsPaidWork(request))')
+    expect(worker).toContain(
+      "return (request.method === 'PUT' && step === null) || step === 'start'",
+    )
+    expect(worker).toContain("return url.pathname === '/api/export'")
+    expect(worker.indexOf('rateLimit(')).toBeLessThan(worker.indexOf('handleUploads('))
+    expect(map.get('README.md')).toContain('20 uploads a minute')
+  })
+
+  it('has no limiter without a paid example', () => {
+    const map = build({ examples: ['crud'] })
+    expect(map.get('wrangler.jsonc')).not.toContain('ratelimits')
+    expect(map.get('worker/index.ts')).not.toContain('@cascivo/app/guard')
+  })
+
+  it('--auth access checks every Worker request first, outside vite dev, and fails closed', () => {
+    const map = build({ auth: 'access' })
+    expect(map.get('wrangler.jsonc')).toContain(
+      '"vars": { "ACCESS_TEAM_DOMAIN": "", "ACCESS_AUD": "" }',
+    )
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain('async fetch(request: Request, env: Env): Promise<Response> {')
+    expect(worker).toContain('if (!import.meta.env.DEV) {')
+    expect(worker.indexOf('requireAccess(')).toBeLessThan(worker.indexOf('return handleApi('))
+    expect(map.get('README.md')).toContain('## Access (who may use the app)')
+  })
+
+  it('--auth access runs before the limiter and the room routes', () => {
+    const worker = build({ auth: 'access', examples: ['board', 'files'] }).get('worker/index.ts')!
+    const access = worker.indexOf('await requireAccess(')
+    expect(access).toBeGreaterThan(0)
+    expect(access).toBeLessThan(worker.indexOf('await rateLimit('))
+    expect(access).toBeLessThan(worker.indexOf('roomResponse(request'))
+  })
+})
+
+describe('create --auth', () => {
+  const dirs: string[] = []
+  afterEach(() => {
+    for (const dir of dirs.splice(0)) rmSync(dir, { recursive: true, force: true })
+    process.exitCode = 0
+    vi.restoreAllMocks()
+  })
+
+  it.each([
+    [['--framework', 'react-vite', '--auth', 'access'], '--auth needs --framework cloudflare'],
+    [['--framework', 'cloudflare', '--auth', 'basic'], 'Unknown auth "basic"'],
+  ])('refuses %j and writes nothing', async (flags, message) => {
+    const cwd = mkdtempSync(join(tmpdir(), 'cascivo-create-'))
+    dirs.push(cwd)
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {})
+    await create(['app', '--yes', ...flags], cwd)
+    expect(process.exitCode).toBe(1)
+    expect(error.mock.calls.join(' ')).toContain(message)
+    expect(readdirSync(cwd)).toEqual([])
   })
 })

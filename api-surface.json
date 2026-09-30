@@ -6858,6 +6858,49 @@
           }
         }
       },
+      "./guard": {
+        "values": ["clientIp", "guardResponse", "rateLimit", "requireAccess", "verifyTurnstile"],
+        "types": ["AccessIdentity", "AccessOptions", "RateLimiter", "TurnstileOptions"],
+        "declarations": {
+          "AccessIdentity": {
+            "email": "string | null",
+            "subject": "string",
+            "claims": "Record<string, unknown>"
+          },
+          "AccessOptions": {
+            "teamDomain": "string",
+            "audience": "string",
+            "fetch?": "typeof fetch",
+            "leewaySeconds?": "number"
+          },
+          "clientIp": "declare function clientIp(request: Request): string",
+          "guardResponse": "declare function guardResponse(error: unknown): Response",
+          "rateLimit": "declare function rateLimit(limiter: RateLimiter, key: string): Promise<void>",
+          "RateLimiter": {
+            "limit": "(options: { key: string; }): Promise<{ success: boolean; }>"
+          },
+          "requireAccess": "declare function requireAccess(request: Request, options: AccessOptions): Promise<AccessIdentity>",
+          "TurnstileOptions": {
+            "secret": "string",
+            "remoteIp?": "string",
+            "action?": "string",
+            "hostname?": "string",
+            "fetch?": "typeof fetch"
+          },
+          "verifyTurnstile": "declare function verifyTurnstile(token: string | null | undefined, options: TurnstileOptions): Promise<void>"
+        }
+      },
+      "./turnstile": {
+        "values": ["mountTurnstile"],
+        "types": ["TurnstileWidget"],
+        "declarations": {
+          "mountTurnstile": "declare function mountTurnstile(element: HTMLElement, options: { siteKey: string; action?: string; onToken: (token: string) => void; onExpire?: () => void; }): TurnstileWidget",
+          "TurnstileWidget": {
+            "reset": "(): void",
+            "remove": "(): void"
+          }
+        }
+      },
       "./sync-server": {
         "values": ["SyncRoom", "roomResponse", "writeRoom"],
         "types": ["HibernatableWebSocket", "RoomNamespace", "RoomWrite", "SyncRoomState"],

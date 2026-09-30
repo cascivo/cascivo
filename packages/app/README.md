@@ -514,6 +514,56 @@ return queryTable(env.DB, customers, body, parseCustomer) // { rows, total }
 `cascivo create --framework cloudflare --example crud` scaffolds a customers table with
 create, edit and delete.
 
+## Who may call the Worker — `@cascivo/app/guard`
+
+Three checks for the top of a Worker's `fetch`, or inside a `createHandler` handler. Each
+throws an `HttpError`, so a handler answers with its status; in `fetch`, `guardResponse(error)`
+turns it into a JSON response.
+
+```ts
+import { clientIp, guardResponse, rateLimit, requireAccess, verifyTurnstile } from '@cascivo/app/guard'
+
+async fetch(request, env) {
+  try {
+    // Cloudflare Access in front of an internal tool: 403 unless Access signed this request.
+    const who = await requireAccess(request, { teamDomain: env.ACCESS_TEAM_DOMAIN, audience: env.ACCESS_AUD })
+    // The Rate Limiting binding ("ratelimits" in wrangler.jsonc): 429 past the limit.
+    await rateLimit(env.LIMITER, who.email ?? clientIp(request))
+  } catch (error) {
+    return guardResponse(error)
+  }
+  …
+}
+
+// A public form: 403 unless Turnstile says a person submitted it.
+signup: async ({ input }, { request, env }) => {
+  await verifyTurnstile(input.turnstileToken, { secret: env.TURNSTILE_SECRET, remoteIp: clientIp(request), action: 'signup' })
+  …
+}
+```
+
+- **`requireAccess`** verifies the JWT Access adds to each request it lets through (the
+  `Cf-Access-Jwt-Assertion` header, or the `CF_Authorization` cookie): the RS256 signature
+  against your team's published keys, the issuer, the audience, and the expiry. The keys are
+  cached for an hour and refetched once when Access rotates them. A request that reached the
+  Worker around Access, at `*.workers.dev` for example, has no valid token and is refused. An
+  empty team domain or audience refuses everything with a 500, so a deploy nobody configured
+  fails closed.
+- **`verifyTurnstile`** checks a token with Cloudflare's siteverify API, optionally for one
+  action and hostname. A token is single-use.
+- **`rateLimit(limiter, key)`** counts one call for `key` against the binding; the limit and
+  period live in `wrangler.jsonc`. It counts per Cloudflare location, so treat it as abuse
+  protection rather than exact accounting.
+
+`mountTurnstile(element, { siteKey, action, onToken })` from `@cascivo/app/turnstile` renders
+the widget in the browser: it loads Cloudflare's script once and returns `reset()` and
+`remove()`. Cloudflare's test keys (site key `1x00000000000000000000AA`, secret
+`1x0000000000000000000000000000000AA`) always pass, for local development.
+
+`cascivo create --framework cloudflare --auth access` scaffolds the Access check.
+`--example files` and `--example export` rate-limit starting an upload or an export (20 a
+minute per IP).
+
 ## Install
 
 ```sh

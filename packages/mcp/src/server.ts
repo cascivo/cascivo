@@ -313,17 +313,24 @@ export function createServer(options: ServerOptions = {}): McpServer {
           .describe(
             'Extra pages for framework "cloudflare": "board" is a multiplayer page (notes + live cursors) on a Durable Object — deployable with no account via deploy_preview; "agent" is an AI assistant (Agents SDK + Workers AI) that answers with validated cascivo views — needs runtime "react" (the default with it) and a real Cloudflare account for the model; "notes" is a local-first page whose edits survive a dropped connection (IndexedDB + a Durable Object); "import" is a CSV import running as a Workflow with live progress (@cascivo/app/jobs) — Workflows need a real Cloudflare account to deploy; "files" uploads into R2 with progress and Cloudflare Images previews (@cascivo/app/uploads) — R2 needs a real account; "export" is a report page downloadable as PDF/PNG, rendered by Browser Run (@cascivo/app/export); "usage" records every API request in Workers Analytics Engine and charts it (@cascivo/app/analytics) — reading needs CF_ACCOUNT_ID and CF_API_TOKEN secrets; "crud" is a D1 customers table behind the DataTable server mode, with create/edit/delete (@cascivo/app/db) — works on a temporary account',
           ),
+        auth: z
+          .enum(['access'])
+          .optional()
+          .describe(
+            'For framework "cloudflare": "access" makes the Worker refuse every request Cloudflare Access did not let through (the user sets the team domain and AUD in wrangler.jsonc). Such an app cannot use deploy_preview.',
+          ),
         cwd: z
           .string()
           .optional()
           .describe('Directory to create the app in (default: current directory)'),
       },
     },
-    ({ name, theme, sections, framework, runtime, examples, cwd }) => {
+    ({ name, theme, sections, framework, runtime, examples, auth, cwd }) => {
       const args = ['-y', 'cascivo', 'create', name, '--yes']
       if (framework) args.push('--framework', framework)
       if (runtime) args.push('--runtime', runtime)
       if (examples && examples.length > 0) args.push('--example', examples.join(','))
+      if (auth) args.push('--auth', auth)
       if (theme) args.push('--theme', theme)
       if (sections && sections.length > 0) args.push('--sections', sections.join(', '))
       const result = spawnSync('npx', args, { encoding: 'utf8', ...(cwd ? { cwd } : {}) })

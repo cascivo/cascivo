@@ -27,6 +27,8 @@ const ENTRIES = [
   { name: 'export', src: 'src/export.ts' },
   { name: 'analytics', src: 'src/analytics.ts' },
   { name: 'db', src: 'src/db.ts' },
+  { name: 'guard', src: 'src/guard.ts' },
+  { name: 'turnstile', src: 'src/turnstile.ts' },
   { name: 'vite', src: 'src/vite.ts' },
 ]
 

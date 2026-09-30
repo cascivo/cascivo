@@ -254,6 +254,26 @@ export const pageOfPeople = async (db: Database, raw: unknown) => {
   await migrate(db, [{ id: '0001', statements: ['CREATE TABLE people (id TEXT PRIMARY KEY, name TEXT)'] }])
   return queryTable(db, people, parseTableQuery(raw), (row) => row)
 }
+import {
+  clientIp,
+  guardResponse,
+  rateLimit,
+  requireAccess,
+  verifyTurnstile,
+  type RateLimiter,
+} from '@cascivo/app/guard'
+import { mountTurnstile } from '@cascivo/app/turnstile'
+export const guarded = async (request: Request, limiter: RateLimiter): Promise<Response | null> => {
+  try {
+    const who = await requireAccess(request, { teamDomain: 'acme.cloudflareaccess.com', audience: 'aud' })
+    await rateLimit(limiter, who.email ?? clientIp(request))
+    await verifyTurnstile(request.headers.get('x-turnstile'), { secret: 's', action: 'signup' })
+    return null
+  } catch (error) {
+    return guardResponse(error)
+  }
+}
+export const widget = mountTurnstile(document.body, { siteKey: 'k', onToken: (token: string) => token })
 export const recordCall = (binding: AnalyticsDataset) => apiMetrics.write(binding, { path: '/', ms: 1 })
 export const totalCalls = (accountId: string, apiToken: string) =>
   queryAnalytics({ accountId, apiToken }, apiMetrics.sql('SELECT SUM(_sample_interval) AS n FROM {dataset}'), (row) =>

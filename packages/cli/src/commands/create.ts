@@ -94,6 +94,11 @@ export interface ScaffoldOptions {
   runtime?: Runtime
   /** Extra demo pages for the `cloudflare` framework. */
   examples?: Example[]
+  /**
+   * `access`: the Worker refuses every request Cloudflare Access did not let through
+   * (`cloudflare` framework only).
+   */
+  auth?: 'access'
 }
 
 export interface ScaffoldFile {
@@ -1253,6 +1258,21 @@ ${jsoncArray('  ', 'migrations', [`{ "tag": "v1", "new_sqlite_classes": [${objec
   "images": { "binding": "IMAGES" },`
       : ''
   }${
+    usesLimiter(opts)
+      ? `
+  // Uploads and exports per caller: 20 a minute. namespace_id is any number unique within
+  // your account. https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/
+  "ratelimits": [
+    { "name": "LIMITER", "namespace_id": "1001", "simple": { "limit": 20, "period": 60 } },
+  ],`
+      : ''
+  }${
+    opts.auth === 'access'
+      ? `
+  // Cloudflare Access (README). Until both are set, the Worker refuses every request.
+  "vars": { "ACCESS_TEAM_DOMAIN": "", "ACCESS_AUD": "" },`
+      : ''
+  }${
     hasExample(opts, 'crud')
       ? `
   // The customers table. No database_id: wrangler creates the database on first deploy, and
@@ -1309,6 +1329,11 @@ function usageDataset(opts: ScaffoldOptions): string {
   return `${packageName(opts.name)
     .replace(/[^a-z0-9_]/g, '_')
     .replace(/^[^a-z_]/, '_$&')}_usage`
+}
+
+/** Examples whose requests cost money per call (storage, a browser): rate-limited per caller. */
+function usesLimiter(opts: ScaffoldOptions): boolean {
+  return hasExample(opts, 'files') || hasExample(opts, 'export')
 }
 
 function usesRooms(opts: ScaffoldOptions): boolean {
@@ -1435,8 +1460,16 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const exports = hasExample(opts, 'export')
   const usage = hasExample(opts, 'usage')
   const crud = hasExample(opts, 'crud')
+  const limiter = usesLimiter(opts)
+  const access = opts.auth === 'access'
+  const guards = [
+    ...(access ? ['requireAccess'] : []),
+    ...(limiter ? ['clientIp', 'rateLimit'] : []),
+  ]
+  const custom = rooms || agent || files || exports || access
+  const isAsync = agent || files || exports || access
   return `${usage ? `import type { AnalyticsDataset } from '@cascivo/app/analytics'\n` : ''}${crud ? `import type { Database } from '@cascivo/app/db'\n` : ''}${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler } from '@cascivo/app/api'
-${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
+${guards.length > 0 ? `import { ${[...guards, 'guardResponse'].sort().join(', ')} } from '@cascivo/app/guard'\n${limiter ? `import type { RateLimiter } from '@cascivo/app/guard'\n` : ''}` : ''}${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
     files
       ? `import { handleUploads, listUploads } from '@cascivo/app/uploads-server'
 import type { ImageResizer, UploadBucket } from '@cascivo/app/uploads-server'
@@ -1484,15 +1517,36 @@ export { ImportJob } from './import-job'
  * here; every handler receives them as \`env\`.
  */
 ${
-  rooms || agent || files || exports || usage || crud
-    ? `export interface Env {${agent ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${crud ? '\n  DB: Database' : ''}
+  rooms || agent || files || exports || usage || crud || access
+    ? `export interface Env {${agent ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${crud ? '\n  DB: Database' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
 }
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-
+${
+  limiter
+    ? `
+/**
+ * Requests that start paid work: ${[files ? 'a new upload (not each part of one)' : '', exports ? 'an export' : ''].filter(Boolean).join(', ')}.
+ * Each counts against LIMITER.
+ */
+function startsPaidWork(request: Request): boolean {
+  const url = new URL(request.url)${
+    files
+      ? `
+  if (url.pathname === uploads.path) {
+    const step = url.searchParams.get('multipart')
+    return (request.method === 'PUT' && step === null) || step === 'start'
+  }`
+      : ''
+  }
+  return ${exports ? "url.pathname === '/api/export'" : 'false'}
+}
+`
+    : ''
+}
 /**
  * One handler per endpoint in src/api.ts, typed from it. A stream handler is an async
  * generator: each \`yield\` is one server-sent event, and returning ends the stream. When the
@@ -1558,8 +1612,35 @@ async function handleAndRecord(request: Request, env: Env): Promise<Response> {
 // wrangler.jsonc routes only ${agent ? '/api/* and /agents/*' : '/api/*'} here; everything else is a static asset or index.html.
 export default {
 ${
-  rooms || agent || files || exports
-    ? `  ${agent || files || exports ? 'async ' : ''}fetch(request: Request, env: Env): Promise<Response>${agent || files || exports ? '' : ' | Response'} {${
+  custom
+    ? `  ${isAsync ? 'async ' : ''}fetch(request: Request, env: Env): Promise<Response>${isAsync ? '' : ' | Response'} {${
+        access
+          ? `
+    // Cloudflare Access is in front of the app (README); this refuses a request that came
+    // around it (straight to *.workers.dev, say). \`vite dev\` has no Access, so not there.
+    if (!import.meta.env.DEV) {
+      try {
+        await requireAccess(request, {
+          teamDomain: env.ACCESS_TEAM_DOMAIN,
+          audience: env.ACCESS_AUD,
+        })
+      } catch (error) {
+        return guardResponse(error)
+      }
+    }`
+          : ''
+      }${
+        limiter
+          ? `
+    if (startsPaidWork(request)) {
+      try {
+        await rateLimit(env.LIMITER, clientIp(request))
+      } catch (error) {
+        return guardResponse(error)
+      }
+    }`
+          : ''
+      }${
         agent
           ? `
     // /agents/assistant/<conversation>: the WebSocket useAgent() opens.
@@ -1569,14 +1650,14 @@ ${
       }${
         files
           ? `
-    // Uploads into R2 and the files they stored. Add your own auth check first.
+    // Uploads into R2 and the files they stored.${access ? '' : ' Anyone can upload: see README.'}
     const upload = await handleUploads(uploads, env.FILES, { images: env.IMAGES })(request)
     if (upload) return upload`
           : ''
       }${
         exports
           ? `
-    // /api/export?page=/report&format=pdf — each export starts a browser: rate-limit it.
+    // /api/export?page=/report&format=pdf — each export starts a browser.
     const exported = await handleExport(request, { launch: () => puppeteer.launch(env.BROWSER) })
     if (exported) return exported`
           : ''
@@ -3986,8 +4067,14 @@ temporary account, so \`deploy:preview\` serves the page without starting import
   stop any file running script. \`?w=320\` returns a WebP preview from Cloudflare Images.
 - \`src/files.ts\` — \`startUpload\` gives each file progress and status signals.
 
-**It has no auth.** Anyone who can reach the app can upload. Check who is asking in
-\`worker/index.ts\` before \`handleUploads\` runs. Create the bucket once before deploying:
+Each caller (by IP) may start 20 uploads a minute (\`ratelimits\` in \`wrangler.jsonc\`).${
+          opts.auth === 'access'
+            ? ''
+            : `
+**It has no auth.** Anyone who can reach the app can upload: put Cloudflare Access in front of
+it (\`--auth access\` scaffolds that), or check who is asking in \`worker/index.ts\` before
+\`handleUploads\` runs.`
+        } Create the bucket once before deploying:
 \`npx wrangler r2 bucket create ${packageName(opts.name)}-files\`. R2 and Images do not run on a
 temporary account.`
       : ''
@@ -4009,8 +4096,8 @@ Cloudflare's Browser Run and returns the file.
   email (\`sendEmail\` from \`@cascivo/email\` takes \`attachments\`).
 
 The browser opens the page without the visitor's cookies, so a page that needs a session
-renders signed out. Each export starts a browser session, which is billed: put a rate limit
-in front of \`/api/export\`. In \`vite dev\` Browser Run starts a local Chrome (downloaded on
+renders signed out. Each export starts a browser session, which is billed, so each caller
+(by IP) may start 20 a minute (\`ratelimits\` in \`wrangler.jsonc\`). In \`vite dev\` Browser Run starts a local Chrome (downloaded on
 first use); it does not run on a temporary account.`
       : ''
   }${
@@ -4039,6 +4126,26 @@ npx wrangler secret put CF_API_TOKEN   # a token with Account Analytics: Read
 For \`vite dev\`, put both in \`.dev.vars\`. Data written locally is not in your account's
 dataset, so in development the charts show what your deployed app recorded. Until the secrets
 exist, the page says what to set.`
+      : ''
+  }${
+    opts.auth === 'access'
+      ? `
+
+## Access (who may use the app)
+
+The Worker refuses every request Cloudflare Access did not let through: \`requireAccess\`
+(\`@cascivo/app/guard\`) at the top of \`worker/index.ts\` verifies the token Access signs.
+
+1. In Cloudflare One (Zero Trust), add a self-hosted Access application for this app's
+   hostname, with a policy saying who may sign in.
+2. Put your team domain (\`<team>.cloudflareaccess.com\`) and the application's Audience (AUD)
+   tag in \`vars\` in \`wrangler.jsonc\`, and deploy.
+
+Until both are set, every API request answers 500 ("Access is not configured"). Access guards
+the pages at the edge; the Worker's check also refuses API calls that reach it around Access,
+at \`*.workers.dev\` for example (set \`"workers_dev": false\` if the app should have no public
+address at all). \`vite dev\` skips the check. A temporary account has no Access, so an app made
+with \`--auth access\` cannot use \`deploy:preview\`.`
       : ''
   }${
     hasExample(opts, 'crud')
@@ -4319,6 +4426,7 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
     'framework',
     'runtime',
     'example',
+    'auth',
   ])[0]
   const themeArg = flagValue(args, 'theme')
   const sectionsArg = flagValue(args, 'sections')
@@ -4344,6 +4452,13 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
   const badExample = exampleArgs.find((e) => !isExample(e))
   if (badExample) {
     console.error(`Unknown example "${badExample}". Expected one of: ${EXAMPLES.join(', ')}.`)
+    process.exitCode = 1
+    return
+  }
+
+  const authArg = (flagValue(args, 'auth') ?? '').toLowerCase()
+  if (authArg && authArg !== 'access') {
+    console.error(`Unknown auth "${authArg}". Expected: access.`)
     process.exitCode = 1
     return
   }
@@ -4408,6 +4523,11 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
       process.exitCode = 1
       return
     }
+    if (authArg && resolvedFramework !== 'cloudflare') {
+      console.error('--auth needs --framework cloudflare (it guards the Worker).')
+      process.exitCode = 1
+      return
+    }
     if (exampleArgs.includes('agent') && runtimeArg === 'preact') {
       console.error(
         "--example agent needs --runtime react: the Agents SDK's hooks call React 19's use(), " +
@@ -4425,6 +4545,7 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
       pm,
       ...(isRuntime(runtimeArg) ? { runtime: runtimeArg } : {}),
       ...(exampleArgs.length > 0 ? { examples: exampleArgs.filter(isExample) } : {}),
+      ...(authArg === 'access' ? { auth: 'access' as const } : {}),
     }
 
     const targetDir = join(cwd, name)
