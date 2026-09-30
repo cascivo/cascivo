@@ -263,6 +263,14 @@ import {
   type RateLimiter,
 } from '@cascivo/app/guard'
 import { mountTurnstile } from '@cascivo/app/turnstile'
+import { createAuth, type User as AuthUser } from '@cascivo/app/auth'
+import { currentUser, handleAuth, requireUser } from '@cascivo/app/auth-server'
+export const appAuth = createAuth()
+export const whoIsIn = (): AuthUser | null | undefined => appAuth.user.value
+export const authRoutes = (db: Database) =>
+  handleAuth(db, { sendLink: async (_email: string, _url: string) => {}, exposeLink: false })
+export const mustBeIn = (db: Database, request: Request) => requireUser(db, request)
+export const maybeIn = (db: Database, request: Request) => currentUser(db, request)
 import { defineLive, watchLive, type LivePoint } from '@cascivo/app/live'
 import { LiveRoom, recordLive, type LiveBatch, type LiveQueue } from '@cascivo/app/live-server'
 export const opsLive = defineLive({ metrics: ['orders', 'errors'], window: 60 })

@@ -6945,6 +6945,47 @@
           "recordLive": "declare function recordLive<M extends string, Id>(live: Live<M>, namespace: RoomNamespace<Id>, name: string, raw: readonly unknown[]): Promise<void>"
         }
       },
+      "./auth": {
+        "values": ["createAuth"],
+        "types": ["Auth", "User"],
+        "declarations": {
+          "Auth": {
+            "readonly user": "ReadonlySignal<User | null | undefined>",
+            "refresh": "(): Promise<void>",
+            "start": "(email: string): Promise<{ link: string | null; }>",
+            "verify": "(token: string): Promise<User>",
+            "signOut": "(): Promise<void>"
+          },
+          "createAuth": "declare function createAuth(basePath?: string): Auth",
+          "User": {
+            "id": "string",
+            "email": "string"
+          }
+        }
+      },
+      "./auth-server": {
+        "values": ["SESSION_COOKIE", "currentUser", "handleAuth", "normalizeEmail", "requireUser"],
+        "types": ["AuthOptions", "User"],
+        "declarations": {
+          "AuthOptions": {
+            "sendLink": "(email: string, url: string): Promise<void>",
+            "verifyPath?": "string",
+            "basePath?": "string",
+            "linkTtlSeconds?": "number",
+            "sessionTtlSeconds?": "number",
+            "exposeLink?": "boolean"
+          },
+          "currentUser": "declare function currentUser(db: Database, request: Request): Promise<User | null>",
+          "handleAuth": "declare function handleAuth(db: Database, options: AuthOptions): (request: Request) => Promise<Response | null>",
+          "normalizeEmail": "declare function normalizeEmail(raw: unknown): string",
+          "requireUser": "declare function requireUser(db: Database, request: Request): Promise<User>",
+          "SESSION_COOKIE": "declare const SESSION_COOKIE = \"__Host-session\"",
+          "User": {
+            "id": "string",
+            "email": "string"
+          }
+        }
+      },
       "./turnstile": {
         "values": ["mountTurnstile"],
         "types": ["TurnstileWidget"],

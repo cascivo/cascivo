@@ -558,6 +558,45 @@ const live = watchLive(ops, '/api/live')
 `cascivo create --framework cloudflare --example live` scaffolds an `/ops` dashboard with KPIs
 and charts, fed by simulated traffic from the page.
 
+## Accounts — `@cascivo/app/auth` and `@cascivo/app/auth-server`
+
+Passwordless sign-in: someone enters an email, gets a one-time link, and opening it signs
+them in with a session cookie. Users, links and sessions live in D1.
+
+```ts
+// the Worker
+const auth = handleAuth(env.DB, {
+  sendLink: (email, url) =>
+    env.EMAIL.send({ from, to: email, subject: 'Sign in', text: url, html }),
+  exposeLink: import.meta.env.DEV, // vite dev shows the link instead of sending it
+})
+const answered = await auth(request) // /api/auth/start, /verify, /me, /signout
+if (answered) return answered
+const user = await requireUser(env.DB, request) // 401 signed out, 403 from another site
+
+// the browser
+export const auth = createAuth()
+auth.user.value // undefined while checking, then { id, email } or null
+await auth.start(email)
+await auth.verify(token) // on the page the link opens
+```
+
+- **Only hashes are stored.** A link and a session id are random 32-byte tokens; D1 keeps
+  their SHA-256, so a leaked table signs no one in.
+- **A link works once, for 15 minutes.** It is consumed by a single `DELETE … RETURNING`, so
+  two tabs racing on one link cannot both sign in.
+- **The link opens a page, not the API.** The page posts the token when the user presses a
+  button, because mail scanners open every link in a message and would use it up.
+- **The cookie** is `__Host-session`: HttpOnly, Secure, SameSite=Lax, 30 days.
+  `requireUser` also refuses a state-changing request whose `Origin` is another site.
+- **No account enumeration.** `/start` answers the same whether or not the address has an
+  account; an account is created on first sign-in.
+- Rate-limit `/api/auth/start` per caller (`rateLimit` from `@cascivo/app/guard`): each call
+  sends an email.
+
+`cascivo create --framework cloudflare --auth email` scaffolds it, with every API write
+requiring a signed-in user.
+
 ## Who may call the Worker — `@cascivo/app/guard`
 
 Three checks for the top of a Worker's `fetch`, or inside a `createHandler` handler. Each

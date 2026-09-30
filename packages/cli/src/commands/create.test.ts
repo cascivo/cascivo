@@ -879,7 +879,10 @@ describe('create --auth', () => {
 
   it.each([
     [['--framework', 'react-vite', '--auth', 'access'], '--auth needs --framework cloudflare'],
-    [['--framework', 'cloudflare', '--auth', 'basic'], 'Unknown auth "basic"'],
+    [
+      ['--framework', 'cloudflare', '--auth', 'basic'],
+      'Unknown auth "basic". Expected: access or email.',
+    ],
   ])('refuses %j and writes nothing', async (flags, message) => {
     const cwd = mkdtempSync(join(tmpdir(), 'cascivo-create-'))
     dirs.push(cwd)
@@ -1033,5 +1036,53 @@ describe('buildScaffold — cloudflare --example publish', () => {
     const both = build(['crud', 'publish'])
     expect(both.get('wrangler.jsonc')!.match(/"d1_databases"/g)).toHaveLength(1)
     expect(both.get('worker/index.ts')!.match(/DB: Database/g)).toHaveLength(1)
+  })
+})
+
+describe('buildScaffold — cloudflare --auth email', () => {
+  const build = (opts: Partial<ScaffoldOptions> = {}) =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        auth: 'email',
+        ...opts,
+      }),
+    )
+  const map = build()
+
+  it('binds D1, Email Service and the limiter, with no sender until one is set', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"send_email": [{ "name": "EMAIL" }]')
+    expect(wrangler).toContain('"vars": { "AUTH_FROM": "" }')
+    expect(wrangler).toContain('"d1_databases"')
+    expect(wrangler).toContain('"name": "LIMITER"')
+    expect(map.get('worker/auth.ts')).toContain("if (!from) throw new Error('Set AUTH_FROM")
+  })
+
+  it('limits sign-in emails, answers /api/auth, then requires a user for every write', () => {
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain(
+      "if (url.pathname === '/api/auth/start') return request.method === 'POST'",
+    )
+    expect(worker).toContain('exposeLink: import.meta.env.DEV')
+    const limit = worker.indexOf('await rateLimit(')
+    const auth = worker.indexOf('await handleAuth(')
+    const guard = worker.indexOf('await requireUser(env.DB, request)')
+    expect(limit).toBeGreaterThan(0)
+    expect(limit).toBeLessThan(auth)
+    expect(auth).toBeLessThan(guard)
+    expect(guard).toBeLessThan(worker.indexOf('return handleApi('))
+  })
+
+  it('adds the account and link pages, and drops the no-auth warnings', () => {
+    expect(map.get('src/routes.gen.ts')).toContain("'/signin/verify'")
+    expect(map.get('src/App.tsx')).toContain("href: '/account'")
+    const readme = build({ examples: ['files', 'publish'] }).get('README.md')!
+    expect(readme).toContain('## Accounts (email sign-in)')
+    expect(readme).not.toContain('It has no auth')
+    expect(readme).not.toContain('Anyone who can reach the app can publish')
   })
 })

@@ -114,6 +114,8 @@ Options:
                             publish — publish views as pages, validated and stored in D1 (cloudflare)
   --auth access             Refuse every Worker request Cloudflare Access did not let
                             through (cloudflare only)
+  --auth email              Accounts with emailed sign-in links; every API write needs a
+                            signed-in user (cloudflare only)
   --template <spec>         Start from a marketplace template (@ns/name or owner/repo/name)
   --theme <name>            Theme to install (${THEME_LIST})
   --sections "<a, b>"       Comma-separated nav section labels (one component each)

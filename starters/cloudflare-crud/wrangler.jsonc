@@ -11,7 +11,7 @@
     "run_worker_first": ["/api/*"],
   },
   "observability": { "enabled": true },
-  // The customers table. No database_id: wrangler creates the database on first
+  // Customers. No database_id: wrangler creates the database on first
   // deploy, and the Worker applies its own schema on its first query (`migrate`).
   "d1_databases": [{ "binding": "DB", "database_name": "cascivo-crud-db" }],
   // Add bindings here (KV, D1, R2, Durable Objects, Workers AI) and read them from the

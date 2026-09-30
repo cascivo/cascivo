@@ -109,10 +109,11 @@ export interface ScaffoldOptions {
   /** Extra demo pages for the `cloudflare` framework. */
   examples?: Example[]
   /**
-   * `access`: the Worker refuses every request Cloudflare Access did not let through
-   * (`cloudflare` framework only).
+   * `cloudflare` framework only. `access`: the Worker refuses every request Cloudflare Access
+   * did not let through. `email`: accounts with emailed sign-in links; every API write needs
+   * a signed-in user.
    */
-  auth?: 'access'
+  auth?: 'access' | 'email'
 }
 
 export interface ScaffoldFile {
@@ -1303,6 +1304,7 @@ ${jsoncArray('  ', 'r2_buckets', [`{ "binding": "FILES", "bucket_name": "${packa
     hasExample(opts, 'files') ? 'Uploads' : '',
     hasExample(opts, 'export') ? 'exports' : '',
     hasExample(opts, 'publish') ? 'published pages' : '',
+    opts.auth === 'email' ? 'sign-in emails' : '',
   ]
     .filter(Boolean)
     .join(', ')
@@ -1318,9 +1320,24 @@ ${jsoncArray('  ', 'ratelimits', ['{ "name": "LIMITER", "namespace_id": "1001", 
   "vars": { "ACCESS_TEAM_DOMAIN": "", "ACCESS_AUD": "" },`
       : ''
   }${
+    opts.auth === 'email'
+      ? `
+  // Sign-in links go out through Email Service (README). AUTH_FROM must be an address on a
+  // domain you have onboarded; until it is set, sign-in fails with a clear error.
+  "send_email": [{ "name": "EMAIL" }],
+  "vars": { "AUTH_FROM": "" },`
+      : ''
+  }${
     usesD1(opts)
       ? `
-  // ${hasExample(opts, 'crud') && hasExample(opts, 'publish') ? 'The customers and pages tables' : hasExample(opts, 'crud') ? 'The customers table' : 'The published pages'}. No database_id: wrangler creates the database on first
+  // ${[
+    hasExample(opts, 'crud') ? 'customers' : '',
+    hasExample(opts, 'publish') ? 'published pages' : '',
+    opts.auth === 'email' ? 'accounts' : '',
+  ]
+    .filter(Boolean)
+    .join(', ')
+    .replace(/^./, (c) => c.toUpperCase())}. No database_id: wrangler creates the database on first
   // deploy, and the Worker applies its own schema on its first query (\`migrate\`).
 ${jsoncArray('  ', 'd1_databases', [`{ "binding": "DB", "database_name": "${packageName(opts.name)}-db" }`])}`
       : ''
@@ -1397,12 +1414,17 @@ function usageDataset(opts: ScaffoldOptions): string {
  * origin (a published page): rate-limited per caller.
  */
 function usesLimiter(opts: ScaffoldOptions): boolean {
-  return hasExample(opts, 'files') || hasExample(opts, 'export') || hasExample(opts, 'publish')
+  return (
+    hasExample(opts, 'files') ||
+    hasExample(opts, 'export') ||
+    hasExample(opts, 'publish') ||
+    opts.auth === 'email'
+  )
 }
 
 /** Examples that keep tables in D1, bound as DB. */
 function usesD1(opts: ScaffoldOptions): boolean {
-  return hasExample(opts, 'crud') || hasExample(opts, 'publish')
+  return hasExample(opts, 'crud') || hasExample(opts, 'publish') || opts.auth === 'email'
 }
 
 /** Examples on Cloudflare's Agents SDK: routed under /agents/*, calling Workers AI. */
@@ -1566,6 +1588,7 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const ai = usesAgents(opts)
   const limiter = usesLimiter(opts)
   const access = opts.auth === 'access'
+  const emailAuth = opts.auth === 'email'
   const guards = [
     ...(access ? ['requireAccess'] : []),
     ...(limiter ? ['clientIp', 'rateLimit'] : []),
@@ -1573,7 +1596,7 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const custom = rooms || ai || files || exports || access || live || limiter
   const isAsync = ai || files || exports || access || limiter
   return `${usage ? `import type { AnalyticsDataset } from '@cascivo/app/analytics'\n` : ''}${d1 ? `import type { Database } from '@cascivo/app/db'\n` : ''}${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler } from '@cascivo/app/api'
-${guards.length > 0 ? `import { ${[...guards, 'guardResponse'].sort().join(', ')} } from '@cascivo/app/guard'\n${limiter ? `import type { RateLimiter } from '@cascivo/app/guard'\n` : ''}` : ''}${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
+${emailAuth ? `import { handleAuth, requireUser } from '@cascivo/app/auth-server'\n` : ''}${guards.length > 0 ? `import { ${[...guards, 'guardResponse'].sort().join(', ')} } from '@cascivo/app/guard'\n${limiter ? `import type { RateLimiter } from '@cascivo/app/guard'\n` : ''}` : ''}${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
     files
       ? `import { handleUploads, listUploads } from '@cascivo/app/uploads-server'
 import type { ImageResizer, UploadBucket } from '@cascivo/app/uploads-server'
@@ -1599,7 +1622,7 @@ import type { BrowserWorker } from '@cloudflare/puppeteer'
       : ''
   }${ai ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\n` : ''}${
+${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\n` : ''}${
     rooms
       ? `
 // The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
@@ -1641,8 +1664,8 @@ export { ImportJob } from './import-job'
  * here; every handler receives them as \`env\`.
  */
 ${
-  rooms || ai || files || exports || usage || d1 || access || live
-    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}
+  rooms || ai || files || exports || usage || d1 || access || live || emailAuth
+    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${emailAuth ? '\n  EMAIL: SignInSender\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -1655,6 +1678,7 @@ ${
 /**
  * Requests that each count against LIMITER:
 ${[
+  emailAuth ? 'a sign-in email' : '',
   files ? 'a new upload (not each part of one)' : '',
   exports ? 'an export' : '',
   publish ? 'a published page' : '',
@@ -1665,6 +1689,11 @@ ${[
  */
 function countsAgainstLimit(request: Request): boolean {
   const url = new URL(request.url)${
+    emailAuth
+      ? `
+  if (url.pathname === '/api/auth/start') return request.method === 'POST'`
+      : ''
+  }${
     publish
       ? `
   if (url.pathname === '/api/pages') return request.method === 'POST'`
@@ -1789,6 +1818,24 @@ ${
     if (countsAgainstLimit(request)) {
       try {
         await rateLimit(env.LIMITER, clientIp(request))
+      } catch (error) {
+        return guardResponse(error)
+      }
+    }`
+          : ''
+      }${
+        emailAuth
+          ? `
+    // Sign-in links and sessions: /api/auth/* is answered here (worker/auth.ts sends mail).
+    const signIn = await handleAuth(env.DB, {
+      sendLink: (email, url) => sendSignInLink(env.EMAIL, env.AUTH_FROM, email, url),
+      exposeLink: import.meta.env.DEV,
+    })(request)
+    if (signIn) return signIn
+    // Every other API write needs a signed-in user; reads stay public.
+    if (request.method !== 'GET' && request.method !== 'HEAD') {
+      try {
+        await requireUser(env.DB, request)
       } catch (error) {
         return guardResponse(error)
       }
@@ -1999,6 +2046,7 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
   if (hasExample(opts, 'live')) items.push({ label: 'Ops', href: '/ops' })
   if (hasExample(opts, 'voice')) items.push({ label: 'Voice', href: '/voice' })
   if (hasExample(opts, 'publish')) items.push({ label: 'Publish', href: '/publish' })
+  if (opts.auth === 'email') items.push({ label: 'Account', href: '/account' })
   const navItems = items
     .map(
       (item) => `    {
@@ -3638,6 +3686,214 @@ export default function Usage() {
 `
 }
 
+/* --- `--auth email`: accounts with emailed sign-in links (@cascivo/app/auth) --- */
+
+function cfAuthTs(): string {
+  return `import { createAuth } from '@cascivo/app/auth'
+
+/**
+ * Who is signed in, shared by every page: \`auth.user.value\` is \`undefined\` while the first
+ * check runs, then the user or \`null\`. The Worker side is \`handleAuth\` in worker/index.ts.
+ */
+export const auth = createAuth()
+`
+}
+
+function cfAuthWorkerTs(): string {
+  return `/** What sending a sign-in link needs of the Email Service binding (\`send_email\`). */
+export interface SignInSender {
+  send(message: {
+    from: string
+    to: string
+    subject: string
+    text: string
+    html: string
+  }): Promise<unknown>
+}
+
+const escape = (value: string) =>
+  value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+
+/**
+ * Emails a sign-in link. \`vite dev\` sends nothing: the link is logged, and the Account page
+ * shows it (\`exposeLink\` in worker/index.ts).
+ */
+export async function sendSignInLink(
+  sender: SignInSender,
+  from: string,
+  email: string,
+  url: string,
+): Promise<void> {
+  if (import.meta.env.DEV) {
+    console.log(\`[auth] sign-in link for \${email}: \${url}\`)
+    return
+  }
+  if (!from) throw new Error('Set AUTH_FROM in wrangler.jsonc to an address on your domain')
+  await sender.send({
+    from,
+    to: email,
+    subject: 'Your sign-in link',
+    text: \`Sign in: \${url}\\n\\nThe link works once, for 15 minutes. If you did not ask for it, ignore this email.\`,
+    html: \`<p><a href="\${escape(url)}">Sign in</a></p><p>The link works once, for 15 minutes. If you did not ask for it, ignore this email.</p>\`,
+  })
+}
+`
+}
+
+function cfAccountRouteTsx(): string {
+  return `import {
+  Alert,
+  Button,
+  Card,
+  CardContent,
+  Flex,
+  Heading,
+  Input,
+  Link,
+  Spinner,
+  Text,
+  signal,
+  useSignals,
+} from '@cascivo/react'
+import type { FormEvent } from 'react'
+import { auth } from '../auth'
+
+const sentTo = signal<string | null>(null)
+/** Set only in \`vite dev\`, where no email is sent: the link to open instead. */
+const devLink = signal<string | null>(null)
+const failure = signal<string | null>(null)
+const sending = signal(false)
+
+async function start(event: FormEvent<HTMLFormElement>): Promise<void> {
+  event.preventDefault()
+  const email = new FormData(event.currentTarget).get('email')
+  if (typeof email !== 'string') return
+  failure.value = null
+  sending.value = true
+  try {
+    const { link } = await auth.start(email)
+    sentTo.value = email
+    devLink.value = link
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Could not send the link'
+  } finally {
+    sending.value = false
+  }
+}
+
+export default function Account() {
+  useSignals()
+  const user = auth.user.value
+
+  if (user === undefined) return <Spinner label="Loading" />
+  if (user) {
+    return (
+      <Flex gap={4}>
+        <Heading level={1}>Account</Heading>
+        <Card>
+          <CardContent>
+            <Flex gap={3}>
+              <Text>Signed in as {user.email}</Text>
+              <Flex direction="horizontal">
+                <Button variant="secondary" onClick={() => void auth.signOut()}>
+                  Sign out
+                </Button>
+              </Flex>
+            </Flex>
+          </CardContent>
+        </Card>
+      </Flex>
+    )
+  }
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Sign in</Heading>
+        <Text muted>No password: we email you a link that signs you in once.</Text>
+      </Flex>
+      {sentTo.value ? (
+        <Alert variant="success" title="Check your email">
+          We sent a sign-in link to {sentTo.value}. It works once, for 15 minutes.
+        </Alert>
+      ) : null}
+      {devLink.value ? (
+        <Alert variant="info" title="vite dev sends no email">
+          <Link href={devLink.value}>Open the sign-in link</Link>
+        </Alert>
+      ) : null}
+      {failure.value ? (
+        <Alert variant="destructive" title="Not sent">
+          {failure.value}
+        </Alert>
+      ) : null}
+      <form onSubmit={(event) => void start(event)}>
+        <Flex direction="horizontal" align="end" gap={2} wrap>
+          <Input name="email" type="email" label="Email" autoComplete="email" required />
+          <Button type="submit" loading={sending.value}>
+            Email me a link
+          </Button>
+        </Flex>
+      </form>
+    </Flex>
+  )
+}
+`
+}
+
+function cfVerifyRouteTsx(): string {
+  return `import { Alert, Button, Flex, Heading, Text, signal, useSignals } from '@cascivo/react'
+import { auth } from '../../auth'
+import { router } from '../../router'
+
+const failure = signal<string | null>(null)
+const busy = signal(false)
+
+/**
+ * The page a sign-in link opens. It signs in only when you press the button: mail scanners
+ * open every link in a message, and a link that signed in on open would be used up by them.
+ */
+async function signIn(): Promise<void> {
+  const token = new URLSearchParams(router.search.value).get('token')
+  if (!token) {
+    failure.value = 'This link has no token. Request a new one.'
+    return
+  }
+  busy.value = true
+  failure.value = null
+  try {
+    await auth.verify(token)
+    router.navigate('/account', { replace: true })
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Could not sign in'
+  } finally {
+    busy.value = false
+  }
+}
+
+export default function VerifySignIn() {
+  useSignals()
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Sign in</Heading>
+        <Text muted>Finish signing in on this device.</Text>
+      </Flex>
+      {failure.value ? (
+        <Alert variant="destructive" title="Not signed in">
+          {failure.value}
+        </Alert>
+      ) : null}
+      <Flex direction="horizontal">
+        <Button loading={busy.value} onClick={() => void signIn()}>
+          Sign in
+        </Button>
+      </Flex>
+    </Flex>
+  )
+}
+`
+}
+
 /* --- `--example publish`: views published as pages, stored in D1 --- */
 
 function cfPagesTs(): string {
@@ -5102,12 +5358,12 @@ temporary account, so \`deploy:preview\` serves the page without starting import
 - \`src/files.ts\` — \`startUpload\` gives each file progress and status signals.
 
 Each caller (by IP) may start 20 uploads a minute (\`ratelimits\` in \`wrangler.jsonc\`).${
-          opts.auth === 'access'
+          opts.auth
             ? ''
             : `
 **It has no auth.** Anyone who can reach the app can upload: put Cloudflare Access in front of
-it (\`--auth access\` scaffolds that), or check who is asking in \`worker/index.ts\` before
-\`handleUploads\` runs.`
+it (\`--auth access\`), add accounts (\`--auth email\`), or check who is asking in
+\`worker/index.ts\` before \`handleUploads\` runs.`
         } Create the bucket once before deploying:
 \`npx wrangler r2 bucket create ${packageName(opts.name)}-files\`. R2 and Images do not run on a
 temporary account.`
@@ -5184,6 +5440,31 @@ npx wrangler secret put CF_API_TOKEN   # a token with Account Analytics: Read
 For \`vite dev\`, put both in \`.dev.vars\`. Data written locally is not in your account's
 dataset, so in development the charts show what your deployed app recorded. Until the secrets
 exist, the page says what to set.`
+      : ''
+  }${
+    opts.auth === 'email'
+      ? `
+
+## Accounts (email sign-in)
+
+Anyone can create an account with their email address: \`/account\` emails a one-time link,
+and opening it signs them in with a session cookie. **Every API write needs a signed-in
+user; reads stay public.**
+
+- \`worker/index.ts\` — \`handleAuth\` (\`@cascivo/app/auth-server\`) answers \`/api/auth/*\`, and
+  \`requireUser\` refuses any other write without a session (401) or from another site (403).
+  Call \`requireUser(env.DB, request)\` in a handler to know who is asking.
+- \`worker/auth.ts\` — sends the link through Email Service. Set \`AUTH_FROM\` in
+  \`wrangler.jsonc\` to an address on a domain you have onboarded to Email Service.
+- \`src/auth.ts\` — \`auth.user\`, a signal every page can read.
+- \`src/routes/signin/verify.tsx\` — the page a link opens. It signs in on a button press,
+  because mail scanners open every link in a message.
+
+Users, links and sessions live in D1, stored as hashes. Links expire after 15 minutes and
+work once; sessions last 30 days. Each caller (by IP) may request 20 links a minute. In
+\`vite dev\` no email is sent: the Account page shows the link instead. WebSocket connections
+(rooms, agents) are not covered by the write rule; check \`currentUser\` before forwarding them
+if they need a user.`
       : ''
   }${
     opts.auth === 'access'
@@ -5268,9 +5549,13 @@ code of its author's and needs no sandbox.
 - \`src/routes/publish.tsx\` — the editor, with a live preview.
 - \`src/routes/p/[slug].tsx\` — a published page.
 
-**Anyone who can reach the app can publish**, and a page is served from your domain: put
-Cloudflare Access in front (\`--auth access\`) or check who is publishing in
-\`worker/index.ts\`. Each caller (by IP) may publish 20 pages a minute (\`ratelimits\` in
+${
+  opts.auth
+    ? ''
+    : `**Anyone who can reach the app can publish**, and a page is served from your domain: put
+Cloudflare Access in front (\`--auth access\`), add accounts (\`--auth email\`), or check who
+is publishing in \`worker/index.ts\`. `
+}Each caller (by IP) may publish 20 pages a minute (\`ratelimits\` in
 \`wrangler.jsonc\`). D1 works on a temporary account.`
       : ''
   }${
@@ -5382,6 +5667,12 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
           { file: 'p/[slug].tsx', contents: cfPageRouteTsx() },
         ]
       : []),
+    ...(opts.auth === 'email'
+      ? [
+          { file: 'account.tsx', contents: cfAccountRouteTsx() },
+          { file: 'signin/verify.tsx', contents: cfVerifyRouteTsx() },
+        ]
+      : []),
   ]
   return [
     { path: 'package.json', contents: cfPackageJson(opts) },
@@ -5432,6 +5723,12 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
         ]
       : []),
     ...(hasExample(opts, 'live') ? [{ path: 'src/ops.ts', contents: cfOpsTs() }] : []),
+    ...(opts.auth === 'email'
+      ? [
+          { path: 'src/auth.ts', contents: cfAuthTs() },
+          { path: 'worker/auth.ts', contents: cfAuthWorkerTs() },
+        ]
+      : []),
     ...(hasExample(opts, 'publish')
       ? [
           { path: 'src/pages.ts', contents: cfPagesTs() },
@@ -5584,8 +5881,8 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
   }
 
   const authArg = (flagValue(args, 'auth') ?? '').toLowerCase()
-  if (authArg && authArg !== 'access') {
-    console.error(`Unknown auth "${authArg}". Expected: access.`)
+  if (authArg && authArg !== 'access' && authArg !== 'email') {
+    console.error(`Unknown auth "${authArg}". Expected: access or email.`)
     process.exitCode = 1
     return
   }
@@ -5672,7 +5969,7 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
       pm,
       ...(isRuntime(runtimeArg) ? { runtime: runtimeArg } : {}),
       ...(exampleArgs.length > 0 ? { examples: exampleArgs.filter(isExample) } : {}),
-      ...(authArg === 'access' ? { auth: 'access' as const } : {}),
+      ...(authArg === 'access' || authArg === 'email' ? { auth: authArg } : {}),
     }
 
     const targetDir = join(cwd, name)

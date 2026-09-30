@@ -99,6 +99,16 @@
       "import": "./dist/live-server.js",
       "default": "./dist/live-server.js"
     },
+    "./auth": {
+      "types": "./dist/auth.d.ts",
+      "import": "./dist/auth.js",
+      "default": "./dist/auth.js"
+    },
+    "./auth-server": {
+      "types": "./dist/auth-server.d.ts",
+      "import": "./dist/auth-server.js",
+      "default": "./dist/auth-server.js"
+    },
     "./turnstile": {
       "types": "./dist/turnstile.d.ts",
       "import": "./dist/turnstile.js",
