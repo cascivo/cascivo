@@ -123,7 +123,11 @@ for (const pkg of ordered) console.log(`  ${pkg.name}@${pkg.version}  (packages/
 
 // 6. Build and lint the packed artifacts exactly as the Release workflow does.
 console.log('\n→ pnpm run release:build')
-run('pnpm', ['run', 'release:build'])
+try {
+  run('pnpm', ['run', 'release:build'])
+} catch {
+  fail('release:build failed — nothing was published.')
+}
 
 // 7. Pack each package once; the dry-run and the real publish ship the same tarball.
 const outDir = mkdtempSync(join(tmpdir(), 'cascivo-bootstrap-'))
