@@ -209,6 +209,35 @@ How data is treated:
 
 `cascivo create --framework cloudflare --example board` scaffolds a working board with draggable notes and live cursors.
 
+### Local-first: keep the room on the device
+
+Pass a `StorageDriver` and the room is saved on the device after every change: its last state
+and every write the room has not confirmed yet.
+
+```ts
+import { indexedDBDriver } from '@cascivo/storage'
+
+const room = connectRoom('/api/rooms/notes', { storage: indexedDBDriver() })
+room.unsynced.value // writes still waiting for the room: non-zero while offline
+```
+
+- **On start, the room renders from storage before the socket opens.** Once it connects, the
+  room's state replaces the saved copy, so a stale copy never wins over newer data.
+- **Writes made offline survive a reload or a closed tab.** They go out, in order, on the next
+  connection. When they arrive they are ordinary writes: last-writer-wins, as above.
+- **The saved copy is parsed on load like any payload.** A copy of another version, or a
+  corrupted one, is dropped with a warning.
+- **One tab per room is the supported offline case.** With several tabs of the same room
+  offline, each saves its own queue under the same key, and the last to change wins.
+- Opening the app with no network at all also needs its files cached, which is a service
+  worker's job, not this one.
+
+To mirror writes elsewhere (into D1, to query across rooms), extend `SyncRoom` and override
+`onWrite({ room, path, value })`. It runs after the write is stored and sent. A throw is
+logged and never reaches the clients.
+
+`cascivo create --framework cloudflare --example notes` scaffolds a local-first notes page.
+
 ## Feature flags — `@cascivo/app/flags`
 
 One definition, shared by the Worker and the browser like the API contract. The Worker

@@ -571,3 +571,36 @@ describe('create --example agent', () => {
     expect(readdirSync(cwd)).toEqual([])
   })
 })
+
+describe('buildScaffold — cloudflare --example notes', () => {
+  const build = (examples: ('board' | 'notes')[]) =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        examples,
+      }),
+    )
+  const map = build(['notes'])
+
+  it('adds a /notes route on a room kept in IndexedDB', () => {
+    expect(map.get('src/routes.gen.ts')).toContain("lazyRoute('/notes'")
+    expect(map.get('src/App.tsx')).toContain("href: '/notes'")
+    const notes = map.get('src/notes.ts')!
+    expect(notes).toContain("storage: indexedDBDriver('cascivo-notes')")
+    expect(notes).not.toMatch(/JSON\.parse\([^)]*\) as /)
+    expect(map.get('src/routes/notes.tsx')).toContain('room.unsynced.value')
+    const pkg = JSON.parse(map.get('package.json')!) as { dependencies: Record<string, string> }
+    expect(pkg.dependencies['@cascivo/storage']).toMatch(/^\d/)
+  })
+
+  it('reuses the SyncRoom binding and route the board uses', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('{ "name": "ROOMS", "class_name": "SyncRoom" }')
+    expect(map.get('worker/index.ts')).toContain('roomResponse(request, env.ROOMS')
+    const both = build(['board', 'notes'])
+    expect(both.get('wrangler.jsonc')!.match(/"class_name": "SyncRoom"/g)).toHaveLength(1)
+  })
+})

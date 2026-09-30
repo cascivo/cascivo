@@ -6500,14 +6500,16 @@
         }
       },
       "./sync": {
-        "values": ["connectRoom"],
+        "values": ["connectRoom", "parseSnapshot"],
         "types": ["Parser", "Room", "RoomOptions", "RoomStatus", "SharedMap", "SharedSignal"],
         "declarations": {
           "connectRoom": "declare function connectRoom(url: string, options?: RoomOptions): Room",
           "Parser": "type<T> = (raw: unknown) => T",
+          "parseSnapshot": "declare function parseSnapshot(raw: string): Snapshot | null",
           "Room": {
             "readonly status": "ReadonlySignal<RoomStatus>",
             "readonly self": "ReadonlySignal<string | null>",
+            "readonly unsynced": "ReadonlySignal<number>",
             "readonly presence": "ReadonlySignal<Readonly<Record<string, unknown>>>",
             "setPresence": "(value: Json): void",
             "signal<T>(path: string, initial: T, parse: Parser<T>): SharedSignal<T>": "",
@@ -6517,7 +6519,9 @@
           "RoomOptions": {
             "WebSocket?": "new (url: string) => WebSocket",
             "minReconnectMs?": "number",
-            "maxReconnectMs?": "number"
+            "maxReconnectMs?": "number",
+            "storage?": "StorageDriver",
+            "storageKey?": "string"
           },
           "RoomStatus": "type = 'connecting' | 'open' | 'closed'",
           "SharedMap": {
@@ -6596,7 +6600,7 @@
       },
       "./sync-server": {
         "values": ["SyncRoom", "roomResponse"],
-        "types": ["HibernatableWebSocket", "RoomNamespace", "SyncRoomState"],
+        "types": ["HibernatableWebSocket", "RoomNamespace", "RoomWrite", "SyncRoomState"],
         "declarations": {
           "HibernatableWebSocket": {
             "send": "(message: string): void",
@@ -6610,9 +6614,15 @@
             "get": "(id: Id): { fetch(request: Request): Promise<Response>; }"
           },
           "roomResponse": "declare function roomResponse<Id>(request: Request, namespace: RoomNamespace<Id>, name: string): Promise<Response> | Response",
+          "RoomWrite": {
+            "room": "string | null",
+            "path": "string",
+            "value": "Json"
+          },
           "SyncRoom": {
             "private readonly ctx": "",
             "constructor": "(ctx: SyncRoomState, _env?: unknown)",
+            "protected onWrite(_write: RoomWrite): void | Promise<void>": "",
             "fetch": "(request: Request): Promise<Response>",
             "accept": "(socket: HibernatableWebSocket): Promise<void>",
             "webSocketMessage": "(socket: HibernatableWebSocket, raw: string | ArrayBuffer): Promise<void>",
@@ -6622,6 +6632,7 @@
             "(kind)": "class"
           },
           "SyncRoomState": {
+            "readonly id?": "{ readonly name?: string | undefined; }",
             "acceptWebSocket": "(socket: HibernatableWebSocket): void",
             "getWebSockets": "(): HibernatableWebSocket[]",
             "storage": "{ get<T = unknown>(key: string): Promise<T | undefined>; put(key: string, value: unknown): Promise<void>; delete(key: string): Promise<boolean>; list<T = unknown>(options: { prefix: string; }): Promise<Map<string, T>>; }"

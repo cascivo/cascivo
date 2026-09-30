@@ -30,6 +30,7 @@ const SCAFFOLD_DEPS = [
   '@cascivo/eslint-config',
   '@cascivo/app',
   '@cascivo/render',
+  '@cascivo/storage',
 ]
 
 interface PackageJson {

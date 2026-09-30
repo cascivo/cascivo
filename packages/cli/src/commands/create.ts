@@ -55,9 +55,9 @@ export type Runtime = 'preact' | 'react'
 export const RUNTIMES = ['preact', 'react'] as const
 
 /** Optional demo pages for `--framework cloudflare`. */
-export type Example = 'board' | 'agent'
+export type Example = 'board' | 'agent' | 'notes'
 
-export const EXAMPLES = ['board', 'agent'] as const
+export const EXAMPLES = ['board', 'agent', 'notes'] as const
 
 function isExample(value: string): value is Example {
   return (EXAMPLES as readonly string[]).includes(value)
@@ -1063,6 +1063,8 @@ function cfPackageJson(opts: ScaffoldOptions): string {
       '@cascivo/themes': V['@cascivo/themes']!,
       '@preact/signals-react': SIGNALS_PEER,
       ...(preact ? { preact: '^10.29.0' } : { react: '^19.0.0', 'react-dom': '^19.0.0' }),
+      // The /notes page keeps its room in IndexedDB.
+      ...(hasExample(opts, 'notes') ? { '@cascivo/storage': V['@cascivo/storage']! } : {}),
       // The /assistant page: Cloudflare's Agents SDK on the AI SDK, and @cascivo/render to
       // draw (and validate) the views the model builds.
       ...(agent
@@ -1189,15 +1191,15 @@ function jsoncArray(indent: string, key: string, items: string[]): string {
 }
 
 function wranglerJsonc(opts: ScaffoldOptions): string {
-  const board = hasExample(opts, 'board')
+  const rooms = usesRooms(opts)
   const agent = hasExample(opts, 'agent')
   // One Durable Object class per example; a fresh app declares them all in one migration.
   const objects = [
-    ...(board ? [{ name: 'ROOMS', className: 'SyncRoom' }] : []),
+    ...(rooms ? [{ name: 'ROOMS', className: 'SyncRoom' }] : []),
     ...(agent ? [{ name: 'Assistant', className: 'Assistant' }] : []),
   ]
   const comments = [
-    ...(board ? ['// ROOMS: one SyncRoom per board room (@cascivo/app/sync-server).'] : []),
+    ...(rooms ? ['// ROOMS: one SyncRoom per room (@cascivo/app/sync-server).'] : []),
     ...(agent
       ? ['// Assistant: one AIChatAgent per conversation; it stores the messages in SQLite.']
       : []),
@@ -1243,6 +1245,11 @@ ${jsoncArray('  ', 'migrations', [`{ "tag": "v1", "new_sqlite_classes": [${objec
 
 function hasExample(opts: ScaffoldOptions, example: Example): boolean {
   return opts.examples?.includes(example) ?? false
+}
+
+/** The board and the notes both live in `SyncRoom`s, routed at /api/rooms/:name. */
+function usesRooms(opts: ScaffoldOptions): boolean {
+  return hasExample(opts, 'board') || hasExample(opts, 'notes')
 }
 
 /**
@@ -1291,11 +1298,11 @@ export const api = defineApi({
 }
 
 function cfWorkerTs(opts: ScaffoldOptions): string {
-  const board = hasExample(opts, 'board')
+  const rooms = usesRooms(opts)
   const agent = hasExample(opts, 'agent')
   return `import { createHandler } from '@cascivo/app/api'
 ${
-  board
+  rooms
     ? `import { roomResponse } from '@cascivo/app/sync-server'
 import type { RoomNamespace } from '@cascivo/app/sync-server'
 `
@@ -1303,9 +1310,9 @@ import type { RoomNamespace } from '@cascivo/app/sync-server'
 }${agent ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
 ${
-  board
+  rooms
     ? `
-// The Durable Object class behind /board. wrangler.jsonc binds it as ROOMS, and it must be
+// The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
 // exported from the Worker's main module.
 export { SyncRoom } from '@cascivo/app/sync-server'
 `
@@ -1323,8 +1330,8 @@ export { Assistant } from './assistant'
  * here; every handler receives them as \`env\`.
  */
 ${
-  board || agent
-    ? `export interface Env {${agent ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${board ? '\n  ROOMS: RoomNamespace<unknown>' : ''}
+  rooms || agent
+    ? `export interface Env {${agent ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -1350,7 +1357,7 @@ const handleApi = createHandler<typeof api, Env>(api, {
 // wrangler.jsonc routes only ${agent ? '/api/* and /agents/*' : '/api/*'} here; everything else is a static asset or index.html.
 export default {
 ${
-  board || agent
+  rooms || agent
     ? `  ${agent ? 'async ' : ''}fetch(request: Request, env: Env): Promise<Response>${agent ? '' : ' | Response'} {${
         agent
           ? `
@@ -1359,7 +1366,7 @@ ${
     if (agent) return agent`
           : ''
       }${
-        board
+        rooms
           ? `
     const room = /^\\/api\\/rooms\\/([^/]+)$/.exec(new URL(request.url).pathname)
     if (room) return roomResponse(request, env.ROOMS, room[1]!)`
@@ -1503,6 +1510,7 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
   const items = sections.map((s, i) => ({ label: s.label, href: cfSectionPath(s, i) }))
   if (hasExample(opts, 'agent')) items.push({ label: 'Assistant', href: '/assistant' })
   if (hasExample(opts, 'board')) items.push({ label: 'Board', href: '/board' })
+  if (hasExample(opts, 'notes')) items.push({ label: 'Notes', href: '/notes' })
   const navItems = items
     .map(
       (item) => `    {
@@ -2193,6 +2201,153 @@ function cfAssistantCss(): string {
 `
 }
 
+/* --- `--example notes`: a local-first page on @cascivo/app/sync + IndexedDB --- */
+
+function cfNotesTs(): string {
+  return `import { connectRoom } from '@cascivo/app/sync'
+import { indexedDBDriver } from '@cascivo/storage'
+
+export interface Note {
+  title: string
+  body: string
+  /** Epoch ms of the last edit, for ordering. */
+  updatedAt: number
+}
+
+const LIST_KEY = 'notes-list'
+
+/**
+ * Which list this browser shows: \`?list=\` when the URL names one, otherwise one made up on
+ * first visit and remembered. Open the same \`?list=\` on another device to sync with it.
+ */
+function resolveList(): string {
+  const fromUrl = (new URLSearchParams(location.search).get('list') ?? '')
+    .replace(/[^\\w-]/g, '')
+    .slice(0, 48)
+  if (fromUrl) return fromUrl
+  try {
+    const saved = localStorage.getItem(LIST_KEY)
+    if (saved) return saved
+    const created = crypto.randomUUID().slice(0, 8)
+    localStorage.setItem(LIST_KEY, created)
+    return created
+  } catch {
+    return crypto.randomUUID().slice(0, 8)
+  }
+}
+
+export const listName = resolveList()
+
+// \`storage\` makes the list local-first: the room's last state and every unconfirmed edit are
+// kept in IndexedDB, so edits made while the connection is down survive a reload or a closed
+// tab, and go to the room when it is reachable again.
+export const room = connectRoom(\`/api/rooms/notes-\${listName}\`, {
+  storage: indexedDBDriver('cascivo-notes'),
+})
+
+/** Notes come from other devices, so they are parsed, not cast. */
+export function parseNote(raw: unknown): Note {
+  if (typeof raw === 'object' && raw !== null) {
+    const { title, body, updatedAt } = raw as Record<string, unknown>
+    if (typeof title === 'string' && typeof body === 'string' && typeof updatedAt === 'number') {
+      return { title, body, updatedAt }
+    }
+  }
+  throw new Error('Malformed note')
+}
+
+export const notes = room.map('notes', parseNote)
+
+export function addNote(): void {
+  notes.set(crypto.randomUUID(), { title: '', body: '', updatedAt: Date.now() })
+}
+
+export function editNote(id: string, note: Note, change: Partial<Note>): void {
+  notes.set(id, { ...note, ...change, updatedAt: Date.now() })
+}
+`
+}
+
+function cfNotesRouteTsx(): string {
+  return `import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  Flex,
+  Heading,
+  Input,
+  Text,
+  Textarea,
+  useSignals,
+} from '@cascivo/react'
+import { addNote, editNote, listName, notes, room } from '../notes'
+
+/** Where the list stands: offline edits are counted until the room confirms them. */
+function SyncBadge() {
+  useSignals()
+  const waiting = room.unsynced.value
+  if (room.status.value === 'open') {
+    return (
+      <Badge variant={waiting > 0 ? 'warning' : 'success'}>
+        {waiting > 0 ? 'Syncing…' : 'Synced'}
+      </Badge>
+    )
+  }
+  return <Badge variant="neutral">{waiting > 0 ? \`Offline · \${waiting} waiting\` : 'Offline'}</Badge>
+}
+
+export default function Notes() {
+  useSignals()
+  const sorted = Object.entries(notes.value).sort(([, a], [, b]) => b.updatedAt - a.updatedAt)
+
+  return (
+    <Flex gap={4}>
+      <Flex direction="horizontal" align="center" justify="between" wrap gap={3}>
+        <Flex gap={1}>
+          <Heading level={1}>Notes</Heading>
+          <Text muted>
+            Keeps working offline: edits are saved on this device and sync when you are back. Open{' '}
+            <code>/notes?list={listName}</code> on another device to share this list.
+          </Text>
+        </Flex>
+        <Flex direction="horizontal" align="center" gap={2}>
+          <SyncBadge />
+          <Button onClick={addNote}>New note</Button>
+        </Flex>
+      </Flex>
+      {sorted.length === 0 ? <Text muted>No notes yet.</Text> : null}
+      {sorted.map(([id, note]) => (
+        <Card key={id}>
+          <CardContent>
+            <Flex gap={2}>
+              <Flex direction="horizontal" align="center" gap={2}>
+                <Input
+                  aria-label="Title"
+                  placeholder="Title"
+                  value={note.title}
+                  onChange={(event) => editNote(id, note, { title: event.target.value })}
+                />
+                <Button variant="ghost" aria-label="Delete note" onClick={() => notes.delete(id)}>
+                  ×
+                </Button>
+              </Flex>
+              <Textarea
+                aria-label="Note"
+                rows={3}
+                value={note.body}
+                onChange={(event) => editNote(id, note, { body: event.target.value })}
+              />
+            </Flex>
+          </CardContent>
+        </Card>
+      ))}
+    </Flex>
+  )
+}
+`
+}
+
 function cfPrettierIgnore(): string {
   return `${prettierIgnore()}# Rewritten by @cascivo/app/vite whenever a route file changes.
 src/routes.gen.ts
@@ -2290,6 +2445,28 @@ Durable Objects work on a temporary account, so \`deploy:preview\` shares a live
 no Cloudflare account.`
       : ''
   }${
+    hasExample(opts, 'notes')
+      ? `
+
+## Notes (local-first)
+
+\`/notes\` keeps working when the connection drops. Edits are saved on this device and sync
+when the room is reachable again; a badge shows how many are still waiting.
+
+- \`src/notes.ts\` — \`connectRoom(url, { storage: indexedDBDriver() })\`: the room's last
+  state and every unconfirmed edit are kept in IndexedDB, so offline edits survive a reload
+  or a closed tab and go out on the next connection. \`room.unsynced\` counts them. (Opening
+  the app with no network at all also needs its files cached, by a service worker.)
+- The list is \`/notes?list=<name>\`. Without one, each browser makes its own and remembers
+  it; open the same \`?list=\` on another device to sync with it.
+- It uses the same \`SyncRoom\` Durable Object as any other room (\`ROOMS\` in
+  \`wrangler.jsonc\`). To query notes across lists, override \`SyncRoom.onWrite\` and mirror
+  each write into D1.
+
+A note is last-writer-wins: an edit made offline replaces whatever the note held when it
+arrives. Edits to different notes never collide.`
+      : ''
+  }${
     hasExample(opts, 'agent')
       ? `
 
@@ -2382,6 +2559,7 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
       ? [{ file: 'assistant.tsx', contents: cfAssistantRouteTsx() }]
       : []),
     ...(hasExample(opts, 'board') ? [{ file: 'board.tsx', contents: cfBoardRouteTsx() }] : []),
+    ...(hasExample(opts, 'notes') ? [{ file: 'notes.tsx', contents: cfNotesRouteTsx() }] : []),
   ]
   return [
     { path: 'package.json', contents: cfPackageJson(opts) },
@@ -2415,6 +2593,7 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
           { path: 'src/assistant.module.css', contents: cfAssistantCss() },
         ]
       : []),
+    ...(hasExample(opts, 'notes') ? [{ path: 'src/notes.ts', contents: cfNotesTs() }] : []),
     ...(hasExample(opts, 'board')
       ? [
           { path: 'src/board.ts', contents: cfBoardTs() },

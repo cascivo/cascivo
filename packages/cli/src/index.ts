@@ -104,6 +104,7 @@ Options:
   --runtime <name>          preact (default) or react — for --framework cloudflare
   --example <name>          board — a multiplayer page on a Durable Object (cloudflare only)
                             agent — an AI assistant that answers with UI (cloudflare, React)
+                            notes — a local-first page that keeps edits offline (cloudflare)
   --template <spec>         Start from a marketplace template (@ns/name or owner/repo/name)
   --theme <name>            Theme to install (${THEME_LIST})
   --sections "<a, b>"       Comma-separated nav section labels (one component each)

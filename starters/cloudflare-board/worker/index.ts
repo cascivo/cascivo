@@ -4,7 +4,7 @@ import type { RoomNamespace } from '@cascivo/app/sync-server'
 import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
 
-// The Durable Object class behind /board. wrangler.jsonc binds it as ROOMS, and it must be
+// The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
 // exported from the Worker's main module.
 export { SyncRoom } from '@cascivo/app/sync-server'
 

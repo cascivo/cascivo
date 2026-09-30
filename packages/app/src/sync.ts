@@ -1,6 +1,6 @@
 import { computed, signal } from '@cascivo/core'
-import type { ReadonlySignal } from '@cascivo/core'
-import { isValidPath, parseServerMessage } from './sync-protocol'
+import type { ReadonlySignal, StorageDriver } from '@cascivo/core'
+import { isValidPath, LIMITS, parseServerMessage } from './sync-protocol'
 import type { ClientMessage, Json } from './sync-protocol'
 
 /**
@@ -51,6 +51,11 @@ export interface Room {
   /** This connection's id in the room, once connected. */
   readonly self: ReadonlySignal<string | null>
   /**
+   * How many of this client's writes the room has not confirmed yet. Non-zero while offline;
+   * with `storage`, they survive a reload and go out on the next connection.
+   */
+  readonly unsynced: ReadonlySignal<number>
+  /**
    * Everyone else in the room, keyed by connection id: `{}` until they set a value (cursor,
    * name, selection…). Its size is how many others are here.
    */
@@ -73,6 +78,54 @@ export interface RoomOptions {
   /** Reconnect delay bounds in ms. Default 500 → 10 000, doubling. */
   minReconnectMs?: number
   maxReconnectMs?: number
+  /**
+   * Keeps the room on this device: the last state seen and every unconfirmed write, saved
+   * after each change. On the next start the room renders from it at once, before the socket
+   * opens, and the saved writes go out when it does. `indexedDBDriver()` from
+   * `@cascivo/storage` suits most apps; any `StorageDriver` works.
+   */
+  storage?: StorageDriver
+  /** The storage key. Default: `cascivo-room:<url>`. */
+  storageKey?: string
+}
+
+/** What a room keeps on the device. Version it: a stored snapshot outlives the code. */
+interface Snapshot {
+  v: 1
+  confirmed: Record<string, Json>
+  pending: { path: string; value: Json }[]
+}
+
+/**
+ * Reads a stored snapshot. Storage is written by this code, but also by an older version of
+ * it, a browser extension or a hand in devtools — so it is parsed like any other payload,
+ * and anything off-shape is dropped rather than trusted.
+ */
+export function parseSnapshot(raw: string): Snapshot | null {
+  let data: unknown
+  try {
+    data = JSON.parse(raw)
+  } catch {
+    return null
+  }
+  if (typeof data !== 'object' || data === null) return null
+  const { v, confirmed, pending } = data as Record<string, unknown>
+  if (v !== 1 || typeof confirmed !== 'object' || confirmed === null || !Array.isArray(pending)) {
+    return null
+  }
+  const out: Snapshot = { v: 1, confirmed: {}, pending: [] }
+  // JSON.parse only produces JSON values, so each value below is a Json by construction.
+  for (const [path, value] of Object.entries(confirmed)) {
+    if (isValidPath(path)) out.confirmed[path] = value as Json
+  }
+  for (const op of pending) {
+    if (typeof op !== 'object' || op === null) continue
+    const { path, value } = op as Record<string, unknown>
+    if (typeof path === 'string' && isValidPath(path) && value !== undefined) {
+      out.pending.push({ path, value: value as Json })
+    }
+  }
+  return out
 }
 
 function wsUrl(url: string): string {
@@ -87,6 +140,11 @@ export function connectRoom(url: string, options: RoomOptions = {}): Room {
   const Socket = options.WebSocket ?? (typeof WebSocket === 'undefined' ? undefined : WebSocket)
   const minDelay = options.minReconnectMs ?? 500
   const maxDelay = options.maxReconnectMs ?? 10_000
+
+  const storage = options.storage
+  const storageKey = options.storageKey ?? `cascivo-room:${url}`
+  // Op ids must not repeat across reloads: saved writes are resent under fresh ids.
+  const session = Math.random().toString(36).slice(2, 10)
 
   const status = signal<RoomStatus>('connecting')
   const self = signal<string | null>(null)
@@ -119,11 +177,43 @@ export function connectRoom(url: string, options: RoomOptions = {}): Room {
     if (socket && socket.readyState === 1) socket.send(JSON.stringify(message))
   }
 
+  const unsynced = signal(0)
+  let saveQueued = false
+
+  /** Records a change: re-derives every shared signal, and saves the room once per tick. */
+  function changed(): void {
+    revision.value++
+    unsynced.value = pending.size
+    if (!storage || saveQueued) return
+    saveQueued = true
+    queueMicrotask(() => {
+      saveQueued = false
+      const snapshot: Snapshot = {
+        v: 1,
+        confirmed: Object.fromEntries(confirmed),
+        pending: [...pending.values()],
+      }
+      try {
+        storage.set(storageKey, JSON.stringify(snapshot))
+      } catch (error) {
+        console.warn(`[cascivo/sync] could not save ${url} to storage:`, error)
+      }
+    })
+  }
+
+  function queue(path: string, value: Json): string {
+    const id = `${session}-${++counter}`
+    pending.set(id, { path, value })
+    return id
+  }
+
   function write(path: string, value: Json): void {
     if (!isValidPath(path)) throw new Error(`Invalid room path "${path}"`)
-    const id = `${self.value ?? 'local'}-${++counter}`
-    pending.set(id, { path, value })
-    revision.value++
+    if (JSON.stringify(value).length > LIMITS.maxValueLength) {
+      throw new Error(`The value at "${path}" is over ${LIMITS.maxValueLength} characters`)
+    }
+    const id = queue(path, value)
+    changed()
     transmit({ t: 'set', id, path, value })
   }
 
@@ -141,13 +231,13 @@ export function connectRoom(url: string, options: RoomOptions = {}): Room {
         // Anything written while disconnected goes out now, in order.
         for (const [id, op] of pending) transmit({ t: 'set', id, path: op.path, value: op.value })
         if (myPresence !== null) transmit({ t: 'presence', value: myPresence })
-        revision.value++
+        changed()
         break
       case 'set':
         if (message.value === null) confirmed.delete(message.path)
         else confirmed.set(message.path, message.value)
         if (message.by === self.value) pending.delete(message.id)
-        revision.value++
+        changed()
         break
       case 'presence': {
         const next = { ...presence.value }
@@ -178,7 +268,32 @@ export function connectRoom(url: string, options: RoomOptions = {}): Room {
       delay = Math.min(delay * 2, maxDelay)
     })
   }
-  open()
+  /** Seeds the room from storage, then connects — never the other way round, or a stale
+   * snapshot could overwrite the room's newer state. */
+  function restore(raw: string | null): void {
+    const snapshot = raw === null ? null : parseSnapshot(raw)
+    if (raw !== null && !snapshot)
+      console.warn(`[cascivo/sync] ignoring an unreadable saved copy of ${url}`)
+    if (snapshot) {
+      for (const [path, value] of Object.entries(snapshot.confirmed)) confirmed.set(path, value)
+      for (const op of snapshot.pending) queue(op.path, op.value)
+      revision.value++
+      unsynced.value = pending.size
+    }
+    open()
+  }
+
+  if (!storage) open()
+  else {
+    let raw: string | null | Promise<string | null>
+    try {
+      raw = storage.get(storageKey)
+    } catch {
+      raw = null
+    }
+    if (raw instanceof Promise) raw.then(restore, () => restore(null))
+    else restore(raw)
+  }
 
   /** The last invalid value warned about, per path — so a bad value logs once, not per change. */
   const warned = new Map<string, Json>()
@@ -203,6 +318,7 @@ export function connectRoom(url: string, options: RoomOptions = {}): Room {
   return {
     status,
     self,
+    unsynced,
     presence,
     setPresence(value) {
       myPresence = value

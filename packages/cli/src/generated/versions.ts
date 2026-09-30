@@ -14,6 +14,7 @@ export const CASCIVO_VERSIONS: Record<string, string> = {
   '@cascivo/eslint-config': '0.4.1',
   '@cascivo/app': '1.3.1',
   '@cascivo/render': '1.3.1',
+  '@cascivo/storage': '1.3.1',
 }
 
 /** `@cascivo/core`'s declared `@preact/signals-react` peer range. */

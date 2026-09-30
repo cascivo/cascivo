@@ -199,11 +199,20 @@ export const notesHandler = createHandler(notesApi, { note: ({ params }) => para
 export const routesPlugin = cascivoRoutes()
 export const routesSource: string = generateRoutes(['index.tsx'], './routes')
 import { connectRoom } from '@cascivo/app/sync'
-import { roomResponse, SyncRoom, type RoomNamespace } from '@cascivo/app/sync-server'
+import { roomResponse, SyncRoom, type RoomNamespace, type RoomWrite } from '@cascivo/app/sync-server'
+import { localStorageDriver } from '@cascivo/storage'
 export const sharedRoom = connectRoom('/api/rooms/demo')
 export const sharedTitle = sharedRoom.signal('title', '', (raw) => String(raw))
 export const roomClass: typeof SyncRoom = SyncRoom
 export const forwardRoom = (request: Request, ns: RoomNamespace<string>) => roomResponse(request, ns, 'demo')
+export class MirroredRoom extends SyncRoom {
+  writes: RoomWrite[] = []
+  protected override onWrite(write: RoomWrite): void {
+    this.writes.push(write)
+  }
+}
+export const localRoom = connectRoom('/api/rooms/local', { storage: localStorageDriver() })
+export const waiting: number = localRoom.unsynced.value
 import {
   applyThemeOverride,
   defineFlags,

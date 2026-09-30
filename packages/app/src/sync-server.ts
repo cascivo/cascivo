@@ -43,6 +43,8 @@ export interface HibernatableWebSocket {
 }
 
 export interface SyncRoomState {
+  /** The object's id; `name` is the room name when it was created with `idFromName`. */
+  readonly id?: { readonly name?: string | undefined }
   acceptWebSocket(socket: HibernatableWebSocket): void
   getWebSockets(): HibernatableWebSocket[]
   storage: {
@@ -59,6 +61,15 @@ interface Attachment {
 }
 
 const VALUE_PREFIX = 'v:'
+
+/** One stored write, as `SyncRoom.onWrite` receives it. */
+export interface RoomWrite {
+  /** The room's name, when the object was created with `idFromName` (as `roomResponse` does). */
+  room: string | null
+  path: string
+  /** The new value; `null` when the path was deleted. */
+  value: Json
+}
 
 function attachmentOf(socket: HibernatableWebSocket): Attachment | null {
   const raw: unknown = socket.deserializeAttachment()
@@ -78,6 +89,23 @@ export class SyncRoom {
     private readonly ctx: SyncRoomState,
     _env?: unknown,
   ) {}
+
+  /**
+   * Called after each write is stored and sent to the room. Override it to mirror writes
+   * elsewhere — into D1, say, so data can be queried across rooms. `value` is `null` for a
+   * delete. A throw is logged and never reaches the clients: the write has already happened.
+   *
+   * ```ts
+   * export class NotesRoom extends SyncRoom {
+   *   constructor(ctx: DurableObjectState, private env: Env) { super(ctx) }
+   *   override async onWrite({ room, path, value }: RoomWrite) {
+   *     await this.env.DB.prepare('INSERT OR REPLACE INTO notes VALUES (?, ?, ?)')
+   *       .bind(room, path, JSON.stringify(value)).run()
+   *   }
+   * }
+   * ```
+   */
+  protected onWrite(_write: RoomWrite): void | Promise<void> {}
 
   async fetch(request: Request): Promise<Response> {
     if (request.headers.get('upgrade')?.toLowerCase() !== 'websocket') {
@@ -144,6 +172,15 @@ export class SyncRoom {
       path: message.path,
       value: message.value,
     })
+    try {
+      await this.onWrite({
+        room: this.ctx.id?.name ?? null,
+        path: message.path,
+        value: message.value,
+      })
+    } catch (error) {
+      console.error(`[cascivo/sync] onWrite failed for "${message.path}":`, error)
+    }
   }
 
   async webSocketClose(socket: HibernatableWebSocket): Promise<void> {

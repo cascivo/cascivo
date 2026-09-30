@@ -11,7 +11,7 @@
     "run_worker_first": ["/api/*"],
   },
   "observability": { "enabled": true },
-  // ROOMS: one SyncRoom per board room (@cascivo/app/sync-server).
+  // ROOMS: one SyncRoom per room (@cascivo/app/sync-server).
   "durable_objects": {
     "bindings": [{ "name": "ROOMS", "class_name": "SyncRoom" }],
   },
