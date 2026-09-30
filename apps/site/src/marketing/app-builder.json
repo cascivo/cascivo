@@ -1,0 +1,282 @@
+{
+  "examples": [
+    {
+      "id": "board",
+      "label": "Multiplayer board",
+      "blurb": "Notes and live cursors, shared by everyone in the room.",
+      "group": "Realtime",
+      "files": ["src/board.module.css", "src/board.ts", "src/routes/board.tsx"],
+      "pages": ["/board"],
+      "services": ["durable_objects"],
+      "react": false,
+      "brings": []
+    },
+    {
+      "id": "agent",
+      "label": "Generative-UI assistant",
+      "blurb": "A chat that answers with validated interface, not just text.",
+      "group": "AI",
+      "files": [
+        "src/assistant.module.css",
+        "src/assistant.ts",
+        "src/routes/assistant.tsx",
+        "tsconfig.worker.json",
+        "worker/assistant.ts",
+        "worker/scripted-model.ts"
+      ],
+      "pages": ["/assistant"],
+      "services": ["durable_objects", "ai"],
+      "react": true,
+      "brings": []
+    },
+    {
+      "id": "notes",
+      "label": "Local-first notes",
+      "blurb": "Edits survive a dropped connection and sync when it returns.",
+      "group": "Realtime",
+      "files": ["src/notes.ts", "src/routes/notes.tsx"],
+      "pages": ["/notes"],
+      "services": ["durable_objects"],
+      "react": false,
+      "brings": []
+    },
+    {
+      "id": "import",
+      "label": "CSV import job",
+      "blurb": "A durable background job with live progress.",
+      "group": "Data",
+      "files": [
+        "src/import-job.ts",
+        "src/import-page.ts",
+        "src/routes/import.tsx",
+        "tsconfig.worker.json",
+        "worker/import-job.ts"
+      ],
+      "pages": ["/import"],
+      "services": ["durable_objects", "workflows"],
+      "react": false,
+      "brings": []
+    },
+    {
+      "id": "files",
+      "label": "File uploads",
+      "blurb": "Uploads with progress and resized image previews.",
+      "group": "Data",
+      "files": [
+        "src/files.module.css",
+        "src/files.ts",
+        "src/routes/files.tsx",
+        "src/upload-policy.ts"
+      ],
+      "pages": ["/files"],
+      "services": ["r2_buckets", "images", "ratelimits"],
+      "react": false,
+      "brings": []
+    },
+    {
+      "id": "export",
+      "label": "PDF export",
+      "blurb": "Any page, downloaded as a PDF or PNG.",
+      "group": "Operations",
+      "files": ["src/routes/report.tsx"],
+      "pages": ["/report"],
+      "services": ["ratelimits", "browser"],
+      "react": false,
+      "brings": []
+    },
+    {
+      "id": "usage",
+      "label": "Usage analytics",
+      "blurb": "Every API call recorded and charted.",
+      "group": "Operations",
+      "files": ["src/routes/usage.tsx", "src/usage.ts", "worker/usage.ts"],
+      "pages": ["/usage"],
+      "services": ["analytics_engine_datasets"],
+      "react": false,
+      "brings": []
+    },
+    {
+      "id": "crud",
+      "label": "Data table",
+      "blurb": "A database table with server-side sort, search and paging.",
+      "group": "Data",
+      "files": [
+        "src/customers-page.ts",
+        "src/customers.ts",
+        "src/routes/customers.tsx",
+        "worker/customers.ts",
+        "worker/migrations.ts"
+      ],
+      "pages": ["/customers"],
+      "services": ["d1_databases"],
+      "react": false,
+      "brings": []
+    },
+    {
+      "id": "live",
+      "label": "Live dashboard",
+      "blurb": "Events through a queue, charts that move every second.",
+      "group": "Realtime",
+      "files": ["src/ops.ts", "src/routes/ops.tsx"],
+      "pages": ["/ops"],
+      "services": ["durable_objects", "queues"],
+      "react": false,
+      "brings": []
+    },
+    {
+      "id": "voice",
+      "label": "Voice assistant",
+      "blurb": "Talk to it; it listens, thinks and answers aloud.",
+      "group": "AI",
+      "files": [
+        "src/routes/voice.tsx",
+        "src/voice.ts",
+        "tsconfig.worker.json",
+        "worker/scripted-voice.ts",
+        "worker/voice.ts"
+      ],
+      "pages": ["/voice"],
+      "services": ["durable_objects", "ai"],
+      "react": false,
+      "brings": []
+    },
+    {
+      "id": "publish",
+      "label": "Publish pages",
+      "blurb": "Turn a generated view into a live, shareable page.",
+      "group": "Data",
+      "files": [
+        "src/pages.ts",
+        "src/routes/p/[slug].tsx",
+        "src/routes/publish.tsx",
+        "worker/page-html.ts",
+        "worker/pages.ts"
+      ],
+      "pages": ["/p/:slug", "/publish"],
+      "services": ["ratelimits", "d1_databases"],
+      "react": false,
+      "brings": []
+    },
+    {
+      "id": "webhooks",
+      "label": "Inbound webhooks",
+      "blurb": "Signed GitHub deliveries, verified and shown live.",
+      "group": "Operations",
+      "files": [".dev.vars", "src/routes/webhooks.tsx", "src/webhooks.ts", "worker/webhooks.ts"],
+      "pages": ["/webhooks"],
+      "services": ["durable_objects", "d1_databases"],
+      "react": false,
+      "brings": []
+    },
+    {
+      "id": "digest",
+      "label": "Weekly report email",
+      "blurb": "The report as a PDF, emailed every Monday.",
+      "group": "Operations",
+      "files": [
+        "src/digest.ts",
+        "src/routes/digest.tsx",
+        "src/routes/report.tsx",
+        "worker/digest.ts"
+      ],
+      "pages": ["/digest", "/report"],
+      "services": ["ratelimits", "send_email", "triggers", "d1_databases", "browser"],
+      "react": false,
+      "brings": ["export"]
+    },
+    {
+      "id": "search",
+      "label": "Semantic search",
+      "blurb": "Finds what a question means, not just the words in it.",
+      "group": "AI",
+      "files": ["src/routes/search.tsx", "src/search.ts", "worker/articles.ts", "worker/search.ts"],
+      "pages": ["/search"],
+      "services": ["ratelimits", "d1_databases", "ai", "vectorize"],
+      "react": false,
+      "brings": []
+    }
+  ],
+  "auth": [
+    {
+      "id": "email",
+      "label": "Accounts",
+      "blurb": "Email sign-in links; every write needs a signed-in user.",
+      "files": [
+        "src/auth.ts",
+        "src/routes/account.tsx",
+        "src/routes/signin/verify.tsx",
+        "worker/auth.ts"
+      ],
+      "pages": ["/account", "/signin/verify"],
+      "services": ["ratelimits", "send_email", "d1_databases"],
+      "react": false
+    },
+    {
+      "id": "access",
+      "label": "Cloudflare Access",
+      "blurb": "Only people your identity provider lets in.",
+      "files": [],
+      "pages": [],
+      "services": ["access"],
+      "react": false
+    }
+  ],
+  "services": {
+    "durable_objects": {
+      "name": "Durable Objects",
+      "local": "simulated"
+    },
+    "d1_databases": {
+      "name": "D1",
+      "local": "simulated"
+    },
+    "r2_buckets": {
+      "name": "R2",
+      "local": "simulated"
+    },
+    "images": {
+      "name": "Images",
+      "local": "simulated"
+    },
+    "queues": {
+      "name": "Queues",
+      "local": "simulated"
+    },
+    "workflows": {
+      "name": "Workflows",
+      "local": "simulated"
+    },
+    "browser": {
+      "name": "Browser Run",
+      "local": "simulated"
+    },
+    "analytics_engine_datasets": {
+      "name": "Analytics Engine",
+      "local": "simulated"
+    },
+    "send_email": {
+      "name": "Email Service",
+      "local": "simulated"
+    },
+    "ratelimits": {
+      "name": "Rate Limiting",
+      "local": "simulated"
+    },
+    "triggers": {
+      "name": "Cron Triggers",
+      "local": "simulated"
+    },
+    "ai": {
+      "name": "Workers AI",
+      "local": "stand-in"
+    },
+    "vectorize": {
+      "name": "Vectorize",
+      "local": "stand-in"
+    },
+    "access": {
+      "name": "Access",
+      "local": "account"
+    }
+  }
+}
