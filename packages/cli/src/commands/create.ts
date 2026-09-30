@@ -55,9 +55,9 @@ export type Runtime = 'preact' | 'react'
 export const RUNTIMES = ['preact', 'react'] as const
 
 /** Optional demo pages for `--framework cloudflare`. */
-export type Example = 'board' | 'agent' | 'notes' | 'import'
+export type Example = 'board' | 'agent' | 'notes' | 'import' | 'files'
 
-export const EXAMPLES = ['board', 'agent', 'notes', 'import'] as const
+export const EXAMPLES = ['board', 'agent', 'notes', 'import', 'files'] as const
 
 function isExample(value: string): value is Example {
   return (EXAMPLES as readonly string[]).includes(value)
@@ -1233,6 +1233,13 @@ ${jsoncArray(
 ${jsoncArray('  ', 'migrations', [`{ "tag": "v1", "new_sqlite_classes": [${objects.map((o) => `"${o.className}"`).join(', ')}] }`])}`
       : ''
   }${
+    hasExample(opts, 'files')
+      ? `
+  // Uploaded files, and Cloudflare Images for their resized previews.
+  "r2_buckets": [{ "binding": "FILES", "bucket_name": "${packageName(opts.name)}-files" }],
+  "images": { "binding": "IMAGES" },`
+      : ''
+  }${
     hasExample(opts, 'import')
       ? `
   // The CSV import runs as a Workflow (worker/import-job.ts); its progress is a room.
@@ -1284,8 +1291,9 @@ function runtimeOf(opts: ScaffoldOptions): Runtime {
 
 function cfApiTs(opts: ScaffoldOptions): string {
   const imports = hasExample(opts, 'import')
-  return `import { defineApi, ${imports ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
-${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}
+  const files = hasExample(opts, 'files')
+  return `import { defineApi, ${imports || files ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
+${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}
 /**
  * The contract between the browser and the Worker. Both import this file: the Worker serves
  * it with \`createHandler\`, the app calls it with \`createClient\`, and a change that breaks
@@ -1325,6 +1333,19 @@ export const api = defineApi({
     output: parseStarted,
   }),`
       : ''
+  }${
+    files
+      ? `
+  // The stored files (the uploads themselves are \`handleUploads\` in the Worker).
+  listFiles: endpoint({
+    method: 'GET',
+    path: '/api/files',
+    output: (raw) => {
+      if (!Array.isArray(raw)) throw new Error('Expected a list of files')
+      return raw.map(parseStoredFile)
+    },
+  }),`
+      : ''
   }
 })
 `
@@ -1334,8 +1355,15 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const rooms = usesRooms(opts)
   const agent = hasExample(opts, 'agent')
   const imports = hasExample(opts, 'import')
+  const files = hasExample(opts, 'files')
   return `import { createHandler } from '@cascivo/app/api'
 ${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
+    files
+      ? `import { handleUploads, listUploads } from '@cascivo/app/uploads-server'
+import type { ImageResizer, UploadBucket } from '@cascivo/app/uploads-server'
+`
+      : ''
+  }${
     rooms
       ? `import { roomResponse } from '@cascivo/app/sync-server'
 import type { RoomNamespace } from '@cascivo/app/sync-server'
@@ -1343,7 +1371,7 @@ import type { RoomNamespace } from '@cascivo/app/sync-server'
       : ''
   }${agent ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-${imports ? `import { importJob } from '../src/import-job'\n` : ''}${
+${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${
     rooms
       ? `
 // The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
@@ -1371,8 +1399,8 @@ export { ImportJob } from './import-job'
  * here; every handler receives them as \`env\`.
  */
 ${
-  rooms || agent
-    ? `export interface Env {${agent ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}
+  rooms || agent || files
+    ? `export interface Env {${agent ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -1404,19 +1432,26 @@ const handleApi = createHandler<typeof api, Env>(api, {
     return { id }
   },`
       : ''
-  }
+  }${files ? `\n  listFiles: ({ env }) => listUploads(env.FILES),` : ''}
 })
 
 // wrangler.jsonc routes only ${agent ? '/api/* and /agents/*' : '/api/*'} here; everything else is a static asset or index.html.
 export default {
 ${
-  rooms || agent
-    ? `  ${agent ? 'async ' : ''}fetch(request: Request, env: Env): Promise<Response>${agent ? '' : ' | Response'} {${
+  rooms || agent || files
+    ? `  ${agent || files ? 'async ' : ''}fetch(request: Request, env: Env): Promise<Response>${agent || files ? '' : ' | Response'} {${
         agent
           ? `
     // /agents/assistant/<conversation>: the WebSocket useAgent() opens.
     const agent = await routeAgentRequest(request, env)
     if (agent) return agent`
+          : ''
+      }${
+        files
+          ? `
+    // Uploads into R2 and the files they stored. Add your own auth check first.
+    const upload = await handleUploads(uploads, env.FILES, { images: env.IMAGES })(request)
+    if (upload) return upload`
           : ''
       }${
         rooms
@@ -1574,6 +1609,7 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
   if (hasExample(opts, 'board')) items.push({ label: 'Board', href: '/board' })
   if (hasExample(opts, 'notes')) items.push({ label: 'Notes', href: '/notes' })
   if (hasExample(opts, 'import')) items.push({ label: 'Import', href: '/import' })
+  if (hasExample(opts, 'files')) items.push({ label: 'Files', href: '/files' })
   const navItems = items
     .map(
       (item) => `    {
@@ -2723,6 +2759,170 @@ export default function Import() {
 `
 }
 
+/* --- `--example files`: uploads into R2 through @cascivo/app/uploads, Images previews --- */
+
+function cfUploadPolicyTs(): string {
+  return `import { defineUploads } from '@cascivo/app/uploads'
+
+/**
+ * What the app accepts, shared by the page (which checks first) and the Worker (which
+ * enforces). SVG and HTML are not on the list, and cannot be: served from this origin they
+ * would run script.
+ */
+export const uploads = defineUploads({
+  path: '/api/uploads',
+  maxBytes: 50 * 1024 * 1024,
+  types: ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'application/pdf'],
+})
+`
+}
+
+function cfFilesTs(): string {
+  return `import { createClient } from '@cascivo/app/api'
+import { startUpload } from '@cascivo/app/uploads'
+import type { StoredFile, Upload } from '@cascivo/app/uploads'
+import { signal } from '@cascivo/react'
+import { api } from './api'
+import { uploads } from './upload-policy'
+
+const client = createClient(api)
+
+/** Files being uploaded now, newest first. */
+export const inFlight = signal<Upload[]>([])
+/** Files already stored (see listUploads for their order). */
+export const stored = signal<StoredFile[]>([])
+
+export async function refresh(): Promise<void> {
+  stored.value = await client.listFiles()
+}
+
+export function addFiles(files: File[]): void {
+  for (const file of files) {
+    const upload = startUpload(uploads, file)
+    inFlight.value = [upload, ...inFlight.value]
+    // Once stored, the file moves from the upload list to the file list.
+    const stop = upload.status.subscribe((status) => {
+      if (status !== 'done') return
+      stop()
+      inFlight.value = inFlight.value.filter((u) => u !== upload)
+      void refresh()
+    })
+  }
+}
+
+export function removeUpload(id: string): void {
+  const upload = inFlight.value.find((u) => u.id === id)
+  upload?.abort()
+  inFlight.value = inFlight.value.filter((u) => u.id !== id)
+}
+`
+}
+
+function cfFilesRouteTsx(): string {
+  return `import type { UploaderFile } from '@cascivo/react'
+import {
+  Card,
+  CardContent,
+  FileUploader,
+  Flex,
+  Heading,
+  ProgressBar,
+  Text,
+  useSignals,
+} from '@cascivo/react'
+import { formatBytes } from '@cascivo/app/uploads'
+import { addFiles, inFlight, refresh, removeUpload, stored } from '../files'
+import { uploads } from '../upload-policy'
+import styles from '../files.module.css'
+
+void refresh()
+
+export default function Files() {
+  useSignals()
+  const files: UploaderFile[] = inFlight.value.map((upload) => ({
+    id: upload.id,
+    name: upload.name,
+    size: upload.size,
+    status: upload.status.value === 'done' ? 'complete' : upload.status.value,
+    ...(upload.error.value ? { errorMessage: upload.error.value } : {}),
+  }))
+
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Files</Heading>
+        <Text muted>
+          Uploads go through the Worker into R2: up to {formatBytes(uploads.maxBytes)} each, large
+          files in parts. Images get resized previews from Cloudflare Images.
+        </Text>
+      </Flex>
+      <FileUploader
+        multiple
+        accept={uploads.types.join(',')}
+        maxSize={uploads.maxBytes}
+        files={files}
+        onFilesAdded={addFiles}
+        onRemove={removeUpload}
+      />
+      {inFlight.value
+        .filter((upload) => upload.status.value === 'uploading')
+        .map((upload) => (
+          <ProgressBar
+            key={upload.id}
+            value={Math.round(upload.progress.value * 100)}
+            label={upload.name}
+          />
+        ))}
+      <div className={styles['grid']}>
+        {stored.value.map((file) => (
+          <Card key={file.key}>
+            <CardContent>
+              <Flex gap={2}>
+                {file.type.startsWith('image/') ? (
+                  <img
+                    className={styles['preview']}
+                    src={\`\${uploads.path}/\${file.key}?w=320\`}
+                    alt={file.name}
+                    loading="lazy"
+                  />
+                ) : null}
+                <a href={\`\${uploads.path}/\${file.key}\`} target="_blank" rel="noreferrer">
+                  {file.name}
+                </a>
+                <Text size="sm" muted>
+                  {formatBytes(file.size)}
+                </Text>
+              </Flex>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </Flex>
+  )
+}
+`
+}
+
+function cfFilesCss(): string {
+  return `/* Your app's own styles live in the cascivo.example layer (declared in index.html). */
+@layer cascivo.example {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: var(--cascivo-space-3);
+  }
+
+  .preview {
+    inline-size: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--cascivo-radius-md);
+    background: var(--cascivo-color-bg-subtle);
+  }
+}
+`
+}
+
 function cfPrettierIgnore(): string {
   return `${prettierIgnore()}# Rewritten by @cascivo/app/vite whenever a route file changes.
 src/routes.gen.ts
@@ -2863,6 +3063,27 @@ a report outside one would run again. Workflows run in \`vite dev\` locally, but
 temporary account, so \`deploy:preview\` serves the page without starting imports.`
       : ''
   }${
+    hasExample(opts, 'files')
+      ? `
+
+## Files (uploads)
+
+\`/files\` uploads into R2 through the Worker, with progress, and shows resized previews.
+
+- \`src/upload-policy.ts\` — what the app accepts (types, size), shared by both sides: the page
+  checks a file before sending it, and the Worker enforces the same policy. SVG and HTML are
+  refused by design; served from your origin they would run script.
+- \`worker/index.ts\` — \`handleUploads\` (\`@cascivo/app/uploads-server\`) stores uploads, in
+  parts above 16 MiB, under keys the Worker chooses, and serves them back with headers that
+  stop any file running script. \`?w=320\` returns a WebP preview from Cloudflare Images.
+- \`src/files.ts\` — \`startUpload\` gives each file progress and status signals.
+
+**It has no auth.** Anyone who can reach the app can upload. Check who is asking in
+\`worker/index.ts\` before \`handleUploads\` runs. Create the bucket once before deploying:
+\`npx wrangler r2 bucket create ${packageName(opts.name)}-files\`. R2 and Images do not run on a
+temporary account.`
+      : ''
+  }${
     hasExample(opts, 'agent')
       ? `
 
@@ -2957,6 +3178,7 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
     ...(hasExample(opts, 'board') ? [{ file: 'board.tsx', contents: cfBoardRouteTsx() }] : []),
     ...(hasExample(opts, 'notes') ? [{ file: 'notes.tsx', contents: cfNotesRouteTsx() }] : []),
     ...(hasExample(opts, 'import') ? [{ file: 'import.tsx', contents: cfImportRouteTsx() }] : []),
+    ...(hasExample(opts, 'files') ? [{ file: 'files.tsx', contents: cfFilesRouteTsx() }] : []),
   ]
   return [
     { path: 'package.json', contents: cfPackageJson(opts) },
@@ -2996,6 +3218,13 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
           { path: 'src/import-job.ts', contents: cfImportJobTs() },
           { path: 'src/import-page.ts', contents: cfImportPageTs() },
           { path: 'worker/import-job.ts', contents: cfImportWorkflowTs() },
+        ]
+      : []),
+    ...(hasExample(opts, 'files')
+      ? [
+          { path: 'src/upload-policy.ts', contents: cfUploadPolicyTs() },
+          { path: 'src/files.ts', contents: cfFilesTs() },
+          { path: 'src/files.module.css', contents: cfFilesCss() },
         ]
       : []),
     ...(hasExample(opts, 'board')

@@ -6644,6 +6644,73 @@
           }
         }
       },
+      "./uploads": {
+        "values": [
+          "checkFile",
+          "defineUploads",
+          "formatBytes",
+          "parseStoredFile",
+          "startUpload",
+          "xhrTransport"
+        ],
+        "types": ["StoredFile", "Upload", "UploadPolicy", "UploadStatus", "UploadTransport"],
+        "declarations": {
+          "checkFile": "declare function checkFile(policy: UploadPolicy, file: { size: number; type: string; }): string | null",
+          "defineUploads": "declare function defineUploads(policy: { path: string; maxBytes: number; types: readonly string[]; partBytes?: number; }): UploadPolicy",
+          "formatBytes": "declare function formatBytes(bytes: number): string",
+          "parseStoredFile": "declare function parseStoredFile(raw: unknown): StoredFile",
+          "startUpload": "declare function startUpload(policy: UploadPolicy, file: File, options?: { transport?: UploadTransport; }): Upload",
+          "StoredFile": {
+            "key": "string",
+            "name": "string",
+            "size": "number",
+            "type": "string"
+          },
+          "Upload": {
+            "readonly id": "string",
+            "readonly name": "string",
+            "readonly size": "number",
+            "readonly progress": "ReadonlySignal<number>",
+            "readonly status": "ReadonlySignal<UploadStatus>",
+            "readonly error": "ReadonlySignal<string | null>",
+            "readonly result": "ReadonlySignal<StoredFile | null>",
+            "abort": "(): void"
+          },
+          "UploadPolicy": {
+            "readonly path": "string",
+            "readonly maxBytes": "number",
+            "readonly types": "readonly string[]",
+            "readonly partBytes": "number"
+          },
+          "UploadStatus": "type = 'uploading' | 'done' | 'error'",
+          "UploadTransport": "type = (request: { method: 'PUT' | 'POST'; url: string; body: Blob | string | null; headers: Record<string, string>; onProgress: (sentBytes: number) => void; signal: AbortSignal; }) => Promise<{ status: number; body: string; }>",
+          "xhrTransport": "declare const xhrTransport: UploadTransport"
+        }
+      },
+      "./uploads-server": {
+        "values": ["handleUploads", "listUploads"],
+        "types": ["ImageResizer", "UploadBucket", "UploadHandlerOptions"],
+        "declarations": {
+          "handleUploads": "declare function handleUploads(policy: UploadPolicy, bucket: UploadBucket, options?: UploadHandlerOptions): (request: Request) => Promise<Response | null>",
+          "ImageResizer": {
+            "input": "(stream: ReadableStream<Uint8Array>): { transform(transform: { width: number; fit: 'scale-down'; }): { output(options: { format: 'image/webp'; }): Promise<{ response(): Response; }>; }; }"
+          },
+          "listUploads": "declare function listUploads(bucket: UploadBucket, options?: { prefix?: string; limit?: number; }): Promise<StoredFile[]>",
+          "UploadBucket": {
+            "put": "(key: string, value: ReadableStream, options: { httpMetadata: { contentType: string; }; customMetadata: Record<string, string>; }): Promise<StoredObject | null>",
+            "head": "(key: string): Promise<StoredObject | null>",
+            "get": "(key: string): Promise<(StoredObject & { body: ReadableStream; }) | null>",
+            "delete": "(key: string): Promise<void>",
+            "createMultipartUpload": "(key: string, options: { httpMetadata: { contentType: string; }; customMetadata: Record<string, string>; }): Promise<{ key: string; uploadId: string; }>",
+            "resumeMultipartUpload": "(key: string, uploadId: string): MultipartUpload",
+            "list": "(options: { prefix: string; limit: number; include: ('httpMetadata' | 'customMetadata')[]; }): Promise<{ objects: StoredObject[]; }>"
+          },
+          "UploadHandlerOptions": {
+            "prefix?": "string",
+            "images?": "ImageResizer"
+          }
+        }
+      },
       "./sync-server": {
         "values": ["SyncRoom", "roomResponse", "writeRoom"],
         "types": ["HibernatableWebSocket", "RoomNamespace", "RoomWrite", "SyncRoomState"],

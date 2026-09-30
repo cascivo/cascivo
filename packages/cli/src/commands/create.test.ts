@@ -652,3 +652,34 @@ describe('buildScaffold — cloudflare --example import', () => {
     expect(pkg.dependencies['preact']).toBeDefined()
   })
 })
+
+describe('buildScaffold — cloudflare --example files', () => {
+  const map = fileMap(
+    buildScaffold({
+      name: 'Edge App',
+      framework: 'cloudflare',
+      theme: 'light',
+      sections: ['Dashboard'],
+      examples: ['files'],
+    }),
+  )
+
+  it('binds a bucket and Images, and routes uploads before the API', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain(
+      '"r2_buckets": [{ "binding": "FILES", "bucket_name": "edge-app-files" }]',
+    )
+    expect(wrangler).toContain('"images": { "binding": "IMAGES" }')
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain('handleUploads(uploads, env.FILES, { images: env.IMAGES })(request)')
+    expect(worker).toContain("import { uploads } from '../src/upload-policy'")
+    expect(map.get('src/api.ts')).toContain("path: '/api/files'")
+    expect(map.get('src/routes.gen.ts')).toContain("lazyRoute('/files'")
+  })
+
+  it('keeps the policy the Worker imports free of the page and of React', () => {
+    const policy = map.get('src/upload-policy.ts')!
+    expect(policy).not.toMatch(/@cascivo\/react|from '\.\/files'/)
+    expect(policy).not.toContain('image/svg+xml')
+  })
+})

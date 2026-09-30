@@ -59,6 +59,16 @@
       "import": "./dist/jobs-server.js",
       "default": "./dist/jobs-server.js"
     },
+    "./uploads": {
+      "types": "./dist/uploads.d.ts",
+      "import": "./dist/uploads.js",
+      "default": "./dist/uploads.js"
+    },
+    "./uploads-server": {
+      "types": "./dist/uploads-server.d.ts",
+      "import": "./dist/uploads-server.js",
+      "default": "./dist/uploads-server.js"
+    },
     "./sync-server": {
       "types": "./dist/sync-server.d.ts",
       "import": "./dist/sync-server.js",

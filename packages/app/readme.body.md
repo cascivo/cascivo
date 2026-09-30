@@ -330,3 +330,44 @@ job.state.value // { status: 'running', step: 2, progress: 0.5, message: 'Import
 
 `cascivo create --framework cloudflare --example import` scaffolds a CSV import that runs as a
 Workflow and shows its steps and progress live.
+
+## Uploads — `@cascivo/app/uploads` and `@cascivo/app/uploads-server`
+
+Files from the browser into R2, through your Worker, with progress. One policy is shared by
+both sides: the page checks a file before sending it, so the user hears "too large" at once,
+and the Worker enforces the same policy, so a page that skipped the check still cannot store
+what it forbids.
+
+```ts
+// src/upload-policy.ts — shared
+export const uploads = defineUploads({
+  path: '/api/uploads',
+  maxBytes: 50 * 1024 * 1024,
+  types: ['image/png', 'image/jpeg', 'application/pdf'],
+})
+
+// worker/index.ts — check who is asking first: this does not authenticate
+const upload = await handleUploads(uploads, env.FILES, { images: env.IMAGES })(request)
+if (upload) return upload
+
+// the page
+const upload = startUpload(uploads, file)
+upload.progress.value // 0–1, across every part of a large file
+upload.status.value // 'uploading' | 'done' | 'error'
+upload.result.value // { key, name, size, type } once stored
+```
+
+- **Progress needs XMLHttpRequest**, because `fetch` cannot report upload progress. The
+  transport is swappable; tests pass one that calls the handler directly.
+- **Files above `partBytes` (16 MiB) go up in parts** (R2 multipart). Each part is size-checked,
+  and a finished file over `maxBytes` is removed.
+- **The Worker picks every key** (`<uuid>/<sanitized name>`); the browser never names where a
+  file lands.
+- **Stored files cannot run script from your origin.** A policy may not accept SVG or HTML.
+  Files are served with `nosniff` and a sandboxing CSP, and a type the policy does not accept
+  is served as a download.
+- **`?w=320` returns a WebP preview** through the Images binding, when you pass `images`.
+- `listUploads(bucket)` lists stored files in R2's key order.
+
+`cascivo create --framework cloudflare --example files` scaffolds an upload page on
+`FileUploader`, with previews.

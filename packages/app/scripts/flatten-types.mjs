@@ -22,6 +22,8 @@ const ENTRIES = [
   { name: 'flags', src: 'src/flags.ts' },
   { name: 'jobs', src: 'src/jobs.ts' },
   { name: 'jobs-server', src: 'src/jobs-server.ts' },
+  { name: 'uploads', src: 'src/uploads.ts' },
+  { name: 'uploads-server', src: 'src/uploads-server.ts' },
   { name: 'vite', src: 'src/vite.ts' },
 ]
 

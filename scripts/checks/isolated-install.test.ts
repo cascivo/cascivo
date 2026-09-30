@@ -227,6 +227,11 @@ export const reportCount = (ns: RoomNamespace<string>) => jobReporter(countJob, 
 export const writeTitle = (ns: RoomNamespace<string>) => writeRoom(ns, 'demo', 'title', 'Hi')
 export const watchOnly = (request: Request, ns: RoomNamespace<string>) =>
   roomResponse(request, ns, 'job-1', { readOnly: true })
+import { defineUploads, startUpload, type Upload } from '@cascivo/app/uploads'
+import { handleUploads, type UploadBucket } from '@cascivo/app/uploads-server'
+export const photoUploads = defineUploads({ path: '/api/uploads', maxBytes: 1e6, types: ['image/png'] })
+export const sendPhoto = (file: File): Upload => startUpload(photoUploads, file)
+export const serveUploads = (bucket: UploadBucket) => handleUploads(photoUploads, bucket)
 import {
   applyThemeOverride,
   defineFlags,

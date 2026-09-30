@@ -105,6 +105,7 @@ Options:
                             agent — an AI assistant that answers with UI (cloudflare, React)
                             notes — a local-first page that keeps edits offline (cloudflare)
                             import — a CSV import on a Workflow, with live progress (cloudflare)
+                            files — uploads into R2 with progress and image previews (cloudflare)
   --template <spec>         Start from a marketplace template (@ns/name or owner/repo/name)
   --theme <name>            Theme to install (${THEME_LIST})
   --sections "<a, b>"       Comma-separated nav section labels (one component each)
