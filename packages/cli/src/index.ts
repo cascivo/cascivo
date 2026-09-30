@@ -112,6 +112,7 @@ Options:
                             live — an ops dashboard fed by a Queue, updating every second (cloudflare)
                             voice — a voice assistant: Workers AI speech in and out (cloudflare)
                             publish — publish views as pages, validated and stored in D1 (cloudflare)
+                            webhooks — signed GitHub deliveries, stored once, shown live (cloudflare)
   --auth access             Refuse every Worker request Cloudflare Access did not let
                             through (cloudflare only)
   --auth email              Accounts with emailed sign-in links; every API write needs a

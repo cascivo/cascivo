@@ -1,7 +1,14 @@
 // @vitest-environment node
 import { HttpError } from '@cascivo/data'
 import { describe, expect, it } from 'vitest'
-import { clientIp, guardResponse, rateLimit, requireAccess, verifyTurnstile } from './guard'
+import {
+  clientIp,
+  guardResponse,
+  rateLimit,
+  requireAccess,
+  verifyTurnstile,
+  verifyWebhook,
+} from './guard'
 import type { RateLimiter } from './guard'
 
 const TEAM = 'acme.cloudflareaccess.com'
@@ -210,5 +217,104 @@ describe('rateLimit and helpers', () => {
       clientIp(new Request('https://x/', { headers: { 'cf-connecting-ip': '9.9.9.9' } })),
     ).toBe('9.9.9.9')
     expect(clientIp(new Request('https://x/'))).toBe('unknown')
+  })
+})
+
+describe('verifyWebhook', () => {
+  const encoder = new TextEncoder()
+  const hmac = async (key: Uint8Array<ArrayBuffer>, content: string) => {
+    const cryptoKey = await crypto.subtle.importKey(
+      'raw',
+      key,
+      { name: 'HMAC', hash: 'SHA-256' },
+      false,
+      ['sign'],
+    )
+    return new Uint8Array(await crypto.subtle.sign('HMAC', cryptoKey, encoder.encode(content)))
+  }
+  const hex = (bytes: Uint8Array) =>
+    Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('')
+  const b64 = (bytes: Uint8Array) => Buffer.from(bytes).toString('base64')
+  const body = JSON.stringify({ action: 'opened', number: 7 })
+  const post = (headers: Record<string, string>, content = body) =>
+    new Request('https://app.example/api/webhooks/x', { method: 'POST', headers, body: content })
+  const nowSeconds = () => Math.floor(Date.now() / 1000)
+
+  it('accepts a GitHub delivery signed with the secret, and refuses anything else', async () => {
+    const signature = `sha256=${hex(await hmac(encoder.encode('s3cret'), body))}`
+    const headers = { 'x-hub-signature-256': signature, 'x-github-delivery': 'd-1' }
+    await expect(
+      verifyWebhook(post(headers), { scheme: 'github', secret: 's3cret' }),
+    ).resolves.toEqual({
+      body,
+      id: 'd-1',
+    })
+    await expect(
+      verifyWebhook(post(headers, `${body} `), { scheme: 'github', secret: 's3cret' }),
+    ).rejects.toMatchObject({
+      status: 401,
+    })
+    await expect(
+      verifyWebhook(post(headers), { scheme: 'github', secret: 'other' }),
+    ).rejects.toMatchObject({ status: 401 })
+    await expect(verifyWebhook(post({}), { scheme: 'github', secret: 's3cret' })).rejects.toThrow(
+      /no X-Hub-Signature-256/,
+    )
+  })
+
+  it('checks a Stripe signature and its timestamp window', async () => {
+    const sign = async (t: number) =>
+      `t=${t},v1=${hex(await hmac(encoder.encode('whsk'), `${t}.${body}`))}`
+    const ok = await sign(nowSeconds())
+    await expect(
+      verifyWebhook(post({ 'stripe-signature': ok }), { scheme: 'stripe', secret: 'whsk' }),
+    ).resolves.toEqual({
+      body,
+      id: null,
+    })
+    // A captured delivery replayed an hour later.
+    const old = await sign(nowSeconds() - 3600)
+    await expect(
+      verifyWebhook(post({ 'stripe-signature': old }), { scheme: 'stripe', secret: 'whsk' }),
+    ).rejects.toThrow(/outside the window/)
+    // Rotation: any matching v1 passes.
+    const rotated = `${ok},v1=${'00'.repeat(32)}`
+    await expect(
+      verifyWebhook(post({ 'stripe-signature': rotated }), { scheme: 'stripe', secret: 'whsk' }),
+    ).resolves.toBeTruthy()
+  })
+
+  it('checks Standard Webhooks signatures (whsec_ secrets, rotation, the window)', async () => {
+    const raw = crypto.getRandomValues(new Uint8Array(24))
+    const secret = `whsec_${b64(raw)}`
+    const t = nowSeconds()
+    const signature = `v1,${b64(await hmac(raw, `msg_1.${t}.${body}`))}`
+    const headers = {
+      'webhook-id': 'msg_1',
+      'webhook-timestamp': String(t),
+      'webhook-signature': `v1,AAAA ${signature}`,
+    }
+    await expect(verifyWebhook(post(headers), { scheme: 'standard', secret })).resolves.toEqual({
+      body,
+      id: 'msg_1',
+    })
+    await expect(
+      verifyWebhook(post({ ...headers, 'webhook-id': 'msg_2' }), { scheme: 'standard', secret }),
+    ).rejects.toMatchObject({ status: 401 })
+    await expect(
+      verifyWebhook(post({ ...headers, 'webhook-timestamp': String(t - 3600) }), {
+        scheme: 'standard',
+        secret,
+      }),
+    ).rejects.toThrow(/outside the window/)
+    await expect(
+      verifyWebhook(post(headers), { scheme: 'standard', secret: 'whsec_***' }),
+    ).rejects.toThrow(/whsec_/)
+  })
+
+  it('refuses to run without a secret', async () => {
+    await expect(verifyWebhook(post({}), { scheme: 'github', secret: '' })).rejects.toThrow(
+      /no secret/,
+    )
   })
 })

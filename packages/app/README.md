@@ -638,6 +638,18 @@ signup: async ({ input }, { request, env }) => {
   period live in `wrangler.jsonc`. It counts per Cloudflare location, so treat it as abuse
   protection rather than exact accounting.
 
+**`verifyWebhook(request, { scheme, secret })`** checks a webhook's signature over its raw body
+before anything in it is trusted, and returns `{ body, id }`:
+
+- `github`: `X-Hub-Signature-256`; `id` is `X-GitHub-Delivery`.
+- `stripe`: `Stripe-Signature`, with a timestamp window (five minutes by default) against a
+  captured delivery replayed later; the event id is in the body.
+- `standard`: [Standard Webhooks](https://www.standardwebhooks.com/) (Svix, Clerk, Resend…),
+  with the `whsec_` secret, rotation and the timestamp window.
+
+A bad or missing signature is a 401. Signatures are compared by WebCrypto's HMAC verify, in
+constant time. A retried delivery keeps its id: store deliveries by it to handle each once.
+
 `mountTurnstile(element, { siteKey, action, onToken })` from `@cascivo/app/turnstile` renders
 the widget in the browser: it loads Cloudflare's script once and returns `reset()` and
 `remove()`. Cloudflare's test keys (site key `1x00000000000000000000AA`, secret

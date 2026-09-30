@@ -247,3 +247,126 @@ export function guardResponse(error: unknown): Response {
     return Response.json({ error: error.message }, { status: error.status })
   throw error
 }
+
+/* --------------------------------- webhooks --------------------------------- */
+
+/**
+ * How the sender signs: `github` (`X-Hub-Signature-256`), `stripe` (`Stripe-Signature`, with
+ * a timestamp) or `standard` (Standard Webhooks — `webhook-id`, `webhook-timestamp`,
+ * `webhook-signature` — used by Svix, Clerk, Resend and others).
+ */
+export type WebhookScheme = 'github' | 'stripe' | 'standard'
+
+export interface WebhookOptions {
+  scheme: WebhookScheme
+  /**
+   * The signing secret, a Worker secret. For `standard`, the `whsec_…` string as the sender
+   * shows it.
+   */
+  secret: string
+  /** Seconds a signed timestamp may be off (`stripe`, `standard`). Default 300. */
+  toleranceSeconds?: number
+}
+
+export interface VerifiedWebhook {
+  /** The body, exactly as signed. Parse it yourself: its shape is the sender's. */
+  body: string
+  /**
+   * The delivery's id, when the scheme carries one (`X-GitHub-Delivery`, `webhook-id`); a
+   * retry keeps its id, so store by it to ignore repeats. Stripe puts it in the body (`id`).
+   */
+  id: string | null
+}
+
+const refused = (why: string): never => {
+  throw new HttpError(401, `Webhook refused: ${why}`)
+}
+
+function hexBytes(hex: string): Uint8Array<ArrayBuffer> | null {
+  if (!/^(?:[0-9a-f]{2})+$/i.test(hex)) return null
+  const bytes = new Uint8Array(hex.length / 2)
+  for (let i = 0; i < bytes.length; i++) bytes[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16)
+  return bytes
+}
+
+function base64Bytes(value: string): Uint8Array<ArrayBuffer> | null {
+  try {
+    const binary = atob(value)
+    const bytes = new Uint8Array(binary.length)
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i)
+    return bytes
+  } catch {
+    return null
+  }
+}
+
+/** HMAC-SHA256 verification by WebCrypto, which compares in constant time. */
+async function hmacValid(
+  key: Uint8Array<ArrayBuffer>,
+  signature: Uint8Array<ArrayBuffer>,
+  content: string,
+): Promise<boolean> {
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw',
+    key,
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['verify'],
+  )
+  return crypto.subtle.verify('HMAC', cryptoKey, signature, new TextEncoder().encode(content))
+}
+
+function checkTimestamp(seconds: number, tolerance: number): void {
+  if (!Number.isFinite(seconds)) refused('no timestamp')
+  if (Math.abs(Date.now() / 1000 - seconds) > tolerance) refused('timestamp outside the window')
+}
+
+/**
+ * Verifies a webhook's signature over its raw body and returns the body. Throws
+ * `HttpError(401)` for a missing or wrong signature, or (for timestamped schemes) one signed
+ * outside the tolerance window — which is what stops an old, captured delivery being replayed
+ * later. Call it before parsing or trusting anything in the request.
+ */
+export async function verifyWebhook(
+  request: Request,
+  options: WebhookOptions,
+): Promise<VerifiedWebhook> {
+  if (!options.secret) throw new Error('verifyWebhook: no secret configured')
+  const body = await request.text()
+  const encoder = new TextEncoder()
+  const tolerance = options.toleranceSeconds ?? 300
+  const header = (name: string) => request.headers.get(name)
+
+  if (options.scheme === 'github') {
+    const signature = header('x-hub-signature-256') ?? refused('no X-Hub-Signature-256')
+    const bytes = hexBytes(signature.replace(/^sha256=/, '')) ?? refused('malformed signature')
+    if (!(await hmacValid(encoder.encode(options.secret), bytes, body))) refused('bad signature')
+    return { body, id: header('x-github-delivery') }
+  }
+
+  if (options.scheme === 'stripe') {
+    const parts = (header('stripe-signature') ?? refused('no Stripe-Signature')).split(',')
+    const timestamp = Number(parts.find((p) => p.startsWith('t='))?.slice(2))
+    checkTimestamp(timestamp, tolerance)
+    const key = encoder.encode(options.secret)
+    for (const part of parts.filter((p) => p.startsWith('v1='))) {
+      const bytes = hexBytes(part.slice(3))
+      if (bytes && (await hmacValid(key, bytes, `${timestamp}.${body}`))) return { body, id: null }
+    }
+    return refused('bad signature')
+  }
+
+  const id = header('webhook-id') ?? refused('no webhook-id')
+  const timestamp = Number(header('webhook-timestamp'))
+  checkTimestamp(timestamp, tolerance)
+  const key = base64Bytes(options.secret.replace(/^whsec_/, ''))
+  // A wrong secret is this app's misconfiguration, not the sender's fault: a 500, not a 401.
+  if (!key) throw new Error('verifyWebhook: a standard secret is "whsec_" and base64')
+  // Several space-separated "v1,<base64>" signatures while a secret is being rotated.
+  for (const entry of (header('webhook-signature') ?? refused('no webhook-signature')).split(' ')) {
+    const [version, signature] = entry.split(',')
+    const bytes = version === 'v1' && signature ? base64Bytes(signature) : null
+    if (bytes && (await hmacValid(key, bytes, `${id}.${timestamp}.${body}`))) return { body, id }
+  }
+  return refused('bad signature')
+}

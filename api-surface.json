@@ -6859,8 +6859,23 @@
         }
       },
       "./guard": {
-        "values": ["clientIp", "guardResponse", "rateLimit", "requireAccess", "verifyTurnstile"],
-        "types": ["AccessIdentity", "AccessOptions", "RateLimiter", "TurnstileOptions"],
+        "values": [
+          "clientIp",
+          "guardResponse",
+          "rateLimit",
+          "requireAccess",
+          "verifyTurnstile",
+          "verifyWebhook"
+        ],
+        "types": [
+          "AccessIdentity",
+          "AccessOptions",
+          "RateLimiter",
+          "TurnstileOptions",
+          "VerifiedWebhook",
+          "WebhookOptions",
+          "WebhookScheme"
+        ],
         "declarations": {
           "AccessIdentity": {
             "email": "string | null",
@@ -6887,7 +6902,18 @@
             "hostname?": "string",
             "fetch?": "typeof fetch"
           },
-          "verifyTurnstile": "declare function verifyTurnstile(token: string | null | undefined, options: TurnstileOptions): Promise<void>"
+          "VerifiedWebhook": {
+            "body": "string",
+            "id": "string | null"
+          },
+          "verifyTurnstile": "declare function verifyTurnstile(token: string | null | undefined, options: TurnstileOptions): Promise<void>",
+          "verifyWebhook": "declare function verifyWebhook(request: Request, options: WebhookOptions): Promise<VerifiedWebhook>",
+          "WebhookOptions": {
+            "scheme": "WebhookScheme",
+            "secret": "string",
+            "toleranceSeconds?": "number"
+          },
+          "WebhookScheme": "type = 'github' | 'stripe' | 'standard'"
         }
       },
       "./live": {

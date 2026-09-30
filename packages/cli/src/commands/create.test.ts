@@ -2,7 +2,13 @@ import { mkdtempSync, readdirSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { buildScaffold, create, type ScaffoldFile, type ScaffoldOptions } from './create.js'
+import {
+  buildScaffold,
+  create,
+  type Example,
+  type ScaffoldFile,
+  type ScaffoldOptions,
+} from './create.js'
 
 function fileMap(files: ScaffoldFile[]): Map<string, string> {
   return new Map(files.map((f) => [f.path, f.contents]))
@@ -1084,5 +1090,48 @@ describe('buildScaffold — cloudflare --auth email', () => {
     expect(readme).toContain('## Accounts (email sign-in)')
     expect(readme).not.toContain('It has no auth')
     expect(readme).not.toContain('Anyone who can reach the app can publish')
+  })
+})
+
+describe('buildScaffold — cloudflare --example webhooks', () => {
+  const build = (examples: Example[], opts: Partial<ScaffoldOptions> = {}) =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        examples,
+        ...opts,
+      }),
+    )
+
+  it('verifies the signature before anything is parsed, and stores each delivery once', () => {
+    const store = build(['webhooks']).get('worker/webhooks.ts')!
+    expect(store.indexOf('await verifyWebhook(request')).toBeLessThan(
+      store.indexOf('JSON.parse(body)'),
+    )
+    expect(store).toContain('ON CONFLICT (id) DO NOTHING RETURNING id')
+    expect(build(['webhooks']).get('.dev.vars')).toContain('WEBHOOK_SECRET=')
+  })
+
+  it('pushes deliveries through a read-only room', () => {
+    const worker = build(['webhooks']).get('worker/index.ts')!
+    expect(worker).toContain(
+      'roomResponse(request, env.ROOMS, DELIVERIES_ROOM, { readOnly: true })',
+    )
+    expect(worker).not.toContain('/api/rooms/')
+  })
+
+  it('keeps the rooms the server writes out of /api/rooms/:name', () => {
+    const worker = build(['board', 'import', 'webhooks']).get('worker/index.ts')!
+    expect(worker).toContain('if (room && !/^(job-|webhooks$)/.test(room[1]!)) {')
+    // With only the import, no client-writable room route exists at all.
+    expect(build(['import']).get('worker/index.ts')).not.toContain('/api\\/rooms\\/')
+  })
+
+  it('exempts signed webhooks from the sign-in rule of --auth email', () => {
+    const worker = build(['webhooks'], { auth: 'email' }).get('worker/index.ts')!
+    expect(worker).toContain("!new URL(request.url).pathname.startsWith('/api/webhooks/')")
   })
 })

@@ -260,8 +260,12 @@ import {
   rateLimit,
   requireAccess,
   verifyTurnstile,
+  verifyWebhook,
   type RateLimiter,
+  type VerifiedWebhook,
 } from '@cascivo/app/guard'
+export const receive = (request: Request): Promise<VerifiedWebhook> =>
+  verifyWebhook(request, { scheme: 'github', secret: 's' })
 import { mountTurnstile } from '@cascivo/app/turnstile'
 import { createAuth, type User as AuthUser } from '@cascivo/app/auth'
 import { currentUser, handleAuth, requireUser } from '@cascivo/app/auth-server'

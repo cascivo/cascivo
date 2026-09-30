@@ -67,6 +67,7 @@ export type Example =
   | 'live'
   | 'voice'
   | 'publish'
+  | 'webhooks'
 
 export const EXAMPLES = [
   'board',
@@ -80,6 +81,7 @@ export const EXAMPLES = [
   'live',
   'voice',
   'publish',
+  'webhooks',
 ] as const
 
 function isExample(value: string): value is Example {
@@ -1330,15 +1332,16 @@ ${jsoncArray('  ', 'ratelimits', ['{ "name": "LIMITER", "namespace_id": "1001", 
   }${
     usesD1(opts)
       ? `
-  // ${[
+  // Tables for ${[
     hasExample(opts, 'crud') ? 'customers' : '',
     hasExample(opts, 'publish') ? 'published pages' : '',
+    hasExample(opts, 'webhooks') ? 'webhook deliveries' : '',
     opts.auth === 'email' ? 'accounts' : '',
   ]
     .filter(Boolean)
-    .join(', ')
-    .replace(/^./, (c) => c.toUpperCase())}. No database_id: wrangler creates the database on first
-  // deploy, and the Worker applies its own schema on its first query (\`migrate\`).
+    .join(', ')}.
+  // No database_id: wrangler creates the database on first deploy, and the Worker applies its
+  // own schema on its first query (\`migrate\`).
 ${jsoncArray('  ', 'd1_databases', [`{ "binding": "DB", "database_name": "${packageName(opts.name)}-db" }`])}`
       : ''
   }${
@@ -1424,7 +1427,12 @@ function usesLimiter(opts: ScaffoldOptions): boolean {
 
 /** Examples that keep tables in D1, bound as DB. */
 function usesD1(opts: ScaffoldOptions): boolean {
-  return hasExample(opts, 'crud') || hasExample(opts, 'publish') || opts.auth === 'email'
+  return (
+    hasExample(opts, 'crud') ||
+    hasExample(opts, 'publish') ||
+    hasExample(opts, 'webhooks') ||
+    opts.auth === 'email'
+  )
 }
 
 /** Examples on Cloudflare's Agents SDK: routed under /agents/*, calling Workers AI. */
@@ -1433,7 +1441,12 @@ function usesAgents(opts: ScaffoldOptions): boolean {
 }
 
 function usesRooms(opts: ScaffoldOptions): boolean {
-  return hasExample(opts, 'board') || hasExample(opts, 'notes') || hasExample(opts, 'import')
+  return (
+    hasExample(opts, 'board') ||
+    hasExample(opts, 'notes') ||
+    hasExample(opts, 'import') ||
+    hasExample(opts, 'webhooks')
+  )
 }
 
 /**
@@ -1461,8 +1474,9 @@ function cfApiTs(opts: ScaffoldOptions): string {
   const crud = hasExample(opts, 'crud')
   const live = hasExample(opts, 'live')
   const publish = hasExample(opts, 'publish')
-  return `import { defineApi, ${imports || files || usage || crud || live || publish ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
-${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}${live ? `import { ops, parseAccepted } from './ops'\n` : ''}${publish ? `import { parsePage, parsePageInput, parsePageSummary } from './pages'\n` : ''}
+  const webhooks = hasExample(opts, 'webhooks')
+  return `import { defineApi, ${imports || files || usage || crud || live || publish || webhooks ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
+${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}${live ? `import { ops, parseAccepted } from './ops'\n` : ''}${publish ? `import { parsePage, parsePageInput, parsePageSummary } from './pages'\n` : ''}${webhooks ? `import { parseDeliveries, parseTestResult } from './webhooks'\n` : ''}
 /**
  * The contract between the browser and the Worker. Both import this file: the Worker serves
  * it with \`createHandler\`, the app calls it with \`createClient\`, and a change that breaks
@@ -1545,6 +1559,18 @@ export const api = defineApi({
   getPage: endpoint({ method: 'GET', path: '/api/pages/:slug', output: parsePage }),`
       : ''
   }${
+    webhooks
+      ? `
+  // The last 50 webhook deliveries (they arrive at /api/webhooks/github, signed).
+  listDeliveries: endpoint({ method: 'GET', path: '/api/webhooks', output: parseDeliveries }),
+  // Signs a sample delivery with WEBHOOK_SECRET and runs it through the same path.
+  sendTestDelivery: endpoint({
+    method: 'POST',
+    path: '/api/webhook-test',
+    output: parseTestResult,
+  }),`
+      : ''
+  }${
     crud
       ? `
   // One page of customers for DataTable's query (sort, search, filters, page).
@@ -1584,6 +1610,7 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const live = hasExample(opts, 'live')
   const voice = hasExample(opts, 'voice')
   const publish = hasExample(opts, 'publish')
+  const webhooks = hasExample(opts, 'webhooks')
   const d1 = usesD1(opts)
   const ai = usesAgents(opts)
   const limiter = usesLimiter(opts)
@@ -1594,9 +1621,11 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
     ...(limiter ? ['clientIp', 'rateLimit'] : []),
   ]
   const custom = rooms || ai || files || exports || access || live || limiter
-  const isAsync = ai || files || exports || access || limiter
+  const isAsync = ai || files || exports || access || limiter || webhooks
+  // Rooms the server writes: never opened through /api/rooms/:name, where clients may write.
+  const serverRooms = [...(imports ? ['job-'] : []), ...(webhooks ? ['webhooks$'] : [])]
   return `${usage ? `import type { AnalyticsDataset } from '@cascivo/app/analytics'\n` : ''}${d1 ? `import type { Database } from '@cascivo/app/db'\n` : ''}${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler } from '@cascivo/app/api'
-${emailAuth ? `import { handleAuth, requireUser } from '@cascivo/app/auth-server'\n` : ''}${guards.length > 0 ? `import { ${[...guards, 'guardResponse'].sort().join(', ')} } from '@cascivo/app/guard'\n${limiter ? `import type { RateLimiter } from '@cascivo/app/guard'\n` : ''}` : ''}${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
+${emailAuth ? `import { handleAuth, requireUser } from '@cascivo/app/auth-server'\n` : ''}${guards.length > 0 || webhooks ? `import { ${[...guards, 'guardResponse'].sort().join(', ')} } from '@cascivo/app/guard'\n${limiter ? `import type { RateLimiter } from '@cascivo/app/guard'\n` : ''}` : ''}${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
     files
       ? `import { handleUploads, listUploads } from '@cascivo/app/uploads-server'
 import type { ImageResizer, UploadBucket } from '@cascivo/app/uploads-server'
@@ -1622,7 +1651,7 @@ import type { BrowserWorker } from '@cloudflare/puppeteer'
       : ''
   }${ai ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\n` : ''}${
+${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\n` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${
     rooms
       ? `
 // The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
@@ -1664,8 +1693,8 @@ export { ImportJob } from './import-job'
  * here; every handler receives them as \`env\`.
  */
 ${
-  rooms || ai || files || exports || usage || d1 || access || live || emailAuth
-    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${emailAuth ? '\n  EMAIL: SignInSender\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}
+  rooms || ai || files || exports || usage || d1 || access || live || emailAuth || webhooks
+    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth ? '\n  EMAIL: SignInSender\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -1761,6 +1790,12 @@ const handleApi = createHandler<typeof api, Env>(api, {
   getPage: ({ params, env }) => pageStore.getPage(env.DB, params.slug),`
       : ''
   }${
+    webhooks
+      ? `
+  listDeliveries: ({ env }) => webhookStore.listDeliveries(env.DB),
+  sendTestDelivery: ({ request, env }) => webhookStore.sendTestDelivery(request.url, env),`
+      : ''
+  }${
     live
       ? `
   // Each event is placed by the Worker's clock: a browser's is not trusted to say when.
@@ -1832,8 +1867,16 @@ ${
       exposeLink: import.meta.env.DEV,
     })(request)
     if (signIn) return signIn
-    // Every other API write needs a signed-in user; reads stay public.
-    if (request.method !== 'GET' && request.method !== 'HEAD') {
+    // Every other API write needs a signed-in user; reads stay public.${webhooks ? '\n    // Webhooks carry a signature instead of a session, and are checked by it.' : ''}
+    if (${
+      webhooks
+        ? `
+      request.method !== 'GET' &&
+      request.method !== 'HEAD' &&
+      !new URL(request.url).pathname.startsWith('/api/webhooks/')
+    `
+        : "request.method !== 'GET' && request.method !== 'HEAD'"
+    }) {
       try {
         await requireUser(env.DB, request)
       } catch (error) {
@@ -1871,10 +1914,36 @@ ${
     }`
           : ''
       }${
-        rooms
+        webhooks
           ? `
-    const room = /^\\/api\\/rooms\\/([^/]+)$/.exec(new URL(request.url).pathname)
+    const path = new URL(request.url).pathname
+    // Signed deliveries from GitHub (worker/webhooks.ts); a bad signature is a 401.
+    if (path === webhookStore.GITHUB_WEBHOOK_PATH && request.method === 'POST') {
+      try {
+        return await webhookStore.receiveGithub(request, env)
+      } catch (error) {
+        return guardResponse(error)
+      }
+    }
+    // New deliveries, pushed to the /webhooks page: it may watch, never write.
+    if (path === '/api/webhooks/live') {
+      return roomResponse(request, env.ROOMS, DELIVERIES_ROOM, { readOnly: true })
+    }`
+          : ''
+      }${
+        hasExample(opts, 'board') || hasExample(opts, 'notes')
+          ? `
+    const room = /^\\/api\\/rooms\\/([^/]+)$/.exec(new URL(request.url).pathname)${
+      serverRooms.length > 0
+        ? `
+    // Rooms only the server writes are watched read-only at their own routes, never opened
+    // here: ${[imports ? "a job's progress" : '', webhooks ? 'webhook deliveries' : ''].filter(Boolean).join(', ')}.
+    if (room && !/^(${serverRooms.join('|')})/.test(room[1]!)) {
+      return roomResponse(request, env.ROOMS, room[1]!)
+    }`
+        : `
     if (room) return roomResponse(request, env.ROOMS, room[1]!)`
+    }`
           : ''
       }${
         imports
@@ -2046,6 +2115,7 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
   if (hasExample(opts, 'live')) items.push({ label: 'Ops', href: '/ops' })
   if (hasExample(opts, 'voice')) items.push({ label: 'Voice', href: '/voice' })
   if (hasExample(opts, 'publish')) items.push({ label: 'Publish', href: '/publish' })
+  if (hasExample(opts, 'webhooks')) items.push({ label: 'Webhooks', href: '/webhooks' })
   if (opts.auth === 'email') items.push({ label: 'Account', href: '/account' })
   const navItems = items
     .map(
@@ -3680,6 +3750,287 @@ export default function Usage() {
           </Card>
         </>
       ) : null}
+    </Flex>
+  )
+}
+`
+}
+
+/* --- `--example webhooks`: signed deliveries, stored once, pushed live --- */
+
+function cfWebhooksTs(): string {
+  return `/**
+ * Webhook deliveries, shared by the Worker (which verifies and stores them) and the
+ * /webhooks page (which lists them as they arrive).
+ */
+export interface Delivery {
+  id: string
+  /** The sender's event name, e.g. GitHub's \`push\` or \`issues\`. */
+  event: string
+  /** One line about what happened, taken from the payload. */
+  summary: string
+  receivedAt: string
+}
+
+/** The live room the page watches; the Worker writes each new delivery to \`latest\` in it. */
+export const DELIVERIES_ROOM = 'webhooks'
+
+export function parseDelivery(raw: unknown): Delivery {
+  if (typeof raw === 'object' && raw !== null) {
+    const { id, event, summary, receivedAt } = raw as Record<string, unknown>
+    if (
+      typeof id === 'string' &&
+      typeof event === 'string' &&
+      typeof summary === 'string' &&
+      typeof receivedAt === 'string'
+    ) {
+      return { id, event, summary, receivedAt }
+    }
+  }
+  throw new Error('Malformed delivery')
+}
+
+export function parseDeliveries(raw: unknown): Delivery[] {
+  if (!Array.isArray(raw)) throw new Error('Expected a list of deliveries')
+  return raw.map(parseDelivery)
+}
+
+export function parseTestResult(raw: unknown): { status: number } {
+  if (typeof raw === 'object' && raw !== null) {
+    const { status } = raw as Record<string, unknown>
+    if (typeof status === 'number') return { status }
+  }
+  throw new Error('Malformed reply')
+}
+`
+}
+
+function cfWebhooksWorkerTs(): string {
+  return `import { migrate, queryRows } from '@cascivo/app/db'
+import type { Database } from '@cascivo/app/db'
+import { verifyWebhook } from '@cascivo/app/guard'
+import { writeRoom } from '@cascivo/app/sync-server'
+import type { RoomNamespace } from '@cascivo/app/sync-server'
+import { DELIVERIES_ROOM, parseDelivery } from '../src/webhooks'
+import type { Delivery } from '../src/webhooks'
+
+const migrations = [
+  {
+    id: '0001_webhook_deliveries',
+    statements: [
+      \`CREATE TABLE webhook_deliveries (
+        id TEXT PRIMARY KEY,
+        event TEXT NOT NULL,
+        summary TEXT NOT NULL,
+        received_at TEXT NOT NULL
+      )\`,
+    ],
+  },
+]
+
+/** Where GitHub posts; set it as the Payload URL of the repository's webhook. */
+export const GITHUB_WEBHOOK_PATH = '/api/webhooks/github'
+
+/** A field of an object, or \`undefined\` for anything else. */
+const field = (value: unknown, key: string): unknown =>
+  typeof value === 'object' && value !== null ? (value as Record<string, unknown>)[key] : undefined
+
+/**
+ * One line about a GitHub event. The payload is the sender's JSON, read field by field: a
+ * signature proves who sent it, not what shape it has.
+ */
+function summarize(event: string, payload: unknown): string {
+  const repo = field(field(payload, 'repository'), 'full_name')
+  const action = field(payload, 'action')
+  const where = typeof repo === 'string' ? repo : 'a repository'
+  return \`\${event}\${typeof action === 'string' ? \` \${action}\` : ''} in \${where}\`.slice(0, 200)
+}
+
+/**
+ * Verifies a GitHub delivery, stores it once (a retry has the same X-GitHub-Delivery id and is
+ * ignored), and pushes it to the /webhooks page. Answers 202 quickly, as GitHub expects.
+ */
+export async function receiveGithub(
+  request: Request,
+  env: { DB: Database; ROOMS: RoomNamespace<unknown>; WEBHOOK_SECRET: string },
+): Promise<Response> {
+  const { body, id } = await verifyWebhook(request, {
+    scheme: 'github',
+    secret: env.WEBHOOK_SECRET,
+  })
+  const event = request.headers.get('x-github-event') ?? 'unknown'
+  let payload: unknown
+  try {
+    payload = JSON.parse(body)
+  } catch {
+    return Response.json({ error: 'Expected a JSON payload' }, { status: 400 })
+  }
+  const delivery: Delivery = {
+    id: id ?? crypto.randomUUID(),
+    event: event.slice(0, 60),
+    summary: summarize(event, payload),
+    receivedAt: new Date().toISOString(),
+  }
+  await migrate(env.DB, migrations)
+  const stored = await queryRows(
+    env.DB,
+    \`INSERT INTO webhook_deliveries (id, event, summary, received_at) VALUES (?, ?, ?, ?)
+     ON CONFLICT (id) DO NOTHING RETURNING id\`,
+    [delivery.id, delivery.event, delivery.summary, delivery.receivedAt],
+    (row) => row,
+  )
+  // Only a first delivery reaches the page; a retry was stored already.
+  if (stored.length > 0) await writeRoom(env.ROOMS, DELIVERIES_ROOM, 'latest', { ...delivery })
+  return Response.json({ received: true }, { status: 202 })
+}
+
+export async function listDeliveries(db: Database): Promise<Delivery[]> {
+  await migrate(db, migrations)
+  return queryRows(
+    db,
+    \`SELECT id, event, summary, received_at AS receivedAt FROM webhook_deliveries
+     ORDER BY received_at DESC LIMIT 50\`,
+    [],
+    parseDelivery,
+  )
+}
+
+/** A signed test delivery, run through the same path GitHub's would take. */
+export async function sendTestDelivery(
+  origin: string,
+  env: { DB: Database; ROOMS: RoomNamespace<unknown>; WEBHOOK_SECRET: string },
+): Promise<{ status: number }> {
+  const body = JSON.stringify({ zen: 'Keep it logically awesome.', hook_id: 1 })
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(env.WEBHOOK_SECRET),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign'],
+  )
+  const mac = new Uint8Array(await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(body)))
+  const hex = Array.from(mac, (b) => b.toString(16).padStart(2, '0')).join('')
+  const response = await receiveGithub(
+    new Request(new URL(GITHUB_WEBHOOK_PATH, origin), {
+      method: 'POST',
+      headers: {
+        'x-github-event': 'ping',
+        'x-github-delivery': crypto.randomUUID(),
+        'x-hub-signature-256': \`sha256=\${hex}\`,
+      },
+      body,
+    }),
+    env,
+  )
+  return { status: response.status }
+}
+`
+}
+
+function cfWebhooksRouteTsx(): string {
+  return `import { createClient } from '@cascivo/app/api'
+import { connectRoom } from '@cascivo/app/sync'
+import {
+  Alert,
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  EmptyState,
+  Flex,
+  Heading,
+  Kbd,
+  Text,
+  computed,
+  signal,
+  useSignals,
+} from '@cascivo/react'
+import { api } from '../api'
+import { parseDelivery } from '../webhooks'
+import type { Delivery } from '../webhooks'
+
+const client = createClient(api)
+const stored = signal<Delivery[]>([])
+const failure = signal<string | null>(null)
+
+// The Worker writes each new delivery here; the browser may only watch.
+const room = connectRoom('/api/webhooks/live')
+const latest = room.signal<Delivery | null>('latest', null, (raw) =>
+  raw === null ? null : parseDelivery(raw),
+)
+/** Stored deliveries, with the newest pushed one on top when it is not in the list yet. */
+const deliveries = computed(() => {
+  const pushed = latest.value
+  return pushed && !stored.value.some((d) => d.id === pushed.id)
+    ? [pushed, ...stored.value]
+    : stored.value
+})
+
+async function load(): Promise<void> {
+  stored.value = await client.listDeliveries().catch(() => stored.peek())
+}
+void load()
+
+async function sendTest(): Promise<void> {
+  failure.value = null
+  try {
+    await client.sendTestDelivery()
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'The test delivery failed'
+  }
+}
+
+export default function Webhooks() {
+  useSignals()
+  const url = \`\${location.origin}/api/webhooks/github\`
+
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Webhooks</Heading>
+        <Text muted>
+          GitHub deliveries, checked against their signature, stored once each, and shown here as
+          they arrive.
+        </Text>
+      </Flex>
+      <Card>
+        <CardContent>
+          <Flex gap={2}>
+            <Text>
+              In the repository's settings, add a webhook with the payload URL <Kbd>{url}</Kbd>,
+              content type application/json, and the secret you set as WEBHOOK_SECRET.
+            </Text>
+            <Flex direction="horizontal">
+              <Button variant="secondary" onClick={() => void sendTest()}>
+                Send a test delivery
+              </Button>
+            </Flex>
+            {failure.value ? (
+              <Alert variant="destructive" title="Not delivered">
+                {failure.value}
+              </Alert>
+            ) : null}
+          </Flex>
+        </CardContent>
+      </Card>
+      {deliveries.value.length === 0 ? (
+        <EmptyState
+          title="No deliveries yet"
+          description="Send a test delivery, or push to the repository."
+        />
+      ) : (
+        <Flex gap={2} role="log" aria-label="Deliveries">
+          {deliveries.value.map((delivery) => (
+            <Flex key={delivery.id} direction="horizontal" align="center" gap={2} wrap>
+              <Badge variant="secondary">{delivery.event}</Badge>
+              <Text>{delivery.summary}</Text>
+              <Text size="sm" muted>
+                {new Date(delivery.receivedAt).toLocaleTimeString()}
+              </Text>
+            </Flex>
+          ))}
+        </Flex>
+      )}
     </Flex>
   )
 }
@@ -5442,6 +5793,29 @@ dataset, so in development the charts show what your deployed app recorded. Unti
 exist, the page says what to set.`
       : ''
   }${
+    hasExample(opts, 'webhooks')
+      ? `
+
+## Webhooks
+
+\`/webhooks\` lists GitHub webhook deliveries as they arrive. Point a repository's webhook at
+\`https://<your app>/api/webhooks/github\` (content type \`application/json\`) with a secret, and
+give the Worker the same secret:
+\`npx wrangler secret put WEBHOOK_SECRET\`. Locally it is in \`.dev.vars\`, and "Send a test
+delivery" signs one with it.
+
+- \`worker/webhooks.ts\` — \`verifyWebhook\` (\`@cascivo/app/guard\`) checks the
+  \`X-Hub-Signature-256\` HMAC over the raw body before anything is parsed, and refuses a bad
+  signature with a 401. Each delivery is stored in D1 under GitHub's delivery id, so a retry is ignored, and a
+  new one is written to a read-only room the page watches.
+- \`verifyWebhook\` also checks Stripe (\`scheme: 'stripe'\`) and Standard Webhooks
+  (\`'standard'\`: Svix, Clerk, Resend…), both with a five-minute timestamp window against
+  replays.
+
+The page answers within milliseconds, well inside GitHub's ten seconds. For slow work, send the
+delivery to a Queue from \`receiveGithub\` and answer at once.`
+      : ''
+  }${
     opts.auth === 'email'
       ? `
 
@@ -5667,6 +6041,9 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
           { file: 'p/[slug].tsx', contents: cfPageRouteTsx() },
         ]
       : []),
+    ...(hasExample(opts, 'webhooks')
+      ? [{ file: 'webhooks.tsx', contents: cfWebhooksRouteTsx() }]
+      : []),
     ...(opts.auth === 'email'
       ? [
           { file: 'account.tsx', contents: cfAccountRouteTsx() },
@@ -5723,6 +6100,14 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
         ]
       : []),
     ...(hasExample(opts, 'live') ? [{ path: 'src/ops.ts', contents: cfOpsTs() }] : []),
+    ...(hasExample(opts, 'webhooks')
+      ? [
+          { path: 'src/webhooks.ts', contents: cfWebhooksTs() },
+          { path: 'worker/webhooks.ts', contents: cfWebhooksWorkerTs() },
+          // Local only (.gitignore'd): the secret vite dev signs and checks test deliveries with.
+          { path: '.dev.vars', contents: 'WEBHOOK_SECRET=dev-only-webhook-secret\n' },
+        ]
+      : []),
     ...(opts.auth === 'email'
       ? [
           { path: 'src/auth.ts', contents: cfAuthTs() },
