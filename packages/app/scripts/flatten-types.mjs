@@ -20,6 +20,8 @@ const ENTRIES = [
   { name: 'sync', src: 'src/sync.ts' },
   { name: 'sync-server', src: 'src/sync-server.ts' },
   { name: 'flags', src: 'src/flags.ts' },
+  { name: 'jobs', src: 'src/jobs.ts' },
+  { name: 'jobs-server', src: 'src/jobs-server.ts' },
   { name: 'vite', src: 'src/vite.ts' },
 ]
 

@@ -2,7 +2,6 @@ import { createRequire } from 'node:module'
 import { argv } from 'node:process'
 import { pathToFileURL } from 'node:url'
 import { add } from './commands/add.js'
-import { create } from './commands/create.js'
 import { runDoctor } from './commands/doctor.js'
 import { generate } from './commands/generate.js'
 import { init } from './commands/init.js'
@@ -105,6 +104,7 @@ Options:
   --example <name>          board — a multiplayer page on a Durable Object (cloudflare only)
                             agent — an AI assistant that answers with UI (cloudflare, React)
                             notes — a local-first page that keeps edits offline (cloudflare)
+                            import — a CSV import on a Workflow, with live progress (cloudflare)
   --template <spec>         Start from a marketplace template (@ns/name or owner/repo/name)
   --theme <name>            Theme to install (${THEME_LIST})
   --sections "<a, b>"       Comma-separated nav section labels (one component each)
@@ -237,6 +237,8 @@ export async function run(args: string[]): Promise<void> {
 
   switch (command) {
     case 'create':
+      // Lazy, like the other commands: its scaffold templates are most of the CLI's size.
+      const { create } = await import('./commands/create.js')
       await create(rest)
       break
     case 'init':

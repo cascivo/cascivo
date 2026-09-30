@@ -35,7 +35,7 @@ This builds the app, then deploys it to a temporary Cloudflare account with
 
 It works only while wrangler is logged out. If you are logged in, use `deploy` instead.
 A temporary account supports Workers, static assets, KV, D1 and Durable Objects. It does not
-support Workers AI or R2.
+support Workers AI, R2 or Workflows.
 
 ## Structure
 

@@ -6598,8 +6598,54 @@
           }
         }
       },
+      "./jobs": {
+        "values": ["defineJob", "watchJob"],
+        "types": ["Job", "JobState", "JobStatus", "WatchedJob"],
+        "declarations": {
+          "defineJob": "declare function defineJob<O>(definition: { steps: readonly string[]; output: Parser<O>; }): Job<O>",
+          "Job": {
+            "(extends)": "<O>",
+            "readonly steps": "readonly string[]",
+            "readonly initial": "JobState<O>",
+            "parseState": "(raw: unknown): JobState<O>",
+            "roomName": "(id: string): string"
+          },
+          "JobState": {
+            "(extends)": "<O>",
+            "status": "JobStatus",
+            "step": "number",
+            "progress": "number | null",
+            "message": "string | null",
+            "output": "O | null",
+            "error": "string | null"
+          },
+          "JobStatus": "type = 'queued' | 'running' | 'done' | 'failed'",
+          "WatchedJob": {
+            "(extends)": "<O>",
+            "readonly state": "ReadonlySignal<JobState<O>>",
+            "readonly connection": "ReadonlySignal<RoomStatus>",
+            "close": "(): void"
+          },
+          "watchJob": "declare function watchJob<O>(job: Job<O>, url: string, options?: Pick<RoomOptions, 'WebSocket'>): WatchedJob<O>"
+        }
+      },
+      "./jobs-server": {
+        "values": ["jobReporter"],
+        "types": ["JobReporter"],
+        "declarations": {
+          "jobReporter": "declare function jobReporter<O, Id>(job: Job<O>, rooms: RoomNamespace<Id>, id: string): JobReporter<O>",
+          "JobReporter": {
+            "(extends)": "<O>",
+            "queued": "(): Promise<void>",
+            "step": "(index: number, message?: string): Promise<void>",
+            "progress": "(index: number, fraction: number, message?: string): Promise<void>",
+            "done": "(output: O): Promise<void>",
+            "fail": "(error: unknown, step?: number): Promise<void>"
+          }
+        }
+      },
       "./sync-server": {
-        "values": ["SyncRoom", "roomResponse"],
+        "values": ["SyncRoom", "roomResponse", "writeRoom"],
         "types": ["HibernatableWebSocket", "RoomNamespace", "RoomWrite", "SyncRoomState"],
         "declarations": {
           "HibernatableWebSocket": {
@@ -6613,7 +6659,7 @@
             "idFromName": "(name: string): Id",
             "get": "(id: Id): { fetch(request: Request): Promise<Response>; }"
           },
-          "roomResponse": "declare function roomResponse<Id>(request: Request, namespace: RoomNamespace<Id>, name: string): Promise<Response> | Response",
+          "roomResponse": "declare function roomResponse<Id>(request: Request, namespace: RoomNamespace<Id>, name: string, options?: { readOnly?: boolean; }): Promise<Response> | Response",
           "RoomWrite": {
             "room": "string | null",
             "path": "string",
@@ -6624,8 +6670,11 @@
             "constructor": "(ctx: SyncRoomState, _env?: unknown)",
             "protected onWrite(_write: RoomWrite): void | Promise<void>": "",
             "fetch": "(request: Request): Promise<Response>",
-            "accept": "(socket: HibernatableWebSocket): Promise<void>",
+            "accept": "(socket: HibernatableWebSocket, options?: { readOnly?: boolean; }): Promise<void>",
             "webSocketMessage": "(socket: HibernatableWebSocket, raw: string | ArrayBuffer): Promise<void>",
+            "private store": "",
+            "private serverWrites": "",
+            "private serverWrite": "",
             "webSocketClose": "(socket: HibernatableWebSocket): Promise<void>",
             "webSocketError": "(socket: HibernatableWebSocket): Promise<void>",
             "private broadcast": "",
@@ -6636,7 +6685,8 @@
             "acceptWebSocket": "(socket: HibernatableWebSocket): void",
             "getWebSockets": "(): HibernatableWebSocket[]",
             "storage": "{ get<T = unknown>(key: string): Promise<T | undefined>; put(key: string, value: unknown): Promise<void>; delete(key: string): Promise<boolean>; list<T = unknown>(options: { prefix: string; }): Promise<Map<string, T>>; }"
-          }
+          },
+          "writeRoom": "declare function writeRoom<Id>(namespace: RoomNamespace<Id>, name: string, path: string, value: Json): Promise<void>"
         }
       },
       "./vite": {

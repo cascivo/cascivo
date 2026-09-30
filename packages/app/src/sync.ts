@@ -248,6 +248,8 @@ export function connectRoom(url: string, options: RoomOptions = {}): Room {
       }
       case 'error':
         console.warn(`[cascivo/sync] ${url}: ${message.message}`)
+        // A refused write never comes back: stop showing it, and stop resending it.
+        if (message.id !== undefined && pending.delete(message.id)) changed()
         break
     }
   }

@@ -10,6 +10,8 @@ export default defineConfig({
         sync: './src/sync.ts',
         'sync-server': './src/sync-server.ts',
         flags: './src/flags.ts',
+        jobs: './src/jobs.ts',
+        'jobs-server': './src/jobs-server.ts',
         vite: './src/vite.ts',
       },
       formats: ['es'],
@@ -28,7 +30,8 @@ export default defineConfig({
         minify: MINIFY,
         // The bundler drops per-module directives. Only the router entry renders React, so
         // only it is a client module; `api` and `sync-server` run in Workers, `sync` holds
-        // no components, `flags` runs on both sides, and `vite` runs in Node (see packages/core/vite.config.ts).
+        // no components, `flags` runs on both sides, `jobs` watches from the browser and
+        // `jobs-server` reports from the Worker, and `vite` runs in Node (see packages/core/vite.config.ts).
         banner: (chunk: { name?: string; isEntry?: boolean }) =>
           chunk.isEntry && chunk.name === 'index' ? "'use client';" : '',
       },

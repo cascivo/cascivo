@@ -1,9 +1,11 @@
 import { memoryDriver } from '@cascivo/core'
 import type { StorageDriver } from '@cascivo/core'
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { defineJob, watchJob } from './jobs'
+import { jobReporter } from './jobs-server'
 import { connectRoom, parseSnapshot } from './sync'
 import type { Room } from './sync'
-import { roomResponse, SyncRoom } from './sync-server'
+import { roomResponse, SyncRoom, writeRoom } from './sync-server'
 import type { HibernatableWebSocket, RoomWrite, SyncRoomState } from './sync-server'
 
 /** An in-memory Durable Object host: one SyncRoom, real storage semantics, async delivery. */
@@ -51,9 +53,10 @@ function createHub(make: (ctx: SyncRoomState) => SyncRoom = (ctx) => new SyncRoo
     constructor(_url: string) {
       clients.push(this)
       this.server = new ServerSocket(this)
+      const readOnly = hub.readOnly
       serially(async () => {
         this.readyState = 1
-        await room.accept(this.server)
+        await room.accept(this.server, { readOnly })
       })
     }
     addEventListener(type: string, listener: (event: unknown) => void) {
@@ -77,12 +80,27 @@ function createHub(make: (ctx: SyncRoomState) => SyncRoom = (ctx) => new SyncRoo
     }
   }
 
-  return {
+  const hub = {
     room,
     storage,
     clients,
+    /** Whether the next socket to join is read-only, as `roomResponse(…, { readOnly })` makes it. */
+    readOnly: false,
     FakeClient: FakeClient as unknown as new (url: string) => WebSocket,
+    /** A Durable Object namespace with this one room behind every name. */
+    namespace: {
+      idFromName: (name: string) => name,
+      get: () => ({
+        fetch: (request: Request) => {
+          let response!: Response
+          return serially(async () => {
+            response = await room.fetch(request)
+          }).then(() => response)
+        },
+      }),
+    },
   }
+  return hub
 }
 
 const settle = async () => {
@@ -461,5 +479,145 @@ describe('SyncRoom.onWrite', () => {
     ])
     expect(b.signal('boom', '', parseString).value).toBe('x')
     expect(error).toHaveBeenCalledOnce()
+  })
+})
+
+describe('writeRoom and read-only rooms', () => {
+  it('delivers a write from the Worker to everyone in the room', async () => {
+    const hub = createHub()
+    const room = join(hub)
+    await settle()
+    await writeRoom(hub.namespace, 'demo', 'title', 'From the server')
+    await settle()
+    expect(room.signal('title', '', parseString).value).toBe('From the server')
+    expect(hub.storage.get('v:title')).toBe('From the server')
+  })
+
+  it('checks a server write like any other', async () => {
+    const hub = createHub()
+    await expect(writeRoom(hub.namespace, 'demo', '../x', 1)).rejects.toThrow(/Invalid room path/)
+    await expect(writeRoom(hub.namespace, 'bad name!', 'x', 1)).rejects.toThrow(/room name/)
+    const response = await hub.room.fetch(
+      new Request('https://room.internal/write', {
+        method: 'POST',
+        headers: { 'x-cascivo-room-write': '1' },
+        body: JSON.stringify({ path: 'x' }),
+      }),
+    )
+    expect(response.status).toBe(400)
+  })
+
+  it('refuses writes from a read-only socket but still sends it every change', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const hub = createHub()
+    hub.readOnly = true
+    const watcher = join(hub)
+    await settle()
+    watcher.signal('title', '', parseString).set('forged')
+    await settle()
+    expect(hub.storage.has('v:title')).toBe(false)
+    expect(warn.mock.calls.join(' ')).toContain('read-only')
+    // The refused write is dropped on the client too, so it is not resent or shown.
+    expect(watcher.unsynced.value).toBe(0)
+    expect(watcher.signal('title', '', parseString).value).toBe('')
+    await writeRoom(hub.namespace, 'demo', 'title', 'real')
+    await settle()
+    expect(watcher.signal('title', '', parseString).value).toBe('real')
+  })
+
+  it('roomResponse marks a read-only connection and strips a forged marker', async () => {
+    const seen: Headers[] = []
+    const ns = {
+      idFromName: (name: string) => name,
+      get: () => ({
+        fetch: async (request: Request) => {
+          seen.push(request.headers)
+          return new Response(null, { status: 204 })
+        },
+      }),
+    }
+    const upgrade = (extra: Record<string, string> = {}) =>
+      new Request('http://x/api/jobs/1', { headers: { upgrade: 'websocket', ...extra } })
+    await roomResponse(upgrade({ 'x-cascivo-room-write': '1' }), ns, 'job-1', { readOnly: true })
+    await roomResponse(upgrade({ 'x-cascivo-room-read-only': '1' }), ns, 'room-1')
+    expect(seen[0]!.get('x-cascivo-room-read-only')).toBe('1')
+    expect(seen[0]!.get('x-cascivo-room-write')).toBeNull()
+    expect(seen[1]!.get('x-cascivo-room-read-only')).toBeNull()
+  })
+})
+
+describe('jobs', () => {
+  const parseSummary = (raw: unknown): { imported: number } => {
+    if (
+      typeof raw === 'object' &&
+      raw !== null &&
+      'imported' in raw &&
+      typeof raw.imported === 'number'
+    ) {
+      return { imported: raw.imported }
+    }
+    throw new Error('not a summary')
+  }
+  const importJob = defineJob({ steps: ['Read', 'Check', 'Import'], output: parseSummary })
+
+  it('streams a job from queued to done to everyone watching', async () => {
+    const hub = createHub()
+    const job = watchJob(importJob, 'ws://test/job', { WebSocket: hub.FakeClient })
+    await settle()
+    expect(job.state.value).toEqual(importJob.initial)
+
+    const report = jobReporter(importJob, hub.namespace, 'abc')
+    await report.step(1, 'Checking rows')
+    await settle()
+    expect(job.state.value).toMatchObject({ status: 'running', step: 1, message: 'Checking rows' })
+
+    await report.progress(2, 0.5, 'Imported 5 of 10')
+    await settle()
+    expect(job.state.value).toMatchObject({ step: 2, progress: 0.5 })
+
+    await report.done({ imported: 10 })
+    await settle()
+    expect(job.state.value).toMatchObject({ status: 'done', step: 2, output: { imported: 10 } })
+
+    // Someone opening the job later sees where it is.
+    const late = watchJob(importJob, 'ws://test/job', { WebSocket: hub.FakeClient })
+    await settle()
+    expect(late.state.value.status).toBe('done')
+    job.close()
+    late.close()
+  })
+
+  it('reports a failure at the step it happened', async () => {
+    const hub = createHub()
+    const job = watchJob(importJob, 'ws://test/job', { WebSocket: hub.FakeClient })
+    const report = jobReporter(importJob, hub.namespace, 'abc')
+    await report.step(1)
+    await report.fail(new Error('Row 3 has no email'))
+    await settle()
+    expect(job.state.value).toMatchObject({
+      status: 'failed',
+      step: 1,
+      error: 'Row 3 has no email',
+    })
+    job.close()
+  })
+
+  it('ignores a state whose output fails the parser', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const hub = createHub()
+    const job = watchJob(importJob, 'ws://test/job', { WebSocket: hub.FakeClient })
+    await jobReporter(importJob, hub.namespace, 'abc').step(2)
+    await writeRoom(hub.namespace, 'demo', 'state', { status: 'done', step: 2, output: 'lies' })
+    await settle()
+    // The forged "done" never shows: the state falls back to the job's initial state.
+    expect(job.state.value).toEqual(importJob.initial)
+    job.close()
+  })
+
+  it('refuses a step out of range and a job id that cannot be a room', () => {
+    const hub = createHub()
+    expect(() => jobReporter(importJob, hub.namespace, 'abc').step(3)).toThrow(/out of range/)
+    expect(() => importJob.roomName('../x')).toThrow(/Job ids/)
+    expect(() => defineJob({ steps: [], output: parseSummary })).toThrow(/at least one step/)
   })
 })

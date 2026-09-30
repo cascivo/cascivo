@@ -199,7 +199,13 @@ export const notesHandler = createHandler(notesApi, { note: ({ params }) => para
 export const routesPlugin = cascivoRoutes()
 export const routesSource: string = generateRoutes(['index.tsx'], './routes')
 import { connectRoom } from '@cascivo/app/sync'
-import { roomResponse, SyncRoom, type RoomNamespace, type RoomWrite } from '@cascivo/app/sync-server'
+import {
+  roomResponse,
+  SyncRoom,
+  writeRoom,
+  type RoomNamespace,
+  type RoomWrite,
+} from '@cascivo/app/sync-server'
 import { localStorageDriver } from '@cascivo/storage'
 export const sharedRoom = connectRoom('/api/rooms/demo')
 export const sharedTitle = sharedRoom.signal('title', '', (raw) => String(raw))
@@ -213,6 +219,14 @@ export class MirroredRoom extends SyncRoom {
 }
 export const localRoom = connectRoom('/api/rooms/local', { storage: localStorageDriver() })
 export const waiting: number = localRoom.unsynced.value
+import { defineJob, watchJob, type JobState } from '@cascivo/app/jobs'
+import { jobReporter } from '@cascivo/app/jobs-server'
+export const countJob = defineJob({ steps: ['Count'], output: (raw) => Number(raw) })
+export const watchedCount: JobState<number> = watchJob(countJob, '/api/jobs/1').state.value
+export const reportCount = (ns: RoomNamespace<string>) => jobReporter(countJob, ns, '1').done(3)
+export const writeTitle = (ns: RoomNamespace<string>) => writeRoom(ns, 'demo', 'title', 'Hi')
+export const watchOnly = (request: Request, ns: RoomNamespace<string>) =>
+  roomResponse(request, ns, 'job-1', { readOnly: true })
 import {
   applyThemeOverride,
   defineFlags,

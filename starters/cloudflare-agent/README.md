@@ -35,7 +35,7 @@ This builds the app, then deploys it to a temporary Cloudflare account with
 
 It works only while wrangler is logged out. If you are logged in, use `deploy` instead.
 A temporary account supports Workers, static assets, KV, D1 and Durable Objects. It does not
-support Workers AI or R2. So a preview serves the app, but its assistant cannot reach the model: deploy it
+support Workers AI, R2 or Workflows. So a preview serves the app, but its assistant cannot reach the model: deploy it
 to your own account for that.
 
 ## Structure

@@ -55,9 +55,9 @@ export type Runtime = 'preact' | 'react'
 export const RUNTIMES = ['preact', 'react'] as const
 
 /** Optional demo pages for `--framework cloudflare`. */
-export type Example = 'board' | 'agent' | 'notes'
+export type Example = 'board' | 'agent' | 'notes' | 'import'
 
-export const EXAMPLES = ['board', 'agent', 'notes'] as const
+export const EXAMPLES = ['board', 'agent', 'notes', 'import'] as const
 
 function isExample(value: string): value is Example {
   return (EXAMPLES as readonly string[]).includes(value)
@@ -1036,6 +1036,7 @@ const COMPATIBILITY_DATE = '2026-09-01'
 function cfPackageJson(opts: ScaffoldOptions): string {
   const pm = opts.pm ?? 'npm'
   const agent = hasExample(opts, 'agent')
+  const workerTypes = needsWorkerTypes(opts)
   const preact = runtimeOf(opts) === 'preact'
   const pkg = {
     name: packageName(opts.name),
@@ -1044,12 +1045,14 @@ function cfPackageJson(opts: ScaffoldOptions): string {
     type: 'module',
     scripts: {
       dev: 'vite',
-      build: agent ? 'tsc && tsc -p tsconfig.worker.json && vite build' : 'tsc && vite build',
+      build: workerTypes ? 'tsc && tsc -p tsconfig.worker.json && vite build' : 'tsc && vite build',
       preview: 'vite preview',
       deploy: `${runScriptCommand(pm, 'build')} && wrangler deploy`,
       // No account: a temporary one, live for 60 minutes unless claimed (see README).
       'deploy:preview': `${runScriptCommand(pm, 'build')} && wrangler deploy --temporary`,
-      typecheck: agent ? 'tsc --noEmit && tsc --noEmit -p tsconfig.worker.json' : 'tsc --noEmit',
+      typecheck: workerTypes
+        ? 'tsc --noEmit && tsc --noEmit -p tsconfig.worker.json'
+        : 'tsc --noEmit',
       lint: 'eslint .',
       format: 'prettier --write .',
       'format:check': 'prettier --check .',
@@ -1082,9 +1085,9 @@ function cfPackageJson(opts: ScaffoldOptions): string {
     devDependencies: {
       '@cascivo/eslint-config': V['@cascivo/eslint-config']!,
       '@cloudflare/vite-plugin': '^1.62.0',
-      // Types for worker/ (tsconfig.worker.json): the Agents SDK extends the runtime's
-      // DurableObject, which only these declare. Kept out of the app's DOM-typed tsconfig.
-      ...(agent ? { '@cloudflare/workers-types': '^5.0.0' } : {}),
+      // Types for worker/ (tsconfig.worker.json): the Agents SDK and Workflows extend runtime
+      // classes only these declare. Kept out of the app's DOM-typed tsconfig.
+      ...(workerTypes ? { '@cloudflare/workers-types': '^5.0.0' } : {}),
       '@eslint/js': '^9.0.0',
       // The source is typed against React even when Preact runs it (see vite.config.ts), so
       // React's types are always installed. Under Preact, `react`/`react-dom` are dev-only:
@@ -1114,10 +1117,10 @@ function cfPackageJson(opts: ScaffoldOptions): string {
 function cfTsconfig(opts: ScaffoldOptions): string {
   const cfg = JSON.parse(tsconfig()) as { include: string[] }
   // `worker/` is type-checked with the app: it imports `src/api.ts`, and a contract change
-  // should fail `tsc` on whichever side was not updated. With the agent example the Worker
-  // needs Cloudflare's runtime types, which clash with the DOM's, so it gets its own config
+  // should fail `tsc` on whichever side was not updated. When the Worker needs Cloudflare's
+  // runtime types (see needsWorkerTypes), which clash with the DOM's, it gets its own config
   // (tsconfig.worker.json) and both run in `typecheck`.
-  cfg.include = hasExample(opts, 'agent') ? ['src'] : ['src', 'worker']
+  cfg.include = needsWorkerTypes(opts) ? ['src'] : ['src', 'worker']
   return formatJson(cfg)
 }
 
@@ -1230,6 +1233,12 @@ ${jsoncArray(
 ${jsoncArray('  ', 'migrations', [`{ "tag": "v1", "new_sqlite_classes": [${objects.map((o) => `"${o.className}"`).join(', ')}] }`])}`
       : ''
   }${
+    hasExample(opts, 'import')
+      ? `
+  // The CSV import runs as a Workflow (worker/import-job.ts); its progress is a room.
+  "workflows": [{ "name": "import-job", "binding": "IMPORT_JOB", "class_name": "ImportJob" }],`
+      : ''
+  }${
     agent
       ? `
   // Workers AI, which the assistant calls; the Agents SDK needs Node.js APIs.
@@ -1247,9 +1256,21 @@ function hasExample(opts: ScaffoldOptions, example: Example): boolean {
   return opts.examples?.includes(example) ?? false
 }
 
-/** The board and the notes both live in `SyncRoom`s, routed at /api/rooms/:name. */
+/**
+ * Examples that live in `SyncRoom`s: the board and the notes (at /api/rooms/:name), and the
+ * import's job progress (a read-only room at /api/jobs/:id).
+ */
 function usesRooms(opts: ScaffoldOptions): boolean {
-  return hasExample(opts, 'board') || hasExample(opts, 'notes')
+  return hasExample(opts, 'board') || hasExample(opts, 'notes') || hasExample(opts, 'import')
+}
+
+/**
+ * Worker code that extends a runtime class (the Agents SDK's Durable Object, a Workflow)
+ * needs Cloudflare's runtime types, which clash with the DOM's: those apps type-check
+ * worker/ on its own (tsconfig.worker.json).
+ */
+function needsWorkerTypes(opts: ScaffoldOptions): boolean {
+  return hasExample(opts, 'agent') || hasExample(opts, 'import')
 }
 
 /**
@@ -1261,9 +1282,10 @@ function runtimeOf(opts: ScaffoldOptions): Runtime {
   return opts.runtime ?? (hasExample(opts, 'agent') ? 'react' : 'preact')
 }
 
-function cfApiTs(): string {
-  return `import { defineApi, stream } from '@cascivo/app/api'
-
+function cfApiTs(opts: ScaffoldOptions): string {
+  const imports = hasExample(opts, 'import')
+  return `import { defineApi, ${imports ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
+${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}
 /**
  * The contract between the browser and the Worker. Both import this file: the Worker serves
  * it with \`createHandler\`, the app calls it with \`createClient\`, and a change that breaks
@@ -1292,7 +1314,18 @@ export function parseTick(raw: unknown): Tick {
 }
 
 export const api = defineApi({
-  ticks: stream({ method: 'GET', path: '/api/ticks', event: parseTick }),
+  ticks: stream({ method: 'GET', path: '/api/ticks', event: parseTick }),${
+    imports
+      ? `
+  // Starts a CSV import; returns the job id to watch (src/import-page.ts).
+  startImport: endpoint({
+    method: 'POST',
+    path: '/api/import',
+    input: parseImportRequest,
+    output: parseStarted,
+  }),`
+      : ''
+  }
 })
 `
 }
@@ -1300,28 +1333,36 @@ export const api = defineApi({
 function cfWorkerTs(opts: ScaffoldOptions): string {
   const rooms = usesRooms(opts)
   const agent = hasExample(opts, 'agent')
+  const imports = hasExample(opts, 'import')
   return `import { createHandler } from '@cascivo/app/api'
-${
-  rooms
-    ? `import { roomResponse } from '@cascivo/app/sync-server'
+${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
+    rooms
+      ? `import { roomResponse } from '@cascivo/app/sync-server'
 import type { RoomNamespace } from '@cascivo/app/sync-server'
 `
-    : ''
-}${agent ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
+      : ''
+  }${agent ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-${
-  rooms
-    ? `
+${imports ? `import { importJob } from '../src/import-job'\n` : ''}${
+    rooms
+      ? `
 // The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
 // exported from the Worker's main module.
 export { SyncRoom } from '@cascivo/app/sync-server'
 `
-    : ''
-}${
+      : ''
+  }${
     agent
       ? `
 // The Durable Object behind /assistant: one per conversation (worker/assistant.ts).
 export { Assistant } from './assistant'
+`
+      : ''
+  }${
+    imports
+      ? `
+// The Workflow behind /import (worker/import-job.ts), bound as IMPORT_JOB.
+export { ImportJob } from './import-job'
 `
       : ''
   }
@@ -1331,7 +1372,7 @@ export { Assistant } from './assistant'
  */
 ${
   rooms || agent
-    ? `export interface Env {${agent ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}
+    ? `export interface Env {${agent ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -1351,7 +1392,19 @@ const handleApi = createHandler<typeof api, Env>(api, {
       yield tick
       await sleep(1000)
     }
-  },
+  },${
+    imports
+      ? `
+  // The job's room exists (as "queued") before the Workflow starts, so the page has
+  // something to show at once.
+  startImport: async ({ body, env }) => {
+    const id = crypto.randomUUID()
+    await jobReporter(importJob, env.ROOMS, id).queued()
+    await env.IMPORT_JOB.create({ id, params: { csv: body.csv } })
+    return { id }
+  },`
+      : ''
+  }
 })
 
 // wrangler.jsonc routes only ${agent ? '/api/* and /agents/*' : '/api/*'} here; everything else is a static asset or index.html.
@@ -1370,6 +1423,15 @@ ${
           ? `
     const room = /^\\/api\\/rooms\\/([^/]+)$/.exec(new URL(request.url).pathname)
     if (room) return roomResponse(request, env.ROOMS, room[1]!)`
+          : ''
+      }${
+        imports
+          ? `
+    // A job's progress: the browser may watch its room, never write to it.
+    const job = /^\\/api\\/jobs\\/([\\w-]{1,60})$/.exec(new URL(request.url).pathname)
+    if (job) {
+      return roomResponse(request, env.ROOMS, importJob.roomName(job[1]!), { readOnly: true })
+    }`
           : ''
       }
     return handleApi(request, env)
@@ -1511,6 +1573,7 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
   if (hasExample(opts, 'agent')) items.push({ label: 'Assistant', href: '/assistant' })
   if (hasExample(opts, 'board')) items.push({ label: 'Board', href: '/board' })
   if (hasExample(opts, 'notes')) items.push({ label: 'Notes', href: '/notes' })
+  if (hasExample(opts, 'import')) items.push({ label: 'Import', href: '/import' })
   const navItems = items
     .map(
       (item) => `    {
@@ -2348,6 +2411,318 @@ export default function Notes() {
 `
 }
 
+/* --- `--example import`: a Workflow whose progress streams through @cascivo/app/jobs --- */
+
+function cfImportJobTs(): string {
+  return `import { defineJob } from '@cascivo/app/jobs'
+
+/**
+ * The CSV import job, shared by the Worker (which runs it) and the page (which watches it).
+ * Its output crosses the network, so it is parsed on the way in, never cast.
+ */
+
+/** Largest CSV the Worker accepts. A Workflow's params are limited in size, too. */
+export const MAX_CSV_LENGTH = 200_000
+
+export interface Rejected {
+  /** 1-based line in the CSV. */
+  line: number
+  reason: string
+}
+
+export interface ImportSummary {
+  imported: number
+  rejected: Rejected[]
+}
+
+export function parseImportSummary(raw: unknown): ImportSummary {
+  if (typeof raw === 'object' && raw !== null) {
+    const { imported, rejected } = raw as Record<string, unknown>
+    if (typeof imported === 'number' && Array.isArray(rejected)) {
+      return {
+        imported,
+        rejected: rejected.map((r: unknown) => {
+          if (typeof r === 'object' && r !== null) {
+            const { line, reason } = r as Record<string, unknown>
+            if (typeof line === 'number' && typeof reason === 'string') return { line, reason }
+          }
+          throw new Error('Malformed rejected row')
+        }),
+      }
+    }
+  }
+  throw new Error('Malformed import summary')
+}
+
+export const importJob = defineJob({
+  steps: ['Read', 'Check', 'Import'],
+  output: parseImportSummary,
+})
+
+export function parseImportRequest(raw: unknown): { csv: string } {
+  if (typeof raw === 'object' && raw !== null) {
+    const { csv } = raw as Record<string, unknown>
+    if (typeof csv === 'string' && csv.length > 0 && csv.length <= MAX_CSV_LENGTH) return { csv }
+  }
+  throw new Error(\`Send { csv } with 1 to \${MAX_CSV_LENGTH} characters\`)
+}
+
+export function parseStarted(raw: unknown): { id: string } {
+  if (typeof raw === 'object' && raw !== null) {
+    const { id } = raw as Record<string, unknown>
+    if (typeof id === 'string' && /^[\\w-]{1,60}$/.test(id)) return { id }
+  }
+  throw new Error('Malformed job id')
+}
+`
+}
+
+function cfImportPageTs(): string {
+  return `import { createClient } from '@cascivo/app/api'
+import { watchJob } from '@cascivo/app/jobs'
+import type { WatchedJob } from '@cascivo/app/jobs'
+import { signal } from '@cascivo/react'
+import { api } from './api'
+import { importJob } from './import-job'
+import type { ImportSummary } from './import-job'
+
+const client = createClient(api)
+
+/** The job this page shows. Kept in the URL (\`?job=\`), so a reload picks it back up. */
+export const current = signal<WatchedJob<ImportSummary> | null>(null)
+export const starting = signal(false)
+export const startError = signal<string | null>(null)
+
+function watch(id: string): void {
+  current.value?.close()
+  current.value = watchJob(importJob, \`/api/jobs/\${id}\`)
+}
+
+const fromUrl = new URLSearchParams(location.search).get('job')
+if (fromUrl && /^[\\w-]{1,60}$/.test(fromUrl)) watch(fromUrl)
+
+export async function startImport(csv: string): Promise<void> {
+  starting.value = true
+  startError.value = null
+  try {
+    const { id } = await client.startImport({ body: { csv } })
+    history.replaceState(null, '', \`/import?job=\${id}\`)
+    watch(id)
+  } catch (error) {
+    startError.value = error instanceof Error ? error.message : 'The import could not start'
+  } finally {
+    starting.value = false
+  }
+}
+`
+}
+
+function cfImportWorkflowTs(): string {
+  return `import { jobReporter } from '@cascivo/app/jobs-server'
+import { WorkflowEntrypoint } from 'cloudflare:workers'
+import type { WorkflowEvent, WorkflowStep } from 'cloudflare:workers'
+import { importJob } from '../src/import-job'
+import type { ImportSummary, Rejected } from '../src/import-job'
+import type { Env } from './index'
+
+interface Contact {
+  line: number
+  name: string
+  email: string
+}
+
+const EMAIL = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/
+const CHUNK = 25
+
+/** \`name,email\` per line, after a header line. Quoted fields are not supported. */
+function readCsv(csv: string): Contact[] {
+  const lines = csv.split(/\\r?\\n/)
+  const rows: Contact[] = []
+  lines.forEach((text, i) => {
+    if (i === 0 || text.trim() === '') return
+    const [name = '', email = ''] = text.split(',').map((cell) => cell.trim())
+    rows.push({ line: i + 1, name, email })
+  })
+  return rows
+}
+
+function checkRows(rows: Contact[]): { valid: Contact[]; rejected: Rejected[] } {
+  const valid: Contact[] = []
+  const rejected: Rejected[] = []
+  for (const row of rows) {
+    if (!row.name) rejected.push({ line: row.line, reason: 'No name' })
+    else if (!EMAIL.test(row.email))
+      rejected.push({ line: row.line, reason: 'Not an email address' })
+    else valid.push(row)
+  }
+  return { valid, rejected }
+}
+
+/**
+ * Write the contacts where they belong (D1, an API…). Here it only waits, so the progress
+ * is visible; each chunk is its own step, so a failure retries that chunk alone.
+ */
+async function importContacts(contacts: Contact[]): Promise<void> {
+  console.log(\`import: \${contacts.length} contacts\`)
+  await new Promise((resolve) => setTimeout(resolve, 400))
+}
+
+/**
+ * The import, as a Workflow: each step is retried on failure and its result is kept, so a
+ * crash or a deploy resumes the job where it was. Progress goes to the job's room, where the
+ * page watches it (\`watchJob\`). Every report is made inside a step: a Workflow replays
+ * \`run()\` from the top after each step, and a report outside one would run again.
+ */
+export class ImportJob extends WorkflowEntrypoint<Env, { csv: string }> {
+  override async run(event: WorkflowEvent<{ csv: string }>, step: WorkflowStep) {
+    const report = jobReporter(importJob, this.env.ROOMS, event.instanceId)
+    let at = 0
+    try {
+      const rows = await step.do('read', async () => {
+        await report.step(0, 'Reading the file')
+        return readCsv(event.payload.csv)
+      })
+      at = 1
+      const checked = await step.do('check', async () => {
+        await report.step(1, \`Checking \${rows.length} rows\`)
+        return checkRows(rows)
+      })
+      at = 2
+      const total = checked.valid.length
+      for (let start = 0; start < total; start += CHUNK) {
+        await step.do(\`import \${start}\`, async () => {
+          await report.progress(2, start / total, \`Imported \${start} of \${total}\`)
+          await importContacts(checked.valid.slice(start, start + CHUNK))
+        })
+      }
+      const summary: ImportSummary = { imported: total, rejected: checked.rejected }
+      await step.do('done', () => report.done(summary))
+      return summary
+    } catch (error) {
+      await report.fail(error, at)
+      throw error
+    }
+  }
+}
+`
+}
+
+function cfImportRouteTsx(): string {
+  return `import type { Step } from '@cascivo/react'
+import {
+  Alert,
+  Button,
+  Card,
+  CardContent,
+  Flex,
+  Heading,
+  ProgressBar,
+  Steps,
+  Text,
+  Textarea,
+  useSignals,
+  useSignalState,
+} from '@cascivo/react'
+import { importJob } from '../import-job'
+import type { JobState } from '@cascivo/app/jobs'
+import type { ImportSummary } from '../import-job'
+import { current, startError, startImport, starting } from '../import-page'
+
+const SAMPLE = [
+  'name,email',
+  ...Array.from({ length: 120 }, (_, i) => \`Person \${i + 1},person\${i + 1}@example.com\`),
+  'No Email,',
+  ',nameless@example.com',
+].join('\\n')
+
+/** One Steps entry per job step, from where the job is. */
+function stepsOf(state: JobState<ImportSummary>): Step[] {
+  return importJob.steps.map((label, i) => ({
+    id: label,
+    label,
+    state:
+      state.status === 'done' || i < state.step
+        ? 'complete'
+        : i > state.step || state.status === 'queued'
+          ? 'pending'
+          : state.status === 'failed'
+            ? 'error'
+            : 'active',
+  }))
+}
+
+function JobView() {
+  useSignals()
+  const job = current.value
+  if (!job) return null
+  const state = job.state.value
+  return (
+    <Card>
+      <CardContent>
+        <Flex gap={3}>
+          <Steps steps={stepsOf(state)} activeStep={state.step} ariaLabel="Import progress" />
+          {state.status === 'running' && state.progress !== null ? (
+            <ProgressBar
+              value={Math.round(state.progress * 100)}
+              label={state.message ?? 'Importing'}
+            />
+          ) : (
+            <Text muted>
+              {state.status === 'queued' ? 'Waiting to start…' : (state.message ?? '')}
+            </Text>
+          )}
+          {state.status === 'done' && state.output ? (
+            <Alert variant="success" title={\`Imported \${state.output.imported} contacts\`}>
+              {state.output.rejected.length === 0
+                ? 'Every row was valid.'
+                : \`Rejected: \${state.output.rejected.map((r) => \`line \${r.line} (\${r.reason})\`).join(', ')}\`}
+            </Alert>
+          ) : null}
+          {state.status === 'failed' ? (
+            <Alert variant="destructive" title="The import failed">
+              {state.error}
+            </Alert>
+          ) : null}
+        </Flex>
+      </CardContent>
+    </Card>
+  )
+}
+
+export default function Import() {
+  useSignals()
+  const [csv, setCsv] = useSignalState(SAMPLE)
+  const running = current.value?.state.value.status
+  const busy = starting.value || running === 'queued' || running === 'running'
+
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Import</Heading>
+        <Text muted>
+          A CSV import running as a Cloudflare Workflow. Each step retries on its own and the job
+          survives a deploy; progress streams here, and a reload picks the job back up.
+        </Text>
+      </Flex>
+      <Textarea
+        aria-label="CSV to import"
+        rows={8}
+        value={csv.value}
+        onChange={(event) => setCsv(event.target.value)}
+      />
+      <Flex direction="horizontal" gap={2} align="center">
+        <Button onClick={() => void startImport(csv.value)} loading={busy} disabled={busy}>
+          Import
+        </Button>
+        {startError.value ? <Text muted>{startError.value}</Text> : null}
+      </Flex>
+      <JobView />
+    </Flex>
+  )
+}
+`
+}
+
 function cfPrettierIgnore(): string {
   return `${prettierIgnore()}# Rewritten by @cascivo/app/vite whenever a route file changes.
 src/routes.gen.ts
@@ -2404,7 +2779,7 @@ This builds the app, then deploys it to a temporary Cloudflare account with
 
 It works only while wrangler is logged out. If you are logged in, use \`deploy\` instead.
 A temporary account supports Workers, static assets, KV, D1 and Durable Objects. It does not
-support Workers AI or R2.${
+support Workers AI, R2 or Workflows.${
     hasExample(opts, 'agent')
       ? ' So a preview serves the app, but its assistant cannot reach the model: deploy it\nto your own account for that.'
       : ''
@@ -2465,6 +2840,27 @@ when the room is reachable again; a badge shows how many are still waiting.
 
 A note is last-writer-wins: an edit made offline replaces whatever the note held when it
 arrives. Edits to different notes never collide.`
+      : ''
+  }${
+    hasExample(opts, 'import')
+      ? `
+
+## Import (background job)
+
+\`/import\` runs a CSV import as a Cloudflare Workflow and shows its progress live.
+
+- \`worker/import-job.ts\` — \`ImportJob\`, the Workflow. Each \`step.do\` is retried on its own
+  and its result kept, so a failure or a deploy resumes the job where it was. Put your writes
+  in \`importContacts\`.
+- \`src/import-job.ts\` — the job (\`defineJob\` from \`@cascivo/app/jobs\`): its steps and the
+  parser for its result, shared by both sides.
+- Progress is a read-only room: the Workflow reports with \`jobReporter\`
+  (\`@cascivo/app/jobs-server\`), and the page watches \`/api/jobs/:id\` with \`watchJob\`. The job
+  id is in the URL, so a reload or another tab picks the job back up.
+
+Report from inside a \`step.do\`: a Workflow replays \`run()\` from the top after each step, and
+a report outside one would run again. Workflows run in \`vite dev\` locally, but not on a
+temporary account, so \`deploy:preview\` serves the page without starting imports.`
       : ''
   }${
     hasExample(opts, 'agent')
@@ -2560,11 +2956,12 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
       : []),
     ...(hasExample(opts, 'board') ? [{ file: 'board.tsx', contents: cfBoardRouteTsx() }] : []),
     ...(hasExample(opts, 'notes') ? [{ file: 'notes.tsx', contents: cfNotesRouteTsx() }] : []),
+    ...(hasExample(opts, 'import') ? [{ file: 'import.tsx', contents: cfImportRouteTsx() }] : []),
   ]
   return [
     { path: 'package.json', contents: cfPackageJson(opts) },
     { path: 'tsconfig.json', contents: cfTsconfig(opts) },
-    ...(hasExample(opts, 'agent')
+    ...(needsWorkerTypes(opts)
       ? [{ path: 'tsconfig.worker.json', contents: cfWorkerTsconfig() }]
       : []),
     { path: 'vite.config.ts', contents: cfViteConfig(runtime, opts) },
@@ -2577,7 +2974,7 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
     { path: 'README.md', contents: cfReadme(opts) },
     { path: 'AGENTS.md', contents: cfAgentsMd(opts) },
     { path: 'worker/index.ts', contents: cfWorkerTs(opts) },
-    { path: 'src/api.ts', contents: cfApiTs() },
+    { path: 'src/api.ts', contents: cfApiTs(opts) },
     { path: 'src/live.ts', contents: cfLiveTs() },
     { path: 'src/LiveCard.tsx', contents: cfLiveCardTsx() },
     { path: 'src/main.tsx', contents: cfMainTsx() },
@@ -2594,6 +2991,13 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
         ]
       : []),
     ...(hasExample(opts, 'notes') ? [{ path: 'src/notes.ts', contents: cfNotesTs() }] : []),
+    ...(hasExample(opts, 'import')
+      ? [
+          { path: 'src/import-job.ts', contents: cfImportJobTs() },
+          { path: 'src/import-page.ts', contents: cfImportPageTs() },
+          { path: 'worker/import-job.ts', contents: cfImportWorkflowTs() },
+        ]
+      : []),
     ...(hasExample(opts, 'board')
       ? [
           { path: 'src/board.ts', contents: cfBoardTs() },

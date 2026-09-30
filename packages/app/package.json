@@ -49,6 +49,16 @@
       "import": "./dist/flags.js",
       "default": "./dist/flags.js"
     },
+    "./jobs": {
+      "types": "./dist/jobs.d.ts",
+      "import": "./dist/jobs.js",
+      "default": "./dist/jobs.js"
+    },
+    "./jobs-server": {
+      "types": "./dist/jobs-server.d.ts",
+      "import": "./dist/jobs-server.js",
+      "default": "./dist/jobs-server.js"
+    },
     "./sync-server": {
       "types": "./dist/sync-server.d.ts",
       "import": "./dist/sync-server.js",

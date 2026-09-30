@@ -310,6 +310,45 @@ nothing without `@cascivo/themes/warm.css`.
 In `vite dev`, Flagship runs a local simulator: an unset flag evaluates to its default, so the
 app works before any flag exists.
 
+## Background jobs — `@cascivo/app/jobs` and `@cascivo/app/jobs-server`
+
+Work that outlives a request, like an import, a report or an agent task, with its progress
+live in the browser. A job's progress is a room that only the server writes: whatever runs
+the job reports into it, and the page watches it. Because the room stores the state, a
+reload, a second tab or another device picks the job up where it is.
+
+```ts
+// src/import-job.ts — shared
+export const importJob = defineJob({ steps: ['Read', 'Check', 'Import'], output: parseSummary })
+
+// the runner — a Workflow, a Queue consumer, ctx.waitUntil
+const report = jobReporter(importJob, env.ROOMS, id)
+await report.step(1, 'Checking 120 rows')
+await report.progress(2, 0.5, 'Imported 60 of 120')
+await report.done({ imported: 120, rejected: [] })
+
+// worker/index.ts — the browser may watch a job's room, never write to it
+roomResponse(request, env.ROOMS, importJob.roomName(id), { readOnly: true })
+
+// the page
+const job = watchJob(importJob, `/api/jobs/${id}`)
+job.state.value // { status: 'running', step: 2, progress: 0.5, message: 'Imported 60 of 120' … }
+```
+
+- **The state is parsed in the browser.** It carries the status, the step, the progress and
+  a message; the output goes through the job's own parser. A state that fails the parse is
+  ignored.
+- **In a Workflow, report from inside `step.do`.** A Workflow replays `run()` from the top
+  after each step, skipping finished ones. A report outside a step runs again on every replay
+  and moves the progress backwards. `fail(error, step)` is the exception: it runs once, as the
+  run ends.
+- **Read-only rooms.** `roomResponse(…, { readOnly: true })` marks the connection. The room
+  refuses its writes, and the refusal names the write, so the client drops it instead of
+  resending it. `writeRoom(namespace, name, path, value)` is the server-side write.
+
+`cascivo create --framework cloudflare --example import` scaffolds a CSV import that runs as a
+Workflow and shows its steps and progress live.
+
 ## Install
 
 ```sh

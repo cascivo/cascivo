@@ -604,3 +604,51 @@ describe('buildScaffold — cloudflare --example notes', () => {
     expect(both.get('wrangler.jsonc')!.match(/"class_name": "SyncRoom"/g)).toHaveLength(1)
   })
 })
+
+describe('buildScaffold — cloudflare --example import', () => {
+  const map = fileMap(
+    buildScaffold({
+      name: 'Edge App',
+      framework: 'cloudflare',
+      theme: 'light',
+      sections: ['Dashboard'],
+      examples: ['import'],
+    }),
+  )
+
+  it('runs the import as a Workflow and serves its progress as a read-only room', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"class_name": "ImportJob"')
+    expect(wrangler).toContain('{ "name": "ROOMS", "class_name": "SyncRoom" }')
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain("export { ImportJob } from './import-job'")
+    expect(worker).toContain('IMPORT_JOB: Workflow<{ csv: string }>')
+    expect(worker).toContain('importJob.roomName(job[1]!), { readOnly: true }')
+    expect(map.get('src/api.ts')).toContain("path: '/api/import'")
+    expect(map.get('src/routes.gen.ts')).toContain("lazyRoute('/import'")
+  })
+
+  it('reports from inside steps, so a replay cannot move progress backwards', () => {
+    const workflow = map.get('worker/import-job.ts')!
+    // Each progress report is the first line of a step.do callback. (`fail` is the one report
+    // outside a step: it runs once, on the way out of a run that is ending.)
+    const reports = workflow.match(/report\.(step|progress|done)\(/g) ?? []
+    const inSteps =
+      workflow.match(
+        /step\.do\([^\n]*\n\s+await report\.(step|progress)\(|step\.do\('done', \(\) => report\.done\(/g,
+      ) ?? []
+    expect(reports.length).toBe(4)
+    expect(inSteps.length).toBe(reports.length)
+  })
+
+  it('type-checks the Workflow against the Workers runtime', () => {
+    expect(map.has('tsconfig.worker.json')).toBe(true)
+    const pkg = JSON.parse(map.get('package.json')!) as {
+      devDependencies: Record<string, string>
+      dependencies: Record<string, string>
+    }
+    expect(pkg.devDependencies['@cloudflare/workers-types']).toBeDefined()
+    // Workflows are on the default runtime: only the agent example needs React.
+    expect(pkg.dependencies['preact']).toBeDefined()
+  })
+})

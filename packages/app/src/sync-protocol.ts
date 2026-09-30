@@ -17,7 +17,8 @@ export type ServerMessage =
   | { t: 'hello'; self: string; state: Record<string, Json>; presence: Record<string, Json> }
   | { t: 'set'; id: string; by: string; path: string; value: Json }
   | { t: 'presence'; conn: string; value: Json }
-  | { t: 'error'; message: string }
+  /** `id` names the refused write, so the client can stop waiting for it. */
+  | { t: 'error'; message: string; id?: string }
 
 export const LIMITS = {
   /** Longest accepted path, e.g. `notes/2f1c…`. */
@@ -102,8 +103,9 @@ export function parseServerMessage(raw: unknown): ServerMessage | null {
       return { t: 'presence', conn, value: (data['value'] ?? null) as Json }
     }
     case 'error': {
-      const { message } = data
-      return typeof message === 'string' ? { t: 'error', message } : null
+      const { message, id } = data
+      if (typeof message !== 'string') return null
+      return typeof id === 'string' ? { t: 'error', message, id } : { t: 'error', message }
     }
     default:
       return null
