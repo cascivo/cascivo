@@ -1126,6 +1126,9 @@ function cfPackageJson(opts: ScaffoldOptions): string {
       ...(hasExample(opts, 'publish') && !agent
         ? { '@cascivo/render': V['@cascivo/render']! }
         : {}),
+      // The Worker server-renders published pages; under Preact, react-dom/server is
+      // preact/compat/server, which needs this.
+      ...(hasExample(opts, 'publish') && preact ? { 'preact-render-to-string': '^6.5.0' } : {}),
     },
     devDependencies: {
       '@cascivo/eslint-config': V['@cascivo/eslint-config']!,
@@ -1234,7 +1237,14 @@ ${
     cloudflare({ remoteBindings: process.env['VITE_REAL_AI'] === '1' }),
   ],`
     : `  plugins: [${call}, cascivoRoutes(), cloudflare()],`
-}
+}${
+    hasExample(opts, 'publish')
+      ? `
+  // A published page's HTML links the stylesheets its route needs, found in this manifest
+  // (worker/page-html.ts), so the page is styled for readers without JavaScript too.
+  build: { manifest: 'asset-manifest.json' },`
+      : ''
+  }
 })
 `
 }
@@ -1247,6 +1257,7 @@ function jsoncArray(indent: string, key: string, items: string[]): string {
 }
 
 function wranglerJsonc(opts: ScaffoldOptions): string {
+  const publish = hasExample(opts, 'publish')
   const rooms = usesRooms(opts)
   const agent = hasExample(opts, 'agent')
   const ai = usesAgents(opts)
@@ -1278,8 +1289,18 @@ function wranglerJsonc(opts: ScaffoldOptions): string {
   "assets": {
     // Client-side app: an unknown path serves index.html, and the client renders it.
     "not_found_handling": "single-page-application",
-    // Only the API reaches the Worker; static assets are served without invoking it.
-    "run_worker_first": ${ai ? '["/api/*", "/agents/*"]' : '["/api/*"]'},
+    // ${
+      publish
+        ? 'Only the API and published pages reach the Worker; static assets are served\n    // without invoking it.'
+        : 'Only the API reaches the Worker; static assets are served without invoking it.'
+    }
+    "run_worker_first": [${['"/api/*"', ...(ai ? ['"/agents/*"'] : []), ...(publish ? ['"/p/*"'] : [])].join(', ')}],${
+      publish
+        ? `
+    // The Worker reads index.html through this to put a published page into it.
+    "binding": "ASSETS",`
+        : ''
+    }
   },
   "observability": { "enabled": true },${
     objects.length > 0
@@ -1668,11 +1689,11 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
     ...(access ? ['requireAccess'] : []),
     ...(limiter ? ['clientIp', 'rateLimit'] : []),
   ]
-  const custom = rooms || ai || files || exports || access || live || limiter
-  const isAsync = ai || files || exports || access || limiter || webhooks
+  const custom = rooms || ai || files || exports || access || live || limiter || publish
+  const isAsync = ai || files || exports || access || limiter || webhooks || publish
   // Rooms the server writes: never opened through /api/rooms/:name, where clients may write.
   const serverRooms = [...(imports ? ['job-'] : []), ...(webhooks ? ['webhooks$'] : [])]
-  return `${usage ? `import type { AnalyticsDataset } from '@cascivo/app/analytics'\n` : ''}${d1 ? `import type { Database } from '@cascivo/app/db'\n` : ''}${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler } from '@cascivo/app/api'
+  return `${usage ? `import type { AnalyticsDataset } from '@cascivo/app/analytics'\n` : ''}${d1 ? `import type { Database } from '@cascivo/app/db'\n` : ''}${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler${publish ? ', HttpError' : ''} } from '@cascivo/app/api'
 ${emailAuth ? `import { handleAuth, requireUser } from '@cascivo/app/auth-server'\n` : ''}${guards.length > 0 || webhooks ? `import { ${[...guards, 'guardResponse'].sort().join(', ')} } from '@cascivo/app/guard'\n${limiter ? `import type { RateLimiter } from '@cascivo/app/guard'\n` : ''}` : ''}${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
     files
       ? `import { handleUploads, listUploads } from '@cascivo/app/uploads-server'
@@ -1699,7 +1720,7 @@ import type { BrowserWorker } from '@cloudflare/puppeteer'
       : ''
   }${ai ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\n` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${
+${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\nimport { renderPageHtml } from './page-html'\nimport type { Assets } from './page-html'\n${exports ? `import { pagePreview } from './page-preview'\n` : ''}` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${
     rooms
       ? `
 // The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
@@ -1752,7 +1773,7 @@ ${
   emailAuth ||
   webhooks ||
   digest
-    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}
+    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -1987,6 +2008,45 @@ ${
     // The /ops dashboard's room: browsers watch it, and only the queue handler writes to it.
     if (new URL(request.url).pathname === '/api/live') {
       return roomResponse(request, env.LIVE, OPS_ROOM, { readOnly: true })
+    }`
+          : ''
+      }${
+        publish
+          ? `
+    // A published page: its HTML carries the page's title, description and content, for link
+    // previews and readers without JavaScript (worker/page-html.ts). An unknown slug gets the
+    // app itself, which says so.
+    const pagePath = new URL(request.url).pathname
+    const published = /^\\/p\\/([a-z0-9]{10})$/.exec(pagePath)
+    if (published && request.method === 'GET') {
+      try {
+        const page = await pageStore.getPage(env.DB, published[1]!)${
+          exports
+            ? `
+        const image = new URL(\`/api/pages/\${page.slug}/preview.png\`, request.url).href
+        return await renderPageHtml(request, page, env.ASSETS, image)`
+            : `
+        return await renderPageHtml(request, page, env.ASSETS, null)`
+        }
+      } catch (error) {
+        if (!(error instanceof HttpError)) throw error
+        return env.ASSETS.fetch(request)
+      }
+    }${
+      exports
+        ? `
+    // Its link-preview image, rendered once by Browser Run (worker/page-preview.ts).
+    const preview = /^\\/api\\/pages\\/([a-z0-9]{10})\\/preview\\.png$/.exec(pagePath)
+    if (preview && request.method === 'GET') {
+      try {
+        return await pagePreview(env.DB, preview[1]!, new URL(request.url).origin, () =>
+          puppeteer.launch(env.BROWSER),
+        )
+      } catch (error) {
+        return guardResponse(error)
+      }
+    }`
+        : ''
     }`
           : ''
       }${
@@ -4749,6 +4809,197 @@ export async function getPage(db: Database, slug: string): Promise<Page> {
 `
 }
 
+function cfPageHtmlTs(): string {
+  return `import { CascivoView } from '@cascivo/render'
+import { Flex, Heading } from '@cascivo/react'
+import { createElement } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import type { Page } from '../src/pages'
+
+/** The static-assets binding (\`assets.binding\` in wrangler.jsonc): the built index.html. */
+export interface Assets {
+  fetch(request: Request): Promise<Response>
+}
+
+const escapeHtml = (value: string) =>
+  value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+
+const ENTITIES: Record<string, string> = {
+  '&amp;': '&',
+  '&lt;': '<',
+  '&gt;': '>',
+  '&quot;': '"',
+  '&#39;': "'",
+  '&#x27;': "'",
+}
+
+/** Rendered markup back to its visible text, for a link preview's description. */
+function textOf(html: string): string {
+  return html
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&(?:amp|lt|gt|quot|#39|#x27);/g, (entity) => ENTITIES[entity] ?? entity)
+    .replace(/\\s+/g, ' ')
+    .trim()
+}
+
+/** The route file whose stylesheets a published page needs, as the build manifest names it. */
+const PAGE_ROUTE = 'src/routes/p/[slug].tsx'
+
+/**
+ * The stylesheets the published-page route loads, from Vite's build manifest (vite.config.ts
+ * writes it as asset-manifest.json). The route is loaded lazily, so its component CSS is
+ * linked by JavaScript; a reader without JavaScript needs it linked in the HTML. \`vite dev\`
+ * has no manifest, and there the CSS arrives with the JavaScript anyway.
+ */
+async function pageStylesheets(request: Request, assets: Assets): Promise<string[]> {
+  const response = await assets.fetch(new Request(new URL('/asset-manifest.json', request.url)))
+  if (!response.ok) return []
+  const manifest: unknown = await response.json().catch(() => null)
+  if (typeof manifest !== 'object' || manifest === null) return []
+  const chunks = manifest as Record<string, unknown>
+  const found = new Set<string>()
+  const seen = new Set<string>()
+  const walk = (key: string) => {
+    if (seen.has(key)) return
+    seen.add(key)
+    const chunk = chunks[key]
+    if (typeof chunk !== 'object' || chunk === null) return
+    const { css, imports } = chunk as Record<string, unknown>
+    if (Array.isArray(css)) for (const file of css) if (typeof file === 'string') found.add(file)
+    if (Array.isArray(imports)) for (const next of imports) if (typeof next === 'string') walk(next)
+  }
+  walk(PAGE_ROUTE)
+  return [...found]
+}
+
+/**
+ * The app's index.html for a published page, with the page in it: a title and description
+ * for search engines and link previews (which run no JavaScript), and the rendered view in
+ * a \`<noscript>\` for readers without JavaScript. The app then starts as usual and renders
+ * the page itself.
+ */
+export async function renderPageHtml(
+  request: Request,
+  page: Page,
+  assets: Assets,
+  imageUrl: string | null,
+): Promise<Response> {
+  const shell = await assets.fetch(new Request(new URL('/', request.url)))
+  const view = renderToStaticMarkup(createElement(CascivoView, { config: page.view }))
+  // The same layout as src/routes/p/[slug].tsx, so it is styled by the same stylesheets.
+  const body = renderToStaticMarkup(
+    createElement(
+      Flex,
+      { gap: 4 },
+      createElement(Heading, { level: 1 }, page.title),
+      createElement(CascivoView, { config: page.view }),
+    ),
+  )
+  const description = textOf(view).slice(0, 160)
+  const url = new URL(request.url)
+  url.search = ''
+  const title = escapeHtml(page.title)
+  const meta = [
+    \`<title>\${title}</title>\`,
+    \`<meta name="description" content="\${escapeHtml(description)}" />\`,
+    \`<link rel="canonical" href="\${escapeHtml(url.href)}" />\`,
+    '<meta property="og:type" content="article" />',
+    \`<meta property="og:title" content="\${title}" />\`,
+    \`<meta property="og:description" content="\${escapeHtml(description)}" />\`,
+    \`<meta property="og:url" content="\${escapeHtml(url.href)}" />\`,
+    ...(imageUrl
+      ? [
+          \`<meta property="og:image" content="\${escapeHtml(imageUrl)}" />\`,
+          '<meta property="og:image:width" content="1200" />',
+          '<meta property="og:image:height" content="630" />',
+          '<meta name="twitter:card" content="summary_large_image" />',
+        ]
+      : ['<meta name="twitter:card" content="summary" />']),
+  ].join('\\n    ')
+  const stylesheets = (await pageStylesheets(request, assets))
+    .map((file) => \`<link rel="stylesheet" href="/\${escapeHtml(file)}" />\`)
+    .join('\\n    ')
+  const html = (await shell.text())
+    .replace(/<title>[\\s\\S]*?<\\/title>/, stylesheets ? \`\${meta}\\n    \${stylesheets}\` : meta)
+    .replace(
+      '<div id="root"></div>',
+      // Before the app's root, which fills the viewport: after it, the page would start below
+      // the fold.
+      \`<noscript><main style="padding: 1.5rem">\${body}</main></noscript>\\n    <div id="root"></div>\`,
+    )
+  return new Response(html, {
+    headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60' },
+  })
+}
+`
+}
+
+function cfPagePreviewTs(): string {
+  return `import { migrate, queryRows } from '@cascivo/app/db'
+import type { Database } from '@cascivo/app/db'
+import { exportPage } from '@cascivo/app/export'
+import type { ExportBrowser } from '@cascivo/app/export'
+import { getPage } from './pages'
+
+const migrations = [
+  {
+    id: '0001_page_previews',
+    statements: ['CREATE TABLE page_previews (slug TEXT PRIMARY KEY, png BLOB NOT NULL)'],
+  },
+]
+
+/** A stored BLOB as bytes: D1 returns one as an array of numbers. */
+function bytesOf(raw: unknown): Uint8Array | null {
+  const png =
+    typeof raw === 'object' && raw !== null ? (raw as Record<string, unknown>)['png'] : null
+  if (png instanceof ArrayBuffer) return new Uint8Array(png)
+  if (ArrayBuffer.isView(png)) return new Uint8Array(png.buffer, png.byteOffset, png.byteLength)
+  if (Array.isArray(png) && png.every((b) => typeof b === 'number')) return Uint8Array.from(png)
+  return null
+}
+
+/**
+ * A published page's link-preview image, 1200 × 630: rendered from the page by Browser Run on
+ * its first request and kept in D1, so a page shared a thousand times starts one browser.
+ */
+export async function pagePreview(
+  db: Database,
+  slug: string,
+  origin: string,
+  launch: () => Promise<ExportBrowser>,
+): Promise<Response> {
+  await getPage(db, slug) // 404 for a page that does not exist
+  await migrate(db, migrations)
+  const [stored] = await queryRows(
+    db,
+    'SELECT png FROM page_previews WHERE slug = ?',
+    [slug],
+    bytesOf,
+  )
+  let png = stored ?? null
+  if (!png) {
+    png = await exportPage(launch, new URL(\`/p/\${slug}\`, origin).href, {
+      format: 'png',
+      viewport: { width: 1200, height: 630 },
+      fullPage: false,
+    })
+    await db
+      .prepare('INSERT OR REPLACE INTO page_previews (slug, png) VALUES (?, ?)')
+      .bind(slug, png)
+      .run()
+  }
+  return new Response(new Uint8Array(png), {
+    headers: { 'content-type': 'image/png', 'cache-control': 'public, max-age=86400' },
+  })
+}
+`
+}
+
 function cfPublishRouteTsx(): string {
   return `import { createClient } from '@cascivo/app/api'
 import { CascivoView } from '@cascivo/render'
@@ -6300,6 +6551,15 @@ code of its author's and needs no sandbox.
 - \`worker/pages.ts\` — pages in D1, under a random ten-character slug.
 - \`src/routes/publish.tsx\` — the editor, with a live preview.
 - \`src/routes/p/[slug].tsx\` — a published page.
+- \`worker/page-html.ts\` — the Worker answers \`/p/<slug>\` with index.html carrying the
+  page's title, description and Open Graph tags, so a shared link previews properly, and the
+  rendered page in a \`<noscript>\` for readers without JavaScript.${
+    hasExample(opts, 'export')
+      ? `
+- \`worker/page-preview.ts\` — the preview image (\`og:image\`, 1200 × 630): Browser Run
+  renders the page once, and D1 keeps the PNG.`
+      : ''
+  }
 
 ${
   opts.auth
@@ -6503,6 +6763,10 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
       ? [
           { path: 'src/pages.ts', contents: cfPagesTs() },
           { path: 'worker/pages.ts', contents: cfPagesWorkerTs() },
+          { path: 'worker/page-html.ts', contents: cfPageHtmlTs() },
+          ...(hasExample(opts, 'export')
+            ? [{ path: 'worker/page-preview.ts', contents: cfPagePreviewTs() }]
+            : []),
         ]
       : []),
     ...(hasExample(opts, 'voice')

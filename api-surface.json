@@ -6740,7 +6740,8 @@
             "landscape?": "boolean",
             "readySelector?": "string",
             "viewport?": "{ width: number; height: number; }",
-            "timeoutMs?": "number"
+            "timeoutMs?": "number",
+            "fullPage?": "boolean"
           },
           "exportUrl": "declare function exportUrl(page: string, format?: ExportFormat, path?: string): string",
           "handleExport": "declare function handleExport(request: Request, options: HandleExportOptions): Promise<Response | null>",

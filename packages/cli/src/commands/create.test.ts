@@ -1181,3 +1181,51 @@ describe('buildScaffold — cloudflare --example digest', () => {
     for (const line of wrangler.split('\n')) expect(line.length).toBeLessThanOrEqual(100)
   })
 })
+
+describe('buildScaffold — published pages rendered by the Worker', () => {
+  const build = (examples: Example[], runtime?: 'react') =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        examples,
+        ...(runtime ? { runtime } : {}),
+      }),
+    )
+  const map = build(['publish'])
+
+  it('routes /p/* to the Worker, which reads index.html through ASSETS', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"run_worker_first": ["/api/*", "/p/*"]')
+    expect(wrangler).toContain('"binding": "ASSETS"')
+    expect(map.get('vite.config.ts')).toContain("build: { manifest: 'asset-manifest.json' }")
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain('return await renderPageHtml(request, page, env.ASSETS, null)')
+    // An unknown slug falls back to the app, which says so; other errors are not swallowed.
+    expect(worker).toContain('if (!(error instanceof HttpError)) throw error')
+  })
+
+  it('escapes what it puts in the HTML and keeps the page above the app root', () => {
+    const html = map.get('worker/page-html.ts')!
+    expect(html).toContain('const title = escapeHtml(page.title)')
+    expect(html.indexOf('<noscript>')).toBeLessThan(html.lastIndexOf('<div id="root"></div>'))
+  })
+
+  it('needs preact-render-to-string under Preact only', () => {
+    const preact = JSON.parse(map.get('package.json')!) as { dependencies: Record<string, string> }
+    expect(preact.dependencies['preact-render-to-string']).toBeDefined()
+    const react = JSON.parse(build(['publish'], 'react').get('package.json')!) as {
+      dependencies: Record<string, string>
+    }
+    expect(react.dependencies['preact-render-to-string']).toBeUndefined()
+  })
+
+  it('adds the preview image only with Browser Run (the export example)', () => {
+    expect(map.get('worker/page-preview.ts')).toBeUndefined()
+    const both = build(['publish', 'export'])
+    expect(both.get('worker/page-preview.ts')).toContain('fullPage: false')
+    expect(both.get('worker/index.ts')).toContain('/preview.png')
+  })
+})

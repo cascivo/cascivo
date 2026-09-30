@@ -50,6 +50,11 @@ export interface ExportPageOptions {
   viewport?: { width: number; height: number }
   /** Default 15 s, for loading and for `readySelector`. */
   timeoutMs?: number
+  /**
+   * For a PNG: the whole page (default), or only the viewport — for an image of a fixed size,
+   * such as a 1200 × 630 link preview.
+   */
+  fullPage?: boolean
 }
 
 /** The query flag an exported page is opened with. */
@@ -96,7 +101,7 @@ export async function exportPage(
           printBackground: true,
           landscape: options.landscape ?? false,
         })
-      : await page.screenshot({ type: 'png', fullPage: true })
+      : await page.screenshot({ type: 'png', fullPage: options.fullPage ?? true })
   } finally {
     await browser.close()
   }

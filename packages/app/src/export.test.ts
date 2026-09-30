@@ -21,8 +21,8 @@ function fakeBrowser(fail?: 'goto') {
           calls.push(`pdf ${o.format}${o.landscape ? ' landscape' : ''}`)
           return new Uint8Array([37, 80, 68, 70])
         },
-        screenshot: async () => {
-          calls.push('png')
+        screenshot: async (o) => {
+          calls.push(o.fullPage ? 'png' : 'png viewport')
           return new Uint8Array([137, 80, 78, 71])
         },
       }
@@ -110,5 +110,22 @@ describe('export helpers', () => {
     )
     expect(isExporting('?export=1')).toBe(true)
     expect(isExporting('?q=1')).toBe(false)
+  })
+})
+
+describe('exportPage', () => {
+  it('captures only the viewport when asked, for a fixed-size image', async () => {
+    const b = fakeBrowser()
+    await exportPage(b.launch, 'https://app.example/p/abc', {
+      format: 'png',
+      viewport: { width: 1200, height: 630 },
+      fullPage: false,
+    })
+    expect(b.calls).toEqual([
+      'viewport 1200x630',
+      'media screen',
+      'goto https://app.example/p/abc?export=1',
+      'png viewport',
+    ])
   })
 })
