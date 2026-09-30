@@ -2,15 +2,10 @@ import { Suspense, lazy } from 'react'
 import { CodeSnippet } from '@cascivo/components/code-snippet'
 import { useComputed, useSignal, useSignals } from '@cascivo/core'
 import data from '../app-builder.json'
+import { PREVIEWABLE } from './ship'
 
 type Example = (typeof data.examples)[number]
 type AuthChoice = 'none' | 'email' | 'access'
-
-/**
- * Services a temporary Cloudflare account supports (`deploy:preview`, no sign-up): Workers,
- * static assets, KV, D1 and Durable Objects. An app that binds anything else needs an account.
- */
-const PREVIEWABLE = new Set(['durable_objects', 'd1_databases'])
 
 const GROUPS = ['Realtime', 'AI', 'Data', 'Operations'] as const
 

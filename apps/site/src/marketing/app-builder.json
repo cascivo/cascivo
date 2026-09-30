@@ -278,5 +278,6 @@
       "name": "Access",
       "local": "account"
     }
-  }
+  },
+  "previewScript": "npm run build && wrangler deploy --temporary"
 }

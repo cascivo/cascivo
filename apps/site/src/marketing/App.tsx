@@ -111,12 +111,15 @@ const BlockPreviewPage = lazy(() =>
 
 /** Reserved-height placeholder for a lazy section/route (avoids CLS on load). */
 function SectionFallback({
+  id,
   tall = false,
   height,
   // Defaults to `null` rather than staying undefined: `exactOptionalPropertyTypes` rejects
   // an explicit `ref={undefined}` on a DOM element, and `Ref<T>` already admits null.
   elementRef = null,
 }: {
+  /** The section's own id, so an anchor to a section not yet mounted still finds its place. */
+  id?: string | undefined
   tall?: boolean
   height?: number
   /** Named, not `ref`: preact/compat strips a bare `ref` from a function component. */
@@ -124,6 +127,7 @@ function SectionFallback({
 }) {
   return (
     <div
+      id={id}
       ref={elementRef}
       className={tall ? 'lazy-fallback lazy-fallback--tall' : 'lazy-fallback'}
       style={height !== undefined ? { minBlockSize: height } : undefined}
@@ -143,7 +147,16 @@ function SectionFallback({
  * BarChart and a dozen live components) and the themes section (which fetches the nine
  * deferred theme stylesheets on mount).
  */
-function WhenNearViewport({ height, children }: { height: number; children: ReactNode }) {
+function WhenNearViewport({
+  id,
+  height,
+  children,
+}: {
+  /** The held-back section's id: `#id` links scroll to the placeholder, which then mounts it. */
+  id?: string
+  height: number
+  children: ReactNode
+}) {
   useSignals()
   const shown = useSignal(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -171,7 +184,11 @@ function WhenNearViewport({ height, children }: { height: number; children: Reac
     return () => observer.disconnect()
   })
 
-  return shown.value ? <>{children}</> : <SectionFallback height={height} elementRef={ref} />
+  return shown.value ? (
+    <>{children}</>
+  ) : (
+    <SectionFallback id={id} height={height} elementRef={ref} />
+  )
 }
 
 function HomePage() {
@@ -206,8 +223,8 @@ function HomePage() {
             <PosterQuickStart />
           </Suspense>
           {/* Interactive, so held back until it is near: nobody above the fold pays for it. */}
-          <WhenNearViewport height={720}>
-            <Suspense fallback={<SectionFallback height={720} />}>
+          <WhenNearViewport id="ship" height={720}>
+            <Suspense fallback={<SectionFallback id="ship" height={720} />}>
               <PosterAppBuilder />
             </Suspense>
           </WhenNearViewport>

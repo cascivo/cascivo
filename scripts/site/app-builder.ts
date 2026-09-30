@@ -206,6 +206,21 @@ export interface BuilderData {
   examples: (Delta & { id: string; label: string; blurb: string; group: Group; brings: string[] })[]
   auth: (Delta & { id: string; label: string; blurb: string })[]
   services: Record<string, { name: string; local: 'simulated' | 'stand-in' | 'account' }>
+  /** The scaffold's `deploy:preview` script, which the call to action tells visitors to run. */
+  previewScript: string
+}
+
+/** A script from a scaffold's package.json, or a throw naming what is missing. */
+function script(files: Map<string, string>, name: string): string {
+  const pkg: unknown = JSON.parse(files.get('package.json') ?? '{}')
+  const scripts =
+    typeof pkg === 'object' && pkg !== null ? (pkg as Record<string, unknown>)['scripts'] : null
+  const value =
+    typeof scripts === 'object' && scripts !== null
+      ? (scripts as Record<string, unknown>)[name]
+      : undefined
+  if (typeof value !== 'string') throw new Error(`The Cloudflare scaffold has no "${name}" script`)
+  return value
 }
 
 export function buildData(): BuilderData {
@@ -242,6 +257,7 @@ export function buildData(): BuilderData {
       ),
       [ACCESS_SERVICE]: { name: 'Access', local: 'account' },
     },
+    previewScript: script(base, 'deploy:preview'),
   }
 }
 

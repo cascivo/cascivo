@@ -755,7 +755,44 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.875rem;
-  margin-block-start: 2rem;
+}
+
+/* Two ways in, side by side from desktop: add to a project, or ship a whole app. */
+.pg-cta-paths {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.5rem;
+  margin-block-start: 2.5rem;
+}
+
+@media (min-width: 64rem) {
+  .pg-cta-paths {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3rem;
+  }
+}
+
+.pg-cta-path {
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+  min-inline-size: 0;
+}
+
+.pg-cta-path > h3 {
+  margin: 0;
+}
+
+.pg-cta-path .pg-note {
+  margin: 0;
+  max-inline-size: 52ch;
+}
+
+.pg-cta-path .pg-note a {
+  color: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 /* ── CodeSnippet in the poster grid ────────────────────────────────────── */
