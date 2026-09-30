@@ -68,6 +68,7 @@ export type Example =
   | 'voice'
   | 'publish'
   | 'webhooks'
+  | 'digest'
 
 export const EXAMPLES = [
   'board',
@@ -82,6 +83,7 @@ export const EXAMPLES = [
   'voice',
   'publish',
   'webhooks',
+  'digest',
 ] as const
 
 function isExample(value: string): value is Example {
@@ -1306,6 +1308,7 @@ ${jsoncArray('  ', 'r2_buckets', [`{ "binding": "FILES", "bucket_name": "${packa
     hasExample(opts, 'files') ? 'Uploads' : '',
     hasExample(opts, 'export') ? 'exports' : '',
     hasExample(opts, 'publish') ? 'published pages' : '',
+    hasExample(opts, 'digest') ? 'digests sent now' : '',
     opts.auth === 'email' ? 'sign-in emails' : '',
   ]
     .filter(Boolean)
@@ -1315,19 +1318,11 @@ ${jsoncArray('  ', 'r2_buckets', [`{ "binding": "FILES", "bucket_name": "${packa
   // https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/
 ${jsoncArray('  ', 'ratelimits', ['{ "name": "LIMITER", "namespace_id": "1001", "simple": { "limit": 20, "period": 60 } }'])}`
       : ''
-  }${
-    opts.auth === 'access'
+  }${wranglerVars(opts)}${
+    hasExample(opts, 'digest')
       ? `
-  // Cloudflare Access (README). Until both are set, the Worker refuses every request.
-  "vars": { "ACCESS_TEAM_DOMAIN": "", "ACCESS_AUD": "" },`
-      : ''
-  }${
-    opts.auth === 'email'
-      ? `
-  // Sign-in links go out through Email Service (README). AUTH_FROM must be an address on a
-  // domain you have onboarded; until it is set, sign-in fails with a clear error.
-  "send_email": [{ "name": "EMAIL" }],
-  "vars": { "AUTH_FROM": "" },`
+  // The weekly digest: Mondays at 08:00 UTC (worker/digest.ts).
+  "triggers": { "crons": ["0 8 * * 1"] },`
       : ''
   }${
     usesD1(opts)
@@ -1336,6 +1331,7 @@ ${jsoncArray('  ', 'ratelimits', ['{ "name": "LIMITER", "namespace_id": "1001", 
     hasExample(opts, 'crud') ? 'customers' : '',
     hasExample(opts, 'publish') ? 'published pages' : '',
     hasExample(opts, 'webhooks') ? 'webhook deliveries' : '',
+    hasExample(opts, 'digest') ? 'digest runs' : '',
     opts.auth === 'email' ? 'accounts' : '',
   ]
     .filter(Boolean)
@@ -1397,6 +1393,47 @@ ${jsoncArray('    ', 'producers', [`{ "binding": "EVENTS", "queue": "${packageNa
 `
 }
 
+/**
+ * wrangler.jsonc's plain-text settings, in one `vars` object (a second one would replace the
+ * first), and the Email Service binding when anything sends mail.
+ */
+function wranglerVars(opts: ScaffoldOptions): string {
+  const digest = hasExample(opts, 'digest')
+  const emailAuth = opts.auth === 'email'
+  const comments = [
+    ...(opts.auth === 'access'
+      ? ['Cloudflare Access (README). Until both are set, the Worker refuses every request.']
+      : []),
+    ...(emailAuth
+      ? [
+          'Sign-in links go out through Email Service (README). AUTH_FROM must be an address on a',
+          'domain you have onboarded; until it is set, sign-in fails with a clear error.',
+        ]
+      : []),
+    ...(digest
+      ? [
+          "The weekly digest (README): who gets it, who sends it, and the deployed app's URL,",
+          'which the browser opens. Until they are set, each run is recorded as skipped.',
+        ]
+      : []),
+  ]
+  const names = [
+    ...(opts.auth === 'access' ? ['ACCESS_TEAM_DOMAIN', 'ACCESS_AUD'] : []),
+    ...(emailAuth ? ['AUTH_FROM'] : []),
+    ...(digest ? ['DIGEST_TO', 'DIGEST_FROM', 'APP_URL'] : []),
+  ]
+  if (names.length === 0) return ''
+  const entries = names.map((name) => `"${name}": ""`)
+  const line = `  "vars": { ${entries.join(', ')} },`
+  const vars =
+    line.length <= 100
+      ? line
+      : `  "vars": {\n${entries.map((entry) => `    ${entry},`).join('\n')}\n  },`
+  return `
+${comments.map((comment) => `  // ${comment}`).join('\n')}${emailAuth || digest ? '\n  "send_email": [{ "name": "EMAIL" }],' : ''}
+${vars}`
+}
+
 function hasExample(opts: ScaffoldOptions, example: Example): boolean {
   return opts.examples?.includes(example) ?? false
 }
@@ -1421,6 +1458,7 @@ function usesLimiter(opts: ScaffoldOptions): boolean {
     hasExample(opts, 'files') ||
     hasExample(opts, 'export') ||
     hasExample(opts, 'publish') ||
+    hasExample(opts, 'digest') ||
     opts.auth === 'email'
   )
 }
@@ -1431,6 +1469,7 @@ function usesD1(opts: ScaffoldOptions): boolean {
     hasExample(opts, 'crud') ||
     hasExample(opts, 'publish') ||
     hasExample(opts, 'webhooks') ||
+    hasExample(opts, 'digest') ||
     opts.auth === 'email'
   )
 }
@@ -1475,8 +1514,9 @@ function cfApiTs(opts: ScaffoldOptions): string {
   const live = hasExample(opts, 'live')
   const publish = hasExample(opts, 'publish')
   const webhooks = hasExample(opts, 'webhooks')
-  return `import { defineApi, ${imports || files || usage || crud || live || publish || webhooks ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
-${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}${live ? `import { ops, parseAccepted } from './ops'\n` : ''}${publish ? `import { parsePage, parsePageInput, parsePageSummary } from './pages'\n` : ''}${webhooks ? `import { parseDeliveries, parseTestResult } from './webhooks'\n` : ''}
+  const digest = hasExample(opts, 'digest')
+  return `import { defineApi, ${imports || files || usage || crud || live || publish || webhooks || digest ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
+${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}${live ? `import { ops, parseAccepted } from './ops'\n` : ''}${publish ? `import { parsePage, parsePageInput, parsePageSummary } from './pages'\n` : ''}${webhooks ? `import { parseDeliveries, parseTestResult } from './webhooks'\n` : ''}${digest ? `import { parseDigestRun, parseDigestRuns } from './digest'\n` : ''}
 /**
  * The contract between the browser and the Worker. Both import this file: the Worker serves
  * it with \`createHandler\`, the app calls it with \`createClient\`, and a change that breaks
@@ -1571,6 +1611,13 @@ export const api = defineApi({
   }),`
       : ''
   }${
+    digest
+      ? `
+  // The weekly digest's recent runs, and one run now (the Cron Trigger runs it on Mondays).
+  digestRuns: endpoint({ method: 'GET', path: '/api/digest/runs', output: parseDigestRuns }),
+  runDigest: endpoint({ method: 'POST', path: '/api/digest/run', output: parseDigestRun }),`
+      : ''
+  }${
     crud
       ? `
   // One page of customers for DataTable's query (sort, search, filters, page).
@@ -1611,6 +1658,7 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const voice = hasExample(opts, 'voice')
   const publish = hasExample(opts, 'publish')
   const webhooks = hasExample(opts, 'webhooks')
+  const digest = hasExample(opts, 'digest')
   const d1 = usesD1(opts)
   const ai = usesAgents(opts)
   const limiter = usesLimiter(opts)
@@ -1651,7 +1699,7 @@ import type { BrowserWorker } from '@cloudflare/puppeteer'
       : ''
   }${ai ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\n` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${
+${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\n` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${
     rooms
       ? `
 // The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
@@ -1693,8 +1741,18 @@ export { ImportJob } from './import-job'
  * here; every handler receives them as \`env\`.
  */
 ${
-  rooms || ai || files || exports || usage || d1 || access || live || emailAuth || webhooks
-    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth ? '\n  EMAIL: SignInSender\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}
+  rooms ||
+  ai ||
+  files ||
+  exports ||
+  usage ||
+  d1 ||
+  access ||
+  live ||
+  emailAuth ||
+  webhooks ||
+  digest
+    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -1708,6 +1766,7 @@ ${
  * Requests that each count against LIMITER:
 ${[
   emailAuth ? 'a sign-in email' : '',
+  digest ? 'a digest sent now (it starts a browser)' : '',
   files ? 'a new upload (not each part of one)' : '',
   exports ? 'an export' : '',
   publish ? 'a published page' : '',
@@ -1718,6 +1777,11 @@ ${[
  */
 function countsAgainstLimit(request: Request): boolean {
   const url = new URL(request.url)${
+    digest
+      ? `
+  if (url.pathname === '/api/digest/run') return request.method === 'POST'`
+      : ''
+  }${
     emailAuth
       ? `
   if (url.pathname === '/api/auth/start') return request.method === 'POST'`
@@ -1794,6 +1858,18 @@ const handleApi = createHandler<typeof api, Env>(api, {
       ? `
   listDeliveries: ({ env }) => webhookStore.listDeliveries(env.DB),
   sendTestDelivery: ({ request, env }) => webhookStore.sendTestDelivery(request.url, env),`
+      : ''
+  }${
+    digest
+      ? `
+  digestRuns: ({ env }) => digestJob.listRuns(env.DB),
+  runDigest: ({ request, env }) =>
+    digestJob.runDigest(
+      env,
+      () => puppeteer.launch(env.BROWSER),
+      'manual',
+      new URL(request.url).origin,
+    ),`
       : ''
   }${
     live
@@ -1959,6 +2035,14 @@ ${
   },`
     : `  fetch: ${usage ? 'handleAndRecord' : 'handleApi'},`
 }${
+    digest
+      ? `
+  // The Cron Trigger in wrangler.jsonc: the weekly digest, recorded whatever happens.
+  async scheduled(_event: unknown, env: Env): Promise<void> {
+    await digestJob.runDigest(env, () => puppeteer.launch(env.BROWSER), 'cron')
+  },`
+      : ''
+  }${
     live
       ? `
   // The EVENTS queue, a batch at a time, into the dashboard's room. A throw retries the batch.
@@ -2116,6 +2200,7 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
   if (hasExample(opts, 'voice')) items.push({ label: 'Voice', href: '/voice' })
   if (hasExample(opts, 'publish')) items.push({ label: 'Publish', href: '/publish' })
   if (hasExample(opts, 'webhooks')) items.push({ label: 'Webhooks', href: '/webhooks' })
+  if (hasExample(opts, 'digest')) items.push({ label: 'Digest', href: '/digest' })
   if (opts.auth === 'email') items.push({ label: 'Account', href: '/account' })
   const navItems = items
     .map(
@@ -3750,6 +3835,278 @@ export default function Usage() {
           </Card>
         </>
       ) : null}
+    </Flex>
+  )
+}
+`
+}
+
+/* --- `--example digest`: the report, rendered and emailed on a Cron Trigger --- */
+
+function cfDigestTs(): string {
+  return `/**
+ * The weekly digest's runs, shared by the Worker (which records each one) and the /digest page
+ * (which lists them). A run happens on the Cron Trigger in wrangler.jsonc, or from "Send now".
+ */
+export interface DigestRun {
+  id: string
+  startedAt: string
+  /** \`sent\`, \`skipped\` (not configured yet: see \`detail\`) or \`failed\`. */
+  status: 'sent' | 'skipped' | 'failed'
+  /** Who it went to, why it was skipped, or what failed. */
+  detail: string
+  /** \`cron\` or \`manual\`. */
+  trigger: 'cron' | 'manual'
+}
+
+const STATUSES = ['sent', 'skipped', 'failed']
+const TRIGGERS = ['cron', 'manual']
+
+export function parseDigestRun(raw: unknown): DigestRun {
+  if (typeof raw === 'object' && raw !== null) {
+    const { id, startedAt, status, detail, trigger } = raw as Record<string, unknown>
+    if (
+      typeof id === 'string' &&
+      typeof startedAt === 'string' &&
+      typeof status === 'string' &&
+      STATUSES.includes(status) &&
+      typeof detail === 'string' &&
+      typeof trigger === 'string' &&
+      TRIGGERS.includes(trigger)
+    ) {
+      // Both checked against their lists just above.
+      return {
+        id,
+        startedAt,
+        status: status as DigestRun['status'],
+        detail,
+        trigger: trigger as DigestRun['trigger'],
+      }
+    }
+  }
+  throw new Error('Malformed digest run')
+}
+
+export function parseDigestRuns(raw: unknown): DigestRun[] {
+  if (!Array.isArray(raw)) throw new Error('Expected a list of runs')
+  return raw.map(parseDigestRun)
+}
+`
+}
+
+function cfDigestWorkerTs(): string {
+  return `import { migrate, queryRows } from '@cascivo/app/db'
+import type { Database } from '@cascivo/app/db'
+import { exportPage } from '@cascivo/app/export'
+import type { ExportBrowser } from '@cascivo/app/export'
+import { parseDigestRun } from '../src/digest'
+import type { DigestRun } from '../src/digest'
+
+const migrations = [
+  {
+    id: '0001_digest_runs',
+    statements: [
+      \`CREATE TABLE digest_runs (
+        id TEXT PRIMARY KEY,
+        started_at TEXT NOT NULL,
+        status TEXT NOT NULL,
+        detail TEXT NOT NULL,
+        trigger TEXT NOT NULL
+      )\`,
+    ],
+  },
+]
+
+/** What sending the digest needs of the Email Service binding (\`send_email\`). */
+export interface DigestSender {
+  send(message: {
+    from: string
+    to: string[]
+    subject: string
+    text: string
+    html: string
+    attachments: {
+      filename: string
+      type: string
+      content: Uint8Array
+      disposition: 'attachment'
+    }[]
+  }): Promise<unknown>
+}
+
+export interface DigestEnv {
+  DB: Database
+  EMAIL: DigestSender
+  /** Comma-separated recipients, set in wrangler.jsonc. */
+  DIGEST_TO: string
+  DIGEST_FROM: string
+  /** The deployed app's origin, which the browser opens: a cron has no request to read it from. */
+  APP_URL: string
+}
+
+/** Why the digest cannot be sent yet, or \`null\` when it can. */
+function missing(env: DigestEnv, origin: string): string | null {
+  const unset = [
+    ...(env.DIGEST_TO.trim() ? [] : ['DIGEST_TO']),
+    ...(env.DIGEST_FROM.trim() ? [] : ['DIGEST_FROM']),
+    ...(origin ? [] : ['APP_URL']),
+  ]
+  return unset.length > 0 ? \`Set \${unset.join(', ')} in wrangler.jsonc\` : null
+}
+
+/**
+ * Renders /report to a PDF with Browser Run and emails it to DIGEST_TO. Every run is recorded,
+ * whatever happens, so the /digest page shows why a Monday's digest did not arrive.
+ */
+export async function runDigest(
+  env: DigestEnv,
+  launch: () => Promise<ExportBrowser>,
+  trigger: DigestRun['trigger'],
+  origin = env.APP_URL,
+): Promise<DigestRun> {
+  const run = { id: crypto.randomUUID(), startedAt: new Date().toISOString(), trigger }
+  let result: DigestRun
+  const skip = missing(env, origin)
+  if (skip) {
+    result = { ...run, status: 'skipped', detail: skip }
+  } else {
+    try {
+      const pdf = await exportPage(launch, new URL('/report', origin).href, { format: 'pdf' })
+      const to = env.DIGEST_TO.split(',')
+        .map((address) => address.trim())
+        .filter(Boolean)
+      const week = run.startedAt.slice(0, 10)
+      await env.EMAIL.send({
+        from: env.DIGEST_FROM,
+        to,
+        subject: \`Weekly report, \${week}\`,
+        text: 'This week’s report is attached as a PDF.',
+        html: '<p>This week’s report is attached as a PDF.</p>',
+        attachments: [
+          {
+            filename: \`report-\${week}.pdf\`,
+            type: 'application/pdf',
+            content: pdf,
+            disposition: 'attachment',
+          },
+        ],
+      })
+      result = {
+        ...run,
+        status: 'sent',
+        detail: \`\${to.join(', ')} (\${Math.round(pdf.byteLength / 1024)} KB)\`,
+      }
+    } catch (error) {
+      console.error('[digest] failed:', error)
+      result = {
+        ...run,
+        status: 'failed',
+        detail: error instanceof Error ? error.message : String(error),
+      }
+    }
+  }
+  await migrate(env.DB, migrations)
+  await env.DB.prepare(
+    'INSERT INTO digest_runs (id, started_at, status, detail, trigger) VALUES (?, ?, ?, ?, ?)',
+  )
+    .bind(result.id, result.startedAt, result.status, result.detail.slice(0, 500), result.trigger)
+    .run()
+  return result
+}
+
+export async function listRuns(db: Database): Promise<DigestRun[]> {
+  await migrate(db, migrations)
+  return queryRows(
+    db,
+    \`SELECT id, started_at AS startedAt, status, detail, trigger FROM digest_runs
+     ORDER BY started_at DESC LIMIT 20\`,
+    [],
+    parseDigestRun,
+  )
+}
+`
+}
+
+function cfDigestRouteTsx(): string {
+  return `import { createClient } from '@cascivo/app/api'
+import {
+  Alert,
+  Badge,
+  Button,
+  EmptyState,
+  Flex,
+  Heading,
+  Text,
+  signal,
+  useSignals,
+} from '@cascivo/react'
+import { api } from '../api'
+import type { DigestRun } from '../digest'
+
+const client = createClient(api)
+const runs = signal<DigestRun[]>([])
+const sending = signal(false)
+const failure = signal<string | null>(null)
+
+async function load(): Promise<void> {
+  runs.value = await client.digestRuns().catch(() => runs.peek())
+}
+void load()
+
+async function sendNow(): Promise<void> {
+  sending.value = true
+  failure.value = null
+  try {
+    await client.runDigest()
+    await load()
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Could not send'
+  } finally {
+    sending.value = false
+  }
+}
+
+const VARIANT = { sent: 'success', skipped: 'warning', failed: 'destructive' } as const
+
+export default function Digest() {
+  useSignals()
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Weekly digest</Heading>
+        <Text muted>
+          Every Monday at 08:00 UTC, the Worker renders /report to a PDF and emails it. Each run is
+          listed here, including the ones that could not send.
+        </Text>
+      </Flex>
+      <Flex direction="horizontal">
+        <Button loading={sending.value} onClick={() => void sendNow()}>
+          Send now
+        </Button>
+      </Flex>
+      {failure.value ? (
+        <Alert variant="destructive" title="Not sent">
+          {failure.value}
+        </Alert>
+      ) : null}
+      {runs.value.length === 0 ? (
+        <EmptyState
+          title="No runs yet"
+          description="The first runs on Monday, or press Send now."
+        />
+      ) : (
+        <Flex gap={2}>
+          {runs.value.map((run) => (
+            <Flex key={run.id} direction="horizontal" align="center" gap={2} wrap>
+              <Badge variant={VARIANT[run.status]}>{run.status}</Badge>
+              <Text>{run.detail}</Text>
+              <Text size="sm" muted>
+                {new Date(run.startedAt).toLocaleString()} · {run.trigger}
+              </Text>
+            </Flex>
+          ))}
+        </Flex>
+      )}
     </Flex>
   )
 }
@@ -5793,6 +6150,27 @@ dataset, so in development the charts show what your deployed app recorded. Unti
 exist, the page says what to set.`
       : ''
   }${
+    hasExample(opts, 'digest')
+      ? `
+
+## Weekly digest (Cron Trigger)
+
+Every Monday at 08:00 UTC (\`triggers.crons\` in \`wrangler.jsonc\`), the Worker renders
+\`/report\` to a PDF with Browser Run and emails it. \`/digest\` lists each run — sent,
+skipped or failed, and why — and "Send now" runs one at once.
+
+- \`worker/digest.ts\` — \`runDigest\`: \`exportPage\` (\`@cascivo/app/export\`), then Email
+  Service with the PDF attached. Every run is recorded in D1, so a digest that did not arrive
+  says why.
+- \`worker/index.ts\` — the \`scheduled\` handler the Cron Trigger calls.
+
+Set \`DIGEST_TO\` (comma-separated), \`DIGEST_FROM\` (an address on a domain onboarded to Email
+Service) and \`APP_URL\` (the deployed app's origin: a cron has no request to read it from) in
+\`wrangler.jsonc\`. Until they are set, runs are recorded as skipped. To fire the cron in
+\`vite dev\`, open \`/cdn-cgi/handler/scheduled\`; "Send now" uses the page's own origin, so it
+needs no \`APP_URL\`. Browser Run starts a local Chrome in development.`
+      : ''
+  }${
     hasExample(opts, 'webhooks')
       ? `
 
@@ -6044,6 +6422,7 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
     ...(hasExample(opts, 'webhooks')
       ? [{ file: 'webhooks.tsx', contents: cfWebhooksRouteTsx() }]
       : []),
+    ...(hasExample(opts, 'digest') ? [{ file: 'digest.tsx', contents: cfDigestRouteTsx() }] : []),
     ...(opts.auth === 'email'
       ? [
           { file: 'account.tsx', contents: cfAccountRouteTsx() },
@@ -6100,6 +6479,12 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
         ]
       : []),
     ...(hasExample(opts, 'live') ? [{ path: 'src/ops.ts', contents: cfOpsTs() }] : []),
+    ...(hasExample(opts, 'digest')
+      ? [
+          { path: 'src/digest.ts', contents: cfDigestTs() },
+          { path: 'worker/digest.ts', contents: cfDigestWorkerTs() },
+        ]
+      : []),
     ...(hasExample(opts, 'webhooks')
       ? [
           { path: 'src/webhooks.ts', contents: cfWebhooksTs() },
@@ -6167,7 +6552,14 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
 export function buildScaffold(opts: ScaffoldOptions): ScaffoldFile[] {
   const sections = resolveSections(opts.sections)
   if (opts.framework === 'astro') return buildAstroScaffold(opts, sections)
-  if (opts.framework === 'cloudflare') return buildCloudflareScaffold(opts, sections)
+  if (opts.framework === 'cloudflare') {
+    // The digest emails the report page the export example adds, so it brings that along.
+    const examples =
+      opts.examples?.includes('digest') && !opts.examples.includes('export')
+        ? [...opts.examples, 'export' as const]
+        : opts.examples
+    return buildCloudflareScaffold({ ...opts, ...(examples ? { examples } : {}) }, sections)
+  }
   return [
     { path: 'package.json', contents: packageJson(opts) },
     { path: 'tsconfig.json', contents: tsconfig() },

@@ -1135,3 +1135,49 @@ describe('buildScaffold — cloudflare --example webhooks', () => {
     expect(worker).toContain("!new URL(request.url).pathname.startsWith('/api/webhooks/')")
   })
 })
+
+describe('buildScaffold — cloudflare --example digest', () => {
+  const build = (examples: Example[], opts: Partial<ScaffoldOptions> = {}) =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        examples,
+        ...opts,
+      }),
+    )
+  const map = build(['digest'])
+
+  it('brings the report page it emails, and a weekly Cron Trigger', () => {
+    expect(map.get('src/routes/report.tsx')).toBeDefined()
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"triggers": { "crons": ["0 8 * * 1"] }')
+    expect(wrangler).toContain('"browser": { "binding": "BROWSER" }')
+    expect(wrangler).toContain('"send_email": [{ "name": "EMAIL" }]')
+    expect(wrangler).toContain('"DIGEST_TO": ""')
+  })
+
+  it('runs the digest from the scheduled handler, and records every run', () => {
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain('async scheduled(_event: unknown, env: Env): Promise<void> {')
+    expect(worker).toContain(
+      "if (url.pathname === '/api/digest/run') return request.method === 'POST'",
+    )
+    const job = map.get('worker/digest.ts')!
+    expect(job).toContain("status: 'skipped'")
+    expect(job).toContain('INSERT INTO digest_runs')
+  })
+
+  it('shares one vars object and one Email Service binding with --auth email', () => {
+    const wrangler = build(['digest'], { auth: 'email' }).get('wrangler.jsonc')!
+    expect(wrangler.match(/"vars":/g)).toHaveLength(1)
+    expect(wrangler.match(/"send_email":/g)).toHaveLength(1)
+    expect(wrangler).toContain('"AUTH_FROM": ""')
+    expect(build(['digest'], { auth: 'email' }).get('worker/index.ts')).toContain(
+      'EMAIL: SignInSender & DigestSender',
+    )
+    for (const line of wrangler.split('\n')) expect(line.length).toBeLessThanOrEqual(100)
+  })
+})
