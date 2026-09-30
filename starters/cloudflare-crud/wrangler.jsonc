@@ -1,0 +1,19 @@
+// Cloudflare deploy config. `npm run deploy` builds and ships the SPA and
+// the Worker together. https://developers.cloudflare.com/workers/wrangler/configuration/
+{
+  "name": "cascivo-crud",
+  "main": "./worker/index.ts",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    // Client-side app: an unknown path serves index.html, and the client renders it.
+    "not_found_handling": "single-page-application",
+    // Only the API reaches the Worker; static assets are served without invoking it.
+    "run_worker_first": ["/api/*"],
+  },
+  "observability": { "enabled": true },
+  // The customers table. No database_id: wrangler creates the database on first deploy, and
+  // the Worker applies its own schema (worker/migrations.ts) on its first query.
+  "d1_databases": [{ "binding": "DB", "database_name": "cascivo-crud-db" }],
+  // Add bindings here (KV, D1, R2, Durable Objects, Workers AI) and read them from the
+  // `env` argument of the Worker's fetch handler.
+}

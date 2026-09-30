@@ -244,6 +244,16 @@ import {
   type AnalyticsDataset,
 } from '@cascivo/app/analytics'
 export const apiMetrics = defineMetrics({ dataset: 'api', blobs: ['path'], doubles: ['ms'] })
+import { defineTable, migrate, parseTableQuery, queryTable, type Database } from '@cascivo/app/db'
+export const people = defineTable({
+  table: 'people',
+  key: 'id',
+  columns: { id: {}, name: { sort: true, search: true, filter: 'text' } },
+})
+export const pageOfPeople = async (db: Database, raw: unknown) => {
+  await migrate(db, [{ id: '0001', statements: ['CREATE TABLE people (id TEXT PRIMARY KEY, name TEXT)'] }])
+  return queryTable(db, people, parseTableQuery(raw), (row) => row)
+}
 export const recordCall = (binding: AnalyticsDataset) => apiMetrics.write(binding, { path: '/', ms: 1 })
 export const totalCalls = (accountId: string, apiToken: string) =>
   queryAnalytics({ accountId, apiToken }, apiMetrics.sql('SELECT SUM(_sample_interval) AS n FROM {dataset}'), (row) =>

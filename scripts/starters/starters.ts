@@ -45,6 +45,11 @@ export const STARTERS: Starter[] = [
     project: 'cascivo-agent',
     args: ['--framework', 'cloudflare', '--example', 'agent', '--pm', 'npm'],
   },
+  {
+    name: 'cloudflare-crud',
+    project: 'cascivo-crud',
+    args: ['--framework', 'cloudflare', '--example', 'crud', '--pm', 'npm'],
+  },
 ]
 
 /** Every file under `dir`, keyed by its `/`-separated relative path. */

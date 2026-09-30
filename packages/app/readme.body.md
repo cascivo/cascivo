@@ -446,3 +446,52 @@ const routes = await queryAnalytics(
 
 `cascivo create --framework cloudflare --example usage` records every API request and
 charts the last 24 hours with `@cascivo/charts`.
+
+## D1 behind a DataTable — `@cascivo/app/db`
+
+`DataTable`'s server mode hands out one `TableQuery`: sort, search, per-column filters and
+page. `defineTable` says which columns may be sorted, searched and filtered, and `queryTable`
+turns a query into SQL. Every identifier in that SQL comes from the table definition, and
+every value is a bound parameter.
+
+```ts
+// shared
+export const customers = defineTable({
+  table: 'customers',
+  key: 'id', // the last tiebreaker, so paging is stable
+  columns: {
+    id: {},
+    name: { sort: true, search: true, filter: 'text' },
+    plan: { sort: true, filter: 'select' },
+    seats: { sort: true, filter: 'range' },
+  },
+})
+
+// src/api.ts — the query crosses the network, so it is parsed
+customers: endpoint({ method: 'POST', path: '/api/customers/query', input: parseTableQuery,
+  output: (raw) => parseTablePage(raw, parseCustomer) }),
+
+// the Worker
+await migrate(env.DB, migrations)
+return queryTable(env.DB, customers, body, parseCustomer) // { rows, total }
+
+// the page
+<DataTable server={{ totalItems: total, onQueryChange: load }} … />
+```
+
+- **A query outside the definition is refused.** Sorting or filtering by a column that does
+  not allow it, or with the wrong filter kind, throws `TableQueryError`. That is an
+  `HttpError(400)`, so `createHandler` answers 400. `parseTableQuery` bounds the page size,
+  search length and filter values.
+- **Search is literal.** `%` and `_` in the search box match themselves, not everything.
+- **`migrate(db, migrations)` lets the Worker apply its own schema.** Each migration runs once,
+  in one transaction with the row that records it, on the first query of each isolate. A fresh
+  deploy, the Deploy button and a temporary account need no migration step, and two isolates
+  racing on a new database is safe. If you prefer `wrangler d1 migrations apply`, use that
+  instead.
+- `queryRows(db, sql, params, parseRow)` runs any other statement through a parser.
+- The D1 binding fits `Database` by shape. Hyperdrive or any client with
+  `prepare`/`bind`/`all` fits too.
+
+`cascivo create --framework cloudflare --example crud` scaffolds a customers table with
+create, edit and delete.

@@ -26,6 +26,7 @@ const ENTRIES = [
   { name: 'uploads-server', src: 'src/uploads-server.ts' },
   { name: 'export', src: 'src/export.ts' },
   { name: 'analytics', src: 'src/analytics.ts' },
+  { name: 'db', src: 'src/db.ts' },
   { name: 'vite', src: 'src/vite.ts' },
 ]
 

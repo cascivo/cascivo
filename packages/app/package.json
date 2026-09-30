@@ -79,6 +79,11 @@
       "import": "./dist/analytics.js",
       "default": "./dist/analytics.js"
     },
+    "./db": {
+      "types": "./dist/db.d.ts",
+      "import": "./dist/db.js",
+      "default": "./dist/db.js"
+    },
     "./sync-server": {
       "types": "./dist/sync-server.d.ts",
       "import": "./dist/sync-server.js",

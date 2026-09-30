@@ -6778,6 +6778,86 @@
           "stringField": "declare function stringField(row: unknown, name: string): string"
         }
       },
+      "./db": {
+        "values": [
+          "TableQueryError",
+          "defineTable",
+          "migrate",
+          "parseTablePage",
+          "parseTableQuery",
+          "queryRows",
+          "queryTable"
+        ],
+        "types": [
+          "Database",
+          "DbStatement",
+          "Migration",
+          "SortDirection",
+          "Table",
+          "TableColumn",
+          "TableFilter",
+          "TablePage",
+          "TableQuery",
+          "TableSort"
+        ],
+        "declarations": {
+          "Database": {
+            "prepare": "(sql: string): DbStatement",
+            "batch": "(statements: DbStatement[]): Promise<unknown[]>"
+          },
+          "DbStatement": {
+            "bind": "(...values: unknown[]): DbStatement",
+            "all": "(): Promise<{ results: unknown[]; }>",
+            "first": "(): Promise<unknown>",
+            "run": "(): Promise<unknown>"
+          },
+          "defineTable": "declare function defineTable<const C extends string>(definition: { table: string; key: NoInfer<C>; columns: Record<C, TableColumn>; }): Table<C>",
+          "migrate": "declare function migrate(db: Database, migrations: Migration[]): Promise<void>",
+          "Migration": {
+            "id": "string",
+            "statements": "string[]"
+          },
+          "parseTablePage": "declare function parseTablePage<Row>(raw: unknown, parseRow: (raw: unknown) => Row): TablePage<Row>",
+          "parseTableQuery": "declare function parseTableQuery(raw: unknown): TableQuery",
+          "queryRows": "declare function queryRows<Row>(db: Database, sql: string, params: unknown[], parseRow: (raw: unknown) => Row): Promise<Row[]>",
+          "queryTable": "declare function queryTable<C extends string, Row>(db: Database, table: Table<C>, query: TableQuery, parseRow: (raw: unknown) => Row): Promise<TablePage<Row>>",
+          "SortDirection": "type = 'asc' | 'desc'",
+          "Table": {
+            "(extends)": "<C extends string>",
+            "readonly table": "string",
+            "readonly key": "C",
+            "readonly columns": "Readonly<Record<C, TableColumn>>",
+            "toSql": "(query: TableQuery): { sql: string; params: unknown[]; countSql: string; countParams: unknown[]; }"
+          },
+          "TableColumn": {
+            "sort?": "boolean",
+            "search?": "boolean",
+            "filter?": "'text' | 'select' | 'range'"
+          },
+          "TableFilter": "type = { kind: 'text'; value: string; } | { kind: 'select'; values: string[]; } | { kind: 'range'; min?: number; max?: number; }",
+          "TablePage": {
+            "(extends)": "<Row>",
+            "rows": "Row[]",
+            "total": "number"
+          },
+          "TableQuery": {
+            "sort": "TableSort | undefined",
+            "search": "string",
+            "filters": "Record<string, TableFilter>",
+            "page": "number",
+            "pageSize": "number"
+          },
+          "TableQueryError": {
+            "constructor": "(message: string)",
+            "(kind)": "class"
+          },
+          "TableSort": {
+            "key": "string",
+            "direction": "SortDirection",
+            "thenBy?": "{ key: string; direction: SortDirection; }[]"
+          }
+        }
+      },
       "./sync-server": {
         "values": ["SyncRoom", "roomResponse", "writeRoom"],
         "types": ["HibernatableWebSocket", "RoomNamespace", "RoomWrite", "SyncRoomState"],

@@ -776,3 +776,42 @@ describe('buildScaffold — cloudflare --example usage', () => {
     expect(map.get('worker/index.ts')).toContain('fetch: handleAndRecord,')
   })
 })
+
+describe('buildScaffold — cloudflare --example crud', () => {
+  const map = fileMap(
+    buildScaffold({
+      name: 'Edge App',
+      framework: 'cloudflare',
+      theme: 'light',
+      sections: ['Dashboard'],
+      examples: ['crud'],
+    }),
+  )
+
+  it('binds a D1 database the Worker migrates itself', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain(
+      '"d1_databases": [{ "binding": "DB", "database_name": "edge-app-db" }]',
+    )
+    expect(wrangler).not.toContain('"database_id"')
+    expect(map.get('worker/customers.ts')).toContain('await migrate(db, migrations)')
+    expect(map.get('worker/migrations.ts')).toContain("id: '0001_customers'")
+  })
+
+  it('queries through the table definition, with the query parsed at the boundary', () => {
+    const api = map.get('src/api.ts')!
+    expect(api).toContain('input: parseTableQuery')
+    expect(api).toContain("path: '/api/customers/:id'")
+    expect(map.get('worker/customers.ts')).toContain(
+      'queryTable(await ready(db), customersTable, query, parseCustomer)',
+    )
+    expect(map.get('src/routes/customers.tsx')).toContain('server={{')
+  })
+
+  it('binds every value in the statements it writes', () => {
+    const store = map.get('worker/customers.ts')!
+    for (const line of store.split('\n').filter((l) => /(INSERT|UPDATE|DELETE)/.test(l))) {
+      expect(line).not.toContain('${')
+    }
+  })
+})

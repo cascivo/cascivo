@@ -16,6 +16,7 @@ export default defineConfig({
         'uploads-server': './src/uploads-server.ts',
         export: './src/export.ts',
         analytics: './src/analytics.ts',
+        db: './src/db.ts',
         vite: './src/vite.ts',
       },
       formats: ['es'],
@@ -36,7 +37,7 @@ export default defineConfig({
         // only it is a client module; `api` and `sync-server` run in Workers, `sync` holds
         // no components, `flags` runs on both sides, `jobs` and `uploads` run in the browser
         // and their `-server` twins in the Worker,
-        // `export` in both, `analytics` in the Worker, and `vite` runs in Node (see packages/core/vite.config.ts).
+        // `export` in both, `analytics` and `db` in the Worker, and `vite` runs in Node (see packages/core/vite.config.ts).
         banner: (chunk: { name?: string; isEntry?: boolean }) =>
           chunk.isEntry && chunk.name === 'index' ? "'use client';" : '',
       },

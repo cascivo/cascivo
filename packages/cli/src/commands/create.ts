@@ -55,9 +55,18 @@ export type Runtime = 'preact' | 'react'
 export const RUNTIMES = ['preact', 'react'] as const
 
 /** Optional demo pages for `--framework cloudflare`. */
-export type Example = 'board' | 'agent' | 'notes' | 'import' | 'files' | 'export' | 'usage'
+export type Example = 'board' | 'agent' | 'notes' | 'import' | 'files' | 'export' | 'usage' | 'crud'
 
-export const EXAMPLES = ['board', 'agent', 'notes', 'import', 'files', 'export', 'usage'] as const
+export const EXAMPLES = [
+  'board',
+  'agent',
+  'notes',
+  'import',
+  'files',
+  'export',
+  'usage',
+  'crud',
+] as const
 
 function isExample(value: string): value is Example {
   return (EXAMPLES as readonly string[]).includes(value)
@@ -1244,6 +1253,13 @@ ${jsoncArray('  ', 'migrations', [`{ "tag": "v1", "new_sqlite_classes": [${objec
   "images": { "binding": "IMAGES" },`
       : ''
   }${
+    hasExample(opts, 'crud')
+      ? `
+  // The customers table. No database_id: wrangler creates the database on first deploy, and
+  // the Worker applies its own schema (worker/migrations.ts) on its first query.
+  "d1_databases": [{ "binding": "DB", "database_name": "${packageName(opts.name)}-db" }],`
+      : ''
+  }${
     hasExample(opts, 'usage')
       ? `
   // Every API request is recorded here (worker/index.ts); /usage reads it back.
@@ -1321,8 +1337,9 @@ function cfApiTs(opts: ScaffoldOptions): string {
   const imports = hasExample(opts, 'import')
   const files = hasExample(opts, 'files')
   const usage = hasExample(opts, 'usage')
-  return `import { defineApi, ${imports || files || usage ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
-${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}
+  const crud = hasExample(opts, 'crud')
+  return `import { defineApi, ${imports || files || usage || crud ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
+${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}
 /**
  * The contract between the browser and the Worker. Both import this file: the Worker serves
  * it with \`createHandler\`, the app calls it with \`createClient\`, and a change that breaks
@@ -1381,6 +1398,30 @@ export const api = defineApi({
   // The last 24 hours of API usage, read from Analytics Engine by the Worker.
   usage: endpoint({ method: 'GET', path: '/api/usage', output: parseUsageReport }),`
       : ''
+  }${
+    crud
+      ? `
+  // One page of customers for DataTable's query (sort, search, filters, page).
+  customers: endpoint({
+    method: 'POST',
+    path: '/api/customers/query',
+    input: parseTableQuery,
+    output: (raw) => parseTablePage(raw, parseCustomer),
+  }),
+  createCustomer: endpoint({
+    method: 'POST',
+    path: '/api/customers',
+    input: parseCustomerInput,
+    output: parseCustomer,
+  }),
+  updateCustomer: endpoint({
+    method: 'PUT',
+    path: '/api/customers/:id',
+    input: parseCustomerInput,
+    output: parseCustomer,
+  }),
+  deleteCustomer: endpoint({ method: 'DELETE', path: '/api/customers/:id', output: parseDeleted }),`
+      : ''
   }
 })
 `
@@ -1393,7 +1434,8 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const files = hasExample(opts, 'files')
   const exports = hasExample(opts, 'export')
   const usage = hasExample(opts, 'usage')
-  return `${usage ? `import type { AnalyticsDataset } from '@cascivo/app/analytics'\n` : ''}${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler } from '@cascivo/app/api'
+  const crud = hasExample(opts, 'crud')
+  return `${usage ? `import type { AnalyticsDataset } from '@cascivo/app/analytics'\n` : ''}${crud ? `import type { Database } from '@cascivo/app/db'\n` : ''}${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler } from '@cascivo/app/api'
 ${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
     files
       ? `import { handleUploads, listUploads } from '@cascivo/app/uploads-server'
@@ -1414,7 +1456,7 @@ import type { BrowserWorker } from '@cloudflare/puppeteer'
       : ''
   }${agent ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${
+${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${
     rooms
       ? `
 // The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
@@ -1442,8 +1484,8 @@ export { ImportJob } from './import-job'
  * here; every handler receives them as \`env\`.
  */
 ${
-  rooms || agent || files || exports || usage
-    ? `export interface Env {${agent ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}
+  rooms || agent || files || exports || usage || crud
+    ? `export interface Env {${agent ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${crud ? '\n  DB: Database' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -1484,6 +1526,14 @@ const handleApi = createHandler<typeof api, Env>(api, {
         ? { accountId: env.CF_ACCOUNT_ID, apiToken: env.CF_API_TOKEN }
         : null,
     ),`
+      : ''
+  }${
+    crud
+      ? `
+  customers: ({ body, env }) => customerStore.listCustomers(env.DB, body),
+  createCustomer: ({ body, env }) => customerStore.createCustomer(env.DB, body),
+  updateCustomer: ({ params, body, env }) => customerStore.updateCustomer(env.DB, params.id, body),
+  deleteCustomer: ({ params, env }) => customerStore.deleteCustomer(env.DB, params.id),`
       : ''
   }
 })
@@ -1689,6 +1739,7 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
   if (hasExample(opts, 'files')) items.push({ label: 'Files', href: '/files' })
   if (hasExample(opts, 'export')) items.push({ label: 'Report', href: '/report' })
   if (hasExample(opts, 'usage')) items.push({ label: 'Usage', href: '/usage' })
+  if (hasExample(opts, 'crud')) items.push({ label: 'Customers', href: '/customers' })
   const navItems = items
     .map(
       (item) => `    {
@@ -3328,6 +3379,458 @@ export default function Usage() {
 `
 }
 
+/* --- `--example crud`: a D1 table behind DataTable's server mode (@cascivo/app/db) --- */
+
+function cfCustomersTs(): string {
+  return `import { defineTable } from '@cascivo/app/db'
+
+/**
+ * The customers table, shared by the Worker (which queries it) and the page (which shows
+ * it). The columns say what the table may sort, search and filter by — anything else in a
+ * query is refused before any SQL is built.
+ */
+export const customersTable = defineTable({
+  table: 'customers',
+  key: 'id',
+  columns: {
+    id: {},
+    name: { sort: true, search: true, filter: 'text' },
+    email: { sort: true, search: true },
+    plan: { sort: true, filter: 'select' },
+    seats: { sort: true, filter: 'range' },
+    created_at: { sort: true },
+  },
+})
+
+export const PLANS = ['free', 'team', 'enterprise'] as const
+export type Plan = (typeof PLANS)[number]
+
+export interface Customer {
+  id: string
+  name: string
+  email: string
+  plan: Plan
+  seats: number
+  created_at: string
+}
+
+/** What the form sends: a customer without the fields the Worker sets. */
+export type CustomerInput = Omit<Customer, 'id' | 'created_at'>
+
+const EMAIL = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/
+
+function isPlan(value: unknown): value is Plan {
+  return typeof value === 'string' && (PLANS as readonly string[]).includes(value)
+}
+
+/** A form submission crosses the network: checked on the Worker before it is stored. */
+export function parseCustomerInput(raw: unknown): CustomerInput {
+  if (typeof raw !== 'object' || raw === null) throw new Error('Send a customer')
+  const { name, email, plan, seats } = raw as Record<string, unknown>
+  if (typeof name !== 'string' || name.trim().length === 0 || name.length > 120) {
+    throw new Error('A name is 1 to 120 characters')
+  }
+  if (typeof email !== 'string' || !EMAIL.test(email) || email.length > 200) {
+    throw new Error('That is not an email address')
+  }
+  if (!isPlan(plan)) throw new Error(\`The plan is one of \${PLANS.join(', ')}\`)
+  if (typeof seats !== 'number' || !Number.isInteger(seats) || seats < 1 || seats > 100_000) {
+    throw new Error('Seats is a whole number from 1')
+  }
+  return { name: name.trim(), email: email.trim().toLowerCase(), plan, seats }
+}
+
+/** A row from D1, or from the Worker's response. */
+export function parseCustomer(raw: unknown): Customer {
+  if (typeof raw === 'object' && raw !== null) {
+    const { id, created_at } = raw as Record<string, unknown>
+    if (typeof id === 'string' && typeof created_at === 'string') {
+      return { id, created_at, ...parseCustomerInput(raw) }
+    }
+  }
+  throw new Error('Malformed customer')
+}
+
+export function parseDeleted(raw: unknown): { id: string } {
+  if (typeof raw === 'object' && raw !== null) {
+    const { id } = raw as Record<string, unknown>
+    if (typeof id === 'string') return { id }
+  }
+  throw new Error('Malformed delete result')
+}
+`
+}
+
+function cfCustomersPageTs(): string {
+  return `import { createClient } from '@cascivo/app/api'
+import type { TableQuery } from '@cascivo/app/db'
+import { signal } from '@cascivo/react'
+import { api } from './api'
+import type { Customer, CustomerInput, Plan } from './customers'
+
+const client = createClient(api)
+
+export const PAGE_SIZE = 10
+
+/** The current page, as the Worker returned it for \`query\`. */
+export const rows = signal<Customer[]>([])
+export const total = signal(0)
+export const loadError = signal<string | null>(null)
+
+/** The plan filter above the table; '' is every plan. */
+export const plan = signal<Plan | ''>('')
+
+let query: TableQuery = { sort: undefined, search: '', filters: {}, page: 1, pageSize: PAGE_SIZE }
+let latest = 0
+
+/** Fetches the page for \`next\` (or the current query again); a slower, older answer is dropped. */
+export async function load(next: TableQuery = query): Promise<void> {
+  query = next
+  const request = ++latest
+  const filters = plan.value
+    ? { ...next.filters, plan: { kind: 'select' as const, values: [plan.value] } }
+    : next.filters
+  try {
+    const page = await client.customers({ body: { ...next, filters } })
+    if (request !== latest) return
+    rows.value = page.rows
+    total.value = page.total
+    loadError.value = null
+  } catch (error) {
+    if (request === latest)
+      loadError.value = error instanceof Error ? error.message : 'Could not load'
+  }
+}
+
+export function setPlan(next: Plan | ''): void {
+  plan.value = next
+  void load({ ...query, page: 1 })
+}
+
+export async function save(id: string | null, input: CustomerInput): Promise<void> {
+  if (id) await client.updateCustomer({ params: { id }, body: input })
+  else await client.createCustomer({ body: input })
+  await load()
+}
+
+export async function remove(id: string): Promise<void> {
+  await client.deleteCustomer({ params: { id } })
+  await load()
+}
+`
+}
+
+function cfCustomersWorkerTs(): string {
+  return `import { HttpError } from '@cascivo/app/api'
+import { migrate, queryTable } from '@cascivo/app/db'
+import type { Database, TablePage, TableQuery } from '@cascivo/app/db'
+import { customersTable, parseCustomer } from '../src/customers'
+import type { Customer, CustomerInput } from '../src/customers'
+import { migrations } from './migrations'
+
+/** Every handler starts here: the schema is applied once per isolate, before the first query. */
+async function ready(db: Database): Promise<Database> {
+  await migrate(db, migrations)
+  return db
+}
+
+/** A second customer with the same email is a conflict the form can show, not a 500. */
+function uniqueEmail(error: unknown): never {
+  if (/UNIQUE/i.test(String(error))) throw new HttpError(409, 'A customer with that email exists')
+  throw error
+}
+
+export async function listCustomers(db: Database, query: TableQuery): Promise<TablePage<Customer>> {
+  return queryTable(await ready(db), customersTable, query, parseCustomer)
+}
+
+export async function createCustomer(db: Database, input: CustomerInput): Promise<Customer> {
+  const customer: Customer = {
+    id: crypto.randomUUID(),
+    created_at: new Date().toISOString(),
+    ...input,
+  }
+  await (
+    await ready(db)
+  )
+    .prepare(
+      'INSERT INTO customers (id, name, email, plan, seats, created_at) VALUES (?, ?, ?, ?, ?, ?)',
+    )
+    .bind(customer.id, input.name, input.email, input.plan, input.seats, customer.created_at)
+    .run()
+    .catch(uniqueEmail)
+  return customer
+}
+
+export async function updateCustomer(
+  db: Database,
+  id: string,
+  input: CustomerInput,
+): Promise<Customer> {
+  const row = await (
+    await ready(db)
+  )
+    .prepare(
+      'UPDATE customers SET name = ?, email = ?, plan = ?, seats = ? WHERE id = ? RETURNING *',
+    )
+    .bind(input.name, input.email, input.plan, input.seats, id)
+    .first()
+    .catch(uniqueEmail)
+  if (!row) throw new HttpError(404, 'No such customer')
+  return parseCustomer(row)
+}
+
+export async function deleteCustomer(db: Database, id: string): Promise<{ id: string }> {
+  const row = await (
+    await ready(db)
+  )
+    .prepare('DELETE FROM customers WHERE id = ? RETURNING id')
+    .bind(id)
+    .first()
+  if (!row) throw new HttpError(404, 'No such customer')
+  return { id }
+}
+`
+}
+
+function cfMigrationsTs(): string {
+  return `import type { Migration } from '@cascivo/app/db'
+
+const FIRST = [
+  'Ada',
+  'Grace',
+  'Alan',
+  'Edsger',
+  'Barbara',
+  'Donald',
+  'Margaret',
+  'Ken',
+  'Frances',
+  'Tim',
+]
+const LAST = ['Labs', 'Systems', 'Works', 'Studio', 'Group', 'Cloud']
+const PLANS = ['free', 'team', 'enterprise']
+
+/** 60 sample customers, so the table has pages to sort, search and filter from the start. */
+function seed(): string {
+  const rows = Array.from({ length: 60 }, (_, i) => {
+    const name = \`\${FIRST[i % FIRST.length]} \${LAST[i % LAST.length]}\`
+    const email = \`\${name.toLowerCase().replace(' ', '.')}\${i}@example.com\`
+    const day = String((i % 28) + 1).padStart(2, '0')
+    return \`('seed-\${i}', '\${name}', '\${email}', '\${PLANS[i % 3]}', \${((i * 37) % 250) + 1}, '2026-0\${(i % 9) + 1}-\${day}')\`
+  })
+  return \`INSERT INTO customers (id, name, email, plan, seats, created_at) VALUES \${rows.join(', ')}\`
+}
+
+/**
+ * The schema, applied by the Worker itself on its first query (\`migrate\` from
+ * \`@cascivo/app/db\`): a fresh deploy, a Deploy button or a temporary account needs no step.
+ * Append new migrations; never edit one that has shipped.
+ */
+export const migrations: Migration[] = [
+  {
+    id: '0001_customers',
+    statements: [
+      \`CREATE TABLE customers (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        email TEXT NOT NULL UNIQUE,
+        plan TEXT NOT NULL,
+        seats INTEGER NOT NULL,
+        created_at TEXT NOT NULL
+      )\`,
+      'CREATE INDEX customers_plan ON customers (plan)',
+      seed(),
+    ],
+  },
+]
+`
+}
+
+function cfCustomersRouteTsx(): string {
+  return `import type { Column } from '@cascivo/react'
+import {
+  Badge,
+  Button,
+  DataTable,
+  Flex,
+  Heading,
+  Input,
+  Modal,
+  NumberInput,
+  Select,
+  Text,
+  signal,
+  useSignals,
+} from '@cascivo/react'
+import { PLANS } from '../customers'
+import type { Customer, CustomerInput, Plan } from '../customers'
+import {
+  PAGE_SIZE,
+  load,
+  loadError,
+  plan,
+  remove,
+  rows,
+  save,
+  setPlan,
+  total,
+} from '../customers-page'
+
+/** The customer in the form: \`id\` null for a new one. */
+const editing = signal<{ id: string | null; draft: CustomerInput } | null>(null)
+const formError = signal<string | null>(null)
+const saving = signal(false)
+
+void load()
+
+const COLUMNS: Column<Customer>[] = [
+  { key: 'name', header: 'Name', sortable: true, filter: 'text' },
+  { key: 'email', header: 'Email', sortable: true },
+  {
+    key: 'plan',
+    header: 'Plan',
+    sortable: true,
+    render: (row) => (
+      <Badge variant={row.plan === 'enterprise' ? 'success' : 'secondary'}>{row.plan}</Badge>
+    ),
+  },
+  { key: 'seats', header: 'Seats', sortable: true, align: 'end', filter: 'range' },
+  {
+    key: 'created_at',
+    header: 'Since',
+    sortable: true,
+    render: (row) => row.created_at.slice(0, 10),
+  },
+]
+
+function edit(customer: Customer | null) {
+  formError.value = null
+  editing.value = customer
+    ? {
+        id: customer.id,
+        draft: {
+          name: customer.name,
+          email: customer.email,
+          plan: customer.plan,
+          seats: customer.seats,
+        },
+      }
+    : { id: null, draft: { name: '', email: '', plan: 'team', seats: 5 } }
+}
+
+function change(patch: Partial<CustomerInput>) {
+  if (editing.value)
+    editing.value = { ...editing.value, draft: { ...editing.value.draft, ...patch } }
+}
+
+async function submit() {
+  if (!editing.value) return
+  saving.value = true
+  formError.value = null
+  try {
+    await save(editing.value.id, editing.value.draft)
+    editing.value = null
+  } catch (error) {
+    // The Worker's message: "A customer with that email exists", "That is not an email address"…
+    formError.value = error instanceof Error ? error.message : 'Could not save'
+  } finally {
+    saving.value = false
+  }
+}
+
+function CustomerForm() {
+  useSignals()
+  const current = editing.value
+  if (!current) return null
+  const { draft } = current
+  return (
+    <Modal
+      open
+      onClose={() => (editing.value = null)}
+      title={current.id ? 'Edit customer' : 'New customer'}
+      footer={
+        <Flex direction="horizontal" gap={2} justify="end">
+          <Button variant="ghost" onClick={() => (editing.value = null)}>
+            Cancel
+          </Button>
+          <Button onClick={() => void submit()} loading={saving.value}>
+            Save
+          </Button>
+        </Flex>
+      }
+    >
+      <Flex gap={3}>
+        <Input label="Name" value={draft.name} onChange={(e) => change({ name: e.target.value })} />
+        <Input
+          label="Email"
+          type="email"
+          value={draft.email}
+          onChange={(e) => change({ email: e.target.value })}
+        />
+        <Select
+          label="Plan"
+          value={draft.plan}
+          options={PLANS.map((p) => ({ value: p, label: p }))}
+          onChange={(e) => change({ plan: e.target.value as Plan })}
+        />
+        <NumberInput
+          label="Seats"
+          min={1}
+          value={draft.seats}
+          onValueChange={(v) => change({ seats: v ?? 1 })}
+        />
+        {formError.value ? <Text muted>{formError.value}</Text> : null}
+      </Flex>
+    </Modal>
+  )
+}
+
+export default function Customers() {
+  useSignals()
+  return (
+    <Flex gap={4}>
+      <Flex direction="horizontal" align="center" justify="between" wrap gap={3}>
+        <Flex gap={1}>
+          <Heading level={1}>Customers</Heading>
+          <Text muted>
+            A D1 table behind DataTable's server mode: sorting, search, filters and paging all run
+            as SQL in the Worker.
+          </Text>
+        </Flex>
+        <Flex direction="horizontal" align="center" gap={2}>
+          <Select
+            ariaLabel="Plan"
+            value={plan.value}
+            options={[
+              { value: '', label: 'Every plan' },
+              ...PLANS.map((p) => ({ value: p, label: p })),
+            ]}
+            onChange={(e) => setPlan(e.target.value as Plan | '')}
+          />
+          <Button onClick={() => edit(null)}>New customer</Button>
+        </Flex>
+      </Flex>
+      {loadError.value ? <Text muted>{loadError.value}</Text> : null}
+      <DataTable
+        columns={COLUMNS}
+        rows={rows.value}
+        getRowId={(row) => row.id}
+        searchable
+        pagination={{ pageSize: PAGE_SIZE }}
+        server={{ totalItems: total.value, onQueryChange: (query) => void load(query) }}
+        rowActions={(row) => [
+          { id: 'edit', label: 'Edit', onSelect: () => edit(row) },
+          { id: 'delete', label: 'Delete', destructive: true, onSelect: () => void remove(row.id) },
+        ]}
+      />
+      <CustomerForm />
+    </Flex>
+  )
+}
+`
+}
+
 function cfPrettierIgnore(): string {
   return `${prettierIgnore()}# Rewritten by @cascivo/app/vite whenever a route file changes.
 src/routes.gen.ts
@@ -3538,6 +4041,27 @@ dataset, so in development the charts show what your deployed app recorded. Unti
 exist, the page says what to set.`
       : ''
   }${
+    hasExample(opts, 'crud')
+      ? `
+
+## Customers (D1)
+
+\`/customers\` is a D1 table behind \`DataTable\`'s server mode: sorting, search, the name and
+seats filters, and paging all run as SQL in the Worker, and the page shows one page at a time.
+
+- \`src/customers.ts\` — \`defineTable\` (\`@cascivo/app/db\`) lists what may be sorted, searched and
+  filtered. \`queryTable\` builds SQL from that list only, with every value a bound parameter:
+  a query for any other column is refused with a 400.
+- \`worker/migrations.ts\` — the schema and 60 sample rows. The Worker applies them itself on its
+  first query (\`migrate\`), so a fresh deploy, the Deploy button and \`deploy:preview\` need no
+  migration step. Append migrations; never edit one that has shipped.
+- \`worker/customers.ts\` — create, update and delete, each checked by \`parseCustomerInput\`.
+
+D1 works on a temporary account, so \`deploy:preview\` shares the table with no sign-up. If you
+prefer wrangler's own migrations (\`wrangler d1 migrations apply\`), move the SQL into
+\`migrations/\` and drop the \`migrate\` call.`
+      : ''
+  }${
     hasExample(opts, 'agent')
       ? `
 
@@ -3635,6 +4159,9 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
     ...(hasExample(opts, 'files') ? [{ file: 'files.tsx', contents: cfFilesRouteTsx() }] : []),
     ...(hasExample(opts, 'export') ? [{ file: 'report.tsx', contents: cfReportRouteTsx() }] : []),
     ...(hasExample(opts, 'usage') ? [{ file: 'usage.tsx', contents: cfUsageRouteTsx() }] : []),
+    ...(hasExample(opts, 'crud')
+      ? [{ file: 'customers.tsx', contents: cfCustomersRouteTsx() }]
+      : []),
   ]
   return [
     { path: 'package.json', contents: cfPackageJson(opts) },
@@ -3674,6 +4201,14 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
           { path: 'src/import-job.ts', contents: cfImportJobTs() },
           { path: 'src/import-page.ts', contents: cfImportPageTs() },
           { path: 'worker/import-job.ts', contents: cfImportWorkflowTs() },
+        ]
+      : []),
+    ...(hasExample(opts, 'crud')
+      ? [
+          { path: 'src/customers.ts', contents: cfCustomersTs() },
+          { path: 'src/customers-page.ts', contents: cfCustomersPageTs() },
+          { path: 'worker/customers.ts', contents: cfCustomersWorkerTs() },
+          { path: 'worker/migrations.ts', contents: cfMigrationsTs() },
         ]
       : []),
     ...(hasExample(opts, 'usage')
