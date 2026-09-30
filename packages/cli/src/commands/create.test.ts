@@ -725,3 +725,54 @@ describe('buildScaffold — cloudflare --example export', () => {
     expect(wrangler).toContain("// The Agents SDK and Cloudflare's puppeteer use Node.js APIs.")
   })
 })
+
+describe('buildScaffold — cloudflare --example usage', () => {
+  const map = fileMap(
+    buildScaffold({
+      name: 'Edge App',
+      framework: 'cloudflare',
+      theme: 'light',
+      sections: ['Dashboard'],
+      examples: ['usage'],
+    }),
+  )
+
+  it('records every API request into a dataset named after the app', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('{ "binding": "USAGE", "dataset": "edge_app_usage" }')
+    expect(map.get('src/usage.ts')).toContain("dataset: 'edge_app_usage'")
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain('usageMetrics.write(env.USAGE, {')
+    // With another example the fetch handler routes first, then records the API call.
+    const withFiles = fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        examples: ['usage', 'files'],
+      }),
+    )
+    expect(withFiles.get('worker/index.ts')).toContain('return handleAndRecord(request, env)')
+  })
+
+  it('reads usage back only with the secrets, and counts sampled rows', () => {
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain('env.CF_ACCOUNT_ID && env.CF_API_TOKEN')
+    const queries = map.get('worker/usage.ts')!
+    expect(queries).toContain('SUM(_sample_interval)')
+    // Code lines only: the comments say why COUNT() is wrong.
+    const code = queries
+      .split('\n')
+      .filter((line) => !/^\s*(\*|\/\*\*|\/\/)/.test(line))
+      .join('\n')
+    expect(code).not.toMatch(/COUNT\(/)
+    const pkg = JSON.parse(map.get('package.json')!) as { dependencies: Record<string, string> }
+    expect(pkg.dependencies['@cascivo/charts']).toMatch(/^\d/)
+  })
+
+  it('records through the plain fetch handler too', () => {
+    // No other example: the Worker's default export is the recording handler itself.
+    expect(map.get('worker/index.ts')).toContain('fetch: handleAndRecord,')
+  })
+})

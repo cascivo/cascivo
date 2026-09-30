@@ -74,6 +74,11 @@
       "import": "./dist/export.js",
       "default": "./dist/export.js"
     },
+    "./analytics": {
+      "types": "./dist/analytics.d.ts",
+      "import": "./dist/analytics.js",
+      "default": "./dist/analytics.js"
+    },
     "./sync-server": {
       "types": "./dist/sync-server.d.ts",
       "import": "./dist/sync-server.js",

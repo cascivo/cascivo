@@ -425,6 +425,46 @@ const pdf = await exportPage(() => puppeteer.launch(env.BROWSER), `${env.APP_URL
 `cascivo create --framework cloudflare --example export` scaffolds a report page with
 "Download PDF" and "Download PNG".
 
+## Usage analytics — `@cascivo/app/analytics`
+
+Metrics in Workers Analytics Engine. Analytics Engine stores values by position (`blob1`,
+`double2`), which drifts: a writer swaps two blobs, a query reads the wrong column.
+`defineMetrics` names the columns once, and both writes and queries go through the names.
+
+```ts
+export const usage = defineMetrics({
+  dataset: 'app_usage',
+  blobs: ['path', 'method'],
+  doubles: ['status', 'duration_ms'],
+  index: 'path',
+})
+
+// the Worker — writing needs only the binding
+usage.write(env.USAGE, { path, method, status: response.status, duration_ms })
+
+// reading goes over the SQL API, with an account token kept as a Worker secret
+const routes = await queryAnalytics(
+  { accountId: env.CF_ACCOUNT_ID, apiToken: env.CF_API_TOKEN },
+  usage.sql(
+    `SELECT {path} AS path, SUM(_sample_interval) AS requests FROM {dataset} GROUP BY path`,
+  ),
+  (row) => ({ path: stringField(row, 'path'), requests: numberField(row, 'requests') }),
+)
+```
+
+- **`usage.sql` substitutes names, not values.** `{path}` becomes `blob1`, and `{dataset}`
+  becomes the table name. Put no request data in a query: it is not a parameterized
+  statement.
+- **Count with `SUM(_sample_interval)`.** Analytics Engine samples at volume, and each row
+  stands for `_sample_interval` events.
+- **Rows are parsed.** `numberField` accepts the string form Analytics Engine uses for 64-bit
+  integers. `stringField` and your own parsers cover the rest.
+- A write fills a missing blob with `''` and a missing double with `0`, and cuts each blob to
+  1 KB so a point stays inside Analytics Engine's limits.
+
+`cascivo create --framework cloudflare --example usage` records every API request and
+charts the last 24 hours with `@cascivo/charts`.
+
 ## Install
 
 ```sh

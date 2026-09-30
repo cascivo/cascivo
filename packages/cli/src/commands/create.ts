@@ -55,9 +55,9 @@ export type Runtime = 'preact' | 'react'
 export const RUNTIMES = ['preact', 'react'] as const
 
 /** Optional demo pages for `--framework cloudflare`. */
-export type Example = 'board' | 'agent' | 'notes' | 'import' | 'files' | 'export'
+export type Example = 'board' | 'agent' | 'notes' | 'import' | 'files' | 'export' | 'usage'
 
-export const EXAMPLES = ['board', 'agent', 'notes', 'import', 'files', 'export'] as const
+export const EXAMPLES = ['board', 'agent', 'notes', 'import', 'files', 'export', 'usage'] as const
 
 function isExample(value: string): value is Example {
   return (EXAMPLES as readonly string[]).includes(value)
@@ -1066,6 +1066,8 @@ function cfPackageJson(opts: ScaffoldOptions): string {
       '@cascivo/themes': V['@cascivo/themes']!,
       '@preact/signals-react': SIGNALS_PEER,
       ...(preact ? { preact: '^10.29.0' } : { react: '^19.0.0', 'react-dom': '^19.0.0' }),
+      // The /usage page's charts.
+      ...(hasExample(opts, 'usage') ? { '@cascivo/charts': V['@cascivo/charts']! } : {}),
       // The /report page's PDF/PNG export drives Browser Run through Cloudflare's puppeteer.
       ...(hasExample(opts, 'export') ? { '@cloudflare/puppeteer': '^1.4.0' } : {}),
       // The /notes page keeps its room in IndexedDB.
@@ -1242,6 +1244,12 @@ ${jsoncArray('  ', 'migrations', [`{ "tag": "v1", "new_sqlite_classes": [${objec
   "images": { "binding": "IMAGES" },`
       : ''
   }${
+    hasExample(opts, 'usage')
+      ? `
+  // Every API request is recorded here (worker/index.ts); /usage reads it back.
+  "analytics_engine_datasets": [{ "binding": "USAGE", "dataset": "${usageDataset(opts)}" }],`
+      : ''
+  }${
     hasExample(opts, 'import')
       ? `
   // The CSV import runs as a Workflow (worker/import-job.ts); its progress is a room.
@@ -1280,6 +1288,13 @@ function hasExample(opts: ScaffoldOptions, example: Example): boolean {
  * Examples that live in `SyncRoom`s: the board and the notes (at /api/rooms/:name), and the
  * import's job progress (a read-only room at /api/jobs/:id).
  */
+/** The Analytics Engine dataset for `--example usage`: one per app, named after it. */
+function usageDataset(opts: ScaffoldOptions): string {
+  return `${packageName(opts.name)
+    .replace(/[^a-z0-9_]/g, '_')
+    .replace(/^[^a-z_]/, '_$&')}_usage`
+}
+
 function usesRooms(opts: ScaffoldOptions): boolean {
   return hasExample(opts, 'board') || hasExample(opts, 'notes') || hasExample(opts, 'import')
 }
@@ -1305,8 +1320,9 @@ function runtimeOf(opts: ScaffoldOptions): Runtime {
 function cfApiTs(opts: ScaffoldOptions): string {
   const imports = hasExample(opts, 'import')
   const files = hasExample(opts, 'files')
-  return `import { defineApi, ${imports || files ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
-${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}
+  const usage = hasExample(opts, 'usage')
+  return `import { defineApi, ${imports || files || usage ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
+${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}
 /**
  * The contract between the browser and the Worker. Both import this file: the Worker serves
  * it with \`createHandler\`, the app calls it with \`createClient\`, and a change that breaks
@@ -1359,6 +1375,12 @@ export const api = defineApi({
     },
   }),`
       : ''
+  }${
+    usage
+      ? `
+  // The last 24 hours of API usage, read from Analytics Engine by the Worker.
+  usage: endpoint({ method: 'GET', path: '/api/usage', output: parseUsageReport }),`
+      : ''
   }
 })
 `
@@ -1370,7 +1392,8 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const imports = hasExample(opts, 'import')
   const files = hasExample(opts, 'files')
   const exports = hasExample(opts, 'export')
-  return `${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler } from '@cascivo/app/api'
+  const usage = hasExample(opts, 'usage')
+  return `${usage ? `import type { AnalyticsDataset } from '@cascivo/app/analytics'\n` : ''}${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler } from '@cascivo/app/api'
 ${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
     files
       ? `import { handleUploads, listUploads } from '@cascivo/app/uploads-server'
@@ -1391,7 +1414,7 @@ import type { BrowserWorker } from '@cloudflare/puppeteer'
       : ''
   }${agent ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${
+${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${
     rooms
       ? `
 // The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
@@ -1419,8 +1442,8 @@ export { ImportJob } from './import-job'
  * here; every handler receives them as \`env\`.
  */
 ${
-  rooms || agent || files || exports
-    ? `export interface Env {${agent ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}
+  rooms || agent || files || exports || usage
+    ? `export interface Env {${agent ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -1452,9 +1475,36 @@ const handleApi = createHandler<typeof api, Env>(api, {
     return { id }
   },`
       : ''
-  }${files ? `\n  listFiles: ({ env }) => listUploads(env.FILES),` : ''}
+  }${files ? `\n  listFiles: ({ env }) => listUploads(env.FILES),` : ''}${
+    usage
+      ? `
+  usage: ({ env }) =>
+    usageReport(
+      env.CF_ACCOUNT_ID && env.CF_API_TOKEN
+        ? { accountId: env.CF_ACCOUNT_ID, apiToken: env.CF_API_TOKEN }
+        : null,
+    ),`
+      : ''
+  }
 })
-
+${
+  usage
+    ? `
+/** Every API request, recorded in Analytics Engine; src/usage.ts names the columns. */
+async function handleAndRecord(request: Request, env: Env): Promise<Response> {
+  const started = Date.now()
+  const response = await handleApi(request, env)
+  usageMetrics.write(env.USAGE, {
+    path: new URL(request.url).pathname,
+    method: request.method,
+    status: response.status,
+    duration_ms: Date.now() - started,
+  })
+  return response
+}
+`
+    : ''
+}
 // wrangler.jsonc routes only ${agent ? '/api/* and /agents/*' : '/api/*'} here; everything else is a static asset or index.html.
 export default {
 ${
@@ -1496,9 +1546,9 @@ ${
     }`
           : ''
       }
-    return handleApi(request, env)
+    return ${usage ? 'handleAndRecord' : 'handleApi'}(request, env)
   },`
-    : '  fetch: handleApi,'
+    : `  fetch: ${usage ? 'handleAndRecord' : 'handleApi'},`
 }
 }
 `
@@ -1638,6 +1688,7 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
   if (hasExample(opts, 'import')) items.push({ label: 'Import', href: '/import' })
   if (hasExample(opts, 'files')) items.push({ label: 'Files', href: '/files' })
   if (hasExample(opts, 'export')) items.push({ label: 'Report', href: '/report' })
+  if (hasExample(opts, 'usage')) items.push({ label: 'Usage', href: '/usage' })
   const navItems = items
     .map(
       (item) => `    {
@@ -3039,6 +3090,244 @@ export default function Report() {
 `
 }
 
+/* --- `--example usage`: API usage in Workers Analytics Engine, charted (@cascivo/app/analytics) --- */
+
+function cfUsageTs(): string {
+  return `import { defineMetrics } from '@cascivo/app/analytics'
+
+/**
+ * What the Worker records for every API request, in Analytics Engine (worker/index.ts writes
+ * it). The names are the columns: a query says {path}, never blob1.
+ */
+export const usageMetrics = defineMetrics({
+  dataset: 'app_usage',
+  blobs: ['path', 'method'],
+  doubles: ['status', 'duration_ms'],
+  index: 'path',
+})
+
+export interface UsageReport {
+  /** False until the Worker has the secrets it needs to read Analytics Engine. */
+  configured: boolean
+  hourly: { hour: string; requests: number }[]
+  routes: { path: string; requests: number }[]
+  totals: { requests: number; errors: number; avgMs: number }
+}
+
+function num(raw: unknown): number {
+  if (typeof raw !== 'number' || !Number.isFinite(raw)) throw new Error('Expected a number')
+  return raw
+}
+
+function str(raw: unknown): string {
+  if (typeof raw !== 'string') throw new Error('Expected a string')
+  return raw
+}
+
+function list<T>(raw: unknown, item: (row: Record<string, unknown>) => T): T[] {
+  if (!Array.isArray(raw)) throw new Error('Expected a list')
+  return raw.map((row: unknown) => {
+    if (typeof row !== 'object' || row === null) throw new Error('Expected an object')
+    return item(row as Record<string, unknown>)
+  })
+}
+
+/** The report crosses the network, so the page parses it. */
+export function parseUsageReport(raw: unknown): UsageReport {
+  if (typeof raw !== 'object' || raw === null) throw new Error('Malformed usage report')
+  const r = raw as Record<string, unknown>
+  const totals = r['totals']
+  if (typeof r['configured'] !== 'boolean' || typeof totals !== 'object' || totals === null) {
+    throw new Error('Malformed usage report')
+  }
+  const t = totals as Record<string, unknown>
+  return {
+    configured: r['configured'],
+    hourly: list(r['hourly'], (row) => ({
+      hour: str(row['hour']),
+      requests: num(row['requests']),
+    })),
+    routes: list(r['routes'], (row) => ({
+      path: str(row['path']),
+      requests: num(row['requests']),
+    })),
+    totals: { requests: num(t['requests']), errors: num(t['errors']), avgMs: num(t['avgMs']) },
+  }
+}
+`
+}
+
+function cfUsageWorkerTs(): string {
+  return `import { numberField, queryAnalytics, stringField } from '@cascivo/app/analytics'
+import type { AnalyticsCredentials } from '@cascivo/app/analytics'
+import { usageMetrics } from '../src/usage'
+import type { UsageReport } from '../src/usage'
+
+const LAST_DAY = "timestamp > NOW() - INTERVAL '1' DAY"
+
+/** A number, or 0 when the query had nothing to sum (an empty day). */
+const orZero = (row: unknown, name: string): number => {
+  try {
+    return numberField(row, name)
+  } catch {
+    return 0
+  }
+}
+
+/**
+ * The last 24 hours of API usage, from Analytics Engine's SQL API. Counts are
+ * \`SUM(_sample_interval)\`, never \`COUNT()\`: Analytics Engine samples at high volume, and each
+ * row stands for \`_sample_interval\` requests.
+ */
+export async function usageReport(credentials: AnalyticsCredentials | null): Promise<UsageReport> {
+  if (!credentials) {
+    return {
+      configured: false,
+      hourly: [],
+      routes: [],
+      totals: { requests: 0, errors: 0, avgMs: 0 },
+    }
+  }
+  const [hourly, routes, totals, errors] = await Promise.all([
+    queryAnalytics(
+      credentials,
+      usageMetrics.sql(
+        \`SELECT toStartOfInterval(timestamp, INTERVAL '1' HOUR) AS hour, SUM(_sample_interval) AS requests
+         FROM {dataset} WHERE \${LAST_DAY} GROUP BY hour ORDER BY hour\`,
+      ),
+      (row) => ({ hour: stringField(row, 'hour'), requests: numberField(row, 'requests') }),
+    ),
+    queryAnalytics(
+      credentials,
+      usageMetrics.sql(
+        \`SELECT {path} AS path, SUM(_sample_interval) AS requests
+         FROM {dataset} WHERE \${LAST_DAY} GROUP BY path ORDER BY requests DESC LIMIT 8\`,
+      ),
+      (row) => ({ path: stringField(row, 'path'), requests: numberField(row, 'requests') }),
+    ),
+    queryAnalytics(
+      credentials,
+      usageMetrics.sql(
+        \`SELECT SUM(_sample_interval) AS requests,
+                SUM(_sample_interval * {duration_ms}) / SUM(_sample_interval) AS avg_ms
+         FROM {dataset} WHERE \${LAST_DAY}\`,
+      ),
+      (row) => ({ requests: orZero(row, 'requests'), avgMs: orZero(row, 'avg_ms') }),
+    ),
+    queryAnalytics(
+      credentials,
+      usageMetrics.sql(
+        \`SELECT SUM(_sample_interval) AS errors FROM {dataset} WHERE \${LAST_DAY} AND {status} >= 500\`,
+      ),
+      (row) => orZero(row, 'errors'),
+    ),
+  ])
+  return {
+    configured: true,
+    hourly,
+    routes,
+    totals: {
+      requests: totals[0]?.requests ?? 0,
+      errors: errors[0] ?? 0,
+      avgMs: Math.round(totals[0]?.avgMs ?? 0),
+    },
+  }
+}
+`
+}
+
+function cfUsageRouteTsx(): string {
+  return `import { BarChart, Kpi, LineChart } from '@cascivo/charts'
+import { createClient } from '@cascivo/app/api'
+import {
+  Button,
+  Card,
+  CardContent,
+  EmptyState,
+  Flex,
+  Grid,
+  Heading,
+  Text,
+  signal,
+  useSignals,
+} from '@cascivo/react'
+import { api } from '../api'
+import type { UsageReport } from '../usage'
+
+const client = createClient(api)
+const report = signal<UsageReport | null>(null)
+const failed = signal<string | null>(null)
+
+async function load(): Promise<void> {
+  failed.value = null
+  try {
+    report.value = await client.usage()
+  } catch (error) {
+    failed.value = error instanceof Error ? error.message : 'Could not load usage'
+  }
+}
+void load()
+
+/** Analytics Engine returns hours as "2026-09-30 14:00:00", in UTC. */
+const toDate = (hour: string) => new Date(\`\${hour.replace(' ', 'T')}Z\`)
+
+export default function Usage() {
+  useSignals()
+  const data = report.value
+
+  return (
+    <Flex gap={4}>
+      <Flex direction="horizontal" align="center" justify="between" wrap gap={3}>
+        <Flex gap={1}>
+          <Heading level={1}>Usage</Heading>
+          <Text muted>Every API request, recorded by the Worker in Workers Analytics Engine.</Text>
+        </Flex>
+        <Button variant="secondary" onClick={() => void load()}>
+          Refresh
+        </Button>
+      </Flex>
+      {failed.value ? <Text muted>{failed.value}</Text> : null}
+      {data && !data.configured ? (
+        <EmptyState
+          title="Connect Analytics Engine to read usage"
+          description="The Worker already records every request. To read them back it needs your account id and an API token with Account Analytics: Read, as secrets: npx wrangler secret put CF_ACCOUNT_ID, then npx wrangler secret put CF_API_TOKEN. For vite dev, put both in .dev.vars."
+        />
+      ) : null}
+      {data && data.configured ? (
+        <>
+          <Grid cols={3} gap={3}>
+            <Kpi label="Requests, 24 h" value={data.totals.requests.toLocaleString()} />
+            <Kpi label="Server errors" value={data.totals.errors.toLocaleString()} />
+            <Kpi label="Average latency" value={\`\${data.totals.avgMs} ms\`} />
+          </Grid>
+          <Card>
+            <CardContent>
+              <LineChart
+                title="Requests per hour"
+                series={[{ id: 'requests', label: 'Requests', data: data.hourly }]}
+                x={(d) => toDate(d.hour)}
+                y={(d) => d.requests}
+              />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent>
+              <BarChart
+                title="Busiest routes"
+                series={[{ id: 'routes', label: 'Requests', data: data.routes }]}
+                x={(d) => d.path}
+                y={(d) => d.requests}
+              />
+            </CardContent>
+          </Card>
+        </>
+      ) : null}
+    </Flex>
+  )
+}
+`
+}
+
 function cfPrettierIgnore(): string {
   return `${prettierIgnore()}# Rewritten by @cascivo/app/vite whenever a route file changes.
 src/routes.gen.ts
@@ -3222,6 +3511,33 @@ in front of \`/api/export\`. In \`vite dev\` Browser Run starts a local Chrome (
 first use); it does not run on a temporary account.`
       : ''
   }${
+    hasExample(opts, 'usage')
+      ? `
+
+## Usage (analytics)
+
+Every API request is recorded in Workers Analytics Engine, and \`/usage\` charts the last
+24 hours: requests per hour, the busiest routes, errors and latency.
+
+- \`src/usage.ts\` — \`defineMetrics\` (\`@cascivo/app/analytics\`) names the columns once
+  (\`path\`, \`method\`, \`status\`, \`duration_ms\`), so writes and queries never disagree about
+  which blob is which.
+- \`worker/index.ts\` — \`handleAndRecord\` writes one data point per API request.
+- \`worker/usage.ts\` — the queries, over Analytics Engine's SQL API.
+
+Writing needs only the binding. **Reading needs two secrets**, because the SQL API is HTTP
+with an account token:
+
+\`\`\`sh
+npx wrangler secret put CF_ACCOUNT_ID
+npx wrangler secret put CF_API_TOKEN   # a token with Account Analytics: Read
+\`\`\`
+
+For \`vite dev\`, put both in \`.dev.vars\`. Data written locally is not in your account's
+dataset, so in development the charts show what your deployed app recorded. Until the secrets
+exist, the page says what to set.`
+      : ''
+  }${
     hasExample(opts, 'agent')
       ? `
 
@@ -3318,6 +3634,7 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
     ...(hasExample(opts, 'import') ? [{ file: 'import.tsx', contents: cfImportRouteTsx() }] : []),
     ...(hasExample(opts, 'files') ? [{ file: 'files.tsx', contents: cfFilesRouteTsx() }] : []),
     ...(hasExample(opts, 'export') ? [{ file: 'report.tsx', contents: cfReportRouteTsx() }] : []),
+    ...(hasExample(opts, 'usage') ? [{ file: 'usage.tsx', contents: cfUsageRouteTsx() }] : []),
   ]
   return [
     { path: 'package.json', contents: cfPackageJson(opts) },
@@ -3357,6 +3674,18 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
           { path: 'src/import-job.ts', contents: cfImportJobTs() },
           { path: 'src/import-page.ts', contents: cfImportPageTs() },
           { path: 'worker/import-job.ts', contents: cfImportWorkflowTs() },
+        ]
+      : []),
+    ...(hasExample(opts, 'usage')
+      ? [
+          {
+            path: 'src/usage.ts',
+            contents: cfUsageTs().replace(
+              "dataset: 'app_usage'",
+              `dataset: '${usageDataset(opts)}'`,
+            ),
+          },
+          { path: 'worker/usage.ts', contents: cfUsageWorkerTs() },
         ]
       : []),
     ...(hasExample(opts, 'files')

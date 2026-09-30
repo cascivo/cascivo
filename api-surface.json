@@ -6753,6 +6753,31 @@
           "isExporting": "declare function isExporting(search?: string): boolean"
         }
       },
+      "./analytics": {
+        "values": ["defineMetrics", "numberField", "queryAnalytics", "stringField"],
+        "types": ["AnalyticsCredentials", "AnalyticsDataset", "Metrics"],
+        "declarations": {
+          "AnalyticsCredentials": {
+            "accountId": "string",
+            "apiToken": "string",
+            "fetch?": "typeof fetch"
+          },
+          "AnalyticsDataset": {
+            "writeDataPoint": "(point: { blobs?: string[]; doubles?: number[]; indexes?: string[]; }): void"
+          },
+          "defineMetrics": "declare function defineMetrics<const B extends string, const D extends string>(schema: { dataset: string; blobs: readonly B[]; doubles: readonly D[]; index?: NoInfer<B>; }): Metrics<B, D>",
+          "Metrics": {
+            "(extends)": "<B extends string, D extends string>",
+            "readonly dataset": "string",
+            "write": "(binding: AnalyticsDataset, point: Partial<Record<B, string> & Record<D, number>>): void",
+            "column": "(name: B | D): string",
+            "sql": "(statement: string): string"
+          },
+          "numberField": "declare function numberField(row: unknown, name: string): number",
+          "queryAnalytics": "declare function queryAnalytics<Row>(credentials: AnalyticsCredentials, sql: string, parseRow: (raw: unknown) => Row): Promise<Row[]>",
+          "stringField": "declare function stringField(row: unknown, name: string): string"
+        }
+      },
       "./sync-server": {
         "values": ["SyncRoom", "roomResponse", "writeRoom"],
         "types": ["HibernatableWebSocket", "RoomNamespace", "RoomWrite", "SyncRoomState"],

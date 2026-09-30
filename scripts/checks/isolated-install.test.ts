@@ -238,6 +238,18 @@ export const bareMode: boolean = isExporting('?export=1')
 export const serveExport = (request: Request, launch: () => Promise<ExportBrowser>) =>
   handleExport(request, { launch })
 import {
+  defineMetrics,
+  numberField,
+  queryAnalytics,
+  type AnalyticsDataset,
+} from '@cascivo/app/analytics'
+export const apiMetrics = defineMetrics({ dataset: 'api', blobs: ['path'], doubles: ['ms'] })
+export const recordCall = (binding: AnalyticsDataset) => apiMetrics.write(binding, { path: '/', ms: 1 })
+export const totalCalls = (accountId: string, apiToken: string) =>
+  queryAnalytics({ accountId, apiToken }, apiMetrics.sql('SELECT SUM(_sample_interval) AS n FROM {dataset}'), (row) =>
+    numberField(row, 'n'),
+  )
+import {
   applyThemeOverride,
   defineFlags,
   themeFlag,

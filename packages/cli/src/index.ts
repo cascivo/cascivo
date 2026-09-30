@@ -107,6 +107,7 @@ Options:
                             import — a CSV import on a Workflow, with live progress (cloudflare)
                             files — uploads into R2 with progress and image previews (cloudflare)
                             export — a report page downloadable as PDF/PNG via Browser Run (cloudflare)
+                            usage — API usage charts from Workers Analytics Engine (cloudflare)
   --template <spec>         Start from a marketplace template (@ns/name or owner/repo/name)
   --theme <name>            Theme to install (${THEME_LIST})
   --sections "<a, b>"       Comma-separated nav section labels (one component each)
