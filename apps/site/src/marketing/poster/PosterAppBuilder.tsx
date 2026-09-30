@@ -1,3 +1,4 @@
+import { Suspense, lazy } from 'react'
 import { CodeSnippet } from '@cascivo/components/code-snippet'
 import { useComputed, useSignal, useSignals } from '@cascivo/core'
 import data from '../app-builder.json'
@@ -30,6 +31,15 @@ const LOCAL_LABEL = new Map([
 const SERVICES = new Map(Object.entries(data.services))
 
 const byId = new Map(data.examples.map((e) => [e.id, e]))
+
+/**
+ * The live Worker's room (apps/live), set at build time once it is deployed:
+ * `VITE_CASCIVO_LIVE_URL=wss://…/room`. Unset, the section has no live strip at all.
+ */
+const LIVE_URL = import.meta.env.VITE_CASCIVO_LIVE_URL
+const PosterLiveStrip = lazy(() =>
+  import('./PosterLiveStrip').then((m) => ({ default: m.PosterLiveStrip })),
+)
 
 /** Files grouped under their folder, for the tree. */
 function tree(files: string[]): string {
@@ -245,6 +255,11 @@ export function PosterAppBuilder() {
           </div>
         </div>
       </div>
+      {LIVE_URL ? (
+        <Suspense fallback={null}>
+          <PosterLiveStrip url={LIVE_URL} />
+        </Suspense>
+      ) : null}
     </section>
   )
 }

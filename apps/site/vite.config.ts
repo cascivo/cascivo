@@ -989,6 +989,7 @@ export default defineConfig({
       '@cascivo/storage': resolve(root, 'packages/storage/src/index.ts'),
       '@cascivo/i18n': resolve(root, 'packages/i18n/src/index.ts'),
       '@cascivo/ai': resolve(root, 'packages/ai/src/index.ts'),
+      '@cascivo/app/sync': resolve(root, 'packages/app/src/sync.ts'),
       // Must precede the bare '@cascivo/render' entry: a string alias replaces by
       // prefix, so without these '@cascivo/render/text' resolves to 'index.ts/text'.
       '@cascivo/render/text': resolve(root, 'packages/render/src/view-text.ts'),

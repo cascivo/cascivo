@@ -1,0 +1,22 @@
+{
+  "name": "@cascivo/live",
+  "version": "0.0.1",
+  "private": true,
+  "description": "The Worker behind the landing page's live strip — a presence-only room on a Durable Object",
+  "type": "module",
+  "scripts": {
+    "dev": "npx wrangler@4 dev --port 8790 --var ALLOWED_ORIGINS:http://localhost:5173,http://localhost:4173",
+    "deploy": "npx wrangler@4 deploy",
+    "test": "vp test",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@cascivo/app": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "paths": {
+      "@cascivo/app/sync-server": ["../../packages/app/src/sync-server.ts"]
+    }
+  },
+  "include": ["worker"]
+}

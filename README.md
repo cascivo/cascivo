@@ -334,6 +334,7 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 
 | App                                    | Description                                                                                      |
 | -------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| [`@cascivo/live`](apps/live)           | The Worker behind the landing page's live strip — a presence-only room on a Durable Object       |
 | [`@cascivo/site`](apps/site)           | cascivo site — the unified front door (cascivo.com) and docs, generated from component manifests |
 | [`@cascivo/storybook`](apps/storybook) | Storybook stories generated from cascivo component manifests                                     |
 

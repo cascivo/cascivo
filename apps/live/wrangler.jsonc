@@ -1,0 +1,20 @@
+// The live strip on cascivo.com's landing page: one room, where visitors see each other's
+// pointers. Deployed by the `deploy-live` job in .github/workflows/cf-pages.yml, which runs
+// only once the repository variable CASCIVO_LIVE_DEPLOY is `true`.
+{
+  "name": "cascivo-live",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-09-01",
+  "durable_objects": { "bindings": [{ "name": "ROOMS", "class_name": "LandingRoom" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["LandingRoom"] }],
+  // Each IP may open 20 connections a minute: enough for reloads and reconnects, not for
+  // filling the room.
+  "ratelimits": [
+    { "name": "CONNECTS", "namespace_id": "1001", "simple": { "limit": 20, "period": 60 } },
+  ],
+  "vars": {
+    // Pages that may open the room. `https://*.host` allows one subdomain level (preview deploys).
+    "ALLOWED_ORIGINS": "https://cascivo.com,https://www.cascivo.com,https://*.cascade-ui-landing.pages.dev,https://cascade-ui-landing.pages.dev",
+  },
+  "observability": { "enabled": true },
+}

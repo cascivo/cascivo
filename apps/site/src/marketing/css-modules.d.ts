@@ -13,3 +13,11 @@ declare module '*?raw' {
 interface ImportMeta {
   glob<T = unknown>(pattern: string, options?: { eager?: boolean; as?: string }): Record<string, T>
 }
+
+// Build-time variables the site reads (Vite inlines `import.meta.env.VITE_*`).
+interface ImportMeta {
+  readonly env: {
+    /** The live strip's room, e.g. `wss://cascivo-live.example.workers.dev/room`. */
+    readonly VITE_CASCIVO_LIVE_URL?: string
+  }
+}

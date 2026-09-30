@@ -17,6 +17,7 @@ jobs:
       site: ${{ steps.out.outputs.site }}
       storybook: ${{ steps.out.outputs.storybook }}
       playground: ${{ steps.out.outputs.playground }}
+      live: ${{ steps.out.outputs.live }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
@@ -55,16 +56,22 @@ jobs:
               - 'packages/render/**'
               - 'packages/react/**'
               - 'pnpm-lock.yaml'
+            live:
+              - 'apps/live/**'
+              - 'packages/app/**'
+              - 'pnpm-lock.yaml'
       - id: out
         env:
           FORCE: ${{ github.event_name == 'workflow_dispatch' }}
           SITE: ${{ steps.filter.outputs.site }}
           STORYBOOK: ${{ steps.filter.outputs.storybook }}
           PLAYGROUND: ${{ steps.filter.outputs.playground }}
+          LIVE: ${{ steps.filter.outputs.live }}
         run: |
           echo "site=$(     [ "$FORCE" = "true" ] && echo true || echo "$SITE"      )" >> $GITHUB_OUTPUT
           echo "storybook=$([ "$FORCE" = "true" ] && echo true || echo "$STORYBOOK" )" >> $GITHUB_OUTPUT
           echo "playground=$([ "$FORCE" = "true" ] && echo true || echo "$PLAYGROUND" )" >> $GITHUB_OUTPUT
+          echo "live=$(      [ "$FORCE" = "true" ] && echo true || echo "$LIVE"       )" >> $GITHUB_OUTPUT
 
   # ── Shared install + build step ───────────────────────────────────────────
   # Each app builds in its own job so failures are isolated and CF Pages
@@ -85,7 +92,11 @@ jobs:
       # Build the unified site, then build + assemble the five demos into
       # apps/site/dist/demos/<slug>/ so one deploy serves the marketing front
       # door, the docs, the /examples/* pages, and every live demo.
+      # The landing page's live strip renders only when this names the deployed room
+      # (apps/live); unset, the page ships without it.
       - run: pnpm run build:landing-demos
+        env:
+          VITE_CASCIVO_LIVE_URL: ${{ vars.CASCIVO_LIVE_URL }}
       # Deploy from apps/site so Wrangler picks up apps/site/functions/ (it resolves
       # the Functions directory relative to its working directory, not the assets arg).
       # The Functions serve machine-readable 404s for /llms/*, /context/*, /r/*.
@@ -161,6 +172,30 @@ jobs:
           npx wrangler pages deploy apps/examples/json-playground/dist
           --project-name=${{ vars.CF_PROJECT_PLAYGROUND || 'cascade-ui-playground' }}
           ${{ github.event_name == 'pull_request' && format('--branch=pr-{0}', github.event.number) || '--branch=main' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+
+  # ── The live strip's Worker (apps/live) ───────────────────────────────────
+  # A public Durable Object room, so it is opt-in: nothing deploys until the repository
+  # variable CASCIVO_LIVE_DEPLOY is `true`. After the first deploy, set CASCIVO_LIVE_URL to
+  # its `wss://…/room` URL so the site build renders the strip (apps/live/README.md).
+  deploy-live:
+    needs: changes
+    if: needs.changes.outputs.live == 'true' && vars.CASCIVO_LIVE_DEPLOY == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # The Worker imports @cascivo/app, whose exports point at dist/.
+      - run: pnpm exec vp run @cascivo/app#build
+      - working-directory: apps/live
+        run: npx wrangler@4 deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
