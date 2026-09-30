@@ -13,6 +13,49 @@ const ACTION_REF_RE = /^\$actions\./
 const STATE_SET_RE = /^\$state\.set\./
 const STATE_TOGGLE_RE = /^\$state\.toggle\./
 
+/**
+ * Props that hold a URL the browser will follow or load, at any depth (`Header.links[].href`
+ * too). React 19 blocks `javascript:` URLs; Preact writes them to the DOM as given, so a view
+ * that crossed the network — a model's, or one a user published — must not carry one.
+ */
+const URL_KEYS = new Set([
+  'href',
+  'src',
+  'fallbackSrc',
+  'skipToContentHref',
+  'formAction',
+  'poster',
+])
+const SAFE_SCHEMES = new Set(['http', 'https', 'mailto', 'tel'])
+
+/** A relative URL, or one whose scheme cannot run script or smuggle a document. */
+function isSafeUrl(url: string): boolean {
+  // Browsers drop ASCII whitespace and control characters inside a scheme ("java\tscript:").
+  let compact = ''
+  for (const char of url) {
+    const code = char.charCodeAt(0)
+    if (code > 0x20 && code !== 0x7f) compact += char
+  }
+  const scheme = /^([a-z][a-z0-9+.-]*):/i.exec(compact)
+  return scheme === null || SAFE_SCHEMES.has(scheme[1]!.toLowerCase())
+}
+
+/** Reports every URL-carrying string under `value` whose scheme is not safe. */
+function checkUrls(value: unknown, key: string, path: string, errors: ValidationError[]): void {
+  if (typeof value === 'string') {
+    if (URL_KEYS.has(key) && !isSafeUrl(value)) {
+      errors.push({
+        path,
+        message: `Unsafe URL for "${key}" — use http(s), mailto, tel or a relative URL.`,
+      })
+    }
+  } else if (Array.isArray(value)) {
+    value.forEach((item, i) => checkUrls(item, key, `${path}[${i}]`, errors))
+  } else if (typeof value === 'object' && value !== null) {
+    for (const [k, v] of Object.entries(value)) checkUrls(v, k, `${path}.${k}`, errors)
+  }
+}
+
 /** Declared view-local state: the set of keys and the subset with boolean initial values. */
 interface StateInfo {
   keys: Set<string>
@@ -49,6 +92,7 @@ function validateProps(
   const propNames = schema.map((p) => p.name)
   for (const [key, value] of Object.entries(props)) {
     if (skip.has(key)) continue
+    checkUrls(value, key, `${path}.props.${key}`, errors)
     const prop = byName.get(key)
     if (!prop) {
       const suggestion = closestName(key, propNames)

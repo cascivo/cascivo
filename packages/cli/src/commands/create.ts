@@ -66,6 +66,7 @@ export type Example =
   | 'crud'
   | 'live'
   | 'voice'
+  | 'publish'
 
 export const EXAMPLES = [
   'board',
@@ -78,6 +79,7 @@ export const EXAMPLES = [
   'crud',
   'live',
   'voice',
+  'publish',
 ] as const
 
 function isExample(value: string): value is Example {
@@ -1115,6 +1117,10 @@ function cfPackageJson(opts: ScaffoldOptions): string {
         : {}),
       // The /voice page: the Agents SDK's voice pipeline and its browser client.
       ...(hasExample(opts, 'voice') && !agent ? { agents: '^0.24.0' } : {}),
+      // The /publish page and published pages render views with @cascivo/render.
+      ...(hasExample(opts, 'publish') && !agent
+        ? { '@cascivo/render': V['@cascivo/render']! }
+        : {}),
     },
     devDependencies: {
       '@cascivo/eslint-config': V['@cascivo/eslint-config']!,
@@ -1293,8 +1299,16 @@ ${jsoncArray('  ', 'r2_buckets', [`{ "binding": "FILES", "bucket_name": "${packa
   }${
     usesLimiter(opts)
       ? `
-  // Uploads and exports per caller: 20 a minute. namespace_id is any number unique within
-  // your account. https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/
+  // ${[
+    hasExample(opts, 'files') ? 'Uploads' : '',
+    hasExample(opts, 'export') ? 'exports' : '',
+    hasExample(opts, 'publish') ? 'published pages' : '',
+  ]
+    .filter(Boolean)
+    .join(', ')
+    .replace(/^./, (c) => c.toUpperCase())} per caller: 20 a minute.
+  // namespace_id is any number unique within your account:
+  // https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/
 ${jsoncArray('  ', 'ratelimits', ['{ "name": "LIMITER", "namespace_id": "1001", "simple": { "limit": 20, "period": 60 } }'])}`
       : ''
   }${
@@ -1304,10 +1318,10 @@ ${jsoncArray('  ', 'ratelimits', ['{ "name": "LIMITER", "namespace_id": "1001", 
   "vars": { "ACCESS_TEAM_DOMAIN": "", "ACCESS_AUD": "" },`
       : ''
   }${
-    hasExample(opts, 'crud')
+    usesD1(opts)
       ? `
-  // The customers table. No database_id: wrangler creates the database on first deploy, and
-  // the Worker applies its own schema (worker/migrations.ts) on its first query.
+  // ${hasExample(opts, 'crud') && hasExample(opts, 'publish') ? 'The customers and pages tables' : hasExample(opts, 'crud') ? 'The customers table' : 'The published pages'}. No database_id: wrangler creates the database on first
+  // deploy, and the Worker applies its own schema on its first query (\`migrate\`).
 ${jsoncArray('  ', 'd1_databases', [`{ "binding": "DB", "database_name": "${packageName(opts.name)}-db" }`])}`
       : ''
   }${
@@ -1378,9 +1392,17 @@ function usageDataset(opts: ScaffoldOptions): string {
     .replace(/^[^a-z_]/, '_$&')}_usage`
 }
 
-/** Examples whose requests cost money per call (storage, a browser): rate-limited per caller. */
+/**
+ * Examples with requests that cost money (storage, a browser) or put content on the app's
+ * origin (a published page): rate-limited per caller.
+ */
 function usesLimiter(opts: ScaffoldOptions): boolean {
-  return hasExample(opts, 'files') || hasExample(opts, 'export')
+  return hasExample(opts, 'files') || hasExample(opts, 'export') || hasExample(opts, 'publish')
+}
+
+/** Examples that keep tables in D1, bound as DB. */
+function usesD1(opts: ScaffoldOptions): boolean {
+  return hasExample(opts, 'crud') || hasExample(opts, 'publish')
 }
 
 /** Examples on Cloudflare's Agents SDK: routed under /agents/*, calling Workers AI. */
@@ -1416,8 +1438,9 @@ function cfApiTs(opts: ScaffoldOptions): string {
   const usage = hasExample(opts, 'usage')
   const crud = hasExample(opts, 'crud')
   const live = hasExample(opts, 'live')
-  return `import { defineApi, ${imports || files || usage || crud || live ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
-${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}${live ? `import { ops, parseAccepted } from './ops'\n` : ''}
+  const publish = hasExample(opts, 'publish')
+  return `import { defineApi, ${imports || files || usage || crud || live || publish ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
+${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}${live ? `import { ops, parseAccepted } from './ops'\n` : ''}${publish ? `import { parsePage, parsePageInput, parsePageSummary } from './pages'\n` : ''}
 /**
  * The contract between the browser and the Worker. Both import this file: the Worker serves
  * it with \`createHandler\`, the app calls it with \`createClient\`, and a change that breaks
@@ -1488,6 +1511,18 @@ export const api = defineApi({
   }),`
       : ''
   }${
+    publish
+      ? `
+  // Publishes a view as a page (checked against the manifests), and reads one back.
+  publishPage: endpoint({
+    method: 'POST',
+    path: '/api/pages',
+    input: parsePageInput,
+    output: parsePageSummary,
+  }),
+  getPage: endpoint({ method: 'GET', path: '/api/pages/:slug', output: parsePage }),`
+      : ''
+  }${
     crud
       ? `
   // One page of customers for DataTable's query (sort, search, filters, page).
@@ -1526,6 +1561,8 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const crud = hasExample(opts, 'crud')
   const live = hasExample(opts, 'live')
   const voice = hasExample(opts, 'voice')
+  const publish = hasExample(opts, 'publish')
+  const d1 = usesD1(opts)
   const ai = usesAgents(opts)
   const limiter = usesLimiter(opts)
   const access = opts.auth === 'access'
@@ -1533,9 +1570,9 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
     ...(access ? ['requireAccess'] : []),
     ...(limiter ? ['clientIp', 'rateLimit'] : []),
   ]
-  const custom = rooms || ai || files || exports || access || live
-  const isAsync = ai || files || exports || access
-  return `${usage ? `import type { AnalyticsDataset } from '@cascivo/app/analytics'\n` : ''}${crud ? `import type { Database } from '@cascivo/app/db'\n` : ''}${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler } from '@cascivo/app/api'
+  const custom = rooms || ai || files || exports || access || live || limiter
+  const isAsync = ai || files || exports || access || limiter
+  return `${usage ? `import type { AnalyticsDataset } from '@cascivo/app/analytics'\n` : ''}${d1 ? `import type { Database } from '@cascivo/app/db'\n` : ''}${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler } from '@cascivo/app/api'
 ${guards.length > 0 ? `import { ${[...guards, 'guardResponse'].sort().join(', ')} } from '@cascivo/app/guard'\n${limiter ? `import type { RateLimiter } from '@cascivo/app/guard'\n` : ''}` : ''}${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
     files
       ? `import { handleUploads, listUploads } from '@cascivo/app/uploads-server'
@@ -1562,7 +1599,7 @@ import type { BrowserWorker } from '@cloudflare/puppeteer'
       : ''
   }${ai ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${
+${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\n` : ''}${
     rooms
       ? `
 // The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
@@ -1604,8 +1641,8 @@ export { ImportJob } from './import-job'
  * here; every handler receives them as \`env\`.
  */
 ${
-  rooms || ai || files || exports || usage || crud || access || live
-    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${crud ? '\n  DB: Database' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}
+  rooms || ai || files || exports || usage || d1 || access || live
+    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -1616,11 +1653,23 @@ ${
   limiter
     ? `
 /**
- * Requests that start paid work: ${[files ? 'a new upload (not each part of one)' : '', exports ? 'an export' : ''].filter(Boolean).join(', ')}.
- * Each counts against LIMITER.
+ * Requests that each count against LIMITER:
+${[
+  files ? 'a new upload (not each part of one)' : '',
+  exports ? 'an export' : '',
+  publish ? 'a published page' : '',
+]
+  .filter(Boolean)
+  .map((item) => ` * - ${item}`)
+  .join('\n')}
  */
-function startsPaidWork(request: Request): boolean {
+function countsAgainstLimit(request: Request): boolean {
   const url = new URL(request.url)${
+    publish
+      ? `
+  if (url.pathname === '/api/pages') return request.method === 'POST'`
+      : ''
+  }${
     files
       ? `
   if (url.pathname === uploads.path) {
@@ -1677,6 +1726,12 @@ const handleApi = createHandler<typeof api, Env>(api, {
   deleteCustomer: ({ params, env }) => customerStore.deleteCustomer(env.DB, params.id),`
       : ''
   }${
+    publish
+      ? `
+  publishPage: ({ body, env }) => pageStore.publishPage(env.DB, body),
+  getPage: ({ params, env }) => pageStore.getPage(env.DB, params.slug),`
+      : ''
+  }${
     live
       ? `
   // Each event is placed by the Worker's clock: a browser's is not trusted to say when.
@@ -1731,7 +1786,7 @@ ${
       }${
         limiter
           ? `
-    if (startsPaidWork(request)) {
+    if (countsAgainstLimit(request)) {
       try {
         await rateLimit(env.LIMITER, clientIp(request))
       } catch (error) {
@@ -1943,6 +1998,7 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
   if (hasExample(opts, 'crud')) items.push({ label: 'Customers', href: '/customers' })
   if (hasExample(opts, 'live')) items.push({ label: 'Ops', href: '/ops' })
   if (hasExample(opts, 'voice')) items.push({ label: 'Voice', href: '/voice' })
+  if (hasExample(opts, 'publish')) items.push({ label: 'Publish', href: '/publish' })
   const navItems = items
     .map(
       (item) => `    {
@@ -3582,6 +3638,371 @@ export default function Usage() {
 `
 }
 
+/* --- `--example publish`: views published as pages, stored in D1 --- */
+
+function cfPagesTs(): string {
+  return `import type { ViewConfig } from '@cascivo/render'
+import { validateView } from '@cascivo/render/validate'
+
+/**
+ * A published page: a title and a view. Shared by the Worker (which stores pages) and the
+ * app (which builds and shows them). A view is data, not code — it can only arrange cascivo
+ * components the manifests describe — so publishing one needs no sandbox and no deploy.
+ */
+export interface PageInput {
+  title: string
+  view: ViewConfig
+}
+
+export interface PageSummary {
+  slug: string
+  title: string
+  createdAt: string
+}
+
+export interface Page extends PageInput, PageSummary {}
+
+/** Largest view accepted, in characters of its JSON. */
+export const MAX_VIEW_LENGTH = 32_000
+
+const SLUG = /^[a-z0-9]{10}$/
+
+export function isSlug(value: string): boolean {
+  return SLUG.test(value)
+}
+
+/**
+ * Checks a page against the component manifests (\`validateView\`: known components and
+ * props, and no URL that could run script). The Worker runs it before storing a page, and
+ * \`<CascivoView>\` runs the same check again before rendering one.
+ */
+export function parsePageInput(raw: unknown): PageInput {
+  if (typeof raw !== 'object' || raw === null) throw new Error('Expected { title, view }')
+  const { title, view } = raw as Record<string, unknown>
+  if (typeof title !== 'string' || title.trim() === '' || title.length > 80) {
+    throw new Error('title: 1–80 characters')
+  }
+  if (JSON.stringify(view ?? null).length > MAX_VIEW_LENGTH) {
+    throw new Error(\`view: at most \${MAX_VIEW_LENGTH} characters of JSON\`)
+  }
+  const result = validateView(view)
+  if (!result.valid) {
+    throw new Error(result.errors.map((e) => \`\${e.path}: \${e.message}\`).join('\\n'))
+  }
+  // validateView has checked the whole shape, so the cast states a proven fact.
+  return { title: title.trim(), view: view as ViewConfig }
+}
+
+export function parsePageSummary(raw: unknown): PageSummary {
+  if (typeof raw === 'object' && raw !== null) {
+    const { slug, title, createdAt } = raw as Record<string, unknown>
+    if (
+      typeof slug === 'string' &&
+      isSlug(slug) &&
+      typeof title === 'string' &&
+      typeof createdAt === 'string'
+    ) {
+      return { slug, title, createdAt }
+    }
+  }
+  throw new Error('Malformed page')
+}
+
+export function parsePage(raw: unknown): Page {
+  const summary = parsePageSummary(raw)
+  const { view } = raw as Record<string, unknown>
+  return { ...summary, ...parsePageInput({ title: summary.title, view }) }
+}
+`
+}
+
+function cfPagesWorkerTs(): string {
+  return `import { HttpError } from '@cascivo/app/api'
+import { migrate, queryRows } from '@cascivo/app/db'
+import type { Database } from '@cascivo/app/db'
+import { isSlug, parsePage } from '../src/pages'
+import type { Page, PageInput, PageSummary } from '../src/pages'
+
+const migrations = [
+  {
+    id: '0001_pages',
+    statements: [
+      \`CREATE TABLE pages (
+        slug TEXT PRIMARY KEY,
+        title TEXT NOT NULL,
+        view TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      )\`,
+    ],
+  },
+]
+
+const ready = async (db: Database) => {
+  await migrate(db, migrations)
+  return db
+}
+
+/** Ten random base-36 characters: not guessable, so an unlisted page stays unlisted. */
+function newSlug(): string {
+  const bytes = crypto.getRandomValues(new Uint8Array(10))
+  return Array.from(bytes, (b) => (b % 36).toString(36)).join('')
+}
+
+/**
+ * A stored row back into a page. The view is JSON text written by this Worker, but it is
+ * parsed and validated again like anything read from storage: an older version of the app,
+ * or a hand in the D1 console, may have written it.
+ */
+function pageFromRow(raw: unknown): Page {
+  if (typeof raw !== 'object' || raw === null) throw new Error('Malformed page row')
+  const row = raw as Record<string, unknown>
+  if (typeof row['view'] !== 'string') throw new Error('Malformed page row')
+  return parsePage({ ...row, view: JSON.parse(row['view']) })
+}
+
+export async function publishPage(db: Database, page: PageInput): Promise<PageSummary> {
+  const summary = { slug: newSlug(), title: page.title, createdAt: new Date().toISOString() }
+  await (
+    await ready(db)
+  )
+    .prepare('INSERT INTO pages (slug, title, view, created_at) VALUES (?, ?, ?, ?)')
+    .bind(summary.slug, summary.title, JSON.stringify(page.view), summary.createdAt)
+    .run()
+  return summary
+}
+
+export async function getPage(db: Database, slug: string): Promise<Page> {
+  if (!isSlug(slug)) throw new HttpError(404, 'No such page')
+  const [page] = await queryRows(
+    await ready(db),
+    'SELECT slug, title, view, created_at AS createdAt FROM pages WHERE slug = ?',
+    [slug],
+    pageFromRow,
+  )
+  if (!page) throw new HttpError(404, 'No such page')
+  return page
+}
+`
+}
+
+function cfPublishRouteTsx(): string {
+  return `import { createClient } from '@cascivo/app/api'
+import { CascivoView } from '@cascivo/render'
+import type { ViewConfig } from '@cascivo/render'
+import { validateView } from '@cascivo/render/validate'
+import {
+  Alert,
+  Button,
+  Card,
+  CardContent,
+  Flex,
+  Grid,
+  Heading,
+  Input,
+  Link,
+  Text,
+  Textarea,
+  computed,
+  signal,
+  useSignals,
+} from '@cascivo/react'
+import type { ChangeEvent } from 'react'
+import { api } from '../api'
+import type { PageSummary } from '../pages'
+
+const client = createClient(api)
+
+const EXAMPLE: ViewConfig = {
+  view: {
+    regions: {
+      main: [
+        {
+          component: 'Card',
+          props: { padding: 'lg' },
+          children: [
+            {
+              component: 'Flex',
+              props: { gap: 3 },
+              children: [
+                { component: 'Badge', props: { variant: 'success' }, children: 'Live' },
+                { component: 'ProgressBar', props: { value: 3, max: 5, label: 'Steps done' } },
+                {
+                  component: 'Alert',
+                  props: { variant: 'info', title: 'Published from a view' },
+                  children: 'Edit the JSON on /publish and publish again for a new page.',
+                },
+                {
+                  component: 'Link',
+                  props: { href: 'https://developers.cloudflare.com/workers/' },
+                  children: 'Cloudflare Workers docs',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  },
+}
+
+const title = signal('Launch checklist')
+const draft = signal(JSON.stringify(EXAMPLE, null, 2))
+const published = signal<PageSummary | null>(null)
+const failure = signal<string | null>(null)
+
+/**
+ * The draft as a view to preview, or what is wrong with it. The Worker checks a page again
+ * before storing it: this check is for the preview, not a guard.
+ */
+const checked = computed((): { view: ViewConfig } | { errors: string[] } => {
+  let raw: unknown
+  try {
+    raw = JSON.parse(draft.value)
+  } catch (error) {
+    return { errors: [error instanceof Error ? error.message : 'Not JSON'] }
+  }
+  const result = validateView(raw)
+  if (!result.valid) return { errors: result.errors.map((e) => \`\${e.path}: \${e.message}\`) }
+  // validateView has checked the whole shape, so the cast states a proven fact.
+  return { view: raw as ViewConfig }
+})
+
+async function publish(): Promise<void> {
+  failure.value = null
+  published.value = null
+  const current = checked.value
+  if ('errors' in current) {
+    failure.value = current.errors.join('\\n')
+    return
+  }
+  try {
+    published.value = await client.publishPage({
+      body: { title: title.value, view: current.view },
+    })
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Could not publish'
+  }
+}
+
+export default function Publish() {
+  useSignals()
+  const current = checked.value
+
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Publish</Heading>
+        <Text muted>
+          Write a view — or have an agent write one — and publish it as a page. A view only arranges
+          this app's components, so a page needs no sandbox and no deploy.
+        </Text>
+      </Flex>
+      <Grid cols={2} gap={4}>
+        <Flex gap={3}>
+          <Input
+            label="Title"
+            value={title.value}
+            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+              title.value = event.currentTarget.value
+            }}
+          />
+          <Textarea
+            label="View (JSON)"
+            rows={18}
+            spellCheck={false}
+            value={draft.value}
+            onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
+              draft.value = event.currentTarget.value
+            }}
+          />
+          <Flex direction="horizontal" align="center" gap={3} wrap>
+            <Button onClick={() => void publish()}>Publish</Button>
+            {published.value ? (
+              <Link href={\`/p/\${published.value.slug}\`}>Open /p/{published.value.slug}</Link>
+            ) : null}
+          </Flex>
+          {failure.value ? (
+            <Alert variant="destructive" title="Not published">
+              {failure.value}
+            </Alert>
+          ) : null}
+        </Flex>
+        <Card>
+          <CardContent>
+            {'errors' in current ? (
+              <Flex gap={1}>
+                {current.errors.map((error) => (
+                  <Text key={error} size="sm" muted>
+                    {error}
+                  </Text>
+                ))}
+              </Flex>
+            ) : (
+              <CascivoView config={current.view} />
+            )}
+          </CardContent>
+        </Card>
+      </Grid>
+    </Flex>
+  )
+}
+`
+}
+
+function cfPageRouteTsx(): string {
+  return `import type { RouteProps } from '@cascivo/app'
+import { createClient } from '@cascivo/app/api'
+import { CascivoView } from '@cascivo/render'
+import {
+  EmptyState,
+  Flex,
+  Heading,
+  Spinner,
+  signal,
+  useEffectPropSignal,
+  useSignalEffect,
+  useSignals,
+} from '@cascivo/react'
+import { api } from '../../api'
+import type { Page } from '../../pages'
+
+const client = createClient(api)
+/** Pages already fetched, by slug; \`null\` when the slug has no page. */
+const pages = signal<Readonly<Record<string, Page | null>>>({})
+
+async function load(slug: string): Promise<void> {
+  if (slug in pages.peek()) return
+  try {
+    const page = await client.getPage({ params: { slug } })
+    pages.value = { ...pages.peek(), [slug]: page }
+  } catch {
+    pages.value = { ...pages.peek(), [slug]: null }
+  }
+}
+
+/** \`/p/:slug\` — a published page, rendered from its view with the app's own components. */
+export default function PublishedPage({ params }: RouteProps<'/p/:slug'>) {
+  useSignals()
+  const slug = useEffectPropSignal(params.slug)
+  useSignalEffect(() => {
+    void load(slug.value)
+  })
+  const page = pages.value[params.slug]
+
+  if (page === undefined) return <Spinner label="Loading" />
+  if (page === null) {
+    return <EmptyState title="No such page" description="It may never have been published." />
+  }
+  return (
+    <Flex gap={4}>
+      <Heading level={1}>{page.title}</Heading>
+      <CascivoView config={page.view} onInvalid="render" />
+    </Flex>
+  )
+}
+`
+}
+
 /* --- `--example voice`: a voice assistant on the Agents SDK and Workers AI speech --- */
 
 function cfVoiceTs(): string {
@@ -4829,6 +5250,30 @@ again. The page renders the result with \`<CascivoView>\`: real components, no g
 Workers AI bills per use beyond its free daily allocation.`
       : ''
   }${
+    hasExample(opts, 'publish')
+      ? `
+
+## Publish (views as pages)
+
+\`/publish\` turns a view — the JSON that \`<CascivoView>\` renders, which an agent can write
+too — into a page at \`/p/<slug>\`, with no deploy. A view is data, not code: it can only
+arrange this app's components with props their manifests allow, so a published page runs no
+code of its author's and needs no sandbox.
+
+- \`src/pages.ts\` — \`parsePageInput\` checks a page with \`validateView\`
+  (\`@cascivo/render/validate\`): known components and props, and no link or image URL that
+  could run script. The Worker runs it before storing a page; \`<CascivoView>\` checks again
+  before rendering one.
+- \`worker/pages.ts\` — pages in D1, under a random ten-character slug.
+- \`src/routes/publish.tsx\` — the editor, with a live preview.
+- \`src/routes/p/[slug].tsx\` — a published page.
+
+**Anyone who can reach the app can publish**, and a page is served from your domain: put
+Cloudflare Access in front (\`--auth access\`) or check who is publishing in
+\`worker/index.ts\`. Each caller (by IP) may publish 20 pages a minute (\`ratelimits\` in
+\`wrangler.jsonc\`). D1 works on a temporary account.`
+      : ''
+  }${
     hasExample(opts, 'voice')
       ? `
 
@@ -4931,6 +5376,12 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
       : []),
     ...(hasExample(opts, 'live') ? [{ file: 'ops.tsx', contents: cfOpsRouteTsx() }] : []),
     ...(hasExample(opts, 'voice') ? [{ file: 'voice.tsx', contents: cfVoiceRouteTsx() }] : []),
+    ...(hasExample(opts, 'publish')
+      ? [
+          { file: 'publish.tsx', contents: cfPublishRouteTsx() },
+          { file: 'p/[slug].tsx', contents: cfPageRouteTsx() },
+        ]
+      : []),
   ]
   return [
     { path: 'package.json', contents: cfPackageJson(opts) },
@@ -4981,6 +5432,12 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
         ]
       : []),
     ...(hasExample(opts, 'live') ? [{ path: 'src/ops.ts', contents: cfOpsTs() }] : []),
+    ...(hasExample(opts, 'publish')
+      ? [
+          { path: 'src/pages.ts', contents: cfPagesTs() },
+          { path: 'worker/pages.ts', contents: cfPagesWorkerTs() },
+        ]
+      : []),
     ...(hasExample(opts, 'voice')
       ? [
           { path: 'src/voice.ts', contents: cfVoiceTs() },

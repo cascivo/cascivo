@@ -833,7 +833,7 @@ describe('buildScaffold — cloudflare guards', () => {
     expect(map.get('wrangler.jsonc')).toContain('"name": "LIMITER"')
     const worker = map.get('worker/index.ts')!
     expect(worker).toContain('LIMITER: RateLimiter')
-    expect(worker).toContain('if (startsPaidWork(request))')
+    expect(worker).toContain('if (countsAgainstLimit(request))')
     expect(worker).toContain(
       "return (request.method === 'PUT' && step === null) || step === 'start'",
     )
@@ -995,5 +995,43 @@ describe('buildScaffold — cloudflare --example voice', () => {
     expect(wrangler).toContain('"new_sqlite_classes": ["Assistant", "Voice"]')
     expect(wrangler.match(/"ai": \{/g)).toHaveLength(1)
     expect(both.get('worker/index.ts')!.match(/routeAgentRequest\(/g)).toHaveLength(1)
+  })
+})
+
+describe('buildScaffold — cloudflare --example publish', () => {
+  const build = (examples: ('crud' | 'publish')[]) =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        examples,
+      }),
+    )
+  const map = build(['publish'])
+
+  it('stores pages in D1 and checks each against the manifests before storing it', () => {
+    expect(map.get('wrangler.jsonc')).toContain('"d1_databases": [{ "binding": "DB"')
+    expect(map.get('src/api.ts')).toContain('input: parsePageInput')
+    const pages = map.get('src/pages.ts')!
+    expect(pages).toContain('const result = validateView(view)')
+    expect(pages).not.toMatch(/JSON\.parse\([^)]*\) as /)
+    expect(map.get('worker/pages.ts')).toContain("id: '0001_pages'")
+  })
+
+  it('serves a page at /p/:slug and rate-limits publishing, not reading', () => {
+    expect(map.get('src/routes.gen.ts')).toContain("'/p/:slug'")
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain("if (url.pathname === '/api/pages') return request.method === 'POST'")
+    expect(map.get('wrangler.jsonc')).toContain('"name": "LIMITER"')
+    const pkg = JSON.parse(map.get('package.json')!) as { dependencies: Record<string, string> }
+    expect(pkg.dependencies['@cascivo/render']).toMatch(/^\d/)
+  })
+
+  it('shares one database and one migration runner with the customers table', () => {
+    const both = build(['crud', 'publish'])
+    expect(both.get('wrangler.jsonc')!.match(/"d1_databases"/g)).toHaveLength(1)
+    expect(both.get('worker/index.ts')!.match(/DB: Database/g)).toHaveLength(1)
   })
 })
