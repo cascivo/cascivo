@@ -941,3 +941,59 @@ describe('buildScaffold — cloudflare --example live', () => {
     for (const line of long.split('\n')) expect(line.length).toBeLessThanOrEqual(100)
   })
 })
+
+describe('buildScaffold — cloudflare --example voice', () => {
+  const build = (examples: ('agent' | 'voice')[]) =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        examples,
+      }),
+    )
+  const map = build(['voice'])
+
+  it('runs on Preact by default: the voice client needs no React', () => {
+    expect(map.get('vite.config.ts')).toContain("import preact from '@preact/preset-vite'")
+    expect(map.get('src/voice.ts')).toContain("from 'agents/voice/client'")
+    const pkg = JSON.parse(map.get('package.json')!) as { dependencies: Record<string, string> }
+    expect(pkg.dependencies['agents']).toBe('^0.24.0')
+    expect(pkg.dependencies['@cloudflare/ai-chat']).toBeUndefined()
+  })
+
+  it('routes the voice agent and binds Workers AI', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"run_worker_first": ["/api/*", "/agents/*"]')
+    expect(wrangler).toContain('{ "name": "Voice", "class_name": "Voice" }')
+    expect(wrangler).toContain('"ai": { "binding": "AI" }')
+    expect(wrangler).toContain('"compatibility_flags": ["nodejs_compat"]')
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain("export { Voice } from './voice'")
+    expect(worker).toContain('const agent = await routeAgentRequest(request, env)')
+    expect(map.get('tsconfig.worker.json')).toBeDefined()
+  })
+
+  it('uses Workers AI in production and stand-ins only in vite dev', () => {
+    const voice = map.get('worker/voice.ts')!
+    expect(voice).toContain("import.meta.env.DEV && import.meta.env['VITE_REAL_AI'] !== '1'")
+    expect(voice).toContain('new WorkersAIFluxSTT(this.env.AI)')
+    expect(voice).toContain('new WorkersAITTS(this.env.AI)')
+    expect(map.get('vite.config.ts')).toContain(
+      "remoteBindings: process.env['VITE_REAL_AI'] === '1'",
+    )
+  })
+
+  it('parses the history the agent sends rather than trusting it', () => {
+    expect(map.get('src/voice.ts')).toContain('export function parseHistory(raw: unknown)')
+  })
+
+  it('shares the Agents SDK wiring with the assistant', () => {
+    const both = build(['agent', 'voice'])
+    const wrangler = both.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"new_sqlite_classes": ["Assistant", "Voice"]')
+    expect(wrangler.match(/"ai": \{/g)).toHaveLength(1)
+    expect(both.get('worker/index.ts')!.match(/routeAgentRequest\(/g)).toHaveLength(1)
+  })
+})

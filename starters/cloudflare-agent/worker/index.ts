@@ -35,7 +35,7 @@ const handleApi = createHandler<typeof api, Env>(api, {
 // wrangler.jsonc routes only /api/* and /agents/* here; everything else is a static asset or index.html.
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    // /agents/assistant/<conversation>: the WebSocket useAgent() opens.
+    // /agents/<agent>/<conversation>: the WebSocket useAgent() opens.
     const agent = await routeAgentRequest(request, env)
     if (agent) return agent
     return handleApi(request, env)

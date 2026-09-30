@@ -65,6 +65,7 @@ export type Example =
   | 'usage'
   | 'crud'
   | 'live'
+  | 'voice'
 
 export const EXAMPLES = [
   'board',
@@ -76,6 +77,7 @@ export const EXAMPLES = [
   'usage',
   'crud',
   'live',
+  'voice',
 ] as const
 
 function isExample(value: string): value is Example {
@@ -1111,6 +1113,8 @@ function cfPackageJson(opts: ScaffoldOptions): string {
             zod: '^4.0.0',
           }
         : {}),
+      // The /voice page: the Agents SDK's voice pipeline and its browser client.
+      ...(hasExample(opts, 'voice') && !agent ? { agents: '^0.24.0' } : {}),
     },
     devDependencies: {
       '@cascivo/eslint-config': V['@cascivo/eslint-config']!,
@@ -1167,6 +1171,7 @@ function cfWorkerTsconfig(): string {
 
 function cfViteConfig(runtime: Runtime, opts: ScaffoldOptions): string {
   const agent = hasExample(opts, 'agent')
+  const ai = usesAgents(opts)
   const plugin =
     runtime === 'preact'
       ? `import preact from '@preact/preset-vite'`
@@ -1194,17 +1199,24 @@ ${note}
 // cascivoRoutes() writes src/routes.gen.ts from src/routes/ — one file per page.
 // cloudflare() runs worker/index.ts in workerd during \`vite dev\` and builds it with the
 // client, so dev and production execute the same runtime. Request routing is in wrangler.jsonc.${
-    agent
+    ai
       ? `
 //
 // Workers AI has no local mode: with remote bindings on, \`vite dev\` needs a Cloudflare login.
-// So they are off, and the assistant answers from worker/scripted-model.ts. Run
-// \`VITE_REAL_AI=1 vite dev\` (after \`wrangler login\`) to talk to the real model.`
+// So they are off, ${
+          agent && hasExample(opts, 'voice')
+            ? `the assistant answers from worker/scripted-model.ts, and the voice
+// page uses the stand-ins in worker/scripted-voice.ts`
+            : agent
+              ? 'and the assistant answers from worker/scripted-model.ts'
+              : 'and the voice page uses the stand-ins in worker/scripted-voice.ts'
+        }. Run
+// \`VITE_REAL_AI=1 vite dev\` (after \`wrangler login\`) to use Workers AI.`
       : ''
   }
 export default defineConfig({
 ${
-  agent
+  ai
     ? `  plugins: [
     ${call},
     cascivoRoutes(),
@@ -1226,11 +1238,13 @@ function jsoncArray(indent: string, key: string, items: string[]): string {
 function wranglerJsonc(opts: ScaffoldOptions): string {
   const rooms = usesRooms(opts)
   const agent = hasExample(opts, 'agent')
+  const ai = usesAgents(opts)
   // One Durable Object class per example; a fresh app declares them all in one migration.
   const objects = [
     ...(rooms ? [{ name: 'ROOMS', className: 'SyncRoom' }] : []),
     ...(agent ? [{ name: 'Assistant', className: 'Assistant' }] : []),
     ...(hasExample(opts, 'live') ? [{ name: 'LIVE', className: 'LiveRoom' }] : []),
+    ...(hasExample(opts, 'voice') ? [{ name: 'Voice', className: 'Voice' }] : []),
   ]
   const comments = [
     ...(rooms ? ['// ROOMS: one SyncRoom per room (@cascivo/app/sync-server).'] : []),
@@ -1239,6 +1253,9 @@ function wranglerJsonc(opts: ScaffoldOptions): string {
       : []),
     ...(hasExample(opts, 'live')
       ? ["// LIVE: the /ops dashboard's per-second totals (@cascivo/app/live-server)."]
+      : []),
+    ...(hasExample(opts, 'voice')
+      ? ['// Voice: one voice agent per conversation (agents/voice); it stores the transcript.']
       : []),
   ]
   return `// Cloudflare deploy config. \`${runExplicitCommand(opts.pm ?? 'npm', 'deploy')}\` builds and ships the SPA and
@@ -1251,7 +1268,7 @@ function wranglerJsonc(opts: ScaffoldOptions): string {
     // Client-side app: an unknown path serves index.html, and the client renders it.
     "not_found_handling": "single-page-application",
     // Only the API reaches the Worker; static assets are served without invoking it.
-    "run_worker_first": ${agent ? '["/api/*", "/agents/*"]' : '["/api/*"]'},
+    "run_worker_first": ${ai ? '["/api/*", "/agents/*"]' : '["/api/*"]'},
   },
   "observability": { "enabled": true },${
     objects.length > 0
@@ -1322,9 +1339,9 @@ ${jsoncArray('    ', 'producers', [`{ "binding": "EVENTS", "queue": "${packageNa
   "workflows": [{ "name": "import-job", "binding": "IMPORT_JOB", "class_name": "ImportJob" }],`
       : ''
   }${
-    agent
+    ai
       ? `
-  // Workers AI, which the assistant calls.
+  // Workers AI, which the ${[agent ? 'assistant' : '', hasExample(opts, 'voice') ? 'voice agent' : ''].filter(Boolean).join(' and ')} call${agent && hasExample(opts, 'voice') ? '' : 's'}.
   "ai": { "binding": "AI" },`
       : ''
   }${
@@ -1334,9 +1351,9 @@ ${jsoncArray('    ', 'producers', [`{ "binding": "EVENTS", "queue": "${packageNa
   "browser": { "binding": "BROWSER" },`
       : ''
   }${
-    agent || hasExample(opts, 'export')
+    ai || hasExample(opts, 'export')
       ? `
-  // ${[agent ? 'The Agents SDK' : '', hasExample(opts, 'export') ? "Cloudflare's puppeteer" : ''].filter(Boolean).join(' and ')} use${agent && hasExample(opts, 'export') ? '' : 's'} Node.js APIs.
+  // ${[ai ? 'The Agents SDK' : '', hasExample(opts, 'export') ? "Cloudflare's puppeteer" : ''].filter(Boolean).join(' and ')} use${ai && hasExample(opts, 'export') ? '' : 's'} Node.js APIs.
   "compatibility_flags": ["nodejs_compat"],`
       : ''
   }
@@ -1366,6 +1383,11 @@ function usesLimiter(opts: ScaffoldOptions): boolean {
   return hasExample(opts, 'files') || hasExample(opts, 'export')
 }
 
+/** Examples on Cloudflare's Agents SDK: routed under /agents/*, calling Workers AI. */
+function usesAgents(opts: ScaffoldOptions): boolean {
+  return hasExample(opts, 'agent') || hasExample(opts, 'voice')
+}
+
 function usesRooms(opts: ScaffoldOptions): boolean {
   return hasExample(opts, 'board') || hasExample(opts, 'notes') || hasExample(opts, 'import')
 }
@@ -1376,7 +1398,7 @@ function usesRooms(opts: ScaffoldOptions): boolean {
  * worker/ on its own (tsconfig.worker.json).
  */
 function needsWorkerTypes(opts: ScaffoldOptions): boolean {
-  return hasExample(opts, 'agent') || hasExample(opts, 'import')
+  return usesAgents(opts) || hasExample(opts, 'import')
 }
 
 /**
@@ -1503,14 +1525,16 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const usage = hasExample(opts, 'usage')
   const crud = hasExample(opts, 'crud')
   const live = hasExample(opts, 'live')
+  const voice = hasExample(opts, 'voice')
+  const ai = usesAgents(opts)
   const limiter = usesLimiter(opts)
   const access = opts.auth === 'access'
   const guards = [
     ...(access ? ['requireAccess'] : []),
     ...(limiter ? ['clientIp', 'rateLimit'] : []),
   ]
-  const custom = rooms || agent || files || exports || access || live
-  const isAsync = agent || files || exports || access
+  const custom = rooms || ai || files || exports || access || live
+  const isAsync = ai || files || exports || access
   return `${usage ? `import type { AnalyticsDataset } from '@cascivo/app/analytics'\n` : ''}${crud ? `import type { Database } from '@cascivo/app/db'\n` : ''}${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler } from '@cascivo/app/api'
 ${guards.length > 0 ? `import { ${[...guards, 'guardResponse'].sort().join(', ')} } from '@cascivo/app/guard'\n${limiter ? `import type { RateLimiter } from '@cascivo/app/guard'\n` : ''}` : ''}${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
     files
@@ -1536,7 +1560,7 @@ import type { RoomNamespace } from '@cascivo/app/sync-server'
 import type { BrowserWorker } from '@cloudflare/puppeteer'
 `
       : ''
-  }${agent ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
+  }${ai ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
 ${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${
     rooms
@@ -1551,6 +1575,13 @@ export { SyncRoom } from '@cascivo/app/sync-server'
       ? `
 // The Durable Object behind /assistant: one per conversation (worker/assistant.ts).
 export { Assistant } from './assistant'
+`
+      : ''
+  }${
+    voice
+      ? `
+// The Durable Object behind /voice: one per conversation (worker/voice.ts).
+export { Voice } from './voice'
 `
       : ''
   }${
@@ -1573,8 +1604,8 @@ export { ImportJob } from './import-job'
  * here; every handler receives them as \`env\`.
  */
 ${
-  rooms || agent || files || exports || usage || crud || access || live
-    ? `export interface Env {${agent ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${crud ? '\n  DB: Database' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}
+  rooms || ai || files || exports || usage || crud || access || live
+    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${crud ? '\n  DB: Database' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -1677,7 +1708,7 @@ async function handleAndRecord(request: Request, env: Env): Promise<Response> {
 `
     : ''
 }
-// wrangler.jsonc routes only ${agent ? '/api/* and /agents/*' : '/api/*'} here; everything else is a static asset or index.html.
+// wrangler.jsonc routes only ${ai ? '/api/* and /agents/*' : '/api/*'} here; everything else is a static asset or index.html.
 export default {
 ${
   custom
@@ -1709,9 +1740,9 @@ ${
     }`
           : ''
       }${
-        agent
+        ai
           ? `
-    // /agents/assistant/<conversation>: the WebSocket useAgent() opens.
+    // /agents/<agent>/<conversation>: the WebSocket ${[agent ? 'useAgent()' : '', voice ? 'VoiceClient' : ''].filter(Boolean).join(' or ')} opens.
     const agent = await routeAgentRequest(request, env)
     if (agent) return agent`
           : ''
@@ -1911,6 +1942,7 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
   if (hasExample(opts, 'usage')) items.push({ label: 'Usage', href: '/usage' })
   if (hasExample(opts, 'crud')) items.push({ label: 'Customers', href: '/customers' })
   if (hasExample(opts, 'live')) items.push({ label: 'Ops', href: '/ops' })
+  if (hasExample(opts, 'voice')) items.push({ label: 'Voice', href: '/voice' })
   const navItems = items
     .map(
       (item) => `    {
@@ -3550,6 +3582,342 @@ export default function Usage() {
 `
 }
 
+/* --- `--example voice`: a voice assistant on the Agents SDK and Workers AI speech --- */
+
+function cfVoiceTs(): string {
+  return `import { signal } from '@cascivo/react'
+import { VoiceClient } from 'agents/voice/client'
+import type { TranscriptMessage, VoiceStatus } from 'agents/voice/client'
+
+/**
+ * The /voice page's connection to its agent (worker/voice.ts). \`VoiceClient\` does the audio:
+ * the microphone, streaming it to the Worker, playing the replies, and noticing when you talk
+ * over one. This file turns its events into signals, which the page reads.
+ */
+
+/** The Durable Object class; the client connects to /agents/voice/<conversation>. */
+export const VOICE_AGENT = 'Voice'
+
+/** One line of the conversation, from this call or an earlier one. */
+export interface Line {
+  role: 'user' | 'assistant'
+  text: string
+}
+
+export const status = signal<VoiceStatus>('idle')
+export const connected = signal(false)
+/** The conversation as the agent stored it when this tab connected. */
+export const history = signal<Line[]>([])
+/** Turns since then; \`transcript\` from VoiceClient, minus what \`history\` already holds. */
+export const transcript = signal<TranscriptMessage[]>([])
+/** What the speech-to-text model has heard so far of the current sentence. */
+export const interim = signal<string | null>(null)
+/** Microphone level, 0–1. */
+export const level = signal(0)
+export const muted = signal(false)
+export const error = signal<string | null>(null)
+
+let client: VoiceClient | null = null
+/** How much of VoiceClient's transcript the last history message already covered. */
+let covered = 0
+
+/**
+ * Checks the history the agent sends on connect (worker/voice.ts). It crossed the network, so
+ * anything that is not a list of { role, content } lines is ignored rather than trusted.
+ */
+export function parseHistory(raw: unknown): Line[] | null {
+  if (typeof raw !== 'object' || raw === null) return null
+  const { type, messages } = raw as Record<string, unknown>
+  if (type !== 'history' || !Array.isArray(messages)) return null
+  const lines: Line[] = []
+  for (const message of messages) {
+    if (typeof message !== 'object' || message === null) continue
+    const { role, content } = message as Record<string, unknown>
+    if ((role === 'user' || role === 'assistant') && typeof content === 'string') {
+      lines.push({ role, text: content })
+    }
+  }
+  return lines
+}
+
+/** One conversation per tab: a reload keeps it, a new tab starts another. */
+function conversationId(): string {
+  const key = 'voice-conversation'
+  try {
+    const saved = sessionStorage.getItem(key)
+    if (saved && /^[\\w-]{1,64}$/.test(saved)) return saved
+    const id = crypto.randomUUID()
+    sessionStorage.setItem(key, id)
+    return id
+  } catch {
+    return crypto.randomUUID()
+  }
+}
+
+/** Connects once; later calls return the same client. */
+export function voice(): VoiceClient {
+  if (client) return client
+  const c = new VoiceClient({ agent: VOICE_AGENT, name: conversationId() })
+  c.addEventListener('statuschange', (value) => (status.value = value))
+  c.addEventListener('connectionchange', (value) => (connected.value = value))
+  c.addEventListener('transcriptchange', (value) => (transcript.value = value.slice(covered)))
+  c.addEventListener('custommessage', (raw) => {
+    const lines = parseHistory(raw)
+    if (!lines) return
+    history.value = lines
+    covered = c.transcript.length
+    transcript.value = []
+  })
+  c.addEventListener('interimtranscript', (value) => (interim.value = value))
+  c.addEventListener('audiolevelchange', (value) => (level.value = value))
+  c.addEventListener('mutechange', (value) => (muted.value = value))
+  c.addEventListener('error', (value) => (error.value = value))
+  c.connect()
+  client = c
+  return c
+}
+`
+}
+
+function cfVoiceWorkerTs(): string {
+  return `import { Agent } from 'agents'
+import type { Connection } from 'agents'
+import { withVoice, WorkersAIFluxSTT, WorkersAITTS } from 'agents/voice'
+import type { TextSource, VoiceTurnContext } from 'agents/voice'
+import type { Env } from './index'
+import { scriptedReply, ScriptedTranscriber, silentSpeech } from './scripted-voice'
+
+/** Any Workers AI text model; replies stream into speech sentence by sentence. */
+const MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast'
+
+/** How many earlier messages a reload shows. */
+const HISTORY_SHOWN = 50
+
+const SYSTEM = \`You are a voice assistant inside a web app. Your replies are spoken aloud, so
+answer in one to three short sentences of plain speech: no lists, no markdown, no emoji.\`
+
+// \`vite dev\` has no Workers AI, so there the voice is a stand-in (worker/scripted-voice.ts):
+// it "hears" a fixed question every few seconds of audio and answers without sound. A
+// deployed Worker uses Workers AI for all three steps, and so does \`VITE_REAL_AI=1 vite dev\`.
+const scripted = import.meta.env.DEV && import.meta.env['VITE_REAL_AI'] !== '1'
+
+const VoiceAgent = withVoice(Agent<Env>)
+
+/**
+ * One Durable Object per conversation: speech in, text through a model, speech out. It keeps
+ * the conversation in its SQLite database, so a reconnect carries on where it was.
+ */
+export class Voice extends VoiceAgent {
+  transcriber = scripted ? new ScriptedTranscriber() : new WorkersAIFluxSTT(this.env.AI)
+  tts = scripted ? silentSpeech : new WorkersAITTS(this.env.AI)
+
+  /** VoiceClient starts empty: send a new connection the conversation so far (src/voice.ts). */
+  onConnect(connection: Connection): void {
+    connection.send(
+      JSON.stringify({ type: 'history', messages: this.getConversationHistory(HISTORY_SHOWN) }),
+    )
+  }
+
+  async onTurn(transcript: string, { messages, signal }: VoiceTurnContext): Promise<TextSource> {
+    if (scripted) return scriptedReply(transcript)
+    try {
+      // A stream of server-sent events; the voice pipeline reads the text out of it.
+      const stream = await this.env.AI.run(
+        MODEL,
+        {
+          messages: [
+            { role: 'system', content: SYSTEM },
+            ...messages,
+            { role: 'user', content: transcript },
+          ],
+          stream: true,
+        },
+        { signal },
+      )
+      if (!(stream instanceof ReadableStream)) throw new Error('Workers AI returned no stream')
+      return stream
+    } catch (error) {
+      if (signal.aborted) throw error
+      // Said aloud rather than left as silence; the cause is in the Worker's logs.
+      console.error('[voice] the model call failed:', error)
+      return 'Sorry, I could not reach the model just now.'
+    }
+  }
+}
+`
+}
+
+function cfScriptedVoiceTs(): string {
+  return `import type {
+  TTSProvider,
+  Transcriber,
+  TranscriberSession,
+  TranscriberSessionOptions,
+} from 'agents/voice'
+
+/**
+ * \`vite dev\` stand-ins for Workers AI's speech models, which have no local mode. They keep the
+ * whole call working offline — microphone, streaming, turns, transcript — without a model:
+ * the transcriber "hears" a fixed question for every few seconds of sound, and the replies
+ * are text only. Production never uses them (see worker/voice.ts).
+ */
+
+/** 16 kHz, 16-bit mono: this many bytes is three seconds of audio. */
+const BYTES_PER_TURN = 16_000 * 2 * 3
+const QUESTIONS = ['What can you do?', 'How do I deploy this app?', 'Thanks, that is all.']
+
+export class ScriptedTranscriber implements Transcriber {
+  createSession(options: TranscriberSessionOptions = {}): TranscriberSession {
+    let bytes = 0
+    let turn = 0
+    return {
+      feed(chunk) {
+        bytes += chunk.byteLength
+        if (bytes < BYTES_PER_TURN) return
+        bytes = 0
+        options.onUtterance?.(QUESTIONS[turn++ % QUESTIONS.length]!)
+      },
+      close() {},
+    }
+  }
+}
+
+/** No sound in \`vite dev\`: the reply shows in the transcript only. */
+export const silentSpeech: TTSProvider = { synthesize: async () => null }
+
+const REPLIES: Record<string, string> = {
+  'What can you do?':
+    'I am the development stand-in. Deploy, or set VITE_REAL_AI=1, for Workers AI.',
+  'How do I deploy this app?': 'Run the deploy script. It builds the page and the Worker together.',
+}
+
+export function scriptedReply(transcript: string): string {
+  return REPLIES[transcript] ?? \`You said: \${transcript}\`
+}
+`
+}
+
+function cfVoiceRouteTsx(): string {
+  return `import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  EmptyState,
+  Flex,
+  Heading,
+  Input,
+  ProgressBar,
+  Text,
+  useSignals,
+} from '@cascivo/react'
+import type { FormEvent } from 'react'
+import {
+  connected,
+  error,
+  history,
+  interim,
+  level,
+  muted,
+  status,
+  transcript,
+  voice,
+} from '../voice'
+import type { Line } from '../voice'
+
+const STATUS_LABEL = {
+  idle: 'Not in a call',
+  listening: 'Listening',
+  thinking: 'Thinking',
+  speaking: 'Speaking',
+} as const
+
+function sendTyped(event: FormEvent<HTMLFormElement>): void {
+  event.preventDefault()
+  const form = event.currentTarget
+  const text = new FormData(form).get('message')
+  if (typeof text !== 'string' || text.trim() === '') return
+  voice().sendText(text.trim())
+  form.reset()
+}
+
+export default function VoicePage() {
+  useSignals()
+  const client = voice()
+  const inCall = status.value !== 'idle'
+  const lines: Line[] = [
+    ...history.value,
+    ...transcript.value.map((m) => ({ role: m.role, text: m.text })),
+  ]
+
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Voice</Heading>
+        <Text muted>
+          Talk to an assistant on Workers AI: speech to text, a model, and text to speech, all in a
+          Durable Object. Speak over a reply to interrupt it.
+        </Text>
+      </Flex>
+      <Card>
+        <CardContent>
+          <Flex gap={3}>
+            <Flex direction="horizontal" align="center" wrap gap={3}>
+              {inCall ? (
+                <Button variant="destructive" onClick={() => client.endCall()}>
+                  End call
+                </Button>
+              ) : (
+                <Button disabled={!connected.value} onClick={() => void client.startCall()}>
+                  Start call
+                </Button>
+              )}
+              <Button variant="secondary" disabled={!inCall} onClick={() => client.toggleMute()}>
+                {muted.value ? 'Unmute' : 'Mute'}
+              </Button>
+              <Badge variant={status.value === 'idle' ? 'secondary' : 'success'}>
+                {connected.value ? STATUS_LABEL[status.value] : 'Connecting'}
+              </Badge>
+            </Flex>
+            {inCall ? (
+              <ProgressBar label="Microphone" value={Math.round(level.value * 100)} max={100} />
+            ) : null}
+            {error.value ? <Text muted>{error.value}</Text> : null}
+          </Flex>
+        </CardContent>
+      </Card>
+      <Flex gap={2} role="log" aria-live="polite" aria-label="Conversation">
+        {lines.length === 0 && !interim.value ? (
+          <EmptyState
+            title="Start a call and say something"
+            description="Or type below: a typed message gets a reply too, spoken if you are in a call."
+          />
+        ) : null}
+        {lines.map((message, index) => (
+          // The conversation only grows, so a line's position is a stable key.
+          <Flex key={index} gap={1}>
+            <Text size="sm" muted>
+              {message.role === 'user' ? 'You' : 'Assistant'}
+            </Text>
+            <Text>{message.text}</Text>
+          </Flex>
+        ))}
+        {interim.value ? <Text muted>{interim.value}…</Text> : null}
+      </Flex>
+      <form onSubmit={sendTyped}>
+        <Flex direction="horizontal" align="end" gap={2}>
+          <Input name="message" label="Or type" placeholder="Ask something" autoComplete="off" />
+          <Button type="submit" variant="secondary" disabled={!connected.value}>
+            Send
+          </Button>
+        </Flex>
+      </form>
+    </Flex>
+  )
+}
+`
+}
+
 /* --- `--example live`: an ops dashboard fed by a Queue (@cascivo/app/live) --- */
 
 function cfOpsTs(): string {
@@ -4214,8 +4582,8 @@ This builds the app, then deploys it to a temporary Cloudflare account with
 It works only while wrangler is logged out. If you are logged in, use \`deploy\` instead.
 A temporary account supports Workers, static assets, KV, D1 and Durable Objects. It does not
 support Workers AI, R2, Workflows or Browser Run.${
-    hasExample(opts, 'agent')
-      ? ' So a preview serves the app, but its assistant cannot reach the model: deploy it\nto your own account for that.'
+    usesAgents(opts)
+      ? ` So a preview serves the app, but its ${hasExample(opts, 'agent') ? 'assistant' : 'voice page'} cannot reach the model: deploy it\nto your own account for that.`
       : ''
   }
 
@@ -4460,6 +4828,29 @@ again. The page renders the result with \`<CascivoView>\`: real components, no g
 
 Workers AI bills per use beyond its free daily allocation.`
       : ''
+  }${
+    hasExample(opts, 'voice')
+      ? `
+
+## Voice
+
+\`/voice\` is a voice assistant: press "Start call", talk, and it answers aloud. Talk over a
+reply to interrupt it. Typed messages work too.
+
+- \`worker/voice.ts\` — \`Voice\`, an Agent with the Agents SDK's voice pipeline
+  (\`withVoice\` from \`agents/voice\`): Workers AI speech to text (Flux, which also decides when
+  you have finished speaking), a text model (\`MODEL\`) and text to speech. One Durable Object
+  per conversation stores the transcript, which the model gets as context.
+- \`src/voice.ts\` — \`VoiceClient\` (\`agents/voice/client\`) captures the microphone, streams
+  it, and plays the replies; its events become signals the page reads.
+- \`worker/scripted-voice.ts\` — \`vite dev\` stand-ins, because Workers AI has no local mode:
+  the transcriber "hears" a fixed question for every three seconds of sound, and the replies
+  are text only. \`VITE_REAL_AI=1 ${runScriptCommand(pm, 'dev')}\` uses Workers AI instead (after
+  \`npx wrangler login\`); a deployed Worker always does.
+
+Browsers allow the microphone only on a secure origin: \`localhost\` or HTTPS. Workers AI
+bills per use beyond its free daily allocation, and a temporary account has no Workers AI.`
+      : ''
   }
 
 Add more components with \`npx cascivo add <component>\`.
@@ -4539,6 +4930,7 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
       ? [{ file: 'customers.tsx', contents: cfCustomersRouteTsx() }]
       : []),
     ...(hasExample(opts, 'live') ? [{ file: 'ops.tsx', contents: cfOpsRouteTsx() }] : []),
+    ...(hasExample(opts, 'voice') ? [{ file: 'voice.tsx', contents: cfVoiceRouteTsx() }] : []),
   ]
   return [
     { path: 'package.json', contents: cfPackageJson(opts) },
@@ -4589,6 +4981,13 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
         ]
       : []),
     ...(hasExample(opts, 'live') ? [{ path: 'src/ops.ts', contents: cfOpsTs() }] : []),
+    ...(hasExample(opts, 'voice')
+      ? [
+          { path: 'src/voice.ts', contents: cfVoiceTs() },
+          { path: 'worker/voice.ts', contents: cfVoiceWorkerTs() },
+          { path: 'worker/scripted-voice.ts', contents: cfScriptedVoiceTs() },
+        ]
+      : []),
     ...(hasExample(opts, 'usage')
       ? [
           {

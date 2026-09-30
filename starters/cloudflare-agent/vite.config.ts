@@ -12,7 +12,7 @@ import { defineConfig } from 'vite'
 //
 // Workers AI has no local mode: with remote bindings on, `vite dev` needs a Cloudflare login.
 // So they are off, and the assistant answers from worker/scripted-model.ts. Run
-// `VITE_REAL_AI=1 vite dev` (after `wrangler login`) to talk to the real model.
+// `VITE_REAL_AI=1 vite dev` (after `wrangler login`) to use Workers AI.
 export default defineConfig({
   plugins: [
     react(),
