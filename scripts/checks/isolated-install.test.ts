@@ -232,6 +232,11 @@ import { handleUploads, type UploadBucket } from '@cascivo/app/uploads-server'
 export const photoUploads = defineUploads({ path: '/api/uploads', maxBytes: 1e6, types: ['image/png'] })
 export const sendPhoto = (file: File): Upload => startUpload(photoUploads, file)
 export const serveUploads = (bucket: UploadBucket) => handleUploads(photoUploads, bucket)
+import { exportUrl, handleExport, isExporting, type ExportBrowser } from '@cascivo/app/export'
+export const reportLink: string = exportUrl('/reports', 'pdf')
+export const bareMode: boolean = isExporting('?export=1')
+export const serveExport = (request: Request, launch: () => Promise<ExportBrowser>) =>
+  handleExport(request, { launch })
 import {
   applyThemeOverride,
   defineFlags,

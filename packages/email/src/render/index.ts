@@ -9,4 +9,10 @@ export { hoistStyles } from './hoist.ts'
 export { analyze, formatAnalysis } from './analyze.ts'
 export type { Analysis, TagCost } from './analyze.ts'
 export { sendEmail } from './send.ts'
-export type { EmailEnvelope, EmailRecipient, EmailSender, OutgoingEmail } from './send.ts'
+export type {
+  EmailAttachment,
+  EmailEnvelope,
+  EmailRecipient,
+  EmailSender,
+  OutgoingEmail,
+} from './send.ts'

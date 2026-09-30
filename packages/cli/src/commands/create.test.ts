@@ -683,3 +683,45 @@ describe('buildScaffold — cloudflare --example files', () => {
     expect(policy).not.toContain('image/svg+xml')
   })
 })
+
+describe('buildScaffold — cloudflare --example export', () => {
+  const map = fileMap(
+    buildScaffold({
+      name: 'Edge App',
+      framework: 'cloudflare',
+      theme: 'light',
+      sections: ['Dashboard'],
+      examples: ['export'],
+    }),
+  )
+
+  it('exports pages through Browser Run, and renders them without the shell', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"browser": { "binding": "BROWSER" }')
+    expect(wrangler).toContain("// Cloudflare's puppeteer uses Node.js APIs.")
+    expect(wrangler.match(/compatibility_flags/g)).toHaveLength(1)
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain(
+      'handleExport(request, { launch: () => puppeteer.launch(env.BROWSER) })',
+    )
+    expect(map.get('src/App.tsx')).toContain('if (isExporting()) {')
+    expect(map.get('src/routes/report.tsx')).toContain("exportUrl('/report', 'pdf')")
+    const pkg = JSON.parse(map.get('package.json')!) as { dependencies: Record<string, string> }
+    expect(pkg.dependencies['@cloudflare/puppeteer']).toBeDefined()
+  })
+
+  it('declares nodejs_compat once when the agent needs it too', () => {
+    const both = fileMap(
+      buildScaffold({
+        name: 'x',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Home'],
+        examples: ['agent', 'export'],
+      }),
+    )
+    const wrangler = both.get('wrangler.jsonc')!
+    expect(wrangler.match(/compatibility_flags/g)).toHaveLength(1)
+    expect(wrangler).toContain("// The Agents SDK and Cloudflare's puppeteer use Node.js APIs.")
+  })
+})

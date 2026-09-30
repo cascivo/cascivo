@@ -371,3 +371,38 @@ upload.result.value // { key, name, size, type } once stored
 
 `cascivo create --framework cloudflare --example files` scaffolds an upload page on
 `FileUploader`, with previews.
+
+## PDF and PNG export — `@cascivo/app/export`
+
+Any page of the app as a file, rendered by Cloudflare's Browser Run from the Worker. The
+Worker opens the page at its own origin with `?export=1`. The app checks `isExporting()` and
+drops its shell, so the file holds the page and not the nav.
+
+```ts
+// worker/index.ts
+import puppeteer from '@cloudflare/puppeteer'
+const exported = await handleExport(request, { launch: () => puppeteer.launch(env.BROWSER) })
+if (exported) return exported
+
+// the page
+<a href={exportUrl('/reports', 'pdf')}>Download PDF</a>
+
+// a Cron Trigger: a weekly report, emailed (sendEmail from @cascivo/email takes attachments)
+const pdf = await exportPage(() => puppeteer.launch(env.BROWSER), `${env.APP_URL}/reports`, {
+  format: 'pdf',
+})
+```
+
+- **Only pages of this app can be exported.** `page` must be a same-origin path, and paths
+  under `/api/` are refused, because an export of an export would launch browsers in a loop.
+  `allow` narrows this further.
+- **Readiness.** By default the page is captured once the network goes quiet. For a page
+  that loads data later, show a marker and pass `readySelector`.
+- **No session.** The browser opens the page without the visitor's cookies, so a page that
+  needs one renders signed out.
+- **Cost.** Each export starts a browser session. Put a rate limit in front of it.
+- **Typed by shape.** `@cloudflare/puppeteer`'s `Browser` fits `ExportBrowser`; this package
+  does not depend on it.
+
+`cascivo create --framework cloudflare --example export` scaffolds a report page with
+"Download PDF" and "Download PNG".

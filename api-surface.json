@@ -6711,6 +6711,48 @@
           }
         }
       },
+      "./export": {
+        "values": ["exportPage", "exportUrl", "handleExport", "isExporting"],
+        "types": [
+          "ExportBrowser",
+          "ExportFormat",
+          "ExportPage",
+          "ExportPageOptions",
+          "HandleExportOptions"
+        ],
+        "declarations": {
+          "ExportBrowser": {
+            "newPage": "(): Promise<ExportPage>",
+            "close": "(): Promise<void>"
+          },
+          "ExportFormat": "type = 'pdf' | 'png'",
+          "exportPage": "declare function exportPage(launch: () => Promise<ExportBrowser>, url: string, options: ExportPageOptions): Promise<Uint8Array>",
+          "ExportPage": {
+            "setViewport": "(viewport: { width: number; height: number; deviceScaleFactor?: number; }): Promise<void>",
+            "goto": "(url: string, options: { waitUntil: 'networkidle0'; timeout: number; }): Promise<unknown>",
+            "waitForSelector": "(selector: string, options: { timeout: number; }): Promise<unknown>",
+            "emulateMediaType": "(type: 'print' | 'screen'): Promise<void>",
+            "pdf": "(options: { format: 'A4'; printBackground: boolean; landscape: boolean; }): Promise<Uint8Array>",
+            "screenshot": "(options: { type: 'png'; fullPage: boolean; }): Promise<Uint8Array>"
+          },
+          "ExportPageOptions": {
+            "format": "ExportFormat",
+            "landscape?": "boolean",
+            "readySelector?": "string",
+            "viewport?": "{ width: number; height: number; }",
+            "timeoutMs?": "number"
+          },
+          "exportUrl": "declare function exportUrl(page: string, format?: ExportFormat, path?: string): string",
+          "handleExport": "declare function handleExport(request: Request, options: HandleExportOptions): Promise<Response | null>",
+          "HandleExportOptions": {
+            "(extends)": "extends Omit<ExportPageOptions, 'format' | 'landscape'>",
+            "launch": "() => Promise<ExportBrowser>",
+            "path?": "string",
+            "allow?": "(page: string) => boolean"
+          },
+          "isExporting": "declare function isExporting(search?: string): boolean"
+        }
+      },
       "./sync-server": {
         "values": ["SyncRoom", "roomResponse", "writeRoom"],
         "types": ["HibernatableWebSocket", "RoomNamespace", "RoomWrite", "SyncRoomState"],

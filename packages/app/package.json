@@ -69,6 +69,11 @@
       "import": "./dist/uploads-server.js",
       "default": "./dist/uploads-server.js"
     },
+    "./export": {
+      "types": "./dist/export.d.ts",
+      "import": "./dist/export.js",
+      "default": "./dist/export.js"
+    },
     "./sync-server": {
       "types": "./dist/sync-server.d.ts",
       "import": "./dist/sync-server.js",

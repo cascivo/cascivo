@@ -63,11 +63,44 @@ describe('sendEmail', () => {
     ['a reply-to', { replyTo: 'r@x.test\r\nX-Evil: 1' }],
     ['a header value', { headers: { 'X-Campaign': 'spring\r\nBcc: everyone@x.test' } }],
     ['a header name', { headers: { 'X-A\r\nBcc': 'everyone@x.test' } }],
+    [
+      'an attachment name',
+      {
+        attachments: [
+          {
+            filename: 'r.pdf\r\nBcc: x@x.test',
+            type: 'application/pdf',
+            content: 'x',
+            disposition: 'attachment' as const,
+          },
+        ],
+      },
+    ],
   ])('rejects CR/LF in %s', async (_, extra) => {
     const sender = recorder()
     await expect(
       sendEmail(sender, message, { from: 'a@x.test', to: 'b@x.test', ...extra }),
     ).rejects.toThrow(/newline/)
     expect(sender.sent).toHaveLength(0)
+  })
+
+  it('passes attachments through to the sender', async () => {
+    const sender = recorder()
+    const pdf = new Uint8Array([37, 80, 68, 70])
+    await sendEmail(sender, message, {
+      from: 'a@x.test',
+      to: 'b@x.test',
+      attachments: [
+        {
+          filename: 'report.pdf',
+          type: 'application/pdf',
+          content: pdf,
+          disposition: 'attachment',
+        },
+      ],
+    })
+    expect(sender.sent[0]?.attachments).toEqual([
+      { filename: 'report.pdf', type: 'application/pdf', content: pdf, disposition: 'attachment' },
+    ])
   })
 })

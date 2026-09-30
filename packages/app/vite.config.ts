@@ -14,6 +14,7 @@ export default defineConfig({
         'jobs-server': './src/jobs-server.ts',
         uploads: './src/uploads.ts',
         'uploads-server': './src/uploads-server.ts',
+        export: './src/export.ts',
         vite: './src/vite.ts',
       },
       formats: ['es'],
@@ -33,7 +34,8 @@ export default defineConfig({
         // The bundler drops per-module directives. Only the router entry renders React, so
         // only it is a client module; `api` and `sync-server` run in Workers, `sync` holds
         // no components, `flags` runs on both sides, `jobs` and `uploads` run in the browser
-        // and their `-server` twins in the Worker, and `vite` runs in Node (see packages/core/vite.config.ts).
+        // and their `-server` twins in the Worker,
+        // `export` in both, and `vite` runs in Node (see packages/core/vite.config.ts).
         banner: (chunk: { name?: string; isEntry?: boolean }) =>
           chunk.isEntry && chunk.name === 'index' ? "'use client';" : '',
       },

@@ -14,6 +14,18 @@ export interface EmailEnvelope {
   replyTo?: EmailRecipient
   /** Extra headers, e.g. `List-Unsubscribe`. */
   headers?: Record<string, string>
+  /** Files to attach, e.g. a PDF report. */
+  attachments?: EmailAttachment[]
+}
+
+/** A file attached to an email. */
+export interface EmailAttachment {
+  /** The name the recipient sees, e.g. `report.pdf`. */
+  filename: string
+  /** Its MIME type, e.g. `application/pdf`. */
+  type: string
+  content: ArrayBuffer | ArrayBufferView | string
+  disposition: 'attachment'
 }
 
 /** What a sender receives: the envelope plus the rendered parts. */
@@ -53,7 +65,7 @@ export async function sendEmail(
   envelope: EmailEnvelope,
 ): Promise<{ messageId: string }> {
   assertSendable(message)
-  const { from, to, cc, bcc, replyTo, headers = {} } = envelope
+  const { from, to, cc, bcc, replyTo, headers = {}, attachments = [] } = envelope
   for (const [field, list] of [
     ['From', addresses(from)],
     ['To', addresses(to)],
@@ -72,6 +84,11 @@ export async function sendEmail(
   for (const [name, value] of Object.entries(headers)) {
     assertHeaderSafe('Header name', name)
     assertHeaderSafe(name, value)
+  }
+  // An attachment's name and type become MIME headers too.
+  for (const attachment of attachments) {
+    assertHeaderSafe('Attachment filename', attachment.filename)
+    assertHeaderSafe('Attachment type', attachment.type)
   }
   return sender.send({
     ...envelope,

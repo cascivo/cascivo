@@ -16,8 +16,9 @@
     "bindings": [{ "name": "Assistant", "class_name": "Assistant" }],
   },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Assistant"] }],
-  // Workers AI, which the assistant calls; the Agents SDK needs Node.js APIs.
+  // Workers AI, which the assistant calls.
   "ai": { "binding": "AI" },
+  // The Agents SDK uses Node.js APIs.
   "compatibility_flags": ["nodejs_compat"],
   // Add bindings here (KV, D1, R2, Durable Objects, Workers AI) and read them from the
   // `env` argument of the Worker's fetch handler.

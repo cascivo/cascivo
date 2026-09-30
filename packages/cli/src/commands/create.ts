@@ -55,9 +55,9 @@ export type Runtime = 'preact' | 'react'
 export const RUNTIMES = ['preact', 'react'] as const
 
 /** Optional demo pages for `--framework cloudflare`. */
-export type Example = 'board' | 'agent' | 'notes' | 'import' | 'files'
+export type Example = 'board' | 'agent' | 'notes' | 'import' | 'files' | 'export'
 
-export const EXAMPLES = ['board', 'agent', 'notes', 'import', 'files'] as const
+export const EXAMPLES = ['board', 'agent', 'notes', 'import', 'files', 'export'] as const
 
 function isExample(value: string): value is Example {
   return (EXAMPLES as readonly string[]).includes(value)
@@ -1066,6 +1066,8 @@ function cfPackageJson(opts: ScaffoldOptions): string {
       '@cascivo/themes': V['@cascivo/themes']!,
       '@preact/signals-react': SIGNALS_PEER,
       ...(preact ? { preact: '^10.29.0' } : { react: '^19.0.0', 'react-dom': '^19.0.0' }),
+      // The /report page's PDF/PNG export drives Browser Run through Cloudflare's puppeteer.
+      ...(hasExample(opts, 'export') ? { '@cloudflare/puppeteer': '^1.4.0' } : {}),
       // The /notes page keeps its room in IndexedDB.
       ...(hasExample(opts, 'notes') ? { '@cascivo/storage': V['@cascivo/storage']! } : {}),
       // The /assistant page: Cloudflare's Agents SDK on the AI SDK, and @cascivo/render to
@@ -1248,8 +1250,19 @@ ${jsoncArray('  ', 'migrations', [`{ "tag": "v1", "new_sqlite_classes": [${objec
   }${
     agent
       ? `
-  // Workers AI, which the assistant calls; the Agents SDK needs Node.js APIs.
-  "ai": { "binding": "AI" },
+  // Workers AI, which the assistant calls.
+  "ai": { "binding": "AI" },`
+      : ''
+  }${
+    hasExample(opts, 'export')
+      ? `
+  // Browser Run: renders pages to PDF/PNG for /api/export.
+  "browser": { "binding": "BROWSER" },`
+      : ''
+  }${
+    agent || hasExample(opts, 'export')
+      ? `
+  // ${[agent ? 'The Agents SDK' : '', hasExample(opts, 'export') ? "Cloudflare's puppeteer" : ''].filter(Boolean).join(' and ')} use${agent && hasExample(opts, 'export') ? '' : 's'} Node.js APIs.
   "compatibility_flags": ["nodejs_compat"],`
       : ''
   }
@@ -1356,7 +1369,8 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const agent = hasExample(opts, 'agent')
   const imports = hasExample(opts, 'import')
   const files = hasExample(opts, 'files')
-  return `import { createHandler } from '@cascivo/app/api'
+  const exports = hasExample(opts, 'export')
+  return `${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler } from '@cascivo/app/api'
 ${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
     files
       ? `import { handleUploads, listUploads } from '@cascivo/app/uploads-server'
@@ -1367,6 +1381,12 @@ import type { ImageResizer, UploadBucket } from '@cascivo/app/uploads-server'
     rooms
       ? `import { roomResponse } from '@cascivo/app/sync-server'
 import type { RoomNamespace } from '@cascivo/app/sync-server'
+`
+      : ''
+  }${
+    exports
+      ? `import puppeteer from '@cloudflare/puppeteer'
+import type { BrowserWorker } from '@cloudflare/puppeteer'
 `
       : ''
   }${agent ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
@@ -1399,8 +1419,8 @@ export { ImportJob } from './import-job'
  * here; every handler receives them as \`env\`.
  */
 ${
-  rooms || agent || files
-    ? `export interface Env {${agent ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}
+  rooms || agent || files || exports
+    ? `export interface Env {${agent ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -1438,8 +1458,8 @@ const handleApi = createHandler<typeof api, Env>(api, {
 // wrangler.jsonc routes only ${agent ? '/api/* and /agents/*' : '/api/*'} here; everything else is a static asset or index.html.
 export default {
 ${
-  rooms || agent || files
-    ? `  ${agent || files ? 'async ' : ''}fetch(request: Request, env: Env): Promise<Response>${agent || files ? '' : ' | Response'} {${
+  rooms || agent || files || exports
+    ? `  ${agent || files || exports ? 'async ' : ''}fetch(request: Request, env: Env): Promise<Response>${agent || files || exports ? '' : ' | Response'} {${
         agent
           ? `
     // /agents/assistant/<conversation>: the WebSocket useAgent() opens.
@@ -1452,6 +1472,13 @@ ${
     // Uploads into R2 and the files they stored. Add your own auth check first.
     const upload = await handleUploads(uploads, env.FILES, { images: env.IMAGES })(request)
     if (upload) return upload`
+          : ''
+      }${
+        exports
+          ? `
+    // /api/export?page=/report&format=pdf — each export starts a browser: rate-limit it.
+    const exported = await handleExport(request, { launch: () => puppeteer.launch(env.BROWSER) })
+    if (exported) return exported`
           : ''
       }${
         rooms
@@ -1610,6 +1637,7 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
   if (hasExample(opts, 'notes')) items.push({ label: 'Notes', href: '/notes' })
   if (hasExample(opts, 'import')) items.push({ label: 'Import', href: '/import' })
   if (hasExample(opts, 'files')) items.push({ label: 'Files', href: '/files' })
+  if (hasExample(opts, 'export')) items.push({ label: 'Report', href: '/report' })
   const navItems = items
     .map(
       (item) => `    {
@@ -1619,8 +1647,9 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
     },`,
     )
     .join('\n')
+  const exports = hasExample(opts, 'export')
   return `import { RouterView } from '@cascivo/app'
-import { Spinner, useSignals, type SideNavItem } from '@cascivo/react'
+${exports ? `import { isExporting } from '@cascivo/app/export'\n` : ''}import { Spinner, useSignals, type SideNavItem } from '@cascivo/react'
 import { router } from './router'
 import { Shell } from './Shell'
 
@@ -1633,7 +1662,20 @@ export default function App() {
   const navItems: SideNavItem[] = [
 ${navItems}
   ]
-
+${
+  exports
+    ? `
+  // Rendered by /api/export: the page alone, without the shell (which gave it its padding).
+  if (isExporting()) {
+    return (
+      <div style={{ padding: 'var(--cascivo-space-8)' }}>
+        <RouterView router={router} fallback={<Spinner label="Loading" />} />
+      </div>
+    )
+  }
+`
+    : ''
+}
   return (
     <Shell navItems={navItems}>
       <RouterView router={router} fallback={<Spinner label="Loading" />} />
@@ -2923,6 +2965,80 @@ function cfFilesCss(): string {
 `
 }
 
+/* --- `--example export`: a page exported to PDF/PNG by Browser Run (@cascivo/app/export) --- */
+
+function cfReportRouteTsx(): string {
+  return `import { exportUrl, isExporting } from '@cascivo/app/export'
+import type { Column } from '@cascivo/react'
+import { Badge, Button, Card, CardContent, DataTable, Flex, Heading, Text } from '@cascivo/react'
+
+interface Month {
+  month: string
+  revenue: number
+  customers: number
+  change: number
+}
+
+const ROWS: Month[] = [
+  { month: 'July', revenue: 48_200, customers: 312, change: 4.1 },
+  { month: 'August', revenue: 51_900, customers: 334, change: 7.7 },
+  { month: 'September', revenue: 50_300, customers: 341, change: -3.1 },
+]
+
+const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
+
+const COLUMNS: Column<Month>[] = [
+  { key: 'month', header: 'Month' },
+  { key: 'revenue', header: 'Revenue', align: 'end', render: (row) => money.format(row.revenue) },
+  { key: 'customers', header: 'Customers', align: 'end' },
+  {
+    key: 'change',
+    header: 'Change',
+    align: 'end',
+    render: (row) => (
+      <Badge variant={row.change >= 0 ? 'success' : 'warning'}>
+        {row.change >= 0 ? '+' : ''}
+        {row.change}%
+      </Badge>
+    ),
+  },
+]
+
+/**
+ * A page worth exporting. The buttons download it as a file, rendered by the Worker in
+ * Cloudflare's Browser Run; inside that browser (\`isExporting()\`) they are left out, and
+ * App.tsx drops the shell, so the file holds the report and nothing else.
+ */
+export default function Report() {
+  return (
+    <Flex gap={4}>
+      <Flex direction="horizontal" align="center" justify="between" wrap gap={3}>
+        <Flex gap={1}>
+          <Heading level={1}>Quarterly report</Heading>
+          <Text muted>Q3 revenue and customers, by month.</Text>
+        </Flex>
+        {isExporting() ? null : (
+          <Flex direction="horizontal" gap={2}>
+            <Button asChild variant="secondary">
+              <a href={exportUrl('/report', 'png')}>Download PNG</a>
+            </Button>
+            <Button asChild>
+              <a href={exportUrl('/report', 'pdf')}>Download PDF</a>
+            </Button>
+          </Flex>
+        )}
+      </Flex>
+      <Card>
+        <CardContent>
+          <DataTable columns={COLUMNS} rows={ROWS} getRowId={(row) => row.month} />
+        </CardContent>
+      </Card>
+    </Flex>
+  )
+}
+`
+}
+
 function cfPrettierIgnore(): string {
   return `${prettierIgnore()}# Rewritten by @cascivo/app/vite whenever a route file changes.
 src/routes.gen.ts
@@ -2979,7 +3095,7 @@ This builds the app, then deploys it to a temporary Cloudflare account with
 
 It works only while wrangler is logged out. If you are logged in, use \`deploy\` instead.
 A temporary account supports Workers, static assets, KV, D1 and Durable Objects. It does not
-support Workers AI, R2 or Workflows.${
+support Workers AI, R2, Workflows or Browser Run.${
     hasExample(opts, 'agent')
       ? ' So a preview serves the app, but its assistant cannot reach the model: deploy it\nto your own account for that.'
       : ''
@@ -3084,6 +3200,28 @@ temporary account, so \`deploy:preview\` serves the page without starting import
 temporary account.`
       : ''
   }${
+    hasExample(opts, 'export')
+      ? `
+
+## Report (PDF and PNG export)
+
+\`/report\` has "Download PDF" and "Download PNG" buttons. The Worker renders the page in
+Cloudflare's Browser Run and returns the file.
+
+- \`worker/index.ts\` — \`handleExport\` (\`@cascivo/app/export\`) serves
+  \`/api/export?page=/report&format=pdf\`. It opens the page at this app's own origin with
+  \`?export=1\`, waits for the network to go quiet, and prints it. Only paths of this app
+  outside \`/api/\` can be exported.
+- \`src/App.tsx\` — \`isExporting()\` drops the shell, so the file holds the page alone.
+- For a scheduled report, call \`exportPage\` from a Cron Trigger and attach the PDF to an
+  email (\`sendEmail\` from \`@cascivo/email\` takes \`attachments\`).
+
+The browser opens the page without the visitor's cookies, so a page that needs a session
+renders signed out. Each export starts a browser session, which is billed: put a rate limit
+in front of \`/api/export\`. In \`vite dev\` Browser Run starts a local Chrome (downloaded on
+first use); it does not run on a temporary account.`
+      : ''
+  }${
     hasExample(opts, 'agent')
       ? `
 
@@ -3179,6 +3317,7 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
     ...(hasExample(opts, 'notes') ? [{ file: 'notes.tsx', contents: cfNotesRouteTsx() }] : []),
     ...(hasExample(opts, 'import') ? [{ file: 'import.tsx', contents: cfImportRouteTsx() }] : []),
     ...(hasExample(opts, 'files') ? [{ file: 'files.tsx', contents: cfFilesRouteTsx() }] : []),
+    ...(hasExample(opts, 'export') ? [{ file: 'report.tsx', contents: cfReportRouteTsx() }] : []),
   ]
   return [
     { path: 'package.json', contents: cfPackageJson(opts) },
