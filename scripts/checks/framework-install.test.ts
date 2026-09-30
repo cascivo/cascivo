@@ -29,8 +29,8 @@
  * requires the check to fail — a canary that cannot fail is worth nothing, which is the
  * failure mode this whole directory documents.
  *
- * Cost: a pack + two installs + four builds — ~30s with a warm pnpm store, a few minutes
- * cold, and it needs network access. It runs in CI after the build, next to
+ * Cost: a pack + three installs + six builds — about a minute with a warm pnpm store, a
+ * few minutes cold, and it needs network access. It runs in CI after the build, next to
  * `isolated:check`; it is NOT in `pnpm ready`.
  *
  * Run: `pnpm framework:check` (requires a prior `pnpm build`; skips cleanly without one).
@@ -58,8 +58,20 @@ const CLI = join(REPO_ROOT, 'packages', 'cli', 'dist', 'index.mjs')
  * Any inter-cascivo edge missing here resolves from the npm REGISTRY instead of this build —
  * which would silently test the last published copy. Asserted below, not assumed.
  */
-const PACKAGES = ['react', 'core', 'themes', 'tokens', 'i18n', 'storage', 'icons']
-const NEEDS_DIST = ['react', 'core', 'i18n', 'storage', 'icons']
+const PACKAGES = [
+  'react',
+  'core',
+  'themes',
+  'tokens',
+  'i18n',
+  'storage',
+  'icons',
+  'data',
+  'app',
+  'render',
+  'text',
+]
+const NEEDS_DIST = ['react', 'core', 'i18n', 'storage', 'icons', 'data', 'app', 'render', 'text']
 
 const built = NEEDS_DIST.every((p) => existsSync(join(REPO_ROOT, 'packages', p, 'dist')))
 const cliBuilt = existsSync(CLI)
@@ -96,9 +108,13 @@ function tarballFor(pkg: string): string {
  * Scaffolds with the real CLI, repoints every @cascivo/* dep at the packed tarballs, and
  * installs. Returns the app directory.
  */
-function scaffold(framework: string, name: string): string {
+function scaffold(framework: string, name: string, extra: string[] = []): string {
   const work = mkdtempSync(join(tmpdir(), `cascivo-fw-${framework}-`))
-  run('node', [CLI, 'create', name, '--framework', framework, '--yes'], work)
+  run(
+    'node',
+    [CLI, 'create', name, '--framework', framework, '--yes', '--pm', 'pnpm', ...extra],
+    work,
+  )
   const app = join(work, name)
 
   const manifestPath = join(app, 'package.json')
@@ -152,6 +168,14 @@ function scaffold(framework: string, name: string): string {
     )
   }
   return app
+}
+
+/**
+ * The app's own `format:check`, with its own Prettier and config. The files this harness
+ * rewrote (the workspace file and lock) are not the scaffold's, so they are left out.
+ */
+function assertFormatted(app: string): void {
+  run('pnpm', ['exec', 'prettier', '--check', '.', '!pnpm-workspace.yaml', '!pnpm-lock.yaml'], app)
 }
 
 /** Every `_name_hash_line` CSS-module class in a built HTML file that has no rule behind it. */
@@ -308,6 +332,135 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
         `entry CSS is ${Math.round(css.length / 1024)} KB — that is aggregate-sheet sized. ` +
           'The scaffold should ship only the components it uses.',
       )
+    })
+
+    it('passes its own format:check', { skip: !ready }, () => {
+      assertFormatted(app)
+    })
+  })
+
+  /**
+   * The client-app-on-Cloudflare scaffold. Two things only a real install can show: that
+   * `@cloudflare/vite-plugin` + `@preact/preset-vite` + `@cascivo/app/vite` build the pair
+   * from packed tarballs, and that the BUILT Worker — `createHandler` from `@cascivo/app/api`
+   * bundled into it — still serves the typed stream.
+   */
+  describe('cloudflare', () => {
+    let app: string
+
+    /** The Worker bundle: the `dist/` entry the plugin wrote a deploy-ready wrangler.json into. */
+    function workerEntry(): string | undefined {
+      const dist = join(app, 'dist')
+      const dir = readdirSync(dist).find((d) => existsSync(join(dist, d, 'wrangler.json')))
+      return dir ? join(dist, dir, 'index.js') : undefined
+    }
+
+    before(() => {
+      if (!ready) return
+      app = scaffold('cloudflare', 'cf-app')
+      run('pnpm', ['exec', 'tsc'], app)
+      run('pnpm', ['exec', 'vite', 'build'], app)
+    })
+
+    it('builds a styled client and a Worker bundle', { skip: !ready }, () => {
+      const assets = join(app, 'dist', 'client', 'assets')
+      const css = readdirSync(assets)
+        .filter((f) => f.endsWith('.css'))
+        .map((f) => readFileSync(join(assets, f), 'utf8'))
+        .join('\n')
+      assert.match(css, /\._shell_[a-z0-9]+_\d+/, 'AppShell CSS is missing from the client build.')
+      const worker = workerEntry()
+      assert.ok(worker && existsSync(worker), 'vite build emitted no Worker bundle.')
+    })
+
+    it('the built Worker streams server-sent events', { skip: !ready }, async () => {
+      const worker = (await import(workerEntry()!)) as {
+        default: { fetch(request: Request): Promise<Response> }
+      }
+      const response = await worker.default.fetch(new Request('http://localhost/api/ticks'))
+      assert.equal(response.status, 200)
+      assert.match(response.headers.get('content-type') ?? '', /^text\/event-stream/)
+      const reader = response.body!.getReader()
+      const { value } = await reader.read()
+      await reader.cancel()
+      assert.match(new TextDecoder().decode(value), /^event: data\ndata: \{"n":1,/)
+    })
+
+    it(
+      'fails without the Cloudflare plugin (the canary can actually fail)',
+      { skip: !ready },
+      () => {
+        const config = join(app, 'vite.config.ts')
+        const original = readFileSync(config, 'utf8')
+        try {
+          writeFileSync(
+            config,
+            "import preact from '@preact/preset-vite'\n" +
+              "import { cascivoRoutes } from '@cascivo/app/vite'\n" +
+              "import { defineConfig } from 'vite'\n" +
+              'export default defineConfig({ plugins: [preact(), cascivoRoutes()] })\n',
+          )
+          execFileSync('pnpm', ['exec', 'vite', 'build', '--emptyOutDir'], {
+            cwd: app,
+            stdio: 'pipe',
+          })
+          assert.ok(
+            !existsSync(join(app, 'dist', 'client')) && workerEntry() === undefined,
+            'Without cloudflare() the build still produced a client/Worker pair, so the ' +
+              'assertions above are not measuring the plugin.',
+          )
+        } finally {
+          writeFileSync(config, original)
+        }
+      },
+    )
+
+    it('passes its own format:check', { skip: !ready }, () => {
+      assertFormatted(app)
+    })
+  })
+
+  /**
+   * `--example agent`: Cloudflare's Agents SDK, the AI SDK and `@cascivo/render/validate` in
+   * the Worker, the SDK's React hooks and `<CascivoView>` in the client. Only a real install
+   * shows that the SDK's current releases still type-check against the scaffold (the Worker
+   * under Cloudflare's runtime types) and still build — the hooks call React's `use()`, which
+   * is why this app is on React.
+   */
+  describe('cloudflare --example agent', () => {
+    let app: string
+
+    before(() => {
+      if (!ready) return
+      app = scaffold('cloudflare', 'cf-agent', ['--example', 'agent'])
+      run('pnpm', ['run', 'typecheck'], app)
+      run('pnpm', ['exec', 'vite', 'build'], app)
+    })
+
+    it(
+      'builds the assistant page and a Worker without the scripted model',
+      { skip: !ready },
+      () => {
+        const assets = readdirSync(join(app, 'dist', 'client', 'assets'))
+        assert.ok(
+          assets.some((f) => /^assistant-.*\.js$/.test(f)),
+          `no assistant route chunk in ${assets.join(', ')}`,
+        )
+        const dist = join(app, 'dist')
+        const dir = readdirSync(dist).find((d) => existsSync(join(dist, d, 'wrangler.json')))
+        assert.ok(dir, 'vite build emitted no Worker bundle.')
+        const worker = readFileSync(join(dist, dir, 'index.js'), 'utf8')
+        assert.match(worker, /show_view/, 'the Worker bundle does not contain the show_view tool')
+        assert.doesNotMatch(
+          worker,
+          /Scripted reply/,
+          'the dev-only scripted model reached the production Worker bundle',
+        )
+      },
+    )
+
+    it('passes its own format:check', { skip: !ready }, () => {
+      assertFormatted(app)
     })
   })
 })

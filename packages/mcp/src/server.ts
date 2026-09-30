@@ -28,6 +28,7 @@ import { loadContext, loadComponentMarkdown } from './context.js'
 import { listGuides, loadGuide } from './guides.js'
 import { selectComponent } from './select.js'
 import { loadCatalog, listTemplates, getTemplate } from './templates.js'
+import { deployPreview } from './deploy-preview.js'
 
 type FetchFn = (url: string, init?: RequestInit) => Promise<Response>
 
@@ -283,7 +284,7 @@ export function createServer(options: ServerOptions = {}): McpServer {
     {
       title: 'Create app',
       description:
-        'Scaffold a complete, ready-to-run cascivo app (Vite + React + TypeScript) wired with the app shell, side navigation, header, and a theme — one page per nav section, with signal-driven section switching. Runs `cascivo create` as a child process, writing the project into a new <name> directory.',
+        'Scaffold a complete, ready-to-run cascivo app wired with the app shell, side navigation, header, and a theme — one page per nav section. `framework`: "react-vite" (default; a client-side Vite + React SPA), "astro" (static pages, only the shell hydrates), or "cloudflare" (a client app plus its API as one Cloudflare Worker, with file routes and a typed API; deploy it with no account via deploy_preview). Runs `cascivo create` as a child process, writing the project into a new <name> directory.',
       inputSchema: {
         name: z.string().describe('Project name and directory, e.g. "my-app"'),
         theme: z
@@ -296,14 +297,57 @@ export function createServer(options: ServerOptions = {}): McpServer {
           .describe(
             'Side-nav section labels; one page is generated per section (default: Dashboard, Reports, Settings)',
           ),
+        framework: z
+          .enum(['react-vite', 'astro', 'cloudflare'])
+          .optional()
+          .describe('Project shape (default: react-vite)'),
+        runtime: z
+          .enum(['preact', 'react'])
+          .optional()
+          .describe(
+            'Client runtime for framework "cloudflare" (default: preact; same source either way)',
+          ),
+        examples: z
+          .array(
+            z.enum([
+              'board',
+              'agent',
+              'notes',
+              'import',
+              'files',
+              'export',
+              'usage',
+              'crud',
+              'live',
+              'voice',
+              'publish',
+              'webhooks',
+              'digest',
+              'search',
+            ]),
+          )
+          .optional()
+          .describe(
+            'Extra pages for framework "cloudflare": "board" is a multiplayer page (notes + live cursors) on a Durable Object — deployable with no account via deploy_preview; "agent" is an AI assistant (Agents SDK + Workers AI) that answers with validated cascivo views — needs runtime "react" (the default with it) and a real Cloudflare account for the model; "notes" is a local-first page whose edits survive a dropped connection (IndexedDB + a Durable Object); "import" is a CSV import running as a Workflow with live progress (@cascivo/app/jobs) — Workflows need a real Cloudflare account to deploy; "files" uploads into R2 with progress and Cloudflare Images previews (@cascivo/app/uploads) — R2 needs a real account; "export" is a report page downloadable as PDF/PNG, rendered by Browser Run (@cascivo/app/export); "usage" records every API request in Workers Analytics Engine and charts it (@cascivo/app/analytics) — reading needs CF_ACCOUNT_ID and CF_API_TOKEN secrets; "crud" is a D1 customers table behind the DataTable server mode, with create/edit/delete (@cascivo/app/db) — works on a temporary account; "live" is an ops dashboard whose charts update every second from events sent through a Queue into a Durable Object (@cascivo/app/live) — the queue must be created before deploying; "voice" is a voice assistant (Agents SDK voice pipeline, Workers AI speech to text, a model and text to speech) that runs on either runtime and offline in vite dev with stand-ins — a real Cloudflare account is needed for the models; "publish" turns views into pages at /p/<slug> with no deploy, each checked against the component manifests (unknown components, invalid props and script-running URLs are refused) and stored in D1 — works on a temporary account; "webhooks" receives GitHub webhook deliveries, verifies their HMAC signature (verifyWebhook also handles Stripe and Standard Webhooks), stores each once in D1 and shows them live — needs a WEBHOOK_SECRET secret; "digest" renders the report page (it adds "export") to PDF with Browser Run and emails it every Monday on a Cron Trigger, recording each run — needs DIGEST_TO, DIGEST_FROM and APP_URL, and a real account for Browser Run and Email Service; "search" finds seeded help articles by meaning, with Workers AI embeddings in a Vectorize index (created once with wrangler vectorize create), and by keyword in vite dev — needs a real account',
+          ),
+        auth: z
+          .enum(['access', 'email'])
+          .optional()
+          .describe(
+            'For framework "cloudflare": "access" makes the Worker refuse every request Cloudflare Access did not let through (the user sets the team domain and AUD in wrangler.jsonc; such an app cannot use deploy_preview). "email" adds accounts with emailed one-time sign-in links and D1 sessions, and every API write then needs a signed-in user (the user sets AUTH_FROM in wrangler.jsonc; in vite dev the link is shown instead of sent).',
+          ),
         cwd: z
           .string()
           .optional()
           .describe('Directory to create the app in (default: current directory)'),
       },
     },
-    ({ name, theme, sections, cwd }) => {
+    ({ name, theme, sections, framework, runtime, examples, auth, cwd }) => {
       const args = ['-y', 'cascivo', 'create', name, '--yes']
+      if (framework) args.push('--framework', framework)
+      if (runtime) args.push('--runtime', runtime)
+      if (examples && examples.length > 0) args.push('--example', examples.join(','))
+      if (auth) args.push('--auth', auth)
       if (theme) args.push('--theme', theme)
       if (sections && sections.length > 0) args.push('--sections', sections.join(', '))
       const result = spawnSync('npx', args, { encoding: 'utf8', ...(cwd ? { cwd } : {}) })
@@ -311,6 +355,32 @@ export function createServer(options: ServerOptions = {}): McpServer {
         return error(result.stderr || result.error?.message || `Failed to create "${name}".`)
       }
       return text(result.stdout || `Created ${name}.`)
+    },
+  )
+
+  server.registerTool(
+    'deploy_preview',
+    {
+      title: 'Deploy preview (no Cloudflare account)',
+      description:
+        'Build and publish an app made with create_app framework "cloudflare" to a temporary Cloudflare account — no sign-up, no credentials — and return its live workers.dev URL and a claim URL. The deployment is PUBLIC on the internet and is deleted after 60 minutes unless the user opens the claim URL and signs in, which makes it theirs. Give the user both URLs. Fails if wrangler is already logged in. Temporary accounts support Workers, static assets, KV, D1 and Durable Objects, but not Workers AI or R2. For a static build (react-vite, astro), tell the user to drop dist/ on https://www.cloudflare.com/drop/ instead.',
+      inputSchema: {
+        cwd: z.string().describe('The app directory (the one containing its package.json)'),
+      },
+    },
+    ({ cwd }) => {
+      try {
+        const { url, claimUrl, output } = deployPreview(cwd)
+        if (!url) return error(`Deployed, but no URL was found in the output:\n${output}`)
+        return text(
+          `Live: ${url}\n` +
+            (claimUrl
+              ? `Claim within 60 minutes to keep it: ${claimUrl}\n`
+              : 'No claim URL was printed; this may have deployed to an existing account.\n'),
+        )
+      } catch (cause) {
+        return error(cause instanceof Error ? cause.message : String(cause))
+      }
     },
   )
 

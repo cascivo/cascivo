@@ -263,6 +263,24 @@ and `Spinner`'s `label` is a screen-reader-only name, so it announces without pa
 4. Never a copy of cascivo's link CSS in your own layer.
 5. Route-split every route **including the index**, and give the root a `HydrateFallback`.
 
+## No router yet? `@cascivo/app`
+
+For a client-rendered app without SSR (a dashboard, a tool, an app on Cloudflare Workers), cascivo
+ships its own router in `@cascivo/app`. Its state is signals, route params are typed, routes can
+come from files, and it plugs into the same seam as the routers above:
+
+```tsx
+import { createRouter, route } from '@cascivo/app'
+import { setLinkComponent } from '@cascivo/react'
+
+const router = createRouter({ routes: [route('/', Home), route('/c/:id', Chat)] })
+setLinkComponent(router.Link)
+```
+
+`npx cascivo create --framework cloudflare` scaffolds it with file routes and a typed Worker
+API. It is optional: everything above works the same with React Router, TanStack Router or
+Next.js. See the [`@cascivo/app` README](../packages/app/README.md).
+
 ## See also
 
 - [HEADLESS.md](HEADLESS.md) — `setLinkComponent` in the primitive catalogue.

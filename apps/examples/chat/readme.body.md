@@ -1,0 +1,53 @@
+Cascivo Chat is a streaming AI chat app. It runs on **Cloudflare Workers AI** and is built with **Preact** and cascivo.
+
+**This is a real backend, not a mock.** One Worker serves the built client app and the `/api/chat` endpoint. The endpoint streams model tokens back over server-sent events. Conversations are stored in the browser, in IndexedDB, through `@cascivo/storage`.
+
+## Architecture
+
+```
+browser (Preact + signals)                     Cloudflare Worker
+──────────────────────────                     ─────────────────
+AiChat ← draft ← client.chat(…)  ◄── SSE ──  createHandler(api, { chat })
+          (createClient(api))                   └ tokens(parseSSE(AI.run(stream: true)))
+/c/:id ← router (src/routes/**)                 body parsed by parseChatRequest first
+conversations ⇄ IndexedDB (persistedSignal)
+```
+
+- `src/api.ts` is the API contract, built with `defineApi` from [`@cascivo/app/api`](../../../packages/app):
+  - The Worker serves it with `createHandler`.
+  - The browser calls it with `createClient`.
+  - The Worker parses each request body with `parseChatRequest`, and the client parses each streamed token with `parseToken`. Both parsers live in `src/lib/protocol.ts`.
+  - Streaming runs over SSE, through [`@cascivo/data`](../../../packages/data).
+- The Worker re-encodes the model's output as `{ text }` tokens. You can change the model or the provider in the Worker only; the client does not change.
+- Routing is file-based:
+  - `src/routes/index.tsx` is a new chat, `src/routes/c/[id].tsx` is a conversation, and `src/routes/404.tsx` handles unknown paths.
+  - The open conversation is the URL, so links, reloads and the back button agree on it.
+  - SideNav items are real links; `main.tsx` passes `router.Link` to `setLinkComponent`.
+- The source is typed against React. `vite.config.ts` aliases `react` to `preact/compat`, so the bundle runs on Preact. The bundle is about 69 KB gzip in total. If you remove the aliases, the same code runs on React.
+
+## Run
+
+```sh
+# From this directory: the Vite dev server serves /api from the real Worker module,
+# with a mock AI binding. You do not need a Cloudflare account.
+pnpm dev
+
+# The same Worker, in wrangler, against real Workers AI (needs `npx wrangler login`)
+pnpm dev:worker
+
+# Build and deploy the SPA and the Worker to your Cloudflare account
+pnpm run deploy
+```
+
+## What it demos
+
+- `AiChat` and `StreamingText` (`@cascivo/ai`)
+- `Alert`, `Button`, `EmptyState`, `Select`, `Spinner` (`@cascivo/react`)
+- `AppShell` from `@cascivo/example-kit`
+- `persistedSignal` with `indexedDBDriver` (`@cascivo/storage`)
+- The router, file routes and typed API (`@cascivo/app`)
+- `parseSSE` (`@cascivo/data`), used in the Worker to read Workers AI's own stream
+
+## Why this app exists
+
+This app is phase 1 of the "cascivo for client apps" exploration. It builds one real app first, then extracts only the primitives that the app needed. See [`FINDINGS.md`](./FINDINGS.md) for what the app showed.

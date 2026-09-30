@@ -2,7 +2,6 @@ import { createRequire } from 'node:module'
 import { argv } from 'node:process'
 import { pathToFileURL } from 'node:url'
 import { add } from './commands/add.js'
-import { create } from './commands/create.js'
 import { runDoctor } from './commands/doctor.js'
 import { generate } from './commands/generate.js'
 import { init } from './commands/init.js'
@@ -95,10 +94,31 @@ Examples:
 
   create: `Usage: cascivo create [name] [options]
 
-Scaffold a new ready-to-run app — Vite + React + TypeScript, pre-wired with the
-cascivo app shell, side navigation, header, and a theme.
+Scaffold a new ready-to-run app, pre-wired with the cascivo app shell, side
+navigation, header, and a theme.
 
 Options:
+  --framework <name>        react-vite (default), astro, or cloudflare (a client app and
+                            its API, deployed as one Cloudflare Worker)
+  --runtime <name>          preact (default) or react — for --framework cloudflare
+  --example <name>          board — a multiplayer page on a Durable Object (cloudflare only)
+                            agent — an AI assistant that answers with UI (cloudflare, React)
+                            notes — a local-first page that keeps edits offline (cloudflare)
+                            import — a CSV import on a Workflow, with live progress (cloudflare)
+                            files — uploads into R2 with progress and image previews (cloudflare)
+                            export — a report page downloadable as PDF/PNG via Browser Run (cloudflare)
+                            usage — API usage charts from Workers Analytics Engine (cloudflare)
+                            crud — a D1 table behind DataTable's server mode (cloudflare)
+                            live — an ops dashboard fed by a Queue, updating every second (cloudflare)
+                            voice — a voice assistant: Workers AI speech in and out (cloudflare)
+                            publish — publish views as pages, validated and stored in D1 (cloudflare)
+                            webhooks — signed GitHub deliveries, stored once, shown live (cloudflare)
+                            digest — the report as a PDF, emailed weekly on a Cron Trigger (cloudflare)
+                            search — help articles searched by meaning: Vectorize + Workers AI (cloudflare)
+  --auth access             Refuse every Worker request Cloudflare Access did not let
+                            through (cloudflare only)
+  --auth email              Accounts with emailed sign-in links; every API write needs a
+                            signed-in user (cloudflare only)
   --template <spec>         Start from a marketplace template (@ns/name or owner/repo/name)
   --theme <name>            Theme to install (${THEME_LIST})
   --sections "<a, b>"       Comma-separated nav section labels (one component each)
@@ -231,6 +251,8 @@ export async function run(args: string[]): Promise<void> {
 
   switch (command) {
     case 'create':
+      // Lazy, like the other commands: its scaffold templates are most of the CLI's size.
+      const { create } = await import('./commands/create.js')
       await create(rest)
       break
     case 'init':

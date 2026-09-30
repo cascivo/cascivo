@@ -76,6 +76,8 @@ const PACKAGES = [
   'tokens',
   'i18n',
   'storage',
+  'data',
+  'app',
   'icons',
   'charts',
   'email',
@@ -93,6 +95,8 @@ const NEEDS_DIST = [
   'core',
   'i18n',
   'storage',
+  'data',
+  'app',
   'icons',
   'charts',
   'email',
@@ -155,13 +159,159 @@ import {
   Preview,
   renderEmail,
   Section,
+  sendEmail,
   Text as EmailText,
+  type EmailSender,
   type EmailTheme,
 } from '@cascivo/email'
 // @cascivo/render — the JSON view runtime an agent's scaffold_view output feeds, and its
-// machine-mode subpath. Both entries are exercised because each ships its own flattened .d.ts.
+// machine-mode and validator subpaths. Every entry is exercised because each ships its own flattened .d.ts.
 import { CascivoView, type ViewConfig } from '@cascivo/render'
 import { viewToMarkdown } from '@cascivo/render/text'
+import { validateView, type ValidationError } from '@cascivo/render/validate'
+// @cascivo/data — framework-free SSE primitives; typed against lib.dom's fetch/stream types
+// only, so this is the check that it needs no @types of any kind from the consumer.
+import { fetchSSE, formatSSE, HttpError, parseSSE, type ServerSentEvent } from '@cascivo/data'
+export const sseLine: string = formatSSE('ping', { ok: true })
+export async function firstEvent(url: string): Promise<ServerSentEvent | undefined> {
+  for await (const event of fetchSSE(url)) return event
+  return undefined
+}
+export const sseParser: typeof parseSSE = parseSSE
+export const httpStatus = (e: unknown): number | undefined => (e instanceof HttpError ? e.status : undefined)
+// @cascivo/app — all three entries: the router (React), the API contract (no React; a Worker
+// imports it), and the Vite plugin (Node). Each ships its own flattened .d.ts.
+import { buildPath, createRouter, route, RouterView, type RouteProps } from '@cascivo/app'
+import { createClient, createHandler, defineApi, endpoint } from '@cascivo/app/api'
+import { cascivoRoutes, generateRoutes } from '@cascivo/app/vite'
+function NotePage({ params }: RouteProps<'/notes/:id'>) {
+  return <p>{params.id}</p>
+}
+export const appRouter = createRouter({ routes: [route('/notes/:id', NotePage)] })
+export const routerView = <RouterView router={appRouter} />
+export const notePath: string = buildPath('/notes/:id', { id: '1' })
+const notesApi = defineApi({
+  note: endpoint({ method: 'GET', path: '/api/notes/:id', output: (raw) => String(raw) }),
+})
+export const notesClient = createClient(notesApi)
+export const noteText: Promise<string> = notesClient.note({ params: { id: '1' } })
+export const notesHandler = createHandler(notesApi, { note: ({ params }) => params.id })
+export const routesPlugin = cascivoRoutes()
+export const routesSource: string = generateRoutes(['index.tsx'], './routes')
+import { connectRoom } from '@cascivo/app/sync'
+import {
+  roomResponse,
+  SyncRoom,
+  writeRoom,
+  type RoomNamespace,
+  type RoomWrite,
+} from '@cascivo/app/sync-server'
+import { localStorageDriver } from '@cascivo/storage'
+export const sharedRoom = connectRoom('/api/rooms/demo')
+export const sharedTitle = sharedRoom.signal('title', '', (raw) => String(raw))
+export const roomClass: typeof SyncRoom = SyncRoom
+export const forwardRoom = (request: Request, ns: RoomNamespace<string>) => roomResponse(request, ns, 'demo')
+export class MirroredRoom extends SyncRoom {
+  writes: RoomWrite[] = []
+  protected override onWrite(write: RoomWrite): void {
+    this.writes.push(write)
+  }
+}
+export const localRoom = connectRoom('/api/rooms/local', { storage: localStorageDriver() })
+export const waiting: number = localRoom.unsynced.value
+import { defineJob, watchJob, type JobState } from '@cascivo/app/jobs'
+import { jobReporter } from '@cascivo/app/jobs-server'
+export const countJob = defineJob({ steps: ['Count'], output: (raw) => Number(raw) })
+export const watchedCount: JobState<number> = watchJob(countJob, '/api/jobs/1').state.value
+export const reportCount = (ns: RoomNamespace<string>) => jobReporter(countJob, ns, '1').done(3)
+export const writeTitle = (ns: RoomNamespace<string>) => writeRoom(ns, 'demo', 'title', 'Hi')
+export const watchOnly = (request: Request, ns: RoomNamespace<string>) =>
+  roomResponse(request, ns, 'job-1', { readOnly: true })
+import { defineUploads, startUpload, type Upload } from '@cascivo/app/uploads'
+import { handleUploads, type UploadBucket } from '@cascivo/app/uploads-server'
+export const photoUploads = defineUploads({ path: '/api/uploads', maxBytes: 1e6, types: ['image/png'] })
+export const sendPhoto = (file: File): Upload => startUpload(photoUploads, file)
+export const serveUploads = (bucket: UploadBucket) => handleUploads(photoUploads, bucket)
+import { exportUrl, handleExport, isExporting, type ExportBrowser } from '@cascivo/app/export'
+export const reportLink: string = exportUrl('/reports', 'pdf')
+export const bareMode: boolean = isExporting('?export=1')
+export const serveExport = (request: Request, launch: () => Promise<ExportBrowser>) =>
+  handleExport(request, { launch })
+import {
+  defineMetrics,
+  numberField,
+  queryAnalytics,
+  type AnalyticsDataset,
+} from '@cascivo/app/analytics'
+export const apiMetrics = defineMetrics({ dataset: 'api', blobs: ['path'], doubles: ['ms'] })
+import { defineTable, migrate, parseTableQuery, queryTable, type Database } from '@cascivo/app/db'
+export const people = defineTable({
+  table: 'people',
+  key: 'id',
+  columns: { id: {}, name: { sort: true, search: true, filter: 'text' } },
+})
+export const pageOfPeople = async (db: Database, raw: unknown) => {
+  await migrate(db, [{ id: '0001', statements: ['CREATE TABLE people (id TEXT PRIMARY KEY, name TEXT)'] }])
+  return queryTable(db, people, parseTableQuery(raw), (row) => row)
+}
+import {
+  clientIp,
+  guardResponse,
+  rateLimit,
+  requireAccess,
+  verifyTurnstile,
+  verifyWebhook,
+  type RateLimiter,
+  type VerifiedWebhook,
+} from '@cascivo/app/guard'
+export const receive = (request: Request): Promise<VerifiedWebhook> =>
+  verifyWebhook(request, { scheme: 'github', secret: 's' })
+import { mountTurnstile } from '@cascivo/app/turnstile'
+import { createAuth, type User as AuthUser } from '@cascivo/app/auth'
+import { currentUser, handleAuth, requireUser } from '@cascivo/app/auth-server'
+export const appAuth = createAuth()
+export const whoIsIn = (): AuthUser | null | undefined => appAuth.user.value
+export const authRoutes = (db: Database) =>
+  handleAuth(db, { sendLink: async (_email: string, _url: string) => {}, exposeLink: false })
+export const mustBeIn = (db: Database, request: Request) => requireUser(db, request)
+export const maybeIn = (db: Database, request: Request) => currentUser(db, request)
+import { defineLive, watchLive, type LivePoint } from '@cascivo/app/live'
+import { LiveRoom, recordLive, type LiveBatch, type LiveQueue } from '@cascivo/app/live-server'
+export const opsLive = defineLive({ metrics: ['orders', 'errors'], window: 60 })
+export const watched = watchLive(opsLive, '/api/live')
+export const firstPoint = (): LivePoint<'orders' | 'errors'> | undefined => watched.points.value[0]
+export const consume = (batch: LiveBatch, rooms: RoomNamespace<unknown>) =>
+  recordLive(opsLive, rooms, 'ops', batch.messages.map((m) => m.body))
+export const produce = (queue: LiveQueue) => queue.sendBatch([{ body: { values: { orders: 1 } } }])
+export { LiveRoom }
+export const guarded = async (request: Request, limiter: RateLimiter): Promise<Response | null> => {
+  try {
+    const who = await requireAccess(request, { teamDomain: 'acme.cloudflareaccess.com', audience: 'aud' })
+    await rateLimit(limiter, who.email ?? clientIp(request))
+    await verifyTurnstile(request.headers.get('x-turnstile'), { secret: 's', action: 'signup' })
+    return null
+  } catch (error) {
+    return guardResponse(error)
+  }
+}
+export const widget = mountTurnstile(document.body, { siteKey: 'k', onToken: (token: string) => token })
+export const recordCall = (binding: AnalyticsDataset) => apiMetrics.write(binding, { path: '/', ms: 1 })
+export const totalCalls = (accountId: string, apiToken: string) =>
+  queryAnalytics({ accountId, apiToken }, apiMetrics.sql('SELECT SUM(_sample_interval) AS n FROM {dataset}'), (row) =>
+    numberField(row, 'n'),
+  )
+import {
+  applyThemeOverride,
+  defineFlags,
+  themeFlag,
+  type FlagEvaluator,
+} from '@cascivo/app/flags'
+export const appFlags = defineFlags({ newCheckout: false, theme: themeFlag() })
+export const evaluateFlags = (evaluator: FlagEvaluator) => appFlags.evaluate(evaluator)
+export const undoTheme: () => void = applyThemeOverride(
+  document.documentElement,
+  appFlags.parse({}).theme,
+)
 
 const VIEW: ViewConfig = {
   version: 1,
@@ -169,6 +319,7 @@ const VIEW: ViewConfig = {
 }
 export const viewText: string = viewToMarkdown(VIEW, { data: {} })
 export const viewElement = <CascivoView config={VIEW} onInvalid="render" />
+export const viewErrors: ValidationError[] = validateView(VIEW).errors
 
 // The assignability that makes the subpath worth having: a Tone named here must satisfy the
 // main entry's prop types. Two separate entry points declaring the same nominal type is
@@ -204,6 +355,15 @@ export function renderNotification(link: string, theme: EmailTheme) {
     </Html>,
     { theme, subject: 'Deploy finished', tier: 'strict' },
   )
+}
+
+/** …and send it through a binding typed by shape (Cloudflare's \`SendEmail\` is one). */
+export async function sendNotification(sender: EmailSender, to: string): Promise<string> {
+  const { messageId } = await sendEmail(sender, renderNotification('https://x.test', 'light'), {
+    from: { name: 'Deploys', email: 'deploys@x.test' },
+    to,
+  })
+  return messageId
 }
 
 export function App() {

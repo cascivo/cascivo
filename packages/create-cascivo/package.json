@@ -1,0 +1,41 @@
+{
+  "name": "create-cascivo",
+  "version": "0.0.0",
+  "private": false,
+  "description": "npm create cascivo — scaffold a cascivo app (Vite, Astro, or a client app on Cloudflare)",
+  "keywords": [
+    "cascivo",
+    "cloudflare",
+    "create",
+    "preact",
+    "react",
+    "scaffold",
+    "starter"
+  ],
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/create-cascivo#readme",
+  "bugs": "https://github.com/cascivo/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
+    "directory": "packages/create-cascivo"
+  },
+  "bin": {
+    "create-cascivo": "./bin/create-cascivo.mjs"
+  },
+  "files": [
+    "bin"
+  ],
+  "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "echo 'create-cascivo: plain ESM launcher, no build'"
+  },
+  "dependencies": {
+    "cascivo": "workspace:^"
+  }
+}

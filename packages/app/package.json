@@ -1,0 +1,163 @@
+{
+  "name": "@cascivo/app",
+  "version": "1.3.1",
+  "private": false,
+  "description": "Client-app layer for cascivo — a signal router, typed client/Worker APIs, and file-based routes",
+  "keywords": [
+    "cascivo",
+    "cloudflare",
+    "preact",
+    "react",
+    "router",
+    "rpc",
+    "signals",
+    "workers"
+  ],
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/app#readme",
+  "bugs": "https://github.com/cascivo/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
+    "directory": "packages/app"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./api": {
+      "types": "./dist/api.d.ts",
+      "import": "./dist/api.js",
+      "default": "./dist/api.js"
+    },
+    "./sync": {
+      "types": "./dist/sync.d.ts",
+      "import": "./dist/sync.js",
+      "default": "./dist/sync.js"
+    },
+    "./flags": {
+      "types": "./dist/flags.d.ts",
+      "import": "./dist/flags.js",
+      "default": "./dist/flags.js"
+    },
+    "./jobs": {
+      "types": "./dist/jobs.d.ts",
+      "import": "./dist/jobs.js",
+      "default": "./dist/jobs.js"
+    },
+    "./jobs-server": {
+      "types": "./dist/jobs-server.d.ts",
+      "import": "./dist/jobs-server.js",
+      "default": "./dist/jobs-server.js"
+    },
+    "./uploads": {
+      "types": "./dist/uploads.d.ts",
+      "import": "./dist/uploads.js",
+      "default": "./dist/uploads.js"
+    },
+    "./uploads-server": {
+      "types": "./dist/uploads-server.d.ts",
+      "import": "./dist/uploads-server.js",
+      "default": "./dist/uploads-server.js"
+    },
+    "./export": {
+      "types": "./dist/export.d.ts",
+      "import": "./dist/export.js",
+      "default": "./dist/export.js"
+    },
+    "./analytics": {
+      "types": "./dist/analytics.d.ts",
+      "import": "./dist/analytics.js",
+      "default": "./dist/analytics.js"
+    },
+    "./db": {
+      "types": "./dist/db.d.ts",
+      "import": "./dist/db.js",
+      "default": "./dist/db.js"
+    },
+    "./guard": {
+      "types": "./dist/guard.d.ts",
+      "import": "./dist/guard.js",
+      "default": "./dist/guard.js"
+    },
+    "./live": {
+      "types": "./dist/live.d.ts",
+      "import": "./dist/live.js",
+      "default": "./dist/live.js"
+    },
+    "./live-server": {
+      "types": "./dist/live-server.d.ts",
+      "import": "./dist/live-server.js",
+      "default": "./dist/live-server.js"
+    },
+    "./auth": {
+      "types": "./dist/auth.d.ts",
+      "import": "./dist/auth.js",
+      "default": "./dist/auth.js"
+    },
+    "./auth-server": {
+      "types": "./dist/auth-server.d.ts",
+      "import": "./dist/auth-server.js",
+      "default": "./dist/auth-server.js"
+    },
+    "./turnstile": {
+      "types": "./dist/turnstile.d.ts",
+      "import": "./dist/turnstile.js",
+      "default": "./dist/turnstile.js"
+    },
+    "./sync-server": {
+      "types": "./dist/sync-server.d.ts",
+      "import": "./dist/sync-server.js",
+      "default": "./dist/sync-server.js"
+    },
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "import": "./dist/vite.js",
+      "default": "./dist/vite.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "vp build && node scripts/flatten-types.mjs && node scripts/check-types-flat.mjs",
+    "check": "tsc --noEmit",
+    "test": "vp test"
+  },
+  "dependencies": {
+    "@cascivo/core": "workspace:^",
+    "@cascivo/data": "workspace:^"
+  },
+  "devDependencies": {
+    "@preact/signals-react": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "jsdom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "@preact/signals-react": ">=3.0.0",
+    "@types/react": ">=18.0.0",
+    "react": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    }
+  }
+}

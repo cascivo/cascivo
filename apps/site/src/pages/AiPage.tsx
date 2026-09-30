@@ -183,6 +183,10 @@ export function AiPage() {
             <code>cascivo-migrate-from-shadcn</code> — move a shadcn/ui app over one file at a time,
             each file checked with <code>cascivo audit --ai</code>
           </li>
+          <li>
+            <code>cascivo-share-preview</code> — put an app on a public URL with no Cloudflare
+            account: a temporary account with a claim link, or Cloudflare Drop for static builds
+          </li>
         </ul>
       </section>
 

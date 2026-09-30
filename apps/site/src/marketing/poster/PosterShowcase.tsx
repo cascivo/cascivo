@@ -42,7 +42,7 @@ export function PosterShowcase() {
     <section className="pg-section" id="showcase" aria-label="In the wild">
       <div className="pg-pad pg-head">
         <h2 className="pg-display pg-display--section">Shipped, in production</h2>
-        <p className="pg-eyebrow">09 / built with cascivo</p>
+        <p className="pg-eyebrow">10 / built with cascivo</p>
       </div>
       {/* Said plainly because it is true, and because a visitor who found it out on their
           own would discount everything else on the page. */}

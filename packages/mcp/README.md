@@ -85,10 +85,11 @@ The server speaks the MCP stdio transport. It is **self-contained**: the registr
 
 ### Project
 
-| Tool             | Input                               | Returns                                                                           |
-| ---------------- | ----------------------------------- | --------------------------------------------------------------------------------- |
-| `add_to_project` | `{ name, outputDir? }`              | Runs `cascivo add <name>` as a child process                                      |
-| `create_app`     | `{ name, theme?, sections?, cwd? }` | Scaffolds a full Vite + React app (shell + side nav + theme) via `cascivo create` |
+| Tool             | Input                                                                | Returns                                                                                                                                                                         |
+| ---------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `add_to_project` | `{ name, outputDir? }`                                               | Runs `cascivo add <name>` as a child process                                                                                                                                    |
+| `create_app`     | `{ name, framework?, runtime?, examples?, theme?, sections?, cwd? }` | Scaffolds a full app (shell + side nav + theme) via `cascivo create`: `react-vite` (default), `astro`, or `cloudflare` (client app + API on one Worker)                         |
+| `deploy_preview` | `{ cwd }`                                                            | Publishes a `cloudflare` app to a temporary Cloudflare account with no sign-up. Returns a public URL and a claim URL; the deployment is deleted after 60 minutes unless claimed |
 
 ### Bound-vocabulary generation (anti-hallucination)
 

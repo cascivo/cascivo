@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cascivo Agent</title>
+    <style>
+      @layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component,
+        cascivo.platform, cascivo.theme, cascivo.blocks, cascivo.example, cascivo.override;
+      /* cascivo.example is this app's own slot — above the component/blocks layers so your
+         styles win, below cascivo.override which stays free for one-off hotfixes. The
+         generated AGENTS.md tells the agent to write there, and this statement is what makes
+         that legal: a layer used but never declared falls to the end of the cascade and
+         beats everything, which is the opposite of what the ordering is for. */
+      /* Third-party CSS goes in the low-priority vendor layer so it can't beat cascivo:
+         @import url('some-lib/styles.css') layer(vendor); — see docs/THIRD-PARTY-CSS.md */
+      @layer cascivo.reset {
+        *,
+        *::before,
+        *::after {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+      }
+      @layer cascivo.base {
+        html,
+        body,
+        #root {
+          height: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

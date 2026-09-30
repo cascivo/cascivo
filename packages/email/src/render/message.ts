@@ -45,7 +45,7 @@ export interface BuildMessageOptions {
 }
 
 /** RFC 5322 forbids CR and LF in a header value; unchecked, they inject headers. */
-function assertHeaderSafe(name: string, value: string): void {
+export function assertHeaderSafe(name: string, value: string): void {
   if (/[\r\n]/.test(value)) {
     throw new Error(
       `Header ${name} contains a newline — this would inject headers into the message`,

@@ -14,6 +14,7 @@ baseline. If an integration surprises you, start here.
 | Vite + React (CSR/SPA)     | ✅ Yes    | Reference setup. See `apps/examples/react-vite`.                                         |
 | Vite SSR / TanStack Start  | ✅ Yes¹   | Requires `ssr.noExternal: [/^@cascivo\//]` (or the `cascivoSsr()` plugin). Working example: [`apps/examples/react-vite-ssr`](../apps/examples/react-vite-ssr/). See [`USING-WITH-VITE-SSR.md`](./USING-WITH-VITE-SSR.md). |
 | Preact 10 (`preact/compat`) | ✅ **CSR only** | Verified on Vite CSR (`@preact/preset-vite`) — components, signals, overlays and charts all behave as on React, at roughly half the JS. **Not verified under SSR/prerender**, and known to fail under Astro's compat aliasing. See [`USING-WITH-PREACT.md`](./USING-WITH-PREACT.md). |
+| Cloudflare Workers (client app + API) | ✅ Yes | Client-rendered (no SSR): static assets with an SPA fallback, `/api/*` routed to the Worker. `npx cascivo create --framework cloudflare` (or `npm create cascivo`) emits it wired up, on Preact or React; the `framework:check` CI job builds that scaffold from packed tarballs and runs its Worker. A ready-to-deploy copy lives in [`starters/cloudflare`](../starters/cloudflare/) (Deploy to Cloudflare button, `npm create cloudflare --template`). Working example with Workers AI streaming: [`apps/examples/chat`](../apps/examples/chat/). |
 | Astro (React islands)      | ✅ Yes²   | Requires `@cascivo/react` ≥ 1.0.1 **and** `vite.resolve.noExternal: [/^@cascivo\//]` in `astro.config.mjs` — without both, SSR'd islands render unstyled. `npx cascivo create --framework astro` emits it wired up. Working example: [`apps/examples/astro-islands`](../apps/examples/astro-islands/). See [`USING-WITH-ASTRO.md`](./USING-WITH-ASTRO.md). |
 | Vue / Svelte / Angular     | ⚠️ Tokens/themes only | `@cascivo/tokens` + `@cascivo/themes` are framework-agnostic CSS; the components are React. |
 | Ghost (Handlebars themes)  | ⚠️ Tokens/themes only | Themes are Handlebars rendered server-side with no JS framework layer, so React components cannot mount. The token + theme CSS works once flattened (bare `@import`s, no build step in Ghost). Working theme, validated by Ghost's own `gscan` in CI: [`apps/examples/ghost-theme`](../apps/examples/ghost-theme/). See [`USING-WITH-GHOST.md`](./USING-WITH-GHOST.md). |
@@ -118,6 +119,8 @@ CI's drift check — it cannot go stale. (It once sat thirteen minors behind, cl
 | `@cascivo/charts` | 1.3.x | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
 | `@cascivo/i18n` | 1.3.x | `@preact/signals-react >=3.0.0` |
 | `@cascivo/storage` | 1.3.x | `@preact/signals-react >=3.0.0` |
+| `@cascivo/data` | 0.0.x | none |
+| `@cascivo/app` | 1.3.x | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0` |
 | `@cascivo/mcp` | 0.7.x | (server; run via `npx`) |
 
 <!-- END GENERATED: package-compatibility -->

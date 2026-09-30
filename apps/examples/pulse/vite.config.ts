@@ -25,8 +25,9 @@ export default defineConfig({
       '@cascivo/i18n': resolve(root, 'packages/i18n/src/index.ts'),
       '@cascivo/react': resolve(root, 'packages/react/src/index.ts'),
       // Must precede the bare '@cascivo/render' entry: a string alias replaces by
-      // prefix, so without this '@cascivo/render/text' resolves to 'index.ts/text'.
+      // prefix, so without these '@cascivo/render/text' resolves to 'index.ts/text'.
       '@cascivo/render/text': resolve(root, 'packages/render/src/view-text.ts'),
+      '@cascivo/render/validate': resolve(root, 'packages/render/src/validate.ts'),
       '@cascivo/render': resolve(root, 'packages/render/src/index.ts'),
       '@cascivo/ai': resolve(root, 'packages/ai/src/index.ts'),
       '@cascivo/icons': resolve(root, 'packages/icons/src/index.tsx'),

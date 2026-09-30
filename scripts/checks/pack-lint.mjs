@@ -13,9 +13,18 @@
 // attw problems we intentionally accept are filtered with a documented reason;
 // everything else fails the gate.
 
-import { execFileSync } from 'node:child_process'
-import { existsSync, readFileSync, readdirSync } from 'node:fs'
-import { join } from 'node:path'
+import { spawnSync } from 'node:child_process'
+import {
+  closeSync,
+  existsSync,
+  mkdtempSync,
+  openSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+} from 'node:fs'
+import { tmpdir } from 'node:os'
+import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { publint } from 'publint'
 
@@ -84,14 +93,23 @@ function entrypointTargets(pkg) {
 
 function runAttw(dir, pkg) {
   // attw exits non-zero when it finds problems, but still writes the JSON report
-  // to stdout — capture it from the thrown error rather than treating exit≠0 as
-  // a run failure. A genuinely broken invocation has no parseable stdout.
+  // to stdout, so exit≠0 is not a run failure. The report goes to a FILE, not a pipe:
+  // attw calls process.exit() on problems, and Node drops pipe output past 64 KB when a
+  // process exits that way. A package with many entries (`@cascivo/app`) crossed that
+  // and the script died on truncated JSON instead of reporting anything.
+  const out = join(mkdtempSync(join(tmpdir(), 'cascivo-attw-')), 'report.json')
+  const fd = openSync(out, 'w')
   let raw
   try {
-    raw = execFileSync(ATTW_BIN, ['--pack', dir, '--format', 'json'], { encoding: 'utf8' })
-  } catch (err) {
-    raw = typeof err?.stdout === 'string' ? err.stdout : ''
-    if (!raw) return [`attw failed to run: ${err instanceof Error ? err.message : String(err)}`]
+    const run = spawnSync(ATTW_BIN, ['--pack', dir, '--format', 'json'], {
+      stdio: ['ignore', fd, 'pipe'],
+      encoding: 'utf8',
+    })
+    raw = readFileSync(out, 'utf8')
+    if (!raw) return [`attw failed to run: ${run.error?.message ?? run.stderr ?? 'no output'}`]
+  } finally {
+    closeSync(fd)
+    rmSync(dirname(out), { recursive: true, force: true })
   }
   const parsed = JSON.parse(raw)
   const problems = parsed.analysis?.problems ?? parsed.problems ?? []

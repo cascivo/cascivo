@@ -45,6 +45,9 @@ _Last updated: 2026-09-24._
   architecture the adopter immediately guts (2026-08-14 report §1). Deliberately
   deferred: three router templates is three more surfaces to keep green, and the
   shell split plus the published router guide captured most of the value.
+  _Partly shipped (2026-09-29):_ `--framework cloudflare` scaffolds a routed app out
+  of the box — file routes and a typed Worker API from `@cascivo/app`. The
+  `react-vite` scaffold's third-party router flag is still open.
 
 ## Later (next quarter)
 

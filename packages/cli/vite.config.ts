@@ -8,6 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@cascivo/registry': resolve(root, 'packages/registry/src/index.ts'),
+      '@cascivo/app/vite': resolve(root, 'packages/app/src/vite.ts'),
     },
   },
   build: {

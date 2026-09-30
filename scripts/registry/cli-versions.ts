@@ -28,6 +28,9 @@ const SCAFFOLD_DEPS = [
   '@cascivo/charts',
   '@cascivo/icons',
   '@cascivo/eslint-config',
+  '@cascivo/app',
+  '@cascivo/render',
+  '@cascivo/storage',
 ]
 
 interface PackageJson {

@@ -63,6 +63,59 @@ await transport.send({ html: message.html, text: message.text, subject: message.
 `renderEmail` also returns `stats` — raw bytes, **quoted-printable-encoded** bytes (what Gmail
 actually measures when it decides to clip), node count and table depth.
 
+### From a Cloudflare Worker
+
+`sendEmail(sender, message, envelope)` runs `assertSendable`, rejects CR/LF in every address
+and header, and hands the message to a sender. Cloudflare's
+[Email Service](https://developers.cloudflare.com/email-service/) binding is one; any object
+whose `send()` takes `{ from, to, subject, html, text }` works too.
+
+```jsonc
+// wrangler.jsonc
+{ "send_email": [{ "name": "EMAIL" }] }
+```
+
+```ts
+import { renderEmail, sendEmail, Welcome, welcomeSubject } from '@cascivo/email'
+import { createElement } from 'react'
+
+export default {
+  async fetch(request: Request, env: { EMAIL: SendEmail }) {
+    const message = renderEmail(createElement(Welcome, { userName: 'Ada' }), {
+      subject: welcomeSubject(),
+    })
+    const { messageId } = await sendEmail(env.EMAIL, message, {
+      from: { name: 'Acme', email: 'hello@acme.example' },
+      to: 'ada@example.com',
+    })
+    return Response.json({ messageId })
+  },
+}
+```
+
+`renderEmail` runs in the Worker itself: it needs only `react-dom/server`, no browser and no
+Node APIs. In `vite dev` (`@cloudflare/vite-plugin`) or `wrangler dev`, the binding does not
+send. It writes each message's HTML and text parts under `.wrangler/tmp/email/` and logs
+their paths, so you can open exactly what would have gone out. To send for real, the sending
+domain must be onboarded to Email Service on your account.
+
+Attach files with `attachments` — a PDF report, say, rendered by Browser Run
+(`exportPage` from `@cascivo/app/export`):
+
+```ts
+await sendEmail(env.EMAIL, message, {
+  from: 'reports@acme.example',
+  to: 'team@acme.example',
+  attachments: [
+    { filename: 'report.pdf', type: 'application/pdf', content: pdf, disposition: 'attachment' },
+  ],
+})
+```
+
+**On Preact.** `@preact/preset-vite` aliases `react` to `preact/compat` in the Worker too, so
+`renderEmail` renders with Preact there, and `react-dom/server` resolves to Preact's server
+renderer. Install `preact-render-to-string` alongside `preact`, or the Worker fails to build.
+
 ## Prose you do not have at build time
 
 `Markdown` is for copy written by an editor and fetched at send time — a newsletter preamble,

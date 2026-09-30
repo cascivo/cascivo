@@ -1,0 +1,19 @@
+// Deploys the built SPA and the /api Worker as ONE Worker with static assets.
+// `pnpm run deploy` builds and ships it (plain `pnpm deploy` is a pnpm built-in).
+// `pnpm dev:worker` runs it locally against the real Workers AI binding (needs
+// `wrangler login` — the AI binding always calls Cloudflare).
+{
+  "name": "cascivo-chat",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // Client-side app: any unknown path serves index.html.
+    "not_found_handling": "single-page-application",
+    // Only the API reaches the Worker; every asset request is served without invoking it.
+    "run_worker_first": ["/api/*"],
+  },
+  "ai": { "binding": "AI" },
+  "observability": { "enabled": true },
+}

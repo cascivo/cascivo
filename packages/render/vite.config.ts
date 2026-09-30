@@ -10,7 +10,11 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: { index: './src/index.ts', 'view-text': './src/view-text.ts' },
+      entry: {
+        index: './src/index.ts',
+        'view-text': './src/view-text.ts',
+        validate: './src/validate.ts',
+      },
       formats: ['es'],
       fileName: (_format, entryName) => `${entryName}.js`,
     },

@@ -76,6 +76,10 @@ const BUDGETS: Record<string, number> = {
   '@cascivo/registry': 10, // measured 4.1
   '@cascivo/ai': 6, // measured 1.3
   '@cascivo/storage': 5, // measured 0.4
+  '@cascivo/data': 3, // measured 1.0
+  // The router entry (index.js) plus its shared path chunk. `api` and `vite` are separate
+  // entries an app only pays for if it imports them.
+  '@cascivo/app': 5,
   // Measured 5.5 across three chunks: the serializer entry is ~0.9 KB on its own, so the
   // tree is what gets measured (code-split) — most of it is the emitter.
   '@cascivo/text': 10,
@@ -135,6 +139,9 @@ const NO_JS_BUDGET: Record<string, string> = {
   '@cascivo/docs': 'content-only — markdown + JSON reference bundle, no JS entry',
   '@cascivo/docspack':
     'content-only — .llms/ chunk markdown + manifest for the docspack indexer, no JS entry',
+  'create-cascivo':
+    'bin-only — the `npm create cascivo` launcher. Three lines that call `cascivo create`, ' +
+    'whose size the `cascivo` budget already measures; nothing here lands in an app bundle.',
   '@cascivo/email-preview':
     'bin-only — a dev server reached through `npx`, never imported. Its JS is the CLI and ' +
     'the UI Vite serves at dev time, neither of which lands in an adopter bundle, so a ' +

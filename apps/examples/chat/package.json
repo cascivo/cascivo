@@ -1,0 +1,42 @@
+{
+  "name": "@cascivo/example-chat",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Example app — a streaming AI chat on Cloudflare Workers AI, built with Preact and cascivo",
+  "type": "module",
+  "scripts": {
+    "dev": "vp dev",
+    "dev:worker": "vp build && npx wrangler@4 dev",
+    "build": "vp build",
+    "preview": "vp preview",
+    "deploy": "vp build && npx wrangler@4 deploy",
+    "test": "vp test",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@cascivo/ai": "workspace:*",
+    "@cascivo/app": "workspace:*",
+    "@cascivo/core": "workspace:*",
+    "@cascivo/data": "workspace:*",
+    "@cascivo/example-kit": "workspace:*",
+    "@cascivo/i18n": "workspace:*",
+    "@cascivo/icons": "workspace:*",
+    "@cascivo/react": "workspace:*",
+    "@cascivo/storage": "workspace:*",
+    "@cascivo/themes": "workspace:*",
+    "@cascivo/tokens": "workspace:*",
+    "@preact/signals-react": "catalog:",
+    "preact": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "jsdom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  }
+}

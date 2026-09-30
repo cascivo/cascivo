@@ -6356,6 +6356,746 @@
             "text?": "TextOptions"
           }
         }
+      },
+      "./validate": {
+        "values": ["validateView"],
+        "types": ["ValidationError"],
+        "declarations": {
+          "validateView": "declare function validateView(config: unknown): { valid: boolean; errors: ValidationError[]; }",
+          "ValidationError": {
+            "path": "string",
+            "message": "string"
+          }
+        }
+      }
+    },
+    "@cascivo/app": {
+      ".": {
+        "values": ["RouterView", "buildPath", "createRouter", "lazyRoute", "route"],
+        "types": [
+          "LinkProps",
+          "NavigateOptions",
+          "PathParams",
+          "Route",
+          "RouteMatch",
+          "RouteProps",
+          "Router",
+          "RouterOptions",
+          "RouterViewProps"
+        ],
+        "declarations": {
+          "buildPath": "declare function buildPath<P extends string>(pattern: P, params: PathParams<P>): string",
+          "createRouter": "declare function createRouter(options: RouterOptions): Router",
+          "lazyRoute": "declare function lazyRoute<P extends string>(path: P, load: () => Promise<{ default: ComponentType<RouteProps<P>>; }>): Route",
+          "LinkProps": "type = LinkComponentProps & Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkComponentProps>",
+          "NavigateOptions": {
+            "replace?": "boolean"
+          },
+          "PathParams": "type<P extends string> = { [K in ParamName<Segments<P>>]: string }",
+          "route": "declare function route<P extends string>(path: P, component: ComponentType<RouteProps<P>>): Route",
+          "Route": {
+            "readonly path": "string",
+            "readonly component": "ErasedComponent | LazyExoticComponent<ErasedComponent>"
+          },
+          "RouteMatch": {
+            "readonly route": "Route",
+            "readonly params": "Readonly<Record<string, string>>"
+          },
+          "RouteProps": {
+            "(extends)": "<P extends string = string>",
+            "params": "PathParams<P>"
+          },
+          "Router": {
+            "readonly pathname": "ReadonlySignal<string>",
+            "readonly search": "ReadonlySignal<string>",
+            "readonly match": "ReadonlySignal<RouteMatch | null>",
+            "readonly notFound": "Route | null",
+            "navigate": "(to: string, options?: NavigateOptions): void",
+            "href": "(to: string): string",
+            "readonly Link": "ComponentType<LinkProps>",
+            "dispose": "(): void"
+          },
+          "RouterOptions": {
+            "routes": "readonly Route[]",
+            "notFound?": "Route | undefined",
+            "base?": "string",
+            "viewTransitions?": "boolean"
+          },
+          "RouterView": "declare function RouterView({ router, fallback }: RouterViewProps): import(\"react\").JSX.Element | null",
+          "RouterViewProps": {
+            "router": "Router",
+            "fallback?": "ReactNode"
+          }
+        }
+      },
+      "./api": {
+        "values": [
+          "HttpError",
+          "buildPath",
+          "createClient",
+          "createHandler",
+          "defineApi",
+          "endpoint",
+          "stream"
+        ],
+        "types": [
+          "AnyEndpoint",
+          "Api",
+          "CallArgs",
+          "CallArgsTuple",
+          "Client",
+          "ClientOptions",
+          "HandlerContext",
+          "Handlers",
+          "JsonEndpoint",
+          "Method",
+          "Parser",
+          "PathParams",
+          "StreamEndpoint"
+        ],
+        "declarations": {
+          "AnyEndpoint": "type = JsonEndpoint<string, unknown, unknown> | StreamEndpoint<string, unknown, unknown>",
+          "Api": "type = Readonly<Record<string, AnyEndpoint>>",
+          "buildPath": "declare function buildPath<P extends string>(pattern: P, params: PathParams<P>): string",
+          "CallArgs": "type<P extends string, I> = ParamsArg<P> & BodyArg<I> & { signal?: AbortSignal; headers?: HeadersInit; }",
+          "CallArgsTuple": "type<P extends string, I> = keyof PathParams<P> extends never ? [I] extends [undefined] ? [args?: CallArgs<P, I>] : [args: CallArgs<P, I>] : [args: CallArgs<P, I>]",
+          "Client": "type<A extends Api> = { readonly [K in keyof A]: A[K] extends JsonEndpoint<infer P, infer I, infer O> ? (...args: CallArgsTuple<P, I>) => Promise<O> : A[K] extends StreamEndpoint<infer P, infer I, infer E> ? (...args: CallArgsTuple<P, I>) => AsyncGenerator<E, void, undefined> : never }",
+          "ClientOptions": {
+            "baseUrl?": "string"
+          },
+          "createClient": "declare function createClient<A extends Api>(api: A, options?: ClientOptions): Client<A>",
+          "createHandler": "declare function createHandler<A extends Api, Env = unknown>(api: A, handlers: Handlers<A, Env>): (request: Request, env: Env) => Promise<Response>",
+          "defineApi": "declare function defineApi<A extends Readonly<Record<string, object>>>(api: A): A",
+          "endpoint": "declare function endpoint<P extends string, O, I = undefined>(definition: { method: Method; path: P; input?: Parser<I>; output: Parser<O>; }): JsonEndpoint<P, I, O>",
+          "HandlerContext": {
+            "(extends)": "<P extends string, I, Env>",
+            "params": "PathParams<P>",
+            "body": "I",
+            "request": "Request",
+            "env": "Env",
+            "signal": "AbortSignal"
+          },
+          "Handlers": "type<A extends Api, Env> = { readonly [K in keyof A]: A[K] extends JsonEndpoint<infer P, infer I, infer O> ? (context: HandlerContext<P, I, Env>) => HandlerResult<O> : A[K] extends StreamEndpoint<infer P, infer I, infer E> ? (context: HandlerContext<P, I, Env>) => AsyncIterable<E> | Promise<AsyncIterable<E>> : never }",
+          "HttpError": "re-export HttpError from \"@cascivo/data\"",
+          "JsonEndpoint": {
+            "(extends)": "<P extends string, I, O>",
+            "readonly kind": "'json'",
+            "readonly method": "Method",
+            "readonly path": "P",
+            "readonly input?": "Parser<I> | undefined",
+            "readonly output": "Parser<O>"
+          },
+          "Method": "type = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'",
+          "Parser": "type<T> = (raw: unknown) => T",
+          "PathParams": "type<P extends string> = { [K in ParamName<Segments<P>>]: string }",
+          "stream": "declare function stream<P extends string, E, I = undefined>(definition: { method: Method; path: P; input?: Parser<I>; event: Parser<E>; }): StreamEndpoint<P, I, E>",
+          "StreamEndpoint": {
+            "(extends)": "<P extends string, I, E>",
+            "readonly kind": "'stream'",
+            "readonly method": "Method",
+            "readonly path": "P",
+            "readonly input?": "Parser<I> | undefined",
+            "readonly event": "Parser<E>"
+          }
+        }
+      },
+      "./sync": {
+        "values": ["connectRoom", "parseSnapshot"],
+        "types": ["Parser", "Room", "RoomOptions", "RoomStatus", "SharedMap", "SharedSignal"],
+        "declarations": {
+          "connectRoom": "declare function connectRoom(url: string, options?: RoomOptions): Room",
+          "Parser": "type<T> = (raw: unknown) => T",
+          "parseSnapshot": "declare function parseSnapshot(raw: string): Snapshot | null",
+          "Room": {
+            "readonly status": "ReadonlySignal<RoomStatus>",
+            "readonly self": "ReadonlySignal<string | null>",
+            "readonly unsynced": "ReadonlySignal<number>",
+            "readonly presence": "ReadonlySignal<Readonly<Record<string, unknown>>>",
+            "setPresence": "(value: Json): void",
+            "signal<T>(path: string, initial: T, parse: Parser<T>): SharedSignal<T>": "",
+            "map<T>(prefix: string, parse: Parser<T>): SharedMap<T>": "",
+            "close": "(): void"
+          },
+          "RoomOptions": {
+            "WebSocket?": "new (url: string) => WebSocket",
+            "minReconnectMs?": "number",
+            "maxReconnectMs?": "number",
+            "storage?": "StorageDriver",
+            "storageKey?": "string"
+          },
+          "RoomStatus": "type = 'connecting' | 'open' | 'closed'",
+          "SharedMap": {
+            "(extends)": "<T>",
+            "readonly value": "Readonly<Record<string, T>>",
+            "readonly signal": "ReadonlySignal<Readonly<Record<string, T>>>",
+            "set": "(id: string, value: T): void",
+            "delete": "(id: string): void"
+          },
+          "SharedSignal": {
+            "(extends)": "<T>",
+            "readonly value": "T",
+            "readonly signal": "ReadonlySignal<T>",
+            "set": "(value: T): void"
+          }
+        }
+      },
+      "./flags": {
+        "values": [
+          "NO_THEME_OVERRIDE",
+          "applyThemeOverride",
+          "defineFlags",
+          "objectFlag",
+          "parseThemeOverride",
+          "themeFlag"
+        ],
+        "types": [
+          "FlagContext",
+          "FlagDefault",
+          "FlagEvaluator",
+          "FlagValues",
+          "Flags",
+          "ObjectFlag",
+          "ThemeOverride",
+          "ThemeTarget"
+        ],
+        "declarations": {
+          "applyThemeOverride": "declare function applyThemeOverride(element: ThemeTarget, override: ThemeOverride): () => void",
+          "defineFlags": "declare function defineFlags<const D extends Record<string, FlagDefault>>(definition: D): Flags<D>",
+          "FlagContext": "type = Record<string, string | number | boolean>",
+          "FlagDefault": "type = boolean | string | number | ObjectFlag<object>",
+          "FlagEvaluator": {
+            "getBooleanValue": "(key: string, defaultValue: boolean, context?: FlagContext): Promise<boolean>",
+            "getStringValue": "(key: string, defaultValue: string, context?: FlagContext): Promise<string>",
+            "getNumberValue": "(key: string, defaultValue: number, context?: FlagContext): Promise<number>",
+            "getObjectValue<T extends object>(key: string, defaultValue: T, context?: FlagContext): Promise<T>": ""
+          },
+          "Flags": {
+            "(extends)": "<D extends Record<string, FlagDefault>>",
+            "readonly defaults": "FlagValues<D>",
+            "parse": "(raw: unknown): FlagValues<D>",
+            "evaluate": "(evaluator: FlagEvaluator, context?: FlagContext): Promise<FlagValues<D>>"
+          },
+          "FlagValues": "type<D extends Record<string, FlagDefault>> = { [K in keyof D]: D[K] extends ObjectFlag<infer T> ? T : D[K] extends boolean ? boolean : D[K] extends string ? string : number }",
+          "NO_THEME_OVERRIDE": "declare const NO_THEME_OVERRIDE: ThemeOverride",
+          "objectFlag": "declare function objectFlag<T extends object>(defaultValue: T, parse: (raw: unknown) => T): ObjectFlag<T>",
+          "ObjectFlag": {
+            "(extends)": "<T extends object>",
+            "readonly kind": "'object'",
+            "readonly default": "T",
+            "readonly parse": "(raw: unknown) => T"
+          },
+          "parseThemeOverride": "declare function parseThemeOverride(raw: unknown): ThemeOverride",
+          "themeFlag": "declare function themeFlag(): ObjectFlag<ThemeOverride>",
+          "ThemeOverride": {
+            "theme": "string | null",
+            "tokens": "Record<string, string>"
+          },
+          "ThemeTarget": {
+            "getAttribute": "(name: string): string | null",
+            "setAttribute": "(name: string, value: string): void",
+            "removeAttribute": "(name: string): void",
+            "readonly style": "{ getPropertyValue(name: string): string; setProperty(name: string, value: string): void; removeProperty(name: string): string; }"
+          }
+        }
+      },
+      "./jobs": {
+        "values": ["defineJob", "watchJob"],
+        "types": ["Job", "JobState", "JobStatus", "WatchedJob"],
+        "declarations": {
+          "defineJob": "declare function defineJob<O>(definition: { steps: readonly string[]; output: Parser<O>; }): Job<O>",
+          "Job": {
+            "(extends)": "<O>",
+            "readonly steps": "readonly string[]",
+            "readonly initial": "JobState<O>",
+            "parseState": "(raw: unknown): JobState<O>",
+            "roomName": "(id: string): string"
+          },
+          "JobState": {
+            "(extends)": "<O>",
+            "status": "JobStatus",
+            "step": "number",
+            "progress": "number | null",
+            "message": "string | null",
+            "output": "O | null",
+            "error": "string | null"
+          },
+          "JobStatus": "type = 'queued' | 'running' | 'done' | 'failed'",
+          "WatchedJob": {
+            "(extends)": "<O>",
+            "readonly state": "ReadonlySignal<JobState<O>>",
+            "readonly connection": "ReadonlySignal<RoomStatus>",
+            "close": "(): void"
+          },
+          "watchJob": "declare function watchJob<O>(job: Job<O>, url: string, options?: Pick<RoomOptions, 'WebSocket'>): WatchedJob<O>"
+        }
+      },
+      "./jobs-server": {
+        "values": ["jobReporter"],
+        "types": ["JobReporter"],
+        "declarations": {
+          "jobReporter": "declare function jobReporter<O, Id>(job: Job<O>, rooms: RoomNamespace<Id>, id: string): JobReporter<O>",
+          "JobReporter": {
+            "(extends)": "<O>",
+            "queued": "(): Promise<void>",
+            "step": "(index: number, message?: string): Promise<void>",
+            "progress": "(index: number, fraction: number, message?: string): Promise<void>",
+            "done": "(output: O): Promise<void>",
+            "fail": "(error: unknown, step?: number): Promise<void>"
+          }
+        }
+      },
+      "./uploads": {
+        "values": [
+          "checkFile",
+          "defineUploads",
+          "formatBytes",
+          "parseStoredFile",
+          "startUpload",
+          "xhrTransport"
+        ],
+        "types": ["StoredFile", "Upload", "UploadPolicy", "UploadStatus", "UploadTransport"],
+        "declarations": {
+          "checkFile": "declare function checkFile(policy: UploadPolicy, file: { size: number; type: string; }): string | null",
+          "defineUploads": "declare function defineUploads(policy: { path: string; maxBytes: number; types: readonly string[]; partBytes?: number; }): UploadPolicy",
+          "formatBytes": "declare function formatBytes(bytes: number): string",
+          "parseStoredFile": "declare function parseStoredFile(raw: unknown): StoredFile",
+          "startUpload": "declare function startUpload(policy: UploadPolicy, file: File, options?: { transport?: UploadTransport; }): Upload",
+          "StoredFile": {
+            "key": "string",
+            "name": "string",
+            "size": "number",
+            "type": "string"
+          },
+          "Upload": {
+            "readonly id": "string",
+            "readonly name": "string",
+            "readonly size": "number",
+            "readonly progress": "ReadonlySignal<number>",
+            "readonly status": "ReadonlySignal<UploadStatus>",
+            "readonly error": "ReadonlySignal<string | null>",
+            "readonly result": "ReadonlySignal<StoredFile | null>",
+            "abort": "(): void"
+          },
+          "UploadPolicy": {
+            "readonly path": "string",
+            "readonly maxBytes": "number",
+            "readonly types": "readonly string[]",
+            "readonly partBytes": "number"
+          },
+          "UploadStatus": "type = 'uploading' | 'done' | 'error'",
+          "UploadTransport": "type = (request: { method: 'PUT' | 'POST'; url: string; body: Blob | string | null; headers: Record<string, string>; onProgress: (sentBytes: number) => void; signal: AbortSignal; }) => Promise<{ status: number; body: string; }>",
+          "xhrTransport": "declare const xhrTransport: UploadTransport"
+        }
+      },
+      "./uploads-server": {
+        "values": ["handleUploads", "listUploads"],
+        "types": ["ImageResizer", "UploadBucket", "UploadHandlerOptions"],
+        "declarations": {
+          "handleUploads": "declare function handleUploads(policy: UploadPolicy, bucket: UploadBucket, options?: UploadHandlerOptions): (request: Request) => Promise<Response | null>",
+          "ImageResizer": {
+            "input": "(stream: ReadableStream<Uint8Array>): { transform(transform: { width: number; fit: 'scale-down'; }): { output(options: { format: 'image/webp'; }): Promise<{ response(): Response; }>; }; }"
+          },
+          "listUploads": "declare function listUploads(bucket: UploadBucket, options?: { prefix?: string; limit?: number; }): Promise<StoredFile[]>",
+          "UploadBucket": {
+            "put": "(key: string, value: ReadableStream, options: { httpMetadata: { contentType: string; }; customMetadata: Record<string, string>; }): Promise<StoredObject | null>",
+            "head": "(key: string): Promise<StoredObject | null>",
+            "get": "(key: string): Promise<(StoredObject & { body: ReadableStream; }) | null>",
+            "delete": "(key: string): Promise<void>",
+            "createMultipartUpload": "(key: string, options: { httpMetadata: { contentType: string; }; customMetadata: Record<string, string>; }): Promise<{ key: string; uploadId: string; }>",
+            "resumeMultipartUpload": "(key: string, uploadId: string): MultipartUpload",
+            "list": "(options: { prefix: string; limit: number; include: ('httpMetadata' | 'customMetadata')[]; }): Promise<{ objects: StoredObject[]; }>"
+          },
+          "UploadHandlerOptions": {
+            "prefix?": "string",
+            "images?": "ImageResizer"
+          }
+        }
+      },
+      "./export": {
+        "values": ["exportPage", "exportUrl", "handleExport", "isExporting"],
+        "types": [
+          "ExportBrowser",
+          "ExportFormat",
+          "ExportPage",
+          "ExportPageOptions",
+          "HandleExportOptions"
+        ],
+        "declarations": {
+          "ExportBrowser": {
+            "newPage": "(): Promise<ExportPage>",
+            "close": "(): Promise<void>"
+          },
+          "ExportFormat": "type = 'pdf' | 'png'",
+          "exportPage": "declare function exportPage(launch: () => Promise<ExportBrowser>, url: string, options: ExportPageOptions): Promise<Uint8Array>",
+          "ExportPage": {
+            "setViewport": "(viewport: { width: number; height: number; deviceScaleFactor?: number; }): Promise<void>",
+            "goto": "(url: string, options: { waitUntil: 'networkidle0'; timeout: number; }): Promise<unknown>",
+            "waitForSelector": "(selector: string, options: { timeout: number; }): Promise<unknown>",
+            "emulateMediaType": "(type: 'print' | 'screen'): Promise<void>",
+            "pdf": "(options: { format: 'A4'; printBackground: boolean; landscape: boolean; }): Promise<Uint8Array>",
+            "screenshot": "(options: { type: 'png'; fullPage: boolean; }): Promise<Uint8Array>"
+          },
+          "ExportPageOptions": {
+            "format": "ExportFormat",
+            "landscape?": "boolean",
+            "readySelector?": "string",
+            "viewport?": "{ width: number; height: number; }",
+            "timeoutMs?": "number",
+            "fullPage?": "boolean"
+          },
+          "exportUrl": "declare function exportUrl(page: string, format?: ExportFormat, path?: string): string",
+          "handleExport": "declare function handleExport(request: Request, options: HandleExportOptions): Promise<Response | null>",
+          "HandleExportOptions": {
+            "(extends)": "extends Omit<ExportPageOptions, 'format' | 'landscape'>",
+            "launch": "() => Promise<ExportBrowser>",
+            "path?": "string",
+            "allow?": "(page: string) => boolean"
+          },
+          "isExporting": "declare function isExporting(search?: string): boolean"
+        }
+      },
+      "./analytics": {
+        "values": ["defineMetrics", "numberField", "queryAnalytics", "stringField"],
+        "types": ["AnalyticsCredentials", "AnalyticsDataset", "Metrics"],
+        "declarations": {
+          "AnalyticsCredentials": {
+            "accountId": "string",
+            "apiToken": "string",
+            "fetch?": "typeof fetch"
+          },
+          "AnalyticsDataset": {
+            "writeDataPoint": "(point: { blobs?: string[]; doubles?: number[]; indexes?: string[]; }): void"
+          },
+          "defineMetrics": "declare function defineMetrics<const B extends string, const D extends string>(schema: { dataset: string; blobs: readonly B[]; doubles: readonly D[]; index?: NoInfer<B>; }): Metrics<B, D>",
+          "Metrics": {
+            "(extends)": "<B extends string, D extends string>",
+            "readonly dataset": "string",
+            "write": "(binding: AnalyticsDataset, point: Partial<Record<B, string> & Record<D, number>>): void",
+            "column": "(name: B | D): string",
+            "sql": "(statement: string): string"
+          },
+          "numberField": "declare function numberField(row: unknown, name: string): number",
+          "queryAnalytics": "declare function queryAnalytics<Row>(credentials: AnalyticsCredentials, sql: string, parseRow: (raw: unknown) => Row): Promise<Row[]>",
+          "stringField": "declare function stringField(row: unknown, name: string): string"
+        }
+      },
+      "./db": {
+        "values": [
+          "TableQueryError",
+          "defineTable",
+          "migrate",
+          "parseTablePage",
+          "parseTableQuery",
+          "queryRows",
+          "queryTable"
+        ],
+        "types": [
+          "Database",
+          "DbStatement",
+          "Migration",
+          "SortDirection",
+          "Table",
+          "TableColumn",
+          "TableFilter",
+          "TablePage",
+          "TableQuery",
+          "TableSort"
+        ],
+        "declarations": {
+          "Database": {
+            "prepare": "(sql: string): DbStatement",
+            "batch": "(statements: DbStatement[]): Promise<unknown[]>"
+          },
+          "DbStatement": {
+            "bind": "(...values: unknown[]): DbStatement",
+            "all": "(): Promise<{ results: unknown[]; }>",
+            "first": "(): Promise<unknown>",
+            "run": "(): Promise<unknown>"
+          },
+          "defineTable": "declare function defineTable<const C extends string>(definition: { table: string; key: NoInfer<C>; columns: Record<C, TableColumn>; }): Table<C>",
+          "migrate": "declare function migrate(db: Database, migrations: Migration[]): Promise<void>",
+          "Migration": {
+            "id": "string",
+            "statements": "string[]"
+          },
+          "parseTablePage": "declare function parseTablePage<Row>(raw: unknown, parseRow: (raw: unknown) => Row): TablePage<Row>",
+          "parseTableQuery": "declare function parseTableQuery(raw: unknown): TableQuery",
+          "queryRows": "declare function queryRows<Row>(db: Database, sql: string, params: unknown[], parseRow: (raw: unknown) => Row): Promise<Row[]>",
+          "queryTable": "declare function queryTable<C extends string, Row>(db: Database, table: Table<C>, query: TableQuery, parseRow: (raw: unknown) => Row): Promise<TablePage<Row>>",
+          "SortDirection": "type = 'asc' | 'desc'",
+          "Table": {
+            "(extends)": "<C extends string>",
+            "readonly table": "string",
+            "readonly key": "C",
+            "readonly columns": "Readonly<Record<C, TableColumn>>",
+            "toSql": "(query: TableQuery): { sql: string; params: unknown[]; countSql: string; countParams: unknown[]; }"
+          },
+          "TableColumn": {
+            "sort?": "boolean",
+            "search?": "boolean",
+            "filter?": "'text' | 'select' | 'range'"
+          },
+          "TableFilter": "type = { kind: 'text'; value: string; } | { kind: 'select'; values: string[]; } | { kind: 'range'; min?: number; max?: number; }",
+          "TablePage": {
+            "(extends)": "<Row>",
+            "rows": "Row[]",
+            "total": "number"
+          },
+          "TableQuery": {
+            "sort": "TableSort | undefined",
+            "search": "string",
+            "filters": "Record<string, TableFilter>",
+            "page": "number",
+            "pageSize": "number"
+          },
+          "TableQueryError": {
+            "constructor": "(message: string)",
+            "(kind)": "class"
+          },
+          "TableSort": {
+            "key": "string",
+            "direction": "SortDirection",
+            "thenBy?": "{ key: string; direction: SortDirection; }[]"
+          }
+        }
+      },
+      "./guard": {
+        "values": [
+          "clientIp",
+          "guardResponse",
+          "rateLimit",
+          "requireAccess",
+          "verifyTurnstile",
+          "verifyWebhook"
+        ],
+        "types": [
+          "AccessIdentity",
+          "AccessOptions",
+          "RateLimiter",
+          "TurnstileOptions",
+          "VerifiedWebhook",
+          "WebhookOptions",
+          "WebhookScheme"
+        ],
+        "declarations": {
+          "AccessIdentity": {
+            "email": "string | null",
+            "subject": "string",
+            "claims": "Record<string, unknown>"
+          },
+          "AccessOptions": {
+            "teamDomain": "string",
+            "audience": "string",
+            "fetch?": "typeof fetch",
+            "leewaySeconds?": "number"
+          },
+          "clientIp": "declare function clientIp(request: Request): string",
+          "guardResponse": "declare function guardResponse(error: unknown): Response",
+          "rateLimit": "declare function rateLimit(limiter: RateLimiter, key: string): Promise<void>",
+          "RateLimiter": {
+            "limit": "(options: { key: string; }): Promise<{ success: boolean; }>"
+          },
+          "requireAccess": "declare function requireAccess(request: Request, options: AccessOptions): Promise<AccessIdentity>",
+          "TurnstileOptions": {
+            "secret": "string",
+            "remoteIp?": "string",
+            "action?": "string",
+            "hostname?": "string",
+            "fetch?": "typeof fetch"
+          },
+          "VerifiedWebhook": {
+            "body": "string",
+            "id": "string | null"
+          },
+          "verifyTurnstile": "declare function verifyTurnstile(token: string | null | undefined, options: TurnstileOptions): Promise<void>",
+          "verifyWebhook": "declare function verifyWebhook(request: Request, options: WebhookOptions): Promise<VerifiedWebhook>",
+          "WebhookOptions": {
+            "scheme": "WebhookScheme",
+            "secret": "string",
+            "toleranceSeconds?": "number"
+          },
+          "WebhookScheme": "type = 'github' | 'stripe' | 'standard'"
+        }
+      },
+      "./live": {
+        "values": ["MAX_EVENTS", "defineLive", "watchLive"],
+        "types": ["Live", "LiveEvent", "LivePoint", "WatchedLive"],
+        "declarations": {
+          "defineLive": "declare function defineLive<const M extends string>(definition: { metrics: readonly M[]; window?: number; bucket?: number; }): Live<M>",
+          "Live": {
+            "(extends)": "<M extends string>",
+            "readonly metrics": "readonly M[]",
+            "readonly window": "number",
+            "readonly bucket": "number",
+            "parseEvent": "(raw: unknown): LiveEvent<M>",
+            "parseEvents": "(raw: unknown): LiveEvent<M>[]",
+            "parseBucket": "(raw: unknown): Record<M, number>",
+            "bucketOf": "(at: number): number",
+            "points": "(buckets: Readonly<Record<string, Record<M, number>>>, now: number): LivePoint<M>[]"
+          },
+          "LiveEvent": {
+            "(extends)": "<M extends string>",
+            "at?": "number",
+            "values": "Partial<Record<M, number>>"
+          },
+          "LivePoint": {
+            "(extends)": "<M extends string>",
+            "at": "number",
+            "values": "Record<M, number>"
+          },
+          "MAX_EVENTS": "declare const MAX_EVENTS = 100",
+          "WatchedLive": {
+            "(extends)": "<M extends string>",
+            "readonly points": "ReadonlySignal<LivePoint<M>[]>",
+            "readonly connection": "ReadonlySignal<RoomStatus>",
+            "close": "(): void"
+          },
+          "watchLive": "declare function watchLive<M extends string>(live: Live<M>, url: string, options?: Pick<RoomOptions, 'WebSocket'>): WatchedLive<M>"
+        }
+      },
+      "./live-server": {
+        "values": ["LiveRoom", "recordLive"],
+        "types": ["LiveBatch", "LiveQueue"],
+        "declarations": {
+          "LiveBatch": {
+            "readonly messages": "readonly { readonly body: unknown; }[]"
+          },
+          "LiveQueue": {
+            "sendBatch": "(messages: Iterable<{ body: unknown; }>): Promise<void>"
+          },
+          "LiveRoom": {
+            "private recording": "",
+            "fetch": "(request: Request): Promise<Response>",
+            "record": "({ window, bucket, events }: RecordRequest, now: number): Promise<void>",
+            "(kind)": "class"
+          },
+          "recordLive": "declare function recordLive<M extends string, Id>(live: Live<M>, namespace: RoomNamespace<Id>, name: string, raw: readonly unknown[]): Promise<void>"
+        }
+      },
+      "./auth": {
+        "values": ["createAuth"],
+        "types": ["Auth", "User"],
+        "declarations": {
+          "Auth": {
+            "readonly user": "ReadonlySignal<User | null | undefined>",
+            "refresh": "(): Promise<void>",
+            "start": "(email: string): Promise<{ link: string | null; }>",
+            "verify": "(token: string): Promise<User>",
+            "signOut": "(): Promise<void>"
+          },
+          "createAuth": "declare function createAuth(basePath?: string): Auth",
+          "User": {
+            "id": "string",
+            "email": "string"
+          }
+        }
+      },
+      "./auth-server": {
+        "values": ["SESSION_COOKIE", "currentUser", "handleAuth", "normalizeEmail", "requireUser"],
+        "types": ["AuthOptions", "User"],
+        "declarations": {
+          "AuthOptions": {
+            "sendLink": "(email: string, url: string): Promise<void>",
+            "verifyPath?": "string",
+            "basePath?": "string",
+            "linkTtlSeconds?": "number",
+            "sessionTtlSeconds?": "number",
+            "exposeLink?": "boolean"
+          },
+          "currentUser": "declare function currentUser(db: Database, request: Request): Promise<User | null>",
+          "handleAuth": "declare function handleAuth(db: Database, options: AuthOptions): (request: Request) => Promise<Response | null>",
+          "normalizeEmail": "declare function normalizeEmail(raw: unknown): string",
+          "requireUser": "declare function requireUser(db: Database, request: Request): Promise<User>",
+          "SESSION_COOKIE": "declare const SESSION_COOKIE = \"__Host-session\"",
+          "User": {
+            "id": "string",
+            "email": "string"
+          }
+        }
+      },
+      "./turnstile": {
+        "values": ["mountTurnstile"],
+        "types": ["TurnstileWidget"],
+        "declarations": {
+          "mountTurnstile": "declare function mountTurnstile(element: HTMLElement, options: { siteKey: string; action?: string; onToken: (token: string) => void; onExpire?: () => void; }): TurnstileWidget",
+          "TurnstileWidget": {
+            "reset": "(): void",
+            "remove": "(): void"
+          }
+        }
+      },
+      "./sync-server": {
+        "values": ["SyncRoom", "roomResponse", "writeRoom"],
+        "types": ["HibernatableWebSocket", "RoomNamespace", "RoomWrite", "SyncRoomState"],
+        "declarations": {
+          "HibernatableWebSocket": {
+            "send": "(message: string): void",
+            "close": "(code?: number, reason?: string): void",
+            "serializeAttachment": "(value: unknown): void",
+            "deserializeAttachment": "(): unknown"
+          },
+          "RoomNamespace": {
+            "(extends)": "<Id>",
+            "idFromName": "(name: string): Id",
+            "get": "(id: Id): { fetch(request: Request): Promise<Response>; }"
+          },
+          "roomResponse": "declare function roomResponse<Id>(request: Request, namespace: RoomNamespace<Id>, name: string, options?: { readOnly?: boolean; }): Promise<Response> | Response",
+          "RoomWrite": {
+            "room": "string | null",
+            "path": "string",
+            "value": "Json"
+          },
+          "SyncRoom": {
+            "protected readonly ctx: SyncRoomState": "",
+            "constructor": "(ctx: SyncRoomState, _env?: unknown)",
+            "protected onWrite(_write: RoomWrite): void | Promise<void>": "",
+            "fetch": "(request: Request): Promise<Response>",
+            "accept": "(socket: HibernatableWebSocket, options?: { readOnly?: boolean; }): Promise<void>",
+            "webSocketMessage": "(socket: HibernatableWebSocket, raw: string | ArrayBuffer): Promise<void>",
+            "private store": "",
+            "private serverWrites": "",
+            "protected read(path: string): Promise<Json | undefined>": "",
+            "protected paths(prefix: string): Promise<string[]>": "",
+            "protected write(path: string, value: Json): Promise<void>": "",
+            "private serverWrite": "",
+            "webSocketClose": "(socket: HibernatableWebSocket): Promise<void>",
+            "webSocketError": "(socket: HibernatableWebSocket): Promise<void>",
+            "private broadcast": "",
+            "(kind)": "class"
+          },
+          "SyncRoomState": {
+            "readonly id?": "{ readonly name?: string | undefined; }",
+            "acceptWebSocket": "(socket: HibernatableWebSocket): void",
+            "getWebSockets": "(): HibernatableWebSocket[]",
+            "storage": "{ get<T = unknown>(key: string): Promise<T | undefined>; put(key: string, value: unknown): Promise<void>; delete(key: string): Promise<boolean>; list<T = unknown>(options: { prefix: string; }): Promise<Map<string, T>>; }"
+          },
+          "writeRoom": "declare function writeRoom<Id>(namespace: RoomNamespace<Id>, name: string, path: string, value: Json): Promise<void>"
+        }
+      },
+      "./vite": {
+        "values": ["cascivoRoutes", "fileToRoutePath", "generateRoutes", "scanRoutes"],
+        "types": ["CascivoRoutesOptions", "CascivoRoutesPlugin", "RouteFile"],
+        "declarations": {
+          "cascivoRoutes": "declare function cascivoRoutes(options?: CascivoRoutesOptions): CascivoRoutesPlugin",
+          "CascivoRoutesOptions": {
+            "dir?": "string",
+            "out?": "string"
+          },
+          "CascivoRoutesPlugin": {
+            "name": "string",
+            "enforce": "'pre'",
+            "configResolved": "(config: { root: string; }): void",
+            "buildStart": "(): void",
+            "configureServer": "(server: { watcher: { add(path: string): unknown; on(event: string, listener: (file: string) => void): unknown; }; }): void"
+          },
+          "fileToRoutePath": "declare function fileToRoutePath(file: string): string | null | undefined",
+          "generateRoutes": "declare function generateRoutes(files: readonly string[], importPrefix: string): string",
+          "RouteFile": {
+            "file": "string",
+            "path": "string | null"
+          },
+          "scanRoutes": "declare function scanRoutes(dir: string): string[]"
+        }
       }
     }
   }

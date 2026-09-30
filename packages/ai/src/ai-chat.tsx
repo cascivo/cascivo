@@ -1,6 +1,6 @@
 'use client'
 import { useRef } from 'react'
-import { useSignal, useSignals } from '@cascivo/core'
+import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { StreamingText } from './streaming-text'
 import styles from './ai-chat.module.css'
@@ -19,6 +19,8 @@ export interface AiChatProps {
   className?: string
 }
 
+const PIN_THRESHOLD_PX = 32
+
 export function AiChat({
   messages,
   onSend,
@@ -29,6 +31,26 @@ export function AiChat({
   useSignals()
   const inputValue = useSignal('')
   const listRef = useRef<HTMLDivElement>(null)
+
+  // Follow new content (a new message, or a reply streaming in) while the reader is at the
+  // bottom of the log; once they scroll up to read history, leave the position alone.
+  useSignalEffect(() => {
+    const list = listRef.current
+    if (!list) return
+    let pinned = true
+    const onScroll = () => {
+      pinned = list.scrollHeight - list.scrollTop - list.clientHeight < PIN_THRESHOLD_PX
+    }
+    const observer = new MutationObserver(() => {
+      if (pinned) list.scrollTop = list.scrollHeight
+    })
+    observer.observe(list, { childList: true, subtree: true, characterData: true })
+    list.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      observer.disconnect()
+      list.removeEventListener('scroll', onScroll)
+    }
+  })
 
   function handleSend() {
     const text = inputValue.value.trim()

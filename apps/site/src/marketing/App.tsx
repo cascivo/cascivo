@@ -32,6 +32,9 @@ const PosterBreadth = lazy(() =>
 const PosterQuickStart = lazy(() =>
   import('./poster/PosterQuickStart').then((m) => ({ default: m.PosterQuickStart })),
 )
+const PosterAppBuilder = lazy(() =>
+  import('./poster/PosterAppBuilder').then((m) => ({ default: m.PosterAppBuilder })),
+)
 const PosterShowcase = lazy(() =>
   import('./poster/PosterShowcase').then((m) => ({ default: m.PosterShowcase })),
 )
@@ -202,6 +205,12 @@ function HomePage() {
           <Suspense fallback={<SectionFallback height={480} />}>
             <PosterQuickStart />
           </Suspense>
+          {/* Interactive, so held back until it is near: nobody above the fold pays for it. */}
+          <WhenNearViewport height={720}>
+            <Suspense fallback={<SectionFallback height={720} />}>
+              <PosterAppBuilder />
+            </Suspense>
+          </WhenNearViewport>
           <Suspense fallback={<SectionFallback height={520} />}>
             <PosterShowcase />
           </Suspense>
