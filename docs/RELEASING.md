@@ -114,13 +114,19 @@ pnpm npm-bootstrap:check   # every non-private packages/* name exists on npm
 When it reports a missing name, publish it once by hand from a clean checkout of `main`:
 
 ```sh
-pnpm build
 npm login
-# Provenance off: it is generated from CI's OIDC token and cannot be produced locally,
-# and publishConfig turns it on for every package. `changeset publish` ships only the
-# versions npm does not already have, so this publishes the missing name and nothing else.
-NPM_CONFIG_PROVENANCE=false pnpm changeset publish
+pnpm release:bootstrap            # or --dry-run to stop after the dry-run
 ```
+
+`release:bootstrap` checks you are logged in and the tree is clean, finds exactly the names
+npm lacks, orders them dependencies-first (`@cascivo/data` before `@cascivo/app`), refuses if
+one would publish against an internal version npm does not have, runs `release:build`, packs
+each package with `pnpm pack` (rewriting `workspace:^`), dry-runs every `npm publish`, asks for
+confirmation, then publishes the same tarballs. Provenance is off (`--provenance=false`): it is
+generated from CI's OIDC token and cannot be produced locally, and `publishConfig` turns it on
+for every package — npm lets the command-line flag override that, but not an
+`NPM_CONFIG_PROVENANCE` env var. Only the missing names ship; stranded versions of existing
+packages stay the workflow's job, where they get provenance.
 
 Then attach the trusted publisher (`npmjs.com/package/<name>` → Settings → Trusted
 Publisher; org `cascivo`, repo `cascivo`, workflow `release.yml`, no environment) and
