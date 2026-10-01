@@ -7023,6 +7023,93 @@
           }
         }
       },
+      "./ses": {
+        "values": [
+          "SesError",
+          "certificatePublicKey",
+          "createSes",
+          "handleSns",
+          "parseSesNotification",
+          "signAwsRequest",
+          "verifySnsMessage"
+        ],
+        "types": [
+          "AwsCredentials",
+          "AwsRequest",
+          "Ses",
+          "SesBounceType",
+          "SesEvent",
+          "SesMessage",
+          "SesOptions",
+          "SnsHandlerOptions",
+          "SnsMessage",
+          "SnsNotification",
+          "SnsSubscription"
+        ],
+        "declarations": {
+          "AwsCredentials": {
+            "accessKeyId": "string",
+            "secretAccessKey": "string",
+            "sessionToken?": "string"
+          },
+          "AwsRequest": {
+            "method": "string",
+            "url": "string",
+            "headers?": "Record<string, string>",
+            "body?": "string"
+          },
+          "certificatePublicKey": "declare function certificatePublicKey(der: Uint8Array): Uint8Array<ArrayBuffer>",
+          "createSes": "declare function createSes(options: SesOptions): Ses",
+          "handleSns": "declare function handleSns(request: Request, options: SnsHandlerOptions): Promise<Response>",
+          "parseSesNotification": "declare function parseSesNotification(message: string): SesEvent",
+          "Ses": {
+            "sendEmail": "(message: SesMessage): Promise<{ messageId: string; }>"
+          },
+          "SesBounceType": "type = 'Permanent' | 'Transient' | 'Undetermined'",
+          "SesError": {
+            "readonly status": "number",
+            "readonly code": "string | null",
+            "readonly retryable": "boolean",
+            "constructor": "(status: number, message: string, code: string | null)",
+            "(kind)": "class"
+          },
+          "SesEvent": "type = { kind: 'bounce'; bounceType: SesBounceType; recipients: string[]; messageId: string | null; } | { kind: 'complaint'; recipients: string[]; messageId: string | null; } | { kind: 'delivery'; recipients: string[]; messageId: string | null; } | { kind: 'other'; type: string; }",
+          "SesMessage": {
+            "from": "string",
+            "to": "string | string[]",
+            "subject": "string",
+            "html?": "string",
+            "text?": "string",
+            "replyTo?": "string[]",
+            "headers?": "Record<string, string>",
+            "configurationSet?": "string"
+          },
+          "SesOptions": {
+            "(extends)": "extends AwsCredentials",
+            "region": "string",
+            "fetch?": "typeof fetch"
+          },
+          "signAwsRequest": "declare function signAwsRequest(request: AwsRequest, credentials: AwsCredentials, scope: { region: string; service: string; }, now?: Date): Promise<Record<string, string>>",
+          "SnsHandlerOptions": {
+            "topicArn": "string",
+            "onNotification": "(notification: SnsNotification): Promise<void>",
+            "fetch?": "typeof fetch"
+          },
+          "SnsMessage": "type = SnsNotification | SnsSubscription",
+          "SnsNotification": {
+            "(extends)": "extends SnsBase",
+            "type": "'Notification'",
+            "subject": "string | null"
+          },
+          "SnsSubscription": {
+            "(extends)": "extends SnsBase",
+            "type": "'SubscriptionConfirmation' | 'UnsubscribeConfirmation'",
+            "token": "string",
+            "subscribeUrl": "string"
+          },
+          "verifySnsMessage": "declare function verifySnsMessage(body: string, options: { topicArn: string; fetch?: typeof fetch; }): Promise<SnsMessage>"
+        }
+      },
       "./stripe": {
         "values": ["StripeError", "createStripe", "parseCheckoutSession", "parseStripeEvent"],
         "types": [

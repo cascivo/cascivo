@@ -1271,6 +1271,93 @@ describe('buildScaffold — cloudflare --example checkout', () => {
   })
 })
 
+describe('buildScaffold — cloudflare --example newsletter', () => {
+  const build = (examples: Example[], opts: Partial<ScaffoldOptions> = {}) =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        examples,
+        ...opts,
+      }),
+    )
+  const map = build(['newsletter'])
+
+  it('mails only confirmed readers, and never twice for one issue', () => {
+    const store = map.get('worker/newsletter.ts')!
+    expect(store).toContain("SELECT email FROM subscribers WHERE status = 'subscribed'")
+    expect(store).toContain('PRIMARY KEY (issue_id, email)')
+    expect(store).toContain(
+      'AND NOT EXISTS (SELECT 1 FROM deliveries d WHERE d.issue_id = ? AND d.email = s.email)',
+    )
+    // Throttling is retried by the queue; one bad address is recorded and the rest go on.
+    expect(store).toContain('if (!(error instanceof SesError) || error.retryable) throw error')
+  })
+
+  it('carries one-click unsubscribe headers and a per-reader link', () => {
+    const store = map.get('worker/newsletter.ts')!
+    expect(store).toContain("'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click'")
+    expect(store).toContain('rendered.html.replaceAll(TOKEN_SLOT, readerToken)')
+    expect(map.get('worker/index.ts')).toContain(
+      "if (newsletterPath === '/api/newsletter/unsubscribe' && request.method === 'POST') {",
+    )
+  })
+
+  it('suppresses permanent bounces and complaints from signature-checked SNS messages', () => {
+    const store = map.get('worker/newsletter.ts')!
+    expect(store).toContain('return handleSns(request, {')
+    expect(store).toContain(
+      "event.kind === 'complaint' || (event.kind === 'bounce' && event.bounceType === 'Permanent')",
+    )
+  })
+
+  it('guards the composer with NEWSLETTER_KEY and rate-limits sign-ups and key use', () => {
+    const store = map.get('worker/newsletter.ts')!
+    for (const fn of ['overview', 'preview', 'sendIssue']) {
+      const body = store.slice(store.indexOf(`export async function ${fn}(`))
+      expect(body.indexOf('await requireKey(env')).toBeLessThan(body.indexOf('await migrate('))
+    }
+    expect(map.get('worker/index.ts')).toContain(
+      '/^\\/api\\/newsletter\\/(subscribe|overview|preview|issues)$/.test(url.pathname)',
+    )
+    expect(map.get('.dev.vars')).toContain('NEWSLETTER_KEY=dev-only-newsletter-key\n')
+    expect(map.get('wrangler.jsonc')).not.toContain('AWS_ACCESS_KEY_ID')
+  })
+
+  it('declares the queue and its pace, and consumes it', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain(
+      '"producers": [{ "binding": "NEWSLETTER", "queue": "edge-app-newsletter" }]',
+    )
+    expect(wrangler).toContain('"max_concurrency": 1')
+    expect(wrangler).not.toContain('send_email')
+    expect(map.get('worker/index.ts')).toContain('await newsletterStore.deliver(env, batch)')
+  })
+
+  it('shares one queues object and one handler with --example live', () => {
+    const both = build(['live', 'newsletter'])
+    const wrangler = both.get('wrangler.jsonc')!
+    expect(wrangler.match(/"queues":/g)).toHaveLength(1)
+    expect(wrangler).toContain('"queue": "edge-app-events"')
+    expect(wrangler).toContain('"queue": "edge-app-newsletter"')
+    const worker = both.get('worker/index.ts')!
+    expect(worker.match(/async queue\(/g)).toHaveLength(1)
+    expect(worker).toContain(
+      "if (batch.queue === 'edge-app-newsletter') return newsletterStore.deliver(env, batch)",
+    )
+  })
+
+  it('lets readers sign up, confirm and unsubscribe without an account under --auth email', () => {
+    const worker = build(['newsletter'], { auth: 'email' }).get('worker/index.ts')!
+    for (const path of ['/api/sns/', '/api/newsletter/subscribe', '/api/newsletter/unsubscribe']) {
+      expect(worker).toContain(`!new URL(request.url).pathname.startsWith('${path}')`)
+    }
+    expect(worker).not.toContain("startsWith('/api/newsletter/issues')")
+  })
+})
+
 describe('buildScaffold — published pages rendered by the Worker', () => {
   const build = (examples: Example[], runtime?: 'react') =>
     fileMap(

@@ -211,6 +211,31 @@
       "services": ["durable_objects", "ratelimits", "send_email", "d1_databases"],
       "react": false,
       "brings": []
+    },
+    {
+      "id": "newsletter",
+      "label": "Newsletter",
+      "blurb": "Double opt-in sign-ups; issues sent through Amazon SES.",
+      "group": "Operations",
+      "files": [
+        ".dev.vars",
+        "src/newsletter.ts",
+        "src/routes/newsletter.tsx",
+        "src/routes/newsletter/confirm.tsx",
+        "src/routes/newsletter/send.tsx",
+        "src/routes/newsletter/unsubscribe.tsx",
+        "worker/newsletter-email.ts",
+        "worker/newsletter.ts"
+      ],
+      "pages": [
+        "/newsletter",
+        "/newsletter/confirm",
+        "/newsletter/send",
+        "/newsletter/unsubscribe"
+      ],
+      "services": ["durable_objects", "ratelimits", "d1_databases", "queues"],
+      "react": false,
+      "brings": []
     }
   ],
   "auth": [

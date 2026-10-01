@@ -105,6 +105,11 @@ export const EXAMPLE_WORDS: Record<string, { label: string; blurb: string; group
     blurb: 'Sell a product: paid on Stripe, confirmed live, receipt emailed.',
     group: 'Operations',
   },
+  newsletter: {
+    label: 'Newsletter',
+    blurb: 'Double opt-in sign-ups; issues sent through Amazon SES.',
+    group: 'Operations',
+  },
 }
 
 export const AUTH_WORDS: Record<string, { label: string; blurb: string }> = {

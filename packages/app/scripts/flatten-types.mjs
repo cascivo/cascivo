@@ -28,6 +28,7 @@ const ENTRIES = [
   { name: 'analytics', src: 'src/analytics.ts' },
   { name: 'db', src: 'src/db.ts' },
   { name: 'guard', src: 'src/guard.ts' },
+  { name: 'ses', src: 'src/ses.ts' },
   { name: 'stripe', src: 'src/stripe.ts' },
   { name: 'turnstile', src: 'src/turnstile.ts' },
   { name: 'auth', src: 'src/auth.ts' },

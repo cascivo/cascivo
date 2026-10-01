@@ -195,7 +195,22 @@ Found on the way: under Preact, `@cascivo/email` serializes `msTextSizeAdjust` a
 `ms-text-size-adjust` (no leading dash), where React writes `-ms-text-size-adjust`. Only old
 Microsoft clients read it.
 
-Next: `@cascivo/app/ses` and `--example newsletter`.
+Shipped next:
+
+- `@cascivo/app/ses`: `createSes` (SES v2 `SendEmail` with extra headers, `SesError` with
+  `retryable`), `handleSns`/`verifySnsMessage` (RSA signature against the certificate, fetched
+  only from `sns.<region>.amazonaws.com`; subscription confirmation), `parseSesNotification`,
+  and `signAwsRequest`. Signature V4 matches AWS's published `get-vanilla` vector and aws4fetch
+  on a request with a query, extra headers and a session token. SNS verification is tested
+  against a real openssl X.509 certificate and messages signed outside the repo.
+- `cascivo create --framework cloudflare --example newsletter`: double opt-in, a composer with
+  preview guarded by `NEWSLETTER_KEY`, a Queue consumer (one message of 25 readers at a time,
+  each send recorded so a retry skips who has it), one-click unsubscribe, suppression of
+  permanent bounces and complaints. Checked under `vite dev` in workerd: sign-up, confirmation,
+  the key check, preview, sending through the local Queue, the progress room, one-click
+  unsubscribe, a second issue going only to who is left, and the SNS refusals. With made-up
+  credentials, the Worker reached the real SES endpoint, which refused the key
+  (`UnrecognizedClientException`). A real send and a real SNS delivery still need an account.
 
 What cannot be proven in this container: a real SES send, a real SNS subscription and a live
 Stripe account. As with the platform spike, those need a test account. Everything else

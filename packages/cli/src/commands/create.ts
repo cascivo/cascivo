@@ -71,6 +71,7 @@ export type Example =
   | 'digest'
   | 'search'
   | 'checkout'
+  | 'newsletter'
 
 export const EXAMPLES = [
   'board',
@@ -88,6 +89,7 @@ export const EXAMPLES = [
   'digest',
   'search',
   'checkout',
+  'newsletter',
 ] as const
 
 function isExample(value: string): value is Example {
@@ -1130,11 +1132,17 @@ function cfPackageJson(opts: ScaffoldOptions): string {
       ...(hasExample(opts, 'publish') && !agent
         ? { '@cascivo/render': V['@cascivo/render']! }
         : {}),
-      // The Worker renders receipts with @cascivo/email (react-dom/server underneath).
-      ...(hasExample(opts, 'checkout') ? { '@cascivo/email': V['@cascivo/email']! } : {}),
-      // The Worker server-renders published pages and receipts; under Preact, react-dom/server
+      // The Worker renders receipts and newsletters with @cascivo/email (react-dom/server
+      // underneath).
+      ...(hasExample(opts, 'checkout') || hasExample(opts, 'newsletter')
+        ? { '@cascivo/email': V['@cascivo/email']! }
+        : {}),
+      // The Worker server-renders published pages and emails; under Preact, react-dom/server
       // is preact/compat/server, which needs this.
-      ...((hasExample(opts, 'publish') || hasExample(opts, 'checkout')) && preact
+      ...((hasExample(opts, 'publish') ||
+        hasExample(opts, 'checkout') ||
+        hasExample(opts, 'newsletter')) &&
+      preact
         ? { 'preact-render-to-string': '^6.5.0' }
         : {}),
     },
@@ -1351,6 +1359,7 @@ ${jsoncArray('  ', 'r2_buckets', [`{ "binding": "FILES", "bucket_name": "${packa
     hasExample(opts, 'digest') ? 'digests sent now' : '',
     hasExample(opts, 'search') ? 'search indexing' : '',
     hasExample(opts, 'checkout') ? 'checkouts started' : '',
+    hasExample(opts, 'newsletter') ? 'newsletter sign-ups and composer requests' : '',
     opts.auth === 'email' ? 'sign-in emails' : '',
   ]
     .filter(Boolean)
@@ -1376,6 +1385,7 @@ ${jsoncArray('  ', 'ratelimits', ['{ "name": "LIMITER", "namespace_id": "1001", 
     hasExample(opts, 'digest') ? 'digest runs' : '',
     hasExample(opts, 'search') ? 'help articles' : '',
     hasExample(opts, 'checkout') ? 'orders' : '',
+    hasExample(opts, 'newsletter') ? 'newsletter subscribers and issues' : '',
     opts.auth === 'email' ? 'accounts' : '',
   ]
     .filter(Boolean)
@@ -1390,23 +1400,7 @@ ${jsoncArray('  ', 'd1_databases', [`{ "binding": "DB", "database_name": "${pack
   // Every API request is recorded here (worker/index.ts); /usage reads it back.
   "analytics_engine_datasets": [{ "binding": "USAGE", "dataset": "${usageDataset(opts)}" }],`
       : ''
-  }${
-    hasExample(opts, 'live')
-      ? `
-  // Events for /ops: POST /api/events sends them, and the Worker's queue handler takes them in
-  // batches of up to 100, or whatever arrived within a second.
-  "queues": {
-${jsoncArray('    ', 'producers', [`{ "binding": "EVENTS", "queue": "${packageName(opts.name)}-events" }`])}
-    "consumers": [
-      {
-        "queue": "${packageName(opts.name)}-events",
-        "max_batch_size": 100,
-        "max_batch_timeout": 1,
-      },
-    ],
-  },`
-      : ''
-  }${
+  }${wranglerQueues(opts)}${
     hasExample(opts, 'import')
       ? `
   // The CSV import runs as a Workflow (worker/import-job.ts); its progress is a room.
@@ -1450,6 +1444,7 @@ ${jsoncArray('  ', 'vectorize', [`{ "binding": "ARTICLES_INDEX", "index_name": "
 function wranglerVars(opts: ScaffoldOptions): string {
   const digest = hasExample(opts, 'digest')
   const checkout = hasExample(opts, 'checkout')
+  const newsletter = hasExample(opts, 'newsletter')
   const emailAuth = opts.auth === 'email'
   const comments = [
     ...(opts.auth === 'access'
@@ -1473,12 +1468,19 @@ function wranglerVars(opts: ScaffoldOptions): string {
           'on a domain you have onboarded (README). Until it is set, no receipt is sent.',
         ]
       : []),
+    ...(newsletter
+      ? [
+          'The newsletter sends through Amazon SES (README): the region your sending identity is',
+          'verified in, its From address, and the SNS topic SES reports bounces and complaints to.',
+        ]
+      : []),
   ]
   const names = [
     ...(opts.auth === 'access' ? ['ACCESS_TEAM_DOMAIN', 'ACCESS_AUD'] : []),
     ...(emailAuth ? ['AUTH_FROM'] : []),
     ...(digest ? ['DIGEST_TO', 'DIGEST_FROM', 'APP_URL'] : []),
     ...(checkout ? ['RECEIPT_FROM'] : []),
+    ...(newsletter ? ['AWS_REGION', 'NEWSLETTER_FROM', 'SNS_TOPIC_ARN'] : []),
   ]
   if (names.length === 0) return ''
   const entries = names.map((name) => `"${name}": ""`)
@@ -1490,6 +1492,68 @@ function wranglerVars(opts: ScaffoldOptions): string {
   return `
 ${comments.map((comment) => `  // ${comment}`).join('\n')}${emailAuth || digest || checkout ? '\n  "send_email": [{ "name": "EMAIL" }],' : ''}
 ${vars}`
+}
+
+/** One `queues` object for every example that has a queue (a second one would replace the first). */
+function wranglerQueues(opts: ScaffoldOptions): string {
+  const queues = [
+    ...(hasExample(opts, 'live')
+      ? [
+          {
+            comment: [
+              "Events for /ops: POST /api/events sends them, and the Worker's queue handler takes them in",
+              'batches of up to 100, or whatever arrived within a second.',
+            ],
+            binding: 'EVENTS',
+            queue: `${packageName(opts.name)}-events`,
+            consumer: ['"max_batch_size": 100', '"max_batch_timeout": 1'],
+          },
+        ]
+      : []),
+    ...(hasExample(opts, 'newsletter')
+      ? [
+          {
+            comment: [
+              'Newsletter sends (worker/newsletter.ts): one message of 25 readers at a time, so SES',
+              'is called at a steady pace. A throttled message is retried after 30 seconds.',
+            ],
+            binding: 'NEWSLETTER',
+            queue: newsletterQueue(opts),
+            consumer: [
+              '"max_batch_size": 1',
+              '"max_concurrency": 1',
+              '"max_retries": 10',
+              '"retry_delay": 30',
+            ],
+          },
+        ]
+      : []),
+  ]
+  if (queues.length === 0) return ''
+  return `
+${queues.flatMap((q) => q.comment.map((line) => `  // ${line}`)).join('\n')}
+  "queues": {
+${jsoncArray(
+  '    ',
+  'producers',
+  queues.map((q) => `{ "binding": "${q.binding}", "queue": "${q.queue}" }`),
+)}
+    "consumers": [
+${queues
+  .map(
+    (q) => `      {
+        "queue": "${q.queue}",
+${q.consumer.map((line) => `        ${line},`).join('\n')}
+      },`,
+  )
+  .join('\n')}
+    ],
+  },`
+}
+
+/** The newsletter's queue, named after the app like every other resource. */
+function newsletterQueue(opts: ScaffoldOptions): string {
+  return `${packageName(opts.name)}-newsletter`
 }
 
 function hasExample(opts: ScaffoldOptions, example: Example): boolean {
@@ -1519,6 +1583,7 @@ function usesLimiter(opts: ScaffoldOptions): boolean {
     hasExample(opts, 'digest') ||
     hasExample(opts, 'search') ||
     hasExample(opts, 'checkout') ||
+    hasExample(opts, 'newsletter') ||
     opts.auth === 'email'
   )
 }
@@ -1532,6 +1597,7 @@ function usesD1(opts: ScaffoldOptions): boolean {
     hasExample(opts, 'digest') ||
     hasExample(opts, 'search') ||
     hasExample(opts, 'checkout') ||
+    hasExample(opts, 'newsletter') ||
     opts.auth === 'email'
   )
 }
@@ -1552,7 +1618,8 @@ function usesRooms(opts: ScaffoldOptions): boolean {
     hasExample(opts, 'notes') ||
     hasExample(opts, 'import') ||
     hasExample(opts, 'webhooks') ||
-    hasExample(opts, 'checkout')
+    hasExample(opts, 'checkout') ||
+    hasExample(opts, 'newsletter')
   )
 }
 
@@ -1585,8 +1652,23 @@ function cfApiTs(opts: ScaffoldOptions): string {
   const digest = hasExample(opts, 'digest')
   const search = hasExample(opts, 'search')
   const checkout = hasExample(opts, 'checkout')
-  return `import { defineApi, ${imports || files || usage || crud || live || publish || webhooks || digest || search || checkout ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
-${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}${live ? `import { ops, parseAccepted } from './ops'\n` : ''}${publish ? `import { parsePage, parsePageInput, parsePageSummary } from './pages'\n` : ''}${webhooks ? `import { parseDeliveries, parseTestResult } from './webhooks'\n` : ''}${digest ? `import { parseDigestRun, parseDigestRuns } from './digest'\n` : ''}${search ? `import { parseIndexed, parseSearchQuery, parseSearchResult } from './search'\n` : ''}${checkout ? `import { parseCheckoutStarted, parseOrder } from './checkout'\n` : ''}
+  const newsletter = hasExample(opts, 'newsletter')
+  return `import { defineApi, ${imports || files || usage || crud || live || publish || webhooks || digest || search || checkout || newsletter ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
+${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}${live ? `import { ops, parseAccepted } from './ops'\n` : ''}${publish ? `import { parsePage, parsePageInput, parsePageSummary } from './pages'\n` : ''}${webhooks ? `import { parseDeliveries, parseTestResult } from './webhooks'\n` : ''}${digest ? `import { parseDigestRun, parseDigestRuns } from './digest'\n` : ''}${search ? `import { parseIndexed, parseSearchQuery, parseSearchResult } from './search'\n` : ''}${checkout ? `import { parseCheckoutStarted, parseOrder } from './checkout'\n` : ''}${
+    newsletter
+      ? `import {
+  parseConfirmed,
+  parseEmailInput,
+  parseIssue,
+  parseIssueInput,
+  parseKeyInput,
+  parseOverview,
+  parsePreview,
+  parseSubscribed,
+  parseTokenInput,
+} from './newsletter'\n`
+      : ''
+  }
 /**
  * The contract between the browser and the Worker. Both import this file: the Worker serves
  * it with \`createHandler\`, the app calls it with \`createClient\`, and a change that breaks
@@ -1709,6 +1791,42 @@ export const api = defineApi({
   getOrder: endpoint({ method: 'GET', path: '/api/orders/:id', output: parseOrder }),`
       : ''
   }${
+    newsletter
+      ? `
+  // Signing up sends a confirmation link; only confirmed readers get issues.
+  subscribe: endpoint({
+    method: 'POST',
+    path: '/api/newsletter/subscribe',
+    input: parseEmailInput,
+    output: parseSubscribed,
+  }),
+  confirmSubscription: endpoint({
+    method: 'POST',
+    path: '/api/newsletter/confirm',
+    input: parseTokenInput,
+    output: parseConfirmed,
+  }),
+  // The composer's calls, each carrying NEWSLETTER_KEY.
+  newsletterOverview: endpoint({
+    method: 'POST',
+    path: '/api/newsletter/overview',
+    input: parseKeyInput,
+    output: parseOverview,
+  }),
+  previewIssue: endpoint({
+    method: 'POST',
+    path: '/api/newsletter/preview',
+    input: parseIssueInput,
+    output: parsePreview,
+  }),
+  sendIssue: endpoint({
+    method: 'POST',
+    path: '/api/newsletter/issues',
+    input: parseIssueInput,
+    output: parseIssue,
+  }),`
+      : ''
+  }${
     crud
       ? `
   // One page of customers for DataTable's query (sort, search, filters, page).
@@ -1752,6 +1870,7 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const digest = hasExample(opts, 'digest')
   const search = hasExample(opts, 'search')
   const checkout = hasExample(opts, 'checkout')
+  const newsletter = hasExample(opts, 'newsletter')
   const d1 = usesD1(opts)
   const ai = usesAgents(opts)
   const limiter = usesLimiter(opts)
@@ -1762,18 +1881,26 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
     ...(limiter ? ['clientIp', 'rateLimit'] : []),
   ]
   const custom = rooms || ai || files || exports || access || live || limiter || publish
-  const isAsync = ai || files || exports || access || limiter || webhooks || publish || checkout
+  const isAsync =
+    ai || files || exports || access || limiter || webhooks || publish || checkout || newsletter
   // Rooms the server writes: never opened through /api/rooms/:name, where clients may write.
   const serverRooms = [
     ...(imports ? ['job-'] : []),
     ...(webhooks ? ['webhooks$'] : []),
     ...(checkout ? ['order-'] : []),
+    ...(newsletter ? ['issue-'] : []),
   ]
-  // Paths that carry a signature instead of a session: --auth email does not ask them to sign in.
+  // Writes --auth email does not ask to sign in: webhooks carry a signature instead of a
+  // session, and a newsletter's readers have no account.
   const signedPaths = [
     ...(webhooks ? ['/api/webhooks/'] : []),
     ...(checkout ? ['/api/stripe/'] : []),
+    ...(newsletter ? ['/api/sns/'] : []),
   ]
+  const readerPaths = newsletter
+    ? ['/api/newsletter/subscribe', '/api/newsletter/confirm', '/api/newsletter/unsubscribe']
+    : []
+  const openPaths = [...signedPaths, ...readerPaths]
   return `${usage ? `import type { AnalyticsDataset } from '@cascivo/app/analytics'\n` : ''}${d1 ? `import type { Database } from '@cascivo/app/db'\n` : ''}${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler${publish ? ', HttpError' : ''} } from '@cascivo/app/api'
 ${emailAuth ? `import { handleAuth, requireUser } from '@cascivo/app/auth-server'\n` : ''}${guards.length > 0 || webhooks ? `import { ${[...guards, 'guardResponse'].sort().join(', ')} } from '@cascivo/app/guard'\n${limiter ? `import type { RateLimiter } from '@cascivo/app/guard'\n` : ''}` : ''}${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
     files
@@ -1801,7 +1928,7 @@ import type { BrowserWorker } from '@cloudflare/puppeteer'
       : ''
   }${ai ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\nimport { renderPageHtml } from './page-html'\nimport type { Assets } from './page-html'\n${exports ? `import { pagePreview } from './page-preview'\n` : ''}` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${search ? `import * as articleSearch from './search'\nimport type { ${ai ? '' : 'Embedder, '}VectorIndex } from './search'\n` : ''}${checkout ? `import * as orderStore from './checkout'\nimport type { ReceiptSender } from './checkout'\nimport { ORDER_ID, orderRoom } from '../src/checkout'\n` : ''}${
+${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\nimport { renderPageHtml } from './page-html'\nimport type { Assets } from './page-html'\n${exports ? `import { pagePreview } from './page-preview'\n` : ''}` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${search ? `import * as articleSearch from './search'\nimport type { ${ai ? '' : 'Embedder, '}VectorIndex } from './search'\n` : ''}${checkout ? `import * as orderStore from './checkout'\nimport type { ReceiptSender } from './checkout'\nimport { ORDER_ID, orderRoom } from '../src/checkout'\n` : ''}${newsletter ? `import * as newsletterStore from './newsletter'\nimport type { NewsletterBatch, NewsletterQueue } from './newsletter'\nimport { ISSUE_ID, issueRoom } from '../src/newsletter'\n` : ''}${
     rooms
       ? `
 // The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
@@ -1855,8 +1982,9 @@ ${
   webhooks ||
   digest ||
   search ||
-  checkout
-    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}
+  checkout ||
+  newsletter
+    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -1873,6 +2001,7 @@ ${[
   digest ? 'a digest sent now (it starts a browser)' : '',
   search ? 'indexing the articles (it embeds every one)' : '',
   checkout ? 'a checkout started (it creates a Stripe session and an order)' : '',
+  newsletter ? 'a newsletter sign-up (it sends an email), and each use of the newsletter key' : '',
   files ? 'a new upload (not each part of one)' : '',
   exports ? 'an export' : '',
   publish ? 'a published page' : '',
@@ -1896,6 +2025,13 @@ function countsAgainstLimit(request: Request): boolean {
     checkout
       ? `
   if (url.pathname === '/api/checkout') return request.method === 'POST'`
+      : ''
+  }${
+    newsletter
+      ? `
+  if (/^\\/api\\/newsletter\\/(subscribe|overview|preview|issues)$/.test(url.pathname)) {
+    return request.method === 'POST'
+  }`
       : ''
   }${
     emailAuth
@@ -1989,6 +2125,18 @@ const handleApi = createHandler<typeof api, Env>(api, {
     orderStore.getOrder(env, params.id, new URL(request.url).origin),`
       : ''
   }${
+    newsletter
+      ? `
+  subscribe: ({ body, request, env }) =>
+    newsletterStore.subscribe(env, body.email, new URL(request.url).origin),
+  confirmSubscription: ({ body, env }) => newsletterStore.confirm(env, body.token),
+  newsletterOverview: ({ body, env }) => newsletterStore.overview(env, body.key),
+  previewIssue: ({ body, request, env }) =>
+    newsletterStore.preview(env, body, new URL(request.url).origin),
+  sendIssue: ({ body, request, env }) =>
+    newsletterStore.sendIssue(env, body, new URL(request.url).origin),`
+      : ''
+  }${
     digest
       ? `
   digestRuns: ({ env }) => digestJob.listRuns(env.DB),
@@ -2072,12 +2220,12 @@ ${
       exposeLink: import.meta.env.DEV,
     })(request)
     if (signIn) return signIn
-    // Every other API write needs a signed-in user; reads stay public.${signedPaths.length > 0 ? '\n    // Webhooks carry a signature instead of a session, and are checked by it.' : ''}
+    // Every other API write needs a signed-in user; reads stay public.${signedPaths.length > 0 ? '\n    // Webhooks carry a signature instead of a session, and are checked by it.' : ''}${readerPaths.length > 0 ? '\n    // Newsletter readers sign up, confirm and unsubscribe without an account.' : ''}
     if (${
-      signedPaths.length > 0
+      openPaths.length > 0
         ? `
       request.method !== 'GET' &&
-      request.method !== 'HEAD' &&${signedPaths
+      request.method !== 'HEAD' &&${openPaths
         .map((prefix) => `\n      !new URL(request.url).pathname.startsWith('${prefix}')`)
         .join(' &&')}
     `
@@ -2194,13 +2342,35 @@ ${
     }`
           : ''
       }${
+        newsletter
+          ? `
+    const newsletterPath = new URL(request.url).pathname
+    // One-click unsubscribe (RFC 8058) and the unsubscribe page's button.
+    if (newsletterPath === '/api/newsletter/unsubscribe' && request.method === 'POST') {
+      return newsletterStore.unsubscribe(request, env)
+    }
+    // SES bounces and complaints, delivered by SNS (worker/newsletter.ts); verified by signature.
+    if (newsletterPath === '/api/sns/ses' && request.method === 'POST') {
+      try {
+        return await newsletterStore.receiveFeedback(request, env)
+      } catch (error) {
+        return guardResponse(error)
+      }
+    }
+    // An issue's sending progress, for the composer: it may watch, never write.
+    const issueLive = /^\\/api\\/newsletter\\/issues\\/([^/]+)\\/live$/.exec(newsletterPath)
+    if (issueLive && ISSUE_ID.test(issueLive[1]!)) {
+      return roomResponse(request, env.ROOMS, issueRoom(issueLive[1]!), { readOnly: true })
+    }`
+          : ''
+      }${
         hasExample(opts, 'board') || hasExample(opts, 'notes')
           ? `
     const room = /^\\/api\\/rooms\\/([^/]+)$/.exec(new URL(request.url).pathname)${
       serverRooms.length > 0
         ? `
     // Rooms only the server writes are watched read-only at their own routes, never opened
-    // here: ${[imports ? "a job's progress" : '', webhooks ? 'webhook deliveries' : '', checkout ? 'orders' : ''].filter(Boolean).join(', ')}.
+    // here: ${[imports ? "a job's progress" : '', webhooks ? 'webhook deliveries' : '', checkout ? 'orders' : '', newsletter ? 'newsletter issues' : ''].filter(Boolean).join(', ')}.
     if (room && !/^(${serverRooms.join('|')})/.test(room[1]!)) {
       return roomResponse(request, env.ROOMS, room[1]!)
     }`
@@ -2230,8 +2400,22 @@ ${
   },`
       : ''
   }${
-    live
+    live && newsletter
       ? `
+  // Two queues, one handler: each batch says which queue it came from. A throw retries it.
+  async queue(batch: LiveBatch & NewsletterBatch & { queue: string }, env: Env): Promise<void> {
+    // NEWSLETTER: one message of readers at a time, through SES (worker/newsletter.ts).
+    if (batch.queue === '${newsletterQueue(opts)}') return newsletterStore.deliver(env, batch)
+    // EVENTS: into the dashboard's room.
+    await recordLive(
+      ops,
+      env.LIVE,
+      OPS_ROOM,
+      batch.messages.map((message) => message.body),
+    )
+  },`
+      : live
+        ? `
   // The EVENTS queue, a batch at a time, into the dashboard's room. A throw retries the batch.
   async queue(batch: LiveBatch, env: Env): Promise<void> {
     await recordLive(
@@ -2241,7 +2425,14 @@ ${
       batch.messages.map((message) => message.body),
     )
   },`
-      : ''
+        : newsletter
+          ? `
+  // The NEWSLETTER queue: one message of readers at a time, through SES
+  // (worker/newsletter.ts). A throw retries the message; readers already sent are skipped.
+  async queue(batch: NewsletterBatch, env: Env): Promise<void> {
+    await newsletterStore.deliver(env, batch)
+  },`
+          : ''
   }
 }
 `
@@ -2390,6 +2581,10 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
   if (hasExample(opts, 'digest')) items.push({ label: 'Digest', href: '/digest' })
   if (hasExample(opts, 'search')) items.push({ label: 'Search', href: '/search' })
   if (hasExample(opts, 'checkout')) items.push({ label: 'Checkout', href: '/checkout' })
+  if (hasExample(opts, 'newsletter')) {
+    items.push({ label: 'Newsletter', href: '/newsletter' })
+    items.push({ label: 'Send newsletter', href: '/newsletter/send' })
+  }
   if (opts.auth === 'email') items.push({ label: 'Account', href: '/account' })
   const navItems = items
     .map(
@@ -5602,6 +5797,1097 @@ export default function OrderPage({ params }: RouteProps<'/checkout/:order'>) {
 `
 }
 
+/* --- `--example newsletter`: double opt-in, sent through Amazon SES on a Queue --- */
+
+function cfNewsletterTs(): string {
+  return `/**
+ * The newsletter's wire types, shared by the Worker (worker/newsletter.ts) and its pages.
+ * Every payload is parsed on arrival: the network is not trusted because the types match.
+ */
+
+/** Longest subject and body the composer accepts. */
+export const MAX_SUBJECT = 200
+export const MAX_BODY = 50_000
+
+export interface SubscriberCounts {
+  /** Signed up, has not clicked the confirmation link yet. */
+  pending: number
+  subscribed: number
+  unsubscribed: number
+  /** Bounced for good or complained: never mailed again (worker/newsletter.ts). */
+  suppressed: number
+}
+
+/** One sent issue and how far its sending has got. */
+export interface Issue {
+  id: string
+  subject: string
+  createdAt: string
+  /** Subscribers it was queued for. */
+  total: number
+  sent: number
+  failed: number
+}
+
+export interface Overview {
+  subscribers: SubscriberCounts
+  issues: Issue[]
+}
+
+/** The room the Worker pushes an issue's progress to; the composer watches it. */
+export const issueRoom = (id: string) => \`issue-\${id}\`
+
+/** An issue id: a UUID the Worker made. */
+export const ISSUE_ID = /^[0-9a-f-]{36}$/
+
+const isRecord = (raw: unknown): raw is Record<string, unknown> =>
+  typeof raw === 'object' && raw !== null
+
+function text(raw: Record<string, unknown>, key: string, max: number): string {
+  const value = raw[key]
+  if (typeof value !== 'string' || value.trim() === '' || value.length > max) {
+    throw new Error(\`Expected \${key}: some text, at most \${max} characters\`)
+  }
+  return value
+}
+
+export function parseEmailInput(raw: unknown): { email: string } {
+  if (!isRecord(raw)) throw new Error('Expected { email }')
+  return { email: text(raw, 'email', 254) }
+}
+
+export function parseTokenInput(raw: unknown): { token: string } {
+  if (!isRecord(raw)) throw new Error('Expected { token }')
+  return { token: text(raw, 'token', 100) }
+}
+
+/** The composer's key: NEWSLETTER_KEY, which only the sender knows. */
+export function parseKeyInput(raw: unknown): { key: string } {
+  if (!isRecord(raw)) throw new Error('Expected { key }')
+  return { key: text(raw, 'key', 200) }
+}
+
+export interface IssueInput {
+  key: string
+  subject: string
+  /** The body in Markdown, rendered by @cascivo/email's Markdown. */
+  body: string
+}
+
+export function parseIssueInput(raw: unknown): IssueInput {
+  if (!isRecord(raw)) throw new Error('Expected { key, subject, body }')
+  return {
+    key: text(raw, 'key', 200),
+    subject: text(raw, 'subject', MAX_SUBJECT),
+    body: text(raw, 'body', MAX_BODY),
+  }
+}
+
+export function parseSubscribed(raw: unknown): { devLink: string | null } {
+  if (isRecord(raw) && (raw['devLink'] === null || typeof raw['devLink'] === 'string')) {
+    return { devLink: raw['devLink'] }
+  }
+  throw new Error('Malformed reply')
+}
+
+export function parseConfirmed(raw: unknown): { email: string } {
+  if (isRecord(raw) && typeof raw['email'] === 'string') return { email: raw['email'] }
+  throw new Error('Malformed reply')
+}
+
+export function parsePreview(raw: unknown): { html: string; bytes: number } {
+  if (isRecord(raw) && typeof raw['html'] === 'string' && typeof raw['bytes'] === 'number') {
+    return { html: raw['html'], bytes: raw['bytes'] }
+  }
+  throw new Error('Malformed preview')
+}
+
+const count = (raw: Record<string, unknown>, key: string): number => {
+  const value = raw[key]
+  if (typeof value !== 'number' || !Number.isInteger(value) || value < 0) {
+    throw new Error(\`Expected a count for \${key}\`)
+  }
+  return value
+}
+
+export function parseIssue(raw: unknown): Issue {
+  if (isRecord(raw) && typeof raw['id'] === 'string' && typeof raw['createdAt'] === 'string') {
+    return {
+      id: raw['id'],
+      subject: text(raw, 'subject', MAX_SUBJECT),
+      createdAt: raw['createdAt'],
+      total: count(raw, 'total'),
+      sent: count(raw, 'sent'),
+      failed: count(raw, 'failed'),
+    }
+  }
+  throw new Error('Malformed issue')
+}
+
+export function parseOverview(raw: unknown): Overview {
+  if (isRecord(raw) && isRecord(raw['subscribers']) && Array.isArray(raw['issues'])) {
+    const s = raw['subscribers']
+    return {
+      subscribers: {
+        pending: count(s, 'pending'),
+        subscribed: count(s, 'subscribed'),
+        unsubscribed: count(s, 'unsubscribed'),
+        suppressed: count(s, 'suppressed'),
+      },
+      issues: raw['issues'].map(parseIssue),
+    }
+  }
+  throw new Error('Malformed overview')
+}
+`
+}
+
+function cfNewsletterEmailTs(opts: ScaffoldOptions): string {
+  return `import {
+  Body,
+  Button,
+  Container,
+  Footer,
+  Head,
+  Heading,
+  Html,
+  Link,
+  Markdown,
+  Preview,
+  Section,
+  Text,
+  renderEmail,
+} from '@cascivo/email'
+import type { RenderResult } from '@cascivo/email'
+import { createElement as h } from 'react'
+
+/** Who the newsletter is from, as its emails say. */
+export const NEWSLETTER_NAME = '${brandName(opts.name).replace(/'/g, "\\'")}'
+
+/** Stands in for each reader's unsubscribe token; worker/newsletter.ts swaps it per message. */
+export const TOKEN_SLOT = '__UNSUBSCRIBE_TOKEN__'
+
+/**
+ * An issue, rendered once with @cascivo/email: the body is Markdown, drawn through the email
+ * primitives (raw HTML in it stays literal text). The footer carries the unsubscribe link,
+ * with TOKEN_SLOT where each reader's token goes.
+ */
+export function renderIssue(subject: string, body: string, origin: string): RenderResult {
+  const unsubscribe = \`\${origin}/newsletter/unsubscribe?token=\${TOKEN_SLOT}\`
+  return renderEmail(
+    h(
+      Html,
+      null,
+      h(Head, { title: subject }),
+      h(
+        Body,
+        null,
+        h(Preview, null, subject),
+        h(
+          Container,
+          null,
+          h(Section, { padding: 32 }, h(Heading, { level: 1 }, subject), h(Markdown, null, body)),
+          h(
+            Footer,
+            null,
+            \`You get this because you subscribed to \${NEWSLETTER_NAME}. \`,
+            h(Link, { href: unsubscribe }, 'Unsubscribe'),
+          ),
+        ),
+      ),
+    ),
+    { subject },
+  )
+}
+
+/** The double opt-in email: nobody is mailed an issue until they open this link. */
+export function renderConfirmation(confirmUrl: string): RenderResult {
+  const subject = \`Confirm your subscription to \${NEWSLETTER_NAME}\`
+  return renderEmail(
+    h(
+      Html,
+      null,
+      h(Head, { title: subject }),
+      h(
+        Body,
+        null,
+        h(Preview, null, 'One click and you are on the list.'),
+        h(
+          Container,
+          null,
+          h(
+            Section,
+            { padding: 32 },
+            h(Heading, { level: 1 }, 'Confirm your subscription'),
+            h(Text, null, \`Someone, hopefully you, asked to get \${NEWSLETTER_NAME} by email.\`),
+            h(Button, { href: confirmUrl }, 'Yes, subscribe me'),
+            h(
+              Text,
+              { variant: 'muted', size: '14px' },
+              'The link works for 24 hours. If you did not ask, ignore this email: you will not hear from us again.',
+            ),
+          ),
+        ),
+      ),
+    ),
+    { subject },
+  )
+}
+`
+}
+
+function cfNewsletterWorkerTs(): string {
+  return `import { HttpError } from '@cascivo/app/api'
+import { normalizeEmail } from '@cascivo/app/auth-server'
+import { migrate, queryRows } from '@cascivo/app/db'
+import type { Database } from '@cascivo/app/db'
+import { SesError, createSes, handleSns, parseSesNotification } from '@cascivo/app/ses'
+import { writeRoom } from '@cascivo/app/sync-server'
+import type { RoomNamespace } from '@cascivo/app/sync-server'
+import { ISSUE_ID, issueRoom, parseIssue } from '../src/newsletter'
+import type { Issue, IssueInput, Overview, SubscriberCounts } from '../src/newsletter'
+import { TOKEN_SLOT, renderConfirmation, renderIssue } from './newsletter-email'
+
+const migrations = [
+  {
+    id: '0001_newsletter',
+    statements: [
+      \`CREATE TABLE subscribers (
+        email TEXT PRIMARY KEY,
+        status TEXT NOT NULL,
+        confirm_hash TEXT,
+        confirm_expires INTEGER,
+        unsubscribe_token TEXT NOT NULL UNIQUE,
+        reason TEXT,
+        created_at TEXT NOT NULL,
+        confirmed_at TEXT
+      )\`,
+      \`CREATE TABLE issues (
+        id TEXT PRIMARY KEY,
+        subject TEXT NOT NULL,
+        body TEXT NOT NULL,
+        total INTEGER NOT NULL,
+        created_at TEXT NOT NULL
+      )\`,
+      // One row per reader per issue, written as each send finishes: a retried queue message
+      // skips whoever already has one, so nobody gets an issue twice.
+      \`CREATE TABLE deliveries (
+        issue_id TEXT NOT NULL,
+        email TEXT NOT NULL,
+        status TEXT NOT NULL,
+        detail TEXT,
+        at TEXT NOT NULL,
+        PRIMARY KEY (issue_id, email)
+      )\`,
+    ],
+  },
+]
+
+/** Readers per queue message. Each message is sent in one go, one reader after another. */
+const CHUNK = 25
+/** A confirmation link works for a day. */
+const CONFIRM_TTL_MS = 24 * 60 * 60 * 1000
+/** A pending address gets another link at most this often, so the form cannot flood an inbox. */
+const RESEND_AFTER_MS = 10 * 60 * 1000
+
+export interface NewsletterMessage {
+  issueId: string
+  emails: string[]
+  /** The app's origin, for the unsubscribe links: a queue consumer has no request. */
+  origin: string
+}
+
+/** What sending needs of the NEWSLETTER queue binding. */
+export interface NewsletterQueue {
+  sendBatch(messages: Iterable<{ body: NewsletterMessage }>): Promise<void>
+}
+
+/** The slice of a Queue consumer's batch \`deliver\` reads. */
+export interface NewsletterBatch {
+  readonly messages: readonly { readonly body: unknown }[]
+}
+
+export interface NewsletterEnv {
+  DB: Database
+  ROOMS: RoomNamespace<unknown>
+  NEWSLETTER: NewsletterQueue
+  /** Set in wrangler.jsonc: the SES region, the From address, the SNS topic for feedback. */
+  AWS_REGION: string
+  NEWSLETTER_FROM: string
+  SNS_TOPIC_ARN: string
+  /** Secrets: \`wrangler secret put\` (.dev.vars locally). Unset until you add them. */
+  AWS_ACCESS_KEY_ID?: string
+  AWS_SECRET_ACCESS_KEY?: string
+  NEWSLETTER_KEY?: string
+}
+
+const encoder = new TextEncoder()
+
+const cell = (raw: unknown, key: string): unknown =>
+  typeof raw === 'object' && raw !== null ? Reflect.get(raw, key) : undefined
+
+/** A string column of a D1 row. Rows are read like any payload: checked, not cast. */
+function column(raw: unknown, key: string): string {
+  const value = cell(raw, key)
+  if (typeof value !== 'string') throw new Error(\`Expected a string in column \${key}\`)
+  return value
+}
+
+async function sha256(value: string): Promise<string> {
+  const digest = await crypto.subtle.digest('SHA-256', encoder.encode(value))
+  return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, '0')).join('')
+}
+
+/** 32 random bytes, URL-safe: a confirmation or unsubscribe token. */
+function token(): string {
+  const bytes = crypto.getRandomValues(new Uint8Array(32))
+  return btoa(String.fromCharCode(...bytes))
+    .replace(/\\+/g, '-')
+    .replace(/\\//g, '_')
+    .replace(/=+$/, '')
+}
+
+/** Refuses a request without NEWSLETTER_KEY. Compares digests, so timing says nothing. */
+async function requireKey(env: NewsletterEnv, key: string): Promise<void> {
+  if (!env.NEWSLETTER_KEY) throw new HttpError(503, 'Set NEWSLETTER_KEY (README)')
+  if ((await sha256(key)) !== (await sha256(env.NEWSLETTER_KEY))) {
+    throw new HttpError(403, 'Wrong newsletter key')
+  }
+}
+
+interface Mail {
+  subject: string
+  html: string
+  text: string
+  headers?: Record<string, string>
+}
+
+type Send = (to: string, mail: Mail) => Promise<'sent' | 'logged'>
+
+/**
+ * Sends one email through SES, or, in \`vite dev\` without AWS credentials, logs it instead.
+ * Deployed without them, it refuses with what to set.
+ */
+function mailer(env: NewsletterEnv): Send {
+  const configured =
+    env.AWS_ACCESS_KEY_ID && env.AWS_SECRET_ACCESS_KEY && env.AWS_REGION && env.NEWSLETTER_FROM
+  if (!configured) {
+    if (!import.meta.env.DEV) {
+      throw new HttpError(
+        503,
+        'Set AWS_REGION and NEWSLETTER_FROM in wrangler.jsonc, and the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY secrets (README)',
+      )
+    }
+    return async (to, message) => {
+      console.log(\`[newsletter] not sent (no SES credentials) to \${to}: "\${message.subject}"\`)
+      return 'logged'
+    }
+  }
+  const ses = createSes({
+    region: env.AWS_REGION,
+    accessKeyId: env.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: env.AWS_SECRET_ACCESS_KEY!,
+  })
+  return async (to, message) => {
+    await ses.sendEmail({ from: env.NEWSLETTER_FROM, to, ...message })
+    return 'sent'
+  }
+}
+
+/**
+ * Signs someone up: a pending subscriber and a confirmation email. The answer is the same
+ * whoever asks, so the form does not tell strangers who is on the list. \`vite dev\` without
+ * SES also returns the confirmation link, to open instead of an email.
+ */
+export async function subscribe(
+  env: NewsletterEnv,
+  rawEmail: string,
+  origin: string,
+): Promise<{ devLink: string | null }> {
+  const email = normalizeEmail(rawEmail)
+  const send = mailer(env)
+  await migrate(env.DB, migrations)
+  const confirm = token()
+  const now = new Date()
+  const expires = now.getTime() + CONFIRM_TTL_MS
+  // A new or unsubscribed address gets a link; a pending one gets a fresh link at most every
+  // ten minutes. A subscribed or suppressed one is left alone, and nothing is sent.
+  const [row] = await queryRows(
+    env.DB,
+    \`INSERT INTO subscribers
+       (email, status, confirm_hash, confirm_expires, unsubscribe_token, created_at)
+     VALUES (?, 'pending', ?, ?, ?, ?)
+     ON CONFLICT (email) DO UPDATE SET
+       status = 'pending', reason = NULL,
+       confirm_hash = excluded.confirm_hash, confirm_expires = excluded.confirm_expires
+     WHERE subscribers.status = 'unsubscribed'
+       OR (subscribers.status = 'pending' AND subscribers.confirm_expires < ?)
+     RETURNING email\`,
+    [email, await sha256(confirm), expires, token(), now.toISOString(), expires - RESEND_AFTER_MS],
+    (raw) => column(raw, 'email'),
+  )
+  if (!row) return { devLink: null }
+  const link = \`\${origin}/newsletter/confirm?token=\${confirm}\`
+  const message = renderConfirmation(link)
+  let outcome: 'sent' | 'logged'
+  try {
+    outcome = await send(email, {
+      subject: message.subject,
+      html: message.html,
+      text: message.text,
+    })
+  } catch (error) {
+    if (!(error instanceof SesError)) throw error
+    console.error('[newsletter] confirmation not sent:', error.code, error.message)
+    // Let the reader try again at once rather than wait out the resend interval.
+    await queryRows(
+      env.DB,
+      "UPDATE subscribers SET confirm_expires = 0 WHERE email = ? AND status = 'pending' RETURNING email",
+      [email],
+      (raw) => raw,
+    )
+    throw new HttpError(502, 'Could not send the confirmation email. Try again in a moment.')
+  }
+  return { devLink: outcome === 'logged' ? link : null }
+}
+
+/** Opens a confirmation link: the subscriber is on the list from now on. */
+export async function confirm(env: NewsletterEnv, rawToken: string): Promise<{ email: string }> {
+  await migrate(env.DB, migrations)
+  const [row] = await queryRows(
+    env.DB,
+    \`UPDATE subscribers SET status = 'subscribed', confirm_hash = NULL, confirmed_at = ?
+     WHERE confirm_hash = ? AND confirm_expires > ? AND status = 'pending' RETURNING email\`,
+    [new Date().toISOString(), await sha256(rawToken), Date.now()],
+    (raw) => ({ email: column(raw, 'email') }),
+  )
+  if (!row) throw new HttpError(400, 'This link has expired or was used already. Sign up again.')
+  return row
+}
+
+/**
+ * \`POST /api/newsletter/unsubscribe?token=…\`: the page's button, and the one-click
+ * unsubscribe mail clients send (RFC 8058) from the List-Unsubscribe header. Always 200, so a
+ * token says nothing about who it belongs to, and a second click is not an error.
+ */
+export async function unsubscribe(request: Request, env: NewsletterEnv): Promise<Response> {
+  const unsubscribeToken = new URL(request.url).searchParams.get('token') ?? ''
+  await migrate(env.DB, migrations)
+  await queryRows(
+    env.DB,
+    \`UPDATE subscribers SET status = 'unsubscribed', reason = 'unsubscribed'
+     WHERE unsubscribe_token = ? AND status IN ('pending', 'subscribed') RETURNING email\`,
+    [unsubscribeToken],
+    (raw) => raw,
+  )
+  return Response.json({ unsubscribed: true })
+}
+
+const ISSUE_COLUMNS = \`issues.id, issues.subject, issues.created_at AS createdAt, issues.total,
+  (SELECT COUNT(*) FROM deliveries d WHERE d.issue_id = issues.id AND d.status != 'failed') AS sent,
+  (SELECT COUNT(*) FROM deliveries d WHERE d.issue_id = issues.id AND d.status = 'failed') AS failed\`
+
+async function readIssue(db: Database, id: string): Promise<Issue> {
+  const [issue] = await queryRows(
+    db,
+    \`SELECT \${ISSUE_COLUMNS} FROM issues WHERE id = ?\`,
+    [id],
+    parseIssue,
+  )
+  if (!issue) throw new HttpError(404, 'No such issue')
+  return issue
+}
+
+/** Subscriber counts and the last 20 issues, for the composer. */
+export async function overview(env: NewsletterEnv, key: string): Promise<Overview> {
+  await requireKey(env, key)
+  await migrate(env.DB, migrations)
+  const subscribers: SubscriberCounts = {
+    pending: 0,
+    subscribed: 0,
+    unsubscribed: 0,
+    suppressed: 0,
+  }
+  const counts = await queryRows(
+    env.DB,
+    'SELECT status, COUNT(*) AS n FROM subscribers GROUP BY status',
+    [],
+    (raw) => ({ status: column(raw, 'status'), n: Number(cell(raw, 'n')) }),
+  )
+  for (const { status, n } of counts) {
+    if (status === 'pending' || status === 'subscribed') subscribers[status] = n
+    if (status === 'unsubscribed' || status === 'suppressed') subscribers[status] = n
+  }
+  const issues = await queryRows(
+    env.DB,
+    \`SELECT \${ISSUE_COLUMNS} FROM issues ORDER BY created_at DESC LIMIT 20\`,
+    [],
+    parseIssue,
+  )
+  return { subscribers, issues }
+}
+
+/** The issue as readers will get it, for the composer's preview. */
+export async function preview(
+  env: NewsletterEnv,
+  input: IssueInput,
+  origin: string,
+): Promise<{ html: string; bytes: number }> {
+  await requireKey(env, input.key)
+  const { html, stats } = renderIssue(input.subject, input.body, origin)
+  return { html, bytes: stats.bytes }
+}
+
+/**
+ * Sends an issue to every confirmed subscriber: the issue is stored, and its readers go onto
+ * the NEWSLETTER queue in chunks, which \`deliver\` sends at the queue's pace.
+ */
+export async function sendIssue(
+  env: NewsletterEnv,
+  input: IssueInput,
+  origin: string,
+): Promise<Issue> {
+  await requireKey(env, input.key)
+  mailer(env) // Deployed without SES, refuse now rather than fail in the queue.
+  await migrate(env.DB, migrations)
+  const readers = await queryRows(
+    env.DB,
+    "SELECT email FROM subscribers WHERE status = 'subscribed' ORDER BY email",
+    [],
+    (raw) => column(raw, 'email'),
+  )
+  const id = crypto.randomUUID()
+  await queryRows(
+    env.DB,
+    'INSERT INTO issues (id, subject, body, total, created_at) VALUES (?, ?, ?, ?, ?) RETURNING id',
+    [id, input.subject, input.body, readers.length, new Date().toISOString()],
+    (raw) => raw,
+  )
+  const messages: { body: NewsletterMessage }[] = []
+  for (let i = 0; i < readers.length; i += CHUNK) {
+    messages.push({ body: { issueId: id, emails: readers.slice(i, i + CHUNK), origin } })
+  }
+  // sendBatch takes at most 100 messages a call.
+  for (let i = 0; i < messages.length; i += 100) {
+    await env.NEWSLETTER.sendBatch(messages.slice(i, i + 100))
+  }
+  const issue = await readIssue(env.DB, id)
+  await writeRoom(env.ROOMS, issueRoom(id), 'issue', { ...issue })
+  return issue
+}
+
+function parseMessage(raw: unknown): NewsletterMessage {
+  if (typeof raw === 'object' && raw !== null) {
+    const { issueId, emails, origin } = raw as Record<string, unknown>
+    if (
+      typeof issueId === 'string' &&
+      ISSUE_ID.test(issueId) &&
+      Array.isArray(emails) &&
+      emails.every((e) => typeof e === 'string') &&
+      typeof origin === 'string'
+    ) {
+      return { issueId, emails: emails as string[], origin }
+    }
+  }
+  throw new Error('Malformed newsletter message')
+}
+
+/**
+ * The NEWSLETTER queue's consumer: sends each reader in the message their copy, with their
+ * own unsubscribe link and the one-click headers bulk senders need. A reader who left or was
+ * suppressed since the issue was queued is skipped. SES throttling or a server error throws,
+ * and the queue retries the message: whoever was sent already has a delivery row and is not
+ * sent again. A refusal for one address (an invalid one, say) is recorded and the rest go on.
+ */
+export async function deliver(env: NewsletterEnv, batch: NewsletterBatch): Promise<void> {
+  await migrate(env.DB, migrations)
+  const send = mailer(env)
+  for (const { body } of batch.messages) {
+    const { issueId, emails, origin } = parseMessage(body)
+    const [issue] = await queryRows(
+      env.DB,
+      'SELECT subject, body FROM issues WHERE id = ?',
+      [issueId],
+      (raw) => ({ subject: column(raw, 'subject'), body: column(raw, 'body') }),
+    )
+    if (!issue) continue
+    const rendered = renderIssue(issue.subject, issue.body, origin)
+    const placeholders = emails.map(() => '?').join(', ')
+    const readers = await queryRows(
+      env.DB,
+      \`SELECT s.email, s.unsubscribe_token AS token FROM subscribers s
+       WHERE s.email IN (\${placeholders}) AND s.status = 'subscribed'
+         AND NOT EXISTS (SELECT 1 FROM deliveries d WHERE d.issue_id = ? AND d.email = s.email)\`,
+      [...emails, issueId],
+      (raw) => ({ email: column(raw, 'email'), token: column(raw, 'token') }),
+    )
+    for (const { email, token: readerToken } of readers) {
+      const unsubscribe = \`\${origin}/api/newsletter/unsubscribe?token=\${readerToken}\`
+      let status: string
+      let detail: string | null = null
+      try {
+        status = await send(email, {
+          subject: rendered.subject,
+          html: rendered.html.replaceAll(TOKEN_SLOT, readerToken),
+          text: rendered.text.replaceAll(TOKEN_SLOT, readerToken),
+          headers: {
+            'List-Unsubscribe': \`<\${unsubscribe}>\`,
+            'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+          },
+        })
+      } catch (error) {
+        if (!(error instanceof SesError) || error.retryable) throw error
+        status = 'failed'
+        detail = \`\${error.code ?? error.status}: \${error.message}\`.slice(0, 300)
+      }
+      await queryRows(
+        env.DB,
+        \`INSERT INTO deliveries (issue_id, email, status, detail, at) VALUES (?, ?, ?, ?, ?)
+         ON CONFLICT DO NOTHING RETURNING email\`,
+        [issueId, email, status, detail, new Date().toISOString()],
+        (raw) => raw,
+      )
+    }
+    const progress = await readIssue(env.DB, issueId)
+    await writeRoom(env.ROOMS, issueRoom(issueId), 'issue', { ...progress })
+  }
+}
+
+/**
+ * SES's feedback, delivered by SNS: a permanent bounce or a complaint suppresses the address
+ * for good. Sending to them again is what gets an SES account put under review.
+ */
+export async function receiveFeedback(request: Request, env: NewsletterEnv): Promise<Response> {
+  if (!env.SNS_TOPIC_ARN) throw new HttpError(503, 'Set SNS_TOPIC_ARN in wrangler.jsonc (README)')
+  return handleSns(request, {
+    topicArn: env.SNS_TOPIC_ARN,
+    onNotification: async ({ message }) => {
+      const event = parseSesNotification(message)
+      const suppress =
+        event.kind === 'complaint' || (event.kind === 'bounce' && event.bounceType === 'Permanent')
+      if (!suppress || event.recipients.length === 0) return
+      await migrate(env.DB, migrations)
+      // D1 binds at most 100 parameters; one bounce rarely names more than a few addresses.
+      const recipients = event.recipients
+        .slice(0, 90)
+        .map((address) => address.trim().toLowerCase())
+      await queryRows(
+        env.DB,
+        \`UPDATE subscribers SET status = 'suppressed', reason = ?
+         WHERE email IN (\${recipients.map(() => '?').join(', ')}) RETURNING email\`,
+        [event.kind, ...recipients],
+        (raw) => raw,
+      )
+    },
+  })
+}
+`
+}
+
+function cfNewsletterRouteTsx(): string {
+  return `import { createClient } from '@cascivo/app/api'
+import {
+  Alert,
+  Button,
+  Card,
+  CardContent,
+  Flex,
+  Heading,
+  Input,
+  Link,
+  Text,
+  signal,
+  useSignals,
+} from '@cascivo/react'
+import type { FormEvent } from 'react'
+import { api } from '../api'
+
+const client = createClient(api)
+const sentTo = signal<string | null>(null)
+/** Set only in \`vite dev\` without SES: the confirmation link, to open instead of an email. */
+const devLink = signal<string | null>(null)
+const failure = signal<string | null>(null)
+const sending = signal(false)
+
+async function signUp(event: FormEvent<HTMLFormElement>): Promise<void> {
+  event.preventDefault()
+  const email = new FormData(event.currentTarget).get('email')
+  if (typeof email !== 'string') return
+  failure.value = null
+  sending.value = true
+  try {
+    const { devLink: link } = await client.subscribe({ body: { email } })
+    sentTo.value = email
+    devLink.value = link
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Could not sign you up'
+  } finally {
+    sending.value = false
+  }
+}
+
+export default function Newsletter() {
+  useSignals()
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Newsletter</Heading>
+        <Text muted>
+          An email now and then. We send a link first: you are on the list only once you open it,
+          and every issue has a one-click unsubscribe.
+        </Text>
+      </Flex>
+      <Card>
+        <CardContent>
+          <form onSubmit={(event) => void signUp(event)}>
+            <Flex direction="horizontal" align="end" gap={2} wrap>
+              <Input name="email" type="email" label="Email" autoComplete="email" required />
+              <Button type="submit" loading={sending.value}>
+                Subscribe
+              </Button>
+            </Flex>
+          </form>
+        </CardContent>
+      </Card>
+      {sentTo.value ? (
+        <Alert variant="success" title="Check your inbox">
+          If {sentTo.value} is not on the list yet, a confirmation link is on its way.
+        </Alert>
+      ) : null}
+      {devLink.value ? (
+        <Alert variant="info" title="vite dev sends no email without SES">
+          <Link href={devLink.value}>Open the confirmation link</Link>
+        </Alert>
+      ) : null}
+      {failure.value ? (
+        <Alert variant="destructive" title="Not signed up">
+          {failure.value}
+        </Alert>
+      ) : null}
+    </Flex>
+  )
+}
+`
+}
+
+function cfNewsletterConfirmRouteTsx(): string {
+  return `import { createClient } from '@cascivo/app/api'
+import { Alert, Button, Flex, Heading, Text, signal, useSignals } from '@cascivo/react'
+import { api } from '../../api'
+import { router } from '../../router'
+
+const client = createClient(api)
+const confirmed = signal<string | null>(null)
+const failure = signal<string | null>(null)
+const busy = signal(false)
+
+/**
+ * The page a confirmation link opens. It confirms only when you press the button: mail
+ * scanners open every link in a message, and would otherwise subscribe whoever was typed in.
+ */
+async function confirm(): Promise<void> {
+  const token = new URLSearchParams(router.search.value).get('token')
+  if (!token) {
+    failure.value = 'This link has no token. Sign up again.'
+    return
+  }
+  busy.value = true
+  failure.value = null
+  try {
+    confirmed.value = (await client.confirmSubscription({ body: { token } })).email
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Could not confirm'
+  } finally {
+    busy.value = false
+  }
+}
+
+export default function ConfirmSubscription() {
+  useSignals()
+  return (
+    <Flex gap={4}>
+      <Heading level={1}>Confirm your subscription</Heading>
+      {confirmed.value ? (
+        <Alert variant="success" title="You are on the list">
+          The next issue goes to {confirmed.value}.
+        </Alert>
+      ) : (
+        <Flex gap={2}>
+          <Text muted>One click and you get the newsletter.</Text>
+          <Flex direction="horizontal">
+            <Button loading={busy.value} onClick={() => void confirm()}>
+              Yes, subscribe me
+            </Button>
+          </Flex>
+        </Flex>
+      )}
+      {failure.value ? (
+        <Alert variant="destructive" title="Not confirmed">
+          {failure.value}
+        </Alert>
+      ) : null}
+    </Flex>
+  )
+}
+`
+}
+
+function cfNewsletterUnsubscribeRouteTsx(): string {
+  return `import { Alert, Button, Flex, Heading, Text, signal, useSignals } from '@cascivo/react'
+import { router } from '../../router'
+
+const done = signal(false)
+const failure = signal<string | null>(null)
+const busy = signal(false)
+
+/**
+ * The footer link of every issue. Like the confirmation, it acts on a button press, never on
+ * opening the page. Mail clients that support one-click unsubscribe skip this page and POST
+ * to the same endpoint from the List-Unsubscribe header.
+ */
+async function unsubscribe(): Promise<void> {
+  const token = new URLSearchParams(router.search.value).get('token') ?? ''
+  busy.value = true
+  failure.value = null
+  try {
+    const response = await fetch(\`/api/newsletter/unsubscribe?token=\${encodeURIComponent(token)}\`, {
+      method: 'POST',
+    })
+    if (!response.ok) throw new Error(\`Request failed with status \${response.status}\`)
+    done.value = true
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Could not unsubscribe'
+  } finally {
+    busy.value = false
+  }
+}
+
+export default function Unsubscribe() {
+  useSignals()
+  return (
+    <Flex gap={4}>
+      <Heading level={1}>Unsubscribe</Heading>
+      {done.value ? (
+        <Alert variant="success" title="You are unsubscribed">
+          You will get no more issues. Sign up again any time.
+        </Alert>
+      ) : (
+        <Flex gap={2}>
+          <Text muted>Stop getting the newsletter at this address.</Text>
+          <Flex direction="horizontal">
+            <Button variant="destructive" loading={busy.value} onClick={() => void unsubscribe()}>
+              Unsubscribe
+            </Button>
+          </Flex>
+        </Flex>
+      )}
+      {failure.value ? (
+        <Alert variant="destructive" title="Not unsubscribed">
+          {failure.value}
+        </Alert>
+      ) : null}
+    </Flex>
+  )
+}
+`
+}
+
+function cfNewsletterSendRouteTsx(): string {
+  return `import { createClient } from '@cascivo/app/api'
+import { connectRoom } from '@cascivo/app/sync'
+import {
+  Alert,
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  EmptyState,
+  Flex,
+  Heading,
+  Input,
+  Text,
+  Textarea,
+  signal,
+  useSignals,
+} from '@cascivo/react'
+import type { MouseEvent } from 'react'
+import { api } from '../../api'
+import { MAX_BODY, MAX_SUBJECT, parseIssue } from '../../newsletter'
+import type { Issue, Overview } from '../../newsletter'
+
+const client = createClient(api)
+const overview = signal<Overview | null>(null)
+const previewHtml = signal<string | null>(null)
+const busy = signal<'load' | 'preview' | 'send' | null>(null)
+const failure = signal<string | null>(null)
+const notice = signal<string | null>(null)
+
+/** The composer's fields, read from the form the clicked button belongs to. */
+function fields(event: MouseEvent<HTMLButtonElement>) {
+  const form = event.currentTarget.form
+  const data = form ? new FormData(form) : new FormData()
+  const read = (name: string) => {
+    const value = data.get(name)
+    return typeof value === 'string' ? value : ''
+  }
+  return { key: read('key'), subject: read('subject'), body: read('body') }
+}
+
+async function run(kind: 'load' | 'preview' | 'send', task: () => Promise<void>): Promise<void> {
+  busy.value = kind
+  failure.value = null
+  notice.value = null
+  try {
+    await task()
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Something went wrong'
+  } finally {
+    busy.value = null
+  }
+}
+
+/** Shows an issue's progress as the Worker pushes it, until every reader has had their copy. */
+function watch(issue: Issue): void {
+  const room = connectRoom(\`/api/newsletter/issues/\${issue.id}/live\`)
+  const pushed = room.signal<Issue | null>('issue', null, (raw) =>
+    raw === null ? null : parseIssue(raw),
+  )
+  const stop = pushed.signal.subscribe((latest) => {
+    const current = overview.peek()
+    if (!latest || !current) return
+    overview.value = {
+      ...current,
+      issues: current.issues.map((i) => (i.id === latest.id ? latest : i)),
+    }
+    if (latest.sent + latest.failed >= latest.total) {
+      stop()
+      room.close()
+    }
+  })
+}
+
+function load(event: MouseEvent<HTMLButtonElement>): void {
+  const { key } = fields(event)
+  void run('load', async () => {
+    overview.value = await client.newsletterOverview({ body: { key } })
+  })
+}
+
+function preview(event: MouseEvent<HTMLButtonElement>): void {
+  const input = fields(event)
+  void run('preview', async () => {
+    previewHtml.value = (await client.previewIssue({ body: input })).html
+  })
+}
+
+function send(event: MouseEvent<HTMLButtonElement>): void {
+  const input = fields(event)
+  const readers = overview.value?.subscribers.subscribed ?? 0
+  if (!window.confirm(\`Send "\${input.subject}" to \${readers} subscribers?\`)) return
+  void run('send', async () => {
+    const issue = await client.sendIssue({ body: input })
+    overview.value = await client.newsletterOverview({ body: { key: input.key } })
+    notice.value = \`Queued for \${issue.total} subscribers.\`
+    watch(issue)
+  })
+}
+
+export default function SendNewsletter() {
+  useSignals()
+  const counts = overview.value?.subscribers
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Send the newsletter</Heading>
+        <Text muted>
+          Written in Markdown, rendered with @cascivo/email, sent through Amazon SES to every
+          confirmed subscriber. Only someone with NEWSLETTER_KEY can send.
+        </Text>
+      </Flex>
+      <form onSubmit={(event) => event.preventDefault()}>
+        <Flex gap={3}>
+          <Flex direction="horizontal" align="end" gap={2} wrap>
+            <Input name="key" type="password" label="Newsletter key" autoComplete="off" required />
+            <Button variant="secondary" loading={busy.value === 'load'} onClick={load}>
+              Show subscribers
+            </Button>
+          </Flex>
+          <Input name="subject" label="Subject" maxLength={MAX_SUBJECT} required />
+          <Textarea
+            name="body"
+            label="Body"
+            hint="Markdown: headings, **bold**, links, lists, quotes and images."
+            rows={12}
+            maxLength={MAX_BODY}
+            required
+          />
+          <Flex direction="horizontal" gap={2} wrap>
+            <Button variant="secondary" loading={busy.value === 'preview'} onClick={preview}>
+              Preview
+            </Button>
+            <Button loading={busy.value === 'send'} disabled={!counts} onClick={send}>
+              Send to {counts ? counts.subscribed : '…'} subscribers
+            </Button>
+          </Flex>
+        </Flex>
+      </form>
+      {failure.value ? (
+        <Alert variant="destructive" title="Not done">
+          {failure.value}
+        </Alert>
+      ) : null}
+      {notice.value ? (
+        <Alert variant="success" title="Sending">
+          {notice.value}
+        </Alert>
+      ) : null}
+      {previewHtml.value ? (
+        <Card>
+          <CardContent>
+            {/* sandbox: the preview runs no script and cannot reach this page. */}
+            <iframe
+              title="Preview"
+              sandbox=""
+              srcDoc={previewHtml.value}
+              width="100%"
+              height="640"
+            />
+          </CardContent>
+        </Card>
+      ) : null}
+      {counts ? (
+        <Flex direction="horizontal" gap={2} wrap>
+          <Badge variant="success">{counts.subscribed} subscribed</Badge>
+          <Badge variant="warning">{counts.pending} not confirmed</Badge>
+          <Badge variant="secondary">{counts.unsubscribed} unsubscribed</Badge>
+          <Badge variant="destructive">{counts.suppressed} suppressed</Badge>
+        </Flex>
+      ) : null}
+      {overview.value && overview.value.issues.length === 0 ? (
+        <EmptyState title="No issues yet" description="Write one above and send it." />
+      ) : null}
+      {overview.value && overview.value.issues.length > 0 ? (
+        <Flex gap={2} role="list" aria-label="Issues">
+          {overview.value.issues.map((issue) => (
+            <Flex key={issue.id} role="listitem" direction="horizontal" align="center" gap={2} wrap>
+              <Badge variant={issue.sent + issue.failed >= issue.total ? 'success' : 'warning'}>
+                {issue.sent}/{issue.total} sent
+              </Badge>
+              {issue.failed > 0 ? <Badge variant="destructive">{issue.failed} failed</Badge> : null}
+              <Text>{issue.subject}</Text>
+              <Text size="sm" muted>
+                {new Date(issue.createdAt).toLocaleString()}
+              </Text>
+            </Flex>
+          ))}
+        </Flex>
+      ) : null}
+    </Flex>
+  )
+}
+`
+}
+
 /* --- `--auth email`: accounts with emailed sign-in links (@cascivo/app/auth) --- */
 
 function cfAuthTs(): string {
@@ -7657,6 +8943,50 @@ browser cannot change it.
 Each caller (by IP) may start 20 checkouts a minute.`
       : ''
   }${
+    hasExample(opts, 'newsletter')
+      ? `
+
+## Newsletter (Amazon SES)
+
+\`/newsletter\` signs readers up; \`/newsletter/send\` writes an issue in Markdown, previews it
+as the email it will be (rendered with \`@cascivo/email\`), and sends it to every confirmed
+reader through Amazon SES. It runs in \`vite dev\` with nothing set up: emails are logged instead
+of sent, and the sign-up page shows the confirmation link. The composer's key is in
+\`.dev.vars\` (\`NEWSLETTER_KEY\`).
+
+To send for real:
+
+1. In SES, verify the domain you send from (SES gives DNS records for DKIM; add them in
+   Cloudflare DNS, with an SPF and a DMARC record), and ask AWS to move the account out of the
+   sandbox, where it can mail only verified addresses.
+2. Create an IAM user allowed \`ses:SendEmail\` and nothing else, and give its keys to the
+   Worker: \`npx wrangler secret put AWS_ACCESS_KEY_ID\` and \`AWS_SECRET_ACCESS_KEY\` (in
+   \`.dev.vars\` locally). Set \`AWS_REGION\` and \`NEWSLETTER_FROM\` in \`wrangler.jsonc\`, and
+   \`npx wrangler secret put NEWSLETTER_KEY\` to a long random value.
+3. Bounces and complaints: create an SNS topic, set it as the SES identity's bounce and
+   complaint notification topic, and subscribe \`https://<your app>/api/sns/ses\` to it (HTTPS).
+   Put the topic's ARN in \`SNS_TOPIC_ARN\`. The Worker confirms the subscription itself.
+4. Create the queue once: \`npx wrangler queues create ${newsletterQueue(opts)}\`.
+
+- \`worker/newsletter.ts\` — double opt-in: a sign-up gets a confirmation link (valid a day,
+  resent at most every ten minutes) and gets no issue until it is opened. Sending stores the
+  issue and puts its readers on the \`NEWSLETTER\` queue, 25 per message; the consumer sends
+  them one by one through \`createSes\` (\`@cascivo/app/ses\`), one message at a time. Each
+  send is recorded, so a message retried after SES throttling skips whoever already has it.
+- Every issue carries \`List-Unsubscribe\` and \`List-Unsubscribe-Post\` (one-click
+  unsubscribe, RFC 8058, which Gmail and Yahoo require of bulk senders) and a footer link to
+  \`/newsletter/unsubscribe\`.
+- \`handleSns\` checks each SNS message's signature against SNS's certificate before
+  \`parseSesNotification\` reads it. A permanent bounce or a complaint suppresses the address
+  for good: mailing it again is what gets an SES account reviewed.
+- \`worker/newsletter-email.ts\` — the issue and confirmation emails. The body is Markdown drawn
+  through the email primitives; raw HTML in it stays literal text.
+
+Sign-ups and every use of the newsletter key count against the rate limit (20 a minute per
+IP). Sending reads every confirmed address into memory; past a few hundred thousand readers,
+page through them instead.`
+      : ''
+  }${
     opts.auth === 'email'
       ? `
 
@@ -7880,6 +9210,15 @@ function cfDevVars(opts: ScaffoldOptions): string {
           'STRIPE_WEBHOOK_SECRET=',
         ]
       : []),
+    ...(hasExample(opts, 'newsletter')
+      ? [
+          '# The key /newsletter/send asks for. Deployed, choose a long random one.',
+          'NEWSLETTER_KEY=dev-only-newsletter-key',
+          '# An IAM user allowed ses:SendEmail (README). Without them, vite dev logs each email.',
+          'AWS_ACCESS_KEY_ID=',
+          'AWS_SECRET_ACCESS_KEY=',
+        ]
+      : []),
   ]
     .map((line) => `${line}\n`)
     .join('')
@@ -7922,6 +9261,14 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
       ? [
           { file: 'checkout.tsx', contents: cfCheckoutRouteTsx() },
           { file: 'checkout/[order].tsx', contents: cfOrderRouteTsx() },
+        ]
+      : []),
+    ...(hasExample(opts, 'newsletter')
+      ? [
+          { file: 'newsletter.tsx', contents: cfNewsletterRouteTsx() },
+          { file: 'newsletter/confirm.tsx', contents: cfNewsletterConfirmRouteTsx() },
+          { file: 'newsletter/unsubscribe.tsx', contents: cfNewsletterUnsubscribeRouteTsx() },
+          { file: 'newsletter/send.tsx', contents: cfNewsletterSendRouteTsx() },
         ]
       : []),
     ...(opts.auth === 'email'
@@ -8005,7 +9352,16 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
           { path: 'worker/checkout.ts', contents: cfCheckoutWorkerTs() },
         ]
       : []),
-    ...(hasExample(opts, 'webhooks') || hasExample(opts, 'checkout')
+    ...(hasExample(opts, 'newsletter')
+      ? [
+          { path: 'src/newsletter.ts', contents: cfNewsletterTs() },
+          { path: 'worker/newsletter.ts', contents: cfNewsletterWorkerTs() },
+          { path: 'worker/newsletter-email.ts', contents: cfNewsletterEmailTs(opts) },
+        ]
+      : []),
+    ...(hasExample(opts, 'webhooks') ||
+    hasExample(opts, 'checkout') ||
+    hasExample(opts, 'newsletter')
       ? [{ path: '.dev.vars', contents: cfDevVars(opts) }]
       : []),
     ...(opts.auth === 'email'

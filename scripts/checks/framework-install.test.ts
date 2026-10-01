@@ -504,4 +504,48 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
       assertFormatted(app)
     })
   })
+
+  /**
+   * `--example newsletter`: `@cascivo/app/ses` (Signature V4 over WebCrypto) and the issue and
+   * confirmation emails rendered by `@cascivo/email` in a Worker on Preact, with a queue
+   * consumer beside the fetch handler.
+   */
+  describe('cloudflare --example newsletter', () => {
+    let app: string
+
+    before(() => {
+      if (!ready) return
+      app = scaffold('cloudflare', 'cf-newsletter', ['--example', 'newsletter'])
+      run('pnpm', ['run', 'typecheck'], app)
+      run('pnpm', ['exec', 'vite', 'build'], app)
+    })
+
+    it(
+      'bundles the SES client, the SNS check and the emails into the Worker',
+      { skip: !ready },
+      () => {
+        const dist = join(app, 'dist')
+        const dir = readdirSync(dist).find((d) => existsSync(join(dist, d, 'wrangler.json')))
+        assert.ok(dir, 'vite build emitted no Worker bundle.')
+        const worker = readFileSync(join(dist, dir, 'index.js'), 'utf8')
+        assert.match(worker, /AWS4-HMAC-SHA256/, 'the Worker bundle cannot sign SES requests')
+        assert.match(worker, /RSASSA-PKCS1-v1_5/, 'the Worker bundle cannot verify SNS messages')
+        assert.match(
+          worker,
+          /Confirm your subscription/,
+          'the Worker bundle has no confirmation email',
+        )
+        const config = readFileSync(join(dist, dir, 'wrangler.json'), 'utf8')
+        assert.match(
+          config,
+          /cf-newsletter-newsletter/,
+          'the deploy config has no newsletter queue',
+        )
+      },
+    )
+
+    it('passes its own format:check', { skip: !ready }, () => {
+      assertFormatted(app)
+    })
+  })
 })

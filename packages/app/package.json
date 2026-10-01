@@ -109,6 +109,11 @@
       "import": "./dist/auth-server.js",
       "default": "./dist/auth-server.js"
     },
+    "./ses": {
+      "types": "./dist/ses.d.ts",
+      "import": "./dist/ses.js",
+      "default": "./dist/ses.js"
+    },
     "./stripe": {
       "types": "./dist/stripe.d.ts",
       "import": "./dist/stripe.js",

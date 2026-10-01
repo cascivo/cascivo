@@ -743,3 +743,64 @@ package; it runs on Workers too.
 `cascivo create --framework cloudflare --example checkout` scaffolds all of it: a product
 page, the order page that updates live when the webhook arrives, orders in D1, and a receipt
 rendered with `@cascivo/email`.
+
+## Email with Amazon SES — `@cascivo/app/ses`
+
+Sending through Amazon SES from a Worker, and hearing about bounces and complaints through SNS.
+AWS Signature Version 4 is computed with WebCrypto: no AWS SDK, no `nodejs_compat`.
+
+```ts
+import { createSes, handleSns, parseSesNotification } from '@cascivo/app/ses'
+
+const ses = createSes({
+  region: env.AWS_REGION,
+  accessKeyId: env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
+})
+await ses.sendEmail({
+  from: 'Example News <news@example.com>',
+  to: 'reader@example.org',
+  subject,
+  html, // e.g. renderEmail(…).html from @cascivo/email
+  text,
+  headers: {
+    'List-Unsubscribe': `<${unsubscribeUrl}>`,
+    'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+  },
+})
+
+// SES publishes bounces and complaints to an SNS topic; subscribe this route to it over HTTPS.
+return handleSns(request, {
+  topicArn: env.SNS_TOPIC_ARN,
+  onNotification: async ({ message }) => {
+    const event = parseSesNotification(message)
+    if (
+      event.kind === 'complaint' ||
+      (event.kind === 'bounce' && event.bounceType === 'Permanent')
+    ) {
+      // stop mailing event.recipients
+    }
+  },
+})
+```
+
+- **`createSes({ region, accessKeyId, secretAccessKey, sessionToken? })`** — `sendEmail` calls
+  SES v2 `SendEmail` with HTML and text parts, reply-to, a configuration set and extra headers.
+  A header value holding a line break is refused. SES's refusals throw `SesError` with its
+  `code` (`MessageRejected`, `TooManyRequestsException`…) and `retryable`, true for throttling
+  and server errors. Give the IAM user `ses:SendEmail` and nothing else.
+- **`handleSns(request, { topicArn, onNotification })`** — verifies each message's RSA
+  signature (versions 1 and 2) against the certificate at `SigningCertURL`, fetched only from
+  an `sns.<region>.amazonaws.com` host and cached. A message from another topic, or with a
+  changed field, is refused with a 401. It confirms the subscription when SNS asks, by
+  fetching the `SubscribeURL` (same host rule), and passes notifications on. `verifySnsMessage`
+  is the check alone.
+- **`parseSesNotification(message)`** — `bounce` (with `bounceType`: only `Permanent` means
+  never mail the address again), `complaint`, `delivery`, or `other`, from identity
+  notifications and configuration-set events alike.
+- **`signAwsRequest(request, credentials, { region, service })`** — the Signature V4 headers
+  for any other AWS API call.
+
+`cascivo create --framework cloudflare --example newsletter` scaffolds a newsletter on it:
+double opt-in, a composer that renders with `@cascivo/email`, sending through a Queue,
+one-click unsubscribe, and suppression from SES feedback.
