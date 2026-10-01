@@ -1,6 +1,6 @@
 import { memoryDriver } from '@cascivo/core'
 import type { StorageDriver } from '@cascivo/core'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, onTestFinished, vi } from 'vitest'
 import { defineJob, watchJob } from './jobs'
 import { jobReporter } from './jobs-server'
 import { defineLive, watchLive } from './live'
@@ -797,6 +797,15 @@ describe('live dashboards', () => {
   })
 
   it('adds batches into per-second totals that every viewer sees, late joiners included', async () => {
+    // watchLive reads the clock when it starts and then once a second. On the real clock a
+    // second boundary could fall between that read and the events below, and the viewer's
+    // window would end one second before their bucket (CI failure on main, 0f22941c). Only
+    // Date is pinned, mid-second: the hub still delivers on real timers.
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(1_700_000_000_500)
+    onTestFinished(() => {
+      vi.useRealTimers()
+    })
     const hub = liveHub()
     const viewer = watchLive(ops, 'ws://test/live', { WebSocket: hub.FakeClient })
     await settle()
@@ -818,6 +827,13 @@ describe('live dashboards', () => {
   })
 
   it('drops events outside the window and malformed ones, and trims old buckets', async () => {
+    // An event without `at` is stamped when recorded; pinned, so that stamp cannot fall in the
+    // second after `now` and name a different bucket.
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(1_700_000_000_500)
+    onTestFinished(() => {
+      vi.useRealTimers()
+    })
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const hub = liveHub()
     const now = Date.now()
