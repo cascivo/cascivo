@@ -1,0 +1,35 @@
+// Cloudflare deploy config. `npm run deploy` builds and ships the SPA and
+// the Worker together. https://developers.cloudflare.com/workers/wrangler/configuration/
+{
+  "name": "cascivo-shop",
+  "main": "./worker/index.ts",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    // Client-side app: an unknown path serves index.html, and the client renders it.
+    "not_found_handling": "single-page-application",
+    // Only the API reaches the Worker; static assets are served without invoking it.
+    "run_worker_first": ["/api/*"],
+  },
+  "observability": { "enabled": true },
+  // ROOMS: one SyncRoom per room (@cascivo/app/sync-server).
+  "durable_objects": {
+    "bindings": [{ "name": "ROOMS", "class_name": "SyncRoom" }],
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["SyncRoom"] }],
+  // Checkouts started per caller: 20 a minute.
+  // namespace_id is any number unique within your account:
+  // https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/
+  "ratelimits": [
+    { "name": "LIMITER", "namespace_id": "1001", "simple": { "limit": 20, "period": 60 } },
+  ],
+  // Receipts for paid orders go out through Email Service from RECEIPT_FROM, an address
+  // on a domain you have onboarded (README). Until it is set, no receipt is sent.
+  "send_email": [{ "name": "EMAIL" }],
+  "vars": { "RECEIPT_FROM": "" },
+  // Tables for orders.
+  // No database_id: wrangler creates the database on first deploy, and the Worker applies its
+  // own schema on its first query (`migrate`).
+  "d1_databases": [{ "binding": "DB", "database_name": "cascivo-shop-db" }],
+  // Add bindings here (KV, D1, R2, Durable Objects, Workers AI) and read them from the
+  // `env` argument of the Worker's fetch handler.
+}

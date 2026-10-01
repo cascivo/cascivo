@@ -164,6 +164,31 @@ describe('buildScaffold', () => {
   })
 })
 
+describe('buildScaffold — the AppShell tag as Prettier lays it out', () => {
+  const shell = (name: string, framework?: 'astro' | 'cloudflare') =>
+    buildScaffold({
+      name,
+      theme: 'light',
+      sections: ['Dashboard'],
+      ...(framework ? { framework } : {}),
+    }).find((f) => f.contents.includes('<AppShell'))!.contents
+
+  it('keeps it on one line when a short name fits in 100 columns', () => {
+    // A fresh `cascivo create app` failed its own format:check: the tag was always split.
+    for (const framework of [undefined, 'astro', 'cloudflare'] as const) {
+      const line = shell('app', framework)
+        .split('\n')
+        .find((l) => l.includes('<AppShell'))!
+      expect(line).toMatch(/^ {4}<AppShell header=\{.*\} nav=\{.*\}>$/)
+      expect(line.length).toBeLessThanOrEqual(100)
+    }
+  })
+
+  it('splits it over its attributes when the name makes it too long', () => {
+    expect(shell('northwind-traders-internal-ops')).toContain('    <AppShell\n      header=')
+  })
+})
+
 describe('buildScaffold — astro', () => {
   const files = buildScaffold({
     name: 'My App',
@@ -1268,6 +1293,94 @@ describe('buildScaffold — cloudflare --example checkout', () => {
     expect(build(['checkout'], { auth: 'email' }).get('worker/index.ts')).toContain(
       'EMAIL: SignInSender & ReceiptSender',
     )
+  })
+})
+
+describe('buildScaffold — cloudflare --example checkout --auth email (billing)', () => {
+  const build = (examples: Example[], auth?: 'email') =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        examples,
+        ...(auth ? { auth } : {}),
+      }),
+    )
+  const map = build(['checkout'], 'email')
+
+  it('adds /billing only when there are accounts to bill', () => {
+    expect(map.get('src/routes/billing.tsx')).toBeDefined()
+    expect(map.get('worker/billing.ts')).toBeDefined()
+    expect(map.get('src/App.tsx')).toContain("href: '/billing'")
+    const anonymous = build(['checkout'])
+    expect(anonymous.get('worker/billing.ts')).toBeUndefined()
+    expect(anonymous.get('README.md')).toContain('--example checkout --auth email')
+  })
+
+  it('names the user in server-set metadata, never in client_reference_id', () => {
+    const billing = map.get('worker/billing.ts')!
+    expect(billing).toContain('subscriptionMetadata: { user: user.id }')
+    expect(billing).toContain("const userId = subscription.metadata['user']")
+    expect(billing).toContain("if (subscription.metadata['user'] !== user.id) {")
+  })
+
+  it('stores what Stripe says now, and never lets an old subscription end a live one', () => {
+    const billing = map.get('worker/billing.ts')!
+    expect(billing).toContain(
+      'await store(env.DB, await stripeOf(env).retrieveSubscription(subscriptionId))',
+    )
+    expect(billing).toContain("OR billing.status NOT IN ('active', 'trialing', 'past_due')")
+  })
+
+  it('routes subscription events from the Stripe webhook into billing', () => {
+    expect(map.get('worker/index.ts')).toContain('billingStore.syncSubscription(env, id)')
+    expect(build(['checkout']).get('worker/index.ts')).toContain(
+      'return await orderStore.receiveStripe(request, env)',
+    )
+    expect(map.get('worker/checkout.ts')).toContain(
+      "if (event.kind === 'subscription') await onSubscription?.(event.subscription.id)",
+    )
+  })
+})
+
+describe('buildScaffold — secrets for the Deploy to Cloudflare button', () => {
+  const build = (examples: Example[]) =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        examples,
+      }),
+    )
+
+  it('lists every local secret, with no value, in a committed .dev.vars.example', () => {
+    const map = build(['webhooks', 'checkout', 'newsletter'])
+    const example = map.get('.dev.vars.example')!
+    const keys = (text: string) =>
+      text
+        .split('\n')
+        .filter((l) => /^[A-Z_]+=/.test(l))
+        .map((l) => l.split('=')[0])
+    expect(keys(example)).toEqual(keys(map.get('.dev.vars')!))
+    expect(example).not.toMatch(/^[A-Z_]+=.+$/m)
+    expect(map.get('.gitignore')).toContain('.dev.vars*\n!.dev.vars.example\n')
+  })
+
+  it('describes each setting in package.json for the button', () => {
+    const pkg = JSON.parse(build(['checkout']).get('package.json')!) as {
+      cloudflare: { bindings: Record<string, { description: string }> }
+    }
+    expect(Object.keys(pkg.cloudflare.bindings)).toEqual([
+      'STRIPE_SECRET_KEY',
+      'STRIPE_WEBHOOK_SECRET',
+      'RECEIPT_FROM',
+    ])
+    expect(JSON.parse(build([]).get('package.json')!)).not.toHaveProperty('cloudflare')
+    expect(build([]).get('.dev.vars.example')).toBeUndefined()
   })
 })
 

@@ -1,12 +1,19 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest'
 import { verifyWebhook } from './guard'
-import { StripeError, createStripe, parseCheckoutSession, parseStripeEvent } from './stripe'
+import {
+  StripeError,
+  createStripe,
+  parseCheckoutSession,
+  parseStripeEvent,
+  parseSubscription,
+} from './stripe'
 
 /** A Checkout Session as Stripe's API returns it, trimmed to what matters here. */
 const session = (overrides: Record<string, unknown> = {}) => ({
   id: 'cs_test_a1',
   object: 'checkout.session',
+  mode: 'payment',
   url: 'https://checkout.stripe.com/c/pay/cs_test_a1',
   status: 'open',
   payment_status: 'unpaid',
@@ -128,6 +135,105 @@ describe('createStripe', () => {
 
   it('refuses to start without a key, so an unset secret fails loudly', () => {
     expect(() => createStripe('')).toThrow(/no secret key/)
+  })
+})
+
+/** A subscription as Stripe's API returns it, trimmed. */
+const subscription = (overrides: Record<string, unknown> = {}) => ({
+  id: 'sub_1',
+  object: 'subscription',
+  status: 'active',
+  customer: 'cus_1',
+  cancel_at_period_end: false,
+  items: { data: [{ price: { id: 'price_pro' }, current_period_end: 1800000000 }] },
+  metadata: { user: 'u-1' },
+  livemode: false,
+  ...overrides,
+})
+
+describe('subscriptions', () => {
+  it('opens a subscription checkout with a recurring price and server-set metadata', async () => {
+    const { calls, fetch } = stubFetch(() =>
+      Response.json(session({ mode: 'subscription', customer: 'cus_1', subscription: null })),
+    )
+    await createStripe('sk_test_123', { fetch }).createCheckoutSession({
+      mode: 'subscription',
+      lineItems: [{ name: 'Pro', amount: 900, currency: 'eur', quantity: 1, interval: 'month' }],
+      successUrl: 'https://app.example/billing',
+      cancelUrl: 'https://app.example/billing',
+      customer: 'cus_1',
+      subscriptionMetadata: { user: 'u-1' },
+    })
+    const form = Object.fromEntries(new URLSearchParams(String(calls[0]!.init.body)))
+    expect(form).toMatchObject({
+      mode: 'subscription',
+      customer: 'cus_1',
+      'subscription_data[metadata][user]': 'u-1',
+      'line_items[0][price_data][recurring][interval]': 'month',
+    })
+  })
+
+  it('reads a subscription, with its period on the subscription or on its items', async () => {
+    const { calls, fetch } = stubFetch(() => Response.json(subscription()))
+    const read = await createStripe('sk_test_123', { fetch }).retrieveSubscription('sub_1')
+    expect(calls[0]!.url).toBe('https://api.stripe.com/v1/subscriptions/sub_1')
+    expect(read).toEqual({
+      id: 'sub_1',
+      status: 'active',
+      customerId: 'cus_1',
+      currentPeriodEnd: 1800000000,
+      cancelAtPeriodEnd: false,
+      priceId: 'price_pro',
+      metadata: { user: 'u-1' },
+      livemode: false,
+    })
+    // Older API versions: the period on the subscription, the customer expanded.
+    expect(
+      parseSubscription(
+        subscription({
+          current_period_end: 1700000000,
+          customer: { id: 'cus_2', object: 'customer' },
+        }),
+      ),
+    ).toMatchObject({ currentPeriodEnd: 1700000000, customerId: 'cus_2' })
+    expect(() => parseSubscription(subscription({ status: 'mystery' }))).toThrow(/unknown status/)
+    expect(() => parseSubscription(subscription({ customer: null }))).toThrow(/no customer/)
+  })
+
+  it('opens the Customer Portal for a customer', async () => {
+    const { calls, fetch } = stubFetch(() =>
+      Response.json({ object: 'billing_portal.session', url: 'https://billing.stripe.com/p/1' }),
+    )
+    const portal = await createStripe('sk_test_123', { fetch }).createPortalSession({
+      customer: 'cus_1',
+      returnUrl: 'https://app.example/billing',
+    })
+    expect(portal).toEqual({ url: 'https://billing.stripe.com/p/1' })
+    expect(calls[0]!.url).toBe('https://api.stripe.com/v1/billing_portal/sessions')
+    expect(Object.fromEntries(new URLSearchParams(String(calls[0]!.init.body)))).toEqual({
+      customer: 'cus_1',
+      return_url: 'https://app.example/billing',
+    })
+  })
+
+  it('types subscription events, with the subscription and the session’s ids', () => {
+    const body = JSON.stringify({
+      id: 'evt_2',
+      object: 'event',
+      type: 'customer.subscription.deleted',
+      created: 1700000000,
+      data: { object: subscription({ status: 'canceled' }) },
+    })
+    expect(parseStripeEvent(body)).toMatchObject({
+      kind: 'subscription',
+      type: 'customer.subscription.deleted',
+      subscription: { status: 'canceled', metadata: { user: 'u-1' } },
+    })
+    expect(
+      parseCheckoutSession(
+        session({ mode: 'subscription', customer: 'cus_1', subscription: { id: 'sub_1' } }),
+      ),
+    ).toMatchObject({ mode: 'subscription', customerId: 'cus_1', subscriptionId: 'sub_1' })
   })
 })
 

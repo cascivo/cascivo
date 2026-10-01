@@ -57,11 +57,13 @@ export type CheckoutLineItem =
       /** Three-letter ISO code, lowercase: `eur`, `usd`. */
       currency: string
       quantity: number
+      /** Bills it every interval: a recurring price, for `mode: 'subscription'`. */
+      interval?: 'day' | 'week' | 'month' | 'year'
     }
 
 export interface CheckoutSessionParams {
-  /** A one-off payment. */
-  mode: 'payment'
+  /** A one-off payment, or a subscription (its line items need recurring prices). */
+  mode: 'payment' | 'subscription'
   lineItems: CheckoutLineItem[]
   /** Where Stripe sends the buyer after paying. */
   successUrl: string
@@ -69,13 +71,27 @@ export interface CheckoutSessionParams {
   cancelUrl: string
   /** Fills in the email field on Stripe's page. */
   customerEmail?: string
-  /** Your own id for this purchase; every event about the session carries it back. */
+  /**
+   * An existing Stripe customer (`cus_…`), such as a returning subscriber's, so their
+   * subscriptions and invoices stay in one place. Use it instead of `customerEmail`.
+   */
+  customer?: string
+  /**
+   * Your own id for this purchase; every event about the session carries it back. A buyer can
+   * set it on a Payment Link, so do not let it decide who gets what.
+   */
   clientReferenceId?: string
   metadata?: Record<string, string>
+  /**
+   * Copied onto the subscription Stripe creates (`mode: 'subscription'`), and so onto every
+   * subscription event. Only your server can set it, so it can name the user it belongs to.
+   */
+  subscriptionMetadata?: Record<string, string>
 }
 
 export interface CheckoutSession {
   id: string
+  mode: 'payment' | 'subscription' | 'setup'
   /** Stripe's hosted page, while the session is open. */
   url: string | null
   status: 'open' | 'complete' | 'expired'
@@ -90,6 +106,35 @@ export interface CheckoutSession {
   /** The email the buyer gave on Stripe's page. */
   customerEmail: string | null
   clientReferenceId: string | null
+  metadata: Record<string, string>
+  /** The Stripe customer (`cus_…`), once the session made or used one. */
+  customerId: string | null
+  /** The subscription (`sub_…`) a completed subscription session created. */
+  subscriptionId: string | null
+  livemode: boolean
+}
+
+export type SubscriptionStatus =
+  | 'incomplete'
+  | 'incomplete_expired'
+  | 'trialing'
+  | 'active'
+  | 'past_due'
+  | 'canceled'
+  | 'unpaid'
+  | 'paused'
+
+export interface Subscription {
+  id: string
+  /** `active` and `trialing` are paying (or about to); the rest are not, or not yet. */
+  status: SubscriptionStatus
+  customerId: string
+  /** Seconds since the epoch: when the current period ends and the next charge is due. */
+  currentPeriodEnd: number | null
+  /** Cancelled, but running until `currentPeriodEnd`. */
+  cancelAtPeriodEnd: boolean
+  /** The first item's price (`price_…`): which plan this is. */
+  priceId: string | null
   metadata: Record<string, string>
   livemode: boolean
 }
@@ -115,6 +160,14 @@ export interface Stripe {
   ): Promise<CheckoutSession>
   /** Reads a session back: whether it was paid, without waiting for the webhook. */
   retrieveCheckoutSession(id: string): Promise<CheckoutSession>
+  /** Reads a subscription's current state: what to store, whatever order events came in. */
+  retrieveSubscription(id: string): Promise<Subscription>
+  /**
+   * Opens Stripe's hosted Customer Portal for a customer: their plan, cards, invoices and
+   * cancellation. Send the browser to the `url`; Stripe sends it back to `returnUrl`. Save the
+   * portal's settings once in the dashboard first (test mode too), or Stripe refuses.
+   */
+  createPortalSession(params: { customer: string; returnUrl: string }): Promise<{ url: string }>
 }
 
 /** Stripe's form encoding: nested keys in brackets, `line_items[0][quantity]=1`. */
@@ -124,11 +177,15 @@ function formBody(params: CheckoutSessionParams): URLSearchParams {
   form.set('success_url', params.successUrl)
   form.set('cancel_url', params.cancelUrl)
   if (params.customerEmail !== undefined) form.set('customer_email', params.customerEmail)
+  if (params.customer !== undefined) form.set('customer', params.customer)
   if (params.clientReferenceId !== undefined) {
     form.set('client_reference_id', params.clientReferenceId)
   }
   for (const [key, value] of Object.entries(params.metadata ?? {})) {
     form.set(`metadata[${key}]`, value)
+  }
+  for (const [key, value] of Object.entries(params.subscriptionMetadata ?? {})) {
+    form.set(`subscription_data[metadata][${key}]`, value)
   }
   params.lineItems.forEach((item, i) => {
     const at = `line_items[${i}]`
@@ -140,6 +197,9 @@ function formBody(params: CheckoutSessionParams): URLSearchParams {
     form.set(`${at}[price_data][currency]`, item.currency)
     form.set(`${at}[price_data][unit_amount]`, String(item.amount))
     form.set(`${at}[price_data][product_data][name]`, item.name)
+    if (item.interval !== undefined) {
+      form.set(`${at}[price_data][recurring][interval]`, item.interval)
+    }
     if (item.description !== undefined) {
       form.set(`${at}[price_data][product_data][description]`, item.description)
     }
@@ -154,6 +214,33 @@ const stringOrNull = (value: unknown): string | null => (typeof value === 'strin
 
 const SESSION_STATUSES = ['open', 'complete', 'expired'] as const
 const PAYMENT_STATUSES = ['paid', 'unpaid', 'no_payment_required'] as const
+const SESSION_MODES = ['payment', 'subscription', 'setup'] as const
+const SUBSCRIPTION_STATUSES: readonly SubscriptionStatus[] = [
+  'incomplete',
+  'incomplete_expired',
+  'trialing',
+  'active',
+  'past_due',
+  'canceled',
+  'unpaid',
+  'paused',
+]
+
+/** An id Stripe sends as a string, or as the object itself when it was expanded. */
+function idOf(value: unknown): string | null {
+  if (typeof value === 'string') return value
+  return isRecord(value) ? stringOrNull(value['id']) : null
+}
+
+function stringMap(raw: unknown): Record<string, string> {
+  const out: Record<string, string> = {}
+  if (isRecord(raw)) {
+    for (const [key, value] of Object.entries(raw)) {
+      if (typeof value === 'string') out[key] = value
+    }
+  }
+  return out
+}
 
 function oneOf<T extends string>(list: readonly T[], value: unknown): T | null {
   return list.find((item) => item === value) ?? null
@@ -169,20 +256,15 @@ export function parseCheckoutSession(raw: unknown): CheckoutSession {
   }
   const status = oneOf(SESSION_STATUSES, raw['status'])
   const paymentStatus = oneOf(PAYMENT_STATUSES, raw['payment_status'])
-  if (!status || !paymentStatus) {
-    throw new Error(`Checkout Session ${raw['id']} has an unknown status`)
+  const mode = oneOf(SESSION_MODES, raw['mode'])
+  if (!status || !paymentStatus || !mode) {
+    throw new Error(`Checkout Session ${raw['id']} has an unknown status or mode`)
   }
   const details = raw['customer_details']
-  const metadata: Record<string, string> = {}
-  const rawMetadata = raw['metadata']
-  if (isRecord(rawMetadata)) {
-    for (const [key, value] of Object.entries(rawMetadata)) {
-      if (typeof value === 'string') metadata[key] = value
-    }
-  }
   const amount = raw['amount_total']
   return {
     id: raw['id'],
+    mode,
     url: stringOrNull(raw['url']),
     status,
     paymentStatus,
@@ -192,7 +274,39 @@ export function parseCheckoutSession(raw: unknown): CheckoutSession {
       (isRecord(details) ? stringOrNull(details['email']) : null) ??
       stringOrNull(raw['customer_email']),
     clientReferenceId: stringOrNull(raw['client_reference_id']),
-    metadata,
+    metadata: stringMap(raw['metadata']),
+    customerId: idOf(raw['customer']),
+    subscriptionId: idOf(raw['subscription']),
+    livemode: raw['livemode'] === true,
+  }
+}
+
+/**
+ * Parses a subscription as Stripe sends it. Newer API versions moved the billing period from
+ * the subscription onto its items; both places are read.
+ */
+export function parseSubscription(raw: unknown): Subscription {
+  if (!isRecord(raw) || raw['object'] !== 'subscription' || typeof raw['id'] !== 'string') {
+    throw new Error('Expected a Stripe subscription')
+  }
+  const status = oneOf(SUBSCRIPTION_STATUSES, raw['status'])
+  const customerId = idOf(raw['customer'])
+  if (!status || !customerId) {
+    throw new Error(`Subscription ${raw['id']} has an unknown status or no customer`)
+  }
+  const items = raw['items']
+  const list = isRecord(items) && Array.isArray(items['data']) ? items['data'] : []
+  const first: unknown = list[0]
+  const item = isRecord(first) ? first : {}
+  const periodEnd = raw['current_period_end'] ?? item['current_period_end']
+  return {
+    id: raw['id'],
+    status,
+    customerId,
+    currentPeriodEnd: typeof periodEnd === 'number' ? periodEnd : null,
+    cancelAtPeriodEnd: raw['cancel_at_period_end'] === true,
+    priceId: idOf(item['price']),
+    metadata: stringMap(raw['metadata']),
     livemode: raw['livemode'] === true,
   }
 }
@@ -249,6 +363,16 @@ export function createStripe(secretKey: string, options: StripeOptions = {}): St
     async retrieveCheckoutSession(id) {
       return parseCheckoutSession(await call('GET', `/checkout/sessions/${encodeURIComponent(id)}`))
     },
+    async retrieveSubscription(id) {
+      return parseSubscription(await call('GET', `/subscriptions/${encodeURIComponent(id)}`))
+    },
+    async createPortalSession({ customer, returnUrl }) {
+      const form = new URLSearchParams({ customer, return_url: returnUrl })
+      const raw = await call('POST', '/billing_portal/sessions', form)
+      const url = isRecord(raw) ? raw['url'] : null
+      if (typeof url !== 'string') throw new Error('Stripe returned no portal URL')
+      return { url }
+    },
   }
 }
 
@@ -274,8 +398,29 @@ interface EventBase {
   livemode: boolean
 }
 
+/** The subscription events a billing handler acts on. */
+export type SubscriptionEventType =
+  | 'customer.subscription.created'
+  | 'customer.subscription.updated'
+  | 'customer.subscription.deleted'
+
+const SUBSCRIPTION_EVENTS: readonly SubscriptionEventType[] = [
+  'customer.subscription.created',
+  'customer.subscription.updated',
+  'customer.subscription.deleted',
+]
+
 export type StripeEvent =
   | (EventBase & { kind: 'checkout'; type: CheckoutEventType; session: CheckoutSession })
+  /**
+   * The subscription as it was when the event was made. Events arrive out of order: read the
+   * current state back with `retrieveSubscription` before storing it.
+   */
+  | (EventBase & {
+      kind: 'subscription'
+      type: SubscriptionEventType
+      subscription: Subscription
+    })
   /** Any other event: acknowledge it, so Stripe stops retrying it. */
   | (EventBase & { kind: 'other'; type: string })
 
@@ -300,13 +445,23 @@ export function parseStripeEvent(body: string): StripeEvent {
     throw new Error('Expected a Stripe event')
   }
   const base = { id: raw['id'], created: raw['created'], livemode: raw['livemode'] === true }
+  const data = raw['data']
+  const object = isRecord(data) ? data['object'] : null
+  const subscriptionType = oneOf(SUBSCRIPTION_EVENTS, raw['type'])
+  if (subscriptionType) {
+    return {
+      ...base,
+      kind: 'subscription',
+      type: subscriptionType,
+      subscription: parseSubscription(object),
+    }
+  }
   const type = oneOf(CHECKOUT_EVENTS, raw['type'])
   if (!type) return { ...base, kind: 'other', type: raw['type'] }
-  const data = raw['data']
   return {
     ...base,
     kind: 'checkout',
     type,
-    session: parseCheckoutSession(isRecord(data) ? data['object'] : null),
+    session: parseCheckoutSession(object),
   }
 }

@@ -7111,7 +7111,13 @@
         }
       },
       "./stripe": {
-        "values": ["StripeError", "createStripe", "parseCheckoutSession", "parseStripeEvent"],
+        "values": [
+          "StripeError",
+          "createStripe",
+          "parseCheckoutSession",
+          "parseStripeEvent",
+          "parseSubscription"
+        ],
         "types": [
           "CheckoutEventType",
           "CheckoutLineItem",
@@ -7119,13 +7125,17 @@
           "CheckoutSessionParams",
           "Stripe",
           "StripeEvent",
-          "StripeOptions"
+          "StripeOptions",
+          "Subscription",
+          "SubscriptionEventType",
+          "SubscriptionStatus"
         ],
         "declarations": {
           "CheckoutEventType": "type = 'checkout.session.completed' | 'checkout.session.async_payment_succeeded' | 'checkout.session.async_payment_failed' | 'checkout.session.expired'",
-          "CheckoutLineItem": "type = { price: string; quantity: number; } | { name: string; description?: string; amount: number; currency: string; quantity: number; }",
+          "CheckoutLineItem": "type = { price: string; quantity: number; } | { name: string; description?: string; amount: number; currency: string; quantity: number; interval?: 'day' | 'week' | 'month' | 'year'; }",
           "CheckoutSession": {
             "id": "string",
+            "mode": "'payment' | 'subscription' | 'setup'",
             "url": "string | null",
             "status": "'open' | 'complete' | 'expired'",
             "paymentStatus": "'paid' | 'unpaid' | 'no_payment_required'",
@@ -7134,23 +7144,30 @@
             "customerEmail": "string | null",
             "clientReferenceId": "string | null",
             "metadata": "Record<string, string>",
+            "customerId": "string | null",
+            "subscriptionId": "string | null",
             "livemode": "boolean"
           },
           "CheckoutSessionParams": {
-            "mode": "'payment'",
+            "mode": "'payment' | 'subscription'",
             "lineItems": "CheckoutLineItem[]",
             "successUrl": "string",
             "cancelUrl": "string",
             "customerEmail?": "string",
+            "customer?": "string",
             "clientReferenceId?": "string",
-            "metadata?": "Record<string, string>"
+            "metadata?": "Record<string, string>",
+            "subscriptionMetadata?": "Record<string, string>"
           },
           "createStripe": "declare function createStripe(secretKey: string, options?: StripeOptions): Stripe",
           "parseCheckoutSession": "declare function parseCheckoutSession(raw: unknown): CheckoutSession",
           "parseStripeEvent": "declare function parseStripeEvent(body: string): StripeEvent",
+          "parseSubscription": "declare function parseSubscription(raw: unknown): Subscription",
           "Stripe": {
             "createCheckoutSession": "(params: CheckoutSessionParams, options?: { idempotencyKey?: string; }): Promise<CheckoutSession>",
-            "retrieveCheckoutSession": "(id: string): Promise<CheckoutSession>"
+            "retrieveCheckoutSession": "(id: string): Promise<CheckoutSession>",
+            "retrieveSubscription": "(id: string): Promise<Subscription>",
+            "createPortalSession": "(params: { customer: string; returnUrl: string; }): Promise<{ url: string; }>"
           },
           "StripeError": {
             "readonly status": "number",
@@ -7159,11 +7176,23 @@
             "constructor": "(status: number, message: string, type: string | null, code: string | null)",
             "(kind)": "class"
           },
-          "StripeEvent": "type = (EventBase & { kind: 'checkout'; type: CheckoutEventType; session: CheckoutSession; }) | (EventBase & { kind: 'other'; type: string; })",
+          "StripeEvent": "type = (EventBase & { kind: 'checkout'; type: CheckoutEventType; session: CheckoutSession; }) | (EventBase & { kind: 'subscription'; type: SubscriptionEventType; subscription: Subscription; }) | (EventBase & { kind: 'other'; type: string; })",
           "StripeOptions": {
             "apiVersion?": "string",
             "fetch?": "typeof fetch"
-          }
+          },
+          "Subscription": {
+            "id": "string",
+            "status": "SubscriptionStatus",
+            "customerId": "string",
+            "currentPeriodEnd": "number | null",
+            "cancelAtPeriodEnd": "boolean",
+            "priceId": "string | null",
+            "metadata": "Record<string, string>",
+            "livemode": "boolean"
+          },
+          "SubscriptionEventType": "type = 'customer.subscription.created' | 'customer.subscription.updated' | 'customer.subscription.deleted'",
+          "SubscriptionStatus": "type = 'incomplete' | 'incomplete_expired' | 'trialing' | 'active' | 'past_due' | 'canceled' | 'unpaid' | 'paused'"
         }
       },
       "./turnstile": {

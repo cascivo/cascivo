@@ -162,7 +162,13 @@
       "label": "Inbound webhooks",
       "blurb": "Signed GitHub deliveries, verified and shown live.",
       "group": "Operations",
-      "files": [".dev.vars", "src/routes/webhooks.tsx", "src/webhooks.ts", "worker/webhooks.ts"],
+      "files": [
+        ".dev.vars",
+        ".dev.vars.example",
+        "src/routes/webhooks.tsx",
+        "src/webhooks.ts",
+        "worker/webhooks.ts"
+      ],
       "pages": ["/webhooks"],
       "services": ["durable_objects", "d1_databases"],
       "react": false,
@@ -202,6 +208,7 @@
       "group": "Operations",
       "files": [
         ".dev.vars",
+        ".dev.vars.example",
         "src/checkout.ts",
         "src/routes/checkout.tsx",
         "src/routes/checkout/[order].tsx",
@@ -219,6 +226,7 @@
       "group": "Operations",
       "files": [
         ".dev.vars",
+        ".dev.vars.example",
         "src/newsletter.ts",
         "src/routes/newsletter.tsx",
         "src/routes/newsletter/confirm.tsx",

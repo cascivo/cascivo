@@ -15,6 +15,7 @@ the "Deploy to Cloudflare" button and `npm create cloudflare --template` use it 
 | [`cloudflare-board`](cloudflare-board) | `cloudflare`, plus a multiplayer `/board` page. Notes and cursors sync live through a Durable Object (`@cascivo/app/sync`). | [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cascivo/cascivo/tree/main/starters/cloudflare-board) |
 | [`cloudflare-agent`](cloudflare-agent) | `cloudflare`, plus an `/assistant` page. An AI agent (Cloudflare's Agents SDK on Workers AI) answers with real cascivo components, validated against their manifests. Runs on React. | [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cascivo/cascivo/tree/main/starters/cloudflare-agent) |
 | [`cloudflare-crud`](cloudflare-crud) | `cloudflare`, plus a `/customers` page: a D1 table behind `DataTable`'s server mode, with create, edit and delete. The Worker creates its own schema, so it deploys with no setup. | [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cascivo/cascivo/tree/main/starters/cloudflare-crud) |
+| [`shop`](shop) | `cloudflare`, plus a `/checkout` page that sells one product on Stripe Checkout. Orders live in D1, the order page updates when Stripe's webhook arrives, and paid orders get a receipt rendered with `@cascivo/email`. The button asks for your Stripe secret key; a test key works. | [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cascivo/cascivo/tree/main/starters/shop) |
 | [`stage`](stage) | The [Stage](../apps/examples/stage) example app: live Q&A and polls for talks. The audience asks, upvotes and votes from their phones, the host moderates, and a projector view shows the spotlight. One Durable Object per session. | [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cascivo/cascivo/tree/main/starters/stage) |
 
 ```sh
@@ -28,6 +29,10 @@ cd starters/cloudflare-board
 pnpm install   # or npm install
 pnpm dev
 ```
+
+A starter that needs secrets lists them, empty, in `.dev.vars.example`: the Deploy button asks
+for each one and shows the description from `cloudflare.bindings` in `package.json`. Locally,
+`cp .dev.vars.example .dev.vars` and fill them in.
 
 Each starter has its own `pnpm-workspace.yaml`. Without it, `pnpm install` would install the
 cascivo monorepo instead of the starter, and `pnpm dev` would fail to resolve

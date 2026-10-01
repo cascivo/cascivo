@@ -212,6 +212,21 @@ Shipped next:
   credentials, the Worker reached the real SES endpoint, which refused the key
   (`UnrecognizedClientException`). A real send and a real SNS delivery still need an account.
 
+Then the rest of the plan:
+
+- Subscriptions: `@cascivo/app/stripe` gained subscription checkouts, `retrieveSubscription`,
+  `createPortalSession` and the `customer.subscription.*` events. `--example checkout --auth
+  email` adds `/billing`. The user is named in subscription metadata (server-set), every event
+  is read back from Stripe before it is stored, and a late event about an older subscription
+  cannot end a live one. Checked in workerd against a mock Stripe API: the cross-account sync
+  is refused, a stale payload loses to the read-back state, the portal opens for the right
+  customer, and re-subscribing reuses the customer.
+- `starters/shop`, from `--example checkout`. Scaffolds now write `.dev.vars.example` (the
+  secrets the Deploy button asks for) and `cloudflare.bindings` descriptions in `package.json`.
+  The starter builds and passes `wrangler deploy --dry-run`; its card waits for the release
+  that publishes `@cascivo/app/stripe`. The button itself was not run from here.
+- A fresh app with a short name no longer fails its own `format:check`.
+
 What cannot be proven in this container: a real SES send, a real SNS subscription and a live
 Stripe account. As with the platform spike, those need a test account. Everything else
 (signing, verification, parsing, the scaffold under `vite dev`) can be tested here.

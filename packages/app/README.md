@@ -755,12 +755,41 @@ Payment Link), and treat `completed` with `paymentStatus: 'unpaid'` as not paid 
 debit settles days later, with `async_payment_succeeded`). Reading the session back with
 `retrieveCheckoutSession` on the success page confirms a payment before the webhook arrives.
 
-For subscriptions, the Customer Portal or anything else in Stripe's API, install the `stripe`
-package; it runs on Workers too.
+**Subscriptions.** `mode: 'subscription'` with a recurring line item (`interval: 'month'`)
+opens a subscription checkout. Name the user in `subscriptionMetadata`: only your server sets
+it, so every subscription event can be trusted to say whose plan it is.
+
+```ts
+await stripe.createCheckoutSession({
+  mode: 'subscription',
+  lineItems: [{ name: 'Pro', amount: 900, currency: 'eur', interval: 'month', quantity: 1 }],
+  successUrl: `${origin}/billing?session={CHECKOUT_SESSION_ID}`,
+  cancelUrl: `${origin}/billing`,
+  customer: existingCustomerId, // or customerEmail for a first subscription
+  subscriptionMetadata: { user: user.id },
+})
+
+// The webhook: events arrive out of order, so store what Stripe says now, not the payload.
+if (event.kind === 'subscription') {
+  const current = await stripe.retrieveSubscription(event.subscription.id)
+  // current.status, current.currentPeriodEnd, current.cancelAtPeriodEnd, current.metadata.user
+}
+
+// Plan changes, cards, invoices and cancellation: Stripe's hosted Customer Portal.
+const { url } = await stripe.createPortalSession({ customer, returnUrl: `${origin}/billing` })
+```
+
+`parseStripeEvent` types `customer.subscription.created`, `…updated` and `…deleted` as
+`{ kind: 'subscription', subscription }`, and a Checkout session carries `mode`, `customerId`
+and `subscriptionId`. `parseSubscription` reads the billing period from the subscription or,
+in newer API versions, from its first item. Save the Customer Portal's settings once in the
+dashboard (test mode too) before opening it. For anything else in Stripe's API, install the
+`stripe` package; it runs on Workers too.
 
 `cascivo create --framework cloudflare --example checkout` scaffolds all of it: a product
 page, the order page that updates live when the webhook arrives, orders in D1, and a receipt
-rendered with `@cascivo/email`.
+rendered with `@cascivo/email`. With `--auth email` it adds `/billing`: a monthly plan, kept in
+step by the subscription events, and the billing portal.
 
 ## Email with Amazon SES — `@cascivo/app/ses`
 

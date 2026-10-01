@@ -482,10 +482,7 @@ export interface ShellProps {
  */
 export function Shell({ navItems, children }: ShellProps) {
   return (
-    <AppShell
-      header={<ShellHeader brand={{ name: '${brandName(opts.name).replace(/'/g, "\\'")}' }} />}
-      nav={<SideNav items={navItems} />}
-    >
+${appShellOpenTag(opts, 'navItems')}
       {children}
     </AppShell>
   )
@@ -563,6 +560,18 @@ export default [
 }
 
 /** Prettier config matching the style the scaffold's own generated source is written in. */
+/**
+ * The shell's `<AppShell …>` opening tag, laid out as Prettier lays it out: on one line when it
+ * fits in the 100-column print width (a short app name), split over its attributes otherwise.
+ * Always writing the split form made a fresh app with a short name fail its own format:check.
+ */
+function appShellOpenTag(opts: ScaffoldOptions, items: string): string {
+  const header = `header={<ShellHeader brand={{ name: '${brandName(opts.name).replace(/'/g, "\\'")}' }} />}`
+  const nav = `nav={<SideNav items={${items}} />}`
+  const line = `    <AppShell ${header} ${nav}>`
+  return line.length <= 100 ? line : `    <AppShell\n      ${header}\n      ${nav}\n    >`
+}
+
 function prettierrc(): string {
   return JSON.stringify({ semi: false, singleQuote: true, printWidth: 100 }, null, 2) + '\n'
 }
@@ -933,10 +942,7 @@ export function Shell({ activePath, children }: ShellProps) {
   }))
 
   return (
-    <AppShell
-      header={<ShellHeader brand={{ name: '${brandName(opts.name).replace(/'/g, "\\'")}' }} />}
-      nav={<SideNav items={items} />}
-    >
+${appShellOpenTag(opts, 'items')}
       {children}
     </AppShell>
   )
@@ -1175,7 +1181,14 @@ function cfPackageJson(opts: ScaffoldOptions): string {
       wrangler: '^4.143.0',
     },
   }
-  return JSON.stringify(pkg, null, 2) + '\n'
+  const bindings = cfBindingDescriptions(opts)
+  return (
+    JSON.stringify(
+      Object.keys(bindings).length > 0 ? { ...pkg, cloudflare: { bindings } } : pkg,
+      null,
+      2,
+    ) + '\n'
+  )
 }
 
 function cfTsconfig(opts: ScaffoldOptions): string {
@@ -1551,6 +1564,11 @@ ${q.consumer.map((line) => `        ${line},`).join('\n')}
   },`
 }
 
+/** A subscription plan needs an account to belong to: checkout with --auth email bills one. */
+function usesBilling(opts: ScaffoldOptions): boolean {
+  return hasExample(opts, 'checkout') && opts.auth === 'email'
+}
+
 /** The newsletter's queue, named after the app like every other resource. */
 function newsletterQueue(opts: ScaffoldOptions): string {
   return `${packageName(opts.name)}-newsletter`
@@ -1653,8 +1671,9 @@ function cfApiTs(opts: ScaffoldOptions): string {
   const search = hasExample(opts, 'search')
   const checkout = hasExample(opts, 'checkout')
   const newsletter = hasExample(opts, 'newsletter')
+  const billing = usesBilling(opts)
   return `import { defineApi, ${imports || files || usage || crud || live || publish || webhooks || digest || search || checkout || newsletter ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
-${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}${live ? `import { ops, parseAccepted } from './ops'\n` : ''}${publish ? `import { parsePage, parsePageInput, parsePageSummary } from './pages'\n` : ''}${webhooks ? `import { parseDeliveries, parseTestResult } from './webhooks'\n` : ''}${digest ? `import { parseDigestRun, parseDigestRuns } from './digest'\n` : ''}${search ? `import { parseIndexed, parseSearchQuery, parseSearchResult } from './search'\n` : ''}${checkout ? `import { parseCheckoutStarted, parseOrder } from './checkout'\n` : ''}${
+${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}${live ? `import { ops, parseAccepted } from './ops'\n` : ''}${publish ? `import { parsePage, parsePageInput, parsePageSummary } from './pages'\n` : ''}${webhooks ? `import { parseDeliveries, parseTestResult } from './webhooks'\n` : ''}${digest ? `import { parseDigestRun, parseDigestRuns } from './digest'\n` : ''}${search ? `import { parseIndexed, parseSearchQuery, parseSearchResult } from './search'\n` : ''}${billing ? `import { parseBilling, parseRedirect, parseSyncInput } from './billing'\n` : ''}${checkout ? `import { parseCheckoutStarted, parseOrder } from './checkout'\n` : ''}${
     newsletter
       ? `import {
   parseConfirmed,
@@ -1791,6 +1810,28 @@ export const api = defineApi({
   getOrder: endpoint({ method: 'GET', path: '/api/orders/:id', output: parseOrder }),`
       : ''
   }${
+    billing
+      ? `
+  // The signed-in user's subscription (worker/billing.ts), and the ways to change it.
+  getBilling: endpoint({ method: 'GET', path: '/api/billing', output: parseBilling }),
+  startSubscription: endpoint({
+    method: 'POST',
+    path: '/api/billing/subscribe',
+    output: parseRedirect,
+  }),
+  syncBilling: endpoint({
+    method: 'POST',
+    path: '/api/billing/sync',
+    input: parseSyncInput,
+    output: parseBilling,
+  }),
+  openBillingPortal: endpoint({
+    method: 'POST',
+    path: '/api/billing/portal',
+    output: parseRedirect,
+  }),`
+      : ''
+  }${
     newsletter
       ? `
   // Signing up sends a confirmation link; only confirmed readers get issues.
@@ -1871,6 +1912,7 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const search = hasExample(opts, 'search')
   const checkout = hasExample(opts, 'checkout')
   const newsletter = hasExample(opts, 'newsletter')
+  const billing = usesBilling(opts)
   const d1 = usesD1(opts)
   const ai = usesAgents(opts)
   const limiter = usesLimiter(opts)
@@ -1928,7 +1970,7 @@ import type { BrowserWorker } from '@cloudflare/puppeteer'
       : ''
   }${ai ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\nimport { renderPageHtml } from './page-html'\nimport type { Assets } from './page-html'\n${exports ? `import { pagePreview } from './page-preview'\n` : ''}` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${search ? `import * as articleSearch from './search'\nimport type { ${ai ? '' : 'Embedder, '}VectorIndex } from './search'\n` : ''}${checkout ? `import * as orderStore from './checkout'\nimport type { ReceiptSender } from './checkout'\nimport { ORDER_ID, orderRoom } from '../src/checkout'\n` : ''}${newsletter ? `import * as newsletterStore from './newsletter'\nimport type { NewsletterBatch, NewsletterQueue } from './newsletter'\nimport { ISSUE_ID, issueRoom } from '../src/newsletter'\n` : ''}${
+${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\nimport { renderPageHtml } from './page-html'\nimport type { Assets } from './page-html'\n${exports ? `import { pagePreview } from './page-preview'\n` : ''}` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${search ? `import * as articleSearch from './search'\nimport type { ${ai ? '' : 'Embedder, '}VectorIndex } from './search'\n` : ''}${billing ? `import * as billingStore from './billing'\n` : ''}${checkout ? `import * as orderStore from './checkout'\nimport type { ReceiptSender } from './checkout'\nimport { ORDER_ID, orderRoom } from '../src/checkout'\n` : ''}${newsletter ? `import * as newsletterStore from './newsletter'\nimport type { NewsletterBatch, NewsletterQueue } from './newsletter'\nimport { ISSUE_ID, issueRoom } from '../src/newsletter'\n` : ''}${
     rooms
       ? `
 // The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
@@ -2001,6 +2043,7 @@ ${[
   digest ? 'a digest sent now (it starts a browser)' : '',
   search ? 'indexing the articles (it embeds every one)' : '',
   checkout ? 'a checkout started (it creates a Stripe session and an order)' : '',
+  billing ? 'a subscription checkout or billing portal opened' : '',
   newsletter ? 'a newsletter sign-up (it sends an email), and each use of the newsletter key' : '',
   files ? 'a new upload (not each part of one)' : '',
   exports ? 'an export' : '',
@@ -2025,6 +2068,13 @@ function countsAgainstLimit(request: Request): boolean {
     checkout
       ? `
   if (url.pathname === '/api/checkout') return request.method === 'POST'`
+      : ''
+  }${
+    billing
+      ? `
+  if (url.pathname === '/api/billing/subscribe' || url.pathname === '/api/billing/portal') {
+    return request.method === 'POST'
+  }`
       : ''
   }${
     newsletter
@@ -2123,6 +2173,16 @@ const handleApi = createHandler<typeof api, Env>(api, {
   startCheckout: ({ request, env }) => orderStore.startCheckout(env, new URL(request.url).origin),
   getOrder: ({ params, request, env }) =>
     orderStore.getOrder(env, params.id, new URL(request.url).origin),`
+      : ''
+  }${
+    billing
+      ? `
+  getBilling: ({ request, env }) => billingStore.getBilling(env, request),
+  startSubscription: ({ request, env }) =>
+    billingStore.startSubscription(env, request, new URL(request.url).origin),
+  syncBilling: ({ body, request, env }) => billingStore.syncBilling(env, request, body.sessionId),
+  openBillingPortal: ({ request, env }) =>
+    billingStore.openPortal(env, request, new URL(request.url).origin),`
       : ''
   }${
     newsletter
@@ -2330,7 +2390,13 @@ ${
     // Stripe's webhook (worker/checkout.ts); a bad signature is a 401.
     if (checkoutPath === orderStore.STRIPE_WEBHOOK_PATH && request.method === 'POST') {
       try {
-        return await orderStore.receiveStripe(request, env)
+        return await orderStore.receiveStripe(request, env${
+          billing
+            ? `, (id) =>
+          billingStore.syncSubscription(env, id),
+        `
+            : ''
+        })
       } catch (error) {
         return guardResponse(error)
       }
@@ -2581,6 +2647,7 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
   if (hasExample(opts, 'digest')) items.push({ label: 'Digest', href: '/digest' })
   if (hasExample(opts, 'search')) items.push({ label: 'Search', href: '/search' })
   if (hasExample(opts, 'checkout')) items.push({ label: 'Checkout', href: '/checkout' })
+  if (usesBilling(opts)) items.push({ label: 'Billing', href: '/billing' })
   if (hasExample(opts, 'newsletter')) {
     items.push({ label: 'Newsletter', href: '/newsletter' })
     items.push({ label: 'Send newsletter', href: '/newsletter/send' })
@@ -5398,7 +5465,7 @@ export interface CheckoutEnv {
 
 const COLUMNS = 'id, status, amount, currency, created_at AS createdAt, paid_at AS paidAt'
 
-function stripeOf(env: CheckoutEnv): Stripe {
+export function stripeOf(env: { STRIPE_SECRET_KEY?: string }): Stripe {
   if (!env.STRIPE_SECRET_KEY) {
     throw new HttpError(
       503,
@@ -5409,7 +5476,7 @@ function stripeOf(env: CheckoutEnv): Stripe {
 }
 
 /** Stripe's refusal, for the page: its message in vite dev, a pointer to the log deployed. */
-function refused(error: unknown): never {
+export function refused(error: unknown): never {
   if (!(error instanceof StripeError)) throw error
   console.error('[checkout] Stripe refused:', error.status, error.code, error.message)
   throw new HttpError(
@@ -5548,17 +5615,25 @@ async function sendReceipt(env: CheckoutEnv, order: Order, to: string, origin: s
 
 /**
  * Stripe's webhook: verified against STRIPE_WEBHOOK_SECRET before anything in it is read,
- * then each Checkout event settles its order. Other events are acknowledged, so Stripe stops
- * sending them.
+ * then each Checkout event settles its order. Subscription events, and completed subscription
+ * checkouts, go to \`onSubscription\` when the app bills subscriptions (worker/billing.ts).
+ * Other events are acknowledged, so Stripe stops sending them.
  */
-export async function receiveStripe(request: Request, env: CheckoutEnv): Promise<Response> {
+export async function receiveStripe(
+  request: Request,
+  env: CheckoutEnv,
+  onSubscription?: (subscriptionId: string) => Promise<void>,
+): Promise<Response> {
   if (!env.STRIPE_WEBHOOK_SECRET) throw new HttpError(503, 'Set STRIPE_WEBHOOK_SECRET (README)')
   const { body } = await verifyWebhook(request, {
     scheme: 'stripe',
     secret: env.STRIPE_WEBHOOK_SECRET,
   })
   const event = parseStripeEvent(body)
-  if (event.kind === 'checkout') {
+  if (event.kind === 'subscription') await onSubscription?.(event.subscription.id)
+  if (event.kind === 'checkout' && event.session.mode === 'subscription') {
+    if (event.session.subscriptionId) await onSubscription?.(event.session.subscriptionId)
+  } else if (event.kind === 'checkout') {
     const status = statusAfter(event.type, event.session)
     if (status) await settle(env, event.session, status, new URL(request.url).origin)
   }
@@ -6881,6 +6956,465 @@ export default function SendNewsletter() {
             </Flex>
           ))}
         </Flex>
+      ) : null}
+    </Flex>
+  )
+}
+`
+}
+
+/* --- `--example checkout` with `--auth email`: a subscription plan and Stripe's portal --- */
+
+function cfBillingTs(): string {
+  return `/**
+ * The subscription plan /billing sells, shared by the Worker (worker/billing.ts) and the page.
+ * A subscription belongs to a signed-in user, so this exists only with --auth email.
+ */
+
+/** The plan. The Worker sends this to Stripe; the page only displays it. */
+export const PLAN = {
+  name: 'Pro',
+  description: 'Everything in the app, billed monthly. Cancel any time from the billing portal.',
+  /** In the currency's smallest unit, per interval: 900 is €9.00. */
+  amount: 900,
+  currency: 'eur',
+  interval: 'month' as const,
+}
+
+/** \`none\` before the first subscription; otherwise Stripe's subscription status. */
+export type BillingStatus =
+  | 'none'
+  | 'incomplete'
+  | 'incomplete_expired'
+  | 'trialing'
+  | 'active'
+  | 'past_due'
+  | 'canceled'
+  | 'unpaid'
+  | 'paused'
+
+const STATUSES: readonly BillingStatus[] = [
+  'none',
+  'incomplete',
+  'incomplete_expired',
+  'trialing',
+  'active',
+  'past_due',
+  'canceled',
+  'unpaid',
+  'paused',
+]
+
+export interface Billing {
+  status: BillingStatus
+  /** Whether the plan's features are on: the subscription is active or trialing. */
+  active: boolean
+  /** When the current period ends: the next charge, or the end of a cancelled plan. */
+  currentPeriodEnd: string | null
+  /** Cancelled, but running until currentPeriodEnd. */
+  cancelAtPeriodEnd: boolean
+  /** Has a Stripe customer, so the billing portal can open. */
+  canManage: boolean
+}
+
+/** The statuses that unlock the plan. Check this in the Worker before serving a paid feature. */
+export const isActive = (status: BillingStatus) => status === 'active' || status === 'trialing'
+
+export function parseBilling(raw: unknown): Billing {
+  if (typeof raw === 'object' && raw !== null) {
+    const { status, active, currentPeriodEnd, cancelAtPeriodEnd, canManage } = raw as Record<
+      string,
+      unknown
+    >
+    const known = STATUSES.find((s) => s === status)
+    if (
+      known &&
+      typeof active === 'boolean' &&
+      (currentPeriodEnd === null || typeof currentPeriodEnd === 'string') &&
+      typeof cancelAtPeriodEnd === 'boolean' &&
+      typeof canManage === 'boolean'
+    ) {
+      return { status: known, active, currentPeriodEnd, cancelAtPeriodEnd, canManage }
+    }
+  }
+  throw new Error('Malformed billing')
+}
+
+/** Where to send the browser next: Stripe's checkout or its billing portal. */
+export function parseRedirect(raw: unknown): { url: string } {
+  if (typeof raw === 'object' && raw !== null) {
+    const { url } = raw as Record<string, unknown>
+    if (typeof url === 'string' && url.startsWith('https://')) return { url }
+  }
+  throw new Error('Malformed redirect')
+}
+
+export function parseSyncInput(raw: unknown): { sessionId: string } {
+  if (typeof raw === 'object' && raw !== null) {
+    const { sessionId } = raw as Record<string, unknown>
+    if (typeof sessionId === 'string' && /^cs_[\\w]{1,250}$/.test(sessionId)) return { sessionId }
+  }
+  throw new Error('Expected { sessionId }: a Checkout Session id')
+}
+`
+}
+
+function cfBillingWorkerTs(): string {
+  return `import { HttpError } from '@cascivo/app/api'
+import { requireUser } from '@cascivo/app/auth-server'
+import { migrate, queryRows } from '@cascivo/app/db'
+import type { Database } from '@cascivo/app/db'
+import type { Subscription } from '@cascivo/app/stripe'
+import { PLAN, isActive, parseBilling } from '../src/billing'
+import type { Billing } from '../src/billing'
+import { refused, stripeOf } from './checkout'
+
+const migrations = [
+  {
+    id: '0001_billing',
+    statements: [
+      \`CREATE TABLE billing (
+        user_id TEXT PRIMARY KEY,
+        customer_id TEXT,
+        subscription_id TEXT,
+        status TEXT NOT NULL,
+        current_period_end INTEGER,
+        cancel_at_period_end INTEGER NOT NULL DEFAULT 0,
+        updated_at TEXT NOT NULL
+      )\`,
+    ],
+  },
+]
+
+export interface BillingEnv {
+  DB: Database
+  STRIPE_SECRET_KEY?: string
+}
+
+interface Row {
+  status: string
+  customerId: string | null
+  currentPeriodEnd: number | null
+  cancelAtPeriodEnd: number
+}
+
+const cell = (raw: unknown, key: string): unknown =>
+  typeof raw === 'object' && raw !== null ? Reflect.get(raw, key) : undefined
+
+function parseRow(raw: unknown): Row {
+  const status = cell(raw, 'status')
+  const customerId = cell(raw, 'customerId')
+  const end = cell(raw, 'currentPeriodEnd')
+  if (typeof status !== 'string') throw new Error('Malformed billing row')
+  return {
+    status,
+    customerId: typeof customerId === 'string' ? customerId : null,
+    currentPeriodEnd: typeof end === 'number' ? end : null,
+    cancelAtPeriodEnd: Number(cell(raw, 'cancelAtPeriodEnd')),
+  }
+}
+
+async function readRow(db: Database, userId: string): Promise<Row | null> {
+  await migrate(db, migrations)
+  const [row] = await queryRows(
+    db,
+    \`SELECT status, customer_id AS customerId, current_period_end AS currentPeriodEnd,
+       cancel_at_period_end AS cancelAtPeriodEnd FROM billing WHERE user_id = ?\`,
+    [userId],
+    parseRow,
+  )
+  return row ?? null
+}
+
+/** A stored row as the page sees it; the status is checked against the known ones. */
+function toBilling(row: Row | null): Billing {
+  const billing = parseBilling({
+    status: row?.status ?? 'none',
+    active: false,
+    currentPeriodEnd:
+      row?.currentPeriodEnd != null ? new Date(row.currentPeriodEnd * 1000).toISOString() : null,
+    cancelAtPeriodEnd: row?.cancelAtPeriodEnd === 1,
+    canManage: row?.customerId != null,
+  })
+  return { ...billing, active: isActive(billing.status) }
+}
+
+/**
+ * Stores a subscription's current state for the user its metadata names. The metadata is set
+ * by startSubscription, server side: a subscription made any other way (a Payment Link, the
+ * dashboard) names no user here and is ignored. A different subscription replaces the stored
+ * one only when that one is over, so a late event about an old plan cannot end a new one.
+ */
+async function store(db: Database, subscription: Subscription): Promise<void> {
+  const userId = subscription.metadata['user']
+  if (!userId) return
+  await migrate(db, migrations)
+  await queryRows(
+    db,
+    \`INSERT INTO billing
+       (user_id, customer_id, subscription_id, status, current_period_end, cancel_at_period_end, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?)
+     ON CONFLICT (user_id) DO UPDATE SET
+       customer_id = excluded.customer_id, subscription_id = excluded.subscription_id,
+       status = excluded.status, current_period_end = excluded.current_period_end,
+       cancel_at_period_end = excluded.cancel_at_period_end, updated_at = excluded.updated_at
+     WHERE billing.subscription_id IS excluded.subscription_id
+       OR billing.status NOT IN ('active', 'trialing', 'past_due')
+     RETURNING user_id\`,
+    [
+      userId,
+      subscription.customerId,
+      subscription.id,
+      subscription.status,
+      subscription.currentPeriodEnd,
+      subscription.cancelAtPeriodEnd ? 1 : 0,
+      new Date().toISOString(),
+    ],
+    (raw) => raw,
+  )
+}
+
+/**
+ * The webhook's part (worker/checkout.ts passes subscription events here). The event's copy
+ * may be stale, since events arrive out of order: the subscription is read back from Stripe.
+ */
+export async function syncSubscription(env: BillingEnv, subscriptionId: string): Promise<void> {
+  await store(env.DB, await stripeOf(env).retrieveSubscription(subscriptionId))
+}
+
+/** The signed-in user's plan. */
+export async function getBilling(env: BillingEnv, request: Request): Promise<Billing> {
+  const user = await requireUser(env.DB, request)
+  return toBilling(await readRow(env.DB, user.id))
+}
+
+/** Opens a subscription checkout for PLAN, naming the user in the subscription's metadata. */
+export async function startSubscription(
+  env: BillingEnv,
+  request: Request,
+  origin: string,
+): Promise<{ url: string }> {
+  const user = await requireUser(env.DB, request)
+  const row = await readRow(env.DB, user.id)
+  if (row && toBilling(row).active) {
+    throw new HttpError(409, 'You already have the plan. Manage it in the billing portal.')
+  }
+  const stripe = stripeOf(env)
+  try {
+    const session = await stripe.createCheckoutSession({
+      mode: 'subscription',
+      lineItems: [{ ...PLAN, quantity: 1 }],
+      // Stripe fills in {CHECKOUT_SESSION_ID}, so the page can sync before any webhook.
+      successUrl: \`\${origin}/billing?session={CHECKOUT_SESSION_ID}\`,
+      cancelUrl: \`\${origin}/billing\`,
+      ...(row?.customerId ? { customer: row.customerId } : { customerEmail: user.email }),
+      clientReferenceId: user.id,
+      subscriptionMetadata: { user: user.id },
+    })
+    if (!session.url) throw new HttpError(502, 'Stripe returned no checkout page')
+    return { url: session.url }
+  } catch (error) {
+    if (error instanceof HttpError) throw error
+    refused(error)
+  }
+}
+
+/**
+ * Back from Stripe's checkout: reads the session and its subscription, so the page is right
+ * before the webhook arrives (or in \`vite dev\` without \`stripe listen\`). Only the user the
+ * subscription names can sync it.
+ */
+export async function syncBilling(
+  env: BillingEnv,
+  request: Request,
+  sessionId: string,
+): Promise<Billing> {
+  const user = await requireUser(env.DB, request)
+  const stripe = stripeOf(env)
+  try {
+    const session = await stripe.retrieveCheckoutSession(sessionId)
+    if (session.mode === 'subscription' && session.subscriptionId) {
+      const subscription = await stripe.retrieveSubscription(session.subscriptionId)
+      if (subscription.metadata['user'] !== user.id) {
+        throw new HttpError(403, 'This checkout belongs to another account')
+      }
+      await store(env.DB, subscription)
+    }
+  } catch (error) {
+    if (error instanceof HttpError) throw error
+    refused(error)
+  }
+  return toBilling(await readRow(env.DB, user.id))
+}
+
+/** Opens Stripe's Customer Portal: plan, card, invoices and cancellation, all hosted. */
+export async function openPortal(
+  env: BillingEnv,
+  request: Request,
+  origin: string,
+): Promise<{ url: string }> {
+  const user = await requireUser(env.DB, request)
+  const row = await readRow(env.DB, user.id)
+  if (!row?.customerId) throw new HttpError(409, 'Subscribe first: there is nothing to manage yet')
+  try {
+    return await stripeOf(env).createPortalSession({
+      customer: row.customerId,
+      returnUrl: \`\${origin}/billing\`,
+    })
+  } catch (error) {
+    refused(error)
+  }
+}
+`
+}
+
+function cfBillingRouteTsx(): string {
+  return `import { createClient } from '@cascivo/app/api'
+import {
+  Alert,
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  Flex,
+  Heading,
+  Link,
+  Spinner,
+  Text,
+  signal,
+  useSignalEffect,
+  useSignals,
+} from '@cascivo/react'
+import { api } from '../api'
+import { auth } from '../auth'
+import { PLAN } from '../billing'
+import type { Billing, BillingStatus } from '../billing'
+import { formatPrice } from '../checkout'
+import { router } from '../router'
+
+const client = createClient(api)
+const billing = signal<Billing | null>(null)
+const busy = signal<'subscribe' | 'portal' | null>(null)
+const failure = signal<string | null>(null)
+
+/**
+ * Loads the plan. Back from Stripe's checkout, the URL carries the session id: syncing it
+ * shows the new subscription at once, before the webhook. Then the id leaves the URL.
+ */
+async function load(): Promise<void> {
+  failure.value = null
+  try {
+    const sessionId = new URLSearchParams(router.search.peek()).get('session')
+    if (sessionId) {
+      billing.value = await client.syncBilling({ body: { sessionId } })
+      router.navigate('/billing', { replace: true })
+    } else {
+      billing.value = await client.getBilling()
+    }
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Could not load billing'
+  }
+}
+
+/** Both buttons leave for a Stripe page: checkout, or the billing portal. */
+async function leaveFor(kind: 'subscribe' | 'portal'): Promise<void> {
+  busy.value = kind
+  failure.value = null
+  try {
+    const { url } =
+      kind === 'subscribe' ? await client.startSubscription() : await client.openBillingPortal()
+    location.assign(url)
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Stripe did not open'
+    busy.value = null
+  }
+}
+
+const LABEL: Record<BillingStatus, string> = {
+  none: 'No plan',
+  incomplete: 'Payment pending',
+  incomplete_expired: 'Payment expired',
+  trialing: 'Trial',
+  active: 'Active',
+  past_due: 'Payment failed: retrying',
+  canceled: 'Cancelled',
+  unpaid: 'Unpaid',
+  paused: 'Paused',
+}
+
+export default function BillingPage() {
+  useSignals()
+  useSignalEffect(() => {
+    if (auth.user.value) void load()
+  })
+  const user = auth.user.value
+  const plan = billing.value
+
+  if (user === undefined) return <Spinner label="Loading" />
+  if (user === null) {
+    return (
+      <Flex gap={4}>
+        <Heading level={1}>Billing</Heading>
+        <Text>
+          <Link href="/account">Sign in</Link> to subscribe: a plan belongs to your account.
+        </Text>
+      </Flex>
+    )
+  }
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Billing</Heading>
+        <Text muted>
+          Paid on Stripe's hosted checkout; changed, paused or cancelled in Stripe's billing portal.
+          The Worker keeps your plan in step through Stripe's webhook.
+        </Text>
+      </Flex>
+      <Card>
+        <CardContent>
+          <Flex gap={3}>
+            <Flex direction="horizontal" align="center" gap={2} wrap>
+              <Heading level={2}>{PLAN.name}</Heading>
+              {plan ? (
+                <Badge variant={plan.active ? 'success' : 'secondary'}>{LABEL[plan.status]}</Badge>
+              ) : null}
+            </Flex>
+            <Text muted>{PLAN.description}</Text>
+            <Text size="lg">
+              {formatPrice(PLAN.amount, PLAN.currency)} a {PLAN.interval}
+            </Text>
+            {plan?.currentPeriodEnd ? (
+              <Text size="sm" muted>
+                {plan.cancelAtPeriodEnd ? 'Ends' : 'Renews'} on{' '}
+                {new Date(plan.currentPeriodEnd).toLocaleDateString()}
+              </Text>
+            ) : null}
+            <Flex direction="horizontal" gap={2} wrap>
+              {plan && !plan.active ? (
+                <Button
+                  loading={busy.value === 'subscribe'}
+                  onClick={() => void leaveFor('subscribe')}
+                >
+                  Subscribe
+                </Button>
+              ) : null}
+              {plan?.canManage ? (
+                <Button
+                  variant="secondary"
+                  loading={busy.value === 'portal'}
+                  onClick={() => void leaveFor('portal')}
+                >
+                  Manage billing
+                </Button>
+              ) : null}
+            </Flex>
+          </Flex>
+        </CardContent>
+      </Card>
+      {failure.value ? (
+        <Alert variant="destructive" title="Not done">
+          {failure.value}
+        </Alert>
       ) : null}
     </Flex>
   )
@@ -8606,6 +9140,7 @@ function cfGitignore(): string {
 dist
 .wrangler
 .dev.vars*
+!.dev.vars.example
 *.local
 .DS_Store
 `
@@ -8940,7 +9475,34 @@ browser cannot change it.
 - \`src/routes/checkout/[order].tsx\` — where Stripe sends the buyer back. It watches the
   order's read-only room, so it updates when the webhook arrives.
 
-Each caller (by IP) may start 20 checkouts a minute.`
+Each caller (by IP) may start 20 checkouts a minute.${
+          usesBilling(opts)
+            ? `
+
+### Subscriptions (\`/billing\`)
+
+Signed-in users subscribe to \`PLAN\` (\`src/billing.ts\`) on Stripe's checkout and change,
+pause or cancel it in Stripe's hosted billing portal, so the app has no billing screens to build.
+
+1. Add \`customer.subscription.created\`, \`customer.subscription.updated\` and
+   \`customer.subscription.deleted\` to the webhook endpoint's events.
+2. In the Stripe dashboard, save the Customer Portal's settings once (test mode too): until
+   then, Stripe refuses to open it.
+3. Gate a paid feature in the Worker on \`(await billingStore.getBilling(env, request)).active\`,
+   never on what the page shows.
+
+- \`worker/billing.ts\` — the subscription names its user in its metadata, which only the
+  Worker sets (\`client_reference_id\` can be set by a buyer on a Payment Link). Every
+  subscription event is read back from Stripe before it is stored, because events arrive out of
+  order, and a late event about an older subscription cannot end a live one.
+- Back from checkout, \`/billing\` reads the session and its subscription at once, so it is right
+  before the webhook arrives, and only for the user the subscription names.`
+            : `
+
+Subscriptions need an account to belong to: \`cascivo create --framework cloudflare
+--example checkout --auth email\` adds a \`/billing\` page with a monthly plan and Stripe's
+billing portal.`
+        }`
       : ''
   }${
     hasExample(opts, 'newsletter')
@@ -9224,6 +9786,69 @@ function cfDevVars(opts: ScaffoldOptions): string {
     .join('')
 }
 
+/**
+ * The secrets the app reads, with no values: committed, unlike .dev.vars. The "Deploy to
+ * Cloudflare" button asks for each one it lists; `cp .dev.vars.example .dev.vars` starts a
+ * fresh clone.
+ */
+function cfDevVarsExample(opts: ScaffoldOptions): string {
+  return cfDevVars(opts)
+    .split('\n')
+    .map((line) => (line.startsWith('#') ? line : line.replace(/=.*$/, '=')))
+    .join('\n')
+}
+
+/**
+ * What each setting is for, in package.json's \`cloudflare.bindings\`: the "Deploy to Cloudflare"
+ * button shows it beside the field it asks the deployer to fill in.
+ */
+function cfBindingDescriptions(opts: ScaffoldOptions): Record<string, { description: string }> {
+  const describe = (entries: [string, string][]) =>
+    Object.fromEntries(entries.map(([name, description]) => [name, { description }]))
+  return {
+    ...(hasExample(opts, 'webhooks')
+      ? describe([
+          [
+            'WEBHOOK_SECRET',
+            'The secret of the GitHub webhook that posts to `/api/webhooks/github`.',
+          ],
+        ])
+      : {}),
+    ...(hasExample(opts, 'checkout')
+      ? describe([
+          [
+            'STRIPE_SECRET_KEY',
+            'Your Stripe secret key, from the [API keys page](https://dashboard.stripe.com/test/apikeys). A test key (`sk_test_…`) takes test cards only.',
+          ],
+          [
+            'STRIPE_WEBHOOK_SECRET',
+            'The signing secret (`whsec_…`) of a Stripe webhook endpoint at `https://<this app>/api/stripe/webhook`. No endpoint yet? Enter `later`: orders are confirmed on their own page without it. Set the real one with `npx wrangler secret put STRIPE_WEBHOOK_SECRET`.',
+          ],
+          [
+            'RECEIPT_FROM',
+            'The From address of receipts, on a domain onboarded to Cloudflare Email Service. Leave it empty to send none.',
+          ],
+        ])
+      : {}),
+    ...(hasExample(opts, 'newsletter')
+      ? describe([
+          [
+            'NEWSLETTER_KEY',
+            'The key `/newsletter/send` asks for. Make a long random one: `openssl rand -hex 32`.',
+          ],
+          ['AWS_ACCESS_KEY_ID', 'An IAM user allowed `ses:SendEmail` and nothing else (README).'],
+          ['AWS_SECRET_ACCESS_KEY', "That IAM user's secret access key."],
+          ['AWS_REGION', 'The SES region your sending domain is verified in, e.g. `eu-west-1`.'],
+          ['NEWSLETTER_FROM', 'The From address of issues, on your SES-verified domain.'],
+          [
+            'SNS_TOPIC_ARN',
+            'The SNS topic SES reports bounces and complaints to, subscribed to `https://<this app>/api/sns/ses`.',
+          ],
+        ])
+      : {}),
+  }
+}
+
 function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): ScaffoldFile[] {
   const runtime = runtimeOf(opts)
   const routeFiles = [
@@ -9263,6 +9888,7 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
           { file: 'checkout/[order].tsx', contents: cfOrderRouteTsx() },
         ]
       : []),
+    ...(usesBilling(opts) ? [{ file: 'billing.tsx', contents: cfBillingRouteTsx() }] : []),
     ...(hasExample(opts, 'newsletter')
       ? [
           { file: 'newsletter.tsx', contents: cfNewsletterRouteTsx() },
@@ -9352,6 +9978,12 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
           { path: 'worker/checkout.ts', contents: cfCheckoutWorkerTs() },
         ]
       : []),
+    ...(usesBilling(opts)
+      ? [
+          { path: 'src/billing.ts', contents: cfBillingTs() },
+          { path: 'worker/billing.ts', contents: cfBillingWorkerTs() },
+        ]
+      : []),
     ...(hasExample(opts, 'newsletter')
       ? [
           { path: 'src/newsletter.ts', contents: cfNewsletterTs() },
@@ -9362,7 +9994,10 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
     ...(hasExample(opts, 'webhooks') ||
     hasExample(opts, 'checkout') ||
     hasExample(opts, 'newsletter')
-      ? [{ path: '.dev.vars', contents: cfDevVars(opts) }]
+      ? [
+          { path: '.dev.vars', contents: cfDevVars(opts) },
+          { path: '.dev.vars.example', contents: cfDevVarsExample(opts) },
+        ]
       : []),
     ...(opts.auth === 'email'
       ? [
