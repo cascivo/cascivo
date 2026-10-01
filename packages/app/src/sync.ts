@@ -3,6 +3,8 @@ import type { ReadonlySignal, StorageDriver } from '@cascivo/core'
 import { isValidPath, LIMITS, parseServerMessage } from './sync-protocol'
 import type { ClientMessage, Json } from './sync-protocol'
 
+export type { Json } from './sync-protocol'
+
 /**
  * `@cascivo/app/sync` — signals shared by everyone in a room, over one WebSocket to a
  * `SyncRoom` Durable Object (`@cascivo/app/sync-server`).

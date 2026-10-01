@@ -1,3 +1,6 @@
+import { readFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -77,5 +80,16 @@ describe('OtpInput', () => {
     input.dispatchEvent(event)
     // A non-prevented paste keeps the input paste-friendly (Lighthouse audit).
     expect(event.defaultPrevented).toBe(false)
+  })
+
+  // jsdom has no layout, so the rule is asserted on the stylesheet. A fixed 2.75rem width made
+  // six cells (304px with gaps) overflow a padded card on a 320px screen.
+  it('lets its cells shrink to fit a narrow container', () => {
+    const here = dirname(fileURLToPath(import.meta.url))
+    const css = readFileSync(join(here, 'otp-input.module.css'), 'utf8')
+    const slot = /\.slot \{([^}]*)\}/.exec(css)?.[1] ?? ''
+    expect(slot).toMatch(/flex: 0 1 2\.75rem;/)
+    expect(slot).toMatch(/min-inline-size: 0;/)
+    expect(slot).not.toMatch(/(^|[^-])width:/)
   })
 })

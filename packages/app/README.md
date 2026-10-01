@@ -227,6 +227,47 @@ How data is treated:
 
 `cascivo create --framework cloudflare --example board` scaffolds a working board with draggable notes and live cursors.
 
+### Who may write what: `canWrite` and claims
+
+By default any socket may write any path. To decide per write, extend `SyncRoom` and override
+`canWrite`. To make the decision depend on who is writing, pass `claims` to `roomResponse`:
+whatever the Worker verified before it opened the socket, such as a role or a user id.
+
+```ts
+// worker/index.ts — the Worker decides who the connection is
+const host = await isHost(request, env) // your own check: a session, a key, Access
+return roomResponse(request, env.ROOMS, name, { claims: { role: host ? 'host' : 'guest' } })
+
+// the room decides what that connection may write
+import { SyncRoom } from '@cascivo/app/sync-server'
+import type { ClientWrite } from '@cascivo/app/sync-server'
+
+export class BoardRoom extends SyncRoom {
+  protected override canWrite({ path, connection }: ClientWrite) {
+    if (path.startsWith('notes/')) return true // anyone may add and move notes
+    const { claims } = connection
+    const host =
+      typeof claims === 'object' && claims !== null && 'role' in claims && claims.role === 'host'
+    return host || 'Only the host can change the board settings'
+  }
+}
+```
+
+- **Return `true` to store the write.** Return `false` or a message to refuse it. The writer
+  gets the message as an error and drops the write. Nobody else sees it.
+- **`canWrite` sees one write at a time.** `{ room, path, value, connection: { id, claims } }`.
+  To judge a write against the value it replaces, call `this.read(path)`.
+- **Claims come only from the Worker.** `roomResponse` strips any `x-cascivo-room-*` header a
+  browser sends, so a browser cannot claim a role. Claims are JSON, at most 4 KB.
+- **Writes from the Worker skip the rule:** `writeRoom`, and `write` in a subclass.
+- **A rule that throws refuses the write** and logs the error.
+- `canWrite` decides _whether_ a write lands, not _how_: a write is still last-writer-wins. A
+  counter that many people bump at once (votes) belongs on the Worker, which can apply one
+  increment at a time. The [Stage example](../../apps/examples/stage) does that.
+
+`Json`, the type of every room value, is exported from both `@cascivo/app/sync` and
+`@cascivo/app/sync-server`.
+
 ### Local-first: keep the room on the device
 
 Pass a `StorageDriver` and the room is saved on the device after every change: its last state

@@ -17,6 +17,19 @@ export interface PersistedSignalOptions<T> {
   /** Bump together with `migrate` when the stored shape changes. */
   version?: number
   migrate?: (value: unknown, fromVersion: number) => T
+  /**
+   * Checks a stored value before the signal takes it: return it as a `T`, or throw to drop it
+   * and keep the current value. Storage outlives the code that wrote it, and a browser
+   * extension or a hand in devtools can write it too, so without `parse` a stored value is
+   * taken as it is. Runs on load and on every change from another tab.
+   *
+   * ```ts
+   * const theme = persistedSignal<'light' | 'dark'>('theme', 'light', {
+   *   parse: (raw) => (raw === 'dark' ? 'dark' : 'light'),
+   * })
+   * ```
+   */
+  parse?: (raw: unknown) => T
 }
 
 export type PersistedSignal<T> = Signal<T> & { ready: ReadonlySignal<boolean> }
@@ -45,7 +58,13 @@ export function persistedSignal<T>(
         driver.set(key, JSON.stringify({ v: version, value: migrated } satisfies Envelope))
         return migrated
       }
-      return envelope.value as T
+      if (!options.parse) return envelope.value as T
+      try {
+        return options.parse(envelope.value)
+      } catch (error) {
+        console.warn(`[cascivo] persistedSignal("${key}") dropped a stored value:`, error)
+        return undefined
+      }
     } catch {
       return undefined
     }

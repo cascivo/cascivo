@@ -131,19 +131,6 @@
   text-transform: uppercase;
 }
 
-/* OtpInput's cells are a fixed 2.75rem; six of them plus gaps outgrow a 320px card. Let
-   them share the row instead, up to their usual size. */
-.otp > * {
-  inline-size: 100%;
-}
-
-.otp input {
-  flex: 1 1 0;
-  inline-size: auto;
-  min-inline-size: 0;
-  max-inline-size: 3rem;
-}
-
 .yours {
   display: flex;
   flex-direction: column;

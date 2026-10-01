@@ -72,9 +72,9 @@ The copy pins the cascivo versions in this repository. Until those versions are 
 
 ## What building it showed
 
-These are gaps in cascivo that this app worked around. None is fixed in this change.
+Building this app found four gaps in cascivo. All four are now fixed:
 
-- **`SyncRoom` has no per-path write rule.** A room is either writable at every path or read-only. An app that needs "anyone may add, only the host may moderate" must move every write to its own API, as this app does. A `canWrite(path, value, connection)` hook on `SyncRoom` would let simpler apps keep client writes.
-- **`Json` is not exported** from `@cascivo/app/sync` or `@cascivo/app/sync-server`. A subclass that calls the protected `write(path, value: Json)` cannot name the type.
-- **`OtpInput`'s cells have a fixed width.** Six cells overflow a 320px card. The home page lets the cells shrink with app CSS.
-- **`persistedSignal` returns what it reads without checking it.** This app stores `unknown` and parses every read (`src/local.ts`). A `parse` option would make that the default.
+- **`SyncRoom` had no per-path write rule.** A room was either writable at every path or read-only. `SyncRoom.canWrite` now decides each browser write, and `roomResponse(…, { claims })` tells it who is writing. This app still sends every write through its API, and that is deliberate: a vote is a counter that many people bump at once. `canWrite` can refuse a write, but it cannot turn two concurrent "+1"s into "+2". Only one place that applies writes one at a time can.
+- **`Json` was not exported.** It is now exported from `@cascivo/app/sync` and `@cascivo/app/sync-server`.
+- **`OtpInput`'s cells had a fixed width.** Six cells overflowed a 320px card. They now shrink to fit.
+- **`persistedSignal` returned what it read without checking it.** It now takes a `parse` option. `src/local.ts` uses it for every stored value.

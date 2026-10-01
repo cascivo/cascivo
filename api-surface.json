@@ -3039,7 +3039,8 @@
             "(extends)": "<T>",
             "driver?": "StorageDriver",
             "version?": "number",
-            "migrate?": "(value: unknown, fromVersion: number) => T"
+            "migrate?": "(value: unknown, fromVersion: number) => T",
+            "parse?": "(raw: unknown) => T"
           },
           "Portal": "declare function Portal({ children, container }: PortalProps): import(\"react\").ReactPortal | null",
           "PortalProps": {
@@ -6501,9 +6502,18 @@
       },
       "./sync": {
         "values": ["connectRoom", "parseSnapshot"],
-        "types": ["Parser", "Room", "RoomOptions", "RoomStatus", "SharedMap", "SharedSignal"],
+        "types": [
+          "Json",
+          "Parser",
+          "Room",
+          "RoomOptions",
+          "RoomStatus",
+          "SharedMap",
+          "SharedSignal"
+        ],
         "declarations": {
           "connectRoom": "declare function connectRoom(url: string, options?: RoomOptions): Room",
+          "Json": "type = string | number | boolean | null | Json[] | { [key: string]: Json; }",
           "Parser": "type<T> = (raw: unknown) => T",
           "parseSnapshot": "declare function parseSnapshot(raw: string): Snapshot | null",
           "Room": {
@@ -7026,20 +7036,34 @@
       },
       "./sync-server": {
         "values": ["SyncRoom", "roomResponse", "writeRoom"],
-        "types": ["HibernatableWebSocket", "RoomNamespace", "RoomWrite", "SyncRoomState"],
+        "types": [
+          "ClientWrite",
+          "HibernatableWebSocket",
+          "Json",
+          "RoomNamespace",
+          "RoomWrite",
+          "SyncRoomState"
+        ],
         "declarations": {
+          "ClientWrite": {
+            "room": "string | null",
+            "path": "string",
+            "value": "Json",
+            "connection": "{ id: string; claims: Json; }"
+          },
           "HibernatableWebSocket": {
             "send": "(message: string): void",
             "close": "(code?: number, reason?: string): void",
             "serializeAttachment": "(value: unknown): void",
             "deserializeAttachment": "(): unknown"
           },
+          "Json": "type = string | number | boolean | null | Json[] | { [key: string]: Json; }",
           "RoomNamespace": {
             "(extends)": "<Id>",
             "idFromName": "(name: string): Id",
             "get": "(id: Id): { fetch(request: Request): Promise<Response>; }"
           },
-          "roomResponse": "declare function roomResponse<Id>(request: Request, namespace: RoomNamespace<Id>, name: string, options?: { readOnly?: boolean; }): Promise<Response> | Response",
+          "roomResponse": "declare function roomResponse<Id>(request: Request, namespace: RoomNamespace<Id>, name: string, options?: { readOnly?: boolean; claims?: Json; }): Promise<Response> | Response",
           "RoomWrite": {
             "room": "string | null",
             "path": "string",
@@ -7049,8 +7073,9 @@
             "protected readonly ctx: SyncRoomState": "",
             "constructor": "(ctx: SyncRoomState, _env?: unknown)",
             "protected onWrite(_write: RoomWrite): void | Promise<void>": "",
+            "protected canWrite(_write: ClientWrite): boolean | string | Promise<boolean | string>": "",
             "fetch": "(request: Request): Promise<Response>",
-            "accept": "(socket: HibernatableWebSocket, options?: { readOnly?: boolean; }): Promise<void>",
+            "accept": "(socket: HibernatableWebSocket, options?: { readOnly?: boolean; claims?: Json; }): Promise<void>",
             "webSocketMessage": "(socket: HibernatableWebSocket, raw: string | ArrayBuffer): Promise<void>",
             "private store": "",
             "private serverWrites": "",
