@@ -21,6 +21,19 @@ the "Deploy to Cloudflare" button and `npm create cloudflare --template` use it 
 npm create cloudflare@latest my-app -- --template cascivo/cascivo/starters/cloudflare
 ```
 
+To try one inside this repository, install it in its own directory:
+
+```sh
+cd starters/cloudflare-board
+pnpm install   # or npm install
+pnpm dev
+```
+
+Each starter has its own `pnpm-workspace.yaml`. Without it, `pnpm install` would install the
+cascivo monorepo instead of the starter, and `pnpm dev` would fail to resolve
+`@preact/preset-vite` and `@cloudflare/vite-plugin`. The file also approves the install
+scripts of `esbuild` and `workerd`, which pnpm 11 and later refuse by default. npm ignores it.
+
 A starter pins the cascivo versions from the CLI it was generated with. It installs from npm
 once those versions are published. Until a release goes out, a starter on `main` can be ahead
 of npm.

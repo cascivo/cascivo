@@ -14,7 +14,7 @@
  */
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { readTree, REPO_ROOT } from './starters.ts'
+import { readTree, REPO_ROOT, STARTER_PNPM_WORKSPACE } from './starters.ts'
 
 export interface ExampleStarter {
   /** Directory under starters/. */
@@ -233,6 +233,7 @@ export function buildExampleStarter(starter: ExampleStarter): Map<string, string
   files.set('tsconfig.json', JSON.stringify(TSCONFIG, null, 2) + '\n')
   files.set('src/vite-env.d.ts', VITE_ENV)
   files.set('.gitignore', GITIGNORE)
+  files.set('pnpm-workspace.yaml', STARTER_PNPM_WORKSPACE)
   files.set('wrangler.jsonc', wrangler(readFileSync(join(appDir, 'wrangler.jsonc'), 'utf8')))
 
   const title = /<title>([^<]+)<\/title>/.exec(files.get('index.html') ?? '')?.[1] ?? workerName

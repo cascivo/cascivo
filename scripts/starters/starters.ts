@@ -52,11 +52,43 @@ export const STARTERS: Starter[] = [
   },
 ]
 
+/**
+ * Added to every starter on top of what generates it. A starter lives inside this repo's
+ * pnpm workspace without being one of its projects, so `pnpm install` in it installed the
+ * monorepo instead, and `pnpm dev` then failed to resolve the starter's own dependencies.
+ * Its own workspace file makes it the root pnpm finds. The builds are approved because pnpm
+ * 11+ refuses an install with unapproved build scripts (pnpm 10 reads the second list).
+ * npm, and so the Deploy button and C3, ignore the file.
+ */
+export const STARTER_PNPM_WORKSPACE = `# Makes this directory its own pnpm workspace, so \`pnpm install\` works here even inside
+# the cascivo repository. npm ignores this file.
+packages:
+  - .
+allowBuilds:
+  esbuild: true
+  workerd: true
+  # The Agents SDK pulls this in; its install script only prints a banner.
+  core-js-pure: false
+onlyBuiltDependencies:
+  - esbuild
+  - workerd
+`
+
+/** Install and build output: never part of a starter, even after running one in place. */
+const LOCAL_OUTPUT = new Set([
+  'node_modules',
+  'dist',
+  '.wrangler',
+  'pnpm-lock.yaml',
+  'package-lock.json',
+])
+
 /** Every file under `dir`, keyed by its `/`-separated relative path. */
 export function readTree(dir: string): Map<string, string> {
   const out = new Map<string, string>()
   const walk = (current: string) => {
     for (const entry of readdirSync(current)) {
+      if (LOCAL_OUTPUT.has(entry)) continue
       const full = join(current, entry)
       if (statSync(full).isDirectory()) walk(full)
       else out.set(relative(dir, full).split('\\').join('/'), readFileSync(full, 'utf8'))
@@ -74,7 +106,9 @@ export function scaffoldStarter(starter: Starter): Map<string, string> {
       cwd: work,
       stdio: 'pipe',
     })
-    return readTree(join(work, starter.project))
+    const files = readTree(join(work, starter.project))
+    files.set('pnpm-workspace.yaml', STARTER_PNPM_WORKSPACE)
+    return files
   } finally {
     rmSync(work, { recursive: true, force: true })
   }

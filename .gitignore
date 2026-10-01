@@ -4,6 +4,9 @@ node_modules/
 # Build output
 dist/
 .wrangler/
+# A starter run in place (cd starters/<name> && pnpm install) writes its own lockfile.
+/starters/*/pnpm-lock.yaml
+/starters/*/package-lock.json
 dist-matrix/
 # Astro's generated type shims — build output, regenerated on every `astro build`.
 .astro/
