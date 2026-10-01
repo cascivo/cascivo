@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/third-party-css.md
-  registry v1.3.1 · generated 2026-09-19
+  registry v1.4.0 · generated 2026-10-01
 -->
 
 # Taming third-party CSS
