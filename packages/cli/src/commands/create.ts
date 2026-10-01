@@ -70,6 +70,7 @@ export type Example =
   | 'webhooks'
   | 'digest'
   | 'search'
+  | 'checkout'
 
 export const EXAMPLES = [
   'board',
@@ -86,6 +87,7 @@ export const EXAMPLES = [
   'webhooks',
   'digest',
   'search',
+  'checkout',
 ] as const
 
 function isExample(value: string): value is Example {
@@ -1128,9 +1130,13 @@ function cfPackageJson(opts: ScaffoldOptions): string {
       ...(hasExample(opts, 'publish') && !agent
         ? { '@cascivo/render': V['@cascivo/render']! }
         : {}),
-      // The Worker server-renders published pages; under Preact, react-dom/server is
-      // preact/compat/server, which needs this.
-      ...(hasExample(opts, 'publish') && preact ? { 'preact-render-to-string': '^6.5.0' } : {}),
+      // The Worker renders receipts with @cascivo/email (react-dom/server underneath).
+      ...(hasExample(opts, 'checkout') ? { '@cascivo/email': V['@cascivo/email']! } : {}),
+      // The Worker server-renders published pages and receipts; under Preact, react-dom/server
+      // is preact/compat/server, which needs this.
+      ...((hasExample(opts, 'publish') || hasExample(opts, 'checkout')) && preact
+        ? { 'preact-render-to-string': '^6.5.0' }
+        : {}),
     },
     devDependencies: {
       '@cascivo/eslint-config': V['@cascivo/eslint-config']!,
@@ -1344,6 +1350,7 @@ ${jsoncArray('  ', 'r2_buckets', [`{ "binding": "FILES", "bucket_name": "${packa
     hasExample(opts, 'publish') ? 'published pages' : '',
     hasExample(opts, 'digest') ? 'digests sent now' : '',
     hasExample(opts, 'search') ? 'search indexing' : '',
+    hasExample(opts, 'checkout') ? 'checkouts started' : '',
     opts.auth === 'email' ? 'sign-in emails' : '',
   ]
     .filter(Boolean)
@@ -1368,6 +1375,7 @@ ${jsoncArray('  ', 'ratelimits', ['{ "name": "LIMITER", "namespace_id": "1001", 
     hasExample(opts, 'webhooks') ? 'webhook deliveries' : '',
     hasExample(opts, 'digest') ? 'digest runs' : '',
     hasExample(opts, 'search') ? 'help articles' : '',
+    hasExample(opts, 'checkout') ? 'orders' : '',
     opts.auth === 'email' ? 'accounts' : '',
   ]
     .filter(Boolean)
@@ -1441,6 +1449,7 @@ ${jsoncArray('  ', 'vectorize', [`{ "binding": "ARTICLES_INDEX", "index_name": "
  */
 function wranglerVars(opts: ScaffoldOptions): string {
   const digest = hasExample(opts, 'digest')
+  const checkout = hasExample(opts, 'checkout')
   const emailAuth = opts.auth === 'email'
   const comments = [
     ...(opts.auth === 'access'
@@ -1458,11 +1467,18 @@ function wranglerVars(opts: ScaffoldOptions): string {
           'which the browser opens. Until they are set, each run is recorded as skipped.',
         ]
       : []),
+    ...(checkout
+      ? [
+          'Receipts for paid orders go out through Email Service from RECEIPT_FROM, an address',
+          'on a domain you have onboarded (README). Until it is set, no receipt is sent.',
+        ]
+      : []),
   ]
   const names = [
     ...(opts.auth === 'access' ? ['ACCESS_TEAM_DOMAIN', 'ACCESS_AUD'] : []),
     ...(emailAuth ? ['AUTH_FROM'] : []),
     ...(digest ? ['DIGEST_TO', 'DIGEST_FROM', 'APP_URL'] : []),
+    ...(checkout ? ['RECEIPT_FROM'] : []),
   ]
   if (names.length === 0) return ''
   const entries = names.map((name) => `"${name}": ""`)
@@ -1472,7 +1488,7 @@ function wranglerVars(opts: ScaffoldOptions): string {
       ? line
       : `  "vars": {\n${entries.map((entry) => `    ${entry},`).join('\n')}\n  },`
   return `
-${comments.map((comment) => `  // ${comment}`).join('\n')}${emailAuth || digest ? '\n  "send_email": [{ "name": "EMAIL" }],' : ''}
+${comments.map((comment) => `  // ${comment}`).join('\n')}${emailAuth || digest || checkout ? '\n  "send_email": [{ "name": "EMAIL" }],' : ''}
 ${vars}`
 }
 
@@ -1502,6 +1518,7 @@ function usesLimiter(opts: ScaffoldOptions): boolean {
     hasExample(opts, 'publish') ||
     hasExample(opts, 'digest') ||
     hasExample(opts, 'search') ||
+    hasExample(opts, 'checkout') ||
     opts.auth === 'email'
   )
 }
@@ -1514,6 +1531,7 @@ function usesD1(opts: ScaffoldOptions): boolean {
     hasExample(opts, 'webhooks') ||
     hasExample(opts, 'digest') ||
     hasExample(opts, 'search') ||
+    hasExample(opts, 'checkout') ||
     opts.auth === 'email'
   )
 }
@@ -1533,7 +1551,8 @@ function usesRooms(opts: ScaffoldOptions): boolean {
     hasExample(opts, 'board') ||
     hasExample(opts, 'notes') ||
     hasExample(opts, 'import') ||
-    hasExample(opts, 'webhooks')
+    hasExample(opts, 'webhooks') ||
+    hasExample(opts, 'checkout')
   )
 }
 
@@ -1565,8 +1584,9 @@ function cfApiTs(opts: ScaffoldOptions): string {
   const webhooks = hasExample(opts, 'webhooks')
   const digest = hasExample(opts, 'digest')
   const search = hasExample(opts, 'search')
-  return `import { defineApi, ${imports || files || usage || crud || live || publish || webhooks || digest || search ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
-${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}${live ? `import { ops, parseAccepted } from './ops'\n` : ''}${publish ? `import { parsePage, parsePageInput, parsePageSummary } from './pages'\n` : ''}${webhooks ? `import { parseDeliveries, parseTestResult } from './webhooks'\n` : ''}${digest ? `import { parseDigestRun, parseDigestRuns } from './digest'\n` : ''}${search ? `import { parseIndexed, parseSearchQuery, parseSearchResult } from './search'\n` : ''}
+  const checkout = hasExample(opts, 'checkout')
+  return `import { defineApi, ${imports || files || usage || crud || live || publish || webhooks || digest || search || checkout ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
+${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}${live ? `import { ops, parseAccepted } from './ops'\n` : ''}${publish ? `import { parsePage, parsePageInput, parsePageSummary } from './pages'\n` : ''}${webhooks ? `import { parseDeliveries, parseTestResult } from './webhooks'\n` : ''}${digest ? `import { parseDigestRun, parseDigestRuns } from './digest'\n` : ''}${search ? `import { parseIndexed, parseSearchQuery, parseSearchResult } from './search'\n` : ''}${checkout ? `import { parseCheckoutStarted, parseOrder } from './checkout'\n` : ''}
 /**
  * The contract between the browser and the Worker. Both import this file: the Worker serves
  * it with \`createHandler\`, the app calls it with \`createClient\`, and a change that breaks
@@ -1681,6 +1701,14 @@ export const api = defineApi({
   indexArticles: endpoint({ method: 'POST', path: '/api/search/index', output: parseIndexed }),`
       : ''
   }${
+    checkout
+      ? `
+  // Opens a Stripe Checkout page for the product; the browser goes to its url.
+  startCheckout: endpoint({ method: 'POST', path: '/api/checkout', output: parseCheckoutStarted }),
+  // An order, checked with Stripe while it is pending (Stripe's webhook settles it too).
+  getOrder: endpoint({ method: 'GET', path: '/api/orders/:id', output: parseOrder }),`
+      : ''
+  }${
     crud
       ? `
   // One page of customers for DataTable's query (sort, search, filters, page).
@@ -1723,6 +1751,7 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const webhooks = hasExample(opts, 'webhooks')
   const digest = hasExample(opts, 'digest')
   const search = hasExample(opts, 'search')
+  const checkout = hasExample(opts, 'checkout')
   const d1 = usesD1(opts)
   const ai = usesAgents(opts)
   const limiter = usesLimiter(opts)
@@ -1733,9 +1762,18 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
     ...(limiter ? ['clientIp', 'rateLimit'] : []),
   ]
   const custom = rooms || ai || files || exports || access || live || limiter || publish
-  const isAsync = ai || files || exports || access || limiter || webhooks || publish
+  const isAsync = ai || files || exports || access || limiter || webhooks || publish || checkout
   // Rooms the server writes: never opened through /api/rooms/:name, where clients may write.
-  const serverRooms = [...(imports ? ['job-'] : []), ...(webhooks ? ['webhooks$'] : [])]
+  const serverRooms = [
+    ...(imports ? ['job-'] : []),
+    ...(webhooks ? ['webhooks$'] : []),
+    ...(checkout ? ['order-'] : []),
+  ]
+  // Paths that carry a signature instead of a session: --auth email does not ask them to sign in.
+  const signedPaths = [
+    ...(webhooks ? ['/api/webhooks/'] : []),
+    ...(checkout ? ['/api/stripe/'] : []),
+  ]
   return `${usage ? `import type { AnalyticsDataset } from '@cascivo/app/analytics'\n` : ''}${d1 ? `import type { Database } from '@cascivo/app/db'\n` : ''}${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler${publish ? ', HttpError' : ''} } from '@cascivo/app/api'
 ${emailAuth ? `import { handleAuth, requireUser } from '@cascivo/app/auth-server'\n` : ''}${guards.length > 0 || webhooks ? `import { ${[...guards, 'guardResponse'].sort().join(', ')} } from '@cascivo/app/guard'\n${limiter ? `import type { RateLimiter } from '@cascivo/app/guard'\n` : ''}` : ''}${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
     files
@@ -1763,7 +1801,7 @@ import type { BrowserWorker } from '@cloudflare/puppeteer'
       : ''
   }${ai ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\nimport { renderPageHtml } from './page-html'\nimport type { Assets } from './page-html'\n${exports ? `import { pagePreview } from './page-preview'\n` : ''}` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${search ? `import * as articleSearch from './search'\nimport type { ${ai ? '' : 'Embedder, '}VectorIndex } from './search'\n` : ''}${
+${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\nimport { renderPageHtml } from './page-html'\nimport type { Assets } from './page-html'\n${exports ? `import { pagePreview } from './page-preview'\n` : ''}` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${search ? `import * as articleSearch from './search'\nimport type { ${ai ? '' : 'Embedder, '}VectorIndex } from './search'\n` : ''}${checkout ? `import * as orderStore from './checkout'\nimport type { ReceiptSender } from './checkout'\nimport { ORDER_ID, orderRoom } from '../src/checkout'\n` : ''}${
     rooms
       ? `
 // The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
@@ -1816,8 +1854,9 @@ ${
   emailAuth ||
   webhooks ||
   digest ||
-  search
-    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}
+  search ||
+  checkout
+    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -1833,6 +1872,7 @@ ${[
   emailAuth ? 'a sign-in email' : '',
   digest ? 'a digest sent now (it starts a browser)' : '',
   search ? 'indexing the articles (it embeds every one)' : '',
+  checkout ? 'a checkout started (it creates a Stripe session and an order)' : '',
   files ? 'a new upload (not each part of one)' : '',
   exports ? 'an export' : '',
   publish ? 'a published page' : '',
@@ -1851,6 +1891,11 @@ function countsAgainstLimit(request: Request): boolean {
     digest
       ? `
   if (url.pathname === '/api/digest/run') return request.method === 'POST'`
+      : ''
+  }${
+    checkout
+      ? `
+  if (url.pathname === '/api/checkout') return request.method === 'POST'`
       : ''
   }${
     emailAuth
@@ -1937,6 +1982,13 @@ const handleApi = createHandler<typeof api, Env>(api, {
   indexArticles: ({ env }) => articleSearch.indexArticles(env),`
       : ''
   }${
+    checkout
+      ? `
+  startCheckout: ({ request, env }) => orderStore.startCheckout(env, new URL(request.url).origin),
+  getOrder: ({ params, request, env }) =>
+    orderStore.getOrder(env, params.id, new URL(request.url).origin),`
+      : ''
+  }${
     digest
       ? `
   digestRuns: ({ env }) => digestJob.listRuns(env.DB),
@@ -2020,13 +2072,14 @@ ${
       exposeLink: import.meta.env.DEV,
     })(request)
     if (signIn) return signIn
-    // Every other API write needs a signed-in user; reads stay public.${webhooks ? '\n    // Webhooks carry a signature instead of a session, and are checked by it.' : ''}
+    // Every other API write needs a signed-in user; reads stay public.${signedPaths.length > 0 ? '\n    // Webhooks carry a signature instead of a session, and are checked by it.' : ''}
     if (${
-      webhooks
+      signedPaths.length > 0
         ? `
       request.method !== 'GET' &&
-      request.method !== 'HEAD' &&
-      !new URL(request.url).pathname.startsWith('/api/webhooks/')
+      request.method !== 'HEAD' &&${signedPaths
+        .map((prefix) => `\n      !new URL(request.url).pathname.startsWith('${prefix}')`)
+        .join(' &&')}
     `
         : "request.method !== 'GET' && request.method !== 'HEAD'"
     }) {
@@ -2123,13 +2176,31 @@ ${
     }`
           : ''
       }${
+        checkout
+          ? `
+    const checkoutPath = new URL(request.url).pathname
+    // Stripe's webhook (worker/checkout.ts); a bad signature is a 401.
+    if (checkoutPath === orderStore.STRIPE_WEBHOOK_PATH && request.method === 'POST') {
+      try {
+        return await orderStore.receiveStripe(request, env)
+      } catch (error) {
+        return guardResponse(error)
+      }
+    }
+    // An order's page watches its room for what Stripe reports: it may watch, never write.
+    const orderLive = /^\\/api\\/orders\\/([^/]+)\\/live$/.exec(checkoutPath)
+    if (orderLive && ORDER_ID.test(orderLive[1]!)) {
+      return roomResponse(request, env.ROOMS, orderRoom(orderLive[1]!), { readOnly: true })
+    }`
+          : ''
+      }${
         hasExample(opts, 'board') || hasExample(opts, 'notes')
           ? `
     const room = /^\\/api\\/rooms\\/([^/]+)$/.exec(new URL(request.url).pathname)${
       serverRooms.length > 0
         ? `
     // Rooms only the server writes are watched read-only at their own routes, never opened
-    // here: ${[imports ? "a job's progress" : '', webhooks ? 'webhook deliveries' : ''].filter(Boolean).join(', ')}.
+    // here: ${[imports ? "a job's progress" : '', webhooks ? 'webhook deliveries' : '', checkout ? 'orders' : ''].filter(Boolean).join(', ')}.
     if (room && !/^(${serverRooms.join('|')})/.test(room[1]!)) {
       return roomResponse(request, env.ROOMS, room[1]!)
     }`
@@ -2318,6 +2389,7 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
   if (hasExample(opts, 'webhooks')) items.push({ label: 'Webhooks', href: '/webhooks' })
   if (hasExample(opts, 'digest')) items.push({ label: 'Digest', href: '/digest' })
   if (hasExample(opts, 'search')) items.push({ label: 'Search', href: '/search' })
+  if (hasExample(opts, 'checkout')) items.push({ label: 'Checkout', href: '/checkout' })
   if (opts.auth === 'email') items.push({ label: 'Account', href: '/account' })
   const navItems = items
     .map(
@@ -4993,6 +5065,543 @@ export default function Webhooks() {
 `
 }
 
+/* --- `--example checkout`: Stripe Checkout, its webhook, an order pushed live, a receipt --- */
+
+function cfCheckoutTs(opts: ScaffoldOptions): string {
+  return `/**
+ * What /checkout sells and the orders it makes, shared by the Worker (which creates them and
+ * hears from Stripe) and the pages (which show them).
+ */
+
+/** The seller, as the receipt names it. */
+export const SHOP_NAME = '${brandName(opts.name).replace(/'/g, "\\'")}'
+
+/**
+ * What you sell. The Worker sends this to Stripe, so a browser cannot change the price; the
+ * page only displays it.
+ */
+export const PRODUCT = {
+  name: 'Sticker pack',
+  description: 'Twelve vinyl stickers of your favourite components, shipped worldwide.',
+  /** In the currency's smallest unit: 900 is €9.00. */
+  amount: 900,
+  /** Three-letter ISO code, lowercase. */
+  currency: 'eur',
+}
+
+/** \`pending\` until Stripe confirms the payment; the other three are final. */
+export type OrderStatus = 'pending' | 'paid' | 'failed' | 'expired'
+
+export interface Order {
+  id: string
+  status: OrderStatus
+  /** What Stripe charged, in the currency's smallest unit. */
+  amount: number
+  currency: string
+  createdAt: string
+  paidAt: string | null
+}
+
+/** An order id: a UUID the Worker made. */
+export const ORDER_ID = /^[0-9a-f-]{36}$/
+
+/** The room the Worker pushes an order's changes to; its page watches it. */
+export const orderRoom = (id: string) => \`order-\${id}\`
+
+/** A price in the currency's smallest unit, for people: 900 eur is €9.00, 900 jpy is ¥900. */
+export function formatPrice(amount: number, currency: string): string {
+  const format = new Intl.NumberFormat(undefined, { style: 'currency', currency })
+  const digits = format.resolvedOptions().maximumFractionDigits ?? 2
+  return format.format(amount / 10 ** digits)
+}
+
+const STATUSES = ['pending', 'paid', 'failed', 'expired']
+
+export function parseOrder(raw: unknown): Order {
+  if (typeof raw === 'object' && raw !== null) {
+    const { id, status, amount, currency, createdAt, paidAt } = raw as Record<string, unknown>
+    if (
+      typeof id === 'string' &&
+      typeof status === 'string' &&
+      STATUSES.includes(status) &&
+      typeof amount === 'number' &&
+      typeof currency === 'string' &&
+      typeof createdAt === 'string' &&
+      (paidAt === null || typeof paidAt === 'string')
+    ) {
+      // Checked against STATUSES just above.
+      return { id, status: status as OrderStatus, amount, currency, createdAt, paidAt }
+    }
+  }
+  throw new Error('Malformed order')
+}
+
+export function parseCheckoutStarted(raw: unknown): { url: string } {
+  if (typeof raw === 'object' && raw !== null) {
+    const { url } = raw as Record<string, unknown>
+    if (typeof url === 'string' && url.startsWith('https://')) return { url }
+  }
+  throw new Error('Malformed checkout')
+}
+`
+}
+
+function cfCheckoutWorkerTs(): string {
+  return `import { HttpError } from '@cascivo/app/api'
+import { migrate, queryRows } from '@cascivo/app/db'
+import type { Database } from '@cascivo/app/db'
+import { verifyWebhook } from '@cascivo/app/guard'
+import { StripeError, createStripe, parseStripeEvent } from '@cascivo/app/stripe'
+import type { CheckoutEventType, CheckoutSession, Stripe } from '@cascivo/app/stripe'
+import { writeRoom } from '@cascivo/app/sync-server'
+import type { RoomNamespace } from '@cascivo/app/sync-server'
+import { Receipt, receiptSubject, renderEmail } from '@cascivo/email'
+import { createElement } from 'react'
+import { ORDER_ID, PRODUCT, SHOP_NAME, formatPrice, orderRoom, parseOrder } from '../src/checkout'
+import type { Order, OrderStatus } from '../src/checkout'
+
+const migrations = [
+  {
+    id: '0001_orders',
+    statements: [
+      \`CREATE TABLE orders (
+        id TEXT PRIMARY KEY,
+        session_id TEXT NOT NULL UNIQUE,
+        status TEXT NOT NULL,
+        amount INTEGER NOT NULL,
+        currency TEXT NOT NULL,
+        email TEXT,
+        created_at TEXT NOT NULL,
+        paid_at TEXT
+      )\`,
+    ],
+  },
+]
+
+/** Where Stripe posts; add it as an endpoint in the Stripe dashboard (README). */
+export const STRIPE_WEBHOOK_PATH = '/api/stripe/webhook'
+
+/** What sending a receipt needs of the Email Service binding (\`send_email\`). */
+export interface ReceiptSender {
+  send(message: {
+    from: string
+    to: string
+    subject: string
+    text: string
+    html: string
+  }): Promise<unknown>
+}
+
+export interface CheckoutEnv {
+  DB: Database
+  ROOMS: RoomNamespace<unknown>
+  EMAIL: ReceiptSender
+  RECEIPT_FROM: string
+  STRIPE_SECRET_KEY?: string
+  STRIPE_WEBHOOK_SECRET?: string
+}
+
+const COLUMNS = 'id, status, amount, currency, created_at AS createdAt, paid_at AS paidAt'
+
+function stripeOf(env: CheckoutEnv): Stripe {
+  if (!env.STRIPE_SECRET_KEY) {
+    throw new HttpError(
+      503,
+      'Set STRIPE_SECRET_KEY to a test key from the Stripe dashboard (README)',
+    )
+  }
+  return createStripe(env.STRIPE_SECRET_KEY)
+}
+
+/** Stripe's refusal, for the page: its message in vite dev, a pointer to the log deployed. */
+function refused(error: unknown): never {
+  if (!(error instanceof StripeError)) throw error
+  console.error('[checkout] Stripe refused:', error.status, error.code, error.message)
+  throw new HttpError(
+    502,
+    import.meta.env.DEV
+      ? \`Stripe: \${error.message}\`
+      : 'The payment provider refused the request (see the Worker log)',
+  )
+}
+
+/**
+ * Creates a Stripe Checkout Session for PRODUCT and records the order as pending. The order id
+ * is also the idempotency key, so a retried request cannot open a second session.
+ */
+export async function startCheckout(env: CheckoutEnv, origin: string): Promise<{ url: string }> {
+  const stripe = stripeOf(env)
+  const id = crypto.randomUUID()
+  let session: CheckoutSession
+  try {
+    session = await stripe.createCheckoutSession(
+      {
+        mode: 'payment',
+        lineItems: [{ ...PRODUCT, quantity: 1 }],
+        successUrl: \`\${origin}/checkout/\${id}\`,
+        cancelUrl: \`\${origin}/checkout\`,
+        clientReferenceId: id,
+      },
+      { idempotencyKey: id },
+    )
+  } catch (error) {
+    refused(error)
+  }
+  if (!session.url) throw new HttpError(502, 'Stripe returned no checkout page')
+  await migrate(env.DB, migrations)
+  await queryRows(
+    env.DB,
+    \`INSERT INTO orders (id, session_id, status, amount, currency, created_at)
+     VALUES (?, ?, 'pending', ?, ?, ?)\`,
+    [id, session.id, PRODUCT.amount, PRODUCT.currency, new Date().toISOString()],
+    (row) => row,
+  )
+  return { url: session.url }
+}
+
+/** Where an event moves the order, or \`null\` when it does not move it. */
+function statusAfter(type: CheckoutEventType, session: CheckoutSession): OrderStatus | null {
+  switch (type) {
+    case 'checkout.session.completed':
+      // \`unpaid\` here is a bank debit that has not settled: the async events decide it.
+      return session.paymentStatus === 'unpaid' ? null : 'paid'
+    case 'checkout.session.async_payment_succeeded':
+      return 'paid'
+    case 'checkout.session.async_payment_failed':
+      return 'failed'
+    case 'checkout.session.expired':
+      return 'expired'
+  }
+}
+
+/** The same decision from a session read back from Stripe, with no event to go by. */
+function statusOf(session: CheckoutSession): OrderStatus | null {
+  if (session.status === 'complete' && session.paymentStatus !== 'unpaid') return 'paid'
+  return session.status === 'expired' ? 'expired' : null
+}
+
+/**
+ * Moves a pending order to its final status, once: a retried event, or the order page reading
+ * the session before the webhook arrived, finds it settled and changes nothing. The order is
+ * found by Stripe's session id, never by \`client_reference_id\`, which a buyer can set on a
+ * Payment Link. Then the order's page hears about it, and a paid order gets its receipt.
+ */
+async function settle(
+  env: CheckoutEnv,
+  session: CheckoutSession,
+  status: OrderStatus,
+  origin: string,
+): Promise<void> {
+  await migrate(env.DB, migrations)
+  const [order] = await queryRows(
+    env.DB,
+    \`UPDATE orders SET status = ?, paid_at = ?, amount = COALESCE(?, amount),
+       currency = COALESCE(?, currency), email = ?
+     WHERE session_id = ? AND status = 'pending' RETURNING \${COLUMNS}\`,
+    [
+      status,
+      status === 'paid' ? new Date().toISOString() : null,
+      session.amountTotal,
+      session.currency,
+      session.customerEmail,
+      session.id,
+    ],
+    parseOrder,
+  )
+  if (!order) return
+  await writeRoom(env.ROOMS, orderRoom(order.id), 'order', { ...order })
+  if (order.status === 'paid' && session.customerEmail) {
+    await sendReceipt(env, order, session.customerEmail, origin)
+  }
+}
+
+/**
+ * Emails a receipt rendered with @cascivo/email. \`vite dev\` renders it and logs it instead.
+ * A receipt that cannot be sent is logged, not thrown: the payment is recorded either way, and
+ * Stripe retrying the event would not send it again.
+ */
+async function sendReceipt(env: CheckoutEnv, order: Order, to: string, origin: string) {
+  const total = formatPrice(order.amount, order.currency)
+  const props = {
+    productName: SHOP_NAME,
+    orderId: order.id.slice(0, 8).toUpperCase(),
+    items: [{ description: PRODUCT.name, amount: total }],
+    total,
+    invoiceHref: \`\${origin}/checkout/\${order.id}\`,
+  }
+  const message = renderEmail(createElement(Receipt, props), { subject: receiptSubject(props) })
+  if (import.meta.env.DEV) {
+    console.log(\`[checkout] receipt for \${to}: "\${message.subject}" (\${message.html.length} bytes)\`)
+    return
+  }
+  if (!env.RECEIPT_FROM) {
+    console.warn('[checkout] no receipt sent: set RECEIPT_FROM in wrangler.jsonc')
+    return
+  }
+  try {
+    await env.EMAIL.send({
+      from: env.RECEIPT_FROM,
+      to,
+      subject: message.subject,
+      text: message.text,
+      html: message.html,
+    })
+  } catch (error) {
+    console.error('[checkout] receipt not sent:', error)
+  }
+}
+
+/**
+ * Stripe's webhook: verified against STRIPE_WEBHOOK_SECRET before anything in it is read,
+ * then each Checkout event settles its order. Other events are acknowledged, so Stripe stops
+ * sending them.
+ */
+export async function receiveStripe(request: Request, env: CheckoutEnv): Promise<Response> {
+  if (!env.STRIPE_WEBHOOK_SECRET) throw new HttpError(503, 'Set STRIPE_WEBHOOK_SECRET (README)')
+  const { body } = await verifyWebhook(request, {
+    scheme: 'stripe',
+    secret: env.STRIPE_WEBHOOK_SECRET,
+  })
+  const event = parseStripeEvent(body)
+  if (event.kind === 'checkout') {
+    const status = statusAfter(event.type, event.session)
+    if (status) await settle(env, event.session, status, new URL(request.url).origin)
+  }
+  return Response.json({ received: true })
+}
+
+function parseStored(raw: unknown): { order: Order; sessionId: string } {
+  const sessionId = typeof raw === 'object' && raw !== null ? Reflect.get(raw, 'sessionId') : null
+  if (typeof sessionId !== 'string') throw new Error('Malformed order row')
+  return { order: parseOrder(raw), sessionId }
+}
+
+async function readOrder(env: CheckoutEnv, id: string) {
+  await migrate(env.DB, migrations)
+  const [row] = await queryRows(
+    env.DB,
+    \`SELECT \${COLUMNS}, session_id AS sessionId FROM orders WHERE id = ?\`,
+    [id],
+    parseStored,
+  )
+  if (!row) throw new HttpError(404, 'No such order')
+  return row
+}
+
+/**
+ * An order, for its page. A pending one is checked with Stripe first, so the page is right
+ * even when the webhook is late or not set up yet (as in \`vite dev\` without \`stripe listen\`).
+ */
+export async function getOrder(env: CheckoutEnv, id: string, origin: string): Promise<Order> {
+  if (!ORDER_ID.test(id)) throw new HttpError(404, 'No such order')
+  const { order, sessionId } = await readOrder(env, id)
+  if (order.status !== 'pending' || !env.STRIPE_SECRET_KEY) return order
+  try {
+    const session = await stripeOf(env).retrieveCheckoutSession(sessionId)
+    const status = statusOf(session)
+    if (!status) return order
+    await settle(env, session, status, origin)
+  } catch (error) {
+    // Stripe unreachable: show what is known; the webhook settles the order later.
+    console.error('[checkout] could not read the session back:', error)
+    return order
+  }
+  return (await readOrder(env, id)).order
+}
+`
+}
+
+function cfCheckoutRouteTsx(): string {
+  return `import { createClient } from '@cascivo/app/api'
+import {
+  Alert,
+  Button,
+  Card,
+  CardContent,
+  Flex,
+  Heading,
+  Text,
+  signal,
+  useSignals,
+} from '@cascivo/react'
+import { api } from '../api'
+import { PRODUCT, formatPrice } from '../checkout'
+
+const client = createClient(api)
+const starting = signal(false)
+const failure = signal<string | null>(null)
+
+/** Asks the Worker for a Stripe Checkout page and goes there: Stripe takes the card, not us. */
+async function buy(): Promise<void> {
+  starting.value = true
+  failure.value = null
+  try {
+    const { url } = await client.startCheckout()
+    location.assign(url)
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Could not start the checkout'
+    starting.value = false
+  }
+}
+
+export default function Checkout() {
+  useSignals()
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Checkout</Heading>
+        <Text muted>
+          Paid on Stripe's hosted page. Stripe tells the Worker when the payment succeeds; the
+          Worker records the order, updates its page and emails a receipt.
+        </Text>
+      </Flex>
+      <Card>
+        <CardContent>
+          <Flex gap={3}>
+            <Flex gap={1}>
+              <Heading level={2}>{PRODUCT.name}</Heading>
+              <Text muted>{PRODUCT.description}</Text>
+            </Flex>
+            <Text size="lg">{formatPrice(PRODUCT.amount, PRODUCT.currency)}</Text>
+            <Flex direction="horizontal">
+              <Button loading={starting.value} onClick={() => void buy()}>
+                Buy now
+              </Button>
+            </Flex>
+          </Flex>
+        </CardContent>
+      </Card>
+      {failure.value ? (
+        <Alert variant="destructive" title="The checkout did not start">
+          {failure.value}
+        </Alert>
+      ) : null}
+      <Text size="sm" muted>
+        In test mode, pay with the card 4242 4242 4242 4242, any future date and any CVC.
+      </Text>
+    </Flex>
+  )
+}
+`
+}
+
+function cfOrderRouteTsx(): string {
+  return `import type { RouteProps } from '@cascivo/app'
+import { createClient } from '@cascivo/app/api'
+import { connectRoom } from '@cascivo/app/sync'
+import {
+  Alert,
+  Badge,
+  EmptyState,
+  Flex,
+  Heading,
+  Link,
+  Spinner,
+  Text,
+  signal,
+  useEffectPropSignal,
+  useSignalEffect,
+  useSignals,
+} from '@cascivo/react'
+import { api } from '../../api'
+import { PRODUCT, formatPrice, parseOrder } from '../../checkout'
+import type { Order } from '../../checkout'
+
+const client = createClient(api)
+/** Orders seen, by id; \`null\` when the id has none. */
+const orders = signal<Readonly<Record<string, Order | null>>>({})
+
+/** Keeps the newest word on an order: a final status is never replaced by \`pending\`. */
+function remember(id: string, order: Order | null): void {
+  const known = orders.peek()[id]
+  if (known && known.status !== 'pending' && order?.status === 'pending') return
+  orders.value = { ...orders.peek(), [id]: order }
+}
+
+async function load(id: string): Promise<void> {
+  try {
+    remember(id, await client.getOrder({ params: { id } }))
+  } catch {
+    remember(id, null)
+  }
+}
+
+/** Watches the order's room, where the Worker pushes what Stripe reports. Returns the cleanup. */
+function watch(id: string): () => void {
+  const room = connectRoom(\`/api/orders/\${id}/live\`)
+  const pushed = room.signal<Order | null>('order', null, (raw) =>
+    raw === null ? null : parseOrder(raw),
+  )
+  const stop = pushed.signal.subscribe((order) => {
+    if (order) remember(id, order)
+  })
+  return () => {
+    stop()
+    room.close()
+  }
+}
+
+const STATUS = {
+  pending: { variant: 'warning', label: 'Waiting for Stripe' },
+  paid: { variant: 'success', label: 'Paid' },
+  failed: { variant: 'destructive', label: 'Payment failed' },
+  expired: { variant: 'secondary', label: 'Expired' },
+} as const
+
+/** \`/checkout/:order\` — where Stripe sends the buyer back. It updates when Stripe confirms. */
+export default function OrderPage({ params }: RouteProps<'/checkout/:order'>) {
+  useSignals()
+  const id = useEffectPropSignal(params.order)
+  useSignalEffect(() => {
+    void load(id.value)
+    return watch(id.value)
+  })
+  const order = orders.value[params.order]
+
+  if (order === undefined) return <Spinner label="Loading" />
+  if (order === null) {
+    return <EmptyState title="No such order" description="Check the link in your receipt." />
+  }
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Your order</Heading>
+        <Text muted>
+          {PRODUCT.name} · {formatPrice(order.amount, order.currency)}
+        </Text>
+      </Flex>
+      <Flex direction="horizontal" align="center" gap={2} wrap>
+        <Badge variant={STATUS[order.status].variant}>{STATUS[order.status].label}</Badge>
+        <Text size="sm" muted>
+          Ordered {new Date(order.createdAt).toLocaleString()}
+        </Text>
+      </Flex>
+      {order.status === 'pending' ? (
+        <Alert variant="info" title="Confirming your payment">
+          This page updates by itself when Stripe confirms. A bank payment can take a few days.
+        </Alert>
+      ) : null}
+      {order.status === 'paid' ? (
+        <Alert variant="success" title="Thank you">
+          Your payment went through. A receipt is on its way to your inbox.
+        </Alert>
+      ) : null}
+      {order.status === 'failed' ? (
+        <Alert variant="destructive" title="The payment failed">
+          Nothing was charged. <Link href="/checkout">Try again</Link>
+        </Alert>
+      ) : null}
+      {order.status === 'expired' ? (
+        <Alert variant="warning" title="This checkout expired">
+          It was not paid in time. <Link href="/checkout">Start again</Link>
+        </Alert>
+      ) : null}
+    </Flex>
+  )
+}
+`
+}
+
 /* --- `--auth email`: accounts with emailed sign-in links (@cascivo/app/auth) --- */
 
 function cfAuthTs(): string {
@@ -7006,6 +7615,48 @@ The page answers within milliseconds, well inside GitHub's ten seconds. For slow
 delivery to a Queue from \`receiveGithub\` and answer at once.`
       : ''
   }${
+    hasExample(opts, 'checkout')
+      ? `
+
+## Checkout (Stripe)
+
+\`/checkout\` sells one product on Stripe's hosted Checkout page: the card never touches this
+app. Stripe tells the Worker when the payment succeeds; the Worker marks the order paid, pushes
+it to the order page, and emails a receipt rendered with \`@cascivo/email\`.
+
+1. In the Stripe dashboard, in test mode, copy the secret key (\`sk_test_…\`) into \`.dev.vars\`
+   as \`STRIPE_SECRET_KEY\`, then run the app and buy with the card \`4242 4242 4242 4242\`.
+   The order page confirms the payment by reading the session back from Stripe, so this works
+   before any webhook is set up.
+2. To receive the webhook locally, run
+   \`stripe listen --forward-to localhost:5173/api/stripe/webhook\` (the Stripe CLI) and put the
+   \`whsec_…\` secret it prints in \`.dev.vars\` as \`STRIPE_WEBHOOK_SECRET\`.
+3. Deployed: \`npx wrangler secret put STRIPE_SECRET_KEY\` and
+   \`npx wrangler secret put STRIPE_WEBHOOK_SECRET\`. In the dashboard, add a webhook endpoint
+   at \`https://<your app>/api/stripe/webhook\` for \`checkout.session.completed\`,
+   \`checkout.session.async_payment_succeeded\`, \`checkout.session.async_payment_failed\` and
+   \`checkout.session.expired\`; its signing secret is \`STRIPE_WEBHOOK_SECRET\`.
+4. Receipts: set \`RECEIPT_FROM\` in \`wrangler.jsonc\` to an address on a domain you have
+   onboarded to Email Service. \`vite dev\` renders each receipt and logs it instead.
+
+What you sell is \`PRODUCT\` in \`src/checkout.ts\`. The Worker sends that price to Stripe, so a
+browser cannot change it.
+
+- \`worker/checkout.ts\` — \`createStripe\` (\`@cascivo/app/stripe\`) creates the session, with
+  the order id as its idempotency key. The webhook is checked by \`verifyWebhook\` (scheme
+  \`stripe\`: signature and a five-minute window) before \`parseStripeEvent\` reads it.
+- An order moves from \`pending\` to \`paid\`, \`failed\` or \`expired\` once. A retried event, or
+  the page getting there before the webhook, changes nothing, so the receipt goes out once.
+  Orders are found by Stripe's session id, never by \`client_reference_id\`, which a buyer can
+  set on a Payment Link.
+- A bank debit completes the session as \`unpaid\`: the order stays pending until
+  \`async_payment_succeeded\` or \`async_payment_failed\` arrives, possibly days later.
+- \`src/routes/checkout/[order].tsx\` — where Stripe sends the buyer back. It watches the
+  order's read-only room, so it updates when the webhook arrives.
+
+Each caller (by IP) may start 20 checkouts a minute.`
+      : ''
+  }${
     opts.auth === 'email'
       ? `
 
@@ -7212,6 +7863,28 @@ function cfShellTsx(opts: ScaffoldOptions): string {
   )
 }
 
+/** Local secrets for `vite dev` (.gitignore'd); deployed, each is a `wrangler secret`. */
+function cfDevVars(opts: ScaffoldOptions): string {
+  return [
+    ...(hasExample(opts, 'webhooks')
+      ? [
+          '# The secret vite dev signs and checks test webhook deliveries with.',
+          'WEBHOOK_SECRET=dev-only-webhook-secret',
+        ]
+      : []),
+    ...(hasExample(opts, 'checkout')
+      ? [
+          '# Stripe, in test mode (README): the secret key from the dashboard, and the signing',
+          '# secret `stripe listen` prints.',
+          'STRIPE_SECRET_KEY=',
+          'STRIPE_WEBHOOK_SECRET=',
+        ]
+      : []),
+  ]
+    .map((line) => `${line}\n`)
+    .join('')
+}
+
 function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): ScaffoldFile[] {
   const runtime = runtimeOf(opts)
   const routeFiles = [
@@ -7245,6 +7918,12 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
       : []),
     ...(hasExample(opts, 'digest') ? [{ file: 'digest.tsx', contents: cfDigestRouteTsx() }] : []),
     ...(hasExample(opts, 'search') ? [{ file: 'search.tsx', contents: cfSearchRouteTsx() }] : []),
+    ...(hasExample(opts, 'checkout')
+      ? [
+          { file: 'checkout.tsx', contents: cfCheckoutRouteTsx() },
+          { file: 'checkout/[order].tsx', contents: cfOrderRouteTsx() },
+        ]
+      : []),
     ...(opts.auth === 'email'
       ? [
           { file: 'account.tsx', contents: cfAccountRouteTsx() },
@@ -7318,9 +7997,16 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
       ? [
           { path: 'src/webhooks.ts', contents: cfWebhooksTs() },
           { path: 'worker/webhooks.ts', contents: cfWebhooksWorkerTs() },
-          // Local only (.gitignore'd): the secret vite dev signs and checks test deliveries with.
-          { path: '.dev.vars', contents: 'WEBHOOK_SECRET=dev-only-webhook-secret\n' },
         ]
+      : []),
+    ...(hasExample(opts, 'checkout')
+      ? [
+          { path: 'src/checkout.ts', contents: cfCheckoutTs(opts) },
+          { path: 'worker/checkout.ts', contents: cfCheckoutWorkerTs() },
+        ]
+      : []),
+    ...(hasExample(opts, 'webhooks') || hasExample(opts, 'checkout')
+      ? [{ path: '.dev.vars', contents: cfDevVars(opts) }]
       : []),
     ...(opts.auth === 'email'
       ? [

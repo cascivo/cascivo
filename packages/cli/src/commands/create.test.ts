@@ -1182,6 +1182,95 @@ describe('buildScaffold — cloudflare --example digest', () => {
   })
 })
 
+describe('buildScaffold — cloudflare --example checkout', () => {
+  const build = (examples: Example[], opts: Partial<ScaffoldOptions> = {}) =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        examples,
+        ...opts,
+      }),
+    )
+  const map = build(['checkout'])
+
+  it('verifies the Stripe signature before the event is parsed', () => {
+    const store = map.get('worker/checkout.ts')!
+    expect(store.indexOf('await verifyWebhook(request')).toBeGreaterThan(-1)
+    expect(store.indexOf('await verifyWebhook(request')).toBeLessThan(
+      store.indexOf('parseStripeEvent(body)'),
+    )
+    expect(map.get('worker/index.ts')).toContain(
+      "if (checkoutPath === orderStore.STRIPE_WEBHOOK_PATH && request.method === 'POST') {",
+    )
+  })
+
+  it('settles an order once, found by its session id rather than client_reference_id', () => {
+    const store = map.get('worker/checkout.ts')!
+    expect(store).toContain("WHERE session_id = ? AND status = 'pending' RETURNING")
+    expect(store).not.toMatch(/WHERE[^`]*client_reference_id/)
+    // The receipt is sent only after the update returned a row, i.e. on the first settle.
+    expect(store.indexOf('if (!order) return')).toBeLessThan(store.indexOf('await sendReceipt('))
+  })
+
+  it('prices on the server and uses the order id as the idempotency key', () => {
+    const store = map.get('worker/checkout.ts')!
+    expect(store).toContain('lineItems: [{ ...PRODUCT, quantity: 1 }]')
+    expect(store).toContain('{ idempotencyKey: id }')
+    expect(map.get('src/api.ts')).not.toMatch(/startCheckout: endpoint\(\{[^}]*input/)
+  })
+
+  it('watches each order through a read-only room the client cannot open elsewhere', () => {
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain(
+      'return roomResponse(request, env.ROOMS, orderRoom(orderLive[1]!), { readOnly: true })',
+    )
+    expect(worker).toContain('if (orderLive && ORDER_ID.test(orderLive[1]!)) {')
+    expect(build(['board', 'checkout']).get('worker/index.ts')).toContain(
+      'if (room && !/^(order-)/.test(room[1]!)) {',
+    )
+  })
+
+  it('rate-limits starting a checkout and adds the order pages to the nav', () => {
+    expect(map.get('worker/index.ts')).toContain(
+      "if (url.pathname === '/api/checkout') return request.method === 'POST'",
+    )
+    expect(map.get('src/routes/checkout.tsx')).toBeDefined()
+    expect(map.get('src/routes/checkout/[order].tsx')).toBeDefined()
+    expect(map.get('src/routes.gen.ts')).toContain("'/checkout/:order'")
+    expect(map.get('src/App.tsx')).toContain("href: '/checkout'")
+  })
+
+  it('sends receipts with @cascivo/email through the Email Service binding', () => {
+    const pkg = JSON.parse(map.get('package.json')!) as { dependencies: Record<string, string> }
+    expect(pkg.dependencies['@cascivo/email']).toMatch(/^\d+\.\d+\.\d+$/)
+    expect(pkg.dependencies['preact-render-to-string']).toBeDefined()
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"send_email": [{ "name": "EMAIL" }]')
+    expect(wrangler).toContain('"RECEIPT_FROM": ""')
+    expect(map.get('src/checkout.ts')).toContain("export const SHOP_NAME = 'Edge App'")
+  })
+
+  it('keeps Stripe secrets out of wrangler.jsonc and in .dev.vars, beside the webhook one', () => {
+    expect(map.get('wrangler.jsonc')).not.toContain('STRIPE_')
+    expect(map.get('.dev.vars')).toContain('STRIPE_SECRET_KEY=\n')
+    const both = build(['webhooks', 'checkout'])
+    expect(both.get('.dev.vars')).toContain('WEBHOOK_SECRET=dev-only-webhook-secret\n')
+    expect(both.get('.dev.vars')).toContain('STRIPE_WEBHOOK_SECRET=\n')
+  })
+
+  it('exempts Stripe and GitHub webhooks from the sign-in rule of --auth email', () => {
+    const worker = build(['webhooks', 'checkout'], { auth: 'email' }).get('worker/index.ts')!
+    expect(worker).toContain("!new URL(request.url).pathname.startsWith('/api/webhooks/') &&")
+    expect(worker).toContain("!new URL(request.url).pathname.startsWith('/api/stripe/')")
+    expect(build(['checkout'], { auth: 'email' }).get('worker/index.ts')).toContain(
+      'EMAIL: SignInSender & ReceiptSender',
+    )
+  })
+})
+
 describe('buildScaffold — published pages rendered by the Worker', () => {
   const build = (examples: Example[], runtime?: 'react') =>
     fileMap(

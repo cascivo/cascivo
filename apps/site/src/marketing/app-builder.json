@@ -194,6 +194,23 @@
       "services": ["ratelimits", "d1_databases", "ai", "vectorize"],
       "react": false,
       "brings": []
+    },
+    {
+      "id": "checkout",
+      "label": "Stripe checkout",
+      "blurb": "Sell a product: paid on Stripe, confirmed live, receipt emailed.",
+      "group": "Operations",
+      "files": [
+        ".dev.vars",
+        "src/checkout.ts",
+        "src/routes/checkout.tsx",
+        "src/routes/checkout/[order].tsx",
+        "worker/checkout.ts"
+      ],
+      "pages": ["/checkout", "/checkout/:order"],
+      "services": ["durable_objects", "ratelimits", "send_email", "d1_databases"],
+      "react": false,
+      "brings": []
     }
   ],
   "auth": [

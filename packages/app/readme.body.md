@@ -681,3 +681,65 @@ the widget in the browser: it loads Cloudflare's script once and returns `reset(
 `cascivo create --framework cloudflare --auth access` scaffolds the Access check.
 `--example files` and `--example export` rate-limit starting an upload or an export (20 a
 minute per IP).
+
+## Payments — `@cascivo/app/stripe`
+
+Stripe Checkout from a Worker: create a session, send the browser to Stripe's hosted page, and
+learn from the webhook that it was paid. Plain `fetch` against Stripe's API, so no SDK and no
+`nodejs_compat`.
+
+```ts
+import { verifyWebhook } from '@cascivo/app/guard'
+import { createStripe, parseStripeEvent } from '@cascivo/app/stripe'
+
+// Starting a checkout: the price comes from the Worker, never from the browser.
+const session = await createStripe(env.STRIPE_SECRET_KEY).createCheckoutSession(
+  {
+    mode: 'payment',
+    lineItems: [{ name: 'Sticker pack', amount: 900, currency: 'eur', quantity: 1 }],
+    successUrl: `${origin}/orders/${orderId}`,
+    cancelUrl: `${origin}/shop`,
+    clientReferenceId: orderId,
+  },
+  { idempotencyKey: orderId },
+)
+// → redirect to session.url, and store session.id with the order
+
+// The webhook: verify the raw body first, then parse it.
+const { body } = await verifyWebhook(request, {
+  scheme: 'stripe',
+  secret: env.STRIPE_WEBHOOK_SECRET,
+})
+const event = parseStripeEvent(body)
+if (event.kind === 'checkout' && event.session.paymentStatus === 'paid') {
+  // settle the order stored under event.session.id, once
+}
+```
+
+- **`createStripe(secretKey, { apiVersion?, fetch? })`** — `createCheckoutSession(params,
+{ idempotencyKey })` and `retrieveCheckoutSession(id)`. A line item is a dashboard Price
+  (`{ price, quantity }`) or described inline (`{ name, amount, currency, quantity }`, the
+  amount in the currency's smallest unit). Stripe's refusals throw `StripeError` with its
+  `status`, `type` and `code`. Pin `apiVersion` so an account upgrade cannot change responses
+  under a deployed app.
+- **`parseStripeEvent(body)`** — the four Checkout events (`checkout.session.completed`,
+  `…async_payment_succeeded`, `…async_payment_failed`, `…expired`) come back as
+  `{ kind: 'checkout', session }`; every other event as `{ kind: 'other' }`, to acknowledge
+  with a 2xx so Stripe stops retrying it.
+- **`parseCheckoutSession(raw)`** — a session as Stripe sends it, field by field:
+  `status`, `paymentStatus`, `amountTotal`, `currency`, `customerEmail`, `clientReferenceId`,
+  `metadata`.
+
+What the handler must still get right, because a webhook is retried and can arrive late or
+out of order: settle each order once (an update guarded by its current status), look the
+order up by the session id rather than `client_reference_id` (a buyer can set that on a
+Payment Link), and treat `completed` with `paymentStatus: 'unpaid'` as not paid yet (a bank
+debit settles days later, with `async_payment_succeeded`). Reading the session back with
+`retrieveCheckoutSession` on the success page confirms a payment before the webhook arrives.
+
+For subscriptions, the Customer Portal or anything else in Stripe's API, install the `stripe`
+package; it runs on Workers too.
+
+`cascivo create --framework cloudflare --example checkout` scaffolds all of it: a product
+page, the order page that updates live when the webhook arrives, orders in D1, and a receipt
+rendered with `@cascivo/email`.

@@ -7023,6 +7023,62 @@
           }
         }
       },
+      "./stripe": {
+        "values": ["StripeError", "createStripe", "parseCheckoutSession", "parseStripeEvent"],
+        "types": [
+          "CheckoutEventType",
+          "CheckoutLineItem",
+          "CheckoutSession",
+          "CheckoutSessionParams",
+          "Stripe",
+          "StripeEvent",
+          "StripeOptions"
+        ],
+        "declarations": {
+          "CheckoutEventType": "type = 'checkout.session.completed' | 'checkout.session.async_payment_succeeded' | 'checkout.session.async_payment_failed' | 'checkout.session.expired'",
+          "CheckoutLineItem": "type = { price: string; quantity: number; } | { name: string; description?: string; amount: number; currency: string; quantity: number; }",
+          "CheckoutSession": {
+            "id": "string",
+            "url": "string | null",
+            "status": "'open' | 'complete' | 'expired'",
+            "paymentStatus": "'paid' | 'unpaid' | 'no_payment_required'",
+            "amountTotal": "number | null",
+            "currency": "string | null",
+            "customerEmail": "string | null",
+            "clientReferenceId": "string | null",
+            "metadata": "Record<string, string>",
+            "livemode": "boolean"
+          },
+          "CheckoutSessionParams": {
+            "mode": "'payment'",
+            "lineItems": "CheckoutLineItem[]",
+            "successUrl": "string",
+            "cancelUrl": "string",
+            "customerEmail?": "string",
+            "clientReferenceId?": "string",
+            "metadata?": "Record<string, string>"
+          },
+          "createStripe": "declare function createStripe(secretKey: string, options?: StripeOptions): Stripe",
+          "parseCheckoutSession": "declare function parseCheckoutSession(raw: unknown): CheckoutSession",
+          "parseStripeEvent": "declare function parseStripeEvent(body: string): StripeEvent",
+          "Stripe": {
+            "createCheckoutSession": "(params: CheckoutSessionParams, options?: { idempotencyKey?: string; }): Promise<CheckoutSession>",
+            "retrieveCheckoutSession": "(id: string): Promise<CheckoutSession>"
+          },
+          "StripeError": {
+            "readonly status": "number",
+            "readonly type": "string | null",
+            "readonly code": "string | null",
+            "constructor": "(status: number, message: string, type: string | null, code: string | null)",
+            "(kind)": "class"
+          },
+          "StripeEvent": "type = (EventBase & { kind: 'checkout'; type: CheckoutEventType; session: CheckoutSession; }) | (EventBase & { kind: 'other'; type: string; })",
+          "StripeOptions": {
+            "apiVersion?": "string",
+            "fetch?": "typeof fetch"
+          }
+        }
+      },
       "./turnstile": {
         "values": ["mountTurnstile"],
         "types": ["TurnstileWidget"],

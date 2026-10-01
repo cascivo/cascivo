@@ -70,8 +70,20 @@ const PACKAGES = [
   'app',
   'render',
   'text',
+  'email',
 ]
-const NEEDS_DIST = ['react', 'core', 'i18n', 'storage', 'icons', 'data', 'app', 'render', 'text']
+const NEEDS_DIST = [
+  'react',
+  'core',
+  'i18n',
+  'storage',
+  'icons',
+  'data',
+  'app',
+  'render',
+  'text',
+  'email',
+]
 
 const built = NEEDS_DIST.every((p) => existsSync(join(REPO_ROOT, 'packages', p, 'dist')))
 const cliBuilt = existsSync(CLI)
@@ -458,6 +470,35 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
         )
       },
     )
+
+    it('passes its own format:check', { skip: !ready }, () => {
+      assertFormatted(app)
+    })
+  })
+
+  /**
+   * `--example checkout`: `@cascivo/app/stripe` and `@cascivo/email` in the Worker. Only a
+   * build shows that the receipt template, written against React, bundles into a Worker that
+   * runs on Preact (react-dom/server becomes preact/compat/server).
+   */
+  describe('cloudflare --example checkout', () => {
+    let app: string
+
+    before(() => {
+      if (!ready) return
+      app = scaffold('cloudflare', 'cf-checkout', ['--example', 'checkout'])
+      run('pnpm', ['run', 'typecheck'], app)
+      run('pnpm', ['exec', 'vite', 'build'], app)
+    })
+
+    it('bundles the Stripe client and the receipt into the Worker', { skip: !ready }, () => {
+      const dist = join(app, 'dist')
+      const dir = readdirSync(dist).find((d) => existsSync(join(dist, d, 'wrangler.json')))
+      assert.ok(dir, 'vite build emitted no Worker bundle.')
+      const worker = readFileSync(join(dist, dir, 'index.js'), 'utf8')
+      assert.match(worker, /api\.stripe\.com/, 'the Worker bundle has no Stripe client')
+      assert.match(worker, /Thanks for your payment/, 'the Worker bundle has no receipt template')
+    })
 
     it('passes its own format:check', { skip: !ready }, () => {
       assertFormatted(app)

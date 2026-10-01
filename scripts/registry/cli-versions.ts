@@ -31,6 +31,7 @@ const SCAFFOLD_DEPS = [
   '@cascivo/app',
   '@cascivo/render',
   '@cascivo/storage',
+  '@cascivo/email',
 ]
 
 interface PackageJson {

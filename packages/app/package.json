@@ -109,6 +109,11 @@
       "import": "./dist/auth-server.js",
       "default": "./dist/auth-server.js"
     },
+    "./stripe": {
+      "types": "./dist/stripe.d.ts",
+      "import": "./dist/stripe.js",
+      "default": "./dist/stripe.js"
+    },
     "./turnstile": {
       "types": "./dist/turnstile.d.ts",
       "import": "./dist/turnstile.js",

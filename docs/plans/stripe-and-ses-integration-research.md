@@ -174,12 +174,28 @@ records `skipped` with the reason instead of failing.
 `starters/shop` (one product, Checkout, receipt), generated like `starters/stage`. The Deploy
 button prompts for `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET`.
 
-## Open questions
+## Decisions and status
 
-1. Thin fetch client (recommended) or the official `stripe` SDK?
-2. SES next to the Cloudflare Email Service binding (recommended), or as the only transport?
-3. Order: `checkout` first, then `newsletter`? Is subscriptions in the first cut?
-4. A `starters/shop` Deploy-button starter now, or after the examples settle?
+Decided 2026-10-01: a thin fetch client rather than the `stripe` SDK; SES next to the Cloudflare
+Email Service binding, not instead of it; `checkout` first, then `newsletter`; the Deploy-button
+starter after the examples settle.
+
+Shipped:
+
+- `@cascivo/app/stripe`: `createStripe` (`createCheckoutSession`, `retrieveCheckoutSession`),
+  `parseCheckoutSession`, `parseStripeEvent`, `StripeError`. The Customer Portal and
+  subscriptions are not in it yet. `verifyWebhook` still returns `id: null` for Stripe;
+  `parseStripeEvent` reads the event id.
+- `cascivo create --framework cloudflare --example checkout`: one-off payments only. Checked
+  under `vite dev` in workerd with a signed event against a pending order: a bad signature is a
+  401, the order settles once (a retry and a later `expired` change nothing), the order's room
+  pushes one update, and one receipt is rendered. A live Stripe account was not used.
+
+Found on the way: under Preact, `@cascivo/email` serializes `msTextSizeAdjust` as
+`ms-text-size-adjust` (no leading dash), where React writes `-ms-text-size-adjust`. Only old
+Microsoft clients read it.
+
+Next: `@cascivo/app/ses` and `--example newsletter`.
 
 What cannot be proven in this container: a real SES send, a real SNS subscription and a live
 Stripe account. As with the platform spike, those need a test account. Everything else
