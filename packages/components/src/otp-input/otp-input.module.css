@@ -10,7 +10,11 @@
   }
 
   .slot {
-    width: 2.75rem;
+    /* 2.75rem each, but shrinking to share a narrow container: six cells and their gaps are
+       304px, more than a 320px screen leaves inside a padded card. */
+    flex: 0 1 2.75rem;
+    inline-size: 2.75rem;
+    min-inline-size: 0;
     height: 3rem;
     font-family: var(--cascivo-font-mono, var(--cascivo-font-sans));
     font-size: var(--cascivo-text-xl);

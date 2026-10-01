@@ -1,0 +1,12 @@
+# Makes this directory its own pnpm workspace, so `pnpm install` works here even inside
+# the cascivo repository. npm ignores this file.
+packages:
+  - .
+allowBuilds:
+  esbuild: true
+  workerd: true
+  # The Agents SDK pulls this in; its install script only prints a banner.
+  core-js-pure: false
+onlyBuiltDependencies:
+  - esbuild
+  - workerd

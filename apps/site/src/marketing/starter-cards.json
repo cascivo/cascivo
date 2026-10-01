@@ -1,0 +1,37 @@
+[
+  {
+    "name": "cloudflare",
+    "title": "App + API",
+    "summary": "A client-rendered app and its typed API as one Worker, with file routes and a live SSE demo.",
+    "deployUrl": "https://deploy.workers.cloudflare.com/?url=https://github.com/cascivo/cascivo/tree/main/starters/cloudflare",
+    "deployable": true
+  },
+  {
+    "name": "cloudflare-board",
+    "title": "Multiplayer board",
+    "summary": "Notes and cursors shared live through a Durable Object.",
+    "deployUrl": "https://deploy.workers.cloudflare.com/?url=https://github.com/cascivo/cascivo/tree/main/starters/cloudflare-board",
+    "deployable": true
+  },
+  {
+    "name": "cloudflare-agent",
+    "title": "AI agent",
+    "summary": "An assistant on Workers AI that answers with real cascivo components.",
+    "deployUrl": "https://deploy.workers.cloudflare.com/?url=https://github.com/cascivo/cascivo/tree/main/starters/cloudflare-agent",
+    "deployable": false
+  },
+  {
+    "name": "cloudflare-crud",
+    "title": "Data table on D1",
+    "summary": "Customers in D1 behind a DataTable: server-side sort, search and paging, plus editing.",
+    "deployUrl": "https://deploy.workers.cloudflare.com/?url=https://github.com/cascivo/cascivo/tree/main/starters/cloudflare-crud",
+    "deployable": true
+  },
+  {
+    "name": "stage",
+    "title": "Stage: live Q&A",
+    "summary": "Questions, polls and reactions for talks, with a projector view. One Durable Object per session.",
+    "deployUrl": "https://deploy.workers.cloudflare.com/?url=https://github.com/cascivo/cascivo/tree/main/starters/stage",
+    "deployable": false
+  }
+]

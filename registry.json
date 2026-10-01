@@ -12225,7 +12225,7 @@
       "fileHashes": {
         "otp-input.tsx": "sha256-74d90f6f42da90db2ced87773cee63ba1a03fcc6ea8805cfbcdea37f20c6ddd8",
         "index.ts": "sha256-3ff33eb02a8876036f668cc90a8744e398543c1ae540d7523b6790d6e17e99b5",
-        "otp-input.module.css": "sha256-d5ca3d5e912f2fb6392b5a14c614c3f165efd54bb7fee0e53a26654b35a3bc76"
+        "otp-input.module.css": "sha256-37015c92493c5910a781c2e78b33a0d59eb711e0f3aefa954d70a047ca57450e"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {

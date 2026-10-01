@@ -1,0 +1,27 @@
+// One Worker serves the built app and its API. `pnpm run deploy` builds and ships both
+// (plain `pnpm deploy` is a pnpm built-in); `pnpm dev` runs this Worker in wrangler behind
+// Vite. Nothing here needs setting up by hand: Cloudflare creates the Durable Object on the
+// first deploy, which is what lets the "Deploy to Cloudflare" button ship it as-is.
+{
+  "name": "cascivo-stage",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    // Client-side app: any unknown path serves index.html.
+    "not_found_handling": "single-page-application",
+    // Only the API reaches the Worker; every asset request is served without invoking it.
+    "run_worker_first": ["/api/*"],
+  },
+  // STAGES: one StageRoom per session, named by its join code.
+  "durable_objects": {
+    "bindings": [{ "name": "STAGES", "class_name": "StageRoom" }],
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["StageRoom"] }],
+  // Each IP may start 10 sessions a minute. Only starting a session is limited: an audience
+  // behind one conference NAT shares an IP, so questions and votes are capped per session.
+  "ratelimits": [
+    { "name": "CREATE_LIMIT", "namespace_id": "1101", "simple": { "limit": 10, "period": 60 } },
+  ],
+  "observability": { "enabled": true },
+}

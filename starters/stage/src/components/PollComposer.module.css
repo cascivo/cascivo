@@ -1,0 +1,41 @@
+.composer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+}
+
+.options {
+  display: grid;
+  gap: var(--cascivo-space-2);
+  list-style: none;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+}
+
+.option > :nth-child(2) {
+  flex: 1;
+}
+
+.letter {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  border-radius: var(--cascivo-radius-md);
+  font-size: var(--cascivo-font-size-sm);
+  font-weight: var(--cascivo-font-bold);
+  background: color-mix(in oklch, var(--cascivo-color-accent) 18%, transparent);
+  color: var(--cascivo-color-accent-text);
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--cascivo-space-2);
+}

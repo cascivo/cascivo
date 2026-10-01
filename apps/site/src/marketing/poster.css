@@ -1185,6 +1185,56 @@
   font-size: 0.875rem;
 }
 
+/* ── 09 / starters: one-click deploys (starter-cards.json) ──────────────── */
+
+.pg-starters-head {
+  display: grid;
+  gap: 0.5rem;
+  border-block-start: var(--pg-rule);
+}
+
+.pg-starters {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 64rem) {
+  .pg-starters {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.pg-starter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.pg-starter-title {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.pg-starter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-block-start: auto;
+  padding-block-start: 0.5rem;
+}
+
+.pg-starter-source {
+  font-family: var(--cascivo-font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: inherit;
+}
+
 /* ── 09 / the live strip ───────────────────────────────────────────────
    Everyone on the page, as pointers over one box (PosterLiveStrip, apps/live). */
 

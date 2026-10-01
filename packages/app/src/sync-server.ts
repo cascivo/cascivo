@@ -1,6 +1,8 @@
 import { isValidPath, LIMITS, parseClientMessage } from './sync-protocol'
 import type { Json, ServerMessage } from './sync-protocol'
 
+export type { Json } from './sync-protocol'
+
 /**
  * `@cascivo/app/sync-server` — the Durable Object half of `@cascivo/app/sync`.
  *
@@ -60,11 +62,17 @@ interface Attachment {
   presence: Json
   /** Set by `roomResponse(…, { readOnly: true })`: this socket may watch but not write. */
   readOnly?: boolean
+  /** Set by `roomResponse(…, { claims })`: what the Worker verified about this connection. */
+  claims?: Json
 }
 
 const VALUE_PREFIX = 'v:'
 /** Set on the request `roomResponse` forwards, never taken from the browser's. */
 const READ_ONLY_HEADER = 'x-cascivo-room-read-only'
+/** Carries `roomResponse`'s `claims`, as JSON; set there and only there. */
+const CLAIMS_HEADER = 'x-cascivo-room-claims'
+/** Claims are an identity, not data: a role, a user id. */
+const MAX_CLAIMS_LENGTH = 4096
 /** Marks the request `writeRoom` sends; the only non-WebSocket request a room accepts. */
 const SERVER_WRITE_HEADER = 'x-cascivo-room-write'
 /** Every header a room trusts starts with this; `roomResponse` strips them all from a caller. */
@@ -77,6 +85,25 @@ export interface RoomWrite {
   path: string
   /** The new value; `null` when the path was deleted. */
   value: Json
+}
+
+/** A browser's write, as `SyncRoom.canWrite` receives it. */
+export interface ClientWrite {
+  /** The room's name, when the object was created with `idFromName` (as `roomResponse` does). */
+  room: string | null
+  path: string
+  /** The value to store; `null` deletes the path. */
+  value: Json
+  /** Who is writing. */
+  connection: {
+    /** The connection's id in the room, as other clients see it in `room.presence`. */
+    id: string
+    /**
+     * What the Worker verified about this connection and passed as `roomResponse(…, { claims })`
+     * — a role, a user id. `null` when it passed none. Never taken from the browser.
+     */
+    claims: Json
+  }
 }
 
 function attachmentOf(socket: HibernatableWebSocket): Attachment | null {
@@ -115,6 +142,35 @@ export class SyncRoom {
    */
   protected onWrite(_write: RoomWrite): void | Promise<void> {}
 
+  /**
+   * Decides whether a browser's write is stored. Return `true` to accept it, or `false` or a
+   * message to refuse it: the writer gets the message as the write's error and drops the
+   * write, and nobody else sees it. Every write is accepted by default. Writes from the Worker
+   * (`writeRoom`, or `write` in a subclass) do not pass through here.
+   *
+   * `connection.claims` is what the Worker verified before opening the socket, so a rule can
+   * depend on who is writing, not only on what:
+   *
+   * ```ts
+   * // worker: roomResponse(request, env.ROOMS, name, { claims: { role: isHost ? 'host' : 'guest' } })
+   * export class BoardRoom extends SyncRoom {
+   *   protected override canWrite({ path, connection }: ClientWrite) {
+   *     if (path.startsWith('notes/')) return true // anyone may add and move notes
+   *     const { claims } = connection
+   *     const host = typeof claims === 'object' && claims !== null && 'role' in claims
+   *       && claims.role === 'host'
+   *     return host || 'Only the host can change the board settings'
+   *   }
+   * }
+   * ```
+   *
+   * Use `this.read(path)` to judge a write against the value it replaces. A throw refuses the
+   * write and is logged; its message is not sent.
+   */
+  protected canWrite(_write: ClientWrite): boolean | string | Promise<boolean | string> {
+    return true
+  }
+
   async fetch(request: Request): Promise<Response> {
     if (request.method === 'POST' && request.headers.get(SERVER_WRITE_HEADER) === '1') {
       return this.serverWrite(request)
@@ -126,12 +182,19 @@ export class SyncRoom {
       globalThis as unknown as { WebSocketPair: new () => [WebSocket, HibernatableWebSocket] }
     ).WebSocketPair()
     const [client, server] = pair
-    await this.accept(server, { readOnly: request.headers.get(READ_ONLY_HEADER) === '1' })
+    const claims = parseClaims(request.headers.get(CLAIMS_HEADER))
+    await this.accept(server, {
+      readOnly: request.headers.get(READ_ONLY_HEADER) === '1',
+      ...(claims === undefined ? {} : { claims }),
+    })
     return new Response(null, { status: 101, webSocket: client } as ResponseInit)
   }
 
   /** Registers a socket and sends it the room's current state. Public for tests. */
-  async accept(socket: HibernatableWebSocket, options: { readOnly?: boolean } = {}): Promise<void> {
+  async accept(
+    socket: HibernatableWebSocket,
+    options: { readOnly?: boolean; claims?: Json } = {},
+  ): Promise<void> {
     this.ctx.acceptWebSocket(socket)
     const conn = crypto.randomUUID()
     // Present from the moment it joins, with an empty value until it sets one.
@@ -139,6 +202,9 @@ export class SyncRoom {
       conn,
       presence: {},
       ...(options.readOnly ? { readOnly: true } : {}),
+      ...(options.claims !== undefined && options.claims !== null
+        ? { claims: options.claims }
+        : {}),
     } satisfies Attachment)
 
     const stored = await this.ctx.storage.list<Json>({ prefix: VALUE_PREFIX })
@@ -180,6 +246,23 @@ export class SyncRoom {
 
     if (attachment.readOnly) {
       send(socket, { t: 'error', message: 'This room is read-only', ...refusal })
+      return
+    }
+    let verdict: boolean | string
+    try {
+      verdict = await this.canWrite({
+        room: this.ctx.id?.name ?? null,
+        path: message.path,
+        value: message.value,
+        connection: { id: attachment.conn, claims: attachment.claims ?? null },
+      })
+    } catch (error) {
+      console.error(`[cascivo/sync] canWrite failed for "${message.path}":`, error)
+      verdict = false
+    }
+    if (verdict !== true) {
+      const reason = typeof verdict === 'string' && verdict ? verdict : 'Write refused'
+      send(socket, { t: 'error', message: reason, ...refusal })
       return
     }
     await this.store(message.path, message.value, message.id, attachment.conn)
@@ -261,6 +344,17 @@ export class SyncRoom {
   }
 }
 
+/** The claims header `roomResponse` set: JSON, or nothing. Anything else is ignored. */
+function parseClaims(raw: string | null): Json | undefined {
+  if (raw === null || raw.length > MAX_CLAIMS_LENGTH) return undefined
+  try {
+    // JSON.parse only produces JSON values.
+    return JSON.parse(raw) as Json
+  } catch {
+    return undefined
+  }
+}
+
 function send(socket: HibernatableWebSocket, message: ServerMessage): void {
   socket.send(JSON.stringify(message))
 }
@@ -284,6 +378,12 @@ export function roomResponse<Id>(
      * like a job's progress (`writeRoom`, `@cascivo/app/jobs-server`).
      */
     readOnly?: boolean
+    /**
+     * What the Worker verified about this connection — a role, a user id — for the room's
+     * `canWrite` to read as `connection.claims`. Only the Worker sets it; a browser cannot.
+     * JSON, at most 4 KB serialized.
+     */
+    claims?: Json
   } = {},
 ): Promise<Response> | Response {
   if (!ROOM_NAME.test(name)) {
@@ -298,6 +398,13 @@ export function roomResponse<Id>(
   const forged = Array.from(headers.keys()).filter((name) => name.startsWith(ROOM_HEADER_PREFIX))
   for (const name of forged) headers.delete(name)
   if (options.readOnly) headers.set(READ_ONLY_HEADER, '1')
+  if (options.claims !== undefined) {
+    const claims = JSON.stringify(options.claims)
+    if (claims.length > MAX_CLAIMS_LENGTH) {
+      throw new Error(`roomResponse: claims are ${claims.length} characters; the limit is 4096`)
+    }
+    headers.set(CLAIMS_HEADER, claims)
+  }
   return namespace.get(namespace.idFromName(name)).fetch(new Request(request, { headers }))
 }
 

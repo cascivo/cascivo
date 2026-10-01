@@ -36,23 +36,32 @@ const ENTRIES = [
   { name: 'vite', src: 'src/vite.ts' },
 ]
 
+/** Exit status of a process that aborted (SIGABRT, core dumped). */
+const ABORTED = 134
+
+function pack(src) {
+  execFileSync(
+    'pnpm',
+    ['exec', 'vp', 'pack', '--out-dir', isWin ? `"${outDir}"` : outDir, '--dts', '--no-clean', src],
+    // pnpm is pnpm.cmd on Windows; .cmd files require a shell on Node >= 22.
+    { cwd: pkgRoot, stdio: 'inherit', shell: isWin },
+  )
+}
+
 try {
   for (const entry of ENTRIES) {
-    execFileSync(
-      'pnpm',
-      [
-        'exec',
-        'vp',
-        'pack',
-        '--out-dir',
-        isWin ? `"${outDir}"` : outDir,
-        '--dts',
-        '--no-clean',
-        entry.src,
-      ],
-      // pnpm is pnpm.cmd on Windows; .cmd files require a shell on Node >= 22.
-      { cwd: pkgRoot, stdio: 'inherit', shell: isWin },
-    )
+    try {
+      pack(entry.src)
+    } catch (error) {
+      // `vp pack` intermittently aborts with "thread '<unknown>' has overflowed its stack"
+      // while starting up, before it reads the entry (seen on CI for jobs.ts and guard.ts,
+      // locally for api.ts). This package starts it once per entry, 19 times, so it hits
+      // that most. One retry for that abort only; any other failure, or a second abort,
+      // still fails the build.
+      if (error?.status !== ABORTED) throw error
+      console.warn(`flatten-types: vp pack aborted on ${entry.src}; retrying once`)
+      pack(entry.src)
+    }
     const bundled = readFileSync(join(outDir, `${entry.name}.d.mts`), 'utf8')
     // Drop vp's `//#region <source path>` comments so no source paths reach the package.
     const cleaned = bundled

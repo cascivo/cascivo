@@ -1,0 +1,46 @@
+/* App-wide look. Unlayered on purpose: app CSS sits above every cascivo layer. Colors come
+   from the theme's tokens only, so the light theme and midnight both hold. */
+
+/* Declared on every theme scope, not just :root: a var() in a custom property resolves where
+   it is declared, so the stage's own data-theme="midnight" would otherwise inherit the page
+   theme's accent. */
+:root,
+[data-theme] {
+  --stage-glow: color-mix(in oklch, var(--cascivo-color-accent) 32%, transparent);
+  --stage-glow-soft: color-mix(in oklch, var(--cascivo-color-accent) 12%, transparent);
+  --stage-glass: color-mix(in oklch, var(--cascivo-color-surface) 72%, transparent);
+  --stage-hairline: color-mix(in oklch, var(--cascivo-color-text) 10%, transparent);
+  /* Accent as a fill under white text: darker than the accent itself, so the pair clears
+     4.5:1 in every theme. */
+  --stage-accent-fill: color-mix(in oklch, var(--cascivo-color-accent), black 24%);
+  --stage-on-fill: oklch(1 0 0);
+  --stage-gradient-text: linear-gradient(
+    100deg,
+    var(--cascivo-color-accent) 0%,
+    color-mix(in oklch, var(--cascivo-color-accent), var(--cascivo-color-text) 55%) 60%,
+    var(--cascivo-color-accent) 100%
+  );
+}
+
+/* Midnight's primary is a near-white neutral; here primary actions carry the accent. */
+[data-theme='midnight'] {
+  --cascivo-color-primary: var(--stage-accent-fill);
+  --cascivo-color-primary-hover: color-mix(in oklch, var(--cascivo-color-accent), black 14%);
+  --cascivo-color-primary-active: color-mix(in oklch, var(--cascivo-color-accent), black 30%);
+  --cascivo-color-primary-fg: var(--stage-on-fill);
+}
+
+body {
+  background:
+    radial-gradient(ellipse 90% 55% at 50% -12%, var(--stage-glow), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 100% 0%, var(--stage-glow-soft), transparent 70%),
+    var(--cascivo-color-background);
+  background-attachment: fixed;
+  color: var(--cascivo-color-text);
+  font-family: var(--cascivo-font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: color-mix(in oklch, var(--cascivo-color-accent) 40%, transparent);
+}

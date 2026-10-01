@@ -1,0 +1,413 @@
+/* The projector view. Sizes scale with the viewport (vw/vh clamps), because this page is
+   read from the back of a room, not at arm's length. */
+
+.stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100dvh;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--cascivo-color-background);
+  color: var(--cascivo-color-text);
+}
+
+/* Three slow, blurred light pools drifting behind everything. */
+.aurora {
+  position: absolute;
+  inset: -20%;
+  z-index: -1;
+  filter: blur(80px) saturate(1.2);
+  opacity: 0.85;
+}
+
+.aurora span {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  animation: drift 26s ease-in-out infinite alternate;
+}
+
+.aurora span:nth-child(1) {
+  inset-block-start: 5%;
+  inset-inline-start: 10%;
+  inline-size: 55vmax;
+  block-size: 40vmax;
+  background: color-mix(in oklch, var(--cascivo-color-accent) 55%, transparent);
+}
+
+.aurora span:nth-child(2) {
+  inset-block-start: 35%;
+  inset-inline-end: 0;
+  inline-size: 45vmax;
+  block-size: 45vmax;
+  background: color-mix(in oklch, oklch(0.62 0.2 330) 42%, transparent);
+  animation-duration: 32s;
+  animation-direction: alternate-reverse;
+}
+
+.aurora span:nth-child(3) {
+  inset-block-end: -5%;
+  inset-inline-start: 25%;
+  inline-size: 50vmax;
+  block-size: 30vmax;
+  background: color-mix(in oklch, oklch(0.6 0.16 220) 38%, transparent);
+  animation-duration: 38s;
+}
+
+@keyframes drift {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(6vw, -4vh) scale(1.08);
+  }
+  100% {
+    transform: translate(-5vw, 5vh) scale(0.95);
+  }
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cascivo-space-4);
+  padding-block: clamp(1rem, 2.5vh, 2rem);
+  padding-inline: clamp(1rem, 3vw, 3rem);
+}
+
+.brandRow {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-4);
+  min-inline-size: 0;
+}
+
+.sessionTitle {
+  padding-inline-start: var(--cascivo-space-4);
+  border-inline-start: 1px solid var(--stage-hairline);
+  font-size: clamp(1rem, 1.6vw, 1.5rem);
+  color: var(--cascivo-color-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.barEnd {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-3);
+  flex: none;
+}
+
+.people {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+  padding-block: var(--cascivo-space-2);
+  padding-inline: var(--cascivo-space-4);
+  border-radius: var(--cascivo-radius-full);
+  font-size: clamp(0.95rem, 1.3vw, 1.25rem);
+  font-weight: var(--cascivo-font-semibold);
+  font-variant-numeric: tabular-nums;
+  background: var(--stage-glass);
+  border: 1px solid var(--stage-hairline);
+  backdrop-filter: blur(12px);
+}
+
+.dot {
+  inline-size: 0.6em;
+  block-size: 0.6em;
+  border-radius: 50%;
+  background: var(--cascivo-color-warning);
+}
+
+.people[data-live] .dot {
+  background: var(--cascivo-color-success);
+  box-shadow: 0 0 0 0 color-mix(in oklch, var(--cascivo-color-success) 60%, transparent);
+  animation: pulse 2s ease-out infinite;
+}
+
+@keyframes pulse {
+  to {
+    box-shadow: 0 0 0 0.9em transparent;
+  }
+}
+
+.main {
+  flex: 1;
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: center;
+  padding-block: 0 clamp(1.5rem, 4vh, 3rem);
+  padding-inline: clamp(1rem, 3vw, 3rem);
+}
+
+@media (min-width: 64rem) {
+  .main {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+.spot {
+  min-inline-size: 0;
+  animation: enter 700ms cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(2.5vh) scale(0.985);
+    filter: blur(6px);
+  }
+}
+
+/* A question in the spotlight. */
+.spotlit {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 3vh, 2.5rem);
+}
+
+.quote {
+  position: relative;
+  font-size: clamp(2rem, 4.6vw, 5rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.quote::before {
+  content: '“';
+  font-family: Georgia, 'Times New Roman', serif;
+  position: absolute;
+  inset-block-start: -0.45em;
+  inset-inline-start: -0.08em;
+  font-size: 2.4em;
+  line-height: 1;
+  background: var(--stage-gradient-text);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  opacity: 0.55;
+  z-index: -1;
+}
+
+.by {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2vw, 2rem);
+  font-size: clamp(1.1rem, 2vw, 2rem);
+  color: var(--cascivo-color-text-muted);
+}
+
+.votes {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  padding-block: 0.2em;
+  padding-inline: 0.6em;
+  border-radius: var(--cascivo-radius-full);
+  font-weight: var(--cascivo-font-bold);
+  color: var(--stage-on-fill);
+  background: var(--stage-accent-fill);
+  box-shadow: 0 0 40px -6px var(--stage-glow);
+}
+
+/* A poll in the spotlight. */
+.pollStage {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 3vh, 2rem);
+}
+
+.pollMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-4);
+  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  color: var(--cascivo-color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.pill {
+  padding-block: 0.2em;
+  padding-inline: 0.8em;
+  border-radius: var(--cascivo-radius-full);
+  font-weight: var(--cascivo-font-semibold);
+  color: var(--cascivo-color-text);
+  background: color-mix(in oklch, var(--cascivo-color-text) 10%, transparent);
+}
+
+.pill[data-open] {
+  color: var(--stage-on-fill);
+  background: var(--cascivo-color-success);
+  box-shadow: 0 0 30px -6px var(--cascivo-color-success);
+}
+
+.pollQuestion {
+  font-size: clamp(1.8rem, 3.8vw, 4rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+/* Nothing on stage: an invitation, and what the room is asking. */
+.idle {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2.5vh, 2rem);
+}
+
+.idleTitle {
+  font-size: clamp(2.5rem, 6.5vw, 7rem);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  background: linear-gradient(
+    120deg,
+    var(--cascivo-color-text) 30%,
+    color-mix(in oklch, var(--cascivo-color-accent), white 35%)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-wrap: balance;
+}
+
+.idleBody {
+  max-inline-size: 40ch;
+  font-size: clamp(1.1rem, 1.9vw, 1.9rem);
+  line-height: 1.4;
+  color: var(--cascivo-color-text-muted);
+}
+
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+  margin-block-start: clamp(0.5rem, 2vh, 1.5rem);
+}
+
+.leaderTitle {
+  font-size: clamp(0.9rem, 1.2vw, 1.15rem);
+  font-weight: var(--cascivo-font-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--cascivo-color-accent-text);
+}
+
+.leaders {
+  display: grid;
+  gap: clamp(0.5rem, 1.2vh, 1rem);
+  list-style: none;
+}
+
+.leader {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 1.5vw, 1.5rem);
+  padding: clamp(0.75rem, 1.5vw, 1.25rem) clamp(1rem, 2vw, 1.75rem);
+  border-radius: var(--cascivo-radius-xl);
+  background: var(--stage-glass);
+  border: 1px solid var(--stage-hairline);
+  backdrop-filter: blur(10px);
+  font-size: clamp(1.1rem, 1.8vw, 1.8rem);
+  animation: enter 600ms cubic-bezier(0.2, 0.9, 0.25, 1) backwards;
+}
+
+.leaderVotes {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2em;
+  flex: none;
+  min-inline-size: 3.2em;
+  font-weight: var(--cascivo-font-bold);
+  font-variant-numeric: tabular-nums;
+  color: var(--cascivo-color-accent-text);
+}
+
+.leaderText {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+
+/* The way in: QR code, URL and code, readable from the back row. */
+.join {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.75rem, 2vh, 1.5rem);
+  padding: clamp(1rem, 2vw, 2rem);
+  border-radius: calc(var(--cascivo-radius-2xl, 1.25rem) * 1.4);
+  background: var(--stage-glass);
+  border: 1px solid var(--stage-hairline);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 40px 100px -40px var(--stage-glow);
+  text-align: center;
+}
+
+.qr {
+  padding: 0.9rem;
+  border-radius: var(--cascivo-radius-xl);
+  background: #ffffff;
+  line-height: 0;
+}
+
+.qr svg {
+  inline-size: clamp(9rem, 16vw, 15rem);
+  block-size: auto;
+}
+
+.joinText,
+.codeBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.joinLabel {
+  font-size: clamp(0.8rem, 1vw, 1rem);
+  font-weight: var(--cascivo-font-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--cascivo-color-text-muted);
+}
+
+.joinUrl {
+  font-size: clamp(1rem, 1.4vw, 1.4rem);
+  font-weight: var(--cascivo-font-semibold);
+  overflow-wrap: anywhere;
+}
+
+.bigCode {
+  display: flex;
+  gap: 0.12em;
+  font-family: var(--cascivo-font-mono);
+  font-size: clamp(2rem, 3.6vw, 3.6rem);
+  font-weight: 800;
+}
+
+.bigCode span {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 1.05em;
+  block-size: 1.3em;
+  border-radius: 0.18em;
+  background: color-mix(in oklch, var(--cascivo-color-accent) 16%, transparent);
+  border: 1px solid color-mix(in oklch, var(--cascivo-color-accent) 35%, transparent);
+  color: color-mix(in oklch, var(--cascivo-color-accent), white 40%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora span,
+  .people[data-live] .dot,
+  .spot,
+  .leader {
+    animation: none;
+  }
+}

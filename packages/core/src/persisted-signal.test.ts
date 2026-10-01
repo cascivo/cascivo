@@ -51,6 +51,41 @@ describe('persistedSignal (sync driver)', () => {
     )
     expect(sig.value).toBe('dark')
   })
+
+  it('runs parse on a stored value, and keeps the current value when it throws', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const parse = (raw: unknown): 'light' | 'dark' => {
+      if (raw === 'light' || raw === 'dark') return raw
+      throw new Error('not a theme')
+    }
+    localStorage.setItem('t7', JSON.stringify({ v: 1, value: 'dark' }))
+    expect(persistedSignal('t7', 'light', { parse }).value).toBe('dark')
+
+    localStorage.setItem('t8', JSON.stringify({ v: 1, value: '<script>' }))
+    const sig = persistedSignal('t8', 'light', { parse })
+    expect(sig.value).toBe('light')
+    expect(warn.mock.calls.join(' ')).toContain('t8')
+
+    // A bad value from another tab is dropped the same way.
+    window.dispatchEvent(
+      new StorageEvent('storage', {
+        key: 't8',
+        newValue: JSON.stringify({ v: 1, value: 42 }),
+        storageArea: localStorage,
+      }),
+    )
+    expect(sig.value).toBe('light')
+    warn.mockRestore()
+  })
+
+  it('lets parse normalize a stored value', () => {
+    localStorage.setItem('t9', JSON.stringify({ v: 1, value: { count: '3' } }))
+    const sig = persistedSignal('t9', 0, {
+      parse: (raw) =>
+        typeof raw === 'object' && raw !== null && 'count' in raw ? Number(raw.count) : 0,
+    })
+    expect(sig.value).toBe(3)
+  })
 })
 
 describe('persistedSignal (async driver)', () => {

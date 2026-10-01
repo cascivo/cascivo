@@ -1,6 +1,6 @@
 import { memoryDriver } from '@cascivo/core'
 import type { StorageDriver } from '@cascivo/core'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, onTestFinished, vi } from 'vitest'
 import { defineJob, watchJob } from './jobs'
 import { jobReporter } from './jobs-server'
 import { defineLive, watchLive } from './live'
@@ -8,7 +8,13 @@ import { LiveRoom, recordLive } from './live-server'
 import { connectRoom, parseSnapshot } from './sync'
 import type { Room } from './sync'
 import { roomResponse, SyncRoom, writeRoom } from './sync-server'
-import type { HibernatableWebSocket, RoomWrite, SyncRoomState } from './sync-server'
+import type {
+  ClientWrite,
+  HibernatableWebSocket,
+  Json,
+  RoomWrite,
+  SyncRoomState,
+} from './sync-server'
 
 /** An in-memory Durable Object host: one SyncRoom, real storage semantics, async delivery. */
 function createHub(make: (ctx: SyncRoomState) => SyncRoom = (ctx) => new SyncRoom(ctx)) {
@@ -55,10 +61,10 @@ function createHub(make: (ctx: SyncRoomState) => SyncRoom = (ctx) => new SyncRoo
     constructor(_url: string) {
       clients.push(this)
       this.server = new ServerSocket(this)
-      const readOnly = hub.readOnly
+      const { readOnly, claims } = hub
       serially(async () => {
         this.readyState = 1
-        await room.accept(this.server, { readOnly })
+        await room.accept(this.server, { readOnly, ...(claims === undefined ? {} : { claims }) })
       })
     }
     addEventListener(type: string, listener: (event: unknown) => void) {
@@ -88,6 +94,8 @@ function createHub(make: (ctx: SyncRoomState) => SyncRoom = (ctx) => new SyncRoo
     clients,
     /** Whether the next socket to join is read-only, as `roomResponse(…, { readOnly })` makes it. */
     readOnly: false,
+    /** The claims the next socket joins with, as `roomResponse(…, { claims })` sets them. */
+    claims: undefined as Json | undefined,
     FakeClient: FakeClient as unknown as new (url: string) => WebSocket,
     /** A Durable Object namespace with this one room behind every name. */
     namespace: {
@@ -548,6 +556,143 @@ describe('writeRoom and read-only rooms', () => {
   })
 })
 
+describe('SyncRoom.canWrite', () => {
+  /** Notes are open to everyone; the title only to a connection the Worker marked as host. */
+  class RuledRoom extends SyncRoom {
+    seen: ClientWrite[] = []
+    protected override canWrite(write: ClientWrite) {
+      this.seen.push(write)
+      if (write.path.startsWith('notes/')) return true
+      if (write.path === 'boom') throw new Error('rule crashed')
+      const { claims } = write.connection
+      const host =
+        typeof claims === 'object' && claims !== null && 'role' in claims && claims.role === 'host'
+      return host || 'Only the host can rename the room'
+    }
+  }
+
+  it('stores what the rule accepts and refuses the rest, back to the writer only', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const hub = createHub((ctx) => new RuledRoom(ctx))
+    const guest = join(hub)
+    const other = join(hub)
+    await settle()
+    guest.map('notes', parseNote).set('a', { text: 'hi' })
+    guest.signal('title', '', parseString).set('forged')
+    await settle()
+    expect(hub.storage.get('v:notes/a')).toEqual({ text: 'hi' })
+    expect(hub.storage.has('v:title')).toBe(false)
+    expect(other.signal('title', '', parseString).value).toBe('')
+    // The writer drops the refused write instead of resending it forever.
+    expect(guest.unsynced.value).toBe(0)
+    expect(guest.signal('title', '', parseString).value).toBe('')
+    expect(warn.mock.calls.join(' ')).toContain('Only the host can rename the room')
+  })
+
+  it('passes the claims the Worker set, and null when it set none', async () => {
+    const hub = createHub((ctx) => new RuledRoom(ctx))
+    hub.claims = { role: 'host' }
+    const host = join(hub)
+    await settle()
+    host.signal('title', '', parseString).set('Roadmap')
+    await settle()
+    expect(hub.storage.get('v:title')).toBe('Roadmap')
+    hub.claims = undefined
+    const guest = join(hub)
+    await settle()
+    guest.map('notes', parseNote).set('b', { text: 'x' })
+    await settle()
+    const room = hub.room as RuledRoom
+    expect(room.seen.map((w) => w.connection.claims)).toEqual([{ role: 'host' }, null])
+    expect(room.seen[0]).toMatchObject({ room: 'demo', path: 'title', value: 'Roadmap' })
+  })
+
+  it('refuses a write whose rule throws, and logs it', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const hub = createHub((ctx) => new RuledRoom(ctx))
+    const room = join(hub)
+    await settle()
+    room.signal('boom', 0, (raw) => Number(raw)).set(1)
+    await settle()
+    expect(hub.storage.has('v:boom')).toBe(false)
+    expect(error.mock.calls.join(' ')).toContain('canWrite failed')
+  })
+
+  it('does not apply to writes from the Worker', async () => {
+    const hub = createHub((ctx) => new RuledRoom(ctx))
+    await writeRoom(hub.namespace, 'demo', 'title', 'From the server')
+    expect(hub.storage.get('v:title')).toBe('From the server')
+  })
+
+  it('reads claims from the upgrade request into the connection, ignoring malformed ones', async () => {
+    class Socket implements HibernatableWebSocket {
+      attachment: unknown
+      send() {}
+      close() {}
+      serializeAttachment(value: unknown) {
+        this.attachment = value
+      }
+      deserializeAttachment() {
+        return this.attachment
+      }
+    }
+    const sockets: Socket[] = []
+    vi.stubGlobal(
+      'WebSocketPair',
+      class {
+        constructor() {
+          const server = new Socket()
+          sockets.push(server)
+          return [{}, server]
+        }
+      },
+    )
+    // Node's Response refuses status 101; the room's answer is not under test here.
+    vi.stubGlobal(
+      'Response',
+      class {
+        constructor(
+          _body: unknown,
+          readonly init: ResponseInit,
+        ) {}
+      },
+    )
+    const hub = createHub()
+    const upgrade = (claims?: string) =>
+      new Request('https://room.internal/', {
+        headers: { upgrade: 'websocket', ...(claims ? { 'x-cascivo-room-claims': claims } : {}) },
+      })
+    await hub.room.fetch(upgrade('{"role":"host"}'))
+    await hub.room.fetch(upgrade('{not json'))
+    vi.unstubAllGlobals()
+    expect(sockets.map((s) => (s.attachment as { claims?: unknown }).claims)).toEqual([
+      { role: 'host' },
+      undefined,
+    ])
+  })
+
+  it('roomResponse sends claims as JSON, strips forged ones and refuses oversized ones', async () => {
+    const seen: Headers[] = []
+    const ns = {
+      idFromName: (name: string) => name,
+      get: () => ({
+        fetch: async (request: Request) => {
+          seen.push(request.headers)
+          return new Response(null, { status: 204 })
+        },
+      }),
+    }
+    const upgrade = (extra: Record<string, string> = {}) =>
+      new Request('http://x/api/rooms/a', { headers: { upgrade: 'websocket', ...extra } })
+    await roomResponse(upgrade(), ns, 'a', { claims: { role: 'host', user: 'u1' } })
+    await roomResponse(upgrade({ 'x-cascivo-room-claims': '{"role":"host"}' }), ns, 'a')
+    expect(JSON.parse(seen[0]!.get('x-cascivo-room-claims')!)).toEqual({ role: 'host', user: 'u1' })
+    expect(seen[1]!.get('x-cascivo-room-claims')).toBeNull()
+    expect(() => roomResponse(upgrade(), ns, 'a', { claims: 'x'.repeat(5000) })).toThrow(/4096/)
+  })
+})
+
 describe('jobs', () => {
   const parseSummary = (raw: unknown): { imported: number } => {
     if (
@@ -652,6 +797,15 @@ describe('live dashboards', () => {
   })
 
   it('adds batches into per-second totals that every viewer sees, late joiners included', async () => {
+    // watchLive reads the clock when it starts and then once a second. On the real clock a
+    // second boundary could fall between that read and the events below, and the viewer's
+    // window would end one second before their bucket (CI failure on main, 0f22941c). Only
+    // Date is pinned, mid-second: the hub still delivers on real timers.
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(1_700_000_000_500)
+    onTestFinished(() => {
+      vi.useRealTimers()
+    })
     const hub = liveHub()
     const viewer = watchLive(ops, 'ws://test/live', { WebSocket: hub.FakeClient })
     await settle()
@@ -673,6 +827,13 @@ describe('live dashboards', () => {
   })
 
   it('drops events outside the window and malformed ones, and trims old buckets', async () => {
+    // An event without `at` is stamped when recorded; pinned, so that stamp cannot fall in the
+    // second after `now` and name a different bucket.
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(1_700_000_000_500)
+    onTestFinished(() => {
+      vi.useRealTimers()
+    })
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const hub = liveHub()
     const now = Date.now()
