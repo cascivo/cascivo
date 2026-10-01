@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/data",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": false,
   "description": "Client data primitives for cascivo apps — server-sent events over fetch (POST-capable), zero dependencies",
   "keywords": [

@@ -18,7 +18,7 @@
     "title": "AI agent",
     "summary": "An assistant on Workers AI that answers with real cascivo components.",
     "deployUrl": "https://deploy.workers.cloudflare.com/?url=https://github.com/cascivo/cascivo/tree/main/starters/cloudflare-agent",
-    "deployable": false
+    "deployable": true
   },
   {
     "name": "cloudflare-crud",
@@ -32,6 +32,6 @@
     "title": "Stage: live Q&A",
     "summary": "Questions, polls and reactions for talks, with a projector view. One Durable Object per session.",
     "deployUrl": "https://deploy.workers.cloudflare.com/?url=https://github.com/cascivo/cascivo/tree/main/starters/stage",
-    "deployable": false
+    "deployable": true
   }
 ]

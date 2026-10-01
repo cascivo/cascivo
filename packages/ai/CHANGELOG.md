@@ -1,5 +1,20 @@
 # @cascivo/ai
 
+## 1.4.0
+
+### Patch Changes
+
+- a5c3efb: `StreamingText` now keeps revealing text as its `text` prop grows. Its effect read the prop
+  from a closure, so a reply streamed into `AiChat` froze at the first chunk and appeared only
+  when complete. `AiChat` now also follows new content while the reader is at the bottom of the
+  log, and stops following once they scroll up; the log previously never scrolled.
+- Updated dependencies [15caa11]
+- Updated dependencies [b2a3d94]
+- Updated dependencies [b2a3d94]
+  - @cascivo/core@1.4.0
+  - @cascivo/tokens@1.2.0
+  - @cascivo/i18n@1.4.0
+
 ## 1.3.1
 
 ### Patch Changes

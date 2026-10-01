@@ -1,5 +1,33 @@
 # @cascivo/email
 
+## 0.5.0
+
+### Minor Changes
+
+- a5c3efb: `sendEmail(sender, message, envelope)` sends a rendered email through Cloudflare's Email
+  Service binding, or any sender whose `send()` takes `{ from, to, subject, html, text }`.
+
+  - It runs `assertSendable` first, so a message with no subject, no preheader, no text part
+    or a clipped body never leaves.
+  - CR/LF in any address, display name or header is rejected, because it would inject headers.
+  - The sender is typed by shape (`EmailSender`), so the package still needs no Cloudflare
+    types. The binding's own `SendEmail` type satisfies it.
+
+- a5c3efb: PDF and PNG export through Browser Run.
+
+  - `@cascivo/app/export`:
+    - `handleExport(request, { launch })` serves
+      `/api/export?page=/reports&format=pdf|png`. It renders a page of the app at its own
+      origin, and refuses other origins and `/api/` paths.
+    - `exportPage` returns the file directly, for a Cron Trigger or a Workflow.
+    - `isExporting()` lets the app drop its shell in the export.
+    - `exportUrl()` builds the download link.
+    - `@cloudflare/puppeteer`'s `Browser` fits the structural types.
+  - `@cascivo/email`: `sendEmail` takes `attachments`. An attachment's filename and type are
+    checked for CR/LF like any header.
+  - `cascivo create --framework cloudflare --example export` scaffolds a report page with PDF
+    and PNG downloads. The MCP tool `create_app` accepts `examples: ['export']`.
+
 ## 0.4.1
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @cascivo/email-preview
 
+## 3.0.0
+
+### Patch Changes
+
+- Updated dependencies [a5c3efb]
+- Updated dependencies [a5c3efb]
+  - @cascivo/email@0.5.0
+
 ## 2.0.0
 
 ### Minor Changes

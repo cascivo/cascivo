@@ -1,5 +1,14 @@
 # @cascivo/flow
 
+## 1.4.0
+
+### Patch Changes
+
+- Updated dependencies [15caa11]
+- Updated dependencies [b2a3d94]
+  - @cascivo/core@1.4.0
+  - @cascivo/i18n@1.4.0
+
 ## 1.3.1
 
 ### Patch Changes

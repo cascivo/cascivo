@@ -87,4 +87,4 @@ chart, bubble, scatter, three-dimensional, data-viz
 
 ---
 
-_Generated from registry v1.3.1 on 2026-09-19. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.4.0 on 2026-10-01. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
