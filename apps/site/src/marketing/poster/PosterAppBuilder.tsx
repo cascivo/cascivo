@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react'
 import { CodeSnippet } from '@cascivo/components/code-snippet'
 import { useComputed, useSignal, useSignals } from '@cascivo/core'
 import data from '../app-builder.json'
+import starters from '../starter-cards.json'
 
 type Example = (typeof data.examples)[number]
 type AuthChoice = 'none' | 'email' | 'access'
@@ -255,6 +256,59 @@ export function PosterAppBuilder() {
           </div>
         </div>
       </div>
+      <div className="pg-pad pg-starters-head">
+        <p className="pg-eyebrow">Or deploy a starter to your Cloudflare account</p>
+        <p className="pg-note">
+          One click forks the starter into your GitHub account and deploys it. Cloudflare creates
+          the Durable Objects and databases it needs.
+        </p>
+      </div>
+      {/* Generated from scripts/starters (starter-cards.json): every committed starter, and a
+          card whose release is still pending says so instead of offering a broken deploy. */}
+      <ul className="pg-tiles pg-starters" aria-label="Starters">
+        {starters.map((card) => (
+          <li key={card.name} className="pg-pad pg-starter">
+            <h3 className="pg-starter-title">{card.title}</h3>
+            <p className="pg-note">{card.summary}</p>
+            <div className="pg-starter-actions">
+              {card.deployable ? (
+                <a
+                  className="pg-btn pg-btn--primary pg-btn--mono"
+                  href={card.deployUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`Deploy ${card.title} to Cloudflare`}
+                >
+                  Deploy to Cloudflare
+                </a>
+              ) : (
+                <span className="pg-chip">After the next release</span>
+              )}
+              <a
+                className="pg-starter-source"
+                href={`https://github.com/cascivo/cascivo/tree/main/starters/${card.name}`}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${card.title} source on GitHub`}
+              >
+                Source
+              </a>
+            </div>
+          </li>
+        ))}
+        <li className="pg-pad pg-starter">
+          <h3 className="pg-starter-title">Your own mix</h3>
+          <p className="pg-note">
+            Every starter is <code>cascivo create</code> output. Pick the examples you want above,
+            and run the one command it gives you.
+          </p>
+          <div className="pg-starter-actions">
+            <a className="pg-btn pg-btn--quiet pg-btn--mono" href="#ship">
+              Back to the builder
+            </a>
+          </div>
+        </li>
+      </ul>
       {LIVE_URL ? (
         <Suspense fallback={null}>
           <PosterLiveStrip url={LIVE_URL} />

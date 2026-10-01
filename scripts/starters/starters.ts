@@ -19,9 +19,23 @@ export const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url))
 export const CLI = join(REPO_ROOT, 'packages/cli/dist/index.mjs')
 export const STARTERS_DIR = join(REPO_ROOT, 'starters')
 
+/** How a starter is offered on the landing page (scripts/starters/cards.ts). */
+export interface StarterCard {
+  title: string
+  /** One sentence: what the deployed app does. */
+  summary: string
+  /**
+   * The pending changeset this starter's published versions need, e.g. `use-signal-state.md`.
+   * While it is pending, `npm install` of the starter fails, so the card says "after the next
+   * release"; the release that consumes it turns the card into a Deploy button.
+   */
+  waitsFor?: string
+}
+
 export interface Starter {
   /** Directory under starters/. */
   name: string
+  card: StarterCard
   /** Project name passed to `cascivo create`: the package, Worker and header brand. */
   project: string
   /** Extra `cascivo create` flags. */
@@ -33,21 +47,40 @@ export const STARTERS: Starter[] = [
   {
     name: 'cloudflare',
     project: 'cascivo-app',
+    card: {
+      title: 'App + API',
+      summary:
+        'A client-rendered app and its typed API as one Worker, with file routes and a live SSE demo.',
+    },
     args: ['--framework', 'cloudflare', '--pm', 'npm'],
   },
   {
     name: 'cloudflare-board',
     project: 'cascivo-board',
+    card: {
+      title: 'Multiplayer board',
+      summary: 'Notes and cursors shared live through a Durable Object.',
+    },
     args: ['--framework', 'cloudflare', '--example', 'board', '--pm', 'npm'],
   },
   {
     name: 'cloudflare-agent',
     project: 'cascivo-agent',
+    card: {
+      title: 'AI agent',
+      summary: 'An assistant on Workers AI that answers with real cascivo components.',
+      waitsFor: 'use-signal-state.md',
+    },
     args: ['--framework', 'cloudflare', '--example', 'agent', '--pm', 'npm'],
   },
   {
     name: 'cloudflare-crud',
     project: 'cascivo-crud',
+    card: {
+      title: 'Data table on D1',
+      summary:
+        'Customers in D1 behind a DataTable: server-side sort, search and paging, plus editing.',
+    },
     args: ['--framework', 'cloudflare', '--example', 'crud', '--pm', 'npm'],
   },
 ]

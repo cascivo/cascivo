@@ -15,6 +15,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { readTree, REPO_ROOT, STARTER_PNPM_WORKSPACE } from './starters.ts'
+import type { StarterCard } from './starters.ts'
 
 export interface ExampleStarter {
   /** Directory under starters/. */
@@ -25,6 +26,7 @@ export interface ExampleStarter {
   description: string
   /** Shown by the Deploy to Cloudflare flow next to each binding. */
   bindings: Record<string, string>
+  card: StarterCard
 }
 
 export const EXAMPLE_STARTERS: ExampleStarter[] = [
@@ -37,6 +39,12 @@ export const EXAMPLE_STARTERS: ExampleStarter[] = [
         'One Durable Object per session: its questions, polls and votes, and every open socket. Created for you.',
       CREATE_LIMIT:
         'Rate limit on starting sessions, per IP (10 a minute). Change `simple.limit` in `wrangler.jsonc`.',
+    },
+    card: {
+      title: 'Stage: live Q&A',
+      summary:
+        'Questions, polls and reactions for talks, with a projector view. One Durable Object per session.',
+      waitsFor: 'use-signal-state.md',
     },
   },
 ]
@@ -160,8 +168,9 @@ dist
 .dev.vars
 `
 
-export function deployUrl(starter: ExampleStarter): string {
-  return `https://deploy.workers.cloudflare.com/?url=https://github.com/cascivo/cascivo/tree/main/starters/${starter.name}`
+/** The Deploy to Cloudflare link for `starters/<name>`. */
+export function deployUrl(name: string): string {
+  return `https://deploy.workers.cloudflare.com/?url=https://github.com/cascivo/cascivo/tree/main/starters/${name}`
 }
 
 function readme(starter: ExampleStarter, title: string): string {
@@ -169,7 +178,7 @@ function readme(starter: ExampleStarter, title: string): string {
 
 ${starter.description}.
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](${deployUrl(starter)})
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](${deployUrl(starter.name)})
 
 This is a copy of [\`apps/examples/${starter.app}\`](https://github.com/cascivo/cascivo/tree/main/apps/examples/${starter.app}),
 made to run on its own: the Deploy button clones this directory into your GitHub account,
