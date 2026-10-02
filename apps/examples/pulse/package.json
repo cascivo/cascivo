@@ -16,6 +16,7 @@
     "@cascivo/core": "workspace:*",
     "@cascivo/example-kit": "workspace:*",
     "@cascivo/i18n": "workspace:*",
+    "@cascivo/icons": "workspace:*",
     "@cascivo/react": "workspace:*",
     "@cascivo/storage": "workspace:*",
     "@cascivo/themes": "workspace:*",

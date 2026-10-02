@@ -30,7 +30,7 @@ export function SloStrip() {
         gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
         gap: 'var(--cascivo-space-4)',
         padding: 'var(--cascivo-space-4)',
-        background: 'var(--cascivo-surface-subtle)',
+        background: 'var(--cascivo-color-surface)',
         borderRadius: 'var(--cascivo-radius-md)',
         border: '1px solid var(--cascivo-color-border)',
       }}

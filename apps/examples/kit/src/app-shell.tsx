@@ -23,14 +23,18 @@ const msg = defineMessages('kit.appShell', {
   mockBanner: 'Mock demo — no real data',
 })
 
-export type AppShellTheme = 'dark' | 'light' | 'warm'
+export type AppShellTheme = 'dark' | 'light' | 'warm' | 'brutalist'
 
+/** The themes the header toggle cycles through. */
 const THEMES: AppShellTheme[] = ['dark', 'light', 'warm']
+// `brutalist` is the landing poster's own theme, reachable only by URL so an embed can match
+// the page around it. An app must import its CSS to accept it (pulse does).
+const URL_THEMES: AppShellTheme[] = [...THEMES, 'brutalist']
 
-/** A `?theme=` override, or null when absent or not one of {@link THEMES}. */
+/** A `?theme=` override, or null when absent or not one of {@link URL_THEMES}. */
 export function themeFromSearch(search: string): AppShellTheme | null {
   const raw = new URLSearchParams(search).get('theme')
-  return THEMES.find((name) => name === raw) ?? null
+  return URL_THEMES.find((name) => name === raw) ?? null
 }
 
 // The landing embeds this app twice on one origin, once per theme. A persisted signal would

@@ -848,6 +848,9 @@ importers:
       '@cascivo/i18n':
         specifier: workspace:*
         version: link:../../../packages/i18n
+      '@cascivo/icons':
+        specifier: workspace:*
+        version: link:../../../packages/icons
       '@cascivo/react':
         specifier: workspace:*
         version: link:../../../packages/react

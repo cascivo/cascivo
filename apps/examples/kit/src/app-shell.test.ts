@@ -5,6 +5,7 @@ describe('themeFromSearch', () => {
   it('reads a known theme', () => {
     expect(themeFromSearch('?theme=light')).toBe('light')
     expect(themeFromSearch('?foo=1&theme=warm')).toBe('warm')
+    expect(themeFromSearch('?theme=brutalist')).toBe('brutalist')
   })
 
   it('ignores an absent or unknown theme', () => {

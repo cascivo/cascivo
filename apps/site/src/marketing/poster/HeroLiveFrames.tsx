@@ -4,9 +4,13 @@ import { useMediaQuery, useSignal, useSignalEffect, useSignals } from '@cascivo/
 const PULSE = '/demos/pulse/'
 const DETAIL = '/examples/pulse'
 const ALT =
-  'The pulse example app — an observability dashboard with KPI cards, SLO meters and latency charts, built from cascivo components. The light theme sits in front of the dark one.'
+  'The pulse example app — an observability dashboard with KPI cards, SLO meters and latency charts, built from cascivo components. The brutalist theme sits in front of the dark one.'
 
 type Theme = 'light' | 'dark'
+
+// The front (light) window wears `brutalist` — the shipped theme the poster itself is built
+// from — so the app reads as part of the page rather than a stock-grey panel pasted onto it.
+const APP_THEME: Record<Theme, string> = { light: 'brutalist', dark: 'dark' }
 
 /**
  * One app window: the committed screenshot, replaced by the running app once it has painted.
@@ -63,7 +67,7 @@ function Frame({
     >
       <img
         className="pg-hero-frame-poster"
-        src={`/hero/pulse-${theme}.webp`}
+        src={`/hero/pulse-${APP_THEME[theme]}.webp`}
         alt=""
         width={1440}
         height={620}
@@ -73,8 +77,8 @@ function Frame({
       {live && (
         <iframe
           className="pg-hero-frame-live"
-          src={`${PULSE}?theme=${theme}`}
-          title={`Pulse example app, ${theme} theme — live demo`}
+          src={`${PULSE}?theme=${APP_THEME[theme]}`}
+          title={`Pulse example app, ${APP_THEME[theme]} theme — live demo`}
           {...(interactive ? {} : { tabIndex: -1 })}
           onLoad={onLoad}
         />
