@@ -3,7 +3,15 @@ import { migrate, queryRows } from '@cascivo/app/db'
 import type { Database } from '@cascivo/app/db'
 import { verifyWebhook } from '@cascivo/app/guard'
 import { StripeError, createStripe, parseStripeEvent } from '@cascivo/app/stripe'
-import type { CheckoutEventType, CheckoutSession, Stripe } from '@cascivo/app/stripe'
+import type {
+  Charge,
+  CheckoutEventType,
+  CheckoutSession,
+  Dispute,
+  DisputeEventType,
+  Invoice,
+  Stripe,
+} from '@cascivo/app/stripe'
 import { writeRoom } from '@cascivo/app/sync-server'
 import type { RoomNamespace } from '@cascivo/app/sync-server'
 import { Receipt, receiptSubject, renderEmail } from '@cascivo/email'
@@ -23,8 +31,13 @@ const migrations = [
         currency TEXT NOT NULL,
         email TEXT,
         created_at TEXT NOT NULL,
-        paid_at TEXT
+        paid_at TEXT,
+        payment_intent_id TEXT,
+        refunded_amount INTEGER NOT NULL DEFAULT 0,
+        dispute_status TEXT
       )`,
+      // Refund and dispute events name the payment, not the session.
+      'CREATE INDEX orders_payment_intent ON orders (payment_intent_id)',
     ],
   },
 ]
@@ -52,7 +65,8 @@ export interface CheckoutEnv {
   STRIPE_WEBHOOK_SECRET?: string
 }
 
-const COLUMNS = 'id, status, amount, currency, created_at AS createdAt, paid_at AS paidAt'
+const COLUMNS =
+  'id, status, amount, currency, refunded_amount AS refundedAmount, created_at AS createdAt, paid_at AS paidAt'
 
 export function stripeOf(env: { STRIPE_SECRET_KEY?: string }): Stripe {
   if (!env.STRIPE_SECRET_KEY) {
@@ -147,7 +161,7 @@ async function settle(
   const [order] = await queryRows(
     env.DB,
     `UPDATE orders SET status = ?, paid_at = ?, amount = COALESCE(?, amount),
-       currency = COALESCE(?, currency), email = ?
+       currency = COALESCE(?, currency), email = ?, payment_intent_id = ?
      WHERE session_id = ? AND status = 'pending' RETURNING ${COLUMNS}`,
     [
       status,
@@ -155,6 +169,7 @@ async function settle(
       session.amountTotal,
       session.currency,
       session.customerEmail,
+      session.paymentIntentId,
       session.id,
     ],
     parseOrder,
@@ -203,15 +218,82 @@ async function sendReceipt(env: CheckoutEnv, order: Order, to: string, origin: s
 }
 
 /**
+ * A refund, made in the Stripe dashboard or with `createRefund`. `charge.refunded` carries the
+ * running total, so a retried or late event cannot count a refund twice. All of it refunded
+ * makes the order `refunded`; part of it leaves it `paid`, with the amount shown.
+ */
+async function refundOrder(env: CheckoutEnv, charge: Charge): Promise<void> {
+  if (!charge.paymentIntentId) return
+  await migrate(env.DB, migrations)
+  const [order] = await queryRows(
+    env.DB,
+    `UPDATE orders SET refunded_amount = MAX(refunded_amount, ?),
+       status = CASE WHEN ? = 1 THEN 'refunded' ELSE status END
+     WHERE payment_intent_id = ? AND status IN ('paid', 'refunded') RETURNING ${COLUMNS}`,
+    [charge.amountRefunded, charge.refunded ? 1 : 0, charge.paymentIntentId],
+    parseOrder,
+  )
+  if (order) await writeRoom(env.ROOMS, orderRoom(order.id), 'order', { ...order })
+}
+
+/**
+ * A chargeback. While it is open the order is `disputed`: hold back anything not yet
+ * delivered, and answer it with evidence in the Stripe dashboard before the deadline shown
+ * there. Won, the order is `paid` again; lost, it stays `disputed`. The dispute's status is
+ * stored, so a `created` event arriving after `closed` cannot reopen it.
+ */
+async function disputeOrder(
+  env: CheckoutEnv,
+  type: DisputeEventType,
+  dispute: Dispute,
+): Promise<void> {
+  if (!dispute.paymentIntentId) return
+  await migrate(env.DB, migrations)
+  const [order] =
+    type === 'charge.dispute.created'
+      ? await queryRows(
+          env.DB,
+          `UPDATE orders SET status = 'disputed', dispute_status = ?
+           WHERE payment_intent_id = ? AND status = 'paid' AND dispute_status IS NULL
+           RETURNING ${COLUMNS}`,
+          [dispute.status, dispute.paymentIntentId],
+          parseOrder,
+        )
+      : await queryRows(
+          env.DB,
+          `UPDATE orders SET dispute_status = ?,
+             status = CASE WHEN ? = 'won' THEN 'paid' ELSE 'disputed' END
+           WHERE payment_intent_id = ? AND status IN ('paid', 'disputed') RETURNING ${COLUMNS}`,
+          [dispute.status, dispute.status, dispute.paymentIntentId],
+          parseOrder,
+        )
+  if (!order) return
+  if (type === 'charge.dispute.created') {
+    console.warn(
+      `[checkout] order ${order.id} is disputed (${dispute.reason ?? 'no reason given'})`,
+    )
+  }
+  await writeRoom(env.ROOMS, orderRoom(order.id), 'order', { ...order })
+}
+
+/** What the webhook hands to worker/billing.ts, when the app bills subscriptions. */
+export interface BillingHooks {
+  /** A subscription changed: store its current state. */
+  subscription(subscriptionId: string): Promise<void>
+  /** A renewal could not be charged: tell the customer. */
+  paymentFailed(invoice: Invoice, origin: string): Promise<void>
+}
+
+/**
  * Stripe's webhook: verified against STRIPE_WEBHOOK_SECRET before anything in it is read,
- * then each Checkout event settles its order. Subscription events, and completed subscription
- * checkouts, go to `onSubscription` when the app bills subscriptions (worker/billing.ts).
- * Other events are acknowledged, so Stripe stops sending them.
+ * then each Checkout event settles its order, and refunds and disputes update it. Subscription
+ * and invoice events, and completed subscription checkouts, go to `billing` when the app bills
+ * subscriptions (worker/billing.ts). Other events are acknowledged, so Stripe stops sending them.
  */
 export async function receiveStripe(
   request: Request,
   env: CheckoutEnv,
-  onSubscription?: (subscriptionId: string) => Promise<void>,
+  billing?: BillingHooks,
 ): Promise<Response> {
   if (!env.STRIPE_WEBHOOK_SECRET) throw new HttpError(503, 'Set STRIPE_WEBHOOK_SECRET (README)')
   const { body } = await verifyWebhook(request, {
@@ -219,12 +301,18 @@ export async function receiveStripe(
     secret: env.STRIPE_WEBHOOK_SECRET,
   })
   const event = parseStripeEvent(body)
-  if (event.kind === 'subscription') await onSubscription?.(event.subscription.id)
+  const origin = new URL(request.url).origin
+  if (event.kind === 'subscription') await billing?.subscription(event.subscription.id)
+  if (event.kind === 'invoice' && event.type === 'invoice.payment_failed') {
+    await billing?.paymentFailed(event.invoice, origin)
+  }
+  if (event.kind === 'refund') await refundOrder(env, event.charge)
+  if (event.kind === 'dispute') await disputeOrder(env, event.type, event.dispute)
   if (event.kind === 'checkout' && event.session.mode === 'subscription') {
-    if (event.session.subscriptionId) await onSubscription?.(event.session.subscriptionId)
+    if (event.session.subscriptionId) await billing?.subscription(event.session.subscriptionId)
   } else if (event.kind === 'checkout') {
     const status = statusAfter(event.type, event.session)
-    if (status) await settle(env, event.session, status, new URL(request.url).origin)
+    if (status) await settle(env, event.session, status, origin)
   }
   return Response.json({ received: true })
 }

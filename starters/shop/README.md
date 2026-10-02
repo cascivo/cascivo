@@ -70,8 +70,9 @@ it to the order page, and emails a receipt rendered with `@cascivo/email`.
 3. Deployed: `npx wrangler secret put STRIPE_SECRET_KEY` and
    `npx wrangler secret put STRIPE_WEBHOOK_SECRET`. In the dashboard, add a webhook endpoint
    at `https://<your app>/api/stripe/webhook` for `checkout.session.completed`,
-   `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed` and
-   `checkout.session.expired`; its signing secret is `STRIPE_WEBHOOK_SECRET`.
+   `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`,
+   `checkout.session.expired`, `charge.refunded`, `charge.dispute.created` and
+   `charge.dispute.closed`; its signing secret is `STRIPE_WEBHOOK_SECRET`.
 4. Receipts: set `RECEIPT_FROM` in `wrangler.jsonc` to an address on a domain you have
    onboarded to Email Service. `vite dev` renders each receipt and logs it instead.
 
@@ -87,6 +88,10 @@ browser cannot change it.
   set on a Payment Link.
 - A bank debit completes the session as `unpaid`: the order stays pending until
   `async_payment_succeeded` or `async_payment_failed` arrives, possibly days later.
+- Refunds are made in the Stripe dashboard (or with `createRefund`); `charge.refunded` records
+  the amount, and an order refunded in full becomes `refunded`. A chargeback makes it
+  `disputed` until it is decided: answer it with evidence in the dashboard. Both find the
+  order by the payment it stored when it was paid.
 - `src/routes/checkout/[order].tsx` — where Stripe sends the buyer back. It watches the
   order's read-only room, so it updates when the webhook arrives.
 

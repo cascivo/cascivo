@@ -477,16 +477,17 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
   })
 
   /**
-   * `--example checkout`: `@cascivo/app/stripe` and `@cascivo/email` in the Worker. Only a
-   * build shows that the receipt template, written against React, bundles into a Worker that
-   * runs on Preact (react-dom/server becomes preact/compat/server).
+   * `--example checkout --auth email`: `@cascivo/app/stripe` and `@cascivo/email` in the
+   * Worker, with /billing (subscriptions, entitlements, the failed-renewal email). Only a build
+   * shows that the receipt template, written against React, bundles into a Worker that runs on
+   * Preact (react-dom/server becomes preact/compat/server).
    */
-  describe('cloudflare --example checkout', () => {
+  describe('cloudflare --example checkout --auth email', () => {
     let app: string
 
     before(() => {
       if (!ready) return
-      app = scaffold('cloudflare', 'cf-checkout', ['--example', 'checkout'])
+      app = scaffold('cloudflare', 'cf-checkout', ['--example', 'checkout', '--auth', 'email'])
       run('pnpm', ['run', 'typecheck'], app)
       run('pnpm', ['exec', 'vite', 'build'], app)
     })
@@ -498,6 +499,11 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
       const worker = readFileSync(join(dist, dir, 'index.js'), 'utf8')
       assert.match(worker, /api\.stripe\.com/, 'the Worker bundle has no Stripe client')
       assert.match(worker, /Thanks for your payment/, 'the Worker bundle has no receipt template')
+      assert.match(
+        worker,
+        /payment did not go through/,
+        'the Worker bundle has no failed-renewal email',
+      )
     })
 
     it('passes its own format:check', { skip: !ready }, () => {

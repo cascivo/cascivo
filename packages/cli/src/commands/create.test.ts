@@ -1268,6 +1268,24 @@ describe('buildScaffold — cloudflare --example checkout', () => {
     expect(map.get('src/App.tsx')).toContain("href: '/checkout'")
   })
 
+  it('records refunds by the running total and disputes by their stored status', () => {
+    const store = map.get('worker/checkout.ts')!
+    // The payment is stored when the order settles: refund and dispute events name only it.
+    expect(store).toContain('email = ?, payment_intent_id = ?')
+    expect(store).toContain('SET refunded_amount = MAX(refunded_amount, ?)')
+    expect(store).toContain(
+      "WHERE payment_intent_id = ? AND status = 'paid' AND dispute_status IS NULL",
+    )
+    expect(store).toContain("status = CASE WHEN ? = 'won' THEN 'paid' ELSE 'disputed' END")
+    expect(map.get('src/checkout.ts')).toContain(
+      "export type OrderStatus = 'pending' | 'paid' | 'failed' | 'expired' | 'refunded' | 'disputed'",
+    )
+    expect(map.get('src/routes/checkout/[order].tsx')).toContain(
+      "disputed: { variant: 'destructive', label: 'Disputed' },",
+    )
+    expect(map.get('README.md')).toContain('`charge.dispute.closed`')
+  })
+
   it('sends receipts with @cascivo/email through the Email Service binding', () => {
     const pkg = JSON.parse(map.get('package.json')!) as { dependencies: Record<string, string> }
     expect(pkg.dependencies['@cascivo/email']).toMatch(/^\d+\.\d+\.\d+$/)
@@ -1334,14 +1352,38 @@ describe('buildScaffold — cloudflare --example checkout --auth email (billing)
     expect(billing).toContain("OR billing.status NOT IN ('active', 'trialing', 'past_due')")
   })
 
-  it('routes subscription events from the Stripe webhook into billing', () => {
-    expect(map.get('worker/index.ts')).toContain('billingStore.syncSubscription(env, id)')
+  it('routes subscription and invoice events from the Stripe webhook into billing', () => {
+    expect(map.get('worker/index.ts')).toContain(
+      'return await orderStore.receiveStripe(request, env, billingStore.billingHooks(env))',
+    )
     expect(build(['checkout']).get('worker/index.ts')).toContain(
       'return await orderStore.receiveStripe(request, env)',
     )
-    expect(map.get('worker/checkout.ts')).toContain(
-      "if (event.kind === 'subscription') await onSubscription?.(event.subscription.id)",
+    const store = map.get('worker/checkout.ts')!
+    expect(store).toContain(
+      "if (event.kind === 'subscription') await billing?.subscription(event.subscription.id)",
     )
+    expect(store).toContain('await billing?.paymentFailed(event.invoice, origin)')
+  })
+
+  it('gates the plan with isEntitled / requireEntitlement, past_due included', () => {
+    const billing = map.get('worker/billing.ts')!
+    expect(billing).toContain('active: isEntitled(billing.status)')
+    expect(billing).toContain('requireEntitlement((await readRow(env.DB, user.id))?.status)')
+    expect(map.get('src/billing.ts')).not.toContain('isActive')
+    expect(map.get('README.md')).toContain('await billingStore.requirePlan(env, request)')
+  })
+
+  it('reminds a failed renewal once per attempt, only for customers it bills', () => {
+    const billing = map.get('worker/billing.ts')!
+    expect(billing).toContain(
+      "'UPDATE billing SET reminded = ? WHERE customer_id = ? AND reminded IS NOT ? RETURNING user_id'",
+    )
+    expect(billing.indexOf('if (!row) return')).toBeLessThan(
+      billing.indexOf('await env.EMAIL.send('),
+    )
+    expect(billing).toContain('invoice.hostedInvoiceUrl ??')
+    expect(map.get('README.md')).toContain('`invoice.payment_failed`')
   })
 })
 
@@ -1415,6 +1457,16 @@ describe('buildScaffold — cloudflare --example newsletter', () => {
     expect(store).toContain('rendered.html.replaceAll(TOKEN_SLOT, readerToken)')
     expect(map.get('worker/index.ts')).toContain(
       "if (newsletterPath === '/api/newsletter/unsubscribe' && request.method === 'POST') {",
+    )
+  })
+
+  it('sends through sendEmail with the SES client as its sender, and checks an issue first', () => {
+    const store = map.get('worker/newsletter.ts')!
+    expect(store).toContain('await sendEmail(ses, message, {')
+    expect(store).not.toContain('ses.sendEmail(')
+    // An unsendable issue is refused before it is queued, so the queue never retries it forever.
+    expect(store.indexOf('assertSendable(renderIssue(')).toBeLessThan(
+      store.indexOf('await env.NEWSLETTER.sendBatch('),
     )
   })
 

@@ -58,6 +58,8 @@ const STATUS = {
   paid: { variant: 'success', label: 'Paid' },
   failed: { variant: 'destructive', label: 'Payment failed' },
   expired: { variant: 'secondary', label: 'Expired' },
+  refunded: { variant: 'secondary', label: 'Refunded' },
+  disputed: { variant: 'destructive', label: 'Disputed' },
 } as const
 
 /** `/checkout/:order` — where Stripe sends the buyer back. It updates when Stripe confirms. */
@@ -93,9 +95,25 @@ export default function OrderPage({ params }: RouteProps<'/checkout/:order'>) {
           This page updates by itself when Stripe confirms. A bank payment can take a few days.
         </Alert>
       ) : null}
-      {order.status === 'paid' ? (
+      {order.status === 'paid' && order.refundedAmount === 0 ? (
         <Alert variant="success" title="Thank you">
           Your payment went through. A receipt is on its way to your inbox.
+        </Alert>
+      ) : null}
+      {order.status === 'paid' && order.refundedAmount > 0 ? (
+        <Alert variant="info" title="Partly refunded">
+          {formatPrice(order.refundedAmount, order.currency)} of this order was refunded to the card
+          that paid it.
+        </Alert>
+      ) : null}
+      {order.status === 'refunded' ? (
+        <Alert variant="info" title="Refunded">
+          The full amount went back to the card that paid it. It can take a few days to show.
+        </Alert>
+      ) : null}
+      {order.status === 'disputed' ? (
+        <Alert variant="warning" title="This payment is disputed">
+          The card's bank is reviewing a chargeback. The order is on hold until it is decided.
         </Alert>
       ) : null}
       {order.status === 'failed' ? (

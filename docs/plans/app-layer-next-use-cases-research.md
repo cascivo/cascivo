@@ -4,7 +4,7 @@ Date: 2026-10-02. Follow-up to [#259](https://github.com/cascivo/cascivo/pull/25
 Amazon SES). Question: after payments and bulk email, which other use cases are worth building
 into `@cascivo/app` and `cascivo create --framework cloudflare`, and in what order?
 
-This is a proposal only. Nothing here is implemented.
+This started as a proposal only. Items 1–4 have since shipped; see "Status" at the end.
 
 ## How the candidates were judged
 
@@ -309,3 +309,31 @@ most of the rest hangs on, and team billing completes subscriptions), then **8 a
 5. Is a real-account workflow with repository secrets acceptable, and who owns the test
    accounts?
 6. Merchant of record: worth the docs and two webhook schemes now, or only on request?
+
+## Status
+
+Shipped 2026-10-02, items 1–4 as one change:
+
+- **1.** `createSes(...).send(message)` makes the SES client an `EmailSender`:
+  `sendEmail(ses, renderEmail(…), envelope)` works, with display names (RFC 2047 when not
+  ASCII), cc, bcc, reply-to and attachments. SES v2 `Simple` content does take attachments
+  (`Attachments`, base64 `RawContent`), checked against the API reference, so no MIME building
+  was needed. `--example newsletter` now sends through `sendEmail`, and refuses an issue too
+  large to send before queueing it.
+- **2.** `parseStripeEvent` types `charge.refunded` (`kind: 'refund'`), `charge.dispute.*`
+  (`kind: 'dispute'`) and `invoice.paid` / `invoice.payment_failed` (`kind: 'invoice'`).
+  `createRefund` exists; a Checkout session carries `paymentIntentId`. The checkout example
+  stores the payment intent, records refunds by the running total (`refunded` when all of it
+  is), and marks chargebacks `disputed` (back to `paid` when won), storing the dispute's status
+  so a late `created` cannot reopen a closed one. `/billing` emails a failed renewal once per
+  attempt, with the invoice's hosted page. The operator is told about a dispute in the log
+  only; emailing them needs an address the example does not have yet.
+- **3.** `verifyWebhook` returns the Stripe event id.
+- **4.** `isEntitled(status, { pastDue? })` and `requireEntitlement(status)` (402) in
+  `@cascivo/app/stripe`; `past_due` counts while Stripe retries, so the dashboard's
+  failed-payment settings are the one place the grace period is set. `/billing` uses them and
+  gains a `requirePlan` helper. The flags part is documentation (the plan as a flag context
+  attribute) rather than wiring: the scaffold has no flag service to wire it to.
+
+Still unproven without accounts, as before: a real refund, dispute and failed renewal from
+Stripe, and a real SES send with an attachment.

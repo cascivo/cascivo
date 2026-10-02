@@ -151,6 +151,105 @@ describe('createSes', () => {
     ).rejects.toMatchObject({ retryable: true })
   })
 
+  it('sends a composed message: names, cc, bcc, reply-to and attachments', async () => {
+    const { calls, fetch } = stubFetch(() => Response.json({ MessageId: 'ses-456' }))
+    const sent = await ses(fetch).send({
+      from: { name: 'Shop "Main"', email: 'shop@example.com' },
+      to: ['a@example.org', { name: 'Zoë', email: 'zoe@example.org' }],
+      cc: 'c@example.org',
+      bcc: [{ name: 'Audit', email: 'audit@example.com' }],
+      replyTo: 'help@example.com',
+      subject: 'Your receipt — €9.00',
+      html: '<p>Thanks</p>',
+      text: 'Thanks',
+      headers: { 'X-Order': '42' },
+      attachments: [
+        {
+          filename: 'receipt.txt',
+          type: 'text/plain',
+          content: new TextEncoder().encode('paid'),
+          disposition: 'attachment',
+        },
+        {
+          filename: 'a.pdf',
+          type: 'application/pdf',
+          content: 'JVBERg==',
+          disposition: 'attachment',
+        },
+      ],
+    })
+    expect(sent).toEqual({ messageId: 'ses-456' })
+    expect(JSON.parse(String(calls[0]!.init.body))).toEqual({
+      FromEmailAddress: '"Shop \\"Main\\"" <shop@example.com>',
+      Destination: {
+        ToAddresses: ['a@example.org', '=?UTF-8?B?Wm/Dqw==?= <zoe@example.org>'],
+        CcAddresses: ['c@example.org'],
+        BccAddresses: ['"Audit" <audit@example.com>'],
+      },
+      ReplyToAddresses: ['help@example.com'],
+      Content: {
+        Simple: {
+          Subject: { Data: 'Your receipt — €9.00', Charset: 'UTF-8' },
+          Body: {
+            Html: { Data: '<p>Thanks</p>', Charset: 'UTF-8' },
+            Text: { Data: 'Thanks', Charset: 'UTF-8' },
+          },
+          Headers: [{ Name: 'X-Order', Value: '42' }],
+          Attachments: [
+            {
+              FileName: 'receipt.txt',
+              ContentType: 'text/plain',
+              ContentDisposition: 'ATTACHMENT',
+              ContentTransferEncoding: 'BASE64',
+              RawContent: btoa('paid'),
+            },
+            {
+              FileName: 'a.pdf',
+              ContentType: 'application/pdf',
+              ContentDisposition: 'ATTACHMENT',
+              ContentTransferEncoding: 'BASE64',
+              RawContent: 'JVBERg==',
+            },
+          ],
+        },
+      },
+    })
+  })
+
+  it('refuses a line break in an address, a name or an attachment name', async () => {
+    const { calls, fetch } = stubFetch(() => Response.json({ MessageId: 'x' }))
+    const message = {
+      from: 'a@example.com',
+      to: 'b@example.org',
+      subject: 's',
+      html: 'h',
+      text: 't',
+    }
+    await expect(
+      ses(fetch).send({
+        ...message,
+        to: { name: 'B\r\nBcc: x@evil.test', email: 'b@example.org' },
+      }),
+    ).rejects.toThrow(/line break/)
+    await expect(
+      ses(fetch).send({ ...message, cc: 'c@example.org\nBcc: x@evil.test' }),
+    ).rejects.toThrow(/line break/)
+    await expect(
+      ses(fetch).send({
+        ...message,
+        attachments: [
+          {
+            filename: 'a\r\n.pdf',
+            type: 'application/pdf',
+            content: '',
+            disposition: 'attachment',
+          },
+        ],
+      }),
+    ).rejects.toThrow(/line break/)
+    expect(calls).toHaveLength(0)
+  })
+
   it('fails fast on missing credentials or an empty message', async () => {
     expect(() => createSes({ region: 'eu-west-1', accessKeyId: '', secretAccessKey: 's' })).toThrow(
       /required/,

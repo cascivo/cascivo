@@ -351,6 +351,15 @@ nothing without `@cascivo/themes/warm.css`.
 In `vite dev`, Flagship runs a local simulator: an unset flag evaluates to its default, so the
 app works before any flag exists.
 
+**Flags by plan.** The context is yours to fill, so a paid plan is one more attribute: put
+`isEntitled(status)` from `@cascivo/app/stripe` into it and target flags at `plan: 'pro'` in
+Flagship. Use it for what the page shows; the Worker still refuses the paid request itself
+with `requireEntitlement` (see Payments below), because a flag value reaches the browser.
+
+```ts
+flags.evaluate(env.FLAGS, { user: user.id, plan: isEntitled(row?.status) ? 'pro' : 'free' })
+```
+
 ## Background jobs — `@cascivo/app/jobs` and `@cascivo/app/jobs-server`
 
 Work that outlives a request, like an import, a report or an agent task, with its progress
@@ -684,7 +693,7 @@ before anything in it is trusted, and returns `{ body, id }`:
 
 - `github`: `X-Hub-Signature-256`; `id` is `X-GitHub-Delivery`.
 - `stripe`: `Stripe-Signature`, with a timestamp window (five minutes by default) against a
-  captured delivery replayed later; the event id is in the body.
+  captured delivery replayed later; `id` is the event's `evt_…`, read from the verified body.
 - `standard`: [Standard Webhooks](https://www.standardwebhooks.com/) (Svix, Clerk, Resend…),
   with the `whsec_` secret, rotation and the timestamp window.
 
@@ -746,7 +755,8 @@ if (event.kind === 'checkout' && event.session.paymentStatus === 'paid') {
   with a 2xx so Stripe stops retrying it.
 - **`parseCheckoutSession(raw)`** — a session as Stripe sends it, field by field:
   `status`, `paymentStatus`, `amountTotal`, `currency`, `customerEmail`, `clientReferenceId`,
-  `metadata`.
+  `metadata`, and `paymentIntentId`: store it with the order, because refund and dispute
+  events name the payment, not the session.
 
 What the handler must still get right, because a webhook is retried and can arrive late or
 out of order: settle each order once (an update guarded by its current status), look the
@@ -786,10 +796,53 @@ in newer API versions, from its first item. Save the Customer Portal's settings 
 dashboard (test mode too) before opening it. For anything else in Stripe's API, install the
 `stripe` package; it runs on Workers too.
 
+**Gating a paid feature.** `isEntitled(status)` says whether a stored subscription status
+unlocks the plan: `active` and `trialing` do, and so does `past_due` while Stripe retries a
+failed renewal (pass `{ pastDue: false }` to lock it at once). How long the retries last is set
+in the Stripe dashboard, which then ends the subscription as `canceled` or `unpaid`, so the
+grace period is decided in one place. `requireEntitlement(status)` throws `HttpError(402)`
+otherwise; call it in the Worker, never trusting what the page shows.
+
+```ts
+requireEntitlement(row?.status) // 402 unless the plan is on
+```
+
+**Refunds, disputes and failed renewals.** The webhook events after the sale:
+
+```ts
+await stripe.createRefund({ paymentIntent, amount: 300 }, { idempotencyKey: `${orderId}-refund` })
+
+if (event.kind === 'refund') {
+  // event.charge.amountRefunded is the running total; event.charge.refunded means all of it
+}
+if (event.kind === 'dispute') {
+  // charge.dispute.created / …closed: event.dispute.status is 'won' or 'lost' once closed
+}
+if (event.kind === 'invoice' && event.type === 'invoice.payment_failed') {
+  // tell the customer: event.invoice.hostedInvoiceUrl pays it with another card
+}
+```
+
+- **`createRefund({ paymentIntent, amount?, reason?, metadata? }, { idempotencyKey })`** —
+  refunds all or part of a payment. Change the order on `charge.refunded`, not on this call's
+  answer, so a refund made in the dashboard is handled the same way.
+- **`charge.refunded`** is `{ kind: 'refund', charge }`. `amountRefunded` is cumulative, so
+  store the largest one seen: a retried or late event cannot count a refund twice.
+- **`charge.dispute.created` / `…closed`** are `{ kind: 'dispute', dispute }` with
+  `paymentIntentId`, `amount`, `reason` and Stripe's own `status` string (it adds new ones). A
+  `created` can arrive after `closed`: store the dispute's status, and ignore `created` once one
+  is stored.
+- **`invoice.paid` / `invoice.payment_failed`** are `{ kind: 'invoice', invoice }` with
+  `customerId`, `subscriptionId` (from either API version's place for it), `amountDue`,
+  `attemptCount`, `nextPaymentAttempt` and `hostedInvoiceUrl`. Each failed attempt is its own
+  event, and each can be retried: key a reminder on the invoice id and the attempt count.
+- `parseCharge`, `parseDispute` and `parseInvoice` read each object on its own.
+
 `cascivo create --framework cloudflare --example checkout` scaffolds all of it: a product
-page, the order page that updates live when the webhook arrives, orders in D1, and a receipt
-rendered with `@cascivo/email`. With `--auth email` it adds `/billing`: a monthly plan, kept in
-step by the subscription events, and the billing portal.
+page, the order page that updates live when the webhook arrives, orders in D1 (refunded and
+disputed ones included), and a receipt rendered with `@cascivo/email`. With `--auth email` it
+adds `/billing`: a monthly plan, kept in step by the subscription events, gated with
+`requireEntitlement`, an email when a renewal fails, and the billing portal.
 
 ## Email with Amazon SES — `@cascivo/app/ses`
 
@@ -845,6 +898,23 @@ return handleSns(request, {
 - **`parseSesNotification(message)`** — `bounce` (with `bounceType`: only `Permanent` means
   never mail the address again), `complaint`, `delivery`, or `other`, from identity
   notifications and configuration-set events alike.
+- **`send(message)`** — the same client as an `EmailSender` for `@cascivo/email`, so a
+  rendered email goes through that package's checks (subject, preheader, text part, size,
+  line breaks in headers) on its way to SES, and switching from the Email Service binding is
+  one argument:
+
+  ```ts
+  import { renderEmail, sendEmail } from '@cascivo/email'
+  await sendEmail(ses, renderEmail(<Welcome name={name} />, { subject }), {
+    from: { name: 'Example', email: 'hi@example.com' },
+    to,
+    attachments: [{ filename: 'report.pdf', type: 'application/pdf', content: pdf, disposition: 'attachment' }],
+  })
+  ```
+
+  Display names that are not plain ASCII are encoded (RFC 2047); cc, bcc, reply-to and
+  attachments (bytes, or a base64 string as the binding takes it) map onto SES v2's fields.
+
 - **`signAwsRequest(request, credentials, { region, service })`** — the Signature V4 headers
   for any other AWS API call.
 

@@ -1,12 +1,16 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest'
 import { verifyWebhook } from './guard'
+import { HttpError } from '@cascivo/data'
 import {
   StripeError,
   createStripe,
+  isEntitled,
   parseCheckoutSession,
+  parseInvoice,
   parseStripeEvent,
   parseSubscription,
+  requireEntitlement,
 } from './stripe'
 
 /** A Checkout Session as Stripe's API returns it, trimmed to what matters here. */
@@ -237,6 +241,162 @@ describe('subscriptions', () => {
   })
 })
 
+const charge = (overrides: Record<string, unknown> = {}) => ({
+  id: 'ch_1',
+  object: 'charge',
+  payment_intent: 'pi_1',
+  amount: 900,
+  amount_refunded: 300,
+  refunded: false,
+  currency: 'eur',
+  ...overrides,
+})
+
+const invoice = (overrides: Record<string, unknown> = {}) => ({
+  id: 'in_1',
+  object: 'invoice',
+  customer: 'cus_1',
+  status: 'open',
+  amount_due: 900,
+  amount_paid: 0,
+  currency: 'eur',
+  customer_email: 'payer@example.com',
+  hosted_invoice_url: 'https://invoice.stripe.com/i/1',
+  attempt_count: 1,
+  next_payment_attempt: 1800000000,
+  billing_reason: 'subscription_cycle',
+  parent: { type: 'subscription_details', subscription_details: { subscription: 'sub_1' } },
+  ...overrides,
+})
+
+describe('refunds, disputes and invoices', () => {
+  const event = (type: string, object: unknown) =>
+    JSON.stringify({ id: 'evt_3', object: 'event', type, created: 1700000000, data: { object } })
+
+  it('refunds a payment, in part, with an idempotency key', async () => {
+    const { calls, fetch } = stubFetch(() =>
+      Response.json({
+        id: 're_1',
+        object: 'refund',
+        status: 'succeeded',
+        amount: 300,
+        currency: 'eur',
+        payment_intent: 'pi_1',
+      }),
+    )
+    const refund = await createStripe('sk_test_123', { fetch }).createRefund(
+      {
+        paymentIntent: 'pi_1',
+        amount: 300,
+        reason: 'requested_by_customer',
+        metadata: { order: 'o-1' },
+      },
+      { idempotencyKey: 'o-1-refund-1' },
+    )
+    expect(refund).toEqual({
+      id: 're_1',
+      status: 'succeeded',
+      amount: 300,
+      currency: 'eur',
+      paymentIntentId: 'pi_1',
+    })
+    expect(calls[0]!.url).toBe('https://api.stripe.com/v1/refunds')
+    expect((calls[0]!.init.headers as Record<string, string>)['idempotency-key']).toBe(
+      'o-1-refund-1',
+    )
+    expect(Object.fromEntries(new URLSearchParams(String(calls[0]!.init.body)))).toEqual({
+      payment_intent: 'pi_1',
+      amount: '300',
+      reason: 'requested_by_customer',
+      'metadata[order]': 'o-1',
+    })
+  })
+
+  it('types charge.refunded with the running refunded total', () => {
+    expect(parseStripeEvent(event('charge.refunded', charge()))).toMatchObject({
+      kind: 'refund',
+      type: 'charge.refunded',
+      charge: { id: 'ch_1', paymentIntentId: 'pi_1', amountRefunded: 300, refunded: false },
+    })
+    expect(() => parseStripeEvent(event('charge.refunded', charge({ amount: '9' })))).toThrow(
+      /amount or currency/,
+    )
+  })
+
+  it('types the dispute events, keeping a status it does not know', () => {
+    const dispute = {
+      id: 'dp_1',
+      object: 'dispute',
+      charge: 'ch_1',
+      payment_intent: { id: 'pi_1', object: 'payment_intent' },
+      amount: 900,
+      currency: 'eur',
+      status: 'prevented',
+      reason: 'fraudulent',
+    }
+    expect(parseStripeEvent(event('charge.dispute.closed', dispute))).toMatchObject({
+      kind: 'dispute',
+      type: 'charge.dispute.closed',
+      dispute: { id: 'dp_1', chargeId: 'ch_1', paymentIntentId: 'pi_1', status: 'prevented' },
+    })
+    expect(() =>
+      parseStripeEvent(event('charge.dispute.created', { ...dispute, status: null })),
+    ).toThrow(/no status/)
+  })
+
+  it('types the invoice events, with the subscription where either API version puts it', () => {
+    expect(parseStripeEvent(event('invoice.payment_failed', invoice()))).toMatchObject({
+      kind: 'invoice',
+      type: 'invoice.payment_failed',
+      invoice: {
+        id: 'in_1',
+        customerId: 'cus_1',
+        subscriptionId: 'sub_1',
+        status: 'open',
+        hostedInvoiceUrl: 'https://invoice.stripe.com/i/1',
+        attemptCount: 1,
+        nextPaymentAttempt: 1800000000,
+      },
+    })
+    // Older API versions: the subscription on the invoice; a final attempt has no next one.
+    expect(
+      parseInvoice(invoice({ parent: null, subscription: 'sub_2', next_payment_attempt: null })),
+    ).toMatchObject({ subscriptionId: 'sub_2', nextPaymentAttempt: null })
+    expect(() => parseInvoice({ id: 'in_1', object: 'charge' })).toThrow(/invoice/)
+  })
+
+  it('carries the payment intent on a Checkout session, for refunds to find the order', () => {
+    expect(parseCheckoutSession(session({ payment_intent: 'pi_7' })).paymentIntentId).toBe('pi_7')
+    expect(parseCheckoutSession(session()).paymentIntentId).toBeNull()
+  })
+})
+
+describe('entitlements', () => {
+  it('unlocks active and trialing plans, and past_due unless told not to', () => {
+    expect(isEntitled('active')).toBe(true)
+    expect(isEntitled('trialing')).toBe(true)
+    expect(isEntitled('past_due')).toBe(true)
+    expect(isEntitled('past_due', { pastDue: false })).toBe(false)
+    for (const status of ['canceled', 'unpaid', 'incomplete', 'paused', 'none', 'mystery', null]) {
+      expect(isEntitled(status)).toBe(false)
+    }
+    expect(isEntitled(undefined)).toBe(false)
+  })
+
+  it('refuses with a 402 when the plan is not on', () => {
+    expect(() => requireEntitlement('active')).not.toThrow()
+    const error = (() => {
+      try {
+        requireEntitlement('canceled')
+      } catch (e) {
+        return e
+      }
+    })()
+    expect(error).toBeInstanceOf(HttpError)
+    expect(error).toMatchObject({ status: 402 })
+  })
+})
+
 describe('parseCheckoutSession', () => {
   it('prefers the email typed on Stripe’s page, then the one passed in', () => {
     expect(parseCheckoutSession(session({ customer_email: 'given@example.com' }))).toMatchObject({
@@ -284,13 +444,15 @@ describe('parseStripeEvent', () => {
   })
 
   it('passes other events through as `other`, so they can be acknowledged', () => {
-    expect(parseStripeEvent(event('invoice.paid', { object: 'invoice' }))).toEqual({
-      kind: 'other',
-      id: 'evt_1',
-      type: 'invoice.paid',
-      created: 1700000000,
-      livemode: false,
-    })
+    expect(parseStripeEvent(event('payment_intent.created', { object: 'payment_intent' }))).toEqual(
+      {
+        kind: 'other',
+        id: 'evt_1',
+        type: 'payment_intent.created',
+        created: 1700000000,
+        livemode: false,
+      },
+    )
   })
 
   it('refuses a body that is not an event, or a Checkout event without a session', () => {
@@ -319,6 +481,7 @@ describe('parseStripeEvent', () => {
       body,
     })
     const verified = await verifyWebhook(request, { scheme: 'stripe', secret: 'whsec_test' })
+    expect(verified.id).toBe('evt_1')
     expect(parseStripeEvent(verified.body)).toMatchObject({
       kind: 'checkout',
       type: 'checkout.session.expired',

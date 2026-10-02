@@ -7037,10 +7037,13 @@
           "AwsCredentials",
           "AwsRequest",
           "Ses",
+          "SesAttachment",
           "SesBounceType",
           "SesEvent",
           "SesMessage",
           "SesOptions",
+          "SesOutgoingEmail",
+          "SesRecipient",
           "SnsHandlerOptions",
           "SnsMessage",
           "SnsNotification",
@@ -7063,7 +7066,14 @@
           "handleSns": "declare function handleSns(request: Request, options: SnsHandlerOptions): Promise<Response>",
           "parseSesNotification": "declare function parseSesNotification(message: string): SesEvent",
           "Ses": {
-            "sendEmail": "(message: SesMessage): Promise<{ messageId: string; }>"
+            "sendEmail": "(message: SesMessage): Promise<{ messageId: string; }>",
+            "send": "(message: SesOutgoingEmail): Promise<{ messageId: string; }>"
+          },
+          "SesAttachment": {
+            "filename": "string",
+            "type": "string",
+            "content": "ArrayBuffer | ArrayBufferView | string",
+            "disposition": "'attachment'"
           },
           "SesBounceType": "type = 'Permanent' | 'Transient' | 'Undetermined'",
           "SesError": {
@@ -7089,6 +7099,19 @@
             "region": "string",
             "fetch?": "typeof fetch"
           },
+          "SesOutgoingEmail": {
+            "from": "SesRecipient",
+            "to": "SesRecipient | SesRecipient[]",
+            "cc?": "SesRecipient | SesRecipient[]",
+            "bcc?": "SesRecipient | SesRecipient[]",
+            "replyTo?": "SesRecipient",
+            "subject": "string",
+            "html": "string",
+            "text": "string",
+            "headers?": "Record<string, string>",
+            "attachments?": "SesAttachment[]"
+          },
+          "SesRecipient": "type = string | { name: string; email: string; }",
           "signAwsRequest": "declare function signAwsRequest(request: AwsRequest, credentials: AwsCredentials, scope: { region: string; service: string; }, now?: Date): Promise<Record<string, string>>",
           "SnsHandlerOptions": {
             "topicArn": "string",
@@ -7114,15 +7137,28 @@
         "values": [
           "StripeError",
           "createStripe",
+          "isEntitled",
+          "parseCharge",
           "parseCheckoutSession",
+          "parseDispute",
+          "parseInvoice",
           "parseStripeEvent",
-          "parseSubscription"
+          "parseSubscription",
+          "requireEntitlement"
         ],
         "types": [
+          "Charge",
           "CheckoutEventType",
           "CheckoutLineItem",
           "CheckoutSession",
           "CheckoutSessionParams",
+          "Dispute",
+          "DisputeEventType",
+          "Invoice",
+          "InvoiceEventType",
+          "InvoiceStatus",
+          "Refund",
+          "RefundParams",
           "Stripe",
           "StripeEvent",
           "StripeOptions",
@@ -7131,6 +7167,14 @@
           "SubscriptionStatus"
         ],
         "declarations": {
+          "Charge": {
+            "id": "string",
+            "paymentIntentId": "string | null",
+            "amount": "number",
+            "amountRefunded": "number",
+            "refunded": "boolean",
+            "currency": "string"
+          },
           "CheckoutEventType": "type = 'checkout.session.completed' | 'checkout.session.async_payment_succeeded' | 'checkout.session.async_payment_failed' | 'checkout.session.expired'",
           "CheckoutLineItem": "type = { price: string; quantity: number; } | { name: string; description?: string; amount: number; currency: string; quantity: number; interval?: 'day' | 'week' | 'month' | 'year'; }",
           "CheckoutSession": {
@@ -7146,6 +7190,7 @@
             "metadata": "Record<string, string>",
             "customerId": "string | null",
             "subscriptionId": "string | null",
+            "paymentIntentId": "string | null",
             "livemode": "boolean"
           },
           "CheckoutSessionParams": {
@@ -7160,14 +7205,59 @@
             "subscriptionMetadata?": "Record<string, string>"
           },
           "createStripe": "declare function createStripe(secretKey: string, options?: StripeOptions): Stripe",
+          "Dispute": {
+            "id": "string",
+            "chargeId": "string | null",
+            "paymentIntentId": "string | null",
+            "amount": "number",
+            "currency": "string",
+            "status": "string",
+            "reason": "string | null"
+          },
+          "DisputeEventType": "type = 'charge.dispute.created' | 'charge.dispute.closed'",
+          "Invoice": {
+            "id": "string",
+            "customerId": "string | null",
+            "subscriptionId": "string | null",
+            "status": "InvoiceStatus | null",
+            "amountDue": "number",
+            "amountPaid": "number",
+            "currency": "string",
+            "customerEmail": "string | null",
+            "hostedInvoiceUrl": "string | null",
+            "attemptCount": "number",
+            "nextPaymentAttempt": "number | null",
+            "billingReason": "string | null"
+          },
+          "InvoiceEventType": "type = 'invoice.paid' | 'invoice.payment_failed'",
+          "InvoiceStatus": "type = 'draft' | 'open' | 'paid' | 'uncollectible' | 'void'",
+          "isEntitled": "declare function isEntitled(status: string | null | undefined, options?: { pastDue?: boolean; }): boolean",
+          "parseCharge": "declare function parseCharge(raw: unknown): Charge",
           "parseCheckoutSession": "declare function parseCheckoutSession(raw: unknown): CheckoutSession",
+          "parseDispute": "declare function parseDispute(raw: unknown): Dispute",
+          "parseInvoice": "declare function parseInvoice(raw: unknown): Invoice",
           "parseStripeEvent": "declare function parseStripeEvent(body: string): StripeEvent",
           "parseSubscription": "declare function parseSubscription(raw: unknown): Subscription",
+          "Refund": {
+            "id": "string",
+            "status": "string",
+            "amount": "number",
+            "currency": "string",
+            "paymentIntentId": "string | null"
+          },
+          "RefundParams": {
+            "paymentIntent": "string",
+            "amount?": "number",
+            "reason?": "'duplicate' | 'fraudulent' | 'requested_by_customer'",
+            "metadata?": "Record<string, string>"
+          },
+          "requireEntitlement": "declare function requireEntitlement(status: string | null | undefined, options?: { pastDue?: boolean; }): void",
           "Stripe": {
             "createCheckoutSession": "(params: CheckoutSessionParams, options?: { idempotencyKey?: string; }): Promise<CheckoutSession>",
             "retrieveCheckoutSession": "(id: string): Promise<CheckoutSession>",
             "retrieveSubscription": "(id: string): Promise<Subscription>",
-            "createPortalSession": "(params: { customer: string; returnUrl: string; }): Promise<{ url: string; }>"
+            "createPortalSession": "(params: { customer: string; returnUrl: string; }): Promise<{ url: string; }>",
+            "createRefund": "(params: RefundParams, options?: { idempotencyKey?: string; }): Promise<Refund>"
           },
           "StripeError": {
             "readonly status": "number",
@@ -7176,7 +7266,7 @@
             "constructor": "(status: number, message: string, type: string | null, code: string | null)",
             "(kind)": "class"
           },
-          "StripeEvent": "type = (EventBase & { kind: 'checkout'; type: CheckoutEventType; session: CheckoutSession; }) | (EventBase & { kind: 'subscription'; type: SubscriptionEventType; subscription: Subscription; }) | (EventBase & { kind: 'other'; type: string; })",
+          "StripeEvent": "type = (EventBase & { kind: 'checkout'; type: CheckoutEventType; session: CheckoutSession; }) | (EventBase & { kind: 'refund'; type: 'charge.refunded'; charge: Charge; }) | (EventBase & { kind: 'dispute'; type: DisputeEventType; dispute: Dispute; }) | (EventBase & { kind: 'invoice'; type: InvoiceEventType; invoice: Invoice; }) | (EventBase & { kind: 'subscription'; type: SubscriptionEventType; subscription: Subscription; }) | (EventBase & { kind: 'other'; type: string; })",
           "StripeOptions": {
             "apiVersion?": "string",
             "fetch?": "typeof fetch"
