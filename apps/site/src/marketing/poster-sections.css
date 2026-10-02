@@ -193,6 +193,10 @@
   opacity: 1;
 }
 
+.pg-hero-frame[data-interactive] .pg-hero-frame-live {
+  pointer-events: auto;
+}
+
 @media (min-width: 40rem) {
   .pg-hero-frame,
   .pg-hero-frames[data-live] .pg-hero-frame {
@@ -218,7 +222,8 @@
   }
 }
 
-/* The whole picture is one link to the example; the frames under it take no pointer. */
+/* Until the front window is interactive, the whole picture is one link to the example;
+   the frames under it take no pointer. */
 .pg-hero-shot-link {
   position: absolute;
   inset: 0;

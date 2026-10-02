@@ -14,9 +14,24 @@ type Theme = 'light' | 'dark'
  * The screenshot stays underneath rather than being swapped out, so a frame that never
  * becomes ready (no JS, a dev server without the built demo) still shows the app.
  */
-function Frame({ theme, live }: { theme: Theme; live: boolean }) {
+function Frame({
+  theme,
+  live,
+  interactive,
+  onReady,
+}: {
+  theme: Theme
+  live: boolean
+  interactive: boolean
+  onReady?: () => void
+}) {
   useSignals()
   const ready = useSignal(false)
+
+  function markReady() {
+    ready.value = true
+    onReady?.()
+  }
 
   function onLoad(event: { currentTarget: HTMLIFrameElement }) {
     const doc = event.currentTarget.contentDocument
@@ -27,12 +42,12 @@ function Frame({ theme, live }: { theme: Theme; live: boolean }) {
     if (!root) return
     // `load` can fire before React has committed into #root, which would fade in a blank box.
     if (root.firstElementChild) {
-      ready.value = true
+      markReady()
       return
     }
     const observer = new MutationObserver(() => {
       if (!root.firstElementChild) return
-      ready.value = true
+      markReady()
       observer.disconnect()
     })
     observer.observe(root, { childList: true })
@@ -42,6 +57,9 @@ function Frame({ theme, live }: { theme: Theme; live: boolean }) {
     <div
       className={`pg-hero-frame pg-hero-frame--${theme}`}
       data-ready={ready.value ? '' : undefined}
+      data-interactive={interactive ? '' : undefined}
+      aria-hidden={interactive ? undefined : 'true'}
+      inert={interactive ? undefined : true}
     >
       <img
         className="pg-hero-frame-poster"
@@ -56,8 +74,8 @@ function Frame({ theme, live }: { theme: Theme; live: boolean }) {
         <iframe
           className="pg-hero-frame-live"
           src={`${PULSE}?theme=${theme}`}
-          title={`Pulse example app, ${theme} theme`}
-          tabIndex={-1}
+          title={`Pulse example app, ${theme} theme — live demo`}
+          {...(interactive ? {} : { tabIndex: -1 })}
           onLoad={onLoad}
         />
       )}
@@ -74,9 +92,11 @@ function Frame({ theme, live }: { theme: Theme; live: boolean }) {
  * the landing itself has finished loading and the figure is close to the viewport — the
  * hero's first paint costs exactly what it did with the screenshots.
  *
- * The frames are a picture, not a workspace: inert, so they take no focus, no pointer and
- * no scroll (an iframe that captured touch would trap a phone's page scroll), and one link
- * laid over them goes to the full example.
+ * With a mouse, the front window is the app itself: click through sections, change the
+ * range, pause the simulation. On touch it stays a picture — inert, so it takes no focus,
+ * no pointer and no scroll (an iframe that captured touch would trap a phone's page
+ * scroll) — and one link laid over it goes to the full example. The dark window behind is
+ * always a picture: only a sliver of it shows, and controls in a sliver read as a misclick.
  */
 export function HeroLiveFrames() {
   useSignals()
@@ -84,6 +104,11 @@ export function HeroLiveFrames() {
   // Below md the dark frame is hidden by CSS — a sliver behind a phone-width window is not
   // worth a second running app — so it stays a (never-fetched, lazy) screenshot there.
   const wide = useMediaQuery('(min-width: 40rem)')
+  const desktop = useMediaQuery('(min-width: 40rem) and (pointer: fine)')
+  // Interactive only once the app has actually painted: until then (or if it never does)
+  // the screenshot is all there is, and it should still link to the example.
+  const frontReady = useSignal(false)
+  const interactive = desktop.value && frontReady.value
   const ref = useRef<HTMLDivElement>(null)
 
   useSignalEffect(() => {
@@ -120,11 +145,18 @@ export function HeroLiveFrames() {
 
   return (
     <div className="pg-hero-frames" ref={ref} data-live={live.value ? '' : undefined}>
-      <div className="pg-hero-frames-stack" aria-hidden="true" inert>
-        <Frame theme="dark" live={live.value && wide.value} />
-        <Frame theme="light" live={live.value} />
+      <div className="pg-hero-frames-stack">
+        <Frame theme="dark" live={live.value && wide.value} interactive={false} />
+        <Frame
+          theme="light"
+          live={live.value}
+          interactive={interactive}
+          onReady={() => {
+            frontReady.value = true
+          }}
+        />
       </div>
-      <a className="pg-hero-shot-link" href={DETAIL} aria-label={ALT} />
+      {!interactive && <a className="pg-hero-shot-link" href={DETAIL} aria-label={ALT} />}
     </div>
   )
 }
