@@ -1,6 +1,7 @@
 import { Stat } from '@cascivo/components/stat'
 import { CopyButton } from '@cascivo/components/copy-button'
 import { axeViolations, gzip, kb, partial } from './figures'
+import { HeroLiveFrames } from './HeroLiveFrames'
 
 const INIT = 'npx cascivo init'
 
@@ -67,28 +68,9 @@ export function PosterHero() {
       </div>
 
       {/* Proof before any argument: a real app built only from cascivo components, in
-          both first-party modes. Two stacked screenshots rather than a live mount, so the
-          hero costs no JavaScript; the link goes to the running example. */}
+          both first-party modes — running, not photographed. */}
       <figure className="pg-hero-shot">
-        <a className="pg-hero-shot-link" href="/examples/pulse">
-          <img
-            className="pg-hero-shot-img pg-hero-shot-img--back"
-            src="/hero/pulse-dark.webp"
-            alt=""
-            width={1440}
-            height={620}
-            loading="lazy"
-            decoding="async"
-          />
-          <img
-            className="pg-hero-shot-img pg-hero-shot-img--front"
-            src="/hero/pulse-light.webp"
-            alt="The pulse example app — an observability dashboard with KPI cards, SLO meters and latency charts, built from cascivo components. The light theme sits in front of the dark one."
-            width={1440}
-            height={620}
-            decoding="async"
-          />
-        </a>
+        <HeroLiveFrames />
         <figcaption className="pg-hero-shot-caption pg-mono">
           pulse · an observability dashboard built only from cascivo components · light and dark are
           one <code>data-theme</code> apart ·{' '}

@@ -127,9 +127,9 @@
   margin-inline-start: 0.375rem;
 }
 
-/* Hero screenshot: two app captures stacked on one grid cell, the dark one set
-   back and offset so both modes read at a glance. Spans the full band under the
-   lead + stats row. */
+/* Hero: the pulse app in two windows stacked on one grid cell, the dark one set back and
+   offset so both modes read at a glance. Spans the full band under the lead + stats row.
+   Each window shows its screenshot until the live app has painted over it. */
 .pg-hero-shot {
   margin: 0;
   padding: var(--pg-pad-block) var(--pg-pad-inline);
@@ -142,24 +142,92 @@
   }
 }
 
-.pg-hero-shot-link {
+.pg-hero-frames {
+  position: relative;
+}
+
+.pg-hero-frames-stack {
   display: grid;
 }
 
-.pg-hero-shot-img {
+.pg-hero-frame {
   grid-area: 1 / 1;
-  display: block;
-  inline-size: 94%;
-  block-size: auto;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1440 / 620;
   border: var(--cascivo-landing-rule-weight) solid var(--cascivo-color-border);
+  background: var(--cascivo-color-background);
 }
 
-.pg-hero-shot-img--back {
-  justify-self: end;
+/* Phone: one window. Once live it is phone-tall, so the app shows its own mobile layout at
+   real size instead of a desktop layout shrunk to illegibility. */
+.pg-hero-frame--dark {
+  display: none;
 }
 
-.pg-hero-shot-img--front {
-  margin-block-start: 4%;
+.pg-hero-frames[data-live] .pg-hero-frame {
+  aspect-ratio: auto;
+  block-size: 34rem;
+}
+
+.pg-hero-frame-poster {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: left top;
+}
+
+.pg-hero-frame-live {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.pg-hero-frame[data-ready] .pg-hero-frame-live {
+  opacity: 1;
+}
+
+@media (min-width: 40rem) {
+  .pg-hero-frame,
+  .pg-hero-frames[data-live] .pg-hero-frame {
+    inline-size: 94%;
+    block-size: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .pg-hero-frame--dark {
+    display: block;
+    justify-self: end;
+  }
+
+  .pg-hero-frame--light {
+    margin-block-start: 4%;
+  }
+}
+
+@media (min-width: 80rem) {
+  .pg-hero-frame,
+  .pg-hero-frames[data-live] .pg-hero-frame {
+    aspect-ratio: 1440 / 620;
+  }
+}
+
+/* The whole picture is one link to the example; the frames under it take no pointer. */
+.pg-hero-shot-link {
+  position: absolute;
+  inset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pg-hero-frame-live {
+    transition: none;
+  }
 }
 
 .pg-hero-shot-caption {
