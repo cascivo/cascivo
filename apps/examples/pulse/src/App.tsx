@@ -1,6 +1,7 @@
 'use client'
 import { signal, useMediaQuery, useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
+import { Activity, Bell, LayoutDashboard, Terminal } from '@cascivo/icons'
 import { ToastProvider, Button, SegmentedControl } from '@cascivo/react'
 import { persistedSignal } from '@cascivo/storage'
 import { AppShell, useSimulation } from '@cascivo/example-kit'
@@ -12,9 +13,10 @@ import { Alerts } from './sections/Alerts'
 import { Logs } from './sections/Logs'
 import { msg } from './i18n'
 
-import '@cascivo/themes/dark.css'
-import '@cascivo/themes/light.css'
-import '@cascivo/themes/warm.css'
+// Every theme the landing can wear: the hero embeds this app in whatever theme the visitor
+// picked there, including cascivo.com's own poster pair (site-local, not a published theme).
+import '@cascivo/themes/all.css'
+import '../../../site/src/poster.css'
 import '@cascivo/tokens'
 
 type Section = 'overview' | 'metrics' | 'alerts' | 'logs'
@@ -41,6 +43,7 @@ export default function App() {
   const navItems: SideNavItem[] = [
     {
       label: t(msg.navOverview),
+      icon: <LayoutDashboard size={16} />,
       active: currentSection.value === 'overview',
       onClick: (e) => {
         e.preventDefault()
@@ -49,6 +52,7 @@ export default function App() {
     },
     {
       label: t(msg.navMetrics),
+      icon: <Activity size={16} />,
       active: currentSection.value === 'metrics',
       onClick: (e) => {
         e.preventDefault()
@@ -57,6 +61,7 @@ export default function App() {
     },
     {
       label: t(msg.navAlerts),
+      icon: <Bell size={16} />,
       active: currentSection.value === 'alerts',
       onClick: (e) => {
         e.preventDefault()
@@ -65,6 +70,7 @@ export default function App() {
     },
     {
       label: t(msg.navLogs),
+      icon: <Terminal size={16} />,
       active: currentSection.value === 'logs',
       onClick: (e) => {
         e.preventDefault()

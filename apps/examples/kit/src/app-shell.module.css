@@ -6,12 +6,30 @@
     font-family: var(--cascivo-font-sans);
   }
 
+  /* A quiet caption strip rather than an alert: it states a fact about the demo, so it takes
+     the surface's own colours and a single warning-coloured mark instead of a tinted band. */
   .mockBanner {
-    background: var(--cascivo-color-warning-subtle);
-    color: var(--cascivo-color-warning-foreground);
-    text-align: center;
-    padding-block: var(--cascivo-space-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cascivo-space-2);
+    padding-block: var(--cascivo-space-1);
     padding-inline: var(--cascivo-space-4);
-    font-size: var(--cascivo-text-sm);
+    background: var(--cascivo-color-surface-2);
+    border-block-end: 1px solid var(--cascivo-color-border);
+    color: var(--cascivo-color-foreground-muted);
+    font-family: var(--cascivo-font-mono);
+    font-size: var(--cascivo-text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    &::before {
+      content: '';
+      inline-size: 0.5rem;
+      block-size: 0.5rem;
+      flex: none;
+      background: var(--cascivo-color-warning);
+      border-radius: var(--cascivo-radius-indicator);
+    }
   }
 }

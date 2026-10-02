@@ -31,10 +31,12 @@ export interface BulletProps {
   className?: string
 }
 
+// Mixed from the theme's foreground rather than fixed grey primitives, which stay light on a
+// dark theme's surface and read as glare.
 const RANGE_COLORS = [
-  'var(--cascivo-gray-200)',
-  'var(--cascivo-gray-300)',
-  'var(--cascivo-gray-400)',
+  'color-mix(in oklab, var(--cascivo-color-foreground) 8%, transparent)',
+  'color-mix(in oklab, var(--cascivo-color-foreground) 16%, transparent)',
+  'color-mix(in oklab, var(--cascivo-color-foreground) 26%, transparent)',
 ]
 
 export function Bullet({
@@ -98,7 +100,7 @@ export function Bullet({
                   y={0}
                   width={Math.max(0, bandW)}
                   height={height}
-                  fill={RANGE_COLORS[i % RANGE_COLORS.length] ?? 'var(--cascivo-gray-200)'}
+                  fill={RANGE_COLORS[i % RANGE_COLORS.length]}
                 />
               )
             })}

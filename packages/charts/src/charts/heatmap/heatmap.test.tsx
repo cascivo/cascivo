@@ -54,4 +54,16 @@ describe('Heatmap', () => {
       expect(svg?.getAttribute('viewBox')).toBe('0 0 120 32')
     })
   })
+
+  it('thins crowded row labels instead of printing all of them on top of each other', () => {
+    const hours = Array.from({ length: 24 }, (_, h) => String(h).padStart(2, '0'))
+    const grid = hours.map((y) => ({ x: '00', y, value: 1 }))
+    const { container } = render(<Heatmap data={grid} title="Hours" width={400} height={160} />)
+    const labels = [...container.querySelectorAll('text')].map((el) => el.textContent)
+    const rowLabels = labels.filter((label) => label !== null && hours.includes(label))
+    expect(rowLabels.length).toBeGreaterThan(1)
+    expect(rowLabels.length).toBeLessThan(hours.length)
+    // The final row is always labelled, so the axis still reads to its end.
+    expect(rowLabels).toContain('23')
+  })
 })

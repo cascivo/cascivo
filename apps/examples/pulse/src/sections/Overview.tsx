@@ -1,8 +1,9 @@
 'use client'
 import { useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
-import { LineChart } from '@cascivo/charts'
+import { AreaChart } from '@cascivo/charts'
 import { SloStrip } from './SloStrip'
+import { ChartPanel, P50_COLOR, P95_COLOR, P99_COLOR } from './ChartPanel'
 import { latencyHistory, hostMetrics } from '../sim/metrics'
 import { msg } from '../i18n'
 
@@ -40,16 +41,20 @@ export function Overview() {
           gap: 'var(--cascivo-space-4)',
         }}
       >
-        <KpiCard label="Total RPS" value={String(totalRps)} />
-        <KpiCard label="Avg P99" value={`${avgP99}ms`} />
-        <KpiCard label="Avg Error" value={`${(avgError * 100).toFixed(2)}%`} />
-        <KpiCard label="Hosts" value={String(hosts.length)} />
+        <KpiCard label="Total RPS" value={String(totalRps)} accent={P50_COLOR} />
+        <KpiCard label="Avg P99" value={`${avgP99}ms`} accent={P99_COLOR} />
+        <KpiCard
+          label="Avg Error"
+          value={`${(avgError * 100).toFixed(2)}%`}
+          accent="var(--cascivo-color-error)"
+        />
+        <KpiCard label="Hosts" value={String(hosts.length)} accent={P95_COLOR} />
       </div>
 
       {/* SLO strip — above the fold */}
       <SloStrip />
 
-      {/* Latency overview — three single-series line charts side by side */}
+      {/* Latency overview — three single-series area charts side by side, one hue each */}
       <div
         style={{
           display: 'grid',
@@ -57,43 +62,53 @@ export function Overview() {
           gap: 'var(--cascivo-space-4)',
         }}
       >
-        <LineChart<LatencyDatum>
-          title={t(msg.seriesP50)}
-          series={[{ id: 'p50', label: t(msg.seriesP50), data: p50Data }]}
-          x={(d) => new Date(d.t)}
-          y={(d) => d.y}
-          height={200}
-          tooltip
-        />
-        <LineChart<LatencyDatum>
-          title={t(msg.seriesP95)}
-          series={[{ id: 'p95', label: t(msg.seriesP95), data: p95Data }]}
-          x={(d) => new Date(d.t)}
-          y={(d) => d.y}
-          height={200}
-          tooltip
-        />
-        <LineChart<LatencyDatum>
-          title={t(msg.seriesP99)}
-          series={[{ id: 'p99', label: t(msg.seriesP99), data: p99Data }]}
-          x={(d) => new Date(d.t)}
-          y={(d) => d.y}
-          height={200}
-          tooltip
-        />
+        <ChartPanel title={t(msg.seriesP50)} color={P50_COLOR}>
+          <AreaChart<LatencyDatum>
+            title={t(msg.seriesP50)}
+            series={[{ id: 'p50', label: t(msg.seriesP50), data: p50Data, color: P50_COLOR }]}
+            x={(d) => new Date(d.t)}
+            y={(d) => d.y}
+            height={180}
+            fill="solid"
+            tooltip
+          />
+        </ChartPanel>
+        <ChartPanel title={t(msg.seriesP95)} color={P95_COLOR}>
+          <AreaChart<LatencyDatum>
+            title={t(msg.seriesP95)}
+            series={[{ id: 'p95', label: t(msg.seriesP95), data: p95Data, color: P95_COLOR }]}
+            x={(d) => new Date(d.t)}
+            y={(d) => d.y}
+            height={180}
+            fill="solid"
+            tooltip
+          />
+        </ChartPanel>
+        <ChartPanel title={t(msg.seriesP99)} color={P99_COLOR}>
+          <AreaChart<LatencyDatum>
+            title={t(msg.seriesP99)}
+            series={[{ id: 'p99', label: t(msg.seriesP99), data: p99Data, color: P99_COLOR }]}
+            x={(d) => new Date(d.t)}
+            y={(d) => d.y}
+            height={180}
+            fill="solid"
+            tooltip
+          />
+        </ChartPanel>
       </div>
     </div>
   )
 }
 
-function KpiCard({ label, value }: { label: string; value: string }) {
+function KpiCard({ label, value, accent }: { label: string; value: string; accent: string }) {
   return (
     <div
       style={{
         padding: 'var(--cascivo-space-4)',
-        background: 'var(--cascivo-surface-subtle)',
-        borderRadius: 'var(--cascivo-radius-md)',
+        background: 'var(--cascivo-color-surface)',
+        borderRadius: 'var(--cascivo-radius-surface)',
         border: '1px solid var(--cascivo-color-border)',
+        borderBlockStart: `4px solid ${accent}`,
       }}
     >
       <div

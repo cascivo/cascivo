@@ -96,6 +96,9 @@
     /* ── Radius — one knob; semantic scale derives in tokens ── */
     --cascivo-radius-base: 0.375rem; /* 6px */
     --cascivo-radius-control: var(--cascivo-radius-base);
+    --cascivo-radius-field: var(--cascivo-radius-base);
+    --cascivo-radius-item: calc(var(--cascivo-radius-base) * 0.66);
+    --cascivo-radius-overlay: calc(var(--cascivo-radius-base) * 2);
     --cascivo-radius-surface: calc(var(--cascivo-radius-base) * 1.66);
     --cascivo-radius-indicator: calc(var(--cascivo-radius-base) / 2);
     --cascivo-radius-full: 9999px;

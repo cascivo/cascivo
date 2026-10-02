@@ -122,7 +122,7 @@ export function Meter({
           viewBox={`0 0 ${svgW} ${svgH}`}
           aria-hidden="true"
         >
-          <path d={totalPath} fill="var(--cascivo-color-border)" />
+          <path d={totalPath} className={styles['track']} />
           {fillPath && <path d={fillPath} fill={color} />}
         </svg>
         <div className={styles['gaugeLabel']}>
@@ -148,26 +148,18 @@ export function Meter({
       aria-valuemax={max}
     >
       <svg
-        className={styles['svg']}
+        className={`${styles['svg']} ${styles['bar']}`}
         width={barW}
         height={barH}
         viewBox={`0 0 ${barW} ${barH}`}
         aria-hidden="true"
       >
+        <rect x={0} y={0} width={barW} height={barH} className={styles['track']} />
         <rect
           x={0}
           y={0}
           width={barW}
           height={barH}
-          rx={barH / 2}
-          fill="var(--cascivo-color-border)"
-        />
-        <rect
-          x={0}
-          y={0}
-          width={barW}
-          height={barH}
-          rx={barH / 2}
           fill={color}
           className={styles['fill']}
           style={{ transform: `scaleX(${ratio})` }}

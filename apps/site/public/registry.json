@@ -13312,7 +13312,7 @@
       "fileHashes": {
         "progress-circle.tsx": "sha256-426ccbdc6408008614855ea29b371734b0903d40ab01c8c2c4b0523468820e49",
         "index.ts": "sha256-c41b61dea3e5c3aee1a3c70df4bd0753d5a9216a1f51051b85d200a17fa0ca4d",
-        "progress-circle.module.css": "sha256-1d91d42681c703f98e6cc8e775a102c362bb899529a48e9646ba3d6721167c55"
+        "progress-circle.module.css": "sha256-e7530cc1cf44224f9e75c7723a65bb22048f89a282ad5920afd4b176e368ae62"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {

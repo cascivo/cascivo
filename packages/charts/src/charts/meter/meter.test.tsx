@@ -36,4 +36,14 @@ describe('Meter', () => {
     )
     expect(container.querySelector('[role="meter"]')).toBeTruthy()
   })
+
+  // The track used --cascivo-color-border, which is near-black in the hard-edged themes, and
+  // a baked-in `rx` kept the bar a pill under a zero-radius theme. Both now come from CSS.
+  it('leaves track colour and corner radius to the theme', () => {
+    for (const variant of ['bar', 'gauge'] as const) {
+      const { container } = render(<Meter value={40} label="Load" variant={variant} />)
+      expect(container.querySelector('[rx]')).toBeNull()
+      expect(container.querySelector('[fill="var(--cascivo-color-border)"]')).toBeNull()
+    }
+  })
 })

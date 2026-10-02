@@ -31,7 +31,9 @@
   }
 
   .track {
-    stroke: var(--cascivo-color-border);
+    /* A fill, not a rule — the border colour is near-black in the hard-edged themes. Same
+       track as Progress. */
+    stroke: var(--cascivo-color-surface-2);
   }
 
   .fill {

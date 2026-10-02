@@ -1,7 +1,7 @@
 'use client'
 import { useSignal, useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
-import { PLAIN_MARGINS } from '../../core/use-chart'
+import { PLAIN_MARGINS, autoLabelStride } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { VisualMap, mapVisual, visualVisible, type VisualMapOptions } from '../../chrome/visual-map'
 import type { ToolboxOptions } from '../../chrome/toolbox'
@@ -196,14 +196,26 @@ export function Heatmap({
             })}
             {!plain && (
               <>
+                {/* Thin crowded category labels, as BarChart does: a 24-row grid in a
+                    220px-tall chart otherwise prints every hour on top of the next. */}
                 <Axis
                   scale={xScale}
                   orientation="x"
                   length={inner.width}
                   transform={`translate(0,${inner.height})`}
                   {...(format ? { format: format } : {})}
+                  labelEvery={autoLabelStride(
+                    format ? xs.map((x) => format(x)) : xs,
+                    inner.width,
+                    'horizontal',
+                  )}
                 />
-                <Axis scale={yScale} orientation="y" length={inner.height} />
+                <Axis
+                  scale={yScale}
+                  orientation="y"
+                  length={inner.height}
+                  labelEvery={autoLabelStride(ys, inner.height, 'vertical')}
+                />
               </>
             )}
           </g>
