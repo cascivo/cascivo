@@ -46,8 +46,8 @@ export function Alerts() {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 padding: 'var(--cascivo-space-3) var(--cascivo-space-4)',
-                background: 'var(--cascivo-surface-subtle)',
-                borderRadius: 'var(--cascivo-radius-md)',
+                background: 'var(--cascivo-color-surface)',
+                borderRadius: 'var(--cascivo-radius-surface)',
                 border: '1px solid var(--cascivo-color-border)',
                 gap: 'var(--cascivo-space-3)',
               }}

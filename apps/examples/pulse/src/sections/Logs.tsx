@@ -81,8 +81,8 @@ export function Logs() {
         style={{
           height: 'calc(100vh - 220px)',
           overflowY: 'auto',
-          background: 'var(--cascivo-surface-subtle)',
-          borderRadius: 'var(--cascivo-radius-md)',
+          background: 'var(--cascivo-color-surface)',
+          borderRadius: 'var(--cascivo-radius-surface)',
           border: '1px solid var(--cascivo-color-border)',
           padding: 'var(--cascivo-space-3)',
         }}

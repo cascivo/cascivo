@@ -1,19 +1,13 @@
 'use client'
 import { useSignals } from '@cascivo/core'
-import type { ReactNode } from 'react'
 import { t } from '@cascivo/i18n'
 import { AreaChart } from '@cascivo/charts'
 import { SloStrip } from './SloStrip'
+import { ChartPanel, P50_COLOR, P95_COLOR, P99_COLOR } from './ChartPanel'
 import { latencyHistory, hostMetrics } from '../sim/metrics'
 import { msg } from '../i18n'
 
 type LatencyDatum = { t: number; y: number }
-
-// One palette hue per percentile, so the three charts read apart at a glance and every
-// theme (including the landing's brutalist embed) recolours them.
-const P50_COLOR = 'var(--cascivo-chart-2)'
-const P95_COLOR = 'var(--cascivo-chart-1)'
-const P99_COLOR = 'var(--cascivo-chart-6)'
 
 export function Overview() {
   useSignals()
@@ -112,7 +106,7 @@ function KpiCard({ label, value, accent }: { label: string; value: string; accen
       style={{
         padding: 'var(--cascivo-space-4)',
         background: 'var(--cascivo-color-surface)',
-        borderRadius: 'var(--cascivo-radius-md)',
+        borderRadius: 'var(--cascivo-radius-surface)',
         border: '1px solid var(--cascivo-color-border)',
         borderBlockStart: `4px solid ${accent}`,
       }}
@@ -136,49 +130,5 @@ function KpiCard({ label, value, accent }: { label: string; value: string; accen
         {value}
       </div>
     </div>
-  )
-}
-
-function ChartPanel({
-  title,
-  color,
-  children,
-}: {
-  title: string
-  color: string
-  children: ReactNode
-}) {
-  return (
-    <section
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 'var(--cascivo-space-3)',
-        padding: 'var(--cascivo-space-4)',
-        background: 'var(--cascivo-color-surface)',
-        borderRadius: 'var(--cascivo-radius-md)',
-        border: '1px solid var(--cascivo-color-border)',
-      }}
-    >
-      <h2
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 'var(--cascivo-space-2)',
-          fontSize: 'var(--cascivo-text-xs)',
-          fontWeight: 600,
-          color: 'var(--cascivo-color-foreground-muted)',
-          textTransform: 'uppercase',
-          letterSpacing: '0.05em',
-        }}
-      >
-        <span
-          aria-hidden="true"
-          style={{ inlineSize: '0.625rem', blockSize: '0.625rem', background: color }}
-        />
-        {title}
-      </h2>
-      {children}
-    </section>
   )
 }

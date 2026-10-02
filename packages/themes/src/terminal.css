@@ -97,6 +97,9 @@
     /* ── Radius — zero ───────────────────────────────── */
     --cascivo-radius-base: 0;
     --cascivo-radius-control: 0;
+    --cascivo-radius-field: var(--cascivo-radius-base);
+    --cascivo-radius-item: calc(var(--cascivo-radius-base) * 0.66);
+    --cascivo-radius-overlay: calc(var(--cascivo-radius-base) * 2);
     --cascivo-radius-surface: 0;
     --cascivo-radius-indicator: 0;
     --cascivo-radius-full: 0;

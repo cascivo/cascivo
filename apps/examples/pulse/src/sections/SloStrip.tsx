@@ -31,7 +31,7 @@ export function SloStrip() {
         gap: 'var(--cascivo-space-4)',
         padding: 'var(--cascivo-space-4)',
         background: 'var(--cascivo-color-surface)',
-        borderRadius: 'var(--cascivo-radius-md)',
+        borderRadius: 'var(--cascivo-radius-surface)',
         border: '1px solid var(--cascivo-color-border)',
       }}
     >

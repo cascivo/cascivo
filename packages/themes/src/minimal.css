@@ -43,6 +43,9 @@
     /* ── Radius — rounder ────────────────────────────── */
     --cascivo-radius-base: 0.75rem;
     --cascivo-radius-control: 0.75rem;
+    --cascivo-radius-field: var(--cascivo-radius-base);
+    --cascivo-radius-item: calc(var(--cascivo-radius-base) * 0.66);
+    --cascivo-radius-overlay: calc(var(--cascivo-radius-base) * 2);
     --cascivo-radius-surface: 1.25rem;
     --cascivo-radius-indicator: 0.375rem;
     --cascivo-radius-full: 9999px;

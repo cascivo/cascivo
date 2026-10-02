@@ -13,6 +13,18 @@
     max-inline-size: 100%;
   }
 
+  /* The track is a fill, not a rule: --cascivo-color-border is near-black in the hard-edged
+     themes. The bar's corners come from the theme's radius, not a baked-in pill, so a
+     zero-radius theme gets a square bar. */
+  .track {
+    fill: var(--cascivo-color-surface-2);
+  }
+
+  .bar {
+    border-radius: var(--cascivo-radius-full);
+    overflow: hidden;
+  }
+
   .label {
     font-size: var(--cascivo-text-xs);
     color: var(--cascivo-color-foreground-muted);

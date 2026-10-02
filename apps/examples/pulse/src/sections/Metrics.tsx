@@ -1,9 +1,10 @@
 'use client'
 import { useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
-import { LineChart, Heatmap, Sparkline } from '@cascivo/charts'
+import { AreaChart, Heatmap, Sparkline } from '@cascivo/charts'
 import { latencyHistory, heatmapGrid, hostMetrics } from '../sim/metrics'
 import { msg } from '../i18n'
+import { ChartPanel, P50_COLOR, P95_COLOR, P99_COLOR } from './ChartPanel'
 import type { HostMetric } from '../data/seed'
 
 type LatencyDatum = { t: number; y: number }
@@ -56,47 +57,46 @@ export function Metrics() {
             gap: 'var(--cascivo-space-4)',
           }}
         >
-          <LineChart<LatencyDatum>
-            title={t(msg.seriesP50)}
-            series={[{ id: 'p50', label: t(msg.seriesP50), data: p50Data }]}
-            x={(d) => new Date(d.t)}
-            y={(d) => d.y}
-            height={220}
-            tooltip
-          />
-          <LineChart<LatencyDatum>
-            title={t(msg.seriesP95)}
-            series={[{ id: 'p95', label: t(msg.seriesP95), data: p95Data }]}
-            x={(d) => new Date(d.t)}
-            y={(d) => d.y}
-            height={220}
-            tooltip
-          />
-          <LineChart<LatencyDatum>
-            title={t(msg.seriesP99)}
-            series={[{ id: 'p99', label: t(msg.seriesP99), data: p99Data }]}
-            x={(d) => new Date(d.t)}
-            y={(d) => d.y}
-            height={220}
-            tooltip
-          />
+          <ChartPanel title={t(msg.seriesP50)} color={P50_COLOR}>
+            <AreaChart<LatencyDatum>
+              title={t(msg.seriesP50)}
+              series={[{ id: 'p50', label: t(msg.seriesP50), data: p50Data, color: P50_COLOR }]}
+              x={(d) => new Date(d.t)}
+              y={(d) => d.y}
+              height={200}
+              fill="gradient"
+              tooltip
+            />
+          </ChartPanel>
+          <ChartPanel title={t(msg.seriesP95)} color={P95_COLOR}>
+            <AreaChart<LatencyDatum>
+              title={t(msg.seriesP95)}
+              series={[{ id: 'p95', label: t(msg.seriesP95), data: p95Data, color: P95_COLOR }]}
+              x={(d) => new Date(d.t)}
+              y={(d) => d.y}
+              height={200}
+              fill="gradient"
+              tooltip
+            />
+          </ChartPanel>
+          <ChartPanel title={t(msg.seriesP99)} color={P99_COLOR}>
+            <AreaChart<LatencyDatum>
+              title={t(msg.seriesP99)}
+              series={[{ id: 'p99', label: t(msg.seriesP99), data: p99Data, color: P99_COLOR }]}
+              x={(d) => new Date(d.t)}
+              y={(d) => d.y}
+              height={200}
+              fill="gradient"
+              tooltip
+            />
+          </ChartPanel>
         </div>
       </section>
 
       {/* Heatmap — request density by hour × minute */}
-      <section>
-        <h2
-          style={{
-            fontSize: 'var(--cascivo-text-base)',
-            fontWeight: 600,
-            marginBottom: 'var(--cascivo-space-3)',
-            color: 'var(--cascivo-color-foreground)',
-          }}
-        >
-          {t(msg.sectionHeatmap)}
-        </h2>
+      <ChartPanel title={t(msg.sectionHeatmap)} color="var(--cascivo-chart-1)">
         <Heatmap title={t(msg.sectionHeatmap)} data={heatmapData} height={220} />
-      </section>
+      </ChartPanel>
 
       {/* Per-host sparklines */}
       <section>
@@ -131,8 +131,8 @@ function HostCard({ hm }: { hm: HostMetric }) {
     <div
       style={{
         padding: 'var(--cascivo-space-4)',
-        background: 'var(--cascivo-surface-subtle)',
-        borderRadius: 'var(--cascivo-radius-md)',
+        background: 'var(--cascivo-color-surface)',
+        borderRadius: 'var(--cascivo-radius-surface)',
         border: '1px solid var(--cascivo-color-border)',
         display: 'flex',
         flexDirection: 'column',
