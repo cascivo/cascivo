@@ -475,24 +475,31 @@
   border-block-start: 1px solid var(--cascivo-landing-hatch);
 }
 
-/* One grid for both tables. Auto layout sized each from its own content, so the
-   shadcn table ran 277/544/281 and the StyleX one 262/462/379 — the two things
-   being compared got different room in the two tables that exist to compare
-   them. Fixed layout, 0.8fr / 1fr / 1fr. */
+/* Phone: a three-column table cannot fit 320-414px — the fixed feature column left
+   "Internationalization" and "(@cascivo/charts)" wider than their cells. Each row
+   stacks instead: the feature as a full-width heading, the two answers side by side
+   beneath it, under the column headers they still line up with. The markup carries
+   explicit table roles (PosterComparison.tsx) because changing `display` on table
+   elements drops their semantics in some engines. */
 .pg-table {
+  display: block;
   inline-size: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
   font-size: 0.875rem;
   text-align: start;
 }
 
-.pg-table thead th {
-  inline-size: 35.71%;
+.pg-table thead,
+.pg-table tbody {
+  display: block;
 }
 
-.pg-table thead th:first-child {
-  inline-size: 28.58%;
+/* minmax(0, …) so every row splits at the same line: a plain fr floors at its
+   content's min-width, and each row is its own grid. The cascivo answers carry the
+   package names ("(@cascivo/charts)"), so they get the wider share — at an even
+   split those broke mid-word at 320px. */
+.pg-table tr {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
 }
 
 .pg-table thead tr {
@@ -500,11 +507,24 @@
   color: var(--cascivo-landing-invert-fg);
 }
 
+/* The stacked rows name their feature themselves; the header stays for AT. */
+.pg-table thead th:first-child {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
 .pg-table th,
 .pg-table td {
   text-align: start;
   vertical-align: top;
-  padding: 0.75rem 0.875rem;
+  padding: 0.75rem 0.625rem;
+  overflow-wrap: break-word;
 }
 
 .pg-table thead th {
@@ -521,21 +541,77 @@
   font-weight: 600;
 }
 
-.pg-table tbody th,
-.pg-table tbody td {
+.pg-table tbody tr {
   border: 2px solid var(--cascivo-color-border);
+  border-block-start: 0;
 }
 
 .pg-table tbody th {
+  grid-column: 1 / -1;
   font-weight: 700;
+  border-block-end: 2px solid var(--cascivo-color-border);
 }
 
 .pg-table tbody .pg-table-us {
   font-weight: 600;
+  border-inline-end: 2px solid var(--cascivo-color-border);
 }
 
 .pg-table tbody .pg-table-them {
   color: var(--cascivo-color-text-subtle);
+}
+
+/* md+: a real three-column table again. One grid for both tables — auto layout
+   sized each from its own content, so the shadcn table ran 277/544/281 and the
+   StyleX one 262/462/379, giving the two things being compared different room in
+   the two tables that exist to compare them. Fixed layout, 0.8fr / 1fr / 1fr. */
+@media (min-width: 40rem) {
+  .pg-table {
+    display: table;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+  .pg-table thead {
+    display: table-header-group;
+  }
+
+  .pg-table tbody {
+    display: table-row-group;
+  }
+
+  .pg-table tr {
+    display: table-row;
+  }
+
+  .pg-table thead th {
+    inline-size: 35.71%;
+  }
+
+  .pg-table th,
+  .pg-table td {
+    padding-inline: 0.875rem;
+  }
+
+  .pg-table thead th:first-child {
+    position: static;
+    inline-size: 28.58%;
+    block-size: auto;
+    margin: 0;
+    padding: 0.75rem 0.875rem;
+    overflow: visible;
+    clip: auto;
+  }
+
+  .pg-table tbody tr {
+    border: 0;
+  }
+
+  .pg-table tbody th,
+  .pg-table tbody td,
+  .pg-table tbody .pg-table-us {
+    border: 2px solid var(--cascivo-color-border);
+  }
 }
 
 .pg-compare-foot {

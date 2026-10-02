@@ -103,8 +103,9 @@ const ROWS: Row[] = [
 
 /**
  * A real `<table>` rather than `DataTable`: the accessibility spec requires a
- * `<caption>` and `<th scope="row">` per row, which a sortable data grid does
- * not model. It scrolls inside its own box so 320px never scrolls the page.
+ * `<caption>` and `<th scope="row" role="rowheader">` per row, which a sortable data grid does
+ * not model. Below md each row stacks (poster-sections.css), so the elements carry
+ * their table roles explicitly: a `display` change drops them in some engines.
  */
 export function PosterComparison() {
   return (
@@ -124,27 +125,35 @@ export function PosterComparison() {
           and an AI layer in the box.
         </p>
         <div className="pg-scroll" role="region" aria-label="Feature comparison" tabIndex={0}>
-          <table className="pg-table">
+          <table className="pg-table" role="table">
             <caption className="visually-hidden">
               Feature-by-feature comparison of cascivo and shadcn/ui
             </caption>
-            <thead>
-              <tr>
-                <th scope="col">Feature</th>
-                <th scope="col" className="pg-table-us">
+            <thead role="rowgroup">
+              <tr role="row">
+                <th scope="col" role="columnheader">
+                  Feature
+                </th>
+                <th scope="col" role="columnheader" className="pg-table-us">
                   cascivo
                 </th>
-                <th scope="col">shadcn/ui</th>
+                <th scope="col" role="columnheader">
+                  shadcn/ui
+                </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
               {ROWS.map((row) => (
-                <tr key={row.feature}>
-                  <th scope="row">
+                <tr key={row.feature} role="row">
+                  <th scope="row" role="rowheader">
                     {row.href ? <a href={row.href}>{row.feature}</a> : row.feature}
                   </th>
-                  <td className="pg-table-us">{row.cascivo}</td>
-                  <td className="pg-table-them">{row.shadcn}</td>
+                  <td role="cell" className="pg-table-us">
+                    {row.cascivo}
+                  </td>
+                  <td role="cell" className="pg-table-them">
+                    {row.shadcn}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -165,25 +174,35 @@ export function PosterComparison() {
           token names you can type from memory.
         </p>
         <div className="pg-scroll" role="region" aria-label="StyleX comparison" tabIndex={0}>
-          <table className="pg-table">
+          <table className="pg-table" role="table">
             <caption className="visually-hidden">
               Feature-by-feature comparison of cascivo and StyleX
             </caption>
-            <thead>
-              <tr>
-                <th scope="col">Feature</th>
-                <th scope="col" className="pg-table-us">
+            <thead role="rowgroup">
+              <tr role="row">
+                <th scope="col" role="columnheader">
+                  Feature
+                </th>
+                <th scope="col" role="columnheader" className="pg-table-us">
                   cascivo
                 </th>
-                <th scope="col">StyleX</th>
+                <th scope="col" role="columnheader">
+                  StyleX
+                </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
               {STYLEX_ROWS.map((row) => (
-                <tr key={row.feature}>
-                  <th scope="row">{row.feature}</th>
-                  <td className="pg-table-us">{row.cascivo}</td>
-                  <td className="pg-table-them">{row.stylex}</td>
+                <tr key={row.feature} role="row">
+                  <th scope="row" role="rowheader">
+                    {row.feature}
+                  </th>
+                  <td role="cell" className="pg-table-us">
+                    {row.cascivo}
+                  </td>
+                  <td role="cell" className="pg-table-them">
+                    {row.stylex}
+                  </td>
                 </tr>
               ))}
             </tbody>
