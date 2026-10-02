@@ -89,7 +89,7 @@ export const STARTERS: Starter[] = [
     card: {
       title: 'Shop on Stripe',
       summary:
-        'Sell a product with Stripe Checkout: orders in D1, a live order page, emailed receipts.',
+        'Sell a product with Stripe Checkout: orders in D1, a live order page, receipts, refunds and disputes.',
       waitsFor: 'app-stripe.md',
     },
     args: ['--framework', 'cloudflare', '--example', 'checkout', '--pm', 'npm'],

@@ -102,7 +102,7 @@ export const EXAMPLE_WORDS: Record<string, { label: string; blurb: string; group
   },
   checkout: {
     label: 'Stripe checkout',
-    blurb: 'Sell a product: paid on Stripe, confirmed live, receipt emailed.',
+    blurb: 'Sell on Stripe: receipts, refunds, disputes; add Accounts for a monthly plan.',
     group: 'Operations',
   },
   newsletter: {

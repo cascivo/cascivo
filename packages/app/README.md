@@ -712,7 +712,8 @@ minute per IP).
 ## Payments — `@cascivo/app/stripe`
 
 Stripe Checkout from a Worker: create a session, send the browser to Stripe's hosted page, and
-learn from the webhook that it was paid. Plain `fetch` against Stripe's API, so no SDK and no
+learn from the webhook that it was paid. The workflow end to end, with the mistakes it
+prevents, is the [payments recipe](https://cascivo.com/docs/recipe-payments.md). Plain `fetch` against Stripe's API, so no SDK and no
 `nodejs_compat`.
 
 ```ts
