@@ -64,7 +64,7 @@ export function Metrics() {
               x={(d) => new Date(d.t)}
               y={(d) => d.y}
               height={200}
-              fill="gradient"
+              fill="solid"
               tooltip
             />
           </ChartPanel>
@@ -75,7 +75,7 @@ export function Metrics() {
               x={(d) => new Date(d.t)}
               y={(d) => d.y}
               height={200}
-              fill="gradient"
+              fill="solid"
               tooltip
             />
           </ChartPanel>
@@ -86,7 +86,7 @@ export function Metrics() {
               x={(d) => new Date(d.t)}
               y={(d) => d.y}
               height={200}
-              fill="gradient"
+              fill="solid"
               tooltip
             />
           </ChartPanel>

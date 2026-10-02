@@ -13,10 +13,10 @@ import { Alerts } from './sections/Alerts'
 import { Logs } from './sections/Logs'
 import { msg } from './i18n'
 
-import '@cascivo/themes/brutalist.css'
-import '@cascivo/themes/dark.css'
-import '@cascivo/themes/light.css'
-import '@cascivo/themes/warm.css'
+// Every theme the landing can wear: the hero embeds this app in whatever theme the visitor
+// picked there, including cascivo.com's own poster pair (site-local, not a published theme).
+import '@cascivo/themes/all.css'
+import '../../../site/src/poster.css'
 import '@cascivo/tokens'
 
 type Section = 'overview' | 'metrics' | 'alerts' | 'logs'

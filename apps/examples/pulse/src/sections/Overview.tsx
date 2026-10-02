@@ -69,7 +69,7 @@ export function Overview() {
             x={(d) => new Date(d.t)}
             y={(d) => d.y}
             height={180}
-            fill="gradient"
+            fill="solid"
             tooltip
           />
         </ChartPanel>
@@ -80,7 +80,7 @@ export function Overview() {
             x={(d) => new Date(d.t)}
             y={(d) => d.y}
             height={180}
-            fill="gradient"
+            fill="solid"
             tooltip
           />
         </ChartPanel>
@@ -91,7 +91,7 @@ export function Overview() {
             x={(d) => new Date(d.t)}
             y={(d) => d.y}
             height={180}
-            fill="gradient"
+            fill="solid"
             tooltip
           />
         </ChartPanel>

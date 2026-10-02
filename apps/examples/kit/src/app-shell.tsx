@@ -23,18 +23,67 @@ const msg = defineMessages('kit.appShell', {
   mockBanner: 'Mock demo — no real data',
 })
 
-export type AppShellTheme = 'dark' | 'light' | 'warm' | 'brutalist'
+export type AppShellTheme =
+  | 'dark'
+  | 'light'
+  | 'warm'
+  | 'flat'
+  | 'minimal'
+  | 'midnight'
+  | 'pastel'
+  | 'brutalist'
+  | 'corporate'
+  | 'terminal'
+  | 'cyberpunk'
+  | 'arcade'
+  | 'poster'
+  | 'poster-dark'
 
 /** The themes the header toggle cycles through. */
 const THEMES: AppShellTheme[] = ['dark', 'light', 'warm']
-// `brutalist` is the landing poster's own theme, reachable only by URL so an embed can match
-// the page around it. An app must import its CSS to accept it (pulse does).
-const URL_THEMES: AppShellTheme[] = [...THEMES, 'brutalist']
+// Every theme the landing can wear, so an embed follows the page around it: the twelve
+// first-party themes plus cascivo.com's own poster pair. Reachable only by URL or message,
+// and an app must load their CSS to accept them (pulse does).
+const EMBED_THEMES: AppShellTheme[] = [
+  ...THEMES,
+  'flat',
+  'minimal',
+  'midnight',
+  'pastel',
+  'brutalist',
+  'corporate',
+  'terminal',
+  'cyberpunk',
+  'arcade',
+  'poster',
+  'poster-dark',
+]
+const DARK_THEMES = new Set<AppShellTheme>([
+  'dark',
+  'midnight',
+  'terminal',
+  'cyberpunk',
+  'poster-dark',
+])
+const POSTER_PAIR: Partial<Record<AppShellTheme, AppShellTheme>> = {
+  poster: 'poster-dark',
+  'poster-dark': 'poster',
+}
 
-/** A `?theme=` override, or null when absent or not one of {@link URL_THEMES}. */
+function asEmbedTheme(raw: unknown): AppShellTheme | null {
+  return EMBED_THEMES.find((name) => name === raw) ?? null
+}
+
+/** A `?theme=` override, or null when absent or not one of {@link EMBED_THEMES}. */
 export function themeFromSearch(search: string): AppShellTheme | null {
-  const raw = new URLSearchParams(search).get('theme')
-  return URL_THEMES.find((name) => name === raw) ?? null
+  return asEmbedTheme(new URLSearchParams(search).get('theme'))
+}
+
+/** The theme in a `{ type: 'cascivo:theme', theme }` message, or null for anything else. */
+export function themeFromMessage(data: unknown): AppShellTheme | null {
+  if (typeof data !== 'object' || data === null) return null
+  const { type, theme: raw } = data as { type?: unknown; theme?: unknown }
+  return type === 'cascivo:theme' ? asEmbedTheme(raw) : null
 }
 
 // The landing embeds this app twice on one origin, once per theme. A persisted signal would
@@ -43,6 +92,17 @@ const urlTheme = typeof location === 'undefined' ? null : themeFromSearch(locati
 const theme = urlTheme
   ? signal<AppShellTheme>(urlTheme)
   : persistedSignal<AppShellTheme>('kit.appShell.theme', 'dark')
+
+// An embed follows its host page's theme switches without a reload, which would drop the
+// running simulation. Only a same-origin parent may drive it.
+if (urlTheme && typeof window !== 'undefined') {
+  window.addEventListener('message', (event) => {
+    if (event.origin !== window.location.origin) return
+    const next = themeFromMessage(event.data)
+    if (next) theme.value = next
+  })
+}
+
 const menuOpen = signal(false)
 const shellState = createShellState({ persistKey: 'kit.shell' })
 
@@ -88,7 +148,8 @@ export function AppShell({
   const hasSideNav = Boolean(navItems || navGroups)
 
   function cycleTheme() {
-    const next = THEMES[(THEMES.indexOf(theme.value) + 1) % THEMES.length]
+    const next =
+      POSTER_PAIR[theme.value] ?? THEMES[(THEMES.indexOf(theme.value) + 1) % THEMES.length]
     theme.value = next ?? 'dark'
   }
 
@@ -115,7 +176,7 @@ export function AppShell({
                 {
                   id: 'theme',
                   label: t(msg.toggleTheme),
-                  icon: theme.value === 'dark' ? <Sun size={16} /> : <Moon size={16} />,
+                  icon: DARK_THEMES.has(theme.value) ? <Sun size={16} /> : <Moon size={16} />,
                   onClick: cycleTheme,
                 },
               ]}
