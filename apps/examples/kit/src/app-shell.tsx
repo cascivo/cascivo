@@ -26,7 +26,19 @@ const msg = defineMessages('kit.appShell', {
 export type AppShellTheme = 'dark' | 'light' | 'warm'
 
 const THEMES: AppShellTheme[] = ['dark', 'light', 'warm']
-const theme = persistedSignal<AppShellTheme>('kit.appShell.theme', 'dark')
+
+/** A `?theme=` override, or null when absent or not one of {@link THEMES}. */
+export function themeFromSearch(search: string): AppShellTheme | null {
+  const raw = new URLSearchParams(search).get('theme')
+  return THEMES.find((name) => name === raw) ?? null
+}
+
+// The landing embeds this app twice on one origin, once per theme. A persisted signal would
+// have both frames read and write the same localStorage key, so an override stays in memory.
+const urlTheme = typeof location === 'undefined' ? null : themeFromSearch(location.search)
+const theme = urlTheme
+  ? signal<AppShellTheme>(urlTheme)
+  : persistedSignal<AppShellTheme>('kit.appShell.theme', 'dark')
 const menuOpen = signal(false)
 const shellState = createShellState({ persistKey: 'kit.shell' })
 

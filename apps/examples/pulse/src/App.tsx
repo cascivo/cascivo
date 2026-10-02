@@ -1,5 +1,5 @@
 'use client'
-import { signal, useSignals } from '@cascivo/core'
+import { signal, useMediaQuery, useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
 import { ToastProvider, Button, SegmentedControl } from '@cascivo/react'
 import { persistedSignal } from '@cascivo/storage'
@@ -34,6 +34,9 @@ export default function App() {
 
   // Start simulation — runs once, cleaned up on unmount
   useSimulation(metricsSim)
+  // A phone-width header cannot hold the brand, theme toggle, live badge, range control and
+  // pause button in one row, so below md the controls move into a toolbar above the content.
+  const wide = useMediaQuery('(min-width: 40rem)')
 
   const navItems: SideNavItem[] = [
     {
@@ -70,12 +73,19 @@ export default function App() {
     },
   ]
 
-  const actions = (
+  const controls = (
     <div
       style={{
         display: 'flex',
+        flexWrap: 'wrap',
         alignItems: 'center',
         gap: 'var(--cascivo-space-3)',
+        ...(wide.value
+          ? {}
+          : {
+              padding: 'var(--cascivo-space-3) var(--cascivo-space-6)',
+              borderBlockEnd: '1px solid var(--cascivo-color-border)',
+            }),
       }}
     >
       {metricsSim.running.value && (
@@ -131,7 +141,8 @@ export default function App() {
         }
       `}</style>
       <ToastProvider>
-        <AppShell navItems={navItems} actions={actions} mockBanner>
+        <AppShell navItems={navItems} actions={wide.value ? controls : undefined} mockBanner>
+          {!wide.value && controls}
           {currentSection.value === 'overview' && <Overview />}
           {currentSection.value === 'metrics' && <Metrics />}
           {currentSection.value === 'alerts' && <Alerts />}
