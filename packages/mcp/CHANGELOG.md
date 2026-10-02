@@ -1,5 +1,14 @@
 # @cascivo/mcp
 
+## 0.8.2
+
+### Patch Changes
+
+- 9ffc904: `ProgressCircle`'s track is `--cascivo-color-surface-2`, matching `Progress`, instead of
+  `--cascivo-color-border`, which drew a near-black ring in the hard-edged themes.
+- Updated dependencies [60021d3]
+  - @cascivo/docs@0.2.13
+
 ## 0.8.1
 
 ### Patch Changes

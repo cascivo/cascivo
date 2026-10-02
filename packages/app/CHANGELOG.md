@@ -1,5 +1,34 @@
 # @cascivo/app
 
+## 1.6.0
+
+### Minor Changes
+
+- 60021d3: `@cascivo/app/ses`: the SES client is now also an `EmailSender` for `@cascivo/email`.
+  `createSes(...).send(message)` takes the composed message `sendEmail` hands over, so
+  `sendEmail(ses, renderEmail(…), envelope)` runs that package's checks before the message goes
+  to SES, and an app can switch from the Email Service binding by changing one argument.
+  Display names (RFC 2047-encoded when not plain ASCII), cc, bcc, reply-to and attachments map
+  onto SES v2's fields; a line break in any address, name, header or attachment name is refused.
+- 60021d3: `@cascivo/app/stripe` covers what happens after the sale:
+
+  - `parseStripeEvent` types `charge.refunded` (`kind: 'refund'`, with the running refunded
+    total), `charge.dispute.created` / `…closed` (`kind: 'dispute'`) and `invoice.paid` /
+    `invoice.payment_failed` (`kind: 'invoice'`, with the subscription from either API
+    version's place for it). `parseCharge`, `parseDispute` and `parseInvoice` read each object.
+    `invoice.paid` was `kind: 'other'` before.
+  - `createRefund({ paymentIntent, amount?, reason?, metadata? }, { idempotencyKey })`.
+  - A Checkout session carries `paymentIntentId`, which refund and dispute events name.
+  - `isEntitled(status, { pastDue? })` and `requireEntitlement(status)` (a 402): whether a stored
+    subscription status unlocks the plan, `past_due` included while Stripe retries a renewal.
+
+  `verifyWebhook` with `scheme: 'stripe'` now returns the event's id (`evt_…`) from the verified
+  body, where it returned `null`, so all three schemes deduplicate the same way.
+
+### Patch Changes
+
+- @cascivo/core@1.6.0
+
 ## 1.5.0
 
 ### Minor Changes

@@ -1,5 +1,16 @@
 # @cascivo/react
 
+## 1.6.0
+
+### Patch Changes
+
+- 9ffc904: `ProgressCircle`'s track is `--cascivo-color-surface-2`, matching `Progress`, instead of
+  `--cascivo-color-border`, which drew a near-black ring in the hard-edged themes.
+- Updated dependencies [9ffc904]
+  - @cascivo/themes@1.0.1
+  - @cascivo/core@1.6.0
+  - @cascivo/i18n@1.6.0
+
 ## 1.5.0
 
 ### Patch Changes

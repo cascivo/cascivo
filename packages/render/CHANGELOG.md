@@ -1,5 +1,15 @@
 # @cascivo/render
 
+## 1.6.0
+
+### Patch Changes
+
+- Updated dependencies [9ffc904]
+  - @cascivo/react@1.6.0
+  - @cascivo/core@1.6.0
+  - @cascivo/i18n@1.6.0
+  - @cascivo/text@1.6.0
+
 ## 1.5.0
 
 ### Patch Changes
