@@ -1,5 +1,12 @@
 # @cascivo/react
 
+## 1.5.0
+
+### Patch Changes
+
+- @cascivo/core@1.5.0
+- @cascivo/i18n@1.5.0
+
 ## 1.4.0
 
 ### Minor Changes

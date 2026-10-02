@@ -1,5 +1,37 @@
 # cascivo
 
+## 1.5.0
+
+### Minor Changes
+
+- d258fc9: `cascivo create --framework cloudflare --example checkout --auth email` adds `/billing`: a
+  monthly plan on Stripe Checkout, managed in Stripe's Customer Portal. The subscription names its
+  user in metadata only the Worker sets; every subscription event is read back from Stripe
+  before it is stored, and a late event about an older subscription cannot end a live one.
+  Back from checkout, the page syncs the session at once, for the user the subscription names
+  only.
+
+  A fresh app with a short name (`cascivo create app`) no longer fails its own `format:check`:
+  the shell's `<AppShell>` tag is written on one line when it fits, as Prettier writes it.
+
+- d258fc9: `cascivo create --framework cloudflare --example checkout`: sell a product with Stripe
+  Checkout. The Worker prices the order, opens a hosted Checkout page, checks Stripe's webhook
+  signature, and settles each order once in D1. The order page updates live through a read-only
+  room, and a paid order gets a receipt rendered with `@cascivo/email` and sent through Email
+  Service. A Stripe test key is enough in `vite dev`: the order page reads the session back
+  before any webhook is set up. With `--auth email`, Stripe's webhook is exempt from the sign-in
+  rule, as GitHub's is. The MCP `create_app` tool accepts the new example.
+- d258fc9: `cascivo create --framework cloudflare --example newsletter`: a newsletter sent through Amazon
+  SES. Readers sign up with double opt-in (a confirmation link, valid a day, resent at most every
+  ten minutes). `/newsletter/send` writes an issue in Markdown, previews it as rendered by
+  `@cascivo/email`, and queues it for every confirmed reader. A Queue consumer sends each copy
+  through `@cascivo/app/ses` with its own unsubscribe link and one-click `List-Unsubscribe`
+  headers, and records it, so a retried message never mails anyone twice. Bounces and complaints
+  arrive from SNS, are signature-checked, and suppress the address. The composer is guarded by
+  `NEWSLETTER_KEY`. In `vite dev` with no AWS credentials, emails are logged and the sign-up page
+  shows the confirmation link. With `--example live`, the two queues share one `queues` block and
+  one handler. The MCP `create_app` tool accepts the new example.
+
 ## 1.4.0
 
 ### Minor Changes

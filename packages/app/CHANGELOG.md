@@ -1,5 +1,35 @@
 # @cascivo/app
 
+## 1.5.0
+
+### Minor Changes
+
+- d258fc9: `@cascivo/app/ses`: Amazon SES from a Worker with no AWS SDK. `createSes(...).sendEmail()`
+  calls SES v2 `SendEmail` (HTML and text parts, extra headers such as `List-Unsubscribe`,
+  configuration sets) and throws `SesError` with SES's code and whether a retry can help.
+  `handleSns` verifies SNS messages against the signing certificate, fetched only from SNS's
+  hosts, confirms the subscription, and passes notifications on; `parseSesNotification` reads
+  bounces, complaints and deliveries. `signAwsRequest` signs any other AWS call with Signature
+  Version 4 over WebCrypto.
+- d258fc9: `@cascivo/app/stripe` takes subscriptions. `createCheckoutSession` accepts
+  `mode: 'subscription'`, recurring inline prices (`interval`), an existing `customer`, and
+  `subscriptionMetadata`, which only the server can set and every subscription event carries.
+  New: `retrieveSubscription` and `parseSubscription` (the billing period is read from the
+  subscription or its first item, so older and newer API versions both work), and
+  `createPortalSession` for Stripe's hosted Customer Portal. `parseStripeEvent` types the
+  `customer.subscription.*` events as `kind: 'subscription'`, and a Checkout session now carries
+  `mode`, `customerId` and `subscriptionId`.
+- d258fc9: `@cascivo/app/stripe`: Stripe Checkout from a Worker over plain `fetch`, with no SDK.
+  `createStripe(secretKey)` creates and reads back Checkout Sessions (idempotency keys, inline or
+  dashboard prices, a pinned API version), and throws `StripeError` with Stripe's status, type
+  and code. `parseStripeEvent(body)` reads a webhook body that `verifyWebhook` has checked: the
+  four Checkout events come back typed with their session, and every other event as
+  `kind: 'other'`.
+
+### Patch Changes
+
+- @cascivo/core@1.5.0
+
 ## 1.4.0
 
 ### Minor Changes

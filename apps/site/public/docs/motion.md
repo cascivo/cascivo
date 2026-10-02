@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/motion.md
-  registry v1.4.0 · generated 2026-10-01
+  registry v1.5.0 · generated 2026-10-02
 -->
 
 # Motion (`@cascivo/tokens/motion.css`)

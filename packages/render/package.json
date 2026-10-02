@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/render",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "private": false,
   "description": "Render a JSON view config with real cascivo components — the runtime behind the MCP scaffold_view / validate_view tools, plus machine mode for views. Docs offline: npx @cascivo/docs",
   "keywords": [
