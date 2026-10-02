@@ -164,6 +164,31 @@ describe('buildScaffold', () => {
   })
 })
 
+describe('buildScaffold — the AppShell tag as Prettier lays it out', () => {
+  const shell = (name: string, framework?: 'astro' | 'cloudflare') =>
+    buildScaffold({
+      name,
+      theme: 'light',
+      sections: ['Dashboard'],
+      ...(framework ? { framework } : {}),
+    }).find((f) => f.contents.includes('<AppShell'))!.contents
+
+  it('keeps it on one line when a short name fits in 100 columns', () => {
+    // A fresh `cascivo create app` failed its own format:check: the tag was always split.
+    for (const framework of [undefined, 'astro', 'cloudflare'] as const) {
+      const line = shell('app', framework)
+        .split('\n')
+        .find((l) => l.includes('<AppShell'))!
+      expect(line).toMatch(/^ {4}<AppShell header=\{.*\} nav=\{.*\}>$/)
+      expect(line.length).toBeLessThanOrEqual(100)
+    }
+  })
+
+  it('splits it over its attributes when the name makes it too long', () => {
+    expect(shell('northwind-traders-internal-ops')).toContain('    <AppShell\n      header=')
+  })
+})
+
 describe('buildScaffold — astro', () => {
   const files = buildScaffold({
     name: 'My App',
@@ -1179,6 +1204,270 @@ describe('buildScaffold — cloudflare --example digest', () => {
       'EMAIL: SignInSender & DigestSender',
     )
     for (const line of wrangler.split('\n')) expect(line.length).toBeLessThanOrEqual(100)
+  })
+})
+
+describe('buildScaffold — cloudflare --example checkout', () => {
+  const build = (examples: Example[], opts: Partial<ScaffoldOptions> = {}) =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        examples,
+        ...opts,
+      }),
+    )
+  const map = build(['checkout'])
+
+  it('verifies the Stripe signature before the event is parsed', () => {
+    const store = map.get('worker/checkout.ts')!
+    expect(store.indexOf('await verifyWebhook(request')).toBeGreaterThan(-1)
+    expect(store.indexOf('await verifyWebhook(request')).toBeLessThan(
+      store.indexOf('parseStripeEvent(body)'),
+    )
+    expect(map.get('worker/index.ts')).toContain(
+      "if (checkoutPath === orderStore.STRIPE_WEBHOOK_PATH && request.method === 'POST') {",
+    )
+  })
+
+  it('settles an order once, found by its session id rather than client_reference_id', () => {
+    const store = map.get('worker/checkout.ts')!
+    expect(store).toContain("WHERE session_id = ? AND status = 'pending' RETURNING")
+    expect(store).not.toMatch(/WHERE[^`]*client_reference_id/)
+    // The receipt is sent only after the update returned a row, i.e. on the first settle.
+    expect(store.indexOf('if (!order) return')).toBeLessThan(store.indexOf('await sendReceipt('))
+  })
+
+  it('prices on the server and uses the order id as the idempotency key', () => {
+    const store = map.get('worker/checkout.ts')!
+    expect(store).toContain('lineItems: [{ ...PRODUCT, quantity: 1 }]')
+    expect(store).toContain('{ idempotencyKey: id }')
+    expect(map.get('src/api.ts')).not.toMatch(/startCheckout: endpoint\(\{[^}]*input/)
+  })
+
+  it('watches each order through a read-only room the client cannot open elsewhere', () => {
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain(
+      'return roomResponse(request, env.ROOMS, orderRoom(orderLive[1]!), { readOnly: true })',
+    )
+    expect(worker).toContain('if (orderLive && ORDER_ID.test(orderLive[1]!)) {')
+    expect(build(['board', 'checkout']).get('worker/index.ts')).toContain(
+      'if (room && !/^(order-)/.test(room[1]!)) {',
+    )
+  })
+
+  it('rate-limits starting a checkout and adds the order pages to the nav', () => {
+    expect(map.get('worker/index.ts')).toContain(
+      "if (url.pathname === '/api/checkout') return request.method === 'POST'",
+    )
+    expect(map.get('src/routes/checkout.tsx')).toBeDefined()
+    expect(map.get('src/routes/checkout/[order].tsx')).toBeDefined()
+    expect(map.get('src/routes.gen.ts')).toContain("'/checkout/:order'")
+    expect(map.get('src/App.tsx')).toContain("href: '/checkout'")
+  })
+
+  it('sends receipts with @cascivo/email through the Email Service binding', () => {
+    const pkg = JSON.parse(map.get('package.json')!) as { dependencies: Record<string, string> }
+    expect(pkg.dependencies['@cascivo/email']).toMatch(/^\d+\.\d+\.\d+$/)
+    expect(pkg.dependencies['preact-render-to-string']).toBeDefined()
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"send_email": [{ "name": "EMAIL" }]')
+    expect(wrangler).toContain('"RECEIPT_FROM": ""')
+    expect(map.get('src/checkout.ts')).toContain("export const SHOP_NAME = 'Edge App'")
+  })
+
+  it('keeps Stripe secrets out of wrangler.jsonc and in .dev.vars, beside the webhook one', () => {
+    expect(map.get('wrangler.jsonc')).not.toContain('STRIPE_')
+    expect(map.get('.dev.vars')).toContain('STRIPE_SECRET_KEY=\n')
+    const both = build(['webhooks', 'checkout'])
+    expect(both.get('.dev.vars')).toContain('WEBHOOK_SECRET=dev-only-webhook-secret\n')
+    expect(both.get('.dev.vars')).toContain('STRIPE_WEBHOOK_SECRET=\n')
+  })
+
+  it('exempts Stripe and GitHub webhooks from the sign-in rule of --auth email', () => {
+    const worker = build(['webhooks', 'checkout'], { auth: 'email' }).get('worker/index.ts')!
+    expect(worker).toContain("!new URL(request.url).pathname.startsWith('/api/webhooks/') &&")
+    expect(worker).toContain("!new URL(request.url).pathname.startsWith('/api/stripe/')")
+    expect(build(['checkout'], { auth: 'email' }).get('worker/index.ts')).toContain(
+      'EMAIL: SignInSender & ReceiptSender',
+    )
+  })
+})
+
+describe('buildScaffold — cloudflare --example checkout --auth email (billing)', () => {
+  const build = (examples: Example[], auth?: 'email') =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        examples,
+        ...(auth ? { auth } : {}),
+      }),
+    )
+  const map = build(['checkout'], 'email')
+
+  it('adds /billing only when there are accounts to bill', () => {
+    expect(map.get('src/routes/billing.tsx')).toBeDefined()
+    expect(map.get('worker/billing.ts')).toBeDefined()
+    expect(map.get('src/App.tsx')).toContain("href: '/billing'")
+    const anonymous = build(['checkout'])
+    expect(anonymous.get('worker/billing.ts')).toBeUndefined()
+    expect(anonymous.get('README.md')).toContain('--example checkout --auth email')
+  })
+
+  it('names the user in server-set metadata, never in client_reference_id', () => {
+    const billing = map.get('worker/billing.ts')!
+    expect(billing).toContain('subscriptionMetadata: { user: user.id }')
+    expect(billing).toContain("const userId = subscription.metadata['user']")
+    expect(billing).toContain("if (subscription.metadata['user'] !== user.id) {")
+  })
+
+  it('stores what Stripe says now, and never lets an old subscription end a live one', () => {
+    const billing = map.get('worker/billing.ts')!
+    expect(billing).toContain(
+      'await store(env.DB, await stripeOf(env).retrieveSubscription(subscriptionId))',
+    )
+    expect(billing).toContain("OR billing.status NOT IN ('active', 'trialing', 'past_due')")
+  })
+
+  it('routes subscription events from the Stripe webhook into billing', () => {
+    expect(map.get('worker/index.ts')).toContain('billingStore.syncSubscription(env, id)')
+    expect(build(['checkout']).get('worker/index.ts')).toContain(
+      'return await orderStore.receiveStripe(request, env)',
+    )
+    expect(map.get('worker/checkout.ts')).toContain(
+      "if (event.kind === 'subscription') await onSubscription?.(event.subscription.id)",
+    )
+  })
+})
+
+describe('buildScaffold — secrets for the Deploy to Cloudflare button', () => {
+  const build = (examples: Example[]) =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        examples,
+      }),
+    )
+
+  it('lists every local secret, with no value, in a committed .dev.vars.example', () => {
+    const map = build(['webhooks', 'checkout', 'newsletter'])
+    const example = map.get('.dev.vars.example')!
+    const keys = (text: string) =>
+      text
+        .split('\n')
+        .filter((l) => /^[A-Z_]+=/.test(l))
+        .map((l) => l.split('=')[0])
+    expect(keys(example)).toEqual(keys(map.get('.dev.vars')!))
+    expect(example).not.toMatch(/^[A-Z_]+=.+$/m)
+    expect(map.get('.gitignore')).toContain('.dev.vars*\n!.dev.vars.example\n')
+  })
+
+  it('describes each setting in package.json for the button', () => {
+    const pkg = JSON.parse(build(['checkout']).get('package.json')!) as {
+      cloudflare: { bindings: Record<string, { description: string }> }
+    }
+    expect(Object.keys(pkg.cloudflare.bindings)).toEqual([
+      'STRIPE_SECRET_KEY',
+      'STRIPE_WEBHOOK_SECRET',
+      'RECEIPT_FROM',
+    ])
+    expect(JSON.parse(build([]).get('package.json')!)).not.toHaveProperty('cloudflare')
+    expect(build([]).get('.dev.vars.example')).toBeUndefined()
+  })
+})
+
+describe('buildScaffold — cloudflare --example newsletter', () => {
+  const build = (examples: Example[], opts: Partial<ScaffoldOptions> = {}) =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        examples,
+        ...opts,
+      }),
+    )
+  const map = build(['newsletter'])
+
+  it('mails only confirmed readers, and never twice for one issue', () => {
+    const store = map.get('worker/newsletter.ts')!
+    expect(store).toContain("SELECT email FROM subscribers WHERE status = 'subscribed'")
+    expect(store).toContain('PRIMARY KEY (issue_id, email)')
+    expect(store).toContain(
+      'AND NOT EXISTS (SELECT 1 FROM deliveries d WHERE d.issue_id = ? AND d.email = s.email)',
+    )
+    // Throttling is retried by the queue; one bad address is recorded and the rest go on.
+    expect(store).toContain('if (!(error instanceof SesError) || error.retryable) throw error')
+  })
+
+  it('carries one-click unsubscribe headers and a per-reader link', () => {
+    const store = map.get('worker/newsletter.ts')!
+    expect(store).toContain("'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click'")
+    expect(store).toContain('rendered.html.replaceAll(TOKEN_SLOT, readerToken)')
+    expect(map.get('worker/index.ts')).toContain(
+      "if (newsletterPath === '/api/newsletter/unsubscribe' && request.method === 'POST') {",
+    )
+  })
+
+  it('suppresses permanent bounces and complaints from signature-checked SNS messages', () => {
+    const store = map.get('worker/newsletter.ts')!
+    expect(store).toContain('return handleSns(request, {')
+    expect(store).toContain(
+      "event.kind === 'complaint' || (event.kind === 'bounce' && event.bounceType === 'Permanent')",
+    )
+  })
+
+  it('guards the composer with NEWSLETTER_KEY and rate-limits sign-ups and key use', () => {
+    const store = map.get('worker/newsletter.ts')!
+    for (const fn of ['overview', 'preview', 'sendIssue']) {
+      const body = store.slice(store.indexOf(`export async function ${fn}(`))
+      expect(body.indexOf('await requireKey(env')).toBeLessThan(body.indexOf('await migrate('))
+    }
+    expect(map.get('worker/index.ts')).toContain(
+      '/^\\/api\\/newsletter\\/(subscribe|overview|preview|issues)$/.test(url.pathname)',
+    )
+    expect(map.get('.dev.vars')).toContain('NEWSLETTER_KEY=dev-only-newsletter-key\n')
+    expect(map.get('wrangler.jsonc')).not.toContain('AWS_ACCESS_KEY_ID')
+  })
+
+  it('declares the queue and its pace, and consumes it', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain(
+      '"producers": [{ "binding": "NEWSLETTER", "queue": "edge-app-newsletter" }]',
+    )
+    expect(wrangler).toContain('"max_concurrency": 1')
+    expect(wrangler).not.toContain('send_email')
+    expect(map.get('worker/index.ts')).toContain('await newsletterStore.deliver(env, batch)')
+  })
+
+  it('shares one queues object and one handler with --example live', () => {
+    const both = build(['live', 'newsletter'])
+    const wrangler = both.get('wrangler.jsonc')!
+    expect(wrangler.match(/"queues":/g)).toHaveLength(1)
+    expect(wrangler).toContain('"queue": "edge-app-events"')
+    expect(wrangler).toContain('"queue": "edge-app-newsletter"')
+    const worker = both.get('worker/index.ts')!
+    expect(worker.match(/async queue\(/g)).toHaveLength(1)
+    expect(worker).toContain(
+      "if (batch.queue === 'edge-app-newsletter') return newsletterStore.deliver(env, batch)",
+    )
+  })
+
+  it('lets readers sign up, confirm and unsubscribe without an account under --auth email', () => {
+    const worker = build(['newsletter'], { auth: 'email' }).get('worker/index.ts')!
+    for (const path of ['/api/sns/', '/api/newsletter/subscribe', '/api/newsletter/unsubscribe']) {
+      expect(worker).toContain(`!new URL(request.url).pathname.startsWith('${path}')`)
+    }
+    expect(worker).not.toContain("startsWith('/api/newsletter/issues')")
   })
 })
 

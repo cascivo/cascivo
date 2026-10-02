@@ -267,6 +267,31 @@ import {
 export const receive = (request: Request): Promise<VerifiedWebhook> =>
   verifyWebhook(request, { scheme: 'github', secret: 's' })
 import { mountTurnstile } from '@cascivo/app/turnstile'
+import { createStripe, parseStripeEvent, type CheckoutSession, type StripeEvent } from '@cascivo/app/stripe'
+export const checkout = (key: string): Promise<CheckoutSession> =>
+  createStripe(key).createCheckoutSession({
+    mode: 'payment',
+    lineItems: [{ name: 'Plan', amount: 900, currency: 'eur', quantity: 1 }],
+    successUrl: 'https://app.example/thanks',
+    cancelUrl: 'https://app.example/shop',
+  })
+export const stripeEvent = (body: string): StripeEvent => parseStripeEvent(body)
+import { createSes, handleSns, parseSesNotification, type SesEvent } from '@cascivo/app/ses'
+export const mail = (region: string, accessKeyId: string, secretAccessKey: string) =>
+  createSes({ region, accessKeyId, secretAccessKey }).sendEmail({
+    from: 'news@example.com',
+    to: 'reader@example.org',
+    subject: 'Issue 1',
+    text: 'Hello',
+  })
+export const feedback = (request: Request): Promise<Response> =>
+  handleSns(request, {
+    topicArn: 'arn:aws:sns:eu-west-1:1:ses',
+    onNotification: async ({ message }) => {
+      const event: SesEvent = parseSesNotification(message)
+      void event
+    },
+  })
 import { createAuth, type User as AuthUser } from '@cascivo/app/auth'
 import { currentUser, handleAuth, requireUser } from '@cascivo/app/auth-server'
 export const appAuth = createAuth()

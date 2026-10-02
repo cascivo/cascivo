@@ -70,6 +70,8 @@ export type Example =
   | 'webhooks'
   | 'digest'
   | 'search'
+  | 'checkout'
+  | 'newsletter'
 
 export const EXAMPLES = [
   'board',
@@ -86,6 +88,8 @@ export const EXAMPLES = [
   'webhooks',
   'digest',
   'search',
+  'checkout',
+  'newsletter',
 ] as const
 
 function isExample(value: string): value is Example {
@@ -478,10 +482,7 @@ export interface ShellProps {
  */
 export function Shell({ navItems, children }: ShellProps) {
   return (
-    <AppShell
-      header={<ShellHeader brand={{ name: '${brandName(opts.name).replace(/'/g, "\\'")}' }} />}
-      nav={<SideNav items={navItems} />}
-    >
+${appShellOpenTag(opts, 'navItems')}
       {children}
     </AppShell>
   )
@@ -559,6 +560,18 @@ export default [
 }
 
 /** Prettier config matching the style the scaffold's own generated source is written in. */
+/**
+ * The shell's `<AppShell …>` opening tag, laid out as Prettier lays it out: on one line when it
+ * fits in the 100-column print width (a short app name), split over its attributes otherwise.
+ * Always writing the split form made a fresh app with a short name fail its own format:check.
+ */
+function appShellOpenTag(opts: ScaffoldOptions, items: string): string {
+  const header = `header={<ShellHeader brand={{ name: '${brandName(opts.name).replace(/'/g, "\\'")}' }} />}`
+  const nav = `nav={<SideNav items={${items}} />}`
+  const line = `    <AppShell ${header} ${nav}>`
+  return line.length <= 100 ? line : `    <AppShell\n      ${header}\n      ${nav}\n    >`
+}
+
 function prettierrc(): string {
   return JSON.stringify({ semi: false, singleQuote: true, printWidth: 100 }, null, 2) + '\n'
 }
@@ -929,10 +942,7 @@ export function Shell({ activePath, children }: ShellProps) {
   }))
 
   return (
-    <AppShell
-      header={<ShellHeader brand={{ name: '${brandName(opts.name).replace(/'/g, "\\'")}' }} />}
-      nav={<SideNav items={items} />}
-    >
+${appShellOpenTag(opts, 'items')}
       {children}
     </AppShell>
   )
@@ -1128,9 +1138,19 @@ function cfPackageJson(opts: ScaffoldOptions): string {
       ...(hasExample(opts, 'publish') && !agent
         ? { '@cascivo/render': V['@cascivo/render']! }
         : {}),
-      // The Worker server-renders published pages; under Preact, react-dom/server is
-      // preact/compat/server, which needs this.
-      ...(hasExample(opts, 'publish') && preact ? { 'preact-render-to-string': '^6.5.0' } : {}),
+      // The Worker renders receipts and newsletters with @cascivo/email (react-dom/server
+      // underneath).
+      ...(hasExample(opts, 'checkout') || hasExample(opts, 'newsletter')
+        ? { '@cascivo/email': V['@cascivo/email']! }
+        : {}),
+      // The Worker server-renders published pages and emails; under Preact, react-dom/server
+      // is preact/compat/server, which needs this.
+      ...((hasExample(opts, 'publish') ||
+        hasExample(opts, 'checkout') ||
+        hasExample(opts, 'newsletter')) &&
+      preact
+        ? { 'preact-render-to-string': '^6.5.0' }
+        : {}),
     },
     devDependencies: {
       '@cascivo/eslint-config': V['@cascivo/eslint-config']!,
@@ -1161,7 +1181,14 @@ function cfPackageJson(opts: ScaffoldOptions): string {
       wrangler: '^4.143.0',
     },
   }
-  return JSON.stringify(pkg, null, 2) + '\n'
+  const bindings = cfBindingDescriptions(opts)
+  return (
+    JSON.stringify(
+      Object.keys(bindings).length > 0 ? { ...pkg, cloudflare: { bindings } } : pkg,
+      null,
+      2,
+    ) + '\n'
+  )
 }
 
 function cfTsconfig(opts: ScaffoldOptions): string {
@@ -1344,6 +1371,8 @@ ${jsoncArray('  ', 'r2_buckets', [`{ "binding": "FILES", "bucket_name": "${packa
     hasExample(opts, 'publish') ? 'published pages' : '',
     hasExample(opts, 'digest') ? 'digests sent now' : '',
     hasExample(opts, 'search') ? 'search indexing' : '',
+    hasExample(opts, 'checkout') ? 'checkouts started' : '',
+    hasExample(opts, 'newsletter') ? 'newsletter sign-ups and composer requests' : '',
     opts.auth === 'email' ? 'sign-in emails' : '',
   ]
     .filter(Boolean)
@@ -1368,6 +1397,8 @@ ${jsoncArray('  ', 'ratelimits', ['{ "name": "LIMITER", "namespace_id": "1001", 
     hasExample(opts, 'webhooks') ? 'webhook deliveries' : '',
     hasExample(opts, 'digest') ? 'digest runs' : '',
     hasExample(opts, 'search') ? 'help articles' : '',
+    hasExample(opts, 'checkout') ? 'orders' : '',
+    hasExample(opts, 'newsletter') ? 'newsletter subscribers and issues' : '',
     opts.auth === 'email' ? 'accounts' : '',
   ]
     .filter(Boolean)
@@ -1382,23 +1413,7 @@ ${jsoncArray('  ', 'd1_databases', [`{ "binding": "DB", "database_name": "${pack
   // Every API request is recorded here (worker/index.ts); /usage reads it back.
   "analytics_engine_datasets": [{ "binding": "USAGE", "dataset": "${usageDataset(opts)}" }],`
       : ''
-  }${
-    hasExample(opts, 'live')
-      ? `
-  // Events for /ops: POST /api/events sends them, and the Worker's queue handler takes them in
-  // batches of up to 100, or whatever arrived within a second.
-  "queues": {
-${jsoncArray('    ', 'producers', [`{ "binding": "EVENTS", "queue": "${packageName(opts.name)}-events" }`])}
-    "consumers": [
-      {
-        "queue": "${packageName(opts.name)}-events",
-        "max_batch_size": 100,
-        "max_batch_timeout": 1,
-      },
-    ],
-  },`
-      : ''
-  }${
+  }${wranglerQueues(opts)}${
     hasExample(opts, 'import')
       ? `
   // The CSV import runs as a Workflow (worker/import-job.ts); its progress is a room.
@@ -1441,6 +1456,8 @@ ${jsoncArray('  ', 'vectorize', [`{ "binding": "ARTICLES_INDEX", "index_name": "
  */
 function wranglerVars(opts: ScaffoldOptions): string {
   const digest = hasExample(opts, 'digest')
+  const checkout = hasExample(opts, 'checkout')
+  const newsletter = hasExample(opts, 'newsletter')
   const emailAuth = opts.auth === 'email'
   const comments = [
     ...(opts.auth === 'access'
@@ -1458,11 +1475,25 @@ function wranglerVars(opts: ScaffoldOptions): string {
           'which the browser opens. Until they are set, each run is recorded as skipped.',
         ]
       : []),
+    ...(checkout
+      ? [
+          'Receipts for paid orders go out through Email Service from RECEIPT_FROM, an address',
+          'on a domain you have onboarded (README). Until it is set, no receipt is sent.',
+        ]
+      : []),
+    ...(newsletter
+      ? [
+          'The newsletter sends through Amazon SES (README): the region your sending identity is',
+          'verified in, its From address, and the SNS topic SES reports bounces and complaints to.',
+        ]
+      : []),
   ]
   const names = [
     ...(opts.auth === 'access' ? ['ACCESS_TEAM_DOMAIN', 'ACCESS_AUD'] : []),
     ...(emailAuth ? ['AUTH_FROM'] : []),
     ...(digest ? ['DIGEST_TO', 'DIGEST_FROM', 'APP_URL'] : []),
+    ...(checkout ? ['RECEIPT_FROM'] : []),
+    ...(newsletter ? ['AWS_REGION', 'NEWSLETTER_FROM', 'SNS_TOPIC_ARN'] : []),
   ]
   if (names.length === 0) return ''
   const entries = names.map((name) => `"${name}": ""`)
@@ -1472,8 +1503,75 @@ function wranglerVars(opts: ScaffoldOptions): string {
       ? line
       : `  "vars": {\n${entries.map((entry) => `    ${entry},`).join('\n')}\n  },`
   return `
-${comments.map((comment) => `  // ${comment}`).join('\n')}${emailAuth || digest ? '\n  "send_email": [{ "name": "EMAIL" }],' : ''}
+${comments.map((comment) => `  // ${comment}`).join('\n')}${emailAuth || digest || checkout ? '\n  "send_email": [{ "name": "EMAIL" }],' : ''}
 ${vars}`
+}
+
+/** One `queues` object for every example that has a queue (a second one would replace the first). */
+function wranglerQueues(opts: ScaffoldOptions): string {
+  const queues = [
+    ...(hasExample(opts, 'live')
+      ? [
+          {
+            comment: [
+              "Events for /ops: POST /api/events sends them, and the Worker's queue handler takes them in",
+              'batches of up to 100, or whatever arrived within a second.',
+            ],
+            binding: 'EVENTS',
+            queue: `${packageName(opts.name)}-events`,
+            consumer: ['"max_batch_size": 100', '"max_batch_timeout": 1'],
+          },
+        ]
+      : []),
+    ...(hasExample(opts, 'newsletter')
+      ? [
+          {
+            comment: [
+              'Newsletter sends (worker/newsletter.ts): one message of 25 readers at a time, so SES',
+              'is called at a steady pace. A throttled message is retried after 30 seconds.',
+            ],
+            binding: 'NEWSLETTER',
+            queue: newsletterQueue(opts),
+            consumer: [
+              '"max_batch_size": 1',
+              '"max_concurrency": 1',
+              '"max_retries": 10',
+              '"retry_delay": 30',
+            ],
+          },
+        ]
+      : []),
+  ]
+  if (queues.length === 0) return ''
+  return `
+${queues.flatMap((q) => q.comment.map((line) => `  // ${line}`)).join('\n')}
+  "queues": {
+${jsoncArray(
+  '    ',
+  'producers',
+  queues.map((q) => `{ "binding": "${q.binding}", "queue": "${q.queue}" }`),
+)}
+    "consumers": [
+${queues
+  .map(
+    (q) => `      {
+        "queue": "${q.queue}",
+${q.consumer.map((line) => `        ${line},`).join('\n')}
+      },`,
+  )
+  .join('\n')}
+    ],
+  },`
+}
+
+/** A subscription plan needs an account to belong to: checkout with --auth email bills one. */
+function usesBilling(opts: ScaffoldOptions): boolean {
+  return hasExample(opts, 'checkout') && opts.auth === 'email'
+}
+
+/** The newsletter's queue, named after the app like every other resource. */
+function newsletterQueue(opts: ScaffoldOptions): string {
+  return `${packageName(opts.name)}-newsletter`
 }
 
 function hasExample(opts: ScaffoldOptions, example: Example): boolean {
@@ -1502,6 +1600,8 @@ function usesLimiter(opts: ScaffoldOptions): boolean {
     hasExample(opts, 'publish') ||
     hasExample(opts, 'digest') ||
     hasExample(opts, 'search') ||
+    hasExample(opts, 'checkout') ||
+    hasExample(opts, 'newsletter') ||
     opts.auth === 'email'
   )
 }
@@ -1514,6 +1614,8 @@ function usesD1(opts: ScaffoldOptions): boolean {
     hasExample(opts, 'webhooks') ||
     hasExample(opts, 'digest') ||
     hasExample(opts, 'search') ||
+    hasExample(opts, 'checkout') ||
+    hasExample(opts, 'newsletter') ||
     opts.auth === 'email'
   )
 }
@@ -1533,7 +1635,9 @@ function usesRooms(opts: ScaffoldOptions): boolean {
     hasExample(opts, 'board') ||
     hasExample(opts, 'notes') ||
     hasExample(opts, 'import') ||
-    hasExample(opts, 'webhooks')
+    hasExample(opts, 'webhooks') ||
+    hasExample(opts, 'checkout') ||
+    hasExample(opts, 'newsletter')
   )
 }
 
@@ -1565,8 +1669,25 @@ function cfApiTs(opts: ScaffoldOptions): string {
   const webhooks = hasExample(opts, 'webhooks')
   const digest = hasExample(opts, 'digest')
   const search = hasExample(opts, 'search')
-  return `import { defineApi, ${imports || files || usage || crud || live || publish || webhooks || digest || search ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
-${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}${live ? `import { ops, parseAccepted } from './ops'\n` : ''}${publish ? `import { parsePage, parsePageInput, parsePageSummary } from './pages'\n` : ''}${webhooks ? `import { parseDeliveries, parseTestResult } from './webhooks'\n` : ''}${digest ? `import { parseDigestRun, parseDigestRuns } from './digest'\n` : ''}${search ? `import { parseIndexed, parseSearchQuery, parseSearchResult } from './search'\n` : ''}
+  const checkout = hasExample(opts, 'checkout')
+  const newsletter = hasExample(opts, 'newsletter')
+  const billing = usesBilling(opts)
+  return `import { defineApi, ${imports || files || usage || crud || live || publish || webhooks || digest || search || checkout || newsletter ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
+${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}${live ? `import { ops, parseAccepted } from './ops'\n` : ''}${publish ? `import { parsePage, parsePageInput, parsePageSummary } from './pages'\n` : ''}${webhooks ? `import { parseDeliveries, parseTestResult } from './webhooks'\n` : ''}${digest ? `import { parseDigestRun, parseDigestRuns } from './digest'\n` : ''}${search ? `import { parseIndexed, parseSearchQuery, parseSearchResult } from './search'\n` : ''}${billing ? `import { parseBilling, parseRedirect, parseSyncInput } from './billing'\n` : ''}${checkout ? `import { parseCheckoutStarted, parseOrder } from './checkout'\n` : ''}${
+    newsletter
+      ? `import {
+  parseConfirmed,
+  parseEmailInput,
+  parseIssue,
+  parseIssueInput,
+  parseKeyInput,
+  parseOverview,
+  parsePreview,
+  parseSubscribed,
+  parseTokenInput,
+} from './newsletter'\n`
+      : ''
+  }
 /**
  * The contract between the browser and the Worker. Both import this file: the Worker serves
  * it with \`createHandler\`, the app calls it with \`createClient\`, and a change that breaks
@@ -1681,6 +1802,72 @@ export const api = defineApi({
   indexArticles: endpoint({ method: 'POST', path: '/api/search/index', output: parseIndexed }),`
       : ''
   }${
+    checkout
+      ? `
+  // Opens a Stripe Checkout page for the product; the browser goes to its url.
+  startCheckout: endpoint({ method: 'POST', path: '/api/checkout', output: parseCheckoutStarted }),
+  // An order, checked with Stripe while it is pending (Stripe's webhook settles it too).
+  getOrder: endpoint({ method: 'GET', path: '/api/orders/:id', output: parseOrder }),`
+      : ''
+  }${
+    billing
+      ? `
+  // The signed-in user's subscription (worker/billing.ts), and the ways to change it.
+  getBilling: endpoint({ method: 'GET', path: '/api/billing', output: parseBilling }),
+  startSubscription: endpoint({
+    method: 'POST',
+    path: '/api/billing/subscribe',
+    output: parseRedirect,
+  }),
+  syncBilling: endpoint({
+    method: 'POST',
+    path: '/api/billing/sync',
+    input: parseSyncInput,
+    output: parseBilling,
+  }),
+  openBillingPortal: endpoint({
+    method: 'POST',
+    path: '/api/billing/portal',
+    output: parseRedirect,
+  }),`
+      : ''
+  }${
+    newsletter
+      ? `
+  // Signing up sends a confirmation link; only confirmed readers get issues.
+  subscribe: endpoint({
+    method: 'POST',
+    path: '/api/newsletter/subscribe',
+    input: parseEmailInput,
+    output: parseSubscribed,
+  }),
+  confirmSubscription: endpoint({
+    method: 'POST',
+    path: '/api/newsletter/confirm',
+    input: parseTokenInput,
+    output: parseConfirmed,
+  }),
+  // The composer's calls, each carrying NEWSLETTER_KEY.
+  newsletterOverview: endpoint({
+    method: 'POST',
+    path: '/api/newsletter/overview',
+    input: parseKeyInput,
+    output: parseOverview,
+  }),
+  previewIssue: endpoint({
+    method: 'POST',
+    path: '/api/newsletter/preview',
+    input: parseIssueInput,
+    output: parsePreview,
+  }),
+  sendIssue: endpoint({
+    method: 'POST',
+    path: '/api/newsletter/issues',
+    input: parseIssueInput,
+    output: parseIssue,
+  }),`
+      : ''
+  }${
     crud
       ? `
   // One page of customers for DataTable's query (sort, search, filters, page).
@@ -1723,6 +1910,9 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const webhooks = hasExample(opts, 'webhooks')
   const digest = hasExample(opts, 'digest')
   const search = hasExample(opts, 'search')
+  const checkout = hasExample(opts, 'checkout')
+  const newsletter = hasExample(opts, 'newsletter')
+  const billing = usesBilling(opts)
   const d1 = usesD1(opts)
   const ai = usesAgents(opts)
   const limiter = usesLimiter(opts)
@@ -1733,9 +1923,26 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
     ...(limiter ? ['clientIp', 'rateLimit'] : []),
   ]
   const custom = rooms || ai || files || exports || access || live || limiter || publish
-  const isAsync = ai || files || exports || access || limiter || webhooks || publish
+  const isAsync =
+    ai || files || exports || access || limiter || webhooks || publish || checkout || newsletter
   // Rooms the server writes: never opened through /api/rooms/:name, where clients may write.
-  const serverRooms = [...(imports ? ['job-'] : []), ...(webhooks ? ['webhooks$'] : [])]
+  const serverRooms = [
+    ...(imports ? ['job-'] : []),
+    ...(webhooks ? ['webhooks$'] : []),
+    ...(checkout ? ['order-'] : []),
+    ...(newsletter ? ['issue-'] : []),
+  ]
+  // Writes --auth email does not ask to sign in: webhooks carry a signature instead of a
+  // session, and a newsletter's readers have no account.
+  const signedPaths = [
+    ...(webhooks ? ['/api/webhooks/'] : []),
+    ...(checkout ? ['/api/stripe/'] : []),
+    ...(newsletter ? ['/api/sns/'] : []),
+  ]
+  const readerPaths = newsletter
+    ? ['/api/newsletter/subscribe', '/api/newsletter/confirm', '/api/newsletter/unsubscribe']
+    : []
+  const openPaths = [...signedPaths, ...readerPaths]
   return `${usage ? `import type { AnalyticsDataset } from '@cascivo/app/analytics'\n` : ''}${d1 ? `import type { Database } from '@cascivo/app/db'\n` : ''}${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler${publish ? ', HttpError' : ''} } from '@cascivo/app/api'
 ${emailAuth ? `import { handleAuth, requireUser } from '@cascivo/app/auth-server'\n` : ''}${guards.length > 0 || webhooks ? `import { ${[...guards, 'guardResponse'].sort().join(', ')} } from '@cascivo/app/guard'\n${limiter ? `import type { RateLimiter } from '@cascivo/app/guard'\n` : ''}` : ''}${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
     files
@@ -1763,7 +1970,7 @@ import type { BrowserWorker } from '@cloudflare/puppeteer'
       : ''
   }${ai ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\nimport { renderPageHtml } from './page-html'\nimport type { Assets } from './page-html'\n${exports ? `import { pagePreview } from './page-preview'\n` : ''}` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${search ? `import * as articleSearch from './search'\nimport type { ${ai ? '' : 'Embedder, '}VectorIndex } from './search'\n` : ''}${
+${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\nimport { renderPageHtml } from './page-html'\nimport type { Assets } from './page-html'\n${exports ? `import { pagePreview } from './page-preview'\n` : ''}` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${search ? `import * as articleSearch from './search'\nimport type { ${ai ? '' : 'Embedder, '}VectorIndex } from './search'\n` : ''}${billing ? `import * as billingStore from './billing'\n` : ''}${checkout ? `import * as orderStore from './checkout'\nimport type { ReceiptSender } from './checkout'\nimport { ORDER_ID, orderRoom } from '../src/checkout'\n` : ''}${newsletter ? `import * as newsletterStore from './newsletter'\nimport type { NewsletterBatch, NewsletterQueue } from './newsletter'\nimport { ISSUE_ID, issueRoom } from '../src/newsletter'\n` : ''}${
     rooms
       ? `
 // The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
@@ -1816,8 +2023,10 @@ ${
   emailAuth ||
   webhooks ||
   digest ||
-  search
-    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}
+  search ||
+  checkout ||
+  newsletter
+    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -1833,6 +2042,9 @@ ${[
   emailAuth ? 'a sign-in email' : '',
   digest ? 'a digest sent now (it starts a browser)' : '',
   search ? 'indexing the articles (it embeds every one)' : '',
+  checkout ? 'a checkout started (it creates a Stripe session and an order)' : '',
+  billing ? 'a subscription checkout or billing portal opened' : '',
+  newsletter ? 'a newsletter sign-up (it sends an email), and each use of the newsletter key' : '',
   files ? 'a new upload (not each part of one)' : '',
   exports ? 'an export' : '',
   publish ? 'a published page' : '',
@@ -1851,6 +2063,25 @@ function countsAgainstLimit(request: Request): boolean {
     digest
       ? `
   if (url.pathname === '/api/digest/run') return request.method === 'POST'`
+      : ''
+  }${
+    checkout
+      ? `
+  if (url.pathname === '/api/checkout') return request.method === 'POST'`
+      : ''
+  }${
+    billing
+      ? `
+  if (url.pathname === '/api/billing/subscribe' || url.pathname === '/api/billing/portal') {
+    return request.method === 'POST'
+  }`
+      : ''
+  }${
+    newsletter
+      ? `
+  if (/^\\/api\\/newsletter\\/(subscribe|overview|preview|issues)$/.test(url.pathname)) {
+    return request.method === 'POST'
+  }`
       : ''
   }${
     emailAuth
@@ -1937,6 +2168,35 @@ const handleApi = createHandler<typeof api, Env>(api, {
   indexArticles: ({ env }) => articleSearch.indexArticles(env),`
       : ''
   }${
+    checkout
+      ? `
+  startCheckout: ({ request, env }) => orderStore.startCheckout(env, new URL(request.url).origin),
+  getOrder: ({ params, request, env }) =>
+    orderStore.getOrder(env, params.id, new URL(request.url).origin),`
+      : ''
+  }${
+    billing
+      ? `
+  getBilling: ({ request, env }) => billingStore.getBilling(env, request),
+  startSubscription: ({ request, env }) =>
+    billingStore.startSubscription(env, request, new URL(request.url).origin),
+  syncBilling: ({ body, request, env }) => billingStore.syncBilling(env, request, body.sessionId),
+  openBillingPortal: ({ request, env }) =>
+    billingStore.openPortal(env, request, new URL(request.url).origin),`
+      : ''
+  }${
+    newsletter
+      ? `
+  subscribe: ({ body, request, env }) =>
+    newsletterStore.subscribe(env, body.email, new URL(request.url).origin),
+  confirmSubscription: ({ body, env }) => newsletterStore.confirm(env, body.token),
+  newsletterOverview: ({ body, env }) => newsletterStore.overview(env, body.key),
+  previewIssue: ({ body, request, env }) =>
+    newsletterStore.preview(env, body, new URL(request.url).origin),
+  sendIssue: ({ body, request, env }) =>
+    newsletterStore.sendIssue(env, body, new URL(request.url).origin),`
+      : ''
+  }${
     digest
       ? `
   digestRuns: ({ env }) => digestJob.listRuns(env.DB),
@@ -2020,13 +2280,14 @@ ${
       exposeLink: import.meta.env.DEV,
     })(request)
     if (signIn) return signIn
-    // Every other API write needs a signed-in user; reads stay public.${webhooks ? '\n    // Webhooks carry a signature instead of a session, and are checked by it.' : ''}
+    // Every other API write needs a signed-in user; reads stay public.${signedPaths.length > 0 ? '\n    // Webhooks carry a signature instead of a session, and are checked by it.' : ''}${readerPaths.length > 0 ? '\n    // Newsletter readers sign up, confirm and unsubscribe without an account.' : ''}
     if (${
-      webhooks
+      openPaths.length > 0
         ? `
       request.method !== 'GET' &&
-      request.method !== 'HEAD' &&
-      !new URL(request.url).pathname.startsWith('/api/webhooks/')
+      request.method !== 'HEAD' &&${openPaths
+        .map((prefix) => `\n      !new URL(request.url).pathname.startsWith('${prefix}')`)
+        .join(' &&')}
     `
         : "request.method !== 'GET' && request.method !== 'HEAD'"
     }) {
@@ -2123,13 +2384,59 @@ ${
     }`
           : ''
       }${
+        checkout
+          ? `
+    const checkoutPath = new URL(request.url).pathname
+    // Stripe's webhook (worker/checkout.ts); a bad signature is a 401.
+    if (checkoutPath === orderStore.STRIPE_WEBHOOK_PATH && request.method === 'POST') {
+      try {
+        return await orderStore.receiveStripe(request, env${
+          billing
+            ? `, (id) =>
+          billingStore.syncSubscription(env, id),
+        `
+            : ''
+        })
+      } catch (error) {
+        return guardResponse(error)
+      }
+    }
+    // An order's page watches its room for what Stripe reports: it may watch, never write.
+    const orderLive = /^\\/api\\/orders\\/([^/]+)\\/live$/.exec(checkoutPath)
+    if (orderLive && ORDER_ID.test(orderLive[1]!)) {
+      return roomResponse(request, env.ROOMS, orderRoom(orderLive[1]!), { readOnly: true })
+    }`
+          : ''
+      }${
+        newsletter
+          ? `
+    const newsletterPath = new URL(request.url).pathname
+    // One-click unsubscribe (RFC 8058) and the unsubscribe page's button.
+    if (newsletterPath === '/api/newsletter/unsubscribe' && request.method === 'POST') {
+      return newsletterStore.unsubscribe(request, env)
+    }
+    // SES bounces and complaints, delivered by SNS (worker/newsletter.ts); verified by signature.
+    if (newsletterPath === '/api/sns/ses' && request.method === 'POST') {
+      try {
+        return await newsletterStore.receiveFeedback(request, env)
+      } catch (error) {
+        return guardResponse(error)
+      }
+    }
+    // An issue's sending progress, for the composer: it may watch, never write.
+    const issueLive = /^\\/api\\/newsletter\\/issues\\/([^/]+)\\/live$/.exec(newsletterPath)
+    if (issueLive && ISSUE_ID.test(issueLive[1]!)) {
+      return roomResponse(request, env.ROOMS, issueRoom(issueLive[1]!), { readOnly: true })
+    }`
+          : ''
+      }${
         hasExample(opts, 'board') || hasExample(opts, 'notes')
           ? `
     const room = /^\\/api\\/rooms\\/([^/]+)$/.exec(new URL(request.url).pathname)${
       serverRooms.length > 0
         ? `
     // Rooms only the server writes are watched read-only at their own routes, never opened
-    // here: ${[imports ? "a job's progress" : '', webhooks ? 'webhook deliveries' : ''].filter(Boolean).join(', ')}.
+    // here: ${[imports ? "a job's progress" : '', webhooks ? 'webhook deliveries' : '', checkout ? 'orders' : '', newsletter ? 'newsletter issues' : ''].filter(Boolean).join(', ')}.
     if (room && !/^(${serverRooms.join('|')})/.test(room[1]!)) {
       return roomResponse(request, env.ROOMS, room[1]!)
     }`
@@ -2159,8 +2466,22 @@ ${
   },`
       : ''
   }${
-    live
+    live && newsletter
       ? `
+  // Two queues, one handler: each batch says which queue it came from. A throw retries it.
+  async queue(batch: LiveBatch & NewsletterBatch & { queue: string }, env: Env): Promise<void> {
+    // NEWSLETTER: one message of readers at a time, through SES (worker/newsletter.ts).
+    if (batch.queue === '${newsletterQueue(opts)}') return newsletterStore.deliver(env, batch)
+    // EVENTS: into the dashboard's room.
+    await recordLive(
+      ops,
+      env.LIVE,
+      OPS_ROOM,
+      batch.messages.map((message) => message.body),
+    )
+  },`
+      : live
+        ? `
   // The EVENTS queue, a batch at a time, into the dashboard's room. A throw retries the batch.
   async queue(batch: LiveBatch, env: Env): Promise<void> {
     await recordLive(
@@ -2170,7 +2491,14 @@ ${
       batch.messages.map((message) => message.body),
     )
   },`
-      : ''
+        : newsletter
+          ? `
+  // The NEWSLETTER queue: one message of readers at a time, through SES
+  // (worker/newsletter.ts). A throw retries the message; readers already sent are skipped.
+  async queue(batch: NewsletterBatch, env: Env): Promise<void> {
+    await newsletterStore.deliver(env, batch)
+  },`
+          : ''
   }
 }
 `
@@ -2318,6 +2646,12 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
   if (hasExample(opts, 'webhooks')) items.push({ label: 'Webhooks', href: '/webhooks' })
   if (hasExample(opts, 'digest')) items.push({ label: 'Digest', href: '/digest' })
   if (hasExample(opts, 'search')) items.push({ label: 'Search', href: '/search' })
+  if (hasExample(opts, 'checkout')) items.push({ label: 'Checkout', href: '/checkout' })
+  if (usesBilling(opts)) items.push({ label: 'Billing', href: '/billing' })
+  if (hasExample(opts, 'newsletter')) {
+    items.push({ label: 'Newsletter', href: '/newsletter' })
+    items.push({ label: 'Send newsletter', href: '/newsletter/send' })
+  }
   if (opts.auth === 'email') items.push({ label: 'Account', href: '/account' })
   const navItems = items
     .map(
@@ -4993,6 +5327,2101 @@ export default function Webhooks() {
 `
 }
 
+/* --- `--example checkout`: Stripe Checkout, its webhook, an order pushed live, a receipt --- */
+
+function cfCheckoutTs(opts: ScaffoldOptions): string {
+  return `/**
+ * What /checkout sells and the orders it makes, shared by the Worker (which creates them and
+ * hears from Stripe) and the pages (which show them).
+ */
+
+/** The seller, as the receipt names it. */
+export const SHOP_NAME = '${brandName(opts.name).replace(/'/g, "\\'")}'
+
+/**
+ * What you sell. The Worker sends this to Stripe, so a browser cannot change the price; the
+ * page only displays it.
+ */
+export const PRODUCT = {
+  name: 'Sticker pack',
+  description: 'Twelve vinyl stickers of your favourite components, shipped worldwide.',
+  /** In the currency's smallest unit: 900 is €9.00. */
+  amount: 900,
+  /** Three-letter ISO code, lowercase. */
+  currency: 'eur',
+}
+
+/** \`pending\` until Stripe confirms the payment; the other three are final. */
+export type OrderStatus = 'pending' | 'paid' | 'failed' | 'expired'
+
+export interface Order {
+  id: string
+  status: OrderStatus
+  /** What Stripe charged, in the currency's smallest unit. */
+  amount: number
+  currency: string
+  createdAt: string
+  paidAt: string | null
+}
+
+/** An order id: a UUID the Worker made. */
+export const ORDER_ID = /^[0-9a-f-]{36}$/
+
+/** The room the Worker pushes an order's changes to; its page watches it. */
+export const orderRoom = (id: string) => \`order-\${id}\`
+
+/** A price in the currency's smallest unit, for people: 900 eur is €9.00, 900 jpy is ¥900. */
+export function formatPrice(amount: number, currency: string): string {
+  const format = new Intl.NumberFormat(undefined, { style: 'currency', currency })
+  const digits = format.resolvedOptions().maximumFractionDigits ?? 2
+  return format.format(amount / 10 ** digits)
+}
+
+const STATUSES = ['pending', 'paid', 'failed', 'expired']
+
+export function parseOrder(raw: unknown): Order {
+  if (typeof raw === 'object' && raw !== null) {
+    const { id, status, amount, currency, createdAt, paidAt } = raw as Record<string, unknown>
+    if (
+      typeof id === 'string' &&
+      typeof status === 'string' &&
+      STATUSES.includes(status) &&
+      typeof amount === 'number' &&
+      typeof currency === 'string' &&
+      typeof createdAt === 'string' &&
+      (paidAt === null || typeof paidAt === 'string')
+    ) {
+      // Checked against STATUSES just above.
+      return { id, status: status as OrderStatus, amount, currency, createdAt, paidAt }
+    }
+  }
+  throw new Error('Malformed order')
+}
+
+export function parseCheckoutStarted(raw: unknown): { url: string } {
+  if (typeof raw === 'object' && raw !== null) {
+    const { url } = raw as Record<string, unknown>
+    if (typeof url === 'string' && url.startsWith('https://')) return { url }
+  }
+  throw new Error('Malformed checkout')
+}
+`
+}
+
+function cfCheckoutWorkerTs(): string {
+  return `import { HttpError } from '@cascivo/app/api'
+import { migrate, queryRows } from '@cascivo/app/db'
+import type { Database } from '@cascivo/app/db'
+import { verifyWebhook } from '@cascivo/app/guard'
+import { StripeError, createStripe, parseStripeEvent } from '@cascivo/app/stripe'
+import type { CheckoutEventType, CheckoutSession, Stripe } from '@cascivo/app/stripe'
+import { writeRoom } from '@cascivo/app/sync-server'
+import type { RoomNamespace } from '@cascivo/app/sync-server'
+import { Receipt, receiptSubject, renderEmail } from '@cascivo/email'
+import { createElement } from 'react'
+import { ORDER_ID, PRODUCT, SHOP_NAME, formatPrice, orderRoom, parseOrder } from '../src/checkout'
+import type { Order, OrderStatus } from '../src/checkout'
+
+const migrations = [
+  {
+    id: '0001_orders',
+    statements: [
+      \`CREATE TABLE orders (
+        id TEXT PRIMARY KEY,
+        session_id TEXT NOT NULL UNIQUE,
+        status TEXT NOT NULL,
+        amount INTEGER NOT NULL,
+        currency TEXT NOT NULL,
+        email TEXT,
+        created_at TEXT NOT NULL,
+        paid_at TEXT
+      )\`,
+    ],
+  },
+]
+
+/** Where Stripe posts; add it as an endpoint in the Stripe dashboard (README). */
+export const STRIPE_WEBHOOK_PATH = '/api/stripe/webhook'
+
+/** What sending a receipt needs of the Email Service binding (\`send_email\`). */
+export interface ReceiptSender {
+  send(message: {
+    from: string
+    to: string
+    subject: string
+    text: string
+    html: string
+  }): Promise<unknown>
+}
+
+export interface CheckoutEnv {
+  DB: Database
+  ROOMS: RoomNamespace<unknown>
+  EMAIL: ReceiptSender
+  RECEIPT_FROM: string
+  STRIPE_SECRET_KEY?: string
+  STRIPE_WEBHOOK_SECRET?: string
+}
+
+const COLUMNS = 'id, status, amount, currency, created_at AS createdAt, paid_at AS paidAt'
+
+export function stripeOf(env: { STRIPE_SECRET_KEY?: string }): Stripe {
+  if (!env.STRIPE_SECRET_KEY) {
+    throw new HttpError(
+      503,
+      'Set STRIPE_SECRET_KEY to a test key from the Stripe dashboard (README)',
+    )
+  }
+  return createStripe(env.STRIPE_SECRET_KEY)
+}
+
+/** Stripe's refusal, for the page: its message in vite dev, a pointer to the log deployed. */
+export function refused(error: unknown): never {
+  if (!(error instanceof StripeError)) throw error
+  console.error('[checkout] Stripe refused:', error.status, error.code, error.message)
+  throw new HttpError(
+    502,
+    import.meta.env.DEV
+      ? \`Stripe: \${error.message}\`
+      : 'The payment provider refused the request (see the Worker log)',
+  )
+}
+
+/**
+ * Creates a Stripe Checkout Session for PRODUCT and records the order as pending. The order id
+ * is also the idempotency key, so a retried request cannot open a second session.
+ */
+export async function startCheckout(env: CheckoutEnv, origin: string): Promise<{ url: string }> {
+  const stripe = stripeOf(env)
+  const id = crypto.randomUUID()
+  let session: CheckoutSession
+  try {
+    session = await stripe.createCheckoutSession(
+      {
+        mode: 'payment',
+        lineItems: [{ ...PRODUCT, quantity: 1 }],
+        successUrl: \`\${origin}/checkout/\${id}\`,
+        cancelUrl: \`\${origin}/checkout\`,
+        clientReferenceId: id,
+      },
+      { idempotencyKey: id },
+    )
+  } catch (error) {
+    refused(error)
+  }
+  if (!session.url) throw new HttpError(502, 'Stripe returned no checkout page')
+  await migrate(env.DB, migrations)
+  await queryRows(
+    env.DB,
+    \`INSERT INTO orders (id, session_id, status, amount, currency, created_at)
+     VALUES (?, ?, 'pending', ?, ?, ?)\`,
+    [id, session.id, PRODUCT.amount, PRODUCT.currency, new Date().toISOString()],
+    (row) => row,
+  )
+  return { url: session.url }
+}
+
+/** Where an event moves the order, or \`null\` when it does not move it. */
+function statusAfter(type: CheckoutEventType, session: CheckoutSession): OrderStatus | null {
+  switch (type) {
+    case 'checkout.session.completed':
+      // \`unpaid\` here is a bank debit that has not settled: the async events decide it.
+      return session.paymentStatus === 'unpaid' ? null : 'paid'
+    case 'checkout.session.async_payment_succeeded':
+      return 'paid'
+    case 'checkout.session.async_payment_failed':
+      return 'failed'
+    case 'checkout.session.expired':
+      return 'expired'
+  }
+}
+
+/** The same decision from a session read back from Stripe, with no event to go by. */
+function statusOf(session: CheckoutSession): OrderStatus | null {
+  if (session.status === 'complete' && session.paymentStatus !== 'unpaid') return 'paid'
+  return session.status === 'expired' ? 'expired' : null
+}
+
+/**
+ * Moves a pending order to its final status, once: a retried event, or the order page reading
+ * the session before the webhook arrived, finds it settled and changes nothing. The order is
+ * found by Stripe's session id, never by \`client_reference_id\`, which a buyer can set on a
+ * Payment Link. Then the order's page hears about it, and a paid order gets its receipt.
+ */
+async function settle(
+  env: CheckoutEnv,
+  session: CheckoutSession,
+  status: OrderStatus,
+  origin: string,
+): Promise<void> {
+  await migrate(env.DB, migrations)
+  const [order] = await queryRows(
+    env.DB,
+    \`UPDATE orders SET status = ?, paid_at = ?, amount = COALESCE(?, amount),
+       currency = COALESCE(?, currency), email = ?
+     WHERE session_id = ? AND status = 'pending' RETURNING \${COLUMNS}\`,
+    [
+      status,
+      status === 'paid' ? new Date().toISOString() : null,
+      session.amountTotal,
+      session.currency,
+      session.customerEmail,
+      session.id,
+    ],
+    parseOrder,
+  )
+  if (!order) return
+  await writeRoom(env.ROOMS, orderRoom(order.id), 'order', { ...order })
+  if (order.status === 'paid' && session.customerEmail) {
+    await sendReceipt(env, order, session.customerEmail, origin)
+  }
+}
+
+/**
+ * Emails a receipt rendered with @cascivo/email. \`vite dev\` renders it and logs it instead.
+ * A receipt that cannot be sent is logged, not thrown: the payment is recorded either way, and
+ * Stripe retrying the event would not send it again.
+ */
+async function sendReceipt(env: CheckoutEnv, order: Order, to: string, origin: string) {
+  const total = formatPrice(order.amount, order.currency)
+  const props = {
+    productName: SHOP_NAME,
+    orderId: order.id.slice(0, 8).toUpperCase(),
+    items: [{ description: PRODUCT.name, amount: total }],
+    total,
+    invoiceHref: \`\${origin}/checkout/\${order.id}\`,
+  }
+  const message = renderEmail(createElement(Receipt, props), { subject: receiptSubject(props) })
+  if (import.meta.env.DEV) {
+    console.log(\`[checkout] receipt for \${to}: "\${message.subject}" (\${message.html.length} bytes)\`)
+    return
+  }
+  if (!env.RECEIPT_FROM) {
+    console.warn('[checkout] no receipt sent: set RECEIPT_FROM in wrangler.jsonc')
+    return
+  }
+  try {
+    await env.EMAIL.send({
+      from: env.RECEIPT_FROM,
+      to,
+      subject: message.subject,
+      text: message.text,
+      html: message.html,
+    })
+  } catch (error) {
+    console.error('[checkout] receipt not sent:', error)
+  }
+}
+
+/**
+ * Stripe's webhook: verified against STRIPE_WEBHOOK_SECRET before anything in it is read,
+ * then each Checkout event settles its order. Subscription events, and completed subscription
+ * checkouts, go to \`onSubscription\` when the app bills subscriptions (worker/billing.ts).
+ * Other events are acknowledged, so Stripe stops sending them.
+ */
+export async function receiveStripe(
+  request: Request,
+  env: CheckoutEnv,
+  onSubscription?: (subscriptionId: string) => Promise<void>,
+): Promise<Response> {
+  if (!env.STRIPE_WEBHOOK_SECRET) throw new HttpError(503, 'Set STRIPE_WEBHOOK_SECRET (README)')
+  const { body } = await verifyWebhook(request, {
+    scheme: 'stripe',
+    secret: env.STRIPE_WEBHOOK_SECRET,
+  })
+  const event = parseStripeEvent(body)
+  if (event.kind === 'subscription') await onSubscription?.(event.subscription.id)
+  if (event.kind === 'checkout' && event.session.mode === 'subscription') {
+    if (event.session.subscriptionId) await onSubscription?.(event.session.subscriptionId)
+  } else if (event.kind === 'checkout') {
+    const status = statusAfter(event.type, event.session)
+    if (status) await settle(env, event.session, status, new URL(request.url).origin)
+  }
+  return Response.json({ received: true })
+}
+
+function parseStored(raw: unknown): { order: Order; sessionId: string } {
+  const sessionId = typeof raw === 'object' && raw !== null ? Reflect.get(raw, 'sessionId') : null
+  if (typeof sessionId !== 'string') throw new Error('Malformed order row')
+  return { order: parseOrder(raw), sessionId }
+}
+
+async function readOrder(env: CheckoutEnv, id: string) {
+  await migrate(env.DB, migrations)
+  const [row] = await queryRows(
+    env.DB,
+    \`SELECT \${COLUMNS}, session_id AS sessionId FROM orders WHERE id = ?\`,
+    [id],
+    parseStored,
+  )
+  if (!row) throw new HttpError(404, 'No such order')
+  return row
+}
+
+/**
+ * An order, for its page. A pending one is checked with Stripe first, so the page is right
+ * even when the webhook is late or not set up yet (as in \`vite dev\` without \`stripe listen\`).
+ */
+export async function getOrder(env: CheckoutEnv, id: string, origin: string): Promise<Order> {
+  if (!ORDER_ID.test(id)) throw new HttpError(404, 'No such order')
+  const { order, sessionId } = await readOrder(env, id)
+  if (order.status !== 'pending' || !env.STRIPE_SECRET_KEY) return order
+  try {
+    const session = await stripeOf(env).retrieveCheckoutSession(sessionId)
+    const status = statusOf(session)
+    if (!status) return order
+    await settle(env, session, status, origin)
+  } catch (error) {
+    // Stripe unreachable: show what is known; the webhook settles the order later.
+    console.error('[checkout] could not read the session back:', error)
+    return order
+  }
+  return (await readOrder(env, id)).order
+}
+`
+}
+
+function cfCheckoutRouteTsx(): string {
+  return `import { createClient } from '@cascivo/app/api'
+import {
+  Alert,
+  Button,
+  Card,
+  CardContent,
+  Flex,
+  Heading,
+  Text,
+  signal,
+  useSignals,
+} from '@cascivo/react'
+import { api } from '../api'
+import { PRODUCT, formatPrice } from '../checkout'
+
+const client = createClient(api)
+const starting = signal(false)
+const failure = signal<string | null>(null)
+
+/** Asks the Worker for a Stripe Checkout page and goes there: Stripe takes the card, not us. */
+async function buy(): Promise<void> {
+  starting.value = true
+  failure.value = null
+  try {
+    const { url } = await client.startCheckout()
+    location.assign(url)
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Could not start the checkout'
+    starting.value = false
+  }
+}
+
+export default function Checkout() {
+  useSignals()
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Checkout</Heading>
+        <Text muted>
+          Paid on Stripe's hosted page. Stripe tells the Worker when the payment succeeds; the
+          Worker records the order, updates its page and emails a receipt.
+        </Text>
+      </Flex>
+      <Card>
+        <CardContent>
+          <Flex gap={3}>
+            <Flex gap={1}>
+              <Heading level={2}>{PRODUCT.name}</Heading>
+              <Text muted>{PRODUCT.description}</Text>
+            </Flex>
+            <Text size="lg">{formatPrice(PRODUCT.amount, PRODUCT.currency)}</Text>
+            <Flex direction="horizontal">
+              <Button loading={starting.value} onClick={() => void buy()}>
+                Buy now
+              </Button>
+            </Flex>
+          </Flex>
+        </CardContent>
+      </Card>
+      {failure.value ? (
+        <Alert variant="destructive" title="The checkout did not start">
+          {failure.value}
+        </Alert>
+      ) : null}
+      <Text size="sm" muted>
+        In test mode, pay with the card 4242 4242 4242 4242, any future date and any CVC.
+      </Text>
+    </Flex>
+  )
+}
+`
+}
+
+function cfOrderRouteTsx(): string {
+  return `import type { RouteProps } from '@cascivo/app'
+import { createClient } from '@cascivo/app/api'
+import { connectRoom } from '@cascivo/app/sync'
+import {
+  Alert,
+  Badge,
+  EmptyState,
+  Flex,
+  Heading,
+  Link,
+  Spinner,
+  Text,
+  signal,
+  useEffectPropSignal,
+  useSignalEffect,
+  useSignals,
+} from '@cascivo/react'
+import { api } from '../../api'
+import { PRODUCT, formatPrice, parseOrder } from '../../checkout'
+import type { Order } from '../../checkout'
+
+const client = createClient(api)
+/** Orders seen, by id; \`null\` when the id has none. */
+const orders = signal<Readonly<Record<string, Order | null>>>({})
+
+/** Keeps the newest word on an order: a final status is never replaced by \`pending\`. */
+function remember(id: string, order: Order | null): void {
+  const known = orders.peek()[id]
+  if (known && known.status !== 'pending' && order?.status === 'pending') return
+  orders.value = { ...orders.peek(), [id]: order }
+}
+
+async function load(id: string): Promise<void> {
+  try {
+    remember(id, await client.getOrder({ params: { id } }))
+  } catch {
+    remember(id, null)
+  }
+}
+
+/** Watches the order's room, where the Worker pushes what Stripe reports. Returns the cleanup. */
+function watch(id: string): () => void {
+  const room = connectRoom(\`/api/orders/\${id}/live\`)
+  const pushed = room.signal<Order | null>('order', null, (raw) =>
+    raw === null ? null : parseOrder(raw),
+  )
+  const stop = pushed.signal.subscribe((order) => {
+    if (order) remember(id, order)
+  })
+  return () => {
+    stop()
+    room.close()
+  }
+}
+
+const STATUS = {
+  pending: { variant: 'warning', label: 'Waiting for Stripe' },
+  paid: { variant: 'success', label: 'Paid' },
+  failed: { variant: 'destructive', label: 'Payment failed' },
+  expired: { variant: 'secondary', label: 'Expired' },
+} as const
+
+/** \`/checkout/:order\` — where Stripe sends the buyer back. It updates when Stripe confirms. */
+export default function OrderPage({ params }: RouteProps<'/checkout/:order'>) {
+  useSignals()
+  const id = useEffectPropSignal(params.order)
+  useSignalEffect(() => {
+    void load(id.value)
+    return watch(id.value)
+  })
+  const order = orders.value[params.order]
+
+  if (order === undefined) return <Spinner label="Loading" />
+  if (order === null) {
+    return <EmptyState title="No such order" description="Check the link in your receipt." />
+  }
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Your order</Heading>
+        <Text muted>
+          {PRODUCT.name} · {formatPrice(order.amount, order.currency)}
+        </Text>
+      </Flex>
+      <Flex direction="horizontal" align="center" gap={2} wrap>
+        <Badge variant={STATUS[order.status].variant}>{STATUS[order.status].label}</Badge>
+        <Text size="sm" muted>
+          Ordered {new Date(order.createdAt).toLocaleString()}
+        </Text>
+      </Flex>
+      {order.status === 'pending' ? (
+        <Alert variant="info" title="Confirming your payment">
+          This page updates by itself when Stripe confirms. A bank payment can take a few days.
+        </Alert>
+      ) : null}
+      {order.status === 'paid' ? (
+        <Alert variant="success" title="Thank you">
+          Your payment went through. A receipt is on its way to your inbox.
+        </Alert>
+      ) : null}
+      {order.status === 'failed' ? (
+        <Alert variant="destructive" title="The payment failed">
+          Nothing was charged. <Link href="/checkout">Try again</Link>
+        </Alert>
+      ) : null}
+      {order.status === 'expired' ? (
+        <Alert variant="warning" title="This checkout expired">
+          It was not paid in time. <Link href="/checkout">Start again</Link>
+        </Alert>
+      ) : null}
+    </Flex>
+  )
+}
+`
+}
+
+/* --- `--example newsletter`: double opt-in, sent through Amazon SES on a Queue --- */
+
+function cfNewsletterTs(): string {
+  return `/**
+ * The newsletter's wire types, shared by the Worker (worker/newsletter.ts) and its pages.
+ * Every payload is parsed on arrival: the network is not trusted because the types match.
+ */
+
+/** Longest subject and body the composer accepts. */
+export const MAX_SUBJECT = 200
+export const MAX_BODY = 50_000
+
+export interface SubscriberCounts {
+  /** Signed up, has not clicked the confirmation link yet. */
+  pending: number
+  subscribed: number
+  unsubscribed: number
+  /** Bounced for good or complained: never mailed again (worker/newsletter.ts). */
+  suppressed: number
+}
+
+/** One sent issue and how far its sending has got. */
+export interface Issue {
+  id: string
+  subject: string
+  createdAt: string
+  /** Subscribers it was queued for. */
+  total: number
+  sent: number
+  failed: number
+}
+
+export interface Overview {
+  subscribers: SubscriberCounts
+  issues: Issue[]
+}
+
+/** The room the Worker pushes an issue's progress to; the composer watches it. */
+export const issueRoom = (id: string) => \`issue-\${id}\`
+
+/** An issue id: a UUID the Worker made. */
+export const ISSUE_ID = /^[0-9a-f-]{36}$/
+
+const isRecord = (raw: unknown): raw is Record<string, unknown> =>
+  typeof raw === 'object' && raw !== null
+
+function text(raw: Record<string, unknown>, key: string, max: number): string {
+  const value = raw[key]
+  if (typeof value !== 'string' || value.trim() === '' || value.length > max) {
+    throw new Error(\`Expected \${key}: some text, at most \${max} characters\`)
+  }
+  return value
+}
+
+export function parseEmailInput(raw: unknown): { email: string } {
+  if (!isRecord(raw)) throw new Error('Expected { email }')
+  return { email: text(raw, 'email', 254) }
+}
+
+export function parseTokenInput(raw: unknown): { token: string } {
+  if (!isRecord(raw)) throw new Error('Expected { token }')
+  return { token: text(raw, 'token', 100) }
+}
+
+/** The composer's key: NEWSLETTER_KEY, which only the sender knows. */
+export function parseKeyInput(raw: unknown): { key: string } {
+  if (!isRecord(raw)) throw new Error('Expected { key }')
+  return { key: text(raw, 'key', 200) }
+}
+
+export interface IssueInput {
+  key: string
+  subject: string
+  /** The body in Markdown, rendered by @cascivo/email's Markdown. */
+  body: string
+}
+
+export function parseIssueInput(raw: unknown): IssueInput {
+  if (!isRecord(raw)) throw new Error('Expected { key, subject, body }')
+  return {
+    key: text(raw, 'key', 200),
+    subject: text(raw, 'subject', MAX_SUBJECT),
+    body: text(raw, 'body', MAX_BODY),
+  }
+}
+
+export function parseSubscribed(raw: unknown): { devLink: string | null } {
+  if (isRecord(raw) && (raw['devLink'] === null || typeof raw['devLink'] === 'string')) {
+    return { devLink: raw['devLink'] }
+  }
+  throw new Error('Malformed reply')
+}
+
+export function parseConfirmed(raw: unknown): { email: string } {
+  if (isRecord(raw) && typeof raw['email'] === 'string') return { email: raw['email'] }
+  throw new Error('Malformed reply')
+}
+
+export function parsePreview(raw: unknown): { html: string; bytes: number } {
+  if (isRecord(raw) && typeof raw['html'] === 'string' && typeof raw['bytes'] === 'number') {
+    return { html: raw['html'], bytes: raw['bytes'] }
+  }
+  throw new Error('Malformed preview')
+}
+
+const count = (raw: Record<string, unknown>, key: string): number => {
+  const value = raw[key]
+  if (typeof value !== 'number' || !Number.isInteger(value) || value < 0) {
+    throw new Error(\`Expected a count for \${key}\`)
+  }
+  return value
+}
+
+export function parseIssue(raw: unknown): Issue {
+  if (isRecord(raw) && typeof raw['id'] === 'string' && typeof raw['createdAt'] === 'string') {
+    return {
+      id: raw['id'],
+      subject: text(raw, 'subject', MAX_SUBJECT),
+      createdAt: raw['createdAt'],
+      total: count(raw, 'total'),
+      sent: count(raw, 'sent'),
+      failed: count(raw, 'failed'),
+    }
+  }
+  throw new Error('Malformed issue')
+}
+
+export function parseOverview(raw: unknown): Overview {
+  if (isRecord(raw) && isRecord(raw['subscribers']) && Array.isArray(raw['issues'])) {
+    const s = raw['subscribers']
+    return {
+      subscribers: {
+        pending: count(s, 'pending'),
+        subscribed: count(s, 'subscribed'),
+        unsubscribed: count(s, 'unsubscribed'),
+        suppressed: count(s, 'suppressed'),
+      },
+      issues: raw['issues'].map(parseIssue),
+    }
+  }
+  throw new Error('Malformed overview')
+}
+`
+}
+
+function cfNewsletterEmailTs(opts: ScaffoldOptions): string {
+  return `import {
+  Body,
+  Button,
+  Container,
+  Footer,
+  Head,
+  Heading,
+  Html,
+  Link,
+  Markdown,
+  Preview,
+  Section,
+  Text,
+  renderEmail,
+} from '@cascivo/email'
+import type { RenderResult } from '@cascivo/email'
+import { createElement as h } from 'react'
+
+/** Who the newsletter is from, as its emails say. */
+export const NEWSLETTER_NAME = '${brandName(opts.name).replace(/'/g, "\\'")}'
+
+/** Stands in for each reader's unsubscribe token; worker/newsletter.ts swaps it per message. */
+export const TOKEN_SLOT = '__UNSUBSCRIBE_TOKEN__'
+
+/**
+ * An issue, rendered once with @cascivo/email: the body is Markdown, drawn through the email
+ * primitives (raw HTML in it stays literal text). The footer carries the unsubscribe link,
+ * with TOKEN_SLOT where each reader's token goes.
+ */
+export function renderIssue(subject: string, body: string, origin: string): RenderResult {
+  const unsubscribe = \`\${origin}/newsletter/unsubscribe?token=\${TOKEN_SLOT}\`
+  return renderEmail(
+    h(
+      Html,
+      null,
+      h(Head, { title: subject }),
+      h(
+        Body,
+        null,
+        h(Preview, null, subject),
+        h(
+          Container,
+          null,
+          h(Section, { padding: 32 }, h(Heading, { level: 1 }, subject), h(Markdown, null, body)),
+          h(
+            Footer,
+            null,
+            \`You get this because you subscribed to \${NEWSLETTER_NAME}. \`,
+            h(Link, { href: unsubscribe }, 'Unsubscribe'),
+          ),
+        ),
+      ),
+    ),
+    { subject },
+  )
+}
+
+/** The double opt-in email: nobody is mailed an issue until they open this link. */
+export function renderConfirmation(confirmUrl: string): RenderResult {
+  const subject = \`Confirm your subscription to \${NEWSLETTER_NAME}\`
+  return renderEmail(
+    h(
+      Html,
+      null,
+      h(Head, { title: subject }),
+      h(
+        Body,
+        null,
+        h(Preview, null, 'One click and you are on the list.'),
+        h(
+          Container,
+          null,
+          h(
+            Section,
+            { padding: 32 },
+            h(Heading, { level: 1 }, 'Confirm your subscription'),
+            h(Text, null, \`Someone, hopefully you, asked to get \${NEWSLETTER_NAME} by email.\`),
+            h(Button, { href: confirmUrl }, 'Yes, subscribe me'),
+            h(
+              Text,
+              { variant: 'muted', size: '14px' },
+              'The link works for 24 hours. If you did not ask, ignore this email: you will not hear from us again.',
+            ),
+          ),
+        ),
+      ),
+    ),
+    { subject },
+  )
+}
+`
+}
+
+function cfNewsletterWorkerTs(): string {
+  return `import { HttpError } from '@cascivo/app/api'
+import { normalizeEmail } from '@cascivo/app/auth-server'
+import { migrate, queryRows } from '@cascivo/app/db'
+import type { Database } from '@cascivo/app/db'
+import { SesError, createSes, handleSns, parseSesNotification } from '@cascivo/app/ses'
+import { writeRoom } from '@cascivo/app/sync-server'
+import type { RoomNamespace } from '@cascivo/app/sync-server'
+import { ISSUE_ID, issueRoom, parseIssue } from '../src/newsletter'
+import type { Issue, IssueInput, Overview, SubscriberCounts } from '../src/newsletter'
+import { TOKEN_SLOT, renderConfirmation, renderIssue } from './newsletter-email'
+
+const migrations = [
+  {
+    id: '0001_newsletter',
+    statements: [
+      \`CREATE TABLE subscribers (
+        email TEXT PRIMARY KEY,
+        status TEXT NOT NULL,
+        confirm_hash TEXT,
+        confirm_expires INTEGER,
+        unsubscribe_token TEXT NOT NULL UNIQUE,
+        reason TEXT,
+        created_at TEXT NOT NULL,
+        confirmed_at TEXT
+      )\`,
+      \`CREATE TABLE issues (
+        id TEXT PRIMARY KEY,
+        subject TEXT NOT NULL,
+        body TEXT NOT NULL,
+        total INTEGER NOT NULL,
+        created_at TEXT NOT NULL
+      )\`,
+      // One row per reader per issue, written as each send finishes: a retried queue message
+      // skips whoever already has one, so nobody gets an issue twice.
+      \`CREATE TABLE deliveries (
+        issue_id TEXT NOT NULL,
+        email TEXT NOT NULL,
+        status TEXT NOT NULL,
+        detail TEXT,
+        at TEXT NOT NULL,
+        PRIMARY KEY (issue_id, email)
+      )\`,
+    ],
+  },
+]
+
+/** Readers per queue message. Each message is sent in one go, one reader after another. */
+const CHUNK = 25
+/** A confirmation link works for a day. */
+const CONFIRM_TTL_MS = 24 * 60 * 60 * 1000
+/** A pending address gets another link at most this often, so the form cannot flood an inbox. */
+const RESEND_AFTER_MS = 10 * 60 * 1000
+
+export interface NewsletterMessage {
+  issueId: string
+  emails: string[]
+  /** The app's origin, for the unsubscribe links: a queue consumer has no request. */
+  origin: string
+}
+
+/** What sending needs of the NEWSLETTER queue binding. */
+export interface NewsletterQueue {
+  sendBatch(messages: Iterable<{ body: NewsletterMessage }>): Promise<void>
+}
+
+/** The slice of a Queue consumer's batch \`deliver\` reads. */
+export interface NewsletterBatch {
+  readonly messages: readonly { readonly body: unknown }[]
+}
+
+export interface NewsletterEnv {
+  DB: Database
+  ROOMS: RoomNamespace<unknown>
+  NEWSLETTER: NewsletterQueue
+  /** Set in wrangler.jsonc: the SES region, the From address, the SNS topic for feedback. */
+  AWS_REGION: string
+  NEWSLETTER_FROM: string
+  SNS_TOPIC_ARN: string
+  /** Secrets: \`wrangler secret put\` (.dev.vars locally). Unset until you add them. */
+  AWS_ACCESS_KEY_ID?: string
+  AWS_SECRET_ACCESS_KEY?: string
+  NEWSLETTER_KEY?: string
+}
+
+const encoder = new TextEncoder()
+
+const cell = (raw: unknown, key: string): unknown =>
+  typeof raw === 'object' && raw !== null ? Reflect.get(raw, key) : undefined
+
+/** A string column of a D1 row. Rows are read like any payload: checked, not cast. */
+function column(raw: unknown, key: string): string {
+  const value = cell(raw, key)
+  if (typeof value !== 'string') throw new Error(\`Expected a string in column \${key}\`)
+  return value
+}
+
+async function sha256(value: string): Promise<string> {
+  const digest = await crypto.subtle.digest('SHA-256', encoder.encode(value))
+  return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, '0')).join('')
+}
+
+/** 32 random bytes, URL-safe: a confirmation or unsubscribe token. */
+function token(): string {
+  const bytes = crypto.getRandomValues(new Uint8Array(32))
+  return btoa(String.fromCharCode(...bytes))
+    .replace(/\\+/g, '-')
+    .replace(/\\//g, '_')
+    .replace(/=+$/, '')
+}
+
+/** Refuses a request without NEWSLETTER_KEY. Compares digests, so timing says nothing. */
+async function requireKey(env: NewsletterEnv, key: string): Promise<void> {
+  if (!env.NEWSLETTER_KEY) throw new HttpError(503, 'Set NEWSLETTER_KEY (README)')
+  if ((await sha256(key)) !== (await sha256(env.NEWSLETTER_KEY))) {
+    throw new HttpError(403, 'Wrong newsletter key')
+  }
+}
+
+interface Mail {
+  subject: string
+  html: string
+  text: string
+  headers?: Record<string, string>
+}
+
+type Send = (to: string, mail: Mail) => Promise<'sent' | 'logged'>
+
+/**
+ * Sends one email through SES, or, in \`vite dev\` without AWS credentials, logs it instead.
+ * Deployed without them, it refuses with what to set.
+ */
+function mailer(env: NewsletterEnv): Send {
+  const configured =
+    env.AWS_ACCESS_KEY_ID && env.AWS_SECRET_ACCESS_KEY && env.AWS_REGION && env.NEWSLETTER_FROM
+  if (!configured) {
+    if (!import.meta.env.DEV) {
+      throw new HttpError(
+        503,
+        'Set AWS_REGION and NEWSLETTER_FROM in wrangler.jsonc, and the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY secrets (README)',
+      )
+    }
+    return async (to, message) => {
+      console.log(\`[newsletter] not sent (no SES credentials) to \${to}: "\${message.subject}"\`)
+      return 'logged'
+    }
+  }
+  const ses = createSes({
+    region: env.AWS_REGION,
+    accessKeyId: env.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: env.AWS_SECRET_ACCESS_KEY!,
+  })
+  return async (to, message) => {
+    await ses.sendEmail({ from: env.NEWSLETTER_FROM, to, ...message })
+    return 'sent'
+  }
+}
+
+/**
+ * Signs someone up: a pending subscriber and a confirmation email. The answer is the same
+ * whoever asks, so the form does not tell strangers who is on the list. \`vite dev\` without
+ * SES also returns the confirmation link, to open instead of an email.
+ */
+export async function subscribe(
+  env: NewsletterEnv,
+  rawEmail: string,
+  origin: string,
+): Promise<{ devLink: string | null }> {
+  const email = normalizeEmail(rawEmail)
+  const send = mailer(env)
+  await migrate(env.DB, migrations)
+  const confirm = token()
+  const now = new Date()
+  const expires = now.getTime() + CONFIRM_TTL_MS
+  // A new or unsubscribed address gets a link; a pending one gets a fresh link at most every
+  // ten minutes. A subscribed or suppressed one is left alone, and nothing is sent.
+  const [row] = await queryRows(
+    env.DB,
+    \`INSERT INTO subscribers
+       (email, status, confirm_hash, confirm_expires, unsubscribe_token, created_at)
+     VALUES (?, 'pending', ?, ?, ?, ?)
+     ON CONFLICT (email) DO UPDATE SET
+       status = 'pending', reason = NULL,
+       confirm_hash = excluded.confirm_hash, confirm_expires = excluded.confirm_expires
+     WHERE subscribers.status = 'unsubscribed'
+       OR (subscribers.status = 'pending' AND subscribers.confirm_expires < ?)
+     RETURNING email\`,
+    [email, await sha256(confirm), expires, token(), now.toISOString(), expires - RESEND_AFTER_MS],
+    (raw) => column(raw, 'email'),
+  )
+  if (!row) return { devLink: null }
+  const link = \`\${origin}/newsletter/confirm?token=\${confirm}\`
+  const message = renderConfirmation(link)
+  let outcome: 'sent' | 'logged'
+  try {
+    outcome = await send(email, {
+      subject: message.subject,
+      html: message.html,
+      text: message.text,
+    })
+  } catch (error) {
+    if (!(error instanceof SesError)) throw error
+    console.error('[newsletter] confirmation not sent:', error.code, error.message)
+    // Let the reader try again at once rather than wait out the resend interval.
+    await queryRows(
+      env.DB,
+      "UPDATE subscribers SET confirm_expires = 0 WHERE email = ? AND status = 'pending' RETURNING email",
+      [email],
+      (raw) => raw,
+    )
+    throw new HttpError(502, 'Could not send the confirmation email. Try again in a moment.')
+  }
+  return { devLink: outcome === 'logged' ? link : null }
+}
+
+/** Opens a confirmation link: the subscriber is on the list from now on. */
+export async function confirm(env: NewsletterEnv, rawToken: string): Promise<{ email: string }> {
+  await migrate(env.DB, migrations)
+  const [row] = await queryRows(
+    env.DB,
+    \`UPDATE subscribers SET status = 'subscribed', confirm_hash = NULL, confirmed_at = ?
+     WHERE confirm_hash = ? AND confirm_expires > ? AND status = 'pending' RETURNING email\`,
+    [new Date().toISOString(), await sha256(rawToken), Date.now()],
+    (raw) => ({ email: column(raw, 'email') }),
+  )
+  if (!row) throw new HttpError(400, 'This link has expired or was used already. Sign up again.')
+  return row
+}
+
+/**
+ * \`POST /api/newsletter/unsubscribe?token=…\`: the page's button, and the one-click
+ * unsubscribe mail clients send (RFC 8058) from the List-Unsubscribe header. Always 200, so a
+ * token says nothing about who it belongs to, and a second click is not an error.
+ */
+export async function unsubscribe(request: Request, env: NewsletterEnv): Promise<Response> {
+  const unsubscribeToken = new URL(request.url).searchParams.get('token') ?? ''
+  await migrate(env.DB, migrations)
+  await queryRows(
+    env.DB,
+    \`UPDATE subscribers SET status = 'unsubscribed', reason = 'unsubscribed'
+     WHERE unsubscribe_token = ? AND status IN ('pending', 'subscribed') RETURNING email\`,
+    [unsubscribeToken],
+    (raw) => raw,
+  )
+  return Response.json({ unsubscribed: true })
+}
+
+const ISSUE_COLUMNS = \`issues.id, issues.subject, issues.created_at AS createdAt, issues.total,
+  (SELECT COUNT(*) FROM deliveries d WHERE d.issue_id = issues.id AND d.status != 'failed') AS sent,
+  (SELECT COUNT(*) FROM deliveries d WHERE d.issue_id = issues.id AND d.status = 'failed') AS failed\`
+
+async function readIssue(db: Database, id: string): Promise<Issue> {
+  const [issue] = await queryRows(
+    db,
+    \`SELECT \${ISSUE_COLUMNS} FROM issues WHERE id = ?\`,
+    [id],
+    parseIssue,
+  )
+  if (!issue) throw new HttpError(404, 'No such issue')
+  return issue
+}
+
+/** Subscriber counts and the last 20 issues, for the composer. */
+export async function overview(env: NewsletterEnv, key: string): Promise<Overview> {
+  await requireKey(env, key)
+  await migrate(env.DB, migrations)
+  const subscribers: SubscriberCounts = {
+    pending: 0,
+    subscribed: 0,
+    unsubscribed: 0,
+    suppressed: 0,
+  }
+  const counts = await queryRows(
+    env.DB,
+    'SELECT status, COUNT(*) AS n FROM subscribers GROUP BY status',
+    [],
+    (raw) => ({ status: column(raw, 'status'), n: Number(cell(raw, 'n')) }),
+  )
+  for (const { status, n } of counts) {
+    if (status === 'pending' || status === 'subscribed') subscribers[status] = n
+    if (status === 'unsubscribed' || status === 'suppressed') subscribers[status] = n
+  }
+  const issues = await queryRows(
+    env.DB,
+    \`SELECT \${ISSUE_COLUMNS} FROM issues ORDER BY created_at DESC LIMIT 20\`,
+    [],
+    parseIssue,
+  )
+  return { subscribers, issues }
+}
+
+/** The issue as readers will get it, for the composer's preview. */
+export async function preview(
+  env: NewsletterEnv,
+  input: IssueInput,
+  origin: string,
+): Promise<{ html: string; bytes: number }> {
+  await requireKey(env, input.key)
+  const { html, stats } = renderIssue(input.subject, input.body, origin)
+  return { html, bytes: stats.bytes }
+}
+
+/**
+ * Sends an issue to every confirmed subscriber: the issue is stored, and its readers go onto
+ * the NEWSLETTER queue in chunks, which \`deliver\` sends at the queue's pace.
+ */
+export async function sendIssue(
+  env: NewsletterEnv,
+  input: IssueInput,
+  origin: string,
+): Promise<Issue> {
+  await requireKey(env, input.key)
+  mailer(env) // Deployed without SES, refuse now rather than fail in the queue.
+  await migrate(env.DB, migrations)
+  const readers = await queryRows(
+    env.DB,
+    "SELECT email FROM subscribers WHERE status = 'subscribed' ORDER BY email",
+    [],
+    (raw) => column(raw, 'email'),
+  )
+  const id = crypto.randomUUID()
+  await queryRows(
+    env.DB,
+    'INSERT INTO issues (id, subject, body, total, created_at) VALUES (?, ?, ?, ?, ?) RETURNING id',
+    [id, input.subject, input.body, readers.length, new Date().toISOString()],
+    (raw) => raw,
+  )
+  const messages: { body: NewsletterMessage }[] = []
+  for (let i = 0; i < readers.length; i += CHUNK) {
+    messages.push({ body: { issueId: id, emails: readers.slice(i, i + CHUNK), origin } })
+  }
+  // sendBatch takes at most 100 messages a call.
+  for (let i = 0; i < messages.length; i += 100) {
+    await env.NEWSLETTER.sendBatch(messages.slice(i, i + 100))
+  }
+  const issue = await readIssue(env.DB, id)
+  await writeRoom(env.ROOMS, issueRoom(id), 'issue', { ...issue })
+  return issue
+}
+
+function parseMessage(raw: unknown): NewsletterMessage {
+  if (typeof raw === 'object' && raw !== null) {
+    const { issueId, emails, origin } = raw as Record<string, unknown>
+    if (
+      typeof issueId === 'string' &&
+      ISSUE_ID.test(issueId) &&
+      Array.isArray(emails) &&
+      emails.every((e) => typeof e === 'string') &&
+      typeof origin === 'string'
+    ) {
+      return { issueId, emails: emails as string[], origin }
+    }
+  }
+  throw new Error('Malformed newsletter message')
+}
+
+/**
+ * The NEWSLETTER queue's consumer: sends each reader in the message their copy, with their
+ * own unsubscribe link and the one-click headers bulk senders need. A reader who left or was
+ * suppressed since the issue was queued is skipped. SES throttling or a server error throws,
+ * and the queue retries the message: whoever was sent already has a delivery row and is not
+ * sent again. A refusal for one address (an invalid one, say) is recorded and the rest go on.
+ */
+export async function deliver(env: NewsletterEnv, batch: NewsletterBatch): Promise<void> {
+  await migrate(env.DB, migrations)
+  const send = mailer(env)
+  for (const { body } of batch.messages) {
+    const { issueId, emails, origin } = parseMessage(body)
+    const [issue] = await queryRows(
+      env.DB,
+      'SELECT subject, body FROM issues WHERE id = ?',
+      [issueId],
+      (raw) => ({ subject: column(raw, 'subject'), body: column(raw, 'body') }),
+    )
+    if (!issue) continue
+    const rendered = renderIssue(issue.subject, issue.body, origin)
+    const placeholders = emails.map(() => '?').join(', ')
+    const readers = await queryRows(
+      env.DB,
+      \`SELECT s.email, s.unsubscribe_token AS token FROM subscribers s
+       WHERE s.email IN (\${placeholders}) AND s.status = 'subscribed'
+         AND NOT EXISTS (SELECT 1 FROM deliveries d WHERE d.issue_id = ? AND d.email = s.email)\`,
+      [...emails, issueId],
+      (raw) => ({ email: column(raw, 'email'), token: column(raw, 'token') }),
+    )
+    for (const { email, token: readerToken } of readers) {
+      const unsubscribe = \`\${origin}/api/newsletter/unsubscribe?token=\${readerToken}\`
+      let status: string
+      let detail: string | null = null
+      try {
+        status = await send(email, {
+          subject: rendered.subject,
+          html: rendered.html.replaceAll(TOKEN_SLOT, readerToken),
+          text: rendered.text.replaceAll(TOKEN_SLOT, readerToken),
+          headers: {
+            'List-Unsubscribe': \`<\${unsubscribe}>\`,
+            'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+          },
+        })
+      } catch (error) {
+        if (!(error instanceof SesError) || error.retryable) throw error
+        status = 'failed'
+        detail = \`\${error.code ?? error.status}: \${error.message}\`.slice(0, 300)
+      }
+      await queryRows(
+        env.DB,
+        \`INSERT INTO deliveries (issue_id, email, status, detail, at) VALUES (?, ?, ?, ?, ?)
+         ON CONFLICT DO NOTHING RETURNING email\`,
+        [issueId, email, status, detail, new Date().toISOString()],
+        (raw) => raw,
+      )
+    }
+    const progress = await readIssue(env.DB, issueId)
+    await writeRoom(env.ROOMS, issueRoom(issueId), 'issue', { ...progress })
+  }
+}
+
+/**
+ * SES's feedback, delivered by SNS: a permanent bounce or a complaint suppresses the address
+ * for good. Sending to them again is what gets an SES account put under review.
+ */
+export async function receiveFeedback(request: Request, env: NewsletterEnv): Promise<Response> {
+  if (!env.SNS_TOPIC_ARN) throw new HttpError(503, 'Set SNS_TOPIC_ARN in wrangler.jsonc (README)')
+  return handleSns(request, {
+    topicArn: env.SNS_TOPIC_ARN,
+    onNotification: async ({ message }) => {
+      const event = parseSesNotification(message)
+      const suppress =
+        event.kind === 'complaint' || (event.kind === 'bounce' && event.bounceType === 'Permanent')
+      if (!suppress || event.recipients.length === 0) return
+      await migrate(env.DB, migrations)
+      // D1 binds at most 100 parameters; one bounce rarely names more than a few addresses.
+      const recipients = event.recipients
+        .slice(0, 90)
+        .map((address) => address.trim().toLowerCase())
+      await queryRows(
+        env.DB,
+        \`UPDATE subscribers SET status = 'suppressed', reason = ?
+         WHERE email IN (\${recipients.map(() => '?').join(', ')}) RETURNING email\`,
+        [event.kind, ...recipients],
+        (raw) => raw,
+      )
+    },
+  })
+}
+`
+}
+
+function cfNewsletterRouteTsx(): string {
+  return `import { createClient } from '@cascivo/app/api'
+import {
+  Alert,
+  Button,
+  Card,
+  CardContent,
+  Flex,
+  Heading,
+  Input,
+  Link,
+  Text,
+  signal,
+  useSignals,
+} from '@cascivo/react'
+import type { FormEvent } from 'react'
+import { api } from '../api'
+
+const client = createClient(api)
+const sentTo = signal<string | null>(null)
+/** Set only in \`vite dev\` without SES: the confirmation link, to open instead of an email. */
+const devLink = signal<string | null>(null)
+const failure = signal<string | null>(null)
+const sending = signal(false)
+
+async function signUp(event: FormEvent<HTMLFormElement>): Promise<void> {
+  event.preventDefault()
+  const email = new FormData(event.currentTarget).get('email')
+  if (typeof email !== 'string') return
+  failure.value = null
+  sending.value = true
+  try {
+    const { devLink: link } = await client.subscribe({ body: { email } })
+    sentTo.value = email
+    devLink.value = link
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Could not sign you up'
+  } finally {
+    sending.value = false
+  }
+}
+
+export default function Newsletter() {
+  useSignals()
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Newsletter</Heading>
+        <Text muted>
+          An email now and then. We send a link first: you are on the list only once you open it,
+          and every issue has a one-click unsubscribe.
+        </Text>
+      </Flex>
+      <Card>
+        <CardContent>
+          <form onSubmit={(event) => void signUp(event)}>
+            <Flex direction="horizontal" align="end" gap={2} wrap>
+              <Input name="email" type="email" label="Email" autoComplete="email" required />
+              <Button type="submit" loading={sending.value}>
+                Subscribe
+              </Button>
+            </Flex>
+          </form>
+        </CardContent>
+      </Card>
+      {sentTo.value ? (
+        <Alert variant="success" title="Check your inbox">
+          If {sentTo.value} is not on the list yet, a confirmation link is on its way.
+        </Alert>
+      ) : null}
+      {devLink.value ? (
+        <Alert variant="info" title="vite dev sends no email without SES">
+          <Link href={devLink.value}>Open the confirmation link</Link>
+        </Alert>
+      ) : null}
+      {failure.value ? (
+        <Alert variant="destructive" title="Not signed up">
+          {failure.value}
+        </Alert>
+      ) : null}
+    </Flex>
+  )
+}
+`
+}
+
+function cfNewsletterConfirmRouteTsx(): string {
+  return `import { createClient } from '@cascivo/app/api'
+import { Alert, Button, Flex, Heading, Text, signal, useSignals } from '@cascivo/react'
+import { api } from '../../api'
+import { router } from '../../router'
+
+const client = createClient(api)
+const confirmed = signal<string | null>(null)
+const failure = signal<string | null>(null)
+const busy = signal(false)
+
+/**
+ * The page a confirmation link opens. It confirms only when you press the button: mail
+ * scanners open every link in a message, and would otherwise subscribe whoever was typed in.
+ */
+async function confirm(): Promise<void> {
+  const token = new URLSearchParams(router.search.value).get('token')
+  if (!token) {
+    failure.value = 'This link has no token. Sign up again.'
+    return
+  }
+  busy.value = true
+  failure.value = null
+  try {
+    confirmed.value = (await client.confirmSubscription({ body: { token } })).email
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Could not confirm'
+  } finally {
+    busy.value = false
+  }
+}
+
+export default function ConfirmSubscription() {
+  useSignals()
+  return (
+    <Flex gap={4}>
+      <Heading level={1}>Confirm your subscription</Heading>
+      {confirmed.value ? (
+        <Alert variant="success" title="You are on the list">
+          The next issue goes to {confirmed.value}.
+        </Alert>
+      ) : (
+        <Flex gap={2}>
+          <Text muted>One click and you get the newsletter.</Text>
+          <Flex direction="horizontal">
+            <Button loading={busy.value} onClick={() => void confirm()}>
+              Yes, subscribe me
+            </Button>
+          </Flex>
+        </Flex>
+      )}
+      {failure.value ? (
+        <Alert variant="destructive" title="Not confirmed">
+          {failure.value}
+        </Alert>
+      ) : null}
+    </Flex>
+  )
+}
+`
+}
+
+function cfNewsletterUnsubscribeRouteTsx(): string {
+  return `import { Alert, Button, Flex, Heading, Text, signal, useSignals } from '@cascivo/react'
+import { router } from '../../router'
+
+const done = signal(false)
+const failure = signal<string | null>(null)
+const busy = signal(false)
+
+/**
+ * The footer link of every issue. Like the confirmation, it acts on a button press, never on
+ * opening the page. Mail clients that support one-click unsubscribe skip this page and POST
+ * to the same endpoint from the List-Unsubscribe header.
+ */
+async function unsubscribe(): Promise<void> {
+  const token = new URLSearchParams(router.search.value).get('token') ?? ''
+  busy.value = true
+  failure.value = null
+  try {
+    const response = await fetch(\`/api/newsletter/unsubscribe?token=\${encodeURIComponent(token)}\`, {
+      method: 'POST',
+    })
+    if (!response.ok) throw new Error(\`Request failed with status \${response.status}\`)
+    done.value = true
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Could not unsubscribe'
+  } finally {
+    busy.value = false
+  }
+}
+
+export default function Unsubscribe() {
+  useSignals()
+  return (
+    <Flex gap={4}>
+      <Heading level={1}>Unsubscribe</Heading>
+      {done.value ? (
+        <Alert variant="success" title="You are unsubscribed">
+          You will get no more issues. Sign up again any time.
+        </Alert>
+      ) : (
+        <Flex gap={2}>
+          <Text muted>Stop getting the newsletter at this address.</Text>
+          <Flex direction="horizontal">
+            <Button variant="destructive" loading={busy.value} onClick={() => void unsubscribe()}>
+              Unsubscribe
+            </Button>
+          </Flex>
+        </Flex>
+      )}
+      {failure.value ? (
+        <Alert variant="destructive" title="Not unsubscribed">
+          {failure.value}
+        </Alert>
+      ) : null}
+    </Flex>
+  )
+}
+`
+}
+
+function cfNewsletterSendRouteTsx(): string {
+  return `import { createClient } from '@cascivo/app/api'
+import { connectRoom } from '@cascivo/app/sync'
+import {
+  Alert,
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  EmptyState,
+  Flex,
+  Heading,
+  Input,
+  Text,
+  Textarea,
+  signal,
+  useSignals,
+} from '@cascivo/react'
+import type { MouseEvent } from 'react'
+import { api } from '../../api'
+import { MAX_BODY, MAX_SUBJECT, parseIssue } from '../../newsletter'
+import type { Issue, Overview } from '../../newsletter'
+
+const client = createClient(api)
+const overview = signal<Overview | null>(null)
+const previewHtml = signal<string | null>(null)
+const busy = signal<'load' | 'preview' | 'send' | null>(null)
+const failure = signal<string | null>(null)
+const notice = signal<string | null>(null)
+
+/** The composer's fields, read from the form the clicked button belongs to. */
+function fields(event: MouseEvent<HTMLButtonElement>) {
+  const form = event.currentTarget.form
+  const data = form ? new FormData(form) : new FormData()
+  const read = (name: string) => {
+    const value = data.get(name)
+    return typeof value === 'string' ? value : ''
+  }
+  return { key: read('key'), subject: read('subject'), body: read('body') }
+}
+
+async function run(kind: 'load' | 'preview' | 'send', task: () => Promise<void>): Promise<void> {
+  busy.value = kind
+  failure.value = null
+  notice.value = null
+  try {
+    await task()
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Something went wrong'
+  } finally {
+    busy.value = null
+  }
+}
+
+/** Shows an issue's progress as the Worker pushes it, until every reader has had their copy. */
+function watch(issue: Issue): void {
+  const room = connectRoom(\`/api/newsletter/issues/\${issue.id}/live\`)
+  const pushed = room.signal<Issue | null>('issue', null, (raw) =>
+    raw === null ? null : parseIssue(raw),
+  )
+  const stop = pushed.signal.subscribe((latest) => {
+    const current = overview.peek()
+    if (!latest || !current) return
+    overview.value = {
+      ...current,
+      issues: current.issues.map((i) => (i.id === latest.id ? latest : i)),
+    }
+    if (latest.sent + latest.failed >= latest.total) {
+      stop()
+      room.close()
+    }
+  })
+}
+
+function load(event: MouseEvent<HTMLButtonElement>): void {
+  const { key } = fields(event)
+  void run('load', async () => {
+    overview.value = await client.newsletterOverview({ body: { key } })
+  })
+}
+
+function preview(event: MouseEvent<HTMLButtonElement>): void {
+  const input = fields(event)
+  void run('preview', async () => {
+    previewHtml.value = (await client.previewIssue({ body: input })).html
+  })
+}
+
+function send(event: MouseEvent<HTMLButtonElement>): void {
+  const input = fields(event)
+  const readers = overview.value?.subscribers.subscribed ?? 0
+  if (!window.confirm(\`Send "\${input.subject}" to \${readers} subscribers?\`)) return
+  void run('send', async () => {
+    const issue = await client.sendIssue({ body: input })
+    overview.value = await client.newsletterOverview({ body: { key: input.key } })
+    notice.value = \`Queued for \${issue.total} subscribers.\`
+    watch(issue)
+  })
+}
+
+export default function SendNewsletter() {
+  useSignals()
+  const counts = overview.value?.subscribers
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Send the newsletter</Heading>
+        <Text muted>
+          Written in Markdown, rendered with @cascivo/email, sent through Amazon SES to every
+          confirmed subscriber. Only someone with NEWSLETTER_KEY can send.
+        </Text>
+      </Flex>
+      <form onSubmit={(event) => event.preventDefault()}>
+        <Flex gap={3}>
+          <Flex direction="horizontal" align="end" gap={2} wrap>
+            <Input name="key" type="password" label="Newsletter key" autoComplete="off" required />
+            <Button variant="secondary" loading={busy.value === 'load'} onClick={load}>
+              Show subscribers
+            </Button>
+          </Flex>
+          <Input name="subject" label="Subject" maxLength={MAX_SUBJECT} required />
+          <Textarea
+            name="body"
+            label="Body"
+            hint="Markdown: headings, **bold**, links, lists, quotes and images."
+            rows={12}
+            maxLength={MAX_BODY}
+            required
+          />
+          <Flex direction="horizontal" gap={2} wrap>
+            <Button variant="secondary" loading={busy.value === 'preview'} onClick={preview}>
+              Preview
+            </Button>
+            <Button loading={busy.value === 'send'} disabled={!counts} onClick={send}>
+              Send to {counts ? counts.subscribed : '…'} subscribers
+            </Button>
+          </Flex>
+        </Flex>
+      </form>
+      {failure.value ? (
+        <Alert variant="destructive" title="Not done">
+          {failure.value}
+        </Alert>
+      ) : null}
+      {notice.value ? (
+        <Alert variant="success" title="Sending">
+          {notice.value}
+        </Alert>
+      ) : null}
+      {previewHtml.value ? (
+        <Card>
+          <CardContent>
+            {/* sandbox: the preview runs no script and cannot reach this page. */}
+            <iframe
+              title="Preview"
+              sandbox=""
+              srcDoc={previewHtml.value}
+              width="100%"
+              height="640"
+            />
+          </CardContent>
+        </Card>
+      ) : null}
+      {counts ? (
+        <Flex direction="horizontal" gap={2} wrap>
+          <Badge variant="success">{counts.subscribed} subscribed</Badge>
+          <Badge variant="warning">{counts.pending} not confirmed</Badge>
+          <Badge variant="secondary">{counts.unsubscribed} unsubscribed</Badge>
+          <Badge variant="destructive">{counts.suppressed} suppressed</Badge>
+        </Flex>
+      ) : null}
+      {overview.value && overview.value.issues.length === 0 ? (
+        <EmptyState title="No issues yet" description="Write one above and send it." />
+      ) : null}
+      {overview.value && overview.value.issues.length > 0 ? (
+        <Flex gap={2} role="list" aria-label="Issues">
+          {overview.value.issues.map((issue) => (
+            <Flex key={issue.id} role="listitem" direction="horizontal" align="center" gap={2} wrap>
+              <Badge variant={issue.sent + issue.failed >= issue.total ? 'success' : 'warning'}>
+                {issue.sent}/{issue.total} sent
+              </Badge>
+              {issue.failed > 0 ? <Badge variant="destructive">{issue.failed} failed</Badge> : null}
+              <Text>{issue.subject}</Text>
+              <Text size="sm" muted>
+                {new Date(issue.createdAt).toLocaleString()}
+              </Text>
+            </Flex>
+          ))}
+        </Flex>
+      ) : null}
+    </Flex>
+  )
+}
+`
+}
+
+/* --- `--example checkout` with `--auth email`: a subscription plan and Stripe's portal --- */
+
+function cfBillingTs(): string {
+  return `/**
+ * The subscription plan /billing sells, shared by the Worker (worker/billing.ts) and the page.
+ * A subscription belongs to a signed-in user, so this exists only with --auth email.
+ */
+
+/** The plan. The Worker sends this to Stripe; the page only displays it. */
+export const PLAN = {
+  name: 'Pro',
+  description: 'Everything in the app, billed monthly. Cancel any time from the billing portal.',
+  /** In the currency's smallest unit, per interval: 900 is €9.00. */
+  amount: 900,
+  currency: 'eur',
+  interval: 'month' as const,
+}
+
+/** \`none\` before the first subscription; otherwise Stripe's subscription status. */
+export type BillingStatus =
+  | 'none'
+  | 'incomplete'
+  | 'incomplete_expired'
+  | 'trialing'
+  | 'active'
+  | 'past_due'
+  | 'canceled'
+  | 'unpaid'
+  | 'paused'
+
+const STATUSES: readonly BillingStatus[] = [
+  'none',
+  'incomplete',
+  'incomplete_expired',
+  'trialing',
+  'active',
+  'past_due',
+  'canceled',
+  'unpaid',
+  'paused',
+]
+
+export interface Billing {
+  status: BillingStatus
+  /** Whether the plan's features are on: the subscription is active or trialing. */
+  active: boolean
+  /** When the current period ends: the next charge, or the end of a cancelled plan. */
+  currentPeriodEnd: string | null
+  /** Cancelled, but running until currentPeriodEnd. */
+  cancelAtPeriodEnd: boolean
+  /** Has a Stripe customer, so the billing portal can open. */
+  canManage: boolean
+}
+
+/** The statuses that unlock the plan. Check this in the Worker before serving a paid feature. */
+export const isActive = (status: BillingStatus) => status === 'active' || status === 'trialing'
+
+export function parseBilling(raw: unknown): Billing {
+  if (typeof raw === 'object' && raw !== null) {
+    const { status, active, currentPeriodEnd, cancelAtPeriodEnd, canManage } = raw as Record<
+      string,
+      unknown
+    >
+    const known = STATUSES.find((s) => s === status)
+    if (
+      known &&
+      typeof active === 'boolean' &&
+      (currentPeriodEnd === null || typeof currentPeriodEnd === 'string') &&
+      typeof cancelAtPeriodEnd === 'boolean' &&
+      typeof canManage === 'boolean'
+    ) {
+      return { status: known, active, currentPeriodEnd, cancelAtPeriodEnd, canManage }
+    }
+  }
+  throw new Error('Malformed billing')
+}
+
+/** Where to send the browser next: Stripe's checkout or its billing portal. */
+export function parseRedirect(raw: unknown): { url: string } {
+  if (typeof raw === 'object' && raw !== null) {
+    const { url } = raw as Record<string, unknown>
+    if (typeof url === 'string' && url.startsWith('https://')) return { url }
+  }
+  throw new Error('Malformed redirect')
+}
+
+export function parseSyncInput(raw: unknown): { sessionId: string } {
+  if (typeof raw === 'object' && raw !== null) {
+    const { sessionId } = raw as Record<string, unknown>
+    if (typeof sessionId === 'string' && /^cs_[\\w]{1,250}$/.test(sessionId)) return { sessionId }
+  }
+  throw new Error('Expected { sessionId }: a Checkout Session id')
+}
+`
+}
+
+function cfBillingWorkerTs(): string {
+  return `import { HttpError } from '@cascivo/app/api'
+import { requireUser } from '@cascivo/app/auth-server'
+import { migrate, queryRows } from '@cascivo/app/db'
+import type { Database } from '@cascivo/app/db'
+import type { Subscription } from '@cascivo/app/stripe'
+import { PLAN, isActive, parseBilling } from '../src/billing'
+import type { Billing } from '../src/billing'
+import { refused, stripeOf } from './checkout'
+
+const migrations = [
+  {
+    id: '0001_billing',
+    statements: [
+      \`CREATE TABLE billing (
+        user_id TEXT PRIMARY KEY,
+        customer_id TEXT,
+        subscription_id TEXT,
+        status TEXT NOT NULL,
+        current_period_end INTEGER,
+        cancel_at_period_end INTEGER NOT NULL DEFAULT 0,
+        updated_at TEXT NOT NULL
+      )\`,
+    ],
+  },
+]
+
+export interface BillingEnv {
+  DB: Database
+  STRIPE_SECRET_KEY?: string
+}
+
+interface Row {
+  status: string
+  customerId: string | null
+  currentPeriodEnd: number | null
+  cancelAtPeriodEnd: number
+}
+
+const cell = (raw: unknown, key: string): unknown =>
+  typeof raw === 'object' && raw !== null ? Reflect.get(raw, key) : undefined
+
+function parseRow(raw: unknown): Row {
+  const status = cell(raw, 'status')
+  const customerId = cell(raw, 'customerId')
+  const end = cell(raw, 'currentPeriodEnd')
+  if (typeof status !== 'string') throw new Error('Malformed billing row')
+  return {
+    status,
+    customerId: typeof customerId === 'string' ? customerId : null,
+    currentPeriodEnd: typeof end === 'number' ? end : null,
+    cancelAtPeriodEnd: Number(cell(raw, 'cancelAtPeriodEnd')),
+  }
+}
+
+async function readRow(db: Database, userId: string): Promise<Row | null> {
+  await migrate(db, migrations)
+  const [row] = await queryRows(
+    db,
+    \`SELECT status, customer_id AS customerId, current_period_end AS currentPeriodEnd,
+       cancel_at_period_end AS cancelAtPeriodEnd FROM billing WHERE user_id = ?\`,
+    [userId],
+    parseRow,
+  )
+  return row ?? null
+}
+
+/** A stored row as the page sees it; the status is checked against the known ones. */
+function toBilling(row: Row | null): Billing {
+  const billing = parseBilling({
+    status: row?.status ?? 'none',
+    active: false,
+    currentPeriodEnd:
+      row?.currentPeriodEnd != null ? new Date(row.currentPeriodEnd * 1000).toISOString() : null,
+    cancelAtPeriodEnd: row?.cancelAtPeriodEnd === 1,
+    canManage: row?.customerId != null,
+  })
+  return { ...billing, active: isActive(billing.status) }
+}
+
+/**
+ * Stores a subscription's current state for the user its metadata names. The metadata is set
+ * by startSubscription, server side: a subscription made any other way (a Payment Link, the
+ * dashboard) names no user here and is ignored. A different subscription replaces the stored
+ * one only when that one is over, so a late event about an old plan cannot end a new one.
+ */
+async function store(db: Database, subscription: Subscription): Promise<void> {
+  const userId = subscription.metadata['user']
+  if (!userId) return
+  await migrate(db, migrations)
+  await queryRows(
+    db,
+    \`INSERT INTO billing
+       (user_id, customer_id, subscription_id, status, current_period_end, cancel_at_period_end, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?)
+     ON CONFLICT (user_id) DO UPDATE SET
+       customer_id = excluded.customer_id, subscription_id = excluded.subscription_id,
+       status = excluded.status, current_period_end = excluded.current_period_end,
+       cancel_at_period_end = excluded.cancel_at_period_end, updated_at = excluded.updated_at
+     WHERE billing.subscription_id IS excluded.subscription_id
+       OR billing.status NOT IN ('active', 'trialing', 'past_due')
+     RETURNING user_id\`,
+    [
+      userId,
+      subscription.customerId,
+      subscription.id,
+      subscription.status,
+      subscription.currentPeriodEnd,
+      subscription.cancelAtPeriodEnd ? 1 : 0,
+      new Date().toISOString(),
+    ],
+    (raw) => raw,
+  )
+}
+
+/**
+ * The webhook's part (worker/checkout.ts passes subscription events here). The event's copy
+ * may be stale, since events arrive out of order: the subscription is read back from Stripe.
+ */
+export async function syncSubscription(env: BillingEnv, subscriptionId: string): Promise<void> {
+  await store(env.DB, await stripeOf(env).retrieveSubscription(subscriptionId))
+}
+
+/** The signed-in user's plan. */
+export async function getBilling(env: BillingEnv, request: Request): Promise<Billing> {
+  const user = await requireUser(env.DB, request)
+  return toBilling(await readRow(env.DB, user.id))
+}
+
+/** Opens a subscription checkout for PLAN, naming the user in the subscription's metadata. */
+export async function startSubscription(
+  env: BillingEnv,
+  request: Request,
+  origin: string,
+): Promise<{ url: string }> {
+  const user = await requireUser(env.DB, request)
+  const row = await readRow(env.DB, user.id)
+  if (row && toBilling(row).active) {
+    throw new HttpError(409, 'You already have the plan. Manage it in the billing portal.')
+  }
+  const stripe = stripeOf(env)
+  try {
+    const session = await stripe.createCheckoutSession({
+      mode: 'subscription',
+      lineItems: [{ ...PLAN, quantity: 1 }],
+      // Stripe fills in {CHECKOUT_SESSION_ID}, so the page can sync before any webhook.
+      successUrl: \`\${origin}/billing?session={CHECKOUT_SESSION_ID}\`,
+      cancelUrl: \`\${origin}/billing\`,
+      ...(row?.customerId ? { customer: row.customerId } : { customerEmail: user.email }),
+      clientReferenceId: user.id,
+      subscriptionMetadata: { user: user.id },
+    })
+    if (!session.url) throw new HttpError(502, 'Stripe returned no checkout page')
+    return { url: session.url }
+  } catch (error) {
+    if (error instanceof HttpError) throw error
+    refused(error)
+  }
+}
+
+/**
+ * Back from Stripe's checkout: reads the session and its subscription, so the page is right
+ * before the webhook arrives (or in \`vite dev\` without \`stripe listen\`). Only the user the
+ * subscription names can sync it.
+ */
+export async function syncBilling(
+  env: BillingEnv,
+  request: Request,
+  sessionId: string,
+): Promise<Billing> {
+  const user = await requireUser(env.DB, request)
+  const stripe = stripeOf(env)
+  try {
+    const session = await stripe.retrieveCheckoutSession(sessionId)
+    if (session.mode === 'subscription' && session.subscriptionId) {
+      const subscription = await stripe.retrieveSubscription(session.subscriptionId)
+      if (subscription.metadata['user'] !== user.id) {
+        throw new HttpError(403, 'This checkout belongs to another account')
+      }
+      await store(env.DB, subscription)
+    }
+  } catch (error) {
+    if (error instanceof HttpError) throw error
+    refused(error)
+  }
+  return toBilling(await readRow(env.DB, user.id))
+}
+
+/** Opens Stripe's Customer Portal: plan, card, invoices and cancellation, all hosted. */
+export async function openPortal(
+  env: BillingEnv,
+  request: Request,
+  origin: string,
+): Promise<{ url: string }> {
+  const user = await requireUser(env.DB, request)
+  const row = await readRow(env.DB, user.id)
+  if (!row?.customerId) throw new HttpError(409, 'Subscribe first: there is nothing to manage yet')
+  try {
+    return await stripeOf(env).createPortalSession({
+      customer: row.customerId,
+      returnUrl: \`\${origin}/billing\`,
+    })
+  } catch (error) {
+    refused(error)
+  }
+}
+`
+}
+
+function cfBillingRouteTsx(): string {
+  return `import { createClient } from '@cascivo/app/api'
+import {
+  Alert,
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  Flex,
+  Heading,
+  Link,
+  Spinner,
+  Text,
+  signal,
+  useSignalEffect,
+  useSignals,
+} from '@cascivo/react'
+import { api } from '../api'
+import { auth } from '../auth'
+import { PLAN } from '../billing'
+import type { Billing, BillingStatus } from '../billing'
+import { formatPrice } from '../checkout'
+import { router } from '../router'
+
+const client = createClient(api)
+const billing = signal<Billing | null>(null)
+const busy = signal<'subscribe' | 'portal' | null>(null)
+const failure = signal<string | null>(null)
+
+/**
+ * Loads the plan. Back from Stripe's checkout, the URL carries the session id: syncing it
+ * shows the new subscription at once, before the webhook. Then the id leaves the URL.
+ */
+async function load(): Promise<void> {
+  failure.value = null
+  try {
+    const sessionId = new URLSearchParams(router.search.peek()).get('session')
+    if (sessionId) {
+      billing.value = await client.syncBilling({ body: { sessionId } })
+      router.navigate('/billing', { replace: true })
+    } else {
+      billing.value = await client.getBilling()
+    }
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Could not load billing'
+  }
+}
+
+/** Both buttons leave for a Stripe page: checkout, or the billing portal. */
+async function leaveFor(kind: 'subscribe' | 'portal'): Promise<void> {
+  busy.value = kind
+  failure.value = null
+  try {
+    const { url } =
+      kind === 'subscribe' ? await client.startSubscription() : await client.openBillingPortal()
+    location.assign(url)
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Stripe did not open'
+    busy.value = null
+  }
+}
+
+const LABEL: Record<BillingStatus, string> = {
+  none: 'No plan',
+  incomplete: 'Payment pending',
+  incomplete_expired: 'Payment expired',
+  trialing: 'Trial',
+  active: 'Active',
+  past_due: 'Payment failed: retrying',
+  canceled: 'Cancelled',
+  unpaid: 'Unpaid',
+  paused: 'Paused',
+}
+
+export default function BillingPage() {
+  useSignals()
+  useSignalEffect(() => {
+    if (auth.user.value) void load()
+  })
+  const user = auth.user.value
+  const plan = billing.value
+
+  if (user === undefined) return <Spinner label="Loading" />
+  if (user === null) {
+    return (
+      <Flex gap={4}>
+        <Heading level={1}>Billing</Heading>
+        <Text>
+          <Link href="/account">Sign in</Link> to subscribe: a plan belongs to your account.
+        </Text>
+      </Flex>
+    )
+  }
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Billing</Heading>
+        <Text muted>
+          Paid on Stripe's hosted checkout; changed, paused or cancelled in Stripe's billing portal.
+          The Worker keeps your plan in step through Stripe's webhook.
+        </Text>
+      </Flex>
+      <Card>
+        <CardContent>
+          <Flex gap={3}>
+            <Flex direction="horizontal" align="center" gap={2} wrap>
+              <Heading level={2}>{PLAN.name}</Heading>
+              {plan ? (
+                <Badge variant={plan.active ? 'success' : 'secondary'}>{LABEL[plan.status]}</Badge>
+              ) : null}
+            </Flex>
+            <Text muted>{PLAN.description}</Text>
+            <Text size="lg">
+              {formatPrice(PLAN.amount, PLAN.currency)} a {PLAN.interval}
+            </Text>
+            {plan?.currentPeriodEnd ? (
+              <Text size="sm" muted>
+                {plan.cancelAtPeriodEnd ? 'Ends' : 'Renews'} on{' '}
+                {new Date(plan.currentPeriodEnd).toLocaleDateString()}
+              </Text>
+            ) : null}
+            <Flex direction="horizontal" gap={2} wrap>
+              {plan && !plan.active ? (
+                <Button
+                  loading={busy.value === 'subscribe'}
+                  onClick={() => void leaveFor('subscribe')}
+                >
+                  Subscribe
+                </Button>
+              ) : null}
+              {plan?.canManage ? (
+                <Button
+                  variant="secondary"
+                  loading={busy.value === 'portal'}
+                  onClick={() => void leaveFor('portal')}
+                >
+                  Manage billing
+                </Button>
+              ) : null}
+            </Flex>
+          </Flex>
+        </CardContent>
+      </Card>
+      {failure.value ? (
+        <Alert variant="destructive" title="Not done">
+          {failure.value}
+        </Alert>
+      ) : null}
+    </Flex>
+  )
+}
+`
+}
+
 /* --- `--auth email`: accounts with emailed sign-in links (@cascivo/app/auth) --- */
 
 function cfAuthTs(): string {
@@ -6711,6 +9140,7 @@ function cfGitignore(): string {
 dist
 .wrangler
 .dev.vars*
+!.dev.vars.example
 *.local
 .DS_Store
 `
@@ -7006,6 +9436,119 @@ The page answers within milliseconds, well inside GitHub's ten seconds. For slow
 delivery to a Queue from \`receiveGithub\` and answer at once.`
       : ''
   }${
+    hasExample(opts, 'checkout')
+      ? `
+
+## Checkout (Stripe)
+
+\`/checkout\` sells one product on Stripe's hosted Checkout page: the card never touches this
+app. Stripe tells the Worker when the payment succeeds; the Worker marks the order paid, pushes
+it to the order page, and emails a receipt rendered with \`@cascivo/email\`.
+
+1. In the Stripe dashboard, in test mode, copy the secret key (\`sk_test_…\`) into \`.dev.vars\`
+   as \`STRIPE_SECRET_KEY\`, then run the app and buy with the card \`4242 4242 4242 4242\`.
+   The order page confirms the payment by reading the session back from Stripe, so this works
+   before any webhook is set up.
+2. To receive the webhook locally, run
+   \`stripe listen --forward-to localhost:5173/api/stripe/webhook\` (the Stripe CLI) and put the
+   \`whsec_…\` secret it prints in \`.dev.vars\` as \`STRIPE_WEBHOOK_SECRET\`.
+3. Deployed: \`npx wrangler secret put STRIPE_SECRET_KEY\` and
+   \`npx wrangler secret put STRIPE_WEBHOOK_SECRET\`. In the dashboard, add a webhook endpoint
+   at \`https://<your app>/api/stripe/webhook\` for \`checkout.session.completed\`,
+   \`checkout.session.async_payment_succeeded\`, \`checkout.session.async_payment_failed\` and
+   \`checkout.session.expired\`; its signing secret is \`STRIPE_WEBHOOK_SECRET\`.
+4. Receipts: set \`RECEIPT_FROM\` in \`wrangler.jsonc\` to an address on a domain you have
+   onboarded to Email Service. \`vite dev\` renders each receipt and logs it instead.
+
+What you sell is \`PRODUCT\` in \`src/checkout.ts\`. The Worker sends that price to Stripe, so a
+browser cannot change it.
+
+- \`worker/checkout.ts\` — \`createStripe\` (\`@cascivo/app/stripe\`) creates the session, with
+  the order id as its idempotency key. The webhook is checked by \`verifyWebhook\` (scheme
+  \`stripe\`: signature and a five-minute window) before \`parseStripeEvent\` reads it.
+- An order moves from \`pending\` to \`paid\`, \`failed\` or \`expired\` once. A retried event, or
+  the page getting there before the webhook, changes nothing, so the receipt goes out once.
+  Orders are found by Stripe's session id, never by \`client_reference_id\`, which a buyer can
+  set on a Payment Link.
+- A bank debit completes the session as \`unpaid\`: the order stays pending until
+  \`async_payment_succeeded\` or \`async_payment_failed\` arrives, possibly days later.
+- \`src/routes/checkout/[order].tsx\` — where Stripe sends the buyer back. It watches the
+  order's read-only room, so it updates when the webhook arrives.
+
+Each caller (by IP) may start 20 checkouts a minute.${
+          usesBilling(opts)
+            ? `
+
+### Subscriptions (\`/billing\`)
+
+Signed-in users subscribe to \`PLAN\` (\`src/billing.ts\`) on Stripe's checkout and change,
+pause or cancel it in Stripe's hosted billing portal, so the app has no billing screens to build.
+
+1. Add \`customer.subscription.created\`, \`customer.subscription.updated\` and
+   \`customer.subscription.deleted\` to the webhook endpoint's events.
+2. In the Stripe dashboard, save the Customer Portal's settings once (test mode too): until
+   then, Stripe refuses to open it.
+3. Gate a paid feature in the Worker on \`(await billingStore.getBilling(env, request)).active\`,
+   never on what the page shows.
+
+- \`worker/billing.ts\` — the subscription names its user in its metadata, which only the
+  Worker sets (\`client_reference_id\` can be set by a buyer on a Payment Link). Every
+  subscription event is read back from Stripe before it is stored, because events arrive out of
+  order, and a late event about an older subscription cannot end a live one.
+- Back from checkout, \`/billing\` reads the session and its subscription at once, so it is right
+  before the webhook arrives, and only for the user the subscription names.`
+            : `
+
+Subscriptions need an account to belong to: \`cascivo create --framework cloudflare
+--example checkout --auth email\` adds a \`/billing\` page with a monthly plan and Stripe's
+billing portal.`
+        }`
+      : ''
+  }${
+    hasExample(opts, 'newsletter')
+      ? `
+
+## Newsletter (Amazon SES)
+
+\`/newsletter\` signs readers up; \`/newsletter/send\` writes an issue in Markdown, previews it
+as the email it will be (rendered with \`@cascivo/email\`), and sends it to every confirmed
+reader through Amazon SES. It runs in \`vite dev\` with nothing set up: emails are logged instead
+of sent, and the sign-up page shows the confirmation link. The composer's key is in
+\`.dev.vars\` (\`NEWSLETTER_KEY\`).
+
+To send for real:
+
+1. In SES, verify the domain you send from (SES gives DNS records for DKIM; add them in
+   Cloudflare DNS, with an SPF and a DMARC record), and ask AWS to move the account out of the
+   sandbox, where it can mail only verified addresses.
+2. Create an IAM user allowed \`ses:SendEmail\` and nothing else, and give its keys to the
+   Worker: \`npx wrangler secret put AWS_ACCESS_KEY_ID\` and \`AWS_SECRET_ACCESS_KEY\` (in
+   \`.dev.vars\` locally). Set \`AWS_REGION\` and \`NEWSLETTER_FROM\` in \`wrangler.jsonc\`, and
+   \`npx wrangler secret put NEWSLETTER_KEY\` to a long random value.
+3. Bounces and complaints: create an SNS topic, set it as the SES identity's bounce and
+   complaint notification topic, and subscribe \`https://<your app>/api/sns/ses\` to it (HTTPS).
+   Put the topic's ARN in \`SNS_TOPIC_ARN\`. The Worker confirms the subscription itself.
+4. Create the queue once: \`npx wrangler queues create ${newsletterQueue(opts)}\`.
+
+- \`worker/newsletter.ts\` — double opt-in: a sign-up gets a confirmation link (valid a day,
+  resent at most every ten minutes) and gets no issue until it is opened. Sending stores the
+  issue and puts its readers on the \`NEWSLETTER\` queue, 25 per message; the consumer sends
+  them one by one through \`createSes\` (\`@cascivo/app/ses\`), one message at a time. Each
+  send is recorded, so a message retried after SES throttling skips whoever already has it.
+- Every issue carries \`List-Unsubscribe\` and \`List-Unsubscribe-Post\` (one-click
+  unsubscribe, RFC 8058, which Gmail and Yahoo require of bulk senders) and a footer link to
+  \`/newsletter/unsubscribe\`.
+- \`handleSns\` checks each SNS message's signature against SNS's certificate before
+  \`parseSesNotification\` reads it. A permanent bounce or a complaint suppresses the address
+  for good: mailing it again is what gets an SES account reviewed.
+- \`worker/newsletter-email.ts\` — the issue and confirmation emails. The body is Markdown drawn
+  through the email primitives; raw HTML in it stays literal text.
+
+Sign-ups and every use of the newsletter key count against the rate limit (20 a minute per
+IP). Sending reads every confirmed address into memory; past a few hundred thousand readers,
+page through them instead.`
+      : ''
+  }${
     opts.auth === 'email'
       ? `
 
@@ -7212,6 +9755,100 @@ function cfShellTsx(opts: ScaffoldOptions): string {
   )
 }
 
+/** Local secrets for `vite dev` (.gitignore'd); deployed, each is a `wrangler secret`. */
+function cfDevVars(opts: ScaffoldOptions): string {
+  return [
+    ...(hasExample(opts, 'webhooks')
+      ? [
+          '# The secret vite dev signs and checks test webhook deliveries with.',
+          'WEBHOOK_SECRET=dev-only-webhook-secret',
+        ]
+      : []),
+    ...(hasExample(opts, 'checkout')
+      ? [
+          '# Stripe, in test mode (README): the secret key from the dashboard, and the signing',
+          '# secret `stripe listen` prints.',
+          'STRIPE_SECRET_KEY=',
+          'STRIPE_WEBHOOK_SECRET=',
+        ]
+      : []),
+    ...(hasExample(opts, 'newsletter')
+      ? [
+          '# The key /newsletter/send asks for. Deployed, choose a long random one.',
+          'NEWSLETTER_KEY=dev-only-newsletter-key',
+          '# An IAM user allowed ses:SendEmail (README). Without them, vite dev logs each email.',
+          'AWS_ACCESS_KEY_ID=',
+          'AWS_SECRET_ACCESS_KEY=',
+        ]
+      : []),
+  ]
+    .map((line) => `${line}\n`)
+    .join('')
+}
+
+/**
+ * The secrets the app reads, with no values: committed, unlike .dev.vars. The "Deploy to
+ * Cloudflare" button asks for each one it lists; `cp .dev.vars.example .dev.vars` starts a
+ * fresh clone.
+ */
+function cfDevVarsExample(opts: ScaffoldOptions): string {
+  return cfDevVars(opts)
+    .split('\n')
+    .map((line) => (line.startsWith('#') ? line : line.replace(/=.*$/, '=')))
+    .join('\n')
+}
+
+/**
+ * What each setting is for, in package.json's \`cloudflare.bindings\`: the "Deploy to Cloudflare"
+ * button shows it beside the field it asks the deployer to fill in.
+ */
+function cfBindingDescriptions(opts: ScaffoldOptions): Record<string, { description: string }> {
+  const describe = (entries: [string, string][]) =>
+    Object.fromEntries(entries.map(([name, description]) => [name, { description }]))
+  return {
+    ...(hasExample(opts, 'webhooks')
+      ? describe([
+          [
+            'WEBHOOK_SECRET',
+            'The secret of the GitHub webhook that posts to `/api/webhooks/github`.',
+          ],
+        ])
+      : {}),
+    ...(hasExample(opts, 'checkout')
+      ? describe([
+          [
+            'STRIPE_SECRET_KEY',
+            'Your Stripe secret key, from the [API keys page](https://dashboard.stripe.com/test/apikeys). A test key (`sk_test_…`) takes test cards only.',
+          ],
+          [
+            'STRIPE_WEBHOOK_SECRET',
+            'The signing secret (`whsec_…`) of a Stripe webhook endpoint at `https://<this app>/api/stripe/webhook`. No endpoint yet? Enter `later`: orders are confirmed on their own page without it. Set the real one with `npx wrangler secret put STRIPE_WEBHOOK_SECRET`.',
+          ],
+          [
+            'RECEIPT_FROM',
+            'The From address of receipts, on a domain onboarded to Cloudflare Email Service. Leave it empty to send none.',
+          ],
+        ])
+      : {}),
+    ...(hasExample(opts, 'newsletter')
+      ? describe([
+          [
+            'NEWSLETTER_KEY',
+            'The key `/newsletter/send` asks for. Make a long random one: `openssl rand -hex 32`.',
+          ],
+          ['AWS_ACCESS_KEY_ID', 'An IAM user allowed `ses:SendEmail` and nothing else (README).'],
+          ['AWS_SECRET_ACCESS_KEY', "That IAM user's secret access key."],
+          ['AWS_REGION', 'The SES region your sending domain is verified in, e.g. `eu-west-1`.'],
+          ['NEWSLETTER_FROM', 'The From address of issues, on your SES-verified domain.'],
+          [
+            'SNS_TOPIC_ARN',
+            'The SNS topic SES reports bounces and complaints to, subscribed to `https://<this app>/api/sns/ses`.',
+          ],
+        ])
+      : {}),
+  }
+}
+
 function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): ScaffoldFile[] {
   const runtime = runtimeOf(opts)
   const routeFiles = [
@@ -7245,6 +9882,21 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
       : []),
     ...(hasExample(opts, 'digest') ? [{ file: 'digest.tsx', contents: cfDigestRouteTsx() }] : []),
     ...(hasExample(opts, 'search') ? [{ file: 'search.tsx', contents: cfSearchRouteTsx() }] : []),
+    ...(hasExample(opts, 'checkout')
+      ? [
+          { file: 'checkout.tsx', contents: cfCheckoutRouteTsx() },
+          { file: 'checkout/[order].tsx', contents: cfOrderRouteTsx() },
+        ]
+      : []),
+    ...(usesBilling(opts) ? [{ file: 'billing.tsx', contents: cfBillingRouteTsx() }] : []),
+    ...(hasExample(opts, 'newsletter')
+      ? [
+          { file: 'newsletter.tsx', contents: cfNewsletterRouteTsx() },
+          { file: 'newsletter/confirm.tsx', contents: cfNewsletterConfirmRouteTsx() },
+          { file: 'newsletter/unsubscribe.tsx', contents: cfNewsletterUnsubscribeRouteTsx() },
+          { file: 'newsletter/send.tsx', contents: cfNewsletterSendRouteTsx() },
+        ]
+      : []),
     ...(opts.auth === 'email'
       ? [
           { file: 'account.tsx', contents: cfAccountRouteTsx() },
@@ -7318,8 +9970,33 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
       ? [
           { path: 'src/webhooks.ts', contents: cfWebhooksTs() },
           { path: 'worker/webhooks.ts', contents: cfWebhooksWorkerTs() },
-          // Local only (.gitignore'd): the secret vite dev signs and checks test deliveries with.
-          { path: '.dev.vars', contents: 'WEBHOOK_SECRET=dev-only-webhook-secret\n' },
+        ]
+      : []),
+    ...(hasExample(opts, 'checkout')
+      ? [
+          { path: 'src/checkout.ts', contents: cfCheckoutTs(opts) },
+          { path: 'worker/checkout.ts', contents: cfCheckoutWorkerTs() },
+        ]
+      : []),
+    ...(usesBilling(opts)
+      ? [
+          { path: 'src/billing.ts', contents: cfBillingTs() },
+          { path: 'worker/billing.ts', contents: cfBillingWorkerTs() },
+        ]
+      : []),
+    ...(hasExample(opts, 'newsletter')
+      ? [
+          { path: 'src/newsletter.ts', contents: cfNewsletterTs() },
+          { path: 'worker/newsletter.ts', contents: cfNewsletterWorkerTs() },
+          { path: 'worker/newsletter-email.ts', contents: cfNewsletterEmailTs(opts) },
+        ]
+      : []),
+    ...(hasExample(opts, 'webhooks') ||
+    hasExample(opts, 'checkout') ||
+    hasExample(opts, 'newsletter')
+      ? [
+          { path: '.dev.vars', contents: cfDevVars(opts) },
+          { path: '.dev.vars.example', contents: cfDevVarsExample(opts) },
         ]
       : []),
     ...(opts.auth === 'email'

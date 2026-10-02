@@ -681,3 +681,155 @@ the widget in the browser: it loads Cloudflare's script once and returns `reset(
 `cascivo create --framework cloudflare --auth access` scaffolds the Access check.
 `--example files` and `--example export` rate-limit starting an upload or an export (20 a
 minute per IP).
+
+## Payments — `@cascivo/app/stripe`
+
+Stripe Checkout from a Worker: create a session, send the browser to Stripe's hosted page, and
+learn from the webhook that it was paid. Plain `fetch` against Stripe's API, so no SDK and no
+`nodejs_compat`.
+
+```ts
+import { verifyWebhook } from '@cascivo/app/guard'
+import { createStripe, parseStripeEvent } from '@cascivo/app/stripe'
+
+// Starting a checkout: the price comes from the Worker, never from the browser.
+const session = await createStripe(env.STRIPE_SECRET_KEY).createCheckoutSession(
+  {
+    mode: 'payment',
+    lineItems: [{ name: 'Sticker pack', amount: 900, currency: 'eur', quantity: 1 }],
+    successUrl: `${origin}/orders/${orderId}`,
+    cancelUrl: `${origin}/shop`,
+    clientReferenceId: orderId,
+  },
+  { idempotencyKey: orderId },
+)
+// → redirect to session.url, and store session.id with the order
+
+// The webhook: verify the raw body first, then parse it.
+const { body } = await verifyWebhook(request, {
+  scheme: 'stripe',
+  secret: env.STRIPE_WEBHOOK_SECRET,
+})
+const event = parseStripeEvent(body)
+if (event.kind === 'checkout' && event.session.paymentStatus === 'paid') {
+  // settle the order stored under event.session.id, once
+}
+```
+
+- **`createStripe(secretKey, { apiVersion?, fetch? })`** — `createCheckoutSession(params,
+{ idempotencyKey })` and `retrieveCheckoutSession(id)`. A line item is a dashboard Price
+  (`{ price, quantity }`) or described inline (`{ name, amount, currency, quantity }`, the
+  amount in the currency's smallest unit). Stripe's refusals throw `StripeError` with its
+  `status`, `type` and `code`. Pin `apiVersion` so an account upgrade cannot change responses
+  under a deployed app.
+- **`parseStripeEvent(body)`** — the four Checkout events (`checkout.session.completed`,
+  `…async_payment_succeeded`, `…async_payment_failed`, `…expired`) come back as
+  `{ kind: 'checkout', session }`; every other event as `{ kind: 'other' }`, to acknowledge
+  with a 2xx so Stripe stops retrying it.
+- **`parseCheckoutSession(raw)`** — a session as Stripe sends it, field by field:
+  `status`, `paymentStatus`, `amountTotal`, `currency`, `customerEmail`, `clientReferenceId`,
+  `metadata`.
+
+What the handler must still get right, because a webhook is retried and can arrive late or
+out of order: settle each order once (an update guarded by its current status), look the
+order up by the session id rather than `client_reference_id` (a buyer can set that on a
+Payment Link), and treat `completed` with `paymentStatus: 'unpaid'` as not paid yet (a bank
+debit settles days later, with `async_payment_succeeded`). Reading the session back with
+`retrieveCheckoutSession` on the success page confirms a payment before the webhook arrives.
+
+**Subscriptions.** `mode: 'subscription'` with a recurring line item (`interval: 'month'`)
+opens a subscription checkout. Name the user in `subscriptionMetadata`: only your server sets
+it, so every subscription event can be trusted to say whose plan it is.
+
+```ts
+await stripe.createCheckoutSession({
+  mode: 'subscription',
+  lineItems: [{ name: 'Pro', amount: 900, currency: 'eur', interval: 'month', quantity: 1 }],
+  successUrl: `${origin}/billing?session={CHECKOUT_SESSION_ID}`,
+  cancelUrl: `${origin}/billing`,
+  customer: existingCustomerId, // or customerEmail for a first subscription
+  subscriptionMetadata: { user: user.id },
+})
+
+// The webhook: events arrive out of order, so store what Stripe says now, not the payload.
+if (event.kind === 'subscription') {
+  const current = await stripe.retrieveSubscription(event.subscription.id)
+  // current.status, current.currentPeriodEnd, current.cancelAtPeriodEnd, current.metadata.user
+}
+
+// Plan changes, cards, invoices and cancellation: Stripe's hosted Customer Portal.
+const { url } = await stripe.createPortalSession({ customer, returnUrl: `${origin}/billing` })
+```
+
+`parseStripeEvent` types `customer.subscription.created`, `…updated` and `…deleted` as
+`{ kind: 'subscription', subscription }`, and a Checkout session carries `mode`, `customerId`
+and `subscriptionId`. `parseSubscription` reads the billing period from the subscription or,
+in newer API versions, from its first item. Save the Customer Portal's settings once in the
+dashboard (test mode too) before opening it. For anything else in Stripe's API, install the
+`stripe` package; it runs on Workers too.
+
+`cascivo create --framework cloudflare --example checkout` scaffolds all of it: a product
+page, the order page that updates live when the webhook arrives, orders in D1, and a receipt
+rendered with `@cascivo/email`. With `--auth email` it adds `/billing`: a monthly plan, kept in
+step by the subscription events, and the billing portal.
+
+## Email with Amazon SES — `@cascivo/app/ses`
+
+Sending through Amazon SES from a Worker, and hearing about bounces and complaints through SNS.
+AWS Signature Version 4 is computed with WebCrypto: no AWS SDK, no `nodejs_compat`.
+
+```ts
+import { createSes, handleSns, parseSesNotification } from '@cascivo/app/ses'
+
+const ses = createSes({
+  region: env.AWS_REGION,
+  accessKeyId: env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
+})
+await ses.sendEmail({
+  from: 'Example News <news@example.com>',
+  to: 'reader@example.org',
+  subject,
+  html, // e.g. renderEmail(…).html from @cascivo/email
+  text,
+  headers: {
+    'List-Unsubscribe': `<${unsubscribeUrl}>`,
+    'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+  },
+})
+
+// SES publishes bounces and complaints to an SNS topic; subscribe this route to it over HTTPS.
+return handleSns(request, {
+  topicArn: env.SNS_TOPIC_ARN,
+  onNotification: async ({ message }) => {
+    const event = parseSesNotification(message)
+    if (
+      event.kind === 'complaint' ||
+      (event.kind === 'bounce' && event.bounceType === 'Permanent')
+    ) {
+      // stop mailing event.recipients
+    }
+  },
+})
+```
+
+- **`createSes({ region, accessKeyId, secretAccessKey, sessionToken? })`** — `sendEmail` calls
+  SES v2 `SendEmail` with HTML and text parts, reply-to, a configuration set and extra headers.
+  A header value holding a line break is refused. SES's refusals throw `SesError` with its
+  `code` (`MessageRejected`, `TooManyRequestsException`…) and `retryable`, true for throttling
+  and server errors. Give the IAM user `ses:SendEmail` and nothing else.
+- **`handleSns(request, { topicArn, onNotification })`** — verifies each message's RSA
+  signature (versions 1 and 2) against the certificate at `SigningCertURL`, fetched only from
+  an `sns.<region>.amazonaws.com` host and cached. A message from another topic, or with a
+  changed field, is refused with a 401. It confirms the subscription when SNS asks, by
+  fetching the `SubscribeURL` (same host rule), and passes notifications on. `verifySnsMessage`
+  is the check alone.
+- **`parseSesNotification(message)`** — `bounce` (with `bounceType`: only `Permanent` means
+  never mail the address again), `complaint`, `delivery`, or `other`, from identity
+  notifications and configuration-set events alike.
+- **`signAwsRequest(request, credentials, { region, service })`** — the Signature V4 headers
+  for any other AWS API call.
+
+`cascivo create --framework cloudflare --example newsletter` scaffolds a newsletter on it:
+double opt-in, a composer that renders with `@cascivo/email`, sending through a Queue,
+one-click unsubscribe, and suppression from SES feedback.

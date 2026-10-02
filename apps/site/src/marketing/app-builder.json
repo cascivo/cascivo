@@ -162,7 +162,13 @@
       "label": "Inbound webhooks",
       "blurb": "Signed GitHub deliveries, verified and shown live.",
       "group": "Operations",
-      "files": [".dev.vars", "src/routes/webhooks.tsx", "src/webhooks.ts", "worker/webhooks.ts"],
+      "files": [
+        ".dev.vars",
+        ".dev.vars.example",
+        "src/routes/webhooks.tsx",
+        "src/webhooks.ts",
+        "worker/webhooks.ts"
+      ],
       "pages": ["/webhooks"],
       "services": ["durable_objects", "d1_databases"],
       "react": false,
@@ -192,6 +198,50 @@
       "files": ["src/routes/search.tsx", "src/search.ts", "worker/articles.ts", "worker/search.ts"],
       "pages": ["/search"],
       "services": ["ratelimits", "d1_databases", "ai", "vectorize"],
+      "react": false,
+      "brings": []
+    },
+    {
+      "id": "checkout",
+      "label": "Stripe checkout",
+      "blurb": "Sell a product: paid on Stripe, confirmed live, receipt emailed.",
+      "group": "Operations",
+      "files": [
+        ".dev.vars",
+        ".dev.vars.example",
+        "src/checkout.ts",
+        "src/routes/checkout.tsx",
+        "src/routes/checkout/[order].tsx",
+        "worker/checkout.ts"
+      ],
+      "pages": ["/checkout", "/checkout/:order"],
+      "services": ["durable_objects", "ratelimits", "send_email", "d1_databases"],
+      "react": false,
+      "brings": []
+    },
+    {
+      "id": "newsletter",
+      "label": "Newsletter",
+      "blurb": "Double opt-in sign-ups; issues sent through Amazon SES.",
+      "group": "Operations",
+      "files": [
+        ".dev.vars",
+        ".dev.vars.example",
+        "src/newsletter.ts",
+        "src/routes/newsletter.tsx",
+        "src/routes/newsletter/confirm.tsx",
+        "src/routes/newsletter/send.tsx",
+        "src/routes/newsletter/unsubscribe.tsx",
+        "worker/newsletter-email.ts",
+        "worker/newsletter.ts"
+      ],
+      "pages": [
+        "/newsletter",
+        "/newsletter/confirm",
+        "/newsletter/send",
+        "/newsletter/unsubscribe"
+      ],
+      "services": ["durable_objects", "ratelimits", "d1_databases", "queues"],
       "react": false,
       "brings": []
     }

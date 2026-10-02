@@ -83,6 +83,17 @@ export const STARTERS: Starter[] = [
     },
     args: ['--framework', 'cloudflare', '--example', 'crud', '--pm', 'npm'],
   },
+  {
+    name: 'shop',
+    project: 'cascivo-shop',
+    card: {
+      title: 'Shop on Stripe',
+      summary:
+        'Sell a product with Stripe Checkout: orders in D1, a live order page, emailed receipts.',
+      waitsFor: 'app-stripe.md',
+    },
+    args: ['--framework', 'cloudflare', '--example', 'checkout', '--pm', 'npm'],
+  },
 ]
 
 /**
@@ -141,6 +152,8 @@ export function scaffoldStarter(starter: Starter): Map<string, string> {
     })
     const files = readTree(join(work, starter.project))
     files.set('pnpm-workspace.yaml', STARTER_PNPM_WORKSPACE)
+    // Local secrets are never committed; .dev.vars.example lists them for the Deploy button.
+    files.delete('.dev.vars')
     return files
   } finally {
     rmSync(work, { recursive: true, force: true })

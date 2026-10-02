@@ -1,0 +1,4 @@
+# Stripe, in test mode (README): the secret key from the dashboard, and the signing
+# secret `stripe listen` prints.
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=

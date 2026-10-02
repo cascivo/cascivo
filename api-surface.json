@@ -7023,6 +7023,178 @@
           }
         }
       },
+      "./ses": {
+        "values": [
+          "SesError",
+          "certificatePublicKey",
+          "createSes",
+          "handleSns",
+          "parseSesNotification",
+          "signAwsRequest",
+          "verifySnsMessage"
+        ],
+        "types": [
+          "AwsCredentials",
+          "AwsRequest",
+          "Ses",
+          "SesBounceType",
+          "SesEvent",
+          "SesMessage",
+          "SesOptions",
+          "SnsHandlerOptions",
+          "SnsMessage",
+          "SnsNotification",
+          "SnsSubscription"
+        ],
+        "declarations": {
+          "AwsCredentials": {
+            "accessKeyId": "string",
+            "secretAccessKey": "string",
+            "sessionToken?": "string"
+          },
+          "AwsRequest": {
+            "method": "string",
+            "url": "string",
+            "headers?": "Record<string, string>",
+            "body?": "string"
+          },
+          "certificatePublicKey": "declare function certificatePublicKey(der: Uint8Array): Uint8Array<ArrayBuffer>",
+          "createSes": "declare function createSes(options: SesOptions): Ses",
+          "handleSns": "declare function handleSns(request: Request, options: SnsHandlerOptions): Promise<Response>",
+          "parseSesNotification": "declare function parseSesNotification(message: string): SesEvent",
+          "Ses": {
+            "sendEmail": "(message: SesMessage): Promise<{ messageId: string; }>"
+          },
+          "SesBounceType": "type = 'Permanent' | 'Transient' | 'Undetermined'",
+          "SesError": {
+            "readonly status": "number",
+            "readonly code": "string | null",
+            "readonly retryable": "boolean",
+            "constructor": "(status: number, message: string, code: string | null)",
+            "(kind)": "class"
+          },
+          "SesEvent": "type = { kind: 'bounce'; bounceType: SesBounceType; recipients: string[]; messageId: string | null; } | { kind: 'complaint'; recipients: string[]; messageId: string | null; } | { kind: 'delivery'; recipients: string[]; messageId: string | null; } | { kind: 'other'; type: string; }",
+          "SesMessage": {
+            "from": "string",
+            "to": "string | string[]",
+            "subject": "string",
+            "html?": "string",
+            "text?": "string",
+            "replyTo?": "string[]",
+            "headers?": "Record<string, string>",
+            "configurationSet?": "string"
+          },
+          "SesOptions": {
+            "(extends)": "extends AwsCredentials",
+            "region": "string",
+            "fetch?": "typeof fetch"
+          },
+          "signAwsRequest": "declare function signAwsRequest(request: AwsRequest, credentials: AwsCredentials, scope: { region: string; service: string; }, now?: Date): Promise<Record<string, string>>",
+          "SnsHandlerOptions": {
+            "topicArn": "string",
+            "onNotification": "(notification: SnsNotification): Promise<void>",
+            "fetch?": "typeof fetch"
+          },
+          "SnsMessage": "type = SnsNotification | SnsSubscription",
+          "SnsNotification": {
+            "(extends)": "extends SnsBase",
+            "type": "'Notification'",
+            "subject": "string | null"
+          },
+          "SnsSubscription": {
+            "(extends)": "extends SnsBase",
+            "type": "'SubscriptionConfirmation' | 'UnsubscribeConfirmation'",
+            "token": "string",
+            "subscribeUrl": "string"
+          },
+          "verifySnsMessage": "declare function verifySnsMessage(body: string, options: { topicArn: string; fetch?: typeof fetch; }): Promise<SnsMessage>"
+        }
+      },
+      "./stripe": {
+        "values": [
+          "StripeError",
+          "createStripe",
+          "parseCheckoutSession",
+          "parseStripeEvent",
+          "parseSubscription"
+        ],
+        "types": [
+          "CheckoutEventType",
+          "CheckoutLineItem",
+          "CheckoutSession",
+          "CheckoutSessionParams",
+          "Stripe",
+          "StripeEvent",
+          "StripeOptions",
+          "Subscription",
+          "SubscriptionEventType",
+          "SubscriptionStatus"
+        ],
+        "declarations": {
+          "CheckoutEventType": "type = 'checkout.session.completed' | 'checkout.session.async_payment_succeeded' | 'checkout.session.async_payment_failed' | 'checkout.session.expired'",
+          "CheckoutLineItem": "type = { price: string; quantity: number; } | { name: string; description?: string; amount: number; currency: string; quantity: number; interval?: 'day' | 'week' | 'month' | 'year'; }",
+          "CheckoutSession": {
+            "id": "string",
+            "mode": "'payment' | 'subscription' | 'setup'",
+            "url": "string | null",
+            "status": "'open' | 'complete' | 'expired'",
+            "paymentStatus": "'paid' | 'unpaid' | 'no_payment_required'",
+            "amountTotal": "number | null",
+            "currency": "string | null",
+            "customerEmail": "string | null",
+            "clientReferenceId": "string | null",
+            "metadata": "Record<string, string>",
+            "customerId": "string | null",
+            "subscriptionId": "string | null",
+            "livemode": "boolean"
+          },
+          "CheckoutSessionParams": {
+            "mode": "'payment' | 'subscription'",
+            "lineItems": "CheckoutLineItem[]",
+            "successUrl": "string",
+            "cancelUrl": "string",
+            "customerEmail?": "string",
+            "customer?": "string",
+            "clientReferenceId?": "string",
+            "metadata?": "Record<string, string>",
+            "subscriptionMetadata?": "Record<string, string>"
+          },
+          "createStripe": "declare function createStripe(secretKey: string, options?: StripeOptions): Stripe",
+          "parseCheckoutSession": "declare function parseCheckoutSession(raw: unknown): CheckoutSession",
+          "parseStripeEvent": "declare function parseStripeEvent(body: string): StripeEvent",
+          "parseSubscription": "declare function parseSubscription(raw: unknown): Subscription",
+          "Stripe": {
+            "createCheckoutSession": "(params: CheckoutSessionParams, options?: { idempotencyKey?: string; }): Promise<CheckoutSession>",
+            "retrieveCheckoutSession": "(id: string): Promise<CheckoutSession>",
+            "retrieveSubscription": "(id: string): Promise<Subscription>",
+            "createPortalSession": "(params: { customer: string; returnUrl: string; }): Promise<{ url: string; }>"
+          },
+          "StripeError": {
+            "readonly status": "number",
+            "readonly type": "string | null",
+            "readonly code": "string | null",
+            "constructor": "(status: number, message: string, type: string | null, code: string | null)",
+            "(kind)": "class"
+          },
+          "StripeEvent": "type = (EventBase & { kind: 'checkout'; type: CheckoutEventType; session: CheckoutSession; }) | (EventBase & { kind: 'subscription'; type: SubscriptionEventType; subscription: Subscription; }) | (EventBase & { kind: 'other'; type: string; })",
+          "StripeOptions": {
+            "apiVersion?": "string",
+            "fetch?": "typeof fetch"
+          },
+          "Subscription": {
+            "id": "string",
+            "status": "SubscriptionStatus",
+            "customerId": "string",
+            "currentPeriodEnd": "number | null",
+            "cancelAtPeriodEnd": "boolean",
+            "priceId": "string | null",
+            "metadata": "Record<string, string>",
+            "livemode": "boolean"
+          },
+          "SubscriptionEventType": "type = 'customer.subscription.created' | 'customer.subscription.updated' | 'customer.subscription.deleted'",
+          "SubscriptionStatus": "type = 'incomplete' | 'incomplete_expired' | 'trialing' | 'active' | 'past_due' | 'canceled' | 'unpaid' | 'paused'"
+        }
+      },
       "./turnstile": {
         "values": ["mountTurnstile"],
         "types": ["TurnstileWidget"],

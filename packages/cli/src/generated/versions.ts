@@ -15,6 +15,7 @@ export const CASCIVO_VERSIONS: Record<string, string> = {
   '@cascivo/app': '1.4.0',
   '@cascivo/render': '1.4.0',
   '@cascivo/storage': '1.4.0',
+  '@cascivo/email': '0.5.0',
 }
 
 /** `@cascivo/core`'s declared `@preact/signals-react` peer range. */
