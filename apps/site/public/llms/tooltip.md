@@ -71,4 +71,4 @@ overlay, hint, popover
 
 ---
 
-_Generated from registry v1.4.0 on 2026-10-01. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.5.0 on 2026-10-02. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

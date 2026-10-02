@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/using-with-preact.md
-  registry v1.4.0 · generated 2026-10-01
+  registry v1.5.0 · generated 2026-10-02
 -->
 
 # Using cascivo with Preact
