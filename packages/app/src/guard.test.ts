@@ -272,6 +272,16 @@ describe('verifyWebhook', () => {
       body,
       id: null,
     })
+    // A Stripe event names itself in the body: the id comes from there once it is verified.
+    const event = JSON.stringify({ id: 'evt_9', object: 'event' })
+    const t = nowSeconds()
+    const signed = `t=${t},v1=${hex(await hmac(encoder.encode('whsk'), `${t}.${event}`))}`
+    await expect(
+      verifyWebhook(post({ 'stripe-signature': signed }, event), {
+        scheme: 'stripe',
+        secret: 'whsk',
+      }),
+    ).resolves.toEqual({ body: event, id: 'evt_9' })
     // A captured delivery replayed an hour later.
     const old = await sign(nowSeconds() - 3600)
     await expect(

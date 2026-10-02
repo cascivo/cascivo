@@ -174,9 +174,48 @@ export class SesError extends Error {
   }
 }
 
+/** A sender or recipient: a bare address, or a display name with one. */
+export type SesRecipient = string | { name: string; email: string }
+
+/** A file attached to a message `send` takes. */
+export interface SesAttachment {
+  /** The name the recipient sees, e.g. `report.pdf`. */
+  filename: string
+  /** Its MIME type, e.g. `application/pdf`. */
+  type: string
+  /** The bytes, or a string already base64-encoded (as the Email Service binding takes it). */
+  content: ArrayBuffer | ArrayBufferView | string
+  disposition: 'attachment'
+}
+
+/**
+ * What `send` takes: the shape of `OutgoingEmail` in `@cascivo/email`, so an `Ses` is an
+ * `EmailSender` there, like Cloudflare's Email Service binding, and
+ * `sendEmail(ses, renderEmail(…), envelope)` runs that package's checks before it sends.
+ */
+export interface SesOutgoingEmail {
+  from: SesRecipient
+  to: SesRecipient | SesRecipient[]
+  cc?: SesRecipient | SesRecipient[]
+  bcc?: SesRecipient | SesRecipient[]
+  replyTo?: SesRecipient
+  subject: string
+  html: string
+  text: string
+  /** Extra headers, e.g. `List-Unsubscribe`. SES takes at most 15. */
+  headers?: Record<string, string>
+  attachments?: SesAttachment[]
+}
+
 export interface Ses {
   /** Sends one message (SES v2 `SendEmail`) and returns SES's message id. */
   sendEmail(message: SesMessage): Promise<{ messageId: string }>
+  /**
+   * Sends a composed message, as `sendEmail` from `@cascivo/email` hands it over: pass the
+   * client itself as that function's sender. Display names that are not plain ASCII are
+   * encoded (RFC 2047); a line break in any address, name or header is refused.
+   */
+  send(message: SesOutgoingEmail): Promise<{ messageId: string }>
 }
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
@@ -184,24 +223,111 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
 
 const utf8 = (data: string) => ({ Data: data, Charset: 'UTF-8' })
 
+function refuseLineBreak(what: string, value: string): void {
+  if (/[\r\n]/.test(value)) {
+    throw new Error(`send: ${what} ${JSON.stringify(value)} holds a line break`)
+  }
+}
+
+function base64(bytes: Uint8Array): string {
+  let binary = ''
+  // In chunks: spreading a large file into one call overflows the stack.
+  for (let i = 0; i < bytes.length; i += 0x8000) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000))
+  }
+  return btoa(binary)
+}
+
+/** `Name <address>`, quoted, or encoded when the name is not plain ASCII. */
+function formatRecipient(recipient: SesRecipient): string {
+  if (typeof recipient === 'string') {
+    refuseLineBreak('address', recipient)
+    return recipient
+  }
+  refuseLineBreak('address', recipient.email)
+  refuseLineBreak('name', recipient.name)
+  // eslint-disable-next-line no-control-regex -- the point is to detect non-ASCII characters.
+  const name = /[^ -~]/.test(recipient.name)
+    ? `=?UTF-8?B?${base64(encoder.encode(recipient.name))}?=`
+    : `"${recipient.name.replace(/["\\]/g, '\\$&')}"`
+  return `${name} <${recipient.email}>`
+}
+
+const recipients = (value: SesRecipient | SesRecipient[] | undefined): string[] =>
+  (value === undefined ? [] : Array.isArray(value) ? value : [value]).map(formatRecipient)
+
+function sesHeaders(headers: Record<string, string> = {}): { Name: string; Value: string }[] {
+  return Object.entries(headers).map(([Name, Value]) => {
+    if (/[\r\n]/.test(Name) || /[\r\n]/.test(Value)) {
+      throw new Error(`sendEmail: header ${JSON.stringify(Name)} holds a line break`)
+    }
+    return { Name, Value }
+  })
+}
+
+function sesAttachment(attachment: SesAttachment) {
+  refuseLineBreak('attachment filename', attachment.filename)
+  refuseLineBreak('attachment type', attachment.type)
+  const { content } = attachment
+  return {
+    FileName: attachment.filename,
+    ContentType: attachment.type,
+    ContentDisposition: 'ATTACHMENT',
+    ContentTransferEncoding: 'BASE64',
+    RawContent:
+      typeof content === 'string'
+        ? content
+        : base64(
+            content instanceof ArrayBuffer
+              ? new Uint8Array(content)
+              : new Uint8Array(content.buffer, content.byteOffset, content.byteLength),
+          ),
+  }
+}
+
 /** Creates an SES client. The IAM user needs `ses:SendEmail` and nothing else. */
 export function createSes(options: SesOptions): Ses {
   if (!options.region || !options.accessKeyId || !options.secretAccessKey) {
     throw new Error('createSes: region, accessKeyId and secretAccessKey are all required')
   }
-  const send = options.fetch ?? fetch
+  const fetcher = options.fetch ?? fetch
   const url = `https://email.${options.region}.amazonaws.com/v2/email/outbound-emails`
+
+  /** One SES v2 `SendEmail` call with the request's fields. */
+  async function post(fields: Record<string, unknown>): Promise<{ messageId: string }> {
+    const body = JSON.stringify(fields)
+    const signed = await signAwsRequest(
+      { method: 'POST', url, headers: { 'content-type': 'application/json' }, body },
+      options,
+      { region: options.region, service: 'ses' },
+    )
+    const response = await fetcher(url, { method: 'POST', headers: signed, body })
+    let payload: unknown = null
+    try {
+      payload = await response.json()
+    } catch {
+      // Not JSON: the status says what went wrong.
+    }
+    if (!response.ok) {
+      // REST-JSON errors name their type in a header ("MessageRejected:http://…").
+      const type = response.headers.get('x-amzn-errortype')?.split(':')[0] ?? null
+      const said = isRecord(payload) ? (payload['message'] ?? payload['Message']) : null
+      throw new SesError(
+        response.status,
+        typeof said === 'string' ? said : `SES answered ${response.status}`,
+        type,
+      )
+    }
+    const messageId = isRecord(payload) ? payload['MessageId'] : null
+    if (typeof messageId !== 'string') throw new Error('SES returned no MessageId')
+    return { messageId }
+  }
 
   return {
     async sendEmail(message) {
       if (!message.html && !message.text) throw new Error('sendEmail: give html, text or both')
-      const headers = Object.entries(message.headers ?? {}).map(([Name, Value]) => {
-        if (/[\r\n]/.test(Name) || /[\r\n]/.test(Value)) {
-          throw new Error(`sendEmail: header ${JSON.stringify(Name)} holds a line break`)
-        }
-        return { Name, Value }
-      })
-      const body = JSON.stringify({
+      const headers = sesHeaders(message.headers)
+      return post({
         FromEmailAddress: message.from,
         Destination: { ToAddresses: Array.isArray(message.to) ? message.to : [message.to] },
         ...(message.replyTo ? { ReplyToAddresses: message.replyTo } : {}),
@@ -217,31 +343,31 @@ export function createSes(options: SesOptions): Ses {
           },
         },
       })
-      const signed = await signAwsRequest(
-        { method: 'POST', url, headers: { 'content-type': 'application/json' }, body },
-        options,
-        { region: options.region, service: 'ses' },
-      )
-      const response = await send(url, { method: 'POST', headers: signed, body })
-      let payload: unknown = null
-      try {
-        payload = await response.json()
-      } catch {
-        // Not JSON: the status says what went wrong.
-      }
-      if (!response.ok) {
-        // REST-JSON errors name their type in a header ("MessageRejected:http://…").
-        const type = response.headers.get('x-amzn-errortype')?.split(':')[0] ?? null
-        const said = isRecord(payload) ? (payload['message'] ?? payload['Message']) : null
-        throw new SesError(
-          response.status,
-          typeof said === 'string' ? said : `SES answered ${response.status}`,
-          type,
-        )
-      }
-      const messageId = isRecord(payload) ? payload['MessageId'] : null
-      if (typeof messageId !== 'string') throw new Error('SES returned no MessageId')
-      return { messageId }
+    },
+    async send(message) {
+      const headers = sesHeaders(message.headers)
+      const [from] = recipients(message.from)
+      const cc = recipients(message.cc)
+      const bcc = recipients(message.bcc)
+      const replyTo = recipients(message.replyTo)
+      const attachments = (message.attachments ?? []).map(sesAttachment)
+      return post({
+        FromEmailAddress: from,
+        Destination: {
+          ToAddresses: recipients(message.to),
+          ...(cc.length > 0 ? { CcAddresses: cc } : {}),
+          ...(bcc.length > 0 ? { BccAddresses: bcc } : {}),
+        },
+        ...(replyTo.length > 0 ? { ReplyToAddresses: replyTo } : {}),
+        Content: {
+          Simple: {
+            Subject: utf8(message.subject),
+            Body: { Html: utf8(message.html), Text: utf8(message.text) },
+            ...(headers.length > 0 ? { Headers: headers } : {}),
+            ...(attachments.length > 0 ? { Attachments: attachments } : {}),
+          },
+        },
+      })
     },
   }
 }

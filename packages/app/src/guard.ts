@@ -272,8 +272,9 @@ export interface VerifiedWebhook {
   /** The body, exactly as signed. Parse it yourself: its shape is the sender's. */
   body: string
   /**
-   * The delivery's id, when the scheme carries one (`X-GitHub-Delivery`, `webhook-id`); a
-   * retry keeps its id, so store by it to ignore repeats. Stripe puts it in the body (`id`).
+   * The delivery's id: `X-GitHub-Delivery`, `webhook-id`, or for Stripe the event's `id`
+   * (`evt_…`) read from the verified body. A retry keeps its id, so store by it to ignore
+   * repeats. `null` when the sender left it out.
    */
   id: string | null
 }
@@ -321,6 +322,17 @@ function checkTimestamp(seconds: number, tolerance: number): void {
   if (Math.abs(Date.now() / 1000 - seconds) > tolerance) refused('timestamp outside the window')
 }
 
+/** A Stripe event's `id`, from a body whose signature has been checked; its shape has not. */
+function stripeEventId(body: string): string | null {
+  try {
+    const parsed: unknown = JSON.parse(body)
+    const id = typeof parsed === 'object' && parsed !== null ? Reflect.get(parsed, 'id') : null
+    return typeof id === 'string' ? id : null
+  } catch {
+    return null
+  }
+}
+
 /**
  * Verifies a webhook's signature over its raw body and returns the body. Throws
  * `HttpError(401)` for a missing or wrong signature, or (for timestamped schemes) one signed
@@ -351,7 +363,9 @@ export async function verifyWebhook(
     const key = encoder.encode(options.secret)
     for (const part of parts.filter((p) => p.startsWith('v1='))) {
       const bytes = hexBytes(part.slice(3))
-      if (bytes && (await hmacValid(key, bytes, `${timestamp}.${body}`))) return { body, id: null }
+      if (bytes && (await hmacValid(key, bytes, `${timestamp}.${body}`))) {
+        return { body, id: stripeEventId(body) }
+      }
     }
     return refused('bad signature')
   }

@@ -2391,11 +2391,7 @@ ${
     if (checkoutPath === orderStore.STRIPE_WEBHOOK_PATH && request.method === 'POST') {
       try {
         return await orderStore.receiveStripe(request, env${
-          billing
-            ? `, (id) =>
-          billingStore.syncSubscription(env, id),
-        `
-            : ''
+          billing ? ', billingStore.billingHooks(env)' : ''
         })
       } catch (error) {
         return guardResponse(error)
@@ -5351,8 +5347,12 @@ export const PRODUCT = {
   currency: 'eur',
 }
 
-/** \`pending\` until Stripe confirms the payment; the other three are final. */
-export type OrderStatus = 'pending' | 'paid' | 'failed' | 'expired'
+/**
+ * \`pending\` until Stripe confirms the payment. \`failed\` and \`expired\` are final. A paid
+ * order becomes \`refunded\` when all of it is refunded, and \`disputed\` while a chargeback is
+ * open (back to \`paid\` if it is won).
+ */
+export type OrderStatus = 'pending' | 'paid' | 'failed' | 'expired' | 'refunded' | 'disputed'
 
 export interface Order {
   id: string
@@ -5360,6 +5360,8 @@ export interface Order {
   /** What Stripe charged, in the currency's smallest unit. */
   amount: number
   currency: string
+  /** Refunded so far, in the same unit: part of a paid order, or all of a refunded one. */
+  refundedAmount: number
   createdAt: string
   paidAt: string | null
 }
@@ -5377,22 +5379,34 @@ export function formatPrice(amount: number, currency: string): string {
   return format.format(amount / 10 ** digits)
 }
 
-const STATUSES = ['pending', 'paid', 'failed', 'expired']
+const STATUSES = ['pending', 'paid', 'failed', 'expired', 'refunded', 'disputed']
 
 export function parseOrder(raw: unknown): Order {
   if (typeof raw === 'object' && raw !== null) {
-    const { id, status, amount, currency, createdAt, paidAt } = raw as Record<string, unknown>
+    const { id, status, amount, currency, refundedAmount, createdAt, paidAt } = raw as Record<
+      string,
+      unknown
+    >
     if (
       typeof id === 'string' &&
       typeof status === 'string' &&
       STATUSES.includes(status) &&
       typeof amount === 'number' &&
       typeof currency === 'string' &&
+      typeof refundedAmount === 'number' &&
       typeof createdAt === 'string' &&
       (paidAt === null || typeof paidAt === 'string')
     ) {
-      // Checked against STATUSES just above.
-      return { id, status: status as OrderStatus, amount, currency, createdAt, paidAt }
+      return {
+        id,
+        // Checked against STATUSES just above.
+        status: status as OrderStatus,
+        amount,
+        currency,
+        refundedAmount,
+        createdAt,
+        paidAt,
+      }
     }
   }
   throw new Error('Malformed order')
@@ -5414,7 +5428,15 @@ import { migrate, queryRows } from '@cascivo/app/db'
 import type { Database } from '@cascivo/app/db'
 import { verifyWebhook } from '@cascivo/app/guard'
 import { StripeError, createStripe, parseStripeEvent } from '@cascivo/app/stripe'
-import type { CheckoutEventType, CheckoutSession, Stripe } from '@cascivo/app/stripe'
+import type {
+  Charge,
+  CheckoutEventType,
+  CheckoutSession,
+  Dispute,
+  DisputeEventType,
+  Invoice,
+  Stripe,
+} from '@cascivo/app/stripe'
 import { writeRoom } from '@cascivo/app/sync-server'
 import type { RoomNamespace } from '@cascivo/app/sync-server'
 import { Receipt, receiptSubject, renderEmail } from '@cascivo/email'
@@ -5434,8 +5456,13 @@ const migrations = [
         currency TEXT NOT NULL,
         email TEXT,
         created_at TEXT NOT NULL,
-        paid_at TEXT
+        paid_at TEXT,
+        payment_intent_id TEXT,
+        refunded_amount INTEGER NOT NULL DEFAULT 0,
+        dispute_status TEXT
       )\`,
+      // Refund and dispute events name the payment, not the session.
+      'CREATE INDEX orders_payment_intent ON orders (payment_intent_id)',
     ],
   },
 ]
@@ -5463,7 +5490,8 @@ export interface CheckoutEnv {
   STRIPE_WEBHOOK_SECRET?: string
 }
 
-const COLUMNS = 'id, status, amount, currency, created_at AS createdAt, paid_at AS paidAt'
+const COLUMNS =
+  'id, status, amount, currency, refunded_amount AS refundedAmount, created_at AS createdAt, paid_at AS paidAt'
 
 export function stripeOf(env: { STRIPE_SECRET_KEY?: string }): Stripe {
   if (!env.STRIPE_SECRET_KEY) {
@@ -5558,7 +5586,7 @@ async function settle(
   const [order] = await queryRows(
     env.DB,
     \`UPDATE orders SET status = ?, paid_at = ?, amount = COALESCE(?, amount),
-       currency = COALESCE(?, currency), email = ?
+       currency = COALESCE(?, currency), email = ?, payment_intent_id = ?
      WHERE session_id = ? AND status = 'pending' RETURNING \${COLUMNS}\`,
     [
       status,
@@ -5566,6 +5594,7 @@ async function settle(
       session.amountTotal,
       session.currency,
       session.customerEmail,
+      session.paymentIntentId,
       session.id,
     ],
     parseOrder,
@@ -5614,15 +5643,82 @@ async function sendReceipt(env: CheckoutEnv, order: Order, to: string, origin: s
 }
 
 /**
+ * A refund, made in the Stripe dashboard or with \`createRefund\`. \`charge.refunded\` carries the
+ * running total, so a retried or late event cannot count a refund twice. All of it refunded
+ * makes the order \`refunded\`; part of it leaves it \`paid\`, with the amount shown.
+ */
+async function refundOrder(env: CheckoutEnv, charge: Charge): Promise<void> {
+  if (!charge.paymentIntentId) return
+  await migrate(env.DB, migrations)
+  const [order] = await queryRows(
+    env.DB,
+    \`UPDATE orders SET refunded_amount = MAX(refunded_amount, ?),
+       status = CASE WHEN ? = 1 THEN 'refunded' ELSE status END
+     WHERE payment_intent_id = ? AND status IN ('paid', 'refunded') RETURNING \${COLUMNS}\`,
+    [charge.amountRefunded, charge.refunded ? 1 : 0, charge.paymentIntentId],
+    parseOrder,
+  )
+  if (order) await writeRoom(env.ROOMS, orderRoom(order.id), 'order', { ...order })
+}
+
+/**
+ * A chargeback. While it is open the order is \`disputed\`: hold back anything not yet
+ * delivered, and answer it with evidence in the Stripe dashboard before the deadline shown
+ * there. Won, the order is \`paid\` again; lost, it stays \`disputed\`. The dispute's status is
+ * stored, so a \`created\` event arriving after \`closed\` cannot reopen it.
+ */
+async function disputeOrder(
+  env: CheckoutEnv,
+  type: DisputeEventType,
+  dispute: Dispute,
+): Promise<void> {
+  if (!dispute.paymentIntentId) return
+  await migrate(env.DB, migrations)
+  const [order] =
+    type === 'charge.dispute.created'
+      ? await queryRows(
+          env.DB,
+          \`UPDATE orders SET status = 'disputed', dispute_status = ?
+           WHERE payment_intent_id = ? AND status = 'paid' AND dispute_status IS NULL
+           RETURNING \${COLUMNS}\`,
+          [dispute.status, dispute.paymentIntentId],
+          parseOrder,
+        )
+      : await queryRows(
+          env.DB,
+          \`UPDATE orders SET dispute_status = ?,
+             status = CASE WHEN ? = 'won' THEN 'paid' ELSE 'disputed' END
+           WHERE payment_intent_id = ? AND status IN ('paid', 'disputed') RETURNING \${COLUMNS}\`,
+          [dispute.status, dispute.status, dispute.paymentIntentId],
+          parseOrder,
+        )
+  if (!order) return
+  if (type === 'charge.dispute.created') {
+    console.warn(
+      \`[checkout] order \${order.id} is disputed (\${dispute.reason ?? 'no reason given'})\`,
+    )
+  }
+  await writeRoom(env.ROOMS, orderRoom(order.id), 'order', { ...order })
+}
+
+/** What the webhook hands to worker/billing.ts, when the app bills subscriptions. */
+export interface BillingHooks {
+  /** A subscription changed: store its current state. */
+  subscription(subscriptionId: string): Promise<void>
+  /** A renewal could not be charged: tell the customer. */
+  paymentFailed(invoice: Invoice, origin: string): Promise<void>
+}
+
+/**
  * Stripe's webhook: verified against STRIPE_WEBHOOK_SECRET before anything in it is read,
- * then each Checkout event settles its order. Subscription events, and completed subscription
- * checkouts, go to \`onSubscription\` when the app bills subscriptions (worker/billing.ts).
- * Other events are acknowledged, so Stripe stops sending them.
+ * then each Checkout event settles its order, and refunds and disputes update it. Subscription
+ * and invoice events, and completed subscription checkouts, go to \`billing\` when the app bills
+ * subscriptions (worker/billing.ts). Other events are acknowledged, so Stripe stops sending them.
  */
 export async function receiveStripe(
   request: Request,
   env: CheckoutEnv,
-  onSubscription?: (subscriptionId: string) => Promise<void>,
+  billing?: BillingHooks,
 ): Promise<Response> {
   if (!env.STRIPE_WEBHOOK_SECRET) throw new HttpError(503, 'Set STRIPE_WEBHOOK_SECRET (README)')
   const { body } = await verifyWebhook(request, {
@@ -5630,12 +5726,18 @@ export async function receiveStripe(
     secret: env.STRIPE_WEBHOOK_SECRET,
   })
   const event = parseStripeEvent(body)
-  if (event.kind === 'subscription') await onSubscription?.(event.subscription.id)
+  const origin = new URL(request.url).origin
+  if (event.kind === 'subscription') await billing?.subscription(event.subscription.id)
+  if (event.kind === 'invoice' && event.type === 'invoice.payment_failed') {
+    await billing?.paymentFailed(event.invoice, origin)
+  }
+  if (event.kind === 'refund') await refundOrder(env, event.charge)
+  if (event.kind === 'dispute') await disputeOrder(env, event.type, event.dispute)
   if (event.kind === 'checkout' && event.session.mode === 'subscription') {
-    if (event.session.subscriptionId) await onSubscription?.(event.session.subscriptionId)
+    if (event.session.subscriptionId) await billing?.subscription(event.session.subscriptionId)
   } else if (event.kind === 'checkout') {
     const status = statusAfter(event.type, event.session)
-    if (status) await settle(env, event.session, status, new URL(request.url).origin)
+    if (status) await settle(env, event.session, status, origin)
   }
   return Response.json({ received: true })
 }
@@ -5816,6 +5918,8 @@ const STATUS = {
   paid: { variant: 'success', label: 'Paid' },
   failed: { variant: 'destructive', label: 'Payment failed' },
   expired: { variant: 'secondary', label: 'Expired' },
+  refunded: { variant: 'secondary', label: 'Refunded' },
+  disputed: { variant: 'destructive', label: 'Disputed' },
 } as const
 
 /** \`/checkout/:order\` — where Stripe sends the buyer back. It updates when Stripe confirms. */
@@ -5851,9 +5955,25 @@ export default function OrderPage({ params }: RouteProps<'/checkout/:order'>) {
           This page updates by itself when Stripe confirms. A bank payment can take a few days.
         </Alert>
       ) : null}
-      {order.status === 'paid' ? (
+      {order.status === 'paid' && order.refundedAmount === 0 ? (
         <Alert variant="success" title="Thank you">
           Your payment went through. A receipt is on its way to your inbox.
+        </Alert>
+      ) : null}
+      {order.status === 'paid' && order.refundedAmount > 0 ? (
+        <Alert variant="info" title="Partly refunded">
+          {formatPrice(order.refundedAmount, order.currency)} of this order was refunded to the card
+          that paid it.
+        </Alert>
+      ) : null}
+      {order.status === 'refunded' ? (
+        <Alert variant="info" title="Refunded">
+          The full amount went back to the card that paid it. It can take a few days to show.
+        </Alert>
+      ) : null}
+      {order.status === 'disputed' ? (
+        <Alert variant="warning" title="This payment is disputed">
+          The card's bank is reviewing a chargeback. The order is on hold until it is decided.
         </Alert>
       ) : null}
       {order.status === 'failed' ? (
@@ -6119,6 +6239,8 @@ import type { Database } from '@cascivo/app/db'
 import { SesError, createSes, handleSns, parseSesNotification } from '@cascivo/app/ses'
 import { writeRoom } from '@cascivo/app/sync-server'
 import type { RoomNamespace } from '@cascivo/app/sync-server'
+import { assertSendable, sendEmail } from '@cascivo/email'
+import type { RenderResult } from '@cascivo/email'
 import { ISSUE_ID, issueRoom, parseIssue } from '../src/newsletter'
 import type { Issue, IssueInput, Overview, SubscriberCounts } from '../src/newsletter'
 import { TOKEN_SLOT, renderConfirmation, renderIssue } from './newsletter-email'
@@ -6230,18 +6352,16 @@ async function requireKey(env: NewsletterEnv, key: string): Promise<void> {
   }
 }
 
-interface Mail {
-  subject: string
-  html: string
-  text: string
-  headers?: Record<string, string>
-}
-
-type Send = (to: string, mail: Mail) => Promise<'sent' | 'logged'>
+type Send = (
+  to: string,
+  message: RenderResult,
+  headers?: Record<string, string>,
+) => Promise<'sent' | 'logged'>
 
 /**
  * Sends one email through SES, or, in \`vite dev\` without AWS credentials, logs it instead.
- * Deployed without them, it refuses with what to set.
+ * Deployed without them, it refuses with what to set. The SES client is an \`EmailSender\`, so
+ * \`sendEmail\` checks the message (subject, preheader, text part, size) and every header first.
  */
 function mailer(env: NewsletterEnv): Send {
   const configured =
@@ -6263,8 +6383,12 @@ function mailer(env: NewsletterEnv): Send {
     accessKeyId: env.AWS_ACCESS_KEY_ID!,
     secretAccessKey: env.AWS_SECRET_ACCESS_KEY!,
   })
-  return async (to, message) => {
-    await ses.sendEmail({ from: env.NEWSLETTER_FROM, to, ...message })
+  return async (to, message, headers) => {
+    await sendEmail(ses, message, {
+      from: env.NEWSLETTER_FROM,
+      to,
+      ...(headers ? { headers } : {}),
+    })
     return 'sent'
   }
 }
@@ -6306,11 +6430,7 @@ export async function subscribe(
   const message = renderConfirmation(link)
   let outcome: 'sent' | 'logged'
   try {
-    outcome = await send(email, {
-      subject: message.subject,
-      html: message.html,
-      text: message.text,
-    })
+    outcome = await send(email, message)
   } catch (error) {
     if (!(error instanceof SesError)) throw error
     console.error('[newsletter] confirmation not sent:', error.code, error.message)
@@ -6424,6 +6544,12 @@ export async function sendIssue(
 ): Promise<Issue> {
   await requireKey(env, input.key)
   mailer(env) // Deployed without SES, refuse now rather than fail in the queue.
+  try {
+    // An issue too large to send (Gmail clips it) is refused here, not retried in the queue.
+    assertSendable(renderIssue(input.subject, input.body, origin))
+  } catch (error) {
+    throw new HttpError(400, error instanceof Error ? error.message : String(error))
+  }
   await migrate(env.DB, migrations)
   const readers = await queryRows(
     env.DB,
@@ -6501,15 +6627,18 @@ export async function deliver(env: NewsletterEnv, batch: NewsletterBatch): Promi
       let status: string
       let detail: string | null = null
       try {
-        status = await send(email, {
-          subject: rendered.subject,
-          html: rendered.html.replaceAll(TOKEN_SLOT, readerToken),
-          text: rendered.text.replaceAll(TOKEN_SLOT, readerToken),
-          headers: {
+        status = await send(
+          email,
+          {
+            ...rendered,
+            html: rendered.html.replaceAll(TOKEN_SLOT, readerToken),
+            text: rendered.text.replaceAll(TOKEN_SLOT, readerToken),
+          },
+          {
             'List-Unsubscribe': \`<\${unsubscribe}>\`,
             'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
           },
-        })
+        )
       } catch (error) {
         if (!(error instanceof SesError) || error.retryable) throw error
         status = 'failed'
@@ -7007,7 +7136,10 @@ const STATUSES: readonly BillingStatus[] = [
 
 export interface Billing {
   status: BillingStatus
-  /** Whether the plan's features are on: the subscription is active or trialing. */
+  /**
+   * Whether the plan's features are on: the subscription is active or trialing, or past due
+   * while Stripe retries the renewal (\`isEntitled\` from @cascivo/app/stripe, in the Worker).
+   */
   active: boolean
   /** When the current period ends: the next charge, or the end of a cancelled plan. */
   currentPeriodEnd: string | null
@@ -7016,9 +7148,6 @@ export interface Billing {
   /** Has a Stripe customer, so the billing portal can open. */
   canManage: boolean
 }
-
-/** The statuses that unlock the plan. Check this in the Worker before serving a paid feature. */
-export const isActive = (status: BillingStatus) => status === 'active' || status === 'trialing'
 
 export function parseBilling(raw: unknown): Billing {
   if (typeof raw === 'object' && raw !== null) {
@@ -7064,10 +7193,26 @@ function cfBillingWorkerTs(): string {
 import { requireUser } from '@cascivo/app/auth-server'
 import { migrate, queryRows } from '@cascivo/app/db'
 import type { Database } from '@cascivo/app/db'
-import type { Subscription } from '@cascivo/app/stripe'
-import { PLAN, isActive, parseBilling } from '../src/billing'
+import { isEntitled, requireEntitlement } from '@cascivo/app/stripe'
+import type { Invoice, Subscription } from '@cascivo/app/stripe'
+import {
+  Body,
+  Button,
+  Container,
+  Head,
+  Heading,
+  Html,
+  Preview,
+  Section,
+  Text,
+  renderEmail,
+} from '@cascivo/email'
+import { createElement as h } from 'react'
+import { PLAN, parseBilling } from '../src/billing'
 import type { Billing } from '../src/billing'
+import { SHOP_NAME, formatPrice } from '../src/checkout'
 import { refused, stripeOf } from './checkout'
+import type { BillingHooks, ReceiptSender } from './checkout'
 
 const migrations = [
   {
@@ -7080,7 +7225,8 @@ const migrations = [
         status TEXT NOT NULL,
         current_period_end INTEGER,
         cancel_at_period_end INTEGER NOT NULL DEFAULT 0,
-        updated_at TEXT NOT NULL
+        updated_at TEXT NOT NULL,
+        reminded TEXT
       )\`,
     ],
   },
@@ -7088,6 +7234,8 @@ const migrations = [
 
 export interface BillingEnv {
   DB: Database
+  EMAIL: ReceiptSender
+  RECEIPT_FROM: string
   STRIPE_SECRET_KEY?: string
 }
 
@@ -7136,7 +7284,7 @@ function toBilling(row: Row | null): Billing {
     cancelAtPeriodEnd: row?.cancelAtPeriodEnd === 1,
     canManage: row?.customerId != null,
   })
-  return { ...billing, active: isActive(billing.status) }
+  return { ...billing, active: isEntitled(billing.status) }
 }
 
 /**
@@ -7186,6 +7334,102 @@ export async function syncSubscription(env: BillingEnv, subscriptionId: string):
 export async function getBilling(env: BillingEnv, request: Request): Promise<Billing> {
   const user = await requireUser(env.DB, request)
   return toBilling(await readRow(env.DB, user.id))
+}
+
+/**
+ * Refuses a user whose plan is not on: 401 signed out, 402 without the plan. Call it in the
+ * Worker before serving a paid feature, never trusting what the page shows.
+ */
+export async function requirePlan(env: BillingEnv, request: Request): Promise<void> {
+  const user = await requireUser(env.DB, request)
+  requireEntitlement((await readRow(env.DB, user.id))?.status)
+}
+
+/** The email for a renewal that could not be charged, with where to pay it. */
+function renderPaymentFailed(invoice: Invoice, payHref: string) {
+  const subject = \`Your \${PLAN.name} payment did not go through\`
+  const amount = formatPrice(invoice.amountDue, invoice.currency)
+  return renderEmail(
+    h(
+      Html,
+      null,
+      h(Head, { title: subject }),
+      h(
+        Body,
+        null,
+        h(Preview, null, \`We could not charge \${amount}. Update your card to keep \${PLAN.name}.\`),
+        h(
+          Container,
+          null,
+          h(
+            Section,
+            { padding: 32 },
+            h(Heading, { level: 1 }, 'Your payment did not go through'),
+            h(
+              Text,
+              null,
+              \`We could not charge \${amount} for \${SHOP_NAME} \${PLAN.name}. Your plan stays on while we try again; pay with another card to keep it.\`,
+            ),
+            h(Button, { href: payHref }, 'Update payment'),
+          ),
+        ),
+      ),
+    ),
+    { subject },
+  )
+}
+
+/**
+ * A renewal Stripe could not charge (\`invoice.payment_failed\`). The customer hears about it
+ * once per attempt, with Stripe's page for paying the invoice with another card. The plan stays
+ * on while Stripe retries (\`past_due\`); the Stripe dashboard's failed-payment settings decide
+ * when it ends. Only customers this app bills are written to: a retried event, or an invoice
+ * for something else on the same Stripe account, sends nothing.
+ */
+export async function remindPayment(
+  env: BillingEnv,
+  invoice: Invoice,
+  origin: string,
+): Promise<void> {
+  if (!invoice.customerId || !invoice.customerEmail) return
+  await migrate(env.DB, migrations)
+  const attempt = \`\${invoice.id}:\${invoice.attemptCount}\`
+  const [row] = await queryRows(
+    env.DB,
+    'UPDATE billing SET reminded = ? WHERE customer_id = ? AND reminded IS NOT ? RETURNING user_id',
+    [attempt, invoice.customerId, attempt],
+    (raw) => raw,
+  )
+  if (!row) return
+  const message = renderPaymentFailed(invoice, invoice.hostedInvoiceUrl ?? \`\${origin}/billing\`)
+  if (import.meta.env.DEV) {
+    console.log(\`[billing] payment reminder for \${invoice.customerEmail}: "\${message.subject}"\`)
+    return
+  }
+  if (!env.RECEIPT_FROM) {
+    console.warn('[billing] no payment reminder sent: set RECEIPT_FROM in wrangler.jsonc')
+    return
+  }
+  try {
+    await env.EMAIL.send({
+      from: env.RECEIPT_FROM,
+      to: invoice.customerEmail,
+      subject: message.subject,
+      text: message.text,
+      html: message.html,
+    })
+  } catch (error) {
+    // Logged, not thrown: Stripe retrying the event would not send it again.
+    console.error('[billing] payment reminder not sent:', error)
+  }
+}
+
+/** What the Stripe webhook (worker/checkout.ts) hands over to billing. */
+export function billingHooks(env: BillingEnv): BillingHooks {
+  return {
+    subscription: (id) => syncSubscription(env, id),
+    paymentFailed: (invoice, origin) => remindPayment(env, invoice, origin),
+  }
 }
 
 /** Opens a subscription checkout for PLAN, naming the user in the subscription's metadata. */
@@ -9455,8 +9699,9 @@ it to the order page, and emails a receipt rendered with \`@cascivo/email\`.
 3. Deployed: \`npx wrangler secret put STRIPE_SECRET_KEY\` and
    \`npx wrangler secret put STRIPE_WEBHOOK_SECRET\`. In the dashboard, add a webhook endpoint
    at \`https://<your app>/api/stripe/webhook\` for \`checkout.session.completed\`,
-   \`checkout.session.async_payment_succeeded\`, \`checkout.session.async_payment_failed\` and
-   \`checkout.session.expired\`; its signing secret is \`STRIPE_WEBHOOK_SECRET\`.
+   \`checkout.session.async_payment_succeeded\`, \`checkout.session.async_payment_failed\`,
+   \`checkout.session.expired\`, \`charge.refunded\`, \`charge.dispute.created\` and
+   \`charge.dispute.closed\`; its signing secret is \`STRIPE_WEBHOOK_SECRET\`.
 4. Receipts: set \`RECEIPT_FROM\` in \`wrangler.jsonc\` to an address on a domain you have
    onboarded to Email Service. \`vite dev\` renders each receipt and logs it instead.
 
@@ -9472,6 +9717,10 @@ browser cannot change it.
   set on a Payment Link.
 - A bank debit completes the session as \`unpaid\`: the order stays pending until
   \`async_payment_succeeded\` or \`async_payment_failed\` arrives, possibly days later.
+- Refunds are made in the Stripe dashboard (or with \`createRefund\`); \`charge.refunded\` records
+  the amount, and an order refunded in full becomes \`refunded\`. A chargeback makes it
+  \`disputed\` until it is decided: answer it with evidence in the dashboard. Both find the
+  order by the payment it stored when it was paid.
 - \`src/routes/checkout/[order].tsx\` — where Stripe sends the buyer back. It watches the
   order's read-only room, so it updates when the webhook arrives.
 
@@ -9484,19 +9733,24 @@ Each caller (by IP) may start 20 checkouts a minute.${
 Signed-in users subscribe to \`PLAN\` (\`src/billing.ts\`) on Stripe's checkout and change,
 pause or cancel it in Stripe's hosted billing portal, so the app has no billing screens to build.
 
-1. Add \`customer.subscription.created\`, \`customer.subscription.updated\` and
-   \`customer.subscription.deleted\` to the webhook endpoint's events.
+1. Add \`customer.subscription.created\`, \`customer.subscription.updated\`,
+   \`customer.subscription.deleted\` and \`invoice.payment_failed\` to the webhook endpoint's
+   events.
 2. In the Stripe dashboard, save the Customer Portal's settings once (test mode too): until
    then, Stripe refuses to open it.
-3. Gate a paid feature in the Worker on \`(await billingStore.getBilling(env, request)).active\`,
-   never on what the page shows.
+3. Gate a paid feature in the Worker with \`await billingStore.requirePlan(env, request)\` (402
+   without the plan), never on what the page shows.
 
 - \`worker/billing.ts\` — the subscription names its user in its metadata, which only the
   Worker sets (\`client_reference_id\` can be set by a buyer on a Payment Link). Every
   subscription event is read back from Stripe before it is stored, because events arrive out of
   order, and a late event about an older subscription cannot end a live one.
 - Back from checkout, \`/billing\` reads the session and its subscription at once, so it is right
-  before the webhook arrives, and only for the user the subscription names.`
+  before the webhook arrives, and only for the user the subscription names.
+- A renewal that cannot be charged leaves the plan on (\`past_due\`) while Stripe retries, and
+  emails the customer once per attempt with Stripe's page to pay with another card. How long
+  Stripe retries, and whether it then cancels, is set in the dashboard (Billing → Subscriptions
+  and emails); turn off Stripe's own failed-payment emails there, or customers get two.`
             : `
 
 Subscriptions need an account to belong to: \`cascivo create --framework cloudflare
@@ -9533,7 +9787,8 @@ To send for real:
 - \`worker/newsletter.ts\` — double opt-in: a sign-up gets a confirmation link (valid a day,
   resent at most every ten minutes) and gets no issue until it is opened. Sending stores the
   issue and puts its readers on the \`NEWSLETTER\` queue, 25 per message; the consumer sends
-  them one by one through \`createSes\` (\`@cascivo/app/ses\`), one message at a time. Each
+  them one by one through \`createSes\` (\`@cascivo/app/ses\`), handed to \`sendEmail\` from
+  \`@cascivo/email\`, which checks each message before it leaves, one message at a time. Each
   send is recorded, so a message retried after SES throttling skips whoever already has it.
 - Every issue carries \`List-Unsubscribe\` and \`List-Unsubscribe-Post\` (one-click
   unsubscribe, RFC 8058, which Gmail and Yahoo require of bulk senders) and a footer link to

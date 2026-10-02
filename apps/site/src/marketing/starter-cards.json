@@ -30,7 +30,7 @@
   {
     "name": "shop",
     "title": "Shop on Stripe",
-    "summary": "Sell a product with Stripe Checkout: orders in D1, a live order page, emailed receipts.",
+    "summary": "Sell a product with Stripe Checkout: orders in D1, a live order page, receipts, refunds and disputes.",
     "deployUrl": "https://deploy.workers.cloudflare.com/?url=https://github.com/cascivo/cascivo/tree/main/starters/shop",
     "deployable": true
   },

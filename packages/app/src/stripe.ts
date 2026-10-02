@@ -22,6 +22,8 @@
  * Checkout needs; for anything else, install the `stripe` package, which runs on Workers too.
  */
 
+import { HttpError } from '@cascivo/data'
+
 const API = 'https://api.stripe.com/v1'
 
 /** A refusal from Stripe's API: a bad key, an invalid parameter, a declined request. */
@@ -111,6 +113,11 @@ export interface CheckoutSession {
   customerId: string | null
   /** The subscription (`sub_…`) a completed subscription session created. */
   subscriptionId: string | null
+  /**
+   * The PaymentIntent (`pi_…`) of a payment session. Refund and dispute events name the
+   * payment by it, so store it with the order.
+   */
+  paymentIntentId: string | null
   livemode: boolean
 }
 
@@ -137,6 +144,79 @@ export interface Subscription {
   priceId: string | null
   metadata: Record<string, string>
   livemode: boolean
+}
+
+/** A charge, as `charge.refunded` carries it. */
+export interface Charge {
+  id: string
+  /** The PaymentIntent it belongs to: how to find the order. */
+  paymentIntentId: string | null
+  /** In the currency's smallest unit. */
+  amount: number
+  /** Everything refunded so far, in total: not the amount of this one refund. */
+  amountRefunded: number
+  /** Refunded in full. */
+  refunded: boolean
+  currency: string
+}
+
+/**
+ * A dispute (chargeback). Its `status` is Stripe's own string: `needs_response` and
+ * `under_review` while open, `won` or `lost` once closed, and a few more Stripe may add.
+ */
+export interface Dispute {
+  id: string
+  chargeId: string | null
+  paymentIntentId: string | null
+  /** What is disputed, in the currency's smallest unit. */
+  amount: number
+  currency: string
+  status: string
+  /** Why the cardholder disputed it, e.g. `fraudulent` or `product_not_received`. */
+  reason: string | null
+}
+
+export type InvoiceStatus = 'draft' | 'open' | 'paid' | 'uncollectible' | 'void'
+
+/** An invoice: each subscription period is billed by one. */
+export interface Invoice {
+  id: string
+  customerId: string | null
+  /** The subscription it bills, when it bills one. */
+  subscriptionId: string | null
+  status: InvoiceStatus | null
+  /** In the currency's smallest unit. */
+  amountDue: number
+  amountPaid: number
+  currency: string
+  customerEmail: string | null
+  /** Stripe's hosted page where the customer can see the invoice and pay it with another card. */
+  hostedInvoiceUrl: string | null
+  /** How many times Stripe has tried to collect it. */
+  attemptCount: number
+  /** Seconds since the epoch of Stripe's next try, or `null` when it will not try again. */
+  nextPaymentAttempt: number | null
+  /** Why it exists: `subscription_create`, `subscription_cycle` (a renewal), `manual`… */
+  billingReason: string | null
+}
+
+/** A refund `createRefund` made. */
+export interface Refund {
+  id: string
+  /** `pending`, `succeeded`, `failed`, `canceled` or `requires_action`. */
+  status: string
+  amount: number
+  currency: string
+  paymentIntentId: string | null
+}
+
+export interface RefundParams {
+  /** The PaymentIntent to refund (`pi_…`), as a Checkout session or an event names it. */
+  paymentIntent: string
+  /** Part of it, in the currency's smallest unit. Default: whatever is left. */
+  amount?: number
+  reason?: 'duplicate' | 'fraudulent' | 'requested_by_customer'
+  metadata?: Record<string, string>
 }
 
 export interface StripeOptions {
@@ -168,6 +248,12 @@ export interface Stripe {
    * portal's settings once in the dashboard first (test mode too), or Stripe refuses.
    */
   createPortalSession(params: { customer: string; returnUrl: string }): Promise<{ url: string }>
+  /**
+   * Refunds a payment, in full or in part. Pass an `idempotencyKey` (the order id plus what
+   * the refund is for), so a retried call does not refund twice. Stripe then sends
+   * `charge.refunded`, which is where the order should change.
+   */
+  createRefund(params: RefundParams, options?: { idempotencyKey?: string }): Promise<Refund>
 }
 
 /** Stripe's form encoding: nested keys in brackets, `line_items[0][quantity]=1`. */
@@ -277,6 +363,7 @@ export function parseCheckoutSession(raw: unknown): CheckoutSession {
     metadata: stringMap(raw['metadata']),
     customerId: idOf(raw['customer']),
     subscriptionId: idOf(raw['subscription']),
+    paymentIntentId: idOf(raw['payment_intent']),
     livemode: raw['livemode'] === true,
   }
 }
@@ -308,6 +395,138 @@ export function parseSubscription(raw: unknown): Subscription {
     priceId: idOf(item['price']),
     metadata: stringMap(raw['metadata']),
     livemode: raw['livemode'] === true,
+  }
+}
+
+const numberOr = (value: unknown, fallback: number): number =>
+  typeof value === 'number' && Number.isFinite(value) ? value : fallback
+
+/** An object of the named type with a string id, or a throw naming what was expected. */
+function stripeObject(
+  raw: unknown,
+  object: string,
+  label: string,
+): Record<string, unknown> & { id: string } {
+  if (!isRecord(raw) || raw['object'] !== object || typeof raw['id'] !== 'string') {
+    throw new Error(`Expected a Stripe ${label}`)
+  }
+  return raw as Record<string, unknown> & { id: string }
+}
+
+/** A currency and an amount every payment object carries: without them it is not one. */
+function money(raw: Record<string, unknown>, field: string, label: string) {
+  const amount = raw[field]
+  const currency = raw['currency']
+  if (typeof amount !== 'number' || typeof currency !== 'string') {
+    throw new Error(`${label} ${String(raw['id'])} has no amount or currency`)
+  }
+  return { amount, currency }
+}
+
+/** Parses a charge as Stripe sends it, reading only the fields `Charge` types. */
+export function parseCharge(raw: unknown): Charge {
+  const charge = stripeObject(raw, 'charge', 'charge')
+  const { amount, currency } = money(charge, 'amount', 'Charge')
+  return {
+    id: charge.id,
+    paymentIntentId: idOf(charge['payment_intent']),
+    amount,
+    amountRefunded: numberOr(charge['amount_refunded'], 0),
+    refunded: charge['refunded'] === true,
+    currency,
+  }
+}
+
+/** Parses a dispute as Stripe sends it, reading only the fields `Dispute` types. */
+export function parseDispute(raw: unknown): Dispute {
+  const dispute = stripeObject(raw, 'dispute', 'dispute')
+  const { amount, currency } = money(dispute, 'amount', 'Dispute')
+  const status = dispute['status']
+  if (typeof status !== 'string') throw new Error(`Dispute ${dispute.id} has no status`)
+  return {
+    id: dispute.id,
+    chargeId: idOf(dispute['charge']),
+    paymentIntentId: idOf(dispute['payment_intent']),
+    amount,
+    currency,
+    status,
+    reason: stringOrNull(dispute['reason']),
+  }
+}
+
+const INVOICE_STATUSES: readonly InvoiceStatus[] = [
+  'draft',
+  'open',
+  'paid',
+  'uncollectible',
+  'void',
+]
+
+/**
+ * Parses an invoice as Stripe sends it. Newer API versions moved its subscription under
+ * `parent.subscription_details`; both places are read.
+ */
+export function parseInvoice(raw: unknown): Invoice {
+  const invoice = stripeObject(raw, 'invoice', 'invoice')
+  const currency = invoice['currency']
+  if (typeof currency !== 'string') throw new Error(`Invoice ${invoice.id} has no currency`)
+  const parent = invoice['parent']
+  const details = isRecord(parent) ? parent['subscription_details'] : null
+  const next = invoice['next_payment_attempt']
+  return {
+    id: invoice.id,
+    customerId: idOf(invoice['customer']),
+    subscriptionId:
+      idOf(invoice['subscription']) ?? (isRecord(details) ? idOf(details['subscription']) : null),
+    status: oneOf(INVOICE_STATUSES, invoice['status']),
+    amountDue: numberOr(invoice['amount_due'], 0),
+    amountPaid: numberOr(invoice['amount_paid'], 0),
+    currency,
+    customerEmail: stringOrNull(invoice['customer_email']),
+    hostedInvoiceUrl: stringOrNull(invoice['hosted_invoice_url']),
+    attemptCount: numberOr(invoice['attempt_count'], 0),
+    nextPaymentAttempt: typeof next === 'number' ? next : null,
+    billingReason: stringOrNull(invoice['billing_reason']),
+  }
+}
+
+function parseRefund(raw: unknown): Refund {
+  const refund = stripeObject(raw, 'refund', 'refund')
+  const { amount, currency } = money(refund, 'amount', 'Refund')
+  return {
+    id: refund.id,
+    status: stringOrNull(refund['status']) ?? 'pending',
+    amount,
+    currency,
+    paymentIntentId: idOf(refund['payment_intent']),
+  }
+}
+
+/**
+ * Whether a subscription's status unlocks what it pays for: `active` and `trialing` do, and
+ * `past_due` does too while Stripe retries a failed renewal, unless `pastDue` is `false`. How
+ * long that lasts is set in the Stripe dashboard (Billing → Subscriptions and emails →
+ * Manage failed payments), which ends it as `canceled` or `unpaid`: one place decides the
+ * grace period. Anything else, `null` (no subscription) and an unknown status do not.
+ */
+export function isEntitled(
+  status: string | null | undefined,
+  options: { pastDue?: boolean } = {},
+): boolean {
+  if (status === 'active' || status === 'trialing') return true
+  return status === 'past_due' && options.pastDue !== false
+}
+
+/**
+ * Throws `HttpError(402)` unless `isEntitled(status, options)`: call it in the Worker before
+ * serving a paid feature, with the status stored from the subscription events.
+ */
+export function requireEntitlement(
+  status: string | null | undefined,
+  options: { pastDue?: boolean } = {},
+): void {
+  if (!isEntitled(status, options)) {
+    throw new HttpError(402, 'This needs an active subscription')
   }
 }
 
@@ -373,6 +592,15 @@ export function createStripe(secretKey: string, options: StripeOptions = {}): St
       if (typeof url !== 'string') throw new Error('Stripe returned no portal URL')
       return { url }
     },
+    async createRefund(params, callOptions = {}) {
+      const form = new URLSearchParams({ payment_intent: params.paymentIntent })
+      if (params.amount !== undefined) form.set('amount', String(params.amount))
+      if (params.reason !== undefined) form.set('reason', params.reason)
+      for (const [key, value] of Object.entries(params.metadata ?? {})) {
+        form.set(`metadata[${key}]`, value)
+      }
+      return parseRefund(await call('POST', '/refunds', form, callOptions.idempotencyKey))
+    },
   }
 }
 
@@ -410,8 +638,25 @@ const SUBSCRIPTION_EVENTS: readonly SubscriptionEventType[] = [
   'customer.subscription.deleted',
 ]
 
+/** The dispute events: one opened, and one decided (`won` or `lost`). */
+export type DisputeEventType = 'charge.dispute.created' | 'charge.dispute.closed'
+
+const DISPUTE_EVENTS: readonly DisputeEventType[] = [
+  'charge.dispute.created',
+  'charge.dispute.closed',
+]
+
+/** The invoice events a billing handler acts on: a renewal paid, or a renewal that failed. */
+export type InvoiceEventType = 'invoice.paid' | 'invoice.payment_failed'
+
+const INVOICE_EVENTS: readonly InvoiceEventType[] = ['invoice.paid', 'invoice.payment_failed']
+
 export type StripeEvent =
   | (EventBase & { kind: 'checkout'; type: CheckoutEventType; session: CheckoutSession })
+  /** A refund, full or partial: `charge.amountRefunded` is the running total. */
+  | (EventBase & { kind: 'refund'; type: 'charge.refunded'; charge: Charge })
+  | (EventBase & { kind: 'dispute'; type: DisputeEventType; dispute: Dispute })
+  | (EventBase & { kind: 'invoice'; type: InvoiceEventType; invoice: Invoice })
   /**
    * The subscription as it was when the event was made. Events arrive out of order: read the
    * current state back with `retrieveSubscription` before storing it.
@@ -456,6 +701,15 @@ export function parseStripeEvent(body: string): StripeEvent {
       subscription: parseSubscription(object),
     }
   }
+  if (raw['type'] === 'charge.refunded') {
+    return { ...base, kind: 'refund', type: 'charge.refunded', charge: parseCharge(object) }
+  }
+  const disputeType = oneOf(DISPUTE_EVENTS, raw['type'])
+  if (disputeType)
+    return { ...base, kind: 'dispute', type: disputeType, dispute: parseDispute(object) }
+  const invoiceType = oneOf(INVOICE_EVENTS, raw['type'])
+  if (invoiceType)
+    return { ...base, kind: 'invoice', type: invoiceType, invoice: parseInvoice(object) }
   const type = oneOf(CHECKOUT_EVENTS, raw['type'])
   if (!type) return { ...base, kind: 'other', type: raw['type'] }
   return {

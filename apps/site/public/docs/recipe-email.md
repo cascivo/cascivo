@@ -56,6 +56,12 @@ body), and a body over the clip threshold. It is a separate call rather than som
 `renderEmail` does, because a preview renders half-finished templates on every keystroke and
 must not throw.
 
+`sendEmail(sender, message, envelope)` runs `assertSendable` and refuses line breaks in every
+address and header, then hands the message to a sender: Cloudflare's Email Service binding
+(`env.EMAIL`), or the Amazon SES client from `@cascivo/app/ses`. Taking payments and sending
+through SES from a Worker, with bounces and complaints handled, is its own recipe:
+[RECIPE-PAYMENTS.md](/docs/recipe-payments.md).
+
 ### The preheader
 
 `<Preview>` is the grey line beside the subject in the inbox. Without it the client shows the

@@ -19,8 +19,12 @@ export const PRODUCT = {
   currency: 'eur',
 }
 
-/** `pending` until Stripe confirms the payment; the other three are final. */
-export type OrderStatus = 'pending' | 'paid' | 'failed' | 'expired'
+/**
+ * `pending` until Stripe confirms the payment. `failed` and `expired` are final. A paid
+ * order becomes `refunded` when all of it is refunded, and `disputed` while a chargeback is
+ * open (back to `paid` if it is won).
+ */
+export type OrderStatus = 'pending' | 'paid' | 'failed' | 'expired' | 'refunded' | 'disputed'
 
 export interface Order {
   id: string
@@ -28,6 +32,8 @@ export interface Order {
   /** What Stripe charged, in the currency's smallest unit. */
   amount: number
   currency: string
+  /** Refunded so far, in the same unit: part of a paid order, or all of a refunded one. */
+  refundedAmount: number
   createdAt: string
   paidAt: string | null
 }
@@ -45,22 +51,34 @@ export function formatPrice(amount: number, currency: string): string {
   return format.format(amount / 10 ** digits)
 }
 
-const STATUSES = ['pending', 'paid', 'failed', 'expired']
+const STATUSES = ['pending', 'paid', 'failed', 'expired', 'refunded', 'disputed']
 
 export function parseOrder(raw: unknown): Order {
   if (typeof raw === 'object' && raw !== null) {
-    const { id, status, amount, currency, createdAt, paidAt } = raw as Record<string, unknown>
+    const { id, status, amount, currency, refundedAmount, createdAt, paidAt } = raw as Record<
+      string,
+      unknown
+    >
     if (
       typeof id === 'string' &&
       typeof status === 'string' &&
       STATUSES.includes(status) &&
       typeof amount === 'number' &&
       typeof currency === 'string' &&
+      typeof refundedAmount === 'number' &&
       typeof createdAt === 'string' &&
       (paidAt === null || typeof paidAt === 'string')
     ) {
-      // Checked against STATUSES just above.
-      return { id, status: status as OrderStatus, amount, currency, createdAt, paidAt }
+      return {
+        id,
+        // Checked against STATUSES just above.
+        status: status as OrderStatus,
+        amount,
+        currency,
+        refundedAmount,
+        createdAt,
+        paidAt,
+      }
     }
   }
   throw new Error('Malformed order')
