@@ -57,6 +57,8 @@ catalog:
   vite-imagetools: ^10.0.1
   publint: ^0.3.21
   '@arethetypeswrong/cli': ^0.18.5
+  '@docspack/cmdspec': ^0.2.0
+  docspack: ^1.3.1
 
 overrides:
   vite: 'npm:@voidzero-dev/vite-plus-core@0.2.1'
@@ -115,6 +117,10 @@ minimumReleaseAgeExclude:
   - '@voidzero-dev/vite-plus-win32-arm64-msvc@0.2.1'
   - '@voidzero-dev/vite-plus-win32-x64-msvc@0.2.1'
   - vite-plus@0.2.1
+  - '@docspack/cmdspec@0.2.0'
+  - '@docspack/lapis@0.3.0'
+  - '@docspack/openapi@0.2.1'
+  - docspack@1.3.1
 
 patchedDependencies:
   '@changesets/cli@2.31.1': patches/@changesets__cli@2.31.1.patch
