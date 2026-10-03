@@ -233,7 +233,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-198 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
+199 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
 
 ### Inputs
 
@@ -357,6 +357,7 @@ routing break after adding one of these, check that the import resolves to
 - **Modal** — Accessible dialog overlay using native <dialog> element
 - **OverflowMenu** — Kebab icon button revealing a menu of row-level actions
 - **Popover** — Anchored floating panel built on CSS Anchor Positioning + Popover API
+- **ShareMenu** — A Share button opening intent links for Bluesky, Mastodon, Threads, LinkedIn and X, plus copy link and the system share sheet
 - **Sheet** — Slide-in panel from any edge, using popover=manual and @starting-style animations
 - **Toast** — Transient notification surfaced via the useToast hook
 - **Toggletip** — A click-triggered info popover for supplementary, selectable content

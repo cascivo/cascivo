@@ -244,6 +244,7 @@
             "Separator",
             "SettingsFormPage",
             "SettingsLayout",
+            "ShareMenu",
             "Sheet",
             "ShellHeader",
             "SideNav",
@@ -4013,6 +4014,39 @@
                     "type": "boolean"
                   }
                 }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "ShareMenu"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md"]
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["url"]
               }
             }
           }

@@ -1354,6 +1354,18 @@
         "note": "Color must resolve to --cascivo-color-border"
       }
     ],
+    "ShareMenu": [
+      {
+        "area": "networks",
+        "level": "flexible",
+        "note": "items picks and orders the networks; shareIntentUrl builds the same links for custom markup"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Styling resolves to the listed semantic --cascivo-* tokens"
+      }
+    ],
     "Sheet": [
       {
         "area": "side",

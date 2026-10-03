@@ -85,6 +85,7 @@ import {
   ScrollArea,
   Search,
   Select,
+  ShareMenu,
   SkipNavLink,
   SkipNavTarget,
   Spinner,
@@ -276,6 +277,9 @@ const FIXTURES: Record<string, () => ReactElement> = {
   'packages/components/src/select/select.meta.ts': () => (
     <Select label="Role" options={[{ value: 'admin', label: 'Admin' }]} />
   ),
+  'packages/components/src/share-menu/share-menu.meta.ts': () => (
+    <ShareMenu url="https://cascivo.com" text="Read this" />
+  ),
   'packages/components/src/skip-nav/skip-nav.meta.ts': () => (
     <>
       <SkipNavLink />
@@ -362,6 +366,7 @@ const EXPECTED_CONTENT: Record<string, string> = {
   'packages/components/src/navigation-menu/navigation-menu.meta.ts': 'Docs',
   'packages/components/src/notification/notification.meta.ts': 'Your files are up to date.',
   'packages/components/src/scroll-area/scroll-area.meta.ts': 'Long content that scrolls natively.',
+  'packages/components/src/share-menu/share-menu.meta.ts': 'https://bsky.app/intent/compose',
   'packages/components/src/steps/steps.meta.ts': 'Shipping',
   'packages/components/src/structured-list/structured-list.meta.ts': 'Engineer',
   'packages/components/src/toc/toc.meta.ts': 'Usage',

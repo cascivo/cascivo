@@ -6078,6 +6078,36 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: true,
     },
   ],
+  ShareMenu: [
+    {
+      name: 'url',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'text',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'items',
+      required: false,
+    },
+    {
+      name: 'size',
+      required: false,
+      enum: ['sm', 'md'],
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   Sheet: [
     {
       name: 'open',

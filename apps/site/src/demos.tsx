@@ -98,6 +98,7 @@ import { Search } from '@cascivo/components/search'
 import { Field } from '@cascivo/components/field'
 import { InlineLoading } from '@cascivo/components/inline-loading'
 import { CopyButton } from '@cascivo/components/copy-button'
+import { ShareMenu } from '@cascivo/components/share-menu'
 import { Progress } from '@cascivo/components/progress'
 import { ProgressCircle } from '@cascivo/components/progress-circle'
 import { RadialProgress } from '@cascivo/components/radial-progress'
@@ -1677,6 +1678,12 @@ export const demos: Record<string, () => JSX.Element> = {
     <Row>
       <CopyButton value="npx cascivo add button" />
       <CopyButton value="npm install @cascivo/core" size="sm" />
+    </Row>
+  ),
+  'share-menu': () => (
+    <Row>
+      <ShareMenu url="https://cascivo.com" text="cascivo — the CSS-native React design system" />
+      <ShareMenu url="https://cascivo.com" items={['bluesky', 'mastodon']} size="sm" />
     </Row>
   ),
   progress: () => (

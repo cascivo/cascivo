@@ -1838,6 +1838,25 @@
       ]
     },
     {
+      "name": "ShareMenu",
+      "props": [
+        { "name": "url", "type": "string", "required": true },
+        { "name": "text", "type": "string", "required": false },
+        {
+          "name": "items",
+          "type": "Array<'bluesky' | 'mastodon' | 'threads' | 'linkedin' | 'x'>",
+          "required": false
+        },
+        { "name": "size", "type": "'sm' | 'md'", "required": false },
+        {
+          "name": "labels",
+          "type": "{ share?: string; copyLink?: string; copied?: string; more?: string; server?: string; shareOn?: (network: string) => string }",
+          "required": false
+        },
+        { "name": "className", "type": "string", "required": false }
+      ]
+    },
+    {
       "name": "Sheet",
       "props": [
         { "name": "open", "type": "boolean", "required": true },
@@ -3665,6 +3684,7 @@
     "ProgressIndicator",
     "Prose",
     "Search",
+    "ShareMenu",
     "SkipNav",
     "Stat",
     "Status",

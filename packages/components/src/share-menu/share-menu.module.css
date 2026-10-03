@@ -1,0 +1,201 @@
+@layer cascivo.component {
+  .root {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascivo-space-2);
+    padding-inline: var(--cascivo-space-3);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-medium);
+    color: var(--cascivo-color-text);
+    background-color: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-control);
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--cascivo-color-bg-subtle);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+    }
+
+    &[data-size='sm'] {
+      block-size: var(--cascivo-control-height-sm);
+    }
+
+    &[data-size='md'] {
+      block-size: var(--cascivo-control-height-md);
+    }
+
+    @media (pointer: coarse) {
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
+
+  .icon {
+    inline-size: 1rem;
+    block-size: 1rem;
+  }
+
+  .panel {
+    /* Base (phone): a sheet along the bottom edge, full width, so no trigger position can
+       push it off screen. A browser without anchor positioning keeps the sheet at every
+       width. */
+    position: fixed;
+    inset: auto var(--cascivo-space-4) var(--cascivo-space-4);
+    margin: 0;
+    min-inline-size: 12rem;
+    padding: var(--cascivo-space-1);
+    color: var(--cascivo-color-text);
+    background-color: var(--cascivo-color-surface-overlay);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-overlay);
+    box-shadow: var(--cascivo-shadow-overlay);
+
+    &:popover-open {
+      opacity: 1;
+      translate: 0 0;
+      transition:
+        opacity var(--cascivo-motion-enter),
+        translate var(--cascivo-motion-enter);
+
+      @starting-style {
+        opacity: 0;
+        translate: 0 0.25rem;
+      }
+    }
+
+    /* viewport-query: the panel is a popover in the top layer, so no ancestor contains it;
+       the viewport is what it must fit inside. */
+    @media (min-width: 30rem) {
+      @supports (anchor-name: --a) {
+        inset: auto;
+        inset-block-start: anchor(end);
+        inset-inline-start: anchor(start);
+        margin-block-start: var(--cascivo-space-1);
+        inline-size: max-content;
+        max-inline-size: 20rem;
+        position-try-fallbacks:
+          flip-block,
+          flip-inline,
+          flip-block flip-inline;
+      }
+    }
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .divided {
+    margin-block-start: var(--cascivo-space-1);
+    padding-block-start: var(--cascivo-space-1);
+    border-block-start: 1px solid var(--cascivo-color-border);
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    inline-size: 100%;
+    padding-inline: var(--cascivo-space-3);
+    padding-block: var(--cascivo-space-2);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    text-align: start;
+    text-decoration: none;
+    white-space: nowrap;
+    color: var(--cascivo-color-text);
+    background: transparent;
+    border: none;
+    border-radius: var(--cascivo-radius-item);
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      outline: none;
+      background-color: var(--cascivo-color-bg-subtle);
+    }
+
+    &[data-state='copied'] {
+      color: var(--cascivo-color-success);
+    }
+
+    @media (pointer: coarse) {
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
+
+  .server {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-1);
+    padding-inline: var(--cascivo-space-3);
+    padding-block: var(--cascivo-space-2);
+  }
+
+  .serverLabel {
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-text-muted);
+  }
+
+  .serverRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cascivo-space-1);
+
+    & .item {
+      inline-size: auto;
+      border: 1px solid var(--cascivo-color-border);
+    }
+  }
+
+  .serverInput {
+    flex: 1 1 8rem;
+    min-inline-size: 0;
+    min-block-size: var(--cascivo-control-height-sm);
+    padding-inline: var(--cascivo-space-2);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text);
+    background-color: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-control);
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel:popover-open {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .panel {
+    border: 1px solid CanvasText;
+  }
+
+  .trigger:focus-visible,
+  .item:focus-visible,
+  .serverInput:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}
