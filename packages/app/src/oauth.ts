@@ -410,6 +410,12 @@ function stringOrNull(value: unknown): string | null {
   return typeof value === 'string' && value !== '' ? value : null
 }
 
+function asObject(value: unknown): Record<string, unknown> | null {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null
+}
+
 /* ------------------------------- OpenID Connect ------------------------------- */
 
 /**
@@ -1054,6 +1060,39 @@ async function authServerOf(doFetch: typeof fetch, pds: string): Promise<AuthSer
 }
 
 /** The key Bluesky clients sign with: an ES256 private JWK, with the `kid` it is published under. */
+/**
+ * The display name and avatar in the account's profile record, read from its own PDS (public,
+ * no session). The avatar is the PDS's blob URL, not an app view's CDN. Best effort: a profile
+ * that is missing or unreadable leaves both `null` and never fails the connection.
+ */
+async function blueskyProfile(
+  doFetch: typeof fetch,
+  pds: string,
+  did: string,
+): Promise<{ name: string | null; avatarUrl: string | null }> {
+  const query = new URLSearchParams({
+    repo: did,
+    collection: 'app.bsky.actor.profile',
+    rkey: 'self',
+  })
+  try {
+    const { status, body } = await serverJson(
+      doFetch,
+      `${pds}/xrpc/com.atproto.repo.getRecord?${query}`,
+    )
+    const value = status === 200 ? asObject(asObject(body)?.['value']) : null
+    const name = stringOrNull(value?.['displayName'])?.trim().slice(0, 640) || null
+    const cid = stringOrNull(asObject(asObject(value?.['avatar'])?.['ref'])?.['$link'])
+    const avatarUrl =
+      cid && /^[a-z2-7]+$/.test(cid)
+        ? `${pds}/xrpc/com.atproto.sync.getBlob?${new URLSearchParams({ did, cid })}`
+        : null
+    return { name, avatarUrl }
+  } catch {
+    return { name: null, avatarUrl: null }
+  }
+}
+
 export type BlueskyKey = JsonWebKey & { kid: string }
 
 export interface BlueskyOptions {
@@ -1265,15 +1304,16 @@ export function bluesky(options: BlueskyOptions = {}): OAuthProvider {
               `${server.issuer} issued tokens for another account`,
             )
           }
+          const profile = await blueskyProfile(doFetch, doc.pds, did)
           return {
             tokens,
             identity: {
               provider: 'bluesky',
               subject: did,
               email: null,
-              name: null,
+              name: profile.name,
               handle: handle ? `@${handle}` : null,
-              avatarUrl: null,
+              avatarUrl: profile.avatarUrl,
               server: new URL(doc.pds).host,
             },
           }

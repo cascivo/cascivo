@@ -701,3 +701,13 @@ server.
   (`provider_error`), the code exchange refused `Invalid client_id`, and publishing answered
   401, which became `reconnect`. Not tried: a real account (Meta's tester role on an app).
 
+**Gaps closed after step 7 (2026-10-03):**
+
+- Bluesky display name and avatar: read from the profile record on the account's PDS
+  (`com.atproto.repo.getRecord`, public), the avatar as the PDS's `getBlob` URL rather than an
+  app view's CDN. Live: `@bsky.app` resolved to "Bluesky", and its blob served `image/jpeg`.
+- Mastodon's per-server limits: `mastodonServerLimits` reads `/api/v2/instance`
+  (`max_characters`, `max_media_attachments`, `characters_reserved_per_url`), each accepted
+  within a sane range. Live: hachyderm.io allows 2263 characters. The example keeps them in D1
+  for a day, and checks against them in the page and again in the Workflow.
+

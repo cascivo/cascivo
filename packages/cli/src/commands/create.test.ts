@@ -1333,6 +1333,18 @@ describe('buildScaffold — cloudflare --example social', () => {
     )
   })
 
+  it('checks a Mastodon post against its server’s own limits, in the page and the Workflow', () => {
+    const store = map.get('worker/social.ts')!
+    expect(store).toContain('const limits = await mastodonServerLimits(server)')
+    expect(store).toContain("id: '0002_social_server_limits'")
+    expect(map.get('src/social.ts')).toContain(
+      "if (account.network === 'mastodon' && account.limits) return mastodonPublisher(account.limits)",
+    )
+    expect(map.get('worker/social-post.ts')).toContain(
+      'await publisherFor({ ...target, limits }).publish(',
+    )
+  })
+
   it('names the Mastodon app after the project, quotes and all', () => {
     expect(map.get('worker/social.ts')).toContain("const APP_NAME = 'Edge App'")
     expect(build({ name: "Ada's \\app" }).get('worker/social.ts')).toContain(

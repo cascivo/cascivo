@@ -7910,14 +7910,27 @@ const publishers: Record<Exclude<Network, 'buffer'>, Publisher> = {
   threads: threadsPublisher(),
 }
 
+/** A Mastodon server's own limits (\`mastodonServerLimits\`), which many set above 500. */
+export interface ServerLimits {
+  maxChars: number
+  maxImages: number
+  urlWeight: number
+}
+
 /**
  * The publisher for an account. A Buffer channel posts through Buffer, checked against the
- * limit of the network behind it (\`service\`).
+ * limit of the network behind it (\`service\`); a Mastodon account, against its server's.
  */
-export function publisherFor(account: { network: Network; service: string | null }): Publisher {
-  return account.network === 'buffer'
-    ? bufferPublisher(account.service ? { service: account.service } : {})
-    : publishers[account.network]
+export function publisherFor(account: {
+  network: Network
+  service: string | null
+  limits?: ServerLimits | null
+}): Publisher {
+  if (account.network === 'buffer') {
+    return bufferPublisher(account.service ? { service: account.service } : {})
+  }
+  if (account.network === 'mastodon' && account.limits) return mastodonPublisher(account.limits)
+  return publishers[account.network]
 }
 
 export const MAX_TEXT = 5000
@@ -7934,6 +7947,8 @@ export interface Account {
   status: 'active' | 'expiring' | 'reconnect'
   /** For a Buffer channel, the network behind it (\`instagram\`, \`twitter\`, …); else \`null\`. */
   service: string | null
+  /** For a Mastodon account, its server's limits; else \`null\`. */
+  limits: ServerLimits | null
 }
 
 export type TargetStatus = 'pending' | 'publishing' | 'posted' | 'failed'
@@ -8038,6 +8053,23 @@ function parseAccount(raw: unknown): Account {
     label: text(r['label'], 'label'),
     status,
     service: typeof r['service'] === 'string' ? r['service'] : null,
+    limits: parseLimits(r['limits']),
+  }
+}
+
+function parseLimits(raw: unknown): ServerLimits | null {
+  if (raw === null || raw === undefined) return null
+  const r = record(raw, 'limits')
+  const count = (value: unknown) => {
+    if (typeof value !== 'number' || !Number.isInteger(value) || value <= 0) {
+      throw new Error('Malformed limits')
+    }
+    return value
+  }
+  return {
+    maxChars: count(r['maxChars']),
+    maxImages: count(r['maxImages']),
+    urlWeight: count(r['urlWeight']),
   }
 }
 
@@ -8120,7 +8152,7 @@ import {
   refreshConnections,
 } from '@cascivo/app/oauth-server'
 import type { Connection } from '@cascivo/app/oauth-server'
-import { bufferChannels } from '@cascivo/app/social'
+import { bufferChannels, mastodonServerLimits } from '@cascivo/app/social'
 import {
   asSocialPost,
   isNetwork,
@@ -8128,7 +8160,14 @@ import {
   parseScheduledPost,
   publisherFor,
 } from '../src/social'
-import type { Account, PostInput, PostStatus, ScheduledPost, Social } from '../src/social'
+import type {
+  Account,
+  PostInput,
+  PostStatus,
+  ScheduledPost,
+  ServerLimits,
+  Social,
+} from '../src/social'
 
 /** What the Workflow behind a scheduled post (worker/social-post.ts) is started with. */
 export interface SocialPostParams {
@@ -8189,6 +8228,18 @@ const migrations = [
         name TEXT NOT NULL,
         fetched_at INTEGER NOT NULL,
         PRIMARY KEY (connection_id, channel_id)
+      )\`,
+    ],
+  },
+  {
+    id: '0002_social_server_limits',
+    statements: [
+      \`CREATE TABLE social_server_limits (
+        server TEXT PRIMARY KEY,
+        max_chars INTEGER NOT NULL,
+        max_images INTEGER NOT NULL,
+        url_weight INTEGER NOT NULL,
+        fetched_at INTEGER NOT NULL
       )\`,
     ],
   },
@@ -8358,6 +8409,43 @@ async function channelsOf(env: SocialEnv, connection: Connection, userId: string
   }
 }
 
+/** A Mastodon server's limits change rarely: they are kept for a day. */
+const LIMITS_TTL_MS = 24 * 60 * 60 * 1000
+
+/**
+ * A Mastodon server's own limits, from D1 when fresh, else from the server. Shared by every
+ * account on that server; a server that does not answer gets Mastodon's defaults for now.
+ */
+export async function serverLimits(env: SocialEnv, server: string): Promise<ServerLimits> {
+  await migrate(env.DB, migrations)
+  const [cached] = await queryRows(
+    env.DB,
+    \`SELECT max_chars AS maxChars, max_images AS maxImages, url_weight AS urlWeight, fetched_at AS fetchedAt
+     FROM social_server_limits WHERE server = ?\`,
+    [server],
+    (raw) => {
+      if (typeof raw !== 'object' || raw === null) throw new Error('Malformed limits row')
+      const { maxChars, maxImages, urlWeight, fetchedAt } = raw as Record<string, unknown>
+      return {
+        limits: { maxChars: Number(maxChars), maxImages: Number(maxImages), urlWeight: Number(urlWeight) },
+        fetchedAt: Number(fetchedAt),
+      }
+    },
+  )
+  if (cached && Date.now() - cached.fetchedAt < LIMITS_TTL_MS) return cached.limits
+  const limits = await mastodonServerLimits(server)
+  await env.DB.prepare(
+    \`INSERT INTO social_server_limits (server, max_chars, max_images, url_weight, fetched_at)
+     VALUES (?, ?, ?, ?, ?)
+     ON CONFLICT (server) DO UPDATE SET max_chars = excluded.max_chars,
+       max_images = excluded.max_images, url_weight = excluded.url_weight,
+       fetched_at = excluded.fetched_at\`,
+  )
+    .bind(server, limits.maxChars, limits.maxImages, limits.urlWeight, Date.now())
+    .run()
+  return limits
+}
+
 async function userAccounts(env: SocialEnv, userId: string): Promise<Account[]> {
   await migrate(env.DB, migrations)
   const accounts: Account[] = []
@@ -8370,6 +8458,10 @@ async function userAccounts(env: SocialEnv, userId: string): Promise<Account[]> 
         label: connection.handle ?? connection.name ?? connection.subject,
         status: connection.status,
         service: null,
+        limits:
+          connection.provider === 'mastodon' && connection.server
+            ? await serverLimits(env, connection.server)
+            : null,
       })
       continue
     }
@@ -8381,6 +8473,7 @@ async function userAccounts(env: SocialEnv, userId: string): Promise<Account[]> 
         label: \`\${channel.name} (\${channel.service}, via Buffer)\`,
         status: connection.status,
         service: channel.service,
+        limits: null,
       })
     }
   }
@@ -8532,7 +8625,7 @@ import type { WorkflowEvent, WorkflowStep } from 'cloudflare:workers'
 import { asSocialPost, NETWORKS, postsOnce, publisherFor } from '../src/social'
 import type { ScheduledPost, Target } from '../src/social'
 import type { Env } from './index'
-import { BUFFER_SEPARATOR, readPosts, secretOf, socialProviders } from './social'
+import { BUFFER_SEPARATOR, readPosts, secretOf, serverLimits, socialProviders } from './social'
 import type { SocialPostParams } from './social'
 
 type TargetResult = Pick<Target, 'status' | 'url' | 'error'>
@@ -8640,7 +8733,12 @@ async function publishTo(env: Env, post: ScheduledPost, target: Target, userId: 
       { secret: secretOf(env), providers: socialProviders(env) },
       { connectionId, userId },
     )
-    const published = await publisherFor(target).publish(
+    // Checked again as it goes out, against the same server limits the composer used.
+    const limits =
+      target.network === 'mastodon' && connection.server
+        ? await serverLimits(env, connection.server)
+        : null
+    const published = await publisherFor({ ...target, limits }).publish(
       { tokens, subject: channelId ?? connection.subject, server: connection.server },
       asSocialPost(post),
       // Fixed for every attempt: Mastodon's key, and Bluesky's record key, make a retry safe.

@@ -301,6 +301,26 @@ describe('bluesky(): the flow', () => {
     expect(net.problems).toEqual([])
   })
 
+  it('reads the display name and avatar from the profile on the account’s own PDS', async () => {
+    const net = network()
+    net.records.set('self', {
+      $type: 'app.bsky.actor.profile',
+      displayName: '  Ada Lovelace ',
+      avatar: { $type: 'blob', ref: { $link: 'bafkreiavatar' }, mimeType: 'image/jpeg', size: 9 },
+    })
+    const { resolved, pending, callback } = await signIn(net)
+    const { identity } = await completeAuthorization(resolved, pending, callback)
+    expect(identity.name).toBe('Ada Lovelace')
+    expect(identity.avatarUrl).toBe(
+      `${PDS}/xrpc/com.atproto.sync.getBlob?did=${encodeURIComponent(DID)}&cid=bafkreiavatar`,
+    )
+    // A ref that is not a CID makes no URL.
+    net.records.set('self', { displayName: 'Ada', avatar: { ref: { $link: '../x?y' } } })
+    const again = await signIn(net)
+    const second = await completeAuthorization(again.resolved, again.pending, again.callback)
+    expect(second.identity).toMatchObject({ name: 'Ada', avatarUrl: null })
+  })
+
   it('refuses a callback from another issuer, and tokens for another account', async () => {
     const net = network()
     const { resolved, pending, callback } = await signIn(net)

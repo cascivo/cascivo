@@ -7285,6 +7285,7 @@
           "linkedinPublisher",
           "mastodonLength",
           "mastodonPublisher",
+          "mastodonServerLimits",
           "threadsLength",
           "threadsPublisher"
         ],
@@ -7339,13 +7340,16 @@
             "version?": "string",
             "fetch?": "typeof fetch"
           },
-          "mastodonLength": "declare function mastodonLength(text: string): number",
+          "mastodonLength": "declare function mastodonLength(text: string, urlWeight?: number): number",
           "mastodonPublisher": "declare function mastodonPublisher(options?: MastodonPublisherOptions): Publisher",
           "MastodonPublisherOptions": {
             "maxChars?": "number",
+            "maxImages?": "number",
+            "urlWeight?": "number",
             "visibility?": "'public' | 'unlisted' | 'private'",
             "fetch?": "typeof fetch"
           },
+          "mastodonServerLimits": "declare function mastodonServerLimits(server: string, options?: { fetch?: typeof fetch; }): Promise<Required<Pick<MastodonPublisherOptions, 'maxChars' | 'maxImages' | 'urlWeight'>>>",
           "PostProblem": {
             "code": "'empty' | 'too_long' | 'too_many_images' | 'link_and_images' | 'bad_link' | 'bad_image'",
             "message": "string"

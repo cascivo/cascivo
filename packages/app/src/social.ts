@@ -320,9 +320,13 @@ export function linkedinPublisher(options: LinkedInPublisherOptions = {}): Publi
 export interface MastodonPublisherOptions {
   /**
    * The server's limit (`configuration.statuses.max_characters` in `/api/v2/instance`).
-   * Default 500, Mastodon's own; many servers allow more.
+   * Default 500, Mastodon's own; many servers allow more. `mastodonServerLimits` reads it.
    */
   maxChars?: number
+  /** Images in a post. Default 4. */
+  maxImages?: number
+  /** What a URL counts as, however long. Default 23. */
+  urlWeight?: number
   /** Default `public`. */
   visibility?: 'public' | 'unlisted' | 'private'
   fetch?: typeof fetch
@@ -333,12 +337,12 @@ const URL_WEIGHT = 23
 const MASTODON_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
 
 /**
- * The length Mastodon counts: a URL is 23 characters, a mention `@user@server` counts only
- * `@user`, everything else by character.
+ * The length Mastodon counts: a URL is 23 characters (or the server's `urlWeight`), a mention
+ * `@user@server` counts only `@user`, everything else by character.
  */
-export function mastodonLength(text: string): number {
+export function mastodonLength(text: string, urlWeight = URL_WEIGHT): number {
   const counted = text
-    .replace(/https?:\/\/\S+/g, 'x'.repeat(URL_WEIGHT))
+    .replace(/https?:\/\/\S+/g, 'x'.repeat(urlWeight))
     .replace(/(^|\s)(@[\w.-]+)@[\w.-]+\.[a-z]{2,}/gi, '$1$2')
   return [...counted].length
 }
@@ -350,6 +354,41 @@ function mastodonText(post: SocialPost): string {
 }
 
 /**
+ * A Mastodon server's own limits, from its public `/api/v2/instance`: hand them to
+ * `mastodonPublisher` so `check` agrees with the server. `server` is a host, as a connection
+ * stores it. A server that does not answer, or answers without them, gets Mastodon's defaults.
+ */
+export async function mastodonServerLimits(
+  server: string,
+  options: { fetch?: typeof fetch } = {},
+): Promise<Required<Pick<MastodonPublisherOptions, 'maxChars' | 'maxImages' | 'urlWeight'>>> {
+  const doFetch = options.fetch ?? ((input, init) => fetch(input, init))
+  const defaults = { maxChars: 500, maxImages: 4, urlWeight: URL_WEIGHT }
+  try {
+    const response = await doFetch(`https://${server}/api/v2/instance`, {
+      redirect: 'manual',
+      signal: AbortSignal.timeout(10_000),
+      headers: { accept: 'application/json' },
+    })
+    if (!response.ok) return defaults
+    const configuration = asRecord(asRecord(await response.json())?.['configuration'])
+    const statuses = asRecord(configuration?.['statuses'])
+    // Within reason: a server's figures decide what the composer allows.
+    const count = (value: unknown, fallback: number, max: number) =>
+      typeof value === 'number' && Number.isInteger(value) && value > 0 && value <= max
+        ? value
+        : fallback
+    return {
+      maxChars: count(statuses?.['max_characters'], defaults.maxChars, 100_000),
+      maxImages: count(statuses?.['max_media_attachments'], defaults.maxImages, 20),
+      urlWeight: count(statuses?.['characters_reserved_per_url'], defaults.urlWeight, 1000),
+    }
+  } catch {
+    return defaults
+  }
+}
+
+/**
  * Posts a status to the account's server (`write:statuses`, and `write:media` for images). A
  * link becomes part of the text, and the server builds its card. Images are uploaded first,
  * and waited for while the server processes them. With `idempotencyKey`, retrying a post
@@ -357,7 +396,8 @@ function mastodonText(post: SocialPost): string {
  */
 export function mastodonPublisher(options: MastodonPublisherOptions = {}): Publisher {
   const doFetch = options.fetch ?? ((input, init) => fetch(input, init))
-  const limits = { maxChars: options.maxChars ?? 500, maxImages: 4 }
+  const limits = { maxChars: options.maxChars ?? 500, maxImages: options.maxImages ?? 4 }
+  const urlWeight = options.urlWeight ?? URL_WEIGHT
 
   function failure(status: number, json: unknown): PublishError {
     const reason = asRecord(json)?.['error']
@@ -425,7 +465,7 @@ export function mastodonPublisher(options: MastodonPublisherOptions = {}): Publi
       if (!text.trim() && images.length === 0) {
         problems.push({ code: 'empty', message: 'Write something to post' })
       }
-      const length = mastodonLength(text)
+      const length = mastodonLength(text, urlWeight)
       if (length > limits.maxChars) {
         problems.push({
           code: 'too_long',

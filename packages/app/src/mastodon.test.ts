@@ -11,7 +11,7 @@ import {
   listConnections,
   mastodonRegistrations,
 } from './oauth-server'
-import { mastodonLength, mastodonPublisher } from './social'
+import { mastodonLength, mastodonPublisher, mastodonServerLimits } from './social'
 import { d1 } from './sqlite.fixtures'
 
 const ORIGIN = 'https://app.example'
@@ -325,6 +325,55 @@ describe('connecting a Mastodon account', () => {
     expect(JSON.stringify(sqlite.prepare('SELECT * FROM oauth_clients').all())).not.toContain(
       'csecret',
     )
+  })
+})
+
+describe('mastodonServerLimits', () => {
+  const answering = (status: number, body: unknown) => {
+    const urls: string[] = []
+    const doFetch = (async (input: string | URL | Request, init?: RequestInit) => {
+      urls.push(String(input))
+      expect(init?.redirect).toBe('manual')
+      return Response.json(body, { status })
+    }) as typeof fetch
+    return { urls, doFetch }
+  }
+
+  it('reads the server’s own limits, and the publisher checks against them', async () => {
+    const net = answering(200, {
+      configuration: {
+        statuses: {
+          max_characters: 11_000,
+          max_media_attachments: 8,
+          characters_reserved_per_url: 30,
+        },
+      },
+    })
+    const limits = await mastodonServerLimits('hachyderm.io', { fetch: net.doFetch })
+    expect(net.urls).toEqual(['https://hachyderm.io/api/v2/instance'])
+    expect(limits).toEqual({ maxChars: 11_000, maxImages: 8, urlWeight: 30 })
+    const publisher = mastodonPublisher(limits)
+    expect(publisher.check({ text: 'x'.repeat(11_000) })).toEqual([])
+    expect(publisher.check({ text: 'x'.repeat(11_001) }).map((p) => p.code)).toEqual(['too_long'])
+    expect(mastodonLength('https://a.example/long', limits.urlWeight)).toBe(30)
+  })
+
+  it.each([
+    ['an error', 503, {}],
+    ['no configuration', 200, { version: '4.3.0' }],
+    [
+      'figures out of reason',
+      200,
+      { configuration: { statuses: { max_characters: -1, max_media_attachments: 1e9 } } },
+    ],
+  ])('falls back to Mastodon’s defaults on %s', async (_, status, body) => {
+    expect(
+      await mastodonServerLimits('a.example', { fetch: answering(status, body).doFetch }),
+    ).toEqual({
+      maxChars: 500,
+      maxImages: 4,
+      urlWeight: 23,
+    })
   })
 })
 
