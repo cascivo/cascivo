@@ -244,6 +244,27 @@
       "services": ["durable_objects", "ratelimits", "d1_databases", "queues"],
       "react": false,
       "brings": []
+    },
+    {
+      "id": "social",
+      "label": "Social scheduler",
+      "blurb": "Connect LinkedIn and Mastodon; post now or at a set time.",
+      "group": "Operations",
+      "files": [
+        ".dev.vars",
+        ".dev.vars.example",
+        "src/auth.ts",
+        "src/routes/account.tsx",
+        "src/routes/social.tsx",
+        "src/social.ts",
+        "tsconfig.worker.json",
+        "worker/social-post.ts",
+        "worker/social.ts"
+      ],
+      "pages": ["/account", "/social"],
+      "services": ["ratelimits", "d1_databases", "workflows"],
+      "react": false,
+      "brings": []
     }
   ],
   "auth": [
@@ -259,6 +280,15 @@
       ],
       "pages": ["/account", "/signin/verify"],
       "services": ["ratelimits", "send_email", "d1_databases"],
+      "react": false
+    },
+    {
+      "id": "oauth",
+      "label": "Social sign-in",
+      "blurb": "GitHub, Google and LinkedIn; every write needs a signed-in user.",
+      "files": [".dev.vars", ".dev.vars.example", "src/auth.ts", "src/routes/account.tsx"],
+      "pages": ["/account"],
+      "services": ["d1_databases"],
       "react": false
     },
     {

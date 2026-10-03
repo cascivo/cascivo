@@ -14,6 +14,7 @@ import type { Database } from './db'
 import {
   beginAuthorization,
   completeAuthorization,
+  normalizeServer,
   OAuthError,
   parsePendingAuthorization,
   parseTokenSet,
@@ -23,6 +24,8 @@ import {
 import type {
   CompletedAuthorization,
   Identity,
+  MastodonRegistration,
+  MastodonRegistrations,
   OAuthErrorCode,
   OAuthProvider,
   PendingAuthorization,
@@ -152,10 +155,28 @@ function redirectFlow(config: {
     clear,
     fail,
     async start(provider: OAuthProvider, request: Request, origin: string): Promise<Response> {
-      const returnTo = safeReturnTo(new URL(request.url).searchParams.get('returnTo'), origin)
-      const { url, pending } = await beginAuthorization(provider, {
-        redirectUri: `${origin}${config.callbackPath(provider)}`,
+      const params = new URL(request.url).searchParams
+      const returnTo = safeReturnTo(params.get('returnTo'), origin)
+      const redirectUri = `${origin}${config.callbackPath(provider)}`
+      // A provider that is many servers (Mastodon) starts at the one the user named: ?server=.
+      let server: string | undefined
+      let resolved = provider
+      if (provider.forServer) {
+        try {
+          server = normalizeServer(params.get('server') ?? '')
+          resolved = await provider.forServer(server, redirectUri)
+        } catch (error) {
+          if (error instanceof OAuthError) {
+            console.warn(`[cascivo/oauth] ${provider.id}: ${error.code}: ${error.message}`)
+            return fail(error.code, origin)
+          }
+          throw error
+        }
+      }
+      const { url, pending } = await beginAuthorization(resolved, {
+        redirectUri,
         ttlSeconds: PENDING_TTL,
+        ...(server ? { server } : {}),
       })
       const sealed = await seal(config.secret, config.context, {
         authorization: pending,
@@ -175,8 +196,11 @@ function redirectFlow(config: {
       const pending = parsePending(await unseal(config.secret, config.context, cookie))
       if (!pending) return fail('state_mismatch', origin)
       try {
+        const { server, redirectUri } = pending.authorization
+        const resolved =
+          provider.forServer && server ? await provider.forServer(server, redirectUri) : provider
         const completed = await completeAuthorization(
-          provider,
+          resolved,
           pending.authorization,
           new URL(request.url).searchParams,
         )
@@ -330,6 +354,8 @@ export interface Connection {
   provider: string
   /** The account at the provider: the subject `social` publishers post as. */
   subject: string
+  /** The server the account lives on, for a provider that is many (Mastodon); else `null`. */
+  server: string | null
   name: string | null
   handle: string | null
   scopes: string[]
@@ -385,6 +411,7 @@ const connectionMigrations = [
         user_id TEXT NOT NULL REFERENCES users (id),
         provider TEXT NOT NULL,
         subject TEXT NOT NULL,
+        server TEXT,
         name TEXT,
         handle TEXT,
         scopes TEXT NOT NULL,
@@ -399,6 +426,11 @@ const connectionMigrations = [
         UNIQUE (user_id, provider, subject)
       )`,
       'CREATE INDEX IF NOT EXISTS connections_user ON connections (user_id)',
+      `CREATE TABLE IF NOT EXISTS oauth_clients (
+        key TEXT PRIMARY KEY,
+        sealed TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      )`,
     ],
   },
 ]
@@ -420,7 +452,7 @@ interface ConnectionRow {
 }
 
 const COLUMNS =
-  'id, user_id, provider, subject, name, handle, scopes, expires_at, refreshable, broken, sealed_tokens, version'
+  'id, user_id, provider, subject, server, name, handle, scopes, expires_at, refreshable, broken, sealed_tokens, version'
 
 function connectionRowParser(expiringDays: number) {
   return (raw: unknown): ConnectionRow => {
@@ -446,6 +478,7 @@ function connectionRowParser(expiringDays: number) {
         userId: text('user_id'),
         provider: text('provider'),
         subject: text('subject'),
+        server: optional('server'),
         name: optional('name'),
         handle: optional('handle'),
         scopes: text('scopes').split(' ').filter(Boolean),
@@ -662,8 +695,8 @@ export function handleConnections(
     )
     if (!row) throw new Error('The connection was not stored')
     await db
-      .prepare('UPDATE connections SET name = ?, handle = ? WHERE id = ?')
-      .bind(identity.name, identity.handle, row.connection.id)
+      .prepare('UPDATE connections SET server = ?, name = ?, handle = ? WHERE id = ?')
+      .bind(identity.server ?? null, identity.name, identity.handle, row.connection.id)
       .run()
     if (!(await storeTokens(db, options.secret, row.connection.id, tokens, row.version))) {
       // A second callback for the same account landed in between; its tokens are as new.
@@ -713,4 +746,56 @@ export function handleConnections(
     await store(user.id, finished.completed)
     return redirect(new URL(finished.returnTo, origin).href, [flow.clear])
   }
+}
+
+/**
+ * Where `mastodon()` keeps the app registration each server issued, in D1, its client secret
+ * sealed under `secret`. A registration that no longer opens (the secret changed) is made again.
+ */
+export function mastodonRegistrations(db: Database, secret: string): MastodonRegistrations {
+  const context = (key: string) => `cascivo-oauth-client:${key}`
+  return {
+    async get(key) {
+      await migrateConnections(db)
+      const [row] = await queryRows(
+        db,
+        'SELECT sealed FROM oauth_clients WHERE key = ?',
+        [key],
+        (raw) =>
+          typeof raw === 'object' && raw !== null
+            ? (raw as Record<string, unknown>)['sealed']
+            : null,
+      )
+      if (typeof row !== 'string') return null
+      return parseRegistration(await unseal(secret, context(key), row))
+    },
+    async set(key, registration) {
+      await migrateConnections(db)
+      await db
+        .prepare(
+          `INSERT INTO oauth_clients (key, sealed, created_at) VALUES (?, ?, ?)
+           ON CONFLICT (key) DO UPDATE SET sealed = excluded.sealed, created_at = excluded.created_at`,
+        )
+        .bind(key, await seal(secret, context(key), registration), new Date().toISOString())
+        .run()
+    },
+  }
+}
+
+function parseRegistration(raw: unknown): MastodonRegistration | null {
+  if (typeof raw !== 'object' || raw === null) return null
+  const r = raw as Record<string, unknown>
+  const { clientId, clientSecret, authorizationEndpoint, tokenEndpoint, pkce, scopes } = r
+  if (
+    typeof clientId === 'string' &&
+    typeof clientSecret === 'string' &&
+    typeof authorizationEndpoint === 'string' &&
+    typeof tokenEndpoint === 'string' &&
+    typeof pkce === 'boolean' &&
+    Array.isArray(scopes) &&
+    scopes.every((x) => typeof x === 'string')
+  ) {
+    return { clientId, clientSecret, authorizationEndpoint, tokenEndpoint, pkce, scopes }
+  }
+  return null
 }

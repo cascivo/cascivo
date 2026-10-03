@@ -36,9 +36,10 @@ export interface Auth {
   providers(): Promise<string[]>
   /**
    * Where a "Sign in with …" link points: the Worker redirects to the provider and, once signed
-   * in, back to `returnTo` (a path on this site; default the current page).
+   * in, back to `returnTo` (a path on this site; default the current page). `server` names the
+   * user's server for a provider that is many (`mastodon.social` for Mastodon).
    */
-  signInUrl(provider: string, returnTo?: string): string
+  signInUrl(provider: string, returnTo?: string, server?: string): string
 }
 
 function parseUser(raw: unknown): User | null {
@@ -101,9 +102,10 @@ export function createAuth(basePath = '/api/auth'): Auth {
       }
       return providers
     },
-    signInUrl(provider, returnTo) {
+    signInUrl(provider, returnTo, server) {
       const back = returnTo ?? `${location.pathname}${location.search}`
-      return `${basePath}/oauth/${encodeURIComponent(provider)}?returnTo=${encodeURIComponent(back)}`
+      const query = new URLSearchParams({ returnTo: back, ...(server ? { server } : {}) })
+      return `${basePath}/oauth/${encodeURIComponent(provider)}?${query}`
     },
   }
   auth.refresh().catch((error: unknown) => {

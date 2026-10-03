@@ -776,6 +776,44 @@ try {
 
 Like `oauth`, `social` has no database or Worker code: give it any `TokenSet` and subject.
 
+### Mastodon: one provider, many servers
+
+Every Mastodon server runs its own OAuth, so `mastodon()` is a factory. The flow takes the
+user's server as `?server=` (`/api/connections/mastodon?server=hachyderm.io`, or a handle such
+as `@ada@hachyderm.io`), discovers its endpoints, registers your app there once, and keeps the
+registration (client secret sealed) with `mastodonRegistrations`:
+
+```ts
+const providers = [
+  mastodon({
+    appName: 'Acme',
+    website: 'https://acme.example',
+    scopes: ['profile', 'write:statuses', 'write:media'],
+    registrations: mastodonRegistrations(env.DB, env.AUTH_SECRET),
+  }),
+]
+// connectionTokens(…) → { connection, tokens }; connection.server is the account's server
+await mastodonPublisher().publish(
+  { tokens, subject: connection.subject, server: connection.server },
+  post,
+  { idempotencyKey: `${postId}:${connection.id}` }, // retries cannot post twice
+)
+```
+
+- **The server name is distrusted input.** `normalizeServer` takes a host, URL or handle and
+  refuses IP addresses, ports, single labels and local names. Calls to it time out after ten
+  seconds, follow no redirects, and stop reading after 256 KB. Its metadata may not move the
+  token endpoint to another host.
+- **Old and new servers.** Mastodon 4.3+ announces PKCE and the `profile` scope, and both are
+  used; an older server gets `read:accounts` and no PKCE. GoToSocial and Akkoma speak the same
+  API.
+- **The account is `<id>@<server>`,** with a `@user@server` handle and no email. Tokens do not
+  expire; a refused one is a `reconnect`.
+- **`mastodonPublisher`** counts like Mastodon (any URL is 23 characters, a mention without its
+  server), appends a link to the text so the server builds the card, uploads images and waits
+  while the server processes them, and sends `Idempotency-Key`. Pass the server's own
+  `maxChars` when it allows more than 500.
+
 ## Who may call the Worker — `@cascivo/app/guard`
 
 Three checks for the top of a Worker's `fetch`, or inside a `createHandler` handler. Each

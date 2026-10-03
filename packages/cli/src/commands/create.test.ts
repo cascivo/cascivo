@@ -916,6 +916,10 @@ describe('create --auth', () => {
       'Unknown auth "basic". Expected: access, email, oauth or email,oauth.',
     ],
     [
+      ['--framework', 'cloudflare', '--example', 'social', '--auth', 'access'],
+      '--example social needs accounts',
+    ],
+    [
       ['--framework', 'cloudflare', '--auth', 'access,email'],
       'Unknown auth "access,email". Expected: access, email, oauth or email,oauth.',
     ],
@@ -1220,6 +1224,64 @@ describe('buildScaffold — cloudflare --auth oauth', () => {
   it('bills accounts without an email: checkout then asks Stripe for one', () => {
     const billing = build({ examples: ['checkout'] }).get('worker/billing.ts')!
     expect(billing).toContain('user.email\n          ? { customerEmail: user.email }')
+  })
+})
+
+describe('buildScaffold — cloudflare --example social', () => {
+  const build = (opts: Partial<ScaffoldOptions> = {}) =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        examples: ['social'],
+        ...opts,
+      }),
+    )
+  const map = build()
+
+  it('brings sign-in with providers when no --auth is given', () => {
+    expect(map.get('src/routes/account.tsx')).toContain('auth.signInUrl(')
+    expect(map.get('worker/index.ts')).toContain('await handleOAuth(')
+    // With email sign-in it uses that instead, and still seals tokens with AUTH_SECRET.
+    const email = build({ auth: 'email' })
+    expect(email.get('worker/index.ts')).not.toContain('handleOAuth(')
+    expect(email.get('.dev.vars')).toMatch(/^AUTH_SECRET=.{32,}$/m)
+    expect(email.get('worker/index.ts')).toContain('AUTH_SECRET?: string')
+  })
+
+  it('binds a Workflow per post, and connects accounts behind the signed-in guard', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"binding": "SOCIAL_POST", "class_name": "SocialPost"')
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain("export { SocialPost } from './social-post'")
+    expect(worker.indexOf('await requireUser(env.DB, request)')).toBeLessThan(
+      worker.indexOf('await socialStore.connections(env)(request)'),
+    )
+    // Starting a connection (Mastodon registers the app) and posting are rate-limited.
+    expect(worker).toMatch(/connections.*return request\.method === 'GET'/)
+    expect(worker).toContain(
+      "if (url.pathname === '/api/social/posts') return request.method === 'POST'",
+    )
+    expect(map.get('src/App.tsx')).toContain("href: '/social'")
+  })
+
+  it('never retries a LinkedIn post, and retries Mastodon with an idempotency key', () => {
+    const workflow = map.get('worker/social-post.ts')!
+    expect(workflow).toContain("{ retries: { limit: 0, delay: '1 second' } }")
+    expect(workflow).toContain('idempotencyKey: `${post.id}:${target.accountId}`')
+    // "Post now" must not ask a Workflow to sleep until the past.
+    expect(workflow.indexOf("step.do('due later'")).toBeLessThan(
+      workflow.indexOf('step.sleepUntil('),
+    )
+  })
+
+  it('names the Mastodon app after the project, quotes and all', () => {
+    expect(map.get('worker/social.ts')).toContain("const APP_NAME = 'Edge App'")
+    expect(build({ name: "Ada's \\app" }).get('worker/social.ts')).toContain(
+      "const APP_NAME = 'Adas app'",
+    )
   })
 })
 

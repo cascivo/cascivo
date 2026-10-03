@@ -6993,7 +6993,7 @@
             "verify": "(token: string): Promise<User>",
             "signOut": "(): Promise<void>",
             "providers": "(): Promise<string[]>",
-            "signInUrl": "(provider: string, returnTo?: string): string"
+            "signInUrl": "(provider: string, returnTo?: string, server?: string): string"
           },
           "createAuth": "declare function createAuth(basePath?: string): Auth",
           "User": {
@@ -7033,6 +7033,8 @@
           "github",
           "google",
           "linkedin",
+          "mastodon",
+          "normalizeServer",
           "parsePendingAuthorization",
           "parseTokenSet",
           "seal",
@@ -7044,13 +7046,16 @@
           "GoogleOptions",
           "Identity",
           "LinkedInOptions",
+          "MastodonOptions",
+          "MastodonRegistration",
+          "MastodonRegistrations",
           "OAuthErrorCode",
           "OAuthProvider",
           "PendingAuthorization",
           "TokenSet"
         ],
         "declarations": {
-          "beginAuthorization": "declare function beginAuthorization(provider: OAuthProvider, options: { redirectUri: string; scopes?: readonly string[]; ttlSeconds?: number; }): Promise<{ url: string; pending: PendingAuthorization; }>",
+          "beginAuthorization": "declare function beginAuthorization(provider: OAuthProvider, options: { redirectUri: string; scopes?: readonly string[]; ttlSeconds?: number; server?: string; }): Promise<{ url: string; pending: PendingAuthorization; }>",
           "completeAuthorization": "declare function completeAuthorization(provider: OAuthProvider, pending: PendingAuthorization, params: URLSearchParams): Promise<CompletedAuthorization>",
           "CompletedAuthorization": {
             "tokens": "TokenSet",
@@ -7080,7 +7085,8 @@
             "email": "string | null",
             "name": "string | null",
             "handle": "string | null",
-            "avatarUrl": "string | null"
+            "avatarUrl": "string | null",
+            "server?": "string"
           },
           "linkedin": "declare function linkedin(options: LinkedInOptions): OAuthProvider",
           "LinkedInOptions": {
@@ -7089,18 +7095,40 @@
             "scopes?": "readonly string[]",
             "fetch?": "typeof fetch"
           },
+          "mastodon": "declare function mastodon(options: MastodonOptions): OAuthProvider",
+          "MastodonOptions": {
+            "appName": "string",
+            "website?": "string",
+            "scopes?": "readonly string[]",
+            "registrations": "MastodonRegistrations",
+            "fetch?": "typeof fetch"
+          },
+          "MastodonRegistration": {
+            "clientId": "string",
+            "clientSecret": "string",
+            "authorizationEndpoint": "string",
+            "tokenEndpoint": "string",
+            "pkce": "boolean",
+            "scopes": "string[]"
+          },
+          "MastodonRegistrations": {
+            "get": "(key: string): Promise<MastodonRegistration | null>",
+            "set": "(key: string, registration: MastodonRegistration): Promise<void>"
+          },
+          "normalizeServer": "declare function normalizeServer(input: string): string",
           "OAuthError": {
             "readonly code": "OAuthErrorCode",
             "constructor": "(code: OAuthErrorCode, message: string)",
             "(kind)": "class"
           },
-          "OAuthErrorCode": "type = 'denied' | 'state_mismatch' | 'expired' | 'provider_error'",
+          "OAuthErrorCode": "type = 'denied' | 'state_mismatch' | 'expired' | 'provider_error' | 'bad_server'",
           "OAuthProvider": {
             "readonly id": "string",
             "readonly scopes": "readonly string[]",
             "authorizationUrl": "(pending: PendingAuthorization, codeChallenge: string): URL",
             "exchange": "(code: string, pending: PendingAuthorization): Promise<CompletedAuthorization>",
-            "refresh?": "(tokens: TokenSet): Promise<TokenSet>"
+            "refresh?": "(tokens: TokenSet): Promise<TokenSet>",
+            "forServer?": "(server: string, redirectUri: string): Promise<OAuthProvider>"
           },
           "parsePendingAuthorization": "declare function parsePendingAuthorization(raw: unknown): PendingAuthorization",
           "parseTokenSet": "declare function parseTokenSet(raw: unknown): TokenSet",
@@ -7111,7 +7139,8 @@
             "nonce": "string",
             "redirectUri": "string",
             "scopes": "string[]",
-            "expiresAt": "number"
+            "expiresAt": "number",
+            "server": "string | null"
           },
           "seal": "declare function seal(secret: string, context: string, value: unknown): Promise<string>",
           "TokenSet": {
@@ -7130,7 +7159,8 @@
           "handleConnections",
           "handleOAuth",
           "listConnections",
-          "markReconnect"
+          "markReconnect",
+          "mastodonRegistrations"
         ],
         "types": ["Connection", "ConnectionsOptions", "OAuthFailure", "OAuthServerOptions"],
         "declarations": {
@@ -7139,6 +7169,7 @@
             "userId": "string",
             "provider": "string",
             "subject": "string",
+            "server": "string | null",
             "name": "string | null",
             "handle": "string | null",
             "scopes": "string[]",
@@ -7163,6 +7194,7 @@
           "handleOAuth": "declare function handleOAuth(db: Database, options: OAuthServerOptions): (request: Request) => Promise<Response | null>",
           "listConnections": "declare function listConnections(db: Database, userId: string, options?: { expiringDays?: number; }): Promise<Connection[]>",
           "markReconnect": "declare function markReconnect(db: Database, connectionId: string): Promise<void>",
+          "mastodonRegistrations": "declare function mastodonRegistrations(db: Database, secret: string): MastodonRegistrations",
           "OAuthFailure": "type = OAuthErrorCode | 'identity_in_use'",
           "OAuthServerOptions": {
             "providers": "readonly OAuthProvider[]",
@@ -7175,11 +7207,19 @@
         }
       },
       "./social": {
-        "values": ["PublishError", "escapeLittleText", "linkedinPublisher"],
+        "values": [
+          "PublishError",
+          "escapeLittleText",
+          "linkedinPublisher",
+          "mastodonLength",
+          "mastodonPublisher"
+        ],
         "types": [
           "LinkedInPublisherOptions",
+          "MastodonPublisherOptions",
           "PostProblem",
           "PublishErrorKind",
+          "PublishOptions",
           "PublishTarget",
           "PublishedPost",
           "Publisher",
@@ -7191,6 +7231,13 @@
           "linkedinPublisher": "declare function linkedinPublisher(options?: LinkedInPublisherOptions): Publisher",
           "LinkedInPublisherOptions": {
             "version?": "string",
+            "fetch?": "typeof fetch"
+          },
+          "mastodonLength": "declare function mastodonLength(text: string): number",
+          "mastodonPublisher": "declare function mastodonPublisher(options?: MastodonPublisherOptions): Publisher",
+          "MastodonPublisherOptions": {
+            "maxChars?": "number",
+            "visibility?": "'public' | 'unlisted' | 'private'",
             "fetch?": "typeof fetch"
           },
           "PostProblem": {
@@ -7205,7 +7252,7 @@
             "readonly network": "string",
             "readonly limits": "{ maxChars: number; maxImages: number; }",
             "check": "(post: SocialPost): PostProblem[]",
-            "publish": "(target: PublishTarget, post: SocialPost): Promise<PublishedPost>"
+            "publish": "(target: PublishTarget, post: SocialPost, options?: PublishOptions): Promise<PublishedPost>"
           },
           "PublishError": {
             "readonly network": "string",
@@ -7216,9 +7263,13 @@
             "(kind)": "class"
           },
           "PublishErrorKind": "type = 'invalid' | 'reconnect' | 'rate_limited' | 'failed'",
+          "PublishOptions": {
+            "idempotencyKey?": "string"
+          },
           "PublishTarget": {
             "tokens": "TokenSet",
-            "subject": "string"
+            "subject": "string",
+            "server?": "string | null"
           },
           "SocialImage": {
             "data": "Blob",

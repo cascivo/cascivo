@@ -2,7 +2,7 @@ import { base64UrlDecode, base64UrlEncode, JwtError, verifyJwt } from './jwt'
 
 /**
  * `@cascivo/app/oauth` — the authorization-code flow against an OAuth provider, and adapters
- * for Google, GitHub and LinkedIn. It knows the protocol and the provider, nothing else: no database, no
+ * for Google, GitHub, LinkedIn and Mastodon. It knows the protocol and the provider, nothing else: no database, no
  * cookies, no users. What happens to the tokens is the caller's choice: `handleOAuth`
  * (`@cascivo/app/oauth-server`) turns the identity into a session and drops them; an app that
  * posts or reads on the user's behalf keeps them, sealed with `seal`. It runs anywhere with
@@ -43,6 +43,8 @@ export interface Identity {
   /** A username where the provider has one (GitHub's login); it can change. */
   handle: string | null
   avatarUrl: string | null
+  /** For a provider that is many servers (Mastodon): the one this account lives on. */
+  server?: string
 }
 
 /** What must survive from `beginAuthorization` to `completeAuthorization`. */
@@ -55,6 +57,8 @@ export interface PendingAuthorization {
   scopes: string[]
   /** Unix seconds. */
   expiresAt: number
+  /** The server the flow runs against, for a provider that is many (Mastodon); else `null`. */
+  server: string | null
 }
 
 export interface OAuthProvider {
@@ -66,6 +70,11 @@ export interface OAuthProvider {
   exchange(code: string, pending: PendingAuthorization): Promise<CompletedAuthorization>
   /** Present when the provider issues refresh tokens. */
   refresh?(tokens: TokenSet): Promise<TokenSet>
+  /**
+   * Present when the provider is many servers that each run their own OAuth (Mastodon): the
+   * provider for one server, which the user names. Begin and complete with what it returns.
+   */
+  forServer?(server: string, redirectUri: string): Promise<OAuthProvider>
 }
 
 export interface CompletedAuthorization {
@@ -82,6 +91,8 @@ export type OAuthErrorCode =
   | 'expired'
   /** The provider refused the exchange, or answered with something that failed a check. */
   | 'provider_error'
+  /** The server the user named is not a public host, or does not answer as a provider. */
+  | 'bad_server'
 
 /** A flow that failed for a reason the user can be told about. */
 export class OAuthError extends Error {
@@ -112,7 +123,13 @@ async function s256(verifier: string): Promise<string> {
  */
 export async function beginAuthorization(
   provider: OAuthProvider,
-  options: { redirectUri: string; scopes?: readonly string[]; ttlSeconds?: number },
+  options: {
+    redirectUri: string
+    scopes?: readonly string[]
+    ttlSeconds?: number
+    /** The server, when `provider` came from `forServer`. */
+    server?: string
+  },
 ): Promise<{ url: string; pending: PendingAuthorization }> {
   const pending: PendingAuthorization = {
     provider: provider.id,
@@ -122,6 +139,7 @@ export async function beginAuthorization(
     redirectUri: options.redirectUri,
     scopes: [...(options.scopes ?? provider.scopes)],
     expiresAt: now() + (options.ttlSeconds ?? 600),
+    server: options.server ?? null,
   }
   const url = provider.authorizationUrl(pending, await s256(pending.codeVerifier))
   return { url: url.href, pending }
@@ -170,7 +188,9 @@ export function parsePendingAuthorization(raw: unknown): PendingAuthorization {
   if (typeof raw === 'object' && raw !== null) {
     const r = raw as Record<string, unknown>
     const { provider, state, codeVerifier, nonce, redirectUri, scopes, expiresAt } = r
+    const server = r['server'] ?? null
     if (
+      (typeof server === 'string' || server === null) &&
       typeof provider === 'string' &&
       typeof state === 'string' &&
       typeof codeVerifier === 'string' &&
@@ -180,7 +200,7 @@ export function parsePendingAuthorization(raw: unknown): PendingAuthorization {
       scopes.every((s) => typeof s === 'string') &&
       typeof expiresAt === 'number'
     ) {
-      return { provider, state, codeVerifier, nonce, redirectUri, scopes, expiresAt }
+      return { provider, state, codeVerifier, nonce, redirectUri, scopes, expiresAt, server }
     }
   }
   throw new Error('Malformed pending authorization')
@@ -546,6 +566,287 @@ export function linkedin(options: LinkedInOptions): OAuthProvider {
       return { tokens, identity: oidcIdentity('linkedin', claims) }
     },
   }
+}
+
+/* ---------------------------------- Mastodon ---------------------------------- */
+
+/**
+ * The host a person typed for their server, or `OAuthError('bad_server')`. Takes
+ * `mastodon.social`, `https://mastodon.social/about` or a handle (`@ada@mastodon.social`);
+ * gives the lowercased, punycoded hostname. Refuses what is not a public DNS name: IP
+ * addresses, ports, credentials, single labels and local names. The Worker fetches this host,
+ * so it is input to be distrusted.
+ */
+export function normalizeServer(input: string): string {
+  let value = input.trim().toLowerCase()
+  if (value.includes('@')) value = value.slice(value.lastIndexOf('@') + 1)
+  value = value.replace(/^https?:\/\//, '').replace(/[/?#].*$/, '')
+  const bad = () => new OAuthError('bad_server', `"${input.slice(0, 100)}" is not a server name`)
+  if (!value || value.length > 253) throw bad()
+  let url: URL
+  try {
+    url = new URL(`https://${value}`)
+  } catch {
+    throw bad()
+  }
+  const host = url.hostname
+  if (
+    url.port ||
+    url.username ||
+    url.password ||
+    !host.includes('.') ||
+    host.startsWith('[') ||
+    /^[\d.]+$/.test(host) ||
+    /(^|\.)(localhost|local|internal|lan|home|arpa)$/.test(host)
+  ) {
+    throw bad()
+  }
+  return host
+}
+
+const SERVER_TIMEOUT_MS = 10_000
+const SERVER_MAX_BYTES = 256 * 1024
+
+/**
+ * A JSON call to a server someone named: a timeout, no redirects (a redirect could point
+ * anywhere), and a cap on how much is read. Returns the status and the parsed body (or null).
+ */
+async function serverJson(
+  doFetch: typeof fetch,
+  url: string,
+  init: RequestInit = {},
+): Promise<{ status: number; body: unknown }> {
+  let response: Response
+  try {
+    response = await doFetch(url, {
+      ...init,
+      redirect: 'manual',
+      signal: AbortSignal.timeout(SERVER_TIMEOUT_MS),
+    })
+  } catch (error) {
+    throw new OAuthError('bad_server', `${new URL(url).host} did not answer: ${String(error)}`)
+  }
+  if (!response.body) return { status: response.status, body: null }
+  const reader = response.body.getReader()
+  const chunks: Uint8Array[] = []
+  let size = 0
+  for (;;) {
+    const { done, value } = await reader.read()
+    if (done) break
+    size += value.byteLength
+    if (size > SERVER_MAX_BYTES) {
+      await reader.cancel()
+      throw new OAuthError('bad_server', `${new URL(url).host} sent too much`)
+    }
+    chunks.push(value)
+  }
+  const bytes = new Uint8Array(size)
+  let offset = 0
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset)
+    offset += chunk.byteLength
+  }
+  let body: unknown = null
+  try {
+    body = JSON.parse(new TextDecoder().decode(bytes)) as unknown
+  } catch {
+    // Not JSON: the caller decides from the status.
+  }
+  return { status: response.status, body }
+}
+
+/** What a server issued this app: kept so it registers once per server. */
+export interface MastodonRegistration {
+  clientId: string
+  clientSecret: string
+  authorizationEndpoint: string
+  tokenEndpoint: string
+  /** The server announced S256 PKCE (Mastodon 4.3+). */
+  pkce: boolean
+  /** The scopes registered, which every authorization asks for. */
+  scopes: string[]
+}
+
+/** Where registrations are kept. `handleOAuth`'s package ships a D1 one (`mastodonRegistrations`). */
+export interface MastodonRegistrations {
+  get(key: string): Promise<MastodonRegistration | null>
+  set(key: string, registration: MastodonRegistration): Promise<void>
+}
+
+export interface MastodonOptions {
+  /** The app name a server shows on its authorize page. */
+  appName: string
+  /** Your app's homepage, shown with the name. */
+  website?: string
+  /**
+   * Default `profile` (read only who signed in; servers before 4.3 get `read:accounts`). Add
+   * `write:statuses` and `write:media` to post with the tokens.
+   */
+  scopes?: readonly string[]
+  registrations: MastodonRegistrations
+  fetch?: typeof fetch
+}
+
+/**
+ * Mastodon, and servers that speak its API (GoToSocial, Akkoma, …). Every server runs its own
+ * OAuth, so this provider is a factory: `forServer` discovers the server's endpoints, registers
+ * the app there once (kept in `registrations`), and returns the provider for that server. The
+ * identity is `<account id>@<server>`, with no email. Tokens do not expire.
+ */
+export function mastodon(options: MastodonOptions): OAuthProvider {
+  const doFetch = options.fetch ?? ((input, init) => fetch(input, init))
+  const wanted = options.scopes ?? ['profile']
+
+  async function register(server: string, redirectUri: string): Promise<MastodonRegistration> {
+    const meta = await serverJson(
+      doFetch,
+      `https://${server}/.well-known/oauth-authorization-server`,
+    )
+    const metadata =
+      meta.status === 200 && typeof meta.body === 'object' && meta.body !== null
+        ? (meta.body as Record<string, unknown>)
+        : null
+    const endpoint = (key: string, fallback: string) => {
+      const value = metadata?.[key]
+      if (typeof value !== 'string') return fallback
+      // The token goes to this URL: it must be the server the user named.
+      if (!URL.canParse(value) || new URL(value).host !== server) {
+        throw new OAuthError('bad_server', `${server} points its ${key} at another host`)
+      }
+      return value
+    }
+    const supported = Array.isArray(metadata?.['scopes_supported'])
+      ? (metadata['scopes_supported'] as unknown[])
+      : []
+    const methods = Array.isArray(metadata?.['code_challenge_methods_supported'])
+      ? (metadata['code_challenge_methods_supported'] as unknown[])
+      : []
+    // `profile` came with 4.3; an older server reads the account with `read:accounts`.
+    const scopes = wanted.map((scope) =>
+      scope === 'profile' && !supported.includes('profile') ? 'read:accounts' : scope,
+    )
+    const created = await serverJson(doFetch, `https://${server}/api/v1/apps`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', accept: 'application/json' },
+      body: JSON.stringify({
+        client_name: options.appName,
+        redirect_uris: redirectUri,
+        scopes: scopes.join(' '),
+        ...(options.website ? { website: options.website } : {}),
+      }),
+    })
+    const app = typeof created.body === 'object' && created.body !== null ? created.body : null
+    const clientId = app ? (app as Record<string, unknown>)['client_id'] : undefined
+    const clientSecret = app ? (app as Record<string, unknown>)['client_secret'] : undefined
+    if (
+      created.status !== 200 ||
+      typeof clientId !== 'string' ||
+      typeof clientSecret !== 'string'
+    ) {
+      throw new OAuthError('bad_server', `${server} did not register the app (${created.status})`)
+    }
+    return {
+      clientId,
+      clientSecret,
+      authorizationEndpoint: endpoint(
+        'authorization_endpoint',
+        `https://${server}/oauth/authorize`,
+      ),
+      tokenEndpoint: endpoint('token_endpoint', `https://${server}/oauth/token`),
+      pkce: methods.includes('S256'),
+      scopes,
+    }
+  }
+
+  const factory: OAuthProvider = {
+    id: 'mastodon',
+    scopes: wanted,
+    authorizationUrl() {
+      throw new Error('mastodon(): call forServer(server, redirectUri) first')
+    },
+    async exchange() {
+      throw new Error('mastodon(): call forServer(server, redirectUri) first')
+    },
+    async forServer(input, redirectUri) {
+      const server = normalizeServer(input)
+      const key = `${server} ${redirectUri} ${wanted.join(' ')}`
+      let registration = await options.registrations.get(key)
+      if (!registration) {
+        registration = await register(server, redirectUri)
+        await options.registrations.set(key, registration)
+      }
+      const app = registration
+      return {
+        id: 'mastodon',
+        scopes: app.scopes,
+        authorizationUrl(pending, codeChallenge) {
+          const url = new URL(app.authorizationEndpoint)
+          const params: Record<string, string> = {
+            response_type: 'code',
+            client_id: app.clientId,
+            redirect_uri: pending.redirectUri,
+            // Must be within what was registered: always the registered set.
+            scope: app.scopes.join(' '),
+            state: pending.state,
+            ...(app.pkce ? { code_challenge: codeChallenge, code_challenge_method: 'S256' } : {}),
+          }
+          for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v)
+          return url
+        },
+        async exchange(code, pending) {
+          const { body: tokenBody } = await serverJson(doFetch, app.tokenEndpoint, {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/x-www-form-urlencoded',
+              accept: 'application/json',
+            },
+            body: new URLSearchParams({
+              grant_type: 'authorization_code',
+              code,
+              client_id: app.clientId,
+              client_secret: app.clientSecret,
+              redirect_uri: pending.redirectUri,
+              scope: app.scopes.join(' '),
+              ...(app.pkce ? { code_verifier: pending.codeVerifier } : {}),
+            }),
+          })
+          const { idToken: _idToken, ...tokens } = parseTokenResponse(tokenBody, app.scopes)
+          const me = await serverJson(
+            doFetch,
+            `https://${server}/api/v1/accounts/verify_credentials`,
+            {
+              headers: {
+                authorization: `Bearer ${tokens.accessToken}`,
+                accept: 'application/json',
+              },
+            },
+          )
+          const account =
+            me.status === 200 && typeof me.body === 'object' && me.body !== null
+              ? (me.body as Record<string, unknown>)
+              : null
+          const id = account?.['id']
+          if (typeof id !== 'string' || !id) {
+            throw new OAuthError('provider_error', `${server} did not say who signed in`)
+          }
+          const username = stringOrNull(account?.['username'])
+          return {
+            tokens,
+            identity: {
+              provider: 'mastodon',
+              subject: `${id}@${server}`,
+              email: null,
+              name: stringOrNull(account?.['display_name']) ?? username,
+              handle: username ? `@${username}@${server}` : null,
+              avatarUrl: stringOrNull(account?.['avatar']),
+              server,
+            },
+          }
+        },
+      }
+    },
+  }
+  return factory
 }
 
 /* ----------------------------------- GitHub ----------------------------------- */

@@ -520,6 +520,39 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
   })
 
   /**
+   * `--example social` (which brings `--auth oauth`): connected LinkedIn and Mastodon accounts
+   * from `@cascivo/app/oauth-server`, the two publishers from `@cascivo/app/social` running in
+   * the page as well as the Worker, and a Workflow per scheduled post.
+   */
+  describe('cloudflare --example social', () => {
+    let app: string
+
+    before(() => {
+      if (!ready) return
+      app = scaffold('cloudflare', 'cf-social', ['--example', 'social'])
+      run('pnpm', ['run', 'typecheck'], app)
+      run('pnpm', ['exec', 'vite', 'build'], app)
+    })
+
+    it('bundles both publishers and the Workflow into the Worker', { skip: !ready }, () => {
+      const dist = join(app, 'dist')
+      const dir = readdirSync(dist).find((d) => existsSync(join(dist, d, 'wrangler.json')))
+      assert.ok(dir, 'vite build emitted no Worker bundle.')
+      const worker = readFileSync(join(dist, dir, 'index.js'), 'utf8')
+      assert.match(worker, /api\.linkedin\.com\/rest/, 'the Worker bundle cannot post to LinkedIn')
+      assert.match(worker, /\/api\/v1\/statuses/, 'the Worker bundle cannot post to Mastodon')
+      // The bundle is minified: the class keeps its exported name, not its declaration.
+      assert.match(worker, /\bSocialPost\b/, 'the Worker bundle exports no SocialPost Workflow')
+      const config = readFileSync(join(dist, dir, 'wrangler.json'), 'utf8')
+      assert.match(config, /"SOCIAL_POST"/, 'the Workflow is not bound')
+    })
+
+    it('passes its own format:check', { skip: !ready }, () => {
+      assertFormatted(app)
+    })
+  })
+
+  /**
    * `--example newsletter`: `@cascivo/app/ses` (Signature V4 over WebCrypto) and the issue and
    * confirmation emails rendered by `@cascivo/email` in a Worker on Preact, with a queue
    * consumer beside the fetch handler.

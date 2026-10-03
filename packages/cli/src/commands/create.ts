@@ -72,6 +72,7 @@ export type Example =
   | 'search'
   | 'checkout'
   | 'newsletter'
+  | 'social'
 
 export const EXAMPLES = [
   'board',
@@ -90,6 +91,7 @@ export const EXAMPLES = [
   'search',
   'checkout',
   'newsletter',
+  'social',
 ] as const
 
 function isExample(value: string): value is Example {
@@ -1417,10 +1419,28 @@ ${jsoncArray('  ', 'd1_databases', [`{ "binding": "DB", "database_name": "${pack
   "analytics_engine_datasets": [{ "binding": "USAGE", "dataset": "${usageDataset(opts)}" }],`
       : ''
   }${wranglerQueues(opts)}${
-    hasExample(opts, 'import')
+    hasExample(opts, 'import') || hasExample(opts, 'social')
       ? `
-  // The CSV import runs as a Workflow (worker/import-job.ts); its progress is a room.
-  "workflows": [{ "name": "import-job", "binding": "IMPORT_JOB", "class_name": "ImportJob" }],`
+  // ${[
+    hasExample(opts, 'import')
+      ? 'The CSV import runs as a Workflow (worker/import-job.ts); its progress is a room.'
+      : '',
+    hasExample(opts, 'social')
+      ? 'Each scheduled post is a Workflow that waits until it is due (worker/social-post.ts).'
+      : '',
+  ]
+    .filter(Boolean)
+    .join('\n  // ')}
+${jsoncArray('  ', 'workflows', [
+  ...(hasExample(opts, 'import')
+    ? ['{ "name": "import-job", "binding": "IMPORT_JOB", "class_name": "ImportJob" }']
+    : []),
+  ...(hasExample(opts, 'social')
+    ? [
+        `{ "name": "${packageName(opts.name)}-social-post", "binding": "SOCIAL_POST", "class_name": "SocialPost" }`,
+      ]
+    : []),
+])}`
       : ''
   }${
     usesWorkersAi(opts)
@@ -1640,6 +1660,7 @@ function usesLimiter(opts: ScaffoldOptions): boolean {
     hasExample(opts, 'search') ||
     hasExample(opts, 'checkout') ||
     hasExample(opts, 'newsletter') ||
+    hasExample(opts, 'social') ||
     emailSignIn(opts)
   )
 }
@@ -1685,7 +1706,7 @@ function usesRooms(opts: ScaffoldOptions): boolean {
  * worker/ on its own (tsconfig.worker.json).
  */
 function needsWorkerTypes(opts: ScaffoldOptions): boolean {
-  return usesAgents(opts) || hasExample(opts, 'import')
+  return usesAgents(opts) || hasExample(opts, 'import') || hasExample(opts, 'social')
 }
 
 /**
@@ -1710,7 +1731,8 @@ function cfApiTs(opts: ScaffoldOptions): string {
   const checkout = hasExample(opts, 'checkout')
   const newsletter = hasExample(opts, 'newsletter')
   const billing = usesBilling(opts)
-  return `import { defineApi, ${imports || files || usage || crud || live || publish || webhooks || digest || search || checkout || newsletter ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
+  const social = hasExample(opts, 'social')
+  return `import { defineApi, ${imports || files || usage || crud || live || publish || webhooks || digest || search || checkout || newsletter || social ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
 ${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}${live ? `import { ops, parseAccepted } from './ops'\n` : ''}${publish ? `import { parsePage, parsePageInput, parsePageSummary } from './pages'\n` : ''}${webhooks ? `import { parseDeliveries, parseTestResult } from './webhooks'\n` : ''}${digest ? `import { parseDigestRun, parseDigestRuns } from './digest'\n` : ''}${search ? `import { parseIndexed, parseSearchQuery, parseSearchResult } from './search'\n` : ''}${billing ? `import { parseBilling, parseRedirect, parseSyncInput } from './billing'\n` : ''}${checkout ? `import { parseCheckoutStarted, parseOrder } from './checkout'\n` : ''}${
     newsletter
       ? `import {
@@ -1725,7 +1747,7 @@ ${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` :
   parseTokenInput,
 } from './newsletter'\n`
       : ''
-  }
+  }${social ? `import { parsePostInput, parseScheduledPost, parseSocial } from './social'\n` : ''}
 /**
  * The contract between the browser and the Worker. Both import this file: the Worker serves
  * it with \`createHandler\`, the app calls it with \`createClient\`, and a change that breaks
@@ -1929,6 +1951,23 @@ export const api = defineApi({
   }),
   deleteCustomer: endpoint({ method: 'DELETE', path: '/api/customers/:id', output: parseDeleted }),`
       : ''
+  }${
+    social
+      ? `
+  // The signed-in user's connected accounts and posts (worker/social.ts).
+  getSocial: endpoint({ method: 'GET', path: '/api/social', output: parseSocial }),
+  schedulePost: endpoint({
+    method: 'POST',
+    path: '/api/social/posts',
+    input: parsePostInput,
+    output: parseScheduledPost,
+  }),
+  cancelPost: endpoint({
+    method: 'POST',
+    path: '/api/social/posts/:id/cancel',
+    output: parseScheduledPost,
+  }),`
+      : ''
   }
 })
 `
@@ -1958,6 +1997,7 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const emailAuth = emailSignIn(opts)
   const oauth = oauthSignIn(opts)
   const accounts = hasAccounts(opts)
+  const social = hasExample(opts, 'social')
   const guards = [
     ...(access ? ['requireAccess'] : []),
     ...(limiter ? ['clientIp', 'rateLimit'] : []),
@@ -2019,7 +2059,7 @@ import type { BrowserWorker } from '@cloudflare/puppeteer'
       : ''
   }${ai ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\nimport { renderPageHtml } from './page-html'\nimport type { Assets } from './page-html'\n${exports ? `import { pagePreview } from './page-preview'\n` : ''}` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${search ? `import * as articleSearch from './search'\nimport type { ${ai ? '' : 'Embedder, '}VectorIndex } from './search'\n` : ''}${billing ? `import * as billingStore from './billing'\n` : ''}${checkout ? `import * as orderStore from './checkout'\nimport type { ReceiptSender } from './checkout'\nimport { ORDER_ID, orderRoom } from '../src/checkout'\n` : ''}${newsletter ? `import * as newsletterStore from './newsletter'\nimport type { NewsletterBatch, NewsletterQueue } from './newsletter'\nimport { ISSUE_ID, issueRoom } from '../src/newsletter'\n` : ''}${
+${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\nimport { renderPageHtml } from './page-html'\nimport type { Assets } from './page-html'\n${exports ? `import { pagePreview } from './page-preview'\n` : ''}` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${search ? `import * as articleSearch from './search'\nimport type { ${ai ? '' : 'Embedder, '}VectorIndex } from './search'\n` : ''}${billing ? `import * as billingStore from './billing'\n` : ''}${social ? `import * as socialStore from './social'\nimport type { SocialPostParams } from './social'\n` : ''}${checkout ? `import * as orderStore from './checkout'\nimport type { ReceiptSender } from './checkout'\nimport { ORDER_ID, orderRoom } from '../src/checkout'\n` : ''}${newsletter ? `import * as newsletterStore from './newsletter'\nimport type { NewsletterBatch, NewsletterQueue } from './newsletter'\nimport { ISSUE_ID, issueRoom } from '../src/newsletter'\n` : ''}${
     rooms
       ? `
 // The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
@@ -2055,6 +2095,13 @@ export { LiveRoom } from '@cascivo/app/live-server'
 export { ImportJob } from './import-job'
 `
       : ''
+  }${
+    social
+      ? `
+// The Workflow behind each scheduled post (worker/social-post.ts), bound as SOCIAL_POST.
+export { SocialPost } from './social-post'
+`
+      : ''
   }
 /**
  * Add bindings (KV, D1, R2, Durable Objects, Workers AI) in wrangler.jsonc and type them
@@ -2070,12 +2117,13 @@ ${
   access ||
   live ||
   accounts ||
+  social ||
   webhooks ||
   digest ||
   search ||
   checkout ||
   newsletter
-    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${oauth ? '\n  /** Sign-in with GitHub, Google and LinkedIn: `wrangler secret put` (.dev.vars locally). A provider is\n   * offered once both its id and secret are set; AUTH_SECRET seals the sign-in state. */\n  AUTH_SECRET?: string\n  GITHUB_CLIENT_ID?: string\n  GITHUB_CLIENT_SECRET?: string\n  GOOGLE_CLIENT_ID?: string\n  GOOGLE_CLIENT_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
+    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${oauth ? '\n  /** Sign-in with GitHub, Google and LinkedIn: `wrangler secret put` (.dev.vars locally). A provider is\n   * offered once both its id and secret are set; AUTH_SECRET seals the sign-in state. */\n  AUTH_SECRET?: string\n  GITHUB_CLIENT_ID?: string\n  GITHUB_CLIENT_SECRET?: string\n  GOOGLE_CLIENT_ID?: string\n  GOOGLE_CLIENT_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string' : social ? "\n  /** Seals connected accounts' tokens, and LinkedIn's app: `wrangler secret put` (.dev.vars\n   * locally). LinkedIn is offered once both its values are set. */\n  AUTH_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string" : ''}${social ? '\n  SOCIAL_POST: Workflow<SocialPostParams>' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -2122,6 +2170,7 @@ ${[
   files ? 'a new upload (not each part of one)' : '',
   exports ? 'an export' : '',
   publish ? 'a published page' : '',
+  social ? 'connecting an account (Mastodon registers the app with the server), or a post' : '',
 ]
   .filter(Boolean)
   .map((item) => ` * - ${item}`)
@@ -2161,6 +2210,12 @@ function countsAgainstLimit(request: Request): boolean {
     emailAuth
       ? `
   if (url.pathname === '/api/auth/start') return request.method === 'POST'`
+      : ''
+  }${
+    social
+      ? `
+  if (/^\\/api\\/connections\\/[a-z-]+$/.test(url.pathname)) return request.method === 'GET'
+  if (url.pathname === '/api/social/posts') return request.method === 'POST'`
       : ''
   }${
     publish
@@ -2269,6 +2324,13 @@ const handleApi = createHandler<typeof api, Env>(api, {
     newsletterStore.preview(env, body, new URL(request.url).origin),
   sendIssue: ({ body, request, env }) =>
     newsletterStore.sendIssue(env, body, new URL(request.url).origin),`
+      : ''
+  }${
+    social
+      ? `
+  getSocial: ({ request, env }) => socialStore.getSocial(env, request),
+  schedulePost: ({ body, request, env }) => socialStore.schedulePost(env, request, body),
+  cancelPost: ({ params, request, env }) => socialStore.cancelPost(env, request, params.id),`
       : ''
   }${
     digest
@@ -2386,6 +2448,13 @@ ${
       } catch (error) {
         return guardResponse(error)
       }
+    }${
+      social
+        ? `
+    // The accounts a user connects to post with (worker/social.ts): /api/connections/*.
+    const connected = await socialStore.connections(env)(request)
+    if (connected) return connected`
+        : ''
     }`
           : ''
       }${
@@ -2738,6 +2807,7 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
     items.push({ label: 'Newsletter', href: '/newsletter' })
     items.push({ label: 'Send newsletter', href: '/newsletter/send' })
   }
+  if (hasExample(opts, 'social')) items.push({ label: 'Social', href: '/social' })
   if (hasAccounts(opts)) items.push({ label: 'Account', href: '/account' })
   const navItems = items
     .map(
@@ -7761,6 +7831,960 @@ export default function BillingPage() {
 `
 }
 
+/* --- `--example social`: scheduled posts to connected LinkedIn and Mastodon accounts --- */
+
+function cfSocialTs(): string {
+  return `import { linkedinPublisher, mastodonPublisher } from '@cascivo/app/social'
+import type { Publisher, SocialPost } from '@cascivo/app/social'
+
+/**
+ * Posts scheduled to the accounts a user connected, shared by the Worker (worker/social.ts)
+ * and the /social page. The publishers run on both sides: the page shows what a network would
+ * refuse while you type, and the Worker refuses the same post before scheduling it.
+ */
+
+export const NETWORKS = { linkedin: 'LinkedIn', mastodon: 'Mastodon' } as const
+export type Network = keyof typeof NETWORKS
+
+export function isNetwork(value: string): value is Network {
+  return value === 'linkedin' || value === 'mastodon'
+}
+
+export const publishers: Record<Network, Publisher> = {
+  linkedin: linkedinPublisher(),
+  mastodon: mastodonPublisher(),
+}
+
+export const MAX_TEXT = 5000
+export const MAX_ACCOUNTS = 10
+/** How far ahead a post can be scheduled. */
+export const MAX_DAYS_AHEAD = 365
+
+export interface Account {
+  id: string
+  network: Network
+  /** \`@ada@hachyderm.io\`, or the name on a LinkedIn profile. */
+  label: string
+  /** \`expiring\`: the token ends soon and cannot be renewed (LinkedIn): connect it again. */
+  status: 'active' | 'expiring' | 'reconnect'
+}
+
+export type TargetStatus = 'pending' | 'publishing' | 'posted' | 'failed'
+
+export interface Target {
+  accountId: string
+  network: Network
+  label: string
+  status: TargetStatus
+  url: string | null
+  error: string | null
+}
+
+export type PostStatus = 'scheduled' | 'publishing' | 'done' | 'partial' | 'failed' | 'cancelled'
+
+export interface Link {
+  url: string
+  /** LinkedIn shows it on the card; Mastodon builds its own card from the page. */
+  title: string
+}
+
+export interface ScheduledPost {
+  id: string
+  text: string
+  link: Link | null
+  /** ISO time it goes out. */
+  at: string
+  status: PostStatus
+  targets: Target[]
+}
+
+export interface Social {
+  /** The networks this app can connect (LinkedIn needs its client id and secret). */
+  networks: Network[]
+  accounts: Account[]
+  posts: ScheduledPost[]
+}
+
+export interface PostInput {
+  text: string
+  link: Link | null
+  accountIds: string[]
+  /** ISO time, or \`null\` for now. */
+  at: string | null
+}
+
+/** What \`publishers\` check: the post as a network sees it. */
+export function asSocialPost(input: { text: string; link: Link | null }): SocialPost {
+  return input.link ? { text: input.text, link: input.link } : { text: input.text }
+}
+
+const record = (raw: unknown, what: string): Record<string, unknown> => {
+  if (typeof raw !== 'object' || raw === null) throw new Error(\`Malformed \${what}\`)
+  return raw as Record<string, unknown>
+}
+
+const text = (value: unknown, what: string): string => {
+  if (typeof value !== 'string') throw new Error(\`Malformed \${what}\`)
+  return value
+}
+
+function parseLink(raw: unknown): Link | null {
+  if (raw === null || raw === undefined) return null
+  const { url, title } = record(raw, 'link')
+  return { url: text(url, 'link url'), title: text(title, 'link title') }
+}
+
+export function parsePostInput(raw: unknown): PostInput {
+  const r = record(raw, 'post')
+  const body = text(r['text'], 'text')
+  if (body.length > MAX_TEXT) throw new Error(\`Keep the text under \${MAX_TEXT} characters\`)
+  const link = parseLink(r['link'])
+  if (link && !/^https?:\\/\\//.test(link.url)) throw new Error('The link must be an http(s) URL')
+  const ids = r['accountIds']
+  if (
+    !Array.isArray(ids) ||
+    ids.length === 0 ||
+    ids.length > MAX_ACCOUNTS ||
+    !ids.every((id) => typeof id === 'string')
+  ) {
+    throw new Error(\`Pick 1 to \${MAX_ACCOUNTS} accounts\`)
+  }
+  const at = r['at'] ?? null
+  if (at !== null && (typeof at !== 'string' || Number.isNaN(Date.parse(at)))) {
+    throw new Error('Send the time as an ISO date')
+  }
+  return { text: body, link, accountIds: [...new Set(ids)], at }
+}
+
+function parseAccount(raw: unknown): Account {
+  const r = record(raw, 'account')
+  const network = text(r['network'], 'network')
+  const status = text(r['status'], 'status')
+  if (!isNetwork(network)) throw new Error('Malformed network')
+  if (status !== 'active' && status !== 'expiring' && status !== 'reconnect') {
+    throw new Error('Malformed account status')
+  }
+  return { id: text(r['id'], 'account id'), network, label: text(r['label'], 'label'), status }
+}
+
+const TARGET_STATUSES: readonly TargetStatus[] = ['pending', 'publishing', 'posted', 'failed']
+const POST_STATUSES: readonly PostStatus[] = [
+  'scheduled',
+  'publishing',
+  'done',
+  'partial',
+  'failed',
+  'cancelled',
+]
+
+function parseTarget(raw: unknown): Target {
+  const r = record(raw, 'target')
+  const network = text(r['network'], 'network')
+  const status = TARGET_STATUSES.find((s) => s === r['status'])
+  if (!isNetwork(network) || !status) throw new Error('Malformed target')
+  return {
+    accountId: text(r['accountId'], 'account id'),
+    network,
+    label: text(r['label'], 'label'),
+    status,
+    url: typeof r['url'] === 'string' ? r['url'] : null,
+    error: typeof r['error'] === 'string' ? r['error'] : null,
+  }
+}
+
+export function parseScheduledPost(raw: unknown): ScheduledPost {
+  const r = record(raw, 'post')
+  const status = POST_STATUSES.find((s) => s === r['status'])
+  if (!status || !Array.isArray(r['targets'])) throw new Error('Malformed post')
+  return {
+    id: text(r['id'], 'post id'),
+    text: text(r['text'], 'text'),
+    link: parseLink(r['link']),
+    at: text(r['at'], 'time'),
+    status,
+    targets: r['targets'].map(parseTarget),
+  }
+}
+
+export function parseSocial(raw: unknown): Social {
+  const r = record(raw, 'social')
+  const networks = r['networks']
+  if (!Array.isArray(networks) || !Array.isArray(r['accounts']) || !Array.isArray(r['posts'])) {
+    throw new Error('Malformed social')
+  }
+  return {
+    networks: networks.filter((n): n is Network => typeof n === 'string' && isNetwork(n)),
+    accounts: r['accounts'].map(parseAccount),
+    posts: r['posts'].map(parseScheduledPost),
+  }
+}
+`
+}
+
+function cfSocialWorkerTs(opts: ScaffoldOptions): string {
+  return `import { HttpError } from '@cascivo/app/api'
+import { requireUser } from '@cascivo/app/auth-server'
+import { migrate, queryRows } from '@cascivo/app/db'
+import type { Database } from '@cascivo/app/db'
+import { linkedin, mastodon } from '@cascivo/app/oauth'
+import type { OAuthProvider } from '@cascivo/app/oauth'
+import {
+  handleConnections,
+  listConnections,
+  mastodonRegistrations,
+} from '@cascivo/app/oauth-server'
+import type { Connection } from '@cascivo/app/oauth-server'
+import {
+  asSocialPost,
+  isNetwork,
+  MAX_DAYS_AHEAD,
+  NETWORKS,
+  parseScheduledPost,
+  publishers,
+} from '../src/social'
+import type { Account, PostInput, PostStatus, ScheduledPost, Social } from '../src/social'
+
+/** What the Workflow behind a scheduled post (worker/social-post.ts) is started with. */
+export interface SocialPostParams {
+  postId: string
+  userId: string
+}
+
+/** What scheduling needs of the Worker's env. */
+export interface SocialEnv {
+  DB: Database
+  /** Seals the connected accounts' tokens (and Mastodon's app registrations). */
+  AUTH_SECRET?: string
+  LINKEDIN_CLIENT_ID?: string
+  LINKEDIN_CLIENT_SECRET?: string
+  SOCIAL_POST: Workflow<SocialPostParams>
+}
+
+const APP_NAME = '${opts.name.replace(/[\\\\']/g, '')}'
+
+const migrations = [
+  {
+    id: '0001_social',
+    statements: [
+      \`CREATE TABLE social_posts (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        text TEXT NOT NULL,
+        link_url TEXT,
+        link_title TEXT,
+        at TEXT NOT NULL,
+        status TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      )\`,
+      'CREATE INDEX social_posts_user ON social_posts (user_id, at)',
+      \`CREATE TABLE social_targets (
+        post_id TEXT NOT NULL REFERENCES social_posts (id),
+        account_id TEXT NOT NULL,
+        network TEXT NOT NULL,
+        label TEXT NOT NULL,
+        status TEXT NOT NULL,
+        url TEXT,
+        error TEXT,
+        PRIMARY KEY (post_id, account_id)
+      )\`,
+    ],
+  },
+]
+
+export const secretOf = (env: SocialEnv): string => env.AUTH_SECRET ?? ''
+
+/**
+ * The accounts a user can connect: Mastodon always (the app registers itself with each
+ * server), LinkedIn once its client id and secret are set. Each asks for the scopes to post.
+ */
+export function socialProviders(env: SocialEnv): OAuthProvider[] {
+  const providers: OAuthProvider[] = []
+  if (env.LINKEDIN_CLIENT_ID && env.LINKEDIN_CLIENT_SECRET) {
+    providers.push(
+      linkedin({
+        clientId: env.LINKEDIN_CLIENT_ID,
+        clientSecret: env.LINKEDIN_CLIENT_SECRET,
+        scopes: ['openid', 'profile', 'w_member_social'],
+      }),
+    )
+  }
+  providers.push(
+    mastodon({
+      appName: APP_NAME,
+      scopes: ['profile', 'write:statuses', 'write:media'],
+      registrations: mastodonRegistrations(env.DB, secretOf(env)),
+    }),
+  )
+  return providers
+}
+
+/**
+ * /api/connections: list, connect (\`/api/connections/mastodon?server=hachyderm.io\`) and remove
+ * the signed-in user's accounts. A failed connection comes back to /social with \`?error=\`.
+ */
+export function connections(env: SocialEnv): (request: Request) => Promise<Response | null> {
+  return handleConnections(env.DB, {
+    secret: secretOf(env),
+    providers: socialProviders(env),
+    errorPath: '/social',
+  })
+}
+
+function toAccount(connection: Connection): Account | null {
+  if (!isNetwork(connection.provider)) return null
+  return {
+    id: connection.id,
+    network: connection.provider,
+    label: connection.handle ?? connection.name ?? connection.subject,
+    status: connection.status,
+  }
+}
+
+async function userAccounts(env: SocialEnv, userId: string): Promise<Account[]> {
+  const list = await listConnections(env.DB, userId)
+  return list.map(toAccount).filter((a): a is Account => a !== null)
+}
+
+export async function readPosts(db: Database, where: string, params: unknown[]) {
+  await migrate(db, migrations)
+  const posts = await queryRows(
+    db,
+    \`SELECT id, text, link_url AS linkUrl, link_title AS linkTitle, at, status FROM social_posts
+     WHERE \${where} ORDER BY at DESC LIMIT 50\`,
+    params,
+    (raw) => raw as Record<string, unknown>,
+  )
+  if (posts.length === 0) return []
+  const ids = posts.map((p) => String(p['id']))
+  const targets = await queryRows(
+    db,
+    \`SELECT post_id AS postId, account_id AS accountId, network, label, status, url, error
+     FROM social_targets WHERE post_id IN (\${ids.map(() => '?').join(', ')})\`,
+    ids,
+    (raw) => raw as Record<string, unknown>,
+  )
+  return posts.map((p) =>
+    parseScheduledPost({
+      id: p['id'],
+      text: p['text'],
+      link:
+        typeof p['linkUrl'] === 'string'
+          ? { url: p['linkUrl'], title: p['linkTitle'] ?? '' }
+          : null,
+      at: p['at'],
+      status: p['status'],
+      targets: targets.filter((t) => t['postId'] === p['id']),
+    }),
+  )
+}
+
+/** The signed-in user's networks, accounts and recent posts: everything /social shows. */
+export async function getSocial(env: SocialEnv, request: Request): Promise<Social> {
+  const user = await requireUser(env.DB, request)
+  return {
+    networks: socialProviders(env)
+      .map((p) => p.id)
+      .filter(isNetwork),
+    accounts: await userAccounts(env, user.id),
+    posts: await readPosts(env.DB, 'user_id = ?', [user.id]),
+  }
+}
+
+/**
+ * Schedules a post: each account must be the user's and connected, and each network's
+ * publisher must accept the post, before anything is stored. A Workflow then waits until the
+ * time and posts to each account (worker/social-post.ts).
+ */
+export async function schedulePost(
+  env: SocialEnv,
+  request: Request,
+  input: PostInput,
+): Promise<ScheduledPost> {
+  const user = await requireUser(env.DB, request)
+  const accounts = new Map((await userAccounts(env, user.id)).map((a) => [a.id, a]))
+  const chosen = input.accountIds.map((id) => {
+    const account = accounts.get(id)
+    if (!account) throw new HttpError(400, 'Pick accounts you have connected')
+    if (account.status === 'reconnect') {
+      throw new HttpError(400, \`Connect \${account.label} again first\`)
+    }
+    return account
+  })
+  const post = asSocialPost(input)
+  for (const network of new Set(chosen.map((a) => a.network))) {
+    const problems = publishers[network].check(post)
+    if (problems.length > 0) {
+      throw new HttpError(400, \`\${NETWORKS[network]}: \${problems.map((p) => p.message).join('; ')}\`)
+    }
+  }
+  const now = Date.now()
+  const at = input.at ? Date.parse(input.at) : now
+  if (at > now + MAX_DAYS_AHEAD * 86_400_000) {
+    throw new HttpError(400, \`Schedule at most \${MAX_DAYS_AHEAD} days ahead\`)
+  }
+  const id = crypto.randomUUID()
+  const status: PostStatus = 'scheduled'
+  await migrate(env.DB, migrations)
+  await env.DB.batch([
+    env.DB.prepare(
+      \`INSERT INTO social_posts (id, user_id, text, link_url, link_title, at, status, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)\`,
+    ).bind(
+      id,
+      user.id,
+      input.text,
+      input.link?.url ?? null,
+      input.link?.title ?? null,
+      new Date(Math.max(at, now)).toISOString(),
+      status,
+      new Date(now).toISOString(),
+    ),
+    ...chosen.map((account) =>
+      env.DB.prepare(
+        \`INSERT INTO social_targets (post_id, account_id, network, label, status)
+         VALUES (?, ?, ?, ?, 'pending')\`,
+      ).bind(id, account.id, account.network, account.label),
+    ),
+  ])
+  await env.SOCIAL_POST.create({ id, params: { postId: id, userId: user.id } })
+  const [stored] = await readPosts(env.DB, 'id = ?', [id])
+  if (!stored) throw new Error('The post was not stored')
+  return stored
+}
+
+/** Cancels a post that has not started going out. */
+export async function cancelPost(
+  env: SocialEnv,
+  request: Request,
+  id: string,
+): Promise<ScheduledPost> {
+  const user = await requireUser(env.DB, request)
+  await migrate(env.DB, migrations)
+  const cancelled = await queryRows(
+    env.DB,
+    \`UPDATE social_posts SET status = 'cancelled'
+     WHERE id = ? AND user_id = ? AND status = 'scheduled' RETURNING id\`,
+    [id, user.id],
+    (raw) => raw,
+  )
+  if (cancelled.length === 0) throw new HttpError(409, 'Only a scheduled post can be cancelled')
+  try {
+    await (await env.SOCIAL_POST.get(id)).terminate()
+  } catch (error) {
+    // The Workflow checks the status before it posts, so a missed terminate posts nothing.
+    console.warn('[social] could not stop the workflow:', error)
+  }
+  const [post] = await readPosts(env.DB, 'id = ?', [id])
+  if (!post) throw new Error('The post disappeared')
+  return post
+}
+`
+}
+
+function cfSocialPostTs(): string {
+  return `import { queryRows } from '@cascivo/app/db'
+import { ConnectionError, connectionTokens, markReconnect } from '@cascivo/app/oauth-server'
+import { PublishError } from '@cascivo/app/social'
+import { WorkflowEntrypoint } from 'cloudflare:workers'
+import type { WorkflowEvent, WorkflowStep } from 'cloudflare:workers'
+import { asSocialPost, NETWORKS, publishers } from '../src/social'
+import type { ScheduledPost, Target } from '../src/social'
+import type { Env } from './index'
+import { readPosts, secretOf, socialProviders } from './social'
+import type { SocialPostParams } from './social'
+
+type TargetResult = Pick<Target, 'status' | 'url' | 'error'>
+
+/**
+ * One scheduled post, as a Workflow: it sleeps until the post is due, then posts to each
+ * account in its own step, so one network failing does not hold up or repeat the others.
+ *
+ * Retrying is decided per network. Mastodon takes an idempotency key, so a step that failed
+ * mid-request is retried and cannot post twice. LinkedIn takes none: its step is never
+ * retried, and an account found mid-post (a crash between the request and the record) is
+ * reported for a person to check instead of being posted again.
+ */
+export class SocialPost extends WorkflowEntrypoint<Env, SocialPostParams> {
+  override async run(event: WorkflowEvent<SocialPostParams>, step: WorkflowStep) {
+    const { postId, userId } = event.payload
+    const post = await step.do('load', () => loadPost(this.env, postId))
+    if (!post) return
+    // A Workflow refuses to sleep until a past time ("post now"). Decided in a step, so a
+    // replay after the sleep takes the same path.
+    const due = await step.do('due later', async () => Date.parse(post.at) > Date.now())
+    if (due) await step.sleepUntil('wait until due', new Date(post.at))
+    const started = await step.do('start', () =>
+      setStatus(this.env, postId, 'scheduled', 'publishing'),
+    )
+    // Cancelled while it waited.
+    if (!started) return
+    for (const target of post.targets) {
+      const name = \`post to \${target.accountId}\`
+      try {
+        await step.do(
+          name,
+          target.network === 'mastodon'
+            ? { retries: { limit: 3, delay: '30 seconds', backoff: 'exponential' } }
+            : { retries: { limit: 0, delay: '1 second' } },
+          () => publishTo(this.env, post, target, userId),
+        )
+      } catch (error) {
+        await step.do(\`\${name}: give up\`, () =>
+          record(this.env, postId, target.accountId, {
+            status: 'failed',
+            url: null,
+            error:
+              target.network === 'linkedin'
+                ? 'LinkedIn did not answer. Check your profile before posting this again.'
+                : \`\${NETWORKS[target.network]} did not take it: \${String(error)}\`,
+          }),
+        )
+      }
+    }
+    await step.do('finish', () => finish(this.env, postId))
+  }
+}
+
+async function loadPost(env: Env, postId: string): Promise<ScheduledPost | null> {
+  const [post] = await readPosts(env.DB, 'id = ?', [postId])
+  return post ?? null
+}
+
+async function setStatus(env: Env, postId: string, from: string, to: string): Promise<boolean> {
+  const rows = await queryRows(
+    env.DB,
+    'UPDATE social_posts SET status = ? WHERE id = ? AND status = ? RETURNING id',
+    [to, postId, from],
+    (raw) => raw,
+  )
+  return rows.length === 1
+}
+
+async function record(env: Env, postId: string, accountId: string, result: TargetResult) {
+  await env.DB.prepare(
+    'UPDATE social_targets SET status = ?, url = ?, error = ? WHERE post_id = ? AND account_id = ?',
+  )
+    .bind(result.status, result.url, result.error, postId, accountId)
+    .run()
+}
+
+async function publishTo(env: Env, post: ScheduledPost, target: Target, userId: string) {
+  // Claim the account before calling the network, so a second attempt knows a first began.
+  const claimed = await queryRows(
+    env.DB,
+    \`UPDATE social_targets SET status = 'publishing'
+     WHERE post_id = ? AND account_id = ? AND status = 'pending' RETURNING status\`,
+    [post.id, target.accountId],
+    (raw) => raw,
+  )
+  if (claimed.length === 0) {
+    const [current] = await readPosts(env.DB, 'id = ?', [post.id])
+    const now = current?.targets.find((t) => t.accountId === target.accountId)
+    if (!now || now.status !== 'publishing') return
+    if (target.network !== 'mastodon') {
+      await record(env, post.id, target.accountId, {
+        status: 'failed',
+        url: null,
+        error: 'Interrupted while posting. Check your LinkedIn profile before posting this again.',
+      })
+      return
+    }
+  }
+  try {
+    const { connection, tokens } = await connectionTokens(
+      env.DB,
+      { secret: secretOf(env), providers: socialProviders(env) },
+      { connectionId: target.accountId, userId },
+    )
+    const published = await publishers[target.network].publish(
+      { tokens, subject: connection.subject, server: connection.server },
+      asSocialPost(post),
+      { idempotencyKey: \`\${post.id}:\${target.accountId}\` },
+    )
+    await record(env, post.id, target.accountId, {
+      status: 'posted',
+      url: published.url,
+      error: null,
+    })
+  } catch (error) {
+    if (
+      error instanceof ConnectionError ||
+      (error instanceof PublishError && error.kind === 'reconnect')
+    ) {
+      await markReconnect(env.DB, target.accountId)
+      await record(env, post.id, target.accountId, {
+        status: 'failed',
+        url: null,
+        error: \`\${target.label} needs connecting again before it can post.\`,
+      })
+      return
+    }
+    if (error instanceof PublishError && !error.retryable) {
+      await record(env, post.id, target.accountId, {
+        status: 'failed',
+        url: null,
+        error: error.message,
+      })
+      return
+    }
+    // Retryable, or the network did not answer: the step's retry policy decides.
+    throw error
+  }
+}
+
+async function finish(env: Env, postId: string) {
+  const [post] = await readPosts(env.DB, 'id = ?', [postId])
+  if (!post) return
+  const posted = post.targets.filter((t) => t.status === 'posted').length
+  const status = posted === post.targets.length ? 'done' : posted > 0 ? 'partial' : 'failed'
+  await setStatus(env, postId, 'publishing', status)
+}
+`
+}
+
+function cfSocialRouteTsx(): string {
+  return `import { createClient } from '@cascivo/app/api'
+import {
+  Alert,
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  Checkbox,
+  Flex,
+  Heading,
+  Input,
+  Link,
+  Spinner,
+  Text,
+  Textarea,
+  signal,
+  useSignalEffect,
+  useSignals,
+} from '@cascivo/react'
+import type { FormEvent } from 'react'
+import { api } from '../api'
+import { auth } from '../auth'
+import { router } from '../router'
+import { asSocialPost, NETWORKS, publishers } from '../social'
+import type { Account, PostStatus, Social, TargetStatus } from '../social'
+
+const client = createClient(api)
+const social = signal<Social | null>(null)
+const failure = signal<string | null>(null)
+const busy = signal(false)
+
+// The composer. Kept in signals so each network's check runs as you type.
+const text = signal('')
+const linkUrl = signal('')
+const linkTitle = signal('')
+const at = signal('')
+const chosen = signal<string[]>([])
+
+async function load(): Promise<void> {
+  try {
+    social.value = await client.getSocial()
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Could not load your accounts'
+  }
+}
+
+/** Why connecting an account failed: /api/connections sends it back as \`?error=\`. */
+const REASONS: Record<string, string> = {
+  denied: 'You did not allow access, so nothing was connected.',
+  expired: 'Connecting took too long, or started in another browser. Try again.',
+  state_mismatch: 'That did not match the connection this browser started. Try again.',
+  provider_error: 'The network did not confirm the account. Try again.',
+  bad_server: 'That is not a Mastodon server this app can reach. Check the name.',
+  signed_out: 'Sign in first, then connect an account.',
+}
+
+/** Badge's tones. */
+type Tone = 'neutral' | 'info' | 'success' | 'warning' | 'danger'
+
+const ACCOUNT_TONE: Record<Account['status'], Tone> = {
+  active: 'success',
+  expiring: 'warning',
+  reconnect: 'danger',
+}
+const POST_TONE: Record<PostStatus, Tone> = {
+  scheduled: 'info',
+  publishing: 'info',
+  done: 'success',
+  partial: 'warning',
+  failed: 'danger',
+  cancelled: 'neutral',
+}
+const TARGET_TONE: Record<TargetStatus, Tone> = {
+  pending: 'neutral',
+  publishing: 'info',
+  posted: 'success',
+  failed: 'danger',
+}
+
+function draft() {
+  const url = linkUrl.value.trim()
+  return asSocialPost({
+    text: text.value,
+    link: url ? { url, title: linkTitle.value.trim() } : null,
+  })
+}
+
+/** What each chosen network would refuse, from the same checks the Worker runs. */
+function problems(accounts: Account[]): string[] {
+  const networks = new Set(
+    accounts.filter((a) => chosen.value.includes(a.id)).map((a) => a.network),
+  )
+  return [...networks].flatMap((network) =>
+    publishers[network].check(draft()).map((p) => \`\${NETWORKS[network]}: \${p.message}\`),
+  )
+}
+
+async function schedule(event: FormEvent<HTMLFormElement>): Promise<void> {
+  event.preventDefault()
+  busy.value = true
+  failure.value = null
+  try {
+    const url = linkUrl.value.trim()
+    await client.schedulePost({
+      body: {
+        text: text.value,
+        link: url ? { url, title: linkTitle.value.trim() } : null,
+        accountIds: chosen.value,
+        // datetime-local is the browser's local time; the Worker keeps UTC.
+        at: at.value ? new Date(at.value).toISOString() : null,
+      },
+    })
+    text.value = ''
+    linkUrl.value = ''
+    linkTitle.value = ''
+    at.value = ''
+    await load()
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Not scheduled'
+  } finally {
+    busy.value = false
+  }
+}
+
+async function cancel(id: string): Promise<void> {
+  try {
+    await client.cancelPost({ params: { id } })
+    await load()
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Not cancelled'
+  }
+}
+
+async function remove(id: string): Promise<void> {
+  const response = await fetch(\`/api/connections/\${encodeURIComponent(id)}\`, { method: 'DELETE' })
+  if (!response.ok) failure.value = 'The account was not removed'
+  chosen.value = chosen.value.filter((c) => c !== id)
+  await load()
+}
+
+function toggle(id: string, on: boolean): void {
+  chosen.value = on ? [...chosen.value, id] : chosen.value.filter((c) => c !== id)
+}
+
+export default function SocialPage() {
+  useSignals()
+  useSignalEffect(() => {
+    if (auth.user.value) void load()
+  })
+  const user = auth.user.value
+  const data = social.value
+  const reason = new URLSearchParams(router.search.value).get('error')
+
+  if (user === undefined) return <Spinner label="Loading" />
+  if (user === null) {
+    return (
+      <Flex gap={4}>
+        <Heading level={1}>Social</Heading>
+        <Text>
+          <Link href="/account">Sign in</Link> to connect your accounts and schedule posts.
+        </Text>
+      </Flex>
+    )
+  }
+  const usable = data?.accounts.filter((a) => a.status !== 'reconnect') ?? []
+  const blocking = data ? problems(data.accounts) : []
+
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Social</Heading>
+        <Text muted>Write once, post to LinkedIn and Mastodon now or at a time you pick.</Text>
+      </Flex>
+      {reason ? (
+        <Alert variant="destructive" title="Not connected">
+          {REASONS[reason] ?? 'Connecting failed. Try again.'}
+        </Alert>
+      ) : null}
+      {failure.value ? (
+        <Alert variant="destructive" title="Something went wrong">
+          {failure.value}
+        </Alert>
+      ) : null}
+      {data === null ? (
+        <Spinner label="Loading" />
+      ) : (
+        <>
+          <Card>
+            <CardContent>
+              <Flex gap={3}>
+                <Heading level={2}>Accounts</Heading>
+                {data.accounts.length === 0 ? <Text muted>No accounts connected yet.</Text> : null}
+                {data.accounts.map((account) => (
+                  <Flex key={account.id} direction="horizontal" align="center" gap={2} wrap>
+                    <Text>
+                      {NETWORKS[account.network]}: {account.label}
+                    </Text>
+                    <Badge variant={ACCOUNT_TONE[account.status]}>
+                      {account.status === 'expiring'
+                        ? 'expires soon: connect again'
+                        : account.status}
+                    </Badge>
+                    <Button size="sm" variant="ghost" onClick={() => void remove(account.id)}>
+                      Remove
+                    </Button>
+                  </Flex>
+                ))}
+                <Flex direction="horizontal" align="end" gap={2} wrap>
+                  {data.networks.includes('linkedin') ? (
+                    <Button asChild variant="secondary">
+                      <a href="/api/connections/linkedin?returnTo=/social">Connect LinkedIn</a>
+                    </Button>
+                  ) : null}
+                  {/* A plain GET form: the Worker redirects to the server named here. */}
+                  <form method="get" action="/api/connections/mastodon">
+                    <input type="hidden" name="returnTo" value="/social" />
+                    <Flex direction="horizontal" align="end" gap={2} wrap>
+                      <Input
+                        name="server"
+                        label="Mastodon server"
+                        placeholder="mastodon.social"
+                        required
+                      />
+                      <Button type="submit" variant="secondary">
+                        Connect Mastodon
+                      </Button>
+                    </Flex>
+                  </form>
+                </Flex>
+              </Flex>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent>
+              <form onSubmit={(event) => void schedule(event)}>
+                <Flex gap={3}>
+                  <Heading level={2}>New post</Heading>
+                  <Textarea
+                    label="Text"
+                    value={text.value}
+                    onInput={(event) => (text.value = event.currentTarget.value)}
+                    rows={5}
+                  />
+                  <Flex direction="horizontal" gap={2} wrap>
+                    <Input
+                      label="Link (optional)"
+                      type="url"
+                      value={linkUrl.value}
+                      onInput={(event) => (linkUrl.value = event.currentTarget.value)}
+                    />
+                    <Input
+                      label="Link title (LinkedIn shows it)"
+                      value={linkTitle.value}
+                      onInput={(event) => (linkTitle.value = event.currentTarget.value)}
+                    />
+                  </Flex>
+                  {usable.length === 0 ? (
+                    <Text muted>Connect an account to post.</Text>
+                  ) : (
+                    usable.map((account) => (
+                      <Checkbox
+                        key={account.id}
+                        label={\`\${NETWORKS[account.network]}: \${account.label}\`}
+                        checked={chosen.value.includes(account.id)}
+                        onChange={(event) => toggle(account.id, event.currentTarget.checked)}
+                      />
+                    ))
+                  )}
+                  <Input
+                    label="When (empty: now)"
+                    type="datetime-local"
+                    value={at.value}
+                    onInput={(event) => (at.value = event.currentTarget.value)}
+                  />
+                  {blocking.length > 0 ? (
+                    <Alert variant="warning" title="Not ready to post">
+                      {blocking.join(' ')}
+                    </Alert>
+                  ) : null}
+                  <Flex direction="horizontal">
+                    <Button
+                      type="submit"
+                      loading={busy.value}
+                      disabled={chosen.value.length === 0 || blocking.length > 0}
+                    >
+                      {at.value ? 'Schedule' : 'Post now'}
+                    </Button>
+                  </Flex>
+                </Flex>
+              </form>
+            </CardContent>
+          </Card>
+          <Flex gap={3}>
+            <Heading level={2}>Posts</Heading>
+            {data.posts.length === 0 ? <Text muted>Nothing scheduled yet.</Text> : null}
+            {data.posts.map((post) => (
+              <Card key={post.id}>
+                <CardContent>
+                  <Flex gap={2}>
+                    <Flex direction="horizontal" align="center" gap={2} wrap>
+                      <Badge variant={POST_TONE[post.status]}>{post.status}</Badge>
+                      <Text muted>{new Date(post.at).toLocaleString()}</Text>
+                      {post.status === 'scheduled' ? (
+                        <Button size="sm" variant="ghost" onClick={() => void cancel(post.id)}>
+                          Cancel
+                        </Button>
+                      ) : null}
+                    </Flex>
+                    <Text>{post.text}</Text>
+                    {post.targets.map((target) => (
+                      <Flex
+                        key={target.accountId}
+                        direction="horizontal"
+                        align="center"
+                        gap={2}
+                        wrap
+                      >
+                        {post.status === 'cancelled' ? (
+                          <Badge variant="neutral">not sent</Badge>
+                        ) : (
+                          <Badge variant={TARGET_TONE[target.status]}>{target.status}</Badge>
+                        )}
+                        <Text>
+                          {NETWORKS[target.network]}: {target.label}
+                        </Text>
+                        {target.url ? <Link href={target.url}>View</Link> : null}
+                        {target.error ? <Text muted>{target.error}</Text> : null}
+                      </Flex>
+                    ))}
+                  </Flex>
+                </CardContent>
+              </Card>
+            ))}
+          </Flex>
+        </>
+      )}
+    </Flex>
+  )
+}
+`
+}
+
 /* --- `--auth email`: accounts with emailed sign-in links (@cascivo/app/auth) --- */
 
 function cfAuthTs(): string {
@@ -9972,6 +10996,35 @@ IP). Sending reads every confirmed address into memory; past a few hundred thous
 page through them instead.`
       : ''
   }${
+    hasExample(opts, 'social')
+      ? `
+
+## Social posts
+
+\`/social\` connects LinkedIn and Mastodon accounts and posts to them, now or at a time you pick.
+
+- \`worker/social.ts\` — \`handleConnections\` (\`@cascivo/app/oauth-server\`) answers
+  \`/api/connections/*\`: connect, list, remove. Tokens are sealed in D1 with \`AUTH_SECRET\`.
+  Scheduling checks that each account is yours and connected, and that each network's
+  publisher (\`@cascivo/app/social\`) accepts the post, before anything is stored.
+- \`worker/social-post.ts\` — \`SocialPost\`, a Workflow per post: it sleeps until the post
+  is due, then posts to each account in its own step. Mastodon steps retry, safely, with an
+  idempotency key. LinkedIn's never do: LinkedIn cannot deduplicate, so an interrupted
+  LinkedIn post is reported for you to check rather than sent twice.
+- \`src/social.ts\` — the shared types, and the publishers the page also runs, so what a
+  network would refuse shows while you type.
+
+**Mastodon** needs no set-up: people type their server, and the app registers itself there
+on first use. **LinkedIn** needs an app at https://www.linkedin.com/developers/apps with the
+"Share on LinkedIn" product${oauthSignIn(opts) ? ' (the same app as sign-in works, with both products)' : ''}; add
+\`…/api/connections/linkedin/callback\` as a redirect URL and set \`LINKEDIN_CLIENT_ID\` and
+\`LINKEDIN_CLIENT_SECRET\`. LinkedIn tokens last 60 days and cannot be renewed: the page shows
+"expires soon" a week ahead, and connecting again renews the account in place.
+
+Connecting an account and posting count against the rate limit (20 a minute per IP).
+Workflows need a real Cloudflare account to deploy.`
+      : ''
+  }${
     hasAccounts(opts)
       ? `
 
@@ -10253,7 +11306,15 @@ function cfDevVars(opts: ScaffoldOptions): string {
           'LINKEDIN_CLIENT_ID=',
           'LINKEDIN_CLIENT_SECRET=',
         ]
-      : []),
+      : hasExample(opts, 'social')
+        ? [
+            "# Seals connected accounts' tokens. Deployed, a random one: openssl rand -base64 32",
+            'AUTH_SECRET=dev-only-auth-secret-0123456789abcdef',
+            '# A LinkedIn app with "Share on LinkedIn" (README). Mastodon needs nothing.',
+            'LINKEDIN_CLIENT_ID=',
+            'LINKEDIN_CLIENT_SECRET=',
+          ]
+        : []),
   ]
     .map((line) => `${line}\n`)
     .join('')
@@ -10341,7 +11402,19 @@ function cfBindingDescriptions(opts: ScaffoldOptions): Record<string, { descript
           ],
           ['LINKEDIN_CLIENT_SECRET', "That LinkedIn app's primary client secret."],
         ])
-      : {}),
+      : hasExample(opts, 'social')
+        ? describe([
+            [
+              'AUTH_SECRET',
+              'Seals the tokens of the accounts people connect. Make a random one: `openssl rand -base64 32`.',
+            ],
+            [
+              'LINKEDIN_CLIENT_ID',
+              'The client id of a LinkedIn app with the "Share on LinkedIn" product and the redirect URL `https://<this app>/api/connections/linkedin/callback`. Leave it empty to offer no LinkedIn.',
+            ],
+            ['LINKEDIN_CLIENT_SECRET', "That LinkedIn app's primary client secret."],
+          ])
+        : {}),
   }
 }
 
@@ -10393,6 +11466,7 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
           { file: 'newsletter/send.tsx', contents: cfNewsletterSendRouteTsx() },
         ]
       : []),
+    ...(hasExample(opts, 'social') ? [{ file: 'social.tsx', contents: cfSocialRouteTsx() }] : []),
     ...(hasAccounts(opts) ? [{ file: 'account.tsx', contents: cfAccountRouteTsx(opts) }] : []),
     ...(emailSignIn(opts) ? [{ file: 'signin/verify.tsx', contents: cfVerifyRouteTsx() }] : []),
   ]
@@ -10486,6 +11560,7 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
     ...(hasExample(opts, 'webhooks') ||
     hasExample(opts, 'checkout') ||
     hasExample(opts, 'newsletter') ||
+    hasExample(opts, 'social') ||
     oauthSignIn(opts)
       ? [
           { path: '.dev.vars', contents: cfDevVars(opts) },
@@ -10493,6 +11568,13 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
         ]
       : []),
     ...(hasAccounts(opts) ? [{ path: 'src/auth.ts', contents: cfAuthTs() }] : []),
+    ...(hasExample(opts, 'social')
+      ? [
+          { path: 'src/social.ts', contents: cfSocialTs() },
+          { path: 'worker/social.ts', contents: cfSocialWorkerTs(opts) },
+          { path: 'worker/social-post.ts', contents: cfSocialPostTs() },
+        ]
+      : []),
     ...(emailSignIn(opts) ? [{ path: 'worker/auth.ts', contents: cfAuthWorkerTs() }] : []),
     ...(hasExample(opts, 'publish')
       ? [
@@ -10557,7 +11639,12 @@ export function buildScaffold(opts: ScaffoldOptions): ScaffoldFile[] {
       opts.examples?.includes('digest') && !opts.examples.includes('export')
         ? [...opts.examples, 'export' as const]
         : opts.examples
-    return buildCloudflareScaffold({ ...opts, ...(examples ? { examples } : {}) }, sections)
+    // Social posts belong to a user: without --auth, it brings sign-in with providers.
+    const auth = opts.auth ?? (examples?.includes('social') ? 'oauth' : undefined)
+    return buildCloudflareScaffold(
+      { ...opts, ...(examples ? { examples } : {}), ...(auth ? { auth } : {}) },
+      sections,
+    )
   }
   return [
     { path: 'package.json', contents: packageJson(opts) },
@@ -10722,6 +11809,14 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
 
     if (exampleArgs.length > 0 && resolvedFramework !== 'cloudflare') {
       console.error('--example needs --framework cloudflare (it adds a Worker-backed page).')
+      process.exitCode = 1
+      return
+    }
+    if (exampleArgs.includes('social') && authArg === 'access') {
+      console.error(
+        '--example social needs accounts (posts belong to a user): use --auth email, oauth or ' +
+          'email,oauth, or leave --auth out to get oauth.',
+      )
       process.exitCode = 1
       return
     }

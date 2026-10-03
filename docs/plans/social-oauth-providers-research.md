@@ -617,3 +617,26 @@ is host-only, so a different host fails the flow rather than leaking it.
   Workflow per scheduled post, LinkedIn reconnect reminders) comes with step 4.
 
 Not proven without real credentials: a LinkedIn sign-in and a post to a real feed.
+
+**Step 4 implemented (2026-10-03):** Mastodon and `--example social`.
+
+- `mastodon()` in `oauth`, a provider for many servers: `OAuthProvider.forServer(server,
+  redirectUri)` discovers a server's endpoints and registers the app there once
+  (`mastodonRegistrations` keeps registrations in D1, client secrets sealed), and the flow
+  carries the server in its sealed state (`?server=` to start). PKCE and the `profile` scope
+  where the server announces them, `read:accounts` before 4.3. `normalizeServer` and a
+  hardened fetch (timeout, no redirects, 256 KB cap, token endpoint on the same host).
+- `mastodonPublisher()` and `mastodonLength()` in `social`; `publish` takes an
+  `idempotencyKey`. A connection records its `server`.
+- `--example social` (brings `--auth oauth` unless another sign-in is given): connect
+  LinkedIn and Mastodon, compose with each network's checks live, post now or schedule; one
+  Workflow per post, one step per account. Run under `vite dev` in workerd: post-now, the
+  reconnect path, scheduling and cancelling (the Workflow terminated) all behave. That run
+  found that a Workflow refuses to `sleepUntil` a past time, so "post now" decides inside a
+  step whether to sleep.
+- Not built: LinkedIn reconnect **emails** (the page shows "expires soon" a week ahead
+  instead), images in the example's composer (the publishers take them), and the Mastodon
+  server's own character limit in the composer (500 is assumed).
+
+Not proven without real accounts: a post to a real LinkedIn feed and to a real Mastodon
+server.

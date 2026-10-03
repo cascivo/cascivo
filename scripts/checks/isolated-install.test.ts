@@ -301,9 +301,14 @@ export const authRoutes = (db: Database) =>
 export const mustBeIn = (db: Database, request: Request) => requireUser(db, request)
 export const maybeIn = (db: Database, request: Request) => currentUser(db, request)
 import { github, google, beginAuthorization, seal, type Identity, type TokenSet } from '@cascivo/app/oauth'
-import { connectionTokens, handleConnections, handleOAuth, type Connection } from '@cascivo/app/oauth-server'
-import { linkedinPublisher, PublishError, type PublishedPost } from '@cascivo/app/social'
-import { linkedin } from '@cascivo/app/oauth'
+import { connectionTokens, handleConnections, handleOAuth, mastodonRegistrations, type Connection } from '@cascivo/app/oauth-server'
+import { linkedinPublisher, mastodonPublisher, PublishError, type PublishedPost } from '@cascivo/app/social'
+import { linkedin, mastodon, normalizeServer } from '@cascivo/app/oauth'
+export const fediverse = (db: Database) =>
+  mastodon({ appName: 'A', registrations: mastodonRegistrations(db, 's'.repeat(32)), scopes: ['profile', 'write:statuses'] })
+export const host = (input: string): string => normalizeServer(input)
+export const toot = (tokens: TokenSet) =>
+  mastodonPublisher().publish({ tokens, subject: '1@a.example', server: 'a.example' }, { text: 'Hi' }, { idempotencyKey: 'k' })
 export const connectRoutes = (db: Database) =>
   handleConnections(db, { secret: 's'.repeat(32), providers: [linkedin({ clientId: 'a', clientSecret: 'b', scopes: ['openid', 'w_member_social'] })] })
 export const postAs = async (db: Database, userId: string, connectionId: string): Promise<PublishedPost | null> => {

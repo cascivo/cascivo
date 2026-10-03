@@ -36,6 +36,16 @@ export interface PostProblem {
 export interface PublishTarget {
   tokens: TokenSet
   subject: string
+  /** The account's server, for a network that is many (Mastodon). */
+  server?: string | null
+}
+
+export interface PublishOptions {
+  /**
+   * The same key for every attempt at the same post. A network that honours it (Mastodon)
+   * publishes once however often it is retried; one that has none (LinkedIn) ignores it.
+   */
+  idempotencyKey?: string
 }
 
 export interface PublishedPost {
@@ -81,7 +91,7 @@ export interface Publisher {
   /** What the network would refuse; empty when the post can go. Synchronous: call it as people type. */
   check(post: SocialPost): PostProblem[]
   /** Checks, then posts. Throws `PublishError`. */
-  publish(target: PublishTarget, post: SocialPost): Promise<PublishedPost>
+  publish(target: PublishTarget, post: SocialPost, options?: PublishOptions): Promise<PublishedPost>
 }
 
 function asRecord(raw: unknown): Record<string, unknown> | null {
@@ -90,9 +100,16 @@ function asRecord(raw: unknown): Record<string, unknown> | null {
 
 const IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/gif'])
 
-function checkImage(image: SocialImage, problems: PostProblem[]): void {
-  if (!IMAGE_TYPES.has(image.data.type)) {
-    problems.push({ code: 'bad_image', message: 'Images must be JPEG, PNG or GIF' })
+function checkImage(
+  image: SocialImage,
+  problems: PostProblem[],
+  types: ReadonlySet<string> = IMAGE_TYPES,
+): void {
+  if (!types.has(image.data.type)) {
+    problems.push({
+      code: 'bad_image',
+      message: `Images must be ${[...types].map((t) => t.slice(6).toUpperCase()).join(', ')}`,
+    })
   } else if (!image.alt.trim()) {
     problems.push({ code: 'bad_image', message: 'Every image needs a description (alt text)' })
   }
@@ -283,6 +300,171 @@ export function linkedinPublisher(options: LinkedInPublisherOptions = {}): Publi
       const id = response.headers.get('x-restli-id')
       if (!id) throw new PublishError('linkedin', 'failed', 'LinkedIn returned no post id')
       return { id, url: `https://www.linkedin.com/feed/update/${id}/` }
+    },
+  }
+  return publisher
+}
+
+/* --------------------------------- Mastodon --------------------------------- */
+
+export interface MastodonPublisherOptions {
+  /**
+   * The server's limit (`configuration.statuses.max_characters` in `/api/v2/instance`).
+   * Default 500, Mastodon's own; many servers allow more.
+   */
+  maxChars?: number
+  /** Default `public`. */
+  visibility?: 'public' | 'unlisted' | 'private'
+  fetch?: typeof fetch
+}
+
+/** Mastodon counts every URL as this many characters, however long it is. */
+const URL_WEIGHT = 23
+const MASTODON_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
+
+/**
+ * The length Mastodon counts: a URL is 23 characters, a mention `@user@server` counts only
+ * `@user`, everything else by character.
+ */
+export function mastodonLength(text: string): number {
+  const counted = text
+    .replace(/https?:\/\/\S+/g, 'x'.repeat(URL_WEIGHT))
+    .replace(/(^|\s)(@[\w.-]+)@[\w.-]+\.[a-z]{2,}/gi, '$1$2')
+  return [...counted].length
+}
+
+/** The text Mastodon posts: the link appended when the text does not already carry it. */
+function mastodonText(post: SocialPost): string {
+  if (!post.link || post.text.includes(post.link.url)) return post.text
+  return post.text ? `${post.text}\n\n${post.link.url}` : post.link.url
+}
+
+/**
+ * Posts a status to the account's server (`write:statuses`, and `write:media` for images). A
+ * link becomes part of the text, and the server builds its card. Images are uploaded first,
+ * and waited for while the server processes them. With `idempotencyKey`, retrying a post
+ * whose request timed out cannot publish it twice.
+ */
+export function mastodonPublisher(options: MastodonPublisherOptions = {}): Publisher {
+  const doFetch = options.fetch ?? ((input, init) => fetch(input, init))
+  const limits = { maxChars: options.maxChars ?? 500, maxImages: 4 }
+
+  function failure(status: number, json: unknown): PublishError {
+    const reason = asRecord(json)?.['error']
+    const message = typeof reason === 'string' ? reason : `Mastodon answered ${status}`
+    const kind: PublishErrorKind =
+      status === 401 || status === 403
+        ? 'reconnect'
+        : status === 429
+          ? 'rate_limited'
+          : status === 400 || status === 422
+            ? 'invalid'
+            : 'failed'
+    return new PublishError('mastodon', kind, message, status)
+  }
+
+  async function call(url: string, tokens: TokenSet, init: RequestInit) {
+    const response = await doFetch(url, {
+      ...init,
+      redirect: 'manual',
+      signal: AbortSignal.timeout(30_000),
+      headers: {
+        ...(init.headers as Record<string, string>),
+        authorization: `Bearer ${tokens.accessToken}`,
+      },
+    })
+    const json: unknown = await response.json().catch(() => null)
+    if (!response.ok) throw failure(response.status, json)
+    return { status: response.status, json: asRecord(json) }
+  }
+
+  async function upload(server: string, tokens: TokenSet, image: SocialImage): Promise<string> {
+    const form = new FormData()
+    form.set('file', image.data)
+    form.set('description', image.alt)
+    const uploaded = await call(`https://${server}/api/v2/media`, tokens, {
+      method: 'POST',
+      body: form,
+    })
+    const id = uploaded.json?.['id']
+    if (typeof id !== 'string')
+      throw new PublishError('mastodon', 'failed', 'No media id came back')
+    // 202: still processing. A status cannot attach it until its URL exists.
+    let ready = uploaded.status === 200 && typeof uploaded.json?.['url'] === 'string'
+    for (let attempt = 0; !ready && attempt < 30; attempt++) {
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const polled = await call(
+        `https://${server}/api/v1/media/${encodeURIComponent(id)}`,
+        tokens,
+        {},
+      )
+      ready = polled.status === 200 && typeof polled.json?.['url'] === 'string'
+    }
+    if (!ready)
+      throw new PublishError('mastodon', 'failed', 'The server took too long with an image')
+    return id
+  }
+
+  const publisher: Publisher = {
+    network: 'mastodon',
+    limits,
+    check(post) {
+      const problems: PostProblem[] = []
+      const text = mastodonText(post)
+      const images = post.images ?? []
+      if (!text.trim() && images.length === 0) {
+        problems.push({ code: 'empty', message: 'Write something to post' })
+      }
+      const length = mastodonLength(text)
+      if (length > limits.maxChars) {
+        problems.push({
+          code: 'too_long',
+          message: `This server takes ${limits.maxChars} characters; this has ${length}`,
+        })
+      }
+      if (images.length > limits.maxImages) {
+        problems.push({
+          code: 'too_many_images',
+          message: `Mastodon takes ${limits.maxImages} images in a post`,
+        })
+      }
+      if (post.link && !/^https?:\/\//.test(post.link.url)) {
+        problems.push({ code: 'bad_link', message: 'The link must be an http(s) URL' })
+      }
+      for (const image of images) checkImage(image, problems, MASTODON_IMAGE_TYPES)
+      return problems
+    },
+    async publish(target, post, publishOptions = {}) {
+      const problems = publisher.check(post)
+      if (problems.length > 0) {
+        throw new PublishError('mastodon', 'invalid', problems.map((p) => p.message).join('; '))
+      }
+      if (!target.server) {
+        throw new PublishError('mastodon', 'invalid', 'A Mastodon account needs its server')
+      }
+      const mediaIds: string[] = []
+      for (const image of post.images ?? [])
+        mediaIds.push(await upload(target.server, target.tokens, image))
+      const { json } = await call(`https://${target.server}/api/v1/statuses`, target.tokens, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          ...(publishOptions.idempotencyKey
+            ? { 'idempotency-key': publishOptions.idempotencyKey }
+            : {}),
+        },
+        body: JSON.stringify({
+          status: mastodonText(post),
+          ...(mediaIds.length > 0 ? { media_ids: mediaIds } : {}),
+          visibility: options.visibility ?? 'public',
+        }),
+      })
+      const id = json?.['id']
+      const url = json?.['url']
+      if (typeof id !== 'string' || typeof url !== 'string') {
+        throw new PublishError('mastodon', 'failed', 'Mastodon returned no status')
+      }
+      return { id, url }
     },
   }
   return publisher
