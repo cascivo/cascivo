@@ -1,5 +1,11 @@
 # @cascivo/text
 
+## 1.7.0
+
+### Patch Changes
+
+- @cascivo/core@1.7.0
+
 ## 1.6.0
 
 ### Patch Changes

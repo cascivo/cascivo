@@ -69,4 +69,4 @@ layout, header, page
 
 ---
 
-_Generated from registry v1.6.0 on 2026-10-02. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.7.0 on 2026-10-03. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

@@ -1,5 +1,15 @@
 # @cascivo/render
 
+## 1.7.0
+
+### Patch Changes
+
+- Updated dependencies [57dc995]
+  - @cascivo/react@1.7.0
+  - @cascivo/i18n@1.7.0
+  - @cascivo/core@1.7.0
+  - @cascivo/text@1.7.0
+
 ## 1.6.0
 
 ### Patch Changes

@@ -1,5 +1,31 @@
 # @cascivo/mcp
 
+## 0.9.0
+
+### Minor Changes
+
+- 57dc995: `ShareMenu`: a Share button opening each network's own compose link for Bluesky, Mastodon,
+  Threads, LinkedIn and X. It also offers copy link, and the system share sheet where the browser
+  has one. No account, token or third-party script is involved. The panel is a native popover opened by
+  `popovertarget`, so the links work before hydration. On a phone it is a bottom sheet; wider, it
+  is anchored to the trigger and flips to stay on screen. Mastodon asks for the reader's server
+  and remembers it. `shareIntentUrl(network, { url, text, server })` builds the same links for
+  your own markup. New `builtin.shareMenu` messages (en, de).
+
+### Patch Changes
+
+- 57dc995: New guide, `recipe-social`. It covers sign-in with providers, connecting Bluesky, Mastodon,
+  LinkedIn, Threads and Buffer, posting now or on a schedule, images, and keeping connections
+  alive, plus `ShareMenu` for readers. Read it at `cascivo.com/docs/recipe-social.md` or with
+  `npx @cascivo/docs guide recipe-social`; `llms.txt` links it. `cascivo create --help`, the MCP
+  `create_app` description and the `@cascivo/app` README now describe the social example and
+  its providers as they are, including Threads, images, Mastodon server limits and Bluesky
+  display names.
+- 57dc995: `create_project` takes `auth: 'oauth'` and `'email,oauth'`, and the `social` example.
+- Updated dependencies [57dc995]
+- Updated dependencies [57dc995]
+  - @cascivo/docs@0.2.14
+
 ## 0.8.2
 
 ### Patch Changes
