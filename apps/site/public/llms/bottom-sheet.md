@@ -95,4 +95,4 @@ overlay, sheet, bottom-sheet, mobile, drag, detent, gesture
 
 ---
 
-_Generated from registry v1.5.0 on 2026-10-02. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.6.0 on 2026-10-02. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
