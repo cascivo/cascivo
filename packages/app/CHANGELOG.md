@@ -1,5 +1,135 @@
 # @cascivo/app
 
+## 1.7.0
+
+### Minor Changes
+
+- 57dc995: Bluesky (any AT Protocol account): sign in, connect, and post.
+
+  - `bluesky()` in `@cascivo/app/oauth`: the flow takes a handle or DID, resolves it (DNS over
+    HTTPS, then `/.well-known/atproto-did`) to the DID document, PDS and authorization server,
+    and runs AT Protocol OAuth: pushed authorization requests, PKCE, DPoP on every request with
+    the nonce retry, the callback's `iss`, and the check that the tokens' `sub` is the DID whose
+    document points at that server. The loopback client in development, a public web client, or
+    a confidential one with `privateKey` (`private_key_jwt`). `blueskyClientMetadata`,
+    `blueskyJwks` and `parseBlueskyKey` for serving the client.
+  - A provider may set `dpop` (the flow makes a key: `PendingAuthorization.dpopKey`), build its
+    authorization URL asynchronously, name its resolved `server`, and read the callback's
+    parameters in `exchange`. `TokenSet.dpop` carries a bound session's key, issuer and client id.
+  - `blueskyPublisher()`, `blueskyLength()`, `blueskyFacets()` and `blueskyRecordKey()` in
+    `@cascivo/app/social`: graphemes, facets at UTF-8 byte offsets with mentions resolved, link
+    cards, images, and a record key fixed by `idempotencyKey` and the new `createdAt` option so a
+    retry finds the post it already made.
+
+- 57dc995: Buffer: connect a user's Buffer, and post through it.
+
+  - `buffer({ clientId, clientSecret? })` in `@cascivo/app/oauth`: OAuth with PKCE, consent and
+    offline access; refresh tokens are single-use and renewed under `connectionTokens`' lease. A
+    connection is the account's Buffer organization. `bufferQuery` calls the GraphQL API and
+    reads errors sent with a 200 (`errors[]`, `extensions.code`) and `Retry-After`.
+  - `bufferPublisher({ service, uploadImage })`, `bufferChannels()` and `bufferTokens(apiKey)` in
+    `@cascivo/app/social`: post to a channel now or at a later `createdAt`, checked against the
+    limit of the network behind it; images by public URL; a personal API key works as tokens.
+  - `PublishedPost.url` is `string | null` (Buffer has no URL until it sends the post), and
+    `PublishError` carries `retryAfter`.
+
+- 57dc995: `expiringConnections(db, { withinDays })` in `@cascivo/app/oauth-server`: every user's
+  connections that will stop working within the window (default 7 days) and cannot be renewed,
+  with the owner's email. Use it in a scheduled job that asks people to connect again before their
+  posts start failing.
+- 57dc995: LinkedIn, connected accounts, and posting.
+
+  - `linkedin()` in `@cascivo/app/oauth`: sign-in over OpenID Connect, the ID token verified
+    against LinkedIn's keys. Add `w_member_social` to its scopes to post with the tokens.
+    `parseTokenSet` checks a token set read back from storage.
+  - `handleConnections(db, { providers, secret })` in `@cascivo/app/oauth-server` lets a
+    signed-in user connect an account so the app can act for them: `GET /api/connections`,
+    `GET /api/connections/<provider>` to connect, `DELETE /api/connections/<id>`. Tokens are
+    sealed at rest and bound to their row. `connectionTokens` hands them to their owner,
+    refreshing on use: one request at a time holds the refresh, so providers that replace their
+    refresh token on every use are safe. `listConnections` reports `active`, `expiring` (a token
+    that cannot be refreshed ends soon) or `reconnect`; `markReconnect` records a refusal.
+  - `@cascivo/app/social`, a new entry: `linkedinPublisher()` posts text, a link card, one
+    image or several to the member's feed, with `check(post)` listing what LinkedIn would refuse
+    before anything is sent, text escaped for LinkedIn's format (hashtags kept), and a
+    `PublishError` whose `kind` says whether to fix the post, reconnect, or retry.
+
+- 57dc995: Mastodon (and servers that speak its API): sign in, connect, and post.
+
+  - `mastodon({ appName, registrations })` in `@cascivo/app/oauth` is a provider for many
+    servers. The flow takes the user's server as `?server=`; `forServer` discovers its endpoints,
+    registers the app there once, and uses PKCE and the `profile` scope where the server
+    announces them (4.3+), `read:accounts` before that. The server name is distrusted:
+    `normalizeServer` refuses IPs, ports and local names, and every call to it has a timeout, no
+    redirects and a size cap. `OAuthProvider.forServer` and `PendingAuthorization.server` carry
+    this through any flow; `OAuthErrorCode` gains `bad_server`.
+  - `mastodonRegistrations(db, secret)` in `@cascivo/app/oauth-server` keeps registrations in
+    D1, client secrets sealed. A connection records its `server`.
+  - `mastodonPublisher()` and `mastodonLength()` in `@cascivo/app/social`: Mastodon's character
+    counting, the link appended for the server to build its card, images uploaded and waited
+    for, and `Idempotency-Key` from the new `publish(…, { idempotencyKey })` option.
+  - The browser `auth.signInUrl(provider, returnTo, server)` takes the server.
+
+- 57dc995: Sign in with GitHub or Google: two new entries.
+
+  - `@cascivo/app/oauth` — the authorization-code flow (`beginAuthorization`,
+    `completeAuthorization`) with `state`, PKCE (S256) and an OpenID `nonce`, and adapters:
+    `google()` verifies the ID token against Google's keys (issuer, audience, expiry, nonce, and
+    `hostedDomain` on the token), `github()` reads `/user` and only a primary, verified email.
+    `seal` / `unseal` encrypt a value (AES-256-GCM, a key derived per context) for a cookie or a
+    stored token. No database, cookie or Worker code: the adapters work anywhere `fetch` and
+    WebCrypto do, so the tokens can be kept to call the provider's API.
+  - `@cascivo/app/oauth-server` — `handleOAuth(db, { providers, secret })` answers
+    `/api/auth/oauth/<id>` and its callback on the same users and sessions as `handleAuth`, so the
+    two share one sign-in page and `requireUser`. A user is found by `(provider, subject)`; a new
+    identity joins the signed-in user, else the user with the same verified email, else a new
+    user. Failures redirect to a page with `?error=`.
+
+  The browser `createAuth()` gains `providers()` and `signInUrl(provider, returnTo?)`.
+
+  **Type change:** `User.email` (from `@cascivo/app/auth` and `@cascivo/app/auth-server`) is now
+  `string | null`, since a provider may share no verified address. Code that reads it as a
+  `string` needs a check. Users who signed in by email link always have one. The `users` table
+  is rebuilt once to drop `NOT NULL` from `email` (migration `cascivo_auth_0002`, applied on the
+  first request as before); ids, sessions and your own foreign keys to `users` are kept.
+
+  `requireAccess` now verifies through the same JWKS code as Google's ID tokens; its behaviour
+  and messages are unchanged.
+
+- 57dc995: - `bluesky()` names the account: its display name and avatar come from its profile record on its
+  own PDS (the avatar as the PDS's blob URL). Best effort: a missing profile leaves them `null`.
+  - `mastodonServerLimits(server)` in `@cascivo/app/social` reads a server's own limits from its
+    public `/api/v2/instance`: characters, images per post, and what a URL counts as. It falls
+    back to Mastodon's defaults when the server does not say. `mastodonPublisher` takes all three
+    (`maxImages` and `urlWeight` are new), and `mastodonLength(text, urlWeight?)` counts with the
+    server's URL weight.
+- 57dc995: Threads: connect an account and post to it.
+
+  - `threads({ clientId, clientSecret })` in `@cascivo/app/oauth`: the code buys a one-hour
+    token, traded at once for a 60-day one; the profile names the account. Not for sign-in
+    (Threads shares no email).
+  - `OAuthProvider.refreshAhead`: for a provider whose token renews itself rather than through a
+    refresh token. `connectionTokens` renews such a token in that window. If the renewal fails,
+    it keeps the token that still works and tries again on the next call.
+    `refreshConnections(db, { secret, providers })` in `@cascivo/app/oauth-server` renews every
+    connection that is due; call it from a daily Cron Trigger.
+  - `threadsPublisher({ uploadImage })` and `threadsLength` in `@cascivo/app/social`: a media
+    container (text with a link card, an image, or a carousel of up to 20 with alt text), waited
+    on while Meta fetches the images, then published; 500 characters with emoji counted by
+    their UTF-8 bytes. Meta's error codes map to `reconnect`, `rate_limited`, `invalid` and
+    `failed`.
+
+### Patch Changes
+
+- 57dc995: New guide, `recipe-social`. It covers sign-in with providers, connecting Bluesky, Mastodon,
+  LinkedIn, Threads and Buffer, posting now or on a schedule, images, and keeping connections
+  alive, plus `ShareMenu` for readers. Read it at `cascivo.com/docs/recipe-social.md` or with
+  `npx @cascivo/docs guide recipe-social`; `llms.txt` links it. `cascivo create --help`, the MCP
+  `create_app` description and the `@cascivo/app` README now describe the social example and
+  its providers as they are, including Threads, images, Mastodon server limits and Bluesky
+  display names.
+  - @cascivo/core@1.7.0
+
 ## 1.6.0
 
 ### Minor Changes
