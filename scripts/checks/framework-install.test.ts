@@ -477,17 +477,23 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
   })
 
   /**
-   * `--example checkout --auth email`: `@cascivo/app/stripe` and `@cascivo/email` in the
-   * Worker, with /billing (subscriptions, entitlements, the failed-renewal email). Only a build
-   * shows that the receipt template, written against React, bundles into a Worker that runs on
-   * Preact (react-dom/server becomes preact/compat/server).
+   * `--example checkout --auth email,oauth`: `@cascivo/app/stripe` and `@cascivo/email` in the
+   * Worker, with /billing (subscriptions, entitlements, the failed-renewal email), and both
+   * sign-in methods on one page (`handleAuth` and `handleOAuth`, users whose email may be
+   * null). Only a build shows that the receipt template, written against React, bundles into a
+   * Worker that runs on Preact (react-dom/server becomes preact/compat/server).
    */
-  describe('cloudflare --example checkout --auth email', () => {
+  describe('cloudflare --example checkout --auth email,oauth', () => {
     let app: string
 
     before(() => {
       if (!ready) return
-      app = scaffold('cloudflare', 'cf-checkout', ['--example', 'checkout', '--auth', 'email'])
+      app = scaffold('cloudflare', 'cf-checkout', [
+        '--example',
+        'checkout',
+        '--auth',
+        'email,oauth',
+      ])
       run('pnpm', ['run', 'typecheck'], app)
       run('pnpm', ['exec', 'vite', 'build'], app)
     })
@@ -504,6 +510,8 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
         /payment did not go through/,
         'the Worker bundle has no failed-renewal email',
       )
+      assert.match(worker, /accounts\.google\.com/, 'the Worker bundle has no Google sign-in')
+      assert.match(worker, /api\.github\.com/, 'the Worker bundle has no GitHub sign-in')
     })
 
     it('passes its own format:check', { skip: !ready }, () => {

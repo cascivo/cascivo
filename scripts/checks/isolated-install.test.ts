@@ -300,6 +300,14 @@ export const authRoutes = (db: Database) =>
   handleAuth(db, { sendLink: async (_email: string, _url: string) => {}, exposeLink: false })
 export const mustBeIn = (db: Database, request: Request) => requireUser(db, request)
 export const maybeIn = (db: Database, request: Request) => currentUser(db, request)
+import { github, google, beginAuthorization, seal, type Identity, type TokenSet } from '@cascivo/app/oauth'
+import { handleOAuth } from '@cascivo/app/oauth-server'
+export const providers = [github({ clientId: 'a', clientSecret: 'b' }), google({ clientId: 'c', clientSecret: 'd' })]
+export const oauthRoutes = (db: Database) => handleOAuth(db, { secret: 's'.repeat(32), providers })
+export const firstStep = beginAuthorization(providers[0]!, { redirectUri: 'https://app.example/cb' })
+export const keep = (tokens: TokenSet): Promise<string> => seal('s'.repeat(32), 'tokens:1', tokens)
+export const mailOf = (identity: Identity): string | null => identity.email
+export const signInHref = (): string => appAuth.signInUrl('github', '/account')
 import { defineLive, watchLive, type LivePoint } from '@cascivo/app/live'
 import { LiveRoom, recordLive, type LiveBatch, type LiveQueue } from '@cascivo/app/live-server'
 export const opsLive = defineLive({ metrics: ['orders', 'errors'], window: 60 })

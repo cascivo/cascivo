@@ -4,6 +4,7 @@ import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   buildScaffold,
+  parseAuth,
   create,
   type Example,
   type ScaffoldFile,
@@ -912,7 +913,11 @@ describe('create --auth', () => {
     [['--framework', 'react-vite', '--auth', 'access'], '--auth needs --framework cloudflare'],
     [
       ['--framework', 'cloudflare', '--auth', 'basic'],
-      'Unknown auth "basic". Expected: access or email.',
+      'Unknown auth "basic". Expected: access, email, oauth or email,oauth.',
+    ],
+    [
+      ['--framework', 'cloudflare', '--auth', 'access,email'],
+      'Unknown auth "access,email". Expected: access, email, oauth or email,oauth.',
     ],
   ])('refuses %j and writes nothing', async (flags, message) => {
     const cwd = mkdtempSync(join(tmpdir(), 'cascivo-create-'))
@@ -1115,6 +1120,103 @@ describe('buildScaffold — cloudflare --auth email', () => {
     expect(readme).toContain('## Accounts (email sign-in)')
     expect(readme).not.toContain('It has no auth')
     expect(readme).not.toContain('Anyone who can reach the app can publish')
+  })
+})
+
+describe('parseAuth', () => {
+  it.each([
+    [undefined, null],
+    ['', null],
+    ['email', 'email'],
+    ['OAuth', 'oauth'],
+    ['oauth,email', 'email,oauth'],
+    ['email, oauth, email', 'email,oauth'],
+    ['access,oauth', 'invalid'],
+    ['magic', 'invalid'],
+  ] as const)('reads %j as %j', (raw, auth) => {
+    expect(parseAuth(raw)).toBe(auth)
+  })
+})
+
+describe('buildScaffold — cloudflare --auth oauth', () => {
+  const build = (opts: Partial<ScaffoldOptions> = {}) =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        auth: 'oauth',
+        ...opts,
+      }),
+    )
+  const map = build()
+
+  it('binds D1 but sends no email: no Email Service, no sign-in link page', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"d1_databases"')
+    expect(wrangler).not.toContain('send_email')
+    expect(wrangler).not.toContain('AUTH_FROM')
+    expect(map.has('worker/auth.ts')).toBe(false)
+    expect(map.get('src/routes.gen.ts')).not.toContain("'/signin/verify'")
+    expect(map.get('src/App.tsx')).toContain("href: '/account'")
+  })
+
+  it('answers /api/auth/oauth with the providers that are configured, then requires a user', () => {
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain("import { handleOAuth } from '@cascivo/app/oauth-server'")
+    expect(worker).toContain("import { requireUser } from '@cascivo/app/auth-server'")
+    expect(worker).not.toContain('handleAuth(')
+    expect(worker).toContain('if (env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET)')
+    expect(worker).toContain("errorPath: '/account'")
+    // No limiter here, so nothing else imports the guard's error responder (a past build break).
+    expect(worker).toContain("import { guardResponse } from '@cascivo/app/guard'")
+    const oauth = worker.indexOf('await handleOAuth(')
+    const guard = worker.indexOf('await requireUser(env.DB, request)')
+    expect(oauth).toBeGreaterThan(0)
+    expect(oauth).toBeLessThan(guard)
+  })
+
+  it('keeps the secrets in .dev.vars, with a sealing secret long enough for vite dev', () => {
+    const vars = map.get('.dev.vars')!
+    const secret = /^AUTH_SECRET=(.*)$/m.exec(vars)![1]!
+    expect(secret.length).toBeGreaterThanOrEqual(32)
+    for (const name of [
+      'GITHUB_CLIENT_ID',
+      'GITHUB_CLIENT_SECRET',
+      'GOOGLE_CLIENT_ID',
+      'GOOGLE_CLIENT_SECRET',
+    ])
+      expect(vars).toContain(`${name}=`)
+    expect(map.get('.dev.vars.example')).toContain('AUTH_SECRET=\n')
+    const bindings = JSON.parse(map.get('package.json')!).cloudflare.bindings
+    expect(Object.keys(bindings)).toEqual(
+      expect.arrayContaining(['AUTH_SECRET', 'GITHUB_CLIENT_ID', 'GOOGLE_CLIENT_SECRET']),
+    )
+  })
+
+  it('shows provider links and the reason a sign-in failed, without the email form', () => {
+    const account = map.get('src/routes/account.tsx')!
+    expect(account).toContain("auth.signInUrl(id, '/account')")
+    expect(account).toContain('identity_in_use')
+    expect(account).not.toContain('Email me a link')
+    expect(map.get('README.md')).toContain('## Accounts (GitHub and Google sign-in)')
+  })
+
+  it('puts both ways in on one page with --auth email,oauth', () => {
+    const both = build({ auth: 'email,oauth' })
+    const worker = both.get('worker/index.ts')!
+    expect(worker.indexOf('await handleAuth(')).toBeLessThan(worker.indexOf('await handleOAuth('))
+    const account = both.get('src/routes/account.tsx')!
+    expect(account).toContain('Email me a link')
+    expect(account).toContain('auth.signInUrl(')
+    expect(both.get('src/routes.gen.ts')).toContain("'/signin/verify'")
+    expect(both.get('README.md')).toContain('## Accounts (email, GitHub and Google sign-in)')
+  })
+
+  it('bills accounts without an email: checkout then asks Stripe for one', () => {
+    const billing = build({ examples: ['checkout'] }).get('worker/billing.ts')!
+    expect(billing).toContain('user.email\n          ? { customerEmail: user.email }')
   })
 })
 

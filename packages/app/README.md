@@ -626,7 +626,7 @@ const user = await requireUser(env.DB, request) // 401 signed out, 403 from anot
 
 // the browser
 export const auth = createAuth()
-auth.user.value // undefined while checking, then { id, email } or null
+auth.user.value // undefined while checking, then { id, email } or null (email may be null)
 await auth.start(email)
 await auth.verify(token) // on the page the link opens
 ```
@@ -646,6 +646,77 @@ await auth.verify(token) // on the page the link opens
 
 `cascivo create --framework cloudflare --auth email` scaffolds it, with every API write
 requiring a signed-in user.
+
+## Sign in with GitHub or Google — `@cascivo/app/oauth` and `@cascivo/app/oauth-server`
+
+`handleOAuth` adds provider sign-in to the same users and sessions as `handleAuth`, so both can
+sit on one sign-in page and `requireUser` works for either.
+
+```ts
+// the Worker
+import { github, google } from '@cascivo/app/oauth'
+import { handleOAuth } from '@cascivo/app/oauth-server'
+
+const oauth = handleOAuth(env.DB, {
+  secret: env.AUTH_SECRET, // ≥ 32 characters: openssl rand -base64 32
+  providers: [
+    github({ clientId: env.GITHUB_CLIENT_ID, clientSecret: env.GITHUB_CLIENT_SECRET }),
+    google({ clientId: env.GOOGLE_CLIENT_ID, clientSecret: env.GOOGLE_CLIENT_SECRET }),
+  ],
+})
+const answered = await oauth(request) // /api/auth/oauth/<id>, …/callback, /oauth, /me, /signout
+if (answered) return answered
+
+// the browser
+await auth.providers() // ['github', 'google']
+<a href={auth.signInUrl('github')}>Sign in with GitHub</a> // back to this page afterwards
+```
+
+Register `https://<your app>/api/auth/oauth/<id>/callback` as the redirect URI at each
+provider (GitHub: an OAuth App; Google: an OAuth client of type "Web application").
+
+- **The flow is checked end to end.** `state`, a PKCE verifier (S256) and an OpenID `nonce`
+  travel in a sealed (AES-GCM), HttpOnly, `SameSite=Lax` cookie that lives ten minutes. A
+  callback without it, with another flow's state, or for another provider is refused.
+- **Google's ID token is verified** against Google's published keys: signature, issuer,
+  audience, expiry and nonce. `google({ hostedDomain: 'acme.com' })` admits only that
+  Workspace domain, checked on the token, since the `hd` parameter alone is just a hint.
+- **GitHub's email is read only when it is the primary one and verified.** GitHub has no ID
+  token; the adapter reads `/user` for the numeric id and `/user/emails` for the address.
+- **Accounts are linked by identity, not by email.** A user is found by `(provider, subject)`.
+  A new identity joins the signed-in user if there is one (a "connect GitHub" button on a
+  settings page), else the user with the same _verified_ email (so a sign-in link and Google
+  on one address are one account), else a new user. An identity already linked to someone else
+  is refused while another user is signed in.
+- **Email is optional.** `User.email` is `string | null`: a provider that shares no verified
+  address still signs someone in. Check it before sending them mail.
+- **Failures land on a page, not a JSON error.** The callback redirects to `errorPath`
+  (default `/signin`) with `?error=denied | expired | state_mismatch | provider_error |
+identity_in_use`.
+- **The redirect never leaves the app.** `?returnTo=` must resolve to this origin; anything
+  else lands on `/`. Set `origin` when the Worker answers on more than one host, so the
+  redirect URI always matches the registered one.
+
+`@cascivo/app/oauth` has no database, cookie or Worker code, so the adapters work on their own
+anywhere `fetch` and WebCrypto do. Keep the tokens to call the provider's API on the user's
+behalf, sealed for storage:
+
+```ts
+const { url, pending } = await beginAuthorization(
+  google({ clientId, clientSecret, offline: true, scopes }),
+  { redirectUri },
+)
+// … the browser comes back …
+const { tokens, identity } = await completeAuthorization(
+  provider,
+  pending,
+  callbackUrl.searchParams,
+)
+const stored = await seal(env.TOKEN_SECRET, `tokens:${identity.subject}`, tokens) // unseal() to use
+```
+
+`cascivo create --framework cloudflare --auth oauth` scaffolds GitHub and Google sign-in;
+`--auth email,oauth` puts both methods on one page.
 
 ## Who may call the Worker — `@cascivo/app/guard`
 

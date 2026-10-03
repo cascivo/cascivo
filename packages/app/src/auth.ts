@@ -10,12 +10,16 @@ import type { ReadonlySignal } from '@cascivo/core'
  * await auth.start('ada@example.com')   // emails a link
  * await auth.verify(token)              // on the page the link opens
  * await auth.signOut()
+ * // With handleOAuth (`@cascivo/app/oauth-server`) as well:
+ * await auth.providers()                  // ['github', 'google']
+ * <a href={auth.signInUrl('github')}>     // a plain link: works before hydration too
  * ```
  */
 
 export interface User {
   id: string
-  email: string
+  /** `null` for someone who signed in with a provider that shares no verified address. */
+  email: string | null
 }
 
 export interface Auth {
@@ -28,13 +32,21 @@ export interface Auth {
   /** Signs in with the token from the link. */
   verify(token: string): Promise<User>
   signOut(): Promise<void>
+  /** The OAuth providers the Worker offers (`handleOAuth`), in its order. */
+  providers(): Promise<string[]>
+  /**
+   * Where a "Sign in with …" link points: the Worker redirects to the provider and, once signed
+   * in, back to `returnTo` (a path on this site; default the current page).
+   */
+  signInUrl(provider: string, returnTo?: string): string
 }
 
 function parseUser(raw: unknown): User | null {
   if (raw === null) return null
   if (typeof raw === 'object') {
     const { id, email } = raw as Record<string, unknown>
-    if (typeof id === 'string' && typeof email === 'string') return { id, email }
+    if (typeof id === 'string' && (typeof email === 'string' || email === null))
+      return { id, email }
   }
   throw new Error('Malformed user')
 }
@@ -81,6 +93,17 @@ export function createAuth(basePath = '/api/auth'): Auth {
     async signOut() {
       await post('signout', {})
       user.value = null
+    },
+    async providers() {
+      const { providers } = await call(`${basePath}/oauth`)
+      if (!Array.isArray(providers) || !providers.every((p) => typeof p === 'string')) {
+        throw new Error('Malformed provider list')
+      }
+      return providers
+    },
+    signInUrl(provider, returnTo) {
+      const back = returnTo ?? `${location.pathname}${location.search}`
+      return `${basePath}/oauth/${encodeURIComponent(provider)}?returnTo=${encodeURIComponent(back)}`
     },
   }
   auth.refresh().catch((error: unknown) => {

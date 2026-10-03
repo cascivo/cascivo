@@ -6991,12 +6991,14 @@
             "refresh": "(): Promise<void>",
             "start": "(email: string): Promise<{ link: string | null; }>",
             "verify": "(token: string): Promise<User>",
-            "signOut": "(): Promise<void>"
+            "signOut": "(): Promise<void>",
+            "providers": "(): Promise<string[]>",
+            "signInUrl": "(provider: string, returnTo?: string): string"
           },
           "createAuth": "declare function createAuth(basePath?: string): Auth",
           "User": {
             "id": "string",
-            "email": "string"
+            "email": "string | null"
           }
         }
       },
@@ -7019,7 +7021,110 @@
           "SESSION_COOKIE": "declare const SESSION_COOKIE = \"__Host-session\"",
           "User": {
             "id": "string",
-            "email": "string"
+            "email": "string | null"
+          }
+        }
+      },
+      "./oauth": {
+        "values": [
+          "OAuthError",
+          "beginAuthorization",
+          "completeAuthorization",
+          "github",
+          "google",
+          "parsePendingAuthorization",
+          "seal",
+          "unseal"
+        ],
+        "types": [
+          "CompletedAuthorization",
+          "GitHubOptions",
+          "GoogleOptions",
+          "Identity",
+          "OAuthErrorCode",
+          "OAuthProvider",
+          "PendingAuthorization",
+          "TokenSet"
+        ],
+        "declarations": {
+          "beginAuthorization": "declare function beginAuthorization(provider: OAuthProvider, options: { redirectUri: string; scopes?: readonly string[]; ttlSeconds?: number; }): Promise<{ url: string; pending: PendingAuthorization; }>",
+          "completeAuthorization": "declare function completeAuthorization(provider: OAuthProvider, pending: PendingAuthorization, params: URLSearchParams): Promise<CompletedAuthorization>",
+          "CompletedAuthorization": {
+            "tokens": "TokenSet",
+            "identity": "Identity"
+          },
+          "github": "declare function github(options: GitHubOptions): OAuthProvider",
+          "GitHubOptions": {
+            "clientId": "string",
+            "clientSecret": "string",
+            "scopes?": "readonly string[]",
+            "allowSignup?": "boolean",
+            "userAgent?": "string",
+            "fetch?": "typeof fetch"
+          },
+          "google": "declare function google(options: GoogleOptions): OAuthProvider",
+          "GoogleOptions": {
+            "clientId": "string",
+            "clientSecret": "string",
+            "scopes?": "readonly string[]",
+            "hostedDomain?": "string",
+            "offline?": "boolean",
+            "fetch?": "typeof fetch"
+          },
+          "Identity": {
+            "provider": "string",
+            "subject": "string",
+            "email": "string | null",
+            "name": "string | null",
+            "handle": "string | null",
+            "avatarUrl": "string | null"
+          },
+          "OAuthError": {
+            "readonly code": "OAuthErrorCode",
+            "constructor": "(code: OAuthErrorCode, message: string)",
+            "(kind)": "class"
+          },
+          "OAuthErrorCode": "type = 'denied' | 'state_mismatch' | 'expired' | 'provider_error'",
+          "OAuthProvider": {
+            "readonly id": "string",
+            "readonly scopes": "readonly string[]",
+            "authorizationUrl": "(pending: PendingAuthorization, codeChallenge: string): URL",
+            "exchange": "(code: string, pending: PendingAuthorization): Promise<CompletedAuthorization>",
+            "refresh?": "(tokens: TokenSet): Promise<TokenSet>"
+          },
+          "parsePendingAuthorization": "declare function parsePendingAuthorization(raw: unknown): PendingAuthorization",
+          "PendingAuthorization": {
+            "provider": "string",
+            "state": "string",
+            "codeVerifier": "string",
+            "nonce": "string",
+            "redirectUri": "string",
+            "scopes": "string[]",
+            "expiresAt": "number"
+          },
+          "seal": "declare function seal(secret: string, context: string, value: unknown): Promise<string>",
+          "TokenSet": {
+            "accessToken": "string",
+            "refreshToken": "string | null",
+            "expiresAt": "number | null",
+            "scopes": "string[]"
+          },
+          "unseal": "declare function unseal(secret: string, context: string, sealed: string): Promise<unknown>"
+        }
+      },
+      "./oauth-server": {
+        "values": ["handleOAuth"],
+        "types": ["OAuthFailure", "OAuthServerOptions"],
+        "declarations": {
+          "handleOAuth": "declare function handleOAuth(db: Database, options: OAuthServerOptions): (request: Request) => Promise<Response | null>",
+          "OAuthFailure": "type = OAuthErrorCode | 'identity_in_use'",
+          "OAuthServerOptions": {
+            "providers": "readonly OAuthProvider[]",
+            "secret": "string",
+            "basePath?": "string",
+            "origin?": "string",
+            "errorPath?": "string",
+            "sessionTtlSeconds?": "number"
           }
         }
       },

@@ -33,6 +33,8 @@ const ENTRIES = [
   { name: 'turnstile', src: 'src/turnstile.ts' },
   { name: 'auth', src: 'src/auth.ts' },
   { name: 'auth-server', src: 'src/auth-server.ts' },
+  { name: 'oauth', src: 'src/oauth.ts' },
+  { name: 'oauth-server', src: 'src/oauth-server.ts' },
   { name: 'live', src: 'src/live.ts' },
   { name: 'live-server', src: 'src/live-server.ts' },
   { name: 'vite', src: 'src/vite.ts' },

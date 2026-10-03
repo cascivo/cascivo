@@ -568,3 +568,31 @@ Taken 2026-10-03:
   [Queues delivery delay](https://developers.cloudflare.com/queues/configuration/batching-retries/)
 - Threads: [Get started](https://developers.facebook.com/docs/threads/get-started),
   [Access tokens and permissions](https://developers.facebook.com/docs/threads/get-started/get-access-tokens-and-permissions)
+
+## Status
+
+**Step 2 implemented (2026-10-03):** the OAuth core, Google, GitHub and sign-in.
+
+- `@cascivo/app/oauth`: `beginAuthorization` / `completeAuthorization` (state, PKCE S256,
+  nonce), `google()` (ID token verified against Google's JWKS, `hostedDomain` checked on the
+  token, optional `offline` + `refresh`), `github()` (numeric id, primary verified email only),
+  `seal` / `unseal` (AES-256-GCM, HKDF per context). A test holds it to importing only the
+  internal JWT module, so the adapters stay reusable outside the app layer.
+- `@cascivo/app/oauth-server`: `handleOAuth`, on the same users and sessions as `handleAuth`,
+  linking by `(provider, subject)` as designed above. Failures redirect with `?error=`.
+- `requireAccess` and Google's ID tokens share one JWKS/RS256 verifier (`src/jwt.ts`).
+- `User.email` is `string | null`. `cascivo_auth_0002` rebuilds `users` without renaming it
+  (copy aside, drop, recreate, refill, with foreign keys deferred), because a rename rewrites
+  every foreign key pointing at the table. Verified on SQLite and on local D1 (workerd): ids,
+  sessions and an app's own foreign key to `users` survive.
+- `cascivo create --auth oauth` and `--auth email,oauth`. `framework:check`'s checkout leg now
+  uses `--auth email,oauth`.
+
+Not proven without real credentials: a completed round trip at GitHub and at Google. Under
+`vite dev` in workerd, everything up to the provider's consent page works, and so does a
+refused code exchange against GitHub's real token endpoint.
+
+The decision that `redirect URIs come from configuration, never from the request` became:
+the request's origin by default, with an `origin` option to pin it. On Workers the host is
+the routed hostname, the provider only accepts registered redirect URIs, and the state cookie
+is host-only, so a different host fails the flow rather than leaking it.

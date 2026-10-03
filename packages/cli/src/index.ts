@@ -121,6 +121,8 @@ Options:
                             through (cloudflare only)
   --auth email              Accounts with emailed sign-in links; every API write needs a
                             signed-in user (cloudflare only)
+  --auth oauth              Accounts with GitHub and Google sign-in; every API write needs
+                            a signed-in user (cloudflare only). --auth email,oauth: both
   --template <spec>         Start from a marketplace template (@ns/name or owner/repo/name)
   --theme <name>            Theme to install (${THEME_LIST})
   --sections "<a, b>"       Comma-separated nav section labels (one component each)

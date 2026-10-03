@@ -120,11 +120,14 @@ export interface ScaffoldOptions {
   examples?: Example[]
   /**
    * `cloudflare` framework only. `access`: the Worker refuses every request Cloudflare Access
-   * did not let through. `email`: accounts with emailed sign-in links; every API write needs
-   * a signed-in user.
+   * did not let through. `email`: accounts with emailed sign-in links; `oauth`: accounts with
+   * GitHub and Google sign-in; `email,oauth`: both on one page. With accounts, every API write
+   * needs a signed-in user.
    */
-  auth?: 'access' | 'email'
+  auth?: Auth
 }
+
+export type Auth = 'access' | 'email' | 'oauth' | 'email,oauth'
 
 export interface ScaffoldFile {
   /** Path relative to the project root. */
@@ -1373,7 +1376,7 @@ ${jsoncArray('  ', 'r2_buckets', [`{ "binding": "FILES", "bucket_name": "${packa
     hasExample(opts, 'search') ? 'search indexing' : '',
     hasExample(opts, 'checkout') ? 'checkouts started' : '',
     hasExample(opts, 'newsletter') ? 'newsletter sign-ups and composer requests' : '',
-    opts.auth === 'email' ? 'sign-in emails' : '',
+    emailSignIn(opts) ? 'sign-in emails' : '',
   ]
     .filter(Boolean)
     .join(', ')
@@ -1399,7 +1402,7 @@ ${jsoncArray('  ', 'ratelimits', ['{ "name": "LIMITER", "namespace_id": "1001", 
     hasExample(opts, 'search') ? 'help articles' : '',
     hasExample(opts, 'checkout') ? 'orders' : '',
     hasExample(opts, 'newsletter') ? 'newsletter subscribers and issues' : '',
-    opts.auth === 'email' ? 'accounts' : '',
+    hasAccounts(opts) ? 'accounts' : '',
   ]
     .filter(Boolean)
     .join(', ')}.
@@ -1458,7 +1461,7 @@ function wranglerVars(opts: ScaffoldOptions): string {
   const digest = hasExample(opts, 'digest')
   const checkout = hasExample(opts, 'checkout')
   const newsletter = hasExample(opts, 'newsletter')
-  const emailAuth = opts.auth === 'email'
+  const emailAuth = emailSignIn(opts)
   const comments = [
     ...(opts.auth === 'access'
       ? ['Cloudflare Access (README). Until both are set, the Worker refuses every request.']
@@ -1564,9 +1567,44 @@ ${q.consumer.map((line) => `        ${line},`).join('\n')}
   },`
 }
 
-/** A subscription plan needs an account to belong to: checkout with --auth email bills one. */
+/** A subscription plan needs an account to belong to: checkout with accounts bills one. */
 function usesBilling(opts: ScaffoldOptions): boolean {
-  return hasExample(opts, 'checkout') && opts.auth === 'email'
+  return hasExample(opts, 'checkout') && hasAccounts(opts)
+}
+
+/** Accounts of any kind: users, sessions, and API writes that need a signed-in user. */
+function hasAccounts(opts: ScaffoldOptions): boolean {
+  return emailSignIn(opts) || oauthSignIn(opts)
+}
+
+/** Sign-in by an emailed one-time link (`handleAuth`). */
+function emailSignIn(opts: ScaffoldOptions): boolean {
+  return opts.auth === 'email' || opts.auth === 'email,oauth'
+}
+
+/**
+ * `--auth`: `access`, `email`, `oauth`, or `email,oauth` (either order); `null` when absent,
+ * `'invalid'` for anything else, including `access` combined with a sign-in method.
+ */
+export function parseAuth(raw: string | undefined): Auth | null | 'invalid' {
+  const parts = [
+    ...new Set(
+      (raw ?? '')
+        .toLowerCase()
+        .split(',')
+        .map((p) => p.trim()),
+    ),
+  ].filter(Boolean)
+  if (parts.length === 0) return null
+  const key = parts.sort().join(',')
+  return key === 'access' || key === 'email' || key === 'oauth' || key === 'email,oauth'
+    ? key
+    : 'invalid'
+}
+
+/** Sign-in with GitHub and Google (`handleOAuth`). */
+function oauthSignIn(opts: ScaffoldOptions): boolean {
+  return opts.auth === 'oauth' || opts.auth === 'email,oauth'
 }
 
 /** The newsletter's queue, named after the app like every other resource. */
@@ -1602,7 +1640,7 @@ function usesLimiter(opts: ScaffoldOptions): boolean {
     hasExample(opts, 'search') ||
     hasExample(opts, 'checkout') ||
     hasExample(opts, 'newsletter') ||
-    opts.auth === 'email'
+    emailSignIn(opts)
   )
 }
 
@@ -1616,7 +1654,7 @@ function usesD1(opts: ScaffoldOptions): boolean {
     hasExample(opts, 'search') ||
     hasExample(opts, 'checkout') ||
     hasExample(opts, 'newsletter') ||
-    opts.auth === 'email'
+    hasAccounts(opts)
   )
 }
 
@@ -1917,14 +1955,25 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const ai = usesAgents(opts)
   const limiter = usesLimiter(opts)
   const access = opts.auth === 'access'
-  const emailAuth = opts.auth === 'email'
+  const emailAuth = emailSignIn(opts)
+  const oauth = oauthSignIn(opts)
+  const accounts = hasAccounts(opts)
   const guards = [
     ...(access ? ['requireAccess'] : []),
     ...(limiter ? ['clientIp', 'rateLimit'] : []),
   ]
-  const custom = rooms || ai || files || exports || access || live || limiter || publish
+  const custom = rooms || ai || files || exports || access || live || limiter || publish || accounts
   const isAsync =
-    ai || files || exports || access || limiter || webhooks || publish || checkout || newsletter
+    ai ||
+    files ||
+    exports ||
+    access ||
+    limiter ||
+    webhooks ||
+    publish ||
+    checkout ||
+    newsletter ||
+    accounts
   // Rooms the server writes: never opened through /api/rooms/:name, where clients may write.
   const serverRooms = [
     ...(imports ? ['job-'] : []),
@@ -1932,7 +1981,7 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
     ...(checkout ? ['order-'] : []),
     ...(newsletter ? ['issue-'] : []),
   ]
-  // Writes --auth email does not ask to sign in: webhooks carry a signature instead of a
+  // Writes that need no signed-in user even with accounts: webhooks carry a signature instead of a
   // session, and a newsletter's readers have no account.
   const signedPaths = [
     ...(webhooks ? ['/api/webhooks/'] : []),
@@ -1944,7 +1993,7 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
     : []
   const openPaths = [...signedPaths, ...readerPaths]
   return `${usage ? `import type { AnalyticsDataset } from '@cascivo/app/analytics'\n` : ''}${d1 ? `import type { Database } from '@cascivo/app/db'\n` : ''}${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler${publish ? ', HttpError' : ''} } from '@cascivo/app/api'
-${emailAuth ? `import { handleAuth, requireUser } from '@cascivo/app/auth-server'\n` : ''}${guards.length > 0 || webhooks ? `import { ${[...guards, 'guardResponse'].sort().join(', ')} } from '@cascivo/app/guard'\n${limiter ? `import type { RateLimiter } from '@cascivo/app/guard'\n` : ''}` : ''}${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
+${accounts ? `import { ${emailAuth ? 'handleAuth, ' : ''}requireUser } from '@cascivo/app/auth-server'\n` : ''}${oauth ? `import { github, google } from '@cascivo/app/oauth'\nimport type { OAuthProvider } from '@cascivo/app/oauth'\nimport { handleOAuth } from '@cascivo/app/oauth-server'\n` : ''}${guards.length > 0 || webhooks || accounts ? `import { ${[...guards, 'guardResponse'].sort().join(', ')} } from '@cascivo/app/guard'\n${limiter ? `import type { RateLimiter } from '@cascivo/app/guard'\n` : ''}` : ''}${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
     files
       ? `import { handleUploads, listUploads } from '@cascivo/app/uploads-server'
 import type { ImageResizer, UploadBucket } from '@cascivo/app/uploads-server'
@@ -2020,13 +2069,13 @@ ${
   d1 ||
   access ||
   live ||
-  emailAuth ||
+  accounts ||
   webhooks ||
   digest ||
   search ||
   checkout ||
   newsletter
-    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
+    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${oauth ? '\n  /** Sign-in with GitHub and Google: `wrangler secret put` (.dev.vars locally). A provider is\n   * offered once both its id and secret are set; AUTH_SECRET seals the sign-in state. */\n  AUTH_SECRET?: string\n  GITHUB_CLIENT_ID?: string\n  GITHUB_CLIENT_SECRET?: string\n  GOOGLE_CLIENT_ID?: string\n  GOOGLE_CLIENT_SECRET?: string' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -2034,8 +2083,28 @@ export interface Env {}`
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 ${
-  limiter
+  oauth
     ? `
+/** The sign-in providers with both an id and a secret set; the others are not offered. */
+function oauthProviders(env: Env): OAuthProvider[] {
+  const providers: OAuthProvider[] = []
+  if (env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET) {
+    providers.push(
+      github({ clientId: env.GITHUB_CLIENT_ID, clientSecret: env.GITHUB_CLIENT_SECRET }),
+    )
+  }
+  if (env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET) {
+    providers.push(
+      google({ clientId: env.GOOGLE_CLIENT_ID, clientSecret: env.GOOGLE_CLIENT_SECRET }),
+    )
+  }
+  return providers
+}
+`
+    : ''
+}${
+    limiter
+      ? `
 /**
  * Requests that each count against LIMITER:
 ${[
@@ -2105,8 +2174,8 @@ function countsAgainstLimit(request: Request): boolean {
   return ${exports ? "url.pathname === '/api/export'" : 'false'}
 }
 `
-    : ''
-}
+      : ''
+  }
 /**
  * One handler per endpoint in src/api.ts, typed from it. A stream handler is an async
  * generator: each \`yield\` is one server-sent event, and returning ends the stream. When the
@@ -2272,14 +2341,30 @@ ${
     }`
           : ''
       }${
-        emailAuth
-          ? `
+        accounts
+          ? `${
+              emailAuth
+                ? `
     // Sign-in links and sessions: /api/auth/* is answered here (worker/auth.ts sends mail).
     const signIn = await handleAuth(env.DB, {
       sendLink: (email, url) => sendSignInLink(env.EMAIL, env.AUTH_FROM, email, url),
       exposeLink: import.meta.env.DEV,
     })(request)
-    if (signIn) return signIn
+    if (signIn) return signIn`
+                : ''
+            }${
+              oauth
+                ? `
+    // Sign-in with GitHub and Google: /api/auth/oauth/* (and /me, /signout). A failed
+    // sign-in lands on /account with ?error=.
+    const signInWith = await handleOAuth(env.DB, {
+      secret: env.AUTH_SECRET ?? '',
+      providers: oauthProviders(env),
+      errorPath: '/account',
+    })(request)
+    if (signInWith) return signInWith`
+                : ''
+            }
     // Every other API write needs a signed-in user; reads stay public.${signedPaths.length > 0 ? '\n    // Webhooks carry a signature instead of a session, and are checked by it.' : ''}${readerPaths.length > 0 ? '\n    // Newsletter readers sign up, confirm and unsubscribe without an account.' : ''}
     if (${
       openPaths.length > 0
@@ -2648,7 +2733,7 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
     items.push({ label: 'Newsletter', href: '/newsletter' })
     items.push({ label: 'Send newsletter', href: '/newsletter/send' })
   }
-  if (opts.auth === 'email') items.push({ label: 'Account', href: '/account' })
+  if (hasAccounts(opts)) items.push({ label: 'Account', href: '/account' })
   const navItems = items
     .map(
       (item) => `    {
@@ -7451,7 +7536,12 @@ export async function startSubscription(
       // Stripe fills in {CHECKOUT_SESSION_ID}, so the page can sync before any webhook.
       successUrl: \`\${origin}/billing?session={CHECKOUT_SESSION_ID}\`,
       cancelUrl: \`\${origin}/billing\`,
-      ...(row?.customerId ? { customer: row.customerId } : { customerEmail: user.email }),
+      // Signed in with a provider that shares no email: Stripe's checkout asks for one.
+      ...(row?.customerId
+        ? { customer: row.customerId }
+        : user.email
+          ? { customerEmail: user.email }
+          : {}),
       clientReferenceId: user.id,
       subscriptionMetadata: { user: user.id },
     })
@@ -7720,24 +7810,30 @@ export async function sendSignInLink(
 `
 }
 
-function cfAccountRouteTsx(): string {
+function cfAccountRouteTsx(opts: ScaffoldOptions): string {
+  const email = emailSignIn(opts)
+  const oauth = oauthSignIn(opts)
+  const lead = email
+    ? oauth
+      ? 'Continue with GitHub or Google, or get a one-time link by email. No password.'
+      : 'No password: we email you a link that signs you in once.'
+    : 'Continue with GitHub or Google. No password.'
   return `import {
   Alert,
   Button,
   Card,
   CardContent,
   Flex,
-  Heading,
-  Input,
-  Link,
+  Heading,${email ? '\n  Input,\n  Link,' : ''}
   Spinner,
   Text,
   signal,
   useSignals,
 } from '@cascivo/react'
-import type { FormEvent } from 'react'
-import { auth } from '../auth'
-
+${email ? "import type { FormEvent } from 'react'\n" : ''}import { auth } from '../auth'${oauth ? "\nimport { router } from '../router'" : ''}
+${
+  email
+    ? `
 const sentTo = signal<string | null>(null)
 /** Set only in \`vite dev\`, where no email is sent: the link to open instead. */
 const devLink = signal<string | null>(null)
@@ -7760,10 +7856,43 @@ async function start(event: FormEvent<HTMLFormElement>): Promise<void> {
     sending.value = false
   }
 }
+`
+    : ''
+}${
+    oauth
+      ? `
+const LABELS: Record<string, string> = { github: 'GitHub', google: 'Google' }
 
+/** The providers the Worker offers: those with an id and a secret set (README). */
+const providers = signal<string[] | null>(null)
+auth.providers().then(
+  (list) => {
+    providers.value = list
+  },
+  () => {
+    providers.value = []
+  },
+)
+
+/** Why the last sign-in with a provider failed: the Worker sends it back as \`?error=\`. */
+const REASONS: Record<string, string> = {
+  denied: 'You did not allow access, so you are not signed in.',
+  expired: 'The sign-in took too long, or started in another browser. Try again.',
+  state_mismatch: 'That sign-in did not match the one this browser started. Try again.',
+  provider_error: 'The provider did not confirm who you are. Try again, or use another way in.',
+  identity_in_use: 'That account is already linked to another user here.',
+}
+`
+      : ''
+  }
 export default function Account() {
   useSignals()
-  const user = auth.user.value
+  const user = auth.user.value${
+    oauth
+      ? `
+  const reason = new URLSearchParams(router.search.value).get('error')`
+      : ''
+  }
 
   if (user === undefined) return <Spinner label="Loading" />
   if (user) {
@@ -7773,7 +7902,7 @@ export default function Account() {
         <Card>
           <CardContent>
             <Flex gap={3}>
-              <Text>Signed in as {user.email}</Text>
+              <Text>{user.email ? \`Signed in as \${user.email}\` : 'Signed in'}</Text>
               <Flex direction="horizontal">
                 <Button variant="secondary" onClick={() => void auth.signOut()}>
                   Sign out
@@ -7789,8 +7918,40 @@ export default function Account() {
     <Flex gap={4}>
       <Flex gap={1}>
         <Heading level={1}>Sign in</Heading>
-        <Text muted>No password: we email you a link that signs you in once.</Text>
-      </Flex>
+        ${
+          // Prettier's width: a lead too long for one line goes on its own.
+          `<Text muted>${lead}</Text>`.length + 8 > 100
+            ? `<Text muted>\n          ${lead}\n        </Text>`
+            : `<Text muted>${lead}</Text>`
+        }
+      </Flex>${
+        oauth
+          ? `
+      {reason ? (
+        <Alert variant="destructive" title="Not signed in">
+          {REASONS[reason] ?? 'Sign-in failed. Try again.'}
+        </Alert>
+      ) : null}
+      {providers.value === null ? (
+        <Spinner label="Loading" />
+      ) : providers.value.length === 0 ? (
+        <Alert variant="info" title="No provider is set up yet">
+          Set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET, or the GOOGLE_ pair, in .dev.vars (README).
+        </Alert>
+      ) : (
+        <Flex direction="horizontal" gap={2} wrap>
+          {providers.value.map((id) => (
+            // A plain link: the Worker redirects to the provider, and back here afterwards.
+            <Button key={id} asChild variant="secondary">
+              <a href={auth.signInUrl(id, '/account')}>Continue with {LABELS[id] ?? id}</a>
+            </Button>
+          ))}
+        </Flex>
+      )}`
+          : ''
+      }${
+        email
+          ? `
       {sentTo.value ? (
         <Alert variant="success" title="Check your email">
           We sent a sign-in link to {sentTo.value}. It works once, for 15 minutes.
@@ -7813,7 +7974,9 @@ export default function Account() {
             Email me a link
           </Button>
         </Flex>
-      </form>
+      </form>`
+          : ''
+      }
     </Flex>
   )
 }
@@ -9804,29 +9967,62 @@ IP). Sending reads every confirmed address into memory; past a few hundred thous
 page through them instead.`
       : ''
   }${
-    opts.auth === 'email'
+    hasAccounts(opts)
       ? `
 
-## Accounts (email sign-in)
+## Accounts (${emailSignIn(opts) ? (oauthSignIn(opts) ? 'email, GitHub and Google sign-in' : 'email sign-in') : 'GitHub and Google sign-in'})
 
-Anyone can create an account with their email address: \`/account\` emails a one-time link,
-and opening it signs them in with a session cookie. **Every API write needs a signed-in
-user; reads stay public.**
+${
+  emailSignIn(opts) && oauthSignIn(opts)
+    ? 'Anyone can create an account by continuing with GitHub or Google, or with their email address, on `/account`.'
+    : oauthSignIn(opts)
+      ? 'Anyone can create an account by continuing with GitHub or Google on `/account`.'
+      : 'Anyone can create an account with their email address: `/account` emails a one-time link, and opening it signs them in with a session cookie.'
+} **Every API write needs a signed-in user; reads stay public.**
 
-- \`worker/index.ts\` — \`handleAuth\` (\`@cascivo/app/auth-server\`) answers \`/api/auth/*\`, and
+- \`worker/index.ts\` — ${[emailSignIn(opts) ? '`handleAuth` (`@cascivo/app/auth-server`)' : '', oauthSignIn(opts) ? '`handleOAuth` (`@cascivo/app/oauth-server`)' : ''].filter(Boolean).join(' and ')} answer${emailSignIn(opts) && oauthSignIn(opts) ? '' : 's'} \`/api/auth/*\`, and
   \`requireUser\` refuses any other write without a session (401) or from another site (403).
-  Call \`requireUser(env.DB, request)\` in a handler to know who is asking.
+  Call \`requireUser(env.DB, request)\` in a handler to know who is asking.${
+    emailSignIn(opts)
+      ? `
 - \`worker/auth.ts\` — sends the link through Email Service. Set \`AUTH_FROM\` in
-  \`wrangler.jsonc\` to an address on a domain you have onboarded to Email Service.
-- \`src/auth.ts\` — \`auth.user\`, a signal every page can read.
+  \`wrangler.jsonc\` to an address on a domain you have onboarded to Email Service.`
+      : ''
+  }
+- \`src/auth.ts\` — \`auth.user\`, a signal every page can read. \`user.email\` is \`null\` for
+  someone whose provider shared no verified address.${
+    emailSignIn(opts)
+      ? `
 - \`src/routes/signin/verify.tsx\` — the page a link opens. It signs in on a button press,
-  because mail scanners open every link in a message.
+  because mail scanners open every link in a message.`
+      : ''
+  }
 
-Users, links and sessions live in D1, stored as hashes. Links expire after 15 minutes and
-work once; sessions last 30 days. Each caller (by IP) may request 20 links a minute. In
-\`vite dev\` no email is sent: the Account page shows the link instead. WebSocket connections
+Users${emailSignIn(opts) ? ', links' : ''} and sessions live in D1, stored as hashes. ${emailSignIn(opts) ? 'Links expire after 15 minutes and work once; sessions' : 'Sessions'} last 30 days.${emailSignIn(opts) ? ' Each caller (by IP) may request 20 links a minute. In `vite dev` no email is sent: the Account page shows the link instead.' : ''} WebSocket connections
 (rooms, agents) are not covered by the write rule; check \`currentUser\` before forwarding them
-if they need a user.`
+if they need a user.${
+          oauthSignIn(opts)
+            ? `
+
+### GitHub and Google
+
+1. **GitHub**: create an OAuth App at https://github.com/settings/developers with the
+   callback URL \`http://localhost:5173/api/auth/oauth/github/callback\` for \`vite dev\`
+   (an OAuth App takes one callback URL, so make a second app for the deployed one).
+2. **Google**: in the Google Cloud console, create an OAuth client of type "Web application"
+   with the redirect URIs \`http://localhost:5173/api/auth/oauth/google/callback\` and
+   \`https://<your app>/api/auth/oauth/google/callback\`.
+3. Put the ids and secrets in \`.dev.vars\`. Deployed: \`npx wrangler secret put\` each of
+   \`GITHUB_CLIENT_ID\`, \`GITHUB_CLIENT_SECRET\`, \`GOOGLE_CLIENT_ID\`, \`GOOGLE_CLIENT_SECRET\`,
+   and \`AUTH_SECRET\` (a random one: \`openssl rand -base64 32\`). A provider is offered once
+   both its values are set.
+
+People are matched by their account at the provider, not by email. A new sign-in joins an
+existing account only through an email the provider has verified (GitHub's primary verified
+address, Google's \`email_verified\`). A signed-in user who follows another provider's link
+adds it to their account.`
+            : ''
+        }`
       : ''
   }${
     opts.auth === 'access'
@@ -10036,6 +10232,19 @@ function cfDevVars(opts: ScaffoldOptions): string {
           'AWS_SECRET_ACCESS_KEY=',
         ]
       : []),
+    ...(oauthSignIn(opts)
+      ? [
+          '# Seals the sign-in state between the redirect and the callback. Deployed, a random one:',
+          '# openssl rand -base64 32',
+          'AUTH_SECRET=dev-only-auth-secret-0123456789abcdef',
+          '# An OAuth App (github.com/settings/developers) and a Google OAuth client (README).',
+          '# Each provider is offered once both its id and secret are set.',
+          'GITHUB_CLIENT_ID=',
+          'GITHUB_CLIENT_SECRET=',
+          'GOOGLE_CLIENT_ID=',
+          'GOOGLE_CLIENT_SECRET=',
+        ]
+      : []),
   ]
     .map((line) => `${line}\n`)
     .join('')
@@ -10101,6 +10310,24 @@ function cfBindingDescriptions(opts: ScaffoldOptions): Record<string, { descript
           ],
         ])
       : {}),
+    ...(oauthSignIn(opts)
+      ? describe([
+          [
+            'AUTH_SECRET',
+            'Seals the sign-in state between the redirect to GitHub or Google and the way back. Make a random one: `openssl rand -base64 32`.',
+          ],
+          [
+            'GITHUB_CLIENT_ID',
+            'The client id of a [GitHub OAuth App](https://github.com/settings/developers) whose callback URL is `https://<this app>/api/auth/oauth/github/callback`. Leave it empty to offer no GitHub sign-in.',
+          ],
+          ['GITHUB_CLIENT_SECRET', "That OAuth App's client secret."],
+          [
+            'GOOGLE_CLIENT_ID',
+            'The client id of a Google OAuth client (Web application) with the redirect URI `https://<this app>/api/auth/oauth/google/callback`. Leave it empty to offer no Google sign-in.',
+          ],
+          ['GOOGLE_CLIENT_SECRET', "That OAuth client's secret."],
+        ])
+      : {}),
   }
 }
 
@@ -10152,12 +10379,8 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
           { file: 'newsletter/send.tsx', contents: cfNewsletterSendRouteTsx() },
         ]
       : []),
-    ...(opts.auth === 'email'
-      ? [
-          { file: 'account.tsx', contents: cfAccountRouteTsx() },
-          { file: 'signin/verify.tsx', contents: cfVerifyRouteTsx() },
-        ]
-      : []),
+    ...(hasAccounts(opts) ? [{ file: 'account.tsx', contents: cfAccountRouteTsx(opts) }] : []),
+    ...(emailSignIn(opts) ? [{ file: 'signin/verify.tsx', contents: cfVerifyRouteTsx() }] : []),
   ]
   return [
     { path: 'package.json', contents: cfPackageJson(opts) },
@@ -10248,18 +10471,15 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
       : []),
     ...(hasExample(opts, 'webhooks') ||
     hasExample(opts, 'checkout') ||
-    hasExample(opts, 'newsletter')
+    hasExample(opts, 'newsletter') ||
+    oauthSignIn(opts)
       ? [
           { path: '.dev.vars', contents: cfDevVars(opts) },
           { path: '.dev.vars.example', contents: cfDevVarsExample(opts) },
         ]
       : []),
-    ...(opts.auth === 'email'
-      ? [
-          { path: 'src/auth.ts', contents: cfAuthTs() },
-          { path: 'worker/auth.ts', contents: cfAuthWorkerTs() },
-        ]
-      : []),
+    ...(hasAccounts(opts) ? [{ path: 'src/auth.ts', contents: cfAuthTs() }] : []),
+    ...(emailSignIn(opts) ? [{ path: 'worker/auth.ts', contents: cfAuthWorkerTs() }] : []),
     ...(hasExample(opts, 'publish')
       ? [
           { path: 'src/pages.ts', contents: cfPagesTs() },
@@ -10422,9 +10642,11 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
     return
   }
 
-  const authArg = (flagValue(args, 'auth') ?? '').toLowerCase()
-  if (authArg && authArg !== 'access' && authArg !== 'email') {
-    console.error(`Unknown auth "${authArg}". Expected: access or email.`)
+  const authArg = parseAuth(flagValue(args, 'auth'))
+  if (authArg === 'invalid') {
+    console.error(
+      `Unknown auth "${flagValue(args, 'auth') ?? ''}". Expected: access, email, oauth or email,oauth.`,
+    )
     process.exitCode = 1
     return
   }
@@ -10511,7 +10733,7 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
       pm,
       ...(isRuntime(runtimeArg) ? { runtime: runtimeArg } : {}),
       ...(exampleArgs.length > 0 ? { examples: exampleArgs.filter(isExample) } : {}),
-      ...(authArg === 'access' || authArg === 'email' ? { auth: authArg } : {}),
+      ...(authArg ? { auth: authArg } : {}),
     }
 
     const targetDir = join(cwd, name)

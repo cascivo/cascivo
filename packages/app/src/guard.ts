@@ -1,4 +1,5 @@
 import { HttpError } from '@cascivo/data'
+import { JwtError, verifyJwt } from './jwt'
 
 /**
  * `@cascivo/app/guard` — who may call the Worker, and how often.
@@ -34,75 +35,6 @@ export interface AccessIdentity {
   claims: Record<string, unknown>
 }
 
-interface Jwk {
-  kid: string
-  kty: string
-  n: string
-  e: string
-  alg?: string
-}
-
-const KEY_TTL_MS = 60 * 60 * 1000
-const keyCache = new Map<string, { at: number; keys: Map<string, CryptoKey> }>()
-
-function base64UrlDecode(part: string): Uint8Array<ArrayBuffer> {
-  const base64 = part
-    .replace(/-/g, '+')
-    .replace(/_/g, '/')
-    .padEnd(Math.ceil(part.length / 4) * 4, '=')
-  const binary = atob(base64)
-  const bytes = new Uint8Array(binary.length)
-  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i)
-  return bytes
-}
-
-function decodeJson(part: string): Record<string, unknown> {
-  const value: unknown = JSON.parse(new TextDecoder().decode(base64UrlDecode(part)))
-  if (typeof value !== 'object' || value === null || Array.isArray(value))
-    throw new Error('Not an object')
-  return value as Record<string, unknown>
-}
-
-async function signingKeys(
-  options: AccessOptions,
-  refresh: boolean,
-): Promise<Map<string, CryptoKey>> {
-  const cached = keyCache.get(options.teamDomain)
-  if (cached && !refresh && Date.now() - cached.at < KEY_TTL_MS) return cached.keys
-  const doFetch = options.fetch ?? fetch
-  const response = await doFetch(`https://${options.teamDomain}/cdn-cgi/access/certs`)
-  if (!response.ok) throw new Error(`Access signing keys: ${response.status}`)
-  const body: unknown = await response.json()
-  const list =
-    typeof body === 'object' && body !== null ? (body as { keys?: unknown }).keys : undefined
-  if (!Array.isArray(list)) throw new Error('Access signing keys: no keys[]')
-  const keys = new Map<string, CryptoKey>()
-  for (const raw of list) {
-    if (typeof raw !== 'object' || raw === null) continue
-    const jwk = raw as Partial<Jwk>
-    if (
-      jwk.kty !== 'RSA' ||
-      typeof jwk.kid !== 'string' ||
-      typeof jwk.n !== 'string' ||
-      typeof jwk.e !== 'string'
-    ) {
-      continue
-    }
-    keys.set(
-      jwk.kid,
-      await crypto.subtle.importKey(
-        'jwk',
-        { kty: 'RSA', n: jwk.n, e: jwk.e, alg: 'RS256', ext: true },
-        { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
-        false,
-        ['verify'],
-      ),
-    )
-  }
-  keyCache.set(options.teamDomain, { at: Date.now(), keys })
-  return keys
-}
-
 const denied = (why: string): never => {
   throw new HttpError(403, `Access denied: ${why}`)
 }
@@ -125,42 +57,20 @@ export async function requireAccess(
     request.headers.get('cf-access-jwt-assertion') ??
     /(?:^|;\s*)CF_Authorization=([^;]+)/.exec(request.headers.get('cookie') ?? '')?.[1] ??
     denied('no Access token')
-  const parts = token.split('.')
-  if (parts.length !== 3) denied('malformed token')
-  const [headerPart, payloadPart, signaturePart] = parts as [string, string, string]
-  let header: Record<string, unknown>
   let claims: Record<string, unknown>
   try {
-    header = decodeJson(headerPart)
-    claims = decodeJson(payloadPart)
-  } catch {
-    return denied('malformed token')
+    claims = await verifyJwt(token, {
+      jwksUrl: `https://${options.teamDomain}/cdn-cgi/access/certs`,
+      issuer: `https://${options.teamDomain}`,
+      audience: options.audience,
+      label: 'Access',
+      ...(options.leewaySeconds === undefined ? {} : { leewaySeconds: options.leewaySeconds }),
+      ...(options.fetch ? { fetch: options.fetch } : {}),
+    })
+  } catch (error) {
+    if (error instanceof JwtError) return denied(error.reason)
+    throw error
   }
-  if (header['alg'] !== 'RS256' || typeof header['kid'] !== 'string')
-    denied('unexpected token algorithm')
-  const kid = header['kid'] as string
-  let key = (await signingKeys(options, false)).get(kid)
-  // Access rotates its keys: an unknown kid is a reason to refetch once, not to fail.
-  if (!key) key = (await signingKeys(options, true)).get(kid)
-  if (!key) return denied('unknown signing key')
-  const valid = await crypto.subtle.verify(
-    'RSASSA-PKCS1-v1_5',
-    key,
-    base64UrlDecode(signaturePart),
-    new TextEncoder().encode(`${headerPart}.${payloadPart}`),
-  )
-  if (!valid) denied('bad signature')
-
-  if (claims['iss'] !== `https://${options.teamDomain}`) denied('wrong issuer')
-  const aud = claims['aud']
-  if (!(Array.isArray(aud) ? aud.includes(options.audience) : aud === options.audience)) {
-    denied('wrong audience')
-  }
-  const now = Date.now() / 1000
-  const leeway = options.leewaySeconds ?? 60
-  if (typeof claims['exp'] !== 'number' || claims['exp'] + leeway < now) denied('token expired')
-  if (typeof claims['nbf'] === 'number' && claims['nbf'] - leeway > now)
-    denied('token not yet valid')
   const subject = claims['sub'] ?? claims['common_name']
   if (typeof subject !== 'string') return denied('no subject')
   return { email: typeof claims['email'] === 'string' ? claims['email'] : null, subject, claims }
