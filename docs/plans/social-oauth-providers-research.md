@@ -6,7 +6,8 @@ of [app-layer-next-use-cases-research.md](./app-layer-next-use-cases-research.md
 integrated easily, and can the provider adapters be designed so the same tokens also drive
 something other than sign-in, such as a social sharing and scheduling app?
 
-This is a proposal only. Nothing here has shipped.
+The open questions were decided on 2026-10-03 (see "Decisions"), and Buffer was added as a
+seventh integration. Nothing here has shipped yet.
 
 ## Short answer
 
@@ -18,6 +19,7 @@ This is a proposal only. Nothing here has shipped.
 | Mastodon | Medium             | Yes, no review               | M      | One OAuth server per instance; client registered per instance |
 | Bluesky  | Hard to do right   | Yes, no review               | M–L    | PAR + DPoP + identity resolution are mandatory               |
 | Threads  | Possible, not wise | Yes, after Meta review       | M      | App Review + Tech Provider verification; no email, no PKCE   |
+| Buffer   | Not a provider     | Yes, through Buffer's queue  | S      | The adopter's Buffer plan caps requests for all their users  |
 
 All six work over plain `fetch` and WebCrypto, so `@cascivo/app` can stay
 dependency-free. The work is uneven. Google and GitHub are a week together. Bluesky alone is
@@ -183,8 +185,9 @@ versions, the 60-day reconnect).
 - **Gate.** None. Development uses the spec's `http://localhost` client exception.
 
 **Verdict: hard to do right, but entirely doable without a dependency.** ES256 signing,
-JWK thumbprints and JWT assembly are WebCrypto. The official `@atproto/oauth-client` exists
-and is the safe shortcut if we decide a dependency is acceptable (decision 2).
+JWK thumbprints and JWT assembly are WebCrypto. **Decided: our own client**, not
+`@atproto/oauth-client`, so the package stays dependency-free and Workers-native. The cost is
+that we own spec changes; the mock-server tests below are what keeps that honest.
 
 ### Threads
 
@@ -211,12 +214,52 @@ and is the safe shortcut if we decide a dependency is acceptable (decision 2).
 posting. Do not offer it as a sign-in method: no email, and the review burden falls on every
 adopter before their first stranger can sign in.
 
+### Buffer
+
+Buffer is not a network but a scheduler in front of eleven of them (Bluesky, Threads, LinkedIn,
+Mastodon, X, Instagram, Facebook, TikTok, YouTube, Pinterest, Google Business Profile). For an
+adopter it is the cheap way to reach the networks we do not integrate (X, Instagram, TikTok),
+and to use queue slots and posting times the user already set up in Buffer.
+
+- **API.** GraphQL at `https://api.buffer.com`, `Authorization: Bearer …`. The current API is
+  new (public beta in 2026) and is not the old REST API, which stopped accepting new apps.
+- **Auth.** Two ways, and we support both:
+  - A **personal API key** (Settings → API). Right for a single-owner app: the operator's own
+    Buffer account, the key as a Worker secret, no OAuth at all.
+  - **OAuth 2** for an app whose users connect _their own_ Buffer: authorize at
+    `https://auth.buffer.com/auth`, token at `https://auth.buffer.com/token`. **PKCE is
+    mandatory.** Access tokens last 1 hour; a refresh token comes only with `offline_access`
+    and is **single-use**, rotated on every refresh. That is the same rotation race as Bluesky,
+    so the same guard applies. Scopes: `posts:read`, `posts:write`, `ideas:read`,
+    `ideas:write`, `account:read`, `account:write`, `offline_access`.
+- **Identity.** `account { id email organizations { id } }`. Buffer is a connection, not a
+  sign-in method: nobody expects "Sign in with Buffer".
+- **Posting.** `query { account { organizations { id } } }`, then the organization's channels
+  (one per connected social profile), then `createPost(input: { channelId, text,
+  schedulingType: automatic, mode: addToQueue | customScheduled | shareNow, dueAt, assets })`.
+  The result is a union: always select both `PostActionSuccess` and `MutationError`. A
+  `MutationError` arrives with HTTP 200, so a client that checks only the status reports
+  success for a rejected post.
+- **Media.** By public URL only; Buffer fetches it. Same need as Threads: an R2 object behind a
+  public or presigned URL.
+- **Limits.** Per API key or app client, by the _adopter's_ plan: 100 requests per 15 minutes
+  on every plan, 250–500 per day, 3,000–15,000 per 30 days. With OAuth, every end user's
+  requests count against the adopter's app client. A multi-user app must count its own calls
+  and refuse before Buffer does; `429` carries `Retry-After`.
+- **Idempotency.** None documented. Record the attempt before calling and never blind-retry a
+  timeout, as with LinkedIn.
+- **Overlap.** A user who connects both Bluesky directly and Bluesky through Buffer would post
+  twice. The composer should show channels by network and warn on a duplicate.
+
+**Verdict: small.** One GraphQL call per post, OAuth on the core we build anyway. The real work
+is the rate-limit accounting and an honest error mapping.
+
 ### Not covered, for the record
 
 - **X (Twitter).** Write access is paid and has changed terms repeatedly. A share intent (below)
-  covers most of what an adopter wants without the API.
+  covers reader sharing, and Buffer covers scheduled posts to X.
 - **Facebook and Instagram.** Business/creator accounts only, through Meta App Review. Same
-  shape as Threads, larger review. Revisit once Threads exists.
+  shape as Threads, larger review. Buffer reaches both without it.
 - **Apple.** Sign-in only, already listed in the earlier note (JWT client secret,
   `response_mode=form_post`, private relay email).
 
@@ -237,10 +280,18 @@ Plus `navigator.share()` where the platform has a share sheet. This is a few doz
 no secrets, and it covers "let readers share this article". OAuth is needed only when the
 **app** posts: scheduled posts, cross-posting, posting from a server.
 
-Proposal: `shareIntentUrl(network, { text, url })` in `@cascivo/app` (pure function, works
-anywhere), and possibly a `ShareMenu` component that remembers the user's Mastodon instance
-in `@cascivo/storage`. A component means a manifest, i18n strings and the usual checks; decide
-separately.
+**Decided: both.** `shareIntentUrl(network, { text, url })` in `@cascivo/app` (a pure function,
+usable anywhere), and a `ShareMenu` registry component built on it:
+
+- A trigger button that opens a Popover-API menu (the sanctioned dismissal path), one item per
+  network, plus "Copy link" and, where `navigator.share` exists, the system share sheet.
+- Mastodon asks for the instance once and remembers it with `@cascivo/storage`. The instance is
+  normalized the same way as on the server, so no `javascript:` or path-bearing value reaches
+  an `href`.
+- `networks` prop (`items`-style collection per the vocabulary rule), labels from the
+  `@cascivo/i18n` catalog, `clientJs: 'enhancement'`: without JavaScript the items are plain
+  links that open the intents.
+- Manifest, visual baselines in all three themes, and the usual gates.
 
 ## Design: one adapter, two uses
 
@@ -333,6 +384,9 @@ connections (id, user_id, provider, subject, issuer, handle,
              scopes, expires_at, status, sealed_tokens, key_id, updated_at)
 ```
 
+A Buffer connection is one row, with its Buffer channels cached beside it so the composer can
+list them without a call per page view.
+
 - **Encrypted, not hashed.** Sessions and sign-in links are stored as SHA-256 hashes because
   we only compare them. Provider tokens must be used, so they are sealed with AES-GCM: a key
   from a Worker secret, the connection id as additional data (a sealed blob copied to another
@@ -349,10 +403,11 @@ connections (id, user_id, provider, subject, issuer, handle,
   | Threads  | A scheduled job refreshes tokens older than ~30 days (window: 24 h to 60 days) |
   | LinkedIn | No refresh: email the user a reconnect link a week before `expires_at`        |
   | Mastodon | Nothing; a `401` sets `status = 'reconnect'`                                  |
+  | Buffer   | Refresh on use (access 1 h); refresh tokens rotate, as Bluesky's              |
   | Google   | Refresh on use (access 1 h)                                                    |
   | GitHub   | OAuth App: nothing. GitHub App: refresh on use (8 h / 6 months)               |
 
-- **The rotation race.** Two Workers refreshing one Bluesky session at once is the subtle bug
+- **The rotation race.** Two Workers refreshing one Bluesky or Buffer session at once is the subtle bug
   here: the loser's refresh token is already spent, and the user is disconnected. Guard the
   refresh with a conditional update (`UPDATE … SET sealed_tokens = ? WHERE id = ? AND
   updated_at = ?`); the loser re-reads the row and uses the winner's token. A Durable Object
@@ -382,22 +437,52 @@ interface Publisher {
 - `prepare` runs before anything is queued, so the composer can show "too long for Bluesky"
   while the user types, and a scheduled post that cannot be sent is refused up front (the
   same lesson as the newsletter's size check in #261).
-- `publish` is called from a queue consumer (`@cascivo/app/jobs`). Idempotency per network:
-  Mastodon's `Idempotency-Key`; Bluesky's client-chosen `rkey`; Threads' container id makes
-  the publish step retryable. LinkedIn has none: record the attempt before calling and never
+- `publish` is called from a Workflow step (below). Idempotency per network: Mastodon's
+  `Idempotency-Key`; Bluesky's client-chosen `rkey`; Threads' container id makes the publish
+  step retryable. LinkedIn and Buffer have none: record the attempt before calling and never
   blind-retry a timeout.
+- Buffer is one more `Publisher`, with a twist: its `publish` can hand the timing to Buffer
+  (`mode: customScheduled` with `dueAt`, or `addToQueue`) instead of our Workflow waiting. The
+  composer offers "schedule here" and "schedule in Buffer"; the second needs no Workflow at
+  all.
 - Link cards are the one place where we fetch arbitrary user URLs (Bluesky). Same rules as
   Mastodon hosts: `https`, timeouts, size caps, image type checks.
 
 ### The example that proves it: `--example social`
 
-A small scheduler: compose once, pick networks, post now or at a time, see the result per
-network. It uses everything above plus pieces that exist: `jobs` for the queue, `uploads` for
-images (and an R2 public URL for Threads), `@cascivo/email` for "reconnect LinkedIn", the
-cron trigger for Threads refreshes. Sign-in with any of the six, or with `--auth email`, with
-connections managed from settings. That is the "different context" the request asks for, and
+A small scheduler: compose once, pick networks (direct connections and Buffer channels), post
+now or at a time, see the result per network with live progress through `jobs`. Images go
+through `uploads`. Sign-in with Google, GitHub, LinkedIn, Mastodon or Bluesky, or with
+`--auth email`. Connections are managed from settings. That is the "different context" the request asks for, and
 it keeps the adapters honest: if posting needs a cookie from `handleOAuth`, the line between
 layers is wrong.
+
+### Infrastructure: Cloudflare only
+
+Everything above maps onto what the Cloudflare scaffold already provisions or knows how to
+(`d1_databases`, `r2_buckets`, `queues`, `workflows`, `triggers.crons` all exist in
+`cascivo create --framework cloudflare` today). Nothing needs a server, Redis or a third-party
+scheduler.
+
+| Need                                  | Cloudflare piece                                                                 |
+| ------------------------------------- | -------------------------------------------------------------------------------- |
+| Users, identities, sessions           | D1, the tables `auth-server` already migrates, plus `user_identities`             |
+| Connections, Mastodon registrations   | D1 (`connections`, `oauth_clients`); tokens sealed with AES-GCM                   |
+| Sealing key, client secrets, ES256 key | Worker secrets (`OAUTH_SEALING_KEY`, `GOOGLE_CLIENT_SECRET`, `BLUESKY_PRIVATE_JWK`, …) |
+| Pending authorization (state, PKCE)   | A sealed, short-lived cookie: no storage at all                                   |
+| Bluesky client metadata and JWKS      | Served by the Worker at `/oauth/client-metadata.json` and `/oauth/jwks.json`      |
+| Handle → DID over DNS                 | DNS-over-HTTPS to `cloudflare-dns.com`                                            |
+| A scheduled post                      | One **Workflow** instance per post: `step.sleepUntil(dueAt)`, then one step per network, each retried on its own and never re-run once it succeeded |
+| Threads refresh, LinkedIn reminder    | A daily **Cron Trigger** that selects connections by `expires_at`                 |
+| Images for Threads and Buffer         | **R2**, exposed by a short-lived presigned URL (both fetch media by URL)          |
+| Live progress in the composer         | `@cascivo/app/jobs` rooms (Durable Objects), as today                             |
+| Rate limits (Mastodon connect, Buffer budget) | The Workers Rate Limiting binding behind `rateLimit` in `guard.ts`, and a D1 counter for Buffer's 30-day budget |
+| Turnstile on "connect your instance"  | `verifyTurnstile`, already in `guard.ts`                                          |
+
+Why a Workflow per post rather than a cron that scans for due posts: the sleep is exact rather
+than "within a minute", a cancelled post is one `instance.terminate()`, and a post to four
+networks where one fails retries only that network. Queues alone cap a delay at 24 hours, so
+they cannot hold a post scheduled for next week.
 
 ## Testing
 
@@ -410,16 +495,18 @@ What can be proven in the container:
   whose document points to a different authorization server must be refused.
 - Facet byte offsets with emoji and combining characters; LinkedIn escaping of every reserved
   character; Mastodon URL weighting.
+- Buffer against a mock GraphQL endpoint: a `MutationError` with HTTP 200 is a failure, a `429`
+  honours `Retry-After`, the budget counter refuses before Buffer does.
 - The rotation race, with two refreshes run concurrently against one row.
 - The scaffold under `vite dev` in workerd, signed in through the mock provider.
 
 What needs real accounts: one round trip per provider, and one real post each to Bluesky,
-Mastodon and LinkedIn test accounts. Threads needs a tester account on a Meta app. This joins
+Mastodon and LinkedIn test accounts, and one post through a Buffer free account. Threads needs a tester account on a Meta app. This joins
 item 5 of the earlier note (the real-account smoke run).
 
 ## Recommended order
 
-1. **Share intents** (S). No tokens, no secrets, useful on day one.
+1. **Share intents** (S–M). `shareIntentUrl` and the `ShareMenu` component.
 2. **`oauth` core + Google + GitHub + `handleOAuth`** (M). This is item 6 as proposed, with the
    adapter and storage split above, `verifyJwt` factored out of `requireAccess`, and the
    nullable-email migration. `--auth oauth` in the scaffold.
@@ -430,27 +517,34 @@ item 5 of the earlier note (the real-account smoke run).
    ships here with LinkedIn and Mastodon.
 5. **Bluesky** (M–L). PAR, DPoP, identity resolution, the rotation guard, facets. The largest
    single item; worth its own PR.
-6. **Threads** (M). Publisher and the scheduled refresher. Ships last because no one can test it
+6. **Buffer** (S). Personal key and OAuth; publisher; Buffer channels in the composer. Can move
+   up to right after step 4 if reaching X and Instagram matters sooner: it needs only the
+   OAuth core and `handleConnections`.
+7. **Threads** (M). Publisher and the scheduled refresher. Ships last because no one can test it
    end to end without a reviewed Meta app.
 
 Teams (item 7 of the earlier note) should come after step 2, since it builds on the same
 identity model.
 
-## Decisions needed
+## Decisions
 
-1. **Where the adapters live.** Subpaths of `@cascivo/app` (`oauth`, `oauth-server`, `social`),
-   as proposed, or a separate `@cascivo/oauth` package so non-cascivo projects can take the
-   adapters without the app layer? Subpaths are cheaper now; the "imports nothing from `db`"
-   rule keeps a later split mechanical.
-2. **Bluesky: own implementation or `@atproto/oauth-client`?** Ours keeps the package
-   dependency-free and Workers-native, at the cost of owning DPoP and identity resolution. The
-   library is maintained by Bluesky and handles spec changes. A middle path: our code in the
-   package, and a test that runs both against the same mock server.
-3. **Nullable email.** Make `User.email` nullable (honest, a breaking type change), or ask
-   email-less users for an address after first sign-in (keeps the type, adds a step)?
-4. **Threads as sign-in.** Proposed: posting only. Agree?
-5. **Share menu as a component.** A `ShareMenu` in the registry (manifest, i18n, the usual
-   checks), or only the `shareIntentUrl` helper?
+Taken 2026-10-03:
+
+1. **Where the adapters live: `@cascivo/app`**, as subpaths (`oauth`, `oauth-server`,
+   `social`). The rule that `oauth` and `social` import nothing from `db`, `auth-server` or the
+   cookie code stays, and a test enforces it, so they remain usable outside a cascivo app.
+2. **Bluesky: our own client.** No `@atproto/oauth-client`; `@cascivo/app` stays
+   dependency-free.
+3. **Email is optional.** `User.email` becomes `string | null`, on the server and in the
+   browser `User`, through a `cascivo_auth_0002` migration that rebuilds `users`. A breaking
+   type change, called out in the changeset. Email-only features (sign-in links, receipts,
+   failed-renewal emails) check for an address and say why when there is none.
+4. **Threads: posting only.** No "Sign in with Threads".
+5. **Share: helper and component.** `shareIntentUrl` and a `ShareMenu` registry component.
+6. **Buffer is in**, as a connected account and a publisher, with both the personal key and
+   OAuth.
+7. **Infrastructure is Cloudflare** wherever any is needed (see "Infrastructure: Cloudflare
+   only").
 
 ## Sources
 
@@ -466,5 +560,11 @@ identity model.
   [apps](https://docs.joinmastodon.org/methods/apps)
 - AT Protocol: [OAuth](https://atproto.com/specs/oauth),
   [Permissions](https://atproto.com/specs/permission)
+- Buffer: [Quick start](https://developers.buffer.com/guides/getting-started.html),
+  [Authentication](https://developers.buffer.com/guides/authentication.html),
+  [Posts and scheduling](https://developers.buffer.com/guides/posts-and-scheduling.html),
+  [Limits](https://developers.buffer.com/guides/api-limits.html)
+- Cloudflare: [Workflows sleeping and retries](https://developers.cloudflare.com/workflows/build/sleeping-and-retrying/),
+  [Queues delivery delay](https://developers.cloudflare.com/queues/configuration/batching-retries/)
 - Threads: [Get started](https://developers.facebook.com/docs/threads/get-started),
   [Access tokens and permissions](https://developers.facebook.com/docs/threads/get-started/get-access-tokens-and-permissions)
