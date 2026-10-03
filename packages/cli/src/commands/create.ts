@@ -1130,15 +1130,15 @@ function cfPackageJson(opts: ScaffoldOptions): string {
         ? {
             '@ai-sdk/react': '^4.0.0',
             '@cascivo/render': V['@cascivo/render']!,
-            '@cloudflare/ai-chat': '^0.12.0',
-            agents: '^0.24.0',
+            '@cloudflare/ai-chat': '^0.12.1',
+            agents: '^0.26.0',
             ai: '^7.0.0',
             'workers-ai-provider': '^4.0.0',
             zod: '^4.0.0',
           }
         : {}),
       // The /voice page: the Agents SDK's voice pipeline and its browser client.
-      ...(hasExample(opts, 'voice') && !agent ? { agents: '^0.24.0' } : {}),
+      ...(hasExample(opts, 'voice') && !agent ? { agents: '^0.26.0' } : {}),
       // The /publish page and published pages render views with @cascivo/render.
       ...(hasExample(opts, 'publish') && !agent
         ? { '@cascivo/render': V['@cascivo/render']! }

@@ -1002,7 +1002,7 @@ describe('buildScaffold — cloudflare --example voice', () => {
     expect(map.get('vite.config.ts')).toContain("import preact from '@preact/preset-vite'")
     expect(map.get('src/voice.ts')).toContain("from 'agents/voice/client'")
     const pkg = JSON.parse(map.get('package.json')!) as { dependencies: Record<string, string> }
-    expect(pkg.dependencies['agents']).toBe('^0.24.0')
+    expect(pkg.dependencies['agents']).toBe('^0.26.0')
     expect(pkg.dependencies['@cloudflare/ai-chat']).toBeUndefined()
   })
 
