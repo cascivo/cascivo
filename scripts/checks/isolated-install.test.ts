@@ -300,6 +300,65 @@ export const authRoutes = (db: Database) =>
   handleAuth(db, { sendLink: async (_email: string, _url: string) => {}, exposeLink: false })
 export const mustBeIn = (db: Database, request: Request) => requireUser(db, request)
 export const maybeIn = (db: Database, request: Request) => currentUser(db, request)
+import { github, google, beginAuthorization, seal, type Identity, type TokenSet } from '@cascivo/app/oauth'
+import { connectionTokens, handleConnections, handleOAuth, mastodonRegistrations, type Connection } from '@cascivo/app/oauth-server'
+import { linkedinPublisher, mastodonPublisher, PublishError, type PublishedPost } from '@cascivo/app/social'
+import { bluesky, blueskyClientMetadata, blueskyJwks, linkedin, mastodon, normalizeServer, parseBlueskyKey, type BlueskyKey } from '@cascivo/app/oauth'
+import { blueskyFacets, blueskyPublisher, blueskyRecordKey } from '@cascivo/app/social'
+import { buffer, bufferQuery } from '@cascivo/app/oauth'
+import { bufferChannels, bufferPublisher, bufferTokens, type BufferChannel } from '@cascivo/app/social'
+export const bufferApp = buffer({ clientId: 'c', clientSecret: 's' })
+export const listChannels = (key: string): Promise<BufferChannel[]> => bufferChannels(bufferTokens(key), 'org')
+export const viaBuffer = (key: string) =>
+  bufferPublisher({ service: 'instagram', uploadImage: async () => 'https://x.example/1.png' }).publish(
+    { tokens: bufferTokens(key), subject: 'ch' },
+    { text: 'Hi' },
+    { createdAt: new Date(Date.now() + 3_600_000) },
+  )
+export const rawQuery = (key: string) => bufferQuery(fetch, key, 'query { account { organizations { id } } }')
+import { threads } from '@cascivo/app/oauth'
+import { refreshConnections } from '@cascivo/app/oauth-server'
+import { threadsLength, threadsPublisher } from '@cascivo/app/social'
+export const threadsApp = threads({ clientId: 'c', clientSecret: 's' })
+export const renewAhead: number | undefined = threadsApp.refreshAhead
+export const nightly = (db: Database): Promise<{ renewed: number; failed: number }> =>
+  refreshConnections(db, { secret: 's'.repeat(32), providers: [threadsApp] })
+export const thread = (tokens: TokenSet) =>
+  threadsPublisher({ uploadImage: async () => 'https://x.example/1.png', pollMs: 1000 }).publish(
+    { tokens, subject: '1789' },
+    { text: 'Hi', images: [{ data: new Blob(['x'], { type: 'image/png' }), alt: 'A' }] },
+  )
+export const threadsCount = (text: string): number => threadsLength(text)
+export const atproto = (key?: BlueskyKey) => bluesky({ clientMetadataPath: '/oauth/client-metadata.json', ...(key ? { privateKey: key } : {}) })
+export const atprotoClient = (origin: string, secret: string) => {
+  const privateKey = parseBlueskyKey(secret)
+  return { meta: blueskyClientMetadata({ origin, redirectPaths: ['/cb'], clientName: 'A', privateKey }), jwks: blueskyJwks(privateKey) }
+}
+export const skeet = (tokens: TokenSet) =>
+  blueskyPublisher({ langs: ['en'] }).publish({ tokens, subject: 'did:plc:x', server: 'pds.example' }, { text: 'Hi #tag' }, { idempotencyKey: 'k', createdAt: new Date() })
+export const facetsOf = (text: string) => blueskyFacets(text, async () => null)
+export const keyOf = (at: Date): Promise<string> => blueskyRecordKey(at, 'k')
+export const fediverse = (db: Database) =>
+  mastodon({ appName: 'A', registrations: mastodonRegistrations(db, 's'.repeat(32)), scopes: ['profile', 'write:statuses'] })
+export const host = (input: string): string => normalizeServer(input)
+export const toot = (tokens: TokenSet) =>
+  mastodonPublisher().publish({ tokens, subject: '1@a.example', server: 'a.example' }, { text: 'Hi' }, { idempotencyKey: 'k' })
+export const connectRoutes = (db: Database) =>
+  handleConnections(db, { secret: 's'.repeat(32), providers: [linkedin({ clientId: 'a', clientSecret: 'b', scopes: ['openid', 'w_member_social'] })] })
+export const postAs = async (db: Database, userId: string, connectionId: string): Promise<PublishedPost | null> => {
+  const { connection, tokens }: { connection: Connection; tokens: TokenSet } = await connectionTokens(db, { secret: 's'.repeat(32), providers: [] }, { userId, connectionId })
+  try {
+    return await linkedinPublisher().publish({ tokens, subject: connection.subject }, { text: 'Hello' })
+  } catch (error) {
+    return error instanceof PublishError && error.retryable ? null : Promise.reject(error)
+  }
+}
+export const providers = [github({ clientId: 'a', clientSecret: 'b' }), google({ clientId: 'c', clientSecret: 'd' })]
+export const oauthRoutes = (db: Database) => handleOAuth(db, { secret: 's'.repeat(32), providers })
+export const firstStep = beginAuthorization(providers[0]!, { redirectUri: 'https://app.example/cb' })
+export const keep = (tokens: TokenSet): Promise<string> => seal('s'.repeat(32), 'tokens:1', tokens)
+export const mailOf = (identity: Identity): string | null => identity.email
+export const signInHref = (): string => appAuth.signInUrl('github', '/account')
 import { defineLive, watchLive, type LivePoint } from '@cascivo/app/live'
 import { LiveRoom, recordLive, type LiveBatch, type LiveQueue } from '@cascivo/app/live-server'
 export const opsLive = defineLive({ metrics: ['orders', 'errors'], window: 60 })

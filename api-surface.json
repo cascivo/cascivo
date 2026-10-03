@@ -139,6 +139,7 @@
           "SegmentedControl",
           "Select",
           "Separator",
+          "ShareMenu",
           "Sheet",
           "ShellHeader",
           "SideNav",
@@ -201,6 +202,7 @@
           "mergeProps",
           "setLinkComponent",
           "setTheme",
+          "shareIntentUrl",
           "signal",
           "themePreloadScript",
           "themeSignal",
@@ -443,6 +445,9 @@
           "SelectOption",
           "SelectProps",
           "SeparatorProps",
+          "ShareContent",
+          "ShareMenuProps",
+          "ShareNetwork",
           "SheetProps",
           "ShellHeaderAction",
           "ShellHeaderBrand",
@@ -2154,6 +2159,22 @@
           },
           "setLinkComponent": "re-export setLinkComponent from \"@cascivo/core\"",
           "setTheme": "re-export setTheme from \"@cascivo/core\"",
+          "ShareContent": {
+            "url": "string",
+            "text?": "string",
+            "server?": "string"
+          },
+          "shareIntentUrl": "declare function shareIntentUrl(network: ShareNetwork, content: ShareContent): string | null",
+          "ShareMenu": "declare function ShareMenu({ url, text, items, size, labels, className }: ShareMenuProps): import(\"react\").JSX.Element",
+          "ShareMenuProps": {
+            "url": "string",
+            "text?": "string",
+            "items?": "ShareNetwork[]",
+            "size?": "'sm' | 'md'",
+            "labels?": "{ share?: string; copyLink?: string; copied?: string; more?: string; server?: string; shareOn?: (network: string) => string; }",
+            "className?": "string"
+          },
+          "ShareNetwork": "type = 'bluesky' | 'mastodon' | 'threads' | 'linkedin' | 'x'",
           "Sheet": "declare function Sheet({ open, onClose, title, children, side }: SheetProps): import(\"react\").JSX.Element",
           "SheetProps": {
             "open": "boolean",
@@ -5187,7 +5208,7 @@
         ],
         "types": ["FormatBytesOptions", "LocaleStore", "Message", "MessageValue", "PluralForms"],
         "declarations": {
-          "builtin": "declare const builtin: { pagination: { readonly itemsPerPage: Message<\"Items per page\">; readonly pageOf: Message<\"Page {page} of {total}\">; readonly range: Message<\"{start}–{end} of {total} items\">; readonly previous: Message<\"Previous page\">; readonly next: Message<\"Next page\">; readonly nav: Message<\"Pagination\">; }; toast: { readonly dismiss: Message<\"Dismiss notification\">; readonly region: Message<\"Notifications\">; }; modal: { readonly close: Message<\"Close modal\">; }; alert: { readonly dismiss: Message<\"Dismiss\">; }; header: { readonly nav: Message<\"Main\">; }; search: { readonly label: Message<\"Search\">; readonly placeholder: Message<\"Search\">; readonly clear: Message<\"Clear search\">; }; commandMenu: { readonly label: Message<\"Command menu\">; readonly placeholder: Message<\"Type a command or search…\">; readonly empty: Message<\"No results found\">; readonly back: Message<\"Back\">; readonly loading: Message<\"Loading…\">; readonly matches: Message<\"{count} matches\">; readonly scopeLabel: Message<\"Scope\">; readonly clearScope: Message<\"Clear scope\">; }; breadcrumb: { readonly nav: Message<\"Breadcrumb\">; }; toc: { readonly nav: Message<\"On this page\">; }; datePicker: { readonly placeholder: Message<\"Select a date\">; readonly previousMonth: Message<\"Previous month\">; readonly nextMonth: Message<\"Next month\">; readonly clear: Message<\"Clear date\">; readonly open: Message<\"Open calendar\">; }; combobox: { readonly placeholder: Message<\"Select an option\">; readonly empty: Message<\"No options found\">; readonly clear: Message<\"Clear selection\">; readonly loading: Message<\"Loading options…\">; readonly create: Message<\"Add “{label}”\">; readonly resultCount: Message<\"{count} options available\">; }; dataTable: { readonly search: Message<\"Search\">; readonly empty: Message<\"No data\">; readonly selectAll: Message<\"Select all rows\">; readonly selectRow: Message<\"Select row\">; readonly itemsSelected: Message<\"{count} selected\">; readonly expandRow: Message<\"Expand row\">; readonly previousPage: Message<\"Previous page\">; readonly nextPage: Message<\"Next page\">; readonly columns: Message<\"Columns\">; readonly actions: Message<\"Actions\">; readonly noResults: Message<\"No matching rows\">; readonly clearFilters: Message<\"Clear filters\">; readonly filterColumn: Message<\"Filter {column}\">; readonly min: Message<\"Min\">; readonly max: Message<\"Max\">; readonly all: Message<\"All\">; readonly columnMenu: Message<\"Options for {column}\">; readonly sortAscending: Message<\"Sort ascending\">; readonly sortDescending: Message<\"Sort descending\">; readonly clearSort: Message<\"Clear sort\">; readonly moveLeft: Message<\"Move left\">; readonly moveRight: Message<\"Move right\">; readonly pinStart: Message<\"Pin to start\">; readonly pinEnd: Message<\"Pin to end\">; readonly unpin: Message<\"Unpin\">; readonly hideColumn: Message<\"Hide column\">; readonly resizeColumn: Message<\"Resize {column}\">; readonly editCell: Message<\"Edit {column}\">; readonly totals: Message<\"Total\">; readonly exportCsv: Message<\"Export CSV\">; }; dock: { readonly nav: Message<\"Main navigation\">; }; steps: { readonly label: Message<\"Steps\">; }; overflowMenu: { readonly trigger: Message<\"More actions\">; }; sideNav: { readonly nav: Message<\"Side navigation\">; readonly collapse: Message<\"Collapse navigation\">; readonly expand: Message<\"Expand navigation\">; }; spinner: { readonly label: Message<\"Loading\">; }; numberInput: { readonly increment: Message<\"Increment\">; readonly decrement: Message<\"Decrement\">; }; tag: { readonly dismiss: Message<\"Remove\">; }; appShell: { readonly collapse: Message<\"Collapse navigation\">; readonly expand: Message<\"Expand navigation\">; readonly dismissError: Message<\"Dismiss error\">; }; charts: { readonly legendToggle: Message<\"Toggle series {name}\">; readonly noData: Message<\"No data\">; readonly resetZoom: Message<\"Reset zoom\">; readonly exportPng: Message<\"Export PNG\">; readonly exportSvg: Message<\"Export SVG\">; readonly dataView: Message<\"Data view\">; readonly restore: Message<\"Restore\">; }; alertDialog: { readonly confirm: Message<\"Confirm\">; readonly cancel: Message<\"Cancel\">; }; sheet: { readonly close: Message<\"Close panel\">; }; bottomSheet: { readonly close: Message<\"Close\">; readonly handle: Message<\"Drag to resize\">; }; actionSheet: { readonly label: Message<\"Actions\">; readonly cancel: Message<\"Cancel\">; }; reorderList: { readonly handle: Message<\"Reorder {name}\">; readonly grabbed: Message<\"Picked up {name}. Position {position} of {total}.\">; readonly moved: Message<\"Moved {name} to position {position} of {total}.\">; readonly dropped: Message<\"Dropped {name} at position {position} of {total}.\">; readonly cancelled: Message<\"Reordering cancelled. {name} returned to its original position.\">; }; infiniteScroll: { readonly loadMore: Message<\"Load more\">; readonly loading: Message<\"Loading more\">; }; pullToRefresh: { readonly pull: Message<\"Pull to refresh\">; readonly release: Message<\"Release to refresh\">; readonly refreshing: Message<\"Refreshing\">; }; fileUploader: { readonly label: Message<\"Upload files\">; readonly drop: Message<\"Drag and drop files here or click to upload\">; readonly remove: Message<\"Remove {name}\">; readonly uploading: Message<\"Uploading\">; readonly complete: Message<\"Upload complete\">; readonly error: Message<\"Upload failed\">; readonly status: Message<{ readonly one: \"{count} file: {state}\"; readonly other: \"{count} files: {state}\"; }>; }; passwordInput: { readonly reveal: Message<\"Show password\">; readonly hide: Message<\"Hide password\">; readonly strengthWeak: Message<\"weak\">; readonly strengthFair: Message<\"fair\">; readonly strengthGood: Message<\"good\">; readonly strengthStrong: Message<\"strong\">; readonly strengthLabel: Message<\"Password strength: {level}\">; }; multiSelect: { readonly label: Message<\"Options\">; readonly placeholder: Message<\"Select options\">; readonly selected: Message<\"{count} selected\">; readonly search: Message<\"Search options\">; readonly noResults: Message<\"No options found\">; readonly loading: Message<\"Loading options…\">; readonly clear: Message<\"Clear selection\">; readonly remove: Message<\"Remove {label}\">; readonly selectAll: Message<\"Select all\">; readonly clearAll: Message<\"Clear all\">; readonly create: Message<\"Add “{label}”\">; readonly selectionChanged: Message<\"{count} of {total} selected\">; readonly maxReached: Message<\"Maximum of {max} selected\">; }; tagsInput: { readonly label: Message<\"Tags\">; readonly remove: Message<\"Remove {tag}\">; readonly placeholder: Message<\"Add tag…\">; }; otpInput: { readonly label: Message<\"One-time code\">; readonly digit: Message<\"Digit {n}\">; }; ai: { readonly generating: Message<\"Generating…\">; readonly done: Message<\"Done\">; readonly error: Message<\"Error\">; readonly send: Message<\"Send\">; readonly placeholder: Message<\"Type a message…\">; readonly you: Message<\"You\">; readonly assistant: Message<\"Assistant\">; }; shellHeader: { readonly skipToContent: Message<\"Skip to main content\">; readonly nav: Message<\"Main\">; readonly openMenu: Message<\"Open navigation\">; readonly closeMenu: Message<\"Close navigation\">; }; headerPanel: { readonly close: Message<\"Close panel\">; }; switcher: { readonly label: Message<\"Switch application\">; }; copyButton: { readonly copy: Message<\"Copy\">; readonly copied: Message<\"Copied\">; }; skipNav: { readonly label: Message<\"Skip to content\">; }; form: { readonly required: Message<\"Required\">; readonly invalid: Message<\"Invalid value\">; }; label: { readonly required: Message<\"Required\">; }; inlineLoading: { readonly active: Message<\"Loading\">; readonly finished: Message<\"Loaded\">; readonly error: Message<\"Error\">; }; notification: { readonly dismiss: Message<\"Dismiss\">; }; treeView: { readonly loading: Message<\"Loading…\">; readonly expand: Message<\"Expand\">; readonly collapse: Message<\"Collapse\">; }; carousel: { readonly region: Message<\"Carousel\">; readonly previous: Message<\"Previous slide\">; readonly next: Message<\"Next slide\">; readonly slide: Message<\"{n} of {total}\">; readonly goTo: Message<\"Go to slide {n}\">; readonly choose: Message<\"Choose slide to display\">; readonly play: Message<\"Start automatic slide show\">; readonly pause: Message<\"Stop automatic slide show\">; }; calendar: { readonly previousMonth: Message<\"Previous month\">; readonly nextMonth: Message<\"Next month\">; readonly today: Message<\"Today\">; readonly weekNumber: Message<\"Week\">; }; colorPicker: { readonly hue: Message<\"Hue\">; readonly alpha: Message<\"Alpha\">; readonly colorArea: Message<\"Saturation and brightness\">; readonly saturation: Message<\"Saturation\">; readonly brightness: Message<\"Brightness\">; readonly eyedropper: Message<\"Pick a color from the screen\">; readonly presets: Message<\"Preset colors\">; readonly hex: Message<\"Color value\">; readonly value: Message<\"Selected color {color}\">; }; drawer: { readonly close: Message<\"Close\">; }; menuButton: { readonly open: Message<\"Open menu\">; }; resizable: { readonly handle: Message<\"Resize panels\">; }; codeSnippet: { readonly copy: Message<\"Copy code\">; readonly copied: Message<\"Copied\">; }; dateRangePicker: { readonly label: Message<\"Date range\">; readonly placeholder: Message<\"Select a date range\">; readonly start: Message<\"Start date\">; readonly end: Message<\"End date\">; readonly apply: Message<\"Apply\">; readonly clear: Message<\"Clear\">; }; toggletip: { readonly label: Message<\"More information\">; }; avatarGroup: { readonly more: Message<\"{count} more\">; }; comparison: { readonly label: Message<\"Comparison slider\">; }; qrCode: { readonly label: Message<\"QR code\">; }; flow: { readonly zoomIn: Message<\"Zoom in\">; readonly zoomOut: Message<\"Zoom out\">; readonly fitView: Message<\"Fit view\">; readonly minimap: Message<\"Minimap\">; readonly play: Message<\"Play\">; readonly pause: Message<\"Pause\">; readonly next: Message<\"Next step\">; readonly previous: Message<\"Previous step\">; readonly restart: Message<\"Restart\">; readonly step: Message<\"Step {current} of {total}\">; }; logViewer: { readonly label: Message<\"Log output\">; readonly search: Message<\"Search log\">; readonly follow: Message<\"Following\">; readonly paused: Message<\"Jump to latest\">; readonly copy: Message<\"Copy\">; readonly copied: Message<\"Copied\">; readonly empty: Message<\"No log output\">; readonly matches: Message<\"{count} matches\">; readonly lines: Message<\"{count} lines\">; }; editor: { readonly label: Message<\"Code editor\">; readonly code: Message<\"Code\">; readonly find: Message<\"Find\">; readonly replace: Message<\"Replace\">; readonly findPlaceholder: Message<\"Find\">; readonly replacePlaceholder: Message<\"Replace with\">; readonly next: Message<\"Next match\">; readonly previous: Message<\"Previous match\">; readonly replaceOne: Message<\"Replace\">; readonly replaceAll: Message<\"Replace all\">; readonly close: Message<\"Close\">; readonly matchCase: Message<\"Match case\">; readonly toggleReplace: Message<\"Toggle replace\">; readonly noMatches: Message<\"No results\">; readonly findCount: Message<\"{current} of {total}\">; readonly commandMenu: Message<\"Command menu\">; readonly commandMenuEmpty: Message<\"No commands\">; }; }",
+          "builtin": "declare const builtin: { pagination: { readonly itemsPerPage: Message<\"Items per page\">; readonly pageOf: Message<\"Page {page} of {total}\">; readonly range: Message<\"{start}–{end} of {total} items\">; readonly previous: Message<\"Previous page\">; readonly next: Message<\"Next page\">; readonly nav: Message<\"Pagination\">; }; toast: { readonly dismiss: Message<\"Dismiss notification\">; readonly region: Message<\"Notifications\">; }; modal: { readonly close: Message<\"Close modal\">; }; alert: { readonly dismiss: Message<\"Dismiss\">; }; header: { readonly nav: Message<\"Main\">; }; search: { readonly label: Message<\"Search\">; readonly placeholder: Message<\"Search\">; readonly clear: Message<\"Clear search\">; }; commandMenu: { readonly label: Message<\"Command menu\">; readonly placeholder: Message<\"Type a command or search…\">; readonly empty: Message<\"No results found\">; readonly back: Message<\"Back\">; readonly loading: Message<\"Loading…\">; readonly matches: Message<\"{count} matches\">; readonly scopeLabel: Message<\"Scope\">; readonly clearScope: Message<\"Clear scope\">; }; breadcrumb: { readonly nav: Message<\"Breadcrumb\">; }; toc: { readonly nav: Message<\"On this page\">; }; datePicker: { readonly placeholder: Message<\"Select a date\">; readonly previousMonth: Message<\"Previous month\">; readonly nextMonth: Message<\"Next month\">; readonly clear: Message<\"Clear date\">; readonly open: Message<\"Open calendar\">; }; combobox: { readonly placeholder: Message<\"Select an option\">; readonly empty: Message<\"No options found\">; readonly clear: Message<\"Clear selection\">; readonly loading: Message<\"Loading options…\">; readonly create: Message<\"Add “{label}”\">; readonly resultCount: Message<\"{count} options available\">; }; dataTable: { readonly search: Message<\"Search\">; readonly empty: Message<\"No data\">; readonly selectAll: Message<\"Select all rows\">; readonly selectRow: Message<\"Select row\">; readonly itemsSelected: Message<\"{count} selected\">; readonly expandRow: Message<\"Expand row\">; readonly previousPage: Message<\"Previous page\">; readonly nextPage: Message<\"Next page\">; readonly columns: Message<\"Columns\">; readonly actions: Message<\"Actions\">; readonly noResults: Message<\"No matching rows\">; readonly clearFilters: Message<\"Clear filters\">; readonly filterColumn: Message<\"Filter {column}\">; readonly min: Message<\"Min\">; readonly max: Message<\"Max\">; readonly all: Message<\"All\">; readonly columnMenu: Message<\"Options for {column}\">; readonly sortAscending: Message<\"Sort ascending\">; readonly sortDescending: Message<\"Sort descending\">; readonly clearSort: Message<\"Clear sort\">; readonly moveLeft: Message<\"Move left\">; readonly moveRight: Message<\"Move right\">; readonly pinStart: Message<\"Pin to start\">; readonly pinEnd: Message<\"Pin to end\">; readonly unpin: Message<\"Unpin\">; readonly hideColumn: Message<\"Hide column\">; readonly resizeColumn: Message<\"Resize {column}\">; readonly editCell: Message<\"Edit {column}\">; readonly totals: Message<\"Total\">; readonly exportCsv: Message<\"Export CSV\">; }; dock: { readonly nav: Message<\"Main navigation\">; }; steps: { readonly label: Message<\"Steps\">; }; overflowMenu: { readonly trigger: Message<\"More actions\">; }; sideNav: { readonly nav: Message<\"Side navigation\">; readonly collapse: Message<\"Collapse navigation\">; readonly expand: Message<\"Expand navigation\">; }; spinner: { readonly label: Message<\"Loading\">; }; numberInput: { readonly increment: Message<\"Increment\">; readonly decrement: Message<\"Decrement\">; }; tag: { readonly dismiss: Message<\"Remove\">; }; appShell: { readonly collapse: Message<\"Collapse navigation\">; readonly expand: Message<\"Expand navigation\">; readonly dismissError: Message<\"Dismiss error\">; }; charts: { readonly legendToggle: Message<\"Toggle series {name}\">; readonly noData: Message<\"No data\">; readonly resetZoom: Message<\"Reset zoom\">; readonly exportPng: Message<\"Export PNG\">; readonly exportSvg: Message<\"Export SVG\">; readonly dataView: Message<\"Data view\">; readonly restore: Message<\"Restore\">; }; alertDialog: { readonly confirm: Message<\"Confirm\">; readonly cancel: Message<\"Cancel\">; }; sheet: { readonly close: Message<\"Close panel\">; }; bottomSheet: { readonly close: Message<\"Close\">; readonly handle: Message<\"Drag to resize\">; }; actionSheet: { readonly label: Message<\"Actions\">; readonly cancel: Message<\"Cancel\">; }; reorderList: { readonly handle: Message<\"Reorder {name}\">; readonly grabbed: Message<\"Picked up {name}. Position {position} of {total}.\">; readonly moved: Message<\"Moved {name} to position {position} of {total}.\">; readonly dropped: Message<\"Dropped {name} at position {position} of {total}.\">; readonly cancelled: Message<\"Reordering cancelled. {name} returned to its original position.\">; }; infiniteScroll: { readonly loadMore: Message<\"Load more\">; readonly loading: Message<\"Loading more\">; }; pullToRefresh: { readonly pull: Message<\"Pull to refresh\">; readonly release: Message<\"Release to refresh\">; readonly refreshing: Message<\"Refreshing\">; }; fileUploader: { readonly label: Message<\"Upload files\">; readonly drop: Message<\"Drag and drop files here or click to upload\">; readonly remove: Message<\"Remove {name}\">; readonly uploading: Message<\"Uploading\">; readonly complete: Message<\"Upload complete\">; readonly error: Message<\"Upload failed\">; readonly status: Message<{ readonly one: \"{count} file: {state}\"; readonly other: \"{count} files: {state}\"; }>; }; passwordInput: { readonly reveal: Message<\"Show password\">; readonly hide: Message<\"Hide password\">; readonly strengthWeak: Message<\"weak\">; readonly strengthFair: Message<\"fair\">; readonly strengthGood: Message<\"good\">; readonly strengthStrong: Message<\"strong\">; readonly strengthLabel: Message<\"Password strength: {level}\">; }; multiSelect: { readonly label: Message<\"Options\">; readonly placeholder: Message<\"Select options\">; readonly selected: Message<\"{count} selected\">; readonly search: Message<\"Search options\">; readonly noResults: Message<\"No options found\">; readonly loading: Message<\"Loading options…\">; readonly clear: Message<\"Clear selection\">; readonly remove: Message<\"Remove {label}\">; readonly selectAll: Message<\"Select all\">; readonly clearAll: Message<\"Clear all\">; readonly create: Message<\"Add “{label}”\">; readonly selectionChanged: Message<\"{count} of {total} selected\">; readonly maxReached: Message<\"Maximum of {max} selected\">; }; tagsInput: { readonly label: Message<\"Tags\">; readonly remove: Message<\"Remove {tag}\">; readonly placeholder: Message<\"Add tag…\">; }; otpInput: { readonly label: Message<\"One-time code\">; readonly digit: Message<\"Digit {n}\">; }; ai: { readonly generating: Message<\"Generating…\">; readonly done: Message<\"Done\">; readonly error: Message<\"Error\">; readonly send: Message<\"Send\">; readonly placeholder: Message<\"Type a message…\">; readonly you: Message<\"You\">; readonly assistant: Message<\"Assistant\">; }; shellHeader: { readonly skipToContent: Message<\"Skip to main content\">; readonly nav: Message<\"Main\">; readonly openMenu: Message<\"Open navigation\">; readonly closeMenu: Message<\"Close navigation\">; }; headerPanel: { readonly close: Message<\"Close panel\">; }; switcher: { readonly label: Message<\"Switch application\">; }; copyButton: { readonly copy: Message<\"Copy\">; readonly copied: Message<\"Copied\">; }; shareMenu: { readonly share: Message<\"Share\">; readonly copyLink: Message<\"Copy link\">; readonly copied: Message<\"Link copied\">; readonly more: Message<\"More options…\">; readonly server: Message<\"Your Mastodon server\">; readonly shareOn: Message<\"Share on {network}\">; }; skipNav: { readonly label: Message<\"Skip to content\">; }; form: { readonly required: Message<\"Required\">; readonly invalid: Message<\"Invalid value\">; }; label: { readonly required: Message<\"Required\">; }; inlineLoading: { readonly active: Message<\"Loading\">; readonly finished: Message<\"Loaded\">; readonly error: Message<\"Error\">; }; notification: { readonly dismiss: Message<\"Dismiss\">; }; treeView: { readonly loading: Message<\"Loading…\">; readonly expand: Message<\"Expand\">; readonly collapse: Message<\"Collapse\">; }; carousel: { readonly region: Message<\"Carousel\">; readonly previous: Message<\"Previous slide\">; readonly next: Message<\"Next slide\">; readonly slide: Message<\"{n} of {total}\">; readonly goTo: Message<\"Go to slide {n}\">; readonly choose: Message<\"Choose slide to display\">; readonly play: Message<\"Start automatic slide show\">; readonly pause: Message<\"Stop automatic slide show\">; }; calendar: { readonly previousMonth: Message<\"Previous month\">; readonly nextMonth: Message<\"Next month\">; readonly today: Message<\"Today\">; readonly weekNumber: Message<\"Week\">; }; colorPicker: { readonly hue: Message<\"Hue\">; readonly alpha: Message<\"Alpha\">; readonly colorArea: Message<\"Saturation and brightness\">; readonly saturation: Message<\"Saturation\">; readonly brightness: Message<\"Brightness\">; readonly eyedropper: Message<\"Pick a color from the screen\">; readonly presets: Message<\"Preset colors\">; readonly hex: Message<\"Color value\">; readonly value: Message<\"Selected color {color}\">; }; drawer: { readonly close: Message<\"Close\">; }; menuButton: { readonly open: Message<\"Open menu\">; }; resizable: { readonly handle: Message<\"Resize panels\">; }; codeSnippet: { readonly copy: Message<\"Copy code\">; readonly copied: Message<\"Copied\">; }; dateRangePicker: { readonly label: Message<\"Date range\">; readonly placeholder: Message<\"Select a date range\">; readonly start: Message<\"Start date\">; readonly end: Message<\"End date\">; readonly apply: Message<\"Apply\">; readonly clear: Message<\"Clear\">; }; toggletip: { readonly label: Message<\"More information\">; }; avatarGroup: { readonly more: Message<\"{count} more\">; }; comparison: { readonly label: Message<\"Comparison slider\">; }; qrCode: { readonly label: Message<\"QR code\">; }; flow: { readonly zoomIn: Message<\"Zoom in\">; readonly zoomOut: Message<\"Zoom out\">; readonly fitView: Message<\"Fit view\">; readonly minimap: Message<\"Minimap\">; readonly play: Message<\"Play\">; readonly pause: Message<\"Pause\">; readonly next: Message<\"Next step\">; readonly previous: Message<\"Previous step\">; readonly restart: Message<\"Restart\">; readonly step: Message<\"Step {current} of {total}\">; }; logViewer: { readonly label: Message<\"Log output\">; readonly search: Message<\"Search log\">; readonly follow: Message<\"Following\">; readonly paused: Message<\"Jump to latest\">; readonly copy: Message<\"Copy\">; readonly copied: Message<\"Copied\">; readonly empty: Message<\"No log output\">; readonly matches: Message<\"{count} matches\">; readonly lines: Message<\"{count} lines\">; }; editor: { readonly label: Message<\"Code editor\">; readonly code: Message<\"Code\">; readonly find: Message<\"Find\">; readonly replace: Message<\"Replace\">; readonly findPlaceholder: Message<\"Find\">; readonly replacePlaceholder: Message<\"Replace with\">; readonly next: Message<\"Next match\">; readonly previous: Message<\"Previous match\">; readonly replaceOne: Message<\"Replace\">; readonly replaceAll: Message<\"Replace all\">; readonly close: Message<\"Close\">; readonly matchCase: Message<\"Match case\">; readonly toggleReplace: Message<\"Toggle replace\">; readonly noMatches: Message<\"No results\">; readonly findCount: Message<\"{current} of {total}\">; readonly commandMenu: Message<\"Command menu\">; readonly commandMenuEmpty: Message<\"No commands\">; }; }",
           "createLocale": "declare function createLocale<const L extends string>(options: { default: L; supported: readonly L[]; }): LocaleStore<L>",
           "currentLocale": "declare function currentLocale(): string",
           "defineCatalog": "declare function defineCatalog<T extends Record<string, Message>>(messages: T, locale: string, dict: { [K in keyof T]: T[K]['value'] extends PluralForms ? PluralForms : string }): void",
@@ -6991,12 +7012,14 @@
             "refresh": "(): Promise<void>",
             "start": "(email: string): Promise<{ link: string | null; }>",
             "verify": "(token: string): Promise<User>",
-            "signOut": "(): Promise<void>"
+            "signOut": "(): Promise<void>",
+            "providers": "(): Promise<string[]>",
+            "signInUrl": "(provider: string, returnTo?: string, server?: string): string"
           },
           "createAuth": "declare function createAuth(basePath?: string): Auth",
           "User": {
             "id": "string",
-            "email": "string"
+            "email": "string | null"
           }
         }
       },
@@ -7019,7 +7042,364 @@
           "SESSION_COOKIE": "declare const SESSION_COOKIE = \"__Host-session\"",
           "User": {
             "id": "string",
-            "email": "string"
+            "email": "string | null"
+          }
+        }
+      },
+      "./oauth": {
+        "values": [
+          "OAuthError",
+          "beginAuthorization",
+          "bluesky",
+          "blueskyClientMetadata",
+          "blueskyJwks",
+          "buffer",
+          "bufferQuery",
+          "completeAuthorization",
+          "github",
+          "google",
+          "linkedin",
+          "mastodon",
+          "normalizeServer",
+          "parseBlueskyKey",
+          "parsePendingAuthorization",
+          "parseTokenSet",
+          "seal",
+          "threads",
+          "unseal"
+        ],
+        "types": [
+          "BlueskyKey",
+          "BlueskyOptions",
+          "BufferOptions",
+          "CompletedAuthorization",
+          "GitHubOptions",
+          "GoogleOptions",
+          "Identity",
+          "LinkedInOptions",
+          "MastodonOptions",
+          "MastodonRegistration",
+          "MastodonRegistrations",
+          "OAuthErrorCode",
+          "OAuthProvider",
+          "PendingAuthorization",
+          "ThreadsOptions",
+          "TokenSet"
+        ],
+        "declarations": {
+          "beginAuthorization": "declare function beginAuthorization(provider: OAuthProvider, options: { redirectUri: string; scopes?: readonly string[]; ttlSeconds?: number; server?: string; }): Promise<{ url: string; pending: PendingAuthorization; }>",
+          "bluesky": "declare function bluesky(options?: BlueskyOptions): OAuthProvider",
+          "blueskyClientMetadata": "declare function blueskyClientMetadata(options: { origin: string; redirectPaths: readonly string[]; clientName: string; scopes?: readonly string[]; clientMetadataPath?: string; privateKey?: BlueskyKey; jwksPath?: string; }): Record<string, unknown>",
+          "blueskyJwks": "declare function blueskyJwks(privateKey: BlueskyKey): { keys: Record<string, string>[]; }",
+          "BlueskyKey": "type = JsonWebKey & { kid: string; }",
+          "BlueskyOptions": {
+            "privateKey?": "BlueskyKey",
+            "clientMetadataPath?": "string",
+            "scopes?": "readonly string[]",
+            "fetch?": "typeof fetch"
+          },
+          "buffer": "declare function buffer(options: BufferOptions): OAuthProvider",
+          "BufferOptions": {
+            "clientId": "string",
+            "clientSecret?": "string",
+            "scopes?": "readonly string[]",
+            "fetch?": "typeof fetch"
+          },
+          "bufferQuery": "declare function bufferQuery(doFetch: typeof fetch, accessToken: string, query: string, variables?: Record<string, unknown>): Promise<{ status: number; data: Record<string, unknown> | null; error: string | null; code: string | null; retryAfter: number | null; }>",
+          "completeAuthorization": "declare function completeAuthorization(provider: OAuthProvider, pending: PendingAuthorization, params: URLSearchParams): Promise<CompletedAuthorization>",
+          "CompletedAuthorization": {
+            "tokens": "TokenSet",
+            "identity": "Identity"
+          },
+          "github": "declare function github(options: GitHubOptions): OAuthProvider",
+          "GitHubOptions": {
+            "clientId": "string",
+            "clientSecret": "string",
+            "scopes?": "readonly string[]",
+            "allowSignup?": "boolean",
+            "userAgent?": "string",
+            "fetch?": "typeof fetch"
+          },
+          "google": "declare function google(options: GoogleOptions): OAuthProvider",
+          "GoogleOptions": {
+            "clientId": "string",
+            "clientSecret": "string",
+            "scopes?": "readonly string[]",
+            "hostedDomain?": "string",
+            "offline?": "boolean",
+            "fetch?": "typeof fetch"
+          },
+          "Identity": {
+            "provider": "string",
+            "subject": "string",
+            "email": "string | null",
+            "name": "string | null",
+            "handle": "string | null",
+            "avatarUrl": "string | null",
+            "server?": "string"
+          },
+          "linkedin": "declare function linkedin(options: LinkedInOptions): OAuthProvider",
+          "LinkedInOptions": {
+            "clientId": "string",
+            "clientSecret": "string",
+            "scopes?": "readonly string[]",
+            "fetch?": "typeof fetch"
+          },
+          "mastodon": "declare function mastodon(options: MastodonOptions): OAuthProvider",
+          "MastodonOptions": {
+            "appName": "string",
+            "website?": "string",
+            "scopes?": "readonly string[]",
+            "registrations": "MastodonRegistrations",
+            "fetch?": "typeof fetch"
+          },
+          "MastodonRegistration": {
+            "clientId": "string",
+            "clientSecret": "string",
+            "authorizationEndpoint": "string",
+            "tokenEndpoint": "string",
+            "pkce": "boolean",
+            "scopes": "string[]"
+          },
+          "MastodonRegistrations": {
+            "get": "(key: string): Promise<MastodonRegistration | null>",
+            "set": "(key: string, registration: MastodonRegistration): Promise<void>"
+          },
+          "normalizeServer": "declare function normalizeServer(input: string): string",
+          "OAuthError": {
+            "readonly code": "OAuthErrorCode",
+            "constructor": "(code: OAuthErrorCode, message: string)",
+            "(kind)": "class"
+          },
+          "OAuthErrorCode": "type = 'denied' | 'state_mismatch' | 'expired' | 'provider_error' | 'bad_server'",
+          "OAuthProvider": {
+            "readonly id": "string",
+            "readonly scopes": "readonly string[]",
+            "readonly dpop?": "boolean",
+            "readonly server?": "string",
+            "authorizationUrl": "(pending: PendingAuthorization, codeChallenge: string): URL | Promise<URL>",
+            "exchange": "(code: string, pending: PendingAuthorization, params?: URLSearchParams): Promise<CompletedAuthorization>",
+            "refresh?": "(tokens: TokenSet): Promise<TokenSet>",
+            "readonly refreshAhead?": "number",
+            "forServer?": "(server: string, redirectUri: string): Promise<OAuthProvider>"
+          },
+          "parseBlueskyKey": "declare function parseBlueskyKey(raw: string): BlueskyKey",
+          "parsePendingAuthorization": "declare function parsePendingAuthorization(raw: unknown): PendingAuthorization",
+          "parseTokenSet": "declare function parseTokenSet(raw: unknown): TokenSet",
+          "PendingAuthorization": {
+            "provider": "string",
+            "state": "string",
+            "codeVerifier": "string",
+            "nonce": "string",
+            "redirectUri": "string",
+            "scopes": "string[]",
+            "expiresAt": "number",
+            "server": "string | null",
+            "dpopKey": "JsonWebKey | null"
+          },
+          "seal": "declare function seal(secret: string, context: string, value: unknown): Promise<string>",
+          "threads": "declare function threads(options: ThreadsOptions): OAuthProvider",
+          "ThreadsOptions": {
+            "clientId": "string",
+            "clientSecret": "string",
+            "scopes?": "readonly string[]",
+            "fetch?": "typeof fetch"
+          },
+          "TokenSet": {
+            "accessToken": "string",
+            "refreshToken": "string | null",
+            "expiresAt": "number | null",
+            "scopes": "string[]",
+            "dpop?": "{ key: JsonWebKey; issuer: string; clientId: string; }"
+          },
+          "unseal": "declare function unseal(secret: string, context: string, sealed: string): Promise<unknown>"
+        }
+      },
+      "./oauth-server": {
+        "values": [
+          "ConnectionError",
+          "connectionTokens",
+          "expiringConnections",
+          "handleConnections",
+          "handleOAuth",
+          "listConnections",
+          "markReconnect",
+          "mastodonRegistrations",
+          "refreshConnections"
+        ],
+        "types": ["Connection", "ConnectionsOptions", "OAuthFailure", "OAuthServerOptions"],
+        "declarations": {
+          "Connection": {
+            "id": "string",
+            "userId": "string",
+            "provider": "string",
+            "subject": "string",
+            "server": "string | null",
+            "name": "string | null",
+            "handle": "string | null",
+            "scopes": "string[]",
+            "expiresAt": "number | null",
+            "status": "'active' | 'expiring' | 'reconnect'"
+          },
+          "ConnectionError": {
+            "readonly code": "'not_found' | 'reconnect'",
+            "constructor": "(code: 'not_found' | 'reconnect', message: string)",
+            "(kind)": "class"
+          },
+          "ConnectionsOptions": {
+            "providers": "readonly OAuthProvider[]",
+            "secret": "string",
+            "basePath?": "string",
+            "origin?": "string",
+            "errorPath?": "string",
+            "expiringDays?": "number"
+          },
+          "connectionTokens": "declare function connectionTokens(db: Database, options: { secret: string; providers: readonly OAuthProvider[]; }, where: { connectionId: string; userId: string; }): Promise<{ connection: Connection; tokens: TokenSet; }>",
+          "expiringConnections": "declare function expiringConnections(db: Database, options?: { withinDays?: number; }): Promise<{ connection: Connection; email: string | null; }[]>",
+          "handleConnections": "declare function handleConnections(db: Database, options: ConnectionsOptions): (request: Request) => Promise<Response | null>",
+          "handleOAuth": "declare function handleOAuth(db: Database, options: OAuthServerOptions): (request: Request) => Promise<Response | null>",
+          "listConnections": "declare function listConnections(db: Database, userId: string, options?: { expiringDays?: number; }): Promise<Connection[]>",
+          "markReconnect": "declare function markReconnect(db: Database, connectionId: string): Promise<void>",
+          "mastodonRegistrations": "declare function mastodonRegistrations(db: Database, secret: string): MastodonRegistrations",
+          "OAuthFailure": "type = OAuthErrorCode | 'identity_in_use'",
+          "OAuthServerOptions": {
+            "providers": "readonly OAuthProvider[]",
+            "secret": "string",
+            "basePath?": "string",
+            "origin?": "string",
+            "errorPath?": "string",
+            "sessionTtlSeconds?": "number"
+          },
+          "refreshConnections": "declare function refreshConnections(db: Database, options: { secret: string; providers: readonly OAuthProvider[]; }): Promise<{ renewed: number; failed: number; }>"
+        }
+      },
+      "./social": {
+        "values": [
+          "PublishError",
+          "blueskyFacets",
+          "blueskyLength",
+          "blueskyPublisher",
+          "blueskyRecordKey",
+          "bufferChannels",
+          "bufferPublisher",
+          "bufferTokens",
+          "escapeLittleText",
+          "linkedinPublisher",
+          "mastodonLength",
+          "mastodonPublisher",
+          "mastodonServerLimits",
+          "threadsLength",
+          "threadsPublisher"
+        ],
+        "types": [
+          "BlueskyPublisherOptions",
+          "BufferChannel",
+          "BufferPublisherOptions",
+          "Facet",
+          "LinkedInPublisherOptions",
+          "MastodonPublisherOptions",
+          "PostProblem",
+          "PublishErrorKind",
+          "PublishOptions",
+          "PublishTarget",
+          "PublishedPost",
+          "Publisher",
+          "SocialImage",
+          "SocialPost",
+          "ThreadsPublisherOptions"
+        ],
+        "declarations": {
+          "blueskyFacets": "declare function blueskyFacets(text: string, resolve: (handle: string) => Promise<string | null>): Promise<Facet[]>",
+          "blueskyLength": "declare function blueskyLength(text: string): number",
+          "blueskyPublisher": "declare function blueskyPublisher(options?: BlueskyPublisherOptions): Publisher",
+          "BlueskyPublisherOptions": {
+            "langs?": "readonly string[]",
+            "fetch?": "typeof fetch"
+          },
+          "blueskyRecordKey": "declare function blueskyRecordKey(createdAt: Date, idempotencyKey: string): Promise<string>",
+          "BufferChannel": {
+            "id": "string",
+            "name": "string",
+            "service": "string",
+            "avatar": "string | null",
+            "isQueuePaused": "boolean"
+          },
+          "bufferChannels": "declare function bufferChannels(tokens: TokenSet, organizationId: string, options?: { fetch?: typeof fetch; }): Promise<BufferChannel[]>",
+          "bufferPublisher": "declare function bufferPublisher(options?: BufferPublisherOptions): Publisher",
+          "BufferPublisherOptions": {
+            "service?": "string",
+            "uploadImage?": "(image: SocialImage) => Promise<string>",
+            "fetch?": "typeof fetch"
+          },
+          "bufferTokens": "declare function bufferTokens(apiKey: string): TokenSet",
+          "escapeLittleText": "declare function escapeLittleText(text: string): string",
+          "Facet": {
+            "index": "{ byteStart: number; byteEnd: number; }",
+            "features": "Record<string, string>[]"
+          },
+          "linkedinPublisher": "declare function linkedinPublisher(options?: LinkedInPublisherOptions): Publisher",
+          "LinkedInPublisherOptions": {
+            "version?": "string",
+            "fetch?": "typeof fetch"
+          },
+          "mastodonLength": "declare function mastodonLength(text: string, urlWeight?: number): number",
+          "mastodonPublisher": "declare function mastodonPublisher(options?: MastodonPublisherOptions): Publisher",
+          "MastodonPublisherOptions": {
+            "maxChars?": "number",
+            "maxImages?": "number",
+            "urlWeight?": "number",
+            "visibility?": "'public' | 'unlisted' | 'private'",
+            "fetch?": "typeof fetch"
+          },
+          "mastodonServerLimits": "declare function mastodonServerLimits(server: string, options?: { fetch?: typeof fetch; }): Promise<Required<Pick<MastodonPublisherOptions, 'maxChars' | 'maxImages' | 'urlWeight'>>>",
+          "PostProblem": {
+            "code": "'empty' | 'too_long' | 'too_many_images' | 'link_and_images' | 'bad_link' | 'bad_image'",
+            "message": "string"
+          },
+          "PublishedPost": {
+            "id": "string",
+            "url": "string | null"
+          },
+          "Publisher": {
+            "readonly network": "string",
+            "readonly limits": "{ maxChars: number; maxImages: number; }",
+            "check": "(post: SocialPost): PostProblem[]",
+            "publish": "(target: PublishTarget, post: SocialPost, options?: PublishOptions): Promise<PublishedPost>"
+          },
+          "PublishError": {
+            "readonly network": "string",
+            "readonly kind": "PublishErrorKind",
+            "readonly status": "number | null",
+            "readonly retryAfter": "number | null",
+            "constructor": "(network: string, kind: PublishErrorKind, message: string, status?: number | null, retryAfter?: number | null)",
+            "get retryable(): boolean": "",
+            "(kind)": "class"
+          },
+          "PublishErrorKind": "type = 'invalid' | 'reconnect' | 'rate_limited' | 'failed'",
+          "PublishOptions": {
+            "idempotencyKey?": "string",
+            "createdAt?": "Date"
+          },
+          "PublishTarget": {
+            "tokens": "TokenSet",
+            "subject": "string",
+            "server?": "string | null"
+          },
+          "SocialImage": {
+            "data": "Blob",
+            "alt": "string"
+          },
+          "SocialPost": {
+            "text": "string",
+            "link?": "{ url: string; title: string; description?: string; thumbnail?: SocialImage; }",
+            "images?": "readonly SocialImage[]"
+          },
+          "threadsLength": "declare function threadsLength(text: string): number",
+          "threadsPublisher": "declare function threadsPublisher(options?: ThreadsPublisherOptions): Publisher",
+          "ThreadsPublisherOptions": {
+            "uploadImage?": "(image: SocialImage) => Promise<string>",
+            "pollMs?": "number",
+            "fetch?": "typeof fetch"
           }
         }
       },

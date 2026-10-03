@@ -110,10 +110,19 @@ export const EXAMPLE_WORDS: Record<string, { label: string; blurb: string; group
     blurb: 'Double opt-in sign-ups; issues sent through Amazon SES.',
     group: 'Operations',
   },
+  social: {
+    label: 'Social scheduler',
+    blurb: 'Bluesky, Mastodon, LinkedIn, Threads and Buffer; post with images, now or later.',
+    group: 'Operations',
+  },
 }
 
 export const AUTH_WORDS: Record<string, { label: string; blurb: string }> = {
   email: { label: 'Accounts', blurb: 'Email sign-in links; every write needs a signed-in user.' },
+  oauth: {
+    label: 'Social sign-in',
+    blurb: 'GitHub, Google and LinkedIn; every write needs a signed-in user.',
+  },
   access: { label: 'Cloudflare Access', blurb: 'Only people your identity provider lets in.' },
 }
 

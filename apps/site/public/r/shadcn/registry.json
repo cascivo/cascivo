@@ -4433,6 +4433,34 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "share-menu",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "share-menu/share-menu.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "share-menu/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "share-menu/share-menu.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "A Share button opening intent links for Bluesky, Mastodon, Threads, LinkedIn and X, plus copy link and the system share sheet",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "sheet",
       "type": "registry:component",
       "files": [

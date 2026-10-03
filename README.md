@@ -11,7 +11,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-0079bf?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18%2B-0079bf?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
 ![CSS](https://img.shields.io/badge/CSS-native-0079bf?style=flat-square&logo=css3&logoColor=white)
-![components](https://img.shields.io/badge/components-198-0079bf?style=flat-square)
+![components](https://img.shields.io/badge/components-199-0079bf?style=flat-square)
 ![themes](https://img.shields.io/badge/themes-12-0079bf?style=flat-square)
 ![WCAG_2.2](https://img.shields.io/badge/WCAG_2.2-AA-0079bf?style=flat-square)
 [![AI--first](https://img.shields.io/badge/AI--first-MCP-8b5cf6?style=flat-square)](https://github.com/cascivo/cascivo/tree/main/packages/mcp)
@@ -41,7 +41,7 @@ You own the code. Like shadcn/ui, components are copy-pasted into your project v
 
 ## Highlights
 
-- **198 registry entries, one token system** — 131 standalone components (inputs, display, overlay, navigation, layout, feedback), 25 charts, 14 layouts, plus page blocks, sections and flow-diagram parts. Every entry installs with `cascivo add`.
+- **199 registry entries, one token system** — 132 standalone components (inputs, display, overlay, navigation, layout, feedback), 25 charts, 14 layouts, plus page blocks, sections and flow-diagram parts. Every entry installs with `cascivo add`.
 - **Interactive behavior included, not DIY** — dropdowns, menus, context menus, comboboxes, command palettes (⌘K), multi-selects, and tabs ship with keyboard navigation (arrow keys, Home/End, typeahead), focus trapping, and outside-click dismissal already wired, via native `<dialog>`/Popover APIs and `@cascivo/core` primitives (`useRovingFocus`, `FocusScope`, `DismissableLayer`, `useTypeahead`). Nothing to hand-roll or pair with a separate headless library.
 - **Data viz out of the box** — `@cascivo/charts` ships 25 chart types (line, area, bar, sparkline, KPI, heatmap, and more) on a shared scale/shape/decimation engine, token-scaled to match your theme. Pre-built dashboard blocks (`dashboard-charts`, `stats-cards`) and five full example apps (deploy/pulse/trade/pay/track) show them composed into real consoles.
 - **Email that matches your product** — `@cascivo/email` renders transactional mail from the same 12 themes, resolved to literal sRGB because no email client supports a custom property. Table-based layout, inline styles, a derived plain-text part, and a conformance lint that reads the rendered document against a vendored Can I email matrix and fails the build on anything Outlook Windows cannot render.
@@ -362,12 +362,12 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 
 ## Components
 
-**198 components** — display 60 · inputs 42 · layout 27 · chart 25 · navigation 19 · overlay 16 · feedback 9.
+**199 components** — display 60 · inputs 42 · layout 27 · chart 25 · navigation 19 · overlay 17 · feedback 9.
 
 Browse the full catalog with live previews at [cascivo.com/docs/components](https://cascivo.com/docs/components), or read the machine index at [registry.json](https://cascivo.com/registry.json).
 
 <details>
-<summary>All 198 components by category</summary>
+<summary>All 199 components by category</summary>
 
 **display** (60) — alert, avatar, avatar-group, badge, block/console-app, block/dashboard-charts, block/empty-dashboard, block/login-page, block/notification-center, block/page-with-breadcrumb, block/settings-form-page, block/sidebar-app, block/stats-cards, block/users-table-page, blockquote, brand/logo, card, carousel, chat-bubble, code, code-snippet, collapsible, comparison, contained-list, data-list, data-table, editor/highlight, empty-state, flow/flow, flow/flow-background, flow/flow-canvas, flow/flow-controls, flow/flow-edge, flow/flow-handle, flow/flow-minimap, flow/flow-node, flow/flow-panel, flow/flow-story, heading, image, item, kbd, list, log-viewer, prose, qr-code, relative-time, separator, skeleton, stat, status, structured-list, swipe-item, tag, text, timeline, tree-view, user, virtual-list, visually-hidden
 
@@ -379,7 +379,7 @@ Browse the full catalog with live previews at [cascivo.com/docs/components](http
 
 **navigation** (19) — accordion, breadcrumb, dock, header, header-panel, large-title-header, link, menu-button, menubar, navigation-menu, pagination, progress-indicator, shell-header, side-nav, skip-nav, steps, switcher, tabs, toc
 
-**overlay** (16) — action-sheet, alert-dialog, bottom-sheet, command-menu, context-menu, drawer, dropdown, hover-card, menu, modal, overflow-menu, popover, sheet, toast, toggletip, tooltip
+**overlay** (17) — action-sheet, alert-dialog, bottom-sheet, command-menu, context-menu, drawer, dropdown, hover-card, menu, modal, overflow-menu, popover, share-menu, sheet, toast, toggletip, tooltip
 
 **feedback** (9) — infinite-scroll, inline-loading, notification, progress, progress-bar, progress-circle, pull-to-refresh, radial-progress, spinner
 

@@ -1,5 +1,15 @@
 import { HttpError } from '@cascivo/data'
-import { migrate, queryRows } from './db'
+import {
+  checkOrigin,
+  migrateAccounts,
+  now,
+  parseUser,
+  randomToken,
+  sessionRoutes,
+  sha256,
+  startSession,
+} from './accounts'
+import { queryRows } from './db'
 import type { Database } from './db'
 
 /**
@@ -17,10 +27,8 @@ import type { Database } from './db'
  * ```
  */
 
-export interface User {
-  id: string
-  email: string
-}
+export { currentUser, requireUser, SESSION_COOKIE } from './accounts'
+export type { User } from './accounts'
 
 export interface AuthOptions {
   /** Emails the sign-in link. The link is a secret: send it to `email` and nowhere else. */
@@ -44,31 +52,6 @@ export interface AuthOptions {
   exposeLink?: boolean
 }
 
-export const SESSION_COOKIE = '__Host-session'
-
-const migrations = [
-  {
-    id: 'cascivo_auth_0001',
-    statements: [
-      `CREATE TABLE IF NOT EXISTS users (
-        id TEXT PRIMARY KEY,
-        email TEXT NOT NULL UNIQUE,
-        created_at TEXT NOT NULL
-      )`,
-      `CREATE TABLE IF NOT EXISTS auth_links (
-        hash TEXT PRIMARY KEY,
-        email TEXT NOT NULL,
-        expires_at INTEGER NOT NULL
-      )`,
-      `CREATE TABLE IF NOT EXISTS sessions (
-        hash TEXT PRIMARY KEY,
-        user_id TEXT NOT NULL REFERENCES users (id),
-        expires_at INTEGER NOT NULL
-      )`,
-    ],
-  },
-]
-
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 /** Trims and lowercases an address, or throws `HttpError(400)` for one that is not. */
@@ -78,83 +61,11 @@ export function normalizeEmail(raw: unknown): string {
   return email
 }
 
-function randomToken(): string {
-  const bytes = crypto.getRandomValues(new Uint8Array(32))
-  let binary = ''
-  for (const b of bytes) binary += String.fromCharCode(b)
-  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
-}
-
-async function sha256(value: string): Promise<string> {
-  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value))
-  return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, '0')).join('')
-}
-
-const now = () => Math.floor(Date.now() / 1000)
-
-function readCookie(request: Request, name: string): string | null {
-  for (const part of (request.headers.get('cookie') ?? '').split(';')) {
-    const [key, ...rest] = part.trim().split('=')
-    if (key === name) return rest.join('=')
-  }
-  return null
-}
-
-function sessionCookie(value: string, maxAge: number): string {
-  return `${SESSION_COOKIE}=${value}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${maxAge}`
-}
-
-/**
- * Refuses a state-changing request from another site (a form posted from elsewhere carries
- * this app's cookie only under SameSite=Lax's exceptions, and never a matching Origin).
- */
-function checkOrigin(request: Request): void {
-  if (request.method === 'GET' || request.method === 'HEAD') return
-  const origin = request.headers.get('origin')
-  if (origin !== null && origin !== new URL(request.url).origin) {
-    throw new HttpError(403, 'Cross-site request refused')
-  }
-}
-
-function parseUser(raw: unknown): User {
-  if (typeof raw === 'object' && raw !== null) {
-    const { id, email } = raw as Record<string, unknown>
-    if (typeof id === 'string' && typeof email === 'string') return { id, email }
-  }
-  throw new Error('Malformed user row')
-}
-
 function parseLinkEmail(raw: unknown): string {
   if (typeof raw === 'object' && raw !== null) {
     return normalizeEmail((raw as Record<string, unknown>)['email'])
   }
   throw new Error('Malformed link row')
-}
-
-/** The signed-in user, or `null`. Checks the session cookie against D1. */
-export async function currentUser(db: Database, request: Request): Promise<User | null> {
-  const token = readCookie(request, SESSION_COOKIE)
-  if (!token) return null
-  await migrate(db, migrations)
-  const [user] = await queryRows(
-    db,
-    `SELECT users.id, users.email FROM sessions JOIN users ON users.id = sessions.user_id
-     WHERE sessions.hash = ? AND sessions.expires_at > ?`,
-    [await sha256(token), now()],
-    parseUser,
-  )
-  return user ?? null
-}
-
-/**
- * The signed-in user, or `HttpError(401)`; a state-changing request from another origin is a
- * 403. Call it at the top of any handler that needs a user.
- */
-export async function requireUser(db: Database, request: Request): Promise<User> {
-  checkOrigin(request)
-  const user = await currentUser(db, request)
-  if (!user) throw new HttpError(401, 'Sign in first')
-  return user
 }
 
 async function readJson(request: Request): Promise<Record<string, unknown>> {
@@ -216,29 +127,12 @@ export function handleAuth(
         parseUser,
       )
       if (!user) throw new Error('The user was not stored')
-      const session = randomToken()
-      await db.batch([
-        db.prepare('DELETE FROM sessions WHERE expires_at <= ?').bind(now()),
-        db
-          .prepare('INSERT INTO sessions (hash, user_id, expires_at) VALUES (?, ?, ?)')
-          .bind(await sha256(session), user.id, now() + sessionTtl),
-      ])
       return Response.json(
         { user },
-        { headers: { 'set-cookie': sessionCookie(session, sessionTtl) } },
+        { headers: { 'set-cookie': await startSession(db, user.id, sessionTtl) } },
       )
     },
-    'GET me': async (request) => Response.json({ user: await currentUser(db, request) }),
-    'POST signout': async (request) => {
-      const token = readCookie(request, SESSION_COOKIE)
-      if (token) {
-        await db
-          .prepare('DELETE FROM sessions WHERE hash = ?')
-          .bind(await sha256(token))
-          .run()
-      }
-      return Response.json({ user: null }, { headers: { 'set-cookie': sessionCookie('', 0) } })
-    },
+    ...sessionRoutes(db),
   }
 
   return async (request) => {
@@ -248,7 +142,7 @@ export function handleAuth(
     if (!route) return null
     try {
       checkOrigin(request)
-      await migrate(db, migrations)
+      await migrateAccounts(db)
       return await route(request)
     } catch (error) {
       if (error instanceof HttpError) {

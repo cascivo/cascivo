@@ -608,7 +608,7 @@ const user = await requireUser(env.DB, request) // 401 signed out, 403 from anot
 
 // the browser
 export const auth = createAuth()
-auth.user.value // undefined while checking, then { id, email } or null
+auth.user.value // undefined while checking, then { id, email } or null (email may be null)
 await auth.start(email)
 await auth.verify(token) // on the page the link opens
 ```
@@ -628,6 +628,292 @@ await auth.verify(token) // on the page the link opens
 
 `cascivo create --framework cloudflare --auth email` scaffolds it, with every API write
 requiring a signed-in user.
+
+## Sign in with GitHub, Google or LinkedIn — `@cascivo/app/oauth` and `@cascivo/app/oauth-server`
+
+`handleOAuth` adds provider sign-in to the same users and sessions as `handleAuth`, so both can
+sit on one sign-in page and `requireUser` works for either.
+
+```ts
+// the Worker
+import { github, google, linkedin } from '@cascivo/app/oauth'
+import { handleOAuth } from '@cascivo/app/oauth-server'
+
+const oauth = handleOAuth(env.DB, {
+  secret: env.AUTH_SECRET, // ≥ 32 characters: openssl rand -base64 32
+  providers: [
+    github({ clientId: env.GITHUB_CLIENT_ID, clientSecret: env.GITHUB_CLIENT_SECRET }),
+    google({ clientId: env.GOOGLE_CLIENT_ID, clientSecret: env.GOOGLE_CLIENT_SECRET }),
+    linkedin({ clientId: env.LINKEDIN_CLIENT_ID, clientSecret: env.LINKEDIN_CLIENT_SECRET }),
+  ],
+})
+const answered = await oauth(request) // /api/auth/oauth/<id>, …/callback, /oauth, /me, /signout
+if (answered) return answered
+
+// the browser
+await auth.providers() // ['github', 'google']
+<a href={auth.signInUrl('github')}>Sign in with GitHub</a> // back to this page afterwards
+```
+
+Register `https://<your app>/api/auth/oauth/<id>/callback` as the redirect URI at each
+provider (GitHub: an OAuth App; Google: an OAuth client of type "Web application"; LinkedIn:
+an app with the "Sign In with LinkedIn using OpenID Connect" product).
+
+- **The flow is checked end to end.** `state`, a PKCE verifier (S256) and an OpenID `nonce`
+  travel in a sealed (AES-GCM), HttpOnly, `SameSite=Lax` cookie that lives ten minutes. A
+  callback without it, with another flow's state, or for another provider is refused.
+- **Google's ID token is verified** against Google's published keys: signature, issuer,
+  audience, expiry and nonce. `google({ hostedDomain: 'acme.com' })` admits only that
+  Workspace domain, checked on the token, since the `hd` parameter alone is just a hint.
+- **LinkedIn's ID token is verified the same way.** LinkedIn takes no PKCE from a web app, so
+  the client secret and `state` protect the exchange; a `nonce` it echoes must match.
+- **GitHub's email is read only when it is the primary one and verified.** GitHub has no ID
+  token; the adapter reads `/user` for the numeric id and `/user/emails` for the address.
+- **Accounts are linked by identity, not by email.** A user is found by `(provider, subject)`.
+  A new identity joins the signed-in user if there is one (a "connect GitHub" button on a
+  settings page), else the user with the same _verified_ email (so a sign-in link and Google
+  on one address are one account), else a new user. An identity already linked to someone else
+  is refused while another user is signed in.
+- **Email is optional.** `User.email` is `string | null`: a provider that shares no verified
+  address still signs someone in. Check it before sending them mail.
+- **Failures land on a page, not a JSON error.** The callback redirects to `errorPath`
+  (default `/signin`) with `?error=denied | expired | state_mismatch | provider_error |
+identity_in_use`.
+- **The redirect never leaves the app.** `?returnTo=` must resolve to this origin; anything
+  else lands on `/`. Set `origin` when the Worker answers on more than one host, so the
+  redirect URI always matches the registered one.
+
+`@cascivo/app/oauth` has no database, cookie or Worker code, so the adapters work on their own
+anywhere `fetch` and WebCrypto do. Keep the tokens to call the provider's API on the user's
+behalf, sealed for storage:
+
+```ts
+const { url, pending } = await beginAuthorization(
+  google({ clientId, clientSecret, offline: true, scopes }),
+  { redirectUri },
+)
+// … the browser comes back …
+const { tokens, identity } = await completeAuthorization(
+  provider,
+  pending,
+  callbackUrl.searchParams,
+)
+const stored = await seal(env.TOKEN_SECRET, `tokens:${identity.subject}`, tokens) // unseal() to use
+```
+
+`cascivo create --framework cloudflare --auth oauth` scaffolds GitHub, Google and LinkedIn
+sign-in; `--auth email,oauth` puts both methods on one page.
+
+## Connected accounts and posting — `handleConnections` and `@cascivo/app/social`
+
+Signing in throws the provider's tokens away. Connecting an account keeps them, so the app can
+act for the user later: post to their LinkedIn, from a queue, at a scheduled time.
+
+```ts
+// the Worker: /api/connections for the signed-in user
+import { connectionTokens, handleConnections, markReconnect } from '@cascivo/app/oauth-server'
+import { linkedinPublisher, PublishError } from '@cascivo/app/social'
+
+// Its own instance, with the posting scope; the one for sign-in asks for identity only.
+const providers = [
+  linkedin({ clientId, clientSecret, scopes: ['openid', 'profile', 'w_member_social'] }),
+]
+const answered = await handleConnections(env.DB, { secret: env.AUTH_SECRET, providers })(request)
+// GET /api/connections, GET /api/connections/linkedin (connect), DELETE /api/connections/<id>
+
+// later, in a queue consumer or a Workflow step
+const { connection, tokens } = await connectionTokens(
+  env.DB,
+  { secret, providers },
+  { userId, connectionId },
+)
+try {
+  const { url } = await linkedinPublisher().publish({ tokens, subject: connection.subject }, post)
+} catch (error) {
+  if (error instanceof PublishError && error.kind === 'reconnect')
+    await markReconnect(env.DB, connection.id)
+  throw error
+}
+```
+
+- **Tokens are encrypted at rest** (AES-256-GCM under your secret), bound to their row: a
+  sealed value copied to another row does not open. Rotating the secret turns every
+  connection into `reconnect`.
+- **A connection says when to ask the user back.** `status` is `active`, `expiring` (a token
+  that cannot be refreshed ends within `expiringDays`, default 7: LinkedIn's 60-day tokens) or
+  `reconnect`. Connecting the same account again renews it in place. `expiringConnections(db)` lists
+  the expiring ones across all users, with each owner's email, for a job that reminds them.
+- **Refresh happens on use, once.** `connectionTokens` refreshes a token that is about to
+  expire. One request at a time holds the refresh; others wait for its result, so a provider
+  that replaces its refresh token on every use never sees a spent one.
+- **`social` checks before it posts.** `check(post)` is synchronous and lists what the network
+  would refuse (length in characters, image count and types, alt text, link cards), so a
+  composer can show it while typing and a scheduled post fails before it is queued.
+- **LinkedIn specifics are handled.** Text is escaped for LinkedIn's "little" format (a
+  hashtag that starts a word still links), images are uploaded and attached by URN, a link
+  card carries its own title and thumbnail (LinkedIn does not read the page), and every call
+  pins `LinkedIn-Version`.
+- **`PublishError.kind`** is `invalid`, `reconnect`, `rate_limited` or `failed`;
+  `retryable` is true only for rate limits and 5xx. LinkedIn cannot deduplicate, so a request
+  that timed out is not retried for you.
+
+Like `oauth`, `social` has no database or Worker code: give it any `TokenSet` and subject.
+
+### Bluesky: AT Protocol OAuth, all of it
+
+`bluesky()` is a provider for every AT Protocol account. The flow takes the user's handle (or
+DID) as `?server=`, resolves it (DNS over HTTPS, then `/.well-known/atproto-did`) to the DID,
+its document to the PDS, and the PDS to its authorization server, then runs the protocol as
+the spec requires: a pushed authorization request, PKCE, and DPoP on every request, with the
+nonce retry a stateless Worker needs.
+
+```ts
+const providers = [
+  bluesky({
+    clientMetadataPath: '/oauth/client-metadata.json', // your client id is this URL
+    privateKey: parseBlueskyKey(env.BLUESKY_PRIVATE_JWK), // optional: a confidential client
+  }),
+]
+// Serve what Bluesky's servers fetch:
+//   GET /oauth/client-metadata.json → blueskyClientMetadata({ origin, redirectPaths, clientName, privateKey })
+//   GET /oauth/jwks.json            → blueskyJwks(privateKey)
+await blueskyPublisher().publish(
+  { tokens, subject: connection.subject, server: connection.server },
+  post,
+  { idempotencyKey: `${postId}:${connection.id}`, createdAt: scheduledAt },
+)
+```
+
+- **The account is checked, not trusted.** A handle must resolve to the DID and the DID
+  document must claim the handle back. The callback's `iss` must be the authorization server
+  the flow used, and the tokens' `sub` must be the DID resolved for this flow, whose document
+  points at that server. That is what stops a hostile server from signing in as someone
+  else's DID. Every host in the chain is fetched with the same limits as Mastodon's, and the
+  authorization server's endpoints must be on its own origin.
+- **The account is named.** The display name and avatar come from the profile record on the
+  account's own PDS (the avatar as the PDS's blob URL), best effort: a missing profile leaves
+  them `null`.
+- **Tokens are bound to a key.** The flow makes a P-256 key; `TokenSet.dpop` keeps it with
+  the issuer and client id, sealed with the tokens. `connectionTokens` refreshes them under
+  its lease, which matters here: Bluesky replaces the refresh token on every use.
+- **Three kinds of client.** In development a redirect to `127.0.0.1` makes the app
+  Bluesky's loopback client, which needs no metadata (open the app at `127.0.0.1`, not
+  `localhost`). Deployed, the client id is your metadata URL; without `privateKey` the app is
+  a public client (sessions end after two weeks), with one it signs a `private_key_jwt`
+  assertion on each token request.
+- **`blueskyPublisher`** counts graphemes (300), turns links, hashtags and mentions into
+  facets at UTF-8 byte offsets (`blueskyFacets`; a mention's handle is resolved to its DID),
+  builds a link card from the title you give (Bluesky does not read the page), and uploads
+  up to four images of 1 MB. With `idempotencyKey` and `createdAt` the record key is fixed
+  (`blueskyRecordKey`), and a retry returns the post it already made.
+
+### Buffer: the networks this package does not post to itself
+
+Buffer is a scheduler in front of X, Instagram, TikTok, Facebook, Pinterest, YouTube, Google
+Business Profile, Threads and the networks above. Connect a user's Buffer with `buffer()`, or
+post to your own with a personal API key (`bufferTokens(env.BUFFER_API_KEY)`):
+
+```ts
+const providers = [
+  buffer({ clientId: env.BUFFER_CLIENT_ID, clientSecret: env.BUFFER_CLIENT_SECRET }),
+]
+// connection.subject is the Buffer organization; each channel is one social account in it
+const channels = await bufferChannels(tokens, connection.subject)
+await bufferPublisher({ service: channel.service, uploadImage }).publish(
+  { tokens, subject: channel.id },
+  post,
+  { createdAt: dueAt }, // ahead: Buffer holds it in its queue; else it shares now
+)
+```
+
+- **OAuth with PKCE** (mandatory at Buffer), `prompt=consent`, and `offline_access` for a
+  refresh token. Refresh tokens are single-use and reusing one revokes the grant, so
+  `connectionTokens`' lease matters here as it does for Bluesky.
+- **GraphQL errors arrive with a 200.** `bufferQuery` reads `errors[]` and
+  `extensions.code` as well as the status; a `MutationError` (a refused post) is `invalid`,
+  `UNAUTHENTICATED` or a 401 is `reconnect`, and a rate limit carries `Retry-After` on
+  `PublishError.retryAfter`.
+- **Images go by public URL**: Buffer fetches them. Pass `uploadImage` (put the image in R2
+  behind a short-lived signed URL, return the URL); without it, `check` refuses images.
+- **`check` knows the network behind the channel** for the well-known limits (X 280, Threads
+  and Mastodon 500, Bluesky 300 graphemes, Instagram 2,200, LinkedIn 3,000) and leaves the
+  rest to Buffer. A link is appended to the text; the network builds its card.
+- **No idempotency.** Like LinkedIn, a request that timed out may have posted; the post's
+  `url` is `null` until Buffer sends it. Every request counts against the budget of the
+  plan that owns the app client, for all users together (100 per 15 minutes).
+
+### Threads: posting only, and a token that renews itself
+
+`threads()` connects an account to post with; it is not offered for sign-in (Threads shares
+no email). The code buys a one-hour token, traded at once for a 60-day one. There is no refresh
+token: the long-lived token renews itself once it is a day old, and never after it expires, so
+the provider declares `refreshAhead` (30 days) and a daily Cron Trigger renews the quiet ones:
+
+```ts
+const providers = [threads({ clientId: env.THREADS_APP_ID, clientSecret: env.THREADS_APP_SECRET })]
+
+export default {
+  // wrangler.jsonc: "triggers": { "crons": ["17 4 * * *"] }
+  async scheduled(_event, env) {
+    await refreshConnections(env.DB, { secret: env.AUTH_SECRET, providers })
+  },
+}
+
+await threadsPublisher({ uploadImage }).publish({ tokens, subject: connection.subject }, post)
+```
+
+- **Renewal never costs a working token.** `connectionTokens` renews a `refreshAhead` token in
+  its window; if Meta refuses, it keeps the current one and tries again on the next call. A
+  token that never renews shows as `expiring` in its last week, then `reconnect`.
+- **Two steps, as Meta requires.** A media container (text, an image, or a carousel of up to
+  20), waited on while Meta fetches the images, then published. Images go by public URL, as
+  with Buffer: pass `uploadImage`. Alt text is sent with each image.
+- **500 characters, emoji by their UTF-8 bytes** (`threadsLength`). A text post shows its link
+  as a card; one with images carries the link in its text.
+- **No idempotency, 250 posts a day.** Like LinkedIn, a request that timed out may have posted.
+- **Meta's review gates strangers.** Until App Review and Tech Provider verification pass,
+  only the app's own testers can connect.
+
+### Mastodon: one provider, many servers
+
+Every Mastodon server runs its own OAuth, so `mastodon()` is a factory. The flow takes the
+user's server as `?server=` (`/api/connections/mastodon?server=hachyderm.io`, or a handle such
+as `@ada@hachyderm.io`), discovers its endpoints, registers your app there once, and keeps the
+registration (client secret sealed) with `mastodonRegistrations`:
+
+```ts
+const providers = [
+  mastodon({
+    appName: 'Acme',
+    website: 'https://acme.example',
+    scopes: ['profile', 'write:statuses', 'write:media'],
+    registrations: mastodonRegistrations(env.DB, env.AUTH_SECRET),
+  }),
+]
+// connectionTokens(…) → { connection, tokens }; connection.server is the account's server
+await mastodonPublisher().publish(
+  { tokens, subject: connection.subject, server: connection.server },
+  post,
+  { idempotencyKey: `${postId}:${connection.id}` }, // retries cannot post twice
+)
+```
+
+- **The server name is distrusted input.** `normalizeServer` takes a host, URL or handle and
+  refuses IP addresses, ports, single labels and local names. Calls to it time out after ten
+  seconds, follow no redirects, and stop reading after 256 KB. Its metadata may not move the
+  token endpoint to another host.
+- **Old and new servers.** Mastodon 4.3+ announces PKCE and the `profile` scope, and both are
+  used; an older server gets `read:accounts` and no PKCE. GoToSocial and Akkoma speak the same
+  API.
+- **The account is `<id>@<server>`,** with a `@user@server` handle and no email. Tokens do not
+  expire; a refused one is a `reconnect`.
+- **`mastodonPublisher`** counts like Mastodon (any URL is 23 characters, a mention without its
+  server), appends a link to the text so the server builds the card, uploads images and waits
+  while the server processes them, and sends `Idempotency-Key`.
+- **Each server has its own limits.** `mastodonServerLimits(server)` reads them from the
+  server's public `/api/v2/instance` (characters, images per post, what a URL counts as) and
+  falls back to Mastodon's defaults. Pass the result to `mastodonPublisher(limits)` so `check`
+  agrees with the server: hachyderm.io takes 2263 characters, not 500.
 
 ## Who may call the Worker — `@cascivo/app/guard`
 

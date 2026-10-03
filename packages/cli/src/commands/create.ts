@@ -72,6 +72,7 @@ export type Example =
   | 'search'
   | 'checkout'
   | 'newsletter'
+  | 'social'
 
 export const EXAMPLES = [
   'board',
@@ -90,6 +91,7 @@ export const EXAMPLES = [
   'search',
   'checkout',
   'newsletter',
+  'social',
 ] as const
 
 function isExample(value: string): value is Example {
@@ -120,11 +122,14 @@ export interface ScaffoldOptions {
   examples?: Example[]
   /**
    * `cloudflare` framework only. `access`: the Worker refuses every request Cloudflare Access
-   * did not let through. `email`: accounts with emailed sign-in links; every API write needs
-   * a signed-in user.
+   * did not let through. `email`: accounts with emailed sign-in links; `oauth`: accounts with
+   * GitHub, Google and LinkedIn sign-in; `email,oauth`: both on one page. With accounts, every API write
+   * needs a signed-in user.
    */
-  auth?: 'access' | 'email'
+  auth?: Auth
 }
+
+export type Auth = 'access' | 'email' | 'oauth' | 'email,oauth'
 
 export interface ScaffoldFile {
   /** Path relative to the project root. */
@@ -1125,15 +1130,15 @@ function cfPackageJson(opts: ScaffoldOptions): string {
         ? {
             '@ai-sdk/react': '^4.0.0',
             '@cascivo/render': V['@cascivo/render']!,
-            '@cloudflare/ai-chat': '^0.12.0',
-            agents: '^0.24.0',
+            '@cloudflare/ai-chat': '^0.12.1',
+            agents: '^0.26.0',
             ai: '^7.0.0',
             'workers-ai-provider': '^4.0.0',
             zod: '^4.0.0',
           }
         : {}),
       // The /voice page: the Agents SDK's voice pipeline and its browser client.
-      ...(hasExample(opts, 'voice') && !agent ? { agents: '^0.24.0' } : {}),
+      ...(hasExample(opts, 'voice') && !agent ? { agents: '^0.26.0' } : {}),
       // The /publish page and published pages render views with @cascivo/render.
       ...(hasExample(opts, 'publish') && !agent
         ? { '@cascivo/render': V['@cascivo/render']! }
@@ -1356,11 +1361,24 @@ ${jsoncArray(
 ${jsoncArray('  ', 'migrations', [`{ "tag": "v1", "new_sqlite_classes": [${objects.map((o) => `"${o.className}"`).join(', ')}] }`])}`
       : ''
   }${
-    hasExample(opts, 'files')
+    hasExample(opts, 'files') || hasExample(opts, 'social')
       ? `
-  // Uploaded files, and Cloudflare Images for their resized previews.
-${jsoncArray('  ', 'r2_buckets', [`{ "binding": "FILES", "bucket_name": "${packageName(opts.name)}-files" }`])}
-  "images": { "binding": "IMAGES" },`
+  // ${[
+    hasExample(opts, 'files')
+      ? 'Uploaded files, and Cloudflare Images for their resized previews'
+      : '',
+    hasExample(opts, 'social') ? 'Images attached to social posts (worker/social.ts)' : '',
+  ]
+    .filter(Boolean)
+    .join('; ')}.
+${jsoncArray('  ', 'r2_buckets', [
+  ...(hasExample(opts, 'files')
+    ? [`{ "binding": "FILES", "bucket_name": "${packageName(opts.name)}-files" }`]
+    : []),
+  ...(hasExample(opts, 'social')
+    ? [`{ "binding": "SOCIAL_MEDIA", "bucket_name": "${packageName(opts.name)}-social-media" }`]
+    : []),
+])}${hasExample(opts, 'files') ? '\n  "images": { "binding": "IMAGES" },' : ''}`
       : ''
   }${
     usesLimiter(opts)
@@ -1373,7 +1391,8 @@ ${jsoncArray('  ', 'r2_buckets', [`{ "binding": "FILES", "bucket_name": "${packa
     hasExample(opts, 'search') ? 'search indexing' : '',
     hasExample(opts, 'checkout') ? 'checkouts started' : '',
     hasExample(opts, 'newsletter') ? 'newsletter sign-ups and composer requests' : '',
-    opts.auth === 'email' ? 'sign-in emails' : '',
+    hasExample(opts, 'social') ? 'connecting accounts, posts and image uploads' : '',
+    emailSignIn(opts) ? 'sign-in emails' : '',
   ]
     .filter(Boolean)
     .join(', ')
@@ -1383,10 +1402,22 @@ ${jsoncArray('  ', 'r2_buckets', [`{ "binding": "FILES", "bucket_name": "${packa
 ${jsoncArray('  ', 'ratelimits', ['{ "name": "LIMITER", "namespace_id": "1001", "simple": { "limit": 20, "period": 60 } }'])}`
       : ''
   }${wranglerVars(opts)}${
-    hasExample(opts, 'digest')
+    hasExample(opts, 'digest') || hasExample(opts, 'social')
       ? `
-  // The weekly digest: Mondays at 08:00 UTC (worker/digest.ts).
-  "triggers": { "crons": ["0 8 * * 1"] },`
+  // ${[
+    hasExample(opts, 'digest') ? 'The weekly digest: Mondays at 08:00 UTC (worker/digest.ts)' : '',
+    hasExample(opts, 'social')
+      ? 'Threads tokens renewed and reconnect reminders sent, daily at 04:17 UTC (worker/social.ts)'
+      : '',
+  ]
+    .filter(Boolean)
+    .join('; ')}.
+  "triggers": { "crons": [${[
+    hasExample(opts, 'digest') ? '"0 8 * * 1"' : '',
+    hasExample(opts, 'social') ? `"${SOCIAL_CRON}"` : '',
+  ]
+    .filter(Boolean)
+    .join(', ')}] },`
       : ''
   }${
     usesD1(opts)
@@ -1399,7 +1430,7 @@ ${jsoncArray('  ', 'ratelimits', ['{ "name": "LIMITER", "namespace_id": "1001", 
     hasExample(opts, 'search') ? 'help articles' : '',
     hasExample(opts, 'checkout') ? 'orders' : '',
     hasExample(opts, 'newsletter') ? 'newsletter subscribers and issues' : '',
-    opts.auth === 'email' ? 'accounts' : '',
+    hasAccounts(opts) ? 'accounts' : '',
   ]
     .filter(Boolean)
     .join(', ')}.
@@ -1414,10 +1445,28 @@ ${jsoncArray('  ', 'd1_databases', [`{ "binding": "DB", "database_name": "${pack
   "analytics_engine_datasets": [{ "binding": "USAGE", "dataset": "${usageDataset(opts)}" }],`
       : ''
   }${wranglerQueues(opts)}${
-    hasExample(opts, 'import')
+    hasExample(opts, 'import') || hasExample(opts, 'social')
       ? `
-  // The CSV import runs as a Workflow (worker/import-job.ts); its progress is a room.
-  "workflows": [{ "name": "import-job", "binding": "IMPORT_JOB", "class_name": "ImportJob" }],`
+  // ${[
+    hasExample(opts, 'import')
+      ? 'The CSV import runs as a Workflow (worker/import-job.ts); its progress is a room.'
+      : '',
+    hasExample(opts, 'social')
+      ? 'Each scheduled post is a Workflow that waits until it is due (worker/social-post.ts).'
+      : '',
+  ]
+    .filter(Boolean)
+    .join('\n  // ')}
+${jsoncArray('  ', 'workflows', [
+  ...(hasExample(opts, 'import')
+    ? ['{ "name": "import-job", "binding": "IMPORT_JOB", "class_name": "ImportJob" }']
+    : []),
+  ...(hasExample(opts, 'social')
+    ? [
+        `{ "name": "${packageName(opts.name)}-social-post", "binding": "SOCIAL_POST", "class_name": "SocialPost" }`,
+      ]
+    : []),
+])}`
       : ''
   }${
     usesWorkersAi(opts)
@@ -1456,9 +1505,10 @@ ${jsoncArray('  ', 'vectorize', [`{ "binding": "ARTICLES_INDEX", "index_name": "
  */
 function wranglerVars(opts: ScaffoldOptions): string {
   const digest = hasExample(opts, 'digest')
+  const social = hasExample(opts, 'social')
   const checkout = hasExample(opts, 'checkout')
   const newsletter = hasExample(opts, 'newsletter')
-  const emailAuth = opts.auth === 'email'
+  const emailAuth = emailSignIn(opts)
   const comments = [
     ...(opts.auth === 'access'
       ? ['Cloudflare Access (README). Until both are set, the Worker refuses every request.']
@@ -1473,6 +1523,13 @@ function wranglerVars(opts: ScaffoldOptions): string {
       ? [
           "The weekly digest (README): who gets it, who sends it, and the deployed app's URL,",
           'which the browser opens. Until they are set, each run is recorded as skipped.',
+        ]
+      : []),
+    ...(social
+      ? [
+          'Reminders to connect LinkedIn again go out through Email Service from REMINDER_FROM, an',
+          `address on a domain you have onboarded, with links to APP_URL (README). Until both are`,
+          'set, no reminder is sent.',
         ]
       : []),
     ...(checkout
@@ -1492,6 +1549,7 @@ function wranglerVars(opts: ScaffoldOptions): string {
     ...(opts.auth === 'access' ? ['ACCESS_TEAM_DOMAIN', 'ACCESS_AUD'] : []),
     ...(emailAuth ? ['AUTH_FROM'] : []),
     ...(digest ? ['DIGEST_TO', 'DIGEST_FROM', 'APP_URL'] : []),
+    ...(social ? ['REMINDER_FROM', ...(digest ? [] : ['APP_URL'])] : []),
     ...(checkout ? ['RECEIPT_FROM'] : []),
     ...(newsletter ? ['AWS_REGION', 'NEWSLETTER_FROM', 'SNS_TOPIC_ARN'] : []),
   ]
@@ -1503,7 +1561,7 @@ function wranglerVars(opts: ScaffoldOptions): string {
       ? line
       : `  "vars": {\n${entries.map((entry) => `    ${entry},`).join('\n')}\n  },`
   return `
-${comments.map((comment) => `  // ${comment}`).join('\n')}${emailAuth || digest || checkout ? '\n  "send_email": [{ "name": "EMAIL" }],' : ''}
+${comments.map((comment) => `  // ${comment}`).join('\n')}${emailAuth || digest || checkout || social ? '\n  "send_email": [{ "name": "EMAIL" }],' : ''}
 ${vars}`
 }
 
@@ -1564,9 +1622,44 @@ ${q.consumer.map((line) => `        ${line},`).join('\n')}
   },`
 }
 
-/** A subscription plan needs an account to belong to: checkout with --auth email bills one. */
+/** A subscription plan needs an account to belong to: checkout with accounts bills one. */
 function usesBilling(opts: ScaffoldOptions): boolean {
-  return hasExample(opts, 'checkout') && opts.auth === 'email'
+  return hasExample(opts, 'checkout') && hasAccounts(opts)
+}
+
+/** Accounts of any kind: users, sessions, and API writes that need a signed-in user. */
+function hasAccounts(opts: ScaffoldOptions): boolean {
+  return emailSignIn(opts) || oauthSignIn(opts)
+}
+
+/** Sign-in by an emailed one-time link (`handleAuth`). */
+function emailSignIn(opts: ScaffoldOptions): boolean {
+  return opts.auth === 'email' || opts.auth === 'email,oauth'
+}
+
+/**
+ * `--auth`: `access`, `email`, `oauth`, or `email,oauth` (either order); `null` when absent,
+ * `'invalid'` for anything else, including `access` combined with a sign-in method.
+ */
+export function parseAuth(raw: string | undefined): Auth | null | 'invalid' {
+  const parts = [
+    ...new Set(
+      (raw ?? '')
+        .toLowerCase()
+        .split(',')
+        .map((p) => p.trim()),
+    ),
+  ].filter(Boolean)
+  if (parts.length === 0) return null
+  const key = parts.sort().join(',')
+  return key === 'access' || key === 'email' || key === 'oauth' || key === 'email,oauth'
+    ? key
+    : 'invalid'
+}
+
+/** Sign-in with GitHub, Google and LinkedIn (`handleOAuth`). */
+function oauthSignIn(opts: ScaffoldOptions): boolean {
+  return opts.auth === 'oauth' || opts.auth === 'email,oauth'
 }
 
 /** The newsletter's queue, named after the app like every other resource. */
@@ -1602,7 +1695,8 @@ function usesLimiter(opts: ScaffoldOptions): boolean {
     hasExample(opts, 'search') ||
     hasExample(opts, 'checkout') ||
     hasExample(opts, 'newsletter') ||
-    opts.auth === 'email'
+    hasExample(opts, 'social') ||
+    emailSignIn(opts)
   )
 }
 
@@ -1616,7 +1710,7 @@ function usesD1(opts: ScaffoldOptions): boolean {
     hasExample(opts, 'search') ||
     hasExample(opts, 'checkout') ||
     hasExample(opts, 'newsletter') ||
-    opts.auth === 'email'
+    hasAccounts(opts)
   )
 }
 
@@ -1647,7 +1741,7 @@ function usesRooms(opts: ScaffoldOptions): boolean {
  * worker/ on its own (tsconfig.worker.json).
  */
 function needsWorkerTypes(opts: ScaffoldOptions): boolean {
-  return usesAgents(opts) || hasExample(opts, 'import')
+  return usesAgents(opts) || hasExample(opts, 'import') || hasExample(opts, 'social')
 }
 
 /**
@@ -1672,7 +1766,8 @@ function cfApiTs(opts: ScaffoldOptions): string {
   const checkout = hasExample(opts, 'checkout')
   const newsletter = hasExample(opts, 'newsletter')
   const billing = usesBilling(opts)
-  return `import { defineApi, ${imports || files || usage || crud || live || publish || webhooks || digest || search || checkout || newsletter ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
+  const social = hasExample(opts, 'social')
+  return `import { defineApi, ${imports || files || usage || crud || live || publish || webhooks || digest || search || checkout || newsletter || social ? 'endpoint, ' : ''}stream } from '@cascivo/app/api'
 ${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` : ''}${files ? `import { parseStoredFile } from '@cascivo/app/uploads'\n` : ''}${imports ? `import { parseImportRequest, parseStarted } from './import-job'\n` : ''}${usage ? `import { parseUsageReport } from './usage'\n` : ''}${crud ? `import { parseCustomer, parseCustomerInput, parseDeleted } from './customers'\n` : ''}${live ? `import { ops, parseAccepted } from './ops'\n` : ''}${publish ? `import { parsePage, parsePageInput, parsePageSummary } from './pages'\n` : ''}${webhooks ? `import { parseDeliveries, parseTestResult } from './webhooks'\n` : ''}${digest ? `import { parseDigestRun, parseDigestRuns } from './digest'\n` : ''}${search ? `import { parseIndexed, parseSearchQuery, parseSearchResult } from './search'\n` : ''}${billing ? `import { parseBilling, parseRedirect, parseSyncInput } from './billing'\n` : ''}${checkout ? `import { parseCheckoutStarted, parseOrder } from './checkout'\n` : ''}${
     newsletter
       ? `import {
@@ -1687,7 +1782,7 @@ ${crud ? `import { parseTablePage, parseTableQuery } from '@cascivo/app/db'\n` :
   parseTokenInput,
 } from './newsletter'\n`
       : ''
-  }
+  }${social ? `import { parsePostInput, parseScheduledPost, parseSocial } from './social'\n` : ''}
 /**
  * The contract between the browser and the Worker. Both import this file: the Worker serves
  * it with \`createHandler\`, the app calls it with \`createClient\`, and a change that breaks
@@ -1891,6 +1986,23 @@ export const api = defineApi({
   }),
   deleteCustomer: endpoint({ method: 'DELETE', path: '/api/customers/:id', output: parseDeleted }),`
       : ''
+  }${
+    social
+      ? `
+  // The signed-in user's connected accounts and posts (worker/social.ts).
+  getSocial: endpoint({ method: 'GET', path: '/api/social', output: parseSocial }),
+  schedulePost: endpoint({
+    method: 'POST',
+    path: '/api/social/posts',
+    input: parsePostInput,
+    output: parseScheduledPost,
+  }),
+  cancelPost: endpoint({
+    method: 'POST',
+    path: '/api/social/posts/:id/cancel',
+    output: parseScheduledPost,
+  }),`
+      : ''
   }
 })
 `
@@ -1917,14 +2029,26 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
   const ai = usesAgents(opts)
   const limiter = usesLimiter(opts)
   const access = opts.auth === 'access'
-  const emailAuth = opts.auth === 'email'
+  const emailAuth = emailSignIn(opts)
+  const oauth = oauthSignIn(opts)
+  const accounts = hasAccounts(opts)
+  const social = hasExample(opts, 'social')
   const guards = [
     ...(access ? ['requireAccess'] : []),
     ...(limiter ? ['clientIp', 'rateLimit'] : []),
   ]
-  const custom = rooms || ai || files || exports || access || live || limiter || publish
+  const custom = rooms || ai || files || exports || access || live || limiter || publish || accounts
   const isAsync =
-    ai || files || exports || access || limiter || webhooks || publish || checkout || newsletter
+    ai ||
+    files ||
+    exports ||
+    access ||
+    limiter ||
+    webhooks ||
+    publish ||
+    checkout ||
+    newsletter ||
+    accounts
   // Rooms the server writes: never opened through /api/rooms/:name, where clients may write.
   const serverRooms = [
     ...(imports ? ['job-'] : []),
@@ -1932,7 +2056,7 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
     ...(checkout ? ['order-'] : []),
     ...(newsletter ? ['issue-'] : []),
   ]
-  // Writes --auth email does not ask to sign in: webhooks carry a signature instead of a
+  // Writes that need no signed-in user even with accounts: webhooks carry a signature instead of a
   // session, and a newsletter's readers have no account.
   const signedPaths = [
     ...(webhooks ? ['/api/webhooks/'] : []),
@@ -1944,7 +2068,7 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
     : []
   const openPaths = [...signedPaths, ...readerPaths]
   return `${usage ? `import type { AnalyticsDataset } from '@cascivo/app/analytics'\n` : ''}${d1 ? `import type { Database } from '@cascivo/app/db'\n` : ''}${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler${publish ? ', HttpError' : ''} } from '@cascivo/app/api'
-${emailAuth ? `import { handleAuth, requireUser } from '@cascivo/app/auth-server'\n` : ''}${guards.length > 0 || webhooks ? `import { ${[...guards, 'guardResponse'].sort().join(', ')} } from '@cascivo/app/guard'\n${limiter ? `import type { RateLimiter } from '@cascivo/app/guard'\n` : ''}` : ''}${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
+${accounts ? `import { ${emailAuth ? 'handleAuth, ' : ''}requireUser } from '@cascivo/app/auth-server'\n` : ''}${oauth ? `import { github, google, linkedin } from '@cascivo/app/oauth'\nimport type { OAuthProvider } from '@cascivo/app/oauth'\nimport { handleOAuth } from '@cascivo/app/oauth-server'\n` : ''}${guards.length > 0 || webhooks || accounts ? `import { ${[...guards, 'guardResponse'].sort().join(', ')} } from '@cascivo/app/guard'\n${limiter ? `import type { RateLimiter } from '@cascivo/app/guard'\n` : ''}` : ''}${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
     files
       ? `import { handleUploads, listUploads } from '@cascivo/app/uploads-server'
 import type { ImageResizer, UploadBucket } from '@cascivo/app/uploads-server'
@@ -1970,7 +2094,7 @@ import type { BrowserWorker } from '@cloudflare/puppeteer'
       : ''
   }${ai ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\nimport { renderPageHtml } from './page-html'\nimport type { Assets } from './page-html'\n${exports ? `import { pagePreview } from './page-preview'\n` : ''}` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${search ? `import * as articleSearch from './search'\nimport type { ${ai ? '' : 'Embedder, '}VectorIndex } from './search'\n` : ''}${billing ? `import * as billingStore from './billing'\n` : ''}${checkout ? `import * as orderStore from './checkout'\nimport type { ReceiptSender } from './checkout'\nimport { ORDER_ID, orderRoom } from '../src/checkout'\n` : ''}${newsletter ? `import * as newsletterStore from './newsletter'\nimport type { NewsletterBatch, NewsletterQueue } from './newsletter'\nimport { ISSUE_ID, issueRoom } from '../src/newsletter'\n` : ''}${
+${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\nimport { renderPageHtml } from './page-html'\nimport type { Assets } from './page-html'\n${exports ? `import { pagePreview } from './page-preview'\n` : ''}` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${search ? `import * as articleSearch from './search'\nimport type { ${ai ? '' : 'Embedder, '}VectorIndex } from './search'\n` : ''}${billing ? `import * as billingStore from './billing'\n` : ''}${social ? `import * as socialStore from './social'\nimport type { ReminderSender, SocialMediaBucket, SocialPostParams } from './social'\n` : ''}${checkout ? `import * as orderStore from './checkout'\nimport type { ReceiptSender } from './checkout'\nimport { ORDER_ID, orderRoom } from '../src/checkout'\n` : ''}${newsletter ? `import * as newsletterStore from './newsletter'\nimport type { NewsletterBatch, NewsletterQueue } from './newsletter'\nimport { ISSUE_ID, issueRoom } from '../src/newsletter'\n` : ''}${
     rooms
       ? `
 // The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
@@ -2006,6 +2130,13 @@ export { LiveRoom } from '@cascivo/app/live-server'
 export { ImportJob } from './import-job'
 `
       : ''
+  }${
+    social
+      ? `
+// The Workflow behind each scheduled post (worker/social-post.ts), bound as SOCIAL_POST.
+export { SocialPost } from './social-post'
+`
+      : ''
   }
 /**
  * Add bindings (KV, D1, R2, Durable Objects, Workers AI) in wrangler.jsonc and type them
@@ -2020,13 +2151,14 @@ ${
   d1 ||
   access ||
   live ||
-  emailAuth ||
+  accounts ||
+  social ||
   webhooks ||
   digest ||
   search ||
   checkout ||
   newsletter
-    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
+    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout || social ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : '', social ? 'ReminderSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${oauth ? '\n  /** Sign-in with GitHub, Google and LinkedIn: `wrangler secret put` (.dev.vars locally). A provider is\n   * offered once both its id and secret are set; AUTH_SECRET seals the sign-in state. */\n  AUTH_SECRET?: string\n  GITHUB_CLIENT_ID?: string\n  GITHUB_CLIENT_SECRET?: string\n  GOOGLE_CLIENT_ID?: string\n  GOOGLE_CLIENT_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string' : social ? "\n  /** Seals connected accounts' tokens, and LinkedIn's app: `wrangler secret put` (.dev.vars\n   * locally). LinkedIn is offered once both its values are set. */\n  AUTH_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string" : ''}${social ? '\n  /** Bluesky: an ES256 private JWK (README); unset, the app is a public client. */\n  BLUESKY_PRIVATE_JWK?: string\n  /** A Buffer app client (README); Buffer is offered once its id is set. */\n  BUFFER_CLIENT_ID?: string\n  BUFFER_CLIENT_SECRET?: string\n  /** A Meta app with the Threads use case (README); Threads is offered once both are set. */\n  THREADS_APP_ID?: string\n  THREADS_APP_SECRET?: string\n  SOCIAL_POST: Workflow<SocialPostParams>\n  SOCIAL_MEDIA: SocialMediaBucket\n  /** Reconnect reminders (worker/social.ts), set in wrangler.jsonc. */\n  REMINDER_FROM: string' + (digest ? '' : '\n  APP_URL: string') : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -2034,8 +2166,33 @@ export interface Env {}`
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 ${
-  limiter
+  oauth
     ? `
+/** The sign-in providers with both an id and a secret set; the others are not offered. */
+function oauthProviders(env: Env): OAuthProvider[] {
+  const providers: OAuthProvider[] = []
+  if (env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET) {
+    providers.push(
+      github({ clientId: env.GITHUB_CLIENT_ID, clientSecret: env.GITHUB_CLIENT_SECRET }),
+    )
+  }
+  if (env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET) {
+    providers.push(
+      google({ clientId: env.GOOGLE_CLIENT_ID, clientSecret: env.GOOGLE_CLIENT_SECRET }),
+    )
+  }
+  if (env.LINKEDIN_CLIENT_ID && env.LINKEDIN_CLIENT_SECRET) {
+    providers.push(
+      linkedin({ clientId: env.LINKEDIN_CLIENT_ID, clientSecret: env.LINKEDIN_CLIENT_SECRET }),
+    )
+  }
+  return providers
+}
+`
+    : ''
+}${
+    limiter
+      ? `
 /**
  * Requests that each count against LIMITER:
 ${[
@@ -2048,6 +2205,7 @@ ${[
   files ? 'a new upload (not each part of one)' : '',
   exports ? 'an export' : '',
   publish ? 'a published page' : '',
+  social ? 'connecting an account (Mastodon registers the app with the server), or a post' : '',
 ]
   .filter(Boolean)
   .map((item) => ` * - ${item}`)
@@ -2089,6 +2247,13 @@ function countsAgainstLimit(request: Request): boolean {
   if (url.pathname === '/api/auth/start') return request.method === 'POST'`
       : ''
   }${
+    social
+      ? `
+  if (/^\\/api\\/connections\\/[a-z-]+$/.test(url.pathname)) return request.method === 'GET'
+  if (url.pathname === '/api/social/posts') return request.method === 'POST'
+  if (url.pathname.startsWith('/api/social/images')) return request.method !== 'GET'`
+      : ''
+  }${
     publish
       ? `
   if (url.pathname === '/api/pages') return request.method === 'POST'`
@@ -2105,8 +2270,8 @@ function countsAgainstLimit(request: Request): boolean {
   return ${exports ? "url.pathname === '/api/export'" : 'false'}
 }
 `
-    : ''
-}
+      : ''
+  }
 /**
  * One handler per endpoint in src/api.ts, typed from it. A stream handler is an async
  * generator: each \`yield\` is one server-sent event, and returning ends the stream. When the
@@ -2197,6 +2362,13 @@ const handleApi = createHandler<typeof api, Env>(api, {
     newsletterStore.sendIssue(env, body, new URL(request.url).origin),`
       : ''
   }${
+    social
+      ? `
+  getSocial: ({ request, env }) => socialStore.getSocial(env, request),
+  schedulePost: ({ body, request, env }) => socialStore.schedulePost(env, request, body),
+  cancelPost: ({ params, request, env }) => socialStore.cancelPost(env, request, params.id),`
+      : ''
+  }${
     digest
       ? `
   digestRuns: ({ env }) => digestJob.listRuns(env.DB),
@@ -2272,14 +2444,30 @@ ${
     }`
           : ''
       }${
-        emailAuth
-          ? `
+        accounts
+          ? `${
+              emailAuth
+                ? `
     // Sign-in links and sessions: /api/auth/* is answered here (worker/auth.ts sends mail).
     const signIn = await handleAuth(env.DB, {
       sendLink: (email, url) => sendSignInLink(env.EMAIL, env.AUTH_FROM, email, url),
       exposeLink: import.meta.env.DEV,
     })(request)
-    if (signIn) return signIn
+    if (signIn) return signIn`
+                : ''
+            }${
+              oauth
+                ? `
+    // Sign-in with GitHub, Google and LinkedIn: /api/auth/oauth/* (and /me, /signout). A failed
+    // sign-in lands on /account with ?error=.
+    const signInWith = await handleOAuth(env.DB, {
+      secret: env.AUTH_SECRET ?? '',
+      providers: oauthProviders(env),
+      errorPath: '/account',
+    })(request)
+    if (signInWith) return signInWith`
+                : ''
+            }
     // Every other API write needs a signed-in user; reads stay public.${signedPaths.length > 0 ? '\n    // Webhooks carry a signature instead of a session, and are checked by it.' : ''}${readerPaths.length > 0 ? '\n    // Newsletter readers sign up, confirm and unsubscribe without an account.' : ''}
     if (${
       openPaths.length > 0
@@ -2296,6 +2484,20 @@ ${
       } catch (error) {
         return guardResponse(error)
       }
+    }${
+      social
+        ? `
+    // The accounts a user connects to post with (worker/social.ts): /api/connections/*, and
+    // the client metadata Bluesky's servers read.
+    const blueskyClient = socialStore.blueskyClient(env, request)
+    if (blueskyClient) return blueskyClient
+    const connected = await socialStore.connections(env)(request)
+    if (connected) return connected
+    // Images for posts: the user's own uploads, and the signed links Threads and Buffer fetch.
+    const image =
+      (await socialStore.images(env, request)) ?? (await socialStore.media(env, request))
+    if (image) return image`
+        : ''
     }`
           : ''
       }${
@@ -2454,13 +2656,33 @@ ${
   },`
     : `  fetch: ${usage ? 'handleAndRecord' : 'handleApi'},`
 }${
-    digest
+    digest && social
       ? `
+  // The Cron Triggers in wrangler.jsonc, told apart by their schedule.
+  async scheduled(event: { cron: string }, env: Env): Promise<void> {
+    // Threads tokens renewed, and reminders for those that cannot be (worker/social.ts).
+    if (event.cron === '${SOCIAL_CRON}') {
+      await socialStore.renewConnections(env)
+      return socialStore.remindExpiring(env)
+    }
+    // The weekly digest, recorded whatever happens.
+    await digestJob.runDigest(env, () => puppeteer.launch(env.BROWSER), 'cron')
+  },`
+      : digest
+        ? `
   // The Cron Trigger in wrangler.jsonc: the weekly digest, recorded whatever happens.
   async scheduled(_event: unknown, env: Env): Promise<void> {
     await digestJob.runDigest(env, () => puppeteer.launch(env.BROWSER), 'cron')
   },`
-      : ''
+        : social
+          ? `
+  // The Cron Trigger in wrangler.jsonc: Threads tokens renewed, then reminders for the ones
+  // that cannot be (LinkedIn).
+  async scheduled(_event: unknown, env: Env): Promise<void> {
+    await socialStore.renewConnections(env)
+    await socialStore.remindExpiring(env)
+  },`
+          : ''
   }${
     live && newsletter
       ? `
@@ -2648,7 +2870,8 @@ function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
     items.push({ label: 'Newsletter', href: '/newsletter' })
     items.push({ label: 'Send newsletter', href: '/newsletter/send' })
   }
-  if (opts.auth === 'email') items.push({ label: 'Account', href: '/account' })
+  if (hasExample(opts, 'social')) items.push({ label: 'Social', href: '/social' })
+  if (hasAccounts(opts)) items.push({ label: 'Account', href: '/account' })
   const navItems = items
     .map(
       (item) => `    {
@@ -7451,7 +7674,12 @@ export async function startSubscription(
       // Stripe fills in {CHECKOUT_SESSION_ID}, so the page can sync before any webhook.
       successUrl: \`\${origin}/billing?session={CHECKOUT_SESSION_ID}\`,
       cancelUrl: \`\${origin}/billing\`,
-      ...(row?.customerId ? { customer: row.customerId } : { customerEmail: user.email }),
+      // Signed in with a provider that shares no email: Stripe's checkout asks for one.
+      ...(row?.customerId
+        ? { customer: row.customerId }
+        : user.email
+          ? { customerEmail: user.email }
+          : {}),
       clientReferenceId: user.id,
       subscriptionMetadata: { user: user.id },
     })
@@ -7666,6 +7894,1750 @@ export default function BillingPage() {
 `
 }
 
+/* --- `--example social`: scheduled posts to connected LinkedIn and Mastodon accounts --- */
+
+/** Daily, off the hour: renews Threads tokens in their last 30 days (\`renewConnections\`). */
+const SOCIAL_CRON = '17 4 * * *'
+
+function cfSocialTs(): string {
+  return `import {
+  blueskyPublisher,
+  bufferPublisher,
+  linkedinPublisher,
+  mastodonPublisher,
+  threadsPublisher,
+} from '@cascivo/app/social'
+import type { Publisher, SocialImage, SocialPost } from '@cascivo/app/social'
+import { defineUploads } from '@cascivo/app/uploads'
+
+/**
+ * Posts scheduled to the accounts a user connected, shared by the Worker (worker/social.ts)
+ * and the /social page. The publishers run on both sides: the page shows what a network would
+ * refuse while you type, and the Worker refuses the same post before scheduling it.
+ */
+
+export const NETWORKS = {
+  bluesky: 'Bluesky',
+  buffer: 'Buffer',
+  linkedin: 'LinkedIn',
+  mastodon: 'Mastodon',
+  threads: 'Threads',
+} as const
+export type Network = keyof typeof NETWORKS
+
+export function isNetwork(value: string): value is Network {
+  return Object.keys(NETWORKS).includes(value)
+}
+
+/**
+ * Networks with no idempotency key: a request that timed out may have posted, so their posts
+ * are never retried.
+ */
+export function postsOnce(network: Network): boolean {
+  return network === 'buffer' || network === 'linkedin' || network === 'threads'
+}
+
+/**
+ * Images attached to a post: uploaded through the Worker into R2 (worker/social.ts). 1 MB and
+ * JPEG or PNG, which every network here takes (Bluesky's limit is 1 MB).
+ */
+export const IMAGES = defineUploads({
+  path: '/api/social/images',
+  maxBytes: 1_000_000,
+  types: ['image/jpeg', 'image/png'],
+})
+export const MAX_IMAGES = 4
+
+/**
+ * Threads and Buffer fetch images by URL. The Worker passes one that signs a link to the image
+ * (worker/social-post.ts); the page only checks posts, so this stands in there.
+ */
+export type ImageLink = (image: SocialImage) => Promise<string>
+const checkOnly: ImageLink = async () => {
+  throw new Error('Only the Worker links images')
+}
+
+const publishers: Record<Exclude<Network, 'buffer' | 'threads'>, Publisher> = {
+  bluesky: blueskyPublisher(),
+  linkedin: linkedinPublisher(),
+  mastodon: mastodonPublisher(),
+}
+
+/** A Mastodon server's own limits (\`mastodonServerLimits\`), which many set above 500. */
+export interface ServerLimits {
+  maxChars: number
+  maxImages: number
+  urlWeight: number
+}
+
+/**
+ * The publisher for an account. A Buffer channel posts through Buffer, checked against the
+ * limit of the network behind it (\`service\`); a Mastodon account, against its server's.
+ */
+export function publisherFor(
+  account: { network: Network; service: string | null; limits?: ServerLimits | null },
+  imageLink: ImageLink = checkOnly,
+): Publisher {
+  if (account.network === 'buffer') {
+    return bufferPublisher({
+      uploadImage: imageLink,
+      ...(account.service ? { service: account.service } : {}),
+    })
+  }
+  if (account.network === 'threads') return threadsPublisher({ uploadImage: imageLink })
+  if (account.network === 'mastodon' && account.limits) return mastodonPublisher(account.limits)
+  return publishers[account.network]
+}
+
+export const MAX_TEXT = 5000
+export const MAX_ACCOUNTS = 10
+/** How far ahead a post can be scheduled. */
+export const MAX_DAYS_AHEAD = 365
+/** Buffer's request budget: this many per 15 minutes, for every user of the app together. */
+export const BUFFER_BUDGET = 100
+
+export interface Account {
+  id: string
+  network: Network
+  /** \`@ada.bsky.social\`, \`@ada@hachyderm.io\`, or the name on a LinkedIn profile. */
+  label: string
+  /** \`expiring\`: the token ends soon and cannot be renewed (LinkedIn): connect it again. */
+  status: 'active' | 'expiring' | 'reconnect'
+  /** For a Buffer channel, the network behind it (\`instagram\`, \`twitter\`, …); else \`null\`. */
+  service: string | null
+  /** For a Mastodon account, its server's limits; else \`null\`. */
+  limits: ServerLimits | null
+}
+
+/** \`queued\`: handed to Buffer, which holds it until the time (it shows in Buffer's queue). */
+export type TargetStatus = 'pending' | 'publishing' | 'queued' | 'posted' | 'failed'
+
+export interface Target {
+  accountId: string
+  network: Network
+  service: string | null
+  label: string
+  status: TargetStatus
+  url: string | null
+  error: string | null
+}
+
+export type PostStatus = 'scheduled' | 'publishing' | 'done' | 'partial' | 'failed' | 'cancelled'
+
+export interface Link {
+  url: string
+  /** LinkedIn and Bluesky show it on the card; Mastodon builds its own card from the page. */
+  title: string
+}
+
+/** An image on a post: its key in the user's uploads, its type, and its description. */
+export interface PostImage {
+  key: string
+  type: string
+  alt: string
+}
+
+export interface ScheduledPost {
+  id: string
+  text: string
+  link: Link | null
+  images: PostImage[]
+  /** ISO time it goes out. */
+  at: string
+  /** Buffer accounts are handed to Buffer at once, to hold until \`at\`. */
+  inBuffer: boolean
+  status: PostStatus
+  targets: Target[]
+}
+
+export interface Social {
+  /** The networks this app can connect (LinkedIn needs its client id and secret). */
+  networks: Network[]
+  accounts: Account[]
+  posts: ScheduledPost[]
+  /** Buffer requests this app made in the current 15 minutes, of 100; \`null\` without Buffer. */
+  bufferUsed: number | null
+}
+
+export interface PostInput {
+  text: string
+  link: Link | null
+  images: PostImage[]
+  accountIds: string[]
+  /** ISO time, or \`null\` for now. */
+  at: string | null
+  /** Hand Buffer accounts to Buffer now, to hold until \`at\`. */
+  inBuffer: boolean
+}
+
+/** What \`publishers\` check: the post as a network sees it. */
+/**
+ * What \`publishers\` check and post: the post as a network sees it. Checking needs only each
+ * image's type and description; posting passes the bytes (\`data\`, in the same order).
+ */
+export function asSocialPost(
+  input: { text: string; link: Link | null; images: readonly PostImage[] },
+  data: readonly Blob[] = [],
+): SocialPost {
+  const images = input.images.map((image, i) => ({
+    data: data[i] ?? new Blob([], { type: image.type }),
+    alt: image.alt,
+  }))
+  return {
+    text: input.text,
+    ...(input.link ? { link: input.link } : {}),
+    ...(images.length > 0 ? { images } : {}),
+  }
+}
+
+const record = (raw: unknown, what: string): Record<string, unknown> => {
+  if (typeof raw !== 'object' || raw === null) throw new Error(\`Malformed \${what}\`)
+  return raw as Record<string, unknown>
+}
+
+const text = (value: unknown, what: string): string => {
+  if (typeof value !== 'string') throw new Error(\`Malformed \${what}\`)
+  return value
+}
+
+function parseLink(raw: unknown): Link | null {
+  if (raw === null || raw === undefined) return null
+  const { url, title } = record(raw, 'link')
+  return { url: text(url, 'link url'), title: text(title, 'link title') }
+}
+
+const IMAGE_KEY = /^[0-9a-f-]{36}\\/[\\w.-]{1,100}$/
+
+function parseImages(raw: unknown): PostImage[] {
+  if (raw === undefined || raw === null) return []
+  if (!Array.isArray(raw) || raw.length > MAX_IMAGES) {
+    throw new Error(\`Attach at most \${MAX_IMAGES} images\`)
+  }
+  return raw.map((item) => {
+    const r = record(item, 'image')
+    const key = text(r['key'], 'image key')
+    const type = text(r['type'], 'image type')
+    const alt = text(r['alt'], 'image description').trim()
+    if (!IMAGE_KEY.test(key) || !IMAGES.types.includes(type)) throw new Error('Malformed image')
+    if (!alt || alt.length > 1000) throw new Error('Describe each image (alt text), briefly')
+    return { key, type, alt }
+  })
+}
+
+export function parsePostInput(raw: unknown): PostInput {
+  const r = record(raw, 'post')
+  const body = text(r['text'], 'text')
+  if (body.length > MAX_TEXT) throw new Error(\`Keep the text under \${MAX_TEXT} characters\`)
+  const link = parseLink(r['link'])
+  if (link && !/^https?:\\/\\//.test(link.url)) throw new Error('The link must be an http(s) URL')
+  const ids = r['accountIds']
+  if (
+    !Array.isArray(ids) ||
+    ids.length === 0 ||
+    ids.length > MAX_ACCOUNTS ||
+    !ids.every((id) => typeof id === 'string')
+  ) {
+    throw new Error(\`Pick 1 to \${MAX_ACCOUNTS} accounts\`)
+  }
+  const at = r['at'] ?? null
+  if (at !== null && (typeof at !== 'string' || Number.isNaN(Date.parse(at)))) {
+    throw new Error('Send the time as an ISO date')
+  }
+  return {
+    text: body,
+    link,
+    images: parseImages(r['images']),
+    accountIds: [...new Set(ids)],
+    at,
+    inBuffer: r['inBuffer'] === true,
+  }
+}
+
+function parseAccount(raw: unknown): Account {
+  const r = record(raw, 'account')
+  const network = text(r['network'], 'network')
+  const status = text(r['status'], 'status')
+  if (!isNetwork(network)) throw new Error('Malformed network')
+  if (status !== 'active' && status !== 'expiring' && status !== 'reconnect') {
+    throw new Error('Malformed account status')
+  }
+  return {
+    id: text(r['id'], 'account id'),
+    network,
+    label: text(r['label'], 'label'),
+    status,
+    service: typeof r['service'] === 'string' ? r['service'] : null,
+    limits: parseLimits(r['limits']),
+  }
+}
+
+function parseLimits(raw: unknown): ServerLimits | null {
+  if (raw === null || raw === undefined) return null
+  const r = record(raw, 'limits')
+  const count = (value: unknown) => {
+    if (typeof value !== 'number' || !Number.isInteger(value) || value <= 0) {
+      throw new Error('Malformed limits')
+    }
+    return value
+  }
+  return {
+    maxChars: count(r['maxChars']),
+    maxImages: count(r['maxImages']),
+    urlWeight: count(r['urlWeight']),
+  }
+}
+
+const TARGET_STATUSES: readonly TargetStatus[] = [
+  'pending',
+  'publishing',
+  'queued',
+  'posted',
+  'failed',
+]
+const POST_STATUSES: readonly PostStatus[] = [
+  'scheduled',
+  'publishing',
+  'done',
+  'partial',
+  'failed',
+  'cancelled',
+]
+
+function parseTarget(raw: unknown): Target {
+  const r = record(raw, 'target')
+  const network = text(r['network'], 'network')
+  const status = TARGET_STATUSES.find((s) => s === r['status'])
+  if (!isNetwork(network) || !status) throw new Error('Malformed target')
+  return {
+    accountId: text(r['accountId'], 'account id'),
+    network,
+    service: typeof r['service'] === 'string' ? r['service'] : null,
+    label: text(r['label'], 'label'),
+    status,
+    url: typeof r['url'] === 'string' ? r['url'] : null,
+    error: typeof r['error'] === 'string' ? r['error'] : null,
+  }
+}
+
+export function parseScheduledPost(raw: unknown): ScheduledPost {
+  const r = record(raw, 'post')
+  const status = POST_STATUSES.find((s) => s === r['status'])
+  if (!status || !Array.isArray(r['targets'])) throw new Error('Malformed post')
+  return {
+    id: text(r['id'], 'post id'),
+    text: text(r['text'], 'text'),
+    link: parseLink(r['link']),
+    images: parseImages(r['images']),
+    at: text(r['at'], 'time'),
+    // D1 hands back 1 and 0.
+    inBuffer: r['inBuffer'] === true || r['inBuffer'] === 1,
+    status,
+    targets: r['targets'].map(parseTarget),
+  }
+}
+
+export function parseSocial(raw: unknown): Social {
+  const r = record(raw, 'social')
+  const networks = r['networks']
+  if (!Array.isArray(networks) || !Array.isArray(r['accounts']) || !Array.isArray(r['posts'])) {
+    throw new Error('Malformed social')
+  }
+  return {
+    networks: networks.filter((n): n is Network => typeof n === 'string' && isNetwork(n)),
+    accounts: r['accounts'].map(parseAccount),
+    posts: r['posts'].map(parseScheduledPost),
+    bufferUsed: typeof r['bufferUsed'] === 'number' ? r['bufferUsed'] : null,
+  }
+}
+`
+}
+
+function cfSocialWorkerTs(opts: ScaffoldOptions): string {
+  return `import { HttpError } from '@cascivo/app/api'
+import { currentUser, requireUser } from '@cascivo/app/auth-server'
+import { migrate, queryRows } from '@cascivo/app/db'
+import type { Database } from '@cascivo/app/db'
+import {
+  bluesky,
+  blueskyClientMetadata,
+  buffer,
+  blueskyJwks,
+  linkedin,
+  mastodon,
+  parseBlueskyKey,
+  threads,
+} from '@cascivo/app/oauth'
+import type { OAuthProvider } from '@cascivo/app/oauth'
+import {
+  connectionTokens,
+  expiringConnections,
+  handleConnections,
+  listConnections,
+  mastodonRegistrations,
+  refreshConnections,
+} from '@cascivo/app/oauth-server'
+import type { Connection } from '@cascivo/app/oauth-server'
+import { bufferChannels, mastodonServerLimits } from '@cascivo/app/social'
+import { handleUploads } from '@cascivo/app/uploads-server'
+import type { UploadBucket } from '@cascivo/app/uploads-server'
+import {
+  asSocialPost,
+  BUFFER_BUDGET,
+  IMAGES,
+  isNetwork,
+  MAX_DAYS_AHEAD,
+  NETWORKS,
+  parseScheduledPost,
+  publisherFor,
+} from '../src/social'
+import type {
+  Account,
+  PostImage,
+  PostInput,
+  PostStatus,
+  ScheduledPost,
+  ServerLimits,
+  Social,
+} from '../src/social'
+
+/** What the Workflow behind a scheduled post (worker/social-post.ts) is started with. */
+export interface SocialPostParams {
+  postId: string
+  userId: string
+}
+
+/** What sending a reminder needs of the Email Service binding (\`send_email\`). */
+export interface ReminderSender {
+  send(message: {
+    from: string
+    to: string
+    subject: string
+    text: string
+    html: string
+  }): Promise<unknown>
+}
+
+/** The R2 bucket images are uploaded to (\`SOCIAL_MEDIA\` in wrangler.jsonc). */
+export type SocialMediaBucket = UploadBucket
+
+/** What scheduling needs of the Worker's env. */
+export interface SocialEnv {
+  DB: Database
+  SOCIAL_MEDIA: SocialMediaBucket
+  EMAIL: ReminderSender
+  /** Who reconnect reminders come from, and the deployed app they link to (wrangler.jsonc). */
+  REMINDER_FROM: string
+  APP_URL: string
+  /** Seals the connected accounts' tokens (and Mastodon's app registrations). */
+  AUTH_SECRET?: string
+  LINKEDIN_CLIENT_ID?: string
+  LINKEDIN_CLIENT_SECRET?: string
+  /** An ES256 private JWK with a kid: makes Bluesky sessions last (README). */
+  BLUESKY_PRIVATE_JWK?: string
+  /** A Buffer app client (README); Buffer is offered once its id is set. */
+  BUFFER_CLIENT_ID?: string
+  BUFFER_CLIENT_SECRET?: string
+  /** A Meta app with the Threads use case (README); Threads is offered once both are set. */
+  THREADS_APP_ID?: string
+  THREADS_APP_SECRET?: string
+  SOCIAL_POST: Workflow<SocialPostParams>
+}
+
+const APP_NAME = '${opts.name.replace(/[\\\\']/g, '')}'
+
+const migrations = [
+  {
+    id: '0001_social',
+    statements: [
+      \`CREATE TABLE social_posts (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        text TEXT NOT NULL,
+        link_url TEXT,
+        link_title TEXT,
+        at TEXT NOT NULL,
+        status TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      )\`,
+      'CREATE INDEX social_posts_user ON social_posts (user_id, at)',
+      \`CREATE TABLE social_targets (
+        post_id TEXT NOT NULL REFERENCES social_posts (id),
+        account_id TEXT NOT NULL,
+        network TEXT NOT NULL,
+        service TEXT,
+        label TEXT NOT NULL,
+        status TEXT NOT NULL,
+        url TEXT,
+        error TEXT,
+        PRIMARY KEY (post_id, account_id)
+      )\`,
+      \`CREATE TABLE social_buffer_channels (
+        connection_id TEXT NOT NULL,
+        channel_id TEXT NOT NULL,
+        service TEXT NOT NULL,
+        name TEXT NOT NULL,
+        fetched_at INTEGER NOT NULL,
+        PRIMARY KEY (connection_id, channel_id)
+      )\`,
+    ],
+  },
+  {
+    id: '0002_social_server_limits',
+    statements: [
+      \`CREATE TABLE social_server_limits (
+        server TEXT PRIMARY KEY,
+        max_chars INTEGER NOT NULL,
+        max_images INTEGER NOT NULL,
+        url_weight INTEGER NOT NULL,
+        fetched_at INTEGER NOT NULL
+      )\`,
+    ],
+  },
+  {
+    id: '0003_social_in_buffer',
+    statements: ['ALTER TABLE social_posts ADD COLUMN in_buffer INTEGER NOT NULL DEFAULT 0'],
+  },
+  {
+    id: '0004_social_buffer_budget',
+    statements: [
+      'CREATE TABLE social_buffer_budget (slot INTEGER PRIMARY KEY, used INTEGER NOT NULL)',
+    ],
+  },
+  {
+    id: '0005_social_reminders',
+    statements: [
+      \`CREATE TABLE social_reminders (
+        connection_id TEXT NOT NULL,
+        expires_at INTEGER NOT NULL,
+        sent_at TEXT NOT NULL,
+        PRIMARY KEY (connection_id, expires_at)
+      )\`,
+    ],
+  },
+  {
+    id: '0006_social_images',
+    statements: ["ALTER TABLE social_posts ADD COLUMN images TEXT NOT NULL DEFAULT '[]'"],
+  },
+]
+
+export const secretOf = (env: SocialEnv): string => env.AUTH_SECRET ?? ''
+
+/** Bluesky fetches this app's client metadata here: its URL is the client id. */
+const BLUESKY_METADATA = '/api/bluesky/client-metadata.json'
+const BLUESKY_JWKS = '/api/bluesky/jwks.json'
+const BLUESKY_SCOPES = ['atproto', 'transition:generic']
+
+const blueskyKey = (env: SocialEnv) =>
+  env.BLUESKY_PRIVATE_JWK ? parseBlueskyKey(env.BLUESKY_PRIVATE_JWK) : undefined
+
+/**
+ * The accounts a user can connect: Bluesky and Mastodon always (Bluesky reads this app's
+ * client metadata; the app registers itself with each Mastodon server); Buffer, LinkedIn and
+ * Threads once their app's values are set. Each asks for the scopes to post.
+ */
+export function socialProviders(env: SocialEnv): OAuthProvider[] {
+  const key = blueskyKey(env)
+  const providers: OAuthProvider[] = [
+    bluesky({
+      clientMetadataPath: BLUESKY_METADATA,
+      scopes: BLUESKY_SCOPES,
+      ...(key ? { privateKey: key } : {}),
+    }),
+  ]
+  if (env.BUFFER_CLIENT_ID) {
+    providers.push(
+      buffer({
+        clientId: env.BUFFER_CLIENT_ID,
+        ...(env.BUFFER_CLIENT_SECRET ? { clientSecret: env.BUFFER_CLIENT_SECRET } : {}),
+      }),
+    )
+  }
+  if (env.LINKEDIN_CLIENT_ID && env.LINKEDIN_CLIENT_SECRET) {
+    providers.push(
+      linkedin({
+        clientId: env.LINKEDIN_CLIENT_ID,
+        clientSecret: env.LINKEDIN_CLIENT_SECRET,
+        scopes: ['openid', 'profile', 'w_member_social'],
+      }),
+    )
+  }
+  if (env.THREADS_APP_ID && env.THREADS_APP_SECRET) {
+    providers.push(threads({ clientId: env.THREADS_APP_ID, clientSecret: env.THREADS_APP_SECRET }))
+  }
+  providers.push(
+    mastodon({
+      appName: APP_NAME,
+      scopes: ['profile', 'write:statuses', 'write:media'],
+      registrations: mastodonRegistrations(env.DB, secretOf(env)),
+    }),
+  )
+  return providers
+}
+
+/**
+ * /api/connections: list, connect (\`/api/connections/mastodon?server=hachyderm.io\`) and remove
+ * the signed-in user's accounts. A failed connection comes back to /social with \`?error=\`.
+ */
+export function connections(env: SocialEnv): (request: Request) => Promise<Response | null> {
+  return handleConnections(env.DB, {
+    secret: secretOf(env),
+    providers: socialProviders(env),
+    errorPath: '/social',
+  })
+}
+
+/**
+ * The daily Cron Trigger: renews Threads tokens in their last 30 days. A Threads token renews
+ * only while it still works, so one nobody posts with would otherwise lapse after 60 days.
+ */
+export async function renewConnections(env: SocialEnv): Promise<void> {
+  const { renewed, failed } = await refreshConnections(env.DB, {
+    secret: secretOf(env),
+    providers: socialProviders(env),
+  })
+  if (renewed + failed > 0) console.log(\`[social] renewed \${renewed}, could not renew \${failed}\`)
+}
+
+const escapeHtml = (value: string) =>
+  value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+
+/**
+ * The daily Cron Trigger, after renewing: a token that cannot be renewed (LinkedIn's 60 days)
+ * and ends within a week gets its owner one email with a link to connect it again. Once per
+ * token: connecting again issues a new one, with a new expiry.
+ */
+export async function remindExpiring(env: SocialEnv): Promise<void> {
+  if (!env.REMINDER_FROM || !env.APP_URL) {
+    console.log('[social] set REMINDER_FROM and APP_URL in wrangler.jsonc to send reminders')
+    return
+  }
+  await migrate(env.DB, migrations)
+  for (const { connection, email } of await expiringConnections(env.DB)) {
+    if (!email || !isNetwork(connection.provider) || connection.expiresAt === null) continue
+    const [sent] = await queryRows(
+      env.DB,
+      'SELECT sent_at FROM social_reminders WHERE connection_id = ? AND expires_at = ?',
+      [connection.id, connection.expiresAt],
+      (raw) => raw,
+    )
+    if (sent) continue
+    const network = NETWORKS[connection.provider]
+    const account = connection.handle ?? connection.name ?? network
+    const path = \`/api/connections/\${connection.provider}?returnTo=/social\`
+    const url = new URL(path, env.APP_URL).href
+    const ends = new Date(connection.expiresAt * 1000).toUTCString().slice(0, 16)
+    await env.EMAIL.send({
+      from: env.REMINDER_FROM,
+      to: email,
+      subject: \`Connect \${network} again before \${ends}\`,
+      text: \`\${network} lets this app post as \${account} only until \${ends}. Connect it again to keep scheduled posts going: \${url}\`,
+      html: \`<p>\${escapeHtml(network)} lets this app post as \${escapeHtml(account)} only until \${escapeHtml(ends)}.</p><p><a href="\${escapeHtml(url)}">Connect it again</a> to keep scheduled posts going.</p>\`,
+    })
+    await env.DB.prepare(
+      'INSERT INTO social_reminders (connection_id, expires_at, sent_at) VALUES (?, ?, ?)',
+    )
+      .bind(connection.id, connection.expiresAt, new Date().toISOString())
+      .run()
+  }
+}
+
+/**
+ * Bluesky's client metadata and public key, which its servers fetch (no session). Without
+ * BLUESKY_PRIVATE_JWK the app is a public client and serves no key.
+ */
+export function blueskyClient(env: SocialEnv, request: Request): Response | null {
+  const url = new URL(request.url)
+  if (request.method !== 'GET') return null
+  const key = blueskyKey(env)
+  if (url.pathname === BLUESKY_METADATA) {
+    return Response.json(
+      blueskyClientMetadata({
+        origin: url.origin,
+        redirectPaths: ['/api/connections/bluesky/callback'],
+        clientName: APP_NAME,
+        clientMetadataPath: BLUESKY_METADATA,
+        scopes: BLUESKY_SCOPES,
+        jwksPath: BLUESKY_JWKS,
+        ...(key ? { privateKey: key } : {}),
+      }),
+    )
+  }
+  if (url.pathname === BLUESKY_JWKS && key) return Response.json(blueskyJwks(key))
+  return null
+}
+
+/** Where a user's image lives in the bucket: under their own prefix, so only they reach it. */
+export const mediaKey = (userId: string, key: string) => \`social/\${userId}/\${key}\`
+
+/**
+ * \`/api/social/images\`: the signed-in user's uploads (\`@cascivo/app/uploads-server\`), stored
+ * under their own prefix, so they can attach, preview and post only their own.
+ */
+export async function images(env: SocialEnv, request: Request): Promise<Response | null> {
+  const { pathname } = new URL(request.url)
+  if (pathname !== IMAGES.path && !pathname.startsWith(\`\${IMAGES.path}/\`)) return null
+  const user = await currentUser(env.DB, request)
+  if (!user) return Response.json({ error: 'Sign in first' }, { status: 401 })
+  return handleUploads(IMAGES, env.SOCIAL_MEDIA, { prefix: mediaKey(user.id, '') })(request)
+}
+
+const MEDIA_PATH = '/api/social/media/'
+
+async function mediaSigningKey(env: SocialEnv): Promise<CryptoKey> {
+  const secret = secretOf(env)
+  if (secret.length < 32) throw new Error('Set AUTH_SECRET (32+ characters) to link images')
+  return crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(\`social-media:\${secret}\`),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign', 'verify'],
+  )
+}
+
+const toHex = (bytes: ArrayBuffer) =>
+  [...new Uint8Array(bytes)].map((b) => b.toString(16).padStart(2, '0')).join('')
+
+/**
+ * A link to an image that works without a session until \`until\` (ms): Threads and Buffer
+ * fetch images by URL. Signed with AUTH_SECRET; the image itself stays private in R2.
+ */
+export async function signedMediaUrl(env: SocialEnv, objectKey: string, until: number) {
+  if (!env.APP_URL) throw new Error('Set APP_URL in wrangler.jsonc so networks can fetch images')
+  const expires = String(Math.ceil(until / 1000))
+  const signature = await crypto.subtle.sign(
+    'HMAC',
+    await mediaSigningKey(env),
+    new TextEncoder().encode(\`\${objectKey}:\${expires}\`),
+  )
+  const path = MEDIA_PATH + objectKey.split('/').map(encodeURIComponent).join('/')
+  const url = new URL(path, env.APP_URL)
+  url.searchParams.set('expires', expires)
+  url.searchParams.set('signature', toHex(signature))
+  return url.href
+}
+
+/** \`GET /api/social/media/<key>?expires&signature\`: an image, for a link \`signedMediaUrl\` made. */
+export async function media(env: SocialEnv, request: Request): Promise<Response | null> {
+  const url = new URL(request.url)
+  if (request.method !== 'GET' || !url.pathname.startsWith(MEDIA_PATH)) return null
+  const refused = () => new Response('Not found', { status: 404 })
+  let objectKey: string
+  try {
+    objectKey = decodeURIComponent(url.pathname.slice(MEDIA_PATH.length))
+  } catch {
+    return refused()
+  }
+  const expires = url.searchParams.get('expires') ?? ''
+  const signature = url.searchParams.get('signature') ?? ''
+  if (!/^\\d{1,12}$/.test(expires) || Number(expires) * 1000 < Date.now()) return refused()
+  if (!/^[0-9a-f]{64}$/.test(signature)) return refused()
+  const bytes = new Uint8Array(signature.match(/../g)!.map((pair) => parseInt(pair, 16)))
+  const valid = await crypto.subtle.verify(
+    'HMAC',
+    await mediaSigningKey(env),
+    bytes,
+    new TextEncoder().encode(\`\${objectKey}:\${expires}\`),
+  )
+  if (!valid) return refused()
+  const object = await env.SOCIAL_MEDIA.get(objectKey)
+  if (!object) return refused()
+  return new Response(object.body, {
+    headers: {
+      'content-type': object.httpMetadata?.contentType ?? 'application/octet-stream',
+      'cache-control': 'private, max-age=300',
+      'x-content-type-options': 'nosniff',
+    },
+  })
+}
+
+/** A Buffer channel's account id: its connection, and the channel within it. */
+export const BUFFER_SEPARATOR = '~'
+
+/** Buffer's request budget is small: its channel list is kept for an hour. */
+const CHANNELS_TTL_MS = 60 * 60 * 1000
+
+interface ChannelRow {
+  id: string
+  service: string
+  name: string
+  fetchedAt: number
+}
+
+function parseChannelRow(raw: unknown): ChannelRow {
+  if (typeof raw !== 'object' || raw === null) throw new Error('Malformed channel row')
+  const { channel_id, service, name, fetched_at } = raw as Record<string, unknown>
+  if (typeof channel_id !== 'string' || typeof service !== 'string' || typeof name !== 'string') {
+    throw new Error('Malformed channel row')
+  }
+  return { id: channel_id, service, name, fetchedAt: Number(fetched_at) }
+}
+
+/**
+ * Buffer's request budget (\`BUFFER_BUDGET\` per 15 minutes, for every user of this app
+ * together), counted per window as the app spends it, so the page can show it and channel lists
+ * can yield when it runs low. Buffer enforces the real one (a 429 with Retry-After).
+ */
+const BUFFER_WINDOW_MS = 15 * 60 * 1000
+/** Below this, channel lists are not refreshed: the rest is kept for posting. */
+const BUFFER_RESERVE = 20
+
+const bufferWindow = () => Math.floor(Date.now() / BUFFER_WINDOW_MS)
+
+/** Counts one Buffer request against the current window. */
+export async function spendBuffer(env: SocialEnv): Promise<void> {
+  await migrate(env.DB, migrations)
+  await env.DB.batch([
+    env.DB.prepare(
+      \`INSERT INTO social_buffer_budget (slot, used) VALUES (?, 1)
+       ON CONFLICT (slot) DO UPDATE SET used = used + 1\`,
+    ).bind(bufferWindow()),
+    env.DB.prepare('DELETE FROM social_buffer_budget WHERE slot < ?').bind(bufferWindow() - 1),
+  ])
+}
+
+/** Buffer requests this app has made in the current window. */
+async function bufferUsed(env: SocialEnv): Promise<number> {
+  await migrate(env.DB, migrations)
+  const [row] = await queryRows(
+    env.DB,
+    'SELECT used FROM social_buffer_budget WHERE slot = ?',
+    [bufferWindow()],
+    (raw) =>
+      typeof raw === 'object' && raw !== null ? Number((raw as { used?: unknown }).used) : 0,
+  )
+  return row ?? 0
+}
+
+/**
+ * A Buffer connection's channels, from D1 when fresh, else from Buffer. If Buffer cannot be
+ * asked, or its budget is running low, the last list known is used.
+ */
+async function channelsOf(env: SocialEnv, connection: Connection, userId: string) {
+  const cached = await queryRows(
+    env.DB,
+    'SELECT channel_id, service, name, fetched_at FROM social_buffer_channels WHERE connection_id = ?',
+    [connection.id],
+    parseChannelRow,
+  )
+  const fresh = cached.length > 0 && cached.every((c) => Date.now() - c.fetchedAt < CHANNELS_TTL_MS)
+  if (fresh || (cached.length > 0 && (await bufferUsed(env)) > BUFFER_BUDGET - BUFFER_RESERVE)) {
+    return cached
+  }
+  try {
+    const { tokens } = await connectionTokens(
+      env.DB,
+      { secret: secretOf(env), providers: socialProviders(env) },
+      { connectionId: connection.id, userId },
+    )
+    await spendBuffer(env)
+    const listed = await bufferChannels(tokens, connection.subject)
+    await env.DB.batch([
+      env.DB.prepare('DELETE FROM social_buffer_channels WHERE connection_id = ?').bind(
+        connection.id,
+      ),
+      ...listed.map((c) =>
+        env.DB.prepare(
+          \`INSERT INTO social_buffer_channels (connection_id, channel_id, service, name, fetched_at)
+           VALUES (?, ?, ?, ?, ?)\`,
+        ).bind(connection.id, c.id, c.service, c.name, Date.now()),
+      ),
+    ])
+    return listed
+  } catch (error) {
+    console.warn('[social] could not list Buffer channels:', error)
+    return cached
+  }
+}
+
+/** A Mastodon server's limits change rarely: they are kept for a day. */
+const LIMITS_TTL_MS = 24 * 60 * 60 * 1000
+
+/**
+ * A Mastodon server's own limits, from D1 when fresh, else from the server. Shared by every
+ * account on that server; a server that does not answer gets Mastodon's defaults for now.
+ */
+export async function serverLimits(env: SocialEnv, server: string): Promise<ServerLimits> {
+  await migrate(env.DB, migrations)
+  const [cached] = await queryRows(
+    env.DB,
+    \`SELECT max_chars AS maxChars, max_images AS maxImages, url_weight AS urlWeight, fetched_at AS fetchedAt
+     FROM social_server_limits WHERE server = ?\`,
+    [server],
+    (raw) => {
+      if (typeof raw !== 'object' || raw === null) throw new Error('Malformed limits row')
+      const { maxChars, maxImages, urlWeight, fetchedAt } = raw as Record<string, unknown>
+      return {
+        limits: {
+          maxChars: Number(maxChars),
+          maxImages: Number(maxImages),
+          urlWeight: Number(urlWeight),
+        },
+        fetchedAt: Number(fetchedAt),
+      }
+    },
+  )
+  if (cached && Date.now() - cached.fetchedAt < LIMITS_TTL_MS) return cached.limits
+  const limits = await mastodonServerLimits(server)
+  await env.DB.prepare(
+    \`INSERT INTO social_server_limits (server, max_chars, max_images, url_weight, fetched_at)
+     VALUES (?, ?, ?, ?, ?)
+     ON CONFLICT (server) DO UPDATE SET max_chars = excluded.max_chars,
+       max_images = excluded.max_images, url_weight = excluded.url_weight,
+       fetched_at = excluded.fetched_at\`,
+  )
+    .bind(server, limits.maxChars, limits.maxImages, limits.urlWeight, Date.now())
+    .run()
+  return limits
+}
+
+async function userAccounts(env: SocialEnv, userId: string): Promise<Account[]> {
+  await migrate(env.DB, migrations)
+  const accounts: Account[] = []
+  for (const connection of await listConnections(env.DB, userId)) {
+    if (!isNetwork(connection.provider)) continue
+    if (connection.provider !== 'buffer') {
+      accounts.push({
+        id: connection.id,
+        network: connection.provider,
+        label: connection.handle ?? connection.name ?? connection.subject,
+        status: connection.status,
+        service: null,
+        limits:
+          connection.provider === 'mastodon' && connection.server
+            ? await serverLimits(env, connection.server)
+            : null,
+      })
+      continue
+    }
+    // Each channel in Buffer is an account of its own to post to.
+    for (const channel of await channelsOf(env, connection, userId)) {
+      accounts.push({
+        id: \`\${connection.id}\${BUFFER_SEPARATOR}\${channel.id}\`,
+        network: 'buffer',
+        label: \`\${channel.name} (\${channel.service}, via Buffer)\`,
+        status: connection.status,
+        service: channel.service,
+        limits: null,
+      })
+    }
+  }
+  return accounts
+}
+
+export async function readPosts(db: Database, where: string, params: unknown[]) {
+  await migrate(db, migrations)
+  const posts = await queryRows(
+    db,
+    \`SELECT id, text, link_url AS linkUrl, link_title AS linkTitle, images, at, in_buffer AS inBuffer,
+       status FROM social_posts WHERE \${where} ORDER BY at DESC LIMIT 50\`,
+    params,
+    (raw) => raw as Record<string, unknown>,
+  )
+  if (posts.length === 0) return []
+  const ids = posts.map((p) => String(p['id']))
+  const targets = await queryRows(
+    db,
+    \`SELECT post_id AS postId, account_id AS accountId, network, service, label, status, url, error
+     FROM social_targets WHERE post_id IN (\${ids.map(() => '?').join(', ')})\`,
+    ids,
+    (raw) => raw as Record<string, unknown>,
+  )
+  return posts.map((p) =>
+    parseScheduledPost({
+      id: p['id'],
+      text: p['text'],
+      link:
+        typeof p['linkUrl'] === 'string'
+          ? { url: p['linkUrl'], title: p['linkTitle'] ?? '' }
+          : null,
+      images: JSON.parse(String(p['images'] ?? '[]')) as unknown,
+      at: p['at'],
+      inBuffer: p['inBuffer'],
+      status: p['status'],
+      targets: targets.filter((t) => t['postId'] === p['id']),
+    }),
+  )
+}
+
+/** The signed-in user's networks, accounts and recent posts: everything /social shows. */
+export async function getSocial(env: SocialEnv, request: Request): Promise<Social> {
+  const user = await requireUser(env.DB, request)
+  return {
+    networks: socialProviders(env)
+      .map((p) => p.id)
+      .filter(isNetwork),
+    accounts: await userAccounts(env, user.id),
+    posts: await readPosts(env.DB, 'user_id = ?', [user.id]),
+    bufferUsed: env.BUFFER_CLIENT_ID ? await bufferUsed(env) : null,
+  }
+}
+
+/**
+ * Schedules a post: each account must be the user's and connected, and each network's
+ * publisher must accept the post, before anything is stored. A Workflow then waits until the
+ * time and posts to each account (worker/social-post.ts).
+ */
+export async function schedulePost(
+  env: SocialEnv,
+  request: Request,
+  input: PostInput,
+): Promise<ScheduledPost> {
+  const user = await requireUser(env.DB, request)
+  const accounts = new Map((await userAccounts(env, user.id)).map((a) => [a.id, a]))
+  const chosen = input.accountIds.map((id) => {
+    const account = accounts.get(id)
+    if (!account) throw new HttpError(400, 'Pick accounts you have connected')
+    if (account.status === 'reconnect') {
+      throw new HttpError(400, \`Connect \${account.label} again first\`)
+    }
+    return account
+  })
+  // Each image must be one this user uploaded; its stored type is the one that counts.
+  const images: PostImage[] = []
+  for (const image of input.images) {
+    const stored = await env.SOCIAL_MEDIA.head(mediaKey(user.id, image.key))
+    const type = stored?.httpMetadata?.contentType
+    if (!stored || !type) throw new HttpError(400, 'An image is missing: attach it again')
+    images.push({ ...image, type })
+  }
+  const post = asSocialPost({ ...input, images })
+  for (const account of chosen) {
+    const problems = publisherFor(account).check(post)
+    if (problems.length > 0) {
+      throw new HttpError(400, \`\${account.label}: \${problems.map((p) => p.message).join('; ')}\`)
+    }
+  }
+  const now = Date.now()
+  const at = input.at ? Date.parse(input.at) : now
+  if (at > now + MAX_DAYS_AHEAD * 86_400_000) {
+    throw new HttpError(400, \`Schedule at most \${MAX_DAYS_AHEAD} days ahead\`)
+  }
+  const id = crypto.randomUUID()
+  const status: PostStatus = 'scheduled'
+  await migrate(env.DB, migrations)
+  await env.DB.batch([
+    env.DB.prepare(
+      \`INSERT INTO social_posts (id, user_id, text, link_url, link_title, images, at, in_buffer,
+         status, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)\`,
+    ).bind(
+      id,
+      user.id,
+      input.text,
+      input.link?.url ?? null,
+      input.link?.title ?? null,
+      JSON.stringify(images),
+      new Date(Math.max(at, now)).toISOString(),
+      input.inBuffer ? 1 : 0,
+      status,
+      new Date(now).toISOString(),
+    ),
+    ...chosen.map((account) =>
+      env.DB.prepare(
+        \`INSERT INTO social_targets (post_id, account_id, network, service, label, status)
+         VALUES (?, ?, ?, ?, ?, 'pending')\`,
+      ).bind(id, account.id, account.network, account.service, account.label),
+    ),
+  ])
+  await env.SOCIAL_POST.create({ id, params: { postId: id, userId: user.id } })
+  const [stored] = await readPosts(env.DB, 'id = ?', [id])
+  if (!stored) throw new Error('The post was not stored')
+  return stored
+}
+
+/** Cancels a post that has not started going out. */
+export async function cancelPost(
+  env: SocialEnv,
+  request: Request,
+  id: string,
+): Promise<ScheduledPost> {
+  const user = await requireUser(env.DB, request)
+  await migrate(env.DB, migrations)
+  const cancelled = await queryRows(
+    env.DB,
+    \`UPDATE social_posts SET status = 'cancelled'
+     WHERE id = ? AND user_id = ? AND status = 'scheduled' RETURNING id\`,
+    [id, user.id],
+    (raw) => raw,
+  )
+  if (cancelled.length === 0) throw new HttpError(409, 'Only a scheduled post can be cancelled')
+  try {
+    await (await env.SOCIAL_POST.get(id)).terminate()
+  } catch (error) {
+    // The Workflow checks the status before it posts, so a missed terminate posts nothing.
+    console.warn('[social] could not stop the workflow:', error)
+  }
+  const [post] = await readPosts(env.DB, 'id = ?', [id])
+  if (!post) throw new Error('The post disappeared')
+  return post
+}
+`
+}
+
+function cfSocialPostTs(): string {
+  return `import { queryRows } from '@cascivo/app/db'
+import { ConnectionError, connectionTokens, markReconnect } from '@cascivo/app/oauth-server'
+import { PublishError } from '@cascivo/app/social'
+import { WorkflowEntrypoint } from 'cloudflare:workers'
+import type { WorkflowEvent, WorkflowStep } from 'cloudflare:workers'
+import { asSocialPost, NETWORKS, postsOnce, publisherFor } from '../src/social'
+import type { ImageLink, PostImage, ScheduledPost, Target } from '../src/social'
+import type { Env } from './index'
+import {
+  BUFFER_SEPARATOR,
+  mediaKey,
+  readPosts,
+  secretOf,
+  serverLimits,
+  signedMediaUrl,
+  socialProviders,
+  spendBuffer,
+} from './social'
+import type { SocialPostParams } from './social'
+
+type TargetResult = Pick<Target, 'status' | 'url' | 'error'>
+
+/**
+ * One scheduled post, as a Workflow: it sleeps until the post is due, then posts to each
+ * account in its own step, so one network failing does not hold up or repeat the others.
+ *
+ * Retrying is decided per network. Mastodon takes an idempotency key and Bluesky a fixed record
+ * key, so a step that failed mid-request is retried and cannot post twice. Buffer, LinkedIn and
+ * Threads take none (\`postsOnce\`): their steps are never retried, and an account found mid-post
+ * (a crash between the request and the record) is reported for a person to check instead of
+ * being posted again.
+ */
+export class SocialPost extends WorkflowEntrypoint<Env, SocialPostParams> {
+  override async run(event: WorkflowEvent<SocialPostParams>, step: WorkflowStep) {
+    const { postId, userId } = event.payload
+    const post = await step.do('load', () => loadPost(this.env, postId))
+    if (!post) return
+    // A Workflow refuses to sleep until a past time ("post now"). Decided in a step, so a
+    // replay after the sleep takes the same path.
+    const due = await step.do('due later', async () => Date.parse(post.at) > Date.now())
+    const postTo = async (target: Target) => {
+      const name = \`post to \${target.accountId}\`
+      try {
+        await step.do(
+          name,
+          postsOnce(target.network)
+            ? { retries: { limit: 0, delay: '1 second' } }
+            : { retries: { limit: 3, delay: '30 seconds', backoff: 'exponential' } },
+          () => publishTo(this.env, post, target, userId),
+        )
+      } catch (error) {
+        await step.do(\`\${name}: give up\`, () =>
+          record(this.env, postId, target.accountId, {
+            status: 'failed',
+            url: null,
+            error: postsOnce(target.network)
+              ? \`\${NETWORKS[target.network]} did not answer. Check before posting this again.\`
+              : \`\${NETWORKS[target.network]} did not take it: \${String(error)}\`,
+          }),
+        )
+      }
+    }
+    // "Let Buffer hold it": Buffer accounts go to Buffer now, with the post's time, and wait in
+    // Buffer's queue (editable there) instead of here. Cancelling here cannot withdraw them.
+    const handedOver =
+      due && post.inBuffer ? post.targets.filter((t) => t.network === 'buffer') : []
+    for (const target of handedOver) await postTo(target)
+    if (due) await step.sleepUntil('wait until due', new Date(post.at))
+    const started = await step.do('start', () =>
+      setStatus(this.env, postId, 'scheduled', 'publishing'),
+    )
+    // Cancelled while it waited.
+    if (!started) return
+    for (const target of post.targets) {
+      if (!handedOver.includes(target)) await postTo(target)
+    }
+    await step.do('finish', () => finish(this.env, postId))
+  }
+}
+
+async function loadPost(env: Env, postId: string): Promise<ScheduledPost | null> {
+  const [post] = await readPosts(env.DB, 'id = ?', [postId])
+  return post ?? null
+}
+
+async function setStatus(env: Env, postId: string, from: string, to: string): Promise<boolean> {
+  const rows = await queryRows(
+    env.DB,
+    'UPDATE social_posts SET status = ? WHERE id = ? AND status = ? RETURNING id',
+    [to, postId, from],
+    (raw) => raw,
+  )
+  return rows.length === 1
+}
+
+async function record(env: Env, postId: string, accountId: string, result: TargetResult) {
+  await env.DB.prepare(
+    'UPDATE social_targets SET status = ?, url = ?, error = ? WHERE post_id = ? AND account_id = ?',
+  )
+    .bind(result.status, result.url, result.error, postId, accountId)
+    .run()
+}
+
+async function publishTo(env: Env, post: ScheduledPost, target: Target, userId: string) {
+  // Claim the account before calling the network, so a second attempt knows a first began.
+  const claimed = await queryRows(
+    env.DB,
+    \`UPDATE social_targets SET status = 'publishing'
+     WHERE post_id = ? AND account_id = ? AND status = 'pending' RETURNING status\`,
+    [post.id, target.accountId],
+    (raw) => raw,
+  )
+  if (claimed.length === 0) {
+    const [current] = await readPosts(env.DB, 'id = ?', [post.id])
+    const now = current?.targets.find((t) => t.accountId === target.accountId)
+    if (!now || now.status !== 'publishing') return
+    if (postsOnce(target.network)) {
+      await record(env, post.id, target.accountId, {
+        status: 'failed',
+        url: null,
+        error: \`Interrupted while posting. Check \${NETWORKS[target.network]} before posting this again.\`,
+      })
+      return
+    }
+  }
+  // A Buffer channel's id is its connection's, then the channel's.
+  const [connectionId = '', channelId] = target.accountId.split(BUFFER_SEPARATOR)
+  try {
+    const { connection, tokens } = await connectionTokens(
+      env.DB,
+      { secret: secretOf(env), providers: socialProviders(env) },
+      { connectionId, userId },
+    )
+    // Checked again as it goes out, against the same server limits the composer used.
+    const limits =
+      target.network === 'mastodon' && connection.server
+        ? await serverLimits(env, connection.server)
+        : null
+    // The images' bytes, from R2. Threads and Buffer fetch them instead, by a signed link that
+    // lasts until a day after the post is due (Buffer may fetch a queued one only then).
+    const data = await Promise.all(post.images.map((image) => loadImage(env, userId, image)))
+    const keys = new Map(data.map((blob, i) => [blob, mediaKey(userId, post.images[i]!.key)]))
+    const until = Math.max(Date.parse(post.at), Date.now()) + 86_400_000
+    const imageLink: ImageLink = (image) => signedMediaUrl(env, keys.get(image.data)!, until)
+    if (target.network === 'buffer') await spendBuffer(env)
+    const published = await publisherFor({ ...target, limits }, imageLink).publish(
+      { tokens, subject: channelId ?? connection.subject, server: connection.server },
+      asSocialPost(post, data),
+      // Fixed for every attempt: Mastodon's key, and Bluesky's record key, make a retry safe.
+      { idempotencyKey: \`\${post.id}:\${target.accountId}\`, createdAt: new Date(post.at) },
+    )
+    await record(env, post.id, target.accountId, {
+      // Buffer, given a later time, holds the post in its queue.
+      status:
+        target.network === 'buffer' && Date.parse(post.at) > Date.now() + 60_000
+          ? 'queued'
+          : 'posted',
+      url: published.url,
+      error: null,
+    })
+  } catch (error) {
+    if (
+      error instanceof ConnectionError ||
+      (error instanceof PublishError && error.kind === 'reconnect')
+    ) {
+      await markReconnect(env.DB, connectionId)
+      await record(env, post.id, target.accountId, {
+        status: 'failed',
+        url: null,
+        error: \`\${target.label} needs connecting again before it can post.\`,
+      })
+      return
+    }
+    if (error instanceof PublishError && !error.retryable) {
+      await record(env, post.id, target.accountId, {
+        status: 'failed',
+        url: null,
+        error: error.message,
+      })
+      return
+    }
+    // Retryable, or the network did not answer: the step's retry policy decides.
+    throw error
+  }
+}
+
+async function loadImage(env: Env, userId: string, image: PostImage): Promise<Blob> {
+  const object = await env.SOCIAL_MEDIA.get(mediaKey(userId, image.key))
+  if (!object) throw new PublishError('social', 'invalid', 'An image of this post is gone')
+  return new Blob([await new Response(object.body).arrayBuffer()], { type: image.type })
+}
+
+async function finish(env: Env, postId: string) {
+  const [post] = await readPosts(env.DB, 'id = ?', [postId])
+  if (!post) return
+  const posted = post.targets.filter((t) => t.status === 'posted' || t.status === 'queued').length
+  const status = posted === post.targets.length ? 'done' : posted > 0 ? 'partial' : 'failed'
+  await setStatus(env, postId, 'publishing', status)
+}
+`
+}
+
+function cfSocialRouteTsx(): string {
+  return `import { createClient } from '@cascivo/app/api'
+import { startUpload } from '@cascivo/app/uploads'
+import type { Upload } from '@cascivo/app/uploads'
+import {
+  Alert,
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  Checkbox,
+  FileUploader,
+  Flex,
+  Heading,
+  Input,
+  Link,
+  Spinner,
+  Text,
+  Textarea,
+  signal,
+  useSignalEffect,
+  useSignals,
+} from '@cascivo/react'
+import type { UploaderFile } from '@cascivo/react'
+import type { FormEvent } from 'react'
+import { api } from '../api'
+import { auth } from '../auth'
+import { router } from '../router'
+import { asSocialPost, BUFFER_BUDGET, IMAGES, MAX_IMAGES, NETWORKS, publisherFor } from '../social'
+import type { Account, PostImage, PostStatus, Social, TargetStatus } from '../social'
+
+const client = createClient(api)
+const social = signal<Social | null>(null)
+const failure = signal<string | null>(null)
+const busy = signal(false)
+
+// The composer. Kept in signals so each network's check runs as you type.
+const text = signal('')
+const linkUrl = signal('')
+const linkTitle = signal('')
+const at = signal('')
+const chosen = signal<string[]>([])
+const inBuffer = signal(false)
+// Images go up to R2 as soon as they are picked; each needs a description before posting.
+const uploads = signal<Upload[]>([])
+const alts = signal<Record<string, string>>({})
+
+function addImages(files: File[]): void {
+  const room = MAX_IMAGES - uploads.value.length
+  uploads.value = [...uploads.value, ...files.slice(0, room).map((f) => startUpload(IMAGES, f))]
+}
+
+function removeImage(id: string): void {
+  uploads.value.find((u) => u.id === id)?.abort()
+  uploads.value = uploads.value.filter((u) => u.id !== id)
+}
+
+/** The uploaded images, in order, with their descriptions. */
+function attached(): PostImage[] {
+  return uploads.value.flatMap((upload) => {
+    const stored = upload.result.value
+    return stored ? [{ key: stored.key, type: stored.type, alt: alts.value[upload.id] ?? '' }] : []
+  })
+}
+
+async function load(): Promise<void> {
+  try {
+    social.value = await client.getSocial()
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Could not load your accounts'
+  }
+}
+
+/** Why connecting an account failed: /api/connections sends it back as \`?error=\`. */
+const REASONS: Record<string, string> = {
+  denied: 'You did not allow access, so nothing was connected.',
+  expired: 'Connecting took too long, or started in another browser. Try again.',
+  state_mismatch: 'That did not match the connection this browser started. Try again.',
+  provider_error: 'The network did not confirm the account. Try again.',
+  bad_server: 'That server or handle could not be reached, or did not check out. Check the name.',
+  signed_out: 'Sign in first, then connect an account.',
+}
+
+/** Badge's tones. */
+type Tone = 'neutral' | 'info' | 'success' | 'warning' | 'danger'
+
+const ACCOUNT_TONE: Record<Account['status'], Tone> = {
+  active: 'success',
+  expiring: 'warning',
+  reconnect: 'danger',
+}
+const POST_TONE: Record<PostStatus, Tone> = {
+  scheduled: 'info',
+  publishing: 'info',
+  done: 'success',
+  partial: 'warning',
+  failed: 'danger',
+  cancelled: 'neutral',
+}
+const TARGET_TONE: Record<TargetStatus, Tone> = {
+  pending: 'neutral',
+  publishing: 'info',
+  queued: 'info',
+  posted: 'success',
+  failed: 'danger',
+}
+
+function draft() {
+  const url = linkUrl.value.trim()
+  return asSocialPost({
+    text: text.value,
+    link: url ? { url, title: linkTitle.value.trim() } : null,
+    images: attached(),
+  })
+}
+
+/** What each chosen network would refuse, from the same checks the Worker runs. */
+function problems(accounts: Account[]): string[] {
+  return accounts
+    .filter((a) => chosen.value.includes(a.id))
+    .flatMap((account) =>
+      publisherFor(account)
+        .check(draft())
+        .map((p) => \`\${account.label}: \${p.message}\`),
+    )
+}
+
+async function schedule(event: FormEvent<HTMLFormElement>): Promise<void> {
+  event.preventDefault()
+  busy.value = true
+  failure.value = null
+  try {
+    const url = linkUrl.value.trim()
+    await client.schedulePost({
+      body: {
+        text: text.value,
+        link: url ? { url, title: linkTitle.value.trim() } : null,
+        images: attached(),
+        accountIds: chosen.value,
+        // datetime-local is the browser's local time; the Worker keeps UTC.
+        at: at.value ? new Date(at.value).toISOString() : null,
+        inBuffer: inBuffer.value,
+      },
+    })
+    text.value = ''
+    linkUrl.value = ''
+    linkTitle.value = ''
+    at.value = ''
+    inBuffer.value = false
+    uploads.value = []
+    alts.value = {}
+    await load()
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Not scheduled'
+  } finally {
+    busy.value = false
+  }
+}
+
+async function cancel(id: string): Promise<void> {
+  try {
+    await client.cancelPost({ params: { id } })
+    await load()
+  } catch (error) {
+    failure.value = error instanceof Error ? error.message : 'Not cancelled'
+  }
+}
+
+async function remove(id: string): Promise<void> {
+  // A Buffer channel goes with its whole Buffer connection (the id before the ~).
+  const connectionId = id.split('~')[0] ?? id
+  const response = await fetch(\`/api/connections/\${encodeURIComponent(connectionId)}\`, {
+    method: 'DELETE',
+  })
+  if (!response.ok) failure.value = 'The account was not removed'
+  chosen.value = chosen.value.filter((c) => c !== id)
+  await load()
+}
+
+function toggle(id: string, on: boolean): void {
+  chosen.value = on ? [...chosen.value, id] : chosen.value.filter((c) => c !== id)
+}
+
+export default function SocialPage() {
+  useSignals()
+  useSignalEffect(() => {
+    if (auth.user.value) void load()
+  })
+  const user = auth.user.value
+  const data = social.value
+  const reason = new URLSearchParams(router.search.value).get('error')
+
+  if (user === undefined) return <Spinner label="Loading" />
+  if (user === null) {
+    return (
+      <Flex gap={4}>
+        <Heading level={1}>Social</Heading>
+        <Text>
+          <Link href="/account">Sign in</Link> to connect your accounts and schedule posts.
+        </Text>
+      </Flex>
+    )
+  }
+  const usable = data?.accounts.filter((a) => a.status !== 'reconnect') ?? []
+  const images: UploaderFile[] = uploads.value.map((upload) => ({
+    id: upload.id,
+    name: upload.name,
+    size: upload.size,
+    status: upload.status.value === 'done' ? 'complete' : upload.status.value,
+    ...(upload.error.value ? { errorMessage: upload.error.value } : {}),
+  }))
+  const uploading = uploads.value.some((upload) => upload.status.value === 'uploading')
+  const blocking = data ? problems(data.accounts) : []
+  const viaBuffer = usable.some((a) => a.network === 'buffer' && chosen.value.includes(a.id))
+
+  return (
+    <Flex gap={4}>
+      <Flex gap={1}>
+        <Heading level={1}>Social</Heading>
+        <Text muted>
+          Write once, post to Bluesky, LinkedIn, Mastodon and the channels in your Buffer, now or at
+          a time you pick.
+        </Text>
+      </Flex>
+      {reason ? (
+        <Alert variant="destructive" title="Not connected">
+          {REASONS[reason] ?? 'Connecting failed. Try again.'}
+        </Alert>
+      ) : null}
+      {location.hostname === 'localhost' ? (
+        <Alert variant="info" title="Connecting Bluesky in development">
+          Bluesky's development sign-in only returns to 127.0.0.1: open{' '}
+          <Link href={\`http://127.0.0.1:\${location.port}/social\`}>this page on 127.0.0.1</Link>.
+        </Alert>
+      ) : null}
+      {failure.value ? (
+        <Alert variant="destructive" title="Something went wrong">
+          {failure.value}
+        </Alert>
+      ) : null}
+      {data === null ? (
+        <Spinner label="Loading" />
+      ) : (
+        <>
+          <Card>
+            <CardContent>
+              <Flex gap={3}>
+                <Heading level={2}>Accounts</Heading>
+                {data.accounts.length === 0 ? <Text muted>No accounts connected yet.</Text> : null}
+                {data.accounts.map((account) => (
+                  <Flex key={account.id} direction="horizontal" align="center" gap={2} wrap>
+                    <Text>
+                      {NETWORKS[account.network]}: {account.label}
+                    </Text>
+                    <Badge variant={ACCOUNT_TONE[account.status]}>
+                      {account.status === 'expiring'
+                        ? 'expires soon: connect again'
+                        : account.status}
+                    </Badge>
+                    <Button size="sm" variant="ghost" onClick={() => void remove(account.id)}>
+                      Remove
+                    </Button>
+                  </Flex>
+                ))}
+                {data.bufferUsed !== null ? (
+                  <Text muted>
+                    Buffer requests in the last 15 minutes, for everyone on this app:{' '}
+                    {data.bufferUsed} of {BUFFER_BUDGET}.
+                  </Text>
+                ) : null}
+                <Flex direction="horizontal" align="end" gap={2} wrap>
+                  {data.networks.includes('buffer') ? (
+                    <Button asChild variant="secondary">
+                      <a href="/api/connections/buffer?returnTo=/social">Connect Buffer</a>
+                    </Button>
+                  ) : null}
+                  {data.networks.includes('linkedin') ? (
+                    <Button asChild variant="secondary">
+                      <a href="/api/connections/linkedin?returnTo=/social">Connect LinkedIn</a>
+                    </Button>
+                  ) : null}
+                  {data.networks.includes('threads') ? (
+                    <Button asChild variant="secondary">
+                      <a href="/api/connections/threads?returnTo=/social">Connect Threads</a>
+                    </Button>
+                  ) : null}
+                  {/* Plain GET forms: the Worker redirects to the account or server named. */}
+                  <form method="get" action="/api/connections/bluesky">
+                    <input type="hidden" name="returnTo" value="/social" />
+                    <Flex direction="horizontal" align="end" gap={2} wrap>
+                      <Input
+                        name="server"
+                        label="Bluesky handle"
+                        placeholder="you.bsky.social"
+                        required
+                      />
+                      <Button type="submit" variant="secondary">
+                        Connect Bluesky
+                      </Button>
+                    </Flex>
+                  </form>
+                  <form method="get" action="/api/connections/mastodon">
+                    <input type="hidden" name="returnTo" value="/social" />
+                    <Flex direction="horizontal" align="end" gap={2} wrap>
+                      <Input
+                        name="server"
+                        label="Mastodon server"
+                        placeholder="mastodon.social"
+                        required
+                      />
+                      <Button type="submit" variant="secondary">
+                        Connect Mastodon
+                      </Button>
+                    </Flex>
+                  </form>
+                </Flex>
+              </Flex>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent>
+              <form onSubmit={(event) => void schedule(event)}>
+                <Flex gap={3}>
+                  <Heading level={2}>New post</Heading>
+                  <Textarea
+                    label="Text"
+                    value={text.value}
+                    onInput={(event) => (text.value = event.currentTarget.value)}
+                    rows={5}
+                  />
+                  <Flex direction="horizontal" gap={2} wrap>
+                    <Input
+                      label="Link (optional)"
+                      type="url"
+                      value={linkUrl.value}
+                      onInput={(event) => (linkUrl.value = event.currentTarget.value)}
+                    />
+                    <Input
+                      label="Link title (LinkedIn shows it)"
+                      value={linkTitle.value}
+                      onInput={(event) => (linkTitle.value = event.currentTarget.value)}
+                    />
+                  </Flex>
+                  <FileUploader
+                    multiple
+                    label={\`Images (up to \${MAX_IMAGES}, JPEG or PNG, 1 MB each)\`}
+                    accept={IMAGES.types.join(',')}
+                    maxSize={IMAGES.maxBytes}
+                    files={images}
+                    onFilesAdded={addImages}
+                    onRemove={removeImage}
+                  />
+                  {uploads.value
+                    .filter((upload) => upload.status.value === 'done')
+                    .map((upload) => (
+                      <Input
+                        key={upload.id}
+                        label={\`Describe \${upload.name} (alt text)\`}
+                        required
+                        value={alts.value[upload.id] ?? ''}
+                        onInput={(event) =>
+                          (alts.value = { ...alts.value, [upload.id]: event.currentTarget.value })
+                        }
+                      />
+                    ))}
+                  {usable.length === 0 ? (
+                    <Text muted>Connect an account to post.</Text>
+                  ) : (
+                    usable.map((account) => (
+                      <Checkbox
+                        key={account.id}
+                        label={\`\${NETWORKS[account.network]}: \${account.label}\`}
+                        checked={chosen.value.includes(account.id)}
+                        onChange={(event) => toggle(account.id, event.currentTarget.checked)}
+                      />
+                    ))
+                  )}
+                  <Input
+                    label="When (empty: now)"
+                    type="datetime-local"
+                    value={at.value}
+                    onInput={(event) => (at.value = event.currentTarget.value)}
+                  />
+                  {at.value && viaBuffer ? (
+                    <Checkbox
+                      label="Let Buffer hold it: Buffer accounts go to Buffer's queue now, where you can still edit them"
+                      checked={inBuffer.value}
+                      onChange={(event) => (inBuffer.value = event.currentTarget.checked)}
+                    />
+                  ) : null}
+                  {blocking.length > 0 ? (
+                    <Alert variant="warning" title="Not ready to post">
+                      {blocking.join(' ')}
+                    </Alert>
+                  ) : null}
+                  <Flex direction="horizontal">
+                    <Button
+                      type="submit"
+                      loading={busy.value}
+                      disabled={chosen.value.length === 0 || blocking.length > 0 || uploading}
+                    >
+                      {at.value ? 'Schedule' : 'Post now'}
+                    </Button>
+                  </Flex>
+                </Flex>
+              </form>
+            </CardContent>
+          </Card>
+          <Flex gap={3}>
+            <Heading level={2}>Posts</Heading>
+            {data.posts.length === 0 ? <Text muted>Nothing scheduled yet.</Text> : null}
+            {data.posts.map((post) => (
+              <Card key={post.id}>
+                <CardContent>
+                  <Flex gap={2}>
+                    <Flex direction="horizontal" align="center" gap={2} wrap>
+                      <Badge variant={POST_TONE[post.status]}>{post.status}</Badge>
+                      <Text muted>{new Date(post.at).toLocaleString()}</Text>
+                      {post.status === 'scheduled' ? (
+                        <Button size="sm" variant="ghost" onClick={() => void cancel(post.id)}>
+                          Cancel
+                        </Button>
+                      ) : null}
+                    </Flex>
+                    <Text>{post.text}</Text>
+                    {post.targets.map((target) => (
+                      <Flex
+                        key={target.accountId}
+                        direction="horizontal"
+                        align="center"
+                        gap={2}
+                        wrap
+                      >
+                        {post.status === 'cancelled' && target.status === 'queued' ? (
+                          <Badge variant="warning">still in Buffer's queue</Badge>
+                        ) : post.status === 'cancelled' ? (
+                          <Badge variant="neutral">not sent</Badge>
+                        ) : (
+                          <Badge variant={TARGET_TONE[target.status]}>{target.status}</Badge>
+                        )}
+                        <Text>
+                          {NETWORKS[target.network]}: {target.label}
+                        </Text>
+                        {target.url ? <Link href={target.url}>View</Link> : null}
+                        {target.error ? <Text muted>{target.error}</Text> : null}
+                      </Flex>
+                    ))}
+                  </Flex>
+                </CardContent>
+              </Card>
+            ))}
+          </Flex>
+        </>
+      )}
+    </Flex>
+  )
+}
+`
+}
+
 /* --- `--auth email`: accounts with emailed sign-in links (@cascivo/app/auth) --- */
 
 function cfAuthTs(): string {
@@ -7720,24 +9692,30 @@ export async function sendSignInLink(
 `
 }
 
-function cfAccountRouteTsx(): string {
+function cfAccountRouteTsx(opts: ScaffoldOptions): string {
+  const email = emailSignIn(opts)
+  const oauth = oauthSignIn(opts)
+  const lead = email
+    ? oauth
+      ? 'Continue with GitHub, Google or LinkedIn, or get a one-time link by email. No password.'
+      : 'No password: we email you a link that signs you in once.'
+    : 'Continue with GitHub, Google or LinkedIn. No password.'
   return `import {
   Alert,
   Button,
   Card,
   CardContent,
   Flex,
-  Heading,
-  Input,
-  Link,
+  Heading,${email ? '\n  Input,\n  Link,' : ''}
   Spinner,
   Text,
   signal,
   useSignals,
 } from '@cascivo/react'
-import type { FormEvent } from 'react'
-import { auth } from '../auth'
-
+${email ? "import type { FormEvent } from 'react'\n" : ''}import { auth } from '../auth'${oauth ? "\nimport { router } from '../router'" : ''}
+${
+  email
+    ? `
 const sentTo = signal<string | null>(null)
 /** Set only in \`vite dev\`, where no email is sent: the link to open instead. */
 const devLink = signal<string | null>(null)
@@ -7760,10 +9738,43 @@ async function start(event: FormEvent<HTMLFormElement>): Promise<void> {
     sending.value = false
   }
 }
+`
+    : ''
+}${
+    oauth
+      ? `
+const LABELS: Record<string, string> = { github: 'GitHub', google: 'Google', linkedin: 'LinkedIn' }
 
+/** The providers the Worker offers: those with an id and a secret set (README). */
+const providers = signal<string[] | null>(null)
+auth.providers().then(
+  (list) => {
+    providers.value = list
+  },
+  () => {
+    providers.value = []
+  },
+)
+
+/** Why the last sign-in with a provider failed: the Worker sends it back as \`?error=\`. */
+const REASONS: Record<string, string> = {
+  denied: 'You did not allow access, so you are not signed in.',
+  expired: 'The sign-in took too long, or started in another browser. Try again.',
+  state_mismatch: 'That sign-in did not match the one this browser started. Try again.',
+  provider_error: 'The provider did not confirm who you are. Try again, or use another way in.',
+  identity_in_use: 'That account is already linked to another user here.',
+}
+`
+      : ''
+  }
 export default function Account() {
   useSignals()
-  const user = auth.user.value
+  const user = auth.user.value${
+    oauth
+      ? `
+  const reason = new URLSearchParams(router.search.value).get('error')`
+      : ''
+  }
 
   if (user === undefined) return <Spinner label="Loading" />
   if (user) {
@@ -7773,7 +9784,7 @@ export default function Account() {
         <Card>
           <CardContent>
             <Flex gap={3}>
-              <Text>Signed in as {user.email}</Text>
+              <Text>{user.email ? \`Signed in as \${user.email}\` : 'Signed in'}</Text>
               <Flex direction="horizontal">
                 <Button variant="secondary" onClick={() => void auth.signOut()}>
                   Sign out
@@ -7789,8 +9800,40 @@ export default function Account() {
     <Flex gap={4}>
       <Flex gap={1}>
         <Heading level={1}>Sign in</Heading>
-        <Text muted>No password: we email you a link that signs you in once.</Text>
-      </Flex>
+        ${
+          // Prettier's width: a lead too long for one line goes on its own.
+          `<Text muted>${lead}</Text>`.length + 8 > 100
+            ? `<Text muted>\n          ${lead}\n        </Text>`
+            : `<Text muted>${lead}</Text>`
+        }
+      </Flex>${
+        oauth
+          ? `
+      {reason ? (
+        <Alert variant="destructive" title="Not signed in">
+          {REASONS[reason] ?? 'Sign-in failed. Try again.'}
+        </Alert>
+      ) : null}
+      {providers.value === null ? (
+        <Spinner label="Loading" />
+      ) : providers.value.length === 0 ? (
+        <Alert variant="info" title="No provider is set up yet">
+          Set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET, or the GOOGLE_ pair, in .dev.vars (README).
+        </Alert>
+      ) : (
+        <Flex direction="horizontal" gap={2} wrap>
+          {providers.value.map((id) => (
+            // A plain link: the Worker redirects to the provider, and back here afterwards.
+            <Button key={id} asChild variant="secondary">
+              <a href={auth.signInUrl(id, '/account')}>Continue with {LABELS[id] ?? id}</a>
+            </Button>
+          ))}
+        </Flex>
+      )}`
+          : ''
+      }${
+        email
+          ? `
       {sentTo.value ? (
         <Alert variant="success" title="Check your email">
           We sent a sign-in link to {sentTo.value}. It works once, for 15 minutes.
@@ -7813,7 +9856,9 @@ export default function Account() {
             Email me a link
           </Button>
         </Flex>
-      </form>
+      </form>`
+          : ''
+      }
     </Flex>
   )
 }
@@ -9804,29 +11849,135 @@ IP). Sending reads every confirmed address into memory; past a few hundred thous
 page through them instead.`
       : ''
   }${
-    opts.auth === 'email'
+    hasExample(opts, 'social')
       ? `
 
-## Accounts (email sign-in)
+## Social posts
 
-Anyone can create an account with their email address: \`/account\` emails a one-time link,
-and opening it signs them in with a session cookie. **Every API write needs a signed-in
-user; reads stay public.**
+\`/social\` connects Bluesky, Buffer, LinkedIn, Mastodon and Threads accounts and posts to them,
+now or at a time you pick.
 
-- \`worker/index.ts\` — \`handleAuth\` (\`@cascivo/app/auth-server\`) answers \`/api/auth/*\`, and
+- \`worker/social.ts\` — \`handleConnections\` (\`@cascivo/app/oauth-server\`) answers
+  \`/api/connections/*\`: connect, list, remove. Tokens are sealed in D1 with \`AUTH_SECRET\`.
+  Scheduling checks that each account is yours and connected, and that each network's
+  publisher (\`@cascivo/app/social\`) accepts the post, before anything is stored.
+- \`worker/social-post.ts\` — \`SocialPost\`, a Workflow per post: it sleeps until the post
+  is due, then posts to each account in its own step. Bluesky and Mastodon steps retry, safely:
+  Mastodon takes an idempotency key, and a Bluesky post's record key is fixed by its time and
+  id. Buffer, LinkedIn and Threads steps never do: they cannot deduplicate, so an interrupted
+  post there is reported for you to check rather than sent twice.
+- \`src/social.ts\` — the shared types, and the publishers the page also runs, so what a
+  network would refuse shows while you type.
+- Images: the composer uploads them into the \`SOCIAL_MEDIA\` R2 bucket through the Worker
+  (\`@cascivo/app/uploads\`), each user under their own prefix; up to 4, JPEG or PNG, 1 MB each
+  (Bluesky's limit), each with a description. Bluesky, LinkedIn and Mastodon get the bytes.
+  Threads and Buffer fetch images by URL, so they get a link to \`/api/social/media/…\` signed
+  with \`AUTH_SECRET\`. It is valid until a day after the post is due, and needs \`APP_URL\` set
+  to the deployed app. Uploads stay in R2: add a lifecycle rule
+  (\`wrangler r2 bucket lifecycle add\`) to expire old ones.
+
+**Bluesky** needs no set-up either: people type their handle. Bluesky's servers read this
+app's client metadata from \`/api/bluesky/client-metadata.json\`, so the deployed app must be
+reachable at its URL. In \`vite dev\` the app is Bluesky's development client, which may only
+return to \`127.0.0.1\`: open \`http://127.0.0.1:5173\`, not \`localhost\`. Without a key the app is a
+public client and sessions end after two weeks; for sessions that last, make a key and set it
+as the \`BLUESKY_PRIVATE_JWK\` secret:
+
+\`\`\`sh
+node -e "crypto.subtle.generateKey({name:'ECDSA',namedCurve:'P-256'},true,['sign']).then(k=>crypto.subtle.exportKey('jwk',k.privateKey)).then(j=>console.log(JSON.stringify({...j,kid:'k1'})))"
+\`\`\`
+
+**Mastodon** needs no set-up: people type their server, and the app registers itself there
+on first use.
+
+**Buffer** reaches the networks connected there (X, Instagram, TikTok, …): register an app
+client at https://publish.buffer.com/settings/api with \`…/api/connections/buffer/callback\` as
+its redirect URL, and set \`BUFFER_CLIENT_ID\` (and \`BUFFER_CLIENT_SECRET\` for a confidential
+client). Each channel in a connected Buffer is an account in the composer, checked against
+its network's limit. Buffer counts every request against your plan's budget (100 per 15
+minutes on every plan), for all your users together, so the channel list is kept for an hour.
+Buffer cannot deduplicate, so its posts are never retried, like LinkedIn's. **LinkedIn** needs an app at https://www.linkedin.com/developers/apps with the
+"Share on LinkedIn" product${oauthSignIn(opts) ? ' (the same app as sign-in works, with both products)' : ''}; add
+\`…/api/connections/linkedin/callback\` as a redirect URL and set \`LINKEDIN_CLIENT_ID\` and
+\`LINKEDIN_CLIENT_SECRET\`. LinkedIn tokens last 60 days and cannot be renewed: the page shows
+"expires soon" a week ahead, and connecting again renews the account in place. The daily Cron
+Trigger also emails the owner once, a week ahead, with a link to connect again
+(\`remindExpiring\`): set \`REMINDER_FROM\` in \`wrangler.jsonc\` to an address on a domain you
+have onboarded to Email Service, and \`APP_URL\` to the deployed app. People whose provider shared
+no email see the page's notice only.
+
+**Threads** needs a Meta app with the "Access the Threads API" use case
+(https://developers.facebook.com/apps), the \`threads_basic\` and \`threads_content_publish\`
+permissions, and \`…/api/connections/threads/callback\` as a redirect callback URL; set
+\`THREADS_APP_ID\` and \`THREADS_APP_SECRET\` (the Threads app id and secret, not the Meta
+app's). Until Meta's App Review and business verification pass, only people added as testers
+on the app can connect. A Threads token lasts 60 days and renews itself only while it still
+works, so a daily Cron Trigger (\`${SOCIAL_CRON}\`, \`renewConnections\`) renews those in their last
+30 days; try it in \`vite dev\` at \`/cdn-cgi/handler/scheduled\`. Threads takes 500 characters,
+counting an emoji as several, and cannot deduplicate either.
+
+Connecting an account and posting count against the rate limit (20 a minute per IP).
+Workflows need a real Cloudflare account to deploy.`
+      : ''
+  }${
+    hasAccounts(opts)
+      ? `
+
+## Accounts (${emailSignIn(opts) ? (oauthSignIn(opts) ? 'email, GitHub, Google and LinkedIn sign-in' : 'email sign-in') : 'GitHub, Google and LinkedIn sign-in'})
+
+${
+  emailSignIn(opts) && oauthSignIn(opts)
+    ? 'Anyone can create an account by continuing with GitHub, Google or LinkedIn, or with their email address, on `/account`.'
+    : oauthSignIn(opts)
+      ? 'Anyone can create an account by continuing with GitHub, Google or LinkedIn on `/account`.'
+      : 'Anyone can create an account with their email address: `/account` emails a one-time link, and opening it signs them in with a session cookie.'
+} **Every API write needs a signed-in user; reads stay public.**
+
+- \`worker/index.ts\` — ${[emailSignIn(opts) ? '`handleAuth` (`@cascivo/app/auth-server`)' : '', oauthSignIn(opts) ? '`handleOAuth` (`@cascivo/app/oauth-server`)' : ''].filter(Boolean).join(' and ')} answer${emailSignIn(opts) && oauthSignIn(opts) ? '' : 's'} \`/api/auth/*\`, and
   \`requireUser\` refuses any other write without a session (401) or from another site (403).
-  Call \`requireUser(env.DB, request)\` in a handler to know who is asking.
+  Call \`requireUser(env.DB, request)\` in a handler to know who is asking.${
+    emailSignIn(opts)
+      ? `
 - \`worker/auth.ts\` — sends the link through Email Service. Set \`AUTH_FROM\` in
-  \`wrangler.jsonc\` to an address on a domain you have onboarded to Email Service.
-- \`src/auth.ts\` — \`auth.user\`, a signal every page can read.
+  \`wrangler.jsonc\` to an address on a domain you have onboarded to Email Service.`
+      : ''
+  }
+- \`src/auth.ts\` — \`auth.user\`, a signal every page can read. \`user.email\` is \`null\` for
+  someone whose provider shared no verified address.${
+    emailSignIn(opts)
+      ? `
 - \`src/routes/signin/verify.tsx\` — the page a link opens. It signs in on a button press,
-  because mail scanners open every link in a message.
+  because mail scanners open every link in a message.`
+      : ''
+  }
 
-Users, links and sessions live in D1, stored as hashes. Links expire after 15 minutes and
-work once; sessions last 30 days. Each caller (by IP) may request 20 links a minute. In
-\`vite dev\` no email is sent: the Account page shows the link instead. WebSocket connections
+Users${emailSignIn(opts) ? ', links' : ''} and sessions live in D1, stored as hashes. ${emailSignIn(opts) ? 'Links expire after 15 minutes and work once; sessions' : 'Sessions'} last 30 days.${emailSignIn(opts) ? ' Each caller (by IP) may request 20 links a minute. In `vite dev` no email is sent: the Account page shows the link instead.' : ''} WebSocket connections
 (rooms, agents) are not covered by the write rule; check \`currentUser\` before forwarding them
-if they need a user.`
+if they need a user.${
+          oauthSignIn(opts)
+            ? `
+
+### GitHub, Google and LinkedIn
+
+1. **GitHub**: create an OAuth App at https://github.com/settings/developers with the
+   callback URL \`http://localhost:5173/api/auth/oauth/github/callback\` for \`vite dev\`
+   (an OAuth App takes one callback URL, so make a second app for the deployed one).
+2. **Google**: in the Google Cloud console, create an OAuth client of type "Web application"
+   with the redirect URIs \`http://localhost:5173/api/auth/oauth/google/callback\` and
+   \`https://<your app>/api/auth/oauth/google/callback\`.
+3. **LinkedIn**: create an app at https://www.linkedin.com/developers/apps, add the product
+   "Sign In with LinkedIn using OpenID Connect", and under Auth add both redirect URLs
+   (\`…/api/auth/oauth/linkedin/callback\` on localhost and on your app).
+4. Put the ids and secrets in \`.dev.vars\`. Deployed: \`npx wrangler secret put\` each
+   \`*_CLIENT_ID\` and \`*_CLIENT_SECRET\` you use, and \`AUTH_SECRET\` (a random one:
+   \`openssl rand -base64 32\`). A provider is offered once both its values are set.
+
+People are matched by their account at the provider, not by email. A new sign-in joins an
+existing account only through an email the provider has verified (GitHub's primary verified
+address, Google's and LinkedIn's \`email_verified\`). A signed-in user who follows another provider's link
+adds it to their account.`
+            : ''
+        }`
       : ''
   }${
     opts.auth === 'access'
@@ -10036,6 +12187,41 @@ function cfDevVars(opts: ScaffoldOptions): string {
           'AWS_SECRET_ACCESS_KEY=',
         ]
       : []),
+    ...(oauthSignIn(opts)
+      ? [
+          '# Seals the sign-in state between the redirect and the callback. Deployed, a random one:',
+          '# openssl rand -base64 32',
+          'AUTH_SECRET=dev-only-auth-secret-0123456789abcdef',
+          '# A GitHub OAuth App, a Google OAuth client and a LinkedIn app (README).',
+          '# Each provider is offered once both its id and secret are set.',
+          'GITHUB_CLIENT_ID=',
+          'GITHUB_CLIENT_SECRET=',
+          'GOOGLE_CLIENT_ID=',
+          'GOOGLE_CLIENT_SECRET=',
+          'LINKEDIN_CLIENT_ID=',
+          'LINKEDIN_CLIENT_SECRET=',
+        ]
+      : hasExample(opts, 'social')
+        ? [
+            "# Seals connected accounts' tokens. Deployed, a random one: openssl rand -base64 32",
+            'AUTH_SECRET=dev-only-auth-secret-0123456789abcdef',
+            '# A LinkedIn app with "Share on LinkedIn" (README). Mastodon needs nothing.',
+            'LINKEDIN_CLIENT_ID=',
+            'LINKEDIN_CLIENT_SECRET=',
+          ]
+        : []),
+    ...(hasExample(opts, 'social')
+      ? [
+          '# Optional: an ES256 private JWK with a kid, so Bluesky sessions last (README).',
+          'BLUESKY_PRIVATE_JWK=',
+          '# Optional: a Buffer app client (publish.buffer.com/settings/api), to post to its channels.',
+          'BUFFER_CLIENT_ID=',
+          'BUFFER_CLIENT_SECRET=',
+          '# Optional: a Meta app with the Threads use case (README), to post to Threads.',
+          'THREADS_APP_ID=',
+          'THREADS_APP_SECRET=',
+        ]
+      : []),
   ]
     .map((line) => `${line}\n`)
     .join('')
@@ -10101,6 +12287,59 @@ function cfBindingDescriptions(opts: ScaffoldOptions): Record<string, { descript
           ],
         ])
       : {}),
+    ...(oauthSignIn(opts)
+      ? describe([
+          [
+            'AUTH_SECRET',
+            'Seals the sign-in state between the redirect to GitHub, Google or LinkedIn and the way back. Make a random one: `openssl rand -base64 32`.',
+          ],
+          [
+            'GITHUB_CLIENT_ID',
+            'The client id of a [GitHub OAuth App](https://github.com/settings/developers) whose callback URL is `https://<this app>/api/auth/oauth/github/callback`. Leave it empty to offer no GitHub sign-in.',
+          ],
+          ['GITHUB_CLIENT_SECRET', "That OAuth App's client secret."],
+          [
+            'GOOGLE_CLIENT_ID',
+            'The client id of a Google OAuth client (Web application) with the redirect URI `https://<this app>/api/auth/oauth/google/callback`. Leave it empty to offer no Google sign-in.',
+          ],
+          ['GOOGLE_CLIENT_SECRET', "That OAuth client's secret."],
+          [
+            'LINKEDIN_CLIENT_ID',
+            'The client id of a LinkedIn app with the "Sign In with LinkedIn using OpenID Connect" product and the redirect URL `https://<this app>/api/auth/oauth/linkedin/callback`. Leave it empty to offer no LinkedIn sign-in.',
+          ],
+          ['LINKEDIN_CLIENT_SECRET', "That LinkedIn app's primary client secret."],
+        ])
+      : hasExample(opts, 'social')
+        ? describe([
+            [
+              'AUTH_SECRET',
+              'Seals the tokens of the accounts people connect. Make a random one: `openssl rand -base64 32`.',
+            ],
+            [
+              'LINKEDIN_CLIENT_ID',
+              'The client id of a LinkedIn app with the "Share on LinkedIn" product and the redirect URL `https://<this app>/api/connections/linkedin/callback`. Leave it empty to offer no LinkedIn.',
+            ],
+            ['LINKEDIN_CLIENT_SECRET', "That LinkedIn app's primary client secret."],
+          ])
+        : {}),
+    ...(hasExample(opts, 'social')
+      ? describe([
+          [
+            'BLUESKY_PRIVATE_JWK',
+            'Optional. An ES256 private key as a JWK with a `kid` (README shows how to make one). With it, Bluesky sessions last until revoked; without it, two weeks.',
+          ],
+          [
+            'BUFFER_CLIENT_ID',
+            'Optional. A Buffer app client (https://publish.buffer.com/settings/api) with the redirect URL `https://<this app>/api/connections/buffer/callback`. Leave it empty to offer no Buffer.',
+          ],
+          ['BUFFER_CLIENT_SECRET', "That Buffer app client's secret (none for a public client)."],
+          [
+            'THREADS_APP_ID',
+            'Optional. The Threads app id of a Meta app with the Threads use case, and `https://<this app>/api/connections/threads/callback` as its redirect callback URL. Leave it empty to offer no Threads.',
+          ],
+          ['THREADS_APP_SECRET', "That Threads app's secret."],
+        ])
+      : {}),
   }
 }
 
@@ -10152,12 +12391,9 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
           { file: 'newsletter/send.tsx', contents: cfNewsletterSendRouteTsx() },
         ]
       : []),
-    ...(opts.auth === 'email'
-      ? [
-          { file: 'account.tsx', contents: cfAccountRouteTsx() },
-          { file: 'signin/verify.tsx', contents: cfVerifyRouteTsx() },
-        ]
-      : []),
+    ...(hasExample(opts, 'social') ? [{ file: 'social.tsx', contents: cfSocialRouteTsx() }] : []),
+    ...(hasAccounts(opts) ? [{ file: 'account.tsx', contents: cfAccountRouteTsx(opts) }] : []),
+    ...(emailSignIn(opts) ? [{ file: 'signin/verify.tsx', contents: cfVerifyRouteTsx() }] : []),
   ]
   return [
     { path: 'package.json', contents: cfPackageJson(opts) },
@@ -10248,18 +12484,23 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
       : []),
     ...(hasExample(opts, 'webhooks') ||
     hasExample(opts, 'checkout') ||
-    hasExample(opts, 'newsletter')
+    hasExample(opts, 'newsletter') ||
+    hasExample(opts, 'social') ||
+    oauthSignIn(opts)
       ? [
           { path: '.dev.vars', contents: cfDevVars(opts) },
           { path: '.dev.vars.example', contents: cfDevVarsExample(opts) },
         ]
       : []),
-    ...(opts.auth === 'email'
+    ...(hasAccounts(opts) ? [{ path: 'src/auth.ts', contents: cfAuthTs() }] : []),
+    ...(hasExample(opts, 'social')
       ? [
-          { path: 'src/auth.ts', contents: cfAuthTs() },
-          { path: 'worker/auth.ts', contents: cfAuthWorkerTs() },
+          { path: 'src/social.ts', contents: cfSocialTs() },
+          { path: 'worker/social.ts', contents: cfSocialWorkerTs(opts) },
+          { path: 'worker/social-post.ts', contents: cfSocialPostTs() },
         ]
       : []),
+    ...(emailSignIn(opts) ? [{ path: 'worker/auth.ts', contents: cfAuthWorkerTs() }] : []),
     ...(hasExample(opts, 'publish')
       ? [
           { path: 'src/pages.ts', contents: cfPagesTs() },
@@ -10323,7 +12564,12 @@ export function buildScaffold(opts: ScaffoldOptions): ScaffoldFile[] {
       opts.examples?.includes('digest') && !opts.examples.includes('export')
         ? [...opts.examples, 'export' as const]
         : opts.examples
-    return buildCloudflareScaffold({ ...opts, ...(examples ? { examples } : {}) }, sections)
+    // Social posts belong to a user: without --auth, it brings sign-in with providers.
+    const auth = opts.auth ?? (examples?.includes('social') ? 'oauth' : undefined)
+    return buildCloudflareScaffold(
+      { ...opts, ...(examples ? { examples } : {}), ...(auth ? { auth } : {}) },
+      sections,
+    )
   }
   return [
     { path: 'package.json', contents: packageJson(opts) },
@@ -10422,9 +12668,11 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
     return
   }
 
-  const authArg = (flagValue(args, 'auth') ?? '').toLowerCase()
-  if (authArg && authArg !== 'access' && authArg !== 'email') {
-    console.error(`Unknown auth "${authArg}". Expected: access or email.`)
+  const authArg = parseAuth(flagValue(args, 'auth'))
+  if (authArg === 'invalid') {
+    console.error(
+      `Unknown auth "${flagValue(args, 'auth') ?? ''}". Expected: access, email, oauth or email,oauth.`,
+    )
     process.exitCode = 1
     return
   }
@@ -10489,6 +12737,14 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
       process.exitCode = 1
       return
     }
+    if (exampleArgs.includes('social') && authArg === 'access') {
+      console.error(
+        '--example social needs accounts (posts belong to a user): use --auth email, oauth or ' +
+          'email,oauth, or leave --auth out to get oauth.',
+      )
+      process.exitCode = 1
+      return
+    }
     if (authArg && resolvedFramework !== 'cloudflare') {
       console.error('--auth needs --framework cloudflare (it guards the Worker).')
       process.exitCode = 1
@@ -10511,7 +12767,7 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
       pm,
       ...(isRuntime(runtimeArg) ? { runtime: runtimeArg } : {}),
       ...(exampleArgs.length > 0 ? { examples: exampleArgs.filter(isExample) } : {}),
-      ...(authArg === 'access' || authArg === 'email' ? { auth: authArg } : {}),
+      ...(authArg ? { auth: authArg } : {}),
     }
 
     const targetDir = join(cwd, name)

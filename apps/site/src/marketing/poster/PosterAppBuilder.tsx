@@ -5,7 +5,7 @@ import data from '../app-builder.json'
 import starters from '../starter-cards.json'
 
 type Example = (typeof data.examples)[number]
-type AuthChoice = 'none' | 'email' | 'access'
+type AuthChoice = 'none' | 'email' | 'oauth' | 'access'
 
 /**
  * Services a temporary Cloudflare account supports (`deploy:preview`, no sign-up): Workers,

@@ -37,6 +37,7 @@ const GUIDES: { src: string; slug: string }[] = [
   { src: 'RECIPE-DASHBOARD.md', slug: 'recipe-dashboard' },
   { src: 'RECIPE-EMAIL.md', slug: 'recipe-email' },
   { src: 'RECIPE-PAYMENTS.md', slug: 'recipe-payments' },
+  { src: 'RECIPE-SOCIAL.md', slug: 'recipe-social' },
   { src: 'EMAIL-PRIMITIVES.md', slug: 'email-primitives' },
   { src: 'EMAIL-CLIENT-SUPPORT.md', slug: 'email-client-support' },
   { src: 'MIGRATING-FROM-SHADCN.md', slug: 'migrating-from-shadcn' },

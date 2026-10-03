@@ -109,6 +109,21 @@
       "import": "./dist/auth-server.js",
       "default": "./dist/auth-server.js"
     },
+    "./oauth": {
+      "types": "./dist/oauth.d.ts",
+      "import": "./dist/oauth.js",
+      "default": "./dist/oauth.js"
+    },
+    "./oauth-server": {
+      "types": "./dist/oauth-server.d.ts",
+      "import": "./dist/oauth-server.js",
+      "default": "./dist/oauth-server.js"
+    },
+    "./social": {
+      "types": "./dist/social.d.ts",
+      "import": "./dist/social.js",
+      "default": "./dist/social.js"
+    },
     "./ses": {
       "types": "./dist/ses.d.ts",
       "import": "./dist/ses.js",

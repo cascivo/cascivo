@@ -4,6 +4,7 @@ import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   buildScaffold,
+  parseAuth,
   create,
   type Example,
   type ScaffoldFile,
@@ -912,7 +913,15 @@ describe('create --auth', () => {
     [['--framework', 'react-vite', '--auth', 'access'], '--auth needs --framework cloudflare'],
     [
       ['--framework', 'cloudflare', '--auth', 'basic'],
-      'Unknown auth "basic". Expected: access or email.',
+      'Unknown auth "basic". Expected: access, email, oauth or email,oauth.',
+    ],
+    [
+      ['--framework', 'cloudflare', '--example', 'social', '--auth', 'access'],
+      '--example social needs accounts',
+    ],
+    [
+      ['--framework', 'cloudflare', '--auth', 'access,email'],
+      'Unknown auth "access,email". Expected: access, email, oauth or email,oauth.',
     ],
   ])('refuses %j and writes nothing', async (flags, message) => {
     const cwd = mkdtempSync(join(tmpdir(), 'cascivo-create-'))
@@ -993,7 +1002,7 @@ describe('buildScaffold — cloudflare --example voice', () => {
     expect(map.get('vite.config.ts')).toContain("import preact from '@preact/preset-vite'")
     expect(map.get('src/voice.ts')).toContain("from 'agents/voice/client'")
     const pkg = JSON.parse(map.get('package.json')!) as { dependencies: Record<string, string> }
-    expect(pkg.dependencies['agents']).toBe('^0.24.0')
+    expect(pkg.dependencies['agents']).toBe('^0.26.0')
     expect(pkg.dependencies['@cloudflare/ai-chat']).toBeUndefined()
   })
 
@@ -1115,6 +1124,311 @@ describe('buildScaffold — cloudflare --auth email', () => {
     expect(readme).toContain('## Accounts (email sign-in)')
     expect(readme).not.toContain('It has no auth')
     expect(readme).not.toContain('Anyone who can reach the app can publish')
+  })
+})
+
+describe('parseAuth', () => {
+  it.each([
+    [undefined, null],
+    ['', null],
+    ['email', 'email'],
+    ['OAuth', 'oauth'],
+    ['oauth,email', 'email,oauth'],
+    ['email, oauth, email', 'email,oauth'],
+    ['access,oauth', 'invalid'],
+    ['magic', 'invalid'],
+  ] as const)('reads %j as %j', (raw, auth) => {
+    expect(parseAuth(raw)).toBe(auth)
+  })
+})
+
+describe('buildScaffold — cloudflare --auth oauth', () => {
+  const build = (opts: Partial<ScaffoldOptions> = {}) =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        auth: 'oauth',
+        ...opts,
+      }),
+    )
+  const map = build()
+
+  it('binds D1 but sends no email: no Email Service, no sign-in link page', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"d1_databases"')
+    expect(wrangler).not.toContain('send_email')
+    expect(wrangler).not.toContain('AUTH_FROM')
+    expect(map.has('worker/auth.ts')).toBe(false)
+    expect(map.get('src/routes.gen.ts')).not.toContain("'/signin/verify'")
+    expect(map.get('src/App.tsx')).toContain("href: '/account'")
+  })
+
+  it('answers /api/auth/oauth with the providers that are configured, then requires a user', () => {
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain("import { handleOAuth } from '@cascivo/app/oauth-server'")
+    expect(worker).toContain("import { requireUser } from '@cascivo/app/auth-server'")
+    expect(worker).not.toContain('handleAuth(')
+    expect(worker).toContain('if (env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET)')
+    expect(worker).toContain('if (env.LINKEDIN_CLIENT_ID && env.LINKEDIN_CLIENT_SECRET)')
+    expect(worker).toContain("errorPath: '/account'")
+    // No limiter here, so nothing else imports the guard's error responder (a past build break).
+    expect(worker).toContain("import { guardResponse } from '@cascivo/app/guard'")
+    const oauth = worker.indexOf('await handleOAuth(')
+    const guard = worker.indexOf('await requireUser(env.DB, request)')
+    expect(oauth).toBeGreaterThan(0)
+    expect(oauth).toBeLessThan(guard)
+  })
+
+  it('keeps the secrets in .dev.vars, with a sealing secret long enough for vite dev', () => {
+    const vars = map.get('.dev.vars')!
+    const secret = /^AUTH_SECRET=(.*)$/m.exec(vars)![1]!
+    expect(secret.length).toBeGreaterThanOrEqual(32)
+    for (const name of [
+      'GITHUB_CLIENT_ID',
+      'GITHUB_CLIENT_SECRET',
+      'GOOGLE_CLIENT_ID',
+      'GOOGLE_CLIENT_SECRET',
+    ])
+      expect(vars).toContain(`${name}=`)
+    expect(map.get('.dev.vars.example')).toContain('AUTH_SECRET=\n')
+    const bindings = JSON.parse(map.get('package.json')!).cloudflare.bindings
+    expect(Object.keys(bindings)).toEqual(
+      expect.arrayContaining(['AUTH_SECRET', 'GITHUB_CLIENT_ID', 'GOOGLE_CLIENT_SECRET']),
+    )
+  })
+
+  it('shows provider links and the reason a sign-in failed, without the email form', () => {
+    const account = map.get('src/routes/account.tsx')!
+    expect(account).toContain("auth.signInUrl(id, '/account')")
+    expect(account).toContain('identity_in_use')
+    expect(account).not.toContain('Email me a link')
+    expect(map.get('README.md')).toContain('## Accounts (GitHub, Google and LinkedIn sign-in)')
+  })
+
+  it('puts both ways in on one page with --auth email,oauth', () => {
+    const both = build({ auth: 'email,oauth' })
+    const worker = both.get('worker/index.ts')!
+    expect(worker.indexOf('await handleAuth(')).toBeLessThan(worker.indexOf('await handleOAuth('))
+    const account = both.get('src/routes/account.tsx')!
+    expect(account).toContain('Email me a link')
+    expect(account).toContain('auth.signInUrl(')
+    expect(both.get('src/routes.gen.ts')).toContain("'/signin/verify'")
+    expect(both.get('README.md')).toContain(
+      '## Accounts (email, GitHub, Google and LinkedIn sign-in)',
+    )
+  })
+
+  it('bills accounts without an email: checkout then asks Stripe for one', () => {
+    const billing = build({ examples: ['checkout'] }).get('worker/billing.ts')!
+    expect(billing).toContain('user.email\n          ? { customerEmail: user.email }')
+  })
+})
+
+describe('buildScaffold — cloudflare --example social', () => {
+  const build = (opts: Partial<ScaffoldOptions> = {}) =>
+    fileMap(
+      buildScaffold({
+        name: 'Edge App',
+        framework: 'cloudflare',
+        theme: 'light',
+        sections: ['Dashboard'],
+        examples: ['social'],
+        ...opts,
+      }),
+    )
+  const map = build()
+
+  it('brings sign-in with providers when no --auth is given', () => {
+    expect(map.get('src/routes/account.tsx')).toContain('auth.signInUrl(')
+    expect(map.get('worker/index.ts')).toContain('await handleOAuth(')
+    // With email sign-in it uses that instead, and still seals tokens with AUTH_SECRET.
+    const email = build({ auth: 'email' })
+    expect(email.get('worker/index.ts')).not.toContain('handleOAuth(')
+    expect(email.get('.dev.vars')).toMatch(/^AUTH_SECRET=.{32,}$/m)
+    expect(email.get('worker/index.ts')).toContain('AUTH_SECRET?: string')
+  })
+
+  it('binds a Workflow per post, and connects accounts behind the signed-in guard', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"binding": "SOCIAL_POST", "class_name": "SocialPost"')
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain("export { SocialPost } from './social-post'")
+    expect(worker.indexOf('await requireUser(env.DB, request)')).toBeLessThan(
+      worker.indexOf('await socialStore.connections(env)(request)'),
+    )
+    // Starting a connection (Mastodon registers the app) and posting are rate-limited.
+    expect(worker).toMatch(/connections.*return request\.method === 'GET'/)
+    expect(worker).toContain(
+      "if (url.pathname === '/api/social/posts') return request.method === 'POST'",
+    )
+    expect(map.get('src/App.tsx')).toContain("href: '/social'")
+  })
+
+  it('posts to Buffer channels through their connection, never retried, budget kept', () => {
+    const store = map.get('worker/social.ts')!
+    expect(store).toContain('if (env.BUFFER_CLIENT_ID) {')
+    expect(store).toContain('const CHANNELS_TTL_MS = 60 * 60 * 1000')
+    const workflow = map.get('worker/social-post.ts')!
+    expect(map.get('src/social.ts')).toContain(
+      "return network === 'buffer' || network === 'linkedin' || network === 'threads'",
+    )
+    expect(workflow).toContain('target.accountId.split(BUFFER_SEPARATOR)')
+    expect(map.get('.dev.vars')).toContain('BUFFER_CLIENT_ID=')
+    expect(map.get('src/routes/social.tsx')).toContain('/api/connections/buffer?returnTo=/social')
+  })
+
+  it('serves the client metadata Bluesky reads, and offers Bluesky without set-up', () => {
+    const worker = map.get('worker/index.ts')!
+    expect(worker.indexOf('socialStore.blueskyClient(env, request)')).toBeLessThan(
+      worker.indexOf('socialStore.connections(env)(request)'),
+    )
+    const store = map.get('worker/social.ts')!
+    expect(store).toContain("const BLUESKY_METADATA = '/api/bluesky/client-metadata.json'")
+    expect(map.get('.dev.vars')).toContain('BLUESKY_PRIVATE_JWK=')
+    expect(map.get('src/routes/social.tsx')).toContain('action="/api/connections/bluesky"')
+    expect(map.get('README.md')).toContain('open `http://127.0.0.1:5173`')
+  })
+
+  it('never retries a LinkedIn post, and retries the others with a fixed key and time', () => {
+    const workflow = map.get('worker/social-post.ts')!
+    expect(workflow).toContain(
+      "postsOnce(target.network)\n            ? { retries: { limit: 0, delay: '1 second' } }",
+    )
+    expect(workflow).toContain(
+      'idempotencyKey: `${post.id}:${target.accountId}`, createdAt: new Date(post.at)',
+    )
+    // "Post now" must not ask a Workflow to sleep until the past.
+    expect(workflow.indexOf("step.do('due later'")).toBeLessThan(
+      workflow.indexOf('step.sleepUntil('),
+    )
+  })
+
+  it('offers Threads once its app is set, and renews its tokens from a daily Cron Trigger', () => {
+    const store = map.get('worker/social.ts')!
+    expect(store).toContain('if (env.THREADS_APP_ID && env.THREADS_APP_SECRET) {')
+    expect(store).toContain('export async function renewConnections(env: SocialEnv)')
+    expect(map.get('src/routes/social.tsx')).toContain('/api/connections/threads?returnTo=/social')
+    expect(map.get('.dev.vars')).toContain('THREADS_APP_SECRET=')
+    expect(map.get('wrangler.jsonc')).toContain('"triggers": { "crons": ["17 4 * * *"] },')
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain('THREADS_APP_ID?: string')
+    expect(worker).toContain('await socialStore.renewConnections(env)')
+    expect(map.get('README.md')).toContain('`17 4 * * *`')
+  })
+
+  it('shares one Cron Trigger handler with the digest, told apart by schedule', () => {
+    const both = build({ examples: ['social', 'digest'] })
+    expect(both.get('wrangler.jsonc')).toContain('"crons": ["0 8 * * 1", "17 4 * * *"]')
+    const worker = both.get('worker/index.ts')!
+    expect(worker).toContain(
+      "if (event.cron === '17 4 * * *') {\n      await socialStore.renewConnections(env)\n      return socialStore.remindExpiring(env)",
+    )
+    // APP_URL once, shared by both.
+    expect(both.get('wrangler.jsonc')!.match(/"APP_URL"/g)).toHaveLength(1)
+    expect(worker.match(/async scheduled\(/g)).toHaveLength(1)
+    // The digest alone keeps its own handler.
+    expect(build({ examples: ['digest'] }).get('worker/index.ts')).toContain(
+      'async scheduled(_event: unknown, env: Env): Promise<void> {\n    await digestJob.runDigest(',
+    )
+  })
+
+  it('checks a Mastodon post against its server’s own limits, in the page and the Workflow', () => {
+    const store = map.get('worker/social.ts')!
+    expect(store).toContain('const limits = await mastodonServerLimits(server)')
+    expect(store).toContain("id: '0002_social_server_limits'")
+    expect(map.get('src/social.ts')).toContain(
+      "if (account.network === 'mastodon' && account.limits) return mastodonPublisher(account.limits)",
+    )
+    expect(map.get('worker/social-post.ts')).toContain(
+      'await publisherFor({ ...target, limits }, imageLink).publish(',
+    )
+  })
+
+  it('lets Buffer hold a scheduled post in its queue, and counts Buffer’s request budget', () => {
+    const workflow = map.get('worker/social-post.ts')!
+    // Handed over before the sleep, and skipped after it.
+    expect(workflow.indexOf('for (const target of handedOver) await postTo(target)')).toBeLessThan(
+      workflow.indexOf("step.sleepUntil('wait until due'"),
+    )
+    expect(workflow).toContain('if (!handedOver.includes(target)) await postTo(target)')
+    expect(workflow).toContain("if (target.network === 'buffer') await spendBuffer(env)")
+    const store = map.get('worker/social.ts')!
+    expect(store).toContain('ALTER TABLE social_posts ADD COLUMN in_buffer')
+    expect(store).toContain('ON CONFLICT (slot) DO UPDATE SET used = used + 1')
+    // Channel lists yield to posting when the budget runs low.
+    expect(store).toContain('(await bufferUsed(env)) > BUFFER_BUDGET - BUFFER_RESERVE')
+    const page = map.get('src/routes/social.tsx')!
+    expect(page).toContain('inBuffer: inBuffer.value,')
+    expect(page).toContain("still in Buffer's queue")
+  })
+
+  it('emails a reconnect reminder once per expiring token, after renewing', () => {
+    const worker = map.get('worker/index.ts')!
+    expect(worker.indexOf('await socialStore.renewConnections(env)')).toBeLessThan(
+      worker.indexOf('await socialStore.remindExpiring(env)'),
+    )
+    expect(worker).toContain('EMAIL: ReminderSender\n')
+    expect(build({ auth: 'email' }).get('worker/index.ts')).toContain(
+      'EMAIL: SignInSender & ReminderSender\n',
+    )
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"send_email": [{ "name": "EMAIL" }],')
+    expect(wrangler).toMatch(/"REMINDER_FROM": "", "APP_URL": ""/)
+    const store = map.get('worker/social.ts')!
+    expect(store).toContain(
+      'for (const { connection, email } of await expiringConnections(env.DB))',
+    )
+    // Recorded only after it was sent, keyed by the token's expiry.
+    expect(store.indexOf('await env.EMAIL.send(')).toBeLessThan(
+      store.indexOf('INSERT INTO social_reminders'),
+    )
+    expect(store).toContain('PRIMARY KEY (connection_id, expires_at)')
+  })
+
+  it('attaches images: uploaded to R2 per user, linked to Threads and Buffer by signature', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"binding": "SOCIAL_MEDIA", "bucket_name": "edge-app-social-media"')
+    const store = map.get('worker/social.ts')!
+    // Each user's uploads under their own prefix; a post may use only images that exist there.
+    expect(store).toContain(
+      "handleUploads(IMAGES, env.SOCIAL_MEDIA, { prefix: mediaKey(user.id, '') })",
+    )
+    expect(store).toContain('await env.SOCIAL_MEDIA.head(mediaKey(user.id, image.key))')
+    // The public link checks expiry and an HMAC before reading R2.
+    expect(store.indexOf('await crypto.subtle.verify(')).toBeLessThan(
+      store.indexOf('await env.SOCIAL_MEDIA.get(objectKey)'),
+    )
+    const workflow = map.get('worker/social-post.ts')!
+    expect(workflow).toContain('asSocialPost(post, data)')
+    expect(map.get('src/routes/social.tsx')).toContain('startUpload(IMAGES, f)')
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain('SOCIAL_MEDIA: SocialMediaBucket')
+    expect(worker).toContain(
+      "if (url.pathname.startsWith('/api/social/images')) return request.method !== 'GET'",
+    )
+  })
+
+  it('says what the rate limit covers', () => {
+    expect(map.get('wrangler.jsonc')).toContain(
+      '// Connecting accounts, posts and image uploads per caller: 20 a minute.',
+    )
+  })
+
+  it('merges the R2 buckets of --example files and social into one list', () => {
+    const wrangler = build({ examples: ['social', 'files'] }).get('wrangler.jsonc')!
+    expect(wrangler.match(/"r2_buckets"/g)).toHaveLength(1)
+    expect(wrangler).toContain('"binding": "FILES"')
+    expect(wrangler).toContain('"binding": "SOCIAL_MEDIA"')
+  })
+
+  it('names the Mastodon app after the project, quotes and all', () => {
+    expect(map.get('worker/social.ts')).toContain("const APP_NAME = 'Edge App'")
+    expect(build({ name: "Ada's \\app" }).get('worker/social.ts')).toContain(
+      "const APP_NAME = 'Adas app'",
+    )
   })
 })
 

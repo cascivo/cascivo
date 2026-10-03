@@ -477,17 +477,23 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
   })
 
   /**
-   * `--example checkout --auth email`: `@cascivo/app/stripe` and `@cascivo/email` in the
-   * Worker, with /billing (subscriptions, entitlements, the failed-renewal email). Only a build
-   * shows that the receipt template, written against React, bundles into a Worker that runs on
-   * Preact (react-dom/server becomes preact/compat/server).
+   * `--example checkout --auth email,oauth`: `@cascivo/app/stripe` and `@cascivo/email` in the
+   * Worker, with /billing (subscriptions, entitlements, the failed-renewal email), and both
+   * sign-in methods on one page (`handleAuth` and `handleOAuth`, users whose email may be
+   * null). Only a build shows that the receipt template, written against React, bundles into a
+   * Worker that runs on Preact (react-dom/server becomes preact/compat/server).
    */
-  describe('cloudflare --example checkout --auth email', () => {
+  describe('cloudflare --example checkout --auth email,oauth', () => {
     let app: string
 
     before(() => {
       if (!ready) return
-      app = scaffold('cloudflare', 'cf-checkout', ['--example', 'checkout', '--auth', 'email'])
+      app = scaffold('cloudflare', 'cf-checkout', [
+        '--example',
+        'checkout',
+        '--auth',
+        'email,oauth',
+      ])
       run('pnpm', ['run', 'typecheck'], app)
       run('pnpm', ['exec', 'vite', 'build'], app)
     })
@@ -504,6 +510,51 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
         /payment did not go through/,
         'the Worker bundle has no failed-renewal email',
       )
+      assert.match(worker, /accounts\.google\.com/, 'the Worker bundle has no Google sign-in')
+      assert.match(worker, /api\.github\.com/, 'the Worker bundle has no GitHub sign-in')
+    })
+
+    it('passes its own format:check', { skip: !ready }, () => {
+      assertFormatted(app)
+    })
+  })
+
+  /**
+   * `--example social` (which brings `--auth oauth`): connected Bluesky, Buffer, LinkedIn,
+   * Mastodon and Threads accounts from `@cascivo/app/oauth-server`, their publishers from
+   * `@cascivo/app/social` running in the page as well as the Worker, a Workflow per scheduled
+   * post, and the Cron Trigger that renews Threads tokens.
+   */
+  describe('cloudflare --example social', () => {
+    let app: string
+
+    before(() => {
+      if (!ready) return
+      app = scaffold('cloudflare', 'cf-social', ['--example', 'social'])
+      run('pnpm', ['run', 'typecheck'], app)
+      run('pnpm', ['exec', 'vite', 'build'], app)
+    })
+
+    it('bundles both publishers and the Workflow into the Worker', { skip: !ready }, () => {
+      const dist = join(app, 'dist')
+      const dir = readdirSync(dist).find((d) => existsSync(join(dist, d, 'wrangler.json')))
+      assert.ok(dir, 'vite build emitted no Worker bundle.')
+      const worker = readFileSync(join(dist, dir, 'index.js'), 'utf8')
+      assert.match(worker, /api\.linkedin\.com\/rest/, 'the Worker bundle cannot post to LinkedIn')
+      assert.match(worker, /\/api\/v1\/statuses/, 'the Worker bundle cannot post to Mastodon')
+      assert.match(
+        worker,
+        /com\.atproto\.repo\.createRecord/,
+        'the Worker bundle cannot post to Bluesky',
+      )
+      assert.match(worker, /dpop\+jwt/, 'the Worker bundle cannot make DPoP proofs')
+      assert.match(worker, /threads_publish/, 'the Worker bundle cannot post to Threads')
+      assert.match(worker, /th_refresh_token/, 'the Worker bundle cannot renew Threads tokens')
+      // The bundle is minified: the class keeps its exported name, not its declaration.
+      assert.match(worker, /\bSocialPost\b/, 'the Worker bundle exports no SocialPost Workflow')
+      const config = readFileSync(join(dist, dir, 'wrangler.json'), 'utf8')
+      assert.match(config, /"SOCIAL_POST"/, 'the Workflow is not bound')
+      assert.match(config, /"crons":\s*\[\s*"17 4 \* \* \*"/, 'Threads tokens are never renewed')
     })
 
     it('passes its own format:check', { skip: !ready }, () => {

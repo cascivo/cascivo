@@ -128,6 +128,9 @@ Testable here against a mock provider in workerd; a real round trip needs app cr
 `--auth oauth` scaffolds it with the provider buttons as cascivo components; it composes with
 `--auth email` (both on one sign-in page).
 
+Follow-up research on more providers (LinkedIn, Bluesky, Mastodon, Threads) and on reusing
+the tokens for posting: [social-oauth-providers-research.md](./social-oauth-providers-research.md).
+
 ### 7. Teams: organisations, roles and invitations (M–L)
 
 **Why.** The moment a SaaS has a second user per customer. Billing is per team, not per person,

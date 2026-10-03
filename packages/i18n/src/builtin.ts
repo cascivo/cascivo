@@ -231,6 +231,14 @@ export const builtin = {
     copy: 'Copy',
     copied: 'Copied',
   }),
+  shareMenu: defineMessages('cascade.shareMenu', {
+    share: 'Share',
+    copyLink: 'Copy link',
+    copied: 'Link copied',
+    more: 'More options…',
+    server: 'Your Mastodon server',
+    shareOn: 'Share on {network}',
+  }),
   skipNav: defineMessages('cascade.skipNav', {
     label: 'Skip to content',
   }),
@@ -579,6 +587,14 @@ defineCatalog(builtin.switcher, 'de', {
 defineCatalog(builtin.copyButton, 'de', {
   copy: 'Kopieren',
   copied: 'Kopiert',
+})
+defineCatalog(builtin.shareMenu, 'de', {
+  share: 'Teilen',
+  copyLink: 'Link kopieren',
+  copied: 'Link kopiert',
+  more: 'Weitere Optionen…',
+  server: 'Dein Mastodon-Server',
+  shareOn: 'Auf {network} teilen',
 })
 defineCatalog(builtin.skipNav, 'de', {
   label: 'Zum Inhalt springen',

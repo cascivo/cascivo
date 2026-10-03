@@ -97,6 +97,7 @@
     "./sheet": "./src/sheet/sheet.tsx",
     "./shell-header": "./src/shell-header/shell-header.tsx",
     "./side-nav": "./src/side-nav/side-nav.tsx",
+    "./share-menu": "./src/share-menu/share-menu.tsx",
     "./skeleton": "./src/skeleton/skeleton.tsx",
     "./skip-nav": "./src/skip-nav/skip-nav.tsx",
     "./slider": "./src/slider/slider.tsx",
