@@ -1345,6 +1345,24 @@ describe('buildScaffold — cloudflare --example social', () => {
     )
   })
 
+  it('lets Buffer hold a scheduled post in its queue, and counts Buffer’s request budget', () => {
+    const workflow = map.get('worker/social-post.ts')!
+    // Handed over before the sleep, and skipped after it.
+    expect(workflow.indexOf('for (const target of handedOver) await postTo(target)')).toBeLessThan(
+      workflow.indexOf("step.sleepUntil('wait until due'"),
+    )
+    expect(workflow).toContain('if (!handedOver.includes(target)) await postTo(target)')
+    expect(workflow).toContain("if (target.network === 'buffer') await spendBuffer(env)")
+    const store = map.get('worker/social.ts')!
+    expect(store).toContain('ALTER TABLE social_posts ADD COLUMN in_buffer')
+    expect(store).toContain('ON CONFLICT (slot) DO UPDATE SET used = used + 1')
+    // Channel lists yield to posting when the budget runs low.
+    expect(store).toContain('(await bufferUsed(env)) > BUFFER_BUDGET - BUFFER_RESERVE')
+    const page = map.get('src/routes/social.tsx')!
+    expect(page).toContain('inBuffer: inBuffer.value,')
+    expect(page).toContain("still in Buffer's queue")
+  })
+
   it('names the Mastodon app after the project, quotes and all', () => {
     expect(map.get('worker/social.ts')).toContain("const APP_NAME = 'Edge App'")
     expect(build({ name: "Ada's \\app" }).get('worker/social.ts')).toContain(

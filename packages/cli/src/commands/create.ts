@@ -7937,6 +7937,8 @@ export const MAX_TEXT = 5000
 export const MAX_ACCOUNTS = 10
 /** How far ahead a post can be scheduled. */
 export const MAX_DAYS_AHEAD = 365
+/** Buffer's request budget: this many per 15 minutes, for every user of the app together. */
+export const BUFFER_BUDGET = 100
 
 export interface Account {
   id: string
@@ -7951,7 +7953,8 @@ export interface Account {
   limits: ServerLimits | null
 }
 
-export type TargetStatus = 'pending' | 'publishing' | 'posted' | 'failed'
+/** \`queued\`: handed to Buffer, which holds it until the time (it shows in Buffer's queue). */
+export type TargetStatus = 'pending' | 'publishing' | 'queued' | 'posted' | 'failed'
 
 export interface Target {
   accountId: string
@@ -7977,6 +7980,8 @@ export interface ScheduledPost {
   link: Link | null
   /** ISO time it goes out. */
   at: string
+  /** Buffer accounts are handed to Buffer at once, to hold until \`at\`. */
+  inBuffer: boolean
   status: PostStatus
   targets: Target[]
 }
@@ -7986,6 +7991,8 @@ export interface Social {
   networks: Network[]
   accounts: Account[]
   posts: ScheduledPost[]
+  /** Buffer requests this app made in the current 15 minutes, of 100; \`null\` without Buffer. */
+  bufferUsed: number | null
 }
 
 export interface PostInput {
@@ -7994,6 +8001,8 @@ export interface PostInput {
   accountIds: string[]
   /** ISO time, or \`null\` for now. */
   at: string | null
+  /** Hand Buffer accounts to Buffer now, to hold until \`at\`. */
+  inBuffer: boolean
 }
 
 /** What \`publishers\` check: the post as a network sees it. */
@@ -8036,7 +8045,7 @@ export function parsePostInput(raw: unknown): PostInput {
   if (at !== null && (typeof at !== 'string' || Number.isNaN(Date.parse(at)))) {
     throw new Error('Send the time as an ISO date')
   }
-  return { text: body, link, accountIds: [...new Set(ids)], at }
+  return { text: body, link, accountIds: [...new Set(ids)], at, inBuffer: r['inBuffer'] === true }
 }
 
 function parseAccount(raw: unknown): Account {
@@ -8073,7 +8082,13 @@ function parseLimits(raw: unknown): ServerLimits | null {
   }
 }
 
-const TARGET_STATUSES: readonly TargetStatus[] = ['pending', 'publishing', 'posted', 'failed']
+const TARGET_STATUSES: readonly TargetStatus[] = [
+  'pending',
+  'publishing',
+  'queued',
+  'posted',
+  'failed',
+]
 const POST_STATUSES: readonly PostStatus[] = [
   'scheduled',
   'publishing',
@@ -8108,6 +8123,8 @@ export function parseScheduledPost(raw: unknown): ScheduledPost {
     text: text(r['text'], 'text'),
     link: parseLink(r['link']),
     at: text(r['at'], 'time'),
+    // D1 hands back 1 and 0.
+    inBuffer: r['inBuffer'] === true || r['inBuffer'] === 1,
     status,
     targets: r['targets'].map(parseTarget),
   }
@@ -8123,6 +8140,7 @@ export function parseSocial(raw: unknown): Social {
     networks: networks.filter((n): n is Network => typeof n === 'string' && isNetwork(n)),
     accounts: r['accounts'].map(parseAccount),
     posts: r['posts'].map(parseScheduledPost),
+    bufferUsed: typeof r['bufferUsed'] === 'number' ? r['bufferUsed'] : null,
   }
 }
 `
@@ -8155,6 +8173,7 @@ import type { Connection } from '@cascivo/app/oauth-server'
 import { bufferChannels, mastodonServerLimits } from '@cascivo/app/social'
 import {
   asSocialPost,
+  BUFFER_BUDGET,
   isNetwork,
   MAX_DAYS_AHEAD,
   parseScheduledPost,
@@ -8241,6 +8260,16 @@ const migrations = [
         url_weight INTEGER NOT NULL,
         fetched_at INTEGER NOT NULL
       )\`,
+    ],
+  },
+  {
+    id: '0003_social_in_buffer',
+    statements: ['ALTER TABLE social_posts ADD COLUMN in_buffer INTEGER NOT NULL DEFAULT 0'],
+  },
+  {
+    id: '0004_social_buffer_budget',
+    statements: [
+      'CREATE TABLE social_buffer_budget (slot INTEGER PRIMARY KEY, used INTEGER NOT NULL)',
     ],
   },
 ]
@@ -8371,8 +8400,44 @@ function parseChannelRow(raw: unknown): ChannelRow {
 }
 
 /**
+ * Buffer's request budget (\`BUFFER_BUDGET\` per 15 minutes, for every user of this app
+ * together), counted per window as the app spends it, so the page can show it and channel lists
+ * can yield when it runs low. Buffer enforces the real one (a 429 with Retry-After).
+ */
+const BUFFER_WINDOW_MS = 15 * 60 * 1000
+/** Below this, channel lists are not refreshed: the rest is kept for posting. */
+const BUFFER_RESERVE = 20
+
+const bufferWindow = () => Math.floor(Date.now() / BUFFER_WINDOW_MS)
+
+/** Counts one Buffer request against the current window. */
+export async function spendBuffer(env: SocialEnv): Promise<void> {
+  await migrate(env.DB, migrations)
+  await env.DB.batch([
+    env.DB.prepare(
+      \`INSERT INTO social_buffer_budget (slot, used) VALUES (?, 1)
+       ON CONFLICT (slot) DO UPDATE SET used = used + 1\`,
+    ).bind(bufferWindow()),
+    env.DB.prepare('DELETE FROM social_buffer_budget WHERE slot < ?').bind(bufferWindow() - 1),
+  ])
+}
+
+/** Buffer requests this app has made in the current window. */
+async function bufferUsed(env: SocialEnv): Promise<number> {
+  await migrate(env.DB, migrations)
+  const [row] = await queryRows(
+    env.DB,
+    'SELECT used FROM social_buffer_budget WHERE slot = ?',
+    [bufferWindow()],
+    (raw) =>
+      typeof raw === 'object' && raw !== null ? Number((raw as { used?: unknown }).used) : 0,
+  )
+  return row ?? 0
+}
+
+/**
  * A Buffer connection's channels, from D1 when fresh, else from Buffer. If Buffer cannot be
- * asked, the last list known is used.
+ * asked, or its budget is running low, the last list known is used.
  */
 async function channelsOf(env: SocialEnv, connection: Connection, userId: string) {
   const cached = await queryRows(
@@ -8381,7 +8446,8 @@ async function channelsOf(env: SocialEnv, connection: Connection, userId: string
     [connection.id],
     parseChannelRow,
   )
-  if (cached.length > 0 && cached.every((c) => Date.now() - c.fetchedAt < CHANNELS_TTL_MS)) {
+  const fresh = cached.length > 0 && cached.every((c) => Date.now() - c.fetchedAt < CHANNELS_TTL_MS)
+  if (fresh || (cached.length > 0 && (await bufferUsed(env)) > BUFFER_BUDGET - BUFFER_RESERVE)) {
     return cached
   }
   try {
@@ -8390,19 +8456,20 @@ async function channelsOf(env: SocialEnv, connection: Connection, userId: string
       { secret: secretOf(env), providers: socialProviders(env) },
       { connectionId: connection.id, userId },
     )
-    const fresh = await bufferChannels(tokens, connection.subject)
+    await spendBuffer(env)
+    const listed = await bufferChannels(tokens, connection.subject)
     await env.DB.batch([
       env.DB.prepare('DELETE FROM social_buffer_channels WHERE connection_id = ?').bind(
         connection.id,
       ),
-      ...fresh.map((c) =>
+      ...listed.map((c) =>
         env.DB.prepare(
           \`INSERT INTO social_buffer_channels (connection_id, channel_id, service, name, fetched_at)
            VALUES (?, ?, ?, ?, ?)\`,
         ).bind(connection.id, c.id, c.service, c.name, Date.now()),
       ),
     ])
-    return fresh
+    return listed
   } catch (error) {
     console.warn('[social] could not list Buffer channels:', error)
     return cached
@@ -8427,7 +8494,11 @@ export async function serverLimits(env: SocialEnv, server: string): Promise<Serv
       if (typeof raw !== 'object' || raw === null) throw new Error('Malformed limits row')
       const { maxChars, maxImages, urlWeight, fetchedAt } = raw as Record<string, unknown>
       return {
-        limits: { maxChars: Number(maxChars), maxImages: Number(maxImages), urlWeight: Number(urlWeight) },
+        limits: {
+          maxChars: Number(maxChars),
+          maxImages: Number(maxImages),
+          urlWeight: Number(urlWeight),
+        },
         fetchedAt: Number(fetchedAt),
       }
     },
@@ -8484,8 +8555,8 @@ export async function readPosts(db: Database, where: string, params: unknown[]) 
   await migrate(db, migrations)
   const posts = await queryRows(
     db,
-    \`SELECT id, text, link_url AS linkUrl, link_title AS linkTitle, at, status FROM social_posts
-     WHERE \${where} ORDER BY at DESC LIMIT 50\`,
+    \`SELECT id, text, link_url AS linkUrl, link_title AS linkTitle, at, in_buffer AS inBuffer, status
+     FROM social_posts WHERE \${where} ORDER BY at DESC LIMIT 50\`,
     params,
     (raw) => raw as Record<string, unknown>,
   )
@@ -8507,6 +8578,7 @@ export async function readPosts(db: Database, where: string, params: unknown[]) 
           ? { url: p['linkUrl'], title: p['linkTitle'] ?? '' }
           : null,
       at: p['at'],
+      inBuffer: p['inBuffer'],
       status: p['status'],
       targets: targets.filter((t) => t['postId'] === p['id']),
     }),
@@ -8522,6 +8594,7 @@ export async function getSocial(env: SocialEnv, request: Request): Promise<Socia
       .filter(isNetwork),
     accounts: await userAccounts(env, user.id),
     posts: await readPosts(env.DB, 'user_id = ?', [user.id]),
+    bufferUsed: env.BUFFER_CLIENT_ID ? await bufferUsed(env) : null,
   }
 }
 
@@ -8562,8 +8635,9 @@ export async function schedulePost(
   await migrate(env.DB, migrations)
   await env.DB.batch([
     env.DB.prepare(
-      \`INSERT INTO social_posts (id, user_id, text, link_url, link_title, at, status, created_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)\`,
+      \`INSERT INTO social_posts (id, user_id, text, link_url, link_title, at, in_buffer, status,
+         created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)\`,
     ).bind(
       id,
       user.id,
@@ -8571,6 +8645,7 @@ export async function schedulePost(
       input.link?.url ?? null,
       input.link?.title ?? null,
       new Date(Math.max(at, now)).toISOString(),
+      input.inBuffer ? 1 : 0,
       status,
       new Date(now).toISOString(),
     ),
@@ -8625,7 +8700,14 @@ import type { WorkflowEvent, WorkflowStep } from 'cloudflare:workers'
 import { asSocialPost, NETWORKS, postsOnce, publisherFor } from '../src/social'
 import type { ScheduledPost, Target } from '../src/social'
 import type { Env } from './index'
-import { BUFFER_SEPARATOR, readPosts, secretOf, serverLimits, socialProviders } from './social'
+import {
+  BUFFER_SEPARATOR,
+  readPosts,
+  secretOf,
+  serverLimits,
+  socialProviders,
+  spendBuffer,
+} from './social'
 import type { SocialPostParams } from './social'
 
 type TargetResult = Pick<Target, 'status' | 'url' | 'error'>
@@ -8648,13 +8730,7 @@ export class SocialPost extends WorkflowEntrypoint<Env, SocialPostParams> {
     // A Workflow refuses to sleep until a past time ("post now"). Decided in a step, so a
     // replay after the sleep takes the same path.
     const due = await step.do('due later', async () => Date.parse(post.at) > Date.now())
-    if (due) await step.sleepUntil('wait until due', new Date(post.at))
-    const started = await step.do('start', () =>
-      setStatus(this.env, postId, 'scheduled', 'publishing'),
-    )
-    // Cancelled while it waited.
-    if (!started) return
-    for (const target of post.targets) {
+    const postTo = async (target: Target) => {
       const name = \`post to \${target.accountId}\`
       try {
         await step.do(
@@ -8675,6 +8751,20 @@ export class SocialPost extends WorkflowEntrypoint<Env, SocialPostParams> {
           }),
         )
       }
+    }
+    // "Let Buffer hold it": Buffer accounts go to Buffer now, with the post's time, and wait in
+    // Buffer's queue (editable there) instead of here. Cancelling here cannot withdraw them.
+    const handedOver =
+      due && post.inBuffer ? post.targets.filter((t) => t.network === 'buffer') : []
+    for (const target of handedOver) await postTo(target)
+    if (due) await step.sleepUntil('wait until due', new Date(post.at))
+    const started = await step.do('start', () =>
+      setStatus(this.env, postId, 'scheduled', 'publishing'),
+    )
+    // Cancelled while it waited.
+    if (!started) return
+    for (const target of post.targets) {
+      if (!handedOver.includes(target)) await postTo(target)
     }
     await step.do('finish', () => finish(this.env, postId))
   }
@@ -8738,6 +8828,7 @@ async function publishTo(env: Env, post: ScheduledPost, target: Target, userId: 
       target.network === 'mastodon' && connection.server
         ? await serverLimits(env, connection.server)
         : null
+    if (target.network === 'buffer') await spendBuffer(env)
     const published = await publisherFor({ ...target, limits }).publish(
       { tokens, subject: channelId ?? connection.subject, server: connection.server },
       asSocialPost(post),
@@ -8745,7 +8836,11 @@ async function publishTo(env: Env, post: ScheduledPost, target: Target, userId: 
       { idempotencyKey: \`\${post.id}:\${target.accountId}\`, createdAt: new Date(post.at) },
     )
     await record(env, post.id, target.accountId, {
-      status: 'posted',
+      // Buffer, given a later time, holds the post in its queue.
+      status:
+        target.network === 'buffer' && Date.parse(post.at) > Date.now() + 60_000
+          ? 'queued'
+          : 'posted',
       url: published.url,
       error: null,
     })
@@ -8778,7 +8873,7 @@ async function publishTo(env: Env, post: ScheduledPost, target: Target, userId: 
 async function finish(env: Env, postId: string) {
   const [post] = await readPosts(env.DB, 'id = ?', [postId])
   if (!post) return
-  const posted = post.targets.filter((t) => t.status === 'posted').length
+  const posted = post.targets.filter((t) => t.status === 'posted' || t.status === 'queued').length
   const status = posted === post.targets.length ? 'done' : posted > 0 ? 'partial' : 'failed'
   await setStatus(env, postId, 'publishing', status)
 }
@@ -8809,7 +8904,7 @@ import type { FormEvent } from 'react'
 import { api } from '../api'
 import { auth } from '../auth'
 import { router } from '../router'
-import { asSocialPost, NETWORKS, publisherFor } from '../social'
+import { asSocialPost, BUFFER_BUDGET, NETWORKS, publisherFor } from '../social'
 import type { Account, PostStatus, Social, TargetStatus } from '../social'
 
 const client = createClient(api)
@@ -8823,6 +8918,7 @@ const linkUrl = signal('')
 const linkTitle = signal('')
 const at = signal('')
 const chosen = signal<string[]>([])
+const inBuffer = signal(false)
 
 async function load(): Promise<void> {
   try {
@@ -8861,6 +8957,7 @@ const POST_TONE: Record<PostStatus, Tone> = {
 const TARGET_TONE: Record<TargetStatus, Tone> = {
   pending: 'neutral',
   publishing: 'info',
+  queued: 'info',
   posted: 'success',
   failed: 'danger',
 }
@@ -8897,12 +8994,14 @@ async function schedule(event: FormEvent<HTMLFormElement>): Promise<void> {
         accountIds: chosen.value,
         // datetime-local is the browser's local time; the Worker keeps UTC.
         at: at.value ? new Date(at.value).toISOString() : null,
+        inBuffer: inBuffer.value,
       },
     })
     text.value = ''
     linkUrl.value = ''
     linkTitle.value = ''
     at.value = ''
+    inBuffer.value = false
     await load()
   } catch (error) {
     failure.value = error instanceof Error ? error.message : 'Not scheduled'
@@ -8957,6 +9056,7 @@ export default function SocialPage() {
   }
   const usable = data?.accounts.filter((a) => a.status !== 'reconnect') ?? []
   const blocking = data ? problems(data.accounts) : []
+  const viaBuffer = usable.some((a) => a.network === 'buffer' && chosen.value.includes(a.id))
 
   return (
     <Flex gap={4}>
@@ -9007,6 +9107,12 @@ export default function SocialPage() {
                     </Button>
                   </Flex>
                 ))}
+                {data.bufferUsed !== null ? (
+                  <Text muted>
+                    Buffer requests in the last 15 minutes, for everyone on this app:{' '}
+                    {data.bufferUsed} of {BUFFER_BUDGET}.
+                  </Text>
+                ) : null}
                 <Flex direction="horizontal" align="end" gap={2} wrap>
                   {data.networks.includes('buffer') ? (
                     <Button asChild variant="secondary">
@@ -9098,6 +9204,13 @@ export default function SocialPage() {
                     value={at.value}
                     onInput={(event) => (at.value = event.currentTarget.value)}
                   />
+                  {at.value && viaBuffer ? (
+                    <Checkbox
+                      label="Let Buffer hold it: Buffer accounts go to Buffer's queue now, where you can still edit them"
+                      checked={inBuffer.value}
+                      onChange={(event) => (inBuffer.value = event.currentTarget.checked)}
+                    />
+                  ) : null}
                   {blocking.length > 0 ? (
                     <Alert variant="warning" title="Not ready to post">
                       {blocking.join(' ')}
@@ -9141,7 +9254,9 @@ export default function SocialPage() {
                         gap={2}
                         wrap
                       >
-                        {post.status === 'cancelled' ? (
+                        {post.status === 'cancelled' && target.status === 'queued' ? (
+                          <Badge variant="warning">still in Buffer's queue</Badge>
+                        ) : post.status === 'cancelled' ? (
                           <Badge variant="neutral">not sent</Badge>
                         ) : (
                           <Badge variant={TARGET_TONE[target.status]}>{target.status}</Badge>

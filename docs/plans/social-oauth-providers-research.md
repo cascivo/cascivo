@@ -710,4 +710,11 @@ server.
   (`max_characters`, `max_media_attachments`, `characters_reserved_per_url`), each accepted
   within a sane range. Live: hachyderm.io allows 2263 characters. The example keeps them in D1
   for a day, and checks against them in the page and again in the Workflow.
+- "Schedule in Buffer" in the example: a scheduled post can hand its Buffer accounts over at
+  once (`createdAt` ahead, so `bufferPublisher` sends `customScheduled`). They wait in
+  Buffer's queue as `queued`; cancelling the post here does not withdraw them, and the page
+  says so.
+- The Buffer request budget: counted in D1 per 15-minute window as the app spends it, shown on
+  the page, and channel lists stop refreshing with fewer than 20 requests left. Buffer still
+  enforces the real budget; its 429 is surfaced as before.
 
