@@ -856,6 +856,38 @@ await bufferPublisher({ service: channel.service, uploadImage }).publish(
   `url` is `null` until Buffer sends it. Every request counts against the budget of the
   plan that owns the app client, for all users together (100 per 15 minutes).
 
+### Threads: posting only, and a token that renews itself
+
+`threads()` connects an account to post with; it is not offered for sign-in (Threads shares
+no email). The code buys a one-hour token, traded at once for a 60-day one. There is no refresh
+token: the long-lived token renews itself once it is a day old, and never after it expires, so
+the provider declares `refreshAhead` (30 days) and a daily Cron Trigger renews the quiet ones:
+
+```ts
+const providers = [threads({ clientId: env.THREADS_APP_ID, clientSecret: env.THREADS_APP_SECRET })]
+
+export default {
+  // wrangler.jsonc: "triggers": { "crons": ["17 4 * * *"] }
+  async scheduled(_event, env) {
+    await refreshConnections(env.DB, { secret: env.AUTH_SECRET, providers })
+  },
+}
+
+await threadsPublisher({ uploadImage }).publish({ tokens, subject: connection.subject }, post)
+```
+
+- **Renewal never costs a working token.** `connectionTokens` renews a `refreshAhead` token in
+  its window; if Meta refuses, it keeps the current one and tries again on the next call. A
+  token that never renews shows as `expiring` in its last week, then `reconnect`.
+- **Two steps, as Meta requires.** A media container (text, an image, or a carousel of up to
+  20), waited on while Meta fetches the images, then published. Images go by public URL, as
+  with Buffer: pass `uploadImage`. Alt text is sent with each image.
+- **500 characters, emoji by their UTF-8 bytes** (`threadsLength`). A text post shows its link
+  as a card; one with images carries the link in its text.
+- **No idempotency, 250 posts a day.** Like LinkedIn, a request that timed out may have posted.
+- **Meta's review gates strangers.** Until App Review and Tech Provider verification pass,
+  only the app's own testers can connect.
+
 ### Mastodon: one provider, many servers
 
 Every Mastodon server runs its own OAuth, so `mastodon()` is a factory. The flow takes the

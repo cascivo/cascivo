@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { DatabaseSync } from 'node:sqlite'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { SESSION_COOKIE } from './auth-server'
 import { OAuthError } from './oauth'
 import type { OAuthProvider, TokenSet } from './oauth'
@@ -11,6 +11,7 @@ import {
   handleOAuth,
   listConnections,
   markReconnect,
+  refreshConnections,
 } from './oauth-server'
 import { d1 } from './sqlite.fixtures'
 
@@ -276,5 +277,108 @@ describe('handleConnections', () => {
         { connectionId: connection!.id, userId: adaId },
       ),
     ).rejects.toMatchObject({ code: 'reconnect' })
+  })
+
+  describe('a token that renews itself (Threads)', () => {
+    const DAY = 86_400
+    /** The same provider, renewing its own token as Threads does: no refresh token. */
+    function selfRenewing(base: OAuthProvider) {
+      let renewals = 0
+      let refuse = false
+      const provider: OAuthProvider = {
+        ...base,
+        refreshAhead: 30 * DAY,
+        async refresh(tokens) {
+          renewals += 1
+          await new Promise((resolve) => setTimeout(resolve, 20))
+          if (refuse) throw new OAuthError('provider_error', 'Session has expired')
+          return { ...tokens, accessToken: `renewed-${renewals}`, expiresAt: now() + 60 * DAY }
+        },
+      }
+      return { provider, renewals: () => renewals, refuse: () => void (refuse = true) }
+    }
+
+    async function connected(daysLeft: number) {
+      const t = setup()
+      const ada = await t.signInAs('ada')
+      t.net.grants({ accessToken: 'long', refreshToken: null, expiresAt: now() + daysLeft * DAY })
+      await t.connect(ada)
+      const adaId = await t.userOf(ada)
+      const [connection] = await listConnections(t.db, adaId)
+      const renewing = selfRenewing(t.net.provider)
+      const options = { secret: SECRET, providers: [renewing.provider] }
+      return {
+        ...t,
+        adaId,
+        renewing,
+        options,
+        where: { connectionId: connection!.id, userId: adaId },
+      }
+    }
+
+    it('is left alone until its renewal window, then renewed once', async () => {
+      const early = await connected(45)
+      expect(
+        (await connectionTokens(early.db, early.options, early.where)).tokens.accessToken,
+      ).toBe('long')
+      expect(early.renewing.renewals()).toBe(0)
+
+      const due = await connected(20)
+      const [a, b] = await Promise.all([
+        connectionTokens(due.db, due.options, due.where),
+        connectionTokens(due.db, due.options, due.where),
+      ])
+      expect(due.renewing.renewals()).toBe(1)
+      // The one that found the renewal under way did not wait: its token still works.
+      expect([a.tokens.accessToken, b.tokens.accessToken].sort()).toEqual(['long', 'renewed-1'])
+      expect((await connectionTokens(due.db, due.options, due.where)).tokens.accessToken).toBe(
+        'renewed-1',
+      )
+      expect((await listConnections(due.db, due.adaId))[0]!.status).toBe('active')
+    })
+
+    it('keeps the working token when renewal fails, and says so in its last week', async () => {
+      const t = await connected(5)
+      t.renewing.refuse()
+      expect((await connectionTokens(t.db, t.options, t.where)).tokens.accessToken).toBe('long')
+      expect((await listConnections(t.db, t.adaId))[0]!.status).toBe('expiring')
+      // Not marked broken: the next call tries again.
+      await connectionTokens(t.db, t.options, t.where)
+      expect(t.renewing.renewals()).toBe(2)
+    })
+
+    it('cannot be renewed once it has expired', async () => {
+      const t = await connected(-1)
+      await expect(connectionTokens(t.db, t.options, t.where)).rejects.toMatchObject({
+        code: 'reconnect',
+      })
+      expect(t.renewing.renewals()).toBe(0)
+      expect((await listConnections(t.db, t.adaId))[0]!.status).toBe('reconnect')
+    })
+
+    it('refreshConnections renews those in the window, and counts the ones it could not', async () => {
+      const t = await connected(10)
+      const other = { ...t.where }
+      // A second account of the same user, outside the window.
+      t.net.grants({ accessToken: 'fresh', expiresAt: now() + 50 * DAY })
+      await t.connect(await t.signInAs('ada'), 'acct-2')
+      expect(await refreshConnections(t.db, t.options)).toEqual({ renewed: 1, failed: 0 })
+      expect((await connectionTokens(t.db, t.options, other)).tokens.accessToken).toBe('renewed-1')
+      // Renewed: no longer due.
+      expect(await refreshConnections(t.db, t.options)).toEqual({ renewed: 0, failed: 0 })
+      // A provider without refreshAhead is not touched.
+      expect(
+        await refreshConnections(t.db, { secret: SECRET, providers: [t.net.provider] }),
+      ).toEqual({ renewed: 0, failed: 0 })
+
+      // 45 days on, both are due (15 and 5 days left), and Meta refuses.
+      vi.useFakeTimers({ toFake: ['Date'], now: Date.now() + 45 * DAY * 1000 })
+      try {
+        t.renewing.refuse()
+        expect(await refreshConnections(t.db, t.options)).toEqual({ renewed: 0, failed: 2 })
+      } finally {
+        vi.useRealTimers()
+      }
+    })
   })
 })

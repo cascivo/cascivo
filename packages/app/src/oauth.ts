@@ -3,7 +3,7 @@ import { base64UrlDecode, base64UrlEncode, JwtError, verifyJwt } from './jwt'
 
 /**
  * `@cascivo/app/oauth` — the authorization-code flow against an OAuth provider, and adapters
- * for Google, GitHub, LinkedIn, Mastodon, Bluesky and Buffer. It knows the protocol and the provider, nothing else: no database, no
+ * for Google, GitHub, LinkedIn, Mastodon, Bluesky, Buffer and Threads. It knows the protocol and the provider, nothing else: no database, no
  * cookies, no users. What happens to the tokens is the caller's choice: `handleOAuth`
  * (`@cascivo/app/oauth-server`) turns the identity into a session and drops them; an app that
  * posts or reads on the user's behalf keeps them, sealed with `seal`. It runs anywhere with
@@ -88,8 +88,14 @@ export interface OAuthProvider {
     pending: PendingAuthorization,
     params?: URLSearchParams,
   ): Promise<CompletedAuthorization>
-  /** Present when the provider issues refresh tokens. */
+  /** Present when the provider issues refresh tokens, or renews its tokens itself (`refreshAhead`). */
   refresh?(tokens: TokenSet): Promise<TokenSet>
+  /**
+   * For a provider whose access token renews itself instead of through a refresh token
+   * (Threads): seconds before expiry from which `refresh` should renew it. An expired token of
+   * such a provider cannot be renewed.
+   */
+  readonly refreshAhead?: number
   /**
    * Present when the provider is many servers that each run their own OAuth (Mastodon): the
    * provider for one server, which the user names. Begin and complete with what it returns.
@@ -1512,6 +1518,134 @@ export function buffer(options: BufferOptions): OAuthProvider {
         expiresAt: fresh.expiresAt,
         scopes: fresh.scopes,
       }
+    },
+  }
+}
+
+/* ----------------------------------- Threads ---------------------------------- */
+
+export interface ThreadsOptions {
+  clientId: string
+  clientSecret: string
+  /** Default `threads_basic threads_content_publish`: who the account is, and posting. */
+  scopes?: readonly string[]
+  fetch?: typeof fetch
+}
+
+const THREADS_GRAPH = 'https://graph.threads.com'
+
+/**
+ * A Graph API answer, or `OAuthError('provider_error')` with Meta's message. Meta reports
+ * errors as `{ error: { message } }`, or as `{ error_message }` from the token endpoint.
+ */
+async function threadsGraph(
+  doFetch: typeof fetch,
+  url: string,
+  init: RequestInit = {},
+): Promise<Record<string, unknown>> {
+  const response = await doFetch(url, { ...init, redirect: 'manual' })
+  const body: unknown = await response.json().catch(() => null)
+  const r = typeof body === 'object' && body !== null ? (body as Record<string, unknown>) : null
+  const error = r?.['error']
+  const message =
+    typeof error === 'object' && error !== null
+      ? (error as Record<string, unknown>)['message']
+      : r?.['error_message']
+  if (!response.ok || !r || error !== undefined) {
+    throw new OAuthError(
+      'provider_error',
+      typeof message === 'string' ? message : `Threads answered ${response.status}`,
+    )
+  }
+  return r
+}
+
+function threadsToken(raw: Record<string, unknown>, scopes: readonly string[]): TokenSet {
+  const accessToken = raw['access_token']
+  const expiresIn = raw['expires_in']
+  if (typeof accessToken !== 'string' || accessToken === '') {
+    throw new OAuthError('provider_error', 'Threads sent no access token')
+  }
+  return {
+    accessToken,
+    refreshToken: null,
+    expiresAt: typeof expiresIn === 'number' ? now() + expiresIn : null,
+    scopes: [...scopes],
+  }
+}
+
+/**
+ * Threads (Meta), for connecting an account to post with — not for sign-in: it shares no
+ * email. The code buys a one-hour token, which is traded at once for a 60-day one. There is no
+ * refresh token: the long-lived token renews itself once it is a day old, and not after it
+ * has expired, so `refreshAhead` asks `connectionTokens` (and a daily `refreshConnections`)
+ * to renew it in its last 30 days. PKCE is not supported; the client secret authenticates.
+ *
+ * Until Meta's App Review and Tech Provider verification pass, only the app's own testers can
+ * connect.
+ */
+export function threads(options: ThreadsOptions): OAuthProvider {
+  const doFetch = options.fetch ?? ((input, init) => fetch(input, init))
+  return {
+    id: 'threads',
+    scopes: options.scopes ?? ['threads_basic', 'threads_content_publish'],
+    refreshAhead: 30 * 86_400,
+    authorizationUrl(pending) {
+      const url = new URL('https://www.threads.com/oauth/authorize')
+      const params: Record<string, string> = {
+        client_id: options.clientId,
+        redirect_uri: pending.redirectUri,
+        scope: pending.scopes.join(','),
+        response_type: 'code',
+        state: pending.state,
+      }
+      for (const [key, value] of Object.entries(params)) url.searchParams.set(key, value)
+      return url
+    },
+    async exchange(code, pending) {
+      const short = await threadsGraph(doFetch, `${THREADS_GRAPH}/oauth/access_token`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          client_id: options.clientId,
+          client_secret: options.clientSecret,
+          grant_type: 'authorization_code',
+          code,
+          redirect_uri: pending.redirectUri,
+        }),
+      })
+      const shortToken = threadsToken(short, pending.scopes)
+      const long = new URL(`${THREADS_GRAPH}/access_token`)
+      long.searchParams.set('grant_type', 'th_exchange_token')
+      long.searchParams.set('client_secret', options.clientSecret)
+      long.searchParams.set('access_token', shortToken.accessToken)
+      const tokens = threadsToken(await threadsGraph(doFetch, long.href), pending.scopes)
+      const me = await threadsGraph(
+        doFetch,
+        `${THREADS_GRAPH}/v1.0/me?fields=id,username,name,threads_profile_picture_url`,
+        { headers: { authorization: `Bearer ${tokens.accessToken}` } },
+      )
+      // Meta sends `user_id` as a number; the profile's `id` is a string.
+      const subject = stringOrNull(me['id']) ?? String(short['user_id'] ?? '')
+      if (!subject) throw new OAuthError('provider_error', 'Threads did not say who this is')
+      const handle = stringOrNull(me['username'])
+      return {
+        tokens,
+        identity: {
+          provider: 'threads',
+          subject,
+          email: null,
+          name: stringOrNull(me['name']) ?? handle,
+          handle,
+          avatarUrl: stringOrNull(me['threads_profile_picture_url']),
+        },
+      }
+    },
+    async refresh(tokens) {
+      const url = new URL(`${THREADS_GRAPH}/refresh_access_token`)
+      url.searchParams.set('grant_type', 'th_refresh_token')
+      url.searchParams.set('access_token', tokens.accessToken)
+      return threadsToken(await threadsGraph(doFetch, url.href), tokens.scopes)
     },
   }
 }

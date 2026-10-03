@@ -681,3 +681,23 @@ server.
 - Not done: the D1 request-budget counter proposed above (Buffer enforces the budget and the
   429 is surfaced instead), and "schedule in Buffer" in the example's composer (the Workflow
   waits and Buffer shares now; `bufferPublisher` supports both).
+
+**Step 7 implemented (2026-10-03):** Threads (decision 4: posting only).
+
+- `threads()` in `oauth`: authorize at `www.threads.com` (the bare host answers with a 301), code and
+  long-lived exchange and the profile at `graph.threads.com` (`graph.threads.net` answers the
+  same; Meta's pages name both). No PKCE, client secret; scopes comma-separated.
+- No refresh token, so the provider declares `refreshAhead` (30 days). `connectionTokens`
+  renews such a token in its window, never waits on another request doing so (the current
+  token still works), and keeps the working token when the renewal fails. Such a connection
+  stays "not refreshable", so a token that never renews shows `expiring` in its last week, then
+  `reconnect`. `refreshConnections` renews all due connections; the example calls it from a
+  daily Cron Trigger that shares the `scheduled` handler with the digest.
+- `threadsPublisher` in `social`: text with `link_attachment`, one image, or a carousel
+  (children first, each waited on), then `threads_publish` and a permalink lookup that cannot
+  turn a published post into a failure. `alt_text` is sent (up to 1000 characters).
+  `threadsLength` counts an emoji by its UTF-8 bytes, as Meta documents.
+- Live, against Meta with a planted token: refresh refused with `Cannot parse access token`
+  (`provider_error`), the code exchange refused `Invalid client_id`, and publishing answered
+  401, which became `reconnect`. Not tried: a real account (Meta's tester role on an app).
+

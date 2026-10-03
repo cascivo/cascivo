@@ -316,6 +316,19 @@ export const viaBuffer = (key: string) =>
     { createdAt: new Date(Date.now() + 3_600_000) },
   )
 export const rawQuery = (key: string) => bufferQuery(fetch, key, 'query { account { organizations { id } } }')
+import { threads } from '@cascivo/app/oauth'
+import { refreshConnections } from '@cascivo/app/oauth-server'
+import { threadsLength, threadsPublisher } from '@cascivo/app/social'
+export const threadsApp = threads({ clientId: 'c', clientSecret: 's' })
+export const renewAhead: number | undefined = threadsApp.refreshAhead
+export const nightly = (db: Database): Promise<{ renewed: number; failed: number }> =>
+  refreshConnections(db, { secret: 's'.repeat(32), providers: [threadsApp] })
+export const thread = (tokens: TokenSet) =>
+  threadsPublisher({ uploadImage: async () => 'https://x.example/1.png', pollMs: 1000 }).publish(
+    { tokens, subject: '1789' },
+    { text: 'Hi', images: [{ data: new Blob(['x'], { type: 'image/png' }), alt: 'A' }] },
+  )
+export const threadsCount = (text: string): number => threadsLength(text)
 export const atproto = (key?: BlueskyKey) => bluesky({ clientMetadataPath: '/oauth/client-metadata.json', ...(key ? { privateKey: key } : {}) })
 export const atprotoClient = (origin: string, secret: string) => {
   const privateKey = parseBlueskyKey(secret)

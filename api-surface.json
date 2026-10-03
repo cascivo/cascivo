@@ -7065,6 +7065,7 @@
           "parsePendingAuthorization",
           "parseTokenSet",
           "seal",
+          "threads",
           "unseal"
         ],
         "types": [
@@ -7082,6 +7083,7 @@
           "OAuthErrorCode",
           "OAuthProvider",
           "PendingAuthorization",
+          "ThreadsOptions",
           "TokenSet"
         ],
         "declarations": {
@@ -7178,6 +7180,7 @@
             "authorizationUrl": "(pending: PendingAuthorization, codeChallenge: string): URL | Promise<URL>",
             "exchange": "(code: string, pending: PendingAuthorization, params?: URLSearchParams): Promise<CompletedAuthorization>",
             "refresh?": "(tokens: TokenSet): Promise<TokenSet>",
+            "readonly refreshAhead?": "number",
             "forServer?": "(server: string, redirectUri: string): Promise<OAuthProvider>"
           },
           "parseBlueskyKey": "declare function parseBlueskyKey(raw: string): BlueskyKey",
@@ -7195,6 +7198,13 @@
             "dpopKey": "JsonWebKey | null"
           },
           "seal": "declare function seal(secret: string, context: string, value: unknown): Promise<string>",
+          "threads": "declare function threads(options: ThreadsOptions): OAuthProvider",
+          "ThreadsOptions": {
+            "clientId": "string",
+            "clientSecret": "string",
+            "scopes?": "readonly string[]",
+            "fetch?": "typeof fetch"
+          },
           "TokenSet": {
             "accessToken": "string",
             "refreshToken": "string | null",
@@ -7213,7 +7223,8 @@
           "handleOAuth",
           "listConnections",
           "markReconnect",
-          "mastodonRegistrations"
+          "mastodonRegistrations",
+          "refreshConnections"
         ],
         "types": ["Connection", "ConnectionsOptions", "OAuthFailure", "OAuthServerOptions"],
         "declarations": {
@@ -7256,7 +7267,8 @@
             "origin?": "string",
             "errorPath?": "string",
             "sessionTtlSeconds?": "number"
-          }
+          },
+          "refreshConnections": "declare function refreshConnections(db: Database, options: { secret: string; providers: readonly OAuthProvider[]; }): Promise<{ renewed: number; failed: number; }>"
         }
       },
       "./social": {
@@ -7272,7 +7284,9 @@
           "escapeLittleText",
           "linkedinPublisher",
           "mastodonLength",
-          "mastodonPublisher"
+          "mastodonPublisher",
+          "threadsLength",
+          "threadsPublisher"
         ],
         "types": [
           "BlueskyPublisherOptions",
@@ -7288,7 +7302,8 @@
           "PublishedPost",
           "Publisher",
           "SocialImage",
-          "SocialPost"
+          "SocialPost",
+          "ThreadsPublisherOptions"
         ],
         "declarations": {
           "blueskyFacets": "declare function blueskyFacets(text: string, resolve: (handle: string) => Promise<string | null>): Promise<Facet[]>",
@@ -7372,6 +7387,13 @@
             "text": "string",
             "link?": "{ url: string; title: string; description?: string; thumbnail?: SocialImage; }",
             "images?": "readonly SocialImage[]"
+          },
+          "threadsLength": "declare function threadsLength(text: string): number",
+          "threadsPublisher": "declare function threadsPublisher(options?: ThreadsPublisherOptions): Publisher",
+          "ThreadsPublisherOptions": {
+            "uploadImage?": "(image: SocialImage) => Promise<string>",
+            "pollMs?": "number",
+            "fetch?": "typeof fetch"
           }
         }
       },

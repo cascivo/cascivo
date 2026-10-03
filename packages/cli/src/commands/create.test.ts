@@ -1272,7 +1272,9 @@ describe('buildScaffold — cloudflare --example social', () => {
     expect(store).toContain('if (env.BUFFER_CLIENT_ID) {')
     expect(store).toContain('const CHANNELS_TTL_MS = 60 * 60 * 1000')
     const workflow = map.get('worker/social-post.ts')!
-    expect(workflow).toContain("target.network === 'linkedin' || target.network === 'buffer'")
+    expect(map.get('src/social.ts')).toContain(
+      "return network === 'buffer' || network === 'linkedin' || network === 'threads'",
+    )
     expect(workflow).toContain('target.accountId.split(BUFFER_SEPARATOR)')
     expect(map.get('.dev.vars')).toContain('BUFFER_CLIENT_ID=')
     expect(map.get('src/routes/social.tsx')).toContain('/api/connections/buffer?returnTo=/social')
@@ -1293,7 +1295,7 @@ describe('buildScaffold — cloudflare --example social', () => {
   it('never retries a LinkedIn post, and retries the others with a fixed key and time', () => {
     const workflow = map.get('worker/social-post.ts')!
     expect(workflow).toContain(
-      "target.network === 'linkedin' || target.network === 'buffer'\n            ? { retries: { limit: 0, delay: '1 second' } }",
+      "postsOnce(target.network)\n            ? { retries: { limit: 0, delay: '1 second' } }",
     )
     expect(workflow).toContain(
       'idempotencyKey: `${post.id}:${target.accountId}`, createdAt: new Date(post.at)',
@@ -1301,6 +1303,33 @@ describe('buildScaffold — cloudflare --example social', () => {
     // "Post now" must not ask a Workflow to sleep until the past.
     expect(workflow.indexOf("step.do('due later'")).toBeLessThan(
       workflow.indexOf('step.sleepUntil('),
+    )
+  })
+
+  it('offers Threads once its app is set, and renews its tokens from a daily Cron Trigger', () => {
+    const store = map.get('worker/social.ts')!
+    expect(store).toContain('if (env.THREADS_APP_ID && env.THREADS_APP_SECRET) {')
+    expect(store).toContain('export async function renewConnections(env: SocialEnv)')
+    expect(map.get('src/routes/social.tsx')).toContain('/api/connections/threads?returnTo=/social')
+    expect(map.get('.dev.vars')).toContain('THREADS_APP_SECRET=')
+    expect(map.get('wrangler.jsonc')).toContain('"triggers": { "crons": ["17 4 * * *"] },')
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain('THREADS_APP_ID?: string')
+    expect(worker).toContain('await socialStore.renewConnections(env)')
+    expect(map.get('README.md')).toContain('`17 4 * * *`')
+  })
+
+  it('shares one Cron Trigger handler with the digest, told apart by schedule', () => {
+    const both = build({ examples: ['social', 'digest'] })
+    expect(both.get('wrangler.jsonc')).toContain('"crons": ["0 8 * * 1", "17 4 * * *"]')
+    const worker = both.get('worker/index.ts')!
+    expect(worker).toContain(
+      "if (event.cron === '17 4 * * *') return socialStore.renewConnections(env)",
+    )
+    expect(worker.match(/async scheduled\(/g)).toHaveLength(1)
+    // The digest alone keeps its own handler.
+    expect(build({ examples: ['digest'] }).get('worker/index.ts')).toContain(
+      'async scheduled(_event: unknown, env: Env): Promise<void> {\n    await digestJob.runDigest(',
     )
   })
 

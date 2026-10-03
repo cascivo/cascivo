@@ -262,7 +262,7 @@
         "worker/social.ts"
       ],
       "pages": ["/account", "/social"],
-      "services": ["ratelimits", "d1_databases", "workflows"],
+      "services": ["ratelimits", "triggers", "d1_databases", "workflows"],
       "react": false,
       "brings": []
     }

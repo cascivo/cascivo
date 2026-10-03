@@ -1388,10 +1388,22 @@ ${jsoncArray('  ', 'r2_buckets', [`{ "binding": "FILES", "bucket_name": "${packa
 ${jsoncArray('  ', 'ratelimits', ['{ "name": "LIMITER", "namespace_id": "1001", "simple": { "limit": 20, "period": 60 } }'])}`
       : ''
   }${wranglerVars(opts)}${
-    hasExample(opts, 'digest')
+    hasExample(opts, 'digest') || hasExample(opts, 'social')
       ? `
-  // The weekly digest: Mondays at 08:00 UTC (worker/digest.ts).
-  "triggers": { "crons": ["0 8 * * 1"] },`
+  // ${[
+    hasExample(opts, 'digest') ? 'The weekly digest: Mondays at 08:00 UTC (worker/digest.ts)' : '',
+    hasExample(opts, 'social')
+      ? 'Threads tokens renewed daily at 04:17 UTC (worker/social.ts)'
+      : '',
+  ]
+    .filter(Boolean)
+    .join('; ')}.
+  "triggers": { "crons": [${[
+    hasExample(opts, 'digest') ? '"0 8 * * 1"' : '',
+    hasExample(opts, 'social') ? `"${SOCIAL_CRON}"` : '',
+  ]
+    .filter(Boolean)
+    .join(', ')}] },`
       : ''
   }${
     usesD1(opts)
@@ -2123,7 +2135,7 @@ ${
   search ||
   checkout ||
   newsletter
-    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${oauth ? '\n  /** Sign-in with GitHub, Google and LinkedIn: `wrangler secret put` (.dev.vars locally). A provider is\n   * offered once both its id and secret are set; AUTH_SECRET seals the sign-in state. */\n  AUTH_SECRET?: string\n  GITHUB_CLIENT_ID?: string\n  GITHUB_CLIENT_SECRET?: string\n  GOOGLE_CLIENT_ID?: string\n  GOOGLE_CLIENT_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string' : social ? "\n  /** Seals connected accounts' tokens, and LinkedIn's app: `wrangler secret put` (.dev.vars\n   * locally). LinkedIn is offered once both its values are set. */\n  AUTH_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string" : ''}${social ? '\n  /** Bluesky: an ES256 private JWK (README); unset, the app is a public client. */\n  BLUESKY_PRIVATE_JWK?: string\n  /** A Buffer app client (README); Buffer is offered once its id is set. */\n  BUFFER_CLIENT_ID?: string\n  BUFFER_CLIENT_SECRET?: string\n  SOCIAL_POST: Workflow<SocialPostParams>' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
+    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${oauth ? '\n  /** Sign-in with GitHub, Google and LinkedIn: `wrangler secret put` (.dev.vars locally). A provider is\n   * offered once both its id and secret are set; AUTH_SECRET seals the sign-in state. */\n  AUTH_SECRET?: string\n  GITHUB_CLIENT_ID?: string\n  GITHUB_CLIENT_SECRET?: string\n  GOOGLE_CLIENT_ID?: string\n  GOOGLE_CLIENT_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string' : social ? "\n  /** Seals connected accounts' tokens, and LinkedIn's app: `wrangler secret put` (.dev.vars\n   * locally). LinkedIn is offered once both its values are set. */\n  AUTH_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string" : ''}${social ? '\n  /** Bluesky: an ES256 private JWK (README); unset, the app is a public client. */\n  BLUESKY_PRIVATE_JWK?: string\n  /** A Buffer app client (README); Buffer is offered once its id is set. */\n  BUFFER_CLIENT_ID?: string\n  BUFFER_CLIENT_SECRET?: string\n  /** A Meta app with the Threads use case (README); Threads is offered once both are set. */\n  THREADS_APP_ID?: string\n  THREADS_APP_SECRET?: string\n  SOCIAL_POST: Workflow<SocialPostParams>' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -2616,13 +2628,28 @@ ${
   },`
     : `  fetch: ${usage ? 'handleAndRecord' : 'handleApi'},`
 }${
-    digest
+    digest && social
       ? `
+  // The Cron Triggers in wrangler.jsonc, told apart by their schedule.
+  async scheduled(event: { cron: string }, env: Env): Promise<void> {
+    // Threads tokens, renewed before they lapse (worker/social.ts).
+    if (event.cron === '${SOCIAL_CRON}') return socialStore.renewConnections(env)
+    // The weekly digest, recorded whatever happens.
+    await digestJob.runDigest(env, () => puppeteer.launch(env.BROWSER), 'cron')
+  },`
+      : digest
+        ? `
   // The Cron Trigger in wrangler.jsonc: the weekly digest, recorded whatever happens.
   async scheduled(_event: unknown, env: Env): Promise<void> {
     await digestJob.runDigest(env, () => puppeteer.launch(env.BROWSER), 'cron')
   },`
-      : ''
+        : social
+          ? `
+  // The Cron Trigger in wrangler.jsonc: Threads tokens, renewed before they lapse.
+  async scheduled(_event: unknown, env: Env): Promise<void> {
+    await socialStore.renewConnections(env)
+  },`
+          : ''
   }${
     live && newsletter
       ? `
@@ -7836,12 +7863,16 @@ export default function BillingPage() {
 
 /* --- `--example social`: scheduled posts to connected LinkedIn and Mastodon accounts --- */
 
+/** Daily, off the hour: renews Threads tokens in their last 30 days (\`renewConnections\`). */
+const SOCIAL_CRON = '17 4 * * *'
+
 function cfSocialTs(): string {
   return `import {
   blueskyPublisher,
   bufferPublisher,
   linkedinPublisher,
   mastodonPublisher,
+  threadsPublisher,
 } from '@cascivo/app/social'
 import type { Publisher, SocialPost } from '@cascivo/app/social'
 
@@ -7856,17 +7887,27 @@ export const NETWORKS = {
   buffer: 'Buffer',
   linkedin: 'LinkedIn',
   mastodon: 'Mastodon',
+  threads: 'Threads',
 } as const
 export type Network = keyof typeof NETWORKS
 
 export function isNetwork(value: string): value is Network {
-  return value === 'bluesky' || value === 'buffer' || value === 'linkedin' || value === 'mastodon'
+  return Object.keys(NETWORKS).includes(value)
+}
+
+/**
+ * Networks with no idempotency key: a request that timed out may have posted, so their posts
+ * are never retried.
+ */
+export function postsOnce(network: Network): boolean {
+  return network === 'buffer' || network === 'linkedin' || network === 'threads'
 }
 
 const publishers: Record<Exclude<Network, 'buffer'>, Publisher> = {
   bluesky: blueskyPublisher(),
   linkedin: linkedinPublisher(),
   mastodon: mastodonPublisher(),
+  threads: threadsPublisher(),
 }
 
 /**
@@ -8068,6 +8109,7 @@ import {
   linkedin,
   mastodon,
   parseBlueskyKey,
+  threads,
 } from '@cascivo/app/oauth'
 import type { OAuthProvider } from '@cascivo/app/oauth'
 import {
@@ -8075,6 +8117,7 @@ import {
   handleConnections,
   listConnections,
   mastodonRegistrations,
+  refreshConnections,
 } from '@cascivo/app/oauth-server'
 import type { Connection } from '@cascivo/app/oauth-server'
 import { bufferChannels } from '@cascivo/app/social'
@@ -8105,6 +8148,9 @@ export interface SocialEnv {
   /** A Buffer app client (README); Buffer is offered once its id is set. */
   BUFFER_CLIENT_ID?: string
   BUFFER_CLIENT_SECRET?: string
+  /** A Meta app with the Threads use case (README); Threads is offered once both are set. */
+  THREADS_APP_ID?: string
+  THREADS_APP_SECRET?: string
   SOCIAL_POST: Workflow<SocialPostParams>
 }
 
@@ -8160,8 +8206,8 @@ const blueskyKey = (env: SocialEnv) =>
 
 /**
  * The accounts a user can connect: Bluesky and Mastodon always (Bluesky reads this app's
- * client metadata; the app registers itself with each Mastodon server), LinkedIn once its
- * client id and secret are set. Each asks for the scopes to post.
+ * client metadata; the app registers itself with each Mastodon server); Buffer, LinkedIn and
+ * Threads once their app's values are set. Each asks for the scopes to post.
  */
 export function socialProviders(env: SocialEnv): OAuthProvider[] {
   const key = blueskyKey(env)
@@ -8189,6 +8235,9 @@ export function socialProviders(env: SocialEnv): OAuthProvider[] {
       }),
     )
   }
+  if (env.THREADS_APP_ID && env.THREADS_APP_SECRET) {
+    providers.push(threads({ clientId: env.THREADS_APP_ID, clientSecret: env.THREADS_APP_SECRET }))
+  }
   providers.push(
     mastodon({
       appName: APP_NAME,
@@ -8209,6 +8258,18 @@ export function connections(env: SocialEnv): (request: Request) => Promise<Respo
     providers: socialProviders(env),
     errorPath: '/social',
   })
+}
+
+/**
+ * The daily Cron Trigger: renews Threads tokens in their last 30 days. A Threads token renews
+ * only while it still works, so one nobody posts with would otherwise lapse after 60 days.
+ */
+export async function renewConnections(env: SocialEnv): Promise<void> {
+  const { renewed, failed } = await refreshConnections(env.DB, {
+    secret: secretOf(env),
+    providers: socialProviders(env),
+  })
+  if (renewed + failed > 0) console.log(\`[social] renewed \${renewed}, could not renew \${failed}\`)
 }
 
 /**
@@ -8468,7 +8529,7 @@ import { ConnectionError, connectionTokens, markReconnect } from '@cascivo/app/o
 import { PublishError } from '@cascivo/app/social'
 import { WorkflowEntrypoint } from 'cloudflare:workers'
 import type { WorkflowEvent, WorkflowStep } from 'cloudflare:workers'
-import { asSocialPost, NETWORKS, publisherFor } from '../src/social'
+import { asSocialPost, NETWORKS, postsOnce, publisherFor } from '../src/social'
 import type { ScheduledPost, Target } from '../src/social'
 import type { Env } from './index'
 import { BUFFER_SEPARATOR, readPosts, secretOf, socialProviders } from './social'
@@ -8481,9 +8542,10 @@ type TargetResult = Pick<Target, 'status' | 'url' | 'error'>
  * account in its own step, so one network failing does not hold up or repeat the others.
  *
  * Retrying is decided per network. Mastodon takes an idempotency key and Bluesky a fixed record
- * key, so a step that failed mid-request is retried and cannot post twice. LinkedIn and Buffer
- * take none: their steps are never retried, and an account found mid-post (a crash between the request and the record) is
- * reported for a person to check instead of being posted again.
+ * key, so a step that failed mid-request is retried and cannot post twice. Buffer, LinkedIn and
+ * Threads take none (\`postsOnce\`): their steps are never retried, and an account found mid-post
+ * (a crash between the request and the record) is reported for a person to check instead of
+ * being posted again.
  */
 export class SocialPost extends WorkflowEntrypoint<Env, SocialPostParams> {
   override async run(event: WorkflowEvent<SocialPostParams>, step: WorkflowStep) {
@@ -8504,7 +8566,7 @@ export class SocialPost extends WorkflowEntrypoint<Env, SocialPostParams> {
       try {
         await step.do(
           name,
-          target.network === 'linkedin' || target.network === 'buffer'
+          postsOnce(target.network)
             ? { retries: { limit: 0, delay: '1 second' } }
             : { retries: { limit: 3, delay: '30 seconds', backoff: 'exponential' } },
           () => publishTo(this.env, post, target, userId),
@@ -8514,10 +8576,9 @@ export class SocialPost extends WorkflowEntrypoint<Env, SocialPostParams> {
           record(this.env, postId, target.accountId, {
             status: 'failed',
             url: null,
-            error:
-              target.network === 'linkedin' || target.network === 'buffer'
-                ? \`\${NETWORKS[target.network]} did not answer. Check before posting this again.\`
-                : \`\${NETWORKS[target.network]} did not take it: \${String(error)}\`,
+            error: postsOnce(target.network)
+              ? \`\${NETWORKS[target.network]} did not answer. Check before posting this again.\`
+              : \`\${NETWORKS[target.network]} did not take it: \${String(error)}\`,
           }),
         )
       }
@@ -8562,7 +8623,7 @@ async function publishTo(env: Env, post: ScheduledPost, target: Target, userId: 
     const [current] = await readPosts(env.DB, 'id = ?', [post.id])
     const now = current?.targets.find((t) => t.accountId === target.accountId)
     if (!now || now.status !== 'publishing') return
-    if (target.network === 'linkedin' || target.network === 'buffer') {
+    if (postsOnce(target.network)) {
       await record(env, post.id, target.accountId, {
         status: 'failed',
         url: null,
@@ -8857,6 +8918,11 @@ export default function SocialPage() {
                   {data.networks.includes('linkedin') ? (
                     <Button asChild variant="secondary">
                       <a href="/api/connections/linkedin?returnTo=/social">Connect LinkedIn</a>
+                    </Button>
+                  ) : null}
+                  {data.networks.includes('threads') ? (
+                    <Button asChild variant="secondary">
+                      <a href="/api/connections/threads?returnTo=/social">Connect Threads</a>
                     </Button>
                   ) : null}
                   {/* Plain GET forms: the Worker redirects to the account or server named. */}
@@ -11218,8 +11284,8 @@ page through them instead.`
 
 ## Social posts
 
-\`/social\` connects Bluesky, LinkedIn and Mastodon accounts and posts to them, now or at a time
-you pick.
+\`/social\` connects Bluesky, Buffer, LinkedIn, Mastodon and Threads accounts and posts to them,
+now or at a time you pick.
 
 - \`worker/social.ts\` — \`handleConnections\` (\`@cascivo/app/oauth-server\`) answers
   \`/api/connections/*\`: connect, list, remove. Tokens are sealed in D1 with \`AUTH_SECRET\`.
@@ -11228,8 +11294,8 @@ you pick.
 - \`worker/social-post.ts\` — \`SocialPost\`, a Workflow per post: it sleeps until the post
   is due, then posts to each account in its own step. Bluesky and Mastodon steps retry, safely:
   Mastodon takes an idempotency key, and a Bluesky post's record key is fixed by its time and
-  id. LinkedIn's never do: LinkedIn cannot deduplicate, so an interrupted
-  LinkedIn post is reported for you to check rather than sent twice.
+  id. Buffer, LinkedIn and Threads steps never do: they cannot deduplicate, so an interrupted
+  post there is reported for you to check rather than sent twice.
 - \`src/social.ts\` — the shared types, and the publishers the page also runs, so what a
   network would refuse shows while you type.
 
@@ -11258,6 +11324,16 @@ Buffer cannot deduplicate, so its posts are never retried, like LinkedIn's. **Li
 \`…/api/connections/linkedin/callback\` as a redirect URL and set \`LINKEDIN_CLIENT_ID\` and
 \`LINKEDIN_CLIENT_SECRET\`. LinkedIn tokens last 60 days and cannot be renewed: the page shows
 "expires soon" a week ahead, and connecting again renews the account in place.
+
+**Threads** needs a Meta app with the "Access the Threads API" use case
+(https://developers.facebook.com/apps), the \`threads_basic\` and \`threads_content_publish\`
+permissions, and \`…/api/connections/threads/callback\` as a redirect callback URL; set
+\`THREADS_APP_ID\` and \`THREADS_APP_SECRET\` (the Threads app id and secret, not the Meta
+app's). Until Meta's App Review and business verification pass, only people added as testers
+on the app can connect. A Threads token lasts 60 days and renews itself only while it still
+works, so a daily Cron Trigger (\`${SOCIAL_CRON}\`, \`renewConnections\`) renews those in their last
+30 days; try it in \`vite dev\` at \`/cdn-cgi/handler/scheduled\`. Threads takes 500 characters,
+counting an emoji as several, and cannot deduplicate either.
 
 Connecting an account and posting count against the rate limit (20 a minute per IP).
 Workflows need a real Cloudflare account to deploy.`
@@ -11560,6 +11636,9 @@ function cfDevVars(opts: ScaffoldOptions): string {
           '# Optional: a Buffer app client (publish.buffer.com/settings/api), to post to its channels.',
           'BUFFER_CLIENT_ID=',
           'BUFFER_CLIENT_SECRET=',
+          '# Optional: a Meta app with the Threads use case (README), to post to Threads.',
+          'THREADS_APP_ID=',
+          'THREADS_APP_SECRET=',
         ]
       : []),
   ]
@@ -11673,6 +11752,11 @@ function cfBindingDescriptions(opts: ScaffoldOptions): Record<string, { descript
             'Optional. A Buffer app client (https://publish.buffer.com/settings/api) with the redirect URL `https://<this app>/api/connections/buffer/callback`. Leave it empty to offer no Buffer.',
           ],
           ['BUFFER_CLIENT_SECRET', "That Buffer app client's secret (none for a public client)."],
+          [
+            'THREADS_APP_ID',
+            'Optional. The Threads app id of a Meta app with the Threads use case, and `https://<this app>/api/connections/threads/callback` as its redirect callback URL. Leave it empty to offer no Threads.',
+          ],
+          ['THREADS_APP_SECRET', "That Threads app's secret."],
         ])
       : {}),
   }

@@ -364,7 +364,8 @@ export interface Connection {
   /**
    * `reconnect`: the tokens no longer work (refused, expired with no way to refresh, or the
    * secret changed). `expiring`: they will stop within `expiringDays` and cannot be refreshed,
-   * so ask the user to connect again (LinkedIn's 60-day tokens).
+   * so ask the user to connect again (LinkedIn's 60-day tokens; a Threads token that
+   * `refreshConnections` has not managed to renew).
    */
   status: 'active' | 'expiring' | 'reconnect'
 }
@@ -568,7 +569,8 @@ async function storeTokens(
 
 /**
  * A connection's current tokens, for the user who owns it. Refreshes an access token that
- * expires within a minute, when the provider can. Throws `ConnectionError`: `not_found`, or
+ * expires within a minute, when the provider can; a provider that renews its own token
+ * (`refreshAhead`, Threads) is renewed early, and a failed early renewal keeps the working token. Throws `ConnectionError`: `not_found`, or
  * `reconnect` when the tokens cannot be used or renewed (and marks the connection so).
  *
  * Refresh tokens that the provider replaces on every use (Bluesky, Buffer) are safe here: one
@@ -602,11 +604,17 @@ export async function connectionTokens(
   const { row, tokens } = await load()
   if (row.broken) throw new ConnectionError('reconnect', 'Connect the account again')
   if (!tokens) return broken('The stored tokens cannot be opened: connect the account again')
-  if (tokens.expiresAt === null || tokens.expiresAt - 60 > now()) {
+  const provider = options.providers.find((p) => p.id === row.connection.provider)
+  const ahead = provider?.refreshAhead
+  const valid = tokens.expiresAt === null || tokens.expiresAt - 60 > now()
+  if (
+    valid &&
+    (ahead === undefined || tokens.expiresAt === null || tokens.expiresAt - ahead > now())
+  ) {
     return { connection: row.connection, tokens }
   }
-  const provider = options.providers.find((p) => p.id === row.connection.provider)
-  if (!provider?.refresh || !tokens.refreshToken) {
+  // A token that renews itself (Threads) can be renewed only while it still works.
+  if (!provider?.refresh || !(tokens.refreshToken || (ahead !== undefined && valid))) {
     return broken('The access token has expired: connect the account again')
   }
   // One refresh at a time per connection. A provider that replaces its refresh token on every
@@ -620,6 +628,8 @@ export async function connectionTokens(
     (raw) => raw,
   )
   if (!lease) {
+    // Renewing early: the current token still works, so there is nothing to wait for.
+    if (valid) return { connection: row.connection, tokens }
     for (let waited = 0; waited < REFRESH_LEASE * 1000; waited += REFRESH_POLL_MS) {
       await new Promise((resolve) => setTimeout(resolve, REFRESH_POLL_MS))
       const again = await load()
@@ -638,6 +648,11 @@ export async function connectionTokens(
       .prepare('UPDATE connections SET lease_until = NULL WHERE id = ?')
       .bind(row.connection.id)
       .run()
+    // An early renewal that failed leaves a token that still works; the next call tries again.
+    if (valid) {
+      console.warn('[cascivo/oauth] could not renew a token ahead of its expiry:', error)
+      return { connection: row.connection, tokens }
+    }
     if (error instanceof OAuthError)
       return broken(`The provider refused to renew: ${error.message}`)
     throw error
@@ -648,6 +663,53 @@ export async function connectionTokens(
   }
   const stored = await readConnection(db, { id: row.connection.id, userId: where.userId })
   return { connection: stored?.connection ?? row.connection, tokens: fresh }
+}
+
+/**
+ * Renews every connection whose provider renews its own token (`refreshAhead`: Threads) and
+ * that is inside that window. Call it from a daily Cron Trigger: such a token can be renewed
+ * only while it still works, so one nobody posts with would otherwise lapse. A connection that
+ * could not be renewed keeps its working token and is tried again on the next run.
+ */
+export async function refreshConnections(
+  db: Database,
+  options: { secret: string; providers: readonly OAuthProvider[] },
+): Promise<{ renewed: number; failed: number }> {
+  await migrateConnections(db)
+  let renewed = 0
+  let failed = 0
+  for (const provider of options.providers) {
+    if (provider.refreshAhead === undefined || !provider.refresh) continue
+    const due = await queryRows(
+      db,
+      `SELECT id, user_id, expires_at FROM connections
+       WHERE provider = ? AND broken = 0 AND expires_at > ? AND expires_at <= ?`,
+      [provider.id, now() + 60, now() + provider.refreshAhead],
+      (raw) => {
+        if (typeof raw !== 'object' || raw === null) throw new Error('Malformed connection row')
+        const r = raw as Record<string, unknown>
+        const { id, user_id: userId, expires_at: expiresAt } = r
+        if (typeof id !== 'string' || typeof userId !== 'string' || typeof expiresAt !== 'number') {
+          throw new Error('Malformed connection row')
+        }
+        return { id, userId, expiresAt }
+      },
+    )
+    for (const row of due) {
+      try {
+        const { tokens } = await connectionTokens(db, options, {
+          connectionId: row.id,
+          userId: row.userId,
+        })
+        if (tokens.expiresAt !== row.expiresAt) renewed += 1
+        else failed += 1
+      } catch (error) {
+        console.warn(`[cascivo/oauth] could not renew connection ${row.id}:`, error)
+        failed += 1
+      }
+    }
+  }
+  return { renewed, failed }
 }
 
 /**

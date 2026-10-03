@@ -941,3 +941,223 @@ export function bufferPublisher(options: BufferPublisherOptions = {}): Publisher
   }
   return publisher
 }
+
+/* --------------------------------- Threads ---------------------------------- */
+
+const THREADS_API = 'https://graph.threads.com/v1.0'
+const THREADS_IMAGE_TYPES = new Set(['image/jpeg', 'image/png'])
+const EMOJI = /\p{Extended_Pictographic}|\p{Regional_Indicator}/u
+
+/**
+ * The length Threads counts against its 500: characters, except that an emoji counts as its
+ * UTF-8 bytes (`😀` is 4, a flag 8).
+ */
+export function threadsLength(text: string): number {
+  let length = 0
+  for (const { segment } of graphemes.segment(text)) {
+    length += EMOJI.test(segment) ? utf8(segment) : [...segment].length
+  }
+  return length
+}
+
+/**
+ * The text Threads posts. A text-only post shows the link as a card (`link_attachment`); one
+ * with images cannot carry a card, so the link joins the text.
+ */
+function threadsText(post: SocialPost): string {
+  const images = post.images?.length ?? 0
+  if (!post.link || images === 0 || post.text.includes(post.link.url)) return post.text
+  return post.text ? `${post.text}\n\n${post.link.url}` : post.link.url
+}
+
+export interface ThreadsPublisherOptions {
+  /**
+   * Threads fetches images by public URL: put each where Meta can reach it (an R2 object behind
+   * a short-lived signed URL) and return the URL. Without it, images are refused.
+   */
+  uploadImage?: (image: SocialImage) => Promise<string>
+  /** Milliseconds between checks of a container Meta is still processing. Default 2000. */
+  pollMs?: number
+  fetch?: typeof fetch
+}
+
+/**
+ * Posts to Threads as the connected account (`threads_content_publish`; the target's
+ * `subject` is the Threads user id). Two steps, as Meta requires: create a media container
+ * (text, images by URL, or a carousel of up to 20), wait until Meta has processed it, then
+ * publish it. Threads has no idempotency key, so a request that timed out may have posted:
+ * do not retry one blindly. 250 posts a day per account.
+ */
+export function threadsPublisher(options: ThreadsPublisherOptions = {}): Publisher {
+  const doFetch = options.fetch ?? ((input, init) => fetch(input, init))
+  const pollMs = options.pollMs ?? 2000
+  const limits = { maxChars: 500, maxImages: 20 }
+
+  async function call(
+    tokens: TokenSet,
+    path: string,
+    form?: Record<string, string>,
+  ): Promise<Record<string, unknown>> {
+    const response = await doFetch(`${THREADS_API}/${path}`, {
+      method: form ? 'POST' : 'GET',
+      redirect: 'manual',
+      signal: AbortSignal.timeout(30_000),
+      headers: { authorization: `Bearer ${tokens.accessToken}` },
+      ...(form && { body: new URLSearchParams(form) }),
+    })
+    const json = asRecord(await response.json().catch(() => null))
+    const error = asRecord(json?.['error'])
+    if (response.ok && json && !error) return json
+    // Meta answers most errors with a 400 and says what it was in `code`.
+    const code = error?.['code']
+    const message = error?.['message']
+    const kind: PublishErrorKind =
+      response.status === 401 || code === 190 || code === 10 || code === 200
+        ? 'reconnect'
+        : response.status === 429 || code === 4 || code === 17 || code === 32 || code === 613
+          ? 'rate_limited'
+          : response.status >= 500 || error?.['is_transient'] === true
+            ? 'failed'
+            : 'invalid'
+    throw new PublishError(
+      'threads',
+      kind,
+      typeof message === 'string' ? message : `Threads answered ${response.status}`,
+      response.status,
+    )
+  }
+
+  /** Waits until Meta has fetched and processed a container's media. */
+  async function ready(tokens: TokenSet, container: string): Promise<void> {
+    for (let attempt = 0; attempt < 30; attempt++) {
+      if (attempt > 0) await new Promise((resolve) => setTimeout(resolve, pollMs))
+      const polled = await call(
+        tokens,
+        `${encodeURIComponent(container)}?fields=status,error_message`,
+      )
+      const status = polled['status']
+      if (status === 'FINISHED') return
+      if (status === 'ERROR' || status === 'EXPIRED') {
+        const reason = polled['error_message']
+        throw new PublishError(
+          'threads',
+          'invalid',
+          `Threads could not use the media: ${typeof reason === 'string' ? reason : status}`,
+        )
+      }
+    }
+    throw new PublishError('threads', 'failed', 'Threads took too long with the media')
+  }
+
+  async function container(tokens: TokenSet, user: string, fields: Record<string, string>) {
+    const id = (await call(tokens, `${encodeURIComponent(user)}/threads`, fields))['id']
+    if (typeof id !== 'string')
+      throw new PublishError('threads', 'failed', 'No container id came back')
+    return id
+  }
+
+  const publisher: Publisher = {
+    network: 'threads',
+    limits,
+    check(post) {
+      const problems: PostProblem[] = []
+      const text = threadsText(post)
+      const images = post.images ?? []
+      if (!text.trim() && images.length === 0) {
+        problems.push({ code: 'empty', message: 'Write something to post' })
+      }
+      const length = threadsLength(text)
+      if (length > limits.maxChars) {
+        problems.push({
+          code: 'too_long',
+          message: `Threads takes ${limits.maxChars} characters (an emoji counts as several); this has ${length}`,
+        })
+      }
+      if (images.length > limits.maxImages) {
+        problems.push({
+          code: 'too_many_images',
+          message: `Threads takes ${limits.maxImages} images in a post`,
+        })
+      }
+      if (images.length > 0 && !options.uploadImage) {
+        problems.push({
+          code: 'bad_image',
+          message: 'Threads takes images by public URL: pass uploadImage to threadsPublisher',
+        })
+      }
+      if (post.link && !/^https?:\/\//.test(post.link.url)) {
+        problems.push({ code: 'bad_link', message: 'The link must be an http(s) URL' })
+      }
+      for (const image of images) {
+        checkImage(image, problems, THREADS_IMAGE_TYPES)
+        if ([...image.alt].length > 1000) {
+          problems.push({ code: 'bad_image', message: 'Threads takes 1000 characters of alt text' })
+        }
+      }
+      return problems
+    },
+    async publish(target, post) {
+      const problems = publisher.check(post)
+      if (problems.length > 0) {
+        throw new PublishError('threads', 'invalid', problems.map((p) => p.message).join('; '))
+      }
+      const { tokens, subject } = target
+      const text = threadsText(post)
+      const images = post.images ?? []
+      const media: { url: string; alt: string }[] = []
+      for (const image of images)
+        media.push({ url: await options.uploadImage!(image), alt: image.alt })
+
+      let creation: string
+      if (media.length === 0) {
+        creation = await container(tokens, subject, {
+          media_type: 'TEXT',
+          text,
+          ...(post.link && !text.includes(post.link.url) && { link_attachment: post.link.url }),
+        })
+      } else if (media.length === 1) {
+        creation = await container(tokens, subject, {
+          media_type: 'IMAGE',
+          image_url: media[0]!.url,
+          alt_text: media[0]!.alt,
+          ...(text && { text }),
+        })
+        await ready(tokens, creation)
+      } else {
+        const children: string[] = []
+        for (const item of media) {
+          children.push(
+            await container(tokens, subject, {
+              media_type: 'IMAGE',
+              image_url: item.url,
+              alt_text: item.alt,
+              is_carousel_item: 'true',
+            }),
+          )
+        }
+        for (const child of children) await ready(tokens, child)
+        creation = await container(tokens, subject, {
+          media_type: 'CAROUSEL',
+          children: children.join(','),
+          ...(text && { text }),
+        })
+        await ready(tokens, creation)
+      }
+
+      const id = (
+        await call(tokens, `${encodeURIComponent(subject)}/threads_publish`, {
+          creation_id: creation,
+        })
+      )['id']
+      if (typeof id !== 'string')
+        throw new PublishError('threads', 'failed', 'Threads returned no post')
+      // The post exists now; a failed lookup of its address must not report it as failed.
+      const permalink = await call(tokens, `${encodeURIComponent(id)}?fields=permalink`).then(
+        (r) => r['permalink'],
+        () => null,
+      )
+      return { id, url: typeof permalink === 'string' ? permalink : null }
+    },
+  }
+  return publisher
+}
