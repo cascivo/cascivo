@@ -2,7 +2,7 @@ import { base64UrlDecode, base64UrlEncode, JwtError, verifyJwt } from './jwt'
 
 /**
  * `@cascivo/app/oauth` — the authorization-code flow against an OAuth provider, and adapters
- * for Google and GitHub. It knows the protocol and the provider, nothing else: no database, no
+ * for Google, GitHub and LinkedIn. It knows the protocol and the provider, nothing else: no database, no
  * cookies, no users. What happens to the tokens is the caller's choice: `handleOAuth`
  * (`@cascivo/app/oauth-server`) turns the identity into a session and drops them; an app that
  * posts or reads on the user's behalf keeps them, sealed with `seal`. It runs anywhere with
@@ -186,6 +186,23 @@ export function parsePendingAuthorization(raw: unknown): PendingAuthorization {
   throw new Error('Malformed pending authorization')
 }
 
+/** Checks a `TokenSet` that came back from storage (`unseal` returns `unknown`). */
+export function parseTokenSet(raw: unknown): TokenSet {
+  if (typeof raw === 'object' && raw !== null) {
+    const { accessToken, refreshToken, expiresAt, scopes } = raw as Record<string, unknown>
+    if (
+      typeof accessToken === 'string' &&
+      (typeof refreshToken === 'string' || refreshToken === null) &&
+      (typeof expiresAt === 'number' || expiresAt === null) &&
+      Array.isArray(scopes) &&
+      scopes.every((s) => typeof s === 'string')
+    ) {
+      return { accessToken, refreshToken, expiresAt, scopes }
+    }
+  }
+  throw new Error('Malformed token set')
+}
+
 /* ---------------------------------- sealing ---------------------------------- */
 
 async function sealingKey(secret: string, context: string): Promise<CryptoKey> {
@@ -262,12 +279,11 @@ interface TokenResponse extends TokenSet {
   idToken: string | null
 }
 
-/** Parses an RFC 6749 token response; `scopeSeparator` is `','` for GitHub. */
-function parseTokenResponse(
-  raw: unknown,
-  requested: readonly string[],
-  scopeSeparator = ' ',
-): TokenResponse {
+/**
+ * Parses an RFC 6749 token response. Granted scopes are split on commas as well as spaces:
+ * GitHub joins them with commas.
+ */
+function parseTokenResponse(raw: unknown, requested: readonly string[]): TokenResponse {
   if (typeof raw !== 'object' || raw === null) {
     throw new OAuthError('provider_error', 'The token response is not a JSON object')
   }
@@ -289,8 +305,7 @@ function parseTokenResponse(
     accessToken,
     refreshToken: typeof r['refresh_token'] === 'string' ? r['refresh_token'] : null,
     expiresAt: typeof expiresIn === 'number' ? now() + expiresIn : null,
-    scopes:
-      typeof scope === 'string' ? scope.split(scopeSeparator).filter(Boolean) : [...requested],
+    scopes: typeof scope === 'string' ? scope.split(/[\s,]+/).filter(Boolean) : [...requested],
     idToken: typeof r['id_token'] === 'string' ? r['id_token'] : null,
   }
 }
@@ -315,6 +330,58 @@ async function postForm(
 
 function stringOrNull(value: unknown): string | null {
   return typeof value === 'string' && value !== '' ? value : null
+}
+
+/* ------------------------------- OpenID Connect ------------------------------- */
+
+/**
+ * Verifies an ID token (signature, issuer, audience, expiry) and its nonce, as `OAuthError`s.
+ * `nonceRequired: false` is for a provider that does not echo the nonce (LinkedIn): one it
+ * does send must still match.
+ */
+async function verifyIdToken(
+  idToken: string,
+  options: {
+    jwksUrl: string
+    issuer: readonly string[]
+    audience: string
+    label: string
+    fetch: typeof fetch
+    nonce: string
+    nonceRequired: boolean
+  },
+): Promise<Record<string, unknown>> {
+  let claims: Record<string, unknown>
+  try {
+    claims = await verifyJwt(idToken, options)
+  } catch (error) {
+    if (error instanceof JwtError) {
+      throw new OAuthError('provider_error', `${options.label} ID token: ${error.reason}`)
+    }
+    throw error
+  }
+  const nonce = claims['nonce']
+  if (nonce === undefined ? options.nonceRequired : nonce !== options.nonce) {
+    throw new OAuthError('provider_error', `${options.label} ID token: wrong nonce`)
+  }
+  if (typeof claims['sub'] !== 'string' || claims['sub'] === '') {
+    throw new OAuthError('provider_error', `${options.label} ID token: no subject`)
+  }
+  return claims
+}
+
+/** The identity in verified ID-token claims; the email only when `email_verified` says so. */
+function oidcIdentity(provider: string, claims: Record<string, unknown>): Identity {
+  const email = stringOrNull(claims['email'])
+  const verified = claims['email_verified'] === true
+  return {
+    provider,
+    subject: String(claims['sub']),
+    email: email && verified ? email.toLowerCase() : null,
+    name: stringOrNull(claims['name']),
+    handle: null,
+    avatarUrl: stringOrNull(claims['picture']),
+  }
 }
 
 /* ----------------------------------- Google ----------------------------------- */
@@ -374,44 +441,20 @@ export function google(options: GoogleOptions): OAuthProvider {
       if (!response.idToken) {
         throw new OAuthError('provider_error', 'Google sent no ID token: ask for the openid scope')
       }
-      let claims: Record<string, unknown>
-      try {
-        claims = await verifyJwt(response.idToken, {
-          jwksUrl: 'https://www.googleapis.com/oauth2/v3/certs',
-          issuer: GOOGLE_ISSUERS,
-          audience: options.clientId,
-          label: 'Google',
-          fetch: doFetch,
-        })
-      } catch (error) {
-        if (error instanceof JwtError) {
-          throw new OAuthError('provider_error', `Google ID token: ${error.reason}`)
-        }
-        throw error
-      }
-      if (claims['nonce'] !== pending.nonce) {
-        throw new OAuthError('provider_error', 'Google ID token: wrong nonce')
-      }
+      const claims = await verifyIdToken(response.idToken, {
+        jwksUrl: 'https://www.googleapis.com/oauth2/v3/certs',
+        issuer: GOOGLE_ISSUERS,
+        audience: options.clientId,
+        label: 'Google',
+        fetch: doFetch,
+        nonce: pending.nonce,
+        nonceRequired: true,
+      })
       if (options.hostedDomain && claims['hd'] !== options.hostedDomain) {
         throw new OAuthError('denied', `Only ${options.hostedDomain} accounts can sign in`)
       }
-      const subject = claims['sub']
-      if (typeof subject !== 'string' || subject === '') {
-        throw new OAuthError('provider_error', 'Google ID token: no subject')
-      }
-      const email = stringOrNull(claims['email'])
       const { idToken: _idToken, ...tokens } = response
-      return {
-        tokens,
-        identity: {
-          provider: 'google',
-          subject,
-          email: email && claims['email_verified'] === true ? email.toLowerCase() : null,
-          name: stringOrNull(claims['name']),
-          handle: null,
-          avatarUrl: stringOrNull(claims['picture']),
-        },
-      }
+      return { tokens, identity: oidcIdentity('google', claims) }
     },
     async refresh(tokens) {
       if (!tokens.refreshToken) throw new Error('No refresh token: authorize with offline: true')
@@ -431,6 +474,76 @@ export function google(options: GoogleOptions): OAuthProvider {
         expiresAt: response.expiresAt,
         scopes: response.scopes,
       }
+    },
+  }
+}
+
+/* ---------------------------------- LinkedIn ---------------------------------- */
+
+export interface LinkedInOptions {
+  clientId: string
+  clientSecret: string
+  /**
+   * Default `openid profile email` (the "Sign In with LinkedIn using OpenID Connect" product).
+   * Add `w_member_social` ("Share on LinkedIn") to post on the member's behalf with the tokens.
+   */
+  scopes?: readonly string[]
+  fetch?: typeof fetch
+}
+
+/**
+ * LinkedIn, over OpenID Connect: the ID token verified against LinkedIn's keys. A web app
+ * authenticates with its client secret (LinkedIn's PKCE is for native apps only), so the
+ * challenge is not sent. Access tokens last 60 days; refresh tokens exist only for LinkedIn's
+ * approved partners, so a member reconnects when one expires.
+ */
+export function linkedin(options: LinkedInOptions): OAuthProvider {
+  const doFetch = options.fetch ?? ((input, init) => fetch(input, init))
+  return {
+    id: 'linkedin',
+    scopes: options.scopes ?? ['openid', 'profile', 'email'],
+    authorizationUrl(pending) {
+      const url = new URL('https://www.linkedin.com/oauth/v2/authorization')
+      const params: Record<string, string> = {
+        response_type: 'code',
+        client_id: options.clientId,
+        redirect_uri: pending.redirectUri,
+        scope: pending.scopes.join(' '),
+        state: pending.state,
+        nonce: pending.nonce,
+      }
+      for (const [key, value] of Object.entries(params)) url.searchParams.set(key, value)
+      return url
+    },
+    async exchange(code, pending) {
+      const response = parseTokenResponse(
+        await postForm(doFetch, 'https://www.linkedin.com/oauth/v2/accessToken', {
+          grant_type: 'authorization_code',
+          code,
+          client_id: options.clientId,
+          client_secret: options.clientSecret,
+          redirect_uri: pending.redirectUri,
+        }),
+        pending.scopes,
+      )
+      if (!response.idToken) {
+        throw new OAuthError(
+          'provider_error',
+          'LinkedIn sent no ID token: ask for the openid scope',
+        )
+      }
+      const claims = await verifyIdToken(response.idToken, {
+        jwksUrl: 'https://www.linkedin.com/oauth/openid/jwks',
+        // The discovery document says the first; the documentation page, the second.
+        issuer: ['https://www.linkedin.com/oauth', 'https://www.linkedin.com'],
+        audience: options.clientId,
+        label: 'LinkedIn',
+        fetch: doFetch,
+        nonce: pending.nonce,
+        nonceRequired: false,
+      })
+      const { idToken: _idToken, ...tokens } = response
+      return { tokens, identity: oidcIdentity('linkedin', claims) }
     },
   }
 }
@@ -494,7 +607,6 @@ export function github(options: GitHubOptions): OAuthProvider {
           code_verifier: pending.codeVerifier,
         }),
         pending.scopes,
-        ',',
       )
       const userResponse = await api('/user', tokens.accessToken)
       if (!userResponse.ok) {

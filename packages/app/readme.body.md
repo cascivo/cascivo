@@ -629,14 +629,14 @@ await auth.verify(token) // on the page the link opens
 `cascivo create --framework cloudflare --auth email` scaffolds it, with every API write
 requiring a signed-in user.
 
-## Sign in with GitHub or Google — `@cascivo/app/oauth` and `@cascivo/app/oauth-server`
+## Sign in with GitHub, Google or LinkedIn — `@cascivo/app/oauth` and `@cascivo/app/oauth-server`
 
 `handleOAuth` adds provider sign-in to the same users and sessions as `handleAuth`, so both can
 sit on one sign-in page and `requireUser` works for either.
 
 ```ts
 // the Worker
-import { github, google } from '@cascivo/app/oauth'
+import { github, google, linkedin } from '@cascivo/app/oauth'
 import { handleOAuth } from '@cascivo/app/oauth-server'
 
 const oauth = handleOAuth(env.DB, {
@@ -644,6 +644,7 @@ const oauth = handleOAuth(env.DB, {
   providers: [
     github({ clientId: env.GITHUB_CLIENT_ID, clientSecret: env.GITHUB_CLIENT_SECRET }),
     google({ clientId: env.GOOGLE_CLIENT_ID, clientSecret: env.GOOGLE_CLIENT_SECRET }),
+    linkedin({ clientId: env.LINKEDIN_CLIENT_ID, clientSecret: env.LINKEDIN_CLIENT_SECRET }),
   ],
 })
 const answered = await oauth(request) // /api/auth/oauth/<id>, …/callback, /oauth, /me, /signout
@@ -655,7 +656,8 @@ await auth.providers() // ['github', 'google']
 ```
 
 Register `https://<your app>/api/auth/oauth/<id>/callback` as the redirect URI at each
-provider (GitHub: an OAuth App; Google: an OAuth client of type "Web application").
+provider (GitHub: an OAuth App; Google: an OAuth client of type "Web application"; LinkedIn:
+an app with the "Sign In with LinkedIn using OpenID Connect" product).
 
 - **The flow is checked end to end.** `state`, a PKCE verifier (S256) and an OpenID `nonce`
   travel in a sealed (AES-GCM), HttpOnly, `SameSite=Lax` cookie that lives ten minutes. A
@@ -663,6 +665,8 @@ provider (GitHub: an OAuth App; Google: an OAuth client of type "Web application
 - **Google's ID token is verified** against Google's published keys: signature, issuer,
   audience, expiry and nonce. `google({ hostedDomain: 'acme.com' })` admits only that
   Workspace domain, checked on the token, since the `hd` parameter alone is just a hint.
+- **LinkedIn's ID token is verified the same way.** LinkedIn takes no PKCE from a web app, so
+  the client secret and `state` protect the exchange; a `nonce` it echoes must match.
 - **GitHub's email is read only when it is the primary one and verified.** GitHub has no ID
   token; the adapter reads `/user` for the numeric id and `/user/emails` for the address.
 - **Accounts are linked by identity, not by email.** A user is found by `(provider, subject)`.
@@ -697,8 +701,62 @@ const { tokens, identity } = await completeAuthorization(
 const stored = await seal(env.TOKEN_SECRET, `tokens:${identity.subject}`, tokens) // unseal() to use
 ```
 
-`cascivo create --framework cloudflare --auth oauth` scaffolds GitHub and Google sign-in;
-`--auth email,oauth` puts both methods on one page.
+`cascivo create --framework cloudflare --auth oauth` scaffolds GitHub, Google and LinkedIn
+sign-in; `--auth email,oauth` puts both methods on one page.
+
+## Connected accounts and posting — `handleConnections` and `@cascivo/app/social`
+
+Signing in throws the provider's tokens away. Connecting an account keeps them, so the app can
+act for the user later: post to their LinkedIn, from a queue, at a scheduled time.
+
+```ts
+// the Worker: /api/connections for the signed-in user
+import { connectionTokens, handleConnections, markReconnect } from '@cascivo/app/oauth-server'
+import { linkedinPublisher, PublishError } from '@cascivo/app/social'
+
+// Its own instance, with the posting scope; the one for sign-in asks for identity only.
+const providers = [
+  linkedin({ clientId, clientSecret, scopes: ['openid', 'profile', 'w_member_social'] }),
+]
+const answered = await handleConnections(env.DB, { secret: env.AUTH_SECRET, providers })(request)
+// GET /api/connections, GET /api/connections/linkedin (connect), DELETE /api/connections/<id>
+
+// later, in a queue consumer or a Workflow step
+const { connection, tokens } = await connectionTokens(
+  env.DB,
+  { secret, providers },
+  { userId, connectionId },
+)
+try {
+  const { url } = await linkedinPublisher().publish({ tokens, subject: connection.subject }, post)
+} catch (error) {
+  if (error instanceof PublishError && error.kind === 'reconnect')
+    await markReconnect(env.DB, connection.id)
+  throw error
+}
+```
+
+- **Tokens are encrypted at rest** (AES-256-GCM under your secret), bound to their row: a
+  sealed value copied to another row does not open. Rotating the secret turns every
+  connection into `reconnect`.
+- **A connection says when to ask the user back.** `status` is `active`, `expiring` (a token
+  that cannot be refreshed ends within `expiringDays`, default 7: LinkedIn's 60-day tokens) or
+  `reconnect`. Connecting the same account again renews it in place.
+- **Refresh happens on use, once.** `connectionTokens` refreshes a token that is about to
+  expire. One request at a time holds the refresh; others wait for its result, so a provider
+  that replaces its refresh token on every use never sees a spent one.
+- **`social` checks before it posts.** `check(post)` is synchronous and lists what the network
+  would refuse (length in characters, image count and types, alt text, link cards), so a
+  composer can show it while typing and a scheduled post fails before it is queued.
+- **LinkedIn specifics are handled.** Text is escaped for LinkedIn's "little" format (a
+  hashtag that starts a word still links), images are uploaded and attached by URN, a link
+  card carries its own title and thumbnail (LinkedIn does not read the page), and every call
+  pins `LinkedIn-Version`.
+- **`PublishError.kind`** is `invalid`, `reconnect`, `rate_limited` or `failed`;
+  `retryable` is true only for rate limits and 5xx. LinkedIn cannot deduplicate, so a request
+  that timed out is not retried for you.
+
+Like `oauth`, `social` has no database or Worker code: give it any `TokenSet` and subject.
 
 ## Who may call the Worker — `@cascivo/app/guard`
 

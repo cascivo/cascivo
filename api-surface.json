@@ -7032,7 +7032,9 @@
           "completeAuthorization",
           "github",
           "google",
+          "linkedin",
           "parsePendingAuthorization",
+          "parseTokenSet",
           "seal",
           "unseal"
         ],
@@ -7041,6 +7043,7 @@
           "GitHubOptions",
           "GoogleOptions",
           "Identity",
+          "LinkedInOptions",
           "OAuthErrorCode",
           "OAuthProvider",
           "PendingAuthorization",
@@ -7079,6 +7082,13 @@
             "handle": "string | null",
             "avatarUrl": "string | null"
           },
+          "linkedin": "declare function linkedin(options: LinkedInOptions): OAuthProvider",
+          "LinkedInOptions": {
+            "clientId": "string",
+            "clientSecret": "string",
+            "scopes?": "readonly string[]",
+            "fetch?": "typeof fetch"
+          },
           "OAuthError": {
             "readonly code": "OAuthErrorCode",
             "constructor": "(code: OAuthErrorCode, message: string)",
@@ -7093,6 +7103,7 @@
             "refresh?": "(tokens: TokenSet): Promise<TokenSet>"
           },
           "parsePendingAuthorization": "declare function parsePendingAuthorization(raw: unknown): PendingAuthorization",
+          "parseTokenSet": "declare function parseTokenSet(raw: unknown): TokenSet",
           "PendingAuthorization": {
             "provider": "string",
             "state": "string",
@@ -7113,10 +7124,45 @@
         }
       },
       "./oauth-server": {
-        "values": ["handleOAuth"],
-        "types": ["OAuthFailure", "OAuthServerOptions"],
+        "values": [
+          "ConnectionError",
+          "connectionTokens",
+          "handleConnections",
+          "handleOAuth",
+          "listConnections",
+          "markReconnect"
+        ],
+        "types": ["Connection", "ConnectionsOptions", "OAuthFailure", "OAuthServerOptions"],
         "declarations": {
+          "Connection": {
+            "id": "string",
+            "userId": "string",
+            "provider": "string",
+            "subject": "string",
+            "name": "string | null",
+            "handle": "string | null",
+            "scopes": "string[]",
+            "expiresAt": "number | null",
+            "status": "'active' | 'expiring' | 'reconnect'"
+          },
+          "ConnectionError": {
+            "readonly code": "'not_found' | 'reconnect'",
+            "constructor": "(code: 'not_found' | 'reconnect', message: string)",
+            "(kind)": "class"
+          },
+          "ConnectionsOptions": {
+            "providers": "readonly OAuthProvider[]",
+            "secret": "string",
+            "basePath?": "string",
+            "origin?": "string",
+            "errorPath?": "string",
+            "expiringDays?": "number"
+          },
+          "connectionTokens": "declare function connectionTokens(db: Database, options: { secret: string; providers: readonly OAuthProvider[]; }, where: { connectionId: string; userId: string; }): Promise<{ connection: Connection; tokens: TokenSet; }>",
+          "handleConnections": "declare function handleConnections(db: Database, options: ConnectionsOptions): (request: Request) => Promise<Response | null>",
           "handleOAuth": "declare function handleOAuth(db: Database, options: OAuthServerOptions): (request: Request) => Promise<Response | null>",
+          "listConnections": "declare function listConnections(db: Database, userId: string, options?: { expiringDays?: number; }): Promise<Connection[]>",
+          "markReconnect": "declare function markReconnect(db: Database, connectionId: string): Promise<void>",
           "OAuthFailure": "type = OAuthErrorCode | 'identity_in_use'",
           "OAuthServerOptions": {
             "providers": "readonly OAuthProvider[]",
@@ -7125,6 +7171,63 @@
             "origin?": "string",
             "errorPath?": "string",
             "sessionTtlSeconds?": "number"
+          }
+        }
+      },
+      "./social": {
+        "values": ["PublishError", "escapeLittleText", "linkedinPublisher"],
+        "types": [
+          "LinkedInPublisherOptions",
+          "PostProblem",
+          "PublishErrorKind",
+          "PublishTarget",
+          "PublishedPost",
+          "Publisher",
+          "SocialImage",
+          "SocialPost"
+        ],
+        "declarations": {
+          "escapeLittleText": "declare function escapeLittleText(text: string): string",
+          "linkedinPublisher": "declare function linkedinPublisher(options?: LinkedInPublisherOptions): Publisher",
+          "LinkedInPublisherOptions": {
+            "version?": "string",
+            "fetch?": "typeof fetch"
+          },
+          "PostProblem": {
+            "code": "'empty' | 'too_long' | 'too_many_images' | 'link_and_images' | 'bad_link' | 'bad_image'",
+            "message": "string"
+          },
+          "PublishedPost": {
+            "id": "string",
+            "url": "string"
+          },
+          "Publisher": {
+            "readonly network": "string",
+            "readonly limits": "{ maxChars: number; maxImages: number; }",
+            "check": "(post: SocialPost): PostProblem[]",
+            "publish": "(target: PublishTarget, post: SocialPost): Promise<PublishedPost>"
+          },
+          "PublishError": {
+            "readonly network": "string",
+            "readonly kind": "PublishErrorKind",
+            "readonly status": "number | null",
+            "constructor": "(network: string, kind: PublishErrorKind, message: string, status?: number | null)",
+            "get retryable(): boolean": "",
+            "(kind)": "class"
+          },
+          "PublishErrorKind": "type = 'invalid' | 'reconnect' | 'rate_limited' | 'failed'",
+          "PublishTarget": {
+            "tokens": "TokenSet",
+            "subject": "string"
+          },
+          "SocialImage": {
+            "data": "Blob",
+            "alt": "string"
+          },
+          "SocialPost": {
+            "text": "string",
+            "link?": "{ url: string; title: string; description?: string; thumbnail?: SocialImage; }",
+            "images?": "readonly SocialImage[]"
           }
         }
       },

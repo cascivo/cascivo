@@ -119,6 +119,11 @@
       "import": "./dist/oauth-server.js",
       "default": "./dist/oauth-server.js"
     },
+    "./social": {
+      "types": "./dist/social.d.ts",
+      "import": "./dist/social.js",
+      "default": "./dist/social.js"
+    },
     "./ses": {
       "types": "./dist/ses.d.ts",
       "import": "./dist/ses.js",

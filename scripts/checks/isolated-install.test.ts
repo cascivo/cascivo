@@ -301,7 +301,19 @@ export const authRoutes = (db: Database) =>
 export const mustBeIn = (db: Database, request: Request) => requireUser(db, request)
 export const maybeIn = (db: Database, request: Request) => currentUser(db, request)
 import { github, google, beginAuthorization, seal, type Identity, type TokenSet } from '@cascivo/app/oauth'
-import { handleOAuth } from '@cascivo/app/oauth-server'
+import { connectionTokens, handleConnections, handleOAuth, type Connection } from '@cascivo/app/oauth-server'
+import { linkedinPublisher, PublishError, type PublishedPost } from '@cascivo/app/social'
+import { linkedin } from '@cascivo/app/oauth'
+export const connectRoutes = (db: Database) =>
+  handleConnections(db, { secret: 's'.repeat(32), providers: [linkedin({ clientId: 'a', clientSecret: 'b', scopes: ['openid', 'w_member_social'] })] })
+export const postAs = async (db: Database, userId: string, connectionId: string): Promise<PublishedPost | null> => {
+  const { connection, tokens }: { connection: Connection; tokens: TokenSet } = await connectionTokens(db, { secret: 's'.repeat(32), providers: [] }, { userId, connectionId })
+  try {
+    return await linkedinPublisher().publish({ tokens, subject: connection.subject }, { text: 'Hello' })
+  } catch (error) {
+    return error instanceof PublishError && error.retryable ? null : Promise.reject(error)
+  }
+}
 export const providers = [github({ clientId: 'a', clientSecret: 'b' }), google({ clientId: 'c', clientSecret: 'd' })]
 export const oauthRoutes = (db: Database) => handleOAuth(db, { secret: 's'.repeat(32), providers })
 export const firstStep = beginAuthorization(providers[0]!, { redirectUri: 'https://app.example/cb' })

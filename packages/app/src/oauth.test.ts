@@ -5,6 +5,7 @@ import {
   completeAuthorization,
   github,
   google,
+  linkedin,
   OAuthError,
   parsePendingAuthorization,
   seal,
@@ -222,6 +223,76 @@ describe('google', () => {
       scopes: ['openid'],
     })
     expect(refreshed).toMatchObject({ accessToken: 'at-2', refreshToken: 'rt-1' })
+  })
+})
+
+describe('linkedin', () => {
+  let issuer: Awaited<ReturnType<typeof rsaIssuer>>
+  beforeAll(async () => {
+    issuer = await rsaIssuer('linkedin-test-key')
+  })
+
+  function setup(claims: (pending: PendingAuthorization) => Record<string, unknown>) {
+    let current: PendingAuthorization | undefined
+    const { doFetch, calls } = fakeFetch({
+      'https://www.linkedin.com/oauth/v2/accessToken': async () =>
+        Response.json({
+          access_token: 'li-1',
+          expires_in: 5184000,
+          scope: 'email,openid,profile,w_member_social',
+          id_token: await issuer.sign(claims(current!)),
+        }),
+      'https://www.linkedin.com/oauth/openid/jwks': () => Response.json(issuer.jwks),
+    })
+    const provider = linkedin({ clientId: 'li-id', clientSecret: 'li-secret', fetch: doFetch })
+    return {
+      calls,
+      provider,
+      async run() {
+        const { pending } = await begin(provider)
+        current = pending
+        return completeAuthorization(provider, pending, callback(pending))
+      },
+    }
+  }
+
+  const valid = () => ({
+    iss: 'https://www.linkedin.com/oauth',
+    aud: 'li-id',
+    sub: 'abc-pairwise',
+    exp: Math.floor(Date.now() / 1000) + 600,
+    email: 'Ada@Example.com',
+    email_verified: true,
+    name: 'Ada Lovelace',
+  })
+
+  it('verifies the ID token without a nonce, and reads the 60-day token', async () => {
+    const { run, calls } = setup(valid)
+    const { identity, tokens } = await run()
+    expect(identity).toMatchObject({
+      provider: 'linkedin',
+      subject: 'abc-pairwise',
+      email: 'ada@example.com',
+    })
+    expect(tokens.scopes).toEqual(['email', 'openid', 'profile', 'w_member_social'])
+    expect(tokens.expiresAt).toBeGreaterThan(Date.now() / 1000 + 5_000_000)
+    // A web app authenticates with its secret: no PKCE verifier is sent.
+    const exchange = form(calls[0]!.init)
+    expect(exchange.get('client_secret')).toBe('li-secret')
+    expect(exchange.has('code_verifier')).toBe(false)
+  })
+
+  it('sends no PKCE challenge, and accepts the issuer as the docs page spells it', async () => {
+    const { provider, run } = setup(() => ({ ...valid(), iss: 'https://www.linkedin.com' }))
+    const { url } = await begin(provider)
+    expect(url.searchParams.has('code_challenge')).toBe(false)
+    expect((await run()).identity.subject).toBe('abc-pairwise')
+  })
+
+  it('refuses a nonce that does not match, and an unverified email', async () => {
+    await expect(setup(() => ({ ...valid(), nonce: 'other' })).run()).rejects.toThrow(/wrong nonce/)
+    const unverified = setup(() => ({ ...valid(), email_verified: false }))
+    expect((await unverified.run()).identity.email).toBeNull()
   })
 })
 

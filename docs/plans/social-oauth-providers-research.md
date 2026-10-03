@@ -596,3 +596,24 @@ The decision that `redirect URIs come from configuration, never from the request
 the request's origin by default, with an `origin` option to pin it. On Workers the host is
 the routed hostname, the provider only accepts registered redirect URIs, and the state cookie
 is host-only, so a different host fails the flow rather than leaking it.
+
+**Step 3 implemented (2026-10-03):** LinkedIn, connected accounts, the LinkedIn publisher.
+
+- `linkedin()` in `oauth`: OpenID Connect against `https://www.linkedin.com/oauth` (the live
+  discovery document's issuer; the docs page says `https://www.linkedin.com`, so both are
+  accepted). No PKCE (web apps use the secret); LinkedIn does not list `nonce` among its
+  claims, so it is checked only when present. Google and LinkedIn share one ID-token check.
+- `handleConnections`, `connectionTokens`, `listConnections`, `markReconnect` in
+  `oauth-server`, on a `connections` table (`cascivo_connections_0001`). The design above said
+  "conditional update, loser re-reads"; a test showed that is not enough. With single-use
+  refresh tokens, the loser's refresh can fail **before** the winner has stored its result,
+  and the loser then sees nothing new and gives up. Refreshing now takes a short lease on the
+  row (`lease_until`), and other requests wait for the stored result without calling the
+  provider. Key rotation (`key_id`) is not built: changing the secret marks connections
+  `reconnect`.
+- `@cascivo/app/social` with `linkedinPublisher()`: text, link card (with its own title and
+  thumbnail; LinkedIn does not scrape), one image or many, `LinkedIn-Version: 202609`.
+- The scaffold offers LinkedIn sign-in. Its `--example social` (connections UI, composer,
+  Workflow per scheduled post, LinkedIn reconnect reminders) comes with step 4.
+
+Not proven without real credentials: a LinkedIn sign-in and a post to a real feed.

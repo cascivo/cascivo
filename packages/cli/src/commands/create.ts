@@ -121,7 +121,7 @@ export interface ScaffoldOptions {
   /**
    * `cloudflare` framework only. `access`: the Worker refuses every request Cloudflare Access
    * did not let through. `email`: accounts with emailed sign-in links; `oauth`: accounts with
-   * GitHub and Google sign-in; `email,oauth`: both on one page. With accounts, every API write
+   * GitHub, Google and LinkedIn sign-in; `email,oauth`: both on one page. With accounts, every API write
    * needs a signed-in user.
    */
   auth?: Auth
@@ -1602,7 +1602,7 @@ export function parseAuth(raw: string | undefined): Auth | null | 'invalid' {
     : 'invalid'
 }
 
-/** Sign-in with GitHub and Google (`handleOAuth`). */
+/** Sign-in with GitHub, Google and LinkedIn (`handleOAuth`). */
 function oauthSignIn(opts: ScaffoldOptions): boolean {
   return opts.auth === 'oauth' || opts.auth === 'email,oauth'
 }
@@ -1993,7 +1993,7 @@ function cfWorkerTs(opts: ScaffoldOptions): string {
     : []
   const openPaths = [...signedPaths, ...readerPaths]
   return `${usage ? `import type { AnalyticsDataset } from '@cascivo/app/analytics'\n` : ''}${d1 ? `import type { Database } from '@cascivo/app/db'\n` : ''}${exports ? `import { handleExport } from '@cascivo/app/export'\n` : ''}import { createHandler${publish ? ', HttpError' : ''} } from '@cascivo/app/api'
-${accounts ? `import { ${emailAuth ? 'handleAuth, ' : ''}requireUser } from '@cascivo/app/auth-server'\n` : ''}${oauth ? `import { github, google } from '@cascivo/app/oauth'\nimport type { OAuthProvider } from '@cascivo/app/oauth'\nimport { handleOAuth } from '@cascivo/app/oauth-server'\n` : ''}${guards.length > 0 || webhooks || accounts ? `import { ${[...guards, 'guardResponse'].sort().join(', ')} } from '@cascivo/app/guard'\n${limiter ? `import type { RateLimiter } from '@cascivo/app/guard'\n` : ''}` : ''}${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
+${accounts ? `import { ${emailAuth ? 'handleAuth, ' : ''}requireUser } from '@cascivo/app/auth-server'\n` : ''}${oauth ? `import { github, google, linkedin } from '@cascivo/app/oauth'\nimport type { OAuthProvider } from '@cascivo/app/oauth'\nimport { handleOAuth } from '@cascivo/app/oauth-server'\n` : ''}${guards.length > 0 || webhooks || accounts ? `import { ${[...guards, 'guardResponse'].sort().join(', ')} } from '@cascivo/app/guard'\n${limiter ? `import type { RateLimiter } from '@cascivo/app/guard'\n` : ''}` : ''}${imports ? `import { jobReporter } from '@cascivo/app/jobs-server'\n` : ''}${
     files
       ? `import { handleUploads, listUploads } from '@cascivo/app/uploads-server'
 import type { ImageResizer, UploadBucket } from '@cascivo/app/uploads-server'
@@ -2075,7 +2075,7 @@ ${
   search ||
   checkout ||
   newsletter
-    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${oauth ? '\n  /** Sign-in with GitHub and Google: `wrangler secret put` (.dev.vars locally). A provider is\n   * offered once both its id and secret are set; AUTH_SECRET seals the sign-in state. */\n  AUTH_SECRET?: string\n  GITHUB_CLIENT_ID?: string\n  GITHUB_CLIENT_SECRET?: string\n  GOOGLE_CLIENT_ID?: string\n  GOOGLE_CLIENT_SECRET?: string' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
+    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${oauth ? '\n  /** Sign-in with GitHub, Google and LinkedIn: `wrangler secret put` (.dev.vars locally). A provider is\n   * offered once both its id and secret are set; AUTH_SECRET seals the sign-in state. */\n  AUTH_SECRET?: string\n  GITHUB_CLIENT_ID?: string\n  GITHUB_CLIENT_SECRET?: string\n  GOOGLE_CLIENT_ID?: string\n  GOOGLE_CLIENT_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -2096,6 +2096,11 @@ function oauthProviders(env: Env): OAuthProvider[] {
   if (env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET) {
     providers.push(
       google({ clientId: env.GOOGLE_CLIENT_ID, clientSecret: env.GOOGLE_CLIENT_SECRET }),
+    )
+  }
+  if (env.LINKEDIN_CLIENT_ID && env.LINKEDIN_CLIENT_SECRET) {
+    providers.push(
+      linkedin({ clientId: env.LINKEDIN_CLIENT_ID, clientSecret: env.LINKEDIN_CLIENT_SECRET }),
     )
   }
   return providers
@@ -2355,7 +2360,7 @@ ${
             }${
               oauth
                 ? `
-    // Sign-in with GitHub and Google: /api/auth/oauth/* (and /me, /signout). A failed
+    // Sign-in with GitHub, Google and LinkedIn: /api/auth/oauth/* (and /me, /signout). A failed
     // sign-in lands on /account with ?error=.
     const signInWith = await handleOAuth(env.DB, {
       secret: env.AUTH_SECRET ?? '',
@@ -7815,9 +7820,9 @@ function cfAccountRouteTsx(opts: ScaffoldOptions): string {
   const oauth = oauthSignIn(opts)
   const lead = email
     ? oauth
-      ? 'Continue with GitHub or Google, or get a one-time link by email. No password.'
+      ? 'Continue with GitHub, Google or LinkedIn, or get a one-time link by email. No password.'
       : 'No password: we email you a link that signs you in once.'
-    : 'Continue with GitHub or Google. No password.'
+    : 'Continue with GitHub, Google or LinkedIn. No password.'
   return `import {
   Alert,
   Button,
@@ -7861,7 +7866,7 @@ async function start(event: FormEvent<HTMLFormElement>): Promise<void> {
 }${
     oauth
       ? `
-const LABELS: Record<string, string> = { github: 'GitHub', google: 'Google' }
+const LABELS: Record<string, string> = { github: 'GitHub', google: 'Google', linkedin: 'LinkedIn' }
 
 /** The providers the Worker offers: those with an id and a secret set (README). */
 const providers = signal<string[] | null>(null)
@@ -9970,13 +9975,13 @@ page through them instead.`
     hasAccounts(opts)
       ? `
 
-## Accounts (${emailSignIn(opts) ? (oauthSignIn(opts) ? 'email, GitHub and Google sign-in' : 'email sign-in') : 'GitHub and Google sign-in'})
+## Accounts (${emailSignIn(opts) ? (oauthSignIn(opts) ? 'email, GitHub, Google and LinkedIn sign-in' : 'email sign-in') : 'GitHub, Google and LinkedIn sign-in'})
 
 ${
   emailSignIn(opts) && oauthSignIn(opts)
-    ? 'Anyone can create an account by continuing with GitHub or Google, or with their email address, on `/account`.'
+    ? 'Anyone can create an account by continuing with GitHub, Google or LinkedIn, or with their email address, on `/account`.'
     : oauthSignIn(opts)
-      ? 'Anyone can create an account by continuing with GitHub or Google on `/account`.'
+      ? 'Anyone can create an account by continuing with GitHub, Google or LinkedIn on `/account`.'
       : 'Anyone can create an account with their email address: `/account` emails a one-time link, and opening it signs them in with a session cookie.'
 } **Every API write needs a signed-in user; reads stay public.**
 
@@ -10004,7 +10009,7 @@ if they need a user.${
           oauthSignIn(opts)
             ? `
 
-### GitHub and Google
+### GitHub, Google and LinkedIn
 
 1. **GitHub**: create an OAuth App at https://github.com/settings/developers with the
    callback URL \`http://localhost:5173/api/auth/oauth/github/callback\` for \`vite dev\`
@@ -10012,14 +10017,16 @@ if they need a user.${
 2. **Google**: in the Google Cloud console, create an OAuth client of type "Web application"
    with the redirect URIs \`http://localhost:5173/api/auth/oauth/google/callback\` and
    \`https://<your app>/api/auth/oauth/google/callback\`.
-3. Put the ids and secrets in \`.dev.vars\`. Deployed: \`npx wrangler secret put\` each of
-   \`GITHUB_CLIENT_ID\`, \`GITHUB_CLIENT_SECRET\`, \`GOOGLE_CLIENT_ID\`, \`GOOGLE_CLIENT_SECRET\`,
-   and \`AUTH_SECRET\` (a random one: \`openssl rand -base64 32\`). A provider is offered once
-   both its values are set.
+3. **LinkedIn**: create an app at https://www.linkedin.com/developers/apps, add the product
+   "Sign In with LinkedIn using OpenID Connect", and under Auth add both redirect URLs
+   (\`…/api/auth/oauth/linkedin/callback\` on localhost and on your app).
+4. Put the ids and secrets in \`.dev.vars\`. Deployed: \`npx wrangler secret put\` each
+   \`*_CLIENT_ID\` and \`*_CLIENT_SECRET\` you use, and \`AUTH_SECRET\` (a random one:
+   \`openssl rand -base64 32\`). A provider is offered once both its values are set.
 
 People are matched by their account at the provider, not by email. A new sign-in joins an
 existing account only through an email the provider has verified (GitHub's primary verified
-address, Google's \`email_verified\`). A signed-in user who follows another provider's link
+address, Google's and LinkedIn's \`email_verified\`). A signed-in user who follows another provider's link
 adds it to their account.`
             : ''
         }`
@@ -10237,12 +10244,14 @@ function cfDevVars(opts: ScaffoldOptions): string {
           '# Seals the sign-in state between the redirect and the callback. Deployed, a random one:',
           '# openssl rand -base64 32',
           'AUTH_SECRET=dev-only-auth-secret-0123456789abcdef',
-          '# An OAuth App (github.com/settings/developers) and a Google OAuth client (README).',
+          '# A GitHub OAuth App, a Google OAuth client and a LinkedIn app (README).',
           '# Each provider is offered once both its id and secret are set.',
           'GITHUB_CLIENT_ID=',
           'GITHUB_CLIENT_SECRET=',
           'GOOGLE_CLIENT_ID=',
           'GOOGLE_CLIENT_SECRET=',
+          'LINKEDIN_CLIENT_ID=',
+          'LINKEDIN_CLIENT_SECRET=',
         ]
       : []),
   ]
@@ -10314,7 +10323,7 @@ function cfBindingDescriptions(opts: ScaffoldOptions): Record<string, { descript
       ? describe([
           [
             'AUTH_SECRET',
-            'Seals the sign-in state between the redirect to GitHub or Google and the way back. Make a random one: `openssl rand -base64 32`.',
+            'Seals the sign-in state between the redirect to GitHub, Google or LinkedIn and the way back. Make a random one: `openssl rand -base64 32`.',
           ],
           [
             'GITHUB_CLIENT_ID',
@@ -10326,6 +10335,11 @@ function cfBindingDescriptions(opts: ScaffoldOptions): Record<string, { descript
             'The client id of a Google OAuth client (Web application) with the redirect URI `https://<this app>/api/auth/oauth/google/callback`. Leave it empty to offer no Google sign-in.',
           ],
           ['GOOGLE_CLIENT_SECRET', "That OAuth client's secret."],
+          [
+            'LINKEDIN_CLIENT_ID',
+            'The client id of a LinkedIn app with the "Sign In with LinkedIn using OpenID Connect" product and the redirect URL `https://<this app>/api/auth/oauth/linkedin/callback`. Leave it empty to offer no LinkedIn sign-in.',
+          ],
+          ['LINKEDIN_CLIENT_SECRET', "That LinkedIn app's primary client secret."],
         ])
       : {}),
   }

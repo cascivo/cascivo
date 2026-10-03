@@ -25,6 +25,7 @@ export default defineConfig({
         'auth-server': './src/auth-server.ts',
         oauth: './src/oauth.ts',
         'oauth-server': './src/oauth-server.ts',
+        social: './src/social.ts',
         live: './src/live.ts',
         'live-server': './src/live-server.ts',
         vite: './src/vite.ts',
@@ -49,8 +50,8 @@ export default defineConfig({
         // and their `-server` twins in the Worker,
         // `export` in both, `analytics`, `db`, `guard`, `ses` and `stripe` in the Worker,
         // `turnstile`, `live` and `auth` in the browser, `live-server`, `auth-server` and
-        // `oauth-server` in the Worker, `oauth` wherever `fetch` and WebCrypto exist, and `vite`
-        // runs in Node (see packages/core/vite.config.ts).
+        // `oauth-server` in the Worker, `oauth` and `social` wherever `fetch` and WebCrypto
+        // exist, and `vite` runs in Node (see packages/core/vite.config.ts).
         banner: (chunk: { name?: string; isEntry?: boolean }) =>
           chunk.isEntry && chunk.name === 'index' ? "'use client';" : '',
       },

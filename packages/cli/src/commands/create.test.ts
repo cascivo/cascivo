@@ -1168,6 +1168,7 @@ describe('buildScaffold — cloudflare --auth oauth', () => {
     expect(worker).toContain("import { requireUser } from '@cascivo/app/auth-server'")
     expect(worker).not.toContain('handleAuth(')
     expect(worker).toContain('if (env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET)')
+    expect(worker).toContain('if (env.LINKEDIN_CLIENT_ID && env.LINKEDIN_CLIENT_SECRET)')
     expect(worker).toContain("errorPath: '/account'")
     // No limiter here, so nothing else imports the guard's error responder (a past build break).
     expect(worker).toContain("import { guardResponse } from '@cascivo/app/guard'")
@@ -1200,7 +1201,7 @@ describe('buildScaffold — cloudflare --auth oauth', () => {
     expect(account).toContain("auth.signInUrl(id, '/account')")
     expect(account).toContain('identity_in_use')
     expect(account).not.toContain('Email me a link')
-    expect(map.get('README.md')).toContain('## Accounts (GitHub and Google sign-in)')
+    expect(map.get('README.md')).toContain('## Accounts (GitHub, Google and LinkedIn sign-in)')
   })
 
   it('puts both ways in on one page with --auth email,oauth', () => {
@@ -1211,7 +1212,9 @@ describe('buildScaffold — cloudflare --auth oauth', () => {
     expect(account).toContain('Email me a link')
     expect(account).toContain('auth.signInUrl(')
     expect(both.get('src/routes.gen.ts')).toContain("'/signin/verify'")
-    expect(both.get('README.md')).toContain('## Accounts (email, GitHub and Google sign-in)')
+    expect(both.get('README.md')).toContain(
+      '## Accounts (email, GitHub, Google and LinkedIn sign-in)',
+    )
   })
 
   it('bills accounts without an email: checkout then asks Stripe for one', () => {
