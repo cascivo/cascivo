@@ -1186,6 +1186,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     `- Payments, billing and email on Cloudflare (Stripe, Amazon SES, @cascivo/app): ${SITE}/docs/recipe-payments.md`,
   )
   lines.push(
+    `- Sign-in, connected accounts and social posting (OAuth, Bluesky, Mastodon, LinkedIn, Threads, Buffer, ShareMenu): ${SITE}/docs/recipe-social.md`,
+  )
+  lines.push(
     `- Every @cascivo/email component, with props and examples: ${SITE}/docs/email-primitives.md`,
   )
   lines.push(

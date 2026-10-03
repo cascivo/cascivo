@@ -334,6 +334,7 @@ All guides are fetchable as plain markdown at https://cascivo.com/docs/<slug>.md
 - Strict host ESLint (scope stylistic rules off your components dir): https://cascivo.com/docs/using-with-strict-eslint.md
 - Transactional & newsletter email (@cascivo/email): https://cascivo.com/docs/recipe-email.md
 - Payments, billing and email on Cloudflare (Stripe, Amazon SES, @cascivo/app): https://cascivo.com/docs/recipe-payments.md
+- Sign-in, connected accounts and social posting (OAuth, Bluesky, Mastodon, LinkedIn, Threads, Buffer, ShareMenu): https://cascivo.com/docs/recipe-social.md
 - Every @cascivo/email component, with props and examples: https://cascivo.com/docs/email-primitives.md
 - Email client support matrix (what the conformance lint enforces): https://cascivo.com/docs/email-client-support.md
 - Compatibility & support matrix: https://cascivo.com/docs/compatibility.md

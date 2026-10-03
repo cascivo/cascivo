@@ -79,6 +79,7 @@ for pasting into an agent's context window.
 | [CONTRIBUTING-TEMPLATES.md](CONTRIBUTING-TEMPLATES.md) | Author a template and submit it to the marketplace. |
 | [MACHINE-MODE.md](MACHINE-MODE.md) | Render a UI as a Markdown document with `@cascivo/text` — for agents, no CSS or interactivity. |
 | [CHART-LIBRARIES.md](CHART-LIBRARIES.md) | `@cascivo/charts` compared to Chart.js and Apache ECharts. |
+| [RECIPE-SOCIAL.md](RECIPE-SOCIAL.md) | Sign in with GitHub, Google or LinkedIn; connect Bluesky, Mastodon, LinkedIn, Threads and Buffer; post now or scheduled; a Share button for readers. |
 | [RECIPE-EMAIL.md](RECIPE-EMAIL.md) | Send transactional email with `@cascivo/email` — themed, table-based, plain-text part included. |
 | [EMAIL-PRIMITIVES.md](EMAIL-PRIMITIVES.md) | Every `@cascivo/email` component — props, defaults, and a worked example each. Generated from the source. |
 | [EMAIL-CLIENT-SUPPORT.md](EMAIL-CLIENT-SUPPORT.md) | What email clients support, generated from the vendored Can I email matrix. |

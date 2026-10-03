@@ -808,6 +808,9 @@ await blueskyPublisher().publish(
   points at that server. That is what stops a hostile server from signing in as someone
   else's DID. Every host in the chain is fetched with the same limits as Mastodon's, and the
   authorization server's endpoints must be on its own origin.
+- **The account is named.** The display name and avatar come from the profile record on the
+  account's own PDS (the avatar as the PDS's blob URL), best effort: a missing profile leaves
+  them `null`.
 - **Tokens are bound to a key.** The flow makes a P-256 key; `TokenSet.dpop` keeps it with
   the issuer and client id, sealed with the tokens. `connectionTokens` refreshes them under
   its lease, which matters here: Bluesky replaces the refresh token on every use.
@@ -924,8 +927,11 @@ await mastodonPublisher().publish(
   expire; a refused one is a `reconnect`.
 - **`mastodonPublisher`** counts like Mastodon (any URL is 23 characters, a mention without its
   server), appends a link to the text so the server builds the card, uploads images and waits
-  while the server processes them, and sends `Idempotency-Key`. Pass the server's own
-  `maxChars` when it allows more than 500.
+  while the server processes them, and sends `Idempotency-Key`.
+- **Each server has its own limits.** `mastodonServerLimits(server)` reads them from the
+  server's public `/api/v2/instance` (characters, images per post, what a URL counts as) and
+  falls back to Mastodon's defaults. Pass the result to `mastodonPublisher(limits)` so `check`
+  agrees with the server: hachyderm.io takes 2263 characters, not 500.
 
 ## Who may call the Worker — `@cascivo/app/guard`
 
