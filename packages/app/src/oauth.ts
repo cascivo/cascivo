@@ -3,7 +3,7 @@ import { base64UrlDecode, base64UrlEncode, JwtError, verifyJwt } from './jwt'
 
 /**
  * `@cascivo/app/oauth` — the authorization-code flow against an OAuth provider, and adapters
- * for Google, GitHub, LinkedIn, Mastodon and Bluesky. It knows the protocol and the provider, nothing else: no database, no
+ * for Google, GitHub, LinkedIn, Mastodon, Bluesky and Buffer. It knows the protocol and the provider, nothing else: no database, no
  * cookies, no users. What happens to the tokens is the caller's choice: `handleOAuth`
  * (`@cascivo/app/oauth-server`) turns the identity into a session and drops them; an app that
  * posts or reads on the user's behalf keeps them, sealed with `seal`. It runs anywhere with
@@ -1358,6 +1358,162 @@ export function parseBlueskyKey(raw: string): BlueskyKey {
     return value as BlueskyKey
   }
   throw new Error('The Bluesky key must be an ES256 (P-256) private JWK with a kid')
+}
+
+/* ----------------------------------- Buffer ----------------------------------- */
+
+export interface BufferOptions {
+  /** An app client registered at https://publish.buffer.com/settings/api. */
+  clientId: string
+  /** A confidential client's secret; a public client has none (PKCE alone). */
+  clientSecret?: string
+  /** Default `posts:write posts:read account:read offline_access`. */
+  scopes?: readonly string[]
+  fetch?: typeof fetch
+}
+
+/** Buffer's GraphQL API, for a query that must succeed (no errors, data present). */
+export async function bufferQuery(
+  doFetch: typeof fetch,
+  accessToken: string,
+  query: string,
+  variables: Record<string, unknown> = {},
+): Promise<{
+  status: number
+  data: Record<string, unknown> | null
+  error: string | null
+  /** GraphQL's `extensions.code` (`RATE_LIMIT_EXCEEDED`, `UNAUTHENTICATED`), when given. */
+  code: string | null
+  /** Seconds, from `Retry-After` on a 429. */
+  retryAfter: number | null
+}> {
+  const response = await doFetch('https://api.buffer.com', {
+    method: 'POST',
+    headers: {
+      authorization: `Bearer ${accessToken}`,
+      'content-type': 'application/json',
+      accept: 'application/json',
+    },
+    body: JSON.stringify({ query, variables }),
+  })
+  const body: unknown = await response.json().catch(() => null)
+  const r = typeof body === 'object' && body !== null ? (body as Record<string, unknown>) : {}
+  // GraphQL reports most errors with a 200: the status alone says nothing.
+  const errors = Array.isArray(r['errors']) ? r['errors'] : []
+  const first = errors[0]
+  const firstError =
+    typeof first === 'object' && first !== null ? (first as Record<string, unknown>) : {}
+  const message = typeof firstError['message'] === 'string' ? firstError['message'] : null
+  const extensions = firstError['extensions']
+  const code =
+    typeof extensions === 'object' &&
+    extensions !== null &&
+    typeof (extensions as Record<string, unknown>)['code'] === 'string'
+      ? String((extensions as Record<string, unknown>)['code'])
+      : null
+  const retry = Number(response.headers.get('retry-after'))
+  const data =
+    typeof r['data'] === 'object' && r['data'] !== null
+      ? (r['data'] as Record<string, unknown>)
+      : null
+  return {
+    status: response.status,
+    data,
+    error: message ?? (response.ok && data ? null : `Buffer answered ${response.status}`),
+    code,
+    retryAfter: Number.isFinite(retry) && retry > 0 ? retry : null,
+  }
+}
+
+/**
+ * Buffer, for connecting a user's Buffer so the app can post through it to the networks they
+ * connected there (X, Instagram, TikTok, … as well as the ones this package posts to itself).
+ * PKCE is mandatory; access tokens last an hour, and refresh tokens are single-use, replaced on
+ * every refresh, which `connectionTokens`' lease makes safe. A connection is a Buffer
+ * organization: its first one, whose channels the app can post to (`bufferChannels`).
+ */
+export function buffer(options: BufferOptions): OAuthProvider {
+  const doFetch = options.fetch ?? ((input, init) => fetch(input, init))
+  const client = (): Record<string, string> => ({
+    client_id: options.clientId,
+    ...(options.clientSecret ? { client_secret: options.clientSecret } : {}),
+  })
+  return {
+    id: 'buffer',
+    scopes: options.scopes ?? ['posts:write', 'posts:read', 'account:read', 'offline_access'],
+    authorizationUrl(pending, codeChallenge) {
+      const url = new URL('https://auth.buffer.com/auth')
+      const params: Record<string, string> = {
+        response_type: 'code',
+        client_id: options.clientId,
+        redirect_uri: pending.redirectUri,
+        scope: pending.scopes.join(' '),
+        state: pending.state,
+        code_challenge: codeChallenge,
+        code_challenge_method: 'S256',
+        prompt: 'consent',
+      }
+      for (const [key, value] of Object.entries(params)) url.searchParams.set(key, value)
+      return url
+    },
+    async exchange(code, pending) {
+      const { idToken: _idToken, ...tokens } = parseTokenResponse(
+        await postForm(doFetch, 'https://auth.buffer.com/token', {
+          grant_type: 'authorization_code',
+          code,
+          redirect_uri: pending.redirectUri,
+          code_verifier: pending.codeVerifier,
+          ...client(),
+        }),
+        pending.scopes,
+      )
+      const { data, error } = await bufferQuery(
+        doFetch,
+        tokens.accessToken,
+        'query { account { organizations { id name } } }',
+      )
+      const account = data?.['account']
+      const orgs =
+        typeof account === 'object' && account !== null
+          ? (account as Record<string, unknown>)['organizations']
+          : null
+      const org = Array.isArray(orgs) ? orgs[0] : null
+      const id =
+        typeof org === 'object' && org !== null ? (org as Record<string, unknown>)['id'] : null
+      if (typeof id !== 'string') {
+        throw new OAuthError('provider_error', error ?? 'This Buffer account has no organization')
+      }
+      return {
+        tokens,
+        identity: {
+          provider: 'buffer',
+          subject: id,
+          email: null,
+          name: stringOrNull((org as Record<string, unknown>)['name']),
+          handle: null,
+          avatarUrl: null,
+        },
+      }
+    },
+    async refresh(tokens) {
+      if (!tokens.refreshToken)
+        throw new Error('No refresh token: ask for the offline_access scope')
+      const fresh = parseTokenResponse(
+        await postForm(doFetch, 'https://auth.buffer.com/token', {
+          grant_type: 'refresh_token',
+          refresh_token: tokens.refreshToken,
+          ...client(),
+        }),
+        tokens.scopes,
+      )
+      return {
+        accessToken: fresh.accessToken,
+        refreshToken: fresh.refreshToken ?? tokens.refreshToken,
+        expiresAt: fresh.expiresAt,
+        scopes: fresh.scopes,
+      }
+    },
+  }
 }
 
 /* ----------------------------------- GitHub ----------------------------------- */

@@ -305,6 +305,17 @@ import { connectionTokens, handleConnections, handleOAuth, mastodonRegistrations
 import { linkedinPublisher, mastodonPublisher, PublishError, type PublishedPost } from '@cascivo/app/social'
 import { bluesky, blueskyClientMetadata, blueskyJwks, linkedin, mastodon, normalizeServer, parseBlueskyKey, type BlueskyKey } from '@cascivo/app/oauth'
 import { blueskyFacets, blueskyPublisher, blueskyRecordKey } from '@cascivo/app/social'
+import { buffer, bufferQuery } from '@cascivo/app/oauth'
+import { bufferChannels, bufferPublisher, bufferTokens, type BufferChannel } from '@cascivo/app/social'
+export const bufferApp = buffer({ clientId: 'c', clientSecret: 's' })
+export const listChannels = (key: string): Promise<BufferChannel[]> => bufferChannels(bufferTokens(key), 'org')
+export const viaBuffer = (key: string) =>
+  bufferPublisher({ service: 'instagram', uploadImage: async () => 'https://x.example/1.png' }).publish(
+    { tokens: bufferTokens(key), subject: 'ch' },
+    { text: 'Hi' },
+    { createdAt: new Date(Date.now() + 3_600_000) },
+  )
+export const rawQuery = (key: string) => bufferQuery(fetch, key, 'query { account { organizations { id } } }')
 export const atproto = (key?: BlueskyKey) => bluesky({ clientMetadataPath: '/oauth/client-metadata.json', ...(key ? { privateKey: key } : {}) })
 export const atprotoClient = (origin: string, secret: string) => {
   const privateKey = parseBlueskyKey(secret)

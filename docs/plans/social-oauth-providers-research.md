@@ -663,3 +663,21 @@ server.
   set, with `BLUESKY_PRIVATE_JWK`).
 - Not done: granular scopes (the default stays `atproto transition:generic`, which every
   server accepts); reading the account's display name.
+
+**Step 6 implemented (2026-10-03):** Buffer.
+
+- `buffer()` in `oauth` (PKCE, consent, offline access, rotating refresh tokens under the
+  lease) and `bufferQuery`, which reads GraphQL errors sent with a 200 and `Retry-After`. A
+  connection is the account's first Buffer organization: the documented query is
+  `account { organizations { id name } }`, and nothing documented names the account itself.
+- `bufferPublisher`, `bufferChannels`, `bufferTokens` in `social`. Inputs are written inline
+  and JSON-encoded rather than as typed variables, so nothing depends on schema type names the
+  docs do not show. `PublishedPost.url` became nullable, `PublishError` gained `retryAfter`.
+- `--example social`: each Buffer channel is an account (`<connection>~<channel>`), checked
+  against its network's limit; channel lists are kept in D1 for an hour; Buffer steps are never
+  retried. Live from `vite dev`, Buffer's API refused a planted token with a 401 and
+  `UNAUTHENTICATED`, which became `reconnect` on the connection and a readable failure on the
+  post.
+- Not done: the D1 request-budget counter proposed above (Buffer enforces the budget and the
+  429 is surfaced instead), and "schedule in Buffer" in the example's composer (the Workflow
+  waits and Buffer shares now; `bufferPublisher` supports both).

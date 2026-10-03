@@ -803,6 +803,41 @@ await blueskyPublisher().publish(
   up to four images of 1 MB. With `idempotencyKey` and `createdAt` the record key is fixed
   (`blueskyRecordKey`), and a retry returns the post it already made.
 
+### Buffer: the networks this package does not post to itself
+
+Buffer is a scheduler in front of X, Instagram, TikTok, Facebook, Pinterest, YouTube, Google
+Business Profile, Threads and the networks above. Connect a user's Buffer with `buffer()`, or
+post to your own with a personal API key (`bufferTokens(env.BUFFER_API_KEY)`):
+
+```ts
+const providers = [
+  buffer({ clientId: env.BUFFER_CLIENT_ID, clientSecret: env.BUFFER_CLIENT_SECRET }),
+]
+// connection.subject is the Buffer organization; each channel is one social account in it
+const channels = await bufferChannels(tokens, connection.subject)
+await bufferPublisher({ service: channel.service, uploadImage }).publish(
+  { tokens, subject: channel.id },
+  post,
+  { createdAt: dueAt }, // ahead: Buffer holds it in its queue; else it shares now
+)
+```
+
+- **OAuth with PKCE** (mandatory at Buffer), `prompt=consent`, and `offline_access` for a
+  refresh token. Refresh tokens are single-use and reusing one revokes the grant, so
+  `connectionTokens`' lease matters here as it does for Bluesky.
+- **GraphQL errors arrive with a 200.** `bufferQuery` reads `errors[]` and
+  `extensions.code` as well as the status; a `MutationError` (a refused post) is `invalid`,
+  `UNAUTHENTICATED` or a 401 is `reconnect`, and a rate limit carries `Retry-After` on
+  `PublishError.retryAfter`.
+- **Images go by public URL**: Buffer fetches them. Pass `uploadImage` (put the image in R2
+  behind a short-lived signed URL, return the URL); without it, `check` refuses images.
+- **`check` knows the network behind the channel** for the well-known limits (X 280, Threads
+  and Mastodon 500, Bluesky 300 graphemes, Instagram 2,200, LinkedIn 3,000) and leaves the
+  rest to Buffer. A link is appended to the text; the network builds its card.
+- **No idempotency.** Like LinkedIn, a request that timed out may have posted; the post's
+  `url` is `null` until Buffer sends it. Every request counts against the budget of the
+  plan that owns the app client, for all users together (100 per 15 minutes).
+
 ### Mastodon: one provider, many servers
 
 Every Mastodon server runs its own OAuth, so `mastodon()` is a factory. The flow takes the

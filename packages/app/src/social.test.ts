@@ -158,7 +158,8 @@ describe('boundary', () => {
     const { readFileSync } = await import('node:fs')
     const source = readFileSync(new URL('./social.ts', import.meta.url), 'utf8')
     const imports = [...source.matchAll(/^import[^'"]*['"]([^'"]+)['"]/gm)].map((m) => m[1])
-    // oauth for types, dpop for Bluesky's proofs: neither touches the app layer.
-    expect(imports).toEqual(['./dpop', './oauth'])
+    // oauth (types, and Buffer's GraphQL call) and dpop (Bluesky's proofs): neither touches
+    // the app layer.
+    expect([...new Set(imports)]).toEqual(['./dpop', './oauth'])
   })
 })

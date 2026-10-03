@@ -1267,6 +1267,17 @@ describe('buildScaffold — cloudflare --example social', () => {
     expect(map.get('src/App.tsx')).toContain("href: '/social'")
   })
 
+  it('posts to Buffer channels through their connection, never retried, budget kept', () => {
+    const store = map.get('worker/social.ts')!
+    expect(store).toContain('if (env.BUFFER_CLIENT_ID) {')
+    expect(store).toContain('const CHANNELS_TTL_MS = 60 * 60 * 1000')
+    const workflow = map.get('worker/social-post.ts')!
+    expect(workflow).toContain("target.network === 'linkedin' || target.network === 'buffer'")
+    expect(workflow).toContain('target.accountId.split(BUFFER_SEPARATOR)')
+    expect(map.get('.dev.vars')).toContain('BUFFER_CLIENT_ID=')
+    expect(map.get('src/routes/social.tsx')).toContain('/api/connections/buffer?returnTo=/social')
+  })
+
   it('serves the client metadata Bluesky reads, and offers Bluesky without set-up', () => {
     const worker = map.get('worker/index.ts')!
     expect(worker.indexOf('socialStore.blueskyClient(env, request)')).toBeLessThan(
@@ -1282,7 +1293,7 @@ describe('buildScaffold — cloudflare --example social', () => {
   it('never retries a LinkedIn post, and retries the others with a fixed key and time', () => {
     const workflow = map.get('worker/social-post.ts')!
     expect(workflow).toContain(
-      "target.network === 'linkedin'\n            ? { retries: { limit: 0, delay: '1 second' } }",
+      "target.network === 'linkedin' || target.network === 'buffer'\n            ? { retries: { limit: 0, delay: '1 second' } }",
     )
     expect(workflow).toContain(
       'idempotencyKey: `${post.id}:${target.accountId}`, createdAt: new Date(post.at)',

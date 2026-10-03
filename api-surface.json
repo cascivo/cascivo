@@ -7032,6 +7032,8 @@
           "bluesky",
           "blueskyClientMetadata",
           "blueskyJwks",
+          "buffer",
+          "bufferQuery",
           "completeAuthorization",
           "github",
           "google",
@@ -7047,6 +7049,7 @@
         "types": [
           "BlueskyKey",
           "BlueskyOptions",
+          "BufferOptions",
           "CompletedAuthorization",
           "GitHubOptions",
           "GoogleOptions",
@@ -7072,6 +7075,14 @@
             "scopes?": "readonly string[]",
             "fetch?": "typeof fetch"
           },
+          "buffer": "declare function buffer(options: BufferOptions): OAuthProvider",
+          "BufferOptions": {
+            "clientId": "string",
+            "clientSecret?": "string",
+            "scopes?": "readonly string[]",
+            "fetch?": "typeof fetch"
+          },
+          "bufferQuery": "declare function bufferQuery(doFetch: typeof fetch, accessToken: string, query: string, variables?: Record<string, unknown>): Promise<{ status: number; data: Record<string, unknown> | null; error: string | null; code: string | null; retryAfter: number | null; }>",
           "completeAuthorization": "declare function completeAuthorization(provider: OAuthProvider, pending: PendingAuthorization, params: URLSearchParams): Promise<CompletedAuthorization>",
           "CompletedAuthorization": {
             "tokens": "TokenSet",
@@ -7234,6 +7245,9 @@
           "blueskyLength",
           "blueskyPublisher",
           "blueskyRecordKey",
+          "bufferChannels",
+          "bufferPublisher",
+          "bufferTokens",
           "escapeLittleText",
           "linkedinPublisher",
           "mastodonLength",
@@ -7241,6 +7255,8 @@
         ],
         "types": [
           "BlueskyPublisherOptions",
+          "BufferChannel",
+          "BufferPublisherOptions",
           "Facet",
           "LinkedInPublisherOptions",
           "MastodonPublisherOptions",
@@ -7262,6 +7278,21 @@
             "fetch?": "typeof fetch"
           },
           "blueskyRecordKey": "declare function blueskyRecordKey(createdAt: Date, idempotencyKey: string): Promise<string>",
+          "BufferChannel": {
+            "id": "string",
+            "name": "string",
+            "service": "string",
+            "avatar": "string | null",
+            "isQueuePaused": "boolean"
+          },
+          "bufferChannels": "declare function bufferChannels(tokens: TokenSet, organizationId: string, options?: { fetch?: typeof fetch; }): Promise<BufferChannel[]>",
+          "bufferPublisher": "declare function bufferPublisher(options?: BufferPublisherOptions): Publisher",
+          "BufferPublisherOptions": {
+            "service?": "string",
+            "uploadImage?": "(image: SocialImage) => Promise<string>",
+            "fetch?": "typeof fetch"
+          },
+          "bufferTokens": "declare function bufferTokens(apiKey: string): TokenSet",
           "escapeLittleText": "declare function escapeLittleText(text: string): string",
           "Facet": {
             "index": "{ byteStart: number; byteEnd: number; }",
@@ -7285,7 +7316,7 @@
           },
           "PublishedPost": {
             "id": "string",
-            "url": "string"
+            "url": "string | null"
           },
           "Publisher": {
             "readonly network": "string",
@@ -7297,7 +7328,8 @@
             "readonly network": "string",
             "readonly kind": "PublishErrorKind",
             "readonly status": "number | null",
-            "constructor": "(network: string, kind: PublishErrorKind, message: string, status?: number | null)",
+            "readonly retryAfter": "number | null",
+            "constructor": "(network: string, kind: PublishErrorKind, message: string, status?: number | null, retryAfter?: number | null)",
             "get retryable(): boolean": "",
             "(kind)": "class"
           },

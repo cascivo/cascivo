@@ -2123,7 +2123,7 @@ ${
   search ||
   checkout ||
   newsletter
-    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${oauth ? '\n  /** Sign-in with GitHub, Google and LinkedIn: `wrangler secret put` (.dev.vars locally). A provider is\n   * offered once both its id and secret are set; AUTH_SECRET seals the sign-in state. */\n  AUTH_SECRET?: string\n  GITHUB_CLIENT_ID?: string\n  GITHUB_CLIENT_SECRET?: string\n  GOOGLE_CLIENT_ID?: string\n  GOOGLE_CLIENT_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string' : social ? "\n  /** Seals connected accounts' tokens, and LinkedIn's app: `wrangler secret put` (.dev.vars\n   * locally). LinkedIn is offered once both its values are set. */\n  AUTH_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string" : ''}${social ? '\n  /** Bluesky: an ES256 private JWK (README); unset, the app is a public client. */\n  BLUESKY_PRIVATE_JWK?: string\n  SOCIAL_POST: Workflow<SocialPostParams>' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
+    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${oauth ? '\n  /** Sign-in with GitHub, Google and LinkedIn: `wrangler secret put` (.dev.vars locally). A provider is\n   * offered once both its id and secret are set; AUTH_SECRET seals the sign-in state. */\n  AUTH_SECRET?: string\n  GITHUB_CLIENT_ID?: string\n  GITHUB_CLIENT_SECRET?: string\n  GOOGLE_CLIENT_ID?: string\n  GOOGLE_CLIENT_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string' : social ? "\n  /** Seals connected accounts' tokens, and LinkedIn's app: `wrangler secret put` (.dev.vars\n   * locally). LinkedIn is offered once both its values are set. */\n  AUTH_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string" : ''}${social ? '\n  /** Bluesky: an ES256 private JWK (README); unset, the app is a public client. */\n  BLUESKY_PRIVATE_JWK?: string\n  /** A Buffer app client (README); Buffer is offered once its id is set. */\n  BUFFER_CLIENT_ID?: string\n  BUFFER_CLIENT_SECRET?: string\n  SOCIAL_POST: Workflow<SocialPostParams>' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -7837,7 +7837,12 @@ export default function BillingPage() {
 /* --- `--example social`: scheduled posts to connected LinkedIn and Mastodon accounts --- */
 
 function cfSocialTs(): string {
-  return `import { blueskyPublisher, linkedinPublisher, mastodonPublisher } from '@cascivo/app/social'
+  return `import {
+  blueskyPublisher,
+  bufferPublisher,
+  linkedinPublisher,
+  mastodonPublisher,
+} from '@cascivo/app/social'
 import type { Publisher, SocialPost } from '@cascivo/app/social'
 
 /**
@@ -7846,17 +7851,32 @@ import type { Publisher, SocialPost } from '@cascivo/app/social'
  * refuse while you type, and the Worker refuses the same post before scheduling it.
  */
 
-export const NETWORKS = { bluesky: 'Bluesky', linkedin: 'LinkedIn', mastodon: 'Mastodon' } as const
+export const NETWORKS = {
+  bluesky: 'Bluesky',
+  buffer: 'Buffer',
+  linkedin: 'LinkedIn',
+  mastodon: 'Mastodon',
+} as const
 export type Network = keyof typeof NETWORKS
 
 export function isNetwork(value: string): value is Network {
-  return value === 'bluesky' || value === 'linkedin' || value === 'mastodon'
+  return value === 'bluesky' || value === 'buffer' || value === 'linkedin' || value === 'mastodon'
 }
 
-export const publishers: Record<Network, Publisher> = {
+const publishers: Record<Exclude<Network, 'buffer'>, Publisher> = {
   bluesky: blueskyPublisher(),
   linkedin: linkedinPublisher(),
   mastodon: mastodonPublisher(),
+}
+
+/**
+ * The publisher for an account. A Buffer channel posts through Buffer, checked against the
+ * limit of the network behind it (\`service\`).
+ */
+export function publisherFor(account: { network: Network; service: string | null }): Publisher {
+  return account.network === 'buffer'
+    ? bufferPublisher(account.service ? { service: account.service } : {})
+    : publishers[account.network]
 }
 
 export const MAX_TEXT = 5000
@@ -7871,6 +7891,8 @@ export interface Account {
   label: string
   /** \`expiring\`: the token ends soon and cannot be renewed (LinkedIn): connect it again. */
   status: 'active' | 'expiring' | 'reconnect'
+  /** For a Buffer channel, the network behind it (\`instagram\`, \`twitter\`, …); else \`null\`. */
+  service: string | null
 }
 
 export type TargetStatus = 'pending' | 'publishing' | 'posted' | 'failed'
@@ -7878,6 +7900,7 @@ export type TargetStatus = 'pending' | 'publishing' | 'posted' | 'failed'
 export interface Target {
   accountId: string
   network: Network
+  service: string | null
   label: string
   status: TargetStatus
   url: string | null
@@ -7968,7 +7991,13 @@ function parseAccount(raw: unknown): Account {
   if (status !== 'active' && status !== 'expiring' && status !== 'reconnect') {
     throw new Error('Malformed account status')
   }
-  return { id: text(r['id'], 'account id'), network, label: text(r['label'], 'label'), status }
+  return {
+    id: text(r['id'], 'account id'),
+    network,
+    label: text(r['label'], 'label'),
+    status,
+    service: typeof r['service'] === 'string' ? r['service'] : null,
+  }
 }
 
 const TARGET_STATUSES: readonly TargetStatus[] = ['pending', 'publishing', 'posted', 'failed']
@@ -7989,6 +8018,7 @@ function parseTarget(raw: unknown): Target {
   return {
     accountId: text(r['accountId'], 'account id'),
     network,
+    service: typeof r['service'] === 'string' ? r['service'] : null,
     label: text(r['label'], 'label'),
     status,
     url: typeof r['url'] === 'string' ? r['url'] : null,
@@ -8033,6 +8063,7 @@ import type { Database } from '@cascivo/app/db'
 import {
   bluesky,
   blueskyClientMetadata,
+  buffer,
   blueskyJwks,
   linkedin,
   mastodon,
@@ -8040,18 +8071,19 @@ import {
 } from '@cascivo/app/oauth'
 import type { OAuthProvider } from '@cascivo/app/oauth'
 import {
+  connectionTokens,
   handleConnections,
   listConnections,
   mastodonRegistrations,
 } from '@cascivo/app/oauth-server'
 import type { Connection } from '@cascivo/app/oauth-server'
+import { bufferChannels } from '@cascivo/app/social'
 import {
   asSocialPost,
   isNetwork,
   MAX_DAYS_AHEAD,
-  NETWORKS,
   parseScheduledPost,
-  publishers,
+  publisherFor,
 } from '../src/social'
 import type { Account, PostInput, PostStatus, ScheduledPost, Social } from '../src/social'
 
@@ -8070,6 +8102,9 @@ export interface SocialEnv {
   LINKEDIN_CLIENT_SECRET?: string
   /** An ES256 private JWK with a kid: makes Bluesky sessions last (README). */
   BLUESKY_PRIVATE_JWK?: string
+  /** A Buffer app client (README); Buffer is offered once its id is set. */
+  BUFFER_CLIENT_ID?: string
+  BUFFER_CLIENT_SECRET?: string
   SOCIAL_POST: Workflow<SocialPostParams>
 }
 
@@ -8094,11 +8129,20 @@ const migrations = [
         post_id TEXT NOT NULL REFERENCES social_posts (id),
         account_id TEXT NOT NULL,
         network TEXT NOT NULL,
+        service TEXT,
         label TEXT NOT NULL,
         status TEXT NOT NULL,
         url TEXT,
         error TEXT,
         PRIMARY KEY (post_id, account_id)
+      )\`,
+      \`CREATE TABLE social_buffer_channels (
+        connection_id TEXT NOT NULL,
+        channel_id TEXT NOT NULL,
+        service TEXT NOT NULL,
+        name TEXT NOT NULL,
+        fetched_at INTEGER NOT NULL,
+        PRIMARY KEY (connection_id, channel_id)
       )\`,
     ],
   },
@@ -8128,6 +8172,14 @@ export function socialProviders(env: SocialEnv): OAuthProvider[] {
       ...(key ? { privateKey: key } : {}),
     }),
   ]
+  if (env.BUFFER_CLIENT_ID) {
+    providers.push(
+      buffer({
+        clientId: env.BUFFER_CLIENT_ID,
+        ...(env.BUFFER_CLIENT_SECRET ? { clientSecret: env.BUFFER_CLIENT_SECRET } : {}),
+      }),
+    )
+  }
   if (env.LINKEDIN_CLIENT_ID && env.LINKEDIN_CLIENT_SECRET) {
     providers.push(
       linkedin({
@@ -8184,19 +8236,94 @@ export function blueskyClient(env: SocialEnv, request: Request): Response | null
   return null
 }
 
-function toAccount(connection: Connection): Account | null {
-  if (!isNetwork(connection.provider)) return null
-  return {
-    id: connection.id,
-    network: connection.provider,
-    label: connection.handle ?? connection.name ?? connection.subject,
-    status: connection.status,
+/** A Buffer channel's account id: its connection, and the channel within it. */
+export const BUFFER_SEPARATOR = '~'
+
+/** Buffer's request budget is small: its channel list is kept for an hour. */
+const CHANNELS_TTL_MS = 60 * 60 * 1000
+
+interface ChannelRow {
+  id: string
+  service: string
+  name: string
+  fetchedAt: number
+}
+
+function parseChannelRow(raw: unknown): ChannelRow {
+  if (typeof raw !== 'object' || raw === null) throw new Error('Malformed channel row')
+  const { channel_id, service, name, fetched_at } = raw as Record<string, unknown>
+  if (typeof channel_id !== 'string' || typeof service !== 'string' || typeof name !== 'string') {
+    throw new Error('Malformed channel row')
+  }
+  return { id: channel_id, service, name, fetchedAt: Number(fetched_at) }
+}
+
+/**
+ * A Buffer connection's channels, from D1 when fresh, else from Buffer. If Buffer cannot be
+ * asked, the last list known is used.
+ */
+async function channelsOf(env: SocialEnv, connection: Connection, userId: string) {
+  const cached = await queryRows(
+    env.DB,
+    'SELECT channel_id, service, name, fetched_at FROM social_buffer_channels WHERE connection_id = ?',
+    [connection.id],
+    parseChannelRow,
+  )
+  if (cached.length > 0 && cached.every((c) => Date.now() - c.fetchedAt < CHANNELS_TTL_MS)) {
+    return cached
+  }
+  try {
+    const { tokens } = await connectionTokens(
+      env.DB,
+      { secret: secretOf(env), providers: socialProviders(env) },
+      { connectionId: connection.id, userId },
+    )
+    const fresh = await bufferChannels(tokens, connection.subject)
+    await env.DB.batch([
+      env.DB.prepare('DELETE FROM social_buffer_channels WHERE connection_id = ?').bind(
+        connection.id,
+      ),
+      ...fresh.map((c) =>
+        env.DB.prepare(
+          \`INSERT INTO social_buffer_channels (connection_id, channel_id, service, name, fetched_at)
+           VALUES (?, ?, ?, ?, ?)\`,
+        ).bind(connection.id, c.id, c.service, c.name, Date.now()),
+      ),
+    ])
+    return fresh
+  } catch (error) {
+    console.warn('[social] could not list Buffer channels:', error)
+    return cached
   }
 }
 
 async function userAccounts(env: SocialEnv, userId: string): Promise<Account[]> {
-  const list = await listConnections(env.DB, userId)
-  return list.map(toAccount).filter((a): a is Account => a !== null)
+  await migrate(env.DB, migrations)
+  const accounts: Account[] = []
+  for (const connection of await listConnections(env.DB, userId)) {
+    if (!isNetwork(connection.provider)) continue
+    if (connection.provider !== 'buffer') {
+      accounts.push({
+        id: connection.id,
+        network: connection.provider,
+        label: connection.handle ?? connection.name ?? connection.subject,
+        status: connection.status,
+        service: null,
+      })
+      continue
+    }
+    // Each channel in Buffer is an account of its own to post to.
+    for (const channel of await channelsOf(env, connection, userId)) {
+      accounts.push({
+        id: \`\${connection.id}\${BUFFER_SEPARATOR}\${channel.id}\`,
+        network: 'buffer',
+        label: \`\${channel.name} (\${channel.service}, via Buffer)\`,
+        status: connection.status,
+        service: channel.service,
+      })
+    }
+  }
+  return accounts
 }
 
 export async function readPosts(db: Database, where: string, params: unknown[]) {
@@ -8212,7 +8339,7 @@ export async function readPosts(db: Database, where: string, params: unknown[]) 
   const ids = posts.map((p) => String(p['id']))
   const targets = await queryRows(
     db,
-    \`SELECT post_id AS postId, account_id AS accountId, network, label, status, url, error
+    \`SELECT post_id AS postId, account_id AS accountId, network, service, label, status, url, error
      FROM social_targets WHERE post_id IN (\${ids.map(() => '?').join(', ')})\`,
     ids,
     (raw) => raw as Record<string, unknown>,
@@ -8265,10 +8392,10 @@ export async function schedulePost(
     return account
   })
   const post = asSocialPost(input)
-  for (const network of new Set(chosen.map((a) => a.network))) {
-    const problems = publishers[network].check(post)
+  for (const account of chosen) {
+    const problems = publisherFor(account).check(post)
     if (problems.length > 0) {
-      throw new HttpError(400, \`\${NETWORKS[network]}: \${problems.map((p) => p.message).join('; ')}\`)
+      throw new HttpError(400, \`\${account.label}: \${problems.map((p) => p.message).join('; ')}\`)
     }
   }
   const now = Date.now()
@@ -8295,9 +8422,9 @@ export async function schedulePost(
     ),
     ...chosen.map((account) =>
       env.DB.prepare(
-        \`INSERT INTO social_targets (post_id, account_id, network, label, status)
-         VALUES (?, ?, ?, ?, 'pending')\`,
-      ).bind(id, account.id, account.network, account.label),
+        \`INSERT INTO social_targets (post_id, account_id, network, service, label, status)
+         VALUES (?, ?, ?, ?, ?, 'pending')\`,
+      ).bind(id, account.id, account.network, account.service, account.label),
     ),
   ])
   await env.SOCIAL_POST.create({ id, params: { postId: id, userId: user.id } })
@@ -8341,10 +8468,10 @@ import { ConnectionError, connectionTokens, markReconnect } from '@cascivo/app/o
 import { PublishError } from '@cascivo/app/social'
 import { WorkflowEntrypoint } from 'cloudflare:workers'
 import type { WorkflowEvent, WorkflowStep } from 'cloudflare:workers'
-import { asSocialPost, NETWORKS, publishers } from '../src/social'
+import { asSocialPost, NETWORKS, publisherFor } from '../src/social'
 import type { ScheduledPost, Target } from '../src/social'
 import type { Env } from './index'
-import { readPosts, secretOf, socialProviders } from './social'
+import { BUFFER_SEPARATOR, readPosts, secretOf, socialProviders } from './social'
 import type { SocialPostParams } from './social'
 
 type TargetResult = Pick<Target, 'status' | 'url' | 'error'>
@@ -8354,8 +8481,8 @@ type TargetResult = Pick<Target, 'status' | 'url' | 'error'>
  * account in its own step, so one network failing does not hold up or repeat the others.
  *
  * Retrying is decided per network. Mastodon takes an idempotency key and Bluesky a fixed record
- * key, so a step that failed mid-request is retried and cannot post twice. LinkedIn takes
- * none: its step is never retried, and an account found mid-post (a crash between the request and the record) is
+ * key, so a step that failed mid-request is retried and cannot post twice. LinkedIn and Buffer
+ * take none: their steps are never retried, and an account found mid-post (a crash between the request and the record) is
  * reported for a person to check instead of being posted again.
  */
 export class SocialPost extends WorkflowEntrypoint<Env, SocialPostParams> {
@@ -8377,7 +8504,7 @@ export class SocialPost extends WorkflowEntrypoint<Env, SocialPostParams> {
       try {
         await step.do(
           name,
-          target.network === 'linkedin'
+          target.network === 'linkedin' || target.network === 'buffer'
             ? { retries: { limit: 0, delay: '1 second' } }
             : { retries: { limit: 3, delay: '30 seconds', backoff: 'exponential' } },
           () => publishTo(this.env, post, target, userId),
@@ -8388,8 +8515,8 @@ export class SocialPost extends WorkflowEntrypoint<Env, SocialPostParams> {
             status: 'failed',
             url: null,
             error:
-              target.network === 'linkedin'
-                ? 'LinkedIn did not answer. Check your profile before posting this again.'
+              target.network === 'linkedin' || target.network === 'buffer'
+                ? \`\${NETWORKS[target.network]} did not answer. Check before posting this again.\`
                 : \`\${NETWORKS[target.network]} did not take it: \${String(error)}\`,
           }),
         )
@@ -8435,23 +8562,25 @@ async function publishTo(env: Env, post: ScheduledPost, target: Target, userId: 
     const [current] = await readPosts(env.DB, 'id = ?', [post.id])
     const now = current?.targets.find((t) => t.accountId === target.accountId)
     if (!now || now.status !== 'publishing') return
-    if (target.network === 'linkedin') {
+    if (target.network === 'linkedin' || target.network === 'buffer') {
       await record(env, post.id, target.accountId, {
         status: 'failed',
         url: null,
-        error: 'Interrupted while posting. Check your LinkedIn profile before posting this again.',
+        error: \`Interrupted while posting. Check \${NETWORKS[target.network]} before posting this again.\`,
       })
       return
     }
   }
+  // A Buffer channel's id is its connection's, then the channel's.
+  const [connectionId = '', channelId] = target.accountId.split(BUFFER_SEPARATOR)
   try {
     const { connection, tokens } = await connectionTokens(
       env.DB,
       { secret: secretOf(env), providers: socialProviders(env) },
-      { connectionId: target.accountId, userId },
+      { connectionId, userId },
     )
-    const published = await publishers[target.network].publish(
-      { tokens, subject: connection.subject, server: connection.server },
+    const published = await publisherFor(target).publish(
+      { tokens, subject: channelId ?? connection.subject, server: connection.server },
       asSocialPost(post),
       // Fixed for every attempt: Mastodon's key, and Bluesky's record key, make a retry safe.
       { idempotencyKey: \`\${post.id}:\${target.accountId}\`, createdAt: new Date(post.at) },
@@ -8466,7 +8595,7 @@ async function publishTo(env: Env, post: ScheduledPost, target: Target, userId: 
       error instanceof ConnectionError ||
       (error instanceof PublishError && error.kind === 'reconnect')
     ) {
-      await markReconnect(env.DB, target.accountId)
+      await markReconnect(env.DB, connectionId)
       await record(env, post.id, target.accountId, {
         status: 'failed',
         url: null,
@@ -8521,7 +8650,7 @@ import type { FormEvent } from 'react'
 import { api } from '../api'
 import { auth } from '../auth'
 import { router } from '../router'
-import { asSocialPost, NETWORKS, publishers } from '../social'
+import { asSocialPost, NETWORKS, publisherFor } from '../social'
 import type { Account, PostStatus, Social, TargetStatus } from '../social'
 
 const client = createClient(api)
@@ -8587,12 +8716,13 @@ function draft() {
 
 /** What each chosen network would refuse, from the same checks the Worker runs. */
 function problems(accounts: Account[]): string[] {
-  const networks = new Set(
-    accounts.filter((a) => chosen.value.includes(a.id)).map((a) => a.network),
-  )
-  return [...networks].flatMap((network) =>
-    publishers[network].check(draft()).map((p) => \`\${NETWORKS[network]}: \${p.message}\`),
-  )
+  return accounts
+    .filter((a) => chosen.value.includes(a.id))
+    .flatMap((account) =>
+      publisherFor(account)
+        .check(draft())
+        .map((p) => \`\${account.label}: \${p.message}\`),
+    )
 }
 
 async function schedule(event: FormEvent<HTMLFormElement>): Promise<void> {
@@ -8632,7 +8762,11 @@ async function cancel(id: string): Promise<void> {
 }
 
 async function remove(id: string): Promise<void> {
-  const response = await fetch(\`/api/connections/\${encodeURIComponent(id)}\`, { method: 'DELETE' })
+  // A Buffer channel goes with its whole Buffer connection (the id before the ~).
+  const connectionId = id.split('~')[0] ?? id
+  const response = await fetch(\`/api/connections/\${encodeURIComponent(connectionId)}\`, {
+    method: 'DELETE',
+  })
   if (!response.ok) failure.value = 'The account was not removed'
   chosen.value = chosen.value.filter((c) => c !== id)
   await load()
@@ -8670,7 +8804,8 @@ export default function SocialPage() {
       <Flex gap={1}>
         <Heading level={1}>Social</Heading>
         <Text muted>
-          Write once, post to Bluesky, LinkedIn and Mastodon now or at a time you pick.
+          Write once, post to Bluesky, LinkedIn, Mastodon and the channels in your Buffer, now or at
+          a time you pick.
         </Text>
       </Flex>
       {reason ? (
@@ -8714,6 +8849,11 @@ export default function SocialPage() {
                   </Flex>
                 ))}
                 <Flex direction="horizontal" align="end" gap={2} wrap>
+                  {data.networks.includes('buffer') ? (
+                    <Button asChild variant="secondary">
+                      <a href="/api/connections/buffer?returnTo=/social">Connect Buffer</a>
+                    </Button>
+                  ) : null}
                   {data.networks.includes('linkedin') ? (
                     <Button asChild variant="secondary">
                       <a href="/api/connections/linkedin?returnTo=/social">Connect LinkedIn</a>
@@ -11105,7 +11245,15 @@ node -e "crypto.subtle.generateKey({name:'ECDSA',namedCurve:'P-256'},true,['sign
 \`\`\`
 
 **Mastodon** needs no set-up: people type their server, and the app registers itself there
-on first use. **LinkedIn** needs an app at https://www.linkedin.com/developers/apps with the
+on first use.
+
+**Buffer** reaches the networks connected there (X, Instagram, TikTok, …): register an app
+client at https://publish.buffer.com/settings/api with \`…/api/connections/buffer/callback\` as
+its redirect URL, and set \`BUFFER_CLIENT_ID\` (and \`BUFFER_CLIENT_SECRET\` for a confidential
+client). Each channel in a connected Buffer is an account in the composer, checked against
+its network's limit. Buffer counts every request against your plan's budget (100 per 15
+minutes on every plan), for all your users together, so the channel list is kept for an hour.
+Buffer cannot deduplicate, so its posts are never retried, like LinkedIn's. **LinkedIn** needs an app at https://www.linkedin.com/developers/apps with the
 "Share on LinkedIn" product${oauthSignIn(opts) ? ' (the same app as sign-in works, with both products)' : ''}; add
 \`…/api/connections/linkedin/callback\` as a redirect URL and set \`LINKEDIN_CLIENT_ID\` and
 \`LINKEDIN_CLIENT_SECRET\`. LinkedIn tokens last 60 days and cannot be renewed: the page shows
@@ -11409,6 +11557,9 @@ function cfDevVars(opts: ScaffoldOptions): string {
       ? [
           '# Optional: an ES256 private JWK with a kid, so Bluesky sessions last (README).',
           'BLUESKY_PRIVATE_JWK=',
+          '# Optional: a Buffer app client (publish.buffer.com/settings/api), to post to its channels.',
+          'BUFFER_CLIENT_ID=',
+          'BUFFER_CLIENT_SECRET=',
         ]
       : []),
   ]
@@ -11517,6 +11668,11 @@ function cfBindingDescriptions(opts: ScaffoldOptions): Record<string, { descript
             'BLUESKY_PRIVATE_JWK',
             'Optional. An ES256 private key as a JWK with a `kid` (README shows how to make one). With it, Bluesky sessions last until revoked; without it, two weeks.',
           ],
+          [
+            'BUFFER_CLIENT_ID',
+            'Optional. A Buffer app client (https://publish.buffer.com/settings/api) with the redirect URL `https://<this app>/api/connections/buffer/callback`. Leave it empty to offer no Buffer.',
+          ],
+          ['BUFFER_CLIENT_SECRET', "That Buffer app client's secret (none for a public client)."],
         ])
       : {}),
   }

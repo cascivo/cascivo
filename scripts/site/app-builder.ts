@@ -112,7 +112,7 @@ export const EXAMPLE_WORDS: Record<string, { label: string; blurb: string; group
   },
   social: {
     label: 'Social scheduler',
-    blurb: 'Connect Bluesky, LinkedIn and Mastodon; post now or at a set time.',
+    blurb: 'Bluesky, LinkedIn, Mastodon and Buffer; post now or at a set time.',
     group: 'Operations',
   },
 }

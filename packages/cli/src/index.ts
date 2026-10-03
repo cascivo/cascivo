@@ -117,7 +117,7 @@ Options:
                             search — help articles searched by meaning: Vectorize + Workers AI (cloudflare)
                             checkout — sell a product with Stripe Checkout; orders and receipts (cloudflare)
                             newsletter — double opt-in sign-up, issues sent through Amazon SES (cloudflare)
-                            social — post to Bluesky, LinkedIn and Mastodon now or on a schedule (cloudflare)
+                            social — post to Bluesky, LinkedIn, Mastodon and Buffer, now or scheduled (cloudflare)
   --auth access             Refuse every Worker request Cloudflare Access did not let
                             through (cloudflare only)
   --auth email              Accounts with emailed sign-in links; every API write needs a

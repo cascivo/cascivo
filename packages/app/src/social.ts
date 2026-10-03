@@ -1,4 +1,5 @@
 import { dpopFetch } from './dpop'
+import { bufferQuery } from './oauth'
 import type { TokenSet } from './oauth'
 
 /**
@@ -57,7 +58,8 @@ export interface PublishOptions {
 export interface PublishedPost {
   /** The network's id for the post (LinkedIn: `urn:li:share:…`). */
   id: string
-  url: string
+  /** Where to see it; `null` when the network cannot say yet (Buffer sends it on later). */
+  url: string | null
 }
 
 export type PublishErrorKind =
@@ -77,6 +79,8 @@ export class PublishError extends Error {
     message: string,
     /** The HTTP status, when the network answered. */
     readonly status: number | null = null,
+    /** Seconds the network asked to wait (`Retry-After`), on a rate limit. */
+    readonly retryAfter: number | null = null,
   ) {
     super(message)
     this.name = 'PublishError'
@@ -750,6 +754,189 @@ export function blueskyPublisher(options: BlueskyPublisherOptions = {}): Publish
       if (typeof uri !== 'string')
         throw new PublishError('bluesky', 'failed', 'Bluesky returned no record')
       return { id: uri, url: urlOf(uri.split('/').pop()!) }
+    },
+  }
+  return publisher
+}
+
+/* ---------------------------------- Buffer ---------------------------------- */
+
+/** A personal Buffer API key as a `TokenSet`, for an app that posts to its owner's Buffer. */
+export function bufferTokens(apiKey: string): TokenSet {
+  return { accessToken: apiKey, refreshToken: null, expiresAt: null, scopes: [] }
+}
+
+/** A social account connected in Buffer, which the app can post to. */
+export interface BufferChannel {
+  id: string
+  name: string
+  /** The network: `bluesky`, `instagram`, `linkedin`, `mastodon`, `threads`, `twitter`, … */
+  service: string
+  avatar: string | null
+  isQueuePaused: boolean
+}
+
+function bufferFailure(result: Awaited<ReturnType<typeof bufferQuery>>): PublishError {
+  const { status, code, error, retryAfter } = result
+  const kind: PublishErrorKind =
+    status === 429 || code === 'RATE_LIMIT_EXCEEDED'
+      ? 'rate_limited'
+      : status === 401 || status === 403 || code === 'UNAUTHENTICATED' || code === 'FORBIDDEN'
+        ? 'reconnect'
+        : status >= 500
+          ? 'failed'
+          : 'invalid'
+  return new PublishError('buffer', kind, error ?? `Buffer answered ${status}`, status, retryAfter)
+}
+
+/** The channels of a Buffer organization (the connection's `subject`). */
+export async function bufferChannels(
+  tokens: TokenSet,
+  organizationId: string,
+  options: { fetch?: typeof fetch } = {},
+): Promise<BufferChannel[]> {
+  const doFetch = options.fetch ?? ((input, init) => fetch(input, init))
+  const result = await bufferQuery(
+    doFetch,
+    tokens.accessToken,
+    `query { channels(input: { organizationId: ${JSON.stringify(organizationId)} }) { id name service avatar isQueuePaused } }`,
+  )
+  const list = result.data?.['channels']
+  if (result.error || !Array.isArray(list)) throw bufferFailure(result)
+  return list.flatMap((raw) => {
+    const c = asRecord(raw)
+    if (typeof c?.['id'] !== 'string' || typeof c['service'] !== 'string') return []
+    return [
+      {
+        id: c['id'],
+        name: typeof c['name'] === 'string' ? c['name'] : c['id'],
+        service: c['service'],
+        avatar: typeof c['avatar'] === 'string' ? c['avatar'] : null,
+        isQueuePaused: c['isQueuePaused'] === true,
+      },
+    ]
+  })
+}
+
+/**
+ * The text limit of the network behind a Buffer channel, where it is well known; Buffer
+ * refuses the rest itself. Bluesky counts graphemes, the others characters.
+ */
+const BUFFER_LIMITS: Record<string, number> = {
+  bluesky: 300,
+  twitter: 280,
+  x: 280,
+  threads: 500,
+  mastodon: 500,
+  instagram: 2200,
+  linkedin: 3000,
+}
+
+export interface BufferPublisherOptions {
+  /** The channel's network (`BufferChannel.service`), so `check` knows its text limit. */
+  service?: string
+  /**
+   * Buffer takes images by public URL only: put the image somewhere it can fetch (an R2 object
+   * behind a short-lived signed URL) and return the URL. Without it, images are refused.
+   */
+  uploadImage?: (image: SocialImage) => Promise<string>
+  fetch?: typeof fetch
+}
+
+/** The text Buffer gets: the link appended when the text does not carry it. */
+function bufferText(post: SocialPost): string {
+  if (!post.link || post.text.includes(post.link.url)) return post.text
+  return post.text ? `${post.text}\n\n${post.link.url}` : post.link.url
+}
+
+/**
+ * Posts through Buffer to one channel (the target's `subject` is the channel id): now, or at
+ * `createdAt` when that is ahead (Buffer then holds it in its queue). Buffer has no
+ * idempotency key, so a request that timed out may have posted: do not retry one blindly.
+ * A rate limit carries Buffer's `Retry-After` on the error.
+ */
+export function bufferPublisher(options: BufferPublisherOptions = {}): Publisher {
+  const doFetch = options.fetch ?? ((input, init) => fetch(input, init))
+  const service = options.service?.toLowerCase()
+  const limit = service ? BUFFER_LIMITS[service] : undefined
+  const limits = { maxChars: limit ?? 100_000, maxImages: 10 }
+
+  const publisher: Publisher = {
+    network: 'buffer',
+    limits,
+    check(post) {
+      const problems: PostProblem[] = []
+      const text = bufferText(post)
+      const images = post.images ?? []
+      if (!text.trim() && images.length === 0) {
+        problems.push({ code: 'empty', message: 'Write something to post' })
+      }
+      const length = service === 'bluesky' ? blueskyLength(text) : [...text].length
+      if (limit !== undefined && length > limit) {
+        problems.push({
+          code: 'too_long',
+          message: `${options.service} through Buffer takes ${limit} characters; this has ${length}`,
+        })
+      }
+      if (images.length > limits.maxImages) {
+        problems.push({
+          code: 'too_many_images',
+          message: `Buffer takes ${limits.maxImages} images`,
+        })
+      }
+      if (images.length > 0 && !options.uploadImage) {
+        problems.push({
+          code: 'bad_image',
+          message: 'Buffer takes images by public URL: pass uploadImage to bufferPublisher',
+        })
+      }
+      if (post.link && !/^https?:\/\//.test(post.link.url)) {
+        problems.push({ code: 'bad_link', message: 'The link must be an http(s) URL' })
+      }
+      for (const image of images) checkImage(image, problems, MASTODON_IMAGE_TYPES)
+      return problems
+    },
+    async publish(target, post, publishOptions = {}) {
+      const problems = publisher.check(post)
+      if (problems.length > 0) {
+        throw new PublishError('buffer', 'invalid', problems.map((p) => p.message).join('; '))
+      }
+      const urls: string[] = []
+      for (const image of post.images ?? []) urls.push(await options.uploadImage!(image))
+      const later =
+        publishOptions.createdAt && publishOptions.createdAt.getTime() > Date.now() + 60_000
+          ? publishOptions.createdAt.toISOString()
+          : null
+      // Written inline, every value JSON-encoded (a valid GraphQL string), enums bare.
+      const input = [
+        `text: ${JSON.stringify(bufferText(post))}`,
+        `channelId: ${JSON.stringify(target.subject)}`,
+        'schedulingType: automatic',
+        later ? `mode: customScheduled, dueAt: ${JSON.stringify(later)}` : 'mode: shareNow',
+        ...(urls.length > 0
+          ? [
+              `assets: [${urls.map((url) => `{ image: { url: ${JSON.stringify(url)} } }`).join(', ')}]`,
+            ]
+          : []),
+      ].join(', ')
+      const result = await bufferQuery(
+        doFetch,
+        target.tokens.accessToken,
+        `mutation { createPost(input: { ${input} }) { ... on PostActionSuccess { post { id } } ... on MutationError { message } } }`,
+      )
+      if (result.error) throw bufferFailure(result)
+      const created = asRecord(result.data?.['createPost'])
+      const id = asRecord(created?.['post'])?.['id']
+      if (typeof id !== 'string') {
+        const message = created?.['message']
+        throw new PublishError(
+          'buffer',
+          'invalid',
+          typeof message === 'string' ? message : 'Buffer did not create the post',
+          result.status,
+        )
+      }
+      return { id, url: null }
     },
   }
   return publisher
