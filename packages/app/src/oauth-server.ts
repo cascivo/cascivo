@@ -713,6 +713,36 @@ export async function refreshConnections(
 }
 
 /**
+ * Every user's connections that will stop working within `withinDays` (default 7) and cannot
+ * be renewed (LinkedIn's 60-day tokens; a Threads token that would not renew), with the
+ * owner's email (`null` when their provider shared none). For a scheduled job that asks people
+ * to connect again before posting breaks.
+ */
+export async function expiringConnections(
+  db: Database,
+  options: { withinDays?: number } = {},
+): Promise<{ connection: Connection; email: string | null }[]> {
+  await migrateConnections(db)
+  const withinDays = options.withinDays ?? 7
+  const parse = connectionRowParser(withinDays)
+  return queryRows(
+    db,
+    `SELECT ${COLUMNS.split(', ')
+      .map((column) => `c.${column}`)
+      .join(', ')}, u.email AS owner_email
+     FROM connections c JOIN users u ON u.id = c.user_id
+     WHERE c.broken = 0 AND c.refreshable = 0 AND c.expires_at > ? AND c.expires_at <= ?
+     ORDER BY c.expires_at`,
+    [now(), now() + withinDays * 86_400],
+    (raw) => {
+      const { connection } = parse(raw)
+      const email = (raw as Record<string, unknown>)['owner_email']
+      return { connection, email: typeof email === 'string' ? email : null }
+    },
+  )
+}
+
+/**
  * Answers, for the signed-in user: `GET <base>` (their connections), `GET <base>/<provider>`
  * (redirects to connect; `?returnTo=` is where to land), `GET <base>/<provider>/callback`, and
  * `DELETE <base>/<connection id>`. Returns `null` for any other request.

@@ -718,3 +718,8 @@ server.
   the page, and channel lists stop refreshing with fewer than 20 requests left. Buffer still
   enforces the real budget; its 429 is surfaced as before.
 
+- LinkedIn reconnect reminders: `expiringConnections` lists, across users, the connections that
+  cannot renew and end within a week, with the owner's email. The example's daily Cron Trigger
+  emails each owner once per token (keyed by its expiry, recorded after sending) through Email
+  Service. Live in workerd: one email for the token ending in 3 days, none for the one ending in
+  30, and none on the second run.

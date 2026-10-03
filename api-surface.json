@@ -7219,6 +7219,7 @@
         "values": [
           "ConnectionError",
           "connectionTokens",
+          "expiringConnections",
           "handleConnections",
           "handleOAuth",
           "listConnections",
@@ -7254,6 +7255,7 @@
             "expiringDays?": "number"
           },
           "connectionTokens": "declare function connectionTokens(db: Database, options: { secret: string; providers: readonly OAuthProvider[]; }, where: { connectionId: string; userId: string; }): Promise<{ connection: Connection; tokens: TokenSet; }>",
+          "expiringConnections": "declare function expiringConnections(db: Database, options?: { withinDays?: number; }): Promise<{ connection: Connection; email: string | null; }[]>",
           "handleConnections": "declare function handleConnections(db: Database, options: ConnectionsOptions): (request: Request) => Promise<Response | null>",
           "handleOAuth": "declare function handleOAuth(db: Database, options: OAuthServerOptions): (request: Request) => Promise<Response | null>",
           "listConnections": "declare function listConnections(db: Database, userId: string, options?: { expiringDays?: number; }): Promise<Connection[]>",

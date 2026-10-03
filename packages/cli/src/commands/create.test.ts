@@ -1324,8 +1324,10 @@ describe('buildScaffold — cloudflare --example social', () => {
     expect(both.get('wrangler.jsonc')).toContain('"crons": ["0 8 * * 1", "17 4 * * *"]')
     const worker = both.get('worker/index.ts')!
     expect(worker).toContain(
-      "if (event.cron === '17 4 * * *') return socialStore.renewConnections(env)",
+      "if (event.cron === '17 4 * * *') {\n      await socialStore.renewConnections(env)\n      return socialStore.remindExpiring(env)",
     )
+    // APP_URL once, shared by both.
+    expect(both.get('wrangler.jsonc')!.match(/"APP_URL"/g)).toHaveLength(1)
     expect(worker.match(/async scheduled\(/g)).toHaveLength(1)
     // The digest alone keeps its own handler.
     expect(build({ examples: ['digest'] }).get('worker/index.ts')).toContain(
@@ -1361,6 +1363,29 @@ describe('buildScaffold — cloudflare --example social', () => {
     const page = map.get('src/routes/social.tsx')!
     expect(page).toContain('inBuffer: inBuffer.value,')
     expect(page).toContain("still in Buffer's queue")
+  })
+
+  it('emails a reconnect reminder once per expiring token, after renewing', () => {
+    const worker = map.get('worker/index.ts')!
+    expect(worker.indexOf('await socialStore.renewConnections(env)')).toBeLessThan(
+      worker.indexOf('await socialStore.remindExpiring(env)'),
+    )
+    expect(worker).toContain('EMAIL: ReminderSender\n')
+    expect(build({ auth: 'email' }).get('worker/index.ts')).toContain(
+      'EMAIL: SignInSender & ReminderSender\n',
+    )
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"send_email": [{ "name": "EMAIL" }],')
+    expect(wrangler).toMatch(/"REMINDER_FROM": "", "APP_URL": ""/)
+    const store = map.get('worker/social.ts')!
+    expect(store).toContain(
+      'for (const { connection, email } of await expiringConnections(env.DB))',
+    )
+    // Recorded only after it was sent, keyed by the token's expiry.
+    expect(store.indexOf('await env.EMAIL.send(')).toBeLessThan(
+      store.indexOf('INSERT INTO social_reminders'),
+    )
+    expect(store).toContain('PRIMARY KEY (connection_id, expires_at)')
   })
 
   it('names the Mastodon app after the project, quotes and all', () => {

@@ -1393,7 +1393,7 @@ ${jsoncArray('  ', 'ratelimits', ['{ "name": "LIMITER", "namespace_id": "1001", 
   // ${[
     hasExample(opts, 'digest') ? 'The weekly digest: Mondays at 08:00 UTC (worker/digest.ts)' : '',
     hasExample(opts, 'social')
-      ? 'Threads tokens renewed daily at 04:17 UTC (worker/social.ts)'
+      ? 'Threads tokens renewed and reconnect reminders sent, daily at 04:17 UTC (worker/social.ts)'
       : '',
   ]
     .filter(Boolean)
@@ -1491,6 +1491,7 @@ ${jsoncArray('  ', 'vectorize', [`{ "binding": "ARTICLES_INDEX", "index_name": "
  */
 function wranglerVars(opts: ScaffoldOptions): string {
   const digest = hasExample(opts, 'digest')
+  const social = hasExample(opts, 'social')
   const checkout = hasExample(opts, 'checkout')
   const newsletter = hasExample(opts, 'newsletter')
   const emailAuth = emailSignIn(opts)
@@ -1510,6 +1511,13 @@ function wranglerVars(opts: ScaffoldOptions): string {
           'which the browser opens. Until they are set, each run is recorded as skipped.',
         ]
       : []),
+    ...(social
+      ? [
+          'Reminders to connect LinkedIn again go out through Email Service from REMINDER_FROM, an',
+          `address on a domain you have onboarded, with links to APP_URL (README). Until both are`,
+          'set, no reminder is sent.',
+        ]
+      : []),
     ...(checkout
       ? [
           'Receipts for paid orders go out through Email Service from RECEIPT_FROM, an address',
@@ -1527,6 +1535,7 @@ function wranglerVars(opts: ScaffoldOptions): string {
     ...(opts.auth === 'access' ? ['ACCESS_TEAM_DOMAIN', 'ACCESS_AUD'] : []),
     ...(emailAuth ? ['AUTH_FROM'] : []),
     ...(digest ? ['DIGEST_TO', 'DIGEST_FROM', 'APP_URL'] : []),
+    ...(social ? ['REMINDER_FROM', ...(digest ? [] : ['APP_URL'])] : []),
     ...(checkout ? ['RECEIPT_FROM'] : []),
     ...(newsletter ? ['AWS_REGION', 'NEWSLETTER_FROM', 'SNS_TOPIC_ARN'] : []),
   ]
@@ -1538,7 +1547,7 @@ function wranglerVars(opts: ScaffoldOptions): string {
       ? line
       : `  "vars": {\n${entries.map((entry) => `    ${entry},`).join('\n')}\n  },`
   return `
-${comments.map((comment) => `  // ${comment}`).join('\n')}${emailAuth || digest || checkout ? '\n  "send_email": [{ "name": "EMAIL" }],' : ''}
+${comments.map((comment) => `  // ${comment}`).join('\n')}${emailAuth || digest || checkout || social ? '\n  "send_email": [{ "name": "EMAIL" }],' : ''}
 ${vars}`
 }
 
@@ -2071,7 +2080,7 @@ import type { BrowserWorker } from '@cloudflare/puppeteer'
       : ''
   }${ai ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\nimport { renderPageHtml } from './page-html'\nimport type { Assets } from './page-html'\n${exports ? `import { pagePreview } from './page-preview'\n` : ''}` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${search ? `import * as articleSearch from './search'\nimport type { ${ai ? '' : 'Embedder, '}VectorIndex } from './search'\n` : ''}${billing ? `import * as billingStore from './billing'\n` : ''}${social ? `import * as socialStore from './social'\nimport type { SocialPostParams } from './social'\n` : ''}${checkout ? `import * as orderStore from './checkout'\nimport type { ReceiptSender } from './checkout'\nimport { ORDER_ID, orderRoom } from '../src/checkout'\n` : ''}${newsletter ? `import * as newsletterStore from './newsletter'\nimport type { NewsletterBatch, NewsletterQueue } from './newsletter'\nimport { ISSUE_ID, issueRoom } from '../src/newsletter'\n` : ''}${
+${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\nimport { renderPageHtml } from './page-html'\nimport type { Assets } from './page-html'\n${exports ? `import { pagePreview } from './page-preview'\n` : ''}` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${search ? `import * as articleSearch from './search'\nimport type { ${ai ? '' : 'Embedder, '}VectorIndex } from './search'\n` : ''}${billing ? `import * as billingStore from './billing'\n` : ''}${social ? `import * as socialStore from './social'\nimport type { ReminderSender, SocialPostParams } from './social'\n` : ''}${checkout ? `import * as orderStore from './checkout'\nimport type { ReceiptSender } from './checkout'\nimport { ORDER_ID, orderRoom } from '../src/checkout'\n` : ''}${newsletter ? `import * as newsletterStore from './newsletter'\nimport type { NewsletterBatch, NewsletterQueue } from './newsletter'\nimport { ISSUE_ID, issueRoom } from '../src/newsletter'\n` : ''}${
     rooms
       ? `
 // The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
@@ -2135,7 +2144,7 @@ ${
   search ||
   checkout ||
   newsletter
-    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${oauth ? '\n  /** Sign-in with GitHub, Google and LinkedIn: `wrangler secret put` (.dev.vars locally). A provider is\n   * offered once both its id and secret are set; AUTH_SECRET seals the sign-in state. */\n  AUTH_SECRET?: string\n  GITHUB_CLIENT_ID?: string\n  GITHUB_CLIENT_SECRET?: string\n  GOOGLE_CLIENT_ID?: string\n  GOOGLE_CLIENT_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string' : social ? "\n  /** Seals connected accounts' tokens, and LinkedIn's app: `wrangler secret put` (.dev.vars\n   * locally). LinkedIn is offered once both its values are set. */\n  AUTH_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string" : ''}${social ? '\n  /** Bluesky: an ES256 private JWK (README); unset, the app is a public client. */\n  BLUESKY_PRIVATE_JWK?: string\n  /** A Buffer app client (README); Buffer is offered once its id is set. */\n  BUFFER_CLIENT_ID?: string\n  BUFFER_CLIENT_SECRET?: string\n  /** A Meta app with the Threads use case (README); Threads is offered once both are set. */\n  THREADS_APP_ID?: string\n  THREADS_APP_SECRET?: string\n  SOCIAL_POST: Workflow<SocialPostParams>' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
+    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout || social ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : '', social ? 'ReminderSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${oauth ? '\n  /** Sign-in with GitHub, Google and LinkedIn: `wrangler secret put` (.dev.vars locally). A provider is\n   * offered once both its id and secret are set; AUTH_SECRET seals the sign-in state. */\n  AUTH_SECRET?: string\n  GITHUB_CLIENT_ID?: string\n  GITHUB_CLIENT_SECRET?: string\n  GOOGLE_CLIENT_ID?: string\n  GOOGLE_CLIENT_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string' : social ? "\n  /** Seals connected accounts' tokens, and LinkedIn's app: `wrangler secret put` (.dev.vars\n   * locally). LinkedIn is offered once both its values are set. */\n  AUTH_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string" : ''}${social ? '\n  /** Bluesky: an ES256 private JWK (README); unset, the app is a public client. */\n  BLUESKY_PRIVATE_JWK?: string\n  /** A Buffer app client (README); Buffer is offered once its id is set. */\n  BUFFER_CLIENT_ID?: string\n  BUFFER_CLIENT_SECRET?: string\n  /** A Meta app with the Threads use case (README); Threads is offered once both are set. */\n  THREADS_APP_ID?: string\n  THREADS_APP_SECRET?: string\n  SOCIAL_POST: Workflow<SocialPostParams>\n  /** Reconnect reminders (worker/social.ts), set in wrangler.jsonc. */\n  REMINDER_FROM: string' + (digest ? '' : '\n  APP_URL: string') : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -2632,8 +2641,11 @@ ${
       ? `
   // The Cron Triggers in wrangler.jsonc, told apart by their schedule.
   async scheduled(event: { cron: string }, env: Env): Promise<void> {
-    // Threads tokens, renewed before they lapse (worker/social.ts).
-    if (event.cron === '${SOCIAL_CRON}') return socialStore.renewConnections(env)
+    // Threads tokens renewed, and reminders for those that cannot be (worker/social.ts).
+    if (event.cron === '${SOCIAL_CRON}') {
+      await socialStore.renewConnections(env)
+      return socialStore.remindExpiring(env)
+    }
     // The weekly digest, recorded whatever happens.
     await digestJob.runDigest(env, () => puppeteer.launch(env.BROWSER), 'cron')
   },`
@@ -2645,9 +2657,11 @@ ${
   },`
         : social
           ? `
-  // The Cron Trigger in wrangler.jsonc: Threads tokens, renewed before they lapse.
+  // The Cron Trigger in wrangler.jsonc: Threads tokens renewed, then reminders for the ones
+  // that cannot be (LinkedIn).
   async scheduled(_event: unknown, env: Env): Promise<void> {
     await socialStore.renewConnections(env)
+    await socialStore.remindExpiring(env)
   },`
           : ''
   }${
@@ -8164,6 +8178,7 @@ import {
 import type { OAuthProvider } from '@cascivo/app/oauth'
 import {
   connectionTokens,
+  expiringConnections,
   handleConnections,
   listConnections,
   mastodonRegistrations,
@@ -8176,6 +8191,7 @@ import {
   BUFFER_BUDGET,
   isNetwork,
   MAX_DAYS_AHEAD,
+  NETWORKS,
   parseScheduledPost,
   publisherFor,
 } from '../src/social'
@@ -8194,9 +8210,24 @@ export interface SocialPostParams {
   userId: string
 }
 
+/** What sending a reminder needs of the Email Service binding (\`send_email\`). */
+export interface ReminderSender {
+  send(message: {
+    from: string
+    to: string
+    subject: string
+    text: string
+    html: string
+  }): Promise<unknown>
+}
+
 /** What scheduling needs of the Worker's env. */
 export interface SocialEnv {
   DB: Database
+  EMAIL: ReminderSender
+  /** Who reconnect reminders come from, and the deployed app they link to (wrangler.jsonc). */
+  REMINDER_FROM: string
+  APP_URL: string
   /** Seals the connected accounts' tokens (and Mastodon's app registrations). */
   AUTH_SECRET?: string
   LINKEDIN_CLIENT_ID?: string
@@ -8270,6 +8301,17 @@ const migrations = [
     id: '0004_social_buffer_budget',
     statements: [
       'CREATE TABLE social_buffer_budget (slot INTEGER PRIMARY KEY, used INTEGER NOT NULL)',
+    ],
+  },
+  {
+    id: '0005_social_reminders',
+    statements: [
+      \`CREATE TABLE social_reminders (
+        connection_id TEXT NOT NULL,
+        expires_at INTEGER NOT NULL,
+        sent_at TEXT NOT NULL,
+        PRIMARY KEY (connection_id, expires_at)
+      )\`,
     ],
   },
 ]
@@ -8350,6 +8392,49 @@ export async function renewConnections(env: SocialEnv): Promise<void> {
     providers: socialProviders(env),
   })
   if (renewed + failed > 0) console.log(\`[social] renewed \${renewed}, could not renew \${failed}\`)
+}
+
+const escapeHtml = (value: string) =>
+  value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+
+/**
+ * The daily Cron Trigger, after renewing: a token that cannot be renewed (LinkedIn's 60 days)
+ * and ends within a week gets its owner one email with a link to connect it again. Once per
+ * token: connecting again issues a new one, with a new expiry.
+ */
+export async function remindExpiring(env: SocialEnv): Promise<void> {
+  if (!env.REMINDER_FROM || !env.APP_URL) {
+    console.log('[social] set REMINDER_FROM and APP_URL in wrangler.jsonc to send reminders')
+    return
+  }
+  await migrate(env.DB, migrations)
+  for (const { connection, email } of await expiringConnections(env.DB)) {
+    if (!email || !isNetwork(connection.provider) || connection.expiresAt === null) continue
+    const [sent] = await queryRows(
+      env.DB,
+      'SELECT sent_at FROM social_reminders WHERE connection_id = ? AND expires_at = ?',
+      [connection.id, connection.expiresAt],
+      (raw) => raw,
+    )
+    if (sent) continue
+    const network = NETWORKS[connection.provider]
+    const account = connection.handle ?? connection.name ?? network
+    const path = \`/api/connections/\${connection.provider}?returnTo=/social\`
+    const url = new URL(path, env.APP_URL).href
+    const ends = new Date(connection.expiresAt * 1000).toUTCString().slice(0, 16)
+    await env.EMAIL.send({
+      from: env.REMINDER_FROM,
+      to: email,
+      subject: \`Connect \${network} again before \${ends}\`,
+      text: \`\${network} lets this app post as \${account} only until \${ends}. Connect it again to keep scheduled posts going: \${url}\`,
+      html: \`<p>\${escapeHtml(network)} lets this app post as \${escapeHtml(account)} only until \${escapeHtml(ends)}.</p><p><a href="\${escapeHtml(url)}">Connect it again</a> to keep scheduled posts going.</p>\`,
+    })
+    await env.DB.prepare(
+      'INSERT INTO social_reminders (connection_id, expires_at, sent_at) VALUES (?, ?, ?)',
+    )
+      .bind(connection.id, connection.expiresAt, new Date().toISOString())
+      .run()
+  }
 }
 
 /**
@@ -11536,7 +11621,11 @@ Buffer cannot deduplicate, so its posts are never retried, like LinkedIn's. **Li
 "Share on LinkedIn" product${oauthSignIn(opts) ? ' (the same app as sign-in works, with both products)' : ''}; add
 \`…/api/connections/linkedin/callback\` as a redirect URL and set \`LINKEDIN_CLIENT_ID\` and
 \`LINKEDIN_CLIENT_SECRET\`. LinkedIn tokens last 60 days and cannot be renewed: the page shows
-"expires soon" a week ahead, and connecting again renews the account in place.
+"expires soon" a week ahead, and connecting again renews the account in place. The daily Cron
+Trigger also emails the owner once, a week ahead, with a link to connect again
+(\`remindExpiring\`): set \`REMINDER_FROM\` in \`wrangler.jsonc\` to an address on a domain you
+have onboarded to Email Service, and \`APP_URL\` to the deployed app. People whose provider shared
+no email see the page's notice only.
 
 **Threads** needs a Meta app with the "Access the Threads API" use case
 (https://developers.facebook.com/apps), the \`threads_basic\` and \`threads_content_publish\`

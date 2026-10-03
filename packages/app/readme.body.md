@@ -741,7 +741,8 @@ try {
   connection into `reconnect`.
 - **A connection says when to ask the user back.** `status` is `active`, `expiring` (a token
   that cannot be refreshed ends within `expiringDays`, default 7: LinkedIn's 60-day tokens) or
-  `reconnect`. Connecting the same account again renews it in place.
+  `reconnect`. Connecting the same account again renews it in place. `expiringConnections(db)` lists
+  the expiring ones across all users, with each owner's email, for a job that reminds them.
 - **Refresh happens on use, once.** `connectionTokens` refreshes a token that is about to
   expire. One request at a time holds the refresh; others wait for its result, so a provider
   that replaces its refresh token on every use never sees a spent one.

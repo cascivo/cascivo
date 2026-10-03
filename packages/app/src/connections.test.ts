@@ -9,6 +9,7 @@ import {
   connectionTokens,
   handleConnections,
   handleOAuth,
+  expiringConnections,
   listConnections,
   markReconnect,
   refreshConnections,
@@ -24,7 +25,7 @@ const now = () => Math.floor(Date.now() / 1000)
  * its refresh tokens are single-use: a spent one is refused, as Bluesky and Buffer do.
  */
 function provider(id: string) {
-  let identity = { subject: 'acct-1', name: 'Ada' as string | null }
+  let identity = { subject: 'acct-1', name: 'Ada' as string | null, email: null as string | null }
   let grant: TokenSet = {
     accessToken: 'at-1',
     refreshToken: null,
@@ -45,7 +46,7 @@ function provider(id: string) {
       validRefresh = grant.refreshToken
       return {
         tokens: grant,
-        identity: { provider: id, email: null, handle: null, avatarUrl: null, ...identity },
+        identity: { provider: id, handle: null, avatarUrl: null, ...identity },
       }
     },
     async refresh(tokens) {
@@ -112,13 +113,13 @@ function setup() {
       pending,
     ]))!
   }
-  const signInAs = async (subject: string) => {
-    net.as({ subject: `login-${subject}` })
+  const signInAs = async (subject: string, email: string | null = null) => {
+    net.as({ subject: `login-${subject}`, email })
     const response = await roundTrip(signIn, '/api/auth/oauth', [], '__Host-oauth')
     return cookieOf(response, SESSION_COOKIE)!
   }
   const connect = async (session: string, subject = 'acct-1') => {
-    net.as({ subject })
+    net.as({ subject, email: null })
     return roundTrip(connections, '/api/connections', [session], '__Host-connect')
   }
   const userOf = async (session: string) => {
@@ -221,6 +222,31 @@ describe('handleConnections', () => {
     // Connecting again clears it.
     await connect(ada)
     expect((await listConnections(db, adaId))[0]!.status).toBe('expiring')
+  })
+
+  it('lists every user’s connections that will lapse soon, with the owner’s email', async () => {
+    const { db, signInAs, connect, net } = setup()
+    const ada = await signInAs('ada', 'ada@example.com')
+    const bob = await signInAs('bob')
+    // LinkedIn's shape: no refresh token. Ada's ends in 3 days, Bob's in 5, Ada's other in 30.
+    net.grants({ refreshToken: null, expiresAt: now() + 3 * 86_400 })
+    await connect(ada, 'li-ada')
+    net.grants({ expiresAt: now() + 5 * 86_400 })
+    await connect(bob, 'li-bob')
+    net.grants({ expiresAt: now() + 30 * 86_400 })
+    await connect(ada, 'li-ada-2')
+    // Refreshable ones renew themselves: not listed.
+    net.grants({ refreshToken: 'rt-1', expiresAt: now() + 86_400 })
+    await connect(bob, 'refreshable')
+    const soon = await expiringConnections(db)
+    expect(soon.map((s) => [s.connection.subject, s.email, s.connection.status])).toEqual([
+      ['li-ada', 'ada@example.com', 'expiring'],
+      ['li-bob', null, 'expiring'],
+    ])
+    expect((await expiringConnections(db, { withinDays: 31 })).length).toBe(3)
+    // One already refused is not "expiring": it needs a reconnect now, and says so on the page.
+    await markReconnect(db, soon[0]!.connection.id)
+    expect((await expiringConnections(db)).map((s) => s.connection.subject)).toEqual(['li-bob'])
   })
 
   it('refreshes an expired token once, even when two requests ask at the same moment', async () => {
