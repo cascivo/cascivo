@@ -1343,7 +1343,7 @@ describe('buildScaffold — cloudflare --example social', () => {
       "if (account.network === 'mastodon' && account.limits) return mastodonPublisher(account.limits)",
     )
     expect(map.get('worker/social-post.ts')).toContain(
-      'await publisherFor({ ...target, limits }).publish(',
+      'await publisherFor({ ...target, limits }, imageLink).publish(',
     )
   })
 
@@ -1386,6 +1386,42 @@ describe('buildScaffold — cloudflare --example social', () => {
       store.indexOf('INSERT INTO social_reminders'),
     )
     expect(store).toContain('PRIMARY KEY (connection_id, expires_at)')
+  })
+
+  it('attaches images: uploaded to R2 per user, linked to Threads and Buffer by signature', () => {
+    const wrangler = map.get('wrangler.jsonc')!
+    expect(wrangler).toContain('"binding": "SOCIAL_MEDIA", "bucket_name": "edge-app-social-media"')
+    const store = map.get('worker/social.ts')!
+    // Each user's uploads under their own prefix; a post may use only images that exist there.
+    expect(store).toContain(
+      "handleUploads(IMAGES, env.SOCIAL_MEDIA, { prefix: mediaKey(user.id, '') })",
+    )
+    expect(store).toContain('await env.SOCIAL_MEDIA.head(mediaKey(user.id, image.key))')
+    // The public link checks expiry and an HMAC before reading R2.
+    expect(store.indexOf('await crypto.subtle.verify(')).toBeLessThan(
+      store.indexOf('await env.SOCIAL_MEDIA.get(objectKey)'),
+    )
+    const workflow = map.get('worker/social-post.ts')!
+    expect(workflow).toContain('asSocialPost(post, data)')
+    expect(map.get('src/routes/social.tsx')).toContain('startUpload(IMAGES, f)')
+    const worker = map.get('worker/index.ts')!
+    expect(worker).toContain('SOCIAL_MEDIA: SocialMediaBucket')
+    expect(worker).toContain(
+      "if (url.pathname.startsWith('/api/social/images')) return request.method !== 'GET'",
+    )
+  })
+
+  it('says what the rate limit covers', () => {
+    expect(map.get('wrangler.jsonc')).toContain(
+      '// Connecting accounts, posts and image uploads per caller: 20 a minute.',
+    )
+  })
+
+  it('merges the R2 buckets of --example files and social into one list', () => {
+    const wrangler = build({ examples: ['social', 'files'] }).get('wrangler.jsonc')!
+    expect(wrangler.match(/"r2_buckets"/g)).toHaveLength(1)
+    expect(wrangler).toContain('"binding": "FILES"')
+    expect(wrangler).toContain('"binding": "SOCIAL_MEDIA"')
   })
 
   it('names the Mastodon app after the project, quotes and all', () => {

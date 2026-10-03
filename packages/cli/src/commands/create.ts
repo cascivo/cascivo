@@ -1361,11 +1361,24 @@ ${jsoncArray(
 ${jsoncArray('  ', 'migrations', [`{ "tag": "v1", "new_sqlite_classes": [${objects.map((o) => `"${o.className}"`).join(', ')}] }`])}`
       : ''
   }${
-    hasExample(opts, 'files')
+    hasExample(opts, 'files') || hasExample(opts, 'social')
       ? `
-  // Uploaded files, and Cloudflare Images for their resized previews.
-${jsoncArray('  ', 'r2_buckets', [`{ "binding": "FILES", "bucket_name": "${packageName(opts.name)}-files" }`])}
-  "images": { "binding": "IMAGES" },`
+  // ${[
+    hasExample(opts, 'files')
+      ? 'Uploaded files, and Cloudflare Images for their resized previews'
+      : '',
+    hasExample(opts, 'social') ? 'Images attached to social posts (worker/social.ts)' : '',
+  ]
+    .filter(Boolean)
+    .join('; ')}.
+${jsoncArray('  ', 'r2_buckets', [
+  ...(hasExample(opts, 'files')
+    ? [`{ "binding": "FILES", "bucket_name": "${packageName(opts.name)}-files" }`]
+    : []),
+  ...(hasExample(opts, 'social')
+    ? [`{ "binding": "SOCIAL_MEDIA", "bucket_name": "${packageName(opts.name)}-social-media" }`]
+    : []),
+])}${hasExample(opts, 'files') ? '\n  "images": { "binding": "IMAGES" },' : ''}`
       : ''
   }${
     usesLimiter(opts)
@@ -1378,6 +1391,7 @@ ${jsoncArray('  ', 'r2_buckets', [`{ "binding": "FILES", "bucket_name": "${packa
     hasExample(opts, 'search') ? 'search indexing' : '',
     hasExample(opts, 'checkout') ? 'checkouts started' : '',
     hasExample(opts, 'newsletter') ? 'newsletter sign-ups and composer requests' : '',
+    hasExample(opts, 'social') ? 'connecting accounts, posts and image uploads' : '',
     emailSignIn(opts) ? 'sign-in emails' : '',
   ]
     .filter(Boolean)
@@ -2080,7 +2094,7 @@ import type { BrowserWorker } from '@cloudflare/puppeteer'
       : ''
   }${ai ? `import { routeAgentRequest } from 'agents'\n` : ''}import { api, TICKS_PER_STREAM } from '../src/api'
 import type { Tick } from '../src/api'
-${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\nimport { renderPageHtml } from './page-html'\nimport type { Assets } from './page-html'\n${exports ? `import { pagePreview } from './page-preview'\n` : ''}` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${search ? `import * as articleSearch from './search'\nimport type { ${ai ? '' : 'Embedder, '}VectorIndex } from './search'\n` : ''}${billing ? `import * as billingStore from './billing'\n` : ''}${social ? `import * as socialStore from './social'\nimport type { ReminderSender, SocialPostParams } from './social'\n` : ''}${checkout ? `import * as orderStore from './checkout'\nimport type { ReceiptSender } from './checkout'\nimport { ORDER_ID, orderRoom } from '../src/checkout'\n` : ''}${newsletter ? `import * as newsletterStore from './newsletter'\nimport type { NewsletterBatch, NewsletterQueue } from './newsletter'\nimport { ISSUE_ID, issueRoom } from '../src/newsletter'\n` : ''}${
+${imports ? `import { importJob } from '../src/import-job'\n` : ''}${files ? `import { uploads } from '../src/upload-policy'\n` : ''}${usage ? `import { usageMetrics } from '../src/usage'\nimport { usageReport } from './usage'\n` : ''}${live ? `import { OPS_ROOM, ops } from '../src/ops'\n` : ''}${emailAuth ? `import { sendSignInLink } from './auth'\nimport type { SignInSender } from './auth'\n` : ''}${crud ? `import * as customerStore from './customers'\n` : ''}${publish ? `import * as pageStore from './pages'\nimport { renderPageHtml } from './page-html'\nimport type { Assets } from './page-html'\n${exports ? `import { pagePreview } from './page-preview'\n` : ''}` : ''}${webhooks ? `import * as webhookStore from './webhooks'\nimport { DELIVERIES_ROOM } from '../src/webhooks'\n` : ''}${digest ? `import * as digestJob from './digest'\nimport type { DigestSender } from './digest'\n` : ''}${search ? `import * as articleSearch from './search'\nimport type { ${ai ? '' : 'Embedder, '}VectorIndex } from './search'\n` : ''}${billing ? `import * as billingStore from './billing'\n` : ''}${social ? `import * as socialStore from './social'\nimport type { ReminderSender, SocialMediaBucket, SocialPostParams } from './social'\n` : ''}${checkout ? `import * as orderStore from './checkout'\nimport type { ReceiptSender } from './checkout'\nimport { ORDER_ID, orderRoom } from '../src/checkout'\n` : ''}${newsletter ? `import * as newsletterStore from './newsletter'\nimport type { NewsletterBatch, NewsletterQueue } from './newsletter'\nimport { ISSUE_ID, issueRoom } from '../src/newsletter'\n` : ''}${
     rooms
       ? `
 // The Durable Object class behind every room. wrangler.jsonc binds it as ROOMS, and it must be
@@ -2144,7 +2158,7 @@ ${
   search ||
   checkout ||
   newsletter
-    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout || social ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : '', social ? 'ReminderSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${oauth ? '\n  /** Sign-in with GitHub, Google and LinkedIn: `wrangler secret put` (.dev.vars locally). A provider is\n   * offered once both its id and secret are set; AUTH_SECRET seals the sign-in state. */\n  AUTH_SECRET?: string\n  GITHUB_CLIENT_ID?: string\n  GITHUB_CLIENT_SECRET?: string\n  GOOGLE_CLIENT_ID?: string\n  GOOGLE_CLIENT_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string' : social ? "\n  /** Seals connected accounts' tokens, and LinkedIn's app: `wrangler secret put` (.dev.vars\n   * locally). LinkedIn is offered once both its values are set. */\n  AUTH_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string" : ''}${social ? '\n  /** Bluesky: an ES256 private JWK (README); unset, the app is a public client. */\n  BLUESKY_PRIVATE_JWK?: string\n  /** A Buffer app client (README); Buffer is offered once its id is set. */\n  BUFFER_CLIENT_ID?: string\n  BUFFER_CLIENT_SECRET?: string\n  /** A Meta app with the Threads use case (README); Threads is offered once both are set. */\n  THREADS_APP_ID?: string\n  THREADS_APP_SECRET?: string\n  SOCIAL_POST: Workflow<SocialPostParams>\n  /** Reconnect reminders (worker/social.ts), set in wrangler.jsonc. */\n  REMINDER_FROM: string' + (digest ? '' : '\n  APP_URL: string') : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
+    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout || social ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : '', social ? 'ReminderSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${oauth ? '\n  /** Sign-in with GitHub, Google and LinkedIn: `wrangler secret put` (.dev.vars locally). A provider is\n   * offered once both its id and secret are set; AUTH_SECRET seals the sign-in state. */\n  AUTH_SECRET?: string\n  GITHUB_CLIENT_ID?: string\n  GITHUB_CLIENT_SECRET?: string\n  GOOGLE_CLIENT_ID?: string\n  GOOGLE_CLIENT_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string' : social ? "\n  /** Seals connected accounts' tokens, and LinkedIn's app: `wrangler secret put` (.dev.vars\n   * locally). LinkedIn is offered once both its values are set. */\n  AUTH_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string" : ''}${social ? '\n  /** Bluesky: an ES256 private JWK (README); unset, the app is a public client. */\n  BLUESKY_PRIVATE_JWK?: string\n  /** A Buffer app client (README); Buffer is offered once its id is set. */\n  BUFFER_CLIENT_ID?: string\n  BUFFER_CLIENT_SECRET?: string\n  /** A Meta app with the Threads use case (README); Threads is offered once both are set. */\n  THREADS_APP_ID?: string\n  THREADS_APP_SECRET?: string\n  SOCIAL_POST: Workflow<SocialPostParams>\n  SOCIAL_MEDIA: SocialMediaBucket\n  /** Reconnect reminders (worker/social.ts), set in wrangler.jsonc. */\n  REMINDER_FROM: string' + (digest ? '' : '\n  APP_URL: string') : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -2236,7 +2250,8 @@ function countsAgainstLimit(request: Request): boolean {
     social
       ? `
   if (/^\\/api\\/connections\\/[a-z-]+$/.test(url.pathname)) return request.method === 'GET'
-  if (url.pathname === '/api/social/posts') return request.method === 'POST'`
+  if (url.pathname === '/api/social/posts') return request.method === 'POST'
+  if (url.pathname.startsWith('/api/social/images')) return request.method !== 'GET'`
       : ''
   }${
     publish
@@ -2477,7 +2492,11 @@ ${
     const blueskyClient = socialStore.blueskyClient(env, request)
     if (blueskyClient) return blueskyClient
     const connected = await socialStore.connections(env)(request)
-    if (connected) return connected`
+    if (connected) return connected
+    // Images for posts: the user's own uploads, and the signed links Threads and Buffer fetch.
+    const image =
+      (await socialStore.images(env, request)) ?? (await socialStore.media(env, request))
+    if (image) return image`
         : ''
     }`
           : ''
@@ -7888,7 +7907,8 @@ function cfSocialTs(): string {
   mastodonPublisher,
   threadsPublisher,
 } from '@cascivo/app/social'
-import type { Publisher, SocialPost } from '@cascivo/app/social'
+import type { Publisher, SocialImage, SocialPost } from '@cascivo/app/social'
+import { defineUploads } from '@cascivo/app/uploads'
 
 /**
  * Posts scheduled to the accounts a user connected, shared by the Worker (worker/social.ts)
@@ -7917,11 +7937,30 @@ export function postsOnce(network: Network): boolean {
   return network === 'buffer' || network === 'linkedin' || network === 'threads'
 }
 
-const publishers: Record<Exclude<Network, 'buffer'>, Publisher> = {
+/**
+ * Images attached to a post: uploaded through the Worker into R2 (worker/social.ts). 1 MB and
+ * JPEG or PNG, which every network here takes (Bluesky's limit is 1 MB).
+ */
+export const IMAGES = defineUploads({
+  path: '/api/social/images',
+  maxBytes: 1_000_000,
+  types: ['image/jpeg', 'image/png'],
+})
+export const MAX_IMAGES = 4
+
+/**
+ * Threads and Buffer fetch images by URL. The Worker passes one that signs a link to the image
+ * (worker/social-post.ts); the page only checks posts, so this stands in there.
+ */
+export type ImageLink = (image: SocialImage) => Promise<string>
+const checkOnly: ImageLink = async () => {
+  throw new Error('Only the Worker links images')
+}
+
+const publishers: Record<Exclude<Network, 'buffer' | 'threads'>, Publisher> = {
   bluesky: blueskyPublisher(),
   linkedin: linkedinPublisher(),
   mastodon: mastodonPublisher(),
-  threads: threadsPublisher(),
 }
 
 /** A Mastodon server's own limits (\`mastodonServerLimits\`), which many set above 500. */
@@ -7935,14 +7974,17 @@ export interface ServerLimits {
  * The publisher for an account. A Buffer channel posts through Buffer, checked against the
  * limit of the network behind it (\`service\`); a Mastodon account, against its server's.
  */
-export function publisherFor(account: {
-  network: Network
-  service: string | null
-  limits?: ServerLimits | null
-}): Publisher {
+export function publisherFor(
+  account: { network: Network; service: string | null; limits?: ServerLimits | null },
+  imageLink: ImageLink = checkOnly,
+): Publisher {
   if (account.network === 'buffer') {
-    return bufferPublisher(account.service ? { service: account.service } : {})
+    return bufferPublisher({
+      uploadImage: imageLink,
+      ...(account.service ? { service: account.service } : {}),
+    })
   }
+  if (account.network === 'threads') return threadsPublisher({ uploadImage: imageLink })
   if (account.network === 'mastodon' && account.limits) return mastodonPublisher(account.limits)
   return publishers[account.network]
 }
@@ -7988,10 +8030,18 @@ export interface Link {
   title: string
 }
 
+/** An image on a post: its key in the user's uploads, its type, and its description. */
+export interface PostImage {
+  key: string
+  type: string
+  alt: string
+}
+
 export interface ScheduledPost {
   id: string
   text: string
   link: Link | null
+  images: PostImage[]
   /** ISO time it goes out. */
   at: string
   /** Buffer accounts are handed to Buffer at once, to hold until \`at\`. */
@@ -8012,6 +8062,7 @@ export interface Social {
 export interface PostInput {
   text: string
   link: Link | null
+  images: PostImage[]
   accountIds: string[]
   /** ISO time, or \`null\` for now. */
   at: string | null
@@ -8020,8 +8071,23 @@ export interface PostInput {
 }
 
 /** What \`publishers\` check: the post as a network sees it. */
-export function asSocialPost(input: { text: string; link: Link | null }): SocialPost {
-  return input.link ? { text: input.text, link: input.link } : { text: input.text }
+/**
+ * What \`publishers\` check and post: the post as a network sees it. Checking needs only each
+ * image's type and description; posting passes the bytes (\`data\`, in the same order).
+ */
+export function asSocialPost(
+  input: { text: string; link: Link | null; images: readonly PostImage[] },
+  data: readonly Blob[] = [],
+): SocialPost {
+  const images = input.images.map((image, i) => ({
+    data: data[i] ?? new Blob([], { type: image.type }),
+    alt: image.alt,
+  }))
+  return {
+    text: input.text,
+    ...(input.link ? { link: input.link } : {}),
+    ...(images.length > 0 ? { images } : {}),
+  }
 }
 
 const record = (raw: unknown, what: string): Record<string, unknown> => {
@@ -8038,6 +8104,24 @@ function parseLink(raw: unknown): Link | null {
   if (raw === null || raw === undefined) return null
   const { url, title } = record(raw, 'link')
   return { url: text(url, 'link url'), title: text(title, 'link title') }
+}
+
+const IMAGE_KEY = /^[0-9a-f-]{36}\\/[\\w.-]{1,100}$/
+
+function parseImages(raw: unknown): PostImage[] {
+  if (raw === undefined || raw === null) return []
+  if (!Array.isArray(raw) || raw.length > MAX_IMAGES) {
+    throw new Error(\`Attach at most \${MAX_IMAGES} images\`)
+  }
+  return raw.map((item) => {
+    const r = record(item, 'image')
+    const key = text(r['key'], 'image key')
+    const type = text(r['type'], 'image type')
+    const alt = text(r['alt'], 'image description').trim()
+    if (!IMAGE_KEY.test(key) || !IMAGES.types.includes(type)) throw new Error('Malformed image')
+    if (!alt || alt.length > 1000) throw new Error('Describe each image (alt text), briefly')
+    return { key, type, alt }
+  })
 }
 
 export function parsePostInput(raw: unknown): PostInput {
@@ -8059,7 +8143,14 @@ export function parsePostInput(raw: unknown): PostInput {
   if (at !== null && (typeof at !== 'string' || Number.isNaN(Date.parse(at)))) {
     throw new Error('Send the time as an ISO date')
   }
-  return { text: body, link, accountIds: [...new Set(ids)], at, inBuffer: r['inBuffer'] === true }
+  return {
+    text: body,
+    link,
+    images: parseImages(r['images']),
+    accountIds: [...new Set(ids)],
+    at,
+    inBuffer: r['inBuffer'] === true,
+  }
 }
 
 function parseAccount(raw: unknown): Account {
@@ -8136,6 +8227,7 @@ export function parseScheduledPost(raw: unknown): ScheduledPost {
     id: text(r['id'], 'post id'),
     text: text(r['text'], 'text'),
     link: parseLink(r['link']),
+    images: parseImages(r['images']),
     at: text(r['at'], 'time'),
     // D1 hands back 1 and 0.
     inBuffer: r['inBuffer'] === true || r['inBuffer'] === 1,
@@ -8162,7 +8254,7 @@ export function parseSocial(raw: unknown): Social {
 
 function cfSocialWorkerTs(opts: ScaffoldOptions): string {
   return `import { HttpError } from '@cascivo/app/api'
-import { requireUser } from '@cascivo/app/auth-server'
+import { currentUser, requireUser } from '@cascivo/app/auth-server'
 import { migrate, queryRows } from '@cascivo/app/db'
 import type { Database } from '@cascivo/app/db'
 import {
@@ -8186,9 +8278,12 @@ import {
 } from '@cascivo/app/oauth-server'
 import type { Connection } from '@cascivo/app/oauth-server'
 import { bufferChannels, mastodonServerLimits } from '@cascivo/app/social'
+import { handleUploads } from '@cascivo/app/uploads-server'
+import type { UploadBucket } from '@cascivo/app/uploads-server'
 import {
   asSocialPost,
   BUFFER_BUDGET,
+  IMAGES,
   isNetwork,
   MAX_DAYS_AHEAD,
   NETWORKS,
@@ -8197,6 +8292,7 @@ import {
 } from '../src/social'
 import type {
   Account,
+  PostImage,
   PostInput,
   PostStatus,
   ScheduledPost,
@@ -8221,9 +8317,13 @@ export interface ReminderSender {
   }): Promise<unknown>
 }
 
+/** The R2 bucket images are uploaded to (\`SOCIAL_MEDIA\` in wrangler.jsonc). */
+export type SocialMediaBucket = UploadBucket
+
 /** What scheduling needs of the Worker's env. */
 export interface SocialEnv {
   DB: Database
+  SOCIAL_MEDIA: SocialMediaBucket
   EMAIL: ReminderSender
   /** Who reconnect reminders come from, and the deployed app they link to (wrangler.jsonc). */
   REMINDER_FROM: string
@@ -8313,6 +8413,10 @@ const migrations = [
         PRIMARY KEY (connection_id, expires_at)
       )\`,
     ],
+  },
+  {
+    id: '0006_social_images',
+    statements: ["ALTER TABLE social_posts ADD COLUMN images TEXT NOT NULL DEFAULT '[]'"],
   },
 ]
 
@@ -8460,6 +8564,91 @@ export function blueskyClient(env: SocialEnv, request: Request): Response | null
   }
   if (url.pathname === BLUESKY_JWKS && key) return Response.json(blueskyJwks(key))
   return null
+}
+
+/** Where a user's image lives in the bucket: under their own prefix, so only they reach it. */
+export const mediaKey = (userId: string, key: string) => \`social/\${userId}/\${key}\`
+
+/**
+ * \`/api/social/images\`: the signed-in user's uploads (\`@cascivo/app/uploads-server\`), stored
+ * under their own prefix, so they can attach, preview and post only their own.
+ */
+export async function images(env: SocialEnv, request: Request): Promise<Response | null> {
+  const { pathname } = new URL(request.url)
+  if (pathname !== IMAGES.path && !pathname.startsWith(\`\${IMAGES.path}/\`)) return null
+  const user = await currentUser(env.DB, request)
+  if (!user) return Response.json({ error: 'Sign in first' }, { status: 401 })
+  return handleUploads(IMAGES, env.SOCIAL_MEDIA, { prefix: mediaKey(user.id, '') })(request)
+}
+
+const MEDIA_PATH = '/api/social/media/'
+
+async function mediaSigningKey(env: SocialEnv): Promise<CryptoKey> {
+  const secret = secretOf(env)
+  if (secret.length < 32) throw new Error('Set AUTH_SECRET (32+ characters) to link images')
+  return crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(\`social-media:\${secret}\`),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign', 'verify'],
+  )
+}
+
+const toHex = (bytes: ArrayBuffer) =>
+  [...new Uint8Array(bytes)].map((b) => b.toString(16).padStart(2, '0')).join('')
+
+/**
+ * A link to an image that works without a session until \`until\` (ms): Threads and Buffer
+ * fetch images by URL. Signed with AUTH_SECRET; the image itself stays private in R2.
+ */
+export async function signedMediaUrl(env: SocialEnv, objectKey: string, until: number) {
+  if (!env.APP_URL) throw new Error('Set APP_URL in wrangler.jsonc so networks can fetch images')
+  const expires = String(Math.ceil(until / 1000))
+  const signature = await crypto.subtle.sign(
+    'HMAC',
+    await mediaSigningKey(env),
+    new TextEncoder().encode(\`\${objectKey}:\${expires}\`),
+  )
+  const path = MEDIA_PATH + objectKey.split('/').map(encodeURIComponent).join('/')
+  const url = new URL(path, env.APP_URL)
+  url.searchParams.set('expires', expires)
+  url.searchParams.set('signature', toHex(signature))
+  return url.href
+}
+
+/** \`GET /api/social/media/<key>?expires&signature\`: an image, for a link \`signedMediaUrl\` made. */
+export async function media(env: SocialEnv, request: Request): Promise<Response | null> {
+  const url = new URL(request.url)
+  if (request.method !== 'GET' || !url.pathname.startsWith(MEDIA_PATH)) return null
+  const refused = () => new Response('Not found', { status: 404 })
+  let objectKey: string
+  try {
+    objectKey = decodeURIComponent(url.pathname.slice(MEDIA_PATH.length))
+  } catch {
+    return refused()
+  }
+  const expires = url.searchParams.get('expires') ?? ''
+  const signature = url.searchParams.get('signature') ?? ''
+  if (!/^\\d{1,12}$/.test(expires) || Number(expires) * 1000 < Date.now()) return refused()
+  if (!/^[0-9a-f]{64}$/.test(signature)) return refused()
+  const bytes = new Uint8Array(signature.match(/../g)!.map((pair) => parseInt(pair, 16)))
+  const valid = await crypto.subtle.verify(
+    'HMAC',
+    await mediaSigningKey(env),
+    bytes,
+    new TextEncoder().encode(\`\${objectKey}:\${expires}\`),
+  )
+  if (!valid) return refused()
+  const object = await env.SOCIAL_MEDIA.get(objectKey)
+  if (!object) return refused()
+  return new Response(object.body, {
+    headers: {
+      'content-type': object.httpMetadata?.contentType ?? 'application/octet-stream',
+      'cache-control': 'private, max-age=300',
+      'x-content-type-options': 'nosniff',
+    },
+  })
 }
 
 /** A Buffer channel's account id: its connection, and the channel within it. */
@@ -8640,8 +8829,8 @@ export async function readPosts(db: Database, where: string, params: unknown[]) 
   await migrate(db, migrations)
   const posts = await queryRows(
     db,
-    \`SELECT id, text, link_url AS linkUrl, link_title AS linkTitle, at, in_buffer AS inBuffer, status
-     FROM social_posts WHERE \${where} ORDER BY at DESC LIMIT 50\`,
+    \`SELECT id, text, link_url AS linkUrl, link_title AS linkTitle, images, at, in_buffer AS inBuffer,
+       status FROM social_posts WHERE \${where} ORDER BY at DESC LIMIT 50\`,
     params,
     (raw) => raw as Record<string, unknown>,
   )
@@ -8662,6 +8851,7 @@ export async function readPosts(db: Database, where: string, params: unknown[]) 
         typeof p['linkUrl'] === 'string'
           ? { url: p['linkUrl'], title: p['linkTitle'] ?? '' }
           : null,
+      images: JSON.parse(String(p['images'] ?? '[]')) as unknown,
       at: p['at'],
       inBuffer: p['inBuffer'],
       status: p['status'],
@@ -8703,7 +8893,15 @@ export async function schedulePost(
     }
     return account
   })
-  const post = asSocialPost(input)
+  // Each image must be one this user uploaded; its stored type is the one that counts.
+  const images: PostImage[] = []
+  for (const image of input.images) {
+    const stored = await env.SOCIAL_MEDIA.head(mediaKey(user.id, image.key))
+    const type = stored?.httpMetadata?.contentType
+    if (!stored || !type) throw new HttpError(400, 'An image is missing: attach it again')
+    images.push({ ...image, type })
+  }
+  const post = asSocialPost({ ...input, images })
   for (const account of chosen) {
     const problems = publisherFor(account).check(post)
     if (problems.length > 0) {
@@ -8720,15 +8918,16 @@ export async function schedulePost(
   await migrate(env.DB, migrations)
   await env.DB.batch([
     env.DB.prepare(
-      \`INSERT INTO social_posts (id, user_id, text, link_url, link_title, at, in_buffer, status,
-         created_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)\`,
+      \`INSERT INTO social_posts (id, user_id, text, link_url, link_title, images, at, in_buffer,
+         status, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)\`,
     ).bind(
       id,
       user.id,
       input.text,
       input.link?.url ?? null,
       input.link?.title ?? null,
+      JSON.stringify(images),
       new Date(Math.max(at, now)).toISOString(),
       input.inBuffer ? 1 : 0,
       status,
@@ -8783,13 +8982,15 @@ import { PublishError } from '@cascivo/app/social'
 import { WorkflowEntrypoint } from 'cloudflare:workers'
 import type { WorkflowEvent, WorkflowStep } from 'cloudflare:workers'
 import { asSocialPost, NETWORKS, postsOnce, publisherFor } from '../src/social'
-import type { ScheduledPost, Target } from '../src/social'
+import type { ImageLink, PostImage, ScheduledPost, Target } from '../src/social'
 import type { Env } from './index'
 import {
   BUFFER_SEPARATOR,
+  mediaKey,
   readPosts,
   secretOf,
   serverLimits,
+  signedMediaUrl,
   socialProviders,
   spendBuffer,
 } from './social'
@@ -8913,10 +9114,16 @@ async function publishTo(env: Env, post: ScheduledPost, target: Target, userId: 
       target.network === 'mastodon' && connection.server
         ? await serverLimits(env, connection.server)
         : null
+    // The images' bytes, from R2. Threads and Buffer fetch them instead, by a signed link that
+    // lasts until a day after the post is due (Buffer may fetch a queued one only then).
+    const data = await Promise.all(post.images.map((image) => loadImage(env, userId, image)))
+    const keys = new Map(data.map((blob, i) => [blob, mediaKey(userId, post.images[i]!.key)]))
+    const until = Math.max(Date.parse(post.at), Date.now()) + 86_400_000
+    const imageLink: ImageLink = (image) => signedMediaUrl(env, keys.get(image.data)!, until)
     if (target.network === 'buffer') await spendBuffer(env)
-    const published = await publisherFor({ ...target, limits }).publish(
+    const published = await publisherFor({ ...target, limits }, imageLink).publish(
       { tokens, subject: channelId ?? connection.subject, server: connection.server },
-      asSocialPost(post),
+      asSocialPost(post, data),
       // Fixed for every attempt: Mastodon's key, and Bluesky's record key, make a retry safe.
       { idempotencyKey: \`\${post.id}:\${target.accountId}\`, createdAt: new Date(post.at) },
     )
@@ -8955,6 +9162,12 @@ async function publishTo(env: Env, post: ScheduledPost, target: Target, userId: 
   }
 }
 
+async function loadImage(env: Env, userId: string, image: PostImage): Promise<Blob> {
+  const object = await env.SOCIAL_MEDIA.get(mediaKey(userId, image.key))
+  if (!object) throw new PublishError('social', 'invalid', 'An image of this post is gone')
+  return new Blob([await new Response(object.body).arrayBuffer()], { type: image.type })
+}
+
 async function finish(env: Env, postId: string) {
   const [post] = await readPosts(env.DB, 'id = ?', [postId])
   if (!post) return
@@ -8967,6 +9180,8 @@ async function finish(env: Env, postId: string) {
 
 function cfSocialRouteTsx(): string {
   return `import { createClient } from '@cascivo/app/api'
+import { startUpload } from '@cascivo/app/uploads'
+import type { Upload } from '@cascivo/app/uploads'
 import {
   Alert,
   Badge,
@@ -8974,6 +9189,7 @@ import {
   Card,
   CardContent,
   Checkbox,
+  FileUploader,
   Flex,
   Heading,
   Input,
@@ -8985,12 +9201,13 @@ import {
   useSignalEffect,
   useSignals,
 } from '@cascivo/react'
+import type { UploaderFile } from '@cascivo/react'
 import type { FormEvent } from 'react'
 import { api } from '../api'
 import { auth } from '../auth'
 import { router } from '../router'
-import { asSocialPost, BUFFER_BUDGET, NETWORKS, publisherFor } from '../social'
-import type { Account, PostStatus, Social, TargetStatus } from '../social'
+import { asSocialPost, BUFFER_BUDGET, IMAGES, MAX_IMAGES, NETWORKS, publisherFor } from '../social'
+import type { Account, PostImage, PostStatus, Social, TargetStatus } from '../social'
 
 const client = createClient(api)
 const social = signal<Social | null>(null)
@@ -9004,6 +9221,27 @@ const linkTitle = signal('')
 const at = signal('')
 const chosen = signal<string[]>([])
 const inBuffer = signal(false)
+// Images go up to R2 as soon as they are picked; each needs a description before posting.
+const uploads = signal<Upload[]>([])
+const alts = signal<Record<string, string>>({})
+
+function addImages(files: File[]): void {
+  const room = MAX_IMAGES - uploads.value.length
+  uploads.value = [...uploads.value, ...files.slice(0, room).map((f) => startUpload(IMAGES, f))]
+}
+
+function removeImage(id: string): void {
+  uploads.value.find((u) => u.id === id)?.abort()
+  uploads.value = uploads.value.filter((u) => u.id !== id)
+}
+
+/** The uploaded images, in order, with their descriptions. */
+function attached(): PostImage[] {
+  return uploads.value.flatMap((upload) => {
+    const stored = upload.result.value
+    return stored ? [{ key: stored.key, type: stored.type, alt: alts.value[upload.id] ?? '' }] : []
+  })
+}
 
 async function load(): Promise<void> {
   try {
@@ -9052,6 +9290,7 @@ function draft() {
   return asSocialPost({
     text: text.value,
     link: url ? { url, title: linkTitle.value.trim() } : null,
+    images: attached(),
   })
 }
 
@@ -9076,6 +9315,7 @@ async function schedule(event: FormEvent<HTMLFormElement>): Promise<void> {
       body: {
         text: text.value,
         link: url ? { url, title: linkTitle.value.trim() } : null,
+        images: attached(),
         accountIds: chosen.value,
         // datetime-local is the browser's local time; the Worker keeps UTC.
         at: at.value ? new Date(at.value).toISOString() : null,
@@ -9087,6 +9327,8 @@ async function schedule(event: FormEvent<HTMLFormElement>): Promise<void> {
     linkTitle.value = ''
     at.value = ''
     inBuffer.value = false
+    uploads.value = []
+    alts.value = {}
     await load()
   } catch (error) {
     failure.value = error instanceof Error ? error.message : 'Not scheduled'
@@ -9140,6 +9382,14 @@ export default function SocialPage() {
     )
   }
   const usable = data?.accounts.filter((a) => a.status !== 'reconnect') ?? []
+  const images: UploaderFile[] = uploads.value.map((upload) => ({
+    id: upload.id,
+    name: upload.name,
+    size: upload.size,
+    status: upload.status.value === 'done' ? 'complete' : upload.status.value,
+    ...(upload.error.value ? { errorMessage: upload.error.value } : {}),
+  }))
+  const uploading = uploads.value.some((upload) => upload.status.value === 'uploading')
   const blocking = data ? problems(data.accounts) : []
   const viaBuffer = usable.some((a) => a.network === 'buffer' && chosen.value.includes(a.id))
 
@@ -9271,6 +9521,28 @@ export default function SocialPage() {
                       onInput={(event) => (linkTitle.value = event.currentTarget.value)}
                     />
                   </Flex>
+                  <FileUploader
+                    multiple
+                    label={\`Images (up to \${MAX_IMAGES}, JPEG or PNG, 1 MB each)\`}
+                    accept={IMAGES.types.join(',')}
+                    maxSize={IMAGES.maxBytes}
+                    files={images}
+                    onFilesAdded={addImages}
+                    onRemove={removeImage}
+                  />
+                  {uploads.value
+                    .filter((upload) => upload.status.value === 'done')
+                    .map((upload) => (
+                      <Input
+                        key={upload.id}
+                        label={\`Describe \${upload.name} (alt text)\`}
+                        required
+                        value={alts.value[upload.id] ?? ''}
+                        onInput={(event) =>
+                          (alts.value = { ...alts.value, [upload.id]: event.currentTarget.value })
+                        }
+                      />
+                    ))}
                   {usable.length === 0 ? (
                     <Text muted>Connect an account to post.</Text>
                   ) : (
@@ -9305,7 +9577,7 @@ export default function SocialPage() {
                     <Button
                       type="submit"
                       loading={busy.value}
-                      disabled={chosen.value.length === 0 || blocking.length > 0}
+                      disabled={chosen.value.length === 0 || blocking.length > 0 || uploading}
                     >
                       {at.value ? 'Schedule' : 'Post now'}
                     </Button>
@@ -11596,6 +11868,13 @@ now or at a time you pick.
   post there is reported for you to check rather than sent twice.
 - \`src/social.ts\` — the shared types, and the publishers the page also runs, so what a
   network would refuse shows while you type.
+- Images: the composer uploads them into the \`SOCIAL_MEDIA\` R2 bucket through the Worker
+  (\`@cascivo/app/uploads\`), each user under their own prefix; up to 4, JPEG or PNG, 1 MB each
+  (Bluesky's limit), each with a description. Bluesky, LinkedIn and Mastodon get the bytes.
+  Threads and Buffer fetch images by URL, so they get a link to \`/api/social/media/…\` signed
+  with \`AUTH_SECRET\`. It is valid until a day after the post is due, and needs \`APP_URL\` set
+  to the deployed app. Uploads stay in R2: add a lifecycle rule
+  (\`wrangler r2 bucket lifecycle add\`) to expire old ones.
 
 **Bluesky** needs no set-up either: people type their handle. Bluesky's servers read this
 app's client metadata from \`/api/bluesky/client-metadata.json\`, so the deployed app must be

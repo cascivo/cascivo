@@ -723,3 +723,13 @@ server.
   emails each owner once per token (keyed by its expiry, recorded after sending) through Email
   Service. Live in workerd: one email for the token ending in 3 days, none for the one ending in
   30, and none on the second run.
+- Images in the example's composer: uploaded through the Worker into R2
+  (`@cascivo/app/uploads`), each user under their own prefix, which also scopes reading them
+  back. Threads and Buffer get a Worker route signed with HMAC under `AUTH_SECRET` rather than
+  an R2 presigned URL, which would need a separate S3 API key. It is valid until a day after the
+  post is due. Live in workerd: anonymous and SVG uploads refused; the owner reads the image,
+  another user gets 404. The signed link serves `image/png` with `nosniff`. Expired links,
+  forged signatures, and a signature replayed against another user's key all get 404. Not run
+  live: a post carrying images through a real network (no test accounts here).
+
+All gaps listed after step 7 are now closed.
