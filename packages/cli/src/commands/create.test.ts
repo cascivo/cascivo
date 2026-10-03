@@ -1267,10 +1267,26 @@ describe('buildScaffold — cloudflare --example social', () => {
     expect(map.get('src/App.tsx')).toContain("href: '/social'")
   })
 
-  it('never retries a LinkedIn post, and retries Mastodon with an idempotency key', () => {
+  it('serves the client metadata Bluesky reads, and offers Bluesky without set-up', () => {
+    const worker = map.get('worker/index.ts')!
+    expect(worker.indexOf('socialStore.blueskyClient(env, request)')).toBeLessThan(
+      worker.indexOf('socialStore.connections(env)(request)'),
+    )
+    const store = map.get('worker/social.ts')!
+    expect(store).toContain("const BLUESKY_METADATA = '/api/bluesky/client-metadata.json'")
+    expect(map.get('.dev.vars')).toContain('BLUESKY_PRIVATE_JWK=')
+    expect(map.get('src/routes/social.tsx')).toContain('action="/api/connections/bluesky"')
+    expect(map.get('README.md')).toContain('open `http://127.0.0.1:5173`')
+  })
+
+  it('never retries a LinkedIn post, and retries the others with a fixed key and time', () => {
     const workflow = map.get('worker/social-post.ts')!
-    expect(workflow).toContain("{ retries: { limit: 0, delay: '1 second' } }")
-    expect(workflow).toContain('idempotencyKey: `${post.id}:${target.accountId}`')
+    expect(workflow).toContain(
+      "target.network === 'linkedin'\n            ? { retries: { limit: 0, delay: '1 second' } }",
+    )
+    expect(workflow).toContain(
+      'idempotencyKey: `${post.id}:${target.accountId}`, createdAt: new Date(post.at)',
+    )
     // "Post now" must not ask a Workflow to sleep until the past.
     expect(workflow.indexOf("step.do('due later'")).toBeLessThan(
       workflow.indexOf('step.sleepUntil('),

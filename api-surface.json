@@ -7029,18 +7029,24 @@
         "values": [
           "OAuthError",
           "beginAuthorization",
+          "bluesky",
+          "blueskyClientMetadata",
+          "blueskyJwks",
           "completeAuthorization",
           "github",
           "google",
           "linkedin",
           "mastodon",
           "normalizeServer",
+          "parseBlueskyKey",
           "parsePendingAuthorization",
           "parseTokenSet",
           "seal",
           "unseal"
         ],
         "types": [
+          "BlueskyKey",
+          "BlueskyOptions",
           "CompletedAuthorization",
           "GitHubOptions",
           "GoogleOptions",
@@ -7056,6 +7062,16 @@
         ],
         "declarations": {
           "beginAuthorization": "declare function beginAuthorization(provider: OAuthProvider, options: { redirectUri: string; scopes?: readonly string[]; ttlSeconds?: number; server?: string; }): Promise<{ url: string; pending: PendingAuthorization; }>",
+          "bluesky": "declare function bluesky(options?: BlueskyOptions): OAuthProvider",
+          "blueskyClientMetadata": "declare function blueskyClientMetadata(options: { origin: string; redirectPaths: readonly string[]; clientName: string; scopes?: readonly string[]; clientMetadataPath?: string; privateKey?: BlueskyKey; jwksPath?: string; }): Record<string, unknown>",
+          "blueskyJwks": "declare function blueskyJwks(privateKey: BlueskyKey): { keys: Record<string, string>[]; }",
+          "BlueskyKey": "type = JsonWebKey & { kid: string; }",
+          "BlueskyOptions": {
+            "privateKey?": "BlueskyKey",
+            "clientMetadataPath?": "string",
+            "scopes?": "readonly string[]",
+            "fetch?": "typeof fetch"
+          },
           "completeAuthorization": "declare function completeAuthorization(provider: OAuthProvider, pending: PendingAuthorization, params: URLSearchParams): Promise<CompletedAuthorization>",
           "CompletedAuthorization": {
             "tokens": "TokenSet",
@@ -7125,11 +7141,14 @@
           "OAuthProvider": {
             "readonly id": "string",
             "readonly scopes": "readonly string[]",
-            "authorizationUrl": "(pending: PendingAuthorization, codeChallenge: string): URL",
-            "exchange": "(code: string, pending: PendingAuthorization): Promise<CompletedAuthorization>",
+            "readonly dpop?": "boolean",
+            "readonly server?": "string",
+            "authorizationUrl": "(pending: PendingAuthorization, codeChallenge: string): URL | Promise<URL>",
+            "exchange": "(code: string, pending: PendingAuthorization, params?: URLSearchParams): Promise<CompletedAuthorization>",
             "refresh?": "(tokens: TokenSet): Promise<TokenSet>",
             "forServer?": "(server: string, redirectUri: string): Promise<OAuthProvider>"
           },
+          "parseBlueskyKey": "declare function parseBlueskyKey(raw: string): BlueskyKey",
           "parsePendingAuthorization": "declare function parsePendingAuthorization(raw: unknown): PendingAuthorization",
           "parseTokenSet": "declare function parseTokenSet(raw: unknown): TokenSet",
           "PendingAuthorization": {
@@ -7140,14 +7159,16 @@
             "redirectUri": "string",
             "scopes": "string[]",
             "expiresAt": "number",
-            "server": "string | null"
+            "server": "string | null",
+            "dpopKey": "JsonWebKey | null"
           },
           "seal": "declare function seal(secret: string, context: string, value: unknown): Promise<string>",
           "TokenSet": {
             "accessToken": "string",
             "refreshToken": "string | null",
             "expiresAt": "number | null",
-            "scopes": "string[]"
+            "scopes": "string[]",
+            "dpop?": "{ key: JsonWebKey; issuer: string; clientId: string; }"
           },
           "unseal": "declare function unseal(secret: string, context: string, sealed: string): Promise<unknown>"
         }
@@ -7209,12 +7230,18 @@
       "./social": {
         "values": [
           "PublishError",
+          "blueskyFacets",
+          "blueskyLength",
+          "blueskyPublisher",
+          "blueskyRecordKey",
           "escapeLittleText",
           "linkedinPublisher",
           "mastodonLength",
           "mastodonPublisher"
         ],
         "types": [
+          "BlueskyPublisherOptions",
+          "Facet",
           "LinkedInPublisherOptions",
           "MastodonPublisherOptions",
           "PostProblem",
@@ -7227,7 +7254,19 @@
           "SocialPost"
         ],
         "declarations": {
+          "blueskyFacets": "declare function blueskyFacets(text: string, resolve: (handle: string) => Promise<string | null>): Promise<Facet[]>",
+          "blueskyLength": "declare function blueskyLength(text: string): number",
+          "blueskyPublisher": "declare function blueskyPublisher(options?: BlueskyPublisherOptions): Publisher",
+          "BlueskyPublisherOptions": {
+            "langs?": "readonly string[]",
+            "fetch?": "typeof fetch"
+          },
+          "blueskyRecordKey": "declare function blueskyRecordKey(createdAt: Date, idempotencyKey: string): Promise<string>",
           "escapeLittleText": "declare function escapeLittleText(text: string): string",
+          "Facet": {
+            "index": "{ byteStart: number; byteEnd: number; }",
+            "features": "Record<string, string>[]"
+          },
           "linkedinPublisher": "declare function linkedinPublisher(options?: LinkedInPublisherOptions): Publisher",
           "LinkedInPublisherOptions": {
             "version?": "string",
@@ -7264,7 +7303,8 @@
           },
           "PublishErrorKind": "type = 'invalid' | 'reconnect' | 'rate_limited' | 'failed'",
           "PublishOptions": {
-            "idempotencyKey?": "string"
+            "idempotencyKey?": "string",
+            "createdAt?": "Date"
           },
           "PublishTarget": {
             "tokens": "TokenSet",

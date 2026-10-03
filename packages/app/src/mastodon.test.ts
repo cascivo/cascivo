@@ -157,7 +157,7 @@ describe('mastodon()', () => {
       redirect_uris: REDIRECT,
       scopes: 'profile write:statuses',
     })
-    const url = one.authorizationUrl(
+    const url = await one.authorizationUrl(
       {
         provider: 'mastodon',
         state: 's',
@@ -167,6 +167,7 @@ describe('mastodon()', () => {
         scopes: [],
         expiresAt: 0,
         server: 'social.example',
+        dpopKey: null,
       },
       'challenge',
     )
@@ -179,7 +180,7 @@ describe('mastodon()', () => {
     const server = fakeServer('old.example', { modern: false })
     const resolved = await provider(server).forServer!('old.example', REDIRECT)
     expect(resolved.scopes).toEqual(['read:accounts'])
-    const url = resolved.authorizationUrl(
+    const url = await resolved.authorizationUrl(
       {
         provider: 'mastodon',
         state: 's',
@@ -189,6 +190,7 @@ describe('mastodon()', () => {
         scopes: [],
         expiresAt: 0,
         server: 'old.example',
+        dpopKey: null,
       },
       'challenge',
     )
@@ -224,6 +226,7 @@ describe('mastodon()', () => {
       scopes: [],
       expiresAt: 0,
       server: 'social.example',
+      dpopKey: null,
     })
     expect(identity).toEqual({
       provider: 'mastodon',

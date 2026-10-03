@@ -248,7 +248,7 @@
     {
       "id": "social",
       "label": "Social scheduler",
-      "blurb": "Connect LinkedIn and Mastodon; post now or at a set time.",
+      "blurb": "Connect Bluesky, LinkedIn and Mastodon; post now or at a set time.",
       "group": "Operations",
       "files": [
         ".dev.vars",

@@ -369,6 +369,11 @@ describe('boundary', () => {
     const source = readFileSync(new URL('./oauth.ts', import.meta.url), 'utf8')
     const imports = [...source.matchAll(/^import[^'"]*['"]([^'"]+)['"]/gm)].map((m) => m[1])
     // Usable from any runtime with fetch and WebCrypto, so other code can reuse the adapters.
-    expect(imports).toEqual(['./jwt'])
+    expect(imports).toEqual(['./dpop', './jwt'])
+    // And those two are crypto only.
+    const dpop = readFileSync(new URL('./dpop.ts', import.meta.url), 'utf8')
+    expect([...dpop.matchAll(/^import[^'"]*['"]([^'"]+)['"]/gm)].map((m) => m[1])).toEqual([
+      './jwt',
+    ])
   })
 })

@@ -2123,7 +2123,7 @@ ${
   search ||
   checkout ||
   newsletter
-    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${oauth ? '\n  /** Sign-in with GitHub, Google and LinkedIn: `wrangler secret put` (.dev.vars locally). A provider is\n   * offered once both its id and secret are set; AUTH_SECRET seals the sign-in state. */\n  AUTH_SECRET?: string\n  GITHUB_CLIENT_ID?: string\n  GITHUB_CLIENT_SECRET?: string\n  GOOGLE_CLIENT_ID?: string\n  GOOGLE_CLIENT_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string' : social ? "\n  /** Seals connected accounts' tokens, and LinkedIn's app: `wrangler secret put` (.dev.vars\n   * locally). LinkedIn is offered once both its values are set. */\n  AUTH_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string" : ''}${social ? '\n  SOCIAL_POST: Workflow<SocialPostParams>' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
+    ? `export interface Env {${ai ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Ai' : search ? '\n  /** Workers AI, bound in wrangler.jsonc. */\n  AI: Embedder' : ''}${search ? '\n  ARTICLES_INDEX: VectorIndex' : ''}${rooms ? '\n  ROOMS: RoomNamespace<unknown>' : ''}${imports ? '\n  IMPORT_JOB: Workflow<{ csv: string }>' : ''}${files ? '\n  FILES: UploadBucket\n  IMAGES: ImageResizer' : ''}${exports ? '\n  BROWSER: BrowserWorker' : ''}${usage ? '\n  USAGE: AnalyticsDataset\n  /** Secrets for reading Analytics Engine back (see README). */\n  CF_ACCOUNT_ID?: string\n  CF_API_TOKEN?: string' : ''}${d1 ? '\n  DB: Database' : ''}${publish ? '\n  ASSETS: Assets' : ''}${live ? '\n  LIVE: RoomNamespace<unknown>\n  EVENTS: LiveQueue' : ''}${limiter ? '\n  LIMITER: RateLimiter' : ''}${access ? '\n  /** Set in wrangler.jsonc (see README). */\n  ACCESS_TEAM_DOMAIN: string\n  ACCESS_AUD: string' : ''}${webhooks ? '\n  /** The webhook signing secret: `wrangler secret put WEBHOOK_SECRET` (.dev.vars locally). */\n  WEBHOOK_SECRET: string' : ''}${emailAuth || digest || checkout ? `\n  EMAIL: ${[emailAuth ? 'SignInSender' : '', digest ? 'DigestSender' : '', checkout ? 'ReceiptSender' : ''].filter(Boolean).join(' & ')}` : ''}${emailAuth ? '\n  /** The From address of sign-in emails, set in wrangler.jsonc. */\n  AUTH_FROM: string' : ''}${oauth ? '\n  /** Sign-in with GitHub, Google and LinkedIn: `wrangler secret put` (.dev.vars locally). A provider is\n   * offered once both its id and secret are set; AUTH_SECRET seals the sign-in state. */\n  AUTH_SECRET?: string\n  GITHUB_CLIENT_ID?: string\n  GITHUB_CLIENT_SECRET?: string\n  GOOGLE_CLIENT_ID?: string\n  GOOGLE_CLIENT_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string' : social ? "\n  /** Seals connected accounts' tokens, and LinkedIn's app: `wrangler secret put` (.dev.vars\n   * locally). LinkedIn is offered once both its values are set. */\n  AUTH_SECRET?: string\n  LINKEDIN_CLIENT_ID?: string\n  LINKEDIN_CLIENT_SECRET?: string" : ''}${social ? '\n  /** Bluesky: an ES256 private JWK (README); unset, the app is a public client. */\n  BLUESKY_PRIVATE_JWK?: string\n  SOCIAL_POST: Workflow<SocialPostParams>' : ''}${digest ? '\n  /** The weekly digest (worker/digest.ts), set in wrangler.jsonc. */\n  DIGEST_TO: string\n  DIGEST_FROM: string\n  APP_URL: string' : ''}${checkout ? '\n  /** The From address of receipts, set in wrangler.jsonc. */\n  RECEIPT_FROM: string\n  /** Stripe secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  STRIPE_SECRET_KEY?: string\n  STRIPE_WEBHOOK_SECRET?: string' : ''}${newsletter ? '\n  NEWSLETTER: NewsletterQueue\n  /** The newsletter (worker/newsletter.ts), set in wrangler.jsonc. */\n  AWS_REGION: string\n  NEWSLETTER_FROM: string\n  SNS_TOPIC_ARN: string\n  /** Secrets: `wrangler secret put` (.dev.vars locally). Unset until you add them. */\n  AWS_ACCESS_KEY_ID?: string\n  AWS_SECRET_ACCESS_KEY?: string\n  NEWSLETTER_KEY?: string' : ''}
 }`
     : `// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- bindings are added as members
 export interface Env {}`
@@ -2451,7 +2451,10 @@ ${
     }${
       social
         ? `
-    // The accounts a user connects to post with (worker/social.ts): /api/connections/*.
+    // The accounts a user connects to post with (worker/social.ts): /api/connections/*, and
+    // the client metadata Bluesky's servers read.
+    const blueskyClient = socialStore.blueskyClient(env, request)
+    if (blueskyClient) return blueskyClient
     const connected = await socialStore.connections(env)(request)
     if (connected) return connected`
         : ''
@@ -7834,7 +7837,7 @@ export default function BillingPage() {
 /* --- `--example social`: scheduled posts to connected LinkedIn and Mastodon accounts --- */
 
 function cfSocialTs(): string {
-  return `import { linkedinPublisher, mastodonPublisher } from '@cascivo/app/social'
+  return `import { blueskyPublisher, linkedinPublisher, mastodonPublisher } from '@cascivo/app/social'
 import type { Publisher, SocialPost } from '@cascivo/app/social'
 
 /**
@@ -7843,14 +7846,15 @@ import type { Publisher, SocialPost } from '@cascivo/app/social'
  * refuse while you type, and the Worker refuses the same post before scheduling it.
  */
 
-export const NETWORKS = { linkedin: 'LinkedIn', mastodon: 'Mastodon' } as const
+export const NETWORKS = { bluesky: 'Bluesky', linkedin: 'LinkedIn', mastodon: 'Mastodon' } as const
 export type Network = keyof typeof NETWORKS
 
 export function isNetwork(value: string): value is Network {
-  return value === 'linkedin' || value === 'mastodon'
+  return value === 'bluesky' || value === 'linkedin' || value === 'mastodon'
 }
 
 export const publishers: Record<Network, Publisher> = {
+  bluesky: blueskyPublisher(),
   linkedin: linkedinPublisher(),
   mastodon: mastodonPublisher(),
 }
@@ -7863,7 +7867,7 @@ export const MAX_DAYS_AHEAD = 365
 export interface Account {
   id: string
   network: Network
-  /** \`@ada@hachyderm.io\`, or the name on a LinkedIn profile. */
+  /** \`@ada.bsky.social\`, \`@ada@hachyderm.io\`, or the name on a LinkedIn profile. */
   label: string
   /** \`expiring\`: the token ends soon and cannot be renewed (LinkedIn): connect it again. */
   status: 'active' | 'expiring' | 'reconnect'
@@ -7884,7 +7888,7 @@ export type PostStatus = 'scheduled' | 'publishing' | 'done' | 'partial' | 'fail
 
 export interface Link {
   url: string
-  /** LinkedIn shows it on the card; Mastodon builds its own card from the page. */
+  /** LinkedIn and Bluesky show it on the card; Mastodon builds its own card from the page. */
   title: string
 }
 
@@ -8026,7 +8030,14 @@ function cfSocialWorkerTs(opts: ScaffoldOptions): string {
 import { requireUser } from '@cascivo/app/auth-server'
 import { migrate, queryRows } from '@cascivo/app/db'
 import type { Database } from '@cascivo/app/db'
-import { linkedin, mastodon } from '@cascivo/app/oauth'
+import {
+  bluesky,
+  blueskyClientMetadata,
+  blueskyJwks,
+  linkedin,
+  mastodon,
+  parseBlueskyKey,
+} from '@cascivo/app/oauth'
 import type { OAuthProvider } from '@cascivo/app/oauth'
 import {
   handleConnections,
@@ -8057,6 +8068,8 @@ export interface SocialEnv {
   AUTH_SECRET?: string
   LINKEDIN_CLIENT_ID?: string
   LINKEDIN_CLIENT_SECRET?: string
+  /** An ES256 private JWK with a kid: makes Bluesky sessions last (README). */
+  BLUESKY_PRIVATE_JWK?: string
   SOCIAL_POST: Workflow<SocialPostParams>
 }
 
@@ -8093,12 +8106,28 @@ const migrations = [
 
 export const secretOf = (env: SocialEnv): string => env.AUTH_SECRET ?? ''
 
+/** Bluesky fetches this app's client metadata here: its URL is the client id. */
+const BLUESKY_METADATA = '/api/bluesky/client-metadata.json'
+const BLUESKY_JWKS = '/api/bluesky/jwks.json'
+const BLUESKY_SCOPES = ['atproto', 'transition:generic']
+
+const blueskyKey = (env: SocialEnv) =>
+  env.BLUESKY_PRIVATE_JWK ? parseBlueskyKey(env.BLUESKY_PRIVATE_JWK) : undefined
+
 /**
- * The accounts a user can connect: Mastodon always (the app registers itself with each
- * server), LinkedIn once its client id and secret are set. Each asks for the scopes to post.
+ * The accounts a user can connect: Bluesky and Mastodon always (Bluesky reads this app's
+ * client metadata; the app registers itself with each Mastodon server), LinkedIn once its
+ * client id and secret are set. Each asks for the scopes to post.
  */
 export function socialProviders(env: SocialEnv): OAuthProvider[] {
-  const providers: OAuthProvider[] = []
+  const key = blueskyKey(env)
+  const providers: OAuthProvider[] = [
+    bluesky({
+      clientMetadataPath: BLUESKY_METADATA,
+      scopes: BLUESKY_SCOPES,
+      ...(key ? { privateKey: key } : {}),
+    }),
+  ]
   if (env.LINKEDIN_CLIENT_ID && env.LINKEDIN_CLIENT_SECRET) {
     providers.push(
       linkedin({
@@ -8128,6 +8157,31 @@ export function connections(env: SocialEnv): (request: Request) => Promise<Respo
     providers: socialProviders(env),
     errorPath: '/social',
   })
+}
+
+/**
+ * Bluesky's client metadata and public key, which its servers fetch (no session). Without
+ * BLUESKY_PRIVATE_JWK the app is a public client and serves no key.
+ */
+export function blueskyClient(env: SocialEnv, request: Request): Response | null {
+  const url = new URL(request.url)
+  if (request.method !== 'GET') return null
+  const key = blueskyKey(env)
+  if (url.pathname === BLUESKY_METADATA) {
+    return Response.json(
+      blueskyClientMetadata({
+        origin: url.origin,
+        redirectPaths: ['/api/connections/bluesky/callback'],
+        clientName: APP_NAME,
+        clientMetadataPath: BLUESKY_METADATA,
+        scopes: BLUESKY_SCOPES,
+        jwksPath: BLUESKY_JWKS,
+        ...(key ? { privateKey: key } : {}),
+      }),
+    )
+  }
+  if (url.pathname === BLUESKY_JWKS && key) return Response.json(blueskyJwks(key))
+  return null
 }
 
 function toAccount(connection: Connection): Account | null {
@@ -8299,9 +8353,9 @@ type TargetResult = Pick<Target, 'status' | 'url' | 'error'>
  * One scheduled post, as a Workflow: it sleeps until the post is due, then posts to each
  * account in its own step, so one network failing does not hold up or repeat the others.
  *
- * Retrying is decided per network. Mastodon takes an idempotency key, so a step that failed
- * mid-request is retried and cannot post twice. LinkedIn takes none: its step is never
- * retried, and an account found mid-post (a crash between the request and the record) is
+ * Retrying is decided per network. Mastodon takes an idempotency key and Bluesky a fixed record
+ * key, so a step that failed mid-request is retried and cannot post twice. LinkedIn takes
+ * none: its step is never retried, and an account found mid-post (a crash between the request and the record) is
  * reported for a person to check instead of being posted again.
  */
 export class SocialPost extends WorkflowEntrypoint<Env, SocialPostParams> {
@@ -8323,9 +8377,9 @@ export class SocialPost extends WorkflowEntrypoint<Env, SocialPostParams> {
       try {
         await step.do(
           name,
-          target.network === 'mastodon'
-            ? { retries: { limit: 3, delay: '30 seconds', backoff: 'exponential' } }
-            : { retries: { limit: 0, delay: '1 second' } },
+          target.network === 'linkedin'
+            ? { retries: { limit: 0, delay: '1 second' } }
+            : { retries: { limit: 3, delay: '30 seconds', backoff: 'exponential' } },
           () => publishTo(this.env, post, target, userId),
         )
       } catch (error) {
@@ -8381,7 +8435,7 @@ async function publishTo(env: Env, post: ScheduledPost, target: Target, userId: 
     const [current] = await readPosts(env.DB, 'id = ?', [post.id])
     const now = current?.targets.find((t) => t.accountId === target.accountId)
     if (!now || now.status !== 'publishing') return
-    if (target.network !== 'mastodon') {
+    if (target.network === 'linkedin') {
       await record(env, post.id, target.accountId, {
         status: 'failed',
         url: null,
@@ -8399,7 +8453,8 @@ async function publishTo(env: Env, post: ScheduledPost, target: Target, userId: 
     const published = await publishers[target.network].publish(
       { tokens, subject: connection.subject, server: connection.server },
       asSocialPost(post),
-      { idempotencyKey: \`\${post.id}:\${target.accountId}\` },
+      // Fixed for every attempt: Mastodon's key, and Bluesky's record key, make a retry safe.
+      { idempotencyKey: \`\${post.id}:\${target.accountId}\`, createdAt: new Date(post.at) },
     )
     await record(env, post.id, target.accountId, {
       status: 'posted',
@@ -8495,7 +8550,7 @@ const REASONS: Record<string, string> = {
   expired: 'Connecting took too long, or started in another browser. Try again.',
   state_mismatch: 'That did not match the connection this browser started. Try again.',
   provider_error: 'The network did not confirm the account. Try again.',
-  bad_server: 'That is not a Mastodon server this app can reach. Check the name.',
+  bad_server: 'That server or handle could not be reached, or did not check out. Check the name.',
   signed_out: 'Sign in first, then connect an account.',
 }
 
@@ -8614,11 +8669,19 @@ export default function SocialPage() {
     <Flex gap={4}>
       <Flex gap={1}>
         <Heading level={1}>Social</Heading>
-        <Text muted>Write once, post to LinkedIn and Mastodon now or at a time you pick.</Text>
+        <Text muted>
+          Write once, post to Bluesky, LinkedIn and Mastodon now or at a time you pick.
+        </Text>
       </Flex>
       {reason ? (
         <Alert variant="destructive" title="Not connected">
           {REASONS[reason] ?? 'Connecting failed. Try again.'}
+        </Alert>
+      ) : null}
+      {location.hostname === 'localhost' ? (
+        <Alert variant="info" title="Connecting Bluesky in development">
+          Bluesky's development sign-in only returns to 127.0.0.1: open{' '}
+          <Link href={\`http://127.0.0.1:\${location.port}/social\`}>this page on 127.0.0.1</Link>.
         </Alert>
       ) : null}
       {failure.value ? (
@@ -8656,7 +8719,21 @@ export default function SocialPage() {
                       <a href="/api/connections/linkedin?returnTo=/social">Connect LinkedIn</a>
                     </Button>
                   ) : null}
-                  {/* A plain GET form: the Worker redirects to the server named here. */}
+                  {/* Plain GET forms: the Worker redirects to the account or server named. */}
+                  <form method="get" action="/api/connections/bluesky">
+                    <input type="hidden" name="returnTo" value="/social" />
+                    <Flex direction="horizontal" align="end" gap={2} wrap>
+                      <Input
+                        name="server"
+                        label="Bluesky handle"
+                        placeholder="you.bsky.social"
+                        required
+                      />
+                      <Button type="submit" variant="secondary">
+                        Connect Bluesky
+                      </Button>
+                    </Flex>
+                  </form>
                   <form method="get" action="/api/connections/mastodon">
                     <input type="hidden" name="returnTo" value="/social" />
                     <Flex direction="horizontal" align="end" gap={2} wrap>
@@ -11001,18 +11078,31 @@ page through them instead.`
 
 ## Social posts
 
-\`/social\` connects LinkedIn and Mastodon accounts and posts to them, now or at a time you pick.
+\`/social\` connects Bluesky, LinkedIn and Mastodon accounts and posts to them, now or at a time
+you pick.
 
 - \`worker/social.ts\` — \`handleConnections\` (\`@cascivo/app/oauth-server\`) answers
   \`/api/connections/*\`: connect, list, remove. Tokens are sealed in D1 with \`AUTH_SECRET\`.
   Scheduling checks that each account is yours and connected, and that each network's
   publisher (\`@cascivo/app/social\`) accepts the post, before anything is stored.
 - \`worker/social-post.ts\` — \`SocialPost\`, a Workflow per post: it sleeps until the post
-  is due, then posts to each account in its own step. Mastodon steps retry, safely, with an
-  idempotency key. LinkedIn's never do: LinkedIn cannot deduplicate, so an interrupted
+  is due, then posts to each account in its own step. Bluesky and Mastodon steps retry, safely:
+  Mastodon takes an idempotency key, and a Bluesky post's record key is fixed by its time and
+  id. LinkedIn's never do: LinkedIn cannot deduplicate, so an interrupted
   LinkedIn post is reported for you to check rather than sent twice.
 - \`src/social.ts\` — the shared types, and the publishers the page also runs, so what a
   network would refuse shows while you type.
+
+**Bluesky** needs no set-up either: people type their handle. Bluesky's servers read this
+app's client metadata from \`/api/bluesky/client-metadata.json\`, so the deployed app must be
+reachable at its URL. In \`vite dev\` the app is Bluesky's development client, which may only
+return to \`127.0.0.1\`: open \`http://127.0.0.1:5173\`, not \`localhost\`. Without a key the app is a
+public client and sessions end after two weeks; for sessions that last, make a key and set it
+as the \`BLUESKY_PRIVATE_JWK\` secret:
+
+\`\`\`sh
+node -e "crypto.subtle.generateKey({name:'ECDSA',namedCurve:'P-256'},true,['sign']).then(k=>crypto.subtle.exportKey('jwk',k.privateKey)).then(j=>console.log(JSON.stringify({...j,kid:'k1'})))"
+\`\`\`
 
 **Mastodon** needs no set-up: people type their server, and the app registers itself there
 on first use. **LinkedIn** needs an app at https://www.linkedin.com/developers/apps with the
@@ -11315,6 +11405,12 @@ function cfDevVars(opts: ScaffoldOptions): string {
             'LINKEDIN_CLIENT_SECRET=',
           ]
         : []),
+    ...(hasExample(opts, 'social')
+      ? [
+          '# Optional: an ES256 private JWK with a kid, so Bluesky sessions last (README).',
+          'BLUESKY_PRIVATE_JWK=',
+        ]
+      : []),
   ]
     .map((line) => `${line}\n`)
     .join('')
@@ -11415,6 +11511,14 @@ function cfBindingDescriptions(opts: ScaffoldOptions): Record<string, { descript
             ['LINKEDIN_CLIENT_SECRET', "That LinkedIn app's primary client secret."],
           ])
         : {}),
+    ...(hasExample(opts, 'social')
+      ? describe([
+          [
+            'BLUESKY_PRIVATE_JWK',
+            'Optional. An ES256 private key as a JWK with a `kid` (README shows how to make one). With it, Bluesky sessions last until revoked; without it, two weeks.',
+          ],
+        ])
+      : {}),
   }
 }
 

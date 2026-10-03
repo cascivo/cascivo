@@ -758,6 +758,51 @@ try {
 
 Like `oauth`, `social` has no database or Worker code: give it any `TokenSet` and subject.
 
+### Bluesky: AT Protocol OAuth, all of it
+
+`bluesky()` is a provider for every AT Protocol account. The flow takes the user's handle (or
+DID) as `?server=`, resolves it (DNS over HTTPS, then `/.well-known/atproto-did`) to the DID,
+its document to the PDS, and the PDS to its authorization server, then runs the protocol as
+the spec requires: a pushed authorization request, PKCE, and DPoP on every request, with the
+nonce retry a stateless Worker needs.
+
+```ts
+const providers = [
+  bluesky({
+    clientMetadataPath: '/oauth/client-metadata.json', // your client id is this URL
+    privateKey: parseBlueskyKey(env.BLUESKY_PRIVATE_JWK), // optional: a confidential client
+  }),
+]
+// Serve what Bluesky's servers fetch:
+//   GET /oauth/client-metadata.json → blueskyClientMetadata({ origin, redirectPaths, clientName, privateKey })
+//   GET /oauth/jwks.json            → blueskyJwks(privateKey)
+await blueskyPublisher().publish(
+  { tokens, subject: connection.subject, server: connection.server },
+  post,
+  { idempotencyKey: `${postId}:${connection.id}`, createdAt: scheduledAt },
+)
+```
+
+- **The account is checked, not trusted.** A handle must resolve to the DID and the DID
+  document must claim the handle back. The callback's `iss` must be the authorization server
+  the flow used, and the tokens' `sub` must be the DID resolved for this flow, whose document
+  points at that server. That is what stops a hostile server from signing in as someone
+  else's DID. Every host in the chain is fetched with the same limits as Mastodon's, and the
+  authorization server's endpoints must be on its own origin.
+- **Tokens are bound to a key.** The flow makes a P-256 key; `TokenSet.dpop` keeps it with
+  the issuer and client id, sealed with the tokens. `connectionTokens` refreshes them under
+  its lease, which matters here: Bluesky replaces the refresh token on every use.
+- **Three kinds of client.** In development a redirect to `127.0.0.1` makes the app
+  Bluesky's loopback client, which needs no metadata (open the app at `127.0.0.1`, not
+  `localhost`). Deployed, the client id is your metadata URL; without `privateKey` the app is
+  a public client (sessions end after two weeks), with one it signs a `private_key_jwt`
+  assertion on each token request.
+- **`blueskyPublisher`** counts graphemes (300), turns links, hashtags and mentions into
+  facets at UTF-8 byte offsets (`blueskyFacets`; a mention's handle is resolved to its DID),
+  builds a link card from the title you give (Bluesky does not read the page), and uploads
+  up to four images of 1 MB. With `idempotencyKey` and `createdAt` the record key is fixed
+  (`blueskyRecordKey`), and a retry returns the post it already made.
+
 ### Mastodon: one provider, many servers
 
 Every Mastodon server runs its own OAuth, so `mastodon()` is a factory. The flow takes the

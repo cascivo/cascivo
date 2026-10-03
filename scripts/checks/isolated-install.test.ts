@@ -303,7 +303,17 @@ export const maybeIn = (db: Database, request: Request) => currentUser(db, reque
 import { github, google, beginAuthorization, seal, type Identity, type TokenSet } from '@cascivo/app/oauth'
 import { connectionTokens, handleConnections, handleOAuth, mastodonRegistrations, type Connection } from '@cascivo/app/oauth-server'
 import { linkedinPublisher, mastodonPublisher, PublishError, type PublishedPost } from '@cascivo/app/social'
-import { linkedin, mastodon, normalizeServer } from '@cascivo/app/oauth'
+import { bluesky, blueskyClientMetadata, blueskyJwks, linkedin, mastodon, normalizeServer, parseBlueskyKey, type BlueskyKey } from '@cascivo/app/oauth'
+import { blueskyFacets, blueskyPublisher, blueskyRecordKey } from '@cascivo/app/social'
+export const atproto = (key?: BlueskyKey) => bluesky({ clientMetadataPath: '/oauth/client-metadata.json', ...(key ? { privateKey: key } : {}) })
+export const atprotoClient = (origin: string, secret: string) => {
+  const privateKey = parseBlueskyKey(secret)
+  return { meta: blueskyClientMetadata({ origin, redirectPaths: ['/cb'], clientName: 'A', privateKey }), jwks: blueskyJwks(privateKey) }
+}
+export const skeet = (tokens: TokenSet) =>
+  blueskyPublisher({ langs: ['en'] }).publish({ tokens, subject: 'did:plc:x', server: 'pds.example' }, { text: 'Hi #tag' }, { idempotencyKey: 'k', createdAt: new Date() })
+export const facetsOf = (text: string) => blueskyFacets(text, async () => null)
+export const keyOf = (at: Date): Promise<string> => blueskyRecordKey(at, 'k')
 export const fediverse = (db: Database) =>
   mastodon({ appName: 'A', registrations: mastodonRegistrations(db, 's'.repeat(32)), scopes: ['profile', 'write:statuses'] })
 export const host = (input: string): string => normalizeServer(input)

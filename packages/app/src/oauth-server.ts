@@ -14,7 +14,6 @@ import type { Database } from './db'
 import {
   beginAuthorization,
   completeAuthorization,
-  normalizeServer,
   OAuthError,
   parsePendingAuthorization,
   parseTokenSet,
@@ -158,13 +157,14 @@ function redirectFlow(config: {
       const params = new URL(request.url).searchParams
       const returnTo = safeReturnTo(params.get('returnTo'), origin)
       const redirectUri = `${origin}${config.callbackPath(provider)}`
-      // A provider that is many servers (Mastodon) starts at the one the user named: ?server=.
+      // A provider that is many servers (Mastodon, Bluesky) starts at the one the user named,
+      // `?server=`: a host, a handle or a DID, which the provider itself checks and resolves.
       let server: string | undefined
       let resolved = provider
       if (provider.forServer) {
         try {
-          server = normalizeServer(params.get('server') ?? '')
-          resolved = await provider.forServer(server, redirectUri)
+          resolved = await provider.forServer(params.get('server') ?? '', redirectUri)
+          server = resolved.server
         } catch (error) {
           if (error instanceof OAuthError) {
             console.warn(`[cascivo/oauth] ${provider.id}: ${error.code}: ${error.message}`)

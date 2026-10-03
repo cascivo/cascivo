@@ -1,3 +1,4 @@
+import { dpopFetch } from './dpop'
 import type { TokenSet } from './oauth'
 
 /**
@@ -46,6 +47,11 @@ export interface PublishOptions {
    * publishes once however often it is retried; one that has none (LinkedIn) ignores it.
    */
   idempotencyKey?: string
+  /**
+   * When the post was meant to go out, the same on every attempt. With `idempotencyKey`, it
+   * fixes Bluesky's record key, so a retry finds the post it already made.
+   */
+  createdAt?: Date
 }
 
 export interface PublishedPost {
@@ -465,6 +471,285 @@ export function mastodonPublisher(options: MastodonPublisherOptions = {}): Publi
         throw new PublishError('mastodon', 'failed', 'Mastodon returned no status')
       }
       return { id, url }
+    },
+  }
+  return publisher
+}
+
+/* --------------------------------- Bluesky ---------------------------------- */
+
+const graphemes = new Intl.Segmenter(undefined, { granularity: 'grapheme' })
+
+/** Characters as Bluesky counts them: graphemes (an emoji with modifiers is one). */
+export function blueskyLength(text: string): number {
+  let count = 0
+  for (const _ of graphemes.segment(text)) count += 1
+  return count
+}
+
+const utf8 = (text: string) => new TextEncoder().encode(text).byteLength
+
+export interface Facet {
+  index: { byteStart: number; byteEnd: number }
+  features: Record<string, string>[]
+}
+
+const LINK = /https?:\/\/[^\s<>"]*[^\s<>".,;:!?)\]'"]/g
+const TAG = /(^|\s)(#[\p{L}\p{N}_]*\p{L}[\p{L}\p{N}_]*)/gu
+const MENTION = /(^|\s)(@([a-z0-9-]+(?:\.[a-z0-9-]+)+))/gi
+
+/**
+ * Links, hashtags and mentions in `text` as Bluesky facets. Offsets are UTF-8 **bytes**, not
+ * string indices: get them wrong and the link lands on the wrong characters. `resolve` turns a
+ * mention's handle into its DID; one it cannot resolve stays plain text.
+ */
+export async function blueskyFacets(
+  text: string,
+  resolve: (handle: string) => Promise<string | null>,
+): Promise<Facet[]> {
+  const facets: Facet[] = []
+  const span = (start: number, length: number) => {
+    const byteStart = utf8(text.slice(0, start))
+    return { byteStart, byteEnd: byteStart + utf8(text.slice(start, start + length)) }
+  }
+  for (const m of text.matchAll(LINK)) {
+    facets.push({
+      index: span(m.index, m[0].length),
+      features: [{ $type: 'app.bsky.richtext.facet#link', uri: m[0] }],
+    })
+  }
+  for (const m of text.matchAll(TAG)) {
+    const tag = m[2]!
+    facets.push({
+      index: span(m.index + m[1]!.length, tag.length),
+      features: [{ $type: 'app.bsky.richtext.facet#tag', tag: tag.slice(1) }],
+    })
+  }
+  for (const m of text.matchAll(MENTION)) {
+    const did = await resolve(m[3]!.toLowerCase())
+    if (!did) continue
+    facets.push({
+      index: span(m.index + m[1]!.length, m[2]!.length),
+      features: [{ $type: 'app.bsky.richtext.facet#mention', did }],
+    })
+  }
+  return facets.sort((a, b) => a.index.byteStart - b.index.byteStart)
+}
+
+const S32 = '234567abcdefghijklmnopqrstuvwxyz'
+
+/**
+ * A record key (TID) fixed by a time and an idempotency key: the time in microseconds, and ten
+ * bits of the key's hash as the clock id. The same post, retried, gets the same key.
+ */
+export async function blueskyRecordKey(createdAt: Date, idempotencyKey: string): Promise<string> {
+  const digest = new Uint8Array(
+    await crypto.subtle.digest('SHA-256', new TextEncoder().encode(idempotencyKey)),
+  )
+  const clock = BigInt(((digest[0]! << 8) | digest[1]!) & 0x3ff)
+  let n = ((BigInt(createdAt.getTime()) * BigInt(1000)) << BigInt(10)) | clock
+  let key = ''
+  for (let i = 0; i < 13; i++) {
+    key = S32[Number(n & BigInt(31))] + key
+    n >>= BigInt(5)
+  }
+  return key
+}
+
+const BLUESKY_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp'])
+const BLUESKY_IMAGE_BYTES = 1_000_000
+
+export interface BlueskyPublisherOptions {
+  /** Post languages, BCP 47 (`['en']`); none by default. */
+  langs?: readonly string[]
+  fetch?: typeof fetch
+}
+
+/**
+ * Posts to a Bluesky account (`app.bsky.feed.post`) on its own PDS, with every request DPoP
+ * bound to the session's key. Links, hashtags and mentions become facets; a link becomes an
+ * external card with the title you give (Bluesky does not read the page); up to four images
+ * with alt text. With `idempotencyKey` and `createdAt`, a retry cannot post twice: the record
+ * key is fixed, and an existing record under it is returned instead.
+ */
+export function blueskyPublisher(options: BlueskyPublisherOptions = {}): Publisher {
+  const doFetch = options.fetch ?? ((input, init) => fetch(input, init))
+  const limits = { maxChars: 300, maxImages: 4 }
+
+  function failure(status: number, json: unknown): PublishError {
+    const r = asRecord(json)
+    const code = typeof r?.['error'] === 'string' ? r['error'] : ''
+    const message = typeof r?.['message'] === 'string' ? r['message'] : `Bluesky answered ${status}`
+    const kind: PublishErrorKind =
+      status === 401 || status === 403 || code === 'InvalidToken' || code === 'ExpiredToken'
+        ? 'reconnect'
+        : status === 429
+          ? 'rate_limited'
+          : status === 400 || status === 413
+            ? 'invalid'
+            : 'failed'
+    return new PublishError('bluesky', kind, message, status)
+  }
+
+  async function xrpc(
+    target: PublishTarget,
+    method: string,
+    init: { body?: string | Blob; contentType?: string } = {},
+  ): Promise<Record<string, unknown> | null> {
+    const key = target.tokens.dpop?.key
+    if (!key)
+      throw new PublishError('bluesky', 'reconnect', 'These tokens are not a Bluesky session')
+    const response = await dpopFetch(doFetch, key, `https://${target.server}/xrpc/${method}`, {
+      method: 'POST',
+      accessToken: target.tokens.accessToken,
+      redirect: 'manual',
+      signal: AbortSignal.timeout(30_000),
+      headers: {
+        'content-type': init.contentType ?? 'application/json',
+        accept: 'application/json',
+      },
+      ...(init.body === undefined ? {} : { body: init.body }),
+    })
+    const json: unknown = await response.json().catch(() => null)
+    if (!response.ok) throw failure(response.status, json)
+    return asRecord(json)
+  }
+
+  async function uploadBlob(target: PublishTarget, image: SocialImage): Promise<unknown> {
+    const result = await xrpc(target, 'com.atproto.repo.uploadBlob', {
+      body: image.data,
+      contentType: image.data.type,
+    })
+    if (!result?.['blob']) throw new PublishError('bluesky', 'failed', 'No blob came back')
+    return result['blob']
+  }
+
+  /** A handle's DID, from the account's own PDS; `null` when it does not resolve. */
+  async function resolveHandle(server: string, handle: string): Promise<string | null> {
+    try {
+      const response = await doFetch(
+        `https://${server}/xrpc/com.atproto.identity.resolveHandle?handle=${encodeURIComponent(handle)}`,
+        { redirect: 'manual', signal: AbortSignal.timeout(10_000) },
+      )
+      const did = asRecord(await response.json().catch(() => null))?.['did']
+      return response.ok && typeof did === 'string' && did.startsWith('did:') ? did : null
+    } catch {
+      return null
+    }
+  }
+
+  const publisher: Publisher = {
+    network: 'bluesky',
+    limits,
+    check(post) {
+      const problems: PostProblem[] = []
+      const images = post.images ?? []
+      if (!post.text.trim() && images.length === 0 && !post.link) {
+        problems.push({ code: 'empty', message: 'Write something to post' })
+      }
+      const length = blueskyLength(post.text)
+      if (length > limits.maxChars) {
+        problems.push({
+          code: 'too_long',
+          message: `Bluesky takes ${limits.maxChars} characters; this has ${length}`,
+        })
+      }
+      if (images.length > limits.maxImages) {
+        problems.push({
+          code: 'too_many_images',
+          message: `Bluesky takes ${limits.maxImages} images in a post`,
+        })
+      }
+      if (post.link && images.length > 0) {
+        problems.push({
+          code: 'link_and_images',
+          message: 'A Bluesky post has a link card or images, not both',
+        })
+      }
+      if (post.link) {
+        if (!/^https?:\/\//.test(post.link.url)) {
+          problems.push({ code: 'bad_link', message: 'The link must be an http(s) URL' })
+        }
+        if (!post.link.title.trim()) {
+          problems.push({
+            code: 'bad_link',
+            message: 'A link card needs a title: Bluesky does not read the page',
+          })
+        }
+      }
+      for (const image of [...images, ...(post.link?.thumbnail ? [post.link.thumbnail] : [])]) {
+        checkImage(image, problems, BLUESKY_IMAGE_TYPES)
+        if (image.data.size > BLUESKY_IMAGE_BYTES) {
+          problems.push({ code: 'bad_image', message: 'Bluesky takes images up to 1 MB' })
+        }
+      }
+      return problems
+    },
+    async publish(target, post, publishOptions = {}) {
+      const problems = publisher.check(post)
+      if (problems.length > 0) {
+        throw new PublishError('bluesky', 'invalid', problems.map((p) => p.message).join('; '))
+      }
+      if (!target.server)
+        throw new PublishError('bluesky', 'invalid', 'A Bluesky account needs its PDS')
+      const did = target.subject
+      const { idempotencyKey, createdAt } = publishOptions
+      const rkey =
+        idempotencyKey && createdAt ? await blueskyRecordKey(createdAt, idempotencyKey) : null
+      const urlOf = (key: string) => `https://bsky.app/profile/${did}/post/${key}`
+
+      if (rkey) {
+        // A retry: the post may already exist under the fixed key.
+        const existing = await doFetch(
+          `https://${target.server}/xrpc/com.atproto.repo.getRecord?repo=${encodeURIComponent(did)}&collection=app.bsky.feed.post&rkey=${rkey}`,
+          { redirect: 'manual', signal: AbortSignal.timeout(10_000) },
+        ).catch(() => null)
+        const found = existing?.ok ? asRecord(await existing.json().catch(() => null)) : null
+        if (typeof found?.['uri'] === 'string') return { id: found['uri'], url: urlOf(rkey) }
+      }
+
+      const images = post.images ?? []
+      let embed: Record<string, unknown> | undefined
+      if (images.length > 0) {
+        const uploaded = []
+        for (const image of images)
+          uploaded.push({ image: await uploadBlob(target, image), alt: image.alt })
+        embed = { $type: 'app.bsky.embed.images', images: uploaded }
+      } else if (post.link) {
+        embed = {
+          $type: 'app.bsky.embed.external',
+          external: {
+            uri: post.link.url,
+            title: post.link.title,
+            description: post.link.description ?? '',
+            ...(post.link.thumbnail
+              ? { thumb: await uploadBlob(target, post.link.thumbnail) }
+              : {}),
+          },
+        }
+      }
+      const facets = await blueskyFacets(post.text, (handle) =>
+        resolveHandle(target.server!, handle),
+      )
+      const result = await xrpc(target, 'com.atproto.repo.createRecord', {
+        body: JSON.stringify({
+          repo: did,
+          collection: 'app.bsky.feed.post',
+          ...(rkey ? { rkey } : {}),
+          record: {
+            $type: 'app.bsky.feed.post',
+            text: post.text,
+            createdAt: (createdAt ?? new Date()).toISOString(),
+            ...(facets.length > 0 ? { facets } : {}),
+            ...(embed ? { embed } : {}),
+            ...(options.langs?.length ? { langs: [...options.langs] } : {}),
+          },
+        }),
+      })
+      const uri = result?.['uri']
+      if (typeof uri !== 'string')
+        throw new PublishError('bluesky', 'failed', 'Bluesky returned no record')
+      return { id: uri, url: urlOf(uri.split('/').pop()!) }
     },
   }
   return publisher

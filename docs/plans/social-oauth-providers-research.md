@@ -640,3 +640,26 @@ Not proven without real credentials: a LinkedIn sign-in and a post to a real fee
 
 Not proven without real accounts: a post to a real LinkedIn feed and to a real Mastodon
 server.
+
+**Step 5 implemented (2026-10-03):** Bluesky, our own client (decision 2).
+
+- `bluesky()` in `oauth`: handle or DID → DID document → PDS → authorization server, then PAR,
+  PKCE and DPoP (internal `dpop.ts`: ES256 proofs, the nonce retry), `iss` checked, `sub`
+  checked against the DID resolved for the flow. Loopback, public and confidential clients;
+  `blueskyClientMetadata`, `blueskyJwks`, `parseBlueskyKey`. The provider interface grew
+  `dpop`, an async `authorizationUrl`, `server` on a resolved provider, and the callback
+  parameters in `exchange`; `TokenSet.dpop` carries the binding.
+- `blueskyPublisher()` in `social`: graphemes, facets at UTF-8 byte offsets (mentions
+  resolved on the account's PDS), link cards from the given title, images. Idempotency as
+  designed above, with one addition: the record key is a TID fixed by `createdAt` and the
+  idempotency key, and a retry first looks the record up, since `createRecord` gives no
+  documented error code for a taken key.
+- Tests run against a fake network whose servers verify every DPoP proof and client
+  assertion with Node's own crypto, and include the hostile cases (a DID document claiming
+  another handle, metadata naming another issuer, a token endpoint elsewhere, tokens for
+  another DID). Live, from `vite dev`: `@bsky.app` resolved through real DNS and PLC, and
+  Bluesky's real server accepted the pushed request and served its authorize page.
+- `--example social` connects Bluesky; the Worker serves the client metadata (and the key
+  set, with `BLUESKY_PRIVATE_JWK`).
+- Not done: granular scopes (the default stays `atproto transition:generic`, which every
+  server accepts); reading the account's display name.

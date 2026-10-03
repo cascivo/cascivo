@@ -1,8 +1,9 @@
+import { dpopFetch, newEs256Key, publicEs256, signEs256 } from './dpop'
 import { base64UrlDecode, base64UrlEncode, JwtError, verifyJwt } from './jwt'
 
 /**
  * `@cascivo/app/oauth` — the authorization-code flow against an OAuth provider, and adapters
- * for Google, GitHub, LinkedIn and Mastodon. It knows the protocol and the provider, nothing else: no database, no
+ * for Google, GitHub, LinkedIn, Mastodon and Bluesky. It knows the protocol and the provider, nothing else: no database, no
  * cookies, no users. What happens to the tokens is the caller's choice: `handleOAuth`
  * (`@cascivo/app/oauth-server`) turns the identity into a session and drops them; an app that
  * posts or reads on the user's behalf keeps them, sealed with `seal`. It runs anywhere with
@@ -26,6 +27,11 @@ export interface TokenSet {
   expiresAt: number | null
   /** The scopes granted, which can be fewer than the ones asked for. */
   scopes: string[]
+  /**
+   * Present when the tokens are bound to a key (DPoP: AT Protocol, Bluesky). Every use of them
+   * must prove possession of `key`, and renewing them goes to `issuer` as `clientId`.
+   */
+  dpop?: { key: JsonWebKey; issuer: string; clientId: string }
 }
 
 /** Who signed in, as the provider describes them. */
@@ -59,15 +65,29 @@ export interface PendingAuthorization {
   expiresAt: number
   /** The server the flow runs against, for a provider that is many (Mastodon); else `null`. */
   server: string | null
+  /** The DPoP key the tokens will be bound to, for a provider that sets `dpop`; else `null`. */
+  dpopKey: JsonWebKey | null
 }
 
 export interface OAuthProvider {
   readonly id: string
   /** Asked for when `beginAuthorization` is given none. */
   readonly scopes: readonly string[]
-  authorizationUrl(pending: PendingAuthorization, codeChallenge: string): URL
-  /** Exchanges the code, checks what came back, and says who it is. */
-  exchange(code: string, pending: PendingAuthorization): Promise<CompletedAuthorization>
+  /** Bound tokens (DPoP): `beginAuthorization` makes a key for the flow. */
+  readonly dpop?: boolean
+  /** On a provider from `forServer`: the server it is for, as the flow should remember it. */
+  readonly server?: string
+  /** Where to send the browser. Asynchronous for a provider that pushes the request first (PAR). */
+  authorizationUrl(pending: PendingAuthorization, codeChallenge: string): URL | Promise<URL>
+  /**
+   * Exchanges the code, checks what came back, and says who it is. `params` is the whole
+   * callback query, for a provider that checks more than the code (`iss`).
+   */
+  exchange(
+    code: string,
+    pending: PendingAuthorization,
+    params?: URLSearchParams,
+  ): Promise<CompletedAuthorization>
   /** Present when the provider issues refresh tokens. */
   refresh?(tokens: TokenSet): Promise<TokenSet>
   /**
@@ -140,8 +160,9 @@ export async function beginAuthorization(
     scopes: [...(options.scopes ?? provider.scopes)],
     expiresAt: now() + (options.ttlSeconds ?? 600),
     server: options.server ?? null,
+    dpopKey: provider.dpop ? await newEs256Key() : null,
   }
-  const url = provider.authorizationUrl(pending, await s256(pending.codeVerifier))
+  const url = await provider.authorizationUrl(pending, await s256(pending.codeVerifier))
   return { url: url.href, pending }
 }
 
@@ -173,7 +194,7 @@ export async function completeAuthorization(
   }
   const code = params.get('code')
   if (!code) throw new OAuthError('provider_error', 'The provider sent no code')
-  return provider.exchange(code, pending)
+  return provider.exchange(code, pending, params)
 }
 
 function sameString(a: string, b: string): boolean {
@@ -189,8 +210,10 @@ export function parsePendingAuthorization(raw: unknown): PendingAuthorization {
     const r = raw as Record<string, unknown>
     const { provider, state, codeVerifier, nonce, redirectUri, scopes, expiresAt } = r
     const server = r['server'] ?? null
+    const dpopKey = r['dpopKey'] ?? null
     if (
       (typeof server === 'string' || server === null) &&
+      (dpopKey === null || isEcJwk(dpopKey)) &&
       typeof provider === 'string' &&
       typeof state === 'string' &&
       typeof codeVerifier === 'string' &&
@@ -200,16 +223,38 @@ export function parsePendingAuthorization(raw: unknown): PendingAuthorization {
       scopes.every((s) => typeof s === 'string') &&
       typeof expiresAt === 'number'
     ) {
-      return { provider, state, codeVerifier, nonce, redirectUri, scopes, expiresAt, server }
+      return {
+        provider,
+        state,
+        codeVerifier,
+        nonce,
+        redirectUri,
+        scopes,
+        expiresAt,
+        server,
+        dpopKey,
+      }
     }
   }
   throw new Error('Malformed pending authorization')
 }
 
+function isEcJwk(raw: unknown): raw is JsonWebKey {
+  if (typeof raw !== 'object' || raw === null) return false
+  const { kty, crv, x, y, d } = raw as Record<string, unknown>
+  return (
+    kty === 'EC' &&
+    crv === 'P-256' &&
+    typeof x === 'string' &&
+    typeof y === 'string' &&
+    typeof d === 'string'
+  )
+}
+
 /** Checks a `TokenSet` that came back from storage (`unseal` returns `unknown`). */
 export function parseTokenSet(raw: unknown): TokenSet {
   if (typeof raw === 'object' && raw !== null) {
-    const { accessToken, refreshToken, expiresAt, scopes } = raw as Record<string, unknown>
+    const { accessToken, refreshToken, expiresAt, scopes, dpop } = raw as Record<string, unknown>
     if (
       typeof accessToken === 'string' &&
       (typeof refreshToken === 'string' || refreshToken === null) &&
@@ -217,7 +262,14 @@ export function parseTokenSet(raw: unknown): TokenSet {
       Array.isArray(scopes) &&
       scopes.every((s) => typeof s === 'string')
     ) {
-      return { accessToken, refreshToken, expiresAt, scopes }
+      const tokens: TokenSet = { accessToken, refreshToken, expiresAt, scopes }
+      if (dpop === undefined) return tokens
+      if (typeof dpop === 'object' && dpop !== null) {
+        const { key, issuer, clientId } = dpop as Record<string, unknown>
+        if (isEcJwk(key) && typeof issuer === 'string' && typeof clientId === 'string') {
+          return { ...tokens, dpop: { key, issuer, clientId } }
+        }
+      }
     }
   }
   throw new Error('Malformed token set')
@@ -607,8 +659,15 @@ export function normalizeServer(input: string): string {
 const SERVER_TIMEOUT_MS = 10_000
 const SERVER_MAX_BYTES = 256 * 1024
 
+/** The settings for every call to a server someone named: a timeout, and no redirects. */
+const guarded = (init: RequestInit = {}): RequestInit => ({
+  ...init,
+  redirect: 'manual',
+  signal: AbortSignal.timeout(SERVER_TIMEOUT_MS),
+})
+
 /**
- * A JSON call to a server someone named: a timeout, no redirects (a redirect could point
+ * A call to a server someone named: a timeout, no redirects (a redirect could point
  * anywhere), and a cap on how much is read. Returns the status and the parsed body (or null).
  */
 async function serverJson(
@@ -618,15 +677,26 @@ async function serverJson(
 ): Promise<{ status: number; body: unknown }> {
   let response: Response
   try {
-    response = await doFetch(url, {
-      ...init,
-      redirect: 'manual',
-      signal: AbortSignal.timeout(SERVER_TIMEOUT_MS),
-    })
+    response = await doFetch(url, guarded(init))
   } catch (error) {
     throw new OAuthError('bad_server', `${new URL(url).host} did not answer: ${String(error)}`)
   }
-  if (!response.body) return { status: response.status, body: null }
+  const { status, text } = await readCapped(response, url)
+  let body: unknown = null
+  try {
+    body = JSON.parse(text) as unknown
+  } catch {
+    // Not JSON: the caller decides from the status.
+  }
+  return { status, body }
+}
+
+/** A response's text, refused past `SERVER_MAX_BYTES`. */
+async function readCapped(
+  response: Response,
+  url: string,
+): Promise<{ status: number; text: string }> {
+  if (!response.body) return { status: response.status, text: '' }
   const reader = response.body.getReader()
   const chunks: Uint8Array[] = []
   let size = 0
@@ -646,13 +716,7 @@ async function serverJson(
     bytes.set(chunk, offset)
     offset += chunk.byteLength
   }
-  let body: unknown = null
-  try {
-    body = JSON.parse(new TextDecoder().decode(bytes)) as unknown
-  } catch {
-    // Not JSON: the caller decides from the status.
-  }
-  return { status: response.status, body }
+  return { status: response.status, text: new TextDecoder().decode(bytes) }
 }
 
 /** What a server issued this app: kept so it registers once per server. */
@@ -778,6 +842,7 @@ export function mastodon(options: MastodonOptions): OAuthProvider {
       const app = registration
       return {
         id: 'mastodon',
+        server,
         scopes: app.scopes,
         authorizationUrl(pending, codeChallenge) {
           const url = new URL(app.authorizationEndpoint)
@@ -847,6 +912,452 @@ export function mastodon(options: MastodonOptions): OAuthProvider {
     },
   }
   return factory
+}
+
+/* ---------------------------------- Bluesky ---------------------------------- */
+
+const DID = /^did:(plc:[a-z2-7]{24}|web:[a-z0-9.-]+)$/
+
+/** An https URL on a public host (a PDS or an authorization server a document names), as its origin. */
+function publicOrigin(raw: unknown, what: string): string {
+  if (typeof raw !== 'string' || !URL.canParse(raw)) {
+    throw new OAuthError('bad_server', `No usable ${what}`)
+  }
+  const url = new URL(raw)
+  if (url.protocol !== 'https:' || url.port || normalizeServer(url.host) !== url.hostname) {
+    throw new OAuthError('bad_server', `The ${what} ${url.host} is not a public https host`)
+  }
+  return url.origin
+}
+
+/** A handle (`ada.bsky.social`, `@ada.example.com`) or a DID, as the user typed it. */
+function parseAccountInput(input: string): { did: string } | { handle: string } {
+  const value = input
+    .trim()
+    .replace(/^@/, '')
+    .replace(/^at:\/\//, '')
+  if (value.startsWith('did:')) {
+    if (!DID.test(value))
+      throw new OAuthError('bad_server', `"${value.slice(0, 100)}" is not a DID`)
+    return { did: value }
+  }
+  return { handle: normalizeServer(value) }
+}
+
+async function resolveHandle(doFetch: typeof fetch, handle: string): Promise<string> {
+  // DNS first, over HTTPS: a TXT record `_atproto.<handle>` holding `did=<did>`.
+  const dns = await serverJson(
+    doFetch,
+    `https://cloudflare-dns.com/dns-query?name=_atproto.${handle}&type=TXT`,
+    { headers: { accept: 'application/dns-json' } },
+  )
+  const answers =
+    typeof dns.body === 'object' && dns.body !== null
+      ? (dns.body as Record<string, unknown>)['Answer']
+      : null
+  const fromDns = (Array.isArray(answers) ? answers : [])
+    .map((a) =>
+      typeof a === 'object' && a !== null ? (a as Record<string, unknown>)['data'] : null,
+    )
+    .filter((d): d is string => typeof d === 'string')
+    .map((d) => d.replace(/^"|"$/g, ''))
+    .filter((d) => d.startsWith('did='))
+    .map((d) => d.slice(4))
+  if (fromDns.length === 1 && DID.test(fromDns[0]!)) return fromDns[0]!
+  // Then HTTPS: the DID as the whole body of /.well-known/atproto-did.
+  let response: Response
+  try {
+    response = await doFetch(`https://${handle}/.well-known/atproto-did`, guarded())
+  } catch {
+    throw new OAuthError('bad_server', `The handle ${handle} does not resolve`)
+  }
+  const { status, text } = await readCapped(response, `https://${handle}/`)
+  const did = text.trim()
+  if (status !== 200 || !DID.test(did)) {
+    throw new OAuthError('bad_server', `The handle ${handle} does not resolve`)
+  }
+  return did
+}
+
+async function resolveDid(
+  doFetch: typeof fetch,
+  did: string,
+): Promise<{ pds: string; handles: string[] }> {
+  const url = did.startsWith('did:plc:')
+    ? `https://plc.directory/${did}`
+    : `https://${normalizeServer(did.slice('did:web:'.length))}/.well-known/did.json`
+  const { status, body } = await serverJson(doFetch, url)
+  const doc =
+    status === 200 && typeof body === 'object' && body !== null
+      ? (body as Record<string, unknown>)
+      : null
+  if (!doc || doc['id'] !== did) throw new OAuthError('bad_server', `${did} has no DID document`)
+  const services = Array.isArray(doc['service']) ? doc['service'] : []
+  const pds = services
+    .map((s) => (typeof s === 'object' && s !== null ? (s as Record<string, unknown>) : {}))
+    .find(
+      (s) =>
+        typeof s['id'] === 'string' &&
+        s['id'].endsWith('#atproto_pds') &&
+        s['type'] === 'AtprotoPersonalDataServer',
+    )
+  const handles = (Array.isArray(doc['alsoKnownAs']) ? doc['alsoKnownAs'] : [])
+    .filter((a): a is string => typeof a === 'string' && a.startsWith('at://'))
+    .map((a) => a.slice('at://'.length).toLowerCase())
+  return { pds: publicOrigin(pds?.['serviceEndpoint'], 'PDS'), handles }
+}
+
+interface AuthServer {
+  issuer: string
+  par: string
+  authorize: string
+  token: string
+}
+
+async function authServerOf(doFetch: typeof fetch, pds: string): Promise<AuthServer> {
+  const resource = await serverJson(doFetch, `${pds}/.well-known/oauth-protected-resource`)
+  const servers =
+    typeof resource.body === 'object' && resource.body !== null
+      ? (resource.body as Record<string, unknown>)['authorization_servers']
+      : null
+  const issuer = publicOrigin(Array.isArray(servers) ? servers[0] : null, 'authorization server')
+  const meta = await serverJson(doFetch, `${issuer}/.well-known/oauth-authorization-server`)
+  const m =
+    typeof meta.body === 'object' && meta.body !== null
+      ? (meta.body as Record<string, unknown>)
+      : {}
+  // The metadata must describe the server it came from: a mismatch is a server lying.
+  if (m['issuer'] !== issuer) throw new OAuthError('bad_server', `${issuer} names another issuer`)
+  const algs = m['dpop_signing_alg_values_supported']
+  if (Array.isArray(algs) && !algs.includes('ES256')) {
+    throw new OAuthError('bad_server', `${issuer} does not take ES256 DPoP proofs`)
+  }
+  // The code and the client's assertion go to these: they must be the issuer's own.
+  const endpoint = (key: string) => {
+    if (publicOrigin(m[key], key) !== issuer) {
+      throw new OAuthError('bad_server', `${issuer} points its ${key} at another host`)
+    }
+    return String(m[key])
+  }
+  return {
+    issuer,
+    par: endpoint('pushed_authorization_request_endpoint'),
+    authorize: endpoint('authorization_endpoint'),
+    token: endpoint('token_endpoint'),
+  }
+}
+
+/** The key Bluesky clients sign with: an ES256 private JWK, with the `kid` it is published under. */
+export type BlueskyKey = JsonWebKey & { kid: string }
+
+export interface BlueskyOptions {
+  /**
+   * A confidential client: your app's ES256 key (`private_key_jwt`). Sessions can last until
+   * revoked; without it the app is a public client, and sessions end after two weeks.
+   */
+  privateKey?: BlueskyKey
+  /**
+   * Where your client metadata is served, on the app's origin (`blueskyClientMetadata`). Its
+   * URL is the client id. Default `/oauth/client-metadata.json`. Unused in development: a
+   * redirect to `127.0.0.1` makes it the loopback client, which needs no metadata.
+   */
+  clientMetadataPath?: string
+  /** Default `atproto transition:generic`: post, and read the account's own records. */
+  scopes?: readonly string[]
+  fetch?: typeof fetch
+}
+
+const isLoopback = (url: URL) => url.hostname === '127.0.0.1' || url.hostname === '[::1]'
+
+function blueskyClientId(
+  options: BlueskyOptions,
+  redirectUri: string,
+  scopes: readonly string[],
+): string {
+  const redirect = new URL(redirectUri)
+  if (redirect.hostname === 'localhost') {
+    throw new Error(
+      'Bluesky: open the app at http://127.0.0.1 in development, not localhost. Its development client may only redirect to 127.0.0.1.',
+    )
+  }
+  if (isLoopback(redirect)) {
+    const id = new URL('http://localhost')
+    id.searchParams.set('redirect_uri', redirectUri)
+    id.searchParams.set('scope', scopes.join(' '))
+    return id.href
+  }
+  return new URL(options.clientMetadataPath ?? '/oauth/client-metadata.json', redirect.origin).href
+}
+
+/**
+ * Bluesky (any AT Protocol account). Every account names its own server, so this is a
+ * factory: `forServer` takes the handle or DID the user typed, resolves it to the account's
+ * PDS and the authorization server behind it, and returns the provider for that account.
+ *
+ * The protocol is strict, and all of it is here: pushed authorization requests, PKCE, DPoP on
+ * every request (tokens are bound to a key the flow makes, kept in `TokenSet.dpop`), the
+ * callback's `iss`, and the check that the account the tokens name resolves back to the same
+ * authorization server, so a hostile server cannot sign in as someone else's DID. The identity
+ * is the DID, with the handle when it resolves back to the same DID; there is no email.
+ */
+export function bluesky(options: BlueskyOptions = {}): OAuthProvider {
+  const doFetch = options.fetch ?? ((input, init) => fetch(input, init))
+  const scopes = options.scopes ?? ['atproto', 'transition:generic']
+
+  /** Client authentication for a token or PAR request: an assertion, or just the id. */
+  async function clientAuth(clientId: string, issuer: string): Promise<Record<string, string>> {
+    if (!options.privateKey || clientId.startsWith('http://localhost'))
+      return { client_id: clientId }
+    return {
+      client_id: clientId,
+      client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
+      client_assertion: await signEs256(
+        options.privateKey,
+        { kid: options.privateKey.kid },
+        {
+          iss: clientId,
+          sub: clientId,
+          aud: issuer,
+          jti: crypto.randomUUID(),
+          iat: now(),
+          exp: now() + 60,
+        },
+      ),
+    }
+  }
+
+  async function post(url: string, key: JsonWebKey, form: Record<string, string>) {
+    let response: Response
+    try {
+      response = await dpopFetch(
+        doFetch,
+        key,
+        url,
+        guarded({
+          method: 'POST',
+          headers: {
+            'content-type': 'application/x-www-form-urlencoded',
+            accept: 'application/json',
+          },
+          body: new URLSearchParams(form).toString(),
+        }),
+      )
+    } catch (error) {
+      throw new OAuthError(
+        'provider_error',
+        `${new URL(url).host} did not answer: ${String(error)}`,
+      )
+    }
+    const { status, text } = await readCapped(response, url)
+    let body: unknown = null
+    try {
+      body = JSON.parse(text) as unknown
+    } catch {
+      // reported below
+    }
+    return { status, body }
+  }
+
+  function boundTokens(
+    body: unknown,
+    key: JsonWebKey,
+    issuer: string,
+    clientId: string,
+  ): TokenSet & { sub: unknown } {
+    const { idToken: _idToken, ...tokens } = parseTokenResponse(body, scopes)
+    const r = body as Record<string, unknown>
+    if (typeof r['token_type'] !== 'string' || r['token_type'].toLowerCase() !== 'dpop') {
+      throw new OAuthError('provider_error', 'Bluesky issued a token not bound to the key')
+    }
+    return { ...tokens, dpop: { key, issuer, clientId }, sub: r['sub'] }
+  }
+
+  const factory: OAuthProvider = {
+    id: 'bluesky',
+    scopes,
+    dpop: true,
+    authorizationUrl() {
+      throw new Error('bluesky(): call forServer(handle, redirectUri) first')
+    },
+    async exchange() {
+      throw new Error('bluesky(): call forServer(handle, redirectUri) first')
+    },
+    async forServer(input, redirectUri) {
+      const account = parseAccountInput(input)
+      const did = 'did' in account ? account.did : await resolveHandle(doFetch, account.handle)
+      const doc = await resolveDid(doFetch, did)
+      if ('handle' in account && !doc.handles.includes(account.handle)) {
+        throw new OAuthError('bad_server', `${account.handle} and ${did} do not name each other`)
+      }
+      const server = await authServerOf(doFetch, doc.pds)
+      const clientId = blueskyClientId(options, redirectUri, scopes)
+      // The handle shown: one the DID document claims and that resolves back to the DID.
+      let handle: string | null = 'handle' in account ? account.handle : null
+      if (!handle && doc.handles[0]) {
+        handle = await resolveHandle(doFetch, doc.handles[0]).then(
+          (back) => (back === did ? doc.handles[0]! : null),
+          () => null,
+        )
+      }
+      return {
+        id: 'bluesky',
+        server: did,
+        scopes,
+        dpop: true,
+        async authorizationUrl(pending, codeChallenge) {
+          if (!pending.dpopKey) throw new Error('The flow has no DPoP key')
+          const { status, body } = await post(server.par, pending.dpopKey, {
+            response_type: 'code',
+            code_challenge: codeChallenge,
+            code_challenge_method: 'S256',
+            state: pending.state,
+            redirect_uri: pending.redirectUri,
+            scope: scopes.join(' '),
+            login_hint: handle ?? did,
+            ...(await clientAuth(clientId, server.issuer)),
+          })
+          const requestUri =
+            typeof body === 'object' && body !== null
+              ? (body as Record<string, unknown>)['request_uri']
+              : null
+          if ((status !== 201 && status !== 200) || typeof requestUri !== 'string') {
+            const reason =
+              typeof body === 'object' && body !== null
+                ? (body as Record<string, unknown>)['error_description']
+                : null
+            throw new OAuthError(
+              'provider_error',
+              `${server.issuer} refused the request${typeof reason === 'string' ? `: ${reason}` : ` (${status})`}`,
+            )
+          }
+          const url = new URL(server.authorize)
+          url.searchParams.set('client_id', clientId)
+          url.searchParams.set('request_uri', requestUri)
+          return url
+        },
+        async exchange(code, pending, params) {
+          if (params?.get('iss') !== server.issuer) {
+            throw new OAuthError(
+              'provider_error',
+              'The callback came from another authorization server',
+            )
+          }
+          if (!pending.dpopKey) throw new Error('The flow has no DPoP key')
+          const { body } = await post(server.token, pending.dpopKey, {
+            grant_type: 'authorization_code',
+            code,
+            redirect_uri: pending.redirectUri,
+            code_verifier: pending.codeVerifier,
+            ...(await clientAuth(clientId, server.issuer)),
+          })
+          const { sub, ...tokens } = boundTokens(body, pending.dpopKey, server.issuer, clientId)
+          // The tokens must be for the account this flow resolved, whose DID document points at
+          // the server that issued them (resolved fresh for this callback).
+          if (sub !== did) {
+            throw new OAuthError(
+              'provider_error',
+              `${server.issuer} issued tokens for another account`,
+            )
+          }
+          return {
+            tokens,
+            identity: {
+              provider: 'bluesky',
+              subject: did,
+              email: null,
+              name: null,
+              handle: handle ? `@${handle}` : null,
+              avatarUrl: null,
+              server: new URL(doc.pds).host,
+            },
+          }
+        },
+      }
+    },
+    async refresh(tokens) {
+      if (!tokens.dpop || !tokens.refreshToken) throw new Error('Not a Bluesky session')
+      const { key, issuer, clientId } = tokens.dpop
+      const meta = await serverJson(
+        doFetch,
+        `${publicOrigin(issuer, 'issuer')}/.well-known/oauth-authorization-server`,
+      )
+      const m =
+        typeof meta.body === 'object' && meta.body !== null
+          ? (meta.body as Record<string, unknown>)
+          : {}
+      if (m['issuer'] !== issuer)
+        throw new OAuthError('provider_error', `${issuer} names another issuer`)
+      const tokenUrl = String(m['token_endpoint'])
+      if (publicOrigin(tokenUrl, 'token endpoint') !== new URL(issuer).origin) {
+        throw new OAuthError('provider_error', `${issuer} moved its token endpoint to another host`)
+      }
+      const { body } = await post(tokenUrl, key, {
+        grant_type: 'refresh_token',
+        refresh_token: tokens.refreshToken,
+        ...(await clientAuth(clientId, issuer)),
+      })
+      const { sub: _sub, ...fresh } = boundTokens(body, key, issuer, clientId)
+      return fresh
+    },
+  }
+  return factory
+}
+
+/**
+ * The client metadata document Bluesky's servers fetch from your client id
+ * (`<origin><clientMetadataPath>`). Serve it as JSON at that path; with a `privateKey`, also
+ * serve `blueskyJwks(privateKey)` at `jwksPath`.
+ */
+export function blueskyClientMetadata(options: {
+  origin: string
+  /** Every callback path the app uses: `/api/connections/bluesky/callback`, … */
+  redirectPaths: readonly string[]
+  clientName: string
+  scopes?: readonly string[]
+  clientMetadataPath?: string
+  /** With a key, the app is a confidential client. */
+  privateKey?: BlueskyKey
+  jwksPath?: string
+}): Record<string, unknown> {
+  const origin = new URL(options.origin).origin
+  return {
+    client_id: new URL(options.clientMetadataPath ?? '/oauth/client-metadata.json', origin).href,
+    client_name: options.clientName,
+    client_uri: origin,
+    application_type: 'web',
+    grant_types: ['authorization_code', 'refresh_token'],
+    response_types: ['code'],
+    redirect_uris: options.redirectPaths.map((path) => new URL(path, origin).href),
+    scope: (options.scopes ?? ['atproto', 'transition:generic']).join(' '),
+    dpop_bound_access_tokens: true,
+    ...(options.privateKey
+      ? {
+          token_endpoint_auth_method: 'private_key_jwt',
+          token_endpoint_auth_signing_alg: 'ES256',
+          jwks_uri: new URL(options.jwksPath ?? '/oauth/jwks.json', origin).href,
+        }
+      : { token_endpoint_auth_method: 'none' }),
+  }
+}
+
+/** The public half of your Bluesky key, as the JWKS `jwks_uri` serves. */
+export function blueskyJwks(privateKey: BlueskyKey): { keys: Record<string, string>[] } {
+  const { kty = '', crv = '', x = '', y = '' } = publicEs256(privateKey)
+  return { keys: [{ kty, crv, x, y, kid: privateKey.kid, alg: 'ES256', use: 'sig' }] }
+}
+
+/** Reads a `BlueskyKey` from a secret (its JSON), or throws saying what is wrong. */
+export function parseBlueskyKey(raw: string): BlueskyKey {
+  let value: unknown
+  try {
+    value = JSON.parse(raw) as unknown
+  } catch {
+    throw new Error('The Bluesky key is not JSON: expected an ES256 private JWK with a kid')
+  }
+  if (isEcJwk(value) && typeof (value as { kid?: unknown }).kid === 'string') {
+    return value as BlueskyKey
+  }
+  throw new Error('The Bluesky key must be an ES256 (P-256) private JWK with a kid')
 }
 
 /* ----------------------------------- GitHub ----------------------------------- */

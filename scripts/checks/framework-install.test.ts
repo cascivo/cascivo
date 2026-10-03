@@ -541,6 +541,12 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
       const worker = readFileSync(join(dist, dir, 'index.js'), 'utf8')
       assert.match(worker, /api\.linkedin\.com\/rest/, 'the Worker bundle cannot post to LinkedIn')
       assert.match(worker, /\/api\/v1\/statuses/, 'the Worker bundle cannot post to Mastodon')
+      assert.match(
+        worker,
+        /com\.atproto\.repo\.createRecord/,
+        'the Worker bundle cannot post to Bluesky',
+      )
+      assert.match(worker, /dpop\+jwt/, 'the Worker bundle cannot make DPoP proofs')
       // The bundle is minified: the class keeps its exported name, not its declaration.
       assert.match(worker, /\bSocialPost\b/, 'the Worker bundle exports no SocialPost Workflow')
       const config = readFileSync(join(dist, dir, 'wrangler.json'), 'utf8')

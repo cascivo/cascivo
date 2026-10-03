@@ -158,6 +158,7 @@ describe('boundary', () => {
     const { readFileSync } = await import('node:fs')
     const source = readFileSync(new URL('./social.ts', import.meta.url), 'utf8')
     const imports = [...source.matchAll(/^import[^'"]*['"]([^'"]+)['"]/gm)].map((m) => m[1])
-    expect(imports).toEqual(['./oauth'])
+    // oauth for types, dpop for Bluesky's proofs: neither touches the app layer.
+    expect(imports).toEqual(['./dpop', './oauth'])
   })
 })
