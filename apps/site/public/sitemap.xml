@@ -133,6 +133,14 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/guides</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/cli</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/ai</loc>
     <priority>0.8</priority>
   </url>
@@ -1610,6 +1618,122 @@
   </url>
   <url>
     <loc>https://cascivo.com/docs/themes/arcade</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/theming</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/headless</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/compatibility</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/tokens</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/recipe-dashboard</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/recipe-email</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/recipe-payments</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/recipe-social</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/email-primitives</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/email-client-support</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/migrating-from-shadcn</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/compared-to-stylex</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/enterprise-readiness</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/ai-rules</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/machine-mode</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/troubleshooting</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/testing</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/using-with-a-router</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/using-with-nextjs</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/using-with-vite-ssr</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/using-with-tailwind</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/using-with-preact</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/using-with-astro</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/using-with-ghost</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/styling-internals</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/motion</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/css-layers-pitfall</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/third-party-css</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/using-with-strict-eslint</loc>
     <priority>0.6</priority>
   </url>
   <url>

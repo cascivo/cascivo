@@ -1,4 +1,7 @@
 /installation  /docs/installation  301
+# Guides that replaced a hand-built page are served at that page's URL (scripts/docs-md/guides.ts `route`).
+/docs/guides/getting-started  /docs/getting-started  301
+/docs/guides/upgrading  /docs/upgrading  301
 
 # BEGIN generated aliases
 # Flat-name → namespaced-doc 301s for unambiguous guesses (e.g. /llms/area-chart.md →

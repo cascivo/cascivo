@@ -20,10 +20,10 @@ const NAME = '@cascivo/docspack'
 const VERSION = '0.0.0-test'
 
 let dir: string
-let payload: ReturnType<typeof buildPayload>
+let payload: Awaited<ReturnType<typeof buildPayload>>
 
-beforeAll(() => {
-  payload = buildPayload({ root: REPO_ROOT, name: NAME, version: VERSION })
+beforeAll(async () => {
+  payload = await buildPayload({ root: REPO_ROOT, name: NAME, version: VERSION })
 
   // A real package on disk, because `runDoctor` and `previewPackage` read one.
   dir = mkdtempSync(join(tmpdir(), 'cascivo-docspack-'))
@@ -83,6 +83,20 @@ describe('payload', () => {
     for (const file of button) expect(file.contents).toContain('@cascivo/react')
   })
 
+  it('describes every CLI command, citing the cmdspec a person can open', () => {
+    const cli = payload.manifest.chunks.filter((chunk) => chunk.id.startsWith('cli'))
+    for (const id of ['cli', 'cli-cascivo-add', 'cli-cascivo-mcp-init', 'cli-cascivo-email-lint']) {
+      expect(cli.some((chunk) => chunk.id === id)).toBe(true)
+    }
+    for (const chunk of cli) expect(chunk.documents?.[0]?.name).toBe('cascivo')
+    const add = payload.files.find((file) => file.path.endsWith('/cli-cascivo-add.md'))
+    expect(add?.contents).toContain(
+      '<!-- docspack: from https://github.com/cascivo/cascivo/blob/main/packages/cli/cmdspec.json -->',
+    )
+    // The line an agent needs before running it: `add` installs packages.
+    expect(add?.contents).toContain('effects: read, write, network, exec')
+  })
+
   it('carries the registry metadata a generic markdown build cannot know', () => {
     const button = payload.manifest.chunks.find((chunk) => chunk.id === 'button')
     // `destructive` is a Button variant in the manifest; it appears in no heading.
@@ -117,6 +131,10 @@ const QUERIES: [string, RegExp][] = [
   ['how do I use cascivo with Astro', /^guide-using-with-astro/],
   ['how do I use cascivo with Tailwind', /^guide-using-with-tailwind/],
   ['how do I test a cascivo component', /^guide-testing/],
+  ['how do I add the cascivo MCP server to cursor', /^cli-cascivo-mcp-init/],
+  ['cascivo add button --dry-run', /^cli-cascivo-add/],
+  ['how do I lint rendered email html', /^cli-cascivo-email-lint/],
+  ['how do I check which installed components are outdated', /^cli-cascivo-update/],
 ]
 
 describe('retrieval', () => {
@@ -127,9 +145,11 @@ describe('retrieval', () => {
       const ids = result.hits.map((hit) => hit.chunkId.split('/').pop() ?? '')
       if (!ids.some((id) => expected.test(id))) misses.push(`${question} → ${ids.join(', ')}`)
     }
-    // Measured at 20/20; the floor leaves room for documentation edits to move the ranking.
+    // Measured at 23/24 on docspack 1.3.1; the floor leaves room for documentation edits to move
+    // the ranking. The miss is "how do I install cascivo": 1.x ORs the two words, so short chunks
+    // that say "install" and "cascivo" (chart references, CLI commands) outrank the overview.
     expect(QUERIES.length - misses.length, `misses:\n${misses.join('\n')}`).toBeGreaterThanOrEqual(
-      17,
+      21,
     )
   }, 60_000)
 })

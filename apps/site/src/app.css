@@ -737,3 +737,52 @@ body {
 .doc-primitive-index li {
   margin-block-end: 2px;
 }
+
+/* ── /docs/guides/<slug> ──────────────────────────────────────────────────────
+   Rendered by Sheaf (guides.ts); @docspack/sheaf-react/styles.css styles the
+   article, contents and pager. This is only the frame: the article and its
+   contents side by side once both fit next to the docs rail (xl), stacked in
+   reading order below that. */
+.guide-layout {
+  display: grid;
+  gap: var(--cascivo-space-8);
+  max-inline-size: min(100%, 72rem);
+  margin-inline: auto;
+}
+
+.guide-main {
+  min-inline-size: 0;
+}
+
+.guide-source {
+  margin-block-start: var(--cascivo-space-6);
+  font-size: var(--cascivo-text-sm);
+}
+
+.guide-index {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--cascivo-space-4);
+}
+
+.guide-index p {
+  margin-block: var(--cascivo-space-1) 0;
+}
+
+@media (min-width: 80rem) {
+  .guide-layout {
+    grid-template-columns: minmax(0, 1fr) 13rem;
+  }
+
+  .guide-toc {
+    position: sticky;
+    inset-block-start: var(--cascivo-space-6);
+    align-self: start;
+  }
+}
+
+/* The CLI reference is wider than prose: tables of options and a command builder. */
+.cli-page {
+  max-width: min(100%, 960px);
+}

@@ -22,12 +22,16 @@
  * `<!-- docspack: from … -->` provenance line and manifest serialization all come from the
  * `docspack` package itself, so this file cannot drift from the format it targets.
  */
-import { readFileSync, readdirSync, statSync } from 'node:fs'
+import { mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
 import { basename, join, relative } from 'node:path'
-import { CHUNKS_DIR, type ChunkSpec, estimateTokens } from 'docspack'
+import { buildPackage, CHUNKS_DIR, type ChunkSpec, estimateTokens } from 'docspack'
 
 /** Canonical web home of every chunk, recorded as its provenance. */
 const SITE = 'https://cascivo.com'
+
+/** Where the CLI's command-line description lives; it has no page of its own on the site. */
+const CMDSPEC_URL = 'https://github.com/cascivo/cascivo/blob/main/packages/cli/cmdspec.json'
 
 /**
  * Target size for one chunk.
@@ -72,6 +76,9 @@ const CONTEXT_SECTIONS = new Set([
 const EXCLUDED_GUIDES = new Set(['components'])
 const INDEX_SECTION = /^Component (index|intent summaries)\b/
 
+/** Every chunk this builder writes carries a measured size; docspack's own type leaves it optional. */
+export type SizedChunk = ChunkSpec & { readonly tokens: number }
+
 export interface PayloadFile {
   /** Path relative to `.llms/`. */
   readonly path: string
@@ -79,7 +86,7 @@ export interface PayloadFile {
 }
 
 export interface Payload {
-  readonly manifest: { name: string; version: string; chunks: ChunkSpec[] }
+  readonly manifest: { name: string; version: string; chunks: SizedChunk[] }
   readonly files: PayloadFile[]
   /** The package-root `llms.txt` table of contents. */
   readonly llmsTxt: string
@@ -605,7 +612,7 @@ function chunkDoc(
   taken: Set<string>,
   maxTokens: number,
 ): {
-  chunks: ChunkSpec[]
+  chunks: SizedChunk[]
   files: PayloadFile[]
 } {
   const { intro, sections } = splitAtLevel(doc.body, 2)
@@ -621,7 +628,7 @@ function chunkDoc(
     overhead,
   )
 
-  const chunks: ChunkSpec[] = []
+  const chunks: SizedChunk[] = []
   const files: PayloadFile[] = []
 
   for (const [index, group] of groups.entries()) {
@@ -659,7 +666,64 @@ export interface BuildPayloadOptions {
   readonly maxChunkTokens?: number
 }
 
-export function buildPayload(options: BuildPayloadOptions): Payload {
+/**
+ * One chunk per CLI command, from `packages/cli/cmdspec.json`. Unlike the docs above, this one
+ * uses docspack's own cmdspec builder unchanged: a command's chunk is a help page with its
+ * effects and exit statuses spelled out, and that shape is the format's, not ours to improve on.
+ *
+ * The source carries a placeholder version (the CLI's build stamps the real one into
+ * `dist/cmdspec.json`), so it is stamped here the same way rather than read from a build output
+ * this package would then depend on.
+ */
+async function cliChunks(
+  root: string,
+  taken: Set<string>,
+): Promise<{ chunks: SizedChunk[]; files: PayloadFile[] }> {
+  const cliDir = join(root, 'packages', 'cli')
+  const { version } = JSON.parse(readFileSync(join(cliDir, 'package.json'), 'utf8')) as {
+    version: string
+  }
+  const spec = JSON.parse(readFileSync(join(cliDir, 'cmdspec.json'), 'utf8')) as {
+    info: { version: string }
+  }
+  spec.info.version = version
+
+  const work = mkdtempSync(join(tmpdir(), 'cascivo-docspack-cli-'))
+  try {
+    const source = join(work, 'cmdspec.json')
+    writeFileSync(source, JSON.stringify(spec))
+    const out = join(work, 'out')
+    await buildPackage({ out, cmdspec: source, name: 'cascivo-cli', version })
+
+    const manifest = JSON.parse(readFileSync(join(out, '.llms', 'manifest.json'), 'utf8')) as {
+      chunks: ChunkSpec[]
+    }
+    const chunks: SizedChunk[] = []
+    const files: PayloadFile[] = []
+    for (const chunk of manifest.chunks) {
+      const id = uniqueId(chunk.id, taken)
+      const file = `${CHUNKS_DIR}/${id}.md`
+      // The builder cites the temp file it read; cite the file a person can open instead.
+      const contents = readFileSync(join(out, '.llms', chunk.file), 'utf8').replace(
+        /<!-- docspack: from [^>]*-->/,
+        `<!-- docspack: from ${CMDSPEC_URL} -->`,
+      )
+      files.push({ path: file, contents })
+      chunks.push({
+        ...chunk,
+        id,
+        file,
+        tokens: estimateTokens(contents),
+        documents: [{ name: 'cascivo', version }],
+      })
+    }
+    return { chunks, files }
+  } finally {
+    rmSync(work, { recursive: true, force: true })
+  }
+}
+
+export async function buildPayload(options: BuildPayloadOptions): Promise<Payload> {
   const publicDir = join(options.root, 'apps', 'site', 'public')
   const registry = JSON.parse(readFileSync(join(options.root, 'registry.json'), 'utf8')) as Registry
   const maxTokens = options.maxChunkTokens ?? MAX_CHUNK_TOKENS
@@ -671,13 +735,16 @@ export function buildPayload(options: BuildPayloadOptions): Payload {
   ]
 
   const taken = new Set<string>()
-  const chunks: ChunkSpec[] = []
+  const chunks: SizedChunk[] = []
   const files: PayloadFile[] = []
   for (const doc of docs) {
     const built = chunkDoc(doc, taken, maxTokens)
     chunks.push(...built.chunks)
     files.push(...built.files)
   }
+  const cli = await cliChunks(options.root, taken)
+  chunks.push(...cli.chunks)
+  files.push(...cli.files)
 
   return {
     manifest: { name: options.name, version: options.version, chunks },
@@ -690,7 +757,7 @@ function renderLlmsTxt(
   name: string,
   version: string,
   registryVersion: string,
-  chunks: readonly ChunkSpec[],
+  chunks: readonly SizedChunk[],
 ): string {
   const tokens = chunks.reduce((total, chunk) => total + chunk.tokens, 0)
   return `${[

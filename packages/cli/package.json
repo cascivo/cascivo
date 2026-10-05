@@ -43,7 +43,7 @@
     "provenance": true
   },
   "scripts": {
-    "build": "vp pack --minify && node -e \"const fs=require('fs');fs.mkdirSync('dist/generated',{recursive:true});fs.copyFileSync('src/generated/audit-contract.json','dist/generated/audit-contract.json')\" && node -e \"const fs=require('fs');const f='dist/index.mjs';const c=fs.readFileSync(f,'utf8');if(!c.startsWith('#!/'))fs.writeFileSync(f,'#!/usr/bin/env node\\n'+c);fs.chmodSync(f,0o755)\"",
+    "build": "vp pack --minify && node scripts/write-cmdspec.mjs && node -e \"const fs=require('fs');fs.mkdirSync('dist/generated',{recursive:true});fs.copyFileSync('src/generated/audit-contract.json','dist/generated/audit-contract.json')\" && node -e \"const fs=require('fs');const f='dist/index.mjs';const c=fs.readFileSync(f,'utf8');if(!c.startsWith('#!/'))fs.writeFileSync(f,'#!/usr/bin/env node\\n'+c);fs.chmodSync(f,0o755)\"",
     "check": "tsc --noEmit",
     "test": "vp test",
     "dev": "vp pack --watch"
@@ -55,6 +55,7 @@
     "@cascivo/app": "workspace:*",
     "@cascivo/email": "workspace:*",
     "@cascivo/theme-kit": "workspace:*",
+    "@docspack/cmdspec": "catalog:",
     "@types/node": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:"
@@ -66,5 +67,6 @@
     "@cascivo/email": {
       "optional": true
     }
-  }
+  },
+  "cmdspec": "./dist/cmdspec.json"
 }

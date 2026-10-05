@@ -4,6 +4,7 @@
  *   - marketing routes   from apps/site/src/marketing/route-head.ts (PRERENDER_ROUTES)
  *   - docs static routes  (under /docs), kept in sync with apps/site/src/seo.ts
  *   - docs component pages from registry.json (under /docs/components/<name>)
+ *   - docs guide pages from scripts/docs-md/guides.ts (under /docs/guides/<slug>)
  *
  * Both surfaces now live in one app at one domain, so there is one sitemap.
  * Output is deterministic (no wall-clock, no git history) so the drift check
@@ -26,6 +27,7 @@ import {
   SITE_URL,
 } from '../../apps/site/src/marketing/route-head.ts'
 import { THEME_ORDER } from '../../apps/site/src/theme-head.ts'
+import { GUIDES } from '../docs-md/guides.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..', '..')
@@ -43,6 +45,8 @@ const DOCS_STATIC_ROUTES: { path: string; priority: string }[] = [
   { path: '/docs/faq', priority: '0.7' },
   { path: '/docs/platform', priority: '0.7' },
   { path: '/docs/upgrading', priority: '0.7' },
+  { path: '/docs/guides', priority: '0.8' },
+  { path: '/docs/cli', priority: '0.7' },
   { path: '/docs/ai', priority: '0.8' },
   { path: '/docs/directory', priority: '0.8' },
   { path: '/docs/context', priority: '0.8' },
@@ -111,6 +115,10 @@ const entries = [
     .filter((c) => (c.type ?? 'component') === 'component')
     .map((c) => urlEntry(`${SITE_URL}/accessibility/${c.name}`, '0.6')),
   ...THEME_ORDER.map((theme) => urlEntry(`${SITE_URL}/docs/themes/${theme}`, '0.6')),
+  // A guide with its own `route` is already listed under that static docs route.
+  ...GUIDES.filter((g) => !g.route).map((g) =>
+    urlEntry(`${SITE_URL}/docs/guides/${g.slug}`, '0.6'),
+  ),
   // /blog isn't in PRERENDER_ROUTES (see vite.config.ts — it gets a real
   // post-list body instead of the generic thin one), so it's not covered by
   // marketingRoutes above; add it and every post explicitly. lastmod comes

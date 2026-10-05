@@ -227,13 +227,19 @@ should be tokens, invented props, missing required props, raw strings where
 i18n is expected.
 
 Options:
-  --fix           Rewrite unambiguous CSS literals to their token equivalents
-  --json          Machine-readable output
-  --level <name>  Minimum finding level to report (error | warn; default error)`,
-  registry: `Usage: cascivo registry build [dir]
+  --fix              Rewrite unambiguous CSS literals to their token equivalents
+  --json             Machine-readable output
+  --level <name>     Minimum finding level to report (error | warn; default error)
+  --contract <path>  Use this audit-contract.json instead of the bundled one
+  --verbose          Report which contract source was used`,
+  registry: `Usage: cascivo registry build [options]
 
 Build a static registry (registry.json + file payloads) from a
-cascivo-registry.json manifest, ready to host on any static file server.`,
+cascivo-registry.json manifest, ready to host on any static file server.
+
+Options:
+  --in <file>  The registry manifest (default cascade-registry.json)
+  --out <dir>  Output directory (default public/r)`,
   template: `Usage: cascivo template init <name> [options]
 
 Scaffold a new template: source, manifest, and registry entry.
