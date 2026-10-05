@@ -132,14 +132,14 @@ const FACTS: Fact[] = [
 ]
 
 /**
- * The `src` filenames in `scripts/docs-md/generate.ts`'s `GUIDES` array — the curated set
+ * The `src` filenames in `scripts/docs-md/guides.ts`'s `GUIDES` array — the curated set
  * published to `apps/site/public/docs/<slug>.md`, which is also what `@cascivo/docs` bundles
  * and therefore the ONLY way a `docs/*.md` guide reaches an adopter.
  */
 function publishedGuideSources(): Set<string> {
-  const source = readFileSync(join(ROOT, 'scripts/docs-md/generate.ts'), 'utf8')
+  const source = readFileSync(join(ROOT, 'scripts/docs-md/guides.ts'), 'utf8')
   const block = /const GUIDES:[^=]*=\s*\[([\s\S]*?)\n\]/.exec(source)
-  assert.ok(block, 'could not find the GUIDES array in scripts/docs-md/generate.ts')
+  assert.ok(block, 'could not find the GUIDES array in scripts/docs-md/guides.ts')
   return new Set([...block[1]!.matchAll(/src:\s*'([^']+)'/g)].map((m) => m[1]!))
 }
 
@@ -165,7 +165,7 @@ describe('doc-surface — every fact reaches every surface an adopter reads', ()
       unreachable,
       [],
       'These are registered as adopter-facing surfaces but are NOT in the GUIDES array in ' +
-        'scripts/docs-md/generate.ts, so no adopter can read them — not at ' +
+        'scripts/docs-md/guides.ts, so no adopter can read them — not at ' +
         'cascivo.com/docs/<slug>.md, not via `npx @cascivo/docs`.\n' +
         'Add them to GUIDES and run `pnpm regen`, or drop the surface from the FACTS row.\n  ' +
         unreachable.join('\n  '),

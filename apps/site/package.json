@@ -40,10 +40,14 @@
     "@cascivo/theme-kit": "workspace:*",
     "@cascivo/themes": "workspace:*",
     "@cascivo/tokens": "workspace:*",
+    "@docspack/cmdspec": "catalog:",
+    "@docspack/sheaf-react": "catalog:",
     "preact": "catalog:"
   },
   "devDependencies": {
     "@axe-core/playwright": "catalog:",
+    "@docspack/sheaf": "catalog:",
+    "@docspack/sheaf-html": "catalog:",
     "@playwright/test": "catalog:",
     "@types/node": "catalog:",
     "shiki": "catalog:",
