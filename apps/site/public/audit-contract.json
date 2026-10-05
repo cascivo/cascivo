@@ -777,6 +777,17 @@
       ]
     },
     {
+      "name": "ChainOfThought",
+      "props": [
+        { "name": "items", "type": "ChainOfThoughtItem[]", "required": true },
+        {
+          "name": "labels",
+          "type": "{ pending?: string; active?: string; complete?: string; error?: string }",
+          "required": false
+        }
+      ]
+    },
+    {
       "name": "ChatBubble",
       "props": [
         { "name": "children", "type": "React.ReactNode", "required": true },
@@ -2291,6 +2302,26 @@
       ]
     },
     {
+      "name": "ToolCall",
+      "props": [
+        { "name": "name", "type": "string", "required": true },
+        {
+          "name": "status",
+          "type": "'pending' | 'running' | 'awaiting-approval' | 'complete' | 'error' | 'denied'",
+          "required": true
+        },
+        { "name": "input", "type": "ReactNode", "required": false },
+        { "name": "output", "type": "ReactNode", "required": false },
+        { "name": "error", "type": "ReactNode", "required": false },
+        { "name": "actions", "type": "ReactNode", "required": false },
+        {
+          "name": "labels",
+          "type": "{ pending?: string; running?: string; awaitingApproval?: string; complete?: string; error?: string; denied?: string; input?: string; output?: string; errorHeading?: string }",
+          "required": false
+        }
+      ]
+    },
+    {
       "name": "Tooltip",
       "props": [
         { "name": "content", "type": "ReactNode", "required": true },
@@ -3747,6 +3778,7 @@
     "Breadcrumb",
     "Button",
     "ButtonGroup",
+    "ChainOfThought",
     "CheckboxCard",
     "CommandMenu",
     "CopyButton",
@@ -3781,6 +3813,7 @@
     "Toast",
     "Toc",
     "ToggleGroup",
+    "ToolCall",
     "Tooltip",
     "TypingIndicator",
     "VisuallyHidden"

@@ -1089,6 +1089,38 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chain-of-thought",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "chain-of-thought/chain-of-thought.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "chain-of-thought/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "chain-of-thought/chain-of-thought.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "The steps an AI agent takes — searching, reading, calling tools — each with its status, and optional collapsible detail",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "registryDependencies": [
+        "https://cascivo.com/r/shadcn/shimmer-text.json",
+        "https://cascivo.com/r/shadcn/visually-hidden.json"
+      ],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "chart-area-chart",
       "type": "registry:component",
       "files": [],
@@ -5365,6 +5397,35 @@
       "description": "A click-triggered info popover for supplementary, selectable content",
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "tool-call",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "tool-call/tool-call.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "tool-call/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "tool-call/tool-call.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Card for one AI tool invocation — the tool name, its lifecycle status, collapsible input/output, and approval actions",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "registryDependencies": ["https://cascivo.com/r/shadcn/badge.json"],
+      "categories": ["display"],
       "meta": {
         "cascivo": {
           "type": "component",

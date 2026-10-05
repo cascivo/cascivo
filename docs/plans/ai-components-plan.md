@@ -1,6 +1,6 @@
 # AI components — research, inventory and plan
 
-**Status: Phase 1 in progress (2026-10-05).** Phases 2–4 are proposals and need sign-off.
+**Status: Phases 1 and 2 shipped (2026-10-05).** Phases 3–4 are proposals and need sign-off.
 
 **Motivation:** most design systems now ship a recognisable "AI vocabulary": a provenance label,
 a tinted AI skeleton, a shimmering "Thinking…" label, a reasoning disclosure and a step/tool
@@ -232,16 +232,33 @@ demo, visual baselines, i18n keys (en + de) under `builtin.ai*`, and a changeset
 
 ## 6. Later phases (proposed, not started)
 
-### Phase 2: agentic progress
+### Phase 2: agentic progress (shipped)
 
-- **`ThoughtChain` / `AiSteps`**: a vertical list of steps, each `pending | active | complete
-  | error | stopped`, with title, optional detail, and a disclosure per step. Decide at design
-  time whether it extends `Steps`/`Timeline` or is separate. Lean toward reusing `Timeline`
-  markup with an AI step status.
-- **`ToolCall`**: a card for one tool invocation (name, input, output, error) with the AI SDK
-  lifecycle: `pending → running → awaiting-approval → complete | error | denied`. Approval
-  actions go in `actions`.
-- **Stop / regenerate actions**, if `AiStatus.onStop` proves too narrow.
+- **`ChainOfThought`** (display, `clientJs: 'none'`): an ordered list of agent steps.
+  - It is a separate component rather than a `Timeline` variant. Timeline is a dated activity
+    feed. The chain needs a shimmering active title, a status spoken after each title, an
+    optional per-step `<details>` disclosure, and `aria-busy` on the list while a step is
+    active.
+  - It does reuse the catalogue's `Progress` vocabulary (`pending | active | complete | error`,
+    plus `current` / `upcoming`) and `normalizeProgress`, so one enum drives Timeline, Steps
+    and the chain.
+  - It has no `stopped` status. Adding one would fork that shared vocabulary. After a Stop, a
+    step that never ran stays `pending`, and the overall outcome is reported by
+    `AiStatus status="stopped"`.
+  - Named after Vercel's and Carbon's term. `ThoughtChain` (Ant X), `AgentSteps` and
+    `ReasoningSteps` are aliases.
+- **`ToolCall`** (display, `clientJs: 'none'`): a card for one invocation.
+  - It shows the tool name in monospace and a `Badge` status, toned by lifecycle. The six
+    statuses map onto the AI SDK tool-part states: `pending`, `running`, `awaiting-approval`,
+    `complete`, `error` and `denied`.
+  - Input, output and error sit in a native `<details>` that opens itself on `error`. A string
+    payload renders preformatted; a node renders as given.
+  - `actions` (for example Approve / Deny) renders *outside* the disclosure, so a pending
+    approval is always visible.
+  - It is not a live region, by the §3 contract. Progress is announced with `AiStatus`.
+- **Stop / regenerate**: no new component. `AiStatus.onStop` covers Stop, and "Regenerate" is
+  an ordinary `Button` next to the message. A message-actions component (copy, regenerate,
+  feedback) stays in Phase 4.
 
 ### Phase 3: AI presence and provenance
 

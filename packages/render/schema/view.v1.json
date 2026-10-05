@@ -120,6 +120,7 @@
             "Card",
             "Carousel",
             "Center",
+            "ChainOfThought",
             "ChatBubble",
             "Checkbox",
             "CheckboxCard",
@@ -285,6 +286,7 @@
             "Toggle",
             "ToggleGroup",
             "Toggletip",
+            "ToolCall",
             "Tooltip",
             "TreeView",
             "Treemap",
@@ -981,6 +983,25 @@
                     "type": "number"
                   }
                 }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "ChainOfThought"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {},
+                "required": ["items"]
               }
             }
           }
@@ -5143,6 +5164,56 @@
                   }
                 },
                 "required": ["trigger", "children"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "ToolCall"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "pending",
+                      "running",
+                      "awaiting-approval",
+                      "complete",
+                      "error",
+                      "denied"
+                    ]
+                  },
+                  "input": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "output": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "error": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "actions": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  }
+                },
+                "required": ["name", "status"]
               }
             }
           }

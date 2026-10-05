@@ -112,6 +112,13 @@
     "ReasoningPanel": "Reasoning",
     "TypingDots": "TypingIndicator",
     "MessageLoading": "TypingIndicator",
-    "LoadingDots": "TypingIndicator"
+    "LoadingDots": "TypingIndicator",
+    "ThoughtChain": "ChainOfThought",
+    "AgentSteps": "ChainOfThought",
+    "ReasoningSteps": "ChainOfThought",
+    "Tool": "ToolCall",
+    "ToolInvocation": "ToolCall",
+    "FunctionCall": "ToolCall",
+    "ToolUse": "ToolCall"
   }
 }

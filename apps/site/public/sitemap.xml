@@ -361,6 +361,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/components/chain-of-thought</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/components/chart/area-chart</loc>
     <priority>0.6</priority>
   </url>
@@ -1029,6 +1033,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/components/tool-call</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/components/tooltip</loc>
     <priority>0.6</priority>
   </url>
@@ -1134,6 +1142,10 @@
   </url>
   <url>
     <loc>https://cascivo.com/accessibility/carousel</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/accessibility/chain-of-thought</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -1574,6 +1586,10 @@
   </url>
   <url>
     <loc>https://cascivo.com/accessibility/toggletip</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/accessibility/tool-call</loc>
     <priority>0.6</priority>
   </url>
   <url>

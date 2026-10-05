@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 2,
+  "name": "chain-of-thought",
+  "type": "component",
+  "description": "The steps an AI agent takes — searching, reading, calling tools — each with its status, and optional collapsible detail",
+  "version": "1.6.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/chain-of-thought/chain-of-thought.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/chain-of-thought/index.ts"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/chain-of-thought/chain-of-thought.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["ai", "agent", "steps", "chain-of-thought", "reasoning", "progress", "tools"],
+  "category": "display",
+  "registryDependencies": ["shimmer-text", "visually-hidden"],
+  "meta": {
+    "name": "ChainOfThought",
+    "description": "The steps an AI agent takes — searching, reading, calling tools — each with its status, and optional collapsible detail",
+    "category": "display",
+    "clientJs": "none",
+    "states": ["pending", "active", "complete", "error"],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "items",
+        "description": "The steps, in order. Each has `id`, `title`, optional `description`, `status` (`pending | active | complete | error`, plus the `current` / `upcoming` aliases), optional `detail` (collapsible content that turns the title into a toggle) and optional `icon`.",
+        "type": "ChainOfThoughtItem[]",
+        "required": true
+      },
+      {
+        "name": "labels",
+        "description": "Overrides for the component’s user-visible strings (i18n) — the status text a screen reader hears after each step title.",
+        "type": "{ pending?: string; active?: string; complete?: string; error?: string }",
+        "required": false
+      }
+    ],
+    "typeDefs": [
+      {
+        "name": "ChainOfThoughtItem",
+        "description": "One step in the chain.",
+        "fields": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true,
+            "description": "Stable key for the step."
+          },
+          {
+            "name": "title",
+            "type": "ReactNode",
+            "required": true,
+            "description": "What the step does."
+          },
+          {
+            "name": "description",
+            "type": "ReactNode",
+            "required": false,
+            "description": "A secondary line under the title."
+          },
+          {
+            "name": "status",
+            "type": "ProgressInput",
+            "required": false,
+            "description": "`pending | active | complete | error` (plus `current` / `upcoming`). Defaults to `pending`."
+          },
+          {
+            "name": "detail",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Collapsible content; makes the title a disclosure toggle."
+          },
+          {
+            "name": "icon",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Replaces the status glyph in the marker."
+          }
+        ]
+      }
+    ],
+    "tokens": [
+      "--cascivo-color-ai",
+      "--cascivo-color-text",
+      "--cascivo-color-text-muted",
+      "--cascivo-color-border",
+      "--cascivo-color-success",
+      "--cascivo-color-destructive",
+      "--cascivo-focus-ring",
+      "--cascivo-duration-loop-slow"
+    ],
+    "accessibility": {
+      "role": "list",
+      "wcag": "2.2-AA",
+      "keyboard": ["Tab", "Enter", "Space"],
+      "reducedMotion": true,
+      "forcedColors": true
+    },
+    "examples": [
+      {
+        "title": "Agent steps",
+        "code": "<ChainOfThought\n  items={[\n    { id: 'search', title: 'Searched the docs for \"refund policy\"', status: 'complete' },\n    { id: 'read', title: 'Reading 3 pages', status: 'active' },\n    { id: 'answer', title: 'Write the answer', status: 'pending' },\n  ]}\n/>"
+      },
+      {
+        "title": "With collapsible detail",
+        "code": "<ChainOfThought\n  items={[\n    {\n      id: 'search',\n      title: 'Searched the web',\n      status: 'complete',\n      detail: 'cascivo.com/docs · github.com/cascivo/cascivo · npmjs.com/package/@cascivo/react',\n    },\n    { id: 'fail', title: 'Fetch pricing page', description: 'The page returned 404.', status: 'error' },\n  ]}\n/>"
+      }
+    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "registryDependencies": ["shimmer-text", "visually-hidden"],
+    "tags": ["ai", "agent", "steps", "chain-of-thought", "reasoning", "progress", "tools"],
+    "intent": {
+      "whenToUse": [
+        "Showing the discrete steps an AI agent is taking or took — searches, file reads, tool calls",
+        "Letting a reader expand a step to see what it found, without cluttering the answer"
+      ],
+      "whenNotToUse": [
+        "A free-form reasoning trace — use Reasoning",
+        "A user-facing multi-step form or checkout — use Steps",
+        "A dated activity feed — use Timeline",
+        "One tool invocation with its input and output — use ToolCall"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Marking several steps active at once to look busy",
+          "good": "One active step at a time; finished steps become complete or error",
+          "why": "The active step is announced as the current step (aria-current=\"step\"); more than one makes the position meaningless"
+        }
+      ],
+      "related": [
+        {
+          "name": "Reasoning",
+          "relationship": "alternative",
+          "reason": "Reasoning holds unstructured thinking text; ChainOfThought holds discrete steps"
+        },
+        {
+          "name": "Timeline",
+          "relationship": "alternative",
+          "reason": "Same status vocabulary, for dated events rather than agent steps"
+        },
+        {
+          "name": "ToolCall",
+          "relationship": "pairs-with",
+          "reason": "A step’s detail can contain the ToolCall for that step"
+        },
+        {
+          "name": "AiStatus",
+          "relationship": "pairs-with",
+          "reason": "AiStatus announces the overall phase; the chain itself is never a live region"
+        }
+      ],
+      "a11yRationale": "An ordered list whose active step carries aria-current=\"step\" and whose list is aria-busy while any step is active. Each step speaks its state as visually hidden text after the title, because the marker glyph is decorative. Steps with detail are native <details>/<summary> disclosures (Enter/Space), so they work before hydration. Only the active marker pulses, under prefers-reduced-motion: no-preference; the chain is never a live region — pair it with AiStatus to announce progress",
+      "content": {
+        "tone": "Past tense for finished steps (\"Searched the docs\"), present progressive for the active one (\"Reading 3 pages\")"
+      },
+      "flexibility": [
+        {
+          "area": "step content",
+          "level": "flexible",
+          "note": "Titles, descriptions, detail and icons are any ReactNode"
+        },
+        {
+          "area": "status vocabulary",
+          "level": "strict",
+          "note": "Use the shared Progress values; do not invent per-chain statuses"
+        }
+      ]
+    }
+  }
+}

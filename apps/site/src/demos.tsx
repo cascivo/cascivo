@@ -99,6 +99,8 @@ import { Field } from '@cascivo/components/field'
 import { InlineLoading } from '@cascivo/components/inline-loading'
 import { AiBadge } from '@cascivo/components/ai-badge'
 import { AiStatus } from '@cascivo/components/ai-status'
+import { ChainOfThought } from '@cascivo/components/chain-of-thought'
+import { ToolCall } from '@cascivo/components/tool-call'
 import { Reasoning } from '@cascivo/components/reasoning'
 import { ShimmerText } from '@cascivo/components/shimmer-text'
 import { TypingIndicator } from '@cascivo/components/typing-indicator'
@@ -1707,6 +1709,39 @@ export const demos: Record<string, () => JSX.Element> = {
       <Reasoning duration={12}>
         I compared the totals for each region against the previous quarter.
       </Reasoning>
+    </Col>
+  ),
+  'chain-of-thought': () => (
+    <ChainOfThought
+      items={[
+        {
+          id: 'search',
+          title: 'Searched the docs for “refund policy”',
+          status: 'complete',
+          detail: 'docs/billing.md · docs/terms.md · docs/faq.md',
+        },
+        { id: 'read', title: 'Reading 3 pages', status: 'active' },
+        { id: 'answer', title: 'Write the answer', status: 'pending' },
+      ]}
+    />
+  ),
+  'tool-call': () => (
+    <Col>
+      <ToolCall name="search_web" status="running" input={'{ "query": "cascivo pricing" }'} />
+      <ToolCall
+        name="send_email"
+        status="awaiting-approval"
+        input={'{ "to": "team@example.com", "subject": "Weekly report" }'}
+        actions={
+          <>
+            <Button variant="ghost" size="sm">
+              Deny
+            </Button>
+            <Button size="sm">Approve</Button>
+          </>
+        }
+      />
+      <ToolCall name="fetch_page" status="error" error="The page returned 404." />
     </Col>
   ),
   'ai-badge': () => (

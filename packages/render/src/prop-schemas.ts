@@ -1195,6 +1195,16 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
   ],
+  ChainOfThought: [
+    {
+      name: 'items',
+      required: true,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+  ],
   ChatBubble: [
     {
       name: 'children',
@@ -7278,6 +7288,38 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'onOpenChange',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+  ],
+  ToolCall: [
+    {
+      name: 'name',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'status',
+      required: true,
+      enum: ['pending', 'running', 'awaiting-approval', 'complete', 'error', 'denied'],
+    },
+    {
+      name: 'input',
+      required: false,
+    },
+    {
+      name: 'output',
+      required: false,
+    },
+    {
+      name: 'error',
+      required: false,
+    },
+    {
+      name: 'actions',
       required: false,
     },
     {

@@ -300,6 +300,18 @@
         "note": "Any ReactNode may be a slide; pass via children or the slides array"
       }
     ],
+    "ChainOfThought": [
+      {
+        "area": "step content",
+        "level": "flexible",
+        "note": "Titles, descriptions, detail and icons are any ReactNode"
+      },
+      {
+        "area": "status vocabulary",
+        "level": "strict",
+        "note": "Use the shared Progress values; do not invent per-chain statuses"
+      }
+    ],
     "ChatBubble": [
       {
         "area": "avatar slot",
@@ -1758,6 +1770,18 @@
         "area": "open state ownership",
         "level": "flexible",
         "note": "Use uncontrolled (defaultOpen) or controlled (open + onOpenChange) as needed"
+      }
+    ],
+    "ToolCall": [
+      {
+        "area": "payloads",
+        "level": "flexible",
+        "note": "Strings render preformatted; pass a node (a table, a CodeSnippet) for richer output"
+      },
+      {
+        "area": "status vocabulary",
+        "level": "strict",
+        "note": "Map your framework’s tool states onto the six statuses; do not invent more"
       }
     ],
     "Tooltip": [

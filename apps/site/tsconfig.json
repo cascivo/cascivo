@@ -47,6 +47,8 @@
       "@cascivo/components/reasoning": ["./src/shims/reasoning.d.ts"],
       "@cascivo/components/shimmer-text": ["./src/shims/shimmer-text.d.ts"],
       "@cascivo/components/typing-indicator": ["./src/shims/typing-indicator.d.ts"],
+      "@cascivo/components/chain-of-thought": ["./src/shims/chain-of-thought.d.ts"],
+      "@cascivo/components/tool-call": ["./src/shims/tool-call.d.ts"],
       "@cascivo/components/kbd": ["./src/shims/kbd.d.ts"],
       "@cascivo/components/header": ["./src/shims/header.d.ts"],
       "@cascivo/components/search": ["./src/shims/search.d.ts"],

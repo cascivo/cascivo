@@ -420,6 +420,18 @@
           "note": "Any ReactNode may be a slide; pass via children or the slides array"
         }
       ],
+      "ChainOfThought": [
+        {
+          "area": "step content",
+          "level": "flexible",
+          "note": "Titles, descriptions, detail and icons are any ReactNode"
+        },
+        {
+          "area": "status vocabulary",
+          "level": "strict",
+          "note": "Use the shared Progress values; do not invent per-chain statuses"
+        }
+      ],
       "ChatBubble": [
         {
           "area": "avatar slot",
@@ -1878,6 +1890,18 @@
           "area": "open state ownership",
           "level": "flexible",
           "note": "Use uncontrolled (defaultOpen) or controlled (open + onOpenChange) as needed"
+        }
+      ],
+      "ToolCall": [
+        {
+          "area": "payloads",
+          "level": "flexible",
+          "note": "Strings render preformatted; pass a node (a table, a CodeSnippet) for richer output"
+        },
+        {
+          "area": "status vocabulary",
+          "level": "strict",
+          "note": "Map your framework’s tool states onto the six statuses; do not invent more"
         }
       ],
       "Tooltip": [
@@ -4596,6 +4620,90 @@
       ],
       "contextUrl": "/context/carousel.md",
       "aiPrompt": "I am modifying the cascivo Carousel component (display). Scroll-snap slide deck with previous/next controls and dot indicators\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nCarousel is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-radius-md, --cascivo-radius-full, --cascivo-focus-ring\n\nAccessibility: role \"group\", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/Home/End. Keep it AA.\n\nDo not change (strict): transition — Paging uses native CSS scroll-snap, not transform math — no custom easing config\nFlexible: slide content.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
+      "name": "ChainOfThought",
+      "category": "display",
+      "description": "The steps an AI agent takes — searching, reading, calling tools — each with its status, and optional collapsible detail",
+      "intent": {
+        "whenToUse": [
+          "Showing the discrete steps an AI agent is taking or took — searches, file reads, tool calls",
+          "Letting a reader expand a step to see what it found, without cluttering the answer"
+        ],
+        "whenNotToUse": [
+          "A free-form reasoning trace — use Reasoning",
+          "A user-facing multi-step form or checkout — use Steps",
+          "A dated activity feed — use Timeline",
+          "One tool invocation with its input and output — use ToolCall"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Marking several steps active at once to look busy",
+            "good": "One active step at a time; finished steps become complete or error",
+            "why": "The active step is announced as the current step (aria-current=\"step\"); more than one makes the position meaningless"
+          }
+        ],
+        "related": [
+          {
+            "name": "Reasoning",
+            "relationship": "alternative",
+            "reason": "Reasoning holds unstructured thinking text; ChainOfThought holds discrete steps"
+          },
+          {
+            "name": "Timeline",
+            "relationship": "alternative",
+            "reason": "Same status vocabulary, for dated events rather than agent steps"
+          },
+          {
+            "name": "ToolCall",
+            "relationship": "pairs-with",
+            "reason": "A step’s detail can contain the ToolCall for that step"
+          },
+          {
+            "name": "AiStatus",
+            "relationship": "pairs-with",
+            "reason": "AiStatus announces the overall phase; the chain itself is never a live region"
+          }
+        ],
+        "a11yRationale": "An ordered list whose active step carries aria-current=\"step\" and whose list is aria-busy while any step is active. Each step speaks its state as visually hidden text after the title, because the marker glyph is decorative. Steps with detail are native <details>/<summary> disclosures (Enter/Space), so they work before hydration. Only the active marker pulses, under prefers-reduced-motion: no-preference; the chain is never a live region — pair it with AiStatus to announce progress",
+        "content": {
+          "tone": "Past tense for finished steps (\"Searched the docs\"), present progressive for the active one (\"Reading 3 pages\")"
+        },
+        "flexibility": [
+          {
+            "area": "step content",
+            "level": "flexible",
+            "note": "Titles, descriptions, detail and icons are any ReactNode"
+          },
+          {
+            "area": "status vocabulary",
+            "level": "strict",
+            "note": "Use the shared Progress values; do not invent per-chain statuses"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "items",
+          "description": "The steps, in order. Each has `id`, `title`, optional `description`, `status` (`pending | active | complete | error`, plus the `current` / `upcoming` aliases), optional `detail` (collapsible content that turns the title into a toggle) and optional `icon`.",
+          "type": "ChainOfThoughtItem[]",
+          "required": true,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "labels",
+          "description": "Overrides for the component’s user-visible strings (i18n) — the status text a screen reader hears after each step title.",
+          "type": "{ pending?: string; active?: string; complete?: string; error?: string }",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        }
+      ],
+      "contextUrl": "/context/chain-of-thought.md",
+      "aiPrompt": "I am modifying the cascivo ChainOfThought component (display). The steps an AI agent takes — searching, reading, calling tools — each with its status, and optional collapsible detail\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nChainOfThought is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-ai, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-border, --cascivo-color-success, --cascivo-color-destructive, --cascivo-focus-ring, --cascivo-duration-loop-slow\n\nAccessibility: role \"list\", WCAG 2.2-AA, keyboard: Tab/Enter/Space. Keep it AA.\n\nDo not change (strict): status vocabulary — Use the shared Progress values; do not invent per-chain statuses\nFlexible: step content.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "AreaChart",
@@ -25574,6 +25682,130 @@
       ],
       "contextUrl": "/context/toggletip.md",
       "aiPrompt": "I am modifying the cascivo Toggletip component (overlay). A click-triggered info popover for supplementary, selectable content\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nToggletip is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-text, --cascivo-color-bg-subtle, --cascivo-radius-control, --cascivo-radius-overlay, --cascivo-shadow-md, --cascivo-focus-ring, --cascivo-motion-enter, --cascivo-z-tooltip\n\nAccessibility: role \"status\", WCAG 2.2-AA, keyboard: Enter/Space/Escape. Keep it AA.\n\nDo not change (strict): token names — Trigger and bubble styling must resolve to the listed --cascivo-* tokens\nFlexible: content, open state ownership.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
+      "name": "ToolCall",
+      "category": "display",
+      "description": "Card for one AI tool invocation — the tool name, its lifecycle status, collapsible input/output, and approval actions",
+      "intent": {
+        "whenToUse": [
+          "Showing an AI tool or function call in a conversation, with what it was given and what it returned",
+          "Asking the reader to approve or deny a call before it runs (human-in-the-loop)"
+        ],
+        "whenNotToUse": [
+          "A list of agent steps without payloads — use ChainOfThought",
+          "Announcing that the assistant is working — use AiStatus",
+          "Showing arbitrary code — use CodeSnippet"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Putting Approve / Deny inside the collapsible input panel",
+            "good": "Pass them to `actions`, which always renders below the card",
+            "why": "A pending approval must be visible and reachable without first opening a disclosure"
+          }
+        ],
+        "related": [
+          {
+            "name": "ChainOfThought",
+            "relationship": "contained-by",
+            "reason": "A ToolCall can sit in a ChainOfThought step’s detail"
+          },
+          {
+            "name": "Badge",
+            "relationship": "contains",
+            "reason": "The status is a Badge whose tone follows the lifecycle"
+          },
+          {
+            "name": "AiStatus",
+            "relationship": "pairs-with",
+            "reason": "AiStatus announces progress; ToolCall is never a live region"
+          }
+        ],
+        "a11yRationale": "The header is a native <summary>, so the disclosure is keyboard-operable (Enter/Space) and works before hydration; its accessible name is the tool name plus the status text, never colour alone. Approval actions live outside the disclosure so they are always reachable. The card is not a live region — announce progress with AiStatus. Only the tool glyph pulses while running, under prefers-reduced-motion: no-preference",
+        "content": {
+          "tone": "Show the tool’s real name; keep error text specific (\"The page returned 404.\")"
+        },
+        "flexibility": [
+          {
+            "area": "payloads",
+            "level": "flexible",
+            "note": "Strings render preformatted; pass a node (a table, a CodeSnippet) for richer output"
+          },
+          {
+            "area": "status vocabulary",
+            "level": "strict",
+            "note": "Map your framework’s tool states onto the six statuses; do not invent more"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "name",
+          "description": "The tool’s name, shown in monospace (e.g. `search_web`).",
+          "type": "string",
+          "required": true,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "status",
+          "description": "Lifecycle, matching the AI SDK tool-part states: `pending` (input streaming), `running`, `awaiting-approval`, `complete`, `error`, `denied`.",
+          "type": "'pending' | 'running' | 'awaiting-approval' | 'complete' | 'error' | 'denied'",
+          "required": true,
+          "schema": {
+            "kind": "enum",
+            "values": ["pending", "running", "awaiting-approval", "complete", "error", "denied"]
+          }
+        },
+        {
+          "name": "input",
+          "description": "The call’s arguments. A string (e.g. `JSON.stringify(args, null, 2)`) renders preformatted; any other node renders as given.",
+          "type": "ReactNode",
+          "required": false,
+          "schema": {
+            "kind": "node"
+          }
+        },
+        {
+          "name": "output",
+          "description": "The tool’s result — a string renders preformatted, a node as given.",
+          "type": "ReactNode",
+          "required": false,
+          "schema": {
+            "kind": "node"
+          }
+        },
+        {
+          "name": "error",
+          "description": "Why the call failed. The panel opens itself when status is `error`.",
+          "type": "ReactNode",
+          "required": false,
+          "schema": {
+            "kind": "node"
+          }
+        },
+        {
+          "name": "actions",
+          "description": "Rich slot below the card — typically Approve / Deny buttons while `awaiting-approval`. Always visible, never inside the collapsible panel.",
+          "type": "ReactNode",
+          "required": false,
+          "schema": {
+            "kind": "node"
+          }
+        },
+        {
+          "name": "labels",
+          "description": "Overrides for the component’s user-visible strings (i18n).",
+          "type": "{ pending?: string; running?: string; awaitingApproval?: string; complete?: string; error?: string; denied?: string; input?: string; output?: string; errorHeading?: string }",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        }
+      ],
+      "contextUrl": "/context/tool-call.md",
+      "aiPrompt": "I am modifying the cascivo ToolCall component (display). Card for one AI tool invocation — the tool name, its lifecycle status, collapsible input/output, and approval actions\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nToolCall is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-ai, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-color-text-muted, --cascivo-color-warning, --cascivo-color-destructive, --cascivo-radius-surface, --cascivo-font-mono, --cascivo-focus-ring\n\nAccessibility: role \"group\", WCAG 2.2-AA, keyboard: Tab/Enter/Space. Keep it AA.\n\nDo not change (strict): status vocabulary — Map your framework’s tool states onto the six statuses; do not invent more\nFlexible: payloads.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Tooltip",

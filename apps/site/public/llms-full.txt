@@ -75,7 +75,7 @@ Component names differ from peer systems too. `Switch` IS `Toggle`; `Dialog` IS
 `Modal`. Every mapping below resolves for real — `cascivo add switch` installs
 `toggle`, the MCP `get_component("Dialog")` returns `modal`, and
 `import { Switch } from '@cascivo/react'` compiles.
-Mappings: AILabel→AiBadge, AvatarStack→AvatarGroup, ChipInput→TagsInput, Chip→Tag, CircularProgress→Spinner, CommandPalette→CommandMenu, ConfirmDialog→AlertDialog, Dialog→Modal, Disclosure→Collapsible, DropdownMenu→Dropdown, EmptyView→EmptyState, Layout→AppShell, LinearProgress→InlineLoading, MoreMenu→OverflowMenu, NavigationDrawer→Drawer, NumberField→NumberInput, PinInput→OtpInput, Placeholder→Skeleton, Popper→Popover, Rating→RatingGroup, SegmentedButton→SegmentedControl, SelectNative→NativeSelect, SideSheet→Sheet, Sidebar→SideNav, Snackbar→Toast, Switch→Toggle, Table→DataTable, TextShimmer→ShimmerText, ThinkingBar→AiStatus, Think→Reasoning, ToggleButtonGroup→ToggleGroup, TypingDots→TypingIndicator.
+Mappings: AILabel→AiBadge, AvatarStack→AvatarGroup, ChipInput→TagsInput, Chip→Tag, CircularProgress→Spinner, CommandPalette→CommandMenu, ConfirmDialog→AlertDialog, Dialog→Modal, Disclosure→Collapsible, DropdownMenu→Dropdown, EmptyView→EmptyState, Layout→AppShell, LinearProgress→InlineLoading, MoreMenu→OverflowMenu, NavigationDrawer→Drawer, NumberField→NumberInput, PinInput→OtpInput, Placeholder→Skeleton, Popper→Popover, Rating→RatingGroup, SegmentedButton→SegmentedControl, SelectNative→NativeSelect, SideSheet→Sheet, Sidebar→SideNav, Snackbar→Toast, Switch→Toggle, Table→DataTable, TextShimmer→ShimmerText, ThinkingBar→AiStatus, Think→Reasoning, ThoughtChain→ChainOfThought, ToggleButtonGroup→ToggleGroup, Tool→ToolCall, TypingDots→TypingIndicator.
 
 Pure-CSS glyphs (experimental): a small opt-in set of UI glyphs, rendered with
 `clip-path: shape()` and no SVG — color via `currentColor`, size via
@@ -302,7 +302,7 @@ statement, or it never re-renders. When you do own reactive state, use these:
 - Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` (generated union of every `--cascivo-*` property — no CSS-file lookup).
 - Router links in config-driven navs (SideNav/ShellHeader/Breadcrumb/Dock/…) -> `setLinkComponent(YourLink)` once at startup. Import it (and the `LinkComponentProps` contract type) from `@cascivo/react` (re-exported there, so prebuilt-package users need NOT add `@cascivo/core`); copied source can import from `@cascivo/core`. Adapter: `setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href} {...rest} />)` — spread the bag; the link stays a real `<a>` so middle-click/new-tab work.
 - Event-handler naming (predict the prop from what it receives): a **value** -> `onValueChange(value)` (Tabs, SegmentedControl, Combobox, MultiSelect, Toggle, Search, NumberInput, DatePicker, …); a raw DOM `ChangeEvent` -> `onChange(event)` (Checkbox, NativeSelect, PasswordInput, **Select**, **Slider** — these two wrap a real element and have NO `onValueChange`); activating an item -> `onSelect(value)` (Dropdown, OverflowMenu, chart points; on `Menu`/`ContextMenu` the `onSelect` lives on the *Item*, not the root). A few components keep a deprecated value-carrying `onChange` alias — prefer `onValueChange`.
-- Data/shape prop vocabulary (the other half of handler naming — nine wrong guesses in one 2026-08-08 dashboard, two more on 2026-08-22): a config-driven collection (nav, list, menu) -> **`items`** (17: Breadcrumb, DataList, Dock, Dropdown, MenuButton, NavigationMenu, OverflowMenu, ShareMenu, SideNav, StructuredList, Switcher, Timeline, Toc, ToggleGroup, TreeView, VirtualList, FeatureGrid); the choices on a form control -> **`options`** (7: Combobox, Filter, MultiSelect, NativeSelect, SegmentedControl, Select, WheelPicker); a chart's data points -> **`data`** (11: CalendarHeatmap, Candlestick, Funnel, Heatmap, Histogram, PieChart, Polar, RadialBar, Sparkline, Sunburst, Treemap). Exceptions, named in full because they are where the guesses go wrong: `DataTable.rows` (it renders a real <table>, where "rows" is the domain word); `Textarea.rows` (the HTML `rows` attribute, not a collection); `CommandMenu.groups` (its items are nested inside labelled groups); `ProgressIndicator.steps` (the domain word for a stepper); `Steps.steps` (the domain word for a stepper; also accepts `items`). A visual style enum -> **`variant`**, never `shape`/`kind`/`type`; a discriminated-union tag -> **`kind`**, never `type` (e.g. annotations: [{ kind: 'line' }]); a rich replaceable slot -> **`actions`** as ReactNode (Notification, CardHeader, PageHeader — only `Alert.action` is the {label,onClick} shorthand); body text on a feedback component -> **`description`**, NOT children (Notification renders nothing for children).
+- Data/shape prop vocabulary (the other half of handler naming — nine wrong guesses in one 2026-08-08 dashboard, two more on 2026-08-22): a config-driven collection (nav, list, menu) -> **`items`** (18: Breadcrumb, ChainOfThought, DataList, Dock, Dropdown, MenuButton, NavigationMenu, OverflowMenu, ShareMenu, SideNav, StructuredList, Switcher, Timeline, Toc, ToggleGroup, TreeView, VirtualList, FeatureGrid); the choices on a form control -> **`options`** (7: Combobox, Filter, MultiSelect, NativeSelect, SegmentedControl, Select, WheelPicker); a chart's data points -> **`data`** (11: CalendarHeatmap, Candlestick, Funnel, Heatmap, Histogram, PieChart, Polar, RadialBar, Sparkline, Sunburst, Treemap). Exceptions, named in full because they are where the guesses go wrong: `DataTable.rows` (it renders a real <table>, where "rows" is the domain word); `Textarea.rows` (the HTML `rows` attribute, not a collection); `CommandMenu.groups` (its items are nested inside labelled groups); `ProgressIndicator.steps` (the domain word for a stepper); `Steps.steps` (the domain word for a stepper; also accepts `items`). A visual style enum -> **`variant`**, never `shape`/`kind`/`type`; a discriminated-union tag -> **`kind`**, never `type` (e.g. annotations: [{ kind: 'line' }]); a rich replaceable slot -> **`actions`** as ReactNode (Notification, CardHeader, PageHeader — only `Alert.action` is the {label,onClick} shorthand); body text on a feedback component -> **`description`**, NOT children (Notification renders nothing for children).
 - Near-miss prop names (each one a real adopter's wrong guess): `<Text tone=…>` -> **`muted`** (a boolean; `tone` is the SEVERITY vocabulary on Status/Badge/Timeline/SideNav, not text emphasis); `gap="4"` -> **`gap={4}`** (numeric SpaceStep); `<Flex justify=…>` with no `direction` is already VERTICAL (the default, unlike CSS/Chakra/MUI/Radix); `const { theme } = useTheme()` -> a TUPLE `const [theme, setTheme]`; `DataList orientation="vertical"` moves the VALUE under its label, it does not stack the items (they stack either way); `<DataListItem>` is an INTERFACE, not a component (`DataList` takes `items`). Three former near-misses are now accepted both ways and cost nothing: `import { Switch }` (= `Toggle`), `<OverflowMenu label=…>` (= `ariaLabel`), `<Field hint=…>` (= `description`).
 - ⚠ `gap` takes a NUMBER: `gap={4}`, not `gap="4"`. Every other size-ish prop is a string union (`size="sm"`, `padding="md"`), but the space scale is a numeric `SpaceStep` (1|2|3|4|5|6|8|10|12) — this applies to Flex/Grid/AutoGrid `gap` and `AppShell.padding`. One adopter wrote `gap="4"` and got 20 type errors in a single run.
 - Items-prop-driven vs children-driven: `DataList`/`StructuredList`/`Timeline`/`Steps` take an `items` ARRAY; `ListItem`/`ContainedListItem`/`MenuItem`/`TabsTrigger` are composed as children. `DataListItem` is an INTERFACE, not a component — write <DataList items={[{ label, value }]} />, not <DataList><DataListItem/></DataList>. DataList items are { label, value } (NOT { term, description }, despite rendering a <dl>).
@@ -425,7 +425,7 @@ see how components behave without adding tracking, read these machine-readable C
 - Benchmark results (runtime, bundle, render counts vs Carbon/shadcn): https://github.com/cascivo/cascivo/blob/main/apps/bench/results/results.json
 - Accessibility conformance (axe sweep, AT matrix): https://github.com/cascivo/cascivo/tree/main/docs/specs
 
-## Component index (216 entries — 204 components + 12 page blocks)
+## Component index (218 entries — 206 components + 12 page blocks)
 
 Not all ship in `@cascivo/react`: 25 in @cascivo/charts, 10 in @cascivo/flow, 2 in @cascivo/editor — those are separate installs (see Quick Setup). Blocks are copy-paste only. Each entry below is tagged with its channel.
 
@@ -490,6 +490,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [brand/logo](https://cascivo.com/llms/brand/logo.md) — The cascivo mark and its sanctioned lockups, as inline SVG _(npm @cascivo/react · or copy-paste)_
 - [card](https://cascivo.com/llms/card.md) — Container for grouping related content _(npm @cascivo/react · or copy-paste)_
 - [carousel](https://cascivo.com/llms/carousel.md) — Scroll-snap slide deck with previous/next controls and dot indicators _(npm @cascivo/react · or copy-paste)_
+- [chain-of-thought](https://cascivo.com/llms/chain-of-thought.md) — The steps an AI agent takes — searching, reading, calling tools — each with its status, and optional collapsible detail _(npm @cascivo/react · or copy-paste)_
 - [chat-bubble](https://cascivo.com/llms/chat-bubble.md) — Message bubble for chat and messaging UIs with avatar, name, and timestamp support _(npm @cascivo/react · or copy-paste)_
 - [code](https://cascivo.com/llms/code.md) — Inline code span for identifiers, commands, and short snippets _(npm @cascivo/react · or copy-paste)_
 - [code-snippet](https://cascivo.com/llms/code-snippet.md) — Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look _(npm @cascivo/react · or copy-paste)_
@@ -529,6 +530,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [tag](https://cascivo.com/llms/tag.md) — Compact chip for labeling, categorizing, or filtering content _(npm @cascivo/react · or copy-paste)_
 - [text](https://cascivo.com/llms/text.md) — Body text with size, weight, and muted variants _(npm @cascivo/react · or copy-paste)_
 - [timeline](https://cascivo.com/llms/timeline.md) — Ordered sequence of events with status markers and a connector line _(npm @cascivo/react · or copy-paste)_
+- [tool-call](https://cascivo.com/llms/tool-call.md) — Card for one AI tool invocation — the tool name, its lifecycle status, collapsible input/output, and approval actions _(npm @cascivo/react · or copy-paste)_
 - [tree-view](https://cascivo.com/llms/tree-view.md) — Hierarchical, expandable tree of nodes with keyboard navigation and selection _(npm @cascivo/react · or copy-paste)_
 - [user](https://cascivo.com/llms/user.md) — Identity composite: an avatar with a name, description, and optional action slot _(npm @cascivo/react · or copy-paste)_
 - [virtual-list](https://cascivo.com/llms/virtual-list.md) — Renders only the rows inside the viewport, so list length costs no extra DOM _(npm @cascivo/react · or copy-paste)_
@@ -730,6 +732,7 @@ _Generated: 2026-10-02 from registry v1.6.0_
 - [Calendar](https://cascivo.com/context/calendar.md) — Use when: Showing an always-visible month grid for picking a single date (inline, not a popover)
 - [Card](https://cascivo.com/context/card.md) — Use when: Grouping related content into a visually distinct surface with border/shadow
 - [Carousel](https://cascivo.com/context/carousel.md) — Use when: Presenting a sequence of media or cards the user pages through one at a time
+- [ChainOfThought](https://cascivo.com/context/chain-of-thought.md) — Use when: Showing the discrete steps an AI agent is taking or took — searches, file reads, tool calls
 - [AreaChart](https://cascivo.com/context/chart/area-chart.md) — Use when: Showing cumulative volume or magnitude of a trend over continuous time
 - [BarChart](https://cascivo.com/context/chart/bar-chart.md) — Use when: Comparing discrete categorical values across groups
 - [Boxplot](https://cascivo.com/context/chart/boxplot.md) — Use when: Comparing the distribution spread, median, and quartiles across groups
@@ -897,6 +900,7 @@ _Generated: 2026-10-02 from registry v1.6.0_
 - [Toggle](https://cascivo.com/context/toggle.md) — Use when: Flipping a single binary setting that takes effect immediately (e.g. notifications on/off)
 - [ToggleGroup](https://cascivo.com/context/toggle-group.md) — Use when: Choosing one value from a small, mutually exclusive set that should stay visible (type="single")
 - [Toggletip](https://cascivo.com/context/toggletip.md) — Use when: Revealing brief supplementary information on demand when the user clicks an info affordance
+- [ToolCall](https://cascivo.com/context/tool-call.md) — Use when: Showing an AI tool or function call in a conversation, with what it was given and what it returned
 - [Tooltip](https://cascivo.com/context/tooltip.md) — Use when: Labeling an icon-only control or clarifying a terse element on hover or focus
 - [TreeView](https://cascivo.com/context/tree-view.md) — Use when: Showing nested, parent/child data the user expands and collapses (file trees, org charts, nav)
 - [TypingIndicator](https://cascivo.com/context/typing-indicator.md) — Use when: Holding the place of an assistant reply between sending a prompt and the first token arriving
@@ -3825,6 +3829,123 @@ Enhancement only. The component still does its job with JavaScript disabled — 
 ## Tags
 
 slider, gallery, slideshow, deck, scroll-snap
+
+---
+
+_Generated from registry v1.6.0 on 2026-10-02. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
+# ChainOfThought
+
+The steps an AI agent takes — searching, reading, calling tools — each with its status, and optional collapsible detail
+
+## Install
+
+Copy-paste the source (you own and can edit it):
+
+```bash
+npx cascivo add chain-of-thought
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { ChainOfThought } from '@cascivo/react'
+```
+
+## Category
+
+`display`
+
+## States
+
+- `pending`
+- `active`
+- `complete`
+- `error`
+
+## Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `ChainOfThoughtItem[]` | yes | — | The steps, in order. Each has `id`, `title`, optional `description`, `status` (`pending \| active \| complete \| error`, plus the `current` / `upcoming` aliases), optional `detail` (collapsible content that turns the title into a toggle) and optional `icon`. |
+| `labels` | `{ pending?: string; active?: string; complete?: string; error?: string }` | no | — | Overrides for the component’s user-visible strings (i18n) — the status text a screen reader hears after each step title. |
+
+## Object types
+
+### `ChainOfThoughtItem`
+
+One step in the chain.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `id` | `string` | yes | Stable key for the step. |
+| `title` | `ReactNode` | yes | What the step does. |
+| `description` | `ReactNode` | no | A secondary line under the title. |
+| `status` | `ProgressInput` | no | `pending \| active \| complete \| error` (plus `current` / `upcoming`). Defaults to `pending`. |
+| `detail` | `ReactNode` | no | Collapsible content; makes the title a disclosure toggle. |
+| `icon` | `ReactNode` | no | Replaces the status glyph in the marker. |
+
+## Examples
+
+### Agent steps
+
+```tsx
+<ChainOfThought
+  items={[
+    { id: 'search', title: 'Searched the docs for "refund policy"', status: 'complete' },
+    { id: 'read', title: 'Reading 3 pages', status: 'active' },
+    { id: 'answer', title: 'Write the answer', status: 'pending' },
+  ]}
+/>
+```
+
+### With collapsible detail
+
+```tsx
+<ChainOfThought
+  items={[
+    {
+      id: 'search',
+      title: 'Searched the web',
+      status: 'complete',
+      detail: 'cascivo.com/docs · github.com/cascivo/cascivo · npmjs.com/package/@cascivo/react',
+    },
+    { id: 'fail', title: 'Fetch pricing page', description: 'The page returned 404.', status: 'error' },
+  ]}
+/>
+```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
+## Design tokens
+
+- `--cascivo-color-ai`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-border`
+- `--cascivo-color-success`
+- `--cascivo-color-destructive`
+- `--cascivo-focus-ring`
+- `--cascivo-duration-loop-slow`
+
+## Accessibility
+
+- **WCAG level:** 2.2-AA
+- **ARIA role:** `list`
+- **Keyboard:** Tab, Enter, Space
+
+## Dependencies
+
+- `@cascivo/core`
+- `@cascivo/i18n`
+
+## Tags
+
+ai, agent, steps, chain-of-thought, reasoning, progress, tools
 
 ---
 
@@ -20289,6 +20410,128 @@ Required. The component's primary job needs client JavaScript, so do not render 
 ## Tags
 
 overlay, toggletip, info, popover, floating
+
+---
+
+_Generated from registry v1.6.0 on 2026-10-02. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
+# ToolCall
+
+Card for one AI tool invocation — the tool name, its lifecycle status, collapsible input/output, and approval actions
+
+## Install
+
+Copy-paste the source (you own and can edit it):
+
+```bash
+npx cascivo add tool-call
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { ToolCall } from '@cascivo/react'
+```
+
+## Category
+
+`display`
+
+## States
+
+- `pending`
+- `running`
+- `awaiting-approval`
+- `complete`
+- `error`
+- `denied`
+
+## Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `name` | `string` | yes | — | The tool’s name, shown in monospace (e.g. `search_web`). |
+| `status` | `'pending' \| 'running' \| 'awaiting-approval' \| 'complete' \| 'error' \| 'denied'` | yes | — | Lifecycle, matching the AI SDK tool-part states: `pending` (input streaming), `running`, `awaiting-approval`, `complete`, `error`, `denied`. |
+| `input` | `ReactNode` | no | — | The call’s arguments. A string (e.g. `JSON.stringify(args, null, 2)`) renders preformatted; any other node renders as given. |
+| `output` | `ReactNode` | no | — | The tool’s result — a string renders preformatted, a node as given. |
+| `error` | `ReactNode` | no | — | Why the call failed. The panel opens itself when status is `error`. |
+| `actions` | `ReactNode` | no | — | Rich slot below the card — typically Approve / Deny buttons while `awaiting-approval`. Always visible, never inside the collapsible panel. |
+| `labels` | `{ pending?: string; running?: string; awaitingApproval?: string; complete?: string; error?: string; denied?: string; input?: string; output?: string; errorHeading?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
+
+## Examples
+
+### Running
+
+```tsx
+<ToolCall name="search_web" status="running" input={'{ "query": "cascivo pricing" }'} />
+```
+
+### Complete
+
+```tsx
+<ToolCall
+  name="get_weather"
+  status="complete"
+  input={'{ "city": "Berlin" }'}
+  output={'{ "tempC": 18, "sky": "clear" }'}
+/>
+```
+
+### Awaiting approval
+
+```tsx
+<ToolCall
+  name="send_email"
+  status="awaiting-approval"
+  input={'{ "to": "team@example.com", "subject": "Weekly report" }'}
+  actions={
+    <>
+      <Button variant="ghost" size="sm">Deny</Button>
+      <Button size="sm">Approve</Button>
+    </>
+  }
+/>
+```
+
+### Error
+
+```tsx
+<ToolCall name="fetch_page" status="error" error="The page returned 404." />
+```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
+## Design tokens
+
+- `--cascivo-color-ai`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-warning`
+- `--cascivo-color-destructive`
+- `--cascivo-radius-surface`
+- `--cascivo-font-mono`
+- `--cascivo-focus-ring`
+
+## Accessibility
+
+- **WCAG level:** 2.2-AA
+- **ARIA role:** `group`
+- **Keyboard:** Tab, Enter, Space
+
+## Dependencies
+
+- `@cascivo/core`
+- `@cascivo/i18n`
+
+## Tags
+
+ai, agent, tool, function-call, approval, mcp, status
 
 ---
 

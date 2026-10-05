@@ -31,5 +31,7 @@
   "ai-badge": ["AILabel", "AiSlug", "AISlug"],
   "ai-status": ["ThinkingBar", "ThinkingIndicator", "AiLoader"],
   "reasoning": ["Think", "ThinkingBlock", "ReasoningPanel"],
-  "typing-indicator": ["TypingDots", "MessageLoading", "LoadingDots"]
+  "typing-indicator": ["TypingDots", "MessageLoading", "LoadingDots"],
+  "chain-of-thought": ["ThoughtChain", "AgentSteps", "ReasoningSteps"],
+  "tool-call": ["Tool", "ToolInvocation", "FunctionCall", "ToolUse"]
 }

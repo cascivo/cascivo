@@ -251,7 +251,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-204 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
+206 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
 
 ### Inputs
 
@@ -308,6 +308,7 @@ routing break after adding one of these, check that the import resolves to
 - **Blockquote** — Quoted passage with optional attribution footer
 - **Card** — Container for grouping related content
 - **Carousel** — Scroll-snap slide deck with previous/next controls and dot indicators
+- **ChainOfThought** — The steps an AI agent takes — searching, reading, calling tools — each with its status, and optional collapsible detail
 - **ChatBubble** — Message bubble for chat and messaging UIs with avatar, name, and timestamp support
 - **Code** — Inline code span for identifiers, commands, and short snippets
 - **CodeSnippet** — Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look
@@ -357,6 +358,7 @@ routing break after adding one of these, check that the import resolves to
 - **Tag** — Compact chip for labeling, categorizing, or filtering content
 - **Text** — Body text with size, weight, and muted variants
 - **Timeline** — Ordered sequence of events with status markers and a connector line
+- **ToolCall** — Card for one AI tool invocation — the tool name, its lifecycle status, collapsible input/output, and approval actions
 - **TreeView** — Hierarchical, expandable tree of nodes with keyboard navigation and selection
 - **User** — Identity composite: an avatar with a name, description, and optional action slot
 - **UsersTablePage** — Full users management page with table, search, and invite action.

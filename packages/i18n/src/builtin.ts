@@ -236,6 +236,23 @@ export const builtin = {
     explain: 'Show information',
     description: 'AI-generated',
   }),
+  chainOfThought: defineMessages('cascade.chainOfThought', {
+    pending: 'Pending',
+    active: 'In progress',
+    complete: 'Done',
+    error: 'Failed',
+  }),
+  toolCall: defineMessages('cascade.toolCall', {
+    pending: 'Pending',
+    running: 'Running',
+    awaitingApproval: 'Awaiting approval',
+    complete: 'Completed',
+    error: 'Error',
+    denied: 'Denied',
+    input: 'Input',
+    output: 'Output',
+    errorHeading: 'Error',
+  }),
   shellHeader: defineMessages('cascade.shellHeader', {
     skipToContent: 'Skip to main content',
     nav: 'Main',
@@ -613,6 +630,23 @@ defineCatalog(builtin.aiBadge, 'de', {
   text: 'KI',
   explain: 'Informationen anzeigen',
   description: 'KI-generiert',
+})
+defineCatalog(builtin.chainOfThought, 'de', {
+  pending: 'Ausstehend',
+  active: 'In Bearbeitung',
+  complete: 'Erledigt',
+  error: 'Fehlgeschlagen',
+})
+defineCatalog(builtin.toolCall, 'de', {
+  pending: 'Ausstehend',
+  running: 'Läuft',
+  awaitingApproval: 'Wartet auf Freigabe',
+  complete: 'Abgeschlossen',
+  error: 'Fehler',
+  denied: 'Abgelehnt',
+  input: 'Eingabe',
+  output: 'Ausgabe',
+  errorHeading: 'Fehler',
 })
 defineCatalog(builtin.shellHeader, 'de', {
   skipToContent: 'Zum Hauptinhalt springen',
