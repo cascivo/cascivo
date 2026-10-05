@@ -1,0 +1,138 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'AiStatus',
+  description:
+    'Announces what an AI is doing — thinking, generating, done, failed or stopped — with a shimmering label and an optional Stop button',
+  category: 'feedback',
+  // The status renders and is announced from server HTML; only the Stop button needs JS.
+  clientJs: 'enhancement',
+  states: ['thinking', 'generating', 'complete', 'error', 'stopped'],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'status',
+      description:
+        'The phase: `thinking` (working, nothing produced yet), `generating` (output is streaming), `complete`, `error`, or `stopped` (the reader pressed Stop).',
+      type: "'thinking' | 'generating' | 'complete' | 'error' | 'stopped'",
+      required: true,
+    },
+    {
+      name: 'label',
+      nameVisibility: 'visible',
+      description:
+        'Replaces the default text for the current status, e.g. "Searching 12 documents…".',
+      type: 'ReactNode',
+      required: false,
+    },
+    {
+      name: 'labels',
+      description: 'Overrides for the component’s user-visible strings (i18n).',
+      type: '{ thinking?: string; generating?: string; complete?: string; error?: string; stopped?: string; stop?: string }',
+      required: false,
+    },
+    {
+      name: 'onStop',
+      description:
+        'Called when the reader presses Stop. When set, a Stop button renders while the status is `thinking` or `generating`.',
+      type: '() => void',
+      required: false,
+    },
+  ],
+  tokens: [
+    '--cascivo-color-ai',
+    '--cascivo-color-text',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-success',
+    '--cascivo-color-destructive',
+    '--cascivo-duration-loop-slow',
+  ],
+  accessibility: {
+    role: 'status',
+    wcag: '2.2-AA',
+    keyboard: ['Tab', 'Enter', 'Space'],
+    reducedMotion: true,
+    forcedColors: true,
+  },
+  examples: [
+    { title: 'Thinking', code: '<AiStatus status="thinking" />' },
+    {
+      title: 'Generating, with Stop',
+      code: '<AiStatus status="generating" onStop={() => {}} />',
+    },
+    {
+      title: 'Custom label',
+      code: '<AiStatus status="thinking" label="Searching 12 documents…" />',
+    },
+    { title: 'Complete', code: '<AiStatus status="complete" />' },
+    { title: 'Error', code: '<AiStatus status="error" />' },
+  ],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  registryDependencies: ['button', 'shimmer-text'],
+  tags: ['ai', 'status', 'loading', 'thinking', 'generating', 'progress', 'stop'],
+  intent: {
+    whenToUse: [
+      'Telling the reader an AI request is in flight, and which phase it is in (thinking before output, generating while it streams)',
+      'Offering a keyboard-reachable Stop while a response is being produced',
+      'Reporting the terminal outcome of a generation — done, failed or stopped',
+    ],
+    whenNotToUse: [
+      'Non-AI async work such as saving a form — use InlineLoading',
+      'Holding the place of a chat reply with no text — use TypingIndicator',
+      'Determinate progress with a known percentage — use ProgressBar',
+    ],
+    antiPatterns: [
+      {
+        bad: 'aria-live on the streaming response text',
+        good: '<AiStatus status={phase} /> beside the response, which renders silently',
+        why: 'A live region on streaming text re-announces on every token; AiStatus announces each phase change once',
+      },
+      {
+        bad: 'Showing AiStatus for a response that arrives in under a second',
+        good: 'Delay mounting it ~1s so fast responses never flash a loader',
+        why: 'A loader that blinks on and off reads as a glitch and makes a screen reader announce noise',
+      },
+    ],
+    related: [
+      {
+        name: 'ShimmerText',
+        relationship: 'contains',
+        reason: 'The in-progress label is rendered in ShimmerText',
+      },
+      {
+        name: 'InlineLoading',
+        relationship: 'alternative',
+        reason: 'InlineLoading is the neutral, non-AI save/submit status',
+      },
+      {
+        name: 'TypingIndicator',
+        relationship: 'alternative',
+        reason: 'TypingIndicator is the wordless placeholder inside a chat bubble',
+      },
+      {
+        name: 'Reasoning',
+        relationship: 'pairs-with',
+        reason: 'Reasoning shows the model’s thinking while AiStatus reports the phase',
+      },
+    ],
+    a11yRationale:
+      'The label lives in a role="status" node holding one stable string per phase, so each phase change is announced once and token-level streaming never is. The glyph is aria-hidden and only it pulses (under prefers-reduced-motion: no-preference), so the label never drops below contrast. Stop is a real button outside the status node, so pressing it does not re-announce; forced colours render everything CanvasText',
+    content: {
+      tone: 'Present progressive while working ("Thinking…", "Searching the docs…"), terse when done ("Done", "Stopped")',
+      notes: 'Name the specific work when you can; keep it to one line',
+    },
+    flexibility: [
+      {
+        area: 'label',
+        level: 'flexible',
+        note: 'Defaults per status come from the i18n catalog; override with label or the labels map',
+      },
+      {
+        area: 'status semantics',
+        level: 'strict',
+        note: 'thinking/generating are in progress (sparkle + shimmer); complete/error/stopped are terminal — do not repurpose',
+      },
+    ],
+  },
+}

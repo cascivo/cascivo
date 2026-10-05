@@ -61,6 +61,27 @@
     );
   }
 
+  /* AI-generated content is on its way: the same shapes in the AI tint, with an AI-tinted
+     sheen. Only the colours change, so the reduced-motion resting state still reads. */
+  .skeleton[data-ai] {
+    &[data-variant='circle'],
+    &[data-variant='rect'],
+    .line {
+      background-color: var(--cascivo-color-ai-subtle);
+    }
+
+    &[data-variant='circle']::after,
+    &[data-variant='rect']::after,
+    .line::after {
+      background-image: linear-gradient(
+        90deg,
+        transparent,
+        var(--cascivo-color-ai-sheen),
+        transparent
+      );
+    }
+  }
+
   /* Decorative loop — opt-in, so a user who expresses no preference gets no motion.
      A skeleton already reads as "loading" from its shape alone, so unlike Spinner there
      is nothing to preserve by slowing it instead of stopping it. */

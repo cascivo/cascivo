@@ -2383,6 +2383,13 @@
       "$description": "CSS: --cascivo-progress-color (component) = var(--cascivo-color-primary)"
     }
   },
+  "shimmer": {
+    "shimmer-text-color": {
+      "$type": "color",
+      "$value": "{color.color-text-muted}",
+      "$description": "CSS: --cascivo-shimmer-text-color (component) = var(--cascivo-color-text-muted)"
+    }
+  },
   "skeleton": {
     "skeleton-height": {
       "$type": "dimension",
@@ -2397,6 +2404,13 @@
       "$description": "CSS: --cascivo-tree-indent (component) = var(--cascivo-space-5)"
     }
   },
+  "typing": {
+    "typing-indicator-color": {
+      "$type": "color",
+      "$value": "{color.color-text-muted}",
+      "$description": "CSS: --cascivo-typing-indicator-color (component) = var(--cascivo-color-text-muted)"
+    }
+  },
   "$extensions": {
     "com.cascivo": {
       "notExported": [
@@ -2406,6 +2420,10 @@
         "--cascivo-calendar-range-bg",
         "--cascivo-chart-anim-ease",
         "--cascivo-chart-anim-props",
+        "--cascivo-color-ai",
+        "--cascivo-color-ai-border",
+        "--cascivo-color-ai-sheen",
+        "--cascivo-color-ai-subtle",
         "--cascivo-data-table-max-height",
         "--cascivo-dialog-body-gap",
         "--cascivo-dropdown-anchor",
@@ -2448,6 +2466,7 @@
         "--cascivo-scroll-area-height",
         "--cascivo-scroll-area-width",
         "--cascivo-search-width",
+        "--cascivo-shimmer-text-highlight",
         "--cascivo-skeleton-width",
         "--cascivo-text-2xl-fluid",
         "--cascivo-text-3xl-fluid",

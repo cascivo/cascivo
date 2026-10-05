@@ -54,6 +54,8 @@
     "DropdownMenu": "Dropdown",
     "Placeholder": "Skeleton",
     "Shimmer": "Skeleton",
+    "AiSkeleton": "Skeleton",
+    "AISkeleton": "Skeleton",
     "Popper": "Popover",
     "SegmentedButton": "SegmentedControl",
     "Disclosure": "Collapsible",
@@ -96,6 +98,20 @@
     "Rating": "RatingGroup",
     "StarRating": "RatingGroup",
     "ToggleButtonGroup": "ToggleGroup",
-    "ButtonToggleGroup": "ToggleGroup"
+    "ButtonToggleGroup": "ToggleGroup",
+    "TextShimmer": "ShimmerText",
+    "ShimmeringText": "ShimmerText",
+    "AILabel": "AiBadge",
+    "AiSlug": "AiBadge",
+    "AISlug": "AiBadge",
+    "ThinkingBar": "AiStatus",
+    "ThinkingIndicator": "AiStatus",
+    "AiLoader": "AiStatus",
+    "Think": "Reasoning",
+    "ThinkingBlock": "Reasoning",
+    "ReasoningPanel": "Reasoning",
+    "TypingDots": "TypingIndicator",
+    "MessageLoading": "TypingIndicator",
+    "LoadingDots": "TypingIndicator"
   }
 }

@@ -196,6 +196,30 @@
           "note": "showCancel toggles the separate Cancel button (Escape/outside press still dismiss)"
         }
       ],
+      "AiBadge": [
+        {
+          "area": "explanation content",
+          "level": "flexible",
+          "note": "Any rich content — model name, sources, a link to learn more"
+        },
+        {
+          "area": "pill text",
+          "level": "strict",
+          "note": "Keep it a short AI marker; do not reuse the badge for unrelated labels"
+        }
+      ],
+      "AiStatus": [
+        {
+          "area": "label",
+          "level": "flexible",
+          "note": "Defaults per status come from the i18n catalog; override with label or the labels map"
+        },
+        {
+          "area": "status semantics",
+          "level": "strict",
+          "note": "thinking/generating are in progress (sparkle + shimmer); complete/error/stopped are terminal — do not repurpose"
+        }
+      ],
       "Alert": [
         {
           "area": "variant",
@@ -1373,6 +1397,18 @@
           "note": "max sets the scale and labels.rating customizes the per-star announcement"
         }
       ],
+      "Reasoning": [
+        {
+          "area": "trigger text",
+          "level": "flexible",
+          "note": "Override with label, or localise each state through labels"
+        },
+        {
+          "area": "open behaviour",
+          "level": "strict",
+          "note": "Opens when streaming starts and closes when it ends; do not force it open after the answer arrives"
+        }
+      ],
       "RelativeTime": [
         {
           "area": "format",
@@ -1508,6 +1544,18 @@
           "area": "token names",
           "level": "strict",
           "note": "Surfaces, sizing, and accent must resolve to --cascivo-* shell tokens"
+        }
+      ],
+      "ShimmerText": [
+        {
+          "area": "colours",
+          "level": "flexible",
+          "note": "Override --cascivo-shimmer-text-color and --cascivo-shimmer-text-highlight per instance"
+        },
+        {
+          "area": "motion",
+          "level": "strict",
+          "note": "The sweep must stay inside the reduced-motion opt-in; never animate it unconditionally"
         }
       ],
       "SideNav": [
@@ -1861,6 +1909,18 @@
           "note": "Per-level indent is driven by --cascivo-tree-indent and may be overridden"
         }
       ],
+      "TypingIndicator": [
+        {
+          "area": "colour",
+          "level": "flexible",
+          "note": "Override --cascivo-typing-indicator-color (defaults to muted text)"
+        },
+        {
+          "area": "accessible name",
+          "level": "strict",
+          "note": "Keep the status name — the dots alone carry no meaning for assistive tech"
+        }
+      ],
       "User": [
         {
           "area": "description",
@@ -2152,6 +2212,194 @@
       ],
       "contextUrl": "/context/action-sheet.md",
       "aiPrompt": "I am modifying the cascivo ActionSheet component (overlay). Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nActionSheet is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent-text, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-destructive, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-text-muted, --cascivo-radius-overlay, --cascivo-shadow-overlay, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-z-overlay\n\nAccessibility: role \"menu\", WCAG 2.2-AA, keyboard: ArrowUp/ArrowDown/Home/End/Enter/Space/Escape. Keep it AA.\nFlexible: actions, open state, cancel.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
+      "name": "AiBadge",
+      "category": "display",
+      "description": "Small \"AI\" marker for AI-generated content; with children it opens a toggletip explaining how AI was involved",
+      "intent": {
+        "whenToUse": [
+          "Marking a field, card, table cell or message whose content an AI produced or suggested",
+          "Giving readers an on-demand explanation of how AI was involved (model, sources, confidence)"
+        ],
+        "whenNotToUse": [
+          "Reporting that generation is in progress — use AiStatus",
+          "Generic status or category chips — use Badge or Tag"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "A sparkle icon alone next to AI content",
+            "good": "<AiBadge /> — visible \"AI\" text and an accessible description",
+            "why": "An icon or gradient carries no meaning for assistive tech; the badge names the provenance"
+          }
+        ],
+        "related": [
+          {
+            "name": "Toggletip",
+            "relationship": "contains",
+            "reason": "The explanation opens in a Toggletip anchored to the badge"
+          },
+          {
+            "name": "Badge",
+            "relationship": "alternative",
+            "reason": "Badge is the general-purpose chip; AiBadge is reserved for AI provenance"
+          },
+          {
+            "name": "AiStatus",
+            "relationship": "pairs-with",
+            "reason": "AiStatus reports work in progress; AiBadge marks the finished result"
+          }
+        ],
+        "a11yRationale": "Provenance is carried by text, never by colour: the static marker shows \"AI\" and reads \"AI-generated\"; the interactive one is a button whose accessible name begins with its visible text (\"AI Show information\", WCAG 2.5.3), opening a Toggletip that is dismissable with Escape. Forced colours keep the border and text as CanvasText",
+        "content": {
+          "tone": "Plain and factual — say what the AI did and what the reader should check",
+          "notes": "Keep the pill to \"AI\" (localised); put detail in the explanation"
+        },
+        "flexibility": [
+          {
+            "area": "explanation content",
+            "level": "flexible",
+            "note": "Any rich content — model name, sources, a link to learn more"
+          },
+          {
+            "area": "pill text",
+            "level": "strict",
+            "note": "Keep it a short AI marker; do not reuse the badge for unrelated labels"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "children",
+          "description": "The explanation shown in the toggletip — model, sources, confidence. Omit for a static marker.",
+          "type": "ReactNode",
+          "required": false,
+          "schema": {
+            "kind": "node"
+          }
+        },
+        {
+          "name": "labels",
+          "description": "Overrides for the component’s user-visible strings (i18n): `text` (the pill, \"AI\"), `explain` (appended to the trigger’s accessible name), `description` (what a screen reader hears for the static marker).",
+          "type": "{ text?: string; explain?: string; description?: string }",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        }
+      ],
+      "contextUrl": "/context/ai-badge.md",
+      "aiPrompt": "I am modifying the cascivo AiBadge component (display). Small \"AI\" marker for AI-generated content; with children it opens a toggletip explaining how AI was involved\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nAiBadge is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-ai, --cascivo-color-ai-subtle, --cascivo-color-ai-border, --cascivo-color-text, --cascivo-radius-indicator, --cascivo-text-xs, --cascivo-font-semibold\n\nAccessibility: role \"button\", WCAG 2.2-AA, keyboard: Enter/Space/Escape. Keep it AA.\n\nDo not change (strict): pill text — Keep it a short AI marker; do not reuse the badge for unrelated labels\nFlexible: explanation content.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
+      "name": "AiStatus",
+      "category": "feedback",
+      "description": "Announces what an AI is doing — thinking, generating, done, failed or stopped — with a shimmering label and an optional Stop button",
+      "intent": {
+        "whenToUse": [
+          "Telling the reader an AI request is in flight, and which phase it is in (thinking before output, generating while it streams)",
+          "Offering a keyboard-reachable Stop while a response is being produced",
+          "Reporting the terminal outcome of a generation — done, failed or stopped"
+        ],
+        "whenNotToUse": [
+          "Non-AI async work such as saving a form — use InlineLoading",
+          "Holding the place of a chat reply with no text — use TypingIndicator",
+          "Determinate progress with a known percentage — use ProgressBar"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "aria-live on the streaming response text",
+            "good": "<AiStatus status={phase} /> beside the response, which renders silently",
+            "why": "A live region on streaming text re-announces on every token; AiStatus announces each phase change once"
+          },
+          {
+            "bad": "Showing AiStatus for a response that arrives in under a second",
+            "good": "Delay mounting it ~1s so fast responses never flash a loader",
+            "why": "A loader that blinks on and off reads as a glitch and makes a screen reader announce noise"
+          }
+        ],
+        "related": [
+          {
+            "name": "ShimmerText",
+            "relationship": "contains",
+            "reason": "The in-progress label is rendered in ShimmerText"
+          },
+          {
+            "name": "InlineLoading",
+            "relationship": "alternative",
+            "reason": "InlineLoading is the neutral, non-AI save/submit status"
+          },
+          {
+            "name": "TypingIndicator",
+            "relationship": "alternative",
+            "reason": "TypingIndicator is the wordless placeholder inside a chat bubble"
+          },
+          {
+            "name": "Reasoning",
+            "relationship": "pairs-with",
+            "reason": "Reasoning shows the model’s thinking while AiStatus reports the phase"
+          }
+        ],
+        "a11yRationale": "The label lives in a role=\"status\" node holding one stable string per phase, so each phase change is announced once and token-level streaming never is. The glyph is aria-hidden and only it pulses (under prefers-reduced-motion: no-preference), so the label never drops below contrast. Stop is a real button outside the status node, so pressing it does not re-announce; forced colours render everything CanvasText",
+        "content": {
+          "tone": "Present progressive while working (\"Thinking…\", \"Searching the docs…\"), terse when done (\"Done\", \"Stopped\")",
+          "notes": "Name the specific work when you can; keep it to one line"
+        },
+        "flexibility": [
+          {
+            "area": "label",
+            "level": "flexible",
+            "note": "Defaults per status come from the i18n catalog; override with label or the labels map"
+          },
+          {
+            "area": "status semantics",
+            "level": "strict",
+            "note": "thinking/generating are in progress (sparkle + shimmer); complete/error/stopped are terminal — do not repurpose"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "status",
+          "description": "The phase: `thinking` (working, nothing produced yet), `generating` (output is streaming), `complete`, `error`, or `stopped` (the reader pressed Stop).",
+          "type": "'thinking' | 'generating' | 'complete' | 'error' | 'stopped'",
+          "required": true,
+          "schema": {
+            "kind": "enum",
+            "values": ["thinking", "generating", "complete", "error", "stopped"]
+          }
+        },
+        {
+          "name": "label",
+          "nameVisibility": "visible",
+          "description": "Replaces the default text for the current status, e.g. \"Searching 12 documents…\".",
+          "type": "ReactNode",
+          "required": false,
+          "schema": {
+            "kind": "node"
+          }
+        },
+        {
+          "name": "labels",
+          "description": "Overrides for the component’s user-visible strings (i18n).",
+          "type": "{ thinking?: string; generating?: string; complete?: string; error?: string; stopped?: string; stop?: string }",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "onStop",
+          "description": "Called when the reader presses Stop. When set, a Stop button renders while the status is `thinking` or `generating`.",
+          "type": "() => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        }
+      ],
+      "contextUrl": "/context/ai-status.md",
+      "aiPrompt": "I am modifying the cascivo AiStatus component (feedback). Announces what an AI is doing — thinking, generating, done, failed or stopped — with a shimmering label and an optional Stop button\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nAiStatus is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-ai, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-success, --cascivo-color-destructive, --cascivo-duration-loop-slow\n\nAccessibility: role \"status\", WCAG 2.2-AA, keyboard: Tab/Enter/Space. Keep it AA.\n\nDo not change (strict): status semantics — thinking/generating are in progress (sparkle + shimmer); complete/error/stopped are terminal — do not repurpose\nFlexible: label.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Alert",
@@ -20390,6 +20638,113 @@
       "aiPrompt": "I am modifying the cascivo RatingGroup component (inputs). Star rating input with accessible radio group pattern\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nRatingGroup is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-warning, --cascivo-color-border-strong, --cascivo-color-accent, --cascivo-radius-sm\n\nAccessibility: role \"radiogroup\", WCAG 2.2-AA, keyboard: Tab/Space/Enter. Keep it AA.\n\nDo not change (strict): token names — Star styling must resolve to the listed --cascivo-* tokens\nFlexible: scale and labels.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
+      "name": "Reasoning",
+      "category": "display",
+      "description": "Collapsible panel for a model’s reasoning — opens and shimmers \"Thinking…\" while it streams, then settles to \"Thought for N seconds\"",
+      "intent": {
+        "whenToUse": [
+          "Showing a model’s reasoning or thinking trace above its answer, collapsed once the answer arrives",
+          "Giving readers an opt-in look at how an AI reached a result without cluttering the reply"
+        ],
+        "whenNotToUse": [
+          "General show/hide content — use Collapsible or Accordion",
+          "A sequence of discrete agent steps with their own status — use Steps or Timeline",
+          "Reporting the phase of a request — use AiStatus"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Wrapping the reasoning text in aria-live so it is read as it streams",
+            "good": "<Reasoning streaming> — the content is aria-busy and silent; pair it with AiStatus for the phase",
+            "why": "Announcing every token of a reasoning trace drowns out everything else"
+          }
+        ],
+        "related": [
+          {
+            "name": "ShimmerText",
+            "relationship": "contains",
+            "reason": "The streaming trigger label is ShimmerText"
+          },
+          {
+            "name": "AiStatus",
+            "relationship": "pairs-with",
+            "reason": "AiStatus announces the phase while Reasoning holds the trace"
+          },
+          {
+            "name": "Collapsible",
+            "relationship": "alternative",
+            "reason": "Collapsible is the general-purpose disclosure"
+          }
+        ],
+        "a11yRationale": "Built on native <details>/<summary>, so the trigger is a keyboard-operable disclosure (Enter/Space) with its expanded state exposed by the browser, it works before hydration, and find-in-page can open it. The content carries aria-busy while streaming and is never a live region; the sparkle is decorative and pulses only under prefers-reduced-motion: no-preference",
+        "content": {
+          "tone": "The trigger names the state — \"Thinking…\" while working, \"Thought for 12 seconds\" after"
+        },
+        "flexibility": [
+          {
+            "area": "trigger text",
+            "level": "flexible",
+            "note": "Override with label, or localise each state through labels"
+          },
+          {
+            "area": "open behaviour",
+            "level": "strict",
+            "note": "Opens when streaming starts and closes when it ends; do not force it open after the answer arrives"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "children",
+          "description": "The reasoning text or steps.",
+          "type": "ReactNode",
+          "required": true,
+          "schema": {
+            "kind": "node"
+          }
+        },
+        {
+          "name": "streaming",
+          "description": "True while reasoning is still arriving: the panel opens, the trigger shimmers \"Thinking…\" and the content is aria-busy. Turning it off closes the panel.",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "duration",
+          "description": "Seconds spent reasoning. Once streaming ends the trigger reads \"Thought for {duration} seconds\"; without it, \"Reasoning\". The caller owns the clock.",
+          "type": "number",
+          "required": false,
+          "schema": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "label",
+          "nameVisibility": "visible",
+          "description": "Replaces the trigger text in every state.",
+          "type": "ReactNode",
+          "required": false,
+          "schema": {
+            "kind": "node"
+          }
+        },
+        {
+          "name": "labels",
+          "description": "Overrides for the component’s user-visible strings (i18n). `thoughtFor` may contain `{count}`.",
+          "type": "{ thinking?: string; thoughtFor?: string; label?: string }",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        }
+      ],
+      "contextUrl": "/context/reasoning.md",
+      "aiPrompt": "I am modifying the cascivo Reasoning component (display). Collapsible panel for a model’s reasoning — opens and shimmers \"Thinking…\" while it streams, then settles to \"Thought for N seconds\"\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nReasoning is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-ai, --cascivo-color-ai-border, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-focus-ring, --cascivo-duration-200, --cascivo-duration-loop-slow\n\nAccessibility: role \"button\", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.\n\nDo not change (strict): open behaviour — Opens when streaming starts and closes when it ends; do not force it open after the answer arrives\nFlexible: trigger text.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
       "name": "RelativeTime",
       "category": "display",
       "description": "Displays a date as a localized phrase relative to now, auto-updating",
@@ -22165,6 +22520,87 @@
       "aiPrompt": "I am modifying the cascivo ShellHeader component (navigation). Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nShellHeader is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-shell-header-block-size, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-accent, --cascivo-radius-control\n\nAccessibility: role \"banner\", WCAG 2.2-AA, keyboard: Tab/Enter/Space/ArrowDown/ArrowUp/Escape. Keep it AA.\n\nDo not change (strict): token names — Surfaces, sizing, and accent must resolve to --cascivo-* shell tokens\nFlexible: nav / actions / end slots.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
+      "name": "ShimmerText",
+      "category": "feedback",
+      "description": "Text with a bright band sweeping through it — the \"Thinking…\" look for a label that marks work in progress",
+      "intent": {
+        "whenToUse": [
+          "Styling a short label that names work in progress — \"Thinking…\", \"Searching the docs…\"",
+          "The trigger or heading of an AI surface while a response is being produced"
+        ],
+        "whenNotToUse": [
+          "Announcing status to assistive tech on its own — it is a visual treatment; wrap it in AiStatus or another role=\"status\" region",
+          "Body copy or anything longer than a line — the sweep is meant for a glanceable label",
+          "Placeholder for content whose shape is known — use Skeleton"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<ShimmerText>Done</ShimmerText> left in place after the work finishes",
+            "good": "Render plain text once the work completes",
+            "why": "The shimmer means \"in progress\"; leaving it on a finished label tells the reader something is still happening"
+          }
+        ],
+        "related": [
+          {
+            "name": "AiStatus",
+            "relationship": "contained-by",
+            "reason": "AiStatus renders its in-progress label in ShimmerText inside a role=\"status\" region"
+          },
+          {
+            "name": "Reasoning",
+            "relationship": "contained-by",
+            "reason": "Reasoning shimmers its \"Thinking…\" trigger while streaming"
+          },
+          {
+            "name": "Skeleton",
+            "relationship": "alternative",
+            "reason": "Skeleton previews the shape of pending content; ShimmerText styles a label that names the work"
+          }
+        ],
+        "a11yRationale": "Purely visual: the text stays real text, so it is read normally and never announced on its own. The sweep runs only under prefers-reduced-motion: no-preference (otherwise plain muted text), and forced colours render it as CanvasText. The highlight band is the AI hue, which clears AA on every shipped theme and is never weaker than the muted base it sweeps over, so the sweep never lowers contrast",
+        "content": {
+          "tone": "Present progressive and specific — \"Thinking…\", \"Reading 3 files…\"",
+          "notes": "One line; end with an ellipsis to reinforce that the work is ongoing"
+        },
+        "flexibility": [
+          {
+            "area": "colours",
+            "level": "flexible",
+            "note": "Override --cascivo-shimmer-text-color and --cascivo-shimmer-text-highlight per instance"
+          },
+          {
+            "area": "motion",
+            "level": "strict",
+            "note": "The sweep must stay inside the reduced-motion opt-in; never animate it unconditionally"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "as",
+          "description": "`span` for inline text, `p` for a paragraph, `div` for a block that imposes no semantics of its own.",
+          "type": "'span' | 'p' | 'div'",
+          "required": false,
+          "default": "span",
+          "schema": {
+            "kind": "enum",
+            "values": ["span", "p", "div"]
+          }
+        },
+        {
+          "name": "children",
+          "description": "The label text the shimmer sweeps through.",
+          "type": "ReactNode",
+          "required": false,
+          "schema": {
+            "kind": "node"
+          }
+        }
+      ],
+      "contextUrl": "/context/shimmer-text.md",
+      "aiPrompt": "I am modifying the cascivo ShimmerText component (feedback). Text with a bright band sweeping through it — the \"Thinking…\" look for a label that marks work in progress\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nShimmerText is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-shimmer-text-color, --cascivo-shimmer-text-highlight, --cascivo-color-text-muted, --cascivo-color-ai, --cascivo-duration-loop-slow\n\nAccessibility: role \"none\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): motion — The sweep must stay inside the reduced-motion opt-in; never animate it unconditionally\nFlexible: colours.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
       "name": "SideNav",
       "category": "navigation",
       "description": "Collapsible sidebar navigation with optional icons and one level of grouping",
@@ -22353,7 +22789,8 @@
         "whenToUse": [
           "Indicating loading by mirroring the shape of the content that will appear",
           "Reducing layout shift while data for a known structure is fetching",
-          "Loading larger content regions where shape preview reassures the user"
+          "Loading larger content regions where shape preview reassures the user",
+          "Holding the place of a response an AI is still generating — set `ai`"
         ],
         "whenNotToUse": [
           "Indeterminate work with no known content shape — use Spinner",
@@ -22431,10 +22868,20 @@
           "schema": {
             "kind": "number"
           }
+        },
+        {
+          "name": "ai",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Tints the placeholder and its sheen with the AI hue, marking content that an AI is generating (Carbon’s AI skeleton).",
+          "schema": {
+            "kind": "boolean"
+          }
         }
       ],
       "contextUrl": "/context/skeleton.md",
-      "aiPrompt": "I am modifying the cascivo Skeleton component (display). Animated loading placeholder that mirrors the shape of pending content\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSkeleton is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-radius-sm, --cascivo-radius-full, --cascivo-radius-component\n\nAccessibility: role \"none\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Background and radius must resolve to --cascivo-* tokens\nFlexible: variant and dimensions.\n\nDo not invent props, tokens, or global viewport media queries."
+      "aiPrompt": "I am modifying the cascivo Skeleton component (display). Animated loading placeholder that mirrors the shape of pending content\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSkeleton is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-radius-sm, --cascivo-radius-full, --cascivo-radius-component, --cascivo-color-ai-subtle, --cascivo-color-ai-sheen\n\nAccessibility: role \"none\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Background and radius must resolve to --cascivo-* tokens\nFlexible: variant and dimensions.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "SkipNav",
@@ -25397,6 +25844,87 @@
       ],
       "contextUrl": "/context/tree-view.md",
       "aiPrompt": "I am modifying the cascivo TreeView component (display). Hierarchical, expandable tree of nodes with keyboard navigation and selection\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nTreeView is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-tree-indent, --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-radius-control, --cascivo-focus-ring, --cascivo-duration-200, --cascivo-ease-out\n\nAccessibility: role \"tree\", WCAG 2.2-AA, keyboard: */ArrowDown/ArrowUp/ArrowRight/ArrowLeft/Home/End/Enter/Space/Typeahead. Keep it AA.\n\nDo not change (strict): keyboard model — Arrow/Home/End/typeahead behavior follows the APG tree pattern and must not be re-mapped\nFlexible: selectionMode, indent token.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
+      "name": "TypingIndicator",
+      "category": "feedback",
+      "description": "Three bouncing dots that hold a chat message slot while an assistant (or a person) is composing a reply",
+      "intent": {
+        "whenToUse": [
+          "Holding the place of an assistant reply between sending a prompt and the first token arriving",
+          "Showing that another participant in a conversation is composing a message"
+        ],
+        "whenNotToUse": [
+          "Naming what the AI is doing (\"Searching…\", \"Generating…\") or offering Stop — use AiStatus",
+          "Once text has started streaming — render the text; the dots mean nothing has arrived yet",
+          "Non-conversational loading — use Spinner or Skeleton"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Keeping TypingIndicator below a reply that is already streaming",
+            "good": "Swap TypingIndicator for the message content when the first token arrives",
+            "why": "Two progress signals at once compete, and the status region would keep claiming nothing has been written"
+          }
+        ],
+        "related": [
+          {
+            "name": "ChatBubble",
+            "relationship": "contained-by",
+            "reason": "Rendered as the content of a pending assistant ChatBubble"
+          },
+          {
+            "name": "AiStatus",
+            "relationship": "alternative",
+            "reason": "AiStatus names the phase (thinking / generating) and can offer a Stop button"
+          },
+          {
+            "name": "Spinner",
+            "relationship": "alternative",
+            "reason": "Spinner suits loading outside a conversation"
+          }
+        ],
+        "a11yRationale": "role=\"status\" with an accessible name (\"Assistant is typing\") is announced once when the indicator mounts; the dots are aria-hidden. They bounce only under prefers-reduced-motion: no-preference and otherwise rest as a static ellipsis; forced colours paint them CanvasText",
+        "content": {
+          "tone": "Name who is typing — \"Assistant is typing\", \"Ada is typing\""
+        },
+        "flexibility": [
+          {
+            "area": "colour",
+            "level": "flexible",
+            "note": "Override --cascivo-typing-indicator-color (defaults to muted text)"
+          },
+          {
+            "area": "accessible name",
+            "level": "strict",
+            "note": "Keep the status name — the dots alone carry no meaning for assistive tech"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "ariaLabel",
+          "nameVisibility": "invisible",
+          "description": "Accessible name announced by the status region.",
+          "type": "string",
+          "required": false,
+          "default": "Assistant is typing",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "label",
+          "nameVisibility": "invisible",
+          "description": "Alias of `ariaLabel` — the same invisible accessible name. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        }
+      ],
+      "contextUrl": "/context/typing-indicator.md",
+      "aiPrompt": "I am modifying the cascivo TypingIndicator component (feedback). Three bouncing dots that hold a chat message slot while an assistant (or a person) is composing a reply\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nTypingIndicator is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-typing-indicator-color, --cascivo-color-text-muted, --cascivo-radius-full, --cascivo-space-1, --cascivo-space-2, --cascivo-duration-loop-fast, --cascivo-ease-in-out\n\nAccessibility: role \"status\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): accessible name — Keep the status name — the dots alone carry no meaning for assistive tech\nFlexible: colour.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "User",

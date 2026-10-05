@@ -75,7 +75,7 @@ Component names differ from peer systems too. `Switch` IS `Toggle`; `Dialog` IS
 `Modal`. Every mapping below resolves for real — `cascivo add switch` installs
 `toggle`, the MCP `get_component("Dialog")` returns `modal`, and
 `import { Switch } from '@cascivo/react'` compiles.
-Mappings: AvatarStack→AvatarGroup, ChipInput→TagsInput, Chip→Tag, CircularProgress→Spinner, CommandPalette→CommandMenu, ConfirmDialog→AlertDialog, Dialog→Modal, Disclosure→Collapsible, DropdownMenu→Dropdown, EmptyView→EmptyState, Layout→AppShell, LinearProgress→InlineLoading, MoreMenu→OverflowMenu, NavigationDrawer→Drawer, NumberField→NumberInput, PinInput→OtpInput, Placeholder→Skeleton, Popper→Popover, Rating→RatingGroup, SegmentedButton→SegmentedControl, SelectNative→NativeSelect, SideSheet→Sheet, Sidebar→SideNav, Snackbar→Toast, Switch→Toggle, Table→DataTable, ToggleButtonGroup→ToggleGroup.
+Mappings: AILabel→AiBadge, AvatarStack→AvatarGroup, ChipInput→TagsInput, Chip→Tag, CircularProgress→Spinner, CommandPalette→CommandMenu, ConfirmDialog→AlertDialog, Dialog→Modal, Disclosure→Collapsible, DropdownMenu→Dropdown, EmptyView→EmptyState, Layout→AppShell, LinearProgress→InlineLoading, MoreMenu→OverflowMenu, NavigationDrawer→Drawer, NumberField→NumberInput, PinInput→OtpInput, Placeholder→Skeleton, Popper→Popover, Rating→RatingGroup, SegmentedButton→SegmentedControl, SelectNative→NativeSelect, SideSheet→Sheet, Sidebar→SideNav, Snackbar→Toast, Switch→Toggle, Table→DataTable, TextShimmer→ShimmerText, ThinkingBar→AiStatus, Think→Reasoning, ToggleButtonGroup→ToggleGroup, TypingDots→TypingIndicator.
 
 Pure-CSS glyphs (experimental): a small opt-in set of UI glyphs, rendered with
 `clip-path: shape()` and no SVG — color via `currentColor`, size via
@@ -425,7 +425,7 @@ see how components behave without adding tracking, read these machine-readable C
 - Benchmark results (runtime, bundle, render counts vs Carbon/shadcn): https://github.com/cascivo/cascivo/blob/main/apps/bench/results/results.json
 - Accessibility conformance (axe sweep, AT matrix): https://github.com/cascivo/cascivo/tree/main/docs/specs
 
-## Component index (211 entries — 199 components + 12 page blocks)
+## Component index (216 entries — 204 components + 12 page blocks)
 
 Not all ship in `@cascivo/react`: 25 in @cascivo/charts, 10 in @cascivo/flow, 2 in @cascivo/editor — those are separate installs (see Quick Setup). Blocks are copy-paste only. Each entry below is tagged with its channel.
 
@@ -471,6 +471,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 
 ### display
 
+- [ai-badge](https://cascivo.com/llms/ai-badge.md) — Small "AI" marker for AI-generated content; with children it opens a toggletip explaining how AI was involved _(npm @cascivo/react · or copy-paste)_
 - [alert](https://cascivo.com/llms/alert.md) — Highlights a short, important message inline _(npm @cascivo/react · or copy-paste)_
 - [avatar](https://cascivo.com/llms/avatar.md) — Displays a user image with initials fallback _(npm @cascivo/react · or copy-paste)_
 - [avatar-group](https://cascivo.com/llms/avatar-group.md) — Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip _(npm @cascivo/react · or copy-paste)_
@@ -517,6 +518,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [log-viewer](https://cascivo.com/llms/log-viewer.md) — Virtualized monospace console for high-frequency log and stream output _(npm @cascivo/react · or copy-paste)_
 - [prose](https://cascivo.com/llms/prose.md) — Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables _(npm @cascivo/react · or copy-paste)_
 - [qr-code](https://cascivo.com/llms/qr-code.md) — Encodes a URL or short text into a scannable SVG QR code _(npm @cascivo/react · or copy-paste)_
+- [reasoning](https://cascivo.com/llms/reasoning.md) — Collapsible panel for a model’s reasoning — opens and shimmers "Thinking…" while it streams, then settles to "Thought for N seconds" _(npm @cascivo/react · or copy-paste)_
 - [relative-time](https://cascivo.com/llms/relative-time.md) — Displays a date as a localized phrase relative to now, auto-updating _(npm @cascivo/react · or copy-paste)_
 - [separator](https://cascivo.com/llms/separator.md) — Visual or semantic divider between content _(npm @cascivo/react · or copy-paste)_
 - [skeleton](https://cascivo.com/llms/skeleton.md) — Animated loading placeholder that mirrors the shape of pending content _(npm @cascivo/react · or copy-paste)_
@@ -534,6 +536,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 
 ### feedback
 
+- [ai-status](https://cascivo.com/llms/ai-status.md) — Announces what an AI is doing — thinking, generating, done, failed or stopped — with a shimmering label and an optional Stop button _(npm @cascivo/react · or copy-paste)_
 - [infinite-scroll](https://cascivo.com/llms/infinite-scroll.md) — Loads the next page when the end of a list scrolls into view _(npm @cascivo/react · or copy-paste)_
 - [inline-loading](https://cascivo.com/llms/inline-loading.md) — Compact inline status indicator that pairs a label with a loading, success, or error state _(npm @cascivo/react · or copy-paste)_
 - [notification](https://cascivo.com/llms/notification.md) — Inline, actionable notification banner that surfaces a titled message with an optional recovery action _(npm @cascivo/react · or copy-paste)_
@@ -542,7 +545,9 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [progress-circle](https://cascivo.com/llms/progress-circle.md) — Circular determinate progress indicator rendered as an SVG arc _(npm @cascivo/react · or copy-paste)_
 - [pull-to-refresh](https://cascivo.com/llms/pull-to-refresh.md) — Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top _(npm @cascivo/react · or copy-paste)_
 - [radial-progress](https://cascivo.com/llms/radial-progress.md) — Circular progress indicator using conic-gradient, with percentage label and variant colors _(npm @cascivo/react · or copy-paste)_
+- [shimmer-text](https://cascivo.com/llms/shimmer-text.md) — Text with a bright band sweeping through it — the "Thinking…" look for a label that marks work in progress _(npm @cascivo/react · or copy-paste)_
 - [spinner](https://cascivo.com/llms/spinner.md) — Indeterminate loading indicator _(npm @cascivo/react · or copy-paste)_
+- [typing-indicator](https://cascivo.com/llms/typing-indicator.md) — Three bouncing dots that hold a chat message slot while an assistant (or a person) is composing a reply _(npm @cascivo/react · or copy-paste)_
 
 ### inputs
 

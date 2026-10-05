@@ -76,6 +76,30 @@
         "note": "showCancel toggles the separate Cancel button (Escape/outside press still dismiss)"
       }
     ],
+    "AiBadge": [
+      {
+        "area": "explanation content",
+        "level": "flexible",
+        "note": "Any rich content — model name, sources, a link to learn more"
+      },
+      {
+        "area": "pill text",
+        "level": "strict",
+        "note": "Keep it a short AI marker; do not reuse the badge for unrelated labels"
+      }
+    ],
+    "AiStatus": [
+      {
+        "area": "label",
+        "level": "flexible",
+        "note": "Defaults per status come from the i18n catalog; override with label or the labels map"
+      },
+      {
+        "area": "status semantics",
+        "level": "strict",
+        "note": "thinking/generating are in progress (sparkle + shimmer); complete/error/stopped are terminal — do not repurpose"
+      }
+    ],
     "Alert": [
       {
         "area": "variant",
@@ -1253,6 +1277,18 @@
         "note": "max sets the scale and labels.rating customizes the per-star announcement"
       }
     ],
+    "Reasoning": [
+      {
+        "area": "trigger text",
+        "level": "flexible",
+        "note": "Override with label, or localise each state through labels"
+      },
+      {
+        "area": "open behaviour",
+        "level": "strict",
+        "note": "Opens when streaming starts and closes when it ends; do not force it open after the answer arrives"
+      }
+    ],
     "RelativeTime": [
       {
         "area": "format",
@@ -1388,6 +1424,18 @@
         "area": "token names",
         "level": "strict",
         "note": "Surfaces, sizing, and accent must resolve to --cascivo-* shell tokens"
+      }
+    ],
+    "ShimmerText": [
+      {
+        "area": "colours",
+        "level": "flexible",
+        "note": "Override --cascivo-shimmer-text-color and --cascivo-shimmer-text-highlight per instance"
+      },
+      {
+        "area": "motion",
+        "level": "strict",
+        "note": "The sweep must stay inside the reduced-motion opt-in; never animate it unconditionally"
       }
     ],
     "SideNav": [
@@ -1739,6 +1787,18 @@
         "area": "indent token",
         "level": "flexible",
         "note": "Per-level indent is driven by --cascivo-tree-indent and may be overridden"
+      }
+    ],
+    "TypingIndicator": [
+      {
+        "area": "colour",
+        "level": "flexible",
+        "note": "Override --cascivo-typing-indicator-color (defaults to muted text)"
+      },
+      {
+        "area": "accessible name",
+        "level": "strict",
+        "note": "Keep the status name — the dots alone carry no meaning for assistive tech"
       }
     ],
     "User": [

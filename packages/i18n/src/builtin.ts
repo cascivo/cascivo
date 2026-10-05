@@ -215,6 +215,27 @@ export const builtin = {
     you: 'You',
     assistant: 'Assistant',
   }),
+  typingIndicator: defineMessages('cascade.typingIndicator', {
+    label: 'Assistant is typing',
+  }),
+  aiStatus: defineMessages('cascade.aiStatus', {
+    thinking: 'Thinking…',
+    generating: 'Generating a response…',
+    complete: 'Done',
+    error: 'Something went wrong',
+    stopped: 'Stopped',
+    stop: 'Stop',
+  }),
+  reasoning: defineMessages('cascade.reasoning', {
+    thinking: 'Thinking…',
+    thoughtFor: { one: 'Thought for {count} second', other: 'Thought for {count} seconds' },
+    label: 'Reasoning',
+  }),
+  aiBadge: defineMessages('cascade.aiBadge', {
+    text: 'AI',
+    explain: 'Show information',
+    description: 'AI-generated',
+  }),
   shellHeader: defineMessages('cascade.shellHeader', {
     skipToContent: 'Skip to main content',
     nav: 'Main',
@@ -571,6 +592,27 @@ defineCatalog(builtin.ai, 'de', {
   placeholder: 'Nachricht eingeben…',
   you: 'Du',
   assistant: 'Assistent',
+})
+defineCatalog(builtin.typingIndicator, 'de', {
+  label: 'Assistent schreibt',
+})
+defineCatalog(builtin.aiStatus, 'de', {
+  thinking: 'Denkt nach…',
+  generating: 'Antwort wird generiert…',
+  complete: 'Fertig',
+  error: 'Etwas ist schiefgelaufen',
+  stopped: 'Angehalten',
+  stop: 'Anhalten',
+})
+defineCatalog(builtin.reasoning, 'de', {
+  thinking: 'Denkt nach…',
+  thoughtFor: { one: '{count} Sekunde nachgedacht', other: '{count} Sekunden nachgedacht' },
+  label: 'Gedankengang',
+})
+defineCatalog(builtin.aiBadge, 'de', {
+  text: 'KI',
+  explain: 'Informationen anzeigen',
+  description: 'KI-generiert',
 })
 defineCatalog(builtin.shellHeader, 'de', {
   skipToContent: 'Zum Hauptinhalt springen',

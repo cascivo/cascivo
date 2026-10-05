@@ -251,7 +251,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-199 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
+204 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
 
 ### Inputs
 
@@ -300,6 +300,7 @@ routing break after adding one of these, check that the import resolves to
 
 ### Display
 
+- **AiBadge** — Small "AI" marker for AI-generated content; with children it opens a toggletip explaining how AI was involved
 - **Alert** — Highlights a short, important message inline
 - **Avatar** — Displays a user image with initials fallback
 - **AvatarGroup** — Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip
@@ -342,6 +343,7 @@ routing break after adding one of these, check that the import resolves to
 - **PageWithBreadcrumb** — A centered content page with a breadcrumb navigation and page header.
 - **Prose** — Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables
 - **QrCode** — Encodes a URL or short text into a scannable SVG QR code
+- **Reasoning** — Collapsible panel for a model’s reasoning — opens and shimmers "Thinking…" while it streams, then settles to "Thought for N seconds"
 - **RelativeTime** — Displays a date as a localized phrase relative to now, auto-updating
 - **Separator** — Visual or semantic divider between content
 - **SettingsFormPage** — Settings page with profile form inside a two-column settings layout.
@@ -435,6 +437,7 @@ routing break after adding one of these, check that the import resolves to
 
 ### Feedback
 
+- **AiStatus** — Announces what an AI is doing — thinking, generating, done, failed or stopped — with a shimmering label and an optional Stop button
 - **InfiniteScroll** — Loads the next page when the end of a list scrolls into view
 - **InlineLoading** — Compact inline status indicator that pairs a label with a loading, success, or error state
 - **Notification** — Inline, actionable notification banner that surfaces a titled message with an optional recovery action
@@ -443,7 +446,9 @@ routing break after adding one of these, check that the import resolves to
 - **ProgressCircle** — Circular determinate progress indicator rendered as an SVG arc
 - **PullToRefresh** — Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top
 - **RadialProgress** — Circular progress indicator using conic-gradient, with percentage label and variant colors
+- **ShimmerText** — Text with a bright band sweeping through it — the "Thinking…" look for a label that marks work in progress
 - **Spinner** — Indeterminate loading indicator
+- **TypingIndicator** — Three bouncing dots that hold a chat message slot while an assistant (or a person) is composing a reply
 
 ### Charts
 

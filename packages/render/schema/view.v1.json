@@ -92,6 +92,8 @@
           "enum": [
             "Accordion",
             "ActionSheet",
+            "AiBadge",
+            "AiStatus",
             "Alert",
             "AlertDialog",
             "AppFrame",
@@ -231,6 +233,7 @@
             "Radio",
             "RadioCard",
             "RatingGroup",
+            "Reasoning",
             "RelativeTime",
             "ReorderList",
             "Resizable",
@@ -247,6 +250,7 @@
             "ShareMenu",
             "Sheet",
             "ShellHeader",
+            "ShimmerText",
             "SideNav",
             "SidebarApp",
             "Skeleton",
@@ -284,6 +288,7 @@
             "Tooltip",
             "TreeView",
             "Treemap",
+            "TypingIndicator",
             "User",
             "UsersTablePage",
             "VirtualList",
@@ -381,6 +386,57 @@
                   }
                 },
                 "required": ["actions"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "AiBadge"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "AiStatus"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": ["thinking", "generating", "complete", "error", "stopped"]
+                  },
+                  "label": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  }
+                },
+                "required": ["status"]
               }
             }
           }
@@ -3717,6 +3773,40 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Reasoning"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "streaming": {
+                    "type": "boolean"
+                  },
+                  "duration": {
+                    "type": "number"
+                  },
+                  "label": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  }
+                },
+                "required": ["children"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "RelativeTime"
               }
             },
@@ -4124,6 +4214,33 @@
           "if": {
             "properties": {
               "component": {
+                "const": "ShimmerText"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "as": {
+                    "type": "string",
+                    "enum": ["span", "p", "div"]
+                  },
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "SideNav"
               }
             },
@@ -4192,6 +4309,9 @@
                   },
                   "lines": {
                     "type": "number"
+                  },
+                  "ai": {
+                    "type": "boolean"
                   }
                 }
               }
@@ -5091,6 +5211,31 @@
                   }
                 },
                 "required": ["items"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "TypingIndicator"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
+                  }
+                }
               }
             }
           }

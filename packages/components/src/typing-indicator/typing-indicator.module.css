@@ -1,0 +1,41 @@
+@layer cascivo.component {
+  .typing-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascivo-space-1);
+    padding-block: var(--cascivo-space-2);
+    color: var(--cascivo-typing-indicator-color, var(--cascivo-color-text-muted));
+  }
+
+  /* At rest (and under reduced motion) three static dots, which still read as an ellipsis. */
+  .dot {
+    display: block;
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    border-radius: var(--cascivo-radius-full);
+    background-color: currentColor;
+  }
+
+  /* Decorative loop — opt-in, so a user who expresses no preference gets no motion.
+     The stagger is the one `cascivo-dots` documents: 0, 160ms, 320ms. */
+  @media (prefers-reduced-motion: no-preference) {
+    .dot {
+      animation: global(cascivo-dots) var(--cascivo-duration-loop-fast) var(--cascivo-ease-in-out)
+        infinite;
+
+      &:nth-child(2) {
+        animation-delay: 160ms;
+      }
+
+      &:nth-child(3) {
+        animation-delay: 320ms;
+      }
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .dot {
+    background-color: CanvasText;
+  }
+}

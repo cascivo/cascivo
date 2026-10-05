@@ -61,6 +61,70 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "ai-badge",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "ai-badge/ai-badge.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "ai-badge/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "ai-badge/ai-badge.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Small \"AI\" marker for AI-generated content; with children it opens a toggletip explaining how AI was involved",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "registryDependencies": [
+        "https://cascivo.com/r/shadcn/toggletip.json",
+        "https://cascivo.com/r/shadcn/visually-hidden.json"
+      ],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "ai-status",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "ai-status/ai-status.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "ai-status/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "ai-status/ai-status.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Announces what an AI is doing — thinking, generating, done, failed or stopped — with a shimmering label and an optional Stop button",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "registryDependencies": [
+        "https://cascivo.com/r/shadcn/button.json",
+        "https://cascivo.com/r/shadcn/shimmer-text.json"
+      ],
+      "categories": ["feedback"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "alert",
       "type": "registry:component",
       "files": [
@@ -4053,6 +4117,35 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "reasoning",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "reasoning/reasoning.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "reasoning/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "reasoning/reasoning.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Collapsible panel for a model’s reasoning — opens and shimmers \"Thinking…\" while it streams, then settles to \"Thought for N seconds\"",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "registryDependencies": ["https://cascivo.com/r/shadcn/shimmer-text.json"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "relative-time",
       "type": "registry:component",
       "files": [
@@ -4509,6 +4602,34 @@
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "registryDependencies": ["https://cascivo.com/r/shadcn/popover.json"],
       "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "shimmer-text",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "shimmer-text/shimmer-text.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "shimmer-text/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "shimmer-text/shimmer-text.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Text with a bright band sweeping through it — the \"Thinking…\" look for a label that marks work in progress",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["feedback"],
       "meta": {
         "cascivo": {
           "type": "component",
@@ -5300,6 +5421,34 @@
       "description": "Hierarchical, expandable tree of nodes with keyboard navigation and selection",
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "typing-indicator",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "typing-indicator/typing-indicator.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "typing-indicator/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "typing-indicator/typing-indicator.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Three bouncing dots that hold a chat message slot while an assistant (or a person) is composing a reply",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["feedback"],
       "meta": {
         "cascivo": {
           "type": "component",

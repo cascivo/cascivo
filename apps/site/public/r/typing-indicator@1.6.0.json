@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 2,
+  "name": "typing-indicator",
+  "type": "component",
+  "description": "Three bouncing dots that hold a chat message slot while an assistant (or a person) is composing a reply",
+  "version": "1.6.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/typing-indicator/typing-indicator.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/typing-indicator/index.ts"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/typing-indicator/typing-indicator.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["ai", "chat", "typing", "loading", "dots", "thinking"],
+  "category": "feedback",
+  "meta": {
+    "name": "TypingIndicator",
+    "description": "Three bouncing dots that hold a chat message slot while an assistant (or a person) is composing a reply",
+    "category": "feedback",
+    "clientJs": "none",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "ariaLabel",
+        "nameVisibility": "invisible",
+        "description": "Accessible name announced by the status region.",
+        "type": "string",
+        "required": false,
+        "default": "Assistant is typing"
+      },
+      {
+        "name": "label",
+        "nameVisibility": "invisible",
+        "description": "Alias of `ariaLabel` — the same invisible accessible name. Neither is deprecated.",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "tokens": [
+      "--cascivo-typing-indicator-color",
+      "--cascivo-color-text-muted",
+      "--cascivo-radius-full",
+      "--cascivo-space-1",
+      "--cascivo-space-2",
+      "--cascivo-duration-loop-fast",
+      "--cascivo-ease-in-out"
+    ],
+    "accessibility": {
+      "role": "status",
+      "wcag": "2.2-AA",
+      "keyboard": [],
+      "reducedMotion": true,
+      "forcedColors": true
+    },
+    "examples": [
+      {
+        "title": "Default",
+        "code": "<TypingIndicator />"
+      },
+      {
+        "title": "In a chat bubble",
+        "code": "<ChatBubble name=\"Assistant\"><TypingIndicator /></ChatBubble>"
+      },
+      {
+        "title": "A person typing",
+        "code": "<TypingIndicator ariaLabel=\"Ada is typing\" />"
+      }
+    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "tags": ["ai", "chat", "typing", "loading", "dots", "thinking"],
+    "intent": {
+      "whenToUse": [
+        "Holding the place of an assistant reply between sending a prompt and the first token arriving",
+        "Showing that another participant in a conversation is composing a message"
+      ],
+      "whenNotToUse": [
+        "Naming what the AI is doing (\"Searching…\", \"Generating…\") or offering Stop — use AiStatus",
+        "Once text has started streaming — render the text; the dots mean nothing has arrived yet",
+        "Non-conversational loading — use Spinner or Skeleton"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Keeping TypingIndicator below a reply that is already streaming",
+          "good": "Swap TypingIndicator for the message content when the first token arrives",
+          "why": "Two progress signals at once compete, and the status region would keep claiming nothing has been written"
+        }
+      ],
+      "related": [
+        {
+          "name": "ChatBubble",
+          "relationship": "contained-by",
+          "reason": "Rendered as the content of a pending assistant ChatBubble"
+        },
+        {
+          "name": "AiStatus",
+          "relationship": "alternative",
+          "reason": "AiStatus names the phase (thinking / generating) and can offer a Stop button"
+        },
+        {
+          "name": "Spinner",
+          "relationship": "alternative",
+          "reason": "Spinner suits loading outside a conversation"
+        }
+      ],
+      "a11yRationale": "role=\"status\" with an accessible name (\"Assistant is typing\") is announced once when the indicator mounts; the dots are aria-hidden. They bounce only under prefers-reduced-motion: no-preference and otherwise rest as a static ellipsis; forced colours paint them CanvasText",
+      "content": {
+        "tone": "Name who is typing — \"Assistant is typing\", \"Ada is typing\""
+      },
+      "flexibility": [
+        {
+          "area": "colour",
+          "level": "flexible",
+          "note": "Override --cascivo-typing-indicator-color (defaults to muted text)"
+        },
+        {
+          "area": "accessible name",
+          "level": "strict",
+          "note": "Keep the status name — the dots alone carry no meaning for assistive tech"
+        }
+      ]
+    }
+  }
+}

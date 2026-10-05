@@ -76,6 +76,11 @@ import { meta as shellHeaderMeta } from './shell-header/shell-header.meta'
 import { meta as sideNavMeta } from './side-nav/side-nav.meta'
 import { meta as stackMeta } from './stack/stack.meta'
 import { meta as stepsMeta } from './steps/steps.meta'
+import { meta as aiBadgeMeta } from './ai-badge/ai-badge.meta'
+import { meta as aiStatusMeta } from './ai-status/ai-status.meta'
+import { meta as reasoningMeta } from './reasoning/reasoning.meta'
+import { meta as shimmerTextMeta } from './shimmer-text/shimmer-text.meta'
+import { meta as typingIndicatorMeta } from './typing-indicator/typing-indicator.meta'
 import { meta as skeletonMeta } from './skeleton/skeleton.meta'
 import { meta as skipNavMeta } from './skip-nav/skip-nav.meta'
 import { meta as sliderMeta } from './slider/slider.meta'
@@ -201,4 +206,9 @@ export const allMetas: ComponentMeta[] = [
   virtualListMeta,
   wheelPickerMeta,
   visuallyHiddenMeta,
+  aiBadgeMeta,
+  aiStatusMeta,
+  reasoningMeta,
+  shimmerTextMeta,
+  typingIndicatorMeta,
 ]

@@ -338,6 +338,22 @@
       "resolvedDefault": "clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)"
     },
     { "name": "--cascivo-target-min-coarse", "resolvedDefault": "2.75rem" },
+    {
+      "name": "--cascivo-color-ai",
+      "resolvedDefault": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )"
+    },
+    {
+      "name": "--cascivo-color-ai-subtle",
+      "resolvedDefault": "oklch(from var(--cascivo-color-ai) l c h / 10%)"
+    },
+    {
+      "name": "--cascivo-color-ai-border",
+      "resolvedDefault": "oklch(from var(--cascivo-color-ai) l c h / 40%)"
+    },
+    {
+      "name": "--cascivo-color-ai-sheen",
+      "resolvedDefault": "oklch(from var(--cascivo-color-ai) l c h / 22%)"
+    },
     { "name": "--cascivo-color-background", "resolvedDefault": "oklch(1 0 0)" },
     { "name": "--cascivo-color-surface", "resolvedDefault": "oklch(0.985 0.002 264)" },
     { "name": "--cascivo-color-surface-2", "resolvedDefault": "oklch(0.967 0.003 264)" },
@@ -498,6 +514,11 @@
     { "name": "--cascivo-resizable-ratio", "resolvedDefault": "0.5" },
     { "name": "--cascivo-scroll-area-height", "resolvedDefault": "none" },
     { "name": "--cascivo-scroll-area-width", "resolvedDefault": "none" },
+    {
+      "name": "--cascivo-shimmer-text-color",
+      "resolvedDefault": "var(--cascivo-color-text-muted)"
+    },
+    { "name": "--cascivo-shimmer-text-highlight", "resolvedDefault": "var(--cascivo-color-ai)" },
     { "name": "--cascivo-sidenav-bg", "resolvedDefault": "var(--cascivo-color-surface)" },
     { "name": "--cascivo-sidenav-inline-size", "resolvedDefault": "16rem" },
     { "name": "--cascivo-sidenav-rail-inline-size", "resolvedDefault": "4rem" },
@@ -509,6 +530,10 @@
     { "name": "--cascivo-textarea-max-block-size", "resolvedDefault": "20lh" },
     { "name": "--cascivo-tooltip-anchor", "resolvedDefault": "attr(data-anchor)" },
     { "name": "--cascivo-tree-indent", "resolvedDefault": "var(--cascivo-space-5)" },
+    {
+      "name": "--cascivo-typing-indicator-color",
+      "resolvedDefault": "var(--cascivo-color-text-muted)"
+    },
     { "name": "--cascivo-z-dock", "resolvedDefault": "40" }
   ],
   "components": [
@@ -533,6 +558,34 @@
         { "name": "showCancel", "type": "boolean", "required": false },
         { "name": "labels", "type": "{ cancel?: string; label?: string }", "required": false },
         { "name": "className", "type": "string", "required": false }
+      ]
+    },
+    {
+      "name": "AiBadge",
+      "props": [
+        { "name": "children", "type": "ReactNode", "required": false },
+        {
+          "name": "labels",
+          "type": "{ text?: string; explain?: string; description?: string }",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "AiStatus",
+      "props": [
+        {
+          "name": "status",
+          "type": "'thinking' | 'generating' | 'complete' | 'error' | 'stopped'",
+          "required": true
+        },
+        { "name": "label", "type": "ReactNode", "required": false },
+        {
+          "name": "labels",
+          "type": "{ thinking?: string; generating?: string; complete?: string; error?: string; stopped?: string; stop?: string }",
+          "required": false
+        },
+        { "name": "onStop", "type": "() => void", "required": false }
       ]
     },
     {
@@ -1734,6 +1787,20 @@
       ]
     },
     {
+      "name": "Reasoning",
+      "props": [
+        { "name": "children", "type": "ReactNode", "required": true },
+        { "name": "streaming", "type": "boolean", "required": false },
+        { "name": "duration", "type": "number", "required": false },
+        { "name": "label", "type": "ReactNode", "required": false },
+        {
+          "name": "labels",
+          "type": "{ thinking?: string; thoughtFor?: string; label?: string }",
+          "required": false
+        }
+      ]
+    },
+    {
       "name": "RelativeTime",
       "props": [
         { "name": "date", "type": "Date | number | string", "required": true },
@@ -1880,6 +1947,13 @@
       ]
     },
     {
+      "name": "ShimmerText",
+      "props": [
+        { "name": "as", "type": "'span' | 'p' | 'div'", "required": false },
+        { "name": "children", "type": "ReactNode", "required": false }
+      ]
+    },
+    {
       "name": "SideNav",
       "props": [
         { "name": "groups", "type": "SideNavGroup[]", "required": false },
@@ -1912,7 +1986,8 @@
         { "name": "variant", "type": "'text' | 'circle' | 'rect'", "required": false },
         { "name": "width", "type": "string", "required": false },
         { "name": "height", "type": "string", "required": false },
-        { "name": "lines", "type": "number", "required": false }
+        { "name": "lines", "type": "number", "required": false },
+        { "name": "ai", "type": "boolean", "required": false }
       ]
     },
     {
@@ -2251,6 +2326,13 @@
         { "name": "expanded", "type": "string[]", "required": false },
         { "name": "defaultExpanded", "type": "string[]", "required": false },
         { "name": "onExpandedChange", "type": "(expanded: string[]) => void", "required": false }
+      ]
+    },
+    {
+      "name": "TypingIndicator",
+      "props": [
+        { "name": "ariaLabel", "type": "string", "required": false },
+        { "name": "label", "type": "string", "required": false }
       ]
     },
     {
@@ -3657,6 +3739,8 @@
     "data-cascivo-sheet-body"
   ],
   "content": [
+    "AiBadge",
+    "AiStatus",
     "Alert",
     "AlertDialog",
     "Blockquote",
@@ -3683,8 +3767,10 @@
     "PasswordInput",
     "ProgressIndicator",
     "Prose",
+    "Reasoning",
     "Search",
     "ShareMenu",
+    "ShimmerText",
     "SkipNav",
     "Stat",
     "Status",
@@ -3696,6 +3782,7 @@
     "Toc",
     "ToggleGroup",
     "Tooltip",
+    "TypingIndicator",
     "VisuallyHidden"
   ],
   "contentPrimitives": ["Blockquote", "Heading", "Label", "Prose", "Text", "VisuallyHidden"]

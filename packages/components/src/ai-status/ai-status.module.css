@@ -1,0 +1,65 @@
+@layer cascivo.component {
+  .ai-status {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cascivo-space-2);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    line-height: var(--cascivo-leading-none);
+    color: var(--cascivo-color-text);
+
+    &[data-status='complete'] {
+      color: var(--cascivo-color-success-foreground, var(--cascivo-color-success));
+    }
+
+    &[data-status='error'] {
+      color: var(--cascivo-color-destructive);
+    }
+
+    &[data-status='stopped'] {
+      color: var(--cascivo-color-text-muted);
+    }
+  }
+
+  .glyph {
+    display: inline-flex;
+    flex-shrink: 0;
+    inline-size: 1rem;
+    block-size: 1rem;
+
+    & svg {
+      inline-size: 100%;
+      block-size: 100%;
+    }
+
+    [data-status='thinking'] > &,
+    [data-status='generating'] > & {
+      color: var(--cascivo-color-ai);
+    }
+  }
+
+  .label {
+    color: inherit;
+  }
+
+  .stop {
+    margin-inline-start: var(--cascivo-space-1);
+  }
+
+  /* Decorative loop on the glyph only — never on the label, whose contrast must hold. */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-status='thinking'] > .glyph,
+    [data-status='generating'] > .glyph {
+      animation: global(cascivo-pulse) var(--cascivo-duration-loop-slow) var(--cascivo-ease-in-out)
+        infinite;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .ai-status,
+  .ai-status .glyph {
+    color: CanvasText;
+  }
+}

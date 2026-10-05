@@ -276,6 +276,261 @@
     },
     {
       "schemaVersion": 2,
+      "name": "ai-badge",
+      "type": "component",
+      "description": "Small \"AI\" marker for AI-generated content; with children it opens a toggletip explaining how AI was involved",
+      "version": "1.6.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/ai-badge/ai-badge.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/ai-badge/index.ts"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/ai-badge/ai-badge.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["ai", "label", "badge", "provenance", "explainability", "generated"],
+      "category": "display",
+      "registryDependencies": ["toggletip", "visually-hidden"],
+      "meta": {
+        "name": "AiBadge",
+        "description": "Small \"AI\" marker for AI-generated content; with children it opens a toggletip explaining how AI was involved",
+        "category": "display",
+        "clientJs": "none",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "children",
+            "description": "The explanation shown in the toggletip — model, sources, confidence. Omit for a static marker.",
+            "type": "ReactNode",
+            "required": false
+          },
+          {
+            "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n): `text` (the pill, \"AI\"), `explain` (appended to the trigger’s accessible name), `description` (what a screen reader hears for the static marker).",
+            "type": "{ text?: string; explain?: string; description?: string }",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-ai",
+          "--cascivo-color-ai-subtle",
+          "--cascivo-color-ai-border",
+          "--cascivo-color-text",
+          "--cascivo-radius-indicator",
+          "--cascivo-text-xs",
+          "--cascivo-font-semibold"
+        ],
+        "accessibility": {
+          "role": "button",
+          "wcag": "2.2-AA",
+          "keyboard": ["Enter", "Space", "Escape"],
+          "forcedColors": true
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["toggletip", "visually-hidden"],
+        "tags": ["ai", "label", "badge", "provenance", "explainability", "generated"],
+        "intent": {
+          "whenToUse": [
+            "Marking a field, card, table cell or message whose content an AI produced or suggested",
+            "Giving readers an on-demand explanation of how AI was involved (model, sources, confidence)"
+          ],
+          "whenNotToUse": [
+            "Reporting that generation is in progress — use AiStatus",
+            "Generic status or category chips — use Badge or Tag"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "A sparkle icon alone next to AI content",
+              "good": "<AiBadge /> — visible \"AI\" text and an accessible description",
+              "why": "An icon or gradient carries no meaning for assistive tech; the badge names the provenance"
+            }
+          ],
+          "related": [
+            {
+              "name": "Toggletip",
+              "relationship": "contains",
+              "reason": "The explanation opens in a Toggletip anchored to the badge"
+            },
+            {
+              "name": "Badge",
+              "relationship": "alternative",
+              "reason": "Badge is the general-purpose chip; AiBadge is reserved for AI provenance"
+            },
+            {
+              "name": "AiStatus",
+              "relationship": "pairs-with",
+              "reason": "AiStatus reports work in progress; AiBadge marks the finished result"
+            }
+          ],
+          "a11yRationale": "Provenance is carried by text, never by colour: the static marker shows \"AI\" and reads \"AI-generated\"; the interactive one is a button whose accessible name begins with its visible text (\"AI Show information\", WCAG 2.5.3), opening a Toggletip that is dismissable with Escape. Forced colours keep the border and text as CanvasText",
+          "content": {
+            "tone": "Plain and factual — say what the AI did and what the reader should check",
+            "notes": "Keep the pill to \"AI\" (localised); put detail in the explanation"
+          },
+          "flexibility": [
+            {
+              "area": "explanation content",
+              "level": "flexible",
+              "note": "Any rich content — model name, sources, a link to learn more"
+            },
+            {
+              "area": "pill text",
+              "level": "strict",
+              "note": "Keep it a short AI marker; do not reuse the badge for unrelated labels"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
+      "name": "ai-status",
+      "type": "component",
+      "description": "Announces what an AI is doing — thinking, generating, done, failed or stopped — with a shimmering label and an optional Stop button",
+      "version": "1.6.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/ai-status/ai-status.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/ai-status/index.ts"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/ai-status/ai-status.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["ai", "status", "loading", "thinking", "generating", "progress", "stop"],
+      "category": "feedback",
+      "registryDependencies": ["button", "shimmer-text"],
+      "meta": {
+        "name": "AiStatus",
+        "description": "Announces what an AI is doing — thinking, generating, done, failed or stopped — with a shimmering label and an optional Stop button",
+        "category": "feedback",
+        "clientJs": "enhancement",
+        "states": ["thinking", "generating", "complete", "error", "stopped"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "status",
+            "description": "The phase: `thinking` (working, nothing produced yet), `generating` (output is streaming), `complete`, `error`, or `stopped` (the reader pressed Stop).",
+            "type": "'thinking' | 'generating' | 'complete' | 'error' | 'stopped'",
+            "required": true
+          },
+          {
+            "name": "label",
+            "nameVisibility": "visible",
+            "description": "Replaces the default text for the current status, e.g. \"Searching 12 documents…\".",
+            "type": "ReactNode",
+            "required": false
+          },
+          {
+            "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
+            "type": "{ thinking?: string; generating?: string; complete?: string; error?: string; stopped?: string; stop?: string }",
+            "required": false
+          },
+          {
+            "name": "onStop",
+            "description": "Called when the reader presses Stop. When set, a Stop button renders while the status is `thinking` or `generating`.",
+            "type": "() => void",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-ai",
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-success",
+          "--cascivo-color-destructive",
+          "--cascivo-duration-loop-slow"
+        ],
+        "accessibility": {
+          "role": "status",
+          "wcag": "2.2-AA",
+          "keyboard": ["Tab", "Enter", "Space"],
+          "reducedMotion": true,
+          "forcedColors": true
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["button", "shimmer-text"],
+        "tags": ["ai", "status", "loading", "thinking", "generating", "progress", "stop"],
+        "intent": {
+          "whenToUse": [
+            "Telling the reader an AI request is in flight, and which phase it is in (thinking before output, generating while it streams)",
+            "Offering a keyboard-reachable Stop while a response is being produced",
+            "Reporting the terminal outcome of a generation — done, failed or stopped"
+          ],
+          "whenNotToUse": [
+            "Non-AI async work such as saving a form — use InlineLoading",
+            "Holding the place of a chat reply with no text — use TypingIndicator",
+            "Determinate progress with a known percentage — use ProgressBar"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "aria-live on the streaming response text",
+              "good": "<AiStatus status={phase} /> beside the response, which renders silently",
+              "why": "A live region on streaming text re-announces on every token; AiStatus announces each phase change once"
+            },
+            {
+              "bad": "Showing AiStatus for a response that arrives in under a second",
+              "good": "Delay mounting it ~1s so fast responses never flash a loader",
+              "why": "A loader that blinks on and off reads as a glitch and makes a screen reader announce noise"
+            }
+          ],
+          "related": [
+            {
+              "name": "ShimmerText",
+              "relationship": "contains",
+              "reason": "The in-progress label is rendered in ShimmerText"
+            },
+            {
+              "name": "InlineLoading",
+              "relationship": "alternative",
+              "reason": "InlineLoading is the neutral, non-AI save/submit status"
+            },
+            {
+              "name": "TypingIndicator",
+              "relationship": "alternative",
+              "reason": "TypingIndicator is the wordless placeholder inside a chat bubble"
+            },
+            {
+              "name": "Reasoning",
+              "relationship": "pairs-with",
+              "reason": "Reasoning shows the model’s thinking while AiStatus reports the phase"
+            }
+          ],
+          "a11yRationale": "The label lives in a role=\"status\" node holding one stable string per phase, so each phase change is announced once and token-level streaming never is. The glyph is aria-hidden and only it pulses (under prefers-reduced-motion: no-preference), so the label never drops below contrast. Stop is a real button outside the status node, so pressing it does not re-announce; forced colours render everything CanvasText",
+          "content": {
+            "tone": "Present progressive while working (\"Thinking…\", \"Searching the docs…\"), terse when done (\"Done\", \"Stopped\")",
+            "notes": "Name the specific work when you can; keep it to one line"
+          },
+          "flexibility": [
+            {
+              "area": "label",
+              "level": "flexible",
+              "note": "Defaults per status come from the i18n catalog; override with label or the labels map"
+            },
+            {
+              "area": "status semantics",
+              "level": "strict",
+              "note": "thinking/generating are in progress (sparkle + shimmer); complete/error/stopped are terminal — do not repurpose"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "alert",
       "type": "component",
       "description": "Highlights a short, important message inline",
@@ -22402,6 +22657,143 @@
     },
     {
       "schemaVersion": 2,
+      "name": "reasoning",
+      "type": "component",
+      "description": "Collapsible panel for a model’s reasoning — opens and shimmers \"Thinking…\" while it streams, then settles to \"Thought for N seconds\"",
+      "version": "1.6.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/reasoning/reasoning.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/reasoning/index.ts"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/reasoning/reasoning.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["ai", "reasoning", "thinking", "chain-of-thought", "disclosure", "collapsible"],
+      "category": "display",
+      "registryDependencies": ["shimmer-text"],
+      "meta": {
+        "name": "Reasoning",
+        "description": "Collapsible panel for a model’s reasoning — opens and shimmers \"Thinking…\" while it streams, then settles to \"Thought for N seconds\"",
+        "category": "display",
+        "clientJs": "none",
+        "states": ["streaming", "settled"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "children",
+            "description": "The reasoning text or steps.",
+            "type": "ReactNode",
+            "required": true
+          },
+          {
+            "name": "streaming",
+            "description": "True while reasoning is still arriving: the panel opens, the trigger shimmers \"Thinking…\" and the content is aria-busy. Turning it off closes the panel.",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "duration",
+            "description": "Seconds spent reasoning. Once streaming ends the trigger reads \"Thought for {duration} seconds\"; without it, \"Reasoning\". The caller owns the clock.",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "nameVisibility": "visible",
+            "description": "Replaces the trigger text in every state.",
+            "type": "ReactNode",
+            "required": false
+          },
+          {
+            "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n). `thoughtFor` may contain `{count}`.",
+            "type": "{ thinking?: string; thoughtFor?: string; label?: string }",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-ai",
+          "--cascivo-color-ai-border",
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-focus-ring",
+          "--cascivo-duration-200",
+          "--cascivo-duration-loop-slow"
+        ],
+        "accessibility": {
+          "role": "button",
+          "wcag": "2.2-AA",
+          "keyboard": ["Enter", "Space"],
+          "apgPattern": "disclosure",
+          "reducedMotion": true,
+          "forcedColors": true
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["shimmer-text"],
+        "tags": ["ai", "reasoning", "thinking", "chain-of-thought", "disclosure", "collapsible"],
+        "intent": {
+          "whenToUse": [
+            "Showing a model’s reasoning or thinking trace above its answer, collapsed once the answer arrives",
+            "Giving readers an opt-in look at how an AI reached a result without cluttering the reply"
+          ],
+          "whenNotToUse": [
+            "General show/hide content — use Collapsible or Accordion",
+            "A sequence of discrete agent steps with their own status — use Steps or Timeline",
+            "Reporting the phase of a request — use AiStatus"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Wrapping the reasoning text in aria-live so it is read as it streams",
+              "good": "<Reasoning streaming> — the content is aria-busy and silent; pair it with AiStatus for the phase",
+              "why": "Announcing every token of a reasoning trace drowns out everything else"
+            }
+          ],
+          "related": [
+            {
+              "name": "ShimmerText",
+              "relationship": "contains",
+              "reason": "The streaming trigger label is ShimmerText"
+            },
+            {
+              "name": "AiStatus",
+              "relationship": "pairs-with",
+              "reason": "AiStatus announces the phase while Reasoning holds the trace"
+            },
+            {
+              "name": "Collapsible",
+              "relationship": "alternative",
+              "reason": "Collapsible is the general-purpose disclosure"
+            }
+          ],
+          "a11yRationale": "Built on native <details>/<summary>, so the trigger is a keyboard-operable disclosure (Enter/Space) with its expanded state exposed by the browser, it works before hydration, and find-in-page can open it. The content carries aria-busy while streaming and is never a live region; the sparkle is decorative and pulses only under prefers-reduced-motion: no-preference",
+          "content": {
+            "tone": "The trigger names the state — \"Thinking…\" while working, \"Thought for 12 seconds\" after"
+          },
+          "flexibility": [
+            {
+              "area": "trigger text",
+              "level": "flexible",
+              "note": "Override with label, or localise each state through labels"
+            },
+            {
+              "area": "open behaviour",
+              "level": "strict",
+              "note": "Opens when streaming starts and closes when it ends; do not force it open after the answer arrives"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "relative-time",
       "type": "component",
       "description": "Displays a date as a localized phrase relative to now, auto-updating",
@@ -24676,6 +25068,120 @@
     },
     {
       "schemaVersion": 2,
+      "name": "shimmer-text",
+      "type": "component",
+      "description": "Text with a bright band sweeping through it — the \"Thinking…\" look for a label that marks work in progress",
+      "version": "1.6.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shimmer-text/shimmer-text.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shimmer-text/index.ts"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shimmer-text/shimmer-text.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["ai", "loading", "shimmer", "thinking", "text", "progress"],
+      "category": "feedback",
+      "meta": {
+        "name": "ShimmerText",
+        "description": "Text with a bright band sweeping through it — the \"Thinking…\" look for a label that marks work in progress",
+        "category": "feedback",
+        "clientJs": "none",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "as",
+            "description": "`span` for inline text, `p` for a paragraph, `div` for a block that imposes no semantics of its own.",
+            "type": "'span' | 'p' | 'div'",
+            "required": false,
+            "default": "span"
+          },
+          {
+            "name": "children",
+            "description": "The label text the shimmer sweeps through.",
+            "type": "ReactNode",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-shimmer-text-color",
+          "--cascivo-shimmer-text-highlight",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-ai",
+          "--cascivo-duration-loop-slow"
+        ],
+        "accessibility": {
+          "role": "none",
+          "wcag": "2.2-AA",
+          "keyboard": [],
+          "reducedMotion": true,
+          "forcedColors": true
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["ai", "loading", "shimmer", "thinking", "text", "progress"],
+        "intent": {
+          "whenToUse": [
+            "Styling a short label that names work in progress — \"Thinking…\", \"Searching the docs…\"",
+            "The trigger or heading of an AI surface while a response is being produced"
+          ],
+          "whenNotToUse": [
+            "Announcing status to assistive tech on its own — it is a visual treatment; wrap it in AiStatus or another role=\"status\" region",
+            "Body copy or anything longer than a line — the sweep is meant for a glanceable label",
+            "Placeholder for content whose shape is known — use Skeleton"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<ShimmerText>Done</ShimmerText> left in place after the work finishes",
+              "good": "Render plain text once the work completes",
+              "why": "The shimmer means \"in progress\"; leaving it on a finished label tells the reader something is still happening"
+            }
+          ],
+          "related": [
+            {
+              "name": "AiStatus",
+              "relationship": "contained-by",
+              "reason": "AiStatus renders its in-progress label in ShimmerText inside a role=\"status\" region"
+            },
+            {
+              "name": "Reasoning",
+              "relationship": "contained-by",
+              "reason": "Reasoning shimmers its \"Thinking…\" trigger while streaming"
+            },
+            {
+              "name": "Skeleton",
+              "relationship": "alternative",
+              "reason": "Skeleton previews the shape of pending content; ShimmerText styles a label that names the work"
+            }
+          ],
+          "a11yRationale": "Purely visual: the text stays real text, so it is read normally and never announced on its own. The sweep runs only under prefers-reduced-motion: no-preference (otherwise plain muted text), and forced colours render it as CanvasText. The highlight band is the AI hue, which clears AA on every shipped theme and is never weaker than the muted base it sweeps over, so the sweep never lowers contrast",
+          "content": {
+            "tone": "Present progressive and specific — \"Thinking…\", \"Reading 3 files…\"",
+            "notes": "One line; end with an ellipsis to reinforce that the work is ongoing"
+          },
+          "flexibility": [
+            {
+              "area": "colours",
+              "level": "flexible",
+              "note": "Override --cascivo-shimmer-text-color and --cascivo-shimmer-text-highlight per instance"
+            },
+            {
+              "area": "motion",
+              "level": "strict",
+              "note": "The sweep must stay inside the reduced-motion opt-in; never animate it unconditionally"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "side-nav",
       "type": "component",
       "description": "Collapsible sidebar navigation with optional icons and one level of grouping",
@@ -24884,7 +25390,7 @@
         }
       ],
       "dependencies": ["@cascivo/core"],
-      "tags": ["loading", "placeholder", "shimmer"],
+      "tags": ["loading", "placeholder", "shimmer", "ai"],
       "category": "display",
       "meta": {
         "name": "Skeleton",
@@ -24920,6 +25426,13 @@
             "required": false,
             "default": "1",
             "description": "Number of bars for the text variant; the last bar renders shorter"
+          },
+          {
+            "name": "ai",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Tints the placeholder and its sheen with the AI hue, marking content that an AI is generating (Carbon’s AI skeleton)."
           }
         ],
         "tokens": [
@@ -24927,7 +25440,9 @@
           "--cascivo-color-bg-subtle",
           "--cascivo-radius-sm",
           "--cascivo-radius-full",
-          "--cascivo-radius-component"
+          "--cascivo-radius-component",
+          "--cascivo-color-ai-subtle",
+          "--cascivo-color-ai-sheen"
         ],
         "accessibility": {
           "role": "none",
@@ -24936,12 +25451,13 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
-        "tags": ["loading", "placeholder", "shimmer"],
+        "tags": ["loading", "placeholder", "shimmer", "ai"],
         "intent": {
           "whenToUse": [
             "Indicating loading by mirroring the shape of the content that will appear",
             "Reducing layout shift while data for a known structure is fetching",
-            "Loading larger content regions where shape preview reassures the user"
+            "Loading larger content regions where shape preview reassures the user",
+            "Holding the place of a response an AI is still generating — set `ai`"
           ],
           "whenNotToUse": [
             "Indeterminate work with no known content shape — use Spinner",
@@ -28539,6 +29055,123 @@
               "area": "indent token",
               "level": "flexible",
               "note": "Per-level indent is driven by --cascivo-tree-indent and may be overridden"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
+      "name": "typing-indicator",
+      "type": "component",
+      "description": "Three bouncing dots that hold a chat message slot while an assistant (or a person) is composing a reply",
+      "version": "1.6.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/typing-indicator/typing-indicator.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/typing-indicator/index.ts"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/typing-indicator/typing-indicator.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["ai", "chat", "typing", "loading", "dots", "thinking"],
+      "category": "feedback",
+      "meta": {
+        "name": "TypingIndicator",
+        "description": "Three bouncing dots that hold a chat message slot while an assistant (or a person) is composing a reply",
+        "category": "feedback",
+        "clientJs": "none",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Accessible name announced by the status region.",
+            "type": "string",
+            "required": false,
+            "default": "Assistant is typing"
+          },
+          {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-typing-indicator-color",
+          "--cascivo-color-text-muted",
+          "--cascivo-radius-full",
+          "--cascivo-space-1",
+          "--cascivo-space-2",
+          "--cascivo-duration-loop-fast",
+          "--cascivo-ease-in-out"
+        ],
+        "accessibility": {
+          "role": "status",
+          "wcag": "2.2-AA",
+          "keyboard": [],
+          "reducedMotion": true,
+          "forcedColors": true
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["ai", "chat", "typing", "loading", "dots", "thinking"],
+        "intent": {
+          "whenToUse": [
+            "Holding the place of an assistant reply between sending a prompt and the first token arriving",
+            "Showing that another participant in a conversation is composing a message"
+          ],
+          "whenNotToUse": [
+            "Naming what the AI is doing (\"Searching…\", \"Generating…\") or offering Stop — use AiStatus",
+            "Once text has started streaming — render the text; the dots mean nothing has arrived yet",
+            "Non-conversational loading — use Spinner or Skeleton"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Keeping TypingIndicator below a reply that is already streaming",
+              "good": "Swap TypingIndicator for the message content when the first token arrives",
+              "why": "Two progress signals at once compete, and the status region would keep claiming nothing has been written"
+            }
+          ],
+          "related": [
+            {
+              "name": "ChatBubble",
+              "relationship": "contained-by",
+              "reason": "Rendered as the content of a pending assistant ChatBubble"
+            },
+            {
+              "name": "AiStatus",
+              "relationship": "alternative",
+              "reason": "AiStatus names the phase (thinking / generating) and can offer a Stop button"
+            },
+            {
+              "name": "Spinner",
+              "relationship": "alternative",
+              "reason": "Spinner suits loading outside a conversation"
+            }
+          ],
+          "a11yRationale": "role=\"status\" with an accessible name (\"Assistant is typing\") is announced once when the indicator mounts; the dots are aria-hidden. They bounce only under prefers-reduced-motion: no-preference and otherwise rest as a static ellipsis; forced colours paint them CanvasText",
+          "content": {
+            "tone": "Name who is typing — \"Assistant is typing\", \"Ada is typing\""
+          },
+          "flexibility": [
+            {
+              "area": "colour",
+              "level": "flexible",
+              "note": "Override --cascivo-typing-indicator-color (defaults to muted text)"
+            },
+            {
+              "area": "accessible name",
+              "level": "strict",
+              "note": "Keep the status name — the dots alone carry no meaning for assistive tech"
             }
           ]
         }

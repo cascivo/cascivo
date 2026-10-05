@@ -74,6 +74,35 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
   ],
+  AiBadge: [
+    {
+      name: 'children',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+  ],
+  AiStatus: [
+    {
+      name: 'status',
+      required: true,
+      enum: ['thinking', 'generating', 'complete', 'error', 'stopped'],
+    },
+    {
+      name: 'label',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+    {
+      name: 'onStop',
+      required: false,
+    },
+  ],
   Alert: [
     {
       name: 'variant',
@@ -5634,6 +5663,30 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
   ],
+  Reasoning: [
+    {
+      name: 'children',
+      required: true,
+    },
+    {
+      name: 'streaming',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'duration',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'label',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+  ],
   RelativeTime: [
     {
       name: 'date',
@@ -6168,6 +6221,17 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
   ],
+  ShimmerText: [
+    {
+      name: 'as',
+      required: false,
+      enum: ['span', 'p', 'div'],
+    },
+    {
+      name: 'children',
+      required: false,
+    },
+  ],
   SideNav: [
     {
       name: 'groups',
@@ -6256,6 +6320,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'lines',
       required: false,
       primitives: ['number'],
+    },
+    {
+      name: 'ai',
+      required: false,
+      primitives: ['boolean'],
     },
   ],
   SkipNav: [
@@ -7324,6 +7393,18 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'plain',
       required: false,
       primitives: ['boolean'],
+    },
+  ],
+  TypingIndicator: [
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
     },
   ],
   User: [
