@@ -4,10 +4,13 @@
  * One list for every surface a guide is published to: the raw `/docs/<slug>.md` mirror
  * (`generate.ts`), the rendered `/docs/guides/<slug>` pages (`apps/site`'s guides plugin) and
  * the sitemap. A guide added here appears on all three.
+ *
+ * `route` serves a guide at an existing docs URL instead of `/docs/guides/<slug>` — the guide
+ * replaced a hand-built page there, and the URL is linked from too many places to move.
  */
-export const GUIDES: { src: string; slug: string }[] = [
-  { src: 'GETTING-STARTED.md', slug: 'getting-started' },
-  { src: 'UPGRADING.md', slug: 'upgrading' },
+export const GUIDES: { src: string; slug: string; route?: string }[] = [
+  { src: 'GETTING-STARTED.md', slug: 'getting-started', route: '/docs/getting-started' },
+  { src: 'UPGRADING.md', slug: 'upgrading', route: '/docs/upgrading' },
   { src: 'THEMING.md', slug: 'theming' },
   { src: 'HEADLESS.md', slug: 'headless' },
   { src: 'COMPATIBILITY.md', slug: 'compatibility' },

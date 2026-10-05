@@ -2,10 +2,16 @@ import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import type { Heading } from '@docspack/sheaf'
 import { DocsArticle, DocsPager, DocsToc, findPage } from '@docspack/sheaf-react'
 import '@docspack/sheaf-react/styles.css'
-import { graph, loadGuide } from 'virtual:cascivo-guides'
+import { graph, loadGuide, routes } from 'virtual:cascivo-guides'
+import { redirect } from '../router'
 import { DocsNotFound } from './DocsNotFound'
 
 const BASE = '/docs/guides'
+
+/** Where a guide is served: a page it replaced keeps that page's URL. */
+function hrefFor(slug: string): string {
+  return routes[slug] ?? `${BASE}/${slug}`
+}
 
 /** /docs/guides — every curated guide, in reading order. */
 export function GuidesIndexPage() {
@@ -22,7 +28,7 @@ export function GuidesIndexPage() {
       <ul class="guide-index">
         {graph.pages.map((page) => (
           <li key={page.slug}>
-            <a href={`${BASE}/${page.slug}`}>{page.title}</a>
+            <a href={hrefFor(page.slug)}>{page.title}</a>
             {page.summary && <p class="muted">{page.summary}</p>}
           </li>
         ))}
@@ -80,4 +86,26 @@ export function GuidePage({ slug }: { slug: string }) {
       )}
     </div>
   )
+}
+
+/** /docs/getting-started and /docs/upgrading: the guides that replaced the hand-built pages. */
+export function GettingStartedGuide() {
+  return <GuidePage key="getting-started" slug="getting-started" />
+}
+
+export function UpgradingGuide() {
+  return <GuidePage key="upgrading" slug="upgrading" />
+}
+
+/**
+ * /docs/guides/<slug> for a guide served at its own route. The static host 301s these
+ * (public/_redirects); this covers in-app links, such as the pager's, which build
+ * /docs/guides/<slug> for every page. In an effect, not during render: it writes the router's
+ * signal, which DocsApp reads.
+ */
+export function GuideRedirect({ to }: { to: string }) {
+  useSignalEffect(() => {
+    redirect(to)
+  })
+  return null
 }

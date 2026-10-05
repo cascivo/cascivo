@@ -115,7 +115,10 @@ const entries = [
     .filter((c) => (c.type ?? 'component') === 'component')
     .map((c) => urlEntry(`${SITE_URL}/accessibility/${c.name}`, '0.6')),
   ...THEME_ORDER.map((theme) => urlEntry(`${SITE_URL}/docs/themes/${theme}`, '0.6')),
-  ...GUIDES.map((g) => urlEntry(`${SITE_URL}/docs/guides/${g.slug}`, '0.6')),
+  // A guide with its own `route` is already listed under that static docs route.
+  ...GUIDES.filter((g) => !g.route).map((g) =>
+    urlEntry(`${SITE_URL}/docs/guides/${g.slug}`, '0.6'),
+  ),
   // /blog isn't in PRERENDER_ROUTES (see vite.config.ts — it gets a real
   // post-list body instead of the generic thin one), so it's not covered by
   // marketingRoutes above; add it and every post explicitly. lastmod comes

@@ -23,7 +23,6 @@ import { applyDocsSeo } from './seo'
 import { currentPath } from './router'
 import { Header } from './marketing/sections/Header'
 import { Home } from './pages/Home'
-import { GettingStartedPage } from './pages/GettingStartedPage'
 import { InstallationPage } from './pages/InstallationPage'
 import { DocsNotFound } from './pages/DocsNotFound'
 import { AiPage } from './pages/AiPage'
@@ -41,7 +40,6 @@ import { KeyboardReferencePage } from './pages/KeyboardReferencePage'
 import { PlatformPage } from './pages/PlatformPage'
 import { FaqPage } from './pages/FaqPage'
 import { ChangelogPage } from './pages/ChangelogPage'
-import { UpgradingPage } from './pages/UpgradingPage'
 import { PerfDataTable } from './pages/PerfDataTable'
 import { PlaygroundPage } from './pages/PlaygroundPage'
 import { Benchmarks } from './pages/Benchmarks'
@@ -56,7 +54,14 @@ import { ParityPage } from './pages/ParityPage'
 import { MigratingPage } from './pages/MigratingPage'
 import { BrandPage } from './pages/BrandPage'
 import { CliPage } from './pages/CliPage'
-import { GuidePage, GuidesIndexPage } from './pages/GuidePage'
+import {
+  GettingStartedGuide,
+  GuidePage,
+  GuideRedirect,
+  GuidesIndexPage,
+  UpgradingGuide,
+} from './pages/GuidePage'
+import { routes as guideRoutes } from 'virtual:cascivo-guides'
 
 // Singleton shell state — persisted across navigations.
 const shell = createShellState({ persistKey: 'cascivo.docs.shell' })
@@ -65,14 +70,14 @@ const shell = createShellState({ persistKey: 'cascivo.docs.shell' })
 const DOCS_ROUTES: Record<string, ComponentType> = {
   '/docs': Home,
   '/docs/installation': InstallationPage,
-  '/docs/getting-started': GettingStartedPage,
+  '/docs/getting-started': GettingStartedGuide,
   '/docs/components': ComponentsIndexPage,
   '/docs/api': ApiReferencePage,
   '/docs/keyboard': KeyboardReferencePage,
   '/docs/platform': PlatformPage,
   '/docs/faq': FaqPage,
   '/docs/changelog': ChangelogPage,
-  '/docs/upgrading': UpgradingPage,
+  '/docs/upgrading': UpgradingGuide,
   '/docs/ai': AiPage,
   '/docs/charts': ChartsPage,
   '/docs/editor': EditorPage,
@@ -159,6 +164,8 @@ function pageFor(path: string) {
   }
   if (path.startsWith('/docs/guides/')) {
     const slug = decodeURIComponent(path.slice('/docs/guides/'.length).replace(/\/+$/, ''))
+    const moved = guideRoutes[slug]
+    if (moved) return <GuideRedirect to={moved} />
     // Keyed: guide → guide navigation mounts a fresh page that loads its own HTML.
     return <GuidePage key={slug} slug={slug} />
   }

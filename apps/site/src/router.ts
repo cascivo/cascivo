@@ -23,6 +23,12 @@ export function navigate(href: string) {
   }
 }
 
+/** Like `navigate`, but replaces the history entry: for a URL that has moved. */
+export function redirect(href: string) {
+  history.replaceState(null, '', href)
+  currentPath.value = normPath(new URL(href, location.origin).pathname)
+}
+
 /**
  * Scroll to an in-page anchor, tolerating lazy-rendered routes: the target may
  * not exist on the first frame (the destination page is a lazy chunk), so retry

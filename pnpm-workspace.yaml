@@ -62,6 +62,7 @@ catalog:
   '@docspack/sheaf-react': ^0.4.1
   '@docspack/sheaf': ^0.4.1
   '@docspack/sheaf-html': ^0.4.1
+  '@shikijs/rehype': ^4.2.0
 
 overrides:
   vite: 'npm:@voidzero-dev/vite-plus-core@0.2.1'

@@ -20,6 +20,22 @@ import { fileURLToPath } from 'node:url'
 import type { ContentGraph, Page } from '@docspack/sheaf'
 import { graphFromSources } from '@docspack/sheaf'
 import { createPageRenderer } from '@docspack/sheaf-html'
+import rehypeShikiFromHighlighter from '@shikijs/rehype/core'
+import { createHighlighterCore } from 'shiki/core'
+import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
+import astro from 'shiki/langs/astro.mjs'
+import css from 'shiki/langs/css.mjs'
+import handlebars from 'shiki/langs/handlebars.mjs'
+import htmlLang from 'shiki/langs/html.mjs'
+import javascript from 'shiki/langs/javascript.mjs'
+import json from 'shiki/langs/json.mjs'
+import jsonc from 'shiki/langs/jsonc.mjs'
+import markdown from 'shiki/langs/markdown.mjs'
+import shellscript from 'shiki/langs/shellscript.mjs'
+import tsx from 'shiki/langs/tsx.mjs'
+import typescript from 'shiki/langs/typescript.mjs'
+import yaml from 'shiki/langs/yaml.mjs'
+import githubDark from 'shiki/themes/github-dark.mjs'
 import type { Plugin } from 'vite-plus'
 import { GUIDES } from '../../scripts/docs-md/guides.ts'
 
@@ -41,6 +57,12 @@ export interface RenderedGuides {
 }
 
 const slugBySrc = new Map(GUIDES.map((g) => [g.src, g.slug]))
+const routeBySlug = new Map(GUIDES.flatMap((g) => (g.route ? [[g.slug, g.route] as const] : [])))
+
+/** Where a guide is served: its own `route` (a page it replaced) or `/docs/guides/<slug>`. */
+export function guideRoute(slug: string): string {
+  return routeBySlug.get(slug) ?? `${GUIDES_BASE}/${slug}`
+}
 
 /** Inline code and emphasis markers dropped: the text a reader sees. */
 function plainText(markdown: string): string {
@@ -85,10 +107,45 @@ let cached: Promise<RenderedGuides> | undefined
 export function renderGuides(): Promise<RenderedGuides> {
   cached ??= (async () => {
     const graph = buildGuideGraph()
+    // Only the languages the guides use, on shiki's JavaScript engine — the same setup as the
+    // site's own CodeBlock. The full bundle loads every grammar and took a build from 1 s to 12 s.
+    const highlighter = await createHighlighterCore({
+      themes: [githubDark],
+      langs: [
+        astro,
+        css,
+        handlebars,
+        htmlLang,
+        javascript,
+        json,
+        jsonc,
+        markdown,
+        shellscript,
+        tsx,
+        typescript,
+        yaml,
+      ],
+      engine: createJavaScriptRegexEngine(),
+    })
     const render = createPageRenderer({
+      // Highlighted at build time with the theme and AA fix CodeBlock uses, so a guide's code
+      // reads like every other sample on the site and the page ships no highlighter.
+      rehypePlugins: [
+        [
+          rehypeShikiFromHighlighter,
+          highlighter,
+          {
+            theme: 'github-dark',
+            // github-dark's comment grey is 3.05:1 on its own background; same remap as CodeBlock.
+            colorReplacements: { '#6a737d': '#9aa5b1' },
+            // A fence in a language not loaded above stays a plain block rather than failing.
+            fallbackLanguage: 'text',
+          },
+        ],
+      ],
       links: {
         graph,
-        target: (page) => `${GUIDES_BASE}/${page.slug}`,
+        target: (page) => guideRoute(page.slug),
         resolve: (path) => repoUrl(path),
       },
     })
@@ -128,6 +185,7 @@ export function guidesData(): Plugin {
           .join('\n')
         return [
           `export const graph = ${JSON.stringify(lightGraph(graph))}`,
+          `export const routes = ${JSON.stringify(Object.fromEntries(routeBySlug))}`,
           `const loaders = {\n${loaders}\n}`,
           'export function loadGuide(slug) {',
           // Own keys only: a slug from the URL must not reach `constructor` and friends.

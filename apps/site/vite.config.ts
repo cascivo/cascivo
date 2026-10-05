@@ -24,7 +24,7 @@ import {
 } from './src/accessibility-guide-head'
 import { componentOgImage, componentTitle } from './src/component-head'
 import { POSTS } from './src/blog'
-import { GUIDES_BASE, guidesData, renderGuides } from './guides'
+import { GUIDES_BASE, guideRoute, guidesData, renderGuides } from './guides'
 import type { BlogBlock, BlogPost } from './src/blog/types'
 import { ROUTE_HEAD, canonicalFor, PRERENDER_ROUTES } from './src/marketing/route-head'
 import {
@@ -203,13 +203,6 @@ const DOCS_STATIC_PRERENDER: { path: string; title: string; description: string;
       description:
         'Install cascivo: scaffold a new app, use the prebuilt @cascivo/react package, or copy component source into your repo with the CLI.',
       body: `<main><h1>Installing cascivo</h1><p>Two ways to adopt cascivo — they share the same tokens and themes and can coexist.</p>${DOCS_INSTALL_BODY}</main>`,
-    },
-    {
-      path: '/docs/getting-started',
-      title: 'Getting started — cascivo docs',
-      description:
-        'The fastest path into cascivo — scaffold an app, install the prebuilt package, or copy-paste components with the CLI, plus theming and framework setup.',
-      body: `<main><h1>Getting started with cascivo</h1>${DOCS_INSTALL_BODY}</main>`,
     },
   ]
 
@@ -635,7 +628,7 @@ function renderGuidesIndexBody(
   const items = pages
     .map(
       (p) =>
-        `<li><a href="${GUIDES_BASE}/${e(p.slug)}">${e(p.title)}</a>` +
+        `<li><a href="${e(guideRoute(p.slug))}">${e(p.title)}</a>` +
         (p.summary ? ` — ${e(p.summary)}` : '') +
         `</li>`,
     )
@@ -773,11 +766,11 @@ function prerenderPages(): Plugin {
         )
       }
 
-      // Static docs entry points (/docs, /docs/installation,
-      // /docs/getting-started) — real SPA routes whose body was an empty shell,
-      // so the apex host served no readable content (and 404'd on a plain
-      // fetch). Prerender a real install-focused body; the SPA still hydrates
-      // over it client-side.
+      // Static docs entry points (/docs, /docs/installation) — real SPA routes
+      // whose body was an empty shell, so the apex host served no readable
+      // content (and 404'd on a plain fetch). Prerender a real install-focused
+      // body; the SPA still hydrates over it client-side. /docs/getting-started
+      // is a rendered guide now and gets its full article with the guides below.
       for (const doc of DOCS_STATIC_PRERENDER) {
         const canonical = canonicalFor(doc.path)
         const html = rewriteHead(shell, {
@@ -813,9 +806,11 @@ function prerenderPages(): Plugin {
         'Setup, theming, framework integration and recipes for cascivo.',
         renderGuidesIndexBody(guides.graph.pages),
       )
+      // A guide with its own `route` (it replaced a hand-built page) is written only there:
+      // public/_redirects 301s its /docs/guides/<slug>, and a real file would win over that.
       for (const page of guides.graph.pages) {
         writeDocsRoute(
-          `${GUIDES_BASE}/${page.slug}`,
+          guideRoute(page.slug),
           `${page.title} — cascivo docs`,
           page.summary,
           renderGuideBody(page.title, page.slug, guides.html.get(page.slug) ?? ''),

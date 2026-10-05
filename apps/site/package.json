@@ -49,6 +49,7 @@
     "@docspack/sheaf": "catalog:",
     "@docspack/sheaf-html": "catalog:",
     "@playwright/test": "catalog:",
+    "@shikijs/rehype": "catalog:",
     "@types/node": "catalog:",
     "shiki": "catalog:",
     "typescript": "catalog:",
