@@ -1,0 +1,27 @@
+@layer cascivo.component {
+  .actions {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cascivo-space-1);
+    color: var(--cascivo-color-text-muted);
+  }
+
+  /* A vertical mirror, not a rotation: the glyph is drawn once, and nothing here turns. */
+  .down {
+    scale: 1 -1;
+  }
+
+  .rate {
+    &[data-active] {
+      color: var(--cascivo-color-ai);
+      background-color: var(--cascivo-color-ai-subtle);
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .rate[data-active] {
+    outline: 2px solid Highlight;
+  }
+}

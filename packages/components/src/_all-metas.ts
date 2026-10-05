@@ -83,6 +83,11 @@ import { meta as toolCallMeta } from './tool-call/tool-call.meta'
 import { meta as aiDisclaimerMeta } from './ai-disclaimer/ai-disclaimer.meta'
 import { meta as inlineCitationMeta } from './inline-citation/inline-citation.meta'
 import { meta as sourcesMeta } from './sources/sources.meta'
+import { meta as contextMeterMeta } from './context-meter/context-meter.meta'
+import { meta as messageActionsMeta } from './message-actions/message-actions.meta'
+import { meta as promptSuggestionsMeta } from './prompt-suggestions/prompt-suggestions.meta'
+import { meta as streamingTextMeta } from './streaming-text/streaming-text.meta'
+import { meta as terminalMeta } from './terminal/terminal.meta'
 import { meta as reasoningMeta } from './reasoning/reasoning.meta'
 import { meta as shimmerTextMeta } from './shimmer-text/shimmer-text.meta'
 import { meta as typingIndicatorMeta } from './typing-indicator/typing-indicator.meta'
@@ -221,4 +226,9 @@ export const allMetas: ComponentMeta[] = [
   aiDisclaimerMeta,
   inlineCitationMeta,
   sourcesMeta,
+  contextMeterMeta,
+  messageActionsMeta,
+  promptSuggestionsMeta,
+  streamingTextMeta,
+  terminalMeta,
 ]

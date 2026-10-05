@@ -138,6 +138,7 @@
             "ConsoleApp",
             "ContainedList",
             "ContextMenu",
+            "ContextMeter",
             "CopyButton",
             "Cta",
             "DashboardCharts",
@@ -205,6 +206,7 @@
             "Menu",
             "MenuButton",
             "Menubar",
+            "MessageActions",
             "Meter",
             "Modal",
             "MultiSelect",
@@ -227,6 +229,7 @@
             "ProgressBar",
             "ProgressCircle",
             "ProgressIndicator",
+            "PromptSuggestions",
             "Prose",
             "PullToRefresh",
             "QrCode",
@@ -271,6 +274,7 @@
             "Status",
             "Steps",
             "Stream",
+            "StreamingText",
             "StructuredList",
             "Sunburst",
             "Swap",
@@ -279,6 +283,7 @@
             "Tabs",
             "Tag",
             "TagsInput",
+            "Terminal",
             "Text",
             "Textarea",
             "Tile",
@@ -1541,6 +1546,35 @@
                 "type": "object",
                 "properties": {},
                 "required": ["children"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "ContextMeter"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "number"
+                  },
+                  "max": {
+                    "type": "number"
+                  },
+                  "label": {
+                    "type": "string"
+                  }
+                },
+                "required": ["value", "max"]
               }
             }
           }
@@ -2971,6 +3005,36 @@
           "if": {
             "properties": {
               "component": {
+                "const": "MessageActions"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "copyValue": {
+                    "type": "string"
+                  },
+                  "feedback": {
+                    "type": "string",
+                    "enum": ["good", "bad", "null"]
+                  },
+                  "defaultFeedback": {
+                    "type": "string",
+                    "enum": ["good", "bad", "null"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Modal"
               }
             },
@@ -3602,6 +3666,25 @@
                   }
                 },
                 "required": ["steps", "currentIndex"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "PromptSuggestions"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {},
+                "required": ["items", "onSelect"]
               }
             }
           }
@@ -4657,6 +4740,32 @@
           "if": {
             "properties": {
               "component": {
+                "const": "StreamingText"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "speed": {
+                    "type": "number"
+                  }
+                },
+                "required": ["text"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "StructuredList"
               }
             },
@@ -4871,6 +4980,32 @@
                   }
                 },
                 "required": ["value", "onValueChange"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Terminal"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "speed": {
+                    "type": "number"
+                  },
+                  "loop": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["lines"]
               }
             }
           }

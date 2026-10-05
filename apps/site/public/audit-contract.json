@@ -527,6 +527,8 @@
     { "name": "--cascivo-stack-index", "resolvedDefault": "0" },
     { "name": "--cascivo-stack-offset", "resolvedDefault": "4px" },
     { "name": "--cascivo-target-min", "resolvedDefault": "1.5rem" },
+    { "name": "--cascivo-terminal-bg", "resolvedDefault": "var(--cascivo-editor-bg)" },
+    { "name": "--cascivo-terminal-fg", "resolvedDefault": "var(--cascivo-editor-fg)" },
     { "name": "--cascivo-textarea-max-block-size", "resolvedDefault": "20lh" },
     { "name": "--cascivo-tooltip-anchor", "resolvedDefault": "attr(data-anchor)" },
     { "name": "--cascivo-tree-indent", "resolvedDefault": "var(--cascivo-space-5)" },
@@ -965,6 +967,15 @@
     {
       "name": "ContextMenu",
       "props": [{ "name": "children", "type": "React.ReactNode", "required": true }]
+    },
+    {
+      "name": "ContextMeter",
+      "props": [
+        { "name": "value", "type": "number", "required": true },
+        { "name": "max", "type": "number", "required": true },
+        { "name": "label", "type": "string", "required": false },
+        { "name": "labels", "type": "{ usage?: string }", "required": false }
+      ]
     },
     {
       "name": "CopyButton",
@@ -1502,6 +1513,25 @@
       ]
     },
     {
+      "name": "MessageActions",
+      "props": [
+        { "name": "copyValue", "type": "string", "required": false },
+        { "name": "feedback", "type": "'good' | 'bad' | null", "required": false },
+        { "name": "defaultFeedback", "type": "'good' | 'bad' | null", "required": false },
+        {
+          "name": "onFeedbackChange",
+          "type": "(feedback: 'good' | 'bad' | null) => void",
+          "required": false
+        },
+        { "name": "onRegenerate", "type": "() => void", "required": false },
+        {
+          "name": "labels",
+          "type": "{ group?: string; good?: string; bad?: string; regenerate?: string; recorded?: string }",
+          "required": false
+        }
+      ]
+    },
+    {
       "name": "Modal",
       "props": [
         { "name": "open", "type": "boolean", "required": false },
@@ -1730,6 +1760,14 @@
         { "name": "currentIndex", "type": "number", "required": true },
         { "name": "vertical", "type": "boolean", "required": false },
         { "name": "className", "type": "string", "required": false }
+      ]
+    },
+    {
+      "name": "PromptSuggestions",
+      "props": [
+        { "name": "items", "type": "string[]", "required": true },
+        { "name": "onSelect", "type": "(value: string) => void", "required": true },
+        { "name": "labels", "type": "{ group?: string }", "required": false }
       ]
     },
     {
@@ -2102,6 +2140,14 @@
       ]
     },
     {
+      "name": "StreamingText",
+      "props": [
+        { "name": "text", "type": "string", "required": true },
+        { "name": "speed", "type": "number", "required": false },
+        { "name": "onComplete", "type": "() => void", "required": false }
+      ]
+    },
+    {
       "name": "StructuredList",
       "props": [
         { "name": "label", "type": "string", "required": false },
@@ -2184,6 +2230,16 @@
         { "name": "id", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "label", "type": "string", "required": false }
+      ]
+    },
+    {
+      "name": "Terminal",
+      "props": [
+        { "name": "lines", "type": "TerminalLine[]", "required": true },
+        { "name": "speed", "type": "number", "required": false },
+        { "name": "loop", "type": "boolean", "required": false },
+        { "name": "onComplete", "type": "() => void", "required": false },
+        { "name": "labels", "type": "{ label?: string }", "required": false }
       ]
     },
     {
@@ -3828,6 +3884,7 @@
     "OverflowMenu",
     "PasswordInput",
     "ProgressIndicator",
+    "PromptSuggestions",
     "Prose",
     "Reasoning",
     "Search",

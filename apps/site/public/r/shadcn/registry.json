@@ -1880,6 +1880,34 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "context-meter",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "context-meter/context-meter.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "context-meter/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "context-meter/context-meter.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "How much of a model’s context window a conversation has used — \"12K / 200K\" with a bar that warns as it fills",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["feedback"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "copy-button",
       "type": "registry:component",
       "files": [
@@ -3578,6 +3606,38 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "message-actions",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "message-actions/message-actions.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "message-actions/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "message-actions/message-actions.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "The action row under an AI reply — copy, good / bad feedback as toggle buttons, and regenerate",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "registryDependencies": [
+        "https://cascivo.com/r/shadcn/copy-button.json",
+        "https://cascivo.com/r/shadcn/icon-button.json"
+      ],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "modal",
       "type": "registry:component",
       "files": [
@@ -4002,6 +4062,34 @@
       "description": "Shows progress through the steps of a multi-step flow",
       "dependencies": ["@cascivo/core"],
       "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "prompt-suggestions",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "prompt-suggestions/prompt-suggestions.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "prompt-suggestions/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "prompt-suggestions/prompt-suggestions.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Starter prompts as a wrap of pill buttons — the \"Try asking…\" row of an empty AI chat",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["inputs"],
       "meta": {
         "cascivo": {
           "type": "component",
@@ -5016,6 +5104,34 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "streaming-text",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "streaming-text/streaming-text.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "streaming-text/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "streaming-text/streaming-text.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Reveals text character by character with a blinking cursor, catching up as a streamed reply grows",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "structured-list",
       "type": "registry:component",
       "files": [
@@ -5203,6 +5319,35 @@
       "description": "Free-form multi-value chip input",
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "terminal",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "terminal/terminal.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "terminal/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "terminal/terminal.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "An animated terminal that types out a script of commands and output — for demos, onboarding and agent transcripts",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "registryDependencies": ["https://cascivo.com/r/shadcn/visually-hidden.json"],
+      "categories": ["display"],
       "meta": {
         "cascivo": {
           "type": "component",

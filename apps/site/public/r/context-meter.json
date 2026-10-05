@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 2,
+  "name": "context-meter",
+  "type": "component",
+  "description": "How much of a model’s context window a conversation has used — \"12K / 200K\" with a bar that warns as it fills",
+  "version": "1.6.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/context-meter/context-meter.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/context-meter/index.ts"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/context-meter/context-meter.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["ai", "context", "tokens", "usage", "meter", "quota"],
+  "category": "feedback",
+  "meta": {
+    "name": "ContextMeter",
+    "description": "How much of a model’s context window a conversation has used — \"12K / 200K\" with a bar that warns as it fills",
+    "category": "feedback",
+    "clientJs": "none",
+    "states": ["normal", "high", "full"],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "value",
+        "description": "Tokens used so far.",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "max",
+        "description": "The context window size, in tokens.",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "label",
+        "nameVisibility": "visible",
+        "description": "The meter’s name, shown above the bar.",
+        "type": "string",
+        "required": false,
+        "default": "Context"
+      },
+      {
+        "name": "labels",
+        "description": "Overrides for the component’s user-visible strings (i18n). `usage` is the spoken value and may contain `{used}`, `{max}` and `{percent}`.",
+        "type": "{ usage?: string }",
+        "required": false
+      }
+    ],
+    "tokens": [
+      "--cascivo-color-ai",
+      "--cascivo-color-warning",
+      "--cascivo-color-destructive",
+      "--cascivo-color-bg-subtle",
+      "--cascivo-color-text",
+      "--cascivo-color-text-muted",
+      "--cascivo-radius-full"
+    ],
+    "accessibility": {
+      "role": "meter",
+      "wcag": "2.2-AA",
+      "keyboard": [],
+      "forcedColors": true
+    },
+    "examples": [
+      {
+        "title": "Plenty left",
+        "code": "<ContextMeter value={12400} max={200000} />"
+      },
+      {
+        "title": "Nearly full",
+        "code": "<ContextMeter value={192000} max={200000} />"
+      }
+    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "tags": ["ai", "context", "tokens", "usage", "meter", "quota"],
+    "intent": {
+      "whenToUse": [
+        "Showing how much of the model’s context window a conversation or document has used",
+        "Warning before a conversation hits the limit and older turns are dropped"
+      ],
+      "whenNotToUse": [
+        "Task progress toward completion — use ProgressBar",
+        "Account-level usage and billing quotas with many figures — use Stat or a chart"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Colour alone to signal the window is nearly full",
+          "good": "Keep the \"used / max\" figures visible; colour reinforces them",
+          "why": "Colour is not perceivable by everyone; the numbers carry the meaning"
+        }
+      ],
+      "related": [
+        {
+          "name": "ProgressBar",
+          "relationship": "alternative",
+          "reason": "ProgressBar is for progress toward done; a meter measures a level within a range"
+        },
+        {
+          "name": "AiStatus",
+          "relationship": "pairs-with",
+          "reason": "Both sit in an AI chat’s header or footer"
+        }
+      ],
+      "a11yRationale": "role=\"meter\" with aria-valuenow/min/max and an aria-valuetext in full words (\"12,400 of 200,000 tokens used (6%)\"), named by its label. The compact visible line is aria-hidden so it is not read twice. Colour steps to warning at 80% and destructive at 95%, but the figures always carry the meaning",
+      "flexibility": [
+        {
+          "area": "label and wording",
+          "level": "flexible",
+          "note": "Rename via label; reword via labels.usage"
+        },
+        {
+          "area": "thresholds",
+          "level": "strict",
+          "note": "Warning at 80%, full at 95% — consistent across every meter"
+        }
+      ]
+    }
+  }
+}

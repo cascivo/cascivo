@@ -493,6 +493,18 @@
         "note": "Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click"
       }
     ],
+    "ContextMeter": [
+      {
+        "area": "label and wording",
+        "level": "flexible",
+        "note": "Rename via label; reword via labels.usage"
+      },
+      {
+        "area": "thresholds",
+        "level": "strict",
+        "note": "Warning at 80%, full at 95% — consistent across every meter"
+      }
+    ],
     "CopyButton": [
       {
         "area": "labels",
@@ -1024,6 +1036,18 @@
         "note": "Surface, borders, and focus ring must resolve to --cascivo-* tokens"
       }
     ],
+    "MessageActions": [
+      {
+        "area": "which actions",
+        "level": "flexible",
+        "note": "Each action renders only when its prop is set"
+      },
+      {
+        "area": "rating semantics",
+        "level": "strict",
+        "note": "Two-state good / bad toggles; do not repurpose them for other choices"
+      }
+    ],
     "Modal": [
       {
         "area": "token names",
@@ -1227,6 +1251,18 @@
         "area": "token names",
         "level": "strict",
         "note": "Step and connector colors must resolve to --cascivo-* tokens"
+      }
+    ],
+    "PromptSuggestions": [
+      {
+        "area": "what selecting does",
+        "level": "flexible",
+        "note": "Send immediately, or fill the composer"
+      },
+      {
+        "area": "item text",
+        "level": "strict",
+        "note": "The visible text is the prompt; do not show one thing and send another"
       }
     ],
     "Prose": [
@@ -1589,6 +1625,18 @@
         "note": "Horizontal for top progress bars, vertical for sidebar wizards"
       }
     ],
+    "StreamingText": [
+      {
+        "area": "speed",
+        "level": "flexible",
+        "note": "Characters per frame"
+      },
+      {
+        "area": "announcements",
+        "level": "strict",
+        "note": "Do not add aria-live; announce completion separately"
+      }
+    ],
     "StructuredList": [
       {
         "area": "selectable",
@@ -1671,6 +1719,18 @@
         "area": "commit keys",
         "level": "strict",
         "note": "Enter and comma commit a tag; Backspace on empty removes the last — fixed interaction contract"
+      }
+    ],
+    "Terminal": [
+      {
+        "area": "colours",
+        "level": "flexible",
+        "note": "Follows the editor tokens; override --cascivo-terminal-bg / -fg for an always-dark look"
+      },
+      {
+        "area": "speed and looping",
+        "level": "flexible",
+        "note": "speed, loop, onComplete"
       }
     ],
     "Text": [

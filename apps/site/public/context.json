@@ -613,6 +613,18 @@
           "note": "Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click"
         }
       ],
+      "ContextMeter": [
+        {
+          "area": "label and wording",
+          "level": "flexible",
+          "note": "Rename via label; reword via labels.usage"
+        },
+        {
+          "area": "thresholds",
+          "level": "strict",
+          "note": "Warning at 80%, full at 95% — consistent across every meter"
+        }
+      ],
       "CopyButton": [
         {
           "area": "labels",
@@ -1144,6 +1156,18 @@
           "note": "Surface, borders, and focus ring must resolve to --cascivo-* tokens"
         }
       ],
+      "MessageActions": [
+        {
+          "area": "which actions",
+          "level": "flexible",
+          "note": "Each action renders only when its prop is set"
+        },
+        {
+          "area": "rating semantics",
+          "level": "strict",
+          "note": "Two-state good / bad toggles; do not repurpose them for other choices"
+        }
+      ],
       "Modal": [
         {
           "area": "token names",
@@ -1347,6 +1371,18 @@
           "area": "token names",
           "level": "strict",
           "note": "Step and connector colors must resolve to --cascivo-* tokens"
+        }
+      ],
+      "PromptSuggestions": [
+        {
+          "area": "what selecting does",
+          "level": "flexible",
+          "note": "Send immediately, or fill the composer"
+        },
+        {
+          "area": "item text",
+          "level": "strict",
+          "note": "The visible text is the prompt; do not show one thing and send another"
         }
       ],
       "Prose": [
@@ -1709,6 +1745,18 @@
           "note": "Horizontal for top progress bars, vertical for sidebar wizards"
         }
       ],
+      "StreamingText": [
+        {
+          "area": "speed",
+          "level": "flexible",
+          "note": "Characters per frame"
+        },
+        {
+          "area": "announcements",
+          "level": "strict",
+          "note": "Do not add aria-live; announce completion separately"
+        }
+      ],
       "StructuredList": [
         {
           "area": "selectable",
@@ -1791,6 +1839,18 @@
           "area": "commit keys",
           "level": "strict",
           "note": "Enter and comma commit a tag; Backspace on empty removes the last — fixed interaction contract"
+        }
+      ],
+      "Terminal": [
+        {
+          "area": "colours",
+          "level": "flexible",
+          "note": "Follows the editor tokens; override --cascivo-terminal-bg / -fg for an always-dark look"
+        },
+        {
+          "area": "speed and looping",
+          "level": "flexible",
+          "note": "speed, loop, onComplete"
         }
       ],
       "Text": [
@@ -10485,6 +10545,95 @@
       "aiPrompt": "I am modifying the cascivo ContextMenu component (overlay). Right-click context menu anchored at pointer coordinates via CSS custom properties\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nContextMenu is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-md, --cascivo-shadow-md, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-color-bg-subtle\n\nAccessibility: role \"menu\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Home/End/Enter/Space/Escape. Keep it AA.\n\nDo not change (strict): anchor position — Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click\nFlexible: menu contents.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
+      "name": "ContextMeter",
+      "category": "feedback",
+      "description": "How much of a model’s context window a conversation has used — \"12K / 200K\" with a bar that warns as it fills",
+      "intent": {
+        "whenToUse": [
+          "Showing how much of the model’s context window a conversation or document has used",
+          "Warning before a conversation hits the limit and older turns are dropped"
+        ],
+        "whenNotToUse": [
+          "Task progress toward completion — use ProgressBar",
+          "Account-level usage and billing quotas with many figures — use Stat or a chart"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Colour alone to signal the window is nearly full",
+            "good": "Keep the \"used / max\" figures visible; colour reinforces them",
+            "why": "Colour is not perceivable by everyone; the numbers carry the meaning"
+          }
+        ],
+        "related": [
+          {
+            "name": "ProgressBar",
+            "relationship": "alternative",
+            "reason": "ProgressBar is for progress toward done; a meter measures a level within a range"
+          },
+          {
+            "name": "AiStatus",
+            "relationship": "pairs-with",
+            "reason": "Both sit in an AI chat’s header or footer"
+          }
+        ],
+        "a11yRationale": "role=\"meter\" with aria-valuenow/min/max and an aria-valuetext in full words (\"12,400 of 200,000 tokens used (6%)\"), named by its label. The compact visible line is aria-hidden so it is not read twice. Colour steps to warning at 80% and destructive at 95%, but the figures always carry the meaning",
+        "flexibility": [
+          {
+            "area": "label and wording",
+            "level": "flexible",
+            "note": "Rename via label; reword via labels.usage"
+          },
+          {
+            "area": "thresholds",
+            "level": "strict",
+            "note": "Warning at 80%, full at 95% — consistent across every meter"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "value",
+          "description": "Tokens used so far.",
+          "type": "number",
+          "required": true,
+          "schema": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "max",
+          "description": "The context window size, in tokens.",
+          "type": "number",
+          "required": true,
+          "schema": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "label",
+          "nameVisibility": "visible",
+          "description": "The meter’s name, shown above the bar.",
+          "type": "string",
+          "required": false,
+          "default": "Context",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "labels",
+          "description": "Overrides for the component’s user-visible strings (i18n). `usage` is the spoken value and may contain `{used}`, `{max}` and `{percent}`.",
+          "type": "{ usage?: string }",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        }
+      ],
+      "contextUrl": "/context/context-meter.md",
+      "aiPrompt": "I am modifying the cascivo ContextMeter component (feedback). How much of a model’s context window a conversation has used — \"12K / 200K\" with a bar that warns as it fills\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nContextMeter is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-ai, --cascivo-color-warning, --cascivo-color-destructive, --cascivo-color-bg-subtle, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-radius-full\n\nAccessibility: role \"meter\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): thresholds — Warning at 80%, full at 95% — consistent across every meter\nFlexible: label and wording.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
       "name": "CopyButton",
       "category": "inputs",
       "description": "Icon button that copies a value to the clipboard with copied feedback",
@@ -18086,6 +18235,111 @@
       "aiPrompt": "I am modifying the cascivo Menubar component (navigation). Horizontal application menu bar with keyboard-navigable dropdown menus\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nMenubar is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-bg-subtle, --cascivo-color-text, --cascivo-color-border, --cascivo-focus-ring, --cascivo-motion-enter, --cascivo-motion-exit\n\nAccessibility: role \"menubar\", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/ArrowDown/ArrowUp/Home/End/Enter/Escape. Keep it AA.\n\nDo not change (strict): menu content — Menus are described by data (menus prop) so roles and keyboard wiring stay correct; token names — Surface, borders, and focus ring must resolve to --cascivo-* tokens\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
+      "name": "MessageActions",
+      "category": "inputs",
+      "description": "The action row under an AI reply — copy, good / bad feedback as toggle buttons, and regenerate",
+      "intent": {
+        "whenToUse": [
+          "Under each assistant message: copy the reply, rate it, or ask for another attempt"
+        ],
+        "whenNotToUse": [
+          "Stopping a response that is still generating — use AiStatus with onStop",
+          "Actions on a non-AI item — use ButtonGroup or a Menu"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Swapping the rating button’s label to \"Good response recorded\"",
+            "good": "Keep a stable name and expose the choice with aria-pressed; the component announces the confirmation once",
+            "why": "A name that changes on press reads as a different control; aria-pressed is how toggle buttons report state"
+          }
+        ],
+        "related": [
+          {
+            "name": "CopyButton",
+            "relationship": "contains",
+            "reason": "Copy is a CopyButton"
+          },
+          {
+            "name": "AiStatus",
+            "relationship": "pairs-with",
+            "reason": "AiStatus covers the in-progress phase; MessageActions appears once the reply is complete"
+          }
+        ],
+        "a11yRationale": "A named group of real buttons. Good and Bad are toggle buttons (aria-pressed), so the chosen rating is exposed as state rather than by a changing label, and choosing one announces \"Thanks for your feedback\" once through the shared announce() region. Icon buttons carry accessible names and meet the coarse-pointer target size",
+        "flexibility": [
+          {
+            "area": "which actions",
+            "level": "flexible",
+            "note": "Each action renders only when its prop is set"
+          },
+          {
+            "area": "rating semantics",
+            "level": "strict",
+            "note": "Two-state good / bad toggles; do not repurpose them for other choices"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "copyValue",
+          "description": "The text the Copy button copies. Omit to hide Copy.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "feedback",
+          "description": "Controlled rating: `good`, `bad` or `null`. Pressing the active rating again clears it.",
+          "type": "'good' | 'bad' | null",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "defaultFeedback",
+          "description": "Initial rating when uncontrolled.",
+          "type": "'good' | 'bad' | null",
+          "required": false,
+          "default": "null",
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "onFeedbackChange",
+          "description": "Called with the new rating (or `null` when cleared). The rating buttons render when this or `feedback` is set; a rating also announces \"Thanks for your feedback\".",
+          "type": "(feedback: 'good' | 'bad' | null) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "onRegenerate",
+          "description": "Called by the Regenerate button. Omit to hide it.",
+          "type": "() => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "labels",
+          "description": "Overrides for the component’s user-visible strings (i18n).",
+          "type": "{ group?: string; good?: string; bad?: string; regenerate?: string; recorded?: string }",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        }
+      ],
+      "contextUrl": "/context/message-actions.md",
+      "aiPrompt": "I am modifying the cascivo MessageActions component (inputs). The action row under an AI reply — copy, good / bad feedback as toggle buttons, and regenerate\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nMessageActions is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text-muted, --cascivo-color-ai, --cascivo-color-ai-subtle\n\nAccessibility: role \"group\", WCAG 2.2-AA, keyboard: Tab/Enter/Space. Keep it AA.\n\nDo not change (strict): rating semantics — Two-state good / bad toggles; do not repurpose them for other choices\nFlexible: which actions.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
       "name": "Modal",
       "category": "overlay",
       "description": "Accessible dialog overlay using native <dialog> element",
@@ -20206,6 +20460,87 @@
       ],
       "contextUrl": "/context/progress-indicator.md",
       "aiPrompt": "I am modifying the cascivo ProgressIndicator component (navigation). Shows progress through the steps of a multi-step flow\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nProgressIndicator is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent-text, --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-text-subtle, --cascivo-color-text-on-accent, --cascivo-color-border, --cascivo-color-surface, --cascivo-radius-full\n\nAccessibility: role \"list\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Step and connector colors must resolve to --cascivo-* tokens\nFlexible: orientation.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
+      "name": "PromptSuggestions",
+      "category": "inputs",
+      "description": "Starter prompts as a wrap of pill buttons — the \"Try asking…\" row of an empty AI chat",
+      "intent": {
+        "whenToUse": [
+          "An empty conversation: offer a few concrete things to ask",
+          "Follow-up suggestions under an assistant reply"
+        ],
+        "whenNotToUse": [
+          "Filtering or selecting values — use ToggleGroup, Tag or SegmentedControl",
+          "Autocomplete while typing — use Combobox"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Ten generic prompts (\"Ask me anything\")",
+            "good": "Three or four specific, tappable prompts",
+            "why": "Specific starters show what the assistant can actually do; a long generic list is skipped"
+          }
+        ],
+        "related": [
+          {
+            "name": "MessageActions",
+            "relationship": "pairs-with",
+            "reason": "Both sit around an assistant message"
+          },
+          {
+            "name": "Tag",
+            "relationship": "alternative",
+            "reason": "Tag is for labels and filters, not for sending a prompt"
+          }
+        ],
+        "a11yRationale": "A named group of real buttons whose names are the prompt text, operable with Tab and Enter/Space. Pills meet the coarse-pointer target size and keep a visible focus ring",
+        "content": {
+          "tone": "Write each prompt as the person would type it, in the first person"
+        },
+        "flexibility": [
+          {
+            "area": "what selecting does",
+            "level": "flexible",
+            "note": "Send immediately, or fill the composer"
+          },
+          {
+            "area": "item text",
+            "level": "strict",
+            "note": "The visible text is the prompt; do not show one thing and send another"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "items",
+          "description": "The prompts, as the exact text each one sends.",
+          "type": "string[]",
+          "required": true,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "onSelect",
+          "description": "Called with the chosen prompt — send it, or put it in the composer.",
+          "type": "(value: string) => void",
+          "required": true,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "labels",
+          "description": "Overrides for the component’s user-visible strings (i18n) — `group` names the group for screen readers.",
+          "type": "{ group?: string }",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        }
+      ],
+      "contextUrl": "/context/prompt-suggestions.md",
+      "aiPrompt": "I am modifying the cascivo PromptSuggestions component (inputs). Starter prompts as a wrap of pill buttons — the \"Try asking…\" row of an empty AI chat\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nPromptSuggestions is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-border, --cascivo-color-surface, --cascivo-color-ai-border, --cascivo-color-ai-subtle, --cascivo-radius-full, --cascivo-focus-ring\n\nAccessibility: role \"group\", WCAG 2.2-AA, keyboard: Tab/Enter/Space. Keep it AA.\n\nDo not change (strict): item text — The visible text is the prompt; do not show one thing and send another\nFlexible: what selecting does.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Prose",
@@ -24004,6 +24339,84 @@
       "aiPrompt": "I am modifying the cascivo Steps component (navigation). Visual progress indicator for multi-step flows with horizontal and vertical orientations\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSteps is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-accent-content, --cascivo-color-success, --cascivo-color-success-content, --cascivo-color-error, --cascivo-color-error-content, --cascivo-color-surface, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-text-muted, --cascivo-border-default, --cascivo-radius-full, --cascivo-ease-out\n\nAccessibility: role \"list\", WCAG 2.2-AA. Keep it AA.\nFlexible: step state, orientation.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
+      "name": "StreamingText",
+      "category": "display",
+      "description": "Reveals text character by character with a blinking cursor, catching up as a streamed reply grows",
+      "intent": {
+        "whenToUse": [
+          "Rendering an assistant reply as it streams in, smoothing bursty token arrival into steady typing"
+        ],
+        "whenNotToUse": [
+          "Static text — render it directly",
+          "Announcing the reply to screen readers — StreamingText is never a live region; announce completion with announce() or AiStatus"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Wrapping StreamingText in aria-live",
+            "good": "Leave it silent and announce the finished reply once",
+            "why": "A live region around typing text announces fragments on every frame"
+          }
+        ],
+        "related": [
+          {
+            "name": "AiStatus",
+            "relationship": "pairs-with",
+            "reason": "AiStatus announces the phase while StreamingText renders the words"
+          },
+          {
+            "name": "TypingIndicator",
+            "relationship": "alternative",
+            "reason": "Before the first token arrives, show TypingIndicator instead"
+          }
+        ],
+        "a11yRationale": "Plain text, never a live region, so a screen reader reads it on demand rather than being fed every character; the cursor is aria-hidden and blinks only under prefers-reduced-motion: no-preference",
+        "flexibility": [
+          {
+            "area": "speed",
+            "level": "flexible",
+            "note": "Characters per frame"
+          },
+          {
+            "area": "announcements",
+            "level": "strict",
+            "note": "Do not add aria-live; announce completion separately"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "text",
+          "description": "The target text. Pass the accumulating reply as it streams; typing catches up as it grows, and restarts if it is replaced by a shorter string.",
+          "type": "string",
+          "required": true,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "speed",
+          "description": "Characters revealed per animation frame.",
+          "type": "number",
+          "required": false,
+          "default": "2",
+          "schema": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "onComplete",
+          "description": "Called when the displayed text has caught up with `text`.",
+          "type": "() => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        }
+      ],
+      "contextUrl": "/context/streaming-text.md",
+      "aiPrompt": "I am modifying the cascivo StreamingText component (display). Reveals text character by character with a blinking cursor, catching up as a streamed reply grows\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nStreamingText is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-duration-loop-fast\n\nAccessibility: role \"none\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): announcements — Do not add aria-live; announce completion separately\nFlexible: speed.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
       "name": "StructuredList",
       "category": "display",
       "description": "Tabular row list for scannable data, optionally single-selectable",
@@ -24771,6 +25184,104 @@
       ],
       "contextUrl": "/context/tags-input.md",
       "aiPrompt": "I am modifying the cascivo TagsInput component (inputs). Free-form multi-value chip input\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nTagsInput is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-color-bg-subtle, --cascivo-radius-input, --cascivo-radius-full, --cascivo-focus-ring\n\nAccessibility: role \"textbox\", WCAG 2.2-AA, keyboard: Enter/,/Backspace. Keep it AA.\n\nDo not change (strict): commit keys — Enter and comma commit a tag; Backspace on empty removes the last — fixed interaction contract\nFlexible: tag values.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
+      "name": "Terminal",
+      "category": "display",
+      "description": "An animated terminal that types out a script of commands and output — for demos, onboarding and agent transcripts",
+      "intent": {
+        "whenToUse": [
+          "Demonstrating a CLI or agent run on a marketing or onboarding page",
+          "Replaying a short agent transcript as it happened"
+        ],
+        "whenNotToUse": [
+          "Real, long-running logs — use LogViewer",
+          "Copyable code — use CodeSnippet"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Putting aria-live on the typing lines",
+            "good": "Keep the animation aria-hidden and the full script as text, as Terminal does",
+            "why": "A live region on per-character typing announces fragments on every frame"
+          }
+        ],
+        "related": [
+          {
+            "name": "LogViewer",
+            "relationship": "alternative",
+            "reason": "LogViewer is for real, streaming logs with search and follow"
+          },
+          {
+            "name": "CodeSnippet",
+            "relationship": "alternative",
+            "reason": "CodeSnippet is for static, copyable commands"
+          }
+        ],
+        "a11yRationale": "A named group whose full script is present as visually hidden text from the first render, read once in order; the typing animation is aria-hidden, so a screen reader is never fed per-character fragments. The cursor blinks only under prefers-reduced-motion: no-preference; colours come from the editor tokens and fall back to CanvasText in forced colours",
+        "flexibility": [
+          {
+            "area": "colours",
+            "level": "flexible",
+            "note": "Follows the editor tokens; override --cascivo-terminal-bg / -fg for an always-dark look"
+          },
+          {
+            "area": "speed and looping",
+            "level": "flexible",
+            "note": "speed, loop, onComplete"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "lines",
+          "description": "The script. Each line has `text`, an optional `prefix` (e.g. `$`) and a `type` (`command | output | error | comment`, default `output`).",
+          "type": "TerminalLine[]",
+          "required": true,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "speed",
+          "description": "Characters typed per animation frame.",
+          "type": "number",
+          "required": false,
+          "default": "3",
+          "schema": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "loop",
+          "description": "Restart from the first line after the last one.",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onComplete",
+          "description": "Called each time the last line finishes typing.",
+          "type": "() => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "labels",
+          "description": "Overrides for the component’s user-visible strings (i18n) — `label` names the terminal for screen readers.",
+          "type": "{ label?: string }",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        }
+      ],
+      "contextUrl": "/context/terminal.md",
+      "aiPrompt": "I am modifying the cascivo Terminal component (display). An animated terminal that types out a script of commands and output — for demos, onboarding and agent transcripts\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nTerminal is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-terminal-bg, --cascivo-terminal-fg, --cascivo-editor-bg, --cascivo-editor-fg, --cascivo-editor-border, --cascivo-editor-syntax-keyword, --cascivo-editor-syntax-string, --cascivo-editor-syntax-comment, --cascivo-color-destructive, --cascivo-font-mono\n\nAccessibility: role \"group\", WCAG 2.2-AA. Keep it AA.\nFlexible: colours, speed and looping.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Text",

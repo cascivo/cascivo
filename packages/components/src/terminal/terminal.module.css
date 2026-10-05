@@ -1,0 +1,65 @@
+@layer cascivo.component {
+  .root {
+    padding: var(--cascivo-space-4);
+    overflow-x: auto;
+    border: 1px solid var(--cascivo-editor-border, var(--cascivo-color-border));
+    border-radius: var(--cascivo-radius-surface);
+    background-color: var(--cascivo-terminal-bg, var(--cascivo-editor-bg));
+    color: var(--cascivo-terminal-fg, var(--cascivo-editor-fg));
+    font-family: var(--cascivo-font-mono);
+    font-size: var(--cascivo-text-sm);
+    line-height: var(--cascivo-leading-relaxed);
+  }
+
+  .line {
+    display: flex;
+    gap: var(--cascivo-space-2);
+  }
+
+  .prefix {
+    color: var(--cascivo-editor-syntax-string);
+    user-select: none;
+  }
+
+  .text {
+    flex: 1;
+    white-space: pre-wrap;
+
+    [data-type='command'] > & {
+      color: var(--cascivo-editor-syntax-keyword);
+    }
+
+    [data-type='error'] > & {
+      color: var(--cascivo-color-destructive);
+    }
+
+    [data-type='comment'] > & {
+      color: var(--cascivo-editor-syntax-comment);
+    }
+  }
+
+  .cursor {
+    display: inline-block;
+    inline-size: 0.5rem;
+    block-size: 1em;
+    background-color: currentColor;
+  }
+
+  /* Decorative loop — opt-in, so a user who expresses no preference gets no motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    .cursor {
+      animation: global(cascivo-blink) var(--cascivo-duration-loop-fast) step-end infinite;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .root {
+    border-color: CanvasText;
+  }
+
+  .prefix,
+  .text {
+    color: CanvasText;
+  }
+}

@@ -10,7 +10,7 @@
   ],
   "resolutionTheme": "light",
   "generatedAt": "2026-10-02",
-  "count": 360,
+  "count": 362,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -3213,6 +3213,24 @@
       "layer": "component",
       "group": "target",
       "resolvedDefault": "1.5rem",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-terminal-bg",
+      "value": "var(--cascivo-editor-bg)",
+      "layer": "component",
+      "group": "terminal",
+      "resolvedDefault": "var(--cascivo-editor-bg)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-terminal-fg",
+      "value": "var(--cascivo-editor-fg)",
+      "layer": "component",
+      "group": "terminal",
+      "resolvedDefault": "var(--cascivo-editor-fg)",
       "resolvesPerTheme": false,
       "canonical": true
     },

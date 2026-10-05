@@ -91,6 +91,9 @@ export type {
 export { Presence } from './presence.tsx'
 export type { PresenceProps } from './presence.tsx'
 export { createStreamBuffer, useStreamBuffer } from './stream-buffer.ts'
+// Screen-reader announcements through one shared live region (the AI announcement contract).
+export { announce } from './announce.ts'
+export type { AnnounceOptions, AnnouncePoliteness } from './announce.ts'
 export type { StreamBuffer, StreamBufferOptions } from './stream-buffer.ts'
 export { createScope, useScope } from './scope.ts'
 export type { SignalScope } from './scope.ts'

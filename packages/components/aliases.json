@@ -36,5 +36,10 @@
   "tool-call": ["Tool", "ToolInvocation", "FunctionCall", "ToolUse"],
   "ai-disclaimer": ["AiGeneratedDisclaimer", "AIDisclaimer"],
   "inline-citation": ["Citation", "CitationMarker", "Footnote"],
-  "sources": ["SourceList", "References", "SourcesCard"]
+  "sources": ["SourceList", "References", "SourcesCard"],
+  "message-actions": ["ResponseActions", "MessageToolbar", "FeedbackButtons"],
+  "prompt-suggestions": ["Suggestions", "PromptStarters", "Prompts", "QuickReplies"],
+  "context-meter": ["Context", "TokenUsage", "TokenMeter"],
+  "streaming-text": ["Typewriter", "TypingText"],
+  "terminal": ["TerminalWindow", "CommandLine"]
 }

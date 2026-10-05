@@ -157,6 +157,9 @@ export {
   useClipboard,
   type UseClipboardOptions,
   type UseClipboardReturn,
+  announce,
+  type AnnounceOptions,
+  type AnnouncePoliteness,
   VisuallyHidden,
   type VisuallyHiddenProps,
   Slot,
@@ -233,10 +236,15 @@ export * from '../../components/src/ai-badge/ai-badge'
 export * from '../../components/src/ai-disclaimer/ai-disclaimer'
 export * from '../../components/src/ai-status/ai-status'
 export * from '../../components/src/chain-of-thought/chain-of-thought'
+export * from '../../components/src/context-meter/context-meter'
 export * from '../../components/src/inline-citation/inline-citation'
+export * from '../../components/src/message-actions/message-actions'
+export * from '../../components/src/prompt-suggestions/prompt-suggestions'
 export * from '../../components/src/reasoning/reasoning'
 export * from '../../components/src/shimmer-text/shimmer-text'
 export * from '../../components/src/sources/sources'
+export * from '../../components/src/streaming-text/streaming-text'
+export * from '../../components/src/terminal/terminal'
 export * from '../../components/src/tool-call/tool-call'
 export * from '../../components/src/typing-indicator/typing-indicator'
 export * from '../../components/src/notification/notification'

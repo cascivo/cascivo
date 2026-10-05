@@ -63,6 +63,7 @@ const NO_VISIBLE_LABEL_ALIAS: Record<string, string> = {
   'menu-button': 'the label is the visible button text',
   'ai-status': 'the label is the status text being announced and shown — same as InlineLoading',
   reasoning: 'the label is the visible <summary> text that opens the panel',
+  'context-meter': 'the label is the meter name and is always painted — same as chart/meter',
 }
 
 const NO_LABEL_ALIAS: Record<string, string> = {

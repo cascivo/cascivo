@@ -1,8 +1,16 @@
 'use client'
 import { useRef } from 'react'
-import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import {
+  announce,
+  useEffectPropSignal,
+  useSignal,
+  useSignalEffect,
+  useSignals,
+} from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { StreamingText } from './streaming-text'
+import { AiStatus } from '../../components/src/ai-status/ai-status'
+import { StreamingText } from '../../components/src/streaming-text/streaming-text'
+import { TypingIndicator } from '../../components/src/typing-indicator/typing-indicator'
 import styles from './ai-chat.module.css'
 
 export interface ChatMessage {
@@ -16,6 +24,7 @@ export interface AiChatProps {
   onSend: (text: string) => void
   isStreaming?: boolean
   streamingText?: string
+  onStop?: () => void
   className?: string
 }
 
@@ -26,11 +35,27 @@ export function AiChat({
   onSend,
   isStreaming = false,
   streamingText,
+  onStop,
   className,
 }: AiChatProps) {
   useSignals()
   const inputValue = useSignal('')
   const listRef = useRef<HTMLDivElement>(null)
+  const streaming = useEffectPropSignal(isStreaming)
+  const messagesRef = useRef(messages)
+  messagesRef.current = messages
+  const wasStreaming = useRef(false)
+
+  // The log is not a live region (a streamed reply would be read out token by token), so
+  // the finished reply is announced once, when streaming ends.
+  useSignalEffect(() => {
+    const now = streaming.value
+    if (wasStreaming.current && !now) {
+      const reply = messagesRef.current.filter((m) => m.role === 'assistant').at(-1)
+      if (reply) announce(reply.content, { batchId: 'cascivo-ai-chat' })
+    }
+    wasStreaming.current = now
+  })
 
   // Follow new content (a new message, or a reply streaming in) while the reader is at the
   // bottom of the log; once they scroll up to read history, leave the position alone.
@@ -68,7 +93,7 @@ export function AiChat({
 
   return (
     <div className={[styles.root, className].filter(Boolean).join(' ')}>
-      <div ref={listRef} className={styles.messages} role="log" aria-live="polite">
+      <div ref={listRef} className={styles.messages} role="log" aria-live="off">
         {messages
           .filter((m) => m.role !== 'system')
           .map((msg) => (
@@ -79,15 +104,20 @@ export function AiChat({
               <div className={styles.content}>{msg.content}</div>
             </div>
           ))}
-        {isStreaming && streamingText !== undefined && (
-          <div className={styles.message} data-role="assistant">
+        {isStreaming && (
+          <div className={styles.message} data-role="assistant" aria-busy="true">
             <span className={styles.roleLabel}>{t(builtin.ai.assistant)}</span>
             <div className={styles.content}>
-              <StreamingText text={streamingText} />
+              {streamingText ? <StreamingText text={streamingText} /> : <TypingIndicator />}
             </div>
           </div>
         )}
       </div>
+      {isStreaming && onStop && (
+        <div className={styles.status}>
+          <AiStatus status="generating" onStop={onStop} />
+        </div>
+      )}
       <div className={styles.inputArea}>
         <textarea
           className={styles.textarea}

@@ -1,6 +1,6 @@
 # AI components — research, inventory and plan
 
-**Status: Phases 1–3 shipped (2026-10-05).** Phase 4 is a proposal and needs sign-off.
+**Status: Phases 1–4 shipped (2026-10-05).**
 
 **Motivation:** most design systems now ship a recognisable "AI vocabulary": a provenance label,
 a tinted AI skeleton, a shimmering "Thinking…" label, a reasoning disclosure and a step/tool
@@ -297,15 +297,42 @@ demo, visual baselines, i18n keys (en + de) under `builtin.ai*`, and a changeset
     URLs. `javascript:`, `data:`, relative and malformed URLs render as text, and the tests
     cover each of those cases.
 
-### Phase 4: conversation layer and convergence
+### Phase 4: conversation layer and convergence (shipped)
 
-- **Announcer primitive** in `@cascivo/core` (`useAnnouncer`): one shared polite region with
-  batch clearing, Fluent-style. It needs a `HEADLESS.md` entry.
-- **Prompt suggestions / starters**, **message actions** (copy, good/bad with "recorded"
-  label swap), **context / token meter**.
-- **Converge `@cascivo/ai`**: rebuild `AiChat` on `TypingIndicator`, `AiStatus` and
-  `Reasoning`. Point `AiLabel` at `AiStatus` and deprecate it on the documented schedule. Move
-  `StreamingText` and `Terminal` into the registry with manifests.
+- **`announce()`** in `@cascivo/core` is a plain function, not a `useAnnouncer` hook. It needs
+  no React state, and a hook would add nothing a function lacks. It is safe to call from a
+  handler or an effect.
+  - It keeps one persistent, visually hidden region per politeness level.
+  - It clears the region and writes on a later task, so a repeated message is still spoken.
+  - A `batchId` replaces a queued message from the same source, as in Fluent.
+  - It is catalogued in `HEADLESS.md` and re-exported from `@cascivo/react`.
+- **`MessageActions`** (copy via `CopyButton`, good/bad, regenerate):
+  - Ratings are `aria-pressed` toggle buttons with stable names. PatternFly instead swaps the
+    label ("Good response recorded"), but a name that changes on press reads as a different
+    control. Confirmation is spoken once through `announce()`.
+  - The callback is `onFeedbackChange(feedback)`, named by what it receives, per the
+    handler-naming rule.
+- **`PromptSuggestions`**: `items: string[]`, where the visible text is the prompt, plus
+  `onSelect(prompt)`.
+- **`ContextMeter`**: a `role="meter"` with an `aria-valuetext` in full words, a compact visible
+  line that is `aria-hidden`, and levels at 80% and 95%. The fill uses logical `inline-size`,
+  so it mirrors under RTL.
+- **Convergence of `@cascivo/ai`:**
+  - `StreamingText` and `Terminal` moved into the registry. `@cascivo/ai` re-exports the
+    registry source, so there is one implementation of each.
+  - `Terminal`:
+    - It no longer has `aria-live`. The script is visually hidden text plus an `aria-hidden`
+      animation.
+    - Raw `oklch()` literals were replaced by editor tokens.
+    - A real `loop` bug is fixed: the original reset its indices and stopped ticking. There
+      is a regression test, confirmed failing against the old code.
+  - `AiChat`:
+    - The log is `aria-live="off"`, and the finished reply is announced once.
+    - It shows `TypingIndicator` before the first token.
+    - A new optional `onStop` renders `AiStatus`.
+  - `AiLabel` is deprecated in favour of `AiStatus`, through TSDoc `@deprecated` (since 1.7.0,
+    removed in 2.0.0) plus a README note. It has no manifest, so the manifest-based
+    deprecation surfaces do not apply to it.
 
 ---
 

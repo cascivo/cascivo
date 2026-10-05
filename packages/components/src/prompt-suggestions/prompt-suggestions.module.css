@@ -1,0 +1,52 @@
+@layer cascivo.component {
+  .suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cascivo-space-2);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    max-inline-size: 100%;
+    padding-block: var(--cascivo-space-2);
+    padding-inline: var(--cascivo-space-3);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-full);
+    background-color: var(--cascivo-color-surface);
+    color: var(--cascivo-color-text);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    line-height: var(--cascivo-leading-snug);
+    text-align: start;
+    cursor: pointer;
+    transition:
+      border-color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      background-color var(--cascivo-duration-150) var(--cascivo-ease-out);
+
+    &:hover {
+      border-color: var(--cascivo-color-ai-border);
+      background-color: var(--cascivo-color-ai-subtle);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+    }
+
+    @media (pointer: coarse) {
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .chip {
+    border-color: ButtonText;
+  }
+
+  .chip:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}

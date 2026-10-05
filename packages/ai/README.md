@@ -26,6 +26,8 @@ AI-native components for cascivo — the presentation layer for AI features: str
 pnpm add @cascivo/ai @preact/signals-react
 ```
 
+> **The wider AI catalogue lives in the registry.** `AiStatus`, `ShimmerText`, `TypingIndicator`, `Reasoning`, `ChainOfThought`, `ToolCall`, `AiBadge`, `Sources`, `InlineCitation`, `AiDisclaimer`, `MessageActions`, `PromptSuggestions` and `ContextMeter` ship in `@cascivo/react` and through `cascivo add`. `StreamingText` and `Terminal` below are those same registry components, re-exported here, so there is one implementation of each.
+
 ## `StreamingText`
 
 Types text out character-by-character with a blinking cursor, driven by `requestAnimationFrame`. Feed it a growing string (e.g. an accumulating LLM response) or a static one:
@@ -41,7 +43,9 @@ import { StreamingText } from '@cascivo/ai'
 
 The cursor renders only while the displayed text lags the target, and the animation resets when `text` is replaced with a shorter string.
 
-## `AiLabel`
+## `AiLabel` (deprecated)
+
+> **Deprecated since 1.7.0; removed in 2.0.0.** Use `AiStatus` from `@cascivo/react` (`cascivo add ai-status`). It covers the same states, adds `thinking` and `stopped` and an optional Stop button. Map `variant="done"` to `status="complete"`.
 
 A `role="status"` badge for AI-generated content with three variants — `generating` (default), `done`, `error`. Labels come from the `@cascivo/i18n` built-in catalog, so they localize automatically:
 
@@ -57,7 +61,7 @@ It extends `HTMLAttributes<HTMLSpanElement>`, so `className`, `title`, etc. pass
 
 ## `Terminal`
 
-An animated terminal window (`role="log"`, `aria-live="polite"`) that types out a script of lines. Each line has a `type` (`command` | `output` | `error` | `comment`) for per-line styling and an optional `prefix` (e.g. `$`):
+An animated terminal window that types out a script of lines. The animation is visual only. The full script is in the page as text from the first render, so screen readers read it once rather than being fed characters. Each line has a `type` (`command` | `output` | `error` | `comment`) for per-line styling and an optional `prefix` (e.g. `$`):
 
 ```tsx
 import { Terminal } from '@cascivo/ai'
@@ -75,7 +79,7 @@ import { Terminal } from '@cascivo/ai'
 
 ## `AiChat`
 
-A complete chat surface: message list (`role="log"`), streaming assistant bubble, and a textarea composer with Enter-to-send (Shift+Enter for a newline). It is fully controlled — you own the message array and the send handler:
+A complete chat surface: message list (`role="log"`, deliberately _not_ a live region), streaming assistant bubble (a `TypingIndicator` until the first token arrives), and a textarea composer with Enter-to-send (Shift+Enter for a newline). It is fully controlled — you own the message array and the send handler:
 
 ```tsx
 import { AiChat, type ChatMessage } from '@cascivo/ai'
@@ -90,8 +94,11 @@ const messages: ChatMessage[] = [
   onSend={(text) => append({ role: 'user', content: text })}
   isStreaming={streaming} // disables the send button
   streamingText={partial} // rendered as a live assistant bubble via StreamingText
+  onStop={() => abort()} // optional: shows an AiStatus with a Stop button while streaming
 />
 ```
+
+When streaming ends, the finished reply is announced once to screen readers (through `announce()` from `@cascivo/core`), instead of being read out token by token.
 
 Role labels ("You" / "Assistant"), the input placeholder, and the send button label all default from the `@cascivo/i18n` built-in catalog.
 

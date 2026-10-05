@@ -75,7 +75,7 @@ Component names differ from peer systems too. `Switch` IS `Toggle`; `Dialog` IS
 `Modal`. Every mapping below resolves for real — `cascivo add switch` installs
 `toggle`, the MCP `get_component("Dialog")` returns `modal`, and
 `import { Switch } from '@cascivo/react'` compiles.
-Mappings: AILabel→AiBadge, AiGeneratedDisclaimer→AiDisclaimer, AvatarStack→AvatarGroup, ChipInput→TagsInput, Chip→Tag, CircularProgress→Spinner, Citation→InlineCitation, CommandPalette→CommandMenu, ConfirmDialog→AlertDialog, Dialog→Modal, Disclosure→Collapsible, DropdownMenu→Dropdown, EmptyView→EmptyState, Layout→AppShell, LinearProgress→InlineLoading, MoreMenu→OverflowMenu, NavigationDrawer→Drawer, NumberField→NumberInput, PinInput→OtpInput, Placeholder→Skeleton, Popper→Popover, Rating→RatingGroup, SegmentedButton→SegmentedControl, SelectNative→NativeSelect, SideSheet→Sheet, Sidebar→SideNav, Snackbar→Toast, SourceList→Sources, Switch→Toggle, Table→DataTable, TextShimmer→ShimmerText, ThinkingBar→AiStatus, Think→Reasoning, ThoughtChain→ChainOfThought, ToggleButtonGroup→ToggleGroup, Tool→ToolCall, TypingDots→TypingIndicator.
+Mappings: AILabel→AiBadge, AiGeneratedDisclaimer→AiDisclaimer, AvatarStack→AvatarGroup, ChipInput→TagsInput, Chip→Tag, CircularProgress→Spinner, Citation→InlineCitation, CommandPalette→CommandMenu, ConfirmDialog→AlertDialog, Context→ContextMeter, Dialog→Modal, Disclosure→Collapsible, DropdownMenu→Dropdown, EmptyView→EmptyState, Layout→AppShell, LinearProgress→InlineLoading, MoreMenu→OverflowMenu, NavigationDrawer→Drawer, NumberField→NumberInput, PinInput→OtpInput, Placeholder→Skeleton, Popper→Popover, Rating→RatingGroup, ResponseActions→MessageActions, SegmentedButton→SegmentedControl, SelectNative→NativeSelect, SideSheet→Sheet, Sidebar→SideNav, Snackbar→Toast, SourceList→Sources, Suggestions→PromptSuggestions, Switch→Toggle, Table→DataTable, TerminalWindow→Terminal, TextShimmer→ShimmerText, ThinkingBar→AiStatus, Think→Reasoning, ThoughtChain→ChainOfThought, ToggleButtonGroup→ToggleGroup, Tool→ToolCall, Typewriter→StreamingText, TypingDots→TypingIndicator.
 
 Pure-CSS glyphs (experimental): a small opt-in set of UI glyphs, rendered with
 `clip-path: shape()` and no SVG — color via `currentColor`, size via
@@ -302,7 +302,7 @@ statement, or it never re-renders. When you do own reactive state, use these:
 - Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` (generated union of every `--cascivo-*` property — no CSS-file lookup).
 - Router links in config-driven navs (SideNav/ShellHeader/Breadcrumb/Dock/…) -> `setLinkComponent(YourLink)` once at startup. Import it (and the `LinkComponentProps` contract type) from `@cascivo/react` (re-exported there, so prebuilt-package users need NOT add `@cascivo/core`); copied source can import from `@cascivo/core`. Adapter: `setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href} {...rest} />)` — spread the bag; the link stays a real `<a>` so middle-click/new-tab work.
 - Event-handler naming (predict the prop from what it receives): a **value** -> `onValueChange(value)` (Tabs, SegmentedControl, Combobox, MultiSelect, Toggle, Search, NumberInput, DatePicker, …); a raw DOM `ChangeEvent` -> `onChange(event)` (Checkbox, NativeSelect, PasswordInput, **Select**, **Slider** — these two wrap a real element and have NO `onValueChange`); activating an item -> `onSelect(value)` (Dropdown, OverflowMenu, chart points; on `Menu`/`ContextMenu` the `onSelect` lives on the *Item*, not the root). A few components keep a deprecated value-carrying `onChange` alias — prefer `onValueChange`.
-- Data/shape prop vocabulary (the other half of handler naming — nine wrong guesses in one 2026-08-08 dashboard, two more on 2026-08-22): a config-driven collection (nav, list, menu) -> **`items`** (19: Breadcrumb, ChainOfThought, DataList, Dock, Dropdown, MenuButton, NavigationMenu, OverflowMenu, ShareMenu, SideNav, Sources, StructuredList, Switcher, Timeline, Toc, ToggleGroup, TreeView, VirtualList, FeatureGrid); the choices on a form control -> **`options`** (7: Combobox, Filter, MultiSelect, NativeSelect, SegmentedControl, Select, WheelPicker); a chart's data points -> **`data`** (11: CalendarHeatmap, Candlestick, Funnel, Heatmap, Histogram, PieChart, Polar, RadialBar, Sparkline, Sunburst, Treemap). Exceptions, named in full because they are where the guesses go wrong: `DataTable.rows` (it renders a real <table>, where "rows" is the domain word); `Textarea.rows` (the HTML `rows` attribute, not a collection); `CommandMenu.groups` (its items are nested inside labelled groups); `ProgressIndicator.steps` (the domain word for a stepper); `Steps.steps` (the domain word for a stepper; also accepts `items`). A visual style enum -> **`variant`**, never `shape`/`kind`/`type`; a discriminated-union tag -> **`kind`**, never `type` (e.g. annotations: [{ kind: 'line' }]); a rich replaceable slot -> **`actions`** as ReactNode (Notification, CardHeader, PageHeader — only `Alert.action` is the {label,onClick} shorthand); body text on a feedback component -> **`description`**, NOT children (Notification renders nothing for children).
+- Data/shape prop vocabulary (the other half of handler naming — nine wrong guesses in one 2026-08-08 dashboard, two more on 2026-08-22): a config-driven collection (nav, list, menu) -> **`items`** (20: Breadcrumb, ChainOfThought, DataList, Dock, Dropdown, MenuButton, NavigationMenu, OverflowMenu, PromptSuggestions, ShareMenu, SideNav, Sources, StructuredList, Switcher, Timeline, Toc, ToggleGroup, TreeView, VirtualList, FeatureGrid); the choices on a form control -> **`options`** (7: Combobox, Filter, MultiSelect, NativeSelect, SegmentedControl, Select, WheelPicker); a chart's data points -> **`data`** (11: CalendarHeatmap, Candlestick, Funnel, Heatmap, Histogram, PieChart, Polar, RadialBar, Sparkline, Sunburst, Treemap). Exceptions, named in full because they are where the guesses go wrong: `DataTable.rows` (it renders a real <table>, where "rows" is the domain word); `Textarea.rows` (the HTML `rows` attribute, not a collection); `CommandMenu.groups` (its items are nested inside labelled groups); `ProgressIndicator.steps` (the domain word for a stepper); `Steps.steps` (the domain word for a stepper; also accepts `items`). A visual style enum -> **`variant`**, never `shape`/`kind`/`type`; a discriminated-union tag -> **`kind`**, never `type` (e.g. annotations: [{ kind: 'line' }]); a rich replaceable slot -> **`actions`** as ReactNode (Notification, CardHeader, PageHeader — only `Alert.action` is the {label,onClick} shorthand); body text on a feedback component -> **`description`**, NOT children (Notification renders nothing for children).
 - Near-miss prop names (each one a real adopter's wrong guess): `<Text tone=…>` -> **`muted`** (a boolean; `tone` is the SEVERITY vocabulary on Status/Badge/Timeline/SideNav, not text emphasis); `gap="4"` -> **`gap={4}`** (numeric SpaceStep); `<Flex justify=…>` with no `direction` is already VERTICAL (the default, unlike CSS/Chakra/MUI/Radix); `const { theme } = useTheme()` -> a TUPLE `const [theme, setTheme]`; `DataList orientation="vertical"` moves the VALUE under its label, it does not stack the items (they stack either way); `<DataListItem>` is an INTERFACE, not a component (`DataList` takes `items`). Three former near-misses are now accepted both ways and cost nothing: `import { Switch }` (= `Toggle`), `<OverflowMenu label=…>` (= `ariaLabel`), `<Field hint=…>` (= `description`).
 - ⚠ `gap` takes a NUMBER: `gap={4}`, not `gap="4"`. Every other size-ish prop is a string union (`size="sm"`, `padding="md"`), but the space scale is a numeric `SpaceStep` (1|2|3|4|5|6|8|10|12) — this applies to Flex/Grid/AutoGrid `gap` and `AppShell.padding`. One adopter wrote `gap="4"` and got 20 type errors in a single run.
 - Items-prop-driven vs children-driven: `DataList`/`StructuredList`/`Timeline`/`Steps` take an `items` ARRAY; `ListItem`/`ContainedListItem`/`MenuItem`/`TabsTrigger` are composed as children. `DataListItem` is an INTERFACE, not a component — write <DataList items={[{ label, value }]} />, not <DataList><DataListItem/></DataList>. DataList items are { label, value } (NOT { term, description }, despite rendering a <dl>).
@@ -425,7 +425,7 @@ see how components behave without adding tracking, read these machine-readable C
 - Benchmark results (runtime, bundle, render counts vs Carbon/shadcn): https://github.com/cascivo/cascivo/blob/main/apps/bench/results/results.json
 - Accessibility conformance (axe sweep, AT matrix): https://github.com/cascivo/cascivo/tree/main/docs/specs
 
-## Component index (221 entries — 209 components + 12 page blocks)
+## Component index (226 entries — 214 components + 12 page blocks)
 
 Not all ship in `@cascivo/react`: 25 in @cascivo/charts, 10 in @cascivo/flow, 2 in @cascivo/editor — those are separate installs (see Quick Setup). Blocks are copy-paste only. Each entry below is tagged with its channel.
 
@@ -527,9 +527,11 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [sources](https://cascivo.com/llms/sources.md) — Collapsible, numbered list of the sources an AI answer drew on — "Used 3 sources" — whose numbers match InlineCitation _(npm @cascivo/react · or copy-paste)_
 - [stat](https://cascivo.com/llms/stat.md) — Displays a key metric with optional delta, trend direction and help text _(npm @cascivo/react · or copy-paste)_
 - [status](https://cascivo.com/llms/status.md) — Colored dot with a label communicating the state of a system or entity _(npm @cascivo/react · or copy-paste)_
+- [streaming-text](https://cascivo.com/llms/streaming-text.md) — Reveals text character by character with a blinking cursor, catching up as a streamed reply grows _(npm @cascivo/react · or copy-paste)_
 - [structured-list](https://cascivo.com/llms/structured-list.md) — Tabular row list for scannable data, optionally single-selectable _(npm @cascivo/react · or copy-paste)_
 - [swipe-item](https://cascivo.com/llms/swipe-item.md) — List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity _(npm @cascivo/react · or copy-paste)_
 - [tag](https://cascivo.com/llms/tag.md) — Compact chip for labeling, categorizing, or filtering content _(npm @cascivo/react · or copy-paste)_
+- [terminal](https://cascivo.com/llms/terminal.md) — An animated terminal that types out a script of commands and output — for demos, onboarding and agent transcripts _(npm @cascivo/react · or copy-paste)_
 - [text](https://cascivo.com/llms/text.md) — Body text with size, weight, and muted variants _(npm @cascivo/react · or copy-paste)_
 - [timeline](https://cascivo.com/llms/timeline.md) — Ordered sequence of events with status markers and a connector line _(npm @cascivo/react · or copy-paste)_
 - [tool-call](https://cascivo.com/llms/tool-call.md) — Card for one AI tool invocation — the tool name, its lifecycle status, collapsible input/output, and approval actions _(npm @cascivo/react · or copy-paste)_
@@ -542,6 +544,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 
 - [ai-disclaimer](https://cascivo.com/llms/ai-disclaimer.md) — A short, quiet note that AI-generated content may be wrong — "AI-generated content may be incorrect" _(npm @cascivo/react · or copy-paste)_
 - [ai-status](https://cascivo.com/llms/ai-status.md) — Announces what an AI is doing — thinking, generating, done, failed or stopped — with a shimmering label and an optional Stop button _(npm @cascivo/react · or copy-paste)_
+- [context-meter](https://cascivo.com/llms/context-meter.md) — How much of a model’s context window a conversation has used — "12K / 200K" with a bar that warns as it fills _(npm @cascivo/react · or copy-paste)_
 - [infinite-scroll](https://cascivo.com/llms/infinite-scroll.md) — Loads the next page when the end of a list scrolls into view _(npm @cascivo/react · or copy-paste)_
 - [inline-loading](https://cascivo.com/llms/inline-loading.md) — Compact inline status indicator that pairs a label with a loading, success, or error state _(npm @cascivo/react · or copy-paste)_
 - [notification](https://cascivo.com/llms/notification.md) — Inline, actionable notification banner that surfaces a titled message with an optional recovery action _(npm @cascivo/react · or copy-paste)_
@@ -577,11 +580,13 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [input](https://cascivo.com/llms/input.md) — Text input field with optional label, hint, and error state _(npm @cascivo/react · or copy-paste)_
 - [input-group](https://cascivo.com/llms/input-group.md) — Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders _(npm @cascivo/react · or copy-paste)_
 - [label](https://cascivo.com/llms/label.md) — Accessible caption for a form control _(npm @cascivo/react · or copy-paste)_
+- [message-actions](https://cascivo.com/llms/message-actions.md) — The action row under an AI reply — copy, good / bad feedback as toggle buttons, and regenerate _(npm @cascivo/react · or copy-paste)_
 - [multi-select](https://cascivo.com/llms/multi-select.md) — Searchable multi-value select with a popover listbox, chips and grouping _(npm @cascivo/react · or copy-paste)_
 - [native-select](https://cascivo.com/llms/native-select.md) — A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring _(npm @cascivo/react · or copy-paste)_
 - [number-input](https://cascivo.com/llms/number-input.md) — Numeric input with stepper buttons, clamping, precision, and locale formatting _(npm @cascivo/react · or copy-paste)_
 - [otp-input](https://cascivo.com/llms/otp-input.md) — Segmented one-time code input _(npm @cascivo/react · or copy-paste)_
 - [password-input](https://cascivo.com/llms/password-input.md) — Password input with reveal toggle and optional strength meter _(npm @cascivo/react · or copy-paste)_
+- [prompt-suggestions](https://cascivo.com/llms/prompt-suggestions.md) — Starter prompts as a wrap of pill buttons — the "Try asking…" row of an empty AI chat _(npm @cascivo/react · or copy-paste)_
 - [radio](https://cascivo.com/llms/radio.md) — Single choice from a set, grouped with RadioGroup _(npm @cascivo/react · or copy-paste)_
 - [radio-card](https://cascivo.com/llms/radio-card.md) — Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups. _(npm @cascivo/react · or copy-paste)_
 - [rating-group](https://cascivo.com/llms/rating-group.md) — Star rating input with accessible radio group pattern _(npm @cascivo/react · or copy-paste)_
@@ -774,6 +779,7 @@ _Generated: 2026-10-02 from registry v1.6.0_
 - [Comparison](https://cascivo.com/context/comparison.md) — Use when: Showing the difference between two versions of similar content (before/after edits, original vs processed)
 - [ContainedList](https://cascivo.com/context/contained-list.md) — Use when: Grouping a short set of related rows under a visible heading in a bordered surface
 - [ContextMenu](https://cascivo.com/context/context-menu.md) — Use when: Offering actions contextual to an element via right-click (rename, delete, copy on a row or canvas item)
+- [ContextMeter](https://cascivo.com/context/context-meter.md) — Use when: Showing how much of the model’s context window a conversation or document has used
 - [CopyButton](https://cascivo.com/context/copy-button.md) — Use when: Letting users copy a short value to the clipboard — install commands, API keys, tokens, share links
 - [DataList](https://cascivo.com/context/data-list.md) — Use when: Displaying read-only key-value metadata (profile fields, record summaries)
 - [DataTable](https://cascivo.com/context/data-table.md) — Use when: Displaying tabular data with columns the user sorts, filters, or pages through
@@ -838,6 +844,7 @@ _Generated: 2026-10-02 from registry v1.6.0_
 - [Menu](https://cascivo.com/context/menu.md) — Use when: Presenting a list of actions or commands triggered from a button
 - [MenuButton](https://cascivo.com/context/menu-button.md) — Use when: Exposing a small set of one-shot actions behind a single labeled button
 - [Menubar](https://cascivo.com/context/menubar.md) — Use when: A persistent application-style command bar (File / Edit / View) where each top-level entry opens a menu of actions
+- [MessageActions](https://cascivo.com/context/message-actions.md) — Use when: Under each assistant message: copy the reply, rate it, or ask for another attempt
 - [Modal](https://cascivo.com/context/modal.md) — Use when: Presenting focused content or a task that must interrupt the current flow
 - [MultiSelect](https://cascivo.com/context/multi-select.md) — Use when: Selecting several values at once from a known list of options
 - [NativeSelect](https://cascivo.com/context/native-select.md) — Use when: A standard single-choice dropdown where native behavior and form integration matter most
@@ -853,6 +860,7 @@ _Generated: 2026-10-02 from registry v1.6.0_
 - [ProgressBar](https://cascivo.com/context/progress-bar.md) — Use when: Showing linear determinate progress of a task with a known percentage (value)
 - [ProgressCircle](https://cascivo.com/context/progress-circle.md) — Use when: Showing determinate progress compactly as a circular arc
 - [ProgressIndicator](https://cascivo.com/context/progress-indicator.md) — Use when: Showing progress through the discrete steps of a multi-step flow (wizard, checkout)
+- [PromptSuggestions](https://cascivo.com/context/prompt-suggestions.md) — Use when: An empty conversation: offer a few concrete things to ask
 - [Prose](https://cascivo.com/context/prose.md) — Use when: Styling long-form authored content (articles, docs, CMS output)
 - [PullToRefresh](https://cascivo.com/context/pull-to-refresh.md) — Use when: A scrollable list or feed on touch devices that the user refreshes by pulling down from the top
 - [QrCode](https://cascivo.com/context/qr-code.md) — Use when: Letting users scan a URL, contact, or short token with a phone camera
@@ -889,6 +897,7 @@ _Generated: 2026-10-02 from registry v1.6.0_
 - [Stat](https://cascivo.com/context/stat.md) — Use when: Highlighting a single key metric with a clear label
 - [Status](https://cascivo.com/context/status.md) — Use when: Communicating the live state of a system or entity (operational, deploying, down)
 - [Steps](https://cascivo.com/context/steps.md) — Use when: Checkout flows where the user moves through a fixed sequence of screens
+- [StreamingText](https://cascivo.com/context/streaming-text.md) — Use when: Rendering an assistant reply as it streams in, smoothing bursty token arrival into steady typing
 - [StructuredList](https://cascivo.com/context/structured-list.md) — Use when: Presenting a set of related records in aligned columns the user scans top to bottom
 - [Swap](https://cascivo.com/context/swap.md) — Use when: Theme toggles where an icon animates between two states (sun/moon)
 - [SwipeItem](https://cascivo.com/context/swipe-item.md) — Use when: List rows on touch surfaces where secondary actions (archive, delete) should hide until swiped
@@ -896,6 +905,7 @@ _Generated: 2026-10-02 from registry v1.6.0_
 - [Tabs](https://cascivo.com/context/tabs.md) — Use when: Switching between peer panels of related content in the same context
 - [Tag](https://cascivo.com/context/tag.md) — Use when: Labeling, categorizing, or filtering content with a compact chip
 - [TagsInput](https://cascivo.com/context/tags-input.md) — Use when: Collecting an open-ended set of free-text values the user types themselves (keywords, emails, labels)
+- [Terminal](https://cascivo.com/context/terminal.md) — Use when: Demonstrating a CLI or agent run on a marketing or onboarding page
 - [Text](https://cascivo.com/context/text.md) — Use when: Rendering body copy, paragraphs, and inline text in app UI
 - [Textarea](https://cascivo.com/context/textarea.md) — Use when: Capturing multi-line free text such as messages, descriptions, or comments
 - [Tile](https://cascivo.com/context/tile.md) — Use when: A visually rich, clickable choice card in a single- or multi-select group
@@ -7932,6 +7942,91 @@ _Generated from registry v1.6.0 on 2026-10-02. Docs track `main`; compare with h
 
 ---
 
+# ContextMeter
+
+How much of a model’s context window a conversation has used — "12K / 200K" with a bar that warns as it fills
+
+## Install
+
+Copy-paste the source (you own and can edit it):
+
+```bash
+npx cascivo add context-meter
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { ContextMeter } from '@cascivo/react'
+```
+
+## Category
+
+`feedback`
+
+## States
+
+- `normal`
+- `high`
+- `full`
+
+## Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `number` | yes | — | Tokens used so far. |
+| `max` | `number` | yes | — | The context window size, in tokens. |
+| `label` | `string` | no | `Context` | The meter’s name, shown above the bar. Rendered on screen. |
+| `labels` | `{ usage?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). `usage` is the spoken value and may contain `{used}`, `{max}` and `{percent}`. |
+
+## Examples
+
+### Plenty left
+
+```tsx
+<ContextMeter value={12400} max={200000} />
+```
+
+### Nearly full
+
+```tsx
+<ContextMeter value={192000} max={200000} />
+```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
+## Design tokens
+
+- `--cascivo-color-ai`
+- `--cascivo-color-warning`
+- `--cascivo-color-destructive`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-radius-full`
+
+## Accessibility
+
+- **WCAG level:** 2.2-AA
+- **ARIA role:** `meter`
+
+## Dependencies
+
+- `@cascivo/core`
+- `@cascivo/i18n`
+
+## Tags
+
+ai, context, tokens, usage, meter, quota
+
+---
+
+_Generated from registry v1.6.0 on 2026-10-02. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # CopyButton
 
 Icon button that copies a value to the clipboard with copied feedback
@@ -14296,6 +14391,84 @@ _Generated from registry v1.6.0 on 2026-10-02. Docs track `main`; compare with h
 
 ---
 
+# MessageActions
+
+The action row under an AI reply — copy, good / bad feedback as toggle buttons, and regenerate
+
+## Install
+
+Copy-paste the source (you own and can edit it):
+
+```bash
+npx cascivo add message-actions
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { MessageActions } from '@cascivo/react'
+```
+
+## Category
+
+`inputs`
+
+## Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `copyValue` | `string` | no | — | The text the Copy button copies. Omit to hide Copy. |
+| `feedback` | `'good' \| 'bad' \| null` | no | — | Controlled rating: `good`, `bad` or `null`. Pressing the active rating again clears it. |
+| `defaultFeedback` | `'good' \| 'bad' \| null` | no | `null` | Initial rating when uncontrolled. |
+| `onFeedbackChange` | `(feedback: 'good' \| 'bad' \| null) => void` | no | — | Called with the new rating (or `null` when cleared). The rating buttons render when this or `feedback` is set; a rating also announces "Thanks for your feedback". |
+| `onRegenerate` | `() => void` | no | — | Called by the Regenerate button. Omit to hide it. |
+| `labels` | `{ group?: string; good?: string; bad?: string; regenerate?: string; recorded?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
+
+## Examples
+
+### Copy, rate and regenerate
+
+```tsx
+<MessageActions copyValue="Refunds are available for 30 days." onFeedbackChange={() => {}} onRegenerate={() => {}} />
+```
+
+### Copy only
+
+```tsx
+<MessageActions copyValue="Hello" />
+```
+
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
+## Design tokens
+
+- `--cascivo-color-text-muted`
+- `--cascivo-color-ai`
+- `--cascivo-color-ai-subtle`
+
+## Accessibility
+
+- **WCAG level:** 2.2-AA
+- **ARIA role:** `group`
+- **Keyboard:** Tab, Enter, Space
+
+## Dependencies
+
+- `@cascivo/core`
+- `@cascivo/i18n`
+
+## Tags
+
+ai, chat, feedback, copy, regenerate, thumbs, actions
+
+---
+
+_Generated from registry v1.6.0 on 2026-10-02. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Modal
 
 Accessible dialog overlay using native <dialog> element
@@ -15798,6 +15971,81 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 ## Tags
 
 steps, wizard, stepper, progress, navigation
+
+---
+
+_Generated from registry v1.6.0 on 2026-10-02. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
+# PromptSuggestions
+
+Starter prompts as a wrap of pill buttons — the "Try asking…" row of an empty AI chat
+
+## Install
+
+Copy-paste the source (you own and can edit it):
+
+```bash
+npx cascivo add prompt-suggestions
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { PromptSuggestions } from '@cascivo/react'
+```
+
+## Category
+
+`inputs`
+
+## Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `string[]` | yes | — | The prompts, as the exact text each one sends. |
+| `onSelect` | `(value: string) => void` | yes | — | Called with the chosen prompt — send it, or put it in the composer. |
+| `labels` | `{ group?: string }` | no | — | Overrides for the component’s user-visible strings (i18n) — `group` names the group for screen readers. |
+
+## Examples
+
+### Starter prompts
+
+```tsx
+<PromptSuggestions
+  items={['Summarise this week’s tickets', 'Draft a release note', 'What changed in v2?']}
+  onSelect={() => {}}
+/>
+```
+
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
+## Design tokens
+
+- `--cascivo-color-border`
+- `--cascivo-color-surface`
+- `--cascivo-color-ai-border`
+- `--cascivo-color-ai-subtle`
+- `--cascivo-radius-full`
+- `--cascivo-focus-ring`
+
+## Accessibility
+
+- **WCAG level:** 2.2-AA
+- **ARIA role:** `group`
+- **Keyboard:** Tab, Enter, Space
+
+## Dependencies
+
+- `@cascivo/core`
+- `@cascivo/i18n`
+
+## Tags
+
+ai, chat, prompts, suggestions, starters, chips
 
 ---
 
@@ -19083,6 +19331,71 @@ _Generated from registry v1.6.0 on 2026-10-02. Docs track `main`; compare with h
 
 ---
 
+# StreamingText
+
+Reveals text character by character with a blinking cursor, catching up as a streamed reply grows
+
+## Install
+
+Copy-paste the source (you own and can edit it):
+
+```bash
+npx cascivo add streaming-text
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { StreamingText } from '@cascivo/react'
+```
+
+## Category
+
+`display`
+
+## Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `text` | `string` | yes | — | The target text. Pass the accumulating reply as it streams; typing catches up as it grows, and restarts if it is replaced by a shorter string. |
+| `speed` | `number` | no | `2` | Characters revealed per animation frame. |
+| `onComplete` | `() => void` | no | — | Called when the displayed text has caught up with `text`. |
+
+## Examples
+
+### Typing
+
+```tsx
+<StreamingText text="Hello, I am cascivo." speed={3} />
+```
+
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
+## Design tokens
+
+- `--cascivo-duration-loop-fast`
+
+## Accessibility
+
+- **WCAG level:** 2.2-AA
+- **ARIA role:** `none`
+
+## Dependencies
+
+- `@cascivo/core`
+
+## Tags
+
+ai, streaming, typewriter, text, chat
+
+---
+
+_Generated from registry v1.6.0 on 2026-10-02. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # StructuredList
 
 Tabular row list for scannable data, optionally single-selectable
@@ -19715,6 +20028,101 @@ Required. The component's primary job needs client JavaScript, so do not render 
 ## Tags
 
 form, tags, chips, multi, input
+
+---
+
+_Generated from registry v1.6.0 on 2026-10-02. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
+# Terminal
+
+An animated terminal that types out a script of commands and output — for demos, onboarding and agent transcripts
+
+## Install
+
+Copy-paste the source (you own and can edit it):
+
+```bash
+npx cascivo add terminal
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Terminal } from '@cascivo/react'
+```
+
+## Category
+
+`display`
+
+## Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `lines` | `TerminalLine[]` | yes | — | The script. Each line has `text`, an optional `prefix` (e.g. `$`) and a `type` (`command \| output \| error \| comment`, default `output`). |
+| `speed` | `number` | no | `3` | Characters typed per animation frame. |
+| `loop` | `boolean` | no | `false` | Restart from the first line after the last one. |
+| `onComplete` | `() => void` | no | — | Called each time the last line finishes typing. |
+| `labels` | `{ label?: string }` | no | — | Overrides for the component’s user-visible strings (i18n) — `label` names the terminal for screen readers. |
+
+## Object types
+
+### `TerminalLine`
+
+One line of the script.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `text` | `string` | yes | What the line says. |
+| `prefix` | `string` | no | A prompt marker such as `$`, styled and not selectable. |
+| `type` | `'command' \| 'output' \| 'error' \| 'comment'` | no | Colours the line. Defaults to `output`. |
+
+## Examples
+
+### Install transcript
+
+```tsx
+<Terminal
+  lines={[
+    { text: 'npx cascivo add button', prefix: '$', type: 'command' },
+    { text: 'Added button to src/components.', type: 'output' },
+    { text: '# done in 1.2s', type: 'comment' },
+  ]}
+/>
+```
+
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
+## Design tokens
+
+- `--cascivo-terminal-bg`
+- `--cascivo-terminal-fg`
+- `--cascivo-editor-bg`
+- `--cascivo-editor-fg`
+- `--cascivo-editor-border`
+- `--cascivo-editor-syntax-keyword`
+- `--cascivo-editor-syntax-string`
+- `--cascivo-editor-syntax-comment`
+- `--cascivo-color-destructive`
+- `--cascivo-font-mono`
+
+## Accessibility
+
+- **WCAG level:** 2.2-AA
+- **ARIA role:** `group`
+
+## Dependencies
+
+- `@cascivo/core`
+- `@cascivo/i18n`
+
+## Tags
+
+ai, terminal, cli, demo, typewriter, agent, transcript
 
 ---
 

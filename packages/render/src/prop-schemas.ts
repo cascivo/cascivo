@@ -1936,6 +1936,27 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: true,
     },
   ],
+  ContextMeter: [
+    {
+      name: 'value',
+      required: true,
+      primitives: ['number'],
+    },
+    {
+      name: 'max',
+      required: true,
+      primitives: ['number'],
+    },
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+  ],
   CopyButton: [
     {
       name: 'value',
@@ -4489,6 +4510,33 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
   ],
+  MessageActions: [
+    {
+      name: 'copyValue',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'feedback',
+      required: false,
+    },
+    {
+      name: 'defaultFeedback',
+      required: false,
+    },
+    {
+      name: 'onFeedbackChange',
+      required: false,
+    },
+    {
+      name: 'onRegenerate',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+  ],
   Meter: [
     {
       name: 'value',
@@ -5384,6 +5432,20 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'className',
       required: false,
       primitives: ['string'],
+    },
+  ],
+  PromptSuggestions: [
+    {
+      name: 'items',
+      required: true,
+    },
+    {
+      name: 'onSelect',
+      required: true,
+    },
+    {
+      name: 'labels',
+      required: false,
     },
   ],
   Prose: [
@@ -6745,6 +6807,22 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
   ],
+  StreamingText: [
+    {
+      name: 'text',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'speed',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'onComplete',
+      required: false,
+    },
+  ],
   StructuredList: [
     {
       name: 'label',
@@ -6998,6 +7076,30 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'label',
       required: false,
       primitives: ['string'],
+    },
+  ],
+  Terminal: [
+    {
+      name: 'lines',
+      required: true,
+    },
+    {
+      name: 'speed',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'loop',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onComplete',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
     },
   ],
   Text: [

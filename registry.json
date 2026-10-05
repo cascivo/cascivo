@@ -5273,6 +5273,137 @@
       "channels": ["npm:@cascivo/react", "copy"]
     },
     {
+      "name": "context-meter",
+      "type": "component",
+      "description": "How much of a model’s context window a conversation has used — \"12K / 200K\" with a bar that warns as it fills",
+      "category": "feedback",
+      "version": "1.6.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/context-meter/context-meter.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/context-meter/index.ts",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/context-meter/context-meter.module.css"
+      ],
+      "fileHashes": {
+        "context-meter.tsx": "sha256-919c844f0ec5e134efdd3ac64832203a155dba490d46bb57237a6552e8f41c17",
+        "index.ts": "sha256-13da1ba0d9b84aeb36762e187944804a3bd7c845fe392a1b985be9a86b57ad28",
+        "context-meter.module.css": "sha256-55dd296e989b222cd029490d899e797c60be1d33e4cea098ac4331edb24b207d"
+      },
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=1.6.0",
+        "@cascivo/i18n": ">=1.6.0"
+      },
+      "aliases": ["Context", "TokenUsage", "TokenMeter"],
+      "tags": ["ai", "context", "tokens", "usage", "meter", "quota"],
+      "meta": {
+        "name": "ContextMeter",
+        "description": "How much of a model’s context window a conversation has used — \"12K / 200K\" with a bar that warns as it fills",
+        "category": "feedback",
+        "clientJs": "none",
+        "states": ["normal", "high", "full"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "value",
+            "description": "Tokens used so far.",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "max",
+            "description": "The context window size, in tokens.",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "label",
+            "nameVisibility": "visible",
+            "description": "The meter’s name, shown above the bar.",
+            "type": "string",
+            "required": false,
+            "default": "Context"
+          },
+          {
+            "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n). `usage` is the spoken value and may contain `{used}`, `{max}` and `{percent}`.",
+            "type": "{ usage?: string }",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-ai",
+          "--cascivo-color-warning",
+          "--cascivo-color-destructive",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-radius-full"
+        ],
+        "accessibility": {
+          "role": "meter",
+          "wcag": "2.2-AA",
+          "keyboard": [],
+          "forcedColors": true
+        },
+        "examples": [
+          {
+            "title": "Plenty left",
+            "code": "<ContextMeter value={12400} max={200000} />"
+          },
+          {
+            "title": "Nearly full",
+            "code": "<ContextMeter value={192000} max={200000} />"
+          }
+        ],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["ai", "context", "tokens", "usage", "meter", "quota"],
+        "intent": {
+          "whenToUse": [
+            "Showing how much of the model’s context window a conversation or document has used",
+            "Warning before a conversation hits the limit and older turns are dropped"
+          ],
+          "whenNotToUse": [
+            "Task progress toward completion — use ProgressBar",
+            "Account-level usage and billing quotas with many figures — use Stat or a chart"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Colour alone to signal the window is nearly full",
+              "good": "Keep the \"used / max\" figures visible; colour reinforces them",
+              "why": "Colour is not perceivable by everyone; the numbers carry the meaning"
+            }
+          ],
+          "related": [
+            {
+              "name": "ProgressBar",
+              "relationship": "alternative",
+              "reason": "ProgressBar is for progress toward done; a meter measures a level within a range"
+            },
+            {
+              "name": "AiStatus",
+              "relationship": "pairs-with",
+              "reason": "Both sit in an AI chat’s header or footer"
+            }
+          ],
+          "a11yRationale": "role=\"meter\" with aria-valuenow/min/max and an aria-valuetext in full words (\"12,400 of 200,000 tokens used (6%)\"), named by its label. The compact visible line is aria-hidden so it is not read twice. Colour steps to warning at 80% and destructive at 95%, but the figures always carry the meaning",
+          "flexibility": [
+            {
+              "area": "label and wording",
+              "level": "flexible",
+              "note": "Rename via label; reword via labels.usage"
+            },
+            {
+              "area": "thresholds",
+              "level": "strict",
+              "note": "Warning at 80%, full at 95% — consistent across every meter"
+            }
+          ]
+        }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
+    },
+    {
       "name": "copy-button",
       "type": "component",
       "description": "Icon button that copies a value to the clipboard with copied feedback",
@@ -11759,6 +11890,141 @@
       "channels": ["npm:@cascivo/react", "copy"]
     },
     {
+      "name": "message-actions",
+      "type": "component",
+      "description": "The action row under an AI reply — copy, good / bad feedback as toggle buttons, and regenerate",
+      "category": "inputs",
+      "version": "1.6.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/message-actions/message-actions.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/message-actions/index.ts",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/message-actions/message-actions.module.css"
+      ],
+      "fileHashes": {
+        "message-actions.tsx": "sha256-3c8290a4a62b4c3ee1abafedae84f68899546842b7655d23f0f9510eefc84fcf",
+        "index.ts": "sha256-dd83439285f8ab6066e1bea148a6276b017da4e581af0d8071eb771f53b26039",
+        "message-actions.module.css": "sha256-5bc6b8580031b7868f5da6782225b16859799f932366e83b3b4375ae34eaa723"
+      },
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=1.6.0",
+        "@cascivo/i18n": ">=1.6.0"
+      },
+      "aliases": ["ResponseActions", "MessageToolbar", "FeedbackButtons"],
+      "tags": ["ai", "chat", "feedback", "copy", "regenerate", "thumbs", "actions"],
+      "meta": {
+        "name": "MessageActions",
+        "description": "The action row under an AI reply — copy, good / bad feedback as toggle buttons, and regenerate",
+        "category": "inputs",
+        "clientJs": "required",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "copyValue",
+            "description": "The text the Copy button copies. Omit to hide Copy.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "feedback",
+            "description": "Controlled rating: `good`, `bad` or `null`. Pressing the active rating again clears it.",
+            "type": "'good' | 'bad' | null",
+            "required": false
+          },
+          {
+            "name": "defaultFeedback",
+            "description": "Initial rating when uncontrolled.",
+            "type": "'good' | 'bad' | null",
+            "required": false,
+            "default": "null"
+          },
+          {
+            "name": "onFeedbackChange",
+            "description": "Called with the new rating (or `null` when cleared). The rating buttons render when this or `feedback` is set; a rating also announces \"Thanks for your feedback\".",
+            "type": "(feedback: 'good' | 'bad' | null) => void",
+            "required": false
+          },
+          {
+            "name": "onRegenerate",
+            "description": "Called by the Regenerate button. Omit to hide it.",
+            "type": "() => void",
+            "required": false
+          },
+          {
+            "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
+            "type": "{ group?: string; good?: string; bad?: string; regenerate?: string; recorded?: string }",
+            "required": false
+          }
+        ],
+        "tokens": ["--cascivo-color-text-muted", "--cascivo-color-ai", "--cascivo-color-ai-subtle"],
+        "accessibility": {
+          "role": "group",
+          "wcag": "2.2-AA",
+          "keyboard": ["Tab", "Enter", "Space"],
+          "forcedColors": true
+        },
+        "examples": [
+          {
+            "title": "Copy, rate and regenerate",
+            "code": "<MessageActions copyValue=\"Refunds are available for 30 days.\" onFeedbackChange={() => {}} onRegenerate={() => {}} />"
+          },
+          {
+            "title": "Copy only",
+            "code": "<MessageActions copyValue=\"Hello\" />"
+          }
+        ],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["copy-button", "icon-button"],
+        "tags": ["ai", "chat", "feedback", "copy", "regenerate", "thumbs", "actions"],
+        "intent": {
+          "whenToUse": [
+            "Under each assistant message: copy the reply, rate it, or ask for another attempt"
+          ],
+          "whenNotToUse": [
+            "Stopping a response that is still generating — use AiStatus with onStop",
+            "Actions on a non-AI item — use ButtonGroup or a Menu"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Swapping the rating button’s label to \"Good response recorded\"",
+              "good": "Keep a stable name and expose the choice with aria-pressed; the component announces the confirmation once",
+              "why": "A name that changes on press reads as a different control; aria-pressed is how toggle buttons report state"
+            }
+          ],
+          "related": [
+            {
+              "name": "CopyButton",
+              "relationship": "contains",
+              "reason": "Copy is a CopyButton"
+            },
+            {
+              "name": "AiStatus",
+              "relationship": "pairs-with",
+              "reason": "AiStatus covers the in-progress phase; MessageActions appears once the reply is complete"
+            }
+          ],
+          "a11yRationale": "A named group of real buttons. Good and Bad are toggle buttons (aria-pressed), so the chosen rating is exposed as state rather than by a changing label, and choosing one announces \"Thanks for your feedback\" once through the shared announce() region. Icon buttons carry accessible names and meet the coarse-pointer target size",
+          "flexibility": [
+            {
+              "area": "which actions",
+              "level": "flexible",
+              "note": "Each action renders only when its prop is set"
+            },
+            {
+              "area": "rating semantics",
+              "level": "strict",
+              "note": "Two-state good / bad toggles; do not repurpose them for other choices"
+            }
+          ]
+        }
+      },
+      "registryDependencies": ["copy-button", "icon-button"],
+      "channels": ["npm:@cascivo/react", "copy"]
+    },
+    {
       "name": "modal",
       "type": "component",
       "description": "Accessible dialog overlay using native <dialog> element",
@@ -14344,6 +14610,127 @@
               "area": "token names",
               "level": "strict",
               "note": "Step and connector colors must resolve to --cascivo-* tokens"
+            }
+          ]
+        }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
+    },
+    {
+      "name": "prompt-suggestions",
+      "type": "component",
+      "description": "Starter prompts as a wrap of pill buttons — the \"Try asking…\" row of an empty AI chat",
+      "category": "inputs",
+      "version": "1.6.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prompt-suggestions/prompt-suggestions.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prompt-suggestions/index.ts",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prompt-suggestions/prompt-suggestions.module.css"
+      ],
+      "fileHashes": {
+        "prompt-suggestions.tsx": "sha256-d51ab685058a45cdae9c6f658070ccdd90ed3094c2d7d9b130b61f637355e84d",
+        "index.ts": "sha256-870275e4199c791aaee6ee38f1bd8b894caa24a88ad12d9a14779b921831f2d3",
+        "prompt-suggestions.module.css": "sha256-7685b53f86fca115916cdcdd510a667c7e0ae82e0171f464d873234d4afea04c"
+      },
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=1.6.0",
+        "@cascivo/i18n": ">=1.6.0"
+      },
+      "aliases": ["Suggestions", "PromptStarters", "Prompts", "QuickReplies"],
+      "tags": ["ai", "chat", "prompts", "suggestions", "starters", "chips"],
+      "meta": {
+        "name": "PromptSuggestions",
+        "description": "Starter prompts as a wrap of pill buttons — the \"Try asking…\" row of an empty AI chat",
+        "category": "inputs",
+        "clientJs": "required",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "items",
+            "description": "The prompts, as the exact text each one sends.",
+            "type": "string[]",
+            "required": true
+          },
+          {
+            "name": "onSelect",
+            "description": "Called with the chosen prompt — send it, or put it in the composer.",
+            "type": "(value: string) => void",
+            "required": true
+          },
+          {
+            "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n) — `group` names the group for screen readers.",
+            "type": "{ group?: string }",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-border",
+          "--cascivo-color-surface",
+          "--cascivo-color-ai-border",
+          "--cascivo-color-ai-subtle",
+          "--cascivo-radius-full",
+          "--cascivo-focus-ring"
+        ],
+        "accessibility": {
+          "role": "group",
+          "wcag": "2.2-AA",
+          "keyboard": ["Tab", "Enter", "Space"],
+          "forcedColors": true
+        },
+        "examples": [
+          {
+            "title": "Starter prompts",
+            "code": "<PromptSuggestions\n  items={['Summarise this week’s tickets', 'Draft a release note', 'What changed in v2?']}\n  onSelect={() => {}}\n/>"
+          }
+        ],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["ai", "chat", "prompts", "suggestions", "starters", "chips"],
+        "intent": {
+          "whenToUse": [
+            "An empty conversation: offer a few concrete things to ask",
+            "Follow-up suggestions under an assistant reply"
+          ],
+          "whenNotToUse": [
+            "Filtering or selecting values — use ToggleGroup, Tag or SegmentedControl",
+            "Autocomplete while typing — use Combobox"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Ten generic prompts (\"Ask me anything\")",
+              "good": "Three or four specific, tappable prompts",
+              "why": "Specific starters show what the assistant can actually do; a long generic list is skipped"
+            }
+          ],
+          "related": [
+            {
+              "name": "MessageActions",
+              "relationship": "pairs-with",
+              "reason": "Both sit around an assistant message"
+            },
+            {
+              "name": "Tag",
+              "relationship": "alternative",
+              "reason": "Tag is for labels and filters, not for sending a prompt"
+            }
+          ],
+          "a11yRationale": "A named group of real buttons whose names are the prompt text, operable with Tab and Enter/Space. Pills meet the coarse-pointer target size and keep a visible focus ring",
+          "content": {
+            "tone": "Write each prompt as the person would type it, in the first person"
+          },
+          "flexibility": [
+            {
+              "area": "what selecting does",
+              "level": "flexible",
+              "note": "Send immediately, or fill the composer"
+            },
+            {
+              "area": "item text",
+              "level": "strict",
+              "note": "The visible text is the prompt; do not show one thing and send another"
             }
           ]
         }
@@ -18938,6 +19325,116 @@
       "channels": ["npm:@cascivo/react", "copy"]
     },
     {
+      "name": "streaming-text",
+      "type": "component",
+      "description": "Reveals text character by character with a blinking cursor, catching up as a streamed reply grows",
+      "category": "display",
+      "version": "1.6.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/streaming-text/streaming-text.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/streaming-text/index.ts",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/streaming-text/streaming-text.module.css"
+      ],
+      "fileHashes": {
+        "streaming-text.tsx": "sha256-a4b4d499af219901352c6614f6fbf72f2979a14a114b0387f68a884584f000f9",
+        "index.ts": "sha256-b0bf06655f2c8f2cf5c87c7247de970a61b8ed27e0f37c106d25642b88b46f29",
+        "streaming-text.module.css": "sha256-2c0cbcd212bb53f8f8e6df266ce307cb20b3ae6051411a004c522a93ea581064"
+      },
+      "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=1.6.0"
+      },
+      "aliases": ["Typewriter", "TypingText"],
+      "tags": ["ai", "streaming", "typewriter", "text", "chat"],
+      "meta": {
+        "name": "StreamingText",
+        "description": "Reveals text character by character with a blinking cursor, catching up as a streamed reply grows",
+        "category": "display",
+        "clientJs": "required",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "text",
+            "description": "The target text. Pass the accumulating reply as it streams; typing catches up as it grows, and restarts if it is replaced by a shorter string.",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "speed",
+            "description": "Characters revealed per animation frame.",
+            "type": "number",
+            "required": false,
+            "default": "2"
+          },
+          {
+            "name": "onComplete",
+            "description": "Called when the displayed text has caught up with `text`.",
+            "type": "() => void",
+            "required": false
+          }
+        ],
+        "tokens": ["--cascivo-duration-loop-fast"],
+        "accessibility": {
+          "role": "none",
+          "wcag": "2.2-AA",
+          "keyboard": [],
+          "reducedMotion": true
+        },
+        "examples": [
+          {
+            "title": "Typing",
+            "code": "<StreamingText text=\"Hello, I am cascivo.\" speed={3} />"
+          }
+        ],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["ai", "streaming", "typewriter", "text", "chat"],
+        "intent": {
+          "whenToUse": [
+            "Rendering an assistant reply as it streams in, smoothing bursty token arrival into steady typing"
+          ],
+          "whenNotToUse": [
+            "Static text — render it directly",
+            "Announcing the reply to screen readers — StreamingText is never a live region; announce completion with announce() or AiStatus"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Wrapping StreamingText in aria-live",
+              "good": "Leave it silent and announce the finished reply once",
+              "why": "A live region around typing text announces fragments on every frame"
+            }
+          ],
+          "related": [
+            {
+              "name": "AiStatus",
+              "relationship": "pairs-with",
+              "reason": "AiStatus announces the phase while StreamingText renders the words"
+            },
+            {
+              "name": "TypingIndicator",
+              "relationship": "alternative",
+              "reason": "Before the first token arrives, show TypingIndicator instead"
+            }
+          ],
+          "a11yRationale": "Plain text, never a live region, so a screen reader reads it on demand rather than being fed every character; the cursor is aria-hidden and blinks only under prefers-reduced-motion: no-preference",
+          "flexibility": [
+            {
+              "area": "speed",
+              "level": "flexible",
+              "note": "Characters per frame"
+            },
+            {
+              "area": "announcements",
+              "level": "strict",
+              "note": "Do not add aria-live; announce completion separately"
+            }
+          ]
+        }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
+    },
+    {
       "name": "structured-list",
       "type": "component",
       "description": "Tabular row list for scannable data, optionally single-selectable",
@@ -19938,6 +20435,171 @@
           ]
         }
       },
+      "channels": ["npm:@cascivo/react", "copy"]
+    },
+    {
+      "name": "terminal",
+      "type": "component",
+      "description": "An animated terminal that types out a script of commands and output — for demos, onboarding and agent transcripts",
+      "category": "display",
+      "version": "1.6.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/terminal/terminal.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/terminal/index.ts",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/terminal/terminal.module.css"
+      ],
+      "fileHashes": {
+        "terminal.tsx": "sha256-f8ece3da6f93b53c172b2cdf9efed0aa7aaa0ff9134d36cccd0e91d97a1e4c4c",
+        "index.ts": "sha256-4248c468da2943496ebc51e267d2d07636837516c6361de62ffab714d00dfadf",
+        "terminal.module.css": "sha256-a796d62be2f33a1f3830cb1bd943271bca98928f27a589a8982af587c5c19b1e"
+      },
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=1.6.0",
+        "@cascivo/i18n": ">=1.6.0"
+      },
+      "aliases": ["TerminalWindow", "CommandLine"],
+      "tags": ["ai", "terminal", "cli", "demo", "typewriter", "agent", "transcript"],
+      "meta": {
+        "name": "Terminal",
+        "description": "An animated terminal that types out a script of commands and output — for demos, onboarding and agent transcripts",
+        "category": "display",
+        "clientJs": "required",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "lines",
+            "description": "The script. Each line has `text`, an optional `prefix` (e.g. `$`) and a `type` (`command | output | error | comment`, default `output`).",
+            "type": "TerminalLine[]",
+            "required": true
+          },
+          {
+            "name": "speed",
+            "description": "Characters typed per animation frame.",
+            "type": "number",
+            "required": false,
+            "default": "3"
+          },
+          {
+            "name": "loop",
+            "description": "Restart from the first line after the last one.",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "onComplete",
+            "description": "Called each time the last line finishes typing.",
+            "type": "() => void",
+            "required": false
+          },
+          {
+            "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n) — `label` names the terminal for screen readers.",
+            "type": "{ label?: string }",
+            "required": false
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "TerminalLine",
+            "description": "One line of the script.",
+            "fields": [
+              {
+                "name": "text",
+                "type": "string",
+                "required": true,
+                "description": "What the line says."
+              },
+              {
+                "name": "prefix",
+                "type": "string",
+                "required": false,
+                "description": "A prompt marker such as `$`, styled and not selectable."
+              },
+              {
+                "name": "type",
+                "type": "'command' | 'output' | 'error' | 'comment'",
+                "required": false,
+                "description": "Colours the line. Defaults to `output`."
+              }
+            ]
+          }
+        ],
+        "tokens": [
+          "--cascivo-terminal-bg",
+          "--cascivo-terminal-fg",
+          "--cascivo-editor-bg",
+          "--cascivo-editor-fg",
+          "--cascivo-editor-border",
+          "--cascivo-editor-syntax-keyword",
+          "--cascivo-editor-syntax-string",
+          "--cascivo-editor-syntax-comment",
+          "--cascivo-color-destructive",
+          "--cascivo-font-mono"
+        ],
+        "accessibility": {
+          "role": "group",
+          "wcag": "2.2-AA",
+          "keyboard": [],
+          "reducedMotion": true,
+          "forcedColors": true
+        },
+        "examples": [
+          {
+            "title": "Install transcript",
+            "code": "<Terminal\n  lines={[\n    { text: 'npx cascivo add button', prefix: '$', type: 'command' },\n    { text: 'Added button to src/components.', type: 'output' },\n    { text: '# done in 1.2s', type: 'comment' },\n  ]}\n/>"
+          }
+        ],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["visually-hidden"],
+        "tags": ["ai", "terminal", "cli", "demo", "typewriter", "agent", "transcript"],
+        "intent": {
+          "whenToUse": [
+            "Demonstrating a CLI or agent run on a marketing or onboarding page",
+            "Replaying a short agent transcript as it happened"
+          ],
+          "whenNotToUse": [
+            "Real, long-running logs — use LogViewer",
+            "Copyable code — use CodeSnippet"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Putting aria-live on the typing lines",
+              "good": "Keep the animation aria-hidden and the full script as text, as Terminal does",
+              "why": "A live region on per-character typing announces fragments on every frame"
+            }
+          ],
+          "related": [
+            {
+              "name": "LogViewer",
+              "relationship": "alternative",
+              "reason": "LogViewer is for real, streaming logs with search and follow"
+            },
+            {
+              "name": "CodeSnippet",
+              "relationship": "alternative",
+              "reason": "CodeSnippet is for static, copyable commands"
+            }
+          ],
+          "a11yRationale": "A named group whose full script is present as visually hidden text from the first render, read once in order; the typing animation is aria-hidden, so a screen reader is never fed per-character fragments. The cursor blinks only under prefers-reduced-motion: no-preference; colours come from the editor tokens and fall back to CanvasText in forced colours",
+          "flexibility": [
+            {
+              "area": "colours",
+              "level": "flexible",
+              "note": "Follows the editor tokens; override --cascivo-terminal-bg / -fg for an always-dark look"
+            },
+            {
+              "area": "speed and looping",
+              "level": "flexible",
+              "note": "speed, loop, onComplete"
+            }
+          ]
+        }
+      },
+      "registryDependencies": ["visually-hidden"],
       "channels": ["npm:@cascivo/react", "copy"]
     },
     {

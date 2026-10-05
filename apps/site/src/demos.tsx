@@ -101,6 +101,11 @@ import { AiBadge } from '@cascivo/components/ai-badge'
 import { AiDisclaimer } from '@cascivo/components/ai-disclaimer'
 import { InlineCitation } from '@cascivo/components/inline-citation'
 import { Sources } from '@cascivo/components/sources'
+import { ContextMeter } from '@cascivo/components/context-meter'
+import { MessageActions } from '@cascivo/components/message-actions'
+import { PromptSuggestions } from '@cascivo/components/prompt-suggestions'
+import { StreamingText } from '@cascivo/components/streaming-text'
+import { Terminal } from '@cascivo/components/terminal'
 import { AiStatus } from '@cascivo/components/ai-status'
 import { ChainOfThought } from '@cascivo/components/chain-of-thought'
 import { ToolCall } from '@cascivo/components/tool-call'
@@ -1796,6 +1801,39 @@ export const demos: Record<string, () => JSX.Element> = {
     </p>
   ),
   'ai-disclaimer': () => <AiDisclaimer />,
+  'message-actions': () => (
+    <MessageActions
+      copyValue="Refunds are available for 30 days."
+      defaultFeedback="good"
+      onFeedbackChange={() => {}}
+      onRegenerate={() => {}}
+    />
+  ),
+  'prompt-suggestions': () => (
+    <PromptSuggestions
+      items={['Summarise this week’s tickets', 'Draft a release note', 'What changed in v2?']}
+      onSelect={() => {}}
+    />
+  ),
+  'context-meter': () => (
+    <Col>
+      <ContextMeter value={12400} max={200000} />
+      <ContextMeter value={172000} max={200000} />
+      <ContextMeter value={196000} max={200000} />
+    </Col>
+  ),
+  'streaming-text': () => (
+    <StreamingText text="Hello, I am cascivo — the AI-first design system." />
+  ),
+  terminal: () => (
+    <Terminal
+      lines={[
+        { text: 'npx cascivo add ai-status', prefix: '$', type: 'command' },
+        { text: 'Added ai-status, shimmer-text and button.', type: 'output' },
+        { text: '# done in 1.2s', type: 'comment' },
+      ]}
+    />
+  ),
   'copy-button': () => (
     <Row>
       <CopyButton value="npx cascivo add button" />

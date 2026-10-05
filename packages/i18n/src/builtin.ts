@@ -263,6 +263,23 @@ export const builtin = {
   aiDisclaimer: defineMessages('cascade.aiDisclaimer', {
     text: 'AI-generated content may be incorrect.',
   }),
+  messageActions: defineMessages('cascade.messageActions', {
+    group: 'Message actions',
+    good: 'Good response',
+    bad: 'Bad response',
+    regenerate: 'Regenerate',
+    recorded: 'Thanks for your feedback',
+  }),
+  promptSuggestions: defineMessages('cascade.promptSuggestions', {
+    group: 'Suggested prompts',
+  }),
+  contextMeter: defineMessages('cascade.contextMeter', {
+    label: 'Context',
+    usage: '{used} of {max} tokens used ({percent})',
+  }),
+  terminal: defineMessages('cascade.terminal', {
+    label: 'Terminal',
+  }),
   shellHeader: defineMessages('cascade.shellHeader', {
     skipToContent: 'Skip to main content',
     nav: 'Main',
@@ -667,6 +684,23 @@ defineCatalog(builtin.inlineCitation, 'de', {
 })
 defineCatalog(builtin.aiDisclaimer, 'de', {
   text: 'KI-generierte Inhalte können fehlerhaft sein.',
+})
+defineCatalog(builtin.messageActions, 'de', {
+  group: 'Nachrichtenaktionen',
+  good: 'Gute Antwort',
+  bad: 'Schlechte Antwort',
+  regenerate: 'Neu generieren',
+  recorded: 'Danke für dein Feedback',
+})
+defineCatalog(builtin.promptSuggestions, 'de', {
+  group: 'Vorgeschlagene Prompts',
+})
+defineCatalog(builtin.contextMeter, 'de', {
+  label: 'Kontext',
+  usage: '{used} von {max} Tokens verwendet ({percent})',
+})
+defineCatalog(builtin.terminal, 'de', {
+  label: 'Terminal',
 })
 defineCatalog(builtin.shellHeader, 'de', {
   skipToContent: 'Zum Hauptinhalt springen',

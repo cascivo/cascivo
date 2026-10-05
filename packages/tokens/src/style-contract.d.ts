@@ -99,6 +99,8 @@ export type CascivoComponentToken =
   | '--cascivo-stack-offset'
   | '--cascivo-table-zebra-bg'
   | '--cascivo-target-min'
+  | '--cascivo-terminal-bg'
+  | '--cascivo-terminal-fg'
   | '--cascivo-textarea-max-block-size'
   | '--cascivo-tooltip-anchor'
   | '--cascivo-tree-indent'

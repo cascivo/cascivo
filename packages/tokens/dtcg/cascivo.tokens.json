@@ -2468,6 +2468,8 @@
         "--cascivo-search-width",
         "--cascivo-shimmer-text-highlight",
         "--cascivo-skeleton-width",
+        "--cascivo-terminal-bg",
+        "--cascivo-terminal-fg",
         "--cascivo-text-2xl-fluid",
         "--cascivo-text-3xl-fluid",
         "--cascivo-text-4xl-fluid",

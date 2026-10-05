@@ -251,7 +251,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-209 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
+214 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
 
 ### Inputs
 
@@ -276,11 +276,13 @@ routing break after adding one of these, check that the import resolves to
 - **Input** — Text input field with optional label, hint, and error state
 - **InputGroup** — Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders
 - **Label** — Accessible caption for a form control
+- **MessageActions** — The action row under an AI reply — copy, good / bad feedback as toggle buttons, and regenerate
 - **MultiSelect** — Searchable multi-value select with a popover listbox, chips and grouping
 - **NativeSelect** — A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring
 - **NumberInput** — Numeric input with stepper buttons, clamping, precision, and locale formatting
 - **OtpInput** — Segmented one-time code input
 - **PasswordInput** — Password input with reveal toggle and optional strength meter
+- **PromptSuggestions** — Starter prompts as a wrap of pill buttons — the "Try asking…" row of an empty AI chat
 - **Radio** — Single choice from a set, grouped with RadioGroup
 - **RadioCard** — Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.
 - **RatingGroup** — Star rating input with accessible radio group pattern
@@ -355,9 +357,11 @@ routing break after adding one of these, check that the import resolves to
 - **Stat** — Displays a key metric with optional delta, trend direction and help text
 - **StatsCards** — Grid of KPI stat cards with trend badges.
 - **Status** — Colored dot with a label communicating the state of a system or entity
+- **StreamingText** — Reveals text character by character with a blinking cursor, catching up as a streamed reply grows
 - **StructuredList** — Tabular row list for scannable data, optionally single-selectable
 - **SwipeItem** — List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity
 - **Tag** — Compact chip for labeling, categorizing, or filtering content
+- **Terminal** — An animated terminal that types out a script of commands and output — for demos, onboarding and agent transcripts
 - **Text** — Body text with size, weight, and muted variants
 - **Timeline** — Ordered sequence of events with status markers and a connector line
 - **ToolCall** — Card for one AI tool invocation — the tool name, its lifecycle status, collapsible input/output, and approval actions
@@ -443,6 +447,7 @@ routing break after adding one of these, check that the import resolves to
 
 - **AiDisclaimer** — A short, quiet note that AI-generated content may be wrong — "AI-generated content may be incorrect"
 - **AiStatus** — Announces what an AI is doing — thinking, generating, done, failed or stopped — with a shimmering label and an optional Stop button
+- **ContextMeter** — How much of a model’s context window a conversation has used — "12K / 200K" with a bar that warns as it fills
 - **InfiniteScroll** — Loads the next page when the end of a list scrolls into view
 - **InlineLoading** — Compact inline status indicator that pairs a label with a loading, success, or error state
 - **Notification** — Inline, actionable notification banner that surfaces a titled message with an optional recovery action
