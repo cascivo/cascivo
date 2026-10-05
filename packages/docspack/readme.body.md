@@ -35,6 +35,7 @@ For clients that prefer a declared tool, `npx docspack mcp` serves the same inde
 | Component references | every component, chart, block, layout, section, flow and editor    |
 | Concept guides       | theming, tokens, headless primitives, testing, framework setup     |
 | Overview             | install, the two consumption paths, CSS layer and reactivity rules |
+| CLI                  | one per `cascivo` command: flags, effects, exit statuses, examples |
 
 Each chunk carries the tags, variants, states and prop names from `registry.json`, so a query
 naming a variant ("a destructive button") or an intent ("collapsible sections") reaches the

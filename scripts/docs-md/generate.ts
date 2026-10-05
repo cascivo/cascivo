@@ -18,6 +18,7 @@
 import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import { dirname, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { GUIDES } from './guides.ts'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(here, '..', '..')
@@ -25,41 +26,6 @@ const DOCS_DIR = join(ROOT, 'docs')
 const OUT_DIR = join(ROOT, 'apps', 'site', 'public', 'docs')
 const REPO_BLOB = 'https://github.com/cascivo/cascivo/blob/main'
 const REPO_TREE = 'https://github.com/cascivo/cascivo/tree/main'
-
-/** Curated adopter-facing guides. `src` is the docs/ filename, `slug` the served name. */
-const GUIDES: { src: string; slug: string }[] = [
-  { src: 'GETTING-STARTED.md', slug: 'getting-started' },
-  { src: 'UPGRADING.md', slug: 'upgrading' },
-  { src: 'THEMING.md', slug: 'theming' },
-  { src: 'HEADLESS.md', slug: 'headless' },
-  { src: 'COMPATIBILITY.md', slug: 'compatibility' },
-  { src: 'TOKENS.md', slug: 'tokens' },
-  { src: 'RECIPE-DASHBOARD.md', slug: 'recipe-dashboard' },
-  { src: 'RECIPE-EMAIL.md', slug: 'recipe-email' },
-  { src: 'RECIPE-PAYMENTS.md', slug: 'recipe-payments' },
-  { src: 'RECIPE-SOCIAL.md', slug: 'recipe-social' },
-  { src: 'EMAIL-PRIMITIVES.md', slug: 'email-primitives' },
-  { src: 'EMAIL-CLIENT-SUPPORT.md', slug: 'email-client-support' },
-  { src: 'MIGRATING-FROM-SHADCN.md', slug: 'migrating-from-shadcn' },
-  { src: 'COMPARED-TO-STYLEX.md', slug: 'compared-to-stylex' },
-  { src: 'ENTERPRISE-READINESS.md', slug: 'enterprise-readiness' },
-  { src: 'AI-RULES.md', slug: 'ai-rules' },
-  { src: 'MACHINE-MODE.md', slug: 'machine-mode' },
-  { src: 'TROUBLESHOOTING.md', slug: 'troubleshooting' },
-  { src: 'TESTING.md', slug: 'testing' },
-  { src: 'USING-WITH-A-ROUTER.md', slug: 'using-with-a-router' },
-  { src: 'USING-WITH-NEXTJS.md', slug: 'using-with-nextjs' },
-  { src: 'USING-WITH-VITE-SSR.md', slug: 'using-with-vite-ssr' },
-  { src: 'USING-WITH-TAILWIND.md', slug: 'using-with-tailwind' },
-  { src: 'USING-WITH-PREACT.md', slug: 'using-with-preact' },
-  { src: 'USING-WITH-ASTRO.md', slug: 'using-with-astro' },
-  { src: 'USING-WITH-GHOST.md', slug: 'using-with-ghost' },
-  { src: 'STYLING-INTERNALS.md', slug: 'styling-internals' },
-  { src: 'MOTION.md', slug: 'motion' },
-  { src: 'CSS-LAYERS-PITFALL.md', slug: 'css-layers-pitfall' },
-  { src: 'THIRD-PARTY-CSS.md', slug: 'third-party-css' },
-  { src: 'USING-WITH-STRICT-ESLINT.md', slug: 'using-with-strict-eslint' },
-]
 
 /** src filename → served slug, for rewriting cross-guide links. */
 const slugBySrc = new Map(GUIDES.map((g) => [g.src, g.slug]))

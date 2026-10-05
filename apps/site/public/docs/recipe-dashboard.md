@@ -151,7 +151,7 @@ keeps the engine out of the initial chunk entirely.
 The CSS number behaves differently and needs no action — per-component tree-shaking already
 dropped ~40% of the aggregate sheet (166 KB of 273 KB) — **except under SSR**, where the
 aggregate import is required; see
-[USING-WITH-VITE-SSR.md](/docs/using-with-vite-ssr.md#the-cost-per-component-css-tree-shaking-does-not-apply-under-ssr).
+[USING-WITH-VITE-SSR.md](/docs/using-with-vite-ssr.md#per-component-css-tree-shaking-under-ssr).
 
 ## Composing a KPI tile with a sparkline
 

@@ -1,0 +1,607 @@
+{
+  "$schema": "https://docspack.dev/cmdspec/schema/v0.1.json",
+  "cmdspec": "0.1",
+  "info": {
+    "name": "cascivo",
+    "version": "0.0.0",
+    "summary": "Add, update and audit cascivo components in your project",
+    "description": "The cascivo CLI. Components are copied into your project as source you own (the shadcn model); the CLI resolves their dependencies, installs the runtime packages they need, and checks your code against the cascivo contract.\n\nRun it without installing: `npx cascivo <command>`.",
+    "homepage": "https://cascivo.com",
+    "license": { "identifier": "MIT" }
+  },
+  "subcommandRequired": true,
+  "exits": {
+    "0": { "meaning": "success" },
+    "1": { "meaning": "the command failed or was used wrongly" }
+  },
+  "options": [
+    {
+      "name": "--help",
+      "aliases": ["-h"],
+      "summary": "Show this help, or a command's help",
+      "inherited": true
+    },
+    { "name": "--version", "aliases": ["-v"], "summary": "Print the CLI version" }
+  ],
+  "commands": [
+    {
+      "name": "create",
+      "summary": "Scaffold a new ready-to-run app (shell + nav + theme)",
+      "description": "Scaffold a new app pre-wired with the cascivo app shell, side navigation, header and a theme. Writes a new directory; it does not install dependencies.",
+      "arguments": [{ "name": "name", "summary": "Directory and package name of the new app" }],
+      "options": [
+        {
+          "name": "--framework",
+          "summary": "App framework",
+          "description": "`cloudflare` is a client app and its API, deployed as one Cloudflare Worker.",
+          "value": {
+            "name": "name",
+            "enum": ["react-vite", "astro", "cloudflare"],
+            "default": "react-vite"
+          }
+        },
+        {
+          "name": "--runtime",
+          "summary": "UI runtime, for --framework cloudflare",
+          "value": { "name": "name", "enum": ["preact", "react"], "default": "preact" }
+        },
+        {
+          "name": "--example",
+          "summary": "Add a Worker-backed example page (cloudflare only)",
+          "description": "board (multiplayer page on a Durable Object), agent (AI assistant that answers with UI; needs --runtime react), notes (local-first, offline edits), import (CSV import on a Workflow), files (uploads into R2), export (PDF/PNG via Browser Run), usage (Workers Analytics Engine charts), crud (a D1 table behind DataTable's server mode), live (ops dashboard fed by a Queue), voice (Workers AI speech in and out), publish (views published as pages in D1), webhooks (signed GitHub deliveries), digest (weekly PDF email on a Cron Trigger), search (Vectorize + Workers AI), checkout (Stripe Checkout), newsletter (double opt-in via Amazon SES), social (post to Bluesky, Mastodon, LinkedIn, Threads and Buffer; needs --auth).",
+          "value": {
+            "name": "name",
+            "enum": [
+              "board",
+              "agent",
+              "notes",
+              "import",
+              "files",
+              "export",
+              "usage",
+              "crud",
+              "live",
+              "voice",
+              "publish",
+              "webhooks",
+              "digest",
+              "search",
+              "checkout",
+              "newsletter",
+              "social"
+            ]
+          }
+        },
+        {
+          "name": "--auth",
+          "summary": "Guard the Worker: access, email, oauth, or email,oauth (cloudflare only)",
+          "description": "`access` refuses every request Cloudflare Access did not let through. `email` adds accounts with emailed sign-in links; `oauth` adds GitHub, Google and LinkedIn sign-in. With either, every API write needs a signed-in user. `email,oauth` enables both.",
+          "value": { "name": "mode" }
+        },
+        {
+          "name": "--template",
+          "summary": "Start from a marketplace template (@ns/name or owner/repo/name)",
+          "value": { "name": "spec" },
+          "effects": ["read", "write", "network"]
+        },
+        {
+          "name": "--theme",
+          "summary": "Theme to install",
+          "value": {
+            "name": "name",
+            "enum": [
+              "light",
+              "dark",
+              "warm",
+              "flat",
+              "minimal",
+              "midnight",
+              "pastel",
+              "brutalist",
+              "corporate",
+              "terminal",
+              "cyberpunk",
+              "arcade"
+            ]
+          }
+        },
+        {
+          "name": "--sections",
+          "summary": "Comma-separated nav section labels (one component each)",
+          "value": { "name": "a, b" }
+        },
+        {
+          "name": "--package-manager",
+          "aliases": ["--pm"],
+          "summary": "Package manager named in the README and next steps",
+          "value": {
+            "name": "pm",
+            "enum": ["pnpm", "yarn", "npm", "bun"],
+            "defaultDescription": "auto-detect"
+          }
+        },
+        { "name": "--yes", "aliases": ["-y"], "summary": "Accept defaults, never prompt" }
+      ],
+      "effects": ["read", "write"],
+      "interactive": { "when": "tty", "disable": "--yes" },
+      "examples": [
+        { "run": "npx cascivo create my-app" },
+        { "run": "npx cascivo create my-app --framework cloudflare --example crud --yes" }
+      ]
+    },
+    {
+      "name": "init",
+      "summary": "Set up cascivo in the current project",
+      "description": "Writes cascivo.config.ts and installs the runtime dependencies (@cascivo/core, @cascivo/tokens, @cascivo/themes and the @preact/signals-react peer), plus cascivo as a dev dependency for the config's types.",
+      "options": [
+        {
+          "name": "--theme",
+          "summary": "Theme to configure",
+          "value": {
+            "name": "name",
+            "enum": [
+              "light",
+              "dark",
+              "warm",
+              "flat",
+              "minimal",
+              "midnight",
+              "pastel",
+              "brutalist",
+              "corporate",
+              "terminal",
+              "cyberpunk",
+              "arcade"
+            ]
+          }
+        },
+        {
+          "name": "--package-manager",
+          "aliases": ["--pm"],
+          "summary": "Force a package manager",
+          "value": {
+            "name": "pm",
+            "enum": ["pnpm", "yarn", "npm", "bun"],
+            "defaultDescription": "auto-detect"
+          }
+        },
+        {
+          "name": "--no-install",
+          "summary": "Write files only; print the install commands to run yourself",
+          "effects": ["read", "write"]
+        },
+        {
+          "name": "--yes",
+          "aliases": ["-y"],
+          "summary": "Accept defaults, never prompt (implied when stdin is not a TTY)"
+        }
+      ],
+      "effects": ["read", "write", "network", "exec"],
+      "interactive": { "when": "tty", "disable": "--yes" },
+      "examples": [{ "run": "npx cascivo init --theme dark --yes" }]
+    },
+    {
+      "name": "add",
+      "summary": "Add components or a template to your project",
+      "description": "Copies component source (TSX + CSS module) from the registry into your project, resolving component dependencies, and installs the npm packages they need. Also installs templates (@ns/name) and third-party components (owner/repo/name).",
+      "arguments": [
+        {
+          "name": "component",
+          "required": true,
+          "variadic": true,
+          "summary": "A component name, @ns/name, or owner/repo/name"
+        }
+      ],
+      "options": [
+        {
+          "name": "--dry-run",
+          "summary": "Show what would be written without writing",
+          "effects": ["read", "network"]
+        },
+        {
+          "name": "--package-manager",
+          "aliases": ["--pm"],
+          "summary": "Force a package manager",
+          "value": {
+            "name": "pm",
+            "enum": ["pnpm", "yarn", "npm", "bun"],
+            "defaultDescription": "auto-detect"
+          }
+        },
+        {
+          "name": "--no-install",
+          "summary": "Don't install npm-distributed entries or deps; print the commands instead",
+          "effects": ["read", "write", "network"]
+        },
+        { "name": "--yes", "aliases": ["-y"], "summary": "Skip confirmation prompts" }
+      ],
+      "effects": ["read", "write", "network", "exec"],
+      "interactive": { "when": "tty", "disable": "--yes" },
+      "examples": [
+        { "run": "npx cascivo add button dialog" },
+        { "run": "npx cascivo add data-table --dry-run" }
+      ]
+    },
+    {
+      "name": "list",
+      "summary": "List components available in the configured registry",
+      "options": [
+        {
+          "name": "--installed",
+          "summary": "Only list components already installed in this project"
+        }
+      ],
+      "effects": ["read", "network"],
+      "idempotent": true,
+      "examples": [{ "run": "npx cascivo list --installed" }]
+    },
+    {
+      "name": "update",
+      "summary": "Update installed components to the current registry version",
+      "description": "Without a component argument, updates everything in the lockfile.",
+      "arguments": [{ "name": "component", "summary": "The installed component to update" }],
+      "options": [
+        {
+          "name": "--check",
+          "summary": "List outdated components without writing",
+          "effects": ["read", "network"]
+        },
+        { "name": "--yes", "aliases": ["-y"], "summary": "Skip confirmation prompts" }
+      ],
+      "effects": ["read", "write", "network"],
+      "interactive": { "when": "tty", "disable": "--yes" },
+      "examples": [
+        { "run": "npx cascivo update --check" },
+        { "run": "npx cascivo update button --yes" }
+      ]
+    },
+    {
+      "name": "search",
+      "summary": "Search components across the configured registries",
+      "arguments": [
+        { "name": "query", "required": true, "variadic": true, "summary": "Words to search for" }
+      ],
+      "options": [
+        {
+          "name": "--registry",
+          "summary": "Restrict the search to one registry namespace",
+          "value": { "name": "@ns" }
+        }
+      ],
+      "effects": ["read", "network"],
+      "idempotent": true,
+      "examples": [{ "run": "npx cascivo search date picker" }]
+    },
+    {
+      "name": "view",
+      "summary": "Preview a component or template before installing",
+      "description": "Prints its files, dependencies and description without writing anything.",
+      "arguments": [
+        { "name": "spec", "required": true, "summary": "A bare name, @ns/name, or owner/repo/name" }
+      ],
+      "effects": ["read", "network"],
+      "idempotent": true,
+      "examples": [{ "run": "npx cascivo view combobox" }]
+    },
+    {
+      "name": "theme",
+      "summary": "Install a first-party theme, or build a custom one",
+      "subcommandRequired": true,
+      "commands": [
+        {
+          "name": "add",
+          "summary": "Install @cascivo/themes and print the import + data-theme wiring",
+          "arguments": [
+            {
+              "name": "name",
+              "required": true,
+              "summary": "light, dark, warm, flat, minimal, midnight, pastel, brutalist, corporate, terminal, cyberpunk or arcade"
+            }
+          ],
+          "effects": ["read", "write", "network", "exec"],
+          "examples": [{ "run": "npx cascivo theme add midnight" }]
+        },
+        {
+          "name": "create",
+          "summary": "Turn a theme-builder config into an owned <name>.theme.css",
+          "description": "Get <hash> from https://cascivo.com/create (\"Copy CLI command\").",
+          "arguments": [{ "name": "name", "required": true, "summary": "Theme name" }],
+          "options": [
+            {
+              "name": "--from",
+              "required": true,
+              "summary": "The theme-builder config hash",
+              "value": { "name": "hash" }
+            },
+            {
+              "name": "--out",
+              "summary": "Output file path",
+              "value": { "name": "path", "format": "file" }
+            },
+            { "name": "--dry-run", "summary": "Print the CSS without writing", "effects": [] }
+          ],
+          "effects": ["write"],
+          "examples": [{ "run": "npx cascivo theme create brand --from <hash>" }]
+        }
+      ]
+    },
+    {
+      "name": "eject",
+      "summary": "Eject specific tokens into a scoped local override file",
+      "description": "Restyle a component without forking it.",
+      "arguments": [
+        { "name": "component", "required": true, "summary": "The component whose tokens to eject" }
+      ],
+      "options": [
+        {
+          "name": "--tokens",
+          "summary": "Comma-separated token names to eject",
+          "value": { "name": "a,b", "defaultDescription": "all" }
+        },
+        {
+          "name": "--scope",
+          "summary": "CSS selector the overrides are scoped to",
+          "value": { "name": "sel" }
+        },
+        {
+          "name": "--out",
+          "summary": "Output file path",
+          "value": { "name": "file", "format": "file" }
+        },
+        {
+          "name": "--dry-run",
+          "summary": "Print the override file without writing",
+          "effects": ["read", "network"]
+        }
+      ],
+      "effects": ["read", "write", "network"],
+      "examples": [{ "run": "npx cascivo eject button --tokens button-radius --scope .checkout" }]
+    },
+    {
+      "name": "generate",
+      "summary": "Generate TSX from a ViewConfig JSON file",
+      "description": "The ViewConfig is what the MCP scaffold_view tool produces. With --out, the written file is formatted with the project's formatter when one is found.",
+      "arguments": [
+        {
+          "name": "config.json",
+          "required": true,
+          "summary": "The ViewConfig file",
+          "value": { "format": "file" }
+        }
+      ],
+      "options": [
+        {
+          "name": "--out",
+          "summary": "Output file",
+          "value": { "name": "file", "format": "file", "defaultDescription": "stdout" },
+          "effects": ["read", "write", "network", "exec"]
+        },
+        {
+          "name": "--components-dir",
+          "summary": "Components import base",
+          "value": { "name": "dir", "format": "directory", "default": "./src/components/ui" }
+        }
+      ],
+      "effects": ["read", "network"],
+      "examples": [{ "run": "npx cascivo generate view.json --out src/Dashboard.tsx" }]
+    },
+    {
+      "name": "doctor",
+      "summary": "Check components for rule violations",
+      "description": "Checks components for cascivo rule violations (banned React hooks, hardcoded strings, missing @cascivo/react exports). In an adopter project it also verifies the runtime dependencies copied source needs are declared in package.json, and compares installed components against the registry (copy-paste drift).",
+      "options": [
+        {
+          "name": "--ci",
+          "summary": "Exit non-zero when violations or missing runtime deps are found"
+        },
+        {
+          "name": "--drift",
+          "summary": "Only compare installed components against the registry (copy-paste drift)"
+        }
+      ],
+      "effects": ["read", "network"],
+      "idempotent": true,
+      "examples": [{ "run": "npx cascivo doctor --ci" }]
+    },
+    {
+      "name": "audit",
+      "summary": "Audit AI-generated code against the cascivo contract",
+      "description": "Finds hard-coded values that should be tokens, invented props, missing required props, and raw strings where i18n is expected.",
+      "arguments": [
+        {
+          "name": "paths",
+          "required": true,
+          "variadic": true,
+          "summary": "Files or directories to audit",
+          "value": { "format": "path" }
+        }
+      ],
+      "options": [
+        { "name": "--ai", "required": true, "summary": "Audit against the cascivo contract" },
+        {
+          "name": "--fix",
+          "summary": "Rewrite unambiguous CSS literals to their token equivalents",
+          "effects": ["read", "write"]
+        },
+        { "name": "--json", "summary": "Machine-readable output" },
+        {
+          "name": "--level",
+          "summary": "Minimum finding level to report",
+          "value": { "name": "name", "enum": ["error", "warn"], "default": "error" }
+        },
+        {
+          "name": "--contract",
+          "summary": "Use this audit-contract.json instead of the bundled one",
+          "value": { "name": "path", "format": "file" }
+        },
+        { "name": "--verbose", "summary": "Report which contract source was used" }
+      ],
+      "effects": ["read"],
+      "examples": [{ "run": "npx cascivo audit --ai src/components --json" }]
+    },
+    {
+      "name": "mcp",
+      "summary": "Configure the cascivo MCP server",
+      "subcommandRequired": true,
+      "commands": [
+        {
+          "name": "init",
+          "summary": "Add the cascivo MCP server to your agent's project config",
+          "description": "Adds `npx -y @cascivo/mcp`. Other servers in the file are kept; an existing cascivo entry is left as it is.",
+          "options": [
+            {
+              "name": "--client",
+              "summary": "Which agent config to write: claude (.mcp.json), cursor (.cursor/mcp.json) or vscode (.vscode/mcp.json)",
+              "value": {
+                "name": "name",
+                "enum": ["claude", "cursor", "vscode"],
+                "default": "claude"
+              }
+            },
+            {
+              "name": "--dry-run",
+              "summary": "Print the file instead of writing it",
+              "effects": ["read"]
+            }
+          ],
+          "effects": ["read", "write"],
+          "idempotent": true,
+          "examples": [
+            { "run": "npx cascivo mcp init" },
+            { "run": "npx cascivo mcp init --client cursor" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "registry",
+      "summary": "Build a static registry",
+      "subcommandRequired": true,
+      "commands": [
+        {
+          "name": "build",
+          "summary": "Build registry.json and file payloads from a registry manifest",
+          "description": "The output is ready to host on any static file server.",
+          "options": [
+            {
+              "name": "--in",
+              "summary": "The registry manifest",
+              "value": { "name": "file", "format": "file", "default": "cascade-registry.json" }
+            },
+            {
+              "name": "--out",
+              "summary": "Output directory",
+              "value": { "name": "dir", "format": "directory", "default": "public/r" }
+            }
+          ],
+          "effects": ["read", "write"],
+          "idempotent": true,
+          "examples": [
+            { "run": "npx cascivo registry build --in cascivo-registry.json --out public/r" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "template",
+      "summary": "Author marketplace templates",
+      "subcommandRequired": true,
+      "commands": [
+        {
+          "name": "init",
+          "summary": "Scaffold a new template (source + manifest + registry entry)",
+          "arguments": [{ "name": "name", "required": true, "summary": "Template name" }],
+          "options": [
+            {
+              "name": "--category",
+              "summary": "Template category (e.g. dashboard)",
+              "value": { "name": "name", "default": "misc" }
+            },
+            {
+              "name": "--framework",
+              "summary": "Target framework",
+              "value": { "name": "name", "default": "react-vite" }
+            },
+            {
+              "name": "--components",
+              "summary": "Registry components the template composes",
+              "value": { "name": "a,b" }
+            },
+            {
+              "name": "--repo",
+              "summary": "Repository the template will be hosted in",
+              "value": { "name": "owner/repo" }
+            }
+          ],
+          "effects": ["read", "write"],
+          "examples": [
+            {
+              "run": "npx cascivo template init sales-dashboard --category dashboard --components card,line-chart"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "tokens",
+      "summary": "Design-token interchange",
+      "subcommandRequired": true,
+      "commands": [
+        {
+          "name": "import",
+          "summary": "Import external design tokens as cascivo overrides (not yet implemented)",
+          "description": "Reserved for importing W3C design-tokens JSON. This release prints a notice and changes nothing.",
+          "stability": "experimental",
+          "arguments": [
+            {
+              "name": "file",
+              "required": true,
+              "summary": "A W3C design-tokens JSON file",
+              "value": { "format": "file" }
+            }
+          ],
+          "effects": []
+        }
+      ]
+    },
+    {
+      "name": "email",
+      "summary": "Email tooling",
+      "subcommandRequired": true,
+      "commands": [
+        {
+          "name": "lint",
+          "summary": "Check rendered email HTML against the Can I email matrix",
+          "description": "The same conformance lint @cascivo/email exposes as `lint()`. It lints rendered HTML, not templates. The matrix is fetched from https://www.caniemail.com/api/data.json and cached in the temp directory for a day. A caveat (partial support) never fails the command.",
+          "arguments": [
+            {
+              "name": "file",
+              "required": true,
+              "variadic": true,
+              "summary": "Rendered .html files, or - for stdin",
+              "value": { "format": "file" }
+            }
+          ],
+          "options": [
+            {
+              "name": "--data",
+              "summary": "Use a local copy of the matrix instead of fetching",
+              "value": { "name": "file", "format": "file" },
+              "effects": ["read"]
+            },
+            { "name": "--refresh", "summary": "Re-fetch the matrix even if the cache is fresh" },
+            { "name": "--no-allowlist", "summary": "Report findings CASCIVO_ALLOW waives, too" }
+          ],
+          "effects": ["read", "write", "network"],
+          "exits": {
+            "1": { "meaning": "a floor client cannot support something, or the command failed" }
+          },
+          "examples": [
+            { "run": "npx cascivo email lint dist/emails/*.html" },
+            { "run": "node render.js | npx cascivo email lint -" }
+          ]
+        }
+      ]
+    }
+  ]
+}

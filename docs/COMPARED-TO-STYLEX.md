@@ -58,7 +58,7 @@ write CSS.
 **Colocation.** In StyleX a component is one file: markup and styles in the same module, in
 the same language. In cascivo a component is two — `button.tsx` and `button.module.css`.
 That is a real ergonomic difference, and it is fair to say cascivo does not have what StyleX
-has here. See [Colocation](#colocation-the-honest-tradeoff) below for why the trade is made
+has here. See [Colocation](#colocation--the-honest-tradeoff) below for why the trade is made
 that way on purpose.
 
 **One kind of thing to learn.** If your team has decided styles should be JavaScript

@@ -23,7 +23,7 @@ const pkg = JSON.parse(readFileSync(join(PKG_ROOT, 'package.json'), 'utf8')) as 
 
 let payload
 try {
-  payload = buildPayload({ root: REPO_ROOT, name: pkg.name, version: pkg.version })
+  payload = await buildPayload({ root: REPO_ROOT, name: pkg.name, version: pkg.version })
 } catch (error) {
   console.error(
     `build-payload: ${error instanceof Error ? error.message : String(error)}\n` +
