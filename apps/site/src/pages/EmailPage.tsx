@@ -194,9 +194,10 @@ export function EmailPage() {
         </p>
         <CodeSnippet variant="multi" language="ts" code={SEND} title="Sending" />
         <p>
-          <code>assertSendable</code> catches the four failures that only reveal themselves once the
-          mail has arrived: no subject, no text part, no inbox preview, and a body over the clip
-          threshold.
+          <code>assertSendable</code> catches the five failures that only reveal themselves once the
+          mail has arrived: no subject, no text part, no inbox preview, a body over the clip
+          threshold, and a link that goes nowhere — empty, <code>#</code>, an unreplaced merge tag,
+          or a placeholder <code>example.com</code> left by a forgotten prop.
         </p>
       </section>
 

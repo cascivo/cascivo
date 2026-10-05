@@ -11,7 +11,7 @@ import { buildMessage, quotedPrintable } from './message.ts'
 import { extractPreheader, toPlainText } from './plaintext.ts'
 import { assertSendable, renderEmail } from './render.tsx'
 
-const result = renderEmail(<PasswordReset />, {
+const result = renderEmail(<PasswordReset resetHref="https://acme.io/reset" />, {
   theme: 'light',
   subject: passwordResetSubject(),
   tier: 'strict',

@@ -21,7 +21,9 @@ function recorder(): EmailSender & { sent: OutgoingEmail[] } {
   }
 }
 
-const message = renderEmail(<PasswordReset />, { subject: passwordResetSubject() })
+const message = renderEmail(<PasswordReset resetHref="https://acme.io/reset" />, {
+  subject: passwordResetSubject(),
+})
 
 describe('sendEmail', () => {
   it('hands the sender the envelope and every rendered part', async () => {
@@ -53,6 +55,15 @@ describe('sendEmail', () => {
     )
     await expect(sendEmail(sender, bare, { from: 'a@x.test', to: 'b@x.test' })).rejects.toThrow(
       /not sendable: no subject/,
+    )
+    expect(sender.sent).toHaveLength(0)
+  })
+
+  it('refuses a message still carrying a template default link', async () => {
+    const sender = recorder()
+    const unfilled = renderEmail(<PasswordReset />, { subject: passwordResetSubject() })
+    await expect(sendEmail(sender, unfilled, { from: 'a@x.test', to: 'b@x.test' })).rejects.toThrow(
+      /example\.com\/reset" points at a reserved placeholder domain/,
     )
     expect(sender.sent).toHaveLength(0)
   })

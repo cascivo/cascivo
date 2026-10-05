@@ -46,6 +46,16 @@ const TEMPLATES = [
   ['receipt', <Receipt />, receiptSubject],
 ] as const
 
+const FILLED = [
+  [
+    'welcome',
+    <Welcome ctaHref="https://acme.io/start" supportHref="https://acme.io/help" />,
+    welcomeSubject,
+  ],
+  ['password-reset', <PasswordReset resetHref="https://acme.io/reset" />, passwordResetSubject],
+  ['receipt', <Receipt invoiceHref="https://acme.io/invoice/1" />, receiptSubject],
+] as const
+
 function Fixture() {
   return (
     <Html>
@@ -252,15 +262,23 @@ describe('renderEmail — structural invariants', () => {
 })
 
 describe('renderEmail — every shipped template is sendable', () => {
-  it('declares a subject and a preheader and fits the strict tier', () => {
+  it('declares a subject and a preheader and fits the strict tier, once its links are filled in', () => {
     /*
      * The three ways an email fails after it has already been sent, none of which the HTML
      * itself reveals. Asserted per template rather than on a fixture, because a template
      * that forgets `<Preview>` is exactly the case worth catching.
      */
-    for (const [name, element, subject] of TEMPLATES) {
+    for (const [name, element, subject] of FILLED) {
       const out = renderEmail(element, { theme: 'light', subject: subject(), tier: 'strict' })
       expect(() => assertSendable(out), name).not.toThrow()
+    }
+  })
+
+  it('is refused while it still carries its placeholder example.com links', () => {
+    // The defaults exist so a preview has something to show. Sending one is a forgotten prop.
+    for (const [name, element, subject] of TEMPLATES) {
+      const out = renderEmail(element, { theme: 'light', subject: subject(), tier: 'strict' })
+      expect(() => assertSendable(out), name).toThrow(/reserved placeholder domain/)
     }
   })
 })

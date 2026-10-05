@@ -44,15 +44,18 @@ them across two files is how they drift apart.
 Always send `text` alongside `html`. Some clients are text-only, some readers prefer it, and
 a missing text part is a documented spam-filter signal.
 
-`assertSendable` catches the four things that only reveal themselves once the mail has
+`assertSendable` catches the five things that only reveal themselves once the mail has
 arrived: no subject, no text part, no preheader (the client then shows the first words of the
-body), and a body over the clip threshold. It is a separate call rather than something
+body), a body over the clip threshold, and a link that goes nowhere — empty, `#`, relative, an
+unreplaced merge tag, or a placeholder domain such as the `example.com` the shipped templates
+default to (`checkLinks` lists them, and its caveats, such as `localhost`, never block). It is a separate call rather than something
 `renderEmail` does, because a preview renders half-finished templates on every keystroke and
 must not throw.
 
 `sendEmail(sender, message, envelope)` runs `assertSendable` and refuses line breaks in every
 address and header, then hands the message to a sender: Cloudflare's Email Service binding
-(`env.EMAIL`), or the Amazon SES client from `@cascivo/app/ses`. Taking payments and sending
+(`env.EMAIL`), the Amazon SES client from `@cascivo/app/ses`, or a Resend client wrapped
+with `resendSender(new Resend(key))`. Taking payments and sending
 through SES from a Worker, with bounces and complaints handled, is its own recipe:
 [RECIPE-PAYMENTS.md](./RECIPE-PAYMENTS.md).
 

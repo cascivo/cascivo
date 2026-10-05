@@ -16,7 +16,7 @@ import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'no
 import { dirname, join } from 'node:path'
 import { tmpdir } from 'node:os'
 import { stdin } from 'node:process'
-import type { CanIEmailData, Feature, Finding } from '@cascivo/email'
+import type { CanIEmailData, Feature, Finding, LinkFinding } from '@cascivo/email'
 import { flagValue, positionalArgs } from '../utils/args.js'
 
 /** Upstream, and the URL the README and the preview both name. MIT, hteumeuleu/caniemail. */
@@ -147,6 +147,55 @@ function format(findings: Finding[], label: string): string {
   return lines.join('\n')
 }
 
+function formatLinks(findings: LinkFinding[]): string {
+  return findings.map((f) => `  ${f.level === 'blocked' ? '✗' : '!'} link  ${f.message}`).join('\n')
+}
+
+/** How long one URL gets before it counts as unreachable. */
+const PROBE_TIMEOUT_MS = 10_000
+
+/** Requests in flight at once — enough to be quick, few enough not to look like a scan. */
+const PROBE_CONCURRENCY = 8
+
+/**
+ * Request every URL once and report the ones that do not answer with a success.
+ *
+ * `HEAD` first, because it does not download the page; some servers refuse it (405, 501) or
+ * mishandle it, so a failed `HEAD` is retried as `GET` before it is reported. Redirects are
+ * followed, since a tracked or shortened link is normally a redirect.
+ *
+ * `fetchImpl` exists for the tests: they cannot reach the network, and should not.
+ */
+export async function probeUrls(
+  urls: readonly string[],
+  fetchImpl: typeof fetch = fetch,
+): Promise<Map<string, string>> {
+  const failures = new Map<string, string>()
+  const queue = [...new Set(urls)]
+
+  const probe = async (url: string): Promise<void> => {
+    const attempt = (method: 'HEAD' | 'GET') =>
+      fetchImpl(url, { method, redirect: 'follow', signal: AbortSignal.timeout(PROBE_TIMEOUT_MS) })
+    try {
+      let response = await attempt('HEAD')
+      if (!response.ok) response = await attempt('GET')
+      if (!response.ok)
+        failures.set(url, `answered ${response.status} ${response.statusText}`.trim())
+    } catch (error) {
+      failures.set(
+        url,
+        `could not be reached: ${error instanceof Error ? error.message : String(error)}`,
+      )
+    }
+  }
+
+  const workers = Array.from({ length: Math.min(PROBE_CONCURRENCY, queue.length) }, async () => {
+    for (let url = queue.shift(); url !== undefined; url = queue.shift()) await probe(url)
+  })
+  await Promise.all(workers)
+  return failures
+}
+
 /**
  * Lint one or more rendered emails.
  *
@@ -166,7 +215,7 @@ export async function emailLint(args: string[]): Promise<void> {
     throw new Error('cascivo email lint needs a file, or `-` to read rendered HTML from stdin.')
   }
 
-  const { lint, indexFeatures, CASCIVO_ALLOW } = await loadEmail()
+  const { checkLinks, lint, linkUrls, indexFeatures, CASCIVO_ALLOW } = await loadEmail()
   const features = indexFeatures(await loadMatrix(args))
   const allow = args.includes('--no-allowlist') ? {} : CASCIVO_ALLOW
 
@@ -178,15 +227,41 @@ export async function emailLint(args: string[]): Promise<void> {
     const findings = lint(html, features, { allow })
     const blocked = findings.filter((f) => f.level === 'blocked')
     const caveats = findings.filter((f) => f.level === 'caveat')
-    blockedTotal += blocked.length
-    caveatTotal += caveats.length
+    const links = checkLinks(html)
+    if (args.includes('--check-links')) {
+      // Only what the static check passed: a placeholder or a local host is already reported,
+      // and requesting `localhost` from CI would only add a second, more confusing finding.
+      const flagged = new Set(links.map((f) => f.value))
+      const urls = linkUrls(html).filter(
+        (u): u is { element: 'a' | 'img'; url: string } =>
+          u.url !== null && /^https?:/i.test(u.url) && !flagged.has(u.url),
+      )
+      const failures = await probeUrls(urls.map((u) => u.url))
+      for (const { element, url } of urls) {
+        const why = failures.get(url)
+        if (why === undefined) continue
+        failures.delete(url)
+        links.unshift({
+          level: 'blocked',
+          problem: 'unreachable',
+          value: url,
+          element,
+          message: `<${element}> "${url}" ${why}`,
+        })
+      }
+    }
+    const linksBlocked = links.filter((f) => f.level === 'blocked').length
+    blockedTotal += blocked.length + linksBlocked
+    caveatTotal += caveats.length + links.length - linksBlocked
 
     const name = file === '-' ? '(stdin)' : file
-    if (blocked.length === 0 && caveats.length === 0) {
+    if (findings.length === 0 && links.length === 0) {
       console.log(`✓ ${name}`)
       continue
     }
-    console.log(format([...blocked, ...caveats], `${blocked.length === 0 ? '✓' : '✗'} ${name}`))
+    const failed = blocked.length + linksBlocked > 0
+    console.log(format([...blocked, ...caveats], `${failed ? '✗' : '✓'} ${name}`))
+    if (links.length > 0) console.log(formatLinks(links))
   }
 
   const summary =

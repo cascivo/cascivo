@@ -89,6 +89,7 @@ The server speaks the MCP stdio transport. It is **self-contained**: the registr
 | ---------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `add_to_project` | `{ name, outputDir? }`                                               | Runs `cascivo add <name>` as a child process                                                                                                                                    |
 | `create_app`     | `{ name, framework?, runtime?, examples?, theme?, sections?, cwd? }` | Scaffolds a full app (shell + side nav + theme) via `cascivo create`: `react-vite` (default), `astro`, or `cloudflare` (client app + API on one Worker)                         |
+| `lint_email`     | `{ html, checkLinks?, cwd? }`                                        | Runs `cascivo email lint` on rendered email HTML: unsupported client features and dead links (`#`, `{{merge tags}}`, `example.com`). Needs `@cascivo/email` in `cwd`            |
 | `deploy_preview` | `{ cwd }`                                                            | Publishes a `cloudflare` app to a temporary Cloudflare account with no sign-up. Returns a public URL and a claim URL; the deployment is deleted after 60 minutes unless claimed |
 
 ### Bound-vocabulary generation (anti-hallucination)

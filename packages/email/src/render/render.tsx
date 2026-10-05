@@ -14,6 +14,7 @@ import { quotedPrintable, type EmailMessage } from './message.ts'
 import { minify } from './minify.ts'
 import { hoistStyles } from './hoist.ts'
 import { correctReactOutput } from './react-output.ts'
+import { checkLinks } from '../conformance/links.ts'
 
 /**
  * `TextEncoder`, not `Buffer`.
@@ -175,9 +176,12 @@ export function renderEmail(element: ReactElement, options: RenderOptions = {}):
 /**
  * Throw unless the message is actually sendable.
  *
- * Four things go wrong often enough to be worth a gate, and all four are invisible until
+ * Five things go wrong often enough to be worth a gate, and all five are invisible until
  * someone opens the mail: no subject, no text alternative, no preheader (the client then
- * shows the opening words of the body), and a body over the clip threshold.
+ * shows the opening words of the body), a body over the clip threshold, and a link that goes
+ * nowhere — empty, `#`, relative, an unreplaced merge tag, a refused scheme, or a reserved
+ * placeholder domain such as the `example.com` the shipped templates default to
+ * (`checkLinks`; its caveats, such as `localhost`, do not block).
  *
  * Deliberately a separate call rather than something `renderEmail` does. A preview renders
  * a half-finished template on every keystroke and must not throw; a send path wants to fail
@@ -195,7 +199,11 @@ export function assertSendable(result: RenderResult): void {
       `${result.stats.encodedBytes} encoded bytes exceeds the ${result.stats.tier} clip threshold of ${result.stats.budget}`,
     )
   }
+  for (const link of checkLinks(result.html)) {
+    if (link.level === 'blocked') problems.push(link.message)
+  }
   if (problems.length > 0) {
-    throw new Error(`Email is not sendable: ${problems.join('; ')}`)
+    // A button and its fallback link usually share one URL; say it once.
+    throw new Error(`Email is not sendable: ${[...new Set(problems)].join('; ')}`)
   }
 }

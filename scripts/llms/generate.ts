@@ -1252,6 +1252,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     '- `render_view_as_markdown` — render a view config and read back what it says (needs `@cascivo/render`)',
   )
   lines.push('- `add_to_project` — install components into the user project')
+  lines.push(
+    '- `lint_email` — check rendered @cascivo/email HTML for unsupported features and dead links before sending',
+  )
   lines.push('')
   lines.push('Two MCP servers, two jobs — run both if your client allows it:')
   lines.push(

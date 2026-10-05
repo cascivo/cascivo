@@ -38,7 +38,7 @@ const message = renderEmail(<PasswordReset resetHref={link} />, {
   tier: 'strict',
 })
 
-assertSendable(message) // throws on no subject, no preheader, no text part, or a clipped body
+assertSendable(message) // throws on no subject, preheader or text part, a clipped body, or a dead link
 await transport.send({ html: message.html, text: message.text, subject: message.subject })
 ```
 
@@ -92,6 +92,21 @@ await sendEmail(env.EMAIL, message, {
     { filename: 'report.pdf', type: 'application/pdf', content: pdf, disposition: 'attachment' },
   ],
 })
+```
+
+### Through Resend
+
+`resendSender(client)` turns a [Resend](https://resend.com) client into a sender. It formats
+recipients, base64-encodes attachments and throws Resend's `{ error }` instead of returning
+it. Nothing extra to install: it is typed by shape, so `@cascivo/email` does not depend on the SDK.
+
+```ts
+import { Resend } from 'resend'
+import { renderEmail, resendSender, sendEmail, Welcome, welcomeSubject } from '@cascivo/email'
+
+const resend = resendSender(new Resend(process.env.RESEND_API_KEY))
+const message = renderEmail(<Welcome ctaHref={startUrl} />, { subject: welcomeSubject() })
+const { messageId } = await sendEmail(resend, message, { from: 'Acme <hi@acme.io>', to })
 ```
 
 **On Preact.** `@preact/preset-vite` aliases `react` to `preact/compat` in the Worker too, so
@@ -186,6 +201,30 @@ const blocked = findings.filter((f) => f.level === 'blocked')
 worth knowing about. `CASCIVO_ALLOW` waives the findings the primitives knowingly accept, each
 with a written reason. Pin the file in your repo if you want the linter's verdict to change
 only in a reviewed diff rather than on the day upstream retests a client.
+
+## Links that go nowhere
+
+`checkLinks(message.html)` finds every link and image URL a recipient could not follow, from the
+rendered HTML and without touching the network:
+
+```ts
+import { checkLinks } from '@cascivo/email'
+
+for (const f of checkLinks(message.html)) console.log(f.level, f.message)
+// blocked <a> "https://example.com/reset" points at a reserved placeholder domain
+```
+
+**Blocked** — empty, a bare `#`, relative, an unreplaced merge tag (`{{url}}`, `*|URL|*`), a
+`javascript:`/`data:` scheme, or a reserved placeholder domain (`example.com`, `*.invalid`).
+`assertSendable` and `sendEmail` refuse these. The shipped templates default their links to
+`example.com` so the preview has something to show, which makes a forgotten `resetHref` a
+refused send rather than a reset mail that goes nowhere.
+
+**Caveat** — `localhost` and `*.test` (legitimate in a development send), plain `http:`, an
+in-message `#anchor`, and leftover "lorem ipsum". Reported, never refused.
+
+`cascivo email lint` prints both; add `--check-links` to also request every URL and report the
+ones that answer 4xx or 5xx.
 
 ## Coming from React Email
 

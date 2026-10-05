@@ -33,6 +33,8 @@ export type {
 export { atRuleSlug, elementSlug, propertySlug, valueSlugs } from './conformance/slugs.ts'
 export { CASCIVO_ALLOW, lint } from './conformance/lint.ts'
 export type { Finding, LintOptions } from './conformance/lint.ts'
+export { checkLinks, linkUrls } from './conformance/links.ts'
+export type { EmailUrl, LinkFinding, LinkProblem } from './conformance/links.ts'
 export { simulate, SIMULATED_CLIENTS } from './conformance/simulate.ts'
 export type { SimulateOptions } from './conformance/simulate.ts'
 export * from './templates/index.ts'
