@@ -80,6 +80,25 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
     {
+      name: 'edited',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onRevert',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+  ],
+  AiDisclaimer: [
+    {
+      name: 'children',
+      required: false,
+    },
+    {
       name: 'labels',
       required: false,
     },
@@ -1148,6 +1167,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'padding',
       required: false,
       enum: ['none', 'sm', 'md', 'lg'],
+    },
+    {
+      name: 'ai',
+      required: false,
     },
   ],
   Carousel: [
@@ -3875,6 +3898,21 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
   ],
+  InlineCitation: [
+    {
+      name: 'index',
+      required: true,
+      primitives: ['number'],
+    },
+    {
+      name: 'source',
+      required: true,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+  ],
   InlineLoading: [
     {
       name: 'status',
@@ -3925,6 +3963,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'ariaLabel',
       required: false,
       primitives: ['string'],
+    },
+    {
+      name: 'ai',
+      required: false,
+      primitives: ['boolean'],
     },
   ],
   InputGroup: [
@@ -4520,6 +4563,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'draggable',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'ai',
+      required: false,
     },
   ],
   MultiSelect: [
@@ -6395,6 +6442,16 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
   ],
+  Sources: [
+    {
+      name: 'items',
+      required: true,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+  ],
   Spacer: [
     {
       name: 'size',
@@ -7005,6 +7062,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'ariaLabel',
       required: false,
       primitives: ['string'],
+    },
+    {
+      name: 'ai',
+      required: false,
+      primitives: ['boolean'],
     },
   ],
   Tile: [

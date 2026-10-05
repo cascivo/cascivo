@@ -88,6 +88,18 @@
         "note": "Keep it a short AI marker; do not reuse the badge for unrelated labels"
       }
     ],
+    "AiDisclaimer": [
+      {
+        "area": "text",
+        "level": "flexible",
+        "note": "Replace via children or labels.text"
+      },
+      {
+        "area": "placement",
+        "level": "flexible",
+        "note": "Typically under a composer or at the foot of AI content"
+      }
+    ],
     "AiStatus": [
       {
         "area": "label",
@@ -807,6 +819,18 @@
         "note": "Always renders an activatable button — there is no sentinel-only mode"
       }
     ],
+    "InlineCitation": [
+      {
+        "area": "preview content",
+        "level": "flexible",
+        "note": "description can be any node — an excerpt, a date, a favicon"
+      },
+      {
+        "area": "URL handling",
+        "level": "strict",
+        "note": "Do not bypass sourceHref() — model output is untrusted"
+      }
+    ],
     "InlineLoading": [
       {
         "area": "label",
@@ -1496,6 +1520,18 @@
         "area": "min/max/step",
         "level": "flexible",
         "note": "Consumer-defined bounds and increment"
+      }
+    ],
+    "Sources": [
+      {
+        "area": "summary text",
+        "level": "flexible",
+        "note": "Localise or reword via labels.summary (with {count})"
+      },
+      {
+        "area": "URL handling",
+        "level": "strict",
+        "note": "Do not bypass sourceHref() — model output is untrusted"
       }
     ],
     "Spinner": [

@@ -80,10 +80,39 @@
       "description": "Small \"AI\" marker for AI-generated content; with children it opens a toggletip explaining how AI was involved",
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "registryDependencies": [
+        "https://cascivo.com/r/shadcn/icon-button.json",
         "https://cascivo.com/r/shadcn/toggletip.json",
         "https://cascivo.com/r/shadcn/visually-hidden.json"
       ],
       "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "ai-disclaimer",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "ai-disclaimer/ai-disclaimer.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "ai-disclaimer/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "ai-disclaimer/ai-disclaimer.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "A short, quiet note that AI-generated content may be wrong — \"AI-generated content may be incorrect\"",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["feedback"],
       "meta": {
         "cascivo": {
           "type": "component",
@@ -2727,6 +2756,39 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "inline-citation",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "inline-citation/inline-citation.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "inline-citation/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "inline-citation/inline-citation.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "A numbered citation marker inside AI-generated text that links to its source and previews it in a hover card",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "registryDependencies": [
+        "https://cascivo.com/r/shadcn/hover-card.json",
+        "https://cascivo.com/r/shadcn/sources.json",
+        "https://cascivo.com/r/shadcn/visually-hidden.json"
+      ],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "inline-loading",
       "type": "registry:component",
       "files": [
@@ -4778,6 +4840,34 @@
       "description": "Range input for selecting a value within bounds",
       "dependencies": ["@cascivo/core"],
       "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "sources",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "sources/sources.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "sources/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "sources/sources.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Collapsible, numbered list of the sources an AI answer drew on — \"Used 3 sources\" — whose numbers match InlineCitation",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["display"],
       "meta": {
         "cascivo": {
           "type": "component",

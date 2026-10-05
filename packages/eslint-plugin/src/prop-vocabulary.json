@@ -119,6 +119,14 @@
     "Tool": "ToolCall",
     "ToolInvocation": "ToolCall",
     "FunctionCall": "ToolCall",
-    "ToolUse": "ToolCall"
+    "ToolUse": "ToolCall",
+    "AiGeneratedDisclaimer": "AiDisclaimer",
+    "AIDisclaimer": "AiDisclaimer",
+    "Citation": "InlineCitation",
+    "CitationMarker": "InlineCitation",
+    "Footnote": "InlineCitation",
+    "SourceList": "Sources",
+    "References": "Sources",
+    "SourcesCard": "Sources"
   }
 }

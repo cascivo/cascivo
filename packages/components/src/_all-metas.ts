@@ -80,6 +80,9 @@ import { meta as aiBadgeMeta } from './ai-badge/ai-badge.meta'
 import { meta as aiStatusMeta } from './ai-status/ai-status.meta'
 import { meta as chainOfThoughtMeta } from './chain-of-thought/chain-of-thought.meta'
 import { meta as toolCallMeta } from './tool-call/tool-call.meta'
+import { meta as aiDisclaimerMeta } from './ai-disclaimer/ai-disclaimer.meta'
+import { meta as inlineCitationMeta } from './inline-citation/inline-citation.meta'
+import { meta as sourcesMeta } from './sources/sources.meta'
 import { meta as reasoningMeta } from './reasoning/reasoning.meta'
 import { meta as shimmerTextMeta } from './shimmer-text/shimmer-text.meta'
 import { meta as typingIndicatorMeta } from './typing-indicator/typing-indicator.meta'
@@ -215,4 +218,7 @@ export const allMetas: ComponentMeta[] = [
   typingIndicatorMeta,
   chainOfThoughtMeta,
   toolCallMeta,
+  aiDisclaimerMeta,
+  inlineCitationMeta,
+  sourcesMeta,
 ]

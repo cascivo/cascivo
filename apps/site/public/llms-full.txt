@@ -75,7 +75,7 @@ Component names differ from peer systems too. `Switch` IS `Toggle`; `Dialog` IS
 `Modal`. Every mapping below resolves for real — `cascivo add switch` installs
 `toggle`, the MCP `get_component("Dialog")` returns `modal`, and
 `import { Switch } from '@cascivo/react'` compiles.
-Mappings: AILabel→AiBadge, AvatarStack→AvatarGroup, ChipInput→TagsInput, Chip→Tag, CircularProgress→Spinner, CommandPalette→CommandMenu, ConfirmDialog→AlertDialog, Dialog→Modal, Disclosure→Collapsible, DropdownMenu→Dropdown, EmptyView→EmptyState, Layout→AppShell, LinearProgress→InlineLoading, MoreMenu→OverflowMenu, NavigationDrawer→Drawer, NumberField→NumberInput, PinInput→OtpInput, Placeholder→Skeleton, Popper→Popover, Rating→RatingGroup, SegmentedButton→SegmentedControl, SelectNative→NativeSelect, SideSheet→Sheet, Sidebar→SideNav, Snackbar→Toast, Switch→Toggle, Table→DataTable, TextShimmer→ShimmerText, ThinkingBar→AiStatus, Think→Reasoning, ThoughtChain→ChainOfThought, ToggleButtonGroup→ToggleGroup, Tool→ToolCall, TypingDots→TypingIndicator.
+Mappings: AILabel→AiBadge, AiGeneratedDisclaimer→AiDisclaimer, AvatarStack→AvatarGroup, ChipInput→TagsInput, Chip→Tag, CircularProgress→Spinner, Citation→InlineCitation, CommandPalette→CommandMenu, ConfirmDialog→AlertDialog, Dialog→Modal, Disclosure→Collapsible, DropdownMenu→Dropdown, EmptyView→EmptyState, Layout→AppShell, LinearProgress→InlineLoading, MoreMenu→OverflowMenu, NavigationDrawer→Drawer, NumberField→NumberInput, PinInput→OtpInput, Placeholder→Skeleton, Popper→Popover, Rating→RatingGroup, SegmentedButton→SegmentedControl, SelectNative→NativeSelect, SideSheet→Sheet, Sidebar→SideNav, Snackbar→Toast, SourceList→Sources, Switch→Toggle, Table→DataTable, TextShimmer→ShimmerText, ThinkingBar→AiStatus, Think→Reasoning, ThoughtChain→ChainOfThought, ToggleButtonGroup→ToggleGroup, Tool→ToolCall, TypingDots→TypingIndicator.
 
 Pure-CSS glyphs (experimental): a small opt-in set of UI glyphs, rendered with
 `clip-path: shape()` and no SVG — color via `currentColor`, size via
@@ -302,7 +302,7 @@ statement, or it never re-renders. When you do own reactive state, use these:
 - Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` (generated union of every `--cascivo-*` property — no CSS-file lookup).
 - Router links in config-driven navs (SideNav/ShellHeader/Breadcrumb/Dock/…) -> `setLinkComponent(YourLink)` once at startup. Import it (and the `LinkComponentProps` contract type) from `@cascivo/react` (re-exported there, so prebuilt-package users need NOT add `@cascivo/core`); copied source can import from `@cascivo/core`. Adapter: `setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href} {...rest} />)` — spread the bag; the link stays a real `<a>` so middle-click/new-tab work.
 - Event-handler naming (predict the prop from what it receives): a **value** -> `onValueChange(value)` (Tabs, SegmentedControl, Combobox, MultiSelect, Toggle, Search, NumberInput, DatePicker, …); a raw DOM `ChangeEvent` -> `onChange(event)` (Checkbox, NativeSelect, PasswordInput, **Select**, **Slider** — these two wrap a real element and have NO `onValueChange`); activating an item -> `onSelect(value)` (Dropdown, OverflowMenu, chart points; on `Menu`/`ContextMenu` the `onSelect` lives on the *Item*, not the root). A few components keep a deprecated value-carrying `onChange` alias — prefer `onValueChange`.
-- Data/shape prop vocabulary (the other half of handler naming — nine wrong guesses in one 2026-08-08 dashboard, two more on 2026-08-22): a config-driven collection (nav, list, menu) -> **`items`** (18: Breadcrumb, ChainOfThought, DataList, Dock, Dropdown, MenuButton, NavigationMenu, OverflowMenu, ShareMenu, SideNav, StructuredList, Switcher, Timeline, Toc, ToggleGroup, TreeView, VirtualList, FeatureGrid); the choices on a form control -> **`options`** (7: Combobox, Filter, MultiSelect, NativeSelect, SegmentedControl, Select, WheelPicker); a chart's data points -> **`data`** (11: CalendarHeatmap, Candlestick, Funnel, Heatmap, Histogram, PieChart, Polar, RadialBar, Sparkline, Sunburst, Treemap). Exceptions, named in full because they are where the guesses go wrong: `DataTable.rows` (it renders a real <table>, where "rows" is the domain word); `Textarea.rows` (the HTML `rows` attribute, not a collection); `CommandMenu.groups` (its items are nested inside labelled groups); `ProgressIndicator.steps` (the domain word for a stepper); `Steps.steps` (the domain word for a stepper; also accepts `items`). A visual style enum -> **`variant`**, never `shape`/`kind`/`type`; a discriminated-union tag -> **`kind`**, never `type` (e.g. annotations: [{ kind: 'line' }]); a rich replaceable slot -> **`actions`** as ReactNode (Notification, CardHeader, PageHeader — only `Alert.action` is the {label,onClick} shorthand); body text on a feedback component -> **`description`**, NOT children (Notification renders nothing for children).
+- Data/shape prop vocabulary (the other half of handler naming — nine wrong guesses in one 2026-08-08 dashboard, two more on 2026-08-22): a config-driven collection (nav, list, menu) -> **`items`** (19: Breadcrumb, ChainOfThought, DataList, Dock, Dropdown, MenuButton, NavigationMenu, OverflowMenu, ShareMenu, SideNav, Sources, StructuredList, Switcher, Timeline, Toc, ToggleGroup, TreeView, VirtualList, FeatureGrid); the choices on a form control -> **`options`** (7: Combobox, Filter, MultiSelect, NativeSelect, SegmentedControl, Select, WheelPicker); a chart's data points -> **`data`** (11: CalendarHeatmap, Candlestick, Funnel, Heatmap, Histogram, PieChart, Polar, RadialBar, Sparkline, Sunburst, Treemap). Exceptions, named in full because they are where the guesses go wrong: `DataTable.rows` (it renders a real <table>, where "rows" is the domain word); `Textarea.rows` (the HTML `rows` attribute, not a collection); `CommandMenu.groups` (its items are nested inside labelled groups); `ProgressIndicator.steps` (the domain word for a stepper); `Steps.steps` (the domain word for a stepper; also accepts `items`). A visual style enum -> **`variant`**, never `shape`/`kind`/`type`; a discriminated-union tag -> **`kind`**, never `type` (e.g. annotations: [{ kind: 'line' }]); a rich replaceable slot -> **`actions`** as ReactNode (Notification, CardHeader, PageHeader — only `Alert.action` is the {label,onClick} shorthand); body text on a feedback component -> **`description`**, NOT children (Notification renders nothing for children).
 - Near-miss prop names (each one a real adopter's wrong guess): `<Text tone=…>` -> **`muted`** (a boolean; `tone` is the SEVERITY vocabulary on Status/Badge/Timeline/SideNav, not text emphasis); `gap="4"` -> **`gap={4}`** (numeric SpaceStep); `<Flex justify=…>` with no `direction` is already VERTICAL (the default, unlike CSS/Chakra/MUI/Radix); `const { theme } = useTheme()` -> a TUPLE `const [theme, setTheme]`; `DataList orientation="vertical"` moves the VALUE under its label, it does not stack the items (they stack either way); `<DataListItem>` is an INTERFACE, not a component (`DataList` takes `items`). Three former near-misses are now accepted both ways and cost nothing: `import { Switch }` (= `Toggle`), `<OverflowMenu label=…>` (= `ariaLabel`), `<Field hint=…>` (= `description`).
 - ⚠ `gap` takes a NUMBER: `gap={4}`, not `gap="4"`. Every other size-ish prop is a string union (`size="sm"`, `padding="md"`), but the space scale is a numeric `SpaceStep` (1|2|3|4|5|6|8|10|12) — this applies to Flex/Grid/AutoGrid `gap` and `AppShell.padding`. One adopter wrote `gap="4"` and got 20 type errors in a single run.
 - Items-prop-driven vs children-driven: `DataList`/`StructuredList`/`Timeline`/`Steps` take an `items` ARRAY; `ListItem`/`ContainedListItem`/`MenuItem`/`TabsTrigger` are composed as children. `DataListItem` is an INTERFACE, not a component — write <DataList items={[{ label, value }]} />, not <DataList><DataListItem/></DataList>. DataList items are { label, value } (NOT { term, description }, despite rendering a <dl>).
@@ -425,7 +425,7 @@ see how components behave without adding tracking, read these machine-readable C
 - Benchmark results (runtime, bundle, render counts vs Carbon/shadcn): https://github.com/cascivo/cascivo/blob/main/apps/bench/results/results.json
 - Accessibility conformance (axe sweep, AT matrix): https://github.com/cascivo/cascivo/tree/main/docs/specs
 
-## Component index (218 entries — 206 components + 12 page blocks)
+## Component index (221 entries — 209 components + 12 page blocks)
 
 Not all ship in `@cascivo/react`: 25 in @cascivo/charts, 10 in @cascivo/flow, 2 in @cascivo/editor — those are separate installs (see Quick Setup). Blocks are copy-paste only. Each entry below is tagged with its channel.
 
@@ -513,6 +513,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [flow/flow-story](https://cascivo.com/llms/flow/flow-story.md) — A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions. _(npm @cascivo/flow)_
 - [heading](https://cascivo.com/llms/heading.md) — Section heading with semantic level decoupled from visual size _(npm @cascivo/react · or copy-paste)_
 - [image](https://cascivo.com/llms/image.md) — Image with load state, blur-up placeholder, graceful fallback, and optional zoom _(npm @cascivo/react · or copy-paste)_
+- [inline-citation](https://cascivo.com/llms/inline-citation.md) — A numbered citation marker inside AI-generated text that links to its source and previews it in a hover card _(npm @cascivo/react · or copy-paste)_
 - [item](https://cascivo.com/llms/item.md) — Generic content row primitive with media, content, and action regions _(npm @cascivo/react · or copy-paste)_
 - [kbd](https://cascivo.com/llms/kbd.md) — Displays a keyboard key or shortcut _(npm @cascivo/react · or copy-paste)_
 - [list](https://cascivo.com/llms/list.md) — Styled unordered or ordered list with ListItem _(npm @cascivo/react · or copy-paste)_
@@ -523,6 +524,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [relative-time](https://cascivo.com/llms/relative-time.md) — Displays a date as a localized phrase relative to now, auto-updating _(npm @cascivo/react · or copy-paste)_
 - [separator](https://cascivo.com/llms/separator.md) — Visual or semantic divider between content _(npm @cascivo/react · or copy-paste)_
 - [skeleton](https://cascivo.com/llms/skeleton.md) — Animated loading placeholder that mirrors the shape of pending content _(npm @cascivo/react · or copy-paste)_
+- [sources](https://cascivo.com/llms/sources.md) — Collapsible, numbered list of the sources an AI answer drew on — "Used 3 sources" — whose numbers match InlineCitation _(npm @cascivo/react · or copy-paste)_
 - [stat](https://cascivo.com/llms/stat.md) — Displays a key metric with optional delta, trend direction and help text _(npm @cascivo/react · or copy-paste)_
 - [status](https://cascivo.com/llms/status.md) — Colored dot with a label communicating the state of a system or entity _(npm @cascivo/react · or copy-paste)_
 - [structured-list](https://cascivo.com/llms/structured-list.md) — Tabular row list for scannable data, optionally single-selectable _(npm @cascivo/react · or copy-paste)_
@@ -538,6 +540,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 
 ### feedback
 
+- [ai-disclaimer](https://cascivo.com/llms/ai-disclaimer.md) — A short, quiet note that AI-generated content may be wrong — "AI-generated content may be incorrect" _(npm @cascivo/react · or copy-paste)_
 - [ai-status](https://cascivo.com/llms/ai-status.md) — Announces what an AI is doing — thinking, generating, done, failed or stopped — with a shimmering label and an optional Stop button _(npm @cascivo/react · or copy-paste)_
 - [infinite-scroll](https://cascivo.com/llms/infinite-scroll.md) — Loads the next page when the end of a list scrolls into view _(npm @cascivo/react · or copy-paste)_
 - [inline-loading](https://cascivo.com/llms/inline-loading.md) — Compact inline status indicator that pairs a label with a loading, success, or error state _(npm @cascivo/react · or copy-paste)_
@@ -693,6 +696,7 @@ _Generated: 2026-10-02 from registry v1.6.0_
 - [Accordion](https://cascivo.com/context/accordion.md) — Use when: Progressively disclosing sections of related content the user reads top to bottom
 - [ActionSheet](https://cascivo.com/context/action-sheet.md) — Use when: A short list of discrete actions on a touch surface, rising from the bottom
 - [AiBadge](https://cascivo.com/context/ai-badge.md) — Use when: Marking a field, card, table cell or message whose content an AI produced or suggested
+- [AiDisclaimer](https://cascivo.com/context/ai-disclaimer.md) — Use when: Under an AI chat composer or answer, telling readers the output can be wrong
 - [AiStatus](https://cascivo.com/context/ai-status.md) — Use when: Telling the reader an AI request is in flight, and which phase it is in (thinking before output, generating while it streams)
 - [Alert](https://cascivo.com/context/alert.md) — Use when: Surfacing a persistent, contextual message inline within a view (warning, error, info, success)
 - [AlertDialog](https://cascivo.com/context/alert-dialog.md) — Use when: Confirming a destructive or irreversible action (delete, overwrite, sign out) before it happens
@@ -805,6 +809,7 @@ _Generated: 2026-10-02 from registry v1.6.0_
 - [Image](https://cascivo.com/context/image.md) — Use when: Displaying a content image that should show a placeholder while loading and degrade gracefully on error
 - [Indicator](https://cascivo.com/context/indicator.md) — Use when: Notification counts on icon buttons
 - [InfiniteScroll](https://cascivo.com/context/infinite-scroll.md) — Use when: A long, page-fetched feed or list where the user should keep reading without a page break
+- [InlineCitation](https://cascivo.com/context/inline-citation.md) — Use when: Attributing a claim in an AI answer to the source it came from, right where the claim is made
 - [InlineLoading](https://cascivo.com/context/inline-loading.md) — Use when: Showing the progress of a single inline action — a Save button that becomes "Saving… / Saved / Failed"
 - [Input](https://cascivo.com/context/input.md) — Use when: Collecting a single line of free-form text from the user
 - [InputGroup](https://cascivo.com/context/input-group.md) — Use when: Attaching a prefix/suffix addon (protocol, currency, unit) to an Input so it reads as one field
@@ -878,6 +883,7 @@ _Generated: 2026-10-02 from registry v1.6.0_
 - [Skeleton](https://cascivo.com/context/skeleton.md) — Use when: Indicating loading by mirroring the shape of the content that will appear
 - [SkipNav](https://cascivo.com/context/skip-nav.md) — Use when: Letting keyboard users jump past repeated navigation to the main content
 - [Slider](https://cascivo.com/context/slider.md) — Use when: Selecting a value within a continuous or stepped numeric range where approximate adjustment is fine
+- [Sources](https://cascivo.com/context/sources.md) — Use when: Listing what an AI answer was based on, below the answer
 - [Spinner](https://cascivo.com/context/spinner.md) — Use when: Indicating indeterminate work where duration and progress are unknown
 - [Stack](https://cascivo.com/context/stack.md) — Use when: Card pile UI where depth and layering should be visible
 - [Stat](https://cascivo.com/context/stat.md) — Use when: Highlighting a single key metric with a clear label
@@ -1126,9 +1132,17 @@ import { AiBadge } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `children` | `ReactNode` | no | — | The explanation shown in the toggletip — model, sources, confidence. Omit for a static marker. |
-| `labels` | `{ text?: string; explain?: string; description?: string }` | no | — | Overrides for the component’s user-visible strings (i18n): `text` (the pill, "AI"), `explain` (appended to the trigger’s accessible name), `description` (what a screen reader hears for the static marker). |
+| `edited` | `boolean` | no | `false` | The person has changed the AI’s output. The AI mark gives way to a revert button when `onRevert` is set, and to nothing otherwise — edited content is no longer AI-generated. |
+| `onRevert` | `() => void` | no | — | Restores the AI version. Shown as an icon button (named by `labels.revert`) while `edited` is true. |
+| `labels` | `{ text?: string; explain?: string; description?: string; revert?: string }` | no | — | Overrides for the component’s user-visible strings (i18n): `text` (the pill, "AI"), `explain` (appended to the trigger’s accessible name), `description` (what a screen reader hears for the static marker), `revert` (the revert button’s accessible name). |
 
 ## Examples
+
+### Edited, with revert
+
+```tsx
+<AiBadge edited onRevert={() => {}} />
+```
 
 ### Static marker
 
@@ -1144,7 +1158,7 @@ import { AiBadge } from '@cascivo/react'
 
 ## Client JavaScript
 
-None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -1170,6 +1184,79 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 ## Tags
 
 ai, label, badge, provenance, explainability, generated
+
+---
+
+_Generated from registry v1.6.0 on 2026-10-02. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
+# AiDisclaimer
+
+A short, quiet note that AI-generated content may be wrong — "AI-generated content may be incorrect"
+
+## Install
+
+Copy-paste the source (you own and can edit it):
+
+```bash
+npx cascivo add ai-disclaimer
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { AiDisclaimer } from '@cascivo/react'
+```
+
+## Category
+
+`feedback`
+
+## Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `ReactNode` | no | — | Replaces the default text — e.g. naming the model or what to double-check. |
+| `labels` | `{ text?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
+
+## Examples
+
+### Default
+
+```tsx
+<AiDisclaimer />
+```
+
+### Specific
+
+```tsx
+<AiDisclaimer>Summaries are generated by AI. Check figures against the source report.</AiDisclaimer>
+```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
+## Design tokens
+
+- `--cascivo-color-text-muted`
+- `--cascivo-color-ai`
+- `--cascivo-text-xs`
+
+## Accessibility
+
+- **WCAG level:** 2.2-AA
+- **ARIA role:** `paragraph`
+
+## Dependencies
+
+- `@cascivo/core`
+- `@cascivo/i18n`
+
+## Tags
+
+ai, disclaimer, disclosure, notice, provenance, generated
 
 ---
 
@@ -3707,6 +3794,7 @@ import { Card } from '@cascivo/react'
 | `actions` | `ReactNode` | no | — | CardHeader only — trailing content pinned to the inline-end (overflow menu, badge, link). The header is a column by default, so `justify-content: space-between` alone does nothing; this is how you get the title-left / action-right dashboard card. |
 | `variant` | `'default' \| 'outlined' \| 'elevated'` | no | `default` | `default` draws a 1px border, `outlined` a heavier one, `elevated` drops the border for a shadow. |
 | `padding` | `'none' \| 'sm' \| 'md' \| 'lg'` | no | `md` | Inner padding of the CARD BOX. ⚠ `padding="none"` deliberately does NOT strip the padding from CardHeader/CardContent/CardFooter — those keep their own. It means "let a flush child (a LogViewer, an image, an edge-to-edge table) reach the card's edge"; zeroing both put the title flush against the border and made the mode unusable with the composition it exists for. For an edge-to-edge table, skip CardContent and pass the table as a direct child. |
+| `ai` | `boolean \| 'generating'` | no | `false` | AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text. |
 
 ## Examples
 
@@ -3716,6 +3804,15 @@ import { Card } from '@cascivo/react'
 <Card>
   <CardHeader><CardTitle>Title</CardTitle></CardHeader>
   <CardContent>Content here</CardContent>
+</Card>
+```
+
+### AI-generated content
+
+```tsx
+<Card ai>
+  <CardHeader actions={<AiBadge />}><CardTitle>Summary</CardTitle></CardHeader>
+  <CardContent>Revenue grew 12% quarter over quarter.</CardContent>
 </Card>
 ```
 
@@ -3741,7 +3838,7 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 
 ## Tags
 
-container, layout, surface
+container, layout, surface, ai
 
 ---
 
@@ -11771,6 +11868,93 @@ _Generated from registry v1.6.0 on 2026-10-02. Docs track `main`; compare with h
 
 ---
 
+# InlineCitation
+
+A numbered citation marker inside AI-generated text that links to its source and previews it in a hover card
+
+## Install
+
+Copy-paste the source (you own and can edit it):
+
+```bash
+npx cascivo add inline-citation
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { InlineCitation } from '@cascivo/react'
+```
+
+## Category
+
+`display`
+
+## Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `index` | `number` | yes | — | The visible citation number — the source’s position in the matching Sources list. |
+| `source` | `AiSource` | yes | — | The cited source (`title`, `url`, optional `description`). Only absolute http(s) URLs become links. |
+| `labels` | `{ source?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). `source` may contain `{index}`; the accessible name is "<source>: <title>". |
+
+## Object types
+
+### `AiSource`
+
+One source an answer cites (shared with Sources).
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `title` | `string` | yes | The source’s title. |
+| `url` | `string` | yes | Treated as untrusted: only absolute http(s) URLs are linked. |
+| `description` | `ReactNode` | no | An excerpt shown in the hover card. |
+
+## Examples
+
+### In a sentence
+
+```tsx
+<p>
+  Refunds are available for 30 days.
+  <InlineCitation index={1} source={{ title: 'Refund policy', url: 'https://example.com/refunds' }} />
+</p>
+```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
+## Design tokens
+
+- `--cascivo-color-ai-subtle`
+- `--cascivo-color-ai-sheen`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-radius-full`
+- `--cascivo-focus-ring`
+
+## Accessibility
+
+- **WCAG level:** 2.2-AA
+- **ARIA role:** `link`
+- **Keyboard:** Tab, Enter
+
+## Dependencies
+
+- `@cascivo/core`
+- `@cascivo/i18n`
+
+## Tags
+
+ai, citation, sources, footnote, references, provenance
+
+---
+
+_Generated from registry v1.6.0 on 2026-10-02. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # InlineLoading
 
 Compact inline status indicator that pairs a label with a loading, success, or error state
@@ -11905,6 +12089,7 @@ import { Input } from '@cascivo/react'
 | `placeholder` | `string` | no | — | Placeholder text shown when the field is empty. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 | `ariaLabel` | `string` | no | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
+| `ai` | `boolean` | no | `false` | AI presence: an AI-tinted border and a soft aura, marking a value AI produced or suggested. Visual only — put an AiBadge in the label so the provenance is also text, and clear `ai` once the person edits the value. |
 
 ## Examples
 
@@ -11918,6 +12103,12 @@ import { Input } from '@cascivo/react'
 
 ```tsx
 <Input label="Email" error="Invalid email address" />
+```
+
+### AI-suggested value
+
+```tsx
+<Input label="Subject" ai defaultValue="Weekly report" />
 ```
 
 ## Client JavaScript
@@ -11945,7 +12136,7 @@ Enhancement only. The component still does its job with JavaScript disabled — 
 
 ## Tags
 
-form, text, input
+form, text, input, ai
 
 ---
 
@@ -14149,6 +14340,7 @@ import { Modal } from '@cascivo/react'
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `footer` | `ReactNode` | no | — | Dialog actions, rendered in a right-aligned row below the body and separated by a divider. |
 | `draggable` | `boolean` | no | `false` | Allow dragging the dialog by its header |
+| `ai` | `boolean \| 'generating'` | no | `false` | AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text. |
 
 ## Examples
 
@@ -14186,7 +14378,7 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 ## Tags
 
-overlay, dialog, popup
+overlay, dialog, popup, ai
 
 ---
 
@@ -18331,6 +18523,93 @@ _Generated from registry v1.6.0 on 2026-10-02. Docs track `main`; compare with h
 
 ---
 
+# Sources
+
+Collapsible, numbered list of the sources an AI answer drew on — "Used 3 sources" — whose numbers match InlineCitation
+
+## Install
+
+Copy-paste the source (you own and can edit it):
+
+```bash
+npx cascivo add sources
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Sources } from '@cascivo/react'
+```
+
+## Category
+
+`display`
+
+## Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `AiSource[]` | yes | — | The sources, in citation order. Each has `title`, `url` and an optional `description`. Only absolute http(s) URLs become links; anything else (e.g. `javascript:`) renders as text. |
+| `labels` | `{ summary?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). `summary` may contain `{count}`. |
+
+## Object types
+
+### `AiSource`
+
+One source an answer cites.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `title` | `string` | yes | The source’s title. |
+| `url` | `string` | yes | Where it lives. Treated as untrusted: only absolute http(s) URLs are linked. |
+| `description` | `ReactNode` | no | An excerpt or note shown under the title. |
+
+## Examples
+
+### Answer sources
+
+```tsx
+<Sources
+  items={[
+    { title: 'Refund policy', url: 'https://example.com/refunds' },
+    { title: 'Terms of service', url: 'https://example.com/terms', description: '§4 covers cancellations.' },
+  ]}
+/>
+```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
+## Design tokens
+
+- `--cascivo-link-color`
+- `--cascivo-color-accent-text`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-focus-ring`
+
+## Accessibility
+
+- **WCAG level:** 2.2-AA
+- **ARIA role:** `button`
+- **Keyboard:** Enter, Space
+
+## Dependencies
+
+- `@cascivo/core`
+- `@cascivo/i18n`
+
+## Tags
+
+ai, sources, citations, references, provenance, links
+
+---
+
+_Generated from registry v1.6.0 on 2026-10-02. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Spinner
 
 Indeterminate loading indicator
@@ -19595,6 +19874,7 @@ import { Textarea } from '@cascivo/react'
 | `autosize` | `boolean` | no | `false` | Grow the control with its content instead of holding the fixed rows height. rows becomes the minimum and --cascivo-textarea-max-block-size (default 20lh) the ceiling. Pure CSS (field-sizing: content) — no measurement and no listener; where unsupported the fixed rows height is kept. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 | `ariaLabel` | `string` | no | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
+| `ai` | `boolean` | no | `false` | AI presence: an AI-tinted border and a soft aura, marking a value AI produced or suggested. Visual only — put an AiBadge in the label so the provenance is also text, and clear `ai` once the person edits the value. |
 
 ## Examples
 
@@ -19636,7 +19916,7 @@ Enhancement only. The component still does its job with JavaScript disabled — 
 
 ## Tags
 
-form, text, multiline
+form, text, multiline, ai
 
 ---
 

@@ -7,6 +7,7 @@
 
 - Marking a field, card, table cell or message whose content an AI produced or suggested
 - Giving readers an on-demand explanation of how AI was involved (model, sources, confidence)
+- Offering a way back to the AI version after a person edits an AI-filled value (`edited` + `onRevert`)
 
 ## When NOT to use
 
@@ -29,14 +30,16 @@
 
 ## Accessibility rationale
 
-Provenance is carried by text, never by colour: the static marker shows "AI" and reads "AI-generated"; the interactive one is a button whose accessible name begins with its visible text ("AI Show information", WCAG 2.5.3), opening a Toggletip that is dismissable with Escape. Forced colours keep the border and text as CanvasText
+Provenance is carried by text, never by colour: the static marker shows "AI" and reads "AI-generated"; the interactive one is a button whose accessible name begins with its visible text ("AI Show information", WCAG 2.5.3), opening a Toggletip that is dismissable with Escape. The revert state is a real button with an accessible name ("Revert to AI suggestion"). Forced colours keep the border and text as CanvasText
 
 ## Props
 
-| Name       | Type                                                        | Required | Default | Description                                                                                                                                                                                                  |
-| ---------- | ----------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `children` | `ReactNode`                                                 | No       | —       | The explanation shown in the toggletip — model, sources, confidence. Omit for a static marker.                                                                                                               |
-| `labels`   | `{ text?: string; explain?: string; description?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n): `text` (the pill, "AI"), `explain` (appended to the trigger’s accessible name), `description` (what a screen reader hears for the static marker). |
+| Name       | Type                                                                         | Required | Default | Description                                                                                                                                                                                                                                                  |
+| ---------- | ---------------------------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `children` | `ReactNode`                                                                  | No       | —       | The explanation shown in the toggletip — model, sources, confidence. Omit for a static marker.                                                                                                                                                               |
+| `edited`   | `boolean`                                                                    | No       | false   | The person has changed the AI’s output. The AI mark gives way to a revert button when `onRevert` is set, and to nothing otherwise — edited content is no longer AI-generated.                                                                                |
+| `onRevert` | `() => void`                                                                 | No       | —       | Restores the AI version. Shown as an icon button (named by `labels.revert`) while `edited` is true.                                                                                                                                                          |
+| `labels`   | `{ text?: string; explain?: string; description?: string; revert?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n): `text` (the pill, "AI"), `explain` (appended to the trigger’s accessible name), `description` (what a screen reader hears for the static marker), `revert` (the revert button’s accessible name). |
 
 ## Tokens
 
@@ -49,6 +52,12 @@ Provenance is carried by text, never by colour: the static marker shows "AI" and
 - `--cascivo-font-semibold`
 
 ## Examples
+
+### Edited, with revert
+
+```jsx
+<AiBadge edited onRevert={() => {}} />
+```
 
 ### Static marker
 

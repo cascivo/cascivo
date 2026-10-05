@@ -8,6 +8,11 @@ const meta: Meta = {
 export default meta
 type Story = StoryObj
 
+export const EditedWithRevert: Story = {
+  name: 'Edited, with revert',
+  render: () => <AiBadge edited onRevert={() => {}} />,
+}
+
 export const StaticMarker: Story = {
   name: 'Static marker',
   render: () => <AiBadge />,

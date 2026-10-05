@@ -235,6 +235,7 @@ export const builtin = {
     text: 'AI',
     explain: 'Show information',
     description: 'AI-generated',
+    revert: 'Revert to AI suggestion',
   }),
   chainOfThought: defineMessages('cascade.chainOfThought', {
     pending: 'Pending',
@@ -252,6 +253,15 @@ export const builtin = {
     input: 'Input',
     output: 'Output',
     errorHeading: 'Error',
+  }),
+  sources: defineMessages('cascade.sources', {
+    summary: { one: 'Used {count} source', other: 'Used {count} sources' },
+  }),
+  inlineCitation: defineMessages('cascade.inlineCitation', {
+    source: 'Source {index}',
+  }),
+  aiDisclaimer: defineMessages('cascade.aiDisclaimer', {
+    text: 'AI-generated content may be incorrect.',
   }),
   shellHeader: defineMessages('cascade.shellHeader', {
     skipToContent: 'Skip to main content',
@@ -630,6 +640,7 @@ defineCatalog(builtin.aiBadge, 'de', {
   text: 'KI',
   explain: 'Informationen anzeigen',
   description: 'KI-generiert',
+  revert: 'KI-Vorschlag wiederherstellen',
 })
 defineCatalog(builtin.chainOfThought, 'de', {
   pending: 'Ausstehend',
@@ -647,6 +658,15 @@ defineCatalog(builtin.toolCall, 'de', {
   input: 'Eingabe',
   output: 'Ausgabe',
   errorHeading: 'Fehler',
+})
+defineCatalog(builtin.sources, 'de', {
+  summary: { one: '{count} Quelle verwendet', other: '{count} Quellen verwendet' },
+})
+defineCatalog(builtin.inlineCitation, 'de', {
+  source: 'Quelle {index}',
+})
+defineCatalog(builtin.aiDisclaimer, 'de', {
+  text: 'KI-generierte Inhalte können fehlerhaft sein.',
 })
 defineCatalog(builtin.shellHeader, 'de', {
   skipToContent: 'Zum Hauptinhalt springen',

@@ -7,6 +7,7 @@
   "exports": {
     "./accordion": "./src/accordion/accordion.tsx",
     "./ai-badge": "./src/ai-badge/ai-badge.tsx",
+    "./ai-disclaimer": "./src/ai-disclaimer/ai-disclaimer.tsx",
     "./ai-status": "./src/ai-status/ai-status.tsx",
     "./alert": "./src/alert/alert.tsx",
     "./alert-dialog": "./src/alert-dialog/alert-dialog.tsx",
@@ -53,6 +54,7 @@
     "./hover-card": "./src/hover-card/hover-card.tsx",
     "./icon-button": "./src/icon-button/icon-button.tsx",
     "./indicator": "./src/indicator/indicator.tsx",
+    "./inline-citation": "./src/inline-citation/inline-citation.tsx",
     "./inline-loading": "./src/inline-loading/inline-loading.tsx",
     "./infinite-scroll": "./src/infinite-scroll/infinite-scroll.tsx",
     "./input": "./src/input/input.tsx",
@@ -106,6 +108,7 @@
     "./skeleton": "./src/skeleton/skeleton.tsx",
     "./skip-nav": "./src/skip-nav/skip-nav.tsx",
     "./slider": "./src/slider/slider.tsx",
+    "./sources": "./src/sources/sources.tsx",
     "./spinner": "./src/spinner/spinner.tsx",
     "./stack": "./src/stack/stack.tsx",
     "./stat": "./src/stat/stat.tsx",

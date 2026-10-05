@@ -22,12 +22,20 @@ import { AiBadge } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type                                                        | Required | Default | Description                                                                                                                                                                                                  |
-| ---------- | ----------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `children` | `ReactNode`                                                 | no       | —       | The explanation shown in the toggletip — model, sources, confidence. Omit for a static marker.                                                                                                               |
-| `labels`   | `{ text?: string; explain?: string; description?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n): `text` (the pill, "AI"), `explain` (appended to the trigger’s accessible name), `description` (what a screen reader hears for the static marker). |
+| Prop       | Type                                                                         | Required | Default | Description                                                                                                                                                                                                                                                  |
+| ---------- | ---------------------------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `children` | `ReactNode`                                                                  | no       | —       | The explanation shown in the toggletip — model, sources, confidence. Omit for a static marker.                                                                                                                                                               |
+| `edited`   | `boolean`                                                                    | no       | `false` | The person has changed the AI’s output. The AI mark gives way to a revert button when `onRevert` is set, and to nothing otherwise — edited content is no longer AI-generated.                                                                                |
+| `onRevert` | `() => void`                                                                 | no       | —       | Restores the AI version. Shown as an icon button (named by `labels.revert`) while `edited` is true.                                                                                                                                                          |
+| `labels`   | `{ text?: string; explain?: string; description?: string; revert?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n): `text` (the pill, "AI"), `explain` (appended to the trigger’s accessible name), `description` (what a screen reader hears for the static marker), `revert` (the revert button’s accessible name). |
 
 ## Examples
+
+### Edited, with revert
+
+```tsx
+<AiBadge edited onRevert={() => {}} />
+```
 
 ### Static marker
 
@@ -46,7 +54,7 @@ import { AiBadge } from '@cascivo/react'
 
 ## Client JavaScript
 
-None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 

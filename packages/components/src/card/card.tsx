@@ -23,11 +23,22 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
    * @see the component manifest
    */
   padding?: 'none' | 'sm' | 'md' | 'lg'
+  /**
+   * AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking
+   * AI-generated content; `'generating'` adds a pulsing inner glow while AI is still
+   * producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the
+   * provenance is also text.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
+  ai?: boolean | 'generating'
 }
 
 export function Card({
   variant = 'default',
   padding = 'md',
+  ai = false,
   className,
   children,
   ...props
@@ -37,6 +48,7 @@ export function Card({
       data-cascivo-card=""
       data-variant={variant}
       data-padding={padding}
+      data-ai={ai === 'generating' ? 'generating' : ai ? '' : undefined}
       className={cn(styles['card'], className)}
       {...props}
     >

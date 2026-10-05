@@ -564,11 +564,20 @@
       "name": "AiBadge",
       "props": [
         { "name": "children", "type": "ReactNode", "required": false },
+        { "name": "edited", "type": "boolean", "required": false },
+        { "name": "onRevert", "type": "() => void", "required": false },
         {
           "name": "labels",
-          "type": "{ text?: string; explain?: string; description?: string }",
+          "type": "{ text?: string; explain?: string; description?: string; revert?: string }",
           "required": false
         }
+      ]
+    },
+    {
+      "name": "AiDisclaimer",
+      "props": [
+        { "name": "children", "type": "ReactNode", "required": false },
+        { "name": "labels", "type": "{ text?: string }", "required": false }
       ]
     },
     {
@@ -760,7 +769,8 @@
       "props": [
         { "name": "actions", "type": "ReactNode", "required": false },
         { "name": "variant", "type": "'default' | 'outlined' | 'elevated'", "required": false },
-        { "name": "padding", "type": "'none' | 'sm' | 'md' | 'lg'", "required": false }
+        { "name": "padding", "type": "'none' | 'sm' | 'md' | 'lg'", "required": false },
+        { "name": "ai", "type": "boolean | 'generating'", "required": false }
       ]
     },
     {
@@ -1346,6 +1356,14 @@
       ]
     },
     {
+      "name": "InlineCitation",
+      "props": [
+        { "name": "index", "type": "number", "required": true },
+        { "name": "source", "type": "AiSource", "required": true },
+        { "name": "labels", "type": "{ source?: string }", "required": false }
+      ]
+    },
+    {
       "name": "InlineLoading",
       "props": [
         {
@@ -1370,7 +1388,8 @@
         { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
         { "name": "placeholder", "type": "string", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
-        { "name": "ariaLabel", "type": "string", "required": false }
+        { "name": "ariaLabel", "type": "string", "required": false },
+        { "name": "ai", "type": "boolean", "required": false }
       ]
     },
     {
@@ -1491,7 +1510,8 @@
         { "name": "description", "type": "string", "required": false },
         { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
         { "name": "footer", "type": "ReactNode", "required": false },
-        { "name": "draggable", "type": "boolean", "required": false }
+        { "name": "draggable", "type": "boolean", "required": false },
+        { "name": "ai", "type": "boolean | 'generating'", "required": false }
       ]
     },
     {
@@ -2023,6 +2043,13 @@
       ]
     },
     {
+      "name": "Sources",
+      "props": [
+        { "name": "items", "type": "AiSource[]", "required": true },
+        { "name": "labels", "type": "{ summary?: string }", "required": false }
+      ]
+    },
+    {
       "name": "Spinner",
       "props": [
         { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
@@ -2178,7 +2205,8 @@
         { "name": "resize", "type": "'none' | 'vertical' | 'both'", "required": false },
         { "name": "autosize", "type": "boolean", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
-        { "name": "ariaLabel", "type": "string", "required": false }
+        { "name": "ariaLabel", "type": "string", "required": false },
+        { "name": "ai", "type": "boolean", "required": false }
       ]
     },
     {
@@ -3771,6 +3799,7 @@
   ],
   "content": [
     "AiBadge",
+    "AiDisclaimer",
     "AiStatus",
     "Alert",
     "AlertDialog",
@@ -3788,6 +3817,7 @@
     "FileUploader",
     "Heading",
     "IconButton",
+    "InlineCitation",
     "InlineLoading",
     "Input",
     "Label",
@@ -3804,6 +3834,7 @@
     "ShareMenu",
     "ShimmerText",
     "SkipNav",
+    "Sources",
     "Stat",
     "Status",
     "Tag",

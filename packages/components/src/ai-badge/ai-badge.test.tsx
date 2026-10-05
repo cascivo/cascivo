@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AiBadge } from './ai-badge'
@@ -31,5 +31,18 @@ describe('AiBadge', () => {
   it('merges className', () => {
     const { container } = render(<AiBadge className="custom" />)
     expect(container.firstElementChild).toHaveClass('custom')
+  })
+
+  it('swaps the mark for a revert button once edited', async () => {
+    const onRevert = vi.fn()
+    render(<AiBadge edited onRevert={onRevert} />)
+    expect(screen.queryByText('AI-generated')).toBeNull()
+    await userEvent.click(screen.getByRole('button', { name: 'Revert to AI suggestion' }))
+    expect(onRevert).toHaveBeenCalledTimes(1)
+  })
+
+  it('renders nothing once edited with no way back', () => {
+    const { container } = render(<AiBadge edited />)
+    expect(container).toBeEmptyDOMElement()
   })
 })

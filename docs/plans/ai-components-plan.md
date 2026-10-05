@@ -1,6 +1,6 @@
 # AI components — research, inventory and plan
 
-**Status: Phases 1 and 2 shipped (2026-10-05).** Phases 3–4 are proposals and need sign-off.
+**Status: Phases 1–3 shipped (2026-10-05).** Phase 4 is a proposal and needs sign-off.
 
 **Motivation:** most design systems now ship a recognisable "AI vocabulary": a provenance label,
 a tinted AI skeleton, a shimmering "Thinking…" label, a reasoning disclosure and a step/tool
@@ -260,14 +260,42 @@ demo, visual baselines, i18n keys (en + de) under `builtin.ai*`, and a changeset
   an ordinary `Button` next to the message. A message-actions component (copy, regenerate,
   feedback) stays in Phase 4.
 
-### Phase 3: AI presence and provenance
+### Phase 3: AI presence and provenance (shipped)
 
-- **AI presence surfaces**: an `ai` boolean on `Card`, `Tile`, `Input`/`Textarea`, `Modal`,
-  `Sheet` and `DataTable` rows. It adds a static gradient border and aura (Carbon), with an
-  `ai="generating"` option that animates the border (Rovo's rule: activity only).
-- **Revert-to-AI** on `AiBadge` (`onRevert`, Carbon's edited state).
-- **`AiDisclaimer`**: "AI-generated content may be incorrect" (Fluent, SLDS, Gemini).
-- **`Sources` / `InlineCitation`**: numbered citations with a hover card.
+- **AI presence** is an explicit `ai` prop, not Carbon's `:has(.ai-label)` detection. A prop
+  shows up in manifests and the MCP server, and detecting it from the DOM would be hidden
+  magic.
+  - `Card` and `Modal` take `ai?: boolean | 'generating'`. `true` gives an AI-tinted border
+    (`--cascivo-color-ai-border`) and a soft aura rising from the bottom
+    (`--cascivo-color-ai-subtle`). `'generating'` adds an inner glow on a `::before`, and only
+    that glow's opacity pulses, which keeps the motion compositor-only. Under reduced motion
+    the glow stays on and does not animate. This follows Rovo's rule that an *animated* AI
+    edge means work in progress.
+  - `Input` and `Textarea` take `ai?: boolean` only. Their visible box is the `<input>` /
+    `<textarea>` itself, and those elements can't take pseudo-elements. A field that is being
+    filled is reported by `AiStatus` instead. The rule sits under `:where()`, so hover, focus
+    and error still win.
+  - Not done: `Tile`, `Sheet`, `DataTable` rows. `Tile` is a radio/checkbox surface whose
+    border already signals selection, so an AI edge would compete with it, and `Card` covers
+    tile-like surfaces. `Sheet` does not spread props. `DataTable` rows would need a row
+    predicate prop on a 2,000-line component. Each is a follow-up if anyone asks for it.
+  - Presence is visual only. The prop descriptions tell adopters to pair it with an
+    `AiBadge`, so the provenance is also text.
+- **Revert to AI** on `AiBadge`: new `edited` and `onRevert` props. Once a person edits AI
+  output, the mark becomes an icon button ("Revert to AI suggestion"). Without `onRevert` it
+  renders nothing, because edited content is no longer AI-generated. `AiBadge` is now
+  `clientJs: 'enhancement'`.
+- **`AiDisclaimer`**: a quiet, static paragraph. It is not a live region, because it is
+  guidance, not a status change.
+- **`Sources`** and **`InlineCitation`**:
+  - `Sources` is a `<details>` "Used N sources" with an `<ol>`, so each row is announced by its
+    number.
+  - `InlineCitation` is a `<sup>` link whose name starts with its visible number ("Source 1:
+    Refund policy"). It previews the source in a `HoverCard`, which also opens on keyboard
+    focus.
+  - Model-supplied URLs are untrusted. `sourceHref()` links only absolute `http:` / `https:`
+    URLs. `javascript:`, `data:`, relative and malformed URLs render as text, and the tests
+    cover each of those cases.
 
 ### Phase 4: conversation layer and convergence
 

@@ -37,6 +37,7 @@ role="region" is appropriate only when the card is a meaningful landmark; otherw
 | `actions` | `ReactNode`                             | No       | —       | CardHeader only — trailing content pinned to the inline-end (overflow menu, badge, link). The header is a column by default, so `justify-content: space-between` alone does nothing; this is how you get the title-left / action-right dashboard card.                                                                                                                                                                                                           |
 | `variant` | `'default' \| 'outlined' \| 'elevated'` | No       | default | `default` draws a 1px border, `outlined` a heavier one, `elevated` drops the border for a shadow.                                                                                                                                                                                                                                                                                                                                                                |
 | `padding` | `'none' \| 'sm' \| 'md' \| 'lg'`        | No       | md      | Inner padding of the CARD BOX. ⚠ `padding="none"` deliberately does NOT strip the padding from CardHeader/CardContent/CardFooter — those keep their own. It means "let a flush child (a LogViewer, an image, an edge-to-edge table) reach the card's edge"; zeroing both put the title flush against the border and made the mode unusable with the composition it exists for. For an edge-to-edge table, skip CardContent and pass the table as a direct child. |
+| `ai`      | `boolean \| 'generating'`               | No       | false   | AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text.                                                                                                                                                                               |
 
 ## Tokens
 
@@ -55,6 +56,17 @@ role="region" is appropriate only when the card is a meaningful landmark; otherw
     <CardTitle>Title</CardTitle>
   </CardHeader>
   <CardContent>Content here</CardContent>
+</Card>
+```
+
+### AI-generated content
+
+```jsx
+<Card ai>
+  <CardHeader actions={<AiBadge />}>
+    <CardTitle>Summary</CardTitle>
+  </CardHeader>
+  <CardContent>Revenue grew 12% quarter over quarter.</CardContent>
 </Card>
 ```
 

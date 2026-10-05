@@ -9,6 +9,11 @@
     }
   }
 
+  .revert {
+    color: var(--cascivo-color-ai);
+    vertical-align: middle;
+  }
+
   .badge {
     display: inline-flex;
     align-items: center;
@@ -28,6 +33,11 @@
 }
 
 @media (forced-colors: active) {
+  .revert {
+    color: var(--cascivo-color-ai);
+    vertical-align: middle;
+  }
+
   .badge {
     border-color: CanvasText;
     color: CanvasText;

@@ -5,9 +5,9 @@ export const meta: ComponentMeta = {
   description:
     'Small "AI" marker for AI-generated content; with children it opens a toggletip explaining how AI was involved',
   category: 'display',
-  // Without children it is static markup. With children the explanation needs JS, but that
-  // behaviour lives in Toggletip, which is its own client boundary — this file adds none.
-  clientJs: 'none',
+  // The marker is static markup and reads with JS off. The explanation (Toggletip, its own
+  // client boundary) and the revert button need JS.
+  clientJs: 'enhancement',
   states: [],
   variants: [],
   sizes: [],
@@ -20,10 +20,25 @@ export const meta: ComponentMeta = {
       required: false,
     },
     {
+      name: 'edited',
+      description:
+        'The person has changed the AI’s output. The AI mark gives way to a revert button when `onRevert` is set, and to nothing otherwise — edited content is no longer AI-generated.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'onRevert',
+      description:
+        'Restores the AI version. Shown as an icon button (named by `labels.revert`) while `edited` is true.',
+      type: '() => void',
+      required: false,
+    },
+    {
       name: 'labels',
       description:
-        'Overrides for the component’s user-visible strings (i18n): `text` (the pill, "AI"), `explain` (appended to the trigger’s accessible name), `description` (what a screen reader hears for the static marker).',
-      type: '{ text?: string; explain?: string; description?: string }',
+        'Overrides for the component’s user-visible strings (i18n): `text` (the pill, "AI"), `explain` (appended to the trigger’s accessible name), `description` (what a screen reader hears for the static marker), `revert` (the revert button’s accessible name).',
+      type: '{ text?: string; explain?: string; description?: string; revert?: string }',
       required: false,
     },
   ],
@@ -43,6 +58,10 @@ export const meta: ComponentMeta = {
     forcedColors: true,
   },
   examples: [
+    {
+      title: 'Edited, with revert',
+      code: '<AiBadge edited onRevert={() => {}} />',
+    },
     { title: 'Static marker', code: '<AiBadge />' },
     {
       title: 'With explanation',
@@ -50,12 +69,13 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
-  registryDependencies: ['toggletip', 'visually-hidden'],
+  registryDependencies: ['icon-button', 'toggletip', 'visually-hidden'],
   tags: ['ai', 'label', 'badge', 'provenance', 'explainability', 'generated'],
   intent: {
     whenToUse: [
       'Marking a field, card, table cell or message whose content an AI produced or suggested',
       'Giving readers an on-demand explanation of how AI was involved (model, sources, confidence)',
+      'Offering a way back to the AI version after a person edits an AI-filled value (`edited` + `onRevert`)',
     ],
     whenNotToUse: [
       'Reporting that generation is in progress — use AiStatus',
@@ -86,7 +106,7 @@ export const meta: ComponentMeta = {
       },
     ],
     a11yRationale:
-      'Provenance is carried by text, never by colour: the static marker shows "AI" and reads "AI-generated"; the interactive one is a button whose accessible name begins with its visible text ("AI Show information", WCAG 2.5.3), opening a Toggletip that is dismissable with Escape. Forced colours keep the border and text as CanvasText',
+      'Provenance is carried by text, never by colour: the static marker shows "AI" and reads "AI-generated"; the interactive one is a button whose accessible name begins with its visible text ("AI Show information", WCAG 2.5.3), opening a Toggletip that is dismissable with Escape. The revert state is a real button with an accessible name ("Revert to AI suggestion"). Forced colours keep the border and text as CanvasText',
     content: {
       tone: 'Plain and factual — say what the AI did and what the reader should check',
       notes: 'Keep the pill to "AI" (localised); put detail in the explanation',

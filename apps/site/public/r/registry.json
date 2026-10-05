@@ -294,12 +294,12 @@
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["ai", "label", "badge", "provenance", "explainability", "generated"],
       "category": "display",
-      "registryDependencies": ["toggletip", "visually-hidden"],
+      "registryDependencies": ["icon-button", "toggletip", "visually-hidden"],
       "meta": {
         "name": "AiBadge",
         "description": "Small \"AI\" marker for AI-generated content; with children it opens a toggletip explaining how AI was involved",
         "category": "display",
-        "clientJs": "none",
+        "clientJs": "enhancement",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -311,9 +311,22 @@
             "required": false
           },
           {
+            "name": "edited",
+            "description": "The person has changed the AI’s output. The AI mark gives way to a revert button when `onRevert` is set, and to nothing otherwise — edited content is no longer AI-generated.",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "onRevert",
+            "description": "Restores the AI version. Shown as an icon button (named by `labels.revert`) while `edited` is true.",
+            "type": "() => void",
+            "required": false
+          },
+          {
             "name": "labels",
-            "description": "Overrides for the component’s user-visible strings (i18n): `text` (the pill, \"AI\"), `explain` (appended to the trigger’s accessible name), `description` (what a screen reader hears for the static marker).",
-            "type": "{ text?: string; explain?: string; description?: string }",
+            "description": "Overrides for the component’s user-visible strings (i18n): `text` (the pill, \"AI\"), `explain` (appended to the trigger’s accessible name), `description` (what a screen reader hears for the static marker), `revert` (the revert button’s accessible name).",
+            "type": "{ text?: string; explain?: string; description?: string; revert?: string }",
             "required": false
           }
         ],
@@ -334,12 +347,13 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
-        "registryDependencies": ["toggletip", "visually-hidden"],
+        "registryDependencies": ["icon-button", "toggletip", "visually-hidden"],
         "tags": ["ai", "label", "badge", "provenance", "explainability", "generated"],
         "intent": {
           "whenToUse": [
             "Marking a field, card, table cell or message whose content an AI produced or suggested",
-            "Giving readers an on-demand explanation of how AI was involved (model, sources, confidence)"
+            "Giving readers an on-demand explanation of how AI was involved (model, sources, confidence)",
+            "Offering a way back to the AI version after a person edits an AI-filled value (`edited` + `onRevert`)"
           ],
           "whenNotToUse": [
             "Reporting that generation is in progress — use AiStatus",
@@ -369,7 +383,7 @@
               "reason": "AiStatus reports work in progress; AiBadge marks the finished result"
             }
           ],
-          "a11yRationale": "Provenance is carried by text, never by colour: the static marker shows \"AI\" and reads \"AI-generated\"; the interactive one is a button whose accessible name begins with its visible text (\"AI Show information\", WCAG 2.5.3), opening a Toggletip that is dismissable with Escape. Forced colours keep the border and text as CanvasText",
+          "a11yRationale": "Provenance is carried by text, never by colour: the static marker shows \"AI\" and reads \"AI-generated\"; the interactive one is a button whose accessible name begins with its visible text (\"AI Show information\", WCAG 2.5.3), opening a Toggletip that is dismissable with Escape. The revert state is a real button with an accessible name (\"Revert to AI suggestion\"). Forced colours keep the border and text as CanvasText",
           "content": {
             "tone": "Plain and factual — say what the AI did and what the reader should check",
             "notes": "Keep the pill to \"AI\" (localised); put detail in the explanation"
@@ -384,6 +398,106 @@
               "area": "pill text",
               "level": "strict",
               "note": "Keep it a short AI marker; do not reuse the badge for unrelated labels"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
+      "name": "ai-disclaimer",
+      "type": "component",
+      "description": "A short, quiet note that AI-generated content may be wrong — \"AI-generated content may be incorrect\"",
+      "version": "1.6.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/ai-disclaimer/ai-disclaimer.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/ai-disclaimer/index.ts"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/ai-disclaimer/ai-disclaimer.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["ai", "disclaimer", "disclosure", "notice", "provenance", "generated"],
+      "category": "feedback",
+      "meta": {
+        "name": "AiDisclaimer",
+        "description": "A short, quiet note that AI-generated content may be wrong — \"AI-generated content may be incorrect\"",
+        "category": "feedback",
+        "clientJs": "none",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "children",
+            "description": "Replaces the default text — e.g. naming the model or what to double-check.",
+            "type": "ReactNode",
+            "required": false
+          },
+          {
+            "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
+            "type": "{ text?: string }",
+            "required": false
+          }
+        ],
+        "tokens": ["--cascivo-color-text-muted", "--cascivo-color-ai", "--cascivo-text-xs"],
+        "accessibility": {
+          "role": "paragraph",
+          "wcag": "2.2-AA",
+          "keyboard": [],
+          "forcedColors": true
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["ai", "disclaimer", "disclosure", "notice", "provenance", "generated"],
+        "intent": {
+          "whenToUse": [
+            "Under an AI chat composer or answer, telling readers the output can be wrong",
+            "Beside AI-generated summaries, drafts or suggestions that people may act on"
+          ],
+          "whenNotToUse": [
+            "Marking a single field or card as AI-generated — use AiBadge",
+            "Warnings the reader must act on — use Alert"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Repeating the disclaimer under every message in a conversation",
+              "good": "Show it once, under the composer or at the end of the thread",
+              "why": "Repeated boilerplate is skimmed past and stops being read"
+            }
+          ],
+          "related": [
+            {
+              "name": "AiBadge",
+              "relationship": "pairs-with",
+              "reason": "AiBadge marks which content is AI-generated; the disclaimer says what that means"
+            },
+            {
+              "name": "Alert",
+              "relationship": "alternative",
+              "reason": "Alert is for messages that need attention or action"
+            }
+          ],
+          "a11yRationale": "A plain paragraph: read in document order, never a live region, because it is static guidance rather than a status change. The sparkle is aria-hidden; muted text keeps AA contrast on every theme",
+          "content": {
+            "tone": "Plain and specific — say what may be wrong and what to check",
+            "notes": "One sentence; avoid legalese"
+          },
+          "flexibility": [
+            {
+              "area": "text",
+              "level": "flexible",
+              "note": "Replace via children or labels.text"
+            },
+            {
+              "area": "placement",
+              "level": "flexible",
+              "note": "Typically under a composer or at the foot of AI content"
             }
           ]
         }
@@ -3335,7 +3449,7 @@
         }
       ],
       "dependencies": ["@cascivo/core"],
-      "tags": ["container", "layout", "surface"],
+      "tags": ["container", "layout", "surface", "ai"],
       "category": "display",
       "meta": {
         "name": "Card",
@@ -3365,6 +3479,13 @@
             "type": "'none' | 'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
+          },
+          {
+            "name": "ai",
+            "type": "boolean | 'generating'",
+            "required": false,
+            "default": "false",
+            "description": "AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text."
           }
         ],
         "tokens": [
@@ -3381,7 +3502,7 @@
         "examples": [],
         "dependencies": ["@cascivo/core"],
         "styleHooks": ["data-cascivo-card"],
-        "tags": ["container", "layout", "surface"],
+        "tags": ["container", "layout", "surface", "ai"],
         "intent": {
           "whenToUse": [
             "Grouping related content into a visually distinct surface with border/shadow",
@@ -16462,6 +16583,145 @@
     },
     {
       "schemaVersion": 2,
+      "name": "inline-citation",
+      "type": "component",
+      "description": "A numbered citation marker inside AI-generated text that links to its source and previews it in a hover card",
+      "version": "1.6.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/inline-citation/inline-citation.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/inline-citation/index.ts"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/inline-citation/inline-citation.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["ai", "citation", "sources", "footnote", "references", "provenance"],
+      "category": "display",
+      "registryDependencies": ["hover-card", "sources", "visually-hidden"],
+      "meta": {
+        "name": "InlineCitation",
+        "description": "A numbered citation marker inside AI-generated text that links to its source and previews it in a hover card",
+        "category": "display",
+        "clientJs": "none",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "index",
+            "description": "The visible citation number — the source’s position in the matching Sources list.",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "source",
+            "description": "The cited source (`title`, `url`, optional `description`). Only absolute http(s) URLs become links.",
+            "type": "AiSource",
+            "required": true
+          },
+          {
+            "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n). `source` may contain `{index}`; the accessible name is \"<source>: <title>\".",
+            "type": "{ source?: string }",
+            "required": false
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "AiSource",
+            "description": "One source an answer cites (shared with Sources).",
+            "fields": [
+              {
+                "name": "title",
+                "type": "string",
+                "required": true,
+                "description": "The source’s title."
+              },
+              {
+                "name": "url",
+                "type": "string",
+                "required": true,
+                "description": "Treated as untrusted: only absolute http(s) URLs are linked."
+              },
+              {
+                "name": "description",
+                "type": "ReactNode",
+                "required": false,
+                "description": "An excerpt shown in the hover card."
+              }
+            ]
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-ai-subtle",
+          "--cascivo-color-ai-sheen",
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-radius-full",
+          "--cascivo-focus-ring"
+        ],
+        "accessibility": {
+          "role": "link",
+          "wcag": "2.2-AA",
+          "keyboard": ["Tab", "Enter"],
+          "forcedColors": true
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["hover-card", "sources", "visually-hidden"],
+        "tags": ["ai", "citation", "sources", "footnote", "references", "provenance"],
+        "intent": {
+          "whenToUse": [
+            "Attributing a claim in an AI answer to the source it came from, right where the claim is made"
+          ],
+          "whenNotToUse": [
+            "Listing every source of an answer — use Sources (and number the citations to match)",
+            "General footnotes in authored content — use a plain link or Prose"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Numbering citations independently of the Sources list",
+              "good": "Use the source’s position in Sources as `index`",
+              "why": "A reader matches \"2\" in the text to row 2 of the list; mismatched numbers point at the wrong source"
+            }
+          ],
+          "related": [
+            {
+              "name": "Sources",
+              "relationship": "pairs-with",
+              "reason": "The list the numbers point at"
+            },
+            {
+              "name": "HoverCard",
+              "relationship": "contains",
+              "reason": "The preview opens in a HoverCard on hover and keyboard focus"
+            }
+          ],
+          "a11yRationale": "A real link whose accessible name starts with the visible number and includes the source title (\"Source 1: Refund policy\"), so it is meaningful without the hover card, which also opens on keyboard focus. Refused URLs keep the number and name but are not links",
+          "content": {
+            "tone": "Place the marker right after the claim it supports"
+          },
+          "flexibility": [
+            {
+              "area": "preview content",
+              "level": "flexible",
+              "note": "description can be any node — an excerpt, a date, a favicon"
+            },
+            {
+              "area": "URL handling",
+              "level": "strict",
+              "note": "Do not bypass sourceHref() — model output is untrusted"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "inline-loading",
       "type": "component",
       "description": "Compact inline status indicator that pairs a label with a loading, success, or error state",
@@ -16596,7 +16856,7 @@
         }
       ],
       "dependencies": ["@cascivo/core"],
-      "tags": ["form", "text", "input"],
+      "tags": ["form", "text", "input", "ai"],
       "category": "inputs",
       "meta": {
         "name": "Input",
@@ -16652,6 +16912,13 @@
             "type": "string",
             "required": false,
             "nameVisibility": "invisible"
+          },
+          {
+            "name": "ai",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "AI presence: an AI-tinted border and a soft aura, marking a value AI produced or suggested. Visual only — put an AiBadge in the label so the provenance is also text, and clear `ai` once the person edits the value."
           }
         ],
         "tokens": [
@@ -16671,7 +16938,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
-        "tags": ["form", "text", "input"],
+        "tags": ["form", "text", "input", "ai"],
         "intent": {
           "whenToUse": [
             "Collecting a single line of free-form text from the user",
@@ -19552,7 +19819,7 @@
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
-      "tags": ["overlay", "dialog", "popup"],
+      "tags": ["overlay", "dialog", "popup", "ai"],
       "category": "overlay",
       "meta": {
         "name": "Modal",
@@ -19607,6 +19874,13 @@
             "required": false,
             "default": "false",
             "description": "Allow dragging the dialog by its header"
+          },
+          {
+            "name": "ai",
+            "type": "boolean | 'generating'",
+            "required": false,
+            "default": "false",
+            "description": "AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text."
           }
         ],
         "tokens": [
@@ -19628,7 +19902,7 @@
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "styleHooks": ["data-cascivo-modal-body", "data-cascivo-modal-footer"],
-        "tags": ["overlay", "dialog", "popup"],
+        "tags": ["overlay", "dialog", "popup", "ai"],
         "intent": {
           "whenToUse": [
             "Presenting focused content or a task that must interrupt the current flow",
@@ -25923,6 +26197,138 @@
     },
     {
       "schemaVersion": 2,
+      "name": "sources",
+      "type": "component",
+      "description": "Collapsible, numbered list of the sources an AI answer drew on — \"Used 3 sources\" — whose numbers match InlineCitation",
+      "version": "1.6.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sources/sources.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sources/index.ts"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sources/sources.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["ai", "sources", "citations", "references", "provenance", "links"],
+      "category": "display",
+      "meta": {
+        "name": "Sources",
+        "description": "Collapsible, numbered list of the sources an AI answer drew on — \"Used 3 sources\" — whose numbers match InlineCitation",
+        "category": "display",
+        "clientJs": "none",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "items",
+            "description": "The sources, in citation order. Each has `title`, `url` and an optional `description`. Only absolute http(s) URLs become links; anything else (e.g. `javascript:`) renders as text.",
+            "type": "AiSource[]",
+            "required": true
+          },
+          {
+            "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n). `summary` may contain `{count}`.",
+            "type": "{ summary?: string }",
+            "required": false
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "AiSource",
+            "description": "One source an answer cites.",
+            "fields": [
+              {
+                "name": "title",
+                "type": "string",
+                "required": true,
+                "description": "The source’s title."
+              },
+              {
+                "name": "url",
+                "type": "string",
+                "required": true,
+                "description": "Where it lives. Treated as untrusted: only absolute http(s) URLs are linked."
+              },
+              {
+                "name": "description",
+                "type": "ReactNode",
+                "required": false,
+                "description": "An excerpt or note shown under the title."
+              }
+            ]
+          }
+        ],
+        "tokens": [
+          "--cascivo-link-color",
+          "--cascivo-color-accent-text",
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-focus-ring"
+        ],
+        "accessibility": {
+          "role": "button",
+          "wcag": "2.2-AA",
+          "keyboard": ["Enter", "Space"],
+          "apgPattern": "disclosure",
+          "forcedColors": true
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["ai", "sources", "citations", "references", "provenance", "links"],
+        "intent": {
+          "whenToUse": [
+            "Listing what an AI answer was based on, below the answer",
+            "Giving numbered targets for the InlineCitation markers inside the answer"
+          ],
+          "whenNotToUse": [
+            "Ordinary navigation links — use List or Link",
+            "An agent’s process (searched, read, wrote) — use ChainOfThought"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Rendering model-supplied URLs straight into href",
+              "good": "Pass them to Sources / InlineCitation, which only link absolute http(s) URLs",
+              "why": "A model can emit javascript: or data: URLs; linking them is script injection"
+            }
+          ],
+          "related": [
+            {
+              "name": "InlineCitation",
+              "relationship": "pairs-with",
+              "reason": "InlineCitation numbers in the text point at the same rows"
+            },
+            {
+              "name": "AiBadge",
+              "relationship": "pairs-with",
+              "reason": "AiBadge marks the answer as AI-generated; Sources says what it rests on"
+            }
+          ],
+          "a11yRationale": "A native <details>/<summary> disclosure (Enter/Space) whose summary states the count (\"Used 3 sources\"), so it works before hydration and find-in-page can open it. The list is an <ol>, so each source is announced with its number, matching the InlineCitation markers. Refused URLs render as plain text, never as a link that does nothing",
+          "content": {
+            "tone": "Use the source’s own title; keep descriptions to a short excerpt"
+          },
+          "flexibility": [
+            {
+              "area": "summary text",
+              "level": "flexible",
+              "note": "Localise or reword via labels.summary (with {count})"
+            },
+            {
+              "area": "URL handling",
+              "level": "strict",
+              "note": "Do not bypass sourceHref() — model output is untrusted"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "spinner",
       "type": "component",
       "description": "Indeterminate loading indicator",
@@ -27619,7 +28025,7 @@
         }
       ],
       "dependencies": ["@cascivo/core"],
-      "tags": ["form", "text", "multiline"],
+      "tags": ["form", "text", "multiline", "ai"],
       "category": "inputs",
       "meta": {
         "name": "Textarea",
@@ -27683,6 +28089,13 @@
             "type": "string",
             "required": false,
             "nameVisibility": "invisible"
+          },
+          {
+            "name": "ai",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "AI presence: an AI-tinted border and a soft aura, marking a value AI produced or suggested. Visual only — put an AiBadge in the label so the provenance is also text, and clear `ai` once the person edits the value."
           }
         ],
         "tokens": [
@@ -27703,7 +28116,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
-        "tags": ["form", "text", "multiline"],
+        "tags": ["form", "text", "multiline", "ai"],
         "intent": {
           "whenToUse": [
             "Capturing multi-line free text such as messages, descriptions, or comments",

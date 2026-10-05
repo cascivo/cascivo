@@ -33,5 +33,8 @@
   "reasoning": ["Think", "ThinkingBlock", "ReasoningPanel"],
   "typing-indicator": ["TypingDots", "MessageLoading", "LoadingDots"],
   "chain-of-thought": ["ThoughtChain", "AgentSteps", "ReasoningSteps"],
-  "tool-call": ["Tool", "ToolInvocation", "FunctionCall", "ToolUse"]
+  "tool-call": ["Tool", "ToolInvocation", "FunctionCall", "ToolUse"],
+  "ai-disclaimer": ["AiGeneratedDisclaimer", "AIDisclaimer"],
+  "inline-citation": ["Citation", "CitationMarker", "Footnote"],
+  "sources": ["SourceList", "References", "SourcesCard"]
 }

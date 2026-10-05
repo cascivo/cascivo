@@ -55,6 +55,34 @@
       border: none;
       box-shadow: var(--cascivo-shadow-md);
     }
+
+    /* AI presence: an AI-tinted edge and a soft aura rising from the bottom. A static mark
+       of AI content — after the variant rules so it restates the border on every variant. */
+    &[data-ai] {
+      border: 1px solid var(--cascivo-color-ai-border);
+      background-image: linear-gradient(to top, var(--cascivo-color-ai-subtle), transparent 60%);
+    }
+
+    /* Generation in progress adds an inner glow on its own layer, so the loop below animates
+       only its opacity. At rest (and under reduced motion) the glow simply stays on. */
+    &[data-ai='generating']::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow:
+        inset 0 0 0 1px var(--cascivo-color-ai),
+        inset 0 0 1.5rem var(--cascivo-color-ai-sheen);
+      pointer-events: none;
+    }
+  }
+
+  /* Decorative loop — opt-in. Rovo's rule: an animated AI edge means work in progress. */
+  @media (prefers-reduced-motion: no-preference) {
+    .card[data-ai='generating']::before {
+      animation: global(cascivo-pulse) var(--cascivo-duration-loop-slow) var(--cascivo-ease-in-out)
+        infinite;
+    }
   }
 
   .header {
@@ -125,5 +153,11 @@
     & > * {
       min-inline-size: 0;
     }
+  }
+}
+
+@media (forced-colors: active) {
+  .card[data-ai] {
+    border-color: Highlight;
   }
 }

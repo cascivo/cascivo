@@ -208,6 +208,18 @@
           "note": "Keep it a short AI marker; do not reuse the badge for unrelated labels"
         }
       ],
+      "AiDisclaimer": [
+        {
+          "area": "text",
+          "level": "flexible",
+          "note": "Replace via children or labels.text"
+        },
+        {
+          "area": "placement",
+          "level": "flexible",
+          "note": "Typically under a composer or at the foot of AI content"
+        }
+      ],
       "AiStatus": [
         {
           "area": "label",
@@ -927,6 +939,18 @@
           "note": "Always renders an activatable button — there is no sentinel-only mode"
         }
       ],
+      "InlineCitation": [
+        {
+          "area": "preview content",
+          "level": "flexible",
+          "note": "description can be any node — an excerpt, a date, a favicon"
+        },
+        {
+          "area": "URL handling",
+          "level": "strict",
+          "note": "Do not bypass sourceHref() — model output is untrusted"
+        }
+      ],
       "InlineLoading": [
         {
           "area": "label",
@@ -1618,6 +1642,18 @@
           "note": "Consumer-defined bounds and increment"
         }
       ],
+      "Sources": [
+        {
+          "area": "summary text",
+          "level": "flexible",
+          "note": "Localise or reword via labels.summary (with {count})"
+        },
+        {
+          "area": "URL handling",
+          "level": "strict",
+          "note": "Do not bypass sourceHref() — model output is untrusted"
+        }
+      ],
       "Spinner": [
         {
           "area": "size",
@@ -2244,7 +2280,8 @@
       "intent": {
         "whenToUse": [
           "Marking a field, card, table cell or message whose content an AI produced or suggested",
-          "Giving readers an on-demand explanation of how AI was involved (model, sources, confidence)"
+          "Giving readers an on-demand explanation of how AI was involved (model, sources, confidence)",
+          "Offering a way back to the AI version after a person edits an AI-filled value (`edited` + `onRevert`)"
         ],
         "whenNotToUse": [
           "Reporting that generation is in progress — use AiStatus",
@@ -2274,7 +2311,7 @@
             "reason": "AiStatus reports work in progress; AiBadge marks the finished result"
           }
         ],
-        "a11yRationale": "Provenance is carried by text, never by colour: the static marker shows \"AI\" and reads \"AI-generated\"; the interactive one is a button whose accessible name begins with its visible text (\"AI Show information\", WCAG 2.5.3), opening a Toggletip that is dismissable with Escape. Forced colours keep the border and text as CanvasText",
+        "a11yRationale": "Provenance is carried by text, never by colour: the static marker shows \"AI\" and reads \"AI-generated\"; the interactive one is a button whose accessible name begins with its visible text (\"AI Show information\", WCAG 2.5.3), opening a Toggletip that is dismissable with Escape. The revert state is a real button with an accessible name (\"Revert to AI suggestion\"). Forced colours keep the border and text as CanvasText",
         "content": {
           "tone": "Plain and factual — say what the AI did and what the reader should check",
           "notes": "Keep the pill to \"AI\" (localised); put detail in the explanation"
@@ -2303,9 +2340,28 @@
           }
         },
         {
+          "name": "edited",
+          "description": "The person has changed the AI’s output. The AI mark gives way to a revert button when `onRevert` is set, and to nothing otherwise — edited content is no longer AI-generated.",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onRevert",
+          "description": "Restores the AI version. Shown as an icon button (named by `labels.revert`) while `edited` is true.",
+          "type": "() => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
           "name": "labels",
-          "description": "Overrides for the component’s user-visible strings (i18n): `text` (the pill, \"AI\"), `explain` (appended to the trigger’s accessible name), `description` (what a screen reader hears for the static marker).",
-          "type": "{ text?: string; explain?: string; description?: string }",
+          "description": "Overrides for the component’s user-visible strings (i18n): `text` (the pill, \"AI\"), `explain` (appended to the trigger’s accessible name), `description` (what a screen reader hears for the static marker), `revert` (the revert button’s accessible name).",
+          "type": "{ text?: string; explain?: string; description?: string; revert?: string }",
           "required": false,
           "schema": {
             "kind": "other"
@@ -2314,6 +2370,79 @@
       ],
       "contextUrl": "/context/ai-badge.md",
       "aiPrompt": "I am modifying the cascivo AiBadge component (display). Small \"AI\" marker for AI-generated content; with children it opens a toggletip explaining how AI was involved\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nAiBadge is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-ai, --cascivo-color-ai-subtle, --cascivo-color-ai-border, --cascivo-color-text, --cascivo-radius-indicator, --cascivo-text-xs, --cascivo-font-semibold\n\nAccessibility: role \"button\", WCAG 2.2-AA, keyboard: Enter/Space/Escape. Keep it AA.\n\nDo not change (strict): pill text — Keep it a short AI marker; do not reuse the badge for unrelated labels\nFlexible: explanation content.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
+      "name": "AiDisclaimer",
+      "category": "feedback",
+      "description": "A short, quiet note that AI-generated content may be wrong — \"AI-generated content may be incorrect\"",
+      "intent": {
+        "whenToUse": [
+          "Under an AI chat composer or answer, telling readers the output can be wrong",
+          "Beside AI-generated summaries, drafts or suggestions that people may act on"
+        ],
+        "whenNotToUse": [
+          "Marking a single field or card as AI-generated — use AiBadge",
+          "Warnings the reader must act on — use Alert"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Repeating the disclaimer under every message in a conversation",
+            "good": "Show it once, under the composer or at the end of the thread",
+            "why": "Repeated boilerplate is skimmed past and stops being read"
+          }
+        ],
+        "related": [
+          {
+            "name": "AiBadge",
+            "relationship": "pairs-with",
+            "reason": "AiBadge marks which content is AI-generated; the disclaimer says what that means"
+          },
+          {
+            "name": "Alert",
+            "relationship": "alternative",
+            "reason": "Alert is for messages that need attention or action"
+          }
+        ],
+        "a11yRationale": "A plain paragraph: read in document order, never a live region, because it is static guidance rather than a status change. The sparkle is aria-hidden; muted text keeps AA contrast on every theme",
+        "content": {
+          "tone": "Plain and specific — say what may be wrong and what to check",
+          "notes": "One sentence; avoid legalese"
+        },
+        "flexibility": [
+          {
+            "area": "text",
+            "level": "flexible",
+            "note": "Replace via children or labels.text"
+          },
+          {
+            "area": "placement",
+            "level": "flexible",
+            "note": "Typically under a composer or at the foot of AI content"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "children",
+          "description": "Replaces the default text — e.g. naming the model or what to double-check.",
+          "type": "ReactNode",
+          "required": false,
+          "schema": {
+            "kind": "node"
+          }
+        },
+        {
+          "name": "labels",
+          "description": "Overrides for the component’s user-visible strings (i18n).",
+          "type": "{ text?: string }",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        }
+      ],
+      "contextUrl": "/context/ai-disclaimer.md",
+      "aiPrompt": "I am modifying the cascivo AiDisclaimer component (feedback). A short, quiet note that AI-generated content may be wrong — \"AI-generated content may be incorrect\"\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nAiDisclaimer is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text-muted, --cascivo-color-ai, --cascivo-text-xs\n\nAccessibility: role \"paragraph\", WCAG 2.2-AA. Keep it AA.\nFlexible: text, placement.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "AiStatus",
@@ -4494,6 +4623,16 @@
           "schema": {
             "kind": "enum",
             "values": ["none", "sm", "md", "lg"]
+          }
+        },
+        {
+          "name": "ai",
+          "type": "boolean | 'generating'",
+          "required": false,
+          "default": "false",
+          "description": "AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text.",
+          "schema": {
+            "kind": "other"
           }
         }
       ],
@@ -15481,6 +15620,86 @@
       "aiPrompt": "I am modifying the cascivo InfiniteScroll component (feedback). Loads the next page when the end of a list scrolls into view\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nInfiniteScroll is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text-muted, --cascivo-color-border, --cascivo-color-surface-2, --cascivo-color-foreground, --cascivo-radius-md, --cascivo-ring-width, --cascivo-ring-color, --cascivo-text-ui, --cascivo-target-min-coarse\n\nAccessibility: role \"button\", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.\n\nDo not change (strict): trigger — Always renders an activatable button — there is no sentinel-only mode\nFlexible: rootMargin, onLoadMore.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
+      "name": "InlineCitation",
+      "category": "display",
+      "description": "A numbered citation marker inside AI-generated text that links to its source and previews it in a hover card",
+      "intent": {
+        "whenToUse": [
+          "Attributing a claim in an AI answer to the source it came from, right where the claim is made"
+        ],
+        "whenNotToUse": [
+          "Listing every source of an answer — use Sources (and number the citations to match)",
+          "General footnotes in authored content — use a plain link or Prose"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Numbering citations independently of the Sources list",
+            "good": "Use the source’s position in Sources as `index`",
+            "why": "A reader matches \"2\" in the text to row 2 of the list; mismatched numbers point at the wrong source"
+          }
+        ],
+        "related": [
+          {
+            "name": "Sources",
+            "relationship": "pairs-with",
+            "reason": "The list the numbers point at"
+          },
+          {
+            "name": "HoverCard",
+            "relationship": "contains",
+            "reason": "The preview opens in a HoverCard on hover and keyboard focus"
+          }
+        ],
+        "a11yRationale": "A real link whose accessible name starts with the visible number and includes the source title (\"Source 1: Refund policy\"), so it is meaningful without the hover card, which also opens on keyboard focus. Refused URLs keep the number and name but are not links",
+        "content": {
+          "tone": "Place the marker right after the claim it supports"
+        },
+        "flexibility": [
+          {
+            "area": "preview content",
+            "level": "flexible",
+            "note": "description can be any node — an excerpt, a date, a favicon"
+          },
+          {
+            "area": "URL handling",
+            "level": "strict",
+            "note": "Do not bypass sourceHref() — model output is untrusted"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "index",
+          "description": "The visible citation number — the source’s position in the matching Sources list.",
+          "type": "number",
+          "required": true,
+          "schema": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "source",
+          "description": "The cited source (`title`, `url`, optional `description`). Only absolute http(s) URLs become links.",
+          "type": "AiSource",
+          "required": true,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "labels",
+          "description": "Overrides for the component’s user-visible strings (i18n). `source` may contain `{index}`; the accessible name is \"<source>: <title>\".",
+          "type": "{ source?: string }",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        }
+      ],
+      "contextUrl": "/context/inline-citation.md",
+      "aiPrompt": "I am modifying the cascivo InlineCitation component (display). A numbered citation marker inside AI-generated text that links to its source and previews it in a hover card\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nInlineCitation is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-ai-subtle, --cascivo-color-ai-sheen, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-radius-full, --cascivo-focus-ring\n\nAccessibility: role \"link\", WCAG 2.2-AA, keyboard: Tab/Enter. Keep it AA.\n\nDo not change (strict): URL handling — Do not bypass sourceHref() — model output is untrusted\nFlexible: preview content.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
       "name": "InlineLoading",
       "category": "feedback",
       "description": "Compact inline status indicator that pairs a label with a loading, success, or error state",
@@ -15695,6 +15914,16 @@
           "nameVisibility": "invisible",
           "schema": {
             "kind": "string"
+          }
+        },
+        {
+          "name": "ai",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "AI presence: an AI-tinted border and a soft aura, marking a value AI produced or suggested. Visual only — put an AiBadge in the label so the provenance is also text, and clear `ai` once the person edits the value.",
+          "schema": {
+            "kind": "boolean"
           }
         }
       ],
@@ -17984,6 +18213,16 @@
           "description": "Allow dragging the dialog by its header",
           "schema": {
             "kind": "boolean"
+          }
+        },
+        {
+          "name": "ai",
+          "type": "boolean | 'generating'",
+          "required": false,
+          "default": "false",
+          "description": "AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text.",
+          "schema": {
+            "kind": "other"
           }
         }
       ],
@@ -23202,6 +23441,78 @@
       "aiPrompt": "I am modifying the cascivo Slider component (inputs). Range input for selecting a value within bounds\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSlider is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-border-strong, --cascivo-color-surface, --cascivo-radius-full, --cascivo-focus-ring\n\nAccessibility: role \"slider\", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/ArrowUp/ArrowDown/Home/End. Keep it AA.\n\nDo not change (strict): token names — Track and thumb colors must resolve to --cascivo-color-* / radius / focus-ring tokens\nFlexible: min/max/step.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
+      "name": "Sources",
+      "category": "display",
+      "description": "Collapsible, numbered list of the sources an AI answer drew on — \"Used 3 sources\" — whose numbers match InlineCitation",
+      "intent": {
+        "whenToUse": [
+          "Listing what an AI answer was based on, below the answer",
+          "Giving numbered targets for the InlineCitation markers inside the answer"
+        ],
+        "whenNotToUse": [
+          "Ordinary navigation links — use List or Link",
+          "An agent’s process (searched, read, wrote) — use ChainOfThought"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Rendering model-supplied URLs straight into href",
+            "good": "Pass them to Sources / InlineCitation, which only link absolute http(s) URLs",
+            "why": "A model can emit javascript: or data: URLs; linking them is script injection"
+          }
+        ],
+        "related": [
+          {
+            "name": "InlineCitation",
+            "relationship": "pairs-with",
+            "reason": "InlineCitation numbers in the text point at the same rows"
+          },
+          {
+            "name": "AiBadge",
+            "relationship": "pairs-with",
+            "reason": "AiBadge marks the answer as AI-generated; Sources says what it rests on"
+          }
+        ],
+        "a11yRationale": "A native <details>/<summary> disclosure (Enter/Space) whose summary states the count (\"Used 3 sources\"), so it works before hydration and find-in-page can open it. The list is an <ol>, so each source is announced with its number, matching the InlineCitation markers. Refused URLs render as plain text, never as a link that does nothing",
+        "content": {
+          "tone": "Use the source’s own title; keep descriptions to a short excerpt"
+        },
+        "flexibility": [
+          {
+            "area": "summary text",
+            "level": "flexible",
+            "note": "Localise or reword via labels.summary (with {count})"
+          },
+          {
+            "area": "URL handling",
+            "level": "strict",
+            "note": "Do not bypass sourceHref() — model output is untrusted"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "items",
+          "description": "The sources, in citation order. Each has `title`, `url` and an optional `description`. Only absolute http(s) URLs become links; anything else (e.g. `javascript:`) renders as text.",
+          "type": "AiSource[]",
+          "required": true,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "labels",
+          "description": "Overrides for the component’s user-visible strings (i18n). `summary` may contain `{count}`.",
+          "type": "{ summary?: string }",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        }
+      ],
+      "contextUrl": "/context/sources.md",
+      "aiPrompt": "I am modifying the cascivo Sources component (display). Collapsible, numbered list of the sources an AI answer drew on — \"Used 3 sources\" — whose numbers match InlineCitation\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSources is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-link-color, --cascivo-color-accent-text, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-focus-ring\n\nAccessibility: role \"button\", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.\n\nDo not change (strict): URL handling — Do not bypass sourceHref() — model output is untrusted\nFlexible: summary text.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
       "name": "Spinner",
       "category": "feedback",
       "description": "Indeterminate loading indicator",
@@ -24685,6 +24996,16 @@
           "nameVisibility": "invisible",
           "schema": {
             "kind": "string"
+          }
+        },
+        {
+          "name": "ai",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "AI presence: an AI-tinted border and a soft aura, marking a value AI produced or suggested. Visual only — put an AiBadge in the label so the provenance is also text, and clear `ai` once the person edits the value.",
+          "schema": {
+            "kind": "boolean"
           }
         }
       ],

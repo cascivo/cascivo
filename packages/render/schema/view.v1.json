@@ -93,6 +93,7 @@
             "Accordion",
             "ActionSheet",
             "AiBadge",
+            "AiDisclaimer",
             "AiStatus",
             "Alert",
             "AlertDialog",
@@ -183,6 +184,7 @@
             "Image",
             "Indicator",
             "InfiniteScroll",
+            "InlineCitation",
             "InlineLoading",
             "Input",
             "InputGroup",
@@ -257,6 +259,7 @@
             "Skeleton",
             "SkipNav",
             "Slider",
+            "Sources",
             "Spacer",
             "Sparkline",
             "Spinner",
@@ -397,6 +400,32 @@
             "properties": {
               "component": {
                 "const": "AiBadge"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "edited": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "AiDisclaimer"
               }
             },
             "required": ["component"]
@@ -942,6 +971,10 @@
                   "padding": {
                     "type": "string",
                     "enum": ["none", "sm", "md", "lg"]
+                  },
+                  "ai": {
+                    "type": "string",
+                    "enum": ["boolean", "generating"]
                   }
                 }
               }
@@ -2467,6 +2500,33 @@
           "if": {
             "properties": {
               "component": {
+                "const": "InlineCitation"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "index": {
+                    "type": "number"
+                  },
+                  "source": {
+                    "type": "string",
+                    "enum": ["AiSource"]
+                  }
+                },
+                "required": ["index", "source"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "InlineLoading"
               }
             },
@@ -2526,6 +2586,9 @@
                   },
                   "ariaLabel": {
                     "type": "string"
+                  },
+                  "ai": {
+                    "type": "boolean"
                   }
                 }
               }
@@ -2937,6 +3000,10 @@
                   },
                   "draggable": {
                     "type": "boolean"
+                  },
+                  "ai": {
+                    "type": "string",
+                    "enum": ["boolean", "generating"]
                   }
                 }
               }
@@ -4411,6 +4478,25 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Sources"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {},
+                "required": ["items"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Spinner"
               }
             },
@@ -4861,6 +4947,9 @@
                   },
                   "ariaLabel": {
                     "type": "string"
+                  },
+                  "ai": {
+                    "type": "boolean"
                   }
                 }
               }

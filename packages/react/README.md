@@ -251,7 +251,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-206 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
+209 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
 
 ### Inputs
 
@@ -334,6 +334,7 @@ routing break after adding one of these, check that the import resolves to
 - **Heading** — Section heading with semantic level decoupled from visual size
 - **Highlight** — Read-only syntax-highlighted code block — the same owned tokenizer as CodeEditor, without the textarea.
 - **Image** — Image with load state, blur-up placeholder, graceful fallback, and optional zoom
+- **InlineCitation** — A numbered citation marker inside AI-generated text that links to its source and previews it in a hover card
 - **Item** — Generic content row primitive with media, content, and action regions
 - **Kbd** — Displays a keyboard key or shortcut
 - **List** — Styled unordered or ordered list with ListItem
@@ -350,6 +351,7 @@ routing break after adding one of these, check that the import resolves to
 - **SettingsFormPage** — Settings page with profile form inside a two-column settings layout.
 - **SidebarApp** — Full app shell with collapsible side navigation and top header.
 - **Skeleton** — Animated loading placeholder that mirrors the shape of pending content
+- **Sources** — Collapsible, numbered list of the sources an AI answer drew on — "Used 3 sources" — whose numbers match InlineCitation
 - **Stat** — Displays a key metric with optional delta, trend direction and help text
 - **StatsCards** — Grid of KPI stat cards with trend badges.
 - **Status** — Colored dot with a label communicating the state of a system or entity
@@ -439,6 +441,7 @@ routing break after adding one of these, check that the import resolves to
 
 ### Feedback
 
+- **AiDisclaimer** — A short, quiet note that AI-generated content may be wrong — "AI-generated content may be incorrect"
 - **AiStatus** — Announces what an AI is doing — thinking, generating, done, failed or stopped — with a shimmering label and an optional Stop button
 - **InfiniteScroll** — Loads the next page when the end of a list scrolls into view
 - **InlineLoading** — Compact inline status indicator that pairs a label with a loading, success, or error state

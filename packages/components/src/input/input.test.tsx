@@ -42,3 +42,17 @@ describe('Input', () => {
     expect(handler).toHaveBeenCalled()
   })
 })
+
+describe('Input ai presence', () => {
+  it('flags the wrapper, not the input, and never leaks onto the element', () => {
+    render(<Input label="Subject" ai />)
+    const input = screen.getByLabelText('Subject')
+    expect(input).not.toHaveAttribute('ai')
+    expect(input.parentElement).toHaveAttribute('data-ai', '')
+  })
+
+  it('is off by default', () => {
+    render(<Input label="Subject" />)
+    expect(screen.getByLabelText('Subject').parentElement).not.toHaveAttribute('data-ai')
+  })
+})
