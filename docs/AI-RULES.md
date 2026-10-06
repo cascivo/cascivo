@@ -342,9 +342,30 @@ accepted as an alias — so one domain enum drives the whole catalog with no loo
 | --- | --- | --- |
 | `Steps` | `Step.state` | `current`→active, `upcoming`→pending |
 | `Timeline` | `TimelineItem.status` | `current`→active, `upcoming`→pending |
+| `ChainOfThought` | `ChainOfThoughtItem.status` | `current`→active, `upcoming`→pending |
 
 Write the canonical value in new code. `scripts/checks/vocabulary.test.ts` fails a component
 that models either idea with a private union.
+
+## AI features — announce transitions, never tokens
+
+Building a chat or any other AI surface? Compose it from the AI components rather than
+hand-rolling it. Their accessibility contract is the part a hand-rolled version gets wrong.
+
+- **Never put `aria-live` on streaming text.** Screen readers re-read or garble it on every
+  token. Render the reply silently (`StreamingText`, or plain text). Report the *phase* with
+  `AiStatus` (thinking / generating / complete / error / stopped), and announce the finished
+  reply once with `announce()` from `@cascivo/core`.
+- **Before the first token**, show `TypingIndicator`. **While reasoning**, use `Reasoning`
+  with `streaming` (its content is `aria-busy`). **For agent steps**, use `ChainOfThought`
+  (the `Progress` vocabulary above). **For a tool invocation**, use `ToolCall`, and put
+  approval buttons in its `actions`.
+- **Provenance is text, not colour.** The `ai` prop on `Card`, `Modal`, `Input`,
+  `Textarea` and `Skeleton` is a visual tint only. Pair it with `AiBadge`.
+- **Model-supplied URLs are untrusted.** Render citations with `Sources` / `InlineCitation`,
+  or pass a URL through `sourceHref()`, which links only absolute http(s) URLs.
+- **After the reply**, use `MessageActions` (copy, good / bad, regenerate), `PromptSuggestions`
+  and `AiDisclaimer`. `ContextMeter` shows context-window usage.
 
 ## Links in a routed app
 

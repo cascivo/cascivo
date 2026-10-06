@@ -2,6 +2,7 @@ import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from '../sections/Header'
 import { Footer } from '../sections/Footer'
 import { AgentLayer } from '../sections/AgentLayer'
+import { AiComponentsShowcase } from '../sections/AiComponentsShowcase'
 import { CtaBand } from '../sections/CtaBand'
 
 export function AiPage() {
@@ -24,6 +25,7 @@ export function AiPage() {
             </p>
           </section>
           <AgentLayer />
+          <AiComponentsShowcase />
           <CtaBand />
         </main>
       </SkipNavTarget>

@@ -1,5 +1,37 @@
 import { CodeBlock } from './components/CodeBlock'
-import { StreamingText, AiLabel, Terminal, AiChat } from '@cascivo/ai'
+import { AiChat } from '@cascivo/ai'
+import { AiStatus } from '@cascivo/components/ai-status'
+import { ChainOfThought } from '@cascivo/components/chain-of-thought'
+import { Reasoning } from '@cascivo/components/reasoning'
+
+/** The AI registry components, grouped the way a reply uses them. */
+const AI_COMPONENTS: Record<'progress' | 'agent' | 'provenance', [string, string][]> = {
+  progress: [
+    [
+      'ai-status',
+      'what the AI is doing: thinking, generating, done, failed, stopped; optional Stop',
+    ],
+    ['shimmer-text', 'the “Thinking…” sweep for a label'],
+    ['typing-indicator', 'three dots before the first token'],
+    ['reasoning', 'a collapsible reasoning trace: “Thinking…”, then “Thought for 12 seconds”'],
+    ['streaming-text', 'reveals a streamed reply character by character'],
+    ['skeleton', 'set ai to tint the placeholder for content an AI is generating'],
+    ['context-meter', 'how much of the context window is used'],
+  ],
+  agent: [
+    ['chain-of-thought', 'the steps an agent takes, each with its status and optional detail'],
+    ['tool-call', 'one tool invocation: status, input, output, approval actions'],
+    ['terminal', 'an animated transcript for demos and agent runs'],
+  ],
+  provenance: [
+    ['ai-badge', 'the “AI” marker, with an optional explanation and revert-to-AI'],
+    ['ai-disclaimer', '“AI-generated content may be incorrect”'],
+    ['sources', 'a numbered “Used N sources” list'],
+    ['inline-citation', 'numbered citation markers that preview their source'],
+    ['message-actions', 'copy, good / bad feedback, regenerate'],
+    ['prompt-suggestions', 'starter prompts as pill buttons'],
+  ],
+}
 
 const MCP_SETUP = `// .claude/settings.json
 {
@@ -193,34 +225,75 @@ export function AiPage() {
       <section class="doc-section">
         <h2>AI components</h2>
         <p>
-          The <code>@cascivo/ai</code> package ships four AI-native components.
+          The UI for AI features ships in the registry, like every other component, so each one has
+          a manifest, a docs page and <code>cascivo add</code>. They share one accessibility
+          contract: phase changes are announced once (through <code>AiStatus</code> or{' '}
+          <code>announce()</code> from <code>@cascivo/core</code>) and streamed tokens never are.
+          Every loop stops under reduced motion. One AI hue, <code>--cascivo-color-ai</code>, runs
+          through all twelve themes.
         </p>
 
-        <h3>StreamingText</h3>
-        <p>Animates text character-by-character, mimicking token-by-token LLM output.</p>
-        <StreamingText text="Hello, I am cascivo — the AI-first design system." speed={3} />
+        <h3>Work in progress</h3>
+        <AiStatus status="generating" onStop={() => {}} />
+        <Reasoning streaming>Checking the refund window and the cancellation terms…</Reasoning>
+        <ul>
+          {AI_COMPONENTS.progress.map(([name, what]) => (
+            <li key={name}>
+              <a href={`/docs/components/${name}`}>
+                <code>{name}</code>
+              </a>{' '}
+              — {what}
+            </li>
+          ))}
+        </ul>
 
-        <h3>AiLabel</h3>
-        <p>Status badge for AI operations.</p>
-        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBlock: '0.75rem' }}>
-          <AiLabel variant="generating" />
-          <AiLabel variant="done" />
-          <AiLabel variant="error" />
-        </div>
-
-        <h3>Terminal</h3>
-        <p>Animated terminal output for showing CLI commands.</p>
-        <Terminal
-          lines={[
-            { text: 'npx cascivo add button', prefix: '$', type: 'command' },
-            { text: '✓ Button added to src/components/Button.tsx', type: 'output' },
-            { text: '✓ Done in 0.12s', type: 'output' },
+        <h3>Agent steps</h3>
+        <ChainOfThought
+          items={[
+            { id: 'search', title: 'Searched the help center', status: 'complete' },
+            { id: 'read', title: 'Reading the refund policy', status: 'active' },
+            { id: 'write', title: 'Write the answer', status: 'pending' },
           ]}
-          speed={4}
         />
+        <ul>
+          {AI_COMPONENTS.agent.map(([name, what]) => (
+            <li key={name}>
+              <a href={`/docs/components/${name}`}>
+                <code>{name}</code>
+              </a>{' '}
+              — {what}
+            </li>
+          ))}
+        </ul>
 
-        <h3>AiChat</h3>
-        <p>A minimal chat interface for AI assistant interactions.</p>
+        <h3>Provenance and the finished reply</h3>
+        <ul>
+          {AI_COMPONENTS.provenance.map(([name, what]) => (
+            <li key={name}>
+              <a href={`/docs/components/${name}`}>
+                <code>{name}</code>
+              </a>{' '}
+              — {what}
+            </li>
+          ))}
+        </ul>
+        <p>
+          <code>Card</code>, <code>Modal</code>, <code>Input</code> and <code>Textarea</code> take{' '}
+          <code>ai</code> for an AI-tinted edge (<code>Card</code> and <code>Modal</code> also take{' '}
+          <code>ai="generating"</code>), and <code>Skeleton</code> takes <code>ai</code> for an
+          AI-tinted placeholder. The tint is visual only, so pair it with an <code>AiBadge</code>.
+        </p>
+
+        <h3>
+          <code>@cascivo/ai</code>
+        </h3>
+        <p>
+          <code>AiChat</code> is a complete, controlled chat surface built from the components
+          above. It shows a typing indicator before the first token, an optional Stop button, and
+          announces the finished reply once. <code>StreamingText</code> and <code>Terminal</code>{' '}
+          are re-exported from the registry. <code>AiLabel</code> is deprecated in favour of{' '}
+          <code>AiStatus</code> and is removed in 2.0.
+        </p>
         <div style={{ height: '400px', maxWidth: '640px' }}>
           <AiChat
             messages={[

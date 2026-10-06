@@ -5284,7 +5284,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/context-meter/context-meter.module.css"
       ],
       "fileHashes": {
-        "context-meter.tsx": "sha256-acf095a1f568c42c65452b729a619a03d40b959ae8927c61ce160726eff3c277",
+        "context-meter.tsx": "sha256-919c844f0ec5e134efdd3ac64832203a155dba490d46bb57237a6552e8f41c17",
         "index.ts": "sha256-13da1ba0d9b84aeb36762e187944804a3bd7c845fe392a1b985be9a86b57ad28",
         "context-meter.module.css": "sha256-55dd296e989b222cd029490d899e797c60be1d33e4cea098ac4331edb24b207d"
       },
@@ -5701,7 +5701,7 @@
         "row-sort.ts": "sha256-7d2b3e52e4249bb9f5856d43c0f95ddc8dac4c4f2b81e590ca7182a82b5d7d9d",
         "to-csv.ts": "sha256-8e26da77c73c415b6c7e128174463b8ad2f29036fda2df44e8b152953e9c3b0b",
         "virtual-window.ts": "sha256-7c96f234d62d0d0610cf05c5d99abf6cf10afbebbcbfd528e0202f385a0e1d0f",
-        "data-table.module.css": "sha256-7070640c26f49ca2b19ed570f72315a5aa1cb05da1321e72850a756ec8dd06f7"
+        "data-table.module.css": "sha256-79df9cc0ad5b96fdfcc2127e7a5f33e7b515826a2512385ad03ee24d0807a26c"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -9756,7 +9756,7 @@
       "fileHashes": {
         "inline-citation.tsx": "sha256-418cedb311bcec6d48a5e9efebee40e717234b4f3154a91564b4cf01d1e77ed3",
         "index.ts": "sha256-bed286e9ba1f10d13f469c9e0a9558211d822fcad4580a85c3448ca81952b46a",
-        "inline-citation.module.css": "sha256-ff0577aca9b119d8ecbd50d66521b0d7ce0eeef7b1d15737f6ce2e16c2f8fe16"
+        "inline-citation.module.css": "sha256-71a0eaad1eb06d386aa8cff15c18cc8a5cff6319baffa31cae151e840f2d44c0"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -11903,7 +11903,7 @@
       "fileHashes": {
         "message-actions.tsx": "sha256-3c8290a4a62b4c3ee1abafedae84f68899546842b7655d23f0f9510eefc84fcf",
         "index.ts": "sha256-dd83439285f8ab6066e1bea148a6276b017da4e581af0d8071eb771f53b26039",
-        "message-actions.module.css": "sha256-f49f276c62c3aa4f03b2dc5dbf1b4af904a2c5d9250a8dc59c80e05086e572bd"
+        "message-actions.module.css": "sha256-5bc6b8580031b7868f5da6782225b16859799f932366e83b3b4375ae34eaa723"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -14628,7 +14628,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prompt-suggestions/prompt-suggestions.module.css"
       ],
       "fileHashes": {
-        "prompt-suggestions.tsx": "sha256-3dabb48459b310959028abd5e85d87bf2cec092317c7169bc5f21a7eb4b73b6a",
+        "prompt-suggestions.tsx": "sha256-d51ab685058a45cdae9c6f658070ccdd90ed3094c2d7d9b130b61f637355e84d",
         "index.ts": "sha256-870275e4199c791aaee6ee38f1bd8b894caa24a88ad12d9a14779b921831f2d3",
         "prompt-suggestions.module.css": "sha256-7685b53f86fca115916cdcdd510a667c7e0ae82e0171f464d873234d4afea04c"
       },
@@ -14684,7 +14684,7 @@
         "examples": [
           {
             "title": "Starter prompts",
-            "code": "<PromptSuggestions\n  items={['Summarise this week’s tickets', 'Draft a release note', 'What changed in v2?']}\n  onSelect={(prompt) => {}}\n/>"
+            "code": "<PromptSuggestions\n  items={['Summarise this week’s tickets', 'Draft a release note', 'What changed in v2?']}\n  onSelect={() => {}}\n/>"
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -20449,7 +20449,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/terminal/terminal.module.css"
       ],
       "fileHashes": {
-        "terminal.tsx": "sha256-6e0d422f8fe1d4891093473f122c226b52a08664adb634d42143e646ccaee429",
+        "terminal.tsx": "sha256-f8ece3da6f93b53c172b2cdf9efed0aa7aaa0ff9134d36cccd0e91d97a1e4c4c",
         "index.ts": "sha256-4248c468da2943496ebc51e267d2d07636837516c6361de62ffab714d00dfadf",
         "terminal.module.css": "sha256-a796d62be2f33a1f3830cb1bd943271bca98928f27a589a8982af587c5c19b1e"
       },

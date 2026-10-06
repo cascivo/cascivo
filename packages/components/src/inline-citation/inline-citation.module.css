@@ -28,13 +28,19 @@
     }
   }
 
+  /* This class lands on HoverCard's popover element, so it must not declare a visible
+     display at rest: any author display beats the UA rule that hides a closed popover. */
   .card {
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: var(--cascivo-space-1);
     max-inline-size: 20rem;
     font-size: var(--cascivo-text-sm);
     line-height: var(--cascivo-leading-snug);
+
+    &:popover-open {
+      display: flex;
+    }
   }
 
   .title {
