@@ -1,5 +1,26 @@
 # @cascivo/email-preview
 
+## 4.0.0
+
+### Minor Changes
+
+- d0f0e97: A Links panel lists what `checkLinks` finds in the open template — blocked rows are links
+  `assertSendable` will refuse, such as the shipped templates' `example.com` defaults.
+
+### Patch Changes
+
+- db3f056: `@cascivo/react` is built with vite-plus 1.0. Its `dist/index.d.ts` now marks each declaration `export` where it is
+  written, instead of listing all of them in one trailing `export { … }`. The exported names and
+  their types are unchanged. Long component signatures, such as `DataTable`'s, now put one
+  parameter on each line so the file stays easy to grep.
+
+  The other packages listed here ship only a README change: the vite-plus 1.0 formatter removes
+  a blank line in the header block.
+
+- Updated dependencies [db3f056]
+- Updated dependencies [d0f0e97]
+  - @cascivo/email@0.6.0
+
 ## 3.0.0
 
 ### Patch Changes

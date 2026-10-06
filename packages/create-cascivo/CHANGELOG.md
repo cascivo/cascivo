@@ -1,5 +1,33 @@
 # create-cascivo
 
+## 0.1.1
+
+### Patch Changes
+
+- db3f056: `@cascivo/react` is built with vite-plus 1.0. Its `dist/index.d.ts` now marks each declaration `export` where it is
+  written, instead of listing all of them in one trailing `export { … }`. The exported names and
+  their types are unchanged. Long component signatures, such as `DataTable`'s, now put one
+  parameter on each line so the file stays easy to grep.
+
+  The other packages listed here ship only a README change: the vite-plus 1.0 formatter removes
+  a blank line in the header block.
+
+- Updated dependencies [aa3967d]
+- Updated dependencies [d0f0e97]
+- Updated dependencies [57dc995]
+- Updated dependencies [57dc995]
+- Updated dependencies [57dc995]
+- Updated dependencies [57dc995]
+- Updated dependencies [57dc995]
+- Updated dependencies [57dc995]
+- Updated dependencies [57dc995]
+- Updated dependencies [57dc995]
+- Updated dependencies [57dc995]
+- Updated dependencies [57dc995]
+- Updated dependencies [57dc995]
+- Updated dependencies [57dc995]
+  - cascivo@1.7.0
+
 ## 0.1.0
 
 ### Minor Changes

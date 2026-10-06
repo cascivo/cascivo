@@ -1,11 +1,16 @@
 {
-  "generatedAt": "2026-10-02",
+  "generatedAt": "2026-10-06",
   "description": "Major and minor releases per published package, parsed from changesets CHANGELOGs. Compare against your installed versions to detect API drift; patch releases are excluded.",
   "packages": [
     {
       "name": "@cascivo/ai",
-      "version": "1.6.0",
+      "version": "1.7.0",
       "releases": [
+        {
+          "version": "1.7.0",
+          "level": "minor",
+          "notes": ["AI conversation layer."]
+        },
         {
           "version": "1.0.0",
           "level": "major",
@@ -27,8 +32,22 @@
     },
     {
       "name": "@cascivo/app",
-      "version": "1.6.0",
+      "version": "1.7.0",
       "releases": [
+        {
+          "version": "1.7.0",
+          "level": "minor",
+          "notes": [
+            "Bluesky (any AT Protocol account): sign in, connect, and post.",
+            "Buffer: connect a user's Buffer, and post through it.",
+            "`expiringConnections(db, { withinDays })` in `@cascivo/app/oauth-server`: every user's",
+            "LinkedIn, connected accounts, and posting.",
+            "Mastodon (and servers that speak its API): sign in, connect, and post.",
+            "Sign in with GitHub or Google: two new entries.",
+            "- `bluesky()` names the account: its display name and avatar come from its profile record on its",
+            "Threads: connect an account and post to it."
+          ]
+        },
         {
           "version": "1.6.0",
           "level": "minor",
@@ -71,7 +90,7 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "1.6.0",
+      "version": "1.7.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -159,8 +178,26 @@
     },
     {
       "name": "cascivo",
-      "version": "1.6.0",
+      "version": "1.7.0",
       "releases": [
+        {
+          "version": "1.7.0",
+          "level": "minor",
+          "notes": [
+            "The CLI ships a machine-readable description of every command (`dist/cmdspec.json`, in the",
+            "`cascivo email lint` also reports links that go nowhere (`checkLinks` from `@cascivo/email`):",
+            "`cascivo create --auth oauth` (and `--auth email,oauth`) offers LinkedIn sign-in beside GitHub",
+            "`cascivo create --framework cloudflare --auth oauth` scaffolds GitHub and Google sign-in on",
+            "`cascivo create --framework cloudflare --example social`: `/social` connects LinkedIn and",
+            "`--example social` connects Bluesky accounts too: people type their handle, the Worker serves",
+            "`--example social` and Buffer:",
+            "`--example social` connects Buffer too, once `BUFFER_CLIENT_ID` is set: each channel in a",
+            "`--example social` attaches images. The composer uploads up to 4 (JPEG or PNG, 1 MB each,",
+            "`--example social` emails a reminder to connect LinkedIn again a week before its token",
+            "`--example social` checks a Mastodon post against its server's own limits, read once a day",
+            "`--example social` connects Threads once `THREADS_APP_ID` and `THREADS_APP_SECRET` are set."
+          ]
+        },
         {
           "version": "1.6.0",
           "level": "minor",
@@ -296,8 +333,13 @@
     },
     {
       "name": "@cascivo/core",
-      "version": "1.6.0",
+      "version": "1.7.0",
       "releases": [
+        {
+          "version": "1.7.0",
+          "level": "minor",
+          "notes": ["AI conversation layer."]
+        },
         {
           "version": "1.4.0",
           "level": "minor",
@@ -395,7 +437,7 @@
     },
     {
       "name": "create-cascivo",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "releases": [
         {
           "version": "0.1.0",
@@ -408,7 +450,7 @@
     },
     {
       "name": "@cascivo/data",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "releases": [
         {
           "version": "0.1.0",
@@ -421,7 +463,7 @@
     },
     {
       "name": "@cascivo/docs",
-      "version": "0.2.13",
+      "version": "0.2.14",
       "releases": [
         {
           "version": "0.2.0",
@@ -434,8 +476,15 @@
     },
     {
       "name": "@cascivo/docspack",
-      "version": "0.2.7",
+      "version": "0.3.0",
       "releases": [
+        {
+          "version": "0.3.0",
+          "level": "minor",
+          "notes": [
+            "The CLI ships a machine-readable description of every command (`dist/cmdspec.json`, in the"
+          ]
+        },
         {
           "version": "0.2.0",
           "level": "minor",
@@ -447,7 +496,7 @@
     },
     {
       "name": "@cascivo/editor",
-      "version": "1.6.0",
+      "version": "1.7.0",
       "releases": [
         {
           "version": "1.3.0",
@@ -493,8 +542,13 @@
     },
     {
       "name": "@cascivo/email",
-      "version": "0.5.0",
+      "version": "0.6.0",
       "releases": [
+        {
+          "version": "0.6.0",
+          "level": "minor",
+          "notes": ["Dead links block a send, and Resend is a sender."]
+        },
         {
           "version": "0.5.0",
           "level": "minor",
@@ -526,8 +580,15 @@
     },
     {
       "name": "@cascivo/email-preview",
-      "version": "3.0.0",
+      "version": "4.0.0",
       "releases": [
+        {
+          "version": "4.0.0",
+          "level": "minor",
+          "notes": [
+            "A Links panel lists what `checkLinks` finds in the open template — blocked rows are links"
+          ]
+        },
         {
           "version": "2.0.0",
           "level": "minor",
@@ -546,7 +607,7 @@
     },
     {
       "name": "@cascivo/eslint-config",
-      "version": "0.4.1",
+      "version": "0.4.2",
       "releases": [
         {
           "version": "0.4.0",
@@ -574,8 +635,18 @@
     },
     {
       "name": "@cascivo/eslint-plugin",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "releases": [
+        {
+          "version": "0.3.0",
+          "level": "minor",
+          "notes": [
+            "AI agent progress components. `ChainOfThought` lists the steps an agent takes. Each step has a",
+            "AI components for work in progress. `AiStatus` names what an AI is doing (thinking,",
+            "AI conversation layer.",
+            "AI presence and provenance."
+          ]
+        },
         {
           "version": "0.2.0",
           "level": "minor",
@@ -587,7 +658,7 @@
     },
     {
       "name": "@cascivo/flow",
-      "version": "1.6.0",
+      "version": "1.7.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -619,8 +690,19 @@
     },
     {
       "name": "@cascivo/i18n",
-      "version": "1.6.0",
+      "version": "1.7.0",
       "releases": [
+        {
+          "version": "1.7.0",
+          "level": "minor",
+          "notes": [
+            "AI agent progress components. `ChainOfThought` lists the steps an agent takes. Each step has a",
+            "AI components for work in progress. `AiStatus` names what an AI is doing (thinking,",
+            "AI conversation layer.",
+            "AI presence and provenance.",
+            "`ShareMenu`: a Share button opening each network's own compose link for Bluesky, Mastodon,"
+          ]
+        },
         {
           "version": "1.1.0",
           "level": "minor",
@@ -662,7 +744,7 @@
     },
     {
       "name": "@cascivo/icons",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "releases": [
         {
           "version": "1.1.0",
@@ -695,8 +777,20 @@
     },
     {
       "name": "@cascivo/mcp",
-      "version": "0.8.2",
+      "version": "0.9.0",
       "releases": [
+        {
+          "version": "0.9.0",
+          "level": "minor",
+          "notes": [
+            "AI agent progress components. `ChainOfThought` lists the steps an agent takes. Each step has a",
+            "AI components for work in progress. `AiStatus` names what an AI is doing (thinking,",
+            "AI conversation layer.",
+            "AI presence and provenance.",
+            "`lint_email({ html, checkLinks?, cwd? })`: an agent can check a rendered email before it is",
+            "`ShareMenu`: a Share button opening each network's own compose link for Bluesky, Mastodon,"
+          ]
+        },
         {
           "version": "0.8.0",
           "level": "minor",
@@ -768,13 +862,24 @@
     },
     {
       "name": "@cascivo/platform",
-      "version": "0.0.5",
+      "version": "0.0.6",
       "releases": []
     },
     {
       "name": "@cascivo/react",
-      "version": "1.6.0",
+      "version": "1.7.0",
       "releases": [
+        {
+          "version": "1.7.0",
+          "level": "minor",
+          "notes": [
+            "AI agent progress components. `ChainOfThought` lists the steps an agent takes. Each step has a",
+            "AI components for work in progress. `AiStatus` names what an AI is doing (thinking,",
+            "AI conversation layer.",
+            "AI presence and provenance.",
+            "`ShareMenu`: a Share button opening each network's own compose link for Bluesky, Mastodon,"
+          ]
+        },
         {
           "version": "1.4.0",
           "level": "minor",
@@ -943,7 +1048,7 @@
     },
     {
       "name": "@cascivo/registry",
-      "version": "0.2.10",
+      "version": "0.2.11",
       "releases": [
         {
           "version": "0.2.0",
@@ -959,7 +1064,7 @@
     },
     {
       "name": "@cascivo/render",
-      "version": "1.6.0",
+      "version": "1.7.0",
       "releases": [
         {
           "version": "1.4.0",
@@ -973,7 +1078,7 @@
     },
     {
       "name": "@cascivo/storage",
-      "version": "1.6.0",
+      "version": "1.7.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -996,7 +1101,7 @@
     },
     {
       "name": "@cascivo/text",
-      "version": "1.6.0",
+      "version": "1.7.0",
       "releases": [
         {
           "version": "1.4.0",
@@ -1007,7 +1112,7 @@
     },
     {
       "name": "@cascivo/themes",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "releases": [
         {
           "version": "1.0.0",
@@ -1038,8 +1143,15 @@
     },
     {
       "name": "@cascivo/tokens",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "releases": [
+        {
+          "version": "1.3.0",
+          "level": "minor",
+          "notes": [
+            "AI components for work in progress. `AiStatus` names what an AI is doing (thinking,"
+          ]
+        },
         {
           "version": "1.2.0",
           "level": "minor",
@@ -1088,7 +1200,7 @@
     },
     {
       "name": "@cascivo/vite-plugin",
-      "version": "0.1.10",
+      "version": "0.1.11",
       "releases": [
         {
           "version": "0.1.0",

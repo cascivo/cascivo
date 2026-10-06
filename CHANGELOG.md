@@ -9,32 +9,32 @@ history: [breaking-changes.json](https://cascivo.com/breaking-changes.json).
 
 | Package                  | Version | Latest feature release                                                                   | Changelog                                         |
 | ------------------------ | ------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| `@cascivo/ai`            | 1.6.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/ai/CHANGELOG.md)             |
-| `@cascivo/app`           | 1.6.0   | 1.6.0 — `@cascivo/app/ses`: the SES client is now also an `EmailSender` for `@cascivo/em | [CHANGELOG](packages/app/CHANGELOG.md)            |
-| `@cascivo/charts`        | 1.6.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/charts/CHANGELOG.md)         |
-| `cascivo`                | 1.6.0   | 1.6.0 — `cascivo create --framework cloudflare --example checkout` handles refunds and c | [CHANGELOG](packages/cli/CHANGELOG.md)            |
-| `@cascivo/core`          | 1.6.0   | 1.4.0 — `persistedSignal(key, initial, { parse })` checks what it reads back. `parse(raw | [CHANGELOG](packages/core/CHANGELOG.md)           |
-| `create-cascivo`         | 0.1.0   | 0.1.0 — `cascivo create --framework cloudflare` scaffolds a client-rendered app and its  | [CHANGELOG](packages/create-cascivo/CHANGELOG.md) |
-| `@cascivo/data`          | 0.1.0   | 0.1.0 — New package: `@cascivo/data`, client data primitives with zero dependencies. The | [CHANGELOG](packages/data/CHANGELOG.md)           |
-| `@cascivo/docs`          | 0.2.13  | 0.2.0 — Ship the entire docs surface as an npm package so it's reachable with no website | [CHANGELOG](packages/docs/CHANGELOG.md)           |
-| `@cascivo/docspack`      | 0.2.7   | 0.2.0 — New package: `@cascivo/docspack` — cascivo's documentation in the [docspack](htt | [CHANGELOG](packages/docspack/CHANGELOG.md)       |
-| `@cascivo/editor`        | 1.6.0   | 1.3.0 — Editor: line numbers, the current-line highlight and the left gutter all survive | [CHANGELOG](packages/editor/CHANGELOG.md)         |
-| `@cascivo/email`         | 0.5.0   | 0.5.0 — `sendEmail(sender, message, envelope)` sends a rendered email through Cloudflare | [CHANGELOG](packages/email/CHANGELOG.md)          |
-| `@cascivo/email-preview` | 3.0.0   | 2.0.0 — Email: a button really does follow its cell now, and the preview can render your | [CHANGELOG](packages/email-preview/CHANGELOG.md)  |
-| `@cascivo/eslint-config` | 0.4.1   | 0.4.0 — Enforce the styling contract: a `--cascivo-*` token or `data-cascivo-*` hook tha | [CHANGELOG](packages/eslint-config/CHANGELOG.md)  |
-| `@cascivo/eslint-plugin` | 0.2.1   | 0.2.0 — Enforce the styling contract: a `--cascivo-*` token or `data-cascivo-*` hook tha | [CHANGELOG](packages/eslint-plugin/CHANGELOG.md)  |
-| `@cascivo/flow`          | 1.6.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/flow/CHANGELOG.md)           |
-| `@cascivo/i18n`          | 1.6.0   | 1.1.0 — `ColorPicker`'s picking area returned a colour different from the one under the  | [CHANGELOG](packages/i18n/CHANGELOG.md)           |
-| `@cascivo/icons`         | 1.1.0   | 1.1.0 — Act on the 2026-08-31 deploy-console experience report — a collapsible rail that | [CHANGELOG](packages/icons/CHANGELOG.md)          |
-| `@cascivo/mcp`           | 0.8.2   | 0.8.0 — Agent setup in one command, and `@cascivo/render` on npm.                        | [CHANGELOG](packages/mcp/CHANGELOG.md)            |
-| `@cascivo/platform`      | 0.0.5   | —                                                                                        | [CHANGELOG](packages/platform/CHANGELOG.md)       |
-| `@cascivo/react`         | 1.6.0   | 1.4.0 — New `useSignalState(initial)` — local state as `[signal, setter]`, the React Com | [CHANGELOG](packages/react/CHANGELOG.md)          |
-| `@cascivo/registry`      | 0.2.10  | 0.2.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                       | [CHANGELOG](packages/registry/CHANGELOG.md)       |
-| `@cascivo/render`        | 1.6.0   | 1.4.0 — Agent setup in one command, and `@cascivo/render` on npm.                        | [CHANGELOG](packages/render/CHANGELOG.md)         |
-| `@cascivo/storage`       | 1.6.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/storage/CHANGELOG.md)        |
-| `@cascivo/text`          | 1.6.0   | 1.4.0 — Machine mode — render a cascivo UI as a Markdown document.                       | [CHANGELOG](packages/text/CHANGELOG.md)           |
-| `@cascivo/themes`        | 1.0.1   | 1.0.0 — Join the `1.x` line.                                                             | [CHANGELOG](packages/themes/CHANGELOG.md)         |
-| `@cascivo/tokens`        | 1.2.0   | 1.2.0 — The tokens ship as W3C Design Tokens (DTCG 2025.10) in `@cascivo/tokens/dtcg/`:  | [CHANGELOG](packages/tokens/CHANGELOG.md)         |
-| `@cascivo/vite-plugin`   | 0.1.10  | 0.1.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                       | [CHANGELOG](packages/vite-plugin/CHANGELOG.md)    |
+| `@cascivo/ai`            | 1.7.0   | 1.7.0 — AI conversation layer.                                                           | [CHANGELOG](packages/ai/CHANGELOG.md)             |
+| `@cascivo/app`           | 1.7.0   | 1.7.0 — Bluesky (any AT Protocol account): sign in, connect, and post.                   | [CHANGELOG](packages/app/CHANGELOG.md)            |
+| `@cascivo/charts`        | 1.7.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/charts/CHANGELOG.md)         |
+| `cascivo`                | 1.7.0   | 1.7.0 — The CLI ships a machine-readable description of every command (`dist/cmdspec.jso | [CHANGELOG](packages/cli/CHANGELOG.md)            |
+| `@cascivo/core`          | 1.7.0   | 1.7.0 — AI conversation layer.                                                           | [CHANGELOG](packages/core/CHANGELOG.md)           |
+| `create-cascivo`         | 0.1.1   | 0.1.0 — `cascivo create --framework cloudflare` scaffolds a client-rendered app and its  | [CHANGELOG](packages/create-cascivo/CHANGELOG.md) |
+| `@cascivo/data`          | 0.1.1   | 0.1.0 — New package: `@cascivo/data`, client data primitives with zero dependencies. The | [CHANGELOG](packages/data/CHANGELOG.md)           |
+| `@cascivo/docs`          | 0.2.14  | 0.2.0 — Ship the entire docs surface as an npm package so it's reachable with no website | [CHANGELOG](packages/docs/CHANGELOG.md)           |
+| `@cascivo/docspack`      | 0.3.0   | 0.3.0 — The CLI ships a machine-readable description of every command (`dist/cmdspec.jso | [CHANGELOG](packages/docspack/CHANGELOG.md)       |
+| `@cascivo/editor`        | 1.7.0   | 1.3.0 — Editor: line numbers, the current-line highlight and the left gutter all survive | [CHANGELOG](packages/editor/CHANGELOG.md)         |
+| `@cascivo/email`         | 0.6.0   | 0.6.0 — Dead links block a send, and Resend is a sender.                                 | [CHANGELOG](packages/email/CHANGELOG.md)          |
+| `@cascivo/email-preview` | 4.0.0   | 4.0.0 — A Links panel lists what `checkLinks` finds in the open template — blocked rows  | [CHANGELOG](packages/email-preview/CHANGELOG.md)  |
+| `@cascivo/eslint-config` | 0.4.2   | 0.4.0 — Enforce the styling contract: a `--cascivo-*` token or `data-cascivo-*` hook tha | [CHANGELOG](packages/eslint-config/CHANGELOG.md)  |
+| `@cascivo/eslint-plugin` | 0.3.0   | 0.3.0 — AI agent progress components. `ChainOfThought` lists the steps an agent takes. E | [CHANGELOG](packages/eslint-plugin/CHANGELOG.md)  |
+| `@cascivo/flow`          | 1.7.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/flow/CHANGELOG.md)           |
+| `@cascivo/i18n`          | 1.7.0   | 1.7.0 — AI agent progress components. `ChainOfThought` lists the steps an agent takes. E | [CHANGELOG](packages/i18n/CHANGELOG.md)           |
+| `@cascivo/icons`         | 1.1.1   | 1.1.0 — Act on the 2026-08-31 deploy-console experience report — a collapsible rail that | [CHANGELOG](packages/icons/CHANGELOG.md)          |
+| `@cascivo/mcp`           | 0.9.0   | 0.9.0 — AI agent progress components. `ChainOfThought` lists the steps an agent takes. E | [CHANGELOG](packages/mcp/CHANGELOG.md)            |
+| `@cascivo/platform`      | 0.0.6   | —                                                                                        | [CHANGELOG](packages/platform/CHANGELOG.md)       |
+| `@cascivo/react`         | 1.7.0   | 1.7.0 — AI agent progress components. `ChainOfThought` lists the steps an agent takes. E | [CHANGELOG](packages/react/CHANGELOG.md)          |
+| `@cascivo/registry`      | 0.2.11  | 0.2.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                       | [CHANGELOG](packages/registry/CHANGELOG.md)       |
+| `@cascivo/render`        | 1.7.0   | 1.4.0 — Agent setup in one command, and `@cascivo/render` on npm.                        | [CHANGELOG](packages/render/CHANGELOG.md)         |
+| `@cascivo/storage`       | 1.7.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/storage/CHANGELOG.md)        |
+| `@cascivo/text`          | 1.7.0   | 1.4.0 — Machine mode — render a cascivo UI as a Markdown document.                       | [CHANGELOG](packages/text/CHANGELOG.md)           |
+| `@cascivo/themes`        | 1.0.2   | 1.0.0 — Join the `1.x` line.                                                             | [CHANGELOG](packages/themes/CHANGELOG.md)         |
+| `@cascivo/tokens`        | 1.3.0   | 1.3.0 — AI components for work in progress. `AiStatus` names what an AI is doing (thinki | [CHANGELOG](packages/tokens/CHANGELOG.md)         |
+| `@cascivo/vite-plugin`   | 0.1.11  | 0.1.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                       | [CHANGELOG](packages/vite-plugin/CHANGELOG.md)    |
 
 See [docs/UPGRADING.md](docs/UPGRADING.md) for upgrade guidance.
