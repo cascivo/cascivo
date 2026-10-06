@@ -29,6 +29,7 @@ import { listGuides, loadGuide } from './guides.js'
 import { selectComponent } from './select.js'
 import { loadCatalog, listTemplates, getTemplate } from './templates.js'
 import { deployPreview } from './deploy-preview.js'
+import { lintEmail } from './email-lint.js'
 
 type FetchFn = (url: string, init?: RequestInit) => Promise<Response>
 
@@ -194,6 +195,35 @@ export function createServer(options: ServerOptions = {}): McpServer {
         return error(result.stderr || result.error?.message || `Failed to add "${name}".`)
       }
       return text(result.stdout || `Added ${name}.`)
+    },
+  )
+
+  server.registerTool(
+    'lint_email',
+    {
+      title: 'Lint email',
+      description:
+        'Check rendered email HTML (the `html` from @cascivo/email renderEmail) before it is sent, by running `cascivo email lint`: features a floor client such as Outlook Windows cannot render (against the Can I email matrix), and links that go nowhere — empty, "#", relative, an unreplaced {{merge tag}}, or a placeholder domain such as the example.com the shipped templates default to. Blocked findings mean the email must not be sent; caveats (localhost, http:, partial support) are worth knowing. Needs @cascivo/email installed in `cwd`.',
+      inputSchema: {
+        html: z.string().describe('The rendered email HTML'),
+        checkLinks: z
+          .boolean()
+          .optional()
+          .describe('Also request every http(s) URL and fail on 4xx/5xx or no answer'),
+        cwd: z.string().optional().describe('Project directory that has @cascivo/email installed'),
+      },
+    },
+    ({ html, checkLinks, cwd }) => {
+      try {
+        const { passed, report } = lintEmail({
+          html,
+          ...(checkLinks !== undefined ? { checkLinks } : {}),
+          ...(cwd !== undefined ? { cwd } : {}),
+        })
+        return text(`${passed ? 'PASS' : 'FAIL — do not send'}\n\n${report}`)
+      } catch (e) {
+        return error(e instanceof Error ? e.message : String(e))
+      }
     },
   )
 

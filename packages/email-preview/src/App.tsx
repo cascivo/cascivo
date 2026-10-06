@@ -10,6 +10,7 @@
 import {
   buildMessage,
   CASCIVO_ALLOW,
+  checkLinks,
   EMAIL_THEMES,
   indexFeatures,
   lint,
@@ -29,6 +30,7 @@ import extraAllow from 'virtual:cascivo-email-allow'
 import { source, templates } from 'virtual:cascivo-email-templates'
 import { custom as customThemes } from 'virtual:cascivo-email-themes'
 import { CompatibilityPanel } from './CompatibilityPanel.tsx'
+import { LinksPanel } from './LinksPanel.tsx'
 import { SizeGauge } from './SizeGauge.tsx'
 import { clientFor, VIEWPORTS, type Tab } from './state.ts'
 
@@ -157,6 +159,8 @@ function Preview() {
     [result, allow],
   )
 
+  const links = useMemo(() => checkLinks(result.html), [result])
+
   const download = () => {
     // `buildMessage` rather than a hand-rolled envelope: this one is tested, orders the
     // alternatives correctly, encodes a non-ASCII subject, and refuses header injection.
@@ -208,6 +212,7 @@ function Preview() {
 
         <SizeGauge stats={result.stats} html={result.html} />
         <CompatibilityPanel findings={findings} available={FEATURES !== null} />
+        <LinksPanel findings={links} />
       </aside>
 
       <main>

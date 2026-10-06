@@ -131,7 +131,11 @@ Knowing them saves a round trip:
 ## The message, not just the document
 
 - `assertSendable(message)` before sending — catches a missing subject, missing text part,
-  missing preheader, and a clipped body.
+  missing preheader, a clipped body, and dead links (empty, `#`, relative, an unreplaced
+  `{{merge tag}}`, or `example.com` — the shipped templates' defaults, so always pass their
+  `…Href` props). `checkLinks(html)` lists them, plus non-blocking caveats such as `localhost`.
+- `sendEmail(sender, message, envelope)` runs that gate, then sends: Cloudflare's `env.EMAIL`,
+  `@cascivo/app/ses`, or Resend via `resendSender(new Resend(key))`.
 - `buildMessage(message, { from, to })` produces a `.eml` the user can open in a real client.
 - Plain text is derived and structured. Tune with `{ text: { links, width, bullet } }`, or
   pass `plainText` to write it by hand. Mark visual-only content `data-skip-in-text`.

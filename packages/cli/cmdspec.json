@@ -571,8 +571,8 @@
       "commands": [
         {
           "name": "lint",
-          "summary": "Check rendered email HTML against the Can I email matrix",
-          "description": "The same conformance lint @cascivo/email exposes as `lint()`. It lints rendered HTML, not templates. The matrix is fetched from https://www.caniemail.com/api/data.json and cached in the temp directory for a day. A caveat (partial support) never fails the command.",
+          "summary": "Check rendered email HTML for client support and dead links",
+          "description": "The same conformance lint @cascivo/email exposes as `lint()`. It lints rendered HTML, not templates. The matrix is fetched from https://www.caniemail.com/api/data.json and cached in the temp directory for a day. Links that go nowhere (`checkLinks()`: empty, `#`, relative, an unreplaced merge tag, or a placeholder domain such as example.com) fail it too. A caveat (partial support, a localhost or http: link) never fails the command.",
           "arguments": [
             {
               "name": "file",
@@ -590,15 +590,23 @@
               "effects": ["read"]
             },
             { "name": "--refresh", "summary": "Re-fetch the matrix even if the cache is fresh" },
-            { "name": "--no-allowlist", "summary": "Report findings CASCIVO_ALLOW waives, too" }
+            { "name": "--no-allowlist", "summary": "Report findings CASCIVO_ALLOW waives, too" },
+            {
+              "name": "--check-links",
+              "summary": "Also request every http(s) URL; one answering 4xx/5xx, or not at all within 10s, fails the command",
+              "effects": ["network"]
+            }
           ],
           "effects": ["read", "write", "network"],
           "exits": {
-            "1": { "meaning": "a floor client cannot support something, or the command failed" }
+            "1": {
+              "meaning": "a floor client cannot support something, a link cannot work, or the command failed"
+            }
           },
           "examples": [
             { "run": "npx cascivo email lint dist/emails/*.html" },
-            { "run": "node render.js | npx cascivo email lint -" }
+            { "run": "node render.js | npx cascivo email lint -" },
+            { "run": "npx cascivo email lint dist/emails/*.html --check-links" }
           ]
         }
       ]

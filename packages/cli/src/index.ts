@@ -45,7 +45,7 @@ Commands:
   registry build           Build a static registry from a cascivo-registry.json file
   template init <name>     Scaffold a new template (source + manifest + registry entry)
   tokens import <file>     Import external design tokens as cascivo overrides
-  email lint <file...>     Check rendered email HTML against the Can I email matrix
+  email lint <file...>     Check rendered email HTML for client support and dead links
 
 Run "cascivo <command> --help" for details.`
 
@@ -68,7 +68,9 @@ Examples:
   email: `Usage: cascivo email lint <file...> [options]
 
 Check rendered email HTML against the Can I email support matrix — the same
-conformance lint @cascivo/email exposes as \`lint()\`, with the setup done for you.
+conformance lint @cascivo/email exposes as \`lint()\`, with the setup done for you —
+and for links that go nowhere (\`checkLinks()\`): empty, \`#\`, relative, an
+unreplaced {{merge tag}}, or a placeholder domain such as example.com.
 
 It lints rendered HTML, not templates: render in your own build and pass the
 output, or pipe it in.
@@ -80,17 +82,21 @@ Options:
   --data <file>             Use a local copy of the matrix instead of fetching
   --refresh                 Re-fetch the matrix even if the cache is fresh
   --no-allowlist            Report findings CASCIVO_ALLOW waives, too
+  --check-links             Also request every http(s) URL; one answering 4xx/5xx,
+                            or not at all within 10s, fails the command
 
 The matrix is fetched from https://www.caniemail.com/api/data.json and cached for
 a day. It is not bundled with @cascivo/email because it is ~483 KB of test data.
 
-Exits non-zero when a floor client genuinely cannot support something. A caveat is
-partial support worth knowing about and never fails the command.
+Exits non-zero when a floor client genuinely cannot support something, or a link
+cannot work. A caveat (partial support, a localhost or http: link) is worth knowing
+about and never fails the command.
 
 Examples:
   cascivo email lint dist/emails/*.html
   node render.js | cascivo email lint -
-  cascivo email lint dist/welcome.html --data caniemail.json`,
+  cascivo email lint dist/welcome.html --data caniemail.json
+  cascivo email lint dist/emails/*.html --check-links`,
 
   create: `Usage: cascivo create [name] [options]
 
