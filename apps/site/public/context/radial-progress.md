@@ -91,7 +91,7 @@ Override the default percentage label with custom content
 | Area  | Level    | Note                                                                         |
 | ----- | -------- | ---------------------------------------------------------------------------- |
 | label | flexible | Default is the percentage string; pass children to override with any content |
-| color | strict   | Color resolves through --cascivo-color-\* semantic tokens via data-variant   |
+| color | strict   | Color resolves through --cascivo-color-* semantic tokens via data-variant    |
 
 ## AI context prompt
 

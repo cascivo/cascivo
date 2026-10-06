@@ -1,0 +1,78 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'StreamingText',
+  description:
+    'Reveals text character by character with a blinking cursor, catching up as a streamed reply grows',
+  category: 'display',
+  // The text is revealed by a requestAnimationFrame loop; server HTML starts empty.
+  clientJs: 'required',
+  states: [],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'text',
+      description:
+        'The target text. Pass the accumulating reply as it streams; typing catches up as it grows, and restarts if it is replaced by a shorter string.',
+      type: 'string',
+      required: true,
+    },
+    {
+      name: 'speed',
+      description: 'Characters revealed per animation frame.',
+      type: 'number',
+      required: false,
+      default: '2',
+    },
+    {
+      name: 'onComplete',
+      description: 'Called when the displayed text has caught up with `text`.',
+      type: '() => void',
+      required: false,
+    },
+  ],
+  tokens: ['--cascivo-duration-loop-fast'],
+  accessibility: { role: 'none', wcag: '2.2-AA', keyboard: [], reducedMotion: true },
+  examples: [{ title: 'Typing', code: '<StreamingText text="Hello, I am cascivo." speed={3} />' }],
+  dependencies: ['@cascivo/core'],
+  tags: ['ai', 'streaming', 'typewriter', 'text', 'chat'],
+  intent: {
+    whenToUse: [
+      'Rendering an assistant reply as it streams in, smoothing bursty token arrival into steady typing',
+    ],
+    whenNotToUse: [
+      'Static text — render it directly',
+      'Announcing the reply to screen readers — StreamingText is never a live region; announce completion with announce() or AiStatus',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Wrapping StreamingText in aria-live',
+        good: 'Leave it silent and announce the finished reply once',
+        why: 'A live region around typing text announces fragments on every frame',
+      },
+    ],
+    related: [
+      {
+        name: 'AiStatus',
+        relationship: 'pairs-with',
+        reason: 'AiStatus announces the phase while StreamingText renders the words',
+      },
+      {
+        name: 'TypingIndicator',
+        relationship: 'alternative',
+        reason: 'Before the first token arrives, show TypingIndicator instead',
+      },
+    ],
+    a11yRationale:
+      'Plain text, never a live region, so a screen reader reads it on demand rather than being fed every character; the cursor is aria-hidden and blinks only under prefers-reduced-motion: no-preference',
+    flexibility: [
+      { area: 'speed', level: 'flexible', note: 'Characters per frame' },
+      {
+        area: 'announcements',
+        level: 'strict',
+        note: 'Do not add aria-live; announce completion separately',
+      },
+    ],
+  },
+}

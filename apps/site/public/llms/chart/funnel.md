@@ -52,6 +52,7 @@ Shape of the `data` prop.
 
 ```tsx
 import { Funnel } from '@cascivo/charts'
+
 ;<Funnel
   title="Signup funnel"
   showConversion

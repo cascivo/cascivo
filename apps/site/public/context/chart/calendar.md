@@ -73,6 +73,7 @@ Shape of the `visualMap` prop.
 
 ```jsx
 import { CalendarHeatmap } from '@cascivo/charts'
+
 ;<CalendarHeatmap
   title="Activity"
   data={[

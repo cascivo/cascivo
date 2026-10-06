@@ -10,7 +10,7 @@
   ],
   "resolutionTheme": "light",
   "generatedAt": "2026-10-02",
-  "count": 353,
+  "count": 362,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -2074,6 +2074,42 @@
       "canonical": true
     },
     {
+      "name": "--cascivo-color-ai",
+      "value": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )",
+      "layer": "semantic",
+      "group": "color",
+      "resolvedDefault": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-color-ai-subtle",
+      "value": "oklch(from var(--cascivo-color-ai) l c h / 10%)",
+      "layer": "semantic",
+      "group": "color",
+      "resolvedDefault": "oklch(from var(--cascivo-color-ai) l c h / 10%)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-color-ai-border",
+      "value": "oklch(from var(--cascivo-color-ai) l c h / 40%)",
+      "layer": "semantic",
+      "group": "color",
+      "resolvedDefault": "oklch(from var(--cascivo-color-ai) l c h / 40%)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-color-ai-sheen",
+      "value": "oklch(from var(--cascivo-color-ai) l c h / 22%)",
+      "layer": "semantic",
+      "group": "color",
+      "resolvedDefault": "oklch(from var(--cascivo-color-ai) l c h / 22%)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
       "name": "--cascivo-color-background",
       "value": "oklch(1 0 0)",
       "layer": "semantic",
@@ -3091,6 +3127,24 @@
       "canonical": true
     },
     {
+      "name": "--cascivo-shimmer-text-color",
+      "value": "var(--cascivo-color-text-muted)",
+      "layer": "component",
+      "group": "shimmer",
+      "resolvedDefault": "var(--cascivo-color-text-muted)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-shimmer-text-highlight",
+      "value": "var(--cascivo-color-ai)",
+      "layer": "component",
+      "group": "shimmer",
+      "resolvedDefault": "var(--cascivo-color-ai)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
       "name": "--cascivo-sidenav-bg",
       "value": "var(--cascivo-color-surface)",
       "layer": "component",
@@ -3163,6 +3217,24 @@
       "canonical": true
     },
     {
+      "name": "--cascivo-terminal-bg",
+      "value": "var(--cascivo-editor-bg)",
+      "layer": "component",
+      "group": "terminal",
+      "resolvedDefault": "var(--cascivo-editor-bg)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-terminal-fg",
+      "value": "var(--cascivo-editor-fg)",
+      "layer": "component",
+      "group": "terminal",
+      "resolvedDefault": "var(--cascivo-editor-fg)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
       "name": "--cascivo-textarea-max-block-size",
       "value": "20lh",
       "layer": "component",
@@ -3186,6 +3258,15 @@
       "layer": "component",
       "group": "tree",
       "resolvedDefault": "var(--cascivo-space-5)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-typing-indicator-color",
+      "value": "var(--cascivo-color-text-muted)",
+      "layer": "component",
+      "group": "typing",
+      "resolvedDefault": "var(--cascivo-color-text-muted)",
       "resolvesPerTheme": false,
       "canonical": true
     },

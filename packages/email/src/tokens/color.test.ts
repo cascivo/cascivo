@@ -71,6 +71,14 @@ describe('mixOklch', () => {
     expect(toHex({ ...mixed, alpha: 1 })).toBe(toHex(accent))
   })
 
+  it('takes the hue of the chromatic endpoint when the other is achromatic', () => {
+    const violet = oklchToRgb(0.6, 0.2, 285)
+    for (const grey of [WHITE, BLACK, oklchToRgb(0.5, 0, 0)]) {
+      expect(rgbToOklch(mixOklch(violet, grey, 0.8)).h).toBeCloseTo(285, 0)
+      expect(rgbToOklch(mixOklch(grey, violet, 0.2)).h).toBeCloseTo(285, 0)
+    }
+  })
+
   it('a full-weight mix is the source colour', () => {
     const accent = oklchToRgb(0.52, 0.2, 250)
     expect(toHex(mixOklch(accent, WHITE, 1))).toBe(toHex(accent))

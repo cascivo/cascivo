@@ -85,7 +85,7 @@ Opens in a new tab with rel="noreferrer" and a visual indicator.
 | Area        | Level    | Note                                                             |
 | ----------- | -------- | ---------------------------------------------------------------- |
 | variant     | flexible | standalone vs inline depending on whether the link sits in prose |
-| token names | strict   | Accent colors and focus ring must resolve to --cascivo-\* tokens |
+| token names | strict   | Accent colors and focus ring must resolve to --cascivo-* tokens  |
 
 ## AI context prompt
 

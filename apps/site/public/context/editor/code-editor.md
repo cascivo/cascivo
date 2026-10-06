@@ -53,7 +53,7 @@ The native <textarea> is the editing surface, so caret, selection, IME, undo, an
 | `label`           | `string`                                            | No       | —         | Accessible label (defaults to the i18n "Code editor"). Not rendered — screen readers only.                                                   |
 | `onSave`          | `(value: string) => void`                           | No       | —         | Called on Mod-S; the browser save dialog is suppressed                                                                                       |
 | `bracketMatching` | `boolean`                                           | No       | false     | Highlight the bracket matching the one adjacent to the caret                                                                                 |
-| `theme`           | `EditorTheme`                                       | No       | —         | Per-instance --cascivo-editor-\* overrides; swapping it re-themes live                                                                       |
+| `theme`           | `EditorTheme`                                       | No       | —         | Per-instance --cascivo-editor-* overrides; swapping it re-themes live                                                                        |
 | `keymap`          | `KeyMap`                                            | No       | —         | Extra key bindings merged over the built-ins (user wins on a chord)                                                                          |
 | `decorations`     | `Decoration[] \| ((value: string) => Decoration[])` | No       | —         | Extra offset-range → CSS class decorations                                                                                                   |
 | `commands`        | `SlashCommand[]`                                    | No       | —         | Slash-command entries; typing "/" opens a filtered menu. Omit to disable.                                                                    |
@@ -99,6 +99,7 @@ A slash-command entry.
 ```jsx
 import { CodeEditor } from '@cascivo/editor'
 import '@cascivo/editor/styles.css'
+
 ;<CodeEditor language="typescript" lineNumbers defaultValue={'const x = 1\n'} />
 ```
 

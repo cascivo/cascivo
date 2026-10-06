@@ -40,6 +40,31 @@ function explodeSpecifierList(line) {
 }
 
 /**
+ * Put each destructured parameter of a long function signature on its own line.
+ *
+ * The vite-plus 1 dts bundler keeps the destructuring pattern on one line, so `DataTable`'s
+ * signature alone runs past 600 chars and defeats grep the same way the specifier lists did.
+ * Formatting only, like `explodeSpecifierList`.
+ */
+function explodeParamPattern(line) {
+  if (line.length <= 200) return line
+  const m = /^((?:export )?declare function \w+(?:<[^(]*>)?\()\{ (.+) \}(: .+)$/.exec(line)
+  if (!m) return line
+  const [, head, body, tail] = m
+  if (/[{}]/.test(body)) return line
+  return (
+    head +
+    '{\n' +
+    body
+      .split(', ')
+      .map((n) => '  ' + n)
+      .join(',\n') +
+    '\n}' +
+    tail
+  )
+}
+
+/**
  * Build a commented appendix carrying `@cascivo/core`'s own docblocks for the names this
  * entry re-exports.
  *
@@ -162,6 +187,7 @@ try {
     .split('\n')
     .filter((line) => !/^\s*\/\/#(region|endregion)\b/.test(line))
     .map(explodeSpecifierList)
+    .map(explodeParamPattern)
     .join('\n')
 
   // Prepend the quickstart banner (WS-B). The dts bundler drops the module-leading

@@ -62,10 +62,10 @@ Each item is a native <details> and each trigger its <summary>, so the button ro
 
 ## Boundaries
 
-| Area               | Level    | Note                                                                      |
-| ------------------ | -------- | ------------------------------------------------------------------------- |
-| single vs multiple | flexible | type prop is free to choose based on whether sections are exclusive       |
-| token names        | strict   | Borders, surfaces, and radii must resolve to --cascivo-\* semantic tokens |
+| Area               | Level    | Note                                                                     |
+| ------------------ | -------- | ------------------------------------------------------------------------ |
+| single vs multiple | flexible | type prop is free to choose based on whether sections are exclusive      |
+| token names        | strict   | Borders, surfaces, and radii must resolve to --cascivo-* semantic tokens |
 
 ## AI context prompt
 

@@ -90,11 +90,11 @@ Inline addons are marked aria-hidden because they are purely decorative units/ic
 
 ## Boundaries
 
-| Area            | Level    | Note                                                                                      |
-| --------------- | -------- | ----------------------------------------------------------------------------------------- |
-| token names     | strict   | Addon background, border, text, and radius must resolve to the listed --cascivo-\* tokens |
-| addon alignment | flexible | InputGroupAddon align is inline-start (leading) or inline-end (trailing)                  |
-| addon content   | flexible | prefix/suffix and addon children accept arbitrary ReactNode                               |
+| Area            | Level    | Note                                                                                     |
+| --------------- | -------- | ---------------------------------------------------------------------------------------- |
+| token names     | strict   | Addon background, border, text, and radius must resolve to the listed --cascivo-* tokens |
+| addon alignment | flexible | InputGroupAddon align is inline-start (leading) or inline-end (trailing)                 |
+| addon content   | flexible | prefix/suffix and addon children accept arbitrary ReactNode                              |
 
 ## AI context prompt
 

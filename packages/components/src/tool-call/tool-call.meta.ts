@@ -1,0 +1,166 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'ToolCall',
+  description:
+    'Card for one AI tool invocation — the tool name, its lifecycle status, collapsible input/output, and approval actions',
+  category: 'display',
+  clientJs: 'none',
+  states: ['pending', 'running', 'awaiting-approval', 'complete', 'error', 'denied'],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'name',
+      description: 'The tool’s name, shown in monospace (e.g. `search_web`).',
+      type: 'string',
+      required: true,
+    },
+    {
+      name: 'status',
+      description:
+        'Lifecycle, matching the AI SDK tool-part states: `pending` (input streaming), `running`, `awaiting-approval`, `complete`, `error`, `denied`.',
+      type: "'pending' | 'running' | 'awaiting-approval' | 'complete' | 'error' | 'denied'",
+      required: true,
+    },
+    {
+      name: 'input',
+      description:
+        'The call’s arguments. A string (e.g. `JSON.stringify(args, null, 2)`) renders preformatted; any other node renders as given.',
+      type: 'ReactNode',
+      required: false,
+    },
+    {
+      name: 'output',
+      description: 'The tool’s result — a string renders preformatted, a node as given.',
+      type: 'ReactNode',
+      required: false,
+    },
+    {
+      name: 'error',
+      description: 'Why the call failed. The panel opens itself when status is `error`.',
+      type: 'ReactNode',
+      required: false,
+    },
+    {
+      name: 'actions',
+      description:
+        'Rich slot below the card — typically Approve / Deny buttons while `awaiting-approval`. Always visible, never inside the collapsible panel.',
+      type: 'ReactNode',
+      required: false,
+    },
+    {
+      name: 'labels',
+      description: 'Overrides for the component’s user-visible strings (i18n).',
+      type: '{ pending?: string; running?: string; awaitingApproval?: string; complete?: string; error?: string; denied?: string; input?: string; output?: string; errorHeading?: string }',
+      required: false,
+    },
+  ],
+  tokens: [
+    '--cascivo-color-ai',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-warning',
+    '--cascivo-color-destructive',
+    '--cascivo-radius-surface',
+    '--cascivo-font-mono',
+    '--cascivo-focus-ring',
+  ],
+  accessibility: {
+    role: 'group',
+    wcag: '2.2-AA',
+    keyboard: ['Tab', 'Enter', 'Space'],
+    reducedMotion: true,
+    forcedColors: true,
+  },
+  examples: [
+    {
+      title: 'Running',
+      code: `<ToolCall name="search_web" status="running" input={'{ "query": "cascivo pricing" }'} />`,
+    },
+    {
+      title: 'Complete',
+      code: `<ToolCall
+  name="get_weather"
+  status="complete"
+  input={'{ "city": "Berlin" }'}
+  output={'{ "tempC": 18, "sky": "clear" }'}
+/>`,
+    },
+    {
+      title: 'Awaiting approval',
+      code: `<ToolCall
+  name="send_email"
+  status="awaiting-approval"
+  input={'{ "to": "team@example.com", "subject": "Weekly report" }'}
+  actions={
+    <>
+      <Button variant="ghost" size="sm">Deny</Button>
+      <Button size="sm">Approve</Button>
+    </>
+  }
+/>`,
+    },
+    {
+      title: 'Error',
+      code: '<ToolCall name="fetch_page" status="error" error="The page returned 404." />',
+    },
+  ],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  registryDependencies: ['badge'],
+  tags: ['ai', 'agent', 'tool', 'function-call', 'approval', 'mcp', 'status'],
+  intent: {
+    whenToUse: [
+      'Showing an AI tool or function call in a conversation, with what it was given and what it returned',
+      'Asking the reader to approve or deny a call before it runs (human-in-the-loop)',
+    ],
+    whenNotToUse: [
+      'A list of agent steps without payloads — use ChainOfThought',
+      'Announcing that the assistant is working — use AiStatus',
+      'Showing arbitrary code — use CodeSnippet',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Putting Approve / Deny inside the collapsible input panel',
+        good: 'Pass them to `actions`, which always renders below the card',
+        why: 'A pending approval must be visible and reachable without first opening a disclosure',
+      },
+    ],
+    related: [
+      {
+        name: 'ChainOfThought',
+        relationship: 'contained-by',
+        reason: 'A ToolCall can sit in a ChainOfThought step’s detail',
+      },
+      {
+        name: 'Badge',
+        relationship: 'contains',
+        reason: 'The status is a Badge whose tone follows the lifecycle',
+      },
+      {
+        name: 'AiStatus',
+        relationship: 'pairs-with',
+        reason: 'AiStatus announces progress; ToolCall is never a live region',
+      },
+    ],
+    a11yRationale:
+      'The header is a native <summary>, so the disclosure is keyboard-operable (Enter/Space) and works before hydration; its accessible name is the tool name plus the status text, never colour alone. Approval actions live outside the disclosure so they are always reachable. The card is not a live region — announce progress with AiStatus. Only the tool glyph pulses while running, under prefers-reduced-motion: no-preference',
+    content: {
+      tone: 'Show the tool’s real name; keep error text specific ("The page returned 404.")',
+    },
+    flexibility: [
+      {
+        area: 'payloads',
+        level: 'flexible',
+        note: 'Strings render preformatted; pass a node (a table, a CodeSnippet) for richer output',
+      },
+      {
+        area: 'status vocabulary',
+        level: 'strict',
+        note: 'Map your framework’s tool states onto the six statuses; do not invent more',
+      },
+    ],
+  },
+}

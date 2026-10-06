@@ -85,7 +85,7 @@ Uses the native <progress> element which maps to role="progressbar" automaticall
 | Area        | Level    | Note                                                                  |
 | ----------- | -------- | --------------------------------------------------------------------- |
 | variant     | flexible | Choose the variant that matches the semantic meaning of the operation |
-| token names | strict   | Colors must resolve to --cascivo-\* tokens                            |
+| token names | strict   | Colors must resolve to --cascivo-* tokens                             |
 
 ## AI context prompt
 

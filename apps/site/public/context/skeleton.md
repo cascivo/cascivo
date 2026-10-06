@@ -8,6 +8,7 @@
 - Indicating loading by mirroring the shape of the content that will appear
 - Reducing layout shift while data for a known structure is fetching
 - Loading larger content regions where shape preview reassures the user
+- Holding the place of a response an AI is still generating — set `ai`
 
 ## When NOT to use
 
@@ -33,12 +34,13 @@ Presentational by role — the placeholder shapes carry no meaning; the surround
 
 ## Props
 
-| Name      | Type                           | Required | Default | Description                                                                               |
-| --------- | ------------------------------ | -------- | ------- | ----------------------------------------------------------------------------------------- |
-| `variant` | `'text' \| 'circle' \| 'rect'` | No       | text    | Shape of the placeholder: `text` (stacked lines), `circle` (an avatar), `rect` (a block). |
-| `width`   | `string`                       | No       | —       | CSS length applied as an inline custom property                                           |
-| `height`  | `string`                       | No       | —       | CSS length applied as an inline custom property                                           |
-| `lines`   | `number`                       | No       | 1       | Number of bars for the text variant; the last bar renders shorter                         |
+| Name      | Type                           | Required | Default | Description                                                                                                           |
+| --------- | ------------------------------ | -------- | ------- | --------------------------------------------------------------------------------------------------------------------- |
+| `variant` | `'text' \| 'circle' \| 'rect'` | No       | text    | Shape of the placeholder: `text` (stacked lines), `circle` (an avatar), `rect` (a block).                             |
+| `width`   | `string`                       | No       | —       | CSS length applied as an inline custom property                                                                       |
+| `height`  | `string`                       | No       | —       | CSS length applied as an inline custom property                                                                       |
+| `lines`   | `number`                       | No       | 1       | Number of bars for the text variant; the last bar renders shorter                                                     |
+| `ai`      | `boolean`                      | No       | false   | Tints the placeholder and its sheen with the AI hue, marking content that an AI is generating (Carbon’s AI skeleton). |
 
 ## Tokens
 
@@ -47,6 +49,8 @@ Presentational by role — the placeholder shapes carry no meaning; the surround
 - `--cascivo-radius-sm`
 - `--cascivo-radius-full`
 - `--cascivo-radius-component`
+- `--cascivo-color-ai-subtle`
+- `--cascivo-color-ai-sheen`
 
 ## Examples
 
@@ -68,12 +72,18 @@ Presentational by role — the placeholder shapes carry no meaning; the surround
 <Skeleton variant="rect" height="12rem" />
 ```
 
+### AI-generated content
+
+```jsx
+<Skeleton ai lines={3} />
+```
+
 ## Boundaries
 
 | Area                   | Level    | Note                                                           |
 | ---------------------- | -------- | -------------------------------------------------------------- |
 | variant and dimensions | flexible | Shape, width, height, and line count match the pending content |
-| token names            | strict   | Background and radius must resolve to --cascivo-\* tokens      |
+| token names            | strict   | Background and radius must resolve to --cascivo-* tokens       |
 
 ## AI context prompt
 
@@ -91,7 +101,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Skeleton is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-radius-sm, --cascivo-radius-full, --cascivo-radius-component
+  --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-radius-sm, --cascivo-radius-full, --cascivo-radius-component, --cascivo-color-ai-subtle, --cascivo-color-ai-sheen
 
 Accessibility: role "none", WCAG 2.2-AA. Keep it AA.
 

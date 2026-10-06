@@ -126,7 +126,9 @@ const CSS_BUDGETS: Record<string, number> = {
   // Source stylesheets, so the largest single file is one theme, not the bundle: `all.css`
   // and `light-dark.css` are @import manifests a few hundred bytes long.
   '@cascivo/themes': 6,
-  '@cascivo/tokens': 8,
+  // Raised 8 → 9 when the AI tokens landed (measured 8.23 KB; 7.97 before). The sheet is
+  // read as source, so its required rationale comments count; headroom stays under 1 KB.
+  '@cascivo/tokens': 9,
   '@cascivo/platform': 8,
   '@cascivo/icons': 4, // glyphs.css — the optional icon-font sheet. Measured 1.3 KB gzip.
 }

@@ -68,6 +68,7 @@ Shape of the `data` prop.
 
 ```jsx
 import { Polar } from '@cascivo/charts'
+
 ;<Polar
   title="Wind by direction"
   mode="bar"

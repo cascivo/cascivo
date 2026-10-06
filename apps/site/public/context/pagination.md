@@ -92,10 +92,10 @@ Wrapped in <nav> with an accessible label; page controls are real buttons with c
 
 ## Boundaries
 
-| Area              | Level    | Note                                                              |
-| ----------------- | -------- | ----------------------------------------------------------------- |
-| page size options | flexible | pageSizeOptions and the size select are optional                  |
-| token names       | strict   | Surfaces, borders, and accent must resolve to --cascivo-\* tokens |
+| Area              | Level    | Note                                                             |
+| ----------------- | -------- | ---------------------------------------------------------------- |
+| page size options | flexible | pageSizeOptions and the size select are optional                 |
+| token names       | strict   | Surfaces, borders, and accent must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

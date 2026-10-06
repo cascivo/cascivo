@@ -1,0 +1,45 @@
+@layer cascivo.component {
+  .root {
+    vertical-align: middle;
+
+    /* Toggletip pads its trigger for a bare icon; the pill carries its own padding. */
+    & > button {
+      padding: 0;
+      border-radius: var(--cascivo-radius-indicator);
+    }
+  }
+
+  .revert {
+    color: var(--cascivo-color-ai);
+    vertical-align: middle;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding-block: 0.125rem;
+    padding-inline: var(--cascivo-space-1);
+    border: 1px solid var(--cascivo-color-ai-border);
+    border-radius: var(--cascivo-radius-indicator);
+    background-color: var(--cascivo-color-ai-subtle);
+    color: color-mix(in oklab, var(--cascivo-color-ai) 35%, var(--cascivo-color-text));
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-xs);
+    font-weight: var(--cascivo-font-semibold);
+    letter-spacing: 0.02em;
+    line-height: var(--cascivo-leading-none);
+    vertical-align: middle;
+  }
+}
+
+@media (forced-colors: active) {
+  .revert {
+    color: var(--cascivo-color-ai);
+    vertical-align: middle;
+  }
+
+  .badge {
+    border-color: CanvasText;
+    color: CanvasText;
+  }
+}

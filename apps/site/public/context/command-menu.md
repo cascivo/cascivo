@@ -144,7 +144,7 @@ A scope chip filters to Clusters, matched glyphs are highlighted, each row carri
 | async items    | flexible | onQueryChange + loading allow fetching items per keystroke                                                                                                         |
 | scopes         | flexible | Optional scopes prop adds a filter bar/chip + typed prefixes; groups opt in via a scope id, untagged groups stay visible under any scope                           |
 | inline actions | flexible | Items may declare actions[]; the first is Enter, the second Cmd/Ctrl+Enter, and each is clickable. Rows also support a description metadata line and a status pill |
-| token names    | strict   | Palette styling resolves to semantic --cascivo-color-\* / --cascivo-radius-modal tokens                                                                            |
+| token names    | strict   | Palette styling resolves to semantic --cascivo-color-* / --cascivo-radius-modal tokens                                                                             |
 
 ## AI context prompt
 

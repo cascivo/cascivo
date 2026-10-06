@@ -79,10 +79,10 @@ The use case: HTML you do not control (CMS, markdown pipelines)
 
 ## Boundaries
 
-| Area        | Level    | Note                                                               |
-| ----------- | -------- | ------------------------------------------------------------------ |
-| source HTML | flexible | Accepts authored children or rendered markup                       |
-| token names | strict   | All typography and surface styling resolves to --cascivo-\* tokens |
+| Area        | Level    | Note                                                              |
+| ----------- | -------- | ----------------------------------------------------------------- |
+| source HTML | flexible | Accepts authored children or rendered markup                      |
+| token names | strict   | All typography and surface styling resolves to --cascivo-* tokens |
 
 ## AI context prompt
 

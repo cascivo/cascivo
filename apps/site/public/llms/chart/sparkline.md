@@ -37,6 +37,7 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 
 ```tsx
 import { Sparkline } from '@cascivo/charts'
+
 ;<Sparkline data={[10, 20, 15, 30, 25]} label="Trend" endDot />
 ```
 

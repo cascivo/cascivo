@@ -66,6 +66,14 @@ export const meta: ComponentMeta = {
       required: false,
       nameVisibility: 'invisible',
     },
+    {
+      name: 'ai',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description:
+        'AI presence: an AI-tinted border and a soft aura, marking a value AI produced or suggested. Visual only — put an AiBadge in the label so the provenance is also text, and clear `ai` once the person edits the value.',
+    },
   ],
   tokens: [
     '--cascivo-color-surface',
@@ -88,7 +96,7 @@ export const meta: ComponentMeta = {
     { title: 'With error', code: '<Textarea label="Bio" error="Bio is required" />' },
   ],
   dependencies: ['@cascivo/core'],
-  tags: ['form', 'text', 'multiline'],
+  tags: ['form', 'text', 'multiline', 'ai'],
   intent: {
     whenToUse: [
       'Capturing multi-line free text such as messages, descriptions, or comments',

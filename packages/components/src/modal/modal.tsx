@@ -49,6 +49,16 @@ export interface ModalProps {
    * @see the component manifest
    */
   draggable?: boolean
+  /**
+   * AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking
+   * AI-generated content; `'generating'` adds a pulsing inner glow while AI is still
+   * producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the
+   * provenance is also text.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
+  ai?: boolean | 'generating'
 }
 
 export function Modal({
@@ -61,6 +71,7 @@ export function Modal({
   className,
   size = 'md',
   draggable = false,
+  ai = false,
 }: ModalProps) {
   useSignals()
   const dialogRef = useRef<HTMLDialogElement>(null)
@@ -109,6 +120,7 @@ export function Modal({
       ref={dialogRef}
       data-size={size}
       data-draggable={draggable || undefined}
+      data-ai={ai === 'generating' ? 'generating' : ai ? '' : undefined}
       className={cn(styles['dialog'], className)}
       style={dragStyle}
       onClick={handleBackdropClick}

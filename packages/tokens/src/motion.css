@@ -68,6 +68,28 @@
 }
 
 /**
+ * Text shimmer — a bright band sweeping THROUGH the glyphs of a short status label
+ * ("Thinking…"). The host paints a gradient clipped to its text, sized 200% of its box:
+ *
+ *   color: transparent; background-clip: text; background-size: 200% 100%;
+ *   background-image: linear-gradient(90deg, <base> 40%, <band> 50%, <base> 60%);
+ *
+ * DELIBERATE EXCEPTION to compositor safety: `background-position` repaints. A translated
+ * overlay cannot reach inside glyph outlines, and there is no transform-based way to move a
+ * gradient that is clipped to text. The repaint is bounded — one short label, only while
+ * work is in progress (see `shimmer-text`).
+ */
+@keyframes cascivo-text-shimmer {
+  /* With a 200% background, 150% parks the band just off the start edge, -50% just off the end. */
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
+}
+
+/**
  * Indeterminate progress sweep — a block crossing its track and back out.
  * Translates rather than animating `inset-inline-start`, so it stays off the layout path.
  * The host must be `overflow: hidden`; the bar itself is sized ~40% of the track.

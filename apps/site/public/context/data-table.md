@@ -358,10 +358,10 @@ Virtualized: only the visible rows are in the DOM, the scrollbar reaches the las
 
 ## Boundaries
 
-| Area                 | Level    | Note                                                                   |
-| -------------------- | -------- | ---------------------------------------------------------------------- |
-| sortMode and density | flexible | Choose client/server sort and density to fit data size and layout      |
-| token names          | strict   | All surfaces, borders, and spacing must resolve to --cascivo-\* tokens |
+| Area                 | Level    | Note                                                                  |
+| -------------------- | -------- | --------------------------------------------------------------------- |
+| sortMode and density | flexible | Choose client/server sort and density to fit data size and layout     |
+| token names          | strict   | All surfaces, borders, and spacing must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

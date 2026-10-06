@@ -44,6 +44,7 @@ The label is associated to the input via htmlFor/id, error text is linked throug
 | `placeholder` | `string`               | No       | —       | Placeholder text shown when the field is empty.                                                                                                                                                                                                                                                                                                                                                      |
 | `disabled`    | `boolean`              | No       | false   | When true, disables the control and removes it from the tab order.                                                                                                                                                                                                                                                                                                                                   |
 | `ariaLabel`   | `string`               | No       | —       | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
+| `ai`          | `boolean`              | No       | false   | AI presence: an AI-tinted border and a soft aura, marking a value AI produced or suggested. Visual only — put an AiBadge in the label so the provenance is also text, and clear `ai` once the person edits the value.                                                                                                                                                                                |
 
 ## Tokens
 
@@ -68,13 +69,19 @@ The label is associated to the input via htmlFor/id, error text is linked throug
 <Input label="Email" error="Invalid email address" />
 ```
 
+### AI-suggested value
+
+```jsx
+<Input label="Subject" ai defaultValue="Weekly report" />
+```
+
 ## Boundaries
 
-| Area                      | Level    | Note                                                                                                        |
-| ------------------------- | -------- | ----------------------------------------------------------------------------------------------------------- |
-| token names               | strict   | Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascivo-\* tokens |
-| label / hint / error copy | flexible | Free, within content tone guidance                                                                          |
-| size                      | flexible | sm \| md \| lg, defaulting to md                                                                            |
+| Area                      | Level    | Note                                                                                                       |
+| ------------------------- | -------- | ---------------------------------------------------------------------------------------------------------- |
+| token names               | strict   | Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascivo-* tokens |
+| label / hint / error copy | flexible | Free, within content tone guidance                                                                         |
+| size                      | flexible | sm \| md \| lg, defaulting to md                                                                           |
 
 ## AI context prompt
 

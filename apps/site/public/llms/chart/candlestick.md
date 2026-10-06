@@ -64,6 +64,7 @@ Shape of the `data` prop.
 
 ```tsx
 import { Candlestick } from '@cascivo/charts'
+
 ;<Candlestick
   title="ACME daily"
   tooltip

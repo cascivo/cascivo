@@ -37,6 +37,14 @@ export const meta: ComponentMeta = {
       required: false,
       default: 'md',
     },
+    {
+      name: 'ai',
+      type: "boolean | 'generating'",
+      required: false,
+      default: 'false',
+      description:
+        "AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text.",
+    },
   ],
   tokens: [
     '--cascivo-color-surface',
@@ -50,10 +58,14 @@ export const meta: ComponentMeta = {
       title: 'Basic card',
       code: `<Card>\n  <CardHeader><CardTitle>Title</CardTitle></CardHeader>\n  <CardContent>Content here</CardContent>\n</Card>`,
     },
+    {
+      title: 'AI-generated content',
+      code: '<Card ai>\n  <CardHeader actions={<AiBadge />}><CardTitle>Summary</CardTitle></CardHeader>\n  <CardContent>Revenue grew 12% quarter over quarter.</CardContent>\n</Card>',
+    },
   ],
   dependencies: ['@cascivo/core'],
   styleHooks: ['data-cascivo-card'],
-  tags: ['container', 'layout', 'surface'],
+  tags: ['container', 'layout', 'surface', 'ai'],
   intent: {
     whenToUse: [
       'Grouping related content into a visually distinct surface with border/shadow',

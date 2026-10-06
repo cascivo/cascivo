@@ -88,10 +88,10 @@ role="status" lets assistive tech expose the label as state; meaning is reinforc
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                           |
-| ----------- | -------- | ------------------------------------------------------------------------------ |
-| variant     | flexible | Choose the variant that matches the semantic meaning                           |
-| token names | strict   | Colors and radius must resolve to --cascivo-\* tokens (--cascivo-radius-badge) |
+| Area        | Level    | Note                                                                          |
+| ----------- | -------- | ----------------------------------------------------------------------------- |
+| variant     | flexible | Choose the variant that matches the semantic meaning                          |
+| token names | strict   | Colors and radius must resolve to --cascivo-* tokens (--cascivo-radius-badge) |
 
 ## AI context prompt
 

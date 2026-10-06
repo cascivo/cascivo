@@ -56,6 +56,7 @@ Shape of the `series` prop.
 
 ```tsx
 import { Stream } from '@cascivo/charts'
+
 ;<Stream
   title="Topics over time"
   categories={['Jan', 'Feb', 'Mar', 'Apr']}

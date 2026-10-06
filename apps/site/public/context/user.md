@@ -69,10 +69,10 @@ The composite is a labelled group; the name provides the accessible identity and
 
 ## Boundaries
 
-| Area        | Level    | Note                                                            |
-| ----------- | -------- | --------------------------------------------------------------- |
-| description | flexible | Any ReactNode — email, role, or a status line                   |
-| token names | strict   | Name and description colors must resolve to --cascivo-\* tokens |
+| Area        | Level    | Note                                                           |
+| ----------- | -------- | -------------------------------------------------------------- |
+| description | flexible | Any ReactNode — email, role, or a status line                  |
+| token names | strict   | Name and description colors must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

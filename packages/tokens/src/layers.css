@@ -45,5 +45,4 @@
  * `@layer cascivo.* { … }` block uses a canonical name or the cascivo.blocks.<name>
  * pattern (depth ≤ 3) — no invented layer names.
  */
-@layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.platform,
-  cascivo.theme, cascivo.blocks, cascivo.override;
+@layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.platform, cascivo.theme, cascivo.blocks, cascivo.override;

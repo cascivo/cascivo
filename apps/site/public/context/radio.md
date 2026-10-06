@@ -66,7 +66,7 @@ Each Radio is a native <input type="radio"> wrapped in a <label>, and RadioGroup
 
 | Area                          | Level    | Note                                                                           |
 | ----------------------------- | -------- | ------------------------------------------------------------------------------ |
-| token names                   | strict   | Control and label styling must resolve to the listed --cascivo-\* tokens       |
+| token names                   | strict   | Control and label styling must resolve to the listed --cascivo-* tokens        |
 | option labels and orientation | flexible | Labels are free text and the group supports horizontal or vertical orientation |
 
 ## AI context prompt

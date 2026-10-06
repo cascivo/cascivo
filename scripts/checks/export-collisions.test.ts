@@ -38,7 +38,10 @@ const KNOWN: Record<string, string> = {
  * `PieChart`, …) — the convention is `import { Search as SearchIcon }`. Enumerating them
  * would be noise; capping the count catches a *new* one, which is the part that is avoidable.
  */
-const ICON_OVERLAP_CEILING = 20
+// Raised 20 → 21 deliberately for `Terminal`: it moved from `@cascivo/ai` into the registry
+// under its published name, and renaming a shipped component to dodge an icon is the worse
+// trade. The icon is imported as `Terminal as TerminalIcon`, like the rest.
+const ICON_OVERLAP_CEILING = 21
 
 /**
  * `@cascivo/icons` is out of scope for the fail-on-any rule. An icon set of ~440 nouns will

@@ -43,6 +43,7 @@ Renders a native <textarea> with aria-multiline; hint and error text are associa
 | `autosize`  | `boolean`                        | No       | false    | Grow the control with its content instead of holding the fixed rows height. rows becomes the minimum and --cascivo-textarea-max-block-size (default 20lh) the ceiling. Pure CSS (field-sizing: content) — no measurement and no listener; where unsupported the fixed rows height is kept.                                                                                                           |
 | `disabled`  | `boolean`                        | No       | false    | When true, disables the control and removes it from the tab order.                                                                                                                                                                                                                                                                                                                                   |
 | `ariaLabel` | `string`                         | No       | —        | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
+| `ai`        | `boolean`                        | No       | false    | AI presence: an AI-tinted border and a soft aura, marking a value AI produced or suggested. Visual only — put an AiBadge in the label so the provenance is also text, and clear `ai` once the person edits the value.                                                                                                                                                                                |
 
 ## Tokens
 
@@ -70,10 +71,10 @@ Renders a native <textarea> with aria-multiline; hint and error text are associa
 
 ## Boundaries
 
-| Area            | Level    | Note                                                                             |
-| --------------- | -------- | -------------------------------------------------------------------------------- |
-| token names     | strict   | Border/focus/error colors must resolve to --cascivo-color-\* / focus-ring tokens |
-| resize and rows | flexible | Consumer chooses initial rows and whether the field can resize                   |
+| Area            | Level    | Note                                                                            |
+| --------------- | -------- | ------------------------------------------------------------------------------- |
+| token names     | strict   | Border/focus/error colors must resolve to --cascivo-color-* / focus-ring tokens |
+| resize and rows | flexible | Consumer chooses initial rows and whether the field can resize                  |
 
 ## AI context prompt
 

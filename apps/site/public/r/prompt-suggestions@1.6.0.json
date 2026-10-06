@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 2,
+  "name": "prompt-suggestions",
+  "type": "component",
+  "description": "Starter prompts as a wrap of pill buttons — the \"Try asking…\" row of an empty AI chat",
+  "version": "1.6.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prompt-suggestions/prompt-suggestions.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prompt-suggestions/index.ts"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prompt-suggestions/prompt-suggestions.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["ai", "chat", "prompts", "suggestions", "starters", "chips"],
+  "category": "inputs",
+  "meta": {
+    "name": "PromptSuggestions",
+    "description": "Starter prompts as a wrap of pill buttons — the \"Try asking…\" row of an empty AI chat",
+    "category": "inputs",
+    "clientJs": "required",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "items",
+        "description": "The prompts, as the exact text each one sends.",
+        "type": "string[]",
+        "required": true
+      },
+      {
+        "name": "onSelect",
+        "description": "Called with the chosen prompt — send it, or put it in the composer.",
+        "type": "(value: string) => void",
+        "required": true
+      },
+      {
+        "name": "labels",
+        "description": "Overrides for the component’s user-visible strings (i18n) — `group` names the group for screen readers.",
+        "type": "{ group?: string }",
+        "required": false
+      }
+    ],
+    "tokens": [
+      "--cascivo-color-border",
+      "--cascivo-color-surface",
+      "--cascivo-color-ai-border",
+      "--cascivo-color-ai-subtle",
+      "--cascivo-radius-full",
+      "--cascivo-focus-ring"
+    ],
+    "accessibility": {
+      "role": "group",
+      "wcag": "2.2-AA",
+      "keyboard": ["Tab", "Enter", "Space"],
+      "forcedColors": true
+    },
+    "examples": [
+      {
+        "title": "Starter prompts",
+        "code": "<PromptSuggestions\n  items={['Summarise this week’s tickets', 'Draft a release note', 'What changed in v2?']}\n  onSelect={() => {}}\n/>"
+      }
+    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "tags": ["ai", "chat", "prompts", "suggestions", "starters", "chips"],
+    "intent": {
+      "whenToUse": [
+        "An empty conversation: offer a few concrete things to ask",
+        "Follow-up suggestions under an assistant reply"
+      ],
+      "whenNotToUse": [
+        "Filtering or selecting values — use ToggleGroup, Tag or SegmentedControl",
+        "Autocomplete while typing — use Combobox"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Ten generic prompts (\"Ask me anything\")",
+          "good": "Three or four specific, tappable prompts",
+          "why": "Specific starters show what the assistant can actually do; a long generic list is skipped"
+        }
+      ],
+      "related": [
+        {
+          "name": "MessageActions",
+          "relationship": "pairs-with",
+          "reason": "Both sit around an assistant message"
+        },
+        {
+          "name": "Tag",
+          "relationship": "alternative",
+          "reason": "Tag is for labels and filters, not for sending a prompt"
+        }
+      ],
+      "a11yRationale": "A named group of real buttons whose names are the prompt text, operable with Tab and Enter/Space. Pills meet the coarse-pointer target size and keep a visible focus ring",
+      "content": {
+        "tone": "Write each prompt as the person would type it, in the first person"
+      },
+      "flexibility": [
+        {
+          "area": "what selecting does",
+          "level": "flexible",
+          "note": "Send immediately, or fill the composer"
+        },
+        {
+          "area": "item text",
+          "level": "strict",
+          "note": "The visible text is the prompt; do not show one thing and send another"
+        }
+      ]
+    }
+  }
+}

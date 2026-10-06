@@ -96,10 +96,10 @@ Render button styling on a real anchor (keeps middle-click / open-in-new-tab).
 
 ## Boundaries
 
-| Area        | Level    | Note                                                               |
-| ----------- | -------- | ------------------------------------------------------------------ |
-| token names | strict   | Visual props must resolve to --cascivo-button-\* / semantic tokens |
-| label copy  | flexible | Free, within tone guidance                                         |
+| Area        | Level    | Note                                                              |
+| ----------- | -------- | ----------------------------------------------------------------- |
+| token names | strict   | Visual props must resolve to --cascivo-button-* / semantic tokens |
+| label copy  | flexible | Free, within tone guidance                                        |
 
 ## AI context prompt
 

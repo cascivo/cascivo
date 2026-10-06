@@ -67,7 +67,7 @@ Attribution renders as <footer><cite>
 | Area        | Level    | Note                                                                   |
 | ----------- | -------- | ---------------------------------------------------------------------- |
 | attribution | flexible | cite is optional; omit when the source is given in surrounding context |
-| token names | strict   | Border and text colors must resolve to --cascivo-\* tokens             |
+| token names | strict   | Border and text colors must resolve to --cascivo-* tokens              |
 
 ## AI context prompt
 

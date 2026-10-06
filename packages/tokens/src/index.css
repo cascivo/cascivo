@@ -470,6 +470,23 @@
     --cascivo-editor-syntax-property: var(--cascivo-chart-2);
   }
 
+  /* ── AI ─────────────────────────────────────────────────────
+     One blue-violet, pulled toward the LIGHTNESS of the theme's text (hue held at 285)
+     so it reads on light and dark alike; tints are translucent steps of it. No per-theme
+     selector: the email resolver reads token CSS flat. On `[data-theme]` too, so a scoped
+     theme re-resolves the mix. Rationale: docs/plans/ai-components-plan.md §4. */
+  :root,
+  [data-theme] {
+    --cascivo-color-ai: color-mix(
+      in oklch,
+      oklch(0.6 0.2 285) 80%,
+      oklch(from var(--cascivo-color-text) l 0 285)
+    );
+    --cascivo-color-ai-subtle: oklch(from var(--cascivo-color-ai) l c h / 10%);
+    --cascivo-color-ai-border: oklch(from var(--cascivo-color-ai) l c h / 40%);
+    --cascivo-color-ai-sheen: oklch(from var(--cascivo-color-ai) l c h / 22%);
+  }
+
   /* All one-shot cascade motion derives from the duration tokens, so collapsing them
      disables every transition and finite animation library-wide.
 

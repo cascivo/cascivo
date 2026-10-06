@@ -94,10 +94,10 @@ Sets aria-invalid on the control and announces the error via role="alert".
 
 ## Boundaries
 
-| Area            | Level    | Note                                                                   |
-| --------------- | -------- | ---------------------------------------------------------------------- |
-| token names     | strict   | Spacing and color must resolve to --cascivo-\* semantic tokens         |
-| control element | flexible | Any single element accepting id/aria-\* props can be the child control |
+| Area            | Level    | Note                                                                  |
+| --------------- | -------- | --------------------------------------------------------------------- |
+| token names     | strict   | Spacing and color must resolve to --cascivo-* semantic tokens         |
+| control element | flexible | Any single element accepting id/aria-* props can be the child control |
 
 ## AI context prompt
 

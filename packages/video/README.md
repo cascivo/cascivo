@@ -9,7 +9,6 @@
 ![types](https://img.shields.io/badge/types-included-0079bf?style=flat-square&logo=typescript&logoColor=white)
 
 [cascivo.com](https://cascivo.com) · [Docs](https://cascivo.com/docs) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
-
 </div>
 
 ---
@@ -18,7 +17,7 @@
 
 Remotion video studio for cascivo — animated explainers and launch films for the design system. Private workspace package; not published to npm.
 
-The flagship composition is **`Intro`**: a ~2½-minute launch film that pitches cascivo end to end — the problem it removes, modern CSS over Tailwind, signal-driven reactivity, 12 themes from one attribute, 199 components, three-level tokens, the AI-first context layer, accessibility, and a closing call to action. It uses the real brand palette (brand blue + AI purple) and the positioning from the project README.
+The flagship composition is **`Intro`**: a ~2½-minute launch film that pitches cascivo end to end — the problem it removes, modern CSS over Tailwind, signal-driven reactivity, 12 themes from one attribute, 214 components, three-level tokens, the AI-first context layer, accessibility, and a closing call to action. It uses the real brand palette (brand blue + AI purple) and the positioning from the project README.
 
 ## Develop
 

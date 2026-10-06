@@ -109,7 +109,7 @@ Date range constraint
 | ----------------- | -------- | ------------------------------------------------------------------------------------ |
 | value format      | strict   | All date props are ISO YYYY-MM-DD strings                                            |
 | locale formatting | flexible | Display, weekday labels, and week start derive from the current i18n locale via Intl |
-| token names       | strict   | Styling resolves to --cascivo-date-picker-\* component tokens                        |
+| token names       | strict   | Styling resolves to --cascivo-date-picker-* component tokens                         |
 
 ## AI context prompt
 

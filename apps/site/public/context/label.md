@@ -86,10 +86,10 @@ Render the label semantics onto a custom element via Slot.
 
 ## Boundaries
 
-| Area        | Level    | Note                                                         |
-| ----------- | -------- | ------------------------------------------------------------ |
-| token names | strict   | Colors and type must resolve to --cascivo-\* semantic tokens |
-| label copy  | flexible | Free, within tone guidance                                   |
+| Area        | Level    | Note                                                        |
+| ----------- | -------- | ----------------------------------------------------------- |
+| token names | strict   | Colors and type must resolve to --cascivo-* semantic tokens |
+| label copy  | flexible | Free, within tone guidance                                  |
 
 ## AI context prompt
 

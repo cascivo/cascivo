@@ -41,6 +41,15 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
    * @see the component manifest
    */
   autosize?: boolean
+  /**
+   * AI presence: an AI-tinted border and a soft aura, marking a value AI produced or
+   * suggested. Visual only — put an AiBadge in the label so the provenance is also text, and
+   * clear `ai` once the person edits the value.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
+  ai?: boolean
 }
 
 /**
@@ -64,6 +73,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
     error,
     resize = 'vertical',
     autosize = false,
+    ai = false,
     rows = 4,
     ariaLabel,
     className,
@@ -84,6 +94,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
       data-state={error ? 'error' : state.value}
       data-resize={resize}
       data-autosize={autosize ? '' : undefined}
+      data-ai={ai ? '' : undefined}
       style={autosize ? ({ ['--_rows' as string]: String(rows) } as CSSProperties) : undefined}
     >
       {label && (

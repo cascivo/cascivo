@@ -79,10 +79,10 @@ Renders a trailing remove button labeled by dismissLabel
 
 ## Boundaries
 
-| Area                       | Level    | Note                                                            |
-| -------------------------- | -------- | --------------------------------------------------------------- |
-| variant and dismissibility | flexible | onDismiss is optional; variant matches semantic meaning         |
-| token names                | strict   | Variant colors must resolve to --cascivo-color-\*-subtle tokens |
+| Area                       | Level    | Note                                                           |
+| -------------------------- | -------- | -------------------------------------------------------------- |
+| variant and dismissibility | flexible | onDismiss is optional; variant matches semantic meaning        |
+| token names                | strict   | Variant colors must resolve to --cascivo-color-*-subtle tokens |
 
 ## AI context prompt
 

@@ -152,7 +152,7 @@ A button rather than a text field; printable characters type-to-select, and Home
 | -------------------------- | -------- | ---------------------------------------------------------------------------------------- |
 | searchable                 | flexible | Filtering can be toggled off for short lists via searchable={false}                      |
 | controlled vs uncontrolled | flexible | Supports value + onValueChange or defaultValue                                           |
-| token names                | strict   | Listbox/field styling resolves to semantic --cascivo-color-_ / --cascivo-radius-_ tokens |
+| token names                | strict   | Listbox/field styling resolves to semantic --cascivo-color-* / --cascivo-radius-* tokens |
 
 ## AI context prompt
 

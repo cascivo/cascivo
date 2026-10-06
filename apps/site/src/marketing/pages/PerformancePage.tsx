@@ -179,24 +179,22 @@ function MatrixSection() {
 
   const columns: Column<MatrixRow>[] = [
     { key: 'component', header: 'Component' },
-    ...LIBS.map(
-      (lib): Column<MatrixRow> => ({
-        key: `${lib}_${activeLens}` as keyof MatrixRow,
-        header: LIB_LABELS[lib],
-        align: 'end' as const,
-        render: (row) => {
-          const val = row[`${lib}_${activeLens}` as keyof MatrixRow] as number | undefined
-          const note = row.notes[lib]
-          if (val === undefined) return '—'
-          return (
-            <span>
-              {fmtKb(val)}
-              {note && <sup title={note}>†</sup>}
-            </span>
-          )
-        },
-      }),
-    ),
+    ...LIBS.map((lib): Column<MatrixRow> => ({
+      key: `${lib}_${activeLens}` as keyof MatrixRow,
+      header: LIB_LABELS[lib],
+      align: 'end' as const,
+      render: (row) => {
+        const val = row[`${lib}_${activeLens}` as keyof MatrixRow] as number | undefined
+        const note = row.notes[lib]
+        if (val === undefined) return '—'
+        return (
+          <span>
+            {fmtKb(val)}
+            {note && <sup title={note}>†</sup>}
+          </span>
+        )
+      },
+    })),
   ]
 
   return (

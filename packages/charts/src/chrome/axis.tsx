@@ -166,24 +166,23 @@ export function Axis({
           </text>
         </g>
       ))}
-      {title !== undefined &&
-        title !== '' && (
-          // Vertical axes rotate their title to run along the axis; `y` reads bottom-to-top
-          // and `y-right` top-to-bottom, which is the convention both d3 and Excel use.
-          <text
-            transform={
-              isX
-                ? `translate(${length / 2},${titleOffset})`
-                : `translate(${isRight ? titleOffset : -titleOffset},${length / 2}) rotate(${isRight ? 90 : -90})`
-            }
-            textAnchor="middle"
-            fill="var(--cascivo-chart-axis)"
-            fontSize={11}
-            fontWeight={500}
-          >
-            {title}
-          </text>
-        )}
+      {title !== undefined && title !== '' && (
+        // Vertical axes rotate their title to run along the axis; `y` reads bottom-to-top
+        // and `y-right` top-to-bottom, which is the convention both d3 and Excel use.
+        <text
+          transform={
+            isX
+              ? `translate(${length / 2},${titleOffset})`
+              : `translate(${isRight ? titleOffset : -titleOffset},${length / 2}) rotate(${isRight ? 90 : -90})`
+          }
+          textAnchor="middle"
+          fill="var(--cascivo-chart-axis)"
+          fontSize={11}
+          fontWeight={500}
+        >
+          {title}
+        </text>
+      )}
     </g>
   )
 }

@@ -1,0 +1,24 @@
+@layer cascivo.component {
+  .disclaimer {
+    display: flex;
+    align-items: baseline;
+    gap: var(--cascivo-space-1);
+    margin: 0;
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-xs);
+    line-height: var(--cascivo-leading-snug);
+    color: var(--cascivo-color-text-muted);
+  }
+
+  .glyph {
+    flex: none;
+    color: var(--cascivo-color-ai);
+    translate: 0 0.0625rem;
+  }
+}
+
+@media (forced-colors: active) {
+  .glyph {
+    color: CanvasText;
+  }
+}

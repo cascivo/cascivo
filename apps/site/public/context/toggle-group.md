@@ -87,10 +87,10 @@ Single mode renders role="radiogroup" with role="radio" + aria-checked items; mu
 
 ## Boundaries
 
-| Area         | Level    | Note                                                                                 |
-| ------------ | -------- | ------------------------------------------------------------------------------------ |
-| token names  | strict   | Item height must resolve to --cascivo-control-height-\* to align with other controls |
-| item content | flexible | Items may use a text label, an icon, or both; consumer owns the icon set             |
+| Area         | Level    | Note                                                                                |
+| ------------ | -------- | ----------------------------------------------------------------------------------- |
+| token names  | strict   | Item height must resolve to --cascivo-control-height-* to align with other controls |
+| item content | flexible | Items may use a text label, an icon, or both; consumer owns the icon set            |
 
 ## AI context prompt
 

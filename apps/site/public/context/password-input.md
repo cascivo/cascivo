@@ -69,10 +69,10 @@ The reveal control is a real <button> whose aria-label switches between reveal/h
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                                     |
-| ----------- | -------- | ---------------------------------------------------------------------------------------- |
-| token names | strict   | Field, toggle, and strength-meter styling must resolve to the listed --cascivo-\* tokens |
-| labels      | flexible | reveal, hide, and strengthLabel can be overridden via the labels prop                    |
+| Area        | Level    | Note                                                                                    |
+| ----------- | -------- | --------------------------------------------------------------------------------------- |
+| token names | strict   | Field, toggle, and strength-meter styling must resolve to the listed --cascivo-* tokens |
+| labels      | flexible | reveal, hide, and strengthLabel can be overridden via the labels prop                   |
 
 ## AI context prompt
 

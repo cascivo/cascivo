@@ -68,10 +68,10 @@ Place inside a HeaderPanel opened by a Grid action in ShellHeader
 
 ## Boundaries
 
-| Area        | Level    | Note                                                          |
-| ----------- | -------- | ------------------------------------------------------------- |
-| dividers    | flexible | Dividers group entries as needed                              |
-| token names | strict   | Accent and surface colors must resolve to --cascivo-\* tokens |
+| Area        | Level    | Note                                                         |
+| ----------- | -------- | ------------------------------------------------------------ |
+| dividers    | flexible | Dividers group entries as needed                             |
+| token names | strict   | Accent and surface colors must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

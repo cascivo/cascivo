@@ -73,11 +73,11 @@ The preview renders as a real <button> so it is keyboard-focusable and announces
 
 ## Boundaries
 
-| Area                    | Level    | Note                                                                                     |
-| ----------------------- | -------- | ---------------------------------------------------------------------------------------- |
-| token names             | strict   | Visual styling must resolve to the listed --cascivo-\* surface/border/accent/text tokens |
-| placeholder copy        | flexible | Free, within tone guidance                                                               |
-| submit-on-blur behavior | flexible | submitOnBlur toggles whether blurring confirms or cancels the edit                       |
+| Area                    | Level    | Note                                                                                    |
+| ----------------------- | -------- | --------------------------------------------------------------------------------------- |
+| token names             | strict   | Visual styling must resolve to the listed --cascivo-* surface/border/accent/text tokens |
+| placeholder copy        | flexible | Free, within tone guidance                                                              |
+| submit-on-blur behavior | flexible | submitOnBlur toggles whether blurring confirms or cancels the edit                      |
 
 ## AI context prompt
 

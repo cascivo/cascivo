@@ -20,6 +20,14 @@ export interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
    * @see the component manifest
    */
   lines?: number
+  /**
+   * Tints the placeholder and its sheen with the AI hue, marking content that an AI is
+   * generating (Carbon’s AI skeleton).
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
+  ai?: boolean
 }
 
 export function Skeleton({
@@ -27,6 +35,7 @@ export function Skeleton({
   width,
   height,
   lines = 1,
+  ai = false,
   className,
   style,
   ...props
@@ -40,6 +49,7 @@ export function Skeleton({
     <div
       aria-hidden="true"
       data-variant={variant}
+      data-ai={ai ? '' : undefined}
       className={cn(styles['skeleton'], className)}
       style={{ ...sizeVars, ...style }}
       {...props}

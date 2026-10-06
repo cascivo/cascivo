@@ -61,6 +61,7 @@ Shape of the `nodes` prop.
 
 ```tsx
 import { Sankey } from '@cascivo/charts'
+
 ;<Sankey
   title="Traffic flow"
   nodes={[

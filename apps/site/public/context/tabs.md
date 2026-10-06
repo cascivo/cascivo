@@ -62,10 +62,10 @@ Implements the WAI-ARIA tabs pattern: tablist/tab/tabpanel roles with arrow-key 
 
 ## Boundaries
 
-| Area                       | Level    | Note                                                                |
-| -------------------------- | -------- | ------------------------------------------------------------------- |
-| controlled vs uncontrolled | flexible | Use value or defaultValue depending on control needs                |
-| token names                | strict   | Accent, borders, and focus ring must resolve to --cascivo-\* tokens |
+| Area                       | Level    | Note                                                               |
+| -------------------------- | -------- | ------------------------------------------------------------------ |
+| controlled vs uncontrolled | flexible | Use value or defaultValue depending on control needs               |
+| token names                | strict   | Accent, borders, and focus ring must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

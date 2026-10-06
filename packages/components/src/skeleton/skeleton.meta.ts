@@ -36,6 +36,14 @@ export const meta: ComponentMeta = {
       default: '1',
       description: 'Number of bars for the text variant; the last bar renders shorter',
     },
+    {
+      name: 'ai',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description:
+        'Tints the placeholder and its sheen with the AI hue, marking content that an AI is generating (Carbon’s AI skeleton).',
+    },
   ],
   tokens: [
     '--cascivo-color-border',
@@ -43,20 +51,24 @@ export const meta: ComponentMeta = {
     '--cascivo-radius-sm',
     '--cascivo-radius-full',
     '--cascivo-radius-component',
+    '--cascivo-color-ai-subtle',
+    '--cascivo-color-ai-sheen',
   ],
   accessibility: { role: 'none', wcag: '2.2-AA', keyboard: [] },
   examples: [
     { title: 'Text', code: '<Skeleton lines={3} />' },
     { title: 'Avatar', code: '<Skeleton variant="circle" width="3rem" height="3rem" />' },
     { title: 'Image', code: '<Skeleton variant="rect" height="12rem" />' },
+    { title: 'AI-generated content', code: '<Skeleton ai lines={3} />' },
   ],
   dependencies: ['@cascivo/core'],
-  tags: ['loading', 'placeholder', 'shimmer'],
+  tags: ['loading', 'placeholder', 'shimmer', 'ai'],
   intent: {
     whenToUse: [
       'Indicating loading by mirroring the shape of the content that will appear',
       'Reducing layout shift while data for a known structure is fetching',
       'Loading larger content regions where shape preview reassures the user',
+      'Holding the place of a response an AI is still generating — set `ai`',
     ],
     whenNotToUse: [
       'Indeterminate work with no known content shape — use Spinner',

@@ -64,6 +64,7 @@ shareIntentUrl builds the same compose link for your own markup; it returns null
 
 ```tsx
 import { shareIntentUrl } from './share-menu'
+
 ;<a href={shareIntentUrl('bluesky', { url, text }) ?? undefined}>Post to Bluesky</a>
 ```
 

@@ -96,6 +96,8 @@ const NOT_FIELD_WRAPPED: Record<string, string> = {
   CopyButton: 'a button; names itself from its content or `label`',
   Fab: 'a floating action button; names itself',
   ButtonGroup: 'a group wrapper, not a control',
+  MessageActions: 'a named group of buttons that name themselves',
+  PromptSuggestions: 'a named group of buttons named by their prompt text',
   InputGroup: 'a layout wrapper around a control that is itself Field-wrapped',
   Swap: 'a two-state icon button; names itself',
   Tile: 'a selectable card that names itself from its content',

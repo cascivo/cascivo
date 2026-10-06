@@ -77,7 +77,7 @@ Renders a native <input type="checkbox"> wrapped in a <label>, so role, checked/
 | Area               | Level    | Note                                                                                    |
 | ------------------ | -------- | --------------------------------------------------------------------------------------- |
 | native input props | flexible | Spreads InputHTMLAttributes — name, value, required, checked, onChange all pass through |
-| token names        | strict   | Control styling resolves to semantic --cascivo-color-\* / --cascivo-radius-sm tokens    |
+| token names        | strict   | Control styling resolves to semantic --cascivo-color-* / --cascivo-radius-sm tokens     |
 
 ## AI context prompt
 
