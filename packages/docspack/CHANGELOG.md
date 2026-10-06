@@ -1,5 +1,31 @@
 # @cascivo/docspack
 
+## 0.3.0
+
+### Minor Changes
+
+- aa3967d: The CLI ships a machine-readable description of every command (`dist/cmdspec.json`, in the
+  [cmdspec](https://docspack.dev/cmdspec) format), named by a new `"cmdspec"` field in its
+  `package.json`. `docspack sync` indexes it for the installed version, so an agent can ask how to
+  run a command and learn its flags, effects and exit statuses. `@cascivo/docspack` now carries the
+  same descriptions as one chunk per command.
+
+  `cascivo registry build --help` now documents the `--in` and `--out` flags the command reads (it
+  listed a `[dir]` argument the command ignores), and `cascivo audit --help` lists `--contract` and
+  `--verbose`.
+
+### Patch Changes
+
+- 57dc995: New guide, `recipe-social`. It covers sign-in with providers, connecting Bluesky, Mastodon,
+  LinkedIn, Threads and Buffer, posting now or on a schedule, images, and keeping connections
+  alive, plus `ShareMenu` for readers. Read it at `cascivo.com/docs/recipe-social.md` or with
+  `npx @cascivo/docs guide recipe-social`; `llms.txt` links it. `cascivo create --help`, the MCP
+  `create_app` description and the `@cascivo/app` README now describe the social example and
+  its providers as they are, including Threads, images, Mastodon server limits and Bluesky
+  display names.
+- 57dc995: The bundled registry names the current version (1.6.0); it still said 1.5.0 after the last
+  release.
+
 ## 0.2.7
 
 ### Patch Changes

@@ -1,5 +1,90 @@
 # cascivo
 
+## 1.7.0
+
+### Minor Changes
+
+- aa3967d: The CLI ships a machine-readable description of every command (`dist/cmdspec.json`, in the
+  [cmdspec](https://docspack.dev/cmdspec) format), named by a new `"cmdspec"` field in its
+  `package.json`. `docspack sync` indexes it for the installed version, so an agent can ask how to
+  run a command and learn its flags, effects and exit statuses. `@cascivo/docspack` now carries the
+  same descriptions as one chunk per command.
+
+  `cascivo registry build --help` now documents the `--in` and `--out` flags the command reads (it
+  listed a `[dir]` argument the command ignores), and `cascivo audit --help` lists `--contract` and
+  `--verbose`.
+
+- d0f0e97: `cascivo email lint` also reports links that go nowhere (`checkLinks` from `@cascivo/email`):
+  a blocked link fails the command like a blocked feature does. `--check-links` additionally
+  requests every http(s) URL (`HEAD`, then `GET`, redirects followed, 10s each) and fails on a
+  4xx/5xx or no answer.
+- 57dc995: `cascivo create --auth oauth` (and `--auth email,oauth`) offers LinkedIn sign-in beside GitHub
+  and Google, once `LINKEDIN_CLIENT_ID` and `LINKEDIN_CLIENT_SECRET` are set.
+- 57dc995: `cascivo create --framework cloudflare --auth oauth` scaffolds GitHub and Google sign-in on
+  `/account`, and `--auth email,oauth` puts it beside emailed sign-in links. Each provider is
+  offered once its client id and secret are set (`.dev.vars` locally, `wrangler secret put`
+  deployed); `AUTH_SECRET` seals the sign-in state. A failed sign-in comes back to `/account`
+  with the reason. As with `--auth email`, every API write needs a signed-in user, and
+  `--example checkout` adds `/billing`; an account without an email gets Stripe's checkout asking
+  for one.
+- 57dc995: `cascivo create --framework cloudflare --example social`: `/social` connects LinkedIn and
+  Mastodon accounts and posts to them now or at a time you pick. Each post is a Workflow that
+  waits until it is due, then posts to each account in its own step: Mastodon's retry with an
+  idempotency key, LinkedIn's never (an interrupted LinkedIn post is reported, not repeated).
+  What a network would refuse shows while you type, and the Worker refuses the same before
+  scheduling. It brings `--auth oauth` unless another sign-in is chosen.
+- 57dc995: `--example social` connects Bluesky accounts too: people type their handle, the Worker serves
+  the client metadata Bluesky reads, and `BLUESKY_PRIVATE_JWK` optionally makes sessions last.
+  Bluesky posts retry safely, like Mastodon's.
+- 57dc995: `--example social` and Buffer:
+
+  - **"Let Buffer hold it".** A scheduled post can hand its Buffer accounts to Buffer at once,
+    with the post's time. They then wait in Buffer's queue, where they can still be edited, and
+    show as `queued`. The other networks wait in the Workflow as before.
+  - **The request budget is counted.** The app counts its Buffer requests per 15-minute window
+    in D1 (Buffer allows 100 for every user of the app together) and shows the count on the page.
+    Channel lists stop refreshing when fewer than 20 requests remain, so those are kept for
+    posting.
+
+- 57dc995: `--example social` connects Buffer too, once `BUFFER_CLIENT_ID` is set: each channel in a
+  connected Buffer is an account in the composer, checked against its network's limit. Channel
+  lists are kept for an hour to spare Buffer's request budget, and Buffer posts, like LinkedIn's,
+  are never retried.
+- 57dc995: `--example social` attaches images. The composer uploads up to 4 (JPEG or PNG, 1 MB each,
+  each with a description) through the Worker into an R2 bucket, `SOCIAL_MEDIA`, with each user
+  under their own prefix. A post may use only images that user uploaded. Bluesky, LinkedIn and
+  Mastodon get the bytes. Threads and Buffer, which fetch images by URL, get a link to
+  `/api/social/media/…` signed with `AUTH_SECRET`; it is valid until a day after the post is due.
+  The `files` and `social` examples now share one `r2_buckets` list, and the rate-limit comment
+  says what it covers for `social`.
+- 57dc995: `--example social` emails a reminder to connect LinkedIn again a week before its token
+  lapses, once per token, from the daily Cron Trigger after Threads tokens are renewed. It sends
+  through Email Service: set `REMINDER_FROM` and `APP_URL` in `wrangler.jsonc`. Until then, no
+  reminder is sent.
+- 57dc995: `--example social` checks a Mastodon post against its server's own limits, read once a day
+  per server and kept in D1. The page checks it while you type, and the Workflow checks it again
+  when the post goes out, so a long post for a server that allows one is no longer refused at 500.
+- 57dc995: `--example social` connects Threads once `THREADS_APP_ID` and `THREADS_APP_SECRET` are set.
+  A daily Cron Trigger (`17 4 * * *`) renews Threads tokens in their last 30 days. It shares
+  the Worker's one `scheduled` handler with `--example digest`, which tells the two apart by
+  schedule. Threads posts, like Buffer's and LinkedIn's, are never retried.
+
+### Patch Changes
+
+- 57dc995: `--example agent` builds again. `@cloudflare/ai-chat@0.12.1` needs `agents` 0.25 or later, but
+  the scaffold pinned `agents: ^0.24.0`, which in 0.x semver stops at 0.24.x, so the build
+  failed on missing exports. The agent and voice examples, and the `cloudflare-agent` starter,
+  now ask for `agents ^0.26.0` and `@cloudflare/ai-chat ^0.12.1`.
+- 57dc995: New guide, `recipe-social`. It covers sign-in with providers, connecting Bluesky, Mastodon,
+  LinkedIn, Threads and Buffer, posting now or on a schedule, images, and keeping connections
+  alive, plus `ShareMenu` for readers. Read it at `cascivo.com/docs/recipe-social.md` or with
+  `npx @cascivo/docs guide recipe-social`; `llms.txt` links it. `cascivo create --help`, the MCP
+  `create_app` description and the `@cascivo/app` README now describe the social example and
+  its providers as they are, including Threads, images, Mastodon server limits and Bluesky
+  display names.
+- Updated dependencies [db3f056]
+  - @cascivo/registry@0.2.11
+
 ## 1.6.0
 
 ### Minor Changes

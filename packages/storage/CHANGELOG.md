@@ -1,5 +1,12 @@
 # @cascivo/storage
 
+## 1.7.0
+
+### Patch Changes
+
+- Updated dependencies [db3f056]
+  - @cascivo/core@1.7.0
+
 ## 1.6.0
 
 ### Patch Changes

@@ -1,5 +1,105 @@
 # @cascivo/mcp
 
+## 0.9.0
+
+### Minor Changes
+
+- db3f056: AI agent progress components. `ChainOfThought` lists the steps an agent takes. Each step has a
+  status from the shared `Progress` vocabulary (`pending | active | complete | error`, the same
+  one Timeline and Steps use), which is spoken as text after the title, and can have
+  collapsible detail. The list is `aria-busy` while a step is active. `ToolCall` is a card for
+  one tool invocation. It shows the tool name and a status badge for the AI SDK lifecycle
+  (`pending`, `running`, `awaiting-approval`, `complete`, `error`, `denied`), and puts the input
+  and output in a native disclosure that opens itself on error. It has an always-visible
+  `actions` slot for approval. Both server-render with no client JS. New
+  `builtin.chainOfThought` and `builtin.toolCall` messages (en, de).
+  `@cascivo/eslint-plugin`'s vocabulary maps `ThoughtChain`, `AgentSteps`, `Tool` and
+  `FunctionCall` to them.
+- db3f056: AI components for work in progress. `AiStatus` names what an AI is doing (thinking,
+  generating, done, failed, stopped), with a shimmering label and an optional Stop button. It
+  announces each phase change once and never announces streamed tokens. `ShimmerText` is the
+  "Thinking…" text sweep. `TypingIndicator` is the three-dot placeholder for a reply. `Reasoning`
+  is a native `<details>` panel that opens and shimmers while the model reasons, then closes and
+  reads "Thought for N seconds". `AiBadge` is the "AI" provenance marker, with an optional
+  toggletip explanation. `Skeleton` gains `ai`, which gives a placeholder the AI tint (Carbon's AI
+  skeleton). New semantic tokens `--cascivo-color-ai`, `-ai-subtle`, `-ai-border` and `-ai-sheen`
+  are derived from each theme's own colours, so every theme gets them. New keyframe
+  `cascivo-text-shimmer`. New `builtin.aiStatus`, `builtin.reasoning`, `builtin.aiBadge` and
+  `builtin.typingIndicator` messages (en, de). Every loop stops under
+  `prefers-reduced-motion`. `@cascivo/eslint-plugin`'s vocabulary maps the foreign names `AILabel`,
+  `AISkeleton`, `TextShimmer`, `ThinkingBar` and `TypingDots` to them.
+- db3f056: AI conversation layer.
+
+  - **`announce(message, { politeness, batchId })`** (`@cascivo/core`, re-exported from
+    `@cascivo/react`) speaks to screen-reader users through one shared live region. A
+    `batchId` collapses a burst of announcements into the last one. It is SSR-safe.
+  - **New registry components:**
+    - `MessageActions`: copy, good/bad as `aria-pressed` toggle buttons that announce
+      "Thanks for your feedback", and regenerate.
+    - `PromptSuggestions`: starter prompts as pill buttons, with `onSelect(prompt)`.
+    - `ContextMeter`: a `role="meter"` showing tokens used out of a context window. It warns
+      at 80% and turns destructive at 95%.
+  - **`StreamingText` and `Terminal` are now registry components**, also in `@cascivo/react`.
+    `@cascivo/ai` re-exports the same implementations.
+  - **`Terminal` changes:**
+    - It is no longer a live region. The full script is visually hidden text from the first
+      render, so screen readers are no longer fed per-character fragments.
+    - It follows the editor tokens, so it matches the theme. Set `--cascivo-terminal-bg` /
+      `-fg` for an always-dark look.
+    - `loop` now really replays. It used to stop on an empty first line.
+  - **`AiChat` changes:**
+    - Its log is no longer a live region, so a streamed reply is not read out token by token;
+      the finished reply is announced once.
+    - It shows a `TypingIndicator` until the first token arrives.
+    - A new optional `onStop` shows an `AiStatus` with a Stop button.
+  - **Deprecation:** `AiLabel` is deprecated in favour of `AiStatus` (since 1.7.0, removed in
+    2.0.0).
+  - **Messages:** new `builtin.messageActions`, `builtin.promptSuggestions`,
+    `builtin.contextMeter` and `builtin.terminal` messages (en, de).
+
+- db3f056: AI presence and provenance.
+
+  - **AI presence:** `Card` and `Modal` take `ai` (`true` or `'generating'`). `Input` and
+    `Textarea` take `ai`. `true` gives an AI-tinted edge and a soft aura. `'generating'` adds a
+    pulsing inner glow, which stops under reduced motion. The treatment is visual only, so pair
+    it with `AiBadge`.
+  - **`AiBadge` revert:** new `edited` and `onRevert` props. Once a person edits AI output, the
+    mark becomes a "Revert to AI suggestion" button, or disappears when there is no way back.
+    `AiBadge` is now `clientJs: 'enhancement'`.
+  - **New components:** `AiDisclaimer` is the quiet "AI-generated content may be incorrect"
+    note. `Sources` is a collapsible, numbered "Used N sources" list. `InlineCitation` is a
+    numbered citation marker that previews its source in a HoverCard.
+  - **Safe links:** both components treat model-supplied URLs as untrusted. Only absolute http(s)
+    URLs become links, and the new `sourceHref()` export applies the same rule to your own
+    markup.
+  - **Messages:** new `builtin.sources`, `builtin.inlineCitation` and `builtin.aiDisclaimer`
+    messages, plus `builtin.aiBadge.revert` (en, de).
+
+- d0f0e97: `lint_email({ html, checkLinks?, cwd? })`: an agent can check a rendered email before it is
+  sent — unsupported client features and dead links — by running `cascivo email lint`, the same
+  check a human runs. Needs `@cascivo/email` installed in `cwd`.
+- 57dc995: `ShareMenu`: a Share button opening each network's own compose link for Bluesky, Mastodon,
+  Threads, LinkedIn and X. It also offers copy link, and the system share sheet where the browser
+  has one. No account, token or third-party script is involved. The panel is a native popover opened by
+  `popovertarget`, so the links work before hydration. On a phone it is a bottom sheet; wider, it
+  is anchored to the trigger and flips to stay on screen. Mastodon asks for the reader's server
+  and remembers it. `shareIntentUrl(network, { url, text, server })` builds the same links for
+  your own markup. New `builtin.shareMenu` messages (en, de).
+
+### Patch Changes
+
+- 57dc995: New guide, `recipe-social`. It covers sign-in with providers, connecting Bluesky, Mastodon,
+  LinkedIn, Threads and Buffer, posting now or on a schedule, images, and keeping connections
+  alive, plus `ShareMenu` for readers. Read it at `cascivo.com/docs/recipe-social.md` or with
+  `npx @cascivo/docs guide recipe-social`; `llms.txt` links it. `cascivo create --help`, the MCP
+  `create_app` description and the `@cascivo/app` README now describe the social example and
+  its providers as they are, including Threads, images, Mastodon server limits and Bluesky
+  display names.
+- 57dc995: `create_project` takes `auth: 'oauth'` and `'email,oauth'`, and the `social` example.
+- Updated dependencies [57dc995]
+- Updated dependencies [57dc995]
+  - @cascivo/docs@0.2.14
+
 ## 0.8.2
 
 ### Patch Changes

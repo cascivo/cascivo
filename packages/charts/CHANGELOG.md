@@ -1,5 +1,17 @@
 # @cascivo/charts
 
+## 1.7.0
+
+### Patch Changes
+
+- Updated dependencies [db3f056]
+- Updated dependencies [db3f056]
+- Updated dependencies [db3f056]
+- Updated dependencies [db3f056]
+- Updated dependencies [57dc995]
+  - @cascivo/i18n@1.7.0
+  - @cascivo/core@1.7.0
+
 ## 1.6.0
 
 ### Patch Changes
