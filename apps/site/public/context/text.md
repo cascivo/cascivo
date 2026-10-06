@@ -93,10 +93,10 @@ Text renders a <p> by default, so a nested Text needs as="span" — a <p> inside
 
 ## Boundaries
 
-| Area               | Level    | Note                                                         |
-| ------------------ | -------- | ------------------------------------------------------------ |
-| as / size / weight | flexible | Choose element and treatment to fit context                  |
-| token names        | strict   | Font, leading, and color must resolve to --cascivo-\* tokens |
+| Area               | Level    | Note                                                        |
+| ------------------ | -------- | ----------------------------------------------------------- |
+| as / size / weight | flexible | Choose element and treatment to fit context                 |
+| token names        | strict   | Font, leading, and color must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

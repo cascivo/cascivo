@@ -85,11 +85,11 @@ A rule between groups. Carries no data and is skipped by keyboard navigation.
 
 ## Boundaries
 
-| Area                       | Level    | Note                                                                               |
-| -------------------------- | -------- | ---------------------------------------------------------------------------------- |
-| trigger element            | flexible | Any ReactElement works as the trigger; ref and aria props are merged in            |
-| controlled vs uncontrolled | flexible | Supports open + onOpenChange or fully internal state                               |
-| token names                | strict   | Menu styling resolves to semantic --cascivo-color-\* / --cascivo-z-dropdown tokens |
+| Area                       | Level    | Note                                                                              |
+| -------------------------- | -------- | --------------------------------------------------------------------------------- |
+| trigger element            | flexible | Any ReactElement works as the trigger; ref and aria props are merged in           |
+| controlled vs uncontrolled | flexible | Supports open + onOpenChange or fully internal state                              |
+| token names                | strict   | Menu styling resolves to semantic --cascivo-color-* / --cascivo-z-dropdown tokens |
 
 ## AI context prompt
 

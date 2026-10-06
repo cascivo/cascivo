@@ -81,7 +81,7 @@ Keeps list semantics without visual markers
 | Area        | Level    | Note                                                       |
 | ----------- | -------- | ---------------------------------------------------------- |
 | marker      | flexible | disc/decimal/none chosen to match content and visual needs |
-| token names | strict   | Spacing and text color must resolve to --cascivo-\* tokens |
+| token names | strict   | Spacing and text color must resolve to --cascivo-* tokens  |
 
 ## AI context prompt
 

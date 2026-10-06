@@ -76,10 +76,10 @@ Long trails collapse to the first item, an ellipsis, and the trailing items.
 
 ## Boundaries
 
-| Area        | Level    | Note                                                           |
-| ----------- | -------- | -------------------------------------------------------------- |
-| maxVisible  | flexible | Collapse long trails to fit available width                    |
-| token names | strict   | Text colors and focus ring must resolve to --cascivo-\* tokens |
+| Area        | Level    | Note                                                          |
+| ----------- | -------- | ------------------------------------------------------------- |
+| maxVisible  | flexible | Collapse long trails to fit available width                   |
+| token names | strict   | Text colors and focus ring must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

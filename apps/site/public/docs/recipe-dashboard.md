@@ -161,6 +161,7 @@ The canonical dashboard tile — a number, a trend, and a tiny chart — is eith
 // Layout-only Stat, with a sparkline in its trailing `visual` slot
 import { Stat } from '@cascivo/react'
 import { Sparkline } from '@cascivo/charts'
+
 ;<Stat
   label="Requests / min"
   value="1.2k"
@@ -173,6 +174,7 @@ import { Sparkline } from '@cascivo/charts'
 ```tsx
 // Or the charts package's own KPI tile, sparkline built in
 import { Kpi } from '@cascivo/charts'
+
 ;<Kpi
   label="Requests / min"
   value={1200}

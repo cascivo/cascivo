@@ -89,7 +89,7 @@ Drive the open state from the parent
 
 | Area                 | Level    | Note                                                                         |
 | -------------------- | -------- | ---------------------------------------------------------------------------- |
-| token names          | strict   | Trigger and bubble styling must resolve to the listed --cascivo-\* tokens    |
+| token names          | strict   | Trigger and bubble styling must resolve to the listed --cascivo-* tokens     |
 | content              | flexible | trigger and children accept arbitrary ReactNode supplied by the consumer     |
 | open state ownership | flexible | Use uncontrolled (defaultOpen) or controlled (open + onOpenChange) as needed |
 

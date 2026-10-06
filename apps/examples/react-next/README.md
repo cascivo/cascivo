@@ -9,7 +9,6 @@
 ![types](https://img.shields.io/badge/types-included-0079bf?style=flat-square&logo=typescript&logoColor=white)
 
 [cascivo.com](https://cascivo.com) · [Docs](https://cascivo.com/docs) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
-
 </div>
 
 ---

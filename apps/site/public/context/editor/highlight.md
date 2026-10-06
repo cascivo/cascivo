@@ -53,6 +53,7 @@ Renders a read-only <pre><code>; the line-number gutter is aria-hidden and an op
 ```jsx
 import { Highlight } from '@cascivo/editor'
 import '@cascivo/editor/styles.css'
+
 ;<Highlight language="json" value={'{ "ok": true }'} />
 ```
 

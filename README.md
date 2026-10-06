@@ -17,7 +17,6 @@
 [![AI--first](https://img.shields.io/badge/AI--first-MCP-8b5cf6?style=flat-square)](https://github.com/cascivo/cascivo/tree/main/packages/mcp)
 
 [cascivo.com](https://cascivo.com) · [Docs](https://cascivo.com/docs) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
-
 </div>
 
 ---

@@ -77,11 +77,11 @@ The label is associated to the input via htmlFor/id, error text is linked throug
 
 ## Boundaries
 
-| Area                      | Level    | Note                                                                                                        |
-| ------------------------- | -------- | ----------------------------------------------------------------------------------------------------------- |
-| token names               | strict   | Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascivo-\* tokens |
-| label / hint / error copy | flexible | Free, within content tone guidance                                                                          |
-| size                      | flexible | sm \| md \| lg, defaulting to md                                                                            |
+| Area                      | Level    | Note                                                                                                       |
+| ------------------------- | -------- | ---------------------------------------------------------------------------------------------------------- |
+| token names               | strict   | Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascivo-* tokens |
+| label / hint / error copy | flexible | Free, within content tone guidance                                                                         |
+| size                      | flexible | sm \| md \| lg, defaulting to md                                                                           |
 
 ## AI context prompt
 

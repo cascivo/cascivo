@@ -71,10 +71,10 @@ Renders a native <textarea> with aria-multiline; hint and error text are associa
 
 ## Boundaries
 
-| Area            | Level    | Note                                                                             |
-| --------------- | -------- | -------------------------------------------------------------------------------- |
-| token names     | strict   | Border/focus/error colors must resolve to --cascivo-color-\* / focus-ring tokens |
-| resize and rows | flexible | Consumer chooses initial rows and whether the field can resize                   |
+| Area            | Level    | Note                                                                            |
+| --------------- | -------- | ------------------------------------------------------------------------------- |
+| token names     | strict   | Border/focus/error colors must resolve to --cascivo-color-* / focus-ring tokens |
+| resize and rows | flexible | Consumer chooses initial rows and whether the field can resize                  |
 
 ## AI context prompt
 

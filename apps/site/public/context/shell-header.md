@@ -100,6 +100,7 @@ Brand with prefix, dropdown nav, global icon action
 
 ```jsx
 import { Bell } from '@cascivo/icons'
+
 ;<ShellHeader
   brand={{ prefix: 'cascivo', name: 'Console', href: '/' }}
   nav={[
@@ -128,10 +129,10 @@ center takes the header’s spare width, so the trigger grows and shrinks with t
 
 ## Boundaries
 
-| Area                      | Level    | Note                                                                   |
-| ------------------------- | -------- | ---------------------------------------------------------------------- |
-| nav / actions / end slots | flexible | Brand, nav, actions, and end are composable and optional               |
-| token names               | strict   | Surfaces, sizing, and accent must resolve to --cascivo-\* shell tokens |
+| Area                      | Level    | Note                                                                  |
+| ------------------------- | -------- | --------------------------------------------------------------------- |
+| nav / actions / end slots | flexible | Brand, nav, actions, and end are composable and optional              |
+| token names               | strict   | Surfaces, sizing, and accent must resolve to --cascivo-* shell tokens |
 
 ## AI context prompt
 

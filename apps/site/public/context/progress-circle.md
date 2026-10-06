@@ -71,10 +71,10 @@ role="progressbar" with value/max conveys completion to assistive tech; the labe
 
 ## Boundaries
 
-| Area               | Level    | Note                                                     |
-| ------------------ | -------- | -------------------------------------------------------- |
-| size and showValue | flexible | showValue pairs best with md/lg sizes                    |
-| token names        | strict   | Arc and track colors must resolve to --cascivo-\* tokens |
+| Area               | Level    | Note                                                    |
+| ------------------ | -------- | ------------------------------------------------------- |
+| size and showValue | flexible | showValue pairs best with md/lg sizes                   |
+| token names        | strict   | Arc and track colors must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

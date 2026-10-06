@@ -1334,11 +1334,11 @@ describe('DataTable CSV export', () => {
       },
     })
     Object.defineProperty(URL, 'revokeObjectURL', { configurable: true, value: () => {} })
-    const click = vi
-      .spyOn(HTMLAnchorElement.prototype, 'click')
-      .mockImplementation(function (this: HTMLAnchorElement) {
-        clicks.push(this.download)
-      })
+    const click = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function (
+      this: HTMLAnchorElement,
+    ) {
+      clicks.push(this.download)
+    })
     render(
       <DataTable
         columns={[

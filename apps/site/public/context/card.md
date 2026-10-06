@@ -72,10 +72,10 @@ role="region" is appropriate only when the card is a meaningful landmark; otherw
 
 ## Boundaries
 
-| Area                | Level    | Note                                                                    |
-| ------------------- | -------- | ----------------------------------------------------------------------- |
-| variant and padding | flexible | Choose elevation and density to fit the surrounding layout              |
-| token names         | strict   | Surface, border, radius, and shadow must resolve to --cascivo-\* tokens |
+| Area                | Level    | Note                                                                   |
+| ------------------- | -------- | ---------------------------------------------------------------------- |
+| variant and padding | flexible | Choose elevation and density to fit the surrounding layout             |
+| token names         | strict   | Surface, border, radius, and shadow must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

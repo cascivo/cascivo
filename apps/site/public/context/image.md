@@ -84,10 +84,10 @@ role="img" with alt names the image; on error it shows a fallback image or neutr
 
 ## Boundaries
 
-| Area        | Level    | Note                                                              |
-| ----------- | -------- | ----------------------------------------------------------------- |
-| radius      | flexible | Pick the corner radius that matches the surrounding surface       |
-| token names | strict   | Radius and placeholder colors must resolve to --cascivo-\* tokens |
+| Area        | Level    | Note                                                             |
+| ----------- | -------- | ---------------------------------------------------------------- |
+| radius      | flexible | Pick the corner radius that matches the surrounding surface      |
+| token names | strict   | Radius and placeholder colors must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

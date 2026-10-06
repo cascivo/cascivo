@@ -4638,7 +4638,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/command-menu/command-menu.module.css"
       ],
       "fileHashes": {
-        "command-menu.tsx": "sha256-a48d50944b047848270f4cdf0c6dede29d844ba1a429867e684dd4c0d9456c1e",
+        "command-menu.tsx": "sha256-eb7e7894b122b6e23e4086821176b329a0e0253d89917a68acfb99724581a700",
         "index.ts": "sha256-d08d121a4ef16627e1f176642cad93e731582c02ee31e7a6f0a8a1babc717715",
         "command-menu.module.css": "sha256-00c3aca20cd16fa9aa0b42959541f46120480085841c6ecaf895940886d33efb"
       },

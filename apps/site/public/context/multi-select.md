@@ -147,12 +147,12 @@ Options past the limit report aria-disabled; select-all stops at the limit.
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                                                           |
-| ----------- | -------- | -------------------------------------------------------------------------------------------------------------- |
-| token names | strict   | Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascivo-\* tokens |
-| labels      | flexible | Every user-visible string is overridable through labels                                                        |
-| options     | flexible | Caller supplies the option list and may mark options disabled or assign them a group                           |
-| filtering   | flexible | The default matcher folds diacritics and searches label then value; filter replaces it entirely                |
+| Area        | Level    | Note                                                                                                          |
+| ----------- | -------- | ------------------------------------------------------------------------------------------------------------- |
+| token names | strict   | Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascivo-* tokens |
+| labels      | flexible | Every user-visible string is overridable through labels                                                       |
+| options     | flexible | Caller supplies the option list and may mark options disabled or assign them a group                          |
+| filtering   | flexible | The default matcher folds diacritics and searches label then value; filter replaces it entirely               |
 
 ## AI context prompt
 

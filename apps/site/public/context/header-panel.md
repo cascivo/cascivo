@@ -65,10 +65,10 @@ Pair with a ShellHeader action: action active=open, onAction toggles open
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                  |
-| ----------- | -------- | --------------------------------------------------------------------- |
-| content     | flexible | Children are arbitrary panel content                                  |
-| token names | strict   | Surface, shadow, and sizing must resolve to --cascivo-\* shell tokens |
+| Area        | Level    | Note                                                                 |
+| ----------- | -------- | -------------------------------------------------------------------- |
+| content     | flexible | Children are arbitrary panel content                                 |
+| token names | strict   | Surface, shadow, and sizing must resolve to --cascivo-* shell tokens |
 
 ## AI context prompt
 

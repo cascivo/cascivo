@@ -73,7 +73,7 @@ Presentational by role; the title carries the meaning as text and the action is 
 | Area            | Level    | Note                                                                    |
 | --------------- | -------- | ----------------------------------------------------------------------- |
 | size and action | flexible | Action and icon are optional; size scales for full-page vs in-panel use |
-| token names     | strict   | Text and background colors must resolve to --cascivo-\* tokens          |
+| token names     | strict   | Text and background colors must resolve to --cascivo-* tokens           |
 
 ## AI context prompt
 

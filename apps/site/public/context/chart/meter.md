@@ -56,6 +56,7 @@ Shape of the `thresholds` prop.
 
 ```jsx
 import { Meter } from '@cascivo/charts'
+
 ;<Meter value={72} label="CPU usage" />
 ```
 

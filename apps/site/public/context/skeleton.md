@@ -83,7 +83,7 @@ Presentational by role — the placeholder shapes carry no meaning; the surround
 | Area                   | Level    | Note                                                           |
 | ---------------------- | -------- | -------------------------------------------------------------- |
 | variant and dimensions | flexible | Shape, width, height, and line count match the pending content |
-| token names            | strict   | Background and radius must resolve to --cascivo-\* tokens      |
+| token names            | strict   | Background and radius must resolve to --cascivo-* tokens       |
 
 ## AI context prompt
 

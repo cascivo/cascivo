@@ -95,6 +95,7 @@ Collapsed rail: icons-only with tooltips, grapheme fallback for icon-less items,
 
 ```jsx
 import { Home } from '@cascivo/icons'
+
 ;<SideNav collapsed items={[{ label: 'Home', href: '/', icon: <Home size={16} /> }]} />
 ```
 
@@ -108,10 +109,10 @@ Rail widens as CSS overlay on hover without reflowing adjacent content
 
 ## Boundaries
 
-| Area                      | Level    | Note                                                             |
-| ------------------------- | -------- | ---------------------------------------------------------------- |
-| collapsed / expandOnHover | flexible | Rail behavior is configurable for density needs                  |
-| token names               | strict   | Sizing, surfaces, and motion must resolve to --cascivo-\* tokens |
+| Area                      | Level    | Note                                                            |
+| ------------------------- | -------- | --------------------------------------------------------------- |
+| collapsed / expandOnHover | flexible | Rail behavior is configurable for density needs                 |
+| token names               | strict   | Sizing, surfaces, and motion must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

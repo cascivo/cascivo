@@ -74,7 +74,7 @@ describe('type-exports-parity — every core type naming a published prop is imp
       )
     : []
 
-  /** Names the main entry re-exports (its final flat `export { … }` statement). */
+  /** Names the main entry exports: its final flat `export { … }` plus inline `export` declarations. */
   const mainExports = new Set<string>()
   const exportBlocks = [...indexDts.matchAll(/^export \{([\s\S]*?)\};/gm)]
   const last = exportBlocks.at(-1)
@@ -82,6 +82,12 @@ describe('type-exports-parity — every core type naming a published prop is imp
     for (const name of last[1]!.split(',')) {
       mainExports.add(name.trim().replace(/^type\s+/, ''))
     }
+  }
+  // vite-plus 1's dts bundler also exports declarations inline (`export declare function X`).
+  for (const m of indexDts.matchAll(
+    /^export (?:declare )?(?:function|const|class|enum|interface|type) ([A-Za-z_$][\w$]*)/gm,
+  )) {
+    mainExports.add(m[1]!)
   }
 
   /** Names the `./types` subpath exports. */

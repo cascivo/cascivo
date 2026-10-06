@@ -74,10 +74,10 @@ role="banner" marks the page header landmark; the active link is marked aria-cur
 
 ## Boundaries
 
-| Area              | Level    | Note                                                             |
-| ----------------- | -------- | ---------------------------------------------------------------- |
-| links and actions | flexible | Brand, links, and actions slots are optional and composable      |
-| token names       | strict   | Surface, border, and z-index must resolve to --cascivo-\* tokens |
+| Area              | Level    | Note                                                            |
+| ----------------- | -------- | --------------------------------------------------------------- |
+| links and actions | flexible | Brand, links, and actions slots are optional and composable     |
+| token names       | strict   | Surface, border, and z-index must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 
