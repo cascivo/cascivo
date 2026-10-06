@@ -6888,6 +6888,8 @@ export async function receiveFeedback(request: Request, env: NewsletterEnv): Pro
   if (!env.SNS_TOPIC_ARN) throw new HttpError(503, 'Set SNS_TOPIC_ARN in wrangler.jsonc (README)')
   return handleSns(request, {
     topicArn: env.SNS_TOPIC_ARN,
+    // The one topic configured above: confirming it is the operator's own choice.
+    confirmSubscriptions: true,
     onNotification: async ({ message }) => {
       const event = parseSesNotification(message)
       const suppress =

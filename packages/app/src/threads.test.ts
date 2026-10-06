@@ -171,6 +171,26 @@ describe('threadsPublisher', () => {
     expect(net.calls[0]!.authorization).toBe('Bearer th-at')
   })
 
+  it('replies to a post, and passes an image given by URL as it is', async () => {
+    const net = fakeThreads()
+    const publisher = threadsPublisher({ fetch: net.doFetch, pollMs: 0 })
+    expect(publisher.measure('😀a')).toBe(5)
+    const image = { url: 'https://media.example/a.png', alt: 'A chart' }
+    expect(publisher.check({ text: 'x', images: [image] })).toEqual([])
+    await publisher.publish(
+      target,
+      { text: 'More', images: [image] },
+      {
+        replyTo: { id: 'm0', url: null },
+      },
+    )
+    expect(Object.fromEntries(net.calls[0]!.form!)).toMatchObject({
+      media_type: 'IMAGE',
+      image_url: 'https://media.example/a.png',
+      reply_to_id: 'm0',
+    })
+  })
+
   it('waits for an image Meta is still fetching, with its alt text', async () => {
     let polls = 0
     const net = fakeThreads((call) =>

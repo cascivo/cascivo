@@ -10,7 +10,9 @@ import { JwtError, verifyJwt } from './jwt'
  * - `rateLimit` — the Rate Limiting binding, per caller.
  *
  * Each throws an `HttpError` (403, 429), so a `createHandler` handler — or a check at the top
- * of the Worker's `fetch` — answers with the right status and message.
+ * of the Worker's `fetch` — answers with the right status and message. Where the answer to a
+ * failure is the app's to choose, `turnstileResult` returns the outcome instead, and
+ * `RateLimiter.limit` already does.
  */
 
 /* ----------------------------------- Access ---------------------------------- */
@@ -90,16 +92,42 @@ export interface TurnstileOptions {
   fetch?: typeof fetch
 }
 
+/** A failed Turnstile check: `HttpError(403)` with Cloudflare's `error-codes` attached. */
+export class TurnstileError extends HttpError {
+  /**
+   * Cloudflare's `error-codes` (`invalid-input-response`, `timeout-or-duplicate`…); empty
+   * when the token was missing or was for another action or hostname — `reason` says which.
+   */
+  readonly errorCodes: readonly string[]
+  readonly reason: TurnstileFailure
+
+  constructor(reason: TurnstileFailure, message: string, errorCodes: readonly string[]) {
+    super(403, message)
+    this.name = 'TurnstileError'
+    this.reason = reason
+    this.errorCodes = errorCodes
+  }
+}
+
+/** Why a challenge did not pass: no token, Cloudflare said no, or another action/hostname. */
+export type TurnstileFailure = 'missing' | 'failed' | 'action' | 'hostname'
+
+export type TurnstileResult =
+  | { ok: true }
+  | { ok: false; reason: TurnstileFailure; errorCodes: readonly string[]; message: string }
+
 /**
- * Verifies a Turnstile token with Cloudflare's siteverify API. Throws `HttpError(403)` when it
- * is missing, invalid, spent or for another action/hostname. A token is single-use: verify it
- * once, at the request it came with.
+ * `verifyTurnstile` as a value instead of a throw, for a caller whose answer to a failed
+ * challenge depends on who asked (the form again for a browser, a problem document for an
+ * API). Throws only when siteverify itself cannot be read.
  */
-export async function verifyTurnstile(
+export async function turnstileResult(
   token: string | null | undefined,
   options: TurnstileOptions,
-): Promise<void> {
-  if (!token || token.length > 2048) throw new HttpError(403, 'Complete the challenge first')
+): Promise<TurnstileResult> {
+  const fail = (reason: TurnstileFailure, message: string, errorCodes: readonly string[] = []) =>
+    ({ ok: false, reason, errorCodes, message }) as const
+  if (!token || token.length > 2048) return fail('missing', 'Complete the challenge first')
   const form = new FormData()
   form.set('secret', options.secret)
   form.set('response', token)
@@ -114,17 +142,30 @@ export async function verifyTurnstile(
     throw new Error('Turnstile siteverify returned no JSON')
   const result = body as Record<string, unknown>
   if (result['success'] !== true) {
-    const codes = Array.isArray(result['error-codes'])
-      ? result['error-codes'].join(', ')
-      : 'unknown'
-    throw new HttpError(403, `The challenge failed (${codes})`)
+    const raw = result['error-codes']
+    const codes = Array.isArray(raw) ? raw.filter((c): c is string => typeof c === 'string') : []
+    return fail('failed', `The challenge failed (${codes.join(', ') || 'unknown'})`, codes)
   }
   if (options.action !== undefined && result['action'] !== options.action) {
-    throw new HttpError(403, 'The challenge was for another form')
+    return fail('action', 'The challenge was for another form')
   }
   if (options.hostname !== undefined && result['hostname'] !== options.hostname) {
-    throw new HttpError(403, 'The challenge was for another site')
+    return fail('hostname', 'The challenge was for another site')
   }
+  return { ok: true }
+}
+
+/**
+ * Verifies a Turnstile token with Cloudflare's siteverify API. Throws `TurnstileError` (an
+ * `HttpError(403)` carrying `errorCodes`) when it is missing, invalid, spent or for another
+ * action/hostname. A token is single-use: verify it once, at the request it came with.
+ */
+export async function verifyTurnstile(
+  token: string | null | undefined,
+  options: TurnstileOptions,
+): Promise<void> {
+  const result = await turnstileResult(token, options)
+  if (!result.ok) throw new TurnstileError(result.reason, result.message, result.errorCodes)
 }
 
 /* -------------------------------- rate limits -------------------------------- */
@@ -163,7 +204,8 @@ export function guardResponse(error: unknown): Response {
 /**
  * How the sender signs: `github` (`X-Hub-Signature-256`), `stripe` (`Stripe-Signature`, with
  * a timestamp) or `standard` (Standard Webhooks — `webhook-id`, `webhook-timestamp`,
- * `webhook-signature` — used by Svix, Clerk, Resend and others).
+ * `webhook-signature` — used by Svix, Clerk, Resend and others; Svix's original `svix-id`,
+ * `svix-timestamp` and `svix-signature` spellings are read too).
  */
 export type WebhookScheme = 'github' | 'stripe' | 'standard'
 
@@ -254,11 +296,23 @@ export async function verifyWebhook(
   options: WebhookOptions,
 ): Promise<VerifiedWebhook> {
   if (!options.secret) throw new Error('verifyWebhook: no secret configured')
-  const body = await request.text()
+  return verifyWebhookBody(await request.text(), request.headers, options)
+}
+
+/**
+ * `verifyWebhook` for a body already read: the raw body exactly as it arrived (not re-encoded
+ * JSON) and the request's headers.
+ */
+export async function verifyWebhookBody(
+  body: string,
+  headers: HeadersInit,
+  options: WebhookOptions,
+): Promise<VerifiedWebhook> {
+  if (!options.secret) throw new Error('verifyWebhook: no secret configured')
   const encoder = new TextEncoder()
   const tolerance = options.toleranceSeconds ?? 300
-  const header = (name: string) => request.headers.get(name)
-
+  const received = new Headers(headers)
+  const header = (name: string) => received.get(name)
   if (options.scheme === 'github') {
     const signature = header('x-hub-signature-256') ?? refused('no X-Hub-Signature-256')
     const bytes = hexBytes(signature.replace(/^sha256=/, '')) ?? refused('malformed signature')
@@ -280,14 +334,16 @@ export async function verifyWebhook(
     return refused('bad signature')
   }
 
-  const id = header('webhook-id') ?? refused('no webhook-id')
-  const timestamp = Number(header('webhook-timestamp'))
+  // Svix, and senders on its libraries (Resend, Clerk), still send the `svix-*` spellings.
+  const standard = (field: string) => header(`webhook-${field}`) ?? header(`svix-${field}`)
+  const id = standard('id') ?? refused('no webhook-id')
+  const timestamp = Number(standard('timestamp'))
   checkTimestamp(timestamp, tolerance)
   const key = base64Bytes(options.secret.replace(/^whsec_/, ''))
   // A wrong secret is this app's misconfiguration, not the sender's fault: a 500, not a 401.
   if (!key) throw new Error('verifyWebhook: a standard secret is "whsec_" and base64')
   // Several space-separated "v1,<base64>" signatures while a secret is being rotated.
-  for (const entry of (header('webhook-signature') ?? refused('no webhook-signature')).split(' ')) {
+  for (const entry of (standard('signature') ?? refused('no webhook-signature')).split(' ')) {
     const [version, signature] = entry.split(',')
     const bytes = version === 'v1' && signature ? base64Bytes(signature) : null
     if (bytes && (await hmacValid(key, bytes, `${id}.${timestamp}.${body}`))) return { body, id }

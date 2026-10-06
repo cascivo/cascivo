@@ -15,14 +15,14 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@cascivo/app": "1.6.0",
-    "@cascivo/react": "1.6.0",
-    "@cascivo/themes": "1.0.1",
+    "@cascivo/app": "1.7.0",
+    "@cascivo/react": "1.7.0",
+    "@cascivo/themes": "1.0.2",
     "@preact/signals-react": ">=3.0.0",
     "preact": "^10.29.0"
   },
   "devDependencies": {
-    "@cascivo/eslint-config": "0.4.1",
+    "@cascivo/eslint-config": "0.4.2",
     "@cloudflare/vite-plugin": "^1.62.0",
     "@eslint/js": "^9.0.0",
     "@types/react": "^19.0.0",

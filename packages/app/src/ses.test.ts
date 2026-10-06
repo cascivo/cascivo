@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import {
   SesError,
   certificatePublicKey,
+  confirmSnsSubscription,
   createSes,
   handleSns,
   parseSesNotification,
@@ -151,6 +152,43 @@ describe('createSes', () => {
     ).rejects.toMatchObject({ retryable: true })
   })
 
+  it('reads an identity: whether it sends, and its DKIM CNAMEs on the region’s zone', async () => {
+    const { calls, fetch } = stubFetch((url) =>
+      url.endsWith('/missing.example')
+        ? new Response(JSON.stringify({ message: 'Identity does not exist' }), {
+            status: 404,
+            headers: { 'x-amzn-errortype': 'NotFoundException:' },
+          })
+        : Response.json({
+            VerifiedForSendingStatus: false,
+            DkimAttributes: {
+              Status: 'PENDING',
+              SigningAttributesOrigin: 'AWS_SES',
+              SigningHostedZone: 'dkim.af-south-1.amazonses.com',
+              Tokens: ['t1', 't2', 't3'],
+            },
+          }),
+    )
+    const identity = await ses(fetch).identity('Example.com')
+    expect(calls[0]!.url).toBe(
+      'https://email.eu-west-1.amazonaws.com/v2/email/identities/Example.com',
+    )
+    expect(calls[0]!.init.method).toBe('GET')
+    expect(identity).toEqual({
+      verified: false,
+      dkim: {
+        status: 'PENDING',
+        records: ['t1', 't2', 't3'].map((t) => ({
+          type: 'CNAME',
+          name: `${t}._domainkey.example.com`,
+          value: `${t}.dkim.af-south-1.amazonses.com`,
+        })),
+      },
+    })
+    expect(await ses(fetch).identity('missing.example')).toBeNull()
+    await expect(ses(fetch).identity('a/b')).rejects.toThrow(/not a domain/)
+  })
+
   it('sends a composed message: names, cc, bcc, reply-to and attachments', async () => {
     const { calls, fetch } = stubFetch(() => Response.json({ MessageId: 'ses-456' }))
     const sent = await ses(fetch).send({
@@ -266,7 +304,11 @@ const TOPIC = 'arn:aws:sns:eu-west-1:123456789012:ses-feedback'
 /** Serves the fixture certificate at its SNS URL and answers confirmation links. */
 function snsFetch() {
   return stubFetch((url) =>
-    url.endsWith('.pem') ? new Response(SNS_FIXTURES.cert) : new Response('<ok/>'),
+    url.endsWith('.pem')
+      ? new Response(SNS_FIXTURES.cert)
+      : new Response(
+          `<ConfirmSubscriptionResponse><ConfirmSubscriptionResult><SubscriptionArn>${TOPIC}:sub-1</SubscriptionArn></ConfirmSubscriptionResult></ConfirmSubscriptionResponse>`,
+        ),
   )
 }
 
@@ -316,25 +358,109 @@ describe('verifySnsMessage', () => {
     }
     await expect(verify({ ...original, SignatureVersion: '3' })).rejects.toThrow(/SignatureVersion/)
   })
+
+  it('accepts a list of topics or a test, and refuses an empty list', async () => {
+    const { fetch } = snsFetch()
+    const body = JSON.stringify(SNS_FIXTURES.notificationV2)
+    await expect(
+      verifySnsMessage(body, { topicArn: [`${TOPIC}-a`, TOPIC], fetch }),
+    ).resolves.toMatchObject({ messageId: 'm-1' })
+    await expect(
+      verifySnsMessage(body, { topicArn: (arn) => arn.endsWith(':ses-feedback'), fetch }),
+    ).resolves.toMatchObject({ messageId: 'm-1' })
+    await expect(verifySnsMessage(body, { topicArn: [`${TOPIC}-a`], fetch })).rejects.toThrow(
+      /another topic/,
+    )
+    await expect(verifySnsMessage(body, { topicArn: [], fetch })).rejects.toThrow(/no topicArn/)
+  })
+})
+
+describe('confirmSnsSubscription', () => {
+  it('confirms on the topic’s own regional host, built from the ARN and token', async () => {
+    const { calls, fetch } = snsFetch()
+    expect(await confirmSnsSubscription({ topicArn: TOPIC, token: 'tok-123', fetch })).toEqual({
+      subscriptionArn: `${TOPIC}:sub-1`,
+    })
+    const url = new URL(calls[0]!.url)
+    expect(url.host).toBe('sns.eu-west-1.amazonaws.com')
+    expect(Object.fromEntries(url.searchParams)).toEqual({
+      Action: 'ConfirmSubscription',
+      TopicArn: TOPIC,
+      Token: 'tok-123',
+    })
+    const china = stubFetch(
+      () => new Response(`<SubscriptionArn>arn:aws-cn:sns:x</SubscriptionArn>`),
+    )
+    await confirmSnsSubscription({
+      topicArn: 'arn:aws-cn:sns:cn-north-1:123456789012:t',
+      token: 't',
+      fetch: china.fetch,
+    })
+    expect(new URL(china.calls[0]!.url).host).toBe('sns.cn-north-1.amazonaws.com.cn')
+  })
+
+  it('refuses a malformed ARN, and says why SNS would not confirm', async () => {
+    const { fetch } = snsFetch()
+    for (const topicArn of ['arn:aws:sns:eu-west-1.evil.example:123456789012:t', 'nope']) {
+      await expect(confirmSnsSubscription({ topicArn, token: 't', fetch })).rejects.toThrow(
+        /not an SNS topic ARN/,
+      )
+    }
+    const expired = stubFetch(
+      () =>
+        new Response(
+          '<ErrorResponse><Error><Message>Invalid token</Message></Error></ErrorResponse>',
+          {
+            status: 400,
+          },
+        ),
+    )
+    await expect(
+      confirmSnsSubscription({ topicArn: TOPIC, token: 't', fetch: expired.fetch }),
+    ).rejects.toThrow(/Invalid token/)
+    const pending = stubFetch(
+      () => new Response('<SubscriptionArn>pending confirmation</SubscriptionArn>'),
+    )
+    await expect(
+      confirmSnsSubscription({ topicArn: TOPIC, token: 't', fetch: pending.fetch }),
+    ).rejects.toThrow(/pending confirmation/)
+  })
 })
 
 describe('handleSns', () => {
   const post = (message: object) =>
     new Request('https://app.example/api/sns', { method: 'POST', body: JSON.stringify(message) })
 
-  it('confirms a subscription by fetching its SubscribeURL', async () => {
+  it('hands a subscription request to onSubscription, and confirms nothing itself', async () => {
     const { calls, fetch } = snsFetch()
-    const seen: string[] = []
+    const subscriptions: string[] = []
     const response = await handleSns(post(SNS_FIXTURES.subscription), {
       topicArn: TOPIC,
       fetch,
-      onNotification: async (n) => {
-        seen.push(n.messageId)
+      onNotification: async () => {
+        throw new Error('not a notification')
+      },
+      onSubscription: async (s) => {
+        subscriptions.push(`${s.topicArn} ${s.token}`)
       },
     })
     expect(response.status).toBe(200)
-    expect(calls.map((c) => c.url)).toContain(SNS_FIXTURES.subscription.SubscribeURL)
-    expect(seen).toEqual([])
+    expect(subscriptions).toEqual([`${TOPIC} tok-123`])
+    expect(calls.filter((c) => !c.url.endsWith('.pem'))).toEqual([])
+  })
+
+  it('with confirmSubscriptions, confirms from the verified topic and token, not SubscribeURL', async () => {
+    const { calls, fetch } = snsFetch()
+    const response = await handleSns(post({ ...SNS_FIXTURES.subscription }), {
+      topicArn: TOPIC,
+      fetch,
+      confirmSubscriptions: true,
+      onNotification: async () => {},
+    })
+    expect(await response.json()).toEqual({ confirmed: true })
+    const confirmation = calls.find((c) => !c.url.endsWith('.pem'))!
+    expect(new URL(confirmation.url).searchParams.get('Token')).toBe('tok-123')
+    expect(confirmation.init.redirect).toBe('manual')
   })
 
   it('passes a verified notification on, and answers 401 for a forged one', async () => {
@@ -359,8 +485,11 @@ describe('parseSesNotification', () => {
     expect(parseSesNotification(SNS_FIXTURES.notificationV2.Message)).toEqual({
       kind: 'bounce',
       bounceType: 'Permanent',
+      subType: null,
+      diagnostic: null,
       recipients: ['gone@example.org'],
       messageId: 'ses-1',
+      at: null,
     })
     expect(
       parseSesNotification(
@@ -369,7 +498,7 @@ describe('parseSesNotification', () => {
           complaint: { complainedRecipients: [{ emailAddress: 'angry@example.org' }, {}] },
         }),
       ),
-    ).toEqual({ kind: 'complaint', recipients: ['angry@example.org'], messageId: null })
+    ).toEqual({ kind: 'complaint', recipients: ['angry@example.org'], messageId: null, at: null })
     expect(
       parseSesNotification(
         JSON.stringify({ notificationType: 'Delivery', delivery: { recipients: ['ok@x.io'] } }),
@@ -378,7 +507,40 @@ describe('parseSesNotification', () => {
     expect(parseSesNotification(JSON.stringify({ eventType: 'Open' }))).toEqual({
       kind: 'other',
       type: 'Open',
+      at: null,
     })
+  })
+
+  it('keeps when it happened, and why a bounce bounced', () => {
+    const bounce = parseSesNotification(
+      JSON.stringify({
+        notificationType: 'Bounce',
+        mail: { messageId: 'ses-1', timestamp: '2026-10-01T11:59:00.000Z' },
+        bounce: {
+          bounceType: 'Permanent',
+          bounceSubType: 'OnAccountSuppressionList',
+          timestamp: '2026-10-01T12:00:00.000Z',
+          bouncedRecipients: [
+            { emailAddress: 'gone@example.org', diagnosticCode: 'smtp; 550 5.1.1 user unknown' },
+          ],
+        },
+      }),
+    )
+    expect(bounce).toMatchObject({
+      subType: 'OnAccountSuppressionList',
+      diagnostic: 'smtp; 550 5.1.1 user unknown',
+      at: Date.parse('2026-10-01T12:00:00.000Z'),
+    })
+    // Without the event's own time, the message's.
+    expect(
+      parseSesNotification(
+        JSON.stringify({
+          eventType: 'DeliveryDelay',
+          mail: { timestamp: '2026-10-01T11:59:00.000Z' },
+          deliveryDelay: { timestamp: 'not a date' },
+        }),
+      ),
+    ).toEqual({ kind: 'other', type: 'DeliveryDelay', at: Date.parse('2026-10-01T11:59:00.000Z') })
   })
 
   it('refuses what is not an SES notification', () => {

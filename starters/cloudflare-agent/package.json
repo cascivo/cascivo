@@ -15,14 +15,14 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@cascivo/app": "1.6.0",
-    "@cascivo/react": "1.6.0",
-    "@cascivo/themes": "1.0.1",
+    "@cascivo/app": "1.7.0",
+    "@cascivo/react": "1.7.0",
+    "@cascivo/themes": "1.0.2",
     "@preact/signals-react": ">=3.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "@ai-sdk/react": "^4.0.0",
-    "@cascivo/render": "1.6.0",
+    "@cascivo/render": "1.7.0",
     "@cloudflare/ai-chat": "^0.12.1",
     "agents": "^0.26.0",
     "ai": "^7.0.0",
@@ -30,7 +30,7 @@
     "zod": "^4.0.0"
   },
   "devDependencies": {
-    "@cascivo/eslint-config": "0.4.1",
+    "@cascivo/eslint-config": "0.4.2",
     "@cloudflare/vite-plugin": "^1.62.0",
     "@cloudflare/workers-types": "^5.0.0",
     "@eslint/js": "^9.0.0",

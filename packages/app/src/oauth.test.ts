@@ -8,6 +8,7 @@ import {
   linkedin,
   OAuthError,
   parsePendingAuthorization,
+  renewalDue,
   seal,
   unseal,
 } from './oauth'
@@ -360,6 +361,40 @@ describe('github', () => {
       code: 'provider_error',
       message: 'The code passed is incorrect or expired.',
     })
+  })
+})
+
+describe('renewalDue', () => {
+  const DAY = 86_400
+  const now = 1_000_000_000
+  const tokens = (expiresIn: number | null, refreshToken: string | null = null) => ({
+    accessToken: 'a',
+    refreshToken,
+    expiresAt: expiresIn === null ? null : now + expiresIn,
+    scopes: [],
+  })
+  const refresh = async () => tokens(3600)
+
+  it('renews a refresh-token provider when the token is about to expire, or has', () => {
+    const provider = { refresh }
+    expect(renewalDue(provider, tokens(3600, 'r'), { now })).toBe('no')
+    expect(renewalDue(provider, tokens(30, 'r'), { now })).toBe('soon')
+    expect(renewalDue(provider, tokens(-30, 'r'), { now })).toBe('soon')
+    expect(renewalDue(provider, tokens(null, 'r'), { now })).toBe('no')
+  })
+
+  it('renews a self-renewing token inside its window, while it still works', () => {
+    const provider = { refresh, refreshAhead: 30 * DAY }
+    expect(renewalDue(provider, tokens(40 * DAY), { now })).toBe('no')
+    expect(renewalDue(provider, tokens(20 * DAY), { now })).toBe('soon')
+    expect(renewalDue(provider, tokens(-1), { now })).toBe('cannot')
+  })
+
+  it('warns ahead of a token nothing can renew', () => {
+    const provider = {}
+    expect(renewalDue(provider, tokens(10 * DAY), { now })).toBe('no')
+    expect(renewalDue(provider, tokens(3 * DAY), { now })).toBe('cannot')
+    expect(renewalDue(provider, tokens(10 * DAY), { now, warnSeconds: 14 * DAY })).toBe('cannot')
   })
 })
 

@@ -12,7 +12,13 @@ import {
   parseBlueskyKey,
 } from './oauth'
 import type { BlueskyKey, PendingAuthorization, TokenSet } from './oauth'
-import { blueskyFacets, blueskyLength, blueskyPublisher, blueskyRecordKey } from './social'
+import {
+  blueskyFacets,
+  blueskyLength,
+  blueskyPublisher,
+  blueskyRecordKey,
+  publishThread,
+} from './social'
 
 const DID = 'did:plc:abcdefghijklmnopqrstuvwx'
 const OTHER = 'did:plc:zzzzzzzzzzzzzzzzzzzzzzzz'
@@ -180,6 +186,7 @@ function network(shape: Shape = {}) {
         return record
           ? Response.json({
               uri: `at://${DID}/app.bsky.feed.post/${u.searchParams.get('rkey')}`,
+              cid: `cid-${u.searchParams.get('rkey')}`,
               value: record,
             })
           : Response.json({ error: 'RecordNotFound' }, { status: 400 })
@@ -207,7 +214,7 @@ function network(shape: Shape = {}) {
         const b = body as { rkey?: string; record: unknown }
         const rkey = b.rkey ?? 'serverkey000a'
         records.set(rkey, b.record)
-        return Response.json({ uri: `at://${DID}/app.bsky.feed.post/${rkey}`, cid: 'bafy2' })
+        return Response.json({ uri: `at://${DID}/app.bsky.feed.post/${rkey}`, cid: `cid-${rkey}` })
       }
     }
     throw new Error(`Unexpected fetch ${url}`)
@@ -438,9 +445,11 @@ describe('blueskyPublisher', () => {
     const options = { idempotencyKey: 'post-1:acct', createdAt: new Date('2026-10-03T12:00:00Z') }
     const first = await publisher.publish(target, post, options)
     const rkey = await blueskyRecordKey(options.createdAt, options.idempotencyKey)
+    const uri = `at://${DID}/app.bsky.feed.post/${rkey}`
     expect(first).toEqual({
-      id: `at://${DID}/app.bsky.feed.post/${rkey}`,
+      id: uri,
       url: `https://bsky.app/profile/${DID}/post/${rkey}`,
+      replyRef: { cid: `cid-${rkey}`, rootUri: uri, rootCid: `cid-${rkey}` },
     })
     const record = net.records.get(rkey) as Record<string, unknown>
     expect(record).toMatchObject({
@@ -462,5 +471,56 @@ describe('blueskyPublisher', () => {
     await expect(
       blueskyPublisher().publish({ tokens, subject: DID, server: 'pds.example' }, { text: 'Hi' }),
     ).rejects.toMatchObject({ kind: 'reconnect' })
+  })
+
+  it('threads: each part replies to the one before, under the first as root', async () => {
+    const net = network()
+    const tokens = await session(net)
+    const publisher = blueskyPublisher({ fetch: net.doFetch })
+    const target = { tokens, subject: DID, server: 'pds.example' }
+    const createdAt = new Date('2026-10-03T12:00:00Z')
+    const parts = await publishThread(
+      publisher,
+      target,
+      [{ text: 'one' }, { text: 'two' }, { text: 'three' }],
+      { idempotencyKey: 'thread-1', createdAt },
+    )
+    const keys = await Promise.all(
+      [0, 1, 2].map((i) => blueskyRecordKey(createdAt, `thread-1:${i}`)),
+    )
+    const ref = (rkey: string) => ({
+      uri: `at://${DID}/app.bsky.feed.post/${rkey}`,
+      cid: `cid-${rkey}`,
+    })
+    expect(net.records.get(keys[0]!)).not.toHaveProperty('reply')
+    expect(net.records.get(keys[1]!)).toMatchObject({
+      reply: { root: ref(keys[0]!), parent: ref(keys[0]!) },
+    })
+    expect(net.records.get(keys[2]!)).toMatchObject({
+      reply: { root: ref(keys[0]!), parent: ref(keys[1]!) },
+    })
+    expect(parts.map((p) => p.id)).toEqual(keys.map((k) => ref(k).uri))
+    // A reply needs the post as publish returned it, not a bare id.
+    await expect(
+      publisher.publish(target, { text: 'x' }, { replyTo: { id: parts[0]!.id, url: null } }),
+    ).rejects.toMatchObject({ kind: 'invalid' })
+  })
+
+  it('fetches an image given by URL, and checks its type once fetched', async () => {
+    const net = network()
+    const tokens = await session(net)
+    const images = (type: string): typeof fetch =>
+      (async (input: RequestInfo | URL, init?: RequestInit) =>
+        String(input).startsWith('https://media.example/')
+          ? new Response(new Blob(['png'], { type }))
+          : net.doFetch(input, init)) as typeof fetch
+    const target = { tokens, subject: DID, server: 'pds.example' }
+    const post = { text: 'x', images: [{ url: 'https://media.example/a.png', alt: 'A chart' }] }
+    expect(blueskyPublisher().check(post)).toEqual([])
+    await blueskyPublisher({ fetch: images('image/png') }).publish(target, post)
+    expect(net.log.some((l) => l.url.endsWith('uploadBlob'))).toBe(true)
+    await expect(
+      blueskyPublisher({ fetch: images('text/html') }).publish(target, post),
+    ).rejects.toMatchObject({ kind: 'invalid', message: expect.stringMatching(/text\/html/) })
   })
 })

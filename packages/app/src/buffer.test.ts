@@ -135,6 +135,30 @@ describe('bufferPublisher', () => {
     ).toEqual(['bad_image'])
   })
 
+  it('takes images by URL without uploadImage, and refuses a reply it cannot post', async () => {
+    const net = fakeBuffer(created)
+    const publisher = bufferPublisher({ fetch: net.doFetch })
+    const post = { text: 'x', images: [{ url: 'https://media.example/a.png', alt: 'A chart' }] }
+    expect(publisher.check(post)).toEqual([])
+    await publisher.publish({ tokens, subject: 'ch-1' }, post)
+    expect(net.queries[0]!.query).toContain(
+      'assets: [{ image: { url: "https://media.example/a.png" } }]',
+    )
+    await expect(
+      publisher.publish(
+        { tokens, subject: 'ch-1' },
+        { text: 'more' },
+        {
+          replyTo: { id: 'p-1', url: null },
+        },
+      ),
+    ).rejects.toMatchObject({
+      kind: 'invalid',
+      message: expect.stringMatching(/cannot post a reply/),
+    })
+    expect(net.queries).toHaveLength(1)
+  })
+
   it('shares now, or hands Buffer a later time; user text cannot break out of the query', async () => {
     const net = fakeBuffer(created)
     const publisher = bufferPublisher({
