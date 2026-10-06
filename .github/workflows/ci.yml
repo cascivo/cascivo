@@ -356,8 +356,15 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
+      # Two tasks at a time here, not vp's default four. On PR #270 this job twice failed
+      # to START `@cascivo/react`'s flatten-types step ("Failed to spawn process: Resource
+      # temporarily unavailable (os error 11)") right after the widest vite build in the
+      # graph, while `typecheck` and `build-guards` ran the identical build on the same
+      # commit and passed. Locally the build peaks at the same thread count as main's, so
+      # the limit hit is the runner's, not a leak; fewer concurrent tasks keeps the spawn
+      # clear of it. Measured cost: 87s → 111s on a job that takes ~6 min.
       - name: Build (vp run -r build)
-        run: pnpm exec vp run -r build
+        run: pnpm exec vp run -r --concurrency-limit 2 build
 
       - name: Test (vp run -r test)
         run: pnpm run test
