@@ -20,7 +20,7 @@
  * vp. The rules and the scope-off list stay in sync with
  * docs/USING-WITH-STRICT-ESLINT.md.
  */
-import { existsSync, readdirSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawnSync } from 'node:child_process'
@@ -38,6 +38,9 @@ function findOxlintBin() {
   const candidates = readdirSync(pnpmDir)
     .filter((d) => d.startsWith('oxlint@'))
     .map((d) => join(pnpmDir, d, 'node_modules', 'oxlint', 'bin', 'oxlint'))
+  // Newest first: a store that still holds an older oxlint (left from before a vp bump) must
+  // not mask what CI's clean install runs.
+  candidates.sort((a, b) => b.localeCompare(a, undefined, { numeric: true }))
   const bin = candidates.find((p) => existsSync(p))
   if (!bin) {
     console.error('lint:host-strict: could not locate the oxlint binary under node_modules/.pnpm.')
@@ -50,7 +53,20 @@ const bin = findOxlintBin()
 const config = join(here, '.oxlintrc.json')
 const target = join('packages', 'components', 'src')
 
-const result = spawnSync(bin, ['-c', config, target], { cwd: ROOT, stdio: 'inherit' })
+/*
+ * oxlint 1.85 resolves a config's `ignorePatterns` inside the config file's own directory
+ * (and rejects `..`), so the list in .oxlintrc.json no longer matches packages/components.
+ * Pass the same list as `--ignore-pattern`, which resolves against the cwd.
+ */
+const { ignorePatterns = [] } = JSON.parse(
+  readFileSync(config, 'utf8').replace(/^\s*\/\/.*$/gm, ''),
+)
+const ignoreArgs = ignorePatterns.map((pattern) => `--ignore-pattern=${pattern}`)
+
+const result = spawnSync(bin, ['-c', config, ...ignoreArgs, target], {
+  cwd: ROOT,
+  stdio: 'inherit',
+})
 if (result.status !== 0) {
   console.error(
     '\nlint:host-strict: copied component source must pass the objective host-lint rules. ' +
