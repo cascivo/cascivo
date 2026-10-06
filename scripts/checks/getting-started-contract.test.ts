@@ -29,15 +29,12 @@ const REPO_ROOT = join(import.meta.dirname, '../..')
  * The surfaces a cold adopter actually starts from.
  *
  * `apps/site/public/docs/getting-started.md` is generated from the guide by `pnpm regen`,
- * so it is covered transitively and not listed. The rendered site page is hand-authored
- * TSX and is a genuinely separate surface — that is why it is here.
+ * and the site's /docs/getting-started page is rendered from it at build time
+ * (apps/site/guides.ts), so both are covered transitively by the guide and not listed. The
+ * site page used to be hand-authored TSX, a separate surface that had to be listed here.
  */
 const SURFACES: { label: string; path: string }[] = [
   { label: 'docs/GETTING-STARTED.md', path: 'docs/GETTING-STARTED.md' },
-  {
-    label: 'the docs site getting-started page',
-    path: 'apps/site/src/pages/GettingStartedPage.tsx',
-  },
   { label: 'llms.txt (generator)', path: 'scripts/llms/generate.ts' },
   // The CLI's OWN OUTPUT is a first-day surface — for most adopters it is the first one,
   // since `cascivo init` runs before any doc is opened. It was never checked here, and it

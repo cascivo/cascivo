@@ -177,6 +177,10 @@ export function TokensPage() {
           from the token sources. Previews are live: switch the theme to see every value resolve.{' '}
           {catalog.value.count} tokens.
         </p>
+        <p class="doc-lede">
+          Naming rules, canonical names versus aliases, and the full tables by family are in the{' '}
+          <a href="/docs/guides/tokens">design tokens reference</a>.
+        </p>
       </div>
 
       <section class="doc-section">

@@ -45,6 +45,13 @@ cascivo template init <name>       # scaffold a new template
 
 Every command supports `--help` for its flags and examples.
 
+For agents, the package also ships a machine-readable description of every command —
+[`cmdspec.json`](https://github.com/cascivo/cascivo/blob/main/packages/cli/cmdspec.json), in the
+[cmdspec](https://docspack.dev/cmdspec) format — named by the `"cmdspec"` field in its
+`package.json`. With `cascivo` installed, `docspack sync` indexes it for the installed version, so
+`docspack ask "cascivo add --dry-run"` answers with the command's flags, what it reads, writes and
+runs, and its exit statuses.
+
 A **template** is a registry item (`type: "template"`) that bundles a working page with the components it composes (in `registryDependencies`) and its own page/fixture files (each with a `target`). `cascivo add` installs the component closure into your components directory and writes the template's files to their targets; `create --template` does the same into a freshly scaffolded app.
 
 ## How it works

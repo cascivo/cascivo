@@ -57,6 +57,12 @@ catalog:
   vite-imagetools: ^10.0.1
   publint: ^0.3.21
   '@arethetypeswrong/cli': ^0.18.5
+  '@docspack/cmdspec': ^0.2.0
+  docspack: ^1.3.1
+  '@docspack/sheaf-react': ^0.4.1
+  '@docspack/sheaf': ^0.4.1
+  '@docspack/sheaf-html': ^0.4.1
+  '@shikijs/rehype': ^4.2.0
 
 overrides:
   vite: 'npm:@voidzero-dev/vite-plus-core@1.0.0'
@@ -115,6 +121,10 @@ minimumReleaseAgeExclude:
   - '@voidzero-dev/vite-plus-win32-arm64-msvc@1.0.0'
   - '@voidzero-dev/vite-plus-win32-x64-msvc@1.0.0'
   - vite-plus@1.0.0
+  # docspack and its @docspack/* packages are maintained alongside cascivo and release
+  # together the morning they are adopted; exempt the whole family by name, not per version.
+  - docspack
+  - '@docspack/*'
 
 patchedDependencies:
   '@changesets/cli@2.31.1': patches/@changesets__cli@2.31.1.patch

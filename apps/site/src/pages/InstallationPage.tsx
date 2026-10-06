@@ -1,6 +1,6 @@
 // Installation reference — the page most adopters look for first (and the
 // one that used to 404: it only existed as a section inside Getting Started).
-// Keep in sync with packages/react/readme.body.md and GettingStartedPage.tsx.
+// Keep in sync with packages/react/readme.body.md and docs/GETTING-STARTED.md.
 
 import { CodeBlock } from './components/CodeBlock'
 

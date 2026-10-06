@@ -24,6 +24,7 @@ import {
 } from './src/accessibility-guide-head'
 import { componentOgImage, componentTitle } from './src/component-head'
 import { POSTS } from './src/blog'
+import { GUIDES_BASE, guideRoute, guidesData, renderGuides } from './guides'
 import type { BlogBlock, BlogPost } from './src/blog/types'
 import { ROUTE_HEAD, canonicalFor, PRERENDER_ROUTES } from './src/marketing/route-head'
 import {
@@ -202,13 +203,6 @@ const DOCS_STATIC_PRERENDER: { path: string; title: string; description: string;
       description:
         'Install cascivo: scaffold a new app, use the prebuilt @cascivo/react package, or copy component source into your repo with the CLI.',
       body: `<main><h1>Installing cascivo</h1><p>Two ways to adopt cascivo — they share the same tokens and themes and can coexist.</p>${DOCS_INSTALL_BODY}</main>`,
-    },
-    {
-      path: '/docs/getting-started',
-      title: 'Getting started — cascivo docs',
-      description:
-        'The fastest path into cascivo — scaffold an app, install the prebuilt package, or copy-paste components with the CLI, plus theming and framework setup.',
-      body: `<main><h1>Getting started with cascivo</h1>${DOCS_INSTALL_BODY}</main>`,
     },
   ]
 
@@ -614,11 +608,59 @@ function renderBlogIndexBody(posts: BlogPost[]): string {
   return `<main><h1>Blog</h1><p>${e(ROUTE_HEAD['/blog']?.description ?? '')}</p><ul>${items}</ul></main>`
 }
 
+/** /docs/guides/<slug>: the guide's own rendered HTML (the same HTML the SPA shows). */
+function renderGuideBody(title: string, slug: string, html: string): string {
+  const e = escapeHtml
+  return (
+    `<article>` +
+    `<h1>${e(title)}</h1>` +
+    html +
+    `<p>As Markdown: <a href="/docs/${e(slug)}.md">/docs/${e(slug)}.md</a></p>` +
+    `<p><a href="${GUIDES_BASE}">← All guides</a></p>` +
+    `</article>`
+  )
+}
+
+function renderGuidesIndexBody(
+  pages: readonly { slug: string; title: string; summary: string }[],
+): string {
+  const e = escapeHtml
+  const items = pages
+    .map(
+      (p) =>
+        `<li><a href="${e(guideRoute(p.slug))}">${e(p.title)}</a>` +
+        (p.summary ? ` — ${e(p.summary)}` : '') +
+        `</li>`,
+    )
+    .join('')
+  return `<article><h1>Guides</h1><ul>${items}</ul><p><a href="/docs">← Back to docs</a></p></article>`
+}
+
+/** /docs/cli: one line per top-level command, from the same cmdspec the page renders. */
+function renderCliBody(): string {
+  const e = escapeHtml
+  const spec = JSON.parse(readFileSync(resolve(root, 'packages/cli/cmdspec.json'), 'utf8')) as {
+    commands?: { name: string; summary?: string }[]
+  }
+  const items = (spec.commands ?? [])
+    .map(
+      (c) => `<li><code>cascivo ${e(c.name)}</code>${c.summary ? ` — ${e(c.summary)}` : ''}</li>`,
+    )
+    .join('')
+  return (
+    `<article><h1>CLI reference</h1>` +
+    `<p>Every <code>cascivo</code> command. Run any of them with <code>--help</code> for its options.</p>` +
+    `<ul>${items}</ul>` +
+    `<p>Machine-readable: <a href="https://github.com/cascivo/cascivo/blob/main/packages/cli/cmdspec.json">cmdspec.json</a></p>` +
+    `</article>`
+  )
+}
+
 function prerenderPages(): Plugin {
   return {
     name: 'cascade:prerender-pages',
     apply: 'build',
-    closeBundle() {
+    async closeBundle() {
       const dist = resolve(__dirname, 'dist')
       const shellPath = resolve(dist, 'index.html')
       // Guard: closeBundle can fire before/without the HTML emit in some build
@@ -724,11 +766,11 @@ function prerenderPages(): Plugin {
         )
       }
 
-      // Static docs entry points (/docs, /docs/installation,
-      // /docs/getting-started) — real SPA routes whose body was an empty shell,
-      // so the apex host served no readable content (and 404'd on a plain
-      // fetch). Prerender a real install-focused body; the SPA still hydrates
-      // over it client-side.
+      // Static docs entry points (/docs, /docs/installation) — real SPA routes
+      // whose body was an empty shell, so the apex host served no readable
+      // content (and 404'd on a plain fetch). Prerender a real install-focused
+      // body; the SPA still hydrates over it client-side. /docs/getting-started
+      // is a rendered guide now and gets its full article with the guides below.
       for (const doc of DOCS_STATIC_PRERENDER) {
         const canonical = canonicalFor(doc.path)
         const html = rewriteHead(shell, {
@@ -742,6 +784,44 @@ function prerenderPages(): Plugin {
         mkdirSync(outDir, { recursive: true })
         writeFileSync(resolve(outDir, 'index.html'), injectBody(html, doc.body))
       }
+
+      // Guides (/docs/guides and /docs/guides/<slug>) and the CLI reference (/docs/cli):
+      // rendered by Sheaf at build time, so the static body is the real page, not a summary.
+      const guides = await renderGuides()
+      const writeDocsRoute = (path: string, title: string, description: string, body: string) => {
+        const html = rewriteHead(shell, {
+          title,
+          description,
+          canonical: canonicalFor(path),
+          ogTitle: title,
+          robots: 'index, follow',
+        })
+        const outDir = resolve(dist, path.replace(/^\//, ''))
+        mkdirSync(outDir, { recursive: true })
+        writeFileSync(resolve(outDir, 'index.html'), injectBody(html, body))
+      }
+      writeDocsRoute(
+        GUIDES_BASE,
+        'Guides — cascivo docs',
+        'Setup, theming, framework integration and recipes for cascivo.',
+        renderGuidesIndexBody(guides.graph.pages),
+      )
+      // A guide with its own `route` (it replaced a hand-built page) is written only there:
+      // public/_redirects 301s its /docs/guides/<slug>, and a real file would win over that.
+      for (const page of guides.graph.pages) {
+        writeDocsRoute(
+          guideRoute(page.slug),
+          `${page.title} — cascivo docs`,
+          page.summary,
+          renderGuideBody(page.title, page.slug, guides.html.get(page.slug) ?? ''),
+        )
+      }
+      writeDocsRoute(
+        '/docs/cli',
+        'CLI reference — cascivo docs',
+        'Every cascivo command: arguments, options, effects and exit statuses.',
+        renderCliBody(),
+      )
 
       // Per-component accessibility guides (/accessibility/<name>) — one per
       // `type: 'component'` registry entry (real UI controls; charts/layouts/
@@ -958,7 +1038,14 @@ for (const n of BLOCK_NAMES) {
 }
 
 export default defineConfig({
-  plugins: [imagetools(), injectCounts(), prerenderPages(), benchData(), serveExampleDemos()],
+  plugins: [
+    imagetools(),
+    injectCounts(),
+    guidesData(),
+    prerenderPages(),
+    benchData(),
+    serveExampleDemos(),
+  ],
   define: {
     __CASCIVO_COMPONENT_COUNT__: componentCount(),
     __CASCIVO_THEME_COUNT__: themeCount(),

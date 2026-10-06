@@ -23,7 +23,6 @@ import { applyDocsSeo } from './seo'
 import { currentPath } from './router'
 import { Header } from './marketing/sections/Header'
 import { Home } from './pages/Home'
-import { GettingStartedPage } from './pages/GettingStartedPage'
 import { InstallationPage } from './pages/InstallationPage'
 import { DocsNotFound } from './pages/DocsNotFound'
 import { AiPage } from './pages/AiPage'
@@ -41,7 +40,6 @@ import { KeyboardReferencePage } from './pages/KeyboardReferencePage'
 import { PlatformPage } from './pages/PlatformPage'
 import { FaqPage } from './pages/FaqPage'
 import { ChangelogPage } from './pages/ChangelogPage'
-import { UpgradingPage } from './pages/UpgradingPage'
 import { PerfDataTable } from './pages/PerfDataTable'
 import { PlaygroundPage } from './pages/PlaygroundPage'
 import { Benchmarks } from './pages/Benchmarks'
@@ -55,6 +53,15 @@ import { WhyCascadePage } from './pages/WhyCascadePage'
 import { ParityPage } from './pages/ParityPage'
 import { MigratingPage } from './pages/MigratingPage'
 import { BrandPage } from './pages/BrandPage'
+import { CliPage } from './pages/CliPage'
+import {
+  GettingStartedGuide,
+  GuidePage,
+  GuideRedirect,
+  GuidesIndexPage,
+  UpgradingGuide,
+} from './pages/GuidePage'
+import { routes as guideRoutes } from 'virtual:cascivo-guides'
 
 // Singleton shell state — persisted across navigations.
 const shell = createShellState({ persistKey: 'cascivo.docs.shell' })
@@ -63,14 +70,14 @@ const shell = createShellState({ persistKey: 'cascivo.docs.shell' })
 const DOCS_ROUTES: Record<string, ComponentType> = {
   '/docs': Home,
   '/docs/installation': InstallationPage,
-  '/docs/getting-started': GettingStartedPage,
+  '/docs/getting-started': GettingStartedGuide,
   '/docs/components': ComponentsIndexPage,
   '/docs/api': ApiReferencePage,
   '/docs/keyboard': KeyboardReferencePage,
   '/docs/platform': PlatformPage,
   '/docs/faq': FaqPage,
   '/docs/changelog': ChangelogPage,
-  '/docs/upgrading': UpgradingPage,
+  '/docs/upgrading': UpgradingGuide,
   '/docs/ai': AiPage,
   '/docs/charts': ChartsPage,
   '/docs/editor': EditorPage,
@@ -89,20 +96,23 @@ const DOCS_ROUTES: Record<string, ComponentType> = {
   '/docs/parity': ParityPage,
   '/docs/migrating': MigratingPage,
   '/docs/brand': BrandPage,
+  '/docs/guides': GuidesIndexPage,
+  '/docs/cli': CliPage,
   '/docs/perf/data-table': PerfDataTable,
 }
 
 const exploreItems = [
   { label: 'Installation', href: '/docs/installation', icon: <Zap size={16} /> },
   { label: 'Getting Started', href: '/docs/getting-started', icon: <Zap size={16} /> },
-  // Troubleshooting is the single most useful page for a stuck adopter and had no entry
-  // here at all — it is served as raw markdown from public/docs. It belongs directly
+  // Troubleshooting is the single most useful page for a stuck adopter. It belongs directly
   // under Getting Started, where someone whose first build misbehaves will look.
-  { label: 'Troubleshooting', href: '/docs/troubleshooting.md', icon: <Check size={16} /> },
+  { label: 'Troubleshooting', href: '/docs/guides/troubleshooting', icon: <Check size={16} /> },
+  { label: 'Guides', href: '/docs/guides', icon: <Grid size={16} /> },
   { label: 'All components', href: '/docs/components', icon: <Grid size={16} /> },
   { label: 'FAQ', href: '/docs/faq', icon: <Check size={16} /> },
   { label: 'API reference', href: '/docs/api', icon: <Grid size={16} /> },
   { label: 'Keyboard reference', href: '/docs/keyboard', icon: <Grid size={16} /> },
+  { label: 'CLI reference', href: '/docs/cli', icon: <Terminal size={16} /> },
   { label: 'AI / MCP', href: '/docs/ai', icon: <Server size={16} /> },
   { label: 'Context Explorer', href: '/docs/context', icon: <Eye size={16} /> },
   { label: 'Design Tokens', href: '/docs/tokens', icon: <Layers size={16} /> },
@@ -113,7 +123,7 @@ const exploreItems = [
   { label: 'Migrating from shadcn', href: '/docs/migrating', icon: <Grid size={16} /> },
   {
     label: 'Compared to StyleX',
-    href: '/docs/compared-to-stylex.md',
+    href: '/docs/guides/compared-to-stylex',
     icon: <Layers size={16} />,
   },
   { label: 'Changelog', href: '/docs/changelog', icon: <Grid size={16} /> },
@@ -151,6 +161,13 @@ function pageFor(path: string) {
     // prefix IS the name — do not split on `/` or slashed entries 404.
     const name = decodeURIComponent(path.slice('/docs/components/'.length).replace(/\/+$/, ''))
     return <ComponentPage name={name} />
+  }
+  if (path.startsWith('/docs/guides/')) {
+    const slug = decodeURIComponent(path.slice('/docs/guides/'.length).replace(/\/+$/, ''))
+    const moved = guideRoutes[slug]
+    if (moved) return <GuideRedirect to={moved} />
+    // Keyed: guide → guide navigation mounts a fresh page that loads its own HTML.
+    return <GuidePage key={slug} slug={slug} />
   }
   if (path.startsWith('/docs/categories/')) {
     const category = decodeURIComponent(path.slice('/docs/categories/'.length).replace(/\/+$/, ''))

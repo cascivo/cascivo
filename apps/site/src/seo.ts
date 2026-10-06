@@ -2,6 +2,7 @@ import { CATEGORY_LABELS, categoryDescription, categoryTitle, isCategory } from 
 import { componentOgImage, componentTitle } from './component-head'
 import { components, getComponent } from './data'
 import { THEME_LABELS, isThemeName, themeDescription, themeTitle } from './theme-head'
+import { graph as guideGraph } from 'virtual:cascivo-guides'
 
 const SITE_URL = 'https://cascivo.com'
 const SUFFIX = ' — cascivo docs'
@@ -150,6 +151,16 @@ const ROUTE_HEAD: Record<string, RouteHead> = {
     title: `Migrating from shadcn${SUFFIX}`,
     description: 'A practical guide to moving an existing shadcn/ui project to cascivo.',
   },
+  '/guides': {
+    title: `Guides${SUFFIX}`,
+    description:
+      'Setup, theming, framework integration and recipes for cascivo — every guide as a page, and as Markdown for agents from the same source.',
+  },
+  '/cli': {
+    title: `CLI reference${SUFFIX}`,
+    description:
+      'Every cascivo command: arguments, options, what it reads, writes or runs, and its exit statuses — rendered from the same cmdspec agents read.',
+  },
   '/brand': {
     title: `Brand${SUFFIX}`,
     description: 'cascivo brand guidelines, logos, and color usage.',
@@ -232,6 +243,22 @@ function headFor(path: string): { head: RouteHead; index: boolean } {
           description: entry.meta.description,
           ogImage: componentOgImage(entry.name),
           crumbLabel: entry.meta.name,
+        },
+        index: true,
+      }
+    }
+  }
+
+  const guideMatch = rel.match(/^\/guides\/(.+)$/)
+  if (guideMatch) {
+    const slug = decodeURIComponent(guideMatch[1] ?? '').replace(/\/+$/, '')
+    const page = guideGraph.pages.find((p) => p.slug === slug)
+    if (page) {
+      return {
+        head: {
+          title: `${page.title}${SUFFIX}`,
+          description: page.summary,
+          crumbLabel: page.title,
         },
         index: true,
       }
