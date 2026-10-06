@@ -57,6 +57,14 @@ export const meta: ComponentMeta = {
       required: false,
       nameVisibility: 'invisible',
     },
+    {
+      name: 'ai',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description:
+        'AI presence: an AI-tinted border and a soft aura, marking a value AI produced or suggested. Visual only — put an AiBadge in the label so the provenance is also text, and clear `ai` once the person edits the value.',
+    },
   ],
   tokens: [
     '--cascivo-color-surface',
@@ -76,9 +84,13 @@ export const meta: ComponentMeta = {
   examples: [
     { title: 'With label', code: '<Input label="Email" placeholder="you@example.com" />' },
     { title: 'With error', code: '<Input label="Email" error="Invalid email address" />' },
+    {
+      title: 'AI-suggested value',
+      code: '<Input label="Subject" ai defaultValue="Weekly report" />',
+    },
   ],
   dependencies: ['@cascivo/core'],
-  tags: ['form', 'text', 'input'],
+  tags: ['form', 'text', 'input', 'ai'],
   intent: {
     whenToUse: [
       'Collecting a single line of free-form text from the user',

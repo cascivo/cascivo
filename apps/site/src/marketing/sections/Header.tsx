@@ -277,13 +277,11 @@ export function Header() {
   const renderThemeDropdown = () => (
     <Dropdown
       placement="bottom-end"
-      items={THEMES.map(
-        (t): DropdownItem => ({
-          label: titleCase(t),
-          value: t,
-          ...(theme.value === t ? { icon: <CheckIcon /> } : {}),
-        }),
-      )}
+      items={THEMES.map((t): DropdownItem => ({
+        label: titleCase(t),
+        value: t,
+        ...(theme.value === t ? { icon: <CheckIcon /> } : {}),
+      }))}
       onSelect={(value) => setTheme(value as ThemeName)}
       trigger={
         <button

@@ -33,15 +33,16 @@ import { Modal } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                   | Required | Default | Description                                                                                |
-| ------------- | ---------------------- | -------- | ------- | ------------------------------------------------------------------------------------------ |
-| `open`        | `boolean`              | no       | `false` | Whether the component is open (controlled).                                                |
-| `onClose`     | `() => void`           | no       | —       | Called when the component is closed.                                                       |
-| `title`       | `string`               | no       | —       | Title text for the component.                                                              |
-| `description` | `string`               | no       | —       | Supporting description text.                                                               |
-| `size`        | `'sm' \| 'md' \| 'lg'` | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg').                                      |
-| `footer`      | `ReactNode`            | no       | —       | Dialog actions, rendered in a right-aligned row below the body and separated by a divider. |
-| `draggable`   | `boolean`              | no       | `false` | Allow dragging the dialog by its header                                                    |
+| Prop          | Type                      | Required | Default | Description                                                                                                                                                                                                                                                                        |
+| ------------- | ------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `open`        | `boolean`                 | no       | `false` | Whether the component is open (controlled).                                                                                                                                                                                                                                        |
+| `onClose`     | `() => void`              | no       | —       | Called when the component is closed.                                                                                                                                                                                                                                               |
+| `title`       | `string`                  | no       | —       | Title text for the component.                                                                                                                                                                                                                                                      |
+| `description` | `string`                  | no       | —       | Supporting description text.                                                                                                                                                                                                                                                       |
+| `size`        | `'sm' \| 'md' \| 'lg'`    | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                                                                                                              |
+| `footer`      | `ReactNode`               | no       | —       | Dialog actions, rendered in a right-aligned row below the body and separated by a divider.                                                                                                                                                                                         |
+| `draggable`   | `boolean`                 | no       | `false` | Allow dragging the dialog by its header                                                                                                                                                                                                                                            |
+| `ai`          | `boolean \| 'generating'` | no       | `false` | AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text. |
 
 ## Examples
 
@@ -79,7 +80,7 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 ## Tags
 
-overlay, dialog, popup
+overlay, dialog, popup, ai
 
 ---
 

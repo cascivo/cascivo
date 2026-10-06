@@ -54,6 +54,7 @@ Shape of the `thresholds` prop.
 
 ```tsx
 import { Gauge } from '@cascivo/charts'
+
 ;<Gauge
   title="CPU load"
   value={72}

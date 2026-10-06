@@ -49,6 +49,14 @@ describe('Skeleton', () => {
     expect(root.style.getPropertyValue('--cascivo-skeleton-height')).toBe('')
   })
 
+  it('marks AI-generated placeholders only when ai is set', () => {
+    expect(renderSkeleton(<Skeleton />)).not.toHaveAttribute('data-ai')
+    const root = renderSkeleton(<Skeleton ai lines={2} />)
+    expect(root).toHaveAttribute('data-ai', '')
+    expect(root).toHaveAttribute('aria-hidden', 'true')
+    expect(root.children).toHaveLength(2)
+  })
+
   it('merges custom className', () => {
     const root = renderSkeleton(<Skeleton className="custom" />)
     expect(root).toHaveClass('custom')

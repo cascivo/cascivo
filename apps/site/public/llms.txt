@@ -75,7 +75,7 @@ Component names differ from peer systems too. `Switch` IS `Toggle`; `Dialog` IS
 `Modal`. Every mapping below resolves for real — `cascivo add switch` installs
 `toggle`, the MCP `get_component("Dialog")` returns `modal`, and
 `import { Switch } from '@cascivo/react'` compiles.
-Mappings: AvatarStack→AvatarGroup, ChipInput→TagsInput, Chip→Tag, CircularProgress→Spinner, CommandPalette→CommandMenu, ConfirmDialog→AlertDialog, Dialog→Modal, Disclosure→Collapsible, DropdownMenu→Dropdown, EmptyView→EmptyState, Layout→AppShell, LinearProgress→InlineLoading, MoreMenu→OverflowMenu, NavigationDrawer→Drawer, NumberField→NumberInput, PinInput→OtpInput, Placeholder→Skeleton, Popper→Popover, Rating→RatingGroup, SegmentedButton→SegmentedControl, SelectNative→NativeSelect, SideSheet→Sheet, Sidebar→SideNav, Snackbar→Toast, Switch→Toggle, Table→DataTable, ToggleButtonGroup→ToggleGroup.
+Mappings: AILabel→AiBadge, AiGeneratedDisclaimer→AiDisclaimer, AvatarStack→AvatarGroup, ChipInput→TagsInput, Chip→Tag, CircularProgress→Spinner, Citation→InlineCitation, CommandPalette→CommandMenu, ConfirmDialog→AlertDialog, Context→ContextMeter, Dialog→Modal, Disclosure→Collapsible, DropdownMenu→Dropdown, EmptyView→EmptyState, Layout→AppShell, LinearProgress→InlineLoading, MoreMenu→OverflowMenu, NavigationDrawer→Drawer, NumberField→NumberInput, PinInput→OtpInput, Placeholder→Skeleton, Popper→Popover, Rating→RatingGroup, ResponseActions→MessageActions, SegmentedButton→SegmentedControl, SelectNative→NativeSelect, SideSheet→Sheet, Sidebar→SideNav, Snackbar→Toast, SourceList→Sources, Suggestions→PromptSuggestions, Switch→Toggle, Table→DataTable, TerminalWindow→Terminal, TextShimmer→ShimmerText, ThinkingBar→AiStatus, Think→Reasoning, ThoughtChain→ChainOfThought, ToggleButtonGroup→ToggleGroup, Tool→ToolCall, Typewriter→StreamingText, TypingDots→TypingIndicator.
 
 Pure-CSS glyphs (experimental): a small opt-in set of UI glyphs, rendered with
 `clip-path: shape()` and no SVG — color via `currentColor`, size via
@@ -302,7 +302,7 @@ statement, or it never re-renders. When you do own reactive state, use these:
 - Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` (generated union of every `--cascivo-*` property — no CSS-file lookup).
 - Router links in config-driven navs (SideNav/ShellHeader/Breadcrumb/Dock/…) -> `setLinkComponent(YourLink)` once at startup. Import it (and the `LinkComponentProps` contract type) from `@cascivo/react` (re-exported there, so prebuilt-package users need NOT add `@cascivo/core`); copied source can import from `@cascivo/core`. Adapter: `setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href} {...rest} />)` — spread the bag; the link stays a real `<a>` so middle-click/new-tab work.
 - Event-handler naming (predict the prop from what it receives): a **value** -> `onValueChange(value)` (Tabs, SegmentedControl, Combobox, MultiSelect, Toggle, Search, NumberInput, DatePicker, …); a raw DOM `ChangeEvent` -> `onChange(event)` (Checkbox, NativeSelect, PasswordInput, **Select**, **Slider** — these two wrap a real element and have NO `onValueChange`); activating an item -> `onSelect(value)` (Dropdown, OverflowMenu, chart points; on `Menu`/`ContextMenu` the `onSelect` lives on the *Item*, not the root). A few components keep a deprecated value-carrying `onChange` alias — prefer `onValueChange`.
-- Data/shape prop vocabulary (the other half of handler naming — nine wrong guesses in one 2026-08-08 dashboard, two more on 2026-08-22): a config-driven collection (nav, list, menu) -> **`items`** (17: Breadcrumb, DataList, Dock, Dropdown, MenuButton, NavigationMenu, OverflowMenu, ShareMenu, SideNav, StructuredList, Switcher, Timeline, Toc, ToggleGroup, TreeView, VirtualList, FeatureGrid); the choices on a form control -> **`options`** (7: Combobox, Filter, MultiSelect, NativeSelect, SegmentedControl, Select, WheelPicker); a chart's data points -> **`data`** (11: CalendarHeatmap, Candlestick, Funnel, Heatmap, Histogram, PieChart, Polar, RadialBar, Sparkline, Sunburst, Treemap). Exceptions, named in full because they are where the guesses go wrong: `DataTable.rows` (it renders a real <table>, where "rows" is the domain word); `Textarea.rows` (the HTML `rows` attribute, not a collection); `CommandMenu.groups` (its items are nested inside labelled groups); `ProgressIndicator.steps` (the domain word for a stepper); `Steps.steps` (the domain word for a stepper; also accepts `items`). A visual style enum -> **`variant`**, never `shape`/`kind`/`type`; a discriminated-union tag -> **`kind`**, never `type` (e.g. annotations: [{ kind: 'line' }]); a rich replaceable slot -> **`actions`** as ReactNode (Notification, CardHeader, PageHeader — only `Alert.action` is the {label,onClick} shorthand); body text on a feedback component -> **`description`**, NOT children (Notification renders nothing for children).
+- Data/shape prop vocabulary (the other half of handler naming — nine wrong guesses in one 2026-08-08 dashboard, two more on 2026-08-22): a config-driven collection (nav, list, menu) -> **`items`** (20: Breadcrumb, ChainOfThought, DataList, Dock, Dropdown, MenuButton, NavigationMenu, OverflowMenu, PromptSuggestions, ShareMenu, SideNav, Sources, StructuredList, Switcher, Timeline, Toc, ToggleGroup, TreeView, VirtualList, FeatureGrid); the choices on a form control -> **`options`** (7: Combobox, Filter, MultiSelect, NativeSelect, SegmentedControl, Select, WheelPicker); a chart's data points -> **`data`** (11: CalendarHeatmap, Candlestick, Funnel, Heatmap, Histogram, PieChart, Polar, RadialBar, Sparkline, Sunburst, Treemap). Exceptions, named in full because they are where the guesses go wrong: `DataTable.rows` (it renders a real <table>, where "rows" is the domain word); `Textarea.rows` (the HTML `rows` attribute, not a collection); `CommandMenu.groups` (its items are nested inside labelled groups); `ProgressIndicator.steps` (the domain word for a stepper); `Steps.steps` (the domain word for a stepper; also accepts `items`). A visual style enum -> **`variant`**, never `shape`/`kind`/`type`; a discriminated-union tag -> **`kind`**, never `type` (e.g. annotations: [{ kind: 'line' }]); a rich replaceable slot -> **`actions`** as ReactNode (Notification, CardHeader, PageHeader — only `Alert.action` is the {label,onClick} shorthand); body text on a feedback component -> **`description`**, NOT children (Notification renders nothing for children).
 - Near-miss prop names (each one a real adopter's wrong guess): `<Text tone=…>` -> **`muted`** (a boolean; `tone` is the SEVERITY vocabulary on Status/Badge/Timeline/SideNav, not text emphasis); `gap="4"` -> **`gap={4}`** (numeric SpaceStep); `<Flex justify=…>` with no `direction` is already VERTICAL (the default, unlike CSS/Chakra/MUI/Radix); `const { theme } = useTheme()` -> a TUPLE `const [theme, setTheme]`; `DataList orientation="vertical"` moves the VALUE under its label, it does not stack the items (they stack either way); `<DataListItem>` is an INTERFACE, not a component (`DataList` takes `items`). Three former near-misses are now accepted both ways and cost nothing: `import { Switch }` (= `Toggle`), `<OverflowMenu label=…>` (= `ariaLabel`), `<Field hint=…>` (= `description`).
 - ⚠ `gap` takes a NUMBER: `gap={4}`, not `gap="4"`. Every other size-ish prop is a string union (`size="sm"`, `padding="md"`), but the space scale is a numeric `SpaceStep` (1|2|3|4|5|6|8|10|12) — this applies to Flex/Grid/AutoGrid `gap` and `AppShell.padding`. One adopter wrote `gap="4"` and got 20 type errors in a single run.
 - Items-prop-driven vs children-driven: `DataList`/`StructuredList`/`Timeline`/`Steps` take an `items` ARRAY; `ListItem`/`ContainedListItem`/`MenuItem`/`TabsTrigger` are composed as children. `DataListItem` is an INTERFACE, not a component — write <DataList items={[{ label, value }]} />, not <DataList><DataListItem/></DataList>. DataList items are { label, value } (NOT { term, description }, despite rendering a <dl>).
@@ -426,7 +426,7 @@ see how components behave without adding tracking, read these machine-readable C
 - Benchmark results (runtime, bundle, render counts vs Carbon/shadcn): https://github.com/cascivo/cascivo/blob/main/apps/bench/results/results.json
 - Accessibility conformance (axe sweep, AT matrix): https://github.com/cascivo/cascivo/tree/main/docs/specs
 
-## Component index (211 entries — 199 components + 12 page blocks)
+## Component index (226 entries — 214 components + 12 page blocks)
 
 Not all ship in `@cascivo/react`: 25 in @cascivo/charts, 10 in @cascivo/flow, 2 in @cascivo/editor — those are separate installs (see Quick Setup). Blocks are copy-paste only. Each entry below is tagged with its channel.
 
@@ -472,6 +472,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 
 ### display
 
+- [ai-badge](https://cascivo.com/llms/ai-badge.md) — Small "AI" marker for AI-generated content; with children it opens a toggletip explaining how AI was involved _(npm @cascivo/react · or copy-paste)_
 - [alert](https://cascivo.com/llms/alert.md) — Highlights a short, important message inline _(npm @cascivo/react · or copy-paste)_
 - [avatar](https://cascivo.com/llms/avatar.md) — Displays a user image with initials fallback _(npm @cascivo/react · or copy-paste)_
 - [avatar-group](https://cascivo.com/llms/avatar-group.md) — Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip _(npm @cascivo/react · or copy-paste)_
@@ -490,6 +491,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [brand/logo](https://cascivo.com/llms/brand/logo.md) — The cascivo mark and its sanctioned lockups, as inline SVG _(npm @cascivo/react · or copy-paste)_
 - [card](https://cascivo.com/llms/card.md) — Container for grouping related content _(npm @cascivo/react · or copy-paste)_
 - [carousel](https://cascivo.com/llms/carousel.md) — Scroll-snap slide deck with previous/next controls and dot indicators _(npm @cascivo/react · or copy-paste)_
+- [chain-of-thought](https://cascivo.com/llms/chain-of-thought.md) — The steps an AI agent takes — searching, reading, calling tools — each with its status, and optional collapsible detail _(npm @cascivo/react · or copy-paste)_
 - [chat-bubble](https://cascivo.com/llms/chat-bubble.md) — Message bubble for chat and messaging UIs with avatar, name, and timestamp support _(npm @cascivo/react · or copy-paste)_
 - [code](https://cascivo.com/llms/code.md) — Inline code span for identifiers, commands, and short snippets _(npm @cascivo/react · or copy-paste)_
 - [code-snippet](https://cascivo.com/llms/code-snippet.md) — Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look _(npm @cascivo/react · or copy-paste)_
@@ -512,22 +514,28 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [flow/flow-story](https://cascivo.com/llms/flow/flow-story.md) — A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions. _(npm @cascivo/flow)_
 - [heading](https://cascivo.com/llms/heading.md) — Section heading with semantic level decoupled from visual size _(npm @cascivo/react · or copy-paste)_
 - [image](https://cascivo.com/llms/image.md) — Image with load state, blur-up placeholder, graceful fallback, and optional zoom _(npm @cascivo/react · or copy-paste)_
+- [inline-citation](https://cascivo.com/llms/inline-citation.md) — A numbered citation marker inside AI-generated text that links to its source and previews it in a hover card _(npm @cascivo/react · or copy-paste)_
 - [item](https://cascivo.com/llms/item.md) — Generic content row primitive with media, content, and action regions _(npm @cascivo/react · or copy-paste)_
 - [kbd](https://cascivo.com/llms/kbd.md) — Displays a keyboard key or shortcut _(npm @cascivo/react · or copy-paste)_
 - [list](https://cascivo.com/llms/list.md) — Styled unordered or ordered list with ListItem _(npm @cascivo/react · or copy-paste)_
 - [log-viewer](https://cascivo.com/llms/log-viewer.md) — Virtualized monospace console for high-frequency log and stream output _(npm @cascivo/react · or copy-paste)_
 - [prose](https://cascivo.com/llms/prose.md) — Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables _(npm @cascivo/react · or copy-paste)_
 - [qr-code](https://cascivo.com/llms/qr-code.md) — Encodes a URL or short text into a scannable SVG QR code _(npm @cascivo/react · or copy-paste)_
+- [reasoning](https://cascivo.com/llms/reasoning.md) — Collapsible panel for a model’s reasoning — opens and shimmers "Thinking…" while it streams, then settles to "Thought for N seconds" _(npm @cascivo/react · or copy-paste)_
 - [relative-time](https://cascivo.com/llms/relative-time.md) — Displays a date as a localized phrase relative to now, auto-updating _(npm @cascivo/react · or copy-paste)_
 - [separator](https://cascivo.com/llms/separator.md) — Visual or semantic divider between content _(npm @cascivo/react · or copy-paste)_
 - [skeleton](https://cascivo.com/llms/skeleton.md) — Animated loading placeholder that mirrors the shape of pending content _(npm @cascivo/react · or copy-paste)_
+- [sources](https://cascivo.com/llms/sources.md) — Collapsible, numbered list of the sources an AI answer drew on — "Used 3 sources" — whose numbers match InlineCitation _(npm @cascivo/react · or copy-paste)_
 - [stat](https://cascivo.com/llms/stat.md) — Displays a key metric with optional delta, trend direction and help text _(npm @cascivo/react · or copy-paste)_
 - [status](https://cascivo.com/llms/status.md) — Colored dot with a label communicating the state of a system or entity _(npm @cascivo/react · or copy-paste)_
+- [streaming-text](https://cascivo.com/llms/streaming-text.md) — Reveals text character by character with a blinking cursor, catching up as a streamed reply grows _(npm @cascivo/react · or copy-paste)_
 - [structured-list](https://cascivo.com/llms/structured-list.md) — Tabular row list for scannable data, optionally single-selectable _(npm @cascivo/react · or copy-paste)_
 - [swipe-item](https://cascivo.com/llms/swipe-item.md) — List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity _(npm @cascivo/react · or copy-paste)_
 - [tag](https://cascivo.com/llms/tag.md) — Compact chip for labeling, categorizing, or filtering content _(npm @cascivo/react · or copy-paste)_
+- [terminal](https://cascivo.com/llms/terminal.md) — An animated terminal that types out a script of commands and output — for demos, onboarding and agent transcripts _(npm @cascivo/react · or copy-paste)_
 - [text](https://cascivo.com/llms/text.md) — Body text with size, weight, and muted variants _(npm @cascivo/react · or copy-paste)_
 - [timeline](https://cascivo.com/llms/timeline.md) — Ordered sequence of events with status markers and a connector line _(npm @cascivo/react · or copy-paste)_
+- [tool-call](https://cascivo.com/llms/tool-call.md) — Card for one AI tool invocation — the tool name, its lifecycle status, collapsible input/output, and approval actions _(npm @cascivo/react · or copy-paste)_
 - [tree-view](https://cascivo.com/llms/tree-view.md) — Hierarchical, expandable tree of nodes with keyboard navigation and selection _(npm @cascivo/react · or copy-paste)_
 - [user](https://cascivo.com/llms/user.md) — Identity composite: an avatar with a name, description, and optional action slot _(npm @cascivo/react · or copy-paste)_
 - [virtual-list](https://cascivo.com/llms/virtual-list.md) — Renders only the rows inside the viewport, so list length costs no extra DOM _(npm @cascivo/react · or copy-paste)_
@@ -535,6 +543,9 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 
 ### feedback
 
+- [ai-disclaimer](https://cascivo.com/llms/ai-disclaimer.md) — A short, quiet note that AI-generated content may be wrong — "AI-generated content may be incorrect" _(npm @cascivo/react · or copy-paste)_
+- [ai-status](https://cascivo.com/llms/ai-status.md) — Announces what an AI is doing — thinking, generating, done, failed or stopped — with a shimmering label and an optional Stop button _(npm @cascivo/react · or copy-paste)_
+- [context-meter](https://cascivo.com/llms/context-meter.md) — How much of a model’s context window a conversation has used — "12K / 200K" with a bar that warns as it fills _(npm @cascivo/react · or copy-paste)_
 - [infinite-scroll](https://cascivo.com/llms/infinite-scroll.md) — Loads the next page when the end of a list scrolls into view _(npm @cascivo/react · or copy-paste)_
 - [inline-loading](https://cascivo.com/llms/inline-loading.md) — Compact inline status indicator that pairs a label with a loading, success, or error state _(npm @cascivo/react · or copy-paste)_
 - [notification](https://cascivo.com/llms/notification.md) — Inline, actionable notification banner that surfaces a titled message with an optional recovery action _(npm @cascivo/react · or copy-paste)_
@@ -543,7 +554,9 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [progress-circle](https://cascivo.com/llms/progress-circle.md) — Circular determinate progress indicator rendered as an SVG arc _(npm @cascivo/react · or copy-paste)_
 - [pull-to-refresh](https://cascivo.com/llms/pull-to-refresh.md) — Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top _(npm @cascivo/react · or copy-paste)_
 - [radial-progress](https://cascivo.com/llms/radial-progress.md) — Circular progress indicator using conic-gradient, with percentage label and variant colors _(npm @cascivo/react · or copy-paste)_
+- [shimmer-text](https://cascivo.com/llms/shimmer-text.md) — Text with a bright band sweeping through it — the "Thinking…" look for a label that marks work in progress _(npm @cascivo/react · or copy-paste)_
 - [spinner](https://cascivo.com/llms/spinner.md) — Indeterminate loading indicator _(npm @cascivo/react · or copy-paste)_
+- [typing-indicator](https://cascivo.com/llms/typing-indicator.md) — Three bouncing dots that hold a chat message slot while an assistant (or a person) is composing a reply _(npm @cascivo/react · or copy-paste)_
 
 ### inputs
 
@@ -568,11 +581,13 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [input](https://cascivo.com/llms/input.md) — Text input field with optional label, hint, and error state _(npm @cascivo/react · or copy-paste)_
 - [input-group](https://cascivo.com/llms/input-group.md) — Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders _(npm @cascivo/react · or copy-paste)_
 - [label](https://cascivo.com/llms/label.md) — Accessible caption for a form control _(npm @cascivo/react · or copy-paste)_
+- [message-actions](https://cascivo.com/llms/message-actions.md) — The action row under an AI reply — copy, good / bad feedback as toggle buttons, and regenerate _(npm @cascivo/react · or copy-paste)_
 - [multi-select](https://cascivo.com/llms/multi-select.md) — Searchable multi-value select with a popover listbox, chips and grouping _(npm @cascivo/react · or copy-paste)_
 - [native-select](https://cascivo.com/llms/native-select.md) — A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring _(npm @cascivo/react · or copy-paste)_
 - [number-input](https://cascivo.com/llms/number-input.md) — Numeric input with stepper buttons, clamping, precision, and locale formatting _(npm @cascivo/react · or copy-paste)_
 - [otp-input](https://cascivo.com/llms/otp-input.md) — Segmented one-time code input _(npm @cascivo/react · or copy-paste)_
 - [password-input](https://cascivo.com/llms/password-input.md) — Password input with reveal toggle and optional strength meter _(npm @cascivo/react · or copy-paste)_
+- [prompt-suggestions](https://cascivo.com/llms/prompt-suggestions.md) — Starter prompts as a wrap of pill buttons — the "Try asking…" row of an empty AI chat _(npm @cascivo/react · or copy-paste)_
 - [radio](https://cascivo.com/llms/radio.md) — Single choice from a set, grouped with RadioGroup _(npm @cascivo/react · or copy-paste)_
 - [radio-card](https://cascivo.com/llms/radio-card.md) — Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups. _(npm @cascivo/react · or copy-paste)_
 - [rating-group](https://cascivo.com/llms/rating-group.md) — Star rating input with accessible radio group pattern _(npm @cascivo/react · or copy-paste)_

@@ -35,15 +35,16 @@ Built on the native <dialog> element so showModal() provides a real focus trap, 
 
 ## Props
 
-| Name          | Type                   | Required | Default | Description                                                                                |
-| ------------- | ---------------------- | -------- | ------- | ------------------------------------------------------------------------------------------ |
-| `open`        | `boolean`              | No       | false   | Whether the component is open (controlled).                                                |
-| `onClose`     | `() => void`           | No       | —       | Called when the component is closed.                                                       |
-| `title`       | `string`               | No       | —       | Title text for the component.                                                              |
-| `description` | `string`               | No       | —       | Supporting description text.                                                               |
-| `size`        | `'sm' \| 'md' \| 'lg'` | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                      |
-| `footer`      | `ReactNode`            | No       | —       | Dialog actions, rendered in a right-aligned row below the body and separated by a divider. |
-| `draggable`   | `boolean`              | No       | false   | Allow dragging the dialog by its header                                                    |
+| Name          | Type                      | Required | Default | Description                                                                                                                                                                                                                                                                        |
+| ------------- | ------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `open`        | `boolean`                 | No       | false   | Whether the component is open (controlled).                                                                                                                                                                                                                                        |
+| `onClose`     | `() => void`              | No       | —       | Called when the component is closed.                                                                                                                                                                                                                                               |
+| `title`       | `string`                  | No       | —       | Title text for the component.                                                                                                                                                                                                                                                      |
+| `description` | `string`                  | No       | —       | Supporting description text.                                                                                                                                                                                                                                                       |
+| `size`        | `'sm' \| 'md' \| 'lg'`    | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                                                                                                              |
+| `footer`      | `ReactNode`               | No       | —       | Dialog actions, rendered in a right-aligned row below the body and separated by a divider.                                                                                                                                                                                         |
+| `draggable`   | `boolean`                 | No       | false   | Allow dragging the dialog by its header                                                                                                                                                                                                                                            |
+| `ai`          | `boolean \| 'generating'` | No       | false   | AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text. |
 
 ## Tokens
 
@@ -66,11 +67,11 @@ Built on the native <dialog> element so showModal() provides a real focus trap, 
 
 ## Boundaries
 
-| Area                       | Level    | Note                                                                                                   |
-| -------------------------- | -------- | ------------------------------------------------------------------------------------------------------ |
-| token names                | strict   | Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascivo-\* tokens |
-| size                       | flexible | sm \| md \| lg, defaulting to md                                                                       |
-| title / description / body | flexible | All optional; body accepts arbitrary children                                                          |
+| Area                       | Level    | Note                                                                                                  |
+| -------------------------- | -------- | ----------------------------------------------------------------------------------------------------- |
+| token names                | strict   | Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascivo-* tokens |
+| size                       | flexible | sm \| md \| lg, defaulting to md                                                                      |
+| title / description / body | flexible | All optional; body accepts arbitrary children                                                         |
 
 ## AI context prompt
 

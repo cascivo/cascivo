@@ -88,7 +88,7 @@ Exposes role="spinbutton" with aria-valuenow/min/max so assistive tech announces
 
 | Area                  | Level    | Note                                                                           |
 | --------------------- | -------- | ------------------------------------------------------------------------------ |
-| token names           | strict   | Visual props must resolve to the listed --cascivo-\* semantic tokens           |
+| token names           | strict   | Visual props must resolve to the listed --cascivo-* semantic tokens            |
 | formatting and bounds | flexible | min, max, step, precision, and formatOptions are free to suit the value domain |
 | stepper labels        | flexible | incrementLabel/decrementLabel override the i18n defaults                       |
 

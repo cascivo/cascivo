@@ -114,6 +114,9 @@ export function PosterAiLayer() {
         </p>
         <a className="pg-link" href="/ai">
           See the AI layer →
+        </a>{' '}
+        <a className="pg-link" href="/ai#ai-components">
+          See the AI components →
         </a>
       </div>
     </section>

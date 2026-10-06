@@ -69,7 +69,7 @@ Wraps the slots in role="group" with a localized aria-label and labels each slot
 
 | Area            | Level    | Note                                                                          |
 | --------------- | -------- | ----------------------------------------------------------------------------- |
-| token names     | strict   | Slot styling must resolve to the listed --cascivo-\* tokens                   |
+| token names     | strict   | Slot styling must resolve to the listed --cascivo-* tokens                    |
 | length and type | flexible | length and numeric/alphanumeric type are free to match the issued code format |
 
 ## AI context prompt

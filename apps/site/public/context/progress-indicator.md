@@ -75,10 +75,10 @@ role="list" structures the steps in order; the current step is conveyed as text/
 
 ## Boundaries
 
-| Area        | Level    | Note                                                          |
-| ----------- | -------- | ------------------------------------------------------------- |
-| orientation | flexible | horizontal or vertical to fit the layout                      |
-| token names | strict   | Step and connector colors must resolve to --cascivo-\* tokens |
+| Area        | Level    | Note                                                         |
+| ----------- | -------- | ------------------------------------------------------------ |
+| orientation | flexible | horizontal or vertical to fit the layout                     |
+| token names | strict   | Step and connector colors must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

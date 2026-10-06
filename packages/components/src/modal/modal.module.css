@@ -76,6 +76,31 @@
     overflow: hidden;
   }
 
+  /* AI presence — see Card. The panel is the visible box; the dialog only carries the flag. */
+  .dialog[data-ai] .panel {
+    position: relative;
+    border-color: var(--cascivo-color-ai-border);
+    background-image: linear-gradient(to top, var(--cascivo-color-ai-subtle), transparent 60%);
+  }
+
+  .dialog[data-ai='generating'] .panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow:
+      inset 0 0 0 1px var(--cascivo-color-ai),
+      inset 0 0 1.5rem var(--cascivo-color-ai-sheen);
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .dialog[data-ai='generating'] .panel::before {
+      animation: global(cascivo-pulse) var(--cascivo-duration-loop-slow) var(--cascivo-ease-in-out)
+        infinite;
+    }
+  }
+
   .header {
     display: flex;
     align-items: center;

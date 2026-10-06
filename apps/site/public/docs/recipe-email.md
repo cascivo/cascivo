@@ -155,6 +155,7 @@ there is nothing to compose at build time. `Markdown` covers that case:
 
 ```tsx
 import { Markdown, Section } from '@cascivo/email'
+
 ;<Section padding={24}>
   <Markdown imageWidth={552}>{issue.preamble}</Markdown>
 </Section>

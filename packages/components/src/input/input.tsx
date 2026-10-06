@@ -31,6 +31,15 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   hint?: string
   error?: string
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * AI presence: an AI-tinted border and a soft aura, marking a value AI produced or
+   * suggested. Visual only — put an AiBadge in the label so the provenance is also text, and
+   * clear `ai` once the person edits the value.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
+  ai?: boolean
 }
 
 /**
@@ -41,7 +50,19 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
  * `react >= 18` peer floor honest, since ref-as-prop does not work there.
  */
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-  { label, hint, error, size = 'md', ariaLabel, className, id, onFocus, onBlur, ...props },
+  {
+    label,
+    hint,
+    error,
+    size = 'md',
+    ai = false,
+    ariaLabel,
+    className,
+    id,
+    onFocus,
+    onBlur,
+    ...props
+  },
   ref,
 ) {
   const [state, send] = useMachine(machine)
@@ -53,6 +74,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       className={cn(styles['wrapper'], className)}
       data-state={error ? 'error' : state.value}
       data-size={size}
+      data-ai={ai ? '' : undefined}
     >
       {label && (
         <label className={styles['label']} htmlFor={inputId}>

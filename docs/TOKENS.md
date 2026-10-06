@@ -112,6 +112,10 @@ remains canonical.
 | **`--cascivo-color-accent-text`** | `var(--cascivo-color-accent)` |  |
 | **`--cascivo-color-accent-text-hover`** | `var(--cascivo-color-accent-hover)` |  |
 | **`--cascivo-color-active-bg`** | `oklch(0.145 0.005 264 / 6%)` |  |
+| **`--cascivo-color-ai`** | `color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )` |  |
+| **`--cascivo-color-ai-border`** | `oklch(from var(--cascivo-color-ai) l c h / 40%)` |  |
+| **`--cascivo-color-ai-sheen`** | `oklch(from var(--cascivo-color-ai) l c h / 22%)` |  |
+| **`--cascivo-color-ai-subtle`** | `oklch(from var(--cascivo-color-ai) l c h / 10%)` |  |
 | **`--cascivo-color-background`** | `oklch(1 0 0)` |  |
 | `--cascivo-color-bg` | `var(--cascivo-color-background)` | alias of `--cascivo-color-background` |
 | **`--cascivo-color-bg-subtle`** | `var(--cascivo-color-surface)` |  |

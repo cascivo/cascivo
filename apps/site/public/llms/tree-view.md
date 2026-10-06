@@ -86,7 +86,7 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `tree`
-- **Keyboard:** \*, ArrowDown, ArrowUp, ArrowRight, ArrowLeft, Home, End, Enter, Space, Typeahead
+- **Keyboard:** *, ArrowDown, ArrowUp, ArrowRight, ArrowLeft, Home, End, Enter, Space, Typeahead
 
 ## Dependencies
 

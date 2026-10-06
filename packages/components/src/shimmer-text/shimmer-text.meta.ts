@@ -1,0 +1,106 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'ShimmerText',
+  description:
+    'Text with a bright band sweeping through it — the "Thinking…" look for a label that marks work in progress',
+  category: 'feedback',
+  clientJs: 'none',
+  states: [],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'as',
+      description:
+        '`span` for inline text, `p` for a paragraph, `div` for a block that imposes no semantics of its own.',
+      type: "'span' | 'p' | 'div'",
+      required: false,
+      default: 'span',
+    },
+    {
+      name: 'children',
+      description: 'The label text the shimmer sweeps through.',
+      type: 'ReactNode',
+      required: false,
+    },
+  ],
+  tokens: [
+    '--cascivo-shimmer-text-color',
+    '--cascivo-shimmer-text-highlight',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-ai',
+    '--cascivo-duration-loop-slow',
+  ],
+  accessibility: {
+    role: 'none',
+    wcag: '2.2-AA',
+    keyboard: [],
+    reducedMotion: true,
+    forcedColors: true,
+  },
+  examples: [
+    { title: 'Thinking label', code: '<ShimmerText>Thinking…</ShimmerText>' },
+    {
+      title: 'As a paragraph',
+      code: '<ShimmerText as="p">Searching 12 documents…</ShimmerText>',
+    },
+  ],
+  dependencies: ['@cascivo/core'],
+  tags: ['ai', 'loading', 'shimmer', 'thinking', 'text', 'progress'],
+  intent: {
+    whenToUse: [
+      'Styling a short label that names work in progress — "Thinking…", "Searching the docs…"',
+      'The trigger or heading of an AI surface while a response is being produced',
+    ],
+    whenNotToUse: [
+      'Announcing status to assistive tech on its own — it is a visual treatment; wrap it in AiStatus or another role="status" region',
+      'Body copy or anything longer than a line — the sweep is meant for a glanceable label',
+      'Placeholder for content whose shape is known — use Skeleton',
+    ],
+    antiPatterns: [
+      {
+        bad: '<ShimmerText>Done</ShimmerText> left in place after the work finishes',
+        good: 'Render plain text once the work completes',
+        why: 'The shimmer means "in progress"; leaving it on a finished label tells the reader something is still happening',
+      },
+    ],
+    related: [
+      {
+        name: 'AiStatus',
+        relationship: 'contained-by',
+        reason:
+          'AiStatus renders its in-progress label in ShimmerText inside a role="status" region',
+      },
+      {
+        name: 'Reasoning',
+        relationship: 'contained-by',
+        reason: 'Reasoning shimmers its "Thinking…" trigger while streaming',
+      },
+      {
+        name: 'Skeleton',
+        relationship: 'alternative',
+        reason:
+          'Skeleton previews the shape of pending content; ShimmerText styles a label that names the work',
+      },
+    ],
+    a11yRationale:
+      'Purely visual: the text stays real text, so it is read normally and never announced on its own. The sweep runs only under prefers-reduced-motion: no-preference (otherwise plain muted text), and forced colours render it as CanvasText. The highlight band is the AI hue, which clears AA on every shipped theme and is never weaker than the muted base it sweeps over, so the sweep never lowers contrast',
+    content: {
+      tone: 'Present progressive and specific — "Thinking…", "Reading 3 files…"',
+      notes: 'One line; end with an ellipsis to reinforce that the work is ongoing',
+    },
+    flexibility: [
+      {
+        area: 'colours',
+        level: 'flexible',
+        note: 'Override --cascivo-shimmer-text-color and --cascivo-shimmer-text-highlight per instance',
+      },
+      {
+        area: 'motion',
+        level: 'strict',
+        note: 'The sweep must stay inside the reduced-motion opt-in; never animate it unconditionally',
+      },
+    ],
+  },
+}

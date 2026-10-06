@@ -68,10 +68,10 @@ Renders a native <input type="range"> so the slider role, value announcements, a
 
 ## Boundaries
 
-| Area         | Level    | Note                                                                                   |
-| ------------ | -------- | -------------------------------------------------------------------------------------- |
-| token names  | strict   | Track and thumb colors must resolve to --cascivo-color-\* / radius / focus-ring tokens |
-| min/max/step | flexible | Consumer-defined bounds and increment                                                  |
+| Area         | Level    | Note                                                                                  |
+| ------------ | -------- | ------------------------------------------------------------------------------------- |
+| token names  | strict   | Track and thumb colors must resolve to --cascivo-color-* / radius / focus-ring tokens |
+| min/max/step | flexible | Consumer-defined bounds and increment                                                 |
 
 ## AI context prompt
 

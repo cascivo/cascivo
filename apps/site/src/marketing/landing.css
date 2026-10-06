@@ -1305,6 +1305,48 @@ kbd {
   max-inline-size: 44rem;
 }
 
+/* ── AI components showcase (/ai) ─────────────────────── */
+.ai-showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: var(--cascivo-space-6);
+  align-items: start;
+}
+
+.ai-showcase-caption {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+  margin: 0 0 var(--cascivo-space-4);
+  font-size: var(--cascivo-text-xs);
+  font-weight: var(--cascivo-font-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cascivo-color-text-muted);
+}
+
+.ai-showcase-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-4);
+}
+
+.ai-showcase-answer {
+  margin: 0;
+  line-height: var(--cascivo-leading-relaxed);
+}
+
+.ai-showcase-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cascivo-space-2) var(--cascivo-space-4);
+  margin: var(--cascivo-space-8) 0 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--cascivo-font-mono);
+  font-size: var(--cascivo-text-sm);
+}
+
 .agent-steps {
   list-style: none;
   padding: 0;

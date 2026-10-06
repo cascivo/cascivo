@@ -105,7 +105,12 @@ export function stripComments(source: string): string {
 
 /** Collapse whitespace so a reformat is not a surface change. */
 function normalize(text: string): string {
-  return text.replace(/\s+/g, ' ').trim()
+  // vite-plus 1's dts emitter ends the last member of an object type with `;` and older ones
+  // did not, so `{ a: string; }` and `{ a: string }` must compare equal.
+  return text
+    .replace(/\s+/g, ' ')
+    .replace(/;\s*\}/g, ' }')
+    .trim()
 }
 
 /**
@@ -258,6 +263,14 @@ function exportSpecifiers(source: string): Specifier[] {
       specs.push(entry)
     }
   }
+  // vite-plus 1's dts bundler also exports declarations inline (`export declare function X`,
+  // `export interface X`) instead of listing every name in one trailing `export { … }`.
+  for (const m of source.matchAll(
+    /(?:^|\n)export\s+(?:declare\s+)?(interface|type|const|let|var|function|class|enum|namespace)\s+([A-Za-z_$][\w$]*)/g,
+  )) {
+    const name = m[2]!
+    specs.push({ exported: name, local: name, isType: m[1] === 'interface' || m[1] === 'type' })
+  }
   return specs
 }
 
@@ -341,9 +354,9 @@ interface Declaration {
 function declarationOf(source: string, name: string): Declaration | null {
   const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
-  const iface = new RegExp(`(?:^|\\n)(?:declare\\s+)?interface\\s+${escaped}\\b([^{]*)\\{`).exec(
-    source,
-  )
+  const iface = new RegExp(
+    `(?:^|\\n)(?:export\\s+)?(?:declare\\s+)?interface\\s+${escaped}\\b([^{]*)\\{`,
+  ).exec(source)
   if (iface !== null) {
     const block = readBlock(source, source.indexOf('{', iface.index + iface[0].length - 1))
     if (block !== null) {
@@ -358,7 +371,9 @@ function declarationOf(source: string, name: string): Declaration | null {
     }
   }
 
-  const alias = new RegExp(`(?:^|\\n)(?:declare\\s+)?type\\s+${escaped}\\b([^=]*)=`).exec(source)
+  const alias = new RegExp(
+    `(?:^|\\n)(?:export\\s+)?(?:declare\\s+)?type\\s+${escaped}\\b([^=]*)=`,
+  ).exec(source)
   if (alias !== null) {
     const bodyStart = alias.index + alias[0].length
     const end = declarationEnd(source, bodyStart)
@@ -367,7 +382,7 @@ function declarationOf(source: string, name: string): Declaration | null {
   }
 
   const decl = new RegExp(
-    `(?:^|\\n)declare\\s+(const|let|var|function|class|enum|namespace)\\s+${escaped}\\b`,
+    `(?:^|\\n)(?:export\\s+)?declare\\s+(const|let|var|function|class|enum|namespace)\\s+${escaped}\\b`,
   ).exec(source)
   if (decl !== null) {
     const start = decl.index + (decl[0].startsWith('\n') ? 1 : 0)
@@ -387,7 +402,8 @@ function declarationOf(source: string, name: string): Declaration | null {
     }
     // const / function: take through the terminating semicolon at depth 0.
     const end = declarationEnd(source, start)
-    if (end !== -1) return { kind: 'value', text: normalize(source.slice(start, end)) }
+    if (end !== -1)
+      return { kind: 'value', text: normalize(source.slice(start, end).replace(/^export\s+/, '')) }
   }
   return null
 }

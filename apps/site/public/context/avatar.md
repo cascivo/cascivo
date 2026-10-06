@@ -78,10 +78,10 @@ Derives initials automatically; also sets the accessible label.
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                    |
-| ----------- | -------- | ----------------------------------------------------------------------- |
-| size        | flexible | Pick the size that fits the surrounding density                         |
-| token names | strict   | Fallback and status colors must resolve to --cascivo-\* semantic tokens |
+| Area        | Level    | Note                                                                   |
+| ----------- | -------- | ---------------------------------------------------------------------- |
+| size        | flexible | Pick the size that fits the surrounding density                        |
+| token names | strict   | Fallback and status colors must resolve to --cascivo-* semantic tokens |
 
 ## AI context prompt
 

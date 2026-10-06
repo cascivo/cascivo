@@ -145,20 +145,21 @@ column — `transform` would leave the gap behind), and PullToRefresh's growing 
 
 ## 4. The catalogue
 
-Thirteen keyframes in `packages/tokens/src/motion.css`. It is imported from
+Fourteen keyframes in `packages/tokens/src/motion.css`. It is imported from
 `tokens/index.css`, so every consumer path already has it — including a component copied by
 `cascivo add`, which gains no new dependency.
 
 ### Loading & progress
 
-| Keyframe                 | For                           | Notes                                                          |
-| ------------------------ | ----------------------------- | -------------------------------------------------------------- |
-| `cascivo-spin`           | Spinners, refresh glyphs      | Continuous rotation.                                           |
-| `cascivo-shimmer`        | Skeletons, image placeholders | Translate an overlay; see §3.                                  |
-| `cascivo-progress-sweep` | Indeterminate bars            | Host must be `overflow: hidden`; bar ≈ 40% of track.           |
-| `cascivo-blink`          | Terminal / streaming cursor   | Pair with `step-end`.                                          |
-| `cascivo-dots`           | Typing indicator              | Stagger `animation-delay` 0 / 160ms / 320ms across three dots. |
-| `cascivo-dash-grow`      | Material-style SVG spinner    | Pair with `cascivo-spin` on the parent.                        |
+| Keyframe                 | For                                | Notes                                                          |
+| ------------------------ | ---------------------------------- | -------------------------------------------------------------- |
+| `cascivo-spin`           | Spinners, refresh glyphs           | Continuous rotation.                                           |
+| `cascivo-shimmer`        | Skeletons, image placeholders      | Translate an overlay; see §3.                                  |
+| `cascivo-text-shimmer`   | "Thinking…" labels (`ShimmerText`) | A band sweeping through text clipped to a 200% gradient.       |
+| `cascivo-progress-sweep` | Indeterminate bars                 | Host must be `overflow: hidden`; bar ≈ 40% of track.           |
+| `cascivo-blink`          | Terminal / streaming cursor        | Pair with `step-end`.                                          |
+| `cascivo-dots`           | Typing indicator                   | Stagger `animation-delay` 0 / 160ms / 320ms across three dots. |
+| `cascivo-dash-grow`      | Material-style SVG spinner         | Pair with `cascivo-spin` on the parent.                        |
 
 ### Attention & feedback
 
@@ -176,9 +177,11 @@ Thirteen keyframes in `packages/tokens/src/motion.css`. It is imported from
 > label fading further crosses below the WCAG contrast threshold mid-cycle. Animate a
 > decorative pseudo-element beside the label instead — `ai-label` is the worked example.
 
-Two keyframes are deliberate exceptions to §3, called out at their definitions:
-`cascivo-dash-grow` (`stroke-dashoffset` has no transform equivalent) and `cascivo-flash`
-(neither does a background tint — so it is one-shot, never looped).
+Three keyframes are deliberate exceptions to §3, called out at their definitions:
+`cascivo-dash-grow` (`stroke-dashoffset` has no transform equivalent), `cascivo-flash`
+(neither does a background tint — so it is one-shot, never looped), and
+`cascivo-text-shimmer` (a gradient clipped to glyphs cannot be translated as an overlay — so
+it runs only on a short label, only while work is in progress).
 
 ---
 

@@ -78,10 +78,10 @@ The kebab trigger carries a localized aria-label since it has no visible text, a
 
 ## Boundaries
 
-| Area                | Level    | Note                                                                    |
-| ------------------- | -------- | ----------------------------------------------------------------------- |
-| token names         | strict   | Trigger and item styling must resolve to the listed --cascivo-\* tokens |
-| item set and labels | flexible | items, ariaLabel, and placement are free to suit the context            |
+| Area                | Level    | Note                                                                   |
+| ------------------- | -------- | ---------------------------------------------------------------------- |
+| token names         | strict   | Trigger and item styling must resolve to the listed --cascivo-* tokens |
+| item set and labels | flexible | items, ariaLabel, and placement are free to suit the context           |
 
 ## AI context prompt
 

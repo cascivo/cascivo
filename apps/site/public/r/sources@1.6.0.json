@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 2,
+  "name": "sources",
+  "type": "component",
+  "description": "Collapsible, numbered list of the sources an AI answer drew on — \"Used 3 sources\" — whose numbers match InlineCitation",
+  "version": "1.6.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sources/sources.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sources/index.ts"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sources/sources.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["ai", "sources", "citations", "references", "provenance", "links"],
+  "category": "display",
+  "meta": {
+    "name": "Sources",
+    "description": "Collapsible, numbered list of the sources an AI answer drew on — \"Used 3 sources\" — whose numbers match InlineCitation",
+    "category": "display",
+    "clientJs": "none",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "items",
+        "description": "The sources, in citation order. Each has `title`, `url` and an optional `description`. Only absolute http(s) URLs become links; anything else (e.g. `javascript:`) renders as text.",
+        "type": "AiSource[]",
+        "required": true
+      },
+      {
+        "name": "labels",
+        "description": "Overrides for the component’s user-visible strings (i18n). `summary` may contain `{count}`.",
+        "type": "{ summary?: string }",
+        "required": false
+      }
+    ],
+    "typeDefs": [
+      {
+        "name": "AiSource",
+        "description": "One source an answer cites.",
+        "fields": [
+          {
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "The source’s title."
+          },
+          {
+            "name": "url",
+            "type": "string",
+            "required": true,
+            "description": "Where it lives. Treated as untrusted: only absolute http(s) URLs are linked."
+          },
+          {
+            "name": "description",
+            "type": "ReactNode",
+            "required": false,
+            "description": "An excerpt or note shown under the title."
+          }
+        ]
+      }
+    ],
+    "tokens": [
+      "--cascivo-link-color",
+      "--cascivo-color-accent-text",
+      "--cascivo-color-text",
+      "--cascivo-color-text-muted",
+      "--cascivo-focus-ring"
+    ],
+    "accessibility": {
+      "role": "button",
+      "wcag": "2.2-AA",
+      "keyboard": ["Enter", "Space"],
+      "apgPattern": "disclosure",
+      "forcedColors": true
+    },
+    "examples": [
+      {
+        "title": "Answer sources",
+        "code": "<Sources\n  items={[\n    { title: 'Refund policy', url: 'https://example.com/refunds' },\n    { title: 'Terms of service', url: 'https://example.com/terms', description: '§4 covers cancellations.' },\n  ]}\n/>"
+      }
+    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "tags": ["ai", "sources", "citations", "references", "provenance", "links"],
+    "intent": {
+      "whenToUse": [
+        "Listing what an AI answer was based on, below the answer",
+        "Giving numbered targets for the InlineCitation markers inside the answer"
+      ],
+      "whenNotToUse": [
+        "Ordinary navigation links — use List or Link",
+        "An agent’s process (searched, read, wrote) — use ChainOfThought"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Rendering model-supplied URLs straight into href",
+          "good": "Pass them to Sources / InlineCitation, which only link absolute http(s) URLs",
+          "why": "A model can emit javascript: or data: URLs; linking them is script injection"
+        }
+      ],
+      "related": [
+        {
+          "name": "InlineCitation",
+          "relationship": "pairs-with",
+          "reason": "InlineCitation numbers in the text point at the same rows"
+        },
+        {
+          "name": "AiBadge",
+          "relationship": "pairs-with",
+          "reason": "AiBadge marks the answer as AI-generated; Sources says what it rests on"
+        }
+      ],
+      "a11yRationale": "A native <details>/<summary> disclosure (Enter/Space) whose summary states the count (\"Used 3 sources\"), so it works before hydration and find-in-page can open it. The list is an <ol>, so each source is announced with its number, matching the InlineCitation markers. Refused URLs render as plain text, never as a link that does nothing",
+      "content": {
+        "tone": "Use the source’s own title; keep descriptions to a short excerpt"
+      },
+      "flexibility": [
+        {
+          "area": "summary text",
+          "level": "flexible",
+          "note": "Localise or reword via labels.summary (with {count})"
+        },
+        {
+          "area": "URL handling",
+          "level": "strict",
+          "note": "Do not bypass sourceHref() — model output is untrusted"
+        }
+      ]
+    }
+  }
+}

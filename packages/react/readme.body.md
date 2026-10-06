@@ -233,7 +233,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-199 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
+214 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
 
 ### Inputs
 
@@ -258,11 +258,13 @@ routing break after adding one of these, check that the import resolves to
 - **Input** — Text input field with optional label, hint, and error state
 - **InputGroup** — Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders
 - **Label** — Accessible caption for a form control
+- **MessageActions** — The action row under an AI reply — copy, good / bad feedback as toggle buttons, and regenerate
 - **MultiSelect** — Searchable multi-value select with a popover listbox, chips and grouping
 - **NativeSelect** — A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring
 - **NumberInput** — Numeric input with stepper buttons, clamping, precision, and locale formatting
 - **OtpInput** — Segmented one-time code input
 - **PasswordInput** — Password input with reveal toggle and optional strength meter
+- **PromptSuggestions** — Starter prompts as a wrap of pill buttons — the "Try asking…" row of an empty AI chat
 - **Radio** — Single choice from a set, grouped with RadioGroup
 - **RadioCard** — Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.
 - **RatingGroup** — Star rating input with accessible radio group pattern
@@ -282,6 +284,7 @@ routing break after adding one of these, check that the import resolves to
 
 ### Display
 
+- **AiBadge** — Small "AI" marker for AI-generated content; with children it opens a toggletip explaining how AI was involved
 - **Alert** — Highlights a short, important message inline
 - **Avatar** — Displays a user image with initials fallback
 - **AvatarGroup** — Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip
@@ -289,6 +292,7 @@ routing break after adding one of these, check that the import resolves to
 - **Blockquote** — Quoted passage with optional attribution footer
 - **Card** — Container for grouping related content
 - **Carousel** — Scroll-snap slide deck with previous/next controls and dot indicators
+- **ChainOfThought** — The steps an AI agent takes — searching, reading, calling tools — each with its status, and optional collapsible detail
 - **ChatBubble** — Message bubble for chat and messaging UIs with avatar, name, and timestamp support
 - **Code** — Inline code span for identifiers, commands, and short snippets
 - **CodeSnippet** — Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look
@@ -314,6 +318,7 @@ routing break after adding one of these, check that the import resolves to
 - **Heading** — Section heading with semantic level decoupled from visual size
 - **Highlight** — Read-only syntax-highlighted code block — the same owned tokenizer as CodeEditor, without the textarea.
 - **Image** — Image with load state, blur-up placeholder, graceful fallback, and optional zoom
+- **InlineCitation** — A numbered citation marker inside AI-generated text that links to its source and previews it in a hover card
 - **Item** — Generic content row primitive with media, content, and action regions
 - **Kbd** — Displays a keyboard key or shortcut
 - **List** — Styled unordered or ordered list with ListItem
@@ -324,19 +329,24 @@ routing break after adding one of these, check that the import resolves to
 - **PageWithBreadcrumb** — A centered content page with a breadcrumb navigation and page header.
 - **Prose** — Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables
 - **QrCode** — Encodes a URL or short text into a scannable SVG QR code
+- **Reasoning** — Collapsible panel for a model’s reasoning — opens and shimmers "Thinking…" while it streams, then settles to "Thought for N seconds"
 - **RelativeTime** — Displays a date as a localized phrase relative to now, auto-updating
 - **Separator** — Visual or semantic divider between content
 - **SettingsFormPage** — Settings page with profile form inside a two-column settings layout.
 - **SidebarApp** — Full app shell with collapsible side navigation and top header.
 - **Skeleton** — Animated loading placeholder that mirrors the shape of pending content
+- **Sources** — Collapsible, numbered list of the sources an AI answer drew on — "Used 3 sources" — whose numbers match InlineCitation
 - **Stat** — Displays a key metric with optional delta, trend direction and help text
 - **StatsCards** — Grid of KPI stat cards with trend badges.
 - **Status** — Colored dot with a label communicating the state of a system or entity
+- **StreamingText** — Reveals text character by character with a blinking cursor, catching up as a streamed reply grows
 - **StructuredList** — Tabular row list for scannable data, optionally single-selectable
 - **SwipeItem** — List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity
 - **Tag** — Compact chip for labeling, categorizing, or filtering content
+- **Terminal** — An animated terminal that types out a script of commands and output — for demos, onboarding and agent transcripts
 - **Text** — Body text with size, weight, and muted variants
 - **Timeline** — Ordered sequence of events with status markers and a connector line
+- **ToolCall** — Card for one AI tool invocation — the tool name, its lifecycle status, collapsible input/output, and approval actions
 - **TreeView** — Hierarchical, expandable tree of nodes with keyboard navigation and selection
 - **User** — Identity composite: an avatar with a name, description, and optional action slot
 - **UsersTablePage** — Full users management page with table, search, and invite action.
@@ -417,6 +427,9 @@ routing break after adding one of these, check that the import resolves to
 
 ### Feedback
 
+- **AiDisclaimer** — A short, quiet note that AI-generated content may be wrong — "AI-generated content may be incorrect"
+- **AiStatus** — Announces what an AI is doing — thinking, generating, done, failed or stopped — with a shimmering label and an optional Stop button
+- **ContextMeter** — How much of a model’s context window a conversation has used — "12K / 200K" with a bar that warns as it fills
 - **InfiniteScroll** — Loads the next page when the end of a list scrolls into view
 - **InlineLoading** — Compact inline status indicator that pairs a label with a loading, success, or error state
 - **Notification** — Inline, actionable notification banner that surfaces a titled message with an optional recovery action
@@ -425,7 +438,9 @@ routing break after adding one of these, check that the import resolves to
 - **ProgressCircle** — Circular determinate progress indicator rendered as an SVG arc
 - **PullToRefresh** — Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top
 - **RadialProgress** — Circular progress indicator using conic-gradient, with percentage label and variant colors
+- **ShimmerText** — Text with a bright band sweeping through it — the "Thinking…" look for a label that marks work in progress
 - **Spinner** — Indeterminate loading indicator
+- **TypingIndicator** — Three bouncing dots that hold a chat message slot while an assistant (or a person) is composing a reply
 
 ### Charts
 

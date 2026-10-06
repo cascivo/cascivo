@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 2,
+  "name": "reasoning",
+  "type": "component",
+  "description": "Collapsible panel for a model’s reasoning — opens and shimmers \"Thinking…\" while it streams, then settles to \"Thought for N seconds\"",
+  "version": "1.6.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/reasoning/reasoning.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/reasoning/index.ts"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/reasoning/reasoning.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["ai", "reasoning", "thinking", "chain-of-thought", "disclosure", "collapsible"],
+  "category": "display",
+  "registryDependencies": ["shimmer-text"],
+  "meta": {
+    "name": "Reasoning",
+    "description": "Collapsible panel for a model’s reasoning — opens and shimmers \"Thinking…\" while it streams, then settles to \"Thought for N seconds\"",
+    "category": "display",
+    "clientJs": "none",
+    "states": ["streaming", "settled"],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "children",
+        "description": "The reasoning text or steps.",
+        "type": "ReactNode",
+        "required": true
+      },
+      {
+        "name": "streaming",
+        "description": "True while reasoning is still arriving: the panel opens, the trigger shimmers \"Thinking…\" and the content is aria-busy. Turning it off closes the panel.",
+        "type": "boolean",
+        "required": false,
+        "default": "false"
+      },
+      {
+        "name": "duration",
+        "description": "Seconds spent reasoning. Once streaming ends the trigger reads \"Thought for {duration} seconds\"; without it, \"Reasoning\". The caller owns the clock.",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "label",
+        "nameVisibility": "visible",
+        "description": "Replaces the trigger text in every state.",
+        "type": "ReactNode",
+        "required": false
+      },
+      {
+        "name": "labels",
+        "description": "Overrides for the component’s user-visible strings (i18n). `thoughtFor` may contain `{count}`.",
+        "type": "{ thinking?: string; thoughtFor?: string; label?: string }",
+        "required": false
+      }
+    ],
+    "tokens": [
+      "--cascivo-color-ai",
+      "--cascivo-color-ai-border",
+      "--cascivo-color-text",
+      "--cascivo-color-text-muted",
+      "--cascivo-focus-ring",
+      "--cascivo-duration-200",
+      "--cascivo-duration-loop-slow"
+    ],
+    "accessibility": {
+      "role": "button",
+      "wcag": "2.2-AA",
+      "keyboard": ["Enter", "Space"],
+      "apgPattern": "disclosure",
+      "reducedMotion": true,
+      "forcedColors": true
+    },
+    "examples": [
+      {
+        "title": "Streaming",
+        "code": "<Reasoning streaming>The user wants a summary, so I will start with the totals…</Reasoning>"
+      },
+      {
+        "title": "Settled",
+        "code": "<Reasoning duration={12}>The user wants a summary, so I started with the totals and then compared regions.</Reasoning>"
+      }
+    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "registryDependencies": ["shimmer-text"],
+    "tags": ["ai", "reasoning", "thinking", "chain-of-thought", "disclosure", "collapsible"],
+    "intent": {
+      "whenToUse": [
+        "Showing a model’s reasoning or thinking trace above its answer, collapsed once the answer arrives",
+        "Giving readers an opt-in look at how an AI reached a result without cluttering the reply"
+      ],
+      "whenNotToUse": [
+        "General show/hide content — use Collapsible or Accordion",
+        "A sequence of discrete agent steps with their own status — use Steps or Timeline",
+        "Reporting the phase of a request — use AiStatus"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Wrapping the reasoning text in aria-live so it is read as it streams",
+          "good": "<Reasoning streaming> — the content is aria-busy and silent; pair it with AiStatus for the phase",
+          "why": "Announcing every token of a reasoning trace drowns out everything else"
+        }
+      ],
+      "related": [
+        {
+          "name": "ShimmerText",
+          "relationship": "contains",
+          "reason": "The streaming trigger label is ShimmerText"
+        },
+        {
+          "name": "AiStatus",
+          "relationship": "pairs-with",
+          "reason": "AiStatus announces the phase while Reasoning holds the trace"
+        },
+        {
+          "name": "Collapsible",
+          "relationship": "alternative",
+          "reason": "Collapsible is the general-purpose disclosure"
+        }
+      ],
+      "a11yRationale": "Built on native <details>/<summary>, so the trigger is a keyboard-operable disclosure (Enter/Space) with its expanded state exposed by the browser, it works before hydration, and find-in-page can open it. The content carries aria-busy while streaming and is never a live region; the sparkle is decorative and pulses only under prefers-reduced-motion: no-preference",
+      "content": {
+        "tone": "The trigger names the state — \"Thinking…\" while working, \"Thought for 12 seconds\" after"
+      },
+      "flexibility": [
+        {
+          "area": "trigger text",
+          "level": "flexible",
+          "note": "Override with label, or localise each state through labels"
+        },
+        {
+          "area": "open behaviour",
+          "level": "strict",
+          "note": "Opens when streaming starts and closes when it ends; do not force it open after the answer arrives"
+        }
+      ]
+    }
+  }
+}

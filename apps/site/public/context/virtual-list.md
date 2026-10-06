@@ -19,8 +19,8 @@
 
 ### Positions are arithmetic, not measured, so a mismatch makes rows overlap or leave gaps that grow with scroll depth
 
-**Bad:** `Passing rows whose real height differs from `itemHeight`` 
-**Good:**`Fix the row height in CSS to match `itemHeight` exactly`  
+**Bad:** `Passing rows whose real height differs from `itemHeight``  
+**Good:** `Fix the row height in CSS to match `itemHeight` exactly`  
 **Why:** Positions are arithmetic, not measured, so a mismatch makes rows overlap or leave gaps that grow with scroll depth
 
 ### `height` drives the visible row count, which cannot be derived from a relative length without measuring

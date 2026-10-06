@@ -82,7 +82,7 @@ The picking area is a role="group" holding one native range input per axis — s
 | ------------- | -------- | --------------------------------------------------------------------------------------------- |
 | output format | flexible | format switches between hex, rgb() and hsl(); alpha is included whenever the alpha prop is on |
 | color model   | flexible | Values are stored as hex; consumers can convert to rgb/hsl/oklch as needed                    |
-| token names   | strict   | Surfaces, borders and focus ring must resolve to --cascivo-\* tokens                          |
+| token names   | strict   | Surfaces, borders and focus ring must resolve to --cascivo-* tokens                           |
 
 ## AI context prompt
 

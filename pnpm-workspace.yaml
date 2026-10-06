@@ -25,7 +25,7 @@ catalog:
   next: ^16
   typescript: ^5
   ts-morph: ^28
-  vite-plus: ^0.2.1
+  vite-plus: ^1.0.0
   '@modelcontextprotocol/sdk': ^1.29.0
   zod: ^4.4.3
   # React Compiler 1.0 is built on Babel 7 (@babel/types ^7), so core stays on the 7 line.
@@ -50,7 +50,7 @@ catalog:
   # expect test.describe() to be called here") and collects zero tests. That is
   # what made the weekly bench workflow fail every run from 2026-06-15 on.
   playwright: ^1.61.0
-  vitest: 4.1.9
+  vitest: 5.0.1
   esbuild: ^0.28.0
   '@lhci/cli': ^0.15.1
   '@axe-core/playwright': ^4.11.3
@@ -65,8 +65,8 @@ catalog:
   '@shikijs/rehype': ^4.2.0
 
 overrides:
-  vite: 'npm:@voidzero-dev/vite-plus-core@0.2.1'
-  vitest: '4.1.9'
+  vite: 'npm:@voidzero-dev/vite-plus-core@1.0.0'
+  vitest: '5.0.1'
   # Align the two axe-core consumers on one version: @axe-core/playwright (the
   # sweep) injects axe into the same Storybook iframe where @storybook/addon-a11y
   # already bundles it. Two versions on window.axe → "unknown rule" errors. Pin to
@@ -111,16 +111,16 @@ allowBuilds:
   dtrace-provider: false
 
 minimumReleaseAgeExclude:
-  - '@voidzero-dev/vite-plus-core@0.2.1'
-  - '@voidzero-dev/vite-plus-darwin-arm64@0.2.1'
-  - '@voidzero-dev/vite-plus-darwin-x64@0.2.1'
-  - '@voidzero-dev/vite-plus-linux-arm64-gnu@0.2.1'
-  - '@voidzero-dev/vite-plus-linux-arm64-musl@0.2.1'
-  - '@voidzero-dev/vite-plus-linux-x64-gnu@0.2.1'
-  - '@voidzero-dev/vite-plus-linux-x64-musl@0.2.1'
-  - '@voidzero-dev/vite-plus-win32-arm64-msvc@0.2.1'
-  - '@voidzero-dev/vite-plus-win32-x64-msvc@0.2.1'
-  - vite-plus@0.2.1
+  - '@voidzero-dev/vite-plus-core@1.0.0'
+  - '@voidzero-dev/vite-plus-darwin-arm64@1.0.0'
+  - '@voidzero-dev/vite-plus-darwin-x64@1.0.0'
+  - '@voidzero-dev/vite-plus-linux-arm64-gnu@1.0.0'
+  - '@voidzero-dev/vite-plus-linux-arm64-musl@1.0.0'
+  - '@voidzero-dev/vite-plus-linux-x64-gnu@1.0.0'
+  - '@voidzero-dev/vite-plus-linux-x64-musl@1.0.0'
+  - '@voidzero-dev/vite-plus-win32-arm64-msvc@1.0.0'
+  - '@voidzero-dev/vite-plus-win32-x64-msvc@1.0.0'
+  - vite-plus@1.0.0
   # docspack and its @docspack/* packages are maintained alongside cascivo and release
   # together the morning they are adopted; exempt the whole family by name, not per version.
   - docspack

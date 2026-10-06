@@ -69,10 +69,10 @@ Compose multiple keys to show a shortcut
 
 ## Boundaries
 
-| Area        | Level    | Note                                                   |
-| ----------- | -------- | ------------------------------------------------------ |
-| size        | flexible | sm fits inline help; md matches body text              |
-| token names | strict   | Surface and border must resolve to --cascivo-\* tokens |
+| Area        | Level    | Note                                                  |
+| ----------- | -------- | ----------------------------------------------------- |
+| size        | flexible | sm fits inline help; md matches body text             |
+| token names | strict   | Surface and border must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

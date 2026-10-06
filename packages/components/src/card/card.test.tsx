@@ -61,3 +61,15 @@ describe('CardHeader actions (title + action row)', () => {
     expect(header.className).not.toMatch(/headerRow/)
   })
 })
+
+describe('Card ai presence', () => {
+  it('marks AI content and AI generation, and nothing by default', () => {
+    const { rerender, container } = render(<Card>x</Card>)
+    const root = () => container.firstElementChild
+    expect(root()).not.toHaveAttribute('data-ai')
+    rerender(<Card ai>x</Card>)
+    expect(root()).toHaveAttribute('data-ai', '')
+    rerender(<Card ai="generating">x</Card>)
+    expect(root()).toHaveAttribute('data-ai', 'generating')
+  })
+})

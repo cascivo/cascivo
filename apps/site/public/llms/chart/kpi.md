@@ -39,6 +39,7 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 
 ```tsx
 import { Kpi } from '@cascivo/charts'
+
 ;<Kpi value="$12,400" label="Monthly revenue" delta={8.2} deltaLabel="vs last month" />
 ```
 

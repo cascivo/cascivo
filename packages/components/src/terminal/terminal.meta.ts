@@ -1,0 +1,141 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'Terminal',
+  description:
+    'An animated terminal that types out a script of commands and output — for demos, onboarding and agent transcripts',
+  category: 'display',
+  // The visible lines are typed by a requestAnimationFrame loop. The full script is in the
+  // server HTML for screen readers, but nothing is visible until JS runs.
+  clientJs: 'required',
+  states: [],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'lines',
+      description:
+        'The script. Each line has `text`, an optional `prefix` (e.g. `$`) and a `type` (`command | output | error | comment`, default `output`).',
+      type: 'TerminalLine[]',
+      required: true,
+    },
+    {
+      name: 'speed',
+      description: 'Characters typed per animation frame.',
+      type: 'number',
+      required: false,
+      default: '3',
+    },
+    {
+      name: 'loop',
+      description: 'Restart from the first line after the last one.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'onComplete',
+      description: 'Called each time the last line finishes typing.',
+      type: '() => void',
+      required: false,
+    },
+    {
+      name: 'labels',
+      description:
+        'Overrides for the component’s user-visible strings (i18n) — `label` names the terminal for screen readers.',
+      type: '{ label?: string }',
+      required: false,
+    },
+  ],
+  typeDefs: [
+    {
+      name: 'TerminalLine',
+      description: 'One line of the script.',
+      fields: [
+        { name: 'text', type: 'string', required: true, description: 'What the line says.' },
+        {
+          name: 'prefix',
+          type: 'string',
+          required: false,
+          description: 'A prompt marker such as `$`, styled and not selectable.',
+        },
+        {
+          name: 'type',
+          type: "'command' | 'output' | 'error' | 'comment'",
+          required: false,
+          description: 'Colours the line. Defaults to `output`.',
+        },
+      ],
+    },
+  ],
+  tokens: [
+    '--cascivo-terminal-bg',
+    '--cascivo-terminal-fg',
+    '--cascivo-editor-bg',
+    '--cascivo-editor-fg',
+    '--cascivo-editor-border',
+    '--cascivo-editor-syntax-keyword',
+    '--cascivo-editor-syntax-string',
+    '--cascivo-editor-syntax-comment',
+    '--cascivo-color-destructive',
+    '--cascivo-font-mono',
+  ],
+  accessibility: {
+    role: 'group',
+    wcag: '2.2-AA',
+    keyboard: [],
+    reducedMotion: true,
+    forcedColors: true,
+  },
+  examples: [
+    {
+      title: 'Install transcript',
+      code: `<Terminal
+  lines={[
+    { text: 'npx cascivo add button', prefix: '$', type: 'command' },
+    { text: 'Added button to src/components.', type: 'output' },
+    { text: '# done in 1.2s', type: 'comment' },
+  ]}
+/>`,
+    },
+  ],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  registryDependencies: ['visually-hidden'],
+  tags: ['ai', 'terminal', 'cli', 'demo', 'typewriter', 'agent', 'transcript'],
+  intent: {
+    whenToUse: [
+      'Demonstrating a CLI or agent run on a marketing or onboarding page',
+      'Replaying a short agent transcript as it happened',
+    ],
+    whenNotToUse: ['Real, long-running logs — use LogViewer', 'Copyable code — use CodeSnippet'],
+    antiPatterns: [
+      {
+        bad: 'Putting aria-live on the typing lines',
+        good: 'Keep the animation aria-hidden and the full script as text, as Terminal does',
+        why: 'A live region on per-character typing announces fragments on every frame',
+      },
+    ],
+    related: [
+      {
+        name: 'LogViewer',
+        relationship: 'alternative',
+        reason: 'LogViewer is for real, streaming logs with search and follow',
+      },
+      {
+        name: 'CodeSnippet',
+        relationship: 'alternative',
+        reason: 'CodeSnippet is for static, copyable commands',
+      },
+    ],
+    a11yRationale:
+      'A named group whose full script is present as visually hidden text from the first render, read once in order; the typing animation is aria-hidden, so a screen reader is never fed per-character fragments. The cursor blinks only under prefers-reduced-motion: no-preference; colours come from the editor tokens and fall back to CanvasText in forced colours',
+    flexibility: [
+      {
+        area: 'colours',
+        level: 'flexible',
+        note: 'Follows the editor tokens; override --cascivo-terminal-bg / -fg for an always-dark look',
+      },
+      { area: 'speed and looping', level: 'flexible', note: 'speed, loop, onComplete' },
+    ],
+  },
+}

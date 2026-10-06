@@ -65,10 +65,10 @@ Single-select plan picker
 
 ## Boundaries
 
-| Area                  | Level    | Note                                                                      |
-| --------------------- | -------- | ------------------------------------------------------------------------- |
-| token names           | strict   | Card and indicator styling must resolve to the listed --cascivo-\* tokens |
-| title and description | flexible | title and description accept arbitrary ReactNode content                  |
+| Area                  | Level    | Note                                                                     |
+| --------------------- | -------- | ------------------------------------------------------------------------ |
+| token names           | strict   | Card and indicator styling must resolve to the listed --cascivo-* tokens |
+| title and description | flexible | title and description accept arbitrary ReactNode content                 |
 
 ## AI context prompt
 

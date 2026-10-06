@@ -215,6 +215,71 @@ export const builtin = {
     you: 'You',
     assistant: 'Assistant',
   }),
+  typingIndicator: defineMessages('cascade.typingIndicator', {
+    label: 'Assistant is typing',
+  }),
+  aiStatus: defineMessages('cascade.aiStatus', {
+    thinking: 'Thinking…',
+    generating: 'Generating a response…',
+    complete: 'Done',
+    error: 'Something went wrong',
+    stopped: 'Stopped',
+    stop: 'Stop',
+  }),
+  reasoning: defineMessages('cascade.reasoning', {
+    thinking: 'Thinking…',
+    thoughtFor: { one: 'Thought for {count} second', other: 'Thought for {count} seconds' },
+    label: 'Reasoning',
+  }),
+  aiBadge: defineMessages('cascade.aiBadge', {
+    text: 'AI',
+    explain: 'Show information',
+    description: 'AI-generated',
+    revert: 'Revert to AI suggestion',
+  }),
+  chainOfThought: defineMessages('cascade.chainOfThought', {
+    pending: 'Pending',
+    active: 'In progress',
+    complete: 'Done',
+    error: 'Failed',
+  }),
+  toolCall: defineMessages('cascade.toolCall', {
+    pending: 'Pending',
+    running: 'Running',
+    awaitingApproval: 'Awaiting approval',
+    complete: 'Completed',
+    error: 'Error',
+    denied: 'Denied',
+    input: 'Input',
+    output: 'Output',
+    errorHeading: 'Error',
+  }),
+  sources: defineMessages('cascade.sources', {
+    summary: { one: 'Used {count} source', other: 'Used {count} sources' },
+  }),
+  inlineCitation: defineMessages('cascade.inlineCitation', {
+    source: 'Source {index}',
+  }),
+  aiDisclaimer: defineMessages('cascade.aiDisclaimer', {
+    text: 'AI-generated content may be incorrect.',
+  }),
+  messageActions: defineMessages('cascade.messageActions', {
+    group: 'Message actions',
+    good: 'Good response',
+    bad: 'Bad response',
+    regenerate: 'Regenerate',
+    recorded: 'Thanks for your feedback',
+  }),
+  promptSuggestions: defineMessages('cascade.promptSuggestions', {
+    group: 'Suggested prompts',
+  }),
+  contextMeter: defineMessages('cascade.contextMeter', {
+    label: 'Context',
+    usage: '{used} of {max} tokens used ({percent})',
+  }),
+  terminal: defineMessages('cascade.terminal', {
+    label: 'Terminal',
+  }),
   shellHeader: defineMessages('cascade.shellHeader', {
     skipToContent: 'Skip to main content',
     nav: 'Main',
@@ -571,6 +636,71 @@ defineCatalog(builtin.ai, 'de', {
   placeholder: 'Nachricht eingeben…',
   you: 'Du',
   assistant: 'Assistent',
+})
+defineCatalog(builtin.typingIndicator, 'de', {
+  label: 'Assistent schreibt',
+})
+defineCatalog(builtin.aiStatus, 'de', {
+  thinking: 'Denkt nach…',
+  generating: 'Antwort wird generiert…',
+  complete: 'Fertig',
+  error: 'Etwas ist schiefgelaufen',
+  stopped: 'Angehalten',
+  stop: 'Anhalten',
+})
+defineCatalog(builtin.reasoning, 'de', {
+  thinking: 'Denkt nach…',
+  thoughtFor: { one: '{count} Sekunde nachgedacht', other: '{count} Sekunden nachgedacht' },
+  label: 'Gedankengang',
+})
+defineCatalog(builtin.aiBadge, 'de', {
+  text: 'KI',
+  explain: 'Informationen anzeigen',
+  description: 'KI-generiert',
+  revert: 'KI-Vorschlag wiederherstellen',
+})
+defineCatalog(builtin.chainOfThought, 'de', {
+  pending: 'Ausstehend',
+  active: 'In Bearbeitung',
+  complete: 'Erledigt',
+  error: 'Fehlgeschlagen',
+})
+defineCatalog(builtin.toolCall, 'de', {
+  pending: 'Ausstehend',
+  running: 'Läuft',
+  awaitingApproval: 'Wartet auf Freigabe',
+  complete: 'Abgeschlossen',
+  error: 'Fehler',
+  denied: 'Abgelehnt',
+  input: 'Eingabe',
+  output: 'Ausgabe',
+  errorHeading: 'Fehler',
+})
+defineCatalog(builtin.sources, 'de', {
+  summary: { one: '{count} Quelle verwendet', other: '{count} Quellen verwendet' },
+})
+defineCatalog(builtin.inlineCitation, 'de', {
+  source: 'Quelle {index}',
+})
+defineCatalog(builtin.aiDisclaimer, 'de', {
+  text: 'KI-generierte Inhalte können fehlerhaft sein.',
+})
+defineCatalog(builtin.messageActions, 'de', {
+  group: 'Nachrichtenaktionen',
+  good: 'Gute Antwort',
+  bad: 'Schlechte Antwort',
+  regenerate: 'Neu generieren',
+  recorded: 'Danke für dein Feedback',
+})
+defineCatalog(builtin.promptSuggestions, 'de', {
+  group: 'Vorgeschlagene Prompts',
+})
+defineCatalog(builtin.contextMeter, 'de', {
+  label: 'Kontext',
+  usage: '{used} von {max} Tokens verwendet ({percent})',
+})
+defineCatalog(builtin.terminal, 'de', {
+  label: 'Terminal',
 })
 defineCatalog(builtin.shellHeader, 'de', {
   skipToContent: 'Zum Hauptinhalt springen',

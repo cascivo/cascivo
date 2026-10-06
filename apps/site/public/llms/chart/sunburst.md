@@ -53,6 +53,7 @@ Shape of the `data` prop.
 
 ```tsx
 import { Sunburst } from '@cascivo/charts'
+
 ;<Sunburst
   title="Disk usage"
   data={{

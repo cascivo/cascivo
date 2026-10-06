@@ -58,6 +58,7 @@ Shape of the `data` prop.
 
 ```tsx
 import { RadialBar } from '@cascivo/charts'
+
 ;<RadialBar
   title="Quarterly goals"
   max={100}

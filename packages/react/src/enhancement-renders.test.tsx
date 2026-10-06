@@ -56,6 +56,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  AiBadge,
+  AiStatus,
   Alert,
   AppShell,
   Avatar,
@@ -273,6 +275,10 @@ const FIXTURES: Record<string, () => ReactElement> = {
       <p>Long content that scrolls natively.</p>
     </ScrollArea>
   ),
+  'packages/components/src/ai-badge/ai-badge.meta.ts': () => <AiBadge />,
+  'packages/components/src/ai-status/ai-status.meta.ts': () => (
+    <AiStatus status="generating" onStop={() => {}} />
+  ),
   'packages/components/src/search/search.meta.ts': () => <Search onSearch={() => {}} />,
   'packages/components/src/select/select.meta.ts': () => (
     <Select label="Role" options={[{ value: 'admin', label: 'Admin' }]} />
@@ -358,6 +364,8 @@ const FIXTURES: Record<string, () => ReactElement> = {
  */
 const EXPECTED_CONTENT: Record<string, string> = {
   'packages/components/src/accordion/accordion.meta.ts': 'Body copy',
+  'packages/components/src/ai-badge/ai-badge.meta.ts': 'AI-generated',
+  'packages/components/src/ai-status/ai-status.meta.ts': 'Generating a response…',
   'packages/components/src/alert/alert.meta.ts': 'Your trial ends soon.',
   'packages/components/src/carousel/carousel.meta.ts': '/2.jpg',
   'packages/components/src/code-snippet/code-snippet.meta.ts': 'npx cascivo add button',

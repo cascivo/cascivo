@@ -61,6 +61,99 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "ai-badge",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "ai-badge/ai-badge.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "ai-badge/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "ai-badge/ai-badge.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Small \"AI\" marker for AI-generated content; with children it opens a toggletip explaining how AI was involved",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "registryDependencies": [
+        "https://cascivo.com/r/shadcn/icon-button.json",
+        "https://cascivo.com/r/shadcn/toggletip.json",
+        "https://cascivo.com/r/shadcn/visually-hidden.json"
+      ],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "ai-disclaimer",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "ai-disclaimer/ai-disclaimer.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "ai-disclaimer/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "ai-disclaimer/ai-disclaimer.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "A short, quiet note that AI-generated content may be wrong — \"AI-generated content may be incorrect\"",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["feedback"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "ai-status",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "ai-status/ai-status.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "ai-status/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "ai-status/ai-status.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Announces what an AI is doing — thinking, generating, done, failed or stopped — with a shimmering label and an optional Stop button",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "registryDependencies": [
+        "https://cascivo.com/r/shadcn/button.json",
+        "https://cascivo.com/r/shadcn/shimmer-text.json"
+      ],
+      "categories": ["feedback"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "alert",
       "type": "registry:component",
       "files": [
@@ -1025,6 +1118,38 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chain-of-thought",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "chain-of-thought/chain-of-thought.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "chain-of-thought/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "chain-of-thought/chain-of-thought.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "The steps an AI agent takes — searching, reading, calling tools — each with its status, and optional collapsible detail",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "registryDependencies": [
+        "https://cascivo.com/r/shadcn/shimmer-text.json",
+        "https://cascivo.com/r/shadcn/visually-hidden.json"
+      ],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "chart-area-chart",
       "type": "registry:component",
       "files": [],
@@ -1746,6 +1871,34 @@
       "description": "Right-click context menu anchored at pointer coordinates via CSS custom properties",
       "dependencies": ["@cascivo/core"],
       "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "context-meter",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "context-meter/context-meter.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "context-meter/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "context-meter/context-meter.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "How much of a model’s context window a conversation has used — \"12K / 200K\" with a bar that warns as it fills",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["feedback"],
       "meta": {
         "cascivo": {
           "type": "component",
@@ -2631,6 +2784,39 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "inline-citation",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "inline-citation/inline-citation.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "inline-citation/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "inline-citation/inline-citation.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "A numbered citation marker inside AI-generated text that links to its source and previews it in a hover card",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "registryDependencies": [
+        "https://cascivo.com/r/shadcn/hover-card.json",
+        "https://cascivo.com/r/shadcn/sources.json",
+        "https://cascivo.com/r/shadcn/visually-hidden.json"
+      ],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "inline-loading",
       "type": "registry:component",
       "files": [
@@ -3420,6 +3606,38 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "message-actions",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "message-actions/message-actions.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "message-actions/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "message-actions/message-actions.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "The action row under an AI reply — copy, good / bad feedback as toggle buttons, and regenerate",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "registryDependencies": [
+        "https://cascivo.com/r/shadcn/copy-button.json",
+        "https://cascivo.com/r/shadcn/icon-button.json"
+      ],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "modal",
       "type": "registry:component",
       "files": [
@@ -3853,6 +4071,34 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "prompt-suggestions",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "prompt-suggestions/prompt-suggestions.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "prompt-suggestions/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "prompt-suggestions/prompt-suggestions.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Starter prompts as a wrap of pill buttons — the \"Try asking…\" row of an empty AI chat",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "prose",
       "type": "registry:component",
       "files": [
@@ -4044,6 +4290,35 @@
       "description": "Star rating input with accessible radio group pattern",
       "dependencies": ["@cascivo/core"],
       "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "reasoning",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "reasoning/reasoning.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "reasoning/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "reasoning/reasoning.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Collapsible panel for a model’s reasoning — opens and shimmers \"Thinking…\" while it streams, then settles to \"Thought for N seconds\"",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "registryDependencies": ["https://cascivo.com/r/shadcn/shimmer-text.json"],
+      "categories": ["display"],
       "meta": {
         "cascivo": {
           "type": "component",
@@ -4518,6 +4793,34 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "shimmer-text",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "shimmer-text/shimmer-text.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "shimmer-text/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "shimmer-text/shimmer-text.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Text with a bright band sweeping through it — the \"Thinking…\" look for a label that marks work in progress",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["feedback"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "side-nav",
       "type": "registry:component",
       "files": [
@@ -4625,6 +4928,34 @@
       "description": "Range input for selecting a value within bounds",
       "dependencies": ["@cascivo/core"],
       "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "sources",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "sources/sources.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "sources/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "sources/sources.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Collapsible, numbered list of the sources an AI answer drew on — \"Used 3 sources\" — whose numbers match InlineCitation",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["display"],
       "meta": {
         "cascivo": {
           "type": "component",
@@ -4764,6 +5095,34 @@
       "description": "Visual progress indicator for multi-step flows with horizontal and vertical orientations",
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "streaming-text",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "streaming-text/streaming-text.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "streaming-text/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "streaming-text/streaming-text.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Reveals text character by character with a blinking cursor, catching up as a streamed reply grows",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
       "meta": {
         "cascivo": {
           "type": "component",
@@ -4960,6 +5319,35 @@
       "description": "Free-form multi-value chip input",
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "terminal",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "terminal/terminal.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "terminal/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "terminal/terminal.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "An animated terminal that types out a script of commands and output — for demos, onboarding and agent transcripts",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "registryDependencies": ["https://cascivo.com/r/shadcn/visually-hidden.json"],
+      "categories": ["display"],
       "meta": {
         "cascivo": {
           "type": "component",
@@ -5253,6 +5641,35 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "tool-call",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "tool-call/tool-call.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "tool-call/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "tool-call/tool-call.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Card for one AI tool invocation — the tool name, its lifecycle status, collapsible input/output, and approval actions",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "registryDependencies": ["https://cascivo.com/r/shadcn/badge.json"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "tooltip",
       "type": "registry:component",
       "files": [
@@ -5300,6 +5717,34 @@
       "description": "Hierarchical, expandable tree of nodes with keyboard navigation and selection",
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "typing-indicator",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "typing-indicator/typing-indicator.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "typing-indicator/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "typing-indicator/typing-indicator.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Three bouncing dots that hold a chat message slot while an assistant (or a person) is composing a reply",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["feedback"],
       "meta": {
         "cascivo": {
           "type": "component",

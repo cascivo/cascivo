@@ -72,10 +72,10 @@ Sits inline with surrounding text
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                         |
-| ----------- | -------- | ---------------------------------------------------------------------------- |
-| size        | flexible | sm fits dense UI; md matches body text                                       |
-| token names | strict   | Font and surface must resolve to --cascivo-font-mono and --cascivo-\* tokens |
+| Area        | Level    | Note                                                                        |
+| ----------- | -------- | --------------------------------------------------------------------------- |
+| size        | flexible | sm fits dense UI; md matches body text                                      |
+| token names | strict   | Font and surface must resolve to --cascivo-font-mono and --cascivo-* tokens |
 
 ## AI context prompt
 

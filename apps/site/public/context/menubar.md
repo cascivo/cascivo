@@ -66,7 +66,7 @@ Implements the WAI-ARIA menubar pattern: a roving-tabindex row of menuitem trigg
 | Area         | Level  | Note                                                                               |
 | ------------ | ------ | ---------------------------------------------------------------------------------- |
 | menu content | strict | Menus are described by data (menus prop) so roles and keyboard wiring stay correct |
-| token names  | strict | Surface, borders, and focus ring must resolve to --cascivo-\* tokens               |
+| token names  | strict | Surface, borders, and focus ring must resolve to --cascivo-* tokens                |
 
 ## AI context prompt
 

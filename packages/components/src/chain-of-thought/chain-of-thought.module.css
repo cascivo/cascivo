@@ -1,0 +1,162 @@
+@layer cascivo.component {
+  .chain {
+    --_marker-size: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text);
+  }
+
+  .step {
+    position: relative;
+    display: flex;
+    gap: var(--cascivo-space-3);
+    padding-block-end: var(--cascivo-space-4);
+
+    /* Connector from this marker down to the next one. */
+    &::before {
+      content: '';
+      position: absolute;
+      inset-block-start: calc(var(--_marker-size) + var(--cascivo-space-1));
+      inset-block-end: var(--cascivo-space-1);
+      inset-inline-start: calc(var(--_marker-size) / 2);
+      inline-size: 1px;
+      background-color: var(--cascivo-color-border);
+    }
+
+    &:last-child {
+      padding-block-end: 0;
+
+      &::before {
+        display: none;
+      }
+    }
+  }
+
+  .marker {
+    display: inline-flex;
+    flex: none;
+    inline-size: var(--_marker-size);
+    block-size: var(--_marker-size);
+    margin-block-start: 0.125rem;
+    color: var(--cascivo-color-text-muted);
+
+    & svg {
+      inline-size: 100%;
+      block-size: 100%;
+    }
+
+    [data-status='active'] > & {
+      color: var(--cascivo-color-ai);
+    }
+
+    [data-status='complete'] > & {
+      color: var(--cascivo-color-success-foreground, var(--cascivo-color-success));
+    }
+
+    [data-status='error'] > & {
+      color: var(--cascivo-color-destructive);
+    }
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-1);
+    min-inline-size: 0;
+  }
+
+  .heading,
+  .summary {
+    line-height: var(--cascivo-leading-snug);
+  }
+
+  .title {
+    [data-status='pending'] & {
+      color: var(--cascivo-color-text-muted);
+    }
+
+    [data-status='error'] & {
+      color: var(--cascivo-color-destructive);
+    }
+  }
+
+  .summary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascivo-space-2);
+    border-radius: var(--cascivo-radius-indicator);
+    cursor: pointer;
+
+    /* Suppress the UA disclosure triangle — both spellings are needed for full coverage. */
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+    }
+
+    @media (pointer: coarse) {
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
+
+  .indicator {
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+    flex-shrink: 0;
+    background-color: var(--cascivo-color-text-muted);
+    transition: rotate var(--cascivo-duration-200) var(--cascivo-ease-out);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3E%3C/svg%3E")
+      no-repeat center / contain;
+
+    .disclosure[open] & {
+      rotate: 180deg;
+    }
+  }
+
+  .description {
+    color: var(--cascivo-color-text-muted);
+  }
+
+  .detail {
+    margin-block-start: var(--cascivo-space-2);
+    color: var(--cascivo-color-text-muted);
+  }
+
+  /* Decorative loop on the active step's glyph only — the title keeps its contrast. */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-status='active'] > .marker {
+      animation: global(cascivo-pulse) var(--cascivo-duration-loop-slow) var(--cascivo-ease-in-out)
+        infinite;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .marker,
+  .title {
+    color: CanvasText;
+  }
+
+  .step::before {
+    background-color: CanvasText;
+  }
+
+  .indicator {
+    background-color: CanvasText;
+  }
+
+  .summary:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}

@@ -38,6 +38,7 @@ import { Textarea } from '@cascivo/react'
 | `autosize`  | `boolean`                        | no       | `false`    | Grow the control with its content instead of holding the fixed rows height. rows becomes the minimum and --cascivo-textarea-max-block-size (default 20lh) the ceiling. Pure CSS (field-sizing: content) — no measurement and no listener; where unsupported the fixed rows height is kept.                                                                                                           |
 | `disabled`  | `boolean`                        | no       | `false`    | When true, disables the control and removes it from the tab order.                                                                                                                                                                                                                                                                                                                                   |
 | `ariaLabel` | `string`                         | no       | —          | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
+| `ai`        | `boolean`                        | no       | `false`    | AI presence: an AI-tinted border and a soft aura, marking a value AI produced or suggested. Visual only — put an AiBadge in the label so the provenance is also text, and clear `ai` once the person edits the value.                                                                                                                                                                                |
 
 ## Examples
 
@@ -79,7 +80,7 @@ Enhancement only. The component still does its job with JavaScript disabled — 
 
 ## Tags
 
-form, text, multiline
+form, text, multiline, ai
 
 ---
 

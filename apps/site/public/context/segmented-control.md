@@ -74,7 +74,7 @@ Wraps role="radio" buttons in a role="group" with aria-checked marking the selec
 
 | Area          | Level    | Note                                                                    |
 | ------------- | -------- | ----------------------------------------------------------------------- |
-| token names   | strict   | Segment styling must resolve to the listed --cascivo-\* tokens          |
+| token names   | strict   | Segment styling must resolve to the listed --cascivo-* tokens           |
 | option labels | flexible | option label and value are free, and individual options may be disabled |
 
 ## AI context prompt

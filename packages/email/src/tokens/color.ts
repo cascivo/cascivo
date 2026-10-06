@@ -179,6 +179,9 @@ export function rgbToOklch({ r, g, b, alpha }: Rgb): Oklch {
  * `weight` is the proportion of `from` (a `color-mix` percentage / 100). Hue takes the
  * shorter arc, matching CSS Color 5's default `shorter hue` interpolation.
  */
+/** Chroma below which a colour's hue is powerless — sRGB greys round-trip to ~1e-5. */
+const ACHROMATIC = 1e-3
+
 export function mixOklch(from: Rgb, to: Rgb, weight: number): Rgb {
   const a = rgbToOklch(from)
   const b = rgbToOklch(to)
@@ -186,8 +189,11 @@ export function mixOklch(from: Rgb, to: Rgb, weight: number): Rgb {
 
   // A fully transparent endpoint carries no meaningful hue or chroma — CSS treats it as
   // "the other colour, faded". Interpolating its (arbitrary) hue would tint the result.
-  const aHue = a.alpha === 0 ? b.h : a.h
-  const bHue = b.alpha === 0 ? a.h : b.h
+  // An achromatic endpoint (white, black, a grey) has the same problem with its hue alone:
+  // CSS Color 4 calls that hue powerless and takes the other endpoint's, so a tint toward
+  // white stays on-hue instead of swinging through whatever hue the rounding left behind.
+  const aHue = a.alpha === 0 || a.c < ACHROMATIC ? b.h : a.h
+  const bHue = b.alpha === 0 || b.c < ACHROMATIC ? a.h : b.h
   let dh = bHue - aHue
   if (dh > 180) dh -= 360
   if (dh < -180) dh += 360

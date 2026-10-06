@@ -74,6 +74,54 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
   ],
+  AiBadge: [
+    {
+      name: 'children',
+      required: false,
+    },
+    {
+      name: 'edited',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onRevert',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+  ],
+  AiDisclaimer: [
+    {
+      name: 'children',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+  ],
+  AiStatus: [
+    {
+      name: 'status',
+      required: true,
+      enum: ['thinking', 'generating', 'complete', 'error', 'stopped'],
+    },
+    {
+      name: 'label',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+    {
+      name: 'onStop',
+      required: false,
+    },
+  ],
   Alert: [
     {
       name: 'variant',
@@ -1120,6 +1168,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       enum: ['none', 'sm', 'md', 'lg'],
     },
+    {
+      name: 'ai',
+      required: false,
+    },
   ],
   Carousel: [
     {
@@ -1164,6 +1216,16 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'maxWidth',
       required: false,
       primitives: ['string'],
+    },
+  ],
+  ChainOfThought: [
+    {
+      name: 'items',
+      required: true,
+    },
+    {
+      name: 'labels',
+      required: false,
     },
   ],
   ChatBubble: [
@@ -1872,6 +1934,27 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'children',
       required: true,
+    },
+  ],
+  ContextMeter: [
+    {
+      name: 'value',
+      required: true,
+      primitives: ['number'],
+    },
+    {
+      name: 'max',
+      required: true,
+      primitives: ['number'],
+    },
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'labels',
+      required: false,
     },
   ],
   CopyButton: [
@@ -3836,6 +3919,21 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
   ],
+  InlineCitation: [
+    {
+      name: 'index',
+      required: true,
+      primitives: ['number'],
+    },
+    {
+      name: 'source',
+      required: true,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+  ],
   InlineLoading: [
     {
       name: 'status',
@@ -3886,6 +3984,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'ariaLabel',
       required: false,
       primitives: ['string'],
+    },
+    {
+      name: 'ai',
+      required: false,
+      primitives: ['boolean'],
     },
   ],
   InputGroup: [
@@ -4407,6 +4510,33 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
   ],
+  MessageActions: [
+    {
+      name: 'copyValue',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'feedback',
+      required: false,
+    },
+    {
+      name: 'defaultFeedback',
+      required: false,
+    },
+    {
+      name: 'onFeedbackChange',
+      required: false,
+    },
+    {
+      name: 'onRegenerate',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+  ],
   Meter: [
     {
       name: 'value',
@@ -4481,6 +4611,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'draggable',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'ai',
+      required: false,
     },
   ],
   MultiSelect: [
@@ -5300,6 +5434,20 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
   ],
+  PromptSuggestions: [
+    {
+      name: 'items',
+      required: true,
+    },
+    {
+      name: 'onSelect',
+      required: true,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+  ],
   Prose: [
     {
       name: 'children',
@@ -5628,6 +5776,30 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'readOnly',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+  ],
+  Reasoning: [
+    {
+      name: 'children',
+      required: true,
+    },
+    {
+      name: 'streaming',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'duration',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'label',
+      required: false,
     },
     {
       name: 'labels',
@@ -6168,6 +6340,17 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
   ],
+  ShimmerText: [
+    {
+      name: 'as',
+      required: false,
+      enum: ['span', 'p', 'div'],
+    },
+    {
+      name: 'children',
+      required: false,
+    },
+  ],
   SideNav: [
     {
       name: 'groups',
@@ -6257,6 +6440,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['number'],
     },
+    {
+      name: 'ai',
+      required: false,
+      primitives: ['boolean'],
+    },
   ],
   SkipNav: [
     {
@@ -6314,6 +6502,16 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'ariaLabel',
       required: false,
       primitives: ['string'],
+    },
+  ],
+  Sources: [
+    {
+      name: 'items',
+      required: true,
+    },
+    {
+      name: 'labels',
+      required: false,
     },
   ],
   Spacer: [
@@ -6609,6 +6807,22 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
   ],
+  StreamingText: [
+    {
+      name: 'text',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'speed',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'onComplete',
+      required: false,
+    },
+  ],
   StructuredList: [
     {
       name: 'label',
@@ -6864,6 +7078,30 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
   ],
+  Terminal: [
+    {
+      name: 'lines',
+      required: true,
+    },
+    {
+      name: 'speed',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'loop',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onComplete',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+  ],
   Text: [
     {
       name: 'as',
@@ -6926,6 +7164,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'ariaLabel',
       required: false,
       primitives: ['string'],
+    },
+    {
+      name: 'ai',
+      required: false,
+      primitives: ['boolean'],
     },
   ],
   Tile: [
@@ -7216,6 +7459,38 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
   ],
+  ToolCall: [
+    {
+      name: 'name',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'status',
+      required: true,
+      enum: ['pending', 'running', 'awaiting-approval', 'complete', 'error', 'denied'],
+    },
+    {
+      name: 'input',
+      required: false,
+    },
+    {
+      name: 'output',
+      required: false,
+    },
+    {
+      name: 'error',
+      required: false,
+    },
+    {
+      name: 'actions',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+  ],
   Tooltip: [
     {
       name: 'content',
@@ -7324,6 +7599,18 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'plain',
       required: false,
       primitives: ['boolean'],
+    },
+  ],
+  TypingIndicator: [
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
     },
   ],
   User: [

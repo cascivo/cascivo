@@ -31,6 +31,10 @@
       "base": "--cascivo-color-accent-text",
       "hover": "--cascivo-color-accent-text-hover"
     },
+    "ai": {
+      "base": "--cascivo-color-ai",
+      "subtle": "--cascivo-color-ai-subtle"
+    },
     "bg": {
       "base": "--cascivo-color-bg",
       "subtle": "--cascivo-color-bg-subtle"
@@ -625,6 +629,98 @@
       },
       "role": "active-bg",
       "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-ai",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )",
+        "brutalist": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )",
+        "corporate": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )",
+        "cyberpunk": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )",
+        "dark": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )",
+        "flat": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )",
+        "light-dark": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )",
+        "light": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )",
+        "midnight": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )",
+        "minimal": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )",
+        "pastel": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )",
+        "tailwind": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )",
+        "terminal": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )",
+        "warm": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )"
+      },
+      "role": "ai",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-ai-border",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(from var(--cascivo-color-ai) l c h / 40%)",
+        "brutalist": "oklch(from var(--cascivo-color-ai) l c h / 40%)",
+        "corporate": "oklch(from var(--cascivo-color-ai) l c h / 40%)",
+        "cyberpunk": "oklch(from var(--cascivo-color-ai) l c h / 40%)",
+        "dark": "oklch(from var(--cascivo-color-ai) l c h / 40%)",
+        "flat": "oklch(from var(--cascivo-color-ai) l c h / 40%)",
+        "light-dark": "oklch(from var(--cascivo-color-ai) l c h / 40%)",
+        "light": "oklch(from var(--cascivo-color-ai) l c h / 40%)",
+        "midnight": "oklch(from var(--cascivo-color-ai) l c h / 40%)",
+        "minimal": "oklch(from var(--cascivo-color-ai) l c h / 40%)",
+        "pastel": "oklch(from var(--cascivo-color-ai) l c h / 40%)",
+        "tailwind": "oklch(from var(--cascivo-color-ai) l c h / 40%)",
+        "terminal": "oklch(from var(--cascivo-color-ai) l c h / 40%)",
+        "warm": "oklch(from var(--cascivo-color-ai) l c h / 40%)"
+      },
+      "role": "ai-border",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-ai-sheen",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(from var(--cascivo-color-ai) l c h / 22%)",
+        "brutalist": "oklch(from var(--cascivo-color-ai) l c h / 22%)",
+        "corporate": "oklch(from var(--cascivo-color-ai) l c h / 22%)",
+        "cyberpunk": "oklch(from var(--cascivo-color-ai) l c h / 22%)",
+        "dark": "oklch(from var(--cascivo-color-ai) l c h / 22%)",
+        "flat": "oklch(from var(--cascivo-color-ai) l c h / 22%)",
+        "light-dark": "oklch(from var(--cascivo-color-ai) l c h / 22%)",
+        "light": "oklch(from var(--cascivo-color-ai) l c h / 22%)",
+        "midnight": "oklch(from var(--cascivo-color-ai) l c h / 22%)",
+        "minimal": "oklch(from var(--cascivo-color-ai) l c h / 22%)",
+        "pastel": "oklch(from var(--cascivo-color-ai) l c h / 22%)",
+        "tailwind": "oklch(from var(--cascivo-color-ai) l c h / 22%)",
+        "terminal": "oklch(from var(--cascivo-color-ai) l c h / 22%)",
+        "warm": "oklch(from var(--cascivo-color-ai) l c h / 22%)"
+      },
+      "role": "ai-sheen",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-ai-subtle",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(from var(--cascivo-color-ai) l c h / 10%)",
+        "brutalist": "oklch(from var(--cascivo-color-ai) l c h / 10%)",
+        "corporate": "oklch(from var(--cascivo-color-ai) l c h / 10%)",
+        "cyberpunk": "oklch(from var(--cascivo-color-ai) l c h / 10%)",
+        "dark": "oklch(from var(--cascivo-color-ai) l c h / 10%)",
+        "flat": "oklch(from var(--cascivo-color-ai) l c h / 10%)",
+        "light-dark": "oklch(from var(--cascivo-color-ai) l c h / 10%)",
+        "light": "oklch(from var(--cascivo-color-ai) l c h / 10%)",
+        "midnight": "oklch(from var(--cascivo-color-ai) l c h / 10%)",
+        "minimal": "oklch(from var(--cascivo-color-ai) l c h / 10%)",
+        "pastel": "oklch(from var(--cascivo-color-ai) l c h / 10%)",
+        "tailwind": "oklch(from var(--cascivo-color-ai) l c h / 10%)",
+        "terminal": "oklch(from var(--cascivo-color-ai) l c h / 10%)",
+        "warm": "oklch(from var(--cascivo-color-ai) l c h / 10%)"
+      },
+      "role": "ai",
+      "slot": "subtle"
     },
     {
       "name": "--cascivo-color-background",

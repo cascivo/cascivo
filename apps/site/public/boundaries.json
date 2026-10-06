@@ -76,6 +76,42 @@
         "note": "showCancel toggles the separate Cancel button (Escape/outside press still dismiss)"
       }
     ],
+    "AiBadge": [
+      {
+        "area": "explanation content",
+        "level": "flexible",
+        "note": "Any rich content — model name, sources, a link to learn more"
+      },
+      {
+        "area": "pill text",
+        "level": "strict",
+        "note": "Keep it a short AI marker; do not reuse the badge for unrelated labels"
+      }
+    ],
+    "AiDisclaimer": [
+      {
+        "area": "text",
+        "level": "flexible",
+        "note": "Replace via children or labels.text"
+      },
+      {
+        "area": "placement",
+        "level": "flexible",
+        "note": "Typically under a composer or at the foot of AI content"
+      }
+    ],
+    "AiStatus": [
+      {
+        "area": "label",
+        "level": "flexible",
+        "note": "Defaults per status come from the i18n catalog; override with label or the labels map"
+      },
+      {
+        "area": "status semantics",
+        "level": "strict",
+        "note": "thinking/generating are in progress (sparkle + shimmer); complete/error/stopped are terminal — do not repurpose"
+      }
+    ],
     "Alert": [
       {
         "area": "variant",
@@ -276,6 +312,18 @@
         "note": "Any ReactNode may be a slide; pass via children or the slides array"
       }
     ],
+    "ChainOfThought": [
+      {
+        "area": "step content",
+        "level": "flexible",
+        "note": "Titles, descriptions, detail and icons are any ReactNode"
+      },
+      {
+        "area": "status vocabulary",
+        "level": "strict",
+        "note": "Use the shared Progress values; do not invent per-chain statuses"
+      }
+    ],
     "ChatBubble": [
       {
         "area": "avatar slot",
@@ -443,6 +491,18 @@
         "area": "anchor position",
         "level": "strict",
         "note": "Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click"
+      }
+    ],
+    "ContextMeter": [
+      {
+        "area": "label and wording",
+        "level": "flexible",
+        "note": "Rename via label; reword via labels.usage"
+      },
+      {
+        "area": "thresholds",
+        "level": "strict",
+        "note": "Warning at 80%, full at 95% — consistent across every meter"
       }
     ],
     "CopyButton": [
@@ -771,6 +831,18 @@
         "note": "Always renders an activatable button — there is no sentinel-only mode"
       }
     ],
+    "InlineCitation": [
+      {
+        "area": "preview content",
+        "level": "flexible",
+        "note": "description can be any node — an excerpt, a date, a favicon"
+      },
+      {
+        "area": "URL handling",
+        "level": "strict",
+        "note": "Do not bypass sourceHref() — model output is untrusted"
+      }
+    ],
     "InlineLoading": [
       {
         "area": "label",
@@ -962,6 +1034,18 @@
         "area": "token names",
         "level": "strict",
         "note": "Surface, borders, and focus ring must resolve to --cascivo-* tokens"
+      }
+    ],
+    "MessageActions": [
+      {
+        "area": "which actions",
+        "level": "flexible",
+        "note": "Each action renders only when its prop is set"
+      },
+      {
+        "area": "rating semantics",
+        "level": "strict",
+        "note": "Two-state good / bad toggles; do not repurpose them for other choices"
       }
     ],
     "Modal": [
@@ -1169,6 +1253,18 @@
         "note": "Step and connector colors must resolve to --cascivo-* tokens"
       }
     ],
+    "PromptSuggestions": [
+      {
+        "area": "what selecting does",
+        "level": "flexible",
+        "note": "Send immediately, or fill the composer"
+      },
+      {
+        "area": "item text",
+        "level": "strict",
+        "note": "The visible text is the prompt; do not show one thing and send another"
+      }
+    ],
     "Prose": [
       {
         "area": "source HTML",
@@ -1251,6 +1347,18 @@
         "area": "scale and labels",
         "level": "flexible",
         "note": "max sets the scale and labels.rating customizes the per-star announcement"
+      }
+    ],
+    "Reasoning": [
+      {
+        "area": "trigger text",
+        "level": "flexible",
+        "note": "Override with label, or localise each state through labels"
+      },
+      {
+        "area": "open behaviour",
+        "level": "strict",
+        "note": "Opens when streaming starts and closes when it ends; do not force it open after the answer arrives"
       }
     ],
     "RelativeTime": [
@@ -1390,6 +1498,18 @@
         "note": "Surfaces, sizing, and accent must resolve to --cascivo-* shell tokens"
       }
     ],
+    "ShimmerText": [
+      {
+        "area": "colours",
+        "level": "flexible",
+        "note": "Override --cascivo-shimmer-text-color and --cascivo-shimmer-text-highlight per instance"
+      },
+      {
+        "area": "motion",
+        "level": "strict",
+        "note": "The sweep must stay inside the reduced-motion opt-in; never animate it unconditionally"
+      }
+    ],
     "SideNav": [
       {
         "area": "collapsed / expandOnHover",
@@ -1436,6 +1556,18 @@
         "area": "min/max/step",
         "level": "flexible",
         "note": "Consumer-defined bounds and increment"
+      }
+    ],
+    "Sources": [
+      {
+        "area": "summary text",
+        "level": "flexible",
+        "note": "Localise or reword via labels.summary (with {count})"
+      },
+      {
+        "area": "URL handling",
+        "level": "strict",
+        "note": "Do not bypass sourceHref() — model output is untrusted"
       }
     ],
     "Spinner": [
@@ -1491,6 +1623,18 @@
         "area": "orientation",
         "level": "flexible",
         "note": "Horizontal for top progress bars, vertical for sidebar wizards"
+      }
+    ],
+    "StreamingText": [
+      {
+        "area": "speed",
+        "level": "flexible",
+        "note": "Characters per frame"
+      },
+      {
+        "area": "announcements",
+        "level": "strict",
+        "note": "Do not add aria-live; announce completion separately"
       }
     ],
     "StructuredList": [
@@ -1575,6 +1719,18 @@
         "area": "commit keys",
         "level": "strict",
         "note": "Enter and comma commit a tag; Backspace on empty removes the last — fixed interaction contract"
+      }
+    ],
+    "Terminal": [
+      {
+        "area": "colours",
+        "level": "flexible",
+        "note": "Follows the editor tokens; override --cascivo-terminal-bg / -fg for an always-dark look"
+      },
+      {
+        "area": "speed and looping",
+        "level": "flexible",
+        "note": "speed, loop, onComplete"
       }
     ],
     "Text": [
@@ -1712,6 +1868,18 @@
         "note": "Use uncontrolled (defaultOpen) or controlled (open + onOpenChange) as needed"
       }
     ],
+    "ToolCall": [
+      {
+        "area": "payloads",
+        "level": "flexible",
+        "note": "Strings render preformatted; pass a node (a table, a CodeSnippet) for richer output"
+      },
+      {
+        "area": "status vocabulary",
+        "level": "strict",
+        "note": "Map your framework’s tool states onto the six statuses; do not invent more"
+      }
+    ],
     "Tooltip": [
       {
         "area": "placement",
@@ -1739,6 +1907,18 @@
         "area": "indent token",
         "level": "flexible",
         "note": "Per-level indent is driven by --cascivo-tree-indent and may be overridden"
+      }
+    ],
+    "TypingIndicator": [
+      {
+        "area": "colour",
+        "level": "flexible",
+        "note": "Override --cascivo-typing-indicator-color (defaults to muted text)"
+      },
+      {
+        "area": "accessible name",
+        "level": "strict",
+        "note": "Keep the status name — the dots alone carry no meaning for assistive tech"
       }
     ],
     "User": [

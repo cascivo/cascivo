@@ -73,9 +73,18 @@ function tsxFiles(dir: string): string[] {
  * that is merely *near* a popover attribute costs a false positive that a human resolves
  * in seconds, while under-collecting reproduces the defect this guard exists to catch.
  */
+/**
+ * Components whose root element IS the popover. A `className` passed to one lands on the
+ * popover element too, so a class handed across a file boundary is just as able to beat the
+ * UA hide rule — `InlineCitation` gave `HoverCardContent` a `display: flex` class, and every
+ * closed citation preview kept its box (111px of horizontal overflow at 360px).
+ */
+const POPOVER_ROOTS = ['HoverCardContent', 'PopoverContent']
+
 function popoverClasses(source: string): string[] {
   const names = new Set<string>()
-  for (const match of source.matchAll(/popover=/g)) {
+  const opener = new RegExp(`popover=|<(?:${POPOVER_ROOTS.join('|')})\\b`, 'g')
+  for (const match of source.matchAll(opener)) {
     const tagEnd = source.indexOf('>', match.index)
     const tag = source.slice(match.index, tagEnd === -1 ? source.length : tagEnd)
     for (const ref of tag.matchAll(/styles(?:\.(\w+)|\[['"]([\w-]+)['"]\])/g)) {

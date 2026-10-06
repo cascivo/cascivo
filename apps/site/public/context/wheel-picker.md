@@ -20,8 +20,8 @@
 ### The component is controlled; without a `value` it cannot scroll to the current selection or reflect an external change
 
 **Bad:** `Rendering it uncontrolled and reading the value from the DOM`  
-**Good:** `Pass `value`and`onValueChange`` 
-**Why:** The component is controlled; without a`value` it cannot scroll to the current selection or reflect an external change
+**Good:** `Pass `value`and`onValueChange``  
+**Why:** The component is controlled; without a `value` it cannot scroll to the current selection or reflect an external change
 
 ### A listbox with no accessible name is announced only as a list, so the user cannot tell which field they are in
 

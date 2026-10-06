@@ -57,4 +57,44 @@ describe('AiChat', () => {
     await new Promise((r) => setTimeout(r, 0))
     expect(log.scrollTop).toBe(100)
   })
+
+  it('is not a live region, so a streamed reply is never read out token by token', () => {
+    render(<AiChat messages={messages} onSend={() => {}} isStreaming streamingText="Hel" />)
+    expect(screen.getByRole('log')).toHaveAttribute('aria-live', 'off')
+  })
+
+  it('holds the reply slot with a typing indicator until the first token', () => {
+    const { rerender } = render(<AiChat messages={messages} onSend={() => {}} isStreaming />)
+    expect(screen.getByRole('status', { name: 'Assistant is typing' })).toBeInTheDocument()
+    rerender(<AiChat messages={messages} onSend={() => {}} isStreaming streamingText="Hel" />)
+    expect(screen.queryByRole('status', { name: 'Assistant is typing' })).toBeNull()
+  })
+
+  it('offers Stop while streaming when onStop is given', async () => {
+    const onStop = vi.fn()
+    const { rerender } = render(<AiChat messages={messages} onSend={() => {}} isStreaming />)
+    expect(screen.queryByRole('button', { name: 'Stop' })).toBeNull()
+    rerender(<AiChat messages={messages} onSend={() => {}} isStreaming onStop={onStop} />)
+    await userEvent.click(screen.getByRole('button', { name: 'Stop' }))
+    expect(onStop).toHaveBeenCalledTimes(1)
+  })
+
+  it('announces the finished reply once streaming ends', async () => {
+    const { rerender } = render(
+      <AiChat messages={messages} onSend={() => {}} isStreaming streamingText="Sure" />,
+    )
+    rerender(
+      <AiChat
+        messages={[...messages, { id: '3', role: 'assistant', content: 'Sure, here it is.' }]}
+        onSend={() => {}}
+      />,
+    )
+    await waitFor(() =>
+      expect(
+        Array.from(document.querySelectorAll('[aria-live="polite"]')).some(
+          (el) => el.textContent === 'Sure, here it is.',
+        ),
+      ).toBe(true),
+    )
+  })
 })

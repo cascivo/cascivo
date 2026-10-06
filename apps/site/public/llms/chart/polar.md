@@ -53,6 +53,7 @@ Shape of the `data` prop.
 
 ```tsx
 import { Polar } from '@cascivo/charts'
+
 ;<Polar
   title="Wind by direction"
   mode="bar"

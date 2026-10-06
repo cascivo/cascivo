@@ -85,10 +85,10 @@ Renders a native <button> with a mandatory aria-label so the icon-only control a
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                                                  |
-| ----------- | -------- | ----------------------------------------------------------------------------------------------------- |
-| token names | strict   | Sizing must resolve to --cascivo-control-height-\* so it stays square and aligned with other controls |
-| icon choice | flexible | Any single icon node; consumer owns the icon set                                                      |
+| Area        | Level    | Note                                                                                                 |
+| ----------- | -------- | ---------------------------------------------------------------------------------------------------- |
+| token names | strict   | Sizing must resolve to --cascivo-control-height-* so it stays square and aligned with other controls |
+| icon choice | flexible | Any single icon node; consumer owns the icon set                                                     |
 
 ## AI context prompt
 

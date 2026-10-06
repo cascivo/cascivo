@@ -1,0 +1,32 @@
+@layer cascivo.component {
+  .shimmer-text {
+    /* The resting state — and exactly what a reduced-motion user sees: plain muted text. */
+    color: var(--cascivo-shimmer-text-color, var(--cascivo-color-text-muted));
+  }
+
+  /* Decorative loop — opt-in, so a user who expresses no preference gets no motion. The
+     gradient is applied only here: a static, half-swept gradient would read as a rendering
+     glitch, not as "at rest". */
+  @media (prefers-reduced-motion: no-preference) {
+    .shimmer-text {
+      background-image: linear-gradient(
+        90deg,
+        var(--cascivo-shimmer-text-color, var(--cascivo-color-text-muted)) 40%,
+        var(--cascivo-shimmer-text-highlight, var(--cascivo-color-ai)) 50%,
+        var(--cascivo-shimmer-text-color, var(--cascivo-color-text-muted)) 60%
+      );
+      background-size: 200% 100%;
+      background-clip: text;
+      color: transparent;
+      animation: global(cascivo-text-shimmer) var(--cascivo-duration-loop-slow) linear infinite;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .shimmer-text {
+    background-image: none;
+    color: CanvasText;
+    animation: none;
+  }
+}

@@ -73,6 +73,13 @@
       color: var(--cascivo-color-text-muted);
     }
 
+    /* AI presence — the value was produced or suggested by AI. Under :where() so hover,
+       focus and the error state (all later or more specific) still win. */
+    :where(.wrapper[data-ai]) & {
+      border-color: var(--cascivo-color-ai-border);
+      background-image: linear-gradient(to top, var(--cascivo-color-ai-subtle), transparent);
+    }
+
     &:hover:not(:disabled):not(:focus) {
       border-color: var(--cascivo-color-border-strong);
     }

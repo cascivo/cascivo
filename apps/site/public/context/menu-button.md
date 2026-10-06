@@ -107,7 +107,7 @@ Aligns the menu to the trigger end edge
 
 | Area               | Level    | Note                                                                     |
 | ------------------ | -------- | ------------------------------------------------------------------------ |
-| token names        | strict   | Trigger and menu styling must resolve to the listed --cascivo-\* tokens  |
+| token names        | strict   | Trigger and menu styling must resolve to the listed --cascivo-* tokens   |
 | item content       | flexible | Each item label accepts arbitrary ReactNode; onSelect defines the action |
 | trigger appearance | flexible | variant and size choose among the standard button looks and dimensions   |
 

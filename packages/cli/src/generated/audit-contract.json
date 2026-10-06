@@ -338,6 +338,22 @@
       "resolvedDefault": "clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)"
     },
     { "name": "--cascivo-target-min-coarse", "resolvedDefault": "2.75rem" },
+    {
+      "name": "--cascivo-color-ai",
+      "resolvedDefault": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )"
+    },
+    {
+      "name": "--cascivo-color-ai-subtle",
+      "resolvedDefault": "oklch(from var(--cascivo-color-ai) l c h / 10%)"
+    },
+    {
+      "name": "--cascivo-color-ai-border",
+      "resolvedDefault": "oklch(from var(--cascivo-color-ai) l c h / 40%)"
+    },
+    {
+      "name": "--cascivo-color-ai-sheen",
+      "resolvedDefault": "oklch(from var(--cascivo-color-ai) l c h / 22%)"
+    },
     { "name": "--cascivo-color-background", "resolvedDefault": "oklch(1 0 0)" },
     { "name": "--cascivo-color-surface", "resolvedDefault": "oklch(0.985 0.002 264)" },
     { "name": "--cascivo-color-surface-2", "resolvedDefault": "oklch(0.967 0.003 264)" },
@@ -498,6 +514,11 @@
     { "name": "--cascivo-resizable-ratio", "resolvedDefault": "0.5" },
     { "name": "--cascivo-scroll-area-height", "resolvedDefault": "none" },
     { "name": "--cascivo-scroll-area-width", "resolvedDefault": "none" },
+    {
+      "name": "--cascivo-shimmer-text-color",
+      "resolvedDefault": "var(--cascivo-color-text-muted)"
+    },
+    { "name": "--cascivo-shimmer-text-highlight", "resolvedDefault": "var(--cascivo-color-ai)" },
     { "name": "--cascivo-sidenav-bg", "resolvedDefault": "var(--cascivo-color-surface)" },
     { "name": "--cascivo-sidenav-inline-size", "resolvedDefault": "16rem" },
     { "name": "--cascivo-sidenav-rail-inline-size", "resolvedDefault": "4rem" },
@@ -506,9 +527,15 @@
     { "name": "--cascivo-stack-index", "resolvedDefault": "0" },
     { "name": "--cascivo-stack-offset", "resolvedDefault": "4px" },
     { "name": "--cascivo-target-min", "resolvedDefault": "1.5rem" },
+    { "name": "--cascivo-terminal-bg", "resolvedDefault": "var(--cascivo-editor-bg)" },
+    { "name": "--cascivo-terminal-fg", "resolvedDefault": "var(--cascivo-editor-fg)" },
     { "name": "--cascivo-textarea-max-block-size", "resolvedDefault": "20lh" },
     { "name": "--cascivo-tooltip-anchor", "resolvedDefault": "attr(data-anchor)" },
     { "name": "--cascivo-tree-indent", "resolvedDefault": "var(--cascivo-space-5)" },
+    {
+      "name": "--cascivo-typing-indicator-color",
+      "resolvedDefault": "var(--cascivo-color-text-muted)"
+    },
     { "name": "--cascivo-z-dock", "resolvedDefault": "40" }
   ],
   "components": [
@@ -533,6 +560,43 @@
         { "name": "showCancel", "type": "boolean", "required": false },
         { "name": "labels", "type": "{ cancel?: string; label?: string }", "required": false },
         { "name": "className", "type": "string", "required": false }
+      ]
+    },
+    {
+      "name": "AiBadge",
+      "props": [
+        { "name": "children", "type": "ReactNode", "required": false },
+        { "name": "edited", "type": "boolean", "required": false },
+        { "name": "onRevert", "type": "() => void", "required": false },
+        {
+          "name": "labels",
+          "type": "{ text?: string; explain?: string; description?: string; revert?: string }",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "AiDisclaimer",
+      "props": [
+        { "name": "children", "type": "ReactNode", "required": false },
+        { "name": "labels", "type": "{ text?: string }", "required": false }
+      ]
+    },
+    {
+      "name": "AiStatus",
+      "props": [
+        {
+          "name": "status",
+          "type": "'thinking' | 'generating' | 'complete' | 'error' | 'stopped'",
+          "required": true
+        },
+        { "name": "label", "type": "ReactNode", "required": false },
+        {
+          "name": "labels",
+          "type": "{ thinking?: string; generating?: string; complete?: string; error?: string; stopped?: string; stop?: string }",
+          "required": false
+        },
+        { "name": "onStop", "type": "() => void", "required": false }
       ]
     },
     {
@@ -707,7 +771,8 @@
       "props": [
         { "name": "actions", "type": "ReactNode", "required": false },
         { "name": "variant", "type": "'default' | 'outlined' | 'elevated'", "required": false },
-        { "name": "padding", "type": "'none' | 'sm' | 'md' | 'lg'", "required": false }
+        { "name": "padding", "type": "'none' | 'sm' | 'md' | 'lg'", "required": false },
+        { "name": "ai", "type": "boolean | 'generating'", "required": false }
       ]
     },
     {
@@ -721,6 +786,17 @@
         { "name": "onIndexChange", "type": "(index: number) => void", "required": false },
         { "name": "loop", "type": "boolean", "required": false },
         { "name": "autoplay", "type": "number", "required": false }
+      ]
+    },
+    {
+      "name": "ChainOfThought",
+      "props": [
+        { "name": "items", "type": "ChainOfThoughtItem[]", "required": true },
+        {
+          "name": "labels",
+          "type": "{ pending?: string; active?: string; complete?: string; error?: string }",
+          "required": false
+        }
       ]
     },
     {
@@ -891,6 +967,15 @@
     {
       "name": "ContextMenu",
       "props": [{ "name": "children", "type": "React.ReactNode", "required": true }]
+    },
+    {
+      "name": "ContextMeter",
+      "props": [
+        { "name": "value", "type": "number", "required": true },
+        { "name": "max", "type": "number", "required": true },
+        { "name": "label", "type": "string", "required": false },
+        { "name": "labels", "type": "{ usage?: string }", "required": false }
+      ]
     },
     {
       "name": "CopyButton",
@@ -1282,6 +1367,14 @@
       ]
     },
     {
+      "name": "InlineCitation",
+      "props": [
+        { "name": "index", "type": "number", "required": true },
+        { "name": "source", "type": "AiSource", "required": true },
+        { "name": "labels", "type": "{ source?: string }", "required": false }
+      ]
+    },
+    {
       "name": "InlineLoading",
       "props": [
         {
@@ -1306,7 +1399,8 @@
         { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
         { "name": "placeholder", "type": "string", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
-        { "name": "ariaLabel", "type": "string", "required": false }
+        { "name": "ariaLabel", "type": "string", "required": false },
+        { "name": "ai", "type": "boolean", "required": false }
       ]
     },
     {
@@ -1419,6 +1513,25 @@
       ]
     },
     {
+      "name": "MessageActions",
+      "props": [
+        { "name": "copyValue", "type": "string", "required": false },
+        { "name": "feedback", "type": "'good' | 'bad' | null", "required": false },
+        { "name": "defaultFeedback", "type": "'good' | 'bad' | null", "required": false },
+        {
+          "name": "onFeedbackChange",
+          "type": "(feedback: 'good' | 'bad' | null) => void",
+          "required": false
+        },
+        { "name": "onRegenerate", "type": "() => void", "required": false },
+        {
+          "name": "labels",
+          "type": "{ group?: string; good?: string; bad?: string; regenerate?: string; recorded?: string }",
+          "required": false
+        }
+      ]
+    },
+    {
       "name": "Modal",
       "props": [
         { "name": "open", "type": "boolean", "required": false },
@@ -1427,7 +1540,8 @@
         { "name": "description", "type": "string", "required": false },
         { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
         { "name": "footer", "type": "ReactNode", "required": false },
-        { "name": "draggable", "type": "boolean", "required": false }
+        { "name": "draggable", "type": "boolean", "required": false },
+        { "name": "ai", "type": "boolean | 'generating'", "required": false }
       ]
     },
     {
@@ -1649,6 +1763,14 @@
       ]
     },
     {
+      "name": "PromptSuggestions",
+      "props": [
+        { "name": "items", "type": "string[]", "required": true },
+        { "name": "onSelect", "type": "(value: string) => void", "required": true },
+        { "name": "labels", "type": "{ group?: string }", "required": false }
+      ]
+    },
+    {
       "name": "Prose",
       "props": [
         { "name": "children", "type": "React.ReactNode", "required": false },
@@ -1731,6 +1853,20 @@
         { "name": "disabled", "type": "boolean", "required": false },
         { "name": "readOnly", "type": "boolean", "required": false },
         { "name": "labels", "type": "RatingGroupLabels", "required": false }
+      ]
+    },
+    {
+      "name": "Reasoning",
+      "props": [
+        { "name": "children", "type": "ReactNode", "required": true },
+        { "name": "streaming", "type": "boolean", "required": false },
+        { "name": "duration", "type": "number", "required": false },
+        { "name": "label", "type": "ReactNode", "required": false },
+        {
+          "name": "labels",
+          "type": "{ thinking?: string; thoughtFor?: string; label?: string }",
+          "required": false
+        }
       ]
     },
     {
@@ -1880,6 +2016,13 @@
       ]
     },
     {
+      "name": "ShimmerText",
+      "props": [
+        { "name": "as", "type": "'span' | 'p' | 'div'", "required": false },
+        { "name": "children", "type": "ReactNode", "required": false }
+      ]
+    },
+    {
       "name": "SideNav",
       "props": [
         { "name": "groups", "type": "SideNavGroup[]", "required": false },
@@ -1912,7 +2055,8 @@
         { "name": "variant", "type": "'text' | 'circle' | 'rect'", "required": false },
         { "name": "width", "type": "string", "required": false },
         { "name": "height", "type": "string", "required": false },
-        { "name": "lines", "type": "number", "required": false }
+        { "name": "lines", "type": "number", "required": false },
+        { "name": "ai", "type": "boolean", "required": false }
       ]
     },
     {
@@ -1934,6 +2078,13 @@
         { "name": "defaultValue", "type": "number", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false }
+      ]
+    },
+    {
+      "name": "Sources",
+      "props": [
+        { "name": "items", "type": "AiSource[]", "required": true },
+        { "name": "labels", "type": "{ summary?: string }", "required": false }
       ]
     },
     {
@@ -1986,6 +2137,14 @@
         { "name": "activeStep", "type": "number", "required": false },
         { "name": "orientation", "type": "'horizontal' | 'vertical'", "required": false },
         { "name": "className", "type": "string", "required": false }
+      ]
+    },
+    {
+      "name": "StreamingText",
+      "props": [
+        { "name": "text", "type": "string", "required": true },
+        { "name": "speed", "type": "number", "required": false },
+        { "name": "onComplete", "type": "() => void", "required": false }
       ]
     },
     {
@@ -2074,6 +2233,16 @@
       ]
     },
     {
+      "name": "Terminal",
+      "props": [
+        { "name": "lines", "type": "TerminalLine[]", "required": true },
+        { "name": "speed", "type": "number", "required": false },
+        { "name": "loop", "type": "boolean", "required": false },
+        { "name": "onComplete", "type": "() => void", "required": false },
+        { "name": "labels", "type": "{ label?: string }", "required": false }
+      ]
+    },
+    {
       "name": "Text",
       "props": [
         { "name": "as", "type": "'p' | 'span' | 'div'", "required": false },
@@ -2092,7 +2261,8 @@
         { "name": "resize", "type": "'none' | 'vertical' | 'both'", "required": false },
         { "name": "autosize", "type": "boolean", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
-        { "name": "ariaLabel", "type": "string", "required": false }
+        { "name": "ariaLabel", "type": "string", "required": false },
+        { "name": "ai", "type": "boolean", "required": false }
       ]
     },
     {
@@ -2216,6 +2386,26 @@
       ]
     },
     {
+      "name": "ToolCall",
+      "props": [
+        { "name": "name", "type": "string", "required": true },
+        {
+          "name": "status",
+          "type": "'pending' | 'running' | 'awaiting-approval' | 'complete' | 'error' | 'denied'",
+          "required": true
+        },
+        { "name": "input", "type": "ReactNode", "required": false },
+        { "name": "output", "type": "ReactNode", "required": false },
+        { "name": "error", "type": "ReactNode", "required": false },
+        { "name": "actions", "type": "ReactNode", "required": false },
+        {
+          "name": "labels",
+          "type": "{ pending?: string; running?: string; awaitingApproval?: string; complete?: string; error?: string; denied?: string; input?: string; output?: string; errorHeading?: string }",
+          "required": false
+        }
+      ]
+    },
+    {
       "name": "Tooltip",
       "props": [
         { "name": "content", "type": "ReactNode", "required": true },
@@ -2251,6 +2441,13 @@
         { "name": "expanded", "type": "string[]", "required": false },
         { "name": "defaultExpanded", "type": "string[]", "required": false },
         { "name": "onExpandedChange", "type": "(expanded: string[]) => void", "required": false }
+      ]
+    },
+    {
+      "name": "TypingIndicator",
+      "props": [
+        { "name": "ariaLabel", "type": "string", "required": false },
+        { "name": "label", "type": "string", "required": false }
       ]
     },
     {
@@ -3657,12 +3854,16 @@
     "data-cascivo-sheet-body"
   ],
   "content": [
+    "AiBadge",
+    "AiDisclaimer",
+    "AiStatus",
     "Alert",
     "AlertDialog",
     "Blockquote",
     "Breadcrumb",
     "Button",
     "ButtonGroup",
+    "ChainOfThought",
     "CheckboxCard",
     "CommandMenu",
     "CopyButton",
@@ -3672,6 +3873,7 @@
     "FileUploader",
     "Heading",
     "IconButton",
+    "InlineCitation",
     "InlineLoading",
     "Input",
     "Label",
@@ -3682,10 +3884,14 @@
     "OverflowMenu",
     "PasswordInput",
     "ProgressIndicator",
+    "PromptSuggestions",
     "Prose",
+    "Reasoning",
     "Search",
     "ShareMenu",
+    "ShimmerText",
     "SkipNav",
+    "Sources",
     "Stat",
     "Status",
     "Tag",
@@ -3695,7 +3901,9 @@
     "Toast",
     "Toc",
     "ToggleGroup",
+    "ToolCall",
     "Tooltip",
+    "TypingIndicator",
     "VisuallyHidden"
   ],
   "contentPrimitives": ["Blockquote", "Heading", "Label", "Prose", "Text", "VisuallyHidden"]

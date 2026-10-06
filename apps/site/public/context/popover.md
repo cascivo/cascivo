@@ -79,7 +79,7 @@ The trigger is a real <button> with aria-haspopup="dialog" and aria-expanded ref
 
 | Area        | Level    | Note                                                                      |
 | ----------- | -------- | ------------------------------------------------------------------------- |
-| token names | strict   | Panel styling must resolve to the listed --cascivo-\* tokens              |
+| token names | strict   | Panel styling must resolve to the listed --cascivo-* tokens               |
 | content     | flexible | Trigger and panel content are arbitrary children supplied by the consumer |
 
 ## AI context prompt

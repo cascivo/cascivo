@@ -76,10 +76,10 @@ role="progressbar" with value/max exposes completion to assistive tech; the labe
 
 ## Boundaries
 
-| Area                         | Level    | Note                                                       |
-| ---------------------------- | -------- | ---------------------------------------------------------- |
-| determinate vs indeterminate | flexible | Presence of value selects the mode                         |
-| token names                  | strict   | Fill and status colors must resolve to --cascivo-\* tokens |
+| Area                         | Level    | Note                                                      |
+| ---------------------------- | -------- | --------------------------------------------------------- |
+| determinate vs indeterminate | flexible | Presence of value selects the mode                        |
+| token names                  | strict   | Fill and status colors must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

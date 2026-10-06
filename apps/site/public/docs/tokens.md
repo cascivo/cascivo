@@ -73,147 +73,151 @@ remains canonical.
 
 ## color
 
-| Token                                        | Value                                                               | Notes                                             |
-| -------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------- |
-| **`--cascivo-blue-100`**                     | `oklch(0.932 0.055 250)`                                            |                                                   |
-| **`--cascivo-blue-200`**                     | `oklch(0.882 0.095 250)`                                            |                                                   |
-| **`--cascivo-blue-300`**                     | `oklch(0.808 0.14 250)`                                             |                                                   |
-| **`--cascivo-blue-400`**                     | `oklch(0.707 0.18 250)`                                             |                                                   |
-| **`--cascivo-blue-50`**                      | `oklch(0.97 0.025 250)`                                             |                                                   |
-| **`--cascivo-blue-500`**                     | `oklch(0.623 0.214 250)`                                            |                                                   |
-| **`--cascivo-blue-600`**                     | `oklch(0.546 0.224 250)`                                            |                                                   |
-| **`--cascivo-blue-700`**                     | `oklch(0.452 0.196 250)`                                            |                                                   |
-| **`--cascivo-blue-800`**                     | `oklch(0.373 0.155 250)`                                            |                                                   |
-| **`--cascivo-blue-900`**                     | `oklch(0.29 0.105 250)`                                             |                                                   |
-| **`--cascivo-blue-950`**                     | `oklch(0.205 0.065 250)`                                            |                                                   |
-| **`--cascivo-border-default`**               | `oklch(0.872 0.008 264)`                                            |                                                   |
-| **`--cascivo-border-strong`**                | `oklch(0.707 0.015 264)`                                            |                                                   |
-| **`--cascivo-border-subtle`**                | `oklch(0.928 0.006 264)`                                            |                                                   |
-| **`--cascivo-brand-accent`**                 | `oklch(0.72 0.13 195)`                                              |                                                   |
-| **`--cascivo-brand-gradient-end`**           | `oklch(0.72 0.13 195)`                                              |                                                   |
-| **`--cascivo-brand-gradient-start`**         | `oklch(0.55 0.15 240)`                                              |                                                   |
-| **`--cascivo-brand-ink`**                    | `oklch( 0.22 0.03 250 )`                                            |                                                   |
-| **`--cascivo-brand-paper`**                  | `oklch(0.99 0.005 250)`                                             |                                                   |
-| **`--cascivo-brand-primary`**                | `oklch( 0.55 0.15 240 )`                                            |                                                   |
-| **`--cascivo-chart-1`**                      | `oklch(0.62 0.13 70)`                                               |                                                   |
-| **`--cascivo-chart-2`**                      | `oklch(0.62 0.11 240)`                                              |                                                   |
-| **`--cascivo-chart-3`**                      | `oklch(0.6 0.13 135)`                                               |                                                   |
-| **`--cascivo-chart-4`**                      | `oklch(0.6 0.18 55)`                                                |                                                   |
-| **`--cascivo-chart-5`**                      | `oklch(0.5 0.13 270)`                                               |                                                   |
-| **`--cascivo-chart-6`**                      | `oklch(0.58 0.16 30)`                                               |                                                   |
-| **`--cascivo-chart-7`**                      | `oklch(0.62 0.12 350)`                                              |                                                   |
-| **`--cascivo-chart-8`**                      | `oklch(0.5 0.12 200)`                                               |                                                   |
-| **`--cascivo-chart-axis`**                   | `oklch(0.5 0.016 264)`                                              |                                                   |
-| **`--cascivo-chart-bar-radius`**             | `2px`                                                               |                                                   |
-| **`--cascivo-chart-fill-opacity`**           | `0.25`                                                              |                                                   |
-| **`--cascivo-chart-fill-opacity-overlap`**   | `0.125`                                                             |                                                   |
-| **`--cascivo-chart-grid`**                   | `var(--cascivo-gray-200)`                                           |                                                   |
-| **`--cascivo-color-accent`**                 | `oklch(0.52 0.2 250)`                                               |                                                   |
-| **`--cascivo-color-accent-active`**          | `var(--cascivo-blue-800)`                                           |                                                   |
-| `--cascivo-color-accent-content`             | `var(--cascivo-color-text-on-accent)`                               | alias of `--cascivo-color-accent-foreground`      |
-| **`--cascivo-color-accent-foreground`**      | `oklch(1 0 0)`                                                      |                                                   |
-| **`--cascivo-color-accent-hover`**           | `oklch(0.45 0.2 250)`                                               |                                                   |
-| **`--cascivo-color-accent-muted`**           | `var(--cascivo-blue-100)`                                           |                                                   |
-| **`--cascivo-color-accent-subtle`**          | `var(--cascivo-blue-50)`                                            |                                                   |
-| **`--cascivo-color-accent-text`**            | `var(--cascivo-color-accent)`                                       |                                                   |
-| **`--cascivo-color-accent-text-hover`**      | `var(--cascivo-color-accent-hover)`                                 |                                                   |
-| **`--cascivo-color-active-bg`**              | `oklch(0.145 0.005 264 / 6%)`                                       |                                                   |
-| **`--cascivo-color-background`**             | `oklch(1 0 0)`                                                      |                                                   |
-| `--cascivo-color-bg`                         | `var(--cascivo-color-background)`                                   | alias of `--cascivo-color-background`             |
-| **`--cascivo-color-bg-subtle`**              | `var(--cascivo-color-surface)`                                      |                                                   |
-| **`--cascivo-color-border`**                 | `var(--cascivo-gray-200)`                                           |                                                   |
-| **`--cascivo-color-border-strong`**          | `var(--cascivo-gray-300)`                                           |                                                   |
-| **`--cascivo-color-destructive`**            | `var(--cascivo-red-600)`                                            |                                                   |
-| `--cascivo-color-destructive-content`        | `var(--cascivo-color-text-on-destructive)`                          | alias of `--cascivo-color-destructive-foreground` |
-| **`--cascivo-color-destructive-foreground`** | `oklch(0.448 0.17 22)`                                              |                                                   |
-| **`--cascivo-color-destructive-hover`**      | `var(--cascivo-red-700)`                                            |                                                   |
-| **`--cascivo-color-destructive-subtle`**     | `var(--cascivo-red-50)`                                             |                                                   |
-| `--cascivo-color-error`                      | `oklch(0.628 0.188 22)`                                             | alias of `--cascivo-color-destructive`            |
-| **`--cascivo-color-error-content`**          | `oklch(1 0 0)`                                                      |                                                   |
-| **`--cascivo-color-focus-ring`**             | `var(--cascivo-blue-500)`                                           |                                                   |
-| **`--cascivo-color-foreground`**             | `oklch(0.145 0.005 264)`                                            |                                                   |
-| `--cascivo-color-foreground-muted`           | `oklch(0.5 0.018 264)`                                              | alias of `--cascivo-color-text-muted`             |
-| **`--cascivo-color-info`**                   | `var(--cascivo-blue-600)`                                           |                                                   |
-| **`--cascivo-color-info-content`**           | `oklch(1 0 0)`                                                      |                                                   |
-| **`--cascivo-color-info-foreground`**        | `oklch(0.45 0.19 250)`                                              |                                                   |
-| **`--cascivo-color-info-subtle`**            | `var(--cascivo-blue-50)`                                            |                                                   |
-| **`--cascivo-color-primary`**                | `oklch(0.205 0 0)`                                                  |                                                   |
-| **`--cascivo-color-primary-active`**         | `oklch(0.32 0 0)`                                                   |                                                   |
-| `--cascivo-color-primary-content`            | `var(--cascivo-color-primary-fg)`                                   | alias of `--cascivo-color-primary-fg`             |
-| **`--cascivo-color-primary-fg`**             | `oklch(0.985 0 0)`                                                  |                                                   |
-| **`--cascivo-color-primary-hover`**          | `oklch(0.27 0 0)`                                                   |                                                   |
-| **`--cascivo-color-secondary`**              | `oklch(0.92 0.004 264)`                                             |                                                   |
-| **`--cascivo-color-secondary-content`**      | `oklch(0.27 0.01 264)`                                              |                                                   |
-| **`--cascivo-color-secondary-hover`**        | `oklch(0.86 0.006 264)`                                             |                                                   |
-| **`--cascivo-color-secondary-subtle`**       | `oklch(0.967 0.002 264)`                                            |                                                   |
-| **`--cascivo-color-success`**                | `oklch(0.648 0.15 145)`                                             |                                                   |
-| `--cascivo-color-success-content`            | `oklch(1 0 0)`                                                      | alias of `--cascivo-color-success-foreground`     |
-| **`--cascivo-color-success-foreground`**     | `oklch(0.45 0.14 145)`                                              |                                                   |
-| **`--cascivo-color-success-subtle`**         | `var(--cascivo-green-50)`                                           |                                                   |
-| **`--cascivo-color-surface`**                | `oklch(0.985 0.002 264)`                                            |                                                   |
-| **`--cascivo-color-surface-2`**              | `oklch(0.967 0.003 264)`                                            |                                                   |
-| **`--cascivo-color-surface-overlay`**        | `var(--cascivo-color-background)`                                   |                                                   |
-| **`--cascivo-color-surface-raised`**         | `var(--cascivo-color-surface)`                                      |                                                   |
-| `--cascivo-color-text`                       | `var(--cascivo-color-foreground)`                                   | alias of `--cascivo-color-foreground`             |
-| **`--cascivo-color-text-muted`**             | `oklch(0.5 0.016 264)`                                              |                                                   |
-| **`--cascivo-color-text-on-accent`**         | `oklch(1 0 0)`                                                      |                                                   |
-| **`--cascivo-color-text-on-destructive`**    | `oklch(1 0 0)`                                                      |                                                   |
-| **`--cascivo-color-text-subtle`**            | `var(--cascivo-gray-600)`                                           |                                                   |
-| **`--cascivo-color-warning`**                | `oklch(0.768 0.145 75)`                                             |                                                   |
-| `--cascivo-color-warning-content`            | `oklch(0.145 0 0)`                                                  | alias of `--cascivo-color-warning-foreground`     |
-| **`--cascivo-color-warning-foreground`**     | `oklch(0.5 0.14 75)`                                                |                                                   |
-| **`--cascivo-color-warning-subtle`**         | `var(--cascivo-orange-50)`                                          |                                                   |
-| **`--cascivo-focus-ring`**                   | `0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color)`         |                                                   |
-| **`--cascivo-gray-0`**                       | `oklch(1 0 0)`                                                      |                                                   |
-| **`--cascivo-gray-100`**                     | `oklch(0.967 0.003 264)`                                            |                                                   |
-| **`--cascivo-gray-200`**                     | `oklch(0.928 0.006 264)`                                            |                                                   |
-| **`--cascivo-gray-300`**                     | `oklch(0.872 0.008 264)`                                            |                                                   |
-| **`--cascivo-gray-400`**                     | `oklch(0.707 0.015 264)`                                            |                                                   |
-| **`--cascivo-gray-50`**                      | `oklch(0.985 0.002 264)`                                            |                                                   |
-| **`--cascivo-gray-500`**                     | `oklch(0.554 0.018 264)`                                            |                                                   |
-| **`--cascivo-gray-600`**                     | `oklch(0.446 0.018 264)`                                            |                                                   |
-| **`--cascivo-gray-700`**                     | `oklch(0.373 0.015 264)`                                            |                                                   |
-| **`--cascivo-gray-800`**                     | `oklch(0.269 0.01 264)`                                             |                                                   |
-| **`--cascivo-gray-900`**                     | `oklch(0.205 0.007 264)`                                            |                                                   |
-| **`--cascivo-gray-950`**                     | `oklch(0.145 0.005 264)`                                            |                                                   |
-| **`--cascivo-green-100`**                    | `oklch(0.962 0.044 145)`                                            |                                                   |
-| **`--cascivo-green-200`**                    | `oklch(0.925 0.084 145)`                                            |                                                   |
-| **`--cascivo-green-400`**                    | `oklch(0.75 0.15 145)`                                              |                                                   |
-| **`--cascivo-green-50`**                     | `oklch(0.982 0.018 145)`                                            |                                                   |
-| **`--cascivo-green-500`**                    | `oklch(0.648 0.15 145)`                                             |                                                   |
-| **`--cascivo-green-600`**                    | `oklch(0.548 0.14 145)`                                             |                                                   |
-| **`--cascivo-green-700`**                    | `oklch(0.448 0.12 145)`                                             |                                                   |
-| **`--cascivo-green-900`**                    | `oklch(0.28 0.075 145)`                                             |                                                   |
-| **`--cascivo-orange-100`**                   | `oklch(0.96 0.045 75)`                                              |                                                   |
-| **`--cascivo-orange-400`**                   | `oklch(0.82 0.13 60)`                                               |                                                   |
-| **`--cascivo-orange-50`**                    | `oklch(0.98 0.02 75)`                                               |                                                   |
-| **`--cascivo-orange-500`**                   | `oklch(0.768 0.145 55)`                                             |                                                   |
-| **`--cascivo-orange-600`**                   | `oklch(0.68 0.155 50)`                                              |                                                   |
-| **`--cascivo-red-100`**                      | `oklch(0.936 0.032 22)`                                             |                                                   |
-| **`--cascivo-red-200`**                      | `oklch(0.885 0.062 22)`                                             |                                                   |
-| **`--cascivo-red-400`**                      | `oklch(0.72 0.16 22)`                                               |                                                   |
-| **`--cascivo-red-50`**                       | `oklch(0.971 0.013 22)`                                             |                                                   |
-| **`--cascivo-red-500`**                      | `oklch(0.628 0.188 22)`                                             |                                                   |
-| **`--cascivo-red-600`**                      | `oklch(0.54 0.188 22)`                                              |                                                   |
-| **`--cascivo-red-700`**                      | `oklch(0.448 0.17 22)`                                              |                                                   |
-| **`--cascivo-red-900`**                      | `oklch(0.28 0.1 22)`                                                |                                                   |
-| **`--cascivo-ring-color`**                   | `color-mix(in oklch, var(--cascivo-color-accent) 55%, transparent)` |                                                   |
-| **`--cascivo-ring-offset`**                  | `0px`                                                               |                                                   |
-| **`--cascivo-ring-width`**                   | `2px`                                                               |                                                   |
-| **`--cascivo-warm-100`**                     | `oklch(0.962 0.016 80)`                                             |                                                   |
-| **`--cascivo-warm-200`**                     | `oklch(0.92 0.025 78)`                                              |                                                   |
-| **`--cascivo-warm-300`**                     | `oklch(0.87 0.035 75)`                                              |                                                   |
-| **`--cascivo-warm-400`**                     | `oklch(0.76 0.045 70)`                                              |                                                   |
-| **`--cascivo-warm-50`**                      | `oklch(0.982 0.008 80)`                                             |                                                   |
-| **`--cascivo-warm-500`**                     | `oklch(0.64 0.045 65)`                                              |                                                   |
-| **`--cascivo-warm-600`**                     | `oklch(0.52 0.04 60)`                                               |                                                   |
-| **`--cascivo-warm-700`**                     | `oklch(0.42 0.03 55)`                                               |                                                   |
-| **`--cascivo-warm-800`**                     | `oklch(0.31 0.022 50)`                                              |                                                   |
-| **`--cascivo-warm-900`**                     | `oklch(0.21 0.015 50)`                                              |                                                   |
-| **`--cascivo-yellow-100`**                   | `oklch(0.973 0.05 95)`                                              |                                                   |
-| **`--cascivo-yellow-400`**                   | `oklch(0.868 0.145 80)`                                             |                                                   |
-| **`--cascivo-yellow-50`**                    | `oklch(0.987 0.026 95)`                                             |                                                   |
-| **`--cascivo-yellow-500`**                   | `oklch(0.768 0.145 75)`                                             |                                                   |
+| Token                                        | Value                                                                                          | Notes                                             |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| **`--cascivo-blue-100`**                     | `oklch(0.932 0.055 250)`                                                                       |                                                   |
+| **`--cascivo-blue-200`**                     | `oklch(0.882 0.095 250)`                                                                       |                                                   |
+| **`--cascivo-blue-300`**                     | `oklch(0.808 0.14 250)`                                                                        |                                                   |
+| **`--cascivo-blue-400`**                     | `oklch(0.707 0.18 250)`                                                                        |                                                   |
+| **`--cascivo-blue-50`**                      | `oklch(0.97 0.025 250)`                                                                        |                                                   |
+| **`--cascivo-blue-500`**                     | `oklch(0.623 0.214 250)`                                                                       |                                                   |
+| **`--cascivo-blue-600`**                     | `oklch(0.546 0.224 250)`                                                                       |                                                   |
+| **`--cascivo-blue-700`**                     | `oklch(0.452 0.196 250)`                                                                       |                                                   |
+| **`--cascivo-blue-800`**                     | `oklch(0.373 0.155 250)`                                                                       |                                                   |
+| **`--cascivo-blue-900`**                     | `oklch(0.29 0.105 250)`                                                                        |                                                   |
+| **`--cascivo-blue-950`**                     | `oklch(0.205 0.065 250)`                                                                       |                                                   |
+| **`--cascivo-border-default`**               | `oklch(0.872 0.008 264)`                                                                       |                                                   |
+| **`--cascivo-border-strong`**                | `oklch(0.707 0.015 264)`                                                                       |                                                   |
+| **`--cascivo-border-subtle`**                | `oklch(0.928 0.006 264)`                                                                       |                                                   |
+| **`--cascivo-brand-accent`**                 | `oklch(0.72 0.13 195)`                                                                         |                                                   |
+| **`--cascivo-brand-gradient-end`**           | `oklch(0.72 0.13 195)`                                                                         |                                                   |
+| **`--cascivo-brand-gradient-start`**         | `oklch(0.55 0.15 240)`                                                                         |                                                   |
+| **`--cascivo-brand-ink`**                    | `oklch( 0.22 0.03 250 )`                                                                       |                                                   |
+| **`--cascivo-brand-paper`**                  | `oklch(0.99 0.005 250)`                                                                        |                                                   |
+| **`--cascivo-brand-primary`**                | `oklch( 0.55 0.15 240 )`                                                                       |                                                   |
+| **`--cascivo-chart-1`**                      | `oklch(0.62 0.13 70)`                                                                          |                                                   |
+| **`--cascivo-chart-2`**                      | `oklch(0.62 0.11 240)`                                                                         |                                                   |
+| **`--cascivo-chart-3`**                      | `oklch(0.6 0.13 135)`                                                                          |                                                   |
+| **`--cascivo-chart-4`**                      | `oklch(0.6 0.18 55)`                                                                           |                                                   |
+| **`--cascivo-chart-5`**                      | `oklch(0.5 0.13 270)`                                                                          |                                                   |
+| **`--cascivo-chart-6`**                      | `oklch(0.58 0.16 30)`                                                                          |                                                   |
+| **`--cascivo-chart-7`**                      | `oklch(0.62 0.12 350)`                                                                         |                                                   |
+| **`--cascivo-chart-8`**                      | `oklch(0.5 0.12 200)`                                                                          |                                                   |
+| **`--cascivo-chart-axis`**                   | `oklch(0.5 0.016 264)`                                                                         |                                                   |
+| **`--cascivo-chart-bar-radius`**             | `2px`                                                                                          |                                                   |
+| **`--cascivo-chart-fill-opacity`**           | `0.25`                                                                                         |                                                   |
+| **`--cascivo-chart-fill-opacity-overlap`**   | `0.125`                                                                                        |                                                   |
+| **`--cascivo-chart-grid`**                   | `var(--cascivo-gray-200)`                                                                      |                                                   |
+| **`--cascivo-color-accent`**                 | `oklch(0.52 0.2 250)`                                                                          |                                                   |
+| **`--cascivo-color-accent-active`**          | `var(--cascivo-blue-800)`                                                                      |                                                   |
+| `--cascivo-color-accent-content`             | `var(--cascivo-color-text-on-accent)`                                                          | alias of `--cascivo-color-accent-foreground`      |
+| **`--cascivo-color-accent-foreground`**      | `oklch(1 0 0)`                                                                                 |                                                   |
+| **`--cascivo-color-accent-hover`**           | `oklch(0.45 0.2 250)`                                                                          |                                                   |
+| **`--cascivo-color-accent-muted`**           | `var(--cascivo-blue-100)`                                                                      |                                                   |
+| **`--cascivo-color-accent-subtle`**          | `var(--cascivo-blue-50)`                                                                       |                                                   |
+| **`--cascivo-color-accent-text`**            | `var(--cascivo-color-accent)`                                                                  |                                                   |
+| **`--cascivo-color-accent-text-hover`**      | `var(--cascivo-color-accent-hover)`                                                            |                                                   |
+| **`--cascivo-color-active-bg`**              | `oklch(0.145 0.005 264 / 6%)`                                                                  |                                                   |
+| **`--cascivo-color-ai`**                     | `color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )` |                                                   |
+| **`--cascivo-color-ai-border`**              | `oklch(from var(--cascivo-color-ai) l c h / 40%)`                                              |                                                   |
+| **`--cascivo-color-ai-sheen`**               | `oklch(from var(--cascivo-color-ai) l c h / 22%)`                                              |                                                   |
+| **`--cascivo-color-ai-subtle`**              | `oklch(from var(--cascivo-color-ai) l c h / 10%)`                                              |                                                   |
+| **`--cascivo-color-background`**             | `oklch(1 0 0)`                                                                                 |                                                   |
+| `--cascivo-color-bg`                         | `var(--cascivo-color-background)`                                                              | alias of `--cascivo-color-background`             |
+| **`--cascivo-color-bg-subtle`**              | `var(--cascivo-color-surface)`                                                                 |                                                   |
+| **`--cascivo-color-border`**                 | `var(--cascivo-gray-200)`                                                                      |                                                   |
+| **`--cascivo-color-border-strong`**          | `var(--cascivo-gray-300)`                                                                      |                                                   |
+| **`--cascivo-color-destructive`**            | `var(--cascivo-red-600)`                                                                       |                                                   |
+| `--cascivo-color-destructive-content`        | `var(--cascivo-color-text-on-destructive)`                                                     | alias of `--cascivo-color-destructive-foreground` |
+| **`--cascivo-color-destructive-foreground`** | `oklch(0.448 0.17 22)`                                                                         |                                                   |
+| **`--cascivo-color-destructive-hover`**      | `var(--cascivo-red-700)`                                                                       |                                                   |
+| **`--cascivo-color-destructive-subtle`**     | `var(--cascivo-red-50)`                                                                        |                                                   |
+| `--cascivo-color-error`                      | `oklch(0.628 0.188 22)`                                                                        | alias of `--cascivo-color-destructive`            |
+| **`--cascivo-color-error-content`**          | `oklch(1 0 0)`                                                                                 |                                                   |
+| **`--cascivo-color-focus-ring`**             | `var(--cascivo-blue-500)`                                                                      |                                                   |
+| **`--cascivo-color-foreground`**             | `oklch(0.145 0.005 264)`                                                                       |                                                   |
+| `--cascivo-color-foreground-muted`           | `oklch(0.5 0.018 264)`                                                                         | alias of `--cascivo-color-text-muted`             |
+| **`--cascivo-color-info`**                   | `var(--cascivo-blue-600)`                                                                      |                                                   |
+| **`--cascivo-color-info-content`**           | `oklch(1 0 0)`                                                                                 |                                                   |
+| **`--cascivo-color-info-foreground`**        | `oklch(0.45 0.19 250)`                                                                         |                                                   |
+| **`--cascivo-color-info-subtle`**            | `var(--cascivo-blue-50)`                                                                       |                                                   |
+| **`--cascivo-color-primary`**                | `oklch(0.205 0 0)`                                                                             |                                                   |
+| **`--cascivo-color-primary-active`**         | `oklch(0.32 0 0)`                                                                              |                                                   |
+| `--cascivo-color-primary-content`            | `var(--cascivo-color-primary-fg)`                                                              | alias of `--cascivo-color-primary-fg`             |
+| **`--cascivo-color-primary-fg`**             | `oklch(0.985 0 0)`                                                                             |                                                   |
+| **`--cascivo-color-primary-hover`**          | `oklch(0.27 0 0)`                                                                              |                                                   |
+| **`--cascivo-color-secondary`**              | `oklch(0.92 0.004 264)`                                                                        |                                                   |
+| **`--cascivo-color-secondary-content`**      | `oklch(0.27 0.01 264)`                                                                         |                                                   |
+| **`--cascivo-color-secondary-hover`**        | `oklch(0.86 0.006 264)`                                                                        |                                                   |
+| **`--cascivo-color-secondary-subtle`**       | `oklch(0.967 0.002 264)`                                                                       |                                                   |
+| **`--cascivo-color-success`**                | `oklch(0.648 0.15 145)`                                                                        |                                                   |
+| `--cascivo-color-success-content`            | `oklch(1 0 0)`                                                                                 | alias of `--cascivo-color-success-foreground`     |
+| **`--cascivo-color-success-foreground`**     | `oklch(0.45 0.14 145)`                                                                         |                                                   |
+| **`--cascivo-color-success-subtle`**         | `var(--cascivo-green-50)`                                                                      |                                                   |
+| **`--cascivo-color-surface`**                | `oklch(0.985 0.002 264)`                                                                       |                                                   |
+| **`--cascivo-color-surface-2`**              | `oklch(0.967 0.003 264)`                                                                       |                                                   |
+| **`--cascivo-color-surface-overlay`**        | `var(--cascivo-color-background)`                                                              |                                                   |
+| **`--cascivo-color-surface-raised`**         | `var(--cascivo-color-surface)`                                                                 |                                                   |
+| `--cascivo-color-text`                       | `var(--cascivo-color-foreground)`                                                              | alias of `--cascivo-color-foreground`             |
+| **`--cascivo-color-text-muted`**             | `oklch(0.5 0.016 264)`                                                                         |                                                   |
+| **`--cascivo-color-text-on-accent`**         | `oklch(1 0 0)`                                                                                 |                                                   |
+| **`--cascivo-color-text-on-destructive`**    | `oklch(1 0 0)`                                                                                 |                                                   |
+| **`--cascivo-color-text-subtle`**            | `var(--cascivo-gray-600)`                                                                      |                                                   |
+| **`--cascivo-color-warning`**                | `oklch(0.768 0.145 75)`                                                                        |                                                   |
+| `--cascivo-color-warning-content`            | `oklch(0.145 0 0)`                                                                             | alias of `--cascivo-color-warning-foreground`     |
+| **`--cascivo-color-warning-foreground`**     | `oklch(0.5 0.14 75)`                                                                           |                                                   |
+| **`--cascivo-color-warning-subtle`**         | `var(--cascivo-orange-50)`                                                                     |                                                   |
+| **`--cascivo-focus-ring`**                   | `0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color)`                                    |                                                   |
+| **`--cascivo-gray-0`**                       | `oklch(1 0 0)`                                                                                 |                                                   |
+| **`--cascivo-gray-100`**                     | `oklch(0.967 0.003 264)`                                                                       |                                                   |
+| **`--cascivo-gray-200`**                     | `oklch(0.928 0.006 264)`                                                                       |                                                   |
+| **`--cascivo-gray-300`**                     | `oklch(0.872 0.008 264)`                                                                       |                                                   |
+| **`--cascivo-gray-400`**                     | `oklch(0.707 0.015 264)`                                                                       |                                                   |
+| **`--cascivo-gray-50`**                      | `oklch(0.985 0.002 264)`                                                                       |                                                   |
+| **`--cascivo-gray-500`**                     | `oklch(0.554 0.018 264)`                                                                       |                                                   |
+| **`--cascivo-gray-600`**                     | `oklch(0.446 0.018 264)`                                                                       |                                                   |
+| **`--cascivo-gray-700`**                     | `oklch(0.373 0.015 264)`                                                                       |                                                   |
+| **`--cascivo-gray-800`**                     | `oklch(0.269 0.01 264)`                                                                        |                                                   |
+| **`--cascivo-gray-900`**                     | `oklch(0.205 0.007 264)`                                                                       |                                                   |
+| **`--cascivo-gray-950`**                     | `oklch(0.145 0.005 264)`                                                                       |                                                   |
+| **`--cascivo-green-100`**                    | `oklch(0.962 0.044 145)`                                                                       |                                                   |
+| **`--cascivo-green-200`**                    | `oklch(0.925 0.084 145)`                                                                       |                                                   |
+| **`--cascivo-green-400`**                    | `oklch(0.75 0.15 145)`                                                                         |                                                   |
+| **`--cascivo-green-50`**                     | `oklch(0.982 0.018 145)`                                                                       |                                                   |
+| **`--cascivo-green-500`**                    | `oklch(0.648 0.15 145)`                                                                        |                                                   |
+| **`--cascivo-green-600`**                    | `oklch(0.548 0.14 145)`                                                                        |                                                   |
+| **`--cascivo-green-700`**                    | `oklch(0.448 0.12 145)`                                                                        |                                                   |
+| **`--cascivo-green-900`**                    | `oklch(0.28 0.075 145)`                                                                        |                                                   |
+| **`--cascivo-orange-100`**                   | `oklch(0.96 0.045 75)`                                                                         |                                                   |
+| **`--cascivo-orange-400`**                   | `oklch(0.82 0.13 60)`                                                                          |                                                   |
+| **`--cascivo-orange-50`**                    | `oklch(0.98 0.02 75)`                                                                          |                                                   |
+| **`--cascivo-orange-500`**                   | `oklch(0.768 0.145 55)`                                                                        |                                                   |
+| **`--cascivo-orange-600`**                   | `oklch(0.68 0.155 50)`                                                                         |                                                   |
+| **`--cascivo-red-100`**                      | `oklch(0.936 0.032 22)`                                                                        |                                                   |
+| **`--cascivo-red-200`**                      | `oklch(0.885 0.062 22)`                                                                        |                                                   |
+| **`--cascivo-red-400`**                      | `oklch(0.72 0.16 22)`                                                                          |                                                   |
+| **`--cascivo-red-50`**                       | `oklch(0.971 0.013 22)`                                                                        |                                                   |
+| **`--cascivo-red-500`**                      | `oklch(0.628 0.188 22)`                                                                        |                                                   |
+| **`--cascivo-red-600`**                      | `oklch(0.54 0.188 22)`                                                                         |                                                   |
+| **`--cascivo-red-700`**                      | `oklch(0.448 0.17 22)`                                                                         |                                                   |
+| **`--cascivo-red-900`**                      | `oklch(0.28 0.1 22)`                                                                           |                                                   |
+| **`--cascivo-ring-color`**                   | `color-mix(in oklch, var(--cascivo-color-accent) 55%, transparent)`                            |                                                   |
+| **`--cascivo-ring-offset`**                  | `0px`                                                                                          |                                                   |
+| **`--cascivo-ring-width`**                   | `2px`                                                                                          |                                                   |
+| **`--cascivo-warm-100`**                     | `oklch(0.962 0.016 80)`                                                                        |                                                   |
+| **`--cascivo-warm-200`**                     | `oklch(0.92 0.025 78)`                                                                         |                                                   |
+| **`--cascivo-warm-300`**                     | `oklch(0.87 0.035 75)`                                                                         |                                                   |
+| **`--cascivo-warm-400`**                     | `oklch(0.76 0.045 70)`                                                                         |                                                   |
+| **`--cascivo-warm-50`**                      | `oklch(0.982 0.008 80)`                                                                        |                                                   |
+| **`--cascivo-warm-500`**                     | `oklch(0.64 0.045 65)`                                                                         |                                                   |
+| **`--cascivo-warm-600`**                     | `oklch(0.52 0.04 60)`                                                                          |                                                   |
+| **`--cascivo-warm-700`**                     | `oklch(0.42 0.03 55)`                                                                          |                                                   |
+| **`--cascivo-warm-800`**                     | `oklch(0.31 0.022 50)`                                                                         |                                                   |
+| **`--cascivo-warm-900`**                     | `oklch(0.21 0.015 50)`                                                                         |                                                   |
+| **`--cascivo-yellow-100`**                   | `oklch(0.973 0.05 95)`                                                                         |                                                   |
+| **`--cascivo-yellow-400`**                   | `oklch(0.868 0.145 80)`                                                                        |                                                   |
+| **`--cascivo-yellow-50`**                    | `oklch(0.987 0.026 95)`                                                                        |                                                   |
+| **`--cascivo-yellow-500`**                   | `oklch(0.768 0.145 75)`                                                                        |                                                   |
 
 ## typography
 

@@ -1,10 +1,16 @@
 'use client'
 import { useRef } from 'react'
-import { useEffectPropSignal, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { cn, useEffectPropSignal, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import styles from './streaming-text.module.css'
 
 export interface StreamingTextProps {
   text: string
+  /**
+   * Characters revealed per animation frame.
+   *
+   * @defaultValue `2`
+   * @see the component manifest
+   */
   speed?: number
   onComplete?: () => void
   className?: string
@@ -43,9 +49,9 @@ export function StreamingText({ text, speed = 2, onComplete, className }: Stream
   })
 
   return (
-    <span className={[styles.root, className].filter(Boolean).join(' ')}>
+    <span className={cn(styles['root'], className)}>
       {displayed.value}
-      {displayed.value !== text && <span className={styles.cursor} aria-hidden="true" />}
+      {displayed.value !== text && <span className={styles['cursor']} aria-hidden="true" />}
     </span>
   )
 }

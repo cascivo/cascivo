@@ -32,3 +32,12 @@ describe('Textarea', () => {
     expect(handler).toHaveBeenCalled()
   })
 })
+
+describe('Textarea ai presence', () => {
+  it('flags the wrapper and never leaks onto the element', () => {
+    render(<Textarea label="Notes" ai />)
+    const textarea = screen.getByLabelText('Notes')
+    expect(textarea).not.toHaveAttribute('ai')
+    expect(textarea.parentElement).toHaveAttribute('data-ai', '')
+  })
+})

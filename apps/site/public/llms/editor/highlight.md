@@ -41,6 +41,7 @@ import '@cascivo/editor/styles.css' // bundler: automatic. Needed only for no-bu
 ```tsx
 import { Highlight } from '@cascivo/editor'
 import '@cascivo/editor/styles.css'
+
 ;<Highlight language="json" value={'{ "ok": true }'} />
 ```
 

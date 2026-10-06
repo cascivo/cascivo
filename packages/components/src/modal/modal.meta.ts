@@ -55,6 +55,14 @@ export const meta: ComponentMeta = {
       default: 'false',
       description: 'Allow dragging the dialog by its header',
     },
+    {
+      name: 'ai',
+      type: "boolean | 'generating'",
+      required: false,
+      default: 'false',
+      description:
+        "AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text.",
+    },
   ],
   tokens: [
     '--cascivo-color-surface-overlay',
@@ -80,7 +88,7 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
   styleHooks: ['data-cascivo-modal-body', 'data-cascivo-modal-footer'],
-  tags: ['overlay', 'dialog', 'popup'],
+  tags: ['overlay', 'dialog', 'popup', 'ai'],
   intent: {
     whenToUse: [
       'Presenting focused content or a task that must interrupt the current flow',

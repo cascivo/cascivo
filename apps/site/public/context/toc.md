@@ -80,10 +80,10 @@ Pass activeId to drive the highlight yourself; scroll-spy is disabled.
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                     |
-| ----------- | -------- | ------------------------------------------------------------------------ |
-| activeId    | flexible | Control the highlight externally, or omit it for built-in scroll-spy     |
-| token names | strict   | Colors, focus ring, and touch target must resolve to --cascivo-\* tokens |
+| Area        | Level    | Note                                                                    |
+| ----------- | -------- | ----------------------------------------------------------------------- |
+| activeId    | flexible | Control the highlight externally, or omit it for built-in scroll-spy    |
+| token names | strict   | Colors, focus ring, and touch target must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

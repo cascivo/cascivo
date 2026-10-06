@@ -85,14 +85,20 @@
   }
 
   /* Column-visibility and facet menus: a checklist in a popover. */
+  /* Lands on PopoverContent's popover element: a visible display at rest would beat the UA
+     rule that hides a closed popover, so the closed column/filter menus would keep a box. */
   .menu {
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: var(--cascivo-space-1);
     min-inline-size: 12rem;
     max-block-size: 20rem;
     overflow: auto;
     padding: var(--cascivo-space-2);
+
+    &:popover-open {
+      display: flex;
+    }
   }
 
   /* Per-column filter row under the header: same band as the header, plain text. */

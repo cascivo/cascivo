@@ -163,10 +163,9 @@ export function cascivoEmailPreview({
       const rescan = (file) => {
         if (!TEMPLATE_FILE.test(file) || IGNORED.test(file)) return
         const mod = server.moduleGraph.getModuleById(`\0${TEMPLATES_ID}`)
-        if (mod)
-          server.moduleGraph.invalidateModule(mod)
-          // A changed template list is a changed sidebar, which no HMR patch can express.
-          // `hot` is the current channel and `ws` the older name for it.
+        if (mod) server.moduleGraph.invalidateModule(mod)
+        // A changed template list is a changed sidebar, which no HMR patch can express.
+        // `hot` is the current channel and `ws` the older name for it.
         ;(server.hot ?? server.ws)?.send({ type: 'full-reload' })
       }
       server.watcher.on('add', rescan)

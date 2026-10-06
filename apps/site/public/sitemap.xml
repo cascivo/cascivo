@@ -257,6 +257,18 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/components/ai-badge</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/ai-disclaimer</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/ai-status</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/components/alert</loc>
     <priority>0.6</priority>
   </url>
@@ -358,6 +370,10 @@
   </url>
   <url>
     <loc>https://cascivo.com/docs/components/carousel</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/chain-of-thought</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -509,6 +525,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/components/context-meter</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/components/copy-button</loc>
     <priority>0.6</priority>
   </url>
@@ -649,6 +669,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/components/inline-citation</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/components/inline-loading</loc>
     <priority>0.6</priority>
   </url>
@@ -761,6 +785,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/components/message-actions</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/components/modal</loc>
     <priority>0.6</priority>
   </url>
@@ -821,6 +849,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/components/prompt-suggestions</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/components/prose</loc>
     <priority>0.6</priority>
   </url>
@@ -846,6 +878,10 @@
   </url>
   <url>
     <loc>https://cascivo.com/docs/components/rating-group</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/reasoning</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -917,6 +953,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/components/shimmer-text</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/components/side-nav</loc>
     <priority>0.6</priority>
   </url>
@@ -930,6 +970,10 @@
   </url>
   <url>
     <loc>https://cascivo.com/docs/components/slider</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/sources</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -950,6 +994,10 @@
   </url>
   <url>
     <loc>https://cascivo.com/docs/components/steps</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/streaming-text</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -978,6 +1026,10 @@
   </url>
   <url>
     <loc>https://cascivo.com/docs/components/tags-input</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/terminal</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -1021,11 +1073,19 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/components/tool-call</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/components/tooltip</loc>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://cascivo.com/docs/components/tree-view</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/typing-indicator</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -1050,6 +1110,18 @@
   </url>
   <url>
     <loc>https://cascivo.com/accessibility/action-sheet</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/accessibility/ai-badge</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/accessibility/ai-disclaimer</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/accessibility/ai-status</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -1117,6 +1189,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/accessibility/chain-of-thought</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/accessibility/chat-bubble</loc>
     <priority>0.6</priority>
   </url>
@@ -1162,6 +1238,10 @@
   </url>
   <url>
     <loc>https://cascivo.com/accessibility/context-menu</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/accessibility/context-meter</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -1257,6 +1337,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/accessibility/inline-citation</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/accessibility/inline-loading</loc>
     <priority>0.6</priority>
   </url>
@@ -1310,6 +1394,10 @@
   </url>
   <url>
     <loc>https://cascivo.com/accessibility/menubar</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/accessibility/message-actions</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -1373,6 +1461,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/accessibility/prompt-suggestions</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/accessibility/prose</loc>
     <priority>0.6</priority>
   </url>
@@ -1398,6 +1490,10 @@
   </url>
   <url>
     <loc>https://cascivo.com/accessibility/rating-group</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/accessibility/reasoning</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -1445,6 +1541,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/accessibility/shimmer-text</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/accessibility/side-nav</loc>
     <priority>0.6</priority>
   </url>
@@ -1458,6 +1558,10 @@
   </url>
   <url>
     <loc>https://cascivo.com/accessibility/slider</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/accessibility/sources</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -1478,6 +1582,10 @@
   </url>
   <url>
     <loc>https://cascivo.com/accessibility/steps</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/accessibility/streaming-text</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -1506,6 +1614,10 @@
   </url>
   <url>
     <loc>https://cascivo.com/accessibility/tags-input</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/accessibility/terminal</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -1549,11 +1661,19 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/accessibility/tool-call</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/accessibility/tooltip</loc>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://cascivo.com/accessibility/tree-view</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/accessibility/typing-indicator</loc>
     <priority>0.6</priority>
   </url>
   <url>

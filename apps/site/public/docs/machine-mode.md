@@ -60,6 +60,7 @@ rendered with.
 
 ```tsx
 import { TextView } from '@cascivo/text/react'
+
 ;<TextView>
   <Dashboard />
 </TextView>

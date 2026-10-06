@@ -90,6 +90,7 @@ shareIntentUrl builds the same compose link for your own markup; it returns null
 
 ```jsx
 import { shareIntentUrl } from './share-menu'
+
 ;<a href={shareIntentUrl('bluesky', { url, text }) ?? undefined}>Post to Bluesky</a>
 ```
 
@@ -98,7 +99,7 @@ import { shareIntentUrl } from './share-menu'
 | Area        | Level    | Note                                                                                        |
 | ----------- | -------- | ------------------------------------------------------------------------------------------- |
 | networks    | flexible | items picks and orders the networks; shareIntentUrl builds the same links for custom markup |
-| token names | strict   | Styling resolves to the listed semantic --cascivo-\* tokens                                 |
+| token names | strict   | Styling resolves to the listed semantic --cascivo-* tokens                                  |
 
 ## AI context prompt
 

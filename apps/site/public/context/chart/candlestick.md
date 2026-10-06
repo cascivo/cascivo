@@ -72,6 +72,7 @@ Shape of the `data` prop.
 
 ```jsx
 import { Candlestick } from '@cascivo/charts'
+
 ;<Candlestick
   title="ACME daily"
   tooltip

@@ -1,0 +1,70 @@
+@layer cascivo.component {
+  .citation {
+    line-height: 0;
+  }
+
+  .marker {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: 1.25em;
+    padding-inline: 0.25em;
+    border-radius: var(--cascivo-radius-full);
+    background-color: var(--cascivo-color-ai-subtle);
+    color: var(--cascivo-color-text);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-xs);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.5;
+    text-decoration: none;
+
+    &:hover {
+      background-color: var(--cascivo-color-ai-sheen);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+    }
+  }
+
+  /* This class lands on HoverCard's popover element, so it must not declare a visible
+     display at rest: any author display beats the UA rule that hides a closed popover. */
+  .card {
+    display: none;
+    flex-direction: column;
+    gap: var(--cascivo-space-1);
+    max-inline-size: 20rem;
+    font-size: var(--cascivo-text-sm);
+    line-height: var(--cascivo-leading-snug);
+
+    &:popover-open {
+      display: flex;
+    }
+  }
+
+  .title {
+    font-weight: var(--cascivo-font-medium);
+    color: var(--cascivo-color-text);
+  }
+
+  .host {
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-text-muted);
+  }
+
+  .description {
+    color: var(--cascivo-color-text-muted);
+  }
+}
+
+@media (forced-colors: active) {
+  .marker {
+    border: 1px solid CanvasText;
+  }
+
+  .marker:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}

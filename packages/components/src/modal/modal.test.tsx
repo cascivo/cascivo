@@ -99,3 +99,27 @@ describe('Modal', () => {
     expect(new Set(ids).size).toBe(4)
   })
 })
+
+describe('Modal ai presence', () => {
+  it('flags the dialog for AI content and AI generation', () => {
+    const { rerender } = render(
+      <Modal open title="Draft" ai>
+        Body
+      </Modal>,
+    )
+    const dialog = () => document.querySelector('dialog')
+    expect(dialog()).toHaveAttribute('data-ai', '')
+    rerender(
+      <Modal open title="Draft" ai="generating">
+        Body
+      </Modal>,
+    )
+    expect(dialog()).toHaveAttribute('data-ai', 'generating')
+    rerender(
+      <Modal open title="Draft">
+        Body
+      </Modal>,
+    )
+    expect(dialog()).not.toHaveAttribute('data-ai')
+  })
+})
