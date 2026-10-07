@@ -1,5 +1,11 @@
 # @cascivo/docspack
 
+## 0.3.1
+
+### Patch Changes
+
+- 80edcc3: The bundled `registry.json` names the current 1.7.0 release; it still said 1.6.0.
+
 ## 0.3.0
 
 ### Minor Changes

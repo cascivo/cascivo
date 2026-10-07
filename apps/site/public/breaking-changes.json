@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-06",
+  "generatedAt": "2026-10-07",
   "description": "Major and minor releases per published package, parsed from changesets CHANGELOGs. Compare against your installed versions to detect API drift; patch releases are excluded.",
   "packages": [
     {
       "name": "@cascivo/ai",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "releases": [
         {
           "version": "1.7.0",
@@ -32,8 +32,15 @@
     },
     {
       "name": "@cascivo/app",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "releases": [
+        {
+          "version": "1.8.0",
+          "level": "minor",
+          "notes": [
+            "Fixes and additions from an adoption report (`ses`, `guard`, `social`, `oauth`)."
+          ]
+        },
         {
           "version": "1.7.0",
           "level": "minor",
@@ -90,7 +97,7 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -178,7 +185,7 @@
     },
     {
       "name": "cascivo",
-      "version": "1.7.0",
+      "version": "1.7.1",
       "releases": [
         {
           "version": "1.7.0",
@@ -333,7 +340,7 @@
     },
     {
       "name": "@cascivo/core",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "releases": [
         {
           "version": "1.7.0",
@@ -463,7 +470,7 @@
     },
     {
       "name": "@cascivo/docs",
-      "version": "0.2.14",
+      "version": "0.2.15",
       "releases": [
         {
           "version": "0.2.0",
@@ -476,7 +483,7 @@
     },
     {
       "name": "@cascivo/docspack",
-      "version": "0.3.0",
+      "version": "0.3.1",
       "releases": [
         {
           "version": "0.3.0",
@@ -496,7 +503,7 @@
     },
     {
       "name": "@cascivo/editor",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "releases": [
         {
           "version": "1.3.0",
@@ -658,7 +665,7 @@
     },
     {
       "name": "@cascivo/flow",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -690,7 +697,7 @@
     },
     {
       "name": "@cascivo/i18n",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "releases": [
         {
           "version": "1.7.0",
@@ -867,7 +874,7 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "releases": [
         {
           "version": "1.7.0",
@@ -1064,7 +1071,7 @@
     },
     {
       "name": "@cascivo/render",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "releases": [
         {
           "version": "1.4.0",
@@ -1078,7 +1085,7 @@
     },
     {
       "name": "@cascivo/storage",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -1101,7 +1108,7 @@
     },
     {
       "name": "@cascivo/text",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "releases": [
         {
           "version": "1.4.0",

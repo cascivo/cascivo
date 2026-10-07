@@ -1,5 +1,12 @@
 # @cascivo/flow
 
+## 1.8.0
+
+### Patch Changes
+
+- @cascivo/core@1.8.0
+- @cascivo/i18n@1.8.0
+
 ## 1.7.0
 
 ### Patch Changes
