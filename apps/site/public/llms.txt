@@ -366,18 +366,13 @@ Point any MCP client at the cascivo server:
 { "mcpServers": { "cascivo": { "command": "npx", "args": ["-y", "@cascivo/mcp"] } } }
 ```
 
-Tools:
-- `list_components` — list all components with category/tags
-- `get_component` — full manifest for one component
-- `get_context` — intent + boundaries + tokens for one component
-- `get_tokens` — closed-set token catalog (filter by group/layer)
-- `search_icons` — resolve an icon by intent/foreign name (LayoutDashboard→Dashboard)
-- `select_component` — rank components by a natural-language need
-- `scaffold_view` — natural language -> JSON view config
-- `validate_view` — validate a view config against the schema
-- `render_view_as_markdown` — render a view config and read back what it says (needs `@cascivo/render`)
-- `add_to_project` — install components into the user project
-- `lint_email` — check rendered @cascivo/email HTML for unsupported features and dead links before sending
+Tools (every tool the server registers; `pnpm llms:check` fails when one is missing):
+- Start an app: `create_app` (whole app: shell, nav, theme, pages; cloudflare examples and sign-in), `list_templates` (whole-page templates), `get_template` (one template), `add_template` (install a template), `deploy_preview` (publish a cloudflare app with no account)
+- Pick components: `list_components` (every component, by category/type), `search_components` (fuzzy search), `select_component` (rank by a natural-language need), `get_context` (intent and when (not) to use), `get_component` (manifest; `compact: true` for props + one example), `list_registries` (third-party registries), `add_to_project` (install several components in one call)
+- Build a view: `get_view_grammar` (format rules + props/enums for the components you name), `scaffold_view` (starter ViewConfig from a description), `scaffold_flow` (starter <Flow> diagram), `scaffold_page` (deprecated; use scaffold_view)
+- Verify: `validate_view` (ViewConfig check; `target: "tsx"` before `cascivo generate`), `render_view_as_markdown` (read back what a view says (needs @cascivo/render)), `validate_component` (hooks, breakpoints, fallbacks, tokens in your own component), `lint_email` (rendered email: unsupported features, dead links)
+- Style: `get_tokens` (closed-set token catalog), `get_variant_matrix` (intent → exact token, resolved per theme), `search_icons` (icon by intent or foreign name (LayoutDashboard→Dashboard)), `create_theme` (theme CSS from three colors)
+- Read: `list_guides` (concept guides), `get_guide` (one guide)
 
 Two MCP servers, two jobs — run both if your client allows it:
 - `@cascivo/mcp` (above) serves the **registry**: pick a component, read its manifest, install it.

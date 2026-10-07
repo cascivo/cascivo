@@ -373,13 +373,22 @@
         {
           "name": "--out",
           "summary": "Output file",
-          "value": { "name": "file", "format": "file", "defaultDescription": "stdout" },
+          "value": {
+            "name": "file",
+            "format": "file",
+            "defaultDescription": "<config>.tsx beside the input"
+          },
           "effects": ["read", "write", "network", "exec"]
         },
         {
           "name": "--components-dir",
           "summary": "Components import base",
           "value": { "name": "dir", "format": "directory", "default": "./src/components/ui" }
+        },
+        {
+          "name": "--from",
+          "summary": "Import every component from one package instead of the components directory",
+          "value": { "name": "package" }
         }
       ],
       "effects": ["read", "network"],

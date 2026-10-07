@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { buildGrammar, formatGrammar, parseEnum } from './grammar.js'
+import { RENDERABLE, buildGrammar, formatGrammar, parseEnum } from './grammar.js'
 import { buildGenerationPrompt } from './prompt.js'
 import { loadRegistry } from './registry.js'
 
@@ -29,9 +29,13 @@ describe('buildGrammar() is bounded by the registry', () => {
     ),
   )
 
-  it('references only real components, one per distinct name', () => {
-    const distinctNames = new Set(registry.components.map((c) => c.meta.name)).size
-    expect(grammar.components.length).toBe(distinctNames)
+  it('references only real, renderable components, one per distinct name', () => {
+    const renderable = new Set(
+      registry.components.map((c) => c.meta.name).filter((name) => RENDERABLE.has(name)),
+    )
+    expect(grammar.components.length).toBe(renderable.size)
+    // Stat is a real component <CascivoView> does not render, so a view must not offer it.
+    expect(grammar.components.some((c) => c.name === 'Stat')).toBe(false)
     for (const c of grammar.components) {
       expect(realNames.has(c.name)).toBe(true)
     }

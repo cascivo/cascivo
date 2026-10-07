@@ -26,6 +26,7 @@ import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import type { ComponentMeta, ExampleMeta } from '@cascivo/core'
+import { firstStory, storyId } from '../lib/storybook-id.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = join(HERE, '..', '..')
@@ -33,6 +34,7 @@ const FLOWS_DIR = join(REPO_ROOT, 'packages', 'flow', 'src', 'flows')
 const OUT_DIR = join(REPO_ROOT, 'apps', 'storybook', 'stories', 'flow')
 const STORIES_DIR = join(REPO_ROOT, 'apps', 'storybook', 'stories')
 const GENERATED_DIR = join(STORIES_DIR, 'generated')
+const SITE_STORY_IDS = join(REPO_ROOT, 'apps', 'site', 'src', 'storybook-ids.json')
 
 /** Public flow component exports a generated story may reference. */
 const FLOW_COMPONENTS = [
@@ -477,5 +479,40 @@ async function generateComponentStories(): Promise<void> {
   }
 }
 
+/** Every `*.stories.tsx` under `dir`, recursively, sorted for a deterministic output. */
+function storyFiles(dir: string): string[] {
+  return readdirSync(dir, { withFileTypes: true })
+    .flatMap((d) =>
+      d.isDirectory()
+        ? storyFiles(join(dir, d.name))
+        : d.name.endsWith('.stories.tsx')
+          ? [join(dir, d.name)]
+          : [],
+    )
+    .sort()
+}
+
+/**
+ * The docs site links each component page to its first story. A guessed `--primary` suffix
+ * broke the link for every file without a `Primary` export (most of them), so the ids are
+ * read from the story files and written to `apps/site/src/storybook-ids.json`, keyed by the
+ * last segment of the story title (the component's export name).
+ */
+function writeStoryIndex(): void {
+  const ids: Record<string, string> = {}
+  for (const file of storyFiles(STORIES_DIR)) {
+    const story = firstStory(readFileSync(file, 'utf8'))
+    if (!story) continue
+    const key = story.title.split('/').pop()!
+    ids[key] ??= storyId(story.title, story.exportName)
+  }
+  const sorted = Object.fromEntries(Object.entries(ids).sort(([a], [b]) => a.localeCompare(b)))
+  writeFileSync(SITE_STORY_IDS, `${JSON.stringify(sorted, null, 2)}\n`, 'utf8')
+  console.log(
+    `stories:generate: wrote ${Object.keys(sorted).length} story ids to ${SITE_STORY_IDS}`,
+  )
+}
+
 await main()
 await generateComponentStories()
+writeStoryIndex()

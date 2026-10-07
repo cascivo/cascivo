@@ -184,7 +184,6 @@ owned code, using the blocks, templates and app layer it already ships.
 ```jsonc
 // cascivo.app.json — what an agent emits (~300 tokens), or what `cascivo create` writes from prompts
 {
-  "$schema": "https://cascivo.com/schema/app.json",
   "name": "Acme Console",
   "target": "spa",                 // spa | cloudflare | astro
   "theme": "dark",

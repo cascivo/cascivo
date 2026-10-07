@@ -207,8 +207,9 @@ Options:
 Generate TSX from a ViewConfig JSON file (see the MCP scaffold_view tool).
 
 Options:
-  --out <file>            Output file (default: stdout)
-  --components-dir <dir>  Components import base (default: ./src/components/ui)`,
+  --out <file>            Output file (default: <config>.tsx beside the input)
+  --components-dir <dir>  Components import base (default: ./src/components/ui)
+  --from <package>        Import every component from one package instead, e.g. @cascivo/react`,
   doctor: `Usage: cascivo doctor [options]
 
 Check components in this repo for cascivo rule violations (banned React hooks,

@@ -10,6 +10,69 @@
 
 import type { Registry } from './registry.js'
 
+// The component names <CascivoView /> (@cascivo/render) can render. A view the renderer cannot
+// draw is not valid, whatever the registry contains: an unknown name renders as nothing. Inlined
+// rather than imported so this Node binary never depends on React; `grammar.test.ts` keeps it
+// equal to `packages/render/src/component-names.ts`.
+export const RENDERABLE: ReadonlySet<string> = new Set([
+  'Accordion',
+  'Alert',
+  'AutoGrid',
+  'Avatar',
+  'Badge',
+  'Breadcrumb',
+  'Button',
+  'Card',
+  'Center',
+  'Checkbox',
+  'CheckboxCard',
+  'Columns',
+  'Combobox',
+  'CommandMenu',
+  'DataTable',
+  'DatePicker',
+  'Dropdown',
+  'EmptyState',
+  'FileUploader',
+  'Flex',
+  'Form',
+  'Grid',
+  'GridItem',
+  'Header',
+  'HeaderPanel',
+  'Input',
+  'InputGroup',
+  'Kbd',
+  'LargeTitleHeader',
+  'Link',
+  'Modal',
+  'NumberInput',
+  'OverflowMenu',
+  'Pagination',
+  'ProgressBar',
+  'ProgressIndicator',
+  'Radio',
+  'RadioCard',
+  'RadioCardGroup',
+  'Search',
+  'Select',
+  'Separator',
+  'ShellHeader',
+  'SideNav',
+  'Skeleton',
+  'Slider',
+  'Spacer',
+  'Spinner',
+  'Switcher',
+  'Tabs',
+  'Tag',
+  'Textarea',
+  'TimePicker',
+  'Toast',
+  'Toggle',
+  'Tooltip',
+])
+
 export interface GrammarProp {
   name: string
   required: boolean
@@ -52,8 +115,8 @@ export function parseEnum(type: string): string[] | undefined {
 }
 
 /**
- * Build the bound-vocabulary descriptor from the registry, optionally scoped to
- * a subset of component names (case-insensitive). Output is deterministic
+ * Build the bound-vocabulary descriptor from the registry's renderable components, optionally
+ * scoped to a subset of component names (case-insensitive). Output is deterministic
  * (components and props sorted by name) for reproducible prompts and tests.
  */
 // Preference when two registry entries share a meta.name (e.g. a `component`
@@ -79,7 +142,10 @@ export function buildGrammar(registry: Registry, subset?: string[]): ViewGrammar
     }
   }
 
+  // The grammar is the vocabulary of a ViewConfig, so it lists only what <CascivoView> renders:
+  // advertising a component the renderer draws as nothing invites a blank view.
   const components: GrammarComponent[] = [...canonical.values()]
+    .filter((c) => RENDERABLE.has(c.meta.name))
     .filter(
       (c) => !wanted || wanted.has(c.meta.name.toLowerCase()) || wanted.has(c.name.toLowerCase()),
     )

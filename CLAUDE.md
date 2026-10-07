@@ -382,7 +382,7 @@ Packages that export source directly (components, layouts, charts, themes, token
 - Peer dependencies must be explicit and version-ranged (`>=18.0.0`).
 - Runtime dependencies in `@cascivo/core`: none beyond `@preact/signals-react`.
 - Dev tooling: use vite+ (`vp`) as the single CLI — it bundles Oxlint, Oxfmt, Rolldown, Vitest (all Rust-backed).
-- vite+ is alpha (v0.2.x) — accepted risk. On `vp` breaking changes, check https://viteplus.dev before updating.
+- vite+ is on its stable 1.x line (1.0 shipped 2026-09-28, MIT). On `vp` breaking changes, check https://viteplus.dev before updating.
 
 ### Monorepo Structure
 
@@ -423,7 +423,7 @@ cascivo/
 
 ### Tech Stack
 
-Primary CLI: `vp` (vite+, installed globally via `~/.vite-plus/`). Single command for dev, build, test, lint, format, and task running. Alpha software — accepted risk for a greenfield project. Track breaking changes on updates.
+Primary CLI: `vp` (vite+, installed globally via `~/.vite-plus/`). Single command for dev, build, test, lint, format, and task running. Stable since 1.0; track breaking changes on updates.
 
 | Concern               | Tool                            | Notes                                                      |
 | --------------------- | ------------------------------- | ---------------------------------------------------------- |

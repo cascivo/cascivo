@@ -11,6 +11,71 @@ import { reactExportedModules, reactExportedNames } from '../registry/react-expo
 import { describeWithVisibility } from '../lib/name-visibility-note.ts'
 import { collectionVocabularySentence } from '../lib/collection-vocabulary.ts'
 
+/**
+ * The MCP tools, grouped by the job an agent is doing. `scripts/checks/llms-mcp-tools.test.ts`
+ * fails when a tool registered in packages/mcp/src/server.ts is missing here, so a new tool
+ * cannot ship undiscoverable. The one-shot paths come first: an agent that reads only the
+ * first line should still find `create_app`.
+ */
+const MCP_TOOL_GROUPS: [string, [string, string][]][] = [
+  [
+    'Start an app',
+    [
+      ['create_app', 'whole app: shell, nav, theme, pages; cloudflare examples and sign-in'],
+      ['list_templates', 'whole-page templates'],
+      ['get_template', 'one template'],
+      ['add_template', 'install a template'],
+      ['deploy_preview', 'publish a cloudflare app with no account'],
+    ],
+  ],
+  [
+    'Pick components',
+    [
+      ['list_components', 'every component, by category/type'],
+      ['search_components', 'fuzzy search'],
+      ['select_component', 'rank by a natural-language need'],
+      ['get_context', 'intent and when (not) to use'],
+      ['get_component', 'manifest; `compact: true` for props + one example'],
+      ['list_registries', 'third-party registries'],
+      ['add_to_project', 'install several components in one call'],
+    ],
+  ],
+  [
+    'Build a view',
+    [
+      ['get_view_grammar', 'format rules + props/enums for the components you name'],
+      ['scaffold_view', 'starter ViewConfig from a description'],
+      ['scaffold_flow', 'starter <Flow> diagram'],
+      ['scaffold_page', 'deprecated; use scaffold_view'],
+    ],
+  ],
+  [
+    'Verify',
+    [
+      ['validate_view', 'ViewConfig check; `target: "tsx"` before `cascivo generate`'],
+      ['render_view_as_markdown', 'read back what a view says (needs @cascivo/render)'],
+      ['validate_component', 'hooks, breakpoints, fallbacks, tokens in your own component'],
+      ['lint_email', 'rendered email: unsupported features, dead links'],
+    ],
+  ],
+  [
+    'Style',
+    [
+      ['get_tokens', 'closed-set token catalog'],
+      ['get_variant_matrix', 'intent → exact token, resolved per theme'],
+      ['search_icons', 'icon by intent or foreign name (LayoutDashboard→Dashboard)'],
+      ['create_theme', 'theme CSS from three colors'],
+    ],
+  ],
+  [
+    'Read',
+    [
+      ['list_guides', 'concept guides'],
+      ['get_guide', 'one guide'],
+    ],
+  ],
+]
+
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..', '..')
 const REGISTRY_PATH = join(ROOT, 'registry.json')
@@ -1237,24 +1302,12 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   )
   lines.push('```')
   lines.push('')
-  lines.push('Tools:')
-  lines.push('- `list_components` — list all components with category/tags')
-  lines.push('- `get_component` — full manifest for one component')
-  lines.push('- `get_context` — intent + boundaries + tokens for one component')
-  lines.push('- `get_tokens` — closed-set token catalog (filter by group/layer)')
   lines.push(
-    '- `search_icons` — resolve an icon by intent/foreign name (LayoutDashboard→Dashboard)',
+    'Tools (every tool the server registers; `pnpm llms:check` fails when one is missing):',
   )
-  lines.push('- `select_component` — rank components by a natural-language need')
-  lines.push('- `scaffold_view` — natural language -> JSON view config')
-  lines.push('- `validate_view` — validate a view config against the schema')
-  lines.push(
-    '- `render_view_as_markdown` — render a view config and read back what it says (needs `@cascivo/render`)',
-  )
-  lines.push('- `add_to_project` — install components into the user project')
-  lines.push(
-    '- `lint_email` — check rendered @cascivo/email HTML for unsupported features and dead links before sending',
-  )
+  for (const [group, tools] of MCP_TOOL_GROUPS) {
+    lines.push(`- ${group}: ${tools.map(([name, what]) => `\`${name}\` (${what})`).join(', ')}`)
+  }
   lines.push('')
   lines.push('Two MCP servers, two jobs — run both if your client allows it:')
   lines.push(
