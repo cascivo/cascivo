@@ -30,7 +30,7 @@ npx cascivo create my-app --framework cloudflare   # scaffolds all of this, wire
 # or: npm create cascivo@latest my-app -- --framework cloudflare
 ```
 
-> **Early.** It is versioned in lockstep with `@cascivo/core`, because a second copy of core means a second signal registry. This package was built from two real apps: [`apps/examples/chat`](../../apps/examples/chat) and the `cloudflare` scaffold. It covers what they needed. It has no nested layouts or data loaders yet. See `docs/internal/ROADMAP-V60.md` for the scope and the kill criteria.
+> **Early.** It is versioned in lockstep with `@cascivo/core`, because a second copy of core means a second signal registry. The lockstep set is `@cascivo/app`, `core`, `react`, `charts`, `editor`, `flow`, `i18n`, `storage`, `ai`, `text` and `render`: they are released together under one version, so upgrade them together to the same number (app 1.7 pairs with react 1.7). `@cascivo/email`, `themes`, `icons`, `tokens` and `data` keep their own version numbers and do not pin the set: take the latest of each. This package was built from two real apps: [`apps/examples/chat`](../../apps/examples/chat) and the `cloudflare` scaffold. It covers what they needed. It has no nested layouts or data loaders yet. See `docs/internal/ROADMAP-V60.md` for the scope and the kill criteria.
 
 ## Router — `@cascivo/app`
 
@@ -769,12 +769,32 @@ try {
 - **LinkedIn specifics are handled.** Text is escaped for LinkedIn's "little" format (a
   hashtag that starts a word still links), images are uploaded and attached by URN, a link
   card carries its own title and thumbnail (LinkedIn does not read the page), and every call
-  pins `LinkedIn-Version`.
+  pins `LinkedIn-Version` (`LINKEDIN_VERSION` is the default, exported for a settings
+  screen). `escapeLittleText` runs once, last, on the whole text, URLs included; comments are
+  not in that format and go as written.
 - **`PublishError.kind`** is `invalid`, `reconnect`, `rate_limited` or `failed`;
   `retryable` is true only for rate limits and 5xx. LinkedIn cannot deduplicate, so a request
   that timed out is not retried for you.
+- **Threads of posts.** `publish(target, post, { replyTo })` posts a reply to what an earlier
+  `publish` returned: `in_reply_to_id` on Mastodon, `reply_to_id` on Threads, a reply with
+  its root and parent on Bluesky (which is why `PublishedPost` carries `replyRef`: store the
+  whole object), and a comment on the share on LinkedIn (text only, 1,250 characters).
+  Buffer cannot reply and refuses it. `publishThread(publisher, target, posts, options)`
+  chains them; a part that fails throws with `published` naming the parts already out, so a
+  retry resumes from the last.
+- **Each publisher counts its own way.** `publisher.measure(text)` is the count `check` uses,
+  and `limits.unit` says it in words (`characters, counting any URL as 23 and a mention
+without its server`), so a composer and a linter agree with `check` by construction.
+- **Images by URL.** An image is `{ data: Blob, alt }` or `{ url, alt }`. Threads and Buffer
+  are given the URL as it is; the other publishers fetch it (pass only URLs your app made)
+  and check its type once fetched.
+- **No direct X publisher.** X is reachable through Buffer only.
 
 Like `oauth`, `social` has no database or Worker code: give it any `TokenSet` and subject.
+`renewalDue(provider, tokens)` from `@cascivo/app/oauth` is the renewal rule
+`connectionTokens` follows, without the database: `soon` (call `provider.refresh`), `cannot`
+(it stops working within a week and only reconnecting helps, as with LinkedIn) or `no`, for an
+app that stores tokens in its own tables.
 
 ### Bluesky: AT Protocol OAuth, all of it
 
@@ -850,8 +870,9 @@ await bufferPublisher({ service: channel.service, uploadImage }).publish(
   `extensions.code` as well as the status; a `MutationError` (a refused post) is `invalid`,
   `UNAUTHENTICATED` or a 401 is `reconnect`, and a rate limit carries `Retry-After` on
   `PublishError.retryAfter`.
-- **Images go by public URL**: Buffer fetches them. Pass `uploadImage` (put the image in R2
-  behind a short-lived signed URL, return the URL); without it, `check` refuses images.
+- **Images go by public URL**: Buffer fetches them. Give each image a `url`, or pass
+  `uploadImage` (put the image in R2 behind a short-lived signed URL, return the URL); an
+  image with bytes and no `uploadImage` is refused by `check`.
 - **`check` knows the network behind the channel** for the well-known limits (X 280, Threads
   and Mastodon 500, Bluesky 300 graphemes, Instagram 2,200, LinkedIn 3,000) and leaves the
   rest to Buffer. A link is appended to the text; the network builds its card.
@@ -916,7 +937,8 @@ await mastodonPublisher().publish(
 ```
 
 - **The server name is distrusted input.** `normalizeServer` takes a host, URL or handle and
-  refuses IP addresses, ports, single labels and local names. Calls to it time out after ten
+  refuses IP addresses, ports, single labels and local names; credentials in a URL are
+  stripped with the handle's user part. Calls to it time out after ten
   seconds, follow no redirects, and stop reading after 256 KB. Its metadata may not move the
   token endpoint to another host.
 - **Old and new servers.** Mastodon 4.3+ announces PKCE and the `profile` scope, and both are
@@ -968,10 +990,15 @@ signup: async ({ input }, { request, env }) => {
   empty team domain or audience refuses everything with a 500, so a deploy nobody configured
   fails closed.
 - **`verifyTurnstile`** checks a token with Cloudflare's siteverify API, optionally for one
-  action and hostname. A token is single-use.
+  action and hostname. A token is single-use. It throws `TurnstileError`, an `HttpError(403)`
+  with Cloudflare's `errorCodes` (`timeout-or-duplicate`…) and a `reason`. Where a failed
+  challenge answers differently per caller (the form again for a browser, a problem document
+  for an API), `turnstileResult` returns `{ ok }` or `{ ok: false, reason, errorCodes }`
+  instead of throwing.
 - **`rateLimit(limiter, key)`** counts one call for `key` against the binding; the limit and
   period live in `wrangler.jsonc`. It counts per Cloudflare location, so treat it as abuse
-  protection rather than exact accounting.
+  protection rather than exact accounting. To answer a limit your own way, call the binding:
+  `(await env.LIMITER.limit({ key })).success`.
 
 **`verifyWebhook(request, { scheme, secret })`** checks a webhook's signature over its raw body
 before anything in it is trusted, and returns `{ body, id }`:
@@ -980,9 +1007,11 @@ before anything in it is trusted, and returns `{ body, id }`:
 - `stripe`: `Stripe-Signature`, with a timestamp window (five minutes by default) against a
   captured delivery replayed later; `id` is the event's `evt_…`, read from the verified body.
 - `standard`: [Standard Webhooks](https://www.standardwebhooks.com/) (Svix, Clerk, Resend…),
-  with the `whsec_` secret, rotation and the timestamp window.
+  with the `whsec_` secret, rotation and the timestamp window. Svix's own `svix-id`,
+  `svix-timestamp` and `svix-signature` headers, which Resend and Clerk send, are read too.
 
-A bad or missing signature is a 401. Signatures are compared by WebCrypto's HMAC verify, in
+`verifyWebhookBody(body, headers, options)` is the same check for a body already read: pass
+the raw body exactly as it arrived. A bad or missing signature is a 401. Signatures are compared by WebCrypto's HMAC verify, in
 constant time. A retried delivery keeps its id: store deliveries by it to handle each once.
 
 `mountTurnstile(element, { siteKey, action, onToken })` from `@cascivo/app/turnstile` renders
@@ -1133,7 +1162,9 @@ adds `/billing`: a monthly plan, kept in step by the subscription events, gated 
 ## Email with Amazon SES — `@cascivo/app/ses`
 
 Sending through Amazon SES from a Worker, and hearing about bounces and complaints through SNS.
-AWS Signature Version 4 is computed with WebCrypto: no AWS SDK, no `nodejs_compat`.
+AWS Signature Version 4 is computed with WebCrypto: no AWS SDK, no `nodejs_compat`. The client
+is also an `EmailSender` for `@cascivo/email`: `sendEmail(ses, renderEmail(…), envelope)`
+renders, checks and sends through SES (see `send` below).
 
 ```ts
 import { createSes, handleSns, parseSesNotification } from '@cascivo/app/ses'
@@ -1157,7 +1188,8 @@ await ses.sendEmail({
 
 // SES publishes bounces and complaints to an SNS topic; subscribe this route to it over HTTPS.
 return handleSns(request, {
-  topicArn: env.SNS_TOPIC_ARN,
+  topicArn: env.SNS_TOPIC_ARN, // your topic: never the ARN read from the message
+  confirmSubscriptions: true, // or onSubscription, to let an operator confirm
   onNotification: async ({ message }) => {
     const event = parseSesNotification(message)
     if (
@@ -1174,16 +1206,30 @@ return handleSns(request, {
   SES v2 `SendEmail` with HTML and text parts, reply-to, a configuration set and extra headers.
   A header value holding a line break is refused. SES's refusals throw `SesError` with its
   `code` (`MessageRejected`, `TooManyRequestsException`…) and `retryable`, true for throttling
-  and server errors. Give the IAM user `ses:SendEmail` and nothing else.
+  and server errors. Give the IAM user `ses:SendEmail` and nothing else (and
+  `ses:GetEmailIdentity` for `identity`).
+- **`ses.identity(domain)`** — what a setup screen prints: `verified`, the DKIM `status`, and
+  the three Easy DKIM CNAME `records` (`name`, `value`) built on the region's own DKIM zone.
+  `null` when SES has no such identity.
 - **`handleSns(request, { topicArn, onNotification })`** — verifies each message's RSA
   signature (versions 1 and 2) against the certificate at `SigningCertURL`, fetched only from
-  an `sns.<region>.amazonaws.com` host and cached. A message from another topic, or with a
-  changed field, is refused with a 401. It confirms the subscription when SNS asks, by
-  fetching the `SubscribeURL` (same host rule), and passes notifications on. `verifySnsMessage`
-  is the check alone.
+  an `sns.<region>.amazonaws.com` host and cached. A message from a topic `topicArn` does not
+  accept, or with a changed field, is refused with a 401. `topicArn` is one ARN, a list, or a
+  test (`(arn) => boolean`): the signature proves AWS sent a message, not that it concerns
+  you, since any AWS account can subscribe your endpoint to its own topic. So pass ARNs you
+  know, never the one in the message. A subscription request is not confirmed unless you say
+  so: `confirmSubscriptions: true` confirms it, or `onSubscription(subscription)` receives its
+  `topicArn` and `token` for an operator to confirm with `confirmSnsSubscription`.
+  `verifySnsMessage` is the check alone.
+- **`confirmSnsSubscription({ topicArn, token })`** — `ConfirmSubscription` on the topic's own
+  regional SNS host, built from the verified ARN and token rather than by following the
+  message's `SubscribeURL`. Returns `{ subscriptionArn }`; throws when SNS refuses (a token
+  lasts three days).
 - **`parseSesNotification(message)`** — `bounce` (with `bounceType`: only `Permanent` means
-  never mail the address again), `complaint`, `delivery`, or `other`, from identity
-  notifications and configuration-set events alike.
+  never mail the address again; `subType` such as `OnAccountSuppressionList`; and the
+  receiving server's `diagnostic`), `complaint`, `delivery`, or `other`, from identity
+  notifications and configuration-set events alike. Every event carries `at`, when it
+  happened in epoch milliseconds (SNS can deliver out of order).
 - **`send(message)`** — the same client as an `EmailSender` for `@cascivo/email`, so a
   rendered email goes through that package's checks (subject, preheader, text part, size,
   line breaks in headers) on its way to SES, and switching from the Email Service binding is

@@ -6,7 +6,12 @@ import type { TokenSet } from './oauth'
  * `@cascivo/app/social` — posting on someone's behalf with the tokens of an account they
  * connected (`handleConnections` in `@cascivo/app/oauth-server`, or any `TokenSet` you hold).
  * One `Publisher` per network: `check` says what a network would refuse, before anything is
- * queued; `publish` posts. Like `@cascivo/app/oauth` it has no database or Worker code.
+ * queued; `measure` counts text as the network does; `publish` posts, as a reply with
+ * `replyTo`, and `publishThread` posts a chain. Like `@cascivo/app/oauth` it has no database
+ * or Worker code.
+ *
+ * Publishers exist for LinkedIn, Mastodon, Bluesky, Threads and Buffer. There is no direct X
+ * publisher: X is reachable through Buffer only.
  *
  * ```ts
  * const li = linkedinPublisher()
@@ -22,11 +27,26 @@ export interface SocialImage {
   alt: string
 }
 
+/**
+ * An image the app already keeps at a URL (an R2 or S3 object behind a signed URL). A network
+ * that fetches images itself (Threads, Buffer) is given the URL; for the others the publisher
+ * fetches it, so pass only URLs your app made. Its type is known, and checked, once fetched.
+ */
+export interface SocialImageUrl {
+  url: string
+  alt: string
+}
+
 export interface SocialPost {
   text: string
   /** A link card. Networks that build no preview themselves (LinkedIn) show these fields. */
-  link?: { url: string; title: string; description?: string; thumbnail?: SocialImage }
-  images?: readonly SocialImage[]
+  link?: {
+    url: string
+    title: string
+    description?: string
+    thumbnail?: SocialImage | SocialImageUrl
+  }
+  images?: readonly (SocialImage | SocialImageUrl)[]
 }
 
 export interface PostProblem {
@@ -53,6 +73,12 @@ export interface PublishOptions {
    * fixes Bluesky's record key, so a retry finds the post it already made.
    */
   createdAt?: Date
+  /**
+   * Publish as a reply to this post, as `publish` returned it: a reply on Bluesky, Mastodon and
+   * Threads, a comment on the share on LinkedIn (text only, 1,250 characters). Buffer cannot
+   * reply and refuses it.
+   */
+  replyTo?: PublishedPost
 }
 
 export interface PublishedPost {
@@ -60,6 +86,11 @@ export interface PublishedPost {
   id: string
   /** Where to see it; `null` when the network cannot say yet (Buffer sends it on later). */
   url: string | null
+  /**
+   * What a reply to it needs besides `id`, on a network that needs more (Bluesky: the record's
+   * `cid` and its thread's root). Plain strings: store it with the post to reply later.
+   */
+  replyRef?: Readonly<Record<string, string>>
 }
 
 export type PublishErrorKind =
@@ -81,6 +112,8 @@ export class PublishError extends Error {
     readonly status: number | null = null,
     /** Seconds the network asked to wait (`Retry-After`), on a rate limit. */
     readonly retryAfter: number | null = null,
+    /** From `publishThread`: the parts that went out before this one failed. */
+    readonly published: readonly PublishedPost[] = [],
   ) {
     super(message)
     this.name = 'PublishError'
@@ -97,11 +130,68 @@ export class PublishError extends Error {
 
 export interface Publisher {
   readonly network: string
-  readonly limits: { maxChars: number; maxImages: number }
+  readonly limits: {
+    maxChars: number
+    maxImages: number
+    /** How `maxChars` is counted, for a person. Every publisher here sets it. */
+    unit?: string
+  }
+  /** The length of `text` as this network counts it. Every publisher here has it. */
+  measure?(text: string): number
   /** What the network would refuse; empty when the post can go. Synchronous: call it as people type. */
   check(post: SocialPost): PostProblem[]
   /** Checks, then posts. Throws `PublishError`. */
   publish(target: PublishTarget, post: SocialPost, options?: PublishOptions): Promise<PublishedPost>
+}
+
+/**
+ * What every publisher in this module is: a `Publisher` that also says how it counts, so a
+ * composer or a linter agrees with `check` by construction.
+ */
+export interface MeasuredPublisher extends Publisher {
+  readonly limits: {
+    maxChars: number
+    maxImages: number
+    /** How `maxChars` is counted, for a person: `characters, counting any URL as 23`. */
+    unit: string
+  }
+  /** The length of `text` as this network counts it against `limits.maxChars`. */
+  measure(text: string): number
+}
+
+/**
+ * Posts `posts` as a chain: the first as a post (or a reply to `options.replyTo`), each next as
+ * a reply to the one before; on LinkedIn, the rest as comments on the first. Each part's
+ * `idempotencyKey` is the given key with `:<index>` appended. A part that fails throws its
+ * `PublishError` with `published` holding the parts already made: resume from there with the
+ * remaining posts and `replyTo` the last of them.
+ */
+export async function publishThread(
+  publisher: Publisher,
+  target: PublishTarget,
+  posts: readonly SocialPost[],
+  options: PublishOptions = {},
+): Promise<PublishedPost[]> {
+  const published: PublishedPost[] = []
+  for (const [index, post] of posts.entries()) {
+    const replyTo = published.at(-1) ?? options.replyTo
+    try {
+      published.push(
+        await publisher.publish(target, post, {
+          ...(options.idempotencyKey
+            ? { idempotencyKey: `${options.idempotencyKey}:${index}` }
+            : {}),
+          ...(options.createdAt ? { createdAt: options.createdAt } : {}),
+          ...(replyTo ? { replyTo } : {}),
+        }),
+      )
+    } catch (error) {
+      if (!(error instanceof PublishError)) throw error
+      const { network, kind, message, status, retryAfter } = error
+      throw new PublishError(network, kind, message, status, retryAfter, published)
+    }
+  }
+  return published
 }
 
 function asRecord(raw: unknown): Record<string, unknown> | null {
@@ -110,20 +200,62 @@ function asRecord(raw: unknown): Record<string, unknown> | null {
 
 const IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/gif'])
 
+const typeList = (types: ReadonlySet<string>) =>
+  [...types].map((t) => t.slice(6).toUpperCase()).join(', ')
+
 function checkImage(
-  image: SocialImage,
+  image: SocialImage | SocialImageUrl,
   problems: PostProblem[],
   types: ReadonlySet<string> = IMAGE_TYPES,
 ): void {
-  if (!types.has(image.data.type)) {
+  // An image by URL has no type until it is fetched; `imageBlob` checks it then.
+  if ('url' in image ? !/^https?:\/\//.test(image.url) : !types.has(image.data.type)) {
     problems.push({
       code: 'bad_image',
-      message: `Images must be ${[...types].map((t) => t.slice(6).toUpperCase()).join(', ')}`,
+      message:
+        'url' in image ? 'An image URL must be http(s)' : `Images must be ${typeList(types)}`,
     })
   } else if (!image.alt.trim()) {
     problems.push({ code: 'bad_image', message: 'Every image needs a description (alt text)' })
   }
 }
+
+/** The image's bytes: its own, or fetched from its URL and checked as `checkImage` would. */
+async function imageBlob(
+  network: string,
+  image: SocialImage | SocialImageUrl,
+  doFetch: typeof fetch,
+  types: ReadonlySet<string>,
+): Promise<Blob> {
+  if ('data' in image) return image.data
+  const response = await doFetch(image.url, { signal: AbortSignal.timeout(30_000) })
+  if (!response.ok) {
+    throw new PublishError(
+      network,
+      'failed',
+      `The image at ${image.url} answered ${response.status}`,
+    )
+  }
+  const blob = await response.blob()
+  if (!types.has(blob.type)) {
+    throw new PublishError(
+      network,
+      'invalid',
+      `The image at ${image.url} is ${blob.type || 'untyped'}; images must be ${typeList(types)}`,
+    )
+  }
+  return blob
+}
+
+/** The URL a network that fetches images itself gets: the image's own, or one `upload` made. */
+const imageUrl = (
+  image: SocialImage | SocialImageUrl,
+  upload: ((image: SocialImage) => Promise<string>) | undefined,
+): Promise<string> => ('url' in image ? Promise.resolve(image.url) : upload!(image))
+
+/** A Buffer or Threads post with bytes to upload and no `uploadImage` to do it. */
+const needsUpload = (images: readonly (SocialImage | SocialImageUrl)[]) =>
+  images.some((image) => 'data' in image)
 
 /* --------------------------------- LinkedIn --------------------------------- */
 
@@ -131,6 +263,11 @@ function checkImage(
  * Escapes text for LinkedIn's "little" format, where `| { } @ [ ] ( ) < > # \ * _ ~` are
  * markup: unescaped, they are swallowed or the post is refused. A `#` that starts a word is
  * kept, so hashtags still link.
+ *
+ * Run it once, last, on the whole commentary, URLs included: LinkedIn reads an escaped
+ * character as the character, so an escaped URL still links and builds its card, while a
+ * second pass would show the backslashes. `linkedinPublisher` escapes `post.text` itself, so
+ * give it plain text. Comments are not in this format and are sent as they are.
  */
 export function escapeLittleText(text: string): string {
   return text.replace(/[|{}@[\]()<>#\\*_~]/g, (char, index: number) => {
@@ -152,7 +289,14 @@ export interface LinkedInPublisherOptions {
   fetch?: typeof fetch
 }
 
-const LINKEDIN_VERSION = '202609'
+/**
+ * The `LinkedIn-Version` `linkedinPublisher` sends unless given another: what this release of
+ * the package was built and tested against.
+ */
+export const LINKEDIN_VERSION = '202609'
+
+/** LinkedIn's limit on a comment, which a reply becomes there. */
+const LINKEDIN_COMMENT_CHARS = 1250
 
 /**
  * Posts to a member's own LinkedIn feed (`w_member_social`, from the self-serve "Share on
@@ -160,10 +304,11 @@ const LINKEDIN_VERSION = '202609'
  * OpenID `sub`, which is their person id. LinkedIn has no idempotency key: a post whose
  * request timed out may have gone out, so do not retry one blindly.
  */
-export function linkedinPublisher(options: LinkedInPublisherOptions = {}): Publisher {
+export function linkedinPublisher(options: LinkedInPublisherOptions = {}): MeasuredPublisher {
   const doFetch = options.fetch ?? ((input, init) => fetch(input, init))
   const version = options.version ?? LINKEDIN_VERSION
-  const limits = { maxChars: 3000, maxImages: 20 }
+  const limits = { maxChars: 3000, maxImages: 20, unit: 'characters' }
+  const measure = (text: string) => [...text].length
 
   const call = async (
     path: string,
@@ -199,7 +344,11 @@ export function linkedinPublisher(options: LinkedInPublisherOptions = {}): Publi
     return new PublishError('linkedin', kind, message, status)
   }
 
-  async function upload(target: PublishTarget, image: SocialImage): Promise<string> {
+  async function upload(
+    target: PublishTarget,
+    image: SocialImage | SocialImageUrl,
+  ): Promise<string> {
+    const data = await imageBlob('linkedin', image, doFetch, IMAGE_TYPES)
     const { json } = await call('images?action=initializeUpload', target.tokens, {
       initializeUploadRequest: { owner: `urn:li:person:${target.subject}` },
     })
@@ -212,18 +361,61 @@ export function linkedinPublisher(options: LinkedInPublisherOptions = {}): Publi
     const put = await doFetch(uploadUrl, {
       method: 'PUT',
       headers: { authorization: `Bearer ${target.tokens.accessToken}` },
-      body: image.data,
+      body: data,
     })
     if (!put.ok) throw failure(put.status, null)
     return urn
   }
 
-  const publisher: Publisher = {
+  /** A reply on LinkedIn: a comment on the share the thread started with. */
+  async function comment(
+    target: PublishTarget,
+    post: SocialPost,
+    replyTo: PublishedPost,
+  ): Promise<PublishedPost> {
+    if (post.link || post.images?.length) {
+      throw new PublishError('linkedin', 'invalid', 'A LinkedIn comment carries text only')
+    }
+    const length = measure(post.text)
+    if (length > LINKEDIN_COMMENT_CHARS) {
+      throw new PublishError(
+        'linkedin',
+        'invalid',
+        `A LinkedIn comment takes ${LINKEDIN_COMMENT_CHARS} characters; this has ${length}`,
+      )
+    }
+    const share = replyTo.replyRef?.['post'] ?? replyTo.id
+    const { response, json } = await call(
+      `socialActions/${encodeURIComponent(share)}/comments`,
+      target.tokens,
+      {
+        actor: `urn:li:person:${target.subject}`,
+        object: share,
+        message: { text: post.text },
+      },
+    )
+    const body = asRecord(json)
+    const urn = [body?.['commentUrn'], body?.['$URN'], response.headers.get('x-restli-id')].find(
+      (value): value is string => typeof value === 'string' && value.length > 0,
+    )
+    if (!urn) throw new PublishError('linkedin', 'failed', 'LinkedIn returned no comment id')
+    const postUrl = `https://www.linkedin.com/feed/update/${share}/`
+    return {
+      id: urn,
+      url: urn.startsWith('urn:li:comment:')
+        ? `${postUrl}?commentUrn=${encodeURIComponent(urn)}`
+        : postUrl,
+      replyRef: { post: share },
+    }
+  }
+
+  const publisher: MeasuredPublisher = {
     network: 'linkedin',
     limits,
+    measure,
     check(post) {
       const problems: PostProblem[] = []
-      const length = [...post.text].length
+      const length = measure(post.text)
       if (length === 0 && !post.link && !post.images?.length) {
         problems.push({ code: 'empty', message: 'Write something to post' })
       }
@@ -267,11 +459,12 @@ export function linkedinPublisher(options: LinkedInPublisherOptions = {}): Publi
       for (const image of images) checkImage(image, problems)
       return problems
     },
-    async publish(target, post) {
+    async publish(target, post, publishOptions = {}) {
       const problems = publisher.check(post)
       if (problems.length > 0) {
         throw new PublishError('linkedin', 'invalid', problems.map((p) => p.message).join('; '))
       }
+      if (publishOptions.replyTo) return comment(target, post, publishOptions.replyTo)
       const images = post.images ?? []
       let content: Record<string, unknown> | undefined
       if (post.link) {
@@ -394,10 +587,14 @@ export async function mastodonServerLimits(
  * and waited for while the server processes them. With `idempotencyKey`, retrying a post
  * whose request timed out cannot publish it twice.
  */
-export function mastodonPublisher(options: MastodonPublisherOptions = {}): Publisher {
+export function mastodonPublisher(options: MastodonPublisherOptions = {}): MeasuredPublisher {
   const doFetch = options.fetch ?? ((input, init) => fetch(input, init))
-  const limits = { maxChars: options.maxChars ?? 500, maxImages: options.maxImages ?? 4 }
   const urlWeight = options.urlWeight ?? URL_WEIGHT
+  const limits = {
+    maxChars: options.maxChars ?? 500,
+    maxImages: options.maxImages ?? 4,
+    unit: `characters, counting any URL as ${urlWeight} and a mention without its server`,
+  }
 
   function failure(status: number, json: unknown): PublishError {
     const reason = asRecord(json)?.['error']
@@ -428,9 +625,13 @@ export function mastodonPublisher(options: MastodonPublisherOptions = {}): Publi
     return { status: response.status, json: asRecord(json) }
   }
 
-  async function upload(server: string, tokens: TokenSet, image: SocialImage): Promise<string> {
+  async function upload(
+    server: string,
+    tokens: TokenSet,
+    image: SocialImage | SocialImageUrl,
+  ): Promise<string> {
     const form = new FormData()
-    form.set('file', image.data)
+    form.set('file', await imageBlob('mastodon', image, doFetch, MASTODON_IMAGE_TYPES))
     form.set('description', image.alt)
     const uploaded = await call(`https://${server}/api/v2/media`, tokens, {
       method: 'POST',
@@ -455,9 +656,10 @@ export function mastodonPublisher(options: MastodonPublisherOptions = {}): Publi
     return id
   }
 
-  const publisher: Publisher = {
+  const publisher: MeasuredPublisher = {
     network: 'mastodon',
     limits,
+    measure: (text) => mastodonLength(text, urlWeight),
     check(post) {
       const problems: PostProblem[] = []
       const text = mastodonText(post)
@@ -506,6 +708,7 @@ export function mastodonPublisher(options: MastodonPublisherOptions = {}): Publi
         body: JSON.stringify({
           status: mastodonText(post),
           ...(mediaIds.length > 0 ? { media_ids: mediaIds } : {}),
+          ...(publishOptions.replyTo ? { in_reply_to_id: publishOptions.replyTo.id } : {}),
           visibility: options.visibility ?? 'public',
         }),
       })
@@ -533,8 +736,14 @@ export function blueskyLength(text: string): number {
 
 const utf8 = (text: string) => new TextEncoder().encode(text).byteLength
 
+export type FacetFeature =
+  | { $type: 'app.bsky.richtext.facet#link'; uri: string }
+  | { $type: 'app.bsky.richtext.facet#tag'; tag: string }
+  | { $type: 'app.bsky.richtext.facet#mention'; did: string }
+
 export interface Facet {
   index: { byteStart: number; byteEnd: number }
+  /** Each one a `FacetFeature`; typed as records until the next major narrows it. */
   features: Record<string, string>[]
 }
 
@@ -616,9 +825,13 @@ export interface BlueskyPublisherOptions {
  * with alt text. With `idempotencyKey` and `createdAt`, a retry cannot post twice: the record
  * key is fixed, and an existing record under it is returned instead.
  */
-export function blueskyPublisher(options: BlueskyPublisherOptions = {}): Publisher {
+export function blueskyPublisher(options: BlueskyPublisherOptions = {}): MeasuredPublisher {
   const doFetch = options.fetch ?? ((input, init) => fetch(input, init))
-  const limits = { maxChars: 300, maxImages: 4 }
+  const limits = {
+    maxChars: 300,
+    maxImages: 4,
+    unit: 'characters, counting an emoji with its modifiers as one',
+  }
 
   function failure(status: number, json: unknown): PublishError {
     const r = asRecord(json)
@@ -659,10 +872,17 @@ export function blueskyPublisher(options: BlueskyPublisherOptions = {}): Publish
     return asRecord(json)
   }
 
-  async function uploadBlob(target: PublishTarget, image: SocialImage): Promise<unknown> {
+  async function uploadBlob(
+    target: PublishTarget,
+    image: SocialImage | SocialImageUrl,
+  ): Promise<unknown> {
+    const data = await imageBlob('bluesky', image, doFetch, BLUESKY_IMAGE_TYPES)
+    if (data.size > BLUESKY_IMAGE_BYTES) {
+      throw new PublishError('bluesky', 'invalid', 'Bluesky takes images up to 1 MB')
+    }
     const result = await xrpc(target, 'com.atproto.repo.uploadBlob', {
-      body: image.data,
-      contentType: image.data.type,
+      body: data,
+      contentType: data.type,
     })
     if (!result?.['blob']) throw new PublishError('bluesky', 'failed', 'No blob came back')
     return result['blob']
@@ -682,9 +902,10 @@ export function blueskyPublisher(options: BlueskyPublisherOptions = {}): Publish
     }
   }
 
-  const publisher: Publisher = {
+  const publisher: MeasuredPublisher = {
     network: 'bluesky',
     limits,
+    measure: blueskyLength,
     check(post) {
       const problems: PostProblem[] = []
       const images = post.images ?? []
@@ -723,7 +944,7 @@ export function blueskyPublisher(options: BlueskyPublisherOptions = {}): Publish
       }
       for (const image of [...images, ...(post.link?.thumbnail ? [post.link.thumbnail] : [])]) {
         checkImage(image, problems, BLUESKY_IMAGE_TYPES)
-        if (image.data.size > BLUESKY_IMAGE_BYTES) {
+        if ('data' in image && image.data.size > BLUESKY_IMAGE_BYTES) {
           problems.push({ code: 'bad_image', message: 'Bluesky takes images up to 1 MB' })
         }
       }
@@ -737,7 +958,36 @@ export function blueskyPublisher(options: BlueskyPublisherOptions = {}): Publish
       if (!target.server)
         throw new PublishError('bluesky', 'invalid', 'A Bluesky account needs its PDS')
       const did = target.subject
-      const { idempotencyKey, createdAt } = publishOptions
+      const { idempotencyKey, createdAt, replyTo } = publishOptions
+      // A reply names its parent and its thread's root, each by uri and cid.
+      let reply: {
+        root: { uri: string; cid: string }
+        parent: { uri: string; cid: string }
+      } | null = null
+      if (replyTo) {
+        const cid = replyTo.replyRef?.['cid']
+        if (!cid) {
+          throw new PublishError(
+            'bluesky',
+            'invalid',
+            'A Bluesky reply needs the post as publish returned it (with its replyRef)',
+          )
+        }
+        const parent = { uri: replyTo.id, cid }
+        const rootUri = replyTo.replyRef?.['rootUri']
+        const rootCid = replyTo.replyRef?.['rootCid']
+        reply = { root: rootUri && rootCid ? { uri: rootUri, cid: rootCid } : parent, parent }
+      }
+      const replyRef = (uri: string, cid: unknown) =>
+        typeof cid === 'string'
+          ? {
+              replyRef: {
+                cid,
+                rootUri: reply?.root.uri ?? uri,
+                rootCid: reply?.root.cid ?? cid,
+              },
+            }
+          : {}
       const rkey =
         idempotencyKey && createdAt ? await blueskyRecordKey(createdAt, idempotencyKey) : null
       const urlOf = (key: string) => `https://bsky.app/profile/${did}/post/${key}`
@@ -749,7 +999,9 @@ export function blueskyPublisher(options: BlueskyPublisherOptions = {}): Publish
           { redirect: 'manual', signal: AbortSignal.timeout(10_000) },
         ).catch(() => null)
         const found = existing?.ok ? asRecord(await existing.json().catch(() => null)) : null
-        if (typeof found?.['uri'] === 'string') return { id: found['uri'], url: urlOf(rkey) }
+        if (typeof found?.['uri'] === 'string') {
+          return { id: found['uri'], url: urlOf(rkey), ...replyRef(found['uri'], found['cid']) }
+        }
       }
 
       const images = post.images ?? []
@@ -786,6 +1038,7 @@ export function blueskyPublisher(options: BlueskyPublisherOptions = {}): Publish
             createdAt: (createdAt ?? new Date()).toISOString(),
             ...(facets.length > 0 ? { facets } : {}),
             ...(embed ? { embed } : {}),
+            ...(reply ? { reply } : {}),
             ...(options.langs?.length ? { langs: [...options.langs] } : {}),
           },
         }),
@@ -793,7 +1046,7 @@ export function blueskyPublisher(options: BlueskyPublisherOptions = {}): Publish
       const uri = result?.['uri']
       if (typeof uri !== 'string')
         throw new PublishError('bluesky', 'failed', 'Bluesky returned no record')
-      return { id: uri, url: urlOf(uri.split('/').pop()!) }
+      return { id: uri, url: urlOf(uri.split('/').pop()!), ...replyRef(uri, result?.['cid']) }
     },
   }
   return publisher
@@ -877,7 +1130,8 @@ export interface BufferPublisherOptions {
   service?: string
   /**
    * Buffer takes images by public URL only: put the image somewhere it can fetch (an R2 object
-   * behind a short-lived signed URL) and return the URL. Without it, images are refused.
+   * behind a short-lived signed URL) and return the URL. Without it, images with bytes are
+   * refused; one given by `url` is passed as it is.
    */
   uploadImage?: (image: SocialImage) => Promise<string>
   fetch?: typeof fetch
@@ -895,15 +1149,24 @@ function bufferText(post: SocialPost): string {
  * idempotency key, so a request that timed out may have posted: do not retry one blindly.
  * A rate limit carries Buffer's `Retry-After` on the error.
  */
-export function bufferPublisher(options: BufferPublisherOptions = {}): Publisher {
+export function bufferPublisher(options: BufferPublisherOptions = {}): MeasuredPublisher {
   const doFetch = options.fetch ?? ((input, init) => fetch(input, init))
   const service = options.service?.toLowerCase()
   const limit = service ? BUFFER_LIMITS[service] : undefined
-  const limits = { maxChars: limit ?? 100_000, maxImages: 10 }
+  const measure = (text: string) => (service === 'bluesky' ? blueskyLength(text) : [...text].length)
+  const limits = {
+    maxChars: limit ?? 100_000,
+    maxImages: 10,
+    unit:
+      service === 'bluesky'
+        ? 'characters, counting an emoji with its modifiers as one'
+        : 'characters',
+  }
 
-  const publisher: Publisher = {
+  const publisher: MeasuredPublisher = {
     network: 'buffer',
     limits,
+    measure,
     check(post) {
       const problems: PostProblem[] = []
       const text = bufferText(post)
@@ -911,7 +1174,7 @@ export function bufferPublisher(options: BufferPublisherOptions = {}): Publisher
       if (!text.trim() && images.length === 0) {
         problems.push({ code: 'empty', message: 'Write something to post' })
       }
-      const length = service === 'bluesky' ? blueskyLength(text) : [...text].length
+      const length = measure(text)
       if (limit !== undefined && length > limit) {
         problems.push({
           code: 'too_long',
@@ -924,10 +1187,11 @@ export function bufferPublisher(options: BufferPublisherOptions = {}): Publisher
           message: `Buffer takes ${limits.maxImages} images`,
         })
       }
-      if (images.length > 0 && !options.uploadImage) {
+      if (needsUpload(images) && !options.uploadImage) {
         problems.push({
           code: 'bad_image',
-          message: 'Buffer takes images by public URL: pass uploadImage to bufferPublisher',
+          message:
+            'Buffer takes images by public URL: give each a url, or pass uploadImage to bufferPublisher',
         })
       }
       if (post.link && !/^https?:\/\//.test(post.link.url)) {
@@ -941,8 +1205,15 @@ export function bufferPublisher(options: BufferPublisherOptions = {}): Publisher
       if (problems.length > 0) {
         throw new PublishError('buffer', 'invalid', problems.map((p) => p.message).join('; '))
       }
+      if (publishOptions.replyTo) {
+        throw new PublishError(
+          'buffer',
+          'invalid',
+          'Buffer cannot post a reply: a thread through Buffer is its first post only',
+        )
+      }
       const urls: string[] = []
-      for (const image of post.images ?? []) urls.push(await options.uploadImage!(image))
+      for (const image of post.images ?? []) urls.push(await imageUrl(image, options.uploadImage))
       const later =
         publishOptions.createdAt && publishOptions.createdAt.getTime() > Date.now() + 60_000
           ? publishOptions.createdAt.toISOString()
@@ -1013,7 +1284,8 @@ function threadsText(post: SocialPost): string {
 export interface ThreadsPublisherOptions {
   /**
    * Threads fetches images by public URL: put each where Meta can reach it (an R2 object behind
-   * a short-lived signed URL) and return the URL. Without it, images are refused.
+   * a short-lived signed URL) and return the URL. Without it, images with bytes are refused;
+   * one given by `url` is passed as it is.
    */
   uploadImage?: (image: SocialImage) => Promise<string>
   /** Milliseconds between checks of a container Meta is still processing. Default 2000. */
@@ -1028,10 +1300,14 @@ export interface ThreadsPublisherOptions {
  * publish it. Threads has no idempotency key, so a request that timed out may have posted:
  * do not retry one blindly. 250 posts a day per account.
  */
-export function threadsPublisher(options: ThreadsPublisherOptions = {}): Publisher {
+export function threadsPublisher(options: ThreadsPublisherOptions = {}): MeasuredPublisher {
   const doFetch = options.fetch ?? ((input, init) => fetch(input, init))
   const pollMs = options.pollMs ?? 2000
-  const limits = { maxChars: 500, maxImages: 20 }
+  const limits = {
+    maxChars: 500,
+    maxImages: 20,
+    unit: 'characters, counting an emoji as its UTF-8 bytes',
+  }
 
   async function call(
     tokens: TokenSet,
@@ -1096,9 +1372,10 @@ export function threadsPublisher(options: ThreadsPublisherOptions = {}): Publish
     return id
   }
 
-  const publisher: Publisher = {
+  const publisher: MeasuredPublisher = {
     network: 'threads',
     limits,
+    measure: threadsLength,
     check(post) {
       const problems: PostProblem[] = []
       const text = threadsText(post)
@@ -1119,10 +1396,11 @@ export function threadsPublisher(options: ThreadsPublisherOptions = {}): Publish
           message: `Threads takes ${limits.maxImages} images in a post`,
         })
       }
-      if (images.length > 0 && !options.uploadImage) {
+      if (needsUpload(images) && !options.uploadImage) {
         problems.push({
           code: 'bad_image',
-          message: 'Threads takes images by public URL: pass uploadImage to threadsPublisher',
+          message:
+            'Threads takes images by public URL: give each a url, or pass uploadImage to threadsPublisher',
         })
       }
       if (post.link && !/^https?:\/\//.test(post.link.url)) {
@@ -1136,7 +1414,7 @@ export function threadsPublisher(options: ThreadsPublisherOptions = {}): Publish
       }
       return problems
     },
-    async publish(target, post) {
+    async publish(target, post, publishOptions = {}) {
       const problems = publisher.check(post)
       if (problems.length > 0) {
         throw new PublishError('threads', 'invalid', problems.map((p) => p.message).join('; '))
@@ -1146,13 +1424,15 @@ export function threadsPublisher(options: ThreadsPublisherOptions = {}): Publish
       const images = post.images ?? []
       const media: { url: string; alt: string }[] = []
       for (const image of images)
-        media.push({ url: await options.uploadImage!(image), alt: image.alt })
+        media.push({ url: await imageUrl(image, options.uploadImage), alt: image.alt })
+      const reply = publishOptions.replyTo ? { reply_to_id: publishOptions.replyTo.id } : {}
 
       let creation: string
       if (media.length === 0) {
         creation = await container(tokens, subject, {
           media_type: 'TEXT',
           text,
+          ...reply,
           ...(post.link && !text.includes(post.link.url) && { link_attachment: post.link.url }),
         })
       } else if (media.length === 1) {
@@ -1161,6 +1441,7 @@ export function threadsPublisher(options: ThreadsPublisherOptions = {}): Publish
           image_url: media[0]!.url,
           alt_text: media[0]!.alt,
           ...(text && { text }),
+          ...reply,
         })
         await ready(tokens, creation)
       } else {
@@ -1180,6 +1461,7 @@ export function threadsPublisher(options: ThreadsPublisherOptions = {}): Publish
           media_type: 'CAROUSEL',
           children: children.join(','),
           ...(text && { text }),
+          ...reply,
         })
         await ready(tokens, creation)
       }

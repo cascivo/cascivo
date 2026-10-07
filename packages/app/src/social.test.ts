@@ -1,7 +1,14 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest'
 import type { TokenSet } from './oauth'
-import { escapeLittleText, linkedinPublisher, PublishError } from './social'
+import {
+  escapeLittleText,
+  LINKEDIN_VERSION,
+  linkedinPublisher,
+  mastodonPublisher,
+  publishThread,
+  PublishError,
+} from './social'
 import type { SocialPost } from './social'
 
 const tokens: TokenSet = { accessToken: 'li-at', refreshToken: null, expiresAt: null, scopes: [] }
@@ -24,6 +31,12 @@ function fakeLinkedIn(postStatus = 201, postBody: unknown = {}) {
       })
     }
     if (url.startsWith('https://upload.example/')) return new Response(null, { status: 201 })
+    if (url.startsWith('https://api.linkedin.com/rest/socialActions/')) {
+      return Response.json(
+        { commentUrn: `urn:li:comment:(urn:li:activity:7,${calls.length})` },
+        { status: 201 },
+      )
+    }
     if (url === 'https://api.linkedin.com/rest/posts') {
       return Response.json(postBody, {
         status: postStatus,
@@ -146,10 +159,82 @@ describe('linkedinPublisher', () => {
     expect(error).toMatchObject({ kind, status, message: 'Nope', retryable })
   })
 
+  it('replies as a comment on the share, so a thread is a post and its first comments', async () => {
+    const { publisher, calls } = fakeLinkedIn()
+    const parts = await publishThread(publisher, target, [
+      { text: 'The post' },
+      { text: 'More (in a comment)' },
+      { text: 'And more' },
+    ])
+    const share = 'urn:li:share:42'
+    const commentsUrl = `https://api.linkedin.com/rest/socialActions/${encodeURIComponent(share)}/comments`
+    expect(calls.map((c) => c.url)).toEqual([
+      'https://api.linkedin.com/rest/posts',
+      commentsUrl,
+      commentsUrl,
+    ])
+    // Comments are not in the "little" format: the text goes as written.
+    expect(calls[1]!.body).toEqual({
+      actor: 'urn:li:person:abc123',
+      object: share,
+      message: { text: 'More (in a comment)' },
+    })
+    expect(parts[1]).toEqual({
+      id: 'urn:li:comment:(urn:li:activity:7,2)',
+      url: `https://www.linkedin.com/feed/update/${share}/?commentUrn=${encodeURIComponent('urn:li:comment:(urn:li:activity:7,2)')}`,
+      replyRef: { post: share },
+    })
+    await expect(
+      publisher.publish(target, { text: 'x', images: [png()] }, { replyTo: parts[0]! }),
+    ).rejects.toThrow(/text only/)
+    await expect(
+      publisher.publish(target, { text: 'x'.repeat(1251) }, { replyTo: parts[0]! }),
+    ).rejects.toThrow(/1250/)
+  })
+
+  it('measures as it checks, says in what unit, and exports its LinkedIn-Version', () => {
+    const publisher = linkedinPublisher()
+    expect(publisher.measure('😀 ok')).toBe(4)
+    expect(publisher.limits.unit).toBe('characters')
+    expect(LINKEDIN_VERSION).toMatch(/^\d{6}$/)
+  })
+
   it('refuses a post that fails its checks without calling LinkedIn', async () => {
     const { publisher, calls } = fakeLinkedIn()
     await expect(publisher.publish(target, { text: '' })).rejects.toMatchObject({ kind: 'invalid' })
     expect(calls).toEqual([])
+  })
+})
+
+describe('publishThread', () => {
+  it('names the parts already out when one fails, so a retry can resume', async () => {
+    const statuses: string[] = []
+    const doFetch = (async (_url: string, init: RequestInit) => {
+      const body = JSON.parse(String(init.body)) as { status: string; in_reply_to_id?: string }
+      statuses.push(`${body.status}<${body.in_reply_to_id ?? ''}`)
+      if (body.status === 'three') return Response.json({ error: 'Down' }, { status: 503 })
+      return Response.json({
+        id: `s-${statuses.length}`,
+        url: `https://m.example/${statuses.length}`,
+      })
+    }) as unknown as typeof fetch
+    const publisher = mastodonPublisher({ fetch: doFetch })
+    const error = await publishThread(
+      publisher,
+      { tokens, subject: 'a', server: 'm.example' },
+      [{ text: 'one' }, { text: 'two' }, { text: 'three' }],
+      { idempotencyKey: 'k' },
+    ).catch((e: unknown) => e)
+    expect(statuses).toEqual(['one<', 'two<s-1', 'three<s-2'])
+    expect(error).toBeInstanceOf(PublishError)
+    expect(error).toMatchObject({
+      kind: 'failed',
+      status: 503,
+      published: [
+        { id: 's-1', url: 'https://m.example/1' },
+        { id: 's-2', url: 'https://m.example/2' },
+      ],
+    })
   })
 })
 

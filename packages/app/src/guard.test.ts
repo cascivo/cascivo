@@ -6,8 +6,11 @@ import {
   guardResponse,
   rateLimit,
   requireAccess,
+  turnstileResult,
+  TurnstileError,
   verifyTurnstile,
   verifyWebhook,
+  verifyWebhookBody,
 } from './guard'
 import type { RateLimiter } from './guard'
 
@@ -197,6 +200,41 @@ describe('verifyTurnstile', () => {
       verifyTurnstile('', { secret: 's', fetch: siteverify(true) }),
     ).rejects.toMatchObject({ status: 403 })
   })
+
+  it('carries Cloudflare’s error codes on the error, and as a value from turnstileResult', async () => {
+    const failing = (async () =>
+      Response.json({
+        success: false,
+        'error-codes': ['timeout-or-duplicate'],
+      })) as unknown as typeof fetch
+    const error = await verifyTurnstile('tok', { secret: 's', fetch: failing }).catch(
+      (e: unknown) => e,
+    )
+    expect(error).toBeInstanceOf(TurnstileError)
+    expect(error).toBeInstanceOf(HttpError)
+    expect(error).toMatchObject({
+      status: 403,
+      reason: 'failed',
+      errorCodes: ['timeout-or-duplicate'],
+    })
+    expect(await turnstileResult('tok', { secret: 's', fetch: failing })).toEqual({
+      ok: false,
+      reason: 'failed',
+      errorCodes: ['timeout-or-duplicate'],
+      message: 'The challenge failed (timeout-or-duplicate)',
+    })
+    expect(await turnstileResult(null, { secret: 's', fetch: failing })).toMatchObject({
+      ok: false,
+      reason: 'missing',
+      errorCodes: [],
+    })
+    const passing = (async () =>
+      Response.json({ success: true, action: 'signup' })) as unknown as typeof fetch
+    expect(await turnstileResult('tok', { secret: 's', fetch: passing })).toEqual({ ok: true })
+    expect(
+      await turnstileResult('tok', { secret: 's', fetch: passing, action: 'login' }),
+    ).toMatchObject({ ok: false, reason: 'action' })
+  })
 })
 
 describe('rateLimit and helpers', () => {
@@ -320,6 +358,30 @@ describe('verifyWebhook', () => {
     await expect(
       verifyWebhook(post(headers), { scheme: 'standard', secret: 'whsec_***' }),
     ).rejects.toThrow(/whsec_/)
+  })
+
+  it('reads Svix’s own header names (Resend, Clerk), and verifies a body already read', async () => {
+    const raw = crypto.getRandomValues(new Uint8Array(24))
+    const secret = `whsec_${b64(raw)}`
+    const t = nowSeconds()
+    const headers = {
+      'svix-id': 'msg_1',
+      'svix-timestamp': String(t),
+      'svix-signature': `v1,${b64(await hmac(raw, `msg_1.${t}.${body}`))}`,
+    }
+    await expect(verifyWebhook(post(headers), { scheme: 'standard', secret })).resolves.toEqual({
+      body,
+      id: 'msg_1',
+    })
+    await expect(verifyWebhookBody(body, headers, { scheme: 'standard', secret })).resolves.toEqual(
+      { body, id: 'msg_1' },
+    )
+    await expect(
+      verifyWebhookBody(`${body} `, new Headers(headers), { scheme: 'standard', secret }),
+    ).rejects.toMatchObject({ status: 401 })
+    await expect(
+      verifyWebhookBody(body, { 'svix-timestamp': String(t) }, { scheme: 'standard', secret }),
+    ).rejects.toThrow(/no webhook-id/)
   })
 
   it('refuses to run without a secret', async () => {

@@ -1787,6 +1787,8 @@ describe('buildScaffold — cloudflare --example newsletter', () => {
   it('suppresses permanent bounces and complaints from signature-checked SNS messages', () => {
     const store = map.get('worker/newsletter.ts')!
     expect(store).toContain('return handleSns(request, {')
+    // Confirmation is opt-in in handleSns; the scaffold confirms its one configured topic.
+    expect(store).toContain('confirmSubscriptions: true,')
     expect(store).toContain(
       "event.kind === 'complaint' || (event.kind === 'bounce' && event.bounceType === 'Permanent')",
     )

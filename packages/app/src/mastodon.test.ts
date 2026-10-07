@@ -110,6 +110,7 @@ describe('normalizeServer', () => {
     ['bücher.example', 'xn--bcher-kva.example'],
     // Everything before the last @ is a handle's username: credentials cannot reach the URL.
     ['user:pass@mastodon.social', 'mastodon.social'],
+    ['https://user:pw@mastodon.social', 'mastodon.social'],
   ])('reads %j as %j', (input, host) => {
     expect(normalizeServer(input)).toBe(host)
   })

@@ -11,6 +11,7 @@ import { HttpError } from '@cascivo/data'
  * // SES reports bounces and complaints to an SNS topic; subscribe the Worker to it over HTTPS.
  * return handleSns(request, {
  *   topicArn: env.SNS_TOPIC_ARN,
+ *   confirmSubscriptions: true,
  *   onNotification: async ({ message }) => {
  *     const event = parseSesNotification(message)
  *     if (event.kind === 'complaint') …suppress event.recipients…
@@ -216,6 +217,35 @@ export interface Ses {
    * encoded (RFC 2047); a line break in any address, name or header is refused.
    */
   send(message: SesOutgoingEmail): Promise<{ messageId: string }>
+  /**
+   * A domain or address identity as SES holds it (SES v2 `GetEmailIdentity`): whether it may
+   * send, and the DKIM CNAME records to publish for it. `null` when SES has no such identity.
+   * Needs `ses:GetEmailIdentity`.
+   */
+  identity(identity: string): Promise<SesIdentity | null>
+}
+
+/** A DNS record to publish, as a setup screen shows it. */
+export interface SesDnsRecord {
+  type: 'CNAME'
+  /** The full record name, e.g. `abc123._domainkey.example.com`. */
+  name: string
+  /** What it points at, e.g. `abc123.dkim.amazonses.com`. */
+  value: string
+}
+
+export interface SesIdentity {
+  /** SES will send from it: its DNS checks passed. */
+  verified: boolean
+  dkim: {
+    /** SES's `DkimAttributes.Status`: `PENDING`, `SUCCESS`, `FAILED`, `TEMPORARY_FAILURE`… */
+    status: string | null
+    /**
+     * The three Easy DKIM CNAMEs, built on the region's own DKIM zone. Empty for an address
+     * identity, or one signing with its own key (BYODKIM), whose records SES does not hold.
+     */
+    records: SesDnsRecord[]
+  }
 }
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
@@ -285,23 +315,35 @@ function sesAttachment(attachment: SesAttachment) {
   }
 }
 
-/** Creates an SES client. The IAM user needs `ses:SendEmail` and nothing else. */
+/**
+ * Creates an SES client. The IAM user needs `ses:SendEmail`, and `ses:GetEmailIdentity` if you
+ * call `identity`.
+ */
 export function createSes(options: SesOptions): Ses {
   if (!options.region || !options.accessKeyId || !options.secretAccessKey) {
     throw new Error('createSes: region, accessKeyId and secretAccessKey are all required')
   }
   const fetcher = options.fetch ?? fetch
-  const url = `https://email.${options.region}.amazonaws.com/v2/email/outbound-emails`
+  const api = `https://email.${options.region}.amazonaws.com/v2/email`
 
-  /** One SES v2 `SendEmail` call with the request's fields. */
-  async function post(fields: Record<string, unknown>): Promise<{ messageId: string }> {
-    const body = JSON.stringify(fields)
+  /** One signed SES v2 call; the parsed answer, or `SesError`. */
+  async function call(method: 'GET' | 'POST', path: string, fields?: Record<string, unknown>) {
+    const url = `${api}/${path}`
+    const body = fields === undefined ? undefined : JSON.stringify(fields)
     const signed = await signAwsRequest(
-      { method: 'POST', url, headers: { 'content-type': 'application/json' }, body },
+      {
+        method,
+        url,
+        ...(body === undefined ? {} : { headers: { 'content-type': 'application/json' }, body }),
+      },
       options,
       { region: options.region, service: 'ses' },
     )
-    const response = await fetcher(url, { method: 'POST', headers: signed, body })
+    const response = await fetcher(url, {
+      method,
+      headers: signed,
+      ...(body === undefined ? {} : { body }),
+    })
     let payload: unknown = null
     try {
       payload = await response.json()
@@ -318,6 +360,12 @@ export function createSes(options: SesOptions): Ses {
         type,
       )
     }
+    return payload
+  }
+
+  /** One SES v2 `SendEmail` call with the request's fields. */
+  async function post(fields: Record<string, unknown>): Promise<{ messageId: string }> {
+    const payload = await call('POST', 'outbound-emails', fields)
     const messageId = isRecord(payload) ? payload['MessageId'] : null
     if (typeof messageId !== 'string') throw new Error('SES returned no MessageId')
     return { messageId }
@@ -369,6 +417,38 @@ export function createSes(options: SesOptions): Ses {
         },
       })
     },
+    async identity(identity) {
+      if (!identity || /[\s/]/.test(identity)) {
+        throw new Error(`identity: ${JSON.stringify(identity)} is not a domain or an address`)
+      }
+      let payload: unknown
+      try {
+        payload = await call('GET', `identities/${encodeURIComponent(identity)}`)
+      } catch (error) {
+        if (error instanceof SesError && error.code === 'NotFoundException') return null
+        throw error
+      }
+      const raw = isRecord(payload) ? payload : {}
+      const dkim = isRecord(raw['DkimAttributes']) ? raw['DkimAttributes'] : {}
+      const zone =
+        typeof dkim['SigningHostedZone'] === 'string'
+          ? dkim['SigningHostedZone']
+          : 'dkim.amazonses.com'
+      const domain = identity.includes('@') ? null : identity.toLowerCase()
+      const easy = dkim['SigningAttributesOrigin'] !== 'EXTERNAL'
+      const tokens = domain && easy ? addresses(dkim['Tokens']) : []
+      return {
+        verified: raw['VerifiedForSendingStatus'] === true,
+        dkim: {
+          status: typeof dkim['Status'] === 'string' ? dkim['Status'] : null,
+          records: tokens.map((token) => ({
+            type: 'CNAME' as const,
+            name: `${token}._domainkey.${domain}`,
+            value: `${token}.${zone}`,
+          })),
+        },
+      }
+    },
   }
 }
 
@@ -389,7 +469,10 @@ export interface SnsNotification extends SnsBase {
 export interface SnsSubscription extends SnsBase {
   type: 'SubscriptionConfirmation' | 'UnsubscribeConfirmation'
   token: string
-  /** Fetching it confirms the subscription. */
+  /**
+   * Fetching it confirms the subscription. `confirmSnsSubscription` confirms from `topicArn`
+   * and `token` instead, without following a URL the message supplied.
+   */
   subscribeUrl: string
 }
 
@@ -501,14 +584,35 @@ function stringToSign(message: SnsMessage): string {
 const TYPES = ['Notification', 'SubscriptionConfirmation', 'UnsubscribeConfirmation'] as const
 
 /**
+ * The topics an endpoint accepts: one ARN, a list of them, or a test. Never the ARN read from
+ * the message itself: that compares the message with itself and accepts every topic.
+ */
+export type SnsTopics = string | readonly string[] | ((topicArn: string) => boolean)
+
+/**
  * Checks an SNS message's signature and topic, and returns it. Throws `HttpError(401)` for a
- * message from another topic, a certificate or link off SNS's hosts, or a bad signature.
+ * message from a topic `topicArn` does not accept, a certificate or link off SNS's hosts, or a
+ * bad signature.
+ *
+ * The signature proves AWS sent the message, not that it concerns you: any AWS account can
+ * create a topic, subscribe your endpoint to it and have SNS sign what it publishes. The topic
+ * check is what ties a message to your own topics, so give it ARNs you know (configured, or
+ * stored when an operator confirmed the subscription).
  */
 export async function verifySnsMessage(
   body: string,
-  options: { topicArn: string; fetch?: typeof fetch },
+  options: { topicArn: SnsTopics; fetch?: typeof fetch },
 ): Promise<SnsMessage> {
-  if (!options.topicArn) throw new Error('verifySnsMessage: no topicArn configured')
+  const { topicArn } = options
+  const accepts =
+    typeof topicArn === 'function'
+      ? topicArn
+      : typeof topicArn === 'string'
+        ? (arn: string) => arn === topicArn
+        : (arn: string) => topicArn.includes(arn)
+  if (!topicArn || (Array.isArray(topicArn) && topicArn.length === 0)) {
+    throw new Error('verifySnsMessage: no topicArn configured')
+  }
   let raw: unknown
   try {
     raw = JSON.parse(body)
@@ -529,7 +633,7 @@ export async function verifySnsMessage(
     message: text('Message'),
     timestamp: text('Timestamp'),
   }
-  if (base.topicArn !== options.topicArn) throw refusedSns('another topic')
+  if (!accepts(base.topicArn)) throw refusedSns('another topic')
   const message: SnsMessage =
     type === 'Notification'
       ? {
@@ -570,17 +674,31 @@ export async function verifySnsMessage(
 }
 
 export interface SnsHandlerOptions {
-  /** The topic this endpoint is subscribed to; messages from any other are refused. */
-  topicArn: string
+  /** The topics this endpoint accepts (`SnsTopics`); messages from any other are refused. */
+  topicArn: SnsTopics
   /** Runs for each verified notification. A throw answers 500, and SNS retries. */
   onNotification(notification: SnsNotification): Promise<void>
+  /**
+   * Confirm a subscription request from an accepted topic as it arrives. Off by default:
+   * confirming decides who may write to this endpoint, which is an operator's call. On, the
+   * confirmation is rebuilt from the verified `TopicArn` and `Token` (`confirmSnsSubscription`)
+   * rather than by fetching the message's `SubscribeURL`.
+   */
+  confirmSubscriptions?: boolean
+  /**
+   * Runs for each verified subscription request when `confirmSubscriptions` is off: store its
+   * `topicArn` and `token`, show them to an operator, and confirm with
+   * `confirmSnsSubscription`. A token lasts three days.
+   */
+  onSubscription?(subscription: SnsSubscription): Promise<void>
   /** Stand-in for the global `fetch` (certificates, confirmations), for tests. */
   fetch?: typeof fetch
 }
 
 /**
- * Answers SNS's HTTPS deliveries: verifies each message, confirms the subscription when SNS
- * asks (by fetching its SubscribeURL), and passes notifications to `onNotification`.
+ * Answers SNS's HTTPS deliveries: verifies each message and passes notifications to
+ * `onNotification`. A subscription request goes to `onSubscription`, or is confirmed at once
+ * with `confirmSubscriptions: true`.
  */
 export async function handleSns(request: Request, options: SnsHandlerOptions): Promise<Response> {
   let message: SnsMessage
@@ -593,8 +711,27 @@ export async function handleSns(request: Request, options: SnsHandlerOptions): P
     throw error
   }
   if (message.type === 'SubscriptionConfirmation') {
-    const confirmed = await (options.fetch ?? fetch)(message.subscribeUrl)
-    if (!confirmed.ok) {
+    if (!options.confirmSubscriptions) {
+      if (options.onSubscription) await options.onSubscription(message)
+      else {
+        console.warn(
+          `[cascivo/ses] SNS asked to subscribe this endpoint to ${message.topicArn}; ` +
+            'pass onSubscription or confirmSubscriptions: true to handleSns to answer it',
+        )
+      }
+      return Response.json({ received: true })
+    }
+    try {
+      await confirmSnsSubscription({
+        topicArn: message.topicArn,
+        token: message.token,
+        ...(options.fetch ? { fetch: options.fetch } : {}),
+      })
+    } catch (error) {
+      console.warn(
+        `[cascivo/ses] could not confirm the subscription to ${message.topicArn}:`,
+        error,
+      )
       return Response.json({ error: 'Could not confirm the subscription' }, { status: 502 })
     }
     return Response.json({ confirmed: true })
@@ -603,15 +740,62 @@ export async function handleSns(request: Request, options: SnsHandlerOptions): P
   return Response.json({ received: true })
 }
 
+const TOPIC_ARN = /^arn:(aws|aws-cn|aws-us-gov):sns:([a-z0-9-]+):\d{12}:[\w-]{1,256}(\.fifo)?$/
+
+/**
+ * Confirms an SNS subscription (`ConfirmSubscription`) from the topic and token of a verified
+ * `SubscriptionConfirmation`, on the topic's own regional SNS host: the request is built here,
+ * not taken from the message's `SubscribeURL`. Throws when SNS refuses (a token expires after
+ * three days), and returns the subscription's ARN.
+ */
+export async function confirmSnsSubscription(options: {
+  topicArn: string
+  token: string
+  fetch?: typeof fetch
+}): Promise<{ subscriptionArn: string }> {
+  const arn = TOPIC_ARN.exec(options.topicArn)
+  if (!arn)
+    throw new Error(
+      `confirmSnsSubscription: ${JSON.stringify(options.topicArn)} is not an SNS topic ARN`,
+    )
+  if (!options.token) throw new Error('confirmSnsSubscription: no token')
+  const url = new URL(`https://sns.${arn[2]}.amazonaws.com${arn[1] === 'aws-cn' ? '.cn' : ''}/`)
+  url.searchParams.set('Action', 'ConfirmSubscription')
+  url.searchParams.set('TopicArn', options.topicArn)
+  url.searchParams.set('Token', options.token)
+  const response = await (options.fetch ?? fetch)(url.href, { redirect: 'manual' })
+  const xml = await response.text().catch(() => '')
+  const tag = (name: string) => new RegExp(`<${name}>([^<]*)</${name}>`).exec(xml)?.[1] ?? null
+  if (!response.ok) {
+    throw new Error(
+      `SNS refused the confirmation (${response.status}): ${tag('Message') ?? 'no reason given'}`,
+    )
+  }
+  const subscriptionArn = tag('SubscriptionArn')
+  if (!subscriptionArn || !subscriptionArn.startsWith('arn:')) {
+    throw new Error(
+      `SNS did not confirm the subscription: ${subscriptionArn ?? 'no SubscriptionArn'}`,
+    )
+  }
+  return { subscriptionArn }
+}
+
 /* ---------------------------- SES notifications ---------------------------- */
 
 export type SesBounceType = 'Permanent' | 'Transient' | 'Undetermined'
 
-export type SesEvent =
+export type SesEvent = (
   | {
       kind: 'bounce'
       /** `Permanent`: never mail these addresses again. `Transient`: a full inbox, try later. */
       bounceType: SesBounceType
+      /**
+       * SES's `bounceSubType`: `General`, `NoEmail`, `Suppressed`, `OnAccountSuppressionList`,
+       * `MailboxFull`… `OnAccountSuppressionList` means SES refused before sending.
+       */
+      subType: string | null
+      /** The receiving server's SMTP refusal (`diagnosticCode`) for the first recipient. */
+      diagnostic: string | null
       recipients: string[]
       messageId: string | null
     }
@@ -619,6 +803,14 @@ export type SesEvent =
   | { kind: 'complaint'; recipients: string[]; messageId: string | null }
   | { kind: 'delivery'; recipients: string[]; messageId: string | null }
   | { kind: 'other'; type: string }
+) & {
+  /**
+   * When it happened, in epoch milliseconds: the event's own `timestamp` (the bounce, the
+   * complaint), else the message's. Not when the notification arrived: SNS can deliver out of
+   * order. `null` when SES sent neither.
+   */
+  at: number | null
+}
 
 const BOUNCE_TYPES: readonly SesBounceType[] = ['Permanent', 'Transient', 'Undetermined']
 
@@ -650,14 +842,28 @@ export function parseSesNotification(message: string): SesEvent {
     const value = raw[name]
     return isRecord(value) ? value : {}
   }
+  const time = (value: unknown) => {
+    const parsed = typeof value === 'string' ? Date.parse(value) : NaN
+    return Number.isNaN(parsed) ? null : parsed
+  }
+  // Each event's details sit under its type, lowercased first: `bounce`, `deliveryDelay`…
+  const at =
+    time(section(type.charAt(0).toLowerCase() + type.slice(1))['timestamp']) ??
+    time(isRecord(mail) ? mail['timestamp'] : null)
+  const text = (value: unknown) => (typeof value === 'string' ? value : null)
   if (type === 'Bounce') {
     const bounce = section('bounce')
     const bounceType = BOUNCE_TYPES.find((t) => t === bounce['bounceType']) ?? 'Undetermined'
+    const bounced = bounce['bouncedRecipients']
+    const first = Array.isArray(bounced) && isRecord(bounced[0]) ? bounced[0] : {}
     return {
       kind: 'bounce',
       bounceType,
-      recipients: addresses(bounce['bouncedRecipients'], 'emailAddress'),
+      subType: text(bounce['bounceSubType']),
+      diagnostic: text(first['diagnosticCode']),
+      recipients: addresses(bounced, 'emailAddress'),
       messageId,
+      at,
     }
   }
   if (type === 'Complaint') {
@@ -665,10 +871,16 @@ export function parseSesNotification(message: string): SesEvent {
       kind: 'complaint',
       recipients: addresses(section('complaint')['complainedRecipients'], 'emailAddress'),
       messageId,
+      at,
     }
   }
   if (type === 'Delivery') {
-    return { kind: 'delivery', recipients: addresses(section('delivery')['recipients']), messageId }
+    return {
+      kind: 'delivery',
+      recipients: addresses(section('delivery')['recipients']),
+      messageId,
+      at,
+    }
   }
-  return { kind: 'other', type }
+  return { kind: 'other', type, at }
 }

@@ -103,6 +103,29 @@ export interface OAuthProvider {
   forServer?(server: string, redirectUri: string): Promise<OAuthProvider>
 }
 
+/**
+ * What a stored `TokenSet` needs now, by its provider's rules, with no database: `no`; `soon`,
+ * renew it with `provider.refresh` (it is about to expire, or inside a self-renewing provider's
+ * `refreshAhead` window); or `cannot`, it will stop working within `warnSeconds` (default
+ * seven days) and only connecting the account again helps (LinkedIn's 60-day tokens, a
+ * self-renewing token that has already expired). `connectionTokens` and `refreshConnections`
+ * apply the same rules to the connections they store; this is for tokens you store yourself.
+ */
+export function renewalDue(
+  provider: Pick<OAuthProvider, 'refresh' | 'refreshAhead'>,
+  tokens: TokenSet,
+  options: { now?: number; warnSeconds?: number } = {},
+): 'no' | 'soon' | 'cannot' {
+  if (tokens.expiresAt === null) return 'no'
+  const left = tokens.expiresAt - (options.now ?? now())
+  // A token that renews itself (Threads) can be renewed only while it still works.
+  const renewable =
+    provider.refresh !== undefined &&
+    (tokens.refreshToken !== null || (provider.refreshAhead !== undefined && left > 0))
+  if (renewable) return left <= (provider.refreshAhead ?? 60) ? 'soon' : 'no'
+  return left <= (options.warnSeconds ?? 7 * 86_400) ? 'cannot' : 'no'
+}
+
 export interface CompletedAuthorization {
   tokens: TokenSet
   identity: Identity
@@ -638,8 +661,9 @@ export function linkedin(options: LinkedInOptions): OAuthProvider {
  * The host a person typed for their server, or `OAuthError('bad_server')`. Takes
  * `mastodon.social`, `https://mastodon.social/about` or a handle (`@ada@mastodon.social`);
  * gives the lowercased, punycoded hostname. Refuses what is not a public DNS name: IP
- * addresses, ports, credentials, single labels and local names. The Worker fetches this host,
- * so it is input to be distrusted.
+ * addresses, ports, single labels and local names. Credentials (`user:pw@host`) are stripped
+ * like a handle's user part, not refused. The Worker fetches this host, so it is input to be
+ * distrusted.
  */
 export function normalizeServer(input: string): string {
   let value = input.trim().toLowerCase()

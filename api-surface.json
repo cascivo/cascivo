@@ -7087,18 +7087,23 @@
       },
       "./guard": {
         "values": [
+          "TurnstileError",
           "clientIp",
           "guardResponse",
           "rateLimit",
           "requireAccess",
+          "turnstileResult",
           "verifyTurnstile",
-          "verifyWebhook"
+          "verifyWebhook",
+          "verifyWebhookBody"
         ],
         "types": [
           "AccessIdentity",
           "AccessOptions",
           "RateLimiter",
+          "TurnstileFailure",
           "TurnstileOptions",
+          "TurnstileResult",
           "VerifiedWebhook",
           "WebhookOptions",
           "WebhookScheme"
@@ -7122,6 +7127,13 @@
             "limit": "(options: { key: string }): Promise<{ success: boolean }>"
           },
           "requireAccess": "declare function requireAccess(request: Request, options: AccessOptions): Promise<AccessIdentity>",
+          "TurnstileError": {
+            "readonly errorCodes": "readonly string[]",
+            "readonly reason": "TurnstileFailure",
+            "constructor": "(reason: TurnstileFailure, message: string, errorCodes: readonly string[])",
+            "(kind)": "class"
+          },
+          "TurnstileFailure": "type = 'missing' | 'failed' | 'action' | 'hostname'",
           "TurnstileOptions": {
             "secret": "string",
             "remoteIp?": "string",
@@ -7129,12 +7141,15 @@
             "hostname?": "string",
             "fetch?": "typeof fetch"
           },
+          "turnstileResult": "declare function turnstileResult(token: string | null | undefined, options: TurnstileOptions): Promise<TurnstileResult>",
+          "TurnstileResult": "type = { ok: true } | { ok: false; reason: TurnstileFailure; errorCodes: readonly string[]; message: string }",
           "VerifiedWebhook": {
             "body": "string",
             "id": "string | null"
           },
           "verifyTurnstile": "declare function verifyTurnstile(token: string | null | undefined, options: TurnstileOptions): Promise<void>",
           "verifyWebhook": "declare function verifyWebhook(request: Request, options: WebhookOptions): Promise<VerifiedWebhook>",
+          "verifyWebhookBody": "declare function verifyWebhookBody(body: string, headers: HeadersInit, options: WebhookOptions): Promise<VerifiedWebhook>",
           "WebhookOptions": {
             "scheme": "WebhookScheme",
             "secret": "string",
@@ -7259,6 +7274,7 @@
           "parseBlueskyKey",
           "parsePendingAuthorization",
           "parseTokenSet",
+          "renewalDue",
           "seal",
           "threads",
           "unseal"
@@ -7392,6 +7408,7 @@
             "server": "string | null",
             "dpopKey": "JsonWebKey | null"
           },
+          "renewalDue": "declare function renewalDue(provider: Pick<OAuthProvider, 'refresh' | 'refreshAhead'>, tokens: TokenSet, options?: { now?: number; warnSeconds?: number }): 'no' | 'soon' | 'cannot'",
           "seal": "declare function seal(secret: string, context: string, value: unknown): Promise<string>",
           "threads": "declare function threads(options: ThreadsOptions): OAuthProvider",
           "ThreadsOptions": {
@@ -7470,6 +7487,7 @@
       },
       "./social": {
         "values": [
+          "LINKEDIN_VERSION",
           "PublishError",
           "blueskyFacets",
           "blueskyLength",
@@ -7483,6 +7501,7 @@
           "mastodonLength",
           "mastodonPublisher",
           "mastodonServerLimits",
+          "publishThread",
           "threadsLength",
           "threadsPublisher"
         ],
@@ -7491,8 +7510,10 @@
           "BufferChannel",
           "BufferPublisherOptions",
           "Facet",
+          "FacetFeature",
           "LinkedInPublisherOptions",
           "MastodonPublisherOptions",
+          "MeasuredPublisher",
           "PostProblem",
           "PublishErrorKind",
           "PublishOptions",
@@ -7500,13 +7521,14 @@
           "PublishedPost",
           "Publisher",
           "SocialImage",
+          "SocialImageUrl",
           "SocialPost",
           "ThreadsPublisherOptions"
         ],
         "declarations": {
           "blueskyFacets": "declare function blueskyFacets(text: string, resolve: (handle: string) => Promise<string | null>): Promise<Facet[]>",
           "blueskyLength": "declare function blueskyLength(text: string): number",
-          "blueskyPublisher": "declare function blueskyPublisher(options?: BlueskyPublisherOptions): Publisher",
+          "blueskyPublisher": "declare function blueskyPublisher(options?: BlueskyPublisherOptions): MeasuredPublisher",
           "BlueskyPublisherOptions": {
             "langs?": "readonly string[]",
             "fetch?": "typeof fetch"
@@ -7520,7 +7542,7 @@
             "isQueuePaused": "boolean"
           },
           "bufferChannels": "declare function bufferChannels(tokens: TokenSet, organizationId: string, options?: { fetch?: typeof fetch }): Promise<BufferChannel[]>",
-          "bufferPublisher": "declare function bufferPublisher(options?: BufferPublisherOptions): Publisher",
+          "bufferPublisher": "declare function bufferPublisher(options?: BufferPublisherOptions): MeasuredPublisher",
           "BufferPublisherOptions": {
             "service?": "string",
             "uploadImage?": "(image: SocialImage) => Promise<string>",
@@ -7532,13 +7554,15 @@
             "index": "{ byteStart: number; byteEnd: number }",
             "features": "Record<string, string>[]"
           },
-          "linkedinPublisher": "declare function linkedinPublisher(options?: LinkedInPublisherOptions): Publisher",
+          "FacetFeature": "type = { $type: 'app.bsky.richtext.facet#link'; uri: string } | { $type: 'app.bsky.richtext.facet#tag'; tag: string } | { $type: 'app.bsky.richtext.facet#mention'; did: string }",
+          "LINKEDIN_VERSION": "declare const LINKEDIN_VERSION = \"202609\"",
+          "linkedinPublisher": "declare function linkedinPublisher(options?: LinkedInPublisherOptions): MeasuredPublisher",
           "LinkedInPublisherOptions": {
             "version?": "string",
             "fetch?": "typeof fetch"
           },
           "mastodonLength": "declare function mastodonLength(text: string, urlWeight?: number): number",
-          "mastodonPublisher": "declare function mastodonPublisher(options?: MastodonPublisherOptions): Publisher",
+          "mastodonPublisher": "declare function mastodonPublisher(options?: MastodonPublisherOptions): MeasuredPublisher",
           "MastodonPublisherOptions": {
             "maxChars?": "number",
             "maxImages?": "number",
@@ -7547,17 +7571,24 @@
             "fetch?": "typeof fetch"
           },
           "mastodonServerLimits": "declare function mastodonServerLimits(server: string, options?: { fetch?: typeof fetch }): Promise<Required<Pick<MastodonPublisherOptions, 'maxChars' | 'maxImages' | 'urlWeight'>>>",
+          "MeasuredPublisher": {
+            "(extends)": "extends Publisher",
+            "readonly limits": "{ maxChars: number; maxImages: number; unit: string }",
+            "measure": "(text: string): number"
+          },
           "PostProblem": {
             "code": "'empty' | 'too_long' | 'too_many_images' | 'link_and_images' | 'bad_link' | 'bad_image'",
             "message": "string"
           },
           "PublishedPost": {
             "id": "string",
-            "url": "string | null"
+            "url": "string | null",
+            "replyRef?": "Readonly<Record<string, string>>"
           },
           "Publisher": {
             "readonly network": "string",
-            "readonly limits": "{ maxChars: number; maxImages: number }",
+            "readonly limits": "{ maxChars: number; maxImages: number; unit?: string }",
+            "measure?": "(text: string): number",
             "check": "(post: SocialPost): PostProblem[]",
             "publish": "(target: PublishTarget, post: SocialPost, options?: PublishOptions): Promise<PublishedPost>"
           },
@@ -7566,31 +7597,38 @@
             "readonly kind": "PublishErrorKind",
             "readonly status": "number | null",
             "readonly retryAfter": "number | null",
-            "constructor": "(network: string, kind: PublishErrorKind, message: string, status?: number | null, retryAfter?: number | null)",
+            "readonly published": "readonly PublishedPost[]",
+            "constructor": "(network: string, kind: PublishErrorKind, message: string, status?: number | null, retryAfter?: number | null, published?: readonly PublishedPost[])",
             "get retryable(): boolean": "",
             "(kind)": "class"
           },
           "PublishErrorKind": "type = 'invalid' | 'reconnect' | 'rate_limited' | 'failed'",
           "PublishOptions": {
             "idempotencyKey?": "string",
-            "createdAt?": "Date"
+            "createdAt?": "Date",
+            "replyTo?": "PublishedPost"
           },
           "PublishTarget": {
             "tokens": "TokenSet",
             "subject": "string",
             "server?": "string | null"
           },
+          "publishThread": "declare function publishThread(publisher: Publisher, target: PublishTarget, posts: readonly SocialPost[], options?: PublishOptions): Promise<PublishedPost[]>",
           "SocialImage": {
             "data": "Blob",
             "alt": "string"
           },
+          "SocialImageUrl": {
+            "url": "string",
+            "alt": "string"
+          },
           "SocialPost": {
             "text": "string",
-            "link?": "{ url: string; title: string; description?: string; thumbnail?: SocialImage }",
-            "images?": "readonly SocialImage[]"
+            "link?": "{ url: string; title: string; description?: string; thumbnail?: SocialImage | SocialImageUrl }",
+            "images?": "readonly (SocialImage | SocialImageUrl)[]"
           },
           "threadsLength": "declare function threadsLength(text: string): number",
-          "threadsPublisher": "declare function threadsPublisher(options?: ThreadsPublisherOptions): Publisher",
+          "threadsPublisher": "declare function threadsPublisher(options?: ThreadsPublisherOptions): MeasuredPublisher",
           "ThreadsPublisherOptions": {
             "uploadImage?": "(image: SocialImage) => Promise<string>",
             "pollMs?": "number",
@@ -7602,6 +7640,7 @@
         "values": [
           "SesError",
           "certificatePublicKey",
+          "confirmSnsSubscription",
           "createSes",
           "handleSns",
           "parseSesNotification",
@@ -7614,7 +7653,9 @@
           "Ses",
           "SesAttachment",
           "SesBounceType",
+          "SesDnsRecord",
           "SesEvent",
+          "SesIdentity",
           "SesMessage",
           "SesOptions",
           "SesOutgoingEmail",
@@ -7622,7 +7663,8 @@
           "SnsHandlerOptions",
           "SnsMessage",
           "SnsNotification",
-          "SnsSubscription"
+          "SnsSubscription",
+          "SnsTopics"
         ],
         "declarations": {
           "AwsCredentials": {
@@ -7637,12 +7679,14 @@
             "body?": "string"
           },
           "certificatePublicKey": "declare function certificatePublicKey(der: Uint8Array): Uint8Array<ArrayBuffer>",
+          "confirmSnsSubscription": "declare function confirmSnsSubscription(options: { topicArn: string; token: string; fetch?: typeof fetch }): Promise<{ subscriptionArn: string }>",
           "createSes": "declare function createSes(options: SesOptions): Ses",
           "handleSns": "declare function handleSns(request: Request, options: SnsHandlerOptions): Promise<Response>",
           "parseSesNotification": "declare function parseSesNotification(message: string): SesEvent",
           "Ses": {
             "sendEmail": "(message: SesMessage): Promise<{ messageId: string }>",
-            "send": "(message: SesOutgoingEmail): Promise<{ messageId: string }>"
+            "send": "(message: SesOutgoingEmail): Promise<{ messageId: string }>",
+            "identity": "(identity: string): Promise<SesIdentity | null>"
           },
           "SesAttachment": {
             "filename": "string",
@@ -7651,6 +7695,11 @@
             "disposition": "'attachment'"
           },
           "SesBounceType": "type = 'Permanent' | 'Transient' | 'Undetermined'",
+          "SesDnsRecord": {
+            "type": "'CNAME'",
+            "name": "string",
+            "value": "string"
+          },
           "SesError": {
             "readonly status": "number",
             "readonly code": "string | null",
@@ -7658,7 +7707,11 @@
             "constructor": "(status: number, message: string, code: string | null)",
             "(kind)": "class"
           },
-          "SesEvent": "type = { kind: 'bounce'; bounceType: SesBounceType; recipients: string[]; messageId: string | null } | { kind: 'complaint'; recipients: string[]; messageId: string | null } | { kind: 'delivery'; recipients: string[]; messageId: string | null } | { kind: 'other'; type: string }",
+          "SesEvent": "type = ({ kind: 'bounce'; bounceType: SesBounceType; subType: string | null; diagnostic: string | null; recipients: string[]; messageId: string | null } | { kind: 'complaint'; recipients: string[]; messageId: string | null } | { kind: 'delivery'; recipients: string[]; messageId: string | null } | { kind: 'other'; type: string }) & { at: number | null }",
+          "SesIdentity": {
+            "verified": "boolean",
+            "dkim": "{ status: string | null; records: SesDnsRecord[] }"
+          },
           "SesMessage": {
             "from": "string",
             "to": "string | string[]",
@@ -7689,8 +7742,10 @@
           "SesRecipient": "type = string | { name: string; email: string }",
           "signAwsRequest": "declare function signAwsRequest(request: AwsRequest, credentials: AwsCredentials, scope: { region: string; service: string }, now?: Date): Promise<Record<string, string>>",
           "SnsHandlerOptions": {
-            "topicArn": "string",
+            "topicArn": "SnsTopics",
             "onNotification": "(notification: SnsNotification): Promise<void>",
+            "confirmSubscriptions?": "boolean",
+            "onSubscription?": "(subscription: SnsSubscription): Promise<void>",
             "fetch?": "typeof fetch"
           },
           "SnsMessage": "type = SnsNotification | SnsSubscription",
@@ -7705,7 +7760,8 @@
             "token": "string",
             "subscribeUrl": "string"
           },
-          "verifySnsMessage": "declare function verifySnsMessage(body: string, options: { topicArn: string; fetch?: typeof fetch }): Promise<SnsMessage>"
+          "SnsTopics": "type = string | readonly string[] | ((topicArn: string) => boolean)",
+          "verifySnsMessage": "declare function verifySnsMessage(body: string, options: { topicArn: SnsTopics; fetch?: typeof fetch }): Promise<SnsMessage>"
         }
       },
       "./stripe": {
