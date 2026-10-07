@@ -12,13 +12,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@cascivo/app": "1.7.0",
-    "@cascivo/charts": "1.7.0",
-    "@cascivo/core": "1.7.0",
-    "@cascivo/i18n": "1.7.0",
+    "@cascivo/app": "1.8.0",
+    "@cascivo/charts": "1.8.0",
+    "@cascivo/core": "1.8.0",
+    "@cascivo/i18n": "1.8.0",
     "@cascivo/icons": "1.1.1",
-    "@cascivo/react": "1.7.0",
-    "@cascivo/storage": "1.7.0",
+    "@cascivo/react": "1.8.0",
+    "@cascivo/storage": "1.8.0",
     "@cascivo/themes": "1.0.2",
     "@preact/signals-react": ">=3.0.0",
     "preact": "^10.29.0"
