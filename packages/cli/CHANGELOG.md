@@ -1,5 +1,12 @@
 # cascivo
 
+## 1.7.1
+
+### Patch Changes
+
+- 80edcc3: The `newsletter` example passes `confirmSubscriptions: true` to `handleSns`, which no longer
+  confirms SNS subscriptions unless asked, so the scaffold still confirms its configured topic.
+
 ## 1.7.0
 
 ### Minor Changes

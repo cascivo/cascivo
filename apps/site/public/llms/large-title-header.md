@@ -113,4 +113,4 @@ navigation, header, title, mobile, scroll, sticky, ios
 
 ---
 
-_Generated from registry v1.7.0 on 2026-10-06. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.8.0 on 2026-10-07. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
