@@ -56,10 +56,12 @@ class P:
         # Width across weights: a UI font must not reflow when text turns bold (hover, active
         # tab), so total width may grow only ~5% per 300 weight units (Geist: 0.96x Thin, 1.11x
         # Black). Spacing therefore stays nearly constant and the counters absorb stem growth.
-        self.S = (62 + 0.08 * V) * spacing  # stem sidebearing unit (lowercase, figures, punctuation)
+        self.S = (69.5 + 0.09 * V) * spacing  # stem sidebearing unit (lowercase, figures, punctuation)
         self.Sc = self.S * 1.3  # capitals carry more space: their counters are bigger
         self.cw = counter
-        self.cn = _pw(V, [(20, 400), (90, 284), (182, 168)]) * counter  # n counter
+        # n is 0.82 x-heights wide at Regular (Geist 0.79, Inter 0.80). It was 0.88 with tighter
+        # spacing, which set the same line length but read as wide, close-set letters.
+        self.cn = _pw(V, [(20, 374), (90, 253), (182, 140)]) * counter  # n counter
         self.cH = self.cn * 418 / 284  # H counter, in proportion to n
         self.dot = V * 1.12 + 14  # i dot / period: never thinner than a readable square
         self.mt = V * 0.86 + 6  # accent stroke

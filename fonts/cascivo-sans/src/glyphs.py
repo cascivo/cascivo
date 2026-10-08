@@ -413,9 +413,15 @@ def _S(g, p, w, top, ov, pen=None, term=32):
     g.stroke(lo, caps=('b', 'b'), pen=pen)
 
 
+def _s_extra(p):
+    # s stacks three horizontals plus a diagonal spine inside one x-height, so it runs out of
+    # counter before any other letter as weight rises; heavy weights give it extra width
+    return 0.45 * max(0.0, p.V - 90)
+
+
 @glyph('S', 0x53)
 def _S_(g, p):
-    _S(g, p, p.Hw * 0.94, p.cap, p.ov)
+    _S(g, p, p.Hw * 0.94 + _s_extra(p), p.cap, p.ov)
     g.ht = 'c'
     g.sb = (0.5, 0.5)
 
@@ -629,7 +635,7 @@ def _a(g, p):
 
 @glyph('s', 0x73)
 def _s(g, p):
-    _S(g, p, p.nw * 0.88, p.xh, p.ov)
+    _S(g, p, p.nw * 0.88 + _s_extra(p), p.xh, p.ov)
     g.sb = (0.55, 0.55)
 
 
@@ -1192,8 +1198,10 @@ def _numbersign(g, p):
 @glyph('dollar', 0x24)
 def _dollar(g, p):
     w = fw(p) * 0.98
-    _S(g, p, w, p.cap, p.ov)
-    g.line((w * 0.52, -p.ov - 90), (w * 0.52, p.cap + p.ov + 90), w=p.V * 0.72)
+    # a bar through an S on a tabular width: both thin with weight, or the Black $ fills in
+    k = 1 - 0.2 * max(0.0, (p.V - 90) / 88)
+    _S(g, p, w, p.cap, p.ov, pen=(p.V * k, p.H * k))
+    g.line((w * 0.52, -p.ov - 90), (w * 0.52, p.cap + p.ov + 90), w=p.V * 0.72 * k)
     g.tab = True
     g.ht = 'c'
 

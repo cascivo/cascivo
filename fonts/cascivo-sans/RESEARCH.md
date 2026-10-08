@@ -118,7 +118,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                  |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                         |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                               |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 19.6 KB, `Latin[opsz,wght]` 27.1 KB, `Latin[opsz,slnt,wght]` 30.2 KB. Serve only the axes you use |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 19.9 KB, `Latin[opsz,wght]` 27.4 KB, `Latin[opsz,slnt,wght]` 30.7 KB. Serve only the axes you use |
 
 ## 5. Scorecard
 
@@ -126,15 +126,15 @@ contour in every master for self-intersection. The build ships with zero problem
 
 | File                                                  | Cascivo Sans          | Geist             | IBM Plex Sans     | Inter            |
 | ----------------------------------------------------- | --------------------- | ----------------- | ----------------- | ---------------- |
-| Variable Latin slice, wght axis                       | **19.6 KB** (211 cp)  | 29.4 KB (225 cp)  | 45.7 KB (232 cp)  | 48.3 KB (230 cp) |
-| Bytes per codepoint (Latin slice)                     | **93**                | 131               | 197               | 210              |
+| Variable Latin slice, wght axis                       | **19.9 KB** (211 cp)  | 29.4 KB (225 cp)  | 45.7 KB (232 cp)  | 48.3 KB (230 cp) |
+| Bytes per codepoint (Latin slice)                     | **94**                | 131               | 197               | 210              |
 | Variable, full charset, wght only                     | **24.2 KB** (66 B/cp) | 69.7 KB (96 B/cp) | —                 | —                |
-| Static Regular, full charset                          | **10.9 KB** (30 B/cp) | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp) | —                |
-| Same Latin slice with **two more axes** (opsz + slnt) | 30.2 KB               | n/a               | n/a               | n/a              |
+| Static Regular, full charset                          | **11.0 KB** (30 B/cp) | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp) | —                |
+| Same Latin slice with **two more axes** (opsz + slnt) | 30.7 KB               | n/a               | n/a               | n/a              |
 
 The full-charset comparison is not like for like. Geist and Plex cover Cyrillic, Greek and
 more, and those glyphs are larger. The Latin slices are the fair comparison, and Cascivo uses
-29% fewer bytes per codepoint than Geist. Part of this comes from engineering (composites, the
+28% fewer bytes per codepoint than Geist. Part of this comes from engineering (composites, the
 master layout, tolerances). Part of it comes from simpler drawing: stroke-generated outlines
 have fewer points than outlines drawn and refined by hand.
 
@@ -214,6 +214,30 @@ A follow-up made two more changes:
   At Black the hook becomes a flat top stroke with a clean tip, as in Geist, instead of a tight
   turn whose inner edge folded into a pinhole. The angle stays in one quadrant, so the masters
   remain compatible.
+
+## 7. Proportion review
+
+There is no type-design skill available to this project, so this review used the standard
+type-design criteria and measured each one against the references. All figures are at
+Regular, in units of x-height or cap height.
+
+| Measure                           | Before | After    | Geist | Inter | Plex | Helvetica* |
+| --------------------------------- | ------ | -------- | ----- | ----- | ---- | ---------- |
+| n width ÷ x-height                | 0.88   | **0.82** | 0.79  | 0.80  | 0.78 | 0.80       |
+| H width ÷ cap height              | 0.85   | **0.79** | 0.75  | 0.78  | 0.75 | 0.77       |
+| O width ÷ cap height              | 1.00   | **0.92** | 0.91  | 0.89  | 0.85 | 0.97       |
+| n sidebearing ÷ x-height          | 0.13   | **0.15** | 0.15  | 0.14  | 0.16 | 0.12       |
+| Average advance ÷ x-height (text) | 0.91   | **0.89** | 0.90  | 0.88  | 0.88 | 0.84       |
+
+Before this change, line length was normal but the letters were about 10% too wide and set
+too close together. That reads as wide and dense. The letters are now narrower and the spacing
+looser, so a line is about 2% shorter. Black got two compensations. First, `s` and `S` gain
+width with weight, since three horizontals and a spine in one x-height run out of counter
+first. Second, `$` thins its S and bar with weight, because it shares a fixed tabular width.
+
+Texture evenness (the spread of ink density across the lowercase) is 0.150, against 0.151 for
+Geist and 0.142 for Inter. Overall color at Regular is darker: 0.43 ink per x-height square,
+against 0.39 for Geist and 0.43 for Helvetica.
 
 ## Sources
 
