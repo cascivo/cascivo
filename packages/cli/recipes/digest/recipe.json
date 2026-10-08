@@ -1,0 +1,8 @@
+{
+  "name": "digest",
+  "files": [
+    "src/routes/digest.tsx",
+    "src/digest.ts",
+    "worker/digest.ts"
+  ]
+}

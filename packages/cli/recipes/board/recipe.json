@@ -1,0 +1,8 @@
+{
+  "name": "board",
+  "files": [
+    "src/routes/board.tsx",
+    "src/board.ts",
+    "src/board.module.css"
+  ]
+}

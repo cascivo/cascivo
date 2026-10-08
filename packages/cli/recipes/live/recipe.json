@@ -1,0 +1,7 @@
+{
+  "name": "live",
+  "files": [
+    "src/routes/ops.tsx",
+    "src/ops.ts"
+  ]
+}

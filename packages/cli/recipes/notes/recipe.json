@@ -1,0 +1,7 @@
+{
+  "name": "notes",
+  "files": [
+    "src/routes/notes.tsx",
+    "src/notes.ts"
+  ]
+}

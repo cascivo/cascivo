@@ -1,0 +1,6 @@
+{
+  "name": "export",
+  "files": [
+    "src/routes/report.tsx"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "name": "accounts",
+  "files": [
+    "src/auth.ts"
+  ]
+}

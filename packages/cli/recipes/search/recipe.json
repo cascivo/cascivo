@@ -1,0 +1,9 @@
+{
+  "name": "search",
+  "files": [
+    "src/routes/search.tsx",
+    "src/search.ts",
+    "worker/search.ts",
+    "worker/articles.ts"
+  ]
+}

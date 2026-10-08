@@ -1,0 +1,9 @@
+{
+  "name": "import",
+  "files": [
+    "src/routes/import.tsx",
+    "src/import-job.ts",
+    "src/import-page.ts",
+    "worker/import-job.ts"
+  ]
+}

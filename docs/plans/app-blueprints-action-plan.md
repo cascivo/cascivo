@@ -160,7 +160,35 @@ new architecture.
 
 ## Phase 1 — Recipes: `create.ts` becomes data (no behavior change)
 
-### P1-1 ☐ The recipe format
+**Step 1 shipped 2026-10-08: the leaf files.** Before touching anything, the scaffolder's output
+was hashed for 906 option combinations: three names (one with an apostrophe), every framework,
+runtime, sign-in mode, every example alone, all examples together, and publish + export +
+checkout. Measured that way, **79 of the cloudflare scaffold's files never vary**. The variation
+is concentrated in about 20 aggregation files (README 344 variants, `wrangler.jsonc` 130,
+`package.json` 100, `worker/index.ts` 82). Four leaf files vary only by the app's name.
+
+- 74 files moved out of template literals into `packages/cli/recipes/<name>/`. That is 22 recipes:
+  the `cloudflare` base, 17 examples, and `publish-preview`, `billing`, `accounts`, `auth-email`
+  for the combinations.
+- The four name-dependent files use `{{brand}}`, `{{appName}}` and `{{usageDataset}}`.
+- `create.ts` went from 12,828 to 4,419 lines. Which recipes a scaffold gets is one function,
+  `cloudflareRecipes()`.
+- **Verified:** all 906 combinations hash identically before and after, `starters:generate` from
+  the built CLI leaves no diff, and the packed tarball carries `recipes/`.
+- **Diverged from the spec:**
+  - `recipe.json` holds `name` and `files` only. Routes are the files under `src/routes/`.
+    Everything else in P1-1's list belongs to the aggregation files, so it arrives with step 2,
+    one aggregation file at a time, rather than as an unused schema now.
+  - The parser lives in the CLI (`src/scaffold/recipes.ts`, using the registry's
+    `isSafeRelativePath`) until P1-4 needs it for remote recipes.
+  - `.gitignore` and `.prettierignore` stay in code: npm drops dotfiles from a published
+    package.
+  - The recipe CSS writes the app's own layer slot, so `layer-order.test.ts` now excludes
+    `packages/cli/recipes/` from its library-CSS rule. `unlayered:check` still covers it.
+
+**Next, step 2:** move each recipe's contributions to the aggregation files into its manifest.
+
+### P1-1 ◐ The recipe format
 
 - **Change:** a `recipe.json` schema shaped like a registry item:
   - `files[]` with `target`
@@ -183,7 +211,7 @@ new architecture.
      and AGENTS.md. Today those files are string-concatenated inside `create.ts`.
   3. Conflicts and missing `requires` fail before anything is written.
 
-### P1-3 ☐ Port the scaffolds, one target at a time
+### P1-3 ◐ Port the scaffolds, one target at a time
 
 - **Change:**
   1. Port in this order: `react-vite` → `astro` → `cloudflare` base → each of the 17 examples

@@ -1,0 +1,10 @@
+{
+  "name": "agent",
+  "files": [
+    "src/routes/assistant.tsx",
+    "worker/assistant.ts",
+    "worker/scripted-model.ts",
+    "src/assistant.ts",
+    "src/assistant.module.css"
+  ]
+}

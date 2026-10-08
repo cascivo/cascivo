@@ -1,0 +1,10 @@
+{
+  "name": "publish",
+  "files": [
+    "src/routes/publish.tsx",
+    "src/routes/p/[slug].tsx",
+    "src/pages.ts",
+    "worker/pages.ts",
+    "worker/page-html.ts"
+  ]
+}

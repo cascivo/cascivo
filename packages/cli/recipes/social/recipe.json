@@ -1,0 +1,9 @@
+{
+  "name": "social",
+  "files": [
+    "src/routes/social.tsx",
+    "src/social.ts",
+    "worker/social.ts",
+    "worker/social-post.ts"
+  ]
+}

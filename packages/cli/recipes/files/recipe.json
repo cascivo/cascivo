@@ -1,0 +1,9 @@
+{
+  "name": "files",
+  "files": [
+    "src/routes/files.tsx",
+    "src/upload-policy.ts",
+    "src/files.ts",
+    "src/files.module.css"
+  ]
+}
