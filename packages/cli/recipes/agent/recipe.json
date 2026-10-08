@@ -6,5 +6,11 @@
     "worker/scripted-model.ts",
     "src/assistant.ts",
     "src/assistant.module.css"
+  ],
+  "nav": [
+    {
+      "label": "Assistant",
+      "href": "/assistant"
+    }
   ]
 }

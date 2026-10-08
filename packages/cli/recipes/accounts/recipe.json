@@ -2,5 +2,11 @@
   "name": "accounts",
   "files": [
     "src/auth.ts"
+  ],
+  "nav": [
+    {
+      "label": "Account",
+      "href": "/account"
+    }
   ]
 }

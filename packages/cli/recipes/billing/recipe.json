@@ -4,5 +4,11 @@
     "src/routes/billing.tsx",
     "src/billing.ts",
     "worker/billing.ts"
+  ],
+  "nav": [
+    {
+      "label": "Billing",
+      "href": "/billing"
+    }
   ]
 }

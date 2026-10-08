@@ -8,5 +8,15 @@
     "src/newsletter.ts",
     "worker/newsletter.ts",
     "worker/newsletter-email.ts"
+  ],
+  "nav": [
+    {
+      "label": "Newsletter",
+      "href": "/newsletter"
+    },
+    {
+      "label": "Send newsletter",
+      "href": "/newsletter/send"
+    }
   ]
 }

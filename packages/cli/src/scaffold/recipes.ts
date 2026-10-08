@@ -13,6 +13,14 @@ export interface Recipe {
   name: string
   /** App-relative paths, each a file in the recipe's directory. */
   files: string[]
+  /** Side-nav entries for the pages the recipe adds, in the order they appear. */
+  nav: RecipeNavItem[]
+}
+
+export interface RecipeNavItem {
+  label: string
+  /** An app path, starting with `/`. */
+  href: string
 }
 
 /** The values a recipe file may reference as `{{key}}`. Unknown keys are left as written. */
@@ -40,7 +48,7 @@ export function parseRecipe(raw: unknown, source: string): Recipe {
   if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) {
     throw new Error(`${source}: a recipe must be an object.`)
   }
-  const { name, files } = raw as Record<string, unknown>
+  const { name, files, nav = [] } = raw as Record<string, unknown>
   if (typeof name !== 'string' || !/^[a-z][a-z0-9-]*$/.test(name)) {
     throw new Error(`${source}: "name" must be a lower-case kebab-case string.`)
   }
@@ -54,7 +62,26 @@ export function parseRecipe(raw: unknown, source: string): Recipe {
     }
     paths.push(file)
   }
-  return { name, files: paths }
+  if (!Array.isArray(nav)) throw new Error(`${source}: "nav" must be an array.`)
+  const items: RecipeNavItem[] = []
+  for (const item of nav) {
+    const { label, href } = (typeof item === 'object' && item !== null ? item : {}) as Record<
+      string,
+      unknown
+    >
+    if (
+      typeof label !== 'string' ||
+      label === '' ||
+      typeof href !== 'string' ||
+      !href.startsWith('/')
+    ) {
+      throw new Error(
+        `${source}: each "nav" entry needs a "label" and an "href" starting with "/".`,
+      )
+    }
+    items.push({ label, href })
+  }
+  return { name, files: paths, nav: items }
 }
 
 const cache = new Map<string, Recipe>()

@@ -5,5 +5,11 @@
     "src/upload-policy.ts",
     "src/files.ts",
     "src/files.module.css"
+  ],
+  "nav": [
+    {
+      "label": "Files",
+      "href": "/files"
+    }
   ]
 }

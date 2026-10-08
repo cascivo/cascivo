@@ -4,5 +4,11 @@
     "src/routes/board.tsx",
     "src/board.ts",
     "src/board.module.css"
+  ],
+  "nav": [
+    {
+      "label": "Board",
+      "href": "/board"
+    }
   ]
 }

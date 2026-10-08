@@ -14,7 +14,7 @@ import { CASCIVO_VERSIONS, SIGNALS_PEER } from '../generated/versions.js'
 // Bundled into the CLI (a devDependency): the scaffold writes the same routes.gen.ts the
 // app's own Vite plugin will, so the two cannot drift.
 import { generateRoutes } from '@cascivo/app/vite'
-import { recipeFiles } from '../scaffold/recipes.js'
+import { loadRecipe, recipeFiles } from '../scaffold/recipes.js'
 
 /**
  * Exact published versions, baked in at build time by `scripts/registry/cli-versions.ts`.
@@ -2733,30 +2733,11 @@ function cfSectionFile(section: Section, index: number): string {
   return index === 0 ? 'index.tsx' : `${section.key}.tsx`
 }
 
-function cfAppTsx(sections: Section[], opts: ScaffoldOptions): string {
-  const items = sections.map((s, i) => ({ label: s.label, href: cfSectionPath(s, i) }))
-  if (hasExample(opts, 'agent')) items.push({ label: 'Assistant', href: '/assistant' })
-  if (hasExample(opts, 'board')) items.push({ label: 'Board', href: '/board' })
-  if (hasExample(opts, 'notes')) items.push({ label: 'Notes', href: '/notes' })
-  if (hasExample(opts, 'import')) items.push({ label: 'Import', href: '/import' })
-  if (hasExample(opts, 'files')) items.push({ label: 'Files', href: '/files' })
-  if (hasExample(opts, 'export')) items.push({ label: 'Report', href: '/report' })
-  if (hasExample(opts, 'usage')) items.push({ label: 'Usage', href: '/usage' })
-  if (hasExample(opts, 'crud')) items.push({ label: 'Customers', href: '/customers' })
-  if (hasExample(opts, 'live')) items.push({ label: 'Ops', href: '/ops' })
-  if (hasExample(opts, 'voice')) items.push({ label: 'Voice', href: '/voice' })
-  if (hasExample(opts, 'publish')) items.push({ label: 'Publish', href: '/publish' })
-  if (hasExample(opts, 'webhooks')) items.push({ label: 'Webhooks', href: '/webhooks' })
-  if (hasExample(opts, 'digest')) items.push({ label: 'Digest', href: '/digest' })
-  if (hasExample(opts, 'search')) items.push({ label: 'Search', href: '/search' })
-  if (hasExample(opts, 'checkout')) items.push({ label: 'Checkout', href: '/checkout' })
-  if (usesBilling(opts)) items.push({ label: 'Billing', href: '/billing' })
-  if (hasExample(opts, 'newsletter')) {
-    items.push({ label: 'Newsletter', href: '/newsletter' })
-    items.push({ label: 'Send newsletter', href: '/newsletter/send' })
-  }
-  if (hasExample(opts, 'social')) items.push({ label: 'Social', href: '/social' })
-  if (hasAccounts(opts)) items.push({ label: 'Account', href: '/account' })
+function cfAppTsx(sections: Section[], recipes: string[], opts: ScaffoldOptions): string {
+  const items = [
+    ...sections.map((s, i) => ({ label: s.label, href: cfSectionPath(s, i) })),
+    ...recipes.flatMap((recipe) => loadRecipe(recipe).nav),
+  ]
   const navItems = items
     .map(
       (item) => `    {
@@ -3938,24 +3919,60 @@ function cfBindingDescriptions(opts: ScaffoldOptions): Record<string, { descript
 }
 
 /**
- * The recipes (`packages/cli/recipes/<name>`) a cloudflare scaffold is made of: the base, each
- * example, and the pieces two choices bring together, such as billing (checkout + email
- * sign-in).
+ * The recipes (`packages/cli/recipes/<name>`) a cloudflare scaffold may add after its base, in
+ * the order their pages appear in the side nav.
  */
+const CLOUDFLARE_RECIPES = [
+  'agent',
+  'board',
+  'notes',
+  'import',
+  'files',
+  'export',
+  'usage',
+  'crud',
+  'live',
+  'voice',
+  'publish',
+  'publish-preview',
+  'webhooks',
+  'digest',
+  'search',
+  'checkout',
+  'billing',
+  'newsletter',
+  'social',
+  'accounts',
+  'auth-email',
+] as const
+
+/** Each example is its own recipe; the rest are what two choices bring together. */
+function includesRecipe(
+  recipe: (typeof CLOUDFLARE_RECIPES)[number],
+  opts: ScaffoldOptions,
+): boolean {
+  switch (recipe) {
+    case 'publish-preview':
+      return hasExample(opts, 'publish') && hasExample(opts, 'export')
+    case 'billing':
+      return usesBilling(opts)
+    case 'accounts':
+      return hasAccounts(opts)
+    case 'auth-email':
+      return emailSignIn(opts)
+    default:
+      return hasExample(opts, recipe)
+  }
+}
+
 function cloudflareRecipes(opts: ScaffoldOptions): string[] {
-  return [
-    'cloudflare',
-    ...EXAMPLES.filter((example) => hasExample(opts, example)),
-    ...(hasExample(opts, 'publish') && hasExample(opts, 'export') ? ['publish-preview'] : []),
-    ...(usesBilling(opts) ? ['billing'] : []),
-    ...(hasAccounts(opts) ? ['accounts'] : []),
-    ...(emailSignIn(opts) ? ['auth-email'] : []),
-  ]
+  return ['cloudflare', ...CLOUDFLARE_RECIPES.filter((recipe) => includesRecipe(recipe, opts))]
 }
 
 function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): ScaffoldFile[] {
   const runtime = runtimeOf(opts)
-  const recipeOutput = cloudflareRecipes(opts).flatMap((recipe) =>
+  const recipes = cloudflareRecipes(opts)
+  const recipeOutput = recipes.flatMap((recipe) =>
     recipeFiles(recipe, {
       brand: brandName(opts.name),
       appName: opts.name.replace(/[\\']/g, ''),
@@ -3993,7 +4010,7 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
     { path: 'worker/index.ts', contents: cfWorkerTs(opts) },
     { path: 'src/api.ts', contents: cfApiTs(opts) },
     { path: 'src/vite-env.d.ts', contents: viteEnv() },
-    { path: 'src/App.tsx', contents: cfAppTsx(sections, opts) },
+    { path: 'src/App.tsx', contents: cfAppTsx(sections, recipes, opts) },
     { path: 'src/Shell.tsx', contents: cfShellTsx(opts) },
     ...(hasExample(opts, 'webhooks') ||
     hasExample(opts, 'checkout') ||

@@ -5,5 +5,11 @@
     "src/import-job.ts",
     "src/import-page.ts",
     "worker/import-job.ts"
+  ],
+  "nav": [
+    {
+      "label": "Import",
+      "href": "/import"
+    }
   ]
 }

@@ -6,5 +6,11 @@
     "src/pages.ts",
     "worker/pages.ts",
     "worker/page-html.ts"
+  ],
+  "nav": [
+    {
+      "label": "Publish",
+      "href": "/publish"
+    }
   ]
 }

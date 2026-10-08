@@ -186,7 +186,18 @@ is concentrated in about 20 aggregation files (README 344 variants, `wrangler.js
   - The recipe CSS writes the app's own layer slot, so `layer-order.test.ts` now excludes
     `packages/cli/recipes/` from its library-CSS rule. `unlayered:check` still covers it.
 
-**Next, step 2:** move each recipe's contributions to the aggregation files into its manifest.
+**Step 2 started 2026-10-08 with the side nav.** `recipe.json` takes `nav` (label + app path),
+and `App.tsx`'s nav is the sections followed by each recipe's entries, replacing 19
+`hasExample(...)` pushes. `CLOUDFLARE_RECIPES` lists the recipes in nav order. This is the
+contribution blueprints need first, because a blueprint page is a nav entry plus a route. Still
+byte-identical across the 906 combinations.
+
+**Open: the remaining aggregation files.** `worker/index.ts` (713 lines of generator), README,
+`wrangler.jsonc`, `package.json`, `src/api.ts` and `.dev.vars` are not independent per-recipe
+fragments. Features change each other's output: `search` types its `AI` binding as `Embedder`
+only without `agent`, `social` declares `APP_URL` only without `digest`, and `EMAIL` is an
+intersection over four features. A declarative contribution format that reproduces this
+byte-for-byte would need conditional fragments, which is the same complexity moved into JSON.
 
 ### P1-1 ◐ The recipe format
 

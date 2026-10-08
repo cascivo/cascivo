@@ -5,5 +5,11 @@
     "src/routes/checkout/[order].tsx",
     "src/checkout.ts",
     "worker/checkout.ts"
+  ],
+  "nav": [
+    {
+      "label": "Checkout",
+      "href": "/checkout"
+    }
   ]
 }

@@ -6,5 +6,11 @@
     "src/customers-page.ts",
     "worker/customers.ts",
     "worker/migrations.ts"
+  ],
+  "nav": [
+    {
+      "label": "Customers",
+      "href": "/customers"
+    }
   ]
 }

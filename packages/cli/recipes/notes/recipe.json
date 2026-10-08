@@ -3,5 +3,11 @@
   "files": [
     "src/routes/notes.tsx",
     "src/notes.ts"
+  ],
+  "nav": [
+    {
+      "label": "Notes",
+      "href": "/notes"
+    }
   ]
 }

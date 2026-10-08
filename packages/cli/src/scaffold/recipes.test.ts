@@ -58,7 +58,35 @@ describe('parseRecipe', () => {
     ['no files', { name: 'board', files: [] }],
     ['a path outside the app', { name: 'board', files: ['../../.zshrc'] }],
     ['an absolute path', { name: 'board', files: ['/etc/passwd'] }],
+    ['a nav entry without a label', { name: 'board', files: ['a.ts'], nav: [{ href: '/board' }] }],
+    [
+      'a nav href that is not an app path',
+      { name: 'board', files: ['a.ts'], nav: [{ label: 'B', href: 'https://x' }] },
+    ],
   ])('rejects %s', (_label, raw) => {
     expect(() => parseRecipe(raw, 'recipe.json')).toThrow(/recipe\.json/)
+  })
+})
+
+describe('recipe nav', () => {
+  it('links only to pages a recipe of the same scaffold defines', () => {
+    for (const name of names) {
+      const recipe = loadRecipe(name)
+      const routes = recipe.files
+        .filter((f) => f.startsWith('src/routes/'))
+        .map(
+          (f) =>
+            `/${f
+              .slice('src/routes/'.length)
+              .replace(/\.tsx$/, '')
+              .replace(/(^|\/)index$/, '')}`,
+        )
+      for (const item of recipe.nav) {
+        // accounts' /account route is written by the scaffolder (its text depends on the
+        // sign-in mode), so it is the one entry without a file in the recipe.
+        if (name === 'accounts') continue
+        expect(routes, `${name}: ${item.href}`).toContain(item.href)
+      }
+    }
   })
 })

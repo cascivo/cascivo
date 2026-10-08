@@ -5,5 +5,11 @@
     "src/social.ts",
     "worker/social.ts",
     "worker/social-post.ts"
+  ],
+  "nav": [
+    {
+      "label": "Social",
+      "href": "/social"
+    }
   ]
 }
