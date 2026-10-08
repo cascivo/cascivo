@@ -24,3 +24,8 @@ declare module 'virtual:cascivo-workbench-styles' {
   /** Stylesheets the project does not have installed. */
   export const missing: string[]
 }
+
+declare module 'virtual:cascivo-workbench-text' {
+  /** From the project's `@cascivo/text`, or `null` when it is not installed. */
+  export const elementToMarkdown: ((el: Element) => string) | null
+}

@@ -60,3 +60,32 @@ jobs:
         env:
           AXE_SHARD: ${{ matrix.shard }}/3
         run: pnpm --filter @cascivo/storybook run test:axe
+
+  # Shadow run (2026-10-07 plan, P4-5): the same axe tags over the workbench's entries, built
+  # from the copied-component manifests instead of stories. Non-blocking for one release
+  # cycle: Storybook stays the gate, and is retired only if this run matches it. Light theme
+  # only, because that is what the Storybook sweep checks; `--themes all` is the follow-up.
+  workbench-shadow:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium
+        run: pnpm --filter @cascivo/workbench exec playwright install chromium --with-deps
+
+      - name: Build packages
+        run: pnpm exec vp run -r build
+
+      - name: Workbench axe sweep (shadow)
+        run: pnpm --filter @cascivo/workbench run sweep --themes light

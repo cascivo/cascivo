@@ -9,12 +9,32 @@
  * components, not a dev tool's chrome, and depending on `@cascivo/core` would tie this tool's
  * releases to the runtime's.
  */
-import { Component, createElement, useEffect, useRef, useState } from 'react'
+import {
+  cloneElement,
+  Component,
+  createElement,
+  isValidElement,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import type { ReactNode } from 'react'
 import { components as found, previews, source } from 'virtual:cascivo-workbench-entries'
 import { missing } from 'virtual:cascivo-workbench-styles'
-import { agentContext, parseManifest, THEMES, VIEWPORTS } from './model.ts'
-import type { Manifest } from './model.ts'
+import { elementToMarkdown } from 'virtual:cascivo-workbench-text'
+import { agentContext, controlsFor, parseManifest, THEMES, VIEWPORTS } from './model.ts'
+import type { Control, Manifest } from './model.ts'
+
+/**
+ * `?embed` renders the stage alone, in `?theme=`: the page a test or an axe sweep opens, so
+ * what it checks is the entry and nothing of the workbench's own chrome.
+ */
+const params = new URLSearchParams(location.search)
+const EMBED = params.has('embed')
+const INITIAL_THEME = params.get('theme') ?? 'light'
+
+type Tab = 'code' | 'props' | 'controls' | 'tokens' | 'markdown'
+const TABS: Tab[] = ['code', 'props', 'controls', 'tokens', 'markdown']
 
 const components = found
   .flatMap((c) => {
@@ -67,8 +87,12 @@ class Boundary extends Component<
   }
   override render() {
     if (!this.state.error) return this.props.children
+    // Missing code from the host app (a free identifier, a component nobody copied) is the
+    // example's nature, not a bug; `cascivo-workbench test` skips those and fails the rest.
+    const needsHost =
+      (this.props.unresolved?.length ?? 0) > 0 || this.state.error.name === 'ReferenceError'
     return (
-      <div className="wb-error" role="alert">
+      <div className="wb-error" role="alert" data-needs-host={needsHost}>
         <strong>This entry did not render.</strong>
         <p>
           {this.props.unresolved?.length
@@ -84,25 +108,42 @@ class Boundary extends Component<
   }
 }
 
-/** Runs the example inside the boundary, so a free identifier in it is caught there. */
-function Example({ render }: { render: () => unknown }) {
-  return render() as ReactNode
+/**
+ * Runs the example inside the boundary, so a free identifier in it is caught there. Control
+ * values are applied to the element the example returns, which is the component itself.
+ */
+function Example({
+  render,
+  overrides,
+}: {
+  render: () => unknown
+  overrides: Record<string, unknown>
+}) {
+  const element = render()
+  if (isValidElement(element) && Object.keys(overrides).length > 0) {
+    return cloneElement(element, overrides)
+  }
+  return element as ReactNode
 }
 
 export function App() {
   const [selection, setSelection] = useState<Selection | null>(
     () => fromHash(location.hash) ?? initial(),
   )
-  const [theme, setTheme] = useState<string>('light')
+  const [theme, setTheme] = useState<string>(INITIAL_THEME)
   const [width, setWidth] = useState<number | null>(null)
-  const [tab, setTab] = useState<'code' | 'props' | 'tokens'>('code')
+  const [tab, setTab] = useState<Tab>('code')
   const [copied, setCopied] = useState(false)
+  const [overrides, setOverrides] = useState<Record<string, unknown>>({})
   const stage = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const sync = () => {
       const next = fromHash(location.hash)
-      if (next) setSelection(next)
+      if (next) {
+        setSelection(next)
+        setOverrides({})
+      }
     }
     addEventListener('hashchange', sync)
     return () => removeEventListener('hashchange', sync)
@@ -112,6 +153,7 @@ export function App() {
     history.replaceState(null, '', toHash(next))
     setSelection(next)
     setCopied(false)
+    setOverrides({})
   }
 
   const component =
@@ -123,7 +165,7 @@ export function App() {
   const render = component?.render[exampleIndex]
 
   let content: ReactNode = null
-  if (render) content = <Example render={render} />
+  if (render) content = <Example render={render} overrides={overrides} />
   else if (example) {
     content = (
       <p>
@@ -131,6 +173,33 @@ export function App() {
       </p>
     )
   } else if (preview) content = createElement(preview.Component, preview.props)
+
+  const stageView = (
+    <div
+      ref={stage}
+      className="wb-stage"
+      data-theme={theme}
+      data-testid="stage"
+      data-hash={selection ? toHash(selection) : ''}
+      data-entry={example && !render ? 'snippet' : content === null ? 'empty' : 'rendered'}
+      style={width === null ? undefined : { inlineSize: `${width}px` }}
+    >
+      {content === null ? (
+        <p>
+          Nothing selected. Copy a component with <code>npx cascivo add</code>.
+        </p>
+      ) : (
+        <Boundary
+          key={`${selection?.kind}:${selection?.id}:${exampleIndex}`}
+          unresolved={component?.unresolved[exampleIndex]}
+        >
+          {content}
+        </Boundary>
+      )}
+    </div>
+  )
+
+  if (EMBED) return <div className="wb-embed">{stageView}</div>
 
   return (
     <div className="wb">
@@ -222,33 +291,12 @@ export function App() {
           </p>
         )}
 
-        <div className="wb-canvas">
-          <div
-            ref={stage}
-            className="wb-stage"
-            data-theme={theme}
-            data-testid="stage"
-            style={width === null ? undefined : { inlineSize: `${width}px` }}
-          >
-            {content === null ? (
-              <p>
-                Nothing selected. Copy a component with <code>npx cascivo add</code>.
-              </p>
-            ) : (
-              <Boundary
-                key={`${selection?.kind}:${selection?.id}:${exampleIndex}`}
-                unresolved={component?.unresolved[exampleIndex]}
-              >
-                {content}
-              </Boundary>
-            )}
-          </div>
-        </div>
+        <div className="wb-canvas">{stageView}</div>
 
         {component && example && (
           <section className="wb-panels" aria-label="Manifest">
             <div role="tablist">
-              {(['code', 'props', 'tokens'] as const).map((t) => (
+              {TABS.map((t) => (
                 <button
                   key={t}
                   type="button"
@@ -269,7 +317,18 @@ export function App() {
               </div>
             )}
             {tab === 'props' && <PropsTable meta={component.meta} />}
+            {tab === 'controls' && (
+              <Controls
+                controls={controlsFor(component.meta.props)}
+                values={overrides}
+                onChange={setOverrides}
+                disabled={!render}
+              />
+            )}
             {tab === 'tokens' && <Tokens meta={component.meta} stage={stage} theme={theme} />}
+            {tab === 'markdown' && (
+              <MarkdownPanel stage={stage} entry={JSON.stringify([selection, overrides, theme])} />
+            )}
           </section>
         )}
       </main>
@@ -340,6 +399,109 @@ function Tokens({
           ))}
         </tbody>
       </table>
+    </div>
+  )
+}
+
+/** Edit the example's simple props; a cleared control falls back to what the example sets. */
+function Controls({
+  controls,
+  values,
+  onChange,
+  disabled,
+}: {
+  controls: Control[]
+  values: Record<string, unknown>
+  onChange: (next: Record<string, unknown>) => void
+  disabled: boolean
+}) {
+  if (disabled) return <div role="tabpanel">A snippet has no element to control.</div>
+  if (controls.length === 0) {
+    return <div role="tabpanel">No prop of this component has a type a control can edit.</div>
+  }
+  const set = (name: string, value: unknown) => {
+    const next = { ...values }
+    if (value === undefined) delete next[name]
+    else next[name] = value
+    onChange(next)
+  }
+  return (
+    <div role="tabpanel" className="wb-controls">
+      {controls.map((c) => (
+        <label key={c.name}>
+          <code>{c.name}</code>
+          {c.kind === 'select' && (
+            <select
+              value={typeof values[c.name] === 'string' ? (values[c.name] as string) : ''}
+              onChange={(e) => set(c.name, e.target.value === '' ? undefined : e.target.value)}
+            >
+              <option value="">(as in the example)</option>
+              {c.options.map((o) => (
+                <option key={o}>{o}</option>
+              ))}
+            </select>
+          )}
+          {c.kind === 'boolean' && (
+            <select
+              value={values[c.name] === undefined ? '' : String(values[c.name])}
+              onChange={(e) =>
+                set(c.name, e.target.value === '' ? undefined : e.target.value === 'true')
+              }
+            >
+              <option value="">(as in the example)</option>
+              <option value="true">true</option>
+              <option value="false">false</option>
+            </select>
+          )}
+          {(c.kind === 'text' || c.kind === 'number') && (
+            <input
+              type={c.kind}
+              value={values[c.name] === undefined ? '' : String(values[c.name])}
+              placeholder="(as in the example)"
+              onChange={(e) => {
+                const raw = e.target.value
+                set(c.name, raw === '' ? undefined : c.kind === 'number' ? Number(raw) : raw)
+              }}
+            />
+          )}
+        </label>
+      ))}
+      <button type="button" onClick={() => onChange({})}>
+        Reset
+      </button>
+    </div>
+  )
+}
+
+/**
+ * The stage as Markdown, through `@cascivo/text`'s `elementToMarkdown`: what an agent reading
+ * the rendered component would get (machine mode), including the current state of controls.
+ */
+function MarkdownPanel({
+  stage,
+  entry,
+}: {
+  stage: { current: HTMLElement | null }
+  /** Changes whenever what is on the stage does, so the Markdown is re-read. */
+  entry: string
+}) {
+  const [markdown, setMarkdown] = useState('')
+  useEffect(() => {
+    if (!elementToMarkdown || !stage.current) return
+    setMarkdown(elementToMarkdown(stage.current))
+  }, [stage, entry])
+  if (!elementToMarkdown) {
+    return (
+      <div role="tabpanel">
+        Install <code>@cascivo/text</code> in this project to see the entry as Markdown.
+      </div>
+    )
+  }
+  return (
+    <div role="tabpanel">
+      <pre>
+        <code>{markdown}</code>
+      </pre>
     </div>
   )
 }

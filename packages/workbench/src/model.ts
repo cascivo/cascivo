@@ -101,3 +101,27 @@ export function agentContext(meta: Manifest, example: number): string {
     '',
   ].join('\n')
 }
+
+/** A control the Controls panel can draw for a prop, from its manifest type. */
+export type Control =
+  | { name: string; kind: 'select'; options: string[] }
+  | { name: string; kind: 'boolean' | 'text' | 'number' }
+
+/**
+ * The props whose manifest type is simple enough to edit: a union of string literals, or a
+ * plain `boolean`, `string` or `number`. Anything else (a node, a callback, an object) is left
+ * to the example's own code.
+ */
+export function controlsFor(props: Manifest['props']): Control[] {
+  return props.flatMap((p): Control[] => {
+    const type = p.type.trim()
+    if (type === 'boolean') return [{ name: p.name, kind: 'boolean' }]
+    if (type === 'string') return [{ name: p.name, kind: 'text' }]
+    if (type === 'number') return [{ name: p.name, kind: 'number' }]
+    const members = type.split('|').map((m) => m.trim())
+    if (members.length > 1 && members.every((m) => /^'[^']*'$/.test(m))) {
+      return [{ name: p.name, kind: 'select', options: members.map((m) => m.slice(1, -1)) }]
+    }
+    return []
+  })
+}

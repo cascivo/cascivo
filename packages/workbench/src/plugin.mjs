@@ -18,6 +18,7 @@ import { transformWithOxc } from 'vite'
 const ENTRIES_ID = 'virtual:cascivo-workbench-entries'
 const SCOPE_ID = 'virtual:cascivo-workbench-scope'
 const STYLES_ID = 'virtual:cascivo-workbench-styles'
+const TEXT_ID = 'virtual:cascivo-workbench-text'
 /** One module per manifest, so a broken example takes down its component, not the sidebar. */
 const EXAMPLES_PREFIX = '/@cascivo-workbench/examples/'
 
@@ -146,17 +147,12 @@ export function entriesModule(root, { metas, previews }) {
   return lines.join('\n') + '\n'
 }
 
-/**
- * The stylesheets copied components expect the app to have loaded: tokens and every theme, so
- * the theme switcher has something to switch. Resolved from the project, which installed them
- * with `cascivo init` (`from` is tried in order: its root, then the scanned directory); a
- * project without them still renders, unstyled, and says why.
- */
-export function stylesModule(from, extra = []) {
+/** Resolve a specifier from the first of `from` that has it installed, or `null`. */
+export function resolver(from) {
   const requires = (Array.isArray(from) ? from : [from]).map((dir) =>
     createRequire(join(dir, 'noop.js')),
   )
-  const resolveFirst = (specifier) => {
+  return (specifier) => {
     for (const require of requires) {
       try {
         return require.resolve(specifier)
@@ -166,6 +162,16 @@ export function stylesModule(from, extra = []) {
     }
     return null
   }
+}
+
+/**
+ * The stylesheets copied components expect the app to have loaded: tokens and every theme, so
+ * the theme switcher has something to switch. Resolved from the project, which installed them
+ * with `cascivo init` (`from` is tried in order: its root, then the scanned directory); a
+ * project without them still renders, unstyled, and says why.
+ */
+export function stylesModule(from, extra = []) {
+  const resolveFirst = resolver(from)
   const imports = []
   const missing = []
   for (const specifier of ['@cascivo/tokens', '@cascivo/themes/all.css']) {
@@ -180,6 +186,62 @@ export function stylesModule(from, extra = []) {
 }
 
 /**
+ * `elementToMarkdown` from the project's `@cascivo/text`, or `null`. Optional rather than a
+ * dependency: `@cascivo/text` releases in lockstep with `@cascivo/core`, and a dev tool that
+ * depended on it would have to as well.
+ */
+export function textModule(from) {
+  const file = resolver(from)('@cascivo/text')
+  return file
+    ? `export { elementToMarkdown } from ${JSON.stringify(file)}\n`
+    : 'export const elementToMarkdown = null\n'
+}
+
+/** The URL that renders one entry alone, in one theme: what a test or an axe sweep opens. */
+export function embedUrl(hash, theme = 'light') {
+  return `/?embed&theme=${encodeURIComponent(theme)}${hash}`
+}
+
+/**
+ * Every entry, as `/index.json` serves it: the "iframe URL per entry plus an index" an axe
+ * sweep or a visual test needs (2026-10-07 research, §5.3).
+ */
+export async function entryIndex(root, { metas, previews }, load) {
+  const entries = []
+  for (const file of metas) {
+    const id = idFor(root, file, META_FILE)
+    const { meta } = await load(file)
+    const examples = Array.isArray(meta?.examples) ? meta.examples : []
+    const codes = await Promise.all(
+      examples.map((e) => (typeof e?.code === 'string' ? isExpression(e.code) : false)),
+    )
+    examples.forEach((example, n) => {
+      const hash = `#component/${id}/${n}`
+      entries.push({
+        id: `${id}/${n}`,
+        kind: 'component',
+        component: typeof meta?.name === 'string' ? meta.name : id,
+        title: typeof example?.title === 'string' ? example.title : `Example ${n + 1}`,
+        renders: codes[n],
+        url: embedUrl(hash),
+      })
+    })
+  }
+  for (const file of previews) {
+    const id = idFor(root, file, PREVIEW_FILE)
+    entries.push({
+      id,
+      kind: 'preview',
+      component: id,
+      title: id,
+      renders: true,
+      url: embedUrl(`#preview/${id}`),
+    })
+  }
+  return { v: 1, entries }
+}
+
+/**
  * @param {{ dir: string, styles?: string[], project?: string }} options
  */
 export function cascivoWorkbench({ dir, styles = [], project = process.cwd() }) {
@@ -191,7 +253,7 @@ export function cascivoWorkbench({ dir, styles = [], project = process.cwd() }) 
   return {
     name: 'cascivo-workbench',
     resolveId(id) {
-      if (id === ENTRIES_ID || id === SCOPE_ID || id === STYLES_ID) return `\0${id}`
+      if ([ENTRIES_ID, SCOPE_ID, STYLES_ID, TEXT_ID].includes(id)) return `\0${id}`
       // Not `\0`-prefixed: the id has to end in `.tsx` for Vite to compile the JSX in it.
       if (id.startsWith(EXAMPLES_PREFIX)) return id
       return null
@@ -200,6 +262,7 @@ export function cascivoWorkbench({ dir, styles = [], project = process.cwd() }) 
       if (id === `\0${ENTRIES_ID}`) return entriesModule(root, found)
       if (id === `\0${SCOPE_ID}`) return scopeModule(found.metas)
       if (id === `\0${STYLES_ID}`) return stylesModule([resolve(project), root], extra)
+      if (id === `\0${TEXT_ID}`) return textModule([resolve(project), root])
       if (id.startsWith(EXAMPLES_PREFIX)) {
         const file = found.metas[Number(id.slice(EXAMPLES_PREFIX.length).replace(/\.tsx$/, ''))]
         if (!file || !dev) return 'export default []\nexport const unresolved = []\n'
@@ -241,6 +304,15 @@ export function cascivoWorkbench({ dir, styles = [], project = process.cwd() }) 
       }
       server.watcher.on('add', rescan)
       server.watcher.on('unlink', rescan)
+
+      server.middlewares.use('/index.json', (_req, res, next) => {
+        entryIndex(root, found, (file) => server.ssrLoadModule(file))
+          .then((index) => {
+            res.setHeader('content-type', 'application/json')
+            res.end(JSON.stringify(index))
+          })
+          .catch(next)
+      })
     },
   }
 }

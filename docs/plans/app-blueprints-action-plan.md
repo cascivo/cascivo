@@ -4,7 +4,7 @@
 (2026-10-07). Every finding in that document maps to at least one task below. The mapping table
 is in §6.
 
-**Status legend:** ☐ open · ◐ in progress · ☑ done (with the commit that shipped it)
+**Status legend:** ☐ open · ◐ in progress · ☑ done (with the commit that shipped it) · ☒ decided against
 
 **Rules for every task:**
 
@@ -485,18 +485,45 @@ parity test.
   the stories itself, and its schema is explicitly not public API, so cascivo does not emit a
   second copy.
 
-**Not done, and why:**
+**Second slice shipped 2026-10-08 (finishing the phase):**
 
-- **P4-2: controls from prop schemas, blueprint pages with fixtures, the conformance
-  validator and render-as-Markdown panels.** Each is a further slice on the same entry list.
-- **Publishing `@cascivo/workbench`** is the maintainer's call: removing `"private": true`
-  adds a package to the release train.
-- **P4-3** (`cascivo workbench test`) needs the entry list served as an index, then Vitest
-  browser mode over it.
-- **P4-4** (`preview_entry`) is deferred: `render_view_as_markdown` already validates and
-  renders `{ component, props }`. Examples are TSX, not view configs, so a new tool would only
-  add bytes to the tool list until it can address workbench entries.
-- **P4-5** (shadow axe sweep) needs P4-3's index.
+- **P4-2 ☑** The remaining panels: **Controls** (from each prop's manifest type: string-literal
+  unions, `boolean`, `string`, `number`, applied to the element the example returns) and
+  **Markdown** (the stage through `@cascivo/text`'s `elementToMarkdown`, resolved from the
+  project because `@cascivo/text` releases in lockstep with core). Every entry renders alone at
+  `/?embed&theme=<name>#…`, and `/index.json` lists them: the "iframe URL per entry plus an
+  index" §5.3 asked for.
+- **P4-3 ☑** `cascivo-workbench test [dir]` checks every renderable entry × theme (default
+  light and dark, `--themes all`) with axe's WCAG 2.x A/AA tags, over the whole embed document
+  so overlays in portals count. `--screenshots <dir>` compares each entry's picture with a
+  saved one; `--update` rewrites them. Entries that need host code are skipped and listed; any
+  other render error fails.
+  - **Diverged from the spec:** a Playwright loop over the index instead of Vitest browser
+    mode. Browser mode would ask the project for a Vitest browser config, a provider package
+    and test files; the loop needs only `playwright` and `axe-core`, and has the shape of the
+    Storybook sweep it has to be compared with (P4-5). Screenshots compare bytes, not pixels,
+    so baselines belong to one machine image, the same caveat as the repo's visual baselines.
+  - **Measured** on the repo's 159 manifests, light + dark: 510 checks,
+    103 entries skipped as needing host code, 13 failures. All 13 are real, and the Storybook
+    sweep cannot see them:
+    - light: `native-select` example 0 has no accessible name (`select-name`): the manifest
+      example agents copy is inaccessible. `calendar` with a `defaultValue` puts an
+      unsupported ARIA attribute on the selected day (`aria-allowed-attr`).
+    - dark (Storybook checks light only): `color-contrast` in Button destructive, Link ×3,
+      LogViewer ×2, Card in Stack and Indicator, FileUploader. Button destructive's cause:
+      `--cascivo-color-text-on-destructive`'s static fallback is white, and only browsers
+      with `contrast-color()` pick a dark text over the light-red dark-theme background.
+- **P4-5 ☑ (running)** `.github/workflows/axe.yml` gains a non-blocking `workbench-shadow` job:
+  the workbench sweep over `packages/components/src`, light theme only to match Storybook.
+  Retire Storybook's sweep only if this one matches it for a full release cycle; the two light
+  findings above are the first differences to resolve.
+- **P4-4 ☒ not built.** `render_view_as_markdown` already validates and renders
+  `{ component, props }`, and the tool list sits at 22,340 of its 22,500-byte budget, so a
+  second tool for the same job would raise the budget for nothing. Revisit only if agents are
+  seen wrapping single components in view configs often enough to matter.
+
+**Still open:** blueprint pages rendered with fixtures (they need P2-5's renderer coverage),
+and publishing `@cascivo/workbench` (the maintainer's call: it is `private` until then).
 
 ### P4-1 ☑ `cascivo add` copies `.meta.ts`
 
@@ -506,7 +533,7 @@ parity test.
   2. `add` writes it next to the component.
   3. `update` merges it like any other file.
 
-### P4-2 ◐ `@cascivo/workbench`
+### P4-2 ☑ `@cascivo/workbench`
 
 - **Change:** generalise `@cascivo/email-preview`'s Vite plugin and bin. Entries come from:
   - `meta.examples[]`,
@@ -516,15 +543,15 @@ parity test.
 - **Panels:** theme × viewport × platform, the token inspector, the conformance validator,
   render-as-Markdown, and copy-as-agent-context.
 
-### P4-3 ☐ `cascivo workbench test`
+### P4-3 ☑ `cascivo workbench test`
 
 - **Change:** Vitest browser mode runs axe and `toMatchScreenshot` over the entries.
 
-### P4-4 ☐ MCP `preview_entry(name, props)`
+### P4-4 ☒ MCP `preview_entry(name, props)` (not built, see above)
 
 - **Change:** returns validation results plus the Markdown render.
 
-### P4-5 ☐ Shadow axe sweep
+### P4-5 ☑ Shadow axe sweep
 
 - **Change:** point `axe-sweep.mjs` at the workbench index alongside Storybook for one release
   cycle.

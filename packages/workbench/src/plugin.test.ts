@@ -11,12 +11,15 @@ import { createServer } from 'vite'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import {
   cascivoWorkbench,
+  embedUrl,
   entriesModule,
+  entryIndex,
   examplesModule,
   scan,
   scopeModule,
   stylesModule,
   tagNames,
+  textModule,
 } from './plugin.mjs'
 
 let dir: string
@@ -134,6 +137,49 @@ describe('generated modules', () => {
   })
 })
 
+describe('the entry index', () => {
+  it('lists one entry per example, with the URL that renders it alone', async () => {
+    const index = await entryIndex(dir, scan(dir), async () => ({
+      meta: {
+        name: 'Button',
+        examples: [
+          { title: 'Primary', code: '<Button>Click me</Button>' },
+          { title: 'Snippet', code: 'const x = useThing()' },
+        ],
+      },
+    }))
+    expect(index.entries).toEqual([
+      {
+        id: 'ui/button/button/0',
+        kind: 'component',
+        component: 'Button',
+        title: 'Primary',
+        renders: true,
+        url: '/?embed&theme=light#component/ui/button/button/0',
+      },
+      expect.objectContaining({ id: 'ui/button/button/1', renders: false }),
+      expect.objectContaining({
+        id: 'pages/home',
+        kind: 'preview',
+        url: embedUrl('#preview/pages/home'),
+      }),
+    ])
+  })
+
+  it("re-exports the project's elementToMarkdown", () => {
+    const text = join(dir, 'with-text', 'node_modules', '@cascivo', 'text')
+    mkdirSync(text, { recursive: true })
+    writeFileSync(
+      join(text, 'package.json'),
+      JSON.stringify({ name: '@cascivo/text', exports: { '.': './index.js' } }),
+    )
+    writeFileSync(join(text, 'index.js'), 'export const elementToMarkdown = () => ""\n')
+    expect(textModule(join(dir, 'with-text'))).toBe(
+      `export { elementToMarkdown } from ${JSON.stringify(join(text, 'index.js'))}\n`,
+    )
+  })
+})
+
 describe('in Vite', () => {
   it('compiles the examples of a real manifest', async () => {
     const server = await createServer({
@@ -148,6 +194,27 @@ describe('in Vite', () => {
       const result = await server.transformRequest('/@cascivo-workbench/examples/0.tsx')
       expect(result?.code).toContain('Click me')
       expect(result?.code).not.toContain('<Button>')
+    } finally {
+      await server.close()
+    }
+  })
+
+  it('serves the entry index', async () => {
+    const server = await createServer({
+      configFile: false,
+      root: fileURLToPath(new URL('..', import.meta.url)),
+      logLevel: 'silent',
+      server: { port: 0, hmr: false, watch: null },
+      plugins: [cascivoWorkbench({ dir })],
+    })
+    try {
+      await server.listen()
+      const url = server.resolvedUrls?.local[0]
+      const index: unknown = await (await fetch(new URL('/index.json', url))).json()
+      expect(index).toMatchObject({
+        v: 1,
+        entries: [{ id: 'ui/button/button/0' }, { id: 'ui/button/button/1' }, { id: 'pages/home' }],
+      })
     } finally {
       await server.close()
     }

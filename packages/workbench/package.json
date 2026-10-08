@@ -24,14 +24,17 @@
   },
   "scripts": {
     "check": "tsc --noEmit",
-    "test": "vp test"
+    "test": "vp test",
+    "sweep": "node bin/cascivo-workbench.mjs test ../components/src --project ../../apps/examples/react-vite"
   },
   "dependencies": {
     "vite": "^8.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "axe-core": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "typescript": "catalog:",
