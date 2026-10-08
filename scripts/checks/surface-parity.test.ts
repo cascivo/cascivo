@@ -36,7 +36,8 @@ interface Surface {
 
 const SURFACES: Surface[] = [
   // Paired
-  { capability: 'scaffold an app', cli: 'create', mcp: ['create_app'] },
+  // `compose_app` is `create --from <blueprint>`.
+  { capability: 'scaffold an app', cli: 'create', mcp: ['create_app', 'compose_app'] },
   { capability: 'install components', cli: 'add', mcp: ['add_to_project', 'add_template'] },
   { capability: 'list components', cli: 'list', mcp: ['list_components'] },
   { capability: 'search components', cli: 'search', mcp: ['search_components'] },
@@ -132,6 +133,12 @@ const SURFACES: Surface[] = [
     capability: 'browse templates',
     mcp: ['list_templates', 'get_template'],
     oneSided: 'Humans browse the marketplace site; `add` installs.',
+  },
+  {
+    capability: 'browse blueprint blocks',
+    mcp: ['list_blocks'],
+    oneSided:
+      'An agent needs the catalog before writing a blueprint; on the CLI, `create --from` names every block when one is wrong.',
   },
 ]
 

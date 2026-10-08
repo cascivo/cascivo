@@ -246,7 +246,46 @@ byte-for-byte would need conditional fragments, which is the same complexity mov
 
 ## Phase 2 — Blueprints
 
-### P2-1 ☐ Blueprint schema and parser
+**First slice shipped 2026-10-08** (after the user chose blueprints over finishing the Phase 1
+aggregation files):
+
+- **The blueprint is `create`'s flags plus a block per page.** `cascivo.app.json` takes `name`,
+  `framework`, `theme`, `runtime`, `examples`, `auth` and `pages: [{ title, block? }]`, the
+  vocabulary the CLI already teaches. Pages are today's sections, so routes and nav come for
+  free on both `react-vite` and `cloudflare`.
+- **The parser is strict:**
+  - unknown fields fail;
+  - an unknown block fails with the full list of blocks;
+  - `name` must be one plain directory segment, so a model cannot write outside the working
+    directory;
+  - blocks need `react-vite` or `cloudflare`.
+- The flag combination rules moved into one `optionsError()` that both paths use.
+- **Blocks became generated recipes.** `scripts/recipes/blocks.ts`, which runs in `pnpm regen`,
+  rewrites each block's relative and `@cascivo/core` imports to `@cascivo/react` and writes
+  `recipes/block-<name>/`. That covers 15 blocks. It skips the rest with a printed reason:
+  - three are app shells;
+  - `dashboard-charts` needs `@cascivo/charts`;
+  - `empty-dashboard`, `login-page` and `settings-form-page` need `DashboardLayout`,
+    `AuthLayout` and `SettingsLayout`, which `@cascivo/react` does not export.
+- **Surfaces:** `cascivo create --from cascivo.app.json` on the CLI, and MCP `compose_app` plus
+  `list_blocks`. `list_blocks` reads a catalog the same generator writes, so the two cannot
+  disagree. The tool-list budget went to 22.5 KB, with the reason recorded in the test.
+- **Verified:**
+  - Every block lints clean under the scaffold's own ESLint
+    (`scaffold-blueprint-lint.test.ts`, in `scaffold:check`).
+  - A React + Vite app with all 15 blocks installs from packed tarballs, passes `tsc`, builds,
+    and passes its own `format:check` (`framework:check`).
+  - That run found and fixed a latent bug: a long `--sections` list produced a
+    `type Section = …` line over Prettier's width, failing the app's own format check.
+  - Apps without blocks are byte-identical across the 906 golden combinations.
+- **Open:**
+  - Export the three layouts from `@cascivo/react` to unlock four more blocks.
+  - `@cascivo/charts` as a dependency a block can bring.
+  - `cascivo app add page`.
+  - Prompts that produce a blueprint.
+  - P2-5 and P2-6.
+
+### P2-1 ☑ Blueprint schema and parser
 
 - **Change:**
   1. The `cascivo.app.json` schema (JSON Schema plus a `parseBlueprint(raw: unknown)` parser)
@@ -256,7 +295,7 @@ byte-for-byte would need conditional fragments, which is the same complexity mov
   2. Validation runs against the registry's closed vocabulary. An unknown block fails with the
      list of valid ones.
 
-### P2-2 ☐ Compile a blueprint
+### P2-2 ◐ Compile a blueprint
 
 - **Change:**
   1. `cascivo create --from cascivo.app.json` compiles a blueprint.
@@ -270,7 +309,7 @@ byte-for-byte would need conditional fragments, which is the same complexity mov
 - **Upgrades:** each generated file records `recipe@version` in `cascivo.lock`, so
   `cascivo update` three-way merges app-level files.
 
-### P2-4 ☐ MCP `compose_app(blueprint)`
+### P2-4 ☑ MCP `compose_app(blueprint)`
 
 - **Change:**
   1. `compose_app` replaces `create_app` + `scaffold_view` + N × `add_to_project` for new apps.

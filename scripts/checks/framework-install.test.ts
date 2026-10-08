@@ -352,6 +352,45 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
   })
 
   /**
+   * A blueprint page renders a registry block whose source is copied into the app and rewritten
+   * to import from @cascivo/react (scripts/recipes/blocks.ts). Only a real install can show that
+   * every rewritten import resolves and type-checks against the packed package.
+   */
+  describe('react-vite blueprint with every block', () => {
+    let app: string
+
+    before(() => {
+      if (!ready) return
+      const blocks = readdirSync(join(REPO_ROOT, 'packages/cli/recipes'))
+        .filter((d) => d.startsWith('block-'))
+        .map((d) => d.slice('block-'.length))
+      const blueprint = join(
+        mkdtempSync(join(tmpdir(), 'cascivo-fw-blueprint-')),
+        'cascivo.app.json',
+      )
+      writeFileSync(
+        blueprint,
+        JSON.stringify({
+          name: 'blueprint-app',
+          pages: blocks.map((block, i) => ({ title: `Page ${i + 1}`, block })),
+        }),
+      )
+      app = scaffold('react-vite', 'blueprint-app', ['--from', blueprint])
+      run('pnpm', ['exec', 'tsc', '--noEmit'], app)
+      run('pnpm', ['exec', 'vite', 'build'], app)
+    })
+
+    it('type-checks and builds with every block on a page', { skip: !ready }, () => {
+      assert.ok(existsSync(join(app, 'src', 'blocks')), 'the blueprint wrote no blocks')
+      assert.ok(existsSync(join(app, 'dist', 'index.html')), 'vite build wrote no index.html')
+    })
+
+    it('passes its own format:check', { skip: !ready }, () => {
+      assertFormatted(app)
+    })
+  })
+
+  /**
    * The client-app-on-Cloudflare scaffold. Two things only a real install can show: that
    * `@cloudflare/vite-plugin` + `@preact/preset-vite` + `@cascivo/app/vite` build the pair
    * from packed tarballs, and that the BUILT Worker — `createHandler` from `@cascivo/app/api`

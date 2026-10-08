@@ -34,9 +34,11 @@ describe('createServer', () => {
 })
 
 // Every tool's name, description and schema is sent to the model on every turn, so this surface is
-// paid for many times per session. The budget is the measured size after the 2026-10-07 trim
-// (22.9 KB → 19.8 KB) plus a little headroom: raising it should be a decision, not an accident.
-const TOOL_LIST_BUDGET = 20_500
+// paid for many times per session. Raising the budget should be a decision, not an accident:
+// - 2026-10-07: the trim took it from 22.9 KB to 19.8 KB.
+// - 2026-10-08: compose_app + list_blocks added 2.2 KB. compose_app replaces create_app, then
+//   reading every page's components, then writing every page by hand: far more than 2 KB a turn.
+const TOOL_LIST_BUDGET = 22_500
 
 describe('token budget', () => {
   it('keeps the tool list within its byte budget', async () => {
@@ -98,5 +100,24 @@ describe('validate_view targets', () => {
       ).callTool({ name: 'validate_view', arguments: { config: view, target: 'tsx' } }),
     )
     expect(JSON.parse(result)).toMatchObject({ valid: true })
+  })
+})
+
+describe('blueprint tools', () => {
+  it('lists every block a blueprint page can render, one line each', async () => {
+    const listed = textOf(await (await connect()).callTool({ name: 'list_blocks', arguments: {} }))
+    const lines = listed.split('\n')
+    expect(lines.length).toBeGreaterThan(10)
+    expect(lines.find((l) => l.startsWith('dashboard-overview — '))).toBeDefined()
+  })
+
+  it('refuses a block that does not exist before running anything', async () => {
+    const result = await (
+      await connect()
+    ).callTool({
+      name: 'compose_app',
+      arguments: { name: 'acme', pages: [{ title: 'Charts', block: 'kpi-charts' }] },
+    })
+    expect(result.isError).toBe(true)
   })
 })

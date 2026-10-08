@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { isSafeRelativePath } from '@cascivo/registry'
@@ -108,4 +108,12 @@ export function recipeFiles(name: string, vars: RecipeVars): { path: string; con
       (_, key: keyof RecipeVars) => vars[key],
     ),
   }))
+}
+
+/** The registry blocks a blueprint page can render: each has a `block-<name>` recipe. */
+export function blockNames(): string[] {
+  return readdirSync(recipesDir())
+    .filter((dir) => dir.startsWith('block-'))
+    .map((dir) => dir.slice('block-'.length))
+    .sort()
 }

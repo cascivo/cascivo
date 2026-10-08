@@ -95,6 +95,10 @@ export const CREATE_APP_EXAMPLE_NAMES = Object.keys(CREATE_APP_EXAMPLES) as [
   ...CreateAppExampleName[],
 ]
 
+export function isCreateAppExample(name: string): name is CreateAppExampleName {
+  return Object.hasOwn(CREATE_APP_EXAMPLES, name)
+}
+
 /** One line per example, for the tool description. */
 export function exampleSummaries(): string {
   return CREATE_APP_EXAMPLE_NAMES.map((n) => `"${n}": ${CREATE_APP_EXAMPLES[n].summary}`).join('; ')

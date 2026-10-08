@@ -21,7 +21,12 @@ const MCP_TOOL_GROUPS: [string, [string, string][]][] = [
   [
     'Start an app',
     [
-      ['create_app', 'whole app: shell, nav, theme, pages; cloudflare examples and sign-in'],
+      ['compose_app', 'whole app from a blueprint: each page renders a registry block'],
+      ['list_blocks', 'the blocks a blueprint page can render, one line each'],
+      [
+        'create_app',
+        'whole app: shell, nav, theme, placeholder pages; cloudflare examples and sign-in',
+      ],
       ['list_templates', 'whole-page templates'],
       ['get_template', 'one template'],
       ['add_template', 'install a template'],

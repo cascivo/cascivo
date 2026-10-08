@@ -201,6 +201,35 @@ cascivo app shell, side navigation, header, and a theme. Options:
 `--template <spec>` (start from a marketplace template), `--theme <name>`,
 `--sections "<a, b>"`, `--yes`.
 
+### New project from a blueprint
+
+A blueprint describes the app and names the registry block each page renders. The CLI turns it
+into the same scaffold, with every block's source in `src/blocks/` and every page wired into the
+routes and the side nav:
+
+```json
+{
+  "name": "acme-console",
+  "framework": "cloudflare",
+  "theme": "dark",
+  "pages": [
+    { "title": "Overview", "block": "dashboard-overview" },
+    { "title": "Users", "block": "users-table-page" },
+    { "title": "Settings", "block": "settings-profile" },
+    { "title": "Reports" }
+  ]
+}
+```
+
+```sh
+npx cascivo create --from cascivo.app.json
+```
+
+A page without a `block` is a placeholder to build out. `runtime`, `examples` and `auth` take
+the same values as the flags, and a blueprint is held to the same rules. An unknown field or
+block fails with the list of valid ones. The blueprint is kept in the app as `cascivo.app.json`.
+Agents use the MCP tools `list_blocks` and `compose_app` for the same thing.
+
 ### Existing project
 
 ```sh

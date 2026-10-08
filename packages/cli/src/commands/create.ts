@@ -1,5 +1,5 @@
 import { existsSync, readdirSync } from 'node:fs'
-import { join } from 'node:path'
+import { join, resolve } from 'node:path'
 import { stdin, stdout } from 'node:process'
 import { createInterface } from 'node:readline/promises'
 import {
@@ -15,6 +15,7 @@ import { CASCIVO_VERSIONS, SIGNALS_PEER } from '../generated/versions.js'
 // app's own Vite plugin will, so the two cannot drift.
 import { generateRoutes } from '@cascivo/app/vite'
 import { loadRecipe, recipeFiles } from '../scaffold/recipes.js'
+import type { RecipeVars } from '../scaffold/recipes.js'
 
 /**
  * Exact published versions, baked in at build time by `scripts/registry/cli-versions.ts`.
@@ -95,11 +96,11 @@ export const EXAMPLES = [
   'social',
 ] as const
 
-function isExample(value: string): value is Example {
+export function isExample(value: string): value is Example {
   return (EXAMPLES as readonly string[]).includes(value)
 }
 
-function isRuntime(value: string): value is Runtime {
+export function isRuntime(value: string): value is Runtime {
   return (RUNTIMES as readonly string[]).includes(value)
 }
 
@@ -128,6 +129,11 @@ export interface ScaffoldOptions {
    * needs a signed-in user.
    */
   auth?: Auth
+  /**
+   * The registry block each section's page renders, aligned with `sections` (a blueprint's
+   * `pages[].block`). `undefined` keeps the placeholder page.
+   */
+  blocks?: (string | undefined)[]
 }
 
 export type Auth = 'access' | 'email' | 'oauth' | 'email,oauth'
@@ -145,6 +151,8 @@ interface Section {
   label: string
   /** PascalCase component + file name. */
   component: string
+  /** The registry block the page renders, from a blueprint (`recipes/block-<block>`). */
+  block?: string
 }
 
 /** Slug suitable for a union-member string literal: lower-kebab, alnum only. */
@@ -203,11 +211,11 @@ function packageName(name: string): string {
 }
 
 /** Turn raw section labels into unique keyed/component-named sections. */
-function resolveSections(labels: string[]): Section[] {
+function resolveSections(labels: string[], blocks: (string | undefined)[] = []): Section[] {
   const seenKeys = new Set<string>()
   const seenComponents = new Set<string>()
   const sections: Section[] = []
-  for (const label of labels) {
+  for (const [index, label] of labels.entries()) {
     const trimmed = label.trim()
     if (!trimmed) continue
     let key = slug(trimmed)
@@ -220,7 +228,8 @@ function resolveSections(labels: string[]): Section[] {
     }
     seenKeys.add(key)
     seenComponents.add(component)
-    sections.push({ key, label: trimmed, component })
+    const block = blocks[index]
+    sections.push({ key, label: trimmed, component, ...(block ? { block } : {}) })
   }
   return sections.length > 0 ? sections : [{ key: 'home', label: 'Home', component: 'Home' }]
 }
@@ -396,7 +405,13 @@ function appTsx(sections: Section[]): string {
     .map((s) => `import { ${s.component} } from './sections/${s.component}'`)
     .join('\n')
 
-  const unionType = sections.map((s) => `'${s.key}'`).join(' | ')
+  // As Prettier prints it (printWidth 100): one line while it fits, else one member per line.
+  // A long section list otherwise fails the app's own `format:check`.
+  const oneLine = `type Section = ${sections.map((s) => `'${s.key}'`).join(' | ')}`
+  const sectionType =
+    oneLine.length <= 100
+      ? oneLine
+      : `type Section =\n${sections.map((s) => `  | '${s.key}'`).join('\n')}`
 
   const navItems = sections
     .map(
@@ -424,7 +439,7 @@ import { signal, useSignals, type SideNavItem } from '@cascivo/react'
 import { Shell } from './Shell'
 ${sectionImports}
 
-type Section = ${unionType}
+${sectionType}
 
 const section = signal<Section>('${sections[0]!.key}')
 
@@ -496,7 +511,40 @@ ${appShellOpenTag(opts, 'navItems')}
 `
 }
 
+/**
+ * A page that renders a registry block. The block's source is the app's own, in `src/blocks/`,
+ * written there by its `block-<name>` recipe.
+ */
+function blockPageTsx(
+  section: Section,
+  declaration: 'export function' | 'export default function',
+): string {
+  const block = pascalCase(section.block!)
+  const local = block === section.component ? `${block}Block` : block
+  return `import { ${local === block ? block : `${block} as ${local}`} } from '../blocks/${section.block}'
+
+${declaration} ${section.component}() {
+  return <${local} />
+}
+`
+}
+
+/** The recipe files for every block the pages render, each once. */
+function blockFiles(sections: Section[], opts: ScaffoldOptions): ScaffoldFile[] {
+  const blocks = [...new Set(sections.flatMap((s) => (s.block ? [s.block] : [])))]
+  return blocks.flatMap((block) => recipeFiles(`block-${block}`, recipeVars(opts)))
+}
+
+function recipeVars(opts: ScaffoldOptions): RecipeVars {
+  return {
+    brand: brandName(opts.name),
+    appName: opts.name.replace(/[\\']/g, ''),
+    usageDataset: usageDataset(opts),
+  }
+}
+
 function sectionTsx(section: Section): string {
+  if (section.block) return blockPageTsx(section, 'export function')
   // No inline styles: the generated AGENTS.md tells the agent not to write them, and a
   // scaffold that models the opposite teaches the opposite. The page inset comes from
   // AppShell's own \`padding\` prop, and the stacking from \`Flex\` — note \`gap\` takes a
@@ -3972,17 +4020,15 @@ function cloudflareRecipes(opts: ScaffoldOptions): string[] {
 function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): ScaffoldFile[] {
   const runtime = runtimeOf(opts)
   const recipes = cloudflareRecipes(opts)
-  const recipeOutput = recipes.flatMap((recipe) =>
-    recipeFiles(recipe, {
-      brand: brandName(opts.name),
-      appName: opts.name.replace(/[\\']/g, ''),
-      usageDataset: usageDataset(opts),
-    }),
-  )
+  const recipeOutput = recipes.flatMap((recipe) => recipeFiles(recipe, recipeVars(opts)))
   const routeFiles = [
     ...sections.map((s, i) => ({
       file: cfSectionFile(s, i),
-      contents: i === 0 ? cfFirstRouteTsx(s) : cfRouteTsx(s, i),
+      contents: s.block
+        ? blockPageTsx(s, 'export default function')
+        : i === 0
+          ? cfFirstRouteTsx(s)
+          : cfRouteTsx(s, i),
     })),
     ...(hasAccounts(opts) ? [{ file: 'account.tsx', contents: cfAccountRouteTsx(opts) }] : []),
   ]
@@ -4023,6 +4069,7 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
         ]
       : []),
     ...recipeOutput,
+    ...blockFiles(sections, opts),
     ...routeFiles.map(({ file, contents }) => ({ path: `src/routes/${file}`, contents })),
     // Written now so \`tsc\` passes before the first \`vite\` run; the plugin keeps it current.
     { path: 'src/routes.gen.ts', contents: generateRoutes(routes, './routes') },
@@ -4030,7 +4077,7 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
 }
 
 export function buildScaffold(opts: ScaffoldOptions): ScaffoldFile[] {
-  const sections = resolveSections(opts.sections)
+  const sections = resolveSections(opts.sections, opts.blocks)
   if (opts.framework === 'astro') return buildAstroScaffold(opts, sections)
   if (opts.framework === 'cloudflare') {
     // The digest emails the report page the export example adds, so it brings that along.
@@ -4069,6 +4116,7 @@ export function buildScaffold(opts: ScaffoldOptions): ScaffoldFile[] {
       path: `src/sections/${s.component}.tsx`,
       contents: sectionTsx(s),
     })),
+    ...blockFiles(sections, opts),
   ]
 }
 
@@ -4099,6 +4147,49 @@ function buildAstroScaffold(opts: ScaffoldOptions, sections: Section[]): Scaffol
 
 const DEFAULT_SECTIONS = ['Dashboard', 'Reports', 'Settings']
 
+/**
+ * Combinations that cannot work, as the message to print, or `null`. Shared by the flags and
+ * `--from <blueprint>`, so a blueprint is held to the same rules as a command line.
+ */
+export function optionsError(opts: Omit<ScaffoldOptions, 'pm'>): string | null {
+  const examples = opts.examples ?? []
+  if (examples.length > 0 && opts.framework !== 'cloudflare') {
+    return '--example needs --framework cloudflare (it adds a Worker-backed page).'
+  }
+  if (examples.includes('social') && opts.auth === 'access') {
+    return (
+      '--example social needs accounts (posts belong to a user): use --auth email, oauth or ' +
+      'email,oauth, or leave --auth out to get oauth.'
+    )
+  }
+  if (opts.auth && opts.framework !== 'cloudflare') {
+    return '--auth needs --framework cloudflare (it guards the Worker).'
+  }
+  if (examples.includes('agent') && opts.runtime === 'preact') {
+    return (
+      "--example agent needs --runtime react: the Agents SDK's hooks call React 19's use(), " +
+      'which Preact does not implement.'
+    )
+  }
+  return null
+}
+
+/** Read and parse `--from <file>`, printing the problem and returning null when it is not one. */
+async function readBlueprint(
+  file: string,
+  cwd: string,
+): Promise<Omit<ScaffoldOptions, 'pm'> | null> {
+  const { readFileSync } = await import('node:fs')
+  const { parseBlueprint, blueprintOptions } = await import('../scaffold/blueprint.js')
+  try {
+    const raw: unknown = JSON.parse(readFileSync(resolve(cwd, file), 'utf8'))
+    return blueprintOptions(parseBlueprint(raw, file))
+  } catch (e) {
+    console.error(e instanceof Error ? e.message : String(e))
+    return null
+  }
+}
+
 export async function create(args: string[], cwd: string = process.cwd()): Promise<void> {
   const yes = args.includes('--yes') || args.includes('-y')
   // Skip flag values (e.g. `bun` in `--pm bun`) so the project name is the first
@@ -4113,6 +4204,7 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
     'runtime',
     'example',
     'auth',
+    'from',
   ])[0]
   const themeArg = flagValue(args, 'theme')
   const sectionsArg = flagValue(args, 'sections')
@@ -4170,7 +4262,8 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
   const interactive = !yes && stdin.isTTY
   const rl = interactive ? createInterface({ input: stdin, output: stdout }) : null
 
-  try {
+  /** The options from flags and, on a terminal, prompts for the ones not given. */
+  const prompted = async (): Promise<Omit<ScaffoldOptions, 'pm'>> => {
     let name = nameArg
     if (!name && rl) {
       name = (await rl.question('Project name? [my-cascivo-app]: ')).trim()
@@ -4206,43 +4299,38 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
       ? (framework as Framework)
       : 'react-vite'
 
-    if (exampleArgs.length > 0 && resolvedFramework !== 'cloudflare') {
-      console.error('--example needs --framework cloudflare (it adds a Worker-backed page).')
-      process.exitCode = 1
-      return
-    }
-    if (exampleArgs.includes('social') && authArg === 'access') {
-      console.error(
-        '--example social needs accounts (posts belong to a user): use --auth email, oauth or ' +
-          'email,oauth, or leave --auth out to get oauth.',
-      )
-      process.exitCode = 1
-      return
-    }
-    if (authArg && resolvedFramework !== 'cloudflare') {
-      console.error('--auth needs --framework cloudflare (it guards the Worker).')
-      process.exitCode = 1
-      return
-    }
-    if (exampleArgs.includes('agent') && runtimeArg === 'preact') {
-      console.error(
-        "--example agent needs --runtime react: the Agents SDK's hooks call React 19's use(), " +
-          'which Preact does not implement.',
-      )
-      process.exitCode = 1
-      return
-    }
-
-    const opts: ScaffoldOptions = {
+    return {
       name,
       framework: resolvedFramework,
       theme: resolvedTheme,
       sections: sections.length > 0 ? sections : DEFAULT_SECTIONS,
-      pm,
       ...(isRuntime(runtimeArg) ? { runtime: runtimeArg } : {}),
       ...(exampleArgs.length > 0 ? { examples: exampleArgs.filter(isExample) } : {}),
       ...(authArg ? { auth: authArg } : {}),
     }
+  }
+
+  try {
+    const fromArg = flagValue(args, 'from')
+    const chosen = fromArg ? await readBlueprint(fromArg, cwd) : await prompted()
+    if (!chosen) {
+      process.exitCode = 1
+      return
+    }
+    const opts: ScaffoldOptions = {
+      ...chosen,
+      ...(fromArg && nameArg ? { name: nameArg } : {}),
+      pm,
+    }
+    const problem = optionsError(opts)
+    if (problem) {
+      console.error(problem)
+      process.exitCode = 1
+      return
+    }
+    const name = opts.name
+    const resolvedFramework = opts.framework ?? 'react-vite'
+    const resolvedTheme = opts.theme
 
     const targetDir = join(cwd, name)
     if (existsSync(targetDir) && readdirSync(targetDir).length > 0) {
@@ -4254,6 +4342,12 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
     const files = buildScaffold(opts)
     for (const file of files) {
       await writeFileSafe(join(targetDir, file.path), file.contents)
+    }
+    if (fromArg) {
+      // The app's record of intent: what it was compiled from, for the next agent to read.
+      const { readFileSync } = await import('node:fs')
+      const raw: unknown = JSON.parse(readFileSync(resolve(cwd, fromArg), 'utf8'))
+      await writeFileSafe(join(targetDir, 'cascivo.app.json'), formatJson(raw))
     }
 
     console.log(

@@ -133,6 +133,9 @@ Options:
                             write needs a signed-in user (cloudflare only).
                             --auth email,oauth: both
   --template <spec>         Start from a marketplace template (@ns/name or owner/repo/name)
+  --from <file>             Compile a blueprint (cascivo.app.json): name, framework, theme,
+                            pages [{ title, block? }], runtime, examples, auth. Each page
+                            renders its registry block. Replaces the other options.
   --theme <name>            Theme to install (${THEME_LIST})
   --sections "<a, b>"       Comma-separated nav section labels (one component each)
   --package-manager <pm>    Package manager for README/next-steps (alias --pm; default: auto-detect)

@@ -11,6 +11,13 @@ The user describes a page in plain English (e.g. "a dashboard with a sidebar nav
 
 ## Procedure
 
+### Whole new app? Use a blueprint instead
+
+This skill designs one page. If the user wants a new app (several pages in a shell), call
+`list_blocks`, then `compose_app` with one page per screen, each naming the block that fits. That
+writes the shell, routes, nav and every block's source in one call. Use this skill afterwards
+for any page no block covers.
+
 ### 0. Check the marketplace for a matching template first
 
 Before scaffolding from scratch, see if a published **template** already covers the request — a template is a

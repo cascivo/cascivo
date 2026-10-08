@@ -1,0 +1,7 @@
+{
+  "name": "block-auth-signup",
+  "files": [
+    "src/blocks/auth-signup.tsx",
+    "src/blocks/auth-signup.module.css"
+  ]
+}

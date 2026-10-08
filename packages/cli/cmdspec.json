@@ -85,6 +85,13 @@
           "effects": ["read", "write", "network"]
         },
         {
+          "name": "--from",
+          "summary": "Compile a blueprint file (cascivo.app.json)",
+          "description": "A blueprint names the app, its framework, theme, runtime, examples and auth, and its pages as [{ \"title\", \"block\"? }]: each page renders that registry block, wired into the routes and the side nav. It replaces the other options; the blueprint is copied into the app as cascivo.app.json.",
+          "value": { "name": "file", "format": "file" },
+          "effects": ["read", "write"]
+        },
+        {
           "name": "--theme",
           "summary": "Theme to install",
           "value": {

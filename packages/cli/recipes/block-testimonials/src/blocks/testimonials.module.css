@@ -1,0 +1,67 @@
+@layer cascivo.component {
+  .root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-8);
+    padding-block: var(--cascivo-space-12);
+  }
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-2);
+    text-align: center;
+  }
+
+  .heading {
+    margin: 0;
+    font-family: var(--cascivo-font-display);
+    font-size: var(--cascivo-text-3xl);
+    font-weight: var(--cascivo-font-bold);
+    color: var(--cascivo-color-text);
+  }
+
+  .subtitle {
+    margin: 0;
+    color: var(--cascivo-color-text-muted);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--cascivo-space-6);
+  }
+
+  .card {
+    height: 100%;
+  }
+
+  .quote {
+    margin: 0;
+    color: var(--cascivo-color-text);
+    line-height: var(--cascivo-leading-relaxed);
+  }
+
+  .person {
+    display: flex;
+    align-items: center;
+    gap: var(--cascivo-space-3);
+    margin-block-start: var(--cascivo-space-4);
+  }
+
+  .meta {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .name {
+    font-weight: var(--cascivo-font-semibold);
+    color: var(--cascivo-color-text);
+    font-size: var(--cascivo-text-sm);
+  }
+
+  .role {
+    color: var(--cascivo-color-text-muted);
+    font-size: var(--cascivo-text-xs);
+  }
+}

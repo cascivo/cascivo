@@ -1,4 +1,7 @@
 import { spawnSync } from 'node:child_process'
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { z } from 'zod'
 import {
@@ -22,6 +25,7 @@ import { THEMES, addArgs, createAppArgs } from './cli-args.js'
 import {
   AUTH_MODES,
   CREATE_APP_EXAMPLE_NAMES,
+  isCreateAppExample,
   authSetup,
   authSummaries,
   exampleSetup,
@@ -30,6 +34,7 @@ import {
 import { loadViewToMarkdown } from './view-markdown.js'
 import { scaffoldView } from './scaffold-view.js'
 import { RENDERABLE, buildGrammar, formatGrammar } from './grammar.js'
+import { BLUEPRINT_BLOCKS } from './blocks.generated.js'
 import { buildGenerationPrompt } from './prompt.js'
 import { loadTokenCatalog } from './tokens.js'
 import { loadIconCatalog, searchIcons } from './icons.js'
@@ -424,6 +429,72 @@ export function createServer(options: ServerOptions = {}): McpServer {
       return text(
         (result.stdout || `Created ${name}.`) + exampleSetup(examples ?? []) + authSetup(auth),
       )
+    },
+  )
+
+  server.registerTool(
+    'list_blocks',
+    {
+      title: 'List blocks',
+      description:
+        'The registry blocks a compose_app page can render, one line each. This is all the context a blueprint needs.',
+      inputSchema: {},
+    },
+    () => text([...BLUEPRINT_BLOCKS].map(([name, what]) => `${name} — ${what}`).join('\n')),
+  )
+
+  server.registerTool(
+    'compose_app',
+    {
+      title: 'Compose app from a blueprint',
+      description:
+        "Write a whole app from a blueprint in one call: pages render registry blocks (list_blocks), wired into the routes and side nav, on create_app's shell. Prefer this to create_app plus hand-written pages. Runs `cascivo create --from`; the blueprint is kept in the app as cascivo.app.json.",
+      inputSchema: {
+        name: z.string().describe('Project name and directory, e.g. "acme-console"'),
+        pages: z
+          .array(
+            z.object({
+              title: z.string().describe('Nav label and heading; the first page is /'),
+              block: z
+                .enum([...BLUEPRINT_BLOCKS.keys()] as [string, ...string[]])
+                .optional()
+                .describe('A block from list_blocks; omit for a page to build out'),
+            }),
+          )
+          .min(1),
+        framework: z.enum(['react-vite', 'cloudflare']).optional().describe('Default react-vite'),
+        theme: z.enum(THEMES).optional(),
+        runtime: z.enum(['preact', 'react']).optional(),
+        examples: z
+          .array(z.string())
+          .optional()
+          .describe("Cloudflare example pages: create_app's `examples` names"),
+        auth: z.enum(AUTH_MODES).optional(),
+        cwd: z.string().optional().describe('Directory to create the app in'),
+      },
+    },
+    ({ cwd, ...blueprint }) => {
+      const dir = mkdtempSync(join(tmpdir(), 'cascivo-blueprint-'))
+      try {
+        const file = join(dir, 'cascivo.app.json')
+        writeFileSync(file, JSON.stringify(blueprint))
+        const result = spawnSync('npx', ['-y', 'cascivo', 'create', '--from', file], {
+          encoding: 'utf8',
+          ...(cwd ? { cwd } : {}),
+        })
+        if (result.status !== 0) {
+          return error(
+            result.stderr || result.error?.message || `Failed to create "${blueprint.name}".`,
+          )
+        }
+        return text(
+          (result.stdout || `Created ${blueprint.name}.`) +
+            exampleSetup((blueprint.examples ?? []).filter(isCreateAppExample)) +
+            authSetup(blueprint.auth),
+        )
+      } finally {
+        rmSync(dir, { recursive: true, force: true })
+      }
     },
   )
 

@@ -1,0 +1,35 @@
+@layer cascivo.component {
+  .root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-8);
+    padding-block: var(--cascivo-space-12);
+  }
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-2);
+    text-align: center;
+  }
+
+  .heading {
+    margin: 0;
+    font-family: var(--cascivo-font-display);
+    font-size: var(--cascivo-text-3xl);
+    font-weight: var(--cascivo-font-bold);
+    color: var(--cascivo-color-text);
+  }
+
+  .subtitle {
+    margin: 0;
+    color: var(--cascivo-color-text-muted);
+  }
+
+  /* Constrain the accordion to a readable measure and center it. */
+  .list {
+    inline-size: 100%;
+    max-inline-size: 42rem;
+    margin-inline: auto;
+  }
+}
