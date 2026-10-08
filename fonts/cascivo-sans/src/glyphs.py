@@ -281,7 +281,7 @@ def _Q(g, p):
 def _C(g, p):
     w = p.Hw * 1.07
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.cap + p.ov)
-    g.stroke(g.arc(cx, cy, rx, ry, 42 + p.ap, 318 - p.ap), caps=('h', 'h'))
+    g.stroke(g.arc(cx, cy, rx, ry, 42 + p.ap, 318 - p.ap), caps=('b', 'b'))
     g.ht = 'c'
     g.sb = (0.62, 0.45)
 
@@ -290,7 +290,7 @@ def _C(g, p):
 def _G(g, p):
     w = p.Hw * 1.12
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.cap + p.ov)
-    g.stroke(g.arc(cx, cy, rx, ry, 42 + p.ap, 360), caps=('h', 'b'))
+    g.stroke(g.arc(cx, cy, rx, ry, 42 + p.ap, 360), caps=('b', 'b'))
     xr = cx + rx
     g.hbar(cx + rx * 0.08, xr + p.V / 2, cy - p.H)
     g.ht = 'c'
@@ -376,7 +376,7 @@ def _J(g, p):
     rx = (w - V / 2) / 2 - 2
     ry = min(rx * 1.05, p.cap * 0.36)
     cy = -p.ov + H / 2 + ry
-    g.stroke([L((xr, p.cap), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, -158 + p.ap), caps=('b', 'h'))
+    g.stroke([L((xr, p.cap), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, -158 + p.ap), caps=('b', 'b'))
     g.ht = 'c'
     g.sb = (0.4, 1)
 
@@ -475,7 +475,7 @@ def _r(g, p):
     rx = w - a - p.V * 0.2
     ry = p.xh * 0.42
     cy = p.xh + p.ov * 0.4 - p.H / 2 - ry
-    g.stroke(g.arc(a + rx, cy, rx, ry, 166, 62 - p.ap * 0.5), taper=(0.5, 1), caps=('b', 'v'))
+    g.stroke(g.arc(a + rx, cy, rx, ry, 166, 62 - p.ap * 0.5), taper=(0.5, 1), caps=('b', 'b'))
     g.sb = (1, 0.25)
 
 
@@ -567,7 +567,7 @@ def _g(g, p):
     rx = (w - V) / 2 * 0.98
     ry = 104 + p.V * 0.25
     cy = p.desc - p.ov * 0.5 + H / 2 + ry
-    g.stroke([L((xr, p.xh), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, -152 + p.ap), caps=('b', 'h'))
+    g.stroke([L((xr, p.xh), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, -152 + p.ap), caps=('b', 'b'))
     cx, cy2, rx2, ry2 = g.box(0, 18, w, p.xh + p.ov)
     g.stroke(g.arc(cx, cy2, rx2, ry2, 28, 332), taper=(0.55, 0.55))
     g.sb = (0.62, 1)
@@ -583,7 +583,7 @@ def _o(g, p):
 def _c(g, p):
     w = p.nw * 0.98
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov)
-    g.stroke(g.arc(cx, cy, rx, ry, 44 + p.ap, 316 - p.ap), caps=('h', 'h'))
+    g.stroke(g.arc(cx, cy, rx, ry, 44 + p.ap, 316 - p.ap), caps=('b', 'b'))
     g.sb = (0.62, 0.42)
 
 
@@ -592,7 +592,7 @@ def _e(g, p):
     w = p.nw * 1.06
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov)
     yb = cy  # flush with where the bowl stroke ends, or its butt end shows below the bar
-    g.stroke(g.arc(cx, cy, rx, ry, 0, 322 - p.ap), caps=('b', 'h'))
+    g.stroke(g.arc(cx, cy, rx, ry, 0, 322 - p.ap), caps=('b', 'b'))
     g.hbar(cx - rx, cx + rx, yb, h=p.bar)  # ends on the bowl's centreline, so the bowl stroke covers it
     g.sb = (0.62, 0.5)
 
@@ -607,7 +607,7 @@ def _a(g, p):
     rxt = xs - cxt
     ryt = p.xh * 0.26
     cyt = p.xh + p.ov * 0.5 - H / 2 - ryt
-    g.stroke([L((xs, 0), (xs, cyt))] + g.arc(cxt, cyt, rxt, ryt, 0, 154 - p.ap), caps=('b', 'h'))
+    g.stroke([L((xs, 0), (xs, cyt))] + g.arc(cxt, cyt, rxt, ryt, 0, 154 - p.ap), caps=('b', 'b'))
     # bowl
     ybt = p.xh * (0.57 + 0.05 * max(0.0, (p.V - 90) / 88))  # heavy a: lift the bowl so it keeps a counter
     yt = ybt - H / 2
@@ -640,11 +640,15 @@ def _f(g, p):
     xs = w * 0.28 + V * 0.1
     # size the hook so its terminal ends above the crossbar's end: a wider hook overhangs empty
     # space and opens a gap before the next letter ("def ault")
-    rx = (w * 0.96 - xs - V / 2) / (1 + math.cos(math.radians(38))) + V * 0.15
+    # Heavier weights end the hook higher: near its tip the hook turns tighter than half a Black
+    # stroke, and the inner edge folds into a pinhole. The angle stays in one quadrant, so the
+    # outline structure (and master compatibility) is unchanged.
+    end = 38 + 34 * max(0.0, (V - 90) / 88)
+    rx = (w * 0.96 - xs - V / 2) / (1 + math.cos(math.radians(end))) + V * 0.15
     ry = rx * 1.15
     top = p.asc + p.ov * 0.3
     cy = top - H / 2 - ry
-    g.stroke([L((xs + V / 2, 0), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, 38), caps=('b', 'b'))
+    g.stroke([L((xs + V / 2, 0), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, end), caps=('b', 'b'))
     g.hbar(0, w * 0.96, p.xh - H)
     g.sb = (0.3, 0.05)
     g.ht = 'a'
@@ -658,7 +662,7 @@ def _t(g, p):
     rx = w - xs - V * 0.4
     ry = rx * 0.9
     cy = -p.ov * 0.4 + H / 2 + ry
-    g.stroke([L((xs + V / 2, p.xh + (p.asc - p.xh) * 0.62), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, 286), caps=('b', 'v'))
+    g.stroke([L((xs + V / 2, p.xh + (p.asc - p.xh) * 0.62), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, 286), caps=('b', 'b'))
     g.hbar(0, w * 0.96, p.xh - H)
     g.sb = (0.3, 0.25)
     g.anchors['topright_x'] = xs + V + p.S * 0.4
@@ -778,10 +782,10 @@ def _two(g, p):
     pe = arc_[-1][-1]
     tx, ty = arc_[-1][-1][0] - arc_[-1][-2][0], arc_[-1][-1][1] - arc_[-1][-2][1]
     t = norm((tx, ty))
-    tgt = (V * 0.55, H)
+    tgt = (g.hw(-0.12, -0.3), H)  # outer edge of the foot lands exactly on the bar's start
     d = math.hypot(tgt[0] - pe[0], tgt[1] - pe[1])
     spine = ('C', pe, (pe[0] + t[0] * d * 0.35, pe[1] + t[1] * d * 0.35), (tgt[0] + d * 0.12, tgt[1] + d * 0.3), tgt)
-    g.stroke(arc_ + [spine], caps=('h', 'h'))
+    g.stroke(arc_ + [spine], caps=('b', 'h'))  # the spine's foot joins the base bar; only the top is a terminal
     g.hbar(0, w, 0)
     g.tab = True
     g.ht = 'c'
@@ -794,9 +798,9 @@ def _three(g, p):
     ym = p.cap * 0.56
     cxu, cyu, rxu, ryu = g.box(w * 0.06, ym - H / 2, w * 0.95, p.cap + p.ov)
     cxl, cyl, rxl, ryl = g.box(0, -p.ov, w, ym + H / 2)
-    g.stroke(g.arc(cxu, cyu, rxu, ryu, 152 - p.ap, -90), caps=('h', 'b'))
+    g.stroke(g.arc(cxu, cyu, rxu, ryu, 152 - p.ap, -90), caps=('b', 'b'))
     g.hbar(w * 0.36, cxu + 2, ym - H / 2)
-    g.stroke(g.arc(cxl, cyl, rxl, ryl, 90, -150 + p.ap), caps=('b', 'h'))
+    g.stroke(g.arc(cxl, cyl, rxl, ryl, 90, -150 + p.ap), caps=('b', 'b'))
     g.tab = True
     g.ht = 'c'
 
@@ -823,7 +827,7 @@ def _five(g, p):
     g.hbar(xl + V * 0.3, w * 0.93, p.cap - H)
     g.line((xl + V / 2 + 10, p.cap - H / 2), (xl + V / 2, yj - 6), caps=('b', 'b'))
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.cap * 0.63)
-    g.stroke(g.arc(cx, cy, rx, ry, 150, -150 + p.ap), taper=(0.6, 1), caps=('b', 'h'))
+    g.stroke(g.arc(cx, cy, rx, ry, 150, -150 + p.ap), taper=(0.6, 1), caps=('b', 'b'))
     g.tab = True
     g.ht = 'c'
 
@@ -842,7 +846,7 @@ def _six_strokes(g, p, w):
     g.oval(0, -p.ov, w, top)
     cx, cy, rx, ry = g.box(0, -p.ov, w * 1.02, p.cap + p.ov)
     cyb = (-p.ov + top) / 2
-    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 52 + p.ap * 0.5), caps=('b', 'h'))
+    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 52 + p.ap * 0.5), caps=('b', 'b'))
     del V
 
 
@@ -938,7 +942,7 @@ def _question(g, p):
     arc_ = g.arc(cx, cy, rx, ry, 160 - p.ap, -55)
     pe = arc_[-1][-1]
     tgt = (xm, p.cap * 0.27)
-    g.stroke(arc_ + [('C', pe, (pe[0] - 30, pe[1] - 25), (tgt[0], tgt[1] + 60), tgt)], caps=('h', 'b'))
+    g.stroke(arc_ + [('C', pe, (pe[0] - 30, pe[1] - 25), (tgt[0], tgt[1] + 60), tgt)], caps=('b', 'b'))
     g.dot(xm, 0)
     del V, H, d
     g.sb = (0.55, 0.6)
@@ -1252,7 +1256,7 @@ def _at(g, p):
     yb = p.cap * 0.12 + r + 6
     tail = [L((xs, p.cap * 0.72), (xs, yb))] + g.arc(xs + r, yb, r, r, 180, 360) + [L((cx + rx, yb), (cx + rx, cy))]
     outer = g.arc(cx, cy, rx, ry, 0, 300)
-    g.stroke(tail + outer, pen=pen, caps=('b', 'h'))
+    g.stroke(tail + outer, pen=pen, caps=('b', 'b'))
     g.sb = (0.55, 0.55)
     g.ht = 'c'
 
@@ -1302,7 +1306,7 @@ def _currency(g, p):
 def _cent(g, p):
     w = fw(p) * 0.92
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov + 40)
-    g.stroke(g.arc(cx, cy, rx, ry, 44 + p.ap, 316 - p.ap), caps=('h', 'h'))
+    g.stroke(g.arc(cx, cy, rx, ry, 44 + p.ap, 316 - p.ap), caps=('b', 'b'))
     g.line((w * 0.53, -110), (w * 0.53, p.xh + 150), w=p.V * 0.72)
     g.tab = True
 
@@ -1315,7 +1319,7 @@ def _sterling(g, p):
     rx = (w * 0.9 - xs - V / 2) / 2
     ry = rx * 1.05
     cy = p.cap + p.ov - H / 2 - ry
-    g.stroke([L((xs + V / 2, H), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, 18), caps=('b', 'h'))
+    g.stroke([L((xs + V / 2, H), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, 18), caps=('b', 'b'))
     g.hbar(0, w, 0)
     g.hbar(0, w * 0.68, p.cap * 0.43 - H / 2)
     g.tab = True
@@ -1340,7 +1344,7 @@ def _yen(g, p):
 def _euro(g, p):
     w = fw(p)
     cx, cy, rx, ry = g.box(w * 0.12, -p.ov, w * 1.02, p.cap + p.ov)
-    g.stroke(g.arc(cx, cy, rx, ry, 46, 314), caps=('h', 'h'))
+    g.stroke(g.arc(cx, cy, rx, ry, 46, 314), caps=('b', 'b'))
     g.hbar(0, w * 0.72, p.cap * 0.56 - p.H / 2, h=p.H * 0.9)
     g.hbar(0, w * 0.66, p.cap * 0.38 - p.H / 2, h=p.H * 0.9)
     g.tab = True
@@ -1548,7 +1552,7 @@ def _ae(g, p):
     rxt = xs - cxt
     ryt = p.xh * 0.26
     cyt = p.xh + p.ov * 0.5 - H / 2 - ryt
-    g.stroke([L((xs, p.xh * 0.35), (xs, cyt))] + g.arc(cxt, cyt, rxt, ryt, 0, 154 - p.ap), caps=('b', 'h'))
+    g.stroke([L((xs, p.xh * 0.35), (xs, cyt))] + g.arc(cxt, cyt, rxt, ryt, 0, 154 - p.ap), caps=('b', 'b'))
     ybt = p.xh * 0.57
     yt = ybt - H / 2
     ybot = -p.ov + H / 2
@@ -1559,7 +1563,7 @@ def _ae(g, p):
     x0 = xs - V / 2
     we = p.nw * 0.96
     cx, cy, rx, ry = g.box(x0, -p.ov, x0 + we, p.xh + p.ov)
-    g.stroke(g.arc(cx, cy, rx, ry, 0, 322 - p.ap), caps=('b', 'h'))
+    g.stroke(g.arc(cx, cy, rx, ry, 0, 322 - p.ap), caps=('b', 'b'))
     g.hbar(cx - rx, cx + rx + V / 2, cy + 2)
     g.sb = (0.55, 0.5)
 

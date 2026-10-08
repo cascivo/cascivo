@@ -84,9 +84,9 @@ The targets are the axes where the references leave room:
 **A parametric stroke engine, not drawn outlines.** Each glyph is a set of centerline strokes.
 A pen expands each stroke to an outline. The pen's thickness depends on the direction of travel:
 vertical strokes get the full stem, and horizontal strokes get a thinner hairline. This gives
-the slight modulation of a grotesque without drawing every curve by hand. Terminals are cut
-horizontally, as in Helvetica, and the cut turns into a vertical or angled cut when the stroke
-ends nearly flat. Arches thin where they leave a stem, which is the "crotch" that gives `n` and
+the slight modulation of a grotesque without drawing every curve by hand. Curved terminals are
+cut square to the stroke, as in Geist; straight strokes end flat on the baseline and cap height.
+Arches thin where they leave a stem, which is the "crotch" that gives `n` and
 `b` their sparkle.
 
 **Six masters, with compatibility by construction.** The masters are Regular, Thin, Black,
@@ -118,7 +118,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                  |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                         |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                               |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 19.7 KB, `Latin[opsz,wght]` 27.1 KB, `Latin[opsz,slnt,wght]` 30.3 KB. Serve only the axes you use |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 19.6 KB, `Latin[opsz,wght]` 27.1 KB, `Latin[opsz,slnt,wght]` 30.2 KB. Serve only the axes you use |
 
 ## 5. Scorecard
 
@@ -126,11 +126,11 @@ contour in every master for self-intersection. The build ships with zero problem
 
 | File                                                  | Cascivo Sans          | Geist             | IBM Plex Sans     | Inter            |
 | ----------------------------------------------------- | --------------------- | ----------------- | ----------------- | ---------------- |
-| Variable Latin slice, wght axis                       | **19.7 KB** (211 cp)  | 29.4 KB (225 cp)  | 45.7 KB (232 cp)  | 48.3 KB (230 cp) |
+| Variable Latin slice, wght axis                       | **19.6 KB** (211 cp)  | 29.4 KB (225 cp)  | 45.7 KB (232 cp)  | 48.3 KB (230 cp) |
 | Bytes per codepoint (Latin slice)                     | **93**                | 131               | 197               | 210              |
 | Variable, full charset, wght only                     | **24.2 KB** (66 B/cp) | 69.7 KB (96 B/cp) | —                 | —                |
 | Static Regular, full charset                          | **10.9 KB** (30 B/cp) | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp) | —                |
-| Same Latin slice with **two more axes** (opsz + slnt) | 30.3 KB               | n/a               | n/a               | n/a              |
+| Same Latin slice with **two more axes** (opsz + slnt) | 30.2 KB               | n/a               | n/a               | n/a              |
 
 The full-charset comparison is not like for like. Geist and Plex cover Cyrillic, Greek and
 more, and those glyphs are larger. The Latin slices are the fair comparison, and Cascivo uses
@@ -201,9 +201,19 @@ contours should set (CoreText needs them to anti-alias overlaps without seams).
 What this pass cannot claim: the review was done by eye on rendered images and by measurement,
 not by a trained type designer. It catches structural defects (collapsed counters, kinks,
 seams, gaps, width drift) reliably. It is weaker on the last few units of optical balance and
-on how text renders at 11–14 px on low-resolution screens. Still open: the Black `f` overhangs
-a little, `s` has angled terminals while `c` and `e` keep horizontal ones (a style decision),
-and the bottom of the Black `a` has a small spur.
+on how text renders at 11–14 px on low-resolution screens. Still open: the bottom of the Black
+`a` has a small spur.
+
+A follow-up made two more changes:
+
+- **One terminal rule.** Every curved terminal (`c C G J a e g j r t 2 3 5 6 9 ? @ ¢ £ €`, plus
+  `s` and `S`) is cut square to the stroke. Horizontal cuts were dropped rather than extended
+  to `s`, because at Black a horizontal cut is what made the `s` inner curve fold. Joins keep
+  their flat cut, such as the foot of `2` on its base bar. So do parentheses.
+- **Black `f`.** The hook's end angle rises with weight, from 38° at Regular to 72° at Black.
+  At Black the hook becomes a flat top stroke with a clean tip, as in Geist, instead of a tight
+  turn whose inner edge folded into a pinhole. The angle stays in one quadrant, so the masters
+  remain compatible.
 
 ## Sources
 

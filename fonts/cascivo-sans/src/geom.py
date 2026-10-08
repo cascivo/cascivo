@@ -169,7 +169,8 @@ def _sub_cubic(seg, ta, tb):
 class Stroke:
     """A centerline path plus how to pen it.
 
-    caps: per end, 'b' butt (perpendicular), 'h' cut along a horizontal through the end point,
+    caps: per end, 'b' butt (perpendicular; every curved terminal uses it), 'h' cut along a
+          horizontal through the end point (straight strokes, joins),
           'v' cut along a vertical through the end point.
     taper: per end, thickness multiplier at that end (ramps to 1 across the end segment) —
            used for the thinned joins where an arch leaves a stem.
