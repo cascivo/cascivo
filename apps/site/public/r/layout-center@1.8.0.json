@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/center/center.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/center/center.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

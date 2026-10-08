@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/native-select/native-select.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/native-select/native-select.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

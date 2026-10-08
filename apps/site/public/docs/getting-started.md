@@ -282,8 +282,9 @@ works inside a pnpm/yarn workspace where the lock file lives at the repo root;
 them; and `--yes` / `-y` to accept defaults without prompting (implied when stdin
 is not a TTY, so it is safe in CI).
 
-`add` copies the component source — TSX plus its CSS module — from the registry
-into your project, resolving component dependencies (adding `dialog` also brings
+`add` copies the component source — TSX, its CSS module, and its manifest
+(`<name>.meta.ts`: props, examples, tokens and accessibility, as data your own
+tooling and agents can read) — from the registry into your project, resolving component dependencies (adding `dialog` also brings
 anything it composes) and installing any extra runtime package a component
 declares (e.g. `@cascivo/i18n`). Charts are the exception: `cascivo add
 chart/area-chart` installs the `@cascivo/charts` npm package (a runtime

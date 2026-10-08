@@ -17,6 +17,11 @@
       "path": "layout-center/center.module.css",
       "type": "registry:block",
       "content": "@layer cascivo.component {\n  .center {\n    margin-inline: auto;\n    max-inline-size: var(--_center-max, 48rem);\n    padding-inline: var(--cascivo-space-4);\n    inline-size: 100%;\n  }\n}\n"
+    },
+    {
+      "path": "layout-center/center.meta.ts",
+      "type": "registry:block",
+      "content": "import type { ComponentMeta } from '@cascivo/core'\n\nexport const meta: ComponentMeta = {\n  name: 'Center',\n  description: 'Horizontally centered container with a configurable max-width.',\n  category: 'layout',\n  clientJs: 'none',\n  states: [],\n  variants: [],\n  sizes: [],\n  props: [\n    {\n      name: 'maxWidth',\n      default: '48rem',\n      type: 'string',\n      required: false,\n      description: 'CSS max-width value',\n    },\n  ],\n  tokens: ['--cascivo-space-4'],\n  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },\n  examples: [\n    {\n      title: 'Centered content',\n      code: '<Center maxWidth=\"60rem\"><p>Content</p></Center>',\n      description: 'Centered container with custom max-width',\n    },\n  ],\n  dependencies: ['@cascivo/core'],\n  tags: ['layout', 'center', 'wrapper'],\n  intent: {\n    whenToUse: [\n      'Horizontally centering content within a configurable max-width',\n      'Constraining page or section content to a readable measure',\n    ],\n    whenNotToUse: [\n      'Stacking children with consistent gaps — use Flex',\n      'Multi-column or grid arrangements — use Columns or Grid',\n    ],\n    antiPatterns: [],\n    related: [\n      {\n        name: 'Section',\n        relationship: 'contained-by',\n        reason: 'Sections use a centered inner width built on the same idea',\n      },\n      {\n        name: 'Flex',\n        relationship: 'pairs-with',\n        reason: 'Stack the centered content vertically inside it with Flex',\n      },\n    ],\n    a11yRationale:\n      'Pure layout wrapper with no semantic role; does not affect the accessibility tree.',\n    flexibility: [],\n  },\n}\n"
     }
   ],
   "description": "Horizontally centered container with a configurable max-width.",

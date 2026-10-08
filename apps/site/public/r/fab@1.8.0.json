@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/fab/fab.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/fab/fab.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/spinner/spinner.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/spinner/spinner.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],

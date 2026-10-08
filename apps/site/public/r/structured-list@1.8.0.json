@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/structured-list/structured-list.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/structured-list/structured-list.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

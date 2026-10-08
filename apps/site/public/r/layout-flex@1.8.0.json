@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/flex.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/flex.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],
