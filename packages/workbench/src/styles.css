@@ -1,0 +1,179 @@
+/*
+ * The workbench's own chrome. Unlayered on purpose, and every selector is under `.wb`: the
+ * components on the stage bring their own `@layer cascivo.*` styles, and nothing here may
+ * reach them.
+ */
+.wb {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-block-size: 100dvh;
+  margin: 0;
+  font:
+    14px/1.4 system-ui,
+    sans-serif;
+  color: #1f2328;
+  background: #f6f8fa;
+}
+
+body:has(.wb) {
+  margin: 0;
+}
+
+.wb-sidebar {
+  overflow: auto;
+  max-block-size: 30dvh;
+  padding: 0.75rem;
+  border-block-end: 1px solid #d0d7de;
+  background: #fff;
+}
+
+.wb-sidebar ul {
+  margin: 0;
+  padding-inline-start: 1rem;
+  list-style: none;
+}
+
+.wb-sidebar summary {
+  cursor: pointer;
+  padding-block: 0.125rem;
+  font-weight: 600;
+}
+
+.wb-sidebar h2 {
+  margin-block: 1rem 0.25rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #57606a;
+}
+
+.wb-sidebar a {
+  display: block;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.wb-sidebar a:hover {
+  background: #eaeef2;
+}
+
+.wb-sidebar a[aria-current='page'] {
+  background: #ddf4ff;
+  color: #0969da;
+}
+
+.wb-source {
+  margin: 0 0 0.5rem;
+  color: #57606a;
+  font-size: 0.75rem;
+}
+
+.wb-main {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+.wb-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  border-block-end: 1px solid #d0d7de;
+  background: #fff;
+}
+
+.wb-toolbar button,
+.wb-panels [role='tab'] {
+  font: inherit;
+  padding: 0.25rem 0.625rem;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  background: #f6f8fa;
+  cursor: pointer;
+}
+
+.wb-warning,
+.wb-error {
+  margin: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d4a72c;
+  border-radius: 6px;
+  background: #fff8c5;
+}
+
+.wb-error {
+  border-color: #cf222e;
+  background: #ffebe9;
+}
+
+.wb-canvas {
+  flex: 1;
+  overflow: auto;
+  padding: 1.5rem;
+}
+
+.wb-stage {
+  box-sizing: border-box;
+  max-inline-size: 100%;
+  min-block-size: 12rem;
+  margin-inline: auto;
+  padding: 1.5rem;
+  border: 1px dashed #d0d7de;
+  background: var(--cascivo-color-bg, #fff);
+  color: var(--cascivo-color-fg, inherit);
+}
+
+.wb-panels {
+  max-block-size: 40dvh;
+  overflow: auto;
+  padding: 0.5rem 0.75rem;
+  border-block-start: 1px solid #d0d7de;
+  background: #fff;
+}
+
+.wb-panels [role='tablist'] {
+  display: flex;
+  gap: 0.25rem;
+  margin-block-end: 0.5rem;
+}
+
+.wb-panels [role='tab'][aria-selected='true'] {
+  background: #ddf4ff;
+  border-color: #54aeff;
+}
+
+.wb-panels table {
+  border-collapse: collapse;
+  inline-size: 100%;
+}
+
+.wb-panels td,
+.wb-panels th {
+  padding: 0.25rem 0.5rem;
+  border-block-end: 1px solid #eaeef2;
+  text-align: start;
+  vertical-align: top;
+}
+
+.wb-panels pre {
+  margin: 0;
+  padding: 0.75rem;
+  overflow: auto;
+  border-radius: 6px;
+  background: #f6f8fa;
+}
+
+@media (width >= 40rem) {
+  .wb {
+    grid-template-columns: minmax(12rem, 16rem) 1fr;
+  }
+
+  .wb-sidebar {
+    max-block-size: 100dvh;
+    border-block-end: 0;
+    border-inline-end: 1px solid #d0d7de;
+  }
+}

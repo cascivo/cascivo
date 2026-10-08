@@ -456,7 +456,49 @@ parity test.
 
 ## Phase 4 — Workbench
 
-### P4-1 ☐ `cascivo add` copies `.meta.ts`
+**First slice shipped 2026-10-08:**
+
+- **P4-1 ☑** The registry's `files` list ends with each copied component's `<name>.meta.ts`,
+  hashed. `cascivo add` copies it, and `cascivo update` writes it into components added
+  before (a file new upstream is written, not merged). `init` installs `@cascivo/core`, which
+  provides the manifest's `ComponentMeta` type, and the host lint gates already lint
+  `.meta.ts`. `manifest-shipped.test.ts` (in `meta:check`) keeps it that way.
+- **P4-2 ◐** `packages/workbench` (`@cascivo/workbench`, private for now) generalises
+  `@cascivo/email-preview`'s bin and Vite plugin:
+  - Entries are every `meta.examples[]` entry of every copied manifest, plus `*.preview.tsx`
+    files with `previewProps`. Each entry has a URL (`#component/<path>/<n>`), which is what
+    P4-3 and P4-5 need.
+  - Each example compiles in a generated module per manifest. An example that is a snippet
+    rather than one JSX expression is shown as code, so it cannot break its siblings. One that
+    uses host state fails inside its own error boundary and names the tags no copied
+    component exports.
+  - Panels: theme × width, Code, Props, Tokens (resolved on the stage in the current theme),
+    and copy-as-agent-context.
+  - **Measured** against the repo's own `packages/components/src` (159 manifests, 358
+    examples): 255 render, 6 are snippets, and 97 need host state or placeholder components
+    (`isOpen`, `rows`, `<Slide1 />`). It found one real registry clash: `input-group` and
+    `button-group` both export `ButtonGroup`. The workbench resolves each example's names
+    from its own component first, so the clash no longer breaks those examples.
+  - About 1.2k lines including tests and CSS, against the 3k kill criterion.
+- **P4-6 ☑ (already shipped)** `apps/storybook/.storybook/main.ts` sets
+  `features: { componentsManifest: true }`. Storybook builds `manifests/components.json` from
+  the stories itself, and its schema is explicitly not public API, so cascivo does not emit a
+  second copy.
+
+**Not done, and why:**
+
+- **P4-2: controls from prop schemas, blueprint pages with fixtures, the conformance
+  validator and render-as-Markdown panels.** Each is a further slice on the same entry list.
+- **Publishing `@cascivo/workbench`** is the maintainer's call: removing `"private": true`
+  adds a package to the release train.
+- **P4-3** (`cascivo workbench test`) needs the entry list served as an index, then Vitest
+  browser mode over it.
+- **P4-4** (`preview_entry`) is deferred: `render_view_as_markdown` already validates and
+  renders `{ component, props }`. Examples are TSX, not view configs, so a new tool would only
+  add bytes to the tool list until it can address workbench entries.
+- **P4-5** (shadow axe sweep) needs P4-3's index.
+
+### P4-1 ☑ `cascivo add` copies `.meta.ts`
 
 - **Finding:** research §1.4 defect 7.
 - **Change:**
@@ -464,7 +506,7 @@ parity test.
   2. `add` writes it next to the component.
   3. `update` merges it like any other file.
 
-### P4-2 ☐ `@cascivo/workbench`
+### P4-2 ◐ `@cascivo/workbench`
 
 - **Change:** generalise `@cascivo/email-preview`'s Vite plugin and bin. Entries come from:
   - `meta.examples[]`,
@@ -488,7 +530,7 @@ parity test.
   cycle.
 - **Decide:** retire Storybook only on parity.
 
-### P4-6 ☐ Storybook components manifest
+### P4-6 ☑ Storybook components manifest
 
 - **Change:** emit a Storybook-compatible components manifest from `.meta.ts`, for Storybook MCP
   and Chromatic users.

@@ -328,6 +328,7 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 | [`@cascivo/search`](packages/search)         | Experimental — registry search index for the cascivo ecosystem (API unstable)               |
 | [`@cascivo/theme-kit`](packages/theme-kit)   | Shared theme-config codec + CSS generator for the /create theme builder and the cascivo CLI |
 | [`@cascivo/video`](packages/video)           | Experimental — Remotion video studio for cascivo (animated explainers and launch films)     |
+| [`@cascivo/workbench`](packages/workbench)   | Experimental — browse copied components: every manifest example, in every theme and width   |
 
 ### Apps
 
