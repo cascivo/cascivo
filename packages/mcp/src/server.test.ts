@@ -84,7 +84,7 @@ describe('token budget', () => {
 })
 
 describe('validate_view targets', () => {
-  const view = { view: { regions: { main: [{ component: 'Stat' }] } } }
+  const view = { view: { regions: { main: [{ component: 'Drawer' }] } } }
 
   it('refuses a component <CascivoView> cannot render by default', async () => {
     const result = textOf(

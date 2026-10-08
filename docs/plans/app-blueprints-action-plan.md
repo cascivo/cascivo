@@ -318,9 +318,24 @@ aggregation files):
   run, it falls back to this CLI's output with a warning. The stamp in the blueprint was enough
   to do this; no lockfile was needed.
 - **`cascivo app upgrade`** regenerates the app with this CLI's templates, keeping your edits.
-- **Open:**
-  - P2-5 (renderer coverage).
-  - P2-6 (the agent benchmark needs real model runs, which this environment cannot make).
+
+**P2-5, partly shipped 2026-10-08.** `<CascivoView>` renders 74 components, up from 56. The 18
+added are the ones a page is built from and whose props are JSON: `PageHeader`, `Heading`,
+`Text`, `Stat`, `Status`, `Progress`, `Steps`, `Timeline`, `AvatarGroup`, `Image`, `Code`,
+`Blockquote`, `List`/`ListItem`, and the `Card` parts. The MCP vocabulary follows through its
+parity test.
+
+**Two things deliberately not done:**
+
+- **Charts are a decision for the maintainer.** Rendering `Kpi`, `LineChart` and the rest would
+  make `@cascivo/render`, a published package in the fixed 1.x group, depend on
+  `@cascivo/charts`, and every view-runtime consumer would pay for it. The cheaper alternative is
+  an extension point: a host passes its own `components` to `<CascivoView>` (and the validator).
+  That keeps the dependency where it is used.
+- **Slot layouts** (`DashboardLayout`, `SettingsLayout`, `AuthLayout`) take `ReactNode` props,
+  which a ViewConfig cannot express. They stay TSX-only.
+
+**Open:** P2-6. The agent benchmark needs real model runs, which this environment cannot make.
 
 ### P2-1 ☑ Blueprint schema and parser
 
@@ -354,7 +369,7 @@ aggregation files):
   2. A `list_blocks` tool returns a one-line catalog of blocks, which is the only context an
      agent needs to write a blueprint.
 
-### P2-5 ☐ The renderer covers what the blocks use
+### P2-5 ◐ The renderer covers what the blocks use
 
 - **Finding:** research §1.4 defect 2, the root fix.
 - **Change:**

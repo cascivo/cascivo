@@ -214,3 +214,38 @@ describe('<CascivoView />', () => {
     expect(container.textContent).not.toBe(before)
   })
 })
+
+describe('<CascivoView /> — page building blocks', () => {
+  it('renders a dashboard header and KPI stats from JSON alone', () => {
+    const config = {
+      view: {
+        regions: {
+          main: [
+            { component: 'PageHeader', props: { title: 'Overview', description: 'This week' } },
+            { component: 'Heading', props: { level: 2 }, children: 'Revenue' },
+            {
+              component: 'Stat',
+              props: { label: 'MRR', value: '$48,295', delta: '+12%', trend: 'up' },
+            },
+            {
+              component: 'Card',
+              children: [
+                {
+                  component: 'CardHeader',
+                  children: [{ component: 'CardTitle', children: 'Plan' }],
+                },
+                { component: 'CardContent', children: [{ component: 'Text', children: 'Pro' }] },
+              ],
+            },
+          ],
+        },
+      },
+    }
+    const { container } = render(<CascivoView config={config} />)
+    const text = container.textContent ?? ''
+    for (const expected of ['Overview', 'This week', 'Revenue', 'MRR', '$48,295', 'Plan', 'Pro']) {
+      expect(text).toContain(expected)
+    }
+    expect(container.querySelector('h2')?.textContent).toBe('Revenue')
+  })
+})

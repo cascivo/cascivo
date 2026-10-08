@@ -33,6 +33,11 @@ interface ViewConfig {
  */
 const OWNER_DIRECTORY: Record<string, string> = {
   AppFrame: 'app-shell',
+  CardContent: 'card',
+  CardFooter: 'card',
+  CardHeader: 'card',
+  CardTitle: 'card',
+  ListItem: 'list',
   GridItem: 'grid',
   RadioCardGroup: 'radio-card',
 }

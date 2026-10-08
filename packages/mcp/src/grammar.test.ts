@@ -34,8 +34,8 @@ describe('buildGrammar() is bounded by the registry', () => {
       registry.components.map((c) => c.meta.name).filter((name) => RENDERABLE.has(name)),
     )
     expect(grammar.components.length).toBe(renderable.size)
-    // Stat is a real component <CascivoView> does not render, so a view must not offer it.
-    expect(grammar.components.some((c) => c.name === 'Stat')).toBe(false)
+    // Kpi is a real component (a chart) <CascivoView> does not render, so a view must not offer it.
+    expect(grammar.components.some((c) => c.name === 'Kpi')).toBe(false)
     for (const c of grammar.components) {
       expect(realNames.has(c.name)).toBe(true)
     }
