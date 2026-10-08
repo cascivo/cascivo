@@ -68,142 +68,101 @@ function diff(base: string[], changed: string[]): Chunk[] {
   return chunks
 }
 
-export function merge(base: string, local: string, upstream: string): MergeResult {
-  const baseLines = base.split('\n')
-  const localLines = local.split('\n')
-  const upstreamLines = upstream.split('\n')
+/** One side's change to the base: base lines [start, end) become `lines`. */
+interface Hunk {
+  start: number
+  end: number
+  lines: string[]
+}
 
-  const localChunks = diff(baseLines, localLines)
-
-  const localMap = new Map<string, string[]>()
-  const upstreamMap = new Map<string, string[]>()
-
-  let li = 0
-
-  for (const c of localChunks) {
-    if (c.type === 'left') {
-      localMap.set(`del:${li}`, c.lines)
-    } else if (c.type === 'right') {
-      localMap.set(`ins:${li}`, c.lines)
-      li += c.lines.length
+/** A side's diff against the base as hunks; adjacent deletions and insertions are one hunk. */
+function hunks(base: string[], changed: string[]): Hunk[] {
+  const out: Hunk[] = []
+  let pos = 0
+  let open: Hunk | undefined
+  for (const chunk of diff(base, changed)) {
+    if (chunk.type === 'common') {
+      pos += chunk.lines.length
+      open = undefined
+      continue
+    }
+    if (!open) {
+      open = { start: pos, end: pos, lines: [] }
+      out.push(open)
+    }
+    if (chunk.type === 'left') {
+      open.end += chunk.lines.length
+      pos += chunk.lines.length
     } else {
-      li += c.lines.length
+      open.lines.push(...chunk.lines)
     }
   }
-  void localMap
-  void upstreamMap
+  return out
+}
 
-  // Simple line-by-line three-way merge
+/** Base lines [start, end) with a side's hunks (all inside that range) applied. */
+function apply(base: string[], start: number, end: number, edits: Hunk[]): string[] {
+  const out: string[] = []
+  let pos = start
+  for (const h of edits) {
+    out.push(...base.slice(pos, h.start), ...h.lines)
+    pos = h.end
+  }
+  out.push(...base.slice(pos, end))
+  return out
+}
+
+/**
+ * Three-way merge by line (diff3). Each side's changes against the base are grouped into
+ * regions of overlapping hunks; two insertions at the same point overlap too. A region only
+ * one side changed takes that side; one both changed identically takes it once; anything else
+ * is a conflict, marked the way git marks it.
+ */
+export function merge(base: string, local: string, upstream: string): MergeResult {
+  if (local === base) return { text: upstream, conflicts: 0 }
+  if (upstream === base || local === upstream) return { text: local, conflicts: 0 }
+
+  const baseLines = base.split('\n')
+  const ours = hunks(baseLines, local.split('\n'))
+  const theirs = hunks(baseLines, upstream.split('\n'))
   const result: string[] = []
   let conflicts = 0
-  let bi = 0
-  let lli = 0
-  let uui = 0
+  let pos = 0
+  let i = 0
+  let j = 0
 
-  // Build index maps: base line → local and upstream lines
-  // Use a simpler approach: if local == base, take upstream; if upstream == base, take local;
-  // if both differ, conflict.
-  const bLen = baseLines.length
-  const lLen = localLines.length
-  const uLen = upstreamLines.length
-
-  // If local unchanged vs base, fast-forward to upstream
-  if (local === base) {
-    return { text: upstream, conflicts: 0 }
-  }
-  // If upstream unchanged vs base, keep local
-  if (upstream === base) {
-    return { text: local, conflicts: 0 }
-  }
-  // Both changed — try line-by-line
-  void bi
-  void lli
-  void uui
-  void bLen
-  void lLen
-  void uLen
-
-  const localDiffs = diff(baseLines, localLines)
-  const upstreamDiffs = diff(baseLines, upstreamLines)
-
-  // Reconstruct base position aligned chunks
-  let basePos = 0
-  let lPos = 0
-  let uPos = 0
-  const localOut: { baseStart: number; baseEnd: number; lines: string[] }[] = []
-  const upstreamOut: { baseStart: number; baseEnd: number; lines: string[] }[] = []
-
-  for (const c of localDiffs) {
-    if (c.type === 'common') {
-      lPos += c.lines.length
-      basePos += c.lines.length
-    } else if (c.type === 'right') {
-      localOut.push({ baseStart: basePos, baseEnd: basePos, lines: c.lines })
-      lPos += c.lines.length
-    } else {
-      localOut.push({ baseStart: basePos, baseEnd: basePos + c.lines.length, lines: [] })
-      basePos += c.lines.length
-    }
-  }
-  basePos = 0
-  for (const c of upstreamDiffs) {
-    if (c.type === 'common') {
-      uPos += c.lines.length
-      basePos += c.lines.length
-    } else if (c.type === 'right') {
-      upstreamOut.push({ baseStart: basePos, baseEnd: basePos, lines: c.lines })
-      uPos += c.lines.length
-    } else {
-      upstreamOut.push({ baseStart: basePos, baseEnd: basePos + c.lines.length, lines: [] })
-      basePos += c.lines.length
-    }
-  }
-  void lPos
-  void uPos
-
-  // Simple merge: walk base lines; apply local and upstream edits
-  // When both touch the same region, emit conflict markers
-  const localByBase = new Map<number, { end: number; lines: string[] }>()
-  for (const e of localOut) {
-    localByBase.set(e.baseStart, { end: e.baseEnd, lines: e.lines })
-  }
-  const upstreamByBase = new Map<number, { end: number; lines: string[] }>()
-  for (const e of upstreamOut) {
-    upstreamByBase.set(e.baseStart, { end: e.baseEnd, lines: e.lines })
-  }
-
-  let b = 0
-  while (b <= baseLines.length) {
-    const lEdit = localByBase.get(b)
-    const uEdit = upstreamByBase.get(b)
-
-    if (lEdit && uEdit) {
-      const lEnd = Math.max(lEdit.end, b)
-      const uEnd = Math.max(uEdit.end, b)
-      const lLines = lEdit.lines
-      const uLines = uEdit.lines
-      if (JSON.stringify(lLines) === JSON.stringify(uLines)) {
-        result.push(...lLines)
-      } else {
-        result.push('<<<<<<< local')
-        result.push(...lLines)
-        result.push('=======')
-        result.push(...uLines)
-        result.push('>>>>>>> upstream')
-        conflicts++
+  while (i < ours.length || j < theirs.length) {
+    const start = Math.min(ours[i]?.start ?? Infinity, theirs[j]?.start ?? Infinity)
+    result.push(...baseLines.slice(pos, start))
+    let end = start
+    const mine: Hunk[] = []
+    const yours: Hunk[] = []
+    const overlaps = (h: Hunk | undefined): h is Hunk =>
+      h !== undefined && (h.start < end || h.start === start)
+    for (let grew = true; grew;) {
+      grew = false
+      while (overlaps(ours[i])) {
+        end = Math.max(end, ours[i]!.end)
+        mine.push(ours[i++]!)
+        grew = true
       }
-      b = Math.max(lEnd, uEnd, b + 1)
-    } else if (lEdit) {
-      result.push(...lEdit.lines)
-      b = Math.max(lEdit.end, b + 1)
-    } else if (uEdit) {
-      result.push(...uEdit.lines)
-      b = Math.max(uEdit.end, b + 1)
-    } else {
-      if (b < baseLines.length) result.push(baseLines[b]!)
-      b++
+      while (overlaps(theirs[j])) {
+        end = Math.max(end, theirs[j]!.end)
+        yours.push(theirs[j++]!)
+        grew = true
+      }
     }
+    const localText = apply(baseLines, start, end, mine)
+    const upstreamText = apply(baseLines, start, end, yours)
+    if (yours.length === 0) result.push(...localText)
+    else if (mine.length === 0) result.push(...upstreamText)
+    else if (localText.join('\n') === upstreamText.join('\n')) result.push(...localText)
+    else {
+      result.push('<<<<<<< local', ...localText, '=======', ...upstreamText, '>>>>>>> upstream')
+      conflicts++
+    }
+    pos = end
   }
-
+  result.push(...baseLines.slice(pos))
   return { text: result.join('\n'), conflicts }
 }

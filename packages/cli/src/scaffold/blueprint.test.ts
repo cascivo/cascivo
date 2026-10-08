@@ -116,16 +116,32 @@ describe('blueprint pages render blocks', () => {
     )
   })
 
-  it('every block imports only what a scaffolded app depends on', () => {
-    for (const block of blockNames()) {
-      const source = files('react-vite', [page('A', block)]).get(`src/blocks/${block}.tsx`)!
-      const specifiers = [...source.matchAll(/from '([^']+)'/g)].map((m) => m[1])
-      for (const specifier of specifiers) {
-        expect(['@cascivo/react', 'react', `./${block}.module.css`], `${block}`).toContain(
-          specifier,
+  it('every block imports only what the scaffolded app depends on', () => {
+    for (const framework of ['react-vite', 'cloudflare'] as const) {
+      for (const block of blockNames()) {
+        const map = files(framework, [page('A', block)])
+        const source = map.get(`src/blocks/${block}.tsx`)!
+        const pkg: unknown = JSON.parse(map.get('package.json')!)
+        const declared = Object.keys(
+          (pkg as { dependencies: Record<string, string>; devDependencies: Record<string, string> })
+            .dependencies,
         )
+        for (const [, specifier] of source.matchAll(/from '([^']+)'/g)) {
+          // `import type … from 'react'` is satisfied by @types/react.
+          if (specifier === `./${block}.module.css` || specifier === 'react') continue
+          expect(declared, `${framework} ${block} imports ${specifier}`).toContain(specifier)
+        }
       }
     }
+  })
+
+  it('adds the package a block brings, at the pinned version, only when used', () => {
+    const deps = (pages: { title: string; block?: string }[]): Record<string, string> => {
+      const pkg: unknown = JSON.parse(files('react-vite', pages).get('package.json')!)
+      return (pkg as { dependencies: Record<string, string> }).dependencies
+    }
+    expect(deps([page('Charts', 'dashboard-charts')])['@cascivo/charts']).toMatch(/^\d+\.\d+\.\d+/)
+    expect(deps([page('Overview', 'dashboard-overview')])['@cascivo/charts']).toBeUndefined()
   })
 })
 

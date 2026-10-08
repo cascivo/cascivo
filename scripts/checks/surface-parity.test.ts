@@ -135,6 +135,12 @@ const SURFACES: Surface[] = [
     oneSided: 'Humans browse the marketplace site; `add` installs.',
   },
   {
+    capability: 'change a blueprint app',
+    cli: 'app add',
+    oneSided:
+      'Edits files in the app the agent is working in, which it does by running the CLI; compose_app is the MCP path for a new app.',
+  },
+  {
     capability: 'browse blueprint blocks',
     mcp: ['list_blocks'],
     oneSided:

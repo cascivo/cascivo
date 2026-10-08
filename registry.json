@@ -23770,7 +23770,7 @@
           "flexibility": []
         }
       },
-      "channels": ["copy"]
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "layout/auto-grid",
@@ -24114,7 +24114,7 @@
           "flexibility": []
         }
       },
-      "channels": ["copy"]
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "layout/flex",
@@ -24765,7 +24765,7 @@
           "flexibility": []
         }
       },
-      "channels": ["copy"]
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "layout/spacer",

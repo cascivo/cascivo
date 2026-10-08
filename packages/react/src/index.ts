@@ -302,6 +302,13 @@ export * from '../../layouts/src/auto-grid/auto-grid' // AutoGrid
 // was copy-paste-only — mixing consumption paths for a single component is a worse trade than
 // exporting it. Same dependency profile as the other layout primitives (@cascivo/core only).
 export * from '../../layouts/src/page-header/page-header' // PageHeader
+// The page frames the registry's blocks are built on (dashboard, sign-in, settings). Blocks
+// reach an app from `cascivo create --from <blueprint>` importing @cascivo/react only, so a
+// layout that was copy-paste-only kept those blocks out of every scaffold. Same dependency
+// profile as PageHeader (@cascivo/core/pure only).
+export * from '../../layouts/src/dashboard-layout/dashboard-layout' // DashboardLayout
+export * from '../../layouts/src/auth-layout/auth-layout' // AuthLayout
+export * from '../../layouts/src/settings-layout/settings-layout' // SettingsLayout
 // The spacing-scale type shared by every layout primitive's `gap`/spacing props
 // lives in @cascivo/core (a direct dependency of this package). Importing it there
 // — `import type { SpaceStep } from '@cascivo/core'` — keeps it a single external

@@ -30,6 +30,7 @@ Usage: cascivo <command> [options]
 Commands:
   create [name]            Scaffold a new ready-to-run app (shell + nav + theme)
                            (--template <spec>: start from a marketplace template)
+  app add page "<title>"   Add a page to an app made from a blueprint (--block <name>)
   init                     Set up cascivo in the current project
   add <component...>       Add components or a template to your project
   list [--installed]       List available components
@@ -52,6 +53,14 @@ Run "cascivo <command> --help" for details.`
 const THEME_LIST = THEMES.join(' | ')
 
 const COMMAND_HELP: Record<string, string> = {
+  app: `Usage: cascivo app add page "<title>" [options]
+
+Add a page to an app made from a blueprint: appends it to the app's cascivo.app.json and
+writes the page, its block and the route and nav entries. Files you have edited since they
+were generated are merged with your edits; a clash is left with conflict markers.
+
+Options:
+  --block <name>            The registry block the page renders (default: a page to build out)`,
   mcp: `Usage: cascivo mcp init [options]
 
 Add the cascivo MCP server (npx -y @cascivo/mcp) to your coding agent's project config.
@@ -278,6 +287,11 @@ export async function run(args: string[]): Promise<void> {
       const { create } = await import('./commands/create.js')
       await create(rest)
       break
+    case 'app': {
+      const { app } = await import('./commands/app.js')
+      await app(rest)
+      break
+    }
     case 'init':
       await init(rest)
       break

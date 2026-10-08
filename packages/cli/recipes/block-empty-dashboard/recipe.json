@@ -1,0 +1,6 @@
+{
+  "name": "block-empty-dashboard",
+  "files": [
+    "src/blocks/empty-dashboard.tsx"
+  ]
+}

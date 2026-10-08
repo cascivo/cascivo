@@ -31,8 +31,12 @@ export const BLUEPRINT_BLOCKS: ReadonlyMap<string, string> = new Map([
     'testimonials',
     'Responsive testimonial grid composed from Card and Avatar, with a quote and attribution per card.',
   ],
+  ['dashboard-charts', 'Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.'],
+  ['empty-dashboard', 'Dashboard page showing an empty state with a call-to-action button.'],
+  ['login-page', 'Authentication login page with email and password form.'],
   ['notification-center', 'A list of notification alerts with a mark-all-read action.'],
   ['page-with-breadcrumb', 'A centered content page with a breadcrumb navigation and page header.'],
+  ['settings-form-page', 'Settings page with profile form inside a two-column settings layout.'],
   ['stats-cards', 'Grid of KPI stat cards with trend badges.'],
   ['users-table-page', 'Full users management page with table, search, and invite action.'],
 ])

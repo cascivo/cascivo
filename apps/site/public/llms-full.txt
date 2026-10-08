@@ -607,17 +607,17 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [indicator](https://cascivo.com/llms/indicator.md) — Positions an overlay element (badge, dot, count) at a corner of its child _(npm @cascivo/react · or copy-paste)_
 - [join](https://cascivo.com/llms/join.md) — Groups adjacent children into a seamless joined element by removing interior borders and radii _(npm @cascivo/react · or copy-paste)_
 - [layout/app-shell](https://cascivo.com/llms/layout/app-shell.md) — Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip. _(copy-paste)_
-- [layout/auth-layout](https://cascivo.com/llms/layout/auth-layout.md) — Centered card layout for authentication pages (login, register, forgot password). _(copy-paste)_
+- [layout/auth-layout](https://cascivo.com/llms/layout/auth-layout.md) — Centered card layout for authentication pages (login, register, forgot password). _(npm @cascivo/react · or copy-paste)_
 - [layout/auto-grid](https://cascivo.com/llms/layout/auto-grid.md) — Media-query-free responsive grid — columns auto-fill based on available space. _(npm @cascivo/react · or copy-paste)_
 - [layout/center](https://cascivo.com/llms/layout/center.md) — Horizontally centered container with a configurable max-width. _(npm @cascivo/react · or copy-paste)_
 - [layout/columns](https://cascivo.com/llms/layout/columns.md) — Equal-width multi-column layout that collapses to single column on narrow viewports. _(npm @cascivo/react · or copy-paste)_
-- [layout/dashboard-layout](https://cascivo.com/llms/layout/dashboard-layout.md) — Dashboard page layout with stats strip, main content area, and optional aside. _(copy-paste)_
+- [layout/dashboard-layout](https://cascivo.com/llms/layout/dashboard-layout.md) — Dashboard page layout with stats strip, main content area, and optional aside. _(npm @cascivo/react · or copy-paste)_
 - [layout/flex](https://cascivo.com/llms/layout/flex.md) — Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction="horizontal"` for a row. _(npm @cascivo/react · or copy-paste)_
 - [layout/grid](https://cascivo.com/llms/layout/grid.md) — CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required. _(npm @cascivo/react · or copy-paste)_
 - [layout/masonry](https://cascivo.com/llms/layout/masonry.md) — Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column). _(copy-paste)_
 - [layout/page-header](https://cascivo.com/llms/layout/page-header.md) — Page-level header with title, description, breadcrumb, and actions slots. _(npm @cascivo/react · or copy-paste)_
 - [layout/section](https://cascivo.com/llms/layout/section.md) — Page-section shell with block padding, centered inner width, and stack gap. _(copy-paste)_
-- [layout/settings-layout](https://cascivo.com/llms/layout/settings-layout.md) — Two-column settings page layout with a fixed-width menu and fluid content area. _(copy-paste)_
+- [layout/settings-layout](https://cascivo.com/llms/layout/settings-layout.md) — Two-column settings page layout with a fixed-width menu and fluid content area. _(npm @cascivo/react · or copy-paste)_
 - [layout/spacer](https://cascivo.com/llms/layout/spacer.md) — Fixed-height spacing block using design token steps. _(npm @cascivo/react · or copy-paste)_
 - [layout/split-view](https://cascivo.com/llms/layout/split-view.md) — Resizable two-pane split layout with keyboard and pointer drag support. _(copy-paste)_
 - [resizable](https://cascivo.com/llms/resizable.md) — Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space _(npm @cascivo/react · or copy-paste)_
@@ -12888,7 +12888,11 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/auth-layout
 ```
 
-_Copy-paste only — `AuthLayout` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { AuthLayout } from '@cascivo/react'
+```
 
 ## Category
 
@@ -13153,7 +13157,11 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/dashboard-layout
 ```
 
-_Copy-paste only — `DashboardLayout` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { DashboardLayout } from '@cascivo/react'
+```
 
 ## Category
 
@@ -13604,7 +13612,11 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/settings-layout
 ```
 
-_Copy-paste only — `SettingsLayout` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { SettingsLayout } from '@cascivo/react'
+```
 
 ## Category
 

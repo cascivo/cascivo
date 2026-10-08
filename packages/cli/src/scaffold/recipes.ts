@@ -15,6 +15,8 @@ export interface Recipe {
   files: string[]
   /** Side-nav entries for the pages the recipe adds, in the order they appear. */
   nav: RecipeNavItem[]
+  /** `@cascivo/*` packages the files import, added to the app at the CLI's pinned version. */
+  dependencies: string[]
 }
 
 export interface RecipeNavItem {
@@ -48,7 +50,7 @@ export function parseRecipe(raw: unknown, source: string): Recipe {
   if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) {
     throw new Error(`${source}: a recipe must be an object.`)
   }
-  const { name, files, nav = [] } = raw as Record<string, unknown>
+  const { name, files, nav = [], dependencies = [] } = raw as Record<string, unknown>
   if (typeof name !== 'string' || !/^[a-z][a-z0-9-]*$/.test(name)) {
     throw new Error(`${source}: "name" must be a lower-case kebab-case string.`)
   }
@@ -81,7 +83,13 @@ export function parseRecipe(raw: unknown, source: string): Recipe {
     }
     items.push({ label, href })
   }
-  return { name, files: paths, nav: items }
+  if (
+    !Array.isArray(dependencies) ||
+    !dependencies.every((d) => typeof d === 'string' && /^@cascivo\/[a-z-]+$/.test(d))
+  ) {
+    throw new Error(`${source}: "dependencies" must be an array of @cascivo/* package names.`)
+  }
+  return { name, files: paths, nav: items, dependencies: dependencies.map(String) }
 }
 
 const cache = new Map<string, Recipe>()

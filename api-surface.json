@@ -16,6 +16,7 @@
           "AlertDialog",
           "AppShell",
           "AspectRatio",
+          "AuthLayout",
           "AutoGrid",
           "Avatar",
           "AvatarGroup",
@@ -51,6 +52,7 @@
           "ContextMenuItem",
           "ContextMeter",
           "CopyButton",
+          "DashboardLayout",
           "DataList",
           "DataTable",
           "DatePicker",
@@ -148,6 +150,7 @@
           "SegmentedControl",
           "Select",
           "Separator",
+          "SettingsLayout",
           "ShareMenu",
           "Sheet",
           "ShellHeader",
@@ -266,6 +269,7 @@
           "AnnouncePoliteness",
           "AppShellProps",
           "AspectRatioProps",
+          "AuthLayoutProps",
           "AutoGridProps",
           "AvatarGroupLabels",
           "AvatarGroupProps",
@@ -322,6 +326,7 @@
           "ContextMenuProps",
           "ContextMeterProps",
           "CopyButtonProps",
+          "DashboardLayoutProps",
           "DataListEntry",
           "DataListItem",
           "DataListItemProps",
@@ -477,6 +482,7 @@
           "SelectOption",
           "SelectProps",
           "SeparatorProps",
+          "SettingsLayoutProps",
           "ShareContent",
           "ShareMenuProps",
           "ShareNetwork",
@@ -682,6 +688,12 @@
             "(extends)": "extends HTMLAttributes<HTMLDivElement>",
             "ratio?": "number",
             "children?": "ReactNode"
+          },
+          "AuthLayout": "declare function AuthLayout({ children, logo, className }: AuthLayoutProps): import(\"react\").JSX.Element",
+          "AuthLayoutProps": {
+            "children": "ReactNode",
+            "logo?": "ReactNode",
+            "className?": "string"
           },
           "AutoGrid": "declare function AutoGrid({ min, gap, className, style, ...props }: AutoGridProps): import(\"react\").JSX.Element",
           "AutoGridProps": {
@@ -1137,6 +1149,13 @@
           "createMachine": "re-export createMachine from \"@cascivo/core\"",
           "createScope": "re-export createScope from \"@cascivo/core\"",
           "createStreamBuffer": "re-export createStreamBuffer from \"@cascivo/core\"",
+          "DashboardLayout": "declare function DashboardLayout({ stats, main, aside, className }: DashboardLayoutProps): import(\"react\").JSX.Element",
+          "DashboardLayoutProps": {
+            "stats?": "ReactNode",
+            "main": "ReactNode",
+            "aside?": "ReactNode",
+            "className?": "string | undefined"
+          },
           "DataList": "declare function DataList({ items, orientation, dividers, size, className, children, ...props }: DataListProps): import(\"react\").JSX.Element",
           "DataListEntry": {
             "id?": "string",
@@ -2289,6 +2308,12 @@
           },
           "setLinkComponent": "re-export setLinkComponent from \"@cascivo/core\"",
           "setTheme": "re-export setTheme from \"@cascivo/core\"",
+          "SettingsLayout": "declare function SettingsLayout({ menu, children, className }: SettingsLayoutProps): import(\"react\").JSX.Element",
+          "SettingsLayoutProps": {
+            "menu": "ReactNode",
+            "children": "ReactNode",
+            "className?": "string"
+          },
           "ShareContent": {
             "url": "string",
             "text?": "string",

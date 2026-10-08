@@ -490,6 +490,37 @@
       ]
     },
     {
+      "name": "app",
+      "summary": "Change an app made from a blueprint",
+      "subcommandRequired": true,
+      "commands": [
+        {
+          "name": "add",
+          "summary": "Add to the app",
+          "subcommandRequired": true,
+          "commands": [
+            {
+              "name": "page",
+              "summary": "Add a page, optionally rendering a registry block",
+              "description": "Appends the page to cascivo.app.json and writes the page, its block and the route and nav entries. Files edited since they were generated are merged three ways; a clash is left with conflict markers and the command exits non-zero.",
+              "arguments": [
+                { "name": "title", "required": true, "summary": "Nav label and page heading" }
+              ],
+              "options": [
+                {
+                  "name": "--block",
+                  "summary": "The registry block the page renders",
+                  "value": { "name": "name" }
+                }
+              ],
+              "effects": ["read", "write"],
+              "examples": [{ "run": "npx cascivo app add page \"Users\" --block users-table-page" }]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "registry",
       "summary": "Build a static registry",
       "subcommandRequired": true,

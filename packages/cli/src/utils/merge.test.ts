@@ -49,4 +49,34 @@ describe('three-way merge', () => {
     expect(result.conflicts).toBe(0)
     expect(result.text).toContain('SAME')
   })
+
+  // Regressions: the walk used to advance past the base line after a pure insertion, so that
+  // line vanished from the result, and the misalignment then lost the other side's edits.
+  it('a local insertion keeps the line after it, and upstream edits elsewhere', () => {
+    const base = 'A\nB\nC\nD\nE'
+    const local = 'A\nmine\nB\nC\nD\nE'
+    const upstream = 'A\nB\nC\nD-up\nE\nF'
+    expect(merge(base, local, upstream)).toEqual({
+      text: 'A\nmine\nB\nC\nD-up\nE\nF',
+      conflicts: 0,
+    })
+  })
+
+  it('insertions on both sides at different places both land', () => {
+    const base = 'A\nB\nC'
+    const local = 'L\nA\nB\nC'
+    const upstream = 'A\nB\nU\nC'
+    expect(merge(base, local, upstream)).toEqual({ text: 'L\nA\nB\nU\nC', conflicts: 0 })
+  })
+
+  it('different insertions at the same point conflict', () => {
+    const result = merge('A\nB', 'A\nL\nB', 'A\nU\nB')
+    expect(result.conflicts).toBe(1)
+    expect(result.text).toBe('A\n<<<<<<< local\nL\n=======\nU\n>>>>>>> upstream\nB')
+  })
+
+  it('a deletion on one side and an edit elsewhere on the other both apply', () => {
+    const base = 'A\nB\nC\nD'
+    expect(merge(base, 'A\nC\nD', 'A\nB\nC\nD2')).toEqual({ text: 'A\nC\nD2', conflicts: 0 })
+  })
 })

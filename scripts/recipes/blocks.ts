@@ -6,10 +6,10 @@
  * has neither — it depends on `@cascivo/react` alone. So each block is rewritten to import every
  * name from `@cascivo/react` and written to `packages/cli/recipes/block-<name>/src/blocks/`.
  *
- * A block is skipped, with the reason printed, when the rewrite cannot be correct: a name
- * `@cascivo/react` does not export (the dashboard/auth/settings layouts are copy-paste only),
- * an import from another package the scaffold does not depend on (`@cascivo/charts`,
- * `@cascivo/icons`), or a block that is a whole app shell rather than a page.
+ * Imports from `@cascivo/charts` and `@cascivo/icons` stay as written and become the recipe's
+ * `dependencies`, which the scaffold adds to package.json. A block is skipped, with the reason
+ * printed, when the rewrite cannot be correct: a name `@cascivo/react` does not export, an
+ * import from any other package, or a block that is a whole app shell rather than a page.
  *
  * Chained into `pnpm regen`; the drift gate catches staleness.
  *
@@ -36,7 +36,10 @@ export function pascalCase(name: string): string {
   return name.replace(/(^|-)([a-z0-9])/g, (_, _dash: string, c: string) => c.toUpperCase())
 }
 
-type Rewrite = { ok: true; source: string } | { ok: false; reason: string }
+/** Packages a block may bring into the app besides @cascivo/react; the scaffold adds them. */
+const BRINGABLE = new Set(['@cascivo/charts', '@cascivo/icons'])
+
+type Rewrite = { ok: true; source: string; dependencies: string[] } | { ok: false; reason: string }
 
 /**
  * Rewrite a block's imports for an app that depends on `@cascivo/react` only. `cssFile` is the
@@ -46,6 +49,7 @@ export function rewriteBlock(source: string, exported: Set<string>, cssFile: str
   const values = new Set<string>()
   const types = new Set<string>()
   const kept: string[] = []
+  const dependencies = new Set<string>()
   const importRe = /^import\s+(type\s+)?([\s\S]*?)\s+from\s+'([^']+)'\n/gm
   let firstImport = -1
   for (const match of source.matchAll(importRe)) {
@@ -61,7 +65,8 @@ export function rewriteBlock(source: string, exported: Set<string>, cssFile: str
       specifier === '@cascivo/react' ||
       (specifier.startsWith('.') && !specifier.endsWith('.css'))
     if (!fromReact) {
-      if (specifier === 'react' || specifier === `./${cssFile}`) {
+      if (specifier === 'react' || specifier === `./${cssFile}` || BRINGABLE.has(specifier)) {
+        if (BRINGABLE.has(specifier)) dependencies.add(specifier)
         kept.push(statement)
         continue
       }
@@ -86,7 +91,11 @@ export function rewriteBlock(source: string, exported: Set<string>, cssFile: str
     ...kept,
   ].join('')
   const body = source.replace(importRe, '')
-  return { ok: true, source: body.slice(0, firstImport) + imports + body.slice(firstImport) }
+  return {
+    ok: true,
+    source: body.slice(0, firstImport) + imports + body.slice(firstImport),
+    dependencies: [...dependencies].sort(),
+  }
 }
 
 function main(): void {
@@ -124,7 +133,15 @@ function main(): void {
       }
       writeFileSync(
         join(out, 'recipe.json'),
-        `${JSON.stringify({ name: `block-${name}`, files }, null, 2)}\n`,
+        `${JSON.stringify(
+          {
+            name: `block-${name}`,
+            files,
+            ...(rewrite.dependencies.length > 0 ? { dependencies: rewrite.dependencies } : {}),
+          },
+          null,
+          2,
+        )}\n`,
       )
       written.push(name)
     }

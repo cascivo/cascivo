@@ -278,12 +278,34 @@ aggregation files):
   - That run found and fixed a latent bug: a long `--sections` list produced a
     `type Section = …` line over Prettier's width, failing the app's own format check.
   - Apps without blocks are byte-identical across the 906 golden combinations.
+
+**Second slice shipped 2026-10-08:**
+
+- **Layouts exported.** `DashboardLayout`, `AuthLayout` and `SettingsLayout` are now exported
+  from `@cascivo/react`, as a minor API addition with the snapshot updated. They have the same
+  dependency profile as `PageHeader`.
+- **Blocks can bring a package.** A block recipe declares `dependencies`, and the scaffold adds
+  them at the CLI's pinned versions, only when a page uses that block.
+- **Result: all 19 page blocks are blueprint-ready.** Only the three app shells are left out.
+  `framework:check` now packs `@cascivo/charts` too, and builds a React + Vite app with all 19
+  blocks from tarballs: `tsc`, `vite build` and Prettier all pass.
+- **`cascivo app add page "<title>" [--block <name>]`.** The scaffold is generated from the
+  blueprint before and after, and each touched file is merged three ways:
+  - an untouched file is replaced;
+  - an edited one keeps its edits;
+  - a clash gets conflict markers and the command exits non-zero.
+  The blueprint is updated. This is P2-3's mechanism, applied to the first edit an agent needs.
+- **A bug fixed on the way: `utils/merge.ts`, which `cascivo update` uses, dropped lines.**
+  - After a pure insertion it advanced past the next base line, so that line vanished from the
+    result.
+  - The misalignment could then lose the other side's later edits.
+  - Its tests only covered single-line replacements. It is now a standard diff3 (hunks grouped
+    by overlap, with same-point insertions treated as overlapping), with regression tests.
 - **Open:**
-  - Export the three layouts from `@cascivo/react` to unlock four more blocks.
-  - `@cascivo/charts` as a dependency a block can bring.
-  - `cascivo app add page`.
+  - `cascivo app add recipe` (examples onto an existing app).
+  - `cascivo.lock` versioning, so app files survive a CLI upgrade.
   - Prompts that produce a blueprint.
-  - P2-5 and P2-6.
+  - P2-5 (renderer coverage) and P2-6 (agent benchmark).
 
 ### P2-1 ☑ Blueprint schema and parser
 
@@ -295,7 +317,7 @@ aggregation files):
   2. Validation runs against the registry's closed vocabulary. An unknown block fails with the
      list of valid ones.
 
-### P2-2 ◐ Compile a blueprint
+### P2-2 ☑ Compile a blueprint
 
 - **Change:**
   1. `cascivo create --from cascivo.app.json` compiles a blueprint.
@@ -303,7 +325,7 @@ aggregation files):
   3. Blocks are **wired** into routes and nav. They are not just dropped into `src/pages`.
   4. This closes the ROADMAP's `--router` item: routes come from the blueprint on every target.
 
-### P2-3 ☐ `cascivo app add page|recipe`
+### P2-3 ◐ `cascivo app add page|recipe`
 
 - **Change:** additive edits that update the blueprint, routes and nav together.
 - **Upgrades:** each generated file records `recipe@version` in `cascivo.lock`, so

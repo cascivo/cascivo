@@ -262,6 +262,7 @@ function packageJson(opts: ScaffoldOptions): string {
     // `App.tsx` calls into via `useSignals()`. It used to be omitted entirely and survived
     // only by hoisting — a phantom dependency that breaks under pnpm's strict layout.
     dependencies: {
+      ...blockDependencies(opts),
       '@cascivo/react': V['@cascivo/react']!,
       '@cascivo/themes': V['@cascivo/themes']!,
       '@preact/signals-react': SIGNALS_PEER,
@@ -293,7 +294,7 @@ function packageJson(opts: ScaffoldOptions): string {
  * JSON as Prettier prints it: an array of strings stays on one line. `JSON.stringify` breaks
  * every array across lines, so a fresh app failed its own `format:check` on tsconfig.json.
  */
-function formatJson(value: unknown): string {
+export function formatJson(value: unknown): string {
   const json = JSON.stringify(value, null, 2).replace(
     /\[\n\s+("[^"\n]*"(?:,\n\s+"[^"\n]*")*)\n\s*\]/g,
     (_, items: string) => `[${items.split(/,\n\s+/).join(', ')}]`,
@@ -527,6 +528,22 @@ ${declaration} ${section.component}() {
   return <${local} />
 }
 `
+}
+
+/** The packages the pages' blocks bring (`@cascivo/charts`), at the versions this CLI pins. */
+function blockDependencies(opts: ScaffoldOptions): Record<string, string> {
+  const packages = new Set(
+    (opts.blocks ?? []).flatMap((block) =>
+      block ? loadRecipe(`block-${block}`).dependencies : [],
+    ),
+  )
+  return Object.fromEntries(
+    [...packages].sort().map((name) => {
+      const version = V[name]
+      if (!version) throw new Error(`cascivo: no pinned version for ${name}`)
+      return [name, version]
+    }),
+  )
 }
 
 /** The recipe files for every block the pages render, each once. */
@@ -1161,6 +1178,7 @@ function cfPackageJson(opts: ScaffoldOptions): string {
     // `@cascivo/data` arrives with it.
     dependencies: {
       '@cascivo/app': V['@cascivo/app']!,
+      ...blockDependencies(opts),
       '@cascivo/react': V['@cascivo/react']!,
       '@cascivo/themes': V['@cascivo/themes']!,
       '@preact/signals-react': SIGNALS_PEER,

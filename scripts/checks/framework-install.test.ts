@@ -60,6 +60,7 @@ const CLI = join(REPO_ROOT, 'packages', 'cli', 'dist', 'index.mjs')
  */
 const PACKAGES = [
   'react',
+  'charts',
   'core',
   'themes',
   'tokens',
@@ -74,6 +75,7 @@ const PACKAGES = [
 ]
 const NEEDS_DIST = [
   'react',
+  'charts',
   'core',
   'i18n',
   'storage',
