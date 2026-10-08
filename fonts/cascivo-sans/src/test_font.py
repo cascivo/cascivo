@@ -61,6 +61,23 @@ class Font(unittest.TestCase):
         widths = {hmtx[cmap[ord(c)]][0] for c in '0123456789'}
         self.assertEqual(len(widths), 1)
 
+    def test_weight_changes_do_not_reflow_text(self):
+        # Bold on hover or an active tab must not rewrap a line. Geist spans 0.96x-1.11x of its
+        # Regular width from Thin to Black; before the hand review this font spanned 0.73x-1.35x.
+        from fontTools.varLib.instancer import instantiateVariableFont
+
+        text = 'the settings page lets you rename a team assign seats and set the default theme'
+
+        def width(w):
+            f = instantiateVariableFont(TTFont(VF), {'wght': w, 'opsz': 14, 'slnt': 0})
+            cmap, hmtx = f.getBestCmap(), f['hmtx']
+            return sum(hmtx[cmap[ord(c)]][0] for c in text)
+
+        regular = width(400)
+        self.assertGreaterEqual(width(100) / regular, 0.92)
+        self.assertLessEqual(width(700) / regular, 1.09)
+        self.assertLessEqual(width(900) / regular, 1.16)
+
     def test_no_nested_components(self):
         glyf = self.f['glyf']
         for name in self.f.getGlyphOrder():

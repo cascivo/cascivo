@@ -523,6 +523,17 @@ WEIGHTS = [(100, 'Thin'), (200, 'ExtraLight'), (300, 'Light'), (400, 'Regular'),
 
 def finish(vf):
     from fontTools.ttLib.tables._f_v_a_r import NamedInstance
+    from fontTools.ttLib.tables._g_l_y_f import OVERLAP_COMPOUND, flagOverlapSimple
+
+    # Stroke-built glyphs overlap by design. These flags tell rasterizers so (CoreText needs them
+    # to anti-alias overlaps without seams); fontmake sets them on variable fonts for the same reason.
+    glyf = vf['glyf']
+    for gn in vf.getGlyphOrder():
+        g = glyf[gn]
+        if g.isComposite():
+            g.components[0].flags |= OVERLAP_COMPOUND
+        elif g.numberOfContours > 0:
+            g.flags[0] |= flagOverlapSimple
 
     name = vf['name']
     fvar = vf['fvar']

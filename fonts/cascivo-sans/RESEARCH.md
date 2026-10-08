@@ -118,7 +118,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                  |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                         |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                               |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 20.9 KB, `Latin[opsz,wght]` 29.1 KB, `Latin[opsz,slnt,wght]` 32.1 KB. Serve only the axes you use |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 19.7 KB, `Latin[opsz,wght]` 27.1 KB, `Latin[opsz,slnt,wght]` 30.3 KB. Serve only the axes you use |
 
 ## 5. Scorecard
 
@@ -126,32 +126,32 @@ contour in every master for self-intersection. The build ships with zero problem
 
 | File                                                  | Cascivo Sans          | Geist             | IBM Plex Sans     | Inter            |
 | ----------------------------------------------------- | --------------------- | ----------------- | ----------------- | ---------------- |
-| Variable Latin slice, wght axis                       | **20.9 KB** (212 cp)  | 29.4 KB (225 cp)  | 45.7 KB (232 cp)  | 48.3 KB (230 cp) |
-| Bytes per codepoint (Latin slice)                     | **98**                | 131               | 197               | 210              |
-| Variable, full charset, wght only                     | **25.6 KB** (70 B/cp) | 69.7 KB (96 B/cp) | —                 | —                |
-| Static Regular, full charset                          | **11.0 KB** (30 B/cp) | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp) | —                |
-| Same Latin slice with **two more axes** (opsz + slnt) | 32.1 KB               | n/a               | n/a               | n/a              |
+| Variable Latin slice, wght axis                       | **19.7 KB** (211 cp)  | 29.4 KB (225 cp)  | 45.7 KB (232 cp)  | 48.3 KB (230 cp) |
+| Bytes per codepoint (Latin slice)                     | **93**                | 131               | 197               | 210              |
+| Variable, full charset, wght only                     | **24.2 KB** (66 B/cp) | 69.7 KB (96 B/cp) | —                 | —                |
+| Static Regular, full charset                          | **10.9 KB** (30 B/cp) | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp) | —                |
+| Same Latin slice with **two more axes** (opsz + slnt) | 30.3 KB               | n/a               | n/a               | n/a              |
 
 The full-charset comparison is not like for like. Geist and Plex cover Cyrillic, Greek and
 more, and those glyphs are larger. The Latin slices are the fair comparison, and Cascivo uses
-25% fewer bytes per codepoint than Geist. Part of this comes from engineering (composites, the
+29% fewer bytes per codepoint than Geist. Part of this comes from engineering (composites, the
 master layout, tolerances). Part of it comes from simpler drawing: stroke-generated outlines
 have fewer points than outlines drawn and refined by hand.
 
 ### Everything else
 
-| Dimension       | Cascivo Sans                                                                                                       | Verdict                                                                                                                                                                               |
-| --------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Axes            | wght 100–900, **opsz 8–48**, slnt −12–0                                                                            | **Ahead** of Geist and Plex. Matches Helvetica Now Variable on opsz, under OFL. No `wdth`                                                                                             |
-| UI features     | tnum (default), pnum, zero, ss01, case, frac, sups, sinf, subs, numr, dnom, ordn, locl (ROM/MOL), ccmp, kern, mark | **On par.** Geist has more stylistic sets; Plex has `onum`/`salt`                                                                                                                     |
-| Validation      | Font Bakery universal: 0 fail, 2 intentional warnings. OTS: all six files pass                                     | **On par or ahead.** Validation runs in the test suite, not just at release                                                                                                           |
-| Reproducibility | Byte-identical rebuilds (`SOURCE_DATE_EPOCH`), parametric source, 3.5 s build                                      | **Ahead.** No GUI source files, and diffs are reviewable                                                                                                                              |
-| Coverage        | Latin-1 + Latin Extended-A + Romanian (365 codepoints)                                                             | **Behind.** No Cyrillic, Greek or Vietnamese. Plex covers many scripts                                                                                                                |
-| Drawing quality | Generated by rule, with outline lint and visual QA at 6 instances                                                  | **Behind.** It has none of the per-glyph optical refinement that years of hand drawing give Helvetica, Plex and Geist. `&`, `@`, `§`, `ß` and the braces are serviceable, not refined |
-| Italic          | Oblique (skew) via `slnt`                                                                                          | **Behind.** No true italic forms. A pure skew is close to what a browser can synthesize, and it costs about 4 KB                                                                      |
-| Family          | Sans only                                                                                                          | **Behind.** No Mono (Geist, Plex), Serif or Condensed (Plex)                                                                                                                          |
-| Hinting         | Unhinted; smart dropout `prep`, `gasp` set                                                                         | On par with Geist. Plex ships hinted TTFs                                                                                                                                             |
-| Field testing   | None                                                                                                               | **Behind.** All three references have years of production use                                                                                                                         |
+| Dimension       | Cascivo Sans                                                                                                       | Verdict                                                                                                                        |
+| --------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| Axes            | wght 100–900, **opsz 8–48**, slnt −12–0                                                                            | **Ahead** of Geist and Plex. Matches Helvetica Now Variable on opsz, under OFL. No `wdth`                                      |
+| UI features     | tnum (default), pnum, zero, ss01, case, frac, sups, sinf, subs, numr, dnom, ordn, locl (ROM/MOL), ccmp, kern, mark | **On par.** Geist has more stylistic sets; Plex has `onum`/`salt`                                                              |
+| Validation      | Font Bakery universal: 0 fail, 2 intentional warnings. OTS: all six files pass                                     | **On par or ahead.** Validation runs in the test suite, not just at release                                                    |
+| Reproducibility | Byte-identical rebuilds (`SOURCE_DATE_EPOCH`), parametric source, 3.5 s build                                      | **Ahead.** No GUI source files, and diffs are reviewable                                                                       |
+| Coverage        | Latin-1 + Latin Extended-A + Romanian (365 codepoints)                                                             | **Behind.** No Cyrillic, Greek or Vietnamese. Plex covers many scripts                                                         |
+| Drawing quality | Generated by rule, then reviewed glyph by glyph at Thin, Regular and Black (section 6)                             | **Behind.** One review pass is not years of optical refinement. `&`, `@`, `§`, `ß` and the braces are serviceable, not refined |
+| Italic          | Oblique (skew) via `slnt`                                                                                          | **Behind.** No true italic forms. A pure skew is close to what a browser can synthesize, and it costs about 4 KB               |
+| Family          | Sans only                                                                                                          | **Behind.** No Mono (Geist, Plex), Serif or Condensed (Plex)                                                                   |
+| Hinting         | Unhinted; smart dropout `prep`, `gasp` set                                                                         | On par with Geist. Plex ships hinted TTFs                                                                                      |
+| Field testing   | None                                                                                                               | **Behind.** All three references have years of production use                                                                  |
 
 ### The honest bottom line
 
@@ -166,13 +166,44 @@ The useful result is the method, not the claim. The parametric stroke engine wit
 budget gates gives a font that you can measure, reproduce and change in a pull request. The
 next steps follow from the scorecard, in order of value:
 
-1. A hand-review pass of the 30 most frequent glyphs, with targeted overrides in `glyphs.py`.
+1. A second review pass by a trained type designer, especially at 11–14 px, where an automated
+   eye is weakest (see section 6).
 2. Cyrillic and Greek, which are mostly new strokes. Many glyphs are composites or mirrors of
    Latin ones.
 3. A true italic master (single-storey `a`, a cursive `f` with a descender), so `slnt` earns
    its 4 KB.
 4. `wdth` and a Mono companion that shares the stroke engine.
 5. A test in real products at 12–16 px against Geist, with hinting decided from that data.
+
+## 6. Hand-review pass
+
+The most frequent glyphs (`e t a o i n s h r d l c u m f g y p b` and the capitals `T A S R E N C`)
+were rendered at 300 px next to Geist, at Thin, Regular and Black, then fixed and checked again.
+Running text at 13, 16 and 22 px came last. Every fix was made in the generator (a rule or a
+parameter), so it applies to every master and to every glyph built the same way.
+
+| Found                                                                            | Cause                                                                                         | Fix                                                                                                                                 |
+| -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Text width ran from 0.73× (Thin) to 1.35× (Black) of Regular. Geist: 0.96×–1.11× | Spacing grew with the stem, and the counters did not give the width back                      | Near-constant spacing, and counters that shrink as stems grow. Now 0.94×–1.14×. A test guards it, so bold text never rewraps a line |
+| Black `e`, `a`, `s` counters nearly closed                                       | Horizontals at 0.68 of the stem; crossbars as heavy as bowls                                  | Black contrast 0.60 (Geist measures about 0.6); crossbars thin by up to 22% more than bowls; heavy `a` bowl rises 5%                |
+| `s` spine too thin at Regular, too heavy at Black                                | The angle pen thins diagonals; a constant stem fills the x-height                             | The spine is its own stroke, with a heavier hairline (1.15 × H)                                                                     |
+| `s` and `S` terminals had a small flag                                           | Near 0°, a short bowl's inner radius is smaller than half the stroke, so the inner edge folds | The terminal sits where the curve is gentler, with a square cut                                                                     |
+| Hairline seam inside `s` and `S`                                                 | Strokes that only touch edge to edge anti-alias into a line                                   | The spine overlaps each bowl by 8 units                                                                                             |
+| `e` crossbar nub and step                                                        | The bar's square end sat outside the curving bowl, 2 units off the stroke end                 | The bar ends on the bowl's centreline, flush with the stroke end                                                                    |
+| `a` tooth at the foot of the stem                                                | A round bowl always crosses the stem about 20 units above the baseline                        | The bowl leaves its curve along its tangent and joins the stem diagonally, as in Geist                                              |
+| `f` hook left a gap ("def ault"), and collapsed at Black                         | Hook radius came from the full glyph width; the width did not follow the stem                 | Hook sized to end over the crossbar; `f` width depends on stem weight                                                               |
+| `y` corner visible at Black                                                      | The left arm was cut exactly at the baseline                                                  | The arm ends below the baseline, inside the right stroke                                                                            |
+| `%`, `&`, `@` rings closed at Black after the width change                       | A full stem pen inside a small ring                                                           | The pen in any ring is at most a third of the ring's size                                                                           |
+
+All glyphs also carry the TrueType overlap flags, which variable fonts with overlapping
+contours should set (CoreText needs them to anti-alias overlaps without seams).
+
+What this pass cannot claim: the review was done by eye on rendered images and by measurement,
+not by a trained type designer. It catches structural defects (collapsed counters, kinks,
+seams, gaps, width drift) reliably. It is weaker on the last few units of optical balance and
+on how text renders at 11–14 px on low-resolution screens. Still open: the Black `f` overhangs
+a little, `s` has angled terminals while `c` and `e` keep horizontal ones (a style decision),
+and the bottom of the Black `a` has a small spur.
 
 ## Sources
 

@@ -2,7 +2,7 @@
 
 Cascivo Sans is a variable grotesque for interfaces. It is generated from a parametric stroke
 engine and licensed under the SIL Open Font License 1.1. It has three axes (weight, optical size
-and slant), tabular figures by default, and a 21 KB Latin web file.
+and slant), tabular figures by default, and a 20 KB Latin web file.
 
 Read [RESEARCH.md](./RESEARCH.md) for why it exists, how it compares with Geist, IBM Plex and
 Helvetica, and what it does not do yet.
@@ -11,12 +11,12 @@ Helvetica, and what it does not do yet.
 
 | File                                            | Axes             | Charset               | Size                      |
 | ----------------------------------------------- | ---------------- | --------------------- | ------------------------- |
-| `fonts/CascivoSans-Latin[wght].woff2`           | wght             | Latin                 | 20.9 KB                   |
-| `fonts/CascivoSans-Latin[opsz,wght].woff2`      | wght, opsz       | Latin                 | 29.1 KB                   |
-| `fonts/CascivoSans-Latin[opsz,slnt,wght].woff2` | wght, opsz, slnt | Latin                 | 32.1 KB                   |
-| `fonts/CascivoSans[opsz,slnt,wght].woff2`       | wght, opsz, slnt | full (365 codepoints) | 38.4 KB                   |
-| `fonts/CascivoSans[opsz,slnt,wght].ttf`         | wght, opsz, slnt | full                  | 89.7 KB (desktop install) |
-| `fonts/CascivoSans-Regular.woff2`               | static 400       | full                  | 11.0 KB                   |
+| `fonts/CascivoSans-Latin[wght].woff2`           | wght             | Latin                 | 19.7 KB                   |
+| `fonts/CascivoSans-Latin[opsz,wght].woff2`      | wght, opsz       | Latin                 | 27.1 KB                   |
+| `fonts/CascivoSans-Latin[opsz,slnt,wght].woff2` | wght, opsz, slnt | Latin                 | 30.3 KB                   |
+| `fonts/CascivoSans[opsz,slnt,wght].woff2`       | wght, opsz, slnt | full (365 codepoints) | 36.4 KB                   |
+| `fonts/CascivoSans[opsz,slnt,wght].ttf`         | wght, opsz, slnt | full                  | 86.5 KB (desktop install) |
+| `fonts/CascivoSans-Regular.woff2`               | static 400       | full                  | 10.9 KB                   |
 
 "Latin" means Basic Latin, Latin-1 and common punctuation. The full charset adds Latin
 Extended-A, Romanian comma letters and combining marks. That covers Western, Central and

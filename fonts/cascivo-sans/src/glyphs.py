@@ -66,9 +66,14 @@ class G:
         return ((x0 + x1) / 2, (y0 + y1) / 2, (x1 - x0) / 2 - V / 2, (y1 - y0) / 2 - H / 2)
 
     def oval(self, x0, y0, x1, y1, V=None, H=None, **kw):
+        V = self.p.V if V is None else V
+        H = self.p.H if H is None else H
+        # a small ring (%, &, @) drawn with a heavy pen closes up: keep the pen under a third of
+        # the ring's size so a counter always survives (letters like o are never this small)
+        V, H = min(V, (x1 - x0) * 0.33), min(H, (y1 - y0) * 0.33)
         cx, cy, rx, ry = self.box(x0, y0, x1, y1, V, H)
         segs = self.arc(cx, cy, rx, ry, 90, 450)
-        pen = (V, H) if V is not None else None
+        pen = (V, H)
         return self.stroke(segs, closed=True, pen=pen, **kw)
 
     def hw(self, dx, dy, ws=1.0, w=None):
@@ -106,7 +111,7 @@ def on_line(p0, p1, y):
 def _H(g, p):
     w = p.Hw
     g.vstem(0, 0, p.cap).vstem(w - p.V, 0, p.cap)
-    g.hbar(p.V / 2, w - p.V / 2, p.cap * 0.5 - p.H / 2 + 6)
+    g.hbar(p.V / 2, w - p.V / 2, p.cap * 0.5 - p.bar / 2 + 6, h=p.bar)
     g.ht = 'c'
 
 
@@ -168,7 +173,7 @@ def _A(g, p):
     a = g.diag(0, 0, c, p.cap, 'l', 'c')
     b = g.diag(w, 0, c, p.cap, 'r', 'c')
     y = p.cap * 0.27
-    g.hbar(on_line(*a, y), on_line(*b, y), y)
+    g.hbar(on_line(*a, y), on_line(*b, y), y, h=p.bar)
     g.ht = 'c'
     g.sb = (0.08, 0.08)
 
@@ -376,7 +381,7 @@ def _J(g, p):
     g.sb = (0.4, 1)
 
 
-def _S(g, p, w, top, ov, pen=None):
+def _S(g, p, w, top, ov, pen=None, term=32):
     """S/s/$ spine: upper arc, a cubic spine at full stem weight, lower arc."""
     V, H = p.V, p.H
     yb, yt = -ov, top + ov
@@ -388,10 +393,24 @@ def _S(g, p, w, top, ov, pen=None):
     pa = (cxu - rxu, cyu)
     pb = (cxl + rxl, cyl)
     dy = pa[1] - pb[1]
+    # the spine runs a few units into each bowl: strokes that only touch edge to edge render
+    # with an anti-aliased hairline seam
+    lap = 8
+    pa, pb = (pa[0], pa[1] + lap), (pb[0], pb[1] - lap)
+    dy = pa[1] - pb[1]
     spine = ('C', pa, (pa[0], pa[1] - dy * 0.55), (pb[0], pb[1] + dy * 0.55), pb)
-    up = g.arc(cxu, cyu, rxu, ryu, 36 + p.ap * 0.8, 180)
-    lo = g.arc(cxl, cyl, rxl, ryl, 0, -144 + p.ap * 0.8)
-    g.stroke(up + [spine] + lo, caps=('h', 'h'), pen=pen)
+    # The upper bowl is short, so near 0° its inner radius of curvature drops below half the
+    # stroke and the inner edge must fold. The terminal sits higher, where the curve is gentle,
+    # and is cut square to the stroke (a horizontal cut there would leave a sliver).
+    up = g.arc(cxu, cyu, rxu, ryu, term + p.ap * 0.8, 180)
+    lo = g.arc(cxl, cyl, rxl, ryl, 0, -146 + p.ap * 0.8)
+    # Three strokes, so the spine gets its own pen: the default angle pen thins a diagonal spine
+    # too far at Regular, while a constant full stem closes the counters at Black. A heavier
+    # hairline (1.15 H) does both. The joins sit at the bowls' vertical extremes, where every
+    # pen is exactly one stem wide, so they are seamless.
+    g.stroke(up, caps=('b', 'b'), pen=pen)
+    g.stroke([spine], pen=(PV, PH * 1.15))
+    g.stroke(lo, caps=('b', 'b'), pen=pen)
 
 
 @glyph('S', 0x53)
@@ -477,7 +496,7 @@ def _l_ss01(g, p):
     rx = p.V * 1.15 + 40
     ry = rx * 1.05
     cy = -p.ov * 0.4 + p.H / 2 + ry
-    g.stroke([L((a, p.asc), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, 300), caps=('b', 'h'))
+    g.stroke([L((a, p.asc), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, 300), caps=('b', 'b'))
     g.ht = 'a'
     g.sb = (1, 0.35)
 
@@ -572,9 +591,9 @@ def _c(g, p):
 def _e(g, p):
     w = p.nw * 1.06
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov)
-    yb = cy + 2
+    yb = cy  # flush with where the bowl stroke ends, or its butt end shows below the bar
     g.stroke(g.arc(cx, cy, rx, ry, 0, 322 - p.ap), caps=('b', 'h'))
-    g.hbar(cx - rx, cx + rx + p.V / 2, yb)
+    g.hbar(cx - rx, cx + rx, yb, h=p.bar)  # ends on the bowl's centreline, so the bowl stroke covers it
     g.sb = (0.62, 0.5)
 
 
@@ -590,14 +609,21 @@ def _a(g, p):
     cyt = p.xh + p.ov * 0.5 - H / 2 - ryt
     g.stroke([L((xs, 0), (xs, cyt))] + g.arc(cxt, cyt, rxt, ryt, 0, 154 - p.ap), caps=('b', 'h'))
     # bowl
-    ybt = p.xh * 0.57
+    ybt = p.xh * (0.57 + 0.05 * max(0.0, (p.V - 90) / 88))  # heavy a: lift the bowl so it keeps a counter
     yt = ybt - H / 2
     ybot = -p.ov + H / 2
     ryb = (yt - ybot) / 2
-    rxb = (xs - V / 2) / 2 * 0.98
+    rxb = (xs - V / 2) / 2 * 0.94
     cxb = V / 2 + rxb
     cyb = (yt + ybot) / 2
-    g.stroke([L((xs, yt), (cxb, yt))] + g.arc(cxb, cyb, rxb, ryb, 90, 344), taper=(1, 0.45))
+    # The bowl leaves its curve at 322° and runs straight along that tangent into the stem
+    # centre. A round bowl meeting a stem always grazes the stem's foot about 20 units above
+    # the baseline; a diagonal join (as in Geist) lifts the junction clear of it.
+    bowl = g.arc(cxb, cyb, rxb, ryb, 90, 322)
+    end = bowl[-1][-1]
+    tx, ty = end[0] - bowl[-1][-2][0], end[1] - bowl[-1][-2][1]
+    join = (xs, end[1] + (xs - end[0]) * ty / tx)
+    g.stroke([L((xs, yt), (cxb, yt))] + bowl + [L(end, join)], taper=(1, 0.8))
     g.sb = (0.55, 1)
 
 
@@ -609,17 +635,19 @@ def _s(g, p):
 
 @glyph('f', 0x66)
 def _f(g, p):
-    w = p.nw * 0.6
+    w = p.cn * 0.47 + p.V * 1.69  # heavier stems need a wider f, or the hook has no room to turn
     V, H = p.V, p.H
     xs = w * 0.28 + V * 0.1
-    rx = w - xs - V * 0.25
-    ry = rx * 0.95
+    # size the hook so its terminal ends above the crossbar's end: a wider hook overhangs empty
+    # space and opens a gap before the next letter ("def ault")
+    rx = (w * 0.96 - xs - V / 2) / (1 + math.cos(math.radians(38))) + V * 0.15
+    ry = rx * 1.15
     top = p.asc + p.ov * 0.3
     cy = top - H / 2 - ry
-    g.stroke([L((xs + V / 2, 0), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, 64), caps=('b', 'h'))
+    g.stroke([L((xs + V / 2, 0), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, 38), caps=('b', 'b'))
     g.hbar(0, w * 0.96, p.xh - H)
+    g.sb = (0.3, 0.05)
     g.ht = 'a'
-    g.sb = (0.3, 0.2)
 
 
 @glyph('t', 0x74)
@@ -690,8 +718,10 @@ def _x(g, p):
 def _y(g, p):
     w = p.nw * 1.02
     a = g.diag(w, p.xh, w * 0.36, p.desc, 'r', 'c', caps=('h', 'h'))
-    xm = on_line(*a, 0)
-    g.diag(0, p.xh, xm, 0, 'l', 'c')
+    # the left arm ends below the baseline, on the right stroke's centreline: a cut exactly at
+    # the baseline leaves its corner showing at heavy weights
+    yj = -p.H * 0.5
+    g.diag(0, p.xh, on_line(*a, yj), yj, 'l', 'c', caps=('h', 'b'))
     g.sb = (0.1, 0.1)
 
 
@@ -1212,7 +1242,7 @@ def _asterisk(g, p):
 @glyph('at', 0x40)
 def _at(g, p):
     w = p.Hw * 1.45
-    pen = (p.V * 0.8, p.H * 0.8)
+    pen = (min(p.V * 0.8, w * 0.13), min(p.H * 0.8, w * 0.11))  # @ is mostly counter: cap the pen at heavy weights
     cx, cy, rx, ry = g.box(0, p.desc * 0.7, w, p.cap + p.ov, V=pen[0], H=pen[1])
     xs = w * 0.7
     # inner bowl
@@ -1468,7 +1498,7 @@ def _eth(g, p):
     V, H = p.V, p.H
     g.oval(0, -p.ov, w, p.xh * 0.92)
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.asc)
-    g.stroke([L((cx + rx, p.xh * 0.4), (cx + rx, cy))] + g.arc(cx, cy, rx, ry, 0, 118), caps=('b', 'h'))
+    g.stroke([L((cx + rx, p.xh * 0.4), (cx + rx, cy))] + g.arc(cx, cy, rx, ry, 0, 118), caps=('b', 'b'))
     g.diag(w * 0.28, p.asc * 0.76, w * 0.8, p.asc * 0.98, 'c', 'c', ws=0.8, caps=('b', 'b'))
     del V, H
     g.ht = 'a'
@@ -1570,7 +1600,7 @@ def _longs(g, p):
     ry = rx * 0.95
     top = p.asc + p.ov * 0.3
     cy = top - H / 2 - ry
-    g.stroke([L((xs + V / 2, 0), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, 64), caps=('b', 'h'))
+    g.stroke([L((xs + V / 2, 0), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, 38), caps=('b', 'b'))
     g.ht = 'a'
     g.sb = (1, 0.2)
 
