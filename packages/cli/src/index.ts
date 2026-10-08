@@ -150,6 +150,8 @@ Options:
   --from <file>             Compile a blueprint (cascivo.app.json): name, framework, theme,
                             pages [{ title, block? }], runtime, examples, auth. Each page
                             renders its registry block. Replaces the other options.
+  --workspace               Put the app in a pnpm workspace: apps/web, packages/ui for your own
+                            components, Vite+ running every package's scripts, CI, a smoke test
   --theme <name>            Theme to install (${THEME_LIST})
   --sections "<a, b>"       Comma-separated nav section labels (one component each)
   --package-manager <pm>    Package manager for README/next-steps (alias --pm; default: auto-detect)

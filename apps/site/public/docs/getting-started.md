@@ -246,6 +246,21 @@ edits. A generated file you have edited since keeps your edits, merged three way
 edit and the change touch the same lines, the file gets git-style conflict markers and the
 command exits non-zero.
 
+### New project as a workspace
+
+```sh
+npx cascivo create my-app --workspace
+```
+
+Writes the same app into a pnpm workspace: the app in `apps/web`, the team's own components in
+`packages/ui` (run `npx cascivo add` there, so every app shares one copy), Vite+ (`vp run`)
+running each package's scripts, and a GitHub Actions workflow that runs typecheck, lint, test and
+build on every push. A React + Vite app also gets Vitest with a smoke test. It needs
+`--framework react-vite` (the default) or `cloudflare`, and pnpm.
+
+Every scaffold, workspace or not, comes with agent files: a short `AGENTS.md`, a `CLAUDE.md`
+that includes it, and a `.mcp.json` that registers the cascivo MCP server.
+
 ### Existing project
 
 ```sh

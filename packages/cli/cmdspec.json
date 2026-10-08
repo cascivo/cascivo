@@ -85,6 +85,11 @@
           "effects": ["read", "write", "network"]
         },
         {
+          "name": "--workspace",
+          "summary": "Put the app in a pnpm workspace",
+          "description": "apps/web is the app, packages/ui holds the team's own components, Vite+ (vp run) runs every package's typecheck, lint, test and build, and a GitHub Actions workflow runs the same. React + Vite apps get a Vitest smoke test. Implies pnpm; not for astro."
+        },
+        {
           "name": "--from",
           "summary": "Compile a blueprint file (cascivo.app.json)",
           "description": "A blueprint names the app, its framework, theme, runtime, examples and auth, and its pages as [{ \"title\", \"block\"? }]: each page renders that registry block, wired into the routes and the side nav. It replaces the other options; the blueprint is copied into the app as cascivo.app.json.",

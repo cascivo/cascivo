@@ -24,6 +24,7 @@ describe('createAppArgs', () => {
         auth: 'email',
         sections: ['Overview', 'Users'],
         template: 'dashboard',
+        workspace: true,
       }),
     ).toEqual([
       '-y',
@@ -41,6 +42,7 @@ describe('createAppArgs', () => {
       'midnight',
       '--sections',
       'Overview, Users',
+      '--workspace',
       '--template',
       'dashboard',
     ])

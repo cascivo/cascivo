@@ -391,7 +391,35 @@ parity test.
 
 ## Phase 3 — The opinionated workspace
 
-### P3-1 ☐ `--workspace`
+**First slice shipped 2026-10-08:**
+
+- **`cascivo create --workspace`** (P3-1) writes the ordinary scaffold into `apps/web`, adds
+  `packages/ui` (`@<name>/ui`, already a dependency of the app) as the place to `cascivo add`
+  into, and runs every package's scripts through Vite+ `vp run -r`. `cascivo app` keeps working
+  from `apps/web`, because the app inside is unchanged. It needs `react-vite` or `cloudflare`;
+  astro is refused with a message. MCP `create_app` and `compose_app` take `workspace: true`.
+- **Quality and CI** (part of P3-2): a GitHub Actions workflow runs typecheck, lint, test and
+  build. A React + Vite app gets Vitest with jsdom and a smoke test that renders the shell. The
+  cloudflare app keeps the tests its Worker already has.
+- **Agent files** (P3-3): every scaffold, workspace or not, ships `CLAUDE.md` (`@AGENTS.md`) and
+  a `.mcp.json` that registers `@cascivo/mcp`. The workspace adds a short root `AGENTS.md` that
+  points into the app's. A test holds the largest scaffold's `AGENTS.md` under 6 KB.
+- **Verified:** `framework:check` creates a workspace for both frameworks with the built CLI,
+  installs it from packed tarballs, and runs its typecheck, lint, build, test and `format:check`.
+
+**Not done, and why:**
+
+- **`packages/config` and a pnpm catalog** (P3-1). The app already carries its own ESLint,
+  Prettier and tsconfig. Moving them into a shared package is only worth it with a second app,
+  and a catalog only with a second package that pins the same dependencies.
+- **Vitest browser mode, axe, Playwright, `theme-switcher`, `error-pages`** (P3-2). Each needs a
+  browser download in CI or design work on a new page. They are separate recipes to add later.
+- **AGENTS.md generated from recipes' `agentNotes`** (P3-3). The recipes do not carry
+  `agentNotes` yet (P1-1 is still open), so the agent files stay hand-written templates.
+- **P3-4** needs a new published package, `@cascivo/create`, because `vp create @cascivo` looks
+  up `@cascivo/create` on npm. Publishing a new package is the maintainer's call.
+
+### P3-1 ◐ `--workspace`
 
 - **Change:** generates a monorepo with:
   - `apps/web`
@@ -400,7 +428,7 @@ parity test.
   - Vite+ 1.x and a pnpm catalog
 - **Verify:** an `isolated:check`-style job builds the generated monorepo from packed tarballs.
 
-### P3-2 ☐ Recipes for quality and CI
+### P3-2 ◐ Recipes for quality and CI
 
 - **Change:**
   - `test-setup`: Vitest browser mode plus axe.
@@ -409,7 +437,7 @@ parity test.
   - `theme-switcher`.
   - `error-pages`.
 
-### P3-3 ☐ Agent files
+### P3-3 ◐ Agent files
 
 - **Change:**
   1. AGENTS.md is generated from the selected recipes' `agentNotes`, layered at the root and in

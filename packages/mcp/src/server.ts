@@ -400,13 +400,17 @@ export function createServer(options: ServerOptions = {}): McpServer {
           .describe(
             `Sign-in for framework "cloudflare". ${authSummaries()}. Setup for the chosen mode comes back with the result.`,
           ),
+        workspace: z
+          .boolean()
+          .optional()
+          .describe('A pnpm workspace: apps/web + packages/ui, Vite+, CI (not astro)'),
         cwd: z
           .string()
           .optional()
           .describe('Directory to create the app in (default: current directory)'),
       },
     },
-    ({ name, theme, sections, framework, runtime, examples, auth, template, cwd }) => {
+    ({ name, theme, sections, framework, runtime, examples, auth, template, workspace, cwd }) => {
       let args: string[]
       try {
         args = createAppArgs({
@@ -418,6 +422,7 @@ export function createServer(options: ServerOptions = {}): McpServer {
           examples,
           auth,
           template,
+          workspace,
         })
       } catch (e) {
         return error(e instanceof Error ? e.message : String(e))
@@ -470,15 +475,27 @@ export function createServer(options: ServerOptions = {}): McpServer {
           .optional()
           .describe("Cloudflare example pages: create_app's `examples` names"),
         auth: z.enum(AUTH_MODES).optional(),
+        workspace: z
+          .boolean()
+          .optional()
+          .describe('Put the app in a pnpm workspace, as create_app'),
         cwd: z.string().optional().describe('Directory to create the app in'),
       },
     },
-    ({ cwd, ...blueprint }) => {
+    ({ cwd, workspace, ...blueprint }) => {
       const dir = mkdtempSync(join(tmpdir(), 'cascivo-blueprint-'))
       try {
         const file = join(dir, 'cascivo.app.json')
         writeFileSync(file, JSON.stringify(blueprint))
-        const result = spawnSync('npx', ['-y', 'cascivo', 'create', '--from', file], {
+        const args = [
+          '-y',
+          'cascivo',
+          'create',
+          '--from',
+          file,
+          ...(workspace ? ['--workspace'] : []),
+        ]
+        const result = spawnSync('npx', args, {
           encoding: 'utf8',
           ...(cwd ? { cwd } : {}),
         })

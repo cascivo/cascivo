@@ -15,6 +15,8 @@ import { CASCIVO_VERSIONS, CLI_VERSION, SIGNALS_PEER } from '../generated/versio
 // app's own Vite plugin will, so the two cannot drift.
 import { generateRoutes } from '@cascivo/app/vite'
 import { loadRecipe, recipeFiles } from '../scaffold/recipes.js'
+import { mergeMcpConfig } from './mcp.js'
+import { buildWorkspace } from '../scaffold/workspace.js'
 import type { RecipeVars } from '../scaffold/recipes.js'
 
 /**
@@ -134,6 +136,8 @@ export interface ScaffoldOptions {
    * `pages[].block`). `undefined` keeps the placeholder page.
    */
   blocks?: (string | undefined)[]
+  /** Put the app in a pnpm workspace (`apps/web` + `packages/ui`, Vite+, CI). */
+  workspace?: boolean
 }
 
 export type Auth = 'access' | 'email' | 'oauth' | 'email,oauth'
@@ -4114,9 +4118,32 @@ function blueprintJson(opts: ScaffoldOptions, sections: Section[]): string {
 
 export function buildScaffold(opts: ScaffoldOptions): ScaffoldFile[] {
   const sections = resolveSections(opts.sections, opts.blocks)
-  return [
+  const app = [
     ...buildFrameworkScaffold(opts, sections),
     { path: 'cascivo.app.json', contents: blueprintJson(opts, sections) },
+    ...agentFiles(),
+  ]
+  if (!opts.workspace) return app
+  return buildWorkspace({
+    packageName: packageName(opts.name),
+    app,
+    firstLabel: sections[0]!.label,
+    testable: (opts.framework ?? 'react-vite') === 'react-vite',
+    reactVersion: V['@cascivo/react']!,
+  })
+}
+
+/**
+ * Wiring for a coding agent opened in the app. Claude Code reads CLAUDE.md, which imports the
+ * AGENTS.md every other agent reads, so the instructions live in one file; `.mcp.json` is what
+ * `cascivo mcp init` writes, so the agent can reach the registry without that extra step.
+ */
+function agentFiles(): ScaffoldFile[] {
+  const mcp = mergeMcpConfig(undefined, 'claude')
+  if (mcp.kind !== 'added') throw new Error('cascivo: could not build .mcp.json')
+  return [
+    { path: 'CLAUDE.md', contents: '@AGENTS.md\n' },
+    { path: '.mcp.json', contents: formatJson(mcp.config) },
   ]
 }
 
@@ -4207,6 +4234,9 @@ export function optionsError(opts: Omit<ScaffoldOptions, 'pm'>): string | null {
   }
   if (opts.auth && opts.framework !== 'cloudflare') {
     return '--auth needs --framework cloudflare (it guards the Worker).'
+  }
+  if (opts.workspace && opts.framework === 'astro') {
+    return '--workspace needs --framework react-vite or cloudflare.'
   }
   if (examples.includes('agent') && opts.runtime === 'preact') {
     return (
@@ -4360,10 +4390,13 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
       process.exitCode = 1
       return
     }
+    const workspace = args.includes('--workspace')
     const opts: ScaffoldOptions = {
       ...chosen,
       ...(fromArg && nameArg ? { name: nameArg } : {}),
-      pm,
+      // A workspace is a pnpm workspace: its scripts and CI assume pnpm.
+      pm: workspace ? 'pnpm' : pm,
+      ...(workspace ? { workspace } : {}),
     }
     const problem = optionsError(opts)
     if (problem) {

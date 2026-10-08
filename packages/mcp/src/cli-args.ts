@@ -26,6 +26,7 @@ export interface CreateAppInput {
   examples?: string[] | undefined
   auth?: string | undefined
   template?: string | undefined
+  workspace?: boolean | undefined
 }
 
 /**
@@ -47,6 +48,7 @@ export function createAppArgs(input: CreateAppInput): string[] {
   if (input.sections && input.sections.length > 0) {
     args.push('--sections', input.sections.join(', '))
   }
+  if (input.workspace) args.push('--workspace')
   if (input.template) {
     assertNotFlag(input.template, 'Template')
     args.push('--template', input.template)

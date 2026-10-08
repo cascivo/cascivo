@@ -2,7 +2,7 @@ import { mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'n
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { buildScaffold, create } from '../commands/create.js'
+import { EXAMPLES, buildScaffold, create } from '../commands/create.js'
 import { blueprintOptions, parseBlueprint } from './blueprint.js'
 import { blockNames } from './recipes.js'
 import { CLI_VERSION } from '../generated/versions.js'
@@ -188,5 +188,94 @@ describe('cascivo create --from', () => {
     expect(process.exitCode).toBe(1)
     expect(error.mock.calls.join(' ')).toContain('--example needs --framework cloudflare')
     expect(readdirSync(cwd)).toEqual(['cascivo.app.json'])
+  })
+})
+
+describe('agent files', () => {
+  const build = (opts: Parameters<typeof buildScaffold>[0]) =>
+    new Map(buildScaffold(opts).map((f) => [f.path, f.contents]))
+
+  it('wires CLAUDE.md to AGENTS.md and pre-registers the cascivo MCP server', () => {
+    const map = build({ name: 'acme', theme: 'light', sections: ['Home'] })
+    expect(map.get('CLAUDE.md')).toBe('@AGENTS.md\n')
+    expect(JSON.parse(map.get('.mcp.json')!)).toEqual({
+      mcpServers: { cascivo: { command: 'npx', args: ['-y', '@cascivo/mcp'] } },
+    })
+  })
+
+  // Context files cost tokens on every turn, and requirements a task does not need make agents
+  // worse at it (2026-10-07 research, §2). The largest scaffold — every example, both sign-ins —
+  // must still keep its instructions short.
+  it('keeps AGENTS.md within 6 KB for the largest scaffold', () => {
+    const map = build({
+      name: 'acme',
+      theme: 'light',
+      sections: ['Home'],
+      framework: 'cloudflare',
+      runtime: 'react',
+      examples: [...EXAMPLES],
+      auth: 'email,oauth',
+    })
+    expect(map.get('AGENTS.md')!.length).toBeLessThanOrEqual(6_000)
+  })
+})
+
+describe('create --workspace', () => {
+  const build = (framework: 'react-vite' | 'cloudflare') =>
+    new Map(
+      buildScaffold({
+        name: 'Acme',
+        theme: 'light',
+        sections: ['Home'],
+        framework,
+        workspace: true,
+      }).map((f) => [f.path, f.contents]),
+    )
+
+  it('puts the app in apps/web next to packages/ui, run by Vite+ and CI', () => {
+    const map = build('react-vite')
+    for (const path of [
+      'package.json',
+      'pnpm-workspace.yaml',
+      'vite.config.ts',
+      '.github/workflows/ci.yml',
+      'AGENTS.md',
+      'CLAUDE.md',
+      '.mcp.json',
+      'apps/web/src/App.tsx',
+      'apps/web/cascivo.app.json',
+      'apps/web/src/App.test.tsx',
+      'packages/ui/src/index.ts',
+    ]) {
+      expect(map.has(path), path).toBe(true)
+    }
+    expect(map.has('apps/web/.mcp.json')).toBe(false)
+    const web: unknown = JSON.parse(map.get('apps/web/package.json')!)
+    expect(web).toMatchObject({
+      name: '@acme/web',
+      scripts: { test: 'vitest run' },
+      dependencies: { '@acme/ui': 'workspace:*' },
+    })
+    expect(JSON.parse(map.get('package.json')!)).toMatchObject({
+      scripts: { build: 'vp run -r build', test: 'vp run -r test' },
+      devDependencies: { 'vite-plus': expect.any(String) },
+    })
+  })
+
+  it('runs no test script where there is no test setup (cloudflare)', () => {
+    const map = build('cloudflare')
+    expect(map.has('apps/web/src/App.test.tsx')).toBe(false)
+    expect(map.get('.github/workflows/ci.yml')).not.toContain('pnpm test')
+  })
+
+  it('refuses astro', async () => {
+    const cwd = mkdtempSync(join(tmpdir(), 'cascivo-ws-'))
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {})
+    await create(['site', '--yes', '--framework', 'astro', '--workspace'], cwd)
+    expect(process.exitCode).toBe(1)
+    expect(error.mock.calls.join(' ')).toContain('--workspace needs')
+    process.exitCode = undefined
+    rmSync(cwd, { recursive: true, force: true })
+    vi.restoreAllMocks()
   })
 })
