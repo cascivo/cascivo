@@ -224,14 +224,19 @@ the same values as the flags, and a blueprint is held to the same rules. An unkn
 block fails with the list of valid ones. The blueprint is kept in the app as `cascivo.app.json`.
 Agents use the MCP tools `list_blocks` and `compose_app` for the same thing.
 
-To grow the app a page at a time, run `cascivo app add page` in its directory:
+Every `cascivo create` writes `cascivo.app.json`, whether it ran from flags, prompts or a
+blueprint, so any scaffolded app can grow from its directory:
 
 ```sh
 npx cascivo app add page "Users" --block users-table-page
+npx cascivo app add example crud      # a cloudflare example, as --example would have added it
+npx cascivo app upgrade               # this CLI's templates, keeping your edits
 ```
 
-It adds the page to `cascivo.app.json` and writes the page, its block, and the route and nav
-entries. A generated file you have edited since keeps your edits, merged three ways. When your
+`app add page` adds the page to `cascivo.app.json` and writes the page, its block, and the
+route and nav entries. The app's original files are rebuilt with the CLI version recorded in
+`cascivo.app.json`, so a newer CLI's template changes are merged in, not mistaken for your
+edits. A generated file you have edited since keeps your edits, merged three ways. When your
 edit and the change touch the same lines, the file gets git-style conflict markers and the
 command exits non-zero.
 

@@ -234,7 +234,7 @@ byte-for-byte would need conditional fragments, which is the same complexity mov
   - `pnpm starters:generate && git diff --exit-code starters/` (byte-identical output).
   - `scaffold-contract`, `scaffold-lint`, `framework-install` and `create.test.ts` stay green.
 
-### P1-4 ☐ Recipes are installable registry items
+### P1-4 ◐ Recipes are installable registry items
 
 - **Change:**
   1. `cascivo add recipe:<name>` (and `owner/repo/recipe`) applies a recipe to an existing app.
@@ -301,11 +301,26 @@ aggregation files):
   - The misalignment could then lose the other side's later edits.
   - Its tests only covered single-line replacements. It is now a standard diff3 (hunks grouped
     by overlap, with same-point insertions treated as overlapping), with regression tests.
+
+**Third slice shipped 2026-10-08:**
+
+- **Every scaffold is a blueprint app.** `cascivo create` writes `cascivo.app.json` whether it ran
+  from flags, prompts or `--from`. The file is normalized, and stamped with `"cascivo":
+  "<version>"` from a new `CLI_VERSION` in the generated version table. This is the "prompts
+  produce a blueprint" item: the prompts' answers are recorded rather than a second prompt flow
+  being built. The five cloudflare starters gained the file, and apart from it all 906 golden
+  combinations are byte-identical.
+- **`cascivo app add example <name>`** adds a cloudflare example to an existing app. It goes
+  through the same rules as `--example`, so the same combinations are refused. This supersedes
+  P1-4's `cascivo add recipe:<name>` for first-party recipes.
+- **Versioned merge base, instead of the planned `cascivo.lock`.** The merge base is now what the
+  app's own CLI version generated, rebuilt with `npx cascivo@<recorded version>`. If that cannot
+  run, it falls back to this CLI's output with a warning. The stamp in the blueprint was enough
+  to do this; no lockfile was needed.
+- **`cascivo app upgrade`** regenerates the app with this CLI's templates, keeping your edits.
 - **Open:**
-  - `cascivo app add recipe` (examples onto an existing app).
-  - `cascivo.lock` versioning, so app files survive a CLI upgrade.
-  - Prompts that produce a blueprint.
-  - P2-5 (renderer coverage) and P2-6 (agent benchmark).
+  - P2-5 (renderer coverage).
+  - P2-6 (the agent benchmark needs real model runs, which this environment cannot make).
 
 ### P2-1 ☑ Blueprint schema and parser
 
@@ -325,7 +340,7 @@ aggregation files):
   3. Blocks are **wired** into routes and nav. They are not just dropped into `src/pages`.
   4. This closes the ROADMAP's `--router` item: routes come from the blueprint on every target.
 
-### P2-3 ◐ `cascivo app add page|recipe`
+### P2-3 ☑ `cascivo app add page|recipe`
 
 - **Change:** additive edits that update the blueprint, routes and nav together.
 - **Upgrades:** each generated file records `recipe@version` in `cascivo.lock`, so

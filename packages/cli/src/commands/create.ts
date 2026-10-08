@@ -10,7 +10,7 @@ import {
 } from '../utils/config.js'
 import { flagValue, positionalArgs, resolvePackageManagerFlag } from '../utils/args.js'
 import { writeFileSafe } from '../utils/fs.js'
-import { CASCIVO_VERSIONS, SIGNALS_PEER } from '../generated/versions.js'
+import { CASCIVO_VERSIONS, CLI_VERSION, SIGNALS_PEER } from '../generated/versions.js'
 // Bundled into the CLI (a devDependency): the scaffold writes the same routes.gen.ts the
 // app's own Vite plugin will, so the two cannot drift.
 import { generateRoutes } from '@cascivo/app/vite'
@@ -4094,8 +4094,33 @@ function buildCloudflareScaffold(opts: ScaffoldOptions, sections: Section[]): Sc
   ]
 }
 
+/**
+ * The app's blueprint, as `cascivo.app.json`: what it was generated from, in the vocabulary of
+ * the flags, stamped with this CLI's version. `cascivo app` changes the app by changing this
+ * file and merging what it generates.
+ */
+function blueprintJson(opts: ScaffoldOptions, sections: Section[]): string {
+  return formatJson({
+    name: opts.name,
+    framework: opts.framework ?? 'react-vite',
+    theme: opts.theme,
+    pages: sections.map((s) => ({ title: s.label, ...(s.block ? { block: s.block } : {}) })),
+    ...(opts.runtime ? { runtime: opts.runtime } : {}),
+    ...(opts.examples && opts.examples.length > 0 ? { examples: opts.examples } : {}),
+    ...(opts.auth ? { auth: opts.auth } : {}),
+    cascivo: CLI_VERSION,
+  })
+}
+
 export function buildScaffold(opts: ScaffoldOptions): ScaffoldFile[] {
   const sections = resolveSections(opts.sections, opts.blocks)
+  return [
+    ...buildFrameworkScaffold(opts, sections),
+    { path: 'cascivo.app.json', contents: blueprintJson(opts, sections) },
+  ]
+}
+
+function buildFrameworkScaffold(opts: ScaffoldOptions, sections: Section[]): ScaffoldFile[] {
   if (opts.framework === 'astro') return buildAstroScaffold(opts, sections)
   if (opts.framework === 'cloudflare') {
     // The digest emails the report page the export example adds, so it brings that along.
@@ -4360,12 +4385,6 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
     const files = buildScaffold(opts)
     for (const file of files) {
       await writeFileSafe(join(targetDir, file.path), file.contents)
-    }
-    if (fromArg) {
-      // The app's record of intent: what it was compiled from, for the next agent to read.
-      const { readFileSync } = await import('node:fs')
-      const raw: unknown = JSON.parse(readFileSync(resolve(cwd, fromArg), 'utf8'))
-      await writeFileSafe(join(targetDir, 'cascivo.app.json'), formatJson(raw))
     }
 
     console.log(

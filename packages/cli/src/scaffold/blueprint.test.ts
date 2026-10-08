@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { buildScaffold, create } from '../commands/create.js'
 import { blueprintOptions, parseBlueprint } from './blueprint.js'
 import { blockNames } from './recipes.js'
+import { CLI_VERSION } from '../generated/versions.js'
 
 const page = (title: string, block?: string) => ({ title, ...(block ? { block } : {}) })
 
@@ -174,7 +175,10 @@ describe('cascivo create --from', () => {
     expect(readFileSync(join(cwd, 'acme/src/blocks/stats-cards.tsx'), 'utf8')).toContain(
       'StatsCards',
     )
-    expect(JSON.parse(readFileSync(join(cwd, 'acme/cascivo.app.json'), 'utf8'))).toEqual(blueprint)
+    expect(JSON.parse(readFileSync(join(cwd, 'acme/cascivo.app.json'), 'utf8'))).toEqual({
+      ...blueprint,
+      cascivo: CLI_VERSION,
+    })
   })
 
   it('holds a blueprint to the same rules as the flags, and writes nothing', async () => {

@@ -24,6 +24,8 @@ export interface Blueprint {
   runtime?: Runtime
   examples?: Example[]
   auth?: Auth
+  /** The CLI version that generated the app; `cascivo app` rebuilds its merge base with it. */
+  cascivo?: string
 }
 
 export interface BlueprintPage {
@@ -42,6 +44,7 @@ const KEYS = new Set([
   'runtime',
   'examples',
   'auth',
+  'cascivo',
 ])
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -68,11 +71,17 @@ export function parseBlueprint(raw: unknown, source: string): Blueprint {
     )
   }
   const { name, framework = 'react-vite', theme = 'light', pages, runtime, examples, auth } = raw
-  // The name becomes the directory the app is written to, so it must stay one plain segment.
-  if (typeof name !== 'string' || !/^[\w.-]+( [\w.-]+)*$/.test(name) || /^\.+$/.test(name)) {
-    throw new Error(
-      `${source}: "name" must be a project directory name (letters, digits, spaces, ".", "_", "-").`,
-    )
+  // The name becomes the directory the app is written to, so it must stay one plain segment:
+  // no separators, no control characters, not "." or "..".
+  // eslint-disable-next-line no-control-regex -- control characters are exactly what it rejects
+  const unsafe = /[/\\\u0000-\u001f]/
+  if (
+    typeof name !== 'string' ||
+    name.trim() === '' ||
+    unsafe.test(name) ||
+    /^\.+$/.test(name.trim())
+  ) {
+    throw new Error(`${source}: "name" must be a project directory name, not a path.`)
   }
   const blueprint: Blueprint = {
     name,
@@ -128,6 +137,12 @@ export function parseBlueprint(raw: unknown, source: string): Blueprint {
       throw new Error(`${source}: "auth" must be one of: access, email, oauth, email,oauth.`)
     }
     blueprint.auth = parsed
+  }
+  if (raw.cascivo !== undefined) {
+    if (typeof raw.cascivo !== 'string' || !/^\d+\.\d+\.\d+(-[\w.]+)?$/.test(raw.cascivo)) {
+      throw new Error(`${source}: "cascivo" must be the version of the CLI that generated the app.`)
+    }
+    blueprint.cascivo = raw.cascivo
   }
   return blueprint
 }

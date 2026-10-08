@@ -20,3 +20,9 @@ export const CASCIVO_VERSIONS: Record<string, string> = {
 
 /** `@cascivo/core`'s declared `@preact/signals-react` peer range. */
 export const SIGNALS_PEER = '>=3.0.0'
+
+/**
+ * This CLI's own version, stamped into every scaffold's cascivo.app.json. `cascivo app`
+ * regenerates an app's original files with exactly this version as its merge base.
+ */
+export const CLI_VERSION = '1.7.1'

@@ -491,7 +491,7 @@
     },
     {
       "name": "app",
-      "summary": "Change an app made from a blueprint",
+      "summary": "Change an app made by cascivo create",
       "subcommandRequired": true,
       "commands": [
         {
@@ -515,8 +515,22 @@
               ],
               "effects": ["read", "write"],
               "examples": [{ "run": "npx cascivo app add page \"Users\" --block users-table-page" }]
+            },
+            {
+              "name": "example",
+              "summary": "Add a cloudflare example (the names --example takes)",
+              "arguments": [{ "name": "name", "required": true, "summary": "The example" }],
+              "effects": ["read", "write"],
+              "examples": [{ "run": "npx cascivo app add example crud" }]
             }
           ]
+        },
+        {
+          "name": "upgrade",
+          "summary": "Regenerate the app with this CLI's templates, keeping your edits",
+          "description": "Rebuilds the app's original files with the CLI version recorded in cascivo.app.json (npx cascivo@<version>), then merges this version's output three ways.",
+          "effects": ["read", "write", "network", "exec"],
+          "examples": [{ "run": "npx cascivo app upgrade" }]
         }
       ]
     },

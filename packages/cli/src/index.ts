@@ -30,7 +30,8 @@ Usage: cascivo <command> [options]
 Commands:
   create [name]            Scaffold a new ready-to-run app (shell + nav + theme)
                            (--template <spec>: start from a marketplace template)
-  app add page "<title>"   Add a page to an app made from a blueprint (--block <name>)
+  app add page "<title>"   Add a page to the app (--block <name>); app add example <name>,
+                           app upgrade: change an app the way create would have made it
   init                     Set up cascivo in the current project
   add <component...>       Add components or a template to your project
   list [--installed]       List available components
@@ -54,13 +55,17 @@ const THEME_LIST = THEMES.join(' | ')
 
 const COMMAND_HELP: Record<string, string> = {
   app: `Usage: cascivo app add page "<title>" [options]
+       cascivo app add example <name>
+       cascivo app upgrade
 
-Add a page to an app made from a blueprint: appends it to the app's cascivo.app.json and
-writes the page, its block and the route and nav entries. Files you have edited since they
-were generated are merged with your edits; a clash is left with conflict markers.
+Change an app made by \`cascivo create\` through its cascivo.app.json: add a page, add a
+cloudflare example, or regenerate it with this CLI's templates. The app is generated before and
+after the change, and each file that changes is merged three ways: files you have not touched
+are replaced, your edits are kept, and a clash gets conflict markers (the command then exits
+non-zero). The original files are rebuilt with the CLI version recorded in cascivo.app.json.
 
 Options:
-  --block <name>            The registry block the page renders (default: a page to build out)`,
+  --block <name>            The registry block a new page renders (default: a page to build out)`,
   mcp: `Usage: cascivo mcp init [options]
 
 Add the cascivo MCP server (npx -y @cascivo/mcp) to your coding agent's project config.
