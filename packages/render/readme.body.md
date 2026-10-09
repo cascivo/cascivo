@@ -45,7 +45,19 @@ export function App() {
 
 The JSON stays fully serializable: live values come from the host via `bind` (`"$data.users.active"` resolves a dot-path into the `data` prop) and handlers via `events` (`"$actions.invite"` looks up the `actions` prop) — never from the config itself. Strings can be i18n refs (`{ "$t": "catalog.key" }`), resolved through `@cascivo/i18n`. `config` also accepts a `Signal<ViewConfig>`, so a view can be swapped live.
 
-Nodes resolve against a built-in component map of ~50 core cascivo components (Button, Card, Badge, Input, Select, Modal, Tabs, DataTable, Form, …) — see `component-map.ts` for the full list.
+Nodes resolve against a built-in component map of 74 cascivo components (Button, Card, Badge, Input, Select, Modal, Tabs, DataTable, Form, …) — see `component-map.ts` for the full list.
+
+### Your own components, and charts
+
+Pass `components` to render names beyond the built-in set: charts, or your app's own components. They are looked up before the built-ins, the validator accepts them, and their props are passed through unchecked:
+
+```tsx
+import { Kpi, LineChart } from '@cascivo/charts'
+
+;<CascivoView config={view} data={data} components={{ Kpi, LineChart }} />
+```
+
+`@cascivo/render` does not depend on `@cascivo/charts`, so only an app that renders charts installs it. Validate such a view with the same names: `validateView(view, { components: ['Kpi', 'LineChart'] })`, and read it as Markdown with `viewToMarkdown(view, { components: { Kpi, LineChart } })`.
 
 ## Validation
 

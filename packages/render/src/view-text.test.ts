@@ -1,3 +1,4 @@
+import { createElement } from 'react'
 import { describe, expect, it } from 'vitest'
 import type { ViewConfig } from './types'
 import { viewToMarkdown } from './view-text'
@@ -40,5 +41,13 @@ describe('viewToMarkdown', () => {
       view: { regions: { main: [{ component: 'Button', children: 'Save' }] } },
     }
     expect(viewToMarkdown(config, { text: { annotate: false } })).toBe('Save')
+  })
+
+  it('reads host components, as <CascivoView components> renders them', () => {
+    const config: ViewConfig = {
+      view: { regions: { main: [{ component: 'Kpi', props: { label: 'Revenue' } }] } },
+    }
+    const Kpi = ({ label }: { label: string }) => createElement('h3', null, label)
+    expect(viewToMarkdown(config, { components: { Kpi } })).toBe('### Revenue')
   })
 })

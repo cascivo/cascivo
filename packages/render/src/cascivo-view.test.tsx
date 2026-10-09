@@ -249,3 +249,36 @@ describe('<CascivoView /> — page building blocks', () => {
     expect(container.querySelector('h2')?.textContent).toBe('Revenue')
   })
 })
+
+describe('host components', () => {
+  // Required props on purpose: a chart's props, which the built-in map's type could not take.
+  function Kpi({ label, value }: { label: string; value: number }) {
+    return (
+      <p>
+        {label}: {value}
+      </p>
+    )
+  }
+
+  const config = {
+    view: { regions: { main: [{ component: 'Kpi', props: { label: 'Revenue', value: 42 } }] } },
+  } as const
+
+  it('renders a component the host passes by name', () => {
+    const { getByText } = render(<CascivoView config={config} components={{ Kpi }} />)
+    expect(getByText('Revenue: 42')).toBeTruthy()
+  })
+
+  it('is unknown to the validator unless the host passes it', () => {
+    expect(validateView(config).valid).toBe(false)
+    expect(validateView(config, { components: ['Kpi'] })).toEqual({ valid: true, errors: [] })
+  })
+
+  it("checks no built-in schema against a host component that takes a built-in's name", () => {
+    const badge = {
+      view: { regions: { main: [{ component: 'Badge', props: { tone: 'any', count: 3 } }] } },
+    }
+    expect(validateView(badge).valid).toBe(false)
+    expect(validateView(badge, { components: ['Badge'] }).valid).toBe(true)
+  })
+})

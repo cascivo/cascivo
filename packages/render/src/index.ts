@@ -7,6 +7,6 @@ export type {
   ViewConfig,
 } from './types'
 export { validateView } from './validate'
-export type { ValidationError } from './validate'
+export type { ValidateViewOptions, ValidationError } from './validate'
 export { CascadeView, CascivoView } from './cascivo-view'
 export type { CascadeViewProps, CascivoViewProps } from './cascivo-view'

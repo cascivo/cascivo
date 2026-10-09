@@ -327,11 +327,17 @@ parity test.
 
 **Two things deliberately not done:**
 
-- **Charts are a decision for the maintainer.** Rendering `Kpi`, `LineChart` and the rest would
-  make `@cascivo/render`, a published package in the fixed 1.x group, depend on
-  `@cascivo/charts`, and every view-runtime consumer would pay for it. The cheaper alternative is
-  an extension point: a host passes its own `components` to `<CascivoView>` (and the validator).
-  That keeps the dependency where it is used.
+- **Charts go through an extension point, not a dependency** (shipped 2026-10-09). Rendering
+  `Kpi`, `LineChart` and the rest directly would make `@cascivo/render`, a published package in
+  the fixed 1.x group, depend on `@cascivo/charts`, and every view-runtime consumer would pay
+  for it. Instead a host passes `components={{ Kpi, LineChart }}` to `<CascivoView>`; they are
+  looked up before the built-ins, `validateView(view, { components })` accepts the names, and
+  `viewToMarkdown` takes the same option. Their props are unchecked: no manifest schema covers
+  them.
+- **The component map stays hand-written.** `component-names.test.ts` already holds it, the
+  validator's names and the MCP vocabulary to one list, so a generator would only move the
+  same list into a script. What decides membership (props a JSON view can express) is a
+  judgement per component, not something a generator can read off the types.
 - **Slot layouts** (`DashboardLayout`, `SettingsLayout`, `AuthLayout`) take `ReactNode` props,
   which a ViewConfig cannot express. They stay TSX-only.
 
@@ -369,7 +375,7 @@ parity test.
   2. A `list_blocks` tool returns a one-line catalog of blocks, which is the only context an
      agent needs to write a blueprint.
 
-### P2-5 ◐ The renderer covers what the blocks use
+### P2-5 ☑ The renderer covers what the blocks use
 
 - **Finding:** research §1.4 defect 2, the root fix.
 - **Change:**
