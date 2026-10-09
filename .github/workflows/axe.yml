@@ -63,11 +63,14 @@ jobs:
 
   # Shadow run (2026-10-07 plan, P4-5): the same axe tags over the workbench's entries, built
   # from the copied-component manifests instead of stories. Non-blocking for one release
-  # cycle: Storybook stays the gate, and is retired only if this run matches it. Light theme
-  # only, because that is what the Storybook sweep checks; `--themes all` is the follow-up.
+  # cycle: Storybook stays the gate, and is retired only if this run matches it. All twelve
+  # themes, not just the light one Storybook checks: the 2026-10-09 sweep found 101 contrast
+  # failures in seven themes that no light-only run could see, and they are fixed now, so
+  # this run is clean and a red one is a regression.
   workbench-shadow:
     runs-on: ubuntu-latest
     continue-on-error: true
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
 
@@ -88,4 +91,4 @@ jobs:
         run: pnpm exec vp run -r build
 
       - name: Workbench axe sweep (shadow)
-        run: pnpm --filter @cascivo/workbench run sweep --themes light
+        run: pnpm --filter @cascivo/workbench run sweep --themes all

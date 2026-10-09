@@ -514,7 +514,8 @@ parity test.
       `--cascivo-color-text-on-destructive`'s static fallback is white, and only browsers
       with `contrast-color()` pick a dark text over the light-red dark-theme background.
 - **P4-5 ☑ (running)** `.github/workflows/axe.yml` gains a non-blocking `workbench-shadow` job:
-  the workbench sweep over `packages/components/src`, light theme only to match Storybook.
+  the workbench sweep over `packages/components/src`. It ran light only to match Storybook at
+  first, and all twelve themes since the 12-theme findings were fixed (2026-10-09).
   Retire Storybook's sweep only if this one matches it for a full release cycle; the two light
   findings above are the first differences to resolve.
 - **P4-4 ☒ not built.** `render_view_as_markdown` already validates and renders
