@@ -117,7 +117,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                                             |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                                                    |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                                                          |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.8 KB, `Latin[opsz,wght]` 28.9 KB; italic 24.1 / 32.3 KB, loaded only when a page uses italic. Serve only the axes you use |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.8 KB, `Latin[opsz,wght]` 28.9 KB; italic 24.1 / 32.1 KB, loaded only when a page uses italic. Serve only the axes you use |
 
 ## 5. Scorecard
 
@@ -544,6 +544,25 @@ pen's own end. With that, the italic `s`, `S` and `6` take the flat-leaning cut 
 upright; only the `9`, whose 180° turn makes the slant asymmetric, keeps the vertical one.
 
 The upright is unchanged except for the `4` and the glyphs built from it (`¼`, `¾`, and the alternate fours). Black is unchanged in both styles apart from the italic `A` and `R`.
+
+## 16. The italic alphabet at Bold
+
+At Bold the italic sat at 1.02 of Inter's and Plex's width and 1.01 of their ink (median). Beside
+the deliberate differences already noted (the serifed `I`, `1` against Plex's foot serif, the `i`
+and `j` dots), six glyphs fell out. Every one was short in our upright against Geist and Inter
+too, so all six were fixed in both styles:
+
+| Glyph      | Was, Bold (italic vs Inter / Plex; upright vs Geist and Inter)         | Now                                        | Change                                                                 |
+| ---------- | ---------------------------------------------------------------------- | ------------------------------------------ | ---------------------------------------------------------------------- |
+| `r`        | width 1.16 / 1.12; upright 1.19 (1.50 at Regular)                      | italic 1.09; upright 1.11 (1.30)           | arm shorter at Regular; Black unchanged                                |
+| `6` `9`    | ink 0.91 / 1.05; upright 0.88-0.90 at every weight, Black counter 0.80 | upright 0.90-0.91, Black counter 0.90-0.93 | bowl 0.63 of the cap height, not 0.60; Regular's hook 8° further round |
+| `J`        | ink 0.95 / 0.85; upright 0.88-0.91 at every weight                     | upright 0.95 / 0.92 / 0.90                 | hook taller and 8° further round, 3% wider                             |
+| `T`        | width 0.90 vs Inter; ink 0.92 in the upright at every weight           | width 0.99; upright ink 0.94               | 5% wider                                                               |
+| `A`        | ink 0.92 vs Inter; upright 0.91 at every weight                        | italic 0.96; upright 0.93-0.96             | Regular's diagonals at the full stroke; Black's unchanged              |
+| `4` italic | counter 0.82 / 0.87                                                    | 0.90                                       | stem 2% further right in the italic                                    |
+
+The `J`'s hook stops just short of −180° in every master, so it keeps one segment count where a
+master's negative aperture would have taken it past the quadrant.
 
 ## Sources
 

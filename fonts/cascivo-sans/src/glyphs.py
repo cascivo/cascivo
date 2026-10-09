@@ -160,7 +160,8 @@ def _F(g, p):
 
 @glyph('T', 0x54)
 def _T(g, p):
-    w = p.Hw * 0.92
+    # wider, as Geist's and Inter's: it carried 0.92x their ink at every weight
+    w = p.Hw * 0.97
     g.hbar(0, w, p.cap - p.H).vstem((w - p.V) / 2, 0, p.cap - p.H / 2)
     g.ht = 'c'
     g.sb = (0.18, 0.18)
@@ -173,8 +174,11 @@ def _A(g, p):
     if p.italic:  # the italic's narrowing closed Black's counter to 0.89x the upright's
         w *= 1 + 0.06 * p.heavy
     c = w / 2
-    a = g.diag(0, 0, c, p.cap, 'l', 'c')
-    b = g.diag(w, 0, c, p.cap, 'r', 'c')
+    # Regular's diagonals at the full stroke (the A carried 0.91x the references' ink); Black's
+    # stay lighter, or the counter above the bar closes
+    ws = 1.0 - 0.07 * p.heavy
+    a = g.diag(0, 0, c, p.cap, 'l', 'c', ws=ws)
+    b = g.diag(w, 0, c, p.cap, 'r', 'c', ws=ws)
     y = p.cap * (0.27 - 0.05 * p.heavy)
     g.hbar(on_line(*a, y), on_line(*b, y), y, h=p.bar)
     g.ht = 'c'
@@ -384,15 +388,16 @@ def _U(g, p):
 
 @glyph('J', 0x4A)
 def _J(g, p):
-    w = p.Hw * 0.78
+    w = p.Hw * 0.8
     V, H = p.V, p.H
     xr = w - V / 2
     rx = (w - V / 2) / 2 - 2
-    ry = min(rx * 1.05, p.cap * 0.36)
+    # a taller hook: the J carried 0.88-0.91x Geist's and Inter's ink at every weight
+    ry = min(rx * 1.12, p.cap * 0.40)
     cy = -p.ov + H / 2 + ry
     # Regular's hook runs 12° further round (it stopped short, 0.87x the references' ink); Black's
     # is unchanged
-    g.stroke([L((xr, p.cap), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, -170 + 12 * p.heavy + p.ap), caps=('b', 'b'))
+    g.stroke([L((xr, p.cap), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, max(-179.0, -178 + 20 * p.heavy + p.ap)), caps=('b', 'b'))  # short of -180°: same segments in every master
     g.ht = 'c'
     g.sb = (0.4, 1)
 
@@ -524,7 +529,9 @@ def _u(g, p):
 
 @glyph('r', 0x72)
 def _r(g, p):
-    w = p.nw * 0.64
+    # Regular's arm is shorter: it ran 1.5x Geist's and Inter's width and 1.3x Inter's and Plex's
+    # italic (Black, at 1.02, is unchanged)
+    w = p.nw * (0.64 - 0.08 * (1 - p.heavy))
     g.vstem(0, 0, p.xh)
     a = p.V / 2
     rx = w - a - p.V * 0.2
@@ -998,7 +1005,7 @@ def _four(g, p):
     # heavy 4 drops its bar and lightens its diagonal, or the counter closes (Black: 0.29x)
     # Regular sits its stem further right and its bar lower too: its counter was 0.73x Geist's
     # and Inter's, and 0.65x Inter's and Plex's in the italic (Black is unchanged)
-    xs = w * 0.77
+    xs = w * (0.79 if p.italic else 0.77)  # the slanted triangle runs smaller
     yb = p.cap * (0.23 - 0.05 * p.heavy)
     g.vstem(xs - V / 2, 0, p.cap)
     g.hbar(0, w, yb)
@@ -1037,11 +1044,13 @@ def _six(g, p):
 
 def _six_strokes(g, p, w):
     V = p.V
-    top = p.cap * 0.6
+    # a taller bowl and, at Regular, a hook running further round: the 6 and 9 carried 0.88x
+    # Geist's and Inter's ink at every weight, and Black's counter was 0.80x theirs
+    top = p.cap * 0.63
     g.oval(0, -p.ov, w, top)
     cx, cy, rx, ry = g.box(0, -p.ov, w * 1.02, p.cap + p.ov)
     cyb = (-p.ov + top) / 2
-    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 52 + 20 * p.heavy + p.ap * 0.5), caps=('b', 'b'), cut='h')  # heavy terminals end higher, so the cut trims little and Bold, between the masters, has no dip
+    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 44 + 28 * p.heavy + p.ap * 0.5), caps=('b', 'b'), cut='h')  # heavy terminals end higher, so the cut trims little and Bold, between the masters, has no dip
     del V
 
 
