@@ -168,11 +168,12 @@ def _T(g, p):
 
 @glyph('A', 0x41)
 def _A(g, p):
-    w = p.Hw * 1.1
+    # heavy A widens and drops its bar, or the counter above the bar closes (Black: 0.38x)
+    w = p.Hw * (1.1 + 0.08 * p.heavy)
     c = w / 2
     a = g.diag(0, 0, c, p.cap, 'l', 'c')
     b = g.diag(w, 0, c, p.cap, 'r', 'c')
-    y = p.cap * 0.27
+    y = p.cap * (0.27 - 0.05 * p.heavy)
     g.hbar(on_line(*a, y), on_line(*b, y), y, h=p.bar)
     g.ht = 'c'
     g.sb = (0.08, 0.08)
@@ -180,7 +181,7 @@ def _A(g, p):
 
 @glyph('V', 0x56)
 def _V(g, p):
-    w = p.Hw * 1.07
+    w = p.Hw * (1.07 + 0.1 * p.heavy)
     c = w / 2
     g.diag(0, p.cap, c, 0, 'l', 'c')
     g.diag(w, p.cap, c, 0, 'r', 'c')
@@ -229,7 +230,7 @@ def _Z(g, p):
 
 @glyph('X', 0x58)
 def _X(g, p):
-    w = p.Hw * 1.02
+    w = p.Hw * (1.02 + 0.1 * p.heavy)
     g.diag(0, p.cap, w, 0, 'l', 'r', ws=0.93)
     g.diag(w, p.cap, 0, 0, 'r', 'l', ws=0.9)
     g.ht = 'c'
@@ -250,7 +251,7 @@ def _Y(g, p):
 
 @glyph('K', 0x4B)
 def _K(g, p):
-    w = p.Hw * 0.98
+    w = p.Hw * (0.98 + 0.08 * p.heavy)
     g.vstem(0, 0, p.cap)
     a0, a1 = g.diag(p.V / 2, p.cap * 0.33, w, p.cap, 'c', 'r', ws=0.92, caps=('v', 'h'))
     t = 0.38
@@ -279,9 +280,12 @@ def _Q(g, p):
 
 @glyph('C', 0x43)
 def _C(g, p):
-    w = p.Hw * 1.07
+    w = p.Hw * (1.07 + 0.12 * p.heavy)  # Black's C was 0.75x Geist's and Inter's width
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.cap + p.ov)
-    g.stroke(g.arc(cx, cy, rx, ry, 42 + p.ap, 318 - p.ap), caps=('b', 'b'))
+    # heavy terminals run further round, as in Geist and Inter: an aperture kept at Regular's
+    # size left Black's C, G, S, c, 3 and 5 visibly lighter than the letters around them
+    t = 14 * p.heavy
+    g.stroke(g.arc(cx, cy, rx, ry, 42 + p.ap - t, 318 - p.ap + t), caps=('b', 'b'), cut='h')
     g.ht = 'c'
     g.sb = (0.62, 0.45)
 
@@ -290,9 +294,11 @@ def _C(g, p):
 def _G(g, p):
     w = p.Hw * 1.12
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.cap + p.ov)
-    g.stroke(g.arc(cx, cy, rx, ry, 42 + p.ap, 360), caps=('b', 'b'))
+    g.stroke(g.arc(cx, cy, rx, ry, 42 + p.ap - 14 * p.heavy, 360), caps=('b', 'b'), cut='h')
     xr = cx + rx
-    g.hbar(cx + rx * 0.08, xr + p.V / 2, cy - p.H)
+    # ends inside the curve's stroke: run to its outer edge, the bar overhung where the curve
+    # turns inward below it
+    g.hbar(cx + rx * 0.08, xr, cy - p.H)
     g.ht = 'c'
     g.sb = (0.62, 0.8)
 
@@ -323,10 +329,10 @@ def _bowl_right(g, x0, xr, ytop, ybot, ratio=1.0):
 
 @glyph('P', 0x50)
 def _P(g, p):
-    w = p.Hw * 0.93
+    w = p.Hw * (0.93 + 0.05 * p.heavy)  # heavy P's bowl grows, or its counter closes
     V, H = p.V, p.H
     g.vstem(0, 0, p.cap)
-    _bowl_right(g, V / 2, w - V / 2, p.cap - H / 2, p.cap * 0.44 + H / 2, 1.05)
+    _bowl_right(g, V / 2, w - V / 2, p.cap - H / 2, p.cap * (0.44 - 0.04 * p.heavy) + H / 2, 1.05)
     g.ht = 'c'
     g.sb = (1, 0.55)
 
@@ -381,7 +387,7 @@ def _J(g, p):
     g.sb = (0.4, 1)
 
 
-def _S(g, p, w, top, ov, pen=None, term=32):
+def _S(g, p, w, top, ov, pen=None, term=32, spine=0.1):
     """S/s/$ spine: upper arc, a cubic spine at full stem weight, lower arc."""
     V, H = p.V, p.H
     yb, yt = -ov, top + ov
@@ -403,21 +409,24 @@ def _S(g, p, w, top, ov, pen=None, term=32):
     # s's lie flatter, as three near-horizontal bands, the way Geist's and Inter's do.
     heavy = p.heavy
     hd = dy * (0.55 + 0.2 * heavy)
-    spine = ('C', pa, (pa[0], pa[1] - hd), (pb[0], pb[1] + hd), pb)
+    spine_seg = ('C', pa, (pa[0], pa[1] - hd), (pb[0], pb[1] + hd), pb)
     # The upper bowl is short, so near 0° its inner radius of curvature drops below half the
     # stroke and the inner edge must fold. The terminal sits higher, where the curve is gentle,
     # and is cut square to the stroke (a horizontal cut there would leave a sliver).
-    up = g.arc(cxu, cyu, rxu, ryu, term + p.ap * 0.8, 180)
-    lo = g.arc(cxl, cyl, rxl, ryl, 0, -146 + p.ap * 0.8)
+    up = g.arc(cxu, cyu, rxu, ryu, term - 8 * heavy + p.ap * 0.8, 180)
+    lo = g.arc(cxl, cyl, rxl, ryl, 0, -146 - 8 * heavy + p.ap * 0.8)
     # Three strokes, so the spine gets its own pen: the default angle pen thins a diagonal spine
     # too far at Regular, while a constant full stem closes the counters at Black. A heavier
     # hairline (1.15 H) does both. The joins sit at the bowls' vertical extremes, where every
     # pen is exactly one stem wide, so they are seamless.
-    g.stroke(up, caps=('b', 'b'), pen=pen)
+    # heavy terminals cut toward horizontal, as Geist's and Inter's: cut toward vertical, the
+    # lower one ran out into a long wedge (and in the italic, where the flat cut folds, they stay)
+    cut = 'v' if p.italic else 'h'
+    g.stroke(up, caps=('b', 'b'), pen=pen, cut=cut)
     # Heavier, the spine carries more: at 1.15 H a Black spine was 60% of a stem and the s read
     # as a lightning bolt beside Geist's and Inter's near-full-weight spines.
-    g.stroke([spine], pen=(PV, PH * (1.15 + 0.1 * heavy)))
-    g.stroke(lo, caps=('b', 'b'), pen=pen)
+    g.stroke([spine_seg], pen=(PV, PH * (1.15 + spine * heavy)))
+    g.stroke(lo, caps=('b', 'b'), pen=pen, cut=cut)
 
 
 def _s_extra(p):
@@ -428,7 +437,8 @@ def _s_extra(p):
 
 @glyph('S', 0x53)
 def _S_(g, p):
-    _S(g, p, p.Hw * 0.94 + _s_extra(p), p.cap, p.ov)
+    # capitals have room, so half the s's extra width; a heavier spine, as Geist's and Inter's S
+    _S(g, p, p.Hw * 0.94 + _s_extra(p) * 0.5, p.cap, p.ov, spine=0.3)
     g.ht = 'c'
     g.sb = (0.5, 0.5)
 
@@ -597,7 +607,10 @@ def _o(g, p):
 def _c(g, p):
     w = p.nw * (0.98 + 0.08 * p.heavy)  # heavy c widens, or its counter pinches to a slot
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov)
-    g.stroke(g.arc(cx, cy, rx, ry, 44 + p.ap, 316 - p.ap), caps=('b', 'b'), cut='h')
+    # heavy terminals run a little further round: the aperture stayed Regular's while the strokes
+    # grew, and Black's c carried 0.77x the references' ink
+    t = 14 * p.heavy
+    g.stroke(g.arc(cx, cy, rx, ry, 44 + p.ap - t, 316 - p.ap + t), caps=('b', 'b'), cut='h')
     g.sb = (0.62, 0.42)
 
 
@@ -605,7 +618,9 @@ def _c(g, p):
 def _e(g, p):
     w = p.nw * 1.06
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov)
-    yb = cy  # flush with where the bowl stroke ends, or its butt end shows below the bar
+    # flush with where the bowl stroke ends, or its butt end shows below the bar; heavy bars drop
+    # half their height (still covering that end) so the eye above stays open
+    yb = cy - p.bar * 0.5 * p.heavy
     g.stroke(g.arc(cx, cy, rx, ry, 0, 322 - p.ap), caps=('b', 'b'), cut='h')
     # ends on the bowl's centreline, so the bowl stroke covers it; in the italic the stroke's end
     # is cut on a slant, so the bar stops short of it
@@ -778,7 +793,7 @@ def _t(g, p):
 
 @glyph('k', 0x6B)
 def _k(g, p):
-    w = p.nw * 0.94
+    w = p.nw * (0.94 + 0.08 * p.heavy)
     g.vstem(0, 0, p.asc)
     a0, a1 = g.diag(p.V / 2, p.xh * 0.3, w - 6, p.xh, 'c', 'r', ws=0.92, caps=('v', 'h'))
     t = 0.42
@@ -801,7 +816,7 @@ def _kra(g, p):
 
 @glyph('v', 0x76)
 def _v(g, p):
-    w = p.nw * 1.02
+    w = p.nw * (1.02 + 0.08 * p.heavy)  # heavy diagonals need room: Black was 0.9x the references
     g.diag(0, p.xh, w / 2, 0, 'l', 'c')
     g.diag(w, p.xh, w / 2, 0, 'r', 'c')
     g.sb = (0.1, 0.1)
@@ -912,14 +927,15 @@ def _two(g, p):
 
 @glyph('three', 0x33)
 def _three(g, p):
-    w = fw(p)
+    w = fw(p) * (1 + 0.08 * p.heavy)  # heavy 3 widens, or its bowls pinch (Black was 0.8x Geist's)
     H = p.H
     ym = p.cap * 0.56
     cxu, cyu, rxu, ryu = g.box(w * 0.06, ym - H / 2, w * 0.95, p.cap + p.ov)
     cxl, cyl, rxl, ryl = g.box(0, -p.ov, w, ym + H / 2)
-    g.stroke(g.arc(cxu, cyu, rxu, ryu, 152 - p.ap, -90), caps=('b', 'b'))
-    g.hbar(w * 0.36, cxu + 2, ym - H / 2)
-    g.stroke(g.arc(cxl, cyl, rxl, ryl, 90, -150 + p.ap), caps=('b', 'b'))
+    g.stroke(g.arc(cxu, cyu, rxu, ryu, 152 - p.ap + 10 * p.heavy, -90), caps=('b', 'b'), cut='h')
+    # the bar starts where the bowls end; heavier, its square left end stuck out as a spur
+    g.hbar(w * 0.36 + (cxu - w * 0.36) * 0.5 * p.heavy, cxu + 2, ym - H / 2)
+    g.stroke(g.arc(cxl, cyl, rxl, ryl, 90, -150 + p.ap - 10 * p.heavy), caps=('b', 'b'), cut='h')
     g.tab = True
     g.ht = 'c'
 
@@ -928,11 +944,13 @@ def _three(g, p):
 def _four(g, p):
     w = fw(p)
     V, H = p.V, p.H
-    xs = w * 0.74
-    yb = p.cap * 0.25
+    # heavy 4 drops its bar and lightens its diagonal, or the counter closes (Black: 0.29x)
+    xs = w * (0.74 + 0.03 * p.heavy)
+    yb = p.cap * (0.25 - 0.07 * p.heavy)
     g.vstem(xs - V / 2, 0, p.cap)
     g.hbar(0, w, yb)
-    g.diag(xs + V / 2, p.cap, 0, yb + H / 2, 'r', 'l', ws=0.9, caps=('h', 'h'))
+    # heavier, the diagonal meets the stem's middle rather than its right edge, opening the counter
+    g.diag(xs + V / 2 - V * 0.5 * p.heavy, p.cap, 0, yb + H / 2, 'r', 'l', ws=0.9 - 0.15 * p.heavy, caps=('h', 'h'))
     g.tab = True
     g.ht = 'c'
 
@@ -942,11 +960,16 @@ def _five(g, p):
     w = fw(p)
     V, H = p.V, p.H
     xl = w * 0.1
-    yj = p.cap * 0.55
-    g.hbar(xl + V * 0.3, w * 0.93, p.cap - H)
-    g.line((xl + V / 2 + 10, p.cap - H / 2), (xl + V / 2, yj - 6), caps=('b', 'b'))
+    g.hbar(xl + 10, w * 0.93, p.cap - H)  # from the stem's own left edge: a square corner
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.cap * 0.63)
-    g.stroke(g.arc(cx, cy, rx, ry, 150, -150 + p.ap), taper=(0.6, 1), caps=('b', 'b'))
+    # The bowl starts exactly under the stem, so the stem ends flat on it. With the bowl fixed at
+    # 150° and the stem at its own x, the stem's corner stuck out beside the bowl's start: a
+    # small step at Regular, a large one at Black. The angle stays in one quadrant.
+    xsm = xl + V / 2
+    a0 = math.degrees(math.acos(max(-1.0, min(1.0, (xsm - cx) / rx))))
+    ps = (cx + rx * math.cos(math.radians(a0)), cy + ry * math.sin(math.radians(a0)))
+    g.line((xsm + 10, p.cap - H / 2), ps, caps=('h', 'h'))
+    g.stroke(g.arc(cx, cy, rx, ry, a0, -150 + p.ap - 10 * p.heavy), taper=(0.6, 1), caps=('h', 'b'), cut='h')
     g.tab = True
     g.ht = 'c'
 
@@ -965,7 +988,7 @@ def _six_strokes(g, p, w):
     g.oval(0, -p.ov, w, top)
     cx, cy, rx, ry = g.box(0, -p.ov, w * 1.02, p.cap + p.ov)
     cyb = (-p.ov + top) / 2
-    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 52 + p.ap * 0.5), caps=('b', 'b'))
+    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 52 + p.ap * 0.5), caps=('b', 'b'), cut='v' if p.italic else 'h')  # slanted, the flat cut folds
     del V
 
 
@@ -1063,14 +1086,16 @@ def _exclam(g, p):
 
 @glyph('question', 0x3F)
 def _question(g, p):
-    w = p.Hw * 0.78
+    w = p.Hw * (0.78 + 0.14 * p.heavy)  # the heavy hook needs width to keep its counter
     V, H = p.V, p.H
     d = p.dot
-    cx, cy, rx, ry = g.box(0, p.cap * 0.42, w, p.cap + p.ov)
     xm = w * 0.47
+    # The hook ends a fixed gap above the dot (Black's dot is 227 tall and reached it), and its
+    # bowl rises with that end, or the tail runs out flat and turns to a point.
+    tgt = (xm, max(p.cap * 0.27, p.dot + p.cap * 0.07))
+    cx, cy, rx, ry = g.box(0, tgt[1] + p.cap * (0.15 - 0.03 * p.heavy), w, p.cap + p.ov)
     arc_ = g.arc(cx, cy, rx, ry, 160 - p.ap, -55)
     pe = arc_[-1][-1]
-    tgt = (xm, p.cap * 0.27)
     g.stroke(arc_ + [('C', pe, (pe[0] - 30, pe[1] - 25), (tgt[0], tgt[1] + 60), tgt)], caps=('b', 'b'))
     g.dot(xm, 0)
     del V, H, d

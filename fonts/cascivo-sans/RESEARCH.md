@@ -117,7 +117,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                                             |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                                                    |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                                                          |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.7 KB, `Latin[opsz,wght]` 28.8 KB; italic 24.1 / 32.2 KB, loaded only when a page uses italic. Serve only the axes you use |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.8 KB, `Latin[opsz,wght]` 28.9 KB; italic 24.1 / 32.2 KB, loaded only when a page uses italic. Serve only the axes you use |
 
 ## 5. Scorecard
 
@@ -125,7 +125,7 @@ contour in every master for self-intersection. The build ships with zero problem
 
 | File                                    | Cascivo Sans           | Geist             | IBM Plex Sans                         | Inter              |
 | --------------------------------------- | ---------------------- | ----------------- | ------------------------------------- | ------------------ |
-| Variable Latin slice, wght axis         | **21.7 KB** (211 cp)   | 29.4 KB (225 cp)  | 45.7 KB (232 cp)                      | 48.3 KB (230 cp)   |
+| Variable Latin slice, wght axis         | **21.8 KB** (211 cp)   | 29.4 KB (225 cp)  | 45.7 KB (232 cp)                      | 48.3 KB (230 cp)   |
 | Bytes per codepoint (Latin slice)       | **102**                | 131               | 197                                   | 210                |
 | Variable, full charset, wght only       | **25.8 KB** (71 B/cp)  | 69.7 KB (96 B/cp) | —                                     | —                  |
 | Static Regular, full charset            | **11.7 KB** (32 B/cp)  | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp)                     | —                  |
@@ -342,7 +342,7 @@ tail. Counters are 5% narrower. The italic passes the same no-reflow test as the
   its right-angle turn. The capital breve has a minimum depth, because a shallow arc thinner
   than its stroke folds inside.
 
-**Size.** The italic Latin web file is 24.1 KB for every weight, against 21.7 KB for the upright.
+**Size.** The italic Latin web file is 24.1 KB for every weight, against 21.8 KB for the upright.
 The difference is inherent: once outlines are slanted, every point that moves vertically
 between masters also moves horizontally, so it carries more variation data. For comparison,
 Plex ships 24.4 KB for one static italic weight, and Inter 51.8 KB for its variable italic.
@@ -416,6 +416,52 @@ that Black's `o` keeps a contrast of at least 0.68.
 
 **Still behind.** Ink density at Black is 0.62 against 0.65, because our counters stay a little
 more open than Geist's and Inter's.
+
+## 12. The full alphabet at Black
+
+After section 11, the lowercase held up beside Geist and Inter, but the capitals and figures did
+not. Every letter and figure was measured against the mean of Geist and Inter at Black: ink width,
+enclosed counter area and total ink, each relative to the x-height.
+
+**Visible defects, now fixed.**
+
+- `3`: the middle bar's square end stuck out left of the bowls as a spur. The bar now starts
+  where the bowls end.
+- `5`: the stem and the bowl's start sat at different x, leaving a step. The bowl's start angle
+  is now solved per master so it begins exactly under the stem (within one quadrant), the stem
+  ends flat on it, and the top bar starts at the stem's left edge. Regular had a small step too,
+  so Regular's `5` changed.
+- `G`: the bar ran to the curve's outer edge, where the curve has already turned inward, and
+  overhung it. It now ends inside the curve's stroke.
+- `?`: Black's dot is 227 units tall and reached the hook, which ended at a fixed 27% of the cap
+  height. The hook now ends a fixed gap above the dot, and its bowl rises with it. A test checks
+  the gap at Black.
+- `9` and `6`: their terminals were cut toward vertical on a steep stroke and left a step.
+
+**Terminal cuts.** Geist and Inter cut the heavy terminals of `c`, `e`, `s`, `C`, `G`, `S`, `3`,
+`5`, `6` and `9` close to horizontal, not vertical. Those now turn halfway toward horizontal (the
+italic `6`, `9`, `s` and `S` keep the vertical turn, because the flat cut folds once slanted).
+The `a`, `r`, `f`, `j` and `y` keep the vertical turn.
+
+**Proportions at Black** (Cascivo ÷ the Geist/Inter mean):
+
+| Glyph               | Was                      | Now                      | Change                                                |
+| ------------------- | ------------------------ | ------------------------ | ----------------------------------------------------- |
+| `C`                 | width 0.75, ink 0.71     | width 1.04, ink 0.90     | 12% wider, terminals run further round                |
+| `c`                 | width 0.89, ink 0.77     | width 0.97, ink 0.88     | terminals run further round                           |
+| `G`                 | ink 0.85                 | ink 0.91                 | terminal runs further round                           |
+| `S`                 | width 1.12, ink 0.77     | width 1.02, ink 0.86     | half the `s`'s extra width, heavier spine             |
+| `3`                 | width 0.80, ink 0.80     | width 1.04, ink 0.91     | 8% wider, terminals run further round                 |
+| `5`                 | ink 0.84                 | ink 0.88                 | terminal runs further round                           |
+| `e`                 | counter 0.30             | counter 1.05             | the bar drops half its height, opening the eye        |
+| `A`                 | counter 0.38, width 0.93 | counter 0.84, width 0.98 | wider, bar lower                                      |
+| `4`                 | counter 0.29             | counter 1.17             | bar lower, lighter diagonal meeting the stem's middle |
+| `P`                 | counter 0.74             | counter 1.02             | bigger bowl                                           |
+| `v` `V` `X` `k` `K` | width 0.87-0.91          | width 0.95-0.99          | 8-10% wider                                           |
+
+Every change scales with `p.heavy`, so Regular is unchanged except for the `5`. The serifed `I`,
+the tailed `l`, the `i` and `j` and the more open round counters (`o`, `b`, `d`, `p`, `q`: 1.2-1.3×)
+remain different from Geist and Inter by design. The `S` is still slightly light.
 
 ## Sources
 

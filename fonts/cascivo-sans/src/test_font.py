@@ -183,6 +183,23 @@ class Font(unittest.TestCase):
         self.assertLessEqual(n_sidebearing(black) / n_sidebearing(regular), 0.8)
         self.assertGreaterEqual(o_contrast(black), 0.68)
 
+    def test_heavy_question_mark_hook_clears_its_dot(self):
+        # Black's dot is 227 units tall; with the hook ending at a fixed 27% of cap height, the two
+        # touched and read as a notch.
+        from fontTools.varLib.instancer import instantiateVariableFont
+
+        f = instantiateVariableFont(TTFont(VF), {'wght': 900, 'opsz': 14})
+        g = f['glyf'][f.getBestCmap()[ord('?')]]
+        coords, ends, _ = g.getCoordinates(f['glyf'])
+        boxes, start = [], 0
+        for e in ends:
+            ys = [y for _, y in coords[start:e + 1]]
+            boxes.append((min(ys), max(ys)))
+            start = e + 1
+        dot = min(boxes)  # the contour that sits on the baseline
+        hook_bottom = min(lo for lo, hi in boxes if (lo, hi) != dot)
+        self.assertGreater(hook_bottom - dot[1], 30)
+
     def test_kerning(self):
         try:
             import uharfbuzz as hb
