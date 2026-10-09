@@ -1984,15 +1984,6 @@
       "canonical": true
     },
     {
-      "name": "--cascivo-link-color",
-      "value": "var(--cascivo-color-accent-text)",
-      "layer": "component",
-      "group": "link",
-      "resolvedDefault": "oklch(0.52 0.2 250)",
-      "resolvesPerTheme": true,
-      "canonical": true
-    },
-    {
       "name": "--cascivo-search-width",
       "value": "100%",
       "layer": "component",
@@ -2107,6 +2098,15 @@
       "group": "color",
       "resolvedDefault": "oklch(from var(--cascivo-color-ai) l c h / 22%)",
       "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-link-color",
+      "value": "var(--cascivo-color-accent-text)",
+      "layer": "component",
+      "group": "link",
+      "resolvedDefault": "oklch(0.52 0.2 250)",
+      "resolvesPerTheme": true,
       "canonical": true
     },
     {

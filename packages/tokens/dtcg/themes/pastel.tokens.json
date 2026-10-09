@@ -129,8 +129,8 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [1, 0, 0],
-        "hex": "#ffffff"
+        "components": [0.145, 0.005, 250],
+        "hex": "#090a0c"
       }
     },
     "color-accent-foreground": {
@@ -498,8 +498,8 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [1, 0, 0],
-        "hex": "#ffffff"
+        "components": [0.145, 0.005, 250],
+        "hex": "#090a0c"
       }
     },
     "color-text-on-destructive": {

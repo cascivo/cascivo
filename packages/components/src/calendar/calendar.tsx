@@ -372,16 +372,20 @@ export function Calendar({
                   const isFocused = sameDay(day, focusedDate.value)
                   const dayDisabled = isDayDisabled(day)
                   return (
-                    <td key={di} role="gridcell" className={styles['cell']}>
+                    <td key={di} role="presentation" className={styles['cell']}>
                       <button
                         type="button"
+                        // The button IS the gridcell. aria-selected has to sit on the element
+                        // focus lands on, or the state is never announced (it used to sit on
+                        // the <td>), and ARIA does not allow aria-selected on a button. A
+                        // native <button> keeps Enter/Space activation under this role.
+                        role="gridcell"
                         className={styles['day']}
                         data-day={dayKey(day)}
                         tabIndex={isFocused ? 0 : -1}
                         aria-label={dayLabelFmt.format(day)}
-                        // On the button, not the <td>: focus lands here, so this is the
-                        // element whose selected state assistive technology reads. Omitted
-                        // rather than "false" so 30 cells do not each announce a negative.
+                        // Omitted rather than "false" so 30 cells do not each announce a
+                        // negative.
                         aria-selected={isSelected || undefined}
                         aria-current={isToday ? 'date' : undefined}
                         aria-disabled={dayDisabled || undefined}

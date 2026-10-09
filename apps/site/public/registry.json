@@ -2502,11 +2502,11 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/calendar/calendar.meta.ts"
       ],
       "fileHashes": {
-        "calendar.tsx": "sha256-f89d8eeab042292d0e41ca4c5c6440f434b8fb80b75d3d93f00a0155798d0679",
+        "calendar.tsx": "sha256-2976b86451364ce4bd77726ce987fdf9f799de0ce035a3c1d1810f636a8c7c6d",
         "calendar-date.ts": "sha256-5709e0ae245751b7d28a3c0cb79eed0d5dd88bfe75bc9c047ad50cc98ec3465a",
         "index.ts": "sha256-afc64f5df9822c7a7696d95cb4c3ef69f831e420a04ae358f36b879736933ba4",
         "calendar.module.css": "sha256-f2b63f7440f795873a14efb767d31fc23f9b510e271df7cb5d3487777f7aced2",
-        "calendar.meta.ts": "sha256-30f730846fcdcc1e27b79c13f95164de19ac0216d6fe7333fdb4d5e60a16bc86"
+        "calendar.meta.ts": "sha256-d499b06a0dab494ad177675367de568da1f8ff9b8ee0e708912a27c2ed1c0382"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -2731,7 +2731,7 @@
               "reason": "The range picker renders two Calendar instances side-by-side"
             }
           ],
-          "a11yRationale": "A role=\"grid\" table with role=\"row\"/role=\"gridcell\" and a roving tabindex keeping exactly one day focusable. Navigation moves *real DOM focus*, not just the tabindex: the previous build only rotated the index, so focus stayed on the old button and the moment an arrow crossed a month boundary that button unmounted and focus fell to <body>, ejecting the user from the widget mid-navigation. React reuses the day buttons positionally across months, so the focus move is deferred a task and re-queried by date — landing on the reused node would silently focus whatever date now occupies that grid slot. Arrows move a day or a week, Home/End reach the week edges, PageUp/PageDown change month (Shift for year), and every move is clamped to min/max and skips predicate-disabled days rather than parking the cursor where Enter does nothing; the prev/next buttons disable at the bounds for the same reason. aria-selected sits on the button that takes focus, not the enclosing <td>, and is omitted rather than serialised as \"false\" on the other thirty cells. Today is computed from the *local* calendar rather than the UTC instant, so aria-current=\"date\" no longer lands a day early east of UTC+12. The month is announced through a separate visually-hidden status region: the visible label is also the grid's accessible name, so announcing there would mutate the name of the container focus sits inside.",
+          "a11yRationale": "A role=\"grid\" table with role=\"row\"/role=\"gridcell\" and a roving tabindex keeping exactly one day focusable. Navigation moves *real DOM focus*, not just the tabindex: the previous build only rotated the index, so focus stayed on the old button and the moment an arrow crossed a month boundary that button unmounted and focus fell to <body>, ejecting the user from the widget mid-navigation. React reuses the day buttons positionally across months, so the focus move is deferred a task and re-queried by date — landing on the reused node would silently focus whatever date now occupies that grid slot. Arrows move a day or a week, Home/End reach the week edges, PageUp/PageDown change month (Shift for year), and every move is clamped to min/max and skips predicate-disabled days rather than parking the cursor where Enter does nothing; the prev/next buttons disable at the bounds for the same reason. Each day is a <button role=\"gridcell\"> inside a presentational <td>, so aria-selected sits on the element that takes focus (on the <td> it was never announced) and on a role ARIA allows it on (a plain button may not carry it); it is omitted rather than serialised as \"false\" on the other thirty cells. Today is computed from the *local* calendar rather than the UTC instant, so aria-current=\"date\" no longer lands a day early east of UTC+12. The month is announced through a separate visually-hidden status region: the visible label is also the grid's accessible name, so announcing there would mutate the name of the container focus sits inside.",
           "flexibility": [
             {
               "area": "date type",
@@ -12715,7 +12715,7 @@
         "native-select.tsx": "sha256-d6eddb83cd8e5cf4af6d6a0dce521d8304b3c8949c9cd026adbc4d4d4167f603",
         "index.ts": "sha256-6af5d7c13fc052ae77c40616cf2a4dda79af16cd78ba63d7cd254c2d24bf8800",
         "native-select.module.css": "sha256-105112173293d8d9c6a9d1e6514aa99e989c72483d3df408d7ae96df3e3647f6",
-        "native-select.meta.ts": "sha256-0aad81451aac27e09d1206bd8b97932a6679822e08a14d95485216980b2f8623"
+        "native-select.meta.ts": "sha256-22d8a7add600fccdfce25ac8b02e3781df10128d89cf5f230b13c1739c6f8a3a"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -12819,7 +12819,7 @@
         "examples": [
           {
             "title": "Basic",
-            "code": "<NativeSelect\n  placeholder=\"Choose a country\"\n  options={[\n    { value: 'us', label: 'United States' },\n    { value: 'de', label: 'Germany' },\n  ]}\n  onChange={(e) => setCountry(e.target.value)}\n/>"
+            "code": "<NativeSelect\n  aria-label=\"Country\"\n  placeholder=\"Choose a country\"\n  options={[\n    { value: 'us', label: 'United States' },\n    { value: 'de', label: 'Germany' },\n  ]}\n  onChange={(e) => setCountry(e.target.value)}\n/>"
           },
           {
             "title": "Option children",

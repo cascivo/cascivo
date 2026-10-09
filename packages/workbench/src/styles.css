@@ -122,8 +122,10 @@ body:has(.wb) {
   margin-inline: auto;
   padding: 1.5rem;
   border: 1px dashed #d0d7de;
-  background: var(--cascivo-color-bg, #fff);
-  color: var(--cascivo-color-fg, inherit);
+  /* The theme's own pair, so text on the stage follows the stage's theme: the page around it
+     is themed by `:root`, and inherited text would keep that theme's ink. */
+  background: var(--cascivo-color-background, #fff);
+  color: var(--cascivo-color-foreground, inherit);
 }
 
 .wb-panels {

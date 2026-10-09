@@ -38,7 +38,7 @@
        three. Hue and chroma are untouched, so the theme's character is unchanged.
        Guarded by scripts/checks/muted-text-contrast.test.ts. */
     --cascivo-color-text-muted: oklch(0.535 0.02 325);
-    --cascivo-color-text-on-accent: oklch(1 0 0); /* static fallback */
+    --cascivo-color-text-on-accent: oklch(0.145 0.005 250); /* static fallback */
     --cascivo-color-text-on-destructive: oklch(1 0 0); /* static fallback */
     /* Progressive auto-contrast: contrast-color() stored in a custom property
    does not honor the static fallback on unsupported browsers — the var()

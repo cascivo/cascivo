@@ -117,7 +117,7 @@
     "examples": [
       {
         "title": "Basic",
-        "code": "<NativeSelect\n  placeholder=\"Choose a country\"\n  options={[\n    { value: 'us', label: 'United States' },\n    { value: 'de', label: 'Germany' },\n  ]}\n  onChange={(e) => setCountry(e.target.value)}\n/>"
+        "code": "<NativeSelect\n  aria-label=\"Country\"\n  placeholder=\"Choose a country\"\n  options={[\n    { value: 'us', label: 'United States' },\n    { value: 'de', label: 'Germany' },\n  ]}\n  onChange={(e) => setCountry(e.target.value)}\n/>"
       },
       {
         "title": "Option children",

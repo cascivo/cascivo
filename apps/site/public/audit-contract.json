@@ -319,7 +319,6 @@
     { "name": "--cascivo-shell-header-block-size", "resolvedDefault": "3rem" },
     { "name": "--cascivo-shell-panel-inline-size", "resolvedDefault": "20rem" },
     { "name": "--cascivo-shell-aside-inline-size", "resolvedDefault": "18rem" },
-    { "name": "--cascivo-link-color", "resolvedDefault": "oklch(0.52 0.2 250)" },
     { "name": "--cascivo-search-width", "resolvedDefault": "100%" },
     { "name": "--cascivo-screen-sm", "resolvedDefault": "30rem" },
     { "name": "--cascivo-screen-md", "resolvedDefault": "40rem" },
@@ -354,6 +353,7 @@
       "name": "--cascivo-color-ai-sheen",
       "resolvedDefault": "oklch(from var(--cascivo-color-ai) l c h / 22%)"
     },
+    { "name": "--cascivo-link-color", "resolvedDefault": "oklch(0.52 0.2 250)" },
     { "name": "--cascivo-color-background", "resolvedDefault": "oklch(1 0 0)" },
     { "name": "--cascivo-color-surface", "resolvedDefault": "oklch(0.985 0.002 264)" },
     { "name": "--cascivo-color-surface-2", "resolvedDefault": "oklch(0.967 0.003 264)" },

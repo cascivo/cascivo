@@ -136,3 +136,32 @@ describe('accent-as-type clears WCAG AA in every theme', () => {
     })
   }
 })
+
+/**
+ * Text ON a fill: the destructive button's label, the primary button's label.
+ *
+ * Themes compute these with `contrast-color()` inside `@supports`, so a browser that has it
+ * always picks a readable ink. The static value before it is what every other browser paints,
+ * and nothing held it to the fill: dark's destructive is a light red, its fallback was white,
+ * and a destructive Button read 2.66:1 in Chromium (found by the workbench sweep, 2026-10-08).
+ */
+describe('the static ink on a fill clears WCAG AA in every theme', () => {
+  for (const theme of themes()) {
+    for (const [ink, fill] of [
+      ['--cascivo-color-text-on-destructive', '--cascivo-color-destructive'],
+      ['--cascivo-color-text-on-accent', '--cascivo-color-accent'],
+    ] as const) {
+      const text = declared(theme.block, ink)
+      const bg = declared(theme.block, fill)
+      if (!text || !bg) continue
+      it(`${theme.name}: ${ink}`, () => {
+        const ratio = contrastRatio(parseOklch(text), parseOklch(bg))
+        assert.ok(
+          ratio >= AA,
+          `${theme.name}: ${ink} (${text}) on ${fill} (${bg}) is ${ratio.toFixed(2)}:1, ` +
+            `below AA ${AA}. Browsers without contrast-color() paint this static value.`,
+        )
+      })
+    }
+  }
+})

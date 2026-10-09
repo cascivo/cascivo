@@ -54,6 +54,7 @@ import { NativeSelect } from '@cascivo/react'
 
 ```tsx
 <NativeSelect
+  aria-label="Country"
   placeholder="Choose a country"
   options={[
     { value: 'us', label: 'United States' },

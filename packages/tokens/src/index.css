@@ -427,9 +427,6 @@
     /* ── Component override hooks ───────────────────────── */
     /* Declared here so they appear in tokens.catalog.json — a component reading an
        undeclared var is an override hook nobody can discover. */
-    /* Link reads this before its own fallback, so pointing it at the raw accent
-       made that fallback dead code and every Link the fill hue. */
-    --cascivo-link-color: var(--cascivo-color-accent-text);
     --cascivo-search-width: 100%;
 
     /* ── Breakpoint Scale ────────────────────────────── */
@@ -485,6 +482,10 @@
     --cascivo-color-ai-subtle: oklch(from var(--cascivo-color-ai) l c h / 10%);
     --cascivo-color-ai-border: oklch(from var(--cascivo-color-ai) l c h / 40%);
     --cascivo-color-ai-sheen: oklch(from var(--cascivo-color-ai) l c h / 22%);
+
+    /* Link reads this before its own fallback. Scoped here, not on `:root` alone, so it
+       resolves per theme: scripts/checks/scoped-theme-tokens.test.ts. */
+    --cascivo-link-color: var(--cascivo-color-accent-text);
   }
 
   /* All one-shot cascade motion derives from the duration tokens, so collapsing them
