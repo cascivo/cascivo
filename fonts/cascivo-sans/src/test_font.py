@@ -72,14 +72,19 @@ class Font(unittest.TestCase):
             g.recalcBounds(font['glyf'])
             return g
 
-        self.assertLess(bounds(self.fi, 'f').yMin, -100, 'the italic f descends')
-        self.assertGreaterEqual(bounds(self.f, 'f').yMin, 0)
+        for ch in 'f\u017f\u00df':  # f, long s and sharp s
+            self.assertLess(bounds(self.fi, ch).yMin, -100, f'the italic {ch} descends')
+            self.assertGreaterEqual(bounds(self.f, ch).yMin, 0)
+        # stems are cut flat on the baseline and x-height, not square to the slant (which dipped
+        # 7 units below the baseline and pushed the scaled stems in ™ outside its bounding box)
+        for ch in 'HMTnhimr1':
+            self.assertEqual(bounds(self.fi, ch).yMin, 0, f'italic {ch} sits on the baseline')
         # single-storey a: one contour is a bare stem from baseline to x-height. In the upright
         # a, that contour carries on over the top into the terminal, so it is wide.
-        def has_bare_stem(font):
-            g = font['glyf'][font.getBestCmap()[ord('a')]]
+        def has_bare_stem(font, ch='a'):
+            g = font['glyf'][font.getBestCmap()[ord(ch)]]
             coords, ends, _ = g.getCoordinates(font['glyf'])
-            adv = font['hmtx'][font.getBestCmap()[ord('a')]][0]
+            adv = font['hmtx'][font.getBestCmap()[ord(ch)]][0] / (2 if ch == '\u00e6' else 1)
             start = 0
             for e in ends:
                 xs = [x for x, _ in coords[start:e + 1]]
@@ -91,6 +96,8 @@ class Font(unittest.TestCase):
 
         self.assertTrue(has_bare_stem(self.fi), 'italic a is single-storey')
         self.assertFalse(has_bare_stem(self.f), 'upright a is double-storey')
+        self.assertTrue(has_bare_stem(self.fi, '\u00e6'), 'italic \u00e6 matches the italic a')
+        self.assertFalse(has_bare_stem(self.f, '\u00e6'))
 
     def test_coverage(self):
         cmap = self.f.getBestCmap()

@@ -648,18 +648,34 @@ def _s(g, p):
     g.sb = (0.55, 0.55)
 
 
-@glyph('f', 0x66)
-def _f(g, p):
+def _f_hook(p):
+    """The f's width, stem position, hook end angle and hook radius."""
     w = p.cn * 0.47 + p.V * 1.69  # heavier stems need a wider f, or the hook has no room to turn
-    V, H = p.V, p.H
-    xs = w * 0.28 + V * 0.1
+    xs = w * 0.28 + p.V * 0.1
     # size the hook so its terminal ends above the crossbar's end: a wider hook overhangs empty
     # space and opens a gap before the next letter ("def ault")
     # Heavier weights end the hook higher: near its tip the hook turns tighter than half a Black
     # stroke, and the inner edge folds into a pinhole. The angle stays in one quadrant, so the
     # outline structure (and master compatibility) is unchanged.
-    end = 38 + 34 * max(0.0, (V - 90) / 88)
-    rx = (w * 0.96 - xs - V / 2) / (1 + math.cos(math.radians(end))) + V * 0.15
+    end = 38 + 34 * max(0.0, (p.V - 90) / 88)
+    rx = (w * 0.96 - xs - p.V / 2) / (1 + math.cos(math.radians(end))) + p.V * 0.15
+    return w, xs, end, rx
+
+
+def _italic_descender(g, p, x):
+    """Italic f, long s and sharp s: the stem at x runs below the baseline and hooks left under
+    the preceding letter, the same size in all three. Returns the hook and the y where it meets
+    the stem."""
+    rx = _f_hook(p)[3]
+    rxb, ryb = rx * 0.9, rx * 0.99
+    cyb = p.desc + p.H / 2 + ryb
+    return g.arc(x - rxb, cyb, rxb, ryb, -140, 0), cyb
+
+
+@glyph('f', 0x66)
+def _f(g, p):
+    V, H = p.V, p.H
+    w, xs, end, rx = _f_hook(p)
     ry = rx * 1.15
     top = p.asc + p.ov * 0.3
     cy = top - H / 2 - ry
@@ -667,9 +683,8 @@ def _f(g, p):
     top_hook = g.arc(sx + rx, cy, rx, ry, 180, end)
     if p.italic:
         # the italic f descends and hooks left under the preceding letter
-        rxb, ryb = rx * 0.9, rx * 0.99
-        cyb = p.desc + H / 2 + ryb
-        g.stroke(g.arc(sx - rxb, cyb, rxb, ryb, -140, 0) + [L((sx, cyb), (sx, cy))] + top_hook, caps=('b', 'b'))
+        hook, cyb = _italic_descender(g, p, sx)
+        g.stroke(hook + [L((sx, cyb), (sx, cy))] + top_hook, caps=('b', 'b'))
         g.sb = (-0.2, 0.05)
     else:
         g.stroke([L((sx, 0), (sx, cy))] + top_hook, caps=('b', 'b'))
@@ -680,7 +695,9 @@ def _f(g, p):
 
 @glyph('t', 0x74)
 def _t(g, p):
-    w = p.nw * 0.6
+    heavy = max(0.0, (p.V - 90) / 88)
+    # the slant tightens the hook's inside curve: heavy italics need more room for it to turn
+    w = p.nw * (0.6 + (0.14 * heavy if p.italic else 0))
     V, H = p.V, p.H
     xs = w * 0.24 + V * 0.12
     rx = w - xs - V * 0.4
@@ -1533,14 +1550,19 @@ def _germandbls(g, p):
     rx = (w * 0.86 - a) / 2
     ry = (p.asc + p.ov * 0.4 - ym) / 2
     cy = p.asc + p.ov * 0.4 - H / 2 - ry
-    g.stroke([L((a, 0), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, -90) + [L((a + rx, cy - ry), (w * 0.4, cy - ry))])
+    top = g.arc(a + rx, cy, rx, ry, 180, -90) + [L((a + rx, cy - ry), (w * 0.4, cy - ry))]
+    if p.italic:  # the long-s half descends, as in the italic f and long s
+        hook, cyb = _italic_descender(g, p, a)
+        g.stroke(hook + [L((a, cyb), (a, cy))] + top, caps=('b', 'b'))
+    else:
+        g.stroke([L((a, 0), (a, cy))] + top)
     yt = cy - ry
     ryl = (yt - H / 2) / 2
     rxl = min(ryl * 1.05, (w - V / 2 - w * 0.36) * 0.8)
     cxl = w - V / 2 - rxl
     g.stroke([L((w * 0.36, yt), (cxl, yt))] + g.arc(cxl, (yt + H / 2) / 2, rxl, ryl, 90, -90) + [L((cxl, H / 2), (w * 0.3, H / 2))])
     g.ht = 'a'
-    g.sb = (1, 0.6)
+    g.sb = (0.1 if p.italic else 1, 0.6)
 
 
 @glyph('eth', 0xF0)
@@ -1593,6 +1615,13 @@ def _AE(g, p):
 @glyph('ae', 0xE6)
 def _ae(g, p):
     V, H = p.V, p.H
+    if p.italic:  # single-storey, matching the italic a
+        wa = p.nw * 1.0
+        g.vstem(wa - V, 0, p.xh)
+        _bowl_lc(g, p, wa, False)
+        _ae_e(g, p, wa - V)
+        g.sb = (0.62, 0.5)
+        return
     wa = p.nw * 0.9
     xs = wa - V / 2
     cxt = xs * 0.5 + 6
@@ -1607,12 +1636,15 @@ def _ae(g, p):
     rxb = (xs - V / 2) / 2
     cxb = V / 2 + rxb
     g.stroke([L((xs, yt), (cxb, yt))] + g.arc(cxb, (yt + ybot) / 2, rxb, ryb, 90, 360))
-    x0 = xs - V / 2
-    we = p.nw * 0.96
-    cx, cy, rx, ry = g.box(x0, -p.ov, x0 + we, p.xh + p.ov)
-    g.stroke(g.arc(cx, cy, rx, ry, 0, 322 - p.ap), caps=('b', 'b'))
-    g.hbar(cx - rx, cx + rx + V / 2, cy + 2)
+    _ae_e(g, p, xs - V / 2)
     g.sb = (0.55, 0.5)
+
+
+def _ae_e(g, p, x0):
+    """The e half of æ, its left side sharing the a's stem."""
+    cx, cy, rx, ry = g.box(x0, -p.ov, x0 + p.nw * 0.96, p.xh + p.ov)
+    g.stroke(g.arc(cx, cy, rx, ry, 0, 322 - p.ap), caps=('b', 'b'))
+    g.hbar(cx - rx, cx + rx + (-p.V * 0.18 if p.italic else p.V / 2), cy + 2)
 
 
 @glyph('Eng', 0x14A)
@@ -1651,9 +1683,16 @@ def _longs(g, p):
     ry = rx * 0.95
     top = p.asc + p.ov * 0.3
     cy = top - H / 2 - ry
-    g.stroke([L((xs + V / 2, 0), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, 38), caps=('b', 'b'))
+    sx = xs + V / 2
+    top_hook = g.arc(sx + rx, cy, rx, ry, 180, 38)
+    if p.italic:  # descends like the italic f, which it is the ancestor of
+        hook, cyb = _italic_descender(g, p, sx)
+        g.stroke(hook + [L((sx, cyb), (sx, cy))] + top_hook, caps=('b', 'b'))
+        g.sb = (-0.2, 0.2)
+    else:
+        g.stroke([L((sx, 0), (sx, cy))] + top_hook, caps=('b', 'b'))
+        g.sb = (1, 0.2)
     g.ht = 'a'
-    g.sb = (1, 0.2)
 
 
 @glyph('mu', 0xB5)

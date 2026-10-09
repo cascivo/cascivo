@@ -17,9 +17,9 @@ Helvetica, and what it does not do yet.
 | `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz | full (365 codepoints) | 34.3 KB                   |
 | `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz | full                  | 93.6 KB (desktop install) |
 | `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght       | Latin                 | 23.7 KB                   |
-| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz | Latin                 | 32.0 KB                   |
+| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz | Latin                 | 31.7 KB                   |
 | `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz | full                  | 37.9 KB                   |
-| `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz | full                  | 97.9 KB (desktop install) |
+| `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz | full                  | 97.2 KB (desktop install) |
 | `fonts/CascivoSans-Regular.woff2`                 | static 400 | full                  | 11.7 KB                   |
 
 "Latin" means Basic Latin, Latin-1 and common punctuation. The full charset adds Latin

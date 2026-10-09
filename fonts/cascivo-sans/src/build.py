@@ -66,7 +66,17 @@ def italicize(strokes, p):
     if not p.slant:
         return strokes
     yc = p.xh / 2
-    return [st.transformed(lambda q: (q[0] + (q[1] - yc) * p.slant, q[1]), slant=p.slant) for st in strokes]
+    out = []
+    for st in strokes:
+        it = st.transformed(lambda q: (q[0] + (q[1] - yc) * p.slant, q[1]), slant=p.slant)
+        # A square cut on a slanted stem dips below the baseline and pokes above the x-height
+        # (7 units at Regular). Upright vertical stems are cut flat instead, as in any drawn italic.
+        # Decided by segment type, never by value, so every master gets the same structure.
+        if not st.closed:
+            ends = (st.segs[0], st.segs[-1])
+            it.caps = tuple('h' if c == 'b' and e[0] == 'L' and e[1][0] == e[-1][0] else c for c, e in zip(st.caps, ends))
+        out.append(it)
+    return out
 
 
 def draw_master(p):

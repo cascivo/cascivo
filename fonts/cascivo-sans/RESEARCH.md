@@ -322,17 +322,22 @@ their thick and thin parts where an italic's stress puts them, instead of where 
 upright would leave them. Spacing is measured on the upright drawing and carried over. Kerning
 is measured on the italic outlines, with the same candidate list and model as the upright.
 
-**Italic forms.** `a` is single-storey. `f` descends and hooks left under the previous letter.
-`y` ends in a curved tail. Counters are 5% narrower. The italic passes the same no-reflow test
-as the upright (Thin 0.94×, Bold 1.08×, Black 1.16× of Regular).
+**Italic forms.** `a` is single-storey, and so is the `a` in `æ`. `f` descends and hooks left
+under the previous letter, and `ſ` and `ß` descend with the same hook. `y` ends in a curved
+tail. Counters are 5% narrower. The italic passes the same no-reflow test as the upright (Thin
+0.95×, Bold 1.08×, Black 1.13× of Regular).
 
 **Fixes found while drawing it.**
 
 - The italic `e` bar stops short of the bowl's end. A square cut across a slanted stroke no
   longer covers the bar's corner.
+- Straight stems are cut flat on the baseline, x-height and cap height. A cut square to the
+  slanted stroke dipped 7 units below the baseline at Regular. It also pushed the half-scale `T`
+  and `M` in `™` outside the glyph's bounding box, which Font Bakery reported.
 - Heavy `t` hooks end earlier (286° → 272°) and taper to 0.7, so their inside does not fold.
   This also fixed a near-fold in the upright Black `t`. The angle stays in one quadrant, so
-  every master keeps the same structure.
+  every master keeps the same structure. Heavy italic `t`s are also up to 14% wider, because the
+  slant tightens the inside of the hook. Without the extra room, Black kept a small notch there.
 - The cedilla is now two overlapping strokes, because one stroke could not offset cleanly round
   its right-angle turn. The capital breve has a minimum depth, because a shallow arc thinner
   than its stroke folds inside.
@@ -341,10 +346,6 @@ as the upright (Thin 0.94×, Bold 1.08×, Black 1.16× of Regular).
 The difference is inherent: once outlines are slanted, every point that moves vertically
 between masters also moves horizontally, so it carries more variation data. For comparison,
 Plex ships 24.4 KB for one static italic weight, and Inter 51.8 KB for its variable italic.
-
-**Not done.** `æ` keeps the double-storey `a`. `ß` and `ſ` do not descend. The Black italic `t`
-keeps a 2-unit notch where its hook meets the stem. Font Bakery warns that the italic `™` has
-points half a unit outside its rounded bounding box (it is built from half-scale `T` and `M`).
 
 ## Sources
 
