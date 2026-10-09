@@ -117,7 +117,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                                             |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                                                    |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                                                          |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.8 KB, `Latin[opsz,wght]` 28.9 KB; italic 24.1 / 32.3 KB, loaded only when a page uses italic. Serve only the axes you use |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.8 KB, `Latin[opsz,wght]` 28.9 KB; italic 24.0 / 32.1 KB, loaded only when a page uses italic. Serve only the axes you use |
 
 ## 5. Scorecard
 
@@ -129,7 +129,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | Bytes per codepoint (Latin slice)       | **102**                | 131               | 197                                   | 210                |
 | Variable, full charset, wght only       | **25.8 KB** (71 B/cp)  | 69.7 KB (96 B/cp) | —                                     | —                  |
 | Static Regular, full charset            | **11.7 KB** (32 B/cp)  | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp)                     | —                  |
-| Italic, variable Latin slice, wght axis | **24.1 KB** (114 B/cp) | no italic         | 24.4 KB, one static weight (105 B/cp) | 51.8 KB (225 B/cp) |
+| Italic, variable Latin slice, wght axis | **24.0 KB** (114 B/cp) | no italic         | 24.4 KB, one static weight (105 B/cp) | 51.8 KB (225 B/cp) |
 
 The full-charset comparison is not like for like. Geist and Plex cover Cyrillic, Greek and
 more, and those glyphs are larger. The Latin slices are the fair comparison, and Cascivo uses
@@ -342,7 +342,7 @@ tail. Counters are 5% narrower. The italic passes the same no-reflow test as the
   its right-angle turn. The capital breve has a minimum depth, because a shallow arc thinner
   than its stroke folds inside.
 
-**Size.** The italic Latin web file is 24.1 KB for every weight, against 21.8 KB for the upright.
+**Size.** The italic Latin web file is 24.0 KB for every weight, against 21.8 KB for the upright.
 The difference is inherent: once outlines are slanted, every point that moves vertically
 between masters also moves horizontally, so it carries more variation data. For comparison,
 Plex ships 24.4 KB for one static italic weight, and Inter 51.8 KB for its variable italic.
@@ -488,9 +488,12 @@ comparison found four defects there that Black did not show, or showed less.
   is capped for small rings, so the leg started inside the counter. It now uses the loop's own
   centreline and starts at the loop's width, widening toward the foot.
 
-At Bold, `c`, `C`, `5` and `9` measure 0.84-0.88 of the references' ink. That is inherited from
-Regular, where the open `c` and `C` are lighter still (0.78-0.79), not a heavy-weight fault. The
-`r`'s long arm makes it wider than Geist's and Inter's at every weight (1.5× at Regular).
+At Bold, `c` and `C` measured 0.84-0.85 of the references' ink, inherited from Regular, where the
+open `c` and `C` were lighter still (0.78-0.79). Their terminals now sit 14° further round at
+every weight, and at Regular the `c` is 6% wider and the `C` 5% wider; Black is unchanged. Both
+now measure 0.90-0.91 of the references' ink at Regular, Bold and Black. The `G` keeps its more
+open top. The `r`'s long arm makes it wider than Geist's and Inter's at every weight (1.5× at
+Regular).
 
 ## Sources
 

@@ -280,12 +280,11 @@ def _Q(g, p):
 
 @glyph('C', 0x43)
 def _C(g, p):
-    w = p.Hw * (1.07 + 0.12 * p.heavy)  # Black's C was 0.75x Geist's and Inter's width
+    w = p.Hw * (1.12 + 0.07 * p.heavy)  # Black's C was 0.75x Geist's and Inter's width, Regular's 0.88x
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.cap + p.ov)
-    # heavy terminals run further round, as in Geist and Inter: an aperture kept at Regular's
-    # size left Black's C, G, S, c, 3 and 5 visibly lighter than the letters around them
-    t = 14 * p.heavy
-    g.stroke(g.arc(cx, cy, rx, ry, 42 + p.ap - t, 318 - p.ap + t), caps=('b', 'b'), cut='h')
+    # terminals sit 14° further round than they first did, at every weight, as in Geist and Inter:
+    # the open aperture left the C at 0.79x their ink at Regular and 0.71x at Black
+    g.stroke(g.arc(cx, cy, rx, ry, 28 + p.ap, 332 - p.ap), caps=('b', 'b'), cut='h')
     g.ht = 'c'
     g.sb = (0.62, 0.45)
 
@@ -624,12 +623,13 @@ def _o(g, p):
 
 @glyph('c', 0x63)
 def _c(g, p):
-    w = p.nw * (0.98 + 0.08 * p.heavy)  # heavy c widens, or its counter pinches to a slot
+    # Regular's c was 0.81x Geist's and Inter's width; heavier, it widens a little more, or its
+    # counter pinches
+    w = p.nw * (1.04 + 0.02 * p.heavy)
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov)
-    # heavy terminals run a little further round: the aperture stayed Regular's while the strokes
-    # grew, and Black's c carried 0.77x the references' ink
-    t = 14 * p.heavy
-    g.stroke(g.arc(cx, cy, rx, ry, 44 + p.ap - t, 316 - p.ap + t), caps=('b', 'b'), cut='h')
+    # terminals sit 14° further round than they first did, at every weight: the open aperture left
+    # the c at 0.78x Geist's and Inter's ink at Regular and 0.77x at Black, and Bold inherited it
+    g.stroke(g.arc(cx, cy, rx, ry, 30 + p.ap, 330 - p.ap), caps=('b', 'b'), cut='h')
     g.sb = (0.62, 0.42)
 
 
@@ -1523,7 +1523,7 @@ def _currency(g, p):
 def _cent(g, p):
     w = fw(p) * 0.92
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov + 40)
-    g.stroke(g.arc(cx, cy, rx, ry, 44 + p.ap, 316 - p.ap), caps=('b', 'b'), cut='h')
+    g.stroke(g.arc(cx, cy, rx, ry, 30 + p.ap, 330 - p.ap), caps=('b', 'b'), cut='h')  # as c
     g.line((w * 0.53, -110), (w * 0.53, p.xh + 150), w=p.V * 0.72)
     g.tab = True
 
