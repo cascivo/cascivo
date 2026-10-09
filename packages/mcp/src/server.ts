@@ -1,7 +1,11 @@
 import { spawnSync } from 'node:child_process'
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { z } from 'zod'
 import {
+  compactManifest,
   fetchDirectory,
   fetchRegistryIndex,
   getComponent,
@@ -11,14 +15,26 @@ import {
   loadRegistry,
   mergeRegistries,
   searchComponents,
+  type ComponentManifest,
   type Registry,
 } from './registry.js'
 import { generateThemeCss } from './theme.js'
 import { scaffoldPage } from './scaffold.js'
 import { validateView } from './validate.js'
+import { THEMES, addArgs, createAppArgs } from './cli-args.js'
+import {
+  AUTH_MODES,
+  CREATE_APP_EXAMPLE_NAMES,
+  isCreateAppExample,
+  authSetup,
+  authSummaries,
+  exampleSetup,
+  exampleSummaries,
+} from './create-app-examples.js'
 import { loadViewToMarkdown } from './view-markdown.js'
 import { scaffoldView } from './scaffold-view.js'
-import { buildGrammar, formatGrammar } from './grammar.js'
+import { RENDERABLE, buildGrammar, formatGrammar } from './grammar.js'
+import { BLUEPRINT_BLOCKS } from './blocks.generated.js'
 import { buildGenerationPrompt } from './prompt.js'
 import { loadTokenCatalog } from './tokens.js'
 import { loadIconCatalog, searchIcons } from './icons.js'
@@ -66,6 +82,15 @@ Canonical order (low→high): @layer vendor, cascivo.reset, cascivo.base, casciv
 /** Build a configured McpServer exposing the cascade component registry. */
 export function createServer(options: ServerOptions = {}): McpServer {
   const registry: Registry = loadRegistry(options.registryPath)
+  const registryNames = new Set(registry.components.map((c) => c.meta.name))
+  // What `cascivo generate` can import: everything `cascivo add` copies into the components
+  // directory (charts ship from @cascivo/charts and blocks are whole pages, so neither counts).
+  const installableNames = new Set([
+    ...registry.components
+      .filter((c) => c.type === undefined || c.type === 'component' || c.type === 'layout')
+      .map((c) => c.meta.name),
+    ...RENDERABLE,
+  ])
   const fetchFn = options.fetchFn
 
   const server = new McpServer(
@@ -124,16 +149,21 @@ export function createServer(options: ServerOptions = {}): McpServer {
     {
       title: 'Get component',
       description:
-        'Get the full manifest (props, states, tokens, a11y, examples) for one component.',
+        'Get the manifest (props, states, tokens, a11y, examples) for one component. `compact: true` returns only what writing a usage needs — props, the first example and a11y — at a fraction of the size.',
       inputSchema: {
         name: z.string().describe('Component name, e.g. "button"'),
+        compact: z
+          .boolean()
+          .optional()
+          .describe('Return props, one example and accessibility only'),
         registry: z
           .string()
           .optional()
           .describe('Namespace of an external registry, e.g. "@myns". Omit for the default.'),
       },
     },
-    async ({ name, registry: ns }) => {
+    async ({ name, registry: ns, compact }) => {
+      const shape = (meta: ComponentManifest) => json(compact ? compactManifest(meta) : meta)
       if (ns) {
         const env = getEnvRegistries()
         const directory = await fetchDirectory(fetchFn)
@@ -143,10 +173,10 @@ export function createServer(options: ServerOptions = {}): McpServer {
         const remoteRegistry = await fetchRegistryIndex(entry.registryUrl, fetchFn)
         if (!remoteRegistry) return error(`Failed to fetch registry index for "${ns}".`)
         const meta = getComponent(remoteRegistry, name)
-        return meta ? json(meta) : error(`Component "${name}" not found in registry "${ns}".`)
+        return meta ? shape(meta) : error(`Component "${name}" not found in registry "${ns}".`)
       }
       const meta = getComponentWithVersion(registry, name)
-      return meta ? json(meta) : error(`Component "${name}" not found.`)
+      return meta ? shape(meta) : error(`Component "${name}" not found.`)
     },
   )
 
@@ -182,19 +212,31 @@ export function createServer(options: ServerOptions = {}): McpServer {
     'add_to_project',
     {
       title: 'Add to project',
-      description: 'Add a component to the current project by running the cascade CLI.',
+      description:
+        'Add components, blocks or layouts to the current project by running the cascade CLI. Pass every name in one call.',
       inputSchema: {
-        name: z.string().describe('Component name to add'),
-        outputDir: z.string().optional().describe('Directory to write the component into'),
+        names: z
+          .array(z.string())
+          .optional()
+          .describe('Names to add, e.g. ["card", "stat", "data-table"]'),
+        name: z.string().optional().describe('One name to add (same as names: [name])'),
+        outputDir: z.string().optional().describe('Directory to write the components into'),
       },
     },
-    ({ name, outputDir }) => {
-      const env = outputDir ? { ...process.env, CASCIVO_OUTPUT_DIR: outputDir } : process.env
-      const result = spawnSync('npx', ['-y', 'cascivo', 'add', name], { encoding: 'utf8', env })
-      if (result.status !== 0) {
-        return error(result.stderr || result.error?.message || `Failed to add "${name}".`)
+    ({ names, name, outputDir }) => {
+      const all = [...(names ?? []), ...(name ? [name] : [])]
+      let args: string[]
+      try {
+        args = addArgs(all)
+      } catch (e) {
+        return error(e instanceof Error ? e.message : String(e))
       }
-      return text(result.stdout || `Added ${name}.`)
+      const env = outputDir ? { ...process.env, CASCIVO_OUTPUT_DIR: outputDir } : process.env
+      const result = spawnSync('npx', args, { encoding: 'utf8', env })
+      if (result.status !== 0) {
+        return error(result.stderr || result.error?.message || `Failed to add ${all.join(', ')}.`)
+      }
+      return text(result.stdout || `Added ${all.join(', ')}.`)
     },
   )
 
@@ -298,7 +340,13 @@ export function createServer(options: ServerOptions = {}): McpServer {
       // name straight to the CLI (which resolves specs itself).
       const catalog = await loadCatalog(undefined, fetchFn).catch(() => null)
       const spec = (catalog ? getTemplate(catalog, name)?.installSpec : undefined) ?? name
-      const result = spawnSync('npx', ['-y', 'cascivo', 'add', spec], {
+      let args: string[]
+      try {
+        args = addArgs([spec])
+      } catch (e) {
+        return error(e instanceof Error ? e.message : String(e))
+      }
+      const result = spawnSync('npx', args, {
         encoding: 'utf8',
         ...(cwd ? { cwd } : {}),
       })
@@ -317,10 +365,13 @@ export function createServer(options: ServerOptions = {}): McpServer {
         'Scaffold a complete, ready-to-run cascivo app wired with the app shell, side navigation, header, and a theme — one page per nav section. `framework`: "react-vite" (default; a client-side Vite + React SPA), "astro" (static pages, only the shell hydrates), or "cloudflare" (a client app plus its API as one Cloudflare Worker, with file routes and a typed API; deploy it with no account via deploy_preview). Runs `cascivo create` as a child process, writing the project into a new <name> directory.',
       inputSchema: {
         name: z.string().describe('Project name and directory, e.g. "my-app"'),
-        theme: z
-          .enum(['light', 'dark', 'warm'])
+        theme: z.enum(THEMES).optional().describe('Theme to wire in (default: light)'),
+        template: z
+          .string()
           .optional()
-          .describe('Theme to wire in (default: light)'),
+          .describe(
+            'A template to install into the new app (framework "react-vite"), e.g. "dashboard"; list_templates lists them',
+          ),
         sections: z
           .array(z.string())
           .optional()
@@ -338,56 +389,129 @@ export function createServer(options: ServerOptions = {}): McpServer {
             'Client runtime for framework "cloudflare" (default: preact; same source either way)',
           ),
         examples: z
-          .array(
-            z.enum([
-              'board',
-              'agent',
-              'notes',
-              'import',
-              'files',
-              'export',
-              'usage',
-              'crud',
-              'live',
-              'voice',
-              'publish',
-              'webhooks',
-              'digest',
-              'search',
-              'checkout',
-              'newsletter',
-              'social',
-            ]),
-          )
+          .array(z.enum(CREATE_APP_EXAMPLE_NAMES))
           .optional()
           .describe(
-            'Extra pages for framework "cloudflare": "board" is a multiplayer page (notes + live cursors) on a Durable Object — deployable with no account via deploy_preview; "agent" is an AI assistant (Agents SDK + Workers AI) that answers with validated cascivo views — needs runtime "react" (the default with it) and a real Cloudflare account for the model; "notes" is a local-first page whose edits survive a dropped connection (IndexedDB + a Durable Object); "import" is a CSV import running as a Workflow with live progress (@cascivo/app/jobs) — Workflows need a real Cloudflare account to deploy; "files" uploads into R2 with progress and Cloudflare Images previews (@cascivo/app/uploads) — R2 needs a real account; "export" is a report page downloadable as PDF/PNG, rendered by Browser Run (@cascivo/app/export); "usage" records every API request in Workers Analytics Engine and charts it (@cascivo/app/analytics) — reading needs CF_ACCOUNT_ID and CF_API_TOKEN secrets; "crud" is a D1 customers table behind the DataTable server mode, with create/edit/delete (@cascivo/app/db) — works on a temporary account; "live" is an ops dashboard whose charts update every second from events sent through a Queue into a Durable Object (@cascivo/app/live) — the queue must be created before deploying; "voice" is a voice assistant (Agents SDK voice pipeline, Workers AI speech to text, a model and text to speech) that runs on either runtime and offline in vite dev with stand-ins — a real Cloudflare account is needed for the models; "publish" turns views into pages at /p/<slug> with no deploy, each checked against the component manifests (unknown components, invalid props and script-running URLs are refused) and stored in D1 — works on a temporary account; "webhooks" receives GitHub webhook deliveries, verifies their HMAC signature (verifyWebhook also handles Stripe and Standard Webhooks), stores each once in D1 and shows them live — needs a WEBHOOK_SECRET secret; "digest" renders the report page (it adds "export") to PDF with Browser Run and emails it every Monday on a Cron Trigger, recording each run — needs DIGEST_TO, DIGEST_FROM and APP_URL, and a real account for Browser Run and Email Service; "search" finds seeded help articles by meaning, with Workers AI embeddings in a Vectorize index (created once with wrangler vectorize create), and by keyword in vite dev — needs a real account; "checkout" sells a product on Stripe Checkout, the hosted payment page (@cascivo/app/stripe): the Stripe webhook is signature-checked, each order is settled once in D1, its page updates live, and a receipt rendered with @cascivo/email goes out through Email Service — needs STRIPE_SECRET_KEY (a test key works in vite dev), STRIPE_WEBHOOK_SECRET for the webhook, and RECEIPT_FROM for receipts; with auth "email" it also adds /billing, a monthly subscription paid on Stripe Checkout and managed in the Stripe Customer Portal, kept in step by subscription webhooks; "newsletter" is a double opt-in sign-up and a Markdown composer whose issues are rendered with @cascivo/email and sent through Amazon SES on a Queue (@cascivo/app/ses), with one-click unsubscribe and bounces and complaints suppressed from SNS — runs in vite dev with emails logged; sending for real needs AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION and NEWSLETTER_FROM, plus SNS_TOPIC_ARN for feedback, and the queue created before deploying; "social" connects Bluesky, Mastodon, LinkedIn, Threads and Buffer accounts (each Buffer channel is one more account to post to) (@cascivo/app/oauth-server handleConnections, tokens sealed in D1) and posts to them now or at a chosen time, one Workflow per post, with up to 4 images uploaded to R2 and what each network would refuse (including the limits of each Mastodon server) shown while typing (@cascivo/app/social); a daily Cron Trigger renews Threads tokens and emails LinkedIn reconnect reminders, and Buffer accounts can be handed to the queue in Buffer — brings auth "oauth" unless another sign-in is given (not with "access"); Bluesky and Mastodon need no set-up (BLUESKY_PRIVATE_JWK optionally makes Bluesky sessions last; in vite dev open the app at 127.0.0.1), LinkedIn needs LINKEDIN_CLIENT_ID and LINKEDIN_CLIENT_SECRET, Threads needs THREADS_APP_ID and THREADS_APP_SECRET (and App Review at Meta before strangers can connect), Buffer needs BUFFER_CLIENT_ID, AUTH_SECRET seals the tokens and signs image links, APP_URL lets Threads and Buffer fetch images, REMINDER_FROM sends reminders, and Workflows and R2 need a real account to deploy. Guide: https://cascivo.com/docs/recipe-social.md',
+            `Extra pages for framework "cloudflare". ${exampleSummaries()}. Secrets and account needs for the picked examples come back with the result.`,
           ),
         auth: z
-          .enum(['access', 'email', 'oauth', 'email,oauth'])
+          .enum(AUTH_MODES)
           .optional()
           .describe(
-            'For framework "cloudflare": "access" makes the Worker refuse every request Cloudflare Access did not let through (the user sets the team domain and AUD in wrangler.jsonc; such an app cannot use deploy_preview). "email" adds accounts with emailed one-time sign-in links and D1 sessions, and every API write then needs a signed-in user (the user sets AUTH_FROM in wrangler.jsonc; in vite dev the link is shown instead of sent). "oauth" adds the same accounts with GitHub, Google and LinkedIn sign-in (@cascivo/app/oauth-server), each offered once its client id and secret are set, with AUTH_SECRET sealing the sign-in state; "email,oauth" puts both on one sign-in page.',
+            `Sign-in for framework "cloudflare". ${authSummaries()}. Setup for the chosen mode comes back with the result.`,
           ),
+        workspace: z
+          .boolean()
+          .optional()
+          .describe('A pnpm workspace: apps/web + packages/ui, Vite+, CI (not astro)'),
         cwd: z
           .string()
           .optional()
           .describe('Directory to create the app in (default: current directory)'),
       },
     },
-    ({ name, theme, sections, framework, runtime, examples, auth, cwd }) => {
-      const args = ['-y', 'cascivo', 'create', name, '--yes']
-      if (framework) args.push('--framework', framework)
-      if (runtime) args.push('--runtime', runtime)
-      if (examples && examples.length > 0) args.push('--example', examples.join(','))
-      if (auth) args.push('--auth', auth)
-      if (theme) args.push('--theme', theme)
-      if (sections && sections.length > 0) args.push('--sections', sections.join(', '))
+    ({ name, theme, sections, framework, runtime, examples, auth, template, workspace, cwd }) => {
+      let args: string[]
+      try {
+        args = createAppArgs({
+          name,
+          theme,
+          sections,
+          framework,
+          runtime,
+          examples,
+          auth,
+          template,
+          workspace,
+        })
+      } catch (e) {
+        return error(e instanceof Error ? e.message : String(e))
+      }
       const result = spawnSync('npx', args, { encoding: 'utf8', ...(cwd ? { cwd } : {}) })
       if (result.status !== 0) {
         return error(result.stderr || result.error?.message || `Failed to create "${name}".`)
       }
-      return text(result.stdout || `Created ${name}.`)
+      return text(
+        (result.stdout || `Created ${name}.`) + exampleSetup(examples ?? []) + authSetup(auth),
+      )
+    },
+  )
+
+  server.registerTool(
+    'list_blocks',
+    {
+      title: 'List blocks',
+      description:
+        'The registry blocks a compose_app page can render, one line each. This is all the context a blueprint needs.',
+      inputSchema: {},
+    },
+    () => text([...BLUEPRINT_BLOCKS].map(([name, what]) => `${name} — ${what}`).join('\n')),
+  )
+
+  server.registerTool(
+    'compose_app',
+    {
+      title: 'Compose app from a blueprint',
+      description:
+        "Write a whole app from a blueprint in one call: pages render registry blocks (list_blocks), wired into the routes and side nav, on create_app's shell. Prefer this to create_app plus hand-written pages. Runs `cascivo create --from`; the blueprint is kept in the app as cascivo.app.json.",
+      inputSchema: {
+        name: z.string().describe('Project name and directory, e.g. "acme-console"'),
+        pages: z
+          .array(
+            z.object({
+              title: z.string().describe('Nav label and heading; the first page is /'),
+              block: z
+                .enum([...BLUEPRINT_BLOCKS.keys()] as [string, ...string[]])
+                .optional()
+                .describe('A block from list_blocks; omit for a page to build out'),
+            }),
+          )
+          .min(1),
+        framework: z.enum(['react-vite', 'cloudflare']).optional().describe('Default react-vite'),
+        theme: z.enum(THEMES).optional(),
+        runtime: z.enum(['preact', 'react']).optional(),
+        examples: z
+          .array(z.string())
+          .optional()
+          .describe("Cloudflare example pages: create_app's `examples` names"),
+        auth: z.enum(AUTH_MODES).optional(),
+        workspace: z
+          .boolean()
+          .optional()
+          .describe('Put the app in a pnpm workspace, as create_app'),
+        cwd: z.string().optional().describe('Directory to create the app in'),
+      },
+    },
+    ({ cwd, workspace, ...blueprint }) => {
+      const dir = mkdtempSync(join(tmpdir(), 'cascivo-blueprint-'))
+      try {
+        const file = join(dir, 'cascivo.app.json')
+        writeFileSync(file, JSON.stringify(blueprint))
+        const args = [
+          '-y',
+          'cascivo',
+          'create',
+          '--from',
+          file,
+          ...(workspace ? ['--workspace'] : []),
+        ]
+        const result = spawnSync('npx', args, {
+          encoding: 'utf8',
+          ...(cwd ? { cwd } : {}),
+        })
+        if (result.status !== 0) {
+          return error(
+            result.stderr || result.error?.message || `Failed to create "${blueprint.name}".`,
+          )
+        }
+        return text(
+          (result.stdout || `Created ${blueprint.name}.`) +
+            exampleSetup((blueprint.examples ?? []).filter(isCreateAppExample)) +
+            authSetup(blueprint.auth),
+        )
+      } finally {
+        rmSync(dir, { recursive: true, force: true })
+      }
     },
   )
 
@@ -460,16 +584,17 @@ export function createServer(options: ServerOptions = {}): McpServer {
     {
       title: 'Validate view config',
       description:
-        'Validate a CascivoView JSON config against the registry. Returns errors with exact paths.',
+        'Validate a ViewConfig. `target` "render" (default): every component must be one <CascivoView> renders (get_view_grammar lists them). `target` "tsx": the view becomes source through `cascivo generate`, so any component or layout `cascivo add` installs is allowed. Returns errors with exact paths.',
       inputSchema: {
         config: z.record(z.string(), z.unknown()).describe('The ViewConfig object to validate'),
+        target: z
+          .enum(['render', 'tsx'])
+          .optional()
+          .describe('What consumes the view (default: render)'),
       },
     },
-    ({ config }) => {
-      const componentNames = new Set(registry.components.map((c) => c.meta.name))
-      const result = validateView(config, componentNames)
-      return json(result)
-    },
+    ({ config, target }) =>
+      json(validateView(config, target === 'tsx' ? installableNames : RENDERABLE, registryNames)),
   )
 
   server.registerTool(
@@ -487,8 +612,7 @@ export function createServer(options: ServerOptions = {}): McpServer {
       },
     },
     async ({ config, data }) => {
-      const componentNames = new Set(registry.components.map((c) => c.meta.name))
-      const validation = validateView(config, componentNames)
+      const validation = validateView(config, RENDERABLE, registryNames)
       if (!validation.valid) return json(validation)
       const loaded = await loadViewToMarkdown(process.cwd())
       if (!loaded.ok) return error(loaded.reason)
@@ -582,21 +706,25 @@ export function Diagram() {
     {
       title: 'Get view grammar',
       description:
-        "Get the bound-vocabulary grammar + system prompt for generating valid ViewConfig JSON, derived from the component manifests. Use this to constrain an LLM to cascivo's real components, props, and enum values (anti-hallucination). Optionally scope to a subset of components.",
+        'Get the system prompt for generating valid ViewConfig JSON: the format rules plus the bound vocabulary (every renderable component, its props and enum values), derived from the component manifests. Scope it to the components you need — it is much smaller. `detail: true` adds the vocabulary as structured JSON.',
       inputSchema: {
         components: z
           .array(z.string())
           .optional()
-          .describe('Scope the vocabulary to these component names. Omit for the full registry.'),
+          .describe(
+            'Scope the vocabulary to these component names. Omit for every renderable one.',
+          ),
+        detail: z
+          .boolean()
+          .optional()
+          .describe('Also return the vocabulary as JSON (components → props → enums)'),
       },
     },
-    ({ components }) => {
+    ({ components, detail }) => {
+      const prompt = buildGenerationPrompt(registry, components ? { components } : {})
+      if (!detail) return json({ prompt })
       const grammar = buildGrammar(registry, components)
-      return json({
-        grammar: formatGrammar(grammar),
-        prompt: buildGenerationPrompt(registry, components ? { components } : {}),
-        components: grammar.components,
-      })
+      return json({ prompt, grammar: formatGrammar(grammar), components: grammar.components })
     },
   )
 

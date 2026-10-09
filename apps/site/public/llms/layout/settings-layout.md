@@ -10,7 +10,11 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/settings-layout
 ```
 
-_Copy-paste only — `SettingsLayout` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { SettingsLayout } from '@cascivo/react'
+```
 
 ## Category
 

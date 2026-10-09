@@ -56,14 +56,24 @@ export function InputGroup({ prefix, suffix, children, className, ...props }: In
   )
 }
 
-export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
+export interface InputGroupButtonsProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
 }
 
-export function ButtonGroup({ children, className, ...props }: ButtonGroupProps) {
+export function InputGroupButtons({ children, className, ...props }: InputGroupButtonsProps) {
   return (
     <div className={cn(styles['button-group'], className)} role="group" {...props}>
       {children}
     </div>
   )
 }
+
+/**
+ * @deprecated Use `InputGroupButtons`, or the `button-group` component for a toolbar of its
+ * own. This helper shared its name with `button-group`'s `ButtonGroup`, a different component,
+ * so a project that copied both had two `ButtonGroup`s; it is removed at 2.0.
+ */
+export const ButtonGroup = InputGroupButtons
+
+/** @deprecated Use `InputGroupButtonsProps`; removed at 2.0 with `ButtonGroup`. */
+export type ButtonGroupProps = InputGroupButtonsProps

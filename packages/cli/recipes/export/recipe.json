@@ -1,0 +1,12 @@
+{
+  "name": "export",
+  "files": [
+    "src/routes/report.tsx"
+  ],
+  "nav": [
+    {
+      "label": "Report",
+      "href": "/report"
+    }
+  ]
+}

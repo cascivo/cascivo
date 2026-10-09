@@ -139,6 +139,30 @@ export function getComponentWithVersion(
   }
 }
 
+/**
+ * The part of a manifest needed to write a correct usage: props (with their descriptions, which
+ * carry the non-obvious rules such as a numeric `gap`), one example and the a11y contract.
+ * Tokens, states, tags and the rest of the examples are what make a full manifest large.
+ */
+export function compactManifest(meta: ComponentManifest): {
+  name: string
+  description: string
+  deprecated?: ComponentManifest['deprecated']
+  props: PropManifest[]
+  example?: string
+  accessibility: ComponentManifest['accessibility']
+} {
+  const example = meta.examples[0]?.code
+  return {
+    name: meta.name,
+    description: meta.description,
+    ...(meta.deprecated ? { deprecated: meta.deprecated } : {}),
+    props: meta.props,
+    ...(example ? { example } : {}),
+    accessibility: meta.accessibility,
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Multi-registry support
 // ---------------------------------------------------------------------------

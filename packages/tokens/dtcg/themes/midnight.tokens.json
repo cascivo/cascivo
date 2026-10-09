@@ -133,16 +133,16 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [1, 0, 0],
-        "hex": "#ffffff"
+        "components": [0.145, 0.005, 250],
+        "hex": "#090a0c"
       }
     },
     "color-accent-foreground": {
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [1, 0, 0],
-        "hex": "#ffffff"
+        "components": [0.145, 0.005, 250],
+        "hex": "#090a0c"
       }
     },
     "color-accent-hover": {
@@ -250,8 +250,8 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [1, 0, 0],
-        "hex": "#ffffff"
+        "components": [0.145, 0.005, 250],
+        "hex": "#090a0c"
       }
     },
     "color-destructive-foreground": {
@@ -509,16 +509,16 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [1, 0, 0],
-        "hex": "#ffffff"
+        "components": [0.145, 0.005, 250],
+        "hex": "#090a0c"
       }
     },
     "color-text-on-destructive": {
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [1, 0, 0],
-        "hex": "#ffffff"
+        "components": [0.145, 0.005, 250],
+        "hex": "#090a0c"
       }
     },
     "color-text-subtle": {

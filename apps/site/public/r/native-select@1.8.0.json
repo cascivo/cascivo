@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/native-select/native-select.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/native-select/native-select.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],
@@ -114,7 +117,7 @@
     "examples": [
       {
         "title": "Basic",
-        "code": "<NativeSelect\n  placeholder=\"Choose a country\"\n  options={[\n    { value: 'us', label: 'United States' },\n    { value: 'de', label: 'Germany' },\n  ]}\n  onChange={(e) => setCountry(e.target.value)}\n/>"
+        "code": "<NativeSelect\n  aria-label=\"Country\"\n  placeholder=\"Choose a country\"\n  options={[\n    { value: 'us', label: 'United States' },\n    { value: 'de', label: 'Germany' },\n  ]}\n  onChange={(e) => setCountry(e.target.value)}\n/>"
       },
       {
         "title": "Option children",

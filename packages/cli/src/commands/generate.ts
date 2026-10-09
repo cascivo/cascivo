@@ -25,6 +25,119 @@ interface ViewConfig {
   }
 }
 
+/**
+ * Sub-components installed into another component's registry directory. Every other name
+ * resolves to its own kebab-case directory (`DataTable` → `data-table`); `generate.test.ts`
+ * checks both rules against `registry.json`, so a new exception fails there, not in an
+ * adopter's build.
+ */
+const OWNER_DIRECTORY: Record<string, string> = {
+  AppFrame: 'app-shell',
+  CardContent: 'card',
+  CardFooter: 'card',
+  CardHeader: 'card',
+  CardTitle: 'card',
+  ListItem: 'list',
+  GridItem: 'grid',
+  RadioCardGroup: 'radio-card',
+}
+
+/** The registry directory `cascivo add` installs `component` into. */
+export function componentDirectory(component: string): string {
+  return (
+    OWNER_DIRECTORY[component] ?? component.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
+  )
+}
+
+// Everything below is interpolated into TSX source, so the parser admits only names that
+// cannot break out of their position: identifiers for components, props and state keys,
+// dotted identifier paths for refs and translation keys.
+const COMPONENT_RE = /^[A-Z][A-Za-z0-9]*$/
+const PROP_RE = /^[A-Za-z_$][\w$]*(?:-[\w$]+)*$/
+const IDENT_RE = /^[A-Za-z_$][\w$]*$/
+const REF_RE =
+  /^\$(?:data|actions|state|state\.set|state\.toggle)\.[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*)*$/
+const KEY_RE = /^[\w-]+(?:\.[\w-]+)*$/
+
+function fail(path: string, message: string): never {
+  throw new Error(`Invalid ViewConfig at ${path}: ${message}`)
+}
+
+function isRecord(v: unknown): v is Record<string, unknown> {
+  return typeof v === 'object' && v !== null && !Array.isArray(v)
+}
+
+function parseRefs(raw: unknown, path: string): Record<string, string> {
+  if (!isRecord(raw)) fail(path, 'expected an object')
+  const out: Record<string, string> = {}
+  for (const [k, v] of Object.entries(raw)) {
+    if (!PROP_RE.test(k)) fail(`${path}.${k}`, 'not a valid prop name')
+    if (typeof v !== 'string' || !REF_RE.test(v)) {
+      fail(`${path}.${k}`, 'expected a "$data.*", "$actions.*" or "$state.*" reference')
+    }
+    out[k] = v
+  }
+  return out
+}
+
+function parseTranslationRef(raw: Record<string, unknown>, path: string): { $t: string } {
+  if (typeof raw.$t !== 'string' || !KEY_RE.test(raw.$t)) fail(`${path}.$t`, 'invalid key')
+  return { $t: raw.$t }
+}
+
+function parseNode(raw: unknown, path: string): ComponentNode {
+  if (!isRecord(raw)) fail(path, 'expected a component node object')
+  const { component, props, bind, events, children } = raw
+  if (typeof component !== 'string' || !COMPONENT_RE.test(component)) {
+    fail(`${path}.component`, 'expected a PascalCase component name')
+  }
+  const node: ComponentNode = { component }
+  if (props !== undefined) {
+    if (!isRecord(props)) fail(`${path}.props`, 'expected an object')
+    for (const [k, v] of Object.entries(props)) {
+      if (!PROP_RE.test(k)) fail(`${path}.props.${k}`, 'not a valid prop name')
+      if (isRecord(v) && '$t' in v) props[k] = parseTranslationRef(v, `${path}.props.${k}`)
+    }
+    node.props = props
+  }
+  if (bind !== undefined) node.bind = parseRefs(bind, `${path}.bind`)
+  if (events !== undefined) node.events = parseRefs(events, `${path}.events`)
+  if (children !== undefined) {
+    if (typeof children === 'string') node.children = children
+    else if (Array.isArray(children)) {
+      node.children = children.map((c, i) => parseNode(c, `${path}.children[${i}]`))
+    } else if (isRecord(children) && '$t' in children) {
+      node.children = parseTranslationRef(children, `${path}.children`)
+    } else fail(`${path}.children`, 'expected a string, a node array or a { $t } reference')
+  }
+  return node
+}
+
+/** Parse an untrusted ViewConfig (model output, a file) into one that is safe to emit as TSX. */
+export function parseViewConfig(raw: unknown): ViewConfig {
+  if (!isRecord(raw)) fail('$', 'expected an object')
+  const { state, view } = raw
+  const config: ViewConfig = { view: { regions: {} } }
+  if (state !== undefined) {
+    if (!isRecord(state)) fail('state', 'expected an object')
+    const parsed: NonNullable<ViewConfig['state']> = {}
+    for (const [k, v] of Object.entries(state)) {
+      if (!IDENT_RE.test(k)) fail(`state.${k}`, 'not a valid identifier')
+      if (v === null || typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') {
+        parsed[k] = v
+      } else fail(`state.${k}`, 'expected a string, number, boolean or null')
+    }
+    config.state = parsed
+  }
+  if (!isRecord(view) || !isRecord(view.regions)) fail('view.regions', 'expected an object')
+  for (const [name, nodes] of Object.entries(view.regions)) {
+    if (!/^[\w-]+$/.test(name)) fail(`view.regions.${name}`, 'not a valid region name')
+    if (!Array.isArray(nodes)) fail(`view.regions.${name}`, 'expected an array of nodes')
+    config.view.regions[name] = nodes.map((n, i) => parseNode(n, `view.regions.${name}[${i}]`))
+  }
+  return config
+}
+
 function isTranslationRef(v: unknown): v is { $t: string } {
   return typeof v === 'object' && v !== null && '$t' in v
 }
@@ -35,11 +148,13 @@ function serializeInitial(value: string | number | boolean | null): string {
 }
 
 function serializeProp(value: unknown): string {
-  if (typeof value === 'string') return `"${value.replace(/"/g, '\\"')}"`
+  // A JSX attribute string has no escapes, so anything holding a quote goes through an
+  // expression instead.
+  if (typeof value === 'string')
+    return value.includes('"') ? `{${JSON.stringify(value)}}` : `"${value}"`
   if (typeof value === 'number' || typeof value === 'boolean') return `{${value}}`
   if (value === null) return `{null}`
-  if (isTranslationRef(value))
-    return `{"${(value as { $t: string }).$t}"} {/* i18n: ${(value as { $t: string }).$t} */}`
+  if (isTranslationRef(value)) return `{${JSON.stringify(value.$t)}} {/* i18n: ${value.$t} */}`
   return `{${JSON.stringify(value)}}`
 }
 
@@ -50,11 +165,11 @@ function renderChildren(
   knownComponents: Set<string>,
 ): string {
   if (children === undefined) return ''
-  if (typeof children === 'string') return children
-  if (isTranslationRef(children)) {
-    const key = (children as { $t: string }).$t
-    return `{/* i18n: ${key} */}`
+  // Text with JSX syntax in it (`{`, `<`) would be parsed as code; emit it as a string literal.
+  if (typeof children === 'string') {
+    return /[{}<>]/.test(children) ? `{${JSON.stringify(children)}}` : children
   }
+  if (isTranslationRef(children)) return `{/* i18n: ${children.$t} */}`
   if (Array.isArray(children)) {
     return children
       .map((child) =>
@@ -157,10 +272,33 @@ function usesStateSetter(nodes: ComponentNode[]): boolean {
   return nodes.some(walk)
 }
 
+/**
+ * Where components are imported from: `dir` is the copy-paste components directory (one
+ * import per registry directory), `package` a prebuilt package such as `@cascivo/react`.
+ */
+export type ImportSource = { dir: string } | { package: string }
+
+function importLines(components: Set<string>, source: ImportSource): string {
+  const names = [...components].sort()
+  if ('package' in source) return `import { ${names.join(', ')} } from '${source.package}'`
+  const byDirectory = new Map<string, string[]>()
+  for (const name of names) {
+    const directory = componentDirectory(name)
+    byDirectory.set(directory, [...(byDirectory.get(directory) ?? []), name])
+  }
+  return [...byDirectory]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(
+      ([directory, members]) =>
+        `import { ${members.join(', ')} } from '${source.dir}/${directory}'`,
+    )
+    .join('\n')
+}
+
 export function generateTsx(
   config: ViewConfig,
   _propMetas: Map<string, PropMeta[]>,
-  componentsPath: string,
+  source: ImportSource,
 ): string {
   const knownComponents = new Set<string>()
   const allNodes = Object.values(config.view.regions).flat()
@@ -174,11 +312,6 @@ export function generateTsx(
       const rendered = nodes.map((n) => renderNode(n, '      ', [], knownComponents)).join('\n')
       return `    <div className="region-${regionName}">\n${rendered}\n    </div>`
     })
-    .join('\n')
-
-  const importLines = [...knownComponents]
-    .sort()
-    .map((c) => `import { ${c} } from '${componentsPath}/${c.toLowerCase()}/${c.toLowerCase()}'`)
     .join('\n')
 
   const hasData = boundProps.length > 0
@@ -213,7 +346,7 @@ function coerceValue(e: unknown) {
     : ''
 
   return `import React from 'react'${coreImport}
-${importLines}
+${importLines(knownComponents, source)}
 ${coerceHelper}
 interface PageProps ${propsType}
 
@@ -231,26 +364,41 @@ export async function generate(args: string[], config: CascadeConfig): Promise<v
   const outArg = args.find((_, i) => args[i - 1] === '--out')
   const inputArg = args.find((a) => !a.startsWith('--'))
   const componentsDirArg = args.find((_, i) => args[i - 1] === '--components-dir')
+  const fromArg = args.find((_, i) => args[i - 1] === '--from')
 
   if (!inputArg) {
     console.error(
-      'Usage: cascivo generate <config.json> [--out output.tsx] [--components-dir ./src/components/ui]',
+      'Usage: cascivo generate <config.json> [--out output.tsx] [--components-dir ./src/components/ui | --from @cascivo/react]',
     )
+    process.exitCode = 1
+    return
+  }
+  if (fromArg && componentsDirArg) {
+    console.error('Pass --from or --components-dir, not both.')
     process.exitCode = 1
     return
   }
 
   const { readFileSync } = await import('node:fs')
-  const configJson = readFileSync(inputArg, 'utf-8')
-  const viewConfig = JSON.parse(configJson) as ViewConfig
+  let viewConfig: ViewConfig
+  try {
+    const raw: unknown = JSON.parse(readFileSync(inputArg, 'utf-8'))
+    viewConfig = parseViewConfig(raw)
+  } catch (e) {
+    console.error(`${inputArg}: ${e instanceof Error ? e.message : String(e)}`)
+    process.exitCode = 1
+    return
+  }
 
   // Prop metas are not available from the CLI registry type, so this passes an empty map.
   // (There used to be a `fetchRegistry` call here whose result was discarded — a network
   // round-trip on every `cascivo generate` that fed nothing. `noUnusedLocals` surfaced it.)
   const propMetas = new Map<string, PropMeta[]>()
 
-  const componentsDir = componentsDirArg ?? config.outputDir ?? './src/components/ui'
-  const tsx = generateTsx(viewConfig, propMetas, componentsDir)
+  const source: ImportSource = fromArg
+    ? { package: fromArg }
+    : { dir: componentsDirArg ?? config.outputDir ?? './src/components/ui' }
+  const tsx = generateTsx(viewConfig, propMetas, source)
 
   const outPath = outArg ?? join(dirname(inputArg), `${basename(inputArg, '.json')}.tsx`)
 

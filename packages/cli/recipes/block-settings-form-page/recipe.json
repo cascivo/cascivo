@@ -1,0 +1,6 @@
+{
+  "name": "block-settings-form-page",
+  "files": [
+    "src/blocks/settings-form-page.tsx"
+  ]
+}

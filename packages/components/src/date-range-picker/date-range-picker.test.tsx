@@ -12,7 +12,7 @@ function leftGrid(): HTMLElement {
 }
 
 function dayInLeft(label: RegExp): HTMLElement {
-  return within(leftGrid()).getByRole('button', { name: label })
+  return within(leftGrid()).getByRole('gridcell', { name: label })
 }
 
 describe('DateRangePicker', () => {

@@ -1,6 +1,6 @@
 # InputGroup
 
-Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders
+Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; InputGroupButtons collapses adjacent button borders
 
 ## Install
 
@@ -61,13 +61,13 @@ import { InputGroup } from '@cascivo/react'
 </InputGroup>
 ```
 
-### ButtonGroup
+### InputGroupButtons
 
 ```tsx
-<ButtonGroup>
+<InputGroupButtons>
   <Button>Left</Button>
   <Button>Right</Button>
-</ButtonGroup>
+</InputGroupButtons>
 ```
 
 ## Client JavaScript

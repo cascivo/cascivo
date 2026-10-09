@@ -44,6 +44,7 @@ const load = async (specifier: string) => {
 /* eslint-disable @typescript-eslint/no-explicit-any -- dynamically loaded, see `load` above */
 let chromium: any
 let h: any
+let Alert: any
 let renderToStaticMarkup: any
 let Button: any
 let Card: any
@@ -100,6 +101,7 @@ before(async () => {
   // failure documented in docs/USING-WITH-VITE-SSR.md). The stylesheet is loaded separately,
   // exactly as a browser does.
   ;({
+    Alert,
     AppShell,
     Button,
     Card,
@@ -234,6 +236,29 @@ describe('Card padding composes with its subcomponents', () => {
       `Card and CardHeader both padded (${card}px + ${header}px): the header's content sits ` +
         `${card + header}px from the card border. Exactly one of the two owns the inset.`,
     )
+  })
+})
+
+describe('Alert keeps body ink on its tinted surface', () => {
+  // Each status variant used to set the root's colour to its `*-content` ink, which is the
+  // text colour ON a solid status fill (white in most themes). An Alert sits on a 5% tint of
+  // the page, so any child without a colour of its own came out white on near-white.
+  it('every variant leaves the root on the theme text colour', async () => {
+    for (const variant of ['info', 'success', 'warning', 'destructive']) {
+      await mount(
+        h(
+          'div',
+          null,
+          h(Alert, { variant, title: 'Saved', id: 'alert' } as never, 'Done'),
+          h('p', { id: 'ink', style: { color: 'var(--cascivo-color-text)' } }, 'x'),
+        ),
+      )
+      assert.equal(
+        await computed('#alert', 'color'),
+        await computed('#ink', 'color'),
+        `Alert variant="${variant}" must not recolour its root with the on-fill ink`,
+      )
+    }
   })
 })
 

@@ -1,0 +1,17 @@
+{
+  "name": "cascivo-app",
+  "framework": "cloudflare",
+  "theme": "light",
+  "pages": [
+    {
+      "title": "Dashboard"
+    },
+    {
+      "title": "Reports"
+    },
+    {
+      "title": "Settings"
+    }
+  ],
+  "cascivo": "1.7.1"
+}

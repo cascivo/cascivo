@@ -18,6 +18,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/accordion/accordion.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/accordion/accordion.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -131,6 +134,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/action-sheet/action-sheet.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/action-sheet/action-sheet.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -289,6 +295,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/ai-badge/ai-badge.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/ai-badge/ai-badge.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -418,6 +427,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/ai-disclaimer/ai-disclaimer.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/ai-disclaimer/ai-disclaimer.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -518,6 +530,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/ai-status/ai-status.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/ai-status/ai-status.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -658,6 +673,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert/alert.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert/alert.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -793,6 +811,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert-dialog/alert-dialog.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert-dialog/alert-dialog.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -946,6 +967,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/app-shell/app-shell.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/app-shell/app-shell.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -1083,6 +1107,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/aspect-ratio/aspect-ratio.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/aspect-ratio/aspect-ratio.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -1175,6 +1202,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar/avatar.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar/avatar.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -1297,6 +1327,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar-group/avatar-group.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar-group/avatar-group.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -1420,6 +1453,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/badge/badge.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/badge/badge.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -1596,6 +1632,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/console-app/console-app.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/console-app/console-app.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/react", "@cascivo/icons"],
@@ -1666,6 +1705,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/dashboard-charts/dashboard-charts.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/dashboard-charts/dashboard-charts.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/charts", "@cascivo/react"],
@@ -1770,6 +1812,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/empty-dashboard/empty-dashboard.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/empty-dashboard/empty-dashboard.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/react"],
@@ -1851,6 +1896,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/login-page/login-page.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/login-page/login-page.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/react"],
@@ -1950,6 +1998,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/notification-center/notification-center.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/notification-center/notification-center.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/react"],
@@ -2020,6 +2071,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/page-with-breadcrumb/page-with-breadcrumb.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/page-with-breadcrumb/page-with-breadcrumb.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/react"],
@@ -2094,6 +2148,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/settings-form-page/settings-form-page.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/settings-form-page/settings-form-page.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/react"],
@@ -2175,6 +2232,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/sidebar-app/sidebar-app.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/sidebar-app/sidebar-app.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/react"],
@@ -2254,6 +2314,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/stats-cards/stats-cards.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/stats-cards/stats-cards.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/react"],
@@ -2339,6 +2402,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/users-table-page/users-table-page.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/users-table-page/users-table-page.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/react"],
@@ -2415,6 +2481,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blockquote/blockquote.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blockquote/blockquote.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -2514,6 +2583,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/bottom-sheet/bottom-sheet.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/bottom-sheet/bottom-sheet.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -2687,6 +2759,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/brand/logo/logo.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/brand/logo/logo.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -2797,6 +2872,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/breadcrumb/breadcrumb.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/breadcrumb/breadcrumb.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -2919,6 +2997,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button/button.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button/button.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -3073,6 +3154,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button-group/button-group.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button-group/button-group.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -3204,6 +3288,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/calendar/calendar.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/calendar/calendar.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -3410,7 +3497,7 @@
               "reason": "The range picker renders two Calendar instances side-by-side"
             }
           ],
-          "a11yRationale": "A role=\"grid\" table with role=\"row\"/role=\"gridcell\" and a roving tabindex keeping exactly one day focusable. Navigation moves *real DOM focus*, not just the tabindex: the previous build only rotated the index, so focus stayed on the old button and the moment an arrow crossed a month boundary that button unmounted and focus fell to <body>, ejecting the user from the widget mid-navigation. React reuses the day buttons positionally across months, so the focus move is deferred a task and re-queried by date — landing on the reused node would silently focus whatever date now occupies that grid slot. Arrows move a day or a week, Home/End reach the week edges, PageUp/PageDown change month (Shift for year), and every move is clamped to min/max and skips predicate-disabled days rather than parking the cursor where Enter does nothing; the prev/next buttons disable at the bounds for the same reason. aria-selected sits on the button that takes focus, not the enclosing <td>, and is omitted rather than serialised as \"false\" on the other thirty cells. Today is computed from the *local* calendar rather than the UTC instant, so aria-current=\"date\" no longer lands a day early east of UTC+12. The month is announced through a separate visually-hidden status region: the visible label is also the grid's accessible name, so announcing there would mutate the name of the container focus sits inside.",
+          "a11yRationale": "A role=\"grid\" table with role=\"row\"/role=\"gridcell\" and a roving tabindex keeping exactly one day focusable. Navigation moves *real DOM focus*, not just the tabindex: the previous build only rotated the index, so focus stayed on the old button and the moment an arrow crossed a month boundary that button unmounted and focus fell to <body>, ejecting the user from the widget mid-navigation. React reuses the day buttons positionally across months, so the focus move is deferred a task and re-queried by date — landing on the reused node would silently focus whatever date now occupies that grid slot. Arrows move a day or a week, Home/End reach the week edges, PageUp/PageDown change month (Shift for year), and every move is clamped to min/max and skips predicate-disabled days rather than parking the cursor where Enter does nothing; the prev/next buttons disable at the bounds for the same reason. Each day is a <button role=\"gridcell\"> inside a presentational <td>, so aria-selected sits on the element that takes focus (on the <td> it was never announced) and on a role ARIA allows it on (a plain button may not carry it); it is omitted rather than serialised as \"false\" on the other thirty cells. Today is computed from the *local* calendar rather than the UTC instant, so aria-current=\"date\" no longer lands a day early east of UTC+12. The month is announced through a separate visually-hidden status region: the visible label is also the grid's accessible name, so announcing there would mutate the name of the container focus sits inside.",
           "flexibility": [
             {
               "area": "date type",
@@ -3446,6 +3533,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/card/card.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/card/card.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -3558,6 +3648,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/carousel/carousel.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/carousel/carousel.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -3697,6 +3790,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/chain-of-thought/chain-of-thought.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/chain-of-thought/chain-of-thought.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -8434,6 +8530,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/chat-bubble/chat-bubble.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/chat-bubble/chat-bubble.meta.ts"
         }
       ],
       "dependencies": [],
@@ -8564,6 +8663,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox/checkbox.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox/checkbox.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -8708,6 +8810,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox-card/checkbox-card.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox-card/checkbox-card.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -8835,6 +8940,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code/code.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code/code.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -8936,6 +9044,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code-snippet/code-snippet.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code-snippet/code-snippet.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -9110,6 +9221,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/collapsible/collapsible.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/collapsible/collapsible.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -9243,6 +9357,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/color-picker/color-picker.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/color-picker/color-picker.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -9462,6 +9579,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/combobox/combobox.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/combobox/combobox.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -9779,6 +9899,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/command-menu/command-menu.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/command-menu/command-menu.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -10004,6 +10127,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/comparison/comparison.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/comparison/comparison.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -10166,6 +10292,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/contained-list/contained-list.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/contained-list/contained-list.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -10276,6 +10405,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/context-menu/context-menu.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/context-menu/context-menu.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -10373,6 +10505,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/context-meter/context-meter.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/context-meter/context-meter.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -10491,6 +10626,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/copy-button/copy-button.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/copy-button/copy-button.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -10608,6 +10746,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-list/data-list.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-list/data-list.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -10750,6 +10891,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/data-table.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/data-table.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -11432,6 +11576,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/date-picker.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/date-picker.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -11713,6 +11860,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-range-picker/date-range-picker.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-range-picker/date-range-picker.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -11887,6 +12037,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dock/dock.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dock/dock.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -12013,6 +12166,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/drawer/drawer.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/drawer/drawer.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -12180,6 +12336,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dropdown/dropdown.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dropdown/dropdown.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -12363,6 +12522,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/editable/editable.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/editable/editable.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -12941,6 +13103,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/empty-state/empty-state.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/empty-state/empty-state.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -13066,6 +13231,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/fab/fab.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/fab/fab.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -13232,6 +13400,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/field/field.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/field/field.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -13390,6 +13561,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/file-uploader/file-uploader.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/file-uploader/file-uploader.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -13574,6 +13748,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/filter/filter.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/filter/filter.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -15565,6 +15742,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/form/form.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/form/form.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -15683,6 +15863,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header/header.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header/header.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -15808,6 +15991,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header-panel/header-panel.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header-panel/header-panel.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -15936,6 +16122,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/heading/heading.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/heading/heading.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -16049,6 +16238,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/hover-card/hover-card.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/hover-card/hover-card.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -16168,6 +16360,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/icon-button/icon-button.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/icon-button/icon-button.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -16323,6 +16518,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/image/image.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/image/image.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -16476,6 +16674,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/indicator/indicator.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/indicator/indicator.meta.ts"
         }
       ],
       "dependencies": [],
@@ -16570,6 +16771,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/infinite-scroll/infinite-scroll.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/infinite-scroll/infinite-scroll.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -16714,6 +16918,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/inline-citation/inline-citation.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/inline-citation/inline-citation.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -16853,6 +17060,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/inline-loading/inline-loading.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/inline-loading/inline-loading.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -16971,6 +17181,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input/input.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input/input.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -17121,7 +17334,7 @@
       "schemaVersion": 2,
       "name": "input-group",
       "type": "component",
-      "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders",
+      "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; InputGroupButtons collapses adjacent button borders",
       "version": "1.8.0",
       "files": [
         {
@@ -17132,6 +17345,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input-group/input-group.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input-group/input-group.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -17139,7 +17355,7 @@
       "category": "inputs",
       "meta": {
         "name": "InputGroup",
-        "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders",
+        "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; InputGroupButtons collapses adjacent button borders",
         "category": "inputs",
         "clientJs": "none",
         "states": [],
@@ -17183,7 +17399,7 @@
           "whenToUse": [
             "Attaching a prefix/suffix addon (protocol, currency, unit) to an Input so it reads as one field",
             "Placing a leading or trailing inline icon/unit inside the field border via InputGroupAddon",
-            "Grouping adjacent buttons with collapsed shared borders via ButtonGroup"
+            "Grouping adjacent buttons with collapsed shared borders via InputGroupButtons"
           ],
           "whenNotToUse": [
             "A standalone field with no adornment — use Input directly",
@@ -17205,10 +17421,10 @@
             {
               "name": "Button",
               "relationship": "contains",
-              "reason": "ButtonGroup arranges adjacent Buttons with merged borders"
+              "reason": "InputGroupButtons arranges adjacent Buttons with merged borders"
             }
           ],
-          "a11yRationale": "Inline addons are marked aria-hidden because they are purely decorative units/icons, so the wrapped Input keeps its own accessible name; ButtonGroup uses role=\"group\" to convey that its buttons form a related set.",
+          "a11yRationale": "Inline addons are marked aria-hidden because they are purely decorative units/icons, so the wrapped Input keeps its own accessible name; InputGroupButtons uses role=\"group\" to convey that its buttons form a related set.",
           "flexibility": [
             {
               "area": "token names",
@@ -17244,6 +17460,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/item/item.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/item/item.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -17355,6 +17574,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/join/join.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/join/join.meta.ts"
         }
       ],
       "dependencies": [],
@@ -17446,6 +17668,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/kbd/kbd.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/kbd/kbd.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -17537,6 +17762,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/label/label.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/label/label.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -17679,6 +17907,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/large-title-header/large-title-header.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/large-title-header/large-title-header.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -17838,6 +18069,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/app-shell/app-shell.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/app-shell/app-shell.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n", "@cascivo/storage"],
@@ -17973,6 +18207,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auth-layout/auth-layout.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auth-layout/auth-layout.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -18059,6 +18296,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auto-grid/auto-grid.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auto-grid/auto-grid.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -18134,6 +18374,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/center/center.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/center/center.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -18207,6 +18450,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/columns/columns.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/columns/columns.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -18287,6 +18533,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/dashboard-layout/dashboard-layout.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/dashboard-layout/dashboard-layout.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -18371,6 +18620,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/flex.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/flex.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -18502,6 +18754,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/grid/grid.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/grid/grid.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -18607,6 +18862,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/masonry/masonry.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/masonry/masonry.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -18687,6 +18945,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/page-header/page-header.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/page-header/page-header.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -18791,6 +19052,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/section/section.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/section/section.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -18871,6 +19135,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/settings-layout/settings-layout.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/settings-layout/settings-layout.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -18949,6 +19216,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/spacer/spacer.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/spacer/spacer.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -19017,6 +19287,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/split-view/split-view.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/split-view/split-view.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -19131,6 +19404,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/link/link.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/link/link.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -19254,6 +19530,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/list/list.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/list/list.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -19354,6 +19633,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/log-viewer/log-viewer.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/log-viewer/log-viewer.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -19523,6 +19805,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menu/menu.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menu/menu.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -19634,6 +19919,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menu-button/menu-button.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menu-button/menu-button.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -19805,6 +20093,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menubar/menubar.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menubar/menubar.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -19934,6 +20225,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/message-actions/message-actions.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/message-actions/message-actions.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -20056,6 +20350,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/modal/modal.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/modal/modal.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -20224,6 +20521,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/multi-select/multi-select.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/multi-select/multi-select.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -20546,6 +20846,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/native-select/native-select.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/native-select/native-select.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -20707,6 +21010,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/navigation-menu/navigation-menu.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/navigation-menu/navigation-menu.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -20841,6 +21147,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/notification/notification.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/notification/notification.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -20997,6 +21306,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/number-input/number-input.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/number-input/number-input.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -21199,6 +21511,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/otp-input/otp-input.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/otp-input/otp-input.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -21324,6 +21639,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/overflow-menu/overflow-menu.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/overflow-menu/overflow-menu.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -21493,6 +21811,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pagination/pagination.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pagination/pagination.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -21638,6 +21959,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/password-input/password-input.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/password-input/password-input.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -21782,6 +22106,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/popover.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/popover.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -21910,6 +22237,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress/progress.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress/progress.meta.ts"
         }
       ],
       "dependencies": [],
@@ -22050,6 +22380,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-bar/progress-bar.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-bar/progress-bar.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -22184,6 +22517,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-circle/progress-circle.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-circle/progress-circle.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -22310,6 +22646,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-indicator/progress-indicator.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-indicator/progress-indicator.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -22429,6 +22768,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prompt-suggestions/prompt-suggestions.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prompt-suggestions/prompt-suggestions.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -22541,6 +22883,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prose/prose.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prose/prose.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -22659,6 +23004,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pull-to-refresh/pull-to-refresh.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pull-to-refresh/pull-to-refresh.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -22787,6 +23135,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/qr-code.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/qr-code.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -22920,6 +23271,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radial-progress/radial-progress.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radial-progress/radial-progress.meta.ts"
         }
       ],
       "dependencies": [],
@@ -23072,6 +23426,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio/radio.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio/radio.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -23204,6 +23561,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio-card/radio-card.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio-card/radio-card.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -23328,6 +23688,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/rating-group/rating-group.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/rating-group/rating-group.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -23463,6 +23826,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/reasoning/reasoning.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/reasoning/reasoning.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -23600,6 +23966,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/relative-time/relative-time.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/relative-time/relative-time.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -23704,6 +24073,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/reorder-list/reorder-list.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/reorder-list/reorder-list.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -23872,6 +24244,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/resizable/resizable.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/resizable/resizable.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -24018,6 +24393,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/scroll-area/scroll-area.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/scroll-area/scroll-area.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -24137,6 +24515,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/search/search.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/search/search.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -24338,6 +24719,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/cta/cta.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/cta/cta.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -24436,6 +24820,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/feature-grid/feature-grid.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/feature-grid/feature-grid.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -24543,6 +24930,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/hero/hero.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/hero/hero.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -24660,6 +25050,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/media-masonry/media-masonry.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/media-masonry/media-masonry.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -24765,6 +25158,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/page-footer/page-footer.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/page-footer/page-footer.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -24852,6 +25248,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/stats-band/stats-band.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/stats-band/stats-band.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/charts"],
@@ -24956,6 +25355,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/segmented-control/segmented-control.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/segmented-control/segmented-control.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -25099,6 +25501,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/select/select.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/select/select.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -25250,6 +25655,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/separator/separator.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/separator/separator.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -25343,6 +25751,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/share-menu/share-menu.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/share-menu/share-menu.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -25504,6 +25915,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sheet/sheet.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sheet/sheet.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -25622,6 +26036,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/shell-header.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/shell-header.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -25874,6 +26291,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shimmer-text/shimmer-text.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shimmer-text/shimmer-text.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -25988,6 +26408,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/side-nav/side-nav.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/side-nav/side-nav.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -26180,6 +26603,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skeleton/skeleton.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skeleton/skeleton.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -26306,6 +26732,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skip-nav/skip-nav.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skip-nav/skip-nav.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -26416,6 +26845,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/slider/slider.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/slider/slider.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -26562,6 +26994,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sources/sources.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sources/sources.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -26694,6 +27129,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/spinner/spinner.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/spinner/spinner.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -26801,6 +27239,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stack/stack.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stack/stack.meta.ts"
         }
       ],
       "dependencies": [],
@@ -26904,6 +27345,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stat/stat.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stat/stat.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -27045,6 +27489,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/status/status.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/status/status.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -27155,6 +27602,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/steps/steps.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/steps/steps.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -27326,6 +27776,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/streaming-text/streaming-text.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/streaming-text/streaming-text.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -27428,6 +27881,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/structured-list/structured-list.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/structured-list/structured-list.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -27579,6 +28035,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swap/swap.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swap/swap.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -27727,6 +28186,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swipe-item/swipe-item.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swipe-item/swipe-item.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -27846,6 +28308,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/switcher.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/switcher.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -27960,6 +28425,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tabs/tabs.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tabs/tabs.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -28071,6 +28539,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tag/tag.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tag/tag.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -28199,6 +28670,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tags-input/tags-input.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tags-input/tags-input.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -28353,6 +28827,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/terminal/terminal.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/terminal/terminal.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -28509,6 +28986,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/text/text.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/text/text.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -28632,6 +29112,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/textarea/textarea.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/textarea/textarea.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -28791,6 +29274,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tile/tile.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tile/tile.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -28951,6 +29437,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/time-picker/time-picker.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/time-picker/time-picker.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -29127,6 +29616,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/timeline/timeline.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/timeline/timeline.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -29234,6 +29726,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toast/toast.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toast/toast.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -29361,6 +29856,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/toc.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/toc.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -29486,6 +29984,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle/toggle.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle/toggle.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -29631,6 +30132,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle-group/toggle-group.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle-group/toggle-group.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -29791,6 +30295,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggletip/toggletip.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggletip/toggletip.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -29949,6 +30456,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tool-call/tool-call.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tool-call/tool-call.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -30098,6 +30608,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tooltip/tooltip.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tooltip/tooltip.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -30226,6 +30739,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tree-view/tree-view.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tree-view/tree-view.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -30414,6 +30930,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/typing-indicator/typing-indicator.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/typing-indicator/typing-indicator.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -30531,6 +31050,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/user/user.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/user/user.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -30641,6 +31163,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/virtual-list/virtual-list.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/virtual-list/virtual-list.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -30792,6 +31317,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/visually-hidden/visually-hidden.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/visually-hidden/visually-hidden.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],
@@ -30882,6 +31410,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/wheel-picker/wheel-picker.module.css"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/wheel-picker/wheel-picker.meta.ts"
         }
       ],
       "dependencies": ["@cascivo/core"],

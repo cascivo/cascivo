@@ -366,18 +366,13 @@ Point any MCP client at the cascivo server:
 { "mcpServers": { "cascivo": { "command": "npx", "args": ["-y", "@cascivo/mcp"] } } }
 ```
 
-Tools:
-- `list_components` — list all components with category/tags
-- `get_component` — full manifest for one component
-- `get_context` — intent + boundaries + tokens for one component
-- `get_tokens` — closed-set token catalog (filter by group/layer)
-- `search_icons` — resolve an icon by intent/foreign name (LayoutDashboard→Dashboard)
-- `select_component` — rank components by a natural-language need
-- `scaffold_view` — natural language -> JSON view config
-- `validate_view` — validate a view config against the schema
-- `render_view_as_markdown` — render a view config and read back what it says (needs `@cascivo/render`)
-- `add_to_project` — install components into the user project
-- `lint_email` — check rendered @cascivo/email HTML for unsupported features and dead links before sending
+Tools (every tool the server registers; `pnpm llms:check` fails when one is missing):
+- Start an app: `compose_app` (whole app from a blueprint: each page renders a registry block), `list_blocks` (the blocks a blueprint page can render, one line each), `create_app` (whole app: shell, nav, theme, placeholder pages; cloudflare examples and sign-in), `list_templates` (whole-page templates), `get_template` (one template), `add_template` (install a template), `deploy_preview` (publish a cloudflare app with no account)
+- Pick components: `list_components` (every component, by category/type), `search_components` (fuzzy search), `select_component` (rank by a natural-language need), `get_context` (intent and when (not) to use), `get_component` (manifest; `compact: true` for props + one example), `list_registries` (third-party registries), `add_to_project` (install several components in one call)
+- Build a view: `get_view_grammar` (format rules + props/enums for the components you name), `scaffold_view` (starter ViewConfig from a description), `scaffold_flow` (starter <Flow> diagram), `scaffold_page` (deprecated; use scaffold_view)
+- Verify: `validate_view` (ViewConfig check; `target: "tsx"` before `cascivo generate`), `render_view_as_markdown` (read back what a view says (needs @cascivo/render)), `validate_component` (hooks, breakpoints, fallbacks, tokens in your own component), `lint_email` (rendered email: unsupported features, dead links)
+- Style: `get_tokens` (closed-set token catalog), `get_variant_matrix` (intent → exact token, resolved per theme), `search_icons` (icon by intent or foreign name (LayoutDashboard→Dashboard)), `create_theme` (theme CSS from three colors)
+- Read: `list_guides` (concept guides), `get_guide` (one guide)
 
 Two MCP servers, two jobs — run both if your client allows it:
 - `@cascivo/mcp` (above) serves the **registry**: pick a component, read its manifest, install it.
@@ -579,7 +574,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [form](https://cascivo.com/llms/form.md) — Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper _(npm @cascivo/react · or copy-paste)_
 - [icon-button](https://cascivo.com/llms/icon-button.md) — Square, icon-only button with a required accessible label _(npm @cascivo/react · or copy-paste)_
 - [input](https://cascivo.com/llms/input.md) — Text input field with optional label, hint, and error state _(npm @cascivo/react · or copy-paste)_
-- [input-group](https://cascivo.com/llms/input-group.md) — Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders _(npm @cascivo/react · or copy-paste)_
+- [input-group](https://cascivo.com/llms/input-group.md) — Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; InputGroupButtons collapses adjacent button borders _(npm @cascivo/react · or copy-paste)_
 - [label](https://cascivo.com/llms/label.md) — Accessible caption for a form control _(npm @cascivo/react · or copy-paste)_
 - [message-actions](https://cascivo.com/llms/message-actions.md) — The action row under an AI reply — copy, good / bad feedback as toggle buttons, and regenerate _(npm @cascivo/react · or copy-paste)_
 - [multi-select](https://cascivo.com/llms/multi-select.md) — Searchable multi-value select with a popover listbox, chips and grouping _(npm @cascivo/react · or copy-paste)_
@@ -612,17 +607,17 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [indicator](https://cascivo.com/llms/indicator.md) — Positions an overlay element (badge, dot, count) at a corner of its child _(npm @cascivo/react · or copy-paste)_
 - [join](https://cascivo.com/llms/join.md) — Groups adjacent children into a seamless joined element by removing interior borders and radii _(npm @cascivo/react · or copy-paste)_
 - [layout/app-shell](https://cascivo.com/llms/layout/app-shell.md) — Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip. _(copy-paste)_
-- [layout/auth-layout](https://cascivo.com/llms/layout/auth-layout.md) — Centered card layout for authentication pages (login, register, forgot password). _(copy-paste)_
+- [layout/auth-layout](https://cascivo.com/llms/layout/auth-layout.md) — Centered card layout for authentication pages (login, register, forgot password). _(npm @cascivo/react · or copy-paste)_
 - [layout/auto-grid](https://cascivo.com/llms/layout/auto-grid.md) — Media-query-free responsive grid — columns auto-fill based on available space. _(npm @cascivo/react · or copy-paste)_
 - [layout/center](https://cascivo.com/llms/layout/center.md) — Horizontally centered container with a configurable max-width. _(npm @cascivo/react · or copy-paste)_
 - [layout/columns](https://cascivo.com/llms/layout/columns.md) — Equal-width multi-column layout that collapses to single column on narrow viewports. _(npm @cascivo/react · or copy-paste)_
-- [layout/dashboard-layout](https://cascivo.com/llms/layout/dashboard-layout.md) — Dashboard page layout with stats strip, main content area, and optional aside. _(copy-paste)_
+- [layout/dashboard-layout](https://cascivo.com/llms/layout/dashboard-layout.md) — Dashboard page layout with stats strip, main content area, and optional aside. _(npm @cascivo/react · or copy-paste)_
 - [layout/flex](https://cascivo.com/llms/layout/flex.md) — Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction="horizontal"` for a row. _(npm @cascivo/react · or copy-paste)_
 - [layout/grid](https://cascivo.com/llms/layout/grid.md) — CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required. _(npm @cascivo/react · or copy-paste)_
 - [layout/masonry](https://cascivo.com/llms/layout/masonry.md) — Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column). _(copy-paste)_
 - [layout/page-header](https://cascivo.com/llms/layout/page-header.md) — Page-level header with title, description, breadcrumb, and actions slots. _(npm @cascivo/react · or copy-paste)_
 - [layout/section](https://cascivo.com/llms/layout/section.md) — Page-section shell with block padding, centered inner width, and stack gap. _(copy-paste)_
-- [layout/settings-layout](https://cascivo.com/llms/layout/settings-layout.md) — Two-column settings page layout with a fixed-width menu and fluid content area. _(copy-paste)_
+- [layout/settings-layout](https://cascivo.com/llms/layout/settings-layout.md) — Two-column settings page layout with a fixed-width menu and fluid content area. _(npm @cascivo/react · or copy-paste)_
 - [layout/spacer](https://cascivo.com/llms/layout/spacer.md) — Fixed-height spacing block using design token steps. _(npm @cascivo/react · or copy-paste)_
 - [layout/split-view](https://cascivo.com/llms/layout/split-view.md) — Resizable two-pane split layout with keyboard and pointer drag support. _(copy-paste)_
 - [resizable](https://cascivo.com/llms/resizable.md) — Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space _(npm @cascivo/react · or copy-paste)_

@@ -56,3 +56,23 @@ describe('mcp validateView — $state', () => {
     expect(errors[0]?.path).toBe('state.bad')
   })
 })
+
+describe('mcp validateView — vocabulary', () => {
+  it('reports a real but unrenderable component as such, not as unknown', () => {
+    const { valid, errors } = validateView(
+      { view: { regions: { main: [{ component: 'Stat' }] } } },
+      NAMES,
+      new Set(['Stat']),
+    )
+    expect(valid).toBe(false)
+    expect(errors[0]?.message).toContain('cannot render it')
+  })
+
+  it('still suggests a near name for a typo', () => {
+    const { errors } = validateView(
+      { view: { regions: { main: [{ component: 'Buton' }] } } },
+      NAMES,
+    )
+    expect(errors[0]?.message).toContain('Did you mean "Button"?')
+  })
+})

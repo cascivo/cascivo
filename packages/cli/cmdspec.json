@@ -85,6 +85,18 @@
           "effects": ["read", "write", "network"]
         },
         {
+          "name": "--workspace",
+          "summary": "Put the app in a pnpm workspace",
+          "description": "apps/web is the app, packages/ui holds the team's own components, Vite+ (vp run) runs every package's typecheck, lint, test and build, and a GitHub Actions workflow runs the same. React + Vite apps get a Vitest smoke test. Implies pnpm; not for astro."
+        },
+        {
+          "name": "--from",
+          "summary": "Compile a blueprint file (cascivo.app.json)",
+          "description": "A blueprint names the app, its framework, theme, runtime, examples and auth, and its pages as [{ \"title\", \"block\"? }]: each page renders that registry block, wired into the routes and the side nav. It replaces the other options; the blueprint is copied into the app as cascivo.app.json.",
+          "value": { "name": "file", "format": "file" },
+          "effects": ["read", "write"]
+        },
+        {
           "name": "--theme",
           "summary": "Theme to install",
           "value": {
@@ -373,13 +385,22 @@
         {
           "name": "--out",
           "summary": "Output file",
-          "value": { "name": "file", "format": "file", "defaultDescription": "stdout" },
+          "value": {
+            "name": "file",
+            "format": "file",
+            "defaultDescription": "<config>.tsx beside the input"
+          },
           "effects": ["read", "write", "network", "exec"]
         },
         {
           "name": "--components-dir",
           "summary": "Components import base",
           "value": { "name": "dir", "format": "directory", "default": "./src/components/ui" }
+        },
+        {
+          "name": "--from",
+          "summary": "Import every component from one package instead of the components directory",
+          "value": { "name": "package" }
         }
       ],
       "effects": ["read", "network"],
@@ -470,6 +491,51 @@
             { "run": "npx cascivo mcp init" },
             { "run": "npx cascivo mcp init --client cursor" }
           ]
+        }
+      ]
+    },
+    {
+      "name": "app",
+      "summary": "Change an app made by cascivo create",
+      "subcommandRequired": true,
+      "commands": [
+        {
+          "name": "add",
+          "summary": "Add to the app",
+          "subcommandRequired": true,
+          "commands": [
+            {
+              "name": "page",
+              "summary": "Add a page, optionally rendering a registry block",
+              "description": "Appends the page to cascivo.app.json and writes the page, its block and the route and nav entries. Files edited since they were generated are merged three ways; a clash is left with conflict markers and the command exits non-zero.",
+              "arguments": [
+                { "name": "title", "required": true, "summary": "Nav label and page heading" }
+              ],
+              "options": [
+                {
+                  "name": "--block",
+                  "summary": "The registry block the page renders",
+                  "value": { "name": "name" }
+                }
+              ],
+              "effects": ["read", "write"],
+              "examples": [{ "run": "npx cascivo app add page \"Users\" --block users-table-page" }]
+            },
+            {
+              "name": "example",
+              "summary": "Add a cloudflare example (the names --example takes)",
+              "arguments": [{ "name": "name", "required": true, "summary": "The example" }],
+              "effects": ["read", "write"],
+              "examples": [{ "run": "npx cascivo app add example crud" }]
+            }
+          ]
+        },
+        {
+          "name": "upgrade",
+          "summary": "Regenerate the app with this CLI's templates, keeping your edits",
+          "description": "Rebuilds the app's original files with the CLI version recorded in cascivo.app.json (npx cascivo@<version>), then merges this version's output three ways.",
+          "effects": ["read", "write", "network", "exec"],
+          "examples": [{ "run": "npx cascivo app upgrade" }]
         }
       ]
     },

@@ -24,7 +24,7 @@ describe('focus follows the cursor', () => {
   it('moves real focus with an arrow key', async () => {
     const user = userEvent.setup()
     render(<Calendar defaultValue={utc(2026, 2, 18)} locale="en-GB" />)
-    const start = screen.getByRole('button', { name: /18 March 2026/ })
+    const start = screen.getByRole('gridcell', { name: /18 March 2026/ })
     start.focus()
     await user.keyboard('{ArrowRight}')
     expect(focusedName()).toMatch(/19 March 2026/)
@@ -33,7 +33,7 @@ describe('focus follows the cursor', () => {
   it('keeps focus inside the widget across a month boundary', async () => {
     const user = userEvent.setup()
     render(<Calendar defaultValue={utc(2026, 2, 31)} locale="en-GB" />)
-    screen.getByRole('button', { name: /31 March 2026/ }).focus()
+    screen.getByRole('gridcell', { name: /31 March 2026/ }).focus()
     await user.keyboard('{ArrowRight}')
     // The old build left focus on an unmounted node, so activeElement became <body>.
     expect(document.activeElement).not.toBe(document.body)
@@ -43,7 +43,7 @@ describe('focus follows the cursor', () => {
   it('keeps focus when paging by month', async () => {
     const user = userEvent.setup()
     render(<Calendar defaultValue={utc(2026, 2, 18)} locale="en-GB" />)
-    screen.getByRole('button', { name: /18 March 2026/ }).focus()
+    screen.getByRole('gridcell', { name: /18 March 2026/ }).focus()
     await user.keyboard('{PageDown}')
     expect(focusedName()).toMatch(/18 April 2026/)
     await user.keyboard('{PageUp}')
@@ -53,7 +53,7 @@ describe('focus follows the cursor', () => {
   it('Shift+PageUp/PageDown moves a year', async () => {
     const user = userEvent.setup()
     render(<Calendar defaultValue={utc(2026, 2, 18)} locale="en-GB" />)
-    screen.getByRole('button', { name: /18 March 2026/ }).focus()
+    screen.getByRole('gridcell', { name: /18 March 2026/ }).focus()
     await user.keyboard('{Shift>}{PageDown}{/Shift}')
     expect(focusedName()).toMatch(/18 March 2027/)
   })
@@ -61,7 +61,7 @@ describe('focus follows the cursor', () => {
   it('Home and End reach the ends of the week', async () => {
     const user = userEvent.setup()
     render(<Calendar defaultValue={utc(2026, 2, 18)} locale="en-GB" />)
-    screen.getByRole('button', { name: /18 March 2026/ }).focus()
+    screen.getByRole('gridcell', { name: /18 March 2026/ }).focus()
     await user.keyboard('{Home}')
     expect(focusedName()).toMatch(/16 March 2026/)
     await user.keyboard('{End}')
@@ -71,7 +71,7 @@ describe('focus follows the cursor', () => {
   it('ArrowUp and ArrowDown move a week', async () => {
     const user = userEvent.setup()
     render(<Calendar defaultValue={utc(2026, 2, 18)} locale="en-GB" />)
-    screen.getByRole('button', { name: /18 March 2026/ }).focus()
+    screen.getByRole('gridcell', { name: /18 March 2026/ }).focus()
     await user.keyboard('{ArrowDown}')
     expect(focusedName()).toMatch(/25 March 2026/)
     await user.keyboard('{ArrowUp}')
@@ -80,7 +80,9 @@ describe('focus follows the cursor', () => {
 
   it('keeps exactly one day in the tab order', () => {
     render(<Calendar defaultValue={utc(2026, 2, 18)} locale="en-GB" />)
-    const tabbable = screen.getAllByRole('button').filter((b) => b.getAttribute('tabindex') === '0')
+    const tabbable = screen
+      .getAllByRole('gridcell')
+      .filter((b) => b.getAttribute('tabindex') === '0')
     expect(tabbable).toHaveLength(1)
   })
 })
@@ -96,7 +98,7 @@ describe('bounds', () => {
         locale="en-GB"
       />,
     )
-    screen.getByRole('button', { name: /10 March 2026/ }).focus()
+    screen.getByRole('gridcell', { name: /10 March 2026/ }).focus()
     await user.keyboard('{ArrowLeft}')
     // The old build was unbounded, so this walked into a month where every day was disabled.
     expect(focusedName()).toMatch(/10 March 2026/)
@@ -111,7 +113,7 @@ describe('bounds', () => {
         locale="en-GB"
       />,
     )
-    screen.getByRole('button', { name: /18 March 2026/ }).focus()
+    screen.getByRole('gridcell', { name: /18 March 2026/ }).focus()
     await user.keyboard('{ArrowRight}')
     expect(focusedName()).toMatch(/20 March 2026/)
   })
@@ -141,7 +143,7 @@ describe('bounds', () => {
         locale="en-GB"
       />,
     )
-    await user.click(screen.getByRole('button', { name: /19 March 2026/ }))
+    await user.click(screen.getByRole('gridcell', { name: /19 March 2026/ }))
     expect(onValueChange).not.toHaveBeenCalled()
   })
 })
@@ -154,7 +156,7 @@ describe('selection', () => {
       render(
         <Calendar defaultValue={utc(2026, 2, 18)} onValueChange={onValueChange} locale="en-GB" />,
       )
-      screen.getByRole('button', { name: /18 March 2026/ }).focus()
+      screen.getByRole('gridcell', { name: /18 March 2026/ }).focus()
       await user.keyboard(key)
       expect(onValueChange, key).toHaveBeenCalled()
       cleanup()
@@ -165,7 +167,7 @@ describe('selection', () => {
     render(<Calendar value={utc(2026, 2, 18)} onValueChange={() => {}} locale="en-GB" />)
     // aria-selected used to sit on the <td> while focus landed on the inner button, so the
     // selected state was never announced.
-    expect(screen.getByRole('button', { name: /18 March 2026/ })).toHaveAttribute(
+    expect(screen.getByRole('gridcell', { name: /18 March 2026/ })).toHaveAttribute(
       'aria-selected',
       'true',
     )
@@ -173,7 +175,7 @@ describe('selection', () => {
 
   it('omits aria-selected on the other days rather than saying false thirty times', () => {
     render(<Calendar value={utc(2026, 2, 18)} onValueChange={() => {}} locale="en-GB" />)
-    expect(screen.getByRole('button', { name: /17 March 2026/ })).not.toHaveAttribute(
+    expect(screen.getByRole('gridcell', { name: /17 March 2026/ })).not.toHaveAttribute(
       'aria-selected',
     )
   })
@@ -191,7 +193,7 @@ describe('selection', () => {
   it('continues arrowing from where the user clicked', async () => {
     const user = userEvent.setup()
     render(<Calendar defaultValue={utc(2026, 2, 18)} locale="en-GB" />)
-    await user.click(screen.getByRole('button', { name: /25 March 2026/ }))
+    await user.click(screen.getByRole('gridcell', { name: /25 March 2026/ }))
     await user.keyboard('{ArrowRight}')
     expect(focusedName()).toMatch(/26 March 2026/)
   })
@@ -207,7 +209,7 @@ describe('today', () => {
       day: 'numeric',
     }).format(new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())))
     render(<Calendar locale="en-GB" />)
-    expect(screen.getByRole('button', { name: label })).toHaveAttribute('aria-current', 'date')
+    expect(screen.getByRole('gridcell', { name: label })).toHaveAttribute('aria-current', 'date')
   })
 
   it('offers a Today button that jumps the view and takes focus', async () => {
@@ -271,7 +273,7 @@ describe('announcement and structure', () => {
     const user = userEvent.setup()
     const onDayHover = vi.fn()
     render(<Calendar defaultValue={utc(2026, 2, 18)} onDayHover={onDayHover} locale="en-GB" />)
-    await user.hover(screen.getByRole('button', { name: /19 March 2026/ }))
+    await user.hover(screen.getByRole('gridcell', { name: /19 March 2026/ }))
     expect(onDayHover).toHaveBeenCalled()
   })
 
@@ -285,10 +287,12 @@ describe('announcement and structure', () => {
         locale="en-GB"
       />,
     )
-    expect(screen.getByRole('button', { name: /19 March 2026/ })).toHaveAttribute('data-in-range')
-    expect(screen.getByRole('button', { name: /18 March 2026/ })).toHaveAttribute(
+    expect(screen.getByRole('gridcell', { name: /19 March 2026/ })).toHaveAttribute('data-in-range')
+    expect(screen.getByRole('gridcell', { name: /18 March 2026/ })).toHaveAttribute(
       'data-range-start',
     )
-    expect(screen.getByRole('button', { name: /20 March 2026/ })).toHaveAttribute('data-range-end')
+    expect(screen.getByRole('gridcell', { name: /20 March 2026/ })).toHaveAttribute(
+      'data-range-end',
+    )
   })
 })

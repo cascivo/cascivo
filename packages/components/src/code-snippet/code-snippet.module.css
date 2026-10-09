@@ -119,7 +119,7 @@
   }
 
   .code [data-tok='keyword'] {
-    color: var(--cs-keyword, var(--cascivo-color-accent));
+    color: var(--cs-keyword, var(--cascivo-color-accent-text));
   }
 
   .code [data-tok='fn'] {

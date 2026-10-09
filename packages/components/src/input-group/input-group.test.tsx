@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { InputGroup, ButtonGroup, InputGroupAddon } from './input-group'
+import { InputGroup, ButtonGroup, InputGroupAddon, InputGroupButtons } from './input-group'
 import { Input } from '../input/input'
 import { Button } from '../button/button'
 
@@ -118,13 +118,13 @@ describe('InputGroupAddon', () => {
   })
 })
 
-describe('ButtonGroup', () => {
+describe('InputGroupButtons', () => {
   it('renders children', () => {
     render(
-      <ButtonGroup>
+      <InputGroupButtons>
         <Button>Left</Button>
         <Button>Right</Button>
-      </ButtonGroup>,
+      </InputGroupButtons>,
     )
     expect(screen.getByText('Left')).toBeTruthy()
     expect(screen.getByText('Right')).toBeTruthy()
@@ -132,11 +132,15 @@ describe('ButtonGroup', () => {
 
   it('has role=group', () => {
     render(
-      <ButtonGroup>
+      <InputGroupButtons>
         <Button>A</Button>
         <Button>B</Button>
-      </ButtonGroup>,
+      </InputGroupButtons>,
     )
     expect(screen.getByRole('group')).toBeTruthy()
   })
+})
+
+it('keeps the deprecated ButtonGroup name working until 2.0', () => {
+  expect(ButtonGroup).toBe(InputGroupButtons)
 })

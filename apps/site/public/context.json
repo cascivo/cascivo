@@ -4391,7 +4391,7 @@
             "reason": "The range picker renders two Calendar instances side-by-side"
           }
         ],
-        "a11yRationale": "A role=\"grid\" table with role=\"row\"/role=\"gridcell\" and a roving tabindex keeping exactly one day focusable. Navigation moves *real DOM focus*, not just the tabindex: the previous build only rotated the index, so focus stayed on the old button and the moment an arrow crossed a month boundary that button unmounted and focus fell to <body>, ejecting the user from the widget mid-navigation. React reuses the day buttons positionally across months, so the focus move is deferred a task and re-queried by date — landing on the reused node would silently focus whatever date now occupies that grid slot. Arrows move a day or a week, Home/End reach the week edges, PageUp/PageDown change month (Shift for year), and every move is clamped to min/max and skips predicate-disabled days rather than parking the cursor where Enter does nothing; the prev/next buttons disable at the bounds for the same reason. aria-selected sits on the button that takes focus, not the enclosing <td>, and is omitted rather than serialised as \"false\" on the other thirty cells. Today is computed from the *local* calendar rather than the UTC instant, so aria-current=\"date\" no longer lands a day early east of UTC+12. The month is announced through a separate visually-hidden status region: the visible label is also the grid's accessible name, so announcing there would mutate the name of the container focus sits inside.",
+        "a11yRationale": "A role=\"grid\" table with role=\"row\"/role=\"gridcell\" and a roving tabindex keeping exactly one day focusable. Navigation moves *real DOM focus*, not just the tabindex: the previous build only rotated the index, so focus stayed on the old button and the moment an arrow crossed a month boundary that button unmounted and focus fell to <body>, ejecting the user from the widget mid-navigation. React reuses the day buttons positionally across months, so the focus move is deferred a task and re-queried by date — landing on the reused node would silently focus whatever date now occupies that grid slot. Arrows move a day or a week, Home/End reach the week edges, PageUp/PageDown change month (Shift for year), and every move is clamped to min/max and skips predicate-disabled days rather than parking the cursor where Enter does nothing; the prev/next buttons disable at the bounds for the same reason. Each day is a <button role=\"gridcell\"> inside a presentational <td>, so aria-selected sits on the element that takes focus (on the <td> it was never announced) and on a role ARIA allows it on (a plain button may not carry it); it is omitted rather than serialised as \"false\" on the other thirty cells. Today is computed from the *local* calendar rather than the UTC instant, so aria-current=\"date\" no longer lands a day early east of UTC+12. The month is announced through a separate visually-hidden status region: the visible label is also the grid's accessible name, so announcing there would mutate the name of the container focus sits inside.",
         "flexibility": [
           {
             "area": "date type",
@@ -16082,12 +16082,12 @@
     {
       "name": "InputGroup",
       "category": "inputs",
-      "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders",
+      "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; InputGroupButtons collapses adjacent button borders",
       "intent": {
         "whenToUse": [
           "Attaching a prefix/suffix addon (protocol, currency, unit) to an Input so it reads as one field",
           "Placing a leading or trailing inline icon/unit inside the field border via InputGroupAddon",
-          "Grouping adjacent buttons with collapsed shared borders via ButtonGroup"
+          "Grouping adjacent buttons with collapsed shared borders via InputGroupButtons"
         ],
         "whenNotToUse": [
           "A standalone field with no adornment — use Input directly",
@@ -16109,10 +16109,10 @@
           {
             "name": "Button",
             "relationship": "contains",
-            "reason": "ButtonGroup arranges adjacent Buttons with merged borders"
+            "reason": "InputGroupButtons arranges adjacent Buttons with merged borders"
           }
         ],
-        "a11yRationale": "Inline addons are marked aria-hidden because they are purely decorative units/icons, so the wrapped Input keeps its own accessible name; ButtonGroup uses role=\"group\" to convey that its buttons form a related set.",
+        "a11yRationale": "Inline addons are marked aria-hidden because they are purely decorative units/icons, so the wrapped Input keeps its own accessible name; InputGroupButtons uses role=\"group\" to convey that its buttons form a related set.",
         "flexibility": [
           {
             "area": "token names",
@@ -16161,7 +16161,7 @@
         }
       ],
       "contextUrl": "/context/input-group.md",
-      "aiPrompt": "I am modifying the cascivo InputGroup component (inputs). Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nInputGroup is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-text-subtle, --cascivo-radius-input\n\nAccessibility: role \"generic\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Addon background, border, text, and radius must resolve to the listed --cascivo-* tokens\nFlexible: addon alignment, addon content.\n\nDo not invent props, tokens, or global viewport media queries."
+      "aiPrompt": "I am modifying the cascivo InputGroup component (inputs). Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; InputGroupButtons collapses adjacent button borders\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nInputGroup is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-text-subtle, --cascivo-radius-input\n\nAccessibility: role \"generic\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Addon background, border, text, and radius must resolve to the listed --cascivo-* tokens\nFlexible: addon alignment, addon content.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Item",

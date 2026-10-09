@@ -1,0 +1,7 @@
+{
+  "name": "block-site-footer",
+  "files": [
+    "src/blocks/site-footer.tsx",
+    "src/blocks/site-footer.module.css"
+  ]
+}

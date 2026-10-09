@@ -17,6 +17,11 @@
       "path": "layout-spacer/spacer.module.css",
       "type": "registry:block",
       "content": "@layer cascivo.component {\n  .spacer {\n    block-size: var(--_spacer-size, var(--cascivo-space-4));\n    flex-shrink: 0;\n  }\n}\n"
+    },
+    {
+      "path": "layout-spacer/spacer.meta.ts",
+      "type": "registry:block",
+      "content": "import type { ComponentMeta } from '@cascivo/core'\n\nexport const meta: ComponentMeta = {\n  name: 'Spacer',\n  description: 'Fixed-height spacing block using design token steps.',\n  category: 'layout',\n  clientJs: 'none',\n  states: [],\n  variants: [],\n  sizes: [],\n  props: [\n    {\n      name: 'size',\n      default: '4',\n      type: '1|2|3|4|5|6|8|10|12',\n      required: false,\n      description: 'Spacing token step',\n    },\n  ],\n  tokens: ['--cascivo-space-*'],\n  accessibility: { role: 'none', wcag: '2.1-AA', keyboard: [] },\n  examples: [\n    {\n      title: 'Spacer',\n      code: '<Spacer size={8} />',\n      description: 'Adds vertical space between elements',\n    },\n  ],\n  dependencies: ['@cascivo/core'],\n  tags: ['layout', 'spacer', 'spacing'],\n  intent: {\n    whenToUse: [\n      'Inserting a fixed vertical gap between blocks using spacing token steps',\n      'Adding deliberate breathing room where margins are awkward',\n    ],\n    whenNotToUse: [\n      'Spacing a series of siblings — use Flex with a gap instead',\n      'Arbitrary one-off spacing — prefer token-based gap props',\n    ],\n    antiPatterns: [],\n    related: [\n      {\n        name: 'Flex',\n        relationship: 'alternative',\n        reason: 'Use gap on Flex to space multiple siblings consistently',\n      },\n    ],\n    a11yRationale: 'Empty presentational spacer with no semantic role; ignored by assistive tech.',\n    flexibility: [],\n  },\n}\n"
     }
   ],
   "description": "Fixed-height spacing block using design token steps.",

@@ -1651,195 +1651,6 @@
       "canonical": true
     },
     {
-      "name": "--cascivo-editor-bg",
-      "value": "var(--cascivo-color-surface, oklch(0.985 0.002 264))",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "var(--cascivo-color-surface, oklch(0.985 0.002 264))",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-fg",
-      "value": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-gutter-bg",
-      "value": "var(--cascivo-color-surface-2, oklch(0.967 0.003 264))",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "var(--cascivo-color-surface-2, oklch(0.967 0.003 264))",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-gutter-fg",
-      "value": "var(--cascivo-color-text-muted, oklch(0.55 0.018 264))",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "var(--cascivo-color-text-muted, oklch(0.55 0.018 264))",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-current-line",
-      "value": "var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%))",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%))",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-selection",
-      "value": "var(--cascivo-color-accent-muted, oklch(0.882 0.095 250))",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "var(--cascivo-color-accent-muted, oklch(0.882 0.095 250))",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-border",
-      "value": "var(--cascivo-color-border, oklch(0.928 0.006 264))",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "var(--cascivo-color-border, oklch(0.928 0.006 264))",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-syntax-keyword",
-      "value": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-syntax-string",
-      "value": "oklch(0.53 0.13 135)",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "oklch(0.53 0.13 135)",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-syntax-number",
-      "value": "oklch(0.54 0.15 40)",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "oklch(0.54 0.15 40)",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-syntax-comment",
-      "value": "var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-syntax-function",
-      "value": "var(--cascivo-chart-5, oklch(0.5 0.16 265))",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "var(--cascivo-chart-5, oklch(0.5 0.16 265))",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-syntax-type",
-      "value": "oklch(0.54 0.12 350)",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "oklch(0.54 0.12 350)",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-syntax-operator",
-      "value": "var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-syntax-punctuation",
-      "value": "var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-syntax-variable",
-      "value": "var(--cascivo-editor-fg)",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-syntax-tag",
-      "value": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-syntax-attr",
-      "value": "oklch(0.54 0.15 40)",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "oklch(0.54 0.15 40)",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-syntax-regexp",
-      "value": "oklch(0.53 0.13 135)",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "oklch(0.53 0.13 135)",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-syntax-boolean",
-      "value": "oklch(0.54 0.15 40)",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "oklch(0.54 0.15 40)",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
-      "name": "--cascivo-editor-syntax-property",
-      "value": "oklch(0.53 0.12 240)",
-      "layer": "semantic",
-      "group": "editor",
-      "resolvedDefault": "oklch(0.53 0.12 240)",
-      "resolvesPerTheme": false,
-      "canonical": true
-    },
-    {
       "name": "--cascivo-brand-primary",
       "value": "oklch( 0.55 0.15 240 )",
       "layer": "semantic",
@@ -1984,15 +1795,6 @@
       "canonical": true
     },
     {
-      "name": "--cascivo-link-color",
-      "value": "var(--cascivo-color-accent-text)",
-      "layer": "component",
-      "group": "link",
-      "resolvedDefault": "oklch(0.52 0.2 250)",
-      "resolvesPerTheme": true,
-      "canonical": true
-    },
-    {
       "name": "--cascivo-search-width",
       "value": "100%",
       "layer": "component",
@@ -2074,6 +1876,195 @@
       "canonical": true
     },
     {
+      "name": "--cascivo-editor-bg",
+      "value": "var(--cascivo-color-surface, oklch(0.985 0.002 264))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-surface, oklch(0.985 0.002 264))",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-fg",
+      "value": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-gutter-bg",
+      "value": "var(--cascivo-color-surface-2, oklch(0.967 0.003 264))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-surface-2, oklch(0.967 0.003 264))",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-gutter-fg",
+      "value": "var(--cascivo-color-text-muted, oklch(0.55 0.018 264))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-text-muted, oklch(0.55 0.018 264))",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-current-line",
+      "value": "var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%))",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-selection",
+      "value": "var(--cascivo-color-accent-muted, oklch(0.882 0.095 250))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-accent-muted, oklch(0.882 0.095 250))",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-border",
+      "value": "var(--cascivo-color-border, oklch(0.928 0.006 264))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-border, oklch(0.928 0.006 264))",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-syntax-keyword",
+      "value": "var(--cascivo-color-accent-text, oklch(0.52 0.2 250))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-accent-text, oklch(0.52 0.2 250))",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-syntax-string",
+      "value": "oklch(0.53 0.13 135)",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "oklch(0.53 0.13 135)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-syntax-number",
+      "value": "oklch(0.54 0.15 40)",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "oklch(0.54 0.15 40)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-syntax-comment",
+      "value": "var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-syntax-function",
+      "value": "var(--cascivo-chart-5, oklch(0.5 0.16 265))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-chart-5, oklch(0.5 0.16 265))",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-syntax-type",
+      "value": "oklch(0.54 0.12 350)",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "oklch(0.54 0.12 350)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-syntax-operator",
+      "value": "var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-syntax-punctuation",
+      "value": "var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-syntax-variable",
+      "value": "var(--cascivo-editor-fg)",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-syntax-tag",
+      "value": "var(--cascivo-color-accent-text, oklch(0.52 0.2 250))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-accent-text, oklch(0.52 0.2 250))",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-syntax-attr",
+      "value": "oklch(0.54 0.15 40)",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "oklch(0.54 0.15 40)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-syntax-regexp",
+      "value": "oklch(0.53 0.13 135)",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "oklch(0.53 0.13 135)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-syntax-boolean",
+      "value": "oklch(0.54 0.15 40)",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "oklch(0.54 0.15 40)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-syntax-property",
+      "value": "oklch(0.53 0.12 240)",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "oklch(0.53 0.12 240)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
       "name": "--cascivo-color-ai",
       "value": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )",
       "layer": "semantic",
@@ -2107,6 +2098,15 @@
       "group": "color",
       "resolvedDefault": "oklch(from var(--cascivo-color-ai) l c h / 22%)",
       "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-link-color",
+      "value": "var(--cascivo-color-accent-text)",
+      "layer": "component",
+      "group": "link",
+      "resolvedDefault": "oklch(0.52 0.2 250)",
+      "resolvesPerTheme": true,
       "canonical": true
     },
     {

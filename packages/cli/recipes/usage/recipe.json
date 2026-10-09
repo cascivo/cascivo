@@ -1,0 +1,14 @@
+{
+  "name": "usage",
+  "files": [
+    "src/routes/usage.tsx",
+    "src/usage.ts",
+    "worker/usage.ts"
+  ],
+  "nav": [
+    {
+      "label": "Usage",
+      "href": "/usage"
+    }
+  ]
+}

@@ -401,14 +401,14 @@ remains canonical.
 | **`--cascivo-editor-syntax-boolean`**     | `oklch(0.54 0.15 40)`                                          |       |
 | **`--cascivo-editor-syntax-comment`**     | `var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))` |       |
 | **`--cascivo-editor-syntax-function`**    | `var(--cascivo-chart-5, oklch(0.5 0.16 265))`                  |       |
-| **`--cascivo-editor-syntax-keyword`**     | `var(--cascivo-color-accent, oklch(0.52 0.2 250))`             |       |
+| **`--cascivo-editor-syntax-keyword`**     | `var(--cascivo-color-accent-text, oklch(0.52 0.2 250))`        |       |
 | **`--cascivo-editor-syntax-number`**      | `oklch(0.54 0.15 40)`                                          |       |
 | **`--cascivo-editor-syntax-operator`**    | `var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))`   |       |
 | **`--cascivo-editor-syntax-property`**    | `oklch(0.53 0.12 240)`                                         |       |
 | **`--cascivo-editor-syntax-punctuation`** | `var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))`     |       |
 | **`--cascivo-editor-syntax-regexp`**      | `oklch(0.53 0.13 135)`                                         |       |
 | **`--cascivo-editor-syntax-string`**      | `oklch(0.53 0.13 135)`                                         |       |
-| **`--cascivo-editor-syntax-tag`**         | `var(--cascivo-color-accent, oklch(0.52 0.2 250))`             |       |
+| **`--cascivo-editor-syntax-tag`**         | `var(--cascivo-color-accent-text, oklch(0.52 0.2 250))`        |       |
 | **`--cascivo-editor-syntax-type`**        | `oklch(0.54 0.12 350)`                                         |       |
 | **`--cascivo-editor-syntax-variable`**    | `var(--cascivo-editor-fg)`                                     |       |
 | **`--cascivo-hover-opacity`**             | `0.8`                                                          |       |

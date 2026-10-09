@@ -19,6 +19,10 @@
         {
           "path": "accordion/accordion.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "accordion/accordion.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Vertically stacked, collapsible content sections",
@@ -47,6 +51,10 @@
         {
           "path": "action-sheet/action-sheet.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "action-sheet/action-sheet.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button",
@@ -74,6 +82,10 @@
         },
         {
           "path": "ai-badge/ai-badge.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "ai-badge/ai-badge.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -108,6 +120,10 @@
         {
           "path": "ai-disclaimer/ai-disclaimer.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "ai-disclaimer/ai-disclaimer.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "A short, quiet note that AI-generated content may be wrong — \"AI-generated content may be incorrect\"",
@@ -135,6 +151,10 @@
         },
         {
           "path": "ai-status/ai-status.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "ai-status/ai-status.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -168,6 +188,10 @@
         {
           "path": "alert/alert.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "alert/alert.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Highlights a short, important message inline",
@@ -195,6 +219,10 @@
         },
         {
           "path": "alert-dialog/alert-dialog.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "alert-dialog/alert-dialog.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -224,6 +252,10 @@
         {
           "path": "app-shell/app-shell.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "app-shell/app-shell.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.",
@@ -251,6 +283,10 @@
         },
         {
           "path": "aspect-ratio/aspect-ratio.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "aspect-ratio/aspect-ratio.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -280,6 +316,10 @@
         {
           "path": "avatar/avatar.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "avatar/avatar.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Displays a user image with initials fallback",
@@ -307,6 +347,10 @@
         },
         {
           "path": "avatar-group/avatar-group.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "avatar-group/avatar-group.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -336,6 +380,10 @@
         },
         {
           "path": "badge/badge.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "badge/badge.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -433,6 +481,10 @@
         {
           "path": "block-console-app/console-app.module.css",
           "type": "registry:block"
+        },
+        {
+          "path": "block-console-app/console-app.meta.ts",
+          "type": "registry:block"
         }
       ],
       "description": "Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.",
@@ -456,6 +508,10 @@
       "files": [
         {
           "path": "block-dashboard-charts/dashboard-charts.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "block-dashboard-charts/dashboard-charts.meta.ts",
           "type": "registry:block"
         }
       ],
@@ -526,6 +582,10 @@
         {
           "path": "block-empty-dashboard/empty-dashboard.tsx",
           "type": "registry:block"
+        },
+        {
+          "path": "block-empty-dashboard/empty-dashboard.meta.ts",
+          "type": "registry:block"
         }
       ],
       "description": "Dashboard page showing an empty state with a call-to-action button.",
@@ -570,6 +630,10 @@
       "files": [
         {
           "path": "block-login-page/login-page.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "block-login-page/login-page.meta.ts",
           "type": "registry:block"
         }
       ],
@@ -640,6 +704,10 @@
         {
           "path": "block-notification-center/notification-center.tsx",
           "type": "registry:block"
+        },
+        {
+          "path": "block-notification-center/notification-center.meta.ts",
+          "type": "registry:block"
         }
       ],
       "description": "A list of notification alerts with a mark-all-read action.",
@@ -660,6 +728,10 @@
       "files": [
         {
           "path": "block-page-with-breadcrumb/page-with-breadcrumb.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "block-page-with-breadcrumb/page-with-breadcrumb.meta.ts",
           "type": "registry:block"
         }
       ],
@@ -709,6 +781,10 @@
         {
           "path": "block-settings-form-page/settings-form-page.tsx",
           "type": "registry:block"
+        },
+        {
+          "path": "block-settings-form-page/settings-form-page.meta.ts",
+          "type": "registry:block"
         }
       ],
       "description": "Settings page with profile form inside a two-column settings layout.",
@@ -753,6 +829,10 @@
       "files": [
         {
           "path": "block-sidebar-app/sidebar-app.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "block-sidebar-app/sidebar-app.meta.ts",
           "type": "registry:block"
         }
       ],
@@ -799,6 +879,10 @@
         {
           "path": "block-stats-cards/stats-cards.tsx",
           "type": "registry:block"
+        },
+        {
+          "path": "block-stats-cards/stats-cards.meta.ts",
+          "type": "registry:block"
         }
       ],
       "description": "Grid of KPI stat cards with trend badges.",
@@ -843,6 +927,10 @@
         {
           "path": "block-users-table-page/users-table-page.tsx",
           "type": "registry:block"
+        },
+        {
+          "path": "block-users-table-page/users-table-page.meta.ts",
+          "type": "registry:block"
         }
       ],
       "description": "Full users management page with table, search, and invite action.",
@@ -875,6 +963,10 @@
         {
           "path": "blockquote/blockquote.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "blockquote/blockquote.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Quoted passage with optional attribution footer",
@@ -902,6 +994,10 @@
         },
         {
           "path": "bottom-sheet/bottom-sheet.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "bottom-sheet/bottom-sheet.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -931,6 +1027,10 @@
         {
           "path": "brand-logo/logo.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "brand-logo/logo.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "The cascivo mark and its sanctioned lockups, as inline SVG",
@@ -958,6 +1058,10 @@
         },
         {
           "path": "breadcrumb/breadcrumb.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "breadcrumb/breadcrumb.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -987,6 +1091,10 @@
         {
           "path": "button/button.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "button/button.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Triggers an action or event",
@@ -1015,6 +1123,10 @@
         },
         {
           "path": "button-group/button-group.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "button-group/button-group.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -1048,6 +1160,10 @@
         {
           "path": "calendar/calendar.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "calendar/calendar.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "An accessible standalone month-grid date picker.",
@@ -1075,6 +1191,10 @@
         },
         {
           "path": "card/card.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "card/card.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -1104,6 +1224,10 @@
         {
           "path": "carousel/carousel.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "carousel/carousel.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Scroll-snap slide deck with previous/next controls and dot indicators",
@@ -1131,6 +1255,10 @@
         },
         {
           "path": "chain-of-thought/chain-of-thought.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "chain-of-thought/chain-of-thought.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -1539,6 +1667,10 @@
         {
           "path": "chat-bubble/chat-bubble.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "chat-bubble/chat-bubble.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Message bubble for chat and messaging UIs with avatar, name, and timestamp support",
@@ -1565,6 +1697,10 @@
         },
         {
           "path": "checkbox/checkbox.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "checkbox/checkbox.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -1594,6 +1730,10 @@
         {
           "path": "checkbox-card/checkbox-card.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "checkbox-card/checkbox-card.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.",
@@ -1621,6 +1761,10 @@
         },
         {
           "path": "code/code.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "code/code.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -1654,6 +1798,10 @@
         {
           "path": "code-snippet/code-snippet.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "code-snippet/code-snippet.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look",
@@ -1681,6 +1829,10 @@
         },
         {
           "path": "collapsible/collapsible.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "collapsible/collapsible.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -1713,6 +1865,10 @@
         },
         {
           "path": "color-picker/color-picker.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "color-picker/color-picker.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -1750,6 +1906,10 @@
         {
           "path": "combobox/combobox.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "combobox/combobox.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Filterable single-select with an animated custom listbox, built on the dropdown open/close machine",
@@ -1777,6 +1937,10 @@
         },
         {
           "path": "command-menu/command-menu.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "command-menu/command-menu.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -1810,6 +1974,10 @@
         {
           "path": "comparison/comparison.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "comparison/comparison.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Reveals the difference between two layers with a draggable divider",
@@ -1837,6 +2005,10 @@
         },
         {
           "path": "contained-list/contained-list.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "contained-list/contained-list.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -1866,6 +2038,10 @@
         {
           "path": "context-menu/context-menu.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "context-menu/context-menu.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Right-click context menu anchored at pointer coordinates via CSS custom properties",
@@ -1893,6 +2069,10 @@
         },
         {
           "path": "context-meter/context-meter.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "context-meter/context-meter.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -1922,6 +2102,10 @@
         {
           "path": "copy-button/copy-button.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "copy-button/copy-button.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Icon button that copies a value to the clipboard with copied feedback",
@@ -1949,6 +2133,10 @@
         },
         {
           "path": "data-list/data-list.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "data-list/data-list.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -2010,6 +2198,10 @@
         {
           "path": "data-table/data-table.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "data-table/data-table.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",
@@ -2049,6 +2241,10 @@
         {
           "path": "date-picker/date-picker.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "date-picker/date-picker.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "An accessible date-picker with a calendar popover.",
@@ -2077,6 +2273,10 @@
         },
         {
           "path": "date-range-picker/date-range-picker.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "date-range-picker/date-range-picker.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -2107,6 +2307,10 @@
         {
           "path": "dock/dock.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "dock/dock.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Fixed bottom navigation bar for mobile app shells with up to 5 items",
@@ -2134,6 +2338,10 @@
         },
         {
           "path": "drawer/drawer.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "drawer/drawer.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -2163,6 +2371,10 @@
         {
           "path": "dropdown/dropdown.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "dropdown/dropdown.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Menu of actions revealed from a trigger",
@@ -2190,6 +2402,10 @@
         },
         {
           "path": "editable/editable.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "editable/editable.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -2249,6 +2465,10 @@
         {
           "path": "empty-state/empty-state.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "empty-state/empty-state.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Placeholder for views that have no data to display",
@@ -2277,6 +2497,10 @@
         {
           "path": "fab/fab.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "fab/fab.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Floating action button anchored to a screen corner, with an optional speed-dial of secondary actions",
@@ -2304,6 +2528,10 @@
         },
         {
           "path": "field/field.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "field/field.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -2334,6 +2562,10 @@
         {
           "path": "file-uploader/file-uploader.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "file-uploader/file-uploader.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Drag-and-drop file upload zone with file list and status indicators.",
@@ -2362,6 +2594,10 @@
         },
         {
           "path": "filter/filter.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "filter/filter.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -2545,6 +2781,10 @@
         {
           "path": "form/form.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "form/form.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",
@@ -2572,6 +2812,10 @@
         },
         {
           "path": "header/header.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "header/header.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -2601,6 +2845,10 @@
         {
           "path": "header-panel/header-panel.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "header-panel/header-panel.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings",
@@ -2629,6 +2877,10 @@
         {
           "path": "heading/heading.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "heading/heading.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Section heading with semantic level decoupled from visual size",
@@ -2656,6 +2908,10 @@
         },
         {
           "path": "hover-card/hover-card.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "hover-card/hover-card.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -2686,6 +2942,10 @@
         {
           "path": "icon-button/icon-button.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "icon-button/icon-button.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Square, icon-only button with a required accessible label",
@@ -2713,6 +2973,10 @@
         },
         {
           "path": "image/image.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "image/image.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -2742,6 +3006,10 @@
         {
           "path": "indicator/indicator.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "indicator/indicator.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Positions an overlay element (badge, dot, count) at a corner of its child",
@@ -2768,6 +3036,10 @@
         },
         {
           "path": "infinite-scroll/infinite-scroll.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "infinite-scroll/infinite-scroll.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -2797,6 +3069,10 @@
         },
         {
           "path": "inline-citation/inline-citation.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "inline-citation/inline-citation.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -2831,6 +3107,10 @@
         {
           "path": "inline-loading/inline-loading.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "inline-loading/inline-loading.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Compact inline status indicator that pairs a label with a loading, success, or error state",
@@ -2860,6 +3140,10 @@
         {
           "path": "input/input.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "input/input.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Text input field with optional label, hint, and error state",
@@ -2888,9 +3172,13 @@
         {
           "path": "input-group/input-group.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "input-group/input-group.meta.ts",
+          "type": "registry:component"
         }
       ],
-      "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders",
+      "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; InputGroupButtons collapses adjacent button borders",
       "dependencies": ["@cascivo/core"],
       "categories": ["inputs"],
       "meta": {
@@ -2915,6 +3203,10 @@
         },
         {
           "path": "item/item.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "item/item.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -2944,6 +3236,10 @@
         {
           "path": "join/join.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "join/join.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Groups adjacent children into a seamless joined element by removing interior borders and radii",
@@ -2970,6 +3266,10 @@
         },
         {
           "path": "kbd/kbd.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "kbd/kbd.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -2999,6 +3299,10 @@
         {
           "path": "label/label.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "label/label.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Accessible caption for a form control",
@@ -3026,6 +3330,10 @@
         },
         {
           "path": "large-title-header/large-title-header.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "large-title-header/large-title-header.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -3059,6 +3367,10 @@
         {
           "path": "layout-app-shell/app-shell.module.css",
           "type": "registry:block"
+        },
+        {
+          "path": "layout-app-shell/app-shell.meta.ts",
+          "type": "registry:block"
         }
       ],
       "description": "Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.",
@@ -3086,6 +3398,10 @@
         },
         {
           "path": "layout-auth-layout/auth-layout.module.css",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-auth-layout/auth-layout.meta.ts",
           "type": "registry:block"
         }
       ],
@@ -3115,6 +3431,10 @@
         {
           "path": "layout-auto-grid/auto-grid.module.css",
           "type": "registry:block"
+        },
+        {
+          "path": "layout-auto-grid/auto-grid.meta.ts",
+          "type": "registry:block"
         }
       ],
       "description": "Media-query-free responsive grid — columns auto-fill based on available space.",
@@ -3142,6 +3462,10 @@
         },
         {
           "path": "layout-center/center.module.css",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-center/center.meta.ts",
           "type": "registry:block"
         }
       ],
@@ -3171,6 +3495,10 @@
         {
           "path": "layout-columns/columns.module.css",
           "type": "registry:block"
+        },
+        {
+          "path": "layout-columns/columns.meta.ts",
+          "type": "registry:block"
         }
       ],
       "description": "Equal-width multi-column layout that collapses to single column on narrow viewports.",
@@ -3198,6 +3526,10 @@
         },
         {
           "path": "layout-dashboard-layout/dashboard-layout.module.css",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-dashboard-layout/dashboard-layout.meta.ts",
           "type": "registry:block"
         }
       ],
@@ -3227,6 +3559,10 @@
         {
           "path": "layout-flex/flex.module.css",
           "type": "registry:block"
+        },
+        {
+          "path": "layout-flex/flex.meta.ts",
+          "type": "registry:block"
         }
       ],
       "description": "Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction=\"horizontal\"` for a row.",
@@ -3254,6 +3590,10 @@
         },
         {
           "path": "layout-grid/grid.module.css",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-grid/grid.meta.ts",
           "type": "registry:block"
         }
       ],
@@ -3283,6 +3623,10 @@
         {
           "path": "layout-masonry/masonry.module.css",
           "type": "registry:block"
+        },
+        {
+          "path": "layout-masonry/masonry.meta.ts",
+          "type": "registry:block"
         }
       ],
       "description": "Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).",
@@ -3310,6 +3654,10 @@
         },
         {
           "path": "layout-page-header/page-header.module.css",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-page-header/page-header.meta.ts",
           "type": "registry:block"
         }
       ],
@@ -3339,6 +3687,10 @@
         {
           "path": "layout-section/section.module.css",
           "type": "registry:block"
+        },
+        {
+          "path": "layout-section/section.meta.ts",
+          "type": "registry:block"
         }
       ],
       "description": "Page-section shell with block padding, centered inner width, and stack gap.",
@@ -3366,6 +3718,10 @@
         },
         {
           "path": "layout-settings-layout/settings-layout.module.css",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-settings-layout/settings-layout.meta.ts",
           "type": "registry:block"
         }
       ],
@@ -3395,6 +3751,10 @@
         {
           "path": "layout-spacer/spacer.module.css",
           "type": "registry:block"
+        },
+        {
+          "path": "layout-spacer/spacer.meta.ts",
+          "type": "registry:block"
         }
       ],
       "description": "Fixed-height spacing block using design token steps.",
@@ -3422,6 +3782,10 @@
         },
         {
           "path": "layout-split-view/split-view.module.css",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-split-view/split-view.meta.ts",
           "type": "registry:block"
         }
       ],
@@ -3451,6 +3815,10 @@
         {
           "path": "link/link.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "link/link.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Styled anchor for navigation, standalone or inline within prose",
@@ -3478,6 +3846,10 @@
         },
         {
           "path": "list/list.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "list/list.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -3507,6 +3879,10 @@
         {
           "path": "log-viewer/log-viewer.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "log-viewer/log-viewer.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Virtualized monospace console for high-frequency log and stream output",
@@ -3534,6 +3910,10 @@
         },
         {
           "path": "menu/menu.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "menu/menu.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -3564,6 +3944,10 @@
         {
           "path": "menu-button/menu-button.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "menu-button/menu-button.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "A button that opens an anchored action menu of one-shot commands",
@@ -3592,6 +3976,10 @@
         {
           "path": "menubar/menubar.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "menubar/menubar.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Horizontal application menu bar with keyboard-navigable dropdown menus",
@@ -3619,6 +4007,10 @@
         },
         {
           "path": "message-actions/message-actions.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "message-actions/message-actions.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -3651,6 +4043,10 @@
         },
         {
           "path": "modal/modal.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "modal/modal.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -3688,6 +4084,10 @@
         {
           "path": "multi-select/multi-select.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "multi-select/multi-select.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Searchable multi-value select with a popover listbox, chips and grouping",
@@ -3717,6 +4117,10 @@
         {
           "path": "native-select/native-select.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "native-select/native-select.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring",
@@ -3744,6 +4148,10 @@
         },
         {
           "path": "navigation-menu/navigation-menu.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "navigation-menu/navigation-menu.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -3773,6 +4181,10 @@
         {
           "path": "notification/notification.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "notification/notification.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Inline, actionable notification banner that surfaces a titled message with an optional recovery action",
@@ -3800,6 +4212,10 @@
         },
         {
           "path": "number-input/number-input.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "number-input/number-input.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -3829,6 +4245,10 @@
         {
           "path": "otp-input/otp-input.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "otp-input/otp-input.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Segmented one-time code input",
@@ -3856,6 +4276,10 @@
         },
         {
           "path": "overflow-menu/overflow-menu.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "overflow-menu/overflow-menu.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -3886,6 +4310,10 @@
         {
           "path": "pagination/pagination.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "pagination/pagination.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Controls for navigating paged data sets, with page size selection",
@@ -3913,6 +4341,10 @@
         },
         {
           "path": "password-input/password-input.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "password-input/password-input.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -3946,6 +4378,10 @@
         {
           "path": "popover/popover.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "popover/popover.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Anchored floating panel built on CSS Anchor Positioning + Popover API",
@@ -3974,6 +4410,10 @@
         {
           "path": "progress/progress.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "progress/progress.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Horizontal bar showing the completion progress of a tracked operation",
@@ -4000,6 +4440,10 @@
         },
         {
           "path": "progress-bar/progress-bar.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "progress-bar/progress-bar.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -4029,6 +4473,10 @@
         {
           "path": "progress-circle/progress-circle.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "progress-circle/progress-circle.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Circular determinate progress indicator rendered as an SVG arc",
@@ -4056,6 +4504,10 @@
         },
         {
           "path": "progress-indicator/progress-indicator.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "progress-indicator/progress-indicator.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -4085,6 +4537,10 @@
         {
           "path": "prompt-suggestions/prompt-suggestions.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "prompt-suggestions/prompt-suggestions.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Starter prompts as a wrap of pill buttons — the \"Try asking…\" row of an empty AI chat",
@@ -4113,6 +4569,10 @@
         {
           "path": "prose/prose.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "prose/prose.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables",
@@ -4140,6 +4600,10 @@
         },
         {
           "path": "pull-to-refresh/pull-to-refresh.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "pull-to-refresh/pull-to-refresh.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -4174,6 +4638,10 @@
         {
           "path": "qr-code/qr-code.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "qr-code/qr-code.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Encodes a URL or short text into a scannable SVG QR code",
@@ -4202,6 +4670,10 @@
         {
           "path": "radial-progress/radial-progress.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "radial-progress/radial-progress.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Circular progress indicator using conic-gradient, with percentage label and variant colors",
@@ -4228,6 +4700,10 @@
         },
         {
           "path": "radio/radio.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "radio/radio.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -4257,6 +4733,10 @@
         {
           "path": "radio-card/radio-card.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "radio-card/radio-card.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",
@@ -4285,6 +4765,10 @@
         {
           "path": "rating-group/rating-group.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "rating-group/rating-group.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Star rating input with accessible radio group pattern",
@@ -4312,6 +4796,10 @@
         },
         {
           "path": "reasoning/reasoning.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "reasoning/reasoning.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -4342,6 +4830,10 @@
         {
           "path": "relative-time/relative-time.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "relative-time/relative-time.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Displays a date as a localized phrase relative to now, auto-updating",
@@ -4369,6 +4861,10 @@
         },
         {
           "path": "reorder-list/reorder-list.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "reorder-list/reorder-list.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -4398,6 +4894,10 @@
         {
           "path": "resizable/resizable.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "resizable/resizable.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space",
@@ -4425,6 +4925,10 @@
         },
         {
           "path": "scroll-area/scroll-area.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "scroll-area/scroll-area.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -4454,6 +4958,10 @@
         {
           "path": "search/search.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "search/search.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Search input with debounced search callback and clear button",
@@ -4477,6 +4985,10 @@
         },
         {
           "path": "section-cta/cta.module.css",
+          "type": "registry:block"
+        },
+        {
+          "path": "section-cta/cta.meta.ts",
           "type": "registry:block"
         }
       ],
@@ -4502,6 +5014,10 @@
         },
         {
           "path": "section-feature-grid/feature-grid.module.css",
+          "type": "registry:block"
+        },
+        {
+          "path": "section-feature-grid/feature-grid.meta.ts",
           "type": "registry:block"
         }
       ],
@@ -4531,6 +5047,10 @@
         {
           "path": "section-hero/hero.module.css",
           "type": "registry:block"
+        },
+        {
+          "path": "section-hero/hero.meta.ts",
+          "type": "registry:block"
         }
       ],
       "description": "Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.",
@@ -4555,6 +5075,10 @@
         },
         {
           "path": "section-media-masonry/media-masonry.module.css",
+          "type": "registry:block"
+        },
+        {
+          "path": "section-media-masonry/media-masonry.meta.ts",
           "type": "registry:block"
         }
       ],
@@ -4584,6 +5108,10 @@
         {
           "path": "section-page-footer/page-footer.module.css",
           "type": "registry:block"
+        },
+        {
+          "path": "section-page-footer/page-footer.meta.ts",
+          "type": "registry:block"
         }
       ],
       "description": "Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label=\"Footer\"> wrapping the link columns.",
@@ -4608,6 +5136,10 @@
         },
         {
           "path": "section-stats-band/stats-band.module.css",
+          "type": "registry:block"
+        },
+        {
+          "path": "section-stats-band/stats-band.meta.ts",
           "type": "registry:block"
         }
       ],
@@ -4638,6 +5170,10 @@
         {
           "path": "segmented-control/segmented-control.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "segmented-control/segmented-control.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Mutually exclusive toggle group",
@@ -4665,6 +5201,10 @@
         },
         {
           "path": "select/select.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "select/select.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -4694,6 +5234,10 @@
         {
           "path": "separator/separator.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "separator/separator.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Visual or semantic divider between content",
@@ -4721,6 +5265,10 @@
         },
         {
           "path": "share-menu/share-menu.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "share-menu/share-menu.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -4750,6 +5298,10 @@
         {
           "path": "sheet/sheet.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "sheet/sheet.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Slide-in panel from any edge, using popover=manual and @starting-style animations",
@@ -4777,6 +5329,10 @@
         },
         {
           "path": "shell-header/shell-header.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "shell-header/shell-header.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -4807,6 +5363,10 @@
         {
           "path": "shimmer-text/shimmer-text.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "shimmer-text/shimmer-text.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Text with a bright band sweeping through it — the \"Thinking…\" look for a label that marks work in progress",
@@ -4834,6 +5394,10 @@
         },
         {
           "path": "side-nav/side-nav.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "side-nav/side-nav.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -4867,6 +5431,10 @@
         {
           "path": "skeleton/skeleton.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "skeleton/skeleton.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Animated loading placeholder that mirrors the shape of pending content",
@@ -4894,6 +5462,10 @@
         },
         {
           "path": "skip-nav/skip-nav.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "skip-nav/skip-nav.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -4923,6 +5495,10 @@
         {
           "path": "slider/slider.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "slider/slider.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Range input for selecting a value within bounds",
@@ -4950,6 +5526,10 @@
         },
         {
           "path": "sources/sources.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "sources/sources.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -4979,6 +5559,10 @@
         {
           "path": "spinner/spinner.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "spinner/spinner.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Indeterminate loading indicator",
@@ -5007,6 +5591,10 @@
         {
           "path": "stack/stack.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "stack/stack.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect",
@@ -5033,6 +5621,10 @@
         },
         {
           "path": "stat/stat.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "stat/stat.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -5062,6 +5654,10 @@
         {
           "path": "status/status.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "status/status.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Colored dot with a label communicating the state of a system or entity",
@@ -5089,6 +5685,10 @@
         },
         {
           "path": "steps/steps.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "steps/steps.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -5118,6 +5718,10 @@
         {
           "path": "streaming-text/streaming-text.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "streaming-text/streaming-text.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Reveals text character by character with a blinking cursor, catching up as a streamed reply grows",
@@ -5145,6 +5749,10 @@
         },
         {
           "path": "structured-list/structured-list.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "structured-list/structured-list.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -5174,6 +5782,10 @@
         {
           "path": "swap/swap.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "swap/swap.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Animated toggle between two icon/content states with rotate or flip transition",
@@ -5201,6 +5813,10 @@
         },
         {
           "path": "swipe-item/swipe-item.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "swipe-item/swipe-item.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -5230,6 +5846,10 @@
         {
           "path": "switcher/switcher.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "switcher/switcher.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown.",
@@ -5257,6 +5877,10 @@
         },
         {
           "path": "tabs/tabs.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "tabs/tabs.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -5286,6 +5910,10 @@
         {
           "path": "tag/tag.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "tag/tag.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Compact chip for labeling, categorizing, or filtering content",
@@ -5314,6 +5942,10 @@
         {
           "path": "tags-input/tags-input.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "tags-input/tags-input.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Free-form multi-value chip input",
@@ -5341,6 +5973,10 @@
         },
         {
           "path": "terminal/terminal.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "terminal/terminal.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -5371,6 +6007,10 @@
         {
           "path": "text/text.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "text/text.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Body text with size, weight, and muted variants",
@@ -5398,6 +6038,10 @@
         },
         {
           "path": "textarea/textarea.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "textarea/textarea.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -5427,6 +6071,10 @@
         {
           "path": "tile/tile.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "tile/tile.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "A selectable card with radio (single) or checkbox (multi) semantics, toggled by click or keyboard",
@@ -5454,6 +6102,10 @@
         },
         {
           "path": "time-picker/time-picker.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "time-picker/time-picker.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -5483,6 +6135,10 @@
         {
           "path": "timeline/timeline.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "timeline/timeline.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Ordered sequence of events with status markers and a connector line",
@@ -5510,6 +6166,10 @@
         },
         {
           "path": "toast/toast.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "toast/toast.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -5543,6 +6203,10 @@
         {
           "path": "toc/toc.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "toc/toc.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Table of contents with scroll-spy highlighting of the active section",
@@ -5570,6 +6234,10 @@
         },
         {
           "path": "toggle/toggle.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "toggle/toggle.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -5599,6 +6267,10 @@
         {
           "path": "toggle-group/toggle-group.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "toggle-group/toggle-group.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "A set of toggle buttons for single or multiple selection",
@@ -5627,6 +6299,10 @@
         {
           "path": "toggletip/toggletip.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "toggletip/toggletip.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "A click-triggered info popover for supplementary, selectable content",
@@ -5654,6 +6330,10 @@
         },
         {
           "path": "tool-call/tool-call.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "tool-call/tool-call.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -5684,6 +6364,10 @@
         {
           "path": "tooltip/tooltip.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "tooltip/tooltip.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Contextual label shown on hover or focus",
@@ -5711,6 +6395,10 @@
         },
         {
           "path": "tree-view/tree-view.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "tree-view/tree-view.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -5740,6 +6428,10 @@
         {
           "path": "typing-indicator/typing-indicator.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "typing-indicator/typing-indicator.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Three bouncing dots that hold a chat message slot while an assistant (or a person) is composing a reply",
@@ -5767,6 +6459,10 @@
         },
         {
           "path": "user/user.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "user/user.meta.ts",
           "type": "registry:component"
         }
       ],
@@ -5797,6 +6493,10 @@
         {
           "path": "virtual-list/virtual-list.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "virtual-list/virtual-list.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Renders only the rows inside the viewport, so list length costs no extra DOM",
@@ -5825,6 +6525,10 @@
         {
           "path": "visually-hidden/visually-hidden.module.css",
           "type": "registry:component"
+        },
+        {
+          "path": "visually-hidden/visually-hidden.meta.ts",
+          "type": "registry:component"
         }
       ],
       "description": "Hides content visually while keeping it available to screen readers",
@@ -5852,6 +6556,10 @@
         },
         {
           "path": "wheel-picker/wheel-picker.module.css",
+          "type": "registry:component"
+        },
+        {
+          "path": "wheel-picker/wheel-picker.meta.ts",
           "type": "registry:component"
         }
       ],

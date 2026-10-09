@@ -1,0 +1,7 @@
+{
+  "name": "block-dashboard-table",
+  "files": [
+    "src/blocks/dashboard-table.tsx",
+    "src/blocks/dashboard-table.module.css"
+  ]
+}

@@ -35,10 +35,15 @@ const REPO_ROOT = join(import.meta.dirname, '../..')
  *    not know it, and it only ever styles the preview's own page, which imports no cascivo
  *    stylesheet. There are no cascivo layers there for it to win against. It landed in this
  *    check's scope when the app moved from `apps/` to `packages/` to be published.
+ *  - `workbench/src/styles.css` — the workbench's chrome. Its page DOES load cascivo's layers,
+ *    for the components on its stage, so the bar is met differently: every selector is a
+ *    `.wb-*` chrome element and none reaches into `.wb-stage`'s content, so there is nothing
+ *    of cascivo's for it to beat.
  */
 const ALLOWLIST = new Set([
   'packages/themes/src/tailwind.css',
   'packages/email-preview/src/styles.css',
+  'packages/workbench/src/styles.css',
 ])
 
 function collectCss(dir: string): string[] {

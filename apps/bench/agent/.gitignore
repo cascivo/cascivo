@@ -1,0 +1,5 @@
+# Packed tarballs and the shared dependency tree (src/env.ts). Rebuilt with --fresh.
+.cache/
+
+# Dry runs check the harness and measure no model.
+results/*-dry.json

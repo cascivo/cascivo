@@ -26,7 +26,8 @@
   },
   "files": [
     "dist",
-    "bin"
+    "bin",
+    "recipes"
   ],
   "type": "module",
   "types": "./dist/index.d.mts",

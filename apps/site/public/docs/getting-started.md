@@ -201,6 +201,66 @@ cascivo app shell, side navigation, header, and a theme. Options:
 `--template <spec>` (start from a marketplace template), `--theme <name>`,
 `--sections "<a, b>"`, `--yes`.
 
+### New project from a blueprint
+
+A blueprint describes the app and names the registry block each page renders. The CLI turns it
+into the same scaffold, with every block's source in `src/blocks/` and every page wired into the
+routes and the side nav:
+
+```json
+{
+  "name": "acme-console",
+  "framework": "cloudflare",
+  "theme": "dark",
+  "pages": [
+    { "title": "Overview", "block": "dashboard-overview" },
+    { "title": "Users", "block": "users-table-page" },
+    { "title": "Settings", "block": "settings-profile" },
+    { "title": "Reports" }
+  ]
+}
+```
+
+```sh
+npx cascivo create --from cascivo.app.json
+```
+
+A page without a `block` is a placeholder to build out. `runtime`, `examples` and `auth` take
+the same values as the flags, and a blueprint is held to the same rules. An unknown field or
+block fails with the list of valid ones. The blueprint is kept in the app as `cascivo.app.json`.
+Agents use the MCP tools `list_blocks` and `compose_app` for the same thing.
+
+Every `cascivo create` writes `cascivo.app.json`, whether it ran from flags, prompts or a
+blueprint, so any scaffolded app can grow from its directory:
+
+```sh
+npx cascivo app add page "Users" --block users-table-page
+npx cascivo app add example crud      # a cloudflare example, as --example would have added it
+npx cascivo app upgrade               # this CLI's templates, keeping your edits
+```
+
+`app add page` adds the page to `cascivo.app.json` and writes the page, its block, and the
+route and nav entries. The app's original files are rebuilt with the CLI version recorded in
+`cascivo.app.json`, so a newer CLI's template changes are merged in, not mistaken for your
+edits. A generated file you have edited since keeps your edits, merged three ways. When your
+edit and the change touch the same lines, the file gets git-style conflict markers and the
+command exits non-zero.
+
+### New project as a workspace
+
+```sh
+npx cascivo create my-app --workspace
+```
+
+Writes the same app into a pnpm workspace: the app in `apps/web`, the team's own components in
+`packages/ui` (run `npx cascivo add` there, so every app shares one copy), Vite+ (`vp run`)
+running each package's scripts, and a GitHub Actions workflow that runs typecheck, lint, test and
+build on every push. A React + Vite app also gets Vitest with a smoke test. It needs
+`--framework react-vite` (the default) or `cloudflare`, and pnpm.
+
+Every scaffold, workspace or not, comes with agent files: a short `AGENTS.md`, a `CLAUDE.md`
+that includes it, and a `.mcp.json` that registers the cascivo MCP server.
+
 ### Existing project
 
 ```sh
@@ -222,8 +282,9 @@ works inside a pnpm/yarn workspace where the lock file lives at the repo root;
 them; and `--yes` / `-y` to accept defaults without prompting (implied when stdin
 is not a TTY, so it is safe in CI).
 
-`add` copies the component source — TSX plus its CSS module — from the registry
-into your project, resolving component dependencies (adding `dialog` also brings
+`add` copies the component source — TSX, its CSS module, and its manifest
+(`<name>.meta.ts`: props, examples, tokens and accessibility, as data your own
+tooling and agents can read) — from the registry into your project, resolving component dependencies (adding `dialog` also brings
 anything it composes) and installing any extra runtime package a component
 declares (e.g. `@cascivo/i18n`). Charts are the exception: `cascivo add
 chart/area-chart` installs the `@cascivo/charts` npm package (a runtime

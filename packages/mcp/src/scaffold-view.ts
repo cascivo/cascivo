@@ -1,20 +1,11 @@
 import type { ViewConfig } from './validate.js'
 import { validateView } from './validate.js'
 import type { Registry } from './registry.js'
-import { buildGrammar, formatGrammar } from './grammar.js'
+import { RENDERABLE, buildGrammar, formatGrammar } from './grammar.js'
 
 interface ScaffoldViewInput {
   description: string
   components?: string[]
-}
-
-/** Simple keyword matcher — returns region layout name based on description keywords. */
-function pickLayout(description: string): string {
-  const d = description.toLowerCase()
-  if (d.includes('dashboard') || d.includes('stats') || d.includes('kpi')) return 'dashboard'
-  if (d.includes('settings') || d.includes('preferences') || d.includes('config')) return 'settings'
-  if (d.includes('login') || d.includes('auth') || d.includes('sign')) return 'auth'
-  return 'none'
 }
 
 /** Pick sensible components from the registry matching keywords in description. */
@@ -23,6 +14,7 @@ function pickComponents(description: string, registry: Registry, explicit?: stri
   const d = description.toLowerCase()
   const candidates: string[] = []
   for (const entry of registry.components) {
+    if (!RENDERABLE.has(entry.meta.name)) continue
     const name = entry.meta.name.toLowerCase()
     const tags = entry.tags.join(' ').toLowerCase()
     if (d.includes(name) || tags.split(' ').some((t) => d.includes(t))) {
@@ -67,7 +59,6 @@ export function scaffoldView(
   /** Bound-vocabulary grammar (v40 T1) for the scaffolded components, so a caller gets both a starter scaffold and the allowed props/enums to refine it. */
   grammar: string
 } {
-  const layout = pickLayout(input.description)
   const componentNames = pickComponents(input.description, registry, input.components)
 
   const config: ViewConfig = {
@@ -75,15 +66,14 @@ export function scaffoldView(
       'https://raw.githubusercontent.com/cascivo/cascivo/main/packages/render/schema/view.v1.json',
     version: 1,
     view: {
-      ...(layout !== 'none' ? { layout } : {}),
       regions: {
         main: componentNames.map((name) => makeNode(name, registry)),
       },
     },
   }
 
-  const validNames = new Set(registry.components.map((c) => c.meta.name))
-  const { errors } = validateView(config, validNames)
+  const registryNames = new Set(registry.components.map((c) => c.meta.name))
+  const { errors } = validateView(config, RENDERABLE, registryNames)
   const grammar = formatGrammar(buildGrammar(registry, componentNames))
   return { config, errors, grammar }
 }

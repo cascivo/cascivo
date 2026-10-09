@@ -1898,91 +1898,6 @@
       "$description": "CSS: --cascivo-chart-grid (semantic) = var(--cascivo-gray-200)"
     }
   },
-  "editor": {
-    "editor-syntax-string": {
-      "$type": "color",
-      "$value": {
-        "colorSpace": "oklch",
-        "components": [0.53, 0.13, 135],
-        "hex": "#487c25"
-      },
-      "$description": "CSS: --cascivo-editor-syntax-string (semantic)"
-    },
-    "editor-syntax-number": {
-      "$type": "color",
-      "$value": {
-        "colorSpace": "oklch",
-        "components": [0.54, 0.15, 40],
-        "hex": "#b4481e"
-      },
-      "$description": "CSS: --cascivo-editor-syntax-number (semantic)"
-    },
-    "editor-syntax-type": {
-      "$type": "color",
-      "$value": {
-        "colorSpace": "oklch",
-        "components": [0.54, 0.12, 350],
-        "hex": "#a14e78"
-      },
-      "$description": "CSS: --cascivo-editor-syntax-type (semantic)"
-    },
-    "editor-syntax-attr": {
-      "$type": "color",
-      "$value": {
-        "colorSpace": "oklch",
-        "components": [0.54, 0.15, 40],
-        "hex": "#b4481e"
-      },
-      "$description": "CSS: --cascivo-editor-syntax-attr (semantic)"
-    },
-    "editor-syntax-regexp": {
-      "$type": "color",
-      "$value": {
-        "colorSpace": "oklch",
-        "components": [0.53, 0.13, 135],
-        "hex": "#487c25"
-      },
-      "$description": "CSS: --cascivo-editor-syntax-regexp (semantic)"
-    },
-    "editor-syntax-boolean": {
-      "$type": "color",
-      "$value": {
-        "colorSpace": "oklch",
-        "components": [0.54, 0.15, 40],
-        "hex": "#b4481e"
-      },
-      "$description": "CSS: --cascivo-editor-syntax-boolean (semantic)"
-    },
-    "editor-syntax-property": {
-      "$type": "color",
-      "$value": {
-        "colorSpace": "oklch",
-        "components": [0.53, 0.12, 240],
-        "hex": "#0573aa"
-      },
-      "$description": "CSS: --cascivo-editor-syntax-property (semantic)"
-    },
-    "editor-caret-line": {
-      "$type": "number",
-      "$value": 0,
-      "$description": "CSS: --cascivo-editor-caret-line (component)"
-    },
-    "editor-gutter-digits": {
-      "$type": "number",
-      "$value": 2,
-      "$description": "CSS: --cascivo-editor-gutter-digits (component)"
-    },
-    "editor-tab-size": {
-      "$type": "number",
-      "$value": 2,
-      "$description": "CSS: --cascivo-editor-tab-size (component)"
-    },
-    "editor-gutter-gap": {
-      "$type": "dimension",
-      "$value": "{space.space-3}",
-      "$description": "CSS: --cascivo-editor-gutter-gap (component) = var(--cascivo-space-3)"
-    }
-  },
   "brand": {
     "brand-primary": {
       "$type": "color",
@@ -2157,6 +2072,91 @@
         "unit": "rem"
       },
       "$description": "CSS: --cascivo-target-min (component)"
+    }
+  },
+  "editor": {
+    "editor-syntax-string": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.53, 0.13, 135],
+        "hex": "#487c25"
+      },
+      "$description": "CSS: --cascivo-editor-syntax-string (semantic)"
+    },
+    "editor-syntax-number": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.54, 0.15, 40],
+        "hex": "#b4481e"
+      },
+      "$description": "CSS: --cascivo-editor-syntax-number (semantic)"
+    },
+    "editor-syntax-type": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.54, 0.12, 350],
+        "hex": "#a14e78"
+      },
+      "$description": "CSS: --cascivo-editor-syntax-type (semantic)"
+    },
+    "editor-syntax-attr": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.54, 0.15, 40],
+        "hex": "#b4481e"
+      },
+      "$description": "CSS: --cascivo-editor-syntax-attr (semantic)"
+    },
+    "editor-syntax-regexp": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.53, 0.13, 135],
+        "hex": "#487c25"
+      },
+      "$description": "CSS: --cascivo-editor-syntax-regexp (semantic)"
+    },
+    "editor-syntax-boolean": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.54, 0.15, 40],
+        "hex": "#b4481e"
+      },
+      "$description": "CSS: --cascivo-editor-syntax-boolean (semantic)"
+    },
+    "editor-syntax-property": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.53, 0.12, 240],
+        "hex": "#0573aa"
+      },
+      "$description": "CSS: --cascivo-editor-syntax-property (semantic)"
+    },
+    "editor-caret-line": {
+      "$type": "number",
+      "$value": 0,
+      "$description": "CSS: --cascivo-editor-caret-line (component)"
+    },
+    "editor-gutter-digits": {
+      "$type": "number",
+      "$value": 2,
+      "$description": "CSS: --cascivo-editor-gutter-digits (component)"
+    },
+    "editor-tab-size": {
+      "$type": "number",
+      "$value": 2,
+      "$description": "CSS: --cascivo-editor-tab-size (component)"
+    },
+    "editor-gutter-gap": {
+      "$type": "dimension",
+      "$value": "{space.space-3}",
+      "$description": "CSS: --cascivo-editor-gutter-gap (component) = var(--cascivo-space-3)"
     }
   },
   "aspect": {

@@ -1,0 +1,7 @@
+{
+  "name": "auth-email",
+  "files": [
+    "src/routes/signin/verify.tsx",
+    "worker/auth.ts"
+  ]
+}

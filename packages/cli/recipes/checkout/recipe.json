@@ -1,0 +1,15 @@
+{
+  "name": "checkout",
+  "files": [
+    "src/routes/checkout.tsx",
+    "src/routes/checkout/[order].tsx",
+    "src/checkout.ts",
+    "worker/checkout.ts"
+  ],
+  "nav": [
+    {
+      "label": "Checkout",
+      "href": "/checkout"
+    }
+  ]
+}
