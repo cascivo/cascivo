@@ -11,12 +11,12 @@ Helvetica, and what it does not do yet.
 
 | File                                            | Axes             | Charset               | Size                       |
 | ----------------------------------------------- | ---------------- | --------------------- | -------------------------- |
-| `fonts/CascivoSans-Latin[wght].woff2`           | wght             | Latin                 | 21.5 KB                    |
+| `fonts/CascivoSans-Latin[wght].woff2`           | wght             | Latin                 | 21.6 KB                    |
 | `fonts/CascivoSans-Latin[opsz,wght].woff2`      | wght, opsz       | Latin                 | 28.8 KB                    |
-| `fonts/CascivoSans-Latin[opsz,slnt,wght].woff2` | wght, opsz, slnt | Latin                 | 31.7 KB                    |
-| `fonts/CascivoSans[opsz,slnt,wght].woff2`       | wght, opsz, slnt | full (365 codepoints) | 37.8 KB                    |
-| `fonts/CascivoSans[opsz,slnt,wght].ttf`         | wght, opsz, slnt | full                  | 102.1 KB (desktop install) |
-| `fonts/CascivoSans-Regular.woff2`               | static 400       | full                  | 11.8 KB                    |
+| `fonts/CascivoSans-Latin[opsz,slnt,wght].woff2` | wght, opsz, slnt | Latin                 | 31.9 KB                    |
+| `fonts/CascivoSans[opsz,slnt,wght].woff2`       | wght, opsz, slnt | full (365 codepoints) | 38.2 KB                    |
+| `fonts/CascivoSans[opsz,slnt,wght].ttf`         | wght, opsz, slnt | full                  | 102.4 KB (desktop install) |
+| `fonts/CascivoSans-Regular.woff2`               | static 400       | full                  | 11.9 KB                    |
 
 "Latin" means Basic Latin, Latin-1 and common punctuation. The full charset adds Latin
 Extended-A, Romanian comma letters and combining marks. That covers Western, Central and

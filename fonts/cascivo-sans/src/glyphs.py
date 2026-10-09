@@ -907,10 +907,20 @@ def _period(g, p):
     g.sb = (0.9, 0.9)
 
 
+def comma_shape(g, d, x, top, depth):
+    """A grotesque comma: a square head one dot wide, then a tail that curves down and to the
+    left and tapers. Every curly quote is built from this (’ ” raised, ‘ “ turned), so the
+    curve is what tells them apart from the straight ' and ". A straight wedge read as ″."""
+    neck = top - d * 0.95
+    end = (x - d * 0.6, neck - depth)
+    tail = ('C', (x, neck), (x, neck - depth * 0.45), (x - d * 0.12, neck - depth * 0.8), end)
+    g.stroke([L((x, top), (x, neck)), tail], w=d, taper=(1, 0.38), caps=('b', 'b'))
+
+
 @glyph('comma', 0x2C)
 def _comma(g, p):
     d = p.dot
-    g.line((d / 2, d), (d / 2 - d * 0.18, -d * 1.25), w=d, taper=(1, 0.45), caps=('b', 'b'))
+    comma_shape(g, d, d / 2, d, d * 1.3)
     g.sb = (0.9, 0.9)
 
 
@@ -1764,13 +1774,13 @@ def m_ogonek(g, p, s):
 def m_commabelow(g, p, s):
     d = p.dot * 0.95
     ln = min(d * 2.1, 150 + d * 0.6)
-    g.line((0, -40), (-d * 0.2, -40 - ln), w=d, taper=(1, 0.45), caps=('b', 'b'))
+    comma_shape(g, d, 0, -40, ln - d)  # the same comma as , and the quotes
 
 
 def m_caronalt(g, p, s):
     d = p.dot * 0.95
     ln = min(d * 2.0, 140 + d * 0.6)
-    g.line((0, 0), (-d * 0.18, -ln), w=d, taper=(1, 0.45), caps=('b', 'b'))
+    comma_shape(g, d, 0, 0, ln - d)  # the apostrophe-like caron of ď ľ ť is a comma too
 
 
 MARKS = [
