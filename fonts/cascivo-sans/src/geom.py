@@ -299,20 +299,23 @@ def _side(stroke, sign, V, H):
 
 
 def _move_end(side, at_start, axis, value, limit):
-    """Slide a side's first/last point along its end tangent until coordinate[axis] == value.
+    """Slide a side's first/last point along its end tangent onto the cut line dot(q, axis) == value.
+    `axis` is the cut line's unit normal, or 0/1 for a vertical/horizontal cut.
 
     The slide is clamped to `limit`, so a cut that would run far along a shallow tangent
     degrades into an angled cut instead of a spike.
     """
+    if axis in (0, 1):
+        axis = (1.0, 0.0) if axis == 0 else (0.0, 1.0)
     s = side[0] if at_start else side[-1]
     p = s[1] if at_start else s[-1]
     if s[0] == 'L':
         tan = norm(sub(s[2], s[1]))
     else:
         tan = norm(sub(s[2], s[1])) if at_start else norm(sub(s[4], s[3]))
-    if abs(tan[axis]) < 0.08:
+    if abs(_dot(tan, axis)) < 0.08:
         return side
-    k = (value - p[axis]) / tan[axis]
+    k = (value - _dot(p, axis)) / _dot(tan, axis)
     # Moving *into* the stroke: trim the curve at the cut line instead of dragging the end
     # point backwards past its own handle (which loops the outline).
     inward = k > 0 if at_start else k < 0
@@ -344,10 +347,14 @@ def _move_end(side, at_start, axis, value, limit):
     return side
 
 
+def _dot(p, q):
+    return p[0] * q[0] + p[1] * q[1]
+
+
 def _cut_param(s, axis, value, at_start):
-    """Parameter where a cubic crosses coordinate[axis] == value, searched from the end being cut."""
+    """Parameter where a cubic crosses the cut line, searched from the end being cut."""
     n = 64
-    vals = [seg_point(s, j / n)[axis] - value for j in range(n + 1)]
+    vals = [_dot(seg_point(s, j / n), axis) - value for j in range(n + 1)]
     rng = range(n, 0, -1) if not at_start else range(0, n)
     for j in rng:
         a, b = (j - 1, j) if not at_start else (j, j + 1)
@@ -355,7 +362,7 @@ def _cut_param(s, axis, value, at_start):
             lo, hi = a / n, b / n
             for _ in range(40):
                 m = (lo + hi) / 2
-                if (seg_point(s, m)[axis] - value) * vals[a] > 0:
+                if (_dot(seg_point(s, m), axis) - value) * vals[a] > 0:
                     lo = m
                 else:
                     hi = m
@@ -366,6 +373,27 @@ def _cut_param(s, axis, value, at_start):
 
 def reverse_seg(s):
     return (s[0],) + tuple(reversed(s[1:]))
+
+
+# Curved terminals are cut square to the stroke up to Regular. Heavier, the cut turns toward the
+# (slanted) vertical: a square cut across a Black stroke leaving a curve at 30-50° is a long
+# diagonal facet, and an s or a reads as a lightning bolt. Geist and Inter cut their heavy
+# terminals nearly vertical. Only diagonal ends turn: a stroke ending vertically (a join at a
+# bowl's extreme) or horizontally already has a square cut that is horizontal or vertical.
+HEAVY_FROM, HEAVY_TO = 84, 178
+HEAVY_TURN = 1.0
+
+
+def _heavy_cut(tan, V, slant):
+    """Unit normal of a heavy curved terminal's cut line: the stroke's tangent turned toward the
+    normal of a vertical cut, by a share that grows with weight."""
+    k = HEAVY_TURN * min(1.0, (V - HEAVY_FROM) / (HEAVY_TO - HEAVY_FROM))
+    vn = norm((1.0, -slant))
+    if _dot(vn, tan) < 0:
+        vn = (-vn[0], -vn[1])
+    full = math.atan2(tan[0] * vn[1] - tan[1] * vn[0], _dot(tan, vn))
+    a = math.copysign(k * min(abs(full), math.pi / 2 - abs(full)), full)
+    return (tan[0] * math.cos(a) - tan[1] * math.sin(a), tan[0] * math.sin(a) + tan[1] * math.cos(a))
 
 
 def expand(stroke, V, H):
@@ -390,6 +418,21 @@ def expand(stroke, V, H):
             limit = _thick(stroke, 0 if at_start else n - 1, t, tan, V, H) * 0.6
             left = _move_end(left, at_start, axis, c[axis], limit)
             right = _move_end(right, at_start, axis, c[axis], limit)
+        elif cap == 'b' and V > HEAVY_FROM:
+            seg = stroke.segs[0] if at_start else stroke.segs[-1]
+            if seg[0] != 'C':
+                continue
+            t = 0.0 if at_start else 1.0
+            tan = seg_tangent(seg, t)
+            out = (-tan[0], -tan[1]) if at_start else tan
+            cut = _heavy_cut(out, V, stroke.slant)
+            # pivot on whichever edge ends further back, so the cut only ever trims: pivoting on
+            # the centreline pushed the other edge out into a spike
+            ends = [(sd[0][1] if at_start else sd[-1][-1]) for sd in (left, right)]
+            value = min(_dot(q, cut) for q in ends)
+            limit = _thick(stroke, 0 if at_start else n - 1, t, tan, V, H) * 0.6
+            left = _move_end(left, at_start, cut, value, limit)
+            right = _move_end(right, at_start, cut, value, limit)
     contour = list(left)
     contour.append(L(left[-1][-1], right[-1][-1]))
     contour += [reverse_seg(s) for s in reversed(right)]

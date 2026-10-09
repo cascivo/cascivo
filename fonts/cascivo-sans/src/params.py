@@ -33,7 +33,9 @@ class P:
     def __init__(self, wght, opsz, italic=False):
         self.wght, self.opsz, self.italic = wght, opsz, italic
         V = _pw(wght, [(100, 22), (400, 84), (900, 178)])  # Regular 84: Geist-like color in text
-        contrast = _pw(wght, [(100, 0.96), (400, 0.87), (900, 0.6)])
+        # heavy weights keep their horizontals: at 0.6 Black's arches, bars and s spine went thin
+        # beside the stems and letters looked pinched (Geist 0.70, Inter 0.73 at Black)
+        contrast = _pw(wght, [(100, 0.96), (400, 0.87), (900, 0.72)])
         xh, spacing, counter, k, aperture = 528, 1.0, 1.0, 0.585, 0.0
         if opsz == 8:  # caption: bigger x-height, looser, wider, flatter contrast, open apertures
             V += 5
@@ -58,15 +60,16 @@ class P:
         self.ap = aperture  # degrees added to terminal angles: + opens c/e/s/a
         # Width across weights: a UI font must not reflow when text turns bold (hover, active
         # tab), so total width may grow only ~5% per 300 weight units (Geist: 0.96x Thin, 1.11x
-        # Black). Spacing therefore stays nearly constant and the counters absorb stem growth.
-        # Sidebearings tighten slightly as stems thicken (Regular's spacing is unchanged), as in
-        # most heavy grotesques. Growing spacing made Bold set 10% wider than Regular (Geist: 7%).
-        self.S = (77.1 - 0.03 * (V - 84)) * spacing  # stem sidebearing unit (lowercase, figures, punctuation)
+        # Black). Counters absorb most of the stem growth, and spacing tightens to keep rhythm.
+        # Sidebearings tighten as stems thicken, as in every heavy grotesque: Geist and Inter lose
+        # about 30% of their Regular sidebearing by Black. Held nearly constant, Black's gaps
+        # between letters matched the space inside them and words broke into separate blobs.
+        self.S = (77.1 - (0.03 if V < 84 else 0.25) * (V - 84)) * spacing  # stem sidebearing unit (lowercase, figures, punctuation)
         self.Sc = self.S * 1.3  # capitals carry more space: their counters are bigger
         self.cw = counter
         # n is 0.82 x-heights wide at Regular (Geist 0.79, Inter 0.80). It was 0.88 with tighter
         # spacing, which set the same line length but read as wide, close-set letters.
-        self.cn = _pw(V, [(20, 374), (84, 270), (182, 140)]) * counter  # n counter
+        self.cn = _pw(V, [(20, 374), (84, 270), (182, 152)]) * counter  # n counter
         if italic:
             self.cn *= 0.95  # italics run slightly narrower: the slant already adds movement
         self.cH = self.cn * 418 / 284  # H counter, in proportion to n

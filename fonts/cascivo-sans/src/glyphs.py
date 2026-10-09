@@ -398,7 +398,11 @@ def _S(g, p, w, top, ov, pen=None, term=32):
     lap = 8
     pa, pb = (pa[0], pa[1] + lap), (pb[0], pb[1] - lap)
     dy = pa[1] - pb[1]
-    spine = ('C', pa, (pa[0], pa[1] - dy * 0.55), (pb[0], pb[1] + dy * 0.55), pb)
+    # Longer handles flatten the spine's middle (its slope there is (dy - handle) / dx). Heavy
+    # s's lie flatter, as three near-horizontal bands, the way Geist's and Inter's do.
+    heavy = max(0.0, (p.V - 90) / 88)
+    hd = dy * (0.55 + 0.2 * heavy)
+    spine = ('C', pa, (pa[0], pa[1] - hd), (pb[0], pb[1] + hd), pb)
     # The upper bowl is short, so near 0° its inner radius of curvature drops below half the
     # stroke and the inner edge must fold. The terminal sits higher, where the curve is gentle,
     # and is cut square to the stroke (a horizontal cut there would leave a sliver).
@@ -409,14 +413,16 @@ def _S(g, p, w, top, ov, pen=None, term=32):
     # hairline (1.15 H) does both. The joins sit at the bowls' vertical extremes, where every
     # pen is exactly one stem wide, so they are seamless.
     g.stroke(up, caps=('b', 'b'), pen=pen)
-    g.stroke([spine], pen=(PV, PH * 1.15))
+    # Heavier, the spine carries more: at 1.15 H a Black spine was 60% of a stem and the s read
+    # as a lightning bolt beside Geist's and Inter's near-full-weight spines.
+    g.stroke([spine], pen=(PV, PH * (1.15 + 0.1 * heavy)))
     g.stroke(lo, caps=('b', 'b'), pen=pen)
 
 
 def _s_extra(p):
     # s stacks three horizontals plus a diagonal spine inside one x-height, so it runs out of
     # counter before any other letter as weight rises; heavy weights give it extra width
-    return 0.45 * max(0.0, p.V - 90)
+    return 1.1 * max(0.0, p.V - 90)
 
 
 @glyph('S', 0x53)
@@ -696,14 +702,16 @@ def _f(g, p):
 @glyph('t', 0x74)
 def _t(g, p):
     heavy = max(0.0, (p.V - 90) / 88)
-    # the slant tightens the hook's inside curve: heavy italics need more room for it to turn
-    w = p.nw * (0.6 + (0.14 * heavy if p.italic else 0))
+    # Heavy t's widen so the hook has room to turn and the crossbar still reaches past the stem
+    # on the right; held at Regular's width, Black's hook ended in a stub at the very bottom.
+    # The slant tightens the hook's inside curve further, so the italic gets more.
+    w = p.nw * (0.6 + (0.2 if p.italic else 0.14) * heavy)
     V, H = p.V, p.H
     xs = w * 0.24 + V * 0.12
     rx = w - xs - V * 0.4
     ry = rx * 0.9
     cy = -p.ov * 0.4 + H / 2 + ry
-    g.stroke([L((xs + V / 2, p.xh + (p.asc - p.xh) * 0.62), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, 286 - 14 * max(0.0, (V - 90) / 88)), caps=('b', 'b'), taper=(1, 1 - 0.3 * max(0.0, (V - 90) / 88)))  # heavy hooks end earlier and taper, or the inner curve folds (angle stays above 270°: same segments in every master)
+    g.stroke([L((xs + V / 2, p.xh + (p.asc - p.xh) * 0.62), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, 286 - 2 * heavy), caps=('b', 'b'), taper=(1, 1 - 0.2 * heavy))  # heavy hooks end a little earlier and taper, or the inner curve folds (angle stays above 270°: same segments in every master)
     g.hbar(0, w * 0.96, p.xh - H)
     g.sb = (0.55, 0.25)  # the crossbar reaches left: 0.3 let it touch the stem before it at Black ("ht")
     g.anchors['topright_x'] = xs + V + p.S * 0.4
@@ -1282,15 +1290,41 @@ def _ampersand(g, p):
     lx0, lx1, ly0 = w * 0.1, w * 0.6, p.cap * 0.58
     g.oval(lx0, ly0, lx1, top)
     cx, cy, rx, ry = g.box(lx0, ly0, lx1, top)
-    # leg: from the loop's lower left, straight down to the foot on the right
-    a = (cx - rx * 0.55, cy - ry * 0.8)
-    g.line(a, (w - V * 0.55, 0), ws=0.96, caps=('b', 'h'))
-    # lower bowl: from under the loop, round the bottom, ending on the right
+    # leg: leaves the loop's lower left where it runs tangent to the loop, so its square start
+    # lies buried in the loop's own stroke. Started inside the loop, it poked into the small
+    # counter of heavy weights.
+    foot = (w - V * 0.55, 0)
+
+    def off_tangent(a):
+        t = math.radians(a)
+        px, py = cx + rx * math.cos(t), cy + ry * math.sin(t)
+        tx, ty = -rx * math.sin(t), ry * math.cos(t)
+        return tx * (foot[1] - py) - ty * (foot[0] - px)
+
+    lo, hi = 185.0, 265.0
+    for _ in range(40):
+        mid = (lo + hi) / 2
+        if (off_tangent(mid) > 0) == (off_tangent(lo) > 0):
+            lo = mid
+        else:
+            hi = mid
+    t = math.radians(lo)
+    g.line((cx + rx * math.cos(t), cy + ry * math.sin(t)), foot, ws=0.96, caps=('b', 'h'))
+    # lower bowl: from under the loop, round the bottom, and on into the arm in one stroke. A
+    # separate arm met the bowl end to end at an angle and showed as a broken wedge at Black.
     bx0, bx1 = 0, w * 0.86
     bcx, bcy, brx, bry = g.box(bx0, -p.ov, bx1, p.cap * 0.64)
-    g.stroke(g.arc(bcx, bcy, brx, bry, 62, 352), caps=('b', 'b'), taper=(0.7, 1))
-    e = (bcx + brx * math.cos(math.radians(-8)), bcy + bry * math.sin(math.radians(-8)))
-    g.line(e, (w, p.cap * 0.44), ws=0.9, caps=('b', 'h'))
+    bowl = g.arc(bcx, bcy, brx, bry, 62, 340)
+    e = bowl[-1][-1]
+    # the arm rises steeply and ends on a flat cut, as in Geist and Inter: run out at a shallow
+    # angle, it ended in a long flag at heavy weights
+    arm = (w - V * 0.4, p.cap * 0.5)
+    d = math.hypot(arm[0] - e[0], arm[1] - e[1])
+    t = math.radians(340)
+    tx, ty = -brx * math.sin(t), bry * math.cos(t)
+    tl = math.hypot(tx, ty)
+    swing = ('C', e, (e[0] + tx / tl * d * 0.4, e[1] + ty / tl * d * 0.4), (arm[0] - V * 0.1, arm[1] - d * 0.35), arm)
+    g.stroke(bowl + [swing], caps=('b', 'h'), taper=(0.7, 1))
     g.sb = (0.55, 0.12)
     g.ht = 'c'
 

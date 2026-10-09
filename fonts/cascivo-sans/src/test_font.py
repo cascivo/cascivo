@@ -150,6 +150,39 @@ class Font(unittest.TestCase):
             self.assertLessEqual(width(700, path) / regular, 1.09)
             self.assertLessEqual(width(900, path) / regular, 1.16)
 
+    def test_heavy_weights_keep_their_rhythm(self):
+        # Black looked spotty beside Geist and Inter: its sidebearings stayed at Regular's while
+        # the counters shrank (gap between letters = gap inside them), and its horizontals thinned
+        # to 0.6 of a stem. Both references tighten ~30% by Black and keep horizontals >= 0.7.
+        from fontTools.varLib.instancer import instantiateVariableFont
+
+        def at(w):
+            return instantiateVariableFont(TTFont(VF), {'wght': w, 'opsz': 14})
+
+        def n_sidebearing(f):
+            name = f.getBestCmap()[ord('n')]
+            g = f['glyf'][name]
+            g.recalcBounds(f['glyf'])
+            adv, lsb = f['hmtx'][name]
+            return (lsb + adv - g.xMax) / 2
+
+        def o_contrast(f):
+            name = f.getBestCmap()[ord('o')]
+            g = f['glyf'][name]
+            coords, ends, _ = g.getCoordinates(f['glyf'])
+            boxes, start = [], 0
+            for e in ends:
+                xs = [x for x, _ in coords[start:e + 1]]
+                ys = [y for _, y in coords[start:e + 1]]
+                boxes.append((min(xs), min(ys), max(xs), max(ys)))
+                start = e + 1
+            outer, inner = sorted(boxes, key=lambda b: b[2] - b[0], reverse=True)[:2]
+            return (outer[3] - inner[3]) / (inner[0] - outer[0])
+
+        regular, black = at(400), at(900)
+        self.assertLessEqual(n_sidebearing(black) / n_sidebearing(regular), 0.8)
+        self.assertGreaterEqual(o_contrast(black), 0.68)
+
     def test_kerning(self):
         try:
             import uharfbuzz as hb
