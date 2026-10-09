@@ -115,14 +115,14 @@ def _H(g, p):
     g.ht = 'c'
 
 
-@glyph('I', 0x49)
-def _I(g, p):
+@glyph('I.ss01')
+def _I_ss01(g, p):  # plain I: opt-in, it is identical to l in most grotesques
     g.vstem(0, 0, p.cap)
     g.ht = 'c'
 
 
-@glyph('I.ss01')
-def _I_ss01(g, p):
+@glyph('I', 0x49)
+def _I(g, p):  # serifed by default, so I, l and 1 never read alike in text
     e = p.cH * 0.30 + p.V * 0.2
     w = p.V + 2 * e
     g.vstem(e, 0, p.cap)
@@ -490,19 +490,20 @@ def _dotlessi(g, p):
     g.vstem(0, 0, p.xh)
 
 
-@glyph('l', 0x6C)
-def _l(g, p):
+@glyph('l.ss01')
+def _l_ss01(g, p):  # plain l: opt-in
     g.vstem(0, 0, p.asc)
     g.ht = 'a'
 
 
-@glyph('l.ss01')
-def _l_ss01(g, p):
+@glyph('l', 0x6C)
+def _l(g, p):  # tailed by default
     a = p.V / 2
-    rx = p.V * 1.15 + 40
+    # A short tail that grows slower than the stem: a long heavy tail turns ill into iʟʟ at Black
+    rx = 70 + p.V * 0.5
     ry = rx * 1.05
     cy = -p.ov * 0.4 + p.H / 2 + ry
-    g.stroke([L((a, p.asc), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, 300), caps=('b', 'b'))
+    g.stroke([L((a, p.asc), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, 290), caps=('b', 'b'))
     g.ht = 'a'
     g.sb = (1, 0.35)
 

@@ -2,7 +2,7 @@
 
 Cascivo Sans is a variable grotesque for interfaces. It is generated from a parametric stroke
 engine and licensed under the SIL Open Font License 1.1. It has three axes (weight, optical size
-and slant), tabular figures by default, and a 20 KB Latin web file.
+and slant), an unambiguous `Il1`, tabular figures on request, and a 20 KB Latin web file.
 
 Read [RESEARCH.md](./RESEARCH.md) for why it exists, how it compares with Geist, IBM Plex and
 Helvetica, and what it does not do yet.
@@ -14,9 +14,9 @@ Helvetica, and what it does not do yet.
 | `fonts/CascivoSans-Latin[wght].woff2`           | wght             | Latin                 | 19.9 KB                   |
 | `fonts/CascivoSans-Latin[opsz,wght].woff2`      | wght, opsz       | Latin                 | 27.4 KB                   |
 | `fonts/CascivoSans-Latin[opsz,slnt,wght].woff2` | wght, opsz, slnt | Latin                 | 30.7 KB                   |
-| `fonts/CascivoSans[opsz,slnt,wght].woff2`       | wght, opsz, slnt | full (365 codepoints) | 36.6 KB                   |
-| `fonts/CascivoSans[opsz,slnt,wght].ttf`         | wght, opsz, slnt | full                  | 86.8 KB (desktop install) |
-| `fonts/CascivoSans-Regular.woff2`               | static 400       | full                  | 11.0 KB                   |
+| `fonts/CascivoSans[opsz,slnt,wght].woff2`       | wght, opsz, slnt | full (365 codepoints) | 37.2 KB                   |
+| `fonts/CascivoSans[opsz,slnt,wght].ttf`         | wght, opsz, slnt | full                  | 88.2 KB (desktop install) |
+| `fonts/CascivoSans-Regular.woff2`               | static 400       | full                  | 11.1 KB                   |
 
 "Latin" means Basic Latin, Latin-1 and common punctuation. The full charset adds Latin
 Extended-A, Romanian comma letters and combining marks. That covers Western, Central and
@@ -49,14 +49,14 @@ synthesized slant.
 
 | Feature                | CSS                                        | Effect                                                                   |
 | ---------------------- | ------------------------------------------ | ------------------------------------------------------------------------ |
-| Tabular figures        | default                                    | All digits share one width, so columns align                             |
-| `pnum`                 | `font-variant-numeric: proportional-nums`  | Proportional figures for running text                                    |
+| Proportional figures   | default                                    | Figures sit naturally in running text                                    |
+| `tnum`                 | `font-variant-numeric: tabular-nums`       | All digits share one width, so columns align in tables                   |
 | `zero`                 | `font-variant-numeric: slashed-zero`       | Slashed zero                                                             |
 | `frac`                 | `font-variant-numeric: diagonal-fractions` | 1/2 → ½                                                                  |
 | `sups` / `sinf`        | `font-variant-position: super / sub`       | Real superior and inferior figures                                       |
 | `ordn`                 | `font-variant-numeric: ordinal`            | 1a → 1ª                                                                  |
 | `case`                 | `font-feature-settings: 'case'`            | Hyphens, parentheses and guillemets centred on capitals                  |
-| `ss01`                 | `font-feature-settings: 'ss01'`            | Serifed `I`, tailed `l`: makes `Il1` unambiguous for codes and passwords |
+| `ss01`                 | `font-feature-settings: 'ss01'`            | Plain `I` and `l` (as in Helvetica), including every accented form       |
 | `locl`                 | `lang="ro"`                                | Ş ţ → Ș ț (comma below) for Romanian and Moldovan                        |
 | `kern`, `mark`, `ccmp` | default                                    | Class kerning, and accents placed on any base, including decomposed text |
 

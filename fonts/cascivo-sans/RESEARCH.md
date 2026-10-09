@@ -72,9 +72,9 @@ The targets are the axes where the references leave room:
    x-height, looser spacing, flatter contrast and more open apertures. The Display cut is tighter
    and crisper. Before this, you could get optical sizes in a Helvetica-like font only with
    Helvetica Now Variable, which is commercial.
-2. **UI defaults.** Tabular figures by default, so numbers line up in tables. `pnum` gives
-   proportional figures for running text, `zero` gives a slashed zero, and `ss01` makes `I` and
-   `l` unambiguous. `case`, `frac`, `sups`, `sinf`, `ordn` and `mark` are also included.
+2. **UI defaults.** A serifed `I` and tailed `l` by default, so `Il1` never read alike.
+   Proportional figures by default for running text; `tnum` lines numbers up in tables, `zero`
+   gives a slashed zero, and `ss01` restores the plain `I` and `l`. `case`, `frac`, `sups`, `sinf`, `ordn` and `mark` are also included.
 3. **Small files, by construction.** The aim is the lowest bytes per codepoint of the group.
 4. **Source as code.** About 3,000 lines of Python that produce byte-identical output on every
    build. A test suite, Font Bakery and OTS run in the loop.
@@ -143,7 +143,7 @@ have fewer points than outlines drawn and refined by hand.
 | Dimension       | Cascivo Sans                                                                                                       | Verdict                                                                                                                        |
 | --------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
 | Axes            | wght 100–900, **opsz 8–48**, slnt −12–0                                                                            | **Ahead** of Geist and Plex. Matches Helvetica Now Variable on opsz, under OFL. No `wdth`                                      |
-| UI features     | tnum (default), pnum, zero, ss01, case, frac, sups, sinf, subs, numr, dnom, ordn, locl (ROM/MOL), ccmp, kern, mark | **On par.** Geist has more stylistic sets; Plex has `onum`/`salt`                                                              |
+| UI features     | pnum (default), tnum, zero, ss01, case, frac, sups, sinf, subs, numr, dnom, ordn, locl (ROM/MOL), ccmp, kern, mark | **On par.** Geist has more stylistic sets; Plex has `onum`/`salt`                                                              |
 | Validation      | Font Bakery universal: 0 fail, 2 intentional warnings. OTS: all six files pass                                     | **On par or ahead.** Validation runs in the test suite, not just at release                                                    |
 | Reproducibility | Byte-identical rebuilds (`SOURCE_DATE_EPOCH`), parametric source, 3.5 s build                                      | **Ahead.** No GUI source files, and diffs are reviewable                                                                       |
 | Coverage        | Latin-1 + Latin Extended-A + Romanian (365 codepoints)                                                             | **Behind.** No Cyrillic, Greek or Vietnamese. Plex covers many scripts                                                         |
@@ -238,6 +238,22 @@ first. Second, `$` thins its S and bar with weight, because it shares a fixed ta
 Texture evenness (the spread of ink density across the lowercase) is 0.150, against 0.151 for
 Geist and 0.142 for Inter. Overall color at Regular is darker: 0.43 ink per x-height square,
 against 0.39 for Geist and 0.43 for Helvetica.
+
+## 8. Running-text review
+
+The font was first tuned for tables and interfaces. A review of body text against Geist, Inter,
+Plex and the Helvetica stand-in led to three changes:
+
+| Issue                 | Before                                                      | After                                                                                                                                                                                                        |
+| --------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Figures in sentences  | Tabular by default: "$1, 117" and "11 illegal" looked gappy | Proportional by default, as in Geist and Inter. `tnum` gives tabular figures, and every figure feature (`frac`, `sups`, `ordn`, `zero`) accepts both forms                                                   |
+| `line-height: normal` | 1.22                                                        | 1.30, as in Geist and Plex. The space sits in ascent and descent, so it is split evenly above and below the text                                                                                             |
+| `I` vs `l` at 12 px   | Identical, as in Geist and Inter                            | Serifed `I` and short-tailed `l` by default. The tail grows slower than the stem, so a Black `ill` does not read as `iʟʟ`. `ss01` restores the plain forms, including all 17 accented and composite variants |
+
+Still open for body text: Regular is darker than Geist and Inter (ink 0.434 against 0.39), and
+Bold stands out less (1.31× Regular against 1.45×). A lighter Regular (stem 84, same widths)
+measures 0.406 and 1.36×. It is a proposal, not yet applied. Beyond that, the remaining gaps
+are a drawn italic, a broader kerning set, and a test on low-DPI screens.
 
 ## Sources
 

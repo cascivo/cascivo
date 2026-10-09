@@ -126,8 +126,13 @@ def add_composites(o):
     cadv = o.adv['comma']
     comp('commaturnedabovecomb', [('commaaccentcomb', 0, -40, -1)], 0)
 
-    for ch, base, marks in accented_chars():
-        b = {'i': 'dotlessi', 'j': 'dotlessj'}.get(base, base)
+    # Every accented I and l also gets a plain variant, so ss01 switches Í and ľ along with I
+    # and l instead of leaving a mixed word.
+    accents = accented_chars()
+    accents += [(ch, base, marks, '.ss01') for ch, base, marks in accents if base in 'Il']
+    for ch, base, marks, *alt in accents:
+        sfx = alt[0] if alt else ''
+        b = {'i': 'dotlessi', 'j': 'dotlessj'}.get(base, base) + sfx
         parts = [(b, 0, 0, 1)]
         for m in marks:
             if m == 'caroncomb.alt':
@@ -141,8 +146,8 @@ def add_composites(o):
                 mk = m + '.case' if base.isupper() else m
                 bx, by = o.anchors[b]['top']
                 parts.append((mk, bx, by + (len(parts) - 1) * 0, 1))
-        comp(glyph_name(ch), parts, o.adv[b], ord(ch))
-        o.anchors[glyph_name(ch)] = o.anchors[b]
+        comp(glyph_name(ch) + sfx, parts, o.adv[b], None if sfx else ord(ch))
+        o.anchors[glyph_name(ch) + sfx] = o.anchors[b]
 
     S = p.S
     ov = lambda name: o.adv[name]  # noqa: E731
@@ -171,17 +176,20 @@ def add_composites(o):
     comp('tbar', [('t', 0, 0, 1), ('barcomp.t', tx, 0, 1)], ov('t'), 0x167)
     stem = o.bounds['L'][0] + p.V / 2
     comp('Lslash', [('L', S * 0.5, 0, 1), ('lslash.comp', stem + S * 0.5, 0, 1)], ov('L') + S * 0.5, 0x141)
-    stem = o.bounds['l'][0] + p.V / 2
-    comp('lslash', [('l', S * 0.6, 0, 1), ('lslash.comp', stem + S * 0.6, 0, 1)], ov('l') + S * 1.2, 0x142)
+    for sfx in ('', '.ss01'):
+        stem = o.bounds['l' + sfx][0] + p.V / 2
+        comp('lslash' + sfx, [('l' + sfx, S * 0.6, 0, 1), ('lslash.comp', stem + S * 0.6, 0, 1)], ov('l' + sfx) + S * 1.2, None if sfx else 0x142)
     comp('Ldot', [('L', 0, 0, 1), ('periodcentered', o.bounds['L'][0] + p.V + S * 0.5 - S * 0.9, p.cap * 0.5 - p.xh * 0.5, 1)], ov('L'), 0x13F)
-    comp('ldot', [('l', 0, 0, 1), ('periodcentered', ov('l') - S * 0.6, 0, 1)], ov('l') + ov('periodcentered') - S * 0.6, 0x140)
+    for sfx in ('', '.ss01'):
+        comp('ldot' + sfx, [('l' + sfx, 0, 0, 1), ('periodcentered', ov('l' + sfx) - S * 0.6, 0, 1)], ov('l' + sfx) + ov('periodcentered') - S * 0.6, None if sfx else 0x140)
     comp('Oslash', [('O', 0, 0, 1), ('slashcomp.cap', o.bounds['O'][0], 0, 1)], ov('O'), 0xD8)
     comp('oslash', [('o', 0, 0, 1), ('slashcomp.lc', o.bounds['o'][0], 0, 1)], ov('o'), 0xF8)
     ox = o.bounds['O'][2] - p.V * 1.15 - o.bounds['E'][0]
     comp('OE', [('O', 0, 0, 1), ('E', ox, 0, 1)], ox + ov('E'), 0x152)
     ox = o.bounds['o'][2] - p.V * 1.2 - o.bounds['e'][0]
     comp('oe', [('o', 0, 0, 1), ('e', ox, 0, 1)], ox + ov('e'), 0x153)
-    comp('IJ', [('I', 0, 0, 1), ('J', ov('I') - S * 0.4, 0, 1)], ov('I') + ov('J') - S * 0.4, 0x132)
+    for sfx in ('', '.ss01'):
+        comp('IJ' + sfx, [('I' + sfx, 0, 0, 1), ('J', ov('I' + sfx) - S * 0.4, 0, 1)], ov('I' + sfx) + ov('J') - S * 0.4, None if sfx else 0x132)
     comp('ij', [('i', 0, 0, 1), ('j', ov('i') - S * 0.4, 0, 1)], ov('i') + ov('j') - S * 0.4, 0x133)
     comp('napostrophe', [('quoteright', 0, 0, 1), ('n', cadv - S * 0.4, 0, 1)], cadv - S * 0.4 + ov('n'), 0x149)
 
@@ -207,6 +215,11 @@ def add_composites(o):
         comp(f + '.numr', [(f, lx, sup_y, k)], sw)
         comp(f + '.dnom', [(f, lx, 0, k)], sw)
     comp('zero.zero.pnum', [('zero.slash', S * 0.62 - o.bounds['zero.slash'][0], 0, 1)], o.adv['zero.pnum'])
+    # 1. Proportional figures by default: running text is the common case, and a tabular "1"
+    # in a sentence leaves a hole ("$1, 117"). Tables opt in with font-variant-numeric:
+    # tabular-nums, which cascivo's own table components already set.
+    for f in figs:
+        o.cmap[ord('0') + figs.index(f)] = f + '.pnum'
     o.cmap[0xB9] = 'one.sups'
     o.cmap[0xB2] = 'two.sups'
     o.cmap[0xB3] = 'three.sups'
@@ -385,25 +398,21 @@ feature locl {
 } locl;
 
 feature pnum { sub @figs by @pnum; sub zero.slash by zero.zero.pnum; } pnum;
-feature tnum { sub @pnum by @figs; } tnum;
+feature tnum { sub @pnum by @figs; sub zero.zero.pnum by zero.slash; } tnum;
 feature zero { sub zero by zero.slash; sub zero.pnum by zero.zero.pnum; } zero;
-feature sups { sub @figs by @sups; } sups;
-feature sinf { sub @figs by @sinf; } sinf;
-feature subs { sub @figs by @sinf; } subs;
-feature numr { sub @figs by @numr; } numr;
-feature dnom { sub @figs by @dnom; } dnom;
+feature sups { sub @figs by @sups; sub @pnum by @sups; } sups;
+feature sinf { sub @figs by @sinf; sub @pnum by @sinf; } sinf;
+feature subs { sub @figs by @sinf; sub @pnum by @sinf; } subs;
+feature numr { sub @figs by @numr; sub @pnum by @numr; } numr;
+feature dnom { sub @figs by @dnom; sub @pnum by @dnom; } dnom;
 feature frac {
-  lookup FRAC_NUMR { sub @figs by @numr; } FRAC_NUMR;
+  lookup FRAC_NUMR { sub @figs by @numr; sub @pnum by @numr; } FRAC_NUMR;
   lookup FRAC_SLASH { sub slash by fraction; } FRAC_SLASH;
   lookup FRAC_DNOM { sub [fraction @dnom] @numr' by @dnom; } FRAC_DNOM;
 } frac;
-feature ordn { sub @figs [a o]' by [ordfeminine ordmasculine]; } ordn;
+feature ordn { sub [@figs @pnum] [a o]' by [ordfeminine ordmasculine]; } ordn;
 feature case { sub @case_in by @case_out; } case;
 
-feature ss01 {
-  featureNames { name "Disambiguation: serifed I, tailed l"; };
-  sub I by I.ss01; sub l by l.ss01;
-} ss01;
 """
 
 
@@ -421,7 +430,9 @@ def build_master_font(o, glyf, order):
         adv = 500 if n == '.notdef' else o.adv[n]
         metrics[n] = (adv, getattr(g, 'xMin', 0))
     fb.setupHorizontalMetrics(metrics)
-    fb.setupHorizontalHeader(ascent=960, descent=-260, lineGap=0)
+    # 1.30 em default line box (Geist and Plex: 1.30). The space sits in ascent/descent rather
+    # than lineGap, so it is split evenly above and below the text in every engine.
+    fb.setupHorizontalHeader(ascent=1000, descent=-300, lineGap=0)
     fb.setupNameTable({
         'familyName': FAMILY,
         'styleName': 'Regular',
@@ -436,7 +447,7 @@ def build_master_font(o, glyf, order):
         'designer': 'cascivo (generated from parametric source)',
     }, mac=False)
     fb.setupOS2(version=4, 
-        sTypoAscender=960, sTypoDescender=-260, sTypoLineGap=0,
+        sTypoAscender=1000, sTypoDescender=-300, sTypoLineGap=0,
         usWinAscent=1000, usWinDescent=300, sxHeight=round(p.xh), sCapHeight=p.cap,
         usWeightClass=p.wght, achVendID='CSCV', fsType=0, fsSelection=0x40 | 0x80,
         ulUnicodeRange1=(1 << 0) | (1 << 1) | (1 << 2), ulCodePageRange1=(1 << 0) | (1 << 1),
@@ -444,7 +455,10 @@ def build_master_font(o, glyf, order):
         ySubscriptYOffset=140, ySuperscriptYOffset=round(p.cap * 0.4),
     )
     fb.setupPost(keepGlyphNames=True, underlinePosition=-110, underlineThickness=round(p.H))
-    fea = GSUB_FEA + '\n' + kern_fea(o) + '\n' + mark_fea(o)
+    ss01 = sorted(n[:-5] for n in o.comps.keys() | o.contours.keys() if n.endswith('.ss01') and n[:-5] in o.adv)
+    fea = GSUB_FEA + '\nfeature ss01 {\n  featureNames { name "Plain I and l (as in Helvetica)"; };\n'
+    fea += ''.join(f'  sub {n} by {n}.ss01;\n' for n in ss01) + '} ss01;\n'
+    fea += '\n' + kern_fea(o) + '\n' + mark_fea(o)
     addOpenTypeFeaturesFromString(fb.font, fea)
     # smart dropout control: keeps thin strokes from vanishing in unhinted rasterization
     prep = newTable('prep')

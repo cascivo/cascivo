@@ -56,10 +56,25 @@ class Font(unittest.TestCase):
         self.assertLessEqual({'ccmp', 'locl', 'pnum', 'tnum', 'zero', 'sups', 'sinf', 'subs', 'numr', 'dnom', 'frac', 'ordn', 'case', 'ss01'}, gsub)
         self.assertLessEqual({'kern', 'mark'}, gpos)
 
-    def test_tabular_figures_by_default(self):
+    def test_figures_proportional_by_default_tabular_on_request(self):
         cmap, hmtx = self.f.getBestCmap(), self.f['hmtx']
-        widths = {hmtx[cmap[ord(c)]][0] for c in '0123456789'}
-        self.assertEqual(len(widths), 1)
+        default = {hmtx[cmap[ord(c)]][0] for c in '0123456789'}
+        self.assertGreater(len(default), 1, 'running text should get proportional figures')
+        tnum = {}
+        for fr in self.f['GSUB'].table.FeatureList.FeatureRecord:
+            if fr.FeatureTag == 'tnum':
+                for li in fr.Feature.LookupListIndex:
+                    for st in self.f['GSUB'].table.LookupList.Lookup[li].SubTable:
+                        tnum.update(st.mapping)
+        tabular = {hmtx[tnum[cmap[ord(c)]]][0] for c in '0123456789'}
+        self.assertEqual(len(tabular), 1, 'tnum must give every figure one width')
+
+    def test_default_line_height(self):
+        os2, upm = self.f['OS/2'], self.f['head'].unitsPerEm
+        self.assertTrue(os2.fsSelection & (1 << 7), 'USE_TYPO_METRICS')
+        self.assertAlmostEqual((os2.sTypoAscender - os2.sTypoDescender + os2.sTypoLineGap) / upm, 1.30, places=2)
+        hhea = self.f['hhea']
+        self.assertAlmostEqual((hhea.ascent - hhea.descent + hhea.lineGap) / upm, 1.30, places=2)
 
     def test_weight_changes_do_not_reflow_text(self):
         # Bold on hover or an active tab must not rewrap a line. Geist spans 0.96x-1.11x of its
