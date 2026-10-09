@@ -10,6 +10,8 @@ what a variable font needs.
 
 import math
 
+from params import BLACK_STEM
+
 Pt = tuple  # (x, y)
 
 
@@ -176,10 +178,13 @@ class Stroke:
            used for the thinned joins where an arch leaves a stem.
     w: constant thickness override (dots, hairline marks); ws: scale on the angle pen.
     slant: tan of the italic angle; the pen's stress axis leans by it (0 upright).
+    cut: which way a heavy curved terminal's cut turns: 'v' toward vertical (s, a, r, f...) or
+         'h' toward horizontal (c, e: a vertical cut there narrows the aperture to a slit).
     """
 
-    def __init__(self, segs, caps=('b', 'b'), taper=(1.0, 1.0), w=None, ws=1.0, closed=False, pen=None, slant=0.0):
+    def __init__(self, segs, caps=('b', 'b'), taper=(1.0, 1.0), w=None, ws=1.0, closed=False, pen=None, slant=0.0, cut='v'):
         self.segs = segs
+        self.cut = cut
         self.slant = slant
         self.caps = caps
         self.taper = taper
@@ -190,7 +195,7 @@ class Stroke:
 
     def transformed(self, f, slant=None):
         segs = [(s[0],) + tuple(f(p) for p in s[1:]) for s in self.segs]
-        return Stroke(segs, self.caps, self.taper, self.w, self.ws, self.closed, self.pen, self.slant if slant is None else slant)
+        return Stroke(segs, self.caps, self.taper, self.w, self.ws, self.closed, self.pen, self.slant if slant is None else slant, self.cut)
 
 
 def pen_thickness(tangent, V, H, slant=0.0):
@@ -380,19 +385,22 @@ def reverse_seg(s):
 # diagonal facet, and an s or a reads as a lightning bolt. Geist and Inter cut their heavy
 # terminals nearly vertical. Only diagonal ends turn: a stroke ending vertically (a join at a
 # bowl's extreme) or horizontally already has a square cut that is horizontal or vertical.
-HEAVY_FROM, HEAVY_TO = 84, 178
+HEAVY_FROM, HEAVY_TO = 84, BLACK_STEM
 HEAVY_TURN = 1.0
 
 
-def _heavy_cut(tan, V, slant):
+def _heavy_cut(tan, V, slant, cut='v'):
     """Unit normal of a heavy curved terminal's cut line: the stroke's tangent turned toward the
-    normal of a vertical cut, by a share that grows with weight."""
+    normal of a vertical (or, for cut='h', horizontal) cut, by a share that grows with weight."""
     k = HEAVY_TURN * min(1.0, (V - HEAVY_FROM) / (HEAVY_TO - HEAVY_FROM))
-    vn = norm((1.0, -slant))
+    vn = norm((1.0, -slant)) if cut == 'v' else (0.0, 1.0)
     if _dot(vn, tan) < 0:
         vn = (-vn[0], -vn[1])
     full = math.atan2(tan[0] * vn[1] - tan[1] * vn[0], _dot(tan, vn))
-    a = math.copysign(k * min(abs(full), math.pi / 2 - abs(full)), full)
+    # a horizontal-leaning cut turns only halfway: c and e terminals sit near 45°, where a flat
+    # cut leaves a sharp tip pointing into the counter (Geist and Inter cut about 20° off flat)
+    share = k if cut == 'v' else k * 0.5
+    a = math.copysign(share * min(abs(full), math.pi / 2 - abs(full)), full)
     return (tan[0] * math.cos(a) - tan[1] * math.sin(a), tan[0] * math.sin(a) + tan[1] * math.cos(a))
 
 
@@ -425,7 +433,7 @@ def expand(stroke, V, H):
             t = 0.0 if at_start else 1.0
             tan = seg_tangent(seg, t)
             out = (-tan[0], -tan[1]) if at_start else tan
-            cut = _heavy_cut(out, V, stroke.slant)
+            cut = _heavy_cut(out, V, stroke.slant, stroke.cut)
             # pivot on whichever edge ends further back, so the cut only ever trims: pivoting on
             # the centreline pushed the other edge out into a spike
             ends = [(sd[0][1] if at_start else sd[-1][-1]) for sd in (left, right)]

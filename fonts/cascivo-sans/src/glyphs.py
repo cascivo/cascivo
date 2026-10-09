@@ -385,7 +385,8 @@ def _S(g, p, w, top, ov, pen=None, term=32):
     """S/s/$ spine: upper arc, a cubic spine at full stem weight, lower arc."""
     V, H = p.V, p.H
     yb, yt = -ov, top + ov
-    hu = (yt - yb) * 0.47  # upper bowl height (outer)
+    # upper bowl height (outer); Black gives it more, or its counter closes under the heavier pen
+    hu = (yt - yb) * (0.47 + 0.03 * p.heavy)
     wu = w * 0.94
     PV, PH = pen if pen else (V, H)
     cxu, cyu, rxu, ryu = g.box(w * 0.03, yt - hu, w * 0.03 + wu, yt, PV, PH)
@@ -400,7 +401,7 @@ def _S(g, p, w, top, ov, pen=None, term=32):
     dy = pa[1] - pb[1]
     # Longer handles flatten the spine's middle (its slope there is (dy - handle) / dx). Heavy
     # s's lie flatter, as three near-horizontal bands, the way Geist's and Inter's do.
-    heavy = max(0.0, (p.V - 90) / 88)
+    heavy = p.heavy
     hd = dy * (0.55 + 0.2 * heavy)
     spine = ('C', pa, (pa[0], pa[1] - hd), (pb[0], pb[1] + hd), pb)
     # The upper bowl is short, so near 0° its inner radius of curvature drops below half the
@@ -594,9 +595,9 @@ def _o(g, p):
 
 @glyph('c', 0x63)
 def _c(g, p):
-    w = p.nw * 0.98
+    w = p.nw * (0.98 + 0.08 * p.heavy)  # heavy c widens, or its counter pinches to a slot
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov)
-    g.stroke(g.arc(cx, cy, rx, ry, 44 + p.ap, 316 - p.ap), caps=('b', 'b'))
+    g.stroke(g.arc(cx, cy, rx, ry, 44 + p.ap, 316 - p.ap), caps=('b', 'b'), cut='h')
     g.sb = (0.62, 0.42)
 
 
@@ -605,7 +606,7 @@ def _e(g, p):
     w = p.nw * 1.06
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov)
     yb = cy  # flush with where the bowl stroke ends, or its butt end shows below the bar
-    g.stroke(g.arc(cx, cy, rx, ry, 0, 322 - p.ap), caps=('b', 'b'))
+    g.stroke(g.arc(cx, cy, rx, ry, 0, 322 - p.ap), caps=('b', 'b'), cut='h')
     # ends on the bowl's centreline, so the bowl stroke covers it; in the italic the stroke's end
     # is cut on a slant, so the bar stops short of it
     g.hbar(cx - rx, cx + rx - (p.V * 0.18 if p.italic else 0), yb, h=p.bar)
@@ -630,9 +631,12 @@ def _a(g, p):
     cyt = p.xh + p.ov * 0.5 - H / 2 - ryt
     g.stroke([L((xs, 0), (xs, cyt))] + g.arc(cxt, cyt, rxt, ryt, 0, 154 - p.ap), caps=('b', 'b'))
     # bowl
-    ybt = p.xh * (0.57 + 0.05 * max(0.0, (p.V - 90) / 88))  # heavy a: lift the bowl so it keeps a counter
-    yt = ybt - H / 2
-    ybot = -p.ov + H / 2
+    # Heavy a: the bowl rises, and its top and bottom thin like a crossbar (p.bar), or its
+    # counter shrinks to a slit. Geist and Inter keep a tall teardrop counter at Black.
+    ybt = p.xh * (0.57 + 0.08 * p.heavy)
+    Hb = p.bar
+    yt = ybt - Hb / 2
+    ybot = -p.ov + Hb / 2
     ryb = (yt - ybot) / 2
     rxb = (xs - V / 2) / 2 * 0.94
     cxb = V / 2 + rxb
@@ -640,11 +644,12 @@ def _a(g, p):
     # The bowl leaves its curve at 322° and runs straight along that tangent into the stem
     # centre. A round bowl meeting a stem always grazes the stem's foot about 20 units above
     # the baseline; a diagonal join (as in Geist) lifts the junction clear of it.
-    bowl = g.arc(cxb, cyb, rxb, ryb, 90, 322)
+    # heavy bowls stay round further before the join, or its straight run nicks the counter
+    bowl = g.arc(cxb, cyb, rxb, ryb, 90, 322 + 12 * p.heavy)
     end = bowl[-1][-1]
     tx, ty = end[0] - bowl[-1][-2][0], end[1] - bowl[-1][-2][1]
     join = (xs, end[1] + (xs - end[0]) * ty / tx)
-    g.stroke([L((xs, yt), (cxb, yt))] + bowl + [L(end, join)], taper=(1, 0.8))
+    g.stroke([L((xs, yt), (cxb, yt))] + bowl + [L(end, join)], taper=(1, 0.8), pen=(V, Hb))
     g.sb = (0.55, 1)
 
 
@@ -663,7 +668,7 @@ def _f_hook(p):
     # Heavier weights end the hook higher: near its tip the hook turns tighter than half a Black
     # stroke, and the inner edge folds into a pinhole. The angle stays in one quadrant, so the
     # outline structure (and master compatibility) is unchanged.
-    end = 38 + 34 * max(0.0, (p.V - 90) / 88)
+    end = 38 + 34 * p.heavy
     rx = (w * 0.96 - xs - p.V / 2) / (1 + math.cos(math.radians(end))) + p.V * 0.15
     return w, xs, end, rx
 
@@ -701,7 +706,7 @@ def _f(g, p):
 
 @glyph('t', 0x74)
 def _t(g, p):
-    heavy = max(0.0, (p.V - 90) / 88)
+    heavy = p.heavy
     # Heavy t's widen so the hook has room to turn and the crossbar still reaches past the stem
     # on the right; held at Regular's width, Black's hook ended in a stub at the very bottom.
     # The slant tightens the hook's inside curve further, so the italic gets more.
@@ -709,9 +714,11 @@ def _t(g, p):
     V, H = p.V, p.H
     xs = w * 0.24 + V * 0.12
     rx = w - xs - V * 0.4
-    ry = rx * 0.9
+    # heavy feet turn lower and flatter, toward Geist's and Inter's tight foot; flatter still and
+    # the inside of the turn folds
+    ry = rx * (0.9 - 0.25 * heavy)
     cy = -p.ov * 0.4 + H / 2 + ry
-    g.stroke([L((xs + V / 2, p.xh + (p.asc - p.xh) * 0.62), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, 286 - 2 * heavy), caps=('b', 'b'), taper=(1, 1 - 0.2 * heavy))  # heavy hooks end a little earlier and taper, or the inner curve folds (angle stays above 270°: same segments in every master)
+    g.stroke([L((xs + V / 2, p.xh + (p.asc - p.xh) * 0.62), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, 286 - 2 * heavy), caps=('b', 'b'))  # the end angle stays above 270°: same segments in every master
     g.hbar(0, w * 0.96, p.xh - H)
     g.sb = (0.55, 0.25)  # the crossbar reaches left: 0.3 let it touch the stem before it at Black ("ht")
     g.anchors['topright_x'] = xs + V + p.S * 0.4
@@ -1263,7 +1270,7 @@ def _numbersign(g, p):
 def _dollar(g, p):
     w = fw(p) * 0.98
     # a bar through an S on a tabular width: both thin with weight, or the Black $ fills in
-    k = 1 - 0.2 * max(0.0, (p.V - 90) / 88)
+    k = 1 - 0.2 * p.heavy
     _S(g, p, w, p.cap, p.ov, pen=(p.V * k, p.H * k))
     g.line((w * 0.52, -p.ov - 90), (w * 0.52, p.cap + p.ov + 90), w=p.V * 0.72 * k)
     g.tab = True
@@ -1404,7 +1411,7 @@ def _currency(g, p):
 def _cent(g, p):
     w = fw(p) * 0.92
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov + 40)
-    g.stroke(g.arc(cx, cy, rx, ry, 44 + p.ap, 316 - p.ap), caps=('b', 'b'))
+    g.stroke(g.arc(cx, cy, rx, ry, 44 + p.ap, 316 - p.ap), caps=('b', 'b'), cut='h')
     g.line((w * 0.53, -110), (w * 0.53, p.xh + 150), w=p.V * 0.72)
     g.tab = True
 
@@ -1677,7 +1684,7 @@ def _ae(g, p):
 def _ae_e(g, p, x0):
     """The e half of æ, its left side sharing the a's stem."""
     cx, cy, rx, ry = g.box(x0, -p.ov, x0 + p.nw * 0.96, p.xh + p.ov)
-    g.stroke(g.arc(cx, cy, rx, ry, 0, 322 - p.ap), caps=('b', 'b'))
+    g.stroke(g.arc(cx, cy, rx, ry, 0, 322 - p.ap), caps=('b', 'b'), cut='h')
     g.hbar(cx - rx, cx + rx + (-p.V * 0.18 if p.italic else p.V / 2), cy + 2)
 
 

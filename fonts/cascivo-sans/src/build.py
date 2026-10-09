@@ -32,7 +32,7 @@ from composites import BOTTOM, SPECIAL, accented_chars, glyph_name  # noqa: E402
 from geom import contour_bounds, expand, transform_contour  # noqa: E402
 import kern  # noqa: E402
 from kern import kern_fea  # noqa: E402
-from params import ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, P  # noqa: E402
+from params import BLACK_STEM, ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, P  # noqa: E402
 
 FAMILY = 'Cascivo Sans'
 PS = 'CascivoSans'
@@ -495,11 +495,11 @@ def build_master_font(o, glyf, order):
     return fb.font
 
 
-# Stem at each named weight (Regular 84, Black 178 are the masters). The light half uses equal
+# Stem at each named weight (Regular 84 and Black are the masters). The light half uses equal
 # stem *ratios*, since linear interpolation crowds it (Thin->ExtraLight is a doubling). The heavy
 # half front-loads weight as Geist and Inter do, so Bold reads as clearly bold next to Regular:
 # with equal ratios Bold's stem was 132 and it was only 1.31x as dark as Regular (Geist 1.45x).
-NAMED_STEMS = [(100, 22), (200, 34.4), (300, 53.7), (400, 84), (500, 104), (600, 124), (700, 144), (800, 163), (900, 178)]
+NAMED_STEMS = [(100, 22), (200, 34.4), (300, 53.7), (400, 84), (500, 104), (600, 124), (700, 144), (800, 168), (900, BLACK_STEM)]
 
 
 def _wght_map():
@@ -509,7 +509,7 @@ def _wght_map():
         if stem <= 84:
             d = 100 + (stem - 22) / (84 - 22) * 300
         else:
-            d = 400 + (stem - 84) / (178 - 84) * 500
+            d = 400 + (stem - 84) / (BLACK_STEM - 84) * 500
         out.append((w, round(d, 1)))
     return out
 

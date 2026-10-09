@@ -10,6 +10,9 @@ adds their deltas, which keeps a two-axis family to five masters instead of a 3Ã
 import math
 
 DEFAULT = dict(wght=400, opsz=14)
+# Black's stem: 36% of the x-height, as Geist's and Inter's Black. At 178 (34%) Black was
+# visibly lighter than both.
+BLACK_STEM = 190
 ITALIC_ANGLE = 10  # degrees; Plex and Inter italics sit near 10-11
 
 MASTERS = [
@@ -32,7 +35,7 @@ def _pw(x, table):
 class P:
     def __init__(self, wght, opsz, italic=False):
         self.wght, self.opsz, self.italic = wght, opsz, italic
-        V = _pw(wght, [(100, 22), (400, 84), (900, 178)])  # Regular 84: Geist-like color in text
+        V = _pw(wght, [(100, 22), (400, 84), (900, BLACK_STEM)])  # Regular 84: Geist-like color in text
         # heavy weights keep their horizontals: at 0.6 Black's arches, bars and s spine went thin
         # beside the stems and letters looked pinched (Geist 0.70, Inter 0.73 at Black)
         contrast = _pw(wght, [(100, 0.96), (400, 0.87), (900, 0.72)])
@@ -50,7 +53,7 @@ class P:
         self.V = V
         self.H = V * contrast
         # crossbars (e, A, H...) thin faster than bowls as weight rises, or heavy counters close
-        self.bar = self.H * (1 - 0.22 * max(0.0, (V - 90) / 88))
+        self.bar = self.H * (1 - 0.22 * self.heavy)
         self.cap = 700
         self.asc = 742
         self.desc = -212
@@ -69,7 +72,7 @@ class P:
         self.cw = counter
         # n is 0.82 x-heights wide at Regular (Geist 0.79, Inter 0.80). It was 0.88 with tighter
         # spacing, which set the same line length but read as wide, close-set letters.
-        self.cn = _pw(V, [(20, 374), (84, 270), (182, 152)]) * counter  # n counter
+        self.cn = _pw(V, [(20, 374), (84, 270), (BLACK_STEM + 4, 145)]) * counter  # n counter
         if italic:
             self.cn *= 0.95  # italics run slightly narrower: the slant already adds movement
         self.cH = self.cn * 418 / 284  # H counter, in proportion to n
@@ -77,6 +80,12 @@ class P:
         self.mt = V * 0.86 + 6  # accent stroke
         self.fig_adv = round(580 + 0.55 * (V - 90) + (spacing - 1) * 60)  # tabular figure advance
         self.slant = math.tan(math.radians(ITALIC_ANGLE)) if italic else 0.0
+
+    @property
+    def heavy(self):
+        """0 up to Regular, 1 at Black: how far a heavy-weight adjustment applies. The variable
+        font has masters only at Regular and Black, so only those two values ever take effect."""
+        return max(0.0, (self.V - 90) / (BLACK_STEM - 90))
 
     @property
     def nw(self):
