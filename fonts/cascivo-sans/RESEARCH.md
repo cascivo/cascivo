@@ -452,7 +452,7 @@ The `a`, `r`, `f`, `j` and `y` keep the vertical turn.
 | `G`                 | ink 0.85                 | ink 0.91                 | terminal runs further round                           |
 | `S`                 | width 1.12, ink 0.77     | width 1.02, ink 0.86     | half the `s`'s extra width, heavier spine             |
 | `3`                 | width 0.80, ink 0.80     | width 1.04, ink 0.91     | 8% wider, terminals run further round                 |
-| `5`                 | ink 0.84                 | ink 0.88                 | terminal runs further round                           |
+| `5`                 | ink 0.84                 | ink 0.89                 | terminal runs further round                           |
 | `e`                 | counter 0.30             | counter 1.05             | the bar drops half its height, opening the eye        |
 | `A`                 | counter 0.38, width 0.93 | counter 0.84, width 0.98 | wider, bar lower                                      |
 | `4`                 | counter 0.29             | counter 1.17             | bar lower, lighter diagonal meeting the stem's middle |
