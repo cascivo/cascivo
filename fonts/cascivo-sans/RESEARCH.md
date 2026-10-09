@@ -98,12 +98,10 @@ at each named weight. The light half uses equal stem _ratios_, because a linear 
 (Thin→ExtraLight is a doubling). The heavy half puts more weight into 500–700, as Geist and Inter
 do, so Bold is clearly bold next to Regular.
 
-**Measured kerning, curated pair list.** For each class pair, the gap between glyph profiles
-is measured in 10-unit bands. Deep holes count only up to a limit, which matches what the eye
-does. The result is compared with the gap between two stems. An explicit whitelist decides
-which pairs get kerned: 99 class pairs, which expand to 4,565 glyph pairs. An early version
-kerned every pair that "measured loose". It tightened `LM` and `FG`, which a type designer
-would never do.
+**Measured kerning, referenced pair list.** Section 9 describes the method. The pair list comes
+from two professionally kerned fonts. The values are measured on Cascivo's own outlines with a
+model fitted to those fonts' judgement. An early version kerned every pair that "measured
+loose". It tightened `LM` and `FG`, which a type designer would never do.
 
 **Automated outline lint.** Naive stroke expansion fails on tight inner curves: the offset
 loops back on itself, and you get notches on heavy terminals. `src/lint.py` checks every stroke
@@ -119,7 +117,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                  |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                         |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                               |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 19.6 KB, `Latin[opsz,wght]` 27.1 KB, `Latin[opsz,slnt,wght]` 30.2 KB. Serve only the axes you use |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.5 KB, `Latin[opsz,wght]` 28.8 KB, `Latin[opsz,slnt,wght]` 31.7 KB. Serve only the axes you use |
 
 ## 5. Scorecard
 
@@ -127,15 +125,15 @@ contour in every master for self-intersection. The build ships with zero problem
 
 | File                                                  | Cascivo Sans          | Geist             | IBM Plex Sans     | Inter            |
 | ----------------------------------------------------- | --------------------- | ----------------- | ----------------- | ---------------- |
-| Variable Latin slice, wght axis                       | **19.6 KB** (211 cp)  | 29.4 KB (225 cp)  | 45.7 KB (232 cp)  | 48.3 KB (230 cp) |
-| Bytes per codepoint (Latin slice)                     | **93**                | 131               | 197               | 210              |
-| Variable, full charset, wght only                     | **24.2 KB** (66 B/cp) | 69.7 KB (96 B/cp) | —                 | —                |
-| Static Regular, full charset                          | **11.0 KB** (30 B/cp) | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp) | —                |
-| Same Latin slice with **two more axes** (opsz + slnt) | 30.2 KB               | n/a               | n/a               | n/a              |
+| Variable Latin slice, wght axis                       | **21.5 KB** (211 cp)  | 29.4 KB (225 cp)  | 45.7 KB (232 cp)  | 48.3 KB (230 cp) |
+| Bytes per codepoint (Latin slice)                     | **102**               | 131               | 197               | 210              |
+| Variable, full charset, wght only                     | **25.8 KB** (71 B/cp) | 69.7 KB (96 B/cp) | —                 | —                |
+| Static Regular, full charset                          | **11.8 KB** (32 B/cp) | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp) | —                |
+| Same Latin slice with **two more axes** (opsz + slnt) | 31.7 KB               | n/a               | n/a               | n/a              |
 
 The full-charset comparison is not like for like. Geist and Plex cover Cyrillic, Greek and
 more, and those glyphs are larger. The Latin slices are the fair comparison, and Cascivo uses
-28% fewer bytes per codepoint than Geist. Part of this comes from engineering (composites, the
+23% fewer bytes per codepoint than Geist. Part of this comes from engineering (composites, the
 master layout, tolerances). Part of it comes from simpler drawing: stroke-generated outlines
 have fewer points than outlines drawn and refined by hand.
 
@@ -269,8 +267,46 @@ A follow-up then changed the weights:
   10% wider than Regular and failed the no-reflow guard. A separate Bold master would also
   have fixed it, at a cost of about 4–5 KB.
 
-The remaining gaps for body text are a drawn italic, a broader kerning set, and a test on
+The remaining gaps for body text are a drawn italic and a test on
 low-DPI screens.
+
+## 9. Kerning
+
+|                                              | Before | After                             | Geist                | Inter  |
+| -------------------------------------------- | ------ | --------------------------------- | -------------------- | ------ |
+| Class pairs                                  | 101    | **475**                           | 865                  | 706    |
+| Glyph pairs (with accented forms)            | 4,628  | **5,274**                         | 14,836               | 20,464 |
+| Mean difference from the Geist/Inter average | —      | **12.8 units** (correlation 0.63) | Geist vs Inter: 20.6 |        |
+
+**Which pairs.** `src/kern_candidates.json` lists 489 character pairs: those that Geist and Inter both kern by at least 12 units in the same direction, plus the hand-picked pairs from before. `src/kern_oracle.py` regenerates it. Geist kerns straight quotes against letters ("A) but not curly ones (“A), so a font's vote for the straight form also counts for the curly forms. Without that rule, the most common quote pairs in real text (“A, A”) fell out of the list. Only the list comes from those fonts. A pair is
+kept only when Cascivo's own measurement agrees in direction and is at least 10 units. Three
+were dropped on direction: `A-`, `-A` and `77`, where our shapes differ.
+
+**How much.** The first model had two biases against the references:
+
+- **Too strong on round letters and punctuation.** `D.` was −84 where the references use −32.
+- **Too weak on diagonals.** `AW` was −28 where the references use −81. A shallow depth cap
+  also flattened every strong pair to about −52.
+
+The model now has three terms: the depth-capped average gap, the closest point, and how far the
+two facing sides lean the same way. Least squares fitted the weights on 70% of the pairs. On the
+other 30%, it is off by 15 units on average (correlation 0.61). Geist and Inter differ from each
+other by 21 units (correlation 0.45), so the model sits inside expert disagreement. It still
+undershoots the strongest pairs (about −56 where the references average −78). That errs toward
+loose rather than colliding.
+
+**Two spacing fixes the measurement exposed.**
+
+- **Tailed `l`.** The measurement wanted `l` pulled 40–70 units toward every following letter.
+  Its sidebearing reserved room for the tail, which left a hole above it. The tail now tucks
+  under the next letter (right sidebearing −0.25 of the spacing unit). Only `l.`, `l,` and `l…`
+  are kerned, and they are opened by 40 units.
+- **`t` and `f`.** Their crossbars reached left almost to the previous stem at Black (`ht`,
+  `at`). Their left sidebearings went from 0.3 to 0.55 and 0.45 of the spacing unit.
+
+**Size.** Kerning varies with weight but barely with optical size or slant, so those masters
+reuse Regular's values. That saves 1.6 KB. In total, the larger kerning set costs about 1.8 KB
+on the Latin web file (19.6 → 21.5 KB). That is still 102 bytes per character, against 131 for Geist. A regression test checks that the classic pairs are kerned (To, AV, Av, T., “A, A”, Áv), that stem pairs are not (nn, HH, LM, FG), and that `l.` opens.
 
 ## Sources
 

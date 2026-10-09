@@ -2,21 +2,21 @@
 
 Cascivo Sans is a variable grotesque for interfaces. It is generated from a parametric stroke
 engine and licensed under the SIL Open Font License 1.1. It has three axes (weight, optical size
-and slant), an unambiguous `Il1`, tabular figures on request, and a 20 KB Latin web file.
+and slant), an unambiguous `Il1`, tabular figures on request, and a 22 KB Latin web file.
 
 Read [RESEARCH.md](./RESEARCH.md) for why it exists, how it compares with Geist, IBM Plex and
 Helvetica, and what it does not do yet.
 
 ## Files
 
-| File                                            | Axes             | Charset               | Size                      |
-| ----------------------------------------------- | ---------------- | --------------------- | ------------------------- |
-| `fonts/CascivoSans-Latin[wght].woff2`           | wght             | Latin                 | 19.6 KB                   |
-| `fonts/CascivoSans-Latin[opsz,wght].woff2`      | wght, opsz       | Latin                 | 27.1 KB                   |
-| `fonts/CascivoSans-Latin[opsz,slnt,wght].woff2` | wght, opsz, slnt | Latin                 | 30.2 KB                   |
-| `fonts/CascivoSans[opsz,slnt,wght].woff2`       | wght, opsz, slnt | full (365 codepoints) | 36.6 KB                   |
-| `fonts/CascivoSans[opsz,slnt,wght].ttf`         | wght, opsz, slnt | full                  | 87.8 KB (desktop install) |
-| `fonts/CascivoSans-Regular.woff2`               | static 400       | full                  | 11.1 KB                   |
+| File                                            | Axes             | Charset               | Size                       |
+| ----------------------------------------------- | ---------------- | --------------------- | -------------------------- |
+| `fonts/CascivoSans-Latin[wght].woff2`           | wght             | Latin                 | 21.5 KB                    |
+| `fonts/CascivoSans-Latin[opsz,wght].woff2`      | wght, opsz       | Latin                 | 28.8 KB                    |
+| `fonts/CascivoSans-Latin[opsz,slnt,wght].woff2` | wght, opsz, slnt | Latin                 | 31.7 KB                    |
+| `fonts/CascivoSans[opsz,slnt,wght].woff2`       | wght, opsz, slnt | full (365 codepoints) | 37.8 KB                    |
+| `fonts/CascivoSans[opsz,slnt,wght].ttf`         | wght, opsz, slnt | full                  | 102.1 KB (desktop install) |
+| `fonts/CascivoSans-Regular.woff2`               | static 400       | full                  | 11.8 KB                    |
 
 "Latin" means Basic Latin, Latin-1 and common punctuation. The full charset adds Latin
 Extended-A, Romanian comma letters and combining marks. That covers Western, Central and
@@ -67,7 +67,7 @@ Python 3.11 or later:
 ```sh
 pip install -r requirements.txt
 python3 -I src/build.py                    # writes fonts/, takes about 4 s, byte-reproducible
-python3 -I -m unittest discover -s src     # outline lint, coverage, features, budgets, OTS
+python3 -I -m unittest discover -s src     # outline lint, coverage, features, kerning, budgets, OTS
 python3 -I src/lint.py                     # self-intersection check on every stroke, every master
 ```
 
@@ -78,13 +78,13 @@ contours are standard in variable fonts.
 
 ### Source layout
 
-| File                            | Role                                                                                           |
-| ------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `src/params.py`                 | The six masters and every proportion they drive: stems, contrast, x-height, spacing, apertures |
-| `src/geom.py`                   | Stroke expansion: an angle-driven pen, offset fitting, terminal cuts                           |
-| `src/glyphs.py`                 | One function per drawn glyph, as centerline strokes                                            |
-| `src/composites.py`, `build.py` | Accents, fractions, alternates, master assembly, `varLib`, `avar`, STAT, web builds            |
-| `src/kern.py`                   | Measured class kerning over a curated pair list                                                |
+| File                            | Role                                                                                               |
+| ------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `src/params.py`                 | The six masters and every proportion they drive: stems, contrast, x-height, spacing, apertures     |
+| `src/geom.py`                   | Stroke expansion: an angle-driven pen, offset fitting, terminal cuts                               |
+| `src/glyphs.py`                 | One function per drawn glyph, as centerline strokes                                                |
+| `src/composites.py`, `build.py` | Accents, fractions, alternates, master assembly, `varLib`, `avar`, STAT, web builds                |
+| `src/kern.py`, `kern_oracle.py` | Kerning: pairs that Geist and Inter both kern, values measured on our outlines with a fitted model |
 
 To change a glyph, edit its function in `glyphs.py`, then run the lint, the build and the tests.
 One rule keeps the variable font valid: a master parameter may move points, but it must never

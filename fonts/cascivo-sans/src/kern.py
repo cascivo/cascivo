@@ -1,78 +1,65 @@
 """Measured class kerning.
 
-Pairs are not hand-tuned: for each class pair the gap between the first glyph's right profile and
-the second glyph's left profile is measured in 10-unit bands, depth-limited (a deep hole only
-counts so much — that's what the eye does), and compared with the gap of two straight stems.
-Only pairs involving an irregular side (diagonal, open, overhanging, punctuation) are kerned;
-stem/round combinations are already balanced by the sidebearings.
+Which pairs: src/kern_candidates.json, the character pairs that two independently kerned fonts
+(Geist and Inter) both kern in the same direction, plus the pairs first chosen by hand (see
+kern_oracle.py). Only the list is borrowed. Every value is measured here from Cascivo's own
+outlines, in every master, and a candidate is dropped when that measurement disagrees in sign
+or is too small to see. Measuring every possible pair instead "works" numerically but kerns
+open shapes the eye already accepts (it once tightened LM and FG).
+
+How much: the gap between the first glyph's right profile and the second glyph's left profile
+is measured in 10-unit bands, depth-limited (a deep hole only counts so much, as for the eye),
+and compared with the gap between two straight stems. Two more terms: the closest point, and how
+far both facing sides lean the same way (parallel diagonals, as in AV or Av, read looser than
+their gap says). The weights were fitted by least squares on 70% of the candidates so that,
+applied to Cascivo's own outlines, the result best matches the Geist/Inter average. On the
+held-out 30% it is off by 15 units on average with correlation 0.61; Geist and Inter differ from
+each other by 21 (correlation 0.45). It undershoots the strongest pairs (about -56 where the
+references use -78), which errs toward loose rather than colliding.
 """
+
+import json
+import os
 
 from composites import accented_chars, glyph_name
 from geom import seg_point
 
 BAND = 10
+MIN_KERN = 10  # units; smaller corrections are invisible at text sizes
+DEPTH = 1.04  # depth cap, in stem sidebearings (fitted)
+W_GAP, W_CLOSEST, W_LEAN = 0.605, 0.077, -0.525  # fitted, see module docstring
 
-# representative -> members (first glyph of a pair; its RIGHT side)
-RIGHT = {
-    'A': 'A', 'C': 'C', 'E': 'E AE OE', 'F': 'F', 'G': 'G', 'K': 'K X', 'L': 'L', 'P': 'P Thorn',
-    'R': 'R', 'S': 'S', 'T': 'T', 'V': 'V W', 'Y': 'Y', 'Z': 'Z', 'B': 'B',
-    'H': 'H I M N U J', 'O': 'O D Q Oslash Eth Dcroat',
-    'n': 'n a d i l u g q m h dotlessi', 'o': 'o b p thorn oslash', 'c': 'c', 'e': 'e ae oe',
-    'f': 'f', 'k': 'k x', 'r': 'r', 's': 's', 't': 't', 'v': 'v w y', 'z': 'z',
-    'period': 'period comma ellipsis', 'quoteright': 'quoteright quotedblright quotesingle quotedbl',
-    'hyphen': 'hyphen endash emdash', 'parenleft': 'parenleft bracketleft braceleft',
+CHAR_GLYPH = {
+    '.': 'period', ',': 'comma', ':': 'colon', ';': 'semicolon', "'": 'quotesingle', '"': 'quotedbl',
+    '\u2018': 'quoteleft', '\u2019': 'quoteright', '\u201c': 'quotedblleft', '\u201d': 'quotedblright',
+    '-': 'hyphen', '\u2013': 'endash', '\u2014': 'emdash', '(': 'parenleft', ')': 'parenright',
+    '[': 'bracketleft', ']': 'bracketright', '{': 'braceleft', '}': 'braceright', '/': 'slash',
+    '?': 'question', '!': 'exclam', '\u00ab': 'guillemotleft', '\u00bb': 'guillemotright',
+    '\u2039': 'guilsinglleft', '\u203a': 'guilsinglright', '&': 'ampersand', '*': 'asterisk', '@': 'at',
 }
-# representative -> members (second glyph; its LEFT side)
-LEFT = {
-    'A': 'A AE', 'H': 'H B D E F I K L M N P R U Thorn Eth Dcroat', 'O': 'O C G Q Oslash OE', 'J': 'J',
-    'S': 'S', 'T': 'T', 'V': 'V W', 'X': 'X', 'Y': 'Y', 'Z': 'Z',
-    'n': 'n b h k l i m p r u thorn dotlessi', 'o': 'o c d e q g oslash oe', 'a': 'a ae',
-    'f': 'f', 's': 's', 't': 't', 'v': 'v w y', 'x': 'x', 'z': 'z', 'j': 'j',
-    'period': 'period comma ellipsis', 'quoteleft': 'quoteleft quotedblleft quotesingle quotedbl',
-    'hyphen': 'hyphen endash emdash', 'parenright': 'parenright bracketright braceright',
-}
-# Which class pairs get kerned at all. Measuring every pair "works" numerically but kerns
-# open shapes (E, L, F against stems) that the eye already accepts — professional kerning is a
-# short list of genuinely awkward combinations, so the list is explicit.
-ALLOWED = {
-    'A': 'T V Y O quoteleft v t hyphen',
-    'L': 'T V Y O quoteleft v hyphen',
-    'T': 'A O J period hyphen a o n s v x z',
-    'V': 'A O J period hyphen a o n s',
-    'Y': 'A O J period hyphen a o n s v x',
-    'P': 'A J period a o',
-    'F': 'A J period a o',
-    'K': 'O o hyphen v',
-    'R': 'T V Y',
-    'O': 'A V Y T X J period',
-    'r': 'period hyphen a o',
-    'f': 'period quoteleft o',
-    't': 'o',
-    'v': 'period a o',
-    'k': 'o hyphen',
-    'o': 'v x period quoteleft',
-    'e': 'v x',
-    'period': 'quoteleft T V Y v',
-    'quoteright': 'A a o',
-    'hyphen': 'T V Y A',
-}
+FIGS = 'zero one two three four five six seven eight nine'.split()
+for _i, _n in enumerate(FIGS):
+    CHAR_GLYPH[str(_i)] = _n + '.pnum'  # proportional figures are the default; tabular ones never kern
 
 
-def _expand_members(table, glyphs):
-    acc = {}
-    for ch, base, _m in accented_chars():
-        acc.setdefault(base, []).append(glyph_name(ch))
-    out = {}
-    seen = set()
-    for rep, members in table.items():
-        ms = []
-        for m in members.split():
-            for g in [m] + acc.get(m, []):
-                if g in glyphs and g not in seen:
-                    ms.append(g)
-                    seen.add(g)
-        out[rep] = ms
-    return out
+# Pairs no reference font can vouch for, because the shape is Cascivo's own: the tailed l tucks
+# its tail under the next letter, which brings it too close to low punctuation ("all.").
+OWN_SHAPE_PAIRS = {('l', 'period'): 1, ('l', 'comma'): 1, ('l', 'ellipsis'): 1}
+
+
+def _glyph(ch):
+    return CHAR_GLYPH.get(ch, ch)
+
+
+def _candidates():
+    here = os.path.dirname(os.path.abspath(__file__))
+    with open(os.path.join(here, 'kern_candidates.json'), encoding='utf-8') as fh:
+        return {(_glyph(k[0]), _glyph(k[1])): v for k, v in json.load(fh).items()}
+
+
+def _members(base, glyphs, acc):
+    """A base glyph plus its accented forms: they share a side, so they share kerning."""
+    return [g for g in [base] + acc.get(base, []) if g in glyphs]
 
 
 def _points(o, name, ox=0.0, oy=0.0, a=1.0):
@@ -100,6 +87,16 @@ def _profile(o, name):
     return lo, hi
 
 
+def _slope(profile, bands):
+    """dx/dy of a side profile (least squares): 0 for a stem, about +-0.4 for a diagonal."""
+    n = len(bands)
+    ys = [b * BAND for b in bands]
+    xs = [profile[b] for b in bands]
+    my, mx = sum(ys) / n, sum(xs) / n
+    var = sum((y - my) ** 2 for y in ys)
+    return sum((y - my) * (x - mx) for y, x in zip(ys, xs)) / var if var else 0.0
+
+
 def measure(o, left_glyph, right_glyph):
     p = o.p
     _, hi = _profile(o, left_glyph)
@@ -110,9 +107,11 @@ def measure(o, left_glyph, right_glyph):
         return 0
     gaps = [(adv - hi[b]) + lo[b] for b in bands]
     ref = (p.Sc if left_glyph[0].isupper() else p.S) + (p.Sc if right_glyph[0].isupper() else p.S)
-    depth = 110 + p.S * 0.3
+    depth = DEPTH * p.S
     eff = sum(min(g, ref + depth) for g in gaps) / len(gaps)
-    k = 0.72 * (ref - eff)
+    sa, sb = _slope(hi, bands), _slope(lo, bands)
+    lean = min(abs(sa), abs(sb)) if sa * sb > 0 else 0.0
+    k = W_GAP * (ref - eff) + W_CLOSEST * (ref - min(gaps)) + W_LEAN * lean * p.S
     floor = 0.55 * p.S - min(gaps)  # never let the closest point get nearer than this
     k = max(k, floor)
     return int(round(max(-140, min(40, k))))
@@ -120,33 +119,50 @@ def measure(o, left_glyph, right_glyph):
 
 def kern_pairs(o):
     glyphs = set(o.contours) | set(o.comps)
-    R = _expand_members(RIGHT, glyphs)
-    Lc = _expand_members(LEFT, glyphs)
-    pairs = {}
-    for r in R:
-        for left in Lc:
-            if left not in ALLOWED.get(r, '').split():
-                continue
-            pairs[(r, left)] = measure(o, r, left)
-    return R, Lc, pairs
+    acc = {}
+    for ch, base, _m in accented_chars():
+        acc.setdefault(base, []).append(glyph_name(ch))
+    cands = {k: v for k, v in _candidates().items() if k[0] in glyphs and k[1] in glyphs}
+    cands.update(OWN_SHAPE_PAIRS)
+    pairs = {(a, b): (measure(o, a, b), sign) for (a, b), sign in cands.items()}
+    return acc, glyphs, pairs
 
 
 _SELECTED = None
+_REGULAR = None  # values measured on the Regular master
+
+
+def _values(o, pairs):
+    """Kerning follows weight, but optical size and slant barely change it: those masters reuse
+    Regular's values, so their deltas vanish (1.6 KB of WOFF2, measured)."""
+    global _REGULAR
+    vals = {k: v[0] for k, v in pairs.items()}
+    loc = getattr(o, 'loc', {'wght': 400})
+    if loc.get('wght') == 400 and loc.get('opsz') == 14 and loc.get('slnt') == 0:
+        _REGULAR = vals
+    elif loc.get('wght') == 400 and _REGULAR is not None:
+        return _REGULAR
+    return vals
 
 
 def kern_fea(o):
     """Same pair set for every master (structure must match); values measured per master."""
     global _SELECTED
-    R, Lc, pairs = kern_pairs(o)
+    acc, glyphs, pairs = kern_pairs(o)
     if _SELECTED is None:  # the first (default) master decides which pairs exist
-        _SELECTED = sorted(k for k, v in pairs.items() if abs(v) >= 10)
-    lines = []
-    for rep, ms in R.items():
-        lines.append(f'@kR_{rep} = [{" ".join(ms)}];')
-    for rep, ms in Lc.items():
-        lines.append(f'@kL_{rep} = [{" ".join(ms)}];')
+        keep = []
+        for (a, b), (k, sign) in pairs.items():
+            if abs(k) >= MIN_KERN and (k < 0) == (sign < 0):
+                keep.append((a, b))
+        _SELECTED = sorted(keep)
+    firsts = sorted({a for a, _ in _SELECTED})
+    seconds = sorted({b for _, b in _SELECTED})
+    cls = lambda g: g.replace('.', '_')  # noqa: E731
+    lines = [f'@kR_{cls(g)} = [{" ".join(_members(g, glyphs, acc))}];' for g in firsts]
+    lines += [f'@kL_{cls(g)} = [{" ".join(_members(g, glyphs, acc))}];' for g in seconds]
     lines.append('feature kern {')
-    for r, left in _SELECTED:
-        lines.append(f'  pos @kR_{r} @kL_{left} {pairs[(r, left)]};')
+    vals = _values(o, pairs)
+    for a, b in _SELECTED:
+        lines.append(f'  pos @kR_{cls(a)} @kL_{cls(b)} {vals[(a, b)]};')
     lines.append('} kern;')
     return '\n'.join(lines)

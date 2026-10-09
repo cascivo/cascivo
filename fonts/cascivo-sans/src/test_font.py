@@ -93,6 +93,30 @@ class Font(unittest.TestCase):
         self.assertLessEqual(width(700) / regular, 1.09)
         self.assertLessEqual(width(900) / regular, 1.16)
 
+    def test_kerning(self):
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        with open(VF, 'rb') as fh:
+            font = hb.Font(hb.Face(fh.read()))
+
+        def kern(s):
+            def advance(on):
+                buf = hb.Buffer()
+                buf.add_str(s)
+                buf.guess_segment_properties()
+                hb.shape(font, buf, {'kern': on})
+                return sum(p.x_advance for p in buf.glyph_positions)
+
+            return advance(True) - advance(False)
+
+        for pair in ('To', 'Ty', 'AV', 'VA', 'Av', 'LT', 'T.', 'F.', 'Yo', '\u201cA', 'A\u201d', 'Áv'):
+            self.assertLess(kern(pair), -10, f'{pair} should be kerned')
+        for pair in ('nn', 'HH', 'oo', 'LM', 'FG'):
+            self.assertEqual(kern(pair), 0, f'{pair} needs no kerning')
+        self.assertGreater(kern('l.'), 0, 'the tailed l opens before low punctuation')
+
     def test_no_nested_components(self):
         glyf = self.f['glyf']
         for name in self.f.getGlyphOrder():

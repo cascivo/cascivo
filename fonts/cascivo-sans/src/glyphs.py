@@ -505,7 +505,7 @@ def _l(g, p):  # tailed by default
     cy = -p.ov * 0.4 + p.H / 2 + ry
     g.stroke([L((a, p.asc), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, 290), caps=('b', 'b'))
     g.ht = 'a'
-    g.sb = (1, 0.35)
+    g.sb = (1, -0.25)  # the tail tucks under the next letter; spacing it as ink opened a hole after every l
 
 
 @glyph('dotlessj', 0x237)
@@ -657,7 +657,7 @@ def _f(g, p):
     cy = top - H / 2 - ry
     g.stroke([L((xs + V / 2, 0), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, end), caps=('b', 'b'))
     g.hbar(0, w * 0.96, p.xh - H)
-    g.sb = (0.3, 0.05)
+    g.sb = (0.45, 0.05)  # crossbar overhang, as for t
     g.ht = 'a'
 
 
@@ -671,7 +671,7 @@ def _t(g, p):
     cy = -p.ov * 0.4 + H / 2 + ry
     g.stroke([L((xs + V / 2, p.xh + (p.asc - p.xh) * 0.62), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, 286), caps=('b', 'b'))
     g.hbar(0, w * 0.96, p.xh - H)
-    g.sb = (0.3, 0.25)
+    g.sb = (0.55, 0.25)  # the crossbar reaches left: 0.3 let it touch the stem before it at Black ("ht")
     g.anchors['topright_x'] = xs + V + p.S * 0.4
 
 
