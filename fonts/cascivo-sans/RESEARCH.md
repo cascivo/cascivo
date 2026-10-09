@@ -117,7 +117,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                                             |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                                                    |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                                                          |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.8 KB, `Latin[opsz,wght]` 28.9 KB; italic 24.0 / 32.1 KB, loaded only when a page uses italic. Serve only the axes you use |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.8 KB, `Latin[opsz,wght]` 28.9 KB; italic 24.0 / 32.2 KB, loaded only when a page uses italic. Serve only the axes you use |
 
 ## 5. Scorecard
 
@@ -491,8 +491,8 @@ comparison found four defects there that Black did not show, or showed less.
 At Bold, `c` and `C` measured 0.84-0.85 of the references' ink, inherited from Regular, where the
 open `c` and `C` were lighter still (0.78-0.79). Their terminals now sit 14° further round at
 every weight, and at Regular the `c` is 6% wider and the `C` 5% wider; Black is unchanged. Both
-now measure 0.90-0.91 of the references' ink at Regular, Bold and Black. The `G` keeps its more
-open top. The `r`'s long arm makes it wider than Geist's and Inter's at every weight (1.5× at
+now measure 0.90-0.91 of the references' ink at Regular, Bold and Black. The `G`'s top terminal
+follows the `C`'s. The `r`'s long arm makes it wider than Geist's and Inter's at every weight (1.5× at
 Regular).
 
 ## Sources

@@ -293,7 +293,8 @@ def _C(g, p):
 def _G(g, p):
     w = p.Hw * 1.12
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.cap + p.ov)
-    g.stroke(g.arc(cx, cy, rx, ry, 42 + p.ap - 14 * p.heavy, 360), caps=('b', 'b'), cut='h')
+    # the top terminal sits where the C's does, at every weight (it was 14° more open at Regular)
+    g.stroke(g.arc(cx, cy, rx, ry, 28 + p.ap, 360), caps=('b', 'b'), cut='h')
     xr = cx + rx
     # ends inside the curve's stroke: run to its outer edge, the bar overhung where the curve
     # turns inward below it
