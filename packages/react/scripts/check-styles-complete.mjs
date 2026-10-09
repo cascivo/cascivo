@@ -37,6 +37,10 @@ for (const t of ["[data-theme='light']", "[data-theme='dark']"]) {
 // still appear inside a comment, which is harmless — scan actual at-rule lines).
 const strayImport = css.split('\n').find((l) => /^\s*@import\b/.test(l))
 if (strayImport) fail(`styles.css still has an @import at-rule: ${strayImport.trim()}`)
+// The token/theme half is concatenated from source files written to be read: their comments
+// were 10.5 of the sheet's 60 KB gzip until 2026-10-09. The build strips them; keep it so.
+if (css.includes('/*'))
+  fail('styles.css ships CSS comments — vite.config.ts strips them from THEME_BUNDLE')
 // The `cascivo.reset` floor must survive into the aggregate. It reaches every other
 // entry path via index.css's `@import './reset.css'`, but THIS sheet strips imports —
 // so the reset is inlined explicitly in vite.config.ts and this asserts it stayed.

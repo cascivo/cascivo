@@ -118,8 +118,10 @@ const BUDGETS: Record<string, number> = {
 const CSS_BUDGETS: Record<string, number> = {
   // The full-catalog aggregate: every component's CSS plus tokens and the light/dark themes.
   // For no-bundler / CDN setups only — bundled apps get per-component CSS through the module
-  // graph and tree-shake it. Measured 47.0 KB gzip (328 KB raw).
-  '@cascivo/react': 60,
+  // graph and tree-shake it. 60.0 KB gzip on 2026-10-09, 13 bytes under the old 60 KB
+  // budget, when it was raised to 64 KB; 48.3 KB the same day once the sheet stopped shipping
+  // comments (the token/theme sources' prose and Vite's per-sheet markers, 11.7 KB).
+  '@cascivo/react': 64,
   '@cascivo/charts': 30,
   '@cascivo/editor': 15,
   '@cascivo/flow': 15,
