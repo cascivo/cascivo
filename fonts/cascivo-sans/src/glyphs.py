@@ -387,7 +387,18 @@ def _J(g, p):
     g.sb = (0.4, 1)
 
 
-def _S(g, p, w, top, ov, pen=None, term=32, spine=0.1):
+def _ell_seg(cx, cy, rx, ry, a0, a1, k):
+    """One cubic along an ellipse from a0 to a1 (degrees), which may cross a quadrant boundary.
+    Its handles scale with the span from the quarter-arc squareness k, so it matches arc()."""
+    t0, t1 = math.radians(a0), math.radians(a1)
+    h = k / 0.5523 * 4 / 3 * math.tan((t1 - t0) / 4)
+    p0 = (cx + rx * math.cos(t0), cy + ry * math.sin(t0))
+    p3 = (cx + rx * math.cos(t1), cy + ry * math.sin(t1))
+    return ('C', p0, (p0[0] - h * rx * math.sin(t0), p0[1] + h * ry * math.cos(t0)),
+            (p3[0] + h * rx * math.sin(t1), p3[1] - h * ry * math.cos(t1)), p3)
+
+
+def _S(g, p, w, top, ov, pen=None, term=32, spine=0.1, run=0, run_up=None):
     """S/s/$ spine: upper arc, a cubic spine at full stem weight, lower arc."""
     V, H = p.V, p.H
     yb, yt = -ov, top + ov
@@ -413,8 +424,14 @@ def _S(g, p, w, top, ov, pen=None, term=32, spine=0.1):
     # The upper bowl is short, so near 0° its inner radius of curvature drops below half the
     # stroke and the inner edge must fold. The terminal sits higher, where the curve is gentle,
     # and is cut square to the stroke (a horizontal cut there would leave a sliver).
-    up = g.arc(cxu, cyu, rxu, ryu, term - 8 * heavy + p.ap * 0.8, 180)
-    lo = g.arc(cxl, cyl, rxl, ryl, 0, -146 - 8 * heavy + p.ap * 0.8)
+    # `run`: degrees the heavy terminals run further round. Geist's and Inter's Black S ends each
+    # bowl past its widest point, on a near-flat face low on the curve, which keeps the counters
+    # small and round. That crosses a quadrant boundary, so the terminal segment is drawn as one
+    # cubic (_ell_seg) in every master that needs it: the segment count stays the same.
+    a_up = term - (8 + (run if run_up is None else run_up)) * heavy + p.ap * 0.8
+    a_lo = -146 - (8 + run) * heavy + p.ap * 0.8
+    up = g.arc(cxu, cyu, rxu, ryu, a_up, 180) if a_up > 0 else [_ell_seg(cxu, cyu, rxu, ryu, a_up, 90, p.k)] + g.arc(cxu, cyu, rxu, ryu, 90, 180)
+    lo = g.arc(cxl, cyl, rxl, ryl, 0, a_lo) if a_lo > -180 else g.arc(cxl, cyl, rxl, ryl, 0, -90) + [_ell_seg(cxl, cyl, rxl, ryl, -90, a_lo, p.k)]
     # Three strokes, so the spine gets its own pen: the default angle pen thins a diagonal spine
     # too far at Regular, while a constant full stem closes the counters at Black. A heavier
     # hairline (1.15 H) does both. The joins sit at the bowls' vertical extremes, where every
@@ -438,7 +455,9 @@ def _s_extra(p):
 @glyph('S', 0x53)
 def _S_(g, p):
     # capitals have room, so half the s's extra width; a heavier spine, as Geist's and Inter's S
-    _S(g, p, p.Hw * 0.94 + _s_extra(p) * 0.5, p.cap, p.ov, spine=0.3)
+    # and heavier horizontals: Black's top and bottom were 12% thinner than theirs, and the S
+    # carried 0.86x their ink
+    _S(g, p, p.Hw * 0.94 + _s_extra(p) * 0.5, p.cap, p.ov, pen=(p.V, p.H * (1 + 0.1 * p.heavy)), spine=0.3, run=34)
     g.ht = 'c'
     g.sb = (0.5, 0.5)
 
@@ -695,7 +714,9 @@ def _a(g, p):
 
 @glyph('s', 0x73)
 def _s(g, p):
-    _S(g, p, p.nw * 0.88 + _s_extra(p), p.xh, p.ov)
+    # Heavy terminals run round as the S's do (the short upper bowl folds inside past 16°, 8° once
+    # slanted), and they carry part of the extra width's job, so the s takes 70% of it.
+    _S(g, p, p.nw * 0.88 + _s_extra(p) * 0.7, p.xh, p.ov, run=34, run_up=8 if p.italic else 16)
     g.sb = (0.55, 0.55)
 
 

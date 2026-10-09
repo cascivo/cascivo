@@ -117,7 +117,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                                             |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                                                    |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                                                          |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.8 KB, `Latin[opsz,wght]` 28.9 KB; italic 24.1 / 32.2 KB, loaded only when a page uses italic. Serve only the axes you use |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.9 KB, `Latin[opsz,wght]` 28.9 KB; italic 24.1 / 32.3 KB, loaded only when a page uses italic. Serve only the axes you use |
 
 ## 5. Scorecard
 
@@ -125,7 +125,7 @@ contour in every master for self-intersection. The build ships with zero problem
 
 | File                                    | Cascivo Sans           | Geist             | IBM Plex Sans                         | Inter              |
 | --------------------------------------- | ---------------------- | ----------------- | ------------------------------------- | ------------------ |
-| Variable Latin slice, wght axis         | **21.8 KB** (211 cp)   | 29.4 KB (225 cp)  | 45.7 KB (232 cp)                      | 48.3 KB (230 cp)   |
+| Variable Latin slice, wght axis         | **21.9 KB** (211 cp)   | 29.4 KB (225 cp)  | 45.7 KB (232 cp)                      | 48.3 KB (230 cp)   |
 | Bytes per codepoint (Latin slice)       | **102**                | 131               | 197                                   | 210                |
 | Variable, full charset, wght only       | **25.8 KB** (71 B/cp)  | 69.7 KB (96 B/cp) | —                                     | —                  |
 | Static Regular, full charset            | **11.7 KB** (32 B/cp)  | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp)                     | —                  |
@@ -342,7 +342,7 @@ tail. Counters are 5% narrower. The italic passes the same no-reflow test as the
   its right-angle turn. The capital breve has a minimum depth, because a shallow arc thinner
   than its stroke folds inside.
 
-**Size.** The italic Latin web file is 24.1 KB for every weight, against 21.8 KB for the upright.
+**Size.** The italic Latin web file is 24.1 KB for every weight, against 21.9 KB for the upright.
 The difference is inherent: once outlines are slanted, every point that moves vertically
 between masters also moves horizontally, so it carries more variation data. For comparison,
 Plex ships 24.4 KB for one static italic weight, and Inter 51.8 KB for its variable italic.
@@ -445,23 +445,33 @@ The `a`, `r`, `f`, `j` and `y` keep the vertical turn.
 
 **Proportions at Black** (Cascivo ÷ the Geist/Inter mean):
 
-| Glyph               | Was                      | Now                      | Change                                                |
-| ------------------- | ------------------------ | ------------------------ | ----------------------------------------------------- |
-| `C`                 | width 0.75, ink 0.71     | width 1.04, ink 0.90     | 12% wider, terminals run further round                |
-| `c`                 | width 0.89, ink 0.77     | width 0.97, ink 0.88     | terminals run further round                           |
-| `G`                 | ink 0.85                 | ink 0.91                 | terminal runs further round                           |
-| `S`                 | width 1.12, ink 0.77     | width 1.02, ink 0.86     | half the `s`'s extra width, heavier spine             |
-| `3`                 | width 0.80, ink 0.80     | width 1.04, ink 0.91     | 8% wider, terminals run further round                 |
-| `5`                 | ink 0.84                 | ink 0.89                 | terminal runs further round                           |
-| `e`                 | counter 0.30             | counter 1.05             | the bar drops half its height, opening the eye        |
-| `A`                 | counter 0.38, width 0.93 | counter 0.84, width 0.98 | wider, bar lower                                      |
-| `4`                 | counter 0.29             | counter 1.17             | bar lower, lighter diagonal meeting the stem's middle |
-| `P`                 | counter 0.74             | counter 1.02             | bigger bowl                                           |
-| `v` `V` `X` `k` `K` | width 0.87-0.91          | width 0.95-0.99          | 8-10% wider                                           |
+| Glyph               | Was                      | Now                      | Change                                                         |
+| ------------------- | ------------------------ | ------------------------ | -------------------------------------------------------------- |
+| `C`                 | width 0.75, ink 0.71     | width 1.04, ink 0.90     | 12% wider, terminals run further round                         |
+| `c`                 | width 0.89, ink 0.77     | width 0.97, ink 0.88     | terminals run further round                                    |
+| `G`                 | ink 0.85                 | ink 0.91                 | terminal runs further round                                    |
+| `S`                 | width 1.12, ink 0.77     | width 1.05, ink 1.02     | terminals run round, half the `s`'s extra width, heavier spine |
+| `3`                 | width 0.80, ink 0.80     | width 1.04, ink 0.91     | 8% wider, terminals run further round                          |
+| `5`                 | ink 0.84                 | ink 0.89                 | terminal runs further round                                    |
+| `e`                 | counter 0.30             | counter 1.05             | the bar drops half its height, opening the eye                 |
+| `A`                 | counter 0.38, width 0.93 | counter 0.84, width 0.98 | wider, bar lower                                               |
+| `4`                 | counter 0.29             | counter 1.17             | bar lower, lighter diagonal meeting the stem's middle          |
+| `P`                 | counter 0.74             | counter 1.02             | bigger bowl                                                    |
+| `v` `V` `X` `k` `K` | width 0.87-0.91          | width 0.95-0.99          | 8-10% wider                                                    |
 
 Every change scales with `p.heavy`, so Regular is unchanged except for the `5`. The serifed `I`,
 the tailed `l`, the `i` and `j` and the more open round counters (`o`, `b`, `d`, `p`, `q`: 1.2-1.3×)
-remain different from Geist and Inter by design. The `S` is still slightly light.
+remain different from Geist and Inter by design.
+
+**The S and s.** Geist's and Inter's heavy S runs each bowl past its widest point and ends on a
+near-flat face low on the curve, which keeps the counters small and round. Ours stopped near the
+corners, so the S was wide-open and light. Running that far crosses a quadrant boundary, and
+`arc()` splits curves at every quadrant, which would change the segment count between masters.
+The terminal segment is therefore drawn as one cubic along the ellipse (`_ell_seg`), with
+handles scaled from the same squareness, in every master that needs it. The heavy `s` gets the
+same terminals (its short upper bowl runs less far, or its inside folds) and takes 70% of its
+old extra width, since the terminals now carry part of that job. The S's horizontals are 10%
+heavier at Black.
 
 ## Sources
 
