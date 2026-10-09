@@ -188,12 +188,14 @@ def add_composites(o):
     comp('exclamdown', [('exclam', ov('exclam'), p.xh, -1)], ov('exclam'), 0xA1)
     comp('questiondown', [('question', ov('question'), p.xh + 10, -1)], ov('question'), 0xBF)
     d = p.dot
+    # a turned comma: its tail tip (the comma's depth below its head) reaches the cap height
+    lq = p.cap - (GL.comma_depth(p) - 0.05) * d
     comp('quoteright', [('comma', 0, p.cap - d, 1)], cadv, 0x2019)
-    comp('quoteleft', [('comma', cadv, p.cap - 1.25 * d, -1)], cadv, 0x2018)
+    comp('quoteleft', [('comma', cadv, lq, -1)], cadv, 0x2018)
     comp('quotesinglbase', [('comma', 0, 0, 1)], cadv, 0x201A)
     gap = d + S * 0.55
     comp('quotedblright', [('comma', 0, p.cap - d, 1), ('comma', gap, p.cap - d, 1)], cadv + gap, 0x201D)
-    comp('quotedblleft', [('comma', cadv, p.cap - 1.25 * d, -1), ('comma', cadv + gap, p.cap - 1.25 * d, -1)], cadv + gap, 0x201C)
+    comp('quotedblleft', [('comma', cadv, lq, -1), ('comma', cadv + gap, lq, -1)], cadv + gap, 0x201C)
     comp('quotedblbase', [('comma', 0, 0, 1), ('comma', gap, 0, 1)], cadv + gap, 0x201E)
 
     # stroked / combined letters

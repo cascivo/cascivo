@@ -117,7 +117,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                                             |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                                                    |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                                                          |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.8 KB, `Latin[opsz,wght]` 28.9 KB; italic 24.1 / 32.1 KB, loaded only when a page uses italic. Serve only the axes you use |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.7 KB, `Latin[opsz,wght]` 28.8 KB; italic 23.8 / 31.9 KB, loaded only when a page uses italic. Serve only the axes you use |
 
 ## 5. Scorecard
 
@@ -125,11 +125,11 @@ contour in every master for self-intersection. The build ships with zero problem
 
 | File                                    | Cascivo Sans           | Geist             | IBM Plex Sans                         | Inter              |
 | --------------------------------------- | ---------------------- | ----------------- | ------------------------------------- | ------------------ |
-| Variable Latin slice, wght axis         | **21.8 KB** (211 cp)   | 29.4 KB (225 cp)  | 45.7 KB (232 cp)                      | 48.3 KB (230 cp)   |
+| Variable Latin slice, wght axis         | **21.7 KB** (211 cp)   | 29.4 KB (225 cp)  | 45.7 KB (232 cp)                      | 48.3 KB (230 cp)   |
 | Bytes per codepoint (Latin slice)       | **102**                | 131               | 197                                   | 210                |
 | Variable, full charset, wght only       | **25.8 KB** (71 B/cp)  | 69.7 KB (96 B/cp) | —                                     | —                  |
 | Static Regular, full charset            | **11.7 KB** (32 B/cp)  | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp)                     | —                  |
-| Italic, variable Latin slice, wght axis | **24.1 KB** (115 B/cp) | no italic         | 24.4 KB, one static weight (105 B/cp) | 51.8 KB (225 B/cp) |
+| Italic, variable Latin slice, wght axis | **23.8 KB** (114 B/cp) | no italic         | 24.4 KB, one static weight (105 B/cp) | 51.8 KB (225 B/cp) |
 
 The full-charset comparison is not like for like. Geist and Plex cover Cyrillic, Greek and
 more, and those glyphs are larger. The Latin slices are the fair comparison, and Cascivo uses
@@ -342,7 +342,7 @@ tail. Counters are 5% narrower. The italic passes the same no-reflow test as the
   its right-angle turn. The capital breve has a minimum depth, because a shallow arc thinner
   than its stroke folds inside.
 
-**Size.** The italic Latin web file is 24.1 KB for every weight, against 21.8 KB for the upright.
+**Size.** The italic Latin web file is 23.8 KB for every weight, against 21.7 KB for the upright.
 The difference is inherent: once outlines are slanted, every point that moves vertically
 between masters also moves horizontally, so it carries more variation data. For comparison,
 Plex ships 24.4 KB for one static italic weight, and Inter 51.8 KB for its variable italic.
@@ -563,6 +563,74 @@ too, so all six were fixed in both styles:
 
 The `J`'s hook stops just short of −180° in every master, so it keeps one segment count where a
 master's negative aperture would have taken it past the quadrant.
+
+## 17. Black, text, symbols and optical sizes
+
+Four checks after the Bold round, in this order.
+
+**Black.** Against Inter's Black italic (and Geist's and Inter's Black upright), three glyphs were
+still short in both styles:
+
+| Glyph   | Was, Black (upright vs Geist and Inter) | Now                    | Change                                                                |
+| ------- | --------------------------------------- | ---------------------- | --------------------------------------------------------------------- |
+| `6` `9` | ink 0.89-0.90; hook tapering to a point | 0.94-0.95              | hook on a wider ellipse, ending at 58° instead of 72° without folding |
+| `A`     | ink 0.90, counter 0.84                  | ink 0.95, counter 0.90 | 4% wider at Black, diagonals 97% of the stroke instead of 93%         |
+
+`T`, `M`, `V`, `Y` and `0` stay narrower than Inter's italic, but within 0.93-1.00 of our own
+upright: Inter's Black italic is simply wider.
+
+**Text.** Spacing was measured pair by pair: for the 160 commonest letter pairs of an English
+sample plus 30 kerning classics, shaped with kerning by HarfBuzz, the white between the two
+glyphs' ink (depth-limited, slant-corrected), in units of the font's own `nn` or `HH` gap. Ours
+against the references' mean, summed per letter side, says which sidebearings are off:
+
+| Side                                  | Was (vs references)             | Change                                |
+| ------------------------------------- | ------------------------------- | ------------------------------------- |
+| `v` `w` `x` `y`, both sides           | 12-20% tight (`wh`, `ow`, `ny`) | sidebearings 0.1 → 0.2-0.42 of a unit |
+| `k`, `r`, `f`, right side             | 10-20% tight (`ke`, `ra`, `fo`) | 0.1-0.25 of a unit more               |
+| `J`, right side                       | 7% loose                        | 0.1 of a unit less                    |
+| italic `t`, both sides; Bold `t` left | 15-25% loose                    | less, short of meeting diagonals      |
+| italic `g`, right side                | 10% tight                       | 0.15 of a unit more                   |
+
+The mean pair error fell by 17-26% (Regular 0.071 → 0.059, Bold italic 0.087 → 0.064), and the
+pairs off by more than a quarter from 1-11 per style and weight to 0-3. Text sets 2-4% wider
+than Geist's and Inter's at the same x-height, as before (the changes add under 0.5%).
+
+A clearance check over every kerned pair found the tailed `l` running into `A`, `X` and `x` (-11
+units at Regular, -21 in the italic) and the Black italic `f`'s descender into `k`, `r`, `v`, `w`,
+`x` and `y` (-24). The `l` pairs join `OWN_SHAPE_PAIRS` and open by measurement; the heavy italic
+`f` gets a left sidebearing, as kerning picks its pairs at Regular, where these do not touch. A
+test now keeps them clear. `fT` still touches at Black italic, and `ZX`/`LX` at Display Black
+italic; neither occurs in running text.
+
+**Symbols.** Measured against Geist and Inter, punctuation grew too fast with weight: the period
+carried 0.89 of their ink at Regular and 1.6 at Black, commas 1.7x as tall. The dot (period, i
+and j dots, colon, ellipsis) is now 6% larger at Regular and 25% smaller at Black, and the comma's
+tail shallower at Black; the Black `i` is no longer wide (1.19 → 0.98). Commas and quotes still
+carry about 1.1x the references' ink: the square head is Cascivo's.
+
+| Glyph           | Was, Regular (Black)                | Now                     |
+| --------------- | ----------------------------------- | ----------------------- |
+| `•`             | a hollow ring, 0.64 size (0.86)     | a solid disc, 0.97-1.05 |
+| `°`             | 0.61 size (0.68)                    | 0.90-1.03               |
+| `«` `»` `‹` `›` | 0.78 size (Black's chevrons merged) | 0.90-1.07, open         |
+| `-`             | 0.70 long (0.95)                    | 0.92-0.97               |
+| `*`             | 0.78 size, high (Black filled in)   | 0.99-1.05               |
+| `^`             | 1.5x size                           | 1.05-1.08, raised       |
+| `~`             | 0.67 high                           | 0.80-0.95               |
+
+The bullet was a ring because `oval` caps its pen at a third of the ring, so small rings keep a
+counter; it is now drawn directly. Left as they are: `®` (cap height, where both references use a
+small raised one), `ª` `º`, `€` (narrow on the tabular width), the braces (narrow), and capital
+accents, which sit about 0.1 x-height lower than Plex's and 0.06 lower than Geist's and Inter's.
+The Latin Extended accents could not be compared: all three reference files are Latin subsets.
+
+**Optical sizes.** No reference has an optical-size axis, so the check is internal: every glyph's
+advance and ink at opsz 8 and 48, relative to 14, at Thin, Regular and Black, against the median
+glyph. No glyph changed in these rounds stands out; the outliers are structural groups that move
+together (narrow glyphs whose advance is mostly sidebearing, Thin's operators, which follow the
+horizontal stroke), plus the fraction slash. All corners render without artifacts, and
+the clearance check holds at the corners except the Display Black italic pairs above.
 
 ## Sources
 

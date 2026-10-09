@@ -184,7 +184,7 @@ class Font(unittest.TestCase):
         self.assertGreaterEqual(o_contrast(black), 0.68)
 
     def test_heavy_question_mark_hook_clears_its_dot(self):
-        # Black's dot is 227 units tall; with the hook ending at a fixed 27% of cap height, the two
+        # Black's dot was 227 units tall; with the hook ending at a fixed 27% of cap height, the two
         # touched and read as a notch.
         from fontTools.varLib.instancer import instantiateVariableFont
 
@@ -199,6 +199,84 @@ class Font(unittest.TestCase):
         dot = min(boxes)  # the contour that sits on the baseline
         hook_bottom = min(lo for lo, hi in boxes if (lo, hi) != dot)
         self.assertGreater(hook_bottom - dot[1], 30)
+
+    def test_bullet_is_solid(self):
+        # drawn as an oval stroke, the pen cap that keeps small rings open left it a ring
+        for f in (self.f, self.fi):
+            g = f['glyf'][f.getBestCmap()[0x2022]]
+            self.assertEqual(g.numberOfContours, 1)
+
+    def test_shaped_pairs_keep_clear(self):
+        # Pairs where a shape of Cascivo's own reaches under its neighbour: the tailed l into A, X
+        # and x; the italic f's descender into the letter before it; the italic t and z beside
+        # diagonals. Each touched at some weight before it was spaced or kerned apart.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        import io
+
+        from fontTools.pens.basePen import BasePen
+        from fontTools.varLib.instancer import instantiateVariableFont
+
+        class Bands(BasePen):
+            """Leftmost and rightmost ink per 25-unit band, from the outline sampled every few units."""
+
+            def __init__(self, gs):
+                super().__init__(gs)
+                self.out = {}
+
+            def _add(self, x, y):
+                b = int(y // 25)
+                lo, hi = self.out.get(b, (x, x))
+                self.out[b] = (min(lo, x), max(hi, x))
+
+            def _moveTo(self, p):
+                self._add(*p)
+
+            def _lineTo(self, p):
+                (x0, y0), (x1, y1) = self._getCurrentPoint(), p
+                n = max(1, int(max(abs(x1 - x0), abs(y1 - y0)) // 5))
+                for i in range(1, n + 1):
+                    self._add(x0 + (x1 - x0) * i / n, y0 + (y1 - y0) * i / n)
+
+            def _qCurveToOne(self, c, p):
+                (x0, y0) = self._getCurrentPoint()
+                for i in range(1, 41):
+                    t = i / 40
+                    u = 1 - t
+                    self._add(u * u * x0 + 2 * u * t * c[0] + t * t * p[0], u * u * y0 + 2 * u * t * c[1] + t * t * p[1])
+
+            def _curveToOne(self, c1, c2, p):
+                (x0, y0) = self._getCurrentPoint()
+                for i in range(1, 41):
+                    t = i / 40
+                    u = 1 - t
+                    self._add(u**3 * x0 + 3 * u * u * t * c1[0] + 3 * u * t * t * c2[0] + t**3 * p[0], u**3 * y0 + 3 * u * u * t * c1[1] + 3 * u * t * t * c2[1] + t**3 * p[1])
+
+        def rows(gs, name):
+            pen = Bands(gs)
+            gs[name].draw(pen)
+            return pen.out
+
+        pairs = {VF: ['lA', 'lX', 'lx'], VFI: ['lA', 'lX', 'lx', 'kf', 'rf', 'vf', 'wf', 'xf', 'yf', 'xt', 'kt', 'yt', 'zA', 'zX']}
+        for path, ps in pairs.items():
+            for wght in (400, 900):
+                f = instantiateVariableFont(TTFont(path), {'wght': wght, 'opsz': 14})
+                buf_io = io.BytesIO()
+                f.save(buf_io)
+                font = hb.Font(hb.Face(buf_io.getvalue()))
+                gs, order = f.getGlyphSet(), f.getGlyphOrder()
+                for pair in ps:
+                    buf = hb.Buffer()
+                    buf.add_str(pair)
+                    buf.guess_segment_properties()
+                    hb.shape(font, buf, {'kern': True})
+                    (a, b), adv = [order[i.codepoint] for i in buf.glyph_infos], buf.glyph_positions[0].x_advance
+                    ra, rb = rows(gs, a), rows(gs, b)
+                    gap = min(adv + rb[k][0] - ra[k][1] for k in set(ra) & set(rb))
+                    with self.subTest(font=os.path.basename(path), wght=wght, pair=pair):
+                        self.assertGreater(gap, 0)
 
     def test_kerning(self):
         try:

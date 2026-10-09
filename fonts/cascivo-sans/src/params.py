@@ -76,7 +76,10 @@ class P:
         if italic:
             self.cn *= 0.95  # italics run slightly narrower: the slant already adds movement
         self.cH = self.cn * 418 / 284  # H counter, in proportion to n
-        self.dot = V * 1.12 + 14  # i dot / period: never thinner than a readable square
+        # i dot / period: never thinner than a readable square. Against Geist's and Inter's, a
+        # stem-proportional dot made punctuation 0.89x their ink at Regular and 1.6x at Black
+        # (commas 1.7x as tall): Regular's grows a little, the heavy ones much less.
+        self.dot = (V * 1.12 + 14) * 1.06 - 60 * self.heavy
         self.mt = V * 0.86 + 6  # accent stroke
         self.fig_adv = round(580 + 0.55 * (V - 90) + (spacing - 1) * 60)  # tabular figure advance
         self.slant = math.tan(math.radians(ITALIC_ANGLE)) if italic else 0.0

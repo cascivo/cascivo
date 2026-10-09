@@ -170,13 +170,13 @@ def _T(g, p):
 @glyph('A', 0x41)
 def _A(g, p):
     # heavy A widens and drops its bar, or the counter above the bar closes (Black: 0.38x)
-    w = p.Hw * (1.1 + 0.08 * p.heavy)
+    w = p.Hw * (1.1 + 0.14 * p.heavy)
     if p.italic:  # the italic's narrowing closed Black's counter to 0.89x the upright's
         w *= 1 + 0.06 * p.heavy
     c = w / 2
-    # Regular's diagonals at the full stroke (the A carried 0.91x the references' ink); Black's
-    # stay lighter, or the counter above the bar closes
-    ws = 1.0 - 0.07 * p.heavy
+    # diagonals at (nearly) the full stroke: the A carried 0.90-0.91x the references' ink at every
+    # weight. Black widens as much again, so the counter above the bar stays open
+    ws = 1.0 - 0.03 * p.heavy
     a = g.diag(0, 0, c, p.cap, 'l', 'c', ws=ws)
     b = g.diag(w, 0, c, p.cap, 'r', 'c', ws=ws)
     y = p.cap * (0.27 - 0.05 * p.heavy)
@@ -399,7 +399,7 @@ def _J(g, p):
     # is unchanged
     g.stroke([L((xr, p.cap), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, max(-179.0, -178 + 20 * p.heavy + p.ap)), caps=('b', 'b'))  # short of -180°: same segments in every master
     g.ht = 'c'
-    g.sb = (0.4, 1)
+    g.sb = (0.4, 0.9)
 
 
 def _ell_seg(cx, cy, rx, ry, a0, a1, k):
@@ -538,7 +538,7 @@ def _r(g, p):
     ry = p.xh * 0.42
     cy = p.xh + p.ov * 0.4 - p.H / 2 - ry
     g.stroke(g.arc(a + rx, cy, rx, ry, 166, 62 - p.ap * 0.5), taper=(0.5, 1), caps=('b', 'b'))
-    g.sb = (1, 0.25)
+    g.sb = (1, 0.35 + (0.25 if p.italic else 0) * p.heavy)  # ra, re, ro sat 10% tighter than in the references
 
 
 @glyph('dotlessi', 0x131)
@@ -633,7 +633,7 @@ def _g(g, p):
     g.stroke([L((xr, p.xh), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, -152 + p.ap), caps=('b', 'b'))
     cx, cy2, rx2, ry2 = g.box(0, 18, w, p.xh + p.ov)
     g.stroke(g.arc(cx, cy2, rx2, ry2, 28, 332), taper=(0.55, 0.55))
-    g.sb = (0.62, 1)
+    g.sb = (0.62, 1.15 if p.italic else 1)  # the italic sat 10% tighter on its right than Inter's and Plex's
 
 
 @glyph('o', 0x6F)
@@ -790,10 +790,10 @@ def _f(g, p):
         # the italic f descends and hooks left under the preceding letter
         hook, cyb = _italic_descender(g, p, sx)
         g.stroke(hook + [L((sx, cyb), (sx, cy))] + top_hook, caps=('b', 'b'))
-        g.sb = (-0.2, 0.05)
+        g.sb = (-0.2 + 0.5 * p.heavy, 0.15)  # heavier, the hook ran into the feet of x, y, k, r
     else:
         g.stroke([L((sx, 0), (sx, cy))] + top_hook, caps=('b', 'b'))
-        g.sb = (0.45, 0.05)  # crossbar overhang, as for t
+        g.sb = (0.45, 0.2 + 0.25 * p.heavy)  # crossbar overhang, as for t (fo, ft sat 15% tighter than the references')
     g.hbar(0, w * 0.96, p.xh - H)
     g.ht = 'a'
 
@@ -841,7 +841,9 @@ def _t(g, p):
     # the crossbar reaches left: 0.3 let it touch the stem before it at Black ("ht"). On the right,
     # Regular's foot lifts away from the next letter; Black's runs flat along the baseline and
     # touched a following z. The italic's z slants its baseline bar further under the t.
-    g.sb = (0.55, 0.25 + (1.0 if p.italic else 0.4) * heavy)
+    # the italic t sat 15-25% looser than Inter's and Plex's on both sides, and Bold's left side
+    # 15% looser in both styles (the italic's less, or it meets the feet of x, k and v at Black)
+    g.sb = ((0.4 - 0.05 * heavy) if p.italic else (0.55 - 0.25 * heavy), (0.05 + 0.8 * heavy) if p.italic else (0.25 + 0.4 * heavy))
     g.anchors['topright_x'] = xs + V + p.S * 0.4
 
 
@@ -854,7 +856,7 @@ def _k(g, p):
     j = (a0[0] + (a1[0] - a0[0]) * t, a0[1] + (a1[1] - a0[1]) * t)
     g.diag(j[0], j[1], w, 0, 'c', 'r', ws=0.95, caps=('b', 'h'))
     g.ht = 'a'
-    g.sb = (1, 0.1)
+    g.sb = (1, 0.2)  # ke, ky sat 20% tighter than in Geist and Inter
 
 
 @glyph('kgreenlandic', 0x138)
@@ -873,7 +875,9 @@ def _v(g, p):
     w = p.nw * 1.10  # diagonals need room: v was 0.9x the references' width at Regular and Black
     g.diag(0, p.xh, w / 2, 0, 'l', 'c')
     g.diag(w, p.xh, w / 2, 0, 'r', 'c')
-    g.sb = (0.1, 0.1)
+    # spaced against Geist's and Inter's (and Inter's and Plex's italics) pair by pair: it sat
+    # about 15% tighter beside round and straight letters
+    g.sb = (0.25, 0.25)
 
 
 @glyph('w', 0x77)
@@ -884,7 +888,9 @@ def _w(g, p):
     g.diag(w / 2, p.xh, w * 0.25, 0, 'c', 'c', ws=ws)
     g.diag(w / 2, p.xh, w * 0.75, 0, 'c', 'c', ws=ws)
     g.diag(w, p.xh, w * 0.75, 0, 'r', 'c', ws=ws)
-    g.sb = (0.1, 0.1)
+    # spaced against Geist's and Inter's (and Inter's and Plex's italics) pair by pair: it sat
+    # about 18% tighter beside round and straight letters
+    g.sb = (0.36, 0.36)
 
 
 @glyph('x', 0x78)
@@ -892,7 +898,9 @@ def _x(g, p):
     w = p.nw * 1.07
     g.diag(0, p.xh, w, 0, 'l', 'r', ws=0.93)
     g.diag(w, p.xh, 0, 0, 'r', 'l', ws=0.9)
-    g.sb = (0.12, 0.12)
+    # spaced against Geist's and Inter's (and Inter's and Plex's italics) pair by pair: it sat
+    # about 12% tighter beside round and straight letters
+    g.sb = (0.2, 0.2)
 
 
 @glyph('y', 0x79)
@@ -914,7 +922,9 @@ def _y(g, p):
     # the baseline leaves its corner showing at heavy weights
     yj = -p.H * 0.5
     g.diag(0, p.xh, on_line(*a, yj), yj, 'l', 'c', caps=('h', 'b'))
-    g.sb = (0.1, 0.1)
+    # spaced against Geist's and Inter's (and Inter's and Plex's italics) pair by pair: it sat
+    # about 20% on the left, tighter beside round and straight letters
+    g.sb = (0.42, 0.25)
 
 
 @glyph('z', 0x7A)
@@ -922,7 +932,8 @@ def _z(g, p):
     w = p.nw * 0.95
     g.hbar(w * 0.04, w * 0.98, p.xh - p.H).hbar(0, w, 0)
     g.diag(w * 0.98, p.xh - p.H / 2, 0, p.H / 2, 'r', 'l', ws=0.95)
-    g.sb = (0.35, 0.35)
+    # the italic's baseline bar slants out under the next letter: heavy, it met X and A
+    g.sb = (0.35, 0.35 + (0.4 if p.italic else 0) * p.heavy)
 
 
 # ============================================================================================
@@ -1045,12 +1056,14 @@ def _six(g, p):
 def _six_strokes(g, p, w):
     V = p.V
     # a taller bowl and, at Regular, a hook running further round: the 6 and 9 carried 0.88x
-    # Geist's and Inter's ink at every weight, and Black's counter was 0.80x theirs
+    # Geist's and Inter's ink at every weight, and Black's counter was 0.80x theirs. Black's hook
+    # is drawn on a wider ellipse, so it can end lower without its inner edge folding: ending at
+    # 72° on the narrow one, it tapered to a point
     top = p.cap * 0.63
     g.oval(0, -p.ov, w, top)
-    cx, cy, rx, ry = g.box(0, -p.ov, w * 1.02, p.cap + p.ov)
+    cx, cy, rx, ry = g.box(0, -p.ov, w * (1.02 + 0.15 * p.heavy), p.cap + p.ov)
     cyb = (-p.ov + top) / 2
-    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 44 + 28 * p.heavy + p.ap * 0.5), caps=('b', 'b'), cut='h')  # heavy terminals end higher, so the cut trims little and Bold, between the masters, has no dip
+    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 44 + 14 * p.heavy + p.ap * 0.5), caps=('b', 'b'), cut='h')  # heavy terminals end higher, so the cut trims little and Bold, between the masters, has no dip
     del V
 
 
@@ -1107,6 +1120,11 @@ def _period(g, p):
     g.sb = (0.9, 0.9)
 
 
+def comma_depth(p):
+    # in dots; Black's tail ran 1.7x as deep as Geist's and Inter's
+    return 1.15 - 0.3 * p.heavy
+
+
 def comma_shape(g, d, x, top, depth):
     """A grotesque comma: a square head one dot wide, then a tail that curves down and to the
     left and tapers. Every curly quote is built from this (’ ” raised, ‘ “ turned), so the
@@ -1114,13 +1132,13 @@ def comma_shape(g, d, x, top, depth):
     neck = top - d * 0.95
     end = (x - d * 0.6, neck - depth)
     tail = ('C', (x, neck), (x, neck - depth * 0.45), (x - d * 0.12, neck - depth * 0.8), end)
-    g.stroke([L((x, top), (x, neck)), tail], w=d, taper=(1, 0.38), caps=('b', 'b'))
+    g.stroke([L((x, top), (x, neck)), tail], w=d, taper=(1, 0.15), caps=('b', 'b'))
 
 
 @glyph('comma', 0x2C)
 def _comma(g, p):
     d = p.dot
-    comma_shape(g, d, d / 2, d, d * 1.3)
+    comma_shape(g, d, d / 2, d, d * comma_depth(p))
     g.sb = (0.9, 0.9)
 
 
@@ -1170,7 +1188,7 @@ def _question(g, p):
 
 @glyph('hyphen', 0x2D, 0xAD)
 def _hyphen(g, p):
-    w = 150 + p.V * 0.9
+    w = 270 + p.V * 0.3  # Regular's was 0.70x as long as Geist's and Inter's; Black's is kept
     g.hbar(0, w, p.xh * 0.5 - p.H * 0.55, h=p.H * 1.1)
     g.sb = (0.55, 0.55)
 
@@ -1281,16 +1299,19 @@ def _not(g, p):
 @glyph('asciitilde', 0x7E)
 def _tilde_ascii(g, p):
     w, cy, t = _mathy(p)
-    a = w * 0.1
-    g.stroke([('C', (0, cy - a), (w * 0.2, cy + a * 2.6), (w * 0.8, cy - a * 2.6), (w, cy + a))], w=t)
+    a = w * 0.14  # a deeper wave: it was 0.67x the references' height
+    m = w * 0.08 * p.heavy  # heavy weights draw it shorter: Black's ran 1.3x as wide
+    g.stroke([('C', (m, cy - a), (m + (w - 2 * m) * 0.2, cy + a * 2.6), (w - m - (w - 2 * m) * 0.2, cy - a * 2.6), (w - m, cy + a))], w=t)
     g.tab = True
 
 
 @glyph('asciicircum', 0x5E)
 def _asciicircum(g, p):
     w, cy, t = _mathy(p)
-    g.line((0, p.cap * 0.38), (w / 2, p.cap), w=t, caps=('h', 'b'))
-    g.line((w, p.cap * 0.38), (w / 2, p.cap), w=t, caps=('h', 'b'))
+    # a raised caret, not a full-height chevron: it was 1.5x Geist's and Inter's size
+    x0, x1 = w * (0.17 + 0.08 * p.heavy), w * (0.83 - 0.08 * p.heavy)
+    g.line((x0, p.cap * 0.55), (w / 2, p.cap * 0.93), w=t, caps=('h', 'b'))
+    g.line((x1, p.cap * 0.55), (w / 2, p.cap * 0.93), w=t, caps=('h', 'b'))
     g.ht = 'c'
     g.tab = True
 
@@ -1488,12 +1509,12 @@ def _ampersand(g, p):
 
 @glyph('asterisk', 0x2A)
 def _asterisk(g, p):
-    r = 120 + p.V * 0.2
+    r = 176  # Regular's was 0.78x the references' size, and sat high; Black's 0.94x
     cy = p.cap - r
     c = r
     for ang in (90, 18, -54, -126, 162):
         a = math.radians(ang)
-        g.line((c, cy), (c + r * math.cos(a), cy + r * math.sin(a)), w=p.V * 0.82, caps=('b', 'b'))
+        g.line((c, cy), (c + r * math.cos(a), cy + r * math.sin(a)), w=p.V * (0.82 - 0.22 * p.heavy), caps=('b', 'b'))  # Black's filled in
     g.sb = (0.45, 0.45)
     g.ht = 'c'
 
@@ -1518,8 +1539,11 @@ def _at(g, p):
 
 @glyph('bullet', 0x2022)
 def _bullet(g, p):
-    d = p.dot * 1.5
-    g.oval(0, p.xh * 0.5 - d / 2, d, p.xh * 0.5 + d / 2, V=d * 0.5, H=d * 0.5)
+    # Regular's was 0.64x Geist's and Inter's size; Black's 0.86x
+    d = p.dot * 1.5 * (1.5 - 0.3 * p.heavy)
+    # a solid disc, drawn directly: as an oval stroke, the pen cap that keeps small rings open
+    # left it a ring
+    g.raw.append(orient(g.arc(d / 2, p.xh * 0.5, d / 2, d / 2, 90, 450), outer=True))
     g.sb = (0.8, 0.8)
 
 
@@ -1531,7 +1555,7 @@ def _periodcentered(g, p):
 
 @glyph('degree', 0xB0)
 def _degree(g, p):
-    d = 150 + p.V * 0.5
+    d = 225 + p.V * 0.75  # 0.61-0.68x the references' size, at every weight
     t = min(p.V * 0.72, d * 0.24)
     g.oval(0, p.cap - d, d, p.cap, V=t, H=t)
     g.sb = (0.6, 0.6)
@@ -1648,13 +1672,15 @@ def _ellipsis(g, p):
 
 
 def _guil(g, p, x0, flip, h=1.0):
-    w = 120 + p.V * 0.45
-    hh = p.xh * 0.26 * h
+    # Regular's were 0.8x the references' size, Black's 0.88x and cramped
+    w = 160 + p.V * 0.45
+    hh = p.xh * 0.31 * h
     cy = p.xh * 0.5
     tip = x0 if not flip else x0 + w
     back = x0 + w if not flip else x0
-    g.line((back, cy + hh), (tip, cy), ws=0.86, caps=('b', 'b'), w=p.V * 0.9)
-    g.line((tip, cy), (back, cy - hh), ws=0.86, caps=('b', 'b'), w=p.V * 0.9)
+    t = p.V * (0.9 - 0.12 * p.heavy)  # at the full stem, Black's chevrons ran into each other
+    g.line((back, cy + hh), (tip, cy), ws=0.86, caps=('b', 'b'), w=t)
+    g.line((tip, cy), (back, cy - hh), ws=0.86, caps=('b', 'b'), w=t)
     return w
 
 

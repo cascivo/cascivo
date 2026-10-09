@@ -43,8 +43,11 @@ for _i, _n in enumerate(FIGS):
 
 
 # Pairs no reference font can vouch for, because the shape is Cascivo's own: the tailed l tucks
-# its tail under the next letter, which brings it too close to low punctuation ("all.").
-OWN_SHAPE_PAIRS = {('l', 'period'): 1, ('l', 'comma'): 1, ('l', 'ellipsis'): 1}
+# its tail under the next letter, which brings it too close to low punctuation ("all.") and into
+# the feet of A, X and x; the italic f hooks its descender under the letter before it, into the
+# feet of diagonal letters and r. Only a pair whose measurement opens it is kept.
+OWN_SHAPE_PAIRS = {(a, b): 1 for a, b in [('l', 'period'), ('l', 'comma'), ('l', 'ellipsis'), ('l', 'A'), ('l', 'X'), ('l', 'x')]}
+OWN_SHAPE_PAIRS.update({(a, 'f'): 1 for a in 'kvwxyr'})
 
 
 def _glyph(ch):
