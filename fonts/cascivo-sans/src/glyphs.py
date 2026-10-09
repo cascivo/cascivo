@@ -192,7 +192,9 @@ def _V(g, p):
 @glyph('W', 0x57)
 def _W(g, p):
     w = p.Hw * 1.6
-    ws = 0.86
+    # Regular's diagonals were too light (the W carried 0.85x Geist's and Inter's ink against a
+    # 0.94x Regular overall); Black's weight is unchanged
+    ws = 0.96 - 0.1 * p.heavy
     x1, x3 = w * 0.25, w * 0.75
     g.diag(0, p.cap, x1, 0, 'l', 'c', ws=ws)
     g.diag(w / 2, p.cap, x1, 0, 'c', 'c', ws=ws)
@@ -206,8 +208,9 @@ def _W(g, p):
 def _M(g, p):
     w = p.Hw * 1.24
     g.vstem(0, 0, p.cap).vstem(w - p.V, 0, p.cap)
-    g.diag(0, p.cap, w / 2, 0, 'l', 'c', ws=0.86)
-    g.diag(w, p.cap, w / 2, 0, 'r', 'c', ws=0.86)
+    # heavier diagonals at Regular (0.87x the references' ink), Black's unchanged
+    g.diag(0, p.cap, w / 2, 0, 'l', 'c', ws=0.94 - 0.08 * p.heavy)
+    g.diag(w, p.cap, w / 2, 0, 'r', 'c', ws=0.94 - 0.08 * p.heavy)
     g.ht = 'c'
 
 
@@ -242,8 +245,9 @@ def _Y(g, p):
     w = p.Hw * 1.04
     c = w / 2
     yj = p.cap * 0.43
-    g.diag(0, p.cap, c, yj, 'l', 'c', ws=0.92)
-    g.diag(w, p.cap, c, yj, 'r', 'c', ws=0.92)
+    # heavier arms at Regular (0.88x the references' ink), Black's unchanged
+    g.diag(0, p.cap, c, yj, 'l', 'c', ws=0.98 - 0.06 * p.heavy)
+    g.diag(w, p.cap, c, yj, 'r', 'c', ws=0.98 - 0.06 * p.heavy)
     g.vstem(c - p.V / 2, 0, yj + 2)
     g.ht = 'c'
     g.sb = (0.08, 0.08)
@@ -382,7 +386,9 @@ def _J(g, p):
     rx = (w - V / 2) / 2 - 2
     ry = min(rx * 1.05, p.cap * 0.36)
     cy = -p.ov + H / 2 + ry
-    g.stroke([L((xr, p.cap), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, -158 + p.ap), caps=('b', 'b'))
+    # Regular's hook runs 12° further round (it stopped short, 0.87x the references' ink); Black's
+    # is unchanged
+    g.stroke([L((xr, p.cap), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, -170 + 12 * p.heavy + p.ap), caps=('b', 'b'))
     g.ht = 'c'
     g.sb = (0.4, 1)
 
