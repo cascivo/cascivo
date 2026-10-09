@@ -79,6 +79,14 @@ def italicize(strokes, p):
     return out
 
 
+def italicize_raw(contours, p):
+    """Outlines drawn directly (not as strokes) are sheared around mid-x-height, like strokes."""
+    if not p.slant:
+        return contours
+    yc = p.xh / 2
+    return [transform_contour(c, lambda q: (q[0] + (q[1] - yc) * p.slant, q[1])) for c in contours]
+
+
 def draw_master(p):
     o = Out(p)
     for name in GL.ORDER:
@@ -91,7 +99,7 @@ def draw_master(p):
         cs += g.raw
         # Spacing is measured on the upright drawing; the italic outlines replace it afterwards,
         # slanted around mid-x-height so that spacing carries over.
-        italic_cs = [c for s in italicize(g.strokes, p) for c in expand(s, p.V, p.H)] if p.slant else None
+        italic_cs = [c for s in italicize(g.strokes, p) for c in expand(s, p.V, p.H)] + italicize_raw(g.raw, p) if p.slant else None
         for cp in cps:
             o.cmap[cp] = name
         if g.adv_fixed is not None:

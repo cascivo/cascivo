@@ -16,8 +16,8 @@ Helvetica, and what it does not do yet.
 | `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz | Latin                 | 28.9 KB                   |
 | `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz | full (365 codepoints) | 34.6 KB                   |
 | `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz | full                  | 93.9 KB (desktop install) |
-| `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght       | Latin                 | 24.0 KB                   |
-| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz | Latin                 | 32.1 KB                   |
+| `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght       | Latin                 | 24.1 KB                   |
+| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz | Latin                 | 32.2 KB                   |
 | `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz | full                  | 38.1 KB                   |
 | `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz | full                  | 97.6 KB (desktop install) |
 | `fonts/CascivoSans-Regular.woff2`                 | static 400 | full                  | 11.7 KB                   |

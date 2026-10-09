@@ -10,7 +10,7 @@ that changes the *number* of strokes or segments. Parameters may only move point
 
 import math
 
-from geom import L, Stroke, arc, contour_bounds, pen_thickness, norm
+from geom import L, Stroke, arc, contour_bounds, norm, orient, pen_thickness
 
 GLYPHS = {}  # name -> (codepoints, fn)
 ORDER = []
@@ -707,20 +707,47 @@ def _f(g, p):
 @glyph('t', 0x74)
 def _t(g, p):
     heavy = p.heavy
-    # Heavy t's widen so the hook has room to turn and the crossbar still reaches past the stem
-    # on the right; held at Regular's width, Black's hook ended in a stub at the very bottom.
-    # The slant tightens the hook's inside curve further, so the italic gets more.
-    w = p.nw * (0.6 + (0.2 if p.italic else 0.14) * heavy)
+    # Heavy t's widen so the crossbar still reaches past the stem on the right.
+    w = p.nw * (0.6 + 0.14 * heavy)
     V, H = p.V, p.H
     xs = w * 0.24 + V * 0.12
-    rx = w - xs - V * 0.4
-    # heavy feet turn lower and flatter, toward Geist's and Inter's tight foot; flatter still and
-    # the inside of the turn folds
-    ry = rx * (0.9 - 0.25 * heavy)
-    cy = -p.ov * 0.4 + H / 2 + ry
-    g.stroke([L((xs + V / 2, p.xh + (p.asc - p.xh) * 0.62), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, 286 - 2 * heavy), caps=('b', 'b'))  # the end angle stays above 270°: same segments in every master
     g.hbar(0, w * 0.96, p.xh - H)
-    g.sb = (0.55, 0.25)  # the crossbar reaches left: 0.3 let it touch the stem before it at Black ("ht")
+    # Stem and foot are one outline, drawn directly rather than as a stroke: a stroke turning a
+    # corner tighter than half its width folds on the inside, and Geist's and Inter's heavy t
+    # turns with an almost square inner corner. Every radius is a master parameter, so the same
+    # points interpolate from Regular's round hook to Black's square foot.
+    xl, xr = xs, xs + V  # stem edges
+    yb = -p.ov * 0.4  # underside of the foot
+    ytop = p.xh + (p.asc - p.xh) * 0.62
+    hf = H * (1 - 0.1 * heavy)  # foot thickness at the corner
+    yi = yb + hf  # top of the foot
+    rx = w - xs - V * 0.4  # the Regular hook's centreline radius
+    ri = (rx - V / 2) * (1 - 0.88 * heavy)  # inner corner: round at Regular, near square at Black
+    xe = xr + V * (2.1 - 1.55 * heavy)  # end of the foot
+    rise = hf * 0.25 * (1 - heavy)  # Regular's foot lifts a little toward its end, Black's is flat
+    end_bot = yb + hf * 0.2 * (1 - heavy)
+    roy = (rx * 0.9 + H / 2) * (1 - 0.45 * heavy)  # outer corner, up the stem
+    rox = min(roy * 1.1, (xe - xl) * 0.7)  # outer corner, along the foot
+    k = p.k
+    inner_end = (xr + ri, yi)
+    d = xe - inner_end[0]
+    bot = (xl + rox, yb)
+    db = xe - bot[0]
+    contour = [
+        L((xl, ytop), (xr, ytop)),
+        L((xr, ytop), (xr, yi + ri)),
+        ('C', (xr, yi + ri), (xr, yi + ri * (1 - k)), (xr + ri * (1 - k), yi), inner_end),
+        ('C', inner_end, (inner_end[0] + d * 0.5, yi), (xe - d * 0.2, yi + rise), (xe, yi + rise)),
+        L((xe, yi + rise), (xe, end_bot)),
+        ('C', (xe, end_bot), (xe - db * 0.35, yb), (bot[0] + db * 0.3, yb), bot),
+        ('C', bot, (xl + rox * (1 - k), yb), (xl, yb + roy * (1 - k)), (xl, yb + roy)),
+        L((xl, yb + roy), (xl, ytop)),
+    ]
+    g.raw.append(orient(contour, outer=True))
+    # the crossbar reaches left: 0.3 let it touch the stem before it at Black ("ht"). On the right,
+    # Regular's foot lifts away from the next letter; Black's runs flat along the baseline and
+    # touched a following z. The italic's z slants its baseline bar further under the t.
+    g.sb = (0.55, 0.25 + (1.0 if p.italic else 0.4) * heavy)
     g.anchors['topright_x'] = xs + V + p.S * 0.4
 
 

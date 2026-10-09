@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import glyphs as GL  # noqa: E402
 from geom import expand, flatten  # noqa: E402
-from build import italicize  # noqa: E402
+from build import italicize, italicize_raw  # noqa: E402
 from params import ITALIC_MASTERS, MASTERS, P  # noqa: E402
 
 
@@ -55,6 +55,9 @@ def main():
                 for c in expand(s, p.V, p.H):
                     if self_intersects(flatten(c, 16)):
                         bad.append((mname, name, si))
+            for ri, c in enumerate(italicize_raw(g.raw, p)):
+                if self_intersects(flatten(c, 16)):
+                    bad.append((mname, name, f'raw {ri}'))
     for b in bad:
         print('self-intersecting:', *b)
     print(f'{len(bad)} problem contours')

@@ -117,7 +117,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                                             |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                                                    |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                                                          |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.8 KB, `Latin[opsz,wght]` 28.9 KB; italic 24.0 / 32.1 KB, loaded only when a page uses italic. Serve only the axes you use |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.8 KB, `Latin[opsz,wght]` 28.9 KB; italic 24.1 / 32.2 KB, loaded only when a page uses italic. Serve only the axes you use |
 
 ## 5. Scorecard
 
@@ -129,7 +129,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | Bytes per codepoint (Latin slice)       | **102**                | 131               | 197                                   | 210                |
 | Variable, full charset, wght only       | **25.8 KB** (71 B/cp)  | 69.7 KB (96 B/cp) | —                                     | —                  |
 | Static Regular, full charset            | **11.7 KB** (32 B/cp)  | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp)                     | —                  |
-| Italic, variable Latin slice, wght axis | **24.0 KB** (114 B/cp) | no italic         | 24.4 KB, one static weight (105 B/cp) | 51.8 KB (225 B/cp) |
+| Italic, variable Latin slice, wght axis | **24.1 KB** (114 B/cp) | no italic         | 24.4 KB, one static weight (105 B/cp) | 51.8 KB (225 B/cp) |
 
 The full-charset comparison is not like for like. Geist and Plex cover Cyrillic, Greek and
 more, and those glyphs are larger. The Latin slices are the fair comparison, and Cascivo uses
@@ -342,7 +342,7 @@ tail. Counters are 5% narrower. The italic passes the same no-reflow test as the
   its right-angle turn. The capital breve has a minimum depth, because a shallow arc thinner
   than its stroke folds inside.
 
-**Size.** The italic Latin web file is 24.0 KB for every weight, against 21.8 KB for the upright.
+**Size.** The italic Latin web file is 24.1 KB for every weight, against 21.8 KB for the upright.
 The difference is inherent: once outlines are slanted, every point that moves vertically
 between masters also moves horizontally, so it carries more variation data. For comparison,
 Plex ships 24.4 KB for one static italic weight, and Inter 51.8 KB for its variable italic.
@@ -388,8 +388,12 @@ not. Measured on rasterised `n`, `o` and `e` (percent of x-height, at 900):
 
 - `s`: wider, with a heavier spine that lies flatter. The upper bowl takes a little more of the
   height, so its counter stays open at the heavier Black.
-- `t`: wider, so the hook can turn and the crossbar still reaches past the stem. The foot turns
-  lower and flatter, toward Geist's and Inter's tight foot, and no longer tapers into a notch.
+- `t`: stem and foot are now one outline drawn directly, not a stroke, so the inner corner can
+  be nearly square without folding (a stroke turning tighter than half its width folds inside).
+  Its corner radii are master parameters: Regular keeps its round hook, and Black turns with a
+  near-square inner corner into a flat foot, as Geist's and Inter's do. The heavy t takes more
+  room on its right, because the flat foot now runs along the baseline where the hook used to
+  lift away; at Black it touched a following `z`.
 - `a`: the bowl rises, its top and bottom thin like a crossbar, and it stays round longer before
   it joins the stem. Its counter was a slit.
 - `c`: 8% wider.
@@ -397,15 +401,15 @@ not. Measured on rasterised `n`, `o` and `e` (percent of x-height, at 900):
   loop where it runs tangent to it, so it no longer pokes into the loop's counter. The arm rises
   out of the bowl in one stroke and is no longer a separate wedge.
 
-Regular is unchanged except for the `&`. At 500 px, the largest raster difference in any other
-Regular glyph is 69 pixels, in `Œ`, from how its overlapping `O` and `E` rasterise after
+Regular is unchanged except for the `&` and the `t`, whose rebuilt foot keeps Regular's hook but
+now ends on a vertical cut. At 500 px, the largest raster difference in any other Regular glyph
+is 69 pixels, in `Œ`, from how its overlapping `O` and `E` rasterise after
 quadratic conversion. A test checks that Black's sidebearing is at most 0.8 of Regular's, and
 that Black's `o` keeps a contrast of at least 0.68.
 
 **Still behind.** The heavy `a` counter is bigger, but still smaller than Geist's and Inter's,
-with a slight nick where the bowl joins the stem. The heavy `t` foot is flatter but still round:
-a square inner corner like theirs would fold in this stroke model. Ink density is 0.62 against
-0.65, because our counters stay a little more open.
+with a slight nick where the bowl joins the stem. Ink density is 0.62 against 0.65, because our
+counters stay a little more open.
 
 ## Sources
 
