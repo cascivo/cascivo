@@ -137,8 +137,8 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [1, 0, 0],
-        "hex": "#ffffff"
+        "components": [0.145, 0.005, 250],
+        "hex": "#090a0c"
       }
     },
     "color-accent-hover": {
@@ -234,8 +234,8 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [0.58, 0.18, 22],
-        "hex": "#cf4047"
+        "components": [0.55, 0.18, 22],
+        "hex": "#c5353e"
       }
     },
     "color-destructive-content": {
@@ -306,8 +306,8 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [0.58, 0.025, 325],
-        "hex": "#827583"
+        "components": [0.535, 0.025, 325],
+        "hex": "#756875"
       }
     },
     "color-info": {
@@ -322,8 +322,8 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [1, 0, 0],
-        "hex": "#ffffff"
+        "components": [0.145, 0.005, 250],
+        "hex": "#090a0c"
       }
     },
     "color-info-foreground": {
@@ -362,16 +362,16 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [1, 0, 0],
-        "hex": "#ffffff"
+        "components": [0.145, 0.005, 250],
+        "hex": "#090a0c"
       }
     },
     "color-primary-fg": {
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [1, 0, 0],
-        "hex": "#ffffff"
+        "components": [0.145, 0.005, 250],
+        "hex": "#090a0c"
       }
     },
     "color-primary-hover": {
@@ -514,8 +514,8 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [0.58, 0.025, 325],
-        "hex": "#827583"
+        "components": [0.535, 0.025, 325],
+        "hex": "#756875"
       }
     },
     "color-warning": {

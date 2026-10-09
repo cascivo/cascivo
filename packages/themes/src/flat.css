@@ -114,7 +114,7 @@
     --cascivo-color-warning-subtle: oklch(0.96 0.04 75);
     --cascivo-color-info: oklch(0.5 0.18 250);
     --cascivo-color-info-subtle: oklch(0.95 0.04 250);
-    --cascivo-color-success-foreground: oklch(0.52 0.18 145);
+    --cascivo-color-success-foreground: oklch(0.5 0.18 145);
     --cascivo-color-warning-foreground: oklch(0.5 0.14 75);
     --cascivo-color-destructive-foreground: oklch(0.42 0.19 22);
     --cascivo-color-info-foreground: oklch(0.45 0.19 250);

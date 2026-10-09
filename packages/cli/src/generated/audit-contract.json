@@ -304,7 +304,7 @@
     },
     {
       "name": "--cascivo-editor-syntax-keyword",
-      "resolvedDefault": "var(--cascivo-color-accent, oklch(0.52 0.2 250))"
+      "resolvedDefault": "var(--cascivo-color-accent-text, oklch(0.52 0.2 250))"
     },
     { "name": "--cascivo-editor-syntax-string", "resolvedDefault": "oklch(0.53 0.13 135)" },
     { "name": "--cascivo-editor-syntax-number", "resolvedDefault": "oklch(0.54 0.15 40)" },
@@ -331,7 +331,7 @@
     },
     {
       "name": "--cascivo-editor-syntax-tag",
-      "resolvedDefault": "var(--cascivo-color-accent, oklch(0.52 0.2 250))"
+      "resolvedDefault": "var(--cascivo-color-accent-text, oklch(0.52 0.2 250))"
     },
     { "name": "--cascivo-editor-syntax-attr", "resolvedDefault": "oklch(0.54 0.15 40)" },
     { "name": "--cascivo-editor-syntax-regexp", "resolvedDefault": "oklch(0.53 0.13 135)" },

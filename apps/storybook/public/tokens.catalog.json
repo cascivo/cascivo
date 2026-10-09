@@ -1940,10 +1940,10 @@
     },
     {
       "name": "--cascivo-editor-syntax-keyword",
-      "value": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+      "value": "var(--cascivo-color-accent-text, oklch(0.52 0.2 250))",
       "layer": "semantic",
       "group": "editor",
-      "resolvedDefault": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+      "resolvedDefault": "var(--cascivo-color-accent-text, oklch(0.52 0.2 250))",
       "resolvesPerTheme": false,
       "canonical": true
     },
@@ -2021,10 +2021,10 @@
     },
     {
       "name": "--cascivo-editor-syntax-tag",
-      "value": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+      "value": "var(--cascivo-color-accent-text, oklch(0.52 0.2 250))",
       "layer": "semantic",
       "group": "editor",
-      "resolvedDefault": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+      "resolvedDefault": "var(--cascivo-color-accent-text, oklch(0.52 0.2 250))",
       "resolvesPerTheme": false,
       "canonical": true
     },

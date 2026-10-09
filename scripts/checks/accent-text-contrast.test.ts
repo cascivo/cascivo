@@ -150,6 +150,13 @@ describe('the static ink on a fill clears WCAG AA in every theme', () => {
     for (const [ink, fill] of [
       ['--cascivo-color-text-on-destructive', '--cascivo-color-destructive'],
       ['--cascivo-color-text-on-accent', '--cascivo-color-accent'],
+      // What Button's primary label and Calendar's selected day actually read (the 12-theme
+      // workbench sweep, 2026-10-09: pastel 3.14:1, midnight 3.04:1).
+      ['--cascivo-color-primary-fg', '--cascivo-color-primary'],
+      ['--cascivo-color-accent-foreground', '--cascivo-color-accent'],
+      // A filled info Badge's label. The other `*-content` inks only paint an icon on their
+      // fill (Steps' completed check), which needs 3:1 as a graphic, not 4.5:1 as text.
+      ['--cascivo-color-info-content', '--cascivo-color-info'],
     ] as const) {
       const text = declared(theme.block, ink)
       const bg = declared(theme.block, fill)
@@ -160,6 +167,70 @@ describe('the static ink on a fill clears WCAG AA in every theme', () => {
           ratio >= AA,
           `${theme.name}: ${ink} (${text}) on ${fill} (${bg}) is ${ratio.toFixed(2)}:1, ` +
             `below AA ${AA}. Browsers without contrast-color() paint this static value.`,
+        )
+      })
+    }
+  }
+})
+
+/**
+ * A translucent tint (`oklch(… / 0.1)`, how the dark themes write their `*-subtle` fills) as
+ * the colour it paints over the page background: composited in gamma-encoded sRGB, the way a
+ * browser blends.
+ */
+function opaque(value: string, page: string): ReturnType<typeof parseOklch> {
+  const alpha = value.match(/\/\s*([\d.]+)(%?)\s*\)/)
+  const fg = parseOklch(value)
+  if (!alpha) return fg
+  const a = alpha[2] === '%' ? Number(alpha[1]) / 100 : Number(alpha[1])
+  const bg = parseOklch(page)
+  const encode = (c: number) => (c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055)
+  const decode = (c: number) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
+  const mix = (f: number, b: number) => decode(encode(f) * a + encode(b) * (1 - a))
+  return [mix(fg[0], bg[0]), mix(fg[1], bg[1]), mix(fg[2], bg[2])]
+}
+
+/**
+ * Status and secondary inks used AS TEXT, on the surfaces they are rendered on.
+ *
+ * `--cascivo-color-destructive` is a fill and an ink at once: 47 component rules use it as
+ * `color:` (error messages, a failed tool call's label). `--cascivo-color-success-foreground`
+ * is a Badge's and an Alert title's text on the success tint. `--cascivo-color-foreground-muted`
+ * (and `--cascivo-color-text-subtle`, which points at it) is the secondary text of Card,
+ * DataTable, Alert and ~20 more; `muted-text-contrast` only checked `--cascivo-color-text-muted`.
+ * The 12-theme workbench sweep (2026-10-09) found all three below AA in some theme.
+ */
+describe('status and secondary inks clear WCAG AA as text in every theme', () => {
+  for (const theme of themes()) {
+    const pairs: [string, string][] = []
+    for (const ink of ['--cascivo-color-destructive', '--cascivo-color-foreground-muted']) {
+      for (const bg of [
+        '--cascivo-color-background',
+        '--cascivo-color-surface',
+        '--cascivo-color-surface-2',
+      ]) {
+        pairs.push([ink, bg])
+      }
+    }
+    // On its tint (Badge), and on every surface an Alert's 5% tint barely moves (its title).
+    for (const bg of [
+      '--cascivo-color-success-subtle',
+      '--cascivo-color-background',
+      '--cascivo-color-surface',
+      '--cascivo-color-surface-2',
+    ]) {
+      pairs.push(['--cascivo-color-success-foreground', bg])
+    }
+    const page = declared(theme.block, '--cascivo-color-background')
+    for (const [ink, bg] of pairs) {
+      const text = declared(theme.block, ink)
+      const under = declared(theme.block, bg)
+      if (!text || !under || !page) continue
+      it(`${theme.name}: ${ink} on ${bg}`, () => {
+        const ratio = contrastRatio(parseOklch(text), opaque(under, page))
+        assert.ok(
+          ratio >= AA,
+          `${theme.name}: ${ink} (${text}) on ${bg} (${under}) is ${ratio.toFixed(2)}:1, below AA ${AA}.`,
         )
       })
     }

@@ -30,7 +30,7 @@
 
     /* ── Text ─────────────────────────────────────────── */
     --cascivo-color-foreground: oklch(0.32 0.03 320);
-    --cascivo-color-foreground-muted: oklch(0.58 0.025 325);
+    --cascivo-color-foreground-muted: oklch(0.535 0.025 325);
     --cascivo-color-text: var(--cascivo-color-foreground);
     --cascivo-color-text-subtle: var(--cascivo-color-foreground-muted);
     /* L adjusted 0.7 → 0.535 so muted text clears WCAG 2.2 AA (4.5:1) on this
@@ -52,7 +52,7 @@
     }
     /* ── Accent — candy pink ──────────────────────────── */
     --cascivo-color-accent: oklch(0.68 0.18 350);
-    --cascivo-color-accent-foreground: oklch(1 0 0);
+    --cascivo-color-accent-foreground: oklch(0.145 0.005 250);
     --cascivo-color-accent-hover: oklch(0.62 0.19 350); /* static fallback */
     --cascivo-color-accent-hover: oklch(from var(--cascivo-color-accent) 0.62 0.19 h); /* derived */
     --cascivo-color-accent-active: oklch(0.56 0.2 350); /* static fallback */
@@ -66,13 +66,13 @@
 
     /* ── Primary — accent-mapped ─────────────────────── */
     --cascivo-color-primary: var(--cascivo-color-accent);
-    --cascivo-color-primary-fg: oklch(1 0 0);
+    --cascivo-color-primary-fg: oklch(0.145 0.005 250);
     --cascivo-color-primary-hover: var(--cascivo-color-accent-hover);
     --cascivo-color-primary-active: var(--cascivo-color-accent-active);
     --cascivo-color-active-bg: oklch(0.68 0.18 350 / 8%);
 
     /* ── Destructive ──────────────────────────────────── */
-    --cascivo-color-destructive: oklch(0.58 0.18 22);
+    --cascivo-color-destructive: oklch(0.55 0.18 22);
     --cascivo-color-destructive-hover: oklch(0.52 0.19 22); /* static fallback */
     --cascivo-color-destructive-hover: oklch(
       from var(--cascivo-color-destructive) 0.52 0.19 h
@@ -145,7 +145,7 @@
     --cascivo-color-primary-content: var(--cascivo-color-primary-fg);
     --cascivo-color-accent-content: var(--cascivo-color-text-on-accent);
     --cascivo-color-destructive-content: var(--cascivo-color-text-on-destructive);
-    --cascivo-color-info-content: oklch(1 0 0);
+    --cascivo-color-info-content: oklch(0.145 0.005 250);
     --cascivo-color-success-content: oklch(1 0 0);
     --cascivo-color-warning-content: oklch(0.145 0 0);
     --cascivo-color-error-content: oklch(1 0 0);

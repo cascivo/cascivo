@@ -431,8 +431,8 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [0.52, 0.18, 145],
-        "hex": "#00810e"
+        "components": [0.51, 0.18, 145],
+        "hex": "#007e08"
       }
     },
     "color-success-subtle": {

@@ -3787,7 +3787,7 @@
         "code-snippet.tsx": "sha256-05cc8956133077cb5324e51dfe00102c80f790b7164900ca5f1e6c50752b17e6",
         "highlight.ts": "sha256-252064dd28611c901ce64e2804a11fd5725555af31421768d3178aeba15badea",
         "index.ts": "sha256-f36499ede047cbe5afebdecb12696b34918c8eabcd93fe8448026eb329956b1a",
-        "code-snippet.module.css": "sha256-8fc59484d1db377346646a7144fec2d4d8b5f3d616277d203849ca63125a1130",
+        "code-snippet.module.css": "sha256-8510b7b1337cd396ca7b1763c5ff747f3b2ed7cd86863dc5ef7e391baa90a81d",
         "code-snippet.meta.ts": "sha256-45c71ef4eb77f1ebb80822894143f405abcdc0410d8ba7f1542e7a2f71c74b71"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],

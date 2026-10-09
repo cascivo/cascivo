@@ -52,7 +52,7 @@
     }
     /* ── Accent — violet ──────────────────────────────── */
     --cascivo-color-accent: oklch(0.7 0.22 290);
-    --cascivo-color-accent-foreground: oklch(1 0 0);
+    --cascivo-color-accent-foreground: oklch(0.145 0.005 250);
     --cascivo-color-accent-hover: oklch(0.76 0.2 290); /* static fallback */
     --cascivo-color-accent-hover: oklch(from var(--cascivo-color-accent) 0.76 0.2 h); /* derived */
     --cascivo-color-accent-active: oklch(0.82 0.17 290); /* static fallback */
