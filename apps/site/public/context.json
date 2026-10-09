@@ -16082,12 +16082,12 @@
     {
       "name": "InputGroup",
       "category": "inputs",
-      "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders",
+      "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; InputGroupButtons collapses adjacent button borders",
       "intent": {
         "whenToUse": [
           "Attaching a prefix/suffix addon (protocol, currency, unit) to an Input so it reads as one field",
           "Placing a leading or trailing inline icon/unit inside the field border via InputGroupAddon",
-          "Grouping adjacent buttons with collapsed shared borders via ButtonGroup"
+          "Grouping adjacent buttons with collapsed shared borders via InputGroupButtons"
         ],
         "whenNotToUse": [
           "A standalone field with no adornment — use Input directly",
@@ -16109,10 +16109,10 @@
           {
             "name": "Button",
             "relationship": "contains",
-            "reason": "ButtonGroup arranges adjacent Buttons with merged borders"
+            "reason": "InputGroupButtons arranges adjacent Buttons with merged borders"
           }
         ],
-        "a11yRationale": "Inline addons are marked aria-hidden because they are purely decorative units/icons, so the wrapped Input keeps its own accessible name; ButtonGroup uses role=\"group\" to convey that its buttons form a related set.",
+        "a11yRationale": "Inline addons are marked aria-hidden because they are purely decorative units/icons, so the wrapped Input keeps its own accessible name; InputGroupButtons uses role=\"group\" to convey that its buttons form a related set.",
         "flexibility": [
           {
             "area": "token names",
@@ -16161,7 +16161,7 @@
         }
       ],
       "contextUrl": "/context/input-group.md",
-      "aiPrompt": "I am modifying the cascivo InputGroup component (inputs). Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nInputGroup is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-text-subtle, --cascivo-radius-input\n\nAccessibility: role \"generic\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Addon background, border, text, and radius must resolve to the listed --cascivo-* tokens\nFlexible: addon alignment, addon content.\n\nDo not invent props, tokens, or global viewport media queries."
+      "aiPrompt": "I am modifying the cascivo InputGroup component (inputs). Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; InputGroupButtons collapses adjacent button borders\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nInputGroup is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-text-subtle, --cascivo-radius-input\n\nAccessibility: role \"generic\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Addon background, border, text, and radius must resolve to the listed --cascivo-* tokens\nFlexible: addon alignment, addon content.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Item",

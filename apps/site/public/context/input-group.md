@@ -1,13 +1,13 @@
 # InputGroup
 
 **Category:** inputs  
-**Description:** Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders
+**Description:** Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; InputGroupButtons collapses adjacent button borders
 
 ## When to use
 
 - Attaching a prefix/suffix addon (protocol, currency, unit) to an Input so it reads as one field
 - Placing a leading or trailing inline icon/unit inside the field border via InputGroupAddon
-- Grouping adjacent buttons with collapsed shared borders via ButtonGroup
+- Grouping adjacent buttons with collapsed shared borders via InputGroupButtons
 
 ## When NOT to use
 
@@ -25,11 +25,11 @@
 ## Related components
 
 - **Input** (contains): InputGroup composes around an Input to add prefix/suffix addons
-- **Button** (contains): ButtonGroup arranges adjacent Buttons with merged borders
+- **Button** (contains): InputGroupButtons arranges adjacent Buttons with merged borders
 
 ## Accessibility rationale
 
-Inline addons are marked aria-hidden because they are purely decorative units/icons, so the wrapped Input keeps its own accessible name; ButtonGroup uses role="group" to convey that its buttons form a related set.
+Inline addons are marked aria-hidden because they are purely decorative units/icons, so the wrapped Input keeps its own accessible name; InputGroupButtons uses role="group" to convey that its buttons form a related set.
 
 ## Props
 
@@ -79,13 +79,13 @@ Inline addons are marked aria-hidden because they are purely decorative units/ic
 </InputGroup>
 ```
 
-### ButtonGroup
+### InputGroupButtons
 
 ```jsx
-<ButtonGroup>
+<InputGroupButtons>
   <Button>Left</Button>
   <Button>Right</Button>
-</ButtonGroup>
+</InputGroupButtons>
 ```
 
 ## Boundaries
@@ -101,7 +101,7 @@ Inline addons are marked aria-hidden because they are purely decorative units/ic
 Copy this into an LLM context bar before editing this component:
 
 ```text
-I am modifying the cascivo InputGroup component (inputs). Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders
+I am modifying the cascivo InputGroup component (inputs). Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; InputGroupButtons collapses adjacent button borders
 
 Architecture constraints — follow exactly:
 - Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.

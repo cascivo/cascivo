@@ -742,7 +742,7 @@
       "fileHashes": {
         "alert.tsx": "sha256-efa3d6322171fff06b4e410c3c79006dbf00dc3f7c8548f9b68ffeb899c39b07",
         "index.ts": "sha256-9dc074958383f841fd75ca7eb7c9172cbf7841de2e8a01b71699ec2360a3a8a1",
-        "alert.module.css": "sha256-10072baa13db3ed9408bf6d163c3785a3544c91dbd3e77388599fc03e3cc2621",
+        "alert.module.css": "sha256-9a375ffec7f759af5edf0a2c067e84edcd77590bdf080ee71fb2381adde159b0",
         "alert.meta.ts": "sha256-eeacbc5f06c9b98a3a1d9497b28641afc9c39e5451640cca13e23de2ec1ea714"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -10324,7 +10324,7 @@
     {
       "name": "input-group",
       "type": "component",
-      "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders",
+      "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; InputGroupButtons collapses adjacent button borders",
       "category": "inputs",
       "version": "1.8.0",
       "files": [
@@ -10334,10 +10334,10 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input-group/input-group.meta.ts"
       ],
       "fileHashes": {
-        "input-group.tsx": "sha256-532f3c1d292aa104e62c1c8693723d4e600d2bcf3e5156d5ec97322e48dcd2e8",
+        "input-group.tsx": "sha256-552c412182c82f8846e7af90bf8f3a8cfbd96c7af150ef76e8ca74a2ad6d1252",
         "index.ts": "sha256-f508afcffa9a5d8fcb7ec7f26ee0fc7b6226188c31c2bc2dc5f66bb97db3df83",
         "input-group.module.css": "sha256-fb6c606ca6919903ae6f77582d19b62f90ec427fc6a5780dc1dcb466e60fd966",
-        "input-group.meta.ts": "sha256-3cfbace2792432f02bbe5cb3181d7d0278b70682baaa1d49d44e699f9563d693"
+        "input-group.meta.ts": "sha256-b1a9737038ca2d059f268a68eb65c82eee8e21f7906817101f47f0f6180dec63"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -10346,7 +10346,7 @@
       "tags": ["form", "input", "addon", "group", "layout"],
       "meta": {
         "name": "InputGroup",
-        "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders",
+        "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; InputGroupButtons collapses adjacent button borders",
         "category": "inputs",
         "clientJs": "none",
         "states": [],
@@ -10397,8 +10397,8 @@
             "code": "<InputGroup><Input placeholder=\"0.00\" aria-label=\"Weight\" /><InputGroupAddon align=\"inline-end\">kg</InputGroupAddon></InputGroup>"
           },
           {
-            "title": "ButtonGroup",
-            "code": "<ButtonGroup><Button>Left</Button><Button>Right</Button></ButtonGroup>"
+            "title": "InputGroupButtons",
+            "code": "<InputGroupButtons><Button>Left</Button><Button>Right</Button></InputGroupButtons>"
           }
         ],
         "dependencies": ["@cascivo/core"],
@@ -10407,7 +10407,7 @@
           "whenToUse": [
             "Attaching a prefix/suffix addon (protocol, currency, unit) to an Input so it reads as one field",
             "Placing a leading or trailing inline icon/unit inside the field border via InputGroupAddon",
-            "Grouping adjacent buttons with collapsed shared borders via ButtonGroup"
+            "Grouping adjacent buttons with collapsed shared borders via InputGroupButtons"
           ],
           "whenNotToUse": [
             "A standalone field with no adornment — use Input directly",
@@ -10429,10 +10429,10 @@
             {
               "name": "Button",
               "relationship": "contains",
-              "reason": "ButtonGroup arranges adjacent Buttons with merged borders"
+              "reason": "InputGroupButtons arranges adjacent Buttons with merged borders"
             }
           ],
-          "a11yRationale": "Inline addons are marked aria-hidden because they are purely decorative units/icons, so the wrapped Input keeps its own accessible name; ButtonGroup uses role=\"group\" to convey that its buttons form a related set.",
+          "a11yRationale": "Inline addons are marked aria-hidden because they are purely decorative units/icons, so the wrapped Input keeps its own accessible name; InputGroupButtons uses role=\"group\" to convey that its buttons form a related set.",
           "flexibility": [
             {
               "area": "token names",
