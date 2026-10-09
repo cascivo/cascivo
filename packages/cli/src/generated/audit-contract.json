@@ -240,6 +240,40 @@
     { "name": "--cascivo-chart-bar-radius", "resolvedDefault": "2px" },
     { "name": "--cascivo-color-accent-text", "resolvedDefault": "oklch(0.52 0.2 250)" },
     { "name": "--cascivo-color-accent-text-hover", "resolvedDefault": "oklch(0.45 0.2 250)" },
+    { "name": "--cascivo-brand-primary", "resolvedDefault": "oklch( 0.55 0.15 240 )" },
+    { "name": "--cascivo-brand-accent", "resolvedDefault": "oklch(0.72 0.13 195)" },
+    { "name": "--cascivo-brand-ink", "resolvedDefault": "oklch( 0.22 0.03 250 )" },
+    { "name": "--cascivo-brand-paper", "resolvedDefault": "oklch(0.99 0.005 250)" },
+    { "name": "--cascivo-brand-gradient-start", "resolvedDefault": "oklch(0.55 0.15 240)" },
+    { "name": "--cascivo-brand-gradient-end", "resolvedDefault": "oklch(0.72 0.13 195)" },
+    { "name": "--cascivo-z-base", "resolvedDefault": "0" },
+    { "name": "--cascivo-z-raised", "resolvedDefault": "10" },
+    { "name": "--cascivo-z-dropdown", "resolvedDefault": "100" },
+    { "name": "--cascivo-z-overlay", "resolvedDefault": "200" },
+    { "name": "--cascivo-z-modal", "resolvedDefault": "300" },
+    { "name": "--cascivo-z-toast", "resolvedDefault": "400" },
+    { "name": "--cascivo-z-tooltip", "resolvedDefault": "500" },
+    { "name": "--cascivo-shell-header-block-size", "resolvedDefault": "3rem" },
+    { "name": "--cascivo-shell-panel-inline-size", "resolvedDefault": "20rem" },
+    { "name": "--cascivo-shell-aside-inline-size", "resolvedDefault": "18rem" },
+    { "name": "--cascivo-search-width", "resolvedDefault": "100%" },
+    { "name": "--cascivo-screen-sm", "resolvedDefault": "30rem" },
+    { "name": "--cascivo-screen-md", "resolvedDefault": "40rem" },
+    { "name": "--cascivo-screen-lg", "resolvedDefault": "64rem" },
+    { "name": "--cascivo-screen-xl", "resolvedDefault": "80rem" },
+    {
+      "name": "--cascivo-text-2xl-fluid",
+      "resolvedDefault": "clamp(1.25rem, 1rem + 1.25vw, 1.5rem)"
+    },
+    {
+      "name": "--cascivo-text-3xl-fluid",
+      "resolvedDefault": "clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem)"
+    },
+    {
+      "name": "--cascivo-text-4xl-fluid",
+      "resolvedDefault": "clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)"
+    },
+    { "name": "--cascivo-target-min-coarse", "resolvedDefault": "2.75rem" },
     {
       "name": "--cascivo-editor-bg",
       "resolvedDefault": "var(--cascivo-color-surface, oklch(0.985 0.002 264))"
@@ -303,40 +337,6 @@
     { "name": "--cascivo-editor-syntax-regexp", "resolvedDefault": "oklch(0.53 0.13 135)" },
     { "name": "--cascivo-editor-syntax-boolean", "resolvedDefault": "oklch(0.54 0.15 40)" },
     { "name": "--cascivo-editor-syntax-property", "resolvedDefault": "oklch(0.53 0.12 240)" },
-    { "name": "--cascivo-brand-primary", "resolvedDefault": "oklch( 0.55 0.15 240 )" },
-    { "name": "--cascivo-brand-accent", "resolvedDefault": "oklch(0.72 0.13 195)" },
-    { "name": "--cascivo-brand-ink", "resolvedDefault": "oklch( 0.22 0.03 250 )" },
-    { "name": "--cascivo-brand-paper", "resolvedDefault": "oklch(0.99 0.005 250)" },
-    { "name": "--cascivo-brand-gradient-start", "resolvedDefault": "oklch(0.55 0.15 240)" },
-    { "name": "--cascivo-brand-gradient-end", "resolvedDefault": "oklch(0.72 0.13 195)" },
-    { "name": "--cascivo-z-base", "resolvedDefault": "0" },
-    { "name": "--cascivo-z-raised", "resolvedDefault": "10" },
-    { "name": "--cascivo-z-dropdown", "resolvedDefault": "100" },
-    { "name": "--cascivo-z-overlay", "resolvedDefault": "200" },
-    { "name": "--cascivo-z-modal", "resolvedDefault": "300" },
-    { "name": "--cascivo-z-toast", "resolvedDefault": "400" },
-    { "name": "--cascivo-z-tooltip", "resolvedDefault": "500" },
-    { "name": "--cascivo-shell-header-block-size", "resolvedDefault": "3rem" },
-    { "name": "--cascivo-shell-panel-inline-size", "resolvedDefault": "20rem" },
-    { "name": "--cascivo-shell-aside-inline-size", "resolvedDefault": "18rem" },
-    { "name": "--cascivo-search-width", "resolvedDefault": "100%" },
-    { "name": "--cascivo-screen-sm", "resolvedDefault": "30rem" },
-    { "name": "--cascivo-screen-md", "resolvedDefault": "40rem" },
-    { "name": "--cascivo-screen-lg", "resolvedDefault": "64rem" },
-    { "name": "--cascivo-screen-xl", "resolvedDefault": "80rem" },
-    {
-      "name": "--cascivo-text-2xl-fluid",
-      "resolvedDefault": "clamp(1.25rem, 1rem + 1.25vw, 1.5rem)"
-    },
-    {
-      "name": "--cascivo-text-3xl-fluid",
-      "resolvedDefault": "clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem)"
-    },
-    {
-      "name": "--cascivo-text-4xl-fluid",
-      "resolvedDefault": "clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)"
-    },
-    { "name": "--cascivo-target-min-coarse", "resolvedDefault": "2.75rem" },
     {
       "name": "--cascivo-color-ai",
       "resolvedDefault": "color-mix( in oklch, oklch(0.6 0.2 285) 80%, oklch(from var(--cascivo-color-text) l 0 285) )"

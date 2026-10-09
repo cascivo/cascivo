@@ -10,8 +10,7 @@
  *
  * The rule: a `:root` declaration in `@cascivo/tokens` that reads a theme colour is either
  * restated by every theme (it then resolves per theme) or also declared on `[data-theme]`.
- * KNOWN lists the ones that are neither yet, with the reason they are not fixed here; the
- * list may only shrink.
+ * `@cascivo/editor`'s colours were the other case, and moved with it.
  *
  * Run: `pnpm meta:check`.
  */
@@ -23,27 +22,6 @@ import { test } from 'node:test'
 const ROOT = join(import.meta.dirname, '../..')
 const TOKENS = join(ROOT, 'packages/tokens/src/index.css')
 const THEMES = join(ROOT, 'packages/themes/src')
-
-/**
- * Frozen at the root today: `@cascivo/editor`'s chrome and syntax colours. Moving them is not
- * a one-line change, because the same file overrides them per dark-surface theme further down
- * (equal specificity, so a scoped copy placed after those rules would undo them).
- */
-const KNOWN = new Set([
-  '--cascivo-editor-bg',
-  '--cascivo-editor-fg',
-  '--cascivo-editor-gutter-bg',
-  '--cascivo-editor-gutter-fg',
-  '--cascivo-editor-current-line',
-  '--cascivo-editor-selection',
-  '--cascivo-editor-border',
-  '--cascivo-editor-syntax-keyword',
-  '--cascivo-editor-syntax-comment',
-  '--cascivo-editor-syntax-function',
-  '--cascivo-editor-syntax-operator',
-  '--cascivo-editor-syntax-punctuation',
-  '--cascivo-editor-syntax-tag',
-])
 
 /** The body of every rule whose selector list matches `selector`. */
 function blocks(css: string, selector: RegExp): string[] {
@@ -85,13 +63,22 @@ test('tokens derived from a theme colour resolve inside a scoped theme', () => {
     frozen.push(name!)
   }
 
-  const unexpected = frozen.filter((n) => !KNOWN.has(n))
   assert.deepEqual(
-    unexpected,
+    frozen,
     [],
     `declared on :root alone from a theme colour, so frozen at the root theme inside any ` +
-      `scoped [data-theme]: ${unexpected.join(', ')}. Declare it in the \`:root, [data-theme]\` block.`,
+      `scoped [data-theme]: ${frozen.join(', ')}. Declare it in a \`:root, [data-theme]\` block.`,
   )
-  const fixed = [...KNOWN].filter((n) => !frozen.includes(n))
-  assert.deepEqual(fixed, [], `no longer frozen, remove from KNOWN: ${fixed.join(', ')}`)
+})
+
+// The editor's scoped defaults and the dark-surface overrides have equal specificity, so
+// source order decides: the defaults must come first or every dark theme loses its brighter
+// syntax hues. Asserted here rather than explained in the CSS, which ships its comments in a
+// stylesheet that sits at its gzip budget.
+test("the dark-surface editor overrides come after the editor's scoped defaults", () => {
+  const css = readFileSync(TOKENS, 'utf8')
+  const defaults = css.indexOf('--cascivo-editor-syntax-string: oklch(')
+  const overrides = css.indexOf('--cascivo-editor-syntax-string: var(--cascivo-chart-3)')
+  assert.ok(defaults !== -1 && overrides !== -1, 'editor syntax tokens moved; update this guard')
+  assert.ok(defaults < overrides, 'the dark-surface editor rule must follow the scoped defaults')
 })
