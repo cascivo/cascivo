@@ -10,7 +10,7 @@
  * Vite does the real work, as in the email preview: the files are `.tsx`, and an edit / look /
  * edit loop is HMR, so they go into Vite's module graph rather than through a loader.
  */
-import { existsSync, readdirSync, statSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { basename, dirname, join, relative, resolve } from 'node:path'
 import { transformWithOxc } from 'vite'
@@ -24,6 +24,9 @@ const EXAMPLES_PREFIX = '/@cascivo-workbench/examples/'
 
 const META_FILE = /\.meta\.ts$/
 const PREVIEW_FILE = /\.preview\.(tsx|jsx)$/
+const BLUEPRINT = 'cascivo.app.json'
+/** A registry block's name, which becomes a path below: one kebab-case segment, nothing else. */
+const BLOCK_NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
 /** Every manifest and preview under `dir`, in a stable order. */
 export function scan(dir) {
@@ -40,6 +43,65 @@ export function scan(dir) {
   }
   walk(dir)
   return { metas, previews }
+}
+
+/**
+ * The app's `cascivo.app.json`: beside the scanned directory (the default `src` sits in the app
+ * root), else in the project. `null` when the app was not generated from a blueprint.
+ */
+export function findBlueprint(root, project) {
+  for (const dir of [dirname(resolve(root)), resolve(project)]) {
+    const file = join(dir, BLUEPRINT)
+    if (existsSync(file)) return file
+  }
+  return null
+}
+
+function isRecord(value) {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+/** `auth-login` → `AuthLogin`, the name `cascivo create` imports a block's component by. */
+function pascalCase(name) {
+  return name.replace(/(^|-)([a-z0-9])/g, (_, _sep, c) => c.toUpperCase())
+}
+
+function slug(title) {
+  return (
+    title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '') || 'page'
+  )
+}
+
+/**
+ * The blueprint's pages that render a block, as entries. A generated page is `<Block />` and
+ * nothing else, and a block carries its own sample data, so rendering the block with no props
+ * is rendering the page. Pages without a block are placeholders, with nothing to look at.
+ *
+ * The file is hand-editable and `block` becomes a path, so it is read as `unknown` and a block
+ * name is accepted only as one kebab-case segment whose source exists in `src/blocks/`.
+ */
+export function blueprintPages(file) {
+  if (!file) return []
+  let raw
+  try {
+    raw = JSON.parse(readFileSync(file, 'utf8'))
+  } catch (e) {
+    throw new Error(`${file} is not valid JSON: ${e instanceof Error ? e.message : String(e)}`)
+  }
+  const pages = isRecord(raw) && Array.isArray(raw.pages) ? raw.pages : []
+  return pages.flatMap((page, n) => {
+    if (!isRecord(page) || typeof page.block !== 'string' || !BLOCK_NAME.test(page.block)) {
+      return []
+    }
+    const source = join(dirname(file), 'src', 'blocks', `${page.block}.tsx`)
+    if (!existsSync(source)) return []
+    const title =
+      typeof page.title === 'string' && page.title.trim() !== '' ? page.title.trim() : page.block
+    return [{ id: `app/${n}-${slug(title)}`, title, file: source, name: pascalCase(page.block) }]
+  })
 }
 
 /** The module a manifest's component is imported from: its directory's barrel, else its source. */
@@ -120,7 +182,7 @@ function idFor(root, file, pattern) {
   return relative(root, file).replace(pattern, '').replaceAll('\\', '/')
 }
 
-export function entriesModule(root, { metas, previews }) {
+export function entriesModule(root, { metas, previews, pages: blueprint = [] }) {
   const lines = []
   const components = []
   metas.forEach((file, i) => {
@@ -136,7 +198,15 @@ export function entriesModule(root, { metas, previews }) {
   previews.forEach((file, i) => {
     lines.push(`import * as preview${i} from ${JSON.stringify(file)}`)
     pages.push(
-      `  { id: ${JSON.stringify(idFor(root, file, PREVIEW_FILE))}, Component: preview${i}.default, props: preview${i}.previewProps ?? {} }`,
+      `  { id: ${JSON.stringify(idFor(root, file, PREVIEW_FILE))}, kind: 'preview', title: ${JSON.stringify(idFor(root, file, PREVIEW_FILE))}, Component: preview${i}.default, props: preview${i}.previewProps ?? {} }`,
+    )
+  })
+  // A namespace import, so a block that no longer exports its name drops out of the list
+  // instead of failing the whole module.
+  blueprint.forEach((page, i) => {
+    lines.push(`import * as page${i} from ${JSON.stringify(page.file)}`)
+    pages.push(
+      `  { id: ${JSON.stringify(page.id)}, kind: 'page', title: ${JSON.stringify(page.title)}, Component: page${i}[${JSON.stringify(page.name)}], props: {} }`,
     )
   })
   lines.push(`export const source = ${JSON.stringify(root)}`)
@@ -206,7 +276,7 @@ export function embedUrl(hash, theme = 'light') {
  * Every entry, as `/index.json` serves it: the "iframe URL per entry plus an index" an axe
  * sweep or a visual test needs (2026-10-07 research, §5.3).
  */
-export async function entryIndex(root, { metas, previews }, load) {
+export async function entryIndex(root, { metas, previews, pages = [] }, load) {
   const entries = []
   for (const file of metas) {
     const id = idFor(root, file, META_FILE)
@@ -238,6 +308,16 @@ export async function entryIndex(root, { metas, previews }, load) {
       url: embedUrl(`#preview/${id}`),
     })
   }
+  for (const page of pages) {
+    entries.push({
+      id: page.id,
+      kind: 'page',
+      component: page.name,
+      title: page.title,
+      renders: true,
+      url: embedUrl(`#preview/${page.id}`),
+    })
+  }
   return { v: 1, entries }
 }
 
@@ -247,7 +327,8 @@ export async function entryIndex(root, { metas, previews }, load) {
 export function cascivoWorkbench({ dir, styles = [], project = process.cwd() }) {
   const root = resolve(dir)
   const extra = styles.map((file) => resolve(file))
-  let found = scan(root)
+  const blueprint = findBlueprint(root, project)
+  let found = { ...scan(root), pages: blueprintPages(blueprint) }
   /** @type {import('vite').ViteDevServer | undefined} */
   let dev
   return {
@@ -294,8 +375,15 @@ export function cascivoWorkbench({ dir, styles = [], project = process.cwd() }) 
       })
       // Adding or removing a component changes the sidebar, which no HMR patch expresses.
       const rescan = (file) => {
-        if (!META_FILE.test(file) && !PREVIEW_FILE.test(file)) return
-        found = scan(root)
+        if (!META_FILE.test(file) && !PREVIEW_FILE.test(file) && file !== blueprint) return
+        let pages = found.pages
+        try {
+          pages = blueprintPages(blueprint)
+        } catch (e) {
+          // Mid-edit JSON: keep the last pages until the file parses again.
+          server.config.logger.warn(e instanceof Error ? e.message : String(e))
+        }
+        found = { ...scan(root), pages }
         for (const id of [ENTRIES_ID, SCOPE_ID]) {
           const mod = graph.getModuleById(`\0${id}`)
           if (mod) graph.invalidateModule(mod)
@@ -304,6 +392,13 @@ export function cascivoWorkbench({ dir, styles = [], project = process.cwd() }) 
       }
       server.watcher.on('add', rescan)
       server.watcher.on('unlink', rescan)
+      // `cascivo app add page` adds a page by rewriting the blueprint.
+      if (blueprint) {
+        server.watcher.add(blueprint)
+        server.watcher.on('change', (file) => {
+          if (file === blueprint) rescan(file)
+        })
+      }
 
       server.middlewares.use('/index.json', (_req, res, next) => {
         entryIndex(root, found, (file) => server.ssrLoadModule(file))

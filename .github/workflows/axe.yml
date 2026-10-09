@@ -92,3 +92,9 @@ jobs:
 
       - name: Workbench axe sweep (shadow)
         run: pnpm --filter @cascivo/workbench run sweep --themes all
+
+      # Block manifests carry no examples, so the sweep above never renders a block. This one
+      # generates an app with `cascivo create --from`, one page per block, and sweeps the pages.
+      - name: Workbench axe sweep of every block as an app page (shadow)
+        if: ${{ !cancelled() }}
+        run: pnpm --filter @cascivo/workbench run sweep:pages --themes all

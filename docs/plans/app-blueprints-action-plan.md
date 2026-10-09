@@ -537,8 +537,17 @@ English strings), so the blueprints arm does not start from zero. A real run nee
   second tool for the same job would raise the budget for nothing. Revisit only if agents are
   seen wrapping single components in view configs often enough to matter.
 
-**Still open:** blueprint pages rendered with fixtures (they need P2-5's renderer coverage),
-and publishing `@cascivo/workbench` (the maintainer's call: it is `private` until then).
+**Blueprint pages, 2026-10-09.** They needed no fixtures and no renderer: a generated page is
+`<Block />` and nothing else, and every block ships its own sample data. So each page of
+`cascivo.app.json` that renders a block is an entry that renders the block from `src/blocks/`.
+The block name becomes a path, so it is accepted only as one kebab-case segment whose source
+exists. `sweep:pages` generates an app with `cascivo create --from`, one page per block, and
+runs the axe sweep on it; CI runs it beside the component sweep. It covers what that sweep
+cannot: block manifests carry no examples, so no block was ever rendered there. First run: 19
+blocks × 12 themes, 228 checks, 0 failures.
+
+**Still open:** publishing `@cascivo/workbench` (the maintainer's call: it is `private` until
+then).
 
 ### P4-1 ☑ `cascivo add` copies `.meta.ts`
 
@@ -553,7 +562,7 @@ and publishing `@cascivo/workbench` (the maintainer's call: it is `private` unti
 - **Change:** generalise `@cascivo/email-preview`'s Vite plugin and bin. Entries come from:
   - `meta.examples[]`,
   - `*.preview.tsx` files,
-  - and blueprint pages rendered with fixtures.
+  - and blueprint pages (shipped 2026-10-09: the block each page renders, with its own data).
 - **Controls** come from prop schemas.
 - **Panels:** theme × viewport × platform, the token inspector, the conformance validator,
   render-as-Markdown, and copy-as-agent-context.

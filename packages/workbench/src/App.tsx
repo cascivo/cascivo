@@ -13,6 +13,7 @@ import {
   cloneElement,
   Component,
   createElement,
+  Fragment,
   isValidElement,
   useEffect,
   useRef,
@@ -47,7 +48,10 @@ type Selection =
   | { kind: 'component'; id: string; example: number }
   | { kind: 'preview'; id: string }
 
-/** `#component/<id>/<n>` or `#preview/<id>`, so every entry has a URL a test can open. */
+/**
+ * `#component/<id>/<n>` or `#preview/<id>` (an app page too), so every entry has a URL a test
+ * can open.
+ */
 function fromHash(hash: string): Selection | null {
   const [kind, ...rest] = decodeURIComponent(hash.replace(/^#/, '')).split('/')
   if (kind === 'component' && rest.length >= 2) {
@@ -205,7 +209,7 @@ export function App() {
     <div className="wb">
       <nav className="wb-sidebar" aria-label="Entries">
         <p className="wb-source" title={source}>
-          {components.length} components · {previews.length} previews
+          {components.length} components · {previews.length} pages and previews
         </p>
         {components.map((c) => (
           <details key={c.id} open={c.id === component?.id}>
@@ -228,23 +232,31 @@ export function App() {
             </ul>
           </details>
         ))}
-        {previews.length > 0 && <h2>Previews</h2>}
-        <ul>
-          {previews.map((p) => (
-            <li key={p.id}>
-              <a
-                href={toHash({ kind: 'preview', id: p.id })}
-                aria-current={p.id === preview?.id ? 'page' : undefined}
-                onClick={(e) => {
-                  e.preventDefault()
-                  select({ kind: 'preview', id: p.id })
-                }}
-              >
-                {p.id}
-              </a>
-            </li>
-          ))}
-        </ul>
+        {(['page', 'preview'] as const).map((kind) => {
+          const listed = previews.filter((p) => p.kind === kind)
+          if (listed.length === 0) return null
+          return (
+            <Fragment key={kind}>
+              <h2>{kind === 'page' ? 'App pages' : 'Previews'}</h2>
+              <ul>
+                {listed.map((p) => (
+                  <li key={p.id}>
+                    <a
+                      href={toHash({ kind: 'preview', id: p.id })}
+                      aria-current={p.id === preview?.id ? 'page' : undefined}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        select({ kind: 'preview', id: p.id })
+                      }}
+                    >
+                      {p.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </Fragment>
+          )
+        })}
       </nav>
 
       <main className="wb-main">

@@ -10,11 +10,13 @@ import { fileURLToPath } from 'node:url'
 import { createServer } from 'vite'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import {
+  blueprintPages,
   cascivoWorkbench,
   embedUrl,
   entriesModule,
   entryIndex,
   examplesModule,
+  findBlueprint,
   scan,
   scopeModule,
   stylesModule,
@@ -177,6 +179,83 @@ describe('the entry index', () => {
     expect(textModule(join(dir, 'with-text'))).toBe(
       `export { elementToMarkdown } from ${JSON.stringify(join(text, 'index.js'))}\n`,
     )
+  })
+})
+
+describe('blueprint pages', () => {
+  /** The shape `cascivo create --from` writes: the blueprint beside `src/`, blocks in `src/blocks/`. */
+  function app(pages: unknown): string {
+    const root = mkdtempSync(join(dir, 'app-'))
+    mkdirSync(join(root, 'src', 'blocks'), { recursive: true })
+    writeFileSync(
+      join(root, 'src', 'blocks', 'auth-login.tsx'),
+      'export function AuthLogin() { return null }\n',
+    )
+    writeFileSync(join(root, 'cascivo.app.json'), JSON.stringify({ name: 'demo', pages }))
+    return root
+  }
+
+  it('finds the blueprint beside the scanned directory, then in the project', () => {
+    const root = app([])
+    expect(findBlueprint(join(root, 'src'), dir)).toBe(join(root, 'cascivo.app.json'))
+    expect(findBlueprint(join(dir, 'ui'), root)).toBe(join(root, 'cascivo.app.json'))
+    expect(findBlueprint(join(dir, 'ui'), dir)).toBeNull()
+  })
+
+  it('makes an entry of each page that renders a block the app has', () => {
+    const root = app([
+      { title: 'Sign in', block: 'auth-login' },
+      { title: 'Reports' },
+      { title: 'Users', block: 'users-table-page' },
+    ])
+    expect(blueprintPages(join(root, 'cascivo.app.json'))).toEqual([
+      {
+        id: 'app/0-sign-in',
+        title: 'Sign in',
+        file: join(root, 'src', 'blocks', 'auth-login.tsx'),
+        name: 'AuthLogin',
+      },
+    ])
+  })
+
+  it('never turns a block name into a path outside src/blocks', () => {
+    const root = app([
+      { title: 'Escape', block: '../../auth-login' },
+      { title: 'Absolute', block: '/etc/passwd' },
+      { title: 'Not a string', block: 42 },
+    ])
+    writeFileSync(join(root, 'auth-login.tsx'), 'export function AuthLogin() { return null }\n')
+    expect(blueprintPages(join(root, 'cascivo.app.json'))).toEqual([])
+  })
+
+  it('names the file when it is not JSON', () => {
+    const root = app([])
+    writeFileSync(join(root, 'cascivo.app.json'), '{ "pages": [')
+    expect(() => blueprintPages(join(root, 'cascivo.app.json'))).toThrow(
+      `${join(root, 'cascivo.app.json')} is not valid JSON`,
+    )
+  })
+
+  it('renders each page as its block, with no props, and indexes it', async () => {
+    const root = app([{ title: 'Sign in', block: 'auth-login' }])
+    const pages = blueprintPages(join(root, 'cascivo.app.json'))
+    const found = { metas: [], previews: [], pages }
+    const source = entriesModule(join(root, 'src'), found)
+    expect(source).toContain(
+      `import * as page0 from ${JSON.stringify(join(root, 'src', 'blocks', 'auth-login.tsx'))}`,
+    )
+    expect(source).toContain(`kind: 'page', title: "Sign in", Component: page0["AuthLogin"]`)
+    const index = await entryIndex(join(root, 'src'), found, async () => ({}))
+    expect(index.entries).toEqual([
+      {
+        id: 'app/0-sign-in',
+        kind: 'page',
+        component: 'AuthLogin',
+        title: 'Sign in',
+        renders: true,
+        url: embedUrl('#preview/app/0-sign-in'),
+      },
+    ])
   })
 })
 

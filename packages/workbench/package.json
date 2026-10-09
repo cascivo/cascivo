@@ -25,13 +25,19 @@
   "scripts": {
     "check": "tsc --noEmit",
     "test": "vp test",
-    "sweep": "node bin/cascivo-workbench.mjs test ../components/src --project ../../apps/examples/react-vite"
+    "sweep": "node bin/cascivo-workbench.mjs test ../components/src --project ../../apps/examples/react-vite",
+    "sweep:pages": "node scripts/sweep-pages.mjs"
   },
   "dependencies": {
     "vite": "^8.0.0"
   },
   "devDependencies": {
+    "@cascivo/charts": "workspace:*",
+    "@cascivo/react": "workspace:*",
+    "@cascivo/themes": "workspace:*",
+    "@cascivo/tokens": "workspace:*",
     "@playwright/test": "catalog:",
+    "@preact/signals-react": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "axe-core": "catalog:",

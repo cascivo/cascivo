@@ -13,8 +13,11 @@ declare module 'virtual:cascivo-workbench-entries' {
     /** Per example, the tags it uses that no copied component exports. */
     unresolved: string[][]
   }[]
+  /** `*.preview.tsx` files, and the block pages of the app's `cascivo.app.json`. */
   export const previews: {
     id: string
+    kind: 'preview' | 'page'
+    title: string
     Component: ComponentType<Record<string, unknown>>
     props: Record<string, unknown>
   }[]

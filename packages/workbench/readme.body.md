@@ -18,8 +18,12 @@ npx @cascivo/workbench app/ui   # or the directory you name
 - **Previews.** Any `*.preview.tsx` file renders its default export with its `previewProps`
   export, the convention `@cascivo/email-preview` uses. Use one for a page or for your own
   component.
+- **App pages.** In an app made by `cascivo create`, each page of `cascivo.app.json` that
+  renders a block is an entry: the block from `src/blocks/`, with the sample data it ships.
+  The workbench looks for the blueprint beside the scanned directory, then in `--project`, and
+  picks up pages that `cascivo app add page` adds.
 
-Every entry has a URL (`#component/<path>/<n>`, `#preview/<path>`). Add `?embed&theme=<name>`
+Every entry has a URL (`#component/<path>/<n>`, `#preview/<path>`, `#preview/app/<n>-<page>`). Add `?embed&theme=<name>`
 to render it alone, and `/index.json` lists every entry with that URL: what a test or an axe
 sweep opens.
 

@@ -16,6 +16,8 @@ Usage:
   dir               Directory to scan (default: src). Every <name>.meta.ts that
                     \`cascivo add\` copied becomes one entry per example, and every
                     *.preview.tsx renders its default export with \`previewProps\`.
+                    An app made by \`cascivo create\` adds each page of its
+                    cascivo.app.json that renders a block.
 
 Options:
   --style <file>    A stylesheet your app loads (a reset, fonts). Repeatable.
@@ -140,7 +142,7 @@ for (const file of styles) {
 }
 
 const { startServer } = await import('../src/server.mjs')
-const { scan } = await import('../src/plugin.mjs')
+const { blueprintPages, findBlueprint, scan } = await import('../src/plugin.mjs')
 const testing = parsed.command === 'test'
 const server = await startServer({
   dir,
@@ -155,12 +157,14 @@ const url = server.resolvedUrls?.local?.[0] ?? `http://localhost:${parsed.port}/
 
 if (!testing) {
   const { metas, previews } = scan(dir)
+  const pages = blueprintPages(findBlueprint(dir, project))
   stdout.write(
     `\n  cascivo workbench  ${url}\n` +
       `  scanning           ${dir}\n` +
-      `  entries            ${metas.length} component(s), ${previews.length} preview(s)\n\n`,
+      `  entries            ${metas.length} component(s), ${previews.length} preview(s), ` +
+      `${pages.length} app page(s)\n\n`,
   )
-  if (metas.length === 0 && previews.length === 0) {
+  if (metas.length === 0 && previews.length === 0 && pages.length === 0) {
     stdout.write(
       '  Nothing to show yet: add a component with `npx cascivo add <name>`, or write a\n' +
         '  *.preview.tsx file. Pass the directory to scan if it is not src.\n\n',
