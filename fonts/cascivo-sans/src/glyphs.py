@@ -640,7 +640,13 @@ def _e(g, p):
     # flush with where the bowl stroke ends, or its butt end shows below the bar; heavy bars drop
     # half their height (still covering that end) so the eye above stays open
     yb = cy - p.bar * 0.5 * p.heavy
-    g.stroke(g.arc(cx, cy, rx, ry, 0, 322 - p.ap), caps=('b', 'b'), cut='h')
+    # The bowl starts at the dropped bar's underside, or the bar's lower right corner shows below
+    # the bowl as a step (Bold). Below 0° that crosses a quadrant, so the first segment is one
+    # cubic (_ell_seg) and every master keeps the same segments.
+    a0 = -math.degrees(math.asin(min(1.0, (cy - yb) / ry)))
+    first = [_ell_seg(cx, cy, rx, ry, a0, 90, p.k)] if a0 < 0 else g.arc(cx, cy, rx, ry, 0, 90)
+    # the start is a join hidden in the bar, cut flat along the bar's underside, not a terminal
+    g.stroke(first + g.arc(cx, cy, rx, ry, 90, 322 - p.ap), caps=('h', 'b'), cut='h')
     # ends on the bowl's centreline, so the bowl stroke covers it; in the italic the stroke's end
     # is cut on a slant, so the bar stops short of it
     g.hbar(cx - rx, cx + rx - (p.V * 0.18 if p.italic else 0), yb, h=p.bar)
@@ -1009,7 +1015,7 @@ def _six_strokes(g, p, w):
     g.oval(0, -p.ov, w, top)
     cx, cy, rx, ry = g.box(0, -p.ov, w * 1.02, p.cap + p.ov)
     cyb = (-p.ov + top) / 2
-    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 52 + p.ap * 0.5), caps=('b', 'b'), cut='v' if p.italic else 'h')  # slanted, the flat cut folds
+    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 52 + 20 * p.heavy + p.ap * 0.5), caps=('b', 'b'), cut='v' if p.italic else 'h')  # slanted, the flat cut folds; heavy terminals end higher, so the cut trims little and Bold, between the masters, has no dip
     del V
 
 
@@ -1394,7 +1400,10 @@ def _ampersand(g, p):
     # upper loop: a closed oval sitting left of centre
     lx0, lx1, ly0 = w * 0.1, w * 0.6, p.cap * 0.58
     g.oval(lx0, ly0, lx1, top)
-    cx, cy, rx, ry = g.box(lx0, ly0, lx1, top)
+    # the loop's own centreline: oval() caps its pen for small rings, so a box with the full pen
+    # put the leg's start inside the counter
+    Vo, Ho = min(V, (lx1 - lx0) * 0.33), min(p.H, (top - ly0) * 0.33)
+    cx, cy, rx, ry = g.box(lx0, ly0, lx1, top, Vo, Ho)
     # leg: leaves the loop's lower left where it runs tangent to the loop, so its square start
     # lies buried in the loop's own stroke. Started inside the loop, it poked into the small
     # counter of heavy weights.
@@ -1414,7 +1423,12 @@ def _ampersand(g, p):
         else:
             hi = mid
     t = math.radians(lo)
-    g.line((cx + rx * math.cos(t), cy + ry * math.sin(t)), foot, ws=0.96, caps=('b', 'h'))
+    start = (cx + rx * math.cos(t), cy + ry * math.sin(t))
+    # the leg is wider than the capped loop, so it starts at the loop's width and widens toward
+    # the foot: started at full width, one corner of its square end poked into the counter
+    d = norm((foot[0] - start[0], foot[1] - start[1]))
+    k0 = min(1.0, pen_thickness(d, Vo, Ho) / (pen_thickness(d, V, p.H) * 0.96))
+    g.line(start, foot, ws=0.96, caps=('b', 'h'), taper=(k0, 1))
     # lower bowl: from under the loop, round the bottom, and on into the arm in one stroke. A
     # separate arm met the bowl end to end at an angle and showed as a broken wedge at Black.
     bx0, bx1 = 0, w * 0.86
@@ -1776,8 +1790,10 @@ def _ae(g, p):
 def _ae_e(g, p, x0):
     """The e half of æ, its left side sharing the a's stem."""
     cx, cy, rx, ry = g.box(x0, -p.ov, x0 + p.nw * 0.96, p.xh + p.ov)
-    g.stroke(g.arc(cx, cy, rx, ry, 0, 322 - p.ap), caps=('b', 'b'), cut='h')
-    g.hbar(cx - rx, cx + rx + (-p.V * 0.18 if p.italic else p.V / 2), cy + 2)
+    g.stroke(g.arc(cx, cy, rx, ry, 0, 322 - p.ap), caps=('h', 'b'), cut='h')
+    # ends inside the bowl's stroke, as in e: run to the outer edge, it stuck out at Bold where
+    # the bowl has already turned inward
+    g.hbar(cx - rx, cx + rx - (p.V * 0.18 if p.italic else 0), cy + 2)
 
 
 @glyph('Eng', 0x14A)
