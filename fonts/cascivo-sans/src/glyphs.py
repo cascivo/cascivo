@@ -613,6 +613,50 @@ def _e(g, p):
     g.sb = (0.62, 0.5)
 
 
+def _a_bowl(g, p, xs, wf):
+    """The double-storey a's bowl, left of a stem centred on xs (in æ, the e's left stroke).
+
+    An outer shape and a counter drawn directly, not a stroke. As a stroke, the bowl's thickness
+    followed the pen and its diagonal join into the stem, and at Black the counter shrank to a
+    slit with a nick at its lower right. Drawn, each thickness is its own master parameter, and
+    the counter's right side runs flat against the stem as in Geist and Inter. Regular keeps its
+    proportions. Heavy weights lift the bowl a little and lighten its left side; the counter's
+    area at Black then matches the old one, but as a round shape, not a slit.
+    """
+    V = p.V
+    h = p.heavy
+    k = p.k
+    ybt = p.xh * (0.57 + 0.05 * h)  # top of the bowl
+    yb0 = -p.ov  # bottom of the bowl
+    xe = xs - V / 2  # stem's left edge
+    rxb = (xs - V / 2) / 2 * wf
+    cxb = V / 2 + rxb  # horizontal centre of the bowl's round left half
+    th = p.bar  # top and bottom of the bowl
+    tl = V * (1 - 0.08 * h)  # left side of the bowl
+    cy = (ybt + yb0) / 2
+    ry = (ybt - yb0) / 2
+    yjo = yb0 + (ybt - yb0) * 0.3  # where the outline meets the stem
+    outer = [
+        L((xs, ybt), (cxb, ybt)),
+        ('C', (cxb, ybt), (cxb - cxb * k, ybt), (0, cy + ry * k), (0, cy)),
+        ('C', (0, cy), (0, cy - ry * k), (cxb - cxb * k, yb0), (cxb, yb0)),
+        ('C', (cxb, yb0), (cxb + (xs - cxb) * 0.6, yb0), (xs, yjo - (yjo - yb0) * 0.6), (xs, yjo)),
+        L((xs, yjo), (xs, ybt)),
+    ]
+    yti, ybi = ybt - th, yb0 + th
+    cyi, ryi = (yti + ybi) / 2, (yti - ybi) / 2
+    rxi = cxb - tl
+    yji = ybi + (yti - ybi) * 0.45  # where the counter's round bottom meets the stem
+    inner = [
+        L((xe, yti), (cxb, yti)),
+        ('C', (cxb, yti), (cxb - rxi * k, yti), (tl, cyi + ryi * k), (tl, cyi)),
+        ('C', (tl, cyi), (tl, cyi - ryi * k), (cxb - rxi * k, ybi), (cxb, ybi)),
+        ('C', (cxb, ybi), (cxb + (xe - cxb) * 0.6, ybi), (xe, yji - (yji - ybi) * 0.6), (xe, yji)),
+        L((xe, yji), (xe, yti)),
+    ]
+    g.raw += [orient(outer, outer=True), orient(inner, outer=False)]
+
+
 @glyph('a', 0x61)
 def _a(g, p):
     if p.italic:  # single-storey: a bowl closed by a stem at x-height, as in Plex and Source italics
@@ -630,26 +674,7 @@ def _a(g, p):
     ryt = p.xh * 0.26
     cyt = p.xh + p.ov * 0.5 - H / 2 - ryt
     g.stroke([L((xs, 0), (xs, cyt))] + g.arc(cxt, cyt, rxt, ryt, 0, 154 - p.ap), caps=('b', 'b'))
-    # bowl
-    # Heavy a: the bowl rises, and its top and bottom thin like a crossbar (p.bar), or its
-    # counter shrinks to a slit. Geist and Inter keep a tall teardrop counter at Black.
-    ybt = p.xh * (0.57 + 0.08 * p.heavy)
-    Hb = p.bar
-    yt = ybt - Hb / 2
-    ybot = -p.ov + Hb / 2
-    ryb = (yt - ybot) / 2
-    rxb = (xs - V / 2) / 2 * 0.94
-    cxb = V / 2 + rxb
-    cyb = (yt + ybot) / 2
-    # The bowl leaves its curve at 322° and runs straight along that tangent into the stem
-    # centre. A round bowl meeting a stem always grazes the stem's foot about 20 units above
-    # the baseline; a diagonal join (as in Geist) lifts the junction clear of it.
-    # heavy bowls stay round further before the join, or its straight run nicks the counter
-    bowl = g.arc(cxb, cyb, rxb, ryb, 90, 322 + 12 * p.heavy)
-    end = bowl[-1][-1]
-    tx, ty = end[0] - bowl[-1][-2][0], end[1] - bowl[-1][-2][1]
-    join = (xs, end[1] + (xs - end[0]) * ty / tx)
-    g.stroke([L((xs, yt), (cxb, yt))] + bowl + [L(end, join)], taper=(1, 0.8), pen=(V, Hb))
+    _a_bowl(g, p, xs, 0.94)
     g.sb = (0.55, 1)
 
 
@@ -1697,13 +1722,7 @@ def _ae(g, p):
     ryt = p.xh * 0.26
     cyt = p.xh + p.ov * 0.5 - H / 2 - ryt
     g.stroke([L((xs, p.xh * 0.35), (xs, cyt))] + g.arc(cxt, cyt, rxt, ryt, 0, 154 - p.ap), caps=('b', 'b'))
-    ybt = p.xh * 0.57
-    yt = ybt - H / 2
-    ybot = -p.ov + H / 2
-    ryb = (yt - ybot) / 2
-    rxb = (xs - V / 2) / 2
-    cxb = V / 2 + rxb
-    g.stroke([L((xs, yt), (cxb, yt))] + g.arc(cxb, (yt + ybot) / 2, rxb, ryb, 90, 360))
+    _a_bowl(g, p, xs, 1.0)
     _ae_e(g, p, xs - V / 2)
     g.sb = (0.55, 0.5)
 

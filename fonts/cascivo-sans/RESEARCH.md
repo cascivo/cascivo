@@ -117,7 +117,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                                             |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                                                    |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                                                          |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.8 KB, `Latin[opsz,wght]` 28.9 KB; italic 24.1 / 32.2 KB, loaded only when a page uses italic. Serve only the axes you use |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.7 KB, `Latin[opsz,wght]` 28.8 KB; italic 24.1 / 32.2 KB, loaded only when a page uses italic. Serve only the axes you use |
 
 ## 5. Scorecard
 
@@ -125,7 +125,7 @@ contour in every master for self-intersection. The build ships with zero problem
 
 | File                                    | Cascivo Sans           | Geist             | IBM Plex Sans                         | Inter              |
 | --------------------------------------- | ---------------------- | ----------------- | ------------------------------------- | ------------------ |
-| Variable Latin slice, wght axis         | **21.8 KB** (211 cp)   | 29.4 KB (225 cp)  | 45.7 KB (232 cp)                      | 48.3 KB (230 cp)   |
+| Variable Latin slice, wght axis         | **21.7 KB** (211 cp)   | 29.4 KB (225 cp)  | 45.7 KB (232 cp)                      | 48.3 KB (230 cp)   |
 | Bytes per codepoint (Latin slice)       | **102**                | 131               | 197                                   | 210                |
 | Variable, full charset, wght only       | **25.8 KB** (71 B/cp)  | 69.7 KB (96 B/cp) | —                                     | —                  |
 | Static Regular, full charset            | **11.7 KB** (32 B/cp)  | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp)                     | —                  |
@@ -342,7 +342,7 @@ tail. Counters are 5% narrower. The italic passes the same no-reflow test as the
   its right-angle turn. The capital breve has a minimum depth, because a shallow arc thinner
   than its stroke folds inside.
 
-**Size.** The italic Latin web file is 24.1 KB for every weight, against 21.8 KB for the upright.
+**Size.** The italic Latin web file is 24.1 KB for every weight, against 21.7 KB for the upright.
 The difference is inherent: once outlines are slanted, every point that moves vertically
 between masters also moves horizontally, so it carries more variation data. For comparison,
 Plex ships 24.4 KB for one static italic weight, and Inter 51.8 KB for its variable italic.
@@ -394,22 +394,28 @@ not. Measured on rasterised `n`, `o` and `e` (percent of x-height, at 900):
   near-square inner corner into a flat foot, as Geist's and Inter's do. The heavy t takes more
   room on its right, because the flat foot now runs along the baseline where the hook used to
   lift away; at Black it touched a following `z`.
-- `a`: the bowl rises, its top and bottom thin like a crossbar, and it stays round longer before
-  it joins the stem. Its counter was a slit.
+- `a`: the bowl is now an outer shape and a counter drawn directly, not a stroke. As a stroke,
+  its thickness followed the pen and a straight diagonal join into the stem, and at Black the
+  counter was a slit with a nick at its lower right. Drawn, each thickness is a master
+  parameter, and the counter's right side runs flat against the stem, as in Geist and Inter.
+  The heavy bowl rises a little and its left side lightens. Measured as enclosed area in the
+  lower part of the letter (percent of x-height squared), the Black counter is 6.2 against
+  Geist's 4.2 and Inter's 4.3: the same area as before, now round instead of a slit, and a
+  little more open, like our other counters. The upright `æ` shares the same bowl.
 - `c`: 8% wider.
 - `&`: rebuilt at every weight, because it was broken, not just heavy. The leg leaves the top
   loop where it runs tangent to it, so it no longer pokes into the loop's counter. The arm rises
   out of the bowl in one stroke and is no longer a separate wedge.
 
-Regular is unchanged except for the `&` and the `t`, whose rebuilt foot keeps Regular's hook but
-now ends on a vertical cut. At 500 px, the largest raster difference in any other Regular glyph
+Regular is unchanged except for the `&`, the `t`, whose rebuilt foot keeps Regular's hook but now
+ends on a vertical cut, and the `a` and `æ`, whose bowl now meets the stem in a curve rather
+than a diagonal. At 500 px, the largest raster difference in any other Regular glyph
 is 69 pixels, in `Œ`, from how its overlapping `O` and `E` rasterise after
 quadratic conversion. A test checks that Black's sidebearing is at most 0.8 of Regular's, and
 that Black's `o` keeps a contrast of at least 0.68.
 
-**Still behind.** The heavy `a` counter is bigger, but still smaller than Geist's and Inter's,
-with a slight nick where the bowl joins the stem. Ink density is 0.62 against 0.65, because our
-counters stay a little more open.
+**Still behind.** Ink density at Black is 0.62 against 0.65, because our counters stay a little
+more open than Geist's and Inter's.
 
 ## Sources
 

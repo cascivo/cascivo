@@ -12,10 +12,10 @@ Helvetica, and what it does not do yet.
 
 | File                                              | Axes       | Charset               | Size                      |
 | ------------------------------------------------- | ---------- | --------------------- | ------------------------- |
-| `fonts/CascivoSans-Latin[wght].woff2`             | wght       | Latin                 | 21.8 KB                   |
-| `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz | Latin                 | 28.9 KB                   |
-| `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz | full (365 codepoints) | 34.6 KB                   |
-| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz | full                  | 93.9 KB (desktop install) |
+| `fonts/CascivoSans-Latin[wght].woff2`             | wght       | Latin                 | 21.7 KB                   |
+| `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz | Latin                 | 28.8 KB                   |
+| `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz | full (365 codepoints) | 34.4 KB                   |
+| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz | full                  | 93.7 KB (desktop install) |
 | `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght       | Latin                 | 24.1 KB                   |
 | `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz | Latin                 | 32.2 KB                   |
 | `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz | full                  | 38.1 KB                   |
