@@ -398,7 +398,7 @@ def _ell_seg(cx, cy, rx, ry, a0, a1, k):
             (p3[0] + h * rx * math.sin(t1), p3[1] - h * ry * math.cos(t1)), p3)
 
 
-def _S(g, p, w, top, ov, pen=None, term=32, spine=0.1, run=0, run_up=None):
+def _S(g, p, w, top, ov, pen=None, term=32, spine=0.1, run=0, run_up=None, close=0):
     """S/s/$ spine: upper arc, a cubic spine at full stem weight, lower arc."""
     V, H = p.V, p.H
     yb, yt = -ov, top + ov
@@ -428,8 +428,10 @@ def _S(g, p, w, top, ov, pen=None, term=32, spine=0.1, run=0, run_up=None):
     # bowl past its widest point, on a near-flat face low on the curve, which keeps the counters
     # small and round. That crosses a quadrant boundary, so the terminal segment is drawn as one
     # cubic (_ell_seg) in every master that needs it: the segment count stays the same.
-    a_up = term - (8 + (run if run_up is None else run_up)) * heavy + p.ap * 0.8
-    a_lo = -146 - (8 + run) * heavy + p.ap * 0.8
+    # `close`: degrees every weight's terminals sit further round; the heavy run shrinks by as
+    # much, so Black's terminals stay put
+    a_up = term - close - (8 + (run if run_up is None else run_up) - close) * heavy + p.ap * 0.8
+    a_lo = -146 - close - (8 + run - close) * heavy + p.ap * 0.8
     up = g.arc(cxu, cyu, rxu, ryu, a_up, 180) if a_up > 0 else [_ell_seg(cxu, cyu, rxu, ryu, a_up, 90, p.k)] + g.arc(cxu, cyu, rxu, ryu, 90, 180)
     lo = g.arc(cxl, cyl, rxl, ryl, 0, a_lo) if a_lo > -180 else g.arc(cxl, cyl, rxl, ryl, 0, -90) + [_ell_seg(cxl, cyl, rxl, ryl, -90, a_lo, p.k)]
     # Three strokes, so the spine gets its own pen: the default angle pen thins a diagonal spine
@@ -457,7 +459,8 @@ def _S_(g, p):
     # capitals have room, so half the s's extra width; a heavier spine, as Geist's and Inter's S
     # and heavier horizontals: Black's top and bottom were 12% thinner than theirs, and the S
     # carried 0.86x their ink
-    _S(g, p, p.Hw * 0.94 + _s_extra(p) * 0.5, p.cap, p.ov, pen=(p.V, p.H * (1 + 0.1 * p.heavy)), spine=0.3, run=34)
+    # (Regular's terminals sit 14° further round too: the S carried 0.80x their ink at Regular)
+    _S(g, p, p.Hw * 0.94 + _s_extra(p) * 0.5, p.cap, p.ov, pen=(p.V, p.H * (1 + 0.1 * p.heavy)), spine=0.3, run=34, close=26)
     g.ht = 'c'
     g.sb = (0.5, 0.5)
 
@@ -723,7 +726,9 @@ def _a(g, p):
 def _s(g, p):
     # Heavy terminals run round as the S's do (the short upper bowl folds inside past 16°, 8° once
     # slanted), and they carry part of the extra width's job, so the s takes 70% of it.
-    _S(g, p, p.nw * 0.88 + _s_extra(p) * 0.7, p.xh, p.ov, run=34, run_up=8 if p.italic else 16)
+    # Regular's terminals also sit 14° further round, and its s is 4% wider: it carried 0.77x
+    # Geist's and Inter's ink at 0.90x their width
+    _S(g, p, p.nw * (0.92 - 0.04 * p.heavy) + _s_extra(p) * 0.7, p.xh, p.ov, run=34, run_up=8 if p.italic else 16, close=26)
     g.sb = (0.55, 0.55)
 
 
@@ -844,7 +849,7 @@ def _kra(g, p):
 
 @glyph('v', 0x76)
 def _v(g, p):
-    w = p.nw * (1.02 + 0.08 * p.heavy)  # heavy diagonals need room: Black was 0.9x the references
+    w = p.nw * 1.10  # diagonals need room: v was 0.9x the references' width at Regular and Black
     g.diag(0, p.xh, w / 2, 0, 'l', 'c')
     g.diag(w, p.xh, w / 2, 0, 'r', 'c')
     g.sb = (0.1, 0.1)
@@ -852,7 +857,7 @@ def _v(g, p):
 
 @glyph('w', 0x77)
 def _w(g, p):
-    w = p.nw * 1.52
+    w = p.nw * 1.64  # v, w, x, y and z were 0.88-0.91x Geist's and Inter's width at Regular
     ws = 0.86
     g.diag(0, p.xh, w * 0.25, 0, 'l', 'c', ws=ws)
     g.diag(w / 2, p.xh, w * 0.25, 0, 'c', 'c', ws=ws)
@@ -863,7 +868,7 @@ def _w(g, p):
 
 @glyph('x', 0x78)
 def _x(g, p):
-    w = p.nw * 0.98
+    w = p.nw * 1.07
     g.diag(0, p.xh, w, 0, 'l', 'r', ws=0.93)
     g.diag(w, p.xh, 0, 0, 'r', 'l', ws=0.9)
     g.sb = (0.12, 0.12)
@@ -871,7 +876,7 @@ def _x(g, p):
 
 @glyph('y', 0x79)
 def _y(g, p):
-    w = p.nw * 1.02
+    w = p.nw * 1.10
     a = g.diag(w, p.xh, w * 0.36, p.desc, 'r', 'c', caps=('h', 'h'))
     if p.italic:  # the right stroke turns into a curved tail instead of a straight descender
         g.strokes.pop()
@@ -893,7 +898,7 @@ def _y(g, p):
 
 @glyph('z', 0x7A)
 def _z(g, p):
-    w = p.nw * 0.86
+    w = p.nw * 0.95
     g.hbar(w * 0.04, w * 0.98, p.xh - p.H).hbar(0, w, 0)
     g.diag(w * 0.98, p.xh - p.H / 2, 0, p.H / 2, 'r', 'l', ws=0.95)
     g.sb = (0.35, 0.35)
@@ -955,15 +960,19 @@ def _two(g, p):
 
 @glyph('three', 0x33)
 def _three(g, p):
-    w = fw(p) * (1 + 0.08 * p.heavy)  # heavy 3 widens, or its bowls pinch (Black was 0.8x Geist's)
+    # wider than the other figures, or its bowls pinch: Black's 3 was 0.80x Geist's and Inter's
+    # width, Regular's 0.90x
+    w = fw(p) * (1.06 + 0.02 * p.heavy)
     H = p.H
     ym = p.cap * 0.56
     cxu, cyu, rxu, ryu = g.box(w * 0.06, ym - H / 2, w * 0.95, p.cap + p.ov)
     cxl, cyl, rxl, ryl = g.box(0, -p.ov, w, ym + H / 2)
-    g.stroke(g.arc(cxu, cyu, rxu, ryu, 152 - p.ap + 10 * p.heavy, -90), caps=('b', 'b'), cut='h')
+    # terminals sit 10° further round than they first did at every weight (Regular's 3 was open
+    # and light, 0.86x the references' ink)
+    g.stroke(g.arc(cxu, cyu, rxu, ryu, 162 - p.ap, -90), caps=('b', 'b'), cut='h')
     # the bar starts where the bowls end; heavier, its square left end stuck out as a spur
     g.hbar(w * 0.36 + (cxu - w * 0.36) * 0.5 * p.heavy, cxu + 2, ym - H / 2)
-    g.stroke(g.arc(cxl, cyl, rxl, ryl, 90, -150 + p.ap - 10 * p.heavy), caps=('b', 'b'), cut='h')
+    g.stroke(g.arc(cxl, cyl, rxl, ryl, 90, -160 + p.ap), caps=('b', 'b'), cut='h')
     g.tab = True
     g.ht = 'c'
 
