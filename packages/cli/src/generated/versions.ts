@@ -7,15 +7,15 @@
  * and GETTING-STARTED.md tells adopters to pin exactly. Regenerate with `pnpm regen`.
  */
 export const CASCIVO_VERSIONS: Record<string, string> = {
-  '@cascivo/react': '1.8.0',
-  '@cascivo/themes': '1.0.2',
-  '@cascivo/charts': '1.8.0',
+  '@cascivo/react': '1.9.0',
+  '@cascivo/themes': '1.0.3',
+  '@cascivo/charts': '1.9.0',
   '@cascivo/icons': '1.1.1',
   '@cascivo/eslint-config': '0.4.2',
-  '@cascivo/app': '1.8.0',
-  '@cascivo/render': '1.8.0',
-  '@cascivo/storage': '1.8.0',
-  '@cascivo/email': '0.6.0',
+  '@cascivo/app': '1.9.0',
+  '@cascivo/render': '1.9.0',
+  '@cascivo/storage': '1.9.0',
+  '@cascivo/email': '0.6.1',
 }
 
 /** `@cascivo/core`'s declared `@preact/signals-react` peer range. */
@@ -25,4 +25,4 @@ export const SIGNALS_PEER = '>=3.0.0'
  * This CLI's own version, stamped into every scaffold's cascivo.app.json. `cascivo app`
  * regenerates an app's original files with exactly this version as its merge base.
  */
-export const CLI_VERSION = '1.7.1'
+export const CLI_VERSION = '1.8.0'
