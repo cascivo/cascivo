@@ -132,13 +132,19 @@ _SELECTED = None
 _REGULAR = None  # values measured on the Regular master
 
 
+def reset():
+    """Each font (upright, italic) measures and selects its own pairs."""
+    global _SELECTED, _REGULAR
+    _SELECTED = _REGULAR = None
+
+
 def _values(o, pairs):
-    """Kerning follows weight, but optical size and slant barely change it: those masters reuse
+    """Kerning follows weight, but optical size barely changes it: those masters reuse
     Regular's values, so their deltas vanish (1.6 KB of WOFF2, measured)."""
     global _REGULAR
     vals = {k: v[0] for k, v in pairs.items()}
-    loc = getattr(o, 'loc', {'wght': 400})
-    if loc.get('wght') == 400 and loc.get('opsz') == 14 and loc.get('slnt') == 0:
+    loc = getattr(o, 'loc', {'wght': 400, 'opsz': 14})
+    if loc.get('wght') == 400 and loc.get('opsz') == 14:
         _REGULAR = vals
     elif loc.get('wght') == 400 and _REGULAR is not None:
         return _REGULAR

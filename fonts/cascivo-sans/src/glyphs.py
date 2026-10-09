@@ -600,12 +600,20 @@ def _e(g, p):
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov)
     yb = cy  # flush with where the bowl stroke ends, or its butt end shows below the bar
     g.stroke(g.arc(cx, cy, rx, ry, 0, 322 - p.ap), caps=('b', 'b'))
-    g.hbar(cx - rx, cx + rx, yb, h=p.bar)  # ends on the bowl's centreline, so the bowl stroke covers it
+    # ends on the bowl's centreline, so the bowl stroke covers it; in the italic the stroke's end
+    # is cut on a slant, so the bar stops short of it
+    g.hbar(cx - rx, cx + rx - (p.V * 0.18 if p.italic else 0), yb, h=p.bar)
     g.sb = (0.62, 0.5)
 
 
 @glyph('a', 0x61)
 def _a(g, p):
+    if p.italic:  # single-storey: a bowl closed by a stem at x-height, as in Plex and Source italics
+        w = p.nw * 1.04
+        g.vstem(w - p.V, 0, p.xh)
+        _bowl_lc(g, p, w, False)
+        g.sb = (0.62, 1)
+        return
     w = p.nw * 0.98
     V, H = p.V, p.H
     xs = w - V / 2  # stem centre
@@ -655,9 +663,18 @@ def _f(g, p):
     ry = rx * 1.15
     top = p.asc + p.ov * 0.3
     cy = top - H / 2 - ry
-    g.stroke([L((xs + V / 2, 0), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, end), caps=('b', 'b'))
+    sx = xs + V / 2
+    top_hook = g.arc(sx + rx, cy, rx, ry, 180, end)
+    if p.italic:
+        # the italic f descends and hooks left under the preceding letter
+        rxb, ryb = rx * 0.9, rx * 0.99
+        cyb = p.desc + H / 2 + ryb
+        g.stroke(g.arc(sx - rxb, cyb, rxb, ryb, -140, 0) + [L((sx, cyb), (sx, cy))] + top_hook, caps=('b', 'b'))
+        g.sb = (-0.2, 0.05)
+    else:
+        g.stroke([L((sx, 0), (sx, cy))] + top_hook, caps=('b', 'b'))
+        g.sb = (0.45, 0.05)  # crossbar overhang, as for t
     g.hbar(0, w * 0.96, p.xh - H)
-    g.sb = (0.45, 0.05)  # crossbar overhang, as for t
     g.ht = 'a'
 
 
@@ -669,7 +686,7 @@ def _t(g, p):
     rx = w - xs - V * 0.4
     ry = rx * 0.9
     cy = -p.ov * 0.4 + H / 2 + ry
-    g.stroke([L((xs + V / 2, p.xh + (p.asc - p.xh) * 0.62), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, 286), caps=('b', 'b'))
+    g.stroke([L((xs + V / 2, p.xh + (p.asc - p.xh) * 0.62), (xs + V / 2, cy))] + g.arc(xs + V / 2 + rx, cy, rx, ry, 180, 286 - 14 * max(0.0, (V - 90) / 88)), caps=('b', 'b'), taper=(1, 1 - 0.3 * max(0.0, (V - 90) / 88)))  # heavy hooks end earlier and taper, or the inner curve folds (angle stays above 270°: same segments in every master)
     g.hbar(0, w * 0.96, p.xh - H)
     g.sb = (0.55, 0.25)  # the crossbar reaches left: 0.3 let it touch the stem before it at Black ("ht")
     g.anchors['topright_x'] = xs + V + p.S * 0.4
@@ -729,6 +746,17 @@ def _x(g, p):
 def _y(g, p):
     w = p.nw * 1.02
     a = g.diag(w, p.xh, w * 0.36, p.desc, 'r', 'c', caps=('h', 'h'))
+    if p.italic:  # the right stroke turns into a curved tail instead of a straight descender
+        g.strokes.pop()
+        (x0, y0), (x1, y1) = a
+        d = math.hypot(x1 - x0, y1 - y0)
+        ux, uy = (x1 - x0) / d, (y1 - y0) / d
+        t = (p.desc * 0.15 - y0) / (y1 - y0)
+        q = (x0 + (x1 - x0) * t, p.desc * 0.15)
+        end = (w * 0.06, p.desc + p.H * 0.55)
+        dist = math.hypot(q[0] - end[0], q[1] - end[1])
+        tail = ('C', q, (q[0] + ux * dist * 0.45, q[1] + uy * dist * 0.45), (end[0] + dist * 0.4, end[1]), end)
+        g.stroke([L(a[0], q), tail], caps=('h', 'b'), ws=0.93)
     # the left arm ends below the baseline, on the right stroke's centreline: a cut exactly at
     # the baseline leaves its corner showing at heavy weights
     yj = -p.H * 0.5
@@ -1737,7 +1765,8 @@ def m_macron(g, p, s):
 def m_breve(g, p, s):
     r = 100 + p.V * 0.2
     ry = 85 * s + p.mt / 2
-    g.stroke(g.arc(0, ry, r, ry - p.mt / 2 + 2, 180, 360), pen=(p.mt, p.mt * 0.85))
+    depth = max(ry - p.mt / 2 + 2, p.mt * 0.55 + 30)  # shallower than the stroke, the inside folds
+    g.stroke(g.arc(0, ry, r, depth, 180, 360), pen=(p.mt, p.mt * 0.85))
 
 
 def m_ring(g, p, s):
@@ -1762,7 +1791,10 @@ def m_hungarumlaut(g, p, s):
 def m_cedilla(g, p, s):
     r = 52 + p.V * 0.3
     t = min(p.mt * 0.8, r * 0.8)
-    g.stroke([L((0, 0), (0, -60)), L((0, -60), (r * 0.2, -60))] + g.arc(r * 0.2, -60 - r, r * 1.1, r, 90, -90) + [L((r * 0.2, -60 - 2 * r), (-r * 0.9, -60 - 2 * r))], w=t)
+    # neck and curve are separate, overlapping strokes: one stroke cannot offset cleanly round
+    # the right-angle turn between them, and the fold showed once slanted
+    g.stroke([L((0, 0), (0, -60 - t / 2))], w=t)
+    g.stroke(g.arc(0, -60 - r, r * 1.1, r, 90, -90) + [L((0, -60 - 2 * r), (-r * 1.1, -60 - 2 * r))], w=t)
 
 
 def m_ogonek(g, p, s):

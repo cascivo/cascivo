@@ -13,7 +13,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import glyphs as GL  # noqa: E402
 from geom import expand, flatten  # noqa: E402
-from params import MASTERS, P  # noqa: E402
+from build import italicize  # noqa: E402
+from params import ITALIC_MASTERS, MASTERS, P  # noqa: E402
 
 
 def _cross(a, b, c, d):
@@ -45,12 +46,12 @@ def self_intersects(pts):
 
 def main():
     bad = []
-    for mname, loc in MASTERS:
+    for mname, loc in MASTERS + ITALIC_MASTERS:
         p = P(**loc)
         for name in GL.ORDER:
             g = GL.G(p)
             GL.GLYPHS[name][1](g, p)
-            for si, s in enumerate(g.strokes):
+            for si, s in enumerate(italicize(g.strokes, p)):
                 for c in expand(s, p.V, p.H):
                     if self_intersects(flatten(c, 16)):
                         bad.append((mname, name, si))

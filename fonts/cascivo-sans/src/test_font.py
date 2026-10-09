@@ -15,33 +15,82 @@ from fontTools.ttLib import TTFont  # noqa: E402
 import lint  # noqa: E402
 
 DIST = os.path.join(HERE, '..', 'fonts')
-VF = os.path.join(DIST, 'CascivoSans[opsz,slnt,wght].ttf')
+VF = os.path.join(DIST, 'CascivoSans[opsz,wght].ttf')
+VFI = os.path.join(DIST, 'CascivoSans-Italic[opsz,wght].ttf')
 
 # Size budgets (bytes). A regression past these is a design decision, not an accident.
+# The italic runs larger: every point that moves vertically between masters also moves
+# horizontally once slanted, so it carries more variation data.
 BUDGETS = {
-    'CascivoSans[opsz,slnt,wght].woff2': 40_000,
-    'CascivoSans-Latin[opsz,slnt,wght].woff2': 34_000,
+    'CascivoSans[opsz,wght].woff2': 36_000,
     'CascivoSans-Latin[opsz,wght].woff2': 30_000,
-    'CascivoSans-Latin[wght].woff2': 22_000,
+    'CascivoSans-Latin[wght].woff2': 22_500,
     'CascivoSans-Regular.woff2': 12_000,
+    'CascivoSans-Italic[opsz,wght].woff2': 40_000,
+    'CascivoSans-Italic-Latin[opsz,wght].woff2': 34_000,
+    'CascivoSans-Italic-Latin[wght].woff2': 25_000,
 }
 
 
 class Font(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        if not os.path.exists(VF):
+        if not (os.path.exists(VF) and os.path.exists(VFI)):
             raise unittest.SkipTest('run src/build.py first')
         cls.f = TTFont(VF)
+        cls.fi = TTFont(VFI)
 
     def test_outlines_are_simple(self):
         self.assertEqual(lint.main(), 0)
 
     def test_axes(self):
-        axes = {a.axisTag: (a.minValue, a.defaultValue, a.maxValue) for a in self.f['fvar'].axes}
-        self.assertEqual(axes, {'wght': (100, 400, 900), 'opsz': (8, 14, 48), 'slnt': (-12, 0, 0)})
-        self.assertIn('avar', self.f)
-        self.assertEqual(len(self.f['fvar'].instances), 18)
+        for f in (self.f, self.fi):
+            axes = {a.axisTag: (a.minValue, a.defaultValue, a.maxValue) for a in f['fvar'].axes}
+            self.assertEqual(axes, {'wght': (100, 400, 900), 'opsz': (8, 14, 48)})
+            self.assertIn('avar', f)
+            self.assertEqual(len(f['fvar'].instances), 9)
+
+    def test_italic_is_a_linked_italic(self):
+        fi, f = self.fi, self.f
+        self.assertEqual(fi['post'].italicAngle, -10)
+        self.assertTrue(fi['OS/2'].fsSelection & 1, 'ITALIC bit')
+        self.assertFalse(fi['OS/2'].fsSelection & (1 << 6), 'not REGULAR')
+        self.assertTrue(fi['head'].macStyle & 2)
+        self.assertEqual(f['post'].italicAngle, 0)
+
+        def ital(font):
+            stat = font['STAT'].table
+            tags = [a.AxisTag for a in stat.DesignAxisRecord.Axis]
+            return [v.Value for v in stat.AxisValueArray.AxisValue if v.AxisIndex == tags.index('ital')]
+
+        self.assertEqual(ital(f), [0])
+        self.assertEqual(ital(fi), [1])
+
+    def test_italic_letterforms_are_drawn(self):
+        def bounds(font, ch):
+            g = font['glyf'][font.getBestCmap()[ord(ch)]]
+            g.recalcBounds(font['glyf'])
+            return g
+
+        self.assertLess(bounds(self.fi, 'f').yMin, -100, 'the italic f descends')
+        self.assertGreaterEqual(bounds(self.f, 'f').yMin, 0)
+        # single-storey a: one contour is a bare stem from baseline to x-height. In the upright
+        # a, that contour carries on over the top into the terminal, so it is wide.
+        def has_bare_stem(font):
+            g = font['glyf'][font.getBestCmap()[ord('a')]]
+            coords, ends, _ = g.getCoordinates(font['glyf'])
+            adv = font['hmtx'][font.getBestCmap()[ord('a')]][0]
+            start = 0
+            for e in ends:
+                xs = [x for x, _ in coords[start:e + 1]]
+                ys = [y for _, y in coords[start:e + 1]]
+                start = e + 1
+                if min(ys) <= 0 and max(ys) >= 520 and max(xs) - min(xs) < 0.45 * adv:
+                    return True
+            return False
+
+        self.assertTrue(has_bare_stem(self.fi), 'italic a is single-storey')
+        self.assertFalse(has_bare_stem(self.f), 'upright a is double-storey')
 
     def test_coverage(self):
         cmap = self.f.getBestCmap()
@@ -83,15 +132,16 @@ class Font(unittest.TestCase):
 
         text = 'the settings page lets you rename a team assign seats and set the default theme'
 
-        def width(w):
-            f = instantiateVariableFont(TTFont(VF), {'wght': w, 'opsz': 14, 'slnt': 0})
+        def width(w, path=VF):
+            f = instantiateVariableFont(TTFont(path), {'wght': w, 'opsz': 14})
             cmap, hmtx = f.getBestCmap(), f['hmtx']
             return sum(hmtx[cmap[ord(c)]][0] for c in text)
 
-        regular = width(400)
-        self.assertGreaterEqual(width(100) / regular, 0.92)
-        self.assertLessEqual(width(700) / regular, 1.09)
-        self.assertLessEqual(width(900) / regular, 1.16)
+        for path in (VF, VFI):
+            regular = width(400, path)
+            self.assertGreaterEqual(width(100, path) / regular, 0.92)
+            self.assertLessEqual(width(700, path) / regular, 1.09)
+            self.assertLessEqual(width(900, path) / regular, 1.16)
 
     def test_kerning(self):
         try:

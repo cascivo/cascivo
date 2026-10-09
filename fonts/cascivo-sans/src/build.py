@@ -6,6 +6,7 @@ Deterministic: same source, same bytes.
 """
 
 import io
+import math
 import os
 import sys
 
@@ -29,8 +30,9 @@ from fontTools.varLib import instancer  # noqa: E402
 import glyphs as GL  # noqa: E402
 from composites import BOTTOM, SPECIAL, accented_chars, glyph_name  # noqa: E402
 from geom import contour_bounds, expand, transform_contour  # noqa: E402
+import kern  # noqa: E402
 from kern import kern_fea  # noqa: E402
-from params import MASTERS, P  # noqa: E402
+from params import ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, P  # noqa: E402
 
 FAMILY = 'Cascivo Sans'
 PS = 'CascivoSans'
@@ -58,6 +60,15 @@ class Out:
         self.bounds = {}
 
 
+def italicize(strokes, p):
+    """Slant centerlines around mid-x-height *before* the pen expands them, with the pen's stress
+    axis leaning by the same angle: a drawn italic's curves, not a sheared upright's."""
+    if not p.slant:
+        return strokes
+    yc = p.xh / 2
+    return [st.transformed(lambda q: (q[0] + (q[1] - yc) * p.slant, q[1]), slant=p.slant) for st in strokes]
+
+
 def draw_master(p):
     o = Out(p)
     for name in GL.ORDER:
@@ -68,6 +79,9 @@ def draw_master(p):
         for s in g.strokes:
             cs += expand(s, p.V, p.H)
         cs += g.raw
+        # Spacing is measured on the upright drawing; the italic outlines replace it afterwards,
+        # slanted around mid-x-height so that spacing carries over.
+        italic_cs = [c for s in italicize(g.strokes, p) for c in expand(s, p.V, p.H)] if p.slant else None
         for cp in cps:
             o.cmap[cp] = name
         if g.adv_fixed is not None:
@@ -86,7 +100,7 @@ def draw_master(p):
             l, r = g.sb[0] * unit, g.sb[1] * unit
             dx = l - xmin
             adv = l + (xmax - xmin) + r
-        cs = [transform_contour(c, lambda q, dx=dx: (q[0] + dx, q[1])) for c in cs]
+        cs = [transform_contour(c, lambda q, dx=dx: (q[0] + dx, q[1])) for c in (italic_cs if italic_cs is not None else cs)]
         o.contours[name] = cs
         o.adv[name] = round(adv)
         o.bounds[name] = (xmin + dx, ymin, xmax + dx, ymax)
@@ -269,13 +283,12 @@ def add_composites(o):
 
 
 def apply_slant(o):
+    """Outlines are already slanted (draw_master); anchors and composite offsets follow here."""
     s = o.p.slant
     if not s:
         return
     yc = o.p.xh / 2
     sk = lambda q: (q[0] + (q[1] - yc) * s, q[1])  # noqa: E731
-    for n, cs in o.contours.items():
-        o.contours[n] = [transform_contour(c, sk) for c in cs]
     for n, a in o.anchors.items():
         o.anchors[n] = {k: sk(v) for k, v in a.items()}
     for n, parts in o.comps.items():
@@ -435,10 +448,10 @@ def build_master_font(o, glyf, order):
     fb.setupHorizontalHeader(ascent=1000, descent=-300, lineGap=0)
     fb.setupNameTable({
         'familyName': FAMILY,
-        'styleName': 'Regular',
+        'styleName': 'Italic' if p.italic else 'Regular',
         'uniqueFontIdentifier': f'{VERSION};CSCV;{PS}',
-        'fullName': f'{FAMILY} Regular',
-        'psName': f'{PS}-Regular',
+        'fullName': f'{FAMILY} Italic' if p.italic else f'{FAMILY} Regular',
+        'psName': f'{PS}-Italic' if p.italic else f'{PS}-Regular',
         'version': f'Version {VERSION}',
         'copyright': 'Copyright 2026 The Cascivo Sans Project Authors',
         'licenseDescription': 'This Font Software is licensed under the SIL Open Font License, Version 1.1.',
@@ -494,10 +507,11 @@ def _wght_map():
 WGHT_MAP = _wght_map()
 
 
-def build():
+def build(italic=False):
     os.makedirs(DIST, exist_ok=True)
+    kern.reset()
     outs = []
-    for name, loc in MASTERS:
+    for name, loc in ITALIC_MASTERS if italic else MASTERS:
         p = P(**loc)
         o = draw_master(p)
         o.name, o.loc = name, loc
@@ -507,7 +521,7 @@ def build():
     order = glyph_order(outs[0])
     glyfs = build_glyf(outs, order)
     ds = DesignSpaceDocument()
-    for tag, name, lo, df, hi in (('wght', 'Weight', 100, 400, 900), ('opsz', 'Optical size', 8, 14, 48), ('slnt', 'Slant', -12, 0, 0)):
+    for tag, name, lo, df, hi in (('wght', 'Weight', 100, 400, 900), ('opsz', 'Optical size', 8, 14, 48)):
         a = AxisDescriptor()
         a.tag, a.name, a.minimum, a.default, a.maximum = tag, name, lo, df, hi
         if tag == 'wght':
@@ -516,7 +530,7 @@ def build():
     for o, glyf in zip(outs, glyfs):
         s = SourceDescriptor()
         s.font = build_master_font(o, glyf, order)
-        s.location = {'Weight': o.loc['wght'], 'Optical size': o.loc['opsz'], 'Slant': o.loc['slnt']}
+        s.location = {'Weight': o.loc['wght'], 'Optical size': o.loc['opsz']}
         s.name = o.name
         ds.addSource(s)
     add_gvar = varLib._add_gvar
@@ -525,14 +539,14 @@ def build():
         vf, _, _ = varLib.build(ds, exclude=['STAT'], optimize=True)
     finally:
         varLib._add_gvar = add_gvar
-    finish(vf)
+    finish(vf, italic)
     return vf
 
 
 WEIGHTS = [(100, 'Thin'), (200, 'ExtraLight'), (300, 'Light'), (400, 'Regular'), (500, 'Medium'), (600, 'SemiBold'), (700, 'Bold'), (800, 'ExtraBold'), (900, 'Black')]
 
 
-def finish(vf):
+def finish(vf, italic=False):
     from fontTools.ttLib.tables._f_v_a_r import NamedInstance
     from fontTools.ttLib.tables._g_l_y_f import OVERLAP_COMPOUND, flagOverlapSimple
 
@@ -549,20 +563,23 @@ def finish(vf):
     name = vf['name']
     fvar = vf['fvar']
     fvar.instances = []
-    for slnt, suffix in ((0, ''), (-12, ' Oblique')):
-        for w, wn in WEIGHTS:
-            sub = (wn + suffix).strip() if not (wn == 'Regular' and suffix) else 'Oblique'
-            inst = NamedInstance()
-            inst.subfamilyNameID = name.addMultilingualName({'en': sub}, minNameID=256, mac=False)
-            inst.postscriptNameID = name.addMultilingualName({'en': f'{PS}-{sub.replace(" ", "")}'}, minNameID=256, mac=False)
-            inst.coordinates = {'wght': w, 'opsz': 14, 'slnt': slnt}
-            fvar.instances.append(inst)
+    for w, wn in WEIGHTS:
+        if italic:
+            sub = 'Italic' if wn == 'Regular' else f'{wn} Italic'
+        else:
+            sub = wn
+        inst = NamedInstance()
+        inst.subfamilyNameID = name.addMultilingualName({'en': sub}, minNameID=256, mac=False)
+        inst.postscriptNameID = name.addMultilingualName({'en': f'{PS}-{sub.replace(" ", "")}'}, minNameID=256, mac=False)
+        inst.coordinates = {'wght': w, 'opsz': 14}
+        fvar.instances.append(inst)
     buildStatTable(vf, [
         dict(tag='wght', name='Weight', values=[dict(value=w, name=n, flags=0x2 if w == 400 else 0, **({'linkedValue': 700} if w == 400 else {})) for w, n in WEIGHTS]),
         # opsz is applied automatically by CSS (font-optical-sizing: auto), so it never needs
         # to be part of a style name: every value is elidable
         dict(tag='opsz', name='Optical size', values=[dict(value=8, name='Caption', flags=0x2), dict(value=14, name='Text', flags=0x2), dict(value=48, name='Display', flags=0x2)]),
-        dict(tag='slnt', name='Slant', values=[dict(value=0, name='Upright', flags=0x2), dict(value=-12, name='Oblique')]),
+        # ital is a STAT-only axis: it links the two files so apps group them as one family
+        dict(tag='ital', name='Italic', values=[dict(value=1, name='Italic')] if italic else [dict(value=0, name='Roman', flags=0x2, linkedValue=1)]),
     ], elidedFallbackName='Regular', macNames=False)
     name.removeNames(platformID=1)
     # post v3: glyph names are build-time only; dropping them saves ~2 KB in the shipped file
@@ -570,6 +587,11 @@ def finish(vf):
     vf['head'].fontRevision = float(VERSION.rsplit('.', 1)[0])
     vf['head'].flags |= 1 << 3  # integer ppem scaling
     vf['OS/2'].fsSelection |= 1 << 7  # USE_TYPO_METRICS
+    if italic:
+        vf['OS/2'].fsSelection = (vf['OS/2'].fsSelection | 1) & ~(1 << 6)  # ITALIC, not REGULAR
+        vf['head'].macStyle |= 1 << 1
+        vf['post'].italicAngle = -float(ITALIC_ANGLE)
+        vf['hhea'].caretSlopeRise, vf['hhea'].caretSlopeRun = 1000, round(1000 * math.tan(math.radians(ITALIC_ANGLE)))
 
 
 LATIN = 'U+0020-007E,U+00A0-00FF,U+0131,U+0152-0153,U+02C6,U+02DA,U+02DC,U+2013-2014,U+2018-201A,U+201C-201E,U+2022,U+2026,U+2039-203A,U+20AC,U+2122,U+2212'
@@ -600,23 +622,23 @@ def _save_woff2(font, fn):
     font.save(os.path.join(DIST, fn))
 
 
-def save_all(vf):
-    stem = os.path.join(DIST, f'{PS}[opsz,slnt,wght]')
-    vf.flavor = None
-    vf.save(stem + '.ttf')
-    load = lambda: TTFont(stem + '.ttf')  # noqa: E731
-    _save_woff2(load(), f'{PS}[opsz,slnt,wght].woff2')
-    # Latin slices: the files a website actually serves (unicode-range splits the rest off)
-    _save_woff2(_subset_latin(load()), f'{PS}-Latin[opsz,slnt,wght].woff2')
-    upright = instancer.instantiateVariableFont(load(), {'slnt': 0})
-    _save_woff2(_subset_latin(upright), f'{PS}-Latin[opsz,wght].woff2')
-    wght_only = instancer.instantiateVariableFont(load(), {'slnt': 0, 'opsz': 14})
-    _save_woff2(_subset_latin(wght_only), f'{PS}-Latin[wght].woff2')
+def save_all(upright, italic):
+    for fn in os.listdir(DIST):  # outputs are fully regenerated; stale names must not linger
+        os.remove(os.path.join(DIST, fn))
+    for vf, stem in ((upright, PS), (italic, f'{PS}-Italic')):
+        path = os.path.join(DIST, f'{stem}[opsz,wght].ttf')
+        vf.flavor = None
+        vf.save(path)
+        load = lambda path=path: TTFont(path)  # noqa: E731
+        _save_woff2(load(), f'{stem}[opsz,wght].woff2')
+        # Latin slices: the files a website actually serves (unicode-range splits the rest off)
+        _save_woff2(_subset_latin(load()), f'{stem}-Latin[opsz,wght].woff2')
+        _save_woff2(_subset_latin(instancer.instantiateVariableFont(load(), {'opsz': 14})), f'{stem}-Latin[wght].woff2')
     # static Regular, full character set: the static-vs-static comparison
-    _save_woff2(instancer.instantiateVariableFont(load(), {'wght': 400, 'opsz': 14, 'slnt': 0}), f'{PS}-Regular.woff2')
+    _save_woff2(instancer.instantiateVariableFont(TTFont(os.path.join(DIST, f'{PS}[opsz,wght].ttf')), {'wght': 400, 'opsz': 14}), f'{PS}-Regular.woff2')
     for fn in sorted(os.listdir(DIST)):
         print(f'{os.path.getsize(os.path.join(DIST, fn)):>8}  {fn}')
 
 
 if __name__ == '__main__':
-    save_all(build())
+    save_all(build(), build(italic=True))

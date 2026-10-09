@@ -1,22 +1,25 @@
-"""Master parameters. Everything a glyph knows about weight, optical size and slant comes from here.
+"""Master parameters. Everything a glyph knows about weight, optical size and italic comes from here.
 
-Axes: wght 100–900 (default 400), opsz 8–48 (default 14), slnt -12–0 (default 0).
-Masters are the default plus one extreme per axis end; the variation model adds their deltas,
-which is what keeps a three-axis family to six masters instead of a 3×3×2 grid.
+Two variable fonts, each with axes wght 100–900 (default 400) and opsz 8–48 (default 14): the
+upright and the italic. The italic is a separate font, not a slant axis: its letters have
+different structures (a single-storey a, a descending f), and masters on one axis must share
+structure. Each font's masters are the default plus one extreme per axis end; the variation model
+adds their deltas, which keeps a two-axis family to five masters instead of a 3×3 grid.
 """
 
 import math
 
-DEFAULT = dict(wght=400, opsz=14, slnt=0)
+DEFAULT = dict(wght=400, opsz=14)
+ITALIC_ANGLE = 10  # degrees; Plex and Inter italics sit near 10-11
 
 MASTERS = [
-    ('Regular', dict(wght=400, opsz=14, slnt=0)),
-    ('Thin', dict(wght=100, opsz=14, slnt=0)),
-    ('Black', dict(wght=900, opsz=14, slnt=0)),
-    ('Caption', dict(wght=400, opsz=8, slnt=0)),
-    ('Display', dict(wght=400, opsz=48, slnt=0)),
-    ('Oblique', dict(wght=400, opsz=14, slnt=-12)),
+    ('Regular', dict(wght=400, opsz=14)),
+    ('Thin', dict(wght=100, opsz=14)),
+    ('Black', dict(wght=900, opsz=14)),
+    ('Caption', dict(wght=400, opsz=8)),
+    ('Display', dict(wght=400, opsz=48)),
 ]
+ITALIC_MASTERS = [(('Italic' if n == 'Regular' else f'{n} Italic'), dict(loc, italic=True)) for n, loc in MASTERS]
 
 
 def _pw(x, table):
@@ -27,8 +30,8 @@ def _pw(x, table):
 
 
 class P:
-    def __init__(self, wght, opsz, slnt):
-        self.wght, self.opsz, self.slnt = wght, opsz, slnt
+    def __init__(self, wght, opsz, italic=False):
+        self.wght, self.opsz, self.italic = wght, opsz, italic
         V = _pw(wght, [(100, 22), (400, 84), (900, 178)])  # Regular 84: Geist-like color in text
         contrast = _pw(wght, [(100, 0.96), (400, 0.87), (900, 0.6)])
         xh, spacing, counter, k, aperture = 528, 1.0, 1.0, 0.585, 0.0
@@ -64,11 +67,13 @@ class P:
         # n is 0.82 x-heights wide at Regular (Geist 0.79, Inter 0.80). It was 0.88 with tighter
         # spacing, which set the same line length but read as wide, close-set letters.
         self.cn = _pw(V, [(20, 374), (84, 270), (182, 140)]) * counter  # n counter
+        if italic:
+            self.cn *= 0.95  # italics run slightly narrower: the slant already adds movement
         self.cH = self.cn * 418 / 284  # H counter, in proportion to n
         self.dot = V * 1.12 + 14  # i dot / period: never thinner than a readable square
         self.mt = V * 0.86 + 6  # accent stroke
         self.fig_adv = round(580 + 0.55 * (V - 90) + (spacing - 1) * 60)  # tabular figure advance
-        self.slant = math.tan(math.radians(-slnt))
+        self.slant = math.tan(math.radians(ITALIC_ANGLE)) if italic else 0.0
 
     @property
     def nw(self):

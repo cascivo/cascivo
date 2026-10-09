@@ -89,11 +89,11 @@ cut square to the stroke, as in Geist; straight strokes end flat on the baseline
 Arches thin where they leave a stem, which is the "crotch" that gives `n` and
 `b` their sparkle.
 
-**Six masters, with compatibility by construction.** The masters are Regular, Thin, Black,
-Caption, Display and Oblique. The structure of every outline depends only on the glyph code.
+**Five masters per font, with compatibility by construction.** Each font (upright and italic)
+has the masters Regular, Thin, Black, Caption and Display. The structure of every outline depends only on the glyph code.
 Master parameters move points but never add or remove them. Because of this, each master is
 point-compatible with the others automatically, and variable fonts require that. Additive
-deltas make three axes cost six masters instead of a 3×3×2 grid. An `avar` table sets the stem
+deltas make two axes cost five masters instead of a 3×3 grid. An `avar` table sets the stem
 at each named weight. The light half uses equal stem _ratios_, because a linear scale crowds it
 (Thin→ExtraLight is a doubling). The heavy half puts more weight into 500–700, as Geist and Inter
 do, so Bold is clearly bold next to Regular.
@@ -109,27 +109,27 @@ contour in every master for self-intersection. The build ships with zero problem
 
 ### Where the bytes went (and didn't)
 
-| Technique                                                                                                                                                                                        | Effect                                                                                                          |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
-| **Composites everywhere**: accents, `i`/`j` (dotless + dot), quotes from the comma, `¡¿` as 180° rotations, `Œœ` from `O`+`E`, all super/subscripts, fractions and ordinals as scaled references | 283 of 455 glyphs (62%) cost a few bytes each instead of a full outline plus 5 delta sets                       |
-| **Additive master layout** (6 masters, not 18)                                                                                                                                                   | Each extra axis end costs about 4–5 KB WOFF2. Measured by building without each master                          |
-| **cu2qu tolerance 1.5 units** (1.5/1000 em)                                                                                                                                                      | −4%. Below one pixel up to about 700 px font size                                                               |
-| **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                  |
-| **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                         |
-| **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                               |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.6 KB, `Latin[opsz,wght]` 28.8 KB, `Latin[opsz,slnt,wght]` 31.9 KB. Serve only the axes you use |
+| Technique                                                                                                                                                                                        | Effect                                                                                                                                     |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Composites everywhere**: accents, `i`/`j` (dotless + dot), quotes from the comma, `¡¿` as 180° rotations, `Œœ` from `O`+`E`, all super/subscripts, fractions and ordinals as scaled references | 283 of 455 glyphs (62%) cost a few bytes each instead of a full outline plus 5 delta sets                                                  |
+| **Additive master layout** (6 masters, not 18)                                                                                                                                                   | Each extra axis end costs about 4–5 KB WOFF2. Measured by building without each master                                                     |
+| **cu2qu tolerance 1.5 units** (1.5/1000 em)                                                                                                                                                      | −4%. Below one pixel up to about 700 px font size                                                                                          |
+| **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                                             |
+| **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                                                    |
+| **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                                                          |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.5 KB, `Latin[opsz,wght]` 28.7 KB; italic 23.7 / 32.0 KB, loaded only when a page uses italic. Serve only the axes you use |
 
 ## 5. Scorecard
 
 ### Size
 
-| File                                                  | Cascivo Sans          | Geist             | IBM Plex Sans     | Inter            |
-| ----------------------------------------------------- | --------------------- | ----------------- | ----------------- | ---------------- |
-| Variable Latin slice, wght axis                       | **21.6 KB** (211 cp)  | 29.4 KB (225 cp)  | 45.7 KB (232 cp)  | 48.3 KB (230 cp) |
-| Bytes per codepoint (Latin slice)                     | **102**               | 131               | 197               | 210              |
-| Variable, full charset, wght only                     | **25.8 KB** (71 B/cp) | 69.7 KB (96 B/cp) | —                 | —                |
-| Static Regular, full charset                          | **11.9 KB** (32 B/cp) | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp) | —                |
-| Same Latin slice with **two more axes** (opsz + slnt) | 31.9 KB               | n/a               | n/a               | n/a              |
+| File                                    | Cascivo Sans           | Geist             | IBM Plex Sans                         | Inter              |
+| --------------------------------------- | ---------------------- | ----------------- | ------------------------------------- | ------------------ |
+| Variable Latin slice, wght axis         | **21.5 KB** (211 cp)   | 29.4 KB (225 cp)  | 45.7 KB (232 cp)                      | 48.3 KB (230 cp)   |
+| Bytes per codepoint (Latin slice)       | **102**                | 131               | 197                                   | 210                |
+| Variable, full charset, wght only       | **25.8 KB** (71 B/cp)  | 69.7 KB (96 B/cp) | —                                     | —                  |
+| Static Regular, full charset            | **11.7 KB** (32 B/cp)  | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp)                     | —                  |
+| Italic, variable Latin slice, wght axis | **23.7 KB** (113 B/cp) | no italic         | 24.4 KB, one static weight (105 B/cp) | 51.8 KB (225 B/cp) |
 
 The full-charset comparison is not like for like. Geist and Plex cover Cyrillic, Greek and
 more, and those glyphs are larger. The Latin slices are the fair comparison, and Cascivo uses
@@ -139,26 +139,26 @@ have fewer points than outlines drawn and refined by hand.
 
 ### Everything else
 
-| Dimension       | Cascivo Sans                                                                                                       | Verdict                                                                                                                        |
-| --------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
-| Axes            | wght 100–900, **opsz 8–48**, slnt −12–0                                                                            | **Ahead** of Geist and Plex. Matches Helvetica Now Variable on opsz, under OFL. No `wdth`                                      |
-| UI features     | pnum (default), tnum, zero, ss01, case, frac, sups, sinf, subs, numr, dnom, ordn, locl (ROM/MOL), ccmp, kern, mark | **On par.** Geist has more stylistic sets; Plex has `onum`/`salt`                                                              |
-| Validation      | Font Bakery universal: 0 fail, 2 intentional warnings. OTS: all six files pass                                     | **On par or ahead.** Validation runs in the test suite, not just at release                                                    |
-| Reproducibility | Byte-identical rebuilds (`SOURCE_DATE_EPOCH`), parametric source, 3.5 s build                                      | **Ahead.** No GUI source files, and diffs are reviewable                                                                       |
-| Coverage        | Latin-1 + Latin Extended-A + Romanian (365 codepoints)                                                             | **Behind.** No Cyrillic, Greek or Vietnamese. Plex covers many scripts                                                         |
-| Drawing quality | Generated by rule, then reviewed glyph by glyph at Thin, Regular and Black (section 6)                             | **Behind.** One review pass is not years of optical refinement. `&`, `@`, `§`, `ß` and the braces are serviceable, not refined |
-| Italic          | Oblique (skew) via `slnt`                                                                                          | **Behind.** No true italic forms. A pure skew is close to what a browser can synthesize, and it costs about 4 KB               |
-| Family          | Sans only                                                                                                          | **Behind.** No Mono (Geist, Plex), Serif or Condensed (Plex)                                                                   |
-| Hinting         | Unhinted; smart dropout `prep`, `gasp` set                                                                         | On par with Geist. Plex ships hinted TTFs                                                                                      |
-| Field testing   | None                                                                                                               | **Behind.** All three references have years of production use                                                                  |
+| Dimension       | Cascivo Sans                                                                                                       | Verdict                                                                                                                                                             |
+| --------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Axes            | wght 100–900, **opsz 8–48**, in upright and italic                                                                 | **Ahead** of Geist and Plex. Matches Helvetica Now Variable on opsz, under OFL. No `wdth`                                                                           |
+| UI features     | pnum (default), tnum, zero, ss01, case, frac, sups, sinf, subs, numr, dnom, ordn, locl (ROM/MOL), ccmp, kern, mark | **On par.** Geist has more stylistic sets; Plex has `onum`/`salt`                                                                                                   |
+| Validation      | Font Bakery universal: 0 fail. OTS: all nine files pass                                                            | **On par or ahead.** Validation runs in the test suite, not just at release                                                                                         |
+| Reproducibility | Byte-identical rebuilds (`SOURCE_DATE_EPOCH`), parametric source, 3.5 s build                                      | **Ahead.** No GUI source files, and diffs are reviewable                                                                                                            |
+| Coverage        | Latin-1 + Latin Extended-A + Romanian (365 codepoints)                                                             | **Behind.** No Cyrillic, Greek or Vietnamese. Plex covers many scripts                                                                                              |
+| Drawing quality | Generated by rule, then reviewed glyph by glyph at Thin, Regular and Black (section 6)                             | **Behind.** One review pass is not years of optical refinement. `&`, `@`, `§`, `ß` and the braces are serviceable, not refined                                      |
+| Italic          | Drawn italic, variable, linked by STAT `ital` (section 10)                                                         | **On par with Plex** in form (single-storey `a`, descending `f`). Ahead on size: the whole weight range costs what one Plex italic weight does. Geist has no italic |
+| Family          | Sans only                                                                                                          | **Behind.** No Mono (Geist, Plex), Serif or Condensed (Plex)                                                                                                        |
+| Hinting         | Unhinted; smart dropout `prep`, `gasp` set                                                                         | On par with Geist. Plex ships hinted TTFs                                                                                                                           |
+| Field testing   | None                                                                                                               | **Behind.** All three references have years of production use                                                                                                       |
 
 ### The honest bottom line
 
 The goal was "more advanced than all the others in every dimension". This version does not
 reach that, and claiming it would be false. Cascivo Sans leads on **file size** (by a wide
 margin), on **optical size in an open font**, on **UI-first defaults** and on **reproducible,
-tested engineering**. It is behind on **drawing finesse, script coverage, true italics and
-family breadth**. Those take type designers and years, not a generator, and they are the
+tested engineering**. It is behind on **drawing finesse, script coverage and family
+breadth**. Those take type designers and years, not a generator, and they are the
 reasons the references are trusted.
 
 The useful result is the method, not the claim. The parametric stroke engine with lint and
@@ -169,10 +169,8 @@ next steps follow from the scorecard, in order of value:
    eye is weakest (see section 6).
 2. Cyrillic and Greek, which are mostly new strokes. Many glyphs are composites or mirrors of
    Latin ones.
-3. A true italic master (single-storey `a`, a cursive `f` with a descender), so `slnt` earns
-   its 4 KB.
-4. `wdth` and a Mono companion that shares the stroke engine.
-5. A test in real products at 12–16 px against Geist, with hinting decided from that data.
+3. `wdth` and a Mono companion that shares the stroke engine.
+4. A test in real products at 12–16 px against Geist, with hinting decided from that data.
 
 ## 6. Hand-review pass
 
@@ -268,7 +266,7 @@ A follow-up then changed the weights:
   10% wider than Regular and failed the no-reflow guard. A separate Bold master would also
   have fixed it, at a cost of about 4–5 KB.
 
-The remaining gaps for body text are a drawn italic and a test on
+The italic is now drawn (section 10). The remaining gap for body text is a test on
 low-DPI screens.
 
 ## 9. Kerning
@@ -308,6 +306,45 @@ loose rather than colliding.
 **Size.** Kerning varies with weight but barely with optical size or slant, so those masters
 reuse Regular's values. That saves 1.6 KB. In total, the larger kerning set costs about 1.8 KB
 on the Latin web file (19.6 → 21.5 KB; 21.6 KB after the comma redraw). That is still 102 bytes per character, against 131 for Geist. A regression test checks that the classic pairs are kerned (To, AV, Av, T., “A, A”, Áv), that stem pairs are not (nn, HH, LM, FG), and that `l.` opens.
+
+## 10. The italic
+
+**A separate font, not a slant axis.** A drawn italic changes the structure of some letters, for
+example a single-storey `a`. Masters on one variable axis must share structure, so the italic
+is its own variable font (`wght`, `opsz`). A STAT `ital` axis links the two fonts, so apps group
+them as one family, and CSS maps `font-style: italic` to the italic file. The earlier `slnt` axis
+was removed. It offered a second, mechanical slanted style beside the real one, and it cost 4 KB
+in the upright file.
+
+**Drawn, not sheared.** Centerlines are slanted 10° around mid-x-height _before_ the pen expands
+them. The pen measures direction against the slanted stress axis, not the vertical. Curves get
+their thick and thin parts where an italic's stress puts them, instead of where a shear of the
+upright would leave them. Spacing is measured on the upright drawing and carried over. Kerning
+is measured on the italic outlines, with the same candidate list and model as the upright.
+
+**Italic forms.** `a` is single-storey. `f` descends and hooks left under the previous letter.
+`y` ends in a curved tail. Counters are 5% narrower. The italic passes the same no-reflow test
+as the upright (Thin 0.94×, Bold 1.08×, Black 1.16× of Regular).
+
+**Fixes found while drawing it.**
+
+- The italic `e` bar stops short of the bowl's end. A square cut across a slanted stroke no
+  longer covers the bar's corner.
+- Heavy `t` hooks end earlier (286° → 272°) and taper to 0.7, so their inside does not fold.
+  This also fixed a near-fold in the upright Black `t`. The angle stays in one quadrant, so
+  every master keeps the same structure.
+- The cedilla is now two overlapping strokes, because one stroke could not offset cleanly round
+  its right-angle turn. The capital breve has a minimum depth, because a shallow arc thinner
+  than its stroke folds inside.
+
+**Size.** The italic Latin web file is 23.7 KB for every weight, against 21.5 KB for the upright.
+The difference is inherent: once outlines are slanted, every point that moves vertically
+between masters also moves horizontally, so it carries more variation data. For comparison,
+Plex ships 24.4 KB for one static italic weight, and Inter 51.8 KB for its variable italic.
+
+**Not done.** `æ` keeps the double-storey `a`. `ß` and `ſ` do not descend. The Black italic `t`
+keeps a 2-unit notch where its hook meets the stem. Font Bakery warns that the italic `™` has
+points half a unit outside its rounded bounding box (it is built from half-scale `T` and `M`).
 
 ## Sources
 

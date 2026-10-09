@@ -175,10 +175,12 @@ class Stroke:
     taper: per end, thickness multiplier at that end (ramps to 1 across the end segment) —
            used for the thinned joins where an arch leaves a stem.
     w: constant thickness override (dots, hairline marks); ws: scale on the angle pen.
+    slant: tan of the italic angle; the pen's stress axis leans by it (0 upright).
     """
 
-    def __init__(self, segs, caps=('b', 'b'), taper=(1.0, 1.0), w=None, ws=1.0, closed=False, pen=None):
+    def __init__(self, segs, caps=('b', 'b'), taper=(1.0, 1.0), w=None, ws=1.0, closed=False, pen=None, slant=0.0):
         self.segs = segs
+        self.slant = slant
         self.caps = caps
         self.taper = taper
         self.w = w
@@ -186,13 +188,17 @@ class Stroke:
         self.closed = closed
         self.pen = pen  # (V, H) override
 
-    def transformed(self, f):
+    def transformed(self, f, slant=None):
         segs = [(s[0],) + tuple(f(p) for p in s[1:]) for s in self.segs]
-        return Stroke(segs, self.caps, self.taper, self.w, self.ws, self.closed, self.pen)
+        return Stroke(segs, self.caps, self.taper, self.w, self.ws, self.closed, self.pen, self.slant if slant is None else slant)
 
 
-def pen_thickness(tangent, V, H):
-    s = abs(tangent[1])  # |sin| of angle from horizontal
+def pen_thickness(tangent, V, H, slant=0.0):
+    """Full stem along the stress axis, hairline across it. Upright, the axis is vertical; in the
+    italic it leans with the slant, so curves get their thick and thin parts where a drawn italic
+    has them instead of where a sheared upright would put them."""
+    ax = norm((slant, 1.0))
+    s = abs(tangent[0] * ax[0] + tangent[1] * ax[1])
     return H + (V - H) * s**1.3
 
 
@@ -201,7 +207,7 @@ def _thick(stroke, i, t, tan, V, H):
         w = stroke.w
     else:
         pv, ph = stroke.pen if stroke.pen else (V, H)
-        w = pen_thickness(tan, pv, ph) * stroke.ws
+        w = pen_thickness(tan, pv, ph, stroke.slant) * stroke.ws
     n = len(stroke.segs)
     if i == 0 and stroke.taper[0] != 1.0:
         w *= lerp(stroke.taper[0], 1.0, _ease(t, stroke.segs[i][0]))

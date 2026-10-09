@@ -1,22 +1,26 @@
 # Cascivo Sans
 
 Cascivo Sans is a variable grotesque for interfaces. It is generated from a parametric stroke
-engine and licensed under the SIL Open Font License 1.1. It has three axes (weight, optical size
-and slant), an unambiguous `Il1`, tabular figures on request, and a 22 KB Latin web file.
+engine and licensed under the SIL Open Font License 1.1. It comes as two variable fonts, upright
+and a drawn italic, each with weight and optical-size axes. It has an unambiguous `Il1`, tabular
+figures on request, and a 22 KB Latin web file.
 
 Read [RESEARCH.md](./RESEARCH.md) for why it exists, how it compares with Geist, IBM Plex and
 Helvetica, and what it does not do yet.
 
 ## Files
 
-| File                                            | Axes             | Charset               | Size                       |
-| ----------------------------------------------- | ---------------- | --------------------- | -------------------------- |
-| `fonts/CascivoSans-Latin[wght].woff2`           | wght             | Latin                 | 21.6 KB                    |
-| `fonts/CascivoSans-Latin[opsz,wght].woff2`      | wght, opsz       | Latin                 | 28.8 KB                    |
-| `fonts/CascivoSans-Latin[opsz,slnt,wght].woff2` | wght, opsz, slnt | Latin                 | 31.9 KB                    |
-| `fonts/CascivoSans[opsz,slnt,wght].woff2`       | wght, opsz, slnt | full (365 codepoints) | 38.2 KB                    |
-| `fonts/CascivoSans[opsz,slnt,wght].ttf`         | wght, opsz, slnt | full                  | 102.4 KB (desktop install) |
-| `fonts/CascivoSans-Regular.woff2`               | static 400       | full                  | 11.9 KB                    |
+| File                                              | Axes       | Charset               | Size                      |
+| ------------------------------------------------- | ---------- | --------------------- | ------------------------- |
+| `fonts/CascivoSans-Latin[wght].woff2`             | wght       | Latin                 | 21.5 KB                   |
+| `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz | Latin                 | 28.7 KB                   |
+| `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz | full (365 codepoints) | 34.3 KB                   |
+| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz | full                  | 93.6 KB (desktop install) |
+| `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght       | Latin                 | 23.7 KB                   |
+| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz | Latin                 | 32.0 KB                   |
+| `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz | full                  | 37.9 KB                   |
+| `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz | full                  | 97.9 KB (desktop install) |
+| `fonts/CascivoSans-Regular.woff2`                 | static 400 | full                  | 11.7 KB                   |
 
 "Latin" means Basic Latin, Latin-1 and common punctuation. The full charset adds Latin
 Extended-A, Romanian comma letters and combining marks. That covers Western, Central and
@@ -32,6 +36,14 @@ optical sizing:
   font-family: 'Cascivo Sans';
   src: url('CascivoSans-Latin[opsz,wght].woff2') format('woff2');
   font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cascivo Sans';
+  src: url('CascivoSans-Italic-Latin[opsz,wght].woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: italic; /* downloaded only when a page actually uses italic */
   font-display: swap;
 }
 
@@ -41,9 +53,9 @@ body {
 }
 ```
 
-To get the oblique, use the `slnt` file and declare `font-style: oblique 0deg 12deg` in the
-`@font-face` block. Then `font-style: oblique 12deg` (or `italic`) selects the axis instead of a
-synthesized slant.
+The italic is drawn, not slanted. It has a single-storey `a`, an `f` that descends, a `y` with a
+curved tail, and stress that follows the 10° angle. Without the second `@font-face` block, the
+browser fakes italics by skewing the upright.
 
 ## OpenType features
 
@@ -72,7 +84,7 @@ python3 -I src/lint.py                     # self-intersection check on every st
 ```
 
 Font Bakery (`pip install fontbakery`):
-`fontbakery check-universal "fonts/CascivoSans[opsz,slnt,wght].ttf"` gives 0 fails. The two
+`fontbakery check-universal "fonts/CascivoSans[opsz,wght].ttf" "fonts/CascivoSans-Italic[opsz,wght].ttf"` gives 0 fails. The two
 warnings are intentional: `post` format 3 drops glyph names to save bytes, and overlapping
 contours are standard in variable fonts.
 
