@@ -62,6 +62,7 @@ const PACKAGES = [
   'react',
   'charts',
   'eslint-config',
+  'eslint-plugin',
   'core',
   'themes',
   'tokens',
