@@ -93,9 +93,10 @@ Arches thin where they leave a stem, which is the "crotch" that gives `n` and
 Caption, Display and Oblique. The structure of every outline depends only on the glyph code.
 Master parameters move points but never add or remove them. Because of this, each master is
 point-compatible with the others automatically, and variable fonts require that. Additive
-deltas make three axes cost six masters instead of a 3×3×2 grid. An `avar` table makes each
-named weight a constant _ratio_ of stem thickness. A linear scale crowds the light end
-(Thin→ExtraLight is a doubling), and equal ratios look like equal steps.
+deltas make three axes cost six masters instead of a 3×3×2 grid. An `avar` table sets the stem
+at each named weight. The light half uses equal stem _ratios_, because a linear scale crowds it
+(Thin→ExtraLight is a doubling). The heavy half puts more weight into 500–700, as Geist and Inter
+do, so Bold is clearly bold next to Regular.
 
 **Measured kerning, curated pair list.** For each class pair, the gap between glyph profiles
 is measured in 10-unit bands. Deep holes count only up to a limit, which matches what the eye
@@ -118,7 +119,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                  |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                         |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                               |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 19.9 KB, `Latin[opsz,wght]` 27.4 KB, `Latin[opsz,slnt,wght]` 30.7 KB. Serve only the axes you use |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 19.6 KB, `Latin[opsz,wght]` 27.1 KB, `Latin[opsz,slnt,wght]` 30.2 KB. Serve only the axes you use |
 
 ## 5. Scorecard
 
@@ -126,11 +127,11 @@ contour in every master for self-intersection. The build ships with zero problem
 
 | File                                                  | Cascivo Sans          | Geist             | IBM Plex Sans     | Inter            |
 | ----------------------------------------------------- | --------------------- | ----------------- | ----------------- | ---------------- |
-| Variable Latin slice, wght axis                       | **19.9 KB** (211 cp)  | 29.4 KB (225 cp)  | 45.7 KB (232 cp)  | 48.3 KB (230 cp) |
-| Bytes per codepoint (Latin slice)                     | **94**                | 131               | 197               | 210              |
+| Variable Latin slice, wght axis                       | **19.6 KB** (211 cp)  | 29.4 KB (225 cp)  | 45.7 KB (232 cp)  | 48.3 KB (230 cp) |
+| Bytes per codepoint (Latin slice)                     | **93**                | 131               | 197               | 210              |
 | Variable, full charset, wght only                     | **24.2 KB** (66 B/cp) | 69.7 KB (96 B/cp) | —                 | —                |
 | Static Regular, full charset                          | **11.0 KB** (30 B/cp) | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp) | —                |
-| Same Latin slice with **two more axes** (opsz + slnt) | 30.7 KB               | n/a               | n/a               | n/a              |
+| Same Latin slice with **two more axes** (opsz + slnt) | 30.2 KB               | n/a               | n/a               | n/a              |
 
 The full-charset comparison is not like for like. Geist and Plex cover Cyrillic, Greek and
 more, and those glyphs are larger. The Latin slices are the fair comparison, and Cascivo uses
@@ -250,10 +251,26 @@ Plex and the Helvetica stand-in led to three changes:
 | `line-height: normal` | 1.22                                                        | 1.30, as in Geist and Plex. The space sits in ascent and descent, so it is split evenly above and below the text                                                                                             |
 | `I` vs `l` at 12 px   | Identical, as in Geist and Inter                            | Serifed `I` and short-tailed `l` by default. The tail grows slower than the stem, so a Black `ill` does not read as `iʟʟ`. `ss01` restores the plain forms, including all 17 accented and composite variants |
 
-Still open for body text: Regular is darker than Geist and Inter (ink 0.434 against 0.39), and
-Bold stands out less (1.31× Regular against 1.45×). A lighter Regular (stem 84, same widths)
-measures 0.406 and 1.36×. It is a proposal, not yet applied. Beyond that, the remaining gaps
-are a drawn italic, a broader kerning set, and a test on low-DPI screens.
+A follow-up then changed the weights:
+
+| Measure                                 | Before | After      | Geist | Inter |
+| --------------------------------------- | ------ | ---------- | ----- | ----- |
+| Regular color (ink per x-height square) | 0.434  | **0.406**  | 0.394 | 0.392 |
+| SemiBold vs Regular                     | 1.20×  | **1.32×**  | 1.32× | 1.31× |
+| Bold vs Regular                         | 1.31×  | **1.47×**  | 1.45× | 1.45× |
+| Bold width vs Regular                   | 1.08×  | **1.075×** | 1.07× | 1.03× |
+| Black width vs Regular                  | 1.15×  | **1.12×**  | 1.11× | 1.05× |
+
+- **Regular** stem 90 → 84, with the counters widened so line length is unchanged.
+- **Bold** now comes from explicit stems per named weight in `avar` (500: 104, 600: 124,
+  700: 144, 800: 163), replacing equal ratios, which had left Bold's stem at 132.
+- **Spacing** now tightens slightly as stems thicken; Regular's spacing is unchanged. A heavier
+  Bold sits closer to Black on the axis. With the old spacing that grew with weight, Bold set
+  10% wider than Regular and failed the no-reflow guard. A separate Bold master would also
+  have fixed it, at a cost of about 4–5 KB.
+
+The remaining gaps for body text are a drawn italic, a broader kerning set, and a test on
+low-DPI screens.
 
 ## Sources
 

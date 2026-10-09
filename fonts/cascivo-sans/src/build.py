@@ -472,29 +472,26 @@ def build_master_font(o, glyf, order):
     return fb.font
 
 
-def _geometric_wght_map():
-    """avar: make each named weight step a constant *ratio* of stem thickness, not a constant
-    difference. Linear interpolation crowds the light end (Thin->ExtraLight is a doubling) and
-    flattens the heavy end; equal ratios read as equal steps."""
-    from params import _pw
+# Stem at each named weight (Regular 84, Black 178 are the masters). The light half uses equal
+# stem *ratios*, since linear interpolation crowds it (Thin->ExtraLight is a doubling). The heavy
+# half front-loads weight as Geist and Inter do, so Bold reads as clearly bold next to Regular:
+# with equal ratios Bold's stem was 132 and it was only 1.31x as dark as Regular (Geist 1.45x).
+NAMED_STEMS = [(100, 22), (200, 34.4), (300, 53.7), (400, 84), (500, 104), (600, 124), (700, 144), (800, 163), (900, 178)]
 
-    v = lambda w: _pw(w, [(100, 22), (400, 90), (900, 178)])  # noqa: E731 - master stems
+
+def _wght_map():
+    """avar segments: user weight -> the design coordinate whose linear master stem is the target."""
     out = []
-    for lo, hi, steps in ((100, 400, 3), (400, 900, 5)):
-        r = (v(hi) / v(lo)) ** (1 / steps)
-        for i in range(steps + (1 if hi == 900 else 0)):
-            w = lo + (hi - lo) * i // steps
-            stem = v(lo) * r**i
-            # design coordinate = the master-space weight whose linear stem equals `stem`
-            if stem <= 90:
-                d = 100 + (stem - 22) / (90 - 22) * 300
-            else:
-                d = 400 + (stem - 90) / (178 - 90) * 500
-            out.append((w, round(d, 1)))
+    for w, stem in NAMED_STEMS:
+        if stem <= 84:
+            d = 100 + (stem - 22) / (84 - 22) * 300
+        else:
+            d = 400 + (stem - 84) / (178 - 84) * 500
+        out.append((w, round(d, 1)))
     return out
 
 
-WGHT_MAP = _geometric_wght_map()
+WGHT_MAP = _wght_map()
 
 
 def build():

@@ -29,7 +29,7 @@ def _pw(x, table):
 class P:
     def __init__(self, wght, opsz, slnt):
         self.wght, self.opsz, self.slnt = wght, opsz, slnt
-        V = _pw(wght, [(100, 22), (400, 90), (900, 178)])
+        V = _pw(wght, [(100, 22), (400, 84), (900, 178)])  # Regular 84: Geist-like color in text
         contrast = _pw(wght, [(100, 0.96), (400, 0.87), (900, 0.6)])
         xh, spacing, counter, k, aperture = 528, 1.0, 1.0, 0.585, 0.0
         if opsz == 8:  # caption: bigger x-height, looser, wider, flatter contrast, open apertures
@@ -56,12 +56,14 @@ class P:
         # Width across weights: a UI font must not reflow when text turns bold (hover, active
         # tab), so total width may grow only ~5% per 300 weight units (Geist: 0.96x Thin, 1.11x
         # Black). Spacing therefore stays nearly constant and the counters absorb stem growth.
-        self.S = (69.5 + 0.09 * V) * spacing  # stem sidebearing unit (lowercase, figures, punctuation)
+        # Sidebearings tighten slightly as stems thicken (Regular's spacing is unchanged), as in
+        # most heavy grotesques. Growing spacing made Bold set 10% wider than Regular (Geist: 7%).
+        self.S = (77.1 - 0.03 * (V - 84)) * spacing  # stem sidebearing unit (lowercase, figures, punctuation)
         self.Sc = self.S * 1.3  # capitals carry more space: their counters are bigger
         self.cw = counter
         # n is 0.82 x-heights wide at Regular (Geist 0.79, Inter 0.80). It was 0.88 with tighter
         # spacing, which set the same line length but read as wide, close-set letters.
-        self.cn = _pw(V, [(20, 374), (90, 253), (182, 140)]) * counter  # n counter
+        self.cn = _pw(V, [(20, 374), (84, 270), (182, 140)]) * counter  # n counter
         self.cH = self.cn * 418 / 284  # H counter, in proportion to n
         self.dot = V * 1.12 + 14  # i dot / period: never thinner than a readable square
         self.mt = V * 0.86 + 6  # accent stroke
