@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-07",
+  "generatedAt": "2026-10-09",
   "description": "Major and minor releases per published package, parsed from changesets CHANGELOGs. Compare against your installed versions to detect API drift; patch releases are excluded.",
   "packages": [
     {
       "name": "@cascivo/ai",
-      "version": "1.8.0",
+      "version": "1.9.0",
       "releases": [
         {
           "version": "1.7.0",
@@ -32,7 +32,7 @@
     },
     {
       "name": "@cascivo/app",
-      "version": "1.8.0",
+      "version": "1.9.0",
       "releases": [
         {
           "version": "1.8.0",
@@ -97,7 +97,7 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "1.8.0",
+      "version": "1.9.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -185,8 +185,19 @@
     },
     {
       "name": "cascivo",
-      "version": "1.7.1",
+      "version": "1.8.0",
       "releases": [
+        {
+          "version": "1.8.0",
+          "level": "minor",
+          "notes": [
+            "`cascivo app add page \"<title>\" [--block <name>]` adds a page to an app made from a blueprint: it updates `cascivo.app.json` and writes the page, its block, and the route and nav entries, merging three ways with any generated file you have edited. Blocks can now bring a package (`dashboard-charts` adds `@cascivo/charts`), so all 19 page blocks are available to blueprints.",
+            "Every `cascivo create` now writes `cascivo.app.json` (from flags, prompts or `--from`), stamped with the CLI version, so every scaffolded app can use `cascivo app`. `cascivo app add example <name>` adds a cloudflare example to an existing app, and `cascivo app upgrade` regenerates the app with this CLI's templates. Both merge three ways against the app's original files, which are rebuilt with the CLI version the app records.",
+            "`cascivo create --from cascivo.app.json` compiles a blueprint: the app's name, framework, theme, runtime, examples and auth, plus `pages: [{ title, block? }]`. Each page renders a registry block whose source is written to `src/blocks/` (its imports rewritten to `@cascivo/react`), wired into the routes and the side nav. A blueprint is held to the same rules as the flags, an unknown field or block fails with the list of valid ones, and the blueprint is kept in the app as `cascivo.app.json`. A long `--sections` list no longer fails the React + Vite app's own `format:check`.",
+            "`cascivo generate` writes code that compiles. Imports point at each component's registry directory (`DataTable` → `./data-table`, not `./datatable/datatable`), and sub-components share their owner's import. `--from @cascivo/react` imports everything from the prebuilt package instead. The input is parsed at the boundary: component, prop and state names must be identifiers, and text or attribute values containing quotes or JSX syntax are emitted as expressions, so a model-written view can no longer produce invalid or injected TSX.",
+            "`cascivo create --workspace` writes the app into a pnpm workspace: `apps/web`, a `packages/ui` package for the team's own components, Vite+ running each package's scripts, a GitHub Actions workflow, and (React + Vite) Vitest with a smoke test. Every scaffold now also ships `CLAUDE.md` (which includes `AGENTS.md`) and a `.mcp.json` that registers the cascivo MCP server."
+          ]
+        },
         {
           "version": "1.7.0",
           "level": "minor",
@@ -340,7 +351,7 @@
     },
     {
       "name": "@cascivo/core",
-      "version": "1.8.0",
+      "version": "1.9.0",
       "releases": [
         {
           "version": "1.7.0",
@@ -470,7 +481,7 @@
     },
     {
       "name": "@cascivo/docs",
-      "version": "0.2.15",
+      "version": "0.2.16",
       "releases": [
         {
           "version": "0.2.0",
@@ -483,7 +494,7 @@
     },
     {
       "name": "@cascivo/docspack",
-      "version": "0.3.1",
+      "version": "0.3.2",
       "releases": [
         {
           "version": "0.3.0",
@@ -503,7 +514,7 @@
     },
     {
       "name": "@cascivo/editor",
-      "version": "1.8.0",
+      "version": "1.9.0",
       "releases": [
         {
           "version": "1.3.0",
@@ -549,7 +560,7 @@
     },
     {
       "name": "@cascivo/email",
-      "version": "0.6.0",
+      "version": "0.6.1",
       "releases": [
         {
           "version": "0.6.0",
@@ -665,7 +676,7 @@
     },
     {
       "name": "@cascivo/flow",
-      "version": "1.8.0",
+      "version": "1.9.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -697,7 +708,7 @@
     },
     {
       "name": "@cascivo/i18n",
-      "version": "1.8.0",
+      "version": "1.9.0",
       "releases": [
         {
           "version": "1.7.0",
@@ -784,8 +795,17 @@
     },
     {
       "name": "@cascivo/mcp",
-      "version": "0.9.0",
+      "version": "0.10.0",
       "releases": [
+        {
+          "version": "0.10.0",
+          "level": "minor",
+          "notes": [
+            "`compose_app` writes a whole app from a blueprint in one call: each page renders a registry block, wired into the routes and side nav (`cascivo create --from`). `list_blocks` is the one-line catalog of the blocks a page can render.",
+            "The view tools now agree with the renderer. `get_view_grammar`, `scaffold_view` and `validate_view` offer only the components `<CascivoView>` can draw; before, they accepted all 214 registry names, and a \"valid\" view could render as nothing. A real component the renderer cannot draw is reported as such, and `validate_view` takes `target: \"tsx\"` for a view that `cascivo generate` turns into source, where any copied component is allowed. `GridItem` and `RadioCardGroup` now validate.",
+            "`create_app` and `compose_app` take `workspace: true` to write the app into a pnpm workspace (`cascivo create --workspace`)."
+          ]
+        },
         {
           "version": "0.9.0",
           "level": "minor",
@@ -874,8 +894,15 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "1.8.0",
+      "version": "1.9.0",
       "releases": [
+        {
+          "version": "1.9.0",
+          "level": "minor",
+          "notes": [
+            "`DashboardLayout`, `AuthLayout` and `SettingsLayout` are exported from `@cascivo/react`, with their props types. They were copy-paste only, which kept the registry blocks built on them (`empty-dashboard`, `login-page`, `settings-form-page`) out of every app scaffolded on the prebuilt package."
+          ]
+        },
         {
           "version": "1.7.0",
           "level": "minor",
@@ -1071,8 +1098,16 @@
     },
     {
       "name": "@cascivo/render",
-      "version": "1.8.0",
+      "version": "1.9.0",
       "releases": [
+        {
+          "version": "1.9.0",
+          "level": "minor",
+          "notes": [
+            "`<CascivoView components={{ Kpi, LineChart }}>` renders components beyond the built-in set: charts from `@cascivo/charts`, or an app's own. They are looked up before the built-ins and their props pass through unchecked. `validateView(view, { components })` accepts the same names, and `viewToMarkdown(view, { components })` reads them. `@cascivo/render` gains no dependency: only an app that renders charts installs `@cascivo/charts`.",
+            "`<CascivoView>` renders 18 more components, the ones a page is built from: `PageHeader`, `Heading`, `Text`, `Stat`, `Status`, `Progress`, `Steps`, `Timeline`, `AvatarGroup`, `Image`, `Code`, `Blockquote`, `List` and `ListItem`, and the `CardHeader`, `CardTitle`, `CardContent` and `CardFooter` parts of a card. A JSON view can now carry a dashboard's header and KPI stats."
+          ]
+        },
         {
           "version": "1.4.0",
           "level": "minor",
@@ -1085,7 +1120,7 @@
     },
     {
       "name": "@cascivo/storage",
-      "version": "1.8.0",
+      "version": "1.9.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -1108,7 +1143,7 @@
     },
     {
       "name": "@cascivo/text",
-      "version": "1.8.0",
+      "version": "1.9.0",
       "releases": [
         {
           "version": "1.4.0",
@@ -1119,7 +1154,7 @@
     },
     {
       "name": "@cascivo/themes",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "releases": [
         {
           "version": "1.0.0",
@@ -1150,7 +1185,7 @@
     },
     {
       "name": "@cascivo/tokens",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "releases": [
         {
           "version": "1.3.0",

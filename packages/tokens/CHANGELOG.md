@@ -1,5 +1,27 @@
 # @cascivo/tokens
 
+## 1.3.1
+
+### Patch Changes
+
+- dafb2cc: Accessibility fixes found by the workbench's axe sweep:
+
+  - **Themes:** the static `--cascivo-color-text-on-destructive` / `--cascivo-color-text-on-accent` fallbacks of dark (destructive), midnight (both) and pastel (accent) were white on a light fill, below 3:1. Browsers without `contrast-color()` painted them; they are now dark ink, which is also what `contrast-color()` picks. A new check holds every theme's fallback to AA on its fill.
+  - **Tokens:** `--cascivo-link-color` is declared on `[data-theme]` as well as `:root`, so a Link inside a scoped theme uses that theme's accent instead of the root theme's (3.67:1 on dark).
+  - **Calendar:** each day is a `<button role="gridcell">` inside a presentational `<td>`, so `aria-selected` stays on the focused element and on a role ARIA allows it on. Tests that queried days by role `button` query `gridcell`.
+
+- dafb2cc: `@cascivo/editor`'s colour tokens (`--cascivo-editor-*`) are declared on `[data-theme]` as well as `:root`, so a code editor inside a scoped theme uses that theme's surface, text and syntax colours instead of the root theme's. A light section inside a dark page no longer keeps the dark syntax hues, and the reverse.
+- dafb2cc: Contrast fixes from a workbench axe sweep across all twelve themes: 101 findings in 7 themes before, 0 of 3060 checks after. Lightness only; hue and chroma are unchanged.
+
+  - **Text on a fill:** pastel `--cascivo-color-primary-fg`, `--cascivo-color-accent-foreground` and `--cascivo-color-info-content`, midnight `--cascivo-color-accent-foreground` were white on a light fill (2.9–3.2:1); now dark ink. Primary buttons and info Badges in pastel, and Calendar's selected day in midnight, were the visible cases.
+  - **Secondary text:** `--cascivo-color-foreground-muted` (and `--cascivo-color-text-subtle`, which points at it) darkened in pastel and minimal, so card, table, alert and form help text clears AA on every surface.
+  - **Status ink:** `--cascivo-color-success-foreground` darkened in arcade, brutalist and flat (Badge, Alert titles); `--cascivo-color-destructive` darkened in pastel and lightened in cyberpunk, since 47 component rules use it as text.
+  - **Code syntax:** `--cascivo-editor-syntax-keyword` and `-tag`, and CodeSnippet's keyword colour, read `--cascivo-color-accent-text` instead of the raw accent, which in warm, brutalist and pastel is a fill hue (1.4–2.9:1 as text).
+
+  `accent-text-contrast` now holds every one of these token pairs to AA in every theme.
+
+  `@cascivo/email`'s generated palettes follow the theme values.
+
 ## 1.3.0
 
 ### Minor Changes

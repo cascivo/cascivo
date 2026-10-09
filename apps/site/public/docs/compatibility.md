@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/compatibility.md
-  registry v1.8.0 · generated 2026-10-07
+  registry v1.9.0 · generated 2026-10-09
 -->
 
 # Compatibility & support matrix
@@ -117,17 +117,17 @@ CI's drift check — it cannot go stale. (It once sat thirteen minors behind, cl
 
 | Package            | Version | Peer requirements                                                                                             |
 | ------------------ | ------- | ------------------------------------------------------------------------------------------------------------- |
-| `@cascivo/core`    | 1.8.x   | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
+| `@cascivo/core`    | 1.9.x   | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
 | `@cascivo/tokens`  | 1.3.x   | none (CSS only)                                                                                               |
 | `@cascivo/themes`  | 1.0.x   | `@cascivo/tokens` (direct dep) — themes `@import` it                                                          |
-| `@cascivo/react`   | 1.8.x   | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
+| `@cascivo/react`   | 1.9.x   | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
 | `@cascivo/icons`   | 1.1.x   | `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`                                                        |
-| `@cascivo/charts`  | 1.8.x   | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
-| `@cascivo/i18n`    | 1.8.x   | `@preact/signals-react >=3.0.0`                                                                               |
-| `@cascivo/storage` | 1.8.x   | `@preact/signals-react >=3.0.0`                                                                               |
+| `@cascivo/charts`  | 1.9.x   | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
+| `@cascivo/i18n`    | 1.9.x   | `@preact/signals-react >=3.0.0`                                                                               |
+| `@cascivo/storage` | 1.9.x   | `@preact/signals-react >=3.0.0`                                                                               |
 | `@cascivo/data`    | 0.1.x   | none                                                                                                          |
-| `@cascivo/app`     | 1.8.x   | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`                       |
-| `@cascivo/mcp`     | 0.9.x   | (server; run via `npx`)                                                                                       |
+| `@cascivo/app`     | 1.9.x   | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`                       |
+| `@cascivo/mcp`     | 0.10.x  | (server; run via `npx`)                                                                                       |
 
 <!-- END GENERATED: package-compatibility -->
 
