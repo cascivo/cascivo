@@ -170,6 +170,8 @@ def _T(g, p):
 def _A(g, p):
     # heavy A widens and drops its bar, or the counter above the bar closes (Black: 0.38x)
     w = p.Hw * (1.1 + 0.08 * p.heavy)
+    if p.italic:  # the italic's narrowing closed Black's counter to 0.89x the upright's
+        w *= 1 + 0.06 * p.heavy
     c = w / 2
     a = g.diag(0, 0, c, p.cap, 'l', 'c')
     b = g.diag(w, 0, c, p.cap, 'r', 'c')
@@ -344,6 +346,8 @@ def _P(g, p):
 @glyph('R', 0x52)
 def _R(g, p):
     w = p.Hw * 0.98
+    if p.italic:  # as the italic A: Black's bowl closed to 0.86x the upright's
+        w *= 1 + 0.06 * p.heavy
     V, H = p.V, p.H
     g.vstem(0, 0, p.cap)
     ym = p.cap * 0.44 + H / 2
@@ -446,7 +450,7 @@ def _S(g, p, w, top, ov, pen=None, term=32, spine=0.1, run=0, run_up=None, close
     # pen is exactly one stem wide, so they are seamless.
     # heavy terminals cut toward horizontal, as Geist's and Inter's: cut toward vertical, the
     # lower one ran out into a long wedge (and in the italic, where the flat cut folds, they stay)
-    cut = 'v' if p.italic else 'h'
+    cut = 'h'
     g.stroke(up, caps=('b', 'b'), pen=pen, cut=cut)
     # Heavier, the spine carries more: at 1.15 H a Black spine was 60% of a stem and the s read
     # as a lightning bolt beside Geist's and Inter's near-full-weight spines.
@@ -650,6 +654,10 @@ def _e(g, p):
     # flush with where the bowl stroke ends, or its butt end shows below the bar; heavy bars drop
     # half their height (still covering that end) so the eye above stays open
     yb = cy - p.bar * 0.5 * p.heavy
+    # the italic's narrower, slanted eye closed to 0.69x Inter's and Plex's at Regular: its bar
+    # sits lower at every weight short of Black (every italic master starts with the one cubic)
+    if p.italic:
+        yb -= p.bar * 0.4 * (1 - p.heavy)
     # The bowl starts at the dropped bar's underside, or the bar's lower right corner shows below
     # the bowl as a step (Bold). Below 0° that crosses a quadrant, so the first segment is one
     # cubic (_ell_seg) and every master keeps the same segments.
@@ -988,8 +996,10 @@ def _four(g, p):
     w = fw(p)
     V, H = p.V, p.H
     # heavy 4 drops its bar and lightens its diagonal, or the counter closes (Black: 0.29x)
-    xs = w * (0.74 + 0.03 * p.heavy)
-    yb = p.cap * (0.25 - 0.07 * p.heavy)
+    # Regular sits its stem further right and its bar lower too: its counter was 0.73x Geist's
+    # and Inter's, and 0.65x Inter's and Plex's in the italic (Black is unchanged)
+    xs = w * 0.77
+    yb = p.cap * (0.23 - 0.05 * p.heavy)
     g.vstem(xs - V / 2, 0, p.cap)
     g.hbar(0, w, yb)
     # heavier, the diagonal meets the stem's middle rather than its right edge, opening the counter
@@ -1031,7 +1041,7 @@ def _six_strokes(g, p, w):
     g.oval(0, -p.ov, w, top)
     cx, cy, rx, ry = g.box(0, -p.ov, w * 1.02, p.cap + p.ov)
     cyb = (-p.ov + top) / 2
-    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 52 + 20 * p.heavy + p.ap * 0.5), caps=('b', 'b'), cut='v' if p.italic else 'h')  # slanted, the flat cut folds; heavy terminals end higher, so the cut trims little and Bold, between the masters, has no dip
+    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 52 + 20 * p.heavy + p.ap * 0.5), caps=('b', 'b'), cut='h')  # heavy terminals end higher, so the cut trims little and Bold, between the masters, has no dip
     del V
 
 
@@ -1041,6 +1051,9 @@ def _nine(g, p):
     _six_strokes(g, p, w)
     cap = p.cap
     g.strokes = [s.transformed(lambda q: (w - q[0], cap - q[1])) for s in g.strokes]
+    if p.italic:  # the slant is not symmetric under the 180° turn: the 9's tail takes the flat cut badly
+        for s in g.strokes:
+            s.cut = 'v'
     g.tab = True
     g.ht = 'c'
 

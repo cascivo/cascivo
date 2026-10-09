@@ -117,7 +117,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                                             |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                                                    |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                                                          |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.7 KB, `Latin[opsz,wght]` 28.9 KB; italic 24.2 / 32.3 KB, loaded only when a page uses italic. Serve only the axes you use |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.8 KB, `Latin[opsz,wght]` 28.9 KB; italic 24.1 / 32.3 KB, loaded only when a page uses italic. Serve only the axes you use |
 
 ## 5. Scorecard
 
@@ -125,11 +125,11 @@ contour in every master for self-intersection. The build ships with zero problem
 
 | File                                    | Cascivo Sans           | Geist             | IBM Plex Sans                         | Inter              |
 | --------------------------------------- | ---------------------- | ----------------- | ------------------------------------- | ------------------ |
-| Variable Latin slice, wght axis         | **21.7 KB** (211 cp)   | 29.4 KB (225 cp)  | 45.7 KB (232 cp)                      | 48.3 KB (230 cp)   |
+| Variable Latin slice, wght axis         | **21.8 KB** (211 cp)   | 29.4 KB (225 cp)  | 45.7 KB (232 cp)                      | 48.3 KB (230 cp)   |
 | Bytes per codepoint (Latin slice)       | **102**                | 131               | 197                                   | 210                |
 | Variable, full charset, wght only       | **25.8 KB** (71 B/cp)  | 69.7 KB (96 B/cp) | —                                     | —                  |
 | Static Regular, full charset            | **11.7 KB** (32 B/cp)  | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp)                     | —                  |
-| Italic, variable Latin slice, wght axis | **24.2 KB** (115 B/cp) | no italic         | 24.4 KB, one static weight (105 B/cp) | 51.8 KB (225 B/cp) |
+| Italic, variable Latin slice, wght axis | **24.1 KB** (115 B/cp) | no italic         | 24.4 KB, one static weight (105 B/cp) | 51.8 KB (225 B/cp) |
 
 The full-charset comparison is not like for like. Geist and Plex cover Cyrillic, Greek and
 more, and those glyphs are larger. The Latin slices are the fair comparison, and Cascivo uses
@@ -342,7 +342,7 @@ tail. Counters are 5% narrower. The italic passes the same no-reflow test as the
   its right-angle turn. The capital breve has a minimum depth, because a shallow arc thinner
   than its stroke folds inside.
 
-**Size.** The italic Latin web file is 24.2 KB for every weight, against 21.7 KB for the upright.
+**Size.** The italic Latin web file is 24.1 KB for every weight, against 21.8 KB for the upright.
 The difference is inherent: once outlines are slanted, every point that moves vertically
 between masters also moves horizontally, so it carries more variation data. For comparison,
 Plex ships 24.4 KB for one static italic weight, and Inter 51.8 KB for its variable italic.
@@ -516,6 +516,34 @@ For `s`, `S`, `3`, `W`, `M`, `Y` and `J`, the heavy-weight terms shrink by as mu
 moves (for `s` and `S`, `_S`'s `close`), so Black is unchanged. `v` keeps its Black width; `w`,
 `x`, `y` and `z` are wider at every weight, which Black's measurements allowed (0.95-1.05 of the
 references).
+
+## 15. The italic alphabet
+
+The italic was measured the same way, against Inter's and Plex's italics at Regular and Bold,
+and against Inter's alone at Black (Plex stops at Bold). The medians sat at 1.00 for width and
+ink at Regular and Bold, and 0.98 at Black. Most flags are deliberate: the serifed `I`, the
+`r`, and a `1` measured against Plex's foot serif. Most Black flags (`T`, `Y`, `M`, `V`, `0`,
+`6`, `9`) came within 0.93-1.00 of our own upright, so they record Inter's wider Black italic,
+not an italic defect. Five things were real:
+
+| Glyph                                   | Was                                    | Now                                   | Change                                               |
+| --------------------------------------- | -------------------------------------- | ------------------------------------- | ---------------------------------------------------- |
+| `s` `S` `3` `5` `6` `J` `G`, Bold-Black | wedge-shaped terminals, seams at joins | clean                                 | heavy terminal cut measured on the unslanted drawing |
+| `e`, Regular                            | eye 0.69                               | eye 0.94                              | bar 0.4 of its height lower, short of Black          |
+| `4`, Regular                            | counter 0.65 (upright 0.73)            | 0.73, Inter alone 0.80 (upright 0.83) | stem further right, bar lower, in both styles        |
+| `A`, Black                              | counter 0.74                           | 0.95                                  | 6% wider at Black                                    |
+| `R`, Black                              | counter 0.73                           | 0.87                                  | 6% wider at Black                                    |
+
+**The heavy terminal cut.** Heavy curved terminals turn their cut toward vertical or flat
+(section 11). In the italic, the turn was measured on the slanted stroke. A join running along
+the slant, where a bowl meets the s's spine, read as 10° off vertical. It was turned, then
+trimmed on one edge, which opened a white wedge between the strokes, and the terminals came out
+as lopsided wedges. Now the share of the turn is read off the unslanted drawing and applied to
+the slanted stroke, toward the slanted vertical. A join, where that share is nothing, keeps the
+pen's own end. With that, the italic `s`, `S` and `6` take the flat-leaning cut like the
+upright; only the `9`, whose 180° turn makes the slant asymmetric, keeps the vertical one.
+
+The upright is unchanged except for the `4` and the glyphs built from it (`¼`, `¾`, and the alternate fours). Black is unchanged in both styles apart from the italic `A` and `R`.
 
 ## Sources
 

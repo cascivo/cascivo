@@ -391,17 +391,34 @@ HEAVY_TURN = 1.0
 
 def _heavy_cut(tan, V, slant, cut='v'):
     """Unit normal of a heavy curved terminal's cut line: the stroke's tangent turned toward the
-    normal of a vertical (or, for cut='h', horizontal) cut, by a share that grows with weight."""
+    normal of a vertical (or, for cut='h', horizontal) cut, by a share that grows with weight.
+
+    In the italic the share of the turn is worked out on the unslanted drawing, then applied to
+    the slanted stroke toward the slanted vertical: measured on the slanted stroke alone, a join
+    running along the slant read as 10° off vertical and was turned; sheared back whole, its
+    square end went flat. Either way it opened a seam against the stroke it meets."""
     k = HEAVY_TURN * min(1.0, (V - HEAVY_FROM) / (HEAVY_TO - HEAVY_FROM))
-    vn = norm((1.0, -slant)) if cut == 'v' else (0.0, 1.0)
-    if _dot(vn, tan) < 0:
-        vn = (-vn[0], -vn[1])
-    full = math.atan2(tan[0] * vn[1] - tan[1] * vn[0], _dot(tan, vn))
-    # a horizontal-leaning cut turns only halfway: c and e terminals sit near 45°, where a flat
-    # cut leaves a sharp tip pointing into the counter (Geist and Inter cut about 20° off flat)
     share = k if cut == 'v' else k * 0.5
-    a = math.copysign(share * min(abs(full), math.pi / 2 - abs(full)), full)
+    # how far to turn, as a share of the way to the vertical (or flat) cut, is read off the
+    # unslanted drawing; the turn itself is applied to the slanted stroke toward the sheared
+    # vertical, so a share of nothing leaves the stroke's own square end
+    tu = norm((tan[0] - slant * tan[1], tan[1]))
+    full = _turn(tu, (1.0, 0.0) if cut == 'v' else (0.0, 1.0))
+    turn = min(abs(full), math.pi / 2 - abs(full))
+    if turn < 1e-6:
+        # a join at a bowl's vertical (or flat) extreme: the pen's own end already meets the
+        # stroke it joins, and any cut pivoted on one edge would trim a wedge out of it
+        return None
+    frac = share * turn / abs(full)
+    a = frac * _turn(tan, norm((1.0, -slant)) if cut == 'v' else (0.0, 1.0))
     return (tan[0] * math.cos(a) - tan[1] * math.sin(a), tan[0] * math.sin(a) + tan[1] * math.cos(a))
+
+
+def _turn(t, vn):
+    """Signed angle from t to whichever of ±vn lies on its side."""
+    if _dot(vn, t) < 0:
+        vn = (-vn[0], -vn[1])
+    return math.atan2(t[0] * vn[1] - t[1] * vn[0], _dot(t, vn))
 
 
 def expand(stroke, V, H):
@@ -434,6 +451,8 @@ def expand(stroke, V, H):
             tan = seg_tangent(seg, t)
             out = (-tan[0], -tan[1]) if at_start else tan
             cut = _heavy_cut(out, V, stroke.slant, stroke.cut)
+            if cut is None:
+                continue
             # pivot on whichever edge ends further back, so the cut only ever trims: pivoting on
             # the centreline pushed the other edge out into a spike
             ends = [(sd[0][1] if at_start else sd[-1][-1]) for sd in (left, right)]
