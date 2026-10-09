@@ -341,7 +341,15 @@ parity test.
 - **Slot layouts** (`DashboardLayout`, `SettingsLayout`, `AuthLayout`) take `ReactNode` props,
   which a ViewConfig cannot express. They stay TSX-only.
 
-**Open:** P2-6. The agent benchmark needs real model runs, which this environment cannot make.
+**P2-6, harness shipped 2026-10-09; the measured run is pending.** `apps/bench/agent`
+(`bench-agent`) runs the five prompts × two arms × N runs with `claude -p --bare
+--strict-mcp-config` against this checkout's MCP server and CLI, and scores each app with `tsc`
+and `cascivo audit --ai`. Tokens, cost, time and turns come from the CLI's JSON. `--publish`
+writes `docs/AGENT-BENCHMARKS.md` (not `docs/BENCHMARKS.md`, which `pnpm bench` generates).
+A dry run, with a scripted tool call per arm and no model, passes for all five prompts: every
+app type-checks. It also shows that the registry blocks bring 0–2 audit warnings each (raw
+English strings), so the blueprints arm does not start from zero. A real run needs an
+`ANTHROPIC_API_KEY` and spends it, so it is the maintainer's to start.
 
 ### P2-1 ☑ Blueprint schema and parser
 
@@ -384,7 +392,7 @@ parity test.
      through `@cascivo/charts`.
   2. Make `componentMap` generated rather than hand-maintained.
 
-### P2-6 ☐ Agent benchmark
+### P2-6 ◐ Agent benchmark
 
 - **Finding:** research §6.
 - **Change:**
