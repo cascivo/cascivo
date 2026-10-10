@@ -10,29 +10,30 @@ Helvetica, and what it does not do yet.
 
 ## Files
 
-| File                                              | Axes              | Charset               | Size                      |
-| ------------------------------------------------- | ----------------- | --------------------- | ------------------------- |
-| `fonts/CascivoSans-Latin[wght].woff2`             | wght              | Latin                 | 21.8 KB                   |
-| `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz        | Latin                 | 29.0 KB                   |
-| `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz        | full (365 codepoints) | 34.7 KB                   |
-| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz        | full                  | 94.0 KB (desktop install) |
-| `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght              | Latin                 | 24.1 KB                   |
-| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz        | Latin                 | 32.5 KB                   |
-| `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz        | full                  | 38.5 KB                   |
-| `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz        | full                  | 98.4 KB (desktop install) |
-| `fonts/CascivoSans-Regular.woff2`                 | static 400        | full                  | 11.8 KB                   |
-| `fonts/CascivoSans-Regular.ttf`                   | static 400        | full                  | 36.0 KB (desktop)         |
-| `fonts/CascivoSans-Bold.ttf`                      | static 700        | full                  | 36.0 KB (desktop)         |
-| `fonts/CascivoSans-Italic.ttf`                    | static 400 italic | full                  | 36.8 KB (desktop)         |
-| `fonts/CascivoSans-BoldItalic.ttf`                | static 700 italic | full                  | 36.8 KB (desktop)         |
+| File                                              | Axes              | Charset               | Size                       |
+| ------------------------------------------------- | ----------------- | --------------------- | -------------------------- |
+| `fonts/CascivoSans-Latin[wght].woff2`             | wght              | Latin                 | 21.8 KB                    |
+| `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz        | Latin                 | 29.1 KB                    |
+| `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz        | full (479 codepoints) | 37.6 KB                    |
+| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz        | full                  | 107.2 KB (desktop install) |
+| `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght              | Latin                 | 24.2 KB                    |
+| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz        | Latin                 | 32.4 KB                    |
+| `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz        | full                  | 41.8 KB                    |
+| `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz        | full                  | 111.6 KB (desktop install) |
+| `fonts/CascivoSans-Regular.woff2`                 | static 400        | full                  | 12.8 KB                    |
+| `fonts/CascivoSans-Regular.ttf`                   | static 400        | full                  | 67.7 KB (desktop, hinted)  |
+| `fonts/CascivoSans-Bold.ttf`                      | static 700        | full                  | 68.7 KB (desktop, hinted)  |
+| `fonts/CascivoSans-Italic.ttf`                    | static 400 italic | full                  | 69.8 KB (desktop, hinted)  |
+| `fonts/CascivoSans-BoldItalic.ttf`                | static 700 italic | full                  | 69.8 KB (desktop, hinted)  |
 
 "Latin" means Basic Latin, Latin-1 and common punctuation. The full charset adds Latin
-Extended-A, Romanian comma letters and combining marks. That covers Western, Central and
-Northern European languages, Turkish and Romanian.
+Extended-A, Romanian comma letters, Vietnamese and combining marks. That covers Western, Central and
+Northern European languages, Turkish, Romanian, Vietnamese, Welsh and Azerbaijani, plus the
+Croatian digraph characters (Ǆ … ǌ).
 
 On the desktop, install the two variable TTFs. Apps that only pair styles by name and style
 bits (some word processors) want the four static TTFs instead: Regular, Bold, Italic and Bold
-Italic, at optical size 14.
+Italic, at optical size 14. These four are hinted with ttfautohint for Windows at 100% scaling.
 
 ## Use on the web
 
@@ -86,7 +87,7 @@ Python 3.11 or later:
 
 ```sh
 pip install -r requirements.txt
-python3 -I src/build.py                    # writes fonts/, takes about 4 s, byte-reproducible
+python3 -I src/build.py                    # writes fonts/, takes about 20 s, byte-reproducible
 python3 -I -m unittest discover -s src     # outline lint, coverage, features, kerning, budgets, OTS
 python3 -I src/lint.py                     # self-intersection check on every stroke, every master
 ```

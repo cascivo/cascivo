@@ -21,12 +21,14 @@ VFI = os.path.join(DIST, 'CascivoSans-Italic[opsz,wght].ttf')
 # Size budgets (bytes). A regression past these is a design decision, not an accident.
 # The italic runs larger: every point that moves vertically between masters also moves
 # horizontally once slanted, so it carries more variation data.
+# The full-charset files grew with Vietnamese, Welsh and the Croatian digraphs (365 -> 479
+# codepoints, 95 -> 78 bytes each); the Latin slices are unchanged.
 BUDGETS = {
-    'CascivoSans[opsz,wght].woff2': 36_000,
+    'CascivoSans[opsz,wght].woff2': 39_000,
     'CascivoSans-Latin[opsz,wght].woff2': 30_000,
     'CascivoSans-Latin[wght].woff2': 22_500,
-    'CascivoSans-Regular.woff2': 12_000,
-    'CascivoSans-Italic[opsz,wght].woff2': 40_000,
+    'CascivoSans-Regular.woff2': 13_500,
+    'CascivoSans-Italic[opsz,wght].woff2': 43_000,
     'CascivoSans-Italic-Latin[opsz,wght].woff2': 34_000,
     'CascivoSans-Italic-Latin[wght].woff2': 25_000,
 }
@@ -103,6 +105,8 @@ class Font(unittest.TestCase):
         cmap = self.f.getBestCmap()
         want = set(range(0x20, 0x7F)) | set(range(0xA0, 0x100)) | set(range(0x100, 0x180))
         want |= {0x218, 0x219, 0x21A, 0x21B, 0x2013, 0x2014, 0x2018, 0x2019, 0x201A, 0x201C, 0x201D, 0x201E, 0x2022, 0x2026, 0x2039, 0x203A, 0x20AC, 0x2122, 0x2212}
+        want |= {0x18F, 0x259, 0x1A0, 0x1A1, 0x1AF, 0x1B0, 0x309, 0x31B, 0x323} | set(range(0x1C4, 0x1CD))  # Ə ə, horned O U, marks, digraphs
+        want |= set(range(0x1E80, 0x1E86)) | set(range(0x1EA0, 0x1EFA))  # Welsh, Vietnamese
         want -= {0xAD}  # soft hyphen is deliberately unmapped
         self.assertEqual(sorted(want - set(cmap)), [])
 

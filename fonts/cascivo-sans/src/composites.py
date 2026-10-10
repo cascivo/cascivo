@@ -12,9 +12,9 @@ MARK_OF = {
     0x300: 'gravecomb', 0x301: 'acutecomb', 0x302: 'circumflexcomb', 0x303: 'tildecomb',
     0x304: 'macroncomb', 0x306: 'brevecomb', 0x307: 'dotaccentcomb', 0x308: 'dieresiscomb',
     0x30A: 'ringcomb', 0x30B: 'hungarumlautcomb', 0x30C: 'caroncomb', 0x326: 'commaaccentcomb',
-    0x327: 'cedillacomb', 0x328: 'ogonekcomb',
+    0x327: 'cedillacomb', 0x328: 'ogonekcomb', 0x309: 'hookabovecomb', 0x323: 'dotbelowcomb', 0x31B: 'horncomb',
 }
-BOTTOM = {'commaaccentcomb': 'bottom', 'cedillacomb': 'bottom', 'ogonekcomb': 'ogonek'}
+BOTTOM = {'commaaccentcomb': 'bottom', 'cedillacomb': 'bottom', 'ogonekcomb': 'ogonek', 'dotbelowcomb': 'bottom'}
 
 # Latvian/Romanian convention: these "cedillas" are drawn as a comma below
 COMMA_BELOW = set('ĢģĶķĻļŅņŖŗ')
@@ -35,9 +35,11 @@ def base_name(ch):
 
 
 def accented_chars():
-    """(char, base glyph, [mark glyphs]) for Latin-1 + Latin Extended-A + Romanian comma letters."""
+    """(char, base glyph, [mark glyphs]) for Latin-1, Latin Extended-A, Romanian comma letters,
+    Vietnamese (horned O and U, and Latin Extended Additional) and Welsh (Ẁ Ẃ Ẅ Ỳ)."""
     out = []
     cps = list(range(0xC0, 0x100)) + list(range(0x100, 0x180)) + [0x218, 0x219, 0x21A, 0x21B]
+    cps += [0x1A0, 0x1A1, 0x1AF, 0x1B0] + list(range(0x1E80, 0x1E86)) + list(range(0x1EA0, 0x1EFA))
     for cp in cps:
         ch = chr(cp)
         d = unicodedata.normalize('NFD', ch)

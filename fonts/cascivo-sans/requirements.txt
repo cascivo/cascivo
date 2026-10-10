@@ -1,5 +1,6 @@
 fonttools[woff]==4.66.1
 brotli==1.2.0
+ttfautohint-py==0.6.1
 # tests only
 opentype-sanitizer
 uharfbuzz

@@ -279,6 +279,7 @@ def _K(g, p):
 def _O(g, p):
     w = p.Hw * 1.17
     g.oval(0, -p.ov, w, p.cap + p.ov)
+    g.anchors['horn_x'], g.anchors['horn_y'] = _horn_on_bowl(p, w, p.cap)  # Ơ
     g.ht = 'c'
     g.sb = (0.62, 0.62)
 
@@ -387,6 +388,7 @@ def _U(g, p):
     ry = min(rx * 1.0, p.cap * 0.42)
     cy = -p.ov + H / 2 + ry
     g.stroke([L((xl, p.cap), (xl, cy))] + g.arc(xl + rx, cy, rx, ry, 180, 360) + [L((xr, cy), (xr, p.cap))])
+    g.anchors['horn_x'], g.anchors['horn_y'] = w - p.V * 0.35, p.cap - p.V * 0.3  # Ư: off the right stem's top
     g.ht = 'c'
     g.sb = (1, 1)
 
@@ -530,6 +532,7 @@ def _u(g, p):
     cy = -p.ov * 0.4 + p.H / 2 + ry
     g.stroke([L((a, p.xh), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, 346), taper=(1, 0.5))
     g.vstem(w - p.V, 0, p.xh)
+    g.anchors['horn_x'], g.anchors['horn_y'] = w - p.V * 0.35, p.xh - p.V * 0.3  # ư
 
 
 @glyph('r', 0x72)
@@ -645,7 +648,9 @@ def _g(g, p):
 
 @glyph('o', 0x6F)
 def _o(g, p):
-    g.oval(0, -p.ov, p.nw * (1.1 - 0.05 * p.heavy), p.xh + p.ov)  # as b
+    w = p.nw * (1.1 - 0.05 * p.heavy)  # as b
+    g.oval(0, -p.ov, w, p.xh + p.ov)
+    g.anchors['horn_x'], g.anchors['horn_y'] = _horn_on_bowl(p, w, p.xh)  # ơ
     g.sb = (0.62, 0.62)
 
 
@@ -934,6 +939,9 @@ def _y(g, p):
     # the baseline leaves its corner showing at heavy weights
     yj = -p.H * 0.5
     g.diag(0, p.xh, on_line(*a, yj), yj, 'l', 'c', caps=('h', 'b'))
+    # ỵ's dot below sits right of the descender, under where the arms meet (as Inter's); centred,
+    # it disappeared into the descender
+    g.anchors['bottom_x'] = on_line(*a, 0) + p.V * 0.5 + p.dot * 0.55
     # spaced against Geist's and Inter's (and Inter's and Plex's italics) pair by pair: it sat
     # about 20% on the left, tighter beside round and straight letters
     g.sb = (0.42, 0.25)
@@ -2088,11 +2096,41 @@ def m_ring(g, p, s):
 
 
 def m_tilde(g, p, s):
-    a = 120 + p.V * 0.2
-    h = 60 * s  # 0.75x the references' height
-    t = p.mt * 0.92
+    # heavier, wider and thinner, or Black's wave closed into a slanted bar that read as a grave
+    a = 120 + p.V * 0.2 + 40 * p.heavy
+    h = (60 + 15 * p.heavy) * s  # 0.75x the references' height
+    t = p.mt * (0.92 - 0.25 * p.heavy)
     y = -(30 if p.italic else 55) * p.heavy  # heavier, the references' tildes sit closer (less so in the italic)
     g.stroke([('C', (-a, y + t / 2 + 2), (-a * 0.45, y + h * 2.4 + t / 2), (a * 0.45, y - h * 0.4 + t / 2 - h * 0.8), (a, y + h + t / 2 + 6))], w=t)
+
+
+def m_hook(g, p, s):
+    # Vietnamese hook above: a small question-mark head. Its radius follows the stroke (a smaller
+    # one folds inside), so heavy hooks thin a little to stay compact.
+    t = p.mt * (0.75 - 0.25 * p.heavy)
+    r = t * 0.9
+    cy = r * 0.94 + t / 2
+    g.stroke(g.arc(0, cy, r * 1.15, r, 160, -70), w=t, caps=('b', 'h'))
+
+
+def m_dotbelow(g, p, s):
+    # Vietnamese dot below, as far under the baseline as the dot accent sits over the x-height
+    d = p.dot * 0.95
+    g.dot(0, -70 - d, d)
+
+
+def m_horn(g, p, s):
+    # Vietnamese horn: leaves the letter rightward and turns up, attached at its own origin
+    r = 60 + p.V * 0.25
+    t = p.mt * 0.95
+    g.stroke([('C', (0, 0), (r * 0.65, 0), (r, r * 0.35), (r, r * 1.05))], w=t, caps=('b', 'h'))
+
+
+def _horn_on_bowl(p, w, top):
+    """Where a horn leaves a round bowl: on its outer edge, 40° up its right side."""
+    a = math.radians(40)
+    rx, ry = w / 2 - p.V * 0.35, (top + 2 * p.ov) / 2 - p.H * 0.35
+    return w / 2 + rx * math.cos(a), top / 2 + ry * math.sin(a)
 
 
 def m_hungarumlaut(g, p, s):
@@ -2147,11 +2185,37 @@ MARKS = [
     ('commaaccentcomb', 0x326, m_commabelow, None),
     ('cedillacomb', 0x327, m_cedilla, 0xB8),
     ('ogonekcomb', 0x328, m_ogonek, 0x2DB),
+    ('hookabovecomb', 0x309, m_hook, None),
+    ('dotbelowcomb', 0x323, m_dotbelow, None),
+    ('horncomb', 0x31B, m_horn, None),
 ]
-TOP_MARKS = {'gravecomb', 'acutecomb', 'circumflexcomb', 'tildecomb', 'macroncomb', 'brevecomb', 'dotaccentcomb', 'dieresiscomb', 'ringcomb', 'hungarumlautcomb', 'caroncomb'}
+TOP_MARKS = {'gravecomb', 'acutecomb', 'circumflexcomb', 'tildecomb', 'macroncomb', 'brevecomb', 'dotaccentcomb', 'dieresiscomb', 'ringcomb', 'hungarumlautcomb', 'caroncomb', 'hookabovecomb'}
 
 for _name, _cp, _fn, _sp in MARKS:
     _mk(_name, _cp, _fn)
     if _name in TOP_MARKS:
         _mk(_name + '.case', None, _fn, case=True)
 _mk('caroncomb.alt', None, m_caronalt)
+
+
+@glyph('uni0259', 0x259)
+def _schwa(g, p):
+    """ə: the e turned round its centre, as in every grotesque (Azerbaijani, phonetics)."""
+    _e(g, p)
+    w, top = p.nw * 1.06, p.xh
+    g.strokes = [st.transformed(lambda q: (w - q[0], top - q[1])) for st in g.strokes]
+    g.sb = (g.sb[1], g.sb[0])
+
+
+@glyph('uni018F', 0x18F)
+def _Schwa(g, p):
+    """Ə: the same turned e drawn at the cap height and a capital's width."""
+    import copy
+    pc = copy.copy(p)
+    pc.xh = p.cap
+    pc.cn = p.Hw * 1.1 / 1.06 - 2 * p.V  # so pc.nw is a capital's width
+    _e(g, pc)
+    w, top = pc.nw * 1.06, p.cap
+    g.strokes = [st.transformed(lambda q: (w - q[0], top - q[1])) for st in g.strokes]
+    g.sb = (0.62, 0.62)
+    g.ht = 'c'

@@ -26,6 +26,7 @@ from fontTools.ttLib import TTFont, newTable  # noqa: E402
 from fontTools.ttLib.tables import ttProgram  # noqa: E402
 from fontTools import varLib  # noqa: E402
 from fontTools.varLib import instancer  # noqa: E402
+import ttfautohint  # noqa: E402
 
 import glyphs as GL  # noqa: E402
 from composites import BOTTOM, SPECIAL, accented_chars, glyph_name  # noqa: E402
@@ -127,10 +128,12 @@ def draw_master(p):
         cx = (xmin + xmax) / 2 + dx
         a = {
             'top': (g.anchors.get('top_x', cx - dx) + dx, top_y),
-            'bottom': (cx, 0),
+            'bottom': ((g.anchors['bottom_x'] + dx) if 'bottom_x' in g.anchors else cx, 0),
             'ogonek': (xmax + dx - 70 - p.V * 0.3, 0),
             'topright': ((g.anchors['topright_x'] + dx) if 'topright_x' in g.anchors else xmax + dx + p.S * 0.35, g.anchors.get('topright_y', p.asc if g.ht == 'a' else p.cap)),
         }
+        if 'horn_x' in g.anchors:
+            a['horn'] = (g.anchors['horn_x'] + dx, g.anchors['horn_y'])
         o.anchors[name] = a
     add_composites(o)
     return o
@@ -174,9 +177,13 @@ def add_composites(o):
         above = any(m not in BOTTOM for m in marks)
         b = ({'i': 'dotlessi', 'j': 'dotlessj'}.get(base, base) if above else base) + sfx
         parts = [(b, 0, 0, 1)]
+        prev = None  # the last top mark placed: (glyph, x, y)
         for m in marks:
             if m == 'caroncomb.alt':
                 bx, by = o.anchors[b]['topright']
+                parts.append((m, bx, by, 1))
+            elif m == 'horncomb':
+                bx, by = o.anchors[b]['horn']
                 parts.append((m, bx, by, 1))
             elif m in BOTTOM:
                 parts.append(at(b, m, BOTTOM[m]))
@@ -185,7 +192,17 @@ def add_composites(o):
             else:
                 mk = m + '.case' if base.isupper() else m
                 bx, by = o.anchors[b]['top']
-                parts.append((mk, bx, by + (len(parts) - 1) * 0, 1))
+                if prev is not None:
+                    # Vietnamese stacks: acute, grave and hook sit beside a circumflex, to its
+                    # right as in Inter and Plex; anything else stacks above the first mark
+                    pm, px, py = prev
+                    pb, mb = o.bounds[pm], o.bounds[mk]
+                    if pm.startswith('circumflexcomb') and m in ('acutecomb', 'gravecomb', 'hookabovecomb'):
+                        bx, by = px + pb[2] - mb[0] - p.mt * 0.35, py + (pb[3] - pb[1]) * 0.45 - mb[1]
+                    else:
+                        bx, by = px, py + pb[3] + p.mt * 0.45 - mb[1]
+                parts.append((mk, bx, by, 1))
+                prev = (mk, bx, by)
         comp(glyph_name(ch) + sfx, parts, o.adv[b], None if sfx else ord(ch))
         o.anchors[glyph_name(ch) + sfx] = o.anchors[b]
 
@@ -233,6 +250,11 @@ def add_composites(o):
     for sfx in ('', '.ss01'):
         comp('IJ' + sfx, [('I' + sfx, 0, 0, 1), ('J', ov('I' + sfx) - S * 0.4, 0, 1)], ov('I' + sfx) + ov('J') - S * 0.4, None if sfx else 0x132)
     comp('ij', [('i', 0, 0, 1), ('j', ov('i') - S * 0.4, 0, 1)], ov('i') + ov('j') - S * 0.4, 0x133)
+    # Croatian digraphs (old Yugoslav encodings): two letters set at their normal spacing
+    for cp, a, b in ((0x1C4, 'D', 'uni017D'), (0x1C5, 'D', 'uni017E'), (0x1C6, 'd', 'uni017E'), (0x1C7, 'L', 'J'), (0x1C8, 'L', 'j'),
+                     (0x1C9, 'l', 'j'), (0x1CA, 'N', 'J'), (0x1CB, 'N', 'j'), (0x1CC, 'n', 'j')):
+        gap = S * 0.35 if a == 'l' else 0  # a composite is never kerned: the tailed l keeps clear of j itself
+        comp('uni%04X' % cp, [(a, 0, 0, 1), (b, ov(a) + gap, 0, 1)], ov(a) + gap + ov(b), cp)
     comp('napostrophe', [('quoteright', 0, 0, 1), ('n', cadv - S * 0.4, 0, 1)], cadv - S * 0.4 + ov('n'), 0x149)
 
     # spacing accents
@@ -405,17 +427,19 @@ def mark_fea(o):
     """GPOS mark attachment for decomposed text (base + combining mark)."""
     mo = getattr(o, 'mark_origin', (0, 0))
     top = sorted(GL.TOP_MARKS)
-    bot = ['cedillacomb', 'commaaccentcomb']
+    bot = ['cedillacomb', 'commaaccentcomb', 'dotbelowcomb']
     lines = [
         f'markClass [{" ".join(top)}] <anchor {round(mo[0])} {round(mo[1])}> @MC_top;',
         f'markClass [{" ".join(bot)}] <anchor {round(mo[0])} {round(mo[1])}> @MC_bottom;',
         f'markClass [ogonekcomb] <anchor {round(mo[0])} {round(mo[1])}> @MC_ogonek;',
+        f'markClass [horncomb] <anchor {round(mo[0])} {round(mo[1])}> @MC_horn;',
         'feature mark {',
     ]
     bases = [n for n in o.anchors if n in GL.GLYPHS and not GL.GLYPHS[n][0] == [] and n.isalpha() and len(n) == 1] + ['dotlessi', 'dotlessj']
     for b in bases:
         a = o.anchors[b]
-        lines.append(f'  pos base {b} <anchor {round(a["top"][0])} {round(a["top"][1])}> mark @MC_top <anchor {round(a["bottom"][0])} {round(a["bottom"][1])}> mark @MC_bottom <anchor {round(a["ogonek"][0])} {round(a["ogonek"][1])}> mark @MC_ogonek;')
+        horn = f' <anchor {round(a["horn"][0])} {round(a["horn"][1])}> mark @MC_horn' if 'horn' in a else ''
+        lines.append(f'  pos base {b} <anchor {round(a["top"][0])} {round(a["top"][1])}> mark @MC_top <anchor {round(a["bottom"][0])} {round(a["bottom"][1])}> mark @MC_bottom <anchor {round(a["ogonek"][0])} {round(a["ogonek"][1])}> mark @MC_ogonek{horn};')
     lines.append('} mark;')
     return '\n'.join(lines)
 
@@ -496,7 +520,7 @@ def build_master_font(o, glyf, order):
     }, mac=False)
     fb.setupOS2(version=4, 
         sTypoAscender=1000, sTypoDescender=-300, sTypoLineGap=0,
-        usWinAscent=1000, usWinDescent=300, sxHeight=round(p.xh), sCapHeight=p.cap,
+        usWinAscent=1000, usWinDescent=300,  # set to the real extremes once the variable font exists sxHeight=round(p.xh), sCapHeight=p.cap,
         usWeightClass=p.wght, achVendID='CSCV', fsType=0, fsSelection=0x40 | 0x80,
         ulUnicodeRange1=(1 << 0) | (1 << 1) | (1 << 2), ulCodePageRange1=(1 << 0) | (1 << 1),
         yStrikeoutPosition=round(p.xh * 0.5), yStrikeoutSize=round(p.H),
@@ -622,6 +646,8 @@ def finish(vf, italic=False):
     vf['head'].fontRevision = float(VERSION.rsplit('.', 1)[0])
     vf['head'].flags |= 1 << 3  # integer ppem scaling
     vf['OS/2'].fsSelection |= 1 << 7  # USE_TYPO_METRICS
+    # (usWinAscent/Descent are set in save_all, once for the family: Windows clips to them, so they
+    # cover the tallest and deepest instance of either font. Line spacing comes from the typo metrics.)
     if italic:
         vf['OS/2'].fsSelection = (vf['OS/2'].fsSelection | 1) & ~(1 << 6)  # ITALIC, not REGULAR
         vf['head'].macStyle |= 1 << 1
@@ -657,6 +683,41 @@ def _save_woff2(font, fn):
     font.save(os.path.join(DIST, fn))
 
 
+def _win_extent(vf):
+    """(usWinAscent, usWinDescent) covering every corner of the design space."""
+    buf = io.BytesIO()
+    vf.save(buf)
+    hi, lo = 1000, 300
+    # interpolation is piecewise linear between masters, so the extremes sit at master locations
+    for w in (100, 400, 900):
+        for o in (8, 14, 48):
+            buf.seek(0)
+            glyf = instancer.instantiateVariableFont(TTFont(buf), {'wght': w, 'opsz': o})['glyf']
+            for name in glyf.keys():
+                g = glyf[name]
+                if g.numberOfContours:
+                    g.recalcBounds(glyf)
+                    hi, lo = max(hi, math.ceil(g.yMax)), max(lo, math.ceil(-g.yMin))
+    return hi, lo
+
+
+def _flatten_transformed(font):
+    """Hinted fonts must not carry scaled or rotated components (TM, turned commas): draw those
+    glyphs out as plain outlines."""
+    from fontTools.pens.recordingPen import DecomposingRecordingPen
+    from fontTools.pens.ttGlyphPen import TTGlyphPen
+    glyf, gs = font['glyf'], font.getGlyphSet()
+    for name in font.getGlyphOrder():
+        g = glyf[name]
+        if g.isComposite() and any(getattr(c, 'transform', None) is not None and [list(r) for r in c.transform] != [[1, 0], [0, 1]] for c in g.components):
+            rec = DecomposingRecordingPen(gs)
+            gs[name].draw(rec)
+            pen = TTGlyphPen(None)
+            rec.replay(pen)
+            glyf[name] = pen.glyph()
+    return font
+
+
 def _save_static(vf, style, wght):
     under = (vf['post'].underlinePosition, vf['post'].underlineThickness)  # one underline for the family
     font = instancer.instantiateVariableFont(vf, {'wght': wght, 'opsz': 14})
@@ -671,11 +732,28 @@ def _save_static(vf, style, wght):
     font['OS/2'].usWeightClass = wght
     font['OS/2'].fsSelection = (font['OS/2'].fsSelection & ~0b1100001) | (0x20 if bold else 0) | (0x01 if italic else 0) | (0x40 if not (bold or italic) else 0)
     font['head'].macStyle = (1 if bold else 0) | (2 if italic else 0)
+    _flatten_transformed(font)
+    # drop the component-only glyphs flattening left unreferenced (the (R) ring)
+    opts = subset.Options()
+    opts.layout_features, opts.name_IDs, opts.name_languages, opts.notdef_outline = ['*'], ['*'], ['*'], True
+    opts.glyph_names, opts.hinting, opts.legacy_kern = True, False, True
+    sub = subset.Subsetter(opts)
+    sub.populate(unicodes=font.getBestCmap().keys())
+    sub.subset(font)
     font.flavor = None
-    font.save(os.path.join(DIST, f'{ps}.ttf'))
+    path = os.path.join(DIST, f'{ps}.ttf')
+    font.save(path)
+    # Static desktop files are hinted (ttfautohint): Windows at 100% scaling snaps unhinted stems
+    # unevenly. The variable fonts stay unhinted, as Inter's and Geist's web fonts are.
+    # no_info keeps ttfautohint's own version out of the name table, so builds stay reproducible.
+    ttfautohint.ttfautohint(in_file=path, out_file=path, no_info=True)
 
 
 def save_all(upright, italic):
+    # one clipping extent for the whole family (Windows checks it across styles)
+    win = tuple(max(a, b) for a, b in zip(_win_extent(upright), _win_extent(italic)))
+    for vf in (upright, italic):
+        vf['OS/2'].usWinAscent, vf['OS/2'].usWinDescent = win
     for fn in os.listdir(DIST):  # outputs are fully regenerated; stale names must not linger
         os.remove(os.path.join(DIST, fn))
     for vf, stem in ((upright, PS), (italic, f'{PS}-Italic')):

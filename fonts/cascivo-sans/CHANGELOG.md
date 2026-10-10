@@ -24,7 +24,10 @@ give the numbers.
 - **Accents.** Every accent of Latin-1 and Latin Extended-A measured: capital accents larger and
   higher, dots and macrons clear of the letter, a drawn breve, acutes offset as in the references,
   comma accents resized, and the dot restored to `į`.
-- **Files.** Static Regular, Bold, Italic and Bold Italic TTFs for desktop apps.
+- **Languages.** Vietnamese, Welsh, Azerbaijani (Ə ə) and the Croatian digraph characters: 479
+  codepoints (from 365), with a hook above, horn and dot below, and Vietnamese accent stacking.
+- **Files.** Static Regular, Bold, Italic and Bold Italic TTFs for desktop apps, hinted with
+  ttfautohint. The Windows clipping extent covers every weight and optical size.
 
 ## 0.1.0
 
