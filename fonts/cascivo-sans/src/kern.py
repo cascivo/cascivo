@@ -53,6 +53,11 @@ OWN_SHAPE_PAIRS.update({(a, 'f'): 1 for a in 'kvwxyr'})
 OWN_SHAPE_PAIRS.update({(a, b): 1 for a, b in [('l', 'z'), ('x', 't'), ('k', 't'), ('y', 't'), ('v', 't'), ('w', 't'), ('r', 't'), ('t', 'z'), ('V', 'T'), ('W', 'T'), ('Y', 'T'), ('X', 'T'), ('f', 'T')]})
 
 
+# Closing pairs no reference list carries, kept when the measurement agrees: tt, whose two
+# crossbars Inter and Plex let nearly meet (ours sat 1.3x their white at Bold).
+OWN_CLOSING_PAIRS = {('t', 't'): -1}
+
+
 def _glyph(ch):
     return CHAR_GLYPH.get(ch, ch)
 
@@ -130,6 +135,7 @@ def kern_pairs(o):
         acc.setdefault(base, []).append(glyph_name(ch))
     cands = {k: v for k, v in _candidates().items() if k[0] in glyphs and k[1] in glyphs}
     cands.update(OWN_SHAPE_PAIRS)
+    cands.update(OWN_CLOSING_PAIRS)
     pairs = {(a, b): (measure(o, a, b), sign) for (a, b), sign in cands.items()}
     # an own-shape pair only ever opens, by however much each master measures it needs
     pairs.update({k: (max(0, pairs[k][0]), 1) for k in OWN_SHAPE_PAIRS if k in pairs})

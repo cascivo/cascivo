@@ -58,7 +58,9 @@ class P:
         self.asc = 742
         self.desc = -212
         self.xh = xh
-        self.ov = 10 + V * 0.04  # round overshoot grows with weight so bold rounds don't look short
+        # round overshoot grows up to Regular, then holds: Inter's and Geist's stay constant by
+        # weight, and growing on to Black (0.034 x-height) made Bold's and Black's counters taller
+        self.ov = 10 + min(V, 84) * 0.04
         self.k = k
         self.ap = aperture  # degrees added to terminal angles: + opens c/e/s/a
         # Width across weights: a UI font must not reflow when text turns bold (hover, active

@@ -318,7 +318,7 @@ def _G(g, p):
 
 @glyph('D', 0x44)
 def _D(g, p):
-    w = p.Hw * 1.06
+    w = p.Hw * (1.06 - 0.04 * p.heavy)  # as b
     V, H = p.V, p.H
     xr = w - V / 2
     ry = (p.cap - H) / 2
@@ -592,7 +592,9 @@ def _bowl_lc(g, p, w, stem_left, taper=0.55):
 
 @glyph('b', 0x62)
 def _b(g, p):
-    w = p.nw * 1.08
+    # heavy bowls narrower: at Bold and Black the counters ran 16-40% larger than Inter's, Geist's
+    # and Helvetica's at equal ink, mostly from width (Regular's width is by design, section 8)
+    w = p.nw * (1.08 - 0.05 * p.heavy)
     g.vstem(0, -0, p.asc)
     _bowl_lc(g, p, w, True)
     g.ht = 'a'
@@ -601,7 +603,7 @@ def _b(g, p):
 
 @glyph('p', 0x70)
 def _p(g, p):
-    w = p.nw * 1.08
+    w = p.nw * (1.08 - 0.05 * p.heavy)  # as b
     g.vstem(0, p.desc, p.xh)
     _bowl_lc(g, p, w, True)
     g.sb = (1, 0.62)
@@ -609,7 +611,7 @@ def _p(g, p):
 
 @glyph('d', 0x64)
 def _d(g, p):
-    w = p.nw * 1.08
+    w = p.nw * (1.08 - 0.05 * p.heavy)  # as b
     g.vstem(w - p.V, 0, p.asc)
     _bowl_lc(g, p, w, False)
     g.ht = 'a'
@@ -619,7 +621,7 @@ def _d(g, p):
 
 @glyph('q', 0x71)
 def _q(g, p):
-    w = p.nw * 1.08
+    w = p.nw * (1.08 - 0.05 * p.heavy)  # as b
     g.vstem(w - p.V, p.desc, p.xh)
     _bowl_lc(g, p, w, False)
     g.sb = (0.62, 1)
@@ -641,7 +643,7 @@ def _g(g, p):
 
 @glyph('o', 0x6F)
 def _o(g, p):
-    g.oval(0, -p.ov, p.nw * 1.1, p.xh + p.ov)
+    g.oval(0, -p.ov, p.nw * (1.1 - 0.05 * p.heavy), p.xh + p.ov)  # as b
     g.sb = (0.62, 0.62)
 
 
@@ -690,19 +692,19 @@ def _a_bowl(g, p, xs, wf):
     followed the pen and its diagonal join into the stem, and at Black the counter shrank to a
     slit with a nick at its lower right. Drawn, each thickness is its own master parameter, and
     the counter's right side runs flat against the stem as in Geist and Inter. Regular keeps its
-    proportions. Heavy weights lift the bowl a little and lighten its left side; the counter's
-    area at Black then matches the old one, but as a round shape, not a slit.
+    proportions. Heavy weights lift the bowl a little. (They once also lightened its left side and
+    lifted it more; set against Inter, Geist and Helvetica, Black's counter was then 1.5x theirs.)
     """
     V = p.V
     h = p.heavy
     k = p.k
-    ybt = p.xh * (0.57 + 0.05 * h)  # top of the bowl
+    ybt = p.xh * (0.57 + 0.02 * h)  # top of the bowl
     yb0 = -p.ov  # bottom of the bowl
     xe = xs - V / 2  # stem's left edge
     rxb = (xs - V / 2) / 2 * wf
     cxb = V / 2 + rxb  # horizontal centre of the bowl's round left half
     th = p.bar  # top and bottom of the bowl
-    tl = V * (1 - 0.08 * h)  # left side of the bowl
+    tl = V  # left side of the bowl
     cy = (ybt + yb0) / 2
     ry = (ybt - yb0) / 2
     yjo = yb0 + (ybt - yb0) * 0.3  # where the outline meets the stem
@@ -852,6 +854,7 @@ def _t(g, p):
     # Black, kerning opens the pair (kern.OWN_SHAPE_PAIRS).
     g.sb = ((0.4 - 0.3 * heavy) if p.italic else (0.55 - 0.25 * heavy), (0.05 + 0.25 * heavy) if p.italic else (0.25 + 0.2 * heavy))
     g.anchors['topright_x'] = xs + V + p.S * 0.4
+    g.anchors['topright_y'] = p.asc  # ť's comma reaches the ascender, as ď's and ľ's (and Inter's, Geist's)
 
 
 @glyph('k', 0x6B)
@@ -2052,7 +2055,7 @@ def m_dot(g, p, s):
 
 def m_macron(g, p, s):
     a = 110 + p.V * 0.25
-    g.hbar(-a, a, lift_macron(p), h=p.mt * (0.9 - 0.2 * p.heavy))  # Black's was 1.27x as thick
+    g.hbar(-a, a, lift_macron(p), h=p.mt * (0.9 - (0.32 if p.italic else 0.2) * p.heavy))  # Black's was 1.27x as thick (the italic's, at Bold, 1.3x)
 
 
 def m_breve(g, p, s):
@@ -2113,9 +2116,11 @@ def m_ogonek(g, p, s):
 
 
 def m_commabelow(g, p, s):
-    d = p.dot * (0.95 - (0.42 if p.italic else 0.3) * p.heavy)  # Black's hung 1.4x as deep as the references': its head alone was most of that
-    ln = min(d * 2.1, 150 + d * 0.6)
-    comma_shape(g, d, 0, -40, ln - d)  # the same comma as , and the quotes
+    # Against Inter, Geist and Plex it hung 1.2x as deep and 0.02-0.04 too close at every weight,
+    # and the heavy ones were too narrow (their head stays wide, their tail gets short)
+    d = p.dot * (0.9 - (0.2 if p.italic else 0.1) * p.heavy)
+    ln = min(d * 1.75, 120 + d * 0.55) - 40 * p.heavy
+    comma_shape(g, d, 0, -58, ln - d)  # the same comma as , and the quotes
 
 
 def m_caronalt(g, p, s):

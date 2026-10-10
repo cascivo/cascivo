@@ -129,7 +129,7 @@ def draw_master(p):
             'top': (g.anchors.get('top_x', cx - dx) + dx, top_y),
             'bottom': (cx, 0),
             'ogonek': (xmax + dx - 70 - p.V * 0.3, 0),
-            'topright': ((g.anchors['topright_x'] + dx) if 'topright_x' in g.anchors else xmax + dx + p.S * 0.35, p.asc if g.ht == 'a' else p.cap),
+            'topright': ((g.anchors['topright_x'] + dx) if 'topright_x' in g.anchors else xmax + dx + p.S * 0.35, g.anchors.get('topright_y', p.asc if g.ht == 'a' else p.cap)),
         }
         o.anchors[name] = a
     add_composites(o)

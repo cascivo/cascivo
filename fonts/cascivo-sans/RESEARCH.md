@@ -117,7 +117,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                                             |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                                                    |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                                                          |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.6 KB, `Latin[opsz,wght]` 28.8 KB; italic 24.1 / 32.3 KB, loaded only when a page uses italic. Serve only the axes you use |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.7 KB, `Latin[opsz,wght]` 28.9 KB; italic 24.2 / 32.3 KB, loaded only when a page uses italic. Serve only the axes you use |
 
 ## 5. Scorecard
 
@@ -125,11 +125,11 @@ contour in every master for self-intersection. The build ships with zero problem
 
 | File                                    | Cascivo Sans           | Geist             | IBM Plex Sans                         | Inter              |
 | --------------------------------------- | ---------------------- | ----------------- | ------------------------------------- | ------------------ |
-| Variable Latin slice, wght axis         | **21.6 KB** (211 cp)   | 29.4 KB (225 cp)  | 45.7 KB (232 cp)                      | 48.3 KB (230 cp)   |
+| Variable Latin slice, wght axis         | **21.7 KB** (211 cp)   | 29.4 KB (225 cp)  | 45.7 KB (232 cp)                      | 48.3 KB (230 cp)   |
 | Bytes per codepoint (Latin slice)       | **102**                | 131               | 197                                   | 210                |
 | Variable, full charset, wght only       | **25.8 KB** (71 B/cp)  | 69.7 KB (96 B/cp) | —                                     | —                  |
 | Static Regular, full charset            | **11.7 KB** (32 B/cp)  | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp)                     | —                  |
-| Italic, variable Latin slice, wght axis | **24.1 KB** (115 B/cp) | no italic         | 24.4 KB, one static weight (105 B/cp) | 51.8 KB (225 B/cp) |
+| Italic, variable Latin slice, wght axis | **24.2 KB** (115 B/cp) | no italic         | 24.4 KB, one static weight (105 B/cp) | 51.8 KB (225 B/cp) |
 
 The full-charset comparison is not like for like. Geist and Plex cover Cyrillic, Greek and
 more, and those glyphs are larger. The Latin slices are the fair comparison, and Cascivo uses
@@ -342,7 +342,7 @@ tail. Counters are 5% narrower. The italic passes the same no-reflow test as the
   its right-angle turn. The capital breve has a minimum depth, because a shallow arc thinner
   than its stroke folds inside.
 
-**Size.** The italic Latin web file is 24.1 KB for every weight, against 21.6 KB for the upright.
+**Size.** The italic Latin web file is 24.2 KB for every weight, against 21.7 KB for the upright.
 The difference is inherent: once outlines are slanted, every point that moves vertically
 between masters also moves horizontally, so it carries more variation data. For comparison,
 Plex ships 24.4 KB for one static italic weight, and Inter 51.8 KB for its variable italic.
@@ -725,6 +725,38 @@ the two crossbars nearly join.
 **The specimen** gained a languages-and-symbols section: Czech, Polish, Hungarian, Romanian and
 Turkish samples with weight and italic switches, and a grid of 32 symbols. The page no longer
 scrolls sideways on a phone (the size chart's hidden tooltips did not wrap).
+
+## 20. Heavy bowls, tt, comma accents, and the browser
+
+**Heavy bowls.** At Bold and Black the bowl letters' counters ran 16-40% larger than Inter's,
+Geist's and Helvetica's at equal ink. The suspected cause, the thin, tapered join into the stem,
+was not it: joins at full weight and a longer overlap moved the counters by 1-3%. Rendered, the
+counters were both taller (0.64 x-height against 0.59-0.62 at Bold) and wider (0.45 against 0.41),
+and the `o`, which has no join, showed the same. Two causes: the overshoot grew with weight (0.025
+x-height at Regular, 0.034 at Black) where the references' stays constant, and the bowls are wide.
+The overshoot now stops growing at Regular, and `b d p q o` narrow 5% by Black (`D` 4%), which
+also brings their widths to the references' (Black `o` was 1.08x Inter's). Regular's widths, a
+deliberate choice (section 8), are unchanged. The `a`'s bowl, lifted and lightened at Black in
+section 12 to keep it from closing, had overshot to 1.5x the references' counter; it keeps a
+smaller lift and its full left side (1.16-1.23x). At Bold no bowl letter is a consensus outlier any more (there were six; `Y`'s ink, unchanged, now sits just past the 8% line), and the italic's bowl counters at Bold from 1.10-1.13 of
+Inter's to about 1.01.
+
+**tt.** The kern measure gives it -32 in the italic and -41 upright, but no reference list carries
+the pair. It joins as an own closing pair; italic `tt` now has 1.14x the references' white (was
+1.30), upright 1.04.
+
+**Comma accents.** The comma below hung 1.2x as deep as Inter's, Geist's and Plex's and sat
+0.02-0.04 x-height too close, at every weight; at Black, where an earlier fix had shrunk the whole
+comma, it was also too narrow. It now sits lower with a shorter tail and keeps its head wide when
+heavy (the italic's head narrows a little: a shorter tail alone folded it). `ť`'s comma reaches the
+ascender, as `ď`'s and `ľ`'s and the references' do. The heavy italic macron is thinner (Bold's
+was 1.3x Inter's and Plex's). Accent flags now: 3, 3, 2 upright; 7, 3, 4 italic.
+
+**The browser.** In Chromium (the only engine installed here; Firefox and Safari were not tested),
+`font-optical-sizing: auto` renders pixel-identically to the explicit `opsz` for the font size at
+10, 24 and 48 px, and differently from `opsz` 14, at device pixel ratios 1 and 2: the optical-size
+axis is picked up as intended. At 9-16 px, upright and italic, from Light to Bold, the unhinted
+outlines render without dropouts and with the density of Inter's.
 
 ## Sources
 
