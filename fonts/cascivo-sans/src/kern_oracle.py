@@ -21,6 +21,7 @@ from fontTools.varLib.instancer import instantiateVariableFont
 CHARS = (
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
     '.,:;\'"‘’“”-–—()[]{}/?!«»‹›&*@'
+    'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзиклмнопрстуфхцчшщъыьэюя'  # й Й: kerned as и И
 )
 THRESHOLD = 12
 # Geist kerns straight quotes against letters ("A, 'A) but not curly ones; Inter kerns both. A

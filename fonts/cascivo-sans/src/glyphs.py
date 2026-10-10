@@ -1817,6 +1817,26 @@ def _germandbls(g, p):
     g.sb = (0.1 if p.italic else 1, 0.6)
 
 
+@glyph('uni1E9E', 0x1E9E)
+def _Germandbls(g, p):
+    """ẞ: the German capital sharp s as Inter, Geist and Plex draw it, a stem rounding into a
+    flat top, a 7-like diagonal, and a bowl below (the round-shouldered B reads as a B)."""
+    w = p.Hw * (1.0 + 0.08 * p.heavy)
+    V, H = p.V, p.H
+    a, yt = V / 2, p.cap - H / 2
+    rc = w * 0.3
+    xr = w * 0.88
+    g.stroke([L((a, 0), (a, yt - rc))] + g.arc(a + rc, yt - rc, rc, rc, 180, 90) + [L((a + rc, yt), (xr, yt))], caps=('b', 'b'))
+    ym = p.cap * (0.56 - 0.04 * p.heavy)
+    g.diag(xr, yt, w * (0.42 + 0.04 * p.heavy), ym, 'r', 'c', ws=0.95, caps=('h', 'h'))
+    ry = (ym - H / 2) / 2
+    rx = min(ry * 1.1, (w - V / 2 - w * 0.38) * 0.85)
+    cx = w - V / 2 - rx
+    g.stroke([L((w * 0.38, ym), (cx, ym))] + g.arc(cx, (ym + H / 2) / 2, rx, ry, 90, -90) + [L((cx, H / 2), (w * 0.26, H / 2))], caps=('b', 'b'))
+    g.ht = 'c'
+    g.sb = (1, 0.6)
+
+
 @glyph('eth', 0xF0)
 def _eth(g, p):
     w = p.nw * 1.06
@@ -2217,5 +2237,5 @@ def _Schwa(g, p):
     _e(g, pc)
     w, top = pc.nw * 1.06, p.cap
     g.strokes = [st.transformed(lambda q: (w - q[0], top - q[1])) for st in g.strokes]
-    g.sb = (0.62, 0.62)
+    g.sb = (0.477, 0.477)  # 0.62 of the lowercase unit, in the capitals' (1.3x)
     g.ht = 'c'

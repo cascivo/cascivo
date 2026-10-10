@@ -29,7 +29,8 @@ from fontTools.varLib import instancer  # noqa: E402
 import ttfautohint  # noqa: E402
 
 import glyphs as GL  # noqa: E402
-from composites import BOTTOM, SPECIAL, accented_chars, glyph_name  # noqa: E402
+import cyrillic  # noqa: E402,F401  (registers the Cyrillic drawings)
+from composites import BOTTOM, CYR_ALIAS, SPECIAL, accented_chars, glyph_name, is_cap  # noqa: E402
 from geom import contour_bounds, expand, transform_contour  # noqa: E402
 import kern  # noqa: E402
 from kern import kern_fea  # noqa: E402
@@ -37,7 +38,7 @@ from params import BLACK_STEM, ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, P  # noqa:
 
 FAMILY = 'Cascivo Sans'
 PS = 'CascivoSans'
-VERSION = '0.2.0'
+VERSION = '0.3.0'
 DIST = os.path.join(HERE, '..', 'fonts')  # not dist/: the repo ignores dist/, and these files ship
 MAX_ERR = 1.5  # cu2qu tolerance in font units: 1.5/1000 em is sub-pixel below ~700px
 IUP_TOLERANCE = 1.0  # gvar deltas the rasterizer can re-infer within 1 unit are dropped
@@ -115,7 +116,7 @@ def draw_master(p):
             adv = p.fig_adv
             dx = (adv - (xmax - xmin)) / 2 - xmin
         else:
-            unit = p.Sc if name[0].isupper() else p.S
+            unit = p.Sc if is_cap(name) else p.S
             l, r = g.sb[0] * unit, g.sb[1] * unit
             dx = l - xmin
             adv = l + (xmax - xmin) + r
@@ -190,7 +191,7 @@ def add_composites(o):
             elif m == 'commaturnedabovecomb':
                 parts.append(at(b, m, 'top'))
             else:
-                mk = m + '.case' if base.isupper() else m
+                mk = m + '.case' if ch.isupper() else m
                 bx, by = o.anchors[b]['top']
                 if prev is not None:
                     # Vietnamese stacks: acute, grave and hook sit beside a circumflex, to its
@@ -318,6 +319,14 @@ def add_composites(o):
     comp('at.case', [('at', 0, 50, 1)], o.adv['at'])
     o.cmap.pop(0xAD, None)  # soft hyphen should never render; leave it unmapped
 
+    # Cyrillic letters that are the Latin shape are that glyph, by reference (ss01 included)
+    for cp, latin in CYR_ALIAS.items():
+        n = 'uni%04X' % cp
+        comp(n, [(latin, 0, 0, 1)], o.adv[latin], cp)
+        o.anchors[n] = o.anchors.get(latin, o.anchors[{'hbar': 'h'}.get(latin, latin)])
+        if latin + '.ss01' in o.adv:
+            comp(n + '.ss01', [(latin + '.ss01', 0, 0, 1)], o.adv[latin + '.ss01'])
+
     # flatten: a composite of composites is resolved to outline components only (some
     # rasterizers and validators reject nesting, and it saves an indirection per glyph)
     def flat(parts):
@@ -435,12 +444,32 @@ def mark_fea(o):
         f'markClass [horncomb] <anchor {round(mo[0])} {round(mo[1])}> @MC_horn;',
         'feature mark {',
     ]
-    bases = [n for n in o.anchors if n in GL.GLYPHS and not GL.GLYPHS[n][0] == [] and n.isalpha() and len(n) == 1] + ['dotlessi', 'dotlessj']
+    cyr = [n for n in o.anchors if n.startswith('uni04') and len(n) == 7]  # every Cyrillic letter
+    bases = [n for n in o.anchors if n in GL.GLYPHS and not GL.GLYPHS[n][0] == [] and n.isalpha() and len(n) == 1] + ['dotlessi', 'dotlessj'] + sorted(set(cyr))
     for b in bases:
         a = o.anchors[b]
         horn = f' <anchor {round(a["horn"][0])} {round(a["horn"][1])}> mark @MC_horn' if 'horn' in a else ''
         lines.append(f'  pos base {b} <anchor {round(a["top"][0])} {round(a["top"][1])}> mark @MC_top <anchor {round(a["bottom"][0])} {round(a["bottom"][1])}> mark @MC_bottom <anchor {round(a["ogonek"][0])} {round(a["ogonek"][1])}> mark @MC_ogonek{horn};')
     lines.append('} mark;')
+    # Mark-to-mark, so decomposed text stacks as the precomposed letters do: acute, grave and
+    # hook beside a circumflex (Vietnamese), anything else above the previous mark. The side
+    # lookup runs second, so its attachment replaces the stacked one.
+    p, s, yc = o.p, o.p.slant, o.p.xh / 2
+    sk = lambda x, y: f'<anchor {round(x + (y - yc) * s)} {round(y)}>'  # noqa: E731
+    stack = [m + c for m in sorted(GL.TOP_MARKS) for c in ('', '.case')]
+    side = [m + c for m in ('acutecomb', 'gravecomb', 'hookabovecomb') for c in ('', '.case')]
+    for m in stack:
+        lines.append(f'markClass {m} {sk(0, o.bounds[m][1])} @MK_above;')
+    for m in side:
+        lines.append(f'markClass {m} {sk(o.bounds[m][0], o.bounds[m][1])} @MK_side;')
+    lines.append('feature mkmk {\n  lookup MKMK_ABOVE {')
+    for m in stack:
+        lines.append(f'    pos mark {m} {sk(0, o.bounds[m][3] + p.mt * 0.45)} mark @MK_above;')
+    lines.append('  } MKMK_ABOVE;\n  lookup MKMK_SIDE {')
+    for m in ('circumflexcomb', 'circumflexcomb.case'):
+        b = o.bounds[m]
+        lines.append(f'    pos mark {m} {sk(b[2] - p.mt * 0.35, (b[3] - b[1]) * 0.45)} mark @MK_side;')
+    lines.append('  } MKMK_SIDE;\n} mkmk;')
     return '\n'.join(lines)
 
 
@@ -449,6 +478,7 @@ languagesystem DFLT dflt;
 languagesystem latn dflt;
 languagesystem latn ROM;
 languagesystem latn MOL;
+languagesystem cyrl dflt;
 
 @figs = [zero one two three four five six seven eight nine];
 @pnum = [zero.pnum one.pnum two.pnum three.pnum four.pnum five.pnum six.pnum seven.pnum eight.pnum nine.pnum];
@@ -456,12 +486,12 @@ languagesystem latn MOL;
 @sinf = [zero.sinf one.sinf two.sinf three.sinf four.sinf five.sinf six.sinf seven.sinf eight.sinf nine.sinf];
 @numr = [zero.numr one.numr two.numr three.numr four.numr five.numr six.numr seven.numr eight.numr nine.numr];
 @dnom = [zero.dnom one.dnom two.dnom three.dnom four.dnom five.dnom six.dnom seven.dnom eight.dnom nine.dnom];
-@topmarks = [gravecomb acutecomb circumflexcomb tildecomb macroncomb brevecomb dotaccentcomb dieresiscomb ringcomb hungarumlautcomb caroncomb];
+@topmarks = [gravecomb acutecomb circumflexcomb tildecomb macroncomb brevecomb dotaccentcomb dieresiscomb ringcomb hungarumlautcomb caroncomb hookabovecomb];
 @case_in = [hyphen endash emdash guilsinglleft guilsinglright guillemotleft guillemotright periodcentered bullet parenleft parenright bracketleft bracketright braceleft braceright at];
 @case_out = [hyphen.case endash.case emdash.case guilsinglleft.case guilsinglright.case guillemotleft.case guillemotright.case periodcentered.case bullet.case parenleft.case parenright.case bracketleft.case bracketright.case braceleft.case braceright.case at.case];
 
-lookup DOTLESS { sub i by dotlessi; sub j by dotlessj; } DOTLESS;
-feature ccmp { sub [i j]' lookup DOTLESS @topmarks; } ccmp;
+lookup DOTLESS { sub i by dotlessi; sub j by dotlessj; sub uni0456 by dotlessi; sub uni0458 by dotlessj; } DOTLESS;
+feature ccmp { sub [i j uni0456 uni0458]' lookup DOTLESS @topmarks; } ccmp;
 
 feature locl {
   script latn;
@@ -518,11 +548,14 @@ def build_master_font(o, glyf, order):
         'manufacturer': 'cascivo',
         'designer': 'cascivo (generated from parametric source)',
     }, mac=False)
-    fb.setupOS2(version=4, 
+    fb.setupOS2(version=4,
         sTypoAscender=1000, sTypoDescender=-300, sTypoLineGap=0,
-        usWinAscent=1000, usWinDescent=300,  # set to the real extremes once the variable font exists sxHeight=round(p.xh), sCapHeight=p.cap,
+        usWinAscent=1000, usWinDescent=300,  # set to the real extremes once the variable font exists
+        sxHeight=round(p.xh), sCapHeight=p.cap,
         usWeightClass=p.wght, achVendID='CSCV', fsType=0, fsSelection=0x40 | 0x80,
-        ulUnicodeRange1=(1 << 0) | (1 << 1) | (1 << 2), ulCodePageRange1=(1 << 0) | (1 << 1),
+        # Basic Latin, Latin-1, Latin Extended-A and -B, Cyrillic, Latin Extended Additional;
+        # code pages 1252, 1250 and 1251
+        ulUnicodeRange1=(1 << 0) | (1 << 1) | (1 << 2) | (1 << 3) | (1 << 9) | (1 << 29), ulCodePageRange1=(1 << 0) | (1 << 1) | (1 << 2),
         yStrikeoutPosition=round(p.xh * 0.5), yStrikeoutSize=round(p.H),
         ySubscriptYOffset=140, ySuperscriptYOffset=round(p.cap * 0.4),
     )

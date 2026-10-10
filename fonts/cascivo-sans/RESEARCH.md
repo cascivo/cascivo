@@ -808,6 +808,62 @@ to Windows GDI, the hinted Regular and Bold carry 5-12% more ink at 10-14 px and
 strokes. The variable fonts stay unhinted, as Inter's and Geist's web fonts are. The statics grow
 to about 69 KB each.
 
+## 23. Mark-to-mark, ẞ, and Cyrillic
+
+**Mark-to-mark.** Precomposed Vietnamese stacked correctly (section 22), but text typed as
+separate combining marks did not: with only a `mark` feature, a second accent attached to the base
+and landed on top of the first. `mkmk` now carries two lookups. In the first, every top mark
+stacks above the previous one at the same 0.45-stroke gap the composites use. In the second, an
+acute, grave or hook after a circumflex sits to its right; it runs second, so it replaces the
+first lookup's attachment. Anchors are computed from the same bounds as the composites and go
+through the italic skew, so `x` + U+0302 + U+0301 shapes exactly like `ấ`. A test checks this,
+to within 2 units, in five stacks, three masters and both styles (HarfBuzz recomposes `a` + marks
+into `ấ`, so the test needs a base with no precomposed form).
+
+**ẞ.** The capital sharp s is drawn as Inter, Geist and Plex draw it: a stem that rounds into a
+flat top, a 7-like diagonal, and a bowl. A round-shouldered form reads as B. Black widens by 8%
+and drops the diagonal's foot, or the upper counter closes.
+
+**Cyrillic, not Greek.** Cyrillic was chosen as the larger readership: Russian, Ukrainian,
+Belarusian, Bulgarian, Serbian and Macedonian.
+
+- **Reused, not redrawn.** 27 letters are composites of the Latin glyph: А В Е К М Н О Р С Т Х
+  Ѕ І Ј, а е о р с у х ѕ і ј, к (= ĸ) and ћ (= ħ). They share the Latin letter's kerning
+  classes too. Ё Ї Й Ў Ѓ Ќ Ѐ Ѝ and their lowercase come from the same NFD composite path as the
+  Latin accents. Ї and ї use the dotless i; capitals take the `.case` marks.
+- **Small capitals.** The lowercase в м н т и я are the capitals' own drawings at the
+  x-height: `_small` hands the capital function a copy of the parameters with `cap = xh` and
+  a lowercase width.
+- **Reflections.** И is N reflected, Я is R reflected, and Э is Є reflected. The pen's thickness
+  depends only on the stroke's angle, so a reflected stroke is drawn exactly as the original.
+- **The italic** follows Plex's drawn italic for и п т, which take the cursive u n m. The rest
+  are slanted roman forms, as Inter and Plex draw them.
+- **Л's leg** started as a straight diagonal, which read as a lean beside Н and П. It now drops
+  straight and curls out to a foot, as in Inter, Geist and Plex. Љ and л follow.
+- **Black.** Д widens by 12%, or its counter shut to a slit. The lowercase з and я stack three
+  horizontals in an x-height, and their counters closed (both self-intersected at Black italic).
+  They take a horizontal pen 25% lighter at Black, as Inter's do.
+- **Kerning.** The candidate list now includes the Cyrillic alphabet. Regenerated from the same
+  Geist and Inter, the 489 Latin pairs came back identical, plus 1,045 Cyrillic ones. Letters
+  that are Latin glyphs map to the Latin pair (АТ is AT). Й was dropped from the list: it already
+  sits in И's class, and giving it a class of its own split the lookup and silently dropped `Ty`.
+  491 Cyrillic class pairs are kept.
+- **Collisions.** A sweep of the Cyrillic and mixed pairs at the four corners found two shapes
+  that touch. ħ's bar (and ћ, the same glyph) overhangs into T, Г, У, V and Y: `Тћ` was at -14
+  at Display Black italic, and Latin `Tħ` too, which the Latin sweep had never tried. Ъ Ђ Ћ start
+  with a bar at the top left, and `VЪ` and `УТ` were at 0. These are own-shape pairs, which only
+  ever open. The tightest Cyrillic pair is now 1 unit, the same as Latin `AX`.
+
+**A bug found on the way.** A comment added in section 22 swallowed `sxHeight` and `sCapHeight`
+in the OS/2 call, so 0.2.0 shipped both as 0. CSS `font-size-adjust` and fallback matching read
+them. They are restored (528 and 700), and a test pins them. OS/2 now also declares Latin
+Extended-B, Cyrillic and Latin Extended Additional, and code page 1251.
+
+**Cost.** The full upright woff2 grows from 37.6 to 51.3 KB, and the italic from 41.8 to 56.9 KB.
+About half of that is GPOS, which doubled with the Cyrillic kerning and the mark bases. The
+Latin subsets are unchanged (21.9 and 29.1 KB; 0.1 KB is the OS/2 fix), so a Latin-only page pays nothing. A build
+takes about 30 s.
+
 ## Sources
 
 - [Introducing Geist Pixel (Vercel)](https://vercel.com/blog/introducing-geist-pixel) and the

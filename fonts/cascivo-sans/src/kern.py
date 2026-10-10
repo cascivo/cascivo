@@ -21,7 +21,7 @@ references use -78), which errs toward loose rather than colliding.
 import json
 import os
 
-from composites import accented_chars, glyph_name
+from composites import CYR_ALIAS, accented_chars, glyph_name, is_cap
 from geom import seg_point
 
 BAND = 10
@@ -52,6 +52,12 @@ OWN_SHAPE_PAIRS.update({(a, 'f'): 1 for a in 'kvwxyr'})
 # up): the tailed l into z, the italic t's crossbar under a diagonal, top-heavy capitals into T.
 OWN_SHAPE_PAIRS.update({(a, b): 1 for a, b in [('l', 'z'), ('x', 't'), ('k', 't'), ('y', 't'), ('v', 't'), ('w', 't'), ('r', 't'), ('t', 'z'), ('V', 'T'), ('W', 'T'), ('Y', 'T'), ('X', 'T'), ('f', 'T')]})
 
+# Cyrillic, same kind: ħ's bar (and ћ, the same glyph) overhangs to the left at the height of a
+# T's or Г's bar, and Ъ Ђ Ћ start with a bar at the top left; at the heavy corners each met the
+# letter before it (Тћ -14, VЪ and УТ 0 at Display Black italic).
+OWN_SHAPE_PAIRS.update({(a, 'hbar'): 1 for a in ['T', 'V', 'Y', 'X', 'E', 'uni0413', 'uni0414', 'uni0423', 'uni0490', 'uni0491']})
+OWN_SHAPE_PAIRS.update({(a, b): 1 for a in ['V', 'Y', 'uni0423'] for b in ['T', 'uni0402', 'uni040B', 'uni042A']})
+OWN_SHAPE_PAIRS.update({(a, 'uni044A'): 1 for a in ['uni0436', 'x', 'kgreenlandic', 'y']})
 
 # Closing pairs no reference list carries, kept when the measurement agrees: tt, whose two
 # crossbars Inter and Plex let nearly meet (ours sat 1.3x their white at Bold).
@@ -59,7 +65,11 @@ OWN_CLOSING_PAIRS = {('t', 't'): -1}
 
 
 def _glyph(ch):
-    return CHAR_GLYPH.get(ch, ch)
+    if ch in CHAR_GLYPH:
+        return CHAR_GLYPH[ch]
+    if 0x400 <= ord(ch) < 0x460:  # А is kerned as A: it is A, and shares A's classes
+        return CYR_ALIAS.get(ord(ch), glyph_name(ch))
+    return ch
 
 
 def _candidates():
@@ -117,7 +127,7 @@ def measure(o, left_glyph, right_glyph):
     if len(bands) < 3:
         return 0
     gaps = [(adv - hi[b]) + lo[b] for b in bands]
-    ref = (p.Sc if left_glyph[0].isupper() else p.S) + (p.Sc if right_glyph[0].isupper() else p.S)
+    ref = (p.Sc if is_cap(left_glyph) else p.S) + (p.Sc if is_cap(right_glyph) else p.S)
     depth = DEPTH * p.S
     eff = sum(min(g, ref + depth) for g in gaps) / len(gaps)
     sa, sb = _slope(hi, bands), _slope(lo, bands)
@@ -133,6 +143,8 @@ def kern_pairs(o):
     acc = {}
     for ch, base, _m in accented_chars():
         acc.setdefault(base, []).append(glyph_name(ch))
+    for cp, latin in CYR_ALIAS.items():
+        acc.setdefault(latin, []).append('uni%04X' % cp)
     cands = {k: v for k, v in _candidates().items() if k[0] in glyphs and k[1] in glyphs}
     cands.update(OWN_SHAPE_PAIRS)
     cands.update(OWN_CLOSING_PAIRS)

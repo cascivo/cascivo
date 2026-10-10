@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.0
+
+- **Cyrillic.** Russian, Ukrainian, Belarusian, Bulgarian, Serbian and Macedonian: U+0400-045F
+  and Ґ ґ (578 codepoints, from 479). Letters shared with Latin are composites of the Latin glyph.
+  The lowercase uses the grotesque small-cap forms. The italic takes the cursive и п т, as
+  IBM Plex Italic does. Kerned from Geist's and Inter's pair lists, measured on Cascivo's own
+  outlines, as the Latin is ([RESEARCH.md](./RESEARCH.md) section 23).
+- **ẞ**, the German capital sharp s.
+- **Mark-to-mark positioning (`mkmk`).** Accents typed as separate combining marks now stack as
+  the precomposed letters do, Vietnamese included.
+- **Fixed:** 0.2.0 shipped `sxHeight` and `sCapHeight` as 0 (CSS `font-size-adjust` reads them).
+- The full woff2 files grow by about 13 and 15 KB. The Latin subsets are unchanged.
+
 ## 0.2.0
 
 A review of every glyph against Inter, Geist, IBM Plex and a Helvetica design, at Regular, Bold and

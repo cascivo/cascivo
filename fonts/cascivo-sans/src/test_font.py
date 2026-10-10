@@ -24,11 +24,11 @@ VFI = os.path.join(DIST, 'CascivoSans-Italic[opsz,wght].ttf')
 # The full-charset files grew with Vietnamese, Welsh and the Croatian digraphs (365 -> 479
 # codepoints, 95 -> 78 bytes each); the Latin slices are unchanged.
 BUDGETS = {
-    'CascivoSans[opsz,wght].woff2': 39_000,
+    'CascivoSans[opsz,wght].woff2': 52_000,  # Latin + Cyrillic
     'CascivoSans-Latin[opsz,wght].woff2': 30_000,
     'CascivoSans-Latin[wght].woff2': 22_500,
-    'CascivoSans-Regular.woff2': 13_500,
-    'CascivoSans-Italic[opsz,wght].woff2': 43_000,
+    'CascivoSans-Regular.woff2': 17_500,
+    'CascivoSans-Italic[opsz,wght].woff2': 58_500,
     'CascivoSans-Italic-Latin[opsz,wght].woff2': 34_000,
     'CascivoSans-Italic-Latin[wght].woff2': 25_000,
 }
@@ -107,14 +107,21 @@ class Font(unittest.TestCase):
         want |= {0x218, 0x219, 0x21A, 0x21B, 0x2013, 0x2014, 0x2018, 0x2019, 0x201A, 0x201C, 0x201D, 0x201E, 0x2022, 0x2026, 0x2039, 0x203A, 0x20AC, 0x2122, 0x2212}
         want |= {0x18F, 0x259, 0x1A0, 0x1A1, 0x1AF, 0x1B0, 0x309, 0x31B, 0x323} | set(range(0x1C4, 0x1CD))  # Ə ə, horned O U, marks, digraphs
         want |= set(range(0x1E80, 0x1E86)) | set(range(0x1EA0, 0x1EFA))  # Welsh, Vietnamese
+        want |= {0x1E9E} | set(range(0x400, 0x460)) | {0x490, 0x491}  # ẞ, Cyrillic, Ґ ґ
         want -= {0xAD}  # soft hyphen is deliberately unmapped
         self.assertEqual(sorted(want - set(cmap)), [])
+
+    def test_os2_heights(self):
+        # CSS font-size-adjust and fallback matching read these; a stray comment once zeroed both
+        for path in (VF, VFI):
+            os2 = TTFont(path)['OS/2']
+            self.assertEqual((os2.sxHeight, os2.sCapHeight), (528, 700), path)
 
     def test_features(self):
         gsub = {r.FeatureTag for r in self.f['GSUB'].table.FeatureList.FeatureRecord}
         gpos = {r.FeatureTag for r in self.f['GPOS'].table.FeatureList.FeatureRecord}
         self.assertLessEqual({'ccmp', 'locl', 'pnum', 'tnum', 'zero', 'sups', 'sinf', 'subs', 'numr', 'dnom', 'frac', 'ordn', 'case', 'ss01'}, gsub)
-        self.assertLessEqual({'kern', 'mark'}, gpos)
+        self.assertLessEqual({'kern', 'mark', 'mkmk'}, gpos)
 
     def test_figures_proportional_by_default_tabular_on_request(self):
         cmap, hmtx = self.f.getBestCmap(), self.f['hmtx']
@@ -265,8 +272,9 @@ class Font(unittest.TestCase):
             return pen.out
 
         pairs = {
-            VF: ['lA', 'lX', 'lx', 'lz'],
-            VFI: ['lA', 'lX', 'lx', 'lz', 'kf', 'rf', 'vf', 'wf', 'xf', 'yf', 'xt', 'kt', 'yt', 'vt', 'wt', 'rt', 'tz', 'zA', 'zX', 'LX', 'ZX', 'fT', 'VT', 'WT', 'YT', 'XT'],
+            VF: ['lA', 'lX', 'lx', 'lz', 'Tħ', 'Тћ', 'Гћ', 'Дћ'],
+            VFI: ['lA', 'lX', 'lx', 'lz', 'kf', 'rf', 'vf', 'wf', 'xf', 'yf', 'xt', 'kt', 'yt', 'vt', 'wt', 'rt', 'tz', 'zA', 'zX', 'LX', 'ZX', 'fT', 'VT', 'WT', 'YT', 'XT']
+            + ['Тћ', 'Vћ', 'Ућ', 'Yћ', 'VЪ', 'УТ', 'YЂ', 'VЋ', 'жъ', 'хъ', 'къ'],  # Cyrillic: bars at the top left
         }
         for path, ps in pairs.items():
             # Display Black is the tightest corner: the opsz and weight deltas add up there
@@ -286,6 +294,32 @@ class Font(unittest.TestCase):
                     gap = min(adv + rb[k][0] - ra[k][1] for k in set(ra) & set(rb))
                     with self.subTest(font=os.path.basename(path), wght=wght, opsz=opsz, pair=pair):
                         self.assertGreater(gap, 0)
+
+    def test_decomposed_marks_stack_as_precomposed(self):
+        # mkmk: a base with no precomposed form (x) takes a stack of combining marks exactly where
+        # the precomposed letter (ấ ầ ẩ ắ ẫ) has them, in every master of both fonts
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        from fontTools.varLib.instancer import instantiateVariableFont
+
+        cases = {'uni1EA5': '\u0302\u0301', 'uni1EA7': '\u0302\u0300', 'uni1EA9': '\u0302\u0309', 'uni1EAF': '\u0306\u0301', 'uni1EAB': '\u0302\u0303'}
+        for path in (VF, VFI):
+            font = hb.Font(hb.Face(open(path, 'rb').read()))
+            for loc in ({'wght': 100, 'opsz': 8}, {'wght': 400, 'opsz': 14}, {'wght': 900, 'opsz': 48}):
+                gl = instantiateVariableFont(TTFont(path), loc)['glyf']
+                font.set_variations(loc)
+                for name, marks in cases.items():
+                    c = gl[name].components
+                    buf = hb.Buffer()
+                    buf.add_str('x' + marks)
+                    buf.guess_segment_properties()
+                    hb.shape(font, buf, {})
+                    q = buf.glyph_positions
+                    with self.subTest(font=os.path.basename(path), loc=loc, glyph=name):
+                        self.assertAlmostEqual(q[2].x_offset - q[1].x_offset, c[2].x - c[1].x, delta=2)
+                        self.assertAlmostEqual(q[2].y_offset - q[1].y_offset, c[2].y - c[1].y, delta=2)
 
     def test_static_family_links_as_four_styles(self):
         # word processors pair Regular/Bold/Italic/Bold Italic by family name and style bits
