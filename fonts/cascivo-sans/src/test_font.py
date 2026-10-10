@@ -24,11 +24,11 @@ VFI = os.path.join(DIST, 'CascivoSans-Italic[opsz,wght].ttf')
 # The full-charset files grew with Vietnamese, Welsh and the Croatian digraphs (365 -> 479
 # codepoints, 95 -> 78 bytes each); the Latin slices are unchanged.
 BUDGETS = {
-    'CascivoSans[opsz,wght].woff2': 52_000,  # Latin + Cyrillic
+    'CascivoSans[opsz,wght].woff2': 64_500,  # Latin, Cyrillic, Greek
     'CascivoSans-Latin[opsz,wght].woff2': 30_000,
     'CascivoSans-Latin[wght].woff2': 22_500,
-    'CascivoSans-Regular.woff2': 17_500,
-    'CascivoSans-Italic[opsz,wght].woff2': 58_500,
+    'CascivoSans-Regular.woff2': 21_500,
+    'CascivoSans-Italic[opsz,wght].woff2': 72_000,
     'CascivoSans-Italic-Latin[opsz,wght].woff2': 34_000,
     'CascivoSans-Italic-Latin[wght].woff2': 25_000,
 }
@@ -108,6 +108,11 @@ class Font(unittest.TestCase):
         want |= {0x18F, 0x259, 0x1A0, 0x1A1, 0x1AF, 0x1B0, 0x309, 0x31B, 0x323} | set(range(0x1C4, 0x1CD))  # Ə ə, horned O U, marks, digraphs
         want |= set(range(0x1E80, 0x1E86)) | set(range(0x1EA0, 0x1EFA))  # Welsh, Vietnamese
         want |= {0x1E9E} | set(range(0x400, 0x460)) | {0x490, 0x491}  # ẞ, Cyrillic, Ґ ґ
+        # Kazakh, Uzbek, Tatar, Bashkir, Tajik, Azerbaijani Cyrillic
+        want |= {0x492, 0x493} | set(range(0x496, 0x49E)) | {0x4A0, 0x4A1, 0x4A2, 0x4A3, 0x4AA, 0x4AB} | set(range(0x4AE, 0x4B4)) | set(range(0x4B6, 0x4BC))
+        want |= {0x4C0, 0x4CF, 0x4D8, 0x4D9, 0x4E8, 0x4E9}
+        want |= {0x4D2, 0x4E2, 0x4E3, 0x4E6, 0x4E7, 0x4EE, 0x4EF, 0x4F0, 0x4F1}  # Ӓ Ӣ ӣ Ӧ ӧ Ӯ ӯ Ӱ ӱ
+        want |= set(range(0x384, 0x38B)) | {0x38C} | set(range(0x38E, 0x3A2)) | set(range(0x3A3, 0x3CF)) | {0x37E}  # Greek
         want -= {0xAD}  # soft hyphen is deliberately unmapped
         self.assertEqual(sorted(want - set(cmap)), [])
 
@@ -272,9 +277,10 @@ class Font(unittest.TestCase):
             return pen.out
 
         pairs = {
-            VF: ['lA', 'lX', 'lx', 'lz', 'Tħ', 'Тћ', 'Гћ', 'Дћ'],
+            VF: ['lA', 'lX', 'lx', 'lz', 'Tħ', 'Тћ', 'Гћ', 'Дћ', 'Τΰ', 'ΰΤ', 'ΐΐ', 'ΐλ'],
             VFI: ['lA', 'lX', 'lx', 'lz', 'kf', 'rf', 'vf', 'wf', 'xf', 'yf', 'xt', 'kt', 'yt', 'vt', 'wt', 'rt', 'tz', 'zA', 'zX', 'LX', 'ZX', 'fT', 'VT', 'WT', 'YT', 'XT']
-            + ['Тћ', 'Vћ', 'Ућ', 'Yћ', 'VЪ', 'УТ', 'YЂ', 'VЋ', 'жъ', 'хъ', 'къ'],  # Cyrillic: bars at the top left
+            + ['Тћ', 'Vћ', 'Ућ', 'Yћ', 'VЪ', 'УТ', 'YЂ', 'VЋ', 'жъ', 'хъ', 'къ']  # Cyrillic: bars at the top left
+            + ['Δλ', 'ΔΧ', 'Ωλ', 'Τΰ', 'ΰΤ', 'Γΰ', 'ΐΐ', 'ιλ'],  # Greek: italic feet, ΐ ΰ's dots
         }
         for path, ps in pairs.items():
             # Display Black is the tightest corner: the opsz and weight deltas add up there
@@ -294,6 +300,32 @@ class Font(unittest.TestCase):
                     gap = min(adv + rb[k][0] - ra[k][1] for k in set(ra) & set(rb))
                     with self.subTest(font=os.path.basename(path), wght=wght, opsz=opsz, pair=pair):
                         self.assertGreater(gap, 0)
+
+    def test_local_forms(self):
+        # Bulgarian takes its round lowercase, Serbian and Macedonian their б (and, in the
+        # italic, г д п т); Russian keeps the defaults. The fonts carry no glyph names (post
+        # format 3), so a local form is a glyph other than the cmap's.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+
+        def changed(path, text, lang):
+            cmap = TTFont(path).getBestCmap()
+            order = TTFont(path).getGlyphOrder()
+            font = hb.Font(hb.Face(open(path, 'rb').read()))
+            buf = hb.Buffer()
+            buf.add_str(text)
+            buf.guess_segment_properties()
+            buf.language = lang
+            hb.shape(font, buf, {})
+            return [order[i.codepoint] != cmap[ord(ch)] for i, ch in zip(buf.glyph_infos, text)]
+
+        self.assertTrue(all(changed(VF, 'вгджзийклптцшщю', 'bg')))
+        self.assertTrue(all(changed(VFI, 'бгдпт', 'sr')))
+        self.assertTrue(all(changed(VFI, 'бгдпт', 'mk')))
+        self.assertEqual(changed(VF, 'бгдпт', 'sr'), [True, False, False, False, False])
+        self.assertFalse(any(changed(VF, 'бвгджзийклптцшщю', 'ru')))
 
     def test_decomposed_marks_stack_as_precomposed(self):
         # mkmk: a base with no precomposed form (x) takes a stack of combining marks exactly where

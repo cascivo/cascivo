@@ -860,9 +860,90 @@ them. They are restored (528 and 700), and a test pins them. OS/2 now also decla
 Extended-B, Cyrillic and Latin Extended Additional, and code page 1251.
 
 **Cost.** The full upright woff2 grows from 37.6 to 51.3 KB, and the italic from 41.8 to 56.9 KB.
-About half of that is GPOS, which doubled with the Cyrillic kerning and the mark bases. The
+Raw GPOS doubled with the Cyrillic kerning and the mark bases, but that is not where the
+compressed bytes are: section 24 corrects this. The
 Latin subsets are unchanged (21.9 and 29.1 KB; 0.1 KB is the OS/2 fix), so a Latin-only page pays nothing. A build
 takes about 30 s.
+
+## 24. Greek, more Cyrillic, local forms, and where the bytes are
+
+**More Cyrillic.** The Cyrillic of Kazakh, Uzbek, Tatar, Bashkir, Tajik and Azerbaijani.
+
+- **Shared shapes:** Ә is Ə, Ү is Y, Һ is h, and Ӏ is the plain I.
+- **Base plus a piece:** most letters are a composite of a base and one drawn piece.
+  - A tail at the foot: Қ Җ Ҳ.
+  - A tail off the right stem, spaced as Ц: Ң Ҷ.
+  - A bar: Ғ (the letter moves right until 0.35 of its sidebearing is left), Ұ.
+  - A vertical stroke: Ҝ Ҹ.
+  - A cedilla: Ҙ Ҫ, as Inter and Plex draw them.
+- **Drawn:** Ө ө, Һ, ү and Ҡ ҡ.
+- **From decomposition:** extending the Unicode decomposition range to U+04FF brings Ӑ Ӓ Ӣ Ӧ Ӱ Ӳ
+  Ӟ and the rest.
+
+**Local forms.** Under `bg`, Bulgarian takes the rounder lowercase that IBM Plex uses
+(Inter and Geist have none).
+
+- **Existing shapes:** д is g, и u, й ŭ, к k, п n, т m, ц u with a tail.
+- **Turned or reflected:** ш is m turned 180° (ɯ), л is v flipped (ʌ), г is s reflected (ƨ).
+- **Drawn:** в, ж and ю with ascenders, and з dropped below the line.
+
+Under `sr` and `mk`, Serbian and Macedonian take a б whose top curls up to the left (ð without
+its bar). The italic adds г д п т as ı̄ ɡ ū ш̄. Neither reference does the Serbian forms. They
+are the standard ones, and they exist only in the italic font, so the upright has no glyph it
+cannot reach. A test shapes each language and checks every substitution.
+
+Reflection has a catch in the italic. The italic pen's stress axis leans with the slant, so
+under a reflected stroke it leans against the curve, and the reflected s (ƨ) and ε folded at
+Black italic whatever their width or pen. Those two, and ξ, are expanded with the upright pen
+and sheared instead. That makes them a sloped roman, as all of Inter's italic is.
+
+**Greek.** Monotonic Greek, 73 codepoints.
+
+- **Shared shapes:** 17 capitals are Latin or Cyrillic glyphs (Γ Π Φ are Г П Ф). So are γ δ κ μ
+  ν ο: γ is ү, and δ is the Serbian б.
+- **Drawn:** Δ Θ Λ Ξ Σ Ψ Ω and 19 lowercase, after Inter and Plex: an ɑ-shaped α, β on a
+  descending stem, tailed ι and τ, ς and ζ with a hook below, round υ ψ ω, and ε as з reflected.
+- **Capital tonos:** the tonos stands before the letter. The letter moves right until the tonos
+  clears its leftmost ink in the top 30%, which the build now records for every glyph. Α's apex
+  is far right, so Ά barely moves; Η moves a full gap.
+- **ΐ and ΰ:** the tonos stands between two dots placed to clear it. The leaning tonos needs
+  more room on the left than the right. The dots overhang the narrow ι and υ, so those two
+  letters widen by the overhang (ΐΐ overlapped by 305 units at Black before this). They also
+  take no closing kern: as υ, ΰ's dots ran into a T's bar.
+- **Kerning:** Geist has no Greek, so for pairs with a Greek letter the candidate list asks
+  Inter and Plex to agree instead: 454 pairs. The Latin and Cyrillic candidates regenerated
+  identically.
+- **Collisions:** in the italic, Δ's and Ω's baseline bars slant out under the next letter, as
+  Z's and L's do, and take a heavier right sidebearing at Black. Same-script Greek pairs are
+  clear everywhere except Display Black italic, where the worst is -3, about Latin's own worst
+  there (`Tä` -1, `AX` 2).
+
+**Kerning by side, and where the bytes are.** Cyrillic and Greek glyphs whose left or right ink
+profile matches another glyph's (within 3 units in every 10-unit band) now share that glyph's
+class on that side. Б Г П Ш Ь all start with H's stem, and ц and щ end like u. A Latin match is
+preferred. A pair that lands on Latin on both sides only because of a Cyrillic or Greek glyph is
+dropped, so Latin pairs cannot change; a shaping comparison against 0.3.0 confirms that no
+Latin pair moved.
+
+The proposal was to shrink the file, and it did not: raw GPOS fell 9% (70.3 to 64.0 KB), but
+the WOFF2 by only 0.1 KB. Brotli had already removed the redundancy. Measured per table after
+compression, the upright font's weight is the outline variations (gvar, 34.7 KB) and the
+outlines (glyf, 14.6 KB). Kerning is 5.6 KB, marks 2.5 KB. Section 23's "about half is GPOS"
+was a raw-size statement, and wrong for what a browser downloads.
+
+The grouping stays for what it does do. About 60 glyphs that no reference kerns now kern by
+the glyph they match: Қ Ң Ғ, the Bulgarian forms, the lowercase tonos letters. In the italic,
+и and т (drawn as u and m) take u's and m's kerning instead of pairs Inter measured on its
+upright Т-shaped т.
+
+**Found, not fixed: ï.** The dieresis on i overhangs its stem. At Black, ï collides with an
+ascender beside it (`dï`, `ïl` -39, `fï` -59) and with T, V and Y bars (about -90). At Regular
+only `fï` touches (-19). This has been in every release. The fix (a narrower dieresis on i, or
+widening ï as ΐ now is) changes Latin metrics, so it is left as a proposal.
+
+**Cost.** Full upright woff2 63.4 KB (from 51.3), italic 70.2 KB (from 56.9), 719 codepoints.
+The Latin subsets grew 0.1 KB, from the new scripts' entries in the layout tables. A build takes
+about 40 s.
 
 ## Sources
 

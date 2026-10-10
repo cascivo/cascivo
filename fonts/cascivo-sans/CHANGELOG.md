@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.4.0
+
+- **Greek.** Monotonic Greek with tonos and dialytika: 73 codepoints (719 in all, from 578).
+  Capital tonos stands before the letter, as in Inter and Plex. Kerned from the pairs Inter and
+  IBM Plex agree on.
+- **More Cyrillic.** Kazakh, Uzbek, Tatar, Bashkir, Tajik and Azerbaijani: Ә Ғ Қ Ң Ө Ұ Ү Һ Җ Ҳ
+  Ҷ Ҹ Ҙ Ҫ Ҡ Ҝ Ӏ, and Ӑ Ӓ Ӣ Ӧ Ӱ Ӳ and their relatives.
+- **Local forms (`locl`).** Bulgarian (`bg`) takes its rounder lowercase, as IBM Plex does.
+  Serbian and Macedonian (`sr`, `mk`) take their б, and in the italic their г д п т.
+- **Kerning by side shape.** Cyrillic and Greek letters with a matching side share a kerning
+  class, so letters no reference kerns (Қ, the Bulgarian forms) are kerned. Latin kerning is
+  unchanged.
+- The full woff2 files grow to 63.4 and 70.2 KB. The Latin subsets are unchanged in practice
+  (+0.1 KB).
+
 ## 0.3.0
 
 - **Cyrillic.** Russian, Ukrainian, Belarusian, Bulgarian, Serbian and Macedonian: U+0400-045F

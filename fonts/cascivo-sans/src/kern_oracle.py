@@ -1,12 +1,13 @@
 """Regenerate kern_candidates.json: which character pairs deserve kerning at all.
 
 A pair is a candidate when two independent, professionally kerned fonts (Geist and Inter, both
-OFL) each kern it by at least 12/1000 em in the same direction. Only the *pair list* is stored;
+OFL; Inter and IBM Plex for pairs with a Greek letter, which Geist lacks) each kern it by at
+least 12/1000 em in the same direction. Only the *pair list* is stored;
 every value in Cascivo Sans is measured from its own outlines (kern.py), and a candidate is
 dropped when that measurement disagrees. The pairs chosen by hand before this list existed are
 kept as well.
 
-    python3 -I src/kern_oracle.py path/to/Geist[wght].woff2 path/to/Inter[wght].woff2
+    python3 -I src/kern_oracle.py path/to/Geist.ttf path/to/Inter.ttf path/to/IBMPlexSans.ttf
 """
 
 import io
@@ -23,6 +24,8 @@ CHARS = (
     '.,:;\'"‘’“”-–—()[]{}/?!«»‹›&*@'
     'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзиклмнопрстуфхцчшщъыьэюя'  # й Й: kerned as и И
 )
+# Geist has no Greek: a pair with a Greek letter is a candidate when Inter and IBM Plex agree.
+GREEK = 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρςστυφχψω'
 THRESHOLD = 12
 # Geist kerns straight quotes against letters ("A, 'A) but not curly ones; Inter kerns both. A
 # font's opinion on the straight form counts for the curly forms too, or the most common quote
@@ -37,7 +40,7 @@ LEGACY = (
 ).split()
 
 
-def kerned_pairs(path):
+def kerned_pairs(path, chars=CHARS):
     f = TTFont(path)
     if 'fvar' in f:
         f = instantiateVariableFont(f, {'wght': 400})
@@ -55,8 +58,10 @@ def kerned_pairs(path):
         return sum(p.x_advance for p in b.glyph_positions)
 
     out = {}
-    for a in CHARS:
-        for c in CHARS:
+    for a in chars:
+        for c in chars:
+            if chars is not CHARS and a not in GREEK and c not in GREEK:
+                continue
             k = (advance(a + c, True) - advance(a + c, False)) * 1000 / face.upem
             if abs(k) >= THRESHOLD:
                 out[a + c] = k
@@ -73,9 +78,11 @@ def _with_straight_quotes(kerns):
     return out
 
 
-def main(geist, inter):
+def main(geist, inter, plex):
     g, i = _with_straight_quotes(kerned_pairs(geist)), _with_straight_quotes(kerned_pairs(inter))
     both = {p: (-1 if g[p] < 0 else 1) for p in g if p in i and (g[p] < 0) == (i[p] < 0)}
+    gi, gp = kerned_pairs(inter, CHARS + GREEK), kerned_pairs(plex, CHARS + GREEK)
+    both.update({p: (-1 if gi[p] < 0 else 1) for p in gi if p in gp and (gi[p] < 0) == (gp[p] < 0)})
     for p in LEGACY:
         both.setdefault(p, -1)
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'kern_candidates.json')
@@ -85,4 +92,4 @@ def main(geist, inter):
 
 
 if __name__ == '__main__':
-    main(*sys.argv[1:3])
+    main(*sys.argv[1:4])

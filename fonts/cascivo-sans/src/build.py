@@ -9,6 +9,7 @@ import io
 import math
 import os
 import sys
+import unicodedata
 
 # Reproducible bytes: fontTools stamps head.created/modified from this when it is set.
 os.environ.setdefault('SOURCE_DATE_EPOCH', '1791331200')  # 2026-10-07
@@ -29,8 +30,9 @@ from fontTools.varLib import instancer  # noqa: E402
 import ttfautohint  # noqa: E402
 
 import glyphs as GL  # noqa: E402
-import cyrillic  # noqa: E402,F401  (registers the Cyrillic drawings)
-from composites import BOTTOM, CYR_ALIAS, SPECIAL, accented_chars, glyph_name, is_cap  # noqa: E402
+import cyrillic  # noqa: E402  (also registers the Cyrillic drawings)
+import greek  # noqa: E402,F401  (registers the Greek drawings)
+from composites import ALIAS, BOTTOM, CYR_EXT, CYR_LOCL, GREEK_ACCENTED, ITALIC_ONLY, SPECIAL, accented_chars, glyph_name, is_cap  # noqa: E402
 from geom import contour_bounds, expand, transform_contour  # noqa: E402
 import kern  # noqa: E402
 from kern import kern_fea  # noqa: E402
@@ -38,7 +40,7 @@ from params import BLACK_STEM, ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, P  # noqa:
 
 FAMILY = 'Cascivo Sans'
 PS = 'CascivoSans'
-VERSION = '0.3.0'
+VERSION = '0.4.0'
 DIST = os.path.join(HERE, '..', 'fonts')  # not dist/: the repo ignores dist/, and these files ship
 MAX_ERR = 1.5  # cu2qu tolerance in font units: 1.5/1000 em is sub-pixel below ~700px
 IUP_TOLERANCE = 1.0  # gvar deltas the rasterizer can re-infer within 1 unit are dropped
@@ -60,6 +62,7 @@ class Out:
         self.comps = {}
         self.cmap = {}
         self.bounds = {}
+        self.topleft = {}
 
 
 def italicize(strokes, p):
@@ -110,6 +113,7 @@ def draw_master(p):
         bx = [contour_bounds(c) for c in cs]
         xmin, ymin = min(b[0] for b in bx), min(b[1] for b in bx)
         xmax, ymax = max(b[2] for b in bx), max(b[3] for b in bx)
+        top = [q[0] for c in cs for sg in c for q in sg[1:] if q[1] > p.cap * 0.7]
         if g.mark:
             dx, adv = 0.0, 0
         elif g.tab:
@@ -124,6 +128,7 @@ def draw_master(p):
         o.contours[name] = cs
         o.adv[name] = round(adv)
         o.bounds[name] = (xmin + dx, ymin, xmax + dx, ymax)
+        o.topleft[name] = (min(top) if top else xmin) + dx  # leftmost ink in the top 30% (Ά's tonos)
         # capitals' accents clear the letter by 0.10 cap height, as Inter's, Geist's and Plex's (0.06 was cramped)
         top_y = {'x': p.xh, 'c': p.cap, 'a': p.asc}[g.ht] + {'x': 68, 'c': 70, 'a': 42}[g.ht]
         cx = (xmin + xmax) / 2 + dx
@@ -138,6 +143,13 @@ def draw_master(p):
         o.anchors[name] = a
     add_composites(o)
     return o
+
+
+def _dialytika_tonos(p):
+    """How far ΐ's and ΰ's dots sit left and right of the tonos's centre: each clears the leaning
+    tonos (greek.m_tonos: from (-28, 0) to (28, 160)) by 22 units at the dot's own height."""
+    d, hw = p.dot * 0.95, p.mt * 0.55
+    return 28 + hw + 22 + d / 2, -28 + 56 * d / 160 + hw + 22 + d / 2
 
 
 def add_composites(o):
@@ -319,13 +331,84 @@ def add_composites(o):
     comp('at.case', [('at', 0, 50, 1)], o.adv['at'])
     o.cmap.pop(0xAD, None)  # soft hyphen should never render; leave it unmapped
 
-    # Cyrillic letters that are the Latin shape are that glyph, by reference (ss01 included)
-    for cp, latin in CYR_ALIAS.items():
+    # Cyrillic and Greek letters that are a Latin shape are that glyph, by reference (ss01 included)
+    for cp, latin in ALIAS.items():
         n = 'uni%04X' % cp
         comp(n, [(latin, 0, 0, 1)], o.adv[latin], cp)
-        o.anchors[n] = o.anchors.get(latin, o.anchors[{'hbar': 'h'}.get(latin, latin)])
+        o.anchors[n] = o.anchors.get(latin) or o.anchors.get({'hbar': 'h'}.get(latin, latin), {})  # ; and · carry none
         if latin + '.ss01' in o.adv:
             comp(n + '.ss01', [(latin + '.ss01', 0, 0, 1)], o.adv[latin + '.ss01'])
+    for cp, (base, piece, where) in CYR_EXT.items():
+        n = 'uni%04X' % cp
+        xmin, _, xmax, _ = o.bounds[base]
+        unit = p.Sc if is_cap(n) else p.S
+        adv, shift = o.adv[base], 0
+        if where == 'bottom':
+            parts = [(base, 0, 0, 1), at(base, piece, 'bottom')]
+        else:
+            if where == 'stem':
+                x = xmax - p.V / 2
+                adv += cyrillic.stem_tail_reach(p) - 0.65 * unit  # spaced as Ц
+            elif where == 'left':
+                # the bar reaches left of the stem; the letter moves right until 0.35 of its
+                # sidebearing is left
+                shift = max(0, p.V * 0.45 + 30 - 0.65 * unit)
+                x = xmin
+            else:
+                x = {'foot': xmax, 'centre': (xmin + xmax) / 2, 'arm': xmin + (xmax - xmin) * 0.42, 'bowl': (xmin + xmax) / 2 - p.V * 0.25}[where]
+            parts = [(base, shift, 0, 1), (piece, x + shift, 0, 1)]
+        comp(n, parts, adv + shift, cp)
+        o.anchors[n] = {k: (v[0] + shift, v[1]) for k, v in o.anchors[base].items()}
+    # Greek tonos and dialytika. A lowercase takes its tonos above, between dialytika's dots when
+    # it has both (ΐ ΰ); a capital takes it before the letter at the cap height, the letter moving
+    # right to make room, as in Inter and Plex.
+    for cp in GREEK_ACCENTED:
+        ch = chr(cp)
+        d = unicodedata.normalize('NFD', ch)
+        base = 'uni%04X' % ord(d[0]) if ord(d[0]) not in ALIAS else ALIAS[ord(d[0])]
+        tonos, dial = '\u0301' in d, '\u0308' in d
+        if ch.isupper() and tonos:
+            tx = S * 0.15 + 28 + p.mt / 2
+            shift = max(0.0, tx + 28 + p.mt / 2 + S * 0.55 - o.topleft.get(base, o.bounds.get(base, (0,))[0]))
+            parts = [(base, shift, 0, 1), ('tonoscomb', tx, p.cap - 150, 1)]
+            comp('uni%04X' % cp, parts, o.adv[base] + shift, cp)
+            o.anchors['uni%04X' % cp] = {k: (v[0] + shift, v[1]) for k, v in o.anchors[base].items()}
+            continue
+        parts = [(base, 0, 0, 1)]
+        if dial and tonos:
+            # ΐ ΰ: the tonos stands between two dots set wide enough to hold it, and the letter
+            # widens by however far the dots overhang its ink (ι is narrower than its accents)
+            m, bx, by, a_ = at(base, 'tonoscomb', 'top')
+            dl, dr = _dialytika_tonos(p)
+            half = p.dot / 2
+            xmin, _, xmax, _ = o.bounds[base]
+            sl = max(0.0, xmin - (bx - dl - half))
+            sr = max(0.0, (bx + dr + half) - xmax)
+            parts = [(base, sl, 0, 1), ('dotaccentcomb', bx - dl + sl, by, 1), ('dotaccentcomb', bx + dr + sl, by, 1), (m, bx + sl, by + 10, a_)]
+            comp('uni%04X' % cp, parts, o.adv[base] + sl + sr, cp)
+            o.anchors['uni%04X' % cp] = {k: (v[0] + sl, v[1]) for k, v in o.anchors[base].items()}
+            continue
+        elif dial:
+            parts.append(at(base, 'dieresiscomb.case' if ch.isupper() else 'dieresiscomb', 'top'))
+        elif tonos:
+            parts.append(at(base, 'tonoscomb', 'top'))
+        comp('uni%04X' % cp, parts, o.adv[base], cp)
+        o.anchors['uni%04X' % cp] = o.anchors[base]
+    tw = 170 + p.V * 0.5 + 2 * S * 0.6
+    comp('tonos', [('tonoscomb', tw / 2, p.xh + 68, 1)], tw, 0x384)
+    dl, dr = _dialytika_tonos(p)
+    comp('dieresistonos', [('dotaccentcomb', tw / 2 - dl, p.xh + 68, 1), ('dotaccentcomb', tw / 2 + dr, p.xh + 68, 1), ('tonoscomb', tw / 2, p.xh + 78, 1)], tw, 0x385)
+
+    for n, (base, piece) in CYR_LOCL.items():
+        if n in ITALIC_ONLY and not p.italic:
+            continue
+        parts = [(base, 0, 0, 1)]
+        if piece == 'cyrtail.foot':
+            parts.append((piece, o.bounds[base][2], 0, 1))
+        elif piece:
+            parts.append(at(base, piece, 'top'))
+        comp(n, parts, o.adv[base])
+        o.anchors[n] = o.anchors[base]
 
     # flatten: a composite of composites is resolved to outline components only (some
     # rasterizers and validators reject nesting, and it saves an indirection per glyph)
@@ -444,7 +527,7 @@ def mark_fea(o):
         f'markClass [horncomb] <anchor {round(mo[0])} {round(mo[1])}> @MC_horn;',
         'feature mark {',
     ]
-    cyr = [n for n in o.anchors if n.startswith('uni04') and len(n) == 7]  # every Cyrillic letter
+    cyr = [n for n in o.anchors if n[:5] in ('uni03', 'uni04') and len(n) == 7 and 'top' in o.anchors[n]]  # Cyrillic, Greek letters
     bases = [n for n in o.anchors if n in GL.GLYPHS and not GL.GLYPHS[n][0] == [] and n.isalpha() and len(n) == 1] + ['dotlessi', 'dotlessj'] + sorted(set(cyr))
     for b in bases:
         a = o.anchors[b]
@@ -479,6 +562,10 @@ languagesystem latn dflt;
 languagesystem latn ROM;
 languagesystem latn MOL;
 languagesystem cyrl dflt;
+languagesystem cyrl BGR;
+languagesystem cyrl SRB;
+languagesystem cyrl MKD;
+languagesystem grek dflt;
 
 @figs = [zero one two three four five six seven eight nine];
 @pnum = [zero.pnum one.pnum two.pnum three.pnum four.pnum five.pnum six.pnum seven.pnum eight.pnum nine.pnum];
@@ -518,6 +605,20 @@ feature case { sub @case_in by @case_out; } case;
 """
 
 
+def cyrl_locl(o):
+    """Bulgarian, Serbian and Macedonian forms, by the text's language."""
+    have = set(o.contours) | set(o.comps)
+    bgr = sorted(n for n in have if n.endswith('.loclBGR'))
+    srb = sorted(n for n in have if n.endswith('.loclSRB'))
+    lines = ['feature locl {', '  script cyrl;', '  language BGR;']
+    lines += [f'  sub {n[:7]} by {n};' for n in bgr]
+    for lang in ('SRB', 'MKD'):
+        lines.append(f'  language {lang};')
+        lines += [f'  sub {n[:7]} by {n};' for n in srb]
+    lines.append('} locl;')
+    return '\n'.join(lines)
+
+
 def build_master_font(o, glyf, order):
     p = o.p
     fb = FontBuilder(1000, isTTF=True)
@@ -553,9 +654,9 @@ def build_master_font(o, glyf, order):
         usWinAscent=1000, usWinDescent=300,  # set to the real extremes once the variable font exists
         sxHeight=round(p.xh), sCapHeight=p.cap,
         usWeightClass=p.wght, achVendID='CSCV', fsType=0, fsSelection=0x40 | 0x80,
-        # Basic Latin, Latin-1, Latin Extended-A and -B, Cyrillic, Latin Extended Additional;
-        # code pages 1252, 1250 and 1251
-        ulUnicodeRange1=(1 << 0) | (1 << 1) | (1 << 2) | (1 << 3) | (1 << 9) | (1 << 29), ulCodePageRange1=(1 << 0) | (1 << 1) | (1 << 2),
+        # Basic Latin, Latin-1, Latin Extended-A and -B, Greek, Cyrillic, Latin Extended Additional;
+        # code pages 1252, 1250, 1251 and 1253
+        ulUnicodeRange1=(1 << 0) | (1 << 1) | (1 << 2) | (1 << 3) | (1 << 7) | (1 << 9) | (1 << 29), ulCodePageRange1=(1 << 0) | (1 << 1) | (1 << 2) | (1 << 3),
         yStrikeoutPosition=round(p.xh * 0.5), yStrikeoutSize=round(p.H),
         ySubscriptYOffset=140, ySuperscriptYOffset=round(p.cap * 0.4),
     )
@@ -563,7 +664,7 @@ def build_master_font(o, glyf, order):
     ss01 = sorted(n[:-5] for n in o.comps.keys() | o.contours.keys() if n.endswith('.ss01') and n[:-5] in o.adv)
     fea = GSUB_FEA + '\nfeature ss01 {\n  featureNames { name "Plain I and l (as in Helvetica)"; };\n'
     fea += ''.join(f'  sub {n} by {n}.ss01;\n' for n in ss01) + '} ss01;\n'
-    fea += '\n' + kern_fea(o) + '\n' + mark_fea(o)
+    fea += '\n' + cyrl_locl(o) + '\n' + kern_fea(o) + '\n' + mark_fea(o)
     addOpenTypeFeaturesFromString(fb.font, fea)
     # smart dropout control: keeps thin strokes from vanishing in unhinted rasterization
     prep = newTable('prep')

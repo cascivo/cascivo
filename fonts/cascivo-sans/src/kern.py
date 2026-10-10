@@ -20,8 +20,9 @@ references use -78), which errs toward loose rather than colliding.
 
 import json
 import os
+import unicodedata
 
-from composites import CYR_ALIAS, accented_chars, glyph_name, is_cap
+from composites import ALIAS, GREEK_ACCENTED, accented_chars, glyph_name, is_cap, script_glyph
 from geom import seg_point
 
 BAND = 10
@@ -67,8 +68,8 @@ OWN_CLOSING_PAIRS = {('t', 't'): -1}
 def _glyph(ch):
     if ch in CHAR_GLYPH:
         return CHAR_GLYPH[ch]
-    if 0x400 <= ord(ch) < 0x460:  # А is kerned as A: it is A, and shares A's classes
-        return CYR_ALIAS.get(ord(ch), glyph_name(ch))
+    if 0x370 <= ord(ch) < 0x530:  # А and Α are kerned as A: they are A, and share A's classes
+        return script_glyph(ch)
     return ch
 
 
@@ -143,8 +144,15 @@ def kern_pairs(o):
     acc = {}
     for ch, base, _m in accented_chars():
         acc.setdefault(base, []).append(glyph_name(ch))
-    for cp, latin in CYR_ALIAS.items():
+    for cp, latin in ALIAS.items():
         acc.setdefault(latin, []).append('uni%04X' % cp)
+    # lowercase Greek with tonos or dialytika kern as their letter; a capital's tonos stands
+    # out to its left, so Ά is not kerned as Α
+    for cp in GREEK_ACCENTED:
+        # ΐ ΰ are widened to hold their dots (build.py) and take no closing kern: as υ, ΰ's dots
+        # ran into a T's bar (-32 at Display Black italic)
+        if chr(cp).islower() and cp not in (0x390, 0x3B0):
+            acc.setdefault(script_glyph(unicodedata.normalize('NFD', chr(cp))[0]), []).append('uni%04X' % cp)
     cands = {k: v for k, v in _candidates().items() if k[0] in glyphs and k[1] in glyphs}
     cands.update(OWN_SHAPE_PAIRS)
     cands.update(OWN_CLOSING_PAIRS)
@@ -156,12 +164,53 @@ def kern_pairs(o):
 
 _SELECTED = None
 _REGULAR = None  # values measured on the Regular master
+_GROUPS = None  # (right-side rep, left-side rep) of each Cyrillic and Greek glyph
 
 
 def reset():
     """Each font (upright, italic) measures and selects its own pairs."""
-    global _SELECTED, _REGULAR
-    _SELECTED = _REGULAR = None
+    global _SELECTED, _REGULAR, _GROUPS
+    _SELECTED = _REGULAR = _GROUPS = None
+
+
+def _non_latin(name):
+    return name[:5] in ('uni03', 'uni04')
+
+
+def _side_groups(o, glyphs, acc, keys):
+    """Cyrillic and Greek glyphs whose side matches another glyph's ink to 3 units in every band
+    share that glyph's class on that side: Б Г П Ш Ь all start with H's stem, ц and щ end like u.
+    That shrank the kerning by a third, and gives the letters no reference kerns (Қ, the Bulgarian
+    forms) the kerning of the glyph they match. A Latin match is preferred, the one with the most
+    pairs on that side."""
+    members = {m for ms in acc.values() for m in ms}
+    profiles = {}
+
+    def side(name, right):
+        if (name, right) not in profiles:
+            lo, hi = _profile(o, name)
+            prof = {b: o.adv[name] - x for b, x in hi.items()} if right else lo
+            profiles[name, right] = prof
+        return profiles[name, right]
+
+    def same(a, b, right):
+        pa, pb = side(a, right), side(b, right)
+        return pa.keys() == pb.keys() and len(pa) >= 3 and all(abs(pa[k] - pb[k]) <= 3 for k in pa)
+
+    groups = {}
+    for right, idx in ((True, 0), (False, 1)):
+        count = {}
+        for k in keys:
+            count[k[idx]] = count.get(k[idx], 0) + 1
+        latin = sorted((g for g in count if not _non_latin(g)), key=lambda g: (-count[g], g))
+        reps = []
+        for g in sorted(n for n in glyphs if _non_latin(n) and n not in members and n in o.adv):
+            rep = next((r for r in latin if same(g, r, right)), None) or next((r for r in reps if same(g, r, right)), None)
+            if rep is None:
+                reps.append(g)
+                rep = g
+            groups.setdefault(g, [g, g])[idx] = rep
+    return groups
 
 
 def _values(o, pairs):
@@ -183,8 +232,22 @@ def _values(o, pairs):
 
 def kern_fea(o):
     """Same pair set for every master (structure must match); values measured per master."""
-    global _SELECTED
+    global _SELECTED, _GROUPS
     acc, glyphs, pairs = kern_pairs(o)
+    if _GROUPS is None:  # the default master decides the classes, as it does the pairs
+        _GROUPS = _side_groups(o, glyphs, acc, list(pairs))
+    rr = lambda g: _GROUPS.get(g, (g, g))[0]  # noqa: E731
+    rl = lambda g: _GROUPS.get(g, (g, g))[1]  # noqa: E731
+    # A pair moves to its sides' representatives. One that lands on Latin on both sides only
+    # because of a Cyrillic or Greek glyph is dropped: Latin's own list decides Latin shapes.
+    moved = {}
+    for (a, b), v in pairs.items():
+        k = (rr(a), rl(b))
+        if (a, b) != k and not _non_latin(k[0]) and not _non_latin(k[1]):
+            continue
+        if k not in moved or (a, b) == k:
+            moved[k] = v
+    pairs = {k: (measure(o, *k), v[1]) if k not in pairs else pairs[k] for k, v in moved.items()}
     if _SELECTED is None:  # the first (default) master decides which pairs exist
         keep = []
         for (a, b), (k, sign) in pairs.items():
@@ -194,9 +257,15 @@ def kern_fea(o):
         _SELECTED = sorted(keep)
     firsts = sorted({a for a, _ in _SELECTED})
     seconds = sorted({b for _, b in _SELECTED})
+    joined_r, joined_l = {}, {}
+    for g, (r, l) in _GROUPS.items():
+        if r != g:
+            joined_r.setdefault(r, []).append(g)
+        if l != g:
+            joined_l.setdefault(l, []).append(g)
     cls = lambda g: g.replace('.', '_')  # noqa: E731
-    lines = [f'@kR_{cls(g)} = [{" ".join(_members(g, glyphs, acc))}];' for g in firsts]
-    lines += [f'@kL_{cls(g)} = [{" ".join(_members(g, glyphs, acc))}];' for g in seconds]
+    lines = [f'@kR_{cls(g)} = [{" ".join(_members(g, glyphs, acc) + sorted(joined_r.get(g, [])))}];' for g in firsts]
+    lines += [f'@kL_{cls(g)} = [{" ".join(_members(g, glyphs, acc) + sorted(joined_l.get(g, [])))}];' for g in seconds]
     lines.append('feature kern {')
     vals = _values(o, pairs)
     for a, b in _SELECTED:

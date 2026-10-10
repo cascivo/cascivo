@@ -9,7 +9,9 @@ cursive u n m forms as Plex's drawn italic does (Inter's sloped roman keeps them
 
 import copy
 
-from glyphs import _B, _K, _M, _N, _R, _T, L, _bowl_right, _m, _n, _u, glyph, on_line
+from geom import expand
+from glyphs import _B, _K, _M, _N, _R, _S, _T, L, _bowl_right, _kra, _m, _n, _s_extra, _u, _v, glyph, on_line, shoulder
+
 
 def _small(p, ratio):
     """Parameters under which a capital's drawing comes out as its small-cap lowercase."""
@@ -476,3 +478,196 @@ def _dje(g, p):
     g.ht = 'a'
     g.sb = (0.4, 0.6)
 
+
+
+# --- the Cyrillic of Kazakh, Uzbek, Tatar, Bashkir, Tajik and Azerbaijani -------------------------
+# Most are a base letter plus a piece: a tail at the foot (Қ Җ Ҳ) or off the stem (Ң Ҷ), a bar
+# (Ғ Ұ) or a vertical stroke (Ҝ Ҹ). build.py composes them (composites.CYR_EXT); the pieces are
+# drawn here.
+
+
+def stem_tail_reach(p):
+    """How far Ң's and Ҷ's tail reaches right of the stem's centre (as Ц's)."""
+    return p.V * 0.45 + 20
+
+
+def _piece(name, fn):
+    @glyph(name)
+    def _f(g, p):
+        fn(g, p)
+        g.mark = True
+
+
+_piece('cyrtail.foot', lambda g, p: g.vstem(-p.V, _tail(p), p.H * 0.3))
+
+
+def _stem_tail(g, p):
+    e = stem_tail_reach(p)
+    g.hbar(0, e, 0)
+    g.vstem(e - p.V / 2, _tail(p), p.H)
+
+
+_piece('cyrtail.stem', _stem_tail)
+
+
+def _bar(x0, x1, y):
+    return lambda g, p: g.hbar(x0(p), x1(p), y(p) - p.H * 0.45, h=p.H * 0.9)
+
+
+_piece('cyrbar.Ge', _bar(lambda p: -p.V * 0.45 - 30, lambda p: p.V + p.Hw * 0.28, lambda p: p.cap * 0.46))
+_piece('cyrbar.ge', _bar(lambda p: -p.V * 0.45 - 25, lambda p: p.V + p.nw * 0.3, lambda p: p.xh * 0.46))
+_piece('cyrbar.Ue', _bar(lambda p: -p.Hw * 0.27, lambda p: p.Hw * 0.27, lambda p: p.cap * 0.3))
+_piece('cyrbar.ue', _bar(lambda p: -p.nw * 0.3, lambda p: p.nw * 0.3, lambda p: -40))
+_piece('cyrvbar.Ka', lambda g, p: g.line((0, p.cap * 0.24), (0, p.cap * 0.78), w=p.H * 1.1))
+_piece('cyrvbar.ka', lambda g, p: g.line((0, p.xh * 0.2), (0, p.xh * 0.8), w=p.H * 1.1))
+_piece('cyrvbar.Che', lambda g, p: g.line((0, p.cap * 0.14), (0, p.cap * 0.5), w=p.H * 1.1))
+_piece('cyrvbar.che', lambda g, p: g.line((0, p.xh * 0.12), (0, p.xh * 0.5), w=p.H * 1.1))
+
+
+@both(0x4E8, 0x4E9, 1.1)
+def _Barred_O(g, p, top, W, cap):
+    """Ө: O with a bar across its middle, touching both sides."""
+    w = W * (1.17 if cap else 1.0) * (1 - 0.05 * p.heavy * (not cap))
+    g.oval(0, -p.ov, w, top + p.ov)
+    g.hbar(p.V / 2, w - p.V / 2, top / 2 - p.bar / 2, h=p.bar)
+    g.sb = (0.62, 0.62)
+
+
+@glyph('uni04BA', 0x4BA)
+def _Shha(g, p):
+    """Һ: the h at the cap height, its shoulder from about 0.6."""
+    g.vstem(0, 0, p.cap)
+    shoulder(g, 0, p.Hw * 0.94 - p.V, p.cap * 0.64)
+    g.ht = 'c'
+
+
+@glyph('uni04AF', 0x4AF)
+def _ue(g, p):
+    """ү: a v standing on a straight descender (Kazakh, Tatar, Bashkir)."""
+    w = p.nw * 1.1
+    c = w / 2
+    g.diag(0, p.xh, c, 0, 'l', 'c', ws=0.97)
+    g.diag(w, p.xh, c, 0, 'r', 'c', ws=0.97)
+    g.vstem(c - p.V / 2, p.desc, 2)
+    g.sb = (0.25, 0.25)
+
+
+def _qa(g, p, draw, xs, top, cap):
+    """Ҡ (Bashkir): К whose stem takes a bar out to the left at the top, as Ъ's."""
+    draw(g, p)
+    g.strokes = [st.transformed(lambda q: (q[0] + xs, q[1])) for st in g.strokes]
+    g.hbar(0, xs + p.V / 2, top - p.H)
+    g.sb = (0.2, g.sb[1])
+    g.ht = 'c' if cap else 'x'
+
+
+@glyph('uni04A0', 0x4A0)
+def _Qa(g, p):
+    _qa(g, p, _K, p.Hw * 0.26, p.cap, True)
+
+
+@glyph('uni04A1', 0x4A1)
+def _qa_lc(g, p):
+    _qa(g, p, _kra, p.nw * 0.26, p.xh, False)
+
+
+# --- local forms (locl) ----------------------------------------------------------------------
+# Bulgarian prints the lowercase in its own, rounder forms, as IBM Plex does under `bg` (Inter and
+# Geist do not): в г д ж з и й к л п т ц ш щ ю. Those that are a Latin or turned shape (д = g,
+# и = u, к = k, п = n, т = m, ш = ɯ ...) are composites in build.py; the rest are drawn here.
+# Serbian and Macedonian take a б whose top curls up to the left, like ð without its bar, and in
+# the italic г д п т as ı̄ ɡ ū ш̄.
+
+
+def _turn(g, w, h):
+    g.strokes = [st.transformed(lambda q: (w - q[0], h - q[1])) for st in g.strokes]
+
+
+@glyph('uni0432.loclBGR')
+def _ve_bg(g, p):
+    """в: a round β, its stem rising into a small bowl at the ascender and a larger one below."""
+    V, H = p.V, p.H
+    w = p.nw * 0.98
+    a = V / 2
+    ym = p.xh * 0.62
+    rxt = (w * 0.86 - a) / 2
+    ryt = (p.asc + p.ov * 0.4 - ym) / 2
+    cyt = p.asc + p.ov * 0.4 - H / 2 - ryt
+    g.stroke([L((a, 0), (a, cyt))] + g.arc(a + rxt, cyt, rxt, ryt, 180, -90), caps=('b', 'b'))
+    # the lower bowl leaves from under the upper one and closes on the stem
+    yj = cyt - ryt
+    ry = (yj - H / 2) / 2
+    rx = min(ry * 1.08, (w - V / 2 - a) * 0.75)
+    cx = w - V / 2 - rx
+    g.stroke([L((a + rxt * 0.5, yj), (cx, yj))] + g.arc(cx, (yj + H / 2) / 2, rx, ry, 90, -90) + [L((cx, H / 2), (a, H / 2))])
+    g.ht = 'a'
+    g.sb = (1, 0.62)
+
+
+@glyph('uni0433.loclBGR')
+def _ge_bg(g, p):
+    """г: s reflected (ƨ)."""
+    w = p.nw * (0.92 - 0.04 * p.heavy) + _s_extra(p) * 0.7  # the s's own width
+    # the upright's join run in both styles: the italic s's shorter one is tuned to its own lean,
+    # and reflected it folded at Black
+    _S(g, p, w, p.xh, p.ov, run=34, run_up=16, close=26)
+    g.sb = (0.55, 0.55)
+    _mirror(g, w)
+    if p.italic:
+        # Reflected, the italic pen leans against the curve and the upper join folds at Black
+        # whatever the width or pen; expanded with the upright pen, the outline is sheared
+        # instead (a sloped roman, as Inter's whole italic is).
+        g.raw += [c for st in g.strokes for c in expand(st, p.V, p.H)]
+        g.strokes = []
+
+
+@glyph('uni0436.loclBGR')
+def _zhe_bg(g, p):
+    """ж: its middle stem rises to the ascender."""
+    W = p.nw * 1.04
+    _Zhe(g, p, p.xh, W, False)
+    w = W * (1.42 + 0.1 * p.heavy)
+    g.vstem(w / 2 - p.V / 2, p.xh - p.H, p.asc)
+    g.ht = 'a'
+
+
+@glyph('uni0437.loclBGR')
+def _ze_bg(g, p):
+    """з: the З dropped below the line (ʒ)."""
+    d = -p.desc * 0.55
+    _Ze(g, p, p.xh + d, p.nw * (0.96 + 0.2 * p.heavy), False)  # taller than з: Black's upper bowl shut
+    g.strokes = [st.transformed(lambda q: (q[0], q[1] - d)) for st in g.strokes]
+
+
+@glyph('uni043B.loclBGR')
+def _el_bg(g, p):
+    """л: v turned over (ʌ)."""
+    _v(g, p)
+    w = p.nw * 1.10
+    _turn(g, w, p.xh)
+
+
+@glyph('uni0448.loclBGR')
+def _sha_bg(g, p):
+    """ш: m turned round (ɯ). Also the base of Serbian italic т (ш̄)."""
+    _m(g, p)
+    _turn(g, 2 * p.cn * 0.86 + 3 * p.V, p.xh)
+
+
+@glyph('uni044E.loclBGR')
+def _yu_bg(g, p):
+    """ю: the stem rises to the ascender."""
+    _Yu(g, p, p.xh, p.nw, False)
+    g.strokes[0] = g.strokes[0].transformed(lambda q: (q[0], q[1] * p.asc / p.xh))
+    g.ht = 'a'
+
+
+@glyph('uni0431.loclSRB')
+def _be_sr(g, p):
+    """б: ð without its bar, the top curling up to the left."""
+    w = p.nw * 1.06
+    g.oval(0, -p.ov, w, p.xh * 0.92)
+    cx, cy, rx, ry = g.box(0, -p.ov, w, p.asc)
+    g.stroke([L((cx + rx, p.xh * 0.4), (cx + rx, cy))] + g.arc(cx, cy, rx, ry, 0, 118), caps=('b', 'b'))
+    g.ht = 'a'
+    g.sb = (0.62, 0.62)
