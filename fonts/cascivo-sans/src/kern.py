@@ -48,6 +48,9 @@ for _i, _n in enumerate(FIGS):
 # feet of diagonal letters and r. Only a pair whose measurement opens it is kept.
 OWN_SHAPE_PAIRS = {(a, b): 1 for a, b in [('l', 'period'), ('l', 'comma'), ('l', 'ellipsis'), ('l', 'A'), ('l', 'X'), ('l', 'x')]}
 OWN_SHAPE_PAIRS.update({(a, 'f'): 1 for a in 'kvwxyr'})
+# Clear at Regular but closing at the heavy corners (Display Black: the opsz and weight deltas add
+# up): the tailed l into z, the italic t's crossbar under a diagonal, top-heavy capitals into T.
+OWN_SHAPE_PAIRS.update({(a, b): 1 for a, b in [('l', 'z'), ('x', 't'), ('k', 't'), ('y', 't'), ('v', 't'), ('t', 'z'), ('V', 'T'), ('W', 'T'), ('Y', 'T'), ('X', 'T'), ('f', 'T')]})
 
 
 def _glyph(ch):
@@ -128,6 +131,8 @@ def kern_pairs(o):
     cands = {k: v for k, v in _candidates().items() if k[0] in glyphs and k[1] in glyphs}
     cands.update(OWN_SHAPE_PAIRS)
     pairs = {(a, b): (measure(o, a, b), sign) for (a, b), sign in cands.items()}
+    # an own-shape pair only ever opens, by however much each master measures it needs
+    pairs.update({k: (max(0, pairs[k][0]), 1) for k in OWN_SHAPE_PAIRS if k in pairs})
     return acc, glyphs, pairs
 
 
@@ -145,7 +150,11 @@ def _values(o, pairs):
     """Kerning follows weight, but optical size barely changes it: those masters reuse
     Regular's values, so their deltas vanish (1.6 KB of WOFF2, measured)."""
     global _REGULAR
-    vals = {k: v[0] for k, v in pairs.items()}
+    # The measure is fitted at Regular. Heavier, the references kern harder than it says: Bold
+    # carried 0.87 and Black 0.76 of Inter's and Geist's total kerning, most of it short in the
+    # strong pairs (AW, LT, LY, TJ). Closing pairs grow with weight; opening ones stay.
+    boost = 1 + 0.3 * o.p.heavy
+    vals = {k: round(v[0] * boost) if v[0] < 0 else v[0] for k, v in pairs.items()}
     loc = getattr(o, 'loc', {'wght': 400, 'opsz': 14})
     if loc.get('wght') == 400 and loc.get('opsz') == 14:
         _REGULAR = vals
@@ -161,7 +170,8 @@ def kern_fea(o):
     if _SELECTED is None:  # the first (default) master decides which pairs exist
         keep = []
         for (a, b), (k, sign) in pairs.items():
-            if abs(k) >= MIN_KERN and (k < 0) == (sign < 0):
+            # own-shape pairs stay even where Regular needs nothing: the heavy masters may
+            if (abs(k) >= MIN_KERN and (k < 0) == (sign < 0)) or (a, b) in OWN_SHAPE_PAIRS:
                 keep.append((a, b))
         _SELECTED = sorted(keep)
     firsts = sorted({a for a, _ in _SELECTED})

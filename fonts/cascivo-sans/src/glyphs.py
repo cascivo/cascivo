@@ -136,7 +136,8 @@ def _L(g, p):
     w = p.Hw * 0.76
     g.vstem(0, 0, p.cap).hbar(p.V / 2, w, 0)
     g.ht = 'c'
-    g.sb = (1, 0.35)
+    # the italic's foot slants out under the next capital: heavy, it met X
+    g.sb = (1, 0.35 + (0.3 if p.italic else 0) * p.heavy)
     g.anchors['top_x'] = p.V / 2 + 0.35 * w
 
 
@@ -234,7 +235,7 @@ def _Z(g, p):
     g.hbar(w * 0.04, w, p.cap - p.H).hbar(0, w, 0)
     g.diag(w, p.cap - p.H / 2, 0, p.H / 2, 'r', 'l', ws=0.95)
     g.ht = 'c'
-    g.sb = (0.35, 0.35)
+    g.sb = (0.35, 0.35 + (0.3 if p.italic else 0) * p.heavy)  # as the italic L
 
 
 @glyph('X', 0x58)
@@ -790,10 +791,11 @@ def _f(g, p):
         # the italic f descends and hooks left under the preceding letter
         hook, cyb = _italic_descender(g, p, sx)
         g.stroke(hook + [L((sx, cyb), (sx, cy))] + top_hook, caps=('b', 'b'))
-        g.sb = (-0.2 + 0.5 * p.heavy, 0.15)  # heavier, the hook ran into the feet of x, y, k, r
+        # heavier, the hook ran into the feet of x, y, k, r; and the arm, 9% tight at Bold, met a T
+        g.sb = (-0.2 + 0.35 * p.heavy, 0.15 + 0.3 * p.heavy)
     else:
         g.stroke([L((sx, 0), (sx, cy))] + top_hook, caps=('b', 'b'))
-        g.sb = (0.45, 0.2 + 0.25 * p.heavy)  # crossbar overhang, as for t (fo, ft sat 15% tighter than the references')
+        g.sb = (0.45, 0.2 + 0.4 * p.heavy)  # crossbar overhang, as for t (fo, ft sat 15% tighter than the references')
     g.hbar(0, w * 0.96, p.xh - H)
     g.ht = 'a'
 
@@ -842,8 +844,9 @@ def _t(g, p):
     # Regular's foot lifts away from the next letter; Black's runs flat along the baseline and
     # touched a following z. The italic's z slants its baseline bar further under the t.
     # the italic t sat 15-25% looser than Inter's and Plex's on both sides, and Bold's left side
-    # 15% looser in both styles (the italic's less, or it meets the feet of x, k and v at Black)
-    g.sb = ((0.4 - 0.05 * heavy) if p.italic else (0.55 - 0.25 * heavy), (0.05 + 0.8 * heavy) if p.italic else (0.25 + 0.4 * heavy))
+    # 15% looser in both styles. Where that brings a diagonal's foot against the crossbar at
+    # Black, kerning opens the pair (kern.OWN_SHAPE_PAIRS).
+    g.sb = ((0.4 - 0.15 * heavy) if p.italic else (0.55 - 0.25 * heavy), (0.05 + 0.4 * heavy) if p.italic else (0.25 + 0.2 * heavy))
     g.anchors['topright_x'] = xs + V + p.S * 0.4
 
 
@@ -1396,7 +1399,7 @@ def _brace(g, p, flip):
     h0, h1 = p.desc + 20, p.asc + 40
     cy = (h0 + h1) / 2
     x = 70 + V * 0.5
-    r = 60 + V * 0.2
+    r = 110 + V * 0.3  # at 60 + 0.2 V the braces were half as wide as Geist's and Inter's
     xs = x + V / 2 * 0.0
     up = [L((xs + r, h1 - H / 2), (xs + r * 0.98, h1 - H / 2))]
     del up
@@ -1564,8 +1567,21 @@ def _degree(g, p):
 
 @glyph('ring.circle')
 def _circle(g, p):
-    d = p.cap + 90
-    g.oval(0, -45 - 4, d, p.cap + 45 - 4, V=p.V * 0.62 + 6, H=p.V * 0.62 + 6)
+    _ring_circle(g, p, 1.0)
+
+
+@glyph('ring.circle.small')
+def _circle_small(g, p):
+    _ring_circle(g, p, 0.68)  # (R)'s: a raised mark, drawn small at the full stroke rather than scaled down
+
+
+def _ring_circle(g, p, k):
+    d = (p.cap + 90) * k
+    t = p.V * (0.62 + 0.25 * (1 - p.heavy)) + 6  # (C) and (R) carried 0.6x Inter's and Geist's ink at Regular
+    if k < 1:
+        t *= 1 - 0.25 * p.heavy  # small, a Black ring fills in
+    y0 = (p.cap + 41 if k == 1 else p.cap + 8) - d
+    g.oval(0, y0, d, y0 + d, V=t, H=t)
     g.sb = (0.6, 0.6)
     g.ht = 'c'
 
@@ -1622,10 +1638,12 @@ def _yen(g, p):
 @glyph('Euro', 0x20AC)
 def _euro(g, p):
     w = fw(p)
-    cx, cy, rx, ry = g.box(w * 0.12, -p.ov, w * 1.02, p.cap + p.ov)
+    # the full figure width, and bars at the full horizontal: it was 0.72x as wide as Geist's and
+    # Inter's, and 0.8x their ink
+    cx, cy, rx, ry = g.box(w * 0.04, -p.ov, w * 1.1, p.cap + p.ov)
     g.stroke(g.arc(cx, cy, rx, ry, 46, 314), caps=('b', 'b'))
-    g.hbar(0, w * 0.72, p.cap * 0.56 - p.H / 2, h=p.H * 0.9)
-    g.hbar(0, w * 0.66, p.cap * 0.38 - p.H / 2, h=p.H * 0.9)
+    g.hbar(-w * 0.12, w * 0.72, p.cap * 0.56 - p.H / 2, h=p.H)
+    g.hbar(-w * 0.12, w * 0.66, p.cap * 0.38 - p.H / 2, h=p.H)
     g.tab = True
     g.ht = 'c'
 
@@ -1968,7 +1986,7 @@ def _lslash(g, p):
 def _mk(name, cp, fn, case=False):
     @glyph(name, *([cp] if cp else []))
     def _f(g, p):
-        fn(g, p, 0.82 if case else 1.0)
+        fn(g, p, 0.97 if case else 1.0)  # at 0.82, capital accents were 0.75x the references' height
         g.mark = True
 
     return _f
@@ -1984,16 +2002,28 @@ def m_grave(g, p, s):
     g.diag(60, 0, -60, h, 'c', 'c', w=p.mt, caps=('h', 'h'))
 
 
+# Dots, macron: raised clear of the letter. Measured on Inter, Geist and Plex, they sat 0.10-0.13
+# x-height above it against the references' 0.16-0.22, where acute and grave already matched.
+# Heavier, the references' dots, macrons and tildes come closer (0.09-0.12 at Black), while their
+# acutes keep their distance: the lift turns into a drop.
+def lift_dots(p):
+    return 30 - 41 * p.heavy
+
+
+def lift_macron(p):
+    return 45 - 42 * p.heavy
+
+
 def m_circumflex(g, p, s):
-    h = 135 * s
-    a = 105 + p.V * 0.2
+    h = (135 + 40 * p.heavy) * s  # the references' grow taller with weight (0.20 → 0.24 cap height at Bold)
+    a = 130 + p.V * 0.25  # 0.8x the references' width
     g.diag(-a, 0, 0, h, 'l', 'c', w=p.mt, caps=('h', 'h'))
     g.diag(a, 0, 0, h, 'r', 'c', w=p.mt, caps=('h', 'h'))
 
 
 def m_caron(g, p, s):
-    h = 135 * s
-    a = 105 + p.V * 0.2
+    h = (135 + 40 * p.heavy) * s
+    a = 130 + p.V * 0.25
     g.diag(-a, h, 0, 0, 'l', 'c', w=p.mt, caps=('h', 'h'))
     g.diag(a, h, 0, 0, 'r', 'c', w=p.mt, caps=('h', 'h'))
 
@@ -2001,17 +2031,17 @@ def m_caron(g, p, s):
 def m_dieresis(g, p, s):
     d = p.dot * 0.94
     gap = 54 + p.V * 0.35
-    g.dot(-(gap + d) / 2, 0, d)
-    g.dot((gap + d) / 2, 0, d)
+    g.dot(-(gap + d) / 2, lift_dots(p), d)
+    g.dot((gap + d) / 2, lift_dots(p), d)
 
 
 def m_dot(g, p, s):
-    g.dot(0, 0)
+    g.dot(0, lift_dots(p))
 
 
 def m_macron(g, p, s):
     a = 110 + p.V * 0.25
-    g.hbar(-a, a, 0, h=p.mt * 0.9)
+    g.hbar(-a, a, lift_macron(p), h=p.mt * (0.9 - 0.2 * p.heavy))  # Black's was 1.27x as thick
 
 
 def m_breve(g, p, s):
@@ -2022,16 +2052,20 @@ def m_breve(g, p, s):
 
 
 def m_ring(g, p, s):
-    d = (120 + p.V * 0.3) * (0.92 if s < 1 else 1)
+    d = 180 + p.V * 0.45  # 0.65x the references' size
     t = min(p.mt * 0.8, d * 0.24)  # a heavy pen would close a small ring
-    g.oval(-d / 2, 0, d / 2, d * (0.95 if s == 1 else 0.8), V=t, H=t * 0.94)
+    # on a capital the ring sits closer than other accents (Å, Ů in Inter, Geist and Plex), and
+    # flatter, so it does not tower
+    y0 = -28 if s < 1 else -30 * p.heavy
+    g.oval(-d / 2, y0, d / 2, y0 + d * (0.95 if s == 1 else 0.85), V=t, H=t * 0.94)
 
 
 def m_tilde(g, p, s):
     a = 120 + p.V * 0.2
-    h = 46 * s
+    h = 60 * s  # 0.75x the references' height
     t = p.mt * 0.92
-    g.stroke([('C', (-a, t / 2 + 2), (-a * 0.45, h * 2.4 + t / 2), (a * 0.45, -h * 0.4 + t / 2 - h * 0.8), (a, h + t / 2 + 6))], w=t)
+    y = -55 * p.heavy  # heavier, the references' tildes sit closer
+    g.stroke([('C', (-a, y + t / 2 + 2), (-a * 0.45, y + h * 2.4 + t / 2), (a * 0.45, y - h * 0.4 + t / 2 - h * 0.8), (a, y + h + t / 2 + 6))], w=t)
 
 
 def m_hungarumlaut(g, p, s):
@@ -2041,12 +2075,13 @@ def m_hungarumlaut(g, p, s):
 
 
 def m_cedilla(g, p, s):
-    r = 52 + p.V * 0.3
+    r = 52 + p.V * 0.3 - 25 * p.heavy
+    n = 60 - 30 * p.heavy  # Bold's cedilla hung 1.35x as deep as the references'
     t = min(p.mt * 0.8, r * 0.8)
     # neck and curve are separate, overlapping strokes: one stroke cannot offset cleanly round
     # the right-angle turn between them, and the fold showed once slanted
-    g.stroke([L((0, 0), (0, -60 - t / 2))], w=t)
-    g.stroke(g.arc(0, -60 - r, r * 1.1, r, 90, -90) + [L((0, -60 - 2 * r), (-r * 1.1, -60 - 2 * r))], w=t)
+    g.stroke([L((0, 0), (0, -n - t / 2))], w=t)
+    g.stroke(g.arc(0, -n - r, r * 1.1, r, 90, -90) + [L((0, -n - 2 * r), (-r * 1.1, -n - 2 * r))], w=t)
 
 
 def m_ogonek(g, p, s):
@@ -2056,7 +2091,7 @@ def m_ogonek(g, p, s):
 
 
 def m_commabelow(g, p, s):
-    d = p.dot * 0.95
+    d = p.dot * (0.95 - 0.3 * p.heavy)  # Black's hung 1.4x as deep as the references': its head alone was most of that
     ln = min(d * 2.1, 150 + d * 0.6)
     comma_shape(g, d, 0, -40, ln - d)  # the same comma as , and the quotes
 

@@ -207,9 +207,10 @@ class Font(unittest.TestCase):
             self.assertEqual(g.numberOfContours, 1)
 
     def test_shaped_pairs_keep_clear(self):
-        # Pairs where a shape of Cascivo's own reaches under its neighbour: the tailed l into A, X
-        # and x; the italic f's descender into the letter before it; the italic t and z beside
-        # diagonals. Each touched at some weight before it was spaced or kerned apart.
+        # Pairs where a shape of Cascivo's own reaches under its neighbour: the tailed l into A, X,
+        # x and z; the italic f's descender into the letter before it; the italic t, z, L and Z
+        # beside diagonals; top-heavy capitals into T. Each touched at some weight or optical size
+        # before it was spaced or kerned apart.
         try:
             import uharfbuzz as hb
         except ImportError:
@@ -259,10 +260,14 @@ class Font(unittest.TestCase):
             gs[name].draw(pen)
             return pen.out
 
-        pairs = {VF: ['lA', 'lX', 'lx'], VFI: ['lA', 'lX', 'lx', 'kf', 'rf', 'vf', 'wf', 'xf', 'yf', 'xt', 'kt', 'yt', 'zA', 'zX']}
+        pairs = {
+            VF: ['lA', 'lX', 'lx', 'lz'],
+            VFI: ['lA', 'lX', 'lx', 'lz', 'kf', 'rf', 'vf', 'wf', 'xf', 'yf', 'xt', 'kt', 'yt', 'vt', 'tz', 'zA', 'zX', 'LX', 'ZX', 'fT', 'VT', 'WT', 'YT', 'XT'],
+        }
         for path, ps in pairs.items():
-            for wght in (400, 900):
-                f = instantiateVariableFont(TTFont(path), {'wght': wght, 'opsz': 14})
+            # Display Black is the tightest corner: the opsz and weight deltas add up there
+            for wght, opsz in ((400, 14), (900, 14), (900, 48)):
+                f = instantiateVariableFont(TTFont(path), {'wght': wght, 'opsz': opsz})
                 buf_io = io.BytesIO()
                 f.save(buf_io)
                 font = hb.Font(hb.Face(buf_io.getvalue()))
@@ -275,7 +280,7 @@ class Font(unittest.TestCase):
                     (a, b), adv = [order[i.codepoint] for i in buf.glyph_infos], buf.glyph_positions[0].x_advance
                     ra, rb = rows(gs, a), rows(gs, b)
                     gap = min(adv + rb[k][0] - ra[k][1] for k in set(ra) & set(rb))
-                    with self.subTest(font=os.path.basename(path), wght=wght, pair=pair):
+                    with self.subTest(font=os.path.basename(path), wght=wght, opsz=opsz, pair=pair):
                         self.assertGreater(gap, 0)
 
     def test_kerning(self):

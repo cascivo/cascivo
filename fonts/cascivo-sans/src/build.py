@@ -122,7 +122,8 @@ def draw_master(p):
         o.contours[name] = cs
         o.adv[name] = round(adv)
         o.bounds[name] = (xmin + dx, ymin, xmax + dx, ymax)
-        top_y = {'x': p.xh, 'c': p.cap, 'a': p.asc}[g.ht] + (68 if g.ht == 'x' else 42)
+        # capitals' accents clear the letter by 0.10 cap height, as Inter's, Geist's and Plex's (0.06 was cramped)
+        top_y = {'x': p.xh, 'c': p.cap, 'a': p.asc}[g.ht] + {'x': 68, 'c': 70, 'a': 42}[g.ht]
         cx = (xmin + xmax) / 2 + dx
         a = {
             'top': (g.anchors.get('top_x', cx - dx) + dx, top_y),
@@ -150,8 +151,13 @@ def add_composites(o):
         return (mark, bx, by, 1)
 
     # i and j are dotless + dot so every accent on them is consistent
-    comp('i', [('dotlessi', 0, 0, 1), at('dotlessi', 'dotaccentcomb', 'top')], o.adv['dotlessi'], ord('i'))
-    comp('j', [('dotlessj', 0, 0, 1), at('dotlessj', 'dotaccentcomb', 'top')], o.adv['dotlessj'], ord('j'))
+    # (the i and j dots keep their own height: the dot accent's lift is for ż, ė, ċ)
+    def dot_ij(base):
+        m, bx, by, a = at(base, 'dotaccentcomb', 'top')
+        return (m, bx, by - GL.lift_dots(p), a)
+
+    comp('i', [('dotlessi', 0, 0, 1), dot_ij('dotlessi')], o.adv['dotlessi'], ord('i'))
+    comp('j', [('dotlessj', 0, 0, 1), dot_ij('dotlessj')], o.adv['dotlessj'], ord('j'))
     o.anchors['i'] = o.anchors['dotlessi']
     o.anchors['j'] = o.anchors['dotlessj']
     # turned comma above (ģ)
@@ -164,7 +170,9 @@ def add_composites(o):
     accents += [(ch, base, marks, '.ss01') for ch, base, marks in accents if base in 'Il']
     for ch, base, marks, *alt in accents:
         sfx = alt[0] if alt else ''
-        b = {'i': 'dotlessi', 'j': 'dotlessj'}.get(base, base) + sfx
+        # an accent above replaces the dot; one below (į) keeps it
+        above = any(m not in BOTTOM for m in marks)
+        b = ({'i': 'dotlessi', 'j': 'dotlessj'}.get(base, base) if above else base) + sfx
         parts = [(b, 0, 0, 1)]
         for m in marks:
             if m == 'caroncomb.alt':
@@ -261,16 +269,23 @@ def add_composites(o):
     fr = o.adv['fraction']
     for cp, a, b in ((0xBC, 'one', 'four'), (0xBD, 'one', 'two'), (0xBE, 'three', 'four')):
         comp(f'{a}{b}frac', [(a + '.numr', 0, 0, 1), ('fraction', fw - fr * 0.5 - S * 0.2, 0, 1), (b + '.dnom', fw + fr * 0.2, 0, 1)], 2 * fw + fr * 0.2, cp)
-    comp('ordfeminine', [('a', 0, sup_y + 20, k)], o.adv['a'] * k + S * 0.3, 0xAA)
-    comp('ordmasculine', [('o', 0, sup_y + 20, k)], o.adv['o'] * k + S * 0.3, 0xBA)
+    # ordinals larger than the superior figures, tops at the cap height: at 0.6 they were 0.75x
+    # Inter's and Geist's size and sat 0.14 x-height low
+    ko = 0.7
+    oy = p.cap - p.xh * ko
+    comp('ordfeminine', [('a', 0, oy, ko)], o.adv['a'] * ko + S * 0.3, 0xAA)
+    comp('ordmasculine', [('o', 0, oy, ko)], o.adv['o'] * ko + S * 0.3, 0xBA)
     tk = 0.5
     comp('trademark', [('T', 0, p.cap * (1 - tk), tk), ('M', o.adv['T'] * tk, p.cap * (1 - tk), tk)], (o.adv['T'] + o.adv['M']) * tk + S, 0x2122)
-    rc = o.adv['ring.circle']
-    for name, cp, letter in (('copyright', 0xA9, 'C'), ('registered', 0xAE, 'R')):
-        s = 0.5
+    # (R) is a raised mark, about two thirds of (C), as in Inter and Geist: drawn as large as
+    # (C), it stood 1.44x their size and sat below the cap height's middle
+    for name, cp, letter, ring in (('copyright', 0xA9, 'C', 'ring.circle'), ('registered', 0xAE, 'R', 'ring.circle.small')):
+        rb = o.bounds[ring]
+        s = 0.5 * (rb[3] - rb[1]) / (o.bounds['ring.circle'][3] - o.bounds['ring.circle'][1])
         lw = o.bounds[letter][2] - o.bounds[letter][0]
-        lx = rc / 2 - (o.bounds[letter][0] + lw / 2) * s
-        comp(name, [('ring.circle', 0, 0, 1), (letter, lx, p.cap * (1 - s) / 2, s)], rc, cp)
+        lx = (rb[0] + rb[2]) / 2 - (o.bounds[letter][0] + lw / 2) * s
+        ly = (rb[1] + rb[3]) / 2 - p.cap * s / 2
+        comp(name, [(ring, 0, 0, 1), (letter, lx, ly, s)], o.adv[ring], cp)
 
     # case-sensitive forms: punctuation centred on capitals instead of lowercase
     lift = (p.cap - p.xh) / 2

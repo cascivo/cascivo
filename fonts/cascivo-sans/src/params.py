@@ -68,6 +68,12 @@ class P:
         # about 30% of their Regular sidebearing by Black. Held nearly constant, Black's gaps
         # between letters matched the space inside them and words broke into separate blobs.
         self.S = (77.1 - (0.03 if V < 84 else 0.25) * (V - 84)) * spacing  # stem sidebearing unit (lowercase, figures, punctuation)
+        # Set against Geist and Inter at equal x-height, text ran 3% long: letters 2-3% wider by
+        # design, and an nn gap 10% wider at every weight. The gap closes; the letters stay. The
+        # italic matched at Regular but ran 15-40% loose in its white by Black.
+        # (Heavy weights tighten a little less: at Display Black, where the opsz and weight deltas
+        # add up, the full amount closed lz, YT and xt.)
+        self.S *= (0.97 - 0.04 * self.heavy) if italic else (0.91 + 0.04 * self.heavy)
         self.Sc = self.S * 1.3  # capitals carry more space: their counters are bigger
         self.cw = counter
         # n is 0.82 x-heights wide at Regular (Geist 0.79, Inter 0.80). It was 0.88 with tighter

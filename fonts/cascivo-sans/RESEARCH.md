@@ -117,7 +117,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                                             |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                                                    |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                                                          |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.7 KB, `Latin[opsz,wght]` 28.8 KB; italic 23.8 / 31.9 KB, loaded only when a page uses italic. Serve only the axes you use |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.7 KB, `Latin[opsz,wght]` 28.8 KB; italic 24.1 / 32.1 KB, loaded only when a page uses italic. Serve only the axes you use |
 
 ## 5. Scorecard
 
@@ -129,7 +129,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | Bytes per codepoint (Latin slice)       | **102**                | 131               | 197                                   | 210                |
 | Variable, full charset, wght only       | **25.8 KB** (71 B/cp)  | 69.7 KB (96 B/cp) | —                                     | —                  |
 | Static Regular, full charset            | **11.7 KB** (32 B/cp)  | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp)                     | —                  |
-| Italic, variable Latin slice, wght axis | **23.8 KB** (114 B/cp) | no italic         | 24.4 KB, one static weight (105 B/cp) | 51.8 KB (225 B/cp) |
+| Italic, variable Latin slice, wght axis | **24.1 KB** (115 B/cp) | no italic         | 24.4 KB, one static weight (105 B/cp) | 51.8 KB (225 B/cp) |
 
 The full-charset comparison is not like for like. Geist and Plex cover Cyrillic, Greek and
 more, and those glyphs are larger. The Latin slices are the fair comparison, and Cascivo uses
@@ -342,7 +342,7 @@ tail. Counters are 5% narrower. The italic passes the same no-reflow test as the
   its right-angle turn. The capital breve has a minimum depth, because a shallow arc thinner
   than its stroke folds inside.
 
-**Size.** The italic Latin web file is 23.8 KB for every weight, against 21.7 KB for the upright.
+**Size.** The italic Latin web file is 24.1 KB for every weight, against 21.7 KB for the upright.
 The difference is inherent: once outlines are slanted, every point that moves vertically
 between masters also moves horizontally, so it carries more variation data. For comparison,
 Plex ships 24.4 KB for one static italic weight, and Inter 51.8 KB for its variable italic.
@@ -631,6 +631,60 @@ glyph. No glyph changed in these rounds stands out; the outliers are structural 
 together (narrow glyphs whose advance is mostly sidebearing, Thin's operators, which follow the
 horizontal stroke), plus the fraction slash. All corners render without artifacts, and
 the clearance check holds at the corners except the Display Black italic pairs above.
+
+## 18. Kerning, spacing, symbols and Latin Extended
+
+Five follow-ups, with full-charset references this time: Inter 4.1 and Geist from npm (`inter-ui`,
+`geist`), and Plex's complete static files (`@ibm/plex-sans`); the earlier files were Latin
+subsets.
+
+**Kerning.** Measured as kern values (units per x-height) against Inter and Geist on all 327
+candidate pairs, Regular matched in total (1.02) but Bold carried 0.87 and Black 0.76 of the
+references' kerning, short above all in the strongest pairs (`AW`, `LT`, `LY`, `TJ`, at about half).
+The white-gap measure of section 17 had read `A` and `T` as over-kerned; it caps depth, so it
+cannot see the open space a pair like `To` closes, and it is not used to judge kerning. Closing
+kerns now grow with weight, 1.3x by Black: the totals are 1.00, 0.99 and 0.97. A power curve on
+the values would not help at Regular (11.0 → 10.7 units mean error): what is left there is
+pair-to-pair scatter, smaller than Inter and Geist differ from each other.
+
+**Spacing.** Set at equal x-height, upright text ran 3% longer than Geist's and Inter's: 2-3%
+from wider letters (by design), the rest an `nn` gap 10% wider at every weight. The spacing unit
+is 9% tighter (5% at Black), the italic's 3% (7% at Black); the letters are unchanged. Text now
+sets 1.009 (Regular), 1.017 (Bold) and 1.025 (Black) of the references' length, and the Regular
+`nn` gap is 0.294 x-height against their 0.292. Pair spacing error at Regular fell again (0.059 →
+0.052, no pair off by a quarter). The generous heavy-weight sidebearings of section 17 (italic
+`t` and `f`) came back in: the pairs they protected are now kerned open per master.
+
+**Collisions.** Kerning picks its pairs at Regular, so a pair clear there but closing at Black
+was never kerned. `OWN_SHAPE_PAIRS` are now always kept and only ever open, by however much each
+master measures: `lz`, `tz`, the italic `t` after a diagonal (`xt`, `kt`, `yt`, `vt`), and `VT`,
+`WT`, `YT`, `XT`, `fT`. The heavy italic `L` and `Z` get right sidebearing for `LX` and `ZX`.
+Every letter pair now keeps clear at every weight and optical size (the tightest is 2 units, at
+Display Black italic), and the regression test checks Display Black as well.
+
+**Symbols.** `®` is a raised mark two thirds the size of `©`, drawn small at the full stroke
+rather than scaled; `ª` `º` are 0.7 of the lowercase with their tops at the cap height; `€` uses
+the full figure width; the braces are twice as wide. `©` and `®` were 0.6x the references' ink
+at Regular: the circle's stroke is heavier at light weights.
+
+**Latin Extended.** Each accent was isolated as the ink above (or below) its base letter and
+compared with Inter's, Geist's and Plex's on all 157 accented letters of Latin-1 and Latin
+Extended-A.
+
+| Finding (Regular unless noted)                                    | Was                        | Now                                             |
+| ----------------------------------------------------------------- | -------------------------- | ----------------------------------------------- |
+| Capital accents, gap above the letter (cap height)                | 0.06 (refs 0.10-0.15)      | 0.09-0.16, within 0.02 of each reference letter |
+| Capital accents, size                                             | 0.75x (scaled 0.82)        | 0.97 scale                                      |
+| `¨` `˙` `¯` over lowercase, gap (x-height)                        | 0.10-0.13 (refs 0.16-0.22) | 0.16-0.22, within 0.01                          |
+| `˜` height, `˚` size, `ˆ` `ˇ` width                               | 0.75x, 0.65x, 0.8x         | matched                                         |
+| Bold/Black: `ˆ` `ˇ` height, dots and tildes, cedilla, comma below | fixed sizes and gaps       | follow weight as the references do              |
+| `į`                                                               | no dot                     | dotted                                          |
+
+Flagged letters (gap off by 0.04-0.06, size off by a fifth or more) fell from 87, 67 and 66 at
+Regular, Bold and Black to 3, 2 and 5; the italic's from 93 to 11. What is left: the Black breve
+stays 1.27x tall (lowering it folds the outline), the capital ring is slightly small, and the
+rest are measurement artifacts (`ť`'s comma caron, the comma-shaped `ș`). Acutes stay centred
+where the references push them right.
 
 ## Sources
 
