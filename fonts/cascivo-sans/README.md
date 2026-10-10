@@ -5,26 +5,34 @@ engine and licensed under the SIL Open Font License 1.1. It comes as two variabl
 and a drawn italic, each with weight and optical-size axes. It has an unambiguous `Il1`, tabular
 figures on request, and a 22 KB Latin web file.
 
-Read [RESEARCH.md](./RESEARCH.md) for why it exists, how it compares with Geist, IBM Plex and
+Version 0.2.0; see [CHANGELOG.md](./CHANGELOG.md). Read [RESEARCH.md](./RESEARCH.md) for why it exists, how it compares with Geist, IBM Plex and
 Helvetica, and what it does not do yet.
 
 ## Files
 
-| File                                              | Axes       | Charset               | Size                      |
-| ------------------------------------------------- | ---------- | --------------------- | ------------------------- |
-| `fonts/CascivoSans-Latin[wght].woff2`             | wght       | Latin                 | 21.7 KB                   |
-| `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz | Latin                 | 28.9 KB                   |
-| `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz | full (365 codepoints) | 34.6 KB                   |
-| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz | full                  | 93.9 KB (desktop install) |
-| `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght       | Latin                 | 24.2 KB                   |
-| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz | Latin                 | 32.3 KB                   |
-| `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz | full                  | 38.6 KB                   |
-| `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz | full                  | 98.3 KB (desktop install) |
-| `fonts/CascivoSans-Regular.woff2`                 | static 400 | full                  | 11.7 KB                   |
+| File                                              | Axes              | Charset               | Size                      |
+| ------------------------------------------------- | ----------------- | --------------------- | ------------------------- |
+| `fonts/CascivoSans-Latin[wght].woff2`             | wght              | Latin                 | 21.8 KB                   |
+| `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz        | Latin                 | 29.0 KB                   |
+| `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz        | full (365 codepoints) | 34.7 KB                   |
+| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz        | full                  | 94.0 KB (desktop install) |
+| `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght              | Latin                 | 24.1 KB                   |
+| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz        | Latin                 | 32.5 KB                   |
+| `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz        | full                  | 38.5 KB                   |
+| `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz        | full                  | 98.4 KB (desktop install) |
+| `fonts/CascivoSans-Regular.woff2`                 | static 400        | full                  | 11.8 KB                   |
+| `fonts/CascivoSans-Regular.ttf`                   | static 400        | full                  | 36.0 KB (desktop)         |
+| `fonts/CascivoSans-Bold.ttf`                      | static 700        | full                  | 36.0 KB (desktop)         |
+| `fonts/CascivoSans-Italic.ttf`                    | static 400 italic | full                  | 36.8 KB (desktop)         |
+| `fonts/CascivoSans-BoldItalic.ttf`                | static 700 italic | full                  | 36.8 KB (desktop)         |
 
 "Latin" means Basic Latin, Latin-1 and common punctuation. The full charset adds Latin
 Extended-A, Romanian comma letters and combining marks. That covers Western, Central and
 Northern European languages, Turkish and Romanian.
+
+On the desktop, install the two variable TTFs. Apps that only pair styles by name and style
+bits (some word processors) want the four static TTFs instead: Regular, Bold, Italic and Bold
+Italic, at optical size 14.
 
 ## Use on the web
 

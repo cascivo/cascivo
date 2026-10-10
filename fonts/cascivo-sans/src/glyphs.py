@@ -251,12 +251,13 @@ def _X(g, p):
 
 @glyph('Y', 0x59)
 def _Y(g, p):
-    w = p.Hw * 1.04
+    w = p.Hw * (1.04 + 0.05 * p.heavy)  # Black's was 0.87x Inter's width
     c = w / 2
     yj = p.cap * 0.43
-    # heavier arms at Regular (0.88x the references' ink), Black's unchanged
-    g.diag(0, p.cap, c, yj, 'l', 'c', ws=0.98 - 0.06 * p.heavy)
-    g.diag(w, p.cap, c, yj, 'r', 'c', ws=0.98 - 0.06 * p.heavy)
+    # arms at the full stroke: at 0.92-0.98 the Y carried 0.89-0.92x the ink of Inter, Geist and
+    # Helvetica at every weight
+    g.diag(0, p.cap, c, yj, 'l', 'c', ws=1.0)
+    g.diag(w, p.cap, c, yj, 'r', 'c', ws=1.0)
     g.vstem(c - p.V / 2, 0, yj + 2)
     g.ht = 'c'
     g.sb = (0.08, 0.08)
@@ -296,8 +297,9 @@ def _C(g, p):
     w = p.Hw * (1.12 + 0.07 * p.heavy)  # Black's C was 0.75x Geist's and Inter's width, Regular's 0.88x
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.cap + p.ov)
     # terminals sit 14° further round than they first did, at every weight, as in Geist and Inter:
-    # the open aperture left the C at 0.79x their ink at Regular and 0.71x at Black
-    g.stroke(g.arc(cx, cy, rx, ry, 28 + p.ap, 332 - p.ap), caps=('b', 'b'), cut='h')
+    # the open aperture left the C at 0.79x their ink at Regular and 0.71x at Black; and 6° more
+    # later, when it still carried 0.85-0.93x the ink of Inter, Geist and Helvetica
+    g.stroke(g.arc(cx, cy, rx, ry, 22 + p.ap, 338 - p.ap), caps=('b', 'b'), cut='h')
     g.ht = 'c'
     g.sb = (0.62, 0.45)
 
@@ -307,7 +309,7 @@ def _G(g, p):
     w = p.Hw * 1.12
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.cap + p.ov)
     # the top terminal sits where the C's does, at every weight (it was 14° more open at Regular)
-    g.stroke(g.arc(cx, cy, rx, ry, 28 + p.ap, 360), caps=('b', 'b'), cut='h')
+    g.stroke(g.arc(cx, cy, rx, ry, 22 + p.ap, 360), caps=('b', 'b'), cut='h')  # aligned with C
     xr = cx + rx
     # ends inside the curve's stroke: run to its outer edge, the bar overhung where the curve
     # turns inward below it

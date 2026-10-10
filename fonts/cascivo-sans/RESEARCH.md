@@ -117,7 +117,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                                             |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                                                    |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                                                          |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.7 KB, `Latin[opsz,wght]` 28.9 KB; italic 24.2 / 32.3 KB, loaded only when a page uses italic. Serve only the axes you use |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.8 KB, `Latin[opsz,wght]` 29.0 KB; italic 24.1 / 32.5 KB, loaded only when a page uses italic. Serve only the axes you use |
 
 ## 5. Scorecard
 
@@ -125,11 +125,11 @@ contour in every master for self-intersection. The build ships with zero problem
 
 | File                                    | Cascivo Sans           | Geist             | IBM Plex Sans                         | Inter              |
 | --------------------------------------- | ---------------------- | ----------------- | ------------------------------------- | ------------------ |
-| Variable Latin slice, wght axis         | **21.7 KB** (211 cp)   | 29.4 KB (225 cp)  | 45.7 KB (232 cp)                      | 48.3 KB (230 cp)   |
+| Variable Latin slice, wght axis         | **21.8 KB** (211 cp)   | 29.4 KB (225 cp)  | 45.7 KB (232 cp)                      | 48.3 KB (230 cp)   |
 | Bytes per codepoint (Latin slice)       | **102**                | 131               | 197                                   | 210                |
 | Variable, full charset, wght only       | **25.8 KB** (71 B/cp)  | 69.7 KB (96 B/cp) | —                                     | —                  |
-| Static Regular, full charset            | **11.7 KB** (32 B/cp)  | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp)                     | —                  |
-| Italic, variable Latin slice, wght axis | **24.2 KB** (115 B/cp) | no italic         | 24.4 KB, one static weight (105 B/cp) | 51.8 KB (225 B/cp) |
+| Static Regular, full charset            | **11.8 KB** (32 B/cp)  | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp)                     | —                  |
+| Italic, variable Latin slice, wght axis | **24.1 KB** (115 B/cp) | no italic         | 24.4 KB, one static weight (105 B/cp) | 51.8 KB (225 B/cp) |
 
 The full-charset comparison is not like for like. Geist and Plex cover Cyrillic, Greek and
 more, and those glyphs are larger. The Latin slices are the fair comparison, and Cascivo uses
@@ -342,7 +342,7 @@ tail. Counters are 5% narrower. The italic passes the same no-reflow test as the
   its right-angle turn. The capital breve has a minimum depth, because a shallow arc thinner
   than its stroke folds inside.
 
-**Size.** The italic Latin web file is 24.2 KB for every weight, against 21.7 KB for the upright.
+**Size.** The italic Latin web file is 24.1 KB for every weight, against 21.8 KB for the upright.
 The difference is inherent: once outlines are slanted, every point that moves vertically
 between masters also moves horizontally, so it carries more variation data. For comparison,
 Plex ships 24.4 KB for one static italic weight, and Inter 51.8 KB for its variable italic.
@@ -757,6 +757,24 @@ was 1.3x Inter's and Plex's). Accent flags now: 3, 3, 2 upright; 7, 3, 4 italic.
 10, 24 and 48 px, and differently from `opsz` 14, at device pixel ratios 1 and 2: the optical-size
 axis is picked up as intended. At 9-16 px, upright and italic, from Light to Bold, the unhinted
 outlines render without dropouts and with the density of Inter's.
+
+## 21. Y, C, FreeType, and the 0.2.0 release
+
+**Y and C.** Against all three references the `Y` carried 0.89-0.92 of their ink at every weight
+and Black's was 0.87x Inter's width; its arms are now at the full stroke and it widens 5% by
+Black (0.93-0.95 of Geist's and Inter's ink). The `C` carried 0.85-0.93; its terminals sit a further
+6° round, and `G` with it (`C` 0.93, `G` 0.90-0.93 at every weight, Regular's 0.94 overall being by
+design).
+
+**FreeType.** Firefox on Linux renders with FreeType's light autohinter (fontconfig `hintslight`).
+Rendered that way and unhinted, at 9-16 px, Regular and Bold, Cascivo Sans lands on the same
+whole-pixel x-height as Inter at every size (5 px at 9 px to 9 px at 16 px) and its stems on
+Inter's to within 0.07 px, without dropouts. Safari (Core Text) is still untested.
+
+**0.2.0.** The version moves to 0.2.0 ([CHANGELOG.md](./CHANGELOG.md)). Four static TTFs join the
+variable ones for apps that link styles by name: Regular, Bold, Italic and Bold Italic at optical
+size 14, about 36 KB each, with their family name, weight class and style bits checked by a
+test. Font Bakery passes them with no failures; they share one underline, and keep the STAT table.
 
 ## Sources
 

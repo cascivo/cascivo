@@ -283,6 +283,19 @@ class Font(unittest.TestCase):
                     with self.subTest(font=os.path.basename(path), wght=wght, opsz=opsz, pair=pair):
                         self.assertGreater(gap, 0)
 
+    def test_static_family_links_as_four_styles(self):
+        # word processors pair Regular/Bold/Italic/Bold Italic by family name and style bits
+        expect = {'Regular': (400, 0x40, 0), 'Bold': (700, 0x20, 1), 'Italic': (400, 0x01, 2), 'BoldItalic': (700, 0x21, 3)}
+        for style, (wght, fs, mac) in expect.items():
+            f = TTFont(os.path.join(DIST, f'CascivoSans-{style}.ttf'))
+            with self.subTest(style=style):
+                self.assertNotIn('fvar', f)
+                self.assertEqual(f['name'].getDebugName(1), 'Cascivo Sans')
+                self.assertEqual(f['name'].getDebugName(6), f'CascivoSans-{style}')
+                self.assertEqual(f['OS/2'].usWeightClass, wght)
+                self.assertEqual(f['OS/2'].fsSelection & 0x61, fs)
+                self.assertEqual(f['head'].macStyle & 3, mac)
+
     def test_kerning(self):
         try:
             import uharfbuzz as hb

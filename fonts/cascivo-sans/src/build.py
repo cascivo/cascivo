@@ -36,7 +36,7 @@ from params import BLACK_STEM, ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, P  # noqa:
 
 FAMILY = 'Cascivo Sans'
 PS = 'CascivoSans'
-VERSION = '0.1.0'
+VERSION = '0.2.0'
 DIST = os.path.join(HERE, '..', 'fonts')  # not dist/: the repo ignores dist/, and these files ship
 MAX_ERR = 1.5  # cu2qu tolerance in font units: 1.5/1000 em is sub-pixel below ~700px
 IUP_TOLERANCE = 1.0  # gvar deltas the rasterizer can re-infer within 1 unit are dropped
@@ -657,6 +657,24 @@ def _save_woff2(font, fn):
     font.save(os.path.join(DIST, fn))
 
 
+def _save_static(vf, style, wght):
+    under = (vf['post'].underlinePosition, vf['post'].underlineThickness)  # one underline for the family
+    font = instancer.instantiateVariableFont(vf, {'wght': wght, 'opsz': 14})
+    font['post'].underlinePosition, font['post'].underlineThickness = under
+    bold, italic = 'Bold' in style, 'Italic' in style
+    ps = f'{PS}-{style.replace(" ", "")}'
+    name = font['name']
+    for nid in (16, 17, 25):
+        name.removeNames(nameID=nid)
+    for nid, value in ((1, FAMILY), (2, style), (3, f'{VERSION};CSCV;{ps}'), (4, f'{FAMILY} {style}' if style != 'Regular' else f'{FAMILY} Regular'), (6, ps)):
+        name.setName(value, nid, 3, 1, 0x409)
+    font['OS/2'].usWeightClass = wght
+    font['OS/2'].fsSelection = (font['OS/2'].fsSelection & ~0b1100001) | (0x20 if bold else 0) | (0x01 if italic else 0) | (0x40 if not (bold or italic) else 0)
+    font['head'].macStyle = (1 if bold else 0) | (2 if italic else 0)
+    font.flavor = None
+    font.save(os.path.join(DIST, f'{ps}.ttf'))
+
+
 def save_all(upright, italic):
     for fn in os.listdir(DIST):  # outputs are fully regenerated; stale names must not linger
         os.remove(os.path.join(DIST, fn))
@@ -671,6 +689,9 @@ def save_all(upright, italic):
         _save_woff2(_subset_latin(instancer.instantiateVariableFont(load(), {'opsz': 14})), f'{stem}-Latin[wght].woff2')
     # static Regular, full character set: the static-vs-static comparison
     _save_woff2(instancer.instantiateVariableFont(TTFont(os.path.join(DIST, f'{PS}[opsz,wght].ttf')), {'wght': 400, 'opsz': 14}), f'{PS}-Regular.woff2')
+    # static desktop styles: the four that style-linking apps (word processors) expect
+    for style, src, wght in (('Regular', PS, 400), ('Bold', PS, 700), ('Italic', f'{PS}-Italic', 400), ('Bold Italic', f'{PS}-Italic', 700)):
+        _save_static(TTFont(os.path.join(DIST, f'{src}[opsz,wght].ttf')), style, wght)
     for fn in sorted(os.listdir(DIST)):
         print(f'{os.path.getsize(os.path.join(DIST, fn)):>8}  {fn}')
 
