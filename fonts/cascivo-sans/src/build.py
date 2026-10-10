@@ -239,7 +239,7 @@ def add_composites(o):
     for name, cp in ((n, sp) for n, _c, _f, sp in GL.MARKS if sp):
         b = name in GL.TOP_MARKS
         w = 170 + p.V * 0.5 + 2 * S * 0.6
-        comp(name.replace('comb', '') if name != 'dotaccentcomb' else 'dotaccent', [(name, w / 2, p.xh + 68 if b else 0, 1)], w, cp)
+        comp(name.replace('comb', '') if name != 'dotaccentcomb' else 'dotaccent', [(name, w / 2 - GL.MARK_DX.get(name, 0), p.xh + 68 if b else 0, 1)], w, cp)
 
     # figures: proportional, superior/inferior, numerator/denominator — all from the same outlines
     figs = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']

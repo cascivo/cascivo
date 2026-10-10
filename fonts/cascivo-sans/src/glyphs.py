@@ -10,7 +10,7 @@ that changes the *number* of strokes or segments. Parameters may only move point
 
 import math
 
-from geom import L, Stroke, arc, contour_bounds, norm, orient, pen_thickness
+from geom import L, Stroke, arc, contour_bounds, norm, orient, pen_thickness, reverse_seg
 
 GLYPHS = {}  # name -> (codepoints, fn)
 ORDER = []
@@ -138,7 +138,7 @@ def _L(g, p):
     g.ht = 'c'
     # the italic's foot slants out under the next capital: heavy, it met X
     g.sb = (1, 0.35 + (0.3 if p.italic else 0) * p.heavy)
-    g.anchors['top_x'] = p.V / 2 + 0.35 * w
+    g.anchors['top_x'] = p.V / 2 + 0.12 * w  # over the stem, as Inter's, Geist's and Plex's Ĺ
 
 
 @glyph('E', 0x45)
@@ -190,8 +190,9 @@ def _A(g, p):
 def _V(g, p):
     w = p.Hw * (1.07 + 0.1 * p.heavy)
     c = w / 2
-    g.diag(0, p.cap, c, 0, 'l', 'c')
-    g.diag(w, p.cap, c, 0, 'r', 'c')
+    # Regular's diagonals heavier: 0.82-0.91x the ink of Inter, Geist and Helvetica (Black kept)
+    g.diag(0, p.cap, c, 0, 'l', 'c', ws=1.0 - 0.07 * p.heavy)
+    g.diag(w, p.cap, c, 0, 'r', 'c', ws=1.0 - 0.07 * p.heavy)
     g.ht = 'c'
     g.sb = (0.08, 0.08)
 
@@ -215,9 +216,9 @@ def _W(g, p):
 def _M(g, p):
     w = p.Hw * 1.24
     g.vstem(0, 0, p.cap).vstem(w - p.V, 0, p.cap)
-    # heavier diagonals at Regular (0.87x the references' ink), Black's unchanged
-    g.diag(0, p.cap, w / 2, 0, 'l', 'c', ws=0.94 - 0.08 * p.heavy)
-    g.diag(w, p.cap, w / 2, 0, 'r', 'c', ws=0.94 - 0.08 * p.heavy)
+    # heavier diagonals at Regular (0.87x the references' ink) and, less, at Black (0.88-0.92x)
+    g.diag(0, p.cap, w / 2, 0, 'l', 'c', ws=0.94 - 0.04 * p.heavy)
+    g.diag(w, p.cap, w / 2, 0, 'r', 'c', ws=0.94 - 0.04 * p.heavy)
     g.ht = 'c'
 
 
@@ -241,8 +242,9 @@ def _Z(g, p):
 @glyph('X', 0x58)
 def _X(g, p):
     w = p.Hw * (1.02 + 0.1 * p.heavy)
-    g.diag(0, p.cap, w, 0, 'l', 'r', ws=0.93)
-    g.diag(w, p.cap, 0, 0, 'r', 'l', ws=0.9)
+    # Regular's diagonals heavier: 0.80-0.90x the ink of Inter, Geist and Helvetica (Black kept)
+    g.diag(0, p.cap, w, 0, 'l', 'r', ws=1.0 - 0.07 * p.heavy)
+    g.diag(w, p.cap, 0, 0, 'r', 'l', ws=0.97 - 0.07 * p.heavy)
     g.ht = 'c'
     g.sb = (0.1, 0.1)
 
@@ -311,7 +313,7 @@ def _G(g, p):
     # turns inward below it
     g.hbar(cx + rx * 0.08, xr, cy - p.H)
     g.ht = 'c'
-    g.sb = (0.62, 0.8)
+    g.sb = (0.62, 0.8 - (0.5 if p.italic else 0) * p.heavy)  # the heavy italic's Go sat 28% loose
 
 
 @glyph('D', 0x44)
@@ -531,8 +533,8 @@ def _u(g, p):
 @glyph('r', 0x72)
 def _r(g, p):
     # Regular's arm is shorter: it ran 1.5x Geist's and Inter's width and 1.3x Inter's and Plex's
-    # italic (Black, at 1.02, is unchanged)
-    w = p.nw * (0.64 - 0.08 * (1 - p.heavy))
+    # italic, and Helvetica's r is as narrow as theirs (Black, at 1.02, is unchanged)
+    w = p.nw * (0.64 - 0.13 * (1 - p.heavy))
     g.vstem(0, 0, p.xh)
     a = p.V / 2
     rx = w - a - p.V * 0.2
@@ -666,6 +668,8 @@ def _e(g, p):
     # sits lower at every weight short of Black (every italic master starts with the one cubic)
     if p.italic:
         yb -= p.bar * 0.4 * (1 - p.heavy)
+    else:  # the upright's too: 0.73-0.79x the eye of Inter, Geist and Helvetica at Regular
+        yb -= p.bar * 0.35 * (1 - p.heavy)
     # The bowl starts at the dropped bar's underside, or the bar's lower right corner shows below
     # the bowl as a step (Bold). Below 0° that crosses a quadrant, so the first segment is one
     # cubic (_ell_seg) and every master keeps the same segments.
@@ -792,7 +796,7 @@ def _f(g, p):
         hook, cyb = _italic_descender(g, p, sx)
         g.stroke(hook + [L((sx, cyb), (sx, cy))] + top_hook, caps=('b', 'b'))
         # heavier, the hook ran into the feet of x, y, k, r; and the arm, 9% tight at Bold, met a T
-        g.sb = (-0.2 + 0.35 * p.heavy, 0.15 + 0.3 * p.heavy)
+        g.sb = (-0.2 + 0.1 * p.heavy, 0.15 + 0.3 * p.heavy)
     else:
         g.stroke([L((sx, 0), (sx, cy))] + top_hook, caps=('b', 'b'))
         g.sb = (0.45, 0.2 + 0.4 * p.heavy)  # crossbar overhang, as for t (fo, ft sat 15% tighter than the references')
@@ -846,7 +850,7 @@ def _t(g, p):
     # the italic t sat 15-25% looser than Inter's and Plex's on both sides, and Bold's left side
     # 15% looser in both styles. Where that brings a diagonal's foot against the crossbar at
     # Black, kerning opens the pair (kern.OWN_SHAPE_PAIRS).
-    g.sb = ((0.4 - 0.15 * heavy) if p.italic else (0.55 - 0.25 * heavy), (0.05 + 0.4 * heavy) if p.italic else (0.25 + 0.2 * heavy))
+    g.sb = ((0.4 - 0.3 * heavy) if p.italic else (0.55 - 0.25 * heavy), (0.05 + 0.25 * heavy) if p.italic else (0.25 + 0.2 * heavy))
     g.anchors['topright_x'] = xs + V + p.S * 0.4
 
 
@@ -1992,14 +1996,21 @@ def _mk(name, cp, fn, case=False):
     return _f
 
 
+# Acutes lean toward where they point: Inter, Geist and Plex set them about 45 units right of
+# the letter's centre (Á, ć, ŕ, Ś), graves as far left. The spacing ´ and ` take it back out.
+MARK_DX = {'acutecomb': 45, 'gravecomb': -45}
+
+
 def m_acute(g, p, s):
     h = 150 * s
-    g.diag(-60, 0, 60, h, 'c', 'c', w=p.mt, caps=('h', 'h'))
+    dx = MARK_DX['acutecomb']
+    g.diag(dx - 45, 0, dx + 45, h, 'c', 'c', w=p.mt, caps=('h', 'h'))  # steeper: 1.4x the references' width at 120
 
 
 def m_grave(g, p, s):
     h = 150 * s
-    g.diag(60, 0, -60, h, 'c', 'c', w=p.mt, caps=('h', 'h'))
+    dx = MARK_DX['gravecomb']
+    g.diag(dx + 45, 0, dx - 45, h, 'c', 'c', w=p.mt, caps=('h', 'h'))
 
 
 # Dots, macron: raised clear of the letter. Measured on Inter, Geist and Plex, they sat 0.10-0.13
@@ -2011,7 +2022,7 @@ def lift_dots(p):
 
 
 def lift_macron(p):
-    return 45 - 42 * p.heavy
+    return 45 - (17 if p.italic else 42) * p.heavy  # Inter's heavy italic keeps its macron, tilde and breve higher
 
 
 def m_circumflex(g, p, s):
@@ -2045,10 +2056,21 @@ def m_macron(g, p, s):
 
 
 def m_breve(g, p, s):
-    r = 100 + p.V * 0.2
-    ry = 85 * s + p.mt / 2
-    depth = max(ry - p.mt / 2 + 2, p.mt * 0.55 + 30)  # shallower than the stroke, the inside folds
-    g.stroke(g.arc(0, ry, r, depth, 180, 360), pen=(p.mt, p.mt * 0.85))
+    # Drawn directly, outer and inner half-ellipse: as a stroke, a shallower bowl folded inside, so
+    # Black's breve stood 1.27x as tall as Inter's and Geist's. Drawn, its depth and its bottom's
+    # thickness are separate: heavier, it gets shallower, narrower and a little lighter.
+    h = p.heavy
+    r = (100 + p.V * 0.2) * (1 - 0.2 * h)
+    ts = p.mt * (1 - 0.15 * h)  # side thickness
+    tb = p.mt * 0.85 * (1 - 0.2 * h)  # bottom thickness
+    ryo = max(85 * s + 2, p.mt * 0.55 + 30) * (1 - 0.25 * h) * (1.25 if p.italic else 1) + tb / 2  # the italics' run deeper
+    ryi = max(ryo - tb, 20)
+    rxo, rxi = r + ts / 2, r - ts / 2
+    top = ryo - (0 if p.italic else 25) * h  # and closer to the letter, as the references' heavy breves sit
+    outer = g.arc(0, top, rxo, ryo, 180, 360)
+    inner = [reverse_seg(sg) for sg in reversed(g.arc(0, top, rxi, ryi, 180, 360))]
+    contour = outer + [L((rxo, top), (rxi, top))] + inner + [L((-rxi, top), (-rxo, top))]
+    g.raw.append(orient(contour, outer=True))
 
 
 def m_ring(g, p, s):
@@ -2064,7 +2086,7 @@ def m_tilde(g, p, s):
     a = 120 + p.V * 0.2
     h = 60 * s  # 0.75x the references' height
     t = p.mt * 0.92
-    y = -55 * p.heavy  # heavier, the references' tildes sit closer
+    y = -(30 if p.italic else 55) * p.heavy  # heavier, the references' tildes sit closer (less so in the italic)
     g.stroke([('C', (-a, y + t / 2 + 2), (-a * 0.45, y + h * 2.4 + t / 2), (a * 0.45, y - h * 0.4 + t / 2 - h * 0.8), (a, y + h + t / 2 + 6))], w=t)
 
 
@@ -2091,7 +2113,7 @@ def m_ogonek(g, p, s):
 
 
 def m_commabelow(g, p, s):
-    d = p.dot * (0.95 - 0.3 * p.heavy)  # Black's hung 1.4x as deep as the references': its head alone was most of that
+    d = p.dot * (0.95 - (0.42 if p.italic else 0.3) * p.heavy)  # Black's hung 1.4x as deep as the references': its head alone was most of that
     ln = min(d * 2.1, 150 + d * 0.6)
     comma_shape(g, d, 0, -40, ln - d)  # the same comma as , and the quotes
 

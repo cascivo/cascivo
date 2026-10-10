@@ -262,7 +262,7 @@ class Font(unittest.TestCase):
 
         pairs = {
             VF: ['lA', 'lX', 'lx', 'lz'],
-            VFI: ['lA', 'lX', 'lx', 'lz', 'kf', 'rf', 'vf', 'wf', 'xf', 'yf', 'xt', 'kt', 'yt', 'vt', 'tz', 'zA', 'zX', 'LX', 'ZX', 'fT', 'VT', 'WT', 'YT', 'XT'],
+            VFI: ['lA', 'lX', 'lx', 'lz', 'kf', 'rf', 'vf', 'wf', 'xf', 'yf', 'xt', 'kt', 'yt', 'vt', 'wt', 'rt', 'tz', 'zA', 'zX', 'LX', 'ZX', 'fT', 'VT', 'WT', 'YT', 'XT'],
         }
         for path, ps in pairs.items():
             # Display Black is the tightest corner: the opsz and weight deltas add up there

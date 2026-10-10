@@ -117,7 +117,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                                             |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                                                    |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                                                          |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.7 KB, `Latin[opsz,wght]` 28.8 KB; italic 24.1 / 32.1 KB, loaded only when a page uses italic. Serve only the axes you use |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.6 KB, `Latin[opsz,wght]` 28.8 KB; italic 24.1 / 32.3 KB, loaded only when a page uses italic. Serve only the axes you use |
 
 ## 5. Scorecard
 
@@ -125,7 +125,7 @@ contour in every master for self-intersection. The build ships with zero problem
 
 | File                                    | Cascivo Sans           | Geist             | IBM Plex Sans                         | Inter              |
 | --------------------------------------- | ---------------------- | ----------------- | ------------------------------------- | ------------------ |
-| Variable Latin slice, wght axis         | **21.7 KB** (211 cp)   | 29.4 KB (225 cp)  | 45.7 KB (232 cp)                      | 48.3 KB (230 cp)   |
+| Variable Latin slice, wght axis         | **21.6 KB** (211 cp)   | 29.4 KB (225 cp)  | 45.7 KB (232 cp)                      | 48.3 KB (230 cp)   |
 | Bytes per codepoint (Latin slice)       | **102**                | 131               | 197                                   | 210                |
 | Variable, full charset, wght only       | **25.8 KB** (71 B/cp)  | 69.7 KB (96 B/cp) | —                                     | —                  |
 | Static Regular, full charset            | **11.7 KB** (32 B/cp)  | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp)                     | —                  |
@@ -342,7 +342,7 @@ tail. Counters are 5% narrower. The italic passes the same no-reflow test as the
   its right-angle turn. The capital breve has a minimum depth, because a shallow arc thinner
   than its stroke folds inside.
 
-**Size.** The italic Latin web file is 24.1 KB for every weight, against 21.7 KB for the upright.
+**Size.** The italic Latin web file is 24.1 KB for every weight, against 21.6 KB for the upright.
 The difference is inherent: once outlines are slanted, every point that moves vertically
 between masters also moves horizontally, so it carries more variation data. For comparison,
 Plex ships 24.4 KB for one static italic weight, and Inter 51.8 KB for its variable italic.
@@ -685,6 +685,46 @@ Regular, Bold and Black to 3, 2 and 5; the italic's from 93 to 11. What is left:
 stays 1.27x tall (lowering it folds the outline), the capital ring is slightly small, and the
 rest are measurement artifacts (`ť`'s comma caron, the comma-shaped `ș`). Acutes stay centred
 where the references push them right.
+
+## 19. A third reference, the breve, acutes, and the specimen
+
+**Helvetica.** Inter and Geist share a lineage, so the alphabet was also set against a Helvetica
+design: FreeSans, GNU FreeFont's derivative of URW's Nimbus Sans (Helvetica Now and Söhne are
+commercial). Only consensus outliers count: a glyph off by more than 8% from all three in the same
+direction. Stem and horizontal thickness match all three within a few per cent at every weight
+(contrast 0.85, 0.76, 0.72 at Regular, Bold, Black against their 0.86-0.97, 0.77-0.82, 0.72-0.75).
+What the three agreed on:
+
+| Glyph      | Was (vs Inter / Geist / Helvetica)      | Now          | Change                                                    |
+| ---------- | --------------------------------------- | ------------ | --------------------------------------------------------- |
+| `e`        | eye 0.78 / 0.79 / 0.73 (Bold 0.83-0.87) | within range | bar lower at every weight short of Black, as the italic's |
+| `V` `X`    | ink 0.80-0.91 at Regular                | within range | Regular's diagonals at the full stroke                    |
+| `r`        | 1.28-1.34 wide at Regular               | 1.16-1.22    | shorter arm again (Black kept)                            |
+| `M`, Black | ink 0.88-0.92                           | heavier      | Black's diagonals at 0.90 of the stroke, not 0.86         |
+
+Left as they are: the serifed `I`, the tailed `l` and the `t`'s crossbar (design), `C` slightly
+light at Regular, and the bowl letters at Bold and Black (`b d p q a o D`), whose counters are
+16-26% larger than all three's at equal ink. That comes from the bowl drawing, round right into
+the stem where the references flatten and thicken the join; changing it is a redraw of every bowl.
+
+**The breve** is drawn directly now, outer and inner half-ellipse, so its depth and the thickness
+of its bottom are separate parameters: as a stroke, a shallower one folded. Black's stood 1.27x
+as tall as the references'; it is now 0.21 of the cap height against their 0.22, and the italic's
+runs deeper, as Inter's and Plex's do.
+
+**Acutes and graves** sit 45 units right and left of the letter's centre, as Inter's, Geist's and
+Plex's do (Á, ć, ŕ, Ś within 0.02 of the references' offset), and are steeper (they were 1.4x as
+wide). The acute on `Ĺ` sits over the stem. In the heavy italic the macron, tilde and breve keep
+their height, as Inter's italic does. Accent flags fell to 3, 2 and 1 upright, and 11, 20 and 8 in
+the italic (Regular, Bold, Black).
+
+**Italic Bold spacing.** With collisions now kerned per master, the italic `t`, `f` and `G` came
+back in (`wt`, `rt` joined the own-shape pairs). Only `tt` stays loose (1.3x): Inter and Plex let
+the two crossbars nearly join.
+
+**The specimen** gained a languages-and-symbols section: Czech, Polish, Hungarian, Romanian and
+Turkish samples with weight and italic switches, and a grid of 32 symbols. The page no longer
+scrolls sideways on a phone (the size chart's hidden tooltips did not wrap).
 
 ## Sources
 

@@ -50,7 +50,7 @@ OWN_SHAPE_PAIRS = {(a, b): 1 for a, b in [('l', 'period'), ('l', 'comma'), ('l',
 OWN_SHAPE_PAIRS.update({(a, 'f'): 1 for a in 'kvwxyr'})
 # Clear at Regular but closing at the heavy corners (Display Black: the opsz and weight deltas add
 # up): the tailed l into z, the italic t's crossbar under a diagonal, top-heavy capitals into T.
-OWN_SHAPE_PAIRS.update({(a, b): 1 for a, b in [('l', 'z'), ('x', 't'), ('k', 't'), ('y', 't'), ('v', 't'), ('t', 'z'), ('V', 'T'), ('W', 'T'), ('Y', 'T'), ('X', 'T'), ('f', 'T')]})
+OWN_SHAPE_PAIRS.update({(a, b): 1 for a, b in [('l', 'z'), ('x', 't'), ('k', 't'), ('y', 't'), ('v', 't'), ('w', 't'), ('r', 't'), ('t', 'z'), ('V', 'T'), ('W', 'T'), ('Y', 'T'), ('X', 'T'), ('f', 'T')]})
 
 
 def _glyph(ch):
