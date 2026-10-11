@@ -32,6 +32,8 @@ import ttfautohint  # noqa: E402
 import glyphs as GL  # noqa: E402
 import cyrillic  # noqa: E402  (also registers the Cyrillic drawings)
 import greek  # noqa: E402  (also registers the Greek drawings)
+if os.environ.get('CASCIVO_GEORGIAN') == '1':  # a draft, not yet shipped (RESEARCH.md section 27)
+    import georgian  # noqa: E402,F401  (registers the Georgian drawings)
 from composites import ALIAS, BOTTOM, CYR_EXT, CYR_LOCL, GREEK_ACCENTED, GREEK_POLY, ITALIC_ONLY, POLY_MARK, SPECIAL, accented_chars, glyph_name, is_cap  # noqa: E402
 from geom import contour_bounds, expand, transform_contour  # noqa: E402
 import kern  # noqa: E402
@@ -40,7 +42,7 @@ from params import BLACK_STEM, ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, P  # noqa:
 
 FAMILY = 'Cascivo Sans'
 PS = 'CascivoSans'
-VERSION = '0.5.1'
+VERSION = '0.6.0'
 DIST = os.path.join(HERE, '..', 'fonts')  # not dist/: the repo ignores dist/, and these files ship
 MAX_ERR = 1.5  # cu2qu tolerance in font units: 1.5/1000 em is sub-pixel below ~700px
 IUP_TOLERANCE = 2.0  # gvar deltas the rasterizer can re-infer within 2 units are dropped (section 25)
@@ -371,6 +373,16 @@ def add_composites(o):
         comp(f + '.numr', [(f, lx, sup_y, k)], sw)
         comp(f + '.dnom', [(f, lx, 0, k)], sw)
     comp('zero.zero.pnum', [('zero.slash', S * 0.62 - o.bounds['zero.slash'][0], 0, 1)], o.adv['zero.pnum'])
+    # old-style figures: 0 1 2 drawn short (glyphs.py), 3 4 5 7 9 the lining figure hung below
+    # the line so its top meets the short ones', tabular and proportional
+    drop = p.cap - p.xh * GL.OSF_HEIGHT
+    for f in OSF:
+        if f + '.osf' not in o.bounds:
+            comp(f + '.osf', [(f, 0, -drop, 1)], o.adv[f])
+        src, dy = (f + '.osf', 0) if f + '.osf' in o.bounds else (f, -drop)
+        b = o.bounds[src]
+        tight = {'one': 0.9}.get(f, 0.62)
+        comp(f + '.osf.pnum', [(src, S * tight - b[0], dy, 1)], S * tight + (b[2] - b[0]) + S * tight)
     # 1. Proportional figures by default: running text is the common case, and a tabular "1"
     # in a sentence leaves a hole ("$1, 117"). Tables opt in with font-variant-numeric:
     # tabular-nums, which cascivo's own table components already set.
@@ -662,6 +674,8 @@ def mark_fea(o):
     return '\n'.join(lines)
 
 
+OSF = ['zero', 'one', 'two', 'three', 'four', 'five', 'seven', 'nine']  # 6 and 8 are lining-height already
+
 GSUB_FEA = """
 languagesystem DFLT dflt;
 languagesystem latn dflt;
@@ -692,8 +706,15 @@ feature locl {
   language MOL; sub uni015E by uni0218; sub uni015F by uni0219; sub uni0162 by uni021A; sub uni0163 by uni021B;
 } locl;
 
-feature pnum { sub @figs by @pnum; sub zero.slash by zero.zero.pnum; } pnum;
-feature tnum { sub @pnum by @figs; sub zero.zero.pnum by zero.slash; } tnum;
+@osf_l = [zero one two three four five seven nine];
+@osf_lp = [zero.pnum one.pnum two.pnum three.pnum four.pnum five.pnum seven.pnum nine.pnum];
+@osf = [zero.osf one.osf two.osf three.osf four.osf five.osf seven.osf nine.osf];
+@osf_p = [zero.osf.pnum one.osf.pnum two.osf.pnum three.osf.pnum four.osf.pnum five.osf.pnum seven.osf.pnum nine.osf.pnum];
+
+feature onum { sub @osf_l by @osf; sub @osf_lp by @osf_p; } onum;
+feature lnum { sub @osf by @osf_l; sub @osf_p by @osf_lp; } lnum;
+feature pnum { sub @figs by @pnum; sub zero.slash by zero.zero.pnum; sub @osf by @osf_p; } pnum;
+feature tnum { sub @pnum by @figs; sub zero.zero.pnum by zero.slash; sub @osf_p by @osf; } tnum;
 feature zero { sub zero by zero.slash; sub zero.pnum by zero.zero.pnum; } zero;
 feature sups { sub @figs by @sups; sub @pnum by @sups; } sups;
 feature sinf { sub @figs by @sinf; sub @pnum by @sinf; } sinf;

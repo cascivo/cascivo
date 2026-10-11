@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.6.0
+
+- **Old-style figures (`onum`).** 0 1 2 stand at the x-height, 3 4 5 7 9 descend, and 6 8 stay
+  lining, as in IBM Plex. Proportional by default and tabular with `tnum`. `lnum` turns them back.
+- **Georgian, as a draft only.** `src/georgian.py` draws the 33 Mkhedruli letters, but 13 of them
+  are not yet right, so the release does not include them. `CASCIVO_GEORGIAN=1` builds them for
+  review.
+- A render-proof page for checking small sizes in Safari and on Windows.
+- Files +0.4 to +0.9 KB.
+
 ## 0.5.1
 
 - **Clear at the heavy corners.** The build measures opening pairs on the outlines the variable

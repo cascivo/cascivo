@@ -27,11 +27,11 @@ VFI = os.path.join(DIST, 'CascivoSans-Italic[opsz,wght].ttf')
 BUDGETS = {
     'CascivoSans[opsz,wght].woff2': 69_500,  # Latin, Cyrillic, Greek (with polytonic)
     'CascivoSans-Latin[opsz,wght].woff2': 30_000,
-    'CascivoSans-Latin[wght].woff2': 22_500,
+    'CascivoSans-Latin[wght].woff2': 23_500,
     'CascivoSans-Regular.woff2': 24_500,
     'CascivoSans-Italic[opsz,wght].woff2': 75_000,
     'CascivoSans-Italic-Latin[opsz,wght].woff2': 34_000,
-    'CascivoSans-Italic-Latin[wght].woff2': 25_000,
+    'CascivoSans-Italic-Latin[wght].woff2': 26_000,
 }
 
 
@@ -329,6 +329,40 @@ class Font(unittest.TestCase):
         self.assertTrue(all(changed(VFI, 'бгдпт', 'mk')))
         self.assertEqual(changed(VF, 'бгдпт', 'sr'), [True, False, False, False, False])
         self.assertFalse(any(changed(VF, 'бвгджзийклптцшщю', 'ru')))
+
+    def test_old_style_figures(self):
+        # onum: 0 1 2 at the x-height, 3 4 5 7 9 below the line, 6 8 lining, in proportional and
+        # tabular spacing; lnum undoes it
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        from fontTools.pens.boundsPen import BoundsPen
+
+        for path in (VF, VFI):
+            f = TTFont(path)
+            gs, order = f.getGlyphSet(), f.getGlyphOrder()
+            font = hb.Font(hb.Face(open(path, 'rb').read()))
+            for feats in ({'onum': True}, {'onum': True, 'tnum': True}, {'onum': True, 'lnum': True}):
+                buf = hb.Buffer()
+                buf.add_str('0123456789')
+                buf.guess_segment_properties()
+                hb.shape(font, buf, feats)
+                ymin, ymax = [], []
+                for info in buf.glyph_infos:
+                    pen = BoundsPen(gs)
+                    gs[order[info.codepoint]].draw(pen)
+                    ymin.append(pen.bounds[1])
+                    ymax.append(pen.bounds[3])
+                with self.subTest(font=os.path.basename(path), feats=feats):
+                    if 'lnum' in feats:
+                        self.assertTrue(all(y > 600 for y in ymax))
+                        continue
+                    self.assertTrue(all(ymax[i] < 600 for i in (0, 1, 2)))
+                    self.assertTrue(all(ymin[i] < -100 for i in (3, 4, 5, 7, 9)))
+                    self.assertTrue(all(ymax[i] > 690 for i in (6, 8)))
+                    advs = {q.x_advance for q in buf.glyph_positions}
+                    self.assertEqual(len(advs) == 1, 'tnum' in feats)
 
     def test_greek_ano_teleia_sits_at_the_x_height(self):
         # the raised dot is the colon's upper dot, as Inter and Plex set it (it once sat mid-height)

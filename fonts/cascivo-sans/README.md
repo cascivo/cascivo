@@ -3,9 +3,9 @@
 Cascivo Sans is a variable grotesque for interfaces. It is generated from a parametric stroke
 engine and licensed under the SIL Open Font License 1.1. It comes as two variable fonts, upright
 and a drawn italic, each with weight and optical-size axes. It has an unambiguous `Il1`, tabular
-figures on request, and a 22 KB Latin web file.
+and old-style figures on request, and a 22 KB Latin web file.
 
-Version 0.2.0; see [CHANGELOG.md](./CHANGELOG.md). Read [RESEARCH.md](./RESEARCH.md) for why it exists, how it compares with Geist, IBM Plex and
+Version 0.6.0; see [CHANGELOG.md](./CHANGELOG.md). Read [RESEARCH.md](./RESEARCH.md) for why it exists, how it compares with Geist, IBM Plex and
 Helvetica, and what it does not do yet.
 
 ## Files
@@ -14,17 +14,17 @@ Helvetica, and what it does not do yet.
 | ------------------------------------------------- | ----------------- | --------------------- | -------------------------- |
 | `fonts/CascivoSans-Latin[wght].woff2`             | wght              | Latin                 | 22.2 KB                    |
 | `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz        | Latin                 | 28.4 KB                    |
-| `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz        | full (956 codepoints) | 68.1 KB                    |
-| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz        | full                  | 238.8 KB (desktop install) |
-| `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght              | Latin                 | 24.7 KB                    |
-| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz        | Latin                 | 31.4 KB                    |
-| `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz        | full                  | 73.9 KB                    |
-| `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz        | full                  | 242.7 KB (desktop install) |
-| `fonts/CascivoSans-Regular.woff2`                 | static 400        | full                  | 23.7 KB                    |
-| `fonts/CascivoSans-Regular.ttf`                   | static 400        | full                  | 135.9 KB (desktop, hinted) |
-| `fonts/CascivoSans-Bold.ttf`                      | static 700        | full                  | 137.1 KB (desktop, hinted) |
-| `fonts/CascivoSans-Italic.ttf`                    | static 400 italic | full                  | 137.6 KB (desktop, hinted) |
-| `fonts/CascivoSans-BoldItalic.ttf`                | static 700 italic | full                  | 137.8 KB (desktop, hinted) |
+| `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz        | full (956 codepoints) | 67.3 KB                    |
+| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz        | full                  | 235.4 KB (desktop install) |
+| `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght              | Latin                 | 24.9 KB                    |
+| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz        | Latin                 | 31.5 KB                    |
+| `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz        | full                  | 73.1 KB                    |
+| `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz        | full                  | 239.2 KB (desktop install) |
+| `fonts/CascivoSans-Regular.woff2`                 | static 400        | full                  | 23.5 KB                    |
+| `fonts/CascivoSans-Regular.ttf`                   | static 400        | full                  | 134.0 KB (desktop, hinted) |
+| `fonts/CascivoSans-Bold.ttf`                      | static 700        | full                  | 135.1 KB (desktop, hinted) |
+| `fonts/CascivoSans-Italic.ttf`                    | static 400 italic | full                  | 135.7 KB (desktop, hinted) |
+| `fonts/CascivoSans-BoldItalic.ttf`                | static 700 italic | full                  | 135.9 KB (desktop, hinted) |
 
 "Latin" means Basic Latin, Latin-1 and common punctuation. The full charset adds Latin
 Extended-A, Romanian comma letters, Vietnamese, Cyrillic, Greek and combining marks (stacked by
@@ -71,18 +71,19 @@ browser fakes italics by skewing the upright.
 
 ## OpenType features
 
-| Feature                | CSS                                        | Effect                                                                   |
-| ---------------------- | ------------------------------------------ | ------------------------------------------------------------------------ |
-| Proportional figures   | default                                    | Figures sit naturally in running text                                    |
-| `tnum`                 | `font-variant-numeric: tabular-nums`       | All digits share one width, so columns align in tables                   |
-| `zero`                 | `font-variant-numeric: slashed-zero`       | Slashed zero                                                             |
-| `frac`                 | `font-variant-numeric: diagonal-fractions` | 1/2 → ½                                                                  |
-| `sups` / `sinf`        | `font-variant-position: super / sub`       | Real superior and inferior figures                                       |
-| `ordn`                 | `font-variant-numeric: ordinal`            | 1a → 1ª                                                                  |
-| `case`                 | `font-feature-settings: 'case'`            | Hyphens, parentheses and guillemets centred on capitals                  |
-| `ss01`                 | `font-feature-settings: 'ss01'`            | Plain `I` and `l` (as in Helvetica), including every accented form       |
-| `locl`                 | `lang="ro"`                                | Ş ţ → Ș ț (comma below) for Romanian and Moldovan                        |
-| `kern`, `mark`, `ccmp` | default                                    | Class kerning, and accents placed on any base, including decomposed text |
+| Feature                | CSS                                        | Effect                                                                            |
+| ---------------------- | ------------------------------------------ | --------------------------------------------------------------------------------- |
+| Proportional figures   | default                                    | Figures sit naturally in running text                                             |
+| `tnum`                 | `font-variant-numeric: tabular-nums`       | All digits share one width, so columns align in tables                            |
+| `zero`                 | `font-variant-numeric: slashed-zero`       | Slashed zero                                                                      |
+| `onum` / `lnum`        | `font-variant-numeric: oldstyle-nums`      | Old-style figures (0 1 2 at x-height, 3 4 5 7 9 descend), proportional or tabular |
+| `frac`                 | `font-variant-numeric: diagonal-fractions` | 1/2 → ½                                                                           |
+| `sups` / `sinf`        | `font-variant-position: super / sub`       | Real superior and inferior figures                                                |
+| `ordn`                 | `font-variant-numeric: ordinal`            | 1a → 1ª                                                                           |
+| `case`                 | `font-feature-settings: 'case'`            | Hyphens, parentheses and guillemets centred on capitals                           |
+| `ss01`                 | `font-feature-settings: 'ss01'`            | Plain `I` and `l` (as in Helvetica), including every accented form                |
+| `locl`                 | `lang="ro"`                                | Ş ţ → Ș ț (comma below) for Romanian and Moldovan                                 |
+| `kern`, `mark`, `ccmp` | default                                    | Class kerning, and accents placed on any base, including decomposed text          |
 
 ## Build
 
@@ -109,6 +110,9 @@ contours are standard in variable fonts.
 | `src/glyphs.py`                 | One function per drawn glyph, as centerline strokes                                                |
 | `src/composites.py`, `build.py` | Accents, fractions, alternates, master assembly, `varLib`, `avar`, STAT, web builds                |
 | `src/kern.py`, `kern_oracle.py` | Kerning: pairs that Geist and Inter both kern, values measured on our outlines with a fitted model |
+
+A draft of Georgian (Mkhedruli) is in `src/georgian.py` but is not in the release; build it with
+`CASCIVO_GEORGIAN=1 python3 -I src/build.py` (RESEARCH.md section 27).
 
 To change a glyph, edit its function in `glyphs.py`, then run the lint, the build and the tests.
 One rule keeps the variable font valid: a master parameter may move points, but it must never

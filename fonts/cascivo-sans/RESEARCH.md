@@ -1043,6 +1043,61 @@ Regular and Black, in both styles: every glyph's advance and ink at opsz 8 and 4
 No new letter stands out on its own. The six corners render without artifacts in Latin, Cyrillic
 and polytonic Greek (checked in Chromium).
 
+## 27. Old-style figures, Georgian, and a proof for other renderers
+
+**Old-style figures.** The references split. Inter and Geist have none. IBM Plex Sans has `onum`:
+0 1 2 at the x-height, 3 4 5 7 9 hanging below the baseline, and 6 8 at full height. Cascivo Sans
+now follows Plex:
+
+- 0 1 2 are drawn again at 1.04× the x-height, as their lining shapes are.
+- 3 4 5 7 9 are the lining figures, lowered so their tops meet the old-style 0.
+- 6 and 8 are unchanged.
+
+HarfBuzz puts the tops of 0 1 2 at 549–562 units (x-height 528). 3 4 5 7 9 drop to about −164.
+
+The figures come proportional and tabular, with `pnum` and `tnum` moving between them. `lnum`
+undoes `onum`. Slashed zero needed no work: `zero` already covered the tabular and proportional
+sets. A test checks the heights, the descent and the tabular widths. Cost: +0.4 KB (Regular) to
++0.9 KB (italic full).
+
+**Georgian.** The proposal said Georgian or Armenian were "the next scripts Inter covers". That was
+wrong: none of Inter, Geist, IBM Plex Sans or FreeSans covers either. The only reference to hand
+was Noto Sans Georgian (OFL). It was used for proportions only: x-height, ascender and descender
+depth, and advance widths.
+
+`src/georgian.py` draws the 33 modern Mkhedruli letters and ჻ from shared parts:
+
+- an arch with a curl
+- bowls, a cup and a j-bowl
+- a tail and a hook
+
+The drawings are compatible across all ten masters. Advances fall within 0.9–1.0× Noto's.
+
+Rendered beside Noto, 20 letters read correctly. 13 do not: ა გ დ ე თ კ ლ ჟ უ ფ ღ შ ც. Their
+loops close in the wrong place, or the counter-curl turns the wrong way. Georgian readers
+recognise letters by exactly these details, so the draft is not shipped. It builds only with
+`CASCIVO_GEORGIAN=1`. Finishing it needs two things:
+
+- each letter's centre line traced from a reference's outlines, rather than built by eye from
+  arches
+- a native reader's review
+
+Armenian has the same problem (no reference among ours) and was not started.
+
+**A proof for other renderers.** Every render so far was Chromium or FreeType on Linux. Safari
+(Core Text) and Windows (DirectWrite) draw the same outlines differently at 9–14 px: Core Text
+looks heavier, and DirectWrite snaps to the grid more. The proof page embeds the woff2 files and
+shows, in this order:
+
+- the browser's user agent, pixel ratio and a font-loaded check
+- Regular and Bold waterfalls from 9 to 24 px
+- the weights at 15 px
+- automatic against fixed optical size
+- every script
+- the figure features
+
+A screenshot from a Mac and a PC would cover what this environment cannot.
+
 ## Sources
 
 - [Introducing Geist Pixel (Vercel)](https://vercel.com/blog/introducing-geist-pixel) and the

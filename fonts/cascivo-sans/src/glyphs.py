@@ -981,6 +981,24 @@ def _zero_slash(g, p):
     g.ht = 'c'
 
 
+# Old-style figures (onum): 0 1 2 stand at the x-height, 3 4 5 7 9 hang below the line, 6 8 keep
+# the lining height (as IBM Plex's). Only the short three are drawn: the figure's own function at
+# 1.04 x-height, which is where Plex's sit. The hanging five are composites (build.py).
+OSF_HEIGHT = 1.04
+
+
+def _osf(fn):
+    import copy
+
+    def draw(g, p):
+        pc = copy.copy(p)
+        pc.cap = p.xh * OSF_HEIGHT
+        fn(g, pc)
+        g.ht = 'x'
+
+    return draw
+
+
 @glyph('one', 0x31)
 def _one(g, p):
     w = fw(p)
@@ -1008,6 +1026,11 @@ def _two(g, p):
     g.hbar(0, w, 0)
     g.tab = True
     g.ht = 'c'
+
+
+glyph('zero.osf')(_osf(_zero))
+glyph('one.osf')(_osf(_one))
+glyph('two.osf')(_osf(_two))
 
 
 @glyph('three', 0x33)
