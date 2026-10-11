@@ -14,5 +14,5 @@
     }
   ],
   "examples": ["crud"],
-  "cascivo": "1.7.1"
+  "cascivo": "1.8.0"
 }
