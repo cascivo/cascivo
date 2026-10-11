@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.5.1
+
+- **Clear at the heavy corners.** The build measures opening pairs on the outlines the variable
+  font draws at Display Black and Caption Black, which no master contains. Every same-script pair
+  is now clear at every weight and size (the last ones touched by 3–7 units). ï î ĩ ī ĭ ї now open
+  against every capital and ascender, not only T V W Y F P (`Xï` was −88 at Display Black).
+- **Greek punctuation.** The ano teleia (·) sits at the x-height, as the colon's upper dot,
+  instead of mid-height. ΅ and the polytonic spacing accents no longer overhang their advance.
+- Optical sizes re-checked across all scripts: no new outliers.
+- Files +1.2 KB.
+
 ## 0.5.0
 
 - **Polytonic Greek.** All 233 characters of Greek Extended: breathings, perispomeni, iota

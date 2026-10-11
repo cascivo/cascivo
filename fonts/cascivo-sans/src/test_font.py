@@ -25,7 +25,7 @@ VFI = os.path.join(DIST, 'CascivoSans-Italic[opsz,wght].ttf')
 # The full-charset files grew with Vietnamese, Welsh and the Croatian digraphs (365 -> 479
 # codepoints, 95 -> 78 bytes each); the Latin slices are unchanged.
 BUDGETS = {
-    'CascivoSans[opsz,wght].woff2': 68_000,  # Latin, Cyrillic, Greek (with polytonic)
+    'CascivoSans[opsz,wght].woff2': 69_500,  # Latin, Cyrillic, Greek (with polytonic)
     'CascivoSans-Latin[opsz,wght].woff2': 30_000,
     'CascivoSans-Latin[wght].woff2': 22_500,
     'CascivoSans-Regular.woff2': 24_500,
@@ -279,15 +279,15 @@ class Font(unittest.TestCase):
             return pen.out
 
         pairs = {
-            VF: ['lA', 'lX', 'lx', 'lz', 'Tħ', 'Тћ', 'Гћ', 'Дћ', 'Τΰ', 'ΰΤ', 'ΐΐ', 'ΐλ', 'Tï', 'ïT', 'Vï', 'fï', 'ïï', 'її'],  # ï's dots overhang it
+            VF: ['lA', 'lX', 'lx', 'lz', 'Tħ', 'Тћ', 'Гћ', 'Дћ', 'Τΰ', 'ΰΤ', 'ΐΐ', 'ΐλ', 'Tï', 'ïT', 'Vï', 'fï', 'ïï', 'її', 'Xï', 'ïX', 'Zï', 'ïL', 'ĩF'],  # ï's dots overhang it
             VFI: ['lA', 'lX', 'lx', 'lz', 'kf', 'rf', 'vf', 'wf', 'xf', 'yf', 'xt', 'kt', 'yt', 'vt', 'wt', 'rt', 'tz', 'zA', 'zX', 'LX', 'ZX', 'fT', 'VT', 'WT', 'YT', 'XT']
             + ['Тћ', 'Vћ', 'Ућ', 'Yћ', 'VЪ', 'УТ', 'YЂ', 'VЋ', 'жъ', 'хъ', 'къ']  # Cyrillic: bars at the top left
             + ['Δλ', 'ΔΧ', 'Ωλ', 'Τΰ', 'ΰΤ', 'Γΰ', 'ΐΐ', 'ιλ']  # Greek: italic feet, ΐ ΰ's dots
-            + ['Tï', 'ïT', 'Vï', 'fï'],  # (ïï still touches at Display Black italic; RESEARCH 25)
+            + ['Tï', 'ïT', 'Vï', 'fï', 'ïï', 'Xï', 'ïX', 'Zï', 'ïL', 'χτ'],
         }
         for path, ps in pairs.items():
-            # Display Black is the tightest corner: the opsz and weight deltas add up there
-            for wght, opsz in ((400, 14), (900, 14), (900, 48)):
+            # Display Black and Caption Black are the tightest corners: the opsz and weight deltas add up there
+            for wght, opsz in ((400, 14), (900, 14), (900, 48), (900, 8)):
                 f = instantiateVariableFont(TTFont(path), {'wght': wght, 'opsz': opsz})
                 buf_io = io.BytesIO()
                 f.save(buf_io)
@@ -329,6 +329,20 @@ class Font(unittest.TestCase):
         self.assertTrue(all(changed(VFI, 'бгдпт', 'mk')))
         self.assertEqual(changed(VF, 'бгдпт', 'sr'), [True, False, False, False, False])
         self.assertFalse(any(changed(VF, 'бвгджзийклптцшщю', 'ru')))
+
+    def test_greek_ano_teleia_sits_at_the_x_height(self):
+        # the raised dot is the colon's upper dot, as Inter and Plex set it (it once sat mid-height)
+        from fontTools.pens.boundsPen import BoundsPen
+
+        for path in (VF, VFI):
+            f = TTFont(path)
+            gs, cmap = f.getGlyphSet(), f.getBestCmap()
+            tops = []
+            for cp in (0x387, 0x3A):
+                pen = BoundsPen(gs)
+                gs[cmap[cp]].draw(pen)
+                tops.append(pen.bounds[3])
+            self.assertEqual(tops[0], tops[1], path)
 
     def test_polytonic_marks_typed_separately(self):
         # a breathing then an acute: the acute stands to the breathing's right, as in ἄ; a

@@ -12,19 +12,19 @@ Helvetica, and what it does not do yet.
 
 | File                                              | Axes              | Charset               | Size                       |
 | ------------------------------------------------- | ----------------- | --------------------- | -------------------------- |
-| `fonts/CascivoSans-Latin[wght].woff2`             | wght              | Latin                 | 21.8 KB                    |
-| `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz        | Latin                 | 27.6 KB                    |
-| `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz        | full (956 codepoints) | 66.9 KB                    |
-| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz        | full                  | 226.5 KB (desktop install) |
-| `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght              | Latin                 | 24.4 KB                    |
-| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz        | Latin                 | 30.9 KB                    |
-| `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz        | full                  | 72.7 KB                    |
-| `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz        | full                  | 233.1 KB (desktop install) |
-| `fonts/CascivoSans-Regular.woff2`                 | static 400        | full                  | 23.5 KB                    |
-| `fonts/CascivoSans-Regular.ttf`                   | static 400        | full                  | 131.8 KB (desktop, hinted) |
-| `fonts/CascivoSans-Bold.ttf`                      | static 700        | full                  | 133.0 KB (desktop, hinted) |
-| `fonts/CascivoSans-Italic.ttf`                    | static 400 italic | full                  | 133.6 KB (desktop, hinted) |
-| `fonts/CascivoSans-BoldItalic.ttf`                | static 700 italic | full                  | 133.9 KB (desktop, hinted) |
+| `fonts/CascivoSans-Latin[wght].woff2`             | wght              | Latin                 | 22.2 KB                    |
+| `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz        | Latin                 | 28.4 KB                    |
+| `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz        | full (956 codepoints) | 68.1 KB                    |
+| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz        | full                  | 238.8 KB (desktop install) |
+| `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght              | Latin                 | 24.7 KB                    |
+| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz        | Latin                 | 31.4 KB                    |
+| `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz        | full                  | 73.9 KB                    |
+| `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz        | full                  | 242.7 KB (desktop install) |
+| `fonts/CascivoSans-Regular.woff2`                 | static 400        | full                  | 23.7 KB                    |
+| `fonts/CascivoSans-Regular.ttf`                   | static 400        | full                  | 135.9 KB (desktop, hinted) |
+| `fonts/CascivoSans-Bold.ttf`                      | static 700        | full                  | 137.1 KB (desktop, hinted) |
+| `fonts/CascivoSans-Italic.ttf`                    | static 400 italic | full                  | 137.6 KB (desktop, hinted) |
+| `fonts/CascivoSans-BoldItalic.ttf`                | static 700 italic | full                  | 137.8 KB (desktop, hinted) |
 
 "Latin" means Basic Latin, Latin-1 and common punctuation. The full charset adds Latin
 Extended-A, Romanian comma letters, Vietnamese, Cyrillic, Greek and combining marks (stacked by

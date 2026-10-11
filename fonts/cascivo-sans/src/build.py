@@ -40,7 +40,7 @@ from params import BLACK_STEM, ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, P  # noqa:
 
 FAMILY = 'Cascivo Sans'
 PS = 'CascivoSans'
-VERSION = '0.5.0'
+VERSION = '0.5.1'
 DIST = os.path.join(HERE, '..', 'fonts')  # not dist/: the repo ignores dist/, and these files ship
 MAX_ERR = 1.5  # cu2qu tolerance in font units: 1.5/1000 em is sub-pixel below ~700px
 IUP_TOLERANCE = 2.0  # gvar deltas the rasterizer can re-infer within 2 units are dropped (section 25)
@@ -178,6 +178,15 @@ def _poly_group(o, p, marks):
     return parts, (min(xs), min(ys), max(xs))
 
 
+def _spacing_group(o, comp, name, marks, cp):
+    """A spacing accent: the mark group at the x-height, with the spacing accents' sidebearings
+    either side of its ink (a fixed width left ΅'s dots hanging out of it)."""
+    p = o.p
+    parts, (x0, _, x1) = _poly_group(o, p, marks)
+    sb = p.S * 0.6
+    comp(name, [(g, sb - x0 + x, p.xh + 68 + y, 1) for g, x, y in parts], sb * 2 + (x1 - x0), cp)
+
+
 def add_polytonic(o, comp, at, tw):
     """Greek Extended. A lowercase takes its marks above; a capital takes them before it at the cap
     height (the letter moving right, as for the tonos). Both take the iota subscript below, as
@@ -192,9 +201,7 @@ def add_polytonic(o, comp, at, tw):
             comp(name, [('uni03B9', 0, 0, 1)], o.adv['uni03B9'], cp)
             continue
         if d[0] in POLY_MARK:  # a spacing accent
-            ms = [POLY_MARK[m] for m in d]
-            parts, _ = _poly_group(o, p, ms[:2])
-            comp(name, [(g, tw / 2 + x, p.xh + 68 + y, 1) for g, x, y in parts], tw, cp)
+            _spacing_group(o, comp, name, [POLY_MARK[m] for m in d][:2], cp)
             continue
         base = ALIAS.get(ord(d[0]), 'uni%04X' % ord(d[0]))
         isub = '\u0345' in d
@@ -468,8 +475,9 @@ def add_composites(o):
         o.anchors['uni%04X' % cp] = o.anchors[base]
     tw = 170 + p.V * 0.5 + 2 * S * 0.6
     comp('tonos', [('tonoscomb', tw / 2, p.xh + 68, 1)], tw, 0x384)
-    dl, dr = _dialytika_tonos(p)
-    comp('dieresistonos', [('dotaccentcomb', tw / 2 - dl, p.xh + 68, 1), ('dotaccentcomb', tw / 2 + dr, p.xh + 68, 1), ('tonoscomb', tw / 2, p.xh + 78, 1)], tw, 0x385)
+    _spacing_group(o, comp, 'dieresistonos', ['dieresiscomb', 'tonoscomb'], 0x385)
+    # ano teleia: the colon's upper dot, at the x-height as in Inter and Plex (· sat mid-height)
+    comp('anoteleia', [('period', 0, p.xh - p.dot, 1)], o.adv['period'], 0x387)
 
     add_polytonic(o, comp, at, tw)
 
@@ -523,6 +531,27 @@ def apply_slant(o):
 # ---------------------------------------------------------------------------------------------
 # font assembly
 # ---------------------------------------------------------------------------------------------
+
+
+def _black_corners(outs):
+    """The heavy corner of each optical-size master: what the variable font draws at wght 900 and
+    that optical size, Black's and that master's changes from Regular added together (kern.py
+    keeps opening pairs clear there)."""
+    at = {(o.loc['wght'], o.loc['opsz']): o for o in outs}
+    reg, black = at[400, 14], at[900, 14]
+    add = lambda b, m, r: (b[0] + m[0] - r[0], b[1] + m[1] - r[1])  # noqa: E731
+    corners = {}
+    for (w, z), m in at.items():
+        if w != 400 or z == 14:
+            continue
+        c = Out(black.p)  # only its spacing units are read; P() has no Black at other sizes
+        for n, cs in reg.contours.items():
+            c.contours[n] = [[(sr[0],) + tuple(add(b, q, r) for b, q, r in zip(sb[1:], sm[1:], sr[1:])) for sb, sm, sr in zip(cb, cm, cr)] for cb, cm, cr in zip(black.contours[n], m.contours[n], cs)]
+        for n, parts in reg.comps.items():
+            c.comps[n] = [(g, bx + mx - rx, by + my - ry, a) for (g, rx, ry, a), (_, bx, by, _a), (_, mx, my, _m) in zip(parts, black.comps[n], m.comps[n])]
+        c.adv = {n: black.adv[n] + m.adv[n] - reg.adv[n] for n in reg.adv}
+        corners[m.name] = c
+    return corners
 
 
 def glyph_order(o):
@@ -788,6 +817,7 @@ def build(italic=False):
         outs.append(o)
     for o in outs:
         apply_slant(o)
+    kern.set_corners(_black_corners(outs), next(o for o in outs if (o.loc['wght'], o.loc['opsz']) == (900, 14)))
     order = glyph_order(outs[0])
     glyfs = build_glyf(outs, order)
     ds = DesignSpaceDocument()

@@ -43,7 +43,7 @@ GREEK_ALIAS = {
     0x39A: 'K', 0x39C: 'M', 0x39D: 'N', 0x39F: 'O', 0x3A0: 'uni041F', 0x3A1: 'P', 0x3A4: 'T',
     0x3A5: 'Y', 0x3A6: 'uni0424', 0x3A7: 'X',
     0x3B3: 'uni04AF', 0x3B4: 'uni0431.loclSRB', 0x3BA: 'kgreenlandic', 0x3BC: 'mu', 0x3BD: 'v',
-    0x3BF: 'o', 0x37E: 'semicolon', 0x387: 'periodcentered',
+    0x3BF: 'o', 0x37E: 'semicolon',  # ano teleia (U+0387) is built: the colon's upper dot
 }
 ALIAS = {**CYR_ALIAS, **GREEK_ALIAS}
 # Monotonic Greek's accented letters: tonos, dialytika, and both (ΐ ΰ)

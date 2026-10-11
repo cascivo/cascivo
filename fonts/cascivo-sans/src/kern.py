@@ -59,13 +59,16 @@ OWN_SHAPE_PAIRS.update({(a, b): 1 for a, b in [('l', 'z'), ('x', 't'), ('k', 't'
 OWN_SHAPE_PAIRS.update({(a, 'hbar'): 1 for a in ['T', 'V', 'Y', 'X', 'E', 'uni0413', 'uni0414', 'uni0423', 'uni0490', 'uni0491']})
 OWN_SHAPE_PAIRS.update({(a, b): 1 for a in ['V', 'Y', 'uni0423'] for b in ['T', 'uni0402', 'uni040B', 'uni042A']})
 OWN_SHAPE_PAIRS.update({(a, 'uni044A'): 1 for a in ['uni0436', 'x', 'kgreenlandic', 'y']})
+OWN_SHAPE_PAIRS.update({(a, 'uni03C4'): 1 for a in ['uni03C7', 'kgreenlandic']})  # χτ κτ, as Latin xt kt
 
 # An accent wider than i overhangs it (ï î ĩ ī ĭ, and ї): at Black ï met an ascender beside it by
 # 39 units (dï, ïl), f by 59 and a T or V bar by 90, and Tï touched at Regular. These leave i's class
-# and kern open against the tall letters on either side, as Inter's and Plex's do (Inter: Tï +91,
+# and kern open against every tall letter on either side, as Inter's and Plex's do (Inter: Tï +91,
 # ïï +166 per 1000). They also keep every pair i has.
 I_WIDE = ['uni00EF', 'uni00EE', 'uni0129', 'uni012B', 'uni012D']  # ï î ĩ ī ĭ
-TALL = ['T', 'V', 'W', 'Y', 'F', 'P', 'f', 'd', 'l', 'b', 'h', 'k', 't', 'i', 'j'] + I_WIDE  # i's and j's dots are as high
+# every capital and ascender reaches the dots' height (X's and Z's arms met them by 88 at Display
+# Black), and so do i's and j's own dots
+TALL = list('ABCDEFGHIJKLMNOPQRSTUVWXYZbdfhklt') + ['i', 'j'] + I_WIDE
 OWN_SHAPE_PAIRS.update({(a, b): 1 for i in I_WIDE for a, b in [(t, i) for t in TALL] + [(i, t) for t in TALL]})
 
 # Closing pairs no reference list carries, kept when the measurement agrees: tt, whose two
@@ -190,8 +193,8 @@ _GROUPS = None  # (right-side rep, left-side rep) of each Cyrillic and Greek gly
 
 def reset():
     """Each font (upright, italic) measures and selects its own pairs."""
-    global _SELECTED, _REGULAR, _GROUPS
-    _SELECTED = _REGULAR = _GROUPS = None
+    global _SELECTED, _REGULAR, _BLACK, _GROUPS
+    _SELECTED = _REGULAR = _BLACK = _GROUPS = None
 
 
 def _non_latin(name):
@@ -234,10 +237,29 @@ def _side_groups(o, glyphs, acc, keys):
     return groups
 
 
+_BLACK = None  # values measured on the Black master
+_CORNERS = {}  # optical-size master name -> its corner with Black (outlines Black + it - Regular)
+
+
+_HEAVY = []  # Black and the corners: where an own-shape pair may need opening when Regular doesn't
+
+
+def set_corners(corners, black):
+    """build.py hands over the Black master and the Black corners of the optical-size masters."""
+    _CORNERS.clear()
+    _CORNERS.update(corners)
+    _HEAVY[:] = [black] + list(corners.values())
+
+
 def _values(o, pairs):
     """Kerning follows weight, but optical size barely changes it: those masters reuse
-    Regular's values, so their deltas vanish (1.6 KB of WOFF2, measured)."""
-    global _REGULAR
+    Regular's values, so their deltas vanish (1.6 KB of WOFF2, measured).
+
+    Except where a pair only ever opens: at Display Black the weight's and the size's outline
+    deltas add up to a corner no master contains, and pairs Regular, Black and Display each
+    kept clear touched there (ĩF -5, ïï -7). Such a pair is measured on the corner itself, and
+    the optical-size master takes whatever value makes the interpolated corner reach it."""
+    global _REGULAR, _BLACK
     # The measure is fitted at Regular. Heavier, the references kern harder than it says: Bold
     # carried 0.87 and Black 0.76 of Inter's and Geist's total kerning, most of it short in the
     # strong pairs (AW, LT, LY, TJ). Closing pairs grow with weight; opening ones stay.
@@ -246,8 +268,18 @@ def _values(o, pairs):
     loc = getattr(o, 'loc', {'wght': 400, 'opsz': 14})
     if loc.get('wght') == 400 and loc.get('opsz') == 14:
         _REGULAR = vals
+    elif loc.get('wght') == 900 and loc.get('opsz') == 14:
+        _BLACK = vals
     elif loc.get('wght') == 400 and _REGULAR is not None:
-        return _REGULAR
+        out = dict(_REGULAR)
+        corner = _CORNERS.get(getattr(o, 'name', None))
+        if corner is not None and _BLACK is not None:
+            for k in pairs:
+                if k in OWN_SHAPE_PAIRS or k[0] in I_WIDE or k[1] in I_WIDE:
+                    need = max(0, measure(corner, *k, 250 if k[0] in I_WIDE or k[1] in I_WIDE else 40))
+                    # corner value = R + (B - R) + (M - R) = B + M - R
+                    out[k] = max(out[k], need - _BLACK[k] + _REGULAR[k])
+        return out
     return vals
 
 
@@ -272,9 +304,13 @@ def kern_fea(o):
     if _SELECTED is None:  # the first (default) master decides which pairs exist
         keep = []
         for (a, b), (k, sign) in pairs.items():
-            # own-shape pairs stay even where Regular needs nothing: the heavy masters may
-            if (abs(k) >= MIN_KERN and (k < 0) == (sign < 0)) or (a, b) in OWN_SHAPE_PAIRS:
+            # own-shape pairs stay where Regular needs nothing but Black or a heavy corner does
+            if abs(k) >= MIN_KERN and (k < 0) == (sign < 0):
                 keep.append((a, b))
+            elif (a, b) in OWN_SHAPE_PAIRS:
+                most = 250 if a in I_WIDE or b in I_WIDE else 40
+                if k > 0 or not _HEAVY or any(measure(h, a, b, most) > 0 for h in _HEAVY):
+                    keep.append((a, b))
         _SELECTED = sorted(keep)
     firsts = sorted({a for a, _ in _SELECTED})
     seconds = sorted({b for _, b in _SELECTED})

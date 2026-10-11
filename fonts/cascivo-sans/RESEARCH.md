@@ -1000,6 +1000,49 @@ Black italic.
 5.8 KB of that, after the tolerance saved about 2.5 KB. `Latin[wght]` 21.8 KB, `Latin[opsz,wght]`
 27.6 KB, italic Latin 24.4 and 30.9 KB.
 
+## 26. The heavy corners, Greek punctuation, and optical sizes again
+
+**Kerning at the corners.** Caption and Display reuse Regular's kerning, so the variable font's
+kerning at Display Black is Black's. Its outlines are not: they add Black's and Display's
+changes from Regular, a corner no master contains. So a pair can be clear in all five masters
+and still touch there, as every leftover collision did (ĩF -5, ïï -7, χτ -3).
+
+The build now constructs each corner's outlines (Black + Caption − Regular, Black + Display −
+Regular, point by point) and measures the opening-only pairs on it. That optical-size master's
+value for such a pair becomes whatever makes the interpolated corner reach the measurement,
+and never less than Regular's. Closing pairs keep sharing Regular's values. Against 0.5.0 nothing
+changed at Regular or Black; at Display `xt` `kt` `VT` `fT` open by 3–11 units, and at Caption
+Black `lA` `lX` by 2. The regression test now checks Caption Black too.
+
+The wider sweep also found ï against X, Z and L (−88 at Display Black): every capital and
+ascender reaches the dots' height, not just the T V W Y F P of section 25. All of them are in the
+tall set now. An own-shape pair is kept only if Regular, Black or a corner needs it open (96 were
+not), though WOFF2 had already compressed those away. Every same-script pair in Latin, Cyrillic
+and Greek is now clear at all six corners. The only negatives left are mixed Cyrillic–Greek
+pairs (җλ), which no text contains.
+
+Cost: +1.2 KB upright, +1.2 KB italic, mostly the wider ï set (Latin[wght] +0.3 KB). The
+estimate in section 25's proposal was 1 KB.
+
+**Greek punctuation.** The Greek question mark is the semicolon in Inter and Plex, as here. The
+ano teleia was the middle dot (207–321 units); both references raise it to the x-height (Inter's
+top at 552 against a 546 x-height, Plex's at 528 against 516). It is now the colon's upper dot
+(413–528), and a test pins it there. ΅ and the polytonic spacing accents (῍ ῎ ῝ ...) had a fixed
+accent width that ΅'s dots overhung (left sidebearing −56). Each now takes its mark group's ink
+plus the spacing accents' sidebearings.
+
+**Optical sizes, again.** Section 17's internal check was re-run on all 956 codepoints, at Thin,
+Regular and Black, in both styles: every glyph's advance and ink at opsz 8 and 48, relative to
+14, against the median. The outliers are the same structural groups as before:
+
+- narrow glyphs whose advance is mostly sidebearing (i, !, |), which the new Ι, Ӏ and ї join
+- Caption Thin's horizontal-stroke glyphs (operators, E, Z), which Greek Ξ joins as the most
+  horizontal of all (ink 1.20 against a 1.30 median)
+- marks, which keep their size at Display Thin
+
+No new letter stands out on its own. The six corners render without artifacts in Latin, Cyrillic
+and polytonic Greek (checked in Chromium).
+
 ## Sources
 
 - [Introducing Geist Pixel (Vercel)](https://vercel.com/blog/introducing-geist-pixel) and the
