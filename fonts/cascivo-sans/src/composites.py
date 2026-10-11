@@ -49,6 +49,17 @@ ALIAS = {**CYR_ALIAS, **GREEK_ALIAS}
 # Monotonic Greek's accented letters: tonos, dialytika, and both (ΐ ΰ)
 GREEK_ACCENTED = [0x386, 0x388, 0x389, 0x38A, 0x38C, 0x38E, 0x38F, 0x390, 0x3AA, 0x3AB] + list(range(0x3AC, 0x3B1)) + list(range(0x3CA, 0x3CF))
 
+# Polytonic Greek (Greek Extended): every assigned codepoint, built from its decomposition
+GREEK_POLY = [cp for cp in range(0x1F00, 0x1FFF) if unicodedata.category(chr(cp)) != 'Cn']
+# combining marks of polytonic Greek -> mark glyph (oxia is the tonos)
+POLY_MARK = {
+    '\u0313': 'psilicomb', '\u0314': 'dasiacomb', '\u0301': 'tonoscomb', '\u0300': 'gravecomb',
+    '\u0342': 'perispomenicomb', '\u0308': 'dieresiscomb', '\u0304': 'macroncomb', '\u0306': 'brevecomb',
+    # the spacing forms a decomposition can start from
+    '\u1fbf': 'psilicomb', '\u1fbd': 'psilicomb', '\u1ffe': 'dasiacomb', '\u1fc0': 'perispomenicomb',
+    '\u00a8': 'dieresiscomb', '`': 'gravecomb', '\u00b4': 'tonoscomb',
+}
+
 
 def script_glyph(ch):
     """The glyph a Cyrillic or Greek letter is: its Latin twin's, or its own uniXXXX."""

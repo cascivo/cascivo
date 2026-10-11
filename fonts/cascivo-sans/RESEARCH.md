@@ -114,7 +114,7 @@ contour in every master for self-intersection. The build ships with zero problem
 | **Composites everywhere**: accents, `i`/`j` (dotless + dot), quotes from the comma, `¡¿` as 180° rotations, `Œœ` from `O`+`E`, all super/subscripts, fractions and ordinals as scaled references | 283 of 455 glyphs (62%) cost a few bytes each instead of a full outline plus 5 delta sets                                                  |
 | **Additive master layout** (6 masters, not 18)                                                                                                                                                   | Each extra axis end costs about 4–5 KB WOFF2. Measured by building without each master                                                     |
 | **cu2qu tolerance 1.5 units** (1.5/1000 em)                                                                                                                                                      | −4%. Below one pixel up to about 700 px font size                                                                                          |
-| **IUP delta tolerance 1.0**                                                                                                                                                                      | −3%. The rasterizer re-infers the dropped deltas within 1 unit                                                                             |
+| **IUP delta tolerance 2.0** (1.0 until 0.5.0)                                                                                                                                                    | −3%, then −4% more at 2.0 (section 25). Re-inferred within 2 units                                                                         |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                                                    |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                                                          |
 | **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.8 KB, `Latin[opsz,wght]` 29.1 KB; italic 24.2 / 32.4 KB, loaded only when a page uses italic. Serve only the axes you use |
@@ -944,6 +944,61 @@ widening ï as ΐ now is) changes Latin metrics, so it is left as a proposal.
 **Cost.** Full upright woff2 63.4 KB (from 51.3), italic 70.2 KB (from 56.9), 719 codepoints.
 The Latin subsets grew 0.1 KB, from the new scripts' entries in the layout tables. A build takes
 about 40 s.
+
+## 25. ï, the variation data, and polytonic Greek
+
+**ï.** Its dieresis is as wide as Inter's (dots from -37 to 261 units on a 224 advance, against
+Inter's -39 to 282 on 242), so the drawing was not the fault. The difference is that Inter kerns
+ï open: `Tï` +91 and `ïï` +166 per 1000 em. Plex does the same less strongly (`Tï` +40); Geist
+lets them collide. So ï î ĩ ī ĭ, and with them Ukrainian ї, leave i's kerning class. They keep
+every pair i has, and open against tall neighbours (T V W Y F P f d l b h k t, i and j, whose
+dots stand as high, and each other) by as much as each master measures. The measure's +40
+ceiling, which held ïï to -134 at Black, is lifted for these pairs only. Lifting it for every
+own-shape pair also opened `lA` and `lX` by up to 21 units, so it stayed narrow. Every pair is
+clear in every master; at the Display Black corner, which reuses Regular's optical-size values,
+the worst left is -7 (`ĩF`). No existing pair changed against 0.4.0.
+
+**The variation data.** Section 24 found the compressed bytes are the outlines' variations (gvar)
+and the outlines (glyf), not the kerning. Four ways to cut them were measured:
+
+| Change                                                                           | Upright | Italic | Kept                                                   |
+| -------------------------------------------------------------------------------- | ------- | ------ | ------------------------------------------------------ |
+| Drop implied on-curve points (`drop_implied_oncurves`)                           | -0.1%   | 0.0%   | no: cu2qu leaves few to drop                           |
+| Store zero deltas as absent where absent means zero (composites, advance points) | -0.4%   | -0.8%  | yes: lossless, every glyph identical at four instances |
+| Replace duplicate outlines with references (.case marks, italic и п т)           | -0.1%   | +0.3%  | no: brotli already shares identical bytes              |
+| IUP tolerance 1.0 to 2.0                                                         | -4.3%   | -4.5%  | yes                                                    |
+
+Composites made up 36% of all deltas, and 9,400 stored deltas were exact zeros. The tolerance
+is the one lossy change. A point may now sit up to 2 units from its master position wherever the
+rasterizer re-infers it. Measured against the 1.0 build, the largest shift anywhere is 3.4 units,
+at the Display Black corner where the weight and size errors add. That is 0.34 px on a 100 px
+headline. A pixel diff of a Display Black line at 160 px shows only edge anti-aliasing changing.
+Tolerance 3.0 would save 7-9% but reach about 1 px at 300 px, so it was not taken. At 0.4.0's
+character set the full upright file falls from 63.4 to about 61.0 KB, and `Latin[opsz,wght]`
+from 29.2 to 27.6 KB.
+
+**Polytonic Greek.** All 233 codepoints of Greek Extended are built from their Unicode
+decompositions. Four new marks:
+
+- **Breathings:** psili is a small comma, and dasia is the same comma turned, as in Inter and
+  Plex. At 0.72 of a dot they read as ticks, so they are 0.8, minus 40 units at Black.
+- **Perispomeni:** the tilde.
+- **Ypogegrammeni:** a short stroke below.
+
+A lowercase stacks its marks above the letter. A breathing stands beside an acute or grave,
+under a perispomeni, and an accent goes between dialytika's dots as in ΐ. A capital sets the
+same group before the letter at the cap height, the letter moving right as for the tonos. Inter
+and Plex both hang the iota subscript below even a capital (ᾼ), so this does too, rather than
+using an adscript ι.
+
+Typed as separate marks, a breathing takes an acute or grave beside it (mkmk), a perispomeni
+stacks above, and the iota subscript attaches below. A test checks all three in both styles.
+Polytonic lowercase kerns as its letter; the sweep is clear apart from the same -3 at Display
+Black italic.
+
+**Cost.** 956 codepoints. Full upright woff2 66.9 KB, italic 72.7 KB; polytonic Greek is about
+5.8 KB of that, after the tolerance saved about 2.5 KB. `Latin[wght]` 21.8 KB, `Latin[opsz,wght]`
+27.6 KB, italic Latin 24.4 and 30.9 KB.
 
 ## Sources
 

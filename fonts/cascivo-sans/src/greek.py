@@ -8,7 +8,7 @@ and ς, and the round υ ψ ω.
 
 from cyrillic import _mirror, _Ze
 from geom import L, expand
-from glyphs import _bowl_right, glyph, on_line, shoulder
+from glyphs import _bowl_right, comma_shape, glyph, m_tilde, on_line, shoulder
 
 
 def _iota_stroke(g, p, x, top):
@@ -321,4 +321,42 @@ def m_tonos(g, p, s):
 @glyph('tonoscomb')
 def _tonoscomb(g, p):
     m_tonos(g, p, 1.0)
+    g.mark = True
+
+
+# --- polytonic marks ----------------------------------------------------------------------------
+# Breathings are small commas, as Inter's and Plex's: psili (smooth) the comma, dasia (rough) the
+# comma turned. Perispomeni is the tilde; ypogegrammeni, the iota subscript, a short stroke below.
+GREEK_TOP_MARKS = ['psilicomb', 'dasiacomb', 'perispomenicomb']
+
+
+def _breathing(g, p, turned):
+    d = p.dot * 0.8 - 40 * p.heavy  # at 0.72 they read as ticks; Black's dot would make them blots
+    depth = d * 0.9
+    top = d * 0.95 + depth
+    comma_shape(g, d, d * 0.15, top, depth)
+    if turned:
+        g.strokes = [st.transformed(lambda q: (d * 0.3 - q[0], top - q[1])) for st in g.strokes]
+    g.mark = True
+
+
+@glyph('psilicomb', 0x313)
+def _psili(g, p):
+    _breathing(g, p, False)
+
+
+@glyph('dasiacomb', 0x314)
+def _dasia(g, p):
+    _breathing(g, p, True)
+
+
+@glyph('perispomenicomb', 0x342)
+def _perispomeni(g, p):
+    m_tilde(g, p, 1.0)
+    g.mark = True
+
+
+@glyph('ypogegrammenicomb', 0x345)
+def _ypogegrammeni(g, p):
+    g.line((0, -70 - 150), (0, -70), w=p.mt, caps=('b', 'b'))
     g.mark = True

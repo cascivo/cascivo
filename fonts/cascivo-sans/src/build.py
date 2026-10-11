@@ -31,8 +31,8 @@ import ttfautohint  # noqa: E402
 
 import glyphs as GL  # noqa: E402
 import cyrillic  # noqa: E402  (also registers the Cyrillic drawings)
-import greek  # noqa: E402,F401  (registers the Greek drawings)
-from composites import ALIAS, BOTTOM, CYR_EXT, CYR_LOCL, GREEK_ACCENTED, ITALIC_ONLY, SPECIAL, accented_chars, glyph_name, is_cap  # noqa: E402
+import greek  # noqa: E402  (also registers the Greek drawings)
+from composites import ALIAS, BOTTOM, CYR_EXT, CYR_LOCL, GREEK_ACCENTED, GREEK_POLY, ITALIC_ONLY, POLY_MARK, SPECIAL, accented_chars, glyph_name, is_cap  # noqa: E402
 from geom import contour_bounds, expand, transform_contour  # noqa: E402
 import kern  # noqa: E402
 from kern import kern_fea  # noqa: E402
@@ -40,10 +40,10 @@ from params import BLACK_STEM, ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, P  # noqa:
 
 FAMILY = 'Cascivo Sans'
 PS = 'CascivoSans'
-VERSION = '0.4.0'
+VERSION = '0.5.0'
 DIST = os.path.join(HERE, '..', 'fonts')  # not dist/: the repo ignores dist/, and these files ship
 MAX_ERR = 1.5  # cu2qu tolerance in font units: 1.5/1000 em is sub-pixel below ~700px
-IUP_TOLERANCE = 1.0  # gvar deltas the rasterizer can re-infer within 1 unit are dropped
+IUP_TOLERANCE = 2.0  # gvar deltas the rasterizer can re-infer within 2 units are dropped (section 25)
 
 
 # ---------------------------------------------------------------------------------------------
@@ -150,6 +150,78 @@ def _dialytika_tonos(p):
     tonos (greek.m_tonos: from (-28, 0) to (28, 160)) by 22 units at the dot's own height."""
     d, hw = p.dot * 0.95, p.mt * 0.55
     return 28 + hw + 22 + d / 2, -28 + 56 * d / 160 + hw + 22 + d / 2
+
+
+def _poly_group(o, p, marks):
+    """Polytonic marks laid out around (0, 0), the anchor: a breathing beside an acute or grave
+    (breathing first, as read), a perispomeni above a breathing or dialytika, an acute or grave
+    between dialytika's dots (as ΐ), anything else alone and centred. Returns parts and bounds."""
+    bd = lambda m: o.bounds[m]  # noqa: E731
+    cen = lambda m: -(bd(m)[0] + bd(m)[2]) / 2  # noqa: E731
+    if len(marks) == 1:
+        parts = [(marks[0], cen(marks[0]), 0)]
+    else:
+        first, second = marks
+        if first == 'dieresiscomb' and second in ('tonoscomb', 'gravecomb'):
+            dl, dr = _dialytika_tonos(p)
+            if second == 'gravecomb':
+                dl, dr = dr, dl
+            parts = [('dotaccentcomb', -dl, 0), ('dotaccentcomb', dr, 0), (second, cen(second), 10)]
+        elif second == 'perispomenicomb':
+            parts = [(first, cen(first), 0), (second, cen(second), bd(first)[3] + p.mt * 0.4 - bd(second)[1])]
+        else:  # breathing + acute or grave, side by side
+            wf, ws, gap = bd(first)[2] - bd(first)[0], bd(second)[2] - bd(second)[0], 20 + p.mt * 0.2
+            x0 = -(wf + gap + ws) / 2
+            parts = [(first, x0 - bd(first)[0], 0), (second, x0 + wf + gap - bd(second)[0], 0)]
+    xs = [b for g, x, y in parts for b in (o.bounds.get(g, (0, 0, 0, 0))[0] + x, o.bounds.get(g, (0, 0, 0, 0))[2] + x)]
+    ys = [o.bounds.get(g, (0, 0, 0, 0))[1] + y for g, x, y in parts]
+    return parts, (min(xs), min(ys), max(xs))
+
+
+def add_polytonic(o, comp, at, tw):
+    """Greek Extended. A lowercase takes its marks above; a capital takes them before it at the cap
+    height (the letter moving right, as for the tonos). Both take the iota subscript below, as
+    Inter and Plex set even the capitals (ᾼ). The spacing forms (᾿ ῾ ῀ ΅ ...) centre their marks in an accent's
+    width."""
+    p, S = o.p, o.p.S
+    for cp in GREEK_POLY:
+        ch = chr(cp)
+        d = unicodedata.normalize('NFD', ch)
+        name = 'uni%04X' % cp
+        if d == '\u03b9':  # ι prosgegrammeni is the iota
+            comp(name, [('uni03B9', 0, 0, 1)], o.adv['uni03B9'], cp)
+            continue
+        if d[0] in POLY_MARK:  # a spacing accent
+            ms = [POLY_MARK[m] for m in d]
+            parts, _ = _poly_group(o, p, ms[:2])
+            comp(name, [(g, tw / 2 + x, p.xh + 68 + y, 1) for g, x, y in parts], tw, cp)
+            continue
+        base = ALIAS.get(ord(d[0]), 'uni%04X' % ord(d[0]))
+        isub = '\u0345' in d
+        ms = [POLY_MARK[m] for m in d[1:] if m != '\u0345']
+        if ch.isupper() or ch.istitle():
+            shift, parts = 0.0, []
+            if ms:
+                grp, (gx0, gy0, gx1) = _poly_group(o, p, ms)
+                ox = S * 0.15 - gx0
+                shift = max(0.0, S * 0.15 + (gx1 - gx0) + S * 0.55 - o.topleft.get(base, o.bounds[base][0]))
+                parts = [(g, ox + x, p.cap - 150 - gy0 + y, 1) for g, x, y in grp]
+            parts.insert(0, (base, shift, 0, 1))
+            if isub:
+                m, bx, by, a_ = at(base, 'ypogegrammenicomb', 'bottom')
+                parts.append((m, bx + shift, by, a_))
+            comp(name, parts, o.adv[base] + shift, cp)
+            o.anchors[name] = {k: (v[0] + shift, v[1]) for k, v in o.anchors[base].items()}
+            continue
+        parts = [(base, 0, 0, 1)]
+        if ms:
+            bx, by = o.anchors[base]['top']
+            grp, _ = _poly_group(o, p, ms)
+            parts += [(g, bx + x, by + y, 1) for g, x, y in grp]
+        if isub:
+            parts.append(at(base, 'ypogegrammenicomb', 'bottom'))
+        comp(name, parts, o.adv[base], cp)
+        o.anchors[name] = o.anchors[base]
 
 
 def add_composites(o):
@@ -399,6 +471,8 @@ def add_composites(o):
     dl, dr = _dialytika_tonos(p)
     comp('dieresistonos', [('dotaccentcomb', tw / 2 - dl, p.xh + 68, 1), ('dotaccentcomb', tw / 2 + dr, p.xh + 68, 1), ('tonoscomb', tw / 2, p.xh + 78, 1)], tw, 0x385)
 
+    add_polytonic(o, comp, at, tw)
+
     for n, (base, piece) in CYR_LOCL.items():
         if n in ITALIC_ONLY and not p.italic:
             continue
@@ -518,8 +592,8 @@ def build_glyf(outs, order):
 def mark_fea(o):
     """GPOS mark attachment for decomposed text (base + combining mark)."""
     mo = getattr(o, 'mark_origin', (0, 0))
-    top = sorted(GL.TOP_MARKS)
-    bot = ['cedillacomb', 'commaaccentcomb', 'dotbelowcomb']
+    top = sorted(GL.TOP_MARKS) + greek.GREEK_TOP_MARKS
+    bot = ['cedillacomb', 'commaaccentcomb', 'dotbelowcomb', 'ypogegrammenicomb']
     lines = [
         f'markClass [{" ".join(top)}] <anchor {round(mo[0])} {round(mo[1])}> @MC_top;',
         f'markClass [{" ".join(bot)}] <anchor {round(mo[0])} {round(mo[1])}> @MC_bottom;',
@@ -539,7 +613,7 @@ def mark_fea(o):
     # lookup runs second, so its attachment replaces the stacked one.
     p, s, yc = o.p, o.p.slant, o.p.xh / 2
     sk = lambda x, y: f'<anchor {round(x + (y - yc) * s)} {round(y)}>'  # noqa: E731
-    stack = [m + c for m in sorted(GL.TOP_MARKS) for c in ('', '.case')]
+    stack = [m + c for m in sorted(GL.TOP_MARKS) for c in ('', '.case')] + greek.GREEK_TOP_MARKS
     side = [m + c for m in ('acutecomb', 'gravecomb', 'hookabovecomb') for c in ('', '.case')]
     for m in stack:
         lines.append(f'markClass {m} {sk(0, o.bounds[m][1])} @MK_above;')
@@ -552,6 +626,9 @@ def mark_fea(o):
     for m in ('circumflexcomb', 'circumflexcomb.case'):
         b = o.bounds[m]
         lines.append(f'    pos mark {m} {sk(b[2] - p.mt * 0.35, (b[3] - b[1]) * 0.45)} mark @MK_side;')
+    for m in ('psilicomb', 'dasiacomb'):  # Greek: an acute or grave beside the breathing, as ἄ
+        b = o.bounds[m]
+        lines.append(f'    pos mark {m} {sk(b[2] + 20 + p.mt * 0.2, b[1])} mark @MK_side;')
     lines.append('  } MKMK_SIDE;\n} mkmk;')
     return '\n'.join(lines)
 
@@ -732,11 +809,29 @@ def build(italic=False):
         vf, _, _ = varLib.build(ds, exclude=['STAT'], optimize=True)
     finally:
         varLib._add_gvar = add_gvar
+    _sparse_zero_deltas(vf)
     finish(vf, italic)
     return vf
 
 
 WEIGHTS = [(100, 'Thin'), (200, 'ExtraLight'), (300, 'Light'), (400, 'Regular'), (500, 'Medium'), (600, 'SemiBold'), (700, 'Bold'), (800, 'ExtraBold'), (900, 'Black')]
+
+
+def _sparse_zero_deltas(vf):
+    """Store zero deltas as absent where absent already means zero: every point of a composite,
+    and the four phantom (advance) points of any glyph. IUP infers only a simple glyph's outline
+    points, so those zeros stay. Lossless: the gvar writer then picks sparse point lists where
+    they are smaller (9,400 zeros were stored explicitly), and a variation left empty is dropped."""
+    glyf, gvar = vf['glyf'], vf['gvar']
+    for name, variations in gvar.variations.items():
+        composite = glyf[name].isComposite()
+        kept = []
+        for v in variations:
+            n = len(v.coordinates)
+            v.coordinates = [None if d is not None and d == (0, 0) and (composite or i >= n - 4) else d for i, d in enumerate(v.coordinates)]
+            if any(d is not None for d in v.coordinates):
+                kept.append(v)
+        gvar.variations[name] = kept
 
 
 def finish(vf, italic=False):

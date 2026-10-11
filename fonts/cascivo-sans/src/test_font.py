@@ -5,6 +5,7 @@
 
 import os
 import sys
+import unicodedata
 import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -24,11 +25,11 @@ VFI = os.path.join(DIST, 'CascivoSans-Italic[opsz,wght].ttf')
 # The full-charset files grew with Vietnamese, Welsh and the Croatian digraphs (365 -> 479
 # codepoints, 95 -> 78 bytes each); the Latin slices are unchanged.
 BUDGETS = {
-    'CascivoSans[opsz,wght].woff2': 64_500,  # Latin, Cyrillic, Greek
+    'CascivoSans[opsz,wght].woff2': 68_000,  # Latin, Cyrillic, Greek (with polytonic)
     'CascivoSans-Latin[opsz,wght].woff2': 30_000,
     'CascivoSans-Latin[wght].woff2': 22_500,
-    'CascivoSans-Regular.woff2': 21_500,
-    'CascivoSans-Italic[opsz,wght].woff2': 72_000,
+    'CascivoSans-Regular.woff2': 24_500,
+    'CascivoSans-Italic[opsz,wght].woff2': 75_000,
     'CascivoSans-Italic-Latin[opsz,wght].woff2': 34_000,
     'CascivoSans-Italic-Latin[wght].woff2': 25_000,
 }
@@ -113,6 +114,7 @@ class Font(unittest.TestCase):
         want |= {0x4C0, 0x4CF, 0x4D8, 0x4D9, 0x4E8, 0x4E9}
         want |= {0x4D2, 0x4E2, 0x4E3, 0x4E6, 0x4E7, 0x4EE, 0x4EF, 0x4F0, 0x4F1}  # Ӓ Ӣ ӣ Ӧ ӧ Ӯ ӯ Ӱ ӱ
         want |= set(range(0x384, 0x38B)) | {0x38C} | set(range(0x38E, 0x3A2)) | set(range(0x3A3, 0x3CF)) | {0x37E}  # Greek
+        want |= {cp for cp in range(0x1F00, 0x1FFF) if unicodedata.category(chr(cp)) != 'Cn'}  # polytonic Greek
         want -= {0xAD}  # soft hyphen is deliberately unmapped
         self.assertEqual(sorted(want - set(cmap)), [])
 
@@ -277,10 +279,11 @@ class Font(unittest.TestCase):
             return pen.out
 
         pairs = {
-            VF: ['lA', 'lX', 'lx', 'lz', 'Tħ', 'Тћ', 'Гћ', 'Дћ', 'Τΰ', 'ΰΤ', 'ΐΐ', 'ΐλ'],
+            VF: ['lA', 'lX', 'lx', 'lz', 'Tħ', 'Тћ', 'Гћ', 'Дћ', 'Τΰ', 'ΰΤ', 'ΐΐ', 'ΐλ', 'Tï', 'ïT', 'Vï', 'fï', 'ïï', 'її'],  # ï's dots overhang it
             VFI: ['lA', 'lX', 'lx', 'lz', 'kf', 'rf', 'vf', 'wf', 'xf', 'yf', 'xt', 'kt', 'yt', 'vt', 'wt', 'rt', 'tz', 'zA', 'zX', 'LX', 'ZX', 'fT', 'VT', 'WT', 'YT', 'XT']
             + ['Тћ', 'Vћ', 'Ућ', 'Yћ', 'VЪ', 'УТ', 'YЂ', 'VЋ', 'жъ', 'хъ', 'къ']  # Cyrillic: bars at the top left
-            + ['Δλ', 'ΔΧ', 'Ωλ', 'Τΰ', 'ΰΤ', 'Γΰ', 'ΐΐ', 'ιλ'],  # Greek: italic feet, ΐ ΰ's dots
+            + ['Δλ', 'ΔΧ', 'Ωλ', 'Τΰ', 'ΰΤ', 'Γΰ', 'ΐΐ', 'ιλ']  # Greek: italic feet, ΐ ΰ's dots
+            + ['Tï', 'ïT', 'Vï', 'fï'],  # (ïï still touches at Display Black italic; RESEARCH 25)
         }
         for path, ps in pairs.items():
             # Display Black is the tightest corner: the opsz and weight deltas add up there
@@ -326,6 +329,25 @@ class Font(unittest.TestCase):
         self.assertTrue(all(changed(VFI, 'бгдпт', 'mk')))
         self.assertEqual(changed(VF, 'бгдпт', 'sr'), [True, False, False, False, False])
         self.assertFalse(any(changed(VF, 'бвгджзийклптцшщю', 'ru')))
+
+    def test_polytonic_marks_typed_separately(self):
+        # a breathing then an acute: the acute stands to the breathing's right, as in ἄ; a
+        # perispomeni stacks above the breathing; the iota subscript hangs below
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        for path in (VF, VFI):
+            font = hb.Font(hb.Face(open(path, 'rb').read()))
+            for text, check in (('\u03c7\u0313\u0301', lambda q: q[2].x_offset > q[1].x_offset + 60 and abs(q[2].y_offset - q[1].y_offset) < 20),
+                                ('\u03c7\u0314\u0342', lambda q: q[2].y_offset > q[1].y_offset + 100),
+                                ('\u03c7\u0345', lambda q: q[1].y_offset <= 0)):
+                buf = hb.Buffer()
+                buf.add_str(text)
+                buf.guess_segment_properties()
+                hb.shape(font, buf, {})
+                with self.subTest(font=os.path.basename(path), text=text):
+                    self.assertTrue(check(buf.glyph_positions))
 
     def test_decomposed_marks_stack_as_precomposed(self):
         # mkmk: a base with no precomposed form (x) takes a stack of combining marks exactly where

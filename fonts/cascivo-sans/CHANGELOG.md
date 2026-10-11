@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.5.0
+
+- **Polytonic Greek.** All 233 characters of Greek Extended: breathings, perispomeni, iota
+  subscript, and their combinations, built from Unicode decompositions. Also typed as separate
+  marks (956 codepoints, from 719).
+- **ï no longer collides.** ï î ĩ ī ĭ ї kern open against tall neighbours, as Inter and Plex do.
+  At Black, `dï` was -39 units and `Tï` -75. No other pair changed.
+- **Smaller files.** Zero variation deltas are stored as absent (lossless), and the delta
+  tolerance is 2 units instead of 1 (at most 3.4 units of drift, at the Display Black corner).
+  At 0.4.0's character set the full file falls 3.8%, and `Latin[opsz,wght]` 5.5%.
+
 ## 0.4.0
 
 - **Greek.** Monotonic Greek with tonos and dialytika: 73 codepoints (719 in all, from 578).

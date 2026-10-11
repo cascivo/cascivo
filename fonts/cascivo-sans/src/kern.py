@@ -22,7 +22,7 @@ import json
 import os
 import unicodedata
 
-from composites import ALIAS, GREEK_ACCENTED, accented_chars, glyph_name, is_cap, script_glyph
+from composites import ALIAS, GREEK_ACCENTED, GREEK_POLY, accented_chars, glyph_name, is_cap, script_glyph
 from geom import seg_point
 
 BAND = 10
@@ -59,6 +59,14 @@ OWN_SHAPE_PAIRS.update({(a, b): 1 for a, b in [('l', 'z'), ('x', 't'), ('k', 't'
 OWN_SHAPE_PAIRS.update({(a, 'hbar'): 1 for a in ['T', 'V', 'Y', 'X', 'E', 'uni0413', 'uni0414', 'uni0423', 'uni0490', 'uni0491']})
 OWN_SHAPE_PAIRS.update({(a, b): 1 for a in ['V', 'Y', 'uni0423'] for b in ['T', 'uni0402', 'uni040B', 'uni042A']})
 OWN_SHAPE_PAIRS.update({(a, 'uni044A'): 1 for a in ['uni0436', 'x', 'kgreenlandic', 'y']})
+
+# An accent wider than i overhangs it (ï î ĩ ī ĭ, and ї): at Black ï met an ascender beside it by
+# 39 units (dï, ïl), f by 59 and a T or V bar by 90, and Tï touched at Regular. These leave i's class
+# and kern open against the tall letters on either side, as Inter's and Plex's do (Inter: Tï +91,
+# ïï +166 per 1000). They also keep every pair i has.
+I_WIDE = ['uni00EF', 'uni00EE', 'uni0129', 'uni012B', 'uni012D']  # ï î ĩ ī ĭ
+TALL = ['T', 'V', 'W', 'Y', 'F', 'P', 'f', 'd', 'l', 'b', 'h', 'k', 't', 'i', 'j'] + I_WIDE  # i's and j's dots are as high
+OWN_SHAPE_PAIRS.update({(a, b): 1 for i in I_WIDE for a, b in [(t, i) for t in TALL] + [(i, t) for t in TALL]})
 
 # Closing pairs no reference list carries, kept when the measurement agrees: tt, whose two
 # crossbars Inter and Plex let nearly meet (ours sat 1.3x their white at Bold).
@@ -119,7 +127,7 @@ def _slope(profile, bands):
     return sum((y - my) * (x - mx) for y, x in zip(ys, xs)) / var if var else 0.0
 
 
-def measure(o, left_glyph, right_glyph):
+def measure(o, left_glyph, right_glyph, most=40):
     p = o.p
     _, hi = _profile(o, left_glyph)
     lo, _ = _profile(o, right_glyph)
@@ -136,7 +144,7 @@ def measure(o, left_glyph, right_glyph):
     k = W_GAP * (ref - eff) + W_CLOSEST * (ref - min(gaps)) + W_LEAN * lean * p.S
     floor = 0.55 * p.S - min(gaps)  # never let the closest point get nearer than this
     k = max(k, floor)
-    return int(round(max(-140, min(40, k))))
+    return int(round(max(-140, min(most, k))))
 
 
 def kern_pairs(o):
@@ -148,15 +156,28 @@ def kern_pairs(o):
         acc.setdefault(latin, []).append('uni%04X' % cp)
     # lowercase Greek with tonos or dialytika kern as their letter; a capital's tonos stands
     # out to its left, so Ά is not kerned as Α
+    for cp in GREEK_POLY:  # lowercase polytonic letters kern as their letter (capitals' marks stand before)
+        d = unicodedata.normalize('NFD', chr(cp))
+        if chr(cp).islower() and len(d) > 1 and 0x370 <= ord(d[0]) < 0x400:
+            acc.setdefault(script_glyph(d[0]), []).append('uni%04X' % cp)
     for cp in GREEK_ACCENTED:
         # ΐ ΰ are widened to hold their dots (build.py) and take no closing kern: as υ, ΰ's dots
         # ran into a T's bar (-32 at Display Black italic)
         if chr(cp).islower() and cp not in (0x390, 0x3B0):
             acc.setdefault(script_glyph(unicodedata.normalize('NFD', chr(cp))[0]), []).append('uni%04X' % cp)
+    # ї is ï in Ukrainian: it leaves i's class too, and side grouping puts it with ï
+    acc['i'] = [g for g in acc.get('i', []) if g not in I_WIDE and g != 'uni0457']
     cands = {k: v for k, v in _candidates().items() if k[0] in glyphs and k[1] in glyphs}
+    for (a, b), v in list(cands.items()):
+        for w in I_WIDE:
+            if a == 'i':
+                cands.setdefault((w, b), v)
+            if b == 'i':
+                cands.setdefault((a, w), v)
     cands.update(OWN_SHAPE_PAIRS)
     cands.update(OWN_CLOSING_PAIRS)
-    pairs = {(a, b): (measure(o, a, b), sign) for (a, b), sign in cands.items()}
+    # a wide i opens as far as it must: ïï needs about 190 at Black (Inter's is 166/1000)
+    pairs = {(a, b): (measure(o, a, b, 250 if a in I_WIDE or b in I_WIDE else 40), sign) for (a, b), sign in cands.items()}
     # an own-shape pair only ever opens, by however much each master measures it needs
     pairs.update({k: (max(0, pairs[k][0]), 1) for k in OWN_SHAPE_PAIRS if k in pairs})
     return acc, glyphs, pairs
@@ -247,7 +268,7 @@ def kern_fea(o):
             continue
         if k not in moved or (a, b) == k:
             moved[k] = v
-    pairs = {k: (measure(o, *k), v[1]) if k not in pairs else pairs[k] for k, v in moved.items()}
+    pairs = {k: (measure(o, *k, 250 if k[0] in I_WIDE or k[1] in I_WIDE else 40), v[1]) if k not in pairs else pairs[k] for k, v in moved.items()}
     if _SELECTED is None:  # the first (default) master decides which pairs exist
         keep = []
         for (a, b), (k, sign) in pairs.items():
