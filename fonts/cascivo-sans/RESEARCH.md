@@ -1162,7 +1162,7 @@ therefore adds Noto's copyright notice to the font's, as the licence requires.
 ## 29. Georgian capitals, and Georgian at Black
 
 **Mtavruli.** Unicode 11 pairs each Mkhedruli letter with a Mtavruli capital (U+1C90–1CBF), used
-for all-capitals headings, and without them Font Bakery failed the Georgian build. (Section 28 said
+for all-capitals headings, and without them Font Bakery failed the Georgian build. (An earlier draft said
 `text-transform: uppercase` maps to them. Chromium does not: Georgian text stays Mkhedruli under
 it, so a page sets Mtavruli as its own characters.)
 The 33 capitals of the modern letters (U+1C90–1CB0) are traced the same way. Noto draws them from
