@@ -3,7 +3,7 @@
   "name": "shell-header",
   "type": "component",
   "description": "Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/shell-header.tsx"

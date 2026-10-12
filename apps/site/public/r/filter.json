@@ -3,7 +3,7 @@
   "name": "filter",
   "type": "component",
   "description": "A group of toggleable pill or outline buttons for filtering content by category",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/filter/filter.tsx"

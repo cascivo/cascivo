@@ -3,7 +3,7 @@
   "name": "slider",
   "type": "component",
   "description": "Range input for selecting a value within bounds",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/slider/slider.tsx"

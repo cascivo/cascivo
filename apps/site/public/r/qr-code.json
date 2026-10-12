@@ -3,7 +3,7 @@
   "name": "qr-code",
   "type": "component",
   "description": "Encodes a URL or short text into a scannable SVG QR code",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/qr-code.tsx"

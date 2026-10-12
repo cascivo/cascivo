@@ -3,7 +3,7 @@
   "name": "reorder-list",
   "type": "component",
   "description": "List whose rows can be reordered by pointer drag or entirely by keyboard",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/reorder-list/reorder-list.tsx"

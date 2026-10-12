@@ -3,7 +3,7 @@
   "name": "join",
   "type": "component",
   "description": "Groups adjacent children into a seamless joined element by removing interior borders and radii",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/join/join.tsx"

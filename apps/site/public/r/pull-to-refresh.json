@@ -3,7 +3,7 @@
   "name": "pull-to-refresh",
   "type": "component",
   "description": "Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pull-to-refresh/pull-to-refresh.tsx"

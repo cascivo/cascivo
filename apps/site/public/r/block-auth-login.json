@@ -3,7 +3,7 @@
   "name": "block/auth-login",
   "type": "block",
   "description": "Email + password login with remember-me checkbox and forgot-password link.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/auth-login/auth-login.tsx"

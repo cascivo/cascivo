@@ -3,7 +3,7 @@
   "name": "chart/bar-chart",
   "type": "chart",
   "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "bar", "data-viz"],

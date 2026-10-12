@@ -3,7 +3,7 @@
   "name": "chart/bullet",
   "type": "chart",
   "description": "Bullet chart with background range bands, measure bar, and target tick.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "bullet", "kpi", "progress", "data-viz"],

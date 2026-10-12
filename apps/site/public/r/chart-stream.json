@@ -3,7 +3,7 @@
   "name": "chart/stream",
   "type": "chart",
   "description": "Streamgraph — stacked areas on a centered (silhouette) flowing baseline.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "stream", "streamgraph", "area", "data-viz"],

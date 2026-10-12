@@ -3,7 +3,7 @@
   "name": "share-menu",
   "type": "component",
   "description": "A Share button opening intent links for Bluesky, Mastodon, Threads, LinkedIn and X, plus copy link and the system share sheet",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/share-menu/share-menu.tsx"

@@ -3,7 +3,7 @@
   "name": "select",
   "type": "component",
   "description": "Native select menu styled to match the design system",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/select/select.tsx"

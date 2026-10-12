@@ -3,7 +3,7 @@
   "name": "block/settings-form-page",
   "type": "block",
   "description": "Settings page with profile form inside a two-column settings layout.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/settings-form-page/settings-form-page.tsx"

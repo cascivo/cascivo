@@ -3,7 +3,7 @@
   "name": "accordion",
   "type": "component",
   "description": "Vertically stacked, collapsible content sections",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/accordion/accordion.tsx"

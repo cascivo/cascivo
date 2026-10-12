@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/recipe-social.md
-  registry v1.9.0 · generated 2026-10-09
+  registry v1.9.1 · generated 2026-10-12
 -->
 
 # Recipe: sign-in, connected accounts and social posting on Cloudflare

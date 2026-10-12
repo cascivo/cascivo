@@ -3,7 +3,7 @@
   "name": "rating-group",
   "type": "component",
   "description": "Star rating input with accessible radio group pattern",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/rating-group/rating-group.tsx"

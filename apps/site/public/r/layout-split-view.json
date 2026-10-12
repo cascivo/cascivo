@@ -3,7 +3,7 @@
   "name": "layout/split-view",
   "type": "layout",
   "description": "Resizable two-pane split layout with keyboard and pointer drag support.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/split-view/split-view.tsx"

@@ -3,7 +3,7 @@
   "name": "tags-input",
   "type": "component",
   "description": "Free-form multi-value chip input",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tags-input/tags-input.tsx"

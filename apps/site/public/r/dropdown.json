@@ -3,7 +3,7 @@
   "name": "dropdown",
   "type": "component",
   "description": "Menu of actions revealed from a trigger",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dropdown/dropdown.tsx"

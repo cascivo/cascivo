@@ -3,7 +3,7 @@
   "name": "toggletip",
   "type": "component",
   "description": "A click-triggered info popover for supplementary, selectable content",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggletip/toggletip.tsx"

@@ -1,5 +1,14 @@
 # @cascivo/render
 
+## 1.9.1
+
+### Patch Changes
+
+- @cascivo/core@1.9.1
+- @cascivo/react@1.9.1
+- @cascivo/i18n@1.9.1
+- @cascivo/text@1.9.1
+
 ## 1.9.0
 
 ### Minor Changes

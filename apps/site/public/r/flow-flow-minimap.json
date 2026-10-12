@@ -3,7 +3,7 @@
   "name": "flow/flow-minimap",
   "type": "flow",
   "description": "A scaled SVG overview of the graph with a draggable viewport rectangle.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [],
   "dependencies": ["@cascivo/core"],
   "tags": ["flow", "minimap", "overview", "chrome"],

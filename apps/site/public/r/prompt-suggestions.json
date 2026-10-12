@@ -3,7 +3,7 @@
   "name": "prompt-suggestions",
   "type": "component",
   "description": "Starter prompts as a wrap of pill buttons — the \"Try asking…\" row of an empty AI chat",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prompt-suggestions/prompt-suggestions.tsx"

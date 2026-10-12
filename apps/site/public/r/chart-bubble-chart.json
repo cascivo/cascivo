@@ -3,7 +3,7 @@
   "name": "chart/bubble-chart",
   "type": "chart",
   "description": "Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"],

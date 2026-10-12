@@ -3,7 +3,7 @@
   "name": "notification",
   "type": "component",
   "description": "Inline, actionable notification banner that surfaces a titled message with an optional recovery action",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/notification/notification.tsx"

@@ -3,7 +3,7 @@
   "name": "wheel-picker",
   "type": "component",
   "description": "iOS-style drum picker — a column of options that scrolls and snaps to a selection",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/wheel-picker/wheel-picker.tsx"

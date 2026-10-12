@@ -3,7 +3,7 @@
   "name": "segmented-control",
   "type": "component",
   "description": "Mutually exclusive toggle group",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/segmented-control/segmented-control.tsx"

@@ -3,7 +3,7 @@
   "name": "swap",
   "type": "component",
   "description": "Animated toggle between two icon/content states with rotate or flip transition",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swap/swap.tsx"

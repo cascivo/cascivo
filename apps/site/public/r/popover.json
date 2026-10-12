@@ -3,7 +3,7 @@
   "name": "popover",
   "type": "component",
   "description": "Anchored floating panel built on CSS Anchor Positioning + Popover API",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/popover.tsx"

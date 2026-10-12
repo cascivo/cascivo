@@ -3,7 +3,7 @@
   "name": "kbd",
   "type": "component",
   "description": "Displays a keyboard key or shortcut",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/kbd/kbd.tsx"

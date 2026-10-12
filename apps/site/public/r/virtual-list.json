@@ -3,7 +3,7 @@
   "name": "virtual-list",
   "type": "component",
   "description": "Renders only the rows inside the viewport, so list length costs no extra DOM",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/virtual-list/virtual-list.tsx"

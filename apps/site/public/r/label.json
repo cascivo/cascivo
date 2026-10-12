@@ -3,7 +3,7 @@
   "name": "label",
   "type": "component",
   "description": "Accessible caption for a form control",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/label/label.tsx"

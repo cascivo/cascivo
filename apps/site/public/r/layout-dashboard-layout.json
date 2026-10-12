@@ -3,7 +3,7 @@
   "name": "layout/dashboard-layout",
   "type": "layout",
   "description": "Dashboard page layout with stats strip, main content area, and optional aside.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/dashboard-layout/dashboard-layout.tsx"

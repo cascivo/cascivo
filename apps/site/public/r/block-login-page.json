@@ -3,7 +3,7 @@
   "name": "block/login-page",
   "type": "block",
   "description": "Authentication login page with email and password form.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/login-page/login-page.tsx"

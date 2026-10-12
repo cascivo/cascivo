@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/headless.md
-  registry v1.9.0 · generated 2026-10-09
+  registry v1.9.1 · generated 2026-10-12
 -->
 
 # Headless primitives (`@cascivo/core`)

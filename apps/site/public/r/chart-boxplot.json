@@ -3,7 +3,7 @@
   "name": "chart/boxplot",
   "type": "chart",
   "description": "Box-and-whisker plot with five-number summary and outlier dots per series.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"],

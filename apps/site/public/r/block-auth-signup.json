@@ -3,7 +3,7 @@
   "name": "block/auth-signup",
   "type": "block",
   "description": "Full-name, email, password, confirm-password sign-up form with terms checkbox.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/auth-signup/auth-signup.tsx"

@@ -3,7 +3,7 @@
   "name": "layout/settings-layout",
   "type": "layout",
   "description": "Two-column settings page layout with a fixed-width menu and fluid content area.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/settings-layout/settings-layout.tsx"

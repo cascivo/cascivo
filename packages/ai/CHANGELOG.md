@@ -1,5 +1,12 @@
 # @cascivo/ai
 
+## 1.9.1
+
+### Patch Changes
+
+- @cascivo/core@1.9.1
+- @cascivo/i18n@1.9.1
+
 ## 1.9.0
 
 ### Patch Changes

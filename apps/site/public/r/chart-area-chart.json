@@ -3,7 +3,7 @@
   "name": "chart/area-chart",
   "type": "chart",
   "description": "Area chart with optional stacking, multi-series support, and hover tooltip.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "area", "data-viz"],

@@ -1,7 +1,7 @@
 <!--
   Generated component index — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/components.md
-  registry v1.9.0 · generated 2026-10-09
+  registry v1.9.1 · generated 2026-10-12
 -->
 
 # cascivo component index
@@ -237,4 +237,4 @@ Every component, chart, block, and layout in the registry, with its distribution
 | **VisuallyHidden** — Hides content visually while keeping it available to screen readers                                                                                                                                                                    | npm @cascivo/react · or copy-paste | `/llms/visually-hidden.md`            |
 | **WheelPicker** — iOS-style drum picker — a column of options that scrolls and snaps to a selection                                                                                                                                                         | npm @cascivo/react · or copy-paste | `/llms/wheel-picker.md`               |
 
-_registry v1.9.0 · generated 2026-10-09_
+_registry v1.9.1 · generated 2026-10-12_

@@ -3,7 +3,7 @@
   "name": "large-title-header",
   "type": "component",
   "description": "Scrolling region whose large title collapses into a compact sticky bar as it scrolls",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/large-title-header/large-title-header.tsx"

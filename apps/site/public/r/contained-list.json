@@ -3,7 +3,7 @@
   "name": "contained-list",
   "type": "component",
   "description": "Labelled list of rows inside a bordered container",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/contained-list/contained-list.tsx"

@@ -3,7 +3,7 @@
   "name": "chain-of-thought",
   "type": "component",
   "description": "The steps an AI agent takes — searching, reading, calling tools — each with its status, and optional collapsible detail",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/chain-of-thought/chain-of-thought.tsx"

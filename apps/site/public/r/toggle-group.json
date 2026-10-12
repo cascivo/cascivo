@@ -3,7 +3,7 @@
   "name": "toggle-group",
   "type": "component",
   "description": "A set of toggle buttons for single or multiple selection",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle-group/toggle-group.tsx"

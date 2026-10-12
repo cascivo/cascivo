@@ -3,7 +3,7 @@
   "name": "multi-select",
   "type": "component",
   "description": "Searchable multi-value select with a popover listbox, chips and grouping",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/multi-select/multi-select.tsx"

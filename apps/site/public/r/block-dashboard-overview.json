@@ -3,7 +3,7 @@
   "name": "block/dashboard-overview",
   "type": "block",
   "description": "Welcome header with four KPI stat cards (revenue, users, orders, conversion).",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/dashboard-overview/dashboard-overview.tsx"
