@@ -1310,6 +1310,86 @@ bowls. It moved many strokes to lighter pens, and the mean IoU fell from 0.769 t
 was reverted. ზ and Ზ stay the furthest from Noto Black (0.65–0.66), with ჩ's leg, Შ's and შ's notched
 top left, and ჯ's foot as the remaining visible blemishes at display sizes. Mean IoU: 0.769.
 
+## 33. Armenian, and a tracer for more than one script
+
+**One tracer.** `trace_georgian.py` became `trace_noto.py`, which takes a script's name and Noto's
+Thin, Regular and Black. Each script names its letters, its capitals, the letters its levels are
+read from (desc, base, x-height, ascender, cap height) and its unit letter, which sets the
+horizontal scale (Georgian ი, Armenian ո). The drawing, spacing and kerning moved from
+`georgian.py` to `traced.py`; `georgian.py` and `armenian.py` are now thin wrappers around their
+traced data. The unit letter's width now comes from Noto's ink at each weight, scaled by the
+x-heights, rather than from the traced centre line.
+
+**Armenian.** The 38 capitals, the 40 lowercase letters with և, the six marks (՚ ՛ ՜ ՝ ՞ ՟ and ՙ)
+and the dram sign ֏ are traced from Noto Sans Armenian, 87 glyphs. ։ and ֊ are this font's colon
+and hyphen, by reference. Build it with `CASCIVO_ARMENIAN=1`; like Georgian it is a draft, not
+shipped until a native reader has reviewed it, and a build with it adds Noto's copyright notice
+and writes an Armenian web slice (`U+0530-058F, U+FB13-FB17`, 39 KB upright, 41 KB italic). The
+two gates combine.
+
+Armenian broke the tracer in five places. Each fix is general, and Georgian moved with it.
+
+- **Overlapping contours.** Noto Sans Armenian draws its letters as overlapping strokes. The
+  rasterizer filled each contour even-odd, so every overlap became a hole, and the skeleton ran
+  round it: ն came out as eleven strokes. The contours are now unioned before rasterizing (two
+  strokes for ն). It moved a few Georgian points too, where Noto's Georgian overlaps.
+- **Knots.** Where two strokes cross, the skeleton can leave a tiny closed loop (Ջ's). An open
+  piece whose ends coincide is now dropped.
+- **Corners in open strokes.** Georgian is nearly all curves; Armenian has corners (Լ's foot, Ն's
+  shoulder, the hooks of շ and չ). The pen folds round a bend tighter than its half width, so an
+  open stroke that turns more than 60° within 60 units is split there, and the halves meet in a
+  round joint. Each half is cut back 24 units from the bend and runs on along its own tangent, so
+  the two meet near the corner Noto draws, not inside the skeleton's rounding of it. A closed loop
+  with a rounded-off corner (Գ's bowl at its stem, Ծ's peak) is opened there the same way, and a
+  loop whose two ends come back to the same place (Ց's bowl, both ends on its bar) is halved.
+- **Loops at Black.** Each Thin point moves to the middle of Noto Black's stroke across it, and a
+  move far from the rest was rejected as a crossing that caught another stroke. "The rest" was the
+  whole stroke's median. Round a heavy loop every move points inward, so the median move is none
+  of them, and the top and bottom of Օ were thrown away: its Black loop did not close. A move is
+  now compared with its neighbours', and a loop's moves are smoothed round its seam. Corner ends
+  are tied in the Black too, at the point both strokes' lines agree on (the stem's x, the foot's
+  y): moved separately, ւ's foot had landed 72 units above its stem's end.
+- **Terminals at Black.** The moves are across the stroke, so an end never moved along it. Noto's
+  Black lengthens its terminals as it widens (ւ's foot runs 167 units at Black, 114 at Thin), and
+  ours stayed at the Thin's length, hidden inside the stem. A free end now runs on, or back, along
+  its tangent to where Noto Black's ink ends. A stem that ends on the x-height is cut flat on it,
+  as stems already were on the baseline, ascender, descender and cap height, so the longer Black
+  stems do not rise above it.
+
+After those, every Armenian stroke draws cleanly at every master: none needed a pen lighter than
+the Georgian ones do (the search keeps 0.5 and 0.4 as a last resort, and nothing reached them).
+
+**Kerning.** Noto kerns 721 Armenian pairs at one weight or another; they are used as Georgian's
+are. But Noto tucks the emphasis mark ՛ over ւ (ու՛, −272 at Black) by more than our taller ւ
+allows, and at Black ւ՛ and և՛ overlapped by 166 units. So Armenian has a floor: no pair of its
+glyphs comes closer than 0.2 S at any master, nor at any optical size's Black or Thin corner
+(kern.py's arrangement for Display Black, section 26, with a Thin corner added). It only ever
+opens. 82 pairs open somewhere: 45 of Noto's, held back, and 37 it does not kern, 42 of them with
+a mark. A variable font's masters share one pair set, so the pairs are chosen over every master at
+once and each value is measured on its own master. kern.py's side profile samples each curve 24
+times, which suits Latin's short segments but left whole 10-unit bands empty along a traced
+letter's long ones (օ's left side went missing, so վօ looked 29 units apart and was 8). The traced
+scripts use a profile sampled every 4 units. Letters beside … are kept clear too; the ellipsis
+was missing from the list of neighbours.
+
+The sweep of every Armenian letter and mark pair, and of each against punctuation and figures, at
+every weight and optical size, upright and italic: letter pairs at least 8 units apart, letters and
+punctuation at least 21. Mark beside mark is not swept as text (Noto's own ՚՞ overlap by 36).
+Font Bakery finds no failing check on the Armenian build or on a build with both scripts.
+
+**Measuring.** The IoU tool filled even-odd too, so our round joints and Noto Armenian's overlaps
+punched holes in both (the 0.769 of section 32 was measured that way). With the contours unioned,
+Georgian's mean IoU against Noto Black was 0.813 at the start of this section and is 0.841 after
+it; Armenian's is 0.729. The lowest
+Armenian letters (ֆ, դ, մ, Խ, 0.45–0.47) are ones whose Black Noto draws with a much heavier
+bowl or flourish than this pen keeps; ւ rose from 0.37 to 0.59 with its foot. Georgian's closest
+letter pair moved from 7 to 9 units apart, and its punctuation stays at least 23.
+
+**Not fixed.** Section 32's blemishes are unchanged: ჩ's leg still dips below the line at Black,
+and Შ's and შ's tops still show slivers where the hook meets the arch at display sizes. Tracing
+the hook and the arch as one stroke was tried and reverted: it changed nothing in შ and lowered
+the IoU.
+
 ## Sources
 
 - [Introducing Geist Pixel (Vercel)](https://vercel.com/blog/introducing-geist-pixel) and the

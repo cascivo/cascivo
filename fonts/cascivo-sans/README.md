@@ -111,11 +111,14 @@ contours are standard in variable fonts.
 | `src/composites.py`, `build.py` | Accents, fractions, alternates, master assembly, `varLib`, `avar`, STAT, web builds                |
 | `src/kern.py`, `kern_oracle.py` | Kerning: pairs that Geist and Inter both kern, values measured on our outlines with a fitted model |
 
-A draft of Georgian (Mkhedruli and its Mtavruli capitals) is in `src/georgian.py` but is not in the release; build it with
-`CASCIVO_GEORGIAN=1 python3 -I src/build.py` (RESEARCH.md sections 27–29). Its centre lines in
-`georgian_paths.py` are traced from Noto Sans Georgian (OFL) by `src/trace_georgian.py`; a build
-with Georgian adds Noto's copyright notice to the font's, and writes a Georgian web slice
-(`CascivoSans-Georgian[opsz,wght].woff2`, 33 KB) to load by unicode-range.
+Drafts of Georgian (Mkhedruli and its Mtavruli capitals, `src/georgian.py`) and Armenian
+(`src/armenian.py`) are not in the release; build them with `CASCIVO_GEORGIAN=1` and
+`CASCIVO_ARMENIAN=1 python3 -I src/build.py`, alone or together (RESEARCH.md sections 27–33). Their
+centre lines in `georgian_paths.py` and `armenian_paths.py` are traced from Noto Sans Georgian and
+Noto Sans Armenian (OFL) by `src/trace_noto.py`, and drawn by `src/traced.py`. A build with either
+adds Noto's copyright notice to the font's, and writes a web slice
+(`CascivoSans-Georgian[opsz,wght].woff2`, 35 KB; `CascivoSans-Armenian[opsz,wght].woff2`, 39 KB)
+to load by unicode-range.
 
 To change a glyph, edit its function in `glyphs.py`, then run the lint, the build and the tests.
 One rule keeps the variable font valid: a master parameter may move points, but it must never

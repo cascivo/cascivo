@@ -35,6 +35,9 @@ import greek  # noqa: E402  (also registers the Greek drawings)
 GEORGIAN = os.environ.get('CASCIVO_GEORGIAN') == '1'  # a draft, not yet shipped (RESEARCH.md section 27)
 if GEORGIAN:
     import georgian  # noqa: E402,F401  (registers the Georgian drawings)
+ARMENIAN = os.environ.get('CASCIVO_ARMENIAN') == '1'  # a draft, not yet shipped (RESEARCH.md section 33)
+if ARMENIAN:
+    import armenian  # noqa: E402,F401  (registers the Armenian drawings)
 from composites import ALIAS, BOTTOM, CYR_EXT, CYR_LOCL, GREEK_ACCENTED, GREEK_POLY, ITALIC_ONLY, POLY_MARK, SPECIAL, accented_chars, glyph_name, is_cap  # noqa: E402
 from geom import contour_bounds, expand, transform_contour  # noqa: E402
 import kern  # noqa: E402
@@ -430,6 +433,8 @@ def add_composites(o):
         o.anchors[n] = o.anchors.get(latin) or o.anchors.get({'hbar': 'h'}.get(latin, latin), {})  # ; and · carry none
         if latin + '.ss01' in o.adv:
             comp(n + '.ss01', [(latin + '.ss01', 0, 0, 1)], o.adv[latin + '.ss01'])
+    for cp, latin in (armenian.ALIAS if ARMENIAN else {}).items():  # ։ and ֊: the colon and hyphen
+        comp('uni%04X' % cp, [(latin, 0, 0, 1)], o.adv[latin], cp)
     for cp, (base, piece, where) in CYR_EXT.items():
         n = 'uni%04X' % cp
         xmin, _, xmax, _ = o.bounds[base]
@@ -546,12 +551,12 @@ def apply_slant(o):
 # ---------------------------------------------------------------------------------------------
 
 
-def _black_corners(outs):
+def _black_corners(outs, wght=900):
     """The heavy corner of each optical-size master: what the variable font draws at wght 900 and
     that optical size, Black's and that master's changes from Regular added together (kern.py
-    keeps opening pairs clear there)."""
+    keeps opening pairs clear there). With wght=100, the light corners (traced.py's kerning)."""
     at = {(o.loc['wght'], o.loc['opsz']): o for o in outs}
-    reg, black = at[400, 14], at[900, 14]
+    reg, black = at[400, 14], at[wght, 14]
     add = lambda b, m, r: (b[0] + m[0] - r[0], b[1] + m[1] - r[1])  # noqa: E731
     corners = {}
     for (w, z), m in at.items():
@@ -777,7 +782,8 @@ def build_master_font(o, glyf, order):
         'psName': f'{PS}-Italic' if p.italic else f'{PS}-Regular',
         'version': f'Version {VERSION}',
         # the Georgian centre lines are traced from Noto Sans Georgian, whose notice the OFL keeps
-        'copyright': 'Copyright 2026 The Cascivo Sans Project Authors' + ('; Georgian derived from Noto Sans Georgian, Copyright 2022 The Noto Project Authors (https://github.com/notofonts/georgian)' if GEORGIAN else ''),
+        'copyright': 'Copyright 2026 The Cascivo Sans Project Authors' + ('; Georgian derived from Noto Sans Georgian, Copyright 2022 The Noto Project Authors (https://github.com/notofonts/georgian)' if GEORGIAN else '')
+        + ('; Armenian derived from Noto Sans Armenian, Copyright 2022 The Noto Project Authors (https://github.com/notofonts/armenian)' if ARMENIAN else ''),
         'licenseDescription': 'This Font Software is licensed under the SIL Open Font License, Version 1.1.',
         'licenseInfoURL': 'https://openfontlicense.org',
         'manufacturer': 'cascivo',
@@ -800,7 +806,9 @@ def build_master_font(o, glyf, order):
     fea += ''.join(f'  sub {n} by {n}.ss01;\n' for n in ss01) + '} ss01;\n'
     fea += '\n' + cyrl_locl(o) + '\n' + kern_fea(o) + '\n' + mark_fea(o)
     if GEORGIAN:
-        fea += '\n' + georgian.kern_fea(o.p)
+        fea += '\n' + georgian.kern_fea(o)
+    if ARMENIAN:
+        fea += '\n' + armenian.kern_fea(o)
     addOpenTypeFeaturesFromString(fb.font, fea)
     # smart dropout control: keeps thin strokes from vanishing in unhinted rasterization
     prep = newTable('prep')
@@ -847,7 +855,12 @@ def build(italic=False):
         outs.append(o)
     for o in outs:
         apply_slant(o)
-    kern.set_corners(_black_corners(outs), next(o for o in outs if (o.loc['wght'], o.loc['opsz']) == (900, 14)))
+    corners = _black_corners(outs)
+    kern.set_corners(corners, next(o for o in outs if (o.loc['wght'], o.loc['opsz']) == (900, 14)))
+    if ARMENIAN:
+        armenian.MASTERS[:] = outs
+        armenian.CORNERS.clear()
+        armenian.CORNERS.update({n: (corners[n], c) for n, c in _black_corners(outs, 100).items()})
     order = glyph_order(outs[0])
     glyfs = build_glyf(outs, order)
     ds = DesignSpaceDocument()
@@ -955,8 +968,10 @@ def _roundtrip(font):
     return TTFont(buf)
 
 
-# the Georgian slice, for a page to load only where its text has Georgian (Google Fonts' ranges)
+# the Georgian and Armenian slices, for a page to load only where its text has them (Google
+# Fonts' ranges)
 GEORGIAN_RANGE = 'U+10A0-10FF,U+1C90-1CBF,U+2D00-2D2F'
+ARMENIAN_RANGE = 'U+0530-058F,U+FB13-FB17'
 
 
 def _subset_latin(font, unicodes=LATIN):
@@ -1060,6 +1075,8 @@ def save_all(upright, italic):
         _save_woff2(_subset_latin(instancer.instantiateVariableFont(load(), {'opsz': 14})), f'{stem}-Latin[wght].woff2')
         if GEORGIAN:
             _save_woff2(_subset_latin(load(), GEORGIAN_RANGE), f'{stem}-Georgian[opsz,wght].woff2')
+        if ARMENIAN:
+            _save_woff2(_subset_latin(load(), ARMENIAN_RANGE), f'{stem}-Armenian[opsz,wght].woff2')
     # static Regular, full character set: the static-vs-static comparison
     _save_woff2(instancer.instantiateVariableFont(TTFont(os.path.join(DIST, f'{PS}[opsz,wght].ttf')), {'wght': 400, 'opsz': 14}), f'{PS}-Regular.woff2')
     # static desktop styles: the four that style-linking apps (word processors) expect

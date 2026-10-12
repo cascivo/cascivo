@@ -15,6 +15,14 @@
 - **Georgian beside dashes.** At Black, en and em dashes open away from შ and წ and their
   capitals, which met them before. No reference kerns Georgian against punctuation, so nothing
   else changes. Ჩ's leg sits flat on the baseline.
+- **Armenian draft.** The 38 capitals, 40 lowercase letters with և, the six marks and the dram
+  sign ֏ are traced from Noto Sans Armenian, with Noto's kerning. ։ and ֊ are the colon and
+  hyphen. Built only with `CASCIVO_ARMENIAN=1`, with its own web slice (39 KB); not in the release
+  until a native reader has reviewed it. The shipped files are unchanged.
+- **Georgian at Black, closer to Noto.** The tracer now handles overlapping outlines, corners and
+  heavy loops, and runs terminals out to Noto Black's length. Georgian's mean IoU against Noto
+  Black rises from 0.813 to 0.841 (measured with overlaps filled; the earlier 0.769 counted them as
+  holes). ჩ's leg and შ's top are still not fixed.
 
 ## 0.6.1
 

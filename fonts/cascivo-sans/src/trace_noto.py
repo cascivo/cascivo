@@ -1,17 +1,19 @@
-"""Trace the Georgian centre lines in `georgian_paths.py` from Noto Sans Georgian.
+"""Trace a script's centre lines from Noto Sans: `georgian_paths.py` from Noto Sans Georgian,
+`armenian_paths.py` from Noto Sans Armenian, with each one's kerning.
 
 Each letter of the Thin weight is rasterized and skeletonized; the skeleton is split into strokes
 at its junctions (joining the pairs that run on smoothly), and each stroke is fitted with cubics.
 The same points are then moved onto the Black weight's centre line, so the heavy masters follow
 Noto's Black, which opens its bowls rather than lightening its stems, each stroke only as far as
-this font's pen still draws it cleanly. The Mtavruli capitals are traced the same way.
-Sidebearings come from the Regular and Black weights. Not part of the build, and its dependencies are not in
+this font's pen still draws it cleanly. Capitals are traced the same way. Sidebearings come from
+the Regular and Black weights. Not part of the build, and its dependencies are not in
 requirements.txt:
 
-    pip install scikit-image
-    python3 -I src/trace_georgian.py NotoSansGeorgian-{Thin,Regular,Black}.ttf
+    pip install scikit-image skia-pathops
+    python3 -I src/trace_noto.py georgian NotoSansGeorgian-{Thin,Regular,Black}.ttf
+    python3 -I src/trace_noto.py armenian NotoSansArmenian-{Thin,Regular,Black}.ttf
 
-(the fontsource woff2 files of `@fontsource/noto-sans-georgian` 5.x work as well).
+(the fontsource woff2 files of `@fontsource/noto-sans-georgian` and `-armenian` 5.x work as well).
 """
 import json
 import math
@@ -19,6 +21,7 @@ import os
 import sys
 
 import numpy as np
+import pathops
 from fontTools.pens.basePen import BasePen
 from fontTools.pens.boundsPen import BoundsPen
 from fontTools.ttLib import TTFont
@@ -31,6 +34,7 @@ SC = 2  # raster pixels per font unit
 PAD = 40
 JOIN_TRIM = 40  # font units cut from an end at a junction, where the skeleton bends
 END_TRIM = 18  # font units cut from each open end, and put back along the tangent
+BEND_TRIM = 24  # font units cut from each side of a rounded-off bend, and put back the same way
 TRIM = 24  # px either side of a joined junction
 Y0, Y1 = -300, 820
 
@@ -66,8 +70,13 @@ class PolyPen(BasePen):
 
 
 def raster(gs, name):
+    # contours unioned first: Noto Sans Armenian overlaps its strokes, and an even-odd fill of
+    # overlapping contours punches holes the skeleton then runs round
+    path = pathops.Path()
+    gs[name].draw(path.getPen())
+    path.simplify(fix_winding=True)
     pen = PolyPen(gs)
-    gs[name].draw(pen)
+    path.draw(pen)
     w = int((gs[name].width + 2 * PAD) * SC)
     h = int((Y1 - Y0) * SC)
     # even-odd fill via XOR of each contour
@@ -300,13 +309,43 @@ def split_self(f, touch=16, apart=80):
     return [f]
 
 
-def _corner(piece, w=8):
-    """Where a closed loop turns by more than about 100 degrees, if anywhere."""
+def _corner(piece, w=8, reach=40, bend=0.55):
+    """Where a closed loop turns by more than about 100 degrees, if anywhere; failing that, where
+    it bends by more than about 55 degrees within `reach` units either side (Գ's bowl where it
+    meets the stem, Ծ's peak under its crossbar, which the skeleton rounds off)."""
     ring = piece[:-1]
     v1 = ring - np.roll(ring, w, axis=0)
     v2 = np.roll(ring, -w, axis=0) - ring
     cos = (v1 * v2).sum(1) / (np.linalg.norm(v1, axis=1) * np.linalg.norm(v2, axis=1) + 1e-9)
-    return int(np.argmin(cos)) if cos.min() < -0.2 else None
+    if cos.min() < -0.2:
+        return int(np.argmin(cos))
+    step = np.linalg.norm(np.diff(piece, axis=0), axis=1).mean()
+    n = max(w, int(reach / step))
+    if 2 * n >= len(ring):
+        return None
+    v1 = ring - np.roll(ring, n, axis=0)
+    v2 = np.roll(ring, -n, axis=0) - ring
+    cos = (v1 * v2).sum(1) / (np.linalg.norm(v1, axis=1) * np.linalg.norm(v2, axis=1) + 1e-9)
+    return int(np.argmin(cos)) if cos.min() < bend else None
+
+
+def _open_corners(piece, reach=60, margin=45, apart=60):
+    """Where an open stroke turns by more than 60 degrees within `reach` units either side (a bend
+    tighter than the Black pen's half width, which its inner side folds round),
+    away from its ends: the sample indices, in order."""
+    arc = np.r_[0, np.cumsum(np.linalg.norm(np.diff(piece, axis=0), axis=1))]
+    back = np.searchsorted(arc, arc - reach).clip(0, len(piece) - 1)
+    fwd = np.searchsorted(arc, arc + reach).clip(0, len(piece) - 1)
+    v1, v2 = piece - piece[back], piece[fwd] - piece
+    cos = (v1 * v2).sum(1) / (np.linalg.norm(v1, axis=1) * np.linalg.norm(v2, axis=1) + 1e-9)
+    cos[(arc < margin) | (arc > arc[-1] - margin)] = 1
+    cuts = []
+    for i in np.argsort(cos):
+        if cos[i] >= 0.5:
+            break
+        if all(abs(arc[i] - arc[j]) > apart for j in cuts):
+            cuts.append(int(i))
+    return sorted(cuts)
 
 
 def trace(gs, name, prune=30, tol=8):
@@ -324,6 +363,8 @@ def trace(gs, name, prune=30, tol=8):
         f = smooth(f, 12)
         for piece in split_self(f):
             closed = math.dist(piece[0], piece[-1]) < 90 and length(piece) > 250  # a loop whose ends meet or cross (ზ's) is closed
+            if not closed and math.dist(piece[0], piece[-1]) < 3:
+                continue  # a knot the skeleton ties where strokes cross (Ջ's): no stroke at all
             if closed and math.dist(piece[0], piece[-1]) >= 3:
                 piece = np.vstack([piece, piece[:1]])
             if closed:
@@ -332,13 +373,28 @@ def trace(gs, name, prune=30, tol=8):
             if corner is not None:
                 # a pen folds inside a closed loop's corner (Ჩ's bowl, where it dips into the stem):
                 # draw it as two halves that meet at the corner instead
+                # (or more pieces, where the loop has other corners: Ճ's peak)
                 ring = piece[:-1]
-                ring = np.vstack([ring[corner:], ring[:corner]])
-                half = len(ring) // 2
-                pieces.append((False, ring[: half + 1], (True, True)))  # both ends meet the other half exactly
-                pieces.append((False, np.vstack([ring[half:], ring[:1]]), (True, True)))
+                ring = np.vstack([ring[corner:], ring[: corner + 1]])
+                cuts = _open_corners(ring)
+                at = 'bend' if cuts else True  # halved where it runs smoothly, the halves meet exactly
+                cuts = cuts or [len(ring) // 2]
+                for i, (a, b) in enumerate(zip([0] + cuts, cuts + [len(ring) - 1])):
+                    pieces.append((False, ring[a : b + 1], (True if i == 0 else at, True if b == len(ring) - 1 else at)))
                 continue
-            pieces.append((closed, piece, (False, False)))
+            if closed:
+                pieces.append((closed, piece, (False, False)))
+                continue
+            # a pen folds round a sharp corner in an open stroke too (Լ's foot, Ն's shoulder):
+            # split it there, the halves meeting at the corner
+            cuts = _open_corners(piece)
+            arc = np.r_[0, np.cumsum(np.linalg.norm(np.diff(piece, axis=0), axis=1))]
+            if not cuts and math.dist(piece[0], piece[-1]) < 150 and arc[-1] > 600:
+                # a loop whose two ends come back to the same place (Ց's bowl, both ends on the
+                # bar) folds where its ends overlap: halve it, so each half is its own stroke
+                cuts = [int(np.searchsorted(arc, arc[-1] / 2))]
+            for i, (a, b) in enumerate(zip([0] + cuts, cuts + [len(piece) - 1])):
+                pieces.append((False, piece[a : b + 1], ('bend' if i > 0 else False, 'bend' if b != len(piece) - 1 else False)))
 
     # where two loops cross (ზ's waist) the skeleton leaves a short piece between them: the
     # closed loops already cover it
@@ -374,7 +430,9 @@ def trace(gs, name, prune=30, tol=8):
             arc = np.r_[0, np.cumsum(np.linalg.norm(np.diff(piece, axis=0), axis=1))]
             # a skeleton forks at a blunt end and bends into a junction: cut both back (more at a
             # junction), and the generator runs the end on along the cut's tangent
-            trims = [JOIN_TRIM if e == 'join' else 0 if e == 'corner' else END_TRIM for e in ends]  # a corner is exact
+            # a loop's corner is exact; a bend the skeleton rounds off is cut back like an end, and
+            # the halves run on along their tangents into the corner the reference draws
+            trims = [JOIN_TRIM if e == 'join' else BEND_TRIM if c == 'bend' else 0 if e == 'corner' else END_TRIM for e, c in zip(ends, corners)]
             if arc[-1] > 2 * sum(trims) + 20:
                 piece = piece[(arc >= trims[0]) & (arc <= arc[-1] - trims[1])]
             else:
@@ -386,18 +444,18 @@ def trace(gs, name, prune=30, tol=8):
 
 
 EXT = 12.5  # the thin reference's half stroke: a skeleton stops this short of the ink
-HEADER = '''"""Georgian centre lines, generated by `trace_georgian.py` from Noto Sans Georgian (SIL OFL 1.1;
-Copyright 2022 The Noto Project Authors, https://github.com/notofonts/georgian). Do not edit by
-hand: re-run the tracer.
+HEADER = '''"""{name} centre lines, generated by `trace_noto.py {key}` from Noto Sans {name} (SIL OFL 1.1;
+{copyright}). Do not edit by hand: re-run the tracer.
 
 Each letter: (left and right sidebearing, each as Noto's Regular and Black space it; 'x', 'c' or
-'a' for the letter's height; strokes). A stroke is (closed; each end's kind: 'free', 'join'
-where it runs into another stroke, or 'corner' where a cornered loop was split; the Thin centre line; the same points moved toward Noto Black's
-centre line, as far as this font's pen draws them cleanly; that pen's weight at Black, 1 but
-where even the Thin centre line folds under the full pen; a heavy terminal's cut, 'n' square or
-'h' turned toward flat where a square end folds). A centre line is flat points: the start point, then each cubic's two handles and end
-point, in the reference's units. `REF` holds each reference's levels and ი's width, which
-`georgian.py` maps onto this font's metrics.
+'a' for the letter's height; strokes). A stroke is (closed; each end's kind: 'free', 'join' where it
+runs into another stroke, or 'corner' where a cornered loop was split; the Thin centre line; the
+same points moved toward Noto Black's centre line, as far as this font's pen draws them cleanly;
+that pen's weight at Black, 1 but where even the Thin centre line folds under the full pen; a heavy
+terminal's cut, 'n' square or 'h' turned toward flat where a square end folds). A centre line is
+flat points: the start point, then each cubic's two handles and end point, in the reference's
+units. `REF` holds each reference's levels, its lines and its unit letter's width, which
+traced.py maps onto this font's metrics.
 """
 
 '''
@@ -433,7 +491,7 @@ def across(ink, q, n, reach=160, widest=260):
     return q + n * (a + b) / 2
 
 
-def to_black(cs, ends, ink, skel, n=24):
+def to_black(cs, ends, ink, skel, closed=False, n=24):
     """The same cubics moved onto Noto Black's centre line. Each cubic is sampled; each sample moves
     to the middle of the Black stroke across it. Where a crossing finds no clean stroke (an end
     past the ink, a junction) the sample takes its nearest clean neighbour's move. The moves are
@@ -450,17 +508,28 @@ def to_black(cs, ends, ink, skel, n=24):
     samples = np.array(samples)
     move = [None if (m := across(ink, q, nv)) is None else m - q for q, nv in zip(samples, normals)]
     found = [m for m in move if m is not None]
-    if found:  # a crossing that caught the other stroke at a junction moves far from the rest
-        med = np.median(found, axis=0)
-        move = [None if m is None or np.linalg.norm(m - med) > 70 else m for m in move]
+    if found:  # a crossing that caught the other stroke at a junction moves far from its neighbours'
+        # (the neighbours', not the whole stroke's: round a heavy loop every move points inward,
+        # and the stroke's median move is none of them)
+        w = 12
+        idx = [i for i, m in enumerate(move) if m is not None]
+        meds = {}
+        for i in idx:
+            near = [move[j] for j in idx if (min(abs(j - i), len(move) - abs(j - i)) if closed else abs(j - i)) <= w]
+            meds[i] = np.median(near, axis=0)
+        move = [None if m is None or np.linalg.norm(m - meds[i]) > 70 else m for i, m in enumerate(move)]
     good = [i for i, m in enumerate(move) if m is not None]
     if not good:
         move = list(onto(samples, skel) - samples)
     else:
         move = [move[i] if move[i] is not None else move[min(good, key=lambda g: abs(g - i))] for i in range(len(move))]
     move = np.array(move)
-    k = 8  # smooth the moves along the stroke
-    sm = np.array([move[max(0, i - k) : i + k + 1].mean(0) for i in range(len(move))])
+    k = 8  # smooth the moves along the stroke (round a loop's seam, so the loop still meets)
+    if closed:
+        sm = np.array([move[[(j % len(move)) for j in range(i - k, i + k + 1)]].mean(0) for i in range(len(move))])
+        sm[0] = sm[-1] = (sm[0] + sm[-1]) / 2
+    else:
+        sm = np.array([move[max(0, i - k) : i + k + 1].mean(0) for i in range(len(move))])
     # deform the Thin cubics by the smooth move field: an on-curve point by the move where it
     # sits, a handle by the move a third of the way along, so the curve stays smooth
     out = []
@@ -469,10 +538,32 @@ def to_black(cs, ends, ink, skel, n=24):
         start = sm[at] if j == 0 else (sm[at] + sm[at - 1]) / 2
         end = sm[at + n - 1] if j == len(cs) - 1 else (sm[at + n - 1] + sm[at + n]) / 2
         out.append(np.array([c[0] + start, c[1] + sm[at + n // 3], c[2] + sm[at + 2 * n // 3], c[3] + end]))
+    # a free end runs on (or back) along its tangent to where the Black's ink ends: the moves are
+    # across the stroke, and Noto's Black lengthens its terminals as it widens (ւ's foot)
+    for k, (c, e, h) in enumerate(((out[0], 0, 1), (out[-1], 3, 2))):
+        if closed or ends[k] != 'free':
+            continue
+        v = c[e] - c[h]
+        v = v / (np.linalg.norm(v) + 1e-9)
+        ts = np.arange(-60, 120.5, 0.5)
+        pts = c[e] + np.outer(ts, v)
+        xs = ((pts[:, 0] + PAD) * SC).round().astype(int)
+        ys = ((Y1 - pts[:, 1]) * SC).round().astype(int)
+        ok = (xs >= 0) & (xs < ink.shape[1]) & (ys >= 0) & (ys < ink.shape[0])
+        on = np.zeros(len(ts), bool)
+        on[ok] = ink[ys[ok], xs[ok]]
+        i0 = int(np.searchsorted(ts, 0))
+        if not on[: i0 + 1].any():
+            continue  # no ink behind the end either: leave it
+        last = max(i for i in range(i0 + 1) if on[i])  # the ink nearest the end, at or behind it
+        while last + 1 < len(ts) and on[last + 1]:
+            last += 1  # and on to where that run of ink stops
+        c[e], c[h] = c[e] + v * ts[last], c[h] + v * ts[last]
     return out
 
 
 PENS = (1.0, 0.95, 0.9, 0.85, 0.8, 0.75, 0.72, 0.68, 0.64, 0.6)  # lighter only where nothing heavier draws cleanly
+LAST_PENS = (0.5, 0.4)  # with either cut, only where no pen above draws cleanly with either (Armenian's ՞)
 BLENDS = (1.0, 0.8, 0.6, 0.4, 0.2, 0.0)
 CUTS = ('n', 'h')  # a heavy terminal's cut: square, or turned toward flat where a square end folds
 
@@ -484,28 +575,27 @@ def clean_reach(entry, ref, k):
     outline font can draw and a pen cannot."""
     from build import italicize
     from geom import expand, flatten
-    from georgian import draw_letter
+    from traced import draw_letter
     from glyphs import G
     from lint import self_intersects
     from params import ITALIC_MASTERS, MASTERS, P
 
     closed, ends, thin, black, _, _ = entry[3][k]
-    for cut in CUTS:
-        for pen in PENS:
-            for b in BLENDS:
-                blend = [(round(x + (bx - x) * b), round(y + (by - y) * b)) for (x, y), (bx, by) in zip(thin, black)]
-                strokes = [(c, j, _flat(th), _flat(blend if i == k else bl), pen if i == k else pn, cut if i == k else ct) for i, (c, j, th, bl, pn, ct) in enumerate(entry[3])]
-                ok = True
-                for _, loc in MASTERS + ITALIC_MASTERS:
-                    p = P(**loc)
-                    g = G(p)
-                    draw_letter(g, p, (*entry[:3], strokes), ref)
-                    st = italicize(g.strokes, p)[k]
-                    if any(self_intersects(flatten(c, 16)) for c in expand(st, p.V, p.H)):
-                        ok = False
-                        break
-                if ok:
-                    return pen, b, blend, cut
+    for cut, pen in [(c, q) for c in CUTS for q in PENS] + [(c, q) for c in CUTS for q in LAST_PENS]:
+        for b in BLENDS:
+            blend = [(round(x + (bx - x) * b), round(y + (by - y) * b)) for (x, y), (bx, by) in zip(thin, black)]
+            strokes = [(c, j, _flat(th), _flat(blend if i == k else bl), pen if i == k else pn, cut if i == k else ct) for i, (c, j, th, bl, pn, ct) in enumerate(entry[3])]
+            ok = True
+            for _, loc in MASTERS + ITALIC_MASTERS:
+                p = P(**loc)
+                g = G(p)
+                draw_letter(g, p, (*entry[:3], strokes), ref)
+                st = italicize(g.strokes, p)[k]
+                if any(self_intersects(flatten(c, 16)) for c in expand(st, p.V, p.H)):
+                    ok = False
+                    break
+            if ok:
+                return pen, b, blend, cut
     return pen, 0.0, thin, cut
 
 
@@ -513,7 +603,44 @@ def _flat(pts):
     return [v for q in pts for v in q]
 
 
-def letter(cp, fonts):
+def _tie_corners(out):
+    """Strokes that meet at a corner in the Thin meet there in the Black too. Each is moved onto
+    the Black on its own, and a crossing at a corner catches the other stroke's ink (ւ's foot
+    landed 72 units above its stem's end). Each stroke's move across itself is the one to trust,
+    so the corner goes where both agree: the stem's x, the foot's y. A rounded-off bend's halves,
+    each run on along its tangent, meet at the corner their lines make, in the Thin as well."""
+    groups = []
+    for i, (closed, kinds, thin, _) in enumerate(out):
+        for k, (e, h) in enumerate(((0, 1), (-1, -2))):
+            if not closed and kinds[k] == 'corner':
+                g = next((g for g in groups if math.dist(out[g[0][0]][2][g[0][1]], thin[e]) < BEND_TRIM * 2), None)
+                if g is None:
+                    groups.append([(i, e, h)])
+                else:
+                    g.append((i, e, h))
+    for group in groups:
+        if len(group) < 2:
+            continue
+        for which in (2, 3):
+            rows, rhs, mean = [], [], np.zeros(2)
+            for i, e, h in group:
+                b = out[i][which]
+                d = np.asarray(b[e], float) - np.asarray(b[3 if e == 0 else -4], float)  # the end cubic's chord: its handle bends into the corner
+                n = np.array([-d[1], d[0]]) / (np.linalg.norm(d) + 1e-9)
+                rows.append(n)
+                rhs.append(n @ np.asarray(b[e], float))
+                mean += np.asarray(b[e], float) / len(group)
+            a = np.array(rows)
+            # where the strokes cross at an angle, the point on both their lines; where they run
+            # on smoothly (a loop halved at no corner), their mean
+            target = np.linalg.lstsq(a, np.array(rhs), rcond=None)[0] if abs(np.linalg.det(a[:2] @ a[:2].T)) > 0.25 else mean
+            for i, e, h in group:
+                b = out[i][which]
+                delta = target - np.asarray(b[e], float)
+                b[e], b[h] = target.copy(), np.asarray(b[h], float) + delta
+
+
+def letter(cp, fonts, caps):
     thin, reg, black = fonts
     strokes = trace(thin.getGlyphSet(), thin.getBestCmap()[cp])
     ink = raster(black.getGlyphSet(), black.getBestCmap()[cp])
@@ -544,17 +671,19 @@ def letter(cp, fonts):
                 else:
                     c[3], c[2] = end + v * ext, c[2] + v * ext
         flat = [cs[0][0]] + [q for c in cs for q in c[1:]]
-        bl = to_black(cs, ends, ink, skel)
+        bl = to_black(cs, ends, ink, skel, s['closed'])
         flat_b = [bl[0][0]] + [q for c in bl for q in c[1:]]
         out.append((s['closed'], tuple(ends) if not s['closed'] else ('', ''), flat, flat_b))
+    _tie_corners(out)
     xmin = min(q[0] for st in out for q in st[2])
     xmin_b = min(q[0] for st in out for q in st[3])
-    ht = 'c' if 0x1C90 <= cp <= 0x1CBF else 'a' if y1 > 650 else 'x'
+    ht = 'c' if caps[0] <= cp <= caps[1] else 'a' if y1 > 650 else 'x'
     return {'sb': ((round(x0), round(bx0)), (round(g.width - x1), round(gb.width - bx1))), 'ht': ht, 'strokes': [(c, j, [(q[0] - xmin, q[1]) for q in f], [(q[0] - xmin_b, q[1]) for q in fb]) for c, j, f, fb in out]}
 
 
-def levels(data, which):
-    """Each reference's centre-line levels, read off the letters that show them."""
+def levels(data, which, at):
+    """Each reference's centre-line levels, read off the letters that show them (`at`: level ->
+    (letter, closed strokes only or open only or either, 'min' or 'max', offset))."""
     def curve(cp, closed=None):
         pts = []
         for c, _, f, fb in data[cp]['strokes']:
@@ -563,14 +692,27 @@ def levels(data, which):
                 pts += [bez(f[i : i + 4], t) for i in range(0, len(f) - 1, 3) for t in np.linspace(0, 1, 20)]
         return np.array(pts)
 
+    out = {k: (curve(cp, closed)[:, 1].min() if how == 'min' else curve(cp, closed)[:, 1].max()) + off for k, (cp, closed, how, off) in at.items() if k != 'unit'}
+    out['unit'] = np.ptp(curve(at['unit'][0])[:, 0])  # the unit letter's width: the horizontal scale
+    return out
+
+
+def ink_lines(fonts, lines, unit):
+    """The lines a stem ends on, from the Thin's ink; the x-height (Noto's round top less its 10
+    units of overshoot); and the unit letter's ink width at Thin, Regular and Black."""
+    def bounds(font, cp):
+        gs = font.getGlyphSet()
+        bp = BoundsPen(gs)
+        gs[font.getBestCmap()[cp]].draw(bp)
+        return bp.bounds
+
+    thin = fonts[0]
     return {
-        'desc': curve(0x10D2)[:, 1].min(),  # გ's bowl
-        'base': curve(0x10D1, True)[:, 1].min(),  # ბ's bowl
-        'xh': curve(0x10DD)[:, 1].max(),  # ო's arch
-        'asc': curve(0x10D1, False)[:, 1].max() + 6,  # ბ's hook, between a round top and a cut end
-        'cap': curve(0x1C9D)[:, 1].max(),  # Ო's arch
-        'i': np.ptp(curve(0x10D8)[:, 0]),  # ი: the unit for the horizontal scale
-    }
+        'asc': round(bounds(thin, lines['asc'])[3]),
+        'desc': round(bounds(thin, lines['desc'])[1]),
+        'cap': round(bounds(thin, lines['cap'])[3]),
+        'xh': round(bounds(thin, lines['xh'])[3]) - 10,
+    }, [round(bounds(f, unit)[2] - bounds(f, unit)[0]) for f in fonts]
 
 
 def fmt(pts):
@@ -578,8 +720,8 @@ def fmt(pts):
 
 
 def noto_kerning(fonts, cps):
-    """The letter pairs Noto kerns, with its values at Thin, Regular and Black. This font's Georgian
-    is Noto's centre lines with Noto's spacing, so Noto's kerning fits it as it stands; kern.py
+    """The letter pairs Noto kerns, with its values at Thin, Regular and Black. These letters are
+    Noto's centre lines with Noto's spacing, so Noto's kerning fits them as it stands; traced.py
     scales it with the letters and blends it by weight as the outlines are."""
     import io
 
@@ -610,11 +752,48 @@ def noto_kerning(fonts, cps):
     return out
 
 
+SCRIPTS = {
+    'georgian': {
+        'name': 'Georgian',
+        'cps': list(range(0x10D0, 0x10F1)) + list(range(0x1C90, 0x1CB1)),  # Mkhedruli and their Mtavruli
+        'caps': (0x1C90, 0x1CBF),
+        'levels': {  # level: (letter, closed strokes only / open only / either, min or max, offset)
+            'desc': (0x10D2, None, 'min', 0),  # გ's bowl
+            'base': (0x10D1, True, 'min', 0),  # ბ's bowl
+            'xh': (0x10DD, None, 'max', 0),  # ო's arch
+            'asc': (0x10D1, False, 'max', 6),  # ბ's hook, between a round top and a cut end
+            'cap': (0x1C9D, None, 'max', 0),  # Ო's arch
+            'unit': (0x10D8, None, None, 0),  # ი
+        },
+        'lines': {'asc': 0x10D1, 'desc': 0x10D2, 'cap': 0x1C90, 'xh': 0x10DD},
+    },
+    'armenian': {
+        'name': 'Armenian',
+        # capitals, lowercase with և, the marks, and the dram sign; ։ and ֊ are this font's colon
+        # and hyphen (armenian.py), and two dots trace to nothing
+        'cps': list(range(0x531, 0x557)) + list(range(0x559, 0x589)) + [0x58F],
+        'caps': (0x531, 0x556),
+        'levels': {
+            'desc': (0x584, None, 'min', 0),  # ք's stem
+            'base': (0x585, True, 'min', 0),  # օ's bowl
+            'xh': (0x585, None, 'max', 0),  # օ's bowl
+            'asc': (0x565, None, 'max', 6),  # ե's top
+            'cap': (0x555, None, 'max', 0),  # Օ's bowl
+            'unit': (0x578, None, None, 0),  # ո
+        },
+        'lines': {'asc': 0x565, 'desc': 0x584, 'cap': 0x531, 'xh': 0x585},
+    },
+}
+
+
 if __name__ == '__main__':
-    fonts = [TTFont(p) for p in sys.argv[1:4]]
-    cps = list(range(0x10D0, 0x10F1)) + list(range(0x1C90, 0x1CB1))  # Mkhedruli and their Mtavruli
-    data = {cp: letter(cp, fonts) for cp in cps}
-    ref = {name: {k: round(float(v), 1) for k, v in levels(data, i).items()} for i, name in enumerate(('thin', 'black'))}
+    key = sys.argv[1]
+    cfg = SCRIPTS[key]
+    fonts = [TTFont(p) for p in sys.argv[2:5]]
+    cps = cfg['cps']
+    data = {cp: letter(cp, fonts, cfg['caps']) for cp in cps}
+    ref = {name: {k: round(float(v), 1) for k, v in levels(data, i, cfg['levels']).items()} for i, name in enumerate(('thin', 'black'))}
+    ref['lines'], ref['unit_ink'] = ink_lines(fonts, cfg['lines'], cfg['levels']['unit'][0])
     held = []
     for cp, d in data.items():
         # each stroke is searched in turn, against the ones before it as already settled; a stroke
@@ -629,13 +808,14 @@ if __name__ == '__main__':
             settled[k] = (*rounded[k][:3], blend, pen, cut)
         d['strokes'] = settled
     print('held back from Black:', ' '.join(held))
-    lines = [HEADER + f'REF = {ref!r}\n\nTRACE = {{']
+    notice = fonts[1]['name'].getDebugName(0)
+    lines = [HEADER.format(name=cfg['name'], key=key, copyright=notice) + f'REF = {ref!r}\n\nTRACE = {{']
     for cp, d in data.items():
         body = ',\n        '.join(f'({c}, {j}, {fmt(f)}, {fmt(fb)}, {pen}, {cut!r})' for c, j, f, fb, pen, cut in d['strokes'])
         lines.append(f"    0x{cp:04X}: ({d['sb'][0]}, {d['sb'][1]}, '{d['ht']}', [  # {chr(cp)}\n        {body},\n    ]),")
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'georgian_paths.py')
-    with open(path, 'w') as f:
+    here = os.path.dirname(os.path.abspath(__file__))
+    with open(os.path.join(here, f'{key}_paths.py'), 'w') as f:
         f.write('\n'.join(lines) + '\n}\n')
-    with open(os.path.join(os.path.dirname(path), 'kern_georgian.json'), 'w', encoding='utf-8') as f:
+    with open(os.path.join(here, f'kern_{key}.json'), 'w', encoding='utf-8') as f:
         kern = noto_kerning(fonts, cps)
         f.write('{\n' + ',\n'.join(f'  "{k}": {json.dumps(v)}' for k, v in sorted(kern.items())) + '\n}\n')  # the formatter's layout

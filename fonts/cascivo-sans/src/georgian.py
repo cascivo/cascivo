@@ -3,137 +3,24 @@
 a native reader has reviewed it.
 
 None of Inter, Geist or Plex has Georgian. The letters' centre lines are traced from Noto Sans
-Georgian (`georgian_paths.py`, made by `trace_georgian.py`): from its Thin, and the same points
-moved onto its Black, which the heavy masters blend toward by stem weight. That is how Noto's
-Black keeps the Latin stem and still has room for two or three bowls: they open, and the letter
-barely widens. This font's pen then draws the centre lines at every weight, as it draws the
-Latin. The tracing keeps Noto's structure, which Georgian readers rely on (where a loop closes,
-which way a curl turns); the metrics, contrast and weight are this font's.
+Georgian (`georgian_paths.py`, made by `trace_noto.py georgian`) and drawn by traced.py.
 """
 
 import json
-import math
 import os
 
-from geom import arc, norm, orient, pen_thickness
+import traced
 from georgian_paths import REF, TRACE
 from glyphs import glyph
-from params import BLACK_STEM, P
 
-V_THIN = P(100, 14).V
 with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'kern_georgian.json'), encoding='utf-8') as _fh:
-    KERN = json.load(_fh)  # pair -> Noto's value at Thin, Regular, Black (trace_georgian.py)
+    KERN = json.load(_fh)  # pair -> Noto's value at Thin, Regular, Black (trace_noto.py)
+
+traced.register(TRACE, REF)
 
 
-def _y_map(p, H, ref, ht):
-    """Reference centre-line levels onto this font's: round strokes ride half a stroke inside the
-    line, less their overshoot."""
-    if ht == 'c':
-        src = (ref['base'], ref['cap'])
-        dst = (-p.ov + H / 2, p.cap + p.ov - H / 2)
-    else:
-        src = (ref['desc'], ref['base'], ref['xh'], ref['asc'])
-        dst = (p.desc + H / 2, -p.ov + H / 2, p.xh + p.ov - H / 2, p.asc - H / 4)
-
-    def f(y):
-        i = sum(y >= s for s in src[1:-1])
-        return dst[i] + (y - src[i]) * (dst[i + 1] - dst[i]) / (src[i + 1] - src[i])
-
-    return f
-
-
-def _line(p, y_ref):
-    """The baseline, ascender, descender or cap height a stem's end in the reference sits on."""
-    for ref, line in ((0, 0), (760, p.asc), (-250, p.desc), (714, p.cap)):
-        if abs(y_ref - ref) < 20:
-            return line
-    return None
-
-
-def _snap(line, end, handle):
-    """A stem's end sits on its line exactly. The level map is for the centre of a round stroke,
-    which rides half a stroke inside the line; a cut end does not. A steep end also arrives square
-    to the line, its handle straight above or below it: a leg meeting the baseline on a slant (Ჩ's, ჩ's)
-    left the flat cut more to trim than it may, and a corner hung below the line."""
-    dy = line - end[1]
-    steep = abs(end[0] - handle[0]) < abs(end[1] - handle[1])  # a shallow end (შ's, წ's) would fold if squared
-    return (end[0], line), (end[0] if steep else handle[0], handle[1] + dy)
-
-
-def _into(end, handle, d):
-    """A stroke that ends on another runs on into it by a share of the stem, so the join has no
-    notch at heavy weights; at Thin that share stays inside the other stroke."""
-    v = (end[0] - handle[0], end[1] - handle[1])
-    n = math.hypot(*v) or 1.0
-    dx, dy = v[0] / n * d, v[1] / n * d
-    return (end[0] + dx, end[1] + dy), (handle[0] + dx, handle[1] + dy)
-
-
-def _i_to_n(t):
-    """How much wider ი's ink is than this font's n at blend t: what makes it as wide as Noto's ი
-    at Thin (1.00), Regular (1.06) and Black (1.02), against this font's n at each."""
-    return 1.0 + 0.06 * t / 0.37 if t <= 0.37 else 1.06 - 0.04 * (t - 0.37) / 0.63
-
-
-def _scale(p, ref=REF):
-    """A master's blend between the Thin and Black references (by stem weight: Thin 0, Regular
-    0.37, Black 1), the horizontal scale from reference units, and the blended levels."""
-    t = min(1.0, max(0.0, (p.V - V_THIN) / (BLACK_STEM - V_THIN)))
-    lv = {k: v + (ref['black'][k] - v) * t for k, v in ref['thin'].items()}
-    return t, (_i_to_n(t) * p.nw - p.V) / lv['i'], lv
-
-
-def kern_fea(p):
-    """Noto's own kerning, at this master's blend of its Thin, Regular and Black values and scaled
-    with the letters: the letters are Noto's centre lines with Noto's spacing, so its kerning fits
-    them. (The measure kern.py fits to Latin kerned them twice as hard as Noto does.)"""
-    t, sx, _ = _scale(p)
-    lines = ['feature kern {', '  lookup GEORGIAN_KERN {']
-    for pair, (v0, v1, v2) in sorted(KERN.items()):
-        v = v0 + (v1 - v0) * t / 0.37 if t <= 0.37 else v1 + (v2 - v1) * (t - 0.37) / 0.63
-        lines.append(f'    pos {pair} {round(v * sx)};')
-    lines += ['  } GEORGIAN_KERN;', '} kern;']
-    return '\n'.join(lines)
-
-
-def draw_letter(g, p, entry, ref=REF):
-    """One letter from its traced data. The masters blend the Thin and Black centre lines by stem
-    weight; the tracer has already held each stroke back from Black as far as this pen needs to
-    draw it cleanly."""
-    sbl, sbr, ht, strokes = entry
-    t, sx, lv = _scale(p, ref)
-    V, H = p.V, p.H
-    fy = _y_map(p, H, lv, ht)
-    for closed, ends, thin, black, pen, cut in strokes:
-        sw = 1 - (1 - pen) * p.heavy  # 1, but where the tracer found the full pen folds
-        pts = [((a + (b - a) * t) * sx + V / 2, fy(c + (d - c) * t)) for a, c, b, d in zip(thin[::2], thin[1::2], black[::2], black[1::2])]
-        caps = ['b', 'b']
-        if not closed:
-            for k, (end, handle, y_ref) in enumerate(((0, 1, thin[1]), (-1, -2, thin[-1]))):
-                if ends[k] in ('join', 'corner'):  # a round joint, where square ends would notch
-                    w = pen_thickness(norm((pts[end][0] - pts[handle][0], pts[end][1] - pts[handle][1])), V, H) * sw
-                    g.raw.append(orient(arc(*pts[end], w / 2, w / 2, 90, 450), outer=True))
-                if ends[k] == 'join':
-                    pts[end], pts[handle] = _into(pts[end], pts[handle], 0.4 * V)
-                elif ends[k] == 'free' and _line(p, y_ref) is not None:  # a stem's end: cut flat on its line
-                    pts[end], pts[handle] = _snap(_line(p, y_ref), pts[end], pts[handle])
-                    caps[k] = 'h'
-        segs = [('C', *pts[i : i + 4]) for i in range(0, len(pts) - 1, 3)]
-        g.stroke(segs, closed=closed, ws=sw, cut=cut, caps=tuple(caps))
-    g.ht = ht
-    # Noto's own spacing, scaled with the outline: this font's Latin tightens more at Black than
-    # Noto's does, and Georgian set in the Latin's units touched there
-    u = min(1.0, max(0.0, (t - 0.37) / 0.63))
-    unit = p.Sc if ht == 'c' else p.S
-    g.sb = tuple((a + (b - a) * u) * sx / unit for a, b in (sbl, sbr))
-
-
-def _draw(cp):
-    return lambda g, p: draw_letter(g, p, TRACE[cp])
-
-
-for _cp in TRACE:
-    glyph(f'uni{_cp:04X}', _cp)(_draw(_cp))  # Mkhedruli, and their Mtavruli capitals
+def kern_fea(o):
+    return traced.kern_fea(o, REF, KERN, 'GEORGIAN_KERN')
 
 
 @glyph('uni10FB', 0x10FB)
