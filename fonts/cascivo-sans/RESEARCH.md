@@ -1280,6 +1280,36 @@ Mean IoU against Noto Black rises from 0.762 to 0.768. Ჩ leaves the worst ten 
 0.70). The ზ pair is still lowest (0.65–0.66), because its bowls are smaller than Noto's. Two
 blemishes remain at display sizes: a tick under ჩ's bowl, and Შ's and შ's ragged top left.
 
+## 32. Georgian beside punctuation, and the last blemishes
+
+**Punctuation and figures.** Neither reference kerns Georgian against punctuation or figures.
+Noto Sans Georgian kerns its letters (ᲓᲰ −100), but no Georgian letter against any of
+`. , : ; ! ? - – — / ( ) [ ] « » ‘ ’ “ ” „` or a figure. DejaVu Sans does not either. (Google Fonts
+serves Noto with both sets in one file when asked for that text, so this is not a split between
+files.) So nothing was borrowed. A sweep found where our own shapes need help: at Black, the curls
+of შ and წ and their capitals reach a dash's height, and an en or em dash met them (0 units at
+Display Black italic).
+
+Those pairs join kern.py's own-shape pairs, which only ever open, are measured at every master, and
+are kept where Black or a heavy corner needs them. kern.py's fitted measure would have opened 356
+pairs at Regular, every dash beside a round letter by its full 40 units. So these pairs use a
+measure of their own: just enough to keep the closest point the fitted measure's floor (0.55 S)
+apart. Nothing opens at Regular. At Black it opens the dashes beside შ, წ, Შ and Წ by 18–20 units,
+and every Georgian–punctuation pair is now at least 23 units clear at every corner.
+
+**ჩ and Ჩ's legs.** A leg that meets the baseline on a slant left the flat cut more to trim than it
+may, and a corner hung below the line. A stem end that arrives steeper than 45° is now made to
+arrive square (its last handle straight above the end); a shallower end keeps its own direction,
+because squaring შ's and წ's folded them at Thin. That fixed Ჩ's leg. ჩ's leg still dips below
+the line before its cut at Black: making every squared end run vertical for a whole stem fixed it,
+but bent the legs of ი and ო and cost 16 folds, so it was reverted.
+
+**ზ's bowls.** The search keeps the full pen before it blends further toward Black (section 29).
+Ordering it the other way, a lighter pen for a fuller blend, was tried to give ზ Noto's larger
+bowls. It moved many strokes to lighter pens, and the mean IoU fell from 0.769 to 0.744, so it
+was reverted. ზ and Ზ stay the furthest from Noto Black (0.65–0.66), with ჩ's leg, Შ's and შ's notched
+top left, and ჯ's foot as the remaining visible blemishes at display sizes. Mean IoU: 0.769.
+
 ## Sources
 
 - [Introducing Geist Pixel (Vercel)](https://vercel.com/blog/introducing-geist-pixel) and the

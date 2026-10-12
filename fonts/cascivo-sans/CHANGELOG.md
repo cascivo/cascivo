@@ -12,6 +12,9 @@
 - **Georgian kerning.** Noto's own kerning for the 749 pairs it kerns at any weight, blended by
   weight and scaled with the letters. Every pair is clear at every weight and size. Heavy
   terminals are cut square (ჯ's and ჟ's feet no longer step), and Ჩ's bowl has no spur.
+- **Georgian beside dashes.** At Black, en and em dashes open away from შ and წ and their
+  capitals, which met them before. No reference kerns Georgian against punctuation, so nothing
+  else changes. Ჩ's leg sits flat on the baseline.
 
 ## 0.6.1
 

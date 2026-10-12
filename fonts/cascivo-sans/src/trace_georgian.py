@@ -638,4 +638,4 @@ if __name__ == '__main__':
         f.write('\n'.join(lines) + '\n}\n')
     with open(os.path.join(os.path.dirname(path), 'kern_georgian.json'), 'w', encoding='utf-8') as f:
         kern = noto_kerning(fonts, cps)
-        f.write('{\n' + ',\n'.join(f'"{k}": {json.dumps(v)}' for k, v in sorted(kern.items())) + '\n}\n')
+        f.write('{\n' + ',\n'.join(f'  "{k}": {json.dumps(v)}' for k, v in sorted(kern.items())) + '\n}\n')  # the formatter's layout

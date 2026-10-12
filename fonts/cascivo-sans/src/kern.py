@@ -71,6 +71,10 @@ I_WIDE = ['uni00EF', 'uni00EE', 'uni0129', 'uni012B', 'uni012D']  # ï î ĩ ī 
 TALL = list('ABCDEFGHIJKLMNOPQRSTUVWXYZbdfhklt') + ['i', 'j'] + I_WIDE
 OWN_SHAPE_PAIRS.update({(a, b): 1 for i in I_WIDE for a, b in [(t, i) for t in TALL] + [(i, t) for t in TALL]})
 
+GEORGIAN_NEIGHBOURS = ['period', 'comma', 'colon', 'semicolon', 'exclam', 'question', 'hyphen', 'endash', 'emdash', 'slash',
+                      'parenleft', 'parenright', 'bracketleft', 'bracketright', 'guillemotleft', 'guillemotright',
+                      'quoteleft', 'quoteright', 'quotedblleft', 'quotedblright', 'quotedblbase', 'quotesingle', 'quotedbl'] + [f + '.pnum' for f in FIGS]
+
 # Closing pairs no reference list carries, kept when the measurement agrees: tt, whose two
 # crossbars Inter and Plex let nearly meet (ours sat 1.3x their white at Bold).
 OWN_CLOSING_PAIRS = {('t', 't'): -1}
@@ -150,6 +154,28 @@ def measure(o, left_glyph, right_glyph, most=40):
     return int(round(max(-140, min(most, k))))
 
 
+# Pairs measured for clearance alone: the fitted measure would open every dash beside a round
+# Georgian letter by its full 40 units, where only შ's and წ's curls come near one.
+CLEAR_ONLY = set()
+
+
+def clearance(o, left_glyph, right_glyph):
+    """Just enough opening to keep the closest point the measure's floor apart (0.55 S)."""
+    _, hi = _profile(o, left_glyph)
+    lo, _ = _profile(o, right_glyph)
+    bands = sorted(set(hi) & set(lo))
+    if not bands:
+        return 0
+    closest = min(o.adv[left_glyph] - hi[b] + lo[b] for b in bands)
+    return max(0, int(round(0.55 * o.p.S - closest)))
+
+
+def _need(o, a, b):
+    if (a, b) in CLEAR_ONLY:
+        return clearance(o, a, b)
+    return measure(o, a, b, 250 if a in I_WIDE or b in I_WIDE else 40)
+
+
 def kern_pairs(o):
     glyphs = set(o.contours) | set(o.comps)
     acc = {}
@@ -179,8 +205,16 @@ def kern_pairs(o):
                 cands.setdefault((a, w), v)
     cands.update(OWN_SHAPE_PAIRS)
     cands.update(OWN_CLOSING_PAIRS)
+    # Georgian against punctuation and figures: neither Noto nor DejaVu kerns these, but at Black
+    # შ's and წ's curls reach a dash's height (–შ touched at Display Black italic). Opening only.
+    georgian = [g for g in glyphs if g.startswith(('uni10D', 'uni10E', 'uni10F', 'uni1C9', 'uni1CA', 'uni1CB'))]
+    if georgian:
+        marks = [g for g in GEORGIAN_NEIGHBOURS if g in glyphs]
+        OWN_SHAPE_PAIRS.update({p: 1 for g in georgian for m in marks for p in ((g, m), (m, g))})
+        CLEAR_ONLY.update(p for g in georgian for m in marks for p in ((g, m), (m, g)))
+        cands.update({p: 1 for g in georgian for m in marks for p in ((g, m), (m, g))})
     # a wide i opens as far as it must: ïï needs about 190 at Black (Inter's is 166/1000)
-    pairs = {(a, b): (measure(o, a, b, 250 if a in I_WIDE or b in I_WIDE else 40), sign) for (a, b), sign in cands.items()}
+    pairs = {(a, b): (_need(o, a, b), sign) for (a, b), sign in cands.items()}
     # an own-shape pair only ever opens, by however much each master measures it needs
     pairs.update({k: (max(0, pairs[k][0]), 1) for k in OWN_SHAPE_PAIRS if k in pairs})
     return acc, glyphs, pairs
@@ -276,7 +310,7 @@ def _values(o, pairs):
         if corner is not None and _BLACK is not None:
             for k in pairs:
                 if k in OWN_SHAPE_PAIRS or k[0] in I_WIDE or k[1] in I_WIDE:
-                    need = max(0, measure(corner, *k, 250 if k[0] in I_WIDE or k[1] in I_WIDE else 40))
+                    need = max(0, _need(corner, *k))
                     # corner value = R + (B - R) + (M - R) = B + M - R
                     out[k] = max(out[k], need - _BLACK[k] + _REGULAR[k])
         return out
@@ -300,7 +334,7 @@ def kern_fea(o):
             continue
         if k not in moved or (a, b) == k:
             moved[k] = v
-    pairs = {k: (measure(o, *k, 250 if k[0] in I_WIDE or k[1] in I_WIDE else 40), v[1]) if k not in pairs else pairs[k] for k, v in moved.items()}
+    pairs = {k: (_need(o, *k), v[1]) if k not in pairs else pairs[k] for k, v in moved.items()}
     if _SELECTED is None:  # the first (default) master decides which pairs exist
         keep = []
         for (a, b), (k, sign) in pairs.items():
@@ -308,8 +342,7 @@ def kern_fea(o):
             if abs(k) >= MIN_KERN and (k < 0) == (sign < 0):
                 keep.append((a, b))
             elif (a, b) in OWN_SHAPE_PAIRS:
-                most = 250 if a in I_WIDE or b in I_WIDE else 40
-                if k > 0 or not _HEAVY or any(measure(h, a, b, most) > 0 for h in _HEAVY):
+                if k > 0 or not _HEAVY or any(_need(h, a, b) > 0 for h in _HEAVY):
                     keep.append((a, b))
         _SELECTED = sorted(keep)
     firsts = sorted({a for a, _ in _SELECTED})

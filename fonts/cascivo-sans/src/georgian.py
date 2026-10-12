@@ -52,9 +52,12 @@ def _line(p, y_ref):
 
 def _snap(line, end, handle):
     """A stem's end sits on its line exactly. The level map is for the centre of a round stroke,
-    which rides half a stroke inside the line; a cut end does not."""
+    which rides half a stroke inside the line; a cut end does not. A steep end also arrives square
+    to the line, its handle straight above or below it: a leg meeting the baseline on a slant (Ჩ's, ჩ's)
+    left the flat cut more to trim than it may, and a corner hung below the line."""
     dy = line - end[1]
-    return (end[0], line), (handle[0], handle[1] + dy)
+    steep = abs(end[0] - handle[0]) < abs(end[1] - handle[1])  # a shallow end (შ's, წ's) would fold if squared
+    return (end[0], line), (end[0] if steep else handle[0], handle[1] + dy)
 
 
 def _into(end, handle, d):
