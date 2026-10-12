@@ -1209,6 +1209,39 @@ meet, and Ჩ's bowl is uneven. With both scripts' data, the Georgian build's fu
 (67.3 KB without Georgian). The release still leaves Georgian out until a native reader has
 reviewed it.
 
+## 30. Where Georgian's bytes go, and round joints
+
+**Size.** Section 29's proposal guessed that the second set of centre lines (Black) doubled the
+Georgian data. Measured, it does not. The full upright woff2 of the Georgian build is 97.6 KB:
+
+| Without                                  | Size    | Saved  |
+| ---------------------------------------- | ------- | ------ |
+| the Black blend (Thin centre lines only) | 94.8 KB | 2.8 KB |
+| the Mtavruli capitals                    | 83.5 KB | 14 KB  |
+
+The variation data a Black master adds costs little; each extra letter's outline costs more. A
+looser fit saves little either: 1.4 KB at a 12-unit tolerance, 2.1 KB at 16, and each step
+moves further from Noto. So the build splits the bytes the way Google Fonts does. A Georgian
+build also writes `CascivoSans-Georgian[opsz,wght].woff2` and its italic: every weight and
+optical size of the Georgian letters, 33.1 KB with the joints below. A page that sets
+unicode-range on it downloads the Georgian slice only where its text has Georgian, and the Latin
+file stays as it was.
+
+**Round joints.** Where two strokes end on each other, their square ends left notches at Black,
+as at ჰ's cusp, Შ's curl and Ჩ's bowl. Each such end now gets a disc as wide as the pen there. It
+is drawn as a raw outline, the way the round dots are, so it adds no stroke to fold. To judge
+it, each letter at Black is compared with Noto Black as pixel overlap (IoU, glyphs aligned on
+their ink centres):
+
+- With the joints, the mean IoU rises from 0.718 to 0.762, and the slice grows by 3.7 KB.
+- Two other changes were measured and reverted:
+  - snapping only near-vertical ends onto the baseline: 0.759
+  - the default terminal cut instead of the horizontal one: 0.746, with folds
+
+The worst letters are still Ჩ (0.64), ჟ, ზ and Ზ (0.65–0.66). The ზ pair has smaller bowls
+than Noto's. The others show their remaining blemishes at display sizes: Ჩ's bowl, and the
+inner edge where ც's hook meets its bowl.
+
 ## Sources
 
 - [Introducing Geist Pixel (Vercel)](https://vercel.com/blog/introducing-geist-pixel) and the

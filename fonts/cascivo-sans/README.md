@@ -114,7 +114,8 @@ contours are standard in variable fonts.
 A draft of Georgian (Mkhedruli and its Mtavruli capitals) is in `src/georgian.py` but is not in the release; build it with
 `CASCIVO_GEORGIAN=1 python3 -I src/build.py` (RESEARCH.md sections 27–29). Its centre lines in
 `georgian_paths.py` are traced from Noto Sans Georgian (OFL) by `src/trace_georgian.py`; a build
-with Georgian adds Noto's copyright notice to the font's.
+with Georgian adds Noto's copyright notice to the font's, and writes a Georgian web slice
+(`CascivoSans-Georgian[opsz,wght].woff2`, 33 KB) to load by unicode-range.
 
 To change a glyph, edit its function in `glyphs.py`, then run the lint, the build and the tests.
 One rule keeps the variable font valid: a master parameter may move points, but it must never

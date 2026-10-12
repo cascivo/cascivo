@@ -953,14 +953,18 @@ def _roundtrip(font):
     return TTFont(buf)
 
 
-def _subset_latin(font):
+# the Georgian slice, for a page to load only where its text has Georgian (Google Fonts' ranges)
+GEORGIAN_RANGE = 'U+10A0-10FF,U+1C90-1CBF,U+2D00-2D2F'
+
+
+def _subset_latin(font, unicodes=LATIN):
     font = _roundtrip(font)
     opts = subset.Options()
     opts.layout_features = ['*']
     opts.name_IDs = ['*']
     opts.notdef_outline = True
     s = subset.Subsetter(opts)
-    s.populate(unicodes=subset.parse_unicodes(LATIN))
+    s.populate(unicodes=subset.parse_unicodes(unicodes))
     s.subset(font)
     return font
 
@@ -1052,6 +1056,8 @@ def save_all(upright, italic):
         # Latin slices: the files a website actually serves (unicode-range splits the rest off)
         _save_woff2(_subset_latin(load()), f'{stem}-Latin[opsz,wght].woff2')
         _save_woff2(_subset_latin(instancer.instantiateVariableFont(load(), {'opsz': 14})), f'{stem}-Latin[wght].woff2')
+        if GEORGIAN:
+            _save_woff2(_subset_latin(load(), GEORGIAN_RANGE), f'{stem}-Georgian[opsz,wght].woff2')
     # static Regular, full character set: the static-vs-static comparison
     _save_woff2(instancer.instantiateVariableFont(TTFont(os.path.join(DIST, f'{PS}[opsz,wght].ttf')), {'wght': 400, 'opsz': 14}), f'{PS}-Regular.woff2')
     # static desktop styles: the four that style-linking apps (word processors) expect

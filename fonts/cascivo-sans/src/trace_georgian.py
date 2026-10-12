@@ -390,8 +390,8 @@ Copyright 2022 The Noto Project Authors, https://github.com/notofonts/georgian).
 hand: re-run the tracer.
 
 Each letter: (left and right sidebearing, each as Noto's Regular and Black space it; 'x', 'c' or
-'a' for the letter's height; strokes). A stroke is (closed; whether
-each end joins another stroke; the Thin centre line; the same points moved toward Noto Black's
+'a' for the letter's height; strokes). A stroke is (closed; each end's kind: 'free', 'join'
+where it runs into another stroke, or 'corner' where a cornered loop was split; the Thin centre line; the same points moved toward Noto Black's
 centre line, as far as this font's pen draws them cleanly; that pen's weight at Black, 1 but
 where even the Thin centre line folds under the full pen). A centre line is flat points: the start point, then each cubic's two handles and end
 point, in the reference's units. `REF` holds each reference's levels and ი's width, which
@@ -486,7 +486,7 @@ def clean_reach(entry, ref, k):
     from lint import self_intersects
     from params import ITALIC_MASTERS, MASTERS, P
 
-    closed, joins, thin, black, _ = entry[3][k]
+    closed, ends, thin, black, _ = entry[3][k]
     for pen in PENS:
         for b in BLENDS:
             blend = [(round(x + (bx - x) * b), round(y + (by - y) * b)) for (x, y), (bx, by) in zip(thin, black)]
@@ -542,7 +542,7 @@ def letter(cp, fonts):
         flat = [cs[0][0]] + [q for c in cs for q in c[1:]]
         bl = to_black(cs, ends, ink, skel)
         flat_b = [bl[0][0]] + [q for c in bl for q in c[1:]]
-        out.append((s['closed'], tuple(e == 'join' for e in ends), flat, flat_b))
+        out.append((s['closed'], tuple(ends) if not s['closed'] else ('', ''), flat, flat_b))
     xmin = min(q[0] for st in out for q in st[2])
     xmin_b = min(q[0] for st in out for q in st[3])
     ht = 'c' if 0x1C90 <= cp <= 0x1CBF else 'a' if y1 > 650 else 'x'

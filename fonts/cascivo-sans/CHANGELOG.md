@@ -6,6 +6,9 @@
   passes Font Bakery. The heavy weights follow Noto's Black centre lines at the full stem, and
   widths and spacing follow Noto's at each weight. Still not in the release (no native review);
   the shipped files are unchanged.
+- **Georgian web slice and round joints.** A Georgian build writes a separate Georgian woff2
+  (33 KB, every weight) for unicode-range loading. Strokes that end on each other meet in a round
+  joint, which closes the notches at Black.
 
 ## 0.6.1
 

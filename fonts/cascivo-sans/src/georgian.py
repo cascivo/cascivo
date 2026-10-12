@@ -13,6 +13,7 @@ which way a curl turns); the metrics, contrast and weight are this font's.
 
 import math
 
+from geom import arc, norm, orient, pen_thickness
 from georgian_paths import REF, TRACE
 from glyphs import glyph
 from params import BLACK_STEM, P
@@ -77,15 +78,18 @@ def draw_letter(g, p, entry, ref=REF):
     V, H = p.V, p.H
     sx = (_i_to_n(t) * p.nw - V) / lv['i']
     fy = _y_map(p, H, lv, ht)
-    for closed, joins, thin, black, pen in strokes:
+    for closed, ends, thin, black, pen in strokes:
         sw = 1 - (1 - pen) * p.heavy  # 1, but where the tracer found the full pen folds
         pts = [((a + (b - a) * t) * sx + V / 2, fy(c + (d - c) * t)) for a, c, b, d in zip(thin[::2], thin[1::2], black[::2], black[1::2])]
         caps = ['b', 'b']
         if not closed:
             for k, (end, handle, y_ref) in enumerate(((0, 1, thin[1]), (-1, -2, thin[-1]))):
-                if joins[k]:
+                if ends[k] in ('join', 'corner'):  # a round joint, where square ends would notch
+                    w = pen_thickness(norm((pts[end][0] - pts[handle][0], pts[end][1] - pts[handle][1])), V, H) * sw
+                    g.raw.append(orient(arc(*pts[end], w / 2, w / 2, 90, 450), outer=True))
+                if ends[k] == 'join':
                     pts[end], pts[handle] = _into(pts[end], pts[handle], 0.4 * V)
-                elif _line(p, y_ref) is not None:  # a stem's end: cut flat on its line
+                elif ends[k] == 'free' and _line(p, y_ref) is not None:  # a stem's end: cut flat on its line
                     pts[end], pts[handle] = _snap(_line(p, y_ref), pts[end], pts[handle])
                     caps[k] = 'h'
         segs = [('C', *pts[i : i + 4]) for i in range(0, len(pts) - 1, 3)]
