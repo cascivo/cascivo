@@ -44,6 +44,10 @@ const ENTRIES = [
 /** Exit status of a process that aborted (SIGABRT, core dumped). */
 const ABORTED = 134
 
+// The abort surfaces either as exit status 134 (a shell reports it) or, when the signal
+// propagates to the direct child, as `status: null, signal: 'SIGABRT'` — seen on CI.
+const aborted = (error) => error?.status === ABORTED || error?.signal === 'SIGABRT'
+
 function pack(src) {
   execFileSync(
     'pnpm',
@@ -63,7 +67,7 @@ try {
       // locally for api.ts). This package starts it once per entry, 19 times, so it hits
       // that most. One retry for that abort only; any other failure, or a second abort,
       // still fails the build.
-      if (error?.status !== ABORTED) throw error
+      if (!aborted(error)) throw error
       console.warn(`flatten-types: vp pack aborted on ${entry.src}; retrying once`)
       pack(entry.src)
     }
