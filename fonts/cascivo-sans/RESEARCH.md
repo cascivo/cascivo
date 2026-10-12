@@ -1159,6 +1159,56 @@ With Georgian, the full woff2 grows from 67.5 to 79.3 KB (+12 KB); the Latin fil
 The traced shapes derive from Noto Sans Georgian, which is under the same OFL. A Georgian build
 therefore adds Noto's copyright notice to the font's, as the licence requires.
 
+## 29. Georgian capitals, and Georgian at Black
+
+**Mtavruli.** Unicode 11 pairs each Mkhedruli letter with a Mtavruli capital (U+1C90–1CBF).
+`text-transform: uppercase` maps to them, and without them Font Bakery failed the Georgian build.
+The 33 capitals of the modern letters (U+1C90–1CB0) are traced the same way. Noto draws them from
+the baseline to cap height, without ascenders or descenders, so they map onto this font's cap
+height: round strokes to `cap + overshoot − H/2`, stem ends to the cap line. They are spaced with
+the capitals' sidebearing. Font Bakery now passes the Georgian build.
+
+**Black.** Section 28 drew Black with a pen 0.72 of the Latin's, because the Thin centre lines'
+bowls closed under the full stem. Noto's Black keeps the full stem: its stems measure 192 units
+in Georgian and Latin alike. Its bowls make room in another way. The outer contour stays almost
+where the Thin's is, the stroke grows inward, and the letter barely widens (ბ: 574 units at
+Thin, 636 at Black). So the tracer now also reads Noto's Black centre lines:
+
+1. It samples each traced cubic densely and crosses Noto Black's stroke along the curve's normal
+   at each sample. The middle of that crossing is the Black centre line there.
+2. A crossing wider than a stroke (a junction), or one that finds no ink (an end beyond the
+   Black's), or one far from the stroke's other moves is not used. Its sample takes its nearest
+   clean neighbour's move instead. A skeleton is no use here: a heavy one forks over half a
+   stroke at every blunt end.
+3. The moves are smoothed along the stroke, and the Thin cubics are deformed by them. Each Black
+   centre line therefore has the Thin's exact structure, and the masters blend between them by
+   stem weight: Thin 0, Regular 0.37, Black 1.
+
+Noto's Black counters have inner corners tighter than half its stem. An outline font can draw
+those; a stroke pen cannot, because its inside edge folds back on itself. Clamping the pen's
+inner offset at the centre of curvature was tried and reverted: it changed the Latin outlines
+too. Instead, the tracer tests each stroke with the outline lint, at every master upright and
+italic. It keeps the heaviest pen, then the furthest blend toward Black, that draws cleanly:
+
+- 107 of 149 strokes reach Noto's Black with the full pen.
+- 35 stop part of the way.
+- 7 also need a lighter pen at Black (0.68–0.95). One such stroke is ჭ's crossbar loop.
+
+A closed loop with a corner, like Ჩ's bowl where it dips into the stem, folds under any pen. It
+is drawn as two halves that meet at the corner.
+
+Widths and spacing follow Noto at each weight. ი's ink is 1.00, 1.06 and 1.02 times this font's
+n at Thin, Regular and Black, as Noto's ი is against its own n. Sidebearings are Noto's own,
+from Regular to Black. This font's Latin tightens more at Black than Noto's does (its
+straight-stem sidebearing goes from 70 to 48 units, Noto's n from 85 to 66), and Georgian spaced
+in the Latin's units touched there. At Black, ე ქ ა and რ now measure within 16 units of Noto's
+in ink width (22 for ქ) and within 1 unit in sidebearings.
+
+Some blemishes remain at Black: Შ has a small spur, ჰ and Ჰ have notches where their strokes
+meet, and Ჩ's bowl is uneven. With both scripts' data, the Georgian build's full woff2 is 95.3 KB
+(67.3 KB without Georgian). The release still leaves Georgian out until a native reader has
+reviewed it.
+
 ## Sources
 
 - [Introducing Geist Pixel (Vercel)](https://vercel.com/blog/introducing-geist-pixel) and the

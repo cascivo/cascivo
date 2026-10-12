@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- **Georgian draft: capitals and Black.** The Mtavruli capitals are drawn, so the Georgian build
+  passes Font Bakery. The heavy weights follow Noto's Black centre lines at the full stem, and
+  widths and spacing follow Noto's at each weight. Still not in the release (no native review);
+  the shipped files are unchanged.
+
 ## 0.6.1
 
 - **Fractions only around a slash.** With `frac` on (CSS `diagonal-fractions`), every figure

@@ -111,8 +111,8 @@ contours are standard in variable fonts.
 | `src/composites.py`, `build.py` | Accents, fractions, alternates, master assembly, `varLib`, `avar`, STAT, web builds                |
 | `src/kern.py`, `kern_oracle.py` | Kerning: pairs that Geist and Inter both kern, values measured on our outlines with a fitted model |
 
-A draft of Georgian (Mkhedruli) is in `src/georgian.py` but is not in the release; build it with
-`CASCIVO_GEORGIAN=1 python3 -I src/build.py` (RESEARCH.md sections 27 and 28). Its centre lines in
+A draft of Georgian (Mkhedruli and its Mtavruli capitals) is in `src/georgian.py` but is not in the release; build it with
+`CASCIVO_GEORGIAN=1 python3 -I src/build.py` (RESEARCH.md sections 27–29). Its centre lines in
 `georgian_paths.py` are traced from Noto Sans Georgian (OFL) by `src/trace_georgian.py`; a build
 with Georgian adds Noto's copyright notice to the font's.
 
