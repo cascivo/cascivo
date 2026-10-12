@@ -1151,8 +1151,8 @@ Rendered against Noto at every weight, the letters read as Noto's do. The Thin a
 centre lines are Noto's, so structure is no longer the open question; contrast and weight are
 this font's. Two things still keep Georgian out of the release:
 
-- **Mtavruli.** Unicode 11 gives every Mkhedruli letter a Mtavruli capital (U+1C90), which
-  `text-transform: uppercase` needs. Font Bakery fails the Georgian build for their absence.
+- **Mtavruli.** Unicode 11 gives every Mkhedruli letter a Mtavruli capital (U+1C90), used for
+  all-capitals headings. Font Bakery fails the Georgian build for their absence.
 - **Review.** No native reader has reviewed it.
 
 With Georgian, the full woff2 grows from 67.5 to 79.3 KB (+12 KB); the Latin files are unchanged.
@@ -1161,8 +1161,10 @@ therefore adds Noto's copyright notice to the font's, as the licence requires.
 
 ## 29. Georgian capitals, and Georgian at Black
 
-**Mtavruli.** Unicode 11 pairs each Mkhedruli letter with a Mtavruli capital (U+1C90–1CBF).
-`text-transform: uppercase` maps to them, and without them Font Bakery failed the Georgian build.
+**Mtavruli.** Unicode 11 pairs each Mkhedruli letter with a Mtavruli capital (U+1C90–1CBF), used
+for all-capitals headings, and without them Font Bakery failed the Georgian build. (Section 28 said
+`text-transform: uppercase` maps to them. Chromium does not: Georgian text stays Mkhedruli under
+it, so a page sets Mtavruli as its own characters.)
 The 33 capitals of the modern letters (U+1C90–1CB0) are traced the same way. Noto draws them from
 the baseline to cap height, without ascenders or descenders, so they map onto this font's cap
 height: round strokes to `cap + overshoot − H/2`, stem ends to the cap line. They are spaced with
@@ -1241,6 +1243,12 @@ their ink centres):
 The worst letters are still Ჩ (0.64), ჟ, ზ and Ზ (0.65–0.66). The ზ pair has smaller bowls
 than Noto's. The others show their remaining blemishes at display sizes: Ჩ's bowl, and the
 inner edge where ც's hook meets its bowl.
+
+**Review page.** A page for Georgian readers sets running text (Article 1 of the Universal
+Declaration of Human Rights) and every letter with its capital, at any weight and in italic. A
+reader marks each letter "Right" or "Needs work", with a note, and sees every other reviewer's
+counts. The page loads the fonts as the web would: the Latin file and the Georgian slice, split by
+unicode-range.
 
 ## Sources
 
