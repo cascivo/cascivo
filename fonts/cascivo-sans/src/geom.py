@@ -178,8 +178,9 @@ class Stroke:
            used for the thinned joins where an arch leaves a stem.
     w: constant thickness override (dots, hairline marks); ws: scale on the angle pen.
     slant: tan of the italic angle; the pen's stress axis leans by it (0 upright).
-    cut: which way a heavy curved terminal's cut turns: 'v' toward vertical (s, a, r, f...) or
-         'h' toward horizontal (c, e: a vertical cut there narrows the aperture to a slit).
+    cut: which way a heavy curved terminal's cut turns: 'v' toward vertical (s, a, r, f...),
+         'h' toward horizontal (c, e: a vertical cut there narrows the aperture to a slit), or
+         'n' not at all (a square end: Georgian's traced terminals, where a turned cut stepped).
     """
 
     def __init__(self, segs, caps=('b', 'b'), taper=(1.0, 1.0), w=None, ws=1.0, closed=False, pen=None, slant=0.0, cut='v'):
@@ -443,7 +444,7 @@ def expand(stroke, V, H):
             limit = _thick(stroke, 0 if at_start else n - 1, t, tan, V, H) * 0.6
             left = _move_end(left, at_start, axis, c[axis], limit)
             right = _move_end(right, at_start, axis, c[axis], limit)
-        elif cap == 'b' and V > HEAVY_FROM:
+        elif cap == 'b' and V > HEAVY_FROM and stroke.cut != 'n':
             seg = stroke.segs[0] if at_start else stroke.segs[-1]
             if seg[0] != 'C':
                 continue

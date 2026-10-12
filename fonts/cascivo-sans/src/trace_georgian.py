@@ -13,6 +13,7 @@ requirements.txt:
 
 (the fontsource woff2 files of `@fontsource/noto-sans-georgian` 5.x work as well).
 """
+import json
 import math
 import os
 import sys
@@ -334,8 +335,8 @@ def trace(gs, name, prune=30, tol=8):
                 ring = piece[:-1]
                 ring = np.vstack([ring[corner:], ring[:corner]])
                 half = len(ring) // 2
-                pieces.append((False, ring[: half + 1], (True, False)))
-                pieces.append((False, np.vstack([ring[half:], ring[:1]]), (False, True)))
+                pieces.append((False, ring[: half + 1], (True, True)))  # both ends meet the other half exactly
+                pieces.append((False, np.vstack([ring[half:], ring[:1]]), (True, True)))
                 continue
             pieces.append((closed, piece, (False, False)))
 
@@ -393,7 +394,8 @@ Each letter: (left and right sidebearing, each as Noto's Regular and Black space
 'a' for the letter's height; strokes). A stroke is (closed; each end's kind: 'free', 'join'
 where it runs into another stroke, or 'corner' where a cornered loop was split; the Thin centre line; the same points moved toward Noto Black's
 centre line, as far as this font's pen draws them cleanly; that pen's weight at Black, 1 but
-where even the Thin centre line folds under the full pen). A centre line is flat points: the start point, then each cubic's two handles and end
+where even the Thin centre line folds under the full pen; a heavy terminal's cut, 'n' square or
+'h' turned toward flat where a square end folds). A centre line is flat points: the start point, then each cubic's two handles and end
 point, in the reference's units. `REF` holds each reference's levels and ი's width, which
 `georgian.py` maps onto this font's metrics.
 """
@@ -472,6 +474,7 @@ def to_black(cs, ends, ink, skel, n=24):
 
 PENS = (1.0, 0.95, 0.9, 0.85, 0.8, 0.75, 0.72, 0.68, 0.64, 0.6)  # lighter only where nothing heavier draws cleanly
 BLENDS = (1.0, 0.8, 0.6, 0.4, 0.2, 0.0)
+CUTS = ('n', 'h')  # a heavy terminal's cut: square, or turned toward flat where a square end folds
 
 
 def clean_reach(entry, ref, k):
@@ -486,23 +489,24 @@ def clean_reach(entry, ref, k):
     from lint import self_intersects
     from params import ITALIC_MASTERS, MASTERS, P
 
-    closed, ends, thin, black, _ = entry[3][k]
-    for pen in PENS:
-        for b in BLENDS:
-            blend = [(round(x + (bx - x) * b), round(y + (by - y) * b)) for (x, y), (bx, by) in zip(thin, black)]
-            strokes = [(c, j, _flat(th), _flat(blend if i == k else bl), pen if i == k else pn) for i, (c, j, th, bl, pn) in enumerate(entry[3])]
-            ok = True
-            for _, loc in MASTERS + ITALIC_MASTERS:
-                p = P(**loc)
-                g = G(p)
-                draw_letter(g, p, (*entry[:3], strokes), ref)
-                st = italicize(g.strokes, p)[k]
-                if any(self_intersects(flatten(c, 16)) for c in expand(st, p.V, p.H)):
-                    ok = False
-                    break
-            if ok:
-                return pen, b, blend
-    return pen, 0.0, thin
+    closed, ends, thin, black, _, _ = entry[3][k]
+    for cut in CUTS:
+        for pen in PENS:
+            for b in BLENDS:
+                blend = [(round(x + (bx - x) * b), round(y + (by - y) * b)) for (x, y), (bx, by) in zip(thin, black)]
+                strokes = [(c, j, _flat(th), _flat(blend if i == k else bl), pen if i == k else pn, cut if i == k else ct) for i, (c, j, th, bl, pn, ct) in enumerate(entry[3])]
+                ok = True
+                for _, loc in MASTERS + ITALIC_MASTERS:
+                    p = P(**loc)
+                    g = G(p)
+                    draw_letter(g, p, (*entry[:3], strokes), ref)
+                    st = italicize(g.strokes, p)[k]
+                    if any(self_intersects(flatten(c, 16)) for c in expand(st, p.V, p.H)):
+                        ok = False
+                        break
+                if ok:
+                    return pen, b, blend, cut
+    return pen, 0.0, thin, cut
 
 
 def _flat(pts):
@@ -573,6 +577,39 @@ def fmt(pts):
     return '(' + ', '.join(f'{round(x)}, {round(y)}' for x, y in pts) + ',)'
 
 
+def noto_kerning(fonts, cps):
+    """The letter pairs Noto kerns, with its values at Thin, Regular and Black. This font's Georgian
+    is Noto's centre lines with Noto's spacing, so Noto's kerning fits it as it stands; kern.py
+    scales it with the letters and blends it by weight as the outlines are."""
+    import io
+
+    import uharfbuzz as hb
+
+    shapers = []
+    for font in fonts:
+        font = TTFont(font.reader.file.name)
+        font.flavor = None
+        buf = io.BytesIO()
+        font.save(buf)
+        shapers.append(hb.Font(hb.Face(buf.getvalue())))
+
+    def advance(hbf, text, kern):
+        b = hb.Buffer()
+        b.add_str(text)
+        b.guess_segment_properties()
+        hb.shape(hbf, b, {'kern': kern})
+        return sum(p.x_advance for p in b.glyph_positions)
+
+    out = {}
+    for a in cps:
+        for b in cps:
+            pair = chr(a) + chr(b)
+            vals = [advance(h, pair, True) - advance(h, pair, False) for h in shapers]
+            if any(abs(v) >= 10 for v in vals):
+                out[f'uni{a:04X} uni{b:04X}'] = vals
+    return out
+
+
 if __name__ == '__main__':
     fonts = [TTFont(p) for p in sys.argv[1:4]]
     cps = list(range(0x10D0, 0x10F1)) + list(range(0x1C90, 0x1CB1))  # Mkhedruli and their Mtavruli
@@ -582,20 +619,23 @@ if __name__ == '__main__':
     for cp, d in data.items():
         # each stroke is searched in turn, against the ones before it as already settled; a stroke
         # not yet searched is drawn at its Thin centre line, which every pen draws cleanly
-        rounded = [(c, j, [(round(x), round(y)) for x, y in f], [(round(x), round(y)) for x, y in fb], 1.0) for c, j, f, fb in d['strokes']]
-        settled = [(c, j, th, th, 0.72) for c, j, th, _, _ in rounded]
+        rounded = [(c, j, [(round(x), round(y)) for x, y in f], [(round(x), round(y)) for x, y in fb], 1.0, 'n') for c, j, f, fb in d['strokes']]
+        settled = [(c, j, th, th, 0.72, 'h') for c, j, th, _, _, _ in rounded]
         for k in range(len(rounded)):
             entry = (d['sb'][0], d['sb'][1], d['ht'], settled[:k] + [rounded[k]] + settled[k + 1 :])
-            pen, b, blend = clean_reach(entry, ref, k)
-            if (pen, b) != (1.0, 1.0):
-                held.append(f'{chr(cp)}{k}:{b:.1f}' + (f'@{pen}' if pen < 1 else ''))
-            settled[k] = (*rounded[k][:3], blend, pen)
+            pen, b, blend, cut = clean_reach(entry, ref, k)
+            if (pen, b, cut) != (1.0, 1.0, 'n'):
+                held.append(f'{chr(cp)}{k}:{b:.1f}' + (f'@{pen}' if pen < 1 else '') + (f'/{cut}' if cut != 'n' else ''))
+            settled[k] = (*rounded[k][:3], blend, pen, cut)
         d['strokes'] = settled
     print('held back from Black:', ' '.join(held))
     lines = [HEADER + f'REF = {ref!r}\n\nTRACE = {{']
     for cp, d in data.items():
-        body = ',\n        '.join(f'({c}, {j}, {fmt(f)}, {fmt(fb)}, {pen})' for c, j, f, fb, pen in d['strokes'])
+        body = ',\n        '.join(f'({c}, {j}, {fmt(f)}, {fmt(fb)}, {pen}, {cut!r})' for c, j, f, fb, pen, cut in d['strokes'])
         lines.append(f"    0x{cp:04X}: ({d['sb'][0]}, {d['sb'][1]}, '{d['ht']}', [  # {chr(cp)}\n        {body},\n    ]),")
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'georgian_paths.py')
     with open(path, 'w') as f:
         f.write('\n'.join(lines) + '\n}\n')
+    with open(os.path.join(os.path.dirname(path), 'kern_georgian.json'), 'w', encoding='utf-8') as f:
+        kern = noto_kerning(fonts, cps)
+        f.write('{\n' + ',\n'.join(f'"{k}": {json.dumps(v)}' for k, v in sorted(kern.items())) + '\n}\n')

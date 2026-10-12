@@ -11,7 +11,9 @@ Latin. The tracing keeps Noto's structure, which Georgian readers rely on (where
 which way a curl turns); the metrics, contrast and weight are this font's.
 """
 
+import json
 import math
+import os
 
 from geom import arc, norm, orient, pen_thickness
 from georgian_paths import REF, TRACE
@@ -19,6 +21,8 @@ from glyphs import glyph
 from params import BLACK_STEM, P
 
 V_THIN = P(100, 14).V
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'kern_georgian.json'), encoding='utf-8') as _fh:
+    KERN = json.load(_fh)  # pair -> Noto's value at Thin, Regular, Black (trace_georgian.py)
 
 
 def _y_map(p, H, ref, ht):
@@ -68,17 +72,36 @@ def _i_to_n(t):
     return 1.0 + 0.06 * t / 0.37 if t <= 0.37 else 1.06 - 0.04 * (t - 0.37) / 0.63
 
 
+def _scale(p, ref=REF):
+    """A master's blend between the Thin and Black references (by stem weight: Thin 0, Regular
+    0.37, Black 1), the horizontal scale from reference units, and the blended levels."""
+    t = min(1.0, max(0.0, (p.V - V_THIN) / (BLACK_STEM - V_THIN)))
+    lv = {k: v + (ref['black'][k] - v) * t for k, v in ref['thin'].items()}
+    return t, (_i_to_n(t) * p.nw - p.V) / lv['i'], lv
+
+
+def kern_fea(p):
+    """Noto's own kerning, at this master's blend of its Thin, Regular and Black values and scaled
+    with the letters: the letters are Noto's centre lines with Noto's spacing, so its kerning fits
+    them. (The measure kern.py fits to Latin kerned them twice as hard as Noto does.)"""
+    t, sx, _ = _scale(p)
+    lines = ['feature kern {', '  lookup GEORGIAN_KERN {']
+    for pair, (v0, v1, v2) in sorted(KERN.items()):
+        v = v0 + (v1 - v0) * t / 0.37 if t <= 0.37 else v1 + (v2 - v1) * (t - 0.37) / 0.63
+        lines.append(f'    pos {pair} {round(v * sx)};')
+    lines += ['  } GEORGIAN_KERN;', '} kern;']
+    return '\n'.join(lines)
+
+
 def draw_letter(g, p, entry, ref=REF):
     """One letter from its traced data. The masters blend the Thin and Black centre lines by stem
     weight; the tracer has already held each stroke back from Black as far as this pen needs to
     draw it cleanly."""
     sbl, sbr, ht, strokes = entry
-    t = min(1.0, max(0.0, (p.V - V_THIN) / (BLACK_STEM - V_THIN)))  # Thin 0, Regular 0.37, Black 1
-    lv = {k: v + (ref['black'][k] - v) * t for k, v in ref['thin'].items()}
+    t, sx, lv = _scale(p, ref)
     V, H = p.V, p.H
-    sx = (_i_to_n(t) * p.nw - V) / lv['i']
     fy = _y_map(p, H, lv, ht)
-    for closed, ends, thin, black, pen in strokes:
+    for closed, ends, thin, black, pen, cut in strokes:
         sw = 1 - (1 - pen) * p.heavy  # 1, but where the tracer found the full pen folds
         pts = [((a + (b - a) * t) * sx + V / 2, fy(c + (d - c) * t)) for a, c, b, d in zip(thin[::2], thin[1::2], black[::2], black[1::2])]
         caps = ['b', 'b']
@@ -93,7 +116,7 @@ def draw_letter(g, p, entry, ref=REF):
                     pts[end], pts[handle] = _snap(_line(p, y_ref), pts[end], pts[handle])
                     caps[k] = 'h'
         segs = [('C', *pts[i : i + 4]) for i in range(0, len(pts) - 1, 3)]
-        g.stroke(segs, closed=closed, ws=sw, cut='h', caps=tuple(caps))
+        g.stroke(segs, closed=closed, ws=sw, cut=cut, caps=tuple(caps))
     g.ht = ht
     # Noto's own spacing, scaled with the outline: this font's Latin tightens more at Black than
     # Noto's does, and Georgian set in the Latin's units touched there

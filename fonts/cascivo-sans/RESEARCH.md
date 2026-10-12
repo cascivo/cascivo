@@ -1250,6 +1250,36 @@ reader marks each letter "Right" or "Needs work", with a note, and sees every ot
 counts. The page loads the fonts as the web would: the Latin file and the Georgian slice, split by
 unicode-range.
 
+## 31. Georgian kerning, terminals, and Ჩ
+
+**Kerning.** Noto Sans Georgian kerns 579 letter pairs at Regular. Taking those pairs as
+candidates and measuring the values with `kern.py` (as for Latin, Cyrillic and Greek) kerned the
+shared pairs at −35 on average, where Noto's average is −18. That measure was fitted to Latin
+shapes. Our Georgian letters are Noto's centre lines with Noto's spacing, so Noto's own values fit
+them as they stand. The tracer now reads them at Noto's Thin, Regular and Black, for every pair
+any of the three kerns: 749 pairs, in `kern_georgian.json`. Each master blends those values by
+stem weight, like the outlines, and scales them with the letters. They are plain glyph pairs in
+their own lookup, outside the Latin classes. At Thin, Regular and Black they match Noto's values
+on average (−18 against −18, −17 against −17, −20 against −17). A collision sweep of all 4,356
+letter pairs at every weight and optical size, upright and italic, finds every pair clear. The
+closest is წშ at Display Black italic, 7 units apart.
+
+**Terminals.** At the heavy weights the pen turns a curved terminal's cut toward vertical or
+horizontal. On Georgian's rising terminals (ჯ's and ჟ's feet) the turned cut met the inner edge
+beyond its end, and the outline stepped back on itself. The pen gains a third choice, `cut='n'`:
+a square end, as Noto's Black has. No Latin glyph uses it, and the shipped files are byte for byte
+unchanged. The tracer's search now also picks each stroke's cut: square, unless only a turned cut
+draws cleanly. Two strokes keep the turned cut: ჭ's and Ჭ's crossbar loops, whose square end ran
+into their own body.
+
+**Ჩ.** Its bowl is split into two halves at the corner where it meets the stem (section 29). The
+halves also meet at the opposite point, and both ends there had been treated as joins: trimmed and
+run on straight. On the bowl's curve that made a spur. Both ends of each half are now exact.
+
+Mean IoU against Noto Black rises from 0.762 to 0.768. Ჩ leaves the worst ten (0.65 to above
+0.70). The ზ pair is still lowest (0.65–0.66), because its bowls are smaller than Noto's. Two
+blemishes remain at display sizes: a tick under ჩ's bowl, and Შ's and შ's ragged top left.
+
 ## Sources
 
 - [Introducing Geist Pixel (Vercel)](https://vercel.com/blog/introducing-geist-pixel) and the

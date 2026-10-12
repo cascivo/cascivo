@@ -799,6 +799,8 @@ def build_master_font(o, glyf, order):
     fea = GSUB_FEA + '\nfeature ss01 {\n  featureNames { name "Plain I and l (as in Helvetica)"; };\n'
     fea += ''.join(f'  sub {n} by {n}.ss01;\n' for n in ss01) + '} ss01;\n'
     fea += '\n' + cyrl_locl(o) + '\n' + kern_fea(o) + '\n' + mark_fea(o)
+    if GEORGIAN:
+        fea += '\n' + georgian.kern_fea(o.p)
     addOpenTypeFeaturesFromString(fb.font, fea)
     # smart dropout control: keeps thin strokes from vanishing in unhinted rasterization
     prep = newTable('prep')

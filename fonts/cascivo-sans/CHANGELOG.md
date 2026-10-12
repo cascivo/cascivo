@@ -9,6 +9,9 @@
 - **Georgian web slice and round joints.** A Georgian build writes a separate Georgian woff2
   (33 KB, every weight) for unicode-range loading. Strokes that end on each other meet in a round
   joint, which closes the notches at Black.
+- **Georgian kerning.** Noto's own kerning for the 749 pairs it kerns at any weight, blended by
+  weight and scaled with the letters. Every pair is clear at every weight and size. Heavy
+  terminals are cut square (ჯ's and ჟ's feet no longer step), and Ჩ's bowl has no spur.
 
 ## 0.6.1
 
