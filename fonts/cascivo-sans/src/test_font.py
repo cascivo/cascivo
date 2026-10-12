@@ -364,6 +364,39 @@ class Font(unittest.TestCase):
                     advs = {q.x_advance for q in buf.glyph_positions}
                     self.assertEqual(len(advs) == 1, 'tnum' in feats)
 
+    def test_fractions_only_around_a_slash(self):
+        # Browsers apply diagonal-fractions to a whole run, so frac must leave figures that are
+        # not beside a slash alone: n numerator, d denominator, / fraction slash, . unchanged
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        f, glyf = TTFont(VF), TTFont(VF)['glyf']
+        order = f.getGlyphOrder()
+        font = hb.Font(hb.Face(open(VF, 'rb').read()))
+
+        def kinds(text, **feats):
+            buf = hb.Buffer()
+            buf.add_str(text)
+            buf.guess_segment_properties()
+            hb.shape(font, buf, {'frac': True, **feats})
+            out = ''
+            for info in buf.glyph_infos:
+                name, g = order[info.codepoint], glyf[order[info.codepoint]]
+                if name == 'fraction':
+                    out += '/'
+                elif not g.numberOfContours or name in ('space', 'slash'):
+                    out += ' ' if name == 'space' else '.'
+                else:
+                    out += 'n' if g.yMin > 200 else 'd' if g.yMax < 450 else '.'
+            return out
+
+        for feats in ({}, {'zero': True}, {'onum': True}, {'tnum': True}):
+            self.assertEqual(kinds('7/16 of 100', **feats), 'n/dd .. ...', feats)
+            self.assertEqual(kinds('0 1 1/2', **feats), '. . n/d', feats)
+            self.assertEqual(kinds('10/100', **feats), 'nn/ddd', feats)
+        self.assertEqual(kinds('a/b 3\u20444'), '... n/d')
+
     def test_greek_ano_teleia_sits_at_the_x_height(self):
         # the raised dot is the colon's upper dot, as Inter and Plex set it (it once sat mid-height)
         from fontTools.pens.boundsPen import BoundsPen

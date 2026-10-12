@@ -32,7 +32,8 @@ import ttfautohint  # noqa: E402
 import glyphs as GL  # noqa: E402
 import cyrillic  # noqa: E402  (also registers the Cyrillic drawings)
 import greek  # noqa: E402  (also registers the Greek drawings)
-if os.environ.get('CASCIVO_GEORGIAN') == '1':  # a draft, not yet shipped (RESEARCH.md section 27)
+GEORGIAN = os.environ.get('CASCIVO_GEORGIAN') == '1'  # a draft, not yet shipped (RESEARCH.md section 27)
+if GEORGIAN:
     import georgian  # noqa: E402,F401  (registers the Georgian drawings)
 from composites import ALIAS, BOTTOM, CYR_EXT, CYR_LOCL, GREEK_ACCENTED, GREEK_POLY, ITALIC_ONLY, POLY_MARK, SPECIAL, accented_chars, glyph_name, is_cap  # noqa: E402
 from geom import contour_bounds, expand, transform_contour  # noqa: E402
@@ -42,7 +43,7 @@ from params import BLACK_STEM, ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, P  # noqa:
 
 FAMILY = 'Cascivo Sans'
 PS = 'CascivoSans'
-VERSION = '0.6.0'
+VERSION = '0.6.1'
 DIST = os.path.join(HERE, '..', 'fonts')  # not dist/: the repo ignores dist/, and these files ship
 MAX_ERR = 1.5  # cu2qu tolerance in font units: 1.5/1000 em is sub-pixel below ~700px
 IUP_TOLERANCE = 2.0  # gvar deltas the rasterizer can re-infer within 2 units are dropped (section 25)
@@ -721,10 +722,15 @@ feature sinf { sub @figs by @sinf; sub @pnum by @sinf; } sinf;
 feature subs { sub @figs by @sinf; sub @pnum by @sinf; } subs;
 feature numr { sub @figs by @numr; sub @pnum by @numr; } numr;
 feature dnom { sub @figs by @dnom; sub @pnum by @dnom; } dnom;
+# Only the figures either side of a slash become a fraction, as in Inter: browsers apply
+# `diagonal-fractions` to a whole run, so "7/16 of 100" must leave the 100 alone.
+@fdig = [@figs @pnum zero.slash zero.zero.pnum @osf @osf_p];
+@fnumr = [@numr @numr zero.numr zero.numr zero.numr one.numr two.numr three.numr four.numr five.numr seven.numr nine.numr zero.numr one.numr two.numr three.numr four.numr five.numr seven.numr nine.numr];
+@fdnom = [@dnom @dnom zero.dnom zero.dnom zero.dnom one.dnom two.dnom three.dnom four.dnom five.dnom seven.dnom nine.dnom zero.dnom one.dnom two.dnom three.dnom four.dnom five.dnom seven.dnom nine.dnom];
 feature frac {
-  lookup FRAC_NUMR { sub @figs by @numr; sub @pnum by @numr; } FRAC_NUMR;
-  lookup FRAC_SLASH { sub slash by fraction; } FRAC_SLASH;
-  lookup FRAC_DNOM { sub [fraction @dnom] @numr' by @dnom; } FRAC_DNOM;
+  lookup FRAC_SLASH { sub @fdig slash' @fdig by fraction; } FRAC_SLASH;
+  lookup FRAC_NUMR { rsub @fdig' fraction by @fnumr; rsub @fdig' @numr by @fnumr; } FRAC_NUMR;
+  lookup FRAC_DNOM { sub [fraction @dnom] @fdig' by @fdnom; } FRAC_DNOM;
 } frac;
 feature ordn { sub [@figs @pnum] [a o]' by [ordfeminine ordmasculine]; } ordn;
 feature case { sub @case_in by @case_out; } case;
@@ -770,7 +776,8 @@ def build_master_font(o, glyf, order):
         'fullName': f'{FAMILY} Italic' if p.italic else f'{FAMILY} Regular',
         'psName': f'{PS}-Italic' if p.italic else f'{PS}-Regular',
         'version': f'Version {VERSION}',
-        'copyright': 'Copyright 2026 The Cascivo Sans Project Authors',
+        # the Georgian centre lines are traced from Noto Sans Georgian, whose notice the OFL keeps
+        'copyright': 'Copyright 2026 The Cascivo Sans Project Authors' + ('; Georgian derived from Noto Sans Georgian, Copyright 2022 The Noto Project Authors (https://github.com/notofonts/georgian)' if GEORGIAN else ''),
         'licenseDescription': 'This Font Software is licensed under the SIL Open Font License, Version 1.1.',
         'licenseInfoURL': 'https://openfontlicense.org',
         'manufacturer': 'cascivo',

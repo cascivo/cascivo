@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.1
+
+- **Fractions only around a slash.** With `frac` on (CSS `diagonal-fractions`), every figure
+  became a numerator: "7/16 of 100" set the 100 small. Now only the figures either side of a slash
+  change, in every figure style (slashed zero, old-style, tabular).
+- **Georgian redrawn, still a draft.** The 33 letters' centre lines are traced from Noto Sans
+  Georgian, so their structure is Noto's; this font's pen draws them at every weight. Not in the
+  release: the Mtavruli capitals are missing and no native reader has reviewed it.
+
 ## 0.6.0
 
 - **Old-style figures (`onum`).** 0 1 2 stand at the x-height, 3 4 5 7 9 descend, and 6 8 stay

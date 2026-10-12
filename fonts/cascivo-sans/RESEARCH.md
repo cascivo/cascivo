@@ -1098,6 +1098,67 @@ shows, in this order:
 
 A screenshot from a Mac and a PC would cover what this environment cannot.
 
+## 28. Fractions, and Georgian traced
+
+**Fractions.** The render-proof page showed `frac` turning every figure into a numerator.
+Browsers apply `font-variant-numeric: diagonal-fractions` to a whole run, so "7/16 of 100" set
+the 100 small too. IBM Plex's `frac` does the same as ours did. Inter's is contextual: a slash becomes the fraction
+slash only between figures, then the figures before it become numerators, then the ones after it denominators. The
+new feature has the same three steps:
+
+1. `sub @fdig slash' @fdig by fraction`
+2. a reverse chain, which turns numerators from the slash leftward
+3. a forward chain, which turns denominators rightward
+
+A figure that `zero`, `onum` or `tnum` has already replaced still counts as a figure, so the
+features combine. Before, `zero` left "0 100" as a slashed 0 and a small ¹ beside two full-size
+zeros. A test shapes "7/16 of 100", "0 1 1/2" and "10/100" under each figure feature.
+
+**Georgian, traced.** Section 27's drawings built each letter by eye from a kit of arches and
+bowls, and 13 of 33 came out wrong. A wrong loop or curl is the very detail a Georgian reader
+relies on. Building more parts by eye would repeat that mistake, so the centre lines now come
+from the reference itself. `src/trace_georgian.py` takes each letter of Noto Sans Georgian Thin,
+whose strokes are almost centre lines already, and works in this order:
+
+1. rasterizes it at 2 px per unit and skeletonizes it
+2. splits the skeleton into strokes at its junctions, and drops spurs shorter than 30 units
+3. rejoins the pairs that run on smoothly, unless the joined path would cross itself
+4. fits cubics to each stroke (8-unit tolerance, one cubic for a stroke under 260 units)
+
+Four problems had to be solved before every master passed the outline lint:
+
+- **Ends.** A skeleton forks at a blunt end and bends as it reaches a junction. The tracer cuts
+  18 units from a free end and 40 from a junction end. The generator then runs each end on
+  along its own tangent: a free end to the ink's edge, a junction end into the other stroke.
+- **Loops.** A bowl that closes on its own stem (ძ, ნ, ბ) becomes a closed loop plus a stem. It
+  starts at its lowest point and has one tangent through the seam. Two loops that cross (ზ)
+  are two closed loops; the short piece between them is dropped.
+- **Heavy weights.** Georgian stacks two or three bowls where Latin has one, so at Black its pen
+  is 0.72 of the Latin's. Noto keeps the Latin stem at Black (192 units in both scripts) and
+  redraws its bowls to make room. A traced centre line cannot do that, so the pen is lighter
+  instead.
+- **Terminals.** Heavy terminals are cut toward horizontal (the c and e cut, not the s). Legs
+  that end on the baseline, ascender or descender are cut flat on that line.
+
+`georgian.py` maps the traced points onto this font's metrics:
+
+- **Heights.** Round bottoms and tops map to the levels a round stroke of this pen takes. Stem
+  ends map to the line itself.
+- **Widths.** The horizontal scale makes ი 1.08 times the width of n, as in Noto.
+- **Spacing.** Sidebearings are Noto Regular's, in units of its n.
+
+Rendered against Noto at every weight, the letters read as Noto's do. The Thin and Regular
+centre lines are Noto's, so structure is no longer the open question; contrast and weight are
+this font's. Two things still keep Georgian out of the release:
+
+- **Mtavruli.** Unicode 11 gives every Mkhedruli letter a Mtavruli capital (U+1C90), which
+  `text-transform: uppercase` needs. Font Bakery fails the Georgian build for their absence.
+- **Review.** No native reader has reviewed it.
+
+With Georgian, the full woff2 grows from 67.5 to 79.3 KB (+12 KB); the Latin files are unchanged.
+The traced shapes derive from Noto Sans Georgian, which is under the same OFL. A Georgian build
+therefore adds Noto's copyright notice to the font's, as the licence requires.
+
 ## Sources
 
 - [Introducing Geist Pixel (Vercel)](https://vercel.com/blog/introducing-geist-pixel) and the

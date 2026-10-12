@@ -5,26 +5,26 @@ engine and licensed under the SIL Open Font License 1.1. It comes as two variabl
 and a drawn italic, each with weight and optical-size axes. It has an unambiguous `Il1`, tabular
 and old-style figures on request, and a 22 KB Latin web file.
 
-Version 0.6.0; see [CHANGELOG.md](./CHANGELOG.md). Read [RESEARCH.md](./RESEARCH.md) for why it exists, how it compares with Geist, IBM Plex and
+Version 0.6.1; see [CHANGELOG.md](./CHANGELOG.md). Read [RESEARCH.md](./RESEARCH.md) for why it exists, how it compares with Geist, IBM Plex and
 Helvetica, and what it does not do yet.
 
 ## Files
 
 | File                                              | Axes              | Charset               | Size                       |
 | ------------------------------------------------- | ----------------- | --------------------- | -------------------------- |
-| `fonts/CascivoSans-Latin[wght].woff2`             | wght              | Latin                 | 22.2 KB                    |
-| `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz        | Latin                 | 28.4 KB                    |
+| `fonts/CascivoSans-Latin[wght].woff2`             | wght              | Latin                 | 22.4 KB                    |
+| `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz        | Latin                 | 28.6 KB                    |
 | `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz        | full (956 codepoints) | 67.3 KB                    |
-| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz        | full                  | 235.4 KB (desktop install) |
-| `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght              | Latin                 | 24.9 KB                    |
-| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz        | Latin                 | 31.5 KB                    |
-| `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz        | full                  | 73.1 KB                    |
-| `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz        | full                  | 239.2 KB (desktop install) |
-| `fonts/CascivoSans-Regular.woff2`                 | static 400        | full                  | 23.5 KB                    |
-| `fonts/CascivoSans-Regular.ttf`                   | static 400        | full                  | 134.0 KB (desktop, hinted) |
-| `fonts/CascivoSans-Bold.ttf`                      | static 700        | full                  | 135.1 KB (desktop, hinted) |
-| `fonts/CascivoSans-Italic.ttf`                    | static 400 italic | full                  | 135.7 KB (desktop, hinted) |
-| `fonts/CascivoSans-BoldItalic.ttf`                | static 700 italic | full                  | 135.9 KB (desktop, hinted) |
+| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz        | full                  | 235.8 KB (desktop install) |
+| `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght              | Latin                 | 25.0 KB                    |
+| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz        | Latin                 | 31.7 KB                    |
+| `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz        | full                  | 73.2 KB                    |
+| `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz        | full                  | 239.6 KB (desktop install) |
+| `fonts/CascivoSans-Regular.woff2`                 | static 400        | full                  | 23.6 KB                    |
+| `fonts/CascivoSans-Regular.ttf`                   | static 400        | full                  | 134.4 KB (desktop, hinted) |
+| `fonts/CascivoSans-Bold.ttf`                      | static 700        | full                  | 135.5 KB (desktop, hinted) |
+| `fonts/CascivoSans-Italic.ttf`                    | static 400 italic | full                  | 136.0 KB (desktop, hinted) |
+| `fonts/CascivoSans-BoldItalic.ttf`                | static 700 italic | full                  | 136.3 KB (desktop, hinted) |
 
 "Latin" means Basic Latin, Latin-1 and common punctuation. The full charset adds Latin
 Extended-A, Romanian comma letters, Vietnamese, Cyrillic, Greek and combining marks (stacked by
@@ -112,7 +112,9 @@ contours are standard in variable fonts.
 | `src/kern.py`, `kern_oracle.py` | Kerning: pairs that Geist and Inter both kern, values measured on our outlines with a fitted model |
 
 A draft of Georgian (Mkhedruli) is in `src/georgian.py` but is not in the release; build it with
-`CASCIVO_GEORGIAN=1 python3 -I src/build.py` (RESEARCH.md section 27).
+`CASCIVO_GEORGIAN=1 python3 -I src/build.py` (RESEARCH.md sections 27 and 28). Its centre lines in
+`georgian_paths.py` are traced from Noto Sans Georgian (OFL) by `src/trace_georgian.py`; a build
+with Georgian adds Noto's copyright notice to the font's.
 
 To change a glyph, edit its function in `glyphs.py`, then run the lint, the build and the tests.
 One rule keeps the variable font valid: a master parameter may move points, but it must never
