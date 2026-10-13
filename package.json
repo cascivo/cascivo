@@ -150,6 +150,7 @@
     "@arethetypeswrong/cli": "catalog:",
     "@changesets/cli": "catalog:",
     "@playwright/test": "catalog:",
+    "docspack": "catalog:",
     "publint": "catalog:",
     "ts-morph": "catalog:",
     "vite-plus": "catalog:"
