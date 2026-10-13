@@ -1511,6 +1511,74 @@ Mean IoU against Noto Black: Georgian 0.848, Armenian 0.748, Hebrew 0.772. The s
 letter pair and of letters beside punctuation stay clear at every weight and size; the closest is
 ᲬᲨ, 2 units apart at Black italic. Font Bakery finds no failing check with all three scripts.
 
+## 36. Why the build stays in Python
+
+The rest of the repository is TypeScript, and the generator is about 8,700 lines of Python. A port
+was considered and measured. It was not done: no TypeScript library can build what `build.py`
+builds, and a port would lose the check that has guarded every change so far. The packages below
+were installed in a scratch directory, not in the repository.
+
+**What `build.py` asks of fontTools.** `varLib.build` makes the variable font from six masters:
+`gvar` with IUP optimisation at a 2-unit tolerance (section 25), `HVAR`, `MVAR` and `avar`.
+`feaLib` compiles the features: class kerning with values that vary by master, `mark` and `mkmk`,
+`locl`, `ss01` and the figure features. `instancer` cuts the four statics and the `[wght]` web
+files, `subset` cuts the unicode-range slices, `cu2qu` makes the quadratic curves, and the WOFF2
+writer compresses. `ttfautohint` hints the statics; the tests use OTS and HarfBuzz.
+
+| Need                              | Best npm candidate (Oct 2026)            | What it does                                                                                     |
+| --------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Variable TrueType (`glyf`+`gvar`) | `opentype.js` 2.0.0                      | Writes CFF outlines only. Its `gvar` writer prints "Writing of gvar tables is not yet supported" |
+|                                   | `fonteditor-core` 2.6.3                  | Writes `glyf`; has no `fvar`, `gvar` or `GSUB` writer                                            |
+| Feature files (`.fea`)            | none                                     | No compiler on npm. `opentype.js` and `fontkit` read `GPOS`/`GSUB`; neither writes `GPOS`        |
+| Variable font from masters        | `static-to-variable` 0.6.2               | Needs Python 3.11 and uv; it runs a bundled fontmake                                             |
+|                                   | `@web-alchemy/fonttools` 1.4.0           | fontTools itself, run by Pyodide (Python compiled to WebAssembly)                                |
+| Instancing                        | `harfbuzzjs` 1.6.3                       | Exposes shaping and drawing at a variation, not instancing                                       |
+| Subsetting                        | `subset-font` 2.9.0 (hb-subset in wasm)  | Works; a different subsetter from fontTools', so not the same bytes                              |
+| WOFF2                             | `woff2-encoder` 2.0.0 (Google's encoder) | Works, with other bytes (below)                                                                  |
+| Hinting                           | `ttfautohint` 1.3.0 (2022)               | Downloads the native binary at install. Still C, not TypeScript                                  |
+| Shaping in tests                  | `harfbuzzjs` 1.6.3                       | Equivalent to `uharfbuzz`                                                                        |
+| Path booleans (tracer)            | `pathkit-wasm` 1.0.0                     | Skia's path ops, as `skia-pathops` uses                                                          |
+| Skeletons, labelling (tracer)     | none maintained                          | No counterpart to `skimage.morphology.skeletonize` or `scipy.ndimage`                            |
+
+So a port would have to write `varLib`, the instancer and a feature compiler first. In fontTools
+those are about 28,000 lines (`varLib` 17,100, `feaLib` 7,200, `otlLib` 4,100), three times the
+font's own code, and Google's fontmake and Font Bakery, the tools this font is checked
+against, would still be Python.
+
+**The bytes.** `python3 -I src/build.py` has left `fonts/` byte-identical after every change that
+was not meant to change it. That is how every section above proves "the shipped files are
+unchanged". A port cannot keep it, even at the last step. Google's WOFF2 encoder, given the
+shipped `CascivoSans[opsz,wght].ttf`, writes 69,020 bytes where fontTools wrote 68,940. Every
+shipped file would change at once, and the check would need a replacement: a table-by-table
+comparison of two builds, which would itself have to be written and trusted.
+
+**The numbers under the outlines.** Porting only the design layer (`params`, `geom`, `glyphs`,
+`kern`) to TypeScript, and passing its outlines to fontTools, was measured too. Over 200,000 random
+arguments, Node 22 and CPython 3.13 disagree in the last bit for 3.2% of `sin` results, 3.3% of
+`cos`, 4.5% of `tan`, 12.5% of `atan2` and 34% of `hypot`. Python's `round` takes halves to even
+(75 calls in `src/`); JavaScript's `Math.round` takes them up. Most of this disappears when points
+are rounded to whole units, but a value within a bit of a half moves a point by one unit, and the
+kerning measure and the tracer compare against thresholds, where one unit can change a result.
+The split would also put two languages and a file format between the drawing and the font, where
+there is now one call.
+
+**What a port would buy.** Little. No workspace package imports the generator; the repository
+uses the font as files. `vp check` would type-check the code, but the code is not shared with any
+TypeScript. The one use that would need the drawing in TypeScript is drawing glyphs live in a
+browser (a playground on the site), and nothing plans that.
+
+**Recommended, not done.** The byte check runs by hand today; no CI job runs the build.
+
+- A CI job on changes under `fonts/cascivo-sans/`: install `requirements.txt`, run `lint.py`, the
+  build, `git diff --exit-code fonts/` and the tests. It would turn the byte check into a gate. The
+  two test-only packages (`opentype-sanitizer`, `uharfbuzz`) are not pinned and would need pins.
+- No pnpm workspace package or root script: they would only wrap the three commands in the README.
+- If type checking is wanted, Python's own checkers (mypy, pyright) do it without a port.
+
+Open questions, answered by default here: whether to add the CI job (left as a recommendation),
+and whether a browser drawing of the glyphs will ever be wanted (assumed not; it is the case that
+would reopen this).
+
 ## Sources
 
 - [Introducing Geist Pixel (Vercel)](https://vercel.com/blog/introducing-geist-pixel) and the

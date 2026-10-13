@@ -35,6 +35,10 @@
   stands upright again, and the opening under it is back.
 - **Georgian at Black.** ჩ's leg sits on the baseline, and შ's arch runs on into its stub as Noto's
   does. A notch is left where შ's hook meets the arch at Black.
+- **The build stays in Python.** A TypeScript port was weighed and measured: npm has no variable
+  TrueType or feature compiler, Google's WOFF2 encoder writes other bytes for the same font, and
+  Node and CPython differ in the last bit of `sin`, `atan2` and `hypot`. RESEARCH.md section 36.
+  No code or font changes.
 
 ## 0.6.1
 

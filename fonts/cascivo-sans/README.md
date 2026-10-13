@@ -101,6 +101,10 @@ Font Bakery (`pip install fontbakery`):
 warnings are intentional: `post` format 3 drops glyph names to save bytes, and overlapping
 contours are standard in variable fonts.
 
+The generator stays in Python although the repository is TypeScript: no TypeScript library can
+build a variable TrueType font, compile its features or hint it, and a port would change every
+shipped file at once. RESEARCH.md section 36 has the measurements.
+
 ### Source layout
 
 | File                            | Role                                                                                               |
