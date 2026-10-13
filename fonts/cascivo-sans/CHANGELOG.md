@@ -23,6 +23,14 @@
   heavy loops, and runs terminals out to Noto Black's length. Georgian's mean IoU against Noto
   Black rises from 0.813 to 0.841 (measured with overlaps filled; the earlier 0.769 counted them as
   holes). ჩ's leg and შ's top are still not fixed.
+- **Hebrew draft.** The 27 letters with their final forms, maqaf, paseq, geresh, gershayim and ₪
+  are traced from Noto Sans Hebrew, set as tall above the x-height as Noto sets them, with Noto's
+  kerning working right to left. ׃ is the colon and װ ױ ײ are pairs of letters. No points (niqqud)
+  yet. Built only with `CASCIVO_HEBREW=1`, with its own web slice (12 KB). The shipped files are
+  unchanged.
+- **Armenian ligatures** ﬓ ﬔ ﬕ ﬖ ﬗ, as Noto sets them: the two letters side by side.
+- **Georgian at Black.** ჩ's leg sits on the baseline, and შ's arch runs on into its stub as Noto's
+  does. A notch is left where შ's hook meets the arch at Black.
 
 ## 0.6.1
 

@@ -1390,6 +1390,80 @@ and Შ's and შ's tops still show slivers where the hook meets the arch at dis
 the hook and the arch as one stroke was tried and reverted: it changed nothing in შ and lowered
 the IoU.
 
+## 34. Hebrew, Armenian's ligatures, and Georgian again
+
+**Hebrew.** The 27 letters with their final forms, maqaf ־, paseq ׀, geresh ׳, gershayim ״ and the
+sheqel sign ₪ are traced from Noto Sans Hebrew. Sof pasuq ׃ is the colon, and the Yiddish digraphs
+װ ױ ײ are pairs of the letters, as Noto sets them (its digraphs are within 20 units of their two
+letters' widths, 50 at Black). Build it with `CASCIVO_HEBREW=1`; like the others it is a draft, it
+adds Noto's notice (Copyright 2024 The Noto Project Authors), and it writes a Hebrew web slice
+(12 KB). The points (niqqud) and cantillation marks are not drawn: they need mark positioning, and
+unpointed text, which is most modern Hebrew, does not use them.
+
+Noto sets Hebrew 593 units tall, 11% above its Latin x-height (536), between it and the cap height.
+Mapped onto this font's x-height, as Georgian and Armenian are, Hebrew stood small beside the
+Latin. A script may now say how far above the x-height its letters stand (`height`, 593/536 for
+Hebrew; Georgian and Armenian are unchanged).
+
+Hebrew is rectilinear: flat bars, square corners, stems that stand on a thin base. That broke the
+tracer and the drawing in new places, all fixed generally:
+
+- **Level ends are not stems.** A stroke end near a line was snapped onto it and cut flat, which is
+  right for a stem's end and wrong for a bar's: a bar's centre line rides half a stroke inside the
+  line. Snapped, ւ's foot tipped 91 units down to the baseline, and Hebrew's top bars would have
+  risen to the x-height. An end within 17° of level is now left where the level map puts it, and
+  only a steep end is a stem's on the x-height.
+- **A join lands on the stroke it joins, as wide as that stroke.** A stem standing on ב's or נ's
+  base ran on, and set its round joint, by its own width, which is wider than the base is thick:
+  both came out under the baseline. And where two strokes blend toward Black by different amounts,
+  a join's end was no longer on the other stroke at all. A join's end now moves onto the nearest
+  point of the other stroke's centre line at every master, and its joint and run-on are no wider
+  than that stroke is there.
+- **A corner's two halves meet at every master.** The tracer may hold one half back toward the
+  Thin and let the other go to Black (נ's stem and foot), and they parted. Their ends now meet at
+  the halves' mean, and the joint is as wide as the thinner half.
+- **The Thin is stretched across the Black first.** The moves onto Noto's Black are across each
+  stroke, so a level stroke could never slide sideways. Noto's Black װ is 42% wider than its
+  Thin, and the right vav's head, which had to move 120 units over, landed in the gap between the
+  vavs. The Thin's centre lines are now stretched edge to edge across the Black's (measured from
+  each letter's first stem) before they move.
+- **Straight runs stay straight.** Each point moved on its own, and ב's base came out wavy. A
+  straight level or upright run in the Thin is kept straight and level in the Black.
+- **The search looks again.** A join's drawing now reads the stroke it lands on, which may have
+  moved after the join was searched. Every stroke that folds once all are settled is searched
+  again (ჩ, ჭ and Ჭ in Georgian were).
+- **₪** has four strokes across its width, and at this font's Black, narrower than Noto's, its
+  counters shut. Noto draws it lighter than its letters; its pen here stops at 0.6.
+
+Noto's horizontals at Black are 0.82 of its stem; this font's pen gives 0.72. That is left alone:
+it shows only at Black, and the Latin's contrast is the font's.
+
+**Right-to-left kerning.** Noto's Hebrew kerning (130 pairs) is used as Georgian's is. In the first
+build it did nothing: HarfBuzz gave Hebrew runs no kerning from the `DFLT` script record, only from
+a `hebr` one, and in a right-to-left run the first glyph of a pair stands on the right, so a plain
+advance moves only its outer side. A Hebrew build declares `languagesystem hebr dflt`, and its
+pairs move the first glyph as well as its advance (`<v 0 v 0>`), as Noto's own are written. The
+floor of section 33 is measured with the second glyph on the left, and kern.py's neighbours
+(punctuation and figures) are kept clear in the same lookup, since kern.py measures left to right.
+
+**Armenian's ligatures.** ﬓ ﬔ ﬕ ﬖ ﬗ are the two letters side by side, as Noto sets them: within
+20 units of their two widths, unkerned.
+
+**Georgian.** ჩ's leg sits on the baseline at Black. It curls in at its foot, so its last handle
+arrived shallow, the flat cut turned vertical, and a corner hung 83 units under the line. Steep is
+now judged by the last curve's chord. შ and Შ are better but not fixed. At a junction the skeleton
+leaves fragments a pixel or two long; their direction is noise, and they read as perfect
+continuations, so they decided which branches joined: შ's hook took its stub, and the arch met them
+with a notch. Without them the arch runs on into the stub, as Noto's does. At Black the stub is
+shorter than the pen is wide, though, and a notch remains where the hook meets the arch. Keeping
+each free end's Thin direction in the Black was tried for it and changed nothing; it was reverted.
+
+Mean IoU against Noto Black: Georgian 0.848 (0.841 at the start of this section), Armenian 0.747
+(0.729), Hebrew 0.763. Every letter pair of each script, and each letter beside punctuation and
+figures, is clear at every weight and optical size, upright and italic: the closest are Georgian
+letters 7 units apart (ᲬᲨ at Caption Black italic), Armenian 9, Hebrew 7 (the digraphs beside א);
+punctuation 23, 21 and 10. Font Bakery finds no failing check with all three scripts built in.
+
 ## Sources
 
 - [Introducing Geist Pixel (Vercel)](https://vercel.com/blog/introducing-geist-pixel) and the

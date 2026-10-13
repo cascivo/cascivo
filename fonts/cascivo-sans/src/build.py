@@ -38,6 +38,9 @@ if GEORGIAN:
 ARMENIAN = os.environ.get('CASCIVO_ARMENIAN') == '1'  # a draft, not yet shipped (RESEARCH.md section 33)
 if ARMENIAN:
     import armenian  # noqa: E402,F401  (registers the Armenian drawings)
+HEBREW = os.environ.get('CASCIVO_HEBREW') == '1'  # a draft, not yet shipped (RESEARCH.md section 34)
+if HEBREW:
+    import hebrew  # noqa: E402,F401  (registers the Hebrew drawings)
 from composites import ALIAS, BOTTOM, CYR_EXT, CYR_LOCL, GREEK_ACCENTED, GREEK_POLY, ITALIC_ONLY, POLY_MARK, SPECIAL, accented_chars, glyph_name, is_cap  # noqa: E402
 from geom import contour_bounds, expand, transform_contour  # noqa: E402
 import kern  # noqa: E402
@@ -435,6 +438,12 @@ def add_composites(o):
             comp(n + '.ss01', [(latin + '.ss01', 0, 0, 1)], o.adv[latin + '.ss01'])
     for cp, latin in (armenian.ALIAS if ARMENIAN else {}).items():  # ։ and ֊: the colon and hyphen
         comp('uni%04X' % cp, [(latin, 0, 0, 1)], o.adv[latin], cp)
+    for cp, latin in (hebrew.ALIAS if HEBREW else {}).items():  # ׃: the colon
+        comp('uni%04X' % cp, [(latin, 0, 0, 1)], o.adv[latin], cp)
+    for script in ([armenian] if ARMENIAN else []) + ([hebrew] if HEBREW else []):  # pairs of letters
+        for cp, pair in script.LIGATURES.items():
+            a, b = ('uni%04X' % c for c in (reversed(pair) if script.RTL else pair))  # left one first
+            comp('uni%04X' % cp, [(a, 0, 0, 1), (b, o.adv[a], 0, 1)], o.adv[a] + o.adv[b], cp)
     for cp, (base, piece, where) in CYR_EXT.items():
         n = 'uni%04X' % cp
         xmin, _, xmax, _ = o.bounds[base]
@@ -692,7 +701,7 @@ languagesystem cyrl BGR;
 languagesystem cyrl SRB;
 languagesystem cyrl MKD;
 languagesystem grek dflt;
-
+{hebr}
 @figs = [zero one two three four five six seven eight nine];
 @pnum = [zero.pnum one.pnum two.pnum three.pnum four.pnum five.pnum six.pnum seven.pnum eight.pnum nine.pnum];
 @sups = [zero.sups one.sups two.sups three.sups four.sups five.sups six.sups seven.sups eight.sups nine.sups];
@@ -783,7 +792,8 @@ def build_master_font(o, glyf, order):
         'version': f'Version {VERSION}',
         # the Georgian centre lines are traced from Noto Sans Georgian, whose notice the OFL keeps
         'copyright': 'Copyright 2026 The Cascivo Sans Project Authors' + ('; Georgian derived from Noto Sans Georgian, Copyright 2022 The Noto Project Authors (https://github.com/notofonts/georgian)' if GEORGIAN else '')
-        + ('; Armenian derived from Noto Sans Armenian, Copyright 2022 The Noto Project Authors (https://github.com/notofonts/armenian)' if ARMENIAN else ''),
+        + ('; Armenian derived from Noto Sans Armenian, Copyright 2022 The Noto Project Authors (https://github.com/notofonts/armenian)' if ARMENIAN else '')
+        + ('; Hebrew derived from Noto Sans Hebrew, Copyright 2024 The Noto Project Authors (https://github.com/notofonts/hebrew)' if HEBREW else ''),
         'licenseDescription': 'This Font Software is licensed under the SIL Open Font License, Version 1.1.',
         'licenseInfoURL': 'https://openfontlicense.org',
         'manufacturer': 'cascivo',
@@ -802,13 +812,16 @@ def build_master_font(o, glyf, order):
     )
     fb.setupPost(keepGlyphNames=True, underlinePosition=-110, underlineThickness=round(p.H))
     ss01 = sorted(n[:-5] for n in o.comps.keys() | o.contours.keys() if n.endswith('.ss01') and n[:-5] in o.adv)
-    fea = GSUB_FEA + '\nfeature ss01 {\n  featureNames { name "Plain I and l (as in Helvetica)"; };\n'
+    # a right-to-left run takes no kerning from DFLT's record in HarfBuzz, only from its own script's
+    fea = GSUB_FEA.replace('{hebr}', 'languagesystem hebr dflt;\n' if HEBREW else '') + '\nfeature ss01 {\n  featureNames { name "Plain I and l (as in Helvetica)"; };\n'
     fea += ''.join(f'  sub {n} by {n}.ss01;\n' for n in ss01) + '} ss01;\n'
     fea += '\n' + cyrl_locl(o) + '\n' + kern_fea(o) + '\n' + mark_fea(o)
     if GEORGIAN:
         fea += '\n' + georgian.kern_fea(o)
     if ARMENIAN:
         fea += '\n' + armenian.kern_fea(o)
+    if HEBREW:
+        fea += '\n' + hebrew.kern_fea(o)
     addOpenTypeFeaturesFromString(fb.font, fea)
     # smart dropout control: keeps thin strokes from vanishing in unhinted rasterization
     prep = newTable('prep')
@@ -857,10 +870,10 @@ def build(italic=False):
         apply_slant(o)
     corners = _black_corners(outs)
     kern.set_corners(corners, next(o for o in outs if (o.loc['wght'], o.loc['opsz']) == (900, 14)))
-    if ARMENIAN:
-        armenian.MASTERS[:] = outs
-        armenian.CORNERS.clear()
-        armenian.CORNERS.update({n: (corners[n], c) for n, c in _black_corners(outs, 100).items()})
+    for script in ([armenian] if ARMENIAN else []) + ([hebrew] if HEBREW else []):  # their kerning's pair sets
+        script.MASTERS[:] = outs
+        script.CORNERS.clear()
+        script.CORNERS.update({n: (corners[n], c) for n, c in _black_corners(outs, 100).items()})
     order = glyph_order(outs[0])
     glyfs = build_glyf(outs, order)
     ds = DesignSpaceDocument()
@@ -972,6 +985,7 @@ def _roundtrip(font):
 # Fonts' ranges)
 GEORGIAN_RANGE = 'U+10A0-10FF,U+1C90-1CBF,U+2D00-2D2F'
 ARMENIAN_RANGE = 'U+0530-058F,U+FB13-FB17'
+HEBREW_RANGE = 'U+0590-05FF,U+20AA,U+FB1D-FB4F'
 
 
 def _subset_latin(font, unicodes=LATIN):
@@ -1077,6 +1091,8 @@ def save_all(upright, italic):
             _save_woff2(_subset_latin(load(), GEORGIAN_RANGE), f'{stem}-Georgian[opsz,wght].woff2')
         if ARMENIAN:
             _save_woff2(_subset_latin(load(), ARMENIAN_RANGE), f'{stem}-Armenian[opsz,wght].woff2')
+        if HEBREW:
+            _save_woff2(_subset_latin(load(), HEBREW_RANGE), f'{stem}-Hebrew[opsz,wght].woff2')
     # static Regular, full character set: the static-vs-static comparison
     _save_woff2(instancer.instantiateVariableFont(TTFont(os.path.join(DIST, f'{PS}[opsz,wght].ttf')), {'wght': 400, 'opsz': 14}), f'{PS}-Regular.woff2')
     # static desktop styles: the four that style-linking apps (word processors) expect

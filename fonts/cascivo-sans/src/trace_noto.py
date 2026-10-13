@@ -1,5 +1,6 @@
 """Trace a script's centre lines from Noto Sans: `georgian_paths.py` from Noto Sans Georgian,
-`armenian_paths.py` from Noto Sans Armenian, with each one's kerning.
+`armenian_paths.py` from Noto Sans Armenian, `hebrew_paths.py` from Noto Sans Hebrew, with each
+one's kerning.
 
 Each letter of the Thin weight is rasterized and skeletonized; the skeleton is split into strokes
 at its junctions (joining the pairs that run on smoothly), and each stroke is fitted with cubics.
@@ -12,8 +13,10 @@ requirements.txt:
     pip install scikit-image skia-pathops
     python3 -I src/trace_noto.py georgian NotoSansGeorgian-{Thin,Regular,Black}.ttf
     python3 -I src/trace_noto.py armenian NotoSansArmenian-{Thin,Regular,Black}.ttf
+    python3 -I src/trace_noto.py hebrew NotoSansHebrew-{Thin,Regular,Black}.ttf
 
-(the fontsource woff2 files of `@fontsource/noto-sans-georgian` and `-armenian` 5.x work as well).
+(the fontsource woff2 files of `@fontsource/noto-sans-georgian`, `-armenian` and `-hebrew` 5.x work
+as well).
 """
 import json
 import math
@@ -73,7 +76,7 @@ def raster(gs, name):
     # contours unioned first: Noto Sans Armenian overlaps its strokes, and an even-odd fill of
     # overlapping contours punches holes the skeleton then runs round
     path = pathops.Path()
-    gs[name].draw(path.getPen())
+    gs[name].draw(path.getPen(glyphSet=gs))
     path.simplify(fix_winding=True)
     pen = PolyPen(gs)
     path.draw(pen)
@@ -354,7 +357,10 @@ def trace(gs, name, prune=30, tol=8):
     paths = edges(pts, nbr)
     paths = [p for p in paths if len(p) > 1]
     paths = merge_junctions(paths, prune * SC)
-    paths = join(paths)
+    # a junction leaves fragments a pixel or two long; their direction is noise, and they read as
+    # perfect continuations, so they decided which branches joined (შ's hook took its stub, and
+    # the arch met it with a notch, where Noto's arch runs on into the stub)
+    paths = join([p for p in paths if length(p) >= 4])
     pieces = []
     for pth in paths:
         if length(pth) < prune * SC * 0.6:
@@ -454,8 +460,9 @@ same points moved toward Noto Black's centre line, as far as this font's pen dra
 that pen's weight at Black, 1 but where even the Thin centre line folds under the full pen; a heavy
 terminal's cut, 'n' square or 'h' turned toward flat where a square end folds). A centre line is
 flat points: the start point, then each cubic's two handles and end point, in the reference's
-units. `REF` holds each reference's levels, its lines and its unit letter's width, which
-traced.py maps onto this font's metrics.
+units. `REF` holds each reference's levels, its lines, its unit letter's width and, where its
+letters stand taller than its Latin x-height, by how much; traced.py maps these onto this font's
+metrics.
 """
 
 '''
@@ -538,6 +545,26 @@ def to_black(cs, ends, ink, skel, closed=False, n=24):
         start = sm[at] if j == 0 else (sm[at] + sm[at - 1]) / 2
         end = sm[at + n - 1] if j == len(cs) - 1 else (sm[at + n - 1] + sm[at + n]) / 2
         out.append(np.array([c[0] + start, c[1] + sm[at + n // 3], c[2] + sm[at + 2 * n // 3], c[3] + end]))
+    # a straight level or upright run in the Thin stays straight and level in the Black: each point
+    # moved on its own, and Hebrew's bars came out wavy (ב's base climbed to the right)
+    n_out = len(out)
+    for j, c in enumerate(cs):
+        d = c[3] - c[0]
+        if np.linalg.norm(d) < 20 or max(abs(d[0] * (q[1] - c[0][1]) - d[1] * (q[0] - c[0][0])) / np.linalg.norm(d) for q in c[1:3]) > 1.5:
+            continue
+        axis = 1 if abs(d[1]) < 0.05 * abs(d[0]) else 0 if abs(d[0]) < 0.05 * abs(d[1]) else None
+        if axis is None:
+            continue
+        b = out[j]
+        level = (b[0][axis] + b[3][axis]) / 2
+        for idx, nb, nb_end, nb_handle in ((0, j - 1, 3, 2), (3, j + 1, 0, 1)):
+            delta = level - b[idx][axis]
+            b[idx][axis] = level
+            if closed or 0 <= nb < n_out:
+                o = out[nb % n_out]
+                o[nb_end][axis] = level
+                o[nb_handle][axis] += delta
+        b[1], b[2] = b[0] + (b[3] - b[0]) / 3, b[0] + 2 * (b[3] - b[0]) / 3
     # a free end runs on (or back) along its tangent to where the Black's ink ends: the moves are
     # across the stroke, and Noto's Black lengthens its terminals as it widens (ւ's foot)
     for k, (c, e, h) in enumerate(((out[0], 0, 1), (out[-1], 3, 2))):
@@ -568,33 +595,36 @@ BLENDS = (1.0, 0.8, 0.6, 0.4, 0.2, 0.0)
 CUTS = ('n', 'h')  # a heavy terminal's cut: square, or turned toward flat where a square end folds
 
 
-def clean_reach(entry, ref, k):
+def _clean(entry, ref, k):
+    """Does stroke k of this letter draw without folding at every master, upright and italic?"""
+    from build import italicize
+    from geom import expand, flatten
+    from glyphs import G
+    from lint import self_intersects
+    from params import ITALIC_MASTERS, MASTERS, P
+    from traced import draw_letter
+
+    strokes = [(c, j, _flat(th), _flat(bl), pn, ct) for c, j, th, bl, pn, ct in entry[3]]
+    for _, loc in MASTERS + ITALIC_MASTERS:
+        p = P(**loc)
+        g = G(p)
+        draw_letter(g, p, (*entry[:3], strokes), ref)
+        if any(self_intersects(flatten(c, 16)) for c in expand(italicize(g.strokes, p)[k], p.V, p.H)):
+            return False
+    return True
+
+
+def clean_reach(entry, ref, k, top=1.0):
     """How far toward Black stroke k may go, and with how heavy a pen: the heaviest pen, then the
     largest blend, whose outline draws without folding (the outline lint's test) at every master,
     upright and italic. Noto's Black has inner corners tighter than half its stem, which an
     outline font can draw and a pen cannot."""
-    from build import italicize
-    from geom import expand, flatten
-    from traced import draw_letter
-    from glyphs import G
-    from lint import self_intersects
-    from params import ITALIC_MASTERS, MASTERS, P
-
     closed, ends, thin, black, _, _ = entry[3][k]
-    for cut, pen in [(c, q) for c in CUTS for q in PENS] + [(c, q) for c in CUTS for q in LAST_PENS]:
+    for cut, pen in [(c, q) for c in CUTS for q in PENS if q <= top] + [(c, q) for c in CUTS for q in LAST_PENS if q <= top]:
         for b in BLENDS:
             blend = [(round(x + (bx - x) * b), round(y + (by - y) * b)) for (x, y), (bx, by) in zip(thin, black)]
-            strokes = [(c, j, _flat(th), _flat(blend if i == k else bl), pen if i == k else pn, cut if i == k else ct) for i, (c, j, th, bl, pn, ct) in enumerate(entry[3])]
-            ok = True
-            for _, loc in MASTERS + ITALIC_MASTERS:
-                p = P(**loc)
-                g = G(p)
-                draw_letter(g, p, (*entry[:3], strokes), ref)
-                st = italicize(g.strokes, p)[k]
-                if any(self_intersects(flatten(c, 16)) for c in expand(st, p.V, p.H)):
-                    ok = False
-                    break
-            if ok:
+            strokes = [(c, j, th, blend if i == k else bl, pen if i == k else pn, cut if i == k else ct) for i, (c, j, th, bl, pn, ct) in enumerate(entry[3])]
+            if _clean((*entry[:3], strokes), ref, k):
                 return pen, b, blend, cut
     return pen, 0.0, thin, cut
 
@@ -640,6 +670,18 @@ def _tie_corners(out):
                 b[e], b[h] = target.copy(), np.asarray(b[h], float) + delta
 
 
+def _first_stroke(ink):
+    """The width of a letter's first stroke from the left, across its middle rows (the median)."""
+    rows = np.nonzero(ink.any(1))[0]
+    widths = []
+    for r in rows[len(rows) * 3 // 10 : len(rows) * 7 // 10 : 4]:
+        on = np.nonzero(ink[r])[0]
+        if len(on):
+            run = np.nonzero(np.diff(on) > 1)[0]
+            widths.append((on[run[0]] if len(run) else on[-1]) - on[0] + 1)
+    return float(np.median(widths)) / SC if widths else 0.0
+
+
 def letter(cp, fonts, caps):
     thin, reg, black = fonts
     strokes = trace(thin.getGlyphSet(), thin.getBestCmap()[cp])
@@ -655,6 +697,22 @@ def letter(cp, fonts, caps):
     bpb = BoundsPen(gs_black)
     gb.draw(bpb)
     bx0, _, bx1, _ = bpb.bounds
+    # Noto's Black is wider than its Thin, and the moves below are across each stroke, so a level
+    # stroke could never slide to where the Black has it (װ's right head, 120 units over, landed
+    # in the gap): first stretch the Thin's centre lines across the Black's, edge to edge
+    gs_thin = thin.getGlyphSet()
+    tbp = BoundsPen(gs_thin)
+    gs_thin[thin.getBestCmap()[cp]].draw(tbp)
+    tx0, _, tx1, _ = tbp.bounds
+    ht, hb = _first_stroke(raster(gs_thin, thin.getBestCmap()[cp])) / 2, _first_stroke(ink) / 2
+    lo_t, lo_b = tx0 + ht, bx0 + hb
+    k = (bx1 - hb - lo_b) / max(1.0, tx1 - ht - lo_t)
+
+    def stretch(c):
+        c = c.copy()
+        c[:, 0] = lo_b + (c[:, 0] - lo_t) * k
+        return c
+
     out = []
     for s in strokes:
         cs = [np.array(c, float) for c in s['cubics']]
@@ -671,7 +729,7 @@ def letter(cp, fonts, caps):
                 else:
                     c[3], c[2] = end + v * ext, c[2] + v * ext
         flat = [cs[0][0]] + [q for c in cs for q in c[1:]]
-        bl = to_black(cs, ends, ink, skel, s['closed'])
+        bl = to_black([stretch(c) for c in cs], ends, ink, skel, s['closed'])
         flat_b = [bl[0][0]] + [q for c in bl for q in c[1:]]
         out.append((s['closed'], tuple(ends) if not s['closed'] else ('', ''), flat, flat_b))
     _tie_corners(out)
@@ -783,6 +841,28 @@ SCRIPTS = {
         },
         'lines': {'asc': 0x565, 'desc': 0x584, 'cap': 0x531, 'xh': 0x585},
     },
+    'hebrew': {
+        'name': 'Hebrew',
+        # the 27 letters, maqaf, paseq, geresh, gershayim and the sheqel sign; sof pasuq ׃ is this
+        # font's colon and the Yiddish digraphs are pairs of letters (hebrew.py), and the points
+        # need mark positioning
+        'cps': list(range(0x5D0, 0x5EB)) + [0x5BE, 0x5C0, 0x5F3, 0x5F4, 0x20AA],
+        # Noto draws ₪ lighter than its letters; at this font's narrower Black its counters shut
+        'pens': {0x20AA: 0.6},
+        'caps': (1, 0),  # none
+        'levels': {
+            'desc': (0x5E7, None, 'min', 0),  # ק's stem
+            'base': (0x5E1, None, 'min', 0),  # ס's bowl
+            'xh': (0x5E1, None, 'max', 0),  # ס's bowl
+            'asc': (0x5DC, None, 'max', 6),  # ל's stem
+            'cap': (0x5DC, None, 'max', 6),  # no capitals: unused
+            'unit': (0x5E1, None, None, 0),  # ס
+        },
+        'lines': {'asc': 0x5DC, 'desc': 0x5E7, 'cap': 0x5DC, 'xh': 0x5E1},
+        # Noto sets Hebrew 593 units tall, above its Latin x-height (536): this font's Hebrew stands
+        # as far above its own x-height
+        'height': 593 / 536,
+    },
 }
 
 
@@ -794,6 +874,8 @@ if __name__ == '__main__':
     data = {cp: letter(cp, fonts, cfg['caps']) for cp in cps}
     ref = {name: {k: round(float(v), 1) for k, v in levels(data, i, cfg['levels']).items()} for i, name in enumerate(('thin', 'black'))}
     ref['lines'], ref['unit_ink'] = ink_lines(fonts, cfg['lines'], cfg['levels']['unit'][0])
+    if 'height' in cfg:
+        ref['height'] = round(cfg['height'], 4)
     held = []
     for cp, d in data.items():
         # each stroke is searched in turn, against the ones before it as already settled; a stroke
@@ -802,10 +884,18 @@ if __name__ == '__main__':
         settled = [(c, j, th, th, 0.72, 'h') for c, j, th, _, _, _ in rounded]
         for k in range(len(rounded)):
             entry = (d['sb'][0], d['sb'][1], d['ht'], settled[:k] + [rounded[k]] + settled[k + 1 :])
-            pen, b, blend, cut = clean_reach(entry, ref, k)
+            pen, b, blend, cut = clean_reach(entry, ref, k, cfg.get('pens', {}).get(cp, 1.0))
             if (pen, b, cut) != (1.0, 1.0, 'n'):
                 held.append(f'{chr(cp)}{k}:{b:.1f}' + (f'@{pen}' if pen < 1 else '') + (f'/{cut}' if cut != 'n' else ''))
             settled[k] = (*rounded[k][:3], blend, pen, cut)
+        # a join's drawing reads the stroke it lands on (traced.py), which may have moved since
+        # this one was searched: search again any stroke that now folds, the rest as they settled
+        for k in range(len(rounded)):
+            entry = (d['sb'][0], d['sb'][1], d['ht'], settled)
+            if not _clean(entry, ref, k):
+                pen, b, blend, cut = clean_reach((d['sb'][0], d['sb'][1], d['ht'], settled[:k] + [rounded[k]] + settled[k + 1 :]), ref, k, cfg.get('pens', {}).get(cp, 1.0))
+                held.append(f'{chr(cp)}{k}:{b:.1f}' + (f'@{pen}' if pen < 1 else '') + (f'/{cut}' if cut != 'n' else '') + '(again)')
+                settled[k] = (*rounded[k][:3], blend, pen, cut)
         d['strokes'] = settled
     print('held back from Black:', ' '.join(held))
     notice = fonts[1]['name'].getDebugName(0)

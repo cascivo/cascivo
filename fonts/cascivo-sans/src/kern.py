@@ -71,7 +71,7 @@ I_WIDE = ['uni00EF', 'uni00EE', 'uni0129', 'uni012B', 'uni012D']  # ï î ĩ ī 
 TALL = list('ABCDEFGHIJKLMNOPQRSTUVWXYZbdfhklt') + ['i', 'j'] + I_WIDE
 OWN_SHAPE_PAIRS.update({(a, b): 1 for i in I_WIDE for a, b in [(t, i) for t in TALL] + [(i, t) for t in TALL]})
 
-GEORGIAN_NEIGHBOURS = ['period', 'comma', 'ellipsis', 'colon', 'semicolon', 'exclam', 'question', 'hyphen', 'endash', 'emdash', 'slash',
+TRACED_NEIGHBOURS = ['period', 'comma', 'ellipsis', 'colon', 'semicolon', 'exclam', 'question', 'hyphen', 'endash', 'emdash', 'slash',
                       'parenleft', 'parenright', 'bracketleft', 'bracketright', 'guillemotleft', 'guillemotright',
                       'quoteleft', 'quoteright', 'quotedblleft', 'quotedblright', 'quotedblbase', 'quotesingle', 'quotedbl'] + [f + '.pnum' for f in FIGS]
 
@@ -210,7 +210,7 @@ def kern_pairs(o):
     # Opening only. (։ and ֊ are the colon and hyphen themselves.)
     georgian = [g for g in glyphs if g.startswith(('uni10D', 'uni10E', 'uni10F', 'uni1C9', 'uni1CA', 'uni1CB', 'uni053', 'uni054', 'uni055', 'uni056', 'uni057', 'uni058')) and g not in ('uni0589', 'uni058A')]
     if georgian:
-        marks = [g for g in GEORGIAN_NEIGHBOURS if g in glyphs]
+        marks = [g for g in TRACED_NEIGHBOURS if g in glyphs]
         OWN_SHAPE_PAIRS.update({p: 1 for g in georgian for m in marks for p in ((g, m), (m, g))})
         CLEAR_ONLY.update(p for g in georgian for m in marks for p in ((g, m), (m, g)))
         cands.update({p: 1 for g in georgian for m in marks for p in ((g, m), (m, g))})
