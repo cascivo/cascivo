@@ -149,6 +149,7 @@ def draw_master(p):
         }
         if 'horn_x' in g.anchors:
             a['horn'] = (g.anchors['horn_x'] + dx, g.anchors['horn_y'])
+        a.update({k: (v[0] + dx, v[1]) for k, v in g.anchors.items() if k.startswith('mk_')})  # traced scripts' marks
         o.anchors[name] = a
     add_composites(o)
     return o
@@ -821,7 +822,7 @@ def build_master_font(o, glyf, order):
     if ARMENIAN:
         fea += '\n' + armenian.kern_fea(o)
     if HEBREW:
-        fea += '\n' + hebrew.kern_fea(o)
+        fea += '\n' + hebrew.kern_fea(o) + '\n' + hebrew.mark_fea(o)
     addOpenTypeFeaturesFromString(fb.font, fea)
     # smart dropout control: keeps thin strokes from vanishing in unhinted rasterization
     prep = newTable('prep')

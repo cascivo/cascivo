@@ -216,7 +216,7 @@ def kern_fea(o, ref, kern, lookup, masters=(), corners=None, floor=0.2, cps=(), 
             for corner, weight in zip(corners[o.name], (at[900, 14], at[100, 14])):
                 v = max(v, own(corner, pair) - own(weight, pair) + reg)
         vals[pair] = v
-    lines = ['feature kern {', f'  lookup {lookup} {{']
+    lines = ['feature kern {', f'  lookup {lookup} {{'] + (['    lookupflag IgnoreMarks;'] if rtl else [])  # a pointed letter kerns as a bare one
     # in a right-to-left run the first glyph stands on the right: its advance alone would move only
     # its outer side, so it also moves itself over (Noto's own Hebrew pairs are written the same way)
     lines += [f'    pos {pair} <{v} 0 {v} 0>;' if rtl else f'    pos {pair} {v};' for pair, v in vals.items()]
@@ -228,12 +228,31 @@ def draw_letter(g, p, entry, ref):
     """One letter from its traced data. The masters blend the Thin and Black centre lines by stem
     weight; the tracer has already held each stroke back from Black as far as this pen needs to
     draw it cleanly."""
-    sbl, sbr, ht, strokes = entry
+    sbl, sbr, ht, strokes, *extra = entry
+    extra = extra[0] if extra else {}
     t, sx, lv = scale(p, ref)
     V, H = p.V, p.H
     fy = _y_map(p, H, lv, ht)
+
+    def at(xt, yt, xb, yb):  # a point given at the Thin and the Black, as the centre lines map
+        return (xt + (xb - xt) * t) * sx + V / 2, fy(yt + (yb - yt) * t)
+
+    # a mark is drawn with the point it attaches by at the origin, as the Latin marks are
+    ox, oy = (0.0, 0.0)
+    if 'mark' in extra:
+        ax, ay = at(*extra['mark'][1])
+        ox, oy = -ax, -ay
+        g.mark = True
+    for cls, a in extra.get('anchors', {}).items():
+        g.anchors['mk_' + cls] = at(*a)
+    for xt, yt, rt, xb, yb, rb in extra.get('dots', []):
+        cx, cy = at(xt, yt, xb, yb)
+        r = (rt + (rb - rt) * t) * sx
+        g.raw.append(orient(arc(cx + ox, cy + oy, r, r, 90, 450), outer=True))
     weights = [1 - (1 - pen) * p.heavy for *_, pen, _ in strokes]  # 1, but where the tracer found the full pen folds
-    centres = [[((a + (b - a) * t) * sx + V / 2, fy(c + (d - c) * t)) for a, c, b, d in zip(thin[::2], thin[1::2], black[::2], black[1::2])] for _, _, thin, black, _, _ in strokes]
+    # a mark's strokes are as thick as Noto's points' bars at this weight, not this pen's
+    mark_w = blend3(ref['mark_w'], t) * x_height(p, ref) / ref['lines']['xh'] if 'mark' in extra else None
+    centres = [[(x + ox, y + oy) for x, y in (at(a, c, b, d) for a, c, b, d in zip(thin[::2], thin[1::2], black[::2], black[1::2]))] for _, _, thin, black, _, _ in strokes]
     # a corner's two ends meet, however far toward Black each half was let go (נ's foot went all the
     # way and its stem stayed at the Thin, and they parted)
     meets = {}
@@ -247,7 +266,7 @@ def draw_letter(g, p, entry, ref):
         for i, e, h in group:
             dx, dy = mid[0] - centres[i][e][0], mid[1] - centres[i][e][1]
             centres[i][e], centres[i][h] = mid, (centres[i][h][0] + dx, centres[i][h][1] + dy)
-        w = min(pen_thickness(norm((centres[i][e][0] - centres[i][h][0], centres[i][e][1] - centres[i][h][1])), V, H) * weights[i] for i, e, h in group)
+        w = mark_w or min(pen_thickness(norm((centres[i][e][0] - centres[i][h][0], centres[i][e][1] - centres[i][h][1])), V, H) * weights[i] for i, e, h in group)
         joint.update({(i, e): w for i, e, _ in group})
     for i, ((closed, ends, thin, _, _, cut), sw) in enumerate(zip(strokes, weights)):
         pts = list(centres[i])
@@ -258,10 +277,11 @@ def draw_letter(g, p, entry, ref):
                 met = None
                 if ends[k] == 'join':
                     met, on = _met(p, pts[end], [(c, ws) for j, (c, ws) in enumerate(zip(centres, weights)) if j != i])
+                    met = mark_w or met
                     dx, dy = on[0] - pts[end][0], on[1] - pts[end][1]
                     pts[end], pts[handle] = on, (pts[handle][0] + dx, pts[handle][1] + dy)
                 if ends[k] in ('join', 'corner'):  # a round joint, where square ends would notch
-                    w = pen_thickness(norm((pts[end][0] - pts[handle][0], pts[end][1] - pts[handle][1])), V, H) * sw
+                    w = mark_w or pen_thickness(norm((pts[end][0] - pts[handle][0], pts[end][1] - pts[handle][1])), V, H) * sw
                     met = met or joint.get((i, end), w)
                     r = min(w, met) / 2
                     g.raw.append(orient(arc(*pts[end], r, r, 90, 450), outer=True))
@@ -271,7 +291,7 @@ def draw_letter(g, p, entry, ref):
                     pts[end], pts[handle] = _snap(line, pts[end], pts[handle], pts[3 if end == 0 else -4])
                     caps[k] = 'h'
         segs = [('C', *pts[i : i + 4]) for i in range(0, len(pts) - 1, 3)]
-        g.stroke(segs, closed=closed, ws=sw, cut=cut, caps=tuple(caps))
+        g.stroke(segs, closed=closed, ws=sw, cut=cut, caps=tuple(caps), w=mark_w)
     g.ht = ht
     # the reference's own spacing, scaled with the outline: this font's Latin tightens more at
     # Black than Noto's does, and Georgian set in the Latin's units touched there

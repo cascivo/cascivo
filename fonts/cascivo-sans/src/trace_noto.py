@@ -80,7 +80,8 @@ def raster(gs, name):
     path.simplify(fix_winding=True)
     pen = PolyPen(gs)
     path.draw(pen)
-    w = int((gs[name].width + 2 * PAD) * SC)
+    right = max([gs[name].width] + [x for poly in pen.polys for x, _ in poly])  # a mark has no advance
+    w = int((right + 2 * PAD) * SC)
     h = int((Y1 - Y0) * SC)
     # even-odd fill via XOR of each contour
     acc = np.zeros((h, w), bool)
@@ -460,7 +461,9 @@ same points moved toward Noto Black's centre line, as far as this font's pen dra
 that pen's weight at Black, 1 but where even the Thin centre line folds under the full pen; a heavy
 terminal's cut, 'n' square or 'h' turned toward flat where a square end folds). A centre line is
 flat points: the start point, then each cubic's two handles and end point, in the reference's
-units. `REF` holds each reference's levels, its lines, its unit letter's width and, where its
+units. A letter that takes marks also holds where they attach, and a mark where it attaches and
+its dots, each at the Thin and the Black; a mark's strokes are as thick as Noto's points' bars
+(`mark_w` in `REF`, at Thin, Regular and Black). `REF` holds each reference's levels, its lines, its unit letter's width and, where its
 letters stand taller than its Latin x-height, by how much; traced.py maps these onto this font's
 metrics.
 """
@@ -566,11 +569,15 @@ def to_black(cs, ends, ink, skel, closed=False, n=24):
                 o[nb_handle][axis] += delta
         b[1], b[2] = b[0] + (b[3] - b[0]) / 3, b[0] + 2 * (b[3] - b[0]) / 3
     # a free end runs on (or back) along its tangent to where the Black's ink ends: the moves are
-    # across the stroke, and Noto's Black lengthens its terminals as it widens (ւ's foot)
+    # across the stroke, and Noto's Black lengthens its terminals as it widens (ւ's foot). It keeps
+    # the Thin's direction: the moves turned შ's short stub diagonal, and run on that way it went
+    # into the bowl and shut the counter Noto leaves open
     for k, (c, e, h) in enumerate(((out[0], 0, 1), (out[-1], 3, 2))):
         if closed or ends[k] != 'free':
             continue
-        v = c[e] - c[h]
+        t = cs[0] if k == 0 else cs[-1]
+        v = t[e] - t[h]
+        c[h] = c[e] - v * np.linalg.norm(c[e] - c[h]) / (np.linalg.norm(v) + 1e-9)
         v = v / (np.linalg.norm(v) + 1e-9)
         ts = np.arange(-60, 120.5, 0.5)
         pts = c[e] + np.outer(ts, v)
@@ -592,7 +599,55 @@ def to_black(cs, ends, ink, skel, closed=False, n=24):
 PENS = (1.0, 0.95, 0.9, 0.85, 0.8, 0.75, 0.72, 0.68, 0.64, 0.6)  # lighter only where nothing heavier draws cleanly
 LAST_PENS = (0.5, 0.4)  # with either cut, only where no pen above draws cleanly with either (Armenian's ՞)
 BLENDS = (1.0, 0.8, 0.6, 0.4, 0.2, 0.0)
+COUNTER = 0.6  # the least share of each of Noto Black's counters a letter keeps at Black
+COUNTER_PEN = 0.75  # but not by a pen so light the stroke looks a weight lighter than its neighbours
 CUTS = ('n', 'h')  # a heavy terminal's cut: square, or turned toward flat where a square end folds
+
+
+def _holes(ink, sc):
+    """A raster's counters (white areas no edge reaches), largest first, in font units squared;
+    specks under 800 are not counters."""
+    from scipy import ndimage
+
+    lab, n = ndimage.label(~ink)
+    edge = set(np.unique(np.r_[lab[0], lab[-1], lab[:, 0], lab[:, -1]]))
+    areas = ndimage.sum(np.ones_like(lab), lab, range(1, n + 1))
+    return sorted((a / sc / sc for i, a in enumerate(areas, 1) if i not in edge and a / sc / sc > 800), reverse=True)
+
+
+def _counters(entry, ref, noto):
+    """How much of each of Noto Black's counters this font's Black keeps, the smallest share: the
+    letter's counters, largest first, matched to Noto's in that order, in Noto's units."""
+    from geom import expand, flatten
+    from glyphs import G
+    from params import P
+    from traced import draw_letter, scale, x_height
+
+    if not noto:
+        return 1.0
+    p = P(wght=900, opsz=14)
+    g = G(p)
+    draw_letter(g, p, (*entry[:3], [(c, j, _flat(th), _flat(bl), pn, ct) for c, j, th, bl, pn, ct in entry[3]]), ref)
+    path = pathops.Path()
+    pen = path.getPen()
+    for c in [c for st in g.strokes for c in expand(st, p.V, p.H)] + list(g.raw):
+        pts = flatten(c, 16)
+        pen.moveTo(tuple(pts[0]))
+        for q in pts[1:]:
+            pen.lineTo(tuple(q))
+        pen.closePath()
+    path.simplify(fix_winding=True)
+    poly = PolyPen(None)
+    path.draw(poly)
+    ink = np.zeros((1400, 1400), bool)
+    for pg in poly.polys:
+        im = Image.new('1', (1400, 1400), 0)
+        ImageDraw.Draw(im).polygon([(x + 200, 1000 - y) for x, y in pg], fill=1)
+        ink ^= np.array(im, bool)
+    _, sx, _ = scale(p, ref)
+    unit = sx * x_height(p, ref) / ref['lines']['xh']
+    ours = [a / unit for a in _holes(ink, 1)]
+    return min((ours[i] if i < len(ours) else 0) / a for i, a in enumerate(noto))
 
 
 def _clean(entry, ref, k):
@@ -682,7 +737,31 @@ def _first_stroke(ink):
     return float(np.median(widths)) / SC if widths else 0.0
 
 
-def letter(cp, fonts, caps):
+def _dots(thin, black, stretch):
+    """A mark's dots, which a skeleton cannot trace: each compact blob of the Thin's ink, its centre
+    and the radius of a disc as large, and the Black's blob nearest where the Thin's lands."""
+    from scipy import ndimage
+
+    def blobs(ink):
+        lab, n = ndimage.label(ink)
+        out = []
+        for i, sl in enumerate(ndimage.find_objects(lab), 1):
+            area = (lab[sl] == i).sum() / SC / SC
+            h, w = (sl[0].stop - sl[0].start) / SC, (sl[1].stop - sl[1].start) / SC
+            if max(w, h) < 2.2 * min(w, h) and area > 0.6 * w * h:  # round or square, and solid
+                r, c = ndimage.center_of_mass(lab == i)
+                out.append((*to_font((r, c)), math.sqrt(area / math.pi)))
+        return out
+
+    found, heavy = [], blobs(black)
+    for x, y, r in blobs(thin):
+        near = min(heavy, key=lambda q: math.dist(q[:2], (stretch(x), y)), default=None)
+        bx, by, br = near if near and math.dist(near[:2], (stretch(x), y)) < 80 else (stretch(x), y, r)
+        found.append((x, y, r, bx, by, br))
+    return found
+
+
+def letter(cp, fonts, caps, mark=False):
     thin, reg, black = fonts
     strokes = trace(thin.getGlyphSet(), thin.getBestCmap()[cp])
     ink = raster(black.getGlyphSet(), black.getBestCmap()[cp])
@@ -733,10 +812,19 @@ def letter(cp, fonts, caps):
         flat_b = [bl[0][0]] + [q for c in bl for q in c[1:]]
         out.append((s['closed'], tuple(ends) if not s['closed'] else ('', ''), flat, flat_b))
     _tie_corners(out)
-    xmin = min(q[0] for st in out for q in st[2])
-    xmin_b = min(q[0] for st in out for q in st[3])
+    dots = _dots(raster(gs_thin, thin.getBestCmap()[cp]), ink, lambda x: lo_b + (x - lo_t) * k) if mark else []
+    out = [st for st in out if not any(all(math.dist(q, d[:2]) < d[2] + 15 for q in st[2]) for d in dots)]  # a dot's skeleton
+    xmin = min([q[0] for st in out for q in st[2]] + [d[0] for d in dots])
+    xmin_b = min([q[0] for st in out for q in st[3]] + [d[3] for d in dots])
     ht = 'c' if caps[0] <= cp <= caps[1] else 'a' if y1 > 650 else 'x'
-    return {'sb': ((round(x0), round(bx0)), (round(g.width - x1), round(gb.width - bx1))), 'ht': ht, 'strokes': [(c, j, [(q[0] - xmin, q[1]) for q in f], [(q[0] - xmin_b, q[1]) for q in fb]) for c, j, f, fb in out]}
+    return {
+        'sb': ((round(x0), round(bx0)), (round(g.width - x1), round(gb.width - bx1))),
+        'ht': ht,
+        'holes': [] if mark else _holes(ink, SC),
+        'x0': (xmin, xmin_b),
+        'dots': [(xt - xmin, yt, rt, xb - xmin_b, yb, rb) for xt, yt, rt, xb, yb, rb in dots],
+        'strokes': [(c, j, [(q[0] - xmin, q[1]) for q in f], [(q[0] - xmin_b, q[1]) for q in fb]) for c, j, f, fb in out],
+    }
 
 
 def levels(data, which, at):
@@ -775,6 +863,29 @@ def ink_lines(fonts, lines, unit):
 
 def fmt(pts):
     return '(' + ', '.join(f'{round(x)}, {round(y)}' for x, y in pts) + ',)'
+
+
+def noto_anchors(font):
+    """Noto's mark attachment: each mark-to-base lookup of its `mark` feature is a class. Returns
+    {base glyph: {class: (x, y)}} and {mark glyph: (class, (x, y))}."""
+    gpos = font['GPOS'].table
+    bases, marks = {}, {}
+    for fr in gpos.FeatureList.FeatureRecord:
+        if fr.FeatureTag != 'mark':
+            continue
+        for li in fr.Feature.LookupListIndex:
+            lk = gpos.LookupList.Lookup[li]
+            if lk.LookupType != 4:
+                continue
+            for st in lk.SubTable:
+                st = getattr(st, 'ExtSubTable', st)
+                for m, rec in zip(st.MarkCoverage.glyphs, st.MarkArray.MarkRecord):
+                    marks[m] = (f'L{li}', (rec.MarkAnchor.XCoordinate, rec.MarkAnchor.YCoordinate))
+                for b, rec in zip(st.BaseCoverage.glyphs, st.BaseArray.BaseRecord):
+                    a = rec.BaseAnchor[0]
+                    if a is not None:
+                        bases.setdefault(b, {})[f'L{li}'] = (a.XCoordinate, a.YCoordinate)
+    return bases, marks
 
 
 def noto_kerning(fonts, cps):
@@ -847,6 +958,10 @@ SCRIPTS = {
         # font's colon and the Yiddish digraphs are pairs of letters (hebrew.py), and the points
         # need mark positioning
         'cps': list(range(0x5D0, 0x5EB)) + [0x5BE, 0x5C0, 0x5F3, 0x5F4, 0x20AA],
+        # the points: the vowels, dagesh, rafe, the shin and sin dots, the upper and lower dots and
+        # qamats qatan; the cantillation marks and meteg are not drawn
+        'marks': list(range(0x5B0, 0x5BD)) + [0x5BF, 0x5C1, 0x5C2, 0x5C4, 0x5C5, 0x5C7],
+        'mark_bar': 0x5B7,  # patah: how thick Noto draws a point's bar at each weight
         # Noto draws ₪ lighter than its letters; at this font's narrower Black its counters shut
         'pens': {0x20AA: 0.6},
         'caps': (1, 0),  # none
@@ -872,10 +987,18 @@ if __name__ == '__main__':
     fonts = [TTFont(p) for p in sys.argv[2:5]]
     cps = cfg['cps']
     data = {cp: letter(cp, fonts, cfg['caps']) for cp in cps}
+    data.update({cp: letter(cp, fonts, cfg['caps'], mark=True) for cp in cfg.get('marks', [])})
     ref = {name: {k: round(float(v), 1) for k, v in levels(data, i, cfg['levels']).items()} for i, name in enumerate(('thin', 'black'))}
     ref['lines'], ref['unit_ink'] = ink_lines(fonts, cfg['lines'], cfg['levels']['unit'][0])
     if 'height' in cfg:
         ref['height'] = round(cfg['height'], 4)
+    if 'mark_bar' in cfg:  # Noto keeps its points light at every weight, lighter than any pen here
+        bars = []
+        for f in fonts:
+            bp = BoundsPen(f.getGlyphSet())
+            f.getGlyphSet()[f.getBestCmap()[cfg['mark_bar']]].draw(bp)
+            bars.append(round(bp.bounds[3] - bp.bounds[1]))
+        ref['mark_w'] = bars
     held = []
     for cp, d in data.items():
         # each stroke is searched in turn, against the ones before it as already settled; a stroke
@@ -896,13 +1019,47 @@ if __name__ == '__main__':
                 pen, b, blend, cut = clean_reach((d['sb'][0], d['sb'][1], d['ht'], settled[:k] + [rounded[k]] + settled[k + 1 :]), ref, k, cfg.get('pens', {}).get(cp, 1.0))
                 held.append(f'{chr(cp)}{k}:{b:.1f}' + (f'@{pen}' if pen < 1 else '') + (f'/{cut}' if cut != 'n' else '') + '(again)')
                 settled[k] = (*rounded[k][:3], blend, pen, cut)
+        # a counter Noto's Black keeps open may shut here, the strokes held back toward the Thin
+        # around it (ზ's upper bowl, Ზ's): look again for the fullest blend, with a lighter pen
+        # where it must (not below COUNTER_PEN), while no stroke folds and the smallest counter grows
+        keep = _counters((d['sb'][0], d['sb'][1], d['ht'], settled), ref, d['holes'])
+        if keep < COUNTER:
+            for k in range(len(rounded)):
+                for b, pen, cut in [(b, q, c) for b in BLENDS for c in CUTS for q in PENS if q >= COUNTER_PEN]:
+                    thin, black = rounded[k][2], rounded[k][3]
+                    blend = [(round(x + (bx - x) * b), round(y + (by - y) * b)) for (x, y), (bx, by) in zip(thin, black)]
+                    trial = settled[:k] + [(*rounded[k][:3], blend, pen, cut)] + settled[k + 1 :]
+                    entry = (d['sb'][0], d['sb'][1], d['ht'], trial)
+                    now = _counters(entry, ref, d['holes'])
+                    if now > keep + 0.02 and all(_clean(entry, ref, j) for j in range(len(trial))):
+                        settled, keep = trial, now
+                        held.append(f'{chr(cp)}{k}:{b:.1f}@{pen}(counter {now:.2f})')
+                        if keep >= COUNTER:
+                            break
+                if keep >= COUNTER:
+                    break
         d['strokes'] = settled
     print('held back from Black:', ' '.join(held))
+    # where marks attach, as Noto has it at Thin and Black, in each letter's own coordinates
+    if cfg.get('marks'):
+        (tb, tm), (bb, bm) = noto_anchors(fonts[0]), noto_anchors(fonts[2])
+        for cp, d in data.items():
+            name_t, name_b = fonts[0].getBestCmap()[cp], fonts[2].getBestCmap()[cp]
+            (x0, x0b) = d['x0']
+            if cp in cfg['marks'] and name_t in tm and name_b in bm:
+                (cls, (xt, yt)), (_, (xb, yb)) = tm[name_t], bm[name_b]
+                d['mark'] = (cls, (round(xt - x0), yt, round(xb - x0b), yb))
+            elif name_t in tb and name_b in bb:
+                d['anchors'] = {c: (round(tb[name_t][c][0] - x0), tb[name_t][c][1], round(bb[name_b][c][0] - x0b), bb[name_b][c][1]) for c in tb[name_t] if c in bb[name_b]}
     notice = fonts[1]['name'].getDebugName(0)
     lines = [HEADER.format(name=cfg['name'], key=key, copyright=notice) + f'REF = {ref!r}\n\nTRACE = {{']
     for cp, d in data.items():
         body = ',\n        '.join(f'({c}, {j}, {fmt(f)}, {fmt(fb)}, {pen}, {cut!r})' for c, j, f, fb, pen, cut in d['strokes'])
-        lines.append(f"    0x{cp:04X}: ({d['sb'][0]}, {d['sb'][1]}, '{d['ht']}', [  # {chr(cp)}\n        {body},\n    ]),")
+        extra = {k: d[k] for k in ('mark', 'anchors') if k in d}
+        if d['dots']:
+            extra['dots'] = [tuple(round(v) for v in dot) for dot in d['dots']]
+        tail = f',\n    {extra!r}' if extra else ''
+        lines.append(f"    0x{cp:04X}: ({d['sb'][0]}, {d['sb'][1]}, '{d['ht']}', [  # {chr(cp)}\n        {body}{',' if body else ''}\n    ]{tail}),")
     here = os.path.dirname(os.path.abspath(__file__))
     with open(os.path.join(here, f'{key}_paths.py'), 'w') as f:
         f.write('\n'.join(lines) + '\n}\n')

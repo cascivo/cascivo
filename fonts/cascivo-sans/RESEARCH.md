@@ -1466,6 +1466,51 @@ figures, is clear at every weight and optical size, upright and italic: the clos
 letters 7 units apart (ᲬᲨ at Caption Black italic), Armenian 9, Hebrew 7 (the digraphs beside א);
 punctuation 23, 21 and 10. Font Bakery finds no failing check with all three scripts built in.
 
+## 35. Counters at Black, შ's stub, and Hebrew's points
+
+**Counters.** Section 34 left ზ's and Ზ's small upper bowls nearly shut at Black, where Noto keeps
+them open. The tracer now measures each letter's counters at Black (the white areas no edge
+reaches, on the letter as drawn) against Noto Black's, matched largest to largest. Where one
+keeps less than 60% of Noto's, the letter's strokes are searched again for the fullest blend
+toward Black, with a lighter pen where it must, keeping a change only while no stroke folds and
+the smallest counter grows. Six letters fell short: ზ, Ზ, Ձ, Ֆ, թ, ֆ. Allowed any pen, every one
+reached 60%, but with strokes at 0.4 of the pen, visibly a weight lighter than their neighbours.
+The pen is held at 0.75 or heavier: ზ, Ձ, Ֆ and թ reach 60%, Ზ 56%, and ֆ stays at 18%.
+
+**შ's stub.** Section 34 left a notch where შ's hook meets its arch at Black. A free end's direction
+was the Black's, and the moves had turned შ's short stub diagonal; run on to Noto Black's ink that
+way, it went into the bowl and shut the opening Noto leaves between stub and bowl. A free end now
+keeps the Thin's direction, as Noto's stub does. The stub stands upright and the opening is back;
+the counter above it is still lower than Noto's, because this pen's arch is heavier at its top,
+and a smaller notch remains there.
+
+A taper was tried as well: each free end thinned toward Noto Black's own width there. Noto's stub
+turned out to be its full stem (185 units), and the ends it did thin came out pointed (ი), wobbly
+(Hebrew's corners) and ragged (Armenian). It was removed.
+
+**Hebrew's points.** The vowels (sheva to qubuts, qamats qatan), dagesh, rafe, the shin and sin
+dots and the upper and lower dots are traced and attach where Noto attaches them. The cantillation
+marks and meteg are not drawn.
+
+- A point is mostly dots, which a skeleton cannot trace. Each solid, round blob of the Thin's ink
+  becomes a disc, matched to the nearest blob of the Black's; bars (patah, qamats) are strokes.
+  (The rasterizer sized its canvas by the advance, which a mark does not have, and drew nothing.)
+- The anchors are Noto's: each of its mark-to-base lookups (below, dagesh, above, above left, the
+  shin dot) is a class, read at Thin and Black and mapped like the outlines. A mark is drawn with
+  its anchor at the origin, as the Latin marks are; each letter carries its anchors.
+- Noto keeps its points light at every weight: a patah's bar is 25, 39 and 62 units thick at
+  Thin, Regular and Black, where this pen would draw 21, 73 and 137. A point's strokes are drawn at
+  Noto's thickness, and its joints too: drawn by the letter pen, qamats's joint rose 50 units
+  into the letter above it. At Black a qamats now clears its letter by 76 units, Noto's by 74.
+- Hebrew's kerning ignores the points (`lookupflag IgnoreMarks`), so a pointed letter kerns as a
+  bare one, and its floor (section 33) measures letters only.
+
+The Hebrew web slice grows from 12 to 15 KB.
+
+Mean IoU against Noto Black: Georgian 0.848, Armenian 0.748, Hebrew 0.772. The sweeps of every
+letter pair and of letters beside punctuation stay clear at every weight and size; the closest is
+ᲬᲨ, 2 units apart at Black italic. Font Bakery finds no failing check with all three scripts.
+
 ## Sources
 
 - [Introducing Geist Pixel (Vercel)](https://vercel.com/blog/introducing-geist-pixel) and the

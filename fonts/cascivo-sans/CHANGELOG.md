@@ -25,10 +25,14 @@
   holes). ჩ's leg and შ's top are still not fixed.
 - **Hebrew draft.** The 27 letters with their final forms, maqaf, paseq, geresh, gershayim and ₪
   are traced from Noto Sans Hebrew, set as tall above the x-height as Noto sets them, with Noto's
-  kerning working right to left. ׃ is the colon and װ ױ ײ are pairs of letters. No points (niqqud)
-  yet. Built only with `CASCIVO_HEBREW=1`, with its own web slice (12 KB). The shipped files are
-  unchanged.
+  kerning working right to left. ׃ is the colon and װ ױ ײ are pairs of letters. Built only with
+  `CASCIVO_HEBREW=1`, with its own web slice. The shipped files are unchanged.
 - **Armenian ligatures** ﬓ ﬔ ﬕ ﬖ ﬗ, as Noto sets them: the two letters side by side.
+- **Hebrew points (niqqud).** The vowels, dagesh, rafe and the shin and sin dots, attached where
+  Noto attaches them and as light as Noto draws them at every weight. No cantillation marks.
+- **Counters at Black.** Traced letters keep at least 60% of each of Noto Black's counters where a
+  pen no lighter than 0.75 can (ზ's upper bowl is open again); Ზ keeps 56% and ֆ 18%. შ's stub
+  stands upright again, and the opening under it is back.
 - **Georgian at Black.** ჩ's leg sits on the baseline, and შ's arch runs on into its stub as Noto's
   does. A notch is left where შ's hook meets the arch at Black.
 
