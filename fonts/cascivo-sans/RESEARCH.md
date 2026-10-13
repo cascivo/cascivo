@@ -1457,6 +1457,8 @@ continuations, so they decided which branches joined: შ's hook took its stub, 
 with a notch. Without them the arch runs on into the stub, as Noto's does. At Black the stub is
 shorter than the pen is wide, though, and a notch remains where the hook meets the arch. Keeping
 each free end's Thin direction in the Black was tried for it and changed nothing; it was reverted.
+Stretching the Thin across the Black widens Georgian at Black toward Noto's, and the IoU rose, but
+ზ's and Ზ's small upper bowls now nearly close there, where Noto keeps them open.
 
 Mean IoU against Noto Black: Georgian 0.848 (0.841 at the start of this section), Armenian 0.747
 (0.729), Hebrew 0.763. Every letter pair of each script, and each letter beside punctuation and
