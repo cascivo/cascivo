@@ -1,795 +1,139 @@
 # cascivo
 
-## Part 1 — Behavioral Guidelines
+The CSS-native, signal-driven, AI-first React design system. Components are **owned code**
+(copied into adopter projects by `npx cascivo add`), so they must pass the adopter's strict
+config, not just ours. Full reasoning, the gate catalogue and the architecture reference:
+`docs/internal/CONTRIBUTOR-REFERENCE.md`.
+
+## Repository
+
+pnpm workspace driven by vite+ (`vp`: Oxlint, Oxfmt, Rolldown, Vitest; `vp run` replaces
+Turborepo). TypeScript 5 strict with `noUncheckedIndexedAccess` + `exactOptionalPropertyTypes`.
+
+- `packages/components/`: registry source (TSX + CSS module + `<name>.meta.ts` + tests), not on npm;
+  copied by the CLI. `packages/react/` is the prebuilt npm distribution.
+- `packages/core` (micro-FSM + signals primitives), `tokens`, `themes` (twelve themes), `i18n`,
+  `storage`, `icons`, `charts`, `render`, `cli` (`cascivo`), `mcp`, and more: `ls packages`.
+- `apps/site` (Preact, docs + marketing, data-driven from `registry.json`), `apps/storybook`,
+  `apps/live`, `apps/examples/*` (React demos), `apps/bench/*`.
+- `registry.json` is the source of truth for CLI, MCP and docs; `skills/` holds Claude Code skills;
+  `scripts/factory/backlog.json` is the dark-factory queue (`factory` skill).
+
+## Rules
+
+- State assumptions; ask when a request is ambiguous. Prefer the simplest change, touch only what
+  the task needs, don't refactor or reformat unrelated code, and match existing style.
+- Done means zero lint warnings, zero type errors, passing tests. New behaviour gets tests; bug
+  fixes get a regression test; tests are deterministic. Never skip or delete tests.
+- Comments explain why, not what. Never commit secrets.
+- Latest stable dependencies; peers explicit and ranged (`>=18.0.0`); `@cascivo/core` has no
+  runtime dependency beyond `@preact/signals-react`.
+- An app's `package.json` `name` must end with its directory name (`apps/examples/pulse` →
+  `@cascivo/example-pulse`); a duplicate name stops every task in the monorepo
+  (`scripts/checks/app-package-names.test.ts`).
+- Use docspack (block below) before broad searches. A `PreToolUse` hook
+  (`scripts/docspack-nudge.mjs`) nudges toward it; follow the nudge.
+
+## Gates
+
+- `pnpm ready` before every commit; all must pass. It runs `regen` → `vp check --fix` → host-lint
+  → pre-build guards → build → post-build guards → type check → tests → `compiler:check`. Commit
+  whatever `regen`/`--fix` changed; CI regenerates and fails on any diff.
+- `ready` is not a superset of CI. After changing a **published** package also run
+  `pnpm isolated:check` and `pnpm pack:check` (the only gates that see the packed tarballs). Other
+  CI-only gates, and what each one catches: the reference doc. `pnpm ready:ci` mirrors CI's cold,
+  sequential build.
+- Host lint: `lint:host-strict` (oxlint) is only a fast subset; `lint:host-eslint` (real ESLint +
+  adopter plugins) is the authority.
+- Two type worlds: adopters load `@preact/signals-react`'s JSX augmentation, we don't. An
+  "unnecessary" assertion on a JSX attribute may be load-bearing for them; never bulk-autofix
+  `no-unnecessary-type-assertion` (`scripts/checks/host-lint/eslint/README.md`).
+- Vite aliases: every `@cascivo/*` package whose root export resolves to `./dist/` needs a source
+  alias in `apps/site/vite.config.ts` and `apps/storybook/.storybook/main.ts` (CI builds them
+  without a prior build). A subpath (`@cascivo/core/pure`) needs its own alias **above** the bare
+  one in every alias map, and `rollupOptions.external` must be subpath-aware
+  (`/^@cascivo\/core($|\/)/`).
+
+## Security: never `as` a payload you did not produce
+
+`as` on parsed or fetched data is not validation: `cascivo add` once wrote registry-supplied
+`files[].target` (`../../.zshrc`) outside the project. Bind payloads as `unknown` and parse once at
+the boundary (`parseRegistry` in `packages/cli/src/utils/registry.ts`, `parseItem` in
+`packages/registry/src/validate.ts`). Check an existing validator is actually called and covers the
+fields that matter. Registry paths are untrusted: `isSafeRelativePath` at parse, `assertInside` at
+the write. Narrow, then cast, never the reverse.
+
+## Keeping AI docs in sync
+
+- Component/block/chart/layout: edit its `.meta.ts`, then `pnpm regen` (registry, llms, context
+  and schemas are generated from it).
+- New `@cascivo/core` primitive or `@cascivo/react` theme/form primitive: catalogue it in
+  `docs/HEADLESS.md` (enforced by `scripts/checks/primitive-docs.test.ts`). If it changes reactivity
+  guidance, also update `docs/AI-RULES.md` and `scripts/llms/generate.ts`, then `pnpm regen`.
+
+## Component authoring (non-negotiable)
+
+- **Reactivity:** `useSignal`/`useComputed`/`useSignalEffect` (+ `useMachine` for genuine internal
+  FSM state) from `@cascivo/core`; `useRef` only for DOM refs or always-current callbacks. Never
+  `useState`, `useContext`, `useEffect`, `useLayoutEffect`, `useReducer`; DOM side effects go in
+  `useSignalEffect`.
+- **React apps** (`apps/examples/*`, `apps/bench/*`) have no signals transform: a component reading
+  `signal.value` in render calls `useSignals()` first. App code holds local state with
+  `useSignalState` and writes through the setter (React Compiler safe); library source may write `.value`.
+- **Controlled prop → signal:** read in render → `useControllableSignal`; read only in an effect →
+  `useEffectPropSignal`. Never hand-roll `s.value = prop` during render (it ran `showModal()`
+  mid-render in seven components).
+- **FSM** only when the component itself drives the transitions; a state reachable only via a prop
+  belongs to the parent. Hover/focus/active/disabled are CSS; `data-state` only for what CSS can't express.
+- **Responsive:** mobile-first; prefer `@container`; widths only from `30rem`/`40rem`/`64rem`/`80rem`
+  (`pnpm breakpoint:check`); ≥44px coarse-pointer targets via `var(--cascivo-target-min-coarse, 2.75rem)`;
+  never `display:none` content on mobile, relocate it. WCAG 2.2 AA; RTL via logical properties.
+- **CSS:** everything inside `@layer cascivo.component` (blocks: `cascivo.blocks.<name>`); never
+  unlayered (except forced-colors / prefers-contrast / reduced-motion queries), never an invented
+  layer name, sub-elements via native nesting (`pnpm layers:check`, `pnpm unlayered:check`). No
+  Tailwind, no CSS-in-JS. `@function`/`if()` only as progressive enhancement, with a static fallback
+  declaration immediately before (`pnpm fallback:check`, not in `ready`).
+- **A11y primitives:** `useId()` for ids; native `<dialog>.showModal()` (else `FocusScope`) for traps;
+  `popover="auto"` (else `DismissableLayer`) for dismissal; `useRovingFocus` for static rows; the
+  enabled-items DOM-query pattern (`menu.tsx`) for opened menus; `useTypeahead` (`pnpm primitives:check`).
+- **Handler naming:** `onValueChange(value)`, `onChange(event)` only for a real DOM event,
+  `onSelect(value)` for item activation (`docs/AI-RULES.md`).
+- **Prop vocabulary:** collections `items` (form choices `options`, chart points `data`, never
+  `entries`); visual style `variant` (type named after the prop); union tag `kind`; space steps are
+  numeric (`gap={4}`); rich slots `actions: ReactNode`; feedback body text `description`
+  (`docs/AI-RULES.md` "Data and shape props", `scripts/checks/vocabulary.test.ts`).
+- **Before committing a component:** every signature default has a matching manifest `default`;
+  `vp run @cascivo/components#test` passes; exported from `packages/react/src/index.ts`;
+  user-visible strings from `@cascivo/i18n` (`t(builtin.<component>.<key>)`, `labels` override);
+  passes the 320/360/390/414 overflow + touch-target sweep.
 
-### Think Before Coding
+<!-- prettier-ignore-start -->
+<!-- docspack:start recipe=repo -->
+## Documentation for this project's dependencies
 
-Don't assume. Don't hide confusion. Surface tradeoffs.
+Run `npx docspack ask "<question>"` for documentation on this project's
+dependencies. It answers from the installed versions.
 
-Before implementing:
+## Finding things in this repository
 
-- State your assumptions explicitly. If uncertain, ask.
-- If multiple interpretations exist, present them — don't pick silently.
-- If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
+Before reading files to find where something is, ask the index:
 
-### Simplicity First
+- `npx docspack recall --name repo-code "<what the code does>"` answers with the `file:line`,
+  signature and doc comment of matching declarations. Then read only that range.
+- `npx docspack recall --name repo-docs "<question>"` answers from this repository's Markdown.
 
-Minimum code that solves the problem. Nothing speculative.
+An answer is a pointer: read the file before you edit it. If you already know a name,
+`grep` is as good. If `recall` says nothing is indexed, run `npx docspack index --repo`.
 
-- No features beyond what was asked.
-- No abstractions for single-use code.
-- No "flexibility" or "configurability" that wasn't requested.
-- No error handling for impossible scenarios.
-- If you write 200 lines and it could be 50, rewrite it.
+## Working efficiently in this repository
 
-Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
+Every tool call is a turn, and every turn resends the whole conversation. Use fewer, larger calls:
 
-### Surgical Changes
+- Read several files, or several ranges of one file, in one shell command
+  (`sed -n '40,90p' a.ts; sed -n '1,60p' b.ts`) instead of one Read per file.
+- Search once, with a pattern that covers everything you are looking for.
+- Make related edits together, and run the tests once the change is complete.
 
-Touch only what you must. Clean up only your own mess.
-
-When editing existing code:
-
-- Don't "improve" adjacent code, comments, or formatting.
-- Don't refactor things that aren't broken.
-- Match existing style, even if you'd do it differently.
-- If you notice unrelated dead code, mention it — don't delete it.
-
-When your changes create orphans:
-
-- Remove imports/variables/functions that YOUR changes made unused.
-- Don't remove pre-existing dead code unless asked.
-
-The test: Every changed line should trace directly to the user's request.
-
-### Goal-Driven Execution
-
-Define success criteria. Loop until verified.
-
-Transform tasks into verifiable goals:
-
-- "Add validation" → "Write tests for invalid inputs, then make them pass"
-- "Fix the bug" → "Write a test that reproduces it, then make it pass"
-- "Refactor X" → "Ensure tests pass before and after"
-
-For multi-step tasks, state a brief plan:
-
-```
-1. [Step] → verify: [check]
-2. [Step] → verify: [check]
-3. [Step] → verify: [check]
-```
-
-## Part 2 — General Coding Quality
-
-### Code Correctness
-
-- Zero compiler/type errors. Always.
-- Zero linting warnings. Always.
-- All existing tests must pass after your changes.
-- If you change behavior, update or add tests to cover it.
-
-#### Our source compiles in two type worlds — check both before removing an assertion
-
-`@preact/signals-react` ships a JSX augmentation that widens every DOM attribute to
-`Signalish<T>`. The library's own tsconfig never loads it; every adopter that installs the
-signals runtime does. So `className as string | undefined` is genuinely unnecessary under our
-config and genuinely **load-bearing** under theirs.
-
-A type-aware lint run from inside this repo sees only our half. A
-`no-unnecessary-type-assertion` sweep flagged 125 assertions; autofixing them broke the
-consumer-shaped compilation with 44 errors, 39 of them exactly this. Treat "unnecessary
-assertion" on a JSX attribute as unproven, and never bulk-autofix that rule here. The full
-account, and where such a guard would have to live instead, is in
-`scripts/checks/host-lint/eslint/README.md`.
-
-`pnpm isolated:check` is the gate that compiles the other world — packed tarballs, non-hoisted,
-`skipLibCheck` off. Run it whenever you change a published package's types.
-
-### Formatting & Linting
-
-- Run the project's formatter and linter before considering any task complete.
-- Never submit code that fails formatting or linting checks.
-- Match the project's existing formatting configuration — do not override it.
-
-### Testing
-
-- Write tests for new functionality.
-- Bug fixes must include a regression test.
-- Don't delete or skip existing tests unless explicitly asked.
-- Tests must be deterministic — no flaky assertions, no timing dependencies.
-
-### Error Handling
-
-- Handle errors at the appropriate level — don't swallow them silently.
-- Provide actionable error messages that help debugging.
-- Fail fast on invalid input — don't let bad data propagate.
-
-### Security
-
-- Never commit secrets, tokens, or credentials.
-- Validate and sanitize all external input.
-- Use parameterized queries for database access.
-- Prefer established security libraries over hand-rolled solutions.
-
-#### Never `as` a payload you did not produce
-
-A type assertion on fetched or parsed data is not validation — it is the compiler agreeing to
-stop asking. `JSON.parse`, `res.json()`, and `readFileSync` all hand back `any`, so
-`as SomeShape` type-checks perfectly and proves nothing.
-
-This is not hypothetical here. `cascivo add` fetched a registry item, reached it with a bare
-`as RegistryItem`, and passed `files[].target` to `resolve(cwd, target)` and then
-`writeFileSafe`. `resolve` walks out of the project without complaint, so a registry returning
-`{ "target": "../../.zshrc" }` got an arbitrary file write on the adopter's machine. A thorough
-`validateItem` already existed — it was simply never called on the install path, and never
-inspected `files[]`.
-
-The rules that came out of it:
-
-- **Parse at the boundary, once.** Bind the payload as `unknown`, run a `(raw: unknown) => T`
-  parser, and let everything downstream have the real type.
-  `packages/cli/src/utils/registry.ts`'s `parseRegistry` is the house pattern: throw on
-  structural failure, coerce-with-default on soft fields. `parseItem(raw, source)` names the
-  URL in its error so a bad third-party registry is identifiable.
-- **A validator nothing calls is not a guard.** Before adding one, grep for callers of the
-  validator that already exists — and check it covers the fields that actually matter.
-- **Any registry-supplied path is untrusted.** `isSafeRelativePath` rejects absolute,
-  drive-relative, UNC, and `..`-bearing paths; `assertInside` re-checks containment at the
-  write itself, so a future call site that skips the parser still cannot escape.
-- **Narrow, then cast — never the reverse.** `const x = raw as Record<string, unknown>` followed
-  by `typeof x === 'object'` checks nothing: the cast already told the compiler it passed.
-
-### Performance
-
-- Consider performance implications of your changes.
-- Avoid unnecessary allocations, copies, or iterations.
-- Don't optimize prematurely — but don't write obviously slow code either.
-
-### Documentation
-
-- Update documentation when your changes affect public APIs or user-facing behavior.
-- Code comments explain _why_, not _what_. The code itself should explain _what_.
-- Don't add comments that merely restate the code.
-
-### Pre-Completion Checklist
-
-Before finishing any task, verify:
-
-1. The project builds with zero warnings and zero errors.
-2. Formatting and linting pass.
-3. Type checking passes with zero errors.
-4. All tests pass.
-
-### Gate Before Committing
-
-**All gates below must pass before committing.** No exceptions. If any fails, fix it before pushing — do not commit broken state.
-
-Run the single command that covers everything:
-
-```sh
-pnpm ready
-```
-
-This runs: `pnpm regen` → `vp check --fix` → both host-lint gates (`lint:host-strict`, `lint:host-eslint`, `lint:host-eslint:test`) → the pre-build guard suite (brand, claims, recurrence, release, regen, meta, i18n, docs-routes, llms, layers, unlayered, reset, popover, dead-props, doc-urls, primitives, apg, visual-baselines) → build → the post-build guard suite (scaffold, audit:bundle, ssr, css-contract, sparkline:size, rsc, dts-tsdoc, api, shims, docspack, type-exports, computed, rtl) → type check → tests → the React Compiler leg (`compiler:check`).
-
-The post-build half needs `dist/`, which is why it sits after the build: `api:check` diffs the
-published `.d.ts` surface against `api-surface.json`, `shims:check` regenerates
-`apps/site/src/shims` from the built types and fails on a diff, and `css-contract:check`
-inspects packed CSS.
-
-Both host-lint gates are in there because component source is _copied into adopter projects_, so
-it must pass a strict host config, not just ours. `lint:host-strict` is the fast offline subset
-(oxlint — e.g. no inline `type` specifiers, write a separate `import type` line).
-`lint:host-eslint` is **the authority**: it runs real ESLint with the plugins an adopter
-installs, and covers React-Compiler-backed rules oxlint cannot express. Do not read the fast
-one as coverage for the real one — that mistake shipped 117 real errors
-(`scripts/checks/host-lint/eslint/README.md`).
-
-**`ready` is not yet a strict superset of CI.** These CI steps are still absent from it, mostly because they need a build, the network, or minutes rather than seconds: `audit:animation`, `audit:signals`, `audit:stories`, `demos:storage:check`, `deps:check`, `deps:smoke`, `docs:coverage`, `links:check`, `isolated:check`, `pack:check`, `bare-page:check`, `no-js:check`, `framework:check`, `audit:landing`. Run them directly if you touched what they cover — `isolated:check` and `pack:check` in particular whenever you change a **published** package, since they are the only gates that compile and lint the packed tarballs the way an adopter receives them. Build runs before type check because some apps (the `apps/examples/*` demos) type-check against built `dist/` types. Commit any files that `regen` or `--fix` modified alongside your changes.
-
-To simulate the exact CI environment (cold cache, sequential builds — catches build-ordering bugs that only surface when no dist files exist):
-
-```sh
-pnpm ready:ci
-```
-
-This deletes all `dist/` directories and the vp run cache, then runs the `pnpm ready` gates with builds limited to one at a time via the `--concurrency-limit 1` flag (`vp run -r --concurrency-limit 1 build`). Note: the `VP_RUN_CONCURRENCY_LIMIT` env var is documented by vp but unimplemented in the 0.1.24 binary — use the CLI flag, not the env var. Use before pushing if you've changed build config or added workspace package dependencies.
-
-To reproduce individual CI steps:
-
-```sh
-# Format + lint (mirrors CI "Format + lint" step)
-pnpm exec vp check
-
-# Build all packages (mirrors CI "Build" step)
-pnpm build
-
-# Type check all packages (mirrors CI "Type check" step)
-pnpm exec vp run -r check
-
-# Tests (mirrors CI "Test" step)
-pnpm test
-
-# Drift check — regenerate and confirm no diff (mirrors CI "drift" job)
-pnpm regen
-pnpm exec vp check --fix
-git diff --exit-code
-
-# Breakpoint literal check (off-scale @media/@container widths)
-pnpm breakpoint:check
-
-# Every width @media inside a component declares why the viewport (not the slot) is the
-# right axis — a `viewport-query: <reason>` comment above it. Part of `meta:check`.
-pnpm container-preference:check
-
-# APG conformance (a declared apgPattern matches the manifest's role + required keys)
-pnpm apg:check
-
-# Every registry component has a committed visual baseline for all three themes,
-# and no baseline is orphaned by a rename (keeps the nightly `Visual regression`
-# workflow from rotting red)
-pnpm visual:baselines:check
-
-# The `cascivo.reset` layer is filled (no canonical @layer ships empty)
-pnpm reset:check
-
-# A closed popover keeps no box — an author `display` beats the UA hide rule
-pnpm popover:check
-
-# Every declared prop is read by its component (no typed-but-inert props)
-pnpm dead-props:check
-
-# `clientJs` parity — a manifest claiming 'none' really uses no client-only API, a clean
-# source is not understated as 'enhancement'/'required', and a 'none' component ships no
-# `'use client'`. (Part of `meta:check`; 'enhancement' vs 'required' is author-declared.)
-pnpm exec node --experimental-strip-types --test scripts/checks/client-js-parity.test.ts
-
-# Every shipped cascivo.com URL resolves to a real route or public file
-pnpm doc-urls:check
-
-# The published .d.ts surface still matches api-surface.json, and introduces no new `any`.
-# Regenerate the snapshot with `pnpm api:snapshot` when a surface change is intended.
-pnpm api:check
-
-# RTL: no physical `left`/`right` in shipped CSS (use logical properties), plus a browser
-# leg that mounts components under dir="ltr"/dir="rtl" and requires them to actually mirror
-pnpm rtl:check
-
-# apps/site's type shims still regenerate byte-identically from the built types
-# (`pnpm shims:generate` rewrites them; the check fails on any diff)
-pnpm shims:check
-
-# @cascivo/docspack's generated payload is current
-pnpm docspack:check
-
-# CSS-shipping packages import their own CSS + ship a CSS-free node twin (needs a build)
-pnpm css-contract:check
-
-# Consumer-shaped canary: pack the tarballs, type-check them in a strict, non-hoisted
-# pnpm WORKSPACE outside the repo, with skipLibCheck OFF (needs a build; ~90s)
-pnpm isolated:check
-
-# Scaffolded apps built from PACKED TARBALLS outside the monorepo — the only gate that
-# sees Vite externalizing a real node_modules package. A workspace-linked example app
-# cannot reproduce that, which is how Astro shipped unstyled SSR islands once already.
-pnpm framework:check
-
-# What a visitor to / actually downloads, in a real browser (needs a build + Chromium).
-# Measures the landing ROUTE, not the sum of every chunk in apps/site/dist — that reported
-# the whole multi-route SPA and always failed. Gates the INITIAL payload (before any
-# scrolling) and reports the post-scroll TOTAL: a section held behind WhenNearViewport
-# genuinely does not cost what an eagerly-loaded one does.
-pnpm audit:landing
-
-# A real Ghost (Handlebars) theme: flattens the token/theme CSS past its bare @import
-# specifiers, then validates the theme with Ghost's own gscan.
-pnpm --filter @cascivo/example-ghost-theme run check
-
-# Bare page: shipped styles.css and NOTHING else, full viewport, stacked components,
-# real hit-testing (needs a build + Chromium). Catches what computed:check structurally
-# cannot — a missing reset, an invisible overlay eating clicks.
-pnpm bare-page:check
-
-# No-JS disclosure canary: server HTML mounted and never hydrated, driven by a real
-# keyboard (needs a build + Chromium). jsdom exposes neither `<summary>`'s button role nor
-# Enter/Space activation nor `<details name>` exclusivity, so the platform behaviour behind
-# Accordion/Collapsible's `clientJs: 'enhancement'` is asserted only here.
-pnpm no-js:check
-
-# Astro island CSS probe — one client directive per page; reports (does not gate) whether
-# component CSS survives an SSR'd island. Keeps COMPATIBILITY.md's Astro grade honest.
-pnpm --filter @cascivo/example-astro-islands run build
-
-# Manifest + docs guards (props-parity, pkg-exports, peer-floors, css-imports, docs-imports, doc-links, …)
-pnpm meta:check
-
-# Packaging gate — publint + attw over packed artifacts (release/CI only; needs a prior build)
-pnpm pack:check           # all published packages; `node scripts/checks/pack-lint.mjs <pkg>` to scope
-
-# Deployed-docs freshness probe (run against production; also runs post-deploy + daily)
-bash scripts/checks/deployed-freshness.sh
-```
-
-All must exit 0. The drift check is especially important: regenerated artifacts must be committed if changed.
-
-`pnpm meta:check` bundles the manifest/docs guards, including the 2026-07-28 additions
-(`ref-parity` — single-host components forward a ref; `axis-parity` — every chart drawing an
-x-axis surfaces `Axis`'s `format`; `style-hooks` — `data-cascivo-*` styling hooks match their manifests and
-`docs/STYLING-INTERNALS.md`; `theme-bundle` — `all.css` really contains all twelve themes;
-`framework-matrix` — every ✅ in the support matrix names an example app or CI job that
-exists; `ref-parity`/`axis-parity` — per-exported-component and per-chart capability sweeps; `getting-started-contract` — a first-day fact appears on every first-day surface): `props-parity` (manifest props match the TS interface, both directions), `pkg-exports` (every published package exports `./package.json`), `peer-floors` (every published package flooring the `@preact/signals-react` peer requires `>=3.0.0`, so React 19 support can't silently regress), `css-imports` (every cross-package `@import '@cascivo/…'` in shipped CSS is a real `dependencies` entry, not a peer), `docs-imports` (every `@cascivo/*` import in the guides resolves to a real export/subpath), and `docs-links` (relative links in the guides resolve). `deployed-freshness.sh` asserts the live docs hosts serve the current `registry.json` version (the docs freshness invariant); it runs automatically in the `verify-site` post-deploy job and the daily `docs-freshness` workflow.
-
-### Workspace package aliases — keep in sync
-
-Several CI jobs build apps **without** a prior `pnpm build` step (perf, storybook deploy, landing deploy). When those apps import a workspace package whose `package.json` exports point to `./dist/`, Rolldown fails to resolve the import because no dist exists.
-
-**Rule:** Every `@cascivo/*` package whose root export resolves to `./dist/` **must** have an explicit source alias in the vite config of every app that builds without a prior full build. Currently affected packages: `core`, `storage`, `i18n`, `ai`, `render`, `icons`, `charts`.
-
-The alias maps the package name to its TypeScript source entry so Rolldown can bundle it directly:
-
-```ts
-'@cascivo/render': resolve(root, 'packages/render/src/index.ts'),
-'@cascivo/icons':  resolve(root, 'packages/icons/src/index.tsx'),
-```
-
-**Checklist when adding a new `@cascivo/*` package or changing an existing package's exports:**
-
-1. Check if the package's `package.json` `exports["."].import` points to `./dist/`.
-2. If yes, add a source alias to **all** of the following:
-   - `apps/site/vite.config.ts`
-   - `apps/storybook/.storybook/main.ts` (`viteFinal` alias block)
-3. Verify each builds locally: `pnpm exec vp run @cascivo/site#build @cascivo/storybook#build`
-
-**Subpaths need their own alias, listed first.** A string alias is a _prefix_ replacement, so
-`'@cascivo/core'` alone rewrites `@cascivo/core/pure` to `…/src/index.ts/pure` and the build
-dies with `UNLOADABLE_DEPENDENCY … Not a directory`. Every alias map that carries
-`'@cascivo/core'` must carry `'@cascivo/core/pure'` **above** it — currently twelve of them
-(`apps/site`, `apps/storybook`, and the ten `apps/examples/*` that alias core). Adding a
-subpath to any `@cascivo/*` package means the same sweep.
-
-Also make the package's own consumers' `rollupOptions.external` **subpath-aware**: an exact
-string (`'@cascivo/core'`) does not match `@cascivo/core/pure`, so the subpath gets bundled
-in and its types are duplicated in the published `.d.ts` (`ProgressInput$1`, caught by
-`check-styles-complete`). Use `/^@cascivo\/core($|\/)/`.
-
-Packages that export source directly (components, layouts, charts, themes, tokens) do **not** need aliases — Rolldown resolves them via the `exports` map to their `.tsx`/`.css` source files.
-
----
-
-## Part 3 — Cascade Design System: Architecture Reference
-
-### Project Identity
-
-- **Name**: cascivo / `@cascivo`
-- **Tagline**: The CSS-native, signal-driven, AI-first React design system
-- **Competitors**: shadcn/ui, IBM Carbon Design System
-- **Core thesis**: Modern CSS + fine-grained signals + AI-native tooling = zero compromise on quality, performance, or developer experience
-
-### Core Principles
-
-1. **Simplicity** — adoption must be frictionless. No config hell, no wrapper components, no hidden magic.
-2. **Owned code** — components are copy-pasted into user projects (shadcn model). Users own what they use.
-3. **Modern CSS only** — `@layer`, `@container`, `:has()`, CSS custom properties. No Tailwind, no CSS-in-JS.
-4. **Signal-driven** — custom micro-FSM + Preact Signals in `@cascivo/core`. No `useState`/`useContext` for component interactivity. Zero unnecessary re-renders.
-5. **Beautiful by default** — twelve first-party themes (light, dark, warm, and nine more). Theming via `data-theme` attribute + CSS custom properties. Scoped to any container.
-6. **AI-first** — every component has a machine-readable manifest. MCP server, Claude Code skills, and auto-generated docs all derive from it.
-
-### Dependency Policy
-
-- Always use the **latest stable** version of every dependency (dev or runtime).
-- Peer dependencies must be explicit and version-ranged (`>=18.0.0`).
-- Runtime dependencies in `@cascivo/core`: none beyond `@preact/signals-react`.
-- Dev tooling: use vite+ (`vp`) as the single CLI — it bundles Oxlint, Oxfmt, Rolldown, Vitest (all Rust-backed).
-- vite+ is on its stable 1.x line (1.0 shipped 2026-09-28, MIT). On `vp` breaking changes, check https://viteplus.dev before updating.
-
-### Monorepo Structure
-
-**An app's `package.json` `name` must end with its directory name.** `apps/examples/pulse` is
-`@cascivo/example-pulse`; `apps/bench/runner` is `bench-runner`. Two apps cannot share a
-directory, so a name derived from the directory cannot collide either — and an agent working in
-one app can follow the rule without reading the others, which project isolation may not even
-allow. A duplicate name is not a scoped failure: the task runner refuses to run **any** task in
-the monorepo, and the cause is invisible from inside the app that triggered it (2026-08-22
-report, repo-level note). Enforced by `scripts/checks/app-package-names.test.ts`.
-
-```
-cascivo/
-├── packages/
-│   ├── core/           # @cascivo/core — micro-FSM, Preact Signals integration, base utilities
-│   ├── tokens/         # @cascivo/tokens — CSS design tokens (primitive → semantic → component)
-│   ├── themes/         # @cascivo/themes — light.css, dark.css, warm.css
-│   ├── components/     # Registry source — component TSX + CSS + manifest + tests (not published to npm)
-│   ├── react/          # @cascivo/react — prebuilt npm distribution of all components (use without copying)
-│   ├── i18n/           # @cascivo/i18n — signal-driven locale store, typed catalogs, Intl formatting
-│   ├── storage/        # @cascivo/storage — persisted signals over localStorage/IndexedDB, SSR-safe
-│   ├── icons/          # @cascivo/icons — optional SVG icon components
-│   ├── cli/            # cascivo CLI — npx cascivo init / add / list / update
-│   └── mcp/            # @cascivo/mcp — MCP server exposing component registry to AI agents
-├── apps/
-│   ├── site/           # Vite + Preact + cascivo (dogfood) — marketing + docs routes, data-driven from registry.json
-│   ├── storybook/      # Storybook — auto-generated stories from manifests
-│   ├── landing/        # Landing page — built with cascivo
-│   └── examples/
-│       ├── react-vite/ # Vite + React example app
-│       └── react-next/ # Next.js App Router example (RSC demo)
-├── skills/             # Claude Code skills — cascivo-add, cascivo-design-page, cascivo-create-theme, cascivo-extend
-├── scripts/
-│   ├── factory/        # Dark factory — in-session agent loop + backlog.json (component spec queue)
-│   └── registry/       # registry.json generation + GitHub raw URL map
-└── registry.json       # Component registry manifest — source of truth for CLI + MCP + docs
-```
-
-### Tech Stack
-
-Primary CLI: `vp` (vite+, installed globally via `~/.vite-plus/`). Single command for dev, build, test, lint, format, and task running. Stable since 1.0; track breaking changes on updates.
-
-| Concern               | Tool                            | Notes                                                      |
-| --------------------- | ------------------------------- | ---------------------------------------------------------- |
-| Primary CLI           | vite+ (`vp`)                    | unified toolchain — wraps all tools below                  |
-| Package manager       | pnpm (via `vp install`)         | workspaces, fast installs, disk-efficient                  |
-| Task orchestration    | `vp run`                        | replaces Turborepo — caching + dependency-aware task graph |
-| Build / dev server    | Vite + Rolldown (via `vp`)      | fastest HMR, Rust bundler                                  |
-| Linting               | Oxlint (via `vp lint`)          | Rust-based, ~100× faster than ESLint                       |
-| Formatting            | Oxfmt (via `vp fmt`)            | Rust-based formatter bundled with vite+                    |
-| Type checking         | `vp check`                      | runs fmt + lint + tsc together                             |
-| Testing (unit)        | Vitest (via `vp test`)          | native Vite integration                                    |
-| Testing (components)  | @testing-library/react (latest) |                                                            |
-| Testing (e2e)         | Playwright (latest)             |                                                            |
-| TypeScript            | 5.x strict mode                 | `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`   |
-| React (components)    | 18+                             | RSC-compatible via `"use client"`                          |
-| Preact (docs/signals) | latest                          | `preact/compat` for rendering React components in docs     |
-| State (core)          | @preact/signals-react (latest)  | fine-grained reactivity                                    |
-
-pnpm workspaces (`pnpm-workspace.yaml`) remain the underlying monorepo mechanism. `vp run` orchestrates tasks across packages with caching, replacing `turbo.json`.
-
-### Token Architecture
-
-Three-level CSS custom property system:
-
-```
-Primitive tokens:  --cascivo-blue-500: oklch(0.623 0.214 250)
-        ↓ (theme maps primitive → semantic)
-Semantic tokens:   --cascivo-color-accent: var(--cascivo-blue-500)
-        ↓ (component maps semantic → usage)
-Component tokens:  --cascivo-button-primary-bg: var(--cascivo-color-primary)
-```
-
-Themes override the semantic layer only. Users override component tokens for per-component brand adaptation. Applied via `data-theme="light|dark|warm"` on any DOM element.
-
-### Component Manifest Schema
-
-Every component in `packages/components/` ships a `<name>.meta.ts` manifest (e.g. `button.meta.ts`):
-
-```ts
-export const meta: ComponentMeta = {
-  name: string,           // 'Button'
-  description: string,    // one-line purpose
-  category: string,       // 'inputs' | 'display' | 'overlay' | 'layout' | 'feedback'
-  states: string[],       // FSM states: ['default', 'hover', 'focus', 'disabled', 'loading']
-  variants: string[],     // visual variants: ['primary', 'secondary', 'ghost', 'destructive']
-  sizes: string[],        // ['sm', 'md', 'lg']
-  props: PropMeta[],      // derived from TypeScript types
-  tokens: string[],       // CSS custom properties this component reads
-  accessibility: {
-    role: string,
-    wcag: 'AA',
-    keyboard: string[],   // ['Enter', 'Space']
-  },
-  examples: ExampleMeta[],     // { title, code, description }
-  dependencies: string[],      // ['@cascivo/core']
-  tags: string[],              // for search/discovery
-}
-```
-
-### AI Layer
-
-| Surface            | Package                        | Purpose                                                                                                                       |
-| ------------------ | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
-| Component manifest | `<name>.meta.ts` per component | Ground truth for all AI surfaces                                                                                              |
-| MCP server         | `@cascivo/mcp`                 | 26 tools, e.g. `list_components`, `get_component`, `scaffold_view`, `validate_view`, `add_to_project`                         |
-| Claude Code skills | `skills/`                      | `cascivo-add`, `cascivo-design-page`, `cascivo-create-theme`, `cascivo-extend`                                                |
-| Data-driven docs   | `apps/site/` (docs routes)     | Hand-authored TSX pages render props/tokens/examples live from `registry.json` at runtime — no markdown/HTML is pre-generated |
-| Registry manifest  | `registry.json`                | Machine-readable index — CLI + MCP + docs all read from this                                                                  |
-
-### Keeping the AI docs in sync — every shipped feature must be discoverable
-
-cascivo is AI-first for its **consumers and its contributors**. An adopter or agent that
-can't discover a primitive hand-rolls an inferior version — so a shipped-but-undocumented
-feature is a defect, not just a doc omission. Two update paths, by what you changed:
-
-- **A component / block / chart / layout** (has a `.meta.ts`): update the manifest, then
-  run `pnpm regen`. Every AI surface — `registry.json`, `llms/<name>.md`, `context/<name>.md`,
-  render prop-schemas, `boundaries.json` — is **generated** from the manifest and cannot
-  drift (CI regenerates and diffs). Commit the regenerated artifacts.
-- **A cross-cutting primitive** — a new `@cascivo/core` hook/primitive, or a `@cascivo/react`
-  runtime primitive (theme, forms) — has **no manifest**, so its concept docs are the source
-  of truth and you update them by hand:
-  1. Catalogue it in `docs/HEADLESS.md` (the primitive catalogue + the "React hook → cascivo
-     primitive" table). This is required.
-  2. If it changes the reactivity guidance an agent needs, also update the reactivity contract
-     in `docs/AI-RULES.md` and the "Reactivity & state" section in the `llms.txt` generator
-     (`scripts/llms/generate.ts`), then `pnpm regen`.
-
-**Enforced, not just requested:** `pnpm meta:check` runs `scripts/checks/primitive-docs.test.ts`,
-which fails if any public `@cascivo/core` export (or the named `@cascivo/react` theme/form
-primitives) is absent from the concept docs. Ship a new primitive → document it in `HEADLESS.md`,
-or add an `ALLOWLIST` entry with a reason. This is the analogue of `meta:check`'s
-`meta-coverage` guard for the (manifest-less) concept layer.
-
-### Dark Factory Pipeline
-
-Tiered automation:
-
-- **New components**: dark factory opens a PR → human reviews design + a11y → merge
-- **Patches, doc regeneration, story updates, lint fixes**: fully automated, auto-merged
-- **Trigger**: `scripts/factory/backlog.json` — queue of component specs the factory works through
-- **Loop**: generate → lint → type-check → test → if pass: open PR; if fail: self-heal (max 5 attempts) → escalate
-
-### Original v1 Component List (~20, historical)
-
-The starting scope, kept for context. The registry has long outgrown it — `registry.json` is the
-current list.
-
-`inputs`: Button, Input, Textarea, Select, Checkbox, Radio, Toggle, Slider
-`overlay`: Modal/Dialog, Dropdown, Tooltip, Toast
-`display`: Card, Badge, Alert, Avatar, Separator
-`navigation`: Tabs, Accordion
-`feedback`: Spinner
-
-### Distribution Model
-
-- `@cascivo/core`, `@cascivo/tokens`, `@cascivo/themes`, `@cascivo/icons`, `@cascivo/mcp`: versioned npm packages
-- Components: copy-paste via `npx cascivo add <component>` (source fetched from GitHub raw URLs, indexed in `registry.json`)
-- Themes: `import '@cascivo/themes/light.css'`
-
-### Browser & Accessibility Targets
-
-- **Browsers**: last 2 versions of Chrome, Firefox, Safari (required for `:has()`, `@container`)
-- **Accessibility**: WCAG 2.2 AA minimum
-- **RTL**: CSS logical properties throughout (`margin-inline-start`, `padding-block`, etc.)
-
-### Component Authoring Rules
-
-These rules are non-negotiable. Violating them ships broken code.
-
-#### Responsive by default (mobile-first)
-
-Base styles target the smallest screen (320px); enhancements layer via `min-width`/min container queries.
-Prefer `@container` (component adapts to its slot) over `@media` (viewport) wherever a component can live
-in arbitrary containers.
-
-**Canonical scale** (the only allowed width literals in `@media`/`@container` — `breakpoint:check` enforces this):
-
-| Name | Value   | px (16px root) | Used for                             |
-| ---- | ------- | -------------- | ------------------------------------ |
-| `sm` | `30rem` | 480            | narrow/small phone                   |
-| `md` | `40rem` | 640            | tablet/wide phone                    |
-| `lg` | `64rem` | 1024           | desktop (AppShell drawer breakpoint) |
-| `xl` | `80rem` | 1280           | wide desktop                         |
-
-`@media`/`@container` **cannot read CSS custom properties** — copy the rem value directly. The
-`--cascivo-screen-*` custom properties exist as documentation and JS/`calc` use only.
-
-**Touch targets:** Interactive controls must reach ≥44px effective tap target under
-`@media (pointer: coarse)`. Use `var(--cascivo-target-min-coarse, 2.75rem)` via `min-block-size`.
-Desktop density (pointer: fine) is untouched.
-
-**Never hide content:** `display:none` on mobile is data loss. Relocate content to a disclosure,
-drawer, or bottom-sheet so it stays keyboard-reachable and in the a11y tree.
-
-**Verify:** Pass the mobile-overflow + touch-target sweep at 320/360/390/414 before merging.
-Run: `pnpm breakpoint:check` to confirm no off-scale literals.
-
-#### Reactivity — use signals, not React hooks
-
-| Allowed                                                            | Forbidden                                    |
-| ------------------------------------------------------------------ | -------------------------------------------- |
-| `useSignal`, `useComputed`, `useSignalEffect` from `@cascivo/core` | `useState`                                   |
-| `useRef` for DOM references                                        | `useContext`                                 |
-| `useMachine` / `createMachine` for genuine internal FSM state      | `useEffect`, `useLayoutEffect`, `useReducer` |
-
-#### React apps must subscribe explicitly
-
-The site app (`apps/site`) is Preact (signals are natively reactive there). The
-React apps — `apps/examples/*`, `apps/bench/*` — get NO Babel signals transform:
-**any component that reads `signal.value` during render must call `useSignals()`
-(from `@cascivo/core`) as its first statement**, or it will never re-render on
-signal writes. Symptom: handlers fire, UI freezes (toggles that don't toggle, modals
-that don't open).
-
-In app code (the examples, and everything the docs show adopters), hold local state with
-`const [x, setX] = useSignalState(initial)` and write through `setX` — it subscribes for you,
-and unlike `x.value = …` it compiles under the React Compiler and passes
-`react-hooks/immutability` (`pnpm compiler:check`). Assigning a **module-level** `signal()`
-is fine. Library component source is exempt: it may keep writing `.value` in handlers.
-
-`useEffect` is banned in cascade components without exception. Any async DOM side effect (adding event listeners, calling imperative DOM methods like `showModal()`) must use `useSignalEffect` instead.
-
-`useRef` is allowed only for direct DOM element references (`useRef<HTMLElement>(null)`). It is not a state workaround.
-
-#### Syncing a controlled React prop into a signal
-
-**Where you read the mirrored signal decides which primitive is correct.** Preact runs
-effects **synchronously on write**, so a render-phase mirror executes every subscribed
-`useSignalEffect` body inside React's render phase — `showModal()`, listener registration
-against a pre-commit ref, and parent `setState` calls. That shipped in seven components
-before it was caught.
-
-**Read in render** (JSX, a `data-*` attribute, a derived value) — synchronous mirror. The
-write must be sync or the component renders one tick stale, and a render-phase write that
-only notifies the writing component's own subscription is a legal same-fiber update:
-
-```tsx
-const [value, setValue] = useControllableSignal({ value: valueProp, defaultValue, onChange })
-```
-
-**Read only inside `useSignalEffect`** — deferred mirror, so the effect lands after the
-commit where it was always meant to:
-
-```tsx
-const isOpen = useEffectPropSignal(open) // one microtask later; never during render
-useSignalEffect(() => {
-  if (isOpen.value) dialogRef.current?.showModal()
-})
-```
-
-Do **not** hand-roll `const s = useSignal(open); s.value = open` for the effect case — that
-is the exact shape that ran `showModal()` mid-render in `Modal`, `Sheet`, `Dropdown`,
-`AlertDialog`, `HeaderPanel`, `CommandMenu` and `Presence`. If a value is read at
-_callback_ time rather than to drive effect re-runs (e.g. inside an `IntersectionObserver`
-callback, which runs outside the tracking scope), use a plain `useRef` — a signal there is
-both redundant and one microtask stale.
-
-For callbacks that must always be current in an effect, use a ref:
-
-```tsx
-const onCloseRef = useRef(onClose)
-onCloseRef.current = onClose // sync during render
-// inside useSignalEffect: onCloseRef.current?.()
-```
-
-#### FSM — only create machines for genuine internal state
-
-A machine is justified when the component **itself drives the transitions** via user interaction. It is not justified when the state is entirely controlled by external props.
-
-**Good:** Input `idle` ↔ `focused` driven by onFocus/onBlur events — the component controls these transitions.
-
-**Bad:** Button `idle` ↔ `loading` when `loading` is a controlled prop passed in by the parent — the machine is never driven and `state.value` is always `'idle'`.
-
-**Bad:** Modal `closed` ↔ `open` when `open` is a controlled prop — same problem. Remove the machine; the signal IS the state.
-
-If a state can only be reached by the parent passing a prop, that state belongs in the parent, not in a machine inside the component.
-
-#### Visual states handled by CSS, not JS
-
-Hover, focus, active, and disabled visual states are handled by CSS (`:hover`, `:focus-visible`, `:active`, `:disabled`). Do not track these in a machine or signal. Use `data-state` attributes only for states that CSS pseudo-classes cannot express (e.g., `loading`, `error`).
-
-#### CSS `@function` and `if()` — progressive enhancement only
-
-CSS `@function` and `if(style())` are available in Chrome 133+ but not in Firefox or Safari yet. Every use in cascade components is progressive enhancement only.
-
-**Rules:**
-
-- Every declaration using a `@function` call or `if()` expression **must** have a static fallback for the same property immediately preceding it in the same rule block. The static value is the one non-supporting browsers use.
-- Functions must stay trivial: no recursion, single `result`, `calc()` for numeric deferral, defaults on all optional args.
-- No variable-spreading in `@function` (not yet supported by any browser).
-- The `fallback:check` script (`pnpm fallback:check`) enforces the static-fallback contract. It runs as part of the pre-commit check.
-
-**Pattern:**
-
-```css
-.component {
-  padding-block: 0.5rem; /* static fallback — all browsers */
-  padding-block: --cascivo-step(2); /* progressive — Chrome 133+ */
-}
-```
-
-**Browser support context:** As of 2026-06, `@function` is Chrome-only (133+). Cascade uses it as a forward-looking pilot; it becomes the primary form once Safari/Firefox ship.
-
-#### Consume shared headless primitives — don't hand-roll a11y
-
-`@cascivo/core` is the headless/behavior layer, but "don't hand-roll a11y" does not mean
-"never touch the DOM directly" — it means don't reimplement mechanics the platform or a
-shared primitive already gets right. Two sanctioned substrates cover interactive
-components, chosen by shape, plus `@cascivo/core` primitives for what neither covers:
-
-| Need                                                                                                                                                                                           | Sanctioned approach                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Never                                                                                                |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| Stable aria ids (`aria-labelledby`/`describedby`, anchor names)                                                                                                                                | `useId()`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | hardcoded string-literal ids, `Math.random()` — both collide across instances / break SSR hydration  |
-| Focus trap / return for a modal-style overlay                                                                                                                                                  | Native `<dialog>.showModal()` (browser handles trap + Escape) — see `modal.tsx`, `command-menu.tsx`. `FocusScope` is the fallback for a trap that can't be built on `<dialog>` (e.g. an in-page panel).                                                                                                                                                                                                                                                                                                              | manual `querySelectorAll` focus cycling                                                              |
-| Dismiss on outside pointer / Escape for a popup/menu                                                                                                                                           | Native `popover="auto"` + its `toggle` event (browser handles light-dismiss and Escape) — see `dropdown.tsx`, `menu.tsx`, `popover`'s `use-popover.ts`, `multi-select.tsx`, `context-menu.tsx`. `DismissableLayer` is the fallback when the overlay isn't/can't be built on the Popover API (nested custom layers, non-popover floating panels).                                                                                                                                                                     | raw `document.addEventListener('mousedown'\|'click'\|'pointerdown')` reimplementing either mechanism |
-| Arrow/Home/End nav across a **static, always-mounted** row of siblings (tabs, toggle groups, a menubar's top-level items)                                                                      | `useRovingFocus` — spread `getItemProps(index)` onto each known item                                                                                                                                                                                                                                                                                                                                                                                                                                                 | inline `nextElementSibling` walks or bespoke per-item `onKeyDown` switches                           |
-| Arrow/Home/End nav inside a **dynamically-opened** menu/listbox whose items are opaque children (dropdown, menu, context-menu, combobox, multi-select, command-menu, a menubar's open submenu) | The DOM-query "enabled items" pattern: `querySelectorAll('[role="menuitem"]:not([aria-disabled="true"])')`, move/wrap through the live list, focus the first item on open — see `menu.tsx`'s `enabledItems()`/`focusItem()` and `context-menu.tsx`'s copy of the same shape. `useRovingFocus` doesn't fit here: it requires cloning per-item props onto a statically-known array at render time and has no built-in disabled/separator skipping, neither of which holds for opaque, conditionally-open menu content. | a keydown switch that does not skip `aria-disabled` items or `role="separator"`                      |
-| Type-to-select in a menu/listbox                                                                                                                                                               | `useTypeahead`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | hand-rolled key buffers                                                                              |
-
-The `primitive-adoption:check` script (`pnpm primitives:check`, in CI) mechanically enforces
-only the two unambiguous, universally-checkable rules: no static aria-id literals / `Math.random()`
-ids (use `useId()`), and no _new_ raw outside-click listener via `document.addEventListener`.
-It does not (and structurally cannot) verify which of the two roving-nav shapes a component should
-use, or that a native `<dialog>`/Popover choice was correct — that judgment call is made at review
-time using the table above. Known-remaining raw-outside-click sites are tracked in the check's
-allowlist; migrate them to `DismissableLayer` (only when they're not already on the native Popover
-path), don't add to it.
-
-#### Layer discipline — every declaration inside a layer, no invented names
-
-CSS `@layer` order beats selector specificity, so an unlayered or mis-named rule silently
-defeats the whole system. Non-negotiable:
-
-- **Component/layout CSS** goes in `@layer cascivo.component { … }`. **Block CSS** goes in
-  `@layer cascivo.blocks.<name> { … }` (a sublayer of the canonical `cascivo.blocks` slot).
-- **Never leave a rule unlayered.** Unlayered author CSS beats every cascivo layer regardless
-  of specificity. The only sanctioned exception is an accessibility-guarantee media query
-  (`@media (forced-colors: active)`, `(prefers-contrast: …)`, `(prefers-reduced-motion: …)`),
-  which is deliberately top-level so it wins over everything — `unlayered:check` exempts exactly
-  those.
-- **Never invent a layer name.** The canonical order is the single source of truth
-  (`packages/tokens/src/layers.css`): `cascivo.reset < base < tokens < component < theme < blocks
-< override`. For sub-elements (a badge in a card, a dot in a badge) use **native CSS nesting
-  inside one layer block**, never a deeper sublayer like `cascivo.card.status`.
-- Enforced by `pnpm layers:check` (canonical order + legal block names, depth ≤ 3) and
-  `pnpm unlayered:check` (no unlayered shipped rules).
-
-#### Event-handler naming — name the callback by what it receives
-
-Predictability across the catalog matters more than any single component's taste. Name a
-change/activation callback by its **argument**, not the component:
-
-- Handler receives the component's **value** (string/number/array/boolean/Date — not a DOM
-  event): **`onValueChange(value)`**. This is the default for composite/custom-value
-  components (Tabs, Select, Combobox, Slider, Toggle, …).
-- Handler receives a raw **DOM `ChangeEvent`** from a real underlying element:
-  **`onChange(event)`** (native-wrapper components: Checkbox, NativeSelect, PasswordInput).
-- **Activation/selection** of a discrete item: **`onSelect(value)`** (menus, chart points).
-
-Never give a new component a value-carrying `onChange` — that name is reserved for the DOM
-event. The `docs/AI-RULES.md` "Event-handler naming" table is the published contract; keep
-it in sync. (The last value-carrying `onChange` aliases were removed at 1.0; the rule now
-holds with no exceptions.)
-
-#### Prop-name vocabulary — name the prop by what it carries
-
-The sibling of the handler rule, and the highest-frequency friction an adopter reports: nine
-wrong prop-name guesses in one small dashboard (2026-08-08), one of which (`gap="4"`) cost 20
-type errors in a single run. Predictability IS the product for an AI-first system.
-
-- A config-driven **collection**: **`items`** (nav/list/menu). A form control's choices are
-  **`options`**; a chart's points are **`data`**. Never `entries`. Exceptions, all real:
-  `DataTable.rows` (it renders a `<table>`), `Textarea.rows` (the HTML attribute),
-  `Steps.steps` / `ProgressIndicator.steps` (the stepper domain word; `Steps` also accepts
-  `items`), `CommandMenu.groups` (its items nest inside labelled groups). The published
-  list is generated from the registry by `scripts/lib/collection-vocabulary.ts` — never
-  hand-write a component list for this rule.
-- A **visual style** enum: **`variant`**. Never `shape`/`kind`/`type`/`appearance`. **Name the
-  TYPE after the prop too** — `type BadgeShape` sitting above `BadgeProps` in the `.d.ts` read
-  as the type of a `shape` prop that does not exist and cost an adopter four files.
-- The **tag of a discriminated union**: **`kind`**. Never `type` — that is reserved for
-  HTML-ish meanings (`input type`, renderer keys).
-- A **space-scale step**: numeric **`SpaceStep`** (`gap={4}`), never a string. Every other
-  size-ish prop is a string union, so this one is genuinely surprising — document it on the
-  prop.
-- A **rich replaceable slot**: **`actions`** typed `ReactNode`. Do not add another
-  `action={{ label, onClick }}` shorthand; `Alert.action` is the last of those.
-- **Body text** on a feedback component: **`description`**. A component whose children render
-  nothing must not accept children.
-
-`docs/AI-RULES.md` "Data and shape props" is the published contract and
-`scripts/checks/vocabulary.test.ts` enforces the mechanical half; keep both in sync.
-
-#### Checklist before committing a component
-
-1. No `useState`, `useContext`, `useEffect`, `useLayoutEffect`, `useReducer` imports anywhere in the file.
-   Every prop with a default in the signature carries a matching `default` in the manifest
-   (`pnpm meta:check` derives this from the code — an undocumented default renders as `—` in
-   the generated props table, which is how `Flex`'s `direction: 'vertical'` cost an adopter
-   three wrong layouts).
-2. Every machine transition is reachable by code inside the component (not just by external props).
-3. DOM side effects use `useSignalEffect`, not `useEffect`.
-4. All tests pass: `vp run @cascivo/components#test`.
-5. The component is exported from `packages/react/src/index.ts` (the prebuilt `@cascivo/react` distribution).
-6. User-visible strings default from the `@cascivo/i18n` built-in catalog (`t(builtin.<component>.<key>)`); a `labels` prop overrides per-instance. Never hardcoded English fallbacks.
-7. Passes the mobile-overflow + touch-target sweep at 320/360/390/414; no off-scale breakpoint literals (`pnpm breakpoint:check`).
-8. Consumes shared `@cascivo/core` primitives for aria ids, dismissal, roving focus, and typeahead — no hand-rolled equivalents (`pnpm primitives:check`).
-9. All CSS is inside a canonical `@layer` (`cascivo.component`, or `cascivo.blocks.<name>` for blocks) with no invented layer names and sub-elements via native nesting (`pnpm layers:check`, `pnpm unlayered:check`).
+<!-- Written by `npx docspack agent install`. Re-run it to update this block. -->
+<!-- docspack:end -->
+<!-- prettier-ignore-end -->
