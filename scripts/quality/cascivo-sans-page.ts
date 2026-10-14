@@ -16,6 +16,7 @@ import { createReadStream, existsSync, statSync } from 'node:fs'
 import { extname, join, normalize } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { chromium, type Page } from '@playwright/test'
+import { FONT_SIZES } from '../../apps/site/src/marketing/pages/cascivo-sans/sizes.generated.ts'
 
 const root = fileURLToPath(new URL('../..', import.meta.url))
 const distDir = join(root, 'apps/site/dist')
@@ -83,6 +84,22 @@ try {
   })
   assert.ok(loaded, 'Cascivo Sans did not load on /cascivo-sans')
   console.log('ok — font loaded on /cascivo-sans')
+
+  // Success criterion: every download link resolves, to the right bytes.
+  const links = await page
+    .locator('.cs-downloads a')
+    .evaluateAll((as) => as.map((a) => [a.getAttribute('download'), (a as HTMLAnchorElement).href]))
+  assert.equal(links.length, Object.keys(FONT_SIZES).length, 'download list is incomplete')
+  for (const [name, href] of links) {
+    const res = await page.request.get(href as string)
+    assert.equal(res.status(), 200, `${href} → ${res.status()}`)
+    assert.equal(
+      (await res.body()).length,
+      FONT_SIZES[name as string],
+      `${href} has the wrong bytes`,
+    )
+  }
+  console.log(`ok — all ${links.length} download links resolve to the right bytes`)
 
   const initial = await sampleStyle(page)
   assert.match(initial.fvs, /"wght" 400/)

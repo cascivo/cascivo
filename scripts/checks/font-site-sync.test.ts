@@ -13,6 +13,8 @@ import { describe, it } from 'node:test'
 import {
   FONT_FILES,
   clampAxis,
+  downloadHref,
+  fontFaceSnippet,
   testerStyle,
 } from '../../apps/site/src/marketing/pages/cascivo-sans/data.ts'
 
@@ -61,5 +63,29 @@ describe('type tester helpers', () => {
       '--cs-size': '40px',
       'font-style': 'italic',
     })
+  })
+})
+
+describe('download list and snippet', () => {
+  it('downloadHref uses the URL form the browser requests for url()', () => {
+    // A literal comma, as Chromium sends for the @font-face url() — one spelling per file.
+    assert.equal(
+      downloadHref('CascivoSans-Latin[opsz,wght].woff2'),
+      '/fonts/cascivo-sans/CascivoSans-Latin%5Bopsz,wght%5D.woff2',
+    )
+  })
+
+  it('fontFaceSnippet points relative url()s at every web file, as the page tells adopters', () => {
+    const snippet = fontFaceSnippet()
+    for (const f of FONT_FILES.filter((file) => file.kind === 'web')) {
+      assert.ok(snippet.includes(`url('${f.name}')`), `snippet lacks url('${f.name}')`)
+    }
+    assert.ok(!snippet.includes('/fonts/'), 'snippet must not hard-code a server path')
+  })
+
+  it('web files say they are Latin-only slices', () => {
+    for (const f of FONT_FILES.filter((file) => file.kind === 'web')) {
+      assert.match(f.label, /Latin/, `${f.name} label hides that it is a Latin slice`)
+    }
   })
 })

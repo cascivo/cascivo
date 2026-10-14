@@ -16,13 +16,13 @@ export const FONT_FILES: readonly FontFile[] = [
     name: 'CascivoSans-Latin[opsz,wght].woff2',
     source: `${BUILD}CascivoSans-Latin[opsz,wght].woff2`,
     kind: 'web',
-    label: 'Upright — variable WOFF2',
+    label: 'Upright — variable WOFF2, Latin',
   },
   {
     name: 'CascivoSans-Italic-Latin[opsz,wght].woff2',
     source: `${BUILD}CascivoSans-Italic-Latin[opsz,wght].woff2`,
     kind: 'web',
-    label: 'Italic — variable WOFF2',
+    label: 'Italic — variable WOFF2, Latin',
   },
   {
     name: 'CascivoSans-Regular.ttf',
@@ -57,6 +57,33 @@ export const FONT_FILES: readonly FontFile[] = [
 ]
 
 export const FONT_BASE = '/fonts/cascivo-sans/'
+
+/**
+ * `encodeURI`, not `encodeURIComponent`: it keeps the comma literal, which is how the browser
+ * requests the same file from `@font-face` — one spelling of each URL, not two.
+ */
+export function downloadHref(name: string): string {
+  return encodeURI(FONT_BASE + name)
+}
+
+/** The README's `@font-face` snippet, for adopters who copy the web files next to their CSS. */
+export function fontFaceSnippet(): string {
+  const faces = FONT_FILES.filter((f) => f.kind === 'web').map(
+    (f) => `@font-face {
+  font-family: 'Cascivo Sans';
+  src: url('${f.name}') format('woff2');
+  font-weight: 100 900;
+  font-style: ${f.name.includes('Italic') ? 'italic' : 'normal'};
+  font-display: swap;
+}`,
+  )
+  return `${faces.join('\n')}
+
+body {
+  font-family: 'Cascivo Sans', system-ui, sans-serif;
+  font-optical-sizing: auto; /* the default: opsz follows font-size in px (8-48) */
+}`
+}
 
 export const AXES = {
   wght: { min: 100, max: 900, initial: 400 },

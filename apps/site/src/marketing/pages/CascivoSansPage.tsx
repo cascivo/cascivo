@@ -4,7 +4,13 @@ import { Header } from '../sections/Header'
 import { Footer } from '../sections/Footer'
 import { LinkButton } from '../sections/LinkButton'
 import { TypeTester } from './cascivo-sans/TypeTester'
-import { FONT_BASE, FONT_FILES, SAMPLE, WEIGHT_STOPS } from './cascivo-sans/data'
+import {
+  FONT_FILES,
+  SAMPLE,
+  WEIGHT_STOPS,
+  downloadHref,
+  fontFaceSnippet,
+} from './cascivo-sans/data'
 import { FONT_SIZES } from './cascivo-sans/sizes.generated'
 import './cascivo-sans/font.css'
 
@@ -20,24 +26,7 @@ const CHARSET = [
 const PARAGRAPH =
   'A typeface for interfaces has a quiet job: stay legible at twelve pixels, hold its shape at ninety-six, and never draw attention to itself while doing either.'
 
-const SNIPPET = `@font-face {
-  font-family: 'Cascivo Sans';
-  src: url('/fonts/CascivoSans-Latin[opsz,wght].woff2') format('woff2');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Cascivo Sans';
-  src: url('/fonts/CascivoSans-Italic-Latin[opsz,wght].woff2') format('woff2');
-  font-weight: 100 900;
-  font-style: italic;
-  font-display: swap;
-}
-
-body {
-  font-family: 'Cascivo Sans', system-ui, sans-serif;
-}`
+const SNIPPET = fontFaceSnippet()
 
 const MAKING = [
   {
@@ -122,7 +111,7 @@ export function CascivoSansPage() {
             <ul className="cs-downloads">
               {FONT_FILES.map((file) => (
                 <li key={file.name}>
-                  <a href={FONT_BASE + encodeURIComponent(file.name)} download={file.name}>
+                  <a href={downloadHref(file.name)} download={file.name}>
                     {file.label}
                   </a>
                   <span className="cs-download-meta">
