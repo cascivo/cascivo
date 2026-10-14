@@ -3,7 +3,7 @@
   "name": "flow/flow",
   "type": "flow",
   "description": "The declarative, AI-first flow surface — render a node/edge graph from plain serializable data.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [],
   "dependencies": ["@cascivo/core"],
   "tags": ["flow", "graph", "declarative", "diagram", "ai-first"],

@@ -3,7 +3,7 @@
   "name": "textarea",
   "type": "component",
   "description": "Multi-line text input with optional label, hint, and error state",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/textarea/textarea.tsx"

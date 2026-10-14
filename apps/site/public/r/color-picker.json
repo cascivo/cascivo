@@ -3,7 +3,7 @@
   "name": "color-picker",
   "type": "component",
   "description": "Interactive color selection widget with saturation/lightness area, hue and alpha sliders",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/color-picker/color-picker.tsx"

@@ -3,7 +3,7 @@
   "name": "toggle",
   "type": "component",
   "description": "On/off switch built as an accessible button",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle/toggle.tsx"

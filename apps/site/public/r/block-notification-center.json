@@ -3,7 +3,7 @@
   "name": "block/notification-center",
   "type": "block",
   "description": "A list of notification alerts with a mark-all-read action.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/notification-center/notification-center.tsx"

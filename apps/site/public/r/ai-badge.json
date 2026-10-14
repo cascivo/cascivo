@@ -3,7 +3,7 @@
   "name": "ai-badge",
   "type": "component",
   "description": "Small \"AI\" marker for AI-generated content; with children it opens a toggletip explaining how AI was involved",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/ai-badge/ai-badge.tsx"

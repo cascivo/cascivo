@@ -3,7 +3,7 @@
   "name": "block/app-shell",
   "type": "block",
   "description": "Two-column layout with collapsible sidebar, nav links, and content area.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/app-shell/app-shell.tsx"

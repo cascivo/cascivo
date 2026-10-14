@@ -3,7 +3,7 @@
   "name": "relative-time",
   "type": "component",
   "description": "Displays a date as a localized phrase relative to now, auto-updating",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/relative-time/relative-time.tsx"

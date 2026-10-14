@@ -3,7 +3,7 @@
   "name": "progress-indicator",
   "type": "component",
   "description": "Shows progress through the steps of a multi-step flow",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-indicator/progress-indicator.tsx"

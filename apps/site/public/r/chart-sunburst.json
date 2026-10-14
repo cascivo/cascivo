@@ -3,7 +3,7 @@
   "name": "chart/sunburst",
   "type": "chart",
   "description": "Radial hierarchy — concentric rings where each node is an annular segment sized by value.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "sunburst", "hierarchy", "radial", "data-viz"],

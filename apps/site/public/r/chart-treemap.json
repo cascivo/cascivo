@@ -3,7 +3,7 @@
   "name": "chart/treemap",
   "type": "chart",
   "description": "Squarified treemap for visualizing part-to-whole hierarchical data.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "treemap", "hierarchy", "part-to-whole", "data-viz"],

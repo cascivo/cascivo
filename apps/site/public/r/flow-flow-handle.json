@@ -3,7 +3,7 @@
   "name": "flow/flow-handle",
   "type": "flow",
   "description": "A connection port on a node edge — where edges attach and interactive connect starts.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [],
   "dependencies": ["@cascivo/core"],
   "tags": ["flow", "handle", "port", "connect"],

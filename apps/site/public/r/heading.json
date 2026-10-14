@@ -3,7 +3,7 @@
   "name": "heading",
   "type": "component",
   "description": "Section heading with semantic level decoupled from visual size",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/heading/heading.tsx"

@@ -3,7 +3,7 @@
   "name": "chat-bubble",
   "type": "component",
   "description": "Message bubble for chat and messaging UIs with avatar, name, and timestamp support",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/chat-bubble/chat-bubble.tsx"

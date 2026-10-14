@@ -3,7 +3,7 @@
   "name": "sources",
   "type": "component",
   "description": "Collapsible, numbered list of the sources an AI answer drew on — \"Used 3 sources\" — whose numbers match InlineCitation",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sources/sources.tsx"

@@ -3,7 +3,7 @@
   "name": "ai-disclaimer",
   "type": "component",
   "description": "A short, quiet note that AI-generated content may be wrong — \"AI-generated content may be incorrect\"",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/ai-disclaimer/ai-disclaimer.tsx"

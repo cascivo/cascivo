@@ -3,7 +3,7 @@
   "name": "tool-call",
   "type": "component",
   "description": "Card for one AI tool invocation — the tool name, its lifecycle status, collapsible input/output, and approval actions",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tool-call/tool-call.tsx"

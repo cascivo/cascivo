@@ -3,7 +3,7 @@
   "name": "comparison",
   "type": "component",
   "description": "Reveals the difference between two layers with a draggable divider",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/comparison/comparison.tsx"

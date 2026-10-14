@@ -3,7 +3,7 @@
   "name": "log-viewer",
   "type": "component",
   "description": "Virtualized monospace console for high-frequency log and stream output",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/log-viewer/log-viewer.tsx"

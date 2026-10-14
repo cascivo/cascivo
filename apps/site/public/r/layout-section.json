@@ -3,7 +3,7 @@
   "name": "layout/section",
   "type": "layout",
   "description": "Page-section shell with block padding, centered inner width, and stack gap.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/section/section.tsx"

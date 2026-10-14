@@ -3,7 +3,7 @@
   "name": "modal",
   "type": "component",
   "description": "Accessible dialog overlay using native <dialog> element",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/modal/modal.tsx"

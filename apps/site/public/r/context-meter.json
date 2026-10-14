@@ -3,7 +3,7 @@
   "name": "context-meter",
   "type": "component",
   "description": "How much of a model’s context window a conversation has used — \"12K / 200K\" with a bar that warns as it fills",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/context-meter/context-meter.tsx"

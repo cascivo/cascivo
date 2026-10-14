@@ -3,7 +3,7 @@
   "name": "structured-list",
   "type": "component",
   "description": "Tabular row list for scannable data, optionally single-selectable",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/structured-list/structured-list.tsx"

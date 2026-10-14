@@ -3,7 +3,7 @@
   "name": "button",
   "type": "component",
   "description": "Triggers an action or event",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button/button.tsx"

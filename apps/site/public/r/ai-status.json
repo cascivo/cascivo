@@ -3,7 +3,7 @@
   "name": "ai-status",
   "type": "component",
   "description": "Announces what an AI is doing — thinking, generating, done, failed or stopped — with a shimmering label and an optional Stop button",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/ai-status/ai-status.tsx"

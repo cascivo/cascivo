@@ -3,7 +3,7 @@
   "name": "blockquote",
   "type": "component",
   "description": "Quoted passage with optional attribution footer",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blockquote/blockquote.tsx"

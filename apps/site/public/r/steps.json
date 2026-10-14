@@ -3,7 +3,7 @@
   "name": "steps",
   "type": "component",
   "description": "Visual progress indicator for multi-step flows with horizontal and vertical orientations",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/steps/steps.tsx"

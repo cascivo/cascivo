@@ -3,7 +3,7 @@
   "name": "chart/radar",
   "type": "chart",
   "description": "Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "radar", "spider", "polar", "data-viz"],

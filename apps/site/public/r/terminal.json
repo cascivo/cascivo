@@ -3,7 +3,7 @@
   "name": "terminal",
   "type": "component",
   "description": "An animated terminal that types out a script of commands and output — for demos, onboarding and agent transcripts",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/terminal/terminal.tsx"

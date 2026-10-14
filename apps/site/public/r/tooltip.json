@@ -3,7 +3,7 @@
   "name": "tooltip",
   "type": "component",
   "description": "Contextual label shown on hover or focus",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tooltip/tooltip.tsx"

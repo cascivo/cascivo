@@ -3,7 +3,7 @@
   "name": "pagination",
   "type": "component",
   "description": "Controls for navigating paged data sets, with page size selection",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pagination/pagination.tsx"

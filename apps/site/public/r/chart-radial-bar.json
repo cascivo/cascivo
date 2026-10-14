@@ -3,7 +3,7 @@
   "name": "chart/radial-bar",
   "type": "chart",
   "description": "Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "radial", "gauge", "progress", "data-viz"],

@@ -3,7 +3,7 @@
   "name": "user",
   "type": "component",
   "description": "Identity composite: an avatar with a name, description, and optional action slot",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/user/user.tsx"

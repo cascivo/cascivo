@@ -3,7 +3,7 @@
   "name": "flow/flow-node",
   "type": "flow",
   "description": "An HTML node box positioned in the viewport pane — draggable, selectable, with arbitrary children.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [],
   "dependencies": ["@cascivo/core"],
   "tags": ["flow", "node", "draggable", "graph"],

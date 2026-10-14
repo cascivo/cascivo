@@ -3,7 +3,7 @@
   "name": "chart/sankey",
   "type": "chart",
   "description": "Flow diagram — ranked nodes connected by throughput-sized link ribbons.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "sankey", "flow", "network", "data-viz"],

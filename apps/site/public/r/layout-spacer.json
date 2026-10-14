@@ -3,7 +3,7 @@
   "name": "layout/spacer",
   "type": "layout",
   "description": "Fixed-height spacing block using design token steps.",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/spacer/spacer.tsx"

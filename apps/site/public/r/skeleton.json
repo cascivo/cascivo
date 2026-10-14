@@ -3,7 +3,7 @@
   "name": "skeleton",
   "type": "component",
   "description": "Animated loading placeholder that mirrors the shape of pending content",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skeleton/skeleton.tsx"
