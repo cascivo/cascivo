@@ -318,7 +318,11 @@ async function buildEntry(
   // Charts, flow primitives, and the editor are npm-installed (not copy-pasted): empty files.
   const isNpmInstalled = root.type === 'chart' || root.type === 'flow' || root.type === 'editor'
 
-  const fileNames = isNpmInstalled ? [] : (await readdir(dir)).filter(isSourceFile).sort(sortFiles)
+  // The manifest is copied too, last: it is what an adopter's own tooling (the workbench, agents)
+  // reads to know the component's props and examples, and `cascivo update` merges it like the rest.
+  const fileNames = isNpmInstalled
+    ? []
+    : [...(await readdir(dir)).filter(isSourceFile).sort(sortFiles), `${localName}.meta.ts`]
   const files = fileNames.map((file) => `${BASE_URL}/${relDir}/${file}`)
   const fileHashes: Record<string, string> = {}
   for (const file of fileNames) {

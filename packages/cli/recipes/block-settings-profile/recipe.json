@@ -1,0 +1,7 @@
+{
+  "name": "block-settings-profile",
+  "files": [
+    "src/blocks/settings-profile.tsx",
+    "src/blocks/settings-profile.module.css"
+  ]
+}

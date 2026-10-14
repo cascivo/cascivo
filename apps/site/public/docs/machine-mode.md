@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/machine-mode.md
-  registry v1.8.0 · generated 2026-10-07
+  registry v1.9.0 · generated 2026-10-09
 -->
 
 # Machine mode
@@ -99,9 +99,9 @@ It sits on a subpath rather than the root export because it renders to a string,
 export that reaches `react-dom/server` would pull a server renderer into every browser app
 that imports the view runtime — eight of them here.
 
-That runtime is internal to the monorepo today and is not published to npm, so this entry
-point is available to the docs, MCP and playground surfaces rather than to an installed app.
-The other three work anywhere.
+The view runtime is published as `@cascivo/render`, so an installed app imports this entry
+point as `@cascivo/render/text`, the same way the docs, MCP and playground surfaces do. The
+other three work anywhere.
 
 ## What the document looks like
 

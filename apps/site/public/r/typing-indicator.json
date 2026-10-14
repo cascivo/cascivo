@@ -3,7 +3,7 @@
   "name": "typing-indicator",
   "type": "component",
   "description": "Three bouncing dots that hold a chat message slot while an assistant (or a person) is composing a reply",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/typing-indicator/typing-indicator.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/typing-indicator/typing-indicator.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/typing-indicator/typing-indicator.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],

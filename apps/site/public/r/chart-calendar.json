@@ -3,7 +3,7 @@
   "name": "chart/calendar",
   "type": "chart",
   "description": "Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "calendar", "heatmap", "time", "data-viz"],

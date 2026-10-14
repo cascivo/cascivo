@@ -3,7 +3,7 @@
   "name": "copy-button",
   "type": "component",
   "description": "Icon button that copies a value to the clipboard with copied feedback",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/copy-button/copy-button.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/copy-button/copy-button.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/copy-button/copy-button.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],

@@ -21,7 +21,7 @@
 
     /* ── Foreground ───────────────────────────────────── */
     --cascivo-color-foreground: oklch(0.2 0.01 80);
-    --cascivo-color-foreground-muted: oklch(0.55 0.015 80);
+    --cascivo-color-foreground-muted: oklch(0.525 0.015 80);
 
     /* ── Accent — monochrome ─────────────────────────── */
     --cascivo-color-accent: oklch(0.25 0.01 80);

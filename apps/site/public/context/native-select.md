@@ -70,6 +70,7 @@ It is a real <select>, so the browser provides the combobox role, keyboard inter
 
 ```jsx
 <NativeSelect
+  aria-label="Country"
   placeholder="Choose a country"
   options={[
     { value: 'us', label: 'United States' },

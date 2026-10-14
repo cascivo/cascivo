@@ -3,7 +3,7 @@
   "name": "shimmer-text",
   "type": "component",
   "description": "Text with a bright band sweeping through it — the \"Thinking…\" look for a label that marks work in progress",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shimmer-text/shimmer-text.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shimmer-text/shimmer-text.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shimmer-text/shimmer-text.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

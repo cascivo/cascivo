@@ -3,7 +3,7 @@
   "name": "scroll-area",
   "type": "component",
   "description": "A scroll container with styled, slim scrollbars and overflow shadows",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/scroll-area/scroll-area.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/scroll-area/scroll-area.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/scroll-area/scroll-area.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

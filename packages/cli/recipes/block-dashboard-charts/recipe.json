@@ -1,0 +1,9 @@
+{
+  "name": "block-dashboard-charts",
+  "files": [
+    "src/blocks/dashboard-charts.tsx"
+  ],
+  "dependencies": [
+    "@cascivo/charts"
+  ]
+}

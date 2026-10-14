@@ -3,7 +3,7 @@
   "name": "inline-citation",
   "type": "component",
   "description": "A numbered citation marker inside AI-generated text that links to its source and previews it in a hover card",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/inline-citation/inline-citation.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/inline-citation/inline-citation.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/inline-citation/inline-citation.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],

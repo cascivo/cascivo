@@ -1,5 +1,24 @@
 # @cascivo/render
 
+## 1.9.0
+
+### Minor Changes
+
+- dafb2cc: `<CascivoView components={{ Kpi, LineChart }}>` renders components beyond the built-in set: charts from `@cascivo/charts`, or an app's own. They are looked up before the built-ins and their props pass through unchecked. `validateView(view, { components })` accepts the same names, and `viewToMarkdown(view, { components })` reads them. `@cascivo/render` gains no dependency: only an app that renders charts installs `@cascivo/charts`.
+- dafb2cc: `<CascivoView>` renders 18 more components, the ones a page is built from: `PageHeader`, `Heading`, `Text`, `Stat`, `Status`, `Progress`, `Steps`, `Timeline`, `AvatarGroup`, `Image`, `Code`, `Blockquote`, `List` and `ListItem`, and the `CardHeader`, `CardTitle`, `CardContent` and `CardFooter` parts of a card. A JSON view can now carry a dashboard's header and KPI stats.
+
+### Patch Changes
+
+- Updated dependencies [dafb2cc]
+- Updated dependencies [dafb2cc]
+- Updated dependencies [dafb2cc]
+- Updated dependencies [dafb2cc]
+- Updated dependencies [dafb2cc]
+  - @cascivo/react@1.9.0
+  - @cascivo/core@1.9.0
+  - @cascivo/i18n@1.9.0
+  - @cascivo/text@1.9.0
+
 ## 1.8.0
 
 ### Patch Changes

@@ -306,8 +306,8 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [0.55, 0.015, 80],
-        "hex": "#767168"
+        "components": [0.525, 0.015, 80],
+        "hex": "#6f6a61"
       }
     },
     "color-info": {
@@ -514,8 +514,8 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [0.55, 0.015, 80],
-        "hex": "#767168"
+        "components": [0.525, 0.015, 80],
+        "hex": "#6f6a61"
       }
     },
     "color-warning": {

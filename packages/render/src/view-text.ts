@@ -3,6 +3,7 @@ import type { TextOptions } from '@cascivo/text'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { CascivoView } from './cascivo-view'
+import type { CascivoViewProps } from './cascivo-view'
 import type { ViewConfig } from './types'
 
 export interface ViewToMarkdownOptions {
@@ -10,6 +11,8 @@ export interface ViewToMarkdownOptions {
   data?: Record<string, unknown>
   /** Serialization options, forwarded to `@cascivo/text`. */
   text?: TextOptions
+  /** Components beyond the built-in set, exactly as `<CascivoView components>` takes them. */
+  components?: CascivoViewProps['components']
 }
 
 /**
@@ -29,6 +32,7 @@ export function viewToMarkdown(config: ViewConfig, options?: ViewToMarkdownOptio
     createElement(CascivoView, {
       config,
       ...(options?.data === undefined ? {} : { data: options.data }),
+      ...(options?.components === undefined ? {} : { components: options.components }),
     }),
   )
   return toMarkdown(html, options?.text)

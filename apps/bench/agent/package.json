@@ -1,0 +1,16 @@
+{
+  "name": "bench-agent",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bench": "node src/cli.ts",
+    "test": "vp test",
+    "check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  }
+}

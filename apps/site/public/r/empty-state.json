@@ -3,7 +3,7 @@
   "name": "empty-state",
   "type": "component",
   "description": "Placeholder for views that have no data to display",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/empty-state/empty-state.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/empty-state/empty-state.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/empty-state/empty-state.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

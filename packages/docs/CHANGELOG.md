@@ -1,5 +1,14 @@
 # @cascivo/docs
 
+## 0.2.16
+
+### Patch Changes
+
+- dafb2cc: The getting-started guide covers starting a project from a blueprint (`cascivo create --from`).
+- dafb2cc: The machine-mode guide no longer says `@cascivo/render` is unpublished; an installed app imports `@cascivo/render/text`.
+- dafb2cc: The getting-started guide covers `cascivo create --workspace` and the agent files every scaffold ships.
+- dafb2cc: `cascivo add` copies each component's manifest (`<name>.meta.ts`) next to its source, and `cascivo update` brings it to components added before. The getting-started guide says so.
+
 ## 0.2.15
 
 ### Patch Changes

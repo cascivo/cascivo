@@ -2,6 +2,7 @@
 import { signal, useSignals } from '@cascivo/core'
 import { translateKey } from '@cascivo/i18n'
 import React from 'react'
+import type { ComponentType } from 'react'
 import type { Signal } from '@preact/signals-react'
 import { componentMap } from './component-map'
 import type { ComponentNode, PropValue, TranslationRef, ViewConfig } from './types'
@@ -37,6 +38,13 @@ export interface CascivoViewProps {
   actions?: Record<string, (...args: unknown[]) => unknown>
   /** 'throw' (default) | 'render' — render mode shows errors inline for the playground. */
   onInvalid?: 'throw' | 'render'
+  /**
+   * Components the view may name beyond the built-in set, keyed by the name a node uses, e.g.
+   * `{ Kpi, LineChart }` from `@cascivo/charts`. Looked up before the built-ins, and accepted by
+   * the validator; their props are passed through unchecked, since no manifest schema covers them.
+   * This is how a host renders charts without `@cascivo/render` depending on `@cascivo/charts`.
+   */
+  components?: Record<string, ComponentType<never>>
 }
 
 function isSignal(v: unknown): v is Signal<ViewConfig> {
@@ -81,8 +89,12 @@ function renderNode(
   actions: Record<string, (...args: unknown[]) => unknown> | undefined,
   state: StateSignals,
   key: string,
+  components: Record<string, ComponentType<never>> | undefined,
 ): React.ReactNode {
-  const Comp = componentMap[node.component]
+  // A host component's props are whatever its node carries: unchecked, as the prop documents.
+  const Comp =
+    (components?.[node.component] as ComponentType<Record<string, unknown>> | undefined) ??
+    componentMap[node.component]
   if (!Comp) return null
 
   const props: Record<string, unknown> = {}
@@ -131,7 +143,7 @@ function renderNode(
       children = translateKey(node.children.$t, node.children.params)
     } else if (Array.isArray(node.children)) {
       children = node.children.map((child, i) =>
-        renderNode(child as ComponentNode, data, actions, state, `${key}-${i}`),
+        renderNode(child as ComponentNode, data, actions, state, `${key}-${i}`, components),
       )
     }
   }
@@ -150,6 +162,7 @@ export function CascivoView({
   data,
   actions,
   onInvalid = 'throw',
+  components,
 }: CascivoViewProps): React.ReactElement | null {
   useSignals()
 
@@ -167,7 +180,10 @@ export function CascivoView({
   }
   const state = stateRef.current.signals
 
-  const { valid, errors } = validateView(resolvedConfig)
+  const { valid, errors } = validateView(
+    resolvedConfig,
+    components ? { components: Object.keys(components) } : undefined,
+  )
   if (!valid) {
     const msg = errors.map((e) => `${e.path}: ${e.message}`).join('\n')
     if (onInvalid === 'render') {
@@ -186,7 +202,9 @@ export function CascivoView({
     <div className="cascivo-view">
       {Object.entries(regions).map(([regionName, nodes]) => (
         <div key={regionName} className={`cascade-region cascade-region--${regionName}`}>
-          {nodes.map((node, i) => renderNode(node, data, actions, state, `${regionName}-${i}`))}
+          {nodes.map((node, i) =>
+            renderNode(node, data, actions, state, `${regionName}-${i}`, components),
+          )}
         </div>
       ))}
     </div>

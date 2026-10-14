@@ -3,7 +3,7 @@
   "name": "button-group",
   "type": "component",
   "description": "Visually joins a set of related buttons into a single segmented control",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button-group/button-group.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button-group/button-group.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button-group/button-group.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

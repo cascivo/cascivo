@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/text",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "private": false,
   "description": "Machine mode for cascivo — serialize a rendered UI to Markdown for agents. Docs offline: npx @cascivo/docs",
   "keywords": [

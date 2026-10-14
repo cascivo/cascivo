@@ -1,0 +1,6 @@
+{
+  "name": "block-notification-center",
+  "files": [
+    "src/blocks/notification-center.tsx"
+  ]
+}

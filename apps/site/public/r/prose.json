@@ -3,7 +3,7 @@
   "name": "prose",
   "type": "component",
   "description": "Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prose/prose.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prose/prose.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prose/prose.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

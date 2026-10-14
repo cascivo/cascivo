@@ -1,0 +1,40 @@
+/* Your app's own styles live in the cascivo.example layer (declared in index.html). */
+@layer cascivo.example {
+  .board {
+    position: relative;
+    min-block-size: 32rem;
+    overflow: hidden;
+    border: 1px dashed var(--cascivo-border-default);
+    border-radius: var(--cascivo-radius-surface);
+    background: var(--cascivo-color-surface);
+  }
+
+  /* Positions are shared by everyone in the room, so they are physical (left/top), not
+     logical: an RTL visitor must see a note where an LTR one put it. */
+  .note {
+    position: absolute;
+    top: 0;
+    left: 0;
+    inline-size: 14rem;
+  }
+
+  .handle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--cascivo-space-1) var(--cascivo-space-2);
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .cursor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+    border-radius: 50%;
+    background: var(--cascivo-color-accent);
+    pointer-events: none;
+  }
+}

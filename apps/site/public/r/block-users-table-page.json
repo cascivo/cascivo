@@ -3,10 +3,13 @@
   "name": "block/users-table-page",
   "type": "block",
   "description": "Full users management page with table, search, and invite action.",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/users-table-page/users-table-page.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/users-table-page/users-table-page.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/react"],

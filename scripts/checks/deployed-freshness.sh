@@ -194,9 +194,11 @@ for HOST in "${HOSTS[@]}"; do
   # version boundary (zero-config SSR via the node export condition, WS-A).
   assert_contains "$HOST/docs/using-with-vite-ssr.md" \
     "noExternal" "suppressHydrationWarning" "0.10"
-  # The layout llms doc is copy-paste-only and must NOT advertise a phantom
-  # `@cascivo/layout/…` package import (2026-07-22 report finding #6, stale-deploy class).
-  assert_contains "$HOST/llms/layout/dashboard-layout.md" "Copy-paste only"
+  # The layout llms doc must name the real import — DashboardLayout ships in
+  # @cascivo/react since #274 — and must NOT advertise a phantom `@cascivo/layout/…`
+  # package import (2026-07-22 report finding #6, stale-deploy class).
+  assert_contains "$HOST/llms/layout/dashboard-layout.md" \
+    "import { DashboardLayout } from '@cascivo/react'"
   assert_absent "$HOST/llms/layout/dashboard-layout.md" "@cascivo/layout/"
   # The most-guessable components URL must resolve, not 404 (2026-07-22 report finding #10).
   assert_http_ok "$HOST/docs/components"

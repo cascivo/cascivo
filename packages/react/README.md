@@ -273,7 +273,7 @@ routing break after adding one of these, check that the import resolves to
 - **Form** — Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper
 - **IconButton** — Square, icon-only button with a required accessible label
 - **Input** — Text input field with optional label, hint, and error state
-- **InputGroup** — Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders
+- **InputGroup** — Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; InputGroupButtons collapses adjacent button borders
 - **Label** — Accessible caption for a form control
 - **MessageActions** — The action row under an AI reply — copy, good / bad feedback as toggle buttons, and regenerate
 - **MultiSelect** — Searchable multi-value select with a popover listbox, chips and grouping

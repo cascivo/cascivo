@@ -1,0 +1,6 @@
+{
+  "name": "block-users-table-page",
+  "files": [
+    "src/blocks/users-table-page.tsx"
+  ]
+}

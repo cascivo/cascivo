@@ -1,0 +1,7 @@
+{
+  "name": "block-pricing",
+  "files": [
+    "src/blocks/pricing.tsx",
+    "src/blocks/pricing.module.css"
+  ]
+}

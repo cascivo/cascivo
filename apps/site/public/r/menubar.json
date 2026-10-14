@@ -3,7 +3,7 @@
   "name": "menubar",
   "type": "component",
   "description": "Horizontal application menu bar with keyboard-navigable dropdown menus",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menubar/menubar.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menubar/menubar.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menubar/menubar.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

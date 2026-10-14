@@ -1,0 +1,14 @@
+{
+  "name": "webhooks",
+  "files": [
+    "src/routes/webhooks.tsx",
+    "src/webhooks.ts",
+    "worker/webhooks.ts"
+  ],
+  "nav": [
+    {
+      "label": "Webhooks",
+      "href": "/webhooks"
+    }
+  ]
+}

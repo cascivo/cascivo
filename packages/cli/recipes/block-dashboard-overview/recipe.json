@@ -1,0 +1,7 @@
+{
+  "name": "block-dashboard-overview",
+  "files": [
+    "src/blocks/dashboard-overview.tsx",
+    "src/blocks/dashboard-overview.module.css"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "name": "block-testimonials",
+  "files": [
+    "src/blocks/testimonials.tsx",
+    "src/blocks/testimonials.module.css"
+  ]
+}

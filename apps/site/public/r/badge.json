@@ -3,7 +3,7 @@
   "name": "badge",
   "type": "component",
   "description": "Small status label or category indicator",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/badge/badge.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/badge/badge.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/badge/badge.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

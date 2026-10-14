@@ -3,7 +3,7 @@
   "name": "chart/line-chart",
   "type": "chart",
   "description": "Time-series or numeric line chart with multi-series support, hover tooltip, and legend.",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "line", "time-series", "data-viz"],

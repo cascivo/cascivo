@@ -1,0 +1,15 @@
+{
+  "name": "voice",
+  "files": [
+    "src/routes/voice.tsx",
+    "src/voice.ts",
+    "worker/voice.ts",
+    "worker/scripted-voice.ts"
+  ],
+  "nav": [
+    {
+      "label": "Voice",
+      "href": "/voice"
+    }
+  ]
+}

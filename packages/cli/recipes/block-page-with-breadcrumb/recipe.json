@@ -1,0 +1,6 @@
+{
+  "name": "block-page-with-breadcrumb",
+  "files": [
+    "src/blocks/page-with-breadcrumb.tsx"
+  ]
+}

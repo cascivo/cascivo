@@ -3,7 +3,7 @@
   "name": "chart/scatter-chart",
   "type": "chart",
   "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "scatter", "plot", "data-viz"],

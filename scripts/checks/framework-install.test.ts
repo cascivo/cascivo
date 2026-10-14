@@ -60,6 +60,9 @@ const CLI = join(REPO_ROOT, 'packages', 'cli', 'dist', 'index.mjs')
  */
 const PACKAGES = [
   'react',
+  'charts',
+  'eslint-config',
+  'eslint-plugin',
   'core',
   'themes',
   'tokens',
@@ -74,6 +77,7 @@ const PACKAGES = [
 ]
 const NEEDS_DIST = [
   'react',
+  'charts',
   'core',
   'i18n',
   'storage',
@@ -344,6 +348,99 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
         `entry CSS is ${Math.round(css.length / 1024)} KB — that is aggregate-sheet sized. ` +
           'The scaffold should ship only the components it uses.',
       )
+    })
+
+    it('passes its own format:check', { skip: !ready }, () => {
+      assertFormatted(app)
+    })
+  })
+
+  /**
+   * `cascivo create --workspace`: the app in apps/web, packages/ui, Vite+ running each package's
+   * scripts. Its own root scripts are the assertion: install, typecheck, lint (the real
+   * @cascivo/eslint-config, packed), test, build and format:check, exactly as its CI runs them.
+   */
+  for (const framework of ['react-vite', 'cloudflare'] as const)
+    describe(`${framework} workspace`, () => {
+      let root: string
+
+      before(() => {
+        if (!ready) return
+        const work = mkdtempSync(join(tmpdir(), 'cascivo-fw-workspace-'))
+        run(
+          'node',
+          [CLI, 'create', 'ws-app', '--workspace', '--yes', '--framework', framework],
+          work,
+        )
+        root = join(work, 'ws-app')
+        for (const dir of ['apps/web', 'packages/ui']) {
+          const path = join(root, dir, 'package.json')
+          const manifest = JSON.parse(readFileSync(path, 'utf8')) as {
+            dependencies?: Record<string, string>
+            devDependencies?: Record<string, string>
+          }
+          for (const deps of [manifest.dependencies, manifest.devDependencies]) {
+            for (const dep of Object.keys(deps ?? {})) {
+              if (dep.startsWith('@cascivo/')) deps![dep] = tarballFor(dep.slice(9))
+            }
+          }
+          writeFileSync(path, JSON.stringify(manifest, null, 2) + '\n')
+        }
+        const overrides = PACKAGES.map((p) => `  '@cascivo/${p}': '${tarballFor(p)}'`).join('\n')
+        writeFileSync(
+          join(root, 'pnpm-workspace.yaml'),
+          `packages:\n  - apps/*\n  - packages/*\ndangerouslyAllowAllBuilds: true\noverrides:\n${overrides}\n`,
+        )
+        writeFileSync(join(root, '.npmrc'), 'strict-peer-dependencies=false\n')
+        run('pnpm', ['install'], root)
+      })
+
+      it('passes its own typecheck, lint, test and build', { skip: !ready }, () => {
+        for (const script of ['typecheck', 'lint', 'build']) run('pnpm', ['run', script], root)
+        assert.ok(existsSync(join(root, 'apps/web/dist')), 'the build wrote no app')
+        if (framework !== 'react-vite') return
+        // Non-vacuity: `vp run -r test` must reach the app's smoke test, not exit 0 having run none.
+        const out = execFileSync('pnpm', ['run', 'test'], { cwd: root, encoding: 'utf8' })
+        assert.match(out, /1 passed/, `the workspace test run did not run the smoke test:\n${out}`)
+      })
+
+      it('passes its own format:check', { skip: !ready }, () => {
+        run('pnpm', ['run', 'format:check'], root)
+      })
+    })
+
+  /**
+   * A blueprint page renders a registry block whose source is copied into the app and rewritten
+   * to import from @cascivo/react (scripts/recipes/blocks.ts). Only a real install can show that
+   * every rewritten import resolves and type-checks against the packed package.
+   */
+  describe('react-vite blueprint with every block', () => {
+    let app: string
+
+    before(() => {
+      if (!ready) return
+      const blocks = readdirSync(join(REPO_ROOT, 'packages/cli/recipes'))
+        .filter((d) => d.startsWith('block-'))
+        .map((d) => d.slice('block-'.length))
+      const blueprint = join(
+        mkdtempSync(join(tmpdir(), 'cascivo-fw-blueprint-')),
+        'cascivo.app.json',
+      )
+      writeFileSync(
+        blueprint,
+        JSON.stringify({
+          name: 'blueprint-app',
+          pages: blocks.map((block, i) => ({ title: `Page ${i + 1}`, block })),
+        }),
+      )
+      app = scaffold('react-vite', 'blueprint-app', ['--from', blueprint])
+      run('pnpm', ['exec', 'tsc', '--noEmit'], app)
+      run('pnpm', ['exec', 'vite', 'build'], app)
+    })
+
+    it('type-checks and builds with every block on a page', { skip: !ready }, () => {
+      assert.ok(existsSync(join(app, 'src', 'blocks')), 'the blueprint wrote no blocks')
+      assert.ok(existsSync(join(app, 'dist', 'index.html')), 'vite build wrote no index.html')
     })
 
     it('passes its own format:check', { skip: !ready }, () => {

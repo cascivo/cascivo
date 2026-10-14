@@ -1,5 +1,16 @@
 # @cascivo/ai
 
+## 1.9.0
+
+### Patch Changes
+
+- Updated dependencies [dafb2cc]
+- Updated dependencies [dafb2cc]
+- Updated dependencies [dafb2cc]
+  - @cascivo/tokens@1.3.1
+  - @cascivo/core@1.9.0
+  - @cascivo/i18n@1.9.0
+
 ## 1.8.0
 
 ### Patch Changes

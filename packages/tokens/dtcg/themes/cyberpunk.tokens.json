@@ -239,8 +239,8 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [0.65, 0.25, 18],
-        "hex": "#ff1d51"
+        "components": [0.665, 0.25, 18],
+        "hex": "#ff2756"
       }
     },
     "color-destructive-content": {

@@ -30,6 +30,8 @@ Usage: cascivo <command> [options]
 Commands:
   create [name]            Scaffold a new ready-to-run app (shell + nav + theme)
                            (--template <spec>: start from a marketplace template)
+  app add page "<title>"   Add a page to the app (--block <name>); app add example <name>,
+                           app upgrade: change an app the way create would have made it
   init                     Set up cascivo in the current project
   add <component...>       Add components or a template to your project
   list [--installed]       List available components
@@ -52,6 +54,18 @@ Run "cascivo <command> --help" for details.`
 const THEME_LIST = THEMES.join(' | ')
 
 const COMMAND_HELP: Record<string, string> = {
+  app: `Usage: cascivo app add page "<title>" [options]
+       cascivo app add example <name>
+       cascivo app upgrade
+
+Change an app made by \`cascivo create\` through its cascivo.app.json: add a page, add a
+cloudflare example, or regenerate it with this CLI's templates. The app is generated before and
+after the change, and each file that changes is merged three ways: files you have not touched
+are replaced, your edits are kept, and a clash gets conflict markers (the command then exits
+non-zero). The original files are rebuilt with the CLI version recorded in cascivo.app.json.
+
+Options:
+  --block <name>            The registry block a new page renders (default: a page to build out)`,
   mcp: `Usage: cascivo mcp init [options]
 
 Add the cascivo MCP server (npx -y @cascivo/mcp) to your coding agent's project config.
@@ -133,6 +147,11 @@ Options:
                             write needs a signed-in user (cloudflare only).
                             --auth email,oauth: both
   --template <spec>         Start from a marketplace template (@ns/name or owner/repo/name)
+  --from <file>             Compile a blueprint (cascivo.app.json): name, framework, theme,
+                            pages [{ title, block? }], runtime, examples, auth. Each page
+                            renders its registry block. Replaces the other options.
+  --workspace               Put the app in a pnpm workspace: apps/web, packages/ui for your own
+                            components, Vite+ running every package's scripts, CI, a smoke test
   --theme <name>            Theme to install (${THEME_LIST})
   --sections "<a, b>"       Comma-separated nav section labels (one component each)
   --package-manager <pm>    Package manager for README/next-steps (alias --pm; default: auto-detect)
@@ -207,8 +226,9 @@ Options:
 Generate TSX from a ViewConfig JSON file (see the MCP scaffold_view tool).
 
 Options:
-  --out <file>            Output file (default: stdout)
-  --components-dir <dir>  Components import base (default: ./src/components/ui)`,
+  --out <file>            Output file (default: <config>.tsx beside the input)
+  --components-dir <dir>  Components import base (default: ./src/components/ui)
+  --from <package>        Import every component from one package instead, e.g. @cascivo/react`,
   doctor: `Usage: cascivo doctor [options]
 
 Check components in this repo for cascivo rule violations (banned React hooks,
@@ -274,6 +294,11 @@ export async function run(args: string[]): Promise<void> {
       const { create } = await import('./commands/create.js')
       await create(rest)
       break
+    case 'app': {
+      const { app } = await import('./commands/app.js')
+      await app(rest)
+      break
+    }
     case 'init':
       await init(rest)
       break

@@ -38,8 +38,8 @@
        three. Hue and chroma are untouched, so the theme's character is unchanged.
        Guarded by scripts/checks/muted-text-contrast.test.ts. */
     --cascivo-color-text-muted: oklch(0.625 0.02 280);
-    --cascivo-color-text-on-accent: oklch(1 0 0); /* static fallback */
-    --cascivo-color-text-on-destructive: oklch(1 0 0); /* static fallback */
+    --cascivo-color-text-on-accent: oklch(0.145 0.005 250); /* static fallback */
+    --cascivo-color-text-on-destructive: oklch(0.145 0.005 250); /* static fallback */
     /* Progressive auto-contrast: contrast-color() stored in a custom property
    does not honor the static fallback on unsupported browsers — the var()
    substitution keeps the invalid token and the color inherits foreground.
@@ -52,7 +52,7 @@
     }
     /* ── Accent — violet ──────────────────────────────── */
     --cascivo-color-accent: oklch(0.7 0.22 290);
-    --cascivo-color-accent-foreground: oklch(1 0 0);
+    --cascivo-color-accent-foreground: oklch(0.145 0.005 250);
     --cascivo-color-accent-hover: oklch(0.76 0.2 290); /* static fallback */
     --cascivo-color-accent-hover: oklch(from var(--cascivo-color-accent) 0.76 0.2 h); /* derived */
     --cascivo-color-accent-active: oklch(0.82 0.17 290); /* static fallback */

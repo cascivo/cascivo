@@ -7,6 +7,7 @@ npx cascivo create my-app          # scaffold a full app — Vite + React, app s
 npx cascivo create my-app --framework astro   # …as an Astro site instead (file routing, zero-JS pages)
 npx cascivo create my-app --framework cloudflare  # …as a client app + API on one Cloudflare Worker
 npx cascivo create my-app --template owner/repo/dashboard  # …and start from a template
+npx cascivo create --from cascivo.app.json  # …from a blueprint: pages that render registry blocks
 npx cascivo init                   # scaffold cascivo.config.ts + tokens; detects your package manager
 cascivo add button card            # copy component source from the registry into your project
 cascivo add owner/repo/button      # install from any third-party registry

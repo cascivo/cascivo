@@ -1,0 +1,7 @@
+{
+  "name": "block-auth-login",
+  "files": [
+    "src/blocks/auth-login.tsx",
+    "src/blocks/auth-login.module.css"
+  ]
+}

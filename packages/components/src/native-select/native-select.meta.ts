@@ -98,6 +98,7 @@ export const meta: ComponentMeta = {
     {
       title: 'Basic',
       code: `<NativeSelect
+  aria-label="Country"
   placeholder="Choose a country"
   options={[
     { value: 'us', label: 'United States' },

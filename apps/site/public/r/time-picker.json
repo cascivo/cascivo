@@ -3,7 +3,7 @@
   "name": "time-picker",
   "type": "component",
   "description": "Native time input wrapper with label, hint, error, and size variants",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/time-picker/time-picker.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/time-picker/time-picker.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/time-picker/time-picker.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

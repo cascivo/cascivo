@@ -3,10 +3,13 @@
   "name": "block/empty-dashboard",
   "type": "block",
   "description": "Dashboard page showing an empty state with a call-to-action button.",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/empty-dashboard/empty-dashboard.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/empty-dashboard/empty-dashboard.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/react"],

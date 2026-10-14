@@ -3,7 +3,7 @@
   "name": "icon-button",
   "type": "component",
   "description": "Square, icon-only button with a required accessible label",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/icon-button/icon-button.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/icon-button/icon-button.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/icon-button/icon-button.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

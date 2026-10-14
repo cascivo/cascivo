@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "cascivo": {
+      "command": "npx",
+      "args": ["-y", "@cascivo/mcp"]
+    }
+  }
+}

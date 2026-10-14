@@ -3,7 +3,7 @@
   "name": "brand/logo",
   "type": "component",
   "description": "The cascivo mark and its sanctioned lockups, as inline SVG",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/brand/logo/logo.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/brand/logo/logo.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/brand/logo/logo.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

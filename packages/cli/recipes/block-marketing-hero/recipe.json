@@ -1,0 +1,7 @@
+{
+  "name": "block-marketing-hero",
+  "files": [
+    "src/blocks/marketing-hero.tsx",
+    "src/blocks/marketing-hero.module.css"
+  ]
+}

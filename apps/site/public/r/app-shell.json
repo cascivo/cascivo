@@ -3,7 +3,7 @@
   "name": "app-shell",
   "type": "component",
   "description": "Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/app-shell/app-shell.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/app-shell/app-shell.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/app-shell/app-shell.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

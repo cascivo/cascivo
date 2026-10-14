@@ -1,0 +1,7 @@
+{
+  "name": "block-faq",
+  "files": [
+    "src/blocks/faq.tsx",
+    "src/blocks/faq.module.css"
+  ]
+}

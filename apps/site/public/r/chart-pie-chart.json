@@ -3,7 +3,7 @@
   "name": "chart/pie-chart",
   "type": "chart",
   "description": "Pie or donut chart with hover segments and optional legend.",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "pie", "donut", "data-viz"],

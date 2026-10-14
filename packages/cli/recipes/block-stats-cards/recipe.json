@@ -1,0 +1,6 @@
+{
+  "name": "block-stats-cards",
+  "files": [
+    "src/blocks/stats-cards.tsx"
+  ]
+}

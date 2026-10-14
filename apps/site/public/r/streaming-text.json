@@ -3,7 +3,7 @@
   "name": "streaming-text",
   "type": "component",
   "description": "Reveals text character by character with a blinking cursor, catching up as a streamed reply grows",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/streaming-text/streaming-text.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/streaming-text/streaming-text.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/streaming-text/streaming-text.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

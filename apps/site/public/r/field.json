@@ -3,7 +3,7 @@
   "name": "field",
   "type": "component",
   "description": "Form-field wrapper composing label, control, description, and error",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/field/field.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/field/field.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/field/field.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

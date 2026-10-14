@@ -216,7 +216,9 @@ describe('layer-order:check — one canonical @layer order, no drift', () => {
     new Set(['.css']),
     new Set(),
   )
-    .filter((f) => f.includes(`${sep}src${sep}`))
+    // packages/cli/recipes/ is app source `cascivo create` writes, not library CSS: it belongs
+    // in the app's own slot (cascivo.example), which the scaffolded index.html declares.
+    .filter((f) => f.includes(`${sep}src${sep}`) && !f.includes(`${sep}cli${sep}recipes${sep}`))
     .flatMap(scanBlockNames)
 
   it('found the shipped @layer blocks', () => {

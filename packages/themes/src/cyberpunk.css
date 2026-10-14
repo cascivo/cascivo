@@ -72,7 +72,7 @@
     --cascivo-color-active-bg: oklch(0.7 0.25 330 / 0.12);
 
     /* ── Destructive — neon red ───────────────────────── */
-    --cascivo-color-destructive: oklch(0.65 0.25 18);
+    --cascivo-color-destructive: oklch(0.665 0.25 18);
     --cascivo-color-destructive-hover: oklch(0.72 0.22 18); /* static fallback */
     --cascivo-color-destructive-hover: oklch(
       from var(--cascivo-color-destructive) 0.72 0.22 h

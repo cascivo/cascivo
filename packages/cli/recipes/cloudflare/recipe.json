@@ -1,0 +1,10 @@
+{
+  "name": "cloudflare",
+  "files": [
+    "src/live.ts",
+    "src/LiveCard.tsx",
+    "src/main.tsx",
+    "src/router.ts",
+    "src/routes/404.tsx"
+  ]
+}

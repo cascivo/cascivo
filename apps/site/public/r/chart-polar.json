@@ -3,7 +3,7 @@
   "name": "chart/polar",
   "type": "chart",
   "description": "A polar coordinate plot — categories around the circle, value as radius. Bars (a rose), or a polar line/area.",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "polar", "rose", "radial", "data-viz"],

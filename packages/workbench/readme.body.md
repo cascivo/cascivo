@@ -1,0 +1,68 @@
+Browse the cascivo components a project copied: every example in each component's manifest,
+in all twelve themes and at every breakpoint, with its props and the tokens it reads. No stories
+to write.
+
+```sh
+npx @cascivo/workbench          # scans src/
+npx @cascivo/workbench app/ui   # or the directory you name
+```
+
+> Not on npm yet. Inside this repo, run it from a project that has the themes installed:
+> `cd apps/examples/react-vite && node ../../../packages/workbench/bin/cascivo-workbench.mjs ../../../packages/components/src`.
+
+## Entries
+
+- **Components.** `cascivo add` copies each component's manifest (`<name>.meta.ts`) next to its
+  source. Each example in `meta.examples` becomes one entry. An example that uses state from
+  the host app (`isOpen`, `rows`) fails inside its own entry and says what it needs.
+- **Previews.** Any `*.preview.tsx` file renders its default export with its `previewProps`
+  export, the convention `@cascivo/email-preview` uses. Use one for a page or for your own
+  component.
+- **App pages.** In an app made by `cascivo create`, each page of `cascivo.app.json` that
+  renders a block is an entry: the block from `src/blocks/`, with the sample data it ships.
+  The workbench looks for the blueprint beside the scanned directory, then in `--project`, and
+  picks up pages that `cascivo app add page` adds.
+
+Every entry has a URL (`#component/<path>/<n>`, `#preview/<path>`, `#preview/app/<n>-<page>`). Add `?embed&theme=<name>`
+to render it alone, and `/index.json` lists every entry with that URL: what a test or an axe
+sweep opens.
+
+## Panels
+
+- **Theme** and **width** switch the stage. The widths are cascivo's breakpoint scale.
+- **Code**, **Props** and **Tokens** read the manifest. Tokens show their values resolved on
+  the stage in the current theme.
+- **Controls** edit the example's props whose manifest type is a union of string literals, a
+  `boolean`, a `string` or a `number`.
+- **Markdown** shows the stage as `@cascivo/text` serializes it (machine mode), when the
+  project has `@cascivo/text` installed.
+- **Copy as agent context** copies the component's props and the current example as Markdown,
+  the context an agent needs to use it.
+
+## Test
+
+```sh
+npm i -D playwright axe-core && npx playwright install chromium
+npx @cascivo/workbench test                        # every entry, light and dark, through axe
+npx @cascivo/workbench test --themes all --screenshots .workbench
+```
+
+Each entry that renders is checked with axe's WCAG 2.x A/AA rules, in each theme. With
+`--screenshots <dir>`, its picture is also compared with the one saved there: a missing one is
+written, a different one fails and is saved beside it as `<name>.actual.png`. `--update`
+rewrites them all. An entry that needs code from your app (state, a component you did not
+copy) is skipped and listed; any other render error fails. The command exits non-zero on any
+failure, so it can run in CI.
+
+## Options
+
+| Option            | Meaning                                                                         |
+| ----------------- | ------------------------------------------------------------------------------- |
+| `--style <file>`  | A stylesheet your app loads (a reset, fonts). Repeatable.                       |
+| `--project <dir>` | Where tokens, themes, Playwright and axe-core are installed (default: the cwd). |
+| `--port <n>`      | Port to listen on (default 4191, or the next free one).                         |
+| `--host [addr]`   | Listen on a network address, not only localhost.                                |
+| `--open`          | Open a browser when the server is ready.                                        |
+
+The workbench loads `@cascivo/tokens` and `@cascivo/themes/all.css` from your project, which
+`npx cascivo init` installs.

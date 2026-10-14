@@ -3,7 +3,7 @@
   "name": "tile",
   "type": "component",
   "description": "A selectable card with radio (single) or checkbox (multi) semantics, toggled by click or keyboard",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tile/tile.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tile/tile.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tile/tile.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

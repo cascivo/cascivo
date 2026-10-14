@@ -3,7 +3,7 @@
   "name": "indicator",
   "type": "component",
   "description": "Positions an overlay element (badge, dot, count) at a corner of its child",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/indicator/indicator.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/indicator/indicator.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/indicator/indicator.meta.ts"
     }
   ],
   "dependencies": [],

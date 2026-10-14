@@ -46,10 +46,13 @@ const THEME_BUNDLE = [
   readCss('../themes/src/dark.css'), // dark theme (@layer cascivo.theme)
 ]
   .join('\n')
+  // Comments go here too, so the blank lines they leave are dropped below; the emitted
+  // sheet is stripped again as a whole (see cssImportEdges).
+  .replace(/\/\*[\s\S]*?\*\//g, '')
   // Drop every @import (tokens/layers are already inlined above; @import is only
   // legal before any rule, which no longer holds once concatenated).
   .split('\n')
-  .filter((line) => !/^\s*@import\b/.test(line))
+  .filter((line) => !/^\s*@import\b/.test(line) && line.trim() !== '')
   .join('\n')
 
 /**
@@ -148,7 +151,13 @@ function cssImportEdges() {
       this.emitFile({
         type: 'asset',
         fileName: 'styles.css',
-        source: `${LAYER_ORDER}\n${THEME_BUNDLE}\n${cssSources.join('\n')}`,
+        // Comments out of the whole sheet: the token/theme sources are written to be read
+        // (10.5 KB gzip of prose, 2026-10-09), and each component sheet still carries Vite's
+        // `/*$vite$:1*/` marker. No source here has a `/*` inside a string or a `/*!` notice.
+        source: `${LAYER_ORDER}\n${THEME_BUNDLE}\n${cssSources.join('\n')}`.replace(
+          /\/\*[\s\S]*?\*\//g,
+          '',
+        ),
       })
       // Flat package entry. preserveModulesRoot ('../components/src') pushes the
       // real entry to dist/react/src/index.js, outside the dist root — a subtree

@@ -3,7 +3,7 @@
   "name": "editor/highlight",
   "type": "editor",
   "description": "Read-only syntax-highlighted code block — the same owned tokenizer as CodeEditor, without the textarea.",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [],
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["editor", "code", "syntax-highlighting", "display", "read-only"],

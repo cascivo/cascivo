@@ -1,0 +1,54 @@
+{
+  "name": "@cascivo/workbench",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Experimental — browse copied components: every manifest example, in every theme and width",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
+    "directory": "packages/workbench"
+  },
+  "bin": {
+    "cascivo-workbench": "./bin/cascivo-workbench.mjs"
+  },
+  "files": [
+    "bin",
+    "index.html",
+    "src"
+  ],
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "vp test",
+    "sweep": "node bin/cascivo-workbench.mjs test ../components/src --project ../../apps/examples/react-vite",
+    "sweep:pages": "node scripts/sweep-pages.mjs"
+  },
+  "dependencies": {
+    "vite": "^8.0.0"
+  },
+  "devDependencies": {
+    "@cascivo/charts": "workspace:*",
+    "@cascivo/react": "workspace:*",
+    "@cascivo/themes": "workspace:*",
+    "@cascivo/tokens": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@preact/signals-react": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "axe-core": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  }
+}

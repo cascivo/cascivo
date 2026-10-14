@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/theming.md
-  registry v1.8.0 · generated 2026-10-07
+  registry v1.9.0 · generated 2026-10-09
 -->
 
 # Theming & branding cascivo

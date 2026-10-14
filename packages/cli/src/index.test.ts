@@ -38,6 +38,7 @@ describe('per-command --help', () => {
     'create',
     'init',
     'add',
+    'app',
     'list',
     'update',
     'search',

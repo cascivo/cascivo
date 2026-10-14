@@ -3,7 +3,7 @@
   "name": "flow/flow-background",
   "type": "flow",
   "description": "Decorative dots / grid / cross canvas background, drawn purely in CSS gradients.",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [],
   "dependencies": ["@cascivo/core"],
   "tags": ["flow", "background", "grid", "dots", "canvas"],

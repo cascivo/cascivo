@@ -1,0 +1,16 @@
+{
+  "name": "crud",
+  "files": [
+    "src/routes/customers.tsx",
+    "src/customers.ts",
+    "src/customers-page.ts",
+    "worker/customers.ts",
+    "worker/migrations.ts"
+  ],
+  "nav": [
+    {
+      "label": "Customers",
+      "href": "/customers"
+    }
+  ]
+}

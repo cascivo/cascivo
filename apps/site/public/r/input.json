@@ -3,7 +3,7 @@
   "name": "input",
   "type": "component",
   "description": "Text input field with optional label, hint, and error state",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input/input.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input/input.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input/input.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

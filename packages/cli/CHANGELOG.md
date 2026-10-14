@@ -1,5 +1,22 @@
 # cascivo
 
+## 1.8.0
+
+### Minor Changes
+
+- dafb2cc: `cascivo app add page "<title>" [--block <name>]` adds a page to an app made from a blueprint: it updates `cascivo.app.json` and writes the page, its block, and the route and nav entries, merging three ways with any generated file you have edited. Blocks can now bring a package (`dashboard-charts` adds `@cascivo/charts`), so all 19 page blocks are available to blueprints.
+
+  Fixed the three-way merge behind `cascivo update` (and now `app add page`): after a pure insertion it skipped the next base line, so that line disappeared from the result and the other side's later edits could be lost.
+
+- dafb2cc: Every `cascivo create` now writes `cascivo.app.json` (from flags, prompts or `--from`), stamped with the CLI version, so every scaffolded app can use `cascivo app`. `cascivo app add example <name>` adds a cloudflare example to an existing app, and `cascivo app upgrade` regenerates the app with this CLI's templates. Both merge three ways against the app's original files, which are rebuilt with the CLI version the app records.
+- dafb2cc: `cascivo create --from cascivo.app.json` compiles a blueprint: the app's name, framework, theme, runtime, examples and auth, plus `pages: [{ title, block? }]`. Each page renders a registry block whose source is written to `src/blocks/` (its imports rewritten to `@cascivo/react`), wired into the routes and the side nav. A blueprint is held to the same rules as the flags, an unknown field or block fails with the list of valid ones, and the blueprint is kept in the app as `cascivo.app.json`. A long `--sections` list no longer fails the React + Vite app's own `format:check`.
+- dafb2cc: `cascivo generate` writes code that compiles. Imports point at each component's registry directory (`DataTable` → `./data-table`, not `./datatable/datatable`), and sub-components share their owner's import. `--from @cascivo/react` imports everything from the prebuilt package instead. The input is parsed at the boundary: component, prop and state names must be identifiers, and text or attribute values containing quotes or JSX syntax are emitted as expressions, so a model-written view can no longer produce invalid or injected TSX.
+- dafb2cc: `cascivo create --workspace` writes the app into a pnpm workspace: `apps/web`, a `packages/ui` package for the team's own components, Vite+ running each package's scripts, a GitHub Actions workflow, and (React + Vite) Vitest with a smoke test. Every scaffold now also ships `CLAUDE.md` (which includes `AGENTS.md`) and a `.mcp.json` that registers the cascivo MCP server.
+
+### Patch Changes
+
+- dafb2cc: `cascivo create --framework cloudflare` writes the same files as before, but each example now ships as real source files in the package (`recipes/`) instead of being generated from template strings. Nothing changes in a scaffolded app.
+
 ## 1.7.1
 
 ### Patch Changes

@@ -1,0 +1,7 @@
+{
+  "name": "block-marketing-features",
+  "files": [
+    "src/blocks/marketing-features.tsx",
+    "src/blocks/marketing-features.module.css"
+  ]
+}

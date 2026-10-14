@@ -11,6 +11,13 @@ The user describes a page in plain English (e.g. "a dashboard with a sidebar nav
 
 ## Procedure
 
+### Whole new app? Use a blueprint instead
+
+This skill designs one page. If the user wants a new app (several pages in a shell), call
+`list_blocks`, then `compose_app` with one page per screen, each naming the block that fits. That
+writes the shell, routes, nav and every block's source in one call. Use this skill afterwards
+for any page no block covers.
+
 ### 0. Check the marketplace for a matching template first
 
 Before scaffolding from scratch, see if a published **template** already covers the request — a template is a
@@ -39,14 +46,16 @@ the whole page (`block/dashboard-charts`, `block/stats-cards`, `dashboard-overvi
 components in the `scaffold_view` `components` candidate list over generating custom
 SVG for a chart or a hand-rolled keydown handler for a menu — both already exist.
 
-### 1. Read available components and examples
+### 1. Read only the components you will use
 
-Before generating anything, read the registry and llms.txt at runtime:
+Do NOT rely on training-data knowledge of component APIs, and do not load the whole catalog:
+read exactly the components you plan to use.
 
-- Read `https://cascivo.com/llms.txt` (or local `apps/site/public/llms.txt`) for the component index and authoring rules.
-- For any component you plan to use, read its `/llms/<name>.md` file for the exact props and example usage.
-
-Do NOT rely on training-data knowledge of component APIs — always read from the live files.
+- With the MCP server: call `get_view_grammar` with `components` set to your candidates. It
+  returns the format rules plus each component's props and enum values. For any component
+  outside the grammar, call `get_component` with `compact: true` (props, one example, a11y).
+- Without it: read `/llms/<name>.md` for each candidate. Read `https://cascivo.com/llms.txt`
+  only if you do not yet know which components exist.
 
 ### 2. Clarify the page description
 
@@ -72,7 +81,9 @@ This returns a JSON view config conforming to `view.v1.json`.
 
 ### 4. Validate with validate_view (MCP)
 
-Call `validate_view` with the returned config. If validation fails:
+Call `validate_view` with the returned config and `target: "tsx"`, because step 5 turns it
+into source (without `target`, only components `<CascivoView>` renders at runtime pass). If
+validation fails:
 
 - Fix the reported errors in the config.
 - Re-validate. Repeat until the config is valid (max 5 attempts before reporting to the user).
@@ -86,6 +97,9 @@ npx cascivo generate view.json --out src/pages/<PageName>.tsx
 ```
 
 Where `view.json` is the validated config written to a temp file (or the project root).
+Imports point at the copied components (`./src/components/ui/<name>`). In a project that uses
+the prebuilt package instead, which is what `npm create cascivo` scaffolds, add
+`--from @cascivo/react`.
 
 ### 6. Verify the output compiles
 

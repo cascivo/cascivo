@@ -7,7 +7,7 @@ afterEach(cleanup)
 const JUN_15 = new Date(Date.UTC(2024, 5, 15))
 
 function dayButton(label: RegExp): HTMLElement {
-  return screen.getByRole('button', { name: label })
+  return screen.getByRole('gridcell', { name: label })
 }
 
 describe('Calendar', () => {
@@ -15,7 +15,7 @@ describe('Calendar', () => {
     render(<Calendar defaultValue={JUN_15} />)
     expect(screen.getByRole('grid')).toBeInTheDocument()
     // June 2024 has 30 days
-    const days = screen.getAllByRole('gridcell').filter((c) => c.querySelector('button') !== null)
+    const days = screen.getAllByRole('gridcell').filter((c) => c.tagName === 'BUTTON')
     expect(days).toHaveLength(30)
   })
 
@@ -23,16 +23,23 @@ describe('Calendar', () => {
     render(<Calendar defaultValue={JUN_15} />)
     // aria-selected belongs on the element that takes focus. It used to sit on the <td>
     // while focus landed on the inner button, so the state was never announced.
-    const day = screen.getByRole('button', { name: /15/ })
+    const day = screen.getByRole('gridcell', { name: /15/ })
     expect(day).toHaveAttribute('aria-selected', 'true')
+  })
+
+  it('puts aria-selected only on a role that allows it', () => {
+    // axe's aria-allowed-attr: a <button> may not carry aria-selected. The day button is the
+    // gridcell itself, so the focused element still carries the selected state.
+    const { container } = render(<Calendar defaultValue={JUN_15} />)
+    const selected = [...container.querySelectorAll('[aria-selected]')]
+    expect(selected).toHaveLength(1)
+    expect(selected[0]).toHaveAttribute('role', 'gridcell')
+    expect(selected[0]!.tagName).toBe('BUTTON')
   })
 
   it('only the focused date is tabbable (roving tabindex)', () => {
     render(<Calendar defaultValue={JUN_15} />)
-    const tabbable = screen
-      .getAllByRole('gridcell')
-      .map((c) => c.querySelector('button'))
-      .filter((b): b is HTMLButtonElement => b !== null && b.tabIndex === 0)
+    const tabbable = screen.getAllByRole('gridcell').filter((c) => c.tabIndex === 0)
     expect(tabbable).toHaveLength(1)
     expect(tabbable[0]).toHaveTextContent('15')
   })
@@ -43,10 +50,7 @@ describe('Calendar', () => {
     start.focus()
     fireEvent.keyDown(screen.getByRole('grid'), { key: 'ArrowRight' })
     // June 16 should now be the only tabbable day
-    const focused = screen
-      .getAllByRole('gridcell')
-      .map((c) => c.querySelector('button'))
-      .find((b) => b !== null && b.tabIndex === 0)
+    const focused = screen.getAllByRole('gridcell').find((c) => c.tabIndex === 0)
     expect(focused).toHaveTextContent('16')
   })
 
@@ -54,10 +58,7 @@ describe('Calendar', () => {
     render(<Calendar defaultValue={JUN_15} />)
     dayButton(/June 15/).focus()
     fireEvent.keyDown(screen.getByRole('grid'), { key: 'ArrowDown' })
-    const focused = screen
-      .getAllByRole('gridcell')
-      .map((c) => c.querySelector('button'))
-      .find((b) => b !== null && b.tabIndex === 0)
+    const focused = screen.getAllByRole('gridcell').find((c) => c.tabIndex === 0)
     expect(focused).toHaveTextContent('22')
   })
 
@@ -116,7 +117,7 @@ describe('Calendar', () => {
     render(<Calendar defaultValue={today} />)
     const cell = screen
       .getAllByRole('gridcell')
-      .find((c) => c.querySelector('button[aria-current="date"]'))
+      .find((c) => c.getAttribute('aria-current') === 'date')
     expect(cell).toBeDefined()
   })
 })

@@ -1,0 +1,16 @@
+/* Your app's own styles live in the cascivo.example layer (declared in index.html). */
+@layer cascivo.example {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: var(--cascivo-space-3);
+  }
+
+  .preview {
+    inline-size: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--cascivo-radius-md);
+    background: var(--cascivo-color-bg-subtle);
+  }
+}

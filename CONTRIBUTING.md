@@ -1,8 +1,10 @@
 # Contributing to cascivo
 
 Thanks for your interest in contributing! This guide covers the essentials.
-For the full architecture and authoring rules, read [`CLAUDE.md`](./CLAUDE.md)
-(human + AI contributors) and [`AGENTS.md`](./AGENTS.md) (vendor-neutral AI guide).
+For the authoring rules, read [`CLAUDE.md`](./CLAUDE.md) (human + AI contributors)
+and [`AGENTS.md`](./AGENTS.md) (vendor-neutral AI guide); the full reasoning, gate
+catalogue and architecture live in
+[`docs/internal/CONTRIBUTOR-REFERENCE.md`](./docs/internal/CONTRIBUTOR-REFERENCE.md).
 
 ## Prerequisites
 

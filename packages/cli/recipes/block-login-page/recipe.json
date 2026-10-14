@@ -1,0 +1,6 @@
+{
+  "name": "block-login-page",
+  "files": [
+    "src/blocks/login-page.tsx"
+  ]
+}

@@ -160,6 +160,7 @@ function validateNode(
   path: string,
   errors: ValidationError[],
   state: StateInfo,
+  extra: ReadonlySet<string>,
 ): void {
   if (typeof node !== 'object' || node === null) {
     errors.push({ path, message: 'Expected a component node object' })
@@ -171,8 +172,8 @@ function validateNode(
     return
   }
   const componentName = n['component'] as string
-  if (!componentNames.has(componentName)) {
-    const suggestion = closestName(componentName, [...componentNames])
+  if (!componentNames.has(componentName) && !extra.has(componentName)) {
+    const suggestion = closestName(componentName, [...componentNames, ...extra])
     const hint = suggestion ? ` Did you mean "${suggestion}"?` : ''
     errors.push({
       path: `${path}.component`,
@@ -231,7 +232,9 @@ function validateNode(
 
   // Validate props against the manifest schema (conformance). Bound/event prop
   // names are skipped — their values resolve at runtime from the host context.
-  const schema = propSchemas[componentName]
+  // A host component takes precedence over a built-in of the same name, so the built-in's
+  // schema does not describe it.
+  const schema = extra.has(componentName) ? undefined : propSchemas[componentName]
   const nodeProps = n['props']
   if (schema && typeof nodeProps === 'object' && nodeProps !== null && !Array.isArray(nodeProps)) {
     const skip = new Set([...Object.keys(nodeBind), ...Object.keys(nodeEvents)])
@@ -241,7 +244,7 @@ function validateNode(
   // Recurse into children
   if (Array.isArray(n['children'])) {
     for (let i = 0; i < n['children'].length; i++) {
-      validateNode(n['children'][i], `${path}.children[${i}]`, errors, state)
+      validateNode(n['children'][i], `${path}.children[${i}]`, errors, state, extra)
     }
   }
 }
@@ -252,8 +255,21 @@ function suggestKey(key: string, keys: Set<string>): string {
   return suggestion ? ` Did you mean "${suggestion}"?` : ''
 }
 
-export function validateView(config: unknown): { valid: boolean; errors: ValidationError[] } {
+/** Options for {@link validateView}. */
+export interface ValidateViewOptions {
+  /**
+   * Component names the view may use beyond the built-in set: the keys of the `components` a
+   * host passes to `<CascivoView>`. Their props are not checked against a schema.
+   */
+  components?: Iterable<string>
+}
+
+export function validateView(
+  config: unknown,
+  options?: ValidateViewOptions,
+): { valid: boolean; errors: ValidationError[] } {
   const errors: ValidationError[] = []
+  const extra: ReadonlySet<string> = new Set(options?.components ?? [])
 
   if (typeof config !== 'object' || config === null) {
     return { valid: false, errors: [{ path: '', message: 'Config must be an object' }] }
@@ -309,7 +325,13 @@ export function validateView(config: unknown): { valid: boolean; errors: Validat
       continue
     }
     for (let i = 0; i < nodes.length; i++) {
-      validateNode(nodes[i] as ComponentNode, `view.regions.${regionName}[${i}]`, errors, state)
+      validateNode(
+        nodes[i] as ComponentNode,
+        `view.regions.${regionName}[${i}]`,
+        errors,
+        state,
+        extra,
+      )
     }
   }
 

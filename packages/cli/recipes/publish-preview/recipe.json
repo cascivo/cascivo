@@ -1,0 +1,6 @@
+{
+  "name": "publish-preview",
+  "files": [
+    "worker/page-preview.ts"
+  ]
+}

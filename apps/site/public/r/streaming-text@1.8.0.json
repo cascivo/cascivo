@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/streaming-text/streaming-text.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/streaming-text/streaming-text.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

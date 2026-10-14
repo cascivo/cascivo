@@ -3,7 +3,7 @@
   "name": "layout/center",
   "type": "layout",
   "description": "Horizontally centered container with a configurable max-width.",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/center/center.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/center/center.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/center/center.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

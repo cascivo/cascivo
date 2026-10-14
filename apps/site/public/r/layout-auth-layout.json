@@ -3,7 +3,7 @@
   "name": "layout/auth-layout",
   "type": "layout",
   "description": "Centered card layout for authentication pages (login, register, forgot password).",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auth-layout/auth-layout.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auth-layout/auth-layout.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auth-layout/auth-layout.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],

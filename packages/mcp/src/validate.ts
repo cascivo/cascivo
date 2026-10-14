@@ -69,8 +69,9 @@ function validateNode(
   node: unknown,
   path: string,
   errors: ValidationError[],
-  componentNames: Set<string>,
+  componentNames: ReadonlySet<string>,
   state: StateInfo,
+  registryNames: ReadonlySet<string> | undefined,
 ): void {
   if (typeof node !== 'object' || node === null) {
     errors.push({ path, message: 'Expected a component node object' })
@@ -82,6 +83,13 @@ function validateNode(
     return
   }
   const componentName = n['component'] as string
+  if (!componentNames.has(componentName) && registryNames?.has(componentName)) {
+    errors.push({
+      path: `${path}.component`,
+      message: `"${componentName}" is a cascivo component, but <CascivoView> cannot render it. Use a renderable component (get_view_grammar lists them), or write this part as TSX.`,
+    })
+    return
+  }
   if (!componentNames.has(componentName)) {
     const suggestion = closestName(componentName, [...componentNames])
     const hint = suggestion ? ` Did you mean "${suggestion}"?` : ''
@@ -140,15 +148,21 @@ function validateNode(
         errors,
         componentNames,
         state,
+        registryNames,
       )
     }
   }
 }
 
 /** Validate a ViewConfig object. Component names are checked against the provided set. */
+/**
+ * `componentNames` is what the view may use. `registryNames`, when given, lets a name that is a
+ * real component but outside `componentNames` be reported as such, not as an unknown name.
+ */
 export function validateView(
   config: unknown,
-  componentNames: Set<string>,
+  componentNames: ReadonlySet<string>,
+  registryNames?: ReadonlySet<string>,
 ): { valid: boolean; errors: ValidationError[] } {
   const errors: ValidationError[] = []
 
@@ -212,6 +226,7 @@ export function validateView(
         errors,
         componentNames,
         state,
+        registryNames,
       )
     }
   }

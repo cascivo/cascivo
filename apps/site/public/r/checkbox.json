@@ -3,7 +3,7 @@
   "name": "checkbox",
   "type": "component",
   "description": "Binary toggle for forms, with indeterminate support",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox/checkbox.tsx"
@@ -13,6 +13,9 @@
     },
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox/checkbox.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox/checkbox.meta.ts"
     }
   ],
   "dependencies": ["@cascivo/core"],
