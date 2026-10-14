@@ -102,6 +102,12 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
       'Why cascivo uses modern CSS: @layer for cascade control without specificity wars, @container for components that respond to their slot, and :has() for conditional styling without JavaScript.',
     ogTitle: 'Modern CSS — cascivo',
   },
+  '/cascivo-sans': {
+    title: 'Cascivo Sans — cascivo',
+    description:
+      'Cascivo Sans: an open-source variable sans for interfaces. Weight 100–900, optical size 8–48, Latin, Cyrillic and Greek, free under the OFL. Try it and download it.',
+    ogTitle: 'Cascivo Sans — cascivo',
+  },
   '/highlights': {
     title: 'Highlights — Flow, Editor & Icons — cascivo',
     description:
@@ -186,6 +192,7 @@ export const PRERENDER_ROUTES = [
   'guides/alternatives',
   'guides/faq',
   'modern-css',
+  'cascivo-sans',
   'highlights',
   'examples',
   'showcase',
