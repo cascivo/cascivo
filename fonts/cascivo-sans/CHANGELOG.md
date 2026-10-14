@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- **A page on cascivo.com.** `/cascivo-sans` shows a specimen and a live type tester (weight,
+  optical size, size, italic), and offers the Latin web files, the static TTFs and the licence for
+  download. The site serves copies of the build output; `pnpm fonts:site:sync` refreshes them and
+  `meta:check` fails when they drift.
 - **Georgian draft: capitals and Black.** The Mtavruli capitals are drawn, so the Georgian build
   passes Font Bakery. The heavy weights follow Noto's Black centre lines at the full stem, and
   widths and spacing follow Noto's at each weight. Still not in the release (no native review);

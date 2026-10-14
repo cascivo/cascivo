@@ -24,6 +24,8 @@
     font-weight: 800;
     letter-spacing: normal;
     line-height: 1;
+    /* A specimen shows the lowercase too; the site's h1 style uppercases. */
+    text-transform: none;
   }
 
   & .cs-hero-actions {

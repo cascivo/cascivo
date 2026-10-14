@@ -8,6 +8,8 @@ and old-style figures on request, and a 22 KB Latin web file.
 Version 0.6.1; see [CHANGELOG.md](./CHANGELOG.md). Read [RESEARCH.md](./RESEARCH.md) for why it exists, how it compares with Geist, IBM Plex and
 Helvetica, and what it does not do yet.
 
+Try it and download the web and desktop files at [cascivo.com/cascivo-sans](https://cascivo.com/cascivo-sans).
+
 ## Files
 
 | File                                              | Axes              | Charset               | Size                       |
