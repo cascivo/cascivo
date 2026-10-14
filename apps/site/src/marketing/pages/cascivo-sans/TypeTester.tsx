@@ -57,7 +57,7 @@ export function TypeTester() {
         />
       </div>
       <span id={sampleLabelId} className="cs-tester-label">
-        Sample text — click to edit
+        Sample text — editable
       </span>
       <p
         className="cs-tester-sample"

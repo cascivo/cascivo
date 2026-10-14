@@ -17,6 +17,7 @@ import {
   fontFaceSnippet,
   testerStyle,
 } from '../../apps/site/src/marketing/pages/cascivo-sans/data.ts'
+import { ROUTE_HEAD } from '../../apps/site/src/marketing/route-head.ts'
 
 const ROOT = join(import.meta.dirname, '../..')
 const PUBLIC = join(ROOT, 'apps/site/public/fonts/cascivo-sans')
@@ -87,5 +88,13 @@ describe('download list and snippet', () => {
     for (const f of FONT_FILES.filter((file) => file.kind === 'web')) {
       assert.match(f.label, /Latin/, `${f.name} label hides that it is a Latin slice`)
     }
+  })
+})
+
+describe('/cascivo-sans head', () => {
+  it('meta description fits a search snippet (≤ 160 characters)', () => {
+    const description = ROUTE_HEAD['/cascivo-sans']?.description ?? ''
+    assert.ok(description.length > 0, 'no description for /cascivo-sans')
+    assert.ok(description.length <= 160, `description is ${description.length} characters`)
   })
 })

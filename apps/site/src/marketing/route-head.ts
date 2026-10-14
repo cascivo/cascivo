@@ -105,7 +105,7 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
   '/cascivo-sans': {
     title: 'Cascivo Sans — cascivo',
     description:
-      'Cascivo Sans: an open-source variable sans for interfaces. Weight 100–900, optical size 8–48, Latin, Cyrillic and Greek, free under the OFL. Try it and download it.',
+      'An open-source variable sans for interfaces. Weight 100–900, optical size 8–48, Latin, Cyrillic and Greek, free under the OFL. Try it and download it.',
     ogTitle: 'Cascivo Sans — cascivo',
   },
   '/highlights': {

@@ -94,7 +94,7 @@ export function CascivoSansPage() {
               <p className="cs-pair-text">{PARAGRAPH}</p>
               <p className="cs-pair-text cs-italic">{PARAGRAPH}</p>
             </div>
-            <div className="cs-charset" aria-label="Latin character set">
+            <div className="cs-charset" role="group" aria-label="Latin character set">
               {CHARSET.map((line) => (
                 <p key={line}>{line}</p>
               ))}

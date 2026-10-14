@@ -101,6 +101,18 @@ try {
   }
   console.log(`ok — all ${links.length} download links resolve to the right bytes`)
 
+  assert.equal(
+    await page.getByRole('group', { name: 'Latin character set' }).count(),
+    1,
+    'character strip is not a named group',
+  )
+  assert.doesNotMatch(
+    (await page.locator('.cs-tester-label').textContent()) ?? '',
+    /click/i,
+    'tester label assumes a mouse',
+  )
+  console.log('ok — character strip is a named group; tester label is input-neutral')
+
   const initial = await sampleStyle(page)
   assert.match(initial.fvs, /"wght" 400/)
   assert.match(initial.fvs, /"opsz" 14/)
