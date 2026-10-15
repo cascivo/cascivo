@@ -245,7 +245,7 @@ class StartingPoint(unittest.TestCase):
         """WP4: Black counters keep Inter's proportions; a joins its stem like b and d, a, g and 9 end in a flat
         face, f has no bite, t has a flat top, l keeps its tail inside its advance, 1 has a short flag, 0 is wide."""
         text = '\n'.join(Q.check_all(VF, VFI))
-        for needle in ('counter:', 'notch: a ', 'join: a ', 'join angle: a ', 'flat terminal:', 'terminal corners:', 'crevice:', 't top:', 'zero width:', 'flag:', 'sidebearings: l '):
+        for needle in ('counter:', 'notch: a ', 'join: a ', 'join angle: a ', 'flat terminal:', 'terminal corners:', 'aperture:', 'crevice:', 't top:', 'zero width:', 'flag:', 'sidebearings: l '):
             self.assertNotIn(needle, text)
 
     def test_per_stroke_tilt_flattens_only_its_own_terminal(self):
@@ -273,9 +273,26 @@ class StartingPoint(unittest.TestCase):
             GL.GLYPHS['y'][1](g, p)
             tail = [s for s in g.strokes if s.segs[-1][0] == 'C'][0]
             (a, b) = cap_lines(tail, p.V, p.H)[0][1:]
-            if wght >= 400:  # a curl ending horizontal, so its butt end is a (near) vertical face
-                self.assertLessEqual(abs(a[0] - b[0]), 0.35 * abs(a[1] - b[1]), f'y tail face at wght {wght} opsz {opsz}')
+            self.assertLessEqual(abs(a[0] - b[0]), 0.09 * abs(a[1] - b[1]), f'y tail face at wght {wght} opsz {opsz}')  # vertical within 5 degrees
             self.assertGreaterEqual(min(a[1], b[1]), p.desc - 1, f'y tail clears the descender at wght {wght} opsz {opsz}')
+
+    def test_y_tail_never_turns_back(self):
+        """The y's tail curls one way, from Thin to Black: its direction never turns the other way (an S-kink at
+        wght 100-300 once did) and its x never reverses."""
+        from geom import seg_point
+
+        for wght in (100, 175, 250, 325, 400, 900):
+            p = P(wght=wght, opsz=14)
+            g = GL.G(p)
+            GL.GLYPHS['y'][1](g, p)
+            tail = [s for s in g.strokes if s.segs[-1][0] == 'C'][0]
+            pts = [seg_point(tail.segs[-1], i / 40) for i in range(41)]
+            xs = [q[0] for q in pts]
+            self.assertTrue(all(b <= a + 0.5 for a, b in zip(xs, xs[1:])), f'y tail reverses at wght {wght}')
+            cross = [(b[0] - a[0]) * (c[1] - b[1]) - (b[1] - a[1]) * (c[0] - b[0]) for a, b, c in zip(pts, pts[1:], pts[2:])]
+            # one-sided, give or take the tail's own slight S where its end turns to horizontal (0.22 of the main
+            # turn at Thin; the straight-to-curl blend it replaces read 0.4-0.74 from wght 100 to 250)
+            self.assertLessEqual(max(cross), 0.25 * -min(cross), f'y tail S-kinks at wght {wght}')
 
     def test_cut_faces_found_on_the_built_font(self):
         faces = Q.cut_faces(VF, 'c', 900)
