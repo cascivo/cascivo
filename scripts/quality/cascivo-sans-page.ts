@@ -16,6 +16,7 @@ import { createReadStream, existsSync, statSync } from 'node:fs'
 import { extname, join, normalize } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { chromium, type Page } from '@playwright/test'
+import { COMPARISON } from '../../apps/site/src/marketing/pages/cascivo-sans/comparison.generated.ts'
 import { FONT_SIZES } from '../../apps/site/src/marketing/pages/cascivo-sans/sizes.generated.ts'
 
 const root = fileURLToPath(new URL('../..', import.meta.url))
@@ -113,6 +114,20 @@ try {
   )
   console.log('ok — character strip is a named group; tester label is input-neutral')
 
+  // The comparison: one column per font (plus the row-header column), eight rows, own scroller.
+  const table = page.locator('#cs-compare table')
+  assert.equal(await table.count(), 1, 'no comparison table')
+  assert.equal(await table.locator('thead th').count(), COMPARISON.fonts.length + 1)
+  assert.equal(await table.locator('tbody tr').count(), 8, 'comparison rows differ from the spec')
+  assert.equal(await table.locator('tbody tr:first-child td').count(), COMPARISON.fonts.length)
+  assert.equal(
+    (await table.locator('tbody tr:nth-child(2) td').nth(2).textContent())?.trim(),
+    '—',
+    'Geist has no italic',
+  )
+  assert.equal(await page.locator('.cs-behind li').count(), 7, 'seven "behind" items')
+  console.log('ok — comparison table has 8 rows x 4 fonts and the seven "behind" items')
+
   const initial = await sampleStyle(page)
   assert.match(initial.fvs, /"wght" 400/)
   assert.match(initial.fvs, /"opsz" 14/)
@@ -156,6 +171,17 @@ try {
     assert.ok(over <= 0, `horizontal overflow of ${over}px at ${width}px`)
   }
   console.log('ok — no horizontal overflow at 320/360/390/414 with a long word at 96px')
+
+  for (const width of [320, 414]) {
+    await page.setViewportSize({ width, height: 800 })
+    const wrap = await page.locator('.cs-table-wrap').evaluate((el) => ({
+      scrolls: el.scrollWidth > el.clientWidth,
+      page: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    }))
+    assert.ok(wrap.scrolls, `table should scroll inside its wrapper at ${width}px`)
+    assert.ok(wrap.page <= 0, `table made the page overflow by ${wrap.page}px at ${width}px`)
+  }
+  console.log('ok — the table scrolls inside its own wrapper at 320 and 414')
 
   if (shots) {
     for (const theme of ['light', 'dark']) {

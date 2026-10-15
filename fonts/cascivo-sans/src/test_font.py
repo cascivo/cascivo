@@ -515,6 +515,19 @@ class Font(unittest.TestCase):
             r = ots.sanitize(os.path.join(DIST, fn), os.devnull, capture_output=True)
             self.assertEqual(r.returncode, 0, f'OTS rejects {fn}: {r.stderr.decode()[:300]}')
 
+    def test_comparison_data_is_current(self):
+        """The /cascivo-sans table shows comparison.json; its Cascivo entry must match the
+        font files. After a rebuild run `python3 -I src/compare.py --cascivo-only`."""
+        import json
+
+        import build
+        import compare
+
+        with open(os.path.join(HERE, '..', 'comparison.json'), encoding='utf-8') as fh:
+            data = json.load(fh)
+        self.assertEqual(data['codepoints'], build.LATIN)
+        self.assertEqual(compare.measure_cascivo(), data['fonts'][0], 'run src/compare.py --cascivo-only')
+
 
 if __name__ == '__main__':
     unittest.main()

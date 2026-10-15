@@ -128,3 +128,36 @@ export const WEIGHT_STOPS: readonly { value: number; name: string }[] = [
   { value: 800, name: 'ExtraBold' },
   { value: 900, name: 'Black' },
 ]
+
+export interface ComparedFont {
+  name: string
+  version: string
+  license: string
+  scripts: string
+  axes: readonly string[]
+  hinted: boolean
+  since: string
+  latin_wght_upright_bytes: number
+  latin_wght_italic_bytes: number | null
+  codepoints_upright: number
+  note?: string
+}
+
+/** Comparison-table sizes: KB with one decimal (1 KB = 1024 bytes, as the download list). */
+export function formatKb(bytes: number): string {
+  return `${(bytes / 1024).toFixed(1)} KB`
+}
+
+export function bytesPerCodepoint(bytes: number, codepoints: number): number {
+  return Math.round(bytes / codepoints)
+}
+
+const AXIS_NAMES: Record<string, string> = { wght: 'weight', opsz: 'optical size' }
+
+/** "Weight, optical size · italic file", "Weight · no italic", "None (static) · italic file". */
+export function axesLabel(font: ComparedFont): string {
+  const names = font.axes.map((tag) => AXIS_NAMES[tag] ?? tag)
+  const axes = names.length === 0 ? 'none (static files)' : names.join(', ')
+  const text = `${axes[0]?.toUpperCase() ?? ''}${axes.slice(1)}`
+  return `${text} · ${font.latin_wght_italic_bytes === null ? 'no italic' : 'italic file'}`
+}

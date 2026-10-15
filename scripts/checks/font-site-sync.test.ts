@@ -12,9 +12,12 @@ import { join } from 'node:path'
 import { describe, it } from 'node:test'
 import {
   FONT_FILES,
+  axesLabel,
+  bytesPerCodepoint,
   clampAxis,
   downloadHref,
   fontFaceSnippet,
+  formatKb,
   testerStyle,
 } from '../../apps/site/src/marketing/pages/cascivo-sans/data.ts'
 import { ROUTE_HEAD } from '../../apps/site/src/marketing/route-head.ts'
@@ -46,6 +49,34 @@ describe('site copy of Cascivo Sans', () => {
       const bytes = readFileSync(join(ROOT, f.source)).length
       assert.equal(FONT_SIZES[f.name], bytes, `${f.name} size is stale — ${FIX}`)
     }
+  })
+})
+
+describe('comparison data', () => {
+  it('comparison.generated.ts equals fonts/cascivo-sans/comparison.json', async () => {
+    const { COMPARISON } =
+      await import('../../apps/site/src/marketing/pages/cascivo-sans/comparison.generated.ts')
+    const json: unknown = JSON.parse(
+      readFileSync(join(ROOT, 'fonts/cascivo-sans/comparison.json'), 'utf8'),
+    )
+    assert.deepEqual(JSON.parse(JSON.stringify(COMPARISON)), json, FIX)
+  })
+
+  it('formats sizes as KB with one decimal and bytes per codepoint as integers', () => {
+    assert.equal(formatKb(21096), '20.6 KB')
+    assert.equal(bytesPerCodepoint(21096, 211), 100)
+  })
+
+  it('names the axes and whether an italic file exists', async () => {
+    const { COMPARISON } =
+      await import('../../apps/site/src/marketing/pages/cascivo-sans/comparison.generated.ts')
+    const label = (name: string) => {
+      const font = COMPARISON.fonts.find((f) => f.name === name)
+      assert.ok(font, name)
+      return axesLabel(font)
+    }
+    assert.equal(label('Geist'), 'Weight · no italic')
+    assert.equal(label('IBM Plex Sans'), 'None (static files) · italic file')
   })
 })
 
