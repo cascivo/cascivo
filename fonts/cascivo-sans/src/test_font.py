@@ -29,7 +29,7 @@ BUDGETS = {
     'CascivoSans-Latin[opsz,wght].woff2': 30_000,
     'CascivoSans-Latin[wght].woff2': 23_500,
     'CascivoSans-Regular.woff2': 24_500,
-    'CascivoSans-Italic[opsz,wght].woff2': 75_000,
+    'CascivoSans-Italic[opsz,wght].woff2': 77_000,  # raised from 75_000 for the Latin quality pass (joins)
     'CascivoSans-Italic-Latin[opsz,wght].woff2': 34_000,
     'CascivoSans-Italic-Latin[wght].woff2': 26_000,
 }

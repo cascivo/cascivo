@@ -1983,11 +1983,11 @@ def _eng(g, p):
     g.vstem(0, 0, p.xh)
     a, b = V / 2, p.nw - V / 2
     rx = (b - a) / 2
-    ry = rx * 0.93
+    ry = rx * ARCH_RY  # n's arch and join
     cy = p.xh + p.ov * 0.4 - H / 2 - ry
     r2 = 60 + V * 0.3
     cy2 = p.desc + H / 2 + r2 * 1.1
-    g.stroke(g.arc(a + rx, cy, rx, ry, 166, 0) + [L((b, cy), (b, cy2))] + g.arc(b - r2, cy2, r2, r2 * 1.1, 0, -90) + [L((b - r2, p.desc + H / 2), (b - r2 - 20, p.desc + H / 2))], taper=(0.5, 1))
+    g.stroke(g.arc(a + rx, cy, rx, ry, 180 - JOIN_RUN, 0) + [L((b, cy), (b, cy2))] + g.arc(b - r2, cy2, r2, r2 * 1.1, 0, -90) + [L((b - r2, p.desc + H / 2), (b - r2 - 20, p.desc + H / 2))], taper=(join_taper(p), 1))
 
 
 @glyph('longs', 0x17F)
@@ -2016,10 +2016,10 @@ def _mu(g, p):
     w = p.nw
     a, b = p.V / 2, w - p.V / 2
     rx = (b - a) / 2
-    ry = rx * 0.93
+    ry = rx * ARCH_RY  # u's bowl and join
     cy = -p.ov * 0.4 + p.H / 2 + ry
     g.vstem(0, p.desc, p.xh)
-    g.stroke(g.arc(a + rx, cy, rx, ry, 194, 346), taper=(0.5, 0.5))
+    g.stroke(g.arc(a + rx, cy, rx, ry, 180 + JOIN_RUN, 360 - JOIN_RUN), taper=(join_taper(p),) * 2)
     g.vstem(w - p.V, 0, p.xh)
 
 

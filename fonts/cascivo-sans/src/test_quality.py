@@ -125,6 +125,24 @@ class StartingPoint(unittest.TestCase):
         for needle in ('join:', 'notch:', 'join angle:'):
             self.assertNotIn(needle, text)
 
+    def test_eng_and_mu_share_the_arch_of_n_and_u(self):
+        """The join construction is shared, not copied: eng's arch is n's and mu's bowl, at its right join, is u's.
+        Compared as ink in the band they share, at wght 400 and 900 (the masters) and 250 and 650 (between)."""
+
+        def band(path, glyph, wght, lo, hi):
+            m = Q.raster(path, glyph, wght)
+            xh = m.x_height
+            # right third only: u's left stem and bowl are one continuous stroke, but mu's left stem is a
+            # separate stem the bowl joins (thinned by join_taper), so the left halves differ by design
+            return np.asarray(m)[int(m.baseline - hi * xh) : int(m.baseline - lo * xh), m.shape[1] * 2 // 3 :]
+
+        for wght in (250, 400, 650, 900):
+            for a, b, lo, hi in (('n', 'eng', 0.55, 1.0), ('u', 'mu', 0.0, 0.45)):
+                ra, rb = band(VF, a, wght, lo, hi), band(VF, b, wght, lo, hi)
+                self.assertEqual(ra.shape, rb.shape, f'{b} and {a} differ in size at wght {wght}')
+                # a few px of fit difference (u is one continuous stroke, mu two); the old construction differed by thousands
+                self.assertLessEqual(int((ra ^ rb).sum()), 16, f'{b} at wght {wght} does not match {a}')
+
     def test_cut_faces_of_shallow_and_steep_cuts(self):
         shallow = ((0, 0), [('C', (100, 50)), ('L', (290, 80)), ('C', (400, 200))])  # ~9 degrees, 192 long
         steep = ((0, 0), [('C', (100, 50)), ('L', (200, 215)), ('C', (400, 200))])  # ~59 degrees, 193 long
