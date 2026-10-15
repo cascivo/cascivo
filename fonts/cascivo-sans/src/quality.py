@@ -140,7 +140,7 @@ REF = {
     # Inter.ttf InterItalic.ttf --terminal`, same Inter version), at 1000 upm. A terminal under 0.8 of it
     # is a tongue or a hook: its face runs on into the curve, or the stroke thins to the cut.
     'terminal': {400: 89.3, 900: 188.1},
-    'terminal_italic': {400: 88.4, 900: 186.7},
+    'terminal_italic': {400: 89.2, 900: 186.7},
     # Thin ink of Inter's punctuation (max_ink at wght 100) and of its Thin stem (`l`)
     'thin_punct': {'comma': 24.0, 'quoteright': 24.1, 'quotedblright': 24.1, 'quoteleft': 24.1, 'quotedblleft': 24.1},
     'thin_punct_italic': {'comma': 22.8, 'quoteright': 22.8, 'quotedblright': 22.8, 'quoteleft': 22.8, 'quotedblleft': 22.8},
