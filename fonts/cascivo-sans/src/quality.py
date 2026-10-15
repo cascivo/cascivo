@@ -460,11 +460,12 @@ def _cut_faces(contours, lo, hi, scale=1.0):
     return out
 
 
-# stems: a terminal's cut may run longer than the stroke is thick when it is skewed. Shorter faces are
-# joins thinned on purpose (join_taper's g and italic a bowls, the 5's bowl start tucked under its
-# stem, a 3's bar end): the join checks measure those
-TERMINAL_FACE = (0.95, 1.45)
+# a face shorter than this many stems is a corner chamfer, not a terminal
+TERMINAL_FACE = 0.25
+TERMINAL_FACE_MAX = 1.5  # longer straight edges between curves are a stroke's side, not its cut
+TERMINAL_STEEP = 60.0  # degrees from horizontal
 TERMINAL_MIN = 0.8  # a terminal's thickness may be this share of Inter's, and no less
+TERMINAL_NONE = {('a', True)}  # the single-storey italic a has no terminal: a bowl closed by a stem
 TERMINAL_GLYPHS = [g for g in APERTURE_GLYPHS if g != 'ampersand']  # Inter's & ends in diagonal strokes, not curved terminals
 
 
@@ -511,15 +512,49 @@ def _leaving(seg, at_end):
     return (0.0, 0.0)
 
 
+def _winding(point, polys):
+    """Nonzero-winding count of `point` over closed polygons (lists of points)."""
+    wn = 0
+    x, y = point
+    for poly in polys:
+        for i, (x0, y0) in enumerate(poly):
+            x1, y1 = poly[(i + 1) % len(poly)]
+            if (y0 <= y) != (y1 <= y):
+                t = (y - y0) / (y1 - y0)
+                if x0 + t * (x1 - x0) > x:
+                    wn += 1 if y1 > y0 else -1
+    return wn
+
+
+def _flat(segs, steps=8):
+    pts = []
+    for kind, p in segs:
+        if kind == 'L':
+            pts.append(p[0])
+        else:
+            for j in range(steps):
+                t = j / steps
+                if len(p) == 3:
+                    pts.append(tuple((1 - t) ** 2 * p[0][k] + 2 * (1 - t) * t * p[1][k] + t * t * p[2][k] for k in (0, 1)))
+                else:
+                    pts.append(tuple((1 - t) ** 3 * p[0][k] + 3 * (1 - t) ** 2 * t * p[1][k] + 3 * (1 - t) * t * t * p[2][k] + t**3 * p[3][k] for k in (0, 1)))
+    return pts
+
+
 def _terminal_widths(contours, stem, scale=1.0):
-    """(length, thickness) of each terminal's cut face. A face is a straight segment between two
-    curves, TERMINAL_FACE x the stem long, with a convex corner at both ends (a notch where two
-    strokes meet is concave and is not a terminal). Thickness is the stroke's width across the cut
-    seen from the narrower end: the face times the sine of its corner, which is the whole face for a
-    square cut and a sliver for a tongue, where the face runs on into the curve instead of
-    turning (the stroke has no edge there). Ink lies on the right of an outline's direction."""
+    """(length, thickness) of every terminal's cut face. A terminal is a straight segment between
+    two curves with a convex corner at both ends (a notch where two strokes meet is concave), that
+    shows: a face with other ink right behind its outside is a join buried in a stem (a bowl's
+    tapered end, the 5's bowl start). Faces are not told apart by length, so a stroke that thins to
+    its cut (a short face) is measured; only faces under TERMINAL_FACE x the stem, which are
+    corner chamfers, and over TERMINAL_FACE_MAX, which are a stroke's straight side, and faces steeper than TERMINAL_STEEP, which are bar and stem ends (a
+    terminal's own cut is held to CUT_MAX_DEG by the terminal-cut check), are left out.
+    Thickness is the stroke's width across the cut seen from the narrower end: the face times the
+    sine of its corner, which is the whole face for a square cut and a sliver for a tongue, where the
+    face runs on into the curve instead of turning. Ink lies on the right of an outline's direction."""
     import math
 
+    polys = [_flat(c) for c in contours]
     out = []
     for segs in contours:
         n = len(segs)
@@ -530,12 +565,19 @@ def _terminal_widths(contours, stem, scale=1.0):
             a, b = pts
             face = (b[0] - a[0], b[1] - a[1])
             length = math.hypot(*face) * scale
-            if not TERMINAL_FACE[0] * stem <= length <= TERMINAL_FACE[1] * stem:
+            if not TERMINAL_FACE * stem <= length <= TERMINAL_FACE_MAX * stem:
+                continue
+            if math.degrees(math.atan2(abs(face[1]), abs(face[0]))) > TERMINAL_STEEP:
                 continue
             into_a = _leaving(prv, True)  # points back along the previous segment: it arrives at a
             out_b = _leaving(nxt, False)
             # a right turn is convex: cross(arrive, face) < 0 and cross(face, leave) < 0
             if not (-into_a[0] * face[1] + into_a[1] * face[0] < 0 and face[0] * out_b[1] - face[1] * out_b[0] < 0):
+                continue
+            # the outside is on the left of the direction of travel; a point 3 px out that is ink is a buried join
+            mid = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)
+            nx, ny = -face[1] / math.hypot(*face), face[0] / math.hypot(*face)
+            if _winding((mid[0] + 3 / scale * nx, mid[1] + 3 / scale * ny), polys):
                 continue
             corner_a = _angle(face, into_a)
             corner_b = _angle((-face[0], -face[1]), out_b)
@@ -683,8 +725,10 @@ def measure_angle(font_path, italic=False):
 
 
 def measure_terminal(font_path):
-    """Inter's terminal thickness per weight: the median over the aperture glyphs' faces (zeros, where
-    a face runs on into its curve, are Inter's own spine joins and left out)."""
+    """Inter's terminal thickness per weight: the median over the aperture glyphs' faces, found the same
+    way as ours. Inter's faces of no thickness (a face that runs on into its curve) are left out of the
+    median: in Inter they are straight stretches of a smooth join, not cuts, and counting them would pull
+    the reference to nothing; in Cascivo such a face is a tongue, and is a failure."""
     import statistics
 
     sc = ref_scale(font_path)
@@ -766,7 +810,9 @@ def check_all(upright_vf, italic_vf):
             limit = TERMINAL_MIN * REF['terminal' + suffix][w]
             for g in TERMINAL_GLYPHS:
                 widths = [t for _, t in terminal_thickness(path, g, w)]
-                if widths and min(widths) < limit:
+                if not widths and (g, italic) not in TERMINAL_NONE:
+                    fails.append(f'{label}terminal thickness: {g} at wght {w} has no terminal to measure')
+                elif widths and min(widths) < limit:
                     fails.append(f'{label}terminal thickness: {g} at wght {w} ends {min(widths):.0f} thick, under {limit:.0f} ({TERMINAL_MIN} x Inter {REF["terminal" + suffix][w]:.0f})')
         for g in COUNTER_GLYPHS:
             ref = counter_ref.get((g, 900))

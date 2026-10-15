@@ -460,8 +460,8 @@ def _S(g, p, w, top, ov, pen=None, term=32, spine=0.1, run=0, run_up=None, close
     # too far at Regular, while a constant full stem closes the counters at Black. A heavier
     # hairline (1.15 H) does both. The joins sit at the bowls' vertical extremes, where every
     # pen is exactly one stem wide, so they are seamless.
-    # heavy terminals cut toward horizontal, as Geist's and Inter's: cut toward vertical, the
-    # lower one ran out into a long wedge (and in the italic, where the flat cut folds, they stay)
+    # heavy terminals are cut square and tipped only as far as keeps the face near flat (cut='t'): the old
+    # half-way turn pivoted on the outer edge and stretched the inner one into a tongue
     cut = 't'
     g.stroke(up, caps=('b', 'b'), pen=pen, cut=cut)
     # Heavier, the spine carries more: at 1.15 H a Black spine was 60% of a stem and the s read
@@ -1107,7 +1107,9 @@ def _five(g, p):
     xsm = xl + V / 2
     a0 = math.degrees(math.acos(max(-1.0, min(1.0, (xsm - cx) / rx))))
     ps = (cx + rx * math.cos(math.radians(a0)), cy + ry * math.sin(math.radians(a0)))
-    g.line((xsm + 10, p.cap - H / 2), ps, caps=('h', 'h'))
+    # lighter weights end the stem a little inside the bowl: flush, its foot showed as a small step
+    # (a visible face 36 thick, as a tongue reads) where the thin bowl start leaves it
+    g.line((xsm + 10, p.cap - H / 2), (ps[0], ps[1] - 0.25 * V * (1 - p.heavy)), caps=('h', 'h'))
     g.stroke(g.arc(cx, cy, rx, ry, a0, -150 + p.ap - 10 * p.heavy), taper=(0.6, 1), caps=('h', 'b'), cut='h')
     g.tab = True
     g.ht = 'c'

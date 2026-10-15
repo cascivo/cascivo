@@ -383,8 +383,10 @@ def reverse_seg(s):
 
 # Curved terminals are cut square to the stroke up to Regular. Heavier, the cut turns toward the
 # (slanted) vertical: a square cut across a Black stroke leaving a curve at 30-50° is a long
-# diagonal facet, and an s or a reads as a lightning bolt. Geist and Inter cut their heavy
-# terminals nearly vertical. Only diagonal ends turn: a stroke ending vertically (a join at a
+# diagonal facet, and an s or a reads as a lightning bolt. The default cut ('v') turns toward the
+# vertical, for ends that meet a stem; the terminals of round letters use 'h' (half-way to flat) or
+# 't' (square, tipped only to within HEAVY_TILT of flat), since Inter's and Geist's heavy terminals
+# of c, s, a, g, 6 and 9 end in a near-flat face. Only diagonal ends turn: a stroke ending vertically (a join at a
 # bowl's extreme) or horizontally already has a square cut that is horizontal or vertical.
 HEAVY_FROM, HEAVY_TO = 84, BLACK_STEM
 HEAVY_TURN = 1.0
@@ -409,6 +411,8 @@ def _heavy_cut(tan, V, slant, cut='v'):
         tu = norm((tan[0] - slant * tan[1], tan[1]))
         if math.pi / 2 - abs(_turn(tu, (0.0, 1.0))) < 1e-6:
             return None  # a join at a flat extreme: the pen's own end already meets the stroke it joins
+        # measured on the slanted tangent, unlike the other modes: the target is a face near horizontal
+        # on the page, and a slant does not move horizontal (the italic's faces come out at 13-28 deg)
         full = _turn(tan, (0.0, 1.0))
         a = math.copysign(k * max(0.0, abs(full) - HEAVY_TILT), full)
         return (tan[0] * math.cos(a) - tan[1] * math.sin(a), tan[0] * math.sin(a) + tan[1] * math.cos(a))

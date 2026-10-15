@@ -183,11 +183,29 @@ class StartingPoint(unittest.TestCase):
         notch = [[('C', [(100, 190), (50, 60), (0, 0)]), ('L', [(0, 0), (190, 0)]), ('C', [(190, 0), (300, 100), (290, 190)]), ('L', [(290, 190), (100, 190)])]]
         self.assertEqual(Q._terminal_widths(notch, 190), [])
 
+    def test_terminal_width_ignores_buried_joins_and_short_tongues_count(self):
+        square = [('C', [(0, 0), (50, 60), (100, 190)]), ('L', [(100, 190), (290, 190)]), ('C', [(290, 190), (330, 100), (300, -50)]), ('L', [(300, -50), (0, 0)])]
+        # a stem covering the face's outside: the face is a join hidden in it
+        stem = [('L', [(60, 230), (330, 230)]), ('L', [(330, 230), (330, 192)]), ('L', [(330, 192), (60, 192)]), ('L', [(60, 192), (60, 230)])]
+        self.assertEqual(Q._terminal_widths([square, stem], 190), [])
+        # a short face is measured, not skipped for its length: a stroke thinned to its cut
+        thin = [('C', [(0, 0), (50, 60), (100, 190)]), ('L', [(100, 190), (180, 190)]), ('C', [(180, 190), (220, 100), (190, -50)]), ('L', [(190, -50), (0, 0)])]
+        (face,) = [f for f in Q._terminal_widths([thin], 190) if f[0] < 100]
+        self.assertLess(face[1], 0.8 * 190)
+        # a steep face is a bar or stem end, not a terminal
+        bar = [('C', [(0, 0), (50, 60), (100, 190)]), ('L', [(100, 190), (110, 380)]), ('C', [(110, 380), (200, 300), (300, 0)]), ('L', [(300, 0), (0, 0)])]
+        self.assertEqual(Q._terminal_widths([bar], 190), [])
+
     def test_terminal_thickness_on_the_built_font(self):
-        """Inter's terminals are a stem thick; so are ours, except where today's heavy s ends in a tongue."""
+        """Inter's terminals are a stem thick; so are ours."""
         widths = [t for _, t in Q.terminal_thickness(VF, 'c', 900)]
         self.assertEqual(len(widths), 2)
         self.assertTrue(all(t > 0.9 * 190 * 0.9 for t in widths))
+        # every aperture glyph has terminals to measure (the single-storey italic a is the one exception),
+        # tongues and all: a glyph measuring nothing must fail, not pass for want of a face
+        for g in Q.TERMINAL_GLYPHS:
+            self.assertTrue(Q.terminal_thickness(VF, g, 900), g)
+            self.assertTrue(Q.terminal_thickness(VFI, g, 900) or (g, True) in Q.TERMINAL_NONE, g)
 
     def test_cut_faces_found_on_the_built_font(self):
         faces = Q.cut_faces(VF, 'c', 900)
