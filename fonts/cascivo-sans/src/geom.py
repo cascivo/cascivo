@@ -388,6 +388,8 @@ def reverse_seg(s):
 # bowl's extreme) or horizontally already has a square cut that is horizontal or vertical.
 HEAVY_FROM, HEAVY_TO = 84, BLACK_STEM
 HEAVY_TURN = 1.0
+HEAVY_H = 0.5  # how far a cut='h' terminal turns toward a flat cut, as a share of the way
+HEAVY_TILT = math.radians(28)  # a cut='t' terminal's face lies within this of horizontal
 
 
 def _heavy_cut(tan, V, slant, cut='v'):
@@ -399,7 +401,18 @@ def _heavy_cut(tan, V, slant, cut='v'):
     running along the slant read as 10° off vertical and was turned; sheared back whole, its
     square end went flat. Either way it opened a seam against the stroke it meets."""
     k = HEAVY_TURN * min(1.0, (V - HEAVY_FROM) / (HEAVY_TO - HEAVY_FROM))
-    share = k if cut == 'v' else k * 0.5
+    if cut == 't':
+        # square to the stroke, tipped toward flat only as far as keeps the face within HEAVY_TILT
+        # of horizontal: a half-way turn on a stroke already near 50° left an acute corner on one
+        # side (a blade), and a full one a long diagonal facet. The cut stays a cut across the stroke
+        # that ends, and the turn it takes grows with weight as the others do.
+        tu = norm((tan[0] - slant * tan[1], tan[1]))
+        if math.pi / 2 - abs(_turn(tu, (0.0, 1.0))) < 1e-6:
+            return None  # a join at a flat extreme: the pen's own end already meets the stroke it joins
+        full = _turn(tan, (0.0, 1.0))
+        a = math.copysign(k * max(0.0, abs(full) - HEAVY_TILT), full)
+        return (tan[0] * math.cos(a) - tan[1] * math.sin(a), tan[0] * math.sin(a) + tan[1] * math.cos(a))
+    share = k if cut == 'v' else k * HEAVY_H
     # how far to turn, as a share of the way to the vertical (or flat) cut, is read off the
     # unslanted drawing; the turn itself is applied to the slanted stroke toward the sheared
     # vertical, so a share of nothing leaves the stroke's own square end

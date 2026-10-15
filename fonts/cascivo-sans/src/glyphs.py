@@ -462,7 +462,7 @@ def _S(g, p, w, top, ov, pen=None, term=32, spine=0.1, run=0, run_up=None, close
     # pen is exactly one stem wide, so they are seamless.
     # heavy terminals cut toward horizontal, as Geist's and Inter's: cut toward vertical, the
     # lower one ran out into a long wedge (and in the italic, where the flat cut folds, they stay)
-    cut = 'h'
+    cut = 't'
     g.stroke(up, caps=('b', 'b'), pen=pen, cut=cut)
     # Heavier, the spine carries more: at 1.15 H a Black spine was 60% of a stem and the s read
     # as a lightning bolt beside Geist's and Inter's near-full-weight spines.
@@ -665,7 +665,7 @@ def _g(g, p):
     rx = (w - V) / 2 * 0.98
     ry = 104 + p.V * 0.25
     cy = p.desc - p.ov * 0.5 + H / 2 + ry
-    g.stroke([L((xr, p.xh), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, -152 + p.ap), caps=('b', 'b'))
+    g.stroke([L((xr, p.xh), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, -152 + p.ap), caps=('b', 'b'), cut='t')
     cx, cy2, rx2, ry2 = g.box(0, 18, w, p.xh + p.ov)
     g.stroke(g.arc(cx, cy2, rx2, ry2, JOIN_RUN, 360 - JOIN_RUN), taper=(join_taper(p),) * 2)
     g.sb = (0.62, 1.15 if p.italic else 1)  # the italic sat 10% tighter on its right than Inter's and Plex's
@@ -777,7 +777,7 @@ def _a(g, p):
     rxt = xs - cxt
     ryt = p.xh * 0.26
     cyt = p.xh + p.ov * 0.5 - H / 2 - ryt
-    g.stroke([L((xs, 0), (xs, cyt))] + g.arc(cxt, cyt, rxt, ryt, 0, 154 - p.ap), caps=('b', 'b'))
+    g.stroke([L((xs, 0), (xs, cyt))] + g.arc(cxt, cyt, rxt, ryt, 0, 154 - p.ap), caps=('b', 'b'), cut='t')
     _a_bowl(g, p, xs, 0.94)
     g.sb = (0.55, 1)
 
@@ -1131,7 +1131,7 @@ def _six_strokes(g, p, w):
     g.oval(0, -p.ov, w, top)
     cx, cy, rx, ry = g.box(0, -p.ov, w * (1.02 + 0.15 * p.heavy), p.cap + p.ov)
     cyb = (-p.ov + top) / 2
-    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 44 + 14 * p.heavy + p.ap * 0.5), caps=('b', 'b'), cut='h')  # heavy terminals end higher, so the cut trims little and Bold, between the masters, has no dip
+    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 44 - 16 * p.heavy + p.ap * 0.5), caps=('b', 'b'), cut='t')  # heavy terminals run round to 28°, where the stroke is steep and a square cut is a clean face: ending higher (58°) left a blade with a notch in its inner edge
     del V
 
 
@@ -1141,9 +1141,6 @@ def _nine(g, p):
     _six_strokes(g, p, w)
     cap = p.cap
     g.strokes = [s.transformed(lambda q: (w - q[0], cap - q[1])) for s in g.strokes]
-    if p.italic:  # the slant is not symmetric under the 180° turn: the 9's tail takes the flat cut badly
-        for s in g.strokes:
-            s.cut = 'v'
     g.tab = True
     g.ht = 'c'
 
@@ -1247,7 +1244,7 @@ def _question(g, p):
     cx, cy, rx, ry = g.box(0, tgt[1] + p.cap * (0.15 - 0.03 * p.heavy), w, p.cap + p.ov)
     arc_ = g.arc(cx, cy, rx, ry, 160 - p.ap, -55)
     pe = arc_[-1][-1]
-    g.stroke(arc_ + [('C', pe, (pe[0] - 30, pe[1] - 25), (tgt[0], tgt[1] + 60), tgt)], caps=('b', 'b'))
+    g.stroke(arc_ + [('C', pe, (pe[0] - 30, pe[1] - 25), (tgt[0], tgt[1] + 60), tgt)], caps=('b', 'b'), cut='t')
     g.dot(xm, 0)
     del V, H, d
     g.sb = (0.55, 0.6)

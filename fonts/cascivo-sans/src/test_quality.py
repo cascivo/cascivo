@@ -112,11 +112,10 @@ class StartingPoint(unittest.TestCase):
     def test_current_font_fails_the_new_checks(self):
         """Documents today's defects; WP5 flips this to test_font_passes_quality_checks.
 
-        Measured, not assumed: `c` and `s` cut faces at Black are 13 and 0-5 degrees (Inter 8), so
-        the terminal-cut check names a, g, six, nine and question instead."""
+        WP2 fixed the terminals, so the terminal checks are not among them any more."""
         failures = Q.check_all(VF, VFI)
         text = '\n'.join(failures)
-        for needle in ('thin ink: t ', 'thin ink: comma ', 'terminal cut: a ', 'sidebearings: x '):
+        for needle in ('thin ink: t ', 'thin ink: comma ', 'sidebearings: x '):
             self.assertIn(needle, text)
 
     def test_joins_flow_into_the_stem(self):
@@ -124,6 +123,18 @@ class StartingPoint(unittest.TestCase):
         text = '\n'.join(Q.check_all(VF, VFI))
         for needle in ('join:', 'notch:', 'join angle:'):
             self.assertNotIn(needle, text)
+
+    def test_heavy_terminals_are_clean_cuts(self):
+        """WP2: aperture terminals are cut across the stroke within 35 degrees of flat and are a stroke thick
+        (no tongue, no blade), at Black and at the weights Inter is measured at, in both families."""
+        text = '\n'.join(Q.check_all(VF, VFI))
+        for needle in ('terminal cut:', 'terminal thickness:'):
+            self.assertNotIn(needle, text)
+
+    def test_italic_nine_ends_in_a_clean_cut(self):
+        """The italic nine's tail was cut at 80 degrees (a vertical face); it ends like the six's hook turned round."""
+        (face,) = Q.cut_faces(VFI, 'nine', 900)
+        self.assertLessEqual(face[1], Q.CUT_MAX_DEG)
 
     def test_eng_and_mu_share_the_arch_of_n_and_u(self):
         """The join construction is shared, not copied: eng's arch is n's and mu's bowl, at its right join, is u's.
@@ -158,6 +169,25 @@ class StartingPoint(unittest.TestCase):
         c = ((0, 0), [('L', (200, 0)), ('C', (300, 100)), ('C', (200, 190)), ('L', (0, 190))])
         self.assertEqual(Q._cut_faces([c], 150, 220), [])
         self.assertEqual(Q._cut_faces([((0, 0), [('L', (0, 190)), ('C', (100, 300)), ('C', (200, 0))])], 150, 220), [])
+
+    def test_terminal_width_square_cut_and_tongue(self):
+        # a 190 stem ending in a square cut between two curves, wound clockwise (ink on the right)
+        square = [[('C', [(0, 0), (50, 60), (100, 190)]), ('L', [(100, 190), (290, 190)]), ('C', [(290, 190), (330, 100), (300, -50)]), ('L', [(300, -50), (0, 0)])]]
+        # the same cut running on into the curve behind it: the tongue of a heavy s
+        tongue = [[('C', [(0, 0), (50, 60), (100, 190)]), ('L', [(100, 190), (290, 190)]), ('C', [(290, 190), (390, 188), (480, 170)]), ('L', [(480, 170), (0, 0)])]]
+        (face,) = Q._terminal_widths(square, 190)
+        self.assertGreater(face[1], 0.9 * 190)  # a (nearly) square cut keeps its whole face
+        (face,) = Q._terminal_widths(tongue, 190)
+        self.assertLess(face[1], 0.4 * 190)  # a face that runs on into the curve has no thickness
+        # a notch (a concave corner) is where two strokes meet, not a terminal
+        notch = [[('C', [(100, 190), (50, 60), (0, 0)]), ('L', [(0, 0), (190, 0)]), ('C', [(190, 0), (300, 100), (290, 190)]), ('L', [(290, 190), (100, 190)])]]
+        self.assertEqual(Q._terminal_widths(notch, 190), [])
+
+    def test_terminal_thickness_on_the_built_font(self):
+        """Inter's terminals are a stem thick; so are ours, except where today's heavy s ends in a tongue."""
+        widths = [t for _, t in Q.terminal_thickness(VF, 'c', 900)]
+        self.assertEqual(len(widths), 2)
+        self.assertTrue(all(t > 0.9 * 190 * 0.9 for t in widths))
 
     def test_cut_faces_found_on_the_built_font(self):
         faces = Q.cut_faces(VF, 'c', 900)

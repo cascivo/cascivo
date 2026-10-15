@@ -136,6 +136,11 @@ REF = {
         ('h', 900, 'left', 'top'): 37.6, ('h', 900, 'right', 'top'): 37.8, ('m', 900, 'left', 'top'): 36.9, ('u', 900, 'right', 'bottom'): 36.4,
         ('u', 900, 'left', 'bottom'): 40.1, ('r', 900, 'left', 'top'): 44.1,
     },
+    # terminal_thickness: the median thickness of Inter's terminals over TERMINAL_GLYPHS (`--measure-ref
+    # Inter.ttf InterItalic.ttf --terminal`, same Inter version), at 1000 upm. A terminal under 0.8 of it
+    # is a tongue or a hook: its face runs on into the curve, or the stroke thins to the cut.
+    'terminal': {400: 89.3, 900: 188.1},
+    'terminal_italic': {400: 88.4, 900: 186.7},
     # Thin ink of Inter's punctuation (max_ink at wght 100) and of its Thin stem (`l`)
     'thin_punct': {'comma': 24.0, 'quoteright': 24.1, 'quotedblright': 24.1, 'quoteleft': 24.1, 'quotedblleft': 24.1},
     'thin_punct_italic': {'comma': 22.8, 'quoteright': 22.8, 'quotedblright': 22.8, 'quoteleft': 22.8, 'quotedblleft': 22.8},
@@ -455,6 +460,104 @@ def _cut_faces(contours, lo, hi, scale=1.0):
     return out
 
 
+# stems: a terminal's cut may run longer than the stroke is thick when it is skewed. Shorter faces are
+# joins thinned on purpose (join_taper's g and italic a bowls, the 5's bowl start tucked under its
+# stem, a 3's bar end): the join checks measure those
+TERMINAL_FACE = (0.95, 1.45)
+TERMINAL_MIN = 0.8  # a terminal's thickness may be this share of Inter's, and no less
+TERMINAL_GLYPHS = [g for g in APERTURE_GLYPHS if g != 'ampersand']  # Inter's & ends in diagonal strokes, not curved terminals
+
+
+def outline_segments(font_path, glyph, wght, opsz=14):
+    """The instanced outline as contours of ('L'|'C', [points]) segments: a quadratic keeps its
+    off-curve point, a cubic its two; an implied on-curve point between off-curve points is made
+    explicit. The closing line is a segment."""
+    from fontTools.pens.recordingPen import DecomposingRecordingPen
+
+    gs = instance(font_path, wght, opsz).getGlyphSet()
+    pen = DecomposingRecordingPen(gs)
+    gs[glyph].draw(pen)
+    contours, cur, pos, start = [], None, None, None
+    for op, args in pen.value:
+        if op == 'moveTo':
+            cur, pos, start = [], args[0], args[0]
+            contours.append(cur)
+        elif op == 'lineTo':
+            cur.append(('L', [pos, args[0]]))
+            pos = args[0]
+        elif op == 'curveTo':
+            cur.append(('C', [pos, *args]))
+            pos = args[-1]
+        elif op == 'qCurveTo':
+            offs, end = list(args[:-1]), args[-1]
+            p0 = pos
+            for i, o in enumerate(offs):
+                nxt = end if i == len(offs) - 1 else ((o[0] + offs[i + 1][0]) / 2, (o[1] + offs[i + 1][1]) / 2)
+                cur.append(('C', [p0, o, nxt]))
+                p0 = nxt
+            pos = end
+        elif op in ('closePath', 'endPath') and cur is not None and pos != start:
+            cur.append(('L', [pos, start]))
+    return contours
+
+
+def _leaving(seg, at_end):
+    """Direction in which a segment leaves its first (or, at_end, its last) point, as seen from
+    that point: the first control point that is not the point itself."""
+    pts = seg[1][::-1] if at_end else seg[1]
+    for q in pts[1:]:
+        if q != pts[0]:
+            return (q[0] - pts[0][0], q[1] - pts[0][1])
+    return (0.0, 0.0)
+
+
+def _terminal_widths(contours, stem, scale=1.0):
+    """(length, thickness) of each terminal's cut face. A face is a straight segment between two
+    curves, TERMINAL_FACE x the stem long, with a convex corner at both ends (a notch where two
+    strokes meet is concave and is not a terminal). Thickness is the stroke's width across the cut
+    seen from the narrower end: the face times the sine of its corner, which is the whole face for a
+    square cut and a sliver for a tongue, where the face runs on into the curve instead of
+    turning (the stroke has no edge there). Ink lies on the right of an outline's direction."""
+    import math
+
+    out = []
+    for segs in contours:
+        n = len(segs)
+        for i, (kind, pts) in enumerate(segs):
+            prv, nxt = segs[i - 1], segs[(i + 1) % n]
+            if kind != 'L' or prv[0] == 'L' or nxt[0] == 'L':
+                continue
+            a, b = pts
+            face = (b[0] - a[0], b[1] - a[1])
+            length = math.hypot(*face) * scale
+            if not TERMINAL_FACE[0] * stem <= length <= TERMINAL_FACE[1] * stem:
+                continue
+            into_a = _leaving(prv, True)  # points back along the previous segment: it arrives at a
+            out_b = _leaving(nxt, False)
+            # a right turn is convex: cross(arrive, face) < 0 and cross(face, leave) < 0
+            if not (-into_a[0] * face[1] + into_a[1] * face[0] < 0 and face[0] * out_b[1] - face[1] * out_b[0] < 0):
+                continue
+            corner_a = _angle(face, into_a)
+            corner_b = _angle((-face[0], -face[1]), out_b)
+            out.append((length, length * min(math.sin(corner_a), math.sin(corner_b))))
+    return out
+
+
+def _angle(u, v):
+    import math
+
+    d = (u[0] * v[0] + u[1] * v[1]) / (math.hypot(*u) * math.hypot(*v))
+    return math.acos(max(-1.0, min(1.0, d)))
+
+
+def terminal_thickness(font_path, glyph, wght, opsz=14, scale=1.0):
+    """[(face length, thickness)] of the terminals on the instanced outline, in px at 1000 upm
+    (see `_terminal_widths`); `scale` brings a reference font there."""
+    from params import P
+
+    return _terminal_widths(outline_segments(font_path, glyph, wght, opsz), P(wght=wght, opsz=opsz).V, scale)
+
+
 def notch_depth(mask, stem_side, x_height=None, baseline=None):
     """How deep the outside reaches into the bowl/arch-stem junction, in stem widths.
 
@@ -579,6 +682,18 @@ def measure_angle(font_path, italic=False):
     }
 
 
+def measure_terminal(font_path):
+    """Inter's terminal thickness per weight: the median over the aperture glyphs' faces (zeros, where
+    a face runs on into its curve, are Inter's own spine joins and left out)."""
+    import statistics
+
+    sc = ref_scale(font_path)
+    return {
+        w: round(statistics.median(t for g in TERMINAL_GLYPHS for _, t in terminal_thickness(font_path, g, w, 14, sc) if t > 1), 1)
+        for w in JOIN_WEIGHTS
+    }
+
+
 def measure_notch_thin(font_path):
     """(notch depth per (glyph, wght), Thin ink per punctuation glyph, Thin stem) for a reference."""
     sc = ref_scale(font_path)
@@ -647,6 +762,12 @@ def check_all(upright_vf, italic_vf):
             for length, deg in cut_faces(path, g, 900):
                 if deg > CUT_MAX_DEG:
                     fails.append(f'{label}terminal cut: {g} is {deg:.1f} deg from horizontal at Black (face {length:.0f} long), over {CUT_MAX_DEG:.0f}')
+        for w in JOIN_WEIGHTS:
+            limit = TERMINAL_MIN * REF['terminal' + suffix][w]
+            for g in TERMINAL_GLYPHS:
+                widths = [t for _, t in terminal_thickness(path, g, w)]
+                if widths and min(widths) < limit:
+                    fails.append(f'{label}terminal thickness: {g} at wght {w} ends {min(widths):.0f} thick, under {limit:.0f} ({TERMINAL_MIN} x Inter {REF["terminal" + suffix][w]:.0f})')
         for g in COUNTER_GLYPHS:
             ref = counter_ref.get((g, 900))
             m = raster(path, g, 900)
@@ -674,6 +795,10 @@ if __name__ == '__main__':
         if sys.argv[4:5] == ['--angle']:
             for f, it in ((sys.argv[2], False), (sys.argv[3], True)):
                 print(measure_angle(f, it))
+            sys.exit(0)
+        if sys.argv[4:5] == ['--terminal']:
+            for f in sys.argv[2:4]:
+                print(measure_terminal(f))
             sys.exit(0)
         if sys.argv[4:5] == ['--notch-thin']:
             for f in sys.argv[2:4]:
