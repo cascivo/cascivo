@@ -30,7 +30,10 @@ STEM_THIN = 22  # params.P stem at wght 100
 LOWER = string.ascii_lowercase
 UPPER = string.ascii_uppercase
 DIGITS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
-THIN_INK_GLYPHS = list(LOWER + UPPER) + DIGITS + ['comma', 'semicolon', 'quoteright', 'quotedblright', 'quoteleft', 'quotedblleft']
+THIN_PUNCT = {'comma': 'comma', 'semicolon': 'comma', 'quoteright': 'quoteright', 'quotedblright': 'quotedblright', 'quoteleft': 'quoteleft', 'quotedblleft': 'quotedblleft'}
+# semicolon is judged against Inter's comma: Inter's round dot is not a "dot" to max_ink (it fills
+# 78% of its box, not 85%), so Inter's semicolon value would be the dot and not the tail.
+THIN_INK_GLYPHS = list(LOWER + UPPER) + DIGITS
 LATIN = list(LOWER + UPPER) + DIGITS
 JOIN_GLYPHS = {'a': 'right', 'b': 'left', 'd': 'right', 'g': 'right', 'p': 'left', 'q': 'right', 'n': 'left', 'm': 'left', 'h': 'left', 'u': 'right', 'r': 'left'}
 JOIN_WEIGHTS = (400, 900)
@@ -43,8 +46,14 @@ MASTER_LOCATIONS = [(400, 14), (100, 14), (900, 14), (400, 8), (400, 48)]
 
 # Thresholds (the table in the plan).
 THIN_INK_MAX = 2.5 * STEM_THIN
+THIN_PUNCT_SHARE = 1.25  # punctuation may be this much heavier than Inter's, scaled to the Thin stem
+NOTCH_SLACK = 0.03  # notch_depth may sit this far over Inter's, and never under NOTCH_FLOOR
+NOTCH_FLOOR = 0.12
+APERTURE_GLYPHS = ['c', 'e', 's', 'a', 'g', 'S', 'C', 'G', 'three', 'five', 'six', 'nine', 'question', 'ampersand']
+CUT_FACE = (0.8, 1.15)  # a terminal's cut face is about one stroke thick: shorter lines are
+# joins and bar ends, longer ones stems
 JOIN_SLACK = 0.10  # join_ratio may sit this far under Inter's
-CUT_MAX_DEG = 35.0  # a heavy curved terminal's cut, from horizontal: angled like Inter, never flat by rule
+CUT_MAX_DEG = 35.0  # a heavy curved terminal's cut face, from horizontal: angled like Inter, never flat by rule
 COUNTER_MIN_SHARE = 0.70
 JOIN_SKIP = 0.3  # stem widths: the junction itself is skeleton noise, the join is what follows it
 X_SB_MIN = 25  # x at Regular: its diagonals must not touch the neighbours
@@ -72,6 +81,25 @@ REF = {
     },
     'counter_italic': {('o', 900): 0.1225, ('e', 900): 0.0458, ('a', 900): 0.1219},
     'sliver_italic': 62,
+    # notch_depth (stem widths); n m h u at 900 read ~1.4 because the box's hull spans the arch's
+    # shoulder, a property of the construction that Cascivo shares: only the difference counts.
+    'notch': {
+        ('a', 400): None, ('b', 400): 0.954, ('d', 400): 0.954, ('g', 400): 0.972, ('p', 400): 0.939, ('q', 400): 0.939,
+        ('n', 400): 0.922, ('m', 400): 0.907, ('h', 400): 0.940, ('u', 400): 0.927, ('r', 400): 0.939,
+        ('a', 900): None, ('b', 900): 0.565, ('d', 900): 0.565, ('g', 900): 0.539, ('p', 900): 0.533, ('q', 900): 0.533,
+        ('n', 900): 1.429, ('m', 900): 1.426, ('h', 900): 1.455, ('u', 900): 1.429, ('r', 900): 0.551,
+    },
+    'notch_italic': {
+        ('a', 400): None, ('b', 400): 1.008, ('d', 400): 1.155, ('g', 400): 1.046, ('p', 400): 1.132, ('q', 400): 1.080,
+        ('n', 400): 0.722, ('m', 400): 0.686, ('h', 400): 0.704, ('u', 400): 0.706, ('r', 400): 0.727,
+        ('a', 900): None, ('b', 900): 0.580, ('d', 900): 0.589, ('g', 900): 0.553, ('p', 900): 0.555, ('q', 900): 0.547,
+        ('n', 900): 1.423, ('m', 900): 1.423, ('h', 900): 1.446, ('u', 900): 1.418, ('r', 900): 0.551,
+    },
+    # Thin ink of Inter's punctuation (max_ink at wght 100) and of its Thin stem (`l`)
+    'thin_punct': {'comma': 24.0, 'quoteright': 24.1, 'quotedblright': 24.1, 'quoteleft': 24.1, 'quotedblleft': 24.1},
+    'thin_punct_italic': {'comma': 22.8, 'quoteright': 22.8, 'quotedblright': 22.8, 'quoteleft': 22.8, 'quotedblleft': 22.8},
+    'thin_stem': 22.0,
+    'thin_stem_italic': 22.4,
 }
 
 
@@ -334,34 +362,89 @@ def sliver_area(mask, r=6):
     return int(ndi.sum(thin, labels, index=np.arange(1, n + 1)).max())
 
 
-def cap_angles(p):
-    """(glyph, degrees from horizontal) for every curved end with cap 'b' whose end tangent is
-    within 50 degrees of vertical, read off the engine's own cap lines for master `p`."""
+def cut_faces(font_path, glyph, wght, opsz=14, scale=1.0):
+    """(length, degrees from horizontal) of the cut faces on the instanced outline: straight
+    segments about one stroke thick (CUT_FACE x the stem) whose neighbours on the contour are
+    both curves, i.e. where a curved stroke ends. The closing segment of a contour counts. `scale`
+    brings a reference font to 1000 upm."""
     import math
 
-    import glyphs as GL
-    from build import italicize
-    from geom import cap_lines, seg_tangent
+    from fontTools.pens.recordingPen import DecomposingRecordingPen
 
+    from params import P
+
+    stem = P(wght=wght, opsz=opsz).V
+    gs = instance(font_path, wght, opsz).getGlyphSet()
+    pen = DecomposingRecordingPen(gs)
+    gs[glyph].draw(pen)
+    contours, cur = [], []
+    for op, args in pen.value:
+        if op == 'moveTo':
+            cur = [('M', args[0])]
+        elif op == 'lineTo':
+            cur.append(('L', args[0]))
+        elif op in ('qCurveTo', 'curveTo'):
+            cur.append(('C', args[-1]))
+        elif op in ('closePath', 'endPath') and cur:
+            if cur[-1][1] != cur[0][1]:
+                cur.append(('L', cur[0][1]))  # the implicit closing line
+            else:
+                cur[0] = ('C', cur[0][1])
+            contours.append(cur)
     out = []
-    for name in LATIN:
-        if name not in GL.GLYPHS:
-            continue
-        g = GL.G(p)
-        GL.GLYPHS[name][1](g, p)
-        for s in italicize(g.strokes, p):
-            if s.closed:
+    for c in contours:
+        n = len(c)
+        for i in range(1, n):
+            if c[i][0] != 'L' or c[i - 1][0] == 'L' or c[(i + 1) % n][0] == 'L':
                 continue
-            end_cap, start_cap = cap_lines(s, p.V, p.H)
-            for seg, t, cap, line in ((s.segs[-1], 1.0, s.caps[1], end_cap), (s.segs[0], 0.0, s.caps[0], start_cap)):
-                if cap != 'b' or seg[0] != 'C':
-                    continue
-                tan = seg_tangent(seg, t)
-                if math.degrees(math.atan2(abs(tan[0]), abs(tan[1]))) > 50:
-                    continue
-                dx, dy = line[2][0] - line[1][0], line[2][1] - line[1][1]
-                out.append((name, math.degrees(math.atan2(abs(dy), abs(dx)))))
+            (x0, y0), (x1, y1) = c[i - 1][1], c[i][1]
+            length = math.hypot(x1 - x0, y1 - y0) * scale
+            if CUT_FACE[0] * stem <= length <= CUT_FACE[1] * stem:
+                out.append((length, math.degrees(math.atan2(abs(y1 - y0), abs(x1 - x0)))))
     return out
+
+
+def notch_depth(mask, stem_side, x_height=None, baseline=None):
+    """How deep the outside reaches into the bowl/arch-stem junction, in stem widths.
+
+    In a box from one stem width either side of the stem's edge, in the x-height band (the upper
+    and lower join are taken separately), take the convex hull of the ink; the depth is the
+    largest distance from the hull's boundary to white that is connected to the outside (not an
+    enclosed counter). Every bowl meets its stem with some concavity, so this is compared with
+    Inter's for the same glyph."""
+    from skimage.morphology import convex_hull_image
+
+    x_height = getattr(mask, 'x_height', None) if x_height is None else x_height
+    baseline = getattr(mask, 'baseline', None) if baseline is None else baseline
+    if x_height is None or baseline is None:
+        raise ValueError('notch_depth needs a raster() mask, or x_height and baseline')
+    m = np.asarray(mask)
+    mid = int(round(baseline - x_height / 2))
+    run = _stem_run(m, mid, stem_side)
+    if run is None:
+        return float('nan')
+    a, b = run
+    stem = b - a
+    edge = b if stem_side == 'left' else a
+    c0, c1 = max(int(edge - stem), 0), min(int(edge + stem), m.shape[1])
+    labels, _ = ndi.label(~m)
+    outer = np.isin(labels, [v for v in np.unique(np.concatenate([labels[0], labels[-1], labels[:, 0], labels[:, -1]])) if v])
+    top, base = int(baseline - x_height), int(baseline)
+    best = 0.0
+    for r0, r1 in ((top - 12, mid), (mid, base + 12)):
+        r0, r1 = max(r0, 0), min(r1, m.shape[0])
+        box = np.zeros_like(m)
+        box[r0:r1, c0:c1] = True
+        ink = m & box
+        if not ink.any():
+            continue
+        # outside the box counts as hull, so the box's own edges are not measured as notches
+        hull = convex_hull_image(ink)
+        dist = ndi.distance_transform_edt(hull | ~box)
+        inside = hull & outer & box
+        if inside.any():
+            best = max(best, float(dist[inside].max()))
+    return best / stem
 
 
 # -- measuring Inter -----------------------------------------------------------------------------
@@ -382,6 +465,17 @@ def measure(font_path, italic=False):
     return join, counter, sliver
 
 
+def measure_notch_thin(font_path):
+    """(notch depth per (glyph, wght), Thin ink per punctuation glyph, Thin stem) for a reference."""
+    sc = ref_scale(font_path)
+    notch = {}
+    for w in JOIN_WEIGHTS:
+        for g, side in JOIN_GLYPHS.items():
+            notch[(g, w)] = None if g in JOIN_UNMEASURABLE else round(notch_depth(raster(font_path, g, w, 14, sc), side), 3)
+    punct = {g: round(max_ink(raster(font_path, g, 100, 14, sc)), 1) for g in sorted(set(THIN_PUNCT.values()))}
+    return notch, punct, round(max_ink(raster(font_path, 'l', 100, 14, sc)), 1)
+
+
 # -- the checks ----------------------------------------------------------------------------------
 
 
@@ -394,8 +488,6 @@ def _glyph_bounds(font, name):
 
 def check_all(upright_vf, italic_vf):
     """Human-readable failures across both families; empty when everything passes."""
-    from params import P
-
     fails = []
     for label, path, italic in (('', upright_vf, False), ('italic ', italic_vf, True)):
         suffix = '_italic' if italic else ''
@@ -404,6 +496,11 @@ def check_all(upright_vf, italic_vf):
             v = max_ink(raster(path, g, 100))
             if v > THIN_INK_MAX:
                 fails.append(f'{label}thin ink: {g} is {v:.1f} thick at wght 100, over {THIN_INK_MAX:.1f}')
+        for g, ref_g in THIN_PUNCT.items():
+            limit = THIN_PUNCT_SHARE * REF['thin_punct' + suffix][ref_g] * STEM_THIN / REF['thin_stem' + suffix]
+            v = max_ink(raster(path, g, 100))
+            if v > limit:
+                fails.append(f'{label}thin ink: {g} is {v:.1f} thick at wght 100, over {limit:.1f} ({THIN_PUNCT_SHARE} x Inter {ref_g})')
         for w in JOIN_WEIGHTS:
             for g, side in JOIN_GLYPHS.items():
                 ref = join_ref.get((g, w))
@@ -412,9 +509,20 @@ def check_all(upright_vf, italic_vf):
                 v = join_ratio(raster(path, g, w), side)
                 if not v >= ref - JOIN_SLACK:
                     fails.append(f'{label}join: {g} at wght {w} is {v:.2f}, under Inter {ref:.2f} - {JOIN_SLACK}')
-        for name, deg in cap_angles(P(wght=900, opsz=14, italic=italic)):
-            if deg > CUT_MAX_DEG:
-                fails.append(f'{label}terminal cut: {name} is {deg:.1f} deg from horizontal at Black, over {CUT_MAX_DEG:.0f}')
+        notch_ref = REF['notch' + suffix]
+        for w in JOIN_WEIGHTS:
+            for g, side in JOIN_GLYPHS.items():
+                ref = notch_ref.get((g, w))
+                if ref is None:
+                    continue
+                v = notch_depth(raster(path, g, w), side)
+                limit = max(NOTCH_FLOOR, ref + NOTCH_SLACK)
+                if not v <= limit:
+                    fails.append(f'{label}notch: {g} at wght {w} is {v:.3f} stems deep, over {limit:.3f} (Inter {ref:.3f})')
+        for g in APERTURE_GLYPHS:
+            for length, deg in cut_faces(path, g, 900):
+                if deg > CUT_MAX_DEG:
+                    fails.append(f'{label}terminal cut: {g} is {deg:.1f} deg from horizontal at Black (face {length:.0f} long), over {CUT_MAX_DEG:.0f}')
         for g in COUNTER_GLYPHS:
             ref = counter_ref.get((g, 900))
             m = raster(path, g, 900)
@@ -439,6 +547,10 @@ def check_all(upright_vf, italic_vf):
 if __name__ == '__main__':
     here = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'fonts')
     if sys.argv[1:2] == ['--measure-ref']:
+        if sys.argv[4:5] == ['--notch-thin']:
+            for f in sys.argv[2:4]:
+                print(measure_notch_thin(f))
+            sys.exit(0)
         for f, it in ((sys.argv[2], False), (sys.argv[3], True)):
             j, c, s = measure(f, it)
             print('join' + ('_italic' if it else ''), j)

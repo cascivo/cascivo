@@ -82,13 +82,17 @@ class StartingPoint(unittest.TestCase):
     def test_current_font_fails_the_new_checks(self):
         """Documents today's defects; WP5 flips this to test_font_passes_quality_checks.
 
-        Measured, not assumed: of the defects the plan expected, `comma` stays under the Thin ink
-        limit (42 of 55), no upright join falls under Inter's, and `s` and `c` cuts are already
-        within 35 degrees; the metrics were not bent to make them fail."""
+        Measured, not assumed: `c` and `s` cut faces at Black are 13 and 0-5 degrees (Inter 8), so
+        the terminal-cut check names a, g, six, nine and question instead."""
         failures = Q.check_all(VF, VFI)
         text = '\n'.join(failures)
-        for needle in ('thin ink: t ', 'terminal cut: d ', 'terminal cut: a ', 'sidebearings: x ', 'sidebearings: l '):
+        for needle in ('thin ink: t ', 'thin ink: comma ', 'notch: d at wght 900', 'terminal cut: a ', 'sidebearings: x '):
             self.assertIn(needle, text)
+
+    def test_reference_font_style_cut_is_not_flagged(self):
+        """A flat or shallow cut passes: the check bounds the angle from horizontal, never demands one."""
+        for g in ('c', 's'):
+            self.assertTrue(all(deg <= Q.CUT_MAX_DEG for _, deg in Q.cut_faces(VF, g, 900)))
 
 
 if __name__ == '__main__':
