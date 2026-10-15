@@ -112,11 +112,17 @@ class StartingPoint(unittest.TestCase):
     def test_current_font_fails_the_new_checks(self):
         """Documents today's defects; WP5 flips this to test_font_passes_quality_checks.
 
-        WP2 fixed the terminals, so the terminal checks are not among them any more."""
+        WP2 fixed the terminals and WP3 the Thin ink, so those checks are not among them any more."""
         failures = Q.check_all(VF, VFI)
         text = '\n'.join(failures)
-        for needle in ('thin ink: t ', 'thin ink: comma ', 'sidebearings: x '):
+        for needle in ('sidebearings: x ',):
             self.assertIn(needle, text)
+
+    def test_thin_punctuation_and_t_foot_follow_the_hairline(self):
+        """WP3: at Thin the comma, semicolon and quotes are ticks (not wedges as thick as a dot), the t's foot
+        does not clot, and the a's bowl does not swell beside its stem, in both families."""
+        text = '\n'.join(Q.check_all(VF, VFI))
+        self.assertNotIn('thin ink:', text)
 
     def test_joins_flow_into_the_stem(self):
         """WP1: bowls and arches leave their stems tangentially, in both families, at every checked weight."""

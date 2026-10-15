@@ -10,7 +10,7 @@ that changes the *number* of strokes or segments. Parameters may only move point
 
 import math
 
-from geom import L, Stroke, arc, contour_bounds, norm, orient, pen_thickness, reverse_seg
+from geom import L, lerp, Stroke, arc, contour_bounds, norm, orient, pen_thickness, reverse_seg
 
 GLYPHS = {}  # name -> (codepoints, fn)
 ORDER = []
@@ -751,6 +751,9 @@ def _a_bowl(g, p, xs, wf):
     cyi, ryi = (yti + ybi) / 2, (yti - ybi) / 2
     rxi = cxb - tl
     yji = ybi + (yti - ybi) * 0.45  # where the counter's round bottom meets the stem
+    # At Thin the two joins must meet at one height: with the counter's ending above the outline's
+    # the wall between them swells into a dark wedge beside the stem, thicker than the stem itself.
+    yji = lerp(yjo, yji, max(0.0, min(1.0, (p.wght - 100) / 300)))
     inner = [
         L((xe, yti), (cxb, yti)),
         ('C', (cxb, yti), (cxb - rxi * k, yti), (tl, cyi + ryi * k), (tl, cyi)),
@@ -858,10 +861,20 @@ def _t(g, p):
     rx = w - xs - V * 0.4  # the Regular hook's centreline radius
     ri = (rx - V / 2) * (1 - 0.88 * heavy)  # inner corner: round at Regular, near square at Black
     xe = xr + V * (2.1 - 1.55 * heavy)  # end of the foot
+    # Thin keeps its hook short and tight. Regular's radius on a 22-unit stem is wider than the
+    # foot is long (the inner arc ran past the foot's end and the outline folded into a blob), so
+    # the radius halves and the foot always reaches past the end of the inner arc, as Regular's does.
+    f = max(0.0, min(1.0, (p.wght - 100) / 300))
+    ri = lerp(ri * 0.5, ri, f)
+    xe = lerp(xr + ri + V * 1.8, xe, f)
     rise = hf * 0.25 * (1 - heavy)  # Regular's foot lifts a little toward its end, Black's is flat
     end_bot = yb + hf * 0.2 * (1 - heavy)
     roy = (rx * 0.9 + H / 2) * (1 - 0.45 * heavy)  # outer corner, up the stem
     rox = min(roy * 1.1, (xe - xl) * 0.7)  # outer corner, along the foot
+    # At Thin the outer corner must run concentric with the inner one (a stroke's width apart),
+    # or the two arcs drift apart across the bend and fill it with a dark blob. From Regular up
+    # the heavier corner is deliberate, so this fades out by wght 400.
+    roy, rox = lerp(ri + hf, roy, f), lerp(ri + V, rox, f)
     k = p.k
     inner_end = (xr + ri, yi)
     d = xe - inner_end[0]
@@ -1196,10 +1209,17 @@ def comma_shape(g, d, x, top, depth):
     """A grotesque comma: a square head one dot wide, then a tail that curves down and to the
     left and tapers. Every curly quote is built from this (’ ” raised, ‘ “ turned), so the
     curve is what tells them apart from the straight ' and ". A straight wedge read as ″."""
+    # The head is as wide as the dot from Regular up, but a hairline weight's dot is almost twice
+    # its stem, and a comma that wide is a wedge: Inter's Thin comma is a tick about as thick as
+    # its stem. The tail's width follows the stem there, with its left edge kept where the dot's is.
+    p = g.p
+    f = max(0.0, min(1.0, (p.wght - 100) / 300))
+    w = d * (f + (1 - f) * min(1.0, 1.2 * p.V / p.dot))
+    x -= (d - w) / 2
     neck = top - d * 0.95
-    end = (x - d * 0.6, neck - depth)
-    tail = ('C', (x, neck), (x, neck - depth * 0.45), (x - d * 0.12, neck - depth * 0.8), end)
-    g.stroke([L((x, top), (x, neck)), tail], w=d, taper=(1, 0.15), caps=('b', 'b'))
+    end = (x - w * 0.6, neck - depth)
+    tail = ('C', (x, neck), (x, neck - depth * 0.45), (x - w * 0.12, neck - depth * 0.8), end)
+    g.stroke([L((x, top), (x, neck)), tail], w=w, taper=(1, 0.15), caps=('b', 'b'))
 
 
 @glyph('comma', 0x2C)
