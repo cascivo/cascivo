@@ -77,6 +77,36 @@ class Metrics(unittest.TestCase):
         self.assertLess(Q.max_ink(i), 100)  # the tittle is a dot and is left out; the stem governs
 
 
+class CounterJoinAngle(unittest.TestCase):
+    @staticmethod
+    def stem_with_ceiling(ceiling):
+        """A 40 px stem on the left and a ceiling over a counter on its right; ceiling(x) is the row
+        the ink reaches down to at column x (rows grow downward)."""
+        m = np.zeros((260, 240), bool)
+        m[30:230, 0:40] = True
+        for x in range(40, 240):
+            m[30 : int(ceiling(x)), x] = True
+        mask = m.view(Q.Ink)
+        mask.baseline, mask.x_height = 230, 200
+        return mask
+
+    def test_square_corner_chamfer_and_tangent_arch_read_apart(self):
+        square = self.stem_with_ceiling(lambda x: 60)
+        chamfer = self.stem_with_ceiling(lambda x: max(60, 120 - (x - 40)))
+        arch = self.stem_with_ceiling(lambda x: max(60, 120 - 4 * (x - 40)))
+        a = [Q.counter_join_angle(m, 'left', 'top') for m in (square, chamfer, arch)]
+        self.assertAlmostEqual(a[0], 0, delta=3)
+        self.assertAlmostEqual(a[1], 45, delta=6)
+        self.assertAlmostEqual(a[2], 76, delta=6)
+
+    def test_slant_is_undone_before_reading(self):
+        upright = self.stem_with_ceiling(lambda x: max(60, 120 - 4 * (x - 40)))
+        tan = 0.1763
+        shifted = np.stack([np.roll(np.pad(row, 40), int(round((130 - r) * tan))) for r, row in enumerate(np.asarray(upright))]).view(Q.Ink)
+        shifted.baseline, shifted.x_height = 230, 200
+        self.assertAlmostEqual(Q.counter_join_angle(shifted, 'left', 'top', tan), Q.counter_join_angle(upright, 'left', 'top'), delta=8)
+
+
 @unittest.skipUnless(os.path.exists(VF) and os.path.exists(VFI), 'fonts not built')
 class StartingPoint(unittest.TestCase):
     def test_current_font_fails_the_new_checks(self):
@@ -86,8 +116,14 @@ class StartingPoint(unittest.TestCase):
         the terminal-cut check names a, g, six, nine and question instead."""
         failures = Q.check_all(VF, VFI)
         text = '\n'.join(failures)
-        for needle in ('thin ink: t ', 'thin ink: comma ', 'notch: d at wght 900', 'terminal cut: a ', 'sidebearings: x '):
+        for needle in ('thin ink: t ', 'thin ink: comma ', 'terminal cut: a ', 'sidebearings: x '):
             self.assertIn(needle, text)
+
+    def test_joins_flow_into_the_stem(self):
+        """WP1: bowls and arches leave their stems tangentially, in both families, at every checked weight."""
+        text = '\n'.join(Q.check_all(VF, VFI))
+        for needle in ('join:', 'notch:', 'join angle:'):
+            self.assertNotIn(needle, text)
 
     def test_cut_faces_of_shallow_and_steep_cuts(self):
         shallow = ((0, 0), [('C', (100, 50)), ('L', (290, 80)), ('C', (400, 200))])  # ~9 degrees, 192 long

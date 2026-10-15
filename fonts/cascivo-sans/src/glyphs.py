@@ -492,14 +492,39 @@ def _S_(g, p):
 # ============================================================================================
 
 
-def shoulder(g, xl, xr, top, taper=0.5, ry_k=0.93):
+def join_taper(p):
+    """How much a bowl or arch thins where it flows into its stem (1 = not at all).
+
+    The stroke leaves the stem tangentially, so the counter arches round into the stem and this
+    only lightens the join. Thin has no room to thin; Regular thins most, where a full-weight join
+    clots the stem's side. The more it thins, the more obliquely the stroke's inner edge crosses the
+    stem's edge, so thinning is paid for in counter_join_angle: 0.7 left the Regular italic bowls
+    3 deg under Inter's tolerance and 0.8 at Black left the counter's corner a chamfer again (38 deg
+    against Inter's 48). The tangent join cuts no V at Black, so it needs little thinning."""
+    V = min(max(p.V, 22.0), 190.0)
+    return 1.0 - 0.17 * (V - 22) / (84 - 22) if V <= 84 else 0.83 + 0.12 * (V - 84) / (190 - 84)
+
+
+# n h u: arch height over its half-width (m's is 1.12). At 0.93 the counter's ceiling met the stem at
+# 51 deg at Regular where Inter's meets it at 66: a squat arch turns its corner too early.
+ARCH_RY = 1.10
+
+# How far short of the stem's tangent point (degrees) a bowl or arch stroke starts. The end is buried
+# in the stem, so it never shows; stopping short keeps the end segment partial, which the quadratic
+# conversion codes in fewer points (a full quarter at both ends of every bowl cost the italic 324 B
+# of woff2 and broke its budget). The cap's corner stays inside the stem up to about 18 degrees; 8 is
+# the value, among those that keep every join check passing, that put the italic under its budget.
+JOIN_RUN = 8
+
+
+def shoulder(g, xl, xr, top, ry_k=None):
     """n-arch from a stem whose left edge is xl to a right stem whose left edge is xr."""
     p = g.p
     a, b = xl + p.V / 2, xr + p.V / 2
     rx = (b - a) / 2
-    ry = rx * ry_k
+    ry = rx * (ARCH_RY if ry_k is None else ry_k)
     cy = top - p.H / 2 - ry
-    g.stroke(g.arc(a + rx, cy, rx, ry, 166, 0) + [L((b, cy), (b, 0))], taper=(taper, 1))
+    g.stroke(g.arc(a + rx, cy, rx, ry, 180 - JOIN_RUN, 0) + [L((b, cy), (b, 0))], taper=(join_taper(p), 1))
 
 
 @glyph('n', 0x6E)
@@ -528,9 +553,9 @@ def _u(g, p):
     w = p.nw
     a, b = p.V / 2, w - p.V / 2
     rx = (b - a) / 2
-    ry = rx * 0.93
+    ry = rx * ARCH_RY
     cy = -p.ov * 0.4 + p.H / 2 + ry
-    g.stroke([L((a, p.xh), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, 346), taper=(1, 0.5))
+    g.stroke([L((a, p.xh), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, 360 - JOIN_RUN), taper=(1, join_taper(p)))
     g.vstem(w - p.V, 0, p.xh)
     g.anchors['horn_x'], g.anchors['horn_y'] = w - p.V * 0.35, p.xh - p.V * 0.3  # ư
 
@@ -545,7 +570,7 @@ def _r(g, p):
     rx = w - a - p.V * 0.2
     ry = p.xh * 0.42
     cy = p.xh + p.ov * 0.4 - p.H / 2 - ry
-    g.stroke(g.arc(a + rx, cy, rx, ry, 166, 62 - p.ap * 0.5), taper=(0.5, 1), caps=('b', 'b'))
+    g.stroke(g.arc(a + rx, cy, rx, ry, 180 - JOIN_RUN, 62 - p.ap * 0.5), taper=(join_taper(p), 1), caps=('b', 'b'))
     g.sb = (1, 0.35 + (0.25 if p.italic else 0) * p.heavy)  # ra, re, ro sat 10% tighter than in the references
 
 
@@ -583,16 +608,16 @@ def _dotlessj(g, p):
     g.anchors['top_x'] = x
 
 
-def _bowl_lc(g, p, w, stem_left, taper=0.55):
+def _bowl_lc(g, p, w, stem_left):
     """b/p (stem_left) or d/q bowl. Returns nothing; draws the open arc meeting the stem."""
     V = p.V
     if stem_left:
         x0, x1 = V / 2 - V / 2, w  # left centerline sits on the stem centre
         cx, cy, rx, ry = g.box(x0, -p.ov, x1, p.xh + p.ov)
-        g.stroke(g.arc(cx, cy, rx, ry, 152, -152), taper=(taper, taper))
+        g.stroke(g.arc(cx, cy, rx, ry, 180 - JOIN_RUN, -180 + JOIN_RUN), taper=(join_taper(p),) * 2)
     else:
         cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov)
-        g.stroke(g.arc(cx, cy, rx, ry, 28, 332), taper=(taper, taper))
+        g.stroke(g.arc(cx, cy, rx, ry, JOIN_RUN, 360 - JOIN_RUN), taper=(join_taper(p),) * 2)
 
 
 @glyph('b', 0x62)
@@ -642,7 +667,7 @@ def _g(g, p):
     cy = p.desc - p.ov * 0.5 + H / 2 + ry
     g.stroke([L((xr, p.xh), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, -152 + p.ap), caps=('b', 'b'))
     cx, cy2, rx2, ry2 = g.box(0, 18, w, p.xh + p.ov)
-    g.stroke(g.arc(cx, cy2, rx2, ry2, 28, 332), taper=(0.55, 0.55))
+    g.stroke(g.arc(cx, cy2, rx2, ry2, JOIN_RUN, 360 - JOIN_RUN), taper=(join_taper(p),) * 2)
     g.sb = (0.62, 1.15 if p.italic else 1)  # the italic sat 10% tighter on its right than Inter's and Plex's
 
 
