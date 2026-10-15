@@ -241,6 +241,40 @@ class StartingPoint(unittest.TestCase):
             self.assertTrue(Q.terminal_thickness(VF, g, 900), g)
             self.assertTrue(Q.terminal_thickness(VFI, g, 900) or (g, True) in Q.TERMINAL_NONE, g)
 
+    def test_black_counters_and_letters_pass_the_wp4_checks(self):
+        """WP4: Black counters keep Inter's proportions; a joins its stem like b and d, a, g and 9 end in a flat
+        face, f has no bite, t has a flat top, l keeps its tail inside its advance, 1 has a short flag, 0 is wide."""
+        text = '\n'.join(Q.check_all(VF, VFI))
+        for needle in ('counter:', 'notch: a ', 'join: a ', 'join angle: a ', 'flat terminal:', 'crevice:', 't top:', 'zero width:', 'flag:', 'sidebearings: l '):
+            self.assertNotIn(needle, text)
+
+    def test_per_stroke_tilt_flattens_only_its_own_terminal(self):
+        """A stroke's tilt replaces the shared HEAVY_TILT for its cut='t' ends, and nothing else."""
+        from geom import HEAVY_TILT, _heavy_cut
+        import math
+
+        tan = (math.cos(math.radians(-60)), math.sin(math.radians(-60)))
+        shared = _heavy_cut(tan, 190, 0.0, 't')
+        flat = _heavy_cut(tan, 190, 0.0, 't', 15)
+        face = lambda c: math.degrees(math.atan2(abs(c[0]), abs(c[1])))  # noqa: E731  the cut line is perpendicular to its normal
+        self.assertAlmostEqual(face(shared), math.degrees(HEAVY_TILT), delta=0.5)
+        self.assertAlmostEqual(face(flat), 15, delta=0.5)
+        self.assertEqual(_heavy_cut(tan, 190, 0.0, 't', None), shared)
+
+    def test_l_tail_ends_square_and_y_tail_ends_flat(self):
+        """The l's tail ends in a vertical face and the y's tail in a horizontal one, at every master."""
+        for wght, opsz in ((100, 14), (400, 14), (900, 14), (400, 8), (400, 48)):
+            p = P(wght=wght, opsz=opsz)
+            g = GL.G(p)
+            GL.GLYPHS['l'][1](g, p)
+            (a, b) = cap_lines(g.strokes[0], p.V, p.H)[0][1:]
+            self.assertAlmostEqual(a[0], b[0], delta=0.5, msg=f'l tail face at wght {wght} opsz {opsz}')
+            g = GL.G(p)
+            GL.GLYPHS['y'][1](g, p)
+            tail = [s for s in g.strokes if s.segs[-1][0] == 'C'][0]
+            (a, b) = cap_lines(tail, p.V, p.H)[0][1:]
+            self.assertLessEqual(abs(a[1] - b[1]), 0.06 * abs(a[0] - b[0]), f'y tail face at wght {wght} opsz {opsz}')  # within 3.5 degrees of flat
+
     def test_cut_faces_found_on_the_built_font(self):
         faces = Q.cut_faces(VF, 'c', 900)
         self.assertEqual(len(faces), 2)

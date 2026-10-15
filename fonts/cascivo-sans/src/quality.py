@@ -37,20 +37,30 @@ THIN_INK_GLYPHS = list(LOWER + UPPER) + DIGITS
 LATIN = list(LOWER + UPPER) + DIGITS
 JOIN_GLYPHS = {'a': 'right', 'b': 'left', 'd': 'right', 'g': 'right', 'p': 'left', 'q': 'right', 'n': 'left', 'm': 'left', 'h': 'left', 'u': 'right', 'r': 'left'}
 JOIN_WEIGHTS = (400, 900)
-# The double-storey a's bowl and stem form one ink run at mid x-height, so its stem width (and so
-# its join) cannot be read off a raster; Inter's own value flips between weights. Skipped.
-JOIN_UNMEASURABLE = {'a'}
-# Where each glyph's counter meets a stem: (stem side, which end of the counter). The double-
-# storey a is skipped in both families (its bowl and stem are one ink run at mid x-height, and
-# Inter's own reading flips between weights); m is read at its first arch only.
+# (The double-storey a's bowl and stem form one ink run at mid x-height; it is read lower, at ROW.)
+JOIN_UNMEASURABLE = set()
+# Where the stem is read, in x-heights above the baseline, when mid x-height lands inside a bowl's wall: the
+# double-storey a's bowl and stem are one ink run there, and only below the bowl's top is the stem alone.
+ROW = {'a': 0.35}
+# Where each glyph's counter meets a stem: (stem side, which end of the counter). The a is read at
+# ROW (the upright's double-storey bowl, the italic's single-storey one); m at its first arch only.
 ANGLE_JUNCTIONS = {
     'b': [('left', 'bottom')], 'p': [('left', 'bottom')], 'd': [('right', 'top')], 'q': [('right', 'top')], 'g': [('right', 'top')],
     'n': [('left', 'top'), ('right', 'top')], 'h': [('left', 'top'), ('right', 'top')], 'm': [('left', 'top')],
-    'u': [('right', 'bottom'), ('left', 'bottom')], 'r': [('left', 'top')],
+    'u': [('right', 'bottom'), ('left', 'bottom')], 'r': [('left', 'top')], 'a': [('right', 'bottom')],
 }
 ITALIC_TAN = 0.1763  # tan 10 deg: Inter Italic's and ours; measured stems lean 10-11
 ANGLE_SLACK = 10.0  # degrees counter_join_angle may sit under Inter's
-COUNTER_GLYPHS = ['o', 'e', 'a']
+COUNTER_GLYPHS = ['o', 'e', 'a', 'g', 'b', 'd', 'p', 'q', 'zero', 'six', 'eight', 'nine']
+FLAT_TERMINALS = ['a', 'g', 'nine']  # their Black terminals end in a flatter face than the rest (Inter's end under 10 deg)
+FLAT_MAX_DEG = 21.0
+FLAT_ITALIC_SLACK = 4.0  # the slant turns a face by up to this much: the italic g's bowl ends, buried in its stem, read 22.7
+CREVICE_GLYPHS = ['f', 't']
+CREVICE_R = 16  # px: a white pocket narrower than twice this, opening to the outside, is a crevice
+CREVICE_SHARE = 1.15  # a crevice may be this much larger than Inter's
+ONE_FLAG_SHARE = 1.05  # the 1's flag may reach this much further left than Inter's
+ZERO_MIN_SHARE = 0.92  # the 0's ink width, against Inter's
+T_TOP_MIN = 0.8  # the t's top face is a flat run at least this many stems wide
 SB_GLYPHS = [c for c in LOWER if c not in 'fj']
 MASTER_LOCATIONS = [(400, 14), (100, 14), (900, 14), (400, 8), (400, 48)]
 
@@ -75,7 +85,7 @@ X_SB_MIN = 25  # x at Regular: its diagonals must not touch the neighbours
 # Reference values, measured from Inter (Version 4.001;git-9221beed3, name ID 5) at opsz 14 on
 # 2026-10-15 with `python3 -I src/quality.py --measure-ref Inter.ttf InterItalic.ttf`; keys are
 # (glyph, wght), upright and italic apart because their constructions differ. None = no
-# meaningful value, skipped: the double-storey a (see JOIN_UNMEASURABLE), and joins that read at
+# meaningful value, skipped: joins that read at
 # the skeleton's noise floor (below 0.25, where the window caught a spur and not the join: the
 # slanted stems of Inter Italic's d p n m h u r at Regular, and r at Black). Italic b and q at
 # Regular (Inter 0.51) are skipped for Cascivo's sake: the skeleton of a join with a sharp outer
@@ -83,34 +93,47 @@ X_SB_MIN = 25  # x at Regular: its diagonals must not touch the neighbours
 # whatever the stroke's thickness (0.85 at the bowl); the notch and angle checks cover the join.
 REF = {
     'join': {
-        ('a', 400): None, ('b', 400): 0.587, ('d', 400): 0.581, ('g', 400): 0.592, ('p', 400): 0.586, ('q', 400): 0.587,
+        ('a', 400): 0.645, ('b', 400): 0.587, ('d', 400): 0.581, ('g', 400): 0.592, ('p', 400): 0.586, ('q', 400): 0.587,
         ('n', 400): 0.508, ('m', 400): 0.472, ('h', 400): 0.508, ('u', 400): 0.498, ('r', 400): 0.706,
-        ('a', 900): None, ('b', 900): 0.463, ('d', 900): 0.462, ('g', 900): 0.545, ('p', 900): 0.466, ('q', 900): 0.463,
+        ('a', 900): 0.633, ('b', 900): 0.463, ('d', 900): 0.462, ('g', 900): 0.545, ('p', 900): 0.466, ('q', 900): 0.463,
         ('n', 900): 0.451, ('m', 900): 0.503, ('h', 900): 0.448, ('u', 900): 0.442, ('r', 900): None,
     },
-    'counter': {('o', 900): 0.1215, ('e', 900): 0.0471, ('a', 900): 0.0428},
+    'counter': {
+        ('o', 900): 0.1215, ('e', 900): 0.0471, ('a', 900): 0.0428, ('g', 900): 0.1207, ('b', 900): 0.1218, ('d', 900): 0.1218, ('p', 900): 0.1218,
+        ('q', 900): 0.1219, ('zero', 900): 0.2753, ('six', 900): 0.1118, ('eight', 900): 0.0899, ('nine', 900): 0.1118,
+    },
     'sliver': 46,  # px^2 at 1000 upm: the largest piece of ink a radius-6 disk cannot fit, over Latin at 900
     'join_italic': {
-        ('a', 400): None, ('b', 400): None, ('d', 400): None, ('g', 400): 0.555, ('p', 400): None, ('q', 400): None,
+        ('a', 400): 0.531, ('b', 400): None, ('d', 400): None, ('g', 400): 0.555, ('p', 400): None, ('q', 400): None,
         ('n', 400): None, ('m', 400): None, ('h', 400): None, ('u', 400): None, ('r', 400): None,
-        ('a', 900): None, ('b', 900): 0.408, ('d', 900): 0.419, ('g', 900): 0.447, ('p', 900): 0.407, ('q', 900): 0.427,
+        ('a', 900): 0.438, ('b', 900): 0.408, ('d', 900): 0.419, ('g', 900): 0.447, ('p', 900): 0.407, ('q', 900): 0.427,
         ('n', 900): 0.389, ('m', 900): 0.458, ('h', 900): 0.380, ('u', 900): 0.356, ('r', 900): None,
     },
-    'counter_italic': {('o', 900): 0.1225, ('e', 900): 0.0458, ('a', 900): 0.1219},
+    'counter_italic': {
+        ('o', 900): 0.1225, ('e', 900): 0.0458, ('a', 900): 0.1219, ('g', 900): 0.1204, ('b', 900): 0.1216, ('d', 900): 0.1213, ('p', 900): 0.1216,
+        ('q', 900): 0.1213, ('zero', 900): 0.2753, ('six', 900): 0.1123, ('eight', 900): 0.0899, ('nine', 900): 0.1119,
+    },
+    # crevice_area (CREVICE_R) of f and t at 900, the 1's flag reach (px left of the stem, wght 400 and 900) and the
+    # 0's ink width: measured from the same Inter, on Cascivo's 1000-unit em
+    'crevice': {'f': 73, 't': 73},
+    'crevice_italic': {'f': 95, 't': 94},
+    'flag': {400: 181, 900: 164},
+    'zero_width': {400: 512, 900: 643},
+    'zero_width_italic': {400: 533, 900: 660},
     'sliver_italic': 62,
     # notch_depth (stem widths, NOTCH_MARGIN 24, remeasured when the margin grew from 12: Inter's d and p
     # italic read 1.15 clipped); n m h u at 900 read ~1.4 because the box's hull spans the arch's
     # shoulder, a property of the construction that Cascivo shares: only the difference counts.
     'notch': {
-        ('a', 400): None, ('b', 400): 0.98, ('d', 400): 0.98, ('g', 400): 0.997, ('p', 400): 0.968, ('q', 400): 0.968,
+        ('a', 400): 1.716, ('b', 400): 0.98, ('d', 400): 0.98, ('g', 400): 0.997, ('p', 400): 0.968, ('q', 400): 0.968,
         ('n', 400): 0.922, ('m', 400): 0.907, ('h', 400): 0.967, ('u', 400): 0.927, ('r', 400): 0.939,
-        ('a', 900): None, ('b', 900): 0.622, ('d', 900): 0.622, ('g', 900): 0.596, ('p', 900): 0.586, ('q', 900): 0.586,
+        ('a', 900): 1.153, ('b', 900): 0.622, ('d', 900): 0.622, ('g', 900): 0.596, ('p', 900): 0.586, ('q', 900): 0.586,
         ('n', 900): 1.429, ('m', 900): 1.426, ('h', 900): 1.508, ('u', 900): 1.429, ('r', 900): 0.551,
     },
     'notch_italic': {
-        ('a', 400): None, ('b', 400): 1.008, ('d', 400): 1.192, ('g', 400): 1.046, ('p', 400): 1.18, ('q', 400): 1.08,
+        ('a', 400): 0.917, ('b', 400): 1.008, ('d', 400): 1.192, ('g', 400): 1.046, ('p', 400): 1.18, ('q', 400): 1.08,
         ('n', 400): 0.722, ('m', 400): 0.686, ('h', 400): 0.704, ('u', 400): 0.706, ('r', 400): 0.727,
-        ('a', 900): None, ('b', 900): 0.635, ('d', 900): 0.64, ('g', 900): 0.617, ('p', 900): 0.609, ('q', 900): 0.579,
+        ('a', 900): 0.481, ('b', 900): 0.635, ('d', 900): 0.64, ('g', 900): 0.617, ('p', 900): 0.609, ('q', 900): 0.579,
         ('n', 900): 1.423, ('m', 900): 1.423, ('h', 900): 1.476, ('u', 900): 1.418, ('r', 900): 0.551,
     },
     # counter_join_angle (degrees from horizontal) per (glyph, wght, stem side, end), measured the same
@@ -122,7 +145,7 @@ REF = {
         ('b', 400, 'left', 'bottom'): 72.4, ('p', 400, 'left', 'bottom'): 72.3, ('d', 400, 'right', 'top'): 71.0, ('q', 400, 'right', 'top'): 70.9,
         ('g', 400, 'right', 'top'): 70.6, ('n', 400, 'left', 'top'): 66.3, ('n', 400, 'right', 'top'): 64.6, ('h', 400, 'left', 'top'): 66.2,
         ('h', 400, 'right', 'top'): 64.7, ('m', 400, 'left', 'top'): 64.2, ('u', 400, 'right', 'bottom'): 65.5, ('u', 400, 'left', 'bottom'): 65.3,
-        ('r', 400, 'left', 'top'): 62.8, ('b', 900, 'left', 'bottom'): 50.6, ('p', 900, 'left', 'bottom'): 50.7, ('d', 900, 'right', 'top'): 48.8,
+        ('r', 400, 'left', 'top'): 62.8, ('a', 400, 'right', 'bottom'): 62.1, ('a', 900, 'right', 'bottom'): 35.7, ('b', 900, 'left', 'bottom'): 50.6, ('p', 900, 'left', 'bottom'): 50.7, ('d', 900, 'right', 'top'): 48.8,
         ('q', 900, 'right', 'top'): 49.0, ('g', 900, 'right', 'top'): 49.2, ('n', 900, 'left', 'top'): 38.9, ('n', 900, 'right', 'top'): 37.0,
         ('h', 900, 'left', 'top'): 38.7, ('h', 900, 'right', 'top'): 36.7, ('m', 900, 'left', 'top'): 33.2, ('u', 900, 'right', 'bottom'): 38.0,
         ('u', 900, 'left', 'bottom'): 38.1, ('r', 900, 'left', 'top'): 44.4,
@@ -131,7 +154,7 @@ REF = {
         ('b', 400, 'left', 'bottom'): 72.8, ('p', 400, 'left', 'bottom'): 72.1, ('d', 400, 'right', 'top'): 71.6, ('q', 400, 'right', 'top'): 71.3,
         ('g', 400, 'right', 'top'): 71.5, ('n', 400, 'left', 'top'): 66.4, ('n', 400, 'right', 'top'): 66.5, ('h', 400, 'left', 'top'): 64.8,
         ('h', 400, 'right', 'top'): 64.9, ('m', 400, 'left', 'top'): 63.9, ('u', 400, 'right', 'bottom'): 64.3, ('u', 400, 'left', 'bottom'): 66.6,
-        ('r', 400, 'left', 'top'): 62.2, ('b', 900, 'left', 'bottom'): 48.1, ('p', 900, 'left', 'bottom'): 47.6, ('d', 900, 'right', 'top'): 44.4,
+        ('r', 400, 'left', 'top'): 62.2, ('a', 400, 'right', 'bottom'): 63.3, ('a', 900, 'right', 'bottom'): 28.1, ('b', 900, 'left', 'bottom'): 48.1, ('p', 900, 'left', 'bottom'): 47.6, ('d', 900, 'right', 'top'): 44.4,
         ('q', 900, 'right', 'top'): 44.8, ('g', 900, 'right', 'top'): 46.3, ('n', 900, 'left', 'top'): 39.5, ('n', 900, 'right', 'top'): 34.1,
         ('h', 900, 'left', 'top'): 37.6, ('h', 900, 'right', 'top'): 37.8, ('m', 900, 'left', 'top'): 36.9, ('u', 900, 'right', 'bottom'): 36.4,
         ('u', 900, 'left', 'bottom'): 40.1, ('r', 900, 'left', 'top'): 44.1,
@@ -328,13 +351,13 @@ def prune(skel, n):
     return grown
 
 
-def join_ratio(mask, stem_side, x_height=None, baseline=None):
+def join_ratio(mask, stem_side, x_height=None, baseline=None, at=0.5):
     """How much a bowl/arch thins where it meets its stem, relative to the bowl itself.
 
     Skeletonize; thickness = 2 x EDT on skeleton pixels. The numerator is the thinnest skeleton
     point in a window of 1.5 stem widths beside the stem (within the x-height band, and short of
     the next counter's far side); the denominator is the median thickness of the bowl's skeleton
-    (everything outside the stem). Stem width is the ink run at mid x-height on stem_side. The
+    (everything outside the stem). Stem width is the ink run on stem_side at `at` x-heights (mid x-height unless ROW says otherwise). The
     skeleton sprouts short spurs into every corner and tapers to nothing there; branches shorter
     than half a stem are pruned and points thinner than a tenth of the stem ignored, so only the
     body of the join is measured, starting JOIN_SKIP stems out from the stem edge."""
@@ -343,7 +366,7 @@ def join_ratio(mask, stem_side, x_height=None, baseline=None):
     if x_height is None or baseline is None:
         raise ValueError('join_ratio needs a raster() mask, or x_height and baseline')
     m = np.asarray(mask)
-    mid = int(round(baseline - x_height / 2))
+    mid = int(round(baseline - x_height * at))
     run = _stem_run(m, mid, stem_side)
     if run is None:
         return float('nan')
@@ -406,6 +429,40 @@ def sliver_area(mask, r=6):
     if n == 0:
         return 0
     return int(ndi.sum(thin, labels, index=np.arange(1, n + 1)).max())
+
+
+def crevice_area(mask, r=CREVICE_R):
+    """Area of the largest white pocket a disk of radius r closes: a narrow notch or bite cut into the
+    outline (the f's hook, where a turned cut leaves a slit between its tip and the stem)."""
+    m = np.pad(np.asarray(mask), r + 2)
+    gap = ndi.binary_closing(m, structure=disk(r)) & ~m
+    labels, n = ndi.label(gap)
+    if n == 0:
+        return 0
+    return int(ndi.sum(gap, labels, index=np.arange(1, n + 1)).max())
+
+
+def flag_reach(mask):
+    """How far the 1's flag reaches left of its stem, px: the stem is the ink run at mid x-height."""
+    m = np.asarray(mask)
+    mid = int(round(mask.baseline - mask.x_height / 2))
+    run = _stem_run(m, mid, 'left')
+    cols = np.flatnonzero(m[:, : run[0]].any(0))
+    return float(run[0] - cols[0]) if len(cols) else 0.0
+
+
+def top_run(mask):
+    """Width of the flat top face, in stems: the ink run two rows under the topmost ink row."""
+    m = np.asarray(mask)
+    rows = np.flatnonzero(m.any(1))
+    mid = int(round(mask.baseline - mask.x_height / 2))
+    stem = _stem_run(m, mid, 'left')
+    row = m[rows[0] + 2]
+    best = run = 0
+    for v in row:
+        run = run + 1 if v else 0
+        best = max(best, run)
+    return best / (stem[1] - stem[0])
 
 
 def cut_faces(font_path, glyph, wght, opsz=14, scale=1.0):
@@ -600,7 +657,7 @@ def terminal_thickness(font_path, glyph, wght, opsz=14, scale=1.0):
     return _terminal_widths(outline_segments(font_path, glyph, wght, opsz), P(wght=wght, opsz=opsz).V, scale)
 
 
-def notch_depth(mask, stem_side, x_height=None, baseline=None):
+def notch_depth(mask, stem_side, x_height=None, baseline=None, at=0.5):
     """How deep the outside reaches into the bowl/arch-stem junction, in stem widths.
 
     In a box from one stem width either side of the stem's edge, in the x-height band (the upper
@@ -615,7 +672,7 @@ def notch_depth(mask, stem_side, x_height=None, baseline=None):
     if x_height is None or baseline is None:
         raise ValueError('notch_depth needs a raster() mask, or x_height and baseline')
     m = np.asarray(mask)
-    mid = int(round(baseline - x_height / 2))
+    mid = int(round(baseline - x_height * at))
     run = _stem_run(m, mid, stem_side)
     if run is None:
         return float('nan')
@@ -646,7 +703,7 @@ def notch_depth(mask, stem_side, x_height=None, baseline=None):
 ANGLE_REACH = (0.04, 0.30)  # stem widths from the stem's inner edge: where the outline's direction is read
 
 
-def counter_join_angle(mask, stem_side, end='top', slant=0.0, x_height=None, baseline=None):
+def counter_join_angle(mask, stem_side, end='top', slant=0.0, x_height=None, baseline=None, at=0.5):
     """The angle, in degrees from horizontal, of the counter's outline where it meets the stem's
     inner edge: 90 = it arrives tangent to the stem (a round arch flowing into the stem), small =
     a chamfer (an oblique cut) or a square corner (0).
@@ -662,7 +719,7 @@ def counter_join_angle(mask, stem_side, end='top', slant=0.0, x_height=None, bas
     if x_height is None or baseline is None:
         raise ValueError('counter_join_angle needs a raster() mask, or x_height and baseline')
     m = np.asarray(mask)
-    mid = int(round(baseline - x_height / 2))
+    mid = int(round(baseline - x_height * at))
     if slant:
         pad = int(np.ceil(abs(slant) * m.shape[0]))
         m = np.pad(m, ((0, 0), (pad, pad)))
@@ -705,7 +762,7 @@ def measure(font_path, italic=False):
     join, counter = {}, {}
     for w in JOIN_WEIGHTS:
         for g, side in JOIN_GLYPHS.items():
-            join[(g, w)] = None if g in JOIN_UNMEASURABLE else round(join_ratio(raster(font_path, g, w, 14, sc), side), 3)
+            join[(g, w)] = None if g in JOIN_UNMEASURABLE else round(join_ratio(raster(font_path, g, w, 14, sc), side, at=ROW.get(g, 0.5)), 3)
     for g in COUNTER_GLYPHS:
         m = raster(font_path, g, 900, 14, sc)
         counter[(g, 900)] = round(counter_area(m, m.x_height), 4)
@@ -717,7 +774,7 @@ def measure_angle(font_path, italic=False):
     """counter_join_angle per (glyph, wght, stem side, end) for a reference font."""
     sc = ref_scale(font_path)
     return {
-        (g, w, side, end): round(counter_join_angle(raster(font_path, g, w, 14, sc), side, end, ITALIC_TAN if italic else 0.0), 1)
+        (g, w, side, end): round(counter_join_angle(raster(font_path, g, w, 14, sc), side, end, ITALIC_TAN if italic else 0.0, at=ROW.get(g, 0.5)), 1)
         for w in JOIN_WEIGHTS
         for g, js in ANGLE_JUNCTIONS.items()
         for side, end in js
@@ -744,7 +801,7 @@ def measure_notch_thin(font_path):
     notch = {}
     for w in JOIN_WEIGHTS:
         for g, side in JOIN_GLYPHS.items():
-            notch[(g, w)] = None if g in JOIN_UNMEASURABLE else round(notch_depth(raster(font_path, g, w, 14, sc), side), 3)
+            notch[(g, w)] = None if g in JOIN_UNMEASURABLE else round(notch_depth(raster(font_path, g, w, 14, sc), side, at=ROW.get(g, 0.5)), 3)
     punct = {g: round(max_ink(raster(font_path, g, 100, 14, sc)), 1) for g in sorted(set(THIN_PUNCT.values()))}
     return notch, punct, round(max_ink(raster(font_path, 'l', 100, 14, sc)), 1)
 
@@ -779,7 +836,7 @@ def check_all(upright_vf, italic_vf):
                 ref = join_ref.get((g, w))
                 if ref is None:
                     continue
-                v = join_ratio(raster(path, g, w), side)
+                v = join_ratio(raster(path, g, w), side, at=ROW.get(g, 0.5))
                 if not v >= ref - JOIN_SLACK:
                     fails.append(f'{label}join: {g} at wght {w} is {v:.2f}, under Inter {ref:.2f} - {JOIN_SLACK}')
         notch_ref = REF['notch' + suffix]
@@ -788,7 +845,7 @@ def check_all(upright_vf, italic_vf):
                 ref = notch_ref.get((g, w))
                 if ref is None:
                     continue
-                v = notch_depth(raster(path, g, w), side)
+                v = notch_depth(raster(path, g, w), side, at=ROW.get(g, 0.5))
                 limit = max(NOTCH_FLOOR, ref + NOTCH_SLACK)
                 if not v <= limit:
                     fails.append(f'{label}notch: {g} at wght {w} is {v:.3f} stems deep, over {limit:.3f} (Inter {ref:.3f})')
@@ -799,7 +856,7 @@ def check_all(upright_vf, italic_vf):
                     ref = angle_ref.get((g, w, side, end))
                     if ref is None:
                         continue
-                    v = counter_join_angle(raster(path, g, w), side, end, ITALIC_TAN if italic else 0.0)
+                    v = counter_join_angle(raster(path, g, w), side, end, ITALIC_TAN if italic else 0.0, at=ROW.get(g, 0.5))
                     if not v >= ref - ANGLE_SLACK:
                         fails.append(f'{label}join angle: {g} at wght {w} meets its stem ({side} {end}) at {v:.0f} deg, under Inter {ref:.0f} - {ANGLE_SLACK:.0f}')
         for g in APERTURE_GLYPHS:
@@ -820,6 +877,31 @@ def check_all(upright_vf, italic_vf):
             v = counter_area(m, m.x_height)
             if ref is not None and v < COUNTER_MIN_SHARE * ref:
                 fails.append(f'{label}counter: {g} at wght 900 is {v:.4f}, under {COUNTER_MIN_SHARE} x Inter {ref:.4f}')
+        for g in FLAT_TERMINALS:
+            if (g, italic) in TERMINAL_NONE:
+                continue
+            for length, deg in cut_faces(path, g, 900):
+                if deg > FLAT_MAX_DEG + (FLAT_ITALIC_SLACK if italic else 0):
+                    fails.append(f'{label}flat terminal: {g} ends in a face {deg:.1f} deg from horizontal at Black (face {length:.0f} long), over {FLAT_MAX_DEG:.0f}')
+        for g in CREVICE_GLYPHS:
+            ref = REF['crevice' + suffix][g]
+            for w in JOIN_WEIGHTS:
+                v = crevice_area(raster(path, g, w))
+                if v > CREVICE_SHARE * ref:
+                    fails.append(f'{label}crevice: {g} at wght {w} has a {v} px^2 pocket, over {CREVICE_SHARE} x Inter {ref}')
+        for w in JOIN_WEIGHTS:
+            v = top_run(raster(path, 't', w))
+            if v < T_TOP_MIN:
+                fails.append(f'{label}t top: at wght {w} the top face is {v:.2f} stems wide, under {T_TOP_MIN}')
+            font = instance(path, w, 14)
+            (x0, _, x1, _), _ = _glyph_bounds(font, 'zero')
+            ref = REF['zero_width' + suffix][w]
+            if x1 - x0 < ZERO_MIN_SHARE * ref:
+                fails.append(f'{label}zero width: at wght {w} the 0 is {x1 - x0:.0f} wide, under {ZERO_MIN_SHARE} x Inter {ref}')
+            if not italic:
+                v = flag_reach(raster(path, 'one', w))
+                if v > ONE_FLAG_SHARE * REF['flag'][w]:
+                    fails.append(f'flag: the 1 at wght {w} reaches {v:.0f} left of its stem, over {ONE_FLAG_SHARE} x Inter {REF["flag"][w]}')
         worst = max(((sliver_area(raster(path, g, 900)), g) for g in LATIN))
         if sliver_ref and worst[0] > sliver_ref:
             fails.append(f'{label}sliver: {worst[1]} at wght 900 has {worst[0]} px^2, over Inter {sliver_ref}')

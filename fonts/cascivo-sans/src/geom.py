@@ -181,10 +181,13 @@ class Stroke:
     cut: which way a heavy curved terminal's cut turns: 'v' toward vertical (s, a, r, f...),
          'h' toward horizontal (c, e: a vertical cut there narrows the aperture to a slit), or
          'n' not at all (a square end: Georgian's traced terminals, where a turned cut stepped).
+    tilt: degrees from horizontal a cut='t' terminal's face may lie within, instead of HEAVY_TILT: the
+          flatter ends of a, g and 9 (None keeps the shared angle).
     """
 
-    def __init__(self, segs, caps=('b', 'b'), taper=(1.0, 1.0), w=None, ws=1.0, closed=False, pen=None, slant=0.0, cut='v'):
+    def __init__(self, segs, caps=('b', 'b'), taper=(1.0, 1.0), w=None, ws=1.0, closed=False, pen=None, slant=0.0, cut='v', tilt=None):
         self.segs = segs
+        self.tilt = tilt
         self.cut = cut
         self.slant = slant
         self.caps = caps
@@ -196,7 +199,7 @@ class Stroke:
 
     def transformed(self, f, slant=None):
         segs = [(s[0],) + tuple(f(p) for p in s[1:]) for s in self.segs]
-        return Stroke(segs, self.caps, self.taper, self.w, self.ws, self.closed, self.pen, self.slant if slant is None else slant, self.cut)
+        return Stroke(segs, self.caps, self.taper, self.w, self.ws, self.closed, self.pen, self.slant if slant is None else slant, self.cut, self.tilt)
 
 
 def pen_thickness(tangent, V, H, slant=0.0):
@@ -394,7 +397,7 @@ HEAVY_H = 0.5  # how far a cut='h' terminal turns toward a flat cut, as a share 
 HEAVY_TILT = math.radians(28)  # a cut='t' terminal's face lies within this of horizontal
 
 
-def _heavy_cut(tan, V, slant, cut='v'):
+def _heavy_cut(tan, V, slant, cut='v', tilt=None):
     """Unit normal of a heavy curved terminal's cut line: the stroke's tangent turned toward the
     normal of a vertical (or, for cut='h', horizontal) cut, by a share that grows with weight.
 
@@ -414,7 +417,8 @@ def _heavy_cut(tan, V, slant, cut='v'):
         # measured on the slanted tangent, unlike the other modes: the target is a face near horizontal
         # on the page, and a slant does not move horizontal (the italic's faces come out at 13-28 deg)
         full = _turn(tan, (0.0, 1.0))
-        a = math.copysign(k * max(0.0, abs(full) - HEAVY_TILT), full)
+        limit = HEAVY_TILT if tilt is None else math.radians(tilt)
+        a = math.copysign(k * max(0.0, abs(full) - limit), full)
         return (tan[0] * math.cos(a) - tan[1] * math.sin(a), tan[0] * math.sin(a) + tan[1] * math.cos(a))
     share = k if cut == 'v' else k * HEAVY_H
     # how far to turn, as a share of the way to the vertical (or flat) cut, is read off the
@@ -465,7 +469,7 @@ def _open_sides(stroke, V, H):
             t = 0.0 if at_start else 1.0
             tan = seg_tangent(seg, t)
             out = (-tan[0], -tan[1]) if at_start else tan
-            cut = _heavy_cut(out, V, stroke.slant, stroke.cut)
+            cut = _heavy_cut(out, V, stroke.slant, stroke.cut, stroke.tilt)
             if cut is None:
                 continue
             # pivot on whichever edge ends further back, so the cut only ever trims: pivoting on

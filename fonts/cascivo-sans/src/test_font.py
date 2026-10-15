@@ -25,7 +25,7 @@ VFI = os.path.join(DIST, 'CascivoSans-Italic[opsz,wght].ttf')
 # The full-charset files grew with Vietnamese, Welsh and the Croatian digraphs (365 -> 479
 # codepoints, 95 -> 78 bytes each); the Latin slices are unchanged.
 BUDGETS = {
-    'CascivoSans[opsz,wght].woff2': 69_500,  # Latin, Cyrillic, Greek (with polytonic)
+    'CascivoSans[opsz,wght].woff2': 71_500,  # Latin, Cyrillic, Greek (with polytonic); raised from 69_500 for the Latin quality pass (Black counters, redrawn letters)
     'CascivoSans-Latin[opsz,wght].woff2': 30_000,
     'CascivoSans-Latin[wght].woff2': 23_500,
     'CascivoSans-Regular.woff2': 24_500,

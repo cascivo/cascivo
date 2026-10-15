@@ -267,7 +267,7 @@ def _Y(g, p):
 def _K(g, p):
     w = p.Hw * (0.98 + 0.08 * p.heavy)
     g.vstem(0, 0, p.cap)
-    a0, a1 = g.diag(p.V / 2, p.cap * 0.33, w, p.cap, 'c', 'r', ws=0.92, caps=('v', 'h'))
+    a0, a1 = g.diag(p.V / 2, p.cap * (0.33 - 0.04 * p.heavy), w, p.cap, 'c', 'r', ws=0.92, caps=('v', 'h'))  # a steeper arm at Black: its tip at the cap height was a sliver (52 px^2, Inter's 46)
     t = 0.38
     j = (a0[0] + (a1[0] - a0[0]) * t, a0[1] + (a1[1] - a0[1]) * t)
     g.diag(j[0], j[1], w + 4, 0, 'c', 'r', ws=0.95, caps=('b', 'h'))
@@ -288,7 +288,7 @@ def _O(g, p):
 def _Q(g, p):
     w = p.Hw * 1.17
     g.oval(0, -p.ov, w, p.cap + p.ov)
-    g.diag(w * 0.6, p.cap * 0.2, w + p.V * 0.2, -p.ov - 40, 'c', 'r', ws=0.9, caps=('b', 'h'))
+    g.diag(w * 0.6, p.cap * 0.2, w + p.V * 0.2, -p.ov - 40 + 0.32 * p.V, 'c', 'r', ws=0.9, caps=('b', 'b'))  # a square end: the flat cut left a sliver at its lower corner
     g.ht = 'c'
     g.sb = (0.62, 0.5)
 
@@ -516,6 +516,10 @@ ARCH_RY = 1.10
 # the value, among those that keep every join check passing, that put the italic under its budget.
 JOIN_RUN = 8
 
+# The face of the a, g and 9 terminals at Black, degrees from horizontal (the shared HEAVY_TILT is 28). Inter's
+# end in a face under 10; at 28 the cut left a beak, an acute corner overhanging the bowl by 40 units.
+FLAT_TILT = 18
+
 
 def shoulder(g, xl, xr, top, ry_k=None):
     """n-arch from a stem whose left edge is xl to a right stem whose left edge is xr."""
@@ -588,13 +592,15 @@ def _l_ss01(g, p):  # plain l: opt-in
 @glyph('l', 0x6C)
 def _l(g, p):  # tailed by default
     a = p.V / 2
-    # A short tail that grows slower than the stem: a long heavy tail turns ill into iʟʟ at Black
-    rx = 70 + p.V * 0.5
+    # A short tail that grows slower than the stem: a long heavy tail turns ill into iʟʟ at Black. It
+    # ends square (a vertical face, not the oblique butt of a stroke still rising) and inside its own
+    # advance: the tail used to overhang by 12-21 units and met the next letter.
+    rx = 52 + p.V * 0.4
     ry = rx * 1.05
     cy = -p.ov * 0.4 + p.H / 2 + ry
-    g.stroke([L((a, p.asc), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, 290), caps=('b', 'b'))
+    g.stroke([L((a, p.asc), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, 270), caps=('b', 'v'))
     g.ht = 'a'
-    g.sb = (1, -0.25)  # the tail tucks under the next letter; spacing it as ink opened a hole after every l
+    g.sb = (1, 0.12)
 
 
 @glyph('dotlessj', 0x237)
@@ -665,7 +671,7 @@ def _g(g, p):
     rx = (w - V) / 2 * 0.98
     ry = 104 + p.V * 0.25
     cy = p.desc - p.ov * 0.5 + H / 2 + ry
-    g.stroke([L((xr, p.xh), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, -152 + p.ap), caps=('b', 'b'), cut='t')
+    g.stroke([L((xr, p.xh), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, -152 + p.ap), caps=('b', 'b'), cut='t', tilt=FLAT_TILT)
     cx, cy2, rx2, ry2 = g.box(0, 18, w, p.xh + p.ov)
     g.stroke(g.arc(cx, cy2, rx2, ry2, JOIN_RUN, 360 - JOIN_RUN), taper=(join_taper(p),) * 2)
     g.sb = (0.62, 1.15 if p.italic else 1)  # the italic sat 10% tighter on its right than Inter's and Plex's
@@ -730,7 +736,7 @@ def _a_bowl(g, p, xs, wf):
     V = p.V
     h = p.heavy
     k = p.k
-    ybt = p.xh * (0.57 + 0.02 * h)  # top of the bowl
+    ybt = p.xh * (0.57 + 0.07 * h)  # top of the bowl
     yb0 = -p.ov  # bottom of the bowl
     xe = xs - V / 2  # stem's left edge
     rxb = (xs - V / 2) / 2 * wf
@@ -739,27 +745,31 @@ def _a_bowl(g, p, xs, wf):
     tl = V  # left side of the bowl
     cy = (ybt + yb0) / 2
     ry = (ybt - yb0) / 2
-    yjo = yb0 + (ybt - yb0) * 0.3  # where the outline meets the stem
+    yjo = yb0 + (ybt - yb0) * (0.3 + 0.15 * h)  # where the outline meets the stem
+    # the bowl's top rises toward the stem, as Inter's and Geist's do: a flat top meeting a vertical
+    # stem read as a slab at Black
+    slope = 0.08 + 0.04 * h
+    rise_o, rise_i = slope * (xs - cxb), slope * (xe - cxb)
     outer = [
-        L((xs, ybt), (cxb, ybt)),
-        ('C', (cxb, ybt), (cxb - cxb * k, ybt), (0, cy + ry * k), (0, cy)),
+        L((xs, ybt + rise_o), (cxb, ybt)),
+        ('C', (cxb, ybt), (cxb - cxb * k, ybt - slope * cxb * k), (0, cy + ry * k), (0, cy)),  # leaves the sloped top along its own direction
         ('C', (0, cy), (0, cy - ry * k), (cxb - cxb * k, yb0), (cxb, yb0)),
         ('C', (cxb, yb0), (cxb + (xs - cxb) * 0.6, yb0), (xs, yjo - (yjo - yb0) * 0.6), (xs, yjo)),
-        L((xs, yjo), (xs, ybt)),
+        L((xs, yjo), (xs, ybt + rise_o)),
     ]
-    yti, ybi = ybt - th, yb0 + th
+    yti, ybi = ybt - th * (1 - 0.12 * h), yb0 + th * (1 - 0.16 * h)  # heavy walls give a little to the counter
     cyi, ryi = (yti + ybi) / 2, (yti - ybi) / 2
     rxi = cxb - tl
-    yji = ybi + (yti - ybi) * 0.45  # where the counter's round bottom meets the stem
+    yji = ybi + (yti - ybi) * 0.62  # where the counter's round bottom meets the stem
     # At Thin the two joins must meet at one height: with the counter's ending above the outline's
     # the wall between them swells into a dark wedge beside the stem, thicker than the stem itself.
     yji = lerp(yjo, yji, thin_blend(p))
     inner = [
-        L((xe, yti), (cxb, yti)),
-        ('C', (cxb, yti), (cxb - rxi * k, yti), (tl, cyi + ryi * k), (tl, cyi)),
+        L((xe, yti + rise_i), (cxb, yti)),
+        ('C', (cxb, yti), (cxb - rxi * k, yti - slope * rxi * k), (tl, cyi + ryi * k), (tl, cyi)),
         ('C', (tl, cyi), (tl, cyi - ryi * k), (cxb - rxi * k, ybi), (cxb, ybi)),
-        ('C', (cxb, ybi), (cxb + (xe - cxb) * 0.6, ybi), (xe, yji - (yji - ybi) * 0.6), (xe, yji)),
-        L((xe, yji), (xe, yti)),
+        ('C', (cxb, ybi), (cxb + (xe - cxb) * 0.5, ybi), (xe, yji - (yji - ybi) * 0.85), (xe, yji)),  # arrives along the stem, as b's and d's bowls do
+        L((xe, yji), (xe, yti + rise_i)),
     ]
     g.raw += [orient(outer, outer=True), orient(inner, outer=False)]
 
@@ -780,7 +790,7 @@ def _a(g, p):
     rxt = xs - cxt
     ryt = p.xh * 0.26
     cyt = p.xh + p.ov * 0.5 - H / 2 - ryt
-    g.stroke([L((xs, 0), (xs, cyt))] + g.arc(cxt, cyt, rxt, ryt, 0, 154 - p.ap), caps=('b', 'b'), cut='t')
+    g.stroke([L((xs, 0), (xs, cyt))] + g.arc(cxt, cyt, rxt, ryt, 0, 154 - p.ap), caps=('b', 'b'), cut='t', tilt=FLAT_TILT)
     _a_bowl(g, p, xs, 0.94)
     g.sb = (0.55, 1)
 
@@ -804,7 +814,7 @@ def _f_hook(p):
     # Heavier weights end the hook higher: near its tip the hook turns tighter than half a Black
     # stroke, and the inner edge folds into a pinhole. The angle stays in one quadrant, so the
     # outline structure (and master compatibility) is unchanged.
-    end = 38 + 34 * p.heavy
+    end = 38 + 24 * p.heavy
     rx = (w * 0.96 - xs - p.V / 2) / (1 + math.cos(math.radians(end))) + p.V * 0.15
     return w, xs, end, rx
 
@@ -814,16 +824,19 @@ def _italic_descender(g, p, x):
     the preceding letter, the same size in all three. Returns the hook and the y where it meets
     the stem."""
     rx = _f_hook(p)[3]
-    rxb, ryb = rx * 0.9, rx * 0.99
+    # a wider hook at Black, turned a little less far: at Regular's size the inner edge of Black's hook curled up
+    # against the stem and nicked it
+    rxb, ryb = rx * (0.9 + 0.5 * p.heavy), rx * (0.99 + 0.2 * p.heavy)
     cyb = p.desc + p.H / 2 + ryb
-    return g.arc(x - rxb, cyb, rxb, ryb, -140, 0), cyb
+    return g.arc(x - rxb, cyb, rxb, ryb, -140 + 20 * p.heavy, 0), cyb
 
 
 @glyph('f', 0x66)
 def _f(g, p):
     V, H = p.V, p.H
     w, xs, end, rx = _f_hook(p)
-    ry = rx * 1.15
+    # Black's hook is rounder than tall: a tall narrow arc left a slit between its tip and the stem (the bite)
+    ry = rx * (1.15 - 0.32 * p.heavy)
     top = p.asc + p.ov * 0.3
     cy = top - H / 2 - ry
     sx = xs + V / 2
@@ -831,11 +844,12 @@ def _f(g, p):
     if p.italic:
         # the italic f descends and hooks left under the preceding letter
         hook, cyb = _italic_descender(g, p, sx)
-        g.stroke(hook + [L((sx, cyb), (sx, cy))] + top_hook, caps=('b', 'b'))
+        # square ends (cut='n'): the heavy 'v' cut turned the descender's tip into a spike and left a sliver
+        g.stroke(hook + [L((sx, cyb), (sx, cy))] + top_hook, caps=('b', 'b'), cut='n')
         # heavier, the hook ran into the feet of x, y, k, r; and the arm, 9% tight at Bold, met a T
         g.sb = (-0.2 + 0.1 * p.heavy, 0.15 + 0.3 * p.heavy)
     else:
-        g.stroke([L((sx, 0), (sx, cy))] + top_hook, caps=('b', 'b'))
+        g.stroke([L((sx, 0), (sx, cy))] + top_hook, caps=('b', 'b'), cut='n')
         g.sb = (0.45, 0.2 + 0.4 * p.heavy)  # crossbar overhang, as for t (fo, ft sat 15% tighter than the references')
     g.hbar(0, w * 0.96, p.xh - H)
     g.ht = 'a'
@@ -906,7 +920,7 @@ def _t(g, p):
 def _k(g, p):
     w = p.nw * (0.94 + 0.08 * p.heavy)
     g.vstem(0, 0, p.asc)
-    a0, a1 = g.diag(p.V / 2, p.xh * 0.3, w - 6, p.xh, 'c', 'r', ws=0.92, caps=('v', 'h'))
+    a0, a1 = g.diag(p.V / 2, p.xh * (0.3 - 0.04 * p.heavy), w - 6, p.xh, 'c', 'r', ws=0.92, caps=('v', 'h'))  # as K
     t = 0.42
     j = (a0[0] + (a1[0] - a0[0]) * t, a0[1] + (a1[1] - a0[1]) * t)
     g.diag(j[0], j[1], w, 0, 'c', 'r', ws=0.95, caps=('b', 'h'))
@@ -962,6 +976,25 @@ def _x(g, p):
 def _y(g, p):
     w = p.nw * 1.10
     a = g.diag(w, p.xh, w * 0.36, p.desc, 'r', 'c', caps=('h', 'h'))
+    if not p.italic:
+        # The tail turns left over its last stretch and ends in a horizontal face, as Inter's does: a
+        # straight diagonal cut off flat read as chopped at Black. The curl grows with weight (a line
+        # at Thin, where the stroke is a hairline) and the segment is always a cubic.
+        g.strokes.pop()
+        (x0, y0), (x1, y1) = a
+        d = math.hypot(x1 - x0, y1 - y0)
+        ux, uy = (x1 - x0) / d, (y1 - y0) / d
+        t = (p.desc * 0.3 - y0) / (y1 - y0)
+        q = (x0 + (x1 - x0) * t, p.desc * 0.3)
+        # one arc: the stroke turns left by `bend` degrees between q and the end (a straight line at Thin)
+        bend = math.radians((8 + 8 * p.heavy) * thin_blend(p))
+        phi = math.atan2(uy, ux)
+        mid_dir = (math.cos(phi - bend / 2), math.sin(phi - bend / 2))
+        end = (q[0] + (p.desc - q[1]) * mid_dir[0] / mid_dir[1], p.desc)
+        dist = math.hypot(end[0] - q[0], end[1] - q[1])
+        t_end = (math.cos(phi - bend), math.sin(phi - bend))
+        tail = ('C', q, (q[0] + ux * dist / 3, q[1] + uy * dist / 3), (end[0] - t_end[0] * dist / 3, end[1] - t_end[1] * dist / 3), end)
+        g.stroke([L(a[0], q), tail], caps=('h', 'h'), ws=0.93)
     if p.italic:  # the right stroke turns into a curved tail instead of a straight descender
         g.strokes.pop()
         (x0, y0), (x1, y1) = a
@@ -1005,7 +1038,9 @@ def fw(p):
 
 @glyph('zero', 0x30)
 def _zero(g, p):
-    g.oval(0, -p.ov, fw(p) * 0.98, p.cap + p.ov)
+    # wider than the other figures, as Inter's is (0.98 of the figure width was 6% narrower at Regular and 12% at
+    # Black); the tabular advance is fixed, so the extra comes out of its sidebearings
+    g.oval(0, -p.ov, fw(p) * (1.01 + 0.03 * p.heavy), p.cap + p.ov)
     g.tab = True
     g.ht = 'c'
 
@@ -1042,7 +1077,7 @@ def _one(g, p):
     w = fw(p)
     xs = w * 0.55
     g.vstem(xs - p.V / 2, 0, p.cap)
-    g.diag(xs, p.cap - p.H * 0.4, w * 0.12, p.cap * 0.74, 'c', 'c', ws=0.82, caps=('b', 'b'))
+    g.diag(xs, p.cap - p.H * 0.4, w * 0.12 + 6 + 12 * p.heavy, p.cap * 0.74, 'c', 'c', ws=0.82, caps=('b', 'b'))  # Black's flag reached 10% further left than Inter's
     g.tab = True
     g.ht = 'c'
 
@@ -1146,7 +1181,7 @@ def _six_strokes(g, p, w):
     g.oval(0, -p.ov, w, top)
     cx, cy, rx, ry = g.box(0, -p.ov, w * (1.02 + 0.15 * p.heavy), p.cap + p.ov)
     cyb = (-p.ov + top) / 2
-    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 44 - 16 * p.heavy + p.ap * 0.5), caps=('b', 'b'), cut='t')  # heavy terminals run round to 28°, where the stroke is steep and a square cut is a clean face: ending higher (58°) left a blade with a notch in its inner edge
+    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 44 - 16 * p.heavy + p.ap * 0.5), caps=('b', 'b'), cut='t', tilt=FLAT_TILT)  # heavy terminals run round to 28°, where the stroke is steep and a square cut is a clean face: ending higher (58°) left a blade with a notch in its inner edge
     del V
 
 
