@@ -11,6 +11,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
 import numpy as np  # noqa: E402
+from fontTools.pens.boundsPen import BoundsPen  # noqa: E402
 
 import glyphs as GL  # noqa: E402
 import quality as Q  # noqa: E402
@@ -123,6 +124,33 @@ class StartingPoint(unittest.TestCase):
         does not clot, and the a's bowl does not swell beside its stem, in both families."""
         text = '\n'.join(Q.check_all(VF, VFI))
         self.assertNotIn('thin ink:', text)
+        for path in (VF, VFI):
+            # the generic limit (2.5 stems) is above the base a (40) and t (61): these are glyph-specific
+            # upright base a was 40 and is 28 now. The italic a is the single-storey bowl d, b and p share, and
+            # its tangent join is as heavy as Inter's own (Inter Italic a 38.8, d 38.5; ours 37.9, d 38.1): unchanged
+            # by WP3, so it is held to Inter's, not to the upright's.
+            limit = 32 if path == VF else 38.8
+            self.assertLessEqual(Q.max_ink(Q.raster(path, 'a', 100)), limit, f'{path}: a swells beside its stem')
+            self.assertLessEqual(Q.max_ink(Q.raster(path, 't', 100)), 1.6 * Q.STEM_THIN, f'{path}: t clots in its foot')
+
+    def test_thin_comma_and_quotes_are_long_enough_to_read(self):
+        """A tick narrowed to the hairline must not also shrink to a speck: at 14 px a 30 x 88 unit comma read as a
+        period. Inter's Thin comma descends 0.267 x-heights and is 0.403 tall (quotes: 0.403 tall); ours keeps >= 0.7 of that."""
+        for path in (VF, VFI):
+            font = Q.instance(path, 100)
+            xh = Q.x_height_of(font)
+            gs = font.getGlyphSet()
+
+            def bounds(name):
+                pen = BoundsPen(gs)
+                gs[name].draw(pen)
+                return pen.bounds
+
+            for name in ('comma', 'semicolon'):
+                self.assertLessEqual(bounds(name)[1], -0.7 * 0.267 * xh, f'{path}: {name} does not descend')
+            for name in ('comma', 'quoteright', 'quotedblright', 'quoteleft', 'quotedblleft'):
+                b = bounds(name)
+                self.assertGreaterEqual(b[3] - b[1], 0.7 * 0.403 * xh, f'{path}: {name} is a speck')
 
     def test_joins_flow_into_the_stem(self):
         """WP1: bowls and arches leave their stems tangentially, in both families, at every checked weight."""

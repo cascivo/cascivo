@@ -753,7 +753,7 @@ def _a_bowl(g, p, xs, wf):
     yji = ybi + (yti - ybi) * 0.45  # where the counter's round bottom meets the stem
     # At Thin the two joins must meet at one height: with the counter's ending above the outline's
     # the wall between them swells into a dark wedge beside the stem, thicker than the stem itself.
-    yji = lerp(yjo, yji, max(0.0, min(1.0, (p.wght - 100) / 300)))
+    yji = lerp(yjo, yji, thin_blend(p))
     inner = [
         L((xe, yti), (cxb, yti)),
         ('C', (cxb, yti), (cxb - rxi * k, yti), (tl, cyi + ryi * k), (tl, cyi)),
@@ -864,7 +864,7 @@ def _t(g, p):
     # Thin keeps its hook short and tight. Regular's radius on a 22-unit stem is wider than the
     # foot is long (the inner arc ran past the foot's end and the outline folded into a blob), so
     # the radius halves and the foot always reaches past the end of the inner arc, as Regular's does.
-    f = max(0.0, min(1.0, (p.wght - 100) / 300))
+    f = thin_blend(p)
     ri = lerp(ri * 0.5, ri, f)
     xe = lerp(xr + ri + V * 1.8, xe, f)
     rise = hf * 0.25 * (1 - heavy)  # Regular's foot lifts a little toward its end, Black's is flat
@@ -1200,9 +1200,16 @@ def _period(g, p):
     g.sb = (0.9, 0.9)
 
 
+def thin_blend(p):
+    """0 at Thin, 1 from Regular up: how far a hairline-only adjustment has faded out."""
+    return max(0.0, min(1.0, (p.wght - 100) / 300))
+
+
 def comma_depth(p):
-    # in dots; Black's tail ran 1.7x as deep as Geist's and Inter's
-    return 1.15 - 0.3 * p.heavy
+    # in dots; Black's tail ran 1.7x as deep as Geist's and Inter's. Thin's dot is small, so a tail
+    # that long in dots is a speck at 14 px (it read as a period): 3.4 dots is 139 units, which
+    # reaches Inter's proportions (it descends 0.27 x-heights) and fades to Regular's by wght 400.
+    return lerp(3.4, 1.15, thin_blend(p)) - 0.3 * p.heavy
 
 
 def comma_shape(g, d, x, top, depth):
@@ -1213,7 +1220,7 @@ def comma_shape(g, d, x, top, depth):
     # its stem, and a comma that wide is a wedge: Inter's Thin comma is a tick about as thick as
     # its stem. The tail's width follows the stem there, with its left edge kept where the dot's is.
     p = g.p
-    f = max(0.0, min(1.0, (p.wght - 100) / 300))
+    f = thin_blend(p)
     w = d * (f + (1 - f) * min(1.0, 1.2 * p.V / p.dot))
     x -= (d - w) / 2
     neck = top - d * 0.95

@@ -8,7 +8,7 @@ and ς, and the round υ ψ ω.
 
 from cyrillic import _mirror, _Ze
 from geom import L, expand
-from glyphs import _bowl_right, comma_shape, glyph, m_tilde, on_line, shoulder
+from glyphs import _bowl_right, comma_shape, glyph, m_tilde, on_line, shoulder, thin_blend
 
 
 def _iota_stroke(g, p, x, top):
@@ -332,7 +332,7 @@ GREEK_TOP_MARKS = ['psilicomb', 'dasiacomb', 'perispomenicomb']
 
 def _breathing(g, p, turned):
     d = p.dot * 0.8 - 40 * p.heavy  # at 0.72 they read as ticks; Black's dot would make them blots
-    depth = d * 0.9
+    depth = d * (0.9 + 1.0 * (1 - thin_blend(p)))  # Thin: its small dot made psili and dasia two specks; a longer tail separates the curl from the turned one
     top = d * 0.95 + depth
     comma_shape(g, d, d * 0.15, top, depth)
     if turned:
