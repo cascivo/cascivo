@@ -245,7 +245,7 @@ class StartingPoint(unittest.TestCase):
         """WP4: Black counters keep Inter's proportions; a joins its stem like b and d, a, g and 9 end in a flat
         face, f has no bite, t has a flat top, l keeps its tail inside its advance, 1 has a short flag, 0 is wide."""
         text = '\n'.join(Q.check_all(VF, VFI))
-        for needle in ('counter:', 'notch: a ', 'join: a ', 'join angle: a ', 'flat terminal:', 'crevice:', 't top:', 'zero width:', 'flag:', 'sidebearings: l '):
+        for needle in ('counter:', 'notch: a ', 'join: a ', 'join angle: a ', 'flat terminal:', 'terminal corners:', 'crevice:', 't top:', 'zero width:', 'flag:', 'sidebearings: l '):
             self.assertNotIn(needle, text)
 
     def test_per_stroke_tilt_flattens_only_its_own_terminal(self):
@@ -262,7 +262,7 @@ class StartingPoint(unittest.TestCase):
         self.assertEqual(_heavy_cut(tan, 190, 0.0, 't', None), shared)
 
     def test_l_tail_ends_square_and_y_tail_ends_flat(self):
-        """The l's tail ends in a vertical face and the y's tail in a horizontal one, at every master."""
+        """The l's tail ends in a vertical face and the y's curl ends horizontal (a vertical face), at every master."""
         for wght, opsz in ((100, 14), (400, 14), (900, 14), (400, 8), (400, 48)):
             p = P(wght=wght, opsz=opsz)
             g = GL.G(p)
@@ -273,7 +273,9 @@ class StartingPoint(unittest.TestCase):
             GL.GLYPHS['y'][1](g, p)
             tail = [s for s in g.strokes if s.segs[-1][0] == 'C'][0]
             (a, b) = cap_lines(tail, p.V, p.H)[0][1:]
-            self.assertLessEqual(abs(a[1] - b[1]), 0.06 * abs(a[0] - b[0]), f'y tail face at wght {wght} opsz {opsz}')  # within 3.5 degrees of flat
+            if wght >= 400:  # a curl ending horizontal, so its butt end is a (near) vertical face
+                self.assertLessEqual(abs(a[0] - b[0]), 0.35 * abs(a[1] - b[1]), f'y tail face at wght {wght} opsz {opsz}')
+            self.assertGreaterEqual(min(a[1], b[1]), p.desc - 1, f'y tail clears the descender at wght {wght} opsz {opsz}')
 
     def test_cut_faces_found_on_the_built_font(self):
         faces = Q.cut_faces(VF, 'c', 900)

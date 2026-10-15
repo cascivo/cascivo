@@ -519,6 +519,8 @@ JOIN_RUN = 8
 # The face of the a, g and 9 terminals at Black, degrees from horizontal (the shared HEAVY_TILT is 28). Inter's
 # end in a face under 10; at 28 the cut left a beak, an acute corner overhanging the bowl by 40 units.
 FLAT_TILT = 18
+A_END = 18  # degrees further round at Black: a's top arc and g's tail
+A_RY = 0.18  # a's top arc is this much taller at Black
 
 
 def shoulder(g, xl, xr, top, ry_k=None):
@@ -671,7 +673,7 @@ def _g(g, p):
     rx = (w - V) / 2 * 0.98
     ry = 104 + p.V * 0.25
     cy = p.desc - p.ov * 0.5 + H / 2 + ry
-    g.stroke([L((xr, p.xh), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, -152 + p.ap), caps=('b', 'b'), cut='t', tilt=FLAT_TILT)
+    g.stroke([L((xr, p.xh), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, -152 + p.ap - 3 * p.heavy), caps=('b', 'b'), cut='t', tilt=24)  # capped below 28: the shared tilt pushes the tail's tip into the bowl's gap (notch 0.99 vs Inter's 0.6)
     cx, cy2, rx2, ry2 = g.box(0, 18, w, p.xh + p.ov)
     g.stroke(g.arc(cx, cy2, rx2, ry2, JOIN_RUN, 360 - JOIN_RUN), taper=(join_taper(p),) * 2)
     g.sb = (0.62, 1.15 if p.italic else 1)  # the italic sat 10% tighter on its right than Inter's and Plex's
@@ -736,28 +738,37 @@ def _a_bowl(g, p, xs, wf):
     V = p.V
     h = p.heavy
     k = p.k
-    ybt = p.xh * (0.57 + 0.07 * h)  # top of the bowl
+    ybt = p.xh * (0.57 + 0.04 * h)  # top of the bowl
     yb0 = -p.ov  # bottom of the bowl
     xe = xs - V / 2  # stem's left edge
     rxb = (xs - V / 2) / 2 * wf
     cxb = V / 2 + rxb  # horizontal centre of the bowl's round left half
     th = p.bar  # top and bottom of the bowl
-    tl = V  # left side of the bowl
+    tl = V * (1 + 0.08 * h)  # left side of the bowl
     cy = (ybt + yb0) / 2
     ry = (ybt - yb0) / 2
     yjo = yb0 + (ybt - yb0) * (0.3 + 0.15 * h)  # where the outline meets the stem
     # the bowl's top rises toward the stem, as Inter's and Geist's do: a flat top meeting a vertical
     # stem read as a slab at Black
-    slope = 0.08 + 0.04 * h
+    slope = 0.07 - 0.03 * h
     rise_o, rise_i = slope * (xs - cxb), slope * (xe - cxb)
+    # The top ends against the stem's left edge in a rounded corner, so the aperture closes in a U
+    # (Inter's) and not in a spur where the line crossed the arc's inner round
+    fr = 0.32 * V
+    xf = xe - fr
+    yE = ybt + rise_i
+    yf = ybt + slope * (xf - cxb)
+    yq = yE + fr * 0.6
     outer = [
-        L((xs, ybt + rise_o), (cxb, ybt)),
+        L((xs, yq), (xe, yq)),
+        ('C', (xe, yq), (xe, yq - fr * 0.55), (xf + fr * 0.55, yf + slope * fr * 0.55), (xf, yf)),
+        L((xf, yf), (cxb, ybt)),
         ('C', (cxb, ybt), (cxb - cxb * k, ybt - slope * cxb * k), (0, cy + ry * k), (0, cy)),  # leaves the sloped top along its own direction
         ('C', (0, cy), (0, cy - ry * k), (cxb - cxb * k, yb0), (cxb, yb0)),
         ('C', (cxb, yb0), (cxb + (xs - cxb) * 0.6, yb0), (xs, yjo - (yjo - yb0) * 0.6), (xs, yjo)),
-        L((xs, yjo), (xs, ybt + rise_o)),
+        L((xs, yjo), (xs, yq)),
     ]
-    yti, ybi = ybt - th * (1 - 0.12 * h), yb0 + th * (1 - 0.16 * h)  # heavy walls give a little to the counter
+    yti, ybi = ybt - th, yb0 + th * (1 - 0.1 * h)  # a heavy bowl's floor gives a little to the counter
     cyi, ryi = (yti + ybi) / 2, (yti - ybi) / 2
     rxi = cxb - tl
     yji = ybi + (yti - ybi) * 0.62  # where the counter's round bottom meets the stem
@@ -788,9 +799,11 @@ def _a(g, p):
     # top arc
     cxt = xs * 0.5 + 6
     rxt = xs - cxt
-    ryt = p.xh * 0.26
+    # Black's arc is taller and runs further round before it ends, so the end meets the cut square: forcing a
+    # flat face on a stroke still falling at 49 degrees left a pointed wedge
+    ryt = p.xh * 0.26 * (1 + A_RY * p.heavy)
     cyt = p.xh + p.ov * 0.5 - H / 2 - ryt
-    g.stroke([L((xs, 0), (xs, cyt))] + g.arc(cxt, cyt, rxt, ryt, 0, 154 - p.ap), caps=('b', 'b'), cut='t', tilt=FLAT_TILT)
+    g.stroke([L((xs, 0), (xs, cyt))] + g.arc(cxt, cyt, rxt, ryt, 0, 154 - p.ap + A_END * p.heavy), caps=('b', 'b'), cut='t')
     _a_bowl(g, p, xs, 0.94)
     g.sb = (0.55, 1)
 
@@ -814,8 +827,8 @@ def _f_hook(p):
     # Heavier weights end the hook higher: near its tip the hook turns tighter than half a Black
     # stroke, and the inner edge folds into a pinhole. The angle stays in one quadrant, so the
     # outline structure (and master compatibility) is unchanged.
-    end = 38 + 24 * p.heavy
-    rx = (w * 0.96 - xs - p.V / 2) / (1 + math.cos(math.radians(end))) + p.V * 0.15
+    end = 38 + 30 * p.heavy
+    rx = (w * 0.96 - xs - p.V / 2) / (1 + math.cos(math.radians(end))) + p.V * (0.15 + 0.12 * p.heavy)
     return w, xs, end, rx
 
 
@@ -977,24 +990,20 @@ def _y(g, p):
     w = p.nw * 1.10
     a = g.diag(w, p.xh, w * 0.36, p.desc, 'r', 'c', caps=('h', 'h'))
     if not p.italic:
-        # The tail turns left over its last stretch and ends in a horizontal face, as Inter's does: a
-        # straight diagonal cut off flat read as chopped at Black. The curl grows with weight (a line
-        # at Thin, where the stroke is a hairline) and the segment is always a cubic.
+        # The italic's curled tail, ending horizontal, on the upright too (Geist's curls as well): a straight
+        # diagonal cut off flat read as chopped, and a bent wedge as a boot. The curl grows with weight, so
+        # Regular's stays near its straight tail.
         g.strokes.pop()
         (x0, y0), (x1, y1) = a
         d = math.hypot(x1 - x0, y1 - y0)
         ux, uy = (x1 - x0) / d, (y1 - y0) / d
-        t = (p.desc * 0.3 - y0) / (y1 - y0)
-        q = (x0 + (x1 - x0) * t, p.desc * 0.3)
-        # one arc: the stroke turns left by `bend` degrees between q and the end (a straight line at Thin)
-        bend = math.radians((8 + 8 * p.heavy) * thin_blend(p))
-        phi = math.atan2(uy, ux)
-        mid_dir = (math.cos(phi - bend / 2), math.sin(phi - bend / 2))
-        end = (q[0] + (p.desc - q[1]) * mid_dir[0] / mid_dir[1], p.desc)
-        dist = math.hypot(end[0] - q[0], end[1] - q[1])
-        t_end = (math.cos(phi - bend), math.sin(phi - bend))
-        tail = ('C', q, (q[0] + ux * dist / 3, q[1] + uy * dist / 3), (end[0] - t_end[0] * dist / 3, end[1] - t_end[1] * dist / 3), end)
-        g.stroke([L(a[0], q), tail], caps=('h', 'h'), ws=0.93)
+        t = (p.desc * 0.15 - y0) / (y1 - y0)
+        q = (x0 + (x1 - x0) * t, p.desc * 0.15)
+        reach = (0.45 + 0.55 * p.heavy) * thin_blend(p)
+        end = (lerp(x1, w * 0.06, reach), p.desc + p.H * 0.55)
+        dist = math.hypot(q[0] - end[0], q[1] - end[1])
+        tail = ('C', q, (q[0] + ux * dist * 0.45, q[1] + uy * dist * 0.45), (end[0] + dist * 0.4, end[1]), end)
+        g.stroke([L(a[0], q), tail], caps=('h', 'b'), ws=0.93)
     if p.italic:  # the right stroke turns into a curved tail instead of a straight descender
         g.strokes.pop()
         (x0, y0), (x1, y1) = a

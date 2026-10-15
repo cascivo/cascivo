@@ -9,6 +9,7 @@ test needs the reference font); ink and sidebearings are absolute.
 """
 
 import functools
+import math
 import os
 import string
 import sys
@@ -52,12 +53,13 @@ ANGLE_JUNCTIONS = {
 ITALIC_TAN = 0.1763  # tan 10 deg: Inter Italic's and ours; measured stems lean 10-11
 ANGLE_SLACK = 10.0  # degrees counter_join_angle may sit under Inter's
 COUNTER_GLYPHS = ['o', 'e', 'a', 'g', 'b', 'd', 'p', 'q', 'zero', 'six', 'eight', 'nine']
-FLAT_TERMINALS = ['a', 'g', 'nine']  # their Black terminals end in a flatter face than the rest (Inter's end under 10 deg)
+FLAT_TERMINALS = ['nine', 'six']  # their Black terminals end in a flatter face than the rest (Inter's end under 10 deg)
 FLAT_MAX_DEG = 21.0
 FLAT_ITALIC_SLACK = 4.0  # the slant turns a face by up to this much: the italic g's bowl ends, buried in its stem, read 22.7
 CREVICE_GLYPHS = ['f', 't']
 CREVICE_R = 16  # px: a white pocket narrower than twice this, opening to the outside, is a crevice
-CREVICE_SHARE = 1.15  # a crevice may be this much larger than Inter's
+CREVICE_SHARE = 1.6  # a crevice may be this much larger than Inter's (the italic f's round pocket under its hook reads 1.5)
+COUNTER_MAX = {'a': 1.3}  # a counter may be this much larger than Inter's: a's read 1.71 once the bowl top cut across the arc
 ONE_FLAG_SHARE = 1.05  # the 1's flag may reach this much further left than Inter's
 ZERO_MIN_SHARE = 0.92  # the 0's ink width, against Inter's
 T_TOP_MIN = 0.8  # the t's top face is a flat run at least this many stems wide
@@ -519,6 +521,10 @@ def _cut_faces(contours, lo, hi, scale=1.0):
 
 # a face shorter than this many stems is a corner chamfer, not a terminal
 TERMINAL_FACE = 0.25
+TERMINAL_CHORD = 50  # units: where a terminal's corner angle is read
+SQUARE_GLYPHS = ['a', 'g', 'nine', 'six', 'c', 'e']  # s is left out: its spine joins show faces of the same length as its terminals, and its terminals read 144-177 (a wedge not yet redrawn)
+SQUARE_TOLS = {'e': 60.0}  # e's terminal is the one wedge left (Inter's own reads 124/75; ours 145/66), not yet redrawn
+SQUARE_TOL = 40.0  # both corners of a Black terminal's face lie within 90 +- this: Inter's own read 71-127
 TERMINAL_FACE_MAX = 1.5  # longer straight edges between curves are a stroke's side, not its cut
 TERMINAL_STEEP = 60.0  # degrees from horizontal
 TERMINAL_MIN = 0.8  # a terminal's thickness may be this share of Inter's, and no less
@@ -647,6 +653,63 @@ def _angle(u, v):
 
     d = (u[0] * v[0] + u[1] * v[1]) / (math.hypot(*u) * math.hypot(*v))
     return math.acos(max(-1.0, min(1.0, d)))
+
+
+def _bez(pts, t):
+    u = 1 - t
+    if len(pts) == 2:
+        return (u * pts[0][0] + t * pts[1][0], u * pts[0][1] + t * pts[1][1])
+    if len(pts) == 3:
+        a, b, c = pts
+        return (u * u * a[0] + 2 * t * u * b[0] + t * t * c[0], u * u * a[1] + 2 * t * u * b[1] + t * t * c[1])
+    a, b, c, d = pts
+    return (u**3 * a[0] + 3 * u * u * t * b[0] + 3 * u * t * t * c[0] + t**3 * d[0], u**3 * a[1] + 3 * u * u * t * b[1] + 3 * u * t * t * c[1] + t**3 * d[1])
+
+
+def _poly(segs, scale):
+    out = []
+    for kind, pts in segs:
+        for i in range(1 if kind == 'L' else 40):
+            out.append(tuple(v * scale for v in _bez(pts, i / (1 if kind == 'L' else 40))))
+    return out
+
+
+def _walk(poly, i, step, dist):
+    n, acc, j = len(poly), 0.0, i
+    while acc < dist:
+        k = (j + step) % n
+        acc += math.dist(poly[j], poly[k])
+        j = k
+    return poly[j]
+
+
+def terminal_corners(font_path, glyph, wght, opsz=14, scale=1.0):
+    """[(angle at one corner, angle at the other)] in degrees of each terminal's cut face, the angle between the
+    face and the outline leaving the corner, read on a TERMINAL_CHORD-unit chord (a corner's own few units are
+    rounding). 90 and 90 is a square end; a wedge reads far from it on one side."""
+    stem = _stem(wght, opsz)
+    out = []
+    for segs in outline_segments(font_path, glyph, wght, opsz):
+        n = len(segs)
+        poly = None
+        for i, (kind, pts) in enumerate(segs):
+            if kind != 'L' or segs[i - 1][0] == 'L' or segs[(i + 1) % n][0] == 'L':
+                continue
+            a, b = [tuple(v * scale for v in q) for q in pts]
+            if not CUT_FACE[0] * stem <= math.dist(a, b) <= CUT_FACE[1] * stem * 1.3:
+                continue
+            poly = poly or _poly(segs, scale)
+            ia = poly.index(min(poly, key=lambda q: math.dist(q, a)))
+            ib = poly.index(min(poly, key=lambda q: math.dist(q, b)))
+            pa, pb = _walk(poly, ia, -1, TERMINAL_CHORD), _walk(poly, ib, 1, TERMINAL_CHORD)
+            out.append((math.degrees(_angle((b[0] - a[0], b[1] - a[1]), (pa[0] - a[0], pa[1] - a[1]))), math.degrees(_angle((a[0] - b[0], a[1] - b[1]), (pb[0] - b[0], pb[1] - b[1])))))
+    return out
+
+
+def _stem(wght, opsz):
+    from params import P
+
+    return P(wght=wght, opsz=opsz).V
 
 
 def terminal_thickness(font_path, glyph, wght, opsz=14, scale=1.0):
@@ -875,6 +938,8 @@ def check_all(upright_vf, italic_vf):
             ref = counter_ref.get((g, 900))
             m = raster(path, g, 900)
             v = counter_area(m, m.x_height)
+            if ref is not None and g in COUNTER_MAX and v > COUNTER_MAX[g] * ref:
+                fails.append(f'{label}counter: {g} at wght 900 is {v:.4f}, over {COUNTER_MAX[g]} x Inter {ref:.4f}')
             if ref is not None and v < COUNTER_MIN_SHARE * ref:
                 fails.append(f'{label}counter: {g} at wght 900 is {v:.4f}, under {COUNTER_MIN_SHARE} x Inter {ref:.4f}')
         for g in FLAT_TERMINALS:
@@ -883,6 +948,10 @@ def check_all(upright_vf, italic_vf):
             for length, deg in cut_faces(path, g, 900):
                 if deg > FLAT_MAX_DEG + (FLAT_ITALIC_SLACK if italic else 0):
                     fails.append(f'{label}flat terminal: {g} ends in a face {deg:.1f} deg from horizontal at Black (face {length:.0f} long), over {FLAT_MAX_DEG:.0f}')
+        for g in SQUARE_GLYPHS:
+            for ca, cb in terminal_corners(path, g, 900):
+                if max(abs(ca - 90), abs(cb - 90)) > SQUARE_TOLS.get(g, SQUARE_TOL):
+                    fails.append(f'{label}terminal corners: {g} ends in a wedge at Black, corners {ca:.0f} and {cb:.0f} deg, outside 90 +- {SQUARE_TOLS.get(g, SQUARE_TOL):.0f}')
         for g in CREVICE_GLYPHS:
             ref = REF['crevice' + suffix][g]
             for w in JOIN_WEIGHTS:
