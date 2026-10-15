@@ -89,10 +89,26 @@ class StartingPoint(unittest.TestCase):
         for needle in ('thin ink: t ', 'thin ink: comma ', 'notch: d at wght 900', 'terminal cut: a ', 'sidebearings: x '):
             self.assertIn(needle, text)
 
-    def test_reference_font_style_cut_is_not_flagged(self):
-        """A flat or shallow cut passes: the check bounds the angle from horizontal, never demands one."""
-        for g in ('c', 's'):
-            self.assertTrue(all(deg <= Q.CUT_MAX_DEG for _, deg in Q.cut_faces(VF, g, 900)))
+    def test_cut_faces_of_shallow_and_steep_cuts(self):
+        shallow = ((0, 0), [('C', (100, 50)), ('L', (290, 80)), ('C', (400, 200))])  # ~9 degrees, 192 long
+        steep = ((0, 0), [('C', (100, 50)), ('L', (200, 215)), ('C', (400, 200))])  # ~59 degrees, 193 long
+        (face,) = Q._cut_faces([shallow], 150, 220)
+        self.assertAlmostEqual(face[1], 9.0, delta=1)
+        (face,) = Q._cut_faces([steep], 150, 220)
+        self.assertAlmostEqual(face[1], 59.0, delta=1)
+        self.assertEqual(Q._cut_faces([shallow], 250, 300), [])  # too long or too short is not a cut face
+
+    def test_cut_faces_neighbours_wrap_around_the_contour(self):
+        # starts on a line next to a stem-length line: the closing line's next segment is that
+        # first line, so it is a stem edge and not a face (the moveTo is not a segment)
+        c = ((0, 0), [('L', (200, 0)), ('C', (300, 100)), ('C', (200, 190)), ('L', (0, 190))])
+        self.assertEqual(Q._cut_faces([c], 150, 220), [])
+        self.assertEqual(Q._cut_faces([((0, 0), [('L', (0, 190)), ('C', (100, 300)), ('C', (200, 0))])], 150, 220), [])
+
+    def test_cut_faces_found_on_the_built_font(self):
+        faces = Q.cut_faces(VF, 'c', 900)
+        self.assertEqual(len(faces), 2)
+        self.assertTrue(all(deg <= Q.CUT_MAX_DEG for _, deg in faces))
 
 
 if __name__ == '__main__':

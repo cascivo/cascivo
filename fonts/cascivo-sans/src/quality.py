@@ -377,30 +377,40 @@ def cut_faces(font_path, glyph, wght, opsz=14, scale=1.0):
     gs = instance(font_path, wght, opsz).getGlyphSet()
     pen = DecomposingRecordingPen(gs)
     gs[glyph].draw(pen)
-    contours, cur = [], []
+    contours, cur = [], None
     for op, args in pen.value:
         if op == 'moveTo':
-            cur = [('M', args[0])]
+            cur = (args[0], [])
         elif op == 'lineTo':
-            cur.append(('L', args[0]))
+            cur[1].append(('L', args[0]))
         elif op in ('qCurveTo', 'curveTo'):
-            cur.append(('C', args[-1]))
+            cur[1].append(('C', args[-1]))
         elif op in ('closePath', 'endPath') and cur:
-            if cur[-1][1] != cur[0][1]:
-                cur.append(('L', cur[0][1]))  # the implicit closing line
-            else:
-                cur[0] = ('C', cur[0][1])
             contours.append(cur)
+    return _cut_faces(contours, CUT_FACE[0] * stem, CUT_FACE[1] * stem, scale)
+
+
+def _cut_faces(contours, lo, hi, scale=1.0):
+    """The face finder on plain data: contours are (start, [(kind, end), ...]) with kind 'L' or
+    'C'. Segments are cyclic, the implicit closing line included, so the neighbours of the first
+    and last segment are the real ones."""
+    import math
+
     out = []
-    for c in contours:
-        n = len(c)
-        for i in range(1, n):
-            if c[i][0] != 'L' or c[i - 1][0] == 'L' or c[(i + 1) % n][0] == 'L':
+    for start, ops in contours:
+        segs, prev = [], start
+        for kind, end in ops:
+            segs.append((kind, prev, end))
+            prev = end
+        if prev != start:
+            segs.append(('L', prev, start))
+        n = len(segs)
+        for i, (kind, p0, p1) in enumerate(segs):
+            if kind != 'L' or segs[i - 1][0] == 'L' or segs[(i + 1) % n][0] == 'L':
                 continue
-            (x0, y0), (x1, y1) = c[i - 1][1], c[i][1]
-            length = math.hypot(x1 - x0, y1 - y0) * scale
-            if CUT_FACE[0] * stem <= length <= CUT_FACE[1] * stem:
-                out.append((length, math.degrees(math.atan2(abs(y1 - y0), abs(x1 - x0)))))
+            length = math.hypot(p1[0] - p0[0], p1[1] - p0[1]) * scale
+            if lo <= length <= hi:
+                out.append((length, math.degrees(math.atan2(abs(p1[1] - p0[1]), abs(p1[0] - p0[0])))))
     return out
 
 
