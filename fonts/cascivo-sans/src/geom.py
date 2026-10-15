@@ -422,13 +422,10 @@ def _turn(t, vn):
     return math.atan2(t[0] * vn[1] - t[1] * vn[0], _dot(t, vn))
 
 
-def expand(stroke, V, H):
-    """Return a list of contours; a contour is a list of segments forming a closed loop."""
+def _open_sides(stroke, V, H):
+    """An open stroke's two sides with its end caps already cut (trimmed or turned)."""
     left = _side(stroke, +1, V, H)
     right = _side(stroke, -1, V, H)
-    if stroke.closed:
-        outer, inner = (left, right) if abs(_area(left)) > abs(_area(right)) else (right, left)
-        return [orient(outer, outer=True), orient(inner, outer=False)]
     start_c = stroke.segs[0][1]
     end_c = stroke.segs[-1][-1]
     n = len(stroke.segs)
@@ -461,10 +458,34 @@ def expand(stroke, V, H):
             limit = _thick(stroke, 0 if at_start else n - 1, t, tan, V, H) * 0.6
             left = _move_end(left, at_start, cut, value, limit)
             right = _move_end(right, at_start, cut, value, limit)
+    return left, right
+
+
+def cap_lines(stroke, V, H):
+    """The end-cap segments of an open stroke's contour, (end cap, start cap) as `expand` builds
+    them; none for a closed stroke. Exposed so the quality checks can measure the cut angle."""
+    if stroke.closed:
+        return []
+    return _caps(*_open_sides(stroke, V, H))
+
+
+def _caps(left, right):
+    return [L(left[-1][-1], right[-1][-1]), L(right[0][1], left[0][1])]
+
+
+def expand(stroke, V, H):
+    """Return a list of contours; a contour is a list of segments forming a closed loop."""
+    if stroke.closed:
+        left = _side(stroke, +1, V, H)
+        right = _side(stroke, -1, V, H)
+        outer, inner = (left, right) if abs(_area(left)) > abs(_area(right)) else (right, left)
+        return [orient(outer, outer=True), orient(inner, outer=False)]
+    left, right = _open_sides(stroke, V, H)
+    end_cap, start_cap = _caps(left, right)
     contour = list(left)
-    contour.append(L(left[-1][-1], right[-1][-1]))
+    contour.append(end_cap)
     contour += [reverse_seg(s) for s in reversed(right)]
-    contour.append(L(right[0][1], left[0][1]))
+    contour.append(start_cap)
     return [orient(contour, outer=True)]
 
 

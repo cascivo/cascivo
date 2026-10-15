@@ -4,3 +4,7 @@ ttfautohint-py==0.6.1
 # tests only
 opentype-sanitizer
 uharfbuzz
+numpy
+scipy
+scikit-image
+pillow
