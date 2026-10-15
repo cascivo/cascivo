@@ -161,3 +161,11 @@ export function axesLabel(font: ComparedFont): string {
   const text = `${axes[0]?.toUpperCase() ?? ''}${axes.slice(1)}`
   return `${text} · ${font.latin_wght_italic_bytes === null ? 'no italic' : 'italic file'}`
 }
+
+/** Size of a "U+0020-007E,U+00A0" codepoint spec, i.e. how many codepoints were requested. */
+export function countCodepoints(spec: string): number {
+  return spec.split(',').reduce((total, part) => {
+    const [from = '', to = from] = part.replace(/U\+/g, '').split('-')
+    return total + (Number.parseInt(to, 16) - Number.parseInt(from, 16) + 1)
+  }, 0)
+}

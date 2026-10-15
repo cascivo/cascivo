@@ -1,6 +1,6 @@
 """Measures Cascivo Sans against the reference families for the /cascivo-sans comparison table.
 
-    python3 -I src/compare.py --refs DIR        # all fonts, rewrites comparison.json
+    python3 -I src/compare.py --refs DIR --plex-var DIR   # all fonts, rewrites comparison.json
     python3 -I src/compare.py --cascivo-only    # re-measure only the Cascivo entry (no refs needed)
 
 Every font is cut down the same way: axes other than `wght` pinned at their defaults, subset
@@ -122,37 +122,46 @@ def measure_cascivo():
     )
 
 
-def measure_references(refs):
+PLEX_SOURCE = '@fontsource-variable/ibm-plex-sans@5.3.0'
+
+
+def measure_references(refs, plex_dir):
     p = lambda n: os.path.join(refs, n)  # noqa: E731
+    q = lambda n: os.path.join(plex_dir, n)  # noqa: E731
     return [
         _entry('Inter', p('Inter.ttf'), p('InterItalic.ttf')),
         _entry('Geist', p('Geist.ttf'), None),
-        # The Plex files here are static, one weight each, so this is Regular only, not a
-        # weight-axis figure; the page says so.
+        # IBM's own static files are one weight each, so Plex is measured from its variable
+        # release instead: the npm package above, files/ibm-plex-sans-latin-wght-{normal,italic}
+        # .woff2 (IBM Plex Sans Variable 3.201, wght axis only, already a Latin slice of the
+        # full font, so the LATIN subset below is of that slice). The full family also has a
+        # width axis, which this build leaves out, as opsz is pinned for Inter and Cascivo.
         _entry(
-            'IBM Plex Sans', p('Plex.ttf'), p('PlexItalic.ttf'),
-            note='static files, one weight each (Regular and Italic measured as shipped), not a variable font.',
+            'IBM Plex Sans', q('ibm-plex-sans-latin-wght-normal.woff2'),
+            q('ibm-plex-sans-latin-wght-italic.woff2'),
+            note=f'measured from {PLEX_SOURCE}, a Latin slice of the variable release (weight axis only; the full family also has a width axis).',
         ),
     ]
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--refs', help='directory holding Inter.ttf, InterItalic.ttf, Geist.ttf, Plex.ttf, PlexItalic.ttf')
+    ap.add_argument('--refs', help='directory holding Inter.ttf, InterItalic.ttf, Geist.ttf, (no Plex file)')
+    ap.add_argument('--plex-var', help='extracted @fontsource-variable/ibm-plex-sans package files/ directory')
     ap.add_argument('--cascivo-only', action='store_true', help='re-measure only the Cascivo entry')
     args = ap.parse_args()
     if args.cascivo_only:
         with open(OUT, encoding='utf-8') as fh:
             data = json.load(fh)
         data['fonts'][0] = measure_cascivo()
-    elif args.refs:
+    elif args.refs and args.plex_var:
         data = {
             'codepoints': build.LATIN,
             'measured': datetime.date.today().isoformat(),
-            'fonts': [measure_cascivo(), *measure_references(args.refs)],
+            'fonts': [measure_cascivo(), *measure_references(args.refs, args.plex_var)],
         }
     else:
-        ap.error('pass --refs DIR or --cascivo-only')
+        ap.error('pass --refs DIR --plex-var DIR, or --cascivo-only')
     data['codepoints'] = build.LATIN
     with open(OUT, 'w', encoding='utf-8') as fh:
         json.dump(data, fh, indent=2, ensure_ascii=False)

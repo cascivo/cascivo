@@ -11,6 +11,7 @@ import {
   WEIGHT_STOPS,
   axesLabel,
   bytesPerCodepoint,
+  countCodepoints,
   downloadHref,
   fontFaceSnippet,
   formatKb,
@@ -74,7 +75,11 @@ const COMPARE_ROWS: readonly { label: string; cell: (font: ComparedFont) => stri
   { label: 'The same, italic', cell: (f) => sizeCell(f, f.latin_wght_italic_bytes) },
   {
     label: 'Bytes per codepoint',
-    cell: (f) => String(bytesPerCodepoint(f.latin_wght_upright_bytes, f.codepoints_upright)),
+    // A static file has no weight axis, so its per-codepoint figure would flatter it.
+    cell: (f) =>
+      f.axes.includes('wght')
+        ? String(bytesPerCodepoint(f.latin_wght_upright_bytes, f.codepoints_upright))
+        : '—',
   },
   { label: 'Axes', cell: axesLabel },
   { label: 'Scripts', cell: (f) => f.scripts },
@@ -213,9 +218,9 @@ export function CascivoSansPage() {
               </table>
             </div>
             <p className="cs-note">
-              Each font is cut to the same {COMPARED[0]?.codepoints_upright} Latin codepoints, its
-              axes other than weight pinned at their defaults, and saved as WOFF2 (measured{' '}
-              {COMPARISON.measured}).{' '}
+              Each font is cut to the same requested set of {countCodepoints(COMPARISON.codepoints)}{' '}
+              Latin codepoints (coverage varies slightly by font), its axes other than weight pinned
+              at their defaults, and saved as WOFF2 (measured {COMPARISON.measured}).{' '}
               {COMPARED.filter((font) => font.note !== undefined)
                 .map((font) => `${font.name}: ${font.note}`)
                 .join(' ')}

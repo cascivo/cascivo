@@ -49,16 +49,18 @@ export const COMPARISON = {
     },
     {
       "name": "IBM Plex Sans",
-      "version": "3.005",
+      "version": "3.201",
       "license": "OFL 1.1",
       "scripts": "Latin, Cyrillic, Greek",
       "since": "2017–18",
-      "axes": [],
+      "axes": [
+        "wght"
+      ],
       "hinted": true,
-      "latin_wght_upright_bytes": 17536,
-      "latin_wght_italic_bytes": 19024,
+      "latin_wght_upright_bytes": 41520,
+      "latin_wght_italic_bytes": 45904,
       "codepoints_upright": 212,
-      "note": "static files, one weight each (Regular and Italic measured as shipped), not a variable font."
+      "note": "measured from @fontsource-variable/ibm-plex-sans@5.3.0, a Latin slice of the variable release (weight axis only; the full family also has a width axis)."
     }
   ]
 } as const

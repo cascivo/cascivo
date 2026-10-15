@@ -15,6 +15,7 @@ import {
   axesLabel,
   bytesPerCodepoint,
   clampAxis,
+  countCodepoints,
   downloadHref,
   fontFaceSnippet,
   formatKb,
@@ -67,6 +68,10 @@ describe('comparison data', () => {
     assert.equal(bytesPerCodepoint(21096, 211), 100)
   })
 
+  it('counts the requested codepoint set', () => {
+    assert.equal(countCodepoints('U+0041-0043,U+00A0'), 4)
+  })
+
   it('names the axes and whether an italic file exists', async () => {
     const { COMPARISON } =
       await import('../../apps/site/src/marketing/pages/cascivo-sans/comparison.generated.ts')
@@ -76,7 +81,7 @@ describe('comparison data', () => {
       return axesLabel(font)
     }
     assert.equal(label('Geist'), 'Weight · no italic')
-    assert.equal(label('IBM Plex Sans'), 'None (static files) · italic file')
+    assert.equal(label('IBM Plex Sans'), 'Weight · italic file')
   })
 })
 
