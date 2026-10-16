@@ -117,40 +117,42 @@ contour in every master for self-intersection. The build ships with zero problem
 | **IUP delta tolerance 2.0** (1.0 until 0.5.0)                                                                                                                                                    | −3%, then −4% more at 2.0 (section 25). Re-inferred within 2 units                                                                         |
 | **`post` format 3** (no glyph names in the shipped file)                                                                                                                                         | −1–2 KB. Names exist at build time only                                                                                                    |
 | **Flattened components** (no nesting)                                                                                                                                                            | Removes one indirection per glyph and passes stricter rasterizers                                                                          |
-| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 21.8 KB, `Latin[opsz,wght]` 29.1 KB; italic 24.2 / 32.4 KB, loaded only when a page uses italic. Serve only the axes you use |
+| **Per-axis web builds**                                                                                                                                                                          | `Latin[wght]` 22.8 KB, `Latin[opsz,wght]` 28.9 KB; italic 25.2 / 31.9 KB, loaded only when a page uses italic. Serve only the axes you use |
 
 ## 5. Scorecard
 
 ### Size
 
-| File                                    | Cascivo Sans           | Geist             | IBM Plex Sans                         | Inter              |
-| --------------------------------------- | ---------------------- | ----------------- | ------------------------------------- | ------------------ |
-| Variable Latin slice, wght axis         | **21.8 KB** (211 cp)   | 29.4 KB (225 cp)  | 45.7 KB (232 cp)                      | 48.3 KB (230 cp)   |
-| Bytes per codepoint (Latin slice)       | **102**                | 131               | 197                                   | 210                |
-| Variable, full charset, wght only       | **25.8 KB** (71 B/cp)  | 69.7 KB (96 B/cp) | —                                     | —                  |
-| Static Regular, full charset            | **12.8 KB** (27 B/cp)  | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp)                     | —                  |
-| Italic, variable Latin slice, wght axis | **24.2 KB** (115 B/cp) | no italic         | 24.4 KB, one static weight (105 B/cp) | 51.8 KB (225 B/cp) |
+| File                                    | Cascivo Sans           | Geist             | IBM Plex Sans      | Inter              |
+| --------------------------------------- | ---------------------- | ----------------- | ------------------ | ------------------ |
+| Variable Latin slice, wght axis         | **20.8 KB** (211 cp)   | 25.7 KB (211 cp)  | 40.5 KB (212 cp)   | 36.5 KB (211 cp)   |
+| Bytes per codepoint (Latin slice)       | **101**                | 125               | 196                | 177                |
+| Variable, full charset, wght only       | **25.8 KB** (71 B/cp)  | 69.7 KB (96 B/cp) | —                  | —                  |
+| Static Regular, full charset            | **12.8 KB** (27 B/cp)  | 45.2 KB (62 B/cp) | 63.0 KB (70 B/cp)  | —                  |
+| Italic, variable Latin slice, wght axis | **23.3 KB** (113 B/cp) | no italic         | 44.8 KB (217 B/cp) | 39.2 KB (190 B/cp) |
 
+The two Latin rows are measured by `src/compare.py` into `comparison.json`, which the site table
+reads (1 KB = 1,024 bytes; Plex from its variable release, weight axis only, as a Latin slice).
 The full-charset comparison is not like for like. Geist and Plex cover Cyrillic, Greek and
 more, and those glyphs are larger. The Latin slices are the fair comparison, and Cascivo uses
-23% fewer bytes per codepoint than Geist. Part of this comes from engineering (composites, the
+19% fewer bytes per codepoint than Geist. Part of this comes from engineering (composites, the
 master layout, tolerances). Part of it comes from simpler drawing: stroke-generated outlines
 have fewer points than outlines drawn and refined by hand.
 
 ### Everything else
 
-| Dimension       | Cascivo Sans                                                                                                       | Verdict                                                                                                                                                             |
-| --------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Axes            | wght 100–900, **opsz 8–48**, in upright and italic                                                                 | **Ahead** of Geist and Plex. Matches Helvetica Now Variable on opsz, under OFL. No `wdth`                                                                           |
-| UI features     | pnum (default), tnum, zero, ss01, case, frac, sups, sinf, subs, numr, dnom, ordn, locl (ROM/MOL), ccmp, kern, mark | **On par.** Geist has more stylistic sets; Plex has `onum`/`salt`                                                                                                   |
-| Validation      | Font Bakery universal: 0 fail. OTS: all nine files pass                                                            | **On par or ahead.** Validation runs in the test suite, not just at release                                                                                         |
-| Reproducibility | Byte-identical rebuilds (`SOURCE_DATE_EPOCH`), parametric source, 3.5 s build                                      | **Ahead.** No GUI source files, and diffs are reviewable                                                                                                            |
-| Coverage        | Latin-1 + Latin Extended-A + Romanian + Vietnamese (479 codepoints)                                                | **Behind.** No Cyrillic or Greek. Plex covers many scripts                                                                                                          |
-| Drawing quality | Generated by rule, then reviewed glyph by glyph at Thin, Regular and Black (section 6)                             | **Behind.** One review pass is not years of optical refinement. `&`, `@`, `§`, `ß` and the braces are serviceable, not refined                                      |
-| Italic          | Drawn italic, variable, linked by STAT `ital` (section 10)                                                         | **On par with Plex** in form (single-storey `a`, descending `f`). Ahead on size: the whole weight range costs what one Plex italic weight does. Geist has no italic |
-| Family          | Sans only                                                                                                          | **Behind.** No Mono (Geist, Plex), Serif or Condensed (Plex)                                                                                                        |
-| Hinting         | Unhinted; smart dropout `prep`, `gasp` set                                                                         | On par with Geist. Plex ships hinted TTFs                                                                                                                           |
-| Field testing   | None                                                                                                               | **Behind.** All three references have years of production use                                                                                                       |
+| Dimension       | Cascivo Sans                                                                                                                | Verdict                                                                                                                                                             |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Axes            | wght 100–900, **opsz 8–48**, in upright and italic                                                                          | **Ahead** of Geist and Plex. Matches Helvetica Now Variable on opsz, under OFL. No `wdth`                                                                           |
+| UI features     | pnum (default), tnum, zero, ss01, case, frac, sups, sinf, subs, numr, dnom, ordn, locl (ROM/MOL), ccmp, kern, mark          | **On par.** Geist has more stylistic sets; Plex has `onum`/`salt`                                                                                                   |
+| Validation      | Font Bakery universal: 0 fail. OTS: all nine files pass                                                                     | **On par or ahead.** Validation runs in the test suite, not just at release                                                                                         |
+| Reproducibility | Byte-identical rebuilds (`SOURCE_DATE_EPOCH`), parametric source, 3.5 s build                                               | **Ahead.** No GUI source files, and diffs are reviewable                                                                                                            |
+| Coverage        | Latin-1 + Latin Extended-A + Romanian + Vietnamese (479 codepoints)                                                         | **Behind.** No Cyrillic or Greek. Plex covers many scripts                                                                                                          |
+| Drawing quality | Generated by rule, reviewed glyph by glyph at Thin, Regular and Black (section 6), then measured against Inter (section 37) | **Behind.** One review pass is not years of optical refinement. `&`, `@`, `§`, `ß` and the braces are serviceable, not refined                                      |
+| Italic          | Drawn italic, variable, linked by STAT `ital` (section 10)                                                                  | **On par with Plex** in form (single-storey `a`, descending `f`). Ahead on size: the whole weight range costs what one Plex italic weight does. Geist has no italic |
+| Family          | Sans only                                                                                                                   | **Behind.** No Mono (Geist, Plex), Serif or Condensed (Plex)                                                                                                        |
+| Hinting         | Unhinted; smart dropout `prep`, `gasp` set                                                                                  | On par with Geist. Plex ships hinted TTFs                                                                                                                           |
+| Field testing   | None                                                                                                                        | **Behind.** All three references have years of production use                                                                                                       |
 
 ### The honest bottom line
 
@@ -1578,6 +1580,79 @@ browser (a playground on the site), and nothing plans that.
 Open questions, answered by default here: whether to add the CI job (left as a recommendation),
 and whether a browser drawing of the glyphs will ever be wanted (assumed not; it is the case that
 would reopen this).
+
+## 37. The Latin quality pass
+
+The Latin letters were compared with Inter at 300 px and at 14 px, at Thin, Regular and Black,
+and then measured. `src/quality.py` now holds the measurements, each calibrated on Inter 4.001 and
+run on every build by `lint.py` (`CASCIVO_QUALITY=strict` is the default). On the font as it
+stood, `quality.check_all` reported 42 failures; it now reports none.
+Only the Latin block was changed; Cyrillic and Greek take the shared constructions where they
+use them (the new arch, `Ѕ ѕ а ӑ ӓ`), and nothing was tuned for them.
+
+**What was wrong, and what fixed it.**
+
+| Cause                                                                                                   | Seen as                                                                                                                        | Fix                                                                                                                                                                                                                                  | Measured, before then after                                                                                                                                                         |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| R1. Heavy curved terminals turned the full way to vertical and cut long (`cut='v'`, a half-turn on `s`) | At Black, `a g ?` ended in faces 48-68 deg from horizontal; `s` had a 246-unit tongue                                          | A cut mode `'t'`: square to the stroke, tipped only as far as keeps the face within a limit; each of `a g 6 9 ? S s` has its own approach so the end is blunt, not a wedge. Guards: face thickness, squareness of both corners, lean | `a` 68 deg, `g` 62, `6 9` 36, `?` 48, italic `9` 80 (a real forced cut). After: `a` 28, `g` 28, `6 9` 22, italic `9` 13; thickness `s` 32 then 188 (Inter 181)                      |
+| R2. Bowls joined the stem through an oblique cut and were thinned to 55% at every weight                | "An o glued to a stick"; V-notches up to 35% of the stem at Black                                                              | The curve starts inside the stem at its tangent point and runs on; arches rise to Inter's height (`ARCH_RY` 0.93 to 1.10); the join keeps 0.83 (Regular) and 0.95 (Black) of the stem. `eng` and `mu` share it                       | `counter_join_angle` of `d` at Black 26 deg against Inter 49 (it must reach 39). Quality failures 42 to 30                                                                          |
+| R3. Hairline features drawn at dot scale                                                                | Thin comma 42 units thick where Inter's is 24; Thin `t` foot folded into a blob; Thin quotes read as specks at 14 px           | The comma tail is 1.2 stems at Thin and the dot's width by Regular; its depth is 3.4 dots at Thin; the `t` foot is concentric; the `a` join height follows the outline                                                               | Thin `t` 61.4 to within 55; comma, semicolon and quotes 42.0 to within 30.0 (italic 40.8 to 28.0). Failures 22 to 8                                                                 |
+| R4. Black stems grew into the counters                                                                  | Counters of `a`, `g`, `e`, `s` near closed                                                                                     | Counters were already at 0.79 or more of Inter's, so the work was a guard, not a widening                                                                                                                                            | Floors: 0.7 of Inter for the round letters, 0.8 for each of `s`'s two pockets                                                                                                       |
+| R5. One-off constructions in `a g f t l y 1 0 Q K k`                                                    | Beak and boxed counter on `a`; spike tail on `g`; bite and lip on `f`; chopped `y` tail; `l` with a negative right sidebearing | `a`: tangent join, sloped top, a rounded U at the mouth. `g`: 12 deg tail. `f`: upright hook. `y`: a curl that ends horizontal. `l`: sidebearing at 0 or more. Slivers cut from `5 1 Q ?`                                            | Black `a`: mouth 39 then 47 (Inter 51); aspect 0.76 then 1.23 (Inter 1.17); overhang over the bowl +0.150 then -0.030 (Inter -0.029); bowl-top slope 3.6 then 12.2 deg (Inter 11.9) |
+| R6. Spacing and the italic                                                                              | `x` sidebearing 14 (Inter 32); Thin 25% tighter than the references; `l` overhanging                                           | `x` 28 at Regular, 10 and 9 at Black; Thin spacing opens by 23% (`THIN_OPEN`), `n` at Thin 72 to 88 (Inter 97); Thin figures compensated                                                                                             | Text width at Thin over Regular 0.946 to 1.001 (Inter 0.952); `n` 0.91 of Inter's. Black unchanged                                                                                  |
+
+**Wedges in `e`, `s` and `æ`.** The first Black terminals were thick enough to pass but pointed:
+a forced 18 deg face on a stroke running about 49 deg leaves a wedge. The fix changes the stroke's
+approach, not the face (the arc of `a` and `g` runs on 18 deg, the `a` top rises 18%), and
+`e`, `s` and `æ` were redrawn by construction. Two guards came out of it: both corners of each
+terminal face lie within 90 plus or minus 40 deg (Inter's own read 71-127 on a 25 deg limit,
+so 25 was too strict), and the face leans as Inter's does (`s` lower terminal 3.0 deg, against a
+minimum of 6, before; 9.7 after).
+
+**Black `a`.** Reported after the checkpoint and fixed in two rounds. Two causes: the heavy top
+arc spanned the full width and ran on 18 deg, so its outer edge overhung the bowl by half a stem
+(the beak); and the bowl top sloped 4 deg into a 1.08-stem wall (the box). The first fix left a
+vertical slot for a counter and a mouth that closed in a point; the second thinned the wall,
+lowered the bowl top and gave the mouth a rounded end. `a` is 80 units narrower at Black
+(advance 673 to 593), and the neighbours follow the ink.
+
+**Rounding in the build.** Two faults in `build.py` showed only once the spacing changed. The
+IUP tolerance of 2 units, right for outlines, was also applied to composites, whose components
+are one-point contours: mark offsets lost up to 2 units in the variable font and four
+decomposed-accent tests failed by 3. Composites now keep tolerance 0. The four phantom points
+(the advance and sidebearing deltas) were being dropped too, so `G` came out 763 wide in static
+Bold where `Gcircumflex` was 762, and ten Black composites were off by one or two units. The
+phantom deltas are now exact: `gvar` and `HVAR` agree on every instance tried (13 mismatches
+before, none after), and a test checks that every accented letter keeps its base's advance.
+
+**What a rasteriser showed.** Pillow with hinted FreeType at 14 px (not at 13 or 15) drops the
+~0.3 px spine of the Thin `s` ("is" reads "i:"). Chromium renders it intact at 12-16 px under
+all four hinting settings, and builds from before this pass do the same in Pillow, so nothing was
+changed.
+
+**Gate.** `check_all` returns `[]` on both fonts; `lint.py` fails the build on any entry (there
+is no known-failure list). Tests: 60. Font Bakery `check-universal`: 0 fail, 0 error. Rebuilds
+are byte-identical. Sizes (woff2) against budgets: upright variable 70,004 of 71,500 (68,940 at the
+start of the pass; the budget was raised from 69,500); italic 75,408 of 77,000 (raised from
+75,000); Latin `opsz` 29,636 of 30,000. The Latin
+`wght` slice that the site compares is unchanged at 21,320 bytes for upright and 23,812 for
+italic, against Inter's 37,380 and 40,192.
+
+**Still open.** These were seen, judged and left, and the guards are set so they cannot get
+worse.
+
+- The `?` has a faint corner where the arc meets the tail.
+- The `s` counter tips are square. It shows above about 200 px.
+- The italic Black `æ` is close to `œ`: the italic is single-storey, as designed.
+- The Black `a` mouth ends in a U with a sharp corner on its right side, where the terminal's
+  inner edge meets the bowl top. The `æ`'s `a` half has the same counter, a little slot-like.
+- Thin `s` loses its spine only in Pillow's hinted rasteriser at 14 px (above).
+- Optical size 48 is unchanged by this pass and still needs work.
+- Cyrillic and Greek are untuned; `Ч Ћ Ђ ђ` and `α` still use the old 0.93 arch.
+- The `5` has a faint swell at its foot at Black.
+- Latin `opsz` has 364 bytes of headroom under its budget.
+- No reference here is a type designer. The numbers say the letters are close to Inter's in the
+  places measured; they do not say the font is as good.
 
 ## Sources
 

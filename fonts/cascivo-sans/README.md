@@ -3,7 +3,7 @@
 Cascivo Sans is a variable grotesque for interfaces. It is generated from a parametric stroke
 engine and licensed under the SIL Open Font License 1.1. It comes as two variable fonts, upright
 and a drawn italic, each with weight and optical-size axes. It has an unambiguous `Il1`, tabular
-and old-style figures on request, and a 22 KB Latin web file.
+and old-style figures on request, and a 23 KB Latin web file.
 
 Version 0.6.1; see [CHANGELOG.md](./CHANGELOG.md). Read [RESEARCH.md](./RESEARCH.md) for why it exists, how it compares with Geist, IBM Plex and
 Helvetica, and what it does not do yet.
@@ -14,19 +14,19 @@ Try it and download the web and desktop files at [cascivo.com/cascivo-sans](http
 
 | File                                              | Axes              | Charset               | Size                       |
 | ------------------------------------------------- | ----------------- | --------------------- | -------------------------- |
-| `fonts/CascivoSans-Latin[wght].woff2`             | wght              | Latin                 | 22.4 KB                    |
-| `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz        | Latin                 | 28.6 KB                    |
-| `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz        | full (956 codepoints) | 67.3 KB                    |
-| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz        | full                  | 235.8 KB (desktop install) |
-| `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght              | Latin                 | 25.0 KB                    |
-| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz        | Latin                 | 31.7 KB                    |
-| `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz        | full                  | 73.2 KB                    |
-| `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz        | full                  | 239.6 KB (desktop install) |
-| `fonts/CascivoSans-Regular.woff2`                 | static 400        | full                  | 23.6 KB                    |
-| `fonts/CascivoSans-Regular.ttf`                   | static 400        | full                  | 134.4 KB (desktop, hinted) |
-| `fonts/CascivoSans-Bold.ttf`                      | static 700        | full                  | 135.5 KB (desktop, hinted) |
-| `fonts/CascivoSans-Italic.ttf`                    | static 400 italic | full                  | 136.0 KB (desktop, hinted) |
-| `fonts/CascivoSans-BoldItalic.ttf`                | static 700 italic | full                  | 136.3 KB (desktop, hinted) |
+| `fonts/CascivoSans-Latin[wght].woff2`             | wght              | Latin                 | 22.8 KB                    |
+| `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz        | Latin                 | 28.9 KB                    |
+| `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz        | full (956 codepoints) | 68.4 KB                    |
+| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz        | full                  | 236.5 KB (desktop install) |
+| `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght              | Latin                 | 25.2 KB                    |
+| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz        | Latin                 | 31.9 KB                    |
+| `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz        | full                  | 73.6 KB                    |
+| `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz        | full                  | 240.3 KB (desktop install) |
+| `fonts/CascivoSans-Regular.woff2`                 | static 400        | full                  | 23.7 KB                    |
+| `fonts/CascivoSans-Regular.ttf`                   | static 400        | full                  | 134.5 KB (desktop, hinted) |
+| `fonts/CascivoSans-Bold.ttf`                      | static 700        | full                  | 135.7 KB (desktop, hinted) |
+| `fonts/CascivoSans-Italic.ttf`                    | static 400 italic | full                  | 136.5 KB (desktop, hinted) |
+| `fonts/CascivoSans-BoldItalic.ttf`                | static 700 italic | full                  | 136.7 KB (desktop, hinted) |
 
 "Latin" means Basic Latin, Latin-1 and common punctuation. The full charset adds Latin
 Extended-A, Romanian comma letters, Vietnamese, Cyrillic, Greek and combining marks (stacked by
@@ -95,7 +95,7 @@ Python 3.11 or later:
 pip install -r requirements.txt
 python3 -I src/build.py                    # writes fonts/, takes about 55 s, byte-reproducible
 python3 -I -m unittest discover -s src     # outline lint, coverage, features, kerning, budgets, OTS
-python3 -I src/lint.py                     # self-intersection check on every stroke, every master
+python3 -I src/lint.py                     # self-intersection check on every stroke, every master, then the Latin quality checks (strict: any failure fails)
 ```
 
 Font Bakery (`pip install fontbakery`):

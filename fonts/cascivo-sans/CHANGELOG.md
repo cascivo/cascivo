@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- **The Latin quality pass.** Joins, heavy terminals, Thin hairlines, Black counters and spacing
+  are redrawn against Inter at 300 px and 14 px. Bowls flow into the stem with a tangent join;
+  Black `a g 6 9 ? S s e æ` end in blunt cuts instead of tongues and wedges; the Thin comma, quotes
+  and `t` foot follow the hairline; the Black `a` has a teardrop counter and no beak; `x` and the
+  Thin letters have Inter-like sidebearings, and Thin text is as wide as Regular. `quality.py`
+  holds the measurements and `lint.py` runs them strictly: 42 failures on the earlier font, none
+  now. Composite offsets and the advance deltas are exact in the variable font. The upright
+  variable woff2 budget rises from 69,500 to 71,500 bytes and the italic from 75,000 to 77,000.
+  Known residue is in RESEARCH.md section 37.
 - **A page on cascivo.com.** `/cascivo-sans` shows a specimen and a live type tester (weight,
   optical size, size, italic), and offers the Latin web files, the static TTFs and the licence for
   download. The site serves copies of the build output; `pnpm fonts:site:sync` refreshes them and
