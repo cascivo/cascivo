@@ -264,6 +264,28 @@ class StartingPoint(unittest.TestCase):
         for needle in ('counter:', 'notch: a ', 'join: a ', 'join angle: a ', 'flat terminal:', 'terminal corners:', 'aperture:', 'crevice:', 't top:', 'zero width:', 'flag:', 'sidebearings: l '):
             self.assertNotIn(needle, text)
 
+    def test_black_a_keeps_its_terminal_over_the_bowl_and_opens_its_counter(self):
+        """The a's top arc ends inside the bowl's width and its counter rises toward the stem, at 650 and Black, as Inter's do."""
+        for w, (_, ref_area, ref_slope) in Q.REF['a_shape'].items():
+            over, area, slope = Q.a_shape(Q.raster(VF, 'a', w))
+            self.assertLessEqual(over, Q.A_OVERHANG_MAX, f'overhang at {w}')
+            self.assertGreaterEqual(area, Q.A_COUNTER_MIN_SHARE * ref_area, f'counter at {w}')
+            self.assertLessEqual(area, 1.3 * ref_area, f'counter at {w} stays within the cap')
+            self.assertGreaterEqual(slope, Q.A_SLOPE_MIN, f'slope at {w}')
+
+    def test_a_shape_reads_a_beak_and_a_box(self):
+        """A mask whose top bar hangs left of a small box reads as an overhang, a flat-topped hole as no slope."""
+        m = np.zeros((200, 200), bool)
+        m[40:70, 20:150] = True   # top bar from x=20
+        m[70:170, 60:150] = True  # body from x=60
+        m[100:150, 90:120] = False  # a flat-topped hole
+        m = m.view(Q.Ink)
+        m.x_height, m.baseline = 130, 170
+        over, area, slope = Q.a_shape(m)
+        self.assertAlmostEqual(over, 40 / 130, places=2)
+        self.assertAlmostEqual(slope, 0.0, places=1)
+        self.assertGreater(area, 0)
+
     def test_per_stroke_tilt_flattens_only_its_own_terminal(self):
         """A stroke's tilt replaces the shared HEAVY_TILT for its cut='t' ends, and nothing else."""
         from geom import HEAVY_TILT, _heavy_cut

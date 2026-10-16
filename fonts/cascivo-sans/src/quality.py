@@ -59,6 +59,12 @@ FLAT_ITALIC_SLACK = 4.0  # the slant turns a face by up to this much: the italic
 CREVICE_GLYPHS = ['f', 't']
 CREVICE_R = 16  # px: a white pocket narrower than twice this, opening to the outside, is a crevice
 CREVICE_SHARE = 1.15  # a crevice may be this much larger than Inter's
+# The double-storey a's top arc ends inside the bowl's width (Inter's terminal sits 0.03 x-heights in), and its counter's top edge
+# rises toward the stem (Inter's reads 9 deg at 650 and 12 at Black): at Black the arc once hung 0.15 x-heights past the bowl like
+# a beak, and the counter's top lay at 3.6 deg, a box. Both are measured in x-heights, so they compare across fonts.
+A_OVERHANG_MAX = 0.02
+A_SLOPE_MIN = 6.0
+A_COUNTER_MIN_SHARE = 0.85
 COUNTER_MAX = {'a': 1.3}  # a counter may be this much larger than Inter's: a's read 1.71 once the bowl top cut across the arc
 ONE_FLAG_SHARE = 1.05  # the 1's flag may reach this much further left than Inter's
 ZERO_MIN_SHARE = 0.92  # the 0's ink width, against Inter's
@@ -107,6 +113,8 @@ REF = {
         ('o', 900): 0.1215, ('e', 900): 0.0471, ('a', 900): 0.0428, ('g', 900): 0.1207, ('b', 900): 0.1218, ('d', 900): 0.1218, ('p', 900): 0.1218,
         ('q', 900): 0.1219, ('zero', 900): 0.2753, ('six', 900): 0.1118, ('eight', 900): 0.0899, ('nine', 900): 0.1118,
     },
+    # a_shape: (arc overhang past the bowl, counter area, counter top slope) of Inter's a, from a_shape()
+    'a_shape': {650: (-0.0286, 0.0868, 9.51), 900: (-0.0286, 0.0429, 11.95)},
     'sliver': 46,  # px^2 at 1000 upm: the largest piece of ink a radius-6 disk cannot fit, over Latin at 900
     'join_italic': {
         ('a', 400): 0.531, ('b', 400): None, ('d', 400): None, ('g', 400): 0.555, ('p', 400): None, ('q', 400): None,
@@ -514,6 +522,35 @@ def aperture_mouth(mask):
     if not gaps:
         return 0.0
     return float(min(g for _, g in gaps[: len(gaps) // 2]))  # the second half is the aperture's far end, closing into the stem
+
+
+def a_shape(mask):
+    """(overhang, counter area, counter slope) of the double-storey a, in x-heights and degrees.
+
+    Overhang: how far the top arc's ink reaches left of the bowl's leftmost ink (negative: it sits inside). Counter area:
+    the largest enclosed white piece, as in counter_area. Slope: the counter's top edge fitted over the middle of its width,
+    degrees rising toward the stem (the right)."""
+    m = np.asarray(mask)
+    xh, base = mask.x_height, mask.baseline
+
+    def leftmost(lo, hi):
+        rows = [np.flatnonzero(m[i]) for i in range(int(base - hi * xh), int(base - lo * xh))]
+        return min(r.min() for r in rows if len(r))
+
+    overhang = (leftmost(0.10, 0.45) - leftmost(0.70, 0.98)) / xh
+    labels, n = ndi.label(~m)
+    border = set(np.unique(np.concatenate([labels[0], labels[-1], labels[:, 0], labels[:, -1]])))
+    sizes = {i: int((labels == i).sum()) for i in range(1, n + 1) if i not in border}
+    if not sizes:
+        return overhang, 0.0, 0.0
+    biggest = max(sizes, key=sizes.get)
+    c = labels == biggest
+    cols = np.flatnonzero(c.any(0))
+    x0, x1 = cols.min(), cols.max()
+    xs = np.arange(int(x0 + 0.4 * (x1 - x0)), int(x0 + 0.9 * (x1 - x0)))
+    tops = np.array([np.flatnonzero(c[:, x]).min() for x in xs])
+    slope = float(np.degrees(np.arctan(np.polyfit(xs, -tops, 1)[0])))
+    return float(overhang), sizes[biggest] / xh**2, slope
 
 
 def crevice_area(mask, r=CREVICE_R):
@@ -1099,6 +1136,15 @@ def check_all(upright_vf, italic_vf):
                 fails.append(f'{label}counter: {g} at wght 900 is {v:.4f}, over {COUNTER_MAX[g]} x Inter {ref:.4f}')
             if ref is not None and v < COUNTER_MIN_SHARE * ref:
                 fails.append(f'{label}counter: {g} at wght 900 is {v:.4f}, under {COUNTER_MIN_SHARE} x Inter {ref:.4f}')
+        if not italic:
+            for w, (_, ref_area, ref_slope) in REF['a_shape'].items():
+                over, area, slope = a_shape(raster(path, 'a', w))
+                if over > A_OVERHANG_MAX:
+                    fails.append(f'a shape: the a at wght {w} has its top arc {over:.3f} x-heights past the bowl, over {A_OVERHANG_MAX} (a beak)')
+                if area < A_COUNTER_MIN_SHARE * ref_area:
+                    fails.append(f'a shape: the a at wght {w} has a counter of {area:.4f}, under {A_COUNTER_MIN_SHARE} x Inter {ref_area}')
+                if slope < A_SLOPE_MIN:
+                    fails.append(f'a shape: the a at wght {w} has its counter top at {slope:.1f} deg, under {A_SLOPE_MIN:.0f} (a box; Inter {ref_slope})')
         for g in FLAT_TERMINALS:
             if (g, italic) in TERMINAL_NONE:
                 continue

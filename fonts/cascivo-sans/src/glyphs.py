@@ -522,6 +522,10 @@ FLAT_TILT = 18
 A_END = 18  # degrees further round at Black: a's top arc and g's tail
 AE_A, AE_E = 0.1, 0.05  # Black's wider a and e halves of æ, as shares of the n width
 AEI_A, AEI_E = -0.04, 0.14  # the italic's single-storey a half is a little narrower and its e wider: its eye closed to 0.65x Inter's
+A_ARC_IN = 0.24  # Black's top arc starts this many stems further right: its terminal sat 0.15 x-heights left of the bowl, a beak (Inter's sits inside)
+A_BOWL_SLOPE = 0.15  # extra slope of the bowl's top at Black, so its counter rises toward the stem like Inter's (Black read 3.6 deg, Inter 12)
+A_BOWL_WALL = 0.11  # Black bowl wall as a share of a stem over the stem weight (was 0.08)
+A_ARC_END = 13  # the a's arc runs less far round than the g's tail: ending higher keeps its mouth open once the end moved inward
 A_RY = 0.0  # a's top arc is not taller: at +18% its end dropped onto the bowl's shoulder and the mouth narrowed to 19 units (Inter's 40)
 
 
@@ -761,13 +765,13 @@ def _a_bowl(g, p, xs, wf):
     rxb = (xs - V / 2) / 2 * wf
     cxb = V / 2 + rxb  # horizontal centre of the bowl's round left half
     th = p.bar  # top and bottom of the bowl
-    tl = V * (1 + 0.08 * h)  # left side of the bowl
+    tl = V * (1 + A_BOWL_WALL * h)  # left side of the bowl
     cy = (ybt + yb0) / 2
     ry = (ybt - yb0) / 2
     yjo = yb0 + (ybt - yb0) * (0.3 + 0.15 * h)  # where the outline meets the stem
     # the bowl's top rises toward the stem, as Inter's and Geist's do: a flat top meeting a vertical
     # stem read as a slab at Black
-    slope = 0.07
+    slope = 0.07 + A_BOWL_SLOPE * h
     rise_o, rise_i = slope * (xs - cxb), slope * (xe - cxb)
     # The top ends against the stem's left edge in a rounded corner, so the aperture closes in a U
     # (Inter's) and not in a spur where the line crossed the arc's inner round
@@ -814,13 +818,13 @@ def _a(g, p):
     V, H = p.V, p.H
     xs = w - V / 2  # stem centre
     # top arc
-    cxt = xs * 0.5 + 6
+    cxt = xs * 0.5 + 6 + A_ARC_IN * V * p.heavy
     rxt = xs - cxt
     # Black's arc is taller and runs further round before it ends, so the end meets the cut square: forcing a
     # flat face on a stroke still falling at 49 degrees left a pointed wedge
     ryt = p.xh * 0.26 * (1 + A_RY * p.heavy)
     cyt = p.xh + p.ov * 0.5 - H / 2 - ryt
-    g.stroke([L((xs, 0), (xs, cyt))] + g.arc(cxt, cyt, rxt, ryt, 0, 154 - p.ap + A_END * p.heavy), caps=('b', 'b'), cut='t')
+    g.stroke([L((xs, 0), (xs, cyt))] + g.arc(cxt, cyt, rxt, ryt, 0, 154 - p.ap + A_ARC_END * p.heavy), caps=('b', 'b'), cut='t')
     _a_bowl(g, p, xs, 0.94)
     g.sb = (0.55, 1)
 
