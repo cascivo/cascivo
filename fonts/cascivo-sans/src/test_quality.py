@@ -380,6 +380,31 @@ class StartingPoint(unittest.TestCase):
             for v, r in zip(got, ref):
                 self.assertGreaterEqual(v, Q.POCKET_MIN_SHARE * r)
 
+    def test_concave_turn_reads_a_point_and_a_round_apart(self):
+        """The counter-tip metric: the corner of a white quarter-plane reads far more than the same corner rounded at radius 20 units
+        (80 px at 4 px per unit), which reads about as much as Inter's."""
+        notch = np.ones((300, 300), bool)
+        notch[:150, :150] = False
+        rounded = notch.copy()
+        yy, xx = np.mgrid[:300, :300]
+        rounded[(xx > 70) & (yy > 70) & (xx < 150) & (yy < 150) & (np.hypot(xx - 70, yy - 70) > 80)] = True
+        got = []
+        for mask in (notch, rounded):
+            with mock.patch.object(Q, 'raster', return_value=pad(mask)):
+                got.append(Q.concave_turn('x', 'g', 900))
+        self.assertGreater(got[0], 55)
+        self.assertLess(got[1], 40)
+        self.assertGreater(got[0], 2 * got[1])
+
+    def test_black_counter_tips_are_round(self):
+        """A counter's tip turns like Inter's, not in a point: the ? where its arc hands over to its tail, the s's two
+        counters, the a's and the æ's mouth."""
+        for path, italic in ((VF, False), (VFI, True)):
+            for g, region in Q.TIP_REGIONS.items():
+                if italic and g in ('a', 'ae'):
+                    continue
+                self.assertLessEqual(Q.concave_turn(path, g, 900, region), (Q.TIP_MAX_ITALIC if italic else Q.TIP_MAX)[g], f'{g} italic={italic}')
+
     def test_cut_faces_found_on_the_built_font(self):
         faces = Q.cut_faces(VF, 'c', 900)
         self.assertEqual(len(faces), 2)

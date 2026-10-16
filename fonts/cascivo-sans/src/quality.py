@@ -892,9 +892,67 @@ def exposed_corners(font_path, glyph, wght, opsz=14):
                 continue
             pt = seg[1][0]
             ink = [_winding((pt[0] + 4 * math.cos(k * math.pi / 8), pt[1] + 4 * math.sin(k * math.pi / 8)), polys) != 0 for k in range(16)]
-            if any(ink) and not all(ink):
+            # a vertex of a contour that lies on a smooth stretch of the visible edge (a fillet patch's tangent points do) has
+            # about half the ring inked: a spike or a crack has under a quarter, or over three quarters
+            share = sum(ink) / 16
+            if any(ink) and not all(ink) and not 0.3 <= share <= 0.7:
                 out.append(180 - math.degrees(_angle(u, v)))
     return out
+
+
+TIP_WINDOW = 4.0  # units either side of a point over which the outline's turning is read: a round of radius 20 reads 23 degrees, a corner 90
+TIP_SCALE = 4  # raster pixels per unit for that reading
+TIP_CLOSE = 2.0  # units: white features narrower than this are not read
+# Black counters end in a round, not a point. Regions are fractions of the ink's bounding box (x0, x1, y0, y1; y from the top)
+# that hold only the tip meant: the s's two counter tips (the whole letter holds nothing else concave), the a's mouth
+# (above its lower counter, whose own corner at the stem is Inter's too), the æ's a-half mouth (left of the e, below the
+# junction), and the ? where its arc hands over to its tail (below the hook's inner turn).
+TIP_REGIONS = {'s': (0.0, 1.0, 0.0, 1.0), 'a': (0.35, 0.8, 0.0, 0.45), 'ae': (0.2, 0.44, 0.2, 0.5), 'question': (0.6, 1.0, 0.4, 0.7)}
+# Inter's reading of the same regions at wght 900 (the æ's is the a's: Inter's æ has its own corner at the junction), with
+# `concave_turn` on Inter.ttf, ref_scale 1000 / 2048. Before the fix Cascivo read: s 62, a 45, ae 41, ? 12 (italic s 64).
+TIP_REF = {'s': 13, 'a': 12, 'ae': 12, 'question': 8}
+TIP_REF_ITALIC = {'s': 13, 'question': 6}
+TIP_MAX = {'s': 25, 'a': 24, 'ae': 24, 'question': 11}
+TIP_MAX_ITALIC = {'s': 25, 'question': 8}  # Inter's italic ? reads 6 (the upright 8)  # about 2x Inter's: a round of radius 20 reads 23 degrees, a point 60 or more; the ? is held closer, its defect was small
+
+
+def concave_turn(font_path, glyph, wght, region=(0.0, 1.0, 0.0, 1.0), opsz=14, ref_scale=1.0):
+    """The sharpest concave turn (degrees, over TIP_WINDOW units either side) of the ink outline inside `region`,
+    given as fractions of the ink's bounding box (x0, x1, y0, y1; y from the top). A concave turn is a
+    counter's pointed tip: ink on the outside of a corner, white on the inside. A round reads about
+    2 x TIP_WINDOW / radius radians, a corner of 90 deg reads 90. Taken on the rasterised union, so the crossings of
+    overlapping strokes count, which the outline's own points do not show. `ref_scale` brings a reference font
+    to 1000 units per em."""
+    from skimage.measure import find_contours
+    from skimage.morphology import disk
+
+    mask = np.asarray(raster(font_path, glyph, wght, opsz, TIP_SCALE * ref_scale))
+    # The outline's quadratics are fitted to 1.5 units, so where a patch meets an edge at a shallow angle a pocket of white
+    # up to a unit or two across can remain: no renderer shows one. Closing the mask fills them, and rounds a true point
+    # no further than TIP_CLOSE units, which leaves a point's turn at 90.
+    mask = ndi.binary_closing(mask, structure=disk(round(TIP_CLOSE * TIP_SCALE * ref_scale)))
+    rows, cols = np.nonzero(mask)
+    r0, r1, c0, c1 = rows.min(), rows.max(), cols.min(), cols.max()
+    best = 0.0
+    step = TIP_SCALE * 0.5
+    k = int(TIP_WINDOW * TIP_SCALE / step)
+    for c in find_contours(np.pad(mask.astype(float), 1), 0.5):
+        c = c - 1
+        d = np.r_[0, np.cumsum(np.hypot(*np.diff(c, axis=0).T))]
+        t = np.arange(0, d[-1], step)
+        pts = np.c_[np.interp(t, d, c[:, 0]), np.interp(t, d, c[:, 1])]
+        n = len(pts)
+        if n <= 2 * k:
+            continue
+        a = pts - np.roll(pts, k, axis=0)
+        b = np.roll(pts, -k, axis=0) - pts
+        ang = np.degrees(np.arctan2(a[:, 0] * b[:, 1] - a[:, 1] * b[:, 0], a[:, 0] * b[:, 0] + a[:, 1] * b[:, 1]))
+        fy = (pts[:, 0] - r0) / max(r1 - r0, 1)
+        fx = (pts[:, 1] - c0) / max(c1 - c0, 1)
+        inside = (fx >= region[0]) & (fx <= region[1]) & (fy >= region[2]) & (fy <= region[3])
+        if inside.any():
+            best = max(best, float(ang[inside].max()))
+    return best
 
 
 def terminal_leans(font_path, glyph, wght, opsz=14):
@@ -1196,6 +1254,14 @@ def check_all(upright_vf, italic_vf):
             for lean in terminal_leans(path, g, 900):
                 if lean < LEAN_MIN:
                     fails.append(f'{label}terminal lean: {g} at wght 900 has a face leaning {lean:.1f} deg the way Inter\'s do, under {LEAN_MIN:.0f}')
+        for g, region in TIP_REGIONS.items():
+            if italic and g in ('a', 'ae'):  # the italic a is single-storey: no mouth
+                continue
+            v = concave_turn(path, g, 900, region)
+            limit = (TIP_MAX_ITALIC if italic else TIP_MAX)[g]
+            if v > limit:
+                ref = (TIP_REF_ITALIC if italic else TIP_REF)[g]
+                fails.append(f'{label}round tip: {g} at wght 900 has a counter tip turning {v:.0f} deg over {2 * TIP_WINDOW:.0f} units, over {limit} (Inter {ref})')
         for g in SHARP_GLYPHS:
             worst = min(exposed_corners(path, g, 900), default=180.0)
             if worst < SHARP_MIN:

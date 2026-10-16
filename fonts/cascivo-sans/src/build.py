@@ -43,6 +43,7 @@ HEBREW = os.environ.get('CASCIVO_HEBREW') == '1'  # a draft, not yet shipped (RE
 if HEBREW:
     import hebrew  # noqa: E402,F401  (registers the Hebrew drawings)
 from composites import ALIAS, BOTTOM, CYR_EXT, CYR_LOCL, GREEK_ACCENTED, GREEK_POLY, ITALIC_ONLY, POLY_MARK, SPECIAL, accented_chars, glyph_name, is_cap  # noqa: E402
+from fillet import patch as tip_patch_at, reference as tip_ref  # noqa: E402
 from geom import contour_bounds, expand, transform_contour  # noqa: E402
 import kern  # noqa: E402
 from kern import kern_fea  # noqa: E402
@@ -102,19 +103,62 @@ def italicize_raw(contours, p):
     return [transform_contour(c, lambda q: (q[0] + (q[1] - yc) * p.slant, q[1])) for c in contours]
 
 
+def glyph_outlines(name, p):
+    """(strokes' contours, raw contours, tips) of one glyph at master p, upright or italic, as it is drawn."""
+    g = GL.G(p)
+    GL.GLYPHS[name][1](g, p)
+    if not p.slant:
+        return [expand(s, p.V, p.H) for s in g.strokes], g.raw, g.tips, g
+    per = [expand(s, p.V, p.H) for s in italicize(g.strokes, p)]
+    shear = lambda q: (q[0] + (q[1] - p.xh / 2) * p.slant, q[1])  # noqa: E731
+    return per, italicize_raw(g.raw, p), [(a, b, shear(n), r, lam) for a, b, n, r, lam in g.tips], g
+
+
+_TIP_REFS = {}
+
+
+def tip_reference(name, p, k):
+    """The fillet's tangent points for tip k of glyph `name` (see fillet.reference), found on the Black master of p's family."""
+    key = (name, bool(p.italic), k)
+    if key not in _TIP_REFS:
+        black = P(wght=900, opsz=14, italic=p.italic)
+        per, raw, tips, _ = glyph_outlines(name, black)
+        _TIP_REFS[key] = tip_ref(*_tip_contours(tips[k], per, raw), tips[k][2], tips[k][3], black.V)
+        if _TIP_REFS[key] is None:
+            raise ValueError(f'{name}: no tip {k} on the Black master')
+    return _TIP_REFS[key]
+
+
+def _tip_contours(tip, per_stroke, raw):
+    a, b = tip[0], tip[1]
+    return [per_stroke[i][0] if kind == 's' else raw[i] for kind, i in (a, b)]
+
+
+def tip_patches(name, p, tips, per_stroke, raw):
+    """The fillet patches (fillet.py) for a glyph's registered tips, on its finished outlines."""
+    return [tip_patch_at(*_tip_contours(tip, per_stroke, raw), tip_reference(name, p, k), p.V, tip[4]) for k, tip in enumerate(tips)]
+
+
 def draw_master(p):
     o = Out(p)
     for name in GL.ORDER:
         cps, fn = GL.GLYPHS[name]
         g = GL.G(p)
         fn(g, p)
-        cs = []
-        for s in g.strokes:
-            cs += expand(s, p.V, p.H)
-        cs += g.raw
+        per = [expand(s, p.V, p.H) for s in g.strokes]
+        cs = [c for e in per for c in e] + g.raw
         # Spacing is measured on the upright drawing; the italic outlines replace it afterwards,
         # slanted around mid-x-height so that spacing carries over.
-        italic_cs = [c for s in italicize(g.strokes, p) for c in expand(s, p.V, p.H)] + italicize_raw(g.raw, p) if p.slant else None
+        italic_cs = None
+        fin_per, fin_raw, fin_tips = per, g.raw, g.tips
+        if p.slant:
+            fin_per = [expand(s, p.V, p.H) for s in italicize(g.strokes, p)]
+            fin_raw = italicize_raw(g.raw, p)
+            shear = lambda q: (q[0] + (q[1] - p.xh / 2) * p.slant, q[1])  # noqa: E731
+            fin_tips = [(a, b, shear(n), r, lam) for a, b, n, r, lam in g.tips]
+            italic_cs = [c for e in fin_per for c in e] + fin_raw
+        # the patches lie inside the ink: they add nothing to the bounds the spacing is measured on
+        patches = tip_patches(name, p, fin_tips, fin_per, fin_raw)
         for cp in cps:
             o.cmap[cp] = name
         if g.adv_fixed is not None:
@@ -134,7 +178,7 @@ def draw_master(p):
             l, r = g.sb[0] * unit, g.sb[1] * unit
             dx = l - xmin
             adv = l + (xmax - xmin) + r
-        cs = [transform_contour(c, lambda q, dx=dx: (q[0] + dx, q[1])) for c in (italic_cs if italic_cs is not None else cs)]
+        cs = [transform_contour(c, lambda q, dx=dx: (q[0] + dx, q[1])) for c in (italic_cs if italic_cs is not None else cs) + patches]
         o.contours[name] = cs
         o.adv[name] = round(adv)
         o.bounds[name] = (xmin + dx, ymin, xmax + dx, ymax)
