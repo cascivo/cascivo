@@ -608,7 +608,9 @@ POCKET_MIN_SHARE = 0.8  # each of the s's two counters (the white its terminal a
 AE_COUNTER_MIN_SHARE = 0.7  # each of the æ's two counters, against Inter's
 SHARP_GLYPHS = ['five', 'ae', 's', 'e']  # Black outlines with no exposed corner sharper than this: a hook or sliver left at a join
 SHARP_MIN = 60.0  # degrees: Inter's read 72-89 on these, the 5's bowl-start hook 40
-Q_COUNTER_MIN = 0.9955  # the Q's counter at Black is as convex as the O's (0.9962): the tail does not enter it
+Q_COUNTER_MIN = 0.9955  # the Q's counter at Black is as convex as Cascivo's own O's (0.9962): referenced to the O because Inter's Q tail crosses its counter on purpose
+LEAN_GLYPHS = ['s', 'e', 'c', 'a']  # their Black terminal faces lean as Inter's: the outer corner away from the middle of the letter
+LEAN_MIN = 6.0  # degrees; Inter 8.2, e 12, c 13: a face near flat reads as a slab, and one leaning the other way as a beak
 ONE_TOP_SLACK = 1.0  # units the 1 may rise above its stem top (the flag's square start once poked 5)
 MOUTH_MIN_SHARE = 0.7  # the double-storey a's aperture mouth, against Inter's (the review's 0.8 on its own reading is 0.78 on this one); the italic a is single-storey
 TERMINAL_FACE_MAX = 1.5  # longer straight edges between curves are a stroke's side, not its cut
@@ -835,6 +837,38 @@ def exposed_corners(font_path, glyph, wght, opsz=14):
             ink = [_winding((pt[0] + 4 * math.cos(k * math.pi / 8), pt[1] + 4 * math.sin(k * math.pi / 8)), polys) != 0 for k in range(16)]
             if any(ink) and not all(ink):
                 out.append(180 - math.degrees(_angle(u, v)))
+    return out
+
+
+def terminal_leans(font_path, glyph, wght, opsz=14):
+    """Signed lean, degrees, of each exposed terminal face of a curved letter, positive when it leans the way Inter's do:
+    the outer corner (the one further from the glyph's centre line) higher on a face above mid x-height, lower on one below.
+    A face the other way, or flat, reads small or negative."""
+    stem = _stem(wght, opsz)
+    contours = outline_segments(font_path, glyph, wght, opsz)
+    polys = [_flat(c) for c in contours]
+    xs = [q[0] for poly in polys for q in poly]
+    centre = (min(xs) + max(xs)) / 2
+    mid = 528 / 2
+    out = []
+    for segs in contours:
+        n = len(segs)
+        for i, (kind, pts) in enumerate(segs):
+            if kind != 'L' or segs[i - 1][0] == 'L' or segs[(i + 1) % n][0] == 'L':
+                continue
+            a, b = pts
+            length = math.dist(a, b)
+            if not CUT_FACE[0] * stem <= length <= CUT_FACE[1] * stem * 1.3:
+                continue
+            fx, fy = b[0] - a[0], b[1] - a[1]
+            m = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)
+            if _winding((m[0] - 3 * fy / length, m[1] + 3 * fx / length), polys) and _winding((m[0] + 3 * fy / length, m[1] - 3 * fx / length), polys):
+                continue
+            if abs(fy) > 0.6 * length or abs(fy) < 0.5:
+                continue  # a stem end, or a bar's face: exactly horizontal, which no tilted terminal cut is
+            outer, inner = (a, b) if abs(a[0] - centre) > abs(b[0] - centre) else (b, a)
+            lean = math.degrees(math.atan2(outer[1] - inner[1], abs(outer[0] - inner[0])))
+            out.append(lean if m[1] > mid else -lean)
     return out
 
 
@@ -1086,6 +1120,12 @@ def check_all(upright_vf, italic_vf):
             for name, v, ref in zip(('a', 'e'), ae, ref_ae):
                 if v < AE_COUNTER_MIN_SHARE * ref:
                     fails.append(f'{label}counters: the ae at wght 900 has an {name} counter of {v} px^2, under {AE_COUNTER_MIN_SHARE} x Inter {ref}')
+        for g in LEAN_GLYPHS:
+            if (g, italic) in TERMINAL_NONE:
+                continue
+            for lean in terminal_leans(path, g, 900):
+                if lean < LEAN_MIN:
+                    fails.append(f'{label}terminal lean: {g} at wght 900 has a face leaning {lean:.1f} deg the way Inter\'s do, under {LEAN_MIN:.0f}')
         for g in SHARP_GLYPHS:
             worst = min(exposed_corners(path, g, 900), default=180.0)
             if worst < SHARP_MIN:

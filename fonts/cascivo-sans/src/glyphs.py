@@ -831,7 +831,7 @@ def _s(g, p):
     # slanted), and they carry part of the extra width's job, so the s takes 70% of it.
     # Regular's terminals also sit 14° further round, and its s is 4% wider: it carried 0.77x
     # Geist's and Inter's ink at 0.90x their width
-    _S(g, p, p.nw * (0.92 - 0.04 * p.heavy) + _s_extra(p) * 0.7, p.xh, p.ov, run=10 if p.italic else 28, run_up=8 if p.italic else 16, close=26, bowl=0.22, flat=0.1, deep=70)
+    _S(g, p, p.nw * (0.92 - 0.04 * p.heavy) + _s_extra(p) * 0.7, p.xh, p.ov, run=10 if p.italic else 18, run_up=8 if p.italic else 16, close=26, bowl=0.22, flat=0.1, deep=70)
     g.sb = (0.55, 0.55)
 
 
@@ -1187,7 +1187,7 @@ def _five(g, p):
     g.line((xsm + 10, p.cap - H / 2), (xsm, ps[1] - 0.25 * V * (1 - p.heavy)), caps=('h', 'h'))
     # Black's bowl starts a third of a stem right of the stem's centre: from the centre its thin start left a small hook
     # below the stem's foot, from there it leaves a clean step under it (Inter's)
-    g.stroke(g.arc(cx, cy, rx, ry, a0, -150 + p.ap - 10 * p.heavy), taper=(0.6, 1), caps=('h', 'b'), cut='h')
+    g.stroke(g.arc(cx, cy, rx, ry, a0, -150 + p.ap - 10 * p.heavy), taper=(0.6 + 0.3 * p.heavy, 1), caps=('h', 'b'), cut='h')
     g.tab = True
     g.ht = 'c'
 
