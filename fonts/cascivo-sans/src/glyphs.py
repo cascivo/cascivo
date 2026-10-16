@@ -516,10 +516,10 @@ ARCH_RY = 1.10
 # the value, among those that keep every join check passing, that put the italic under its budget.
 JOIN_RUN = 8
 
-# The face of the a, g and 9 terminals at Black, degrees from horizontal (the shared HEAVY_TILT is 28). Inter's
-# end in a face under 10; at 28 the cut left a beak, an acute corner overhanging the bowl by 40 units.
+# The face of the 6 and 9 terminals at Black, degrees from horizontal (the shared HEAVY_TILT is 28; the a uses
+# that, and the g has its own literal values in _g). Inter's end in a face under 10; at 28 the cut left a beak.
 FLAT_TILT = 18
-A_END = 18  # degrees further round at Black: a's top arc and g's tail
+A_END = 18  # degrees further round at Black: the top arc of the æ's a half (the g's tail has its own run in _g)
 AE_A, AE_E = 0.1, 0.05  # Black's wider a and e halves of æ, as shares of the n width
 AEI_A, AEI_E = -0.04, 0.14  # the italic's single-storey a half is a little narrower and its e wider: its eye closed to 0.65x Inter's
 A_ARC_IN = 0.24  # Black's top arc starts this many stems further right: its terminal sat 0.15 x-heights left of the bowl, a beak (Inter's sits inside)
@@ -529,7 +529,6 @@ A_BOWL_LOW = 0.015  # Black's bowl top sits this share of the x-height lower tha
 A_BOWL_FLOOR = 0.14  # its floor is this much of a bar thicker (not thinner): the counter stays short against its width, as Inter's does, which keeps its area under the cap
 A_FILLET = 0.18  # extra share of a stem in the radius where the bowl's top meets the stem at Black: a steeper top left a spur there, not a U
 A_ARC_END = 13  # the a's arc runs less far round than the g's tail: ending higher keeps its mouth open once the end moved inward
-A_RY = 0.0  # a's top arc is not taller: at +18% its end dropped onto the bowl's shoulder and the mouth narrowed to 19 units (Inter's 40)
 
 
 def shoulder(g, xl, xr, top, ry_k=None):
@@ -824,9 +823,10 @@ def _a(g, p):
     # top arc
     cxt = xs * 0.5 + 6 + A_ARC_IN * V * p.heavy
     rxt = xs - cxt
-    # Black's arc is taller and runs further round before it ends, so the end meets the cut square: forcing a
-    # flat face on a stroke still falling at 49 degrees left a pointed wedge
-    ryt = p.xh * 0.26 * (1 + A_RY * p.heavy)
+    # The arc is no taller at Black (at +18% its end dropped onto the bowl's shoulder and the mouth narrowed to
+    # 19 units, Inter's 40): it starts further right (A_ARC_IN) and runs A_ARC_END further round, so the end
+    # meets the cut square; forcing a flat face on a stroke still falling at 49 degrees left a pointed wedge
+    ryt = p.xh * 0.26
     cyt = p.xh + p.ov * 0.5 - H / 2 - ryt
     g.stroke([L((xs, 0), (xs, cyt))] + g.arc(cxt, cyt, rxt, ryt, 0, 154 - p.ap + A_ARC_END * p.heavy), caps=('b', 'b'), cut='t')
     _a_bowl(g, p, xs, 0.94)

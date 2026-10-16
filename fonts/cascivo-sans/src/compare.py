@@ -4,8 +4,8 @@
     python3 -I src/compare.py --cascivo-only    # re-measure only the Cascivo entry (no refs needed)
 
 Every font is cut down the same way: axes other than `wght` pinned at their defaults, subset
-to build.LATIN with fontTools (default subsetter options, so hinting and layout features are
-kept as shipped), saved as WOFF2. The reference figures are committed in comparison.json so
+to build.LATIN with fontTools (default subsetter options, which drop the ssXX/cvXX features that
+the shipped Latin file keeps, so these figures sit below the file sizes in the README), saved as WOFF2. The reference figures are committed in comparison.json so
 neither the site build nor the tests need the reference fonts; a test checks that the Cascivo
 entry still matches the current font files.
 """
@@ -146,7 +146,7 @@ def measure_references(refs, plex_dir):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--refs', help='directory holding Inter.ttf, InterItalic.ttf, Geist.ttf, (no Plex file)')
+    ap.add_argument('--refs', help='directory holding Inter.ttf, InterItalic.ttf, Geist.ttf, (Plex comes from --plex-var)')
     ap.add_argument('--plex-var', help='extracted @fontsource-variable/ibm-plex-sans package files/ directory')
     ap.add_argument('--cascivo-only', action='store_true', help='re-measure only the Cascivo entry')
     args = ap.parse_args()

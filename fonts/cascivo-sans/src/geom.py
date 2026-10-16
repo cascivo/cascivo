@@ -182,7 +182,7 @@ class Stroke:
          'h' toward horizontal (c, e: a vertical cut there narrows the aperture to a slit), or
          'n' not at all (a square end: Georgian's traced terminals, where a turned cut stepped).
     tilt: degrees from horizontal a cut='t' terminal's face may lie within, instead of HEAVY_TILT: the
-          flatter ends of a, g and 9 (None keeps the shared angle).
+          flatter ends of g and 6/9 (None keeps the shared angle; the a uses it).
     """
 
     def __init__(self, segs, caps=('b', 'b'), taper=(1.0, 1.0), w=None, ws=1.0, closed=False, pen=None, slant=0.0, cut='v', tilt=None):
@@ -484,7 +484,8 @@ def _open_sides(stroke, V, H):
 
 def cap_lines(stroke, V, H):
     """The end-cap segments of an open stroke's contour, (end cap, start cap) as `expand` builds
-    them; none for a closed stroke. Exposed so the quality checks can measure the cut angle."""
+    them; none for a closed stroke. Only the tests use it (they compare it with `expand`); the
+    quality checks measure the cut faces on the instanced outline instead."""
     if stroke.closed:
         return []
     return _caps(*_open_sides(stroke, V, H))

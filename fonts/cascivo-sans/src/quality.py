@@ -3,7 +3,8 @@
 The shipped font is judged the way a reader sees it, not the way the engine draws it: glyphs are
 instanced at a location, rasterized at 1 px per font unit, and measured. Joins, counters and
 slivers are compared with Inter's values for the same glyph and weight (REF, measured once, so no
-test needs the reference font); ink and sidebearings are absolute.
+test needs the reference font); ink and sidebearings are absolute, except Thin punctuation, whose
+ink is relative to Inter's same glyph (THIN_PUNCT_SHARE).
 
     python3 -I src/quality.py [upright.ttf italic.ttf]
 """
@@ -92,7 +93,7 @@ PRUNE_SHARE = 0.5  # skeleton branches shorter than this many stems are spurs
 E_BAR_BAND = 0.12  # x-heights either side of mid x-height: where the e's bar faces sit
 X_SB_MIN = 25  # x at Regular: its diagonals must not touch the neighbours
 N_SB_THIN_REF = 97  # n's sidebearing at Thin (wght 100, opsz 14) in Inter, in 1000-unit em
-THIN_SB_SHARE = 0.9  # Thin's n sidebearings may sit this far under Inter's: Cascivo's read 25% tighter
+THIN_SB_SHARE = 0.9  # Thin's n sidebearings may sit this far under Inter's: Cascivo's read 25% tighter before the Thin opening (THIN_OPEN)
 
 # Reference values, measured from Inter (Version 4.001;git-9221beed3, name ID 5) at opsz 14 on
 # 2026-10-15 with `python3 -I src/quality.py --measure-ref Inter.ttf InterItalic.ttf`; keys are
@@ -103,6 +104,19 @@ THIN_SB_SHARE = 0.9  # Thin's n sidebearings may sit this far under Inter's: Cas
 # Regular (Inter 0.51) are skipped for Cascivo's sake: the skeleton of a join with a sharp outer
 # notch runs through the notch's corner, 5 px from the edge, and the window reads that point (0.13)
 # whatever the stroke's thickness (0.85 at the bowl); the notch and angle checks cover the join.
+# Which function measures each key, run on Inter (the --measure-ref flags are at the foot of this file):
+#   join, counter, sliver (+ _italic)       measure(), the plain --measure-ref call
+#   angle (+ _italic)                       measure_angle(), --angle
+#   terminal (+ _italic)                    measure_terminal(), --terminal
+#   notch, thin_punct, thin_stem (+ _italic)  measure_notch_thin(), --notch-thin (notch_depth per glyph and weight;
+#                                           max_ink at wght 100)
+# The rest have no flag: they were read by calling the function on Inter's glyph, scaled with ref_scale().
+#   a_shape                                 a_shape()
+#   crevice (+ _italic)                     crevice_area()
+#   flag                                    flag_reach()
+#   mouth                                   aperture_mouth()
+#   pocket, ae_counter (+ _italic)          pocket_areas(), enclosed_areas()
+#   zero_width (+ _italic)                  the ink width of zero, from raster()
 REF = {
     'join': {
         ('a', 400): 0.645, ('b', 400): 0.587, ('d', 400): 0.581, ('g', 400): 0.592, ('p', 400): 0.586, ('q', 400): 0.587,
