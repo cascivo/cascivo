@@ -892,11 +892,20 @@ def build(italic=False):
         s.name = o.name
         ds.addSource(s)
     add_gvar, optimize = varLib._add_gvar, TupleVariation.optimize
+
+    def exact_optimize(self, orig, end_pts, tolerance=0.5, **k):
+        """IUP may drop what a rasterizer re-infers within the tolerance, but two kinds of delta must stay exact:
+        a composite's component offsets (a dropped one moved a mark by up to the tolerance, so the decomposed
+        stack stood 3 units off its mkmk anchors; fontTools gives each component a one-point contour) and every
+        glyph's four phantom points (a dropped advance delta left Gcircumflex a unit off G in the static Bold,
+        and gvar off HVAR)."""
+        phantoms = list(self.coordinates)[-4:]
+        composite = list(end_pts) == list(range(len(end_pts)))
+        optimize(self, orig, end_pts, 0 if composite else tolerance, **k)
+        self.coordinates = list(self.coordinates)[:-4] + phantoms
+
     varLib._add_gvar = lambda *a, **k: add_gvar(*a, **{**k, 'tolerance': IUP_TOLERANCE})
-    # A composite has no outline points to infer (fontTools gives each component its own one-point contour):
-    # its deltas are its marks' offsets, and a dropped one moved a
-    # mark by up to the tolerance (the decomposed-mark stack then stood 3 units off its mkmk anchors).
-    TupleVariation.optimize = lambda self, orig, end_pts, tolerance=0.5, **k: optimize(self, orig, end_pts, 0 if list(end_pts) == list(range(len(end_pts))) else tolerance, **k)
+    TupleVariation.optimize = exact_optimize
     try:
         vf, _, _ = varLib.build(ds, exclude=['STAT'], optimize=True)
     finally:

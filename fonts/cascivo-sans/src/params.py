@@ -80,7 +80,7 @@ class P:
         # add up, the full amount closed lz, YT and xt.)
         # Thin's hairline stems left it 25% tighter than Inter's Thin (n sidebearing 72 against 97), so the
         # white opens as the weight falls below Regular; Regular and heavier are unchanged.
-        opened = 1 + THIN_OPEN * max(0.0, (400 - wght) / 300)
+        self.opened = opened = 1 + THIN_OPEN * max(0.0, (400 - wght) / 300)  # 1 from Regular up
         self.S *= opened
         self.S *= (0.97 - 0.04 * self.heavy) if italic else (0.91 + 0.04 * self.heavy)
         self.Sc = self.S * 1.3  # capitals carry more space: their counters are bigger

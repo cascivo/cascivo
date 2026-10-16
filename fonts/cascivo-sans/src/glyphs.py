@@ -1001,7 +1001,8 @@ def _x(g, p):
     # spaced against Geist's and Inter's (and Inter's and Plex's italics) pair by pair: it sat
     # about 12% tighter beside round and straight letters
     # 0.2 left it 14 units wide at Regular where Inter's is 32; Black's was already as tight as Inter's (11)
-    sb = 0.4 - 0.2 * p.heavy
+    # (Thin's opened white is not added: its x was 35 against Inter's 29, and the diagonals already breathe)
+    sb = (0.4 - 0.2 * p.heavy) / p.opened
     g.sb = (sb, sb)
 
 

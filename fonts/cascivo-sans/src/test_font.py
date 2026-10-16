@@ -456,6 +456,43 @@ class Font(unittest.TestCase):
                         self.assertAlmostEqual(q[2].x_offset - q[1].x_offset, c[2].x - c[1].x, delta=2)
                         self.assertAlmostEqual(q[2].y_offset - q[1].y_offset, c[2].y - c[1].y, delta=2)
 
+    def test_accented_letters_keep_their_base_advance_and_gvar_matches_hvar(self):
+        # IUP once dropped phantom (advance) deltas within its tolerance: Gcircumflex came out a unit narrower than
+        # G in the static Bold, and the gvar advances drifted from HVAR (what shapers use) at Thin
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        from fontTools.varLib.instancer import instantiateVariableFont
+
+        def accented(font):
+            glyf, hmtx = font['glyf'], font['hmtx']
+            for name in font.getGlyphOrder():
+                comps = glyf[name].components if glyf[name].isComposite() else []
+                # (polytonic capitals widen to fit their marks beside the letter, by design)
+                if len(comps) > 1 and not name.startswith('uni1F') and not comps[0].glyphName.endswith('comb') and all(c.glyphName.endswith(('comb', 'comb.case', 'comb.alt')) for c in comps[1:]):
+                    yield name, comps[0].glyphName, hmtx[name][0], hmtx[comps[0].glyphName][0]
+
+        found = 0
+        for path in (VF, VFI):
+            face = hb.Face(open(path, 'rb').read())
+            for loc in ({'wght': 100, 'opsz': 14}, {'wght': 650, 'opsz': 14}, {'wght': 900, 'opsz': 14}, {'wght': 100, 'opsz': 8}):
+                f = instantiateVariableFont(TTFont(path), loc)
+                font = hb.Font(face)
+                font.set_variations(loc)
+                with self.subTest(font=os.path.basename(path), loc=loc):
+                    for name, base, adv, base_adv in accented(f):
+                        found += 1
+                        self.assertEqual(adv, base_adv, f'{name} is {adv}, its base {base} {base_adv}')
+                    drift = [n for i, n in enumerate(f.getGlyphOrder()) if f['hmtx'][n][0] != font.get_glyph_h_advance(i)]
+                    self.assertEqual(drift, [], 'gvar advances differ from HVAR')
+        self.assertGreater(found, 300)
+        for name in ('CascivoSans-Bold.ttf', 'CascivoSans-BoldItalic.ttf', 'CascivoSans-Regular.ttf', 'CascivoSans-Italic.ttf'):
+            static = TTFont(os.path.join(DIST, name))
+            with self.subTest(static=name):
+                for glyph, base, adv, base_adv in accented(static):
+                    self.assertEqual(adv, base_adv, f'{name}: {glyph} is {adv}, its base {base} {base_adv}')
+
     def test_static_family_links_as_four_styles(self):
         # word processors pair Regular/Bold/Italic/Bold Italic by family name and style bits
         expect = {'Regular': (400, 0x40, 0), 'Bold': (700, 0x20, 1), 'Italic': (400, 0x01, 2), 'BoldItalic': (700, 0x21, 3)}
