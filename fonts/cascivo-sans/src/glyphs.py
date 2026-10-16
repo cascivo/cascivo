@@ -524,7 +524,10 @@ AE_A, AE_E = 0.1, 0.05  # Black's wider a and e halves of æ, as shares of the n
 AEI_A, AEI_E = -0.04, 0.14  # the italic's single-storey a half is a little narrower and its e wider: its eye closed to 0.65x Inter's
 A_ARC_IN = 0.24  # Black's top arc starts this many stems further right: its terminal sat 0.15 x-heights left of the bowl, a beak (Inter's sits inside)
 A_BOWL_SLOPE = 0.15  # extra slope of the bowl's top at Black, so its counter rises toward the stem like Inter's (Black read 3.6 deg, Inter 12)
-A_BOWL_WALL = 0.11  # Black bowl wall as a share of a stem over the stem weight (was 0.08)
+A_BOWL_WALL = -0.06  # Black's bowl wall is thinner than the stem (as Inter's is), so the counter is a wide teardrop and not a slot
+A_BOWL_LOW = 0.015  # Black's bowl top sits this share of the x-height lower than the +0.05 lift, and
+A_BOWL_FLOOR = 0.14  # its floor is this much of a bar thicker (not thinner): the counter stays short against its width, as Inter's does, which keeps its area under the cap
+A_FILLET = 0.18  # extra share of a stem in the radius where the bowl's top meets the stem at Black: a steeper top left a spur there, not a U
 A_ARC_END = 13  # the a's arc runs less far round than the g's tail: ending higher keeps its mouth open once the end moved inward
 A_RY = 0.0  # a's top arc is not taller: at +18% its end dropped onto the bowl's shoulder and the mouth narrowed to 19 units (Inter's 40)
 
@@ -759,7 +762,7 @@ def _a_bowl(g, p, xs, wf):
     V = p.V
     h = p.heavy
     k = p.k
-    ybt = p.xh * (0.57 + 0.05 * h)  # top of the bowl
+    ybt = p.xh * (0.57 + 0.05 * h - A_BOWL_LOW * h)  # top of the bowl
     yb0 = -p.ov  # bottom of the bowl
     xe = xs - V / 2  # stem's left edge
     rxb = (xs - V / 2) / 2 * wf
@@ -775,7 +778,8 @@ def _a_bowl(g, p, xs, wf):
     rise_o, rise_i = slope * (xs - cxb), slope * (xe - cxb)
     # The top ends against the stem's left edge in a rounded corner, so the aperture closes in a U
     # (Inter's) and not in a spur where the line crossed the arc's inner round
-    fr = 0.32 * V
+    # (clamped to the room left of the stem: in the narrower æ half a bigger round ran the top backwards)
+    fr = max(0.32 * V, min((0.32 + A_FILLET * h) * V, 0.8 * (xe - cxb)))
     xf = xe - fr
     yE = ybt + rise_i
     yf = ybt + slope * (xf - cxb)
@@ -789,7 +793,7 @@ def _a_bowl(g, p, xs, wf):
         ('C', (cxb, yb0), (cxb + (xs - cxb) * 0.6, yb0), (xs, yjo - (yjo - yb0) * 0.6), (xs, yjo)),
         L((xs, yjo), (xs, yq)),
     ]
-    yti, ybi = ybt - th, yb0 + th * (1 - 0.1 * h)  # a heavy bowl's floor gives a little to the counter
+    yti, ybi = ybt - th, yb0 + th * (1 + A_BOWL_FLOOR * h)  # a heavy bowl's floor is thicker, as Inter's
     cyi, ryi = (yti + ybi) / 2, (yti - ybi) / 2
     rxi = cxb - tl
     yji = ybi + (yti - ybi) * 0.62  # where the counter's round bottom meets the stem

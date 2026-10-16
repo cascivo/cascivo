@@ -65,6 +65,7 @@ CREVICE_SHARE = 1.15  # a crevice may be this much larger than Inter's
 A_OVERHANG_MAX = 0.02
 A_SLOPE_MIN = 6.0
 A_COUNTER_MIN_SHARE = 0.85
+A_ASPECT_MIN_SHARE = 0.9  # the counter's width over height, against Inter's: a slot is not a teardrop
 COUNTER_MAX = {'a': 1.3}  # a counter may be this much larger than Inter's: a's read 1.71 once the bowl top cut across the arc
 ONE_FLAG_SHARE = 1.05  # the 1's flag may reach this much further left than Inter's
 ZERO_MIN_SHARE = 0.92  # the 0's ink width, against Inter's
@@ -113,8 +114,8 @@ REF = {
         ('o', 900): 0.1215, ('e', 900): 0.0471, ('a', 900): 0.0428, ('g', 900): 0.1207, ('b', 900): 0.1218, ('d', 900): 0.1218, ('p', 900): 0.1218,
         ('q', 900): 0.1219, ('zero', 900): 0.2753, ('six', 900): 0.1118, ('eight', 900): 0.0899, ('nine', 900): 0.1118,
     },
-    # a_shape: (arc overhang past the bowl, counter area, counter top slope) of Inter's a, from a_shape()
-    'a_shape': {650: (-0.0286, 0.0868, 9.51), 900: (-0.0286, 0.0429, 11.95)},
+    # a_shape: (arc overhang past the bowl, counter area, counter top slope, counter aspect) of Inter's a, from a_shape()
+    'a_shape': {650: (-0.0286, 0.0868, 9.51, 1.236), 900: (-0.0286, 0.0429, 11.95, 1.167)},
     'sliver': 46,  # px^2 at 1000 upm: the largest piece of ink a radius-6 disk cannot fit, over Latin at 900
     'join_italic': {
         ('a', 400): 0.531, ('b', 400): None, ('d', 400): None, ('g', 400): 0.555, ('p', 400): None, ('q', 400): None,
@@ -525,11 +526,12 @@ def aperture_mouth(mask):
 
 
 def a_shape(mask):
-    """(overhang, counter area, counter slope) of the double-storey a, in x-heights and degrees.
+    """(overhang, counter area, counter slope, counter aspect) of the double-storey a, in x-heights and degrees.
 
     Overhang: how far the top arc's ink reaches left of the bowl's leftmost ink (negative: it sits inside). Counter area:
     the largest enclosed white piece, as in counter_area. Slope: the counter's top edge fitted over the middle of its width,
-    degrees rising toward the stem (the right)."""
+    degrees rising toward the stem (the right). Aspect: the counter's width over its height (Inter's is a wide teardrop, 1.17 at Black;
+    a tall slot reads 0.76)."""
     m = np.asarray(mask)
     xh, base = mask.x_height, mask.baseline
 
@@ -537,12 +539,12 @@ def a_shape(mask):
         rows = [np.flatnonzero(m[i]) for i in range(int(base - hi * xh), int(base - lo * xh))]
         return min(r.min() for r in rows if len(r))
 
-    overhang = (leftmost(0.10, 0.45) - leftmost(0.70, 0.98)) / xh
+    overhang = (leftmost(0.10, 0.45) - leftmost(0.60, 0.98)) / xh
     labels, n = ndi.label(~m)
     border = set(np.unique(np.concatenate([labels[0], labels[-1], labels[:, 0], labels[:, -1]])))
     sizes = {i: int((labels == i).sum()) for i in range(1, n + 1) if i not in border}
     if not sizes:
-        return overhang, 0.0, 0.0
+        return overhang, 0.0, 0.0, 0.0
     biggest = max(sizes, key=sizes.get)
     c = labels == biggest
     cols = np.flatnonzero(c.any(0))
@@ -550,7 +552,8 @@ def a_shape(mask):
     xs = np.arange(int(x0 + 0.4 * (x1 - x0)), int(x0 + 0.9 * (x1 - x0)))
     tops = np.array([np.flatnonzero(c[:, x]).min() for x in xs])
     slope = float(np.degrees(np.arctan(np.polyfit(xs, -tops, 1)[0])))
-    return float(overhang), sizes[biggest] / xh**2, slope
+    rows = np.flatnonzero(c.any(1))
+    return float(overhang), sizes[biggest] / xh**2, slope, float((x1 - x0 + 1) / (rows.max() - rows.min() + 1))
 
 
 def crevice_area(mask, r=CREVICE_R):
@@ -1137,8 +1140,10 @@ def check_all(upright_vf, italic_vf):
             if ref is not None and v < COUNTER_MIN_SHARE * ref:
                 fails.append(f'{label}counter: {g} at wght 900 is {v:.4f}, under {COUNTER_MIN_SHARE} x Inter {ref:.4f}')
         if not italic:
-            for w, (_, ref_area, ref_slope) in REF['a_shape'].items():
-                over, area, slope = a_shape(raster(path, 'a', w))
+            for w, (_, ref_area, ref_slope, ref_aspect) in REF['a_shape'].items():
+                over, area, slope, aspect = a_shape(raster(path, 'a', w))
+                if aspect < A_ASPECT_MIN_SHARE * ref_aspect:
+                    fails.append(f'a shape: the a at wght {w} has a counter {aspect:.2f} wide over high, under {A_ASPECT_MIN_SHARE} x Inter {ref_aspect} (a slot)')
                 if over > A_OVERHANG_MAX:
                     fails.append(f'a shape: the a at wght {w} has its top arc {over:.3f} x-heights past the bowl, over {A_OVERHANG_MAX} (a beak)')
                 if area < A_COUNTER_MIN_SHARE * ref_area:
