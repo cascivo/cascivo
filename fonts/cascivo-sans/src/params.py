@@ -32,6 +32,9 @@ def _pw(x, table):
     raise ValueError(x)
 
 
+THIN_OPEN = 0.23  # share of the stem sidebearing Thin opens by, see P.__init__
+
+
 class P:
     def __init__(self, wght, opsz, italic=False):
         self.wght, self.opsz, self.italic = wght, opsz, italic
@@ -75,6 +78,10 @@ class P:
         # italic matched at Regular but ran 15-40% loose in its white by Black.
         # (Heavy weights tighten a little less: at Display Black, where the opsz and weight deltas
         # add up, the full amount closed lz, YT and xt.)
+        # Thin's hairline stems left it 25% tighter than Inter's Thin (n sidebearing 72 against 97), so the
+        # white opens as the weight falls below Regular; Regular and heavier are unchanged.
+        opened = 1 + THIN_OPEN * max(0.0, (400 - wght) / 300)
+        self.S *= opened
         self.S *= (0.97 - 0.04 * self.heavy) if italic else (0.91 + 0.04 * self.heavy)
         self.Sc = self.S * 1.3  # capitals carry more space: their counters are bigger
         self.cw = counter
@@ -89,7 +96,7 @@ class P:
         # (commas 1.7x as tall): Regular's grows a little, the heavy ones much less.
         self.dot = (V * 1.12 + 14) * 1.06 - 60 * self.heavy
         self.mt = V * 0.86 + 6  # accent stroke
-        self.fig_adv = round(580 + 0.55 * (V - 90) + (spacing - 1) * 60)  # tabular figure advance
+        self.fig_adv = round(580 + 0.55 * (V - 90) + (spacing - 1) * 60 + 1.3 * self.S * (1 - 1 / opened))  # tabular figure advance; Thin's opened white is added outside the figures' ink, which the math signs share
         self.slant = math.tan(math.radians(ITALIC_ANGLE)) if italic else 0.0
 
     @property

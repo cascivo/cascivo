@@ -1000,7 +1000,9 @@ def _x(g, p):
     g.diag(w, p.xh, 0, 0, 'r', 'l', ws=0.9)
     # spaced against Geist's and Inter's (and Inter's and Plex's italics) pair by pair: it sat
     # about 12% tighter beside round and straight letters
-    g.sb = (0.2, 0.2)
+    # 0.2 left it 14 units wide at Regular where Inter's is 32; Black's was already as tight as Inter's (11)
+    sb = 0.4 - 0.2 * p.heavy
+    g.sb = (sb, sb)
 
 
 @glyph('y', 0x79)

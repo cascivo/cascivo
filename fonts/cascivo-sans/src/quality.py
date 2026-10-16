@@ -82,7 +82,10 @@ CUT_MAX_DEG = 35.0  # a heavy curved terminal's cut face, from horizontal: angle
 COUNTER_MIN_SHARE = 0.70
 JOIN_SKIP = 0.3  # stem widths: the junction itself is skeleton noise, the join is what follows it
 PRUNE_SHARE = 0.5  # skeleton branches shorter than this many stems are spurs
+E_BAR_BAND = 0.12  # x-heights either side of mid x-height: where the e's bar faces sit
 X_SB_MIN = 25  # x at Regular: its diagonals must not touch the neighbours
+N_SB_THIN_REF = 97  # n's sidebearing at Thin (wght 100, opsz 14) in Inter, in 1000-unit em
+THIN_SB_SHARE = 0.9  # Thin's n sidebearings may sit this far under Inter's: Cascivo's read 25% tighter
 
 # Reference values, measured from Inter (Version 4.001;git-9221beed3, name ID 5) at opsz 14 on
 # 2026-10-15 with `python3 -I src/quality.py --measure-ref Inter.ttf InterItalic.ttf`; keys are
@@ -864,8 +867,10 @@ def terminal_leans(font_path, glyph, wght, opsz=14):
             m = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)
             if _winding((m[0] - 3 * fy / length, m[1] + 3 * fx / length), polys) and _winding((m[0] + 3 * fy / length, m[1] - 3 * fx / length), polys):
                 continue
-            if abs(fy) > 0.6 * length or abs(fy) < 0.5:
-                continue  # a stem end, or a bar's face: exactly horizontal, which no tilted terminal cut is
+            if abs(fy) > 0.6 * length:
+                continue  # a stem end
+            if abs(fy) < 0.5 and glyph == 'e' and abs(m[1] - mid) < E_BAR_BAND * 528:
+                continue  # the e's bar face: horizontal. Anywhere else a flat cut is a flat terminal, and reads lean 0
             outer, inner = (a, b) if abs(a[0] - centre) > abs(b[0] - centre) else (b, a)
             lean = math.degrees(math.atan2(outer[1] - inner[1], abs(outer[0] - inner[0])))
             out.append(lean if m[1] > mid else -lean)
@@ -1172,6 +1177,8 @@ def check_all(upright_vf, italic_vf):
                 need = X_SB_MIN if (g == 'x' and (wght, opsz) == (400, 14)) else 0
                 if lsb < need or rsb < need:
                     fails.append(f'{label}sidebearings: {g} at wght {wght} opsz {opsz} has lsb {lsb:.0f} rsb {rsb:.0f}, needs >= {need}')
+                if g == 'n' and (wght, opsz) == (100, 14) and min(lsb, rsb) < THIN_SB_SHARE * N_SB_THIN_REF:
+                    fails.append(f'{label}spacing: n at wght 100 has sidebearings {lsb:.0f}/{rsb:.0f}, under {THIN_SB_SHARE} x Inter {N_SB_THIN_REF}')
     return fails
 
 

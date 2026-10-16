@@ -3,8 +3,8 @@
 A self-intersecting stroke outline renders with notches or holes once overlaps and winding
 interact, and it is the typical failure of naive stroke expansion on tight inner curves.
 
-    python3 -I src/lint.py                       # outline lint, then the quality checks
-    CASCIVO_QUALITY=strict python3 -I src/lint.py  # quality failures fail the run too
+    python3 -I src/lint.py                       # outline lint, then the quality checks (failures fail the run)
+    CASCIVO_QUALITY=warn python3 -I src/lint.py  # quality failures are only reported
 """
 
 import os
@@ -69,8 +69,7 @@ def main():
 def quality_failures():
     """Run the quality checks on the built fonts (skipped when they are not built).
 
-    CASCIVO_QUALITY: `warn` prints failures and passes, `strict` fails the run. warn is the
-    default until the Latin pass has fixed what the checks find."""
+    CASCIVO_QUALITY: `warn` prints failures and passes, `strict` (the default) fails the run."""
     from quality import check_all
 
     dist = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'fonts')
@@ -82,7 +81,7 @@ def quality_failures():
     for f in fails:
         print('quality:', f)
     print(f'{len(fails)} quality failures')
-    return len(fails) if os.environ.get('CASCIVO_QUALITY', 'warn') == 'strict' else 0
+    return len(fails) if os.environ.get('CASCIVO_QUALITY', 'strict') == 'strict' else 0
 
 
 if __name__ == '__main__':

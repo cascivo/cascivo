@@ -25,6 +25,7 @@ from fontTools.otlLib.builder import buildStatTable  # noqa: E402
 from fontTools.pens.ttGlyphPen import TTGlyphPen  # noqa: E402
 from fontTools.ttLib import TTFont, newTable  # noqa: E402
 from fontTools.ttLib.tables import ttProgram  # noqa: E402
+from fontTools.ttLib.tables.TupleVariation import TupleVariation  # noqa: E402
 from fontTools import varLib  # noqa: E402
 from fontTools.varLib import instancer  # noqa: E402
 import ttfautohint  # noqa: E402
@@ -890,12 +891,16 @@ def build(italic=False):
         s.location = {'Weight': o.loc['wght'], 'Optical size': o.loc['opsz']}
         s.name = o.name
         ds.addSource(s)
-    add_gvar = varLib._add_gvar
+    add_gvar, optimize = varLib._add_gvar, TupleVariation.optimize
     varLib._add_gvar = lambda *a, **k: add_gvar(*a, **{**k, 'tolerance': IUP_TOLERANCE})
+    # A composite has no outline points to infer (fontTools gives each component its own one-point contour):
+    # its deltas are its marks' offsets, and a dropped one moved a
+    # mark by up to the tolerance (the decomposed-mark stack then stood 3 units off its mkmk anchors).
+    TupleVariation.optimize = lambda self, orig, end_pts, tolerance=0.5, **k: optimize(self, orig, end_pts, 0 if list(end_pts) == list(range(len(end_pts))) else tolerance, **k)
     try:
         vf, _, _ = varLib.build(ds, exclude=['STAT'], optimize=True)
     finally:
-        varLib._add_gvar = add_gvar
+        varLib._add_gvar, TupleVariation.optimize = add_gvar, optimize
     _sparse_zero_deltas(vf)
     finish(vf, italic)
     return vf

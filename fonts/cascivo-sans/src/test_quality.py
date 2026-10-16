@@ -6,6 +6,7 @@
 import os
 import sys
 import unittest
+from unittest import mock
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -108,16 +109,31 @@ class CounterJoinAngle(unittest.TestCase):
         self.assertAlmostEqual(Q.counter_join_angle(shifted, 'left', 'top', tan), Q.counter_join_angle(upright, 'left', 'top'), delta=8)
 
 
+class TerminalLeans(unittest.TestCase):
+    """A horizontal cut passes silently only as the e's bar face; on any other letter it reads lean 0."""
+
+    def leans(self, glyph, face_y):
+        stem = 150.0
+        a, b = (0, face_y - 200), (200, face_y)
+        d, e = (200 + stem, face_y), (500, face_y - 200)
+        contour = [('C', [a, (0, face_y - 50), (100, face_y), b]), ('L', [b, d]), ('C', [d, (400, face_y), (500, face_y - 50), e]),
+                   ('C', [e, (500, face_y - 450), (0, face_y - 450), a])]
+        with mock.patch.object(Q, 'outline_segments', return_value=[contour]), mock.patch.object(Q, '_stem', return_value=stem):
+            return Q.terminal_leans('unused.ttf', glyph, 900)
+
+    def test_flat_cut_on_a_curve_letter_is_reported(self):
+        self.assertEqual(self.leans('s', 500), [0.0])
+        self.assertEqual(self.leans('s', 264), [-0.0])  # near mid x-height too: only the e is exempt
+        self.assertEqual(self.leans('e', 500), [0.0])
+
+    def test_the_e_bar_face_is_skipped(self):
+        self.assertEqual(self.leans('e', 264), [])
+
+
 @unittest.skipUnless(os.path.exists(VF) and os.path.exists(VFI), 'fonts not built')
 class StartingPoint(unittest.TestCase):
-    def test_current_font_fails_the_new_checks(self):
-        """Documents today's defects; WP5 flips this to test_font_passes_quality_checks.
-
-        WP2 fixed the terminals and WP3 the Thin ink, so those checks are not among them any more."""
-        failures = Q.check_all(VF, VFI)
-        text = '\n'.join(failures)
-        for needle in ('sidebearings: x ',):
-            self.assertIn(needle, text)
+    def test_font_passes_quality_checks(self):
+        self.assertEqual(Q.check_all(VF, VFI), [])
 
     def test_thin_punctuation_and_t_foot_follow_the_hairline(self):
         """WP3: at Thin the comma, semicolon and quotes are ticks (not wedges as thick as a dot), the t's foot
