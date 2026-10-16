@@ -124,6 +124,12 @@ REF = {
     'zero_width': {400: 512, 900: 643},
     'zero_width_italic': {400: 533, 900: 660},
     'sliver_italic': 62,
+    # pocket_areas of s at 900 (upper, lower), in px^2 at 1000 upm, and the two largest enclosed counters of æ (a, e); the
+    # italic's æ is read the same way (Inter Italic's a half is double-storey, Cascivo's single-storey: only a floor)
+    'pocket': {'s': (19132, 18376)},
+    'pocket_italic': {'s': (19716, 19140)},
+    'ae_counter': (13229, 10757),
+    'ae_counter_italic': (12387, 11235),
     # notch_depth (stem widths, NOTCH_MARGIN 24, remeasured when the margin grew from 12: Inter's d and p
     # italic read 1.15 clipped); n m h u at 900 read ~1.4 because the box's hull spans the arch's
     # shoulder, a property of the construction that Cascivo shares: only the difference counts.
@@ -423,6 +429,49 @@ def counter_area(mask, x_height):
     return float(max(inner, default=0) / x_height**2)
 
 
+def pocket_areas(mask, r=45):
+    """Areas, top to bottom, of the white pockets a disk of radius r (45 px at half scale) closes over the glyph: an s's two
+    open counters. `mask` is a raster at scale 0.5; areas come back in px^2 at 1000 upm. A slit encloses little."""
+    m = np.pad(np.asarray(mask), r + 2)
+    dil = ndi.distance_transform_edt(~m) <= r
+    closed = ndi.distance_transform_edt(dil) > r
+    labels, n = ndi.label(closed & ~m)
+    pockets = []
+    for j in range(1, n + 1):
+        ys, _ = np.nonzero(labels == j)
+        if len(ys) >= 30:
+            pockets.append((ys.mean(), 4 * len(ys)))
+    return [a for _, a in sorted(pockets)]
+
+
+def enclosed_areas(mask, count=2):
+    """Areas, left to right, of the `count` largest enclosed white regions (px^2)."""
+    m = np.asarray(mask)
+    labels, n = ndi.label(~m)
+    border = set(np.unique(np.concatenate([labels[0], labels[-1], labels[:, 0], labels[:, -1]])))
+    found = []
+    for j in range(1, n + 1):
+        if j not in border:
+            ys, xs = np.nonzero(labels == j)
+            found.append((len(xs), xs.mean()))
+    return [a for a, _ in sorted(sorted(found, reverse=True)[:count], key=lambda t: t[1])]
+
+
+def counter_solidity(mask):
+    """Area of the largest enclosed white region over its convex hull's: 1 for an oval, less where ink pokes in."""
+    from skimage.morphology import convex_hull_image
+
+    m = np.asarray(mask)
+    labels, n = ndi.label(~m)
+    border = set(np.unique(np.concatenate([labels[0], labels[-1], labels[:, 0], labels[:, -1]])))
+    inner = [j for j in range(1, n + 1) if j not in border]
+    if not inner:
+        return 0.0
+    best = max(inner, key=lambda j: (labels == j).sum())
+    region = labels == best
+    return float(region.sum() / convex_hull_image(region).sum())
+
+
 def sliver_area(mask, r=6):
     """Area of the largest piece of ink that a disk of radius r cannot fit in: spikes, wedges and
     hairline tails, the places a heavy weight's joins and terminals go wrong."""
@@ -553,11 +602,14 @@ def _cut_faces(contours, lo, hi, scale=1.0):
 # a face shorter than this many stems is a corner chamfer, not a terminal
 TERMINAL_FACE = 0.25
 TERMINAL_CHORD = 50  # units: where a terminal's corner angle is read
-SQUARE_GLYPHS = ['a', 'g', 'nine', 'six', 'c']
-# Wedge terminals that are known and not yet redrawn (Task 4b: e's reads 145/66 against Inter's 124/75, s's 144-177
-# on its terminals). Reported on every run; a glyph that stops being a wedge must leave this list.
-KNOWN_WEDGES = ['e', 's']
+SQUARE_GLYPHS = ['a', 'g', 'nine', 'six', 'c', 'e', 's', 'ae']
 SQUARE_TOL = 40.0  # both corners of a Black terminal's face lie within 90 +- this: Inter's own read 71-127
+POCKET_MIN_SHARE = 0.8  # each of the s's two counters (the white its terminal and spine enclose), against Inter's
+AE_COUNTER_MIN_SHARE = 0.7  # each of the æ's two counters, against Inter's
+SHARP_GLYPHS = ['five', 'ae', 's', 'e']  # Black outlines with no exposed corner sharper than this: a hook or sliver left at a join
+SHARP_MIN = 60.0  # degrees: Inter's read 72-89 on these, the 5's bowl-start hook 40
+Q_COUNTER_MIN = 0.9955  # the Q's counter at Black is as convex as the O's (0.9962): the tail does not enter it
+ONE_TOP_SLACK = 1.0  # units the 1 may rise above its stem top (the flag's square start once poked 5)
 MOUTH_MIN_SHARE = 0.7  # the double-storey a's aperture mouth, against Inter's (the review's 0.8 on its own reading is 0.78 on this one); the italic a is single-storey
 TERMINAL_FACE_MAX = 1.5  # longer straight edges between curves are a stroke's side, not its cut
 TERMINAL_STEEP = 60.0  # degrees from horizontal
@@ -723,7 +775,9 @@ def terminal_corners(font_path, glyph, wght, opsz=14, scale=1.0):
     rounding). 90 and 90 is a square end; a wedge reads far from it on one side."""
     stem = _stem(wght, opsz)
     out = []
-    for segs in outline_segments(font_path, glyph, wght, opsz):
+    contours = outline_segments(font_path, glyph, wght, opsz)
+    polys = [_flat(c) for c in contours]
+    for segs in contours:
         n = len(segs)
         poly = None
         for i, (kind, pts) in enumerate(segs):
@@ -731,6 +785,12 @@ def terminal_corners(font_path, glyph, wght, opsz=14, scale=1.0):
                 continue
             a, b = [tuple(v * scale for v in q) for q in pts]
             if not CUT_FACE[0] * stem <= math.dist(a, b) <= CUT_FACE[1] * stem * 1.3:
+                continue
+            # a face with ink on both sides of it is where two strokes overlap, not a terminal
+            mid = ((pts[0][0] + pts[1][0]) / 2, (pts[0][1] + pts[1][1]) / 2)
+            fx, fy = pts[1][0] - pts[0][0], pts[1][1] - pts[0][1]
+            fl = math.hypot(fx, fy) or 1.0
+            if _winding((mid[0] - 3 * fy / fl, mid[1] + 3 * fx / fl), polys) and _winding((mid[0] + 3 * fy / fl, mid[1] - 3 * fx / fl), polys):
                 continue
             poly = poly or _poly(segs, scale)
             ia = poly.index(min(poly, key=lambda q: math.dist(q, a)))
@@ -752,6 +812,30 @@ def terminal_thickness(font_path, glyph, wght, opsz=14, scale=1.0):
     from params import P
 
     return _terminal_widths(outline_segments(font_path, glyph, wght, opsz), P(wght=wght, opsz=opsz).V, scale)
+
+
+def exposed_corners(font_path, glyph, wght, opsz=14):
+    """Interior angles (degrees) of the outline's corners that lie on the visible edge: a ring around the corner has ink and
+    white both. Corners inside overlapping strokes are not seen. A hook, a spike or a crack reads small."""
+    contours = outline_segments(font_path, glyph, wght, opsz)
+    polys = [_flat(c, 12) for c in contours]
+
+    def tangent(seg, end):
+        pts = seg[1]
+        a, b = (pts[-2], pts[-1]) if end else (pts[0], pts[1])
+        return (b[0] - a[0], b[1] - a[1])
+
+    out = []
+    for segs in contours:
+        for i, seg in enumerate(segs):
+            u, v = tangent(segs[i - 1], True), tangent(seg, False)
+            if math.hypot(*u) < 1e-6 or math.hypot(*v) < 1e-6:
+                continue
+            pt = seg[1][0]
+            ink = [_winding((pt[0] + 4 * math.cos(k * math.pi / 8), pt[1] + 4 * math.sin(k * math.pi / 8)), polys) != 0 for k in range(16)]
+            if any(ink) and not all(ink):
+                out.append(180 - math.degrees(_angle(u, v)))
+    return out
 
 
 def notch_depth(mask, stem_side, x_height=None, baseline=None, at=0.5):
@@ -986,12 +1070,34 @@ def check_all(upright_vf, italic_vf):
             for ca, cb in terminal_corners(path, g, 900):
                 if max(abs(ca - 90), abs(cb - 90)) > SQUARE_TOL:
                     fails.append(f'{label}terminal corners: {g} ends in a wedge at Black, corners {ca:.0f} and {cb:.0f} deg, outside 90 +- {SQUARE_TOL:.0f}')
-        for g in KNOWN_WEDGES:
-            wedges = [(ca, cb) for ca, cb in terminal_corners(path, g, 900) if max(abs(ca - 90), abs(cb - 90)) > SQUARE_TOL]
-            if wedges:
-                print(f'known failure (Task 4b): {label}{g} ends in a wedge at Black, corners {wedges[0][0]:.0f} and {wedges[0][1]:.0f} deg')
-            else:
-                fails.append(f'{label}terminal corners: {g} is no longer a wedge: take it out of KNOWN_WEDGES')
+        ref_p = REF['pocket' + suffix]['s']
+        pk = pocket_areas(raster(path, 's', 900, 14, 0.5))
+        if len(pk) != 2:
+            fails.append(f'{label}counters: the s at wght 900 has {len(pk)} open counters, not 2')
+        else:
+            for name, v, ref in zip(('upper', 'lower'), pk, ref_p):
+                if v < POCKET_MIN_SHARE * ref:
+                    fails.append(f'{label}counters: the s at wght 900 has an {name} counter of {v} px^2, under {POCKET_MIN_SHARE} x Inter {ref}')
+        ae = enclosed_areas(raster(path, 'ae', 900))
+        ref_ae = REF['ae_counter' + suffix]
+        if len(ae) != 2:
+            fails.append(f'{label}counters: the ae at wght 900 has {len(ae)} counters, not 2')
+        else:
+            for name, v, ref in zip(('a', 'e'), ae, ref_ae):
+                if v < AE_COUNTER_MIN_SHARE * ref:
+                    fails.append(f'{label}counters: the ae at wght 900 has an {name} counter of {v} px^2, under {AE_COUNTER_MIN_SHARE} x Inter {ref}')
+        for g in SHARP_GLYPHS:
+            worst = min(exposed_corners(path, g, 900), default=180.0)
+            if worst < SHARP_MIN:
+                fails.append(f'{label}sharp corner: {g} at wght 900 has an exposed corner of {worst:.0f} deg, under {SHARP_MIN:.0f}')
+        if not italic:
+            v = counter_solidity(raster(path, 'Q', 900))
+            if v < Q_COUNTER_MIN:
+                fails.append(f'Q counter: at wght 900 it is {v:.4f} of its convex hull, under {Q_COUNTER_MIN} (the tail pokes into it)')
+        for w in (100, 400, 900):
+            (_, _, _, top), _ = _glyph_bounds(instance(path, w, 14), 'one')
+            if top > 700 + ONE_TOP_SLACK:
+                fails.append(f'{label}one: at wght {w} the 1 rises {top - 700:.1f} above its stem top, over {ONE_TOP_SLACK}')
         for g in CREVICE_GLYPHS:
             ref = REF['crevice' + suffix][g]
             for w in JOIN_WEIGHTS:

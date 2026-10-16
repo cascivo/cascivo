@@ -294,6 +294,53 @@ class StartingPoint(unittest.TestCase):
             # turn at Thin; the straight-to-curl blend it replaces read 0.4-0.74 from wght 100 to 250)
             self.assertLessEqual(max(cross), 0.25 * -min(cross), f'y tail S-kinks at wght {wght}')
 
+    def test_pocket_areas_tell_a_slit_from_an_open_counter(self):
+        # a C-shape whose mouth is 24 px wide: the closing disk fills it, and a slit (4 px) encloses far less
+        wide, slit = np.ones((120, 120), bool), np.ones((120, 120), bool)
+        wide[30:90, 30:100] = False
+        wide[30:90, 100:] = False
+        slit[55:65, 30:100] = False
+        slit[55:65, 100:] = False
+        self.assertGreater(sum(Q.pocket_areas(pad(wide))), 4 * sum(Q.pocket_areas(pad(slit))))
+
+    def test_enclosed_areas_are_ordered_left_to_right(self):
+        m = np.ones((60, 120), bool)
+        m[10:50, 10:40] = False  # 1200
+        m[20:40, 60:110] = False  # 1000
+        self.assertEqual(Q.enclosed_areas(m), [1200, 1000])
+        self.assertEqual(Q.enclosed_areas(m, count=1), [1200])
+
+    def test_counter_solidity_sees_ink_poking_in(self):
+        m = np.ones((100, 100), bool)
+        m[20:80, 20:80] = False
+        full = Q.counter_solidity(m)
+        m[50:80, 45:55] = True  # a spur from the bottom edge
+        self.assertGreater(full, 0.99)
+        self.assertLess(Q.counter_solidity(m), 0.95)
+
+    def test_black_e_s_ae_end_in_square_terminals(self):
+        for path in (VF, VFI):
+            for g in ('e', 's', 'ae'):
+                corners = Q.terminal_corners(path, g, 900)
+                self.assertTrue(corners, f'{g} has a terminal')
+                for ca, cb in corners:
+                    self.assertLessEqual(max(abs(ca - 90), abs(cb - 90)), Q.SQUARE_TOL, f'{g} terminal corners {ca:.0f}/{cb:.0f}')
+
+    def test_black_five_has_no_hook_and_one_no_spur(self):
+        for path in (VF, VFI):
+            self.assertGreaterEqual(min(Q.exposed_corners(path, 'five', 900)), Q.SHARP_MIN)
+            for w in (100, 400, 900):
+                (_, _, _, top), _ = Q._glyph_bounds(Q.instance(path, w, 14), 'one')
+                self.assertLessEqual(top, 700 + Q.ONE_TOP_SLACK, f'1 at wght {w}')
+
+    def test_black_s_counters_are_open(self):
+        for path, suffix in ((VF, ''), (VFI, '_italic')):
+            ref = Q.REF['pocket' + suffix]['s']
+            got = Q.pocket_areas(Q.raster(path, 's', 900, 14, 0.5))
+            self.assertEqual(len(got), 2)
+            for v, r in zip(got, ref):
+                self.assertGreaterEqual(v, Q.POCKET_MIN_SHARE * r)
+
     def test_cut_faces_found_on_the_built_font(self):
         faces = Q.cut_faces(VF, 'c', 900)
         self.assertEqual(len(faces), 2)
