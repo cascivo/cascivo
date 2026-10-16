@@ -1640,57 +1640,54 @@ changed.
 **Gate.** `check_all` returns `[]` on both fonts; `lint.py` fails the build on any entry (there
 is no known-failure list). `.github/workflows/fonts.yml` now runs, on every change under
 `fonts/cascivo-sans/`: the build followed by `git diff --exit-code fonts/` (the committed fonts
-must be what the source makes), `lint.py` in strict mode, the unit tests and Font Bakery. Tests: 66. Font Bakery `check-universal`: 0 fail, 0 error. Rebuilds
-are byte-identical. Sizes (woff2) against budgets: upright variable 70,240 of 71,500 (68,940 at the
-start of the pass; the budget was raised from 69,500); italic 75,556 of 77,000 (raised from
-75,000); Latin `opsz` 29,884 of 30,000. The Latin
-`wght` slice that the site compares grew over the pass, from 21,096 to 21,320 bytes (upright) and
-from 23,700 to 23,812 (italic), against Inter's 37,380 and 40,192.
+must be what the source makes), `lint.py` in strict mode, the unit tests and Font Bakery. Tests: 64. Font Bakery `check-universal`: 0 fail, 0 error. Rebuilds
+are byte-identical. Sizes (woff2) against budgets: upright variable 69,824 of 71,500 (68,940 at the
+start of the pass; the budget was raised from 69,500); italic 75,412 of 77,000 (raised from
+75,000); Latin `opsz` 29,608 of 30,000. The Latin
+`wght` slice that the site compares grew over the pass, from 21,096 to 21,348 bytes (upright) and
+from 23,700 to 23,748 (italic), against Inter's 37,380 and 40,192.
 
-**Counter tips and the `?` join.** Three corners the first pass left were rounded afterwards, each measured with
-`concave_turn` (the sharpest concave turn of the outline, over 4 units either side, in the region of the tip),
-which reads a point at 60-90 degrees and a round at the radius of Inter's near 10-20.
+**The `?` join, and the counter tips that stayed.** Corners measured with `concave_turn` (the sharpest concave
+turn of the outline over 4 units either side, in the region of the tip; a point reads 60-90 degrees, a round near
+Inter's radius 10-20). Readings at wght 900 on the committed base fonts (ad04f3ca): `s` 56, `a` 42, `æ` 42,
+`?` 12, italic `s` 58, italic `?` 9; Inter 13, 12, 12, 8, 13, 6.
 
-- The `?` (both families): its outer edge turned 30 degrees where the arc hands over to the tail, because
-  the tail started with a 39-unit handle and the pen is wider than that. At Black the tail's second handle
-  now lies on the arc's tangent, so the hand-over has no curvature step; Regular keeps its old handles, and
-  the two blend with the weight. Black `?` 12 to 8 (Inter 8); the tail now falls straight to its foot, as
-  Inter's does, where it slanted before.
-- The `s` and `S` counters (both families) ended in points: the spine's centreline turns tighter than half the
-  pen where it leaves each bowl, so the two edges cross at about 90 degrees. Moving the strokes cannot cure
-  it (the radius comes from the letter's proportions, and a flatter spine reads as a slab), so `fillet.py`
-  adds a patch at each tip: one cubic fillet tangent to both edges and two lines that run into the ink.
-  Black `s` 62 to 17, italic 64 to 18 (Inter 13). The Cyrillic `Ѕ ѕ` and every accented `s` and `S` share
-  the outlines.
-- The Black `a` mouth and the `æ`'s `a` half (the italic `a` is single-storey): the bowl's top meets the
-  stem in a rounded corner, and at Black the arc's inner edge crosses that round at 60 degrees before it
-  reaches the stem's straight edge. The same patch fills it. Black `a` 45 to 19, `æ` 41 to 14 (Inter 12).
+- The `?` (both families): its outer edge turned 30 degrees where the arc hands over to the tail, because the tail
+  started with a 39-unit handle and the pen is wider than the curve's radius. At Black the tail's second handle now
+  lies on the arc's tangent, so the hand-over has no curvature step; Regular keeps its old handles, and the two
+  blend with the weight. Black `?` 12 to 8 (Inter 8), italic 9 to 6. The Black tail now falls straight to its foot,
+  as Inter's does, where it slanted before. Held by `TIP_MAX` at 750-900.
+- The `s`/`S` counter tips (the spine's centreline turns tighter than half the pen where it leaves each bowl, so the
+  two inner edges cross at about 90 degrees) and the Black `a`/`æ` mouth (the arc's inner edge crosses the round of
+  the bowl's top at 60 degrees) were tried as a fillet patch added to the finished outlines (a cubic and two lines per
+  tip, tangent points kept as a vertex and an arclength so they follow the edge between masters). It rounded the tips
+  at Black and was withdrawn: at 750-850 the stroke the patch fills moves non-linearly with the weight, the arc is no
+  longer tangent and the patch overshoots in spurs and cusps (`s` 27 to 76 at 750, 31 to 89 at 800, 40 to 100 at 850).
+  A construction fix needs a spine that is much flatter at Black (a start handle of 0.93 of the gap, a 2 degree
+  spine against Inter's 15), which reads as a slab; none was found that stays clean at 650-900. These tips are as at
+  ad04f3ca and are held there: the guard fails if they get sharper at 750, 800, 850 or 900.
 
-The patch is worked out from the finished outlines of the two strokes, on Black, where the tip is a point:
-the tangent points are stored as a vertex of each edge and an arclength from it in stems, and every master
-rebuilds them from that, so they stay on the edge when the masters interpolate (a tangent point found afresh
-in each master slid along the edge, and at 650 the patch showed as a blob in the counter). Below Regular
-there is no tip, so the patch sinks into the ink as the weight falls: Regular and Thin are unchanged in ink
-(no pixel at 400 or 100), 700 is unchanged, and the round grows over 750-900. A hairline can remain where the
-patch meets an edge, up to a unit and a half (the outline's own quadratic fit); `concave_turn` closes
-features narrower than 2 units, which no renderer shows. `test_fillet.py` holds the patch on synthetic
-corners; `TIP_REGIONS`, `TIP_REF` and `TIP_MAX` in `quality.py` hold the reading on the built fonts, and fail
-at HEAD ad04f3ca for `s`, `a`, `æ`, `?` and the italic `s` and `?`.
+`concave_turn` closes features narrower than 2 units first, which no renderer shows. `TIP_REGIONS`, `TIP_REF`,
+`TIP_MAX` and `TIP_BASE` in `quality.py` hold the readings at 750, 800, 850 and 900; the `?` guard fails on the base
+fonts at 800 (11.6 against 11) and at italic 900 (8.7 against 8). `spurs` reads the area of ink and of white thinner than 3
+units for `s S a æ ?` at the same weights, held to the base fonts' reading: it is the check that fails on the withdrawn patch
+(10-18 units^2 of spur at 750-850 against 3-7). `exposed_corners` ignores a vertex on a smooth stretch of the edge.
 
 **Still open.** These were seen, judged and left. Where a guard exists it holds the present
 value; the italic `æ`/`œ` closeness has none.
 
+- The `s` counter tips are square (Black reads 56, Inter 13). It shows above about 200 px. `S` has the same tips.
 - The italic Black `æ` is close to `œ`: the italic is single-storey, as designed.
+- The Black `a` mouth ends in a U with a sharp corner on its right side, where the terminal's
+  inner edge meets the bowl top. The `æ`'s `a` half has the same counter, a little slot-like.
 - Thin `s` loses its spine only in Pillow's hinted rasteriser at 14 px (above).
 - Optical size 48 is unchanged by this pass and still needs work.
 - Cyrillic and Greek are untuned; `Ч Ћ Ђ ђ` and `α` still use the old 0.93 arch.
 - The `5` has a faint swell at its foot at Black.
-- Capital `S` at Black reads 24 upright and 51 italic on `concave_turn` against Inter's 10 and 11: its tips are
-  round now, but the terminals' own inner corners (also Inter's) sit in the same region, so it has no guard.
-- Little budget is left: Latin `opsz` 29,884 of 30,000 (116 bytes), `Latin[wght]` 23,476 of
-  23,500 (24), italic `Latin[wght]` 25,928 of 26,000 (72), `Regular.woff2` 24,284 of 24,500
-  (216). The variable fonts have 1,260 (upright) and 1,444 (italic) bytes, italic `Latin[opsz,wght]`
-  1,296.
+- Little budget is left: Latin `opsz` 29,608 of 30,000 (392 bytes), `Latin[wght]` 23,312 of
+  23,500 (188), italic `Latin[wght]` 25,748 of 26,000 (252), `Regular.woff2` 24,248 of 24,500
+  (252). The variable fonts have 1,676 (upright) and 1,588 (italic) bytes, italic `Latin[opsz,wght]`
+  1,320.
 - Italic joins at Regular are unmeasured for `b d p q n m h u r` (the reference is `None`: Inter's
   skeleton reads at the noise floor there); the notch and angle checks cover them in part.
 - The notch margins are thin: Black `a` reads 1.179 against a limit of 1.183 (Inter's 1.153 plus

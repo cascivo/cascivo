@@ -396,14 +396,42 @@ class StartingPoint(unittest.TestCase):
         self.assertLess(got[1], 40)
         self.assertGreater(got[0], 2 * got[1])
 
-    def test_black_counter_tips_are_round(self):
-        """A counter's tip turns like Inter's, not in a point: the ? where its arc hands over to its tail, the s's two
-        counters, the a's and the æ's mouth."""
-        for path, italic in ((VF, False), (VFI, True)):
+    def test_spurs_reads_a_hair_of_ink_and_a_slit_of_white(self):
+        block = np.zeros((300, 300), bool)
+        block[50:250, 50:250] = True
+        spike = block.copy()
+        spike[148:152, 250:290] = True  # 1 unit thick, 10 long, at 4 px per unit
+        slit = block.copy()
+        slit[148:152, 50:140] = False
+        got = []
+        for mask in (block, spike, slit):
+            with mock.patch.object(Q, 'raster', return_value=mask):
+                got.append(Q.spurs('x', 'g', 900))
+        self.assertLess(got[0][1], 0.5)  # a square's own corners read a few units^2 of ink (3.5), no white
+        self.assertGreater(got[1][0], got[0][0] + 8)
+        self.assertGreater(got[2][1], got[0][1] + 15)
+
+    def test_heavy_counter_tips_hold_the_base_and_the_question_mark_is_round(self):
+        """Tips are read at 750, 800, 850 and 900, not only at Black: a fillet patch that rounded them at 900 spurred between the
+        masters. The s, a and ae tips may not get sharper than the base fonts; the ? hand-over is round (limits near Inter's)."""
+        for path, family in ((VF, 'upright'), (VFI, 'italic')):
             for g, region in Q.TIP_REGIONS.items():
-                if italic and g in ('a', 'ae'):
+                if family == 'italic' and g in ('a', 'ae'):
                     continue
-                self.assertLessEqual(Q.concave_turn(path, g, 900, region), (Q.TIP_MAX_ITALIC if italic else Q.TIP_MAX)[g], f'{g} italic={italic}')
+                limit = (Q.TIP_MAX_ITALIC if family == 'italic' else Q.TIP_MAX).get(g)
+                for w, held in zip(Q.TIP_WEIGHTS, Q.TIP_BASE[family][g]):
+                    v = Q.concave_turn(path, g, w, region)
+                    self.assertLessEqual(v, held + Q.TIP_SLACK, f'{family} {g} at {w}')
+                    if limit is not None:
+                        self.assertLessEqual(v, limit, f'{family} {g} at {w}')
+
+    def test_no_spurs_at_the_heavy_weights(self):
+        for path, family in ((VF, 'upright'), (VFI, 'italic')):
+            for g, per_weight in Q.SPUR_BASE[family].items():
+                for w, (ink0, white0) in zip(Q.TIP_WEIGHTS, per_weight):
+                    ink, white = Q.spurs(path, g, w)
+                    self.assertLessEqual(ink, ink0 + Q.SPUR_SLACK, f'{family} {g} at {w}')
+                    self.assertLessEqual(white, white0 + Q.SPUR_SLACK, f'{family} {g} at {w}')
 
     def test_cut_faces_found_on_the_built_font(self):
         faces = Q.cut_faces(VF, 'c', 900)

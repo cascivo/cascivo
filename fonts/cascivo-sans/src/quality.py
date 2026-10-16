@@ -903,17 +903,61 @@ def exposed_corners(font_path, glyph, wght, opsz=14):
 TIP_WINDOW = 4.0  # units either side of a point over which the outline's turning is read: a round of radius 20 reads 23 degrees, a corner 90
 TIP_SCALE = 4  # raster pixels per unit for that reading
 TIP_CLOSE = 2.0  # units: white features narrower than this are not read
-# Black counters end in a round, not a point. Regions are fractions of the ink's bounding box (x0, x1, y0, y1; y from the top)
-# that hold only the tip meant: the s's two counter tips (the whole letter holds nothing else concave), the a's mouth
-# (above its lower counter, whose own corner at the stem is Inter's too), the æ's a-half mouth (left of the e, below the
-# junction), and the ? where its arc hands over to its tail (below the hook's inner turn).
+# Counter tips. Regions are fractions of the ink's bounding box (x0, x1, y0, y1; y from the top) that hold only the tip
+# meant: the s's two counter tips (the whole letter holds nothing else concave), the a's mouth (above its lower
+# counter, whose own corner at the stem is Inter's too), the a-half mouth of the ae (left of the e, below the junction),
+# and the ? where its arc hands over to its tail (below the hook's inner turn).
 TIP_REGIONS = {'s': (0.0, 1.0, 0.0, 1.0), 'a': (0.35, 0.8, 0.0, 0.45), 'ae': (0.2, 0.44, 0.2, 0.5), 'question': (0.6, 1.0, 0.4, 0.7)}
-# Inter's reading of the same regions at wght 900 (the æ's is the a's: Inter's æ has its own corner at the junction), with
-# `concave_turn` on Inter.ttf, ref_scale 1000 / 2048. Before the fix Cascivo read: s 62, a 45, ae 41, ? 12 (italic s 64).
+TIP_WEIGHTS = (750, 800, 850, 900)  # the heavy weights, where the tips sharpen: read at every one, since a fix that is clean at Black can spur between masters
+# Inter's reading of the same regions at wght 900 (the ae's is the a's: Inter's ae has its own corner at the junction), with
+# `concave_turn` on Inter.ttf, ref_scale 1000 / 2048.
 TIP_REF = {'s': 13, 'a': 12, 'ae': 12, 'question': 8}
 TIP_REF_ITALIC = {'s': 13, 'question': 6}
-TIP_MAX = {'s': 25, 'a': 24, 'ae': 24, 'question': 11}
-TIP_MAX_ITALIC = {'s': 25, 'question': 8}  # Inter's italic ? reads 6 (the upright 8)  # about 2x Inter's: a round of radius 20 reads 23 degrees, a point 60 or more; the ? is held closer, its defect was small
+# Cascivo's own reading on the base fonts (ad04f3ca), which the s, a and ae tips are held to: they are square (4x Inter's at
+# Black), and a fillet patch that rounded them at 900 spurred at 750-850 (s 27 to 76, 31 to 89, 40 to 100). No tip may read
+# sharper than this, by more than the slack.
+TIP_BASE = {
+    'upright': {'s': (26.6, 31.3, 40.2, 56.1), 'a': (23.0, 31.2, 39.3, 41.7), 'ae': (17.2, 27.1, 35.6, 41.6), 'question': (9.5, 11.6, 11.3, 11.6)},
+    'italic': {'s': (27.4, 35.8, 48.2, 58.4), 'question': (5.8, 6.2, 7.7, 8.7)},
+}
+TIP_SLACK = 1.5  # degrees
+# The ? hands its arc to its tail in a round: held to about 1.4x Inter's reading, where the base read 1.5x at 800.
+TIP_MAX = {'question': 11}
+TIP_MAX_ITALIC = {'question': 8}  # Inter's italic ? reads 6
+
+
+# Spurs: ink slivers and white slits thinner than 3 units (the area of what an opening, and a closing, with a disk of
+# 1.5 units' radius changes), in units^2. A patch that rounded a tip at Black and had no tangent edge at the weights between
+# the masters left spurs and cusps of 10 to 18 units^2 at 750-850, where the base fonts read 3 to 7. Held to the base fonts'
+# reading (ad04f3ca), with slack for the outline fit.
+SPUR_RADIUS = 1.5
+SPUR_SLACK = 2.0
+SPUR_BASE = {
+    'upright': {
+        's': ((3.0, 0.2), (2.9, 0.2), (3.2, 0.2), (3.5, 0.4)),
+        'S': ((2.9, 0.0), (2.6, 0.2), (2.8, 0.2), (2.9, 0.3)),
+        'a': ((2.5, 3.1), (2.9, 2.7), (3.3, 2.3), (2.2, 1.1)),
+        'ae': ((3.1, 6.2), (3.7, 5.9), (3.9, 5.6), (3.9, 6.0)),
+        'question': ((6.6, 0.0), (6.5, 0.0), (6.6, 0.1), (6.3, 0.0)),
+    },
+    'italic': {
+        's': ((4.2, 0.4), (3.7, 0.4), (3.6, 0.8), (3.8, 0.6)),
+        'S': ((3.3, 0.5), (2.4, 0.6), (2.8, 0.4), (2.7, 0.9)),
+        'question': ((6.1, 0.1), (6.2, 0.0), (7.0, 0.2), (6.5, 0.0)),
+    },
+}
+
+
+def spurs(font_path, glyph, wght, opsz=14):
+    """(ink, white): the area, in units^2, of ink thinner than 2 x SPUR_RADIUS and of white thinner than that (slits)."""
+    from skimage.morphology import disk
+
+    scale = 4
+    m = np.asarray(raster(font_path, glyph, wght, opsz, float(scale)))
+    d = disk(round(SPUR_RADIUS * 4))
+    thin_ink = m & ~ndi.binary_opening(m, structure=d)
+    thin_white = ndi.binary_closing(m, structure=d) & ~m
+    return float(thin_ink.sum()) / scale**2, float(thin_white.sum()) / scale**2
 
 
 def concave_turn(font_path, glyph, wght, region=(0.0, 1.0, 0.0, 1.0), opsz=14, ref_scale=1.0):
@@ -1257,11 +1301,19 @@ def check_all(upright_vf, italic_vf):
         for g, region in TIP_REGIONS.items():
             if italic and g in ('a', 'ae'):  # the italic a is single-storey: no mouth
                 continue
-            v = concave_turn(path, g, 900, region)
-            limit = (TIP_MAX_ITALIC if italic else TIP_MAX)[g]
-            if v > limit:
-                ref = (TIP_REF_ITALIC if italic else TIP_REF)[g]
-                fails.append(f'{label}round tip: {g} at wght 900 has a counter tip turning {v:.0f} deg over {2 * TIP_WINDOW:.0f} units, over {limit} (Inter {ref})')
+            base = TIP_BASE['italic' if italic else 'upright'][g]
+            limit = (TIP_MAX_ITALIC if italic else TIP_MAX).get(g)
+            for w, held in zip(TIP_WEIGHTS, base):
+                v = concave_turn(path, g, w, region)
+                if v > held + TIP_SLACK:
+                    fails.append(f'{label}tip: {g} at wght {w} has a counter tip turning {v:.0f} deg over {2 * TIP_WINDOW:.0f} units, sharper than the base font\'s {held:.0f}')
+                elif limit is not None and v > limit:
+                    fails.append(f'{label}round tip: {g} at wght {w} has a counter tip turning {v:.0f} deg over {2 * TIP_WINDOW:.0f} units, over {limit} (Inter {(TIP_REF_ITALIC if italic else TIP_REF)[g]})')
+        for g, per_weight in SPUR_BASE['italic' if italic else 'upright'].items():
+            for w, (held_ink, held_white) in zip(TIP_WEIGHTS, per_weight):
+                ink, white = spurs(path, g, w)
+                if ink > held_ink + SPUR_SLACK or white > held_white + SPUR_SLACK:
+                    fails.append(f'{label}spur: {g} at wght {w} has {ink:.1f} units^2 of ink and {white:.1f} of white thinner than {2 * SPUR_RADIUS:.0f} units, over the base font\'s {held_ink:.1f} and {held_white:.1f} + {SPUR_SLACK:.0f}')
         for g in SHARP_GLYPHS:
             worst = min(exposed_corners(path, g, 900), default=180.0)
             if worst < SHARP_MIN:

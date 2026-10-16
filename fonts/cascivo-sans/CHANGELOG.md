@@ -11,9 +11,9 @@
   now. Composite offsets and the advance deltas are exact in the variable font. The upright
   variable woff2 budget rises from 69,500 to 71,500 bytes and the italic from 75,000 to 77,000.
   Known residue is in RESEARCH.md section 37.
-- **Round counter tips.** The Black `s` and `S` counters, the `a` mouth, the `æ`'s `a` half and the `?` where its
-  arc meets its tail end in rounds, as Inter's do, and not in points (a patch, `src/fillet.py`, added at each
-  tip). Regular and Thin are unchanged in ink. `quality.py` reads them on the built fonts.
+- **The Black `?` hand-over.** The `?`'s tail leaves its arc without a curvature step, which removes the corner on its
+  outer edge; the Black tail now falls straight to its foot, as Inter's does, where it slanted before. Regular is
+  unchanged. The square `s` counter tips and the `a` mouth stay open (RESEARCH.md section 37).
 - **A page on cascivo.com.** `/cascivo-sans` shows a specimen and a live type tester (weight,
   optical size, size, italic), and offers the Latin web files, the static TTFs and the licence for
   download. The site serves copies of the build output; `pnpm fonts:site:sync` refreshes them and

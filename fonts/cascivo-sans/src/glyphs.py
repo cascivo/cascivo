@@ -30,7 +30,6 @@ class G:
         self.p = p
         self.strokes = []
         self.raw = []
-        self.tips = []  # (a, b, near, radius): see tip()
         self.sb = (1.0, 1.0)
         self.ht = 'x'
         self.anchors = {}
@@ -41,16 +40,6 @@ class G:
     # -- drawing primitives ------------------------------------------------------------------
     def stroke(self, segs, **kw):
         self.strokes.append(Stroke(segs, **kw))
-        return self
-
-    def tip(self, a, b, near, r, lam=None):
-        """Round the pointed tip where two shapes cross, with a fillet of radius r (see fillet.py). a and b name them:
-        ('s', i) is the i-th stroke, ('r', j) the j-th raw outline; near is the tip, roughly. The fillet's size follows the stem
-        from its size on Black; lam shrinks it toward the ink behind it, to nothing at 0."""
-        # Black is where the tip is a point and the fillet is drawn; it sinks into the ink as the weight falls to Regular, where
-        # there is no tip
-        lam = max(0.03, min(1.0, (self.p.wght - 400) / 500)) if lam is None else lam
-        self.tips.append((a, b, near, r, lam))
         return self
 
     def line(self, p0, p1, **kw):
@@ -431,11 +420,7 @@ def _ell_seg(cx, cy, rx, ry, a0, a1, k):
             (p3[0] + h * rx * math.sin(t1), p3[1] - h * ry * math.cos(t1)), p3)
 
 
-# the radius of a counter's rounded tip, in stems (the s's counters are about a quarter of a stem tall: a circle past this touches both edges)
-TIP_R = 0.11
-
-
-def _S(g, p, w, top, ov, pen=None, term=32, spine=0.1, run=0, run_up=None, close=0, bowl=0.03, flat=0.2, deep=0, tips=False):
+def _S(g, p, w, top, ov, pen=None, term=32, spine=0.1, run=0, run_up=None, close=0, bowl=0.03, flat=0.2, deep=0):
     """S/s/$ spine: upper arc, a cubic spine at full stem weight, lower arc."""
     V, H = p.V, p.H
     yb, yt = -ov, top + ov
@@ -478,18 +463,11 @@ def _S(g, p, w, top, ov, pen=None, term=32, spine=0.1, run=0, run_up=None, close
     # heavy terminals are cut square and tipped only as far as keeps the face near flat (cut='t'): the old
     # half-way turn pivoted on the outer edge and stretched the inner one into a tongue
     cut = 't'
-    i0 = len(g.strokes)
     g.stroke(up, caps=('b', 'b'), pen=pen, cut=cut)
     # Heavier, the spine carries more: at 1.15 H a Black spine was 60% of a stem and the s read
     # as a lightning bolt beside Geist's and Inter's near-full-weight spines.
     g.stroke([spine_seg], pen=(PV, PH * (1.15 + spine * heavy)))
     g.stroke(lo, caps=('b', 'b'), pen=pen, cut=cut)
-    if tips:
-        # Each bowl's inner edge folds where it meets the spine (its centreline turns tighter than half the pen), and the two
-        # edges cross at about 90 degrees, which left both counters ending in a point. Inter's end in a round.
-        r = TIP_R * PV
-        g.tip(('s', i0), ('s', i0 + 1), (pa[0] + PV / 2, pa[1] - lap), r)
-        g.tip(('s', i0 + 1), ('s', i0 + 2), (pb[0] - PV / 2, pb[1] + lap), r)
 
 
 def _s_extra(p):
@@ -504,7 +482,7 @@ def _S_(g, p):
     # and heavier horizontals: Black's top and bottom were 12% thinner than theirs, and the S
     # carried 0.86x their ink
     # (Regular's terminals sit 14° further round too: the S carried 0.80x their ink at Regular)
-    _S(g, p, p.Hw * 0.94 + _s_extra(p) * 0.5, p.cap, p.ov, pen=(p.V, p.H * (1 + 0.1 * p.heavy)), spine=0.3, run=34, close=26, tips=True)
+    _S(g, p, p.Hw * 0.94 + _s_extra(p) * 0.5, p.cap, p.ov, pen=(p.V, p.H * (1 + 0.1 * p.heavy)), spine=0.3, run=34, close=26)
     g.ht = 'c'
     g.sb = (0.5, 0.5)
 
@@ -814,9 +792,6 @@ def _a_bowl(g, p, xs, wf):
         ('C', (cxb, yb0), (cxb + (xs - cxb) * 0.6, yb0), (xs, yjo - (yjo - yb0) * 0.6), (xs, yjo)),
         L((xs, yjo), (xs, yq)),
     ]
-    # Black's arc inner edge meets that round's top before it reaches the stem's straight edge, and crosses it at 60 degrees:
-    # a fillet between the two (Regular's round already ends on the straight edge, and the fillet is gone there)
-    g.tip(('s', len(g.strokes) - 1), ('r', len(g.raw)), (xe, yq), 0.13 * V)
     yti, ybi = ybt - th, yb0 + th * (1 + A_BOWL_FLOOR * h)  # a heavy bowl's floor is thicker, as Inter's
     cyi, ryi = (yti + ybi) / 2, (yti - ybi) / 2
     rxi = cxb - tl
@@ -864,7 +839,7 @@ def _s(g, p):
     # slanted), and they carry part of the extra width's job, so the s takes 70% of it.
     # Regular's terminals also sit 14° further round, and its s is 4% wider: it carried 0.77x
     # Geist's and Inter's ink at 0.90x their width
-    _S(g, p, p.nw * (0.92 - 0.04 * p.heavy) + _s_extra(p) * 0.7, p.xh, p.ov, run=10 if p.italic else 18, run_up=8 if p.italic else 16, close=26, bowl=0.22, flat=0.1, deep=70, tips=True)
+    _S(g, p, p.nw * (0.92 - 0.04 * p.heavy) + _s_extra(p) * 0.7, p.xh, p.ov, run=10 if p.italic else 18, run_up=8 if p.italic else 16, close=26, bowl=0.22, flat=0.1, deep=70)
     g.sb = (0.55, 0.55)
 
 
