@@ -1,10 +1,11 @@
 fonttools[woff]==4.66.1
 brotli==1.2.0
 ttfautohint-py==0.6.1
-# tests only
-opentype-sanitizer
-uharfbuzz
-numpy
-scipy
-scikit-image
-pillow
+# quality checks (lint.py) and tests; pinned so CI measures with the same numbers as a local run
+opentype-sanitizer==9.2.0
+uharfbuzz==0.56.3
+numpy==2.5.4
+scipy==1.18.1
+scikit-image==0.26.0
+pillow==12.3.0
+fontbakery==1.1.0
