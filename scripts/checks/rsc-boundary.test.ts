@@ -23,8 +23,8 @@
  * *render* a client component — `Button` → `Spinner`, `User` → `Avatar`, `Field` → `Label`
  * all cross the boundary correctly. What breaks is calling a client function, or reading a
  * property off what RSC turned into an opaque client reference. `@cascivo/core/pure` exists
- * so those calls have a legal destination; `core-pure.test.ts` polices what may live there,
- * and this guard polices who is allowed to skip it.
+ * so those calls have a legal destination; `packages/core/src/pure.test.ts` polices what may
+ * live there, and this guard polices who is allowed to skip it.
  *
  * Needs a prior `pnpm build` — it reads `dist/`, i.e. what an adopter installs. Skips
  * cleanly when dist is absent so `pnpm ready`'s pre-build stages stay runnable.

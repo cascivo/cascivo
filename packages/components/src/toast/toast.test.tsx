@@ -1,5 +1,6 @@
-import { describe, it, expect, afterEach } from 'vitest'
+import { describe, it, expect, afterEach, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
+import { renderToString } from 'react-dom/server'
 import userEvent from '@testing-library/user-event'
 import { ToastProvider, useToast, dismissAllToasts } from './toast'
 
@@ -62,5 +63,26 @@ describe('Toast', () => {
     }
     render(<Probe />)
     expect(typeof api?.toast).toBe('function')
+  })
+
+  it('toast: enqueue during a server render is a no-op', () => {
+    // The queue is module state: on a server it would outlive the request and show this
+    // toast to the next visitor (and to this one, on the client, uninvited).
+    function EnqueueDuringRender() {
+      useToast().toast({ title: 'x' })
+      return null
+    }
+    vi.stubGlobal('window', undefined)
+    try {
+      renderToString(
+        <ToastProvider>
+          <EnqueueDuringRender />
+        </ToastProvider>,
+      )
+    } finally {
+      vi.unstubAllGlobals()
+    }
+    render(<ToastProvider>{null}</ToastProvider>)
+    expect(screen.queryByText('x')).not.toBeInTheDocument()
   })
 })

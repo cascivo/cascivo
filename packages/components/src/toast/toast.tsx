@@ -43,6 +43,9 @@ let nextToastId = 0
 const toastQueue = signal<ToastRecord[]>([])
 
 function enqueue(options: ToastOptions) {
+  // On a server the queue outlives the request: a toast enqueued while rendering would be
+  // shown to the next visitor. Toasts are client-only feedback.
+  if (typeof window === 'undefined') return
   toastQueue.value = [...toastQueue.value, { id: nextToastId++, ...options }]
 }
 

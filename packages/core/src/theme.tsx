@@ -1,13 +1,15 @@
 'use client'
 import { useSignalEffect, useSignals } from './signals.ts'
 import type { Signal } from './signals.ts'
-import { useRef, type ReactNode, type RefObject } from 'react'
+import { useRef, useSyncExternalStore, type ReactNode, type RefObject } from 'react'
 // `persistedSignal` is SSR-safe: with no `window` its driver is a no-op, so the signal
 // still works on the server.
 import { persistedSignal } from './persisted-signal.ts'
 
-const DEFAULT_KEY = 'cascivo-theme'
-const DEFAULT_ATTR = 'data-theme'
+import { DEFAULT_ATTR, DEFAULT_KEY } from './theme-script.ts'
+
+// Lives in a dependency-free module so `@cascivo/core/pure` can serve it without React.
+export { themePreloadScript } from './theme-script.ts'
 
 /** True unless the build's NODE_ENV is 'production'. Read via `globalThis` so the
  * browser-facing source needs no `@types/node`, and it's safe where `process` is
@@ -169,11 +171,38 @@ export function applyTheme(next: string, target?: HTMLElement | null): void {
 }
 
 /**
+ * What `useTheme()` returns during SSR and the hydration render. A constant, not
+ * `config.defaultTheme`: `ThemeProvider` configures the module during render, and in an
+ * islands page a provider in another island can configure it on the server before a
+ * `useTheme` island renders, but on the client only after that island hydrated. Any snapshot
+ * that reads `config` can differ between the two sides (React #418).
+ */
+const SSR_THEME = 'light'
+
+function subscribeTheme(onStoreChange: () => void): () => void {
+  return themeStore().subscribe(() => onStoreChange())
+}
+
+function readTheme(): string {
+  return themeStore().value
+}
+
+function readServerTheme(): string {
+  return SSR_THEME
+}
+
+/**
  * Read and set the active theme. Returns the current theme **name** (a plain
  * string) and a setter — the component re-renders when the theme changes with no
  * signal handling on your part (this hook calls `useSignals()` for you, so it
  * works in React apps with no Babel transform). This is the React-idiomatic shape;
  * for signal-native code (`computed()`, `effect()`, Preact) use {@link themeSignal}.
+ *
+ * During SSR and the hydration render it returns `'light'`, whatever is persisted or
+ * controlled, and moves to the real theme in the next render (as `next-themes` does), so
+ * the server markup and the first client render always match. The `data-theme` attribute
+ * is right on first paint regardless (the preload / controlled scripts set it), so express
+ * theme-dependent visuals in CSS (`[data-theme='dark'] &`), not by branching on this value.
  *
  * ```tsx
  * const [theme, setTheme] = useTheme()
@@ -184,9 +213,10 @@ export function applyTheme(next: string, target?: HTMLElement | null): void {
  */
 export function useTheme(): readonly [string, (next: string) => void] {
   useSignals()
-  // Read `.value` inside the hook's own tracking window so the subscription is
-  // guaranteed regardless of where the consumer uses the returned string.
-  return [themeStore().value, setTheme] as const
+  // The server and the hydration render both see SSR_THEME; the persisted (or controlled)
+  // value arrives in the render right after hydration, so the markup always matches.
+  const theme = useSyncExternalStore(subscribeTheme, readTheme, readServerTheme)
+  return [theme, setTheme] as const
 }
 
 /**
@@ -272,7 +302,11 @@ export function ThemeProvider({
   // only when the storage key changes — a single root provider (the 99% case)
   // configures exactly once; controlled re-renders never rebuild.
   const configured = useRef(false)
-  if (!configured.current) {
+  // On a server the module singleton outlives the request, so a write here would leak this
+  // provider's theme into the next visitor's render. The server touches neither `config` nor
+  // `store`; the controlled inline script below still renders from the `value` prop.
+  const server = typeof window === 'undefined'
+  if (!server && !configured.current) {
     configured.current = true
     if (store === null || config.storageKey !== storageKey) {
       config = {
@@ -284,17 +318,15 @@ export function ThemeProvider({
     }
   }
 
-  const theme = themeStore()
-
   // Controlled: mirror the prop into the signal each render (no-op if unchanged).
-  if (value !== undefined) theme.value = value
+  if (!server && value !== undefined) themeStore().value = value
 
   // Keep onChange current without an effect (the ref idiom from CLAUDE.md).
   const onChangeRef = useRef(onChange)
   onChangeRef.current = onChange
 
   useSignalEffect(() => {
-    const next = theme.value
+    const next = themeStore().value
     const el = target
       ? target.current
       : typeof document !== 'undefined'
@@ -330,55 +362,4 @@ export function ThemeProvider({
   }
 
   return <>{children}</>
-}
-
-/**
- * A tiny script to inline in your document `<head>` (before the app bundle) so
- * the persisted theme paints on the first byte — no flash of the wrong theme on
- * SSR or a hard reload. Pass the same `storageKey`/`attribute`/`defaultTheme`
- * you give {@link ThemeProvider}.
- *
- * Precedence matches {@link ThemeProvider}: persisted value > `defaultTheme`
- * (if set) > OS `prefers-color-scheme` > `'light'`. Passing `defaultTheme`
- * suppresses the OS check, so a "dark by default" app stays dark on a light-OS
- * visitor.
- *
- * The script sets `data-theme` **before** React hydrates, so add
- * `suppressHydrationWarning` to the element that carries the attribute (usually
- * `<html>`) — the mutation is intentional, and without the flag React 19 logs a
- * hydration mismatch.
- *
- * ```tsx
- * // Next.js app/layout.tsx
- * <html suppressHydrationWarning>
- *   <head>
- *     <script dangerouslySetInnerHTML={{ __html: themePreloadScript({ defaultTheme: 'dark' }) }} />
- *   </head>
- * </html>
- * ```
- */
-export function themePreloadScript(
-  options: { storageKey?: string; attribute?: string; defaultTheme?: string } = {},
-): string {
-  const key = JSON.stringify(options.storageKey ?? DEFAULT_KEY)
-  const attr = JSON.stringify(options.attribute ?? DEFAULT_ATTR)
-  const fallback = JSON.stringify(options.defaultTheme ?? 'light')
-  // OS preference is consulted only when no explicit defaultTheme was given; an
-  // explicit default (especially a custom theme like 'midnight') must win over OS.
-  // The persisted value is read last, so it always wins.
-  const osBlock =
-    options.defaultTheme === undefined
-      ? `if(typeof matchMedia==='function'){` +
-        `if(matchMedia('(prefers-color-scheme: dark)').matches)v='dark';` +
-        `else if(matchMedia('(prefers-color-scheme: light)').matches)v='light';}`
-      : ''
-  // Reads the persistedSignal envelope ({"v":1,"value":"dark"}) and the bare
-  // string form, matching decode() in @cascivo/storage.
-  return (
-    `(function(){try{var v=${fallback};` +
-    osBlock +
-    `var raw=localStorage.getItem(${key});` +
-    `if(raw){v=raw;try{var e=JSON.parse(raw);if(e&&typeof e==='object'&&'value'in e)v=e.value;}catch(_){}}` +
-    `document.documentElement.setAttribute(${attr},v);}catch(_){}})();`
-  )
 }
