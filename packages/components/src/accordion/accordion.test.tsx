@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest'
+import { describe, it, expect, afterEach, vi } from 'vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderToStaticMarkup } from 'react-dom/server'
@@ -113,5 +113,49 @@ describe('Accordion', () => {
     expect(itemFor('First').open).toBe(true)
     await userEvent.click(screen.getByText('First'))
     expect(itemFor('First').open).toBe(true)
+  })
+})
+
+describe('Accordion compound parts outside their root', () => {
+  function expectThrow(ui: React.ReactElement, root: string, name: string) {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    try {
+      expect(() => render(ui)).toThrow(new RegExp(`${name} must be used inside <${root}>`))
+      expect(() => render(ui)).toThrow(/compose .* in one \.tsx island/i)
+    } finally {
+      spy.mockRestore()
+    }
+  }
+
+  it('AccordionItem outside <Accordion> throws a guidance error', () => {
+    expectThrow(<AccordionItem value="a">x</AccordionItem>, 'Accordion', 'AccordionItem')
+  })
+
+  it('AccordionTrigger outside <Accordion> throws a guidance error', () => {
+    expectThrow(<AccordionTrigger>x</AccordionTrigger>, 'Accordion', 'AccordionTrigger')
+  })
+
+  it('AccordionContent outside <Accordion> throws a guidance error', () => {
+    expectThrow(<AccordionContent>x</AccordionContent>, 'Accordion', 'AccordionContent')
+  })
+
+  it('AccordionTrigger inside <Accordion> but outside <AccordionItem> names AccordionItem', () => {
+    expectThrow(
+      <Accordion>
+        <AccordionTrigger>x</AccordionTrigger>
+      </Accordion>,
+      'AccordionItem',
+      'AccordionTrigger',
+    )
+  })
+
+  it('AccordionContent inside <Accordion> but outside <AccordionItem> names AccordionItem', () => {
+    expectThrow(
+      <Accordion>
+        <AccordionContent>x</AccordionContent>
+      </Accordion>,
+      'AccordionItem',
+      'AccordionContent',
+    )
   })
 })

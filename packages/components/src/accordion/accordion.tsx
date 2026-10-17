@@ -15,6 +15,16 @@ interface AccordionStore {
 const AccordionContext = createContext<AccordionStore | null>(null)
 const AccordionItemContext = createContext<{ value: string } | null>(null)
 
+/**
+ * Astro renders every `.astro` child separately, so React context never reaches a compound
+ * part placed outside its root. Say so, instead of rendering nothing.
+ */
+function outsideRoot(part: string, root: string): Error {
+  return new Error(
+    `${part} must be used inside <${root}>. In Astro, compose compound components in one .tsx island and hydrate that island — Astro renders each .astro child separately, so React context cannot reach it.`,
+  )
+}
+
 export interface AccordionProps {
   type?: 'single' | 'multiple'
   defaultValue?: string | string[]
@@ -91,13 +101,14 @@ export function AccordionItem({ value, className, children, ...props }: Accordio
   return (
     <AccordionItemContext.Provider value={{ value }}>
       <AccordionContext.Consumer>
-        {(store) =>
-          store ? (
+        {(store) => {
+          if (!store) throw outsideRoot('AccordionItem', 'Accordion')
+          return (
             <AccordionItemDetails store={store} value={value} className={className} {...props}>
               {children}
             </AccordionItemDetails>
-          ) : null
-        }
+          )
+        }}
       </AccordionContext.Consumer>
     </AccordionItemContext.Provider>
   )
@@ -165,11 +176,11 @@ export const AccordionTrigger = forwardRef<HTMLElement, HTMLAttributes<HTMLEleme
       <AccordionContext.Consumer>
         {(store) => (
           <AccordionItemContext.Consumer>
-            {(item) =>
-              store && item ? (
-                <AccordionTriggerInner store={store} item={item} summaryRef={ref} {...props} />
-              ) : null
-            }
+            {(item) => {
+              if (!store) throw outsideRoot('AccordionTrigger', 'Accordion')
+              if (!item) throw outsideRoot('AccordionTrigger', 'AccordionItem')
+              return <AccordionTriggerInner store={store} item={item} summaryRef={ref} {...props} />
+            }}
           </AccordionItemContext.Consumer>
         )}
       </AccordionContext.Consumer>
@@ -217,9 +228,11 @@ export function AccordionContent(props: HTMLAttributes<HTMLDivElement>) {
     <AccordionContext.Consumer>
       {(store) => (
         <AccordionItemContext.Consumer>
-          {(item) =>
-            store && item ? <AccordionContentInner store={store} item={item} {...props} /> : null
-          }
+          {(item) => {
+            if (!store) throw outsideRoot('AccordionContent', 'Accordion')
+            if (!item) throw outsideRoot('AccordionContent', 'AccordionItem')
+            return <AccordionContentInner store={store} item={item} {...props} />
+          }}
         </AccordionItemContext.Consumer>
       )}
     </AccordionContext.Consumer>

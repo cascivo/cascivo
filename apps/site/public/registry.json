@@ -15,7 +15,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/accordion/accordion.meta.ts"
       ],
       "fileHashes": {
-        "accordion.tsx": "sha256-d7e00e58277f10fc6350c1e92953bfad4ae376a0cd89f94e56463f6d25d1173d",
+        "accordion.tsx": "sha256-7a766e5cfd72d7ec01df415f0266907f4bc8e7fdebcdc5890ff32c8874249c09",
         "index.ts": "sha256-4e44786f6a7d08d54dcaad59e3c423ec89a6248852ddaa13e133cdbaa9e83cea",
         "accordion.module.css": "sha256-d559585cd5a3803d10319a19e7d62ccc0a4efc1a3d1ba569af28c9fdbd4f0a4c",
         "accordion.meta.ts": "sha256-d4afc595c542209b79c911c3bd7a1091f8c2d58f4ddccccfe48daa9eea174760"
@@ -20271,7 +20271,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tabs/tabs.meta.ts"
       ],
       "fileHashes": {
-        "tabs.tsx": "sha256-c9b035ab225636f27f98a531617a9d20cda09b26ae965838c24e184300633da6",
+        "tabs.tsx": "sha256-0626acd8cee309bdef946633e23d040a0b1a81206e3a27b3de62d4ef87c71fe5",
         "index.ts": "sha256-9dd19a218ef88f01cab5cbe7d82fa98b8b6e87ed5992b3eb6cb25735f2d94cc1",
         "tabs.module.css": "sha256-fac5d943843ba4a6f4843370aae9d570e1cf4425a0e29bc4e9553e0599d1e2d5",
         "tabs.meta.ts": "sha256-8bd1686ed20b636a1649e45e0bda1dcde1385d48858385bf8bc9476c0b3d0339"
