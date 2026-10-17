@@ -12183,7 +12183,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/modal/modal.meta.ts"
       ],
       "fileHashes": {
-        "modal.tsx": "sha256-45171682874b67cd51c6f7bc7a194e5e63327deee4f2adb874d9edff659ffeb5",
+        "modal.tsx": "sha256-42d690b0382e1480e057387b78b26ea66771ad39fda450d90d0a986ac271bee2",
         "index.ts": "sha256-fc11e823800f2d698fdd37dae08bdbb90f3b48d439f4c8ac37e5e3f2b9b48566",
         "modal.module.css": "sha256-a80cbf1f8f5ad4ace7d6f9df9daeaf25300e27c902a39fd0d0e92198c7052e2c",
         "modal.meta.ts": "sha256-6cad807aed53d704cc7314b217982c747b24215cfbc38161276d55e678ebd5f4"
@@ -14080,7 +14080,7 @@
       "fileHashes": {
         "popover.tsx": "sha256-76fdd1c31267f9ee83478806dc32ca5642d874895cabc7f95ab69b6a32640520",
         "index.ts": "sha256-2e50daeeb9dfa03e21cd5e7b890e55fc9db4054df101df845da6fa00ee285822",
-        "use-popover.ts": "sha256-4339ceab29d3371dd4b5c33b7b2a116e8c7bd3a651cd5a4e246329db4e406ffe",
+        "use-popover.ts": "sha256-da5ba1569bbc6b565b50eca67b8f7088e6b8ef2bed99a8eba96b8010706dfa4f",
         "popover.module.css": "sha256-cd6827d53118b367cb7653d1376894ea7ccdd3e10bccfdc8296ddf779f191eb1",
         "popover.meta.ts": "sha256-18e98b10b01acd6c9142c96c1a12afedfbdb86b84c98ba42c2a76698e22929f4"
       },

@@ -107,6 +107,27 @@ export function usePopover(options: UsePopoverOptions = {}): UsePopoverReturn {
     return () => popover.removeEventListener('toggle', handler)
   })
 
+  // Astro's `transition:persist` without `Element.moveBefore` re-inserts the island by moving
+  // an ancestor. Removal hides an open popover without firing `toggle`, so the listener above
+  // never hears it and `isOpen` keeps saying open. Watch only while open.
+  useSignalEffect(() => {
+    const open = isOpen.value
+    const popover = popoverRef.current
+    if (!open || !popover) return
+    const observer = new MutationObserver((records) => {
+      if (!popover.isConnected || !wasReinserted(records, popover) || isPopoverOpen(popover)) {
+        return
+      }
+      try {
+        popover.showPopover()
+      } catch {
+        // Browser doesn't support Popover API
+      }
+    })
+    observer.observe(popover.ownerDocument, { childList: true, subtree: true })
+    return () => observer.disconnect()
+  })
+
   return {
     triggerRef,
     popoverRef,
@@ -121,5 +142,26 @@ export function usePopover(options: UsePopoverOptions = {}): UsePopoverReturn {
     toggle: () => {
       isOpen.value = !isOpen.value
     },
+  }
+}
+
+function wasReinserted(records: MutationRecord[], el: Element): boolean {
+  for (const record of records) {
+    // Indexed, not `for…of`: iterating a NodeList needs `DOM.Iterable`, which an adopter's
+    // tsconfig may lack.
+    const added = record.addedNodes
+    for (let i = 0; i < added.length; i++) {
+      if (added.item(i)?.contains(el)) return true
+    }
+  }
+  return false
+}
+
+// A re-inserted popover is never open, so an engine without `:popover-open` re-shows it.
+function isPopoverOpen(el: HTMLElement): boolean {
+  try {
+    return el.matches(':popover-open')
+  } catch {
+    return false
   }
 }

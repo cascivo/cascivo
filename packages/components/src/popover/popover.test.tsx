@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { IconButton } from '../icon-button/icon-button'
 import { Popover, PopoverContent, PopoverTrigger } from './popover'
 
@@ -42,6 +42,55 @@ describe('Popover', () => {
     expect(btn.getAttribute('aria-expanded')).toBe('false')
     await userEvent.click(btn)
     expect(btn.getAttribute('aria-expanded')).toBe('true')
+  })
+
+  // Astro's `transition:persist` without `Element.moveBefore` re-inserts the island by moving
+  // an ancestor. Removal hides an open popover without a `toggle` event, so the `toggle`
+  // listener never hears it and `isOpen` keeps saying open (Astro report R6). The setup stubs
+  // `showPopover`, so the spy stands in for "shown again".
+  it('Popover re-opens after an ancestor is re-inserted', async () => {
+    const wrapper = document.body.appendChild(document.createElement('div'))
+    render(
+      <Popover>
+        <PopoverTrigger>Open</PopoverTrigger>
+        <PopoverContent>Content</PopoverContent>
+      </Popover>,
+      { container: wrapper },
+    )
+    const btn = screen.getByRole('button', { name: 'Open' })
+    await userEvent.click(btn)
+    const showPopover = vi.spyOn(HTMLElement.prototype, 'showPopover')
+    try {
+      await act(async () => {
+        wrapper.remove()
+        document.body.appendChild(wrapper)
+      })
+      expect(showPopover).toHaveBeenCalledTimes(1)
+      expect(btn.getAttribute('aria-expanded')).toBe('true')
+    } finally {
+      showPopover.mockRestore()
+    }
+  })
+
+  it('does not re-open a closed popover when an ancestor is re-inserted', async () => {
+    const wrapper = document.body.appendChild(document.createElement('div'))
+    render(
+      <Popover>
+        <PopoverTrigger>Open</PopoverTrigger>
+        <PopoverContent>Content</PopoverContent>
+      </Popover>,
+      { container: wrapper },
+    )
+    const showPopover = vi.spyOn(HTMLElement.prototype, 'showPopover')
+    try {
+      await act(async () => {
+        wrapper.remove()
+        document.body.appendChild(wrapper)
+      })
+      expect(showPopover).not.toHaveBeenCalled()
+    } finally {
+      showPopover.mockRestore()
+    }
   })
 
   // `asChild` was typed, documented and accepted at runtime while doing nothing at all:
