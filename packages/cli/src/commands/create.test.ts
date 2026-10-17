@@ -279,6 +279,16 @@ describe('buildScaffold — astro', () => {
     expect(pkg.dependencies['@cascivo/tokens']).toBeUndefined()
   })
 
+  it('astro scaffold pins an @astrojs/react major that matches astro', () => {
+    const pkg = JSON.parse(map.get('package.json')!) as {
+      dependencies: Record<string, string>
+    }
+    // @astrojs/react 5 runs on Vite 7 while astro 7 runs on Vite 8: two Vites in one install and a
+    // wall of esbuild deprecation warnings per build. 7.x shares astro 7's Vite.
+    expect(pkg.dependencies['astro']).toMatch(/^\^7\./)
+    expect(pkg.dependencies['@astrojs/react']).toMatch(/^\^7\./)
+  })
+
   it('defaults to the vite scaffold when no framework is given', () => {
     const dflt = fileMap(buildScaffold({ name: 'x', theme: 'light', sections: ['Home'] }))
     expect(dflt.has('vite.config.ts')).toBe(true)

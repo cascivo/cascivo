@@ -848,7 +848,7 @@ function astroPackageJson(opts: ScaffoldOptions): string {
     // Same prebuilt-path rule as the Vite scaffold: `@cascivo/react` + `@cascivo/themes`
     // only. `@cascivo/core` and `@cascivo/tokens` are transitive and must not be declared.
     dependencies: {
-      '@astrojs/react': '^5.0.0',
+      '@astrojs/react': '^7.1.0',
       '@cascivo/react': V['@cascivo/react']!,
       '@cascivo/themes': V['@cascivo/themes']!,
       '@preact/signals-react': SIGNALS_PEER,
@@ -857,6 +857,7 @@ function astroPackageJson(opts: ScaffoldOptions): string {
       'react-dom': '^19.0.0',
     },
     devDependencies: {
+      // @astrojs/check 0.9 peers TypeScript ^5 || ^6 and refuses 7, so `typescript` below stays on 5.
       '@astrojs/check': '^0.9.0',
       '@cascivo/eslint-config': V['@cascivo/eslint-config']!,
       '@eslint/js': '^9.0.0',
