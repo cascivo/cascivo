@@ -36,3 +36,9 @@
 /r/*
   Access-Control-Allow-Origin: *
   X-Robots-Tag: all
+
+# Cascivo Sans files for /cascivo-sans. CORS so adopters can hotlink them; one day, not
+# `immutable`, because the file names are not content-hashed and a rebuild must reach users.
+/fonts/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=86400

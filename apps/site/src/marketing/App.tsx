@@ -82,6 +82,9 @@ const BlogPostPage = lazy(() =>
 const ModernCssPage = lazy(() =>
   import('./pages/ModernCssPage').then((m) => ({ default: m.ModernCssPage })),
 )
+const CascivoSansPage = lazy(() =>
+  import('./pages/CascivoSansPage').then((m) => ({ default: m.CascivoSansPage })),
+)
 const HighlightsPage = lazy(() =>
   import('./pages/HighlightsPage').then((m) => ({ default: m.HighlightsPage })),
 )
@@ -262,6 +265,10 @@ const ROUTES: Record<string, Route> = {
   },
   '/guides/faq': { Page: GuidesFaqPage, title: ROUTE_HEAD['/guides/faq']?.title ?? 'cascivo' },
   '/modern-css': { Page: ModernCssPage, title: ROUTE_HEAD['/modern-css']?.title ?? 'cascivo' },
+  '/cascivo-sans': {
+    Page: CascivoSansPage,
+    title: ROUTE_HEAD['/cascivo-sans']?.title ?? 'cascivo',
+  },
   '/highlights': { Page: HighlightsPage, title: ROUTE_HEAD['/highlights']?.title ?? 'cascivo' },
   '/examples': { Page: ExamplesPage, title: ROUTE_HEAD['/examples']?.title ?? 'cascivo' },
   '/showcase': { Page: ShowcasePage, title: ROUTE_HEAD['/showcase']?.title ?? 'cascivo' },

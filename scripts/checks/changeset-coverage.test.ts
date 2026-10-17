@@ -75,6 +75,10 @@ const NON_SHIPPING = [
   // The email primitive gallery and its generator write only into apps/site and docs/ —
   // nothing under packages/email/dist, which is all the package publishes ("files": ["dist"]).
   /^packages\/email\/scripts\/(generate-primitives\.ts|lib\/gallery\.ts)$/,
+  // Deploy-only site files under the apps/site/public/ CONTENT_SOURCES prefix. None is read
+  // by docs' build-content.mjs (a fixed FILES list + llms/ and context/), docspack's
+  // buildPayload() (llms/, context/, docs/, llms.txt) or mcp's postbuild.
+  /^apps\/site\/public\/(_headers|sitemap\.xml|fonts\/)/,
 ]
 
 type Pkg = { name: string; dir: string; private: boolean }

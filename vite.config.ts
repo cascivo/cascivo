@@ -23,7 +23,14 @@ export default defineConfig({
     // Generated route tables (@cascivo/app/vite) are rewritten on every route change;
     // formatting them would make the generator and the formatter fight.
     // packages/cli/recipes/ must stay byte-identical to what `cascivo create` has always written.
-    ignorePatterns: ['docs/**', '**/routes.gen.ts', 'starters/**', 'packages/cli/recipes/**'],
+    // comparison.generated.ts is JSON.stringify output (fonts:site:sync), also never reformatted.
+    ignorePatterns: [
+      'docs/**',
+      '**/routes.gen.ts',
+      '**/comparison.generated.ts',
+      'starters/**',
+      'packages/cli/recipes/**',
+    ],
   },
   staged: {
     '*': 'vp check --fix',
