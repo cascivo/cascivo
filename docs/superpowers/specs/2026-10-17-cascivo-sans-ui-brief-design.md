@@ -36,7 +36,8 @@ User decisions:
 
 1. **Weight curve (#1).** Respace the weight → stem mapping (instances and the master interpolation the
    engine uses) so each 100-step adds ≈20 units of stem: 100 slightly heavier, 200 clearly apart from
-   100, the 300→400 jump reduced. Masters are unchanged; Black stays Black.
+   100, the 300→400 jump reduced. Masters are unchanged except Thin's stem (22 → 24: user 100 is the
+   Thin master); Black stays Black.
    *Accept:* `n` stem steps between adjacent named weights all within 15–27 units.
 2. **Width within ±2% (#2).** At heavy weights, tighten sidebearings and narrow the widest letters
    slightly so the brief's sample line ("Signals move fast; the cascade decides.", kerning on) and the
