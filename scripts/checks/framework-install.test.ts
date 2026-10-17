@@ -14,9 +14,14 @@
  *
  *   (a) `module` ahead of `node` in the exports map — else the bundled build is the
  *       CSS-free twin. Guarded by scripts/checks/css-contract.test.ts.
- *   (b) `vite.resolve.noExternal` in astro.config.mjs — and it must be `resolve.`, not
- *       `ssr.`, which Astro's prerender environment never reads. Emitted by
- *       `cascivo create --framework astro`, and guarded HERE.
+ *   (b) the `astro-component` keyword in each CSS-shipping package's `keywords`. Astro
+ *       externalizes an npm dependency in its server and prerender builds (Node imports it at
+ *       runtime, so its `import './x.css'` edges are never walked) unless the package's
+ *       keywords contain `astro` or `astro-component`, which makes Astro inline it. Guarded
+ *       by scripts/checks/css-contract.test.ts and, end to end, HERE: a vanilla
+ *       `astro.config` must build styled. `vite.resolve.noExternal` (it must be `resolve.`,
+ *       not `ssr.`, which Astro's prerender environment never reads) stays in the scaffold as
+ *       belt-and-braces for Astro versions that predate the keyword heuristic.
  *
  * The generalizable lesson, and the reason this file is not Astro-specific in shape: **a
  * workspace-linked example app cannot validate packaging behaviour that depends on
@@ -43,6 +48,9 @@ import {
   mkdtempSync,
   readFileSync,
   readdirSync,
+  realpathSync,
+  renameSync,
+  rmSync,
   writeFileSync,
 } from 'node:fs'
 import { tmpdir } from 'node:os'
@@ -194,6 +202,22 @@ function assertFormatted(app: string): void {
   run('pnpm', ['exec', 'prettier', '--check', '.', '!pnpm-workspace.yaml', '!pnpm-lock.yaml'], app)
 }
 
+/**
+ * Rewrites a file inside a pnpm-installed `node_modules` without writing through its inode.
+ *
+ * pnpm hardlinks installed files out of its global content-addressable store, so
+ * `writeFileSync` on the installed path would also rewrite the stored copy and corrupt every
+ * later install of that tarball (on this machine and in the next test). Resolving the real
+ * path and renaming a sibling temp file over it replaces the directory entry instead, leaving
+ * the store's inode untouched. Use it for both the edit and the restore.
+ */
+function patchInstalledFile(path: string, edit: (text: string) => string): void {
+  const real = realpathSync(path)
+  const tmp = `${real}.cascivo-patch-${process.pid}`
+  writeFileSync(tmp, edit(readFileSync(real, 'utf8')))
+  renameSync(tmp, real)
+}
+
 /** Every `_name_hash_line` CSS-module class in a built HTML file that has no rule behind it. */
 function unstyledClasses(app: string): { page: string; used: number; unmatched: string[] }[] {
   const dist = join(app, 'dist')
@@ -270,6 +294,22 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
       run('pnpm', ['exec', 'astro', 'build'], app)
     })
 
+    const vanillaConfig =
+      "import { defineConfig } from 'astro/config'\n" +
+      "import react from '@astrojs/react'\n" +
+      'export default defineConfig({ integrations: [react()] })\n'
+
+    /** Builds with the config an adopter gets from `astro add react`, nothing cascivo-specific. */
+    function buildVanilla(): ReturnType<typeof unstyledClasses> {
+      writeFileSync(join(app, 'astro.config.mjs'), vanillaConfig)
+      // Vite and Astro cache the externalization decision and the transformed graph.
+      for (const dir of ['.vite', '.astro']) {
+        rmSync(join(app, 'node_modules', dir), { recursive: true, force: true })
+      }
+      run('pnpm', ['exec', 'astro', 'build'], app)
+      return unstyledClasses(app)
+    }
+
     it('emits the CSS its server-rendered markup references', { skip: !ready }, () => {
       const results = unstyledClasses(app)
       assert.ok(results.length >= 3, `expected the scaffold's 3 routes, got ${results.length}`)
@@ -284,38 +324,73 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
         broken.map((b) => `${b.page} (${b.unmatched.length} unmatched, e.g. .${b.unmatched[0]})`),
         [],
         'Server-rendered markup references cascivo classes with no rule behind them, so those ' +
-          'pages render unstyled. Check that `cascivo create --framework astro` still emits ' +
-          '`vite.resolve.noExternal` (NOT `ssr.noExternal`) and that `module` is still listed ' +
-          'ahead of `node` in the exports map. See docs/USING-WITH-ASTRO.md.',
+          'pages render unstyled. Check that `module` is still listed ahead of `node` in the ' +
+          'exports map and that the `astro-component` keyword is still in package.json. See ' +
+          'docs/USING-WITH-ASTRO.md.',
       )
     })
 
+    /** The zero-config promise: no `resolve.noExternal`, no integration, still styled. */
+    it(
+      'builds styled with a vanilla astro.config (no resolve.noExternal)',
+      { skip: !ready },
+      () => {
+        const original = readFileSync(join(app, 'astro.config.mjs'), 'utf8')
+        try {
+          const results = buildVanilla()
+          assert.ok(
+            results.some((r) => r.used > 0),
+            'no cascivo module classes in any built page, so this proves nothing.',
+          )
+          const broken = results.filter((r) => r.unmatched.length > 0)
+          assert.deepEqual(
+            broken.map(
+              (b) => `${b.page} (${b.unmatched.length} unmatched, e.g. .${b.unmatched[0]})`,
+            ),
+            [],
+            'A vanilla astro.config rendered cascivo islands unstyled. Astro inlines a package ' +
+              'whose keywords contain `astro-component`; check that @cascivo/react (and the ' +
+              'other CSS-shipping packages) still carry it. See docs/USING-WITH-ASTRO.md.',
+          )
+        } finally {
+          writeFileSync(join(app, 'astro.config.mjs'), original)
+        }
+      },
+    )
+
     /**
-     * The arm that would have caught the original miss. Without it, this file would pass on a
-     * scaffold that had quietly stopped emitting the config — the exact shape of failure that
-     * made `apps/examples/astro-islands` look conclusive when it was not.
+     * The arm that would have caught the original miss. Without it, the arm above would pass on
+     * a build where something else (a workspace link, a stray noExternal) was doing the work —
+     * the exact shape of failure that made `apps/examples/astro-islands` look conclusive when
+     * it was not. Removing the keyword must put the failure back.
      */
-    it('fails without resolve.noExternal (the canary can actually fail)', { skip: !ready }, () => {
-      const config = join(app, 'astro.config.mjs')
-      const original = readFileSync(config, 'utf8')
+    it('the keyword is what makes it work (the canary can still fail)', { skip: !ready }, () => {
+      const original = readFileSync(join(app, 'astro.config.mjs'), 'utf8')
+      const manifest = join(app, 'node_modules', '@cascivo', 'react', 'package.json')
+      const withoutKeyword = (text: string): string => {
+        const pkg = JSON.parse(text) as { keywords?: string[] }
+        pkg.keywords = (pkg.keywords ?? []).filter((k) => k !== 'astro-component')
+        return JSON.stringify(pkg, null, 2) + '\n'
+      }
+      // Captured before the edit so the finally block restores byte for byte.
+      const pristine = readFileSync(realpathSync(manifest), 'utf8')
+      assert.ok(
+        (JSON.parse(pristine) as { keywords?: string[] }).keywords?.includes('astro-component'),
+        'the installed @cascivo/react has no astro-component keyword, so the arm above ' +
+          'cannot be what keeps the build styled.',
+      )
       try {
-        writeFileSync(
-          config,
-          "import { defineConfig } from 'astro/config'\n" +
-            "import react from '@astrojs/react'\n" +
-            'export default defineConfig({ integrations: [react()] })\n',
-        )
-        execFileSync('pnpm', ['exec', 'astro', 'build'], { cwd: app, stdio: 'pipe' })
-        const broken = unstyledClasses(app).filter((r) => r.unmatched.length > 0)
+        patchInstalledFile(manifest, withoutKeyword)
+        const broken = buildVanilla().filter((r) => r.unmatched.length > 0)
         assert.ok(
           broken.length > 0,
-          'Removing `resolve.noExternal` did NOT produce unstyled pages. Either Astro/Vite no ' +
-            'longer externalizes the package (in which case the scaffold can drop the config ' +
-            'and docs/USING-WITH-ASTRO.md should be re-written), or this canary has stopped ' +
-            'measuring anything.',
+          'Removing the astro-component keyword did NOT produce unstyled pages. Either ' +
+            'Astro/Vite no longer externalizes the package without it (re-check ' +
+            'docs/USING-WITH-ASTRO.md), or this canary has stopped measuring anything.',
         )
       } finally {
-        writeFileSync(config, original)
+        patchInstalledFile(manifest, () => pristine)
+        writeFileSync(join(app, 'astro.config.mjs'), original)
       }
     })
   })

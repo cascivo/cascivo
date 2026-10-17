@@ -43,6 +43,13 @@
  *      twin — invariant 2 is preserved. See
  *      docs/plans/framework-templates-astro-ghost-research.md.
  *
+ *   5. Every such package carries the `astro-component` keyword. Astro externalizes an npm
+ *      dependency in its server builds, so Node imports it at runtime, its module graph (and
+ *      its `import './x.css'` edges) is never walked, and server-rendered islands render
+ *      unstyled. Astro inlines packages whose `keywords` contain `astro` or `astro-component`
+ *      (its framework-package detection), which is what makes a plain `astro.config` work
+ *      without `vite.resolve.noExternal`. Pinned end to end by framework-install.test.ts.
+ *
  * Needs a prior `pnpm build` — it reads `dist/`, i.e. what an adopter actually installs.
  * Skips cleanly when dist is absent so `pnpm ready`'s pre-build stages stay runnable.
  *
@@ -60,6 +67,7 @@ interface PkgJson {
   name?: string
   private?: boolean
   sideEffects?: string[] | boolean
+  keywords?: string[]
   exports?: Record<string, unknown>
 }
 
@@ -290,6 +298,26 @@ describe('css-contract — a package that declares CSS side effects imports its 
         'graph then emit none, and SSR-rendered components render unstyled with no warning ' +
         '— reproduced on Astro for two majors. `module` ahead of `node` fixes it without ' +
         "weakening invariant 2, because Node's ESM resolver ignores `module`.\n  " +
+        offenders.join('\n  '),
+    )
+  })
+
+  it('every CSS-bearing package carries the astro-component keyword', { skip: !built }, () => {
+    const offenders: string[] = []
+    for (const c of candidates()) {
+      if (!(c.pkg.keywords ?? []).includes('astro-component')) {
+        offenders.push(`${c.name}: missing "astro-component" keyword`)
+      }
+    }
+    assert.deepEqual(
+      offenders,
+      [],
+      'Astro externalizes an npm dependency in its server and prerender builds, so Node imports ' +
+        "it at runtime and Astro never walks its module graph for CSS: the package's " +
+        'server-rendered islands render unstyled with no warning. Astro inlines a package ' +
+        'instead when its `keywords` contain `astro` or `astro-component`, which makes the ' +
+        'plain `astro.config` (no `vite.resolve.noExternal`) work. Add "astro-component" to the ' +
+        'package.json `keywords`, kept sorted.\n  ' +
         offenders.join('\n  '),
     )
   })
