@@ -46,7 +46,7 @@ from composites import ALIAS, BOTTOM, CYR_EXT, CYR_LOCL, GREEK_ACCENTED, GREEK_P
 from geom import contour_bounds, expand, transform_contour  # noqa: E402
 import kern  # noqa: E402
 from kern import kern_fea  # noqa: E402
-from params import BLACK_STEM, ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, P  # noqa: E402
+from params import BLACK_STEM, THIN_STEM, ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, P  # noqa: E402
 
 FAMILY = 'Cascivo Sans'
 PS = 'CascivoSans'
@@ -837,11 +837,12 @@ def build_master_font(o, glyf, order):
     return fb.font
 
 
-# Stem at each named weight (Regular 84 and Black are the masters). The light half uses equal
-# stem *ratios*, since linear interpolation crowds it (Thin->ExtraLight is a doubling). The heavy
-# half front-loads weight as Geist and Inter do, so Bold reads as clearly bold next to Regular:
-# with equal ratios Bold's stem was 132 and it was only 1.31x as dark as Regular (Geist 1.45x).
-NAMED_STEMS = [(100, 22), (200, 34.4), (300, 53.7), (400, 84), (500, 104), (600, 124), (700, 144), (800, 168), (900, BLACK_STEM)]
+# Stem at each named weight (Regular 84 and Black are the masters). Every step is 20-22 units,
+# as in Inter (19-26): the old light half held equal stem *ratios* (13 units from Thin to
+# ExtraLight, 31 from Light to Regular), which read as a stall then a jump. Thin starts at 24, a
+# touch above the old Thin master (22), so it stays a legible stroke and the first step is a full 20;
+# the heavy half still front-loads weight as Geist and Inter do (Bold reads clearly bold).
+NAMED_STEMS = [(100, THIN_STEM), (200, 44), (300, 64), (400, 84), (500, 104), (600, 124), (700, 146), (800, 168), (900, BLACK_STEM)]
 
 
 def _wght_map():
@@ -849,7 +850,7 @@ def _wght_map():
     out = []
     for w, stem in NAMED_STEMS:
         if stem <= 84:
-            d = 100 + (stem - 22) / (84 - 22) * 300
+            d = 100 + (stem - THIN_STEM) / (84 - THIN_STEM) * 300
         else:
             d = 400 + (stem - 84) / (BLACK_STEM - 84) * 500
         out.append((w, round(d, 1)))

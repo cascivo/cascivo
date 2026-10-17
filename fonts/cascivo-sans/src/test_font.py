@@ -168,6 +168,27 @@ class Font(unittest.TestCase):
             self.assertLessEqual(width(700, path) / regular, 1.09)
             self.assertLessEqual(width(900, path) / regular, 1.16)
 
+    def test_named_weights_step_evenly(self):
+        # The n stem went 22/35/53/84/104/...: a 13-unit Thin -> ExtraLight step (half a pixel at
+        # 40px) and a 31-unit Light -> Regular jump, against ~20 at every other step (Inter 19-26).
+        from fontTools.pens.pointInsidePen import PointInsidePen
+        from fontTools.varLib.instancer import instantiateVariableFont
+
+        def n_stem(path, w):
+            f = instantiateVariableFont(TTFont(path), {'wght': w, 'opsz': 14})
+            gs = f.getGlyphSet()
+            y = f['OS/2'].sxHeight / 2
+            inside = lambda x: (lambda p: (gs['n'].draw(p), p)[1])(PointInsidePen(gs, (x, y), evenOdd=False)).getResult()  # noqa: E731
+            xs = [x for x in range(-50, 700) if inside(x)]
+            end = next((i for i in range(1, len(xs)) if xs[i] != xs[i - 1] + 1), len(xs))
+            return xs[end - 1] - xs[0] + 1
+
+        for path in (VF, VFI):
+            stems = [n_stem(path, w) for w in range(100, 1000, 100)]
+            steps = [b - a for a, b in zip(stems, stems[1:])]
+            for step in steps:
+                self.assertTrue(15 <= step <= 27, f'{os.path.basename(path)}: stems {stems}, steps {steps}')
+
     def test_heavy_weights_keep_their_rhythm(self):
         # Black looked spotty beside Geist and Inter: its sidebearings stayed at Regular's while
         # the counters shrank (gap between letters = gap inside them), and its horizontals thinned

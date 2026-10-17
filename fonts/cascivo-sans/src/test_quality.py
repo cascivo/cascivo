@@ -145,7 +145,7 @@ class StartingPoint(unittest.TestCase):
             # upright base a was 40 and is 28 now. The italic a is the single-storey bowl d, b and p share, and
             # its tangent join is as heavy as Inter's own (Inter Italic a 38.8, d 38.5; ours 37.9, d 38.1): unchanged
             # by WP3, so it is held to Inter's, not to the upright's.
-            limit = 32 if path == VF else 38.8
+            limit = (32 if path == VF else 38.8) * Q.STEM_THIN / 22  # these were read against the old Thin stem of 22
             self.assertLessEqual(Q.max_ink(Q.raster(path, 'a', 100)), limit, f'{path}: a swells beside its stem')
             self.assertLessEqual(Q.max_ink(Q.raster(path, 't', 100)), 1.6 * Q.STEM_THIN, f'{path}: t clots in its foot')
 
