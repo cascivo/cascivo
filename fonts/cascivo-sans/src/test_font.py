@@ -25,13 +25,13 @@ VFI = os.path.join(DIST, 'CascivoSans-Italic[opsz,wght].ttf')
 # The full-charset files grew with Vietnamese, Welsh and the Croatian digraphs (365 -> 479
 # codepoints, 95 -> 78 bytes each); the Latin slices are unchanged.
 BUDGETS = {
-    'CascivoSans[opsz,wght].woff2': 73_500,  # Latin, Cyrillic, Greek (with polytonic); 69_500 -> 71_500 for the Latin quality pass (Black counters, redrawn letters), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space)
+    'CascivoSans[opsz,wght].woff2': 74_000,  # Latin, Cyrillic, Greek (with polytonic); 69_500 -> 71_500 for the Latin quality pass (Black counters, redrawn letters), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve
     'CascivoSans-Latin[opsz,wght].woff2': 31_000,  # raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space)
     'CascivoSans-Latin[wght].woff2': 24_500,  # raised by the user for the interface brief: 23_500 -> 24_000 (width across weights), then for the Bold spacing master
     'CascivoSans-Regular.woff2': 24_500,
-    'CascivoSans-Italic[opsz,wght].woff2': 79_000,  # 75_000 -> 77_000 for the Latin quality pass (joins), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space)
+    'CascivoSans-Italic[opsz,wght].woff2': 80_000,  # 75_000 -> 77_000 for the Latin quality pass (joins), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve
     'CascivoSans-Italic-Latin[opsz,wght].woff2': 34_000,
-    'CascivoSans-Italic-Latin[wght].woff2': 27_000,  # raised by the user for the interface brief: 26_000 -> 26_500 (width across weights), then for the Bold spacing master
+    'CascivoSans-Italic-Latin[wght].woff2': 27_500,  # raised by the user for the interface brief: 26_000 -> 26_500 (width across weights), then for the Bold spacing master and the capital counter curve
 }
 
 
