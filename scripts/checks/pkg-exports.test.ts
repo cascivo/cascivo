@@ -84,13 +84,14 @@ describe('pkg-exports — published packages expose ./package.json', () => {
    */
   it('every published package emits .js/.d.ts, not .mjs/.d.mts', () => {
     // Tool packages an adopter RUNS (npx) rather than imports, plus the build-time vite
-    // plugin. The convention matters for anything landing in a consumer's module graph; a
+    // plugin and Astro integration, which load in the build's config process, not the app. The convention matters for anything landing in a consumer's module graph; a
     // CLI binary's own extension does not.
     const NOT_IMPORTED = new Set([
       'cascivo',
       '@cascivo/mcp',
       '@cascivo/registry',
       '@cascivo/vite-plugin',
+      '@cascivo/astro',
     ])
     const offenders: string[] = []
     for (const p of publishedPackagesWithExports()) {

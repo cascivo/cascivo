@@ -36,6 +36,7 @@ const ORDER = [
   '@cascivo/tokens',
   '@cascivo/themes',
   '@cascivo/react',
+  '@cascivo/astro',
   '@cascivo/icons',
   '@cascivo/charts',
   '@cascivo/i18n',

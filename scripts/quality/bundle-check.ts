@@ -87,6 +87,7 @@ const BUDGETS: Record<string, number> = {
   // table the validator checks every view against; components come from @cascivo/react.
   '@cascivo/render': 16,
   '@cascivo/vite-plugin': 5, // measured 0.6
+  '@cascivo/astro': 5, // measured 0.5 — runs in Astro's config process, never in a browser
   '@cascivo/eslint-config': 5, // measured 2.0 — plain config data, but still worth a ceiling
   // Lints, never ships to a browser. The ceiling is for the generated data files: a
   // near-misses list that grew to hundreds of rows would be a design problem, not a size one.
