@@ -1,0 +1,9 @@
+---
+// No directive: static HTML, no JavaScript, but its CSS must still be emitted.
+import Layout from '../layouts/Layout.astro'
+import { Counter } from '../components/Counter'
+---
+
+<Layout title="no directive">
+  <Counter label="none" />
+</Layout>

@@ -1,0 +1,11 @@
+---
+// One directive per page, so one directive's CSS emission cannot mask another's.
+import Layout from '../layouts/Layout.astro'
+import { Counter } from '../components/Counter'
+import { TabsIsland } from '../components/TabsIsland'
+---
+
+<Layout title="client:load">
+  <Counter label="load" client:load />
+  <TabsIsland client:load />
+</Layout>

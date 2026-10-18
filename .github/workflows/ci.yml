@@ -300,7 +300,9 @@ jobs:
       # Vite's externalization of a real node_modules package — the cause the workspace
       # fixture above structurally cannot reproduce, and which shipped an unstyled Astro
       # experience once already. Each arm also breaks its wiring on purpose and requires
-      # the check to fail, so the canary cannot silently stop measuring anything.
+      # the check to fail, so the canary cannot silently stop measuring anything. Its
+      # naive-adopter Astro arm drives real Chromium: it needs the Chromium installed earlier
+      # in this job ("Install Chromium"), so keep this step after that one.
       - name: Framework-install canary (scaffolded apps render styled from tarballs)
         run: pnpm run framework:check
 

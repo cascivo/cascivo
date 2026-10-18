@@ -1,0 +1,21 @@
+---
+import '@cascivo/themes/light-dark.css'
+import { ClientRouter } from 'astro:transitions'
+import ThemeScript from '../components/ThemeScript.astro'
+
+// `.astro` pages pass `title`; an MDX page's `layout:` passes its frontmatter.
+const title = Astro.props.title ?? Astro.props.frontmatter?.title ?? 'astro-naive'
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <ThemeScript />
+    <ClientRouter />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
