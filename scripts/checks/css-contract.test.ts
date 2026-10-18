@@ -322,6 +322,41 @@ describe('css-contract — a package that declares CSS side effects imports its 
     )
   })
 
+  it('every shipped stylesheet opens with the canonical layer order', { skip: !built }, () => {
+    // The ONE statement, from the one source of truth. Comments are stripped first: the
+    // file's prose mentions `@layer` blocks, and only the real statement ends in `;`.
+    const canonical = readFileSync(join(PACKAGES_DIR, 'tokens/src/layers.css'), 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .match(/@layer\s[^{;]+;/)?.[0]
+    assert.ok(canonical, 'packages/tokens/src/layers.css has no @layer order statement')
+    const squash = (s: string) => s.replace(/\s+/g, ' ').trim()
+
+    const offenders: string[] = []
+    for (const c of candidates()) {
+      for (const file of c.stylesheets) {
+        // First @layer rule, comments out of the way (a leading license banner is fine).
+        const css = readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')
+        const first = css.match(/@layer\s[^{;]*[{;]/)?.[0]
+        const label = `${c.name}: ${file.slice(c.dir.length + 1)}`
+        if (first === undefined) offenders.push(`${label} has no @layer rule`)
+        else if (squash(first) !== squash(canonical)) {
+          offenders.push(`${label} opens with \`${squash(first).slice(0, 60)}\``)
+        }
+      }
+    }
+    assert.deepEqual(
+      offenders,
+      [],
+      'A stylesheet that opens with `@layer cascivo.component{…}` and no order statement lets ' +
+        'whichever stylesheet the page loads first fix the layer order. Astro dev with an MDX ' +
+        'layout loads a component sheet before the tokens, so cascivo.component ends up below ' +
+        'cascivo.reset and the layer order silently inverts. Identical @layer statements are ' +
+        'idempotent, so every emitted sheet carries the statement from ' +
+        '@cascivo/tokens/layers.css (scripts/build/layer-order.ts).\n  ' +
+        offenders.join('\n  '),
+    )
+  })
+
   it(
     'finds the packages it is meant to cover (guards against silent skips)',
     { skip: !built },

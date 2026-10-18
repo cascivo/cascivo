@@ -34,22 +34,31 @@
  */
 
 import { insertAfterDirectives } from '../lib/directives.ts'
+import { layerOrderStatement, prependLayerOrder } from './layer-order.ts'
 
 interface Chunk {
   type: string
   code?: string
+  source?: string | Uint8Array
   isEntry?: boolean
 }
 
 export function cssImportEdge(cssFileName: string) {
+  const layerOrder = layerOrderStatement()
   return {
     name: 'cascivo:css-import-edge',
+    // Post: a single-sheet lib build has Vite's own CSS plugin emit the stylesheet in ITS
+    // generateBundle, so a normal-order hook runs before the asset exists and has nothing to
+    // prepend the layer order to.
+    enforce: 'post' as const,
     generateBundle(
       this: { emitFile(file: { type: 'asset'; fileName: string; source: string }): void },
       _options: unknown,
       bundle: Record<string, Chunk>,
     ) {
       for (const [fileName, chunk] of Object.entries(bundle)) {
+        // Every emitted stylesheet states the layer order itself — see layer-order.ts.
+        if (fileName.endsWith('.css')) prependLayerOrder(chunk, layerOrder)
         if (chunk.type !== 'chunk' || typeof chunk.code !== 'string') continue
 
         // The CSS-free twin, captured before the import is injected. Emitted for shared
