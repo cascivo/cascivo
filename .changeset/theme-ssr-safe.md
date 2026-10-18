@@ -1,6 +1,6 @@
 ---
 '@cascivo/core': minor
-'@cascivo/react': patch
+'@cascivo/react': minor
 '@cascivo/mcp': patch
 ---
 

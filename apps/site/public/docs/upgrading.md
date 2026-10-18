@@ -275,6 +275,13 @@ Release-specific upgrade guides, newest first:
   (a `value` no longer leaks into the next request), and `themePreloadScript({ reapplyOn:
 'astro:after-swap' })` keeps the theme across Astro `<ClientRouter>` soft navigations.
 
+- **Compound parts outside their root now throw** (`@cascivo/react` minor) — `TabsList`,
+  `TabsTrigger`, `TabsContent`, `AccordionItem`, `AccordionTrigger` and `AccordionContent`
+  rendered outside their `Tabs` / `Accordion` root throw an error that names the fix. Before,
+  they silently rendered nothing. Migration: render each part inside its root. In Astro, every
+  `.astro` child renders separately, so React context cannot reach a part placed directly in
+  `.astro` markup; compose the root and its parts in one `.tsx` island and hydrate that island.
+
 - **Upgrading `0.x` → `1.0.0`** — eleven deprecated surfaces are removed. Every one has a
   replacement that takes the identical argument, so each fix is a rename, and every removal
   is a _compile error_ rather than a silent behaviour change.

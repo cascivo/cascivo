@@ -1,5 +1,5 @@
 ---
-'@cascivo/react': patch
+'@cascivo/react': minor
 ---
 
 `TabsList`, `TabsTrigger`, `TabsContent`, `AccordionItem`, `AccordionTrigger` and
