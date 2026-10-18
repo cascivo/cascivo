@@ -849,6 +849,7 @@ function astroPackageJson(opts: ScaffoldOptions): string {
     // only. `@cascivo/core` and `@cascivo/tokens` are transitive and must not be declared.
     dependencies: {
       '@astrojs/react': '^7.1.0',
+      '@cascivo/astro': V['@cascivo/astro']!,
       '@cascivo/react': V['@cascivo/react']!,
       '@cascivo/themes': V['@cascivo/themes']!,
       '@preact/signals-react': SIGNALS_PEER,
@@ -873,13 +874,27 @@ function astroPackageJson(opts: ScaffoldOptions): string {
   return JSON.stringify(pkg, null, 2) + '\n'
 }
 
-function astroConfig(): string {
+function astroConfig(opts: ScaffoldOptions): string {
   return `// @ts-check
 import { defineConfig } from 'astro/config'
 import react from '@astrojs/react'
+import cascivo from '@cascivo/astro'
 
 export default defineConfig({
-  integrations: [react()],
+  // @cascivo/astro injects, on every page and ahead of any other CSS, the layer order and then
+  // the theme, and inlines a no-flash theme script that survives <ClientRouter /> swaps.
+  // \`layers\` is the statement in src/styles/layers.css, this app's cascivo.example slot included.
+  // Both theme options name the app's theme: the defaults (light-dark.css and the OS
+  // preference) would repaint any other theme as plain light or dark.
+  integrations: [
+    react(),
+    cascivo({
+      layers:
+        '${ASTRO_LAYER_ORDER}',
+      theme: '@cascivo/themes/${opts.theme}.css',
+      themeScript: { defaultTheme: '${opts.theme}' },
+    }),
+  ],
   vite: {
     resolve: {
       // REQUIRED, and the single least obvious line in this app.
@@ -911,24 +926,35 @@ function astroTsconfig(): string {
 }
 
 /**
- * The cascade layer order plus this app's own slot.
+ * The Astro scaffold's complete layer order: `vendor` lowest, the canonical cascivo layers,
+ * and this app's `cascivo.example` slot just below `cascivo.override`. One constant, because
+ * it is both passed to `@cascivo/astro` (which injects it first on every page) and repeated
+ * in `src/styles/layers.css`; two copies would drift. One literal, not a concatenation:
+ * scripts/checks/layer-order.test.ts scans this file for `@layer …;` statements, and a split
+ * string would hide this one from it.
+ */
+const ASTRO_LAYER_ORDER =
+  '@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.platform, cascivo.theme, cascivo.blocks, cascivo.example, cascivo.override;'
+
+/**
+ * The reset and base rules, under the same order statement `@cascivo/astro` injects first.
  *
- * A standalone CSS file imported BEFORE the theme, rather than a `<style>` in the layout:
- * layers take their order from first appearance, so a statement that lands after the
- * theme's CSS cannot reorder anything, and `vendor` would end up winning over every
- * cascivo layer instead of losing to all of them.
+ * Layers take their order from first appearance, so the statement that counts is the
+ * integration's, which lands before any cascivo CSS; a statement that only arrived after the
+ * theme could reorder nothing, and `vendor` would win over every cascivo layer. Repeating the
+ * identical statement here is idempotent and keeps the file readable on its own.
  */
 function astroLayersCss(): string {
-  return `/* Cascade layer order. Must load before any cascivo CSS — see the note in
-   src/layouts/Layout.astro. Later layers beat earlier ones regardless of specificity.
+  return `/* Cascade layer order. Later layers beat earlier ones regardless of specificity.
+   @cascivo/astro injects this same statement first on every page (\`layers\` in
+   astro.config.mjs); keep the two identical. Repeating it here is harmless.
 
    cascivo.example is this app's own slot: above the component and blocks layers so your
    page styles win, below cascivo.override which stays free for one-off hotfixes.
    Third-party CSS goes in vendor so it cannot beat cascivo:
      @import url('some-lib/styles.css') layer(vendor);
    See https://cascivo.com/docs/third-party-css.md */
-@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component,
-  cascivo.platform, cascivo.theme, cascivo.blocks, cascivo.example, cascivo.override;
+${ASTRO_LAYER_ORDER}
 
 @layer cascivo.reset {
   *,
@@ -951,13 +977,13 @@ function astroLayersCss(): string {
 
 function astroLayout(opts: ScaffoldOptions): string {
   return `---
-// Import order matters: the layer statement must be established before any cascivo CSS.
+// The layer order and the ${opts.theme} theme come from @cascivo/astro in astro.config.mjs,
+// injected ahead of this file on every page. This adds the reset and base rules.
 import '../styles/layers.css'
-import '@cascivo/themes/${opts.theme}.css'
 
 // No '@cascivo/react/styles.css'. Each component brings its own CSS through the module
 // graph, so you ship only what your pages use. Import the aggregate ONLY if you drop the
-// bundler entirely. The theme import above is always required — themes are never automatic.
+// bundler entirely.
 
 interface Props {
   title: string
@@ -1130,10 +1156,11 @@ A component that reads \`signal.value\` during render must also call \`useSignal
 
 ## Styling
 
-\`src/styles/layers.css\` declares the cascade layer order and this app's own
-\`cascivo.example\` slot. It is imported **before** the theme in \`src/layouts/Layout.astro\`,
-and that order matters: layers take their position from first appearance, so a statement
-loaded after the theme cannot reorder anything.
+\`@cascivo/astro\` (in \`astro.config.mjs\`) injects the cascade layer order, then the
+\`${opts.theme}\` theme, ahead of any other CSS on every page, and inlines a no-flash theme
+script. Its \`layers\` option is the same statement as \`src/styles/layers.css\`, which adds
+this app's own \`cascivo.example\` slot; keep the two identical. Layers take their position
+from first appearance, so a statement loaded after the theme cannot reorder anything.
 
 Add more components with \`npx cascivo add <component>\`.
 ${staticShareSection(opts)}`
@@ -4195,7 +4222,7 @@ function buildAstroScaffold(opts: ScaffoldOptions, sections: Section[]): Scaffol
   return [
     { path: 'package.json', contents: astroPackageJson(opts) },
     { path: 'tsconfig.json', contents: astroTsconfig() },
-    { path: 'astro.config.mjs', contents: astroConfig() },
+    { path: 'astro.config.mjs', contents: astroConfig(opts) },
     { path: 'eslint.config.js', contents: eslintConfig() },
     { path: '.prettierrc', contents: prettierrc() },
     { path: '.prettierignore', contents: prettierIgnore() },

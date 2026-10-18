@@ -248,14 +248,46 @@ describe('buildScaffold — astro', () => {
     expect(map.get('src/components/Dashboard.tsx')).not.toContain('client:')
   })
 
-  it('imports the layer order before the theme, so vendor cannot outrank cascivo', () => {
-    const layout = map.get('src/layouts/Layout.astro')!
-    const layers = layout.indexOf('styles/layers.css')
-    const theme = layout.indexOf('@cascivo/themes/')
-    expect(layers).toBeGreaterThan(-1)
-    expect(theme).toBeGreaterThan(-1)
-    expect(layers).toBeLessThan(theme)
-    expect(map.get('src/styles/layers.css')).toContain('@layer vendor, cascivo.reset')
+  /**
+   * The order statement is injected first on every page by @cascivo/astro. The layout still
+   * imports layers.css for the reset and base rules; its statement must be the one the
+   * integration injects, or the two drift and whichever runs first wins.
+   */
+  it('passes the layers.css order statement to @cascivo/astro, so vendor cannot outrank cascivo', () => {
+    const css = map.get('src/styles/layers.css')!
+    const statement = /^@layer vendor,[^;]+;/m.exec(css)?.[0]
+    expect(statement).toBeDefined()
+    expect(statement).toContain('cascivo.example, cascivo.override')
+    const config = map.get('astro.config.mjs')!
+    // Prettier puts a long string on the line after its key, so allow either layout.
+    const layers = /layers:\s*'([^']+)'/.exec(config)?.[1]
+    expect(layers).toBe(statement!.replace(/\s+/g, ' '))
+    expect(map.get('src/layouts/Layout.astro')).toContain("import '../styles/layers.css'")
+  })
+
+  it('wires @cascivo/astro next to react() and drops the theme import from the layout', () => {
+    const config = map.get('astro.config.mjs')!
+    expect(config).toContain("import cascivo from '@cascivo/astro'")
+    expect(config).toMatch(/integrations: \[\s*react\(\),\s*cascivo\(\{/)
+    expect(config).toContain("theme: '@cascivo/themes/dark.css'")
+    expect(config).toContain("themeScript: { defaultTheme: 'dark' }")
+    // The integration imports the theme on every page; a second import in the layout would
+    // load it after layers.css and duplicate it.
+    expect(map.get('src/layouts/Layout.astro')).not.toContain('@cascivo/themes/')
+  })
+
+  /**
+   * The integration's defaults are light-dark.css and an OS-preference theme script. Either one
+   * left in place repaints a `midnight` app as light or dark: the stylesheet has no midnight
+   * palette and the script overwrites `data-theme`, so the app renders grayscale.
+   */
+  it('passes a non-light/dark theme through to both integration options', () => {
+    const config = fileMap(
+      buildScaffold({ name: 'Night', framework: 'astro', theme: 'midnight', sections: ['Home'] }),
+    ).get('astro.config.mjs')!
+    expect(config).toContain("theme: '@cascivo/themes/midnight.css'")
+    expect(config).toContain("themeScript: { defaultTheme: 'midnight' }")
+    expect(config).not.toContain("'@cascivo/themes/light-dark.css'")
   })
 
   it('nav items carry href, so Astro routing needs no client router', () => {
@@ -274,6 +306,7 @@ describe('buildScaffold — astro', () => {
     expect(pkg.dependencies['@astrojs/react']).toBeDefined()
     expect(pkg.dependencies['@cascivo/react']).toBeDefined()
     expect(pkg.dependencies['@cascivo/themes']).toBeDefined()
+    expect(pkg.dependencies['@cascivo/astro']).toMatch(/^\d+\.\d+\.\d+$/)
     // Same prebuilt-path rule as the Vite scaffold: these are transitive, never declared.
     expect(pkg.dependencies['@cascivo/core']).toBeUndefined()
     expect(pkg.dependencies['@cascivo/tokens']).toBeUndefined()

@@ -82,6 +82,7 @@ const PACKAGES = [
   'render',
   'text',
   'email',
+  'astro',
 ]
 const NEEDS_DIST = [
   'react',
@@ -95,6 +96,7 @@ const NEEDS_DIST = [
   'render',
   'text',
   'email',
+  'astro',
 ]
 
 const built = NEEDS_DIST.every((p) => existsSync(join(REPO_ROOT, 'packages', p, 'dist')))
