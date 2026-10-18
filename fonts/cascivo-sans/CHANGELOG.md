@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Dotted zero in `ss01`; plain `I` and `l` move to `ss02`.** `ss01` sets a zero with a dot in its counter (the period's dot, narrowed to fit at Black), proportional or, with `tnum`, tabular; `zero` stays the slashed zero and wins when both are on. Stylesheets that used `ss01` for the plain `I` and `l` use `ss02` now. The capitals' counters follow the weight's stem again at Caption and Display, and a wide `i` keeps its 16-unit clearance beside D and B at Display Black.
 - **The Latin quality pass.** Joins, heavy terminals, Thin hairlines, Black counters and spacing
   are redrawn against Inter at 300 px and 14 px. Bowls flow into the stem with a tangent join;
   Black `a g 6 9 ? S s e æ` end in blunt cuts instead of tongues and wedges; the Thin comma, quotes

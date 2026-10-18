@@ -8,13 +8,10 @@
       "license": "OFL 1.1",
       "scripts": "Latin, Cyrillic, Greek",
       "since": "2026",
-      "axes": [
-        "wght",
-        "opsz"
-      ],
+      "axes": ["wght", "opsz"],
       "hinted": false,
-      "latin_wght_upright_bytes": 22556,
-      "latin_wght_italic_bytes": 24912,
+      "latin_wght_upright_bytes": 22528,
+      "latin_wght_italic_bytes": 25004,
       "codepoints_upright": 211
     },
     {
@@ -23,10 +20,7 @@
       "license": "OFL 1.1",
       "scripts": "Latin, Cyrillic, Greek",
       "since": "2016–17",
-      "axes": [
-        "opsz",
-        "wght"
-      ],
+      "axes": ["opsz", "wght"],
       "hinted": false,
       "latin_wght_upright_bytes": 37380,
       "latin_wght_italic_bytes": 40192,
@@ -38,9 +32,7 @@
       "license": "OFL 1.1",
       "scripts": "Latin, Cyrillic",
       "since": "2023–24",
-      "axes": [
-        "wght"
-      ],
+      "axes": ["wght"],
       "hinted": false,
       "latin_wght_upright_bytes": 26364,
       "latin_wght_italic_bytes": null,
@@ -52,9 +44,7 @@
       "license": "OFL 1.1",
       "scripts": "Latin, Cyrillic, Greek",
       "since": "2017–18",
-      "axes": [
-        "wght"
-      ],
+      "axes": ["wght"],
       "hinted": true,
       "latin_wght_upright_bytes": 41520,
       "latin_wght_italic_bytes": 45904,

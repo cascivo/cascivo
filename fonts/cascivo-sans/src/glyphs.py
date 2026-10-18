@@ -115,8 +115,8 @@ def _H(g, p):
     g.ht = 'c'
 
 
-@glyph('I.ss01')
-def _I_ss01(g, p):  # plain I: opt-in, it is identical to l in most grotesques
+@glyph('I.ss02')
+def _I_ss02(g, p):  # plain I: opt-in, it is identical to l in most grotesques
     g.vstem(0, 0, p.cap)
     g.ht = 'c'
 
@@ -593,8 +593,8 @@ def _dotlessi(g, p):
     g.vstem(0, 0, p.xh)
 
 
-@glyph('l.ss01')
-def _l_ss01(g, p):  # plain l: opt-in
+@glyph('l.ss02')
+def _l_ss02(g, p):  # plain l: opt-in
     g.vstem(0, 0, p.asc)
     g.ht = 'a'
 
@@ -1088,6 +1088,21 @@ def _zero_slash(g, p):
     w = fw(p) * 0.98
     g.oval(0, -p.ov, w, p.cap + p.ov)
     g.line((w * 0.22, p.cap * 0.2), (w * 0.78, p.cap * 0.8), ws=0.7, caps=('b', 'b'))
+    g.tab = True
+    g.ht = 'c'
+
+
+@glyph('zero.dot.tf')
+def _zero_dot(g, p):
+    w = fw(p) * (1.01 + 0.03 * p.heavy)  # the ring is zero's, so ss01 changes nothing about the width
+    g.oval(0, -p.ov, w, p.cap + p.ov)
+    # The dot is the period's, the largest the counter holds: at Black the counter is narrower than the period's dot is
+    # wide, so the dot narrows to 45% of it and stands taller than wide (up to 1.5x), clear of the ring on every side.
+    cw = w - 2 * p.V
+    dw = min(p.dot, 0.45 * cw)
+    dh = min(p.dot, 1.5 * dw)
+    cy = p.cap / 2
+    g.line((w / 2, cy - dh / 2), (w / 2, cy + dh / 2), w=dw)
     g.tab = True
     g.ht = 'c'
 

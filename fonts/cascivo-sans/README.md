@@ -73,19 +73,20 @@ browser fakes italics by skewing the upright.
 
 ## OpenType features
 
-| Feature                | CSS                                        | Effect                                                                            |
-| ---------------------- | ------------------------------------------ | --------------------------------------------------------------------------------- |
-| Proportional figures   | default                                    | Figures sit naturally in running text                                             |
-| `tnum`                 | `font-variant-numeric: tabular-nums`       | All digits share one width, so columns align in tables                            |
-| `zero`                 | `font-variant-numeric: slashed-zero`       | Slashed zero                                                                      |
-| `onum` / `lnum`        | `font-variant-numeric: oldstyle-nums`      | Old-style figures (0 1 2 at x-height, 3 4 5 7 9 descend), proportional or tabular |
-| `frac`                 | `font-variant-numeric: diagonal-fractions` | 1/2 → ½                                                                           |
-| `sups` / `sinf`        | `font-variant-position: super / sub`       | Real superior and inferior figures                                                |
-| `ordn`                 | `font-variant-numeric: ordinal`            | 1a → 1ª                                                                           |
-| `case`                 | `font-feature-settings: 'case'`            | Hyphens, parentheses and guillemets centred on capitals                           |
-| `ss01`                 | `font-feature-settings: 'ss01'`            | Plain `I` and `l` (as in Helvetica), including every accented form                |
-| `locl`                 | `lang="ro"`                                | Ş ţ → Ș ț (comma below) for Romanian and Moldovan                                 |
-| `kern`, `mark`, `ccmp` | default                                    | Class kerning, and accents placed on any base, including decomposed text          |
+| Feature                | CSS                                        | Effect                                                                                 |
+| ---------------------- | ------------------------------------------ | -------------------------------------------------------------------------------------- |
+| Proportional figures   | default                                    | Figures sit naturally in running text                                                  |
+| `tnum`                 | `font-variant-numeric: tabular-nums`       | All digits share one width, so columns align in tables                                 |
+| `zero`                 | `font-variant-numeric: slashed-zero`       | Slashed zero                                                                           |
+| `onum` / `lnum`        | `font-variant-numeric: oldstyle-nums`      | Old-style figures (0 1 2 at x-height, 3 4 5 7 9 descend), proportional or tabular      |
+| `frac`                 | `font-variant-numeric: diagonal-fractions` | 1/2 → ½                                                                                |
+| `sups` / `sinf`        | `font-variant-position: super / sub`       | Real superior and inferior figures                                                     |
+| `ordn`                 | `font-variant-numeric: ordinal`            | 1a → 1ª                                                                                |
+| `case`                 | `font-feature-settings: 'case'`            | Hyphens, parentheses and guillemets centred on capitals                                |
+| `ss01`                 | `font-feature-settings: 'ss01'`            | Dotted zero, proportional or tabular (`zero`, the slashed zero, wins when both are on) |
+| `ss02`                 | `font-feature-settings: 'ss02'`            | Plain `I` and `l` (as in Helvetica), including every accented form                     |
+| `locl`                 | `lang="ro"`                                | Ş ţ → Ș ț (comma below) for Romanian and Moldovan                                      |
+| `kern`, `mark`, `ccmp` | default                                    | Class kerning, and accents placed on any base, including decomposed text               |
 
 ## Build
 

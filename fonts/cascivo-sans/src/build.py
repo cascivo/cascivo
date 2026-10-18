@@ -281,10 +281,10 @@ def add_composites(o):
     cadv = o.adv['comma']
     comp('commaturnedabovecomb', [('commaaccentcomb', 0, -40, -1)], 0)
 
-    # Every accented I and l also gets a plain variant, so ss01 switches Í and ľ along with I
+    # Every accented I and l also gets a plain variant, so ss02 switches Í and ľ along with I
     # and l instead of leaving a mixed word.
     accents = accented_chars()
-    accents += [(ch, base, marks, '.ss01') for ch, base, marks in accents if base in 'Il']
+    accents += [(ch, base, marks, '.ss02') for ch, base, marks in accents if base in 'Il']
     for ch, base, marks, *alt in accents:
         sfx = alt[0] if alt else ''
         # an accent above replaces the dot; one below (į) keeps it
@@ -349,11 +349,11 @@ def add_composites(o):
     comp('tbar', [('t', 0, 0, 1), ('barcomp.t', tx, 0, 1)], ov('t'), 0x167)
     stem = o.bounds['L'][0] + p.V / 2
     comp('Lslash', [('L', S * 0.5, 0, 1), ('lslash.comp', stem + S * 0.5, 0, 1)], ov('L') + S * 0.5, 0x141)
-    for sfx in ('', '.ss01'):
+    for sfx in ('', '.ss02'):
         stem = o.bounds['l' + sfx][0] + p.V / 2
         comp('lslash' + sfx, [('l' + sfx, S * 0.6, 0, 1), ('lslash.comp', stem + S * 0.6, 0, 1)], ov('l' + sfx) + S * 1.2, None if sfx else 0x142)
     comp('Ldot', [('L', 0, 0, 1), ('periodcentered', o.bounds['L'][0] + p.V + S * 0.5 - S * 0.9, p.cap * 0.5 - p.xh * 0.5, 1)], ov('L'), 0x13F)
-    for sfx in ('', '.ss01'):
+    for sfx in ('', '.ss02'):
         comp('ldot' + sfx, [('l' + sfx, 0, 0, 1), ('periodcentered', ov('l' + sfx) - S * 0.6, 0, 1)], ov('l' + sfx) + ov('periodcentered') - S * 0.6, None if sfx else 0x140)
     comp('Oslash', [('O', 0, 0, 1), ('slashcomp.cap', o.bounds['O'][0], 0, 1)], ov('O'), 0xD8)
     comp('oslash', [('o', 0, 0, 1), ('slashcomp.lc', o.bounds['o'][0], 0, 1)], ov('o'), 0xF8)
@@ -361,7 +361,7 @@ def add_composites(o):
     comp('OE', [('O', 0, 0, 1), ('E', ox, 0, 1)], ox + ov('E'), 0x152)
     ox = o.bounds['o'][2] - p.V * 1.2 - o.bounds['e'][0]
     comp('oe', [('o', 0, 0, 1), ('e', ox, 0, 1)], ox + ov('e'), 0x153)
-    for sfx in ('', '.ss01'):
+    for sfx in ('', '.ss02'):
         comp('IJ' + sfx, [('I' + sfx, 0, 0, 1), ('J', ov('I' + sfx) - S * 0.4, 0, 1)], ov('I' + sfx) + ov('J') - S * 0.4, None if sfx else 0x132)
     comp('ij', [('i', 0, 0, 1), ('j', ov('i') - S * 0.4, 0, 1)], ov('i') + ov('j') - S * 0.4, 0x133)
     # Croatian digraphs (old Yugoslav encodings): two letters set at their normal spacing
@@ -394,6 +394,8 @@ def add_composites(o):
         comp(f + '.numr', [(f, lx, sup_y, k)], sw)
         comp(f + '.dnom', [(f, lx, 0, k)], sw)
     comp('zero.zero.pnum', [('zero.slash', p.Sfig * 0.62 - o.bounds['zero.slash'][0], 0, 1)], o.adv['zero.pnum'])
+    # the dotted zero (ss01): zero.dot.tf is drawn at the tabular advance, zero.dot is the proportional one, set as zero.pnum is
+    comp('zero.dot', [('zero.dot.tf', p.Sfig * 0.62 - o.bounds['zero.dot.tf'][0], 0, 1)], o.adv['zero.pnum'])
     # old-style figures: 0 1 2 drawn short (glyphs.py), 3 4 5 7 9 the lining figure hung below
     # the line so its top meets the short ones', tabular and proportional
     drop = p.cap - p.xh * GL.OSF_HEIGHT
@@ -443,13 +445,13 @@ def add_composites(o):
     comp('at.case', [('at', 0, 50, 1)], o.adv['at'])
     o.cmap.pop(0xAD, None)  # soft hyphen should never render; leave it unmapped
 
-    # Cyrillic and Greek letters that are a Latin shape are that glyph, by reference (ss01 included)
+    # Cyrillic and Greek letters that are a Latin shape are that glyph, by reference (ss02 included)
     for cp, latin in ALIAS.items():
         n = 'uni%04X' % cp
         comp(n, [(latin, 0, 0, 1)], o.adv[latin], cp)
         o.anchors[n] = o.anchors.get(latin) or o.anchors.get({'hbar': 'h'}.get(latin, latin), {})  # ; and · carry none
-        if latin + '.ss01' in o.adv:
-            comp(n + '.ss01', [(latin + '.ss01', 0, 0, 1)], o.adv[latin + '.ss01'])
+        if latin + '.ss02' in o.adv:
+            comp(n + '.ss02', [(latin + '.ss02', 0, 0, 1)], o.adv[latin + '.ss02'])
     for cp, latin in (armenian.ALIAS if ARMENIAN else {}).items():  # ։ and ֊: the colon and hyphen
         comp('uni%04X' % cp, [(latin, 0, 0, 1)], o.adv[latin], cp)
     for cp, latin in (hebrew.ALIAS if HEBREW else {}).items():  # ׃: the colon
@@ -901,10 +903,13 @@ def build_master_font(o, glyf, order):
         ySubscriptYOffset=140, ySuperscriptYOffset=round(p.cap * 0.4),
     )
     fb.setupPost(keepGlyphNames=True, underlinePosition=-110, underlineThickness=round(p.H))
-    ss01 = sorted(n[:-5] for n in o.comps.keys() | o.contours.keys() if n.endswith('.ss01') and n[:-5] in o.adv)
+    ss02 = sorted(n[:-5] for n in o.comps.keys() | o.contours.keys() if n.endswith('.ss02') and n[:-5] in o.adv)
     # a right-to-left run takes no kerning from DFLT's record in HarfBuzz, only from its own script's
-    fea = GSUB_FEA.replace('{hebr}', 'languagesystem hebr dflt;\n' if HEBREW else '') + '\nfeature ss01 {\n  featureNames { name "Plain I and l (as in Helvetica)"; };\n'
-    fea += ''.join(f'  sub {n} by {n}.ss01;\n' for n in ss01) + '} ss01;\n'
+    fea = GSUB_FEA.replace('{hebr}', 'languagesystem hebr dflt;\n' if HEBREW else '')
+    # ss01 follows `zero` and `tnum`, so the slashed zero wins when both are on and the dotted one lands on the spacing tnum chose
+    fea += '\nfeature ss01 {\n  featureNames { name "Dotted zero"; };\n  sub zero by zero.dot.tf;\n  sub zero.pnum by zero.dot;\n} ss01;\n'
+    fea += '\nfeature ss02 {\n  featureNames { name "Plain I and l (as in Helvetica)"; };\n'
+    fea += ''.join(f'  sub {n} by {n}.ss02;\n' for n in ss02) + '} ss02;\n'
     fea += '\n' + cyrl_locl(o) + '\n' + kern_fea(o) + '\n' + mark_fea(o)
     if GEORGIAN:
         fea += '\n' + georgian.kern_fea(o)

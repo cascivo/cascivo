@@ -74,7 +74,7 @@ The targets are the axes where the references leave room:
    Helvetica Now Variable, which is commercial.
 2. **UI defaults.** A serifed `I` and tailed `l` by default, so `Il1` never read alike.
    Proportional figures by default for running text; `tnum` lines numbers up in tables, `zero`
-   gives a slashed zero, and `ss01` restores the plain `I` and `l`. `case`, `frac`, `sups`, `sinf`, `ordn` and `mark` are also included.
+   gives a slashed zero, `ss01` gives a dotted zero, and `ss02` restores the plain `I` and `l`. `case`, `frac`, `sups`, `sinf`, `ordn` and `mark` are also included.
 3. **Small files, by construction.** The aim is the lowest bytes per codepoint of the group.
 4. **Source as code.** About 3,000 lines of Python that produce byte-identical output on every
    build. A test suite, Font Bakery and OTS run in the loop.
@@ -251,7 +251,7 @@ Plex and the Helvetica stand-in led to three changes:
 | --------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Figures in sentences  | Tabular by default: "$1, 117" and "11 illegal" looked gappy | Proportional by default, as in Geist and Inter. `tnum` gives tabular figures, and every figure feature (`frac`, `sups`, `ordn`, `zero`) accepts both forms                                                   |
 | `line-height: normal` | 1.22                                                        | 1.30, as in Geist and Plex. The space sits in ascent and descent, so it is split evenly above and below the text                                                                                             |
-| `I` vs `l` at 12 px   | Identical, as in Geist and Inter                            | Serifed `I` and short-tailed `l` by default. The tail grows slower than the stem, so a Black `ill` does not read as `iʟʟ`. `ss01` restores the plain forms, including all 17 accented and composite variants |
+| `I` vs `l` at 12 px   | Identical, as in Geist and Inter                            | Serifed `I` and short-tailed `l` by default. The tail grows slower than the stem, so a Black `ill` does not read as `iʟʟ`. `ss02` restores the plain forms, including all 17 accented and composite variants |
 
 A follow-up then changed the weights:
 

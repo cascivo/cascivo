@@ -177,7 +177,7 @@ class Font(unittest.TestCase):
     def test_features(self):
         gsub = {r.FeatureTag for r in self.f['GSUB'].table.FeatureList.FeatureRecord}
         gpos = {r.FeatureTag for r in self.f['GPOS'].table.FeatureList.FeatureRecord}
-        self.assertLessEqual({'ccmp', 'locl', 'pnum', 'tnum', 'zero', 'sups', 'sinf', 'subs', 'numr', 'dnom', 'frac', 'ordn', 'case', 'ss01'}, gsub)
+        self.assertLessEqual({'ccmp', 'locl', 'pnum', 'tnum', 'zero', 'sups', 'sinf', 'subs', 'numr', 'dnom', 'frac', 'ordn', 'case', 'ss01', 'ss02'}, gsub)
         self.assertLessEqual({'kern', 'mark', 'mkmk'}, gpos)
 
     def test_figures_proportional_by_default_tabular_on_request(self):
@@ -532,6 +532,76 @@ class Font(unittest.TestCase):
                 gap = min(adv + rb.out[k][0] - ra.out[k][1] for k in set(ra.out) & set(rb.out))
                 with self.subTest(font=os.path.basename(path), pair=pair):
                     self.assertGreaterEqual(gap, 16)
+
+    def test_stylistic_sets(self):
+        # ss01 is the dotted zero, ss02 the plain I and l (as in Helvetica); `zero` stays the slashed zero. Each works
+        # with tnum, and the accented I and l and the Cyrillic and Greek letters that are an I follow ss02.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        from fontTools.pens.boundsPen import BoundsPen
+
+        for path in (VF, VFI):
+            tt = TTFont(path)
+            order, glyf, gs = tt.getGlyphOrder(), tt['glyf'], tt.getGlyphSet()
+            font = hb.Font(hb.Face(open(path, 'rb').read()))
+            name = os.path.basename(path)
+
+            def shape(text, **feats):
+                buf = hb.Buffer()
+                buf.add_str(text)
+                buf.guess_segment_properties()
+                hb.shape(font, buf, feats)
+                return [(order[i.codepoint], p.x_advance) for i, p in zip(buf.glyph_infos, buf.glyph_positions)]
+
+            def zero_kind(feats):
+                (n, adv), = shape('0', **feats)
+                g = glyf[n]
+                coords, ends, _ = g.getCoordinates(glyf)
+                boxes, start = [], 0
+                for e in ends:
+                    xs, ys = zip(*coords[start:e + 1])
+                    boxes.append((min(xs), min(ys), max(xs), max(ys)))
+                    start = e + 1
+                boxes.sort(key=lambda b: (b[2] - b[0]) * (b[3] - b[1]))
+                pen = BoundsPen(gs)
+                gs[n].draw(pen)
+                if len(boxes) == 2:
+                    return 'plain', adv
+                x0, y0, x1, y1 = boxes[0]
+                # the dot is as wide as it is tall and sits at the centre of the ring; the slash runs most of its height
+                dot = (x1 - x0) <= (y1 - y0) * 1.6 and (y1 - y0) < 0.3 * (pen.bounds[3] - pen.bounds[1])
+                centred = abs((x0 + x1) / 2 - (pen.bounds[0] + pen.bounds[2]) / 2) <= 3 and abs((y0 + y1) / 2 - (pen.bounds[1] + pen.bounds[3]) / 2) <= 3
+                return ('dot' if dot and centred else 'slash'), adv
+
+            prop, tab = shape('0 1')[0][1], shape('0 1', tnum=True)[0][1]
+            self.assertNotEqual(prop, tab, name)
+            one_p, one_t = shape('1')[0][1], shape('1', tnum=True)[0][1]
+            for feats, kind, adv in (
+                ({}, 'plain', prop), ({'ss01': True}, 'dot', prop), ({'zero': True}, 'slash', prop),
+                ({'tnum': True}, 'plain', tab), ({'tnum': True, 'ss01': True}, 'dot', tab), ({'tnum': True, 'zero': True}, 'slash', tab),
+                ({'pnum': True, 'ss01': True}, 'dot', prop), ({'ss01': True, 'zero': True}, 'slash', prop),
+            ):
+                with self.subTest(font=name, feats=feats):
+                    self.assertEqual(zero_kind(feats), (kind, adv))
+            self.assertEqual(one_t, tab, name)
+            self.assertEqual(one_p, shape('1', ss01=True)[0][1], name)
+
+            plain_I, plain_l = shape('I', ss02=True)[0][0], shape('l', ss02=True)[0][0]
+            self.assertNotEqual(plain_I, shape('I')[0][0], name)
+            self.assertNotEqual(plain_l, shape('l')[0][0], name)
+            self.assertEqual(glyf[plain_I].numberOfContours, 1, name)  # a bare stem: no serifs
+            self.assertEqual(len(glyf[plain_I].getCoordinates(glyf)[0]), 4, name)
+            for text, base in (('I', plain_I), ('l', plain_l), ('\u00cd', plain_I), ('\u013e', plain_l), ('\u0406', plain_I)):
+                with self.subTest(font=name, text=text):
+                    default, alt = shape(text)[0][0], shape(text, ss02=True)[0][0]
+                    self.assertNotEqual(alt, default)
+                    self.assertEqual(shape(text, ss01=True)[0][0], default, 'ss01 no longer changes I and l')
+                    if text in ('I', 'l'):
+                        self.assertEqual(alt, base)
+                    else:
+                        self.assertEqual(glyf[alt].components[0].glyphName, base, 'built on the plain letter')
 
     def test_local_forms(self):
         # Bulgarian takes its round lowercase, Serbian and Macedonian their б (and, in the
