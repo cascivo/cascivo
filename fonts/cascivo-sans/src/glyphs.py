@@ -162,7 +162,7 @@ def _F(g, p):
 @glyph('T', 0x54)
 def _T(g, p):
     # wider, as Geist's and Inter's: it carried 0.92x their ink at every weight
-    w = p.Hw * 0.97
+    w = p.Hd * 0.97
     g.hbar(0, w, p.cap - p.H).vstem((w - p.V) / 2, 0, p.cap - p.H / 2)
     g.ht = 'c'
     g.sb = (0.18, 0.18)
@@ -171,7 +171,7 @@ def _T(g, p):
 @glyph('A', 0x41)
 def _A(g, p):
     # heavy A widens and drops its bar, or the counter above the bar closes (Black: 0.38x)
-    w = p.Hw * (1.1 + 0.14 * p.heavy)
+    w = p.Hd * (1.1 + 0.14 * p.heavy)
     if p.italic:  # the italic's narrowing closed Black's counter to 0.89x the upright's
         w *= 1 + 0.06 * p.heavy
     c = w / 2
@@ -188,7 +188,7 @@ def _A(g, p):
 
 @glyph('V', 0x56)
 def _V(g, p):
-    w = p.Hw * (1.07 + 0.1 * p.heavy)
+    w = p.Hd * (1.07 + 0.1 * p.heavy)
     c = w / 2
     # Regular's diagonals heavier: 0.82-0.91x the ink of Inter, Geist and Helvetica (Black kept)
     g.diag(0, p.cap, c, 0, 'l', 'c', ws=1.0 - 0.07 * p.heavy)
@@ -199,7 +199,7 @@ def _V(g, p):
 
 @glyph('W', 0x57)
 def _W(g, p):
-    w = p.Hw * 1.6
+    w = p.Hd * 1.6
     # Regular's diagonals were too light (the W carried 0.85x Geist's and Inter's ink against a
     # 0.94x Regular overall); Black's weight is unchanged
     ws = 0.96 - 0.1 * p.heavy
@@ -232,7 +232,7 @@ def _N(g, p):
 
 @glyph('Z', 0x5A)
 def _Z(g, p):
-    w = p.Hw * 0.9
+    w = p.Hd * 0.9
     g.hbar(w * 0.04, w, p.cap - p.H).hbar(0, w, 0)
     g.diag(w, p.cap - p.H / 2, 0, p.H / 2, 'r', 'l', ws=0.95)
     g.ht = 'c'
@@ -241,7 +241,7 @@ def _Z(g, p):
 
 @glyph('X', 0x58)
 def _X(g, p):
-    w = p.Hw * (1.02 + 0.1 * p.heavy)
+    w = p.Hd * (1.02 + 0.1 * p.heavy)
     # Regular's diagonals heavier: 0.80-0.90x the ink of Inter, Geist and Helvetica (Black kept)
     g.diag(0, p.cap, w, 0, 'l', 'r', ws=1.0 - 0.07 * p.heavy)
     g.diag(w, p.cap, 0, 0, 'r', 'l', ws=0.97 - 0.07 * p.heavy)
@@ -251,7 +251,7 @@ def _X(g, p):
 
 @glyph('Y', 0x59)
 def _Y(g, p):
-    w = p.Hw * (1.04 + 0.05 * p.heavy)  # Black's was 0.87x Inter's width
+    w = p.Hd * (1.04 + 0.05 * p.heavy)  # Black's was 0.87x Inter's width
     c = w / 2
     yj = p.cap * 0.43
     # arms at the full stroke: at 0.92-0.98 the Y carried 0.89-0.92x the ink of Inter, Geist and
@@ -265,7 +265,7 @@ def _Y(g, p):
 
 @glyph('K', 0x4B)
 def _K(g, p):
-    w = p.Hw * (0.98 + 0.08 * p.heavy)
+    w = p.Hd * (0.98 + 0.08 * p.heavy)
     g.vstem(0, 0, p.cap)
     a0, a1 = g.diag(p.V / 2, p.cap * (0.33 - 0.04 * p.heavy), w, p.cap, 'c', 'r', ws=0.92, caps=('v', 'h'))  # a steeper arm at Black: its tip at the cap height was a sliver (52 px^2, Inter's 46)
     t = 0.38
@@ -277,7 +277,7 @@ def _K(g, p):
 
 @glyph('O', 0x4F)
 def _O(g, p):
-    w = p.Hw * 1.17
+    w = p.Hd * 1.17
     g.oval(0, -p.ov, w, p.cap + p.ov)
     g.anchors['horn_x'], g.anchors['horn_y'] = _horn_on_bowl(p, w, p.cap)  # Ơ
     g.ht = 'c'
@@ -286,7 +286,7 @@ def _O(g, p):
 
 @glyph('Q', 0x51)
 def _Q(g, p):
-    w = p.Hw * 1.17
+    w = p.Hd * 1.17
     g.oval(0, -p.ov, w, p.cap + p.ov)
     g.diag(w * 0.6, p.cap * 0.2 - 60 * p.heavy, w + p.V * 0.2 + 30 * p.heavy, -p.ov - 40 + 0.32 * p.V - 40 * p.heavy, 'c', 'r', ws=0.9, caps=('b', 'b'))  # a square end: the flat cut left a sliver at its lower corner; Black's starts lower and ends longer, in the ring's wall: its square start poked a spur into the counter
     g.ht = 'c'
@@ -295,7 +295,7 @@ def _Q(g, p):
 
 @glyph('C', 0x43)
 def _C(g, p):
-    w = p.Hw * (1.12 + 0.07 * p.heavy)  # Black's C was 0.75x Geist's and Inter's width, Regular's 0.88x
+    w = p.Hd * (1.12 + 0.07 * p.heavy)  # Black's C was 0.75x Geist's and Inter's width, Regular's 0.88x
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.cap + p.ov)
     # terminals sit 14° further round than they first did, at every weight, as in Geist and Inter:
     # the open aperture left the C at 0.79x their ink at Regular and 0.71x at Black; and 6° more
@@ -307,7 +307,7 @@ def _C(g, p):
 
 @glyph('G', 0x47)
 def _G(g, p):
-    w = p.Hw * 1.12
+    w = p.Hd * 1.12
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.cap + p.ov)
     # the top terminal sits where the C's does, at every weight (it was 14° more open at Regular)
     g.stroke(g.arc(cx, cy, rx, ry, 22 + p.ap, 360), caps=('b', 'b'), cut='h')  # aligned with C
@@ -395,7 +395,7 @@ def _U(g, p):
 
 @glyph('J', 0x4A)
 def _J(g, p):
-    w = p.Hw * 0.8
+    w = p.Hd * 0.8
     V, H = p.V, p.H
     xr = w - V / 2
     rx = (w - V / 2) / 2 - 2
@@ -482,7 +482,7 @@ def _S_(g, p):
     # and heavier horizontals: Black's top and bottom were 12% thinner than theirs, and the S
     # carried 0.86x their ink
     # (Regular's terminals sit 14° further round too: the S carried 0.80x their ink at Regular)
-    _S(g, p, p.Hw * 0.94 + _s_extra(p) * 0.5, p.cap, p.ov, pen=(p.V, p.H * (1 + 0.1 * p.heavy)), spine=0.3, run=34, close=26)
+    _S(g, p, p.Hd * 0.94 + _s_extra(p) * 0.5, p.cap, p.ov, pen=(p.V, p.H * (1 + 0.1 * p.heavy)), spine=0.3, run=34, close=26)
     g.ht = 'c'
     g.sb = (0.5, 0.5)
 

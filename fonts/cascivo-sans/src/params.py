@@ -45,15 +45,17 @@ def _pw(x, table):
 # HEAVY_TIGHTEN and BOLD_TIGHTEN: the share of the stem sidebearing lost at Black and at Bold.
 HEAVY_TIGHTEN = 0.53
 BOLD_TIGHTEN = 0.35
-# The same for capitals, which keep more of their sidebearing: their counters narrow with the stems, so an all-caps line
-# loses width at Black before any spacing is taken (-3% with none) and must not lose it again. Negative opens them.
-CAP_HEAVY_TIGHTEN = -0.15
-CAP_THIN_OPEN = 1.10  # Thin's capital sidebearing, in the lowercase's stem units (Regular's is 1.3)
-CAP_BOLD_TIGHTEN = -0.03
+# CH_THIN and CH_BLACK: the capitals' own counter (H's, in units; Regular's is 397, the lowercase n's scaled), at stem
+#   20 and at stem 194. Capitals set their sidebearings from the lowercase's (Sc = 1.3 S at every weight, as Inter and
+#   Geist keep them in proportion), so their width has to hold in the counter: it narrowed with n's, which cut an
+#   all-caps line by 12% at Black, and at Thin it ran wide (n's 374 would put H 4% over Regular's with 26% more white).
+CH_THIN = 470
+CHD_THIN = 0.93  # the same narrowing, as a share, for the round and diagonal capitals
+CH_BLACK = 300
 # DIAG_TRIM: units the diagonal letters v w x y z lose from their width at Black. Their counters are open white,
 #   not guarded, and they carried the widest ink growth beside the s and e.
 DIAG_TRIM = 90
-THIN_OPEN = 0.27  # share of the stem sidebearing Thin opens by, see P.__init__
+THIN_OPEN = 0.30  # share of the stem sidebearing Thin opens by, see P.__init__
 
 
 class P:
@@ -107,17 +109,18 @@ class P:
         self.S *= (0.97 - 0.04 * self.heavy) if italic else (0.91 + 0.04 * self.heavy)
         self.Sfig = self.S  # figures and math signs keep their ink: their advance is fixed, so a tighter S would widen them
         tighten = lambda bold, black: 1 - (_pw(wght, [(400, 0.0), (MID_WGHT, bold), (900, black)]) if wght >= 400 and not loose else 0.0)  # noqa: E731
-        # capitals carry more space (1.3x): their counters are bigger. Thin's caps are wide already (counters of 374 units), so they
-        # take none of the opening Thin gives the lowercase (THIN_OPEN), and an all-caps line keeps its width from Thin to Regular.
-        self.Sc = self.S / opened * tighten(CAP_BOLD_TIGHTEN, CAP_HEAVY_TIGHTEN) * _pw(wght, [(100, CAP_THIN_OPEN), (400, 1.3), (900, 1.3)])
         self.S *= tighten(BOLD_TIGHTEN, HEAVY_TIGHTEN)
+        self.Sc = self.S * 1.3  # capitals carry more space: their counters are bigger
         self.cw = counter
         # n is 0.82 x-heights wide at Regular (Geist 0.79, Inter 0.80). It was 0.88 with tighter
         # spacing, which set the same line length but read as wide, close-set letters.
         self.cn = _pw(V, [(20, 374), (84, 270), (BLACK_STEM + 4, 145)]) * counter  # n counter
         if italic:
             self.cn *= 0.95  # italics run slightly narrower: the slant already adds movement
-        self.cH = self.cn * 418 / 284  # H counter, in proportion to n
+        # Capitals' counters: the straight-sided ones (H E N B ...) have their own curve, see CH_THIN; the round and diagonal ones
+        # (O C G S A V W X Y Z J) follow n's, which they were fitted to, narrowing with the lowercase
+        self.cHd = self.cn * 418 / 284 * _pw(V, [(20, CHD_THIN), (84, 1.0), (BLACK_STEM + 4, 1.0)])
+        self.cH = _pw(V, [(20, CH_THIN), (84, 270 * 418 / 284), (BLACK_STEM + 4, CH_BLACK)]) * counter * (0.95 if italic else 1.0)
         # i dot / period: never thinner than a readable square. Against Geist's and Inter's, a
         # stem-proportional dot made punctuation 0.89x their ink at Regular and 1.6x at Black
         # (commas 1.7x as tall): Regular's grows a little, the heavy ones much less.
@@ -139,6 +142,11 @@ class P:
     @property
     def dnw(self):
         return self.nw - DIAG_TRIM * self.heavy
+
+    @property
+    def Hd(self):
+        """Width of a round or diagonal capital: its counter follows the lowercase."""
+        return self.cHd + 2 * self.V
 
     @property
     def Hw(self):

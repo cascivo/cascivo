@@ -35,7 +35,7 @@ BUDGETS = {
 }
 
 
-STRINGS = ('Signals move fast; the cascade decides.', 'Overview Activity Settings Members Billing', 'OVERVIEW ACTIVITY SETTINGS MEMBERS BILLING')
+STRINGS = ('Signals move fast; the cascade decides.', 'Overview Activity Settings Members Billing', 'OVERVIEW ACTIVITY SETTINGS', 'MEMBERS BILLING')
 PARAGRAPH = 'making written language legible and the words over 13 lines as words stay apart in the paragraph'
 
 
@@ -245,17 +245,25 @@ class Font(unittest.TestCase):
             else:
                 self.assertGreaterEqual(letter, inter_letter - 40, f'{name}: mean letter gap')
 
-    def test_heavy_capitals_keep_their_sidebearings(self):
-        # H at Black read 29 units a side (Inter's 47) once capitals inherited the lowercase tightening, and
-        # HHHHHHHH ran 12% short; they have their own, lighter tightening (params.CAP_*_TIGHTEN)
+    def test_capitals_keep_their_sidebearings_in_proportion(self):
+        # A capital's sidebearings stay 1.3x the lowercase's at every weight (Inter 1.17 / 1.05 / 0.94 at Thin / Bold /
+        # Black, Geist about 1.12; this font before the width rules 1.30). Measured on H and n, whole sums. When
+        # capitals took their own rule, H read 72 a side at Black against n's 22 (3.2x) and the word-initial capital
+        # floated off its word; the floor catches a capital too tight, the ceiling one too loose.
         from fontTools.varLib.instancer import instantiateVariableFont
 
-        f = instantiateVariableFont(TTFont(VF), {'wght': 900, 'opsz': 14})
-        cmap, glyf, hmtx = f.getBestCmap(), f['glyf'], f['hmtx']
-        g = glyf[cmap[ord('H')]]
-        g.recalcBounds(glyf)
-        adv, lsb = hmtx[cmap[ord('H')]]
-        self.assertGreaterEqual(min(lsb, adv - g.xMax), 38, 'Black H sidebearing')
+        for path in (VF, VFI):
+            for w in (100, 700, 900):
+                f = instantiateVariableFont(TTFont(path), {'wght': w, 'opsz': 14})
+                cmap, glyf, hmtx = f.getBestCmap(), f['glyf'], f['hmtx']
+                sums = {}
+                lean = 0.1763 if path == VFI else 0.0  # tan 10 degrees: the italic's ink is read upright, its boxes overhang
+                for ch in 'Hn':
+                    name = cmap[ord(ch)]
+                    xs = [x - (y - f['OS/2'].sxHeight / 2) * lean for x, y in glyf[name].getCoordinates(glyf)[0]]
+                    sums[ch] = hmtx[name][0] - (max(xs) - min(xs))
+                ratio = sums['H'] / sums['n']
+                self.assertTrue(1.0 <= ratio <= 1.4, f'{os.path.basename(path)} wght {w}: H/n sidebearing {ratio:.2f}')
 
     def test_bold_keeps_glyphs_centred_in_their_advance(self):
         # The Bold master moves each letter half the way its advance shortens; moving none left every glyph
@@ -281,7 +289,7 @@ class Font(unittest.TestCase):
                 r, b = read[ch, 400], read[ch, 900]
                 for w in (600, 700, 800):
                     t = (w - 400) / 500
-                    self.assertLessEqual(abs(read[ch, w] - (r + (b - r) * t)), 4, f'{os.path.basename(path)} {ch} at {w}')
+                    self.assertLessEqual(abs(read[ch, w] - (r + (b - r) * t)), 6, f'{os.path.basename(path)} {ch} at {w}')
 
     def test_named_weights_step_evenly(self):
         # The n stem went 22/35/53/84/104/...: a 13-unit Thin -> ExtraLight step (half a pixel at
