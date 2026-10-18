@@ -11,7 +11,7 @@ history: [breaking-changes.json](https://cascivo.com/breaking-changes.json).
 | ------------------------ | ------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------- |
 | `@cascivo/ai`            | 1.9.0   | 1.7.0 — AI conversation layer.                                                            | [CHANGELOG](packages/ai/CHANGELOG.md)             |
 | `@cascivo/app`           | 1.9.0   | 1.8.0 — Fixes and additions from an adoption report (`ses`, `guard`, `social`, `oauth`).  | [CHANGELOG](packages/app/CHANGELOG.md)            |
-| `@cascivo/astro`         | 1.9.0   | —                                                                                         | [CHANGELOG](packages/astro/CHANGELOG.md)          |
+| `@cascivo/astro`         | 0.0.0   | —                                                                                         | [CHANGELOG](packages/astro/CHANGELOG.md)          |
 | `@cascivo/charts`        | 1.9.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an   | [CHANGELOG](packages/charts/CHANGELOG.md)         |
 | `cascivo`                | 1.8.0   | 1.8.0 — `cascivo app add page "<title>" [--block <name>]` adds a page to an app made fro  | [CHANGELOG](packages/cli/CHANGELOG.md)            |
 | `@cascivo/core`          | 1.9.0   | 1.7.0 — AI conversation layer.                                                            | [CHANGELOG](packages/core/CHANGELOG.md)           |

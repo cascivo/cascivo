@@ -116,7 +116,7 @@ CI's drift check — it cannot go stale. (It once sat thirteen minors behind, cl
 | `@cascivo/tokens` | 1.3.x | none (CSS only) |
 | `@cascivo/themes` | 1.0.x | `@cascivo/tokens` (direct dep) — themes `@import` it |
 | `@cascivo/react` | 1.9.x | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
-| `@cascivo/astro` | 1.9.x | `@cascivo/themes >=1.0.0`, `astro >=7.0.0` |
+| `@cascivo/astro` | 0.0.x | `@cascivo/themes >=1.0.0`, `astro >=7.0.0` |
 | `@cascivo/icons` | 1.1.x | `@types/react >=18.0.0` _(optional)_, `react >=18.0.0` |
 | `@cascivo/charts` | 1.9.x | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
 | `@cascivo/i18n` | 1.9.x | `@preact/signals-react >=3.0.0` |

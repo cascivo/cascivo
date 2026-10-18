@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/astro",
-  "version": "1.9.0",
+  "version": "0.0.0",
   "private": false,
   "description": "Astro integration — cascivo's CSS layer order, theme stylesheet and a view-transition-safe no-flash theme script on every page",
   "keywords": [
