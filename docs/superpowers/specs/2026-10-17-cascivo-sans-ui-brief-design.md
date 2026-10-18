@@ -13,7 +13,8 @@ spec covers what the audit found present, plus the specimen page.
 
 User decisions:
 
-- Width across weights: **within ±2% of 400** at every weight (not uniwidth, not a separate UI font).
+- Width across weights: **within ±2% of 400** at 100–700 and **at most +5%** at 800–900, the display weights
+  (not uniwidth, not a separate UI font). Amended during Task 2: holding ±2% at Black closed its spacing.
 - The specimen is a **site page**, `/cascivo-sans/specimen`, linked from `/cascivo-sans`.
 - Stylistic sets: **`ss01` = dotted zero**; the plain `I`/`l` alternates move to **`ss02`**; `zero` keeps the
   slashed zero.
@@ -42,10 +43,10 @@ User decisions:
 2. **Width within ±2% (#2).** At heavy weights, tighten sidebearings and narrow the widest letters
    slightly so the brief's sample line ("Signals move fast; the cascade decides.", kerning on) and the
    tab row ("Overview Activity Settings Members Billing") set within ±2% of 400 at every weight from 100
-   to 900. Black's counter, notch, mouth, terminal and spur guards from the quality pass must keep
+   to 700, and within +5% at 800–900 (user decision). Black's counter, notch, mouth, terminal and spur guards from the quality pass must keep
    passing — width is taken from spacing first, then from glyph widths, never by closing counters past
    their guards.
-   *Accept:* `test_weight_changes_do_not_reflow_text` tightened to ±2% at each of 100…900 (upright and
+   *Accept:* `test_weight_changes_do_not_reflow_text` tightened to ±2% at 100…700 and +5% at 750…900 (upright and
    italic), both strings.
 3. **Ambiguous glyphs (#4).** New dotted zero (`zero.dot`, plus tabular `zero.dot.tf`) behind `ss01`;
    the existing plain `I`/`l` alternates move from `ss01` to `ss02`; `zero` keeps the slashed zero, and
