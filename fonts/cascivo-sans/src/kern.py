@@ -73,6 +73,10 @@ I_WIDE = ['uni00EF', 'uni00EE', 'uni0129', 'uni012B', 'uni012D']  # ï î ĩ ī 
 # every capital and ascender reaches the dots' height (X's and Z's arms met them by 88 at Display
 # Black), and so do i's and j's own dots
 TALL = list('ABCDEFGHIJKLMNOPQRSTUVWXYZbdfhklt') + ['i', 'j'] + I_WIDE
+# Round pairs at the Display and Caption Black corners: Black's sidebearing (HEAVY_TIGHTEN) plus Display's opening leave OO, oo,
+# ss, SS and rv 4-14 units apart and the italic GO overlapping (a855b5e0: 20-63). They open there as far as KEEP_CLEAR asks.
+ROUND_PAIRS = {('O', 'O'), ('o', 'o'), ('s', 's'), ('S', 'S'), ('r', 'v'), ('G', 'O')}
+OWN_SHAPE_PAIRS.update({k: 1 for k in ROUND_PAIRS})
 OWN_SHAPE_PAIRS.update({(a, b): 1 for i in I_WIDE for a, b in [(t, i) for t in TALL] + [(i, t) for t in TALL]})
 
 # The italic's slanted bars and feet reach under the next capital: these closed at Black once its sidebearing
@@ -127,10 +131,10 @@ def _points(o, name, ox=0.0, oy=0.0, a=1.0, fine=False):
     return out
 
 
-def _profile(o, name, fine=False):
+def _profile(o, name, fine=False, band=BAND):
     lo, hi = {}, {}
     for x, y in _points(o, name, fine=fine):
-        b = int(y // BAND)
+        b = int(y // band)
         lo[b] = min(lo.get(b, x), x)
         hi[b] = max(hi.get(b, x), x)
     return lo, hi
@@ -162,10 +166,22 @@ def measure(o, left_glyph, right_glyph, most=40):
     lean = min(abs(sa), abs(sb)) if sa * sb > 0 else 0.0
     k = W_GAP * (ref - eff) + W_CLOSEST * (ref - min(gaps)) + W_LEAN * lean * p.S
     floor = max(0.55 * p.S, KEEP_CLEAR) - min(gaps)  # never let the closest point get nearer than this
-    if floor > k - 6 and p.heavy > 0.5 and (left_glyph in I_WIDE or right_glyph in I_WIDE):  # the floor is about to decide: read the closest point off the finer outline (Dï at Display Black sat 4 short)
+    # When the floor is about to decide, read the closest point off a finer outline. The cause is _points sampling a curve segment
+    # 24 times, which under-reads a heavy bowl's extreme by up to 4 units (Dï at Display Black sat 4 short of KEEP_CLEAR). It is
+    # restricted to the own-shape pairs (wide i, round pairs, bars), at heavy masters, because the same fix for every pair cost 36 bytes of Latin[wght]; solving
+    # each curve for its extreme instead of sampling it is the follow-up.
+    if floor > k - 6 and p.heavy > 0.5 and (left_glyph in I_WIDE or right_glyph in I_WIDE or (left_glyph, right_glyph) in OWN_SHAPE_PAIRS):
         _, hi_f = _profile(o, left_glyph, True)
         lo_f, _ = _profile(o, right_glyph, True)
         floor = max(0.55 * p.S, KEEP_CLEAR) - min((adv - hi_f[b]) + lo_f[b] for b in bands if b in hi_f and b in lo_f)
+    if p.heavy > 0.5 and (left_glyph, right_glyph) in OWN_SHAPE_PAIRS:
+        # a slanted pair (an italic У beside ћ) clear in 10-unit bands can still touch in 25-unit ones, which is how test_shaped_pairs_keep_clear
+        # reads it: keep those clear by a unit too. Before Display's spacing opened, the Display corner's own opening carried it.
+        _, hi_c = _profile(o, left_glyph, True, 25)
+        lo_c, _ = _profile(o, right_glyph, True, 25)
+        coarse = [(adv - hi_c[b]) + lo_c[b] for b in set(hi_c) & set(lo_c)]
+        if coarse:
+            floor = max(floor, 2 - min(coarse))
     k = max(k, floor)
     return int(round(max(-140, min(most, k))))
 

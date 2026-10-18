@@ -83,7 +83,7 @@ browser fakes italics by skewing the upright.
 | `sups` / `sinf`        | `font-variant-position: super / sub`       | Real superior and inferior figures                                                     |
 | `ordn`                 | `font-variant-numeric: ordinal`            | 1a → 1ª                                                                                |
 | `case`                 | `font-feature-settings: 'case'`            | Hyphens, parentheses and guillemets centred on capitals                                |
-| `ss01`                 | `font-feature-settings: 'ss01'`            | Dotted zero, proportional or tabular (`zero`, the slashed zero, wins when both are on) |
+| `ss01`                 | `font-feature-settings: 'ss01'`            | Dotted zero, proportional or tabular (`zero`, the slashed zero, wins when both are on; with `onum`, `sups` or `frac` the zero is undotted) |
 | `ss02`                 | `font-feature-settings: 'ss02'`            | Plain `I` and `l` (as in Helvetica), including every accented form                     |
 | `locl`                 | `lang="ro"`                                | Ş ţ → Ș ț (comma below) for Romanian and Moldovan                                      |
 | `kern`, `mark`, `ccmp` | default                                    | Class kerning, and accents placed on any base, including decomposed text               |

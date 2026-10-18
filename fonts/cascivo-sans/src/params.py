@@ -76,7 +76,7 @@ class P:
             V -= 3
             contrast -= 0.05
             xh -= 10
-            spacing, counter, k, aperture = 0.8, 0.97, 0.60, -5.0
+            spacing, counter, k, aperture = 0.88, 0.97, 0.60, -5.0  # 0.8 until Black's own tightening (HEAVY_TIGHTEN) met it: the two deltas add at 900/48, which left OO oo ss SS at 9-14 units and the italic GO overlapping
         self.V = V
         self.H = V * contrast
         # crossbars (e, A, H...) thin faster than bowls as weight rises, or heavy counters close

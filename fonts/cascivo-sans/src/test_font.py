@@ -39,6 +39,11 @@ STRINGS = ('Signals move fast; the cascade decides.', 'Overview Activity Setting
 PARAGRAPH = 'making written language legible and the words over 13 lines as words stay apart in the paragraph'
 
 
+def hb_font(hb, path):
+    with open(path, 'rb') as fh:
+        return hb.Font(hb.Face(fh.read()))
+
+
 def shaped_widths(hb, path, text):
     with open(path, 'rb') as fh:
         font = hb.Font(hb.Face(fh.read()))
@@ -454,27 +459,33 @@ class Font(unittest.TestCase):
 
     def test_capitals_at_the_regular_optical_sizes_keep_their_width(self):
         # The capitals' counters are read off the weight's stem, not the optical size's (params.P): reading
-        # Caption's V+5 and Display's V-3 moved 232 and 389 glyphs at the Regular masters (H +4, -4).
-        try:
-            import uharfbuzz as hb
-        except ImportError:
-            self.skipTest('pip install uharfbuzz')
+        # Caption's V+5 and Display's V-3 moved 232 and 389 glyphs at the Regular masters (H +4, -4). The widths
+        # below are a855b5e0's ink widths of H E O B D N (its advances also carried the Display spacing, which
+        # has since moved); 1 unit is rounding.
+        from fontTools.varLib.instancer import instantiateVariableFont
 
         want = {
-            VF: {8: [813, 651, 829, 751, 806, 813], 48: [701, 564, 739, 655, 706, 701]},
-            VFI: {8: [807, 645, 814, 742, 796, 807], 48: [691, 555, 722, 643, 693, 691]},
+            VF: {8: [591, 484, 691, 573, 626, 591], 48: [554, 455, 649, 538, 588, 554]},
+            VFI: {8: [695, 584, 689, 626, 683, 695], 48: [659, 556, 648, 594, 645, 659]},
         }
         for path, sizes in want.items():
-            font = hb.Font(hb.Face(open(path, 'rb').read()))
-            for opsz, advances in sizes.items():
-                font.set_variations({'wght': 400, 'opsz': opsz})
-                got = [font.get_glyph_h_advance(font.get_nominal_glyph(ord(c))) for c in 'HEOBDN']
-                self.assertEqual(got, advances, f'{os.path.basename(path)} opsz {opsz}: H E O B D N')
+            for opsz, widths in sizes.items():
+                f = instantiateVariableFont(TTFont(path), {'wght': 400, 'opsz': opsz})
+                cmap, glyf = f.getBestCmap(), f['glyf']
+                got = []
+                for c in 'HEOBDN':
+                    g = glyf[cmap[ord(c)]]
+                    g.recalcBounds(glyf)
+                    got.append(g.xMax - g.xMin)
+                for c, g, w in zip('HEOBDN', got, widths):
+                    self.assertLessEqual(abs(g - w), 1, f'{os.path.basename(path)} opsz {opsz}: {c} is {g} wide, a855b5e0 had {w}')
 
-    def test_wide_i_keeps_clear_of_round_capitals_at_display_black(self):
-        # Dï and Bî are the tightest corner: Black's spacing plus Display's deltas. kern.py reads the closest point
-        # off a 24-sample curve, which left a heavy bowl's extreme 4 units short, so the gap closed to 12 and 8
-        # against a 16-unit floor.
+    def test_pairs_keep_their_clearance_at_the_black_corners(self):
+        # Display Black is the tightest corner: Black's spacing plus Display's deltas. Dï and Bî must keep kern.py's
+        # 16 units: its closest-point read came from a 24-sample curve, which left a heavy bowl's extreme 4 units
+        # short, so they closed to 12 and 8. The round pairs (OO oo ss SS rv GO) sat at 3-15 units, the italic GO
+        # overlapping, where a855b5e0 had 20-63; a Display face may be tighter than text but not touching, so their
+        # floor is 12, 60% of a855b5e0's tightest (rv, 20), at 900/48 and 900/8.
         try:
             import uharfbuzz as hb
         except ImportError:
@@ -514,13 +525,14 @@ class Font(unittest.TestCase):
                     t, u = i / 80, 1 - i / 80
                     self._add(u * u * x0 + 2 * u * t * c[0] + t * t * p[0], u * u * y0 + 2 * u * t * c[1] + t * t * p[1])
 
-        for path in (VF, VFI):
-            f = instantiateVariableFont(TTFont(path), {'wght': 900, 'opsz': 48})
+        for path, wght, opsz, pairs, floor in [(p, 900, z, ps, fl) for p in (VF, VFI) for z, ps, fl in (
+            (48, ('Dï', 'Bî'), 16), (48, ('OO', 'oo', 'ss', 'SS', 'rv', 'GO'), 12), (8, ('OO', 'oo', 'ss', 'SS', 'rv', 'GO'), 12))]:
+            f = instantiateVariableFont(TTFont(path), {'wght': wght, 'opsz': opsz})
             bio = io.BytesIO()
             f.save(bio)
             font = hb.Font(hb.Face(bio.getvalue()))
             gs, order = f.getGlyphSet(), f.getGlyphOrder()
-            for pair in ('Dï', 'Bî'):
+            for pair in pairs:
                 buf = hb.Buffer()
                 buf.add_str(pair)
                 buf.guess_segment_properties()
@@ -530,8 +542,8 @@ class Font(unittest.TestCase):
                 gs[a].draw(ra)
                 gs[b].draw(rb)
                 gap = min(adv + rb.out[k][0] - ra.out[k][1] for k in set(ra.out) & set(rb.out))
-                with self.subTest(font=os.path.basename(path), pair=pair):
-                    self.assertGreaterEqual(gap, 16)
+                with self.subTest(font=os.path.basename(path), opsz=opsz, pair=pair):
+                    self.assertGreaterEqual(gap, floor)
 
     def test_stylistic_sets(self):
         # ss01 is the dotted zero, ss02 the plain I and l (as in Helvetica); `zero` stays the slashed zero. Each works
@@ -545,7 +557,7 @@ class Font(unittest.TestCase):
         for path in (VF, VFI):
             tt = TTFont(path)
             order, glyf, gs = tt.getGlyphOrder(), tt['glyf'], tt.getGlyphSet()
-            font = hb.Font(hb.Face(open(path, 'rb').read()))
+            font = hb_font(hb, path)
             name = os.path.basename(path)
 
             def shape(text, **feats):
@@ -615,7 +627,7 @@ class Font(unittest.TestCase):
         def changed(path, text, lang):
             cmap = TTFont(path).getBestCmap()
             order = TTFont(path).getGlyphOrder()
-            font = hb.Font(hb.Face(open(path, 'rb').read()))
+            font = hb_font(hb, path)
             buf = hb.Buffer()
             buf.add_str(text)
             buf.guess_segment_properties()
@@ -641,7 +653,7 @@ class Font(unittest.TestCase):
         for path in (VF, VFI):
             f = TTFont(path)
             gs, order = f.getGlyphSet(), f.getGlyphOrder()
-            font = hb.Font(hb.Face(open(path, 'rb').read()))
+            font = hb_font(hb, path)
             for feats in ({'onum': True}, {'onum': True, 'tnum': True}, {'onum': True, 'lnum': True}):
                 buf = hb.Buffer()
                 buf.add_str('0123456789')
@@ -672,7 +684,7 @@ class Font(unittest.TestCase):
             self.skipTest('pip install uharfbuzz')
         f, glyf = TTFont(VF), TTFont(VF)['glyf']
         order = f.getGlyphOrder()
-        font = hb.Font(hb.Face(open(VF, 'rb').read()))
+        font = hb_font(hb, VF)
 
         def kinds(text, **feats):
             buf = hb.Buffer()
@@ -718,7 +730,7 @@ class Font(unittest.TestCase):
         except ImportError:
             self.skipTest('pip install uharfbuzz')
         for path in (VF, VFI):
-            font = hb.Font(hb.Face(open(path, 'rb').read()))
+            font = hb_font(hb, path)
             for text, check in (('\u03c7\u0313\u0301', lambda q: q[2].x_offset > q[1].x_offset + 60 and abs(q[2].y_offset - q[1].y_offset) < 20),
                                 ('\u03c7\u0314\u0342', lambda q: q[2].y_offset > q[1].y_offset + 100),
                                 ('\u03c7\u0345', lambda q: q[1].y_offset <= 0)):
@@ -740,7 +752,7 @@ class Font(unittest.TestCase):
 
         cases = {'uni1EA5': '\u0302\u0301', 'uni1EA7': '\u0302\u0300', 'uni1EA9': '\u0302\u0309', 'uni1EAF': '\u0306\u0301', 'uni1EAB': '\u0302\u0303'}
         for path in (VF, VFI):
-            font = hb.Font(hb.Face(open(path, 'rb').read()))
+            font = hb_font(hb, path)
             for loc in ({'wght': 100, 'opsz': 8}, {'wght': 400, 'opsz': 14}, {'wght': 900, 'opsz': 48}):
                 gl = instantiateVariableFont(TTFont(path), loc)['glyf']
                 font.set_variations(loc)
@@ -774,7 +786,8 @@ class Font(unittest.TestCase):
 
         found = 0
         for path in (VF, VFI):
-            face = hb.Face(open(path, 'rb').read())
+            with open(path, 'rb') as fh:
+                face = hb.Face(fh.read())
             for loc in ({'wght': 100, 'opsz': 14}, {'wght': 650, 'opsz': 14}, {'wght': 900, 'opsz': 14}, {'wght': 100, 'opsz': 8}):
                 f = instantiateVariableFont(TTFont(path), loc)
                 font = hb.Font(face)
