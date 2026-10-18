@@ -112,7 +112,12 @@ export function Modal({
       // Not `close()`: it fires `close`, which reaches `onClose` and a controlled parent
       // would close the modal. `showModal()` throws while the `open` attribute is present.
       dialog.removeAttribute('open')
-      dialog.showModal()
+      try {
+        dialog.showModal()
+      } catch {
+        // Never leave the dialog hidden while `isOpen` says open: shown non-modally beats gone.
+        dialog.setAttribute('open', '')
+      }
     })
     observer.observe(dialog.ownerDocument, { childList: true, subtree: true })
     return () => observer.disconnect()

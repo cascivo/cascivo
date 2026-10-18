@@ -72,6 +72,29 @@ describe('Popover', () => {
     }
   })
 
+  // The `wasReinserted` guard is load-bearing: jsdom has no `:popover-open`, like an engine
+  // without it, so without the guard any DOM change anywhere would call `showPopover()` again.
+  it('ignores unrelated DOM insertions while open', async () => {
+    const wrapper = document.body.appendChild(document.createElement('div'))
+    render(
+      <Popover>
+        <PopoverTrigger>Open</PopoverTrigger>
+        <PopoverContent>Content</PopoverContent>
+      </Popover>,
+      { container: wrapper },
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'Open' }))
+    const showPopover = vi.spyOn(HTMLElement.prototype, 'showPopover')
+    try {
+      await act(async () => {
+        document.body.appendChild(document.createElement('div'))
+      })
+      expect(showPopover).not.toHaveBeenCalled()
+    } finally {
+      showPopover.mockRestore()
+    }
+  })
+
   it('does not re-open a closed popover when an ancestor is re-inserted', async () => {
     const wrapper = document.body.appendChild(document.createElement('div'))
     render(
