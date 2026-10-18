@@ -326,9 +326,15 @@ describe('checkSsrConfig (Astro)', () => {
   let dir: string
   afterEach(() => rmSync(dir, { recursive: true, force: true }))
 
-  function project(opts: { config: string; reactKeywords?: unknown }): string {
+  function project(opts: {
+    config: string
+    reactKeywords?: unknown
+    declareReact?: boolean
+  }): string {
     dir = mkdtempSync(join(tmpdir(), 'cascade-doctor-astro-'))
-    writeFileSync(join(dir, 'package.json'), JSON.stringify({ dependencies: { astro: '7.0.0' } }))
+    const dependencies: Record<string, string> = { astro: '7.0.0' }
+    if (opts.declareReact !== false) dependencies['@cascivo/react'] = '1.9.0'
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ dependencies }))
     writeFileSync(join(dir, 'astro.config.mjs'), opts.config)
     if (opts.reactKeywords !== undefined) {
       const pkgDir = join(dir, 'node_modules', '@cascivo', 'react')
@@ -353,6 +359,13 @@ describe('checkSsrConfig (Astro)', () => {
 
   it('warns when @cascivo/react is not installed at all', () => {
     expect(checkSsrConfig(project({ config: `export default {}` }))).toContain('@cascivo/astro')
+  })
+
+  it('stays quiet on a vendored-only project with no @cascivo/react dependency', () => {
+    const root = project({ config: `export default {}`, declareReact: false })
+    mkdirSync(join(root, 'src/components/ui'), { recursive: true })
+    writeFileSync(join(root, 'src/components/ui/button.tsx'), 'export {}\n')
+    expect(checkSsrConfig(root)).toBeNull()
   })
 
   it('stays quiet when the installed @cascivo/react carries the astro-component keyword', () => {

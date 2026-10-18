@@ -395,6 +395,10 @@ function installedReactIsAstroSafe(cwd: string): boolean {
  * cascivo build that opts in via keyword, SSR'd islands render unstyled with no error.
  */
 function checkAstroConfig(cwd: string, configFile: string): string | null {
+  // Only the prebuilt package's CSS can be externalized. Vendored source under src/ is compiled
+  // by Vite itself, so a copy-paste-only project has nothing to warn about.
+  const installPath = detectInstallPath(cwd)
+  if (installPath !== 'prebuilt' && installPath !== 'hybrid') return null
   const config = readFileSync(join(cwd, configFile), 'utf8')
   if (/@cascivo\/astro/.test(config)) return null
   if (setsResolveNoExternal(config)) return null
