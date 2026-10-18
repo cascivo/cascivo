@@ -46,7 +46,8 @@ from composites import ALIAS, BOTTOM, CYR_EXT, CYR_LOCL, GREEK_ACCENTED, GREEK_P
 from geom import contour_bounds, expand, transform_contour  # noqa: E402
 import kern  # noqa: E402
 from kern import kern_fea  # noqa: E402
-from params import BLACK_STEM, THIN_STEM, ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, P  # noqa: E402
+from fontTools.varLib.models import VariationModel  # noqa: E402
+from params import MID_WGHT, BLACK_STEM, THIN_STEM, ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, P  # noqa: E402
 
 FAMILY = 'Cascivo Sans'
 PS = 'CascivoSans'
@@ -73,6 +74,7 @@ class Out:
         self.cmap = {}
         self.bounds = {}
         self.topleft = {}
+        self.kind = {}  # name -> 'fixed' (own advance), 'mark' or 'tab': glyphs whose spacing is not sidebearings round the ink
 
 
 def italicize(strokes, p):
@@ -119,6 +121,7 @@ def draw_master(p):
             o.cmap[cp] = name
         if g.adv_fixed is not None:
             o.contours[name], o.adv[name] = [], g.adv_fixed
+            o.kind[name] = 'fixed'
             continue
         bx = [contour_bounds(c) for c in cs]
         xmin, ymin = min(b[0] for b in bx), min(b[1] for b in bx)
@@ -126,13 +129,17 @@ def draw_master(p):
         top = [q[0] for c in cs for sg in c for q in sg[1:] if q[1] > p.cap * 0.7]
         if g.mark:
             dx, adv = 0.0, 0
+            o.kind[name] = 'mark'
         elif g.tab:
+            o.kind[name] = 'tab'
             adv = p.fig_adv
             dx = (adv - (xmax - xmin)) / 2 - xmin
         else:
             unit = p.Sc if is_cap(name) else p.S
             l, r = g.sb[0] * unit, g.sb[1] * unit
             dx = l - xmin
+            if p.heavy:  # a whole unit, so the heavy outlines round the same way whatever the spacing: a counter tip a few units long moved by 6 degrees with the fraction
+                dx = round(dx)
             adv = l + (xmax - xmin) + r
         cs = [transform_contour(c, lambda q, dx=dx: (q[0] + dx, q[1])) for c in (italic_cs if italic_cs is not None else cs)]
         o.contours[name] = cs
@@ -368,20 +375,21 @@ def add_composites(o):
 
     # figures: proportional, superior/inferior, numerator/denominator — all from the same outlines
     figs = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
+    # figures keep their untightened sidebearing: Black's tighter S closed '13' into a clot (their advances are tabular-fixed)
     k = 0.6
     sup_y = p.cap - p.cap * k
     for f in figs:
         b = o.bounds[f]
         tight = {'one': 0.9}.get(f, 0.62)
-        l = S * tight
-        comp(f + '.pnum', [(f, l - b[0], 0, 1)], l + (b[2] - b[0]) + S * tight)
+        l = p.Sfig * tight
+        comp(f + '.pnum', [(f, l - b[0], 0, 1)], l + (b[2] - b[0]) + p.Sfig * tight)
         sw = o.adv[f] * k * 0.92
         lx = (sw - o.adv[f] * k) / 2
         comp(f + '.sups', [(f, lx, sup_y, k)], sw)
         comp(f + '.sinf', [(f, lx, -p.cap * 0.14, k)], sw)
         comp(f + '.numr', [(f, lx, sup_y, k)], sw)
         comp(f + '.dnom', [(f, lx, 0, k)], sw)
-    comp('zero.zero.pnum', [('zero.slash', S * 0.62 - o.bounds['zero.slash'][0], 0, 1)], o.adv['zero.pnum'])
+    comp('zero.zero.pnum', [('zero.slash', p.Sfig * 0.62 - o.bounds['zero.slash'][0], 0, 1)], o.adv['zero.pnum'])
     # old-style figures: 0 1 2 drawn short (glyphs.py), 3 4 5 7 9 the lining figure hung below
     # the line so its top meets the short ones', tabular and proportional
     drop = p.cap - p.xh * GL.OSF_HEIGHT
@@ -391,7 +399,7 @@ def add_composites(o):
         src, dy = (f + '.osf', 0) if f + '.osf' in o.bounds else (f, -drop)
         b = o.bounds[src]
         tight = {'one': 0.9}.get(f, 0.62)
-        comp(f + '.osf.pnum', [(src, S * tight - b[0], dy, 1)], S * tight + (b[2] - b[0]) + S * tight)
+        comp(f + '.osf.pnum', [(src, p.Sfig * tight - b[0], dy, 1)], p.Sfig * tight + (b[2] - b[0]) + p.Sfig * tight)
     # 1. Proportional figures by default: running text is the common case, and a tabular "1"
     # in a sentence leaves a hole ("$1, 117"). Tables opt in with font-variant-numeric:
     # tabular-nums, which cascivo's own table components already set.
@@ -542,6 +550,45 @@ def add_composites(o):
 # ---------------------------------------------------------------------------------------------
 
 
+def _lerp_contours(a, b, t):
+    return [[(sa[0],) + tuple((pa[0] + (pb[0] - pa[0]) * t, pa[1] + (pb[1] - pa[1]) * t) for pa, pb in zip(sa[1:], sb[1:])) for sa, sb in zip(ca, cb)] for ca, cb in zip(a, b)]
+
+
+def mid_master(reg, black, nat):
+    """The Bold master: Regular's and Black's outlines, anchors and composites exactly interpolated, with
+    `nat`'s own spacing set on the right of each glyph. Interpolating Regular and Black puts every weight on a
+    straight line between their sidebearings; Bold bends that line so 700 keeps its width (+-2% of Regular)
+    while Black's text stays open. The only thing it differs in is an advance: no outline, anchor or kerning
+    delta, so it costs a phantom-point delta per glyph and nothing else."""
+    p = nat.p
+    t = (p.wght - reg.p.wght) / (black.p.wght - reg.p.wght)
+    lerp = lambda a, b: a + (b - a) * t  # noqa: E731
+    o = Out(p)
+    o.cmap = dict(nat.cmap)
+    o.kind = dict(nat.kind)
+    # Only letters bend: a figure, mark or sign keeps the interpolated advance, which leaves no delta to store for it
+    letters = {n for cp, n in nat.cmap.items() if unicodedata.category(chr(cp)).startswith('L')}
+    for name, rc in reg.contours.items():
+        kind = nat.kind.get(name)
+        if name.split('.')[0] not in letters:
+            kind = kind or 'lerp'
+        if kind == 'fixed' or name not in black.contours:
+            o.contours[name], o.adv[name] = [], nat.adv[name]
+            continue
+        rb, bb, nb = reg.bounds[name], black.bounds[name], nat.bounds[name]
+        x1, x0 = lerp(rb[2], bb[2]), lerp(rb[0], bb[0])  # the upright ink's edges, where the italic's spacing is measured too
+        o.contours[name] = _lerp_contours(rc, black.contours[name], t)
+        o.adv[name] = nat.adv[name] if kind in ('mark', 'tab') else round(lerp(reg.adv[name], black.adv[name])) if kind == 'lerp' else round(x1 + (nat.adv[name] - nb[2]) - (x0 - nb[0]))
+        o.bounds[name] = tuple(lerp(a, b) for a, b in zip(rb, bb))
+        o.topleft[name] = lerp(reg.topleft[name], black.topleft[name])
+        ra, ba = reg.anchors.get(name, {}), black.anchors.get(name, {})
+        o.anchors[name] = {k: tuple(lerp(a, b) for a, b in zip(ra[k], ba[k])) for k in ra}
+    add_composites(o)
+    for name, parts in reg.comps.items():  # offsets interpolate too: a rounded one per master would be a delta of its own
+        o.comps[name] = [(g, lerp(ox, bx), lerp(oy, by), lerp(a, ba_)) for (g, ox, oy, a), (_, bx, by, ba_) in zip(parts, black.comps[name])]
+    return o
+
+
 def apply_slant(o):
     """Outlines are already slanted (draw_master); anchors and composite offsets follow here."""
     s = o.p.slant
@@ -591,6 +638,15 @@ def glyph_order(o):
 def build_glyf(outs, order):
     """Convert every master's cubic outlines to quadratic *jointly* so the masters stay compatible."""
     per_master = [dict() for _ in outs]
+    mids = {m for m, o in enumerate(outs) if o.name.startswith('Bold')}
+    black = next(m for m, o in enumerate(outs) if o.name.startswith('Black'))
+
+    def bold_pt(m, pts):
+        """Bold's point from Regular's (pts[0]) and Black's (pts[black] or pts[1]), each rounded to the unit it is stored
+        at: the variable font then draws Bold from the same integers, and the delta the model stores for it is zero."""
+        t = (outs[m].p.wght - outs[0].p.wght) / (outs[black].p.wght - outs[0].p.wght)
+        pr, pb = pts[0], pts[black] if len(pts) > black else pts[1]
+        return tuple(round(a) + (round(b) - round(a)) * t for a, b in zip(pr, pb))
     for name in order:
         if name == '.notdef':
             for m, o in enumerate(outs):
@@ -621,8 +677,8 @@ def build_glyf(outs, order):
             segs_m = [o.contours[name][ci] for o in outs]
             n = len(segs_m[0])
             assert all(len(s) == n for s in segs_m), f'{name}: segment count differs'
-            for pen, segs in zip(pens, segs_m):
-                pen.moveTo(segs[0][1])
+            for m, (pen, segs) in enumerate(zip(pens, segs_m)):
+                pen.moveTo(bold_pt(m, [s[0][1] for s in segs_m]) if m in mids else segs[0][1])
             for si in range(n):
                 kinds = {s[si][0] for s in segs_m}
                 assert len(kinds) == 1, f'{name}: segment kind differs'
@@ -631,13 +687,19 @@ def build_glyf(outs, order):
                 if kind == 'L':
                     if last:
                         continue  # closePath draws it
-                    for pen, segs in zip(pens, segs_m):
-                        pen.lineTo(segs[si][2])
+                    for m, (pen, segs) in enumerate(zip(pens, segs_m)):
+                        pen.lineTo(bold_pt(m, [s[si][2] for s in segs_m]) if m in mids else segs[si][2])
                 else:
                     curves = [s[si][1:] for s in segs_m]
                     if last:  # close exactly on the start point in every master
                         curves = [c[:3] + (s[0][1],) for c, s in zip(curves, segs_m)]
-                    quads = curves_to_quadratic(curves, [MAX_ERR] * len(curves))
+                    # Bold takes no part in the conversion: its quadratics are Regular's and Black's interpolated, as
+                    # the variable font will draw it, so it stores no outline delta (converted on its own, it differs
+                    # from that line by a unit or two, which blunts a counter tip between Bold and Black)
+                    quads = curves_to_quadratic([c for m, c in enumerate(curves) if m not in mids], [MAX_ERR] * (len(curves) - len(mids)))
+                    for m in sorted(mids):
+                        qr, qb = quads[0], quads[black - sum(1 for x in mids if x < black)]
+                        quads.insert(m, tuple(bold_pt(m, [pr, pb]) for pr, pb in zip(qr, qb)))
                     for pen, q in zip(pens, quads):
                         pen.qCurveTo(*q[1:])
             for pen in pens:
@@ -860,6 +922,27 @@ def _wght_map():
 WGHT_MAP = _wght_map()
 
 
+def _bold_after_black(sort_key):
+    """Order the masters Regular, Black, then Bold. Black then keeps its tent from the default (a delta of
+    Black minus Regular, as with no Bold at all) and Bold, which is Regular and Black interpolated plus a
+    shift of each glyph, stores only that shift: a point or two per contour, where ordered the other way
+    round it would store its whole distance from Regular and Black's tent would start at Bold."""
+    bold = (MID_WGHT - 400) / 500
+
+    def make(locations, axisOrder=[]):
+        key = sort_key(locations, axisOrder=axisOrder)
+
+        def after(loc):
+            k = key(loc)
+            if set(loc) == {'wght'} and abs(loc['wght'] - bold) < 1e-6:
+                return k[:-1] + ((2.0,),)
+            return k
+
+        return after
+
+    return make
+
+
 def build(italic=False):
     os.makedirs(DIST, exist_ok=True)
     kern.reset()
@@ -869,10 +952,23 @@ def build(italic=False):
         o = draw_master(p)
         o.name, o.loc = name, loc
         outs.append(o)
+    black = next(o for o in outs if o.name.startswith('Black'))
+    for i, o in enumerate(outs):
+        if o.name.startswith('Bold'):  # Regular's and Black's outlines, set with Bold's own spacing
+            m = mid_master(outs[0], black, o)
+            m.name, m.loc = o.name, o.loc
+            outs[i] = m
     for o in outs:
         apply_slant(o)
     corners = _black_corners(outs)
-    kern.set_corners(corners, next(o for o in outs if (o.loc['wght'], o.loc['opsz']) == (900, 14)))
+    black = next(o for o in outs if (o.loc['wght'], o.loc['opsz']) == (900, 14))
+    kern.set_corners(corners, black)
+    # the optical-size masters open own-shape pairs as they did before Black's spacing tightened (Display Regular
+    # kerns as it always has); the extra opening Black's tighter corner needs goes on the Black master (kern._values)
+    loose = draw_master(P(wght=900, opsz=14, italic=italic, loose=True))
+    loose.name, loose.loc = black.name, black.loc
+    apply_slant(loose)
+    kern.set_reference(loose, _black_corners([loose if o is black else o for o in outs]))
     for script in ([armenian] if ARMENIAN else []) + ([hebrew] if HEBREW else []):  # their kerning's pair sets
         script.MASTERS[:] = outs
         script.CORNERS.clear()
@@ -907,10 +1003,13 @@ def build(italic=False):
 
     varLib._add_gvar = lambda *a, **k: add_gvar(*a, **{**k, 'tolerance': IUP_TOLERANCE})
     TupleVariation.optimize = exact_optimize
+    sort_key = VariationModel.getMasterLocationsSortKeyFunc
+    VariationModel.getMasterLocationsSortKeyFunc = staticmethod(_bold_after_black(sort_key))
     try:
         vf, _, _ = varLib.build(ds, exclude=['STAT'], optimize=True)
     finally:
         varLib._add_gvar, TupleVariation.optimize = add_gvar, optimize
+        VariationModel.getMasterLocationsSortKeyFunc = staticmethod(sort_key)
     _sparse_zero_deltas(vf)
     finish(vf, italic)
     return vf
@@ -930,7 +1029,10 @@ def _sparse_zero_deltas(vf):
         kept = []
         for v in variations:
             n = len(v.coordinates)
-            v.coordinates = [None if d is not None and d == (0, 0) and (composite or i >= n - 4) else d for i, d in enumerate(v.coordinates)]
+            # a variation whose outline points are all zero (Bold's, which only moves advances) keeps none of them:
+            # a contour with no touched point moves nothing
+            flat = not composite and all(d is None or d == (0, 0) for d in v.coordinates[:n - 4])
+            v.coordinates = [None if d is not None and d == (0, 0) and (composite or flat or i >= n - 4) else d for i, d in enumerate(v.coordinates)]
             if any(d is not None for d in v.coordinates):
                 kept.append(v)
         gvar.variations[name] = kept

@@ -22,6 +22,7 @@ import json
 import os
 import unicodedata
 
+from params import MID_WGHT  # noqa: E402
 from composites import ALIAS, GREEK_ACCENTED, GREEK_POLY, accented_chars, glyph_name, is_cap, script_glyph
 from geom import seg_point
 
@@ -179,11 +180,15 @@ def clearance(o, left_glyph, right_glyph):
     return max(0, int(round(max(0.55 * o.p.S, KEEP_CLEAR) - closest)))
 
 
-def _need(o, a, b):
+def _need(o, a, b, before=False):
+    """`before`: with the caps the opening had before Black's sidebearing tightened (the reference for Display and Caption)."""
     if (a, b) in CLEAR_ONLY:
         return clearance(o, a, b)
     # an own-shape pair may need more than the fitted 40 once Black's sidebearing is ~20 (Tħ, Тћ at Display Black)
-    return measure(o, a, b, 400 if a in I_WIDE or b in I_WIDE else 90 if (a, b) in OWN_SHAPE_PAIRS and o.p.heavy else 40)
+    wide = a in I_WIDE or b in I_WIDE
+    if before or not o.p.heavy:  # Regular and lighter keep the fitted caps, so their kerning is what it was
+        return measure(o, a, b, 250 if wide else 40)
+    return measure(o, a, b, 400 if wide else 90 if (a, b) in OWN_SHAPE_PAIRS else 40)
 
 
 def kern_pairs(o):
@@ -297,6 +302,20 @@ def set_corners(corners, black):
     _HEAVY[:] = [black] + list(corners.values())
 
 
+_REF_BLACK = None
+_REF_CORNERS = {}
+_EXCESS = {}  # optical-size master name -> {pair: opening it carries over Regular}
+
+
+def set_reference(black, corners):
+    """Black and its corners drawn with the sidebearings Black had before HEAVY_TIGHTEN."""
+    global _REF_BLACK
+    _REF_BLACK = black
+    _REF_CORNERS.clear()
+    _REF_CORNERS.update(corners)
+    _EXCESS.clear()
+
+
 def _values(o, pairs):
     """Kerning follows weight, but optical size barely changes it: those masters reuse
     Regular's values, so their deltas vanish (1.6 KB of WOFF2, measured).
@@ -317,16 +336,33 @@ def _values(o, pairs):
     if loc.get('wght') == 400 and loc.get('opsz') == 14:
         _REGULAR = vals
     elif loc.get('wght') == 900 and loc.get('opsz') == 14:
+        # Display and Caption Black are corners no master contains (Black's and that master's changes from Regular
+        # added). An own-shape pair that needs more opening there than Black has takes it on the Black master, which
+        # leaves the optical-size masters on Regular's values: a Regular at Display or Caption kerns as Regular does.
+        for name, corner in _CORNERS.items():
+            _EXCESS[name] = {}
+            for k in pairs:
+                if k in OWN_SHAPE_PAIRS or k[0] in I_WIDE or k[1] in I_WIDE:
+                    # what the optical-size master opened this pair by against Black's old sidebearings, and still does
+                    old_black = max(0, _need(_REF_BLACK, *k, before=True))
+                    old_black = round(old_black * (1 + 0.3 * _REF_BLACK.p.heavy)) if old_black < 0 else old_black
+                    held = 0 if k in _HEAVY_KEYS else max(0, max(0, _need(_REF_CORNERS[name], *k, before=True)) - old_black)
+                    _EXCESS[name][k] = held
+                    vals[k] = max(vals[k], _need(corner, *k) - held)
         _BLACK = vals
     elif loc.get('wght') == 400 and _REGULAR is not None:
         out = dict(_REGULAR)
-        corner = _CORNERS.get(getattr(o, 'name', None))
-        if corner is not None and _BLACK is not None:
-            for k in pairs:
-                if k in OWN_SHAPE_PAIRS or k[0] in I_WIDE or k[1] in I_WIDE:
-                    need = max(0, _need(corner, *k))
-                    # corner value = R + (B - R) + (M - R) = B + M - R
-                    out[k] = max(out[k], need - _BLACK[k] + _REGULAR[k])
+        for k, held in _EXCESS.get(getattr(o, 'name', None), {}).items():
+            out[k] = out[k] + held
+        return out
+    elif loc.get('wght') == MID_WGHT and _REGULAR is not None and _BLACK is not None:
+        # Bold kerns as Regular and Black interpolated, so the master adds no kerning data; a pair that
+        # its own spacing (tighter than that line) would bring too close is opened by what it needs
+        t = (MID_WGHT - 400) / 500
+        out = {k: round(_REGULAR[k] + (_BLACK[k] - _REGULAR[k]) * t) for k in vals}
+        for k in pairs:
+            if k in OWN_SHAPE_PAIRS or k[0] in I_WIDE or k[1] in I_WIDE:
+                out[k] = max(out[k], _need(o, *k))
         return out
     return vals
 

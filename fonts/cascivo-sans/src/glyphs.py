@@ -1261,12 +1261,12 @@ def _eight(g, p):
 
 @glyph('space', 0x20)
 def _space(g, p):
-    g.adv_fixed = round(p.Sspace * 2 + 128)
+    g.adv_fixed = round(p.Sfig * 2 + 128)
 
 
 @glyph('nbspace', 0xA0)
 def _nbsp(g, p):
-    g.adv_fixed = round(p.Sspace * 2 + 128)
+    g.adv_fixed = round(p.Sfig * 2 + 128)
 
 
 @glyph('period', 0x2E)

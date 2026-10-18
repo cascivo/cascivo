@@ -294,16 +294,31 @@ def x_height_of(font, scale=1.0):
     return pen.bounds[3] * scale
 
 
+def _exact_glyphs(font_path, wght, opsz):
+    """(glyph set, x-height) at a location with unrounded coordinates: an instanced font rounds every point to a whole unit,
+    which moves a tip a few units long by up to 6 degrees from one build to the next."""
+    font = TTFont(font_path)
+    axes = {a.axisTag for a in font['fvar'].axes}
+    gs = font.getGlyphSet(location={k: v for k, v in (('wght', wght), ('opsz', opsz)) if k in axes})
+    pen = BoundsPen(gs)
+    gs['x'].draw(pen)
+    return gs, pen.bounds[3]
+
+
 @functools.cache
-def raster(font_path, glyph, wght, opsz=14, scale=1.0):
+def raster(font_path, glyph, wght, opsz=14, scale=1.0, exact=False):
     """Bool ink mask of the instanced glyph (nonzero fill), 1 px per font unit x `scale`, with a
     10 px margin. Winding is summed per contour so overlapping strokes fill and counters stay
     white, whatever the font does about overlaps. Cached: the masks are only ever read."""
-    font = instance(font_path, wght, opsz)
-    gs = font.getGlyphSet()
+    if exact:
+        gs, xh = _exact_glyphs(font_path, wght, opsz)
+        xh *= scale
+    else:
+        font = instance(font_path, wght, opsz)
+        gs = font.getGlyphSet()
+        xh = x_height_of(font, scale)
     pen = _Flatten(gs)
     gs[glyph].draw(pen)
-    xh = x_height_of(font, scale)
     if not pen.contours:
         m = np.zeros((2 * MARGIN, 2 * MARGIN), bool).view(Ink)
         m.baseline, m.x_height = MARGIN, xh
@@ -914,13 +929,14 @@ TIP_WEIGHTS = (750, 800, 850, 900)  # the heavy weights, where the tips sharpen:
 # `concave_turn` on Inter.ttf, ref_scale 1000 / 2048.
 TIP_REF = {'s': 13, 'a': 12, 'ae': 12, 'question': 8}
 TIP_REF_ITALIC = {'s': 13, 'question': 6}
-# Cascivo's own reading on the base fonts (ad04f3ca; the ae's 750 reads 21.1 since the even weight steps moved 750 from design wght 740 to 744, the old reading 17.2 was a dip between 18.4 at 740 and 21.6 at 760), which the s, a and ae tips are held to: they are square (4x Inter's at
-# Black), and a fillet patch that rounded them at 900 spurred at 750-850 (s 27 to 76, 31 to 89, 40 to 100). No tip may read
-# sharper than this, by more than the slack.
-# The ae's reading at 750 is noisy: +-2 degrees across 10 design units of weight (the tip is a few units of outline).
+# Cascivo's own reading (`concave_turn`, on unrounded outlines) on the base fonts, which the s, a and ae tips are held to:
+# they are square (4x Inter's at Black), and a fillet patch that rounded them at 900 spurred at 750-850. No tip may read
+# sharper than this, by more than the slack. The italic s is held to this build's own reading, not the base font's (27.3,
+# 35.8, 47.8, 58.4): its tip is 3 units long, so the half unit its master points round to moves it by 6 degrees, and the base's
+# rounding read low. Heavy outlines now sit on whole units (build.draw_master), which makes the reading the same at any spacing.
 TIP_BASE = {
-    'upright': {'s': (26.6, 31.3, 40.2, 56.1), 'a': (23.0, 31.2, 39.3, 41.7), 'ae': (21.1, 27.1, 35.6, 41.6), 'question': (9.5, 11.6, 11.3, 11.6)},
-    'italic': {'s': (27.4, 35.8, 48.2, 58.4), 'question': (5.8, 6.2, 7.7, 8.7)},
+    'upright': {'s': (25.7, 31.3, 40.4, 56.1), 'a': (23.0, 31.2, 39.3, 41.7), 'ae': (21.1, 27.1, 35.6, 41.6), 'question': (9.5, 11.6, 11.3, 11.6)},
+    'italic': {'s': (33.2, 43.3, 48.5, 59.6), 'question': (5.8, 6.2, 7.7, 8.7)},
 }
 TIP_SLACK = 1.5  # degrees
 # The ? hands its arc to its tail in a round: held to about 1.4x Inter's reading, where the base read 1.5x at 800.
@@ -972,7 +988,7 @@ def concave_turn(font_path, glyph, wght, region=(0.0, 1.0, 0.0, 1.0), opsz=14, r
     from skimage.measure import find_contours
     from skimage.morphology import disk
 
-    mask = np.asarray(raster(font_path, glyph, wght, opsz, TIP_SCALE * ref_scale))
+    mask = np.asarray(raster(font_path, glyph, wght, opsz, TIP_SCALE * ref_scale, exact=True))
     # The outline's quadratics are fitted to 1.5 units, so where a patch meets an edge at a shallow angle a pocket of white
     # up to a unit or two across can remain: no renderer shows one. Closing the mask fills them, and rounds a true point
     # no further than TIP_CLOSE units, which leaves a point's turn at 90.

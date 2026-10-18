@@ -14,12 +14,15 @@ DEFAULT = dict(wght=400, opsz=14)
 # visibly lighter than both.
 BLACK_STEM = 190
 THIN_STEM = 24  # Thin sits 2 above the old 22 so the first weight step is a full 20 (build.NAMED_STEMS)
+BOLD_STEM = 146  # build.NAMED_STEMS at 700
+MID_WGHT = round(400 + (BOLD_STEM - 84) / (BLACK_STEM - 84) * 500, 1)  # Bold's design coordinate (build._wght_map)
 ITALIC_ANGLE = 10  # degrees; Plex and Inter italics sit near 10-11
 
 MASTERS = [
     ('Regular', dict(wght=400, opsz=14)),
     ('Thin', dict(wght=100, opsz=14)),
     ('Black', dict(wght=900, opsz=14)),
+    ('Bold', dict(wght=MID_WGHT, opsz=14)),
     ('Caption', dict(wght=400, opsz=8)),
     ('Display', dict(wght=400, opsz=48)),
 ]
@@ -33,26 +36,23 @@ def _pw(x, table):
     raise ValueError(x)
 
 
-# Width across weights: 100-700 stay within +-2% of Regular and the display weights 800-900 within +5%
-# (test_weight_changes_do_not_reflow_text). Weight and width are linear between the Regular and Black masters, so
-# 700 (58% of the way) caps Black near +3.4%. Black must give back what its stems add, without touching a counter
-# quality.py guards, and without closing its spacing (a strict +-2% at 900 clotted the text: word spaces collapsed,
-# ii and il touched). Two terms:
-# HEAVY_TIGHTEN: share of the stem sidebearing (and the space, which is made of it) lost by Black. Each 0.1 takes
-#   about 1.5% off Black's width on the UI sample lines. 0.58 leaves Black's n sidebearing at 20 units against Inter's
-#   50 and Geist's 56 (Regular 70), (the space has its own, lighter SPACE_TIGHTEN).
-HEAVY_TIGHTEN = 0.582  # the s and ae tip readings in quality.py are noisy: 0.578 and 0.585 read over their base
-# SPACE_TIGHTEN: the same for the word space, which tightens less so words stay apart: Black's space is 0.95x Inter's
-#   (190 against 199) where it would be 0.86x at HEAVY_TIGHTEN. At 14 px the letter gaps close up first.
-SPACE_TIGHTEN = 0.35
+# Width across weights: 100-700 stay within +-2% of Regular's, 750-900 within +5%. Stems add ~11% to a text line by
+# Black; the sidebearings give back what they can without closing the white (inks 0.8x Inter's letter gap, 0.95x
+# its word gap) and the guarded counters give back nothing. Interpolation between Regular and Black would put
+# Bold (700) 58% of the way up Black's gain, so Bold is a master of its own that bends the sidebearing line
+# (build.mid_master): it holds the whole glyph's outline as interpolated and moves only its spacing.
+# HEAVY_TIGHTEN and BOLD_TIGHTEN: the share of the stem sidebearing lost at Black and at Bold.
+HEAVY_TIGHTEN = 0.53
+BOLD_TIGHTEN = 0.35
 # DIAG_TRIM: units the diagonal letters v w x y z lose from their width at Black. Their counters are open white,
-#   not guarded, and they carried the widest ink growth beside the s and e. Worth ~1.3% on the Overview line.
+#   not guarded, and they carried the widest ink growth beside the s and e.
 DIAG_TRIM = 90
 THIN_OPEN = 0.23  # share of the stem sidebearing Thin opens by, see P.__init__
 
 
 class P:
-    def __init__(self, wght, opsz, italic=False):
+    def __init__(self, wght, opsz, italic=False, loose=False):
+        # `loose`: spacing without HEAVY_TIGHTEN, the reference kern.py takes the Display and Caption masters' opening from
         self.wght, self.opsz, self.italic = wght, opsz, italic
         V = _pw(wght, [(100, THIN_STEM), (400, 84), (900, BLACK_STEM)])  # Regular 84: Geist-like color in text
         # heavy weights keep their horizontals: at 0.6 Black's arches, bars and s spine went thin
@@ -100,8 +100,7 @@ class P:
         self.S *= opened
         self.S *= (0.97 - 0.04 * self.heavy) if italic else (0.91 + 0.04 * self.heavy)
         self.Sfig = self.S  # figures and math signs keep their ink: their advance is fixed, so a tighter S would widen them
-        self.Sspace = self.S * (1 - SPACE_TIGHTEN * self.heavy)
-        self.S *= 1 - HEAVY_TIGHTEN * self.heavy
+        self.S *= 1 - (_pw(wght, [(400, 0.0), (MID_WGHT, BOLD_TIGHTEN), (900, HEAVY_TIGHTEN)]) if wght >= 400 and not loose else 0.0)
         self.Sc = self.S * 1.3  # capitals carry more space: their counters are bigger
         self.cw = counter
         # n is 0.82 x-heights wide at Regular (Geist 0.79, Inter 0.80). It was 0.88 with tighter
