@@ -7,9 +7,9 @@
 # Using cascivo with Astro
 
 **Status: supported.** A plain `astro add react` app that installs `@cascivo/react` renders
-styled with **no cascivo config** from the first release after `@cascivo/react` 1.9.0. Every
-client directive (`client:load`, `client:visible`, `client:only`) server-renders and styles
-correctly, and page content rendered with no directive ships as static HTML with zero JS.
+styled with **no cascivo config** from the first release after `@cascivo/react` 1.9.0. `client:load`
+and `client:visible` islands server-render and style correctly, `client:only` islands render on
+the client, and page content rendered with no directive ships as static HTML with zero JS.
 
 `@cascivo/astro` is the recommended companion: one integration for the layer order, the theme
 stylesheet and a no-flash theme that survives `<ClientRouter />`.
@@ -90,7 +90,7 @@ layers and `vendor`.
 Skip `@cascivo/astro` and nothing breaks, but you then own the three jobs it does: put a layer
 order statement in a CSS file imported **before** the theme (not in a layout `<style>` tag, which
 can land after cascivo's CSS), import the theme once in a shared layout, and inline
-`themePreloadScript({ reapplyOn: 'astro:after-swap' })` from `@cascivo/core` in `<head>` if you
+`themePreloadScript({ reapplyOn: 'astro:after-swap' })` from `@cascivo/react` in `<head>` if you
 use `<ClientRouter />`.
 
 ```astro
@@ -196,6 +196,9 @@ theme would revert to light on every click. `@cascivo/astro` handles this: its t
 re-applies after `astro:after-swap`. By hand:
 
 ```astro
+---
+import { themePreloadScript } from '@cascivo/react'
+---
 <script is:inline set:html={themePreloadScript({ reapplyOn: 'astro:after-swap' })} />
 ```
 
