@@ -26,6 +26,9 @@ from composites import ALIAS, GREEK_ACCENTED, GREEK_POLY, accented_chars, glyph_
 from geom import seg_point
 
 BAND = 10
+# Black's sidebearing is ~20 units (params.HEAVY_TIGHTEN), so 0.55 S would keep pairs 11 units apart, and a band
+# profile reads +-2: the closest point never gets nearer than this, whatever S is.
+KEEP_CLEAR = 16
 MIN_KERN = 10  # units; smaller corrections are invisible at text sizes
 DEPTH = 1.04  # depth cap, in stem sidebearings (fitted)
 W_GAP, W_CLOSEST, W_LEAN = 0.605, 0.077, -0.525  # fitted, see module docstring
@@ -70,6 +73,12 @@ I_WIDE = ['uni00EF', 'uni00EE', 'uni0129', 'uni012B', 'uni012D']  # ï î ĩ ī 
 # Black), and so do i's and j's own dots
 TALL = list('ABCDEFGHIJKLMNOPQRSTUVWXYZbdfhklt') + ['i', 'j'] + I_WIDE
 OWN_SHAPE_PAIRS.update({(a, b): 1 for i in I_WIDE for a, b in [(t, i) for t in TALL] + [(i, t) for t in TALL]})
+
+# The italic's slanted bars and feet reach under the next capital: these closed at Black once its sidebearing
+# tightened (params.HEAVY_TIGHTEN), and Greek's Δ Ω feet and Cyrillic's italic bars the same.
+OWN_SHAPE_PAIRS.update({(a, b): 1 for a, b in [('z', 'A'), ('z', 'X'), ('L', 'X'), ('Z', 'X')]})
+HEAVY_ONLY = {(script_glyph(a), script_glyph(b)) for a, b in ['Δλ', 'ΔΧ', 'Ωλ', 'ιλ', 'Γΰ', 'Τΰ', 'ΰΤ', 'ΐΐ']} | {('z', 'A'), ('z', 'X'), ('L', 'X'), ('Z', 'X')}
+OWN_SHAPE_PAIRS.update({k: 1 for k in HEAVY_ONLY})  # opened at the heavy masters only: Regular's spacing is unchanged
 
 TRACED_NEIGHBOURS = ['period', 'comma', 'ellipsis', 'colon', 'semicolon', 'exclam', 'question', 'hyphen', 'endash', 'emdash', 'slash',
                       'parenleft', 'parenright', 'bracketleft', 'bracketright', 'guillemotleft', 'guillemotright',
@@ -149,7 +158,7 @@ def measure(o, left_glyph, right_glyph, most=40):
     sa, sb = _slope(hi, bands), _slope(lo, bands)
     lean = min(abs(sa), abs(sb)) if sa * sb > 0 else 0.0
     k = W_GAP * (ref - eff) + W_CLOSEST * (ref - min(gaps)) + W_LEAN * lean * p.S
-    floor = 0.55 * p.S - min(gaps)  # never let the closest point get nearer than this
+    floor = max(0.55 * p.S, KEEP_CLEAR) - min(gaps)  # never let the closest point get nearer than this
     k = max(k, floor)
     return int(round(max(-140, min(most, k))))
 
@@ -167,13 +176,14 @@ def clearance(o, left_glyph, right_glyph):
     if not bands:
         return 0
     closest = min(o.adv[left_glyph] - hi[b] + lo[b] for b in bands)
-    return max(0, int(round(0.55 * o.p.S - closest)))
+    return max(0, int(round(max(0.55 * o.p.S, KEEP_CLEAR) - closest)))
 
 
 def _need(o, a, b):
     if (a, b) in CLEAR_ONLY:
         return clearance(o, a, b)
-    return measure(o, a, b, 250 if a in I_WIDE or b in I_WIDE else 40)
+    # an own-shape pair may need more than the fitted 40 once Black's sidebearing is ~20 (Tħ, Тћ at Display Black)
+    return measure(o, a, b, 400 if a in I_WIDE or b in I_WIDE else 90 if (a, b) in OWN_SHAPE_PAIRS and o.p.heavy else 40)
 
 
 def kern_pairs(o):
@@ -222,6 +232,7 @@ def kern_pairs(o):
 
 
 _SELECTED = None
+_HEAVY_KEYS = set()  # HEAVY_ONLY moved to the classes' representatives
 _REGULAR = None  # values measured on the Regular master
 _GROUPS = None  # (right-side rep, left-side rep) of each Cyrillic and Greek glyph
 
@@ -300,6 +311,8 @@ def _values(o, pairs):
     # strong pairs (AW, LT, LY, TJ). Closing pairs grow with weight; opening ones stay.
     boost = 1 + 0.3 * o.p.heavy
     vals = {k: round(v[0] * boost) if v[0] < 0 else v[0] for k, v in pairs.items()}
+    if o.p.wght <= 400:
+        vals.update({k: 0 for k in _HEAVY_KEYS if k in vals})
     loc = getattr(o, 'loc', {'wght': 400, 'opsz': 14})
     if loc.get('wght') == 400 and loc.get('opsz') == 14:
         _REGULAR = vals
@@ -320,7 +333,7 @@ def _values(o, pairs):
 
 def kern_fea(o):
     """Same pair set for every master (structure must match); values measured per master."""
-    global _SELECTED, _GROUPS
+    global _SELECTED, _GROUPS, _HEAVY_KEYS
     acc, glyphs, pairs = kern_pairs(o)
     if _GROUPS is None:  # the default master decides the classes, as it does the pairs
         _GROUPS = _side_groups(o, glyphs, acc, list(pairs))
@@ -357,6 +370,7 @@ def kern_fea(o):
     cls = lambda g: g.replace('.', '_')  # noqa: E731
     lines = [f'@kR_{cls(g)} = [{" ".join(_members(g, glyphs, acc) + sorted(joined_r.get(g, [])))}];' for g in firsts]
     lines += [f'@kL_{cls(g)} = [{" ".join(_members(g, glyphs, acc) + sorted(joined_l.get(g, [])))}];' for g in seconds]
+    _HEAVY_KEYS = {(rr(a), rl(b)) for a, b in HEAVY_ONLY} | HEAVY_ONLY
     lines.append('feature kern {')
     vals = _values(o, pairs)
     for a, b in _SELECTED:

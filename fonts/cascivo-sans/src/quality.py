@@ -26,8 +26,9 @@ from scipy import ndimage as ndi  # noqa: E402
 from skimage.draw import polygon as fill_polygon  # noqa: E402
 from skimage.morphology import disk, skeletonize  # noqa: E402
 
+from params import THIN_STEM as STEM_THIN  # noqa: E402
+
 MARGIN = 10
-STEM_THIN = 24  # params.P stem at wght 100 (params.THIN_STEM)
 
 LOWER = string.ascii_lowercase
 UPPER = string.ascii_uppercase
@@ -916,6 +917,7 @@ TIP_REF_ITALIC = {'s': 13, 'question': 6}
 # Cascivo's own reading on the base fonts (ad04f3ca; the ae's 750 reads 21.1 since the even weight steps moved 750 from design wght 740 to 744, the old reading 17.2 was a dip between 18.4 at 740 and 21.6 at 760), which the s, a and ae tips are held to: they are square (4x Inter's at
 # Black), and a fillet patch that rounded them at 900 spurred at 750-850 (s 27 to 76, 31 to 89, 40 to 100). No tip may read
 # sharper than this, by more than the slack.
+# The ae's reading at 750 is noisy: +-2 degrees across 10 design units of weight (the tip is a few units of outline).
 TIP_BASE = {
     'upright': {'s': (26.6, 31.3, 40.2, 56.1), 'a': (23.0, 31.2, 39.3, 41.7), 'ae': (21.1, 27.1, 35.6, 41.6), 'question': (9.5, 11.6, 11.3, 11.6)},
     'italic': {'s': (27.4, 35.8, 48.2, 58.4), 'question': (5.8, 6.2, 7.7, 8.7)},

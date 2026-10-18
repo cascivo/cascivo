@@ -12,7 +12,7 @@
 
 ## Global Constraints
 
-- Width: every weight 100…900 within **±2%** of 400, upright and italic, for "Signals move fast; the cascade decides." and "Overview Activity Settings Members Billing" (kerning on).
+- Width: every weight 100…700 within **±2%** of 400 and 800–900 within **+5%** (user decision), upright and italic, for "Signals move fast; the cascade decides." and "Overview Activity Settings Members Billing" (kerning on).
 - `ss01` = dotted zero; plain `I`/`l` alternates = `ss02`; `zero` = slashed zero (unchanged).
 - Weight steps: `n` stem steps between adjacent named weights all within **15–27** units.
 - Punctuation: hyphen < en dash < em dash; minus advance = plus advance and minus ≥ 8% shorter (ink) than en dash; quotes ≥ 0.9× Inter's ink box at the same weight; `case` brackets centred on cap height ±5 units; dot ≥ 0.05 em at wght 100.

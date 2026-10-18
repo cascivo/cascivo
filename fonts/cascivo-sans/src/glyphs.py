@@ -980,7 +980,7 @@ def _kra(g, p):
 
 @glyph('v', 0x76)
 def _v(g, p):
-    w = p.nw * 1.10  # diagonals need room: v was 0.9x the references' width at Regular and Black
+    w = p.dnw * 1.10  # diagonals need room: v was 0.9x the references' width at Regular and Black
     g.diag(0, p.xh, w / 2, 0, 'l', 'c')
     g.diag(w, p.xh, w / 2, 0, 'r', 'c')
     # spaced against Geist's and Inter's (and Inter's and Plex's italics) pair by pair: it sat
@@ -990,7 +990,7 @@ def _v(g, p):
 
 @glyph('w', 0x77)
 def _w(g, p):
-    w = p.nw * 1.64  # v, w, x, y and z were 0.88-0.91x Geist's and Inter's width at Regular
+    w = p.dnw * 1.64  # v, w, x, y and z were 0.88-0.91x Geist's and Inter's width at Regular
     ws = 0.86
     g.diag(0, p.xh, w * 0.25, 0, 'l', 'c', ws=ws)
     g.diag(w / 2, p.xh, w * 0.25, 0, 'c', 'c', ws=ws)
@@ -1003,7 +1003,7 @@ def _w(g, p):
 
 @glyph('x', 0x78)
 def _x(g, p):
-    w = p.nw * 1.07
+    w = p.dnw * 1.07
     g.diag(0, p.xh, w, 0, 'l', 'r', ws=0.93)
     g.diag(w, p.xh, 0, 0, 'r', 'l', ws=0.9)
     # spaced against Geist's and Inter's (and Inter's and Plex's italics) pair by pair: it sat
@@ -1016,7 +1016,7 @@ def _x(g, p):
 
 @glyph('y', 0x79)
 def _y(g, p):
-    w = p.nw * 1.10
+    w = p.dnw * 1.10
     a = g.diag(w, p.xh, w * 0.36, p.desc, 'r', 'c', caps=('h', 'h'))
     if not p.italic:
         # The italic's curled tail, ending horizontal, on the upright too (Geist's curls as well): a straight
@@ -1058,7 +1058,7 @@ def _y(g, p):
 
 @glyph('z', 0x7A)
 def _z(g, p):
-    w = p.nw * 0.95
+    w = p.dnw * 0.95
     g.hbar(w * 0.04, w * 0.98, p.xh - p.H).hbar(0, w, 0)
     g.diag(w * 0.98, p.xh - p.H / 2, 0, p.H / 2, 'r', 'l', ws=0.95)
     # the italic's baseline bar slants out under the next letter: heavy, it met X and A
@@ -1071,7 +1071,7 @@ def _z(g, p):
 
 
 def fw(p):
-    return p.fig_adv - 2 * p.S * 0.62
+    return p.fig_adv - 2 * p.Sfig * 0.62
 
 
 @glyph('zero', 0x30)
@@ -1261,12 +1261,12 @@ def _eight(g, p):
 
 @glyph('space', 0x20)
 def _space(g, p):
-    g.adv_fixed = round(p.S * 2 + 128)
+    g.adv_fixed = round(p.Sspace * 2 + 128)
 
 
 @glyph('nbspace', 0xA0)
 def _nbsp(g, p):
-    g.adv_fixed = round(p.S * 2 + 128)
+    g.adv_fixed = round(p.Sspace * 2 + 128)
 
 
 @glyph('period', 0x2E)
@@ -1392,7 +1392,7 @@ def _underscore(g, p):
 
 def _mathy(p):
     """Shared geometry for + − × ÷ = ± so operators align: centred on the figure middle."""
-    w = p.fig_adv - 2 * p.S * 0.7
+    w = p.fig_adv - 2 * p.Sfig * 0.7
     return w, p.cap * 0.42, max(p.H * 0.95, 20)
 
 
@@ -1598,7 +1598,7 @@ def _braceright(g, p):
 
 @glyph('numbersign', 0x23)
 def _numbersign(g, p):
-    w = p.fig_adv - 2 * p.S * 0.6
+    w = p.fig_adv - 2 * p.Sfig * 0.6
     t = p.H * 0.95
     top = p.cap * 0.95
     for x in (w * 0.3, w * 0.68):

@@ -27,11 +27,11 @@ VFI = os.path.join(DIST, 'CascivoSans-Italic[opsz,wght].ttf')
 BUDGETS = {
     'CascivoSans[opsz,wght].woff2': 71_500,  # Latin, Cyrillic, Greek (with polytonic); raised from 69_500 for the Latin quality pass (Black counters, redrawn letters)
     'CascivoSans-Latin[opsz,wght].woff2': 30_000,
-    'CascivoSans-Latin[wght].woff2': 23_500,
+    'CascivoSans-Latin[wght].woff2': 24_000,  # raised from 23_500 by the user for the interface brief (width across weights)
     'CascivoSans-Regular.woff2': 24_500,
     'CascivoSans-Italic[opsz,wght].woff2': 77_000,  # raised from 75_000 for the Latin quality pass (joins)
     'CascivoSans-Italic-Latin[opsz,wght].woff2': 34_000,
-    'CascivoSans-Italic-Latin[wght].woff2': 26_000,
+    'CascivoSans-Italic-Latin[wght].woff2': 26_500,  # raised from 26_000 by the user for the interface brief (width across weights)
 }
 
 
@@ -151,22 +151,60 @@ class Font(unittest.TestCase):
         self.assertAlmostEqual((hhea.ascent - hhea.descent + hhea.lineGap) / upm, 1.30, places=2)
 
     def test_weight_changes_do_not_reflow_text(self):
-        # Bold on hover or an active tab must not rewrap a line. Geist spans 0.96x-1.11x of its
-        # Regular width from Thin to Black; before the hand review this font spanned 0.73x-1.35x.
-        from fontTools.varLib.instancer import instantiateVariableFont
+        # Bold on hover or an active tab must not rewrap a line: shaped with kerning, a UI string
+        # stays within 2% of its Regular width at every weight, upright and italic. (Geist spans
+        # 0.96x-1.11x and Inter 0.94x-1.08x of Regular from Thin to Black; this font was 1.11x.)
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
 
-        text = 'the settings page lets you rename a team assign seats and set the default theme'
-
-        def width(w, path=VF):
-            f = instantiateVariableFont(TTFont(path), {'wght': w, 'opsz': 14})
-            cmap, hmtx = f.getBestCmap(), f['hmtx']
-            return sum(hmtx[cmap[ord(c)]][0] for c in text)
+        def widths(path, text):
+            font = hb.Font(hb.Face(open(path, 'rb').read()))
+            out = {}
+            for w in range(100, 950, 50):
+                font.set_variations({'wght': w, 'opsz': 14})
+                buf = hb.Buffer()
+                buf.add_str(text)
+                buf.guess_segment_properties()
+                hb.shape(font, buf, {'kern': True})
+                out[w] = sum(pos.x_advance for pos in buf.glyph_positions)
+            return out
 
         for path in (VF, VFI):
-            regular = width(400, path)
-            self.assertGreaterEqual(width(100, path) / regular, 0.92)
-            self.assertLessEqual(width(700, path) / regular, 1.09)
-            self.assertLessEqual(width(900, path) / regular, 1.16)
+            for text in ('Signals move fast; the cascade decides.', 'Overview Activity Settings Members Billing'):
+                row = widths(path, text)
+                for w, width in row.items():
+                    ratio = width / row[400] - 1
+                    # the display weights may run wider: a strict 2% at Black closed its spacing
+                    limit = (0.02, 0.02) if w <= 700 else (0.05, 0.02)
+                    self.assertTrue(-limit[1] <= ratio <= limit[0], f'{os.path.basename(path)} {text[:10]!r} wght {w}: {ratio:+.1%} against 400')
+
+    def test_black_spacing_stays_open(self):
+        # Holding Black to +-2% of Regular's width took it to 18 units of n sidebearing: word spaces
+        # collapsed and ii, il touched at 14 px. Inter's Black (opsz 14) has n 50, space 199, i 50 per side.
+        from fontTools.varLib.instancer import instantiateVariableFont
+
+        inter_n_sb, inter_space, min_gap = 50, 199, 40
+        for path in (VF, VFI):
+            f = instantiateVariableFont(TTFont(path), {'wght': 900, 'opsz': 14})
+            cmap, glyf, hmtx = f.getBestCmap(), f['glyf'], f['hmtx']
+
+            def sides(ch):
+                g = glyf[cmap[ord(ch)]]
+                g.recalcBounds(glyf)
+                adv, lsb = hmtx[cmap[ord(ch)]]
+                return lsb, adv - g.xMax
+
+            name = os.path.basename(path)
+            self.assertGreaterEqual(hmtx[cmap[32]][0], 0.85 * inter_space, f'{name}: Black word space')
+            if path == VFI:  # a slanted bounding box overhangs its advance: sidebearings read only on the upright
+                continue
+            left, right = sides('n')
+            self.assertGreaterEqual((left + right) / 2, 0.4 * inter_n_sb, f'{name}: Black n sidebearing')
+            for pair in ('ii', 'il', 'nn'):
+                gap = sides(pair[0])[1] + sides(pair[1])[0]
+                self.assertGreaterEqual(gap, min_gap, f'{name}: {pair} gap at Black')
 
     def test_named_weights_step_evenly(self):
         # The n stem went 22/35/53/84/104/...: a 13-unit Thin -> ExtraLight step (half a pixel at
@@ -178,7 +216,11 @@ class Font(unittest.TestCase):
             f = instantiateVariableFont(TTFont(path), {'wght': w, 'opsz': 14})
             gs = f.getGlyphSet()
             y = f['OS/2'].sxHeight / 2
-            inside = lambda x: (lambda p: (gs['n'].draw(p), p)[1])(PointInsidePen(gs, (x, y), evenOdd=False)).getResult()  # noqa: E731
+            def inside(x):
+                pen = PointInsidePen(gs, (x, y), evenOdd=False)
+                gs['n'].draw(pen)
+                return pen.getResult()
+
             xs = [x for x in range(-50, 700) if inside(x)]
             end = next((i for i in range(1, len(xs)) if xs[i] != xs[i - 1] + 1), len(xs))
             return xs[end - 1] - xs[0] + 1
