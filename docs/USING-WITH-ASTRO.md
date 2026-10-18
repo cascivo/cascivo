@@ -206,7 +206,8 @@ Two rules for theme-aware islands:
 - `ThemeProvider` never writes module state on the server, so on-demand SSR does not leak one
   request's theme into the next.
 
-The inline theme script is picked up by Astro's `security.csp` hashing.
+The inline theme script is picked up by Astro's `security.csp` hashing (checked by hand, not by
+the Astro arm below).
 
 ---
 
@@ -285,6 +286,7 @@ What is checked, and where:
 - **`pnpm css-contract:check`** guards the export-condition order and the keyword in every
   package that ships CSS.
 - **Not covered by that arm:** Starlight (checked by hand), `server:defer` (checked by hand),
+  `security.csp` hashing of the inline theme script (checked by hand),
   real Safari and Firefox (only Chromium runs, so the no-`moveBefore` path is simulated), and
   Preact under Astro (a documented report, not a tested contract).
 - **A green `apps/examples/astro-islands` proves little.** It depends on `@cascivo/react` as

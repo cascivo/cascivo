@@ -8,7 +8,8 @@ import { persistedSignal } from './persisted-signal.ts'
 
 import { DEFAULT_ATTR, DEFAULT_KEY } from './theme-script.ts'
 
-// Lives in a dependency-free module so `@cascivo/core/pure` can serve it without React.
+// Lives in a dependency-free module so `@cascivo/core/pure` can serve it without react-dom or
+// the signals runtime.
 export { themePreloadScript } from './theme-script.ts'
 
 /** True unless the build's NODE_ENV is 'production'. Read via `globalThis` so the
@@ -194,7 +195,7 @@ function readServerTheme(): string {
 /**
  * Read and set the active theme. Returns the current theme **name** (a plain
  * string) and a setter — the component re-renders when the theme changes with no
- * signal handling on your part (this hook calls `useSignals()` for you, so it
+ * signal handling on your part (it subscribes through `useSyncExternalStore`, so it
  * works in React apps with no Babel transform). This is the React-idiomatic shape;
  * for signal-native code (`computed()`, `effect()`, Preact) use {@link themeSignal}.
  *

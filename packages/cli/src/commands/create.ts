@@ -897,13 +897,14 @@ export default defineConfig({
   ],
   vite: {
     resolve: {
-      // REQUIRED, and the single least obvious line in this app.
+      // Kept for @cascivo/react 1.9.0 and older; @cascivo/astro sets it too, and newer
+      // versions do not need it (their package carries the \`astro-component\` keyword).
       //
       // Vite externalizes node_modules packages in its server build, so an externalized
       // @cascivo/react is imported by Node at runtime and its module graph is never walked
-      // — and Astro collects a page's CSS by walking that graph. Without this, SSR'd
-      // islands (client:load, client:visible) render with correct class names and no rules
-      // anywhere in the output. Nothing warns; it reads as a theming problem.
+      // — and Astro collects a page's CSS by walking that graph. On those versions, without
+      // it, SSR'd islands (client:load, client:visible) render with correct class names and no
+      // rules anywhere in the output. Nothing warns; it reads as a theming problem.
       //
       // It must be \`resolve.noExternal\`, NOT \`ssr.noExternal\`: Astro prerenders static
       // routes in its own Vite environment, which \`ssr.*\` does not reach.

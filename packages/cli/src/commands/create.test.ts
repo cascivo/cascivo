@@ -226,7 +226,8 @@ describe('buildScaffold — astro', () => {
   })
 
   /**
-   * The single line that decides whether the app renders styled at all.
+   * Kept for `@cascivo/react` 1.9.0 and older, where it decides whether the app renders
+   * styled at all (`@cascivo/astro` sets it too; newer versions do not need it).
    *
    * Vite externalizes node_modules packages in its server build, so without this the
    * package's module graph is never walked and Astro — which collects a page's CSS from

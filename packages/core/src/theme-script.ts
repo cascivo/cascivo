@@ -1,6 +1,6 @@
 // No imports, and no `'use client'`: `@cascivo/core/pure` re-exports this, and an Astro
-// integration calls it in the config process (Node), where nothing from the React runtime
-// may be loaded.
+// integration calls it in the config process (Node), where neither react-dom nor the signals
+// runtime may be loaded.
 
 export const DEFAULT_KEY = 'cascivo-theme'
 export const DEFAULT_ATTR = 'data-theme'
