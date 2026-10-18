@@ -97,6 +97,27 @@ describe('init', () => {
     expect(logs.join('\n')).toContain('USING-WITH-STRICT-ESLINT.md')
   })
 
+  it('prints Astro next steps only when an astro config exists', async () => {
+    await init(['--yes', '--no-install'], dir)
+    expect(logs.join('\n')).not.toContain('astro add')
+
+    for (const file of [
+      'astro.config.mjs',
+      'astro.config.ts',
+      'astro.config.js',
+      'astro.config.mts',
+    ]) {
+      logs.length = 0
+      await writeFile(join(dir, file), 'export default {}\n')
+      await init(['--yes', '--no-install'], dir)
+      const out = logs.join('\n')
+      expect(out).toContain('npx astro add @cascivo/astro')
+      expect(out).toContain('.tsx')
+      expect(out).toContain('client:')
+      await rm(join(dir, file))
+    }
+  })
+
   it('excludes the vendored dir from the formatter only when a formatter config exists', async () => {
     // No formatter config -> no ignore file invented.
     await init(['--yes', '--no-install'], dir)

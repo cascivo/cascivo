@@ -322,6 +322,95 @@ describe('checkSsrConfig', () => {
   })
 })
 
+describe('checkSsrConfig (Astro)', () => {
+  let dir: string
+  afterEach(() => rmSync(dir, { recursive: true, force: true }))
+
+  function project(opts: { config: string; reactKeywords?: unknown }): string {
+    dir = mkdtempSync(join(tmpdir(), 'cascade-doctor-astro-'))
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ dependencies: { astro: '7.0.0' } }))
+    writeFileSync(join(dir, 'astro.config.mjs'), opts.config)
+    if (opts.reactKeywords !== undefined) {
+      const pkgDir = join(dir, 'node_modules', '@cascivo', 'react')
+      mkdirSync(pkgDir, { recursive: true })
+      writeFileSync(
+        join(pkgDir, 'package.json'),
+        JSON.stringify({ name: '@cascivo/react', keywords: opts.reactKeywords }),
+      )
+    }
+    return dir
+  }
+
+  it('warns on Astro without the integration, noExternal or the keyword', () => {
+    const root = project({
+      config: `export default {}`,
+      reactKeywords: ['react', 'design-system'],
+    })
+    const hint = checkSsrConfig(root)
+    expect(hint).toContain('@cascivo/astro')
+    expect(hint).toContain('npx astro add @cascivo/astro')
+  })
+
+  it('warns when @cascivo/react is not installed at all', () => {
+    expect(checkSsrConfig(project({ config: `export default {}` }))).toContain('@cascivo/astro')
+  })
+
+  it('stays quiet when the installed @cascivo/react carries the astro-component keyword', () => {
+    const root = project({
+      config: `export default {}`,
+      reactKeywords: ['react', 'astro-component'],
+    })
+    expect(checkSsrConfig(root)).toBeNull()
+  })
+
+  it('ignores a malformed keywords field instead of trusting it', () => {
+    expect(
+      checkSsrConfig(project({ config: `export default {}`, reactKeywords: 'astro-component' })),
+    ).toContain('@cascivo/astro')
+    expect(
+      checkSsrConfig(project({ config: `export default {}`, reactKeywords: [1, null] })),
+    ).toContain('@cascivo/astro')
+  })
+
+  it('stays quiet when the config uses the @cascivo/astro integration', () => {
+    const root = project({
+      config: `import cascivo from '@cascivo/astro'\nexport default { integrations: [cascivo()] }`,
+    })
+    expect(checkSsrConfig(root)).toBeNull()
+  })
+
+  it('stays quiet when the config sets vite.resolve.noExternal', () => {
+    const root = project({
+      config: `export default { vite: { resolve: { noExternal: [/^@cascivo\\//] } } }`,
+    })
+    expect(checkSsrConfig(root)).toBeNull()
+  })
+
+  it('finds resolve.noExternal after a nested object in the resolve block', () => {
+    const root = project({
+      config: `export default { vite: { resolve: { alias: { a: 'b' }, noExternal: [/^@cascivo\\//] } } }`,
+    })
+    expect(checkSsrConfig(root)).toBeNull()
+  })
+
+  it('still warns when the config only sets ssr.noExternal, which Astro ignores', () => {
+    const root = project({
+      config: `export default { vite: { ssr: { noExternal: [/^@cascivo\\//] } } }`,
+      reactKeywords: ['react'],
+    })
+    const hint = checkSsrConfig(root)
+    expect(hint).toContain('@cascivo/astro')
+    expect(hint).toContain('ssr.noExternal')
+  })
+
+  it('warns when resolve and ssr both exist but only ssr has noExternal', () => {
+    const root = project({
+      config: `export default { vite: { resolve: { alias: {} }, ssr: { noExternal: [/^@cascivo\\//] } } }`,
+    })
+    expect(checkSsrConfig(root)).toContain('@cascivo/astro')
+  })
+})
+
 describe('isAdopterProject', () => {
   let dir: string
   afterEach(() => rmSync(dir, { recursive: true, force: true }))

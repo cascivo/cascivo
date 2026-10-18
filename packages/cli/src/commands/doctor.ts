@@ -341,7 +341,79 @@ export function checkFormatterIgnore(cwd: string, outputDir: string): string | n
   return null
 }
 
+const ASTRO_CONFIG_FILES = [
+  'astro.config.mjs',
+  'astro.config.ts',
+  'astro.config.js',
+  'astro.config.mts',
+]
+
+/** Keyword every published cascivo CSS package carries (react >1.9.0): marks it Astro-safe. */
+const ASTRO_COMPONENT_KEYWORD = 'astro-component'
+
+/**
+ * True when `config` has a `resolve: { ... noExternal ... }` block. Astro prerenders in its own
+ * Vite environment, which reads `resolve.noExternal` and ignores `ssr.noExternal`, so the two
+ * must not be confused. Brace-balanced rather than a lazy regex: a `resolve` block commonly
+ * holds a nested `alias: { ... }` before `noExternal`.
+ */
+function setsResolveNoExternal(config: string): boolean {
+  if (/\bresolve\s*\.\s*noExternal\b/.test(config)) return true
+  for (const match of config.matchAll(/\bresolve\s*:\s*\{/g)) {
+    let depth = 1
+    let i = match.index + match[0].length
+    const start = i
+    while (i < config.length && depth > 0) {
+      const c = config[i]
+      if (c === '{') depth++
+      else if (c === '}') depth--
+      i++
+    }
+    if (/\bnoExternal\b/.test(config.slice(start, i))) return true
+  }
+  return false
+}
+
+/**
+ * True when the installed `@cascivo/react` declares `astro-component`. The file is third-party
+ * input, so it is bound as `unknown` and narrowed before `keywords` is trusted.
+ */
+function installedReactIsAstroSafe(cwd: string): boolean {
+  let pkg: unknown
+  try {
+    pkg = JSON.parse(readFileSync(join(cwd, 'node_modules/@cascivo/react/package.json'), 'utf8'))
+  } catch {
+    return false
+  }
+  if (typeof pkg !== 'object' || pkg === null || !('keywords' in pkg)) return false
+  const { keywords } = pkg
+  return Array.isArray(keywords) && keywords.includes(ASTRO_COMPONENT_KEYWORD)
+}
+
+/**
+ * Astro branch of {@link checkSsrConfig}. Without the integration, `resolve.noExternal`, or a
+ * cascivo build that opts in via keyword, SSR'd islands render unstyled with no error.
+ */
+function checkAstroConfig(cwd: string, configFile: string): string | null {
+  const config = readFileSync(join(cwd, configFile), 'utf8')
+  if (/@cascivo\/astro/.test(config)) return null
+  if (setsResolveNoExternal(config)) return null
+  if (installedReactIsAstroSafe(cwd)) return null
+  const ssrOnly = /\bssr\s*:\s*\{[^}]*noExternal/.test(config)
+  return (
+    `${configFile} does not use the @cascivo/astro integration, so cascivo's CSS is ` +
+    `externalized in Astro's prerender and islands render unstyled with no error` +
+    (ssrOnly ? ` (Astro ignores ssr.noExternal; it reads resolve.noExternal)` : '') +
+    `. Run \`npx astro add @cascivo/astro\`. ` +
+    `Recipe: https://cascivo.com/docs/using-with-astro.md`
+  )
+}
+
 export function checkSsrConfig(cwd: string): string | null {
+  // Astro first: it is not one of the Vite SSR frameworks below and needs a different config key.
+  const astroConfig = ASTRO_CONFIG_FILES.find((f) => existsSync(join(cwd, f)))
+  if (astroConfig !== undefined) return checkAstroConfig(cwd, astroConfig)
+
   let deps: Record<string, unknown> = {}
   try {
     const pkg = JSON.parse(readFileSync(join(cwd, 'package.json'), 'utf8')) as {

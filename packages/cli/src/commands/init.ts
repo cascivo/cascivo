@@ -165,6 +165,28 @@ function hasPrettierKeyInPackageJson(cwd: string, ignore: string): boolean {
   }
 }
 
+const ASTRO_CONFIG_FILES = [
+  'astro.config.mjs',
+  'astro.config.ts',
+  'astro.config.js',
+  'astro.config.mts',
+]
+
+/** Astro prerenders in its own Vite environment, so the generic steps above are not enough. */
+function printAstroNextSteps(cwd: string): void {
+  if (!ASTRO_CONFIG_FILES.some((f) => existsSync(join(cwd, f)))) return
+  console.log('\nAstro detected. Next steps:')
+  console.log(
+    '  npx astro add @cascivo/astro   # layer order, theme and no-flash script, zero config',
+  )
+  console.log('  Compose compound components (Tabs, Accordion, Popover…) inside one .tsx island:')
+  console.log(
+    '    Astro renders each .astro child separately, so React context cannot reach their parts.',
+  )
+  console.log('  Hydrate only the interactive islands: client:visible or client:load on those,')
+  console.log('    and leave static pieces without a client: directive.')
+}
+
 /** The "here's everything you need" summary, printed once at the end of init. */
 function printDependencySummary(): void {
   console.log('\nDependencies')
@@ -270,6 +292,7 @@ export async function init(args: string[] = [], cwd: string = process.cwd()): Pr
   printDependencySummary()
   ensureFormatterIgnore(cwd, DEFAULT_CONFIG.outputDir)
   hintEslintIfPresent(cwd)
+  printAstroNextSteps(cwd)
 
   // The version spread (`@cascivo/react@0.18.x` next to `@cascivo/platform@0.0.x`) is first
   // seen HERE, in the install list this command just printed — not 249 lines into a guide.
