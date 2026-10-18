@@ -74,6 +74,7 @@ class Out:
         self.cmap = {}
         self.bounds = {}
         self.topleft = {}
+        self.shift = {}  # Bold only: how far each letter's outline moved from the interpolated one
         self.kind = {}  # name -> 'fixed' (own advance), 'mark' or 'tab': glyphs whose spacing is not sidebearings round the ink
 
 
@@ -138,8 +139,11 @@ def draw_master(p):
             unit = p.Sc if is_cap(name) else p.S
             l, r = g.sb[0] * unit, g.sb[1] * unit
             dx = l - xmin
-            if p.heavy:  # a whole unit, so the heavy outlines round the same way whatever the spacing: a counter tip a few units long moved by 6 degrees with the fraction
-                dx = round(dx)
+            if p.heavy:
+                # A whole unit, so the heavy outlines round the same way whatever the spacing: a counter tip a few units
+                # long moved by 6 degrees with the fraction. The italic's half unit over is the phase its s tip was fitted
+                # at (27.3 / 35.8 / 47.8 / 58.4 at 750-900); the upright's ae tip would read 30.3 against 28.6 at 800 there.
+                dx = round(dx) + (0.5 if p.italic else 0)
             adv = l + (xmax - xmin) + r
         cs = [transform_contour(c, lambda q, dx=dx: (q[0] + dx, q[1])) for c in (italic_cs if italic_cs is not None else cs)]
         o.contours[name] = cs
@@ -555,11 +559,11 @@ def _lerp_contours(a, b, t):
 
 
 def mid_master(reg, black, nat):
-    """The Bold master: Regular's and Black's outlines, anchors and composites exactly interpolated, with
-    `nat`'s own spacing set on the right of each glyph. Interpolating Regular and Black puts every weight on a
-    straight line between their sidebearings; Bold bends that line so 700 keeps its width (+-2% of Regular)
-    while Black's text stays open. The only thing it differs in is an advance: no outline, anchor or kerning
-    delta, so it costs a phantom-point delta per glyph and nothing else."""
+    """The Bold master: Regular's and Black's outlines, anchors and composites interpolated, then each letter moved
+    half the way its advance shortens, so the sidebearings stay as even as `nat`'s own. Interpolating Regular and
+    Black puts every weight on a straight line between their sidebearings; Bold bends that line so 700 keeps its
+    width (+-2% of Regular) while Black's text stays open. Every delta the master carries is a shift of a whole
+    glyph and its advance (a point or two per contour, with no change of shape or kerning)."""
     p = nat.p
     t = (p.wght - reg.p.wght) / (black.p.wght - reg.p.wght)
     lerp = lambda a, b: a + (b - a) * t  # noqa: E731
@@ -568,6 +572,7 @@ def mid_master(reg, black, nat):
     o.kind = dict(nat.kind)
     # Only letters bend: a figure, mark or sign keeps the interpolated advance, which leaves no delta to store for it
     letters = {n for cp, n in nat.cmap.items() if unicodedata.category(chr(cp)).startswith('L')}
+    shift = {}  # glyph -> how far its outline moved
     for name, rc in reg.contours.items():
         kind = nat.kind.get(name)
         if name.split('.')[0] not in letters:
@@ -577,15 +582,35 @@ def mid_master(reg, black, nat):
             continue
         rb, bb, nb = reg.bounds[name], black.bounds[name], nat.bounds[name]
         x1, x0 = lerp(rb[2], bb[2]), lerp(rb[0], bb[0])  # the upright ink's edges, where the italic's spacing is measured too
-        o.contours[name] = _lerp_contours(rc, black.contours[name], t)
-        o.adv[name] = nat.adv[name] if kind in ('mark', 'tab') else round(lerp(reg.adv[name], black.adv[name])) if kind == 'lerp' else round(x1 + (nat.adv[name] - nb[2]) - (x0 - nb[0]))
+        lerp_adv = lerp(reg.adv[name], black.adv[name])
+        if kind in ('mark', 'tab'):
+            adv, dx = nat.adv[name], 0.0
+        elif kind == 'lerp':
+            adv, dx = lerp_adv, 0.0
+        else:
+            adv = x1 + (nat.adv[name] - nb[2]) - (x0 - nb[0])
+            dx = round((adv - lerp_adv) / 2)  # a whole unit: a half one moves a counter tip (the ae's at 750) by a degree or two
+        shift[name] = dx
+        o.shift[name] = dx
+        o.contours[name] = [transform_contour(c, lambda q, dx=dx: (q[0] + dx, q[1])) for c in _lerp_contours(rc, black.contours[name], t)]
+        o.adv[name] = round(adv)
         o.bounds[name] = tuple(lerp(a, b) for a, b in zip(rb, bb))
-        o.topleft[name] = lerp(reg.topleft[name], black.topleft[name])
+        o.bounds[name] = (o.bounds[name][0] + dx, o.bounds[name][1], o.bounds[name][2] + dx, o.bounds[name][3])
+        o.topleft[name] = lerp(reg.topleft[name], black.topleft[name]) + dx
         ra, ba = reg.anchors.get(name, {}), black.anchors.get(name, {})
-        o.anchors[name] = {k: tuple(lerp(a, b) for a, b in zip(ra[k], ba[k])) for k in ra}
+        o.anchors[name] = {k: (lerp(ra[k][0], ba[k][0]) + dx, lerp(ra[k][1], ba[k][1])) for k in ra}
     add_composites(o)
     for name, parts in reg.comps.items():  # offsets interpolate too: a rounded one per master would be a delta of its own
-        o.comps[name] = [(g, lerp(ox, bx), lerp(oy, by), lerp(a, ba_)) for (g, ox, oy, a), (_, bx, by, ba_) in zip(parts, black.comps[name])]
+        base = shift.get(parts[0][0], 0.0)  # the letter the marks sit on moved with its outline
+        out = []
+        for i, ((g, ox, oy, a), (_, bx, by, ba_)) in enumerate(zip(parts, black.comps[name])):
+            x = lerp(ox, bx)
+            if i and o.kind.get(g) == 'mark':  # a mark follows its base
+                x += base
+            elif i:  # a second letter follows the first one's advance
+                x += 2 * base
+            out.append((g, x, lerp(oy, by), lerp(a, ba_)))
+        o.comps[name] = out
     return o
 
 
@@ -641,12 +666,13 @@ def build_glyf(outs, order):
     mids = {m for m, o in enumerate(outs) if o.name.startswith('Bold')}
     black = next(m for m, o in enumerate(outs) if o.name.startswith('Black'))
 
-    def bold_pt(m, pts):
+    def bold_pt(m, pts, name=None):
         """Bold's point from Regular's (pts[0]) and Black's (pts[black] or pts[1]), each rounded to the unit it is stored
         at: the variable font then draws Bold from the same integers, and the delta the model stores for it is zero."""
         t = (outs[m].p.wght - outs[0].p.wght) / (outs[black].p.wght - outs[0].p.wght)
         pr, pb = pts[0], pts[black] if len(pts) > black else pts[1]
-        return tuple(round(a) + (round(b) - round(a)) * t for a, b in zip(pr, pb))
+        x, y = (round(a) + (round(b) - round(a)) * t for a, b in zip(pr, pb))
+        return (x + outs[m].shift.get(name, 0.0), y)
     for name in order:
         if name == '.notdef':
             for m, o in enumerate(outs):
@@ -678,7 +704,7 @@ def build_glyf(outs, order):
             n = len(segs_m[0])
             assert all(len(s) == n for s in segs_m), f'{name}: segment count differs'
             for m, (pen, segs) in enumerate(zip(pens, segs_m)):
-                pen.moveTo(bold_pt(m, [s[0][1] for s in segs_m]) if m in mids else segs[0][1])
+                pen.moveTo(bold_pt(m, [s[0][1] for s in segs_m], name) if m in mids else segs[0][1])
             for si in range(n):
                 kinds = {s[si][0] for s in segs_m}
                 assert len(kinds) == 1, f'{name}: segment kind differs'
@@ -688,7 +714,7 @@ def build_glyf(outs, order):
                     if last:
                         continue  # closePath draws it
                     for m, (pen, segs) in enumerate(zip(pens, segs_m)):
-                        pen.lineTo(bold_pt(m, [s[si][2] for s in segs_m]) if m in mids else segs[si][2])
+                        pen.lineTo(bold_pt(m, [s[si][2] for s in segs_m], name) if m in mids else segs[si][2])
                 else:
                     curves = [s[si][1:] for s in segs_m]
                     if last:  # close exactly on the start point in every master
@@ -699,7 +725,7 @@ def build_glyf(outs, order):
                     quads = curves_to_quadratic([c for m, c in enumerate(curves) if m not in mids], [MAX_ERR] * (len(curves) - len(mids)))
                     for m in sorted(mids):
                         qr, qb = quads[0], quads[black - sum(1 for x in mids if x < black)]
-                        quads.insert(m, tuple(bold_pt(m, [pr, pb]) for pr, pb in zip(qr, qb)))
+                        quads.insert(m, tuple(bold_pt(m, [pr, pb], name) for pr, pb in zip(qr, qb)))
                     for pen, q in zip(pens, quads):
                         pen.qCurveTo(*q[1:])
             for pen in pens:

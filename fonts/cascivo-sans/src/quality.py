@@ -931,12 +931,12 @@ TIP_REF = {'s': 13, 'a': 12, 'ae': 12, 'question': 8}
 TIP_REF_ITALIC = {'s': 13, 'question': 6}
 # Cascivo's own reading (`concave_turn`, on unrounded outlines) on the base fonts, which the s, a and ae tips are held to:
 # they are square (4x Inter's at Black), and a fillet patch that rounded them at 900 spurred at 750-850. No tip may read
-# sharper than this, by more than the slack. The italic s is held to this build's own reading, not the base font's (27.3,
-# 35.8, 47.8, 58.4): its tip is 3 units long, so the half unit its master points round to moves it by 6 degrees, and the base's
-# rounding read low. Heavy outlines now sit on whole units (build.draw_master), which makes the reading the same at any spacing.
+# sharper than this, by more than the slack. The italic s's tip is 3 units long, so the half unit its points round to moves
+# it by 6 degrees: the base fonts read 27.3 / 35.8 / 47.8 / 58.4, which the italic's heavy outlines reproduce exactly when they
+# sit half a unit over a whole one (build.draw_master), and the reading then holds at any spacing.
 TIP_BASE = {
     'upright': {'s': (25.7, 31.3, 40.4, 56.1), 'a': (23.0, 31.2, 39.3, 41.7), 'ae': (21.1, 27.1, 35.6, 41.6), 'question': (9.5, 11.6, 11.3, 11.6)},
-    'italic': {'s': (33.2, 43.3, 48.5, 59.6), 'question': (5.8, 6.2, 7.7, 8.7)},
+    'italic': {'s': (27.4, 35.8, 48.2, 58.4), 'question': (5.8, 6.2, 7.7, 8.7)},
 }
 TIP_SLACK = 1.5  # degrees
 # The ? hands its arc to its tail in a round: held to about 1.4x Inter's reading, where the base read 1.5x at 800.

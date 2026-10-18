@@ -36,18 +36,24 @@ def _pw(x, table):
     raise ValueError(x)
 
 
-# Width across weights: 100-700 stay within +-2% of Regular's, 750-900 within +5%. Stems add ~11% to a text line by
-# Black; the sidebearings give back what they can without closing the white (inks 0.8x Inter's letter gap, 0.95x
-# its word gap) and the guarded counters give back nothing. Interpolation between Regular and Black would put
-# Bold (700) 58% of the way up Black's gain, so Bold is a master of its own that bends the sidebearing line
-# (build.mid_master): it holds the whole glyph's outline as interpolated and moves only its spacing.
+# Width across weights: 100-700 stay within +-2% of Regular's, 750-900 within +5% (-2%), for mixed case and all caps. Stems
+# add ~11% to a text line by Black; the sidebearings give back what they can and the guarded counters give back nothing.
+# What that leaves at Black: a word gap 0.99x Inter's and a letter gap 0.43x (n sidebearing 22 against Inter's 50): as
+# tight as the +5% allows. Interpolation between Regular and Black would put Bold (700) 58% of the way up Black's gain,
+# so Bold is a master of its own that bends the sidebearing line (build.mid_master): it keeps the interpolated outline,
+# moved half the way its advance shortens, and so stores only a shift per glyph.
 # HEAVY_TIGHTEN and BOLD_TIGHTEN: the share of the stem sidebearing lost at Black and at Bold.
 HEAVY_TIGHTEN = 0.53
 BOLD_TIGHTEN = 0.35
+# The same for capitals, which keep more of their sidebearing: their counters narrow with the stems, so an all-caps line
+# loses width at Black before any spacing is taken (-3% with none) and must not lose it again. Negative opens them.
+CAP_HEAVY_TIGHTEN = -0.15
+CAP_THIN_OPEN = 1.10  # Thin's capital sidebearing, in the lowercase's stem units (Regular's is 1.3)
+CAP_BOLD_TIGHTEN = -0.03
 # DIAG_TRIM: units the diagonal letters v w x y z lose from their width at Black. Their counters are open white,
 #   not guarded, and they carried the widest ink growth beside the s and e.
 DIAG_TRIM = 90
-THIN_OPEN = 0.23  # share of the stem sidebearing Thin opens by, see P.__init__
+THIN_OPEN = 0.27  # share of the stem sidebearing Thin opens by, see P.__init__
 
 
 class P:
@@ -100,8 +106,11 @@ class P:
         self.S *= opened
         self.S *= (0.97 - 0.04 * self.heavy) if italic else (0.91 + 0.04 * self.heavy)
         self.Sfig = self.S  # figures and math signs keep their ink: their advance is fixed, so a tighter S would widen them
-        self.S *= 1 - (_pw(wght, [(400, 0.0), (MID_WGHT, BOLD_TIGHTEN), (900, HEAVY_TIGHTEN)]) if wght >= 400 and not loose else 0.0)
-        self.Sc = self.S * 1.3  # capitals carry more space: their counters are bigger
+        tighten = lambda bold, black: 1 - (_pw(wght, [(400, 0.0), (MID_WGHT, bold), (900, black)]) if wght >= 400 and not loose else 0.0)  # noqa: E731
+        # capitals carry more space (1.3x): their counters are bigger. Thin's caps are wide already (counters of 374 units), so they
+        # take none of the opening Thin gives the lowercase (THIN_OPEN), and an all-caps line keeps its width from Thin to Regular.
+        self.Sc = self.S / opened * tighten(CAP_BOLD_TIGHTEN, CAP_HEAVY_TIGHTEN) * _pw(wght, [(100, CAP_THIN_OPEN), (400, 1.3), (900, 1.3)])
+        self.S *= tighten(BOLD_TIGHTEN, HEAVY_TIGHTEN)
         self.cw = counter
         # n is 0.82 x-heights wide at Regular (Geist 0.79, Inter 0.80). It was 0.88 with tighter
         # spacing, which set the same line length but read as wide, close-set letters.
