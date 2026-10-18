@@ -55,14 +55,14 @@ CH_BLACK = 300
 # DIAG_TRIM: units the diagonal letters v w x y z lose from their width at Black. Their counters are open white,
 #   not guarded, and they carried the widest ink growth beside the s and e.
 DIAG_TRIM = 90
-THIN_OPEN = 0.30  # share of the stem sidebearing Thin opens by, see P.__init__
+THIN_OPEN = 0.30  # share of the stem sidebearing Thin opens by, see P.__init__; 0.30 is held by the italic mixed-case line at Thin (-2.7% at 0.23), which the reflow test covers
 
 
 class P:
     def __init__(self, wght, opsz, italic=False, loose=False):
         # `loose`: spacing without HEAVY_TIGHTEN, the reference kern.py takes the Display and Caption masters' opening from
         self.wght, self.opsz, self.italic = wght, opsz, italic
-        V = _pw(wght, [(100, THIN_STEM), (400, 84), (900, BLACK_STEM)])  # Regular 84: Geist-like color in text
+        V = V0 = _pw(wght, [(100, THIN_STEM), (400, 84), (900, BLACK_STEM)])  # Regular 84: Geist-like color in text
         # heavy weights keep their horizontals: at 0.6 Black's arches, bars and s spine went thin
         # beside the stems and letters looked pinched (Geist 0.70, Inter 0.73 at Black)
         contrast = _pw(wght, [(100, 0.96), (400, 0.87), (900, 0.72)])
@@ -119,8 +119,13 @@ class P:
             self.cn *= 0.95  # italics run slightly narrower: the slant already adds movement
         # Capitals' counters: the straight-sided ones (H E N B ...) have their own curve, see CH_THIN; the round and diagonal ones
         # (O C G S A V W X Y Z J) follow n's, which they were fitted to, narrowing with the lowercase
-        self.cHd = self.cn * 418 / 284 * _pw(V, [(20, CHD_THIN), (84, 1.0), (BLACK_STEM + 4, 1.0)])
-        self.cH = _pw(V, [(20, CH_THIN), (84, 270 * 418 / 284), (BLACK_STEM + 4, CH_BLACK)]) * counter * (0.95 if italic else 1.0)
+        # The curves are read off the weight's own stem (V0), not the optical size's: Caption's stem is V0+5 and Display's V0-3,
+        # and reading those moved every capital at the Regular masters (H +-4) and closed Dï and Bî below kern.py's clearance
+        # at Display Black. The optical size still reaches them through `counter` and, for H, through n's own shift.
+        self.cHd = self.cn * 418 / 284 * _pw(V0, [(20, CHD_THIN), (84, 1.0), (BLACK_STEM + 4, 1.0)])
+        n_curve = [(20, 374), (84, 270), (BLACK_STEM + 4, 145)]
+        n_shift = _pw(V, n_curve) - _pw(V0, n_curve)
+        self.cH = (_pw(V0, [(20, CH_THIN), (84, 270 * 418 / 284), (BLACK_STEM + 4, CH_BLACK)]) + n_shift * 418 / 284) * counter * (0.95 if italic else 1.0)
         # i dot / period: never thinner than a readable square. Against Geist's and Inter's, a
         # stem-proportional dot made punctuation 0.89x their ink at Regular and 1.6x at Black
         # (commas 1.7x as tall): Regular's grows a little, the heavy ones much less.

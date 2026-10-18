@@ -109,7 +109,7 @@ def _members(base, glyphs, acc):
     return [g for g in [base] + acc.get(base, []) if g in glyphs]
 
 
-def _points(o, name, ox=0.0, oy=0.0, a=1.0):
+def _points(o, name, ox=0.0, oy=0.0, a=1.0, fine=False):
     pts = []
     for c in o.contours.get(name, []):
         for s in c:
@@ -118,16 +118,18 @@ def _points(o, name, ox=0.0, oy=0.0, a=1.0):
                 n = max(1, int(max(abs(x1 - x0), abs(y1 - y0)) / 5))
                 pts += [(x0 + (x1 - x0) * j / n, y0 + (y1 - y0) * j / n) for j in range(n)]
             else:
-                pts += [seg_point(s, j / 24) for j in range(24)]
+                # `fine`: a heavy bowl is one long segment, and 24 samples leave its extreme up to 4 units short
+                n = max(24, int(sum(abs(c[i] - d[i]) for c, d in zip(s[1:], s[2:]) for i in (0, 1)) / 2)) if fine else 24
+                pts += [seg_point(s, j / n) for j in range(n)]
     out = [(ox + a * x, oy + a * y) for x, y in pts]
     for g, cx, cy, ca in o.comps.get(name, []):
-        out += _points(o, g, ox + a * cx, oy + a * cy, a * ca)
+        out += _points(o, g, ox + a * cx, oy + a * cy, a * ca, fine)
     return out
 
 
-def _profile(o, name):
+def _profile(o, name, fine=False):
     lo, hi = {}, {}
-    for x, y in _points(o, name):
+    for x, y in _points(o, name, fine=fine):
         b = int(y // BAND)
         lo[b] = min(lo.get(b, x), x)
         hi[b] = max(hi.get(b, x), x)
@@ -160,6 +162,10 @@ def measure(o, left_glyph, right_glyph, most=40):
     lean = min(abs(sa), abs(sb)) if sa * sb > 0 else 0.0
     k = W_GAP * (ref - eff) + W_CLOSEST * (ref - min(gaps)) + W_LEAN * lean * p.S
     floor = max(0.55 * p.S, KEEP_CLEAR) - min(gaps)  # never let the closest point get nearer than this
+    if floor > k - 6 and p.heavy > 0.5 and (left_glyph in I_WIDE or right_glyph in I_WIDE):  # the floor is about to decide: read the closest point off the finer outline (Dï at Display Black sat 4 short)
+        _, hi_f = _profile(o, left_glyph, True)
+        lo_f, _ = _profile(o, right_glyph, True)
+        floor = max(0.55 * p.S, KEEP_CLEAR) - min((adv - hi_f[b]) + lo_f[b] for b in bands if b in hi_f and b in lo_f)
     k = max(k, floor)
     return int(round(max(-140, min(most, k))))
 

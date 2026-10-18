@@ -289,7 +289,7 @@ class Font(unittest.TestCase):
                 r, b = read[ch, 400], read[ch, 900]
                 for w in (600, 700, 800):
                     t = (w - 400) / 500
-                    self.assertLessEqual(abs(read[ch, w] - (r + (b - r) * t)), 6, f'{os.path.basename(path)} {ch} at {w}')
+                    self.assertLessEqual(abs(read[ch, w] - (r + (b - r) * t)), 2, f'{os.path.basename(path)} {ch} at {w}')
 
     def test_named_weights_step_evenly(self):
         # The n stem went 22/35/53/84/104/...: a 13-unit Thin -> ExtraLight step (half a pixel at
@@ -451,6 +451,87 @@ class Font(unittest.TestCase):
                     gap = min(adv + rb[k][0] - ra[k][1] for k in set(ra) & set(rb))
                     with self.subTest(font=os.path.basename(path), wght=wght, opsz=opsz, pair=pair):
                         self.assertGreater(gap, 0)
+
+    def test_capitals_at_the_regular_optical_sizes_keep_their_width(self):
+        # The capitals' counters are read off the weight's stem, not the optical size's (params.P): reading
+        # Caption's V+5 and Display's V-3 moved 232 and 389 glyphs at the Regular masters (H +4, -4).
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+
+        want = {
+            VF: {8: [813, 651, 829, 751, 806, 813], 48: [701, 564, 739, 655, 706, 701]},
+            VFI: {8: [807, 645, 814, 742, 796, 807], 48: [691, 555, 722, 643, 693, 691]},
+        }
+        for path, sizes in want.items():
+            font = hb.Font(hb.Face(open(path, 'rb').read()))
+            for opsz, advances in sizes.items():
+                font.set_variations({'wght': 400, 'opsz': opsz})
+                got = [font.get_glyph_h_advance(font.get_nominal_glyph(ord(c))) for c in 'HEOBDN']
+                self.assertEqual(got, advances, f'{os.path.basename(path)} opsz {opsz}: H E O B D N')
+
+    def test_wide_i_keeps_clear_of_round_capitals_at_display_black(self):
+        # Dï and Bî are the tightest corner: Black's spacing plus Display's deltas. kern.py reads the closest point
+        # off a 24-sample curve, which left a heavy bowl's extreme 4 units short, so the gap closed to 12 and 8
+        # against a 16-unit floor.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        import io
+
+        from fontTools.pens.basePen import BasePen
+        from fontTools.varLib.instancer import instantiateVariableFont
+
+        class Rows(BasePen):
+            def __init__(self, gs):
+                super().__init__(gs)
+                self.out = {}
+
+            def _add(self, x, y):
+                lo, hi = self.out.get(int(y // 5), (x, x))
+                self.out[int(y // 5)] = (min(lo, x), max(hi, x))
+
+            def _moveTo(self, p):
+                self._add(*p)
+
+            def _lineTo(self, p):
+                (x0, y0), (x1, y1) = self._getCurrentPoint(), p
+                n = max(1, int(max(abs(x1 - x0), abs(y1 - y0)) // 2))
+                for i in range(1, n + 1):
+                    self._add(x0 + (x1 - x0) * i / n, y0 + (y1 - y0) * i / n)
+
+            def _curveToOne(self, c1, c2, p):
+                (x0, y0) = self._getCurrentPoint()
+                for i in range(1, 81):
+                    t, u = i / 80, 1 - i / 80
+                    self._add(u**3 * x0 + 3 * u * u * t * c1[0] + 3 * u * t * t * c2[0] + t**3 * p[0], u**3 * y0 + 3 * u * u * t * c1[1] + 3 * u * t * t * c2[1] + t**3 * p[1])
+
+            def _qCurveToOne(self, c, p):
+                (x0, y0) = self._getCurrentPoint()
+                for i in range(1, 81):
+                    t, u = i / 80, 1 - i / 80
+                    self._add(u * u * x0 + 2 * u * t * c[0] + t * t * p[0], u * u * y0 + 2 * u * t * c[1] + t * t * p[1])
+
+        for path in (VF, VFI):
+            f = instantiateVariableFont(TTFont(path), {'wght': 900, 'opsz': 48})
+            bio = io.BytesIO()
+            f.save(bio)
+            font = hb.Font(hb.Face(bio.getvalue()))
+            gs, order = f.getGlyphSet(), f.getGlyphOrder()
+            for pair in ('Dï', 'Bî'):
+                buf = hb.Buffer()
+                buf.add_str(pair)
+                buf.guess_segment_properties()
+                hb.shape(font, buf, {'kern': True})
+                (a, b), adv = [order[i.codepoint] for i in buf.glyph_infos], buf.glyph_positions[0].x_advance
+                ra, rb = Rows(gs), Rows(gs)
+                gs[a].draw(ra)
+                gs[b].draw(rb)
+                gap = min(adv + rb.out[k][0] - ra.out[k][1] for k in set(ra.out) & set(rb.out))
+                with self.subTest(font=os.path.basename(path), pair=pair):
+                    self.assertGreaterEqual(gap, 16)
 
     def test_local_forms(self):
         # Bulgarian takes its round lowercase, Serbian and Macedonian their б (and, in the
