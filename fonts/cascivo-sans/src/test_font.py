@@ -480,6 +480,26 @@ class Font(unittest.TestCase):
                 for c, g, w in zip('HEOBDN', got, widths):
                     self.assertLessEqual(abs(g - w), 1, f'{os.path.basename(path)} opsz {opsz}: {c} is {g} wide, a855b5e0 had {w}')
 
+    def test_advances_at_regular_match_a855b5e0(self):
+        # Every cmap glyph's advance at 400/14 is a855b5e0's, upright and italic, except what is listed with its reason.
+        # advances_a855b5e0.json was generated once from that commit's fonts:
+        #   git show a855b5e0:fonts/cascivo-sans/fonts/'CascivoSans[opsz,wght].ttf' > up.ttf   (and the Italic file)
+        #   instantiateVariableFont(TTFont(up), {'wght': 400, 'opsz': 14}), then {str(cp): hmtx[cmap[cp]][0]} for each cmap entry,
+        #   dumped as {"upright": {...}, "italic": {...}}.
+        import json
+
+        from fontTools.varLib.instancer import instantiateVariableFont
+
+        with open(os.path.join(HERE, 'advances_a855b5e0.json'), encoding='utf-8') as fh:
+            ref = json.load(fh)
+        # glyphs the font gained after a855b5e0 have no entry; the glyphs below changed on purpose
+        allowed = {}
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            f = instantiateVariableFont(TTFont(path), {'wght': 400, 'opsz': 14})
+            cmap, hmtx = f.getBestCmap(), f['hmtx']
+            moved = {cp: (ref[kind][str(cp)], hmtx[n][0]) for cp, n in cmap.items() if str(cp) in ref[kind] and hmtx[n][0] != ref[kind][str(cp)] and cp not in allowed.get(kind, ())}
+            self.assertEqual(moved, {}, f'{kind}: advances that moved since a855b5e0 (codepoint: was, now)')
+
     def test_pairs_keep_their_clearance_at_the_black_corners(self):
         # Display Black is the tightest corner: Black's spacing plus Display's deltas. Dï and Bî must keep kern.py's
         # 16 units: its closest-point read came from a 24-sample curve, which left a heavy bowl's extreme 4 units

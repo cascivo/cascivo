@@ -17,7 +17,7 @@ def _small(p, ratio):
     """Parameters under which a capital's drawing comes out as its small-cap lowercase."""
     pc = copy.copy(p)
     pc.cap = p.xh
-    pc.cH = p.nw * ratio - 2 * p.V  # so pc.Hw is the lowercase width
+    pc.cH = pc.cHd = p.nw * ratio - 2 * p.V  # so pc.Hw and pc.Hd are the lowercase width: a small-cap т reads p.Hd
     return pc
 
 
