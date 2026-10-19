@@ -27,11 +27,11 @@ VFI = os.path.join(DIST, 'CascivoSans-Italic[opsz,wght].ttf')
 BUDGETS = {
     'CascivoSans[opsz,wght].woff2': 74_000,  # Latin, Cyrillic, Greek (with polytonic); 69_500 -> 71_500 for the Latin quality pass (Black counters, redrawn letters), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve
     'CascivoSans-Latin[opsz,wght].woff2': 31_000,  # raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space)
-    'CascivoSans-Latin[wght].woff2': 24_500,  # raised by the user for the interface brief: 23_500 -> 24_000 (width across weights), then for the Bold spacing master
+    'CascivoSans-Latin[wght].woff2': 25_000,  # raised by the user for the interface brief: 23_500 -> 24_000 (width across weights), then for the Bold spacing master, then 24_500 -> 25_000 for its punctuation and spacing
     'CascivoSans-Regular.woff2': 24_500,
     'CascivoSans-Italic[opsz,wght].woff2': 80_000,  # 75_000 -> 77_000 for the Latin quality pass (joins), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve
-    'CascivoSans-Italic-Latin[opsz,wght].woff2': 34_000,
-    'CascivoSans-Italic-Latin[wght].woff2': 27_500,  # raised by the user for the interface brief: 26_000 -> 26_500 (width across weights), then for the Bold spacing master and the capital counter curve
+    'CascivoSans-Italic-Latin[opsz,wght].woff2': 34_500,  # raised by the user for the interface brief's punctuation and spacing
+    'CascivoSans-Italic-Latin[wght].woff2': 28_000,  # raised by the user for the interface brief: 26_000 -> 26_500 (width across weights), then for the Bold spacing master and the capital counter curve, then 27_500 -> 28_000 for its punctuation and spacing
 }
 
 
@@ -1000,16 +1000,47 @@ class Font(unittest.TestCase):
                     self.assertLess(en[2] - en[0], 0.6 * (em[2] - em[0]))
 
     def test_minus_matches_plus(self):
-        # the minus keeps the plus's advance (they stand in the same column) and its ink is >= 8% shorter than the en dash's:
-        # at 0.479 against 0.500 em they read as the same stroke, and at Black the minus was longer than the en dash
+        # the minus keeps the plus's advance (they stand in the same column) and, from Thin to Bold (100-700), its ink is >= 8% shorter
+        # than the en dash's: at 0.479 against 0.500 em they read as the same stroke. The lighter weights are the only ones where the
+        # en dash is the minus's neighbour in a line of figures; see test_minus_grows_to_the_plus_bar for 800-900.
         for path in (VF, VFI):
-            for wght, opsz in [(w, 14) for w in PUNCT_WEIGHTS] + [(100, 8), (100, 48), (400, 8), (400, 48), (900, 8), (900, 48)]:
+            for wght, opsz in [(w, 14) for w in PUNCT_WEIGHTS if w <= 700] + [(100, 8), (100, 48), (400, 8), (400, 48)]:
                 (m, madv), (_, padv), (en, _) = (self._ink(path, wght, n, opsz) for n in ('minus', 'plus', 'endash'))
                 with self.subTest(font=os.path.basename(path), wght=wght, opsz=opsz):
                     self.assertEqual(madv, padv)
                     self.assertLessEqual(m[2] - m[0], 0.92 * (en[2] - en[0]))
                     if path == VF:  # centred in the plus's advance, so the pair lines up in a column of figures (the italic is sheared)
                         self.assertAlmostEqual((m[0] + m[2]) / 2, madv / 2, delta=3)
+
+    def test_minus_grows_to_the_plus_bar(self):
+        # user decision: at 800-900 the minus is as long as the plus's horizontal bar (Inter's is), so "2-1+3" reads at Black, where the
+        # en dash is 0.500 em and the plus 0.567. 100-700 keep the 8%-shorter rule, and the length between 700 and 800 is a straight
+        # line (the Bold and Black masters), so there is no step: 700 is 456, 800 is 0.93x the plus bar, 900 is the plus bar.
+        for path in (VF, VFI):
+            with self.subTest(font=os.path.basename(path)):
+                width = lambda name, wght, opsz=14: (lambda b: b[2] - b[0])(self._ink(path, wght, name, opsz)[0])  # noqa: E731
+                self.assertGreaterEqual(width('minus', 900), 0.98 * width('plus', 900))
+                self.assertGreaterEqual(width('minus', 800), 0.90 * width('plus', 800))
+                for opsz in (8, 48):
+                    self.assertGreaterEqual(width('minus', 900, opsz), 0.95 * width('plus', 900, opsz))
+                    self.assertEqual(self._ink(path, 900, 'minus', opsz)[1], self._ink(path, 900, 'plus', opsz)[1])
+                # monotonic and smooth through the change: each 50-unit step is a step of the same size (+-3)
+                ws = [width('minus', w) for w in (700, 750, 800, 850, 900)]
+                steps = [b - a for a, b in zip(ws, ws[1:])]
+                self.assertTrue(all(s >= 0 for s in steps), ws)
+                self.assertLessEqual(max(steps) - min(steps), 6, ws)
+                self.assertLessEqual(ws[0], 0.92 * width('endash', 700))
+
+    def test_guillemets_black_width(self):
+        # the Black chevrons were low, wide and heavy (725 against Inter's 653: 1.11x its width). They sit at 0.95-1.0x Inter's width at 900,
+        # upright against Inter and italic against Inter Italic; the 0.9x floor of test_quotes_hold_their_size still holds below
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            for name in ('guillemotleft', 'guillemotright'):
+                iw, _ = INTER_QUOTE_BOX[kind][name][900]
+                b, _ = self._ink(path, 900, name)
+                with self.subTest(kind=kind, glyph=name):
+                    self.assertGreaterEqual(b[2] - b[0], 0.95 * iw)
+                    self.assertLessEqual(b[2] - b[0], 1.0 * iw)
 
     def test_quotes_hold_their_size(self):
         # single and double quotes (curly and straight) and the guillemets: the ink box (width and height each) is >= 0.9x Inter's

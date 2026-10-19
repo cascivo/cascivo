@@ -563,6 +563,9 @@ def _lerp_contours(a, b, t):
     return [[(sa[0],) + tuple((pa[0] + (pb[0] - pa[0]) * t, pa[1] + (pb[1] - pa[1]) * t) for pa, pb in zip(sa[1:], sb[1:])) for sa, sb in zip(ca, cb)] for ca, cb in zip(a, b)]
 
 
+BOLD_OWN = {'minus'}  # the minus is 0.456 em at 700 and the plus's bar at Black; the straight line would put Bold at 0.52 em, as long as the en dash
+
+
 def mid_master(reg, black, nat):
     """The Bold master: Regular's and Black's outlines, anchors and composites interpolated, then each letter moved
     half the way its advance shortens, so the sidebearings stay as even as `nat`'s own. Interpolating Regular and
@@ -598,6 +601,8 @@ def mid_master(reg, black, nat):
         shift[name] = dx
         o.shift[name] = dx
         o.contours[name] = [transform_contour(c, lambda q, dx=dx: (q[0] + dx, q[1])) for c in _lerp_contours(rc, black.contours[name], t)]
+        if name in BOLD_OWN:  # a shape whose Bold is not on the line between Regular's and Black's
+            o.contours[name] = nat.contours[name]
         o.adv[name] = round(adv)
         o.bounds[name] = tuple(lerp(a, b) for a, b in zip(rb, bb))
         o.bounds[name] = (o.bounds[name][0] + dx, o.bounds[name][1], o.bounds[name][2] + dx, o.bounds[name][3])
@@ -674,6 +679,8 @@ def build_glyf(outs, order):
     def bold_pt(m, pts, name=None):
         """Bold's point from Regular's (pts[0]) and Black's (pts[black] or pts[1]), each rounded to the unit it is stored
         at: the variable font then draws Bold from the same integers, and the delta the model stores for it is zero."""
+        if name in BOLD_OWN and len(pts) == len(outs):  # drawn for Bold itself: the one shape whose delta this master stores
+            return pts[m]
         t = (outs[m].p.wght - outs[0].p.wght) / (outs[black].p.wght - outs[0].p.wght)
         pr, pb = pts[0], pts[black] if len(pts) > black else pts[1]
         x, y = (round(a) + (round(b) - round(a)) * t for a, b in zip(pr, pb))

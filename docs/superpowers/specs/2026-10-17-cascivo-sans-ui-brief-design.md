@@ -54,10 +54,12 @@ User decisions:
    *Accept:* feature test asserting each substitution; the section 04 pairs and context line read
    unambiguously (already true by default).
 4. **Punctuation (#5).**
-   - Dashes: hyphen < en dash < em dash, and minus matches the plus width and is visibly shorter than the
-     en dash (≥ 8% shorter).
+   - Dashes: hyphen < en dash < em dash, and minus matches the plus advance. At 100–700 its ink is visibly
+     shorter than the en dash (≥ 8% shorter). At 800–900 (user decision) it grows to the plus's horizontal
+     bar, as Inter's does, so "2−1+3" reads at Black; 700→800 is a straight line, not a step.
    - Quotes (single, double, guillemets): larger, with a larger floor at light weights, measured against
-     Inter's size at the same weight (≥ 0.9× Inter's ink box).
+     Inter's size at the same weight (≥ 0.9× Inter's ink box). At Black the guillemets sit at 0.95–1.0×
+     Inter's width (they ran 1.11×, low and heavy).
    - Brackets `( ) [ ] { }`: taller, and their `case` forms centred on the cap height (within ±5 units).
    - Dots `. , : ; ! ?` (and the i/j dots, which share the dot size): minimum dot ≥ 0.05 em at 100.
    *Accept:* tests for each inequality above.

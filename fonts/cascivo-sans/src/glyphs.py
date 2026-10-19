@@ -10,6 +10,7 @@ that changes the *number* of strokes or segments. Parameters may only move point
 
 import math
 
+from params import MID_WGHT
 from geom import L, lerp, Stroke, arc, contour_bounds, norm, orient, pen_thickness, reverse_seg
 
 GLYPHS = {}  # name -> (codepoints, fn)
@@ -1440,9 +1441,11 @@ def _plus(g, p):
 @glyph('minus', 0x2212)
 def _minus(g, p):
     w, cy, t = _mathy(p)
-    # Same advance as the plus (it stands in the same column), but its ink is 8.8% shorter than the en dash's 500: at the plus's full
-    # width (0.479 em at Regular, 0.567 at Black) it read as the en dash, and at Black was longer than it. Inter's is 0.458 against 0.500.
-    g.hbar(0, min(w, ENDASH_W * MINUS_OF_ENDASH), cy - t / 2, h=t)
+    # Same advance as the plus (it stands in the same column). Up to Bold its ink is 8.8% shorter than the en dash's 500: at the plus's
+    # full width (0.479 em at Regular) it read as the en dash. Inter's is 0.458 against 0.500. Above Bold (user decision) it is the
+    # plus's full bar, as Inter's is at its heavy weights: a 0.456 em minus beside a 0.567 em plus at Black read as a hyphen in
+    # "2-1+3". The Bold master keeps 0.456 (build.mid_master draws it itself), so 800 is the straight line between the two.
+    g.hbar(0, w if p.wght > MID_WGHT else min(w, ENDASH_W * MINUS_OF_ENDASH), cy - t / 2, h=t)
     g.tab = True
 
 
@@ -1904,14 +1907,18 @@ def _ellipsis(g, p):
 def _guil(g, p, x0, flip, h=1.0):
     # Regular's were 0.8x the references' size, Black's 0.88x and cramped
     # then to Inter's box (296 x 461 at Regular, 224 x 461 at Thin, 398 x 461 at Black): the chevron's height is the opening's, plus the
-    # stroke, so the light weights take the larger opening and Black a smaller one. The width's constants (207, 0.18) are the pair that
-    # reaches 0.92x Inter's width at Black and leaves every woff2 under its budget: the size moves by about 100 B between neighbouring constants.
-    w = 207 + p.V * 0.45 + 0.18 * max(0.0, p.V - 84)
+    # stroke, so the light weights take the larger opening and Black a smaller one. At Black the heavy strokes made a low, wide, dark
+    # pair (« 725 x 453 against Inter's 653 x 461, 1.11x its width) and, sized down alone, merged into a blot. Three things bring it to
+    # 0.95-1.0x Inter's width (test_guillemets_black_width): the stroke thins faster with weight (Black's was 150 units, Inter's about
+    # 115), the second chevron nests deeper as the stem grows (Inter's offset is 0.64 of a chevron's width, ours was 0.9), and the width's
+    # Black term is 0.25 (it was 0.18; set by woff2 byte count, not by shape: the size moves by about 100 B between neighbouring constants)
+    # so the single chevron keeps 0.9x Inter's italic one.
+    w = 207 + p.V * 0.45 + 0.25 * max(0.0, p.V - 84)
     hh = p.xh * (0.365 + 0.04 * (1 - thin_blend(p)) - 0.062 * p.heavy) * h
     cy = p.xh * 0.5
     tip = x0 if not flip else x0 + w
     back = x0 + w if not flip else x0
-    t = p.V * (0.9 - 0.12 * p.heavy)  # at the full stem, Black's chevrons ran into each other
+    t = p.V * (0.9 - 0.28 * p.heavy)  # at the full stem, Black's chevrons ran into each other
     g.line((back, cy + hh), (tip, cy), ws=0.86, caps=('b', 'b'), w=t)
     g.line((tip, cy), (back, cy - hh), ws=0.86, caps=('b', 'b'), w=t)
     return w
@@ -1932,14 +1939,14 @@ def _guilsinglright(g, p):
 @glyph('guillemotleft', 0xAB)
 def _guillemotleft(g, p):
     w = _guil(g, p, 0, False)
-    _guil(g, p, w * 0.8 + p.V * 0.5, False)
+    _guil(g, p, w * 0.8 + p.V * (0.5 - 0.40 * p.heavy), False)
     g.sb = (0.5, 0.5)
 
 
 @glyph('guillemotright', 0xBB)
 def _guillemotright(g, p):
     w = _guil(g, p, 0, True)
-    _guil(g, p, w * 0.8 + p.V * 0.5, True)
+    _guil(g, p, w * 0.8 + p.V * (0.5 - 0.40 * p.heavy), True)
     g.sb = (0.5, 0.5)
 
 
