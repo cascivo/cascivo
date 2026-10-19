@@ -493,19 +493,21 @@ def _strong_fix(o, vals, first_of, second_of):
 # Capital diagonals beside each other (VV, VW, AX, RA, KA, Ax ...) and beside a stem or bar (KT, XH in the italic): Black's sidebearing
 # (HEAVY_TIGHTEN) leaves two diagonals that face each other 2-3 units of white at 900/48 and 5-6 at 900/14 (fb62663c: 7-8 and 10-12), and the
 # italic's slant brings a diagonal's arm into the next stem. They are opened by what the shaped pair needs to reach a floor of white, measured
-# per master on the outlines as the closest point in 5-unit rows (test_pairs_keep_their_clearance_at_the_black_corners reads the same rows).
-# Opening only, on the heavy masters only, so Regular's and Thin's kerning is unchanged. The floors are what the test asks (12 at the Black
-# corners and at 700/48, 16 in text Black) plus a unit where the 5-unit rows read an edge a little long: 13 at the corners, 17 for the Bold
-# master (read at 700/14, where 700/48 is 2-3 units tighter). Values are rounded up to steps of 4, which compresses better than exact ones.
+# per master on the outlines as the closest point in 5-unit rows (test_diagonal_capitals_keep_clear_at_heavy_weights reads the same rows).
+# The set is built by glyph class, as the kerning classes are: each base letter with its accented forms and the Cyrillic and Greek letters that
+# share its side (К Х А Т Κ Χ Υ Α Τ, Á Ý), and an own-shape capital that draws a diagonal and comes within the floor of one (Ж У Δ); classes whose
+# estimated needs are the same share a class, so the matrix stays small. Opening only, on the heavy masters only, so Regular's and Thin's
+# kerning is unchanged. The floors are what the test asks (12 at the Black corners and at 700/48, 16 in text Black) plus a unit where the 5-unit
+# rows read an edge a little long: 13 at the corners, 17 in text Black and for the Bold master (read at 700/14, where 700/48 is 2-3 units
+# tighter). Values are rounded up to steps of 4, which compresses better than exact ones.
 DIAG_CAPS = 'AVWXYKRZTHMN'
-DIAG_PAIRS = [(a, b) for a in DIAG_CAPS for b in DIAG_CAPS] + [(a, b) for a in 'AKRVWXYZ' for b in 'xvwyk']
-DIAG_FLOOR = {'text': 16, 'corner': 13, 'bold': 17}  # units of white
+DIAG_FLOOR = {'text': 17, 'corner': 13, 'bold': 17}  # units of white
 
 
 def _gap(o, a, b):
     _, hi = _cached_fine(o, a)
     lo, _ = _cached_fine(o, b)
-    shared = set(hi) & set(lo)
+    shared = [x for x in set(hi) & set(lo) if x >= 0]  # above the baseline: an ogonek or a descender hanging below it is not the letters' bodies meeting
     return min((o.adv[a] - hi[x]) + lo[x] for x in shared) if shared else None
 
 
@@ -516,34 +518,97 @@ def _cached_fine(o, name):
     return cache[name]
 
 
-_DIAG = None
+_DIAG = None  # (classes {base: (first-side glyphs, second-side glyphs)}, [(first base, second base)])
 
 
-def _diagonal_domain(rr, rl, glyphs):
-    """DIAG_PAIRS that fall short of their floor on a heavy master with the class kerning alone (STRONG_FIX only opens further, so this
-    is a superset of what the per-master values then need; a margin keeps pairs the Bold master tightens)."""
-    selected = set(_SELECTED)
-    out = []
-    for a, b in DIAG_PAIRS:
-        if a not in glyphs or b not in glyphs:
+def _has_diagonal(o, name, lean):
+    """Does the glyph draw a straight stroke at a real angle to its stems (a K's arm, a Ж's, a У's)? `lean` is the stems' dx/dy (the italic's)."""
+    for c in o.contours.get(name, []):
+        for seg in c:
+            if seg[0] == 'L':
+                (x0, y0), (x1, y1) = seg[1], seg[2]
+                dy = y1 - y0
+                if abs(dy) >= 100 and 0.3 <= abs((x1 - x0) - lean * dy) / abs(dy) <= 2.5:
+                    return True
+    return False
+
+
+def _diagonal_classes(o, glyphs, acc, joined_r, joined_l):
+    """The glyph classes the capital diagonals are opened by, built as the kerning classes are: a base letter with its accented forms and the
+    Cyrillic and Greek letters that share its side (joined_r, joined_l, from _side_groups), so Á Ý К Х Κ Υ Δ-like forms get what A, Y, K, X get.
+    A Cyrillic or Greek capital that shares no side with a Latin one is its own class when it comes nearer than the floor to a Latin diagonal."""
+    classes, seen_r, seen_l = {}, set(), set()
+    extras = []
+    for b in DIAG_CAPS + 'xvwyk':
+        if b in glyphs:
+            classes[b] = ([g for g in _members(b, glyphs, acc) + sorted(joined_r.get(b, [])) if g not in seen_r], [g for g in _members(b, glyphs, acc) + sorted(joined_l.get(b, [])) if g not in seen_l])
+            seen_r.update(classes[b][0])
+            seen_l.update(classes[b][1])
+    lo_h, hi_h = _profile(o, 'H')  # an upright stem leans by the italic angle in the italic: a stroke is diagonal by how far it leans from a stem's
+    bands_h = sorted(set(lo_h) & set(hi_h))
+    lean_h = _slope(hi_h, bands_h)
+    heavy = [(_HEAVY[0], DIAG_FLOOR['text'])] + [(c, DIAG_FLOOR['corner']) for c in _HEAVY[1:]]
+    for g in sorted(glyphs):
+        if g in seen_r and g in seen_l or not (_non_latin(g) and is_cap(g)) or g not in o.adv or g in classes:
             continue
-        k = (rr(a), rl(b))
-        for m, floor in [(_HEAVY[0], DIAG_FLOOR['text'])] + [(c, DIAG_FLOOR['corner']) for c in _HEAVY[1:]]:
-            gap = _gap(m, a, b)
-            if gap is None:
-                continue
-            have = 0
-            if k in selected:
-                v = _need(m, *k)
-                have = round(v * (1 + 0.3 * m.p.heavy)) if v < 0 and k not in STRONG else v
-            if floor - (gap + have) > 0:
-                out.append((a, b))
-                break
-    return out
+        # a capital of its own shape is in the set when it draws a diagonal and, unkerned, it comes nearer than the floor to a Latin
+        # diagonal on a heavy master (Г and Е have bars and stems only; Ж, У and Δ lean)
+        if _has_diagonal(o, g, lean_h) and any((gap := _gap(m, x, y)) is not None and gap < floor for m, floor in heavy for b in DIAG_CAPS if b in classes for x, y in ((g, b), (b, g)) if x in m.adv and y in m.adv):
+            extras.append(g)
+    for g in extras:
+        classes[g] = ([g] if g not in seen_r else [], [g] if g not in seen_l else [])
+    caps = [b for b in list(DIAG_CAPS) + extras if b in classes]
+    domain = [(a, b) for a in caps for b in caps] + [(a, b) for a in 'AKRVWXYZ' for b in 'xvwyk' if a in classes and b in classes]
+    domain += [(a, b) for a in extras for b in 'xvwyk' if b in classes]
+    return classes, domain
 
 
-def _diagonal_fix(o, vals, rr, rl, firsts_fix, seconds_fix, fix, glyphs):
-    """{(a, b): opening} for DIAG_PAIRS on this master, on top of the class kerning and STRONG_FIX the pair already has."""
+def _diag_have(vals, firsts_fix, seconds_fix, fix, selected, a, b, ga, gb):
+    """Kerning a glyph pair has already: its class pair (a, b), and what STRONG_FIX adds."""
+    have = vals.get((a, b), 0) if (a, b) in selected else 0
+    for i, fa in enumerate(firsts_fix):
+        if ga in fa:
+            for j, sb in enumerate(seconds_fix):
+                if gb in sb:
+                    have += fix[i, j]
+    return have
+
+
+def _diagonal_setup(classes, domain):
+    """Cluster the classes: bases whose estimated needs (the class kerning alone, on each heavy master, in steps of 4 units) are the same
+    against every other base share a class on that side, so the matrix stays the size of what differs (the way _strong_fix groups
+    letters). Returns (first clusters, second clusters, the cluster pairs that fall short of their floor on a heavy master). STRONG_FIX only
+    opens further, so the estimate is a superset of what each master then needs."""
+    selected = set(_SELECTED)
+    masters = [(_HEAVY[0], DIAG_FLOOR['text'])] + [(c, DIAG_FLOOR['corner']) for c in _HEAVY[1:]]
+    est = {}
+    for a, b in domain:
+        vec = []
+        for m, floor in masters:
+            v = _need(m, a, b) if (a, b) in selected else 0
+            have = round(v * (1 + 0.3 * m.p.heavy)) if v < 0 and (a, b) not in STRONG else v
+            gaps = [_gap(m, ga, gb) for ga in classes[a][0] for gb in classes[b][1] if ga in m.adv and gb in m.adv]
+            vec.append(max((floor - (g + have) for g in gaps if g is not None), default=0))
+        if max(vec) > 0:
+            est[a, b] = tuple(max(0, math.ceil(x / 8)) for x in vec)
+    zero = (0,) * len(masters)
+    firsts_of = sorted({a for a, _ in est})
+    seconds_of = sorted({b for _, b in est})
+
+    def cluster(bases, key):
+        groups = {}
+        for x in bases:
+            groups.setdefault(key(x), []).append(x)
+        return sorted(groups.values())
+
+    first_clusters = cluster(firsts_of, lambda a: tuple((b, est[a, b]) for b in seconds_of if (a, b) in est))
+    second_clusters = cluster(seconds_of, lambda b: tuple((a, est[a, b]) for a in firsts_of if (a, b) in est))
+    pairs = [(i, j) for i, fa in enumerate(first_clusters) for j, sb in enumerate(second_clusters) if any((a, b) in est for a in fa for b in sb)]
+    return first_clusters, second_clusters, pairs
+
+
+def _diagonal_fix(o, vals, classes, setup, firsts_fix, seconds_fix, fix):
+    """{(first cluster, second cluster): opening} on this master, on top of the class kerning and STRONG_FIX the glyph pair already has."""
     loc = getattr(o, 'loc', {})
     if loc.get('wght') == 900 and loc.get('opsz') == 14:
         where = [(o, DIAG_FLOOR['text'])] + [(c, DIAG_FLOOR['corner']) for c in _HEAVY[1:]]
@@ -551,28 +616,25 @@ def _diagonal_fix(o, vals, rr, rl, firsts_fix, seconds_fix, fix, glyphs):
         where = [(o, DIAG_FLOOR['bold'])]
     else:
         return {}
+    selected = set(_SELECTED)
+    first_clusters, second_clusters, pairs = setup
     out = {}
-    for a, b in DIAG_PAIRS:
-        if a not in glyphs or b not in glyphs:
-            continue
-        have = vals.get((rr(a), rl(b))) if (rr(a), rl(b)) in set(_SELECTED) else 0
-        for i, fa in enumerate(firsts_fix):
-            if a in fa:
-                for j, sb in enumerate(seconds_fix):
-                    if b in sb:
-                        have = (have or 0) + fix[i, j]
+    for i, j in pairs:
         need = 0
         for m, floor in where:
-            gap = _gap(m, a, b)
-            if gap is not None:
-                need = max(need, floor - (gap + have))
-        out[(a, b)] = 4 * int(math.ceil(max(0, need) / 4))  # steps of 4: the same few values compress
+            for a in first_clusters[i]:
+                for b in second_clusters[j]:
+                    for ga in classes[a][0]:
+                        for gb in classes[b][1]:
+                            if ga in m.adv and gb in m.adv and (gap := _gap(m, ga, gb)) is not None:
+                                need = max(need, floor - (gap + _diag_have(vals, firsts_fix, seconds_fix, fix, selected, a, b, ga, gb)))
+        out[i, j] = 4 * int(math.ceil(max(0, need) / 4))  # steps of 4: the same few values compress
     return out
 
 
 def kern_fea(o):
     """Same pair set for every master (structure must match); values measured per master."""
-    global _SELECTED, _GROUPS, _HEAVY_KEYS
+    global _SELECTED, _GROUPS, _HEAVY_KEYS, _DIAG
     acc, glyphs, pairs = kern_pairs(o)
     if _GROUPS is None:  # the default master decides the classes, as it does the pairs
         _GROUPS = _side_groups(o, glyphs, acc, list(pairs))
@@ -616,6 +678,14 @@ def kern_fea(o):
     firsts_fix, seconds_fix, fix = _strong_fix(o, vals, first_of, second_of)
     lines += [f'@kG_{i} = [{" ".join(cluster)}];' for i, cluster in enumerate(firsts_fix)]
     lines += [f'@kF_{j} = [{" ".join(cluster)}];' for j, cluster in enumerate(seconds_fix)]
+    if _DIAG is None:  # the first master decides the classes and the pairs (every master lists the same ones): those a heavy master could need to open
+        classes, domain = _diagonal_classes(o, glyphs, acc, joined_r, joined_l)
+        _DIAG = (classes, _diagonal_setup(classes, domain))
+    classes, setup = _DIAG
+    diag = _diagonal_fix(o, vals, classes, setup, firsts_fix, seconds_fix, fix)
+    dfirst, dsecond, pairs_diag = setup
+    lines += [f'@dR_{i} = [{" ".join(g for a in dfirst[i] for g in classes[a][0])}];' for i in sorted({i for i, _ in pairs_diag})]
+    lines += [f'@dL_{j} = [{" ".join(g for b in dsecond[j] for g in classes[b][1])}];' for j in sorted({j for _, j in pairs_diag})]
     lines.append('feature kern {')
     for a, b in _SELECTED:
         lines.append(f'  pos @kR_{cls(a)} @kL_{cls(b)} {vals[(a, b)]};')
@@ -623,13 +693,8 @@ def kern_fea(o):
         lines.append('  lookup STRONG_FIX {')
         lines += [f'    pos @kG_{i} @kF_{j} {fix[i, j]};' for i in range(len(firsts_fix)) for j in range(len(seconds_fix))]
         lines.append('  } STRONG_FIX;')
-    diag = _diagonal_fix(o, vals, rr, rl, firsts_fix, seconds_fix, fix, glyphs)
-    global _DIAG
-    if _DIAG is None:  # the first master decides the pairs (every master lists the same ones): those a heavy master could need to open
-        _DIAG = _diagonal_domain(rr, rl, glyphs)
-    pairs_diag = _DIAG
     lines.append('  lookup DIAGONAL_FIX {')
-    lines += [f'    pos {a} {b} {diag.get((a, b), 0)};' for a, b in pairs_diag]
+    lines += [f'    pos @dR_{i} @dL_{j} {diag.get((i, j), 0)};' for i, j in pairs_diag]
     lines.append('  } DIAGONAL_FIX;')
     lines.append('} kern;')
     return '\n'.join(lines)

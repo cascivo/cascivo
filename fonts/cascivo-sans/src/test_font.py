@@ -941,7 +941,7 @@ class Font(unittest.TestCase):
     def test_diagonal_capitals_keep_clear_at_heavy_weights(self):
         # VV, VW, AX, RA, Ax and KA kept 2-3 units of white at 900/48 (7-8 before Black's sidebearing tightened for the width rule), 5-6 at
         # 900/14 and 4-5 at 700/48, and the italic's slanted arms overlapped the next stem (KT -17, XW -6). kern.py opens every capital
-        # diagonal pair (and a diagonal before x v w y k) by what the shaped pair needs, so the white between letters stays 12 at the Black
+        # diagonal pair (and a diagonal before x v w y k, with the accented, Cyrillic and Greek letters that share their sides) by what the shaped pair needs, so the white between letters stays 12 at the Black
         # corners and at 700/48, and 16 in text Black. Rows are read at 5 units, as for the round pairs. Regular and Thin are not read:
         # their pairs are not opened.
         try:
@@ -952,10 +952,12 @@ class Font(unittest.TestCase):
 
         from fontTools.varLib.instancer import instantiateVariableFont
 
-        caps = 'AVWXYKRZTHMN'
-        pairs = [a + b for a in caps for b in caps] + [a + b for a in 'AKRVWXYZ' for b in 'xvwyk']
+        # the Latin diagonals, an accented one on each side, and their Cyrillic and Greek twins and own-shape cousins (К Ж Х У А Т, Κ Χ Υ Α Δ Τ)
+        caps = 'AVWXYKRZTHMN' + 'ÁÝ' + 'КЖХУАТНМ' + 'ΚΧΥΑΔΤΗΜΝ'
+        pairs = [a + b for a in caps for b in caps] + [a + b for a in 'AKRVWXYZ' + 'ÁÝКЖХУАΚΧΥΑΔ' for b in 'xvwyk']
         for path in (VF, VFI):
-            for wght, opsz, floor in ((900, 48, 12), (900, 8, 12), (900, 14, 16), (700, 48, 12)):
+            # 800 and 850 at opsz 48 are between the masters: the kerning interpolates linearly where the white does not (italic Tk read 9 at 850/48)
+            for wght, opsz, floor in ((900, 48, 12), (900, 8, 12), (900, 14, 16), (700, 48, 12), (850, 48, 12), (800, 48, 12)):
                 f = instantiateVariableFont(TTFont(path), {'wght': wght, 'opsz': opsz})
                 bio = io.BytesIO()
                 f.save(bio)
