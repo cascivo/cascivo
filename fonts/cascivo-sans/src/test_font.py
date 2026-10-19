@@ -38,6 +38,40 @@ BUDGETS = {
 STRINGS = ('Signals move fast; the cascade decides.', 'Overview Activity Settings Members Billing', 'OVERVIEW ACTIVITY SETTINGS', 'MEMBERS BILLING')
 PARAGRAPH = 'making written language legible and the words over 13 lines as words stay apart in the paragraph'
 
+# Inter's ink boxes, (width, height) in 1/1000 em, of the quotes and guillemets at five weights. Read from the reference fonts Inter.ttf and
+# InterItalic.ttf (Inter 4.001 variable, opsz 14, in the audit's reference set), instanced at each wght: the glyph's bounds (BoundsPen)
+# over unitsPerEm (2048), times 1000, rounded. The tests must not depend on those files, so the numbers live here.
+INTER_QUOTE_BOX = {
+    'upright': {
+        'quoteleft': {100: (73, 220), 200: (97, 239), 400: (144, 277), 700: (189, 303), 900: (229, 325)},
+        'quoteright': {100: (73, 220), 200: (97, 239), 400: (144, 277), 700: (189, 303), 900: (229, 325)},
+        'quotedblleft': {100: (210, 220), 200: (248, 239), 400: (323, 277), 700: (419, 303), 900: (500, 325)},
+        'quotedblright': {100: (210, 220), 200: (248, 239), 400: (323, 277), 700: (411, 303), 900: (485, 325)},
+        'quotesingle': {100: (25, 220), 200: (48, 239), 400: (95, 277), 700: (141, 303), 900: (181, 325)},
+        'quotedbl': {100: (138, 220), 200: (179, 239), 400: (261, 277), 700: (354, 303), 900: (433, 325)},
+        'guilsinglleft': {100: (224, 461), 200: (248, 461), 400: (296, 461), 700: (351, 461), 900: (398, 461)},
+        'guilsinglright': {100: (224, 461), 200: (248, 461), 400: (296, 461), 700: (351, 461), 900: (398, 461)},
+        'guillemotleft': {100: (341, 461), 200: (392, 461), 400: (495, 461), 700: (580, 461), 900: (653, 461)},
+        'guillemotright': {100: (341, 461), 200: (392, 461), 400: (495, 461), 700: (580, 461), 900: (653, 461)},
+    },
+    'italic': {
+        'quoteleft': {100: (109, 220), 200: (136, 239), 400: (189, 277), 700: (240, 303), 900: (282, 325)},
+        'quoteright': {100: (109, 220), 200: (136, 239), 400: (189, 277), 700: (240, 303), 900: (282, 325)},
+        'quotedblleft': {100: (246, 220), 200: (287, 239), 400: (369, 277), 700: (469, 303), 900: (554, 325)},
+        'quotedblright': {100: (246, 220), 200: (287, 239), 400: (369, 277), 700: (461, 303), 900: (539, 325)},
+        'quotesingle': {100: (59, 220), 200: (82, 239), 400: (130, 277), 700: (177, 303), 900: (216, 325)},
+        'quotedbl': {100: (171, 220), 200: (213, 239), 400: (296, 277), 700: (389, 303), 900: (469, 325)},
+        'guilsinglleft': {100: (262, 461), 200: (286, 461), 400: (334, 461), 700: (389, 461), 900: (436, 461)},
+        'guilsinglright': {100: (262, 461), 200: (286, 461), 400: (334, 461), 700: (389, 461), 900: (436, 461)},
+        'guillemotleft': {100: (379, 461), 200: (430, 461), 400: (533, 461), 700: (618, 461), 900: (691, 461)},
+        'guillemotright': {100: (379, 461), 200: (430, 461), 400: (533, 461), 700: (618, 461), 900: (691, 461)},
+    },
+}
+# Inter's parentheses, brackets and braces are 908 units tall at every weight, upright and italic (same read, 'parenleft' ... 'braceright').
+INTER_BRACKET_HEIGHT = 908
+PUNCT_WEIGHTS = (100, 200, 400, 700, 900)
+_INSTANCES = {}  # (path, wght, opsz) -> (glyph set, cmap)
+
 
 def hb_font(hb, path):
     with open(path, 'rb') as fh:
@@ -495,7 +529,10 @@ class Font(unittest.TestCase):
         # glyphs the font gained after a855b5e0 have no entry; list their codepoints here so that adding one is deliberate and a lost
         # one cannot hide behind the skip below (none so far: the cmap's set equals the fixture's keys)
         added = {'upright': set(), 'italic': set()}
-        allowed = {}
+        # Punctuation sized for interfaces (the quotes, comma, guillemets, straight quotes and the semicolon and Greek question mark built on the
+        # comma, plus the parentheses by a unit): their advances follow the larger ink. Nothing else may move.
+        sized = {0x22, 0x27, 0x28, 0x29, 0x2C, 0x3B, 0xAB, 0xBB, 0x149, 0x37E, 0x2018, 0x2019, 0x201A, 0x201C, 0x201D, 0x201E, 0x2039, 0x203A}
+        allowed = {'upright': sized, 'italic': sized}
         for kind, path in (('upright', VF), ('italic', VFI)):
             f = instantiateVariableFont(TTFont(path), {'wght': 400, 'opsz': 14})
             cmap, hmtx = f.getBestCmap(), f['hmtx']
@@ -889,6 +926,163 @@ class Font(unittest.TestCase):
         for fn in sorted(os.listdir(DIST)):
             r = ots.sanitize(os.path.join(DIST, fn), os.devnull, capture_output=True)
             self.assertEqual(r.returncode, 0, f'OTS rejects {fn}: {r.stderr.decode()[:300]}')
+
+    # --- Punctuation sized for interfaces (interface brief, Section 1 item 4) ---
+
+    @staticmethod
+    def _glyphs(path, wght, opsz=14):
+        """(glyph set, cmap) at (wght, opsz). The glyph set applies gvar and HVAR on the fly, which is what instancing does to the
+        outlines but without writing a font: a fraction of a second against several seconds per instance."""
+        key = (path, wght, opsz)
+        if key not in _INSTANCES:
+            f = TTFont(path)
+            _INSTANCES[key] = (f.getGlyphSet(location={'wght': wght, 'opsz': opsz}, normalized=False), f.getBestCmap())
+        return _INSTANCES[key]
+
+    @staticmethod
+    def _named(path, name):
+        """The glyph name (the shipped font numbers its glyphs) for a character or an AGL name ('quoteleft'), or for a (feature tag,
+        character) pair: the glyph that feature substitutes for the character's."""
+        cmap = TTFont(path).getBestCmap()
+        if isinstance(name, tuple):
+            tag, ch = name
+            f = TTFont(path)
+            gsub = f['GSUB'].table
+            mapping = {}
+            for fr in gsub.FeatureList.FeatureRecord:
+                if fr.FeatureTag == tag:
+                    for li in fr.Feature.LookupListIndex:
+                        for st in gsub.LookupList.Lookup[li].SubTable:
+                            mapping.update(getattr(st, 'mapping', {}))
+            return mapping[cmap[ord(ch)]]
+        from fontTools.agl import toUnicode
+
+        return cmap[ord(name if len(name) == 1 else toUnicode(name))]
+
+    def _ink(self, path, wght, name, opsz=14):
+        """(ink bounds, advance) of a glyph by name or by character at (wght, opsz)."""
+        from fontTools.pens.boundsPen import BoundsPen
+
+        gs, cmap = self._glyphs(path, wght, opsz)
+        name = self._named(path, name)
+        pen = BoundsPen(gs)
+        gs[name].draw(pen)
+        return pen.bounds, round(gs[name].width)
+
+    def _contour_boxes(self, path, wght, name, opsz=14):
+        """Ink bounds of each contour of a glyph, in outline order."""
+        from fontTools.pens.boundsPen import BoundsPen
+        from fontTools.pens.recordingPen import DecomposingRecordingPen
+
+        gs, cmap = self._glyphs(path, wght, opsz)
+        name = self._named(path, name)
+        rec = DecomposingRecordingPen(gs)
+        gs[name].draw(rec)
+        boxes, cur = [], []
+        for op, args in rec.value:
+            cur.append((op, args))
+            if op in ('closePath', 'endPath'):
+                pen = BoundsPen(None)
+                for o, a in cur:
+                    getattr(pen, o)(*a)
+                boxes.append(pen.bounds)
+                cur = []
+        return boxes
+
+    def test_dash_lengths_differ(self):
+        # hyphen < en dash < em dash at every weight and optical size, upright and italic. The three were already apart; this keeps a
+        # change to one (the hyphen's length follows the stem, the dashes are fixed) from closing a gap unnoticed.
+        for path in (VF, VFI):
+            for wght, opsz in [(w, 14) for w in PUNCT_WEIGHTS] + [(400, 8), (400, 48), (900, 8), (900, 48)]:
+                hy, en, em = (self._ink(path, wght, n, opsz)[0] for n in ('hyphen', 'endash', 'emdash'))
+                with self.subTest(font=os.path.basename(path), wght=wght, opsz=opsz):
+                    self.assertLess(hy[2] - hy[0], 0.8 * (en[2] - en[0]))
+                    self.assertLess(en[2] - en[0], 0.6 * (em[2] - em[0]))
+
+    def test_minus_matches_plus(self):
+        # the minus keeps the plus's advance (they stand in the same column) and its ink is >= 8% shorter than the en dash's:
+        # at 0.479 against 0.500 em they read as the same stroke, and at Black the minus was longer than the en dash
+        for path in (VF, VFI):
+            for wght, opsz in [(w, 14) for w in PUNCT_WEIGHTS] + [(100, 8), (100, 48), (400, 8), (400, 48), (900, 8), (900, 48)]:
+                (m, madv), (_, padv), (en, _) = (self._ink(path, wght, n, opsz) for n in ('minus', 'plus', 'endash'))
+                with self.subTest(font=os.path.basename(path), wght=wght, opsz=opsz):
+                    self.assertEqual(madv, padv)
+                    self.assertLessEqual(m[2] - m[0], 0.92 * (en[2] - en[0]))
+                    if path == VF:  # centred in the plus's advance, so the pair lines up in a column of figures (the italic is sheared)
+                        self.assertAlmostEqual((m[0] + m[2]) / 2, madv / 2, delta=3)
+
+    def test_quotes_hold_their_size(self):
+        # single and double quotes (curly and straight) and the guillemets: the ink box (width and height each) is >= 0.9x Inter's
+        # at the same weight, upright against Inter and italic against Inter Italic. The floor at light weights is the same 0.9x: the
+        # Thin quote was 0.47x as wide and 0.86x as tall as Inter's.
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            for name, by_weight in INTER_QUOTE_BOX[kind].items():
+                for wght, (iw, ih) in by_weight.items():
+                    b, _ = self._ink(path, wght, name)
+                    with self.subTest(kind=kind, glyph=name, wght=wght):
+                        self.assertGreaterEqual(b[2] - b[0], 0.9 * iw, 'ink width')
+                        self.assertGreaterEqual(b[3] - b[1], 0.9 * ih, 'ink height')
+
+    def test_quotes_hold_their_size_at_the_optical_sizes(self):
+        # Caption and Display keep the box too: the curly and straight double quotes against Inter's (its opsz stays at 14)
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            for name in ('quotedblleft', 'quotedblright', 'quotedbl', 'guillemotleft'):
+                for wght in (100, 400, 900):
+                    iw, ih = INTER_QUOTE_BOX[kind][name][wght]
+                    for opsz in (8, 48):
+                        b, _ = self._ink(path, wght, name, opsz)
+                        with self.subTest(kind=kind, glyph=name, wght=wght, opsz=opsz):
+                            self.assertGreaterEqual(b[2] - b[0], 0.9 * iw)
+                            self.assertGreaterEqual(b[3] - b[1], 0.9 * ih)
+
+    def test_brackets_are_tall_enough(self):
+        # Inter's are 908 tall; the parentheses were 828 (0.91x) beside the brackets' and braces' 974
+        for path in (VF, VFI):
+            for wght in (100, 400, 900):
+                for ch in '()[]{}':
+                    b, _ = self._ink(path, wght, ch)
+                    with self.subTest(font=os.path.basename(path), wght=wght, glyph=ch):
+                        self.assertGreaterEqual(b[3] - b[1], 0.95 * INTER_BRACKET_HEIGHT)
+
+    def test_case_brackets_centre_on_caps(self):
+        # the `case` forms of ( ) [ ] { } are centred on the cap height (350) within 5 units, at every weight and optical size;
+        # they sat 19 units low (331) beside capitals and figures
+        for path in (VF, VFI):
+            for wght, opsz in [(w, 14) for w in PUNCT_WEIGHTS] + [(100, 8), (100, 48), (400, 8), (400, 48), (900, 8), (900, 48)]:
+                for ch in '()[]{}':
+                    b, _ = self._ink(path, wght, ('case', ch), opsz)
+                    with self.subTest(font=os.path.basename(path), wght=wght, opsz=opsz, glyph=ch):
+                        self.assertAlmostEqual((b[1] + b[3]) / 2, 350, delta=5)
+
+    def test_dots_survive_thin(self):
+        # the dot is >= 0.05 em (50 units) square at wght 100 at every optical size: Thin's was 43 (0.041 em, Inter's 0.052),
+        # a 0.7 px speck at 16 px. Every glyph that shares the dot: . : ; ! ? i j and the dotted zero's. (The comma's head and the
+        # quotes follow the hairline stem instead; test_thin_comma_and_quotes_are_long_enough_to_read and quality's thin ink cover them.)
+        # The ink of a dot contour is a square of the dot's size (a sheared one, italic, is as wide again as it is tall).
+        floor = 50
+        for path in (VF, VFI):
+            for opsz in (8, 14, 48):
+                for name, pick in (('.', 'all'), (':', 'all'), (';', 'top'), ('!', 'bottom'), ('?', 'bottom'),
+                                   ('i', 'top'), ('j', 'top'), (('ss01', '0'), 'all')):
+                    boxes = self._contour_boxes(path, 100, name, opsz)
+                    if pick == 'all':
+                        dots = boxes[-1:] if isinstance(name, tuple) else boxes
+                    elif pick == 'top':
+                        dots = [max(boxes, key=lambda b: b[3])] if name in ('i', 'j') else [max(boxes, key=lambda b: b[1])]
+                    else:
+                        dots = [min(boxes, key=lambda b: b[1])]
+                    for b in dots:
+                        with self.subTest(font=os.path.basename(path), opsz=opsz, glyph=name):
+                            self.assertGreaterEqual(b[2] - b[0], floor, 'dot width')
+                            self.assertGreaterEqual(b[3] - b[1], floor, 'dot height')
+
+    def test_dot_floor_is_a_params_constant(self):
+        import params
+
+        self.assertEqual(params.DOT_MIN_EM, 0.05)
+        # Regular and heavier keep their dot: the floor only acts below it
+        self.assertEqual(round(params.P(400, 14).dot), 115)
+        self.assertGreaterEqual(params.P(100, 14).dot, params.DOT_MIN_EM * 1000)
 
     def test_comparison_data_is_current(self):
         """The /cascivo-sans table shows comparison.json; its Cascivo entry must match the

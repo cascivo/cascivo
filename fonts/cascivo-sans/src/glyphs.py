@@ -1295,14 +1295,20 @@ def thin_blend(p):
     return max(0.0, min(1.0, (p.wght - 100) / 300))
 
 
+def comma_swing(p):
+    # Units the comma's tail sweeps left beyond its own taper: Inter's quotes are 0.9-1.0x as wide as the comma-shaped ones were
+    # at Regular and 2x at Thin, where the hairline head is 29 wide and the old tail added 17.
+    return lerp(42.0, 14.0, thin_blend(p)) + 14.0 * p.heavy
+
+
 def comma_depth(p):
     # in dots; Black's tail ran 1.7x as deep as Geist's and Inter's. Thin's dot is small, so a tail
     # that long in dots is a speck at 14 px (it read as a period): 3.4 dots is 139 units, which
     # reaches Inter's proportions (it descends 0.27 x-heights) and fades to Regular's by wght 400.
-    return lerp(3.4, 1.15, thin_blend(p)) - 0.3 * p.heavy
+    return lerp(3.15, 1.4, thin_blend(p)) - 0.55 * p.heavy
 
 
-def comma_shape(g, d, x, top, depth):
+def comma_shape(g, d, x, top, depth, swing=0.0):
     """A grotesque comma: a square head one dot wide, then a tail that curves down and to the
     left and tapers. Every curly quote is built from this (’ ” raised, ‘ “ turned), so the
     curve is what tells them apart from the straight ' and ". A straight wedge read as ″."""
@@ -1314,30 +1320,38 @@ def comma_shape(g, d, x, top, depth):
     w = d * (f + (1 - f) * min(1.0, 1.2 * p.V / p.dot))
     x -= (d - w) / 2
     neck = top - d * 0.95
-    end = (x - w * 0.6, neck - depth)
-    tail = ('C', (x, neck), (x, neck - depth * 0.45), (x - w * 0.12, neck - depth * 0.8), end)
+    end = (x - w * 0.6 - swing, neck - depth)
+    tail = ('C', (x, neck), (x, neck - depth * 0.45), (x - w * 0.12 - swing * 0.3, neck - depth * 0.8), end)
     g.stroke([L((x, top), (x, neck)), tail], w=w, taper=(1, 0.15), caps=('b', 'b'))
 
 
 @glyph('comma', 0x2C)
 def _comma(g, p):
     d = p.dot
-    comma_shape(g, d, d / 2, d, d * comma_depth(p))
+    comma_shape(g, d, d / 2, d, d * comma_depth(p), comma_swing(p))
     g.sb = (0.9, 0.9)
+
+
+def _straight_quote(p):
+    """(stroke width, length, gap between two) of the straight quotes. Inter's are 0.35 em long at Regular and 0.46 at Black (this
+    was a fixed 0.24) and a tenth wider than ours at Regular."""
+    blend = thin_blend(p)
+    return (p.V * (0.95 + 0.14 * blend * (1 - p.heavy)) + 4 * (1 - blend), p.cap * 0.34 + 28 * blend + 45 * p.heavy, p.V * 0.95 + 60 + 24 * (1 - p.heavy))
 
 
 @glyph('quotesingle', 0x27)
 def _quotesingle(g, p):
-    g.line((p.V / 2, p.cap), (p.V / 2, p.cap * 0.66), w=p.V * 0.95, taper=(1, 0.8))
+    w, ln, _ = _straight_quote(p)
+    g.line((w / 2, p.cap), (w / 2, p.cap - ln), w=w, taper=(1, 0.8))
     g.sb = (0.9, 0.9)
     g.ht = 'c'
 
 
 @glyph('quotedbl', 0x22)
 def _quotedbl(g, p):
-    gap = p.V * 0.95 + 60
-    for x in (p.V / 2, p.V / 2 + gap):
-        g.line((x, p.cap), (x, p.cap * 0.66), w=p.V * 0.95, taper=(1, 0.8))
+    w, ln, gap = _straight_quote(p)
+    for x in (w / 2, w / 2 + gap):
+        g.line((x, p.cap), (x, p.cap - ln), w=w, taper=(1, 0.8))
     g.sb = (0.9, 0.9)
     g.ht = 'c'
 
@@ -1387,9 +1401,13 @@ def _hyphen(g, p):
     g.sb = (0.55, 0.55)
 
 
+ENDASH_W = 500
+MINUS_OF_ENDASH = 0.912  # the minus is this much of the en dash's length at most: test_minus_matches_plus asks for 8% shorter
+
+
 @glyph('endash', 0x2013)
 def _endash(g, p):
-    g.hbar(0, 500, p.xh * 0.5 - p.H * 0.55, h=p.H * 1.1)
+    g.hbar(0, ENDASH_W, p.xh * 0.5 - p.H * 0.55, h=p.H * 1.1)
     g.sb = (0.0, 0.0)
 
 
@@ -1422,7 +1440,9 @@ def _plus(g, p):
 @glyph('minus', 0x2212)
 def _minus(g, p):
     w, cy, t = _mathy(p)
-    g.hbar(0, w, cy - t / 2, h=t)
+    # Same advance as the plus (it stands in the same column), but its ink is 8.8% shorter than the en dash's 500: at the plus's full
+    # width (0.479 em at Regular, 0.567 at Black) it read as the en dash, and at Black was longer than it. Inter's is 0.458 against 0.500.
+    g.hbar(0, min(w, ENDASH_W * MINUS_OF_ENDASH), cy - t / 2, h=t)
     g.tab = True
 
 
@@ -1539,9 +1559,10 @@ def _brokenbar(g, p):
 
 
 def _paren(g, p, flip):
-    h0, h1 = p.desc + 20, p.asc + 40
-    cy = (h0 + h1) / 2
-    ry = (h1 - h0) / 2
+    # 880 tall (Inter's 908; it was 828, 0.91x): the arc spans 2 sin 58 = 1.7 of its radius, so ry = 880 / 1.7. The centre stays where the
+    # brackets' is (295), between the x-height's middle and the cap height's, which is what `case` lifts to the caps.
+    cy = (p.desc + 20 + p.asc + 40) / 2
+    ry = 880 / (2 * math.sin(math.radians(58)))
     rx = 150 + p.V * 0.2
     cx = rx + p.V / 2
     segs = g.arc(cx, cy, rx, ry, 122, 238, k=0.56)
@@ -1882,8 +1903,11 @@ def _ellipsis(g, p):
 
 def _guil(g, p, x0, flip, h=1.0):
     # Regular's were 0.8x the references' size, Black's 0.88x and cramped
-    w = 160 + p.V * 0.45
-    hh = p.xh * 0.31 * h
+    # then to Inter's box (296 x 461 at Regular, 224 x 461 at Thin, 398 x 461 at Black): the chevron's height is the opening's, plus the
+    # stroke, so the light weights take the larger opening and Black a smaller one. The width's constants (207, 0.18) are the pair that
+    # reaches 0.92x Inter's width at Black and leaves every woff2 under its budget: the size moves by about 100 B between neighbouring constants.
+    w = 207 + p.V * 0.45 + 0.18 * max(0.0, p.V - 84)
+    hh = p.xh * (0.365 + 0.04 * (1 - thin_blend(p)) - 0.062 * p.heavy) * h
     cy = p.xh * 0.5
     tip = x0 if not flip else x0 + w
     back = x0 + w if not flip else x0

@@ -16,6 +16,8 @@ BLACK_STEM = 190
 THIN_STEM = 24  # Thin sits 2 above the old 22 so the first weight step is a full 20 (build.NAMED_STEMS)
 BOLD_STEM = 146  # build.NAMED_STEMS at 700
 MID_WGHT = round(400 + (BOLD_STEM - 84) / (BLACK_STEM - 84) * 500, 1)  # Bold's design coordinate (build._wght_map)
+DOT_MIN_EM = 0.05  # the smallest dot (period, colon, i dot, ...) at wght 100, in em
+DOT_FLOOR = DOT_MIN_EM * 1000 + 3 * 1.12 * 1.06  # units; see P.dot
 ITALIC_ANGLE = 10  # degrees; Plex and Inter italics sit near 10-11
 
 MASTERS = [
@@ -129,7 +131,10 @@ class P:
         # i dot / period: never thinner than a readable square. Against Geist's and Inter's, a
         # stem-proportional dot made punctuation 0.89x their ink at Regular and 1.6x at Black
         # (commas 1.7x as tall): Regular's grows a little, the heavy ones much less.
-        self.dot = (V * 1.12 + 14) * 1.06 - 60 * self.heavy
+        # The floor keeps Thin's dot a readable 0.05 em (it was 43 units, Inter's 0.052 em, a 0.7 px speck at 16 px). The variation model
+        # adds Display's delta (its stem is 3 lighter, so its dot 3 x 1.12 x 1.06 smaller than Regular's) to the Thin master, so the floor
+        # carries that much more to hold 0.05 em at Thin's Display end too. Regular and heavier are far above it and unchanged.
+        self.dot = max((V * 1.12 + 14) * 1.06 - 60 * self.heavy, DOT_FLOOR)
         self.mt = V * 0.86 + 6  # accent stroke
         self.fig_adv = round(580 + 0.55 * (V - 90) + (spacing - 1) * 60 + 1.3 * self.S * (1 - 1 / opened))  # tabular figure advance; Thin's opened white is added outside the figures' ink, which the math signs share
         self.slant = math.tan(math.radians(ITALIC_ANGLE)) if italic else 0.0

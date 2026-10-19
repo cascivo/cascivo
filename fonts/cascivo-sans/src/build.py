@@ -332,7 +332,9 @@ def add_composites(o):
     comp('quoteright', [('comma', 0, p.cap - d, 1)], cadv, 0x2019)
     comp('quoteleft', [('comma', cadv, lq, -1)], cadv, 0x2018)
     comp('quotesinglbase', [('comma', 0, 0, 1)], cadv, 0x201A)
-    gap = d + S * 0.55
+    # the marks stand apart by their own width again at Thin (Inter's double quote is 2.9 marks wide there, 2.2 at Regular and Black: gaps of 1.9, 1.24 and 1.18 marks)
+    cb = o.bounds['comma']
+    gap = max(d + S * 0.55, (cb[2] - cb[0]) * (1.75 - 0.55 * GL.thin_blend(p) - 0.02 * p.heavy))
     comp('quotedblright', [('comma', 0, p.cap - d, 1), ('comma', gap, p.cap - d, 1)], cadv + gap, 0x201D)
     comp('quotedblleft', [('comma', cadv, lq, -1), ('comma', cadv + gap, lq, -1)], cadv + gap, 0x201C)
     comp('quotedblbase', [('comma', 0, 0, 1), ('comma', gap, 0, 1)], cadv + gap, 0x201E)
@@ -440,8 +442,9 @@ def add_composites(o):
     lift = (p.cap - p.xh) / 2
     for n in ('hyphen', 'endash', 'emdash', 'guilsinglleft', 'guilsinglright', 'guillemotleft', 'guillemotright', 'periodcentered', 'bullet'):
         comp(n + '.case', [(n, 0, lift, 1)], o.adv[n])
+    # each is lifted so its ink centres on the cap height (350): they were lifted a fixed 36 and sat 19 units low
     for n in ('parenleft', 'parenright', 'bracketleft', 'bracketright', 'braceleft', 'braceright'):
-        comp(n + '.case', [(n, 0, 36, 1)], o.adv[n])
+        comp(n + '.case', [(n, 0, p.cap / 2 - (o.bounds[n][1] + o.bounds[n][3]) / 2, 1)], o.adv[n])
     comp('at.case', [('at', 0, 50, 1)], o.adv['at'])
     o.cmap.pop(0xAD, None)  # soft hyphen should never render; leave it unmapped
 
