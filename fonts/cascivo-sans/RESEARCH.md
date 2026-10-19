@@ -1712,7 +1712,7 @@ spacing strings, small sizes).
 
 | #   | Item                 | Before                                                                                                                                                                                                        | After                                                                                                                                                                                                                                                                                                      |
 | --- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | Even weight steps    | `n` stem 22 / 34 / 54 / 84 / 104 / 124 / 144 / 168 / 190; steps 12 / 19 / 30 / 20 / 20 / 20 / 24 / 22                                                                                                         | 24 / 44 / 64 / 84 / 104 / 124 / 146 / 168 / 190; steps 20 / 20 / 20 / 20 / 20 / 22 / 22 / 22 (italic 24 / 44 / 65 / 85 / 105 / 126 / 148 / 171 / 193, steps 20-22). Gate: all steps 15-27. The Thin master stem is 24 (it was 22)                                                                          |
+| 1   | Even weight steps    | `n` stem 22 / 34 / 54 / 84 / 104 / 124 / 144 / 168 / 190; steps 12 / 19 / 30 / 20 / 20 / 20 / 24 / 22                                                                                                         | 24 / 44 / 64 / 84 / 104 / 124 / 146 / 168 / 190; steps 20 / 20 / 20 / 20 / 20 / 22 / 22 / 22 (italic 24 / 44 / 65 / 85 / 105 / 126 / 148 / 170 / 193, steps 20-22). Gate: all steps 15-27. The Thin master stem is 24 (it was 22)                                                                          |
 | 2   | Width across weights | "Signals move fast; the cascade decides." against 400, kerning on: 500 +2.2%, 600 +4.5%, 700 +6.7%, 800 +9.4%, 900 +11.9%. Tab row (sum of word widths): 700 +7.5%                                            | Signals line: 100 +0.8%, 300 +0.3%, 500 +0.5%, 700 +1.6%, 800 +3.1%, 900 +4.6% (the specimen meter, 40 px, opsz 14). Worst over all four test strings, kerning on, upright: 100-700 -0.73% to +1.55%, 750-900 up to +4.62%; italic -1.31% to +1.32% and +4.50%. Gate: ±2% at 100-700, +5% / -2% at 750-900 |
 | 3   | Italic is an oblique | Not present: the italic is drawn (single-storey `a` and `g`, descending `f`, own `k` and `y`); ink within 1% of the upright                                                                                   | Unchanged. No work was needed                                                                                                                                                                                                                                                                              |
 | 4   | Ambiguous glyphs     | Plain `I` / `l` sat on `ss01`; no dotted zero; `zero` is the slashed zero                                                                                                                                     | `ss01` is a dotted zero (tabular with `tnum`); `ss02` is plain `I` and `l`; `zero` is unchanged and wins over `ss01`. Gate: a feature test on every substitution, upright and italic                                                                                                                       |
@@ -1764,12 +1764,17 @@ How the figures were read:
   diagonals that face each other kept 2-3 units of white at 900/48 (VV, VW, AX, RA, Ax, KA; 7-8 at
   fb62663c), 5-6 at 900/14 (10-12), 4-5 at 700/48 (9-10) and 8 at 900/8 (13), and the italic's
   slanted arms overlapped the next stem (KT -17 at 900/48). `kern.py` now adds a second lookup
-  (`DIAGONAL_FIX`) for capital diagonals beside each other, beside a stem or a bar, and a diagonal
-  beside x v w y k. Its values are measured per heavy master as the closest point in 5-unit rows,
-  opening only, in steps of 4 units; Regular and Thin kerning are unchanged. The white is now 12 or
-  more at 900/48, 900/8 and 700/48 and 16 or more at 900/14 for every pair in the set, upright
-  and italic (`test_diagonal_capitals_keep_clear_at_heavy_weights`). The lookup costs about 150-300 bytes per
-  file (see the sizes).
+  (`DIAGONAL_FIX`) for the capital diagonals A V W X Y K R Z beside each other and beside T H M N, and
+  a diagonal beside x v w y k. It is built by glyph class, as the kerning classes are: each base letter
+  with its accented forms and the Cyrillic and Greek letters that share its side (К Х А Т, Κ Χ Υ
+  Α Τ, Á Ý and the rest), and the capitals of their own shape that draw a diagonal and come within the
+  floor of one (Ж У Δ and the like); classes with the same estimated needs share a class. Values are
+  measured per heavy master as the closest point in 5-unit rows, ignoring what hangs below the baseline
+  (an ogonek), opening only, in steps of 4 units; Regular and Thin kerning are unchanged. The white is
+  now 12 or more at 900/48, 900/8, 700/48, 800/48 and 850/48 and 16 or more at 900/14 for every pair of
+  those letters, upright and italic (`test_diagonal_capitals_keep_clear_at_heavy_weights`; the
+  weights between the masters are tested because the kerning interpolates linearly and the white does
+  not: italic Tk read 9 at 850/48). The lookup costs 250 to 900 bytes per file (see the sizes).
 - **Caption counters (not done).** The Caption stem's +1 unit (small sizes, above) took 1.5-5% of the Black
   Caption counter area. Raising the Caption counter factor from 1.06 to 1.07 gave back only
   0.8-2.0% (`o a O` at opsz 8: 400 +1.3 / +0.8 / +0.9%, 700 +1.6 / +1.0 / +1.0%, 900 +2.0 / +1.3 /
@@ -1798,21 +1803,21 @@ How the figures were read:
 - Display spacing 0.88: a trade-off between round pairs at Display Black and width.
 - Size budgets, raised in turn (woff2 bytes, before the brief -> now): full 71,500 -> 74,500;
   Latin[opsz,wght] 30,000 -> 31,500; Latin[wght] 23,500 -> 25,000; Regular 24,500 -> 25,000;
-  Italic full 77,000 -> 81,000; Italic-Latin[opsz,wght] 34,000 -> 34,500; Italic-Latin[wght]
+  Italic full 77,000 -> 81,000; Italic-Latin[opsz,wght] 34,000 -> 35,000 (raised by the user for the Black diagonal capitals); Italic-Latin[wght]
   26,000 -> 28,000. The cost is the Bold master's advance deltas (about 1,000 glyphs), the capital
   counter curves at three masters, Thin kerning, and the V / W / Y / A correction lookup.
 
 ### Sizes
 
-| File (woff2)                          | Before (fb62663c) | Now    | Budget              |
-| ------------------------------------- | ----------------- | ------ | ------------------- |
-| `CascivoSans[opsz,wght]`              | 69,824            | 74,468 | 74,500              |
-| `CascivoSans-Latin[opsz,wght]`        | 29,608            | 31,180 | 31,500              |
-| `CascivoSans-Latin[wght]`             | 23,312            | 24,900 | 25,000              |
-| `CascivoSans-Regular`                 | 24,248            | 24,688 | 25,000              |
-| `CascivoSans-Italic[opsz,wght]`       | 75,412            | 80,824 | 81,000              |
-| `CascivoSans-Italic-Latin[opsz,wght]` | 32,680            | 34,588 | 34,500 (over by 88) |
-| `CascivoSans-Italic-Latin[wght]`      | 25,748            | 27,796 | 28,000              |
+| File (woff2)                          | Before (fb62663c) | Now    | Budget               |
+| ------------------------------------- | ----------------- | ------ | -------------------- |
+| `CascivoSans[opsz,wght]`              | 69,824            | 74,380 | 74,500               |
+| `CascivoSans-Latin[opsz,wght]`        | 29,608            | 31,260 | 31,500               |
+| `CascivoSans-Latin[wght]`             | 23,312            | 24,944 | 25,000               |
+| `CascivoSans-Regular`                 | 24,248            | 25,048 | 25,000 (over by 48)  |
+| `CascivoSans-Italic[opsz,wght]`       | 75,412            | 81,332 | 81,000 (over by 332) |
+| `CascivoSans-Italic-Latin[opsz,wght]` | 32,680            | 34,508 | 35,000               |
+| `CascivoSans-Italic-Latin[wght]`      | 25,748            | 27,852 | 28,000               |
 
 ### Known limits
 
