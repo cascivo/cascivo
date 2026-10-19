@@ -175,8 +175,8 @@ def measure(o, left_glyph, right_glyph, most=40):
         lo_f, _ = _profile(o, right_glyph, True)
         floor = max(0.55 * p.S, KEEP_CLEAR) - min((adv - hi_f[b]) + lo_f[b] for b in bands if b in hi_f and b in lo_f)
     if p.heavy > 0.5 and (left_glyph, right_glyph) in OWN_SHAPE_PAIRS:
-        # a slanted pair (an italic У beside ћ) clear in 10-unit bands can still touch in 25-unit ones, which is how test_shaped_pairs_keep_clear
-        # reads it: keep those clear by a unit too. Before Display's spacing opened, the Display corner's own opening carried it.
+        # a slanted pair (an italic У beside ћ) clear in 10-unit bands can still touch in 25-unit ones. This mirrors test_shaped_pairs_keep_clear's
+        # coarse band reading (25-unit bands), so a pair that test would call touching gets the 2 units the fine reading leaves out.
         _, hi_c = _profile(o, left_glyph, True, 25)
         lo_c, _ = _profile(o, right_glyph, True, 25)
         coarse = [(adv - hi_c[b]) + lo_c[b] for b in set(hi_c) & set(lo_c)]

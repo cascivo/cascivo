@@ -492,18 +492,21 @@ class Font(unittest.TestCase):
 
         with open(os.path.join(HERE, 'advances_a855b5e0.json'), encoding='utf-8') as fh:
             ref = json.load(fh)
-        # glyphs the font gained after a855b5e0 have no entry; the glyphs below changed on purpose
+        # glyphs the font gained after a855b5e0 have no entry; list their codepoints here so that adding one is deliberate and a lost
+        # one cannot hide behind the skip below (none so far: the cmap's set equals the fixture's keys)
+        added = {'upright': set(), 'italic': set()}
         allowed = {}
         for kind, path in (('upright', VF), ('italic', VFI)):
             f = instantiateVariableFont(TTFont(path), {'wght': 400, 'opsz': 14})
             cmap, hmtx = f.getBestCmap(), f['hmtx']
+            self.assertEqual(set(cmap), {int(cp) for cp in ref[kind]} | added[kind], f'{kind}: codepoints gained or lost since a855b5e0')
             moved = {cp: (ref[kind][str(cp)], hmtx[n][0]) for cp, n in cmap.items() if str(cp) in ref[kind] and hmtx[n][0] != ref[kind][str(cp)] and cp not in allowed.get(kind, ())}
             self.assertEqual(moved, {}, f'{kind}: advances that moved since a855b5e0 (codepoint: was, now)')
 
     def test_pairs_keep_their_clearance_at_the_black_corners(self):
         # Display Black is the tightest corner: Black's spacing plus Display's deltas. Dï and Bî must keep kern.py's
         # 16 units: its closest-point read came from a 24-sample curve, which left a heavy bowl's extreme 4 units
-        # short, so they closed to 12 and 8. The round pairs (OO oo ss SS rv GO) sat at 3-15 units, the italic GO
+        # short, so they closed to 12 and 8. The round pairs (OO oo ss SS rv GO, since widened to ROUND_PAIRS) sat at 3-15 units, the italic GO
         # overlapping, where a855b5e0 had 20-63; a Display face may be tighter than text but not touching, so their
         # floor is 12, 60% of a855b5e0's tightest (rv, 20), at 900/48 and 900/8.
         try:
@@ -545,8 +548,11 @@ class Font(unittest.TestCase):
                     t, u = i / 80, 1 - i / 80
                     self._add(u * u * x0 + 2 * u * t * c[0] + t * t * p[0], u * u * y0 + 2 * u * t * c[1] + t * t * p[1])
 
+        # the round pairs: where two bowls (or a bowl and a stem or bowl) meet, the tightest read at Black. The italic cO, ec, oc and pd sit
+        # at 13 at 900/48, so 12 is a floor with a unit of room rather than a target; a855b5e0's tightest of these was rv at 20
+        ROUND_PAIRS = ('OO', 'oo', 'ss', 'SS', 'rv', 'GO', 'cO', 'ec', 'oc', 'eo', 'pd', 'ob', 'bo', 'bp', 'db', 'ce', 'CO', 'DO', 'QO')
         for path, wght, opsz, pairs, floor in [(p, 900, z, ps, fl) for p in (VF, VFI) for z, ps, fl in (
-            (48, ('Dï', 'Bî'), 16), (48, ('OO', 'oo', 'ss', 'SS', 'rv', 'GO'), 12), (8, ('OO', 'oo', 'ss', 'SS', 'rv', 'GO'), 12))]:
+            (48, ('Dï', 'Bî'), 16), (48, ROUND_PAIRS, 12), (8, ROUND_PAIRS, 12))]:
             f = instantiateVariableFont(TTFont(path), {'wght': wght, 'opsz': opsz})
             bio = io.BytesIO()
             f.save(bio)
