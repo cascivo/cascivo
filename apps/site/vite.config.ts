@@ -1038,6 +1038,12 @@ for (const n of BLOCK_NAMES) {
 }
 
 export default defineConfig({
+  test: {
+    // test/*.spec.ts are Playwright specs (their own scripts); unit tests live beside the code.
+    // Only the node-environment .test.ts files: blocks/*.test.tsx render React components with
+    // @testing-library/react, which this Preact-aliased config cannot host (see task-7 report).
+    include: ['src/**/*.test.ts'],
+  },
   plugins: [
     imagetools(),
     injectCounts(),
