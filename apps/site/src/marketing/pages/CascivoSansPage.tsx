@@ -49,6 +49,15 @@ const MAKING = [
   },
 ]
 
+const FEATURES: readonly { tag: string; name: string }[] = [
+  { tag: 'ss01', name: 'Dotted zero' },
+  { tag: 'ss02', name: 'Plain I and l alternates' },
+  { tag: 'zero', name: 'Slashed zero (wins over ss01)' },
+  { tag: 'case', name: 'Brackets, dashes and hyphens centred on the capitals' },
+  { tag: 'tnum', name: 'Tabular figures' },
+  { tag: 'onum', name: 'Oldstyle figures' },
+]
+
 const COMPARED: readonly ComparedFont[] = COMPARISON.fonts
 
 const BEHIND = [
@@ -114,6 +123,9 @@ export function CascivoSansPage() {
               <LinkButton href="#cs-try" variant="secondary">
                 Try it
               </LinkButton>
+              <LinkButton href="/cascivo-sans/specimen" variant="secondary">
+                QA specimen
+              </LinkButton>
             </div>
           </section>
 
@@ -136,6 +148,22 @@ export function CascivoSansPage() {
               weights: their strokes are too fine for small sizes, so set them large. Below 14 px
               the optical size thickens Light a little (up to 10 percent at 8 px) to keep it
               readable.
+            </p>
+          </section>
+
+          <section id="cs-features" className="cs-section" aria-labelledby="cs-features-title">
+            <h2 id="cs-features-title">OpenType features</h2>
+            <ul className="cs-features">
+              {FEATURES.map((f) => (
+                <li key={f.tag}>
+                  <code>{f.tag}</code> {f.name}
+                </li>
+              ))}
+            </ul>
+            <p className="cs-note">
+              Every feature is checked on the <a href="/cascivo-sans/specimen">QA specimen</a>:
+              weight steps and live width drift, reflow on a weight change, ambiguous glyphs,
+              punctuation, spacing and small sizes.
             </p>
           </section>
 

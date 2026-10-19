@@ -78,6 +78,14 @@
     overflow-wrap: anywhere;
   }
 
+  & .cs-features {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--cascivo-space-2);
+  }
+
   & .cs-pair {
     display: grid;
     grid-template-columns: 1fr;

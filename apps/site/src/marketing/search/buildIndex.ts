@@ -114,6 +114,14 @@ const PAGE_SECTIONS: SearchItem[] = [
     type: 'page',
     description: 'The cascivo variable typeface — try it and download it',
   },
+  {
+    id: 'page-cascivo-sans-specimen',
+    title: 'Cascivo Sans specimen',
+    section: 'Landing',
+    href: '/cascivo-sans/specimen',
+    type: 'page',
+    description: 'QA specimen: live width drift, reflow, glyphs, punctuation, spacing, small sizes',
+  },
 ]
 
 export const landingIndex = new SearchIndex([...componentItems, ...PAGE_SECTIONS])

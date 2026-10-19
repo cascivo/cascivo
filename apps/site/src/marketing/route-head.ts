@@ -108,6 +108,12 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
       'An open-source variable sans for interfaces. Weight 100–900, optical size 8–48, Latin, Cyrillic and Greek, free under the OFL. Try it and download it.',
     ogTitle: 'Cascivo Sans — cascivo',
   },
+  '/cascivo-sans/specimen': {
+    title: 'Cascivo Sans specimen — cascivo',
+    description:
+      'A QA specimen for Cascivo Sans: weight steps and live width drift, reflow on state change, italic, ambiguous glyphs, punctuation, spacing and small sizes.',
+    ogTitle: 'Cascivo Sans specimen — cascivo',
+  },
   '/highlights': {
     title: 'Highlights — Flow, Editor & Icons — cascivo',
     description:
@@ -193,6 +199,7 @@ export const PRERENDER_ROUTES = [
   'guides/faq',
   'modern-css',
   'cascivo-sans',
+  'cascivo-sans/specimen',
   'highlights',
   'examples',
   'showcase',
