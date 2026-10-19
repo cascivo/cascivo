@@ -77,13 +77,14 @@ browser fakes italics by skewing the upright.
 
 Nine weights, 100 to 900. Use **300 Light as the lightest weight for text**. **100 Thin and 200
 ExtraLight are display weights**: their strokes are too fine to hold up in body copy or small UI
-text, so set them large (about 24 px and up). Below optical size 14 every weight's stem gains weight (up to 10%
-at 8 px, 3% at 12 px, none from 14 px). It is most noticeable in Light, where it keeps the colour
-at 11 to 13 px.
+text, so set them large (about 24 px and up). Below optical size 14 every weight's stem gets heavier: at 8 px it is
+6 units heavier than at 14 px for every weight (Thin +25%, ExtraLight +14%, Light +9%, Regular +7%,
+Black +3%), about a third of that at 12 px, none from 14 px. It matters most in Light, where it
+keeps the colour at 11 to 13 px.
 
 A line of text keeps its width when only the weight changes: within 2% of Regular from 100 to 700,
 and within 5% at 800 and 900 (display weights), so a hover state or a weight toggle does not
-reflow. Stems step by 19 to 22 units between named weights. Black keeps its words apart but its
+reflow. Stems step by 20 to 22 units between named weights. Black keeps its words apart but its
 letters sit closer than Inter's (RESEARCH.md section 38 has the numbers).
 
 ## OpenType features

@@ -20,7 +20,7 @@
 - Small sizes: Light (300) stem raised ≤ 10% at opsz 8–12, none at opsz ≥ 14.
 - Unchanged gates: `quality.check_all(VF, VFI) == []` (strict), Font Bakery 0 FAIL/0 ERROR, the CI Fonts job (rebuild == committed fonts), point-compatible masters, existing size budgets in `src/test_font.py` (raise only with the user's approval — STOP and report if exceeded).
 - After every build: `python3 -I src/compare.py --cascivo-only` (from `fonts/cascivo-sans`) then `pnpm fonts:site:sync` (repo root); commit the regenerated files.
-- `pnpm ready` passes before every commit (CLAUDE.md). Commit trailers: `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>` and `Claude-Session: https://claude.ai/code/session_018GMr8MKJ9kdBTRa5FE88Rj`; no model names elsewhere.
+- `pnpm ready` passes before every commit (CLAUDE.md). Commit trailers: the `Co-Authored-By` and `Claude-Session` lines the session attribution gives; no model names elsewhere.
 - Site: CLAUDE.md component rules (signals not hooks, `@layer`, logical properties, mobile-first, WCAG 2.2 AA, no `display:none` content on mobile); the font loads only on `/cascivo-sans` and `/cascivo-sans/specimen`.
 - Reference fonts (Inter, Geist, Plex) for calibration: `/tmp/claude-0/-home-user-cascivo/684bb259-c9c5-54d1-9b23-6e019baa909a/scratchpad/full/ttf/`. Audit baseline: `…/scratchpad/brief-audit/audit.md`.
 

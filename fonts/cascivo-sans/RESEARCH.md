@@ -1710,15 +1710,15 @@ figures below are measured on the shipped fonts. The specimen at `/cascivo-sans/
 the same things live (weight rows with a width meter, hover tabs, ambiguous pairs, punctuation,
 spacing strings, small sizes).
 
-| #   | Item                 | Before                                                                                                                                                                                           | After                                                                                                                                                                                                                                                                                                      |
-| --- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | Even weight steps    | `n` stem 22 / 35 / 53 / 84 / 104 / 124 / 144 / 168 / 190; steps 13 / 18 / 31 / 20 / 20 / 20 / 24 / 22                                                                                            | 24 / 43 / 65 / 84 / 104 / 124 / 146 / 168 / 190; steps 19 / 22 / 19 / 20 / 20 / 22 / 22 / 22 (italic 24 / 45 / 65 / 85 / 105 / 126 / 148 / 171 / 193, steps 19-23). Gate: all steps 15-27. The Thin master stem is 24 (it was 22)                                                                          |
-| 2   | Width across weights | "Signals move fast; the cascade decides." against 400, kerning on: 500 +2.2%, 600 +4.5%, 700 +6.7%, 800 +9.4%, 900 +11.9%. Tab row (sum of word widths): 700 +7.5%                               | Signals line: 100 +0.8%, 300 +0.3%, 500 +0.5%, 700 +1.6%, 800 +3.1%, 900 +4.6% (the specimen meter, 40 px, opsz 14). Worst over all four test strings, kerning on, upright: 100-700 -0.73% to +1.55%, 750-900 up to +4.62%; italic -1.31% to +1.32% and +4.50%. Gate: ±2% at 100-700, +5% / -2% at 750-900 |
-| 3   | Italic is an oblique | Not present: the italic is drawn (single-storey `a` and `g`, descending `f`, own `k` and `y`); ink within 1% of the upright                                                                      | Unchanged. No work was needed                                                                                                                                                                                                                                                                              |
-| 4   | Ambiguous glyphs     | Plain `I` / `l` sat on `ss01`; no dotted zero; `zero` is the slashed zero                                                                                                                        | `ss01` is a dotted zero (tabular with `tnum`); `ss02` is plain `I` and `l`; `zero` is unchanged and wins over `ss01`. Gate: a feature test on every substitution, upright and italic                                                                                                                       |
-| 5   | Punctuation          | Minus 479 ink vs en dash 500 at 400 (0.958x), and 567 at 900 (longer than the en dash). Quotes 0.40-0.83x Inter's ink box. Dot at 100: 43 units. Parentheses 828 tall. `case` forms 19 units low | Minus 456 = 0.912x the en dash at 400, 0.884x at 100, same advance as the plus; from 800 it grows to the plus bar (567 at 900). Quotes and guillemets 0.92-0.96x Inter's box or more at every weight. Dot 54 at 100. Parentheses 884. `case` forms centred on 349-350 (gate ±5)                            |
-| 6   | Spacing and kerning  | `z` gap 0.35x the `n` gap; `l` 0.56x, `k` 0.60x. Kerning at 400: LT -59, To -54, Wa -30 (Inter -96 / -78 / -51)                                                                                  | `z` 0.62-0.69x (gate 0.6x); `l` and `k` 0.64x. At 400: LT -89, To -69, Wa -51, Va -52, Ya -66, AV -71. All at least 0.8x Inter's except the pairs in KERNING_SHORT (see the limits)                                                                                                                        |
-| 7   | Small sizes          | Light stem at opsz 8: 69 vs 64 at opsz 14 (1.078x); at opsz 12 it was 1.027x                                                                                                                     | Light stem at opsz 8: 70 (1.094x), at opsz 12: 66 (1.031x), none from opsz 14 up (gate 1.03-1.10x; italic 1.028-1.10x). Light ink against Inter Light at 11 / 12 / 13 px, DPR 1: 0.967 / 0.958 / 0.941 before, 0.985 / 0.962 / 0.941 after                                                                 |
+| #   | Item                 | Before                                                                                                                                                                                                        | After                                                                                                                                                                                                                                                                                                      |
+| --- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Even weight steps    | `n` stem 22 / 34 / 54 / 84 / 104 / 124 / 144 / 168 / 190; steps 12 / 19 / 30 / 20 / 20 / 20 / 24 / 22                                                                                                         | 24 / 44 / 64 / 84 / 104 / 124 / 146 / 168 / 190; steps 20 / 20 / 20 / 20 / 20 / 22 / 22 / 22 (italic 24 / 44 / 65 / 85 / 105 / 126 / 148 / 171 / 193, steps 20-22). Gate: all steps 15-27. The Thin master stem is 24 (it was 22)                                                                          |
+| 2   | Width across weights | "Signals move fast; the cascade decides." against 400, kerning on: 500 +2.2%, 600 +4.5%, 700 +6.7%, 800 +9.4%, 900 +11.9%. Tab row (sum of word widths): 700 +7.5%                                            | Signals line: 100 +0.8%, 300 +0.3%, 500 +0.5%, 700 +1.6%, 800 +3.1%, 900 +4.6% (the specimen meter, 40 px, opsz 14). Worst over all four test strings, kerning on, upright: 100-700 -0.73% to +1.55%, 750-900 up to +4.62%; italic -1.31% to +1.32% and +4.50%. Gate: ±2% at 100-700, +5% / -2% at 750-900 |
+| 3   | Italic is an oblique | Not present: the italic is drawn (single-storey `a` and `g`, descending `f`, own `k` and `y`); ink within 1% of the upright                                                                                   | Unchanged. No work was needed                                                                                                                                                                                                                                                                              |
+| 4   | Ambiguous glyphs     | Plain `I` / `l` sat on `ss01`; no dotted zero; `zero` is the slashed zero                                                                                                                                     | `ss01` is a dotted zero (tabular with `tnum`); `ss02` is plain `I` and `l`; `zero` is unchanged and wins over `ss01`. Gate: a feature test on every substitution, upright and italic                                                                                                                       |
+| 5   | Punctuation          | Minus 479 ink vs en dash 500 at 400 (0.958x), and 567 at 900 (longer than the en dash). Quotes 0.40-0.83x Inter's ink box. Dot at 100: 43 units. Parentheses 828 tall. `case` forms 19 units low              | Minus 456 = 0.912x the en dash at 400, 0.884x at 100, same advance as the plus; from 800 it grows to the plus bar (567 at 900). Quotes and guillemets 0.92-0.96x Inter's box or more at every weight. Dot 54 at 100. Parentheses 884. `case` forms centred on 349-350 (gate ±5)                            |
+| 6   | Spacing and kerning  | `z` gap 0.35x the `n` gap; `l` 0.56x, `k` 0.60x (own sidebearings as a share of the `n`'s). Kerning at 400: LT -59, To -54, Wa -30 (Inter -96 / -78 / -51)                                                    | `z` 0.62-0.75x (gate 0.6x); `l` and `k` 0.64-0.70x (upright 0.64-0.65x). At 400: LT -89, To -69, Wa -51, Va -52, Ya -66, AV -71. All at least 0.8x Inter's except the pairs in KERNING_SHORT (see the limits)                                                                                              |
+| 7   | Small sizes          | Light stem at opsz 8: 58.7 vs 53.7 at opsz 14 (1.093x), 1.032x at opsz 12. The weight curve alone (a855b5e0) left Light at 64 at opsz 14, 69 at opsz 8 (1.078x) and 1.027x at opsz 12, under the gate's floor | Light stem at opsz 8: 70 (1.094x), at opsz 12: 66 (1.031x), none from opsz 14 up (gate 1.03-1.10x; italic 1.028-1.10x). Light ink against Inter Light at 11 / 12 / 13 px, DPR 1: 0.967 / 0.958 / 0.941 before (measured on dca436bc, after the weight curve), 0.985 / 0.962 / 0.941 after                  |
 
 How the figures were read:
 
@@ -1726,8 +1726,8 @@ How the figures were read:
   before row of item 2 is the audit's (canvas, opsz auto); the after row is the live meter and
   the test strings, both at opsz 14.
 - Item 7: the n stem at opsz 8 / 10 / 12 / 14 / 48 is 70 / 68 / 66 / 64 / 61 for Light after, and
-  69 / 67.3 / 65.7 / 64 / 61 before. The audit's "10-13% paler than Inter" was a rough reading;
-  the Task 6 measurement (mean ink over the line box, Chromium) found 3-6%.
+  69 / 67.3 / 65.7 / 64 / 61 on a855b5e0 (the build after the weight curve; fb62663c had 58.7 at opsz 8 and 53.7 at opsz 14). The audit's "10-13% paler than Inter" was a rough reading;
+  a later measurement (mean ink over the line box, Chromium) found 3-6%.
 - Item 6 kerning is the pair value at 400, in 1/1000 em. Inter's are LT 96, To 78, Wa 51, Va 51,
   Ya 71, AV 68.
 
@@ -1748,17 +1748,29 @@ How the figures were read:
   the round pairs `OO oo ss SS rv GO` closed to between -4 and 15 units at 900 / 48; they now keep 14-26.
 - **Punctuation (item 5).** The dot floor is 0.05 em (`DOT_FLOOR` 53.6 units, so Display Thin
   also reaches 50) and is shared by `. : ; ! ? i j` and the dotted zero. Black guillemets are
-  1.08-1.10x Inter's width: the user's rule (Inter's ink and white, a single chevron of at least
-  0.9x Inter's) leaves no room for 1.05x.
-- **Spacing (item 6).** `l` right sidebearing 0.12 to 0.28, `k` 0.2 to 0.28, `z` 0.35 to 0.64.
+  1.08x Inter's width upright and 1.096x italic. The spec asked for 0.95-1.0x; the user accepted
+  the wider mark because Inter's ink and white and a single chevron of at least 0.9x Inter's
+  leave no room for less (spec, Decisions).
+- **Spacing (item 6).** `l` right sidebearing 0.12 to 0.28, `k` 0.2 to 0.28, `z` 0.35 to 0.62-0.75.
   `STRONG_CLASSES` in `kern.py` bring T, W, V, Y and A (and `Ł`) to a weight-independent reach,
   capped at the hardest value Inter has for that class at any weight (LT 96, To 78, Wa 63, Va 69,
   Y 138, A beside V, W, Y 88).
 - **Small sizes (item 7).** Opsz masters exist only at Regular, Caption and Display, so the Caption
-  stem delta (+5 to +6) applies to every weight, not Light alone: every weight's stem gains 1 unit
-  at opsz 8 (Regular 89 to 90), and the effect is most noticeable in Light. +7 would put Light at
-  1.109x, over the 10% cap.
-- **Caption counters (not done).** Task 6's +1 stem unit at Caption took 1.5-5% of the Black
+  stem delta (+5 to +6) applies to every weight, not Light alone. At opsz 8 every weight's stem is
+  6 units heavier than at opsz 14: Thin +25% (24 to 30), ExtraLight +13.6%, Light +9.4%, Regular
+  +7.1%, Black +3.2%. The gate's 10% cap is for Light, where it is most noticeable. +7 would put Light at
+  1.109x, over the cap.
+- **Black diagonal capitals.** With Black's sidebearing tightened for the width rule, two capital
+  diagonals that face each other kept 2-3 units of white at 900/48 (VV, VW, AX, RA, Ax, KA; 7-8 at
+  fb62663c), 5-6 at 900/14 (10-12), 4-5 at 700/48 (9-10) and 8 at 900/8 (13), and the italic's
+  slanted arms overlapped the next stem (KT -17 at 900/48). `kern.py` now adds a second lookup
+  (`DIAGONAL_FIX`) for capital diagonals beside each other, beside a stem or a bar, and a diagonal
+  beside x v w y k. Its values are measured per heavy master as the closest point in 5-unit rows,
+  opening only, in steps of 4 units; Regular and Thin kerning are unchanged. The white is now 12 or
+  more at 900/48, 900/8 and 700/48 and 16 or more at 900/14 for every pair in the set, upright
+  and italic (`test_diagonal_capitals_keep_clear_at_heavy_weights`). The lookup costs about 150-300 bytes per
+  file (see the sizes).
+- **Caption counters (not done).** The Caption stem's +1 unit (small sizes, above) took 1.5-5% of the Black
   Caption counter area. Raising the Caption counter factor from 1.06 to 1.07 gave back only
   0.8-2.0% (`o a O` at opsz 8: 400 +1.3 / +0.8 / +0.9%, 700 +1.6 / +1.0 / +1.0%, 900 +2.0 / +1.3 /
   +1.2%) and widened the Caption capitals (H 594 against 591 in a855b5e0 at opsz 8), which
@@ -1767,6 +1779,13 @@ How the figures were read:
 
 ### Decisions by the owner
 
+- Black guillemets stay at 1.08x Inter's width upright and 1.096x italic, where the spec asked for
+  0.95-1.0x: narrower marks lose their stroke weight or the white between the chevrons.
+- Italic AW and WA at Regular kern at 0.47x and 0.60x Inter's (the upright pair 0.77-0.79x). The
+  pairs in `KERNING_SHORT` keep a lower floor (0.25x Inter's, italic Thin AW 2 units) so none can
+  fall to 0 unnoticed.
+- Black diagonal capitals are opened by the measured kerning (see below), to at least 12 units of
+  white at 900/48, 900/8 and 700/48 and 16 at 900/14.
 - Width: ±2% at 100-700 and +5% at 800-900 (the display weights), upright and italic. A strict
   ±2% at Black left a letter gap of 18 units per side; the owner chose the looser rule so that
   Black text stays open. The specimen marks 800 and 900 as display weights.
@@ -1785,15 +1804,15 @@ How the figures were read:
 
 ### Sizes
 
-| File (woff2)                          | Before (fb62663c) | Now    | Budget |
-| ------------------------------------- | ----------------- | ------ | ------ |
-| `CascivoSans[opsz,wght]`              | 69,824            | 74,172 | 74,500 |
-| `CascivoSans-Latin[opsz,wght]`        | 29,608            | 31,016 | 31,500 |
-| `CascivoSans-Latin[wght]`             | 23,312            | 24,732 | 25,000 |
-| `CascivoSans-Regular`                 | 24,248            | 24,620 | 25,000 |
-| `CascivoSans-Italic[opsz,wght]`       | 75,412            | 80,796 | 81,000 |
-| `CascivoSans-Italic-Latin[opsz,wght]` | 32,680            | 34,352 | 34,500 |
-| `CascivoSans-Italic-Latin[wght]`      | 25,748            | 27,560 | 28,000 |
+| File (woff2)                          | Before (fb62663c) | Now    | Budget              |
+| ------------------------------------- | ----------------- | ------ | ------------------- |
+| `CascivoSans[opsz,wght]`              | 69,824            | 74,468 | 74,500              |
+| `CascivoSans-Latin[opsz,wght]`        | 29,608            | 31,180 | 31,500              |
+| `CascivoSans-Latin[wght]`             | 23,312            | 24,900 | 25,000              |
+| `CascivoSans-Regular`                 | 24,248            | 24,688 | 25,000              |
+| `CascivoSans-Italic[opsz,wght]`       | 75,412            | 80,824 | 81,000              |
+| `CascivoSans-Italic-Latin[opsz,wght]` | 32,680            | 34,588 | 34,500 (over by 88) |
+| `CascivoSans-Italic-Latin[wght]`      | 25,748            | 27,796 | 28,000              |
 
 ### Known limits
 
@@ -1812,7 +1831,7 @@ How the figures were read:
   against -138). They are listed with reasons in `KERNING_SHORT` in `test_font.py`: the outline
   reading finds little to close there, and a shape-specific gain would overshoot at Regular.
 - `usWinAscent` rose from 1266 to 1270 (it is computed from the design-space extremes on every
-  build); the Task 6 review recorded it together with the refit of the omega. `hhea` ascent (1000)
+  build); the review recorded it together with the refit of the omega. `hhea` ascent (1000)
   and `usWinDescent` (300) are unchanged.
 - `apps/site` blocks tests (`BlocksPage.test.tsx`, `BlockDetailPage.test.tsx`) never ran and do
   not run now. They need `@testing-library/react` and jsdom plus the React renderer, and fail
@@ -1823,7 +1842,7 @@ How the figures were read:
   a follow-up; an unrestricted fine floor gave a Latin[wght] of 24,516 bytes, over the 24,500 budget of the time.
 - With `onum`, `sups` or `frac` and `ss01` together, the zero is undotted: those figure forms
   are separate glyphs without a dotted variant. `zero` (slashed) also wins over `ss01`.
-- Black guillemets are 1.08-1.10x Inter's width and Light stays 2-6% paler than Inter Light at
+- Black guillemets are 1.08x Inter's width upright and 1.096x italic (accepted by the user, above) and Light stays 2-6% paler than Inter Light at
   12-13 px; more would need a Light-Caption master or an `avar` remap of opsz (both change all
   weights).
 

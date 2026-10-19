@@ -1,23 +1,33 @@
 # Cascivo Sans: interface brief and QA specimen (design)
 
-Date: 2026-10-17 · Branch: `claude/cascivo-sans-font` (PR #282) · Status: approved in conversation, awaiting spec review
+Date: 2026-10-17 · Branch: `claude/cascivo-sans-font` (PR #282) · Status: implemented
 
 ## Intent
 
-A design brief (`DESIGN_BRIEF.md`, with a QA specimen `Font Test Specimen.dc.html` and its handoff README)
+A design brief, provided by the user (a short document with a QA specimen page and its handoff notes),
 asks that the typeface hold up in product UI: weights that step evenly, widths that do not reflow when
 the weight changes, glyphs that cannot be confused, legible punctuation, even spacing and clean small
-sizes. The brief was written against a generic font, so an audit measured Cascivo Sans against each of
-its seven pass/fail checks first (`scratchpad/brief-audit/audit.md`; numbers below are from it). This
-spec covers what the audit found present, plus the specimen page.
+sizes. It lists seven pass/fail checks. The brief was written against a generic font, so an audit
+measured Cascivo Sans against each check first (the numbers below are from that audit). This spec
+covers what the audit found present, plus the specimen page.
 
 User decisions:
 
 - Width across weights: **within ±2% of 400** at 100–700 and **at most +5%** at 800–900, the display weights
-  (not uniwidth, not a separate UI font). Amended during Task 2: holding ±2% at Black closed its spacing.
+  (not uniwidth, not a separate UI font). Amended during implementation: holding ±2% at Black closed its spacing.
 - The specimen is a **site page**, `/cascivo-sans/specimen`, linked from `/cascivo-sans`.
 - Stylistic sets: **`ss01` = dotted zero**; the plain `I`/`l` alternates move to **`ss02`**; `zero` keeps the
   slashed zero.
+- Decisions during implementation (all by the user):
+  - Black guillemets stay at **1.08× Inter's width upright and 1.096× italic**, not 0.95–1.0×: that is what
+    keeps their stroke weight and the white between the chevrons (Inter's ink and white, a single chevron
+    of at least 0.9× Inter's). The test allows up to 1.1×.
+  - Italic **AW and WA at Regular kern at 0.47× and 0.60× Inter** (upright stays at 0.77–0.79×): the
+    shapes' own white is already as close as the measure's floor allows. `KERNING_SHORT` keeps a lower
+    floor for these and the Thin pairs it lists, so none can drop to 0 unnoticed.
+  - Capital diagonal pairs (VV, VW, AX, RA, Ax, KA and the like) at Black are opened by the measured
+    kerning to at least 12 units of white at 900/48, 900/8 and 700/48 and 16 at 900/14, upright and italic.
+  - Size budgets were raised by the user in turn; the final values are in `test_font.py`.
 - Out of scope here, each its own later cycle: a deep audit-and-fix of the font (next), then a Condensed
   width axis, then Mono. Serif is not planned without a type designer.
 
@@ -109,7 +119,7 @@ must keep passing lint and Font Bakery.
 
 ## Execution
 
-Subagent-driven, as before: one Sonnet implementer per task, an Opus reviewer per task, fix rounds as
+Subagent-driven, as before: one subagent implementer per task, an independent reviewer per task, fix rounds as
 needed; sequential for font tasks (shared engine files). Order: weight curve → width ±2% → zero/ss
 features → punctuation → spacing/kerning → small sizes → specimen page → docs and screenshots → whole-
 branch review → push. Pushes to PR #282 after review without a separate user checkpoint (the user's
