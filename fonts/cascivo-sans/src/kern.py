@@ -19,6 +19,7 @@ references use -78), which errs toward loose rather than colliding.
 """
 
 import json
+import math
 import os
 import unicodedata
 
@@ -34,22 +35,28 @@ MIN_KERN = 10  # units; smaller corrections are invisible at text sizes
 DEPTH = 1.04  # depth cap, in stem sidebearings (fitted)
 W_GAP, W_CLOSEST, W_LEAN = 0.605, 0.077, -0.525  # fitted, see module docstring
 REGULAR_S = P(400, 14).S  # Regular's stem sidebearing unit: the reference of STRONG's reach
-# The pairs the fitted measure undershoots most, because it counts a hole only down to DEPTH sidebearings: LT, To, Wa and the
-# letters that share their sides (Inter kerns LT -96, To -78, Wa -51 at Regular; this measure gave -59 / -54 / -30). The room
+# The pairs the fitted measure undershoots most, because it counts a hole only down to DEPTH sidebearings: LT, To, Wa, the V and Y
+# pairs with the same round letters, and A beside V, W and Y, with the letters that share their sides (Inter kerns LT -96, To -78, Wa -51 at Regular; this measure gave -59 / -54 / -30). The room
 # under a T's bar or beside an L is the same size at every weight, only the sidebearings around it shrink, so for these pairs the hole
 # counts down to `reach` Regular sidebearings at every weight (and Black's total is not boosted again: Inter's LT, To and Wa hold
 # -96 .. -86, -78, -51 .. -63 from Thin to Black). Still measured from the outlines, still floored by the closest point. The values
-# sit at 0.8-1.0x Inter's at Regular (test_key_pairs_kern_like_inter); italic Thin Wa stays short of 0.8x, as the outline measure only
+# sit at 0.8-1.0x Inter's at Regular and mostly at the other weights (test_key_pairs_kern_like_inter lists the exceptions); italic Thin Wa stays short of 0.8x, as the outline measure only
 # reads -17 there against Inter's -51 (the pair's facing sides lean together, and the Thin a is open).
-# The limit is the most a class closes, about Inter's own largest value: at Black the closest-point floor is the only brake, and W
-# beside a round letter read -90 there (Inter -49) with the two nearly touching.
-# (left glyphs, right glyphs, reach in Regular sidebearings, gain on a closing value, limit)
+# (left glyphs, right glyphs, reach at Regular, reach added by Black, gain on a closing value, limit). One rule for the limit: a class
+# never closes harder than the hardest value Inter has for it at any weight (read from Inter 4.001 in the audit: LT -96, To -78,
+# W+a -63, V+a -69, Y+round -138, A beside V/W/Y -88); those numbers are hand-set here, they are not derived. Without it the closest-point
+# floor is the only brake at Black, and W beside a round letter read -90 there (Inter -49) with the two nearly touching. Y's reach grows
+# with the weight because Inter's Y kerns harder as it gets heavier (-77 at Regular, -138 at Black); the others' stays put.
 STRONG_CLASSES = [
-    (['L', 'Lslash'], ['T'], 1.8, 1.0, 96),
-    (['T'], ['o', 'c', 'e', 'd', 'q', 'g', 'a', 's', 'ae', 'oe'], 1.4, 1.0, 78),
-    (['W'], ['a', 'c', 'e', 'o', 'd', 'ae', 'oe'], 2.4, 1.1, 60),
+    (['L', 'Lslash'], ['T'], 1.8, 0.0, 1.0, 96),
+    (['T'], ['o', 'c', 'e', 'd', 'q', 'g', 'a', 's', 'ae', 'oe'], 1.4, 0.0, 1.0, 78),
+    (['W'], ['a', 'c', 'e', 'o', 'd', 'ae', 'oe'], 2.4, 0.0, 1.1, 63),
+    (['V'], ['a', 'c', 'e', 'o', 'd', 'q', 'g', 'ae', 'oe'], 1.4, 0.0, 1.0, 69),
+    (['Y'], ['a', 'c', 'e', 'o', 'd', 'q', 'g', 'ae', 'oe'], 1.4, 1.0, 1.0, 138),
+    (['A'], ['V', 'W', 'Y'], 1.2, 0.6, 1.0, 88),
+    (['V', 'W', 'Y'], ['A'], 1.2, 0.6, 1.0, 88),
 ]
-STRONG = {(a, b): (reach, gain, limit) for lefts, rights, reach, gain, limit in STRONG_CLASSES for a in lefts for b in rights}
+STRONG = {(a, b): (reach, more, gain, limit) for lefts, rights, reach, more, gain, limit in STRONG_CLASSES for a in lefts for b in rights}
 
 CHAR_GLYPH = {
     '.': 'period', ',': 'comma', ':': 'colon', ';': 'semicolon', "'": 'quotesingle', '"': 'quotedbl',
@@ -168,6 +175,28 @@ def _slope(profile, bands):
     return sum((y - my) * (x - mx) for y, x in zip(ys, xs)) / var if var else 0.0
 
 
+QUANT = 8  # units: letters whose corrections differ by less share a class
+MIN_FIX = 12  # units: a smaller correction is inside the floor's own margin (the floor is 16 units, a touch is 0)
+_FIX = None  # (strong pairs' accented second letters in classes of equal correction, the first letters they are corrected for): see _strong_fix
+
+
+def _cached_profile(o, name):
+    cache = o.__dict__.setdefault('_profiles', {})
+    if name not in cache:
+        cache[name] = _profile(o, name)
+    return cache[name]
+
+
+def _room(o, a, b):
+    """The kerning measure()'s floor sets for a pair: it may not close further than this (positive: it must open by that much)."""
+    _, hi = _cached_profile(o, a)
+    lo, _ = _cached_profile(o, b)
+    shared = set(hi) & set(lo)
+    if not shared:
+        return -999
+    return max(0.55 * o.p.S, KEEP_CLEAR) - min((o.adv[a] - hi[x]) + lo[x] for x in shared)
+
+
 def measure(o, left_glyph, right_glyph, most=40):
     p = o.p
     _, hi = _profile(o, left_glyph)
@@ -178,8 +207,8 @@ def measure(o, left_glyph, right_glyph, most=40):
         return 0
     gaps = [(adv - hi[b]) + lo[b] for b in bands]
     ref = (p.Sc if is_cap(left_glyph) else p.S) + (p.Sc if is_cap(right_glyph) else p.S)
-    reach, gain, limit = STRONG.get((left_glyph, right_glyph), (None, 1.0, 140))
-    depth = DEPTH * p.S if reach is None else reach * REGULAR_S
+    reach, more, gain, limit = STRONG.get((left_glyph, right_glyph), (None, 0.0, 1.0, 140))
+    depth = DEPTH * p.S if reach is None else (reach + more * p.heavy) * REGULAR_S
     eff = sum(min(g, ref + depth) for g in gaps) / len(gaps)
     sa, sb = _slope(hi, bands), _slope(lo, bands)
     lean = min(abs(sa), abs(sb)) if sa * sb > 0 else 0.0
@@ -287,8 +316,8 @@ _GROUPS = None  # (right-side rep, left-side rep) of each Cyrillic and Greek gly
 
 def reset():
     """Each font (upright, italic) measures and selects its own pairs."""
-    global _SELECTED, _REGULAR, _BLACK, _GROUPS
-    _SELECTED = _REGULAR = _BLACK = _GROUPS = None
+    global _SELECTED, _REGULAR, _BLACK, _GROUPS, _FIX
+    _SELECTED = _REGULAR = _BLACK = _GROUPS = _FIX = None
 
 
 def _non_latin(name):
@@ -410,6 +439,55 @@ def _values(o, pairs):
     return vals
 
 
+def _strong_fix(o, vals, first_of, second_of):
+    """What a strong class pair must be opened by for the accented forms that cannot close as far as their base: Tö, Wä and Yö have a mark
+    where the bar or diagonal comes in (and ĽT's caron is in the way even unkerned), so the class value, which suits the letter, would
+    bring them nearer than the floor. Inter kerns them apart from the base for the same reason (Tö -51, To -78). The correction is a
+    second lookup that adds to the class pair, between classes of letters that need the same correction in every master that knows them
+    (first letters and second letters each), so the strong value in `vals` stays the base letters' and the table stays small.
+    Returns (first clusters, second clusters, {(first, second): opening for this master})."""
+    global _FIX
+    strong = {k for k in STRONG if k in vals}
+    first_base = {a: ra for ra in sorted({a for a, _ in strong}) for a in first_of(ra)}
+    second_base = {b: rb for rb in sorted({b for _, b in strong}) for b in second_of(rb)}
+
+    def need(m, v, a, b):
+        if a not in m.adv or b not in m.adv:
+            return 0
+        return max(0, _room(m, a, b) - v)
+
+    if _FIX is None:  # the default master and the heavy corners decide which letters differ; the other masters follow the same classes
+        masters = [o] + list(_HEAVY)
+        strong_value = {(m_i, k): measure(m, *k) for m_i, m in enumerate(masters) for k in strong}
+
+        def signature(letter, side):
+            vec = []
+            for m_i, m in enumerate(masters):
+                for other in (second_base if side == 0 else first_base):
+                    pair = (first_base[letter], second_base[other]) if side == 0 else (first_base[other], second_base[letter])
+                    vec.append(round(need(m, strong_value[m_i, pair], *((letter, other) if side == 0 else (other, letter))) / QUANT) if pair in strong else 0)
+            return tuple(vec)
+
+        _FIX = []
+        for side, letters in ((0, first_base), (1, second_base)):
+            groups = {}
+            for letter in sorted(letters):
+                sig = signature(letter, side)
+                if max(sig, default=0) * QUANT >= MIN_FIX:
+                    groups.setdefault(sig, []).append(letter)
+            _FIX.append(sorted(groups.values()))
+    firsts, seconds = _FIX
+    # Display and Caption Black are corners no master draws: they take Black's value plus Regular's optical-size deltas (none here), so the Black
+    # master opens by what the corners need as well, as it does for the own-shape pairs
+    loc = getattr(o, 'loc', {})
+    where = [o] + (list(_HEAVY[1:]) if loc.get('wght') == 900 and loc.get('opsz') == 14 else [])
+    values = {}
+    for i, fa in enumerate(firsts):
+        for j, sb in enumerate(seconds):
+            values[i, j] = int(math.ceil(max((need(m, vals[(first_base[a], second_base[b])], a, b) for m in where for a in fa for b in sb if (first_base[a], second_base[b]) in strong), default=0)))
+    return firsts, seconds, values
+
+
 def kern_fea(o):
     """Same pair set for every master (structure must match); values measured per master."""
     global _SELECTED, _GROUPS, _HEAVY_KEYS
@@ -450,9 +528,18 @@ def kern_fea(o):
     lines = [f'@kR_{cls(g)} = [{" ".join(_members(g, glyphs, acc) + sorted(joined_r.get(g, [])))}];' for g in firsts]
     lines += [f'@kL_{cls(g)} = [{" ".join(_members(g, glyphs, acc) + sorted(joined_l.get(g, [])))}];' for g in seconds]
     _HEAVY_KEYS = {(rr(a), rl(b)) for a, b in HEAVY_ONLY} | HEAVY_ONLY
-    lines.append('feature kern {')
     vals = _values(o, pairs)
+    first_of = lambda ra: _members(ra, glyphs, acc) + sorted(joined_r.get(ra, []))  # noqa: E731
+    second_of = lambda rb: _members(rb, glyphs, acc) + sorted(joined_l.get(rb, []))  # noqa: E731
+    firsts_fix, seconds_fix, fix = _strong_fix(o, vals, first_of, second_of)
+    lines += [f'@kG_{i} = [{" ".join(cluster)}];' for i, cluster in enumerate(firsts_fix)]
+    lines += [f'@kF_{j} = [{" ".join(cluster)}];' for j, cluster in enumerate(seconds_fix)]
+    lines.append('feature kern {')
     for a, b in _SELECTED:
         lines.append(f'  pos @kR_{cls(a)} @kL_{cls(b)} {vals[(a, b)]};')
+    if firsts_fix and seconds_fix:
+        lines.append('  lookup STRONG_FIX {')
+        lines += [f'    pos @kG_{i} @kF_{j} {fix[i, j]};' for i in range(len(firsts_fix)) for j in range(len(seconds_fix))]
+        lines.append('  } STRONG_FIX;')
     lines.append('} kern;')
     return '\n'.join(lines)

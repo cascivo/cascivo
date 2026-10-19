@@ -103,6 +103,30 @@ INTER_KERNING = {
         'Wd': {100: 51, 400: 51, 700: 50, 900: 49},
         'Wæ': {100: 51, 400: 51, 700: 58, 900: 63},
         'Wœ': {100: 51, 400: 51, 700: 50, 900: 49},
+        'Va': {100: 51, 400: 51, 700: 59, 900: 66},
+        'Vc': {100: 51, 400: 51, 700: 61, 900: 69},
+        'Ve': {100: 51, 400: 51, 700: 61, 900: 69},
+        'Vo': {100: 51, 400: 51, 700: 61, 900: 69},
+        'Vd': {100: 51, 400: 51, 700: 61, 900: 69},
+        'Vq': {100: 51, 400: 51, 700: 61, 900: 69},
+        'Vg': {100: 51, 400: 51, 700: 61, 900: 69},
+        'Væ': {100: 51, 400: 51, 700: 59, 900: 66},
+        'Vœ': {100: 51, 400: 51, 700: 61, 900: 69},
+        'Ya': {100: 71, 400: 71, 700: 102, 900: 127},
+        'Yc': {100: 77, 400: 77, 700: 110, 900: 138},
+        'Ye': {100: 77, 400: 77, 700: 110, 900: 138},
+        'Yo': {100: 77, 400: 77, 700: 110, 900: 138},
+        'Yd': {100: 77, 400: 77, 700: 110, 900: 138},
+        'Yq': {100: 77, 400: 77, 700: 110, 900: 138},
+        'Yg': {100: 77, 400: 77, 700: 110, 900: 138},
+        'Yæ': {100: 71, 400: 71, 700: 102, 900: 127},
+        'Yœ': {100: 77, 400: 77, 700: 110, 900: 138},
+        'AV': {100: 68, 400: 68, 700: 79, 900: 88},
+        'AW': {100: 57, 400: 57, 700: 72, 900: 85},
+        'AY': {100: 74, 400: 74, 700: 79, 900: 83},
+        'VA': {100: 68, 400: 68, 700: 79, 900: 88},
+        'WA': {100: 57, 400: 57, 700: 72, 900: 85},
+        'YA': {100: 74, 400: 74, 700: 79, 900: 83},
     },
     'italic': {
         'LT': {100: 96, 400: 96, 700: 91, 900: 86},
@@ -124,15 +148,51 @@ INTER_KERNING = {
         'Wd': {100: 51, 400: 51, 700: 50, 900: 49},
         'Wæ': {100: 51, 400: 51, 700: 58, 900: 63},
         'Wœ': {100: 51, 400: 51, 700: 50, 900: 49},
+        'Va': {100: 51, 400: 51, 700: 61, 900: 69},
+        'Vc': {100: 51, 400: 51, 700: 61, 900: 69},
+        'Ve': {100: 51, 400: 51, 700: 61, 900: 69},
+        'Vo': {100: 51, 400: 51, 700: 61, 900: 69},
+        'Vd': {100: 51, 400: 51, 700: 61, 900: 69},
+        'Vq': {100: 51, 400: 51, 700: 61, 900: 69},
+        'Vg': {100: 51, 400: 51, 700: 61, 900: 69},
+        'Væ': {100: 51, 400: 51, 700: 59, 900: 66},
+        'Vœ': {100: 51, 400: 51, 700: 61, 900: 69},
+        'Ya': {100: 77, 400: 77, 700: 110, 900: 138},
+        'Yc': {100: 77, 400: 77, 700: 110, 900: 138},
+        'Ye': {100: 77, 400: 77, 700: 110, 900: 138},
+        'Yo': {100: 77, 400: 77, 700: 110, 900: 138},
+        'Yd': {100: 77, 400: 77, 700: 110, 900: 138},
+        'Yq': {100: 77, 400: 77, 700: 110, 900: 138},
+        'Yg': {100: 77, 400: 77, 700: 110, 900: 138},
+        'Yæ': {100: 71, 400: 71, 700: 102, 900: 127},
+        'Yœ': {100: 77, 400: 77, 700: 110, 900: 138},
+        'AV': {100: 68, 400: 68, 700: 79, 900: 88},
+        'AW': {100: 57, 400: 57, 700: 72, 900: 85},
+        'AY': {100: 74, 400: 74, 700: 79, 900: 83},
+        'VA': {100: 68, 400: 68, 700: 79, 900: 88},
+        'WA': {100: 57, 400: 57, 700: 72, 900: 85},
+        'YA': {100: 74, 400: 74, 700: 79, 900: 83},
     },
 }
 KERNING_FLOOR = 0.8  # of Inter's
 # Pairs the outline measure cannot bring to the floor, with why: W beside a round letter at Thin (upright We, Wo, Wc, Wœ read -20 to -26
 # where Inter kerns -51: the Thin diagonal and bowl are already far apart in most bands, so the measure sees little to close), and the
 # italic Thin Wa and its class (the italic W's right stroke and the a's left side lean together, which the measure counts as looser).
-# Both are Thin only; from Light (300) up every member reaches 0.8x.
-KERNING_SHORT = {('upright', pair, 100) for pair in ('Wc', 'We', 'Wo', 'Wœ')} | {('italic', pair, 100) for pair in ('Wa', 'Wc', 'We', 'Wo', 'Wæ', 'Wœ')}
+# V beside a round letter at Thin (-31 to -38 against -51) and the italic Thin A-with-V/W/Y pairs fall short the same way: a diagonal's
+# Thin white is wide and the measure closes only what the eye reads as a hole. The Wa and V entries are Thin only.
+KERNING_SHORT = (
+    {('upright', pair, 100) for pair in ('Wc', 'We', 'Wo', 'Wœ', 'Vc', 'Ve', 'Vo', 'Vq', 'Vg', 'Vœ', 'AW', 'WA')}
+    | {('italic', pair, 100) for pair in ('Wa', 'Wc', 'We', 'Wo', 'Wæ', 'Wœ', 'Va', 'Vc', 'Ve', 'Vo', 'Vq', 'Vg', 'Væ', 'Vœ', 'AV', 'AW', 'AY', 'VA', 'WA', 'Yg')}
+    # A beside W: the italic reads -27 / -34 and the upright -45 / -44 at Regular against Inter's -57 (0.79x, 0.77x): the shapes' own white
+    # is already as close as the measure's floor and reach allow. Italic Yg at Black stops at -109 (0.79x): the g's open top is the nearest ink
+    | {('upright', pair, 400) for pair in ('AW', 'WA')} | {('italic', pair, 400) for pair in ('AW', 'WA')} | {('italic', 'Yg', 900)}
+)
 
+# Inter's guillemet ink, in 1/1000 em squared (area of a single chevron; a double one is twice that) and its least white between the
+# chevrons of « », at three heavy weights. Read from Inter.ttf (Inter 4.001 variable, opsz 14, in the audit's reference set; InterItalic.ttf
+# reads the same): the glyph outline flattened and scanned at every unit of height (ink_rows), scaled from 2048 units per em.
+INTER_GUILLEMET_AREA = {700: 72_431, 800: 82_731, 900: 93_966}
+INTER_GUILLEMET_WHITE = {700: 70.0, 800: 60.1, 900: 49.3}
 # Inter's parentheses, brackets and braces are 908 units tall at every weight, upright and italic (same read, 'parenleft' ... 'braceright').
 INTER_BRACKET_HEIGHT = 908
 PUNCT_WEIGHTS = (100, 200, 400, 700, 900)
@@ -188,6 +248,75 @@ def ink_gaps(hb, path, wght):
             words.append(boxes[j + 2][0] - boxes[j][1])
     k = 1000 / f['head'].unitsPerEm
     return sum(words) / len(words) * k, sum(letters) / len(letters) * k
+
+
+def ink_rows(gs, name):
+    """The ink of a glyph as a list of (y, [(x0, x1), ...]): its outline flattened and scanned at every unit of height (non-zero winding),
+    so area and the white between two shapes can be read without a rasterizer."""
+    from fontTools.pens.basePen import BasePen
+
+    class Flat(BasePen):
+        def __init__(self, glyph_set):
+            super().__init__(glyph_set)
+            self.edges, self.start = [], None
+
+        def _moveTo(self, p):
+            self.start = p
+
+        def _lineTo(self, p):
+            self.edges.append((self._getCurrentPoint(), p))
+
+        def _curveToOne(self, c1, c2, p):
+            x0, y0 = self._getCurrentPoint()
+            prev = (x0, y0)
+            for i in range(1, 25):
+                t, u = i / 24, 1 - i / 24
+                q = (u**3 * x0 + 3 * u * u * t * c1[0] + 3 * u * t * t * c2[0] + t**3 * p[0], u**3 * y0 + 3 * u * u * t * c1[1] + 3 * u * t * t * c2[1] + t**3 * p[1])
+                self.edges.append((prev, q))
+                prev = q
+
+        def _qCurveToOne(self, c, p):
+            x0, y0 = self._getCurrentPoint()
+            prev = (x0, y0)
+            for i in range(1, 25):
+                t, u = i / 24, 1 - i / 24
+                q = (u * u * x0 + 2 * u * t * c[0] + t * t * p[0], u * u * y0 + 2 * u * t * c[1] + t * t * p[1])
+                self.edges.append((prev, q))
+                prev = q
+
+        def _closePath(self):
+            if self._getCurrentPoint() != self.start:
+                self.edges.append((self._getCurrentPoint(), self.start))
+
+    pen = Flat(gs)
+    gs[name].draw(pen)
+    ys = [e[0][1] for e in pen.edges] + [e[1][1] for e in pen.edges]
+    rows = []
+    for y in range(int(min(ys)), int(max(ys)) + 1):
+        yy = y + 0.5
+        hits = []
+        for (xa, ya), (xb, yb) in pen.edges:
+            if (ya <= yy < yb) or (yb <= yy < ya):
+                hits.append((xa + (yy - ya) * (xb - xa) / (yb - ya), 1 if yb > ya else -1))
+        hits.sort()
+        runs, wind = [], 0
+        for x, d in hits:
+            if wind == 0:
+                x0 = x
+            wind += d
+            if wind == 0:
+                runs.append((x0, x))
+        rows.append((y, runs))
+    return rows
+
+
+def ink_area(rows):
+    return sum(x1 - x0 for _, runs in rows for x0, x1 in runs)
+
+
+def chevron_white(rows):
+    """The least white between the two chevrons of a guillemet, in any row where both have ink (units)."""
+    return min((b[0] - a[1] for _, runs in rows if len(runs) >= 2 for a, b in zip(runs, runs[1:])), default=None)
 
 
 _SHAPERS = {}
@@ -591,8 +720,8 @@ class Font(unittest.TestCase):
             return pen.out
 
         pairs = {
-            VF: ['lA', 'lX', 'lx', 'lz', 'Tħ', 'Тћ', 'Гћ', 'Дћ', 'Τΰ', 'ΰΤ', 'ΐΐ', 'ΐλ', 'Tï', 'ïT', 'Vï', 'fï', 'ïï', 'її', 'Xï', 'ïX', 'Zï', 'ïL', 'ĩF'],  # ï's dots overhang it
-            VFI: ['lA', 'lX', 'lx', 'lz', 'kf', 'rf', 'vf', 'wf', 'xf', 'yf', 'xt', 'kt', 'yt', 'vt', 'wt', 'rt', 'tz', 'zA', 'zX', 'LX', 'ZX', 'fT', 'VT', 'WT', 'YT', 'XT']
+            VF: ['LT', 'ŁT', 'To', 'Ta', 'Tö', 'Tô', 'Tæ', 'Wa', 'Wo', 'Wä', 'Wæ', 'Va', 'Vo', 'Vö', 'Ya', 'Yo', 'Yö', 'Yg', 'AV', 'AW', 'AY', 'VA', 'WA', 'YA', 'ÁV', 'AÝ', 'lA', 'lX', 'lx', 'lz', 'Tħ', 'Тћ', 'Гћ', 'Дћ', 'Τΰ', 'ΰΤ', 'ΐΐ', 'ΐλ', 'Tï', 'ïT', 'Vï', 'fï', 'ïï', 'її', 'Xï', 'ïX', 'Zï', 'ïL', 'ĩF'],  # ï's dots overhang it
+            VFI: ['LT', 'ŁT', 'To', 'Ta', 'Tö', 'Tô', 'Tæ', 'Wa', 'Wo', 'Wä', 'Wæ', 'Va', 'Vo', 'Vö', 'Ya', 'Yo', 'Yö', 'Yg', 'AV', 'AW', 'AY', 'VA', 'WA', 'YA', 'ÁV', 'AÝ', 'lA', 'lX', 'lx', 'lz', 'kf', 'rf', 'vf', 'wf', 'xf', 'yf', 'xt', 'kt', 'yt', 'vt', 'wt', 'rt', 'tz', 'zA', 'zX', 'LX', 'ZX', 'fT', 'VT', 'WT', 'YT', 'XT']
             + ['Тћ', 'Vћ', 'Ућ', 'Yћ', 'VЪ', 'УТ', 'YЂ', 'VЋ', 'жъ', 'хъ', 'къ']  # Cyrillic: bars at the top left
             + ['Δλ', 'ΔΧ', 'Ωλ', 'Τΰ', 'ΰΤ', 'Γΰ', 'ΐΐ', 'ιλ']  # Greek: italic feet, ΐ ΰ's dots
             + ['Tï', 'ïT', 'Vï', 'fï', 'ïï', 'Xï', 'ïX', 'Zï', 'ïL', 'χτ'],
@@ -1161,15 +1290,33 @@ class Font(unittest.TestCase):
                 self.assertLessEqual(ws[0], 0.92 * width('endash', 700))
 
     def test_guillemets_black_width(self):
-        # the Black chevrons were low, wide and heavy (725 against Inter's 653: 1.11x its width). They sit at 0.95-1.0x Inter's width at 900,
-        # upright against Inter and italic against Inter Italic; the 0.9x floor of test_quotes_hold_their_size still holds below
+        # the Black chevrons were low, wide and heavy (725 against Inter's 653: 1.11x its width). Their width is held to 0.95-1.1x Inter's at
+        # 900, upright against Inter and italic against Inter Italic: the pair keeps Inter's ink and 45 units of white between the chevrons,
+        # and the single chevron keeps 0.9x Inter's width, so it is 1.08x Inter's width, not 1.0x. The 0.9x floor of
+        # test_quotes_hold_their_size still holds below.
         for kind, path in (('upright', VF), ('italic', VFI)):
             for name in ('guillemotleft', 'guillemotright'):
                 iw, _ = INTER_QUOTE_BOX[kind][name][900]
                 b, _ = self._ink(path, 900, name)
                 with self.subTest(kind=kind, glyph=name):
                     self.assertGreaterEqual(b[2] - b[0], 0.95 * iw)
-                    self.assertLessEqual(b[2] - b[0], 1.0 * iw)
+                    self.assertLessEqual(b[2] - b[0], 1.1 * iw)
+
+    def test_guillemets_keep_their_ink_and_their_white(self):
+        # Stroke weight follows the font's weight: a guillemet is never thinned to save width. Its ink area is >= 0.9x Inter's at 700, 800
+        # and 900 (a double one against twice a single), and the two chevrons of « » keep >= 40 units of white between them (Inter 70 / 60 / 49;
+        # thinning the stroke to narrow the pair once left it 0.82x Inter's ink with 3 to 10 units of white). Upright and italic, and at
+        # the optical sizes at 900, where the weight and size deltas add up.
+        for path in (VF, VFI):
+            for wght, opsz in [(w, 14) for w in (700, 800, 900)] + [(900, 8), (900, 48)]:
+                gs, cmap = self._glyphs(path, wght, opsz)
+                inter_area = INTER_GUILLEMET_AREA[wght]
+                for ch, copies in (('\u2039', 1), ('\u203a', 1), ('\u00ab', 2), ('\u00bb', 2)):
+                    rows = ink_rows(gs, cmap[ord(ch)])
+                    with self.subTest(font=os.path.basename(path), wght=wght, opsz=opsz, glyph=ch):
+                        self.assertGreaterEqual(ink_area(rows), 0.9 * copies * inter_area, 'ink area')
+                        if copies == 2:
+                            self.assertGreaterEqual(chevron_white(rows), 40, 'white between the chevrons')
 
     # --- Spacing and kerning (interface brief, Section 1 item 5) ---
 

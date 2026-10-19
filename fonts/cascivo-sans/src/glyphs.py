@@ -1908,18 +1908,20 @@ def _ellipsis(g, p):
 def _guil(g, p, x0, flip, h=1.0):
     # Regular's were 0.8x the references' size, Black's 0.88x and cramped
     # then to Inter's box (296 x 461 at Regular, 224 x 461 at Thin, 398 x 461 at Black): the chevron's height is the opening's, plus the
-    # stroke, so the light weights take the larger opening and Black a smaller one. At Black the heavy strokes made a low, wide, dark
-    # pair (« 725 x 453 against Inter's 653 x 461, 1.11x its width) and, sized down alone, merged into a blot. Three things bring it to
-    # 0.95-1.0x Inter's width (test_guillemets_black_width): the stroke thins faster with weight (Black's was 150 units, Inter's about
-    # 115), the second chevron nests deeper as the stem grows (Inter's offset is 0.64 of a chevron's width, ours was 0.9), and the width's
-    # Black term is 0.25 (it was 0.18; set by woff2 byte count, not by shape: the size moves by about 100 B between neighbouring constants)
-    # so the single chevron keeps 0.9x Inter's italic one.
-    w = 207 + p.V * 0.45 + 0.25 * max(0.0, p.V - 84)
-    hh = p.xh * (0.365 + 0.04 * (1 - thin_blend(p)) - 0.062 * p.heavy) * h
+    # stroke. At Black the pair ran 1.11x Inter's width (« 725 x 452 against 653 x 461), but thinning its stroke to save width (0.9 -> 0.62
+    # of the stem) left it 0.82x Inter's ink with the chevrons 3-10 units apart. The stroke follows the weight (0.9 -> 0.76 of the stem:
+    # Black's ink is 0.93x Inter's, Bold's 0.98x), and the width comes from the shape instead: the chevron is as tall as Inter's (no
+    # height term at Black) and narrower (the width's Black term is 0.02, it was 0.18), so its arms are steeper and cut across less
+    # horizontal stroke; the second chevron nests only as far as leaves 45 units of white between the two (Inter's is 48). That makes the
+    # pair 1.08x Inter's width at Black, the price of keeping its ink and its white: the single chevron must stay >= 0.9x Inter's
+    # (italic), which stops the chevron narrowing further. The italic's second chevron sits 0.12 of the stem further out: its pen
+    # shears the stroke, and its white was 24 units at Black where the upright's is 48. The 0.054 is the height that lands the box on Inter's 461.
+    w = 207 + p.V * 0.45 + 0.02 * max(0.0, p.V - 84)
+    hh = p.xh * (0.365 + 0.04 * (1 - thin_blend(p)) - 0.054 * p.heavy) * h
     cy = p.xh * 0.5
     tip = x0 if not flip else x0 + w
     back = x0 + w if not flip else x0
-    t = p.V * (0.9 - 0.28 * p.heavy)  # at the full stem, Black's chevrons ran into each other
+    t = p.V * (0.9 - 0.14 * p.heavy)  # heavier than Regular's ratio would be, but not the full stem: at it Black's chevrons ran into each other
     g.line((back, cy + hh), (tip, cy), ws=0.86, caps=('b', 'b'), w=t)
     g.line((tip, cy), (back, cy - hh), ws=0.86, caps=('b', 'b'), w=t)
     return w
@@ -1940,14 +1942,14 @@ def _guilsinglright(g, p):
 @glyph('guillemotleft', 0xAB)
 def _guillemotleft(g, p):
     w = _guil(g, p, 0, False)
-    _guil(g, p, w * 0.8 + p.V * (0.5 - 0.40 * p.heavy), False)
+    _guil(g, p, w * 0.8 + p.V * (0.5 + (0.17 if p.italic else 0.05) * p.heavy), False)
     g.sb = (0.5, 0.5)
 
 
 @glyph('guillemotright', 0xBB)
 def _guillemotright(g, p):
     w = _guil(g, p, 0, True)
-    _guil(g, p, w * 0.8 + p.V * (0.5 - 0.40 * p.heavy), True)
+    _guil(g, p, w * 0.8 + p.V * (0.5 + (0.17 if p.italic else 0.05) * p.heavy), True)
     g.sb = (0.5, 0.5)
 
 
