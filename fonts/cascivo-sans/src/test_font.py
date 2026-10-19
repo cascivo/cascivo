@@ -846,8 +846,10 @@ class Font(unittest.TestCase):
         # the round pairs: where two bowls (or a bowl and a stem or bowl) meet, the tightest read at Black. The italic cO, ec, oc and pd sit
         # at 13 at 900/48, so 12 is a floor with a unit of room rather than a target; a855b5e0's tightest of these was rv at 20
         ROUND_PAIRS = ('OO', 'oo', 'ss', 'SS', 'rv', 'GO', 'cO', 'ec', 'oc', 'eo', 'pd', 'ob', 'bo', 'bp', 'db', 'ce', 'CO', 'DO', 'QO')
+        # ĽT (the caron l beside a T) sits at 12 upright and 11 italic at 900/48, one unit under the round pairs' floor, so it gets its own
+        # floor of 11: it cannot slip lower unseen
         for path, wght, opsz, pairs, floor in [(p, 900, z, ps, fl) for p in (VF, VFI) for z, ps, fl in (
-            (48, ('Dï', 'Bî'), 16), (48, ROUND_PAIRS, 12), (8, ROUND_PAIRS, 12))]:
+            (48, ('Dï', 'Bî'), 16), (48, ROUND_PAIRS, 12), (8, ROUND_PAIRS, 12), (48, ('\u013dT',), 11))]:
             f = instantiateVariableFont(TTFont(path), {'wght': wght, 'opsz': opsz})
             bio = io.BytesIO()
             f.save(bio)

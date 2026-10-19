@@ -479,6 +479,8 @@ def _strong_fix(o, vals, first_of, second_of):
     firsts, seconds = _FIX
     # Display and Caption Black are corners no master draws: they take Black's value plus Regular's optical-size deltas (none here), so the Black
     # master opens by what the corners need as well, as it does for the own-shape pairs
+    # (Only the Black master takes this: Bold's interpolation toward it could fall short at 800/48. The reviewer measured it and it did not,
+    # and test_pairs_keep_their_clearance_at_the_black_corners guards 900/48 only.)
     loc = getattr(o, 'loc', {})
     where = [o] + (list(_HEAVY[1:]) if loc.get('wght') == 900 and loc.get('opsz') == 14 else [])
     values = {}
