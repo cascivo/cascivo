@@ -30,7 +30,7 @@ BUDGETS = {
     'CascivoSans-Latin[wght].woff2': 25_000,  # raised by the user for the interface brief: 23_500 -> 24_000 (width across weights), then for the Bold spacing master, then 24_500 -> 25_000 for its punctuation and spacing
     'CascivoSans-Regular.woff2': 25_000,  # raised by the user for the interface brief kerning (V, W, Y and A kern alike)
     'CascivoSans-Italic[opsz,wght].woff2': 81_000,  # 75_000 -> 77_000 for the Latin quality pass (joins), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike)
-    'CascivoSans-Italic-Latin[opsz,wght].woff2': 34_500,  # raised by the user for the interface brief's punctuation and spacing
+    'CascivoSans-Italic-Latin[opsz,wght].woff2': 35_000,  # raised by the user for the interface brief's punctuation and spacing, then for the Black diagonal capitals' clearance
     'CascivoSans-Italic-Latin[wght].woff2': 28_000,  # raised by the user for the interface brief: 26_000 -> 26_500 (width across weights), then for the Bold spacing master and the capital counter curve, then 27_500 -> 28_000 for its punctuation and spacing
 }
 
