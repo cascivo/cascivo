@@ -75,8 +75,9 @@ browser fakes italics by skewing the upright.
 
 Nine weights, 100 to 900. Use **300 Light as the lightest weight for text**. **100 Thin and 200
 ExtraLight are display weights**: their strokes are too fine to hold up in body copy or small UI
-text, so set them large (about 24 px and up). Below optical size 14 the Light stem is thickened by
-up to 10% (about 9% at 8 px, 3% at 12 px, none from 14 px) so it keeps its colour at 11 to 13 px.
+text, so set them large (about 24 px and up). Below optical size 14 every weight's stem gains weight (up to 10%
+at 8 px, 3% at 12 px, none from 14 px). It is most noticeable in Light, where it keeps the colour
+at 11 to 13 px.
 
 ## OpenType features
 

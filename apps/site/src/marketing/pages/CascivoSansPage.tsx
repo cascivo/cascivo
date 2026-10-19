@@ -146,8 +146,8 @@ export function CascivoSansPage() {
             <p className="cs-note">
               Use 300 Light as the lightest weight for text. 100 Thin and 200 ExtraLight are display
               weights: their strokes are too fine for small sizes, so set them large. Below 14 px
-              the optical size thickens Light a little (up to 10 percent at 8 px) to keep it
-              readable.
+              the optical size adds weight to every stem (up to 10 percent at 8 px), most noticeable
+              in Light, to keep it readable.
             </p>
           </section>
 

@@ -663,7 +663,7 @@ class Font(unittest.TestCase):
             for z, stem in held[path].items():
                 self.assertAlmostEqual(n_stem(path, 300, z), stem, msg=f'{name}: Light at opsz {z} moved', delta=0.1)
             # the italic's stem is read across a slant and its masters round to whole units, so its opsz-12 ratio lands at 1.029; the upright's 1.031
-            floor = 1.03 if path == VF else 1.025
+            floor = 1.03 if path == VF else 1.028
             for z in (8, 12):
                 ratio = n_stem(path, 300, z) / base
                 self.assertTrue(floor <= ratio <= 1.10, f'{name}: Light n stem at opsz {z} is {ratio:.3f}x its opsz-14 stem')
