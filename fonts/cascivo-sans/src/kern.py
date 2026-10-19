@@ -22,7 +22,7 @@ import json
 import os
 import unicodedata
 
-from params import MID_WGHT  # noqa: E402
+from params import MID_WGHT, P  # noqa: E402
 from composites import ALIAS, GREEK_ACCENTED, GREEK_POLY, accented_chars, glyph_name, is_cap, script_glyph
 from geom import seg_point
 
@@ -33,6 +33,23 @@ KEEP_CLEAR = 16
 MIN_KERN = 10  # units; smaller corrections are invisible at text sizes
 DEPTH = 1.04  # depth cap, in stem sidebearings (fitted)
 W_GAP, W_CLOSEST, W_LEAN = 0.605, 0.077, -0.525  # fitted, see module docstring
+REGULAR_S = P(400, 14).S  # Regular's stem sidebearing unit: the reference of STRONG's reach
+# The pairs the fitted measure undershoots most, because it counts a hole only down to DEPTH sidebearings: LT, To, Wa and the
+# letters that share their sides (Inter kerns LT -96, To -78, Wa -51 at Regular; this measure gave -59 / -54 / -30). The room
+# under a T's bar or beside an L is the same size at every weight, only the sidebearings around it shrink, so for these pairs the hole
+# counts down to `reach` Regular sidebearings at every weight (and Black's total is not boosted again: Inter's LT, To and Wa hold
+# -96 .. -86, -78, -51 .. -63 from Thin to Black). Still measured from the outlines, still floored by the closest point. The values
+# sit at 0.8-1.0x Inter's at Regular (test_key_pairs_kern_like_inter); italic Thin Wa stays short of 0.8x, as the outline measure only
+# reads -17 there against Inter's -51 (the pair's facing sides lean together, and the Thin a is open).
+# The limit is the most a class closes, about Inter's own largest value: at Black the closest-point floor is the only brake, and W
+# beside a round letter read -90 there (Inter -49) with the two nearly touching.
+# (left glyphs, right glyphs, reach in Regular sidebearings, gain on a closing value, limit)
+STRONG_CLASSES = [
+    (['L', 'Lslash'], ['T'], 1.8, 1.0, 96),
+    (['T'], ['o', 'c', 'e', 'd', 'q', 'g', 'a', 's', 'ae', 'oe'], 1.4, 1.0, 78),
+    (['W'], ['a', 'c', 'e', 'o', 'd', 'ae', 'oe'], 2.4, 1.1, 60),
+]
+STRONG = {(a, b): (reach, gain, limit) for lefts, rights, reach, gain, limit in STRONG_CLASSES for a in lefts for b in rights}
 
 CHAR_GLYPH = {
     '.': 'period', ',': 'comma', ':': 'colon', ';': 'semicolon', "'": 'quotesingle', '"': 'quotedbl',
@@ -41,6 +58,7 @@ CHAR_GLYPH = {
     '[': 'bracketleft', ']': 'bracketright', '{': 'braceleft', '}': 'braceright', '/': 'slash',
     '?': 'question', '!': 'exclam', '\u00ab': 'guillemotleft', '\u00bb': 'guillemotright',
     '\u2039': 'guilsinglleft', '\u203a': 'guilsinglright', '&': 'ampersand', '*': 'asterisk', '@': 'at',
+    '\u0141': 'Lslash', '\u00e6': 'ae', '\u0153': 'oe',  # the glyph names of Ł æ œ (the candidates list them as characters)
 }
 FIGS = 'zero one two three four five six seven eight nine'.split()
 for _i, _n in enumerate(FIGS):
@@ -160,11 +178,14 @@ def measure(o, left_glyph, right_glyph, most=40):
         return 0
     gaps = [(adv - hi[b]) + lo[b] for b in bands]
     ref = (p.Sc if is_cap(left_glyph) else p.S) + (p.Sc if is_cap(right_glyph) else p.S)
-    depth = DEPTH * p.S
+    reach, gain, limit = STRONG.get((left_glyph, right_glyph), (None, 1.0, 140))
+    depth = DEPTH * p.S if reach is None else reach * REGULAR_S
     eff = sum(min(g, ref + depth) for g in gaps) / len(gaps)
     sa, sb = _slope(hi, bands), _slope(lo, bands)
     lean = min(abs(sa), abs(sb)) if sa * sb > 0 else 0.0
     k = W_GAP * (ref - eff) + W_CLOSEST * (ref - min(gaps)) + W_LEAN * lean * p.S
+    if k < 0:
+        k = max(k * gain, -limit)
     floor = max(0.55 * p.S, KEEP_CLEAR) - min(gaps)  # never let the closest point get nearer than this
     # When the floor is about to decide, read the closest point off a finer outline. The cause is _points sampling a curve segment
     # 24 times, which under-reads a heavy bowl's extreme by up to 4 units (Dï at Display Black sat 4 short of KEEP_CLEAR). It is
@@ -351,7 +372,7 @@ def _values(o, pairs):
     # carried 0.87 and Black 0.76 of Inter's and Geist's total kerning, most of it short in the
     # strong pairs (AW, LT, LY, TJ). Closing pairs grow with weight; opening ones stay.
     boost = 1 + 0.3 * o.p.heavy
-    vals = {k: round(v[0] * boost) if v[0] < 0 else v[0] for k, v in pairs.items()}
+    vals = {k: round(v[0] * (1 if k in STRONG else boost)) if v[0] < 0 else v[0] for k, v in pairs.items()}
     if o.p.wght <= 400:
         vals.update({k: 0 for k in _HEAVY_KEYS if k in vals})
     loc = getattr(o, 'loc', {'wght': 400, 'opsz': 14})

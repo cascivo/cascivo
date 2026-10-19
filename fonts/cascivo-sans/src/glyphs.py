@@ -611,7 +611,7 @@ def _l(g, p):  # tailed by default
     cy = -p.ov * 0.4 + p.H / 2 + ry
     g.stroke([L((a, p.asc), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, 270), caps=('b', 'v'))
     g.ht = 'a'
-    g.sb = (1, 0.12)
+    g.sb = (1, 0.28 + (0.08 + 0.5 * p.heavy if p.italic else 0))
 
 
 @glyph('dotlessj', 0x237)
@@ -621,7 +621,8 @@ def _dotlessj(g, p):
     ry = rx * 1.15
     cy = p.desc + p.H / 2 + ry
     g.stroke([L((x, p.xh), (x, cy))] + g.arc(x - rx, cy, rx, ry, 0, -90) + [L((x - rx, p.desc + p.H / 2), (x - rx - 12, p.desc + p.H / 2))])
-    g.sb = (0.2, 1)
+    # the dotted j's ink is wider than this stem (the dot), so 0.5 here reads as the 0.6 of the n's that the other three letters have
+    g.sb = (0.5 + (0.04 + 0.55 * p.heavy if p.italic else 0), 1)
     g.anchors['top_x'] = x
 
 
@@ -965,7 +966,7 @@ def _k(g, p):
     j = (a0[0] + (a1[0] - a0[0]) * t, a0[1] + (a1[1] - a0[1]) * t)
     g.diag(j[0], j[1], w, 0, 'c', 'r', ws=0.95, caps=('b', 'h'))
     g.ht = 'a'
-    g.sb = (1, 0.2)  # ke, ky sat 20% tighter than in Geist and Inter
+    g.sb = (1, 0.28 + (0.02 + 0.25 * p.heavy if p.italic else 0))  # ke, ky sat 20% tighter than in Geist and Inter
 
 
 @glyph('kgreenlandic', 0x138)
@@ -1063,7 +1064,7 @@ def _z(g, p):
     g.hbar(w * 0.04, w * 0.98, p.xh - p.H).hbar(0, w, 0)
     g.diag(w * 0.98, p.xh - p.H / 2, 0, p.H / 2, 'r', 'l', ws=0.95)
     # the italic's baseline bar slants out under the next letter: heavy, it met X and A
-    g.sb = (0.35, 0.35 + (0.4 if p.italic else 0) * p.heavy)
+    g.sb = (0.64, 0.64 + ((0.12 + 1.0 * p.heavy) if p.italic else 0))
 
 
 # ============================================================================================

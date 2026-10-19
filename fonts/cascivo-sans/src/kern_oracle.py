@@ -37,6 +37,7 @@ LEGACY = (
     ' Vo Vn Vs YA YO YJ Y. Y- Ya Yo Yn Ys Yv Yx PA PJ P. Pa Po FA FJ F. Fa Fo KO Ko K- Kv RT RV RY OA'
     ' OV OY OT OX OJ O. r. r- ra ro f. f‘ fo to v. va vo ko k- ov ox o. o‘ ev ex .‘ .T .V .Y .v ’A ’a'
     ' ’o -T -V -Y -A'
+    ' ŁT Tæ Tœ Wæ Wœ'  # Inter kerns them with L, T+o and W+a (kern.py STRONG_CLASSES); Geist has no Ł, æ, œ
 ).split()
 
 

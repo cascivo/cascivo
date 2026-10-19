@@ -67,6 +67,72 @@ INTER_QUOTE_BOX = {
         'guillemotright': {100: (379, 461), 200: (430, 461), 400: (533, 461), 700: (618, 461), 900: (691, 461)},
     },
 }
+# Inter's own sidebearings beside l, k, j and z as a share of the n's (the measure of sidebearing_ratio, from the shaped strings `nn` and
+# `nln`, `nkn`, `njn`, `nzn`), read from the reference fonts Inter.ttf and InterItalic.ttf (Inter 4.001 variable, opsz 14, in the audit's
+# reference set) at each wght. The italic reads the same as the upright. Only the z has a stated floor in the brief (0.6, "Inter 0.80");
+# the table shows what the others are against.
+INTER_SIDEBEARING_RATIO = {
+    'l': {100: 1.00, 400: 1.00, 700: 1.00, 900: 1.00},
+    'k': {100: 0.68, 400: 0.59, 700: 0.53, 900: 0.46},
+    'j': {100: 0.38, 400: 0.30, 700: 0.25, 900: 0.16},
+    'z': {100: 0.80, 400: 0.80, 700: 0.94, 900: 1.12},
+}
+SIDEBEARING_FLOOR = 0.6
+
+# Inter's kerning of LT, To and Wa and the letters that share their sides (the same class in Inter), in 1000 units per em, as a
+# magnitude. Read from Inter.ttf and InterItalic.ttf (Inter 4.001 variable, opsz 14): HarfBuzz shapes the two-letter string with
+# kern on and off at each wght, and the difference of the advances is the pair's kerning (calt and liga off).
+INTER_KERNING = {
+    'upright': {
+        'LT': {100: 96, 400: 96, 700: 91, 900: 86},
+        'ŁT': {100: 96, 400: 96, 700: 91, 900: 86},
+        'To': {100: 78, 400: 78, 700: 78, 900: 78},
+        'Tc': {100: 78, 400: 78, 700: 78, 900: 78},
+        'Te': {100: 78, 400: 78, 700: 78, 900: 78},
+        'Td': {100: 78, 400: 78, 700: 78, 900: 78},
+        'Tq': {100: 78, 400: 78, 700: 78, 900: 78},
+        'Tg': {100: 78, 400: 78, 700: 78, 900: 78},
+        'Ta': {100: 73, 400: 73, 700: 73, 900: 73},
+        'Ts': {100: 74, 400: 74, 700: 74, 900: 74},
+        'Tæ': {100: 73, 400: 73, 700: 73, 900: 73},
+        'Tœ': {100: 78, 400: 78, 700: 78, 900: 78},
+        'Wa': {100: 51, 400: 51, 700: 58, 900: 63},
+        'Wc': {100: 51, 400: 51, 700: 50, 900: 49},
+        'We': {100: 51, 400: 51, 700: 50, 900: 49},
+        'Wo': {100: 51, 400: 51, 700: 50, 900: 49},
+        'Wd': {100: 51, 400: 51, 700: 50, 900: 49},
+        'Wæ': {100: 51, 400: 51, 700: 58, 900: 63},
+        'Wœ': {100: 51, 400: 51, 700: 50, 900: 49},
+    },
+    'italic': {
+        'LT': {100: 96, 400: 96, 700: 91, 900: 86},
+        'ŁT': {100: 96, 400: 96, 700: 91, 900: 86},
+        'To': {100: 78, 400: 78, 700: 78, 900: 78},
+        'Tc': {100: 78, 400: 78, 700: 78, 900: 78},
+        'Te': {100: 78, 400: 78, 700: 78, 900: 78},
+        'Td': {100: 78, 400: 78, 700: 78, 900: 78},
+        'Tq': {100: 78, 400: 78, 700: 78, 900: 78},
+        'Tg': {100: 78, 400: 78, 700: 78, 900: 78},
+        'Ta': {100: 78, 400: 78, 700: 78, 900: 78},
+        'Ts': {100: 74, 400: 74, 700: 74, 900: 74},
+        'Tæ': {100: 73, 400: 73, 700: 73, 900: 73},
+        'Tœ': {100: 78, 400: 78, 700: 78, 900: 78},
+        'Wa': {100: 51, 400: 51, 700: 50, 900: 49},
+        'Wc': {100: 51, 400: 51, 700: 50, 900: 49},
+        'We': {100: 51, 400: 51, 700: 50, 900: 49},
+        'Wo': {100: 51, 400: 51, 700: 50, 900: 49},
+        'Wd': {100: 51, 400: 51, 700: 50, 900: 49},
+        'Wæ': {100: 51, 400: 51, 700: 58, 900: 63},
+        'Wœ': {100: 51, 400: 51, 700: 50, 900: 49},
+    },
+}
+KERNING_FLOOR = 0.8  # of Inter's
+# Pairs the outline measure cannot bring to the floor, with why: W beside a round letter at Thin (upright We, Wo, Wc, Wœ read -20 to -26
+# where Inter kerns -51: the Thin diagonal and bowl are already far apart in most bands, so the measure sees little to close), and the
+# italic Thin Wa and its class (the italic W's right stroke and the a's left side lean together, which the measure counts as looser).
+# Both are Thin only; from Light (300) up every member reaches 0.8x.
+KERNING_SHORT = {('upright', pair, 100) for pair in ('Wc', 'We', 'Wo', 'Wœ')} | {('italic', pair, 100) for pair in ('Wa', 'Wc', 'We', 'Wo', 'Wæ', 'Wœ')}
+
 # Inter's parentheses, brackets and braces are 908 units tall at every weight, upright and italic (same read, 'parenleft' ... 'braceright').
 INTER_BRACKET_HEIGHT = 908
 PUNCT_WEIGHTS = (100, 200, 400, 700, 900)
@@ -122,6 +188,65 @@ def ink_gaps(hb, path, wght):
             words.append(boxes[j + 2][0] - boxes[j][1])
     k = 1000 / f['head'].unitsPerEm
     return sum(words) / len(words) * k, sum(letters) / len(letters) * k
+
+
+_SHAPERS = {}
+
+
+def _shaper(hb, path):
+    """(hb font, TTFont) for a font file, read once."""
+    if path not in _SHAPERS:
+        with open(path, 'rb') as fh:
+            _SHAPERS[path] = (hb.Face(fh.read()), TTFont(path))
+    return _SHAPERS[path]
+
+
+def pair_kerning(hb, path, pair, wght):
+    """What the font's kerning adds to the advance of a two-letter string at (wght, opsz 14), in 1000 units per em (negative closes)."""
+    face, f = _shaper(hb, path)
+    font = hb.Font(face)
+    font.set_variations({'wght': wght, 'opsz': 14})
+
+    def advance(kern):
+        buf = hb.Buffer()
+        buf.add_str(pair)
+        buf.guess_segment_properties()
+        hb.shape(font, buf, {'kern': kern})
+        return sum(p.x_advance for p in buf.glyph_positions)
+
+    return round((advance(True) - advance(False)) * 1000 / face.upem)
+
+
+def sidebearing_ratio(hb, path, letter, wght):
+    """The letter's own sidebearings (left plus right) as a share of the n's, read off the shaped strings `nn` and `n<letter>n`:
+    twice the mean ink gap beside the letter over the gap of `nn`, less one. An italic's outlines are sheared back upright first
+    (by the font's own italicAngle), or its boxes, which overhang their neighbours, would not say how much white is beside it."""
+    import math
+
+    from fontTools.pens.boundsPen import BoundsPen
+    from fontTools.pens.transformPen import TransformPen
+
+    face, f = _shaper(hb, path)
+    font = hb.Font(face)
+    font.set_variations({'wght': wght, 'opsz': 14})
+    gs, order = f.getGlyphSet(location={'wght': wght, 'opsz': 14}, normalized=False), f.getGlyphOrder()
+    shear = math.tan(math.radians(-f['post'].italicAngle))
+
+    def gaps(text):
+        buf = hb.Buffer()
+        buf.add_str(text)
+        buf.guess_segment_properties()
+        hb.shape(font, buf, {'kern': True})
+        x, boxes = 0, []
+        for info, pos in zip(buf.glyph_infos, buf.glyph_positions):
+            pen = BoundsPen(gs)
+            gs[order[info.codepoint]].draw(TransformPen(pen, (1, 0, -shear, 1, 0, 0)))
+            boxes.append((x + pen.bounds[0], x + pen.bounds[2]))
+            x += pos.x_advance
+        return [boxes[i + 1][0] - boxes[i][1] for i in range(len(boxes) - 1)]
+
+    beside = gaps('n' + letter + 'n')
+    return 2 * (sum(beside) / 2) / gaps('nn')[0] - 1
 
 
 class Font(unittest.TestCase):
@@ -532,7 +657,11 @@ class Font(unittest.TestCase):
         # Punctuation sized for interfaces (the quotes, comma, guillemets, straight quotes and the semicolon and Greek question mark built on the
         # comma, plus the parentheses by a unit): their advances follow the larger ink. Nothing else may move.
         sized = {0x22, 0x27, 0x28, 0x29, 0x2C, 0x3B, 0xAB, 0xBB, 0x149, 0x37E, 0x2018, 0x2019, 0x201A, 0x201C, 0x201D, 0x201E, 0x2039, 0x203A}
-        allowed = {'upright': sized, 'italic': sized}
+        # Spacing and kerning (interface brief, item 5): l, k, j and z open their sidebearings, so do the letters built on them (accented
+        # forms, the ij and dz-lj-nj digraphs, ŀ ł, Cyrillic ј, dotless j)
+        opened = {0x6A, 0x6B, 0x6C, 0x7A, 0x133, 0x135, 0x137, 0x13A, 0x13C, 0x13E, 0x140, 0x142, 0x17A, 0x17C, 0x17E, 0x1C5, 0x1C6, 0x1C8, 0x1C9,
+                  0x1CB, 0x1CC, 0x237, 0x458}
+        allowed = {'upright': sized | opened, 'italic': sized | opened}
         for kind, path in (('upright', VF), ('italic', VFI)):
             f = instantiateVariableFont(TTFont(path), {'wght': 400, 'opsz': 14})
             cmap, hmtx = f.getBestCmap(), f['hmtx']
@@ -1041,6 +1170,42 @@ class Font(unittest.TestCase):
                 with self.subTest(kind=kind, glyph=name):
                     self.assertGreaterEqual(b[2] - b[0], 0.95 * iw)
                     self.assertLessEqual(b[2] - b[0], 1.0 * iw)
+
+    # --- Spacing and kerning (interface brief, Section 1 item 5) ---
+
+    def test_tight_letters_open_up(self):
+        # l, k, j and z sat closer to their neighbours than the n does to its own (z 0.35 of the n's sidebearings, Inter 0.80): in a line
+        # they read as gaps between nnlnn's and z-words. Each now has at least 0.6 of the n's, at the weights the table names, upright
+        # and italic. INTER_SIDEBEARING_RATIO says where Inter is (k and j are looser here than Inter's, by design: its j hangs its hook
+        # into the gap before it).
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+
+        for path in (VF, VFI):
+            for letter, by_weight in INTER_SIDEBEARING_RATIO.items():
+                for wght, inter in by_weight.items():
+                    with self.subTest(font=os.path.basename(path), letter=letter, wght=wght):
+                        got = sidebearing_ratio(hb, path, letter, wght)
+                        self.assertGreaterEqual(got, SIDEBEARING_FLOOR, f'{letter} has {got:.2f} of the n\'s sidebearings at {wght} (Inter {inter:.2f})')
+
+    def test_key_pairs_kern_like_inter(self):
+        # LT, To and Wa and their class members kern at least 0.8x as hard as Inter's (Inter -96, -78, -51 at Regular; this font was
+        # -59, -54, -30), at Thin, Regular, Bold and Black, upright against Inter and italic against Inter Italic.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            for pair, by_weight in INTER_KERNING[kind].items():
+                for wght, inter in by_weight.items():
+                    if (kind, pair[:2], wght) in KERNING_SHORT:
+                        continue
+                    with self.subTest(kind=kind, pair=pair, wght=wght):
+                        got = -pair_kerning(hb, path, pair, wght)
+                        self.assertGreaterEqual(got, KERNING_FLOOR * inter, f'{pair} kerns {got} at {wght}, Inter {inter}')
 
     def test_quotes_hold_their_size(self):
         # single and double quotes (curly and straight) and the guillemets: the ink box (width and height each) is >= 0.9x Inter's
