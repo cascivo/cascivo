@@ -144,7 +144,7 @@ def _points(o, name, ox=0.0, oy=0.0, a=1.0, fine=False):
         for s in c:
             if s[0] == 'L':
                 (x0, y0), (x1, y1) = s[1], s[2]
-                n = max(1, int(max(abs(x1 - x0), abs(y1 - y0)) / 5))
+                n = max(1, int(max(abs(x1 - x0), abs(y1 - y0)) / (1 if fine else 5)))  # fine: a slanted edge read every unit, so a row's edge is exact to one unit
                 pts += [(x0 + (x1 - x0) * j / n, y0 + (y1 - y0) * j / n) for j in range(n)]
             else:
                 # `fine`: a heavy bowl is one long segment, and 24 samples leave its extreme up to 4 units short
@@ -316,8 +316,8 @@ _GROUPS = None  # (right-side rep, left-side rep) of each Cyrillic and Greek gly
 
 def reset():
     """Each font (upright, italic) measures and selects its own pairs."""
-    global _SELECTED, _REGULAR, _BLACK, _GROUPS, _FIX
-    _SELECTED = _REGULAR = _BLACK = _GROUPS = _FIX = None
+    global _SELECTED, _REGULAR, _BLACK, _GROUPS, _FIX, _DIAG
+    _SELECTED = _REGULAR = _BLACK = _GROUPS = _FIX = _DIAG = None
 
 
 def _non_latin(name):
@@ -490,6 +490,86 @@ def _strong_fix(o, vals, first_of, second_of):
     return firsts, seconds, values
 
 
+# Capital diagonals beside each other (VV, VW, AX, RA, KA, Ax ...) and beside a stem or bar (KT, XH in the italic): Black's sidebearing
+# (HEAVY_TIGHTEN) leaves two diagonals that face each other 2-3 units of white at 900/48 and 5-6 at 900/14 (fb62663c: 7-8 and 10-12), and the
+# italic's slant brings a diagonal's arm into the next stem. They are opened by what the shaped pair needs to reach a floor of white, measured
+# per master on the outlines as the closest point in 5-unit rows (test_pairs_keep_their_clearance_at_the_black_corners reads the same rows).
+# Opening only, on the heavy masters only, so Regular's and Thin's kerning is unchanged. The floors are what the test asks (12 at the Black
+# corners and at 700/48, 16 in text Black) plus a unit where the 5-unit rows read an edge a little long: 13 at the corners, 17 for the Bold
+# master (read at 700/14, where 700/48 is 2-3 units tighter). Values are rounded up to steps of 4, which compresses better than exact ones.
+DIAG_CAPS = 'AVWXYKRZTHMN'
+DIAG_PAIRS = [(a, b) for a in DIAG_CAPS for b in DIAG_CAPS] + [(a, b) for a in 'AKRVWXYZ' for b in 'xvwyk']
+DIAG_FLOOR = {'text': 16, 'corner': 13, 'bold': 17}  # units of white
+
+
+def _gap(o, a, b):
+    _, hi = _cached_fine(o, a)
+    lo, _ = _cached_fine(o, b)
+    shared = set(hi) & set(lo)
+    return min((o.adv[a] - hi[x]) + lo[x] for x in shared) if shared else None
+
+
+def _cached_fine(o, name):
+    cache = o.__dict__.setdefault('_profiles5', {})
+    if name not in cache:
+        cache[name] = _profile(o, name, True, 5)
+    return cache[name]
+
+
+_DIAG = None
+
+
+def _diagonal_domain(rr, rl, glyphs):
+    """DIAG_PAIRS that fall short of their floor on a heavy master with the class kerning alone (STRONG_FIX only opens further, so this
+    is a superset of what the per-master values then need; a margin keeps pairs the Bold master tightens)."""
+    selected = set(_SELECTED)
+    out = []
+    for a, b in DIAG_PAIRS:
+        if a not in glyphs or b not in glyphs:
+            continue
+        k = (rr(a), rl(b))
+        for m, floor in [(_HEAVY[0], DIAG_FLOOR['text'])] + [(c, DIAG_FLOOR['corner']) for c in _HEAVY[1:]]:
+            gap = _gap(m, a, b)
+            if gap is None:
+                continue
+            have = 0
+            if k in selected:
+                v = _need(m, *k)
+                have = round(v * (1 + 0.3 * m.p.heavy)) if v < 0 and k not in STRONG else v
+            if floor - (gap + have) > 0:
+                out.append((a, b))
+                break
+    return out
+
+
+def _diagonal_fix(o, vals, rr, rl, firsts_fix, seconds_fix, fix, glyphs):
+    """{(a, b): opening} for DIAG_PAIRS on this master, on top of the class kerning and STRONG_FIX the pair already has."""
+    loc = getattr(o, 'loc', {})
+    if loc.get('wght') == 900 and loc.get('opsz') == 14:
+        where = [(o, DIAG_FLOOR['text'])] + [(c, DIAG_FLOOR['corner']) for c in _HEAVY[1:]]
+    elif loc.get('wght') == MID_WGHT:
+        where = [(o, DIAG_FLOOR['bold'])]
+    else:
+        return {}
+    out = {}
+    for a, b in DIAG_PAIRS:
+        if a not in glyphs or b not in glyphs:
+            continue
+        have = vals.get((rr(a), rl(b))) if (rr(a), rl(b)) in set(_SELECTED) else 0
+        for i, fa in enumerate(firsts_fix):
+            if a in fa:
+                for j, sb in enumerate(seconds_fix):
+                    if b in sb:
+                        have = (have or 0) + fix[i, j]
+        need = 0
+        for m, floor in where:
+            gap = _gap(m, a, b)
+            if gap is not None:
+                need = max(need, floor - (gap + have))
+        out[(a, b)] = 4 * int(math.ceil(max(0, need) / 4))  # steps of 4: the same few values compress
+    return out
+
+
 def kern_fea(o):
     """Same pair set for every master (structure must match); values measured per master."""
     global _SELECTED, _GROUPS, _HEAVY_KEYS
@@ -543,5 +623,13 @@ def kern_fea(o):
         lines.append('  lookup STRONG_FIX {')
         lines += [f'    pos @kG_{i} @kF_{j} {fix[i, j]};' for i in range(len(firsts_fix)) for j in range(len(seconds_fix))]
         lines.append('  } STRONG_FIX;')
+    diag = _diagonal_fix(o, vals, rr, rl, firsts_fix, seconds_fix, fix, glyphs)
+    global _DIAG
+    if _DIAG is None:  # the first master decides the pairs (every master lists the same ones): those a heavy master could need to open
+        _DIAG = _diagonal_domain(rr, rl, glyphs)
+    pairs_diag = _DIAG
+    lines.append('  lookup DIAGONAL_FIX {')
+    lines += [f'    pos {a} {b} {diag.get((a, b), 0)};' for a, b in pairs_diag]
+    lines.append('  } DIAGONAL_FIX;')
     lines.append('} kern;')
     return '\n'.join(lines)

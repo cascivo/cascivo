@@ -175,16 +175,20 @@ INTER_KERNING = {
     },
 }
 KERNING_FLOOR = 0.8  # of Inter's
+KERNING_SHORT_FLOOR = 0.25  # of Inter's, for the pairs in KERNING_SHORT: the weakest ships at 0.27x (italic Thin Wc, 14 against 51), so a pair cannot drop toward 0 unnoticed
 # Pairs the outline measure cannot bring to the floor, with why: W beside a round letter at Thin (upright We, Wo, Wc, Wœ read -20 to -26
 # where Inter kerns -51: the Thin diagonal and bowl are already far apart in most bands, so the measure sees little to close), and the
 # italic Thin Wa and its class (the italic W's right stroke and the a's left side lean together, which the measure counts as looser).
 # V beside a round letter at Thin (-31 to -38 against -51) and the italic Thin A-with-V/W/Y pairs fall short the same way: a diagonal's
 # Thin white is wide and the measure closes only what the eye reads as a hole. The Wa and V entries are Thin only.
+# Where 0.25x is too high the pair keeps what it ships, less a unit: italic Thin AW kerns 3 (Inter 57), the weakest pair of all.
+KERNING_SHORT_UNITS = {('italic', 'AW', 100): 2}
 KERNING_SHORT = (
     {('upright', pair, 100) for pair in ('Wc', 'We', 'Wo', 'Wœ', 'Vc', 'Ve', 'Vo', 'Vq', 'Vg', 'Vœ', 'AW', 'WA')}
     | {('italic', pair, 100) for pair in ('Wa', 'Wc', 'We', 'Wo', 'Wæ', 'Wœ', 'Va', 'Vc', 'Ve', 'Vo', 'Vq', 'Vg', 'Væ', 'Vœ', 'AV', 'AW', 'AY', 'VA', 'WA', 'Yg')}
-    # A beside W: the italic reads -27 / -34 and the upright -45 / -44 at Regular against Inter's -57 (0.79x, 0.77x): the shapes' own white
-    # is already as close as the measure's floor and reach allow. Italic Yg at Black stops at -109 (0.79x): the g's open top is the nearest ink
+    # A beside W at Regular: the upright reads -45 / -44 against Inter's -57 (0.79x, 0.77x) and the italic -27 / -34 (0.47x, 0.60x): the
+    # shapes' own white is already as close as the measure's floor and reach allow, and the user accepted the italic's shortfall (spec,
+    # Decisions). Italic Yg at Black stops at -109 (0.79x): the g's open top is the nearest ink
     | {('upright', pair, 400) for pair in ('AW', 'WA')} | {('italic', pair, 400) for pair in ('AW', 'WA')} | {('italic', 'Yg', 900)}
 )
 
@@ -376,6 +380,42 @@ def sidebearing_ratio(hb, path, letter, wght):
 
     beside = gaps('n' + letter + 'n')
     return 2 * (sum(beside) / 2) / gaps('nn')[0] - 1
+
+
+
+# ink extent of a glyph per 5-unit row, curves sampled 80 times: how the clearance tests read the white between two letters
+from fontTools.pens.basePen import BasePen  # noqa: E402
+
+
+class InkRows(BasePen):
+    def __init__(self, gs):
+        super().__init__(gs)
+        self.out = {}
+
+    def _add(self, x, y):
+        lo, hi = self.out.get(int(y // 5), (x, x))
+        self.out[int(y // 5)] = (min(lo, x), max(hi, x))
+
+    def _moveTo(self, p):
+        self._add(*p)
+
+    def _lineTo(self, p):
+        (x0, y0), (x1, y1) = self._getCurrentPoint(), p
+        n = max(1, int(max(abs(x1 - x0), abs(y1 - y0)) // 2))
+        for i in range(1, n + 1):
+            self._add(x0 + (x1 - x0) * i / n, y0 + (y1 - y0) * i / n)
+
+    def _curveToOne(self, c1, c2, p):
+        (x0, y0) = self._getCurrentPoint()
+        for i in range(1, 81):
+            t, u = i / 80, 1 - i / 80
+            self._add(u**3 * x0 + 3 * u * u * t * c1[0] + 3 * u * t * t * c2[0] + t**3 * p[0], u**3 * y0 + 3 * u * u * t * c1[1] + 3 * u * t * t * c2[1] + t**3 * p[1])
+
+    def _qCurveToOne(self, c, p):
+        (x0, y0) = self._getCurrentPoint()
+        for i in range(1, 81):
+            t, u = i / 80, 1 - i / 80
+            self._add(u * u * x0 + 2 * u * t * c[0] + t * t * p[0], u * u * y0 + 2 * u * t * c[1] + t * t * p[1])
 
 
 class Font(unittest.TestCase):
@@ -655,7 +695,7 @@ class Font(unittest.TestCase):
             xs = sorted(a[0] + (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]) for a, b in pen.segs if (a[1] - y) * (b[1] - y) < 0)
             return xs[1] - xs[0]
 
-        # Task 5's build (dca436bc): the opsz-14 and opsz-48 stems that must not move
+        # the opsz-14 and opsz-48 stems that must not move (as measured before the Caption stem moved)
         held = {VF: {14: 64.0, 48: 61.0}, VFI: {14: 64.7, 48: 62.3}}
         for path in (VF, VFI):
             name = os.path.basename(path)
@@ -869,38 +909,9 @@ class Font(unittest.TestCase):
             self.skipTest('pip install uharfbuzz')
         import io
 
-        from fontTools.pens.basePen import BasePen
         from fontTools.varLib.instancer import instantiateVariableFont
 
-        class Rows(BasePen):
-            def __init__(self, gs):
-                super().__init__(gs)
-                self.out = {}
-
-            def _add(self, x, y):
-                lo, hi = self.out.get(int(y // 5), (x, x))
-                self.out[int(y // 5)] = (min(lo, x), max(hi, x))
-
-            def _moveTo(self, p):
-                self._add(*p)
-
-            def _lineTo(self, p):
-                (x0, y0), (x1, y1) = self._getCurrentPoint(), p
-                n = max(1, int(max(abs(x1 - x0), abs(y1 - y0)) // 2))
-                for i in range(1, n + 1):
-                    self._add(x0 + (x1 - x0) * i / n, y0 + (y1 - y0) * i / n)
-
-            def _curveToOne(self, c1, c2, p):
-                (x0, y0) = self._getCurrentPoint()
-                for i in range(1, 81):
-                    t, u = i / 80, 1 - i / 80
-                    self._add(u**3 * x0 + 3 * u * u * t * c1[0] + 3 * u * t * t * c2[0] + t**3 * p[0], u**3 * y0 + 3 * u * u * t * c1[1] + 3 * u * t * t * c2[1] + t**3 * p[1])
-
-            def _qCurveToOne(self, c, p):
-                (x0, y0) = self._getCurrentPoint()
-                for i in range(1, 81):
-                    t, u = i / 80, 1 - i / 80
-                    self._add(u * u * x0 + 2 * u * t * c[0] + t * t * p[0], u * u * y0 + 2 * u * t * c[1] + t * t * p[1])
+        Rows = InkRows
 
         # the round pairs: where two bowls (or a bowl and a stem or bowl) meet, the tightest read at Black. The italic cO, ec, oc and pd sit
         # at 13 at 900/48, so 12 is a floor with a unit of room rather than a target; a855b5e0's tightest of these was rv at 20
@@ -926,6 +937,47 @@ class Font(unittest.TestCase):
                 gap = min(adv + rb.out[k][0] - ra.out[k][1] for k in set(ra.out) & set(rb.out))
                 with self.subTest(font=os.path.basename(path), opsz=opsz, pair=pair):
                     self.assertGreaterEqual(gap, floor)
+
+    def test_diagonal_capitals_keep_clear_at_heavy_weights(self):
+        # VV, VW, AX, RA, Ax and KA kept 2-3 units of white at 900/48 (7-8 before Black's sidebearing tightened for the width rule), 5-6 at
+        # 900/14 and 4-5 at 700/48, and the italic's slanted arms overlapped the next stem (KT -17, XW -6). kern.py opens every capital
+        # diagonal pair (and a diagonal before x v w y k) by what the shaped pair needs, so the white between letters stays 12 at the Black
+        # corners and at 700/48, and 16 in text Black. Rows are read at 5 units, as for the round pairs. Regular and Thin are not read:
+        # their pairs are not opened.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        import io
+
+        from fontTools.varLib.instancer import instantiateVariableFont
+
+        caps = 'AVWXYKRZTHMN'
+        pairs = [a + b for a in caps for b in caps] + [a + b for a in 'AKRVWXYZ' for b in 'xvwyk']
+        for path in (VF, VFI):
+            for wght, opsz, floor in ((900, 48, 12), (900, 8, 12), (900, 14, 16), (700, 48, 12)):
+                f = instantiateVariableFont(TTFont(path), {'wght': wght, 'opsz': opsz})
+                bio = io.BytesIO()
+                f.save(bio)
+                font = hb.Font(hb.Face(bio.getvalue()))
+                gs, order = f.getGlyphSet(), f.getGlyphOrder()
+                rows = {}
+                least = {}
+                for pair in pairs:
+                    buf = hb.Buffer()
+                    buf.add_str(pair)
+                    buf.guess_segment_properties()
+                    hb.shape(font, buf, {'kern': True})
+                    (a, b), adv = [order[i.codepoint] for i in buf.glyph_infos], buf.glyph_positions[0].x_advance
+                    for g in (a, b):
+                        if g not in rows:
+                            rows[g] = InkRows(gs)
+                            gs[g].draw(rows[g])
+                    shared = set(rows[a].out) & set(rows[b].out)
+                    least[pair] = round(min(adv + rows[b].out[k][0] - rows[a].out[k][1] for k in shared))  # whole units, as the round-pair test's floors are
+                short = {p: g for p, g in least.items() if g < floor}
+                with self.subTest(font=os.path.basename(path), wght=wght, opsz=opsz):
+                    self.assertEqual(short, {}, f'pairs with less than {floor} units of white')
 
     def test_stylistic_sets(self):
         # ss01 is the dotted zero, ss02 the plain I and l (as in Helvetica); `zero` stays the slashed zero. Each works
@@ -1409,11 +1461,11 @@ class Font(unittest.TestCase):
         for kind, path in (('upright', VF), ('italic', VFI)):
             for pair, by_weight in INTER_KERNING[kind].items():
                 for wght, inter in by_weight.items():
-                    if (kind, pair[:2], wght) in KERNING_SHORT:
-                        continue
+                    key = (kind, pair[:2], wght)
+                    floor = KERNING_SHORT_UNITS.get(key, 0) / inter if key in KERNING_SHORT_UNITS else KERNING_SHORT_FLOOR if key in KERNING_SHORT else KERNING_FLOOR
                     with self.subTest(kind=kind, pair=pair, wght=wght):
                         got = -pair_kerning(hb, path, pair, wght)
-                        self.assertGreaterEqual(got, KERNING_FLOOR * inter, f'{pair} kerns {got} at {wght}, Inter {inter}')
+                        self.assertGreaterEqual(got, floor * inter, f'{pair} kerns {got} at {wght}, Inter {inter}')
 
     def test_quotes_hold_their_size(self):
         # single and double quotes (curly and straight) and the guillemets: the ink box (width and height each) is >= 0.9x Inter's
