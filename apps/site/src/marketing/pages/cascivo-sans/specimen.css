@@ -92,7 +92,7 @@
       box-shadow: var(--cascivo-focus-ring);
     }
 
-    /* 01: weight rows. Narrow: name and meter share a line, stems and sample stack under it. */
+    /* 01: weight rows. Narrow: the name sits on its own line, then stems, the meter and the sample stack under it. */
     & .sp-weights {
       display: flex;
       flex-direction: column;
@@ -152,7 +152,9 @@
       flex: none;
       inline-size: 5rem;
       block-size: 0.375rem;
-      background-color: var(--cascivo-color-border);
+      /* A tint of the text colour, not the border token: poster themes set the border to the
+         ink colour, which would hide a same-coloured fill. */
+      background-color: color-mix(in oklch, var(--cascivo-color-text) 15%, transparent);
     }
 
     & .sp-tick {
@@ -170,7 +172,8 @@
     }
 
     & .sp-weight[data-over] .sp-fill {
-      background-color: var(--cascivo-color-warning);
+      /* The -foreground step is the one that keeps 3:1 against the page and the track. */
+      background-color: var(--cascivo-color-warning-foreground);
     }
 
     & .sp-delta {

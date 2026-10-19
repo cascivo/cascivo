@@ -35,18 +35,31 @@ const FAMILY = '"Cascivo Sans"'
 /** The size the brief measures at: big enough that rounding noise stays under 0.1%. */
 const MEASURE_PX = 40
 
-/** Canvas width of `text` at each weight, after the face for that weight has loaded. */
+/** The optical size the width limits are defined at (the axis default, 14). */
+const LIMIT_OPSZ = 14
+
+/**
+ * Width of `text` at each weight, after the face for that weight has loaded. Measured in the DOM
+ * rather than on a canvas because canvas cannot pin opsz: at ${MEASURE_PX}px the automatic optical
+ * size would be 40, where Thin runs 0.8% wider than at the opsz 14 the limits are written for.
+ */
 async function measureWeights(text: string): Promise<number[]> {
   await Promise.all(
     SPECIMEN_WEIGHTS.map((w) => document.fonts.load(`${w.value} ${MEASURE_PX}px ${FAMILY}`, text)),
   )
-  const ctx = document.createElement('canvas').getContext('2d')
-  if (ctx === null) return []
-  ctx.fontKerning = 'normal'
-  return SPECIMEN_WEIGHTS.map((w) => {
-    ctx.font = `${w.value} ${MEASURE_PX}px ${FAMILY}`
-    return ctx.measureText(text).width
-  })
+  const probe = document.createElement('span')
+  probe.setAttribute('aria-hidden', 'true')
+  probe.style.cssText = `position:absolute;visibility:hidden;white-space:nowrap;font-family:${FAMILY};font-size:${MEASURE_PX}px;font-kerning:normal;font-optical-sizing:none;font-variation-settings:'opsz' ${LIMIT_OPSZ}`
+  probe.textContent = text
+  document.body.append(probe)
+  try {
+    return SPECIMEN_WEIGHTS.map((w) => {
+      probe.style.fontWeight = String(w.value)
+      return probe.getBoundingClientRect().width
+    })
+  } finally {
+    probe.remove()
+  }
 }
 
 function SectionHead({ n, title, children }: { n: string; title: string; children: string }) {
@@ -184,6 +197,7 @@ export function CascivoSansSpecimenPage() {
                           />
                         </span>
                         <span className="sp-delta" data-delta>
+                          <span className="sp-sr">width vs 400: </span>
                           {row?.label ?? '…'}
                           {row?.over ? <span className="sp-sr"> over the limit</span> : null}
                         </span>
@@ -208,7 +222,8 @@ export function CascivoSansSpecimenPage() {
                 within ±2% of 400, or a state change that swaps the weight reflows the layout. 800
                 and 900 are display weights, set large in headings, and may run up to 5% wider (2%
                 narrower). The fill turns to the warning colour only past a weight&apos;s own limit.
-                Width is measured with canvas <code>measureText</code> at {MEASURE_PX}px.
+                Width is measured in the page at {MEASURE_PX}px with the optical size pinned to{' '}
+                {LIMIT_OPSZ}, where the limits apply.
               </p>
             </Section>
 

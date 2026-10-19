@@ -20,7 +20,6 @@ import { extname, join, normalize } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { chromium, type Page } from '@playwright/test'
 import {
-  BASE_INDEX,
   SAMPLE,
   SPECIMEN_WEIGHTS,
   TAB_LABELS,
@@ -102,13 +101,14 @@ try {
   })
   assert.ok(faceLoaded, 'Cascivo Sans did not load on the specimen')
 
-  // 01: the meter's numbers, against an independent DOM measurement at the same 40px.
+  // 01: the meter's numbers, against an independent measurement: a DOM probe at 40px with automatic
+  // optical sizing off, which is the axis default (opsz 14) the width limits are defined at.
   const meter = await page.evaluate(
     async ({ weights, sample }) => {
       const out: { weight: number; label: string; over: boolean; dom: number }[] = []
       const probe = document.createElement('span')
       probe.style.cssText =
-        'position:absolute;visibility:hidden;white-space:nowrap;font:400 40px "Cascivo Sans";'
+        'position:absolute;visibility:hidden;white-space:nowrap;font:400 40px "Cascivo Sans";font-optical-sizing:none;'
       document.body.append(probe)
       probe.textContent = sample
       const domWidth: number[] = []
@@ -123,7 +123,10 @@ try {
         out.push({
           weight: Number(row.dataset.weight),
           label:
-            row.querySelector('[data-delta]')?.textContent?.replace(' over the limit', '') ?? '',
+            row
+              .querySelector('[data-delta]')
+              ?.textContent?.replace(' over the limit', '')
+              .replace('width vs 400: ', '') ?? '',
           over: row.hasAttribute('data-over'),
           dom: (domWidth[i] ?? 0) / (domWidth[3] ?? 1) - 1,
         })
@@ -153,42 +156,129 @@ try {
   )
   console.log('ok — meter matches the DOM; 100-700 within +-2%, 800-900 within +5% / -2%')
 
-  // 02: the tab rows keep their width (to the same +-2%) on hover and on toggle.
-  const rowWidth = (id: string) =>
-    page.locator(id).evaluate((el) => el.getBoundingClientRect().width)
-  const hover0 = await rowWidth('#sp-tabs-hover')
-  const hoverWidths: number[] = []
+  // 02: the tab rows keep their width to within +-2% (the same rule as section 01), and their
+  // height (nothing wraps) and the next element's position do not move at all.
+  const TAB_TOLERANCE = 0.02
+  const geometry = (id: string) =>
+    page.locator(id).evaluate((el) => {
+      const box = el.getBoundingClientRect()
+      const next = el.closest('.sp-scroll')!.nextElementSibling
+      return {
+        w: box.width,
+        h: box.height,
+        nextTop: (next?.getBoundingClientRect().top ?? -1) - box.top,
+      }
+    })
+  const hoverBase = await geometry('#sp-tabs-hover')
+  const hoverRuns: { w: number; h: number; nextTop: number }[] = []
   for (const label of TAB_LABELS) {
-    await page.locator('#sp-tabs-hover').getByText(label, { exact: true }).hover()
+    const tab = page.locator('#sp-tabs-hover').getByText(label, { exact: true })
+    await tab.hover()
     assert.equal(
-      await page
-        .locator('#sp-tabs-hover')
-        .getByText(label, { exact: true })
-        .evaluate((el) => getComputedStyle(el).fontWeight),
+      await tab.evaluate((el) => getComputedStyle(el).fontWeight),
       '700',
       `${label} is not 700 on hover`,
     )
-    hoverWidths.push(await rowWidth('#sp-tabs-hover'))
+    hoverRuns.push(await geometry('#sp-tabs-hover'))
   }
-  for (const w of hoverWidths) {
-    assert.ok(Math.abs(w / hover0 - 1) <= 0.02, `hover reflowed the row: ${hover0} → ${w}`)
+  for (const g of hoverRuns) {
+    assert.ok(
+      Math.abs(g.w / hoverBase.w - 1) <= TAB_TOLERANCE,
+      `hover reflowed the row: ${hoverBase.w} → ${g.w}`,
+    )
+    assert.equal(g.h, hoverBase.h, 'hover changed the row height')
+    assert.equal(g.nextTop, hoverBase.nextTop, 'hover moved the next element')
   }
   await page.mouse.move(0, 0)
-  const toggle0 = await rowWidth('#sp-tabs-toggle')
+  const toggleBase = await geometry('#sp-tabs-toggle')
   await page.getByRole('button', { name: 'Set row to 700' }).click()
-  const toggle700 = await rowWidth('#sp-tabs-toggle')
+  const toggled = await geometry('#sp-tabs-toggle')
   assert.equal(
     await page.locator('#sp-tabs-toggle').evaluate((el) => getComputedStyle(el).fontWeight),
     '700',
   )
-  assert.ok(Math.abs(toggle700 / toggle0 - 1) <= 0.02, `toggle reflowed: ${toggle0} → ${toggle700}`)
-  await page.getByRole('button', { name: 'Set row to 400' }).click()
-  const toggleBack = await rowWidth('#sp-tabs-toggle')
-  assert.ok(Math.abs(toggleBack - toggle0) < 0.01, 'toggling back did not restore the width')
-  console.log(
-    `ok — tab row ${fmt(hover0)}px; hover max ${pct((Math.max(...hoverWidths) / hover0 - 1) * 100)}; ` +
-      `toggle 400→700 ${fmt(toggle0)}→${fmt(toggle700)}px (${pct((toggle700 / toggle0 - 1) * 100)})`,
+  assert.ok(
+    Math.abs(toggled.w / toggleBase.w - 1) <= TAB_TOLERANCE,
+    `toggle reflowed: ${toggleBase.w} → ${toggled.w}`,
   )
+  assert.equal(toggled.h, toggleBase.h, 'toggle changed the row height')
+  assert.equal(toggled.nextTop, toggleBase.nextTop, 'toggle moved the next element')
+  await page.getByRole('button', { name: 'Set row to 400' }).click()
+  const back = await geometry('#sp-tabs-toggle')
+  assert.ok(Math.abs(back.w - toggleBase.w) < 0.01, 'toggling back did not restore the width')
+  console.log(
+    `ok — tab row ${fmt(hoverBase.w)}px; hover max ${pct((Math.max(...hoverRuns.map((g) => g.w)) / hoverBase.w - 1) * 100)}; ` +
+      `toggle 400→700 ${fmt(toggleBase.w)}→${fmt(toggled.w)}px (${pct((toggled.w / toggleBase.w - 1) * 100)}); ` +
+      'height and next element unmoved; width limit +-2%',
+  )
+
+  // The meter must stay readable in every theme the page can show: track, fill, tick and the
+  // over-limit fill (WCAG 1.4.11, 3:1 against the page and against the track).
+  const THEMES = ['poster', 'poster-dark', 'light', 'dark', 'warm']
+  for (const theme of THEMES) {
+    await page.evaluate((t) => document.documentElement.setAttribute('data-theme', t), theme)
+    const c = await page.evaluate(() => {
+      const ctx = document.createElement('canvas').getContext('2d', { willReadFrequently: true })
+      if (ctx === null) throw new Error('no canvas')
+      type Rgb = [number, number, number]
+      const paint = (under: Rgb, css: string): Rgb => {
+        ctx.clearRect(0, 0, 1, 1)
+        ctx.fillStyle = `rgb(${under.join(',')})`
+        ctx.fillRect(0, 0, 1, 1)
+        ctx.fillStyle = css
+        ctx.fillRect(0, 0, 1, 1)
+        const d = ctx.getImageData(0, 0, 1, 1).data
+        return [d[0] ?? 0, d[1] ?? 0, d[2] ?? 0]
+      }
+      const lum = ([r, g, b]: Rgb) => {
+        const f = (v: number) => {
+          const x = v / 255
+          return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4
+        }
+        return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b)
+      }
+      const ratio = (a: Rgb, b: Rgb) => {
+        const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x) as [number, number]
+        return (hi + 0.05) / (lo + 0.05)
+      }
+      let page: Rgb = [255, 255, 255]
+      for (
+        let el: Element | null = document.querySelector('.sp-track');
+        el;
+        el = el.parentElement
+      ) {
+        const bg = getComputedStyle(el).backgroundColor
+        if (bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent' && !el.matches('.sp-track')) {
+          page = paint([255, 255, 255], bg)
+          break
+        }
+      }
+      const row = document.querySelector<HTMLElement>('.sp-weight[data-weight="900"]')!
+      const css = (sel: string) => getComputedStyle(row.querySelector(sel)!).backgroundColor
+      const track = paint(page, css('.sp-track'))
+      const fill = paint(track, css('.sp-fill'))
+      const tick = paint(track, css('.sp-tick'))
+      row.setAttribute('data-over', '')
+      const warn = paint(track, css('.sp-fill'))
+      row.removeAttribute('data-over')
+      return {
+        trackVsPage: ratio(track, page),
+        fillVsTrack: ratio(fill, track),
+        tickVsTrack: ratio(tick, track),
+        warnVsTrack: ratio(warn, track),
+        warnVsPage: ratio(warn, page),
+      }
+    })
+    console.log(
+      `   ${theme.padEnd(11)} track/page ${c.trackVsPage.toFixed(2)}  fill/track ${c.fillVsTrack.toFixed(2)}  tick/track ${c.tickVsTrack.toFixed(2)}  warn/track ${c.warnVsTrack.toFixed(2)}  warn/page ${c.warnVsPage.toFixed(2)}`,
+    )
+    assert.ok(c.fillVsTrack >= 3, `${theme}: the fill is not visible against the track`)
+    assert.ok(c.tickVsTrack >= 3, `${theme}: the 400 tick is not visible against the track`)
+    assert.ok(c.warnVsTrack >= 3, `${theme}: the over-limit fill is under 3:1 against the track`)
+    assert.ok(c.warnVsPage >= 3, `${theme}: the over-limit fill is under 3:1 against the page`)
+  }
+  console.log('ok — meter fill, tick and over-limit fill keep >=3:1 in five themes')
+  await page.evaluate(() => document.documentElement.removeAttribute('data-theme'))
 
   // 05: advances and ink of the dashes at every weight. 1000px so canvas ink boxes are not
   // rounded to whole pixels of a small size (1px at 64px is 4% of an en dash).
@@ -321,14 +411,17 @@ try {
     mkdirSync(shots, { recursive: true })
     await page.setViewportSize({ width: 1280, height: 900 })
     // The sticky site header would land on top of every element screenshot.
-    await page.addStyleTag({ content: '.landing-shell-header { position: static !important; }' })
-    for (const theme of ['light', 'dark']) {
+    await page.addStyleTag({
+      content:
+        '.landing-shell-header { position: static !important; } .scroll-progress { display: none !important; }',
+    })
+    for (const theme of ['light', 'dark', 'poster', 'poster-dark']) {
       await page.evaluate((t) => document.documentElement.setAttribute('data-theme', t), theme)
       await page.evaluate(() => document.fonts.ready)
       for (let n = 1; n <= 7; n++) {
         const id = `0${n}`
         await page.locator(`#sp-${id}`).screenshot({
-          path: join(shots, `section-${id}${theme === 'dark' ? '-dark' : ''}.png`),
+          path: join(shots, `section-${id}${theme === 'light' ? '' : `-${theme}`}.png`),
         })
       }
     }
