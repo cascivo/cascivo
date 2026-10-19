@@ -609,6 +609,65 @@ class Font(unittest.TestCase):
             for step in steps:
                 self.assertTrue(15 <= step <= 27, f'{os.path.basename(path)}: stems {stems}, steps {steps}')
 
+    def test_light_holds_at_small_sizes(self):
+        # Light (300) rendered 3-6% paler than Inter Light at 11-13 px (mean ink in Chromium), and its stem is thin enough that the Caption
+        # master's +5 left opsz 12 at only 1.027x its opsz-14 stem. The Caption delta is the only lever below opsz 14 (no Light-Caption master
+        # exists), so it rises to +6: Light is 1.03-1.10x its opsz-14 stem at opsz 8 and 12, and untouched at 14 and above.
+        from fontTools.pens.basePen import BasePen
+        from fontTools.varLib.instancer import instantiateVariableFont
+
+        class Edges(BasePen):  # the outline as short line segments, to read where it crosses a horizontal line exactly
+            def __init__(self, gs):
+                super().__init__(gs)
+                self.segs = []
+
+            def _moveTo(self, p):
+                pass
+
+            def _lineTo(self, p):
+                self.segs.append((self._getCurrentPoint(), p))
+
+            def _curveToOne(self, c1, c2, p):
+                p0 = self._getCurrentPoint()
+                prev = p0
+                for i in range(1, 41):
+                    t, u = i / 40, 1 - i / 40
+                    q = tuple(u**3 * p0[k] + 3 * u * u * t * c1[k] + 3 * u * t * t * c2[k] + t**3 * p[k] for k in (0, 1))
+                    self.segs.append((prev, q))
+                    prev = q
+
+            def _qCurveToOne(self, c, p):
+                p0 = self._getCurrentPoint()
+                prev = p0
+                for i in range(1, 41):
+                    t, u = i / 40, 1 - i / 40
+                    q = tuple(u * u * p0[k] + 2 * u * t * c[k] + t * t * p[k] for k in (0, 1))
+                    self.segs.append((prev, q))
+                    prev = q
+
+        def n_stem(path, w, z):
+            # the left stem's width across the middle of the x-height; sub-unit, because the sizes compared differ by a few units
+            f = instantiateVariableFont(TTFont(path), {'wght': w, 'opsz': z})
+            gs = f.getGlyphSet()
+            y = f['OS/2'].sxHeight / 2
+            pen = Edges(gs)
+            gs['n'].draw(pen)
+            xs = sorted(a[0] + (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]) for a, b in pen.segs if (a[1] - y) * (b[1] - y) < 0)
+            return xs[1] - xs[0]
+
+        # Task 5's build (dca436bc): the opsz-14 and opsz-48 stems that must not move
+        held = {VF: {14: 64.0, 48: 61.0}, VFI: {14: 64.7, 48: 62.3}}
+        for path in (VF, VFI):
+            name = os.path.basename(path)
+            base = n_stem(path, 300, 14)
+            for z, stem in held[path].items():
+                self.assertAlmostEqual(n_stem(path, 300, z), stem, msg=f'{name}: Light at opsz {z} moved', delta=0.1)
+            # the italic's stem is read across a slant and its masters round to whole units, so its opsz-12 ratio lands at 1.029; the upright's 1.031
+            floor = 1.03 if path == VF else 1.025
+            for z in (8, 12):
+                ratio = n_stem(path, 300, z) / base
+                self.assertTrue(floor <= ratio <= 1.10, f'{name}: Light n stem at opsz {z} is {ratio:.3f}x its opsz-14 stem')
+
     def test_heavy_weights_keep_their_rhythm(self):
         # Black looked spotty beside Geist and Inter: its sidebearings stayed at Regular's while
         # the counters shrank (gap between letters = gap inside them), and its horizontals thinned

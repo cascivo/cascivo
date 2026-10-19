@@ -71,6 +71,13 @@ The italic is drawn, not slanted. It has a single-storey `a`, an `f` that descen
 curved tail, and stress that follows the 10° angle. Without the second `@font-face` block, the
 browser fakes italics by skewing the upright.
 
+## Weights
+
+Nine weights, 100 to 900. Use **300 Light as the lightest weight for text**. **100 Thin and 200
+ExtraLight are display weights**: their strokes are too fine to hold up in body copy or small UI
+text, so set them large (about 24 px and up). Below optical size 14 the Light stem is thickened by
+up to 10% (about 9% at 8 px, 3% at 12 px, none from 14 px) so it keeps its colour at 11 to 13 px.
+
 ## OpenType features
 
 | Feature                | CSS                                        | Effect                                                                                                                                     |

@@ -70,7 +70,7 @@ class P:
         contrast = _pw(wght, [(100, 0.96), (400, 0.87), (900, 0.72)])
         xh, spacing, counter, k, aperture = 528, 1.0, 1.0, 0.585, 0.0
         if opsz == 8:  # caption: bigger x-height, looser, wider, flatter contrast, open apertures
-            V += 5
+            V += 6  # was 5: the only lever below opsz 14 for Light (no Light-Caption master). Master coordinates are whole units, so 6 is the step that lands Light at 1.09x its opsz-14 stem at opsz 8 (cap 1.10x) and 1.03x at 12; 7 would pass the cap
             contrast = min(0.95, contrast + 0.07)
             xh += 14
             spacing, counter, k, aperture = 1.24, 1.06, 0.575, 7.0

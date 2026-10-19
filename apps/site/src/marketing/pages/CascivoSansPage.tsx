@@ -131,6 +131,12 @@ export function CascivoSansPage() {
                 </li>
               ))}
             </ul>
+            <p className="cs-note">
+              Use 300 Light as the lightest weight for text. 100 Thin and 200 ExtraLight are display
+              weights: their strokes are too fine for small sizes, so set them large. Below 14 px
+              the optical size thickens Light a little (up to 10 percent at 8 px) to keep it
+              readable.
+            </p>
           </section>
 
           <section id="cs-styles" className="cs-section" aria-labelledby="cs-styles-title">
