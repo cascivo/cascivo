@@ -77,6 +77,11 @@ describe('classifyProp', () => {
       reason: 'function',
     })
   })
+  it('classifies an optional function-typed handler as an event', () => {
+    assert.deepEqual(classifyProp(prop('onClose', '(() => void) | undefined'), empty), {
+      kind: 'event',
+    })
+  })
   it('omits unparseable types', () => {
     assert.deepEqual(classifyProp(prop('pair', '[string, number]'), empty), {
       kind: 'omitted',
@@ -174,11 +179,22 @@ describe('toJsonSchema', () => {
     })
     assert.equal(to('{ a: () => void }'), null)
   })
+  it('maps x | null to anyOf with a null branch', () => {
+    assert.deepEqual(to('string | null'), { anyOf: [{ type: 'string' }, { type: 'null' }] })
+  })
   it('maps ReactNode to string only in data', () => {
     assert.deepEqual(to('ReactNode', true), { type: 'string' })
     assert.equal(to('ReactNode', false), null)
   })
 })
+
+const to2 = (src: string) => {
+  const t = parseTsType(src)
+  assert.ok(t)
+  const s = toJsonSchema(t, empty, true)
+  assert.ok(s)
+  return s
+}
 
 describe('parseDefault', () => {
   const enumSchema = { type: 'string', enum: ['sm', 'md'] }
@@ -192,6 +208,19 @@ describe('parseDefault', () => {
     assert.equal(parseDefault('yes', { type: 'boolean' }), undefined)
     assert.deepEqual(parseDefault('3', { type: 'number' }), { value: 3 })
     assert.equal(parseDefault('16 / 9', { type: 'number' }), undefined)
+  })
+  it('parses defaults on anyOf schemas, trying plain strings last', () => {
+    const ai = to2("boolean | 'generating'")
+    assert.deepEqual(parseDefault('false', ai), { value: false })
+    assert.deepEqual(parseDefault('generating', ai), { value: 'generating' })
+    const cols = to2('number | { a: string }')
+    assert.deepEqual(parseDefault('12', cols), { value: 12 })
+    const href = to2('string | false')
+    assert.deepEqual(parseDefault("'#cascade-main'", href), { value: '#cascade-main' })
+    assert.deepEqual(parseDefault('false', href), { value: false })
+    const fb = to2("'good' | 'bad' | null")
+    assert.deepEqual(parseDefault('null', fb), { value: null })
+    assert.equal(parseDefault('huge', fb), undefined)
   })
   it('parses JSON for arrays and objects', () => {
     assert.deepEqual(parseDefault('[]', { type: 'array' }), { value: [] })

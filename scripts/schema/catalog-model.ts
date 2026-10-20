@@ -189,9 +189,18 @@ export function toJsonSchema(t: TsType, ctx: ResolveContext, inData: boolean): J
   return convert(t, ctx, inData, new Set())
 }
 
+/** `(() => void) | undefined` is still a function prop; unwrap optionality before classifying. */
+function withoutUndefined(t: TsType): TsType {
+  if (t.kind !== 'union') return t
+  const rest = t.members.filter((m) => !(m.kind === 'primitive' && m.name === 'undefined'))
+  const [only] = rest
+  return rest.length === 1 && only ? only : { kind: 'union', members: rest }
+}
+
 export function classifyProp(prop: PropMeta, ctx: ResolveContext): PropClass {
-  const t = parseTsType(prop.type)
-  if (!t) return { kind: 'omitted', reason: 'unparseable' }
+  const parsedType = parseTsType(prop.type)
+  if (!parsedType) return { kind: 'omitted', reason: 'unparseable' }
+  const t = withoutUndefined(parsedType)
   if (t.kind === 'function' || (t.kind === 'ref' && t.name.endsWith('EventHandler'))) {
     return /^on[A-Z]/.test(prop.name) ? { kind: 'event' } : { kind: 'omitted', reason: 'function' }
   }
@@ -217,12 +226,28 @@ function unquote(raw: string): string {
 /** undefined when the manifest's default text isn't a literal valid for the schema (e.g. '16 / 9'). */
 export function parseDefault(raw: string, schema: JsonSchema): { value: unknown } | undefined {
   const text = raw.trim()
+  const branches = schema['anyOf']
+  if (Array.isArray(branches)) {
+    // Plain strings accept anything, so they go last or 'false' / '12' / 'null' would be swallowed.
+    const rank = (b: JsonSchema): number =>
+      b['type'] !== 'string' ? 0 : Array.isArray(b['enum']) ? 1 : 2
+    const ordered = branches
+      .filter((b): b is JsonSchema => typeof b === 'object' && b !== null)
+      .sort((a, b) => rank(a) - rank(b))
+    for (const b of ordered) {
+      const r = parseDefault(raw, b)
+      if (r) return r
+    }
+    return undefined
+  }
   const choices = Array.isArray(schema['enum']) ? schema['enum'] : undefined
   const allowed = (v: unknown): { value: unknown } | undefined =>
     !choices || choices.includes(v) ? { value: v } : undefined
   switch (schema['type']) {
     case 'boolean':
       return text === 'true' || text === 'false' ? allowed(text === 'true') : undefined
+    case 'null':
+      return text === 'null' ? { value: null } : undefined
     case 'number': {
       const n = Number(text)
       return text !== '' && Number.isFinite(n) ? allowed(n) : undefined
