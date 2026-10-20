@@ -13572,7 +13572,7 @@
         "overflow-menu.tsx": "sha256-f5ba4ceeafc4d5fa672ab02b0385006a8ed53356b08111b8060611d34cbdee0b",
         "index.ts": "sha256-7070c62d17b5995930ae65e66e40a55dc3532334befe4f899aab9692957447e5",
         "overflow-menu.module.css": "sha256-21f4c4a11b7f8dc0d8bf6ac885e922bf145a1d2ea68dc75ae3b77186112a89a9",
-        "overflow-menu.meta.ts": "sha256-f416b9a20694d1e35b9d1365085c80822c021d2a9dd28dfd25aa84a331d4898f"
+        "overflow-menu.meta.ts": "sha256-9fb118c9429f46a3008148c242b439e9fd3ad5a6df5c7859d4cc9c7677501c97"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -13599,7 +13599,7 @@
           {
             "name": "items",
             "description": "The items to render.",
-            "type": "{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]",
+            "type": "{ label: string; value?: string; id?: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]",
             "required": true
           },
           {

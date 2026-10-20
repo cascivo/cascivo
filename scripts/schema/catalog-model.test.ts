@@ -201,6 +201,20 @@ describe('toJsonSchema', () => {
     assert.deepEqual(to('ReactNode', true), { type: 'string' })
     assert.equal(to('ReactNode', false), null)
   })
+  it('uses the context nodeInData for a ReactNode in data', () => {
+    const t = parseTsType('{ title: ReactNode }[]')
+    assert.ok(t)
+    const nodeInData = { anyOf: [{ type: 'string' }, { type: 'number' }] }
+    assert.deepEqual(toJsonSchema(t, { ...empty, nodeInData }, true), {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: { title: nodeInData },
+        required: ['title'],
+        additionalProperties: false,
+      },
+    })
+  })
 })
 
 const to2 = (src: string) => {

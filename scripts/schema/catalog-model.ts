@@ -33,6 +33,8 @@ export interface ResolveContext {
   typeDefs: ReadonlyMap<string, TypeDefMeta>
   /** Generic params declared by typedef names, e.g. 'Row' from 'Column<Row>'. */
   typeParams: ReadonlySet<string>
+  /** Schema for a ReactNode inside data (default `{ type: 'string' }`); validators widen it. */
+  nodeInData?: JsonSchema
 }
 
 export type PropClass =
@@ -135,7 +137,7 @@ function refSchema(
   inData: boolean,
   seen: ReadonlySet<string>,
 ): JsonSchema | null {
-  if (NODE_REFS.has(t.name)) return inData ? { type: 'string' } : null
+  if (NODE_REFS.has(t.name)) return inData ? (ctx.nodeInData ?? { type: 'string' }) : null
   if (NO_SCHEMA_REFS.has(t.name)) return null
   if (t.name === 'object' || ctx.typeParams.has(t.name)) return { type: 'object' }
   const def = ctx.typeDefs.get(t.name)

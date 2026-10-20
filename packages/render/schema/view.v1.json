@@ -512,8 +512,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -604,8 +603,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -646,8 +644,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -749,8 +746,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -1334,8 +1330,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -1399,8 +1394,7 @@
                               ]
                             }
                           },
-                          "required": ["label"],
-                          "additionalProperties": false
+                          "required": ["label"]
                         }
                       },
                       {
@@ -1817,10 +1811,17 @@
                         "items": {
                           "anyOf": [
                             {
-                              "type": "string"
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "$ref": "#/$defs/TranslationRef"
+                                }
+                              ]
                             },
                             {
-                              "$ref": "#/$defs/TranslationRef"
+                              "type": "number"
                             }
                           ]
                         }
@@ -1910,46 +1911,74 @@
                             "title": {
                               "anyOf": [
                                 {
-                                  "type": "string",
-                                  "description": "What the step does."
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "$ref": "#/$defs/TranslationRef"
+                                    }
+                                  ]
                                 },
                                 {
-                                  "$ref": "#/$defs/TranslationRef"
+                                  "type": "number"
                                 }
-                              ]
+                              ],
+                              "description": "What the step does."
                             },
                             "description": {
                               "anyOf": [
                                 {
-                                  "type": "string",
-                                  "description": "A secondary line under the title."
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "$ref": "#/$defs/TranslationRef"
+                                    }
+                                  ]
                                 },
                                 {
-                                  "$ref": "#/$defs/TranslationRef"
+                                  "type": "number"
                                 }
-                              ]
+                              ],
+                              "description": "A secondary line under the title."
                             },
                             "detail": {
                               "anyOf": [
                                 {
-                                  "type": "string",
-                                  "description": "Collapsible content; makes the title a disclosure toggle."
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "$ref": "#/$defs/TranslationRef"
+                                    }
+                                  ]
                                 },
                                 {
-                                  "$ref": "#/$defs/TranslationRef"
+                                  "type": "number"
                                 }
-                              ]
+                              ],
+                              "description": "Collapsible content; makes the title a disclosure toggle."
                             },
                             "icon": {
                               "anyOf": [
                                 {
-                                  "type": "string",
-                                  "description": "Replaces the status glyph in the marker."
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "$ref": "#/$defs/TranslationRef"
+                                    }
+                                  ]
                                 },
                                 {
-                                  "$ref": "#/$defs/TranslationRef"
+                                  "type": "number"
                                 }
-                              ]
+                              ],
+                              "description": "Replaces the status glyph in the marker."
                             }
                           },
                           "required": ["id", "title"],
@@ -2006,8 +2035,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -2370,8 +2398,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -3151,8 +3178,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -3266,8 +3292,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -3440,14 +3465,26 @@
                               "description": "When true, the header toggles sort on this column."
                             },
                             "align": {
-                              "type": "string",
-                              "enum": ["start", "end"],
-                              "description": "Cell/text alignment. Use 'end' for numbers and timestamps."
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "description": "Cell/text alignment. Use 'end' for numbers and timestamps."
+                                },
+                                {
+                                  "$ref": "#/$defs/TranslationRef"
+                                }
+                              ]
                             },
                             "filter": {
-                              "type": "string",
-                              "enum": ["text", "select", "range"],
-                              "description": "Offer a per-column filter under the header: a substring input, a faceted checklist of distinct values with counts, or a numeric min/max pair. Values surface through the `filters` props."
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "description": "Offer a per-column filter under the header: a substring input, a faceted checklist of distinct values with counts, or a numeric min/max pair. Values surface through the `filters` props."
+                                },
+                                {
+                                  "$ref": "#/$defs/TranslationRef"
+                                }
+                              ]
                             },
                             "editable": {
                               "type": "boolean",
@@ -3515,9 +3552,15 @@
                             ]
                           },
                           "direction": {
-                            "type": "string",
-                            "enum": ["asc", "desc"],
-                            "description": "Sort direction."
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "description": "Sort direction."
+                              },
+                              {
+                                "$ref": "#/$defs/TranslationRef"
+                              }
+                            ]
                           },
                           "thenBy": {
                             "type": "array",
@@ -3535,18 +3578,22 @@
                                   ]
                                 },
                                 "direction": {
-                                  "type": "string",
-                                  "enum": ["asc", "desc"]
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "$ref": "#/$defs/TranslationRef"
+                                    }
+                                  ]
                                 }
                               },
-                              "required": ["key", "direction"],
-                              "additionalProperties": false
+                              "required": ["key", "direction"]
                             },
                             "description": "Secondary columns that break ties, in order (multi-sort)."
                           }
                         },
-                        "required": ["key", "direction"],
-                        "additionalProperties": false
+                        "required": ["key", "direction"]
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -3570,9 +3617,15 @@
                             ]
                           },
                           "direction": {
-                            "type": "string",
-                            "enum": ["asc", "desc"],
-                            "description": "Sort direction."
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "description": "Sort direction."
+                              },
+                              {
+                                "$ref": "#/$defs/TranslationRef"
+                              }
+                            ]
                           },
                           "thenBy": {
                             "type": "array",
@@ -3590,18 +3643,22 @@
                                   ]
                                 },
                                 "direction": {
-                                  "type": "string",
-                                  "enum": ["asc", "desc"]
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "$ref": "#/$defs/TranslationRef"
+                                    }
+                                  ]
                                 }
                               },
-                              "required": ["key", "direction"],
-                              "additionalProperties": false
+                              "required": ["key", "direction"]
                             },
                             "description": "Secondary columns that break ties, in order (multi-sort)."
                           }
                         },
-                        "required": ["key", "direction"],
-                        "additionalProperties": false
+                        "required": ["key", "direction"]
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -3660,8 +3717,14 @@
                         "type": "object",
                         "properties": {
                           "mode": {
-                            "type": "string",
-                            "enum": ["single", "multi"]
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "$ref": "#/$defs/TranslationRef"
+                              }
+                            ]
                           },
                           "selected": {
                             "type": "array",
@@ -3785,8 +3848,7 @@
                             "type": "boolean",
                             "description": "\"Pin to start\" / \"Pin to end\" / \"Unpin\" in each column's header menu."
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -3885,8 +3947,7 @@
                               "type": "object"
                             }
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -3927,7 +3988,6 @@
                             }
                           },
                           "required": ["header", "columns"],
-                          "additionalProperties": false,
                           "description": "A band of columns under one shared header (`columnGroups`)."
                         }
                       },
@@ -3956,8 +4016,7 @@
                                   }
                                 ]
                               }
-                            },
-                            "additionalProperties": false
+                            }
                           }
                         ]
                       },
@@ -4493,8 +4552,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -4572,10 +4630,17 @@
                                 "icon": {
                                   "anyOf": [
                                     {
-                                      "type": "string"
+                                      "anyOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "$ref": "#/$defs/TranslationRef"
+                                        }
+                                      ]
                                     },
                                     {
-                                      "$ref": "#/$defs/TranslationRef"
+                                      "type": "number"
                                     }
                                   ]
                                 },
@@ -4583,19 +4648,23 @@
                                   "type": "boolean"
                                 }
                               },
-                              "required": ["label", "value"],
-                              "additionalProperties": false
+                              "required": ["label", "value"]
                             },
                             {
                               "type": "object",
                               "properties": {
                                 "kind": {
-                                  "type": "string",
-                                  "enum": ["separator"]
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "$ref": "#/$defs/TranslationRef"
+                                    }
+                                  ]
                                 }
                               },
-                              "required": ["kind"],
-                              "additionalProperties": false
+                              "required": ["kind"]
                             }
                           ]
                         }
@@ -5258,8 +5327,7 @@
                               "type": "boolean"
                             }
                           },
-                          "required": ["label", "href"],
-                          "additionalProperties": false
+                          "required": ["label", "href"]
                         }
                       },
                       {
@@ -5781,8 +5849,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -5858,17 +5925,23 @@
                           "description": {
                             "anyOf": [
                               {
-                                "type": "string",
-                                "description": "An excerpt shown in the hover card."
+                                "anyOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "$ref": "#/$defs/TranslationRef"
+                                  }
+                                ]
                               },
                               {
-                                "$ref": "#/$defs/TranslationRef"
+                                "type": "number"
                               }
-                            ]
+                            ],
+                            "description": "An excerpt shown in the hover card."
                           }
                         },
-                        "required": ["title", "url"],
-                        "additionalProperties": false
+                        "required": ["title", "url"]
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -5890,8 +5963,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -6005,8 +6077,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -6348,8 +6419,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -6734,8 +6804,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -6911,8 +6980,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -7473,8 +7541,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -7776,13 +7843,30 @@
                                 }
                               ]
                             },
-                            "icon": {
+                            "id": {
                               "anyOf": [
                                 {
                                   "type": "string"
                                 },
                                 {
                                   "$ref": "#/$defs/TranslationRef"
+                                }
+                              ]
+                            },
+                            "icon": {
+                              "anyOf": [
+                                {
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "$ref": "#/$defs/TranslationRef"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "number"
                                 }
                               ]
                             },
@@ -7793,8 +7877,7 @@
                               "type": "boolean"
                             }
                           },
-                          "required": ["label", "value"],
-                          "additionalProperties": false
+                          "required": ["label"]
                         }
                       },
                       {
@@ -8471,8 +8554,7 @@
                               ]
                             }
                           },
-                          "required": ["label"],
-                          "additionalProperties": false
+                          "required": ["label"]
                         }
                       },
                       {
@@ -8606,8 +8688,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -8671,8 +8752,7 @@
                             ]
                           }
                         },
-                        "required": ["__html"],
-                        "additionalProperties": false
+                        "required": ["__html"]
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -8763,8 +8843,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -9344,8 +9423,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -9431,13 +9509,20 @@
                             "label": {
                               "anyOf": [
                                 {
-                                  "type": "string",
-                                  "description": "Row content"
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "$ref": "#/$defs/TranslationRef"
+                                    }
+                                  ]
                                 },
                                 {
-                                  "$ref": "#/$defs/TranslationRef"
+                                  "type": "number"
                                 }
-                              ]
+                              ],
+                              "description": "Row content"
                             },
                             "name": {
                               "anyOf": [
@@ -9451,8 +9536,7 @@
                               ]
                             }
                           },
-                          "required": ["id", "label"],
-                          "additionalProperties": false
+                          "required": ["id", "label"]
                         }
                       },
                       {
@@ -9525,8 +9609,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -10058,8 +10141,7 @@
                               "type": "boolean"
                             }
                           },
-                          "required": ["value", "label"],
-                          "additionalProperties": false
+                          "required": ["value", "label"]
                         }
                       },
                       {
@@ -10204,8 +10286,14 @@
                       {
                         "type": "array",
                         "items": {
-                          "type": "string",
-                          "enum": ["bluesky", "mastodon", "threads", "linkedin", "x"]
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "$ref": "#/$defs/TranslationRef"
+                            }
+                          ]
                         }
                       },
                       {
@@ -10457,8 +10545,7 @@
                                     "type": "boolean"
                                   }
                                 },
-                                "required": ["label", "href"],
-                                "additionalProperties": false
+                                "required": ["label", "href"]
                               },
                               "description": "Dropdown menu entries (menu items)."
                             },
@@ -10508,13 +10595,20 @@
                             "icon": {
                               "anyOf": [
                                 {
-                                  "type": "string",
-                                  "description": "Icon node, e.g. an @cascivo/icons glyph."
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "$ref": "#/$defs/TranslationRef"
+                                    }
+                                  ]
                                 },
                                 {
-                                  "$ref": "#/$defs/TranslationRef"
+                                  "type": "number"
                                 }
-                              ]
+                              ],
+                              "description": "Icon node, e.g. an @cascivo/icons glyph."
                             },
                             "active": {
                               "type": "boolean",
@@ -10818,8 +10912,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -10986,17 +11079,23 @@
                             "description": {
                               "anyOf": [
                                 {
-                                  "type": "string",
-                                  "description": "An excerpt or note shown under the title."
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "$ref": "#/$defs/TranslationRef"
+                                    }
+                                  ]
                                 },
                                 {
-                                  "$ref": "#/$defs/TranslationRef"
+                                  "type": "number"
                                 }
-                              ]
+                              ],
+                              "description": "An excerpt or note shown under the title."
                             }
                           },
                           "required": ["title", "url"],
-                          "additionalProperties": false,
                           "description": "One source an answer cites."
                         }
                       },
@@ -11020,8 +11119,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -11606,10 +11704,17 @@
                               "items": {
                                 "anyOf": [
                                   {
-                                    "type": "string"
+                                    "anyOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "$ref": "#/$defs/TranslationRef"
+                                      }
+                                    ]
                                   },
                                   {
-                                    "$ref": "#/$defs/TranslationRef"
+                                    "type": "number"
                                   }
                                 ]
                               }
@@ -11618,8 +11723,7 @@
                               "type": "boolean"
                             }
                           },
-                          "required": ["id", "cells"],
-                          "additionalProperties": false
+                          "required": ["id", "cells"]
                         }
                       },
                       {
@@ -11634,10 +11738,17 @@
                         "items": {
                           "anyOf": [
                             {
-                              "type": "string"
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "$ref": "#/$defs/TranslationRef"
+                                }
+                              ]
                             },
                             {
-                              "$ref": "#/$defs/TranslationRef"
+                              "type": "number"
                             }
                           ]
                         }
@@ -12117,13 +12228,18 @@
                               ]
                             },
                             "type": {
-                              "type": "string",
-                              "enum": ["command", "output", "error", "comment"],
-                              "description": "Colours the line. Defaults to `output`."
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "description": "Colours the line. Defaults to `output`."
+                                },
+                                {
+                                  "$ref": "#/$defs/TranslationRef"
+                                }
+                              ]
                             }
                           },
                           "required": ["text"],
-                          "additionalProperties": false,
                           "description": "One line of the script."
                         }
                       },
@@ -12167,8 +12283,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -12660,20 +12775,34 @@
                             "title": {
                               "anyOf": [
                                 {
-                                  "type": "string"
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "$ref": "#/$defs/TranslationRef"
+                                    }
+                                  ]
                                 },
                                 {
-                                  "$ref": "#/$defs/TranslationRef"
+                                  "type": "number"
                                 }
                               ]
                             },
                             "description": {
                               "anyOf": [
                                 {
-                                  "type": "string"
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "$ref": "#/$defs/TranslationRef"
+                                    }
+                                  ]
                                 },
                                 {
-                                  "$ref": "#/$defs/TranslationRef"
+                                  "type": "number"
                                 }
                               ]
                             },
@@ -12690,6 +12819,23 @@
                             "icon": {
                               "anyOf": [
                                 {
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "$ref": "#/$defs/TranslationRef"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ]
+                            },
+                            "status": {
+                              "anyOf": [
+                                {
                                   "type": "string"
                                 },
                                 {
@@ -12697,17 +12843,18 @@
                                 }
                               ]
                             },
-                            "status": {
-                              "type": "string",
-                              "enum": ["complete", "current", "upcoming"]
-                            },
                             "tone": {
-                              "type": "string",
-                              "enum": ["neutral", "info", "success", "warning", "danger"]
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "$ref": "#/$defs/TranslationRef"
+                                }
+                              ]
                             }
                           },
-                          "required": ["id", "title"],
-                          "additionalProperties": false
+                          "required": ["id", "title"]
                         }
                       },
                       {
@@ -12880,8 +13027,7 @@
                               "type": "number"
                             }
                           },
-                          "required": ["id", "label"],
-                          "additionalProperties": false
+                          "required": ["id", "label"]
                         }
                       },
                       {
@@ -12914,8 +13060,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -13162,10 +13307,17 @@
                             "icon": {
                               "anyOf": [
                                 {
-                                  "type": "string"
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "$ref": "#/$defs/TranslationRef"
+                                    }
+                                  ]
                                 },
                                 {
-                                  "$ref": "#/$defs/TranslationRef"
+                                  "type": "number"
                                 }
                               ]
                             },
@@ -13173,8 +13325,7 @@
                               "type": "boolean"
                             }
                           },
-                          "required": ["value"],
-                          "additionalProperties": false
+                          "required": ["value"]
                         }
                       },
                       {
@@ -13330,8 +13481,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -13480,8 +13630,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -13639,20 +13788,34 @@
                             "label": {
                               "anyOf": [
                                 {
-                                  "type": "string"
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "$ref": "#/$defs/TranslationRef"
+                                    }
+                                  ]
                                 },
                                 {
-                                  "$ref": "#/$defs/TranslationRef"
+                                  "type": "number"
                                 }
                               ]
                             },
                             "icon": {
                               "anyOf": [
                                 {
-                                  "type": "string"
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "$ref": "#/$defs/TranslationRef"
+                                    }
+                                  ]
                                 },
                                 {
-                                  "$ref": "#/$defs/TranslationRef"
+                                  "type": "number"
                                 }
                               ]
                             }
@@ -14051,8 +14214,7 @@
                               ]
                             }
                           },
-                          "required": ["value", "label"],
-                          "additionalProperties": false
+                          "required": ["value", "label"]
                         }
                       },
                       {
@@ -14551,8 +14713,7 @@
                               "xl": {
                                 "type": "number"
                               }
-                            },
-                            "additionalProperties": false
+                            }
                           }
                         ]
                       },
@@ -14629,8 +14790,7 @@
                               "xl": {
                                 "type": "number"
                               }
-                            },
-                            "additionalProperties": false
+                            }
                           }
                         ]
                       },
@@ -15330,14 +15490,19 @@
                             "type": "object",
                             "properties": {
                               "method": {
-                                "type": "string",
-                                "enum": ["lttb", "minmax"]
+                                "anyOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "$ref": "#/$defs/TranslationRef"
+                                  }
+                                ]
                               },
                               "threshold": {
                                 "type": "number"
                               }
-                            },
-                            "additionalProperties": false
+                            }
                           }
                         ]
                       },
@@ -15677,8 +15842,7 @@
                               }
                             }
                           },
-                          "required": ["id", "label", "values"],
-                          "additionalProperties": false
+                          "required": ["id", "label", "values"]
                         }
                       },
                       {
@@ -15839,13 +16003,11 @@
                                     "type": "number"
                                   }
                                 },
-                                "required": ["x", "y", "size"],
-                                "additionalProperties": false
+                                "required": ["x", "y", "size"]
                               }
                             }
                           },
-                          "required": ["name", "data"],
-                          "additionalProperties": false
+                          "required": ["name", "data"]
                         }
                       },
                       {
@@ -16360,7 +16522,6 @@
                             }
                           },
                           "required": ["t", "open", "high", "low", "close"],
-                          "additionalProperties": false,
                           "description": "Shape of the `data` prop."
                         }
                       },
@@ -16612,8 +16773,7 @@
                               "type": "number"
                             }
                           },
-                          "required": ["label", "value"],
-                          "additionalProperties": false
+                          "required": ["label", "value"]
                         }
                       },
                       {
@@ -16635,8 +16795,7 @@
                               "type": "number"
                             }
                           },
-                          "required": ["x", "y"],
-                          "additionalProperties": false
+                          "required": ["x", "y"]
                         }
                       },
                       {
@@ -16888,7 +17047,6 @@
                             }
                           },
                           "required": ["id", "label", "value"],
-                          "additionalProperties": false,
                           "description": "Shape of the `data` prop."
                         }
                       },
@@ -17089,8 +17247,7 @@
                               ]
                             }
                           },
-                          "required": ["upTo", "color"],
-                          "additionalProperties": false
+                          "required": ["upTo", "color"]
                         }
                       },
                       {
@@ -17280,8 +17437,7 @@
                               "type": "number"
                             }
                           },
-                          "required": ["x", "y", "value"],
-                          "additionalProperties": false
+                          "required": ["x", "y", "value"]
                         }
                       },
                       {
@@ -17980,14 +18136,19 @@
                             "type": "object",
                             "properties": {
                               "method": {
-                                "type": "string",
-                                "enum": ["lttb", "minmax"]
+                                "anyOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "$ref": "#/$defs/TranslationRef"
+                                  }
+                                ]
                               },
                               "threshold": {
                                 "type": "number"
                               }
-                            },
-                            "additionalProperties": false
+                            }
                           }
                         ]
                       },
@@ -18032,8 +18193,7 @@
                                   ]
                                 }
                               }
-                            },
-                            "additionalProperties": false
+                            }
                           }
                         ]
                       },
@@ -18167,8 +18327,7 @@
                           "critical": {
                             "type": "number"
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -18300,7 +18459,6 @@
                             }
                           },
                           "required": ["id", "label", "value"],
-                          "additionalProperties": false,
                           "description": "One slice. Pass via the `data` prop."
                         }
                       },
@@ -18581,7 +18739,6 @@
                             }
                           },
                           "required": ["label", "value"],
-                          "additionalProperties": false,
                           "description": "Shape of the `data` prop."
                         }
                       },
@@ -18806,8 +18963,7 @@
                               }
                             }
                           },
-                          "required": ["id", "label", "values"],
-                          "additionalProperties": false
+                          "required": ["id", "label", "values"]
                         }
                       },
                       {
@@ -19009,7 +19165,6 @@
                             }
                           },
                           "required": ["id", "label", "value"],
-                          "additionalProperties": false,
                           "description": "Shape of the `data` prop."
                         }
                       },
@@ -19248,7 +19403,6 @@
                             }
                           },
                           "required": ["id", "label"],
-                          "additionalProperties": false,
                           "description": "Shape of the `nodes` prop."
                         }
                       },
@@ -19289,7 +19443,6 @@
                             }
                           },
                           "required": ["source", "target", "value"],
-                          "additionalProperties": false,
                           "description": "Shape of the `links` prop."
                         }
                       },
@@ -19786,7 +19939,6 @@
                             }
                           },
                           "required": ["id", "label", "values"],
-                          "additionalProperties": false,
                           "description": "Shape of the `series` prop."
                         }
                       },
@@ -20212,8 +20364,7 @@
                               "type": "number"
                             }
                           },
-                          "required": ["id", "label", "value"],
-                          "additionalProperties": false
+                          "required": ["id", "label", "value"]
                         }
                       },
                       {
@@ -21616,8 +21767,7 @@
                             "type": "number"
                           }
                         },
-                        "required": ["x", "y", "zoom"],
-                        "additionalProperties": false
+                        "required": ["x", "y", "zoom"]
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -21778,8 +21928,7 @@
                             "type": "number"
                           }
                         },
-                        "required": ["x", "y"],
-                        "additionalProperties": false
+                        "required": ["x", "y"]
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -21798,8 +21947,7 @@
                             "type": "number"
                           }
                         },
-                        "required": ["x", "y"],
-                        "additionalProperties": false
+                        "required": ["x", "y"]
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -22191,8 +22339,7 @@
                             "type": "number"
                           }
                         },
-                        "required": ["x", "y", "zoom"],
-                        "additionalProperties": false
+                        "required": ["x", "y", "zoom"]
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -22274,8 +22421,7 @@
                             "type": "number"
                           }
                         },
-                        "required": ["x", "y", "zoom"],
-                        "additionalProperties": false
+                        "required": ["x", "y", "zoom"]
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"

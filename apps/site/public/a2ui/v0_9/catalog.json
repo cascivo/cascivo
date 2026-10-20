@@ -2682,6 +2682,9 @@
                       "value": {
                         "type": "string"
                       },
+                      "id": {
+                        "type": "string"
+                      },
                       "icon": {
                         "type": "string"
                       },
@@ -2692,7 +2695,7 @@
                         "type": "boolean"
                       }
                     },
-                    "required": ["label", "value"],
+                    "required": ["label"],
                     "additionalProperties": false
                   },
                   "description": "The items to render."

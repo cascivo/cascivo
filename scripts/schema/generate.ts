@@ -8,7 +8,14 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { componentNames as renderableNames } from '../../packages/render/src/component-names.ts'
-import { classifyProp, contextFor, pickCanonical, type JsonSchema } from './catalog-model.ts'
+import {
+  classifyProp,
+  contextFor,
+  pickCanonical,
+  type JsonSchema,
+  type ResolveContext,
+  type TypeDefMeta,
+} from './catalog-model.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = join(HERE, '..', '..')
@@ -59,6 +66,38 @@ function viewPropSchema(schema: JsonSchema): JsonSchema {
   return { anyOf: [inner as JsonSchema, TRANSLATION_REF] }
 }
 
+/**
+ * Manifest type strings drift from source (an optional `id` the manifest omits, a status input
+ * the source also accepts), and these two outputs gate rendering, so nested fields are checked
+ * for presence and type only. catalog.v1 and the A2UI catalog keep the strict schema (R12).
+ */
+function lenientContext(typeDefs: readonly TypeDefMeta[] | undefined): ResolveContext {
+  // A ReactNode in data renders numbers as well as strings.
+  return {
+    ...contextFor(typeDefs),
+    nodeInData: { anyOf: [{ type: 'string' }, { type: 'number' }] },
+  }
+}
+
+/** Drops `additionalProperties: false` everywhere and `enum` below the prop's own value. */
+function lenient(node: JsonSchema, nested = false): JsonSchema {
+  const out: JsonSchema = {}
+  for (const [k, v] of Object.entries(node)) {
+    if ((k === 'additionalProperties' && v === false) || (nested && k === 'enum')) continue
+    if (k === 'properties' && typeof v === 'object' && v !== null) {
+      out[k] = Object.fromEntries(
+        Object.entries(v).map(([f, sub]) => [f, lenient(sub as JsonSchema, true)]),
+      )
+    } else if (k === 'items' && typeof v === 'object' && v !== null) {
+      out[k] = lenient(v as JsonSchema, true)
+    } else if (k === 'anyOf' && Array.isArray(v)) {
+      // Branches of the prop's own value are still top level: a top-level enum stays exact.
+      out[k] = v.map((b: JsonSchema) => lenient(b, nested))
+    } else out[k] = v
+  }
+  return out
+}
+
 const registry: Registry = JSON.parse(readFileSync(REGISTRY_PATH, 'utf-8'))
 // One entry per meta.name, node-usable `component` entry first (AppShell/Stack share names).
 const canonical = pickCanonical(registry.components)
@@ -98,7 +137,7 @@ const propValue = {
 // Per-component anyOf branches constraining props
 const componentBranches = [...canonical.values()].map((entry) => {
   const name = entry.meta.name
-  const ctx = contextFor(entry.meta.typeDefs)
+  const ctx = lenientContext(entry.meta.typeDefs)
   const props: Record<string, unknown> = {}
   const required: string[] = []
 
@@ -106,7 +145,7 @@ const componentBranches = [...canonical.values()].map((entry) => {
     // Slots, events and omitted props get no constraint: children is a node field, not a prop.
     const c = classifyProp(prop, ctx)
     if (c.kind !== 'data') continue
-    props[prop.name] = viewPropSchema(c.schema)
+    props[prop.name] = viewPropSchema(lenient(c.schema))
     if (prop.required && prop.default === undefined) required.push(prop.name)
   }
 
@@ -264,12 +303,13 @@ function shapeOf(schema: JsonSchema): JsonSchema | undefined {
 const propSchemas: Record<string, unknown[]> = {}
 for (const name of [...canonical.keys()].sort()) {
   const entry = canonical.get(name)!
-  const ctx = contextFor(entry.meta.typeDefs)
+  const ctx = lenientContext(entry.meta.typeDefs)
   propSchemas[name] = entry.meta.props.map((p) => {
     const { enum: enumValues, primitives } = classifyPropType(p.type)
     const c = classifyProp(p, ctx)
     // validateView only checks props of components the renderer can build; other shapes are dead bytes.
-    const shape = c.kind === 'data' && renderableNames.has(name) ? shapeOf(c.schema) : undefined
+    const shape =
+      c.kind === 'data' && renderableNames.has(name) ? shapeOf(lenient(c.schema)) : undefined
     return {
       name: p.name,
       required: p.required === true,

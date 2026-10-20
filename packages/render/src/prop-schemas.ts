@@ -770,7 +770,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
             },
           },
           required: ['label'],
-          additionalProperties: false,
         },
       },
     },
@@ -2135,11 +2134,9 @@ export const propSchemas: Record<string, PropSchema[]> = {
             },
             align: {
               type: 'string',
-              enum: ['start', 'end'],
             },
             filter: {
               type: 'string',
-              enum: ['text', 'select', 'range'],
             },
             editable: {
               type: 'boolean',
@@ -2180,7 +2177,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
           },
           direction: {
             type: 'string',
-            enum: ['asc', 'desc'],
           },
           thenBy: {
             type: 'array',
@@ -2192,16 +2188,13 @@ export const propSchemas: Record<string, PropSchema[]> = {
                 },
                 direction: {
                   type: 'string',
-                  enum: ['asc', 'desc'],
                 },
               },
               required: ['key', 'direction'],
-              additionalProperties: false,
             },
           },
         },
         required: ['key', 'direction'],
-        additionalProperties: false,
       },
     },
     {
@@ -2215,7 +2208,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
           },
           direction: {
             type: 'string',
-            enum: ['asc', 'desc'],
           },
           thenBy: {
             type: 'array',
@@ -2227,16 +2219,13 @@ export const propSchemas: Record<string, PropSchema[]> = {
                 },
                 direction: {
                   type: 'string',
-                  enum: ['asc', 'desc'],
                 },
               },
               required: ['key', 'direction'],
-              additionalProperties: false,
             },
           },
         },
         required: ['key', 'direction'],
-        additionalProperties: false,
       },
     },
     {
@@ -2283,7 +2272,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
         properties: {
           mode: {
             type: 'string',
-            enum: ['single', 'multi'],
           },
           selected: {
             type: 'array',
@@ -2388,7 +2376,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
             type: 'boolean',
           },
         },
-        additionalProperties: false,
       },
     },
     {
@@ -2455,7 +2442,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
             },
           },
         },
-        additionalProperties: false,
       },
     },
     {
@@ -2477,7 +2463,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
             },
           },
           required: ['header', 'columns'],
-          additionalProperties: false,
         },
       },
     },
@@ -2496,7 +2481,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
                 type: 'string',
               },
             },
-            additionalProperties: false,
           },
         ],
       },
@@ -2825,25 +2809,29 @@ export const propSchemas: Record<string, PropSchema[]> = {
                   type: 'string',
                 },
                 icon: {
-                  type: 'string',
+                  anyOf: [
+                    {
+                      type: 'string',
+                    },
+                    {
+                      type: 'number',
+                    },
+                  ],
                 },
                 disabled: {
                   type: 'boolean',
                 },
               },
               required: ['label', 'value'],
-              additionalProperties: false,
             },
             {
               type: 'object',
               properties: {
                 kind: {
                   type: 'string',
-                  enum: ['separator'],
                 },
               },
               required: ['kind'],
-              additionalProperties: false,
             },
           ],
         },
@@ -3873,7 +3861,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
                 type: 'number',
               },
             },
-            additionalProperties: false,
           },
         ],
       },
@@ -3924,7 +3911,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
                 type: 'number',
               },
             },
-            additionalProperties: false,
           },
         ],
       },
@@ -3958,7 +3944,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
             },
           },
           required: ['label', 'href'],
-          additionalProperties: false,
         },
       },
     },
@@ -5459,8 +5444,18 @@ export const propSchemas: Record<string, PropSchema[]> = {
             value: {
               type: 'string',
             },
-            icon: {
+            id: {
               type: 'string',
+            },
+            icon: {
+              anyOf: [
+                {
+                  type: 'string',
+                },
+                {
+                  type: 'number',
+                },
+              ],
             },
             disabled: {
               type: 'boolean',
@@ -5469,8 +5464,7 @@ export const propSchemas: Record<string, PropSchema[]> = {
               type: 'boolean',
             },
           },
-          required: ['label', 'value'],
-          additionalProperties: false,
+          required: ['label'],
         },
       },
     },
@@ -5927,7 +5921,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
             },
           },
           required: ['label'],
-          additionalProperties: false,
         },
       },
     },
@@ -6734,7 +6727,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
             },
           },
           required: ['value', 'label'],
-          additionalProperties: false,
         },
       },
     },
@@ -6867,7 +6859,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
                   },
                 },
                 required: ['label', 'href'],
-                additionalProperties: false,
               },
             },
             active: {
@@ -6897,7 +6888,14 @@ export const propSchemas: Record<string, PropSchema[]> = {
               type: 'string',
             },
             icon: {
-              type: 'string',
+              anyOf: [
+                {
+                  type: 'string',
+                },
+                {
+                  type: 'number',
+                },
+              ],
             },
             active: {
               type: 'boolean',
@@ -7940,28 +7938,46 @@ export const propSchemas: Record<string, PropSchema[]> = {
               type: 'string',
             },
             title: {
-              type: 'string',
+              anyOf: [
+                {
+                  type: 'string',
+                },
+                {
+                  type: 'number',
+                },
+              ],
             },
             description: {
-              type: 'string',
+              anyOf: [
+                {
+                  type: 'string',
+                },
+                {
+                  type: 'number',
+                },
+              ],
             },
             time: {
               type: 'string',
             },
             icon: {
-              type: 'string',
+              anyOf: [
+                {
+                  type: 'string',
+                },
+                {
+                  type: 'number',
+                },
+              ],
             },
             status: {
               type: 'string',
-              enum: ['complete', 'current', 'upcoming'],
             },
             tone: {
               type: 'string',
-              enum: ['neutral', 'info', 'success', 'warning', 'danger'],
             },
           },
           required: ['id', 'title'],
-          additionalProperties: false,
         },
       },
     },

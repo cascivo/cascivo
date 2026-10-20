@@ -176,6 +176,21 @@ describe('view.v1.json schema artifact', () => {
       expect(validate(node({ component: 'Select' }))).toBe(false)
     })
 
+    it('keeps nested objects open and nested enums loose, as validateView does (R12)', () => {
+      const validate = validator()
+      const ok = node({
+        component: 'Timeline',
+        props: { items: [{ id: 't', title: 2024, status: 'active', tone: { $t: 'x' }, extra: 1 }] },
+      })
+      expect(validate(ok), JSON.stringify(validate.errors)).toBe(true)
+      expect(validate(node({ component: 'Timeline', props: { items: [{ title: 'x' }] } }))).toBe(
+        false,
+      )
+      expect(
+        validate(node({ component: 'Timeline', props: { items: [{ id: 't', title: true }] } })),
+      ).toBe(false)
+    })
+
     it('still rejects a wrong-typed prop', () => {
       const validate = validator()
       const config = {

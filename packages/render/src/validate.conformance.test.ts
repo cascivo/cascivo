@@ -76,12 +76,12 @@ describe('validateView() deep prop shapes (v61 T6)', () => {
     expect(result.errors[0]!.path).toMatch(/\.props\.columns\[0\]\.key$/)
   })
 
-  it('flags an unknown field on a column', () => {
-    const result = validateView(
-      view({ component: 'Breadcrumb', props: { items: [{ label: 'Home', bogus: 1 }] } }),
-    )
-    expect(result.errors.some((e) => e.path.endsWith('.bogus'))).toBe(true)
-    // DataTable's Column drops its optional `render` function field, so its object stays open (R11).
+  it('accepts unknown nested fields: manifests drift from source (R12)', () => {
+    expect(
+      validateView(
+        view({ component: 'Breadcrumb', props: { items: [{ label: 'Home', bogus: 1 }] } }),
+      ),
+    ).toEqual({ valid: true, errors: [] })
     expect(
       validateView(
         view({ component: 'DataTable', props: { columns: [{ key: 'a', header: 'A', extra: 1 }] } }),
@@ -109,15 +109,18 @@ describe('validateView() deep prop shapes (v61 T6)', () => {
     )
   })
 
-  it('does not let prototype keys bypass additionalProperties:false', () => {
+  it('does not let a prototype key satisfy a required nested field', () => {
     const result = validateView(
-      view({
-        component: 'Breadcrumb',
-        props: { items: [{ label: 'Home', constructor: 1 }] },
-      }),
+      view({ component: 'Breadcrumb', props: { items: [Object.create({ label: 'Home' })] } }),
     )
     expect(result.errors).toHaveLength(1)
-    expect(result.errors[0]!.path).toMatch(/items\[0\]\.constructor$/)
+    expect(result.errors[0]!.path).toMatch(/items\[0\]\.label$/)
+    // A field named like an Object.prototype key is an ordinary (unknown) field, not a schema.
+    expect(
+      validateView(
+        view({ component: 'Breadcrumb', props: { items: [{ label: 'Home', constructor: 1 }] } }),
+      ),
+    ).toEqual({ valid: true, errors: [] })
   })
 
   it('does not treat inherited keys as present required fields', () => {
@@ -139,6 +142,61 @@ describe('validateView() deep prop shapes (v61 T6)', () => {
     const long = validateView(view({ component: 'DataTable', props: { columns: big } }))
     expect(long.errors[0]!.message).toContain('…')
     expect(long.errors[0]!.message.length).toBeLessThan(200)
+  })
+
+  // Each row rendered before shapes were checked; the manifest type strings lag the source (R12).
+  it.each([
+    [
+      'Header.links[].id',
+      { component: 'Header', props: { links: [{ id: 'h', label: 'Home', href: '/' }] } },
+    ],
+    [
+      'Breadcrumb.items[].id',
+      { component: 'Breadcrumb', props: { items: [{ id: 'b', label: 'Home', href: '/' }] } },
+    ],
+    [
+      'ProgressIndicator.steps[].id',
+      { component: 'ProgressIndicator', props: { steps: [{ id: 's', label: 'One' }] } },
+    ],
+    [
+      'OverflowMenu.items[] id alias of value',
+      { component: 'OverflowMenu', props: { items: [{ label: 'Edit', id: 'edit' }] } },
+    ],
+    [
+      'Timeline.items[] status/tone inputs',
+      {
+        component: 'Timeline',
+        props: { items: [{ id: 't', title: 'Launch', status: 'active', tone: 'error' }] },
+      },
+    ],
+    [
+      'Timeline.items[].title as a number',
+      { component: 'Timeline', props: { items: [{ id: 't', title: 2024 }] } },
+    ],
+    [
+      'ShellHeader.nav[].items[].id',
+      {
+        component: 'ShellHeader',
+        props: { nav: [{ label: 'Docs', items: [{ id: 'a', label: 'A', href: '/a' }] }] },
+      },
+    ],
+  ])('accepts a config that renders: %s', (_name, node) => {
+    expect(validateView(view(node))).toEqual({ valid: true, errors: [] })
+  })
+
+  it('still rejects a missing required nested field', () => {
+    const result = validateView(view({ component: 'Timeline', props: { items: [{ title: 'x' }] } }))
+    expect(result.errors.map((e) => e.path)).toEqual(['view.regions.main[0].props.items[0].id'])
+  })
+
+  it('still rejects a wrong-typed nested field', () => {
+    const result = validateView(
+      view({
+        component: 'Header',
+        props: { links: [{ label: 'Home', href: '/', active: 'yes' }] },
+      }),
+    )
+    expect(result.errors.map((e) => e.path)).toEqual(['view.regions.main[0].props.links[0].active'])
   })
 
   it('names object/array in anyOf messages', () => {

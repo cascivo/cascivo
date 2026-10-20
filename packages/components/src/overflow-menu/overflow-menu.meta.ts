@@ -13,7 +13,7 @@ export const meta: ComponentMeta = {
     {
       name: 'items',
       description: 'The items to render.',
-      type: '{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]',
+      type: '{ label: string; value?: string; id?: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]',
       required: true,
     },
     {
