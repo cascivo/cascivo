@@ -26,8 +26,15 @@ import { eventually, firstVisible, goTo } from '../_lib.ts'
  * shows no error next to any field: the bubble names one field at a time and is gone on the next
  * click, and an invalid email never reaches the app's own submit handler.
  */
-/** Word-bounded, so "consent", "essential" or "present" in a hint or an error is not success. */
-const SUCCESS = /\bthank|\bsent\b|\bsuccess|\breceived\b/i
+/**
+ * A success message: thank, sent, success, received, submitted, got it, be in touch. Word-bounded,
+ * so "consent", "essential" or "present" in a hint or an error is not success. Not when a
+ * negation (not, cannot, n't, couldn't, unable, failed) comes before the word in the same
+ * sentence: "Your message was not sent" and "could not be sent" are refusals, and reading them
+ * as success would fail a correct app on its invalid submit. A sentence ends at `.`, `!` or `?`.
+ */
+const SUCCESS =
+  /(?<!(?:\bnot|\bcannot|n['’]t|\bunable|\bfailed)\b[^.!?]*)(?:\bthank|\bsent\b|\bsuccess|\breceived\b|\bsubmitted\b|\bgot it\b|\bbe in touch\b)/i
 
 type FieldKey = 'name' | 'email' | 'message'
 
@@ -261,7 +268,9 @@ async function validSubmitSucceeds(page: Page, baseUrl: string): Promise<void> {
   await submit(page)
   const succeeded = async () => [...(await successTexts(page))].some((t) => !shown.has(t))
   if (!(await eventually(succeeded)))
-    throw new Error('valid submit: no new text matching thank/sent/success/received')
+    throw new Error(
+      'valid submit: no new text matching thank/sent/success/received/submitted/got it/be in touch',
+    )
   const after = await zones(page, known)
   for (const [i, spec] of FIELDS.entries()) {
     const zone = after[i] ?? null

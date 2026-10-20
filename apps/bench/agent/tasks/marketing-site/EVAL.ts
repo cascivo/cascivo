@@ -28,8 +28,7 @@ async function sectionOnPage(page: Page, name: RegExp): Promise<boolean> {
   if (await anyVisible(page.getByRole('heading', { name }))) return true
   if (await anyVisible(page.getByRole('region', { name }))) return true
   for (const link of await page.getByRole('link', { name }).all()) {
-    const href = await link.getAttribute('href')
-    const id = href?.startsWith('#') ? decodeURIComponent(href.slice(1)) : ''
+    const id = inPageTarget(await link.getAttribute('href'), page.url())
     if (id === '' || id.startsWith('/')) continue
     const target = await page.evaluate((targetId) => {
       const el = document.getElementById(targetId)
@@ -38,6 +37,31 @@ async function sectionOnPage(page: Page, name: RegExp): Promise<boolean> {
     if (target) return true
   }
   return false
+}
+
+/**
+ * The element id an href points at on the page at `pageUrl`, or '' when it points elsewhere:
+ * `#features`, and `/#features` from `/` (a site with other routes writes in-page links that
+ * way). A `#/route` hash is a route, not an anchor; the caller skips ids that start with `/`.
+ * A malformed `%` escape is no target, not a failure.
+ */
+function inPageTarget(href: string | null, pageUrl: string): string {
+  if (href === null) return ''
+  let url: URL
+  let here: URL
+  try {
+    url = new URL(href, pageUrl)
+    here = new URL(pageUrl)
+  } catch {
+    return ''
+  }
+  const page = (u: URL) => `${u.origin}${u.pathname.replace(/\/+$/, '')}${u.search}`
+  if (url.hash.length < 2 || page(url) !== page(here)) return ''
+  try {
+    return decodeURIComponent(url.hash.slice(1))
+  } catch {
+    return ''
+  }
 }
 
 interface TextRun {
@@ -72,11 +96,15 @@ function textRuns(page: Page): Promise<TextRun[]> {
       add(h.closest('section, article, [role="region"]') ?? h.parentElement)
     for (const region of all('section[aria-label], [role="region"]'))
       if (faqName.test(region.getAttribute('aria-label') ?? '')) add(region)
-    for (const link of all('a[href^="#"]')) {
+    // The same in-page targets as inPageTarget: `#faq`, or `/#faq` from `/`.
+    const page = (u: URL) => `${u.origin}${u.pathname.replace(/\/+$/, '')}${u.search}`
+    for (const link of all('a[href*="#"]')) {
       const name = `${link.textContent ?? ''} ${link.getAttribute('aria-label') ?? ''}`
       let id = ''
       try {
-        id = decodeURIComponent((link.getAttribute('href') ?? '').slice(1))
+        const url = new URL(link.getAttribute('href') ?? '', location.href)
+        if (page(url) !== page(new URL(location.href))) continue
+        id = decodeURIComponent(url.hash.slice(1))
       } catch {
         continue
       }

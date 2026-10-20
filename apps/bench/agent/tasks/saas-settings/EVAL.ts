@@ -58,11 +58,18 @@ export default async function evaluate(page: Page, baseUrl: string): Promise<voi
   // Rendered first, so the short per-page probe below cannot mistake a slow first paint for a
   // landing page that is none of the three.
   await eventually(() => anyVisible(page.getByRole('heading')))
-  // The landing page may already be one of the three; the other two must each take a click.
+  // The landing page may already be one of the three; the other two must each take a click. A
+  // page counts without a click only when it is that page, heading and control: a settings index
+  // with "Profile", "Billing" and "Notifications" card headings is a menu of the three, not one.
   let navigations = 0
   for (const { label, heading, actionsCount } of PAGES) {
     const headingOf = page.getByRole('heading', { name: heading })
-    if (!(await eventually(() => anyVisible(headingOf), 1000))) {
+    // The control gets the full wait: a page that is this one may render its form after its
+    // heading, and clicking its own nav link again would change nothing.
+    const here =
+      (await eventually(() => anyVisible(headingOf), 1000)) &&
+      (await eventually(() => labelledControl(page, actionsCount)))
+    if (!here) {
       await goTo(page, baseUrl, heading)
       navigations += 1
       if (!(await eventually(() => anyVisible(headingOf))))

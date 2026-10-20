@@ -15,8 +15,11 @@ export interface GoToOptions {
 }
 
 /**
- * Click the first visible link or button whose name matches, then wait until the click had an
- * observable effect, and throw if it had none.
+ * Click the first visible link or button whose name matches, preferring one inside a navigation
+ * landmark (`<nav>`, `role="navigation"`), then wait until the click had an observable effect,
+ * and throw if it had none. The preference matters when the page also has a same-named control
+ * outside the navigation: a header "Settings" or "Profile" button that opens an account menu
+ * changes the DOM, so it would pass the effect check and leave the page where it was.
  *
  * Agents pick history routing or hash routing freely, and a hash change fires no load event, so
  * there is no single "navigation finished" signal. We wait for any evidence of an effect instead:
@@ -34,12 +37,16 @@ export async function goTo(
   const { expectNavigation = true, timeoutMs = SETTLE_MS } = opts
   // A prior step may have left the browser on a blank page or another origin.
   if (!sameOrigin(page.url(), baseUrl)) await page.goto(baseUrl)
-  const target = page
-    .getByRole('link', { name })
-    .or(page.getByRole('button', { name }))
-    .and(page.locator(':visible'))
-    .first()
-  await target.waitFor({ state: 'visible', timeout: timeoutMs })
+  const matches = (scope: Page | Locator) =>
+    scope
+      .getByRole('link', { name })
+      .or(scope.getByRole('button', { name }))
+      .and(page.locator(':visible'))
+      .first()
+  const anywhere = matches(page)
+  await anywhere.waitFor({ state: 'visible', timeout: timeoutMs })
+  const inNav = matches(page.getByRole('navigation'))
+  const target = (await inNav.count()) > 0 ? inNav : anywhere
   const handle = await target.elementHandle({ timeout: timeoutMs })
   if (handle === null) throw new Error(`goTo: "${String(name)}" vanished before the click`)
   const before = page.url()
