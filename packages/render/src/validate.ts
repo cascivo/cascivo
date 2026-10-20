@@ -77,10 +77,28 @@ function primitiveOf(value: unknown): PropPrimitive | 'object' {
 const typeOf = (value: unknown): string =>
   value === null ? 'null' : Array.isArray(value) ? 'array' : typeof value
 
+/** The field that tells an object branch apart: a single-value field, else the first required one. */
+function objectDiscriminator(shape: ShapeSchema): string | undefined {
+  const properties = shape['properties']
+  if (typeof properties === 'object' && properties !== null) {
+    for (const [field, sub] of Object.entries(properties as Record<string, ShapeSchema>)) {
+      const only = 'const' in sub ? [sub['const']] : sub['enum']
+      if (Array.isArray(only) && only.length === 1) return `${field}: ${JSON.stringify(only[0])}`
+    }
+  }
+  const required = shape['required']
+  return Array.isArray(required) && typeof required[0] === 'string' ? required[0] : undefined
+}
+
 /** Short name of what a shape expects, for an anyOf error. */
 function describeShape(shape: ShapeSchema): string {
   const { enum: values, type } = shape
   if (Array.isArray(values)) return values.map((v) => JSON.stringify(v)).join(' | ')
+  if (type === 'object') {
+    // "object or object" says nothing; name what each branch needs.
+    const key = objectDiscriminator(shape)
+    return key ? `object with ${key}` : 'object'
+  }
   if (typeof type === 'string') return type
   return 'anyOf' in shape ? 'a union' : 'any'
 }

@@ -206,6 +206,11 @@ describe('validateView() deep prop shapes (v61 T6)', () => {
     expect(anyOf).toBeDefined()
   })
 
+  it('tells anyOf object branches apart by a required key', () => {
+    const result = validateView(view({ component: 'Dropdown', props: { items: [5] } }))
+    expect(result.errors[0]!.message).toContain('expected object with label or object with kind')
+  })
+
   it('emits shapes only for components the renderer can build', () => {
     const dead = Object.entries(propSchemas)
       .filter(([name]) => !componentNames.has(name))
