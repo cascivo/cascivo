@@ -98,18 +98,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          cancel: {
-            type: 'string',
-          },
-          label: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
     {
       name: 'className',
@@ -134,24 +122,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          text: {
-            type: 'string',
-          },
-          explain: {
-            type: 'string',
-          },
-          description: {
-            type: 'string',
-          },
-          revert: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
   ],
   AiDisclaimer: [
@@ -162,15 +132,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          text: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
   ],
   AiStatus: [
@@ -186,30 +147,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          thinking: {
-            type: 'string',
-          },
-          generating: {
-            type: 'string',
-          },
-          complete: {
-            type: 'string',
-          },
-          error: {
-            type: 'string',
-          },
-          stopped: {
-            type: 'string',
-          },
-          stop: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
     {
       name: 'onStop',
@@ -309,17 +246,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'persistKey',
       required: false,
       primitives: ['string', 'boolean'],
-      shape: {
-        anyOf: [
-          {
-            type: 'boolean',
-            enum: [false],
-          },
-          {
-            type: 'string',
-          },
-        ],
-      },
     },
     {
       name: 'state',
@@ -462,22 +388,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        anyOf: [
-          {
-            type: 'boolean',
-          },
-          {
-            type: 'object',
-            properties: {
-              position: {
-                type: 'string',
-              },
-            },
-            additionalProperties: false,
-          },
-        ],
-      },
     },
     {
       name: 'onSelect',
@@ -511,26 +421,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'decimate',
       required: false,
-      shape: {
-        anyOf: [
-          {
-            type: 'boolean',
-          },
-          {
-            type: 'object',
-            properties: {
-              method: {
-                type: 'string',
-                enum: ['lttb', 'minmax'],
-              },
-              threshold: {
-                type: 'number',
-              },
-            },
-            additionalProperties: false,
-          },
-        ],
-      },
     },
     {
       name: 'toolbox',
@@ -543,15 +433,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'secondAxis',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          label: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
   ],
   AspectRatio: [
@@ -750,22 +631,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        anyOf: [
-          {
-            type: 'boolean',
-          },
-          {
-            type: 'object',
-            properties: {
-              position: {
-                type: 'string',
-              },
-            },
-            additionalProperties: false,
-          },
-        ],
-      },
     },
     {
       name: 'onSelect',
@@ -811,12 +676,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'snapPoints',
       required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'number',
-        },
-      },
     },
     {
       name: 'activeSnap',
@@ -847,18 +706,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          close: {
-            type: 'string',
-          },
-          handle: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
     {
       name: 'className',
@@ -870,28 +717,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'series',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-            },
-            label: {
-              type: 'string',
-            },
-            values: {
-              type: 'array',
-              items: {
-                type: 'number',
-              },
-            },
-          },
-          required: ['id', 'label', 'values'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'title',
@@ -974,38 +799,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'series',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            name: {
-              type: 'string',
-            },
-            data: {
-              type: 'array',
-              items: {
-                type: 'object',
-                properties: {
-                  x: {
-                    type: 'number',
-                  },
-                  y: {
-                    type: 'number',
-                  },
-                  size: {
-                    type: 'number',
-                  },
-                },
-                required: ['x', 'y', 'size'],
-                additionalProperties: false,
-              },
-            },
-          },
-          required: ['name', 'data'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'title',
@@ -1065,12 +858,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'ranges',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'number',
-        },
-      },
     },
     {
       name: 'label',
@@ -1317,56 +1104,12 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'visualMap',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          min: {
-            type: 'number',
-          },
-          max: {
-            type: 'number',
-          },
-          pieces: {
-            type: 'number',
-          },
-        },
-        required: ['min', 'max'],
-        additionalProperties: false,
-      },
     },
   ],
   Candlestick: [
     {
       name: 'data',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            t: {
-              type: 'string',
-            },
-            open: {
-              type: 'number',
-            },
-            high: {
-              type: 'number',
-            },
-            low: {
-              type: 'number',
-            },
-            close: {
-              type: 'number',
-            },
-            volume: {
-              type: 'number',
-            },
-          },
-          required: ['t', 'open', 'high', 'low', 'close'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'title',
@@ -1500,12 +1243,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'slides',
       required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
     },
     {
       name: 'index',
@@ -1543,53 +1280,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'items',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-            },
-            title: {
-              type: 'string',
-            },
-            description: {
-              type: 'string',
-            },
-            detail: {
-              type: 'string',
-            },
-            icon: {
-              type: 'string',
-            },
-          },
-          required: ['id', 'title'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          pending: {
-            type: 'string',
-          },
-          active: {
-            type: 'string',
-          },
-          complete: {
-            type: 'string',
-          },
-          error: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
   ],
   ChatBubble: [
@@ -1778,28 +1472,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'commands',
       required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-            },
-            label: {
-              type: 'string',
-            },
-            hint: {
-              type: 'string',
-            },
-            insert: {
-              type: 'string',
-            },
-          },
-          required: ['id', 'label'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'ref',
@@ -1860,18 +1532,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          copy: {
-            type: 'string',
-          },
-          copied: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
     {
       name: 'className',
@@ -1930,12 +1590,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'presets',
       required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
     },
     {
       name: 'alpha',
@@ -2007,42 +1661,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'bars',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            label: {
-              type: 'string',
-            },
-            value: {
-              type: 'number',
-            },
-          },
-          required: ['label', 'value'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'line',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            x: {
-              type: 'number',
-            },
-            y: {
-              type: 'number',
-            },
-          },
-          required: ['x', 'y'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'title',
@@ -2391,15 +2013,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          usage: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
   ],
   CopyButton: [
@@ -2416,18 +2029,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          copy: {
-            type: 'string',
-          },
-          copied: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
   ],
   Cta: [
@@ -3195,15 +2796,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          close: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
     {
       name: 'className',
@@ -3550,22 +3142,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'value',
       required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
     },
     {
       name: 'defaultValue',
       required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
     },
     {
       name: 'onValueChange',
@@ -3636,46 +3216,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'edges',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-            },
-            source: {
-              type: 'string',
-            },
-            target: {
-              type: 'string',
-            },
-            sourceHandle: {
-              type: 'string',
-            },
-            targetHandle: {
-              type: 'string',
-            },
-            animated: {
-              type: 'boolean',
-            },
-            label: {
-              type: 'string',
-            },
-            selected: {
-              type: 'boolean',
-            },
-            markerStart: {
-              type: 'boolean',
-            },
-            markerEnd: {
-              type: 'boolean',
-            },
-          },
-          required: ['id', 'source', 'target'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'onNodesChange',
@@ -3780,22 +3320,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'viewport',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          x: {
-            type: 'number',
-          },
-          y: {
-            type: 'number',
-          },
-          zoom: {
-            type: 'number',
-          },
-        },
-        required: ['x', 'y', 'zoom'],
-        additionalProperties: false,
-      },
     },
     {
       name: 'onViewportChange',
@@ -3842,22 +3366,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'defaultViewport',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          x: {
-            type: 'number',
-          },
-          y: {
-            type: 'number',
-          },
-          zoom: {
-            type: 'number',
-          },
-        },
-        required: ['x', 'y', 'zoom'],
-        additionalProperties: false,
-      },
     },
     {
       name: 'flow',
@@ -4014,22 +3522,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'viewport',
       required: true,
-      shape: {
-        type: 'object',
-        properties: {
-          x: {
-            type: 'number',
-          },
-          y: {
-            type: 'number',
-          },
-          zoom: {
-            type: 'number',
-          },
-        },
-        required: ['x', 'y', 'zoom'],
-        additionalProperties: false,
-      },
     },
     {
       name: 'containerWidth',
@@ -4088,36 +3580,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'position',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          x: {
-            type: 'number',
-          },
-          y: {
-            type: 'number',
-          },
-        },
-        required: ['x', 'y'],
-        additionalProperties: false,
-      },
     },
     {
       name: 'defaultPosition',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          x: {
-            type: 'number',
-          },
-          y: {
-            type: 'number',
-          },
-        },
-        required: ['x', 'y'],
-        additionalProperties: false,
-      },
     },
     {
       name: 'onPositionChange',
@@ -4185,46 +3651,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'edges',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-            },
-            source: {
-              type: 'string',
-            },
-            target: {
-              type: 'string',
-            },
-            sourceHandle: {
-              type: 'string',
-            },
-            targetHandle: {
-              type: 'string',
-            },
-            animated: {
-              type: 'boolean',
-            },
-            label: {
-              type: 'string',
-            },
-            selected: {
-              type: 'boolean',
-            },
-            markerStart: {
-              type: 'boolean',
-            },
-            markerEnd: {
-              type: 'boolean',
-            },
-          },
-          required: ['id', 'source', 'target'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'script',
@@ -4316,28 +3742,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'data',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-            },
-            label: {
-              type: 'string',
-            },
-            value: {
-              type: 'number',
-            },
-            color: {
-              type: 'string',
-            },
-          },
-          required: ['id', 'label', 'value'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'title',
@@ -4399,22 +3803,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'thresholds',
       required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            upTo: {
-              type: 'number',
-            },
-            color: {
-              type: 'string',
-            },
-          },
-          required: ['upTo', 'color'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'unit',
@@ -4638,25 +4026,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'data',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            x: {
-              type: 'string',
-            },
-            y: {
-              type: 'string',
-            },
-            value: {
-              type: 'number',
-            },
-          },
-          required: ['x', 'y', 'value'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'title',
@@ -4691,22 +4060,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'visualMap',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          min: {
-            type: 'number',
-          },
-          max: {
-            type: 'number',
-          },
-          pieces: {
-            type: 'number',
-          },
-        },
-        required: ['min', 'max'],
-        additionalProperties: false,
-      },
     },
     {
       name: 'toolbox',
@@ -4802,12 +4155,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'data',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'number',
-        },
-      },
     },
     {
       name: 'bins',
@@ -5015,18 +4362,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          loadMore: {
-            type: 'string',
-          },
-          loading: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
     {
       name: 'className',
@@ -5043,35 +4378,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'source',
       required: true,
-      shape: {
-        type: 'object',
-        properties: {
-          title: {
-            type: 'string',
-          },
-          url: {
-            type: 'string',
-          },
-          description: {
-            type: 'string',
-          },
-        },
-        required: ['title', 'url'],
-        additionalProperties: false,
-      },
     },
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          source: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
   ],
   InlineLoading: [
@@ -5087,21 +4397,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          active: {
-            type: 'string',
-          },
-          finished: {
-            type: 'string',
-          },
-          error: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
   ],
   Input: [
@@ -5205,16 +4500,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'value',
       required: true,
       primitives: ['string', 'number'],
-      shape: {
-        anyOf: [
-          {
-            type: 'string',
-          },
-          {
-            type: 'number',
-          },
-        ],
-      },
     },
     {
       name: 'label',
@@ -5247,12 +4532,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'sparkline',
       required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'number',
-        },
-      },
     },
     {
       name: 'className',
@@ -5288,15 +4567,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          required: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
   ],
   LargeTitleHeader: [
@@ -5425,22 +4695,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        anyOf: [
-          {
-            type: 'boolean',
-          },
-          {
-            type: 'object',
-            properties: {
-              position: {
-                type: 'string',
-              },
-            },
-            additionalProperties: false,
-          },
-        ],
-      },
     },
     {
       name: 'connectNulls',
@@ -5479,26 +4733,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'decimate',
       required: false,
-      shape: {
-        anyOf: [
-          {
-            type: 'boolean',
-          },
-          {
-            type: 'object',
-            properties: {
-              method: {
-                type: 'string',
-                enum: ['lttb', 'minmax'],
-              },
-              threshold: {
-                type: 'number',
-              },
-            },
-            additionalProperties: false,
-          },
-        ],
-      },
     },
     {
       name: 'toolbox',
@@ -5507,31 +4741,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'transition',
       required: false,
-      shape: {
-        anyOf: [
-          {
-            type: 'boolean',
-          },
-          {
-            type: 'object',
-            properties: {
-              duration: {
-                type: 'number',
-              },
-              easing: {
-                type: 'string',
-              },
-              properties: {
-                type: 'array',
-                items: {
-                  type: 'string',
-                },
-              },
-            },
-            additionalProperties: false,
-          },
-        ],
-      },
     },
     {
       name: 'onBeforeDraw',
@@ -5544,15 +4753,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'secondAxis',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          label: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
   ],
   Link: [
@@ -5737,15 +4937,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          open: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
   ],
   Menubar: [
@@ -5778,32 +4969,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'feedback',
       required: false,
-      shape: {
-        anyOf: [
-          {
-            type: 'string',
-            enum: ['good', 'bad'],
-          },
-          {
-            type: 'null',
-          },
-        ],
-      },
     },
     {
       name: 'defaultFeedback',
       required: false,
-      shape: {
-        anyOf: [
-          {
-            type: 'string',
-            enum: ['good', 'bad'],
-          },
-          {
-            type: 'null',
-          },
-        ],
-      },
     },
     {
       name: 'onFeedbackChange',
@@ -5816,27 +4985,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          group: {
-            type: 'string',
-          },
-          good: {
-            type: 'string',
-          },
-          bad: {
-            type: 'string',
-          },
-          regenerate: {
-            type: 'string',
-          },
-          recorded: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
   ],
   Meter: [
@@ -5868,18 +5016,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'thresholds',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          warning: {
-            type: 'number',
-          },
-          critical: {
-            type: 'number',
-          },
-        },
-        additionalProperties: false,
-      },
     },
     {
       name: 'width',
@@ -5950,22 +5086,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'value',
       required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
     },
     {
       name: 'defaultValue',
       required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
     },
     {
       name: 'onValueChange',
@@ -6197,15 +5321,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          dismiss: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
   ],
   NotificationCenter: [
@@ -6525,28 +5640,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'data',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-            },
-            label: {
-              type: 'string',
-            },
-            value: {
-              type: 'number',
-            },
-            color: {
-              type: 'string',
-            },
-          },
-          required: ['id', 'label', 'value'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'title',
@@ -6629,22 +5722,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        anyOf: [
-          {
-            type: 'boolean',
-          },
-          {
-            type: 'object',
-            properties: {
-              position: {
-                type: 'string',
-              },
-            },
-            additionalProperties: false,
-          },
-        ],
-      },
     },
     {
       name: 'onSelect',
@@ -6660,25 +5737,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'data',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            label: {
-              type: 'string',
-            },
-            value: {
-              type: 'number',
-            },
-            color: {
-              type: 'string',
-            },
-          },
-          required: ['label', 'value'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'title',
@@ -6898,12 +5956,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'items',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
     },
     {
       name: 'onSelect',
@@ -6912,15 +5964,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          group: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
   ],
   Prose: [
@@ -6931,16 +5974,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'dangerouslySetInnerHTML',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          __html: {
-            type: 'string',
-          },
-        },
-        required: ['__html'],
-        additionalProperties: false,
-      },
     },
     {
       name: 'className',
@@ -6970,21 +6003,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          pull: {
-            type: 'string',
-          },
-          release: {
-            type: 'string',
-          },
-          refreshing: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
     {
       name: 'className',
@@ -7038,38 +6056,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'axes',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
     },
     {
       name: 'series',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-            },
-            label: {
-              type: 'string',
-            },
-            values: {
-              type: 'array',
-              items: {
-                type: 'number',
-              },
-            },
-          },
-          required: ['id', 'label', 'values'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'max',
@@ -7111,28 +6101,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'data',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-            },
-            label: {
-              type: 'string',
-            },
-            value: {
-              type: 'number',
-            },
-            color: {
-              type: 'string',
-            },
-          },
-          required: ['id', 'label', 'value'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'title',
@@ -7354,21 +6322,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          thinking: {
-            type: 'string',
-          },
-          thoughtFor: {
-            type: 'string',
-          },
-          label: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
   ],
   RelativeTime: [
@@ -7395,25 +6348,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'value',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-            },
-            label: {
-              type: 'string',
-            },
-            name: {
-              type: 'string',
-            },
-          },
-          required: ['id', 'label'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'onValueChange',
@@ -7427,27 +6361,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          handle: {
-            type: 'string',
-          },
-          grabbed: {
-            type: 'string',
-          },
-          moved: {
-            type: 'string',
-          },
-          dropped: {
-            type: 'string',
-          },
-          cancelled: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
     {
       name: 'className',
@@ -7504,48 +6417,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'nodes',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-            },
-            label: {
-              type: 'string',
-            },
-            color: {
-              type: 'string',
-            },
-          },
-          required: ['id', 'label'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'links',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            source: {
-              type: 'string',
-            },
-            target: {
-              type: 'string',
-            },
-            value: {
-              type: 'number',
-            },
-          },
-          required: ['source', 'target', 'value'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'title',
@@ -7662,22 +6537,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'visualMap',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          min: {
-            type: 'number',
-          },
-          max: {
-            type: 'number',
-          },
-          pieces: {
-            type: 'number',
-          },
-        },
-        required: ['min', 'max'],
-        additionalProperties: false,
-      },
     },
     {
       name: 'toolbox',
@@ -7942,13 +6801,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'items',
       required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'string',
-          enum: ['bluesky', 'mastodon', 'threads', 'linkedin', 'x'],
-        },
-      },
     },
     {
       name: 'size',
@@ -7958,27 +6810,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          share: {
-            type: 'string',
-          },
-          copyLink: {
-            type: 'string',
-          },
-          copied: {
-            type: 'string',
-          },
-          more: {
-            type: 'string',
-          },
-          server: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
     {
       name: 'className',
@@ -8232,15 +7063,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          label: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
     {
       name: 'id',
@@ -8294,38 +7116,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'items',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            title: {
-              type: 'string',
-            },
-            url: {
-              type: 'string',
-            },
-            description: {
-              type: 'string',
-            },
-          },
-          required: ['title', 'url'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          summary: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
   ],
   Spacer: [
@@ -8338,12 +7132,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'data',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'number',
-        },
-      },
     },
     {
       name: 'label',
@@ -8610,48 +7398,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'series',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-            },
-            label: {
-              type: 'string',
-            },
-            values: {
-              type: 'array',
-              items: {
-                type: 'number',
-              },
-            },
-            color: {
-              type: 'string',
-            },
-          },
-          required: ['id', 'label', 'values'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'categories',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          anyOf: [
-            {
-              type: 'string',
-            },
-            {
-              type: 'number',
-            },
-          ],
-        },
-      },
     },
     {
       name: 'title',
@@ -8742,38 +7492,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'items',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-            },
-            cells: {
-              type: 'array',
-              items: {
-                type: 'string',
-              },
-            },
-            selected: {
-              type: 'boolean',
-            },
-          },
-          required: ['id', 'cells'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'headers',
       required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
     },
     {
       name: 'selectable',
@@ -8799,25 +7521,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'data',
       required: true,
-      shape: {
-        type: 'object',
-        properties: {
-          id: {
-            type: 'string',
-          },
-          label: {
-            type: 'string',
-          },
-          value: {
-            type: 'number',
-          },
-          color: {
-            type: 'string',
-          },
-        },
-        required: ['label'],
-        additionalProperties: false,
-      },
     },
     {
       name: 'title',
@@ -8985,12 +7688,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'value',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
     },
     {
       name: 'onValueChange',
@@ -9035,26 +7732,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'lines',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            text: {
-              type: 'string',
-            },
-            prefix: {
-              type: 'string',
-            },
-            type: {
-              type: 'string',
-              enum: ['command', 'output', 'error', 'comment'],
-            },
-          },
-          required: ['text'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'speed',
@@ -9073,15 +7750,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          label: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
   ],
   Text: [
@@ -9338,25 +8006,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'items',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-            },
-            label: {
-              type: 'string',
-            },
-            level: {
-              type: 'number',
-            },
-          },
-          required: ['id', 'label'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'activeId',
@@ -9370,15 +8019,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          nav: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
     {
       name: 'className',
@@ -9431,36 +8071,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'value',
       required: false,
-      shape: {
-        anyOf: [
-          {
-            type: 'string',
-          },
-          {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-          },
-        ],
-      },
     },
     {
       name: 'defaultValue',
       required: false,
-      shape: {
-        anyOf: [
-          {
-            type: 'string',
-          },
-          {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-          },
-        ],
-      },
     },
     {
       name: 'onValueChange',
@@ -9469,28 +8083,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'items',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            value: {
-              type: 'string',
-            },
-            label: {
-              type: 'string',
-            },
-            icon: {
-              type: 'string',
-            },
-            disabled: {
-              type: 'boolean',
-            },
-          },
-          required: ['value'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'orientation',
@@ -9548,15 +8140,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          label: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
   ],
   ToolCall: [
@@ -9589,39 +8172,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'labels',
       required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          pending: {
-            type: 'string',
-          },
-          running: {
-            type: 'string',
-          },
-          awaitingApproval: {
-            type: 'string',
-          },
-          complete: {
-            type: 'string',
-          },
-          error: {
-            type: 'string',
-          },
-          denied: {
-            type: 'string',
-          },
-          input: {
-            type: 'string',
-          },
-          output: {
-            type: 'string',
-          },
-          errorHeading: {
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-      },
     },
   ],
   Tooltip: [
@@ -9663,25 +8213,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'items',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-            },
-            label: {
-              type: 'string',
-            },
-            icon: {
-              type: 'string',
-            },
-          },
-          required: ['id', 'label'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'selectionMode',
@@ -9691,36 +8222,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'selected',
       required: false,
-      shape: {
-        anyOf: [
-          {
-            type: 'string',
-          },
-          {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-          },
-        ],
-      },
     },
     {
       name: 'defaultSelected',
       required: false,
-      shape: {
-        anyOf: [
-          {
-            type: 'string',
-          },
-          {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-          },
-        ],
-      },
     },
     {
       name: 'onSelectChange',
@@ -9733,22 +8238,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'expanded',
       required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
     },
     {
       name: 'defaultExpanded',
       required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
     },
     {
       name: 'onExpandedChange',
@@ -9759,25 +8252,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'data',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-            },
-            label: {
-              type: 'string',
-            },
-            value: {
-              type: 'number',
-            },
-          },
-          required: ['id', 'label', 'value'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'title',
@@ -9896,22 +8370,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'options',
       required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            value: {
-              type: 'string',
-            },
-            label: {
-              type: 'string',
-            },
-          },
-          required: ['value', 'label'],
-          additionalProperties: false,
-        },
-      },
     },
     {
       name: 'value',

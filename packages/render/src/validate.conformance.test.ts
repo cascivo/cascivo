@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { validateView } from './validate'
+import { componentNames } from './component-names'
+import { propSchemas } from './prop-schemas'
 // Source of truth for the json-playground demo; type-only import there, so a relative path is clean.
 import { exampleConfig } from '../../../apps/examples/json-playground/src/example-config.ts'
 
@@ -99,6 +101,78 @@ describe('validateView() deep prop shapes (v61 T6)', () => {
     expect(validateView(view({ component: 'DataTable', props: { columns: 'x' } })).valid).toBe(
       false,
     )
+  })
+
+  it('does not let prototype keys bypass additionalProperties:false', () => {
+    const result = validateView(
+      view({
+        component: 'DataTable',
+        props: { columns: [{ key: 'a', header: 'A', constructor: 1 }] },
+      }),
+    )
+    expect(result.errors).toHaveLength(1)
+    expect(result.errors[0]!.path).toMatch(/columns\[0\]\.constructor$/)
+  })
+
+  it('does not treat inherited keys as present required fields', () => {
+    const result = validateView(
+      view({
+        component: 'DataTable',
+        props: { columns: [Object.create({ key: 'a', header: 'A' })] },
+      }),
+    )
+    expect(result.errors.map((e) => e.path.slice(-4))).toEqual(['.key', 'ader'])
+  })
+
+  it('truncates large values in error messages', () => {
+    const big = 'x'.repeat(500)
+    const result = validateView(
+      view({ component: 'DataTable', props: { columns: [{ key: 1, header: big }] } }),
+    )
+    expect(result.errors[0]!.message.length).toBeLessThan(200)
+    const long = validateView(view({ component: 'DataTable', props: { columns: big } }))
+    expect(long.errors[0]!.message).toContain('…')
+    expect(long.errors[0]!.message.length).toBeLessThan(200)
+  })
+
+  it('names object/array in anyOf messages', () => {
+    const anyOf = Object.values(propSchemas)
+      .flat()
+      .find((p) => p.shape && 'anyOf' in p.shape)
+    expect(anyOf).toBeDefined()
+  })
+
+  it('emits shapes only for components the renderer can build', () => {
+    const dead = Object.entries(propSchemas)
+      .filter(([name]) => !componentNames.has(name))
+      .filter(([, props]) => props.some((p) => p.shape !== undefined))
+      .map(([name]) => name)
+    expect(dead).toEqual([])
+  })
+
+  it('accepts valid shape-bearing props', () => {
+    expect(
+      validateView(
+        view({
+          component: 'DataTable',
+          props: {
+            columns: [
+              { key: 'a', header: 'A' },
+              { key: 'b', header: { $t: 'cols.b' } },
+            ],
+            rows: [{ a: 1, b: 2 }],
+          },
+        }),
+      ),
+    ).toEqual({ valid: true, errors: [] })
+    expect(
+      validateView(
+        view({
+          component: 'Steps',
+          props: { items: [{ label: 'One', id: 'a' }, { label: 'Two' }], activeStep: 1 },
+        }),
+      ),
+    ).toEqual({ valid: true, errors: [] })
   })
 
   // Configs committed elsewhere (and the richer ones from cascivo-view.test.tsx) must keep validating.

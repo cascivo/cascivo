@@ -7,6 +7,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { componentNames as renderableNames } from '../../packages/render/src/component-names.ts'
 import { classifyProp, contextFor, pickCanonical, type JsonSchema } from './catalog-model.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
@@ -267,7 +268,8 @@ for (const name of [...canonical.keys()].sort()) {
   propSchemas[name] = entry.meta.props.map((p) => {
     const { enum: enumValues, primitives } = classifyPropType(p.type)
     const c = classifyProp(p, ctx)
-    const shape = c.kind === 'data' ? shapeOf(c.schema) : undefined
+    // validateView only checks props of components the renderer can build; other shapes are dead bytes.
+    const shape = c.kind === 'data' && renderableNames.has(name) ? shapeOf(c.schema) : undefined
     return {
       name: p.name,
       required: p.required === true,

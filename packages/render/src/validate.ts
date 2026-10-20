@@ -81,7 +81,14 @@ const typeOf = (value: unknown): string =>
 function describeShape(shape: ShapeSchema): string {
   const { enum: values, type } = shape
   if (Array.isArray(values)) return values.map((v) => JSON.stringify(v)).join(' | ')
-  return typeof type === 'string' ? type : 'any'
+  if (typeof type === 'string') return type
+  return 'anyOf' in shape ? 'a union' : 'any'
+}
+
+/** JSON for an error message, cut short so a large payload is not repeated in every error. */
+function preview(value: unknown): string {
+  const json = JSON.stringify(value) ?? 'undefined'
+  return json.length > 80 ? `${json.slice(0, 80)}…` : json
 }
 
 /**
@@ -99,7 +106,7 @@ function checkShape(
   const fail = (reason: string) =>
     errors.push({
       path,
-      message: `Invalid value ${JSON.stringify(value)} for "${label}" — ${reason}.`,
+      message: `Invalid value ${preview(value)} for "${label}" — ${reason}.`,
     })
 
   const branches = shape['anyOf']
@@ -157,7 +164,7 @@ function checkShape(
       const properties = (shape['properties'] ?? {}) as Record<string, ShapeSchema>
       const required = Array.isArray(shape['required']) ? (shape['required'] as string[]) : []
       for (const field of required) {
-        if (!(field in record)) {
+        if (!Object.hasOwn(record, field)) {
           errors.push({
             path: `${path}.${field}`,
             message: `Missing required field "${field}" for "${label}".`,
@@ -165,7 +172,7 @@ function checkShape(
         }
       }
       for (const [field, fieldValue] of Object.entries(record)) {
-        const sub = properties[field]
+        const sub = Object.hasOwn(properties, field) ? properties[field] : undefined
         if (sub) checkShape(fieldValue, sub, `${path}.${field}`, errors, `${label}.${field}`)
         else if (shape['additionalProperties'] === false) {
           errors.push({
