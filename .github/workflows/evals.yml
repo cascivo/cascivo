@@ -1,0 +1,256 @@
+name: Evals
+
+# The published LLM x cascivo eval (docs/internal/superpowers/specs/2026-10-20-w6-published-eval-design.md).
+# It spends real money, so it never runs on pull_request or push: a person dispatches it, or a
+# published release triggers it. Three jobs, split by what each may see:
+#
+#   generate  holds ANTHROPIC_API_KEY, runs the `claude -p` sessions, and never builds, installs
+#             or executes anything a session wrote.
+#   score     builds and drives what generate wrote. No secrets, read-only contents.
+#   publish   holds the write token, runs no generated code, opens a PR for a valid run only.
+#
+# Workflow hygiene: no `${{ }}` inside a `run:` script. Inputs and context values reach scripts
+# through `env:` only, are validated in the script, and are passed as quoted arguments.
+#
+# No setup-node package-manager cache: a cache a pull request wrote must not reach the job that holds the
+# key or the write token, and a cold install is minutes against a run of hours.
+#
+# Every action is pinned to a commit SHA. checkout, pnpm and setup-node reuse the SHAs of
+# framework-latest.yml; upload/download-artifact were not pinned anywhere yet, so their SHAs
+# were resolved from the upstream tags with `git ls-remote` (tag comments below).
+
+on:
+  workflow_dispatch:
+    inputs:
+      models:
+        description: Comma-separated model ids
+        default: claude-sonnet-5-5,claude-haiku-5-5
+      attempts:
+        description: Attempts per task x arm x model
+        default: '3'
+      max_usd:
+        description: Spend cap in USD; no session starts once it is reached
+        default: '50'
+      tasks:
+        description: Comma-separated task ids (empty = all)
+        default: ''
+  release:
+    types: [published]
+
+permissions: {}
+
+concurrency:
+  group: evals
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    # 144 sequential sessions at the defaults: the 6 h hosted-runner ceiling, minus margin.
+    # A run that does not finish by then is incomplete and is not published.
+    timeout-minutes: 350
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+
+      # The eval CLI is a `.ts` file run by `node src/eval-cli.ts`, which needs Node's type
+      # stripping on by default (22.18 and later). `22` resolves to the newest 22.x.
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          package-manager-cache: false
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # The cascivo starters pack this checkout, and the CLI and MCP server it runs are built
+      # from it (the published ones predate the arm under test).
+      - name: Build (vp run -r build)
+        run: pnpm exec vp run -r --no-cache build
+
+      # Pinned: a CLI that changes between runs changes the measurement. 2.1.304 is the
+      # current release at the time of writing (`npm view @anthropic-ai/claude-code version`).
+      - name: Install the claude CLI
+        run: npm i -g @anthropic-ai/claude-code@2.1.304
+
+      # The starters install third-party packages (shadcn, and the lifecycle scripts of every
+      # dependency). Doing it here, before the key exists in any environment, keeps that code
+      # away from the key; the run step below finds the cache warm.
+      - name: Prepare the starters (no key)
+        run: >
+          node --input-type=module -e "
+          import { PUBLISHED_ARMS } from './apps/bench/agent/src/arms.ts';
+          import { prepareStarter } from './apps/bench/agent/src/eval/starters.ts';
+          for (const arm of PUBLISHED_ARMS) prepareStarter(arm, (line) => console.log(line));
+          "
+
+      # The key is on this step only, not job-wide: install and build scripts never see it.
+      - name: Run the eval sessions
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          MODELS_IN: ${{ inputs.models }}
+          ATTEMPTS_IN: ${{ inputs.attempts }}
+          MAX_USD_IN: ${{ inputs.max_usd }}
+          TASKS_IN: ${{ inputs.tasks }}
+        run: |
+          set -euo pipefail
+          # A release event has no inputs: they arrive empty, so the defaults live here too.
+          models="${MODELS_IN:-claude-sonnet-5-5,claude-haiku-5-5}"
+          attempts="${ATTEMPTS_IN:-3}"
+          max_usd="${MAX_USD_IN:-50}"
+          tasks="${TASKS_IN:-}"
+
+          list_re='^[a-z0-9.,-]*$'
+          int_re='^[0-9]+$'
+          usd_re='^[0-9]+([.][0-9]+)?$'
+          # The rejected value is not echoed: it is untrusted and the log interprets `::`.
+          [[ -n "$models" && "$models" =~ $list_re ]] || { echo "::error::models must match ^[a-z0-9.,-]+$"; exit 2; }
+          [[ "$tasks" =~ $list_re ]] || { echo "::error::tasks must match ^[a-z0-9.,-]*$"; exit 2; }
+          [[ "$attempts" =~ $int_re ]] || { echo "::error::attempts must be a whole number"; exit 2; }
+          [[ "$max_usd" =~ $usd_re ]] || { echo "::error::max_usd must be a number"; exit 2; }
+
+          args=(generate --out "$GITHUB_WORKSPACE/gen" --models "$models" --attempts "$attempts" --max-usd "$max_usd")
+          if [[ -n "$tasks" ]]; then args+=(--tasks "$tasks"); fi
+          pnpm --filter bench-agent eval "${args[@]}"
+
+      # Kept on failure too: the transcripts say why a session died. Hidden files stay in,
+      # so score sees the app exactly as the session left it.
+      - name: Upload the sessions
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: eval-gen
+          path: gen/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 90
+
+  score:
+    needs: generate
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    # Agent-written code executes in this job (vite build, tsc, the app in Chromium). That is
+    # why it has no secrets and read-only contents: the worst it can reach is a throwaway runner.
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+
+      # Node 22.18 or later, for the same type-stripping reason as in generate.
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          package-manager-cache: false
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # The cascivo starters pack this checkout.
+      - name: Build (vp run -r build)
+        run: pnpm exec vp run -r --no-cache build
+
+      - name: Install Chromium
+        run: pnpm --filter @cascivo/site exec playwright install chromium --with-deps
+
+      - name: Download the sessions
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: eval-gen
+          path: gen
+
+      - name: Score
+        run: >
+          pnpm --filter bench-agent eval score
+          --in "$GITHUB_WORKSPACE/gen"
+          --out "$GITHUB_WORKSPACE/results.json"
+          --concurrency 2
+
+      - name: Upload the results
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: eval-results
+          path: results.json
+          if-no-files-found: error
+          retention-days: 90
+
+  publish:
+    needs: score
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      # The one checkout that keeps its credentials: the push below needs them.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0 # zizmor: ignore[artipacked]
+
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+
+      # Node 22.18 or later, for the same type-stripping reason as in generate.
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          package-manager-cache: false
+
+      # No build: publish only reads the results file and writes three others.
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Download the results
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: eval-results
+          path: results
+
+      # Exits non-zero on an incomplete or invalid run, which fails the job before any branch
+      # exists, so no PR is opened for it.
+      - name: Write the results files
+        run: pnpm --filter bench-agent eval publish --results "$GITHUB_WORKSPACE/results/results.json"
+
+      - name: Open the results PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          date="$(date -u +%F)"
+          # The run id and attempt keep a re-run on the same day from colliding with its branch.
+          branch="evals/${date}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "$branch"
+          # Exactly the three outputs: nothing else the job touched (lockfile churn, caches).
+          git add apps/bench/agent/results/ apps/site/public/evals.json docs/AGENT-BENCHMARKS.md
+          if git diff --cached --quiet; then
+            echo "::error::publish wrote nothing to commit"
+            exit 1
+          fi
+
+          results="$GITHUB_WORKSPACE/results/results.json"
+          total="$(jq '.records | length' "$results")"
+          passed="$(jq '[.records[] | select(.status == "pass")] | length' "$results")"
+          version="$(jq -r '.cascivoVersion' "$results")"
+          spent="$(jq -r '.spentUsd' "$results")"
+          body="$RUNNER_TEMP/pr-body.md"
+          {
+            echo "Results of eval run ${GITHUB_RUN_ID} for cascivo ${version}."
+            echo
+            echo "- Attempts: ${total}, passed: ${passed}"
+            echo "- Spend: \$${spent}"
+            echo "- Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            echo
+            echo "Generated by the evals workflow. Review the numbers, then merge."
+          } > "$body"
+
+          git commit -m "evals: ${date} run"
+          git push origin "$branch"
+          gh pr create --title "evals: ${date} run" --body-file "$body"
