@@ -1802,22 +1802,22 @@ How the figures were read:
   width and sidebearing.
 - Display spacing 0.88: a trade-off between round pairs at Display Black and width.
 - Size budgets, raised in turn (woff2 bytes, before the brief -> now): full 71,500 -> 74,500;
-  Latin[opsz,wght] 30,000 -> 31,500; Latin[wght] 23,500 -> 25,000; Regular 24,500 -> 25,000;
-  Italic full 77,000 -> 81,000; Italic-Latin[opsz,wght] 34,000 -> 35,000 (raised by the user for the Black diagonal capitals); Italic-Latin[wght]
+  Latin[opsz,wght] 30,000 -> 31,500; Latin[wght] 23,500 -> 25,000; Regular 24,500 -> 25,500;
+  Italic full 77,000 -> 81,500; Italic-Latin[opsz,wght] 34,000 -> 35,000 (raised by the user for the Black diagonal capitals); Italic-Latin[wght]
   26,000 -> 28,000. The cost is the Bold master's advance deltas (about 1,000 glyphs), the capital
   counter curves at three masters, Thin kerning, and the V / W / Y / A correction lookup.
 
 ### Sizes
 
-| File (woff2)                          | Before (fb62663c) | Now    | Budget               |
-| ------------------------------------- | ----------------- | ------ | -------------------- |
-| `CascivoSans[opsz,wght]`              | 69,824            | 74,380 | 74,500               |
-| `CascivoSans-Latin[opsz,wght]`        | 29,608            | 31,260 | 31,500               |
-| `CascivoSans-Latin[wght]`             | 23,312            | 24,944 | 25,000               |
-| `CascivoSans-Regular`                 | 24,248            | 25,048 | 25,000 (over by 48)  |
-| `CascivoSans-Italic[opsz,wght]`       | 75,412            | 81,332 | 81,000 (over by 332) |
-| `CascivoSans-Italic-Latin[opsz,wght]` | 32,680            | 34,508 | 35,000               |
-| `CascivoSans-Italic-Latin[wght]`      | 25,748            | 27,852 | 28,000               |
+| File (woff2)                          | Before (fb62663c) | Now    | Budget |
+| ------------------------------------- | ----------------- | ------ | ------ |
+| `CascivoSans[opsz,wght]`              | 69,824            | 74,380 | 74,500 |
+| `CascivoSans-Latin[opsz,wght]`        | 29,608            | 31,260 | 31,500 |
+| `CascivoSans-Latin[wght]`             | 23,312            | 24,944 | 25,000 |
+| `CascivoSans-Regular`                 | 24,248            | 25,048 | 25,500 |
+| `CascivoSans-Italic[opsz,wght]`       | 75,412            | 81,332 | 81,500 |
+| `CascivoSans-Italic-Latin[opsz,wght]` | 32,680            | 34,508 | 35,000 |
+| `CascivoSans-Italic-Latin[wght]`      | 25,748            | 27,852 | 28,000 |
 
 ### Known limits
 
