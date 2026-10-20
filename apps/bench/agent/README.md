@@ -16,7 +16,7 @@ ANTHROPIC_API_KEY=… pnpm --filter bench-agent bench --runs 3 --publish
 - **Two arms** (`src/arms.ts`), identical except for two tools:
   - `today`: the cascivo MCP server without `compose_app` and `list_blocks`. The agent scaffolds
     a shell with `create_app` and writes every page as TSX.
-  - `blueprints`: the same server with both, so a page can be a registry block.
+  - `cascivo` (called `blueprints` before the published eval): the same server with both, so a page can be a registry block.
 - **Each run** starts in an empty directory with `claude -p --bare --strict-mcp-config`: no user
   settings, hooks or CLAUDE.md, only the MCP server built from this checkout and the file tools
   (no Bash, so no installs or dev servers). `npx cascivo`, which the MCP server spawns, resolves

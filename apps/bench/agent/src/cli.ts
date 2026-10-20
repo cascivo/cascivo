@@ -15,7 +15,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { argv, env, exit, stderr, stdout } from 'node:process'
-import { ARMS, claudeArgs, isArm } from './arms.ts'
+import { claudeArgs, isLegacyArm, LEGACY_ARMS } from './arms.ts'
 import type { ArmId } from './arms.ts'
 import { dryRun } from './dry-run.ts'
 import { CLI, mcpConfig, prepare, REPO, runDirectory } from './env.ts'
@@ -30,7 +30,7 @@ const HELP = `bench-agent — what an agent spends to build an app with cascivo,
 Options:
   --runs <n>          Runs per prompt and arm (default 3; medians are reported)
   --prompts <ids>     Comma-separated prompt ids (default: all five)
-  --arms <ids>        today, blueprints, or both (default)
+  --arms <ids>        today, cascivo, or both (default)
   --model <id>        Model for claude -p (default: the CLI's default)
   --timeout <min>     Minutes per run before it is stopped (default 20)
   --dry-run           No model: a scripted tool call per arm, to check the harness
@@ -55,7 +55,7 @@ function parse(args: string[]): Options | 'help' {
   const o: Options = {
     runs: 3,
     prompts: PROMPTS.map((p) => p.id),
-    arms: [...ARMS],
+    arms: [...LEGACY_ARMS],
     model: null,
     timeoutMin: 20,
     dryRun: false,
@@ -75,9 +75,9 @@ function parse(args: string[]): Options | 'help' {
     else if (arg === '--prompts') o.prompts = value().split(',')
     else if (arg === '--arms') {
       const arms = value().split(',')
-      const bad = arms.filter((a) => !isArm(a))
+      const bad = arms.filter((a) => !isLegacyArm(a))
       if (bad.length > 0) throw new Error(`unknown arm ${bad.join(', ')}`)
-      o.arms = arms.filter(isArm)
+      o.arms = arms.filter(isLegacyArm)
     } else if (arg === '--model') o.model = value()
     else if (arg === '--timeout') o.timeoutMin = Number(value())
     else if (arg === '--dry-run') o.dryRun = true

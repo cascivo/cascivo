@@ -80,7 +80,7 @@ headless, and is scored on what it leaves: \`tsc --noEmit\` errors and \`cascivo
 findings (warnings include those in the registry blocks a blueprint copies).
 
 - **today**: \`create_app\` for the shell, then every page written as TSX.
-- **blueprints**: also \`list_blocks\` and \`compose_app\`, so pages can be registry blocks.
+- **cascivo**: also \`list_blocks\` and \`compose_app\`, so pages can be registry blocks.
 
 | | |
 | --- | --- |

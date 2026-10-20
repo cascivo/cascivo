@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { claudeArgs } from './arms.ts'
-import { PROMPTS } from './prompts.ts'
+import { claudeArgs, PUBLISHED_ARMS } from './arms.ts'
+import { MODELS } from './models.ts'
+import { instructionsFor, PROMPTS } from './prompts.ts'
 import { markdownTable } from './report.ts'
 import type { BenchResults } from './report.ts'
 import { parseClaudeResult } from './result.ts'
@@ -68,10 +69,72 @@ describe('scoring', () => {
 describe('arms', () => {
   it('differ only in the blueprint tools', () => {
     const today = claudeArgs('today', 'mcp.json', null)
-    const blueprints = claudeArgs('blueprints', 'mcp.json', null)
+    const cascivo = claudeArgs('cascivo', 'mcp.json', null)
     expect(today).toContain('mcp__cascivo__compose_app,mcp__cascivo__list_blocks')
-    expect(blueprints.join(' ')).not.toContain('--disallowedTools')
-    expect(today.slice(0, blueprints.length)).toEqual(blueprints)
+    expect(cascivo.join(' ')).not.toContain('--disallowedTools')
+    expect(today.slice(0, cascivo.length)).toEqual(cascivo)
+  })
+
+  it('keeps the cascivo arm as the legacy blueprints arm was', () => {
+    expect(claudeArgs('cascivo', 'mcp.json', 'claude-x')).toEqual([
+      '--output-format',
+      'json',
+      '--bare',
+      '--strict-mcp-config',
+      '--mcp-config',
+      'mcp.json',
+      '--permission-mode',
+      'acceptEdits',
+      '--allowedTools',
+      'mcp__cascivo__*,Read,Write,Edit,Glob,Grep',
+      '--model',
+      'claude-x',
+    ])
+  })
+
+  it('gives cascivo-bare no MCP server at all', () => {
+    const args = claudeArgs('cascivo-bare', null, null)
+    expect(args).toContain('--strict-mcp-config')
+    expect(args).not.toContain('--mcp-config')
+    expect(args).not.toContain('--disallowedTools')
+    expect(args.join(' ')).not.toContain('mcp__')
+  })
+
+  it('gives shadcn its own MCP config and tools', () => {
+    const args = claudeArgs('shadcn', 'shadcn.json', 'claude-x')
+    expect(args.slice(args.indexOf('--mcp-config'), args.indexOf('--mcp-config') + 2)).toEqual([
+      '--mcp-config',
+      'shadcn.json',
+    ])
+    expect(args).not.toContain('--disallowedTools')
+    expect(args.join(' ')).toContain('mcp__shadcn__*')
+    expect(args.join(' ')).not.toContain('mcp__cascivo__')
+  })
+
+  it('refuses an arm that needs an MCP config without one', () => {
+    expect(() => claudeArgs('shadcn', null, null)).toThrow(/needs an MCP config/)
+  })
+
+  it('captures the whole transcript only when asked', () => {
+    const json = claudeArgs('cascivo', 'mcp.json', null)
+    const stream = claudeArgs('cascivo', 'mcp.json', null, { stream: true })
+    expect(json.slice(0, 2)).toEqual(['--output-format', 'json'])
+    expect(stream.slice(0, 3)).toEqual(['--output-format', 'stream-json', '--verbose'])
+    expect(stream.slice(3)).toEqual(json.slice(2))
+    expect(claudeArgs('cascivo', 'mcp.json', null, {})).toEqual(json)
+  })
+
+  it('publishes three arms and two models', () => {
+    expect(PUBLISHED_ARMS).toEqual(['cascivo', 'cascivo-bare', 'shadcn'])
+    expect(MODELS).toEqual(['claude-sonnet-5-5', 'claude-haiku-5-5'])
+  })
+
+  it('names the design system in each arm instruction', () => {
+    expect(instructionsFor('shadcn')).toContain('shadcn/ui with Tailwind')
+    expect(instructionsFor('cascivo')).toContain('cascivo design system')
+    expect(instructionsFor('cascivo-bare')).toContain('cascivo design system')
+    expect(instructionsFor('shadcn')).not.toContain('cascivo')
+    expect(instructionsFor('cascivo-bare')).not.toContain('MCP')
   })
 
   it('runs isolated from the user and the project', () => {

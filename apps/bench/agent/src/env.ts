@@ -17,7 +17,7 @@ import { fileURLToPath } from 'node:url'
 export const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..', '..')
 export const CLI = join(REPO, 'packages/cli/bin/cascivo.mjs')
 export const MCP = join(REPO, 'packages/mcp/dist/index.mjs')
-const CACHE = join(REPO, 'apps/bench/agent/.cache')
+export const CACHE = join(REPO, 'apps/bench/agent/.cache')
 
 /** The packages a scaffold reaches, as `framework-install.test.ts` packs them. */
 const PACKAGES = [
@@ -36,9 +36,9 @@ const PACKAGES = [
   'email',
 ]
 
-function run(cmd: string, args: string[], cwd: string): void {
+export function run(cmd: string, args: string[], cwd: string, env?: NodeJS.ProcessEnv): void {
   try {
-    execFileSync(cmd, args, { cwd, stdio: 'pipe' })
+    execFileSync(cmd, args, { cwd, stdio: 'pipe', ...(env ? { env } : {}) })
   } catch (error) {
     const e = error as { stdout?: Buffer; stderr?: Buffer }
     throw new Error(
@@ -54,6 +54,41 @@ export function blockNames(): string[] {
     .sort()
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+/** The `file:` spec of the packed `@cascivo/<pkg>` tarball `prepare()` wrote. */
+function tarball(pkg: string): string {
+  const dir = join(CACHE, 'tarballs')
+  const file = existsSync(dir)
+    ? readdirSync(dir).find((f) => f.startsWith(`cascivo-${pkg}-`))
+    : undefined
+  if (!file) throw new Error(`no tarball for @cascivo/${pkg}`)
+  return `file:${join(dir, file)}`
+}
+
+/**
+ * Point a scaffolded app's `@cascivo/*` dependencies at this checkout's packed tarballs, since
+ * the published packages predate it. Needs `prepare()` to have run.
+ */
+export function pinToTarballs(manifestPath: string): void {
+  const manifest: unknown = JSON.parse(readFileSync(manifestPath, 'utf8'))
+  if (
+    !isRecord(manifest) ||
+    !isRecord(manifest.dependencies) ||
+    !isRecord(manifest.devDependencies)
+  )
+    throw new Error(`${manifestPath} has no dependencies and devDependencies objects`)
+  for (const dep of Object.keys(manifest.dependencies)) {
+    if (dep.startsWith('@cascivo/'))
+      manifest.dependencies[dep] = tarball(dep.slice('@cascivo/'.length))
+  }
+  // Lint is not scored, and this one would install a published copy of this repo.
+  delete manifest.devDependencies['@cascivo/eslint-config']
+  writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n')
+}
+
 /** The installed `node_modules` every run links. Built on first use, or again with `fresh`. */
 export function prepare(fresh: boolean, log: (line: string) => void): string {
   for (const file of [CLI, MCP, join(REPO, 'packages/react/dist')]) {
@@ -62,19 +97,16 @@ export function prepare(fresh: boolean, log: (line: string) => void): string {
   }
   const nodeModules = join(CACHE, 'deps', 'node_modules')
   if (!fresh && existsSync(nodeModules)) return nodeModules
-  rmSync(CACHE, { recursive: true, force: true })
+  // Not the whole cache: `.cache/shadcn` is built from the network and independent of this checkout.
+  // `bare` is scaffolded on these tarballs, so it goes with them.
+  for (const stale of ['tarballs', 'deps', 'bare'])
+    rmSync(join(CACHE, stale), { recursive: true, force: true })
   const tarballs = join(CACHE, 'tarballs')
   mkdirSync(tarballs, { recursive: true })
   log(`packing ${PACKAGES.length} packages…`)
   for (const pkg of PACKAGES) {
     run('pnpm', ['pack', '--pack-destination', tarballs], join(REPO, 'packages', pkg))
   }
-  const tarball = (pkg: string) => {
-    const file = readdirSync(tarballs).find((f) => f.startsWith(`cascivo-${pkg}-`))
-    if (!file) throw new Error(`no tarball for @cascivo/${pkg}`)
-    return `file:${join(tarballs, file)}`
-  }
-
   log('installing the shared dependency tree…')
   writeFileSync(
     join(CACHE, 'cascivo.app.json'),
@@ -85,18 +117,7 @@ export function prepare(fresh: boolean, log: (line: string) => void): string {
   )
   run('node', [CLI, 'create', '--from', 'cascivo.app.json', '--pm', 'pnpm'], CACHE)
   const app = join(CACHE, 'deps')
-  const manifestPath = join(app, 'package.json')
-  const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')) as {
-    dependencies: Record<string, string>
-    devDependencies: Record<string, string>
-  }
-  for (const dep of Object.keys(manifest.dependencies)) {
-    if (dep.startsWith('@cascivo/'))
-      manifest.dependencies[dep] = tarball(dep.slice('@cascivo/'.length))
-  }
-  // Lint is not scored, and this one would install a published copy of this repo.
-  delete manifest.devDependencies['@cascivo/eslint-config']
-  writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n')
+  pinToTarballs(join(app, 'package.json'))
   // Overrides in pnpm-workspace.yaml, as framework-install.test.ts explains: the packed
   // packages ask the registry for each other otherwise.
   writeFileSync(
