@@ -119,6 +119,10 @@ export function toA2uiCatalog(catalog: Catalog): JsonSchema {
       'cascivo components as an A2UI v0.9 custom catalog, derived from the protocol-neutral component catalog.',
     components,
     functions,
-    $defs: { anyComponent: { oneOf: names.map((n) => ({ $ref: `#/components/${n}` })) } },
+    $defs: {
+      anyComponent: { oneOf: names.map((n) => ({ $ref: `#/components/${n}` })) },
+      // common_types.json refs `catalog.json#/$defs/anyFunction`: every catalog must define it.
+      anyFunction: { oneOf: BASIC_FUNCTIONS.map((f) => ({ $ref: `#/functions/${f}` })) },
+    },
   }
 }

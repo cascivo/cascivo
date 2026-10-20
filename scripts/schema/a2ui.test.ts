@@ -84,6 +84,10 @@ describe('toA2uiCatalog', () => {
     assert.equal(out['catalogId'], A2UI_CATALOG_ID)
     assert.equal(out['$id'], A2UI_CATALOG_ID)
     assert.equal(Object.keys(out['functions']).length, 14)
+    assert.deepEqual(
+      out['$defs'].anyFunction.oneOf.map((r: Obj) => r['$ref']),
+      Object.keys(out['functions']).map((f) => `#/functions/${f}`),
+    )
     assert.deepEqual(out['$defs'].anyComponent.oneOf[0], { $ref: '#/components/Alpha' })
   })
 })

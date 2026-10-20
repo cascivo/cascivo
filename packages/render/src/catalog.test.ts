@@ -136,7 +136,8 @@ describe('A2UI v0.9 catalog', () => {
   )
   const ajv = new Ajv2020({ strict: false })
   ajv.addSchema(common as object)
-  // common_types resolves `catalog.json#/$defs/anyFunction` against whichever catalog is in use; stub it.
+  // Kept even though our catalog now defines $defs.anyFunction: common_types' relative ref resolves
+  // against https://a2ui.org/.../catalog.json, not our $id. common_types resolves `catalog.json#/$defs/anyFunction` against whichever catalog is in use; stub it.
   ajv.addSchema({
     $id: 'https://a2ui.org/specification/v0_9/catalog.json',
     $defs: { anyFunction: { type: 'object' } },
@@ -148,6 +149,13 @@ describe('A2UI v0.9 catalog', () => {
     expect(readFileSync(SITE_PATH, 'utf-8')).toBe(readFileSync(A2UI_PATH, 'utf-8'))
     expect(a2ui['catalogId']).toBe(ID)
     expect(a2ui['$id']).toBe(ID)
+  })
+
+  it('defines anyFunction over exactly the functions keys', () => {
+    const fns = Object.keys(a2ui['functions'] as object)
+    const defs = a2ui['$defs'] as { anyFunction: { oneOf: { $ref: string }[] } }
+    expect(fns).toHaveLength(14)
+    expect(defs.anyFunction.oneOf.map((r) => r.$ref)).toEqual(fns.map((f) => `#/functions/${f}`))
   })
 
   it('omits reserved-name props, recording them', () => {
