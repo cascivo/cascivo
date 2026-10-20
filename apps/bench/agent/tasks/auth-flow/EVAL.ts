@@ -8,6 +8,11 @@ import { eventually, firstVisible, goTo } from '../_lib.ts'
  *
  * No credentials are given in the prompt, so any plausible ones must log in. These are shaped to
  * pass common client-side rules (a valid email, a long mixed password).
+ *
+ * Residual (ruling R17): when sign-up itself lands on the dashboard, sign-in is re-checked only
+ * after a sign-out that keeps the page. A sign-out that navigates to another document (a server
+ * logout page) looks the same as a reload that lost an in-memory account, so the re-check is
+ * skipped and the sign-up's dashboard is accepted; a broken sign-in can pass that way.
  */
 const IDENTITY_VALUE = 'canary.user@example.com'
 const PASSWORD_VALUE = 'Canary-Pass-7391!'

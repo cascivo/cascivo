@@ -12,9 +12,11 @@ import { eventually, firstVisible, goTo } from '../_lib.ts'
  *   association: wherever it sits, it belongs to that field);
  * - the field's own wrapper: its highest ancestor that holds no other of the three fields;
  * - the siblings that follow that wrapper, up to the next field, the next field's label or a
- *   button (flat markup: `<label>Name <input></label><span>error</span>`). An inline success
- *   message there ("Message sent", new since the submit) is the form's verdict, not an error:
- *   its live region, or its own element when it has none, is left out of the zone.
+ *   button (flat markup: `<label>Name <input></label><span>error</span>`). A sibling that
+ *   holds an inline success message ("Message sent", new since the submit) is the form's
+ *   verdict, not an error, and is left out of the zone whole, whatever its markup (ruling R16).
+ *   Residual: an error kept inside the same block as the success message is not detected on a
+ *   valid submit.
  *
  * ARIA is accepted but not required: the prompt asks for an error beside its field, not for an
  * association, and requiring one would fail a plain-markup app the prompt is satisfied by. A
@@ -109,10 +111,8 @@ async function zones(page: Page, known: string[]): Promise<(Zone | null)[]> {
         }
         return found
       }
-      const collect = (root: Element, field: Element, out: Set<string>, skip: Element[] = []) => {
-        for (const run of runs(root))
-          if (!field.contains(run.node) && !skip.some((s) => s.contains(run.node)))
-            out.add(run.text)
+      const collect = (root: Element, field: Element, out: Set<string>) => {
+        for (const run of runs(root)) if (!field.contains(run.node)) out.add(run.text)
       }
       return fields.map((field) => {
         if (!(field instanceof Element)) return null
@@ -139,20 +139,12 @@ async function zones(page: Page, known: string[]): Promise<(Zone | null)[]> {
         for (let sib = box.nextElementSibling; sib !== null; sib = sib.nextElementSibling) {
           if (holdsOther(sib) || labelsOther(sib)) break
           if (sib.matches('button, input[type="submit"]') || sib.querySelector('button')) break
-          // The form's verdict ("Message sent") is not this field's error. What counts as the
-          // verdict: its live region (an Alert's body belongs to it), or, with no region, the
-          // success text's own element, so an error beside it in a plain wrapper still counts.
-          // Only success text new since before the submit is a verdict, and the walk goes on
-          // past it: a static hint saying "received" must not hide an error after it.
-          const skip = runs(sib)
-            .filter((run) => verdict.test(run.text) && !old.has(run.text))
-            .map((run) => {
-              const region = run.parent.closest(
-                '[role="status"], [role="alert"], [aria-live], output',
-              )
-              return region !== null && sib.contains(region) ? region : run.parent
-            })
-          collect(sib, field, out, skip)
+          // The form's verdict ("Message sent" and its body text) is not this field's error, so
+          // a block holding success text new since before the submit is skipped whole, with or
+          // without a live-region role (R16). Only new success text marks it, and the walk goes
+          // on past it: a static hint saying "received" must not hide an error after it.
+          if (runs(sib).some((run) => verdict.test(run.text) && !old.has(run.text))) continue
+          collect(sib, field, out)
         }
         return { texts: [...out], invalid: field.getAttribute('aria-invalid') === 'true' }
       })
