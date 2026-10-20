@@ -3,7 +3,7 @@ import type { AddressInfo } from 'node:net'
 import { chromium, type Browser, type Page } from '@playwright/test'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { chromiumNote, resolveChromium } from '../../../../scripts/checks/lib/chromium.ts'
-import { anyVisible, eventually, findOnAnyPage, goTo } from './_lib.ts'
+import { anyVisible, eventually, fillUntil, findOnAnyPage, firstVisible, goTo } from './_lib.ts'
 
 // Needs a real Chromium, so it stays out of the default run: EVAL_SLOW=1 enables it.
 const slow = process.env['EVAL_SLOW'] ? describe : describe.skip
@@ -158,6 +158,36 @@ slow('tasks/_lib', () => {
     await expect(anyVisible(page.getByText('Go'))).resolves.toBe(true)
     await expect(anyVisible(page.getByText('Away'))).resolves.toBe(false)
   })
+
+  it('firstVisible skips a hidden match and returns null when none is visible', async () => {
+    page = await browser.newPage()
+    await page.setContent('<p hidden>Go one</p><p>Go two</p><p hidden>Away</p>')
+    const hit = await firstVisible(page.getByText(/^Go/))
+    await expect(hit?.textContent()).resolves.toBe('Go two')
+    await expect(firstVisible(page.getByText('Away'))).resolves.toBeNull()
+  })
+
+  // The never-settling case waits out both of fillUntil's bounds, about 7 s.
+  it(
+    'fillUntil presses Enter for a box that applies its text only then',
+    { timeout: 20_000 },
+    async () => {
+      page = await browser.newPage()
+      await page.setContent(
+        shell(
+          '<input aria-label="Filter"><p id="out"></p>',
+          `const box = document.querySelector('input')
+         box.onkeydown = (e) => { if (e.key === 'Enter') document.getElementById('out').textContent = box.value }`,
+        ),
+      )
+      const out = page.locator('#out')
+      const applied = async () => (await out.textContent()) === 'abc'
+      await expect(fillUntil(page.getByLabel('Filter'), 'abc', applied)).resolves.toBe(true)
+      await expect(fillUntil(page.getByLabel('Filter'), 'xyz', async () => false)).resolves.toBe(
+        false,
+      )
+    },
+  )
 })
 
 describe('eventually', () => {

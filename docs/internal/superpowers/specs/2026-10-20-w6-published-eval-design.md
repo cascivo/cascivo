@@ -87,10 +87,10 @@ arm-specific line naming its design system:
 | `saas-settings` | existing | profile, billing and notification pages, each reached by navigation; profile and notifications each have a labelled form control, billing has a labelled control or a named action or table |
 | `marketing-site` | existing | hero heading, features, pricing, testimonials, FAQ (a question disclosure, if there is one, expands to show its answer; otherwise an answer is visible under its question), footer (`contentinfo` or a page `<footer>`) |
 | `crud-table` | existing | table of projects; search narrows rows; pagination moves pages; "create" adds a row |
-| `auth-flow` | existing | sign-in and sign-up forms with labelled fields; submitting sign-in reaches a dashboard |
-| `form-validation` | new | submitting an empty required field shows an error tied to the field (`aria-describedby` or `aria-invalid`); a valid submit clears it |
-| `delete-confirm` | new | "Delete" opens a dialog with a title; Cancel closes it without deleting; Confirm removes the item |
-| `filter-empty-state` | new | a filter that matches nothing shows an empty-state message; clearing it restores the list |
+| `auth-flow` | existing | a sign-in form with fields named email/user and password (label, `aria-label` or placeholder); a sign-up page reached by a link, button or tab; submitting sign-in with plausible credentials replaces the form with a dashboard heading |
+| `form-validation` | new | submitting empty shows an error next to each of the three fields (in an element the field names in `aria-describedby`/`aria-errormessage`, in the field's own wrapper, or right after it); an invalid email gets an email error and no success; a valid submit shows a thank/sent/success message and no field errors |
+| `delete-confirm` | new | three projects, each with a Delete button; Delete opens a `dialog` or `alertdialog` with an accessible name; Cancel closes it and all three remain; Confirm removes that project and two remain |
+| `filter-empty-state` | new | a filter that matches nothing hides the members and shows a "nothing matched" message; a clear/reset/show-all button or link restores the full list |
 
 **Assertion rules:**
 

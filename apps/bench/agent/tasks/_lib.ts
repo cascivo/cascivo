@@ -126,6 +126,28 @@ export async function anyVisible(locator: Locator): Promise<boolean> {
   return false
 }
 
+/** The first match that is visible now, or null. Unlike `.first()`, a hidden match is skipped. */
+export async function firstVisible(locator: Locator): Promise<Locator | null> {
+  for (const el of await locator.all()) if (await el.isVisible()) return el
+  return null
+}
+
+/**
+ * Type `text` into `box` and wait until `settled`. A box that applies its text only on Enter (a
+ * search form, a "press Enter to filter" box) gets the Enter it waits for, so it is not failed
+ * for not filtering as you type, which no prompt asks for.
+ */
+export async function fillUntil(
+  box: Locator,
+  text: string,
+  settled: () => Promise<boolean>,
+): Promise<boolean> {
+  await box.fill(text)
+  if (await eventually(settled, 2000)) return true
+  await box.press('Enter')
+  return eventually(settled)
+}
+
 /** Throws (via the web-first assertion's own message) unless a matching element is visible. */
 export async function expectVisible(page: Page, role: AriaRole, name: RegExp): Promise<void> {
   await page.getByRole(role, { name }).first().waitFor({ state: 'visible', timeout: SETTLE_MS })

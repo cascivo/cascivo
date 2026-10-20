@@ -1,5 +1,5 @@
 import type { Locator, Page } from '@playwright/test'
-import { anyVisible, eventually, goTo } from '../_lib.ts'
+import { anyVisible, eventually, fillUntil, firstVisible, goTo } from '../_lib.ts'
 
 /** Unlikely to collide with seed data, so finding it proves the create flow added it. */
 const NEW_NAME = 'Canary Orbit 7391'
@@ -7,11 +7,6 @@ const NO_MATCH = 'zzqx-no-such-project'
 
 /** Agents use `<table>` or an ARIA grid (a data table with keyboard navigation) for the same thing. */
 const tables = (page: Page) => page.getByRole('table').or(page.getByRole('grid'))
-
-async function firstVisible(locator: Locator): Promise<Locator | null> {
-  for (const el of await locator.all()) if (await el.isVisible()) return el
-  return null
-}
 
 /**
  * The text of each data row of the first visible table, in order. A row with no data cell is a
@@ -53,21 +48,6 @@ async function queryFromFirstRow(page: Page, rows: string[]): Promise<string> {
   return NO_MATCH
 }
 
-/**
- * Type into the box and wait until `settled`. A search that runs on Enter (a search form, a
- * "press Enter to search" box) gets the Enter it waits for.
- */
-async function search(
-  box: Locator,
-  text: string,
-  settled: () => Promise<boolean>,
-): Promise<boolean> {
-  await box.fill(text)
-  if (await eventually(settled, 2000)) return true
-  await box.press('Enter')
-  return eventually(settled)
-}
-
 const rowCount = async (page: Page) => (await rowTexts(page)).length
 
 async function searchNarrows(page: Page): Promise<void> {
@@ -76,9 +56,9 @@ async function searchNarrows(page: Page): Promise<void> {
   const before = await rowTexts(page)
   if (before.length < 2) throw new Error('search: fewer than two rows to narrow')
   const query = await queryFromFirstRow(page, before)
-  if (!(await search(box, query, async () => (await rowCount(page)) < before.length)))
+  if (!(await fillUntil(box, query, async () => (await rowCount(page)) < before.length)))
     throw new Error(`search: searching "${query}" did not reduce the ${before.length} visible rows`)
-  await search(box, '', async () => (await rowCount(page)) === before.length)
+  await fillUntil(box, '', async () => (await rowCount(page)) === before.length)
 }
 
 async function paginationMoves(page: Page): Promise<void> {
@@ -201,7 +181,7 @@ async function createAddsRow(page: Page, baseUrl: string): Promise<void> {
   // The new row may land on another page of the table: search for it.
   const found = await eventually(async () => (await searchBox(page)) !== null)
   const box = found ? await searchBox(page) : null
-  if (box !== null && (await search(box, NEW_NAME, () => nameInTable(page)))) return
+  if (box !== null && (await fillUntil(box, NEW_NAME, () => nameInTable(page)))) return
   throw new Error(`create: "${NEW_NAME}" was submitted but never appeared in the table`)
 }
 

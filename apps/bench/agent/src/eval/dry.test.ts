@@ -1,11 +1,20 @@
 import { describe, expect, it } from 'vitest'
 import { dryRunCanaries } from './dry.ts'
 
-// Builds twelve real apps and drives each in Chromium: EVAL_SLOW=1 enables it.
+// Builds twenty-four real apps and drives each in Chromium: EVAL_SLOW=1 enables it.
 const slow = !process.env.EVAL_SLOW
 
-/** The tasks whose canaries exist so far; the rest still have stub EVALs. */
-const TASKS = ['admin-console', 'saas-settings', 'marketing-site', 'crud-table']
+/** Every task, in the published order: each has three canaries. */
+const TASKS = [
+  'admin-console',
+  'saas-settings',
+  'marketing-site',
+  'crud-table',
+  'auth-flow',
+  'form-validation',
+  'delete-confirm',
+  'filter-empty-state',
+]
 
 describe('dryRunCanaries', () => {
   it(
