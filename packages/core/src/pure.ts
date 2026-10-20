@@ -22,8 +22,8 @@
  * server — which is exactly the set `clientJs: 'none'` names.
  *
  * Adding to this barrel is a packaging decision, not a convenience: anything unexportable
- * from a Server Component belongs in the main entry. `pnpm exec node
- * --experimental-strip-types --test scripts/checks/core-pure.test.ts` holds that line.
+ * from a Server Component belongs in the main entry. `pure.test.ts` (next to this file) holds
+ * that line.
  */
 export { cn, composeRefs, mergeProps } from './utils.ts'
 export { Slot } from './slot.tsx'
@@ -40,3 +40,6 @@ export type {
 } from './tone.ts'
 export type { SpaceStep } from './space.ts'
 export { useId } from './use-id.ts'
+// Import-free, so Node can build the preload script with no DOM (an Astro integration does,
+// in its config process).
+export { themePreloadScript } from './theme-script.ts'

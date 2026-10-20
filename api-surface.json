@@ -3370,7 +3370,7 @@
             "children": "ReactNode",
             "fallback?": "ReactNode"
           },
-          "themePreloadScript": "declare function themePreloadScript(options?: { storageKey?: string; attribute?: string; defaultTheme?: string }): string",
+          "themePreloadScript": "declare function themePreloadScript(options?: { storageKey?: string; attribute?: string; defaultTheme?: string; reapplyOn?: string | readonly string[] }): string",
           "ThemeProvider": "declare function ThemeProvider({ defaultTheme, value, storageKey, attribute, target, onChange, nonce, children }: ThemeProviderProps): ReactNode",
           "ThemeProviderProps": {
             "defaultTheme?": "string",
@@ -3541,6 +3541,7 @@
           "normalizeProgress",
           "normalizeTone",
           "sentimentOf",
+          "themePreloadScript",
           "useId"
         ],
         "types": [
@@ -3573,6 +3574,7 @@
             "[key: string]: unknown": ""
           },
           "SpaceStep": "type = 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12",
+          "themePreloadScript": "declare function themePreloadScript(options?: { storageKey?: string; attribute?: string; defaultTheme?: string; reapplyOn?: string | readonly string[] }): string",
           "Tone": "type = 'neutral' | 'info' | 'success' | 'warning' | 'danger'",
           "ToneInput": "type = Tone | ToneAlias",
           "Trend": "type = 'up' | 'down' | 'flat'",

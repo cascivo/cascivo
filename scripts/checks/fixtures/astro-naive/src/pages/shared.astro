@@ -1,0 +1,12 @@
+---
+import Layout from '../layouts/Layout.astro'
+import { Notifier } from '../components/Notifier'
+import { SharedDisplay } from '../components/SharedDisplay'
+import { SharedIncrement } from '../components/SharedIncrement'
+---
+
+<Layout title="shared state">
+  <SharedIncrement client:load />
+  <SharedDisplay client:load />
+  <Notifier client:load />
+</Layout>

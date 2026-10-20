@@ -4,6 +4,7 @@
   "description": "AI-native components for cascivo — StreamingText, AiLabel, Terminal, AiChat",
   "keywords": [
     "ai",
+    "astro-component",
     "cascivo",
     "chat",
     "css",

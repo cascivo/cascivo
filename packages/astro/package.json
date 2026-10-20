@@ -1,0 +1,59 @@
+{
+  "name": "@cascivo/astro",
+  "version": "0.0.0",
+  "private": false,
+  "description": "Astro integration — cascivo's CSS layer order, theme stylesheet and a view-transition-safe no-flash theme script on every page",
+  "keywords": [
+    "astro",
+    "astro-integration",
+    "cascivo",
+    "css",
+    "design-system",
+    "withastro"
+  ],
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/astro#readme",
+  "bugs": "https://github.com/cascivo/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
+    "directory": "packages/astro"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "types": "./dist/index.d.mts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "vp pack --minify",
+    "check": "tsc --noEmit",
+    "test": "vp test"
+  },
+  "dependencies": {
+    "@cascivo/core": "workspace:^"
+  },
+  "devDependencies": {
+    "@cascivo/themes": "workspace:*",
+    "@types/node": "catalog:",
+    "astro": "^7.1.4",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "peerDependencies": {
+    "@cascivo/themes": ">=1.0.0",
+    "astro": ">=7.0.0"
+  }
+}

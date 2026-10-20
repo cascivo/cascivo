@@ -1,0 +1,9 @@
+---
+// The vanilla variant's no-flash theme script, as an adopter without @cascivo/astro inlines
+// it. `reapplyOn` re-runs it after a <ClientRouter> swap, which copies the next page's
+// server-rendered <html> attributes over the persisted theme. The cascivo() variant empties
+// this file, because the integration injects the same script.
+import { themePreloadScript } from '@cascivo/react'
+---
+
+<script is:inline set:html={themePreloadScript({ reapplyOn: 'astro:after-swap' })} />

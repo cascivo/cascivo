@@ -99,6 +99,30 @@ export function Modal({
     }
   })
 
+  // Astro's `transition:persist` without `Element.moveBefore` (Safari, Firefox) re-inserts the
+  // island by moving an ancestor, and removal drops an open dialog out of the top layer while
+  // `isOpen` still says open: Escape and the backdrop go dead. Watch only while open, so a
+  // closed modal costs nothing.
+  useSignalEffect(() => {
+    const open = isOpen.value
+    const dialog = dialogRef.current
+    if (!open || !dialog) return
+    const observer = new MutationObserver((records) => {
+      if (!dialog.isConnected || !wasReinserted(records, dialog) || isModal(dialog)) return
+      // Not `close()`: it fires `close`, which reaches `onClose` and a controlled parent
+      // would close the modal. `showModal()` throws while the `open` attribute is present.
+      dialog.removeAttribute('open')
+      try {
+        dialog.showModal()
+      } catch {
+        // Never leave the dialog hidden while `isOpen` says open: shown non-modally beats gone.
+        dialog.setAttribute('open', '')
+      }
+    })
+    observer.observe(dialog.ownerDocument, { childList: true, subtree: true })
+    return () => observer.disconnect()
+  })
+
   useSignalEffect(() => {
     const dialog = dialogRef.current
     if (!dialog) return
@@ -172,4 +196,25 @@ export function Modal({
       </div>
     </dialog>
   )
+}
+
+function wasReinserted(records: MutationRecord[], el: Element): boolean {
+  for (const record of records) {
+    // Indexed, not `for…of`: iterating a NodeList needs `DOM.Iterable`, which an adopter's
+    // tsconfig may lack.
+    const added = record.addedNodes
+    for (let i = 0; i < added.length; i++) {
+      if (added.item(i)?.contains(el)) return true
+    }
+  }
+  return false
+}
+
+// A re-inserted dialog is never modal, so an engine without `:modal` restores it.
+function isModal(dialog: HTMLDialogElement): boolean {
+  try {
+    return dialog.matches(':modal')
+  } catch {
+    return false
+  }
 }

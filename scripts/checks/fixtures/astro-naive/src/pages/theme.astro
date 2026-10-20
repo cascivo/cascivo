@@ -1,0 +1,9 @@
+---
+import Layout from '../layouts/Layout.astro'
+import { ThemeHost, ThemeProbe } from '../components/ThemeProbe'
+---
+
+<Layout title="theme">
+  <ThemeProbe name="bare" client:load />
+  <ThemeHost client:idle />
+</Layout>

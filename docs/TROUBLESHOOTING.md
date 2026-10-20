@@ -89,6 +89,57 @@ See [GETTING-STARTED.md](./GETTING-STARTED.md#the-critical-wiring-themes--data-t
 
 ---
 
+## Astro: server-rendered islands are unstyled, then style on hydration
+
+**Symptom:** the class names are in the HTML, no rule matches them, and the island styles only
+after (or never, for a page with no directive). `astro dev` shows a flash of unstyled content.
+
+**Cause:** Vite externalized `@cascivo/react` in the server build, so Astro never walked its CSS
+imports. `@cascivo/react` releases after 1.9.0 carry the `astro-component` keyword, which makes
+Astro inline the package; older ones do not.
+
+**Fix:** upgrade, or run `npx astro add @cascivo/astro`, or set
+`vite: { resolve: { noExternal: [/^@cascivo\//] } }` (`resolve.`, **not** `ssr.`; Astro prerenders
+in an environment that `ssr.*` does not reach). `npx cascivo doctor` flags the combination. Full
+explanation: [USING-WITH-ASTRO.md](./USING-WITH-ASTRO.md#older-versions-and-the-cause).
+
+---
+
+## Astro: React error #418 / "Hydration failed" on a theme-aware island
+
+**Cause:** the island rendered `useTheme()` on the server as the default and hydrated with the
+persisted theme. Fixed in `@cascivo/core` releases after 1.9.0: `useTheme()` returns the constant
+`'light'` during SSR and the hydration render and the real value right after, so on a current
+version this error means something else (for example your own module-level signal read in render).
+
+**What to expect:** `{theme}` text reads `light` until hydration. Put theme-dependent visuals in
+CSS (`[data-theme='dark'] &`) instead of branching on the value. See
+[THEMING.md](./THEMING.md#switching-themes-at-runtime).
+
+---
+
+## Astro: the theme resets to light after a `<ClientRouter />` navigation
+
+**Cause:** a soft navigation copies the incoming page's server-rendered `<html data-theme>` over
+the visitor's choice, and a `<head>` script does not run again.
+
+**Fix:** `npx astro add @cascivo/astro` (it re-applies the theme on `astro:after-swap`), or inline
+`themePreloadScript({ reapplyOn: 'astro:after-swap' })` yourself. See
+[USING-WITH-ASTRO.md](./USING-WITH-ASTRO.md#theme-across-navigation).
+
+---
+
+## Astro: `Tabs` content vanishes, or `TabsTrigger must be used inside <Tabs>`
+
+**Cause:** the parts were composed in an `.astro` file. Astro renders each child separately and
+React context does not cross, so a part has no root.
+
+**Fix:** compose the compound component in one `.tsx` file and hydrate that island. Do not put a
+`client:*` directive on a `@cascivo/react` export directly (it measured 326 KB of JS and 331 KB
+of CSS). See [USING-WITH-ASTRO.md](./USING-WITH-ASTRO.md#compose-in-tsx-hydrate-the-island).
+
+---
+
 ## `tsc` fails on the CSS import: `Cannot find module '@cascivo/react/styles.css'` (TS2307 / TS2882)
 
 **Symptom:** the app runs and is styled, but a typecheck step (`tsc --noEmit`) reports

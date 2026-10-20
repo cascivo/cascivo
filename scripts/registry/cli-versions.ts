@@ -25,6 +25,7 @@ const OUT = join(PACKAGES, 'cli/src/generated/versions.ts')
 const SCAFFOLD_DEPS = [
   '@cascivo/react',
   '@cascivo/themes',
+  '@cascivo/astro',
   '@cascivo/charts',
   '@cascivo/icons',
   '@cascivo/eslint-config',

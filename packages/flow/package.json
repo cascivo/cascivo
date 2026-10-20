@@ -4,6 +4,7 @@
   "private": false,
   "description": "Flow & diagram components — CSS-native, signal-driven node/edge graphs with pan/zoom, draggable nodes, animated edges, and scripted storylines, zero dependencies",
   "keywords": [
+    "astro-component",
     "cascivo",
     "css",
     "design-system",

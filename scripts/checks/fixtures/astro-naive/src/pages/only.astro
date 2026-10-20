@@ -1,0 +1,8 @@
+---
+import Layout from '../layouts/Layout.astro'
+import { Counter } from '../components/Counter'
+---
+
+<Layout title="client:only">
+  <Counter label="only" client:only="react" />
+</Layout>

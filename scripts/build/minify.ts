@@ -15,7 +15,7 @@
  *     is here, on the rolldown *output*.
  *  2. It only applies to packages built with `vp build`. `vp pack` ignores `rollupOptions`
  *     entirely — the same warning the subpath-external comments in these configs carry — so
- *     the packages on that path (cascivo, mcp, registry, vite-plugin) take `vp pack
+ *     the packages on that path (cascivo, mcp, registry, vite-plugin, astro) take `vp pack
  *     --minify` in their build script instead. Keep the two in step: a package that moves
  *     between `vp build` and `vp pack` silently loses this otherwise.
  *

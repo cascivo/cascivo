@@ -96,6 +96,11 @@
       ]
     },
     {
+      "name": "@cascivo/astro",
+      "version": "0.0.0",
+      "releases": []
+    },
+    {
       "name": "@cascivo/charts",
       "version": "1.9.0",
       "releases": [

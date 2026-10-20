@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs'
@@ -110,5 +110,23 @@ describe('TabsTrigger asChild — URL-driven tabs', () => {
     const tab = screen.getByRole('tab', { name: 'A' })
     expect(tab.tagName).toBe('BUTTON')
     expect(tab.getAttribute('type')).toBe('button')
+  })
+})
+
+describe('Tabs compound parts outside their root', () => {
+  // React logs the thrown render error; keep the run output clean without hiding the assertion.
+  const cases: Array<[string, () => React.ReactElement]> = [
+    ['TabsList', () => <TabsList>x</TabsList>],
+    ['TabsTrigger', () => <TabsTrigger value="a">A</TabsTrigger>],
+    ['TabsContent', () => <TabsContent value="a">A</TabsContent>],
+  ]
+  it.each(cases)('%s outside <Tabs> throws a guidance error', (name, make) => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    try {
+      expect(() => render(make())).toThrow(new RegExp(`${name} must be used inside <Tabs>`))
+      expect(() => render(make())).toThrow(/compose .* in one \.tsx island/i)
+    } finally {
+      spy.mockRestore()
+    }
   })
 })

@@ -4,6 +4,7 @@
   "private": false,
   "description": "Chart components built from scratch — scales, shapes, and signal-driven rendering, zero dependencies. Colors come from @cascivo/themes; components from @cascivo/react. Docs offline: npx @cascivo/docs",
   "keywords": [
+    "astro-component",
     "cascivo",
     "charts",
     "css",

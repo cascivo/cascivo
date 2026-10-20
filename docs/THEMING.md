@@ -119,6 +119,13 @@ function ThemeToggle() {
 
 - **Uncontrolled + persisted** by default (localStorage). Pass `value` to control it from
   server state, `storageKey` to rename the key, `attribute` for a non-default attribute.
+- **SSR and the hydration render.** `useTheme()` returns the constant `'light'` during server
+  rendering and the hydration render, then the real value right after hydration. That keeps
+  hydration free of mismatch errors (React #418) when the persisted theme is not the server's.
+  The cost: the `{theme}` text in the `ThemeToggle` above reads `light` until hydration. Express
+  theme-dependent visuals in CSS (`[data-theme='dark'] &`), not by branching on the value.
+  `ThemeProvider` also never writes the module theme store on the server, so one request's
+  `value` cannot leak into the next.
 - **Scope a subtree** with `target` (a ref): the provider writes the attribute to that element
   instead of `<html>`, so a panel can theme independently of the page.
 - **`useTheme()` / `setTheme()` work from any component** — no React context, no prop-drilling
@@ -152,6 +159,12 @@ import { themePreloadScript } from '@cascivo/core'
   </head>
 </html>
 ```
+
+`themePreloadScript` only runs while the document parses. A client-side router that swaps the
+document (Astro's `<ClientRouter />` copies the incoming page's server-rendered `<html>`
+attributes) would revert the theme, so pass `reapplyOn` to re-run it after such an event:
+`themePreloadScript({ reapplyOn: 'astro:after-swap' })`. Under Astro, prefer the
+[`@cascivo/astro`](./USING-WITH-ASTRO.md) integration, which injects exactly this.
 
 For a **fixed, non-switchable** theme you don't need the script at all — hard-code
 `data-theme="dark"` on the server-rendered `<html>`. That never mismatches and is the right

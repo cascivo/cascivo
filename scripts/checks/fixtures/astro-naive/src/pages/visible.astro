@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro'
+import { Counter } from '../components/Counter'
+---
+
+<Layout title="client:visible">
+  <!-- Below the fold, so the island hydrates only once it is scrolled into view. -->
+  <div style="block-size: 150vh"></div>
+  <Counter label="visible" client:visible />
+</Layout>

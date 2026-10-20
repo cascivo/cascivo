@@ -113,8 +113,10 @@ there, and everything is re-exported from `@cascivo/react`.
    (that is next-themes' shape, not cascivo's). The hook calls `useSignals()` for you, so the
    component re-renders on theme changes with no signal handling. For signal-native code
    (`computed()`/`effect()`/Preact) use `themeSignal()` instead. A controlled
-   `<ThemeProvider value=…>` is SSR-safe by itself (emits an inline attribute setter). Never a
-   `useEffect` that adds a `.dark` class.
+   `<ThemeProvider value=…>` is SSR-safe by itself (emits an inline attribute setter). During SSR
+   and the hydration render `useTheme()` returns `'light'` (the real theme arrives one render
+   later), so put theme-dependent visuals in CSS (`[data-theme='dark'] &`), not in a branch on
+   `theme`. Never a `useEffect` that adds a `.dark` class.
 8. Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from
 '@cascivo/tokens/tokens'` (generated union — no CSS-file lookup).
 9. `useSignals()` is needed ONLY for a signal you did not get from a cascivo hook: a

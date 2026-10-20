@@ -14,9 +14,14 @@
  *
  *   (a) `module` ahead of `node` in the exports map — else the bundled build is the
  *       CSS-free twin. Guarded by scripts/checks/css-contract.test.ts.
- *   (b) `vite.resolve.noExternal` in astro.config.mjs — and it must be `resolve.`, not
- *       `ssr.`, which Astro's prerender environment never reads. Emitted by
- *       `cascivo create --framework astro`, and guarded HERE.
+ *   (b) the `astro-component` keyword in each CSS-shipping package's `keywords`. Astro
+ *       externalizes an npm dependency in its server and prerender builds (Node imports it at
+ *       runtime, so its `import './x.css'` edges are never walked) unless the package's
+ *       keywords contain `astro` or `astro-component`, which makes Astro inline it. Guarded
+ *       by scripts/checks/css-contract.test.ts and, end to end, HERE: a vanilla
+ *       `astro.config` must build styled. `vite.resolve.noExternal` (it must be `resolve.`,
+ *       not `ssr.`, which Astro's prerender environment never reads) stays in the scaffold as
+ *       belt-and-braces for Astro versions that predate the keyword heuristic.
  *
  * The generalizable lesson, and the reason this file is not Astro-specific in shape: **a
  * workspace-linked example app cannot validate packaging behaviour that depends on
@@ -29,26 +34,52 @@
  * requires the check to fail — a canary that cannot fail is worth nothing, which is the
  * failure mode this whole directory documents.
  *
- * Cost: a pack + three installs + six builds — about a minute with a warm pnpm store, a
- * few minutes cold, and it needs network access. It runs in CI after the build, next to
- * `isolated:check`; it is NOT in `pnpm ready`.
+ * The scaffold hides exactly the bugs adopters hit, so the Astro side also has a NAIVE-ADOPTER
+ * arm: a hand-written fixture (scripts/checks/fixtures/astro-naive, what `astro add react` +
+ * `pnpm add @cascivo/react` gives you) built, previewed and run under `astro dev`, with real
+ * Chromium driving the assertions in scripts/checks/astro-browser.ts, once with a vanilla
+ * config and once with the `cascivo()` integration.
+ *
+ * Cost: a pack + several installs + a dozen builds, plus about two minutes of browser runs —
+ * a few minutes with a warm pnpm store, and it needs network access and a Chromium (CI installs
+ * it in the same job; locally scripts/checks/lib/chromium.ts finds one). It runs in CI after the
+ * build, next to `isolated:check`; it is NOT in `pnpm ready`. `ASTRO_VERSION=latest` (the weekly
+ * .github/workflows/framework-latest.yml) runs the naive arm against the newest Astro.
  *
  * Run: `pnpm framework:check` (requires a prior `pnpm build`; skips cleanly without one).
  */
 import assert from 'node:assert/strict'
 import { execFileSync } from 'node:child_process'
 import {
+  cpSync,
   existsSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
   readdirSync,
+  realpathSync,
+  renameSync,
+  rmSync,
   writeFileSync,
 } from 'node:fs'
+import { createServer } from 'node:net'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { before, describe, it } from 'node:test'
+import { after, before, describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
+import { chromium, type Browser, type Page } from '@playwright/test'
+import {
+  PAGES,
+  assertFirstResponseStyled,
+  assertHydrates,
+  assertLayerOrderFirst,
+  assertModalSurvivesPersist,
+  assertNoBarrelIsland,
+  assertNoHydrationErrors,
+  assertThemeSurvivesSoftNav,
+  pageCss,
+} from './astro-browser.ts'
+import { chromiumNote, resolveChromium } from './lib/chromium.ts'
 
 const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url))
 const CLI = join(REPO_ROOT, 'packages', 'cli', 'dist', 'index.mjs')
@@ -74,6 +105,7 @@ const PACKAGES = [
   'render',
   'text',
   'email',
+  'astro',
 ]
 const NEEDS_DIST = [
   'react',
@@ -87,6 +119,7 @@ const NEEDS_DIST = [
   'render',
   'text',
   'email',
+  'astro',
 ]
 
 const built = NEEDS_DIST.every((p) => existsSync(join(REPO_ROOT, 'packages', p, 'dist')))
@@ -145,7 +178,15 @@ function scaffold(framework: string, name: string, extra: string[] = []): string
   // registry would make the install depend on a published version of this very repo.
   delete manifest.devDependencies['@cascivo/eslint-config']
   writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n')
+  installFromTarballs(app)
+  return app
+}
 
+/**
+ * Pins every @cascivo/* package to the packed tarballs, installs, and proves the pins took.
+ * The app's own package.json must already name its @cascivo dependencies as tarballs.
+ */
+function installFromTarballs(app: string): void {
   // Overrides pin every INTER-cascivo edge to the tarballs too. `pnpm pack` rewrites
   // `workspace:^` to `^<version>`, so the packed @cascivo/react asks the REGISTRY for
   // @cascivo/core — which would quietly mix the build under test with the last published
@@ -183,7 +224,6 @@ function scaffold(framework: string, name: string, extra: string[] = []): string
         `the published package. Store entries: ${store.filter((d) => d.includes('cascivo')).join(', ')}`,
     )
   }
-  return app
 }
 
 /**
@@ -192,6 +232,22 @@ function scaffold(framework: string, name: string, extra: string[] = []): string
  */
 function assertFormatted(app: string): void {
   run('pnpm', ['exec', 'prettier', '--check', '.', '!pnpm-workspace.yaml', '!pnpm-lock.yaml'], app)
+}
+
+/**
+ * Rewrites a file inside a pnpm-installed `node_modules` without writing through its inode.
+ *
+ * pnpm hardlinks installed files out of its global content-addressable store, so
+ * `writeFileSync` on the installed path would also rewrite the stored copy and corrupt every
+ * later install of that tarball (on this machine and in the next test). Resolving the real
+ * path and renaming a sibling temp file over it replaces the directory entry instead, leaving
+ * the store's inode untouched. Use it for both the edit and the restore.
+ */
+function patchInstalledFile(path: string, edit: (text: string) => string): void {
+  const real = realpathSync(path)
+  const tmp = `${real}.cascivo-patch-${process.pid}`
+  writeFileSync(tmp, edit(readFileSync(real, 'utf8')))
+  renameSync(tmp, real)
 }
 
 /** Every `_name_hash_line` CSS-module class in a built HTML file that has no rule behind it. */
@@ -270,6 +326,22 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
       run('pnpm', ['exec', 'astro', 'build'], app)
     })
 
+    const vanillaConfig =
+      "import { defineConfig } from 'astro/config'\n" +
+      "import react from '@astrojs/react'\n" +
+      'export default defineConfig({ integrations: [react()] })\n'
+
+    /** Builds with the config an adopter gets from `astro add react`, nothing cascivo-specific. */
+    function buildVanilla(): ReturnType<typeof unstyledClasses> {
+      writeFileSync(join(app, 'astro.config.mjs'), vanillaConfig)
+      // Vite and Astro cache the externalization decision and the transformed graph.
+      for (const dir of ['.vite', '.astro']) {
+        rmSync(join(app, 'node_modules', dir), { recursive: true, force: true })
+      }
+      run('pnpm', ['exec', 'astro', 'build'], app)
+      return unstyledClasses(app)
+    }
+
     it('emits the CSS its server-rendered markup references', { skip: !ready }, () => {
       const results = unstyledClasses(app)
       assert.ok(results.length >= 3, `expected the scaffold's 3 routes, got ${results.length}`)
@@ -284,40 +356,401 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
         broken.map((b) => `${b.page} (${b.unmatched.length} unmatched, e.g. .${b.unmatched[0]})`),
         [],
         'Server-rendered markup references cascivo classes with no rule behind them, so those ' +
-          'pages render unstyled. Check that `cascivo create --framework astro` still emits ' +
-          '`vite.resolve.noExternal` (NOT `ssr.noExternal`) and that `module` is still listed ' +
-          'ahead of `node` in the exports map. See docs/USING-WITH-ASTRO.md.',
+          'pages render unstyled. Check that `module` is still listed ahead of `node` in the ' +
+          'exports map and that the `astro-component` keyword is still in package.json. See ' +
+          'docs/USING-WITH-ASTRO.md.',
       )
     })
 
+    /** The zero-config promise: no `resolve.noExternal`, no integration, still styled. */
+    it(
+      'builds styled with a vanilla astro.config (no resolve.noExternal)',
+      { skip: !ready },
+      () => {
+        const original = readFileSync(join(app, 'astro.config.mjs'), 'utf8')
+        try {
+          const results = buildVanilla()
+          assert.ok(
+            results.some((r) => r.used > 0),
+            'no cascivo module classes in any built page, so this proves nothing.',
+          )
+          const broken = results.filter((r) => r.unmatched.length > 0)
+          assert.deepEqual(
+            broken.map(
+              (b) => `${b.page} (${b.unmatched.length} unmatched, e.g. .${b.unmatched[0]})`,
+            ),
+            [],
+            'A vanilla astro.config rendered cascivo islands unstyled. Astro inlines a package ' +
+              'whose keywords contain `astro-component`; check that @cascivo/react (and the ' +
+              'other CSS-shipping packages) still carry it. See docs/USING-WITH-ASTRO.md.',
+          )
+        } finally {
+          writeFileSync(join(app, 'astro.config.mjs'), original)
+        }
+      },
+    )
+
     /**
-     * The arm that would have caught the original miss. Without it, this file would pass on a
-     * scaffold that had quietly stopped emitting the config — the exact shape of failure that
-     * made `apps/examples/astro-islands` look conclusive when it was not.
+     * The arm that would have caught the original miss. Without it, the arm above would pass on
+     * a build where something else (a workspace link, a stray noExternal) was doing the work —
+     * the exact shape of failure that made `apps/examples/astro-islands` look conclusive when
+     * it was not. Removing the keyword must put the failure back.
      */
-    it('fails without resolve.noExternal (the canary can actually fail)', { skip: !ready }, () => {
-      const config = join(app, 'astro.config.mjs')
-      const original = readFileSync(config, 'utf8')
+    it('the keyword is what makes it work (the canary can still fail)', { skip: !ready }, () => {
+      const original = readFileSync(join(app, 'astro.config.mjs'), 'utf8')
+      const manifest = join(app, 'node_modules', '@cascivo', 'react', 'package.json')
+      const withoutKeyword = (text: string): string => {
+        const pkg = JSON.parse(text) as { keywords?: string[] }
+        pkg.keywords = (pkg.keywords ?? []).filter((k) => k !== 'astro-component')
+        return JSON.stringify(pkg, null, 2) + '\n'
+      }
+      // Captured before the edit so the finally block restores byte for byte.
+      const pristine = readFileSync(realpathSync(manifest), 'utf8')
+      assert.ok(
+        (JSON.parse(pristine) as { keywords?: string[] }).keywords?.includes('astro-component'),
+        'the installed @cascivo/react has no astro-component keyword, so the arm above ' +
+          'cannot be what keeps the build styled.',
+      )
       try {
-        writeFileSync(
-          config,
-          "import { defineConfig } from 'astro/config'\n" +
-            "import react from '@astrojs/react'\n" +
-            'export default defineConfig({ integrations: [react()] })\n',
-        )
-        execFileSync('pnpm', ['exec', 'astro', 'build'], { cwd: app, stdio: 'pipe' })
-        const broken = unstyledClasses(app).filter((r) => r.unmatched.length > 0)
+        patchInstalledFile(manifest, withoutKeyword)
+        const broken = buildVanilla().filter((r) => r.unmatched.length > 0)
         assert.ok(
           broken.length > 0,
-          'Removing `resolve.noExternal` did NOT produce unstyled pages. Either Astro/Vite no ' +
-            'longer externalizes the package (in which case the scaffold can drop the config ' +
-            'and docs/USING-WITH-ASTRO.md should be re-written), or this canary has stopped ' +
-            'measuring anything.',
+          'Removing the astro-component keyword did NOT produce unstyled pages. Either ' +
+            'Astro/Vite no longer externalizes the package without it (re-check ' +
+            'docs/USING-WITH-ASTRO.md), or this canary has stopped measuring anything.',
         )
       } finally {
-        writeFileSync(config, original)
+        patchInstalledFile(manifest, () => pristine)
+        writeFileSync(join(app, 'astro.config.mjs'), original)
       }
     })
+  })
+
+  /**
+   * The naive adopter. The scaffold wires everything for you, so it cannot show what a plain
+   * `astro add react && astro add mdx && pnpm add @cascivo/react` app gets. This fixture is that
+   * app, built, previewed and run under `astro dev` with real Chromium: once with the vanilla
+   * config, once with the `cascivo()` integration added.
+   */
+  describe('astro (naive adopter)', () => {
+    const FIXTURE = join(REPO_ROOT, 'scripts', 'checks', 'fixtures', 'astro-naive')
+    const THEME_SCRIPT = join('src', 'components', 'ThemeScript.astro')
+    const VANILLA_CONFIG = readFileSync(join(FIXTURE, 'astro.config.mjs'), 'utf8')
+    const VANILLA_THEME_SCRIPT = readFileSync(join(FIXTURE, THEME_SCRIPT), 'utf8')
+    const CASCIVO_CONFIG =
+      "import { defineConfig } from 'astro/config'\n" +
+      "import mdx from '@astrojs/mdx'\n" +
+      "import react from '@astrojs/react'\n" +
+      "import cascivo from '@cascivo/astro'\n" +
+      'export default defineConfig({ integrations: [react(), mdx(), cascivo()] })\n'
+    const ASTRO = process.env['ASTRO_VERSION'] ?? '^7.4.0'
+    const latest = ASTRO === 'latest'
+
+    let app = ''
+    let browser: Browser | undefined
+
+    type Variant = 'vanilla' | 'cascivo()'
+
+    /**
+     * Writes a variant's config. Under `cascivo()` the integration injects the theme script, so
+     * the layout's hand-inlined copy goes: a second `astro:after-swap` listener would keep the
+     * theme alive with the integration's broken, and the canary below could not fail.
+     */
+    function useVariant(variant: Variant): void {
+      const cascivo = variant === 'cascivo()'
+      writeFileSync(join(app, 'astro.config.mjs'), cascivo ? CASCIVO_CONFIG : VANILLA_CONFIG)
+      writeFileSync(
+        join(app, THEME_SCRIPT),
+        cascivo ? '---\n// cascivo() injects the theme script.\n---\n' : VANILLA_THEME_SCRIPT,
+      )
+    }
+
+    /**
+     * A build from nothing. Vite and Astro cache transformed modules and the externalization
+     * decision, and a canary leaves a patched copy of a package in those caches.
+     */
+    function cleanBuild(): void {
+      for (const dir of ['dist', join('node_modules', '.vite'), join('node_modules', '.astro')]) {
+        rmSync(join(app, dir), { recursive: true, force: true })
+      }
+      run('pnpm', ['exec', 'astro', 'build'], app)
+    }
+
+    function freePort(): Promise<number> {
+      return new Promise((resolve, reject) => {
+        const server = createServer()
+        server.once('error', reject)
+        server.listen(0, () => {
+          const address = server.address()
+          const port = typeof address === 'object' && address !== null ? address.port : 0
+          server.close(() => resolve(port))
+        })
+      })
+    }
+
+    /** Starts `astro dev` or `astro preview` (background daemons since Astro 7) and waits for it. */
+    async function startServer(command: 'dev' | 'preview'): Promise<string> {
+      const port = await freePort()
+      run('pnpm', ['exec', 'astro', command, '--background', '--port', String(port)], app)
+      const base = `http://localhost:${port}`
+      const deadline = Date.now() + 60_000
+      for (;;) {
+        try {
+          if ((await fetch(`${base}/load`)).status === 200) return base
+        } catch {
+          // Not listening yet.
+        }
+        if (Date.now() > deadline) throw new Error(`astro ${command} did not serve ${base} in 60s`)
+        await new Promise((resolve) => setTimeout(resolve, 250))
+      }
+    }
+
+    /** Stops a daemon; a no-op when none is running, so cleanup can always call it. */
+    function stopServer(command: 'dev' | 'preview'): void {
+      if (app === '') return
+      try {
+        execFileSync('pnpm', ['exec', 'astro', command, 'stop'], { cwd: app, stdio: 'pipe' })
+      } catch {
+        // Nothing to stop.
+      }
+    }
+
+    /** A fresh context per assertion, so one's init scripts and stored theme cannot leak. */
+    async function inPage(fn: (page: Page) => Promise<void>): Promise<void> {
+      assert.ok(browser, 'Chromium did not launch')
+      const context = await browser.newContext()
+      try {
+        await fn(await context.newPage())
+      } finally {
+        await context.close()
+      }
+    }
+
+    before(async () => {
+      if (!ready) return
+      app = join(mkdtempSync(join(tmpdir(), 'cascivo-fw-astro-naive-')), 'astro-naive')
+      cpSync(FIXTURE, app, { recursive: true })
+      const dependencies = {
+        '@astrojs/mdx': latest ? 'latest' : '^8.1.0',
+        '@astrojs/react': latest ? 'latest' : '^7.1.0',
+        // Installed in both variants and imported only by the cascivo() config.
+        '@cascivo/astro': tarballFor('astro'),
+        '@cascivo/react': tarballFor('react'),
+        '@cascivo/themes': tarballFor('themes'),
+        '@preact/signals-react': '^3',
+        astro: ASTRO,
+        react: '^19.2.0',
+        'react-dom': '^19.2.0',
+      }
+      writeFileSync(
+        join(app, 'package.json'),
+        JSON.stringify({ name: 'astro-naive', private: true, type: 'module', dependencies }) + '\n',
+      )
+      installFromTarballs(app)
+      const executablePath = resolveChromium(chromium.executablePath())
+      console.log(chromiumNote(executablePath))
+      browser = await chromium.launch(executablePath === undefined ? {} : { executablePath })
+    })
+
+    after(async () => {
+      stopServer('dev')
+      stopServer('preview')
+      await browser?.close()
+    })
+
+    /** Every browser assertion, against whichever server `base()` names. */
+    function browserAssertions(base: () => string): void {
+      it('the first response is styled on every page', { skip: !ready }, async () => {
+        let used = 0
+        for (const route of PAGES) used += await assertFirstResponseStyled(`${base()}/${route}`)
+        assert.ok(used > 0, 'no cascivo classes in any server-rendered page; this proves nothing')
+      })
+      it('every directive hydrates; shared state, Toast and Tabs work', { skip: !ready }, () =>
+        inPage((page) => assertHydrates(page, base())),
+      )
+      it('no hydration error with a stored dark theme', { skip: !ready }, () =>
+        inPage((page) => assertNoHydrationErrors(page, base())),
+      )
+      it('the theme survives a <ClientRouter> navigation', { skip: !ready }, () =>
+        inPage((page) => assertThemeSurvivesSoftNav(page, base())),
+      )
+      it(
+        'an open Popover and Modal survive transition:persist without moveBefore',
+        { skip: !ready },
+        () => inPage((page) => assertModalSurvivesPersist(page, base())),
+      )
+    }
+
+    for (const variant of ['vanilla', 'cascivo()'] as const) {
+      describe(variant, () => {
+        before(() => {
+          if (!ready) return
+          useVariant(variant)
+          cleanBuild()
+        })
+
+        it('astro build: no barrel island, and every class has a rule', { skip: !ready }, () => {
+          for (const route of PAGES) {
+            assertNoBarrelIsland(readFileSync(join(app, 'dist', route, 'index.html'), 'utf8'))
+          }
+          const results = unstyledClasses(app)
+          assert.equal(results.length, PAGES.length, 'the build did not emit every fixture page')
+          assert.ok(
+            results.some((r) => r.used > 0),
+            'no cascivo module classes in any built page, so this proves nothing.',
+          )
+          assert.deepEqual(
+            results
+              .filter((r) => r.unmatched.length > 0)
+              .map((b) => `${b.page} (${b.unmatched.length} unmatched, e.g. .${b.unmatched[0]})`),
+            [],
+            `The ${variant} build references cascivo classes with no rule behind them. See ` +
+              'docs/USING-WITH-ASTRO.md.',
+          )
+        })
+
+        describe('astro preview', () => {
+          let base = ''
+          before(async () => {
+            if (ready) base = await startServer('preview')
+          })
+          after(() => stopServer('preview'))
+          browserAssertions(() => base)
+        })
+
+        describe('astro dev', () => {
+          let base = ''
+          before(async () => {
+            if (ready) base = await startServer('dev')
+          })
+          after(() => stopServer('dev'))
+          browserAssertions(() => base)
+          // Dev only: a build's minifier folds the statement into the blocks that follow it.
+          it(
+            'the layer order statement is the first @layer rule (MDX)',
+            { skip: !ready },
+            async () => assertLayerOrderFirst(await pageCss(`${base}/mdx`)),
+          )
+        })
+      })
+    }
+
+    /** The two string assertions reject what they guard against (no install needed). */
+    it('assertLayerOrderFirst and assertNoBarrelIsland can fail', () => {
+      const canonical = /^@layer\s+([^;]+);/m.exec(
+        readFileSync(join(REPO_ROOT, 'packages', 'tokens', 'src', 'layers.css'), 'utf8'),
+      )![1]!
+      assertLayerOrderFirst(`@layer vendor, ${canonical};`)
+      for (const css of [
+        `@layer cascivo.reset { }\n@layer ${canonical};`,
+        `@layer ${canonical.replace('cascivo.platform, ', '')};`,
+        `@layer ${canonical}, vendor;`,
+      ]) {
+        assert.throws(() => assertLayerOrderFirst(css), `accepted: ${css}`)
+      }
+      for (const url of ['/node_modules/@cascivo/react/dist/index.js', '/_astro/index.Ab12cD.js']) {
+        assert.throws(() => assertNoBarrelIsland(`<astro-island component-url="${url}">`), url)
+      }
+    })
+
+    /**
+     * The non-vacuity arms. Each puts one fixed bug back into the INSTALLED package (through
+     * patchInstalledFile, never writing through pnpm's store hardlink), rebuilds, and requires
+     * the named assertion to fail for that reason. The edit must match: if the shipped code
+     * changes shape, the canary says so instead of silently testing the unpatched build.
+     */
+    async function failsWithPatch(
+      variant: Variant,
+      file: string,
+      edit: (text: string) => string,
+      expectFailure: (base: string) => Promise<void>,
+    ): Promise<void> {
+      const pristine = readFileSync(realpathSync(file), 'utf8')
+      const patched = edit(pristine)
+      assert.notEqual(
+        patched,
+        pristine,
+        `the canary's edit no longer matches ${file}; update it to the shipped code's shape.`,
+      )
+      useVariant(variant)
+      try {
+        patchInstalledFile(file, () => patched)
+        cleanBuild()
+        await expectFailure(await startServer('preview'))
+      } finally {
+        stopServer('preview')
+        patchInstalledFile(file, () => pristine)
+      }
+    }
+
+    /** `@cascivo/core` as `@cascivo/react` resolves it (the app does not depend on it). */
+    function installedCore(): string {
+      const react = realpathSync(join(app, 'node_modules', '@cascivo', 'react'))
+      return join(react, '..', 'core', 'dist', 'index.js')
+    }
+
+    it(
+      'canary: reverting useTheme to a plain store read fails assertNoHydrationErrors',
+      { skip: !ready },
+      () =>
+        failsWithPatch(
+          'vanilla',
+          installedCore(),
+          (js) =>
+            js.replace(/\b\w+\(subscribeTheme,\s*readTheme,\s*readServerTheme\)/, 'readTheme()'),
+          (base) => inPage((page) => assert.rejects(assertNoHydrationErrors(page, base), /#418/)),
+        ),
+    )
+
+    it(
+      'canary: dropping reapplyOn from the injected theme script fails assertThemeSurvivesSoftNav',
+      { skip: !ready },
+      () =>
+        failsWithPatch(
+          'cascivo()',
+          join(app, 'node_modules', '@cascivo', 'astro', 'dist', 'index.mjs'),
+          (js) => js.replace(/,\s*reapplyOn:\s*[`'"]astro:after-swap[`'"]/, ''),
+          (base) =>
+            inPage((page) =>
+              assert.rejects(assertThemeSurvivesSoftNav(page, base), /no longer "dark"/),
+            ),
+        ),
+    )
+
+    /** Disables the re-insertion detection Modal and usePopover use to restore themselves. */
+    const withoutRestore = (js: string): string =>
+      js.replace(/(?<!function )\bwasReinserted\(/g, '(() => false)(')
+
+    it(
+      'canary: without the Popover restore, assertModalSurvivesPersist fails',
+      { skip: !ready },
+      () =>
+        failsWithPatch(
+          'vanilla',
+          join(app, 'node_modules', '@cascivo', 'react', 'dist', 'popover', 'use-popover.js'),
+          withoutRestore,
+          (base) =>
+            inPage((page) =>
+              assert.rejects(assertModalSurvivesPersist(page, base), /Popover .* closed/),
+            ),
+        ),
+    )
+
+    it(
+      'canary: without the Modal restore, assertModalSurvivesPersist fails',
+      { skip: !ready },
+      () =>
+        failsWithPatch(
+          'vanilla',
+          join(app, 'node_modules', '@cascivo', 'react', 'dist', 'modal', 'modal.js'),
+          withoutRestore,
+          (base) =>
+            inPage((page) =>
+              assert.rejects(assertModalSurvivesPersist(page, base), /no longer modal/),
+            ),
+        ),
+    )
   })
 
   describe('react-vite', () => {

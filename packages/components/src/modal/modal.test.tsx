@@ -100,6 +100,77 @@ describe('Modal', () => {
   })
 })
 
+// Astro's `transition:persist` without `Element.moveBefore` (Safari, Firefox) re-inserts the
+// persisted island by moving an ancestor. The platform then drops the open dialog from the top
+// layer while `isOpen` still says open, so Escape and the backdrop are dead (Astro report R6).
+// jsdom has no top layer, so the `showModal` spy stands in for "back in the top layer".
+describe('Modal re-insertion', () => {
+  it('Modal re-enters the top layer after an ancestor is re-inserted', async () => {
+    const onClose = vi.fn()
+    const wrapper = document.body.appendChild(document.createElement('div'))
+    const showModal = vi.mocked(HTMLDialogElement.prototype.showModal)
+    showModal.mockClear()
+    render(<Modal open onClose={onClose} title="Persisted" />, { container: wrapper })
+    expect(showModal).toHaveBeenCalledTimes(1)
+
+    await act(async () => {
+      wrapper.remove()
+      document.body.appendChild(wrapper)
+    })
+
+    expect(showModal).toHaveBeenCalledTimes(2)
+    expect(screen.getByRole('dialog')).toHaveAttribute('open')
+    // Restoring through `close()` would fire `close`, and a controlled parent would close it.
+    expect(onClose).not.toHaveBeenCalled()
+  })
+
+  // The `wasReinserted` guard is load-bearing: jsdom has no `:modal`, like an engine without it,
+  // so without the guard any DOM change anywhere would call `showModal()` on the open dialog.
+  it('ignores unrelated DOM insertions while open', async () => {
+    const wrapper = document.body.appendChild(document.createElement('div'))
+    const showModal = vi.mocked(HTMLDialogElement.prototype.showModal)
+    showModal.mockClear()
+    render(<Modal open title="Open" />, { container: wrapper })
+    expect(showModal).toHaveBeenCalledTimes(1)
+
+    await act(async () => {
+      document.body.appendChild(document.createElement('div'))
+    })
+
+    expect(showModal).toHaveBeenCalledTimes(1)
+  })
+
+  it('keeps the dialog visible when restoring through showModal() throws', async () => {
+    const wrapper = document.body.appendChild(document.createElement('div'))
+    const showModal = vi.mocked(HTMLDialogElement.prototype.showModal)
+    render(<Modal open title="Restore fails" />, { container: wrapper })
+    showModal.mockImplementationOnce(() => {
+      throw new DOMException('Invalid state', 'InvalidStateError')
+    })
+
+    await act(async () => {
+      wrapper.remove()
+      document.body.appendChild(wrapper)
+    })
+
+    expect(screen.getByRole('dialog', { hidden: true })).toHaveAttribute('open')
+  })
+
+  it('does not touch a closed modal when an ancestor is re-inserted', async () => {
+    const wrapper = document.body.appendChild(document.createElement('div'))
+    const showModal = vi.mocked(HTMLDialogElement.prototype.showModal)
+    showModal.mockClear()
+    render(<Modal title="Closed" />, { container: wrapper })
+
+    await act(async () => {
+      wrapper.remove()
+      document.body.appendChild(wrapper)
+    })
+
+    expect(showModal).not.toHaveBeenCalled()
+  })
+})
+
 describe('Modal ai presence', () => {
   it('flags the dialog for AI content and AI generation', () => {
     const { rerender } = render(

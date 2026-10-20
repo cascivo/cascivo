@@ -13,6 +13,16 @@ interface TabsStore {
 
 const TabsContext = createContext<TabsStore | null>(null)
 
+/**
+ * Astro renders every `.astro` child separately, so React context never reaches a compound
+ * part placed outside its root. Say so, instead of rendering nothing.
+ */
+function outsideRoot(part: string, root: string): Error {
+  return new Error(
+    `${part} must be used inside <${root}>. In Astro, compose compound components in one .tsx island and hydrate that island — Astro renders each .astro child separately, so React context cannot reach it.`,
+  )
+}
+
 export interface TabsProps {
   defaultValue?: string
   value?: string
@@ -53,8 +63,9 @@ export function TabsList({ className, children, ...props }: HTMLAttributes<HTMLD
   return (
     <TabsContext.Consumer>
       {(store) => {
+        if (!store) throw outsideRoot('TabsList', 'Tabs')
         const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-          if (!store || !['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return
+          if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return
           const tabs = Array.from(
             ref.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]:not([disabled])') ?? [],
           )
@@ -122,7 +133,10 @@ export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
   function TabsTrigger(props, ref) {
     return (
       <TabsContext.Consumer>
-        {(store) => (store ? <TabsTriggerInner store={store} buttonRef={ref} {...props} /> : null)}
+        {(store) => {
+          if (!store) throw outsideRoot('TabsTrigger', 'Tabs')
+          return <TabsTriggerInner store={store} buttonRef={ref} {...props} />
+        }}
       </TabsContext.Consumer>
     )
   },
@@ -173,7 +187,10 @@ export interface TabsContentProps extends HTMLAttributes<HTMLDivElement> {
 export function TabsContent(props: TabsContentProps) {
   return (
     <TabsContext.Consumer>
-      {(store) => (store ? <TabsContentInner store={store} {...props} /> : null)}
+      {(store) => {
+        if (!store) throw outsideRoot('TabsContent', 'Tabs')
+        return <TabsContentInner store={store} {...props} />
+      }}
     </TabsContext.Consumer>
   )
 }

@@ -248,6 +248,40 @@ the printed diff).
 
 Release-specific upgrade guides, newest first:
 
+- **`useTheme()` returns `'light'` during SSR and hydration** (`@cascivo/core` minor) — it
+  moves to the persisted or controlled value in the render right after hydration, as
+  `next-themes` does. Before, it returned the persisted client value during the hydration
+  render, so any visitor with a non-default theme hit a hydration mismatch (React #418), and
+  in an islands page (Astro) whether it matched depended on which island hydrated first.
+
+  The `data-theme` attribute is unaffected: `themePreloadScript()` and the controlled
+  `<ThemeProvider value=…>` script still set it before first paint.
+
+  **This is a regression for controlled SSR.** A Next.js `<ThemeProvider value="dark">` with a
+  component that prints `useTheme()[0]` now renders `light` on the server and in the hydration
+  render, then `dark`. Migration: express theme-dependent visuals in CSS, not by branching on
+  the value.
+
+  ```css
+  .logo {
+    background-image: url(/logo-light.svg);
+    [data-theme='dark'] & {
+      background-image: url(/logo-dark.svg);
+    }
+  }
+  ```
+
+  In the same release, `ThemeProvider` stops writing the module theme store on the server
+  (a `value` no longer leaks into the next request), and `themePreloadScript({ reapplyOn:
+'astro:after-swap' })` keeps the theme across Astro `<ClientRouter>` soft navigations.
+
+- **Compound parts outside their root now throw** (`@cascivo/react` minor) — `TabsList`,
+  `TabsTrigger`, `TabsContent`, `AccordionItem`, `AccordionTrigger` and `AccordionContent`
+  rendered outside their `Tabs` / `Accordion` root throw an error that names the fix. Before,
+  they silently rendered nothing. Migration: render each part inside its root. In Astro, every
+  `.astro` child renders separately, so React context cannot reach a part placed directly in
+  `.astro` markup; compose the root and its parts in one `.tsx` island and hydrate that island.
+
 - **Upgrading `0.x` → `1.0.0`** — eleven deprecated surfaces are removed. Every one has a
   replacement that takes the identical argument, so each fix is a rename, and every removal
   is a _compile error_ rather than a silent behaviour change.

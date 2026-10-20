@@ -1,6 +1,7 @@
 import { describe, expect, it, beforeEach, afterEach, vi } from 'vitest'
-import { createRef } from 'react'
+import { createRef, type ReactNode } from 'react'
 import { act, cleanup, render } from '@testing-library/react'
+import { hydrateRoot, type Root } from 'react-dom/client'
 import { renderToString } from 'react-dom/server'
 import {
   applyTheme,
@@ -371,5 +372,153 @@ describe('themePreloadScript', () => {
       run(themePreloadScript({ defaultTheme: 'dark' }))
       expect(currentTheme()).toBe('warm')
     })
+
+    it('themePreloadScript reapplyOn re-applies after a swap', () => {
+      // Without `reapplyOn` the output is byte-identical to the script every adopter already
+      // inlines (and hashes into a CSP), so adding the option cannot change their pages.
+      expect(themePreloadScript()).toBe(
+        `(function(){try{var v="light";if(typeof matchMedia==='function'){if(matchMedia('(prefers-color-scheme: dark)').matches)v='dark';else if(matchMedia('(prefers-color-scheme: light)').matches)v='light';}var raw=localStorage.getItem("cascivo-theme");if(raw){v=raw;try{var e=JSON.parse(raw);if(e&&typeof e==='object'&&'value'in e)v=e.value;}catch(_){}}document.documentElement.setAttribute("data-theme",v);}catch(_){}})();`,
+      )
+      expect(
+        themePreloadScript({ storageKey: 'k', attribute: 'data-x', defaultTheme: 'dark' }),
+      ).toBe(
+        `(function(){try{var v="dark";var raw=localStorage.getItem("k");if(raw){v=raw;try{var e=JSON.parse(raw);if(e&&typeof e==='object'&&'value'in e)v=e.value;}catch(_){}}document.documentElement.setAttribute("data-x",v);}catch(_){}})();`,
+      )
+
+      localStorage.setItem('cascivo-theme', JSON.stringify({ v: 1, value: 'dark' }))
+      run(themePreloadScript({ reapplyOn: 'astro:after-swap' }))
+      expect(currentTheme()).toBe('dark')
+      // A soft navigation swaps in the next SSR document's <html> attributes.
+      document.documentElement.setAttribute('data-theme', 'light')
+      document.dispatchEvent(new Event('astro:after-swap'))
+      expect(currentTheme()).toBe('dark')
+
+      // The list form listens for every name.
+      run(themePreloadScript({ reapplyOn: ['test:swap-a', 'test:swap-b'] }))
+      document.documentElement.setAttribute('data-theme', 'light')
+      document.dispatchEvent(new Event('test:swap-b'))
+      expect(currentTheme()).toBe('dark')
+    })
+  })
+})
+
+describe('SSR and hydration', () => {
+  type ThemeModule = typeof import('./theme.tsx')
+
+  /** A fresh module instance: the server and the browser are separate processes, so each
+   * side of a hydration test must start from its own untouched theme singleton. */
+  async function freshModule(): Promise<ThemeModule> {
+    vi.resetModules()
+    return await import('./theme.tsx')
+  }
+
+  function probeOf(mod: ThemeModule) {
+    return function Probe() {
+      const [theme] = mod.useTheme()
+      return <span>{theme}</span>
+    }
+  }
+
+  /** Run `render` the way a server does: no `window`. */
+  function onServer<T>(render: () => T): T {
+    vi.stubGlobal('window', undefined)
+    try {
+      return render()
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  }
+
+  async function hydrate(html: string, node: ReactNode, onRecoverableError: () => void) {
+    const container = document.createElement('div')
+    container.innerHTML = html
+    document.body.append(container)
+    let root: Root | undefined
+    await act(async () => {
+      root = hydrateRoot(container, node, { onRecoverableError })
+    })
+    return { container, unmount: () => act(() => root?.unmount()) }
+  }
+
+  beforeEach(() => {
+    localStorage.clear()
+    document.documentElement.removeAttribute('data-theme')
+  })
+  afterEach(() => {
+    vi.unstubAllGlobals()
+    document.body.replaceChildren()
+  })
+
+  it('hydration: useTheme renders the server snapshot, then the persisted value', async () => {
+    localStorage.setItem('cascivo-theme', JSON.stringify({ v: 1, value: 'dark' }))
+    const server = await freshModule()
+    const ServerProbe = probeOf(server)
+    const html = onServer(() => renderToString(<ServerProbe />))
+    expect(html).toBe('<span>light</span>')
+
+    const client = await freshModule()
+    const Probe = probeOf(client)
+    const onRecoverableError = vi.fn()
+    const { container, unmount } = await hydrate(html, <Probe />, onRecoverableError)
+    expect(onRecoverableError).not.toHaveBeenCalled()
+    expect(container.textContent).toBe('dark')
+    unmount()
+  })
+
+  it('hydration across islands: a later-hydrating provider cannot cause #418', async () => {
+    const server = await freshModule()
+    const ServerProbe = probeOf(server)
+    // The page renders the provider island first on the server…
+    const [providerHtml, probeHtml] = onServer(() => [
+      renderToString(<server.ThemeProvider defaultTheme="dark" />),
+      renderToString(<ServerProbe />),
+    ])
+
+    // …but the browser may hydrate the probe island first.
+    const client = await freshModule()
+    const Probe = probeOf(client)
+    const onRecoverableError = vi.fn()
+    const probe = await hydrate(probeHtml, <Probe />, onRecoverableError)
+    const provider = await hydrate(
+      providerHtml,
+      <client.ThemeProvider defaultTheme="dark" />,
+      onRecoverableError,
+    )
+    expect(onRecoverableError).not.toHaveBeenCalled()
+    probe.unmount()
+    provider.unmount()
+  })
+
+  it('server isolation: a provider does not leak into the next render', async () => {
+    /** One server process: a controlled provider request, then a bare request. */
+    async function twoRequests() {
+      const server = await freshModule()
+      const Probe = probeOf(server)
+      const second = onServer(() => {
+        renderToString(
+          <server.ThemeProvider value="dark" defaultTheme="dark">
+            <Probe />
+          </server.ThemeProvider>,
+        )
+        return renderToString(<Probe />)
+      })
+      return { server, second }
+    }
+
+    const baseline = await freshModule()
+    const BaselineProbe = probeOf(baseline)
+    const first = onServer(() => renderToString(<BaselineProbe />))
+
+    const a = await twoRequests()
+    expect(a.second).toBe(first)
+    // `config` untouched: the first browser-side read builds the store from the default
+    // config (no explicit default, no OS signal in jsdom → light), not from `dark`.
+    expect(a.server.themeSignal().value).toBe('light')
+
+    // `store` still null: a store built on the server (no-op driver) never reads storage,
+    // so only a store created now picks up the persisted value.
+    const b = await twoRequests()
+    localStorage.setItem('cascivo-theme', JSON.stringify({ v: 1, value: 'warm' }))
+    expect(b.server.themeSignal().value).toBe('warm')
   })
 })

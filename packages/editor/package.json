@@ -4,6 +4,7 @@
   "private": false,
   "description": "Lightweight CSS-native code editor — native textarea overlay + owned zero-dependency tokenizer",
   "keywords": [
+    "astro-component",
     "cascivo",
     "code-editor",
     "css",

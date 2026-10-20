@@ -1,0 +1,54 @@
+name: Framework latest
+
+# `pnpm framework:check` against the NEWEST Astro, not the lockfile's. CI runs the check on
+# every PR, but with the versions the fixtures pin, so the next Astro release (a major above
+# all) would reach adopters before it reached us. ASTRO_VERSION=latest makes the naive-adopter
+# arm install astro@latest, @astrojs/react@latest and @astrojs/mdx@latest instead.
+#
+# Every action is pinned to a commit SHA (the release the `@v4` tags in ci.yml resolve to), and
+# the job gets read-only contents and nothing else: it runs third-party code fresh from npm.
+
+on:
+  schedule:
+    # Mondays, 04:37 UTC. Off the hour: GitHub defers scheduled runs at :00 the most.
+    - cron: '37 4 * * 1'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: framework-latest
+  cancel-in-progress: true
+
+jobs:
+  framework-latest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # framework:check packs the built packages, and skips cleanly without a build.
+      - name: Build (vp run -r build)
+        run: pnpm exec vp run -r --no-cache build
+
+      # The naive-adopter arm drives real Chromium (scripts/checks/astro-browser.ts).
+      - name: Install Chromium
+        run: pnpm --filter @cascivo/site exec playwright install chromium --with-deps
+
+      - name: Framework-install canary against astro@latest
+        run: pnpm run framework:check
+        env:
+          ASTRO_VERSION: latest

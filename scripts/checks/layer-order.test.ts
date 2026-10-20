@@ -186,11 +186,22 @@ describe('layer-order:check — one canonical @layer order, no drift', () => {
       allCss.includes("@import '@cascivo/tokens/layers.css'"),
       'themes/all.css must import @cascivo/tokens/layers.css',
     )
-    // The @cascivo/react aggregate prepends the statement to styles.css.
-    const reactCfg = readFileSync(join(REPO_ROOT, 'packages/react/vite.config.ts'), 'utf8')
+    // Every emitted stylesheet prepends the statement, read from layers.css by one helper
+    // shared by the react build and the single-sheet packages (charts, ai, editor, flow).
+    const helper = readFileSync(join(REPO_ROOT, 'scripts/build/layer-order.ts'), 'utf8')
     assert.ok(
-      reactCfg.includes('layers.css') && reactCfg.includes('LAYER_ORDER'),
+      helper.includes('packages/tokens/src/layers.css'),
+      'scripts/build/layer-order.ts must read the canonical layers.css',
+    )
+    const reactCfg = readFileSync(join(REPO_ROOT, 'packages/react/vite.config.ts'), 'utf8')
+    const edge = readFileSync(join(REPO_ROOT, 'scripts/build/css-import-edge.ts'), 'utf8')
+    assert.ok(
+      reactCfg.includes('layerOrderStatement') && reactCfg.includes('LAYER_ORDER'),
       'react vite.config must prepend the canonical layer statement to styles.css',
+    )
+    assert.ok(
+      edge.includes('prependLayerOrder'),
+      'css-import-edge must prepend the canonical layer statement to the emitted stylesheet',
     )
   })
 

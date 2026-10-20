@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro'
+import { Overlays } from '../components/Overlays'
+import { ThemeSwitch } from '../components/ThemeSwitch'
+---
+
+<Layout title="view transition a">
+  <h1>Page A</h1>
+  <a href="/vt-a" data-testid="link-a">To A</a>
+  <a href="/vt-b" data-testid="link-b">To B</a>
+  <ThemeSwitch client:load />
+  <Overlays client:load transition:persist="overlays" />
+</Layout>

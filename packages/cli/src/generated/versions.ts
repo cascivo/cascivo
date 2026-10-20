@@ -9,6 +9,7 @@
 export const CASCIVO_VERSIONS: Record<string, string> = {
   '@cascivo/react': '1.9.0',
   '@cascivo/themes': '1.0.3',
+  '@cascivo/astro': '0.0.0',
   '@cascivo/charts': '1.9.0',
   '@cascivo/icons': '1.1.1',
   '@cascivo/eslint-config': '0.4.2',

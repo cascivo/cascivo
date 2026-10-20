@@ -16,7 +16,8 @@
       "@cascivo/ai",
       "@cascivo/text",
       "@cascivo/render",
-      "@cascivo/app"
+      "@cascivo/app",
+      "@cascivo/astro"
     ]
   ],
   "updateInternalDependencies": "patch",

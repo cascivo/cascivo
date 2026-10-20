@@ -43,6 +43,13 @@
  *      twin — invariant 2 is preserved. See
  *      docs/plans/framework-templates-astro-ghost-research.md.
  *
+ *   5. Every such package carries the `astro-component` keyword. Astro externalizes an npm
+ *      dependency in its server builds, so Node imports it at runtime, its module graph (and
+ *      its `import './x.css'` edges) is never walked, and server-rendered islands render
+ *      unstyled. Astro inlines packages whose `keywords` contain `astro` or `astro-component`
+ *      (its framework-package detection), which is what makes a plain `astro.config` work
+ *      without `vite.resolve.noExternal`. Pinned end to end by framework-install.test.ts.
+ *
  * Needs a prior `pnpm build` — it reads `dist/`, i.e. what an adopter actually installs.
  * Skips cleanly when dist is absent so `pnpm ready`'s pre-build stages stay runnable.
  *
@@ -60,6 +67,7 @@ interface PkgJson {
   name?: string
   private?: boolean
   sideEffects?: string[] | boolean
+  keywords?: string[]
   exports?: Record<string, unknown>
 }
 
@@ -290,6 +298,61 @@ describe('css-contract — a package that declares CSS side effects imports its 
         'graph then emit none, and SSR-rendered components render unstyled with no warning ' +
         '— reproduced on Astro for two majors. `module` ahead of `node` fixes it without ' +
         "weakening invariant 2, because Node's ESM resolver ignores `module`.\n  " +
+        offenders.join('\n  '),
+    )
+  })
+
+  it('every CSS-bearing package carries the astro-component keyword', { skip: !built }, () => {
+    const offenders: string[] = []
+    for (const c of candidates()) {
+      if (!(c.pkg.keywords ?? []).includes('astro-component')) {
+        offenders.push(`${c.name}: missing "astro-component" keyword`)
+      }
+    }
+    assert.deepEqual(
+      offenders,
+      [],
+      'Astro externalizes an npm dependency in its server and prerender builds, so Node imports ' +
+        "it at runtime and Astro never walks its module graph for CSS: the package's " +
+        'server-rendered islands render unstyled with no warning. Astro inlines a package ' +
+        'instead when its `keywords` contain `astro` or `astro-component`, which makes the ' +
+        'plain `astro.config` (no `vite.resolve.noExternal`) work. Add "astro-component" to the ' +
+        'package.json `keywords`, kept sorted.\n  ' +
+        offenders.join('\n  '),
+    )
+  })
+
+  it('every shipped stylesheet opens with the canonical layer order', { skip: !built }, () => {
+    // The ONE statement, from the one source of truth. Comments are stripped first: the
+    // file's prose mentions `@layer` blocks, and only the real statement ends in `;`.
+    const canonical = readFileSync(join(PACKAGES_DIR, 'tokens/src/layers.css'), 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .match(/@layer\s[^{;]+;/)?.[0]
+    assert.ok(canonical, 'packages/tokens/src/layers.css has no @layer order statement')
+    const squash = (s: string) => s.replace(/\s+/g, ' ').trim()
+
+    const offenders: string[] = []
+    for (const c of candidates()) {
+      for (const file of c.stylesheets) {
+        // First @layer rule, comments out of the way (a leading license banner is fine).
+        const css = readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')
+        const first = css.match(/@layer\s[^{;]*[{;]/)?.[0]
+        const label = `${c.name}: ${file.slice(c.dir.length + 1)}`
+        if (first === undefined) offenders.push(`${label} has no @layer rule`)
+        else if (squash(first) !== squash(canonical)) {
+          offenders.push(`${label} opens with \`${squash(first).slice(0, 60)}\``)
+        }
+      }
+    }
+    assert.deepEqual(
+      offenders,
+      [],
+      'A stylesheet that opens with `@layer cascivo.component{…}` and no order statement lets ' +
+        'whichever stylesheet the page loads first fix the layer order. Astro dev with an MDX ' +
+        'layout loads a component sheet before the tokens, so cascivo.component ends up below ' +
+        'cascivo.reset and the layer order silently inverts. Identical @layer statements are ' +
+        'idempotent, so every emitted sheet carries the statement from ' +
+        '@cascivo/tokens/layers.css (scripts/build/layer-order.ts).\n  ' +
         offenders.join('\n  '),
     )
   })

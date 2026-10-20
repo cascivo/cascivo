@@ -2,16 +2,15 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite-plus'
 import { dedupeDirectives, insertAfterDirectives } from '../../scripts/lib/directives.ts'
+import { layerOrderStatement, prependLayerOrder } from '../../scripts/build/layer-order.ts'
 import { MINIFY } from '../../scripts/build/minify.ts'
 
-// The canonical @layer order statement (single source of truth). Prepended to the
-// aggregate styles.css so a consumer who imports only '@cascivo/react/styles.css'
-// still gets a deterministic cascade order; identical statements are idempotent, so
-// this is harmless when @cascivo/themes is also loaded.
-const LAYER_ORDER = readFileSync(
-  fileURLToPath(new URL('../tokens/src/layers.css', import.meta.url)),
-  'utf8',
-).trim()
+// The canonical @layer order statement (single source of truth: packages/tokens/src/layers.css,
+// read by scripts/build/layer-order.ts). Prepended to the aggregate styles.css AND to every
+// per-component stylesheet, so a consumer who loads any one of them first still gets a
+// deterministic cascade order; identical statements are idempotent, so this is harmless when
+// @cascivo/themes is also loaded.
+const LAYER_ORDER = layerOrderStatement()
 
 // The complete design-token + default-theme bundle, inlined into the aggregate
 // styles.css so a consumer who imports ONLY '@cascivo/react/styles.css' gets a
@@ -130,7 +129,9 @@ function cssImportEdges() {
         if (asset.type !== 'asset' || !fileName.endsWith('.css') || fileName === 'styles.css') {
           continue
         }
+        // Collected BEFORE the prepend: styles.css states the order once, up front.
         if (typeof asset.source === 'string') cssSources.push(asset.source)
+        prependLayerOrder(asset, LAYER_ORDER)
         // Shim that owns this stylesheet's class-name map (x.module.js).
         const jsName = fileName.replace(/\.css$/, '.module.js')
         const chunk = bundle[jsName]
