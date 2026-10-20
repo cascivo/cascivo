@@ -7,31 +7,72 @@ export type AriaRole = Parameters<Page['getByRole']>[0]
 const SETTLE_MS = 5000
 const MAX_PAGES = 10
 
+export interface GoToOptions {
+  /** Set false for an in-page toggle that neither routes nor re-renders. Default true. */
+  expectNavigation?: boolean
+  /** How long to wait for the click to have any effect. Default 5 s. */
+  timeoutMs?: number
+}
+
 /**
- * Click the first visible link or button whose name matches, then wait for the app to settle.
+ * Click the first visible link or button whose name matches, then wait until the click had an
+ * observable effect, and throw if it had none.
  *
  * Agents pick history routing or hash routing freely, and a hash change fires no load event, so
- * there is no single signal to wait on. Instead: either the URL changes, or the clicked element
- * leaves the DOM (a route swap), or the network goes idle. Whichever comes first ends the wait;
- * a click that does none of those (an in-page button) just times out quietly.
+ * there is no single "navigation finished" signal. We wait for any evidence of an effect instead:
+ * the URL changed, the clicked element left the DOM, or the DOM mutated (a client-side route
+ * swap). Network idle is deliberately not evidence: in an SPA it is usually already true, so it
+ * would win the race and make a dead link look like a success, hiding exactly the failure the
+ * check exists to catch. A bare `#` is not a URL change for the same reason.
  */
-export async function goTo(page: Page, baseUrl: string, name: RegExp): Promise<void> {
+export async function goTo(
+  page: Page,
+  baseUrl: string,
+  name: RegExp,
+  opts: GoToOptions = {},
+): Promise<void> {
+  const { expectNavigation = true, timeoutMs = SETTLE_MS } = opts
   // A prior step may have left the browser on a blank page or another origin.
-  if (!page.url().startsWith(baseUrl)) await page.goto(baseUrl)
+  if (!sameOrigin(page.url(), baseUrl)) await page.goto(baseUrl)
   const target = page
     .getByRole('link', { name })
     .or(page.getByRole('button', { name }))
     .and(page.locator(':visible'))
     .first()
-  await target.waitFor({ state: 'visible', timeout: SETTLE_MS })
+  await target.waitFor({ state: 'visible', timeout: timeoutMs })
+  const handle = await target.elementHandle({ timeout: timeoutMs })
+  if (handle === null) throw new Error(`goTo: "${String(name)}" vanished before the click`)
   const before = page.url()
-  await target.click()
-  await Promise.race([
-    page.waitForURL((url) => url.href !== before, { timeout: SETTLE_MS }),
-    target.waitFor({ state: 'detached', timeout: SETTLE_MS }),
-    page.waitForLoadState('networkidle', { timeout: SETTLE_MS }),
-  ]).catch(() => undefined)
-  // The route may render after the URL flips; let the DOM catch up before the caller queries it.
+  // Armed before the click so a synchronous re-render is not missed. childList/characterData
+  // only: attribute churn (focus rings, aria-current) happens on a no-op click too.
+  await page.evaluate(() => {
+    const w = window as unknown as { __evalMutated?: boolean; __evalObserver?: MutationObserver }
+    w.__evalObserver?.disconnect()
+    w.__evalMutated = false
+    w.__evalObserver = new MutationObserver(() => {
+      w.__evalMutated = true
+    })
+    w.__evalObserver.observe(document.body, { childList: true, subtree: true, characterData: true })
+  })
+  await handle.click()
+  if (!expectNavigation) return
+  try {
+    await page.waitForFunction(
+      ({ el, was }) => {
+        const strip = (u: string) => u.replace(/#$/, '')
+        const w = window as unknown as { __evalMutated?: boolean }
+        // After a full page load the flag is gone, but then the URL differs.
+        return strip(location.href) !== strip(was) || !el.isConnected || w.__evalMutated === true
+      },
+      { el: handle, was: before },
+      { timeout: timeoutMs },
+    )
+  } catch (error) {
+    if (error instanceof Error && error.name === 'TimeoutError')
+      throw new Error(`goTo: clicking "${String(name)}" did not navigate or change the page`)
+    throw error
+  }
+  // Late renders (data fetch after the route flips) should have settled before the caller queries.
   await page.waitForLoadState('domcontentloaded')
 }
 
@@ -44,6 +85,9 @@ export async function expectVisible(page: Page, role: AriaRole, name: RegExp): P
  * Find an element wherever the agent put it. The prompts don't say which page holds what, so
  * start at `/`, then visit each distinct nav link once, breadth-first, up to MAX_PAGES pages.
  * Returns the locator with the page left on the route where it was found.
+ *
+ * Discovery follows links only. A route reachable only through a button is invisible here, so an
+ * EVAL that needs one must navigate there explicitly with `goTo`.
  */
 export async function findOnAnyPage(
   page: Page,
@@ -51,35 +95,63 @@ export async function findOnAnyPage(
   role: AriaRole,
   name: RegExp,
 ): Promise<Locator> {
+  // Keyed by pageKey so `/`, `/#top` and `#features` count as one page, not three.
   const seen = new Set<string>()
   const queue: string[] = [baseUrl]
   while (queue.length > 0 && seen.size < MAX_PAGES) {
     const url = queue.shift()
-    if (url === undefined || seen.has(url)) continue
-    seen.add(url)
+    if (url === undefined) continue
+    const key = pageKey(url)
+    if (seen.has(key)) continue
+    seen.add(key)
     await page.goto(url)
     await page.waitForLoadState('networkidle', { timeout: SETTLE_MS }).catch(() => undefined)
     const hit = page.getByRole(role, { name }).first()
     if (await hit.isVisible()) return hit
-    for (const href of await navHrefs(page, baseUrl)) if (!seen.has(href)) queue.push(href)
+    for (const href of await navHrefs(page, baseUrl)) if (!seen.has(pageKey(href))) queue.push(href)
   }
   throw new Error(`No visible ${role} named ${String(name)} on ${seen.size} page(s)`)
 }
 
+function sameOrigin(a: string, b: string): boolean {
+  try {
+    return new URL(a).origin === new URL(b).origin
+  } catch {
+    return false
+  }
+}
+
 /**
- * Same-app link targets, resolved to absolute URLs. Hash routes (`#/settings`) resolve against
- * the page URL, so they come out as distinct entries too. Reading hrefs is plain DOM data, not a
- * payload we need to trust: every value is re-checked against baseUrl before use.
+ * What makes two URLs the same page. Anchors (`#features`, bare `#`) stay on one history route, so
+ * the hash is dropped; a `#/route` or `#!/route` hash IS the route in a hash-routed app, so it is
+ * kept. A trailing slash never distinguishes pages (`/` and the bare origin are one).
+ */
+export function pageKey(href: string): string {
+  const url = new URL(href)
+  const path = url.pathname.replace(/\/+$/, '')
+  const routeHash = /^#!?\//.test(url.hash) ? url.hash.replace(/\/+$/, '') : ''
+  return `${url.origin}${path}${url.search}${routeHash === '#' || routeHash === '#!' ? '' : routeHash}`
+}
+
+/**
+ * Same-app link targets as absolute URLs, deduplicated by page. Hrefs are plain DOM data, not a
+ * payload we trust: each is re-checked against the app's origin before use.
  */
 async function navHrefs(page: Page, baseUrl: string): Promise<string[]> {
-  const links = page.getByRole('link')
-  const out: string[] = []
-  for (const link of await links.all()) {
+  const out = new Map<string, string>()
+  for (const link of await page.getByRole('link').all()) {
     if (!(await link.isVisible())) continue
     const href = await link.getAttribute('href')
     if (href === null) continue
-    const abs = new URL(href, page.url()).href
-    if (abs.startsWith(baseUrl) && !out.includes(abs)) out.push(abs)
+    let abs: URL
+    try {
+      abs = new URL(href, page.url())
+    } catch {
+      continue
+    }
+    if (!sameOrigin(abs.href, baseUrl)) continue
+    const key = pageKey(abs.href)
+    if (!out.has(key)) out.set(key, abs.href)
   }
-  return out
+  return [...out.values()]
 }

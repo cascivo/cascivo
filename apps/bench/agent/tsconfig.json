@@ -9,7 +9,7 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "lib": ["ES2023"],
+    "lib": ["ES2023", "DOM"],
     "types": ["node"]
   },
   "include": ["src", "tasks"]
