@@ -186,19 +186,58 @@ async function register(page: Page, baseUrl: string): Promise<void> {
       await box.fill(value, { timeout: 2000 }).catch(() => {})
       last = box
     }
+  // A required "I agree to the terms" box would block the submit; a user ticks it.
+  for (const box of await page.getByRole('checkbox').all()) {
+    if (!(await box.isVisible()) || (await box.isChecked().catch(() => true))) continue
+    const required = await box.evaluate(
+      (el) => el.hasAttribute('required') || el.getAttribute('aria-required') === 'true',
+    )
+    if (required) await box.check({ timeout: 2000 }).catch(() => {})
+  }
   if (last !== null)
     await submitFrom(page, last, new RegExp(`${SIGN_UP.source}|continue|submit`, 'i'))
 }
 
 /**
+ * Sign-up landed on the dashboard (ruling R15). That shows sign-up logs in, not that sign-in
+ * does: if the app offers a sign-out, sign out and sign in with the same values. A sign-out
+ * that reloads the page loses an in-memory account, so then the sign-up's dashboard stands, as
+ * it does when there is no sign-out at all.
+ */
+async function signInAgainAfterSignOut(page: Page, baseUrl: string): Promise<boolean> {
+  const name = /sign\s*out|log\s*out/i
+  const out = await firstVisible(
+    page.getByRole('button', { name }).or(page.getByRole('link', { name })),
+  )
+  if (out === null) return true
+  await page.evaluate(() => {
+    ;(window as unknown as { __evalNoReload?: boolean }).__evalNoReload = true
+  })
+  await out.click({ timeout: 5000 }).catch(() => {})
+  await eventually(async () => !(await onDashboard(page)), 3000)
+  await page.waitForLoadState('domcontentloaded')
+  const kept = await page
+    .evaluate(() => (window as unknown as { __evalNoReload?: boolean }).__evalNoReload === true)
+    .catch(() => false)
+  return !kept || signIn(page, baseUrl, false)
+}
+
+/**
  * The prompt names no account, so the EVAL signs in with plausible values. An app that only
  * admits registered users gets what a user would do next: sign up with the same values, then
- * (unless sign-up itself lands on the dashboard) sign in again, without reloading.
+ * sign in again, without reloading. If sign-up itself lands on the dashboard, sign-in is still
+ * checked after a sign-out where the app offers one (signInAgainAfterSignOut).
  */
 async function signInReachesDashboard(page: Page, baseUrl: string): Promise<void> {
   if (await signIn(page, baseUrl, true)) return
   await register(page, baseUrl)
-  if (await eventually(() => onDashboard(page), 3000)) return
+  if (await eventually(() => onDashboard(page), 3000)) {
+    if (await signInAgainAfterSignOut(page, baseUrl)) return
+    throw new Error(
+      'dashboard: signing up logged in, but after signing out, signing in with the same ' +
+        'email and password showed no heading named dashboard',
+    )
+  }
   if (await signIn(page, baseUrl, false)) return
   throw new Error(
     'dashboard: submitting sign-in with an email and password (also after signing up with them) ' +

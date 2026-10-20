@@ -1,5 +1,7 @@
 // Auth flow canary (shadcn): log-in and sign-up pages and a dashboard behind hash routes, so the
-// pages are linked with real anchors. Logging in waits briefly, as a real request would.
+// pages are linked with real anchors. Register-first: log-in refuses an unknown account, sign-up
+// stores the account in memory and returns to log-in. Logging in waits briefly, as a real request
+// would.
 import { useEffect, useState, type FormEvent } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -20,13 +22,35 @@ function useHashPath() {
   return path
 }
 
-function LogIn({ onLogIn }: { onLogIn: (user: string) => void }) {
+type Accounts = Record<string, string>
+
+function field(event: FormEvent<HTMLFormElement>, name: string): string {
+  const value = new FormData(event.currentTarget).get(name)
+  return typeof value === 'string' ? value.trim() : ''
+}
+
+function LogIn({
+  accounts,
+  notice,
+  onLogIn,
+}: {
+  accounts: Accounts
+  notice: string
+  onLogIn: (user: string) => void
+}) {
   const [pending, setPending] = useState(false)
+  const [error, setError] = useState('')
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const user = new FormData(event.currentTarget).get('user')
+    const user = field(event, 'user')
+    const password = field(event, 'password')
     setPending(true)
-    window.setTimeout(() => onLogIn(typeof user === 'string' ? user : ''), 400)
+    setError('')
+    window.setTimeout(() => {
+      setPending(false)
+      if (accounts[user] !== undefined && accounts[user] === password) onLogIn(user)
+      else setError('No account found for that username or email.')
+    }, 400)
   }
   return (
     <Card className="w-full max-w-sm">
@@ -38,6 +62,11 @@ function LogIn({ onLogIn }: { onLogIn: (user: string) => void }) {
       </CardHeader>
       <CardContent>
         <form className="flex flex-col gap-4" onSubmit={submit}>
+          {notice !== '' && (
+            <p role="status" className="text-sm">
+              {notice}
+            </p>
+          )}
           <div className="grid gap-2">
             <Label htmlFor="user">Username or email</Label>
             <Input id="user" name="user" autoComplete="username" required />
@@ -52,6 +81,11 @@ function LogIn({ onLogIn }: { onLogIn: (user: string) => void }) {
               required
             />
           </div>
+          {error !== '' && (
+            <p role="alert" className="text-sm text-destructive">
+              {error}
+            </p>
+          )}
           <Button type="submit" disabled={pending}>
             {pending ? 'Logging in…' : 'Log in'}
           </Button>
@@ -67,7 +101,8 @@ function LogIn({ onLogIn }: { onLogIn: (user: string) => void }) {
   )
 }
 
-function SignUp() {
+function SignUp({ onSignUp }: { onSignUp: (email: string, password: string) => void }) {
+  const [error, setError] = useState('')
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
@@ -81,7 +116,12 @@ function SignUp() {
           className="flex flex-col gap-4"
           onSubmit={(event) => {
             event.preventDefault()
-            window.location.hash = '#/login'
+            const password = field(event, 'password')
+            if (password !== field(event, 'confirm')) {
+              setError('The passwords do not match.')
+              return
+            }
+            onSignUp(field(event, 'email'), password)
           }}
         >
           <div className="grid gap-2">
@@ -96,6 +136,11 @@ function SignUp() {
             <Label htmlFor="confirm-password">Confirm password</Label>
             <Input id="confirm-password" name="confirm" type="password" required />
           </div>
+          {error !== '' && (
+            <p role="alert" className="text-sm text-destructive">
+              {error}
+            </p>
+          )}
           <Button type="submit">Create account</Button>
           <p className="text-sm text-muted-foreground">
             Have an account?{' '}
@@ -112,6 +157,8 @@ function SignUp() {
 export function App() {
   const path = useHashPath()
   const [user, setUser] = useState<string | null>(null)
+  const [accounts, setAccounts] = useState<Accounts>({})
+  const [notice, setNotice] = useState('')
 
   if (path === '/dashboard' && user !== null) {
     return (
@@ -135,9 +182,17 @@ export function App() {
   return (
     <main className="flex min-h-svh items-center justify-center p-6">
       {path === '/signup' ? (
-        <SignUp />
+        <SignUp
+          onSignUp={(email, password) => {
+            setAccounts((all) => ({ ...all, [email]: password }))
+            setNotice(`Account created for ${email}. Log in to continue.`)
+            window.location.hash = '#/login'
+          }}
+        />
       ) : (
         <LogIn
+          accounts={accounts}
+          notice={notice}
           onLogIn={(name) => {
             setUser(name)
             window.location.hash = '#/dashboard'

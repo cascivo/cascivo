@@ -11,9 +11,10 @@ import { eventually, firstVisible, goTo } from '../_lib.ts'
  * - an element the field names in `aria-describedby` or `aria-errormessage` (the accessible
  *   association: wherever it sits, it belongs to that field);
  * - the field's own wrapper: its highest ancestor that holds no other of the three fields;
- * - the siblings that follow that wrapper, up to the next field, the next field's label, a
- *   button or a success message (flat markup: `<label>Name <input></label><span>error</span>`;
- *   an inline "Message sent" alert after the last field is the form's verdict, not an error).
+ * - the siblings that follow that wrapper, up to the next field, the next field's label or a
+ *   button (flat markup: `<label>Name <input></label><span>error</span>`). An inline success
+ *   message there ("Message sent", new since the submit) is the form's verdict, not an error:
+ *   its live region, or its own element when it has none, is left out of the zone.
  *
  * ARIA is accepted but not required: the prompt asks for an error beside its field, not for an
  * association, and requiring one would fail a plain-markup app the prompt is satisfied by. A
@@ -63,12 +64,34 @@ async function fieldHandles(page: Page): Promise<(ElementHandle<Node> | null)[]>
   )
 }
 
-/** Each field's zone texts, in FIELDS order. See the header comment for what a zone is. */
-async function zones(page: Page): Promise<(Zone | null)[]> {
+/**
+ * Visible text runs matching SUCCESS. Taken before a submit, they are what `zones` must not take
+ * for the form's verdict: a hint that mentions "received" was there all along.
+ */
+function successRuns(page: Page): Promise<string[]> {
+  return page.evaluate((success) => {
+    const verdict = new RegExp(success, 'i')
+    const out: string[] = []
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
+    for (let node = walker.nextNode(); node !== null; node = walker.nextNode()) {
+      const text = (node.nodeValue ?? '').replace(/\s+/g, ' ').trim()
+      const parent = node.parentElement
+      if (parent !== null && verdict.test(text) && parent.checkVisibility()) out.push(text)
+    }
+    return out
+  }, SUCCESS.source)
+}
+
+/**
+ * Each field's zone texts, in FIELDS order. See the header comment for what a zone is. `known`
+ * holds the success runs from before the submit (see successRuns).
+ */
+async function zones(page: Page, known: string[]): Promise<(Zone | null)[]> {
   const handles = await fieldHandles(page)
   return page.evaluate(
-    ({ fields, success }) => {
+    ({ fields, success, known }) => {
       const verdict = new RegExp(success, 'i')
+      const old = new Set(known)
       const present = fields.filter((f): f is Element => f instanceof Element)
       // Rendered and bigger than a visually-hidden (sr-only) clip: an error must be seen.
       const visible = (el: Element) => {
@@ -76,14 +99,20 @@ async function zones(page: Page): Promise<(Zone | null)[]> {
         const box = el.getBoundingClientRect()
         return box.width > 2 && box.height > 2
       }
-      const collect = (root: Element, field: Element, out: Set<string>) => {
+      const runs = (root: Element) => {
+        const found: { text: string; parent: Element; node: Node }[] = []
         const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
         for (let node = walker.nextNode(); node !== null; node = walker.nextNode()) {
           const text = (node.nodeValue ?? '').replace(/\s+/g, ' ').trim()
           const parent = node.parentElement
-          if (text === '' || parent === null || field.contains(node) || !visible(parent)) continue
-          out.add(text)
+          if (text !== '' && parent !== null && visible(parent)) found.push({ text, parent, node })
         }
+        return found
+      }
+      const collect = (root: Element, field: Element, out: Set<string>, skip: Element[] = []) => {
+        for (const run of runs(root))
+          if (!field.contains(run.node) && !skip.some((s) => s.contains(run.node)))
+            out.add(run.text)
       }
       return fields.map((field) => {
         if (!(field instanceof Element)) return null
@@ -110,13 +139,25 @@ async function zones(page: Page): Promise<(Zone | null)[]> {
         for (let sib = box.nextElementSibling; sib !== null; sib = sib.nextElementSibling) {
           if (holdsOther(sib) || labelsOther(sib)) break
           if (sib.matches('button, input[type="submit"]') || sib.querySelector('button')) break
-          if (sib instanceof HTMLElement && verdict.test(sib.innerText)) break
-          collect(sib, field, out)
+          // The form's verdict ("Message sent") is not this field's error. What counts as the
+          // verdict: its live region (an Alert's body belongs to it), or, with no region, the
+          // success text's own element, so an error beside it in a plain wrapper still counts.
+          // Only success text new since before the submit is a verdict, and the walk goes on
+          // past it: a static hint saying "received" must not hide an error after it.
+          const skip = runs(sib)
+            .filter((run) => verdict.test(run.text) && !old.has(run.text))
+            .map((run) => {
+              const region = run.parent.closest(
+                '[role="status"], [role="alert"], [aria-live], output',
+              )
+              return region !== null && sib.contains(region) ? region : run.parent
+            })
+          collect(sib, field, out, skip)
         }
         return { texts: [...out], invalid: field.getAttribute('aria-invalid') === 'true' }
       })
     },
-    { fields: handles, success: SUCCESS.source },
+    { fields: handles, success: SUCCESS.source, known },
   )
 }
 
@@ -181,11 +222,12 @@ async function fill(page: Page, values: Record<FieldKey, string>): Promise<void>
 
 async function emptySubmitFlagsEachField(page: Page, baseUrl: string): Promise<void> {
   await openForm(page, baseUrl)
-  const before = await zones(page)
+  const known = await successRuns(page)
+  const before = await zones(page, known)
   await submit(page)
   let lacking: string[] = []
   const allFlagged = async () => {
-    const after = await zones(page)
+    const after = await zones(page, known)
     lacking = FIELDS.filter(
       (_, i) => newTexts(after[i] ?? null, before[i] ?? null).length === 0,
     ).map((s) => s.key)
@@ -197,14 +239,15 @@ async function emptySubmitFlagsEachField(page: Page, baseUrl: string): Promise<v
 
 async function invalidEmailFlagged(page: Page, baseUrl: string): Promise<void> {
   await openForm(page, baseUrl)
-  const pristine = await zones(page)
+  const known = await successRuns(page)
+  const pristine = await zones(page, known)
   const shown = await successTexts(page)
   await fill(page, { ...VALID, email: BAD_EMAIL })
   await submit(page)
   // A wrong verdict can render a frame late; let the submit settle before judging it.
   await page.waitForTimeout(500)
   const emailFlagged = async () =>
-    newTexts((await zones(page))[1] ?? null, pristine[1] ?? null).length > 0
+    newTexts((await zones(page, known))[1] ?? null, pristine[1] ?? null).length > 0
   if (!(await eventually(emailFlagged)))
     throw new Error(
       `invalid email: submitting "${BAD_EMAIL}" showed no error next to the email field`,
@@ -215,16 +258,17 @@ async function invalidEmailFlagged(page: Page, baseUrl: string): Promise<void> {
 
 async function validSubmitSucceeds(page: Page, baseUrl: string): Promise<void> {
   await openForm(page, baseUrl)
-  const pristine = await zones(page)
+  const known = await successRuns(page)
+  const pristine = await zones(page, known)
   const shown = await successTexts(page)
   await fill(page, VALID)
   // Taken after filling too: a character counter beside the message changes as it is typed.
-  const filled = await zones(page)
+  const filled = await zones(page, known)
   await submit(page)
   const succeeded = async () => [...(await successTexts(page))].some((t) => !shown.has(t))
   if (!(await eventually(succeeded)))
     throw new Error('valid submit: no new text matching thank/sent/success/received')
-  const after = await zones(page)
+  const after = await zones(page, known)
   for (const [i, spec] of FIELDS.entries()) {
     const zone = after[i] ?? null
     const errors = newTexts(zone, pristine[i] ?? null, filled[i] ?? null)
