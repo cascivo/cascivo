@@ -43,34 +43,61 @@ export async function goTo(
   const handle = await target.elementHandle({ timeout: timeoutMs })
   if (handle === null) throw new Error(`goTo: "${String(name)}" vanished before the click`)
   const before = page.url()
-  // Armed before the click so a synchronous re-render is not missed. childList/characterData
-  // only: attribute churn (focus rings, aria-current) happens on a no-op click too.
+  // The observer counts only mutations after the click, so a clock or a polling widget that was
+  // already ticking cannot make a dead link look like it worked. The capture-phase listener sets
+  // the flag before any app handler runs, so a synchronous re-render still counts. childList and
+  // characterData only: attribute churn (focus rings, aria-current) happens on a no-op click too.
   await page.evaluate(() => {
-    const w = window as unknown as { __evalMutated?: boolean; __evalObserver?: MutationObserver }
-    w.__evalObserver?.disconnect()
+    const w = window as unknown as { __evalMutated?: boolean; __evalArmed?: () => void }
+    w.__evalArmed?.()
+    let clicked = false
     w.__evalMutated = false
-    w.__evalObserver = new MutationObserver(() => {
-      w.__evalMutated = true
+    const onClick = () => {
+      clicked = true
+    }
+    document.addEventListener('click', onClick, { capture: true, once: true })
+    const observer = new MutationObserver(() => {
+      if (clicked) w.__evalMutated = true
     })
-    w.__evalObserver.observe(document.body, { childList: true, subtree: true, characterData: true })
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true })
+    w.__evalArmed = () => {
+      observer.disconnect()
+      document.removeEventListener('click', onClick, { capture: true })
+    }
   })
   await handle.click()
   if (!expectNavigation) return
+  const strip = (u: string) => u.replace(/#$/, '')
+  // Two signals, because neither covers both kinds of navigation: the in-page predicate dies with
+  // the document on a full page load (its execution context is destroyed), while waitForURL alone
+  // cannot see a client-side re-render that leaves the URL alone. Promise.any, not race, so the
+  // context-destroyed rejection of the first cannot beat the second to the verdict.
   try {
-    await page.waitForFunction(
-      ({ el, was }) => {
-        const strip = (u: string) => u.replace(/#$/, '')
-        const w = window as unknown as { __evalMutated?: boolean }
-        // After a full page load the flag is gone, but then the URL differs.
-        return strip(location.href) !== strip(was) || !el.isConnected || w.__evalMutated === true
-      },
-      { el: handle, was: before },
-      { timeout: timeoutMs },
-    )
+    await Promise.any([
+      page.waitForFunction(
+        ({ el, was }) => {
+          const w = window as unknown as { __evalMutated?: boolean }
+          const stripHash = (u: string) => u.replace(/#$/, '')
+          return (
+            stripHash(location.href) !== stripHash(was) ||
+            !el.isConnected ||
+            w.__evalMutated === true
+          )
+        },
+        { el: handle, was: before },
+        { timeout: timeoutMs },
+      ),
+      page.waitForURL((url) => strip(url.href) !== strip(before), {
+        timeout: timeoutMs,
+        waitUntil: 'commit',
+      }),
+    ])
   } catch (error) {
-    if (error instanceof Error && error.name === 'TimeoutError')
+    // Anything but "both timed out" is a real failure (page closed, crash) and keeps its message.
+    const errors = error instanceof AggregateError ? error.errors : [error]
+    if (errors.every((e) => e instanceof Error && e.name === 'TimeoutError'))
       throw new Error(`goTo: clicking "${String(name)}" did not navigate or change the page`)
-    throw error
+    throw errors.find((e) => !(e instanceof Error && e.name === 'TimeoutError')) ?? error
   }
   // Late renders (data fetch after the route flips) should have settled before the caller queries.
   await page.waitForLoadState('domcontentloaded')
