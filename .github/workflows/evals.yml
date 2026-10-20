@@ -2,12 +2,19 @@ name: Evals
 
 # The published LLM x cascivo eval (docs/internal/superpowers/specs/2026-10-20-w6-published-eval-design.md).
 # It spends real money, so it never runs on pull_request or push: a person dispatches it, or a
-# published release triggers it. Three jobs, split by what each may see:
+# published release triggers it. Four jobs, split by what each may see:
 #
-#   generate  holds ANTHROPIC_API_KEY, runs the `claude -p` sessions, and never builds, installs
+#   setup     validates the inputs and fans the run out into one shard per model.
+#   generate  (one per model) holds ANTHROPIC_API_KEY, runs the `claude -p` sessions, and never builds, installs
 #             or executes anything a session wrote.
-#   score     builds and drives what generate wrote. No secrets, read-only contents.
-#   publish   holds the write token, runs no generated code, opens a PR for a valid run only.
+#   score     (one per model) builds and drives what generate wrote. No secrets, read-only contents.
+#   publish   holds the write token, runs no generated code, opens one PR for a valid run only.
+#
+# Sharding: a run is 8 tasks x 3 arms x attempts x models sessions, one after another, and at the
+# defaults that is longer than the 6 h a hosted job may run. So each model is its own generate
+# and score shard (`fail-fast: false`: one shard dying does not cancel the others, whose
+# transcripts are kept). The spend cap is split evenly (`max_usd` / number of models) so the shards
+# together never exceed what the dispatcher set, and no shard needs to know the others' spend.
 #
 # Workflow hygiene: no `${{ }}` inside a `run:` script. Inputs and context values reach scripts
 # through `env:` only, are validated in the script, and are passed as quoted arguments.
@@ -44,13 +51,70 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  generate:
+  setup:
     runs-on: ubuntu-latest
-    # 144 sequential sessions at the defaults: the 6 h hosted-runner ceiling, minus margin.
-    # A run that does not finish by then is incomplete and is not published.
+    timeout-minutes: 5
+    permissions: {}
+    outputs:
+      models: ${{ steps.plan.outputs.models }}
+      attempts: ${{ steps.plan.outputs.attempts }}
+      shard_usd: ${{ steps.plan.outputs.shard_usd }}
+      tasks: ${{ steps.plan.outputs.tasks }}
+    steps:
+      # Validated once, here: the shards read these outputs, never the raw inputs, and a value
+      # that gets past this step is safe to hand to a script as a quoted argument.
+      - name: Validate the inputs and plan the shards
+        id: plan
+        env:
+          MODELS_IN: ${{ inputs.models }}
+          ATTEMPTS_IN: ${{ inputs.attempts }}
+          MAX_USD_IN: ${{ inputs.max_usd }}
+          TASKS_IN: ${{ inputs.tasks }}
+        run: |
+          set -euo pipefail
+          # A release event has no inputs: they arrive empty, so the defaults live here too.
+          models="${MODELS_IN:-claude-sonnet-5-5,claude-haiku-5-5}"
+          attempts="${ATTEMPTS_IN:-3}"
+          max_usd="${MAX_USD_IN:-50}"
+          tasks="${TASKS_IN:-}"
+
+          models_re='^[a-z0-9.-]+(,[a-z0-9.-]+)*$'
+          tasks_re='^[a-z0-9.,-]*$'
+          int_re='^[0-9]+$'
+          usd_re='^[0-9]+([.][0-9]+)?$'
+          # The rejected value is not echoed: it is untrusted and the log interprets `::`.
+          [[ "$models" =~ $models_re ]] || { echo "::error::models must be comma-separated ids matching [a-z0-9.-]+"; exit 2; }
+          [[ "$tasks" =~ $tasks_re ]] || { echo "::error::tasks must match ^[a-z0-9.,-]*$"; exit 2; }
+          [[ "$attempts" =~ $int_re ]] || { echo "::error::attempts must be a whole number"; exit 2; }
+          [[ "$max_usd" =~ $usd_re ]] || { echo "::error::max_usd must be a number"; exit 2; }
+
+          # One artifact per model, so a repeated model would collide.
+          if [[ -n "$(tr ',' '\n' <<< "$models" | sort | uniq -d)" ]]; then
+            echo "::error::models lists a model twice"; exit 2
+          fi
+          count="$(tr ',' '\n' <<< "$models" | wc -l)"
+          shard_usd="$(awk -v total="$max_usd" -v n="$count" 'BEGIN { printf "%.2f", total / n }')"
+          [[ "$shard_usd" =~ $usd_re ]] || { echo "::error::could not split max_usd"; exit 2; }
+
+          {
+            echo "models=$(jq -Rc 'split(",")' <<< "$models")"
+            echo "attempts=$attempts"
+            echo "shard_usd=$shard_usd"
+            echo "tasks=$tasks"
+          } >> "$GITHUB_OUTPUT"
+
+  generate:
+    needs: setup
+    runs-on: ubuntu-latest
+    # One model's sessions: 72 at the defaults, about 4 h. Within the 6 h hosted ceiling; a
+    # shard that does not finish by then is incomplete and is not published.
     timeout-minutes: 350
     permissions:
       contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        model: ${{ fromJSON(needs.setup.outputs.models) }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
@@ -93,29 +157,14 @@ jobs:
       - name: Run the eval sessions
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          MODELS_IN: ${{ inputs.models }}
-          ATTEMPTS_IN: ${{ inputs.attempts }}
-          MAX_USD_IN: ${{ inputs.max_usd }}
-          TASKS_IN: ${{ inputs.tasks }}
+          MODEL: ${{ matrix.model }}
+          ATTEMPTS: ${{ needs.setup.outputs.attempts }}
+          SHARD_USD: ${{ needs.setup.outputs.shard_usd }}
+          TASKS: ${{ needs.setup.outputs.tasks }}
         run: |
           set -euo pipefail
-          # A release event has no inputs: they arrive empty, so the defaults live here too.
-          models="${MODELS_IN:-claude-sonnet-5-5,claude-haiku-5-5}"
-          attempts="${ATTEMPTS_IN:-3}"
-          max_usd="${MAX_USD_IN:-50}"
-          tasks="${TASKS_IN:-}"
-
-          list_re='^[a-z0-9.,-]*$'
-          int_re='^[0-9]+$'
-          usd_re='^[0-9]+([.][0-9]+)?$'
-          # The rejected value is not echoed: it is untrusted and the log interprets `::`.
-          [[ -n "$models" && "$models" =~ $list_re ]] || { echo "::error::models must match ^[a-z0-9.,-]+$"; exit 2; }
-          [[ "$tasks" =~ $list_re ]] || { echo "::error::tasks must match ^[a-z0-9.,-]*$"; exit 2; }
-          [[ "$attempts" =~ $int_re ]] || { echo "::error::attempts must be a whole number"; exit 2; }
-          [[ "$max_usd" =~ $usd_re ]] || { echo "::error::max_usd must be a number"; exit 2; }
-
-          args=(generate --out "$GITHUB_WORKSPACE/gen" --models "$models" --attempts "$attempts" --max-usd "$max_usd")
-          if [[ -n "$tasks" ]]; then args+=(--tasks "$tasks"); fi
+          args=(generate --out "$GITHUB_WORKSPACE/gen" --models "$MODEL" --attempts "$ATTEMPTS" --max-usd "$SHARD_USD")
+          if [[ -n "$TASKS" ]]; then args+=(--tasks "$TASKS"); fi
           pnpm --filter bench-agent eval "${args[@]}"
 
       # Kept on failure too: the transcripts say why a session died. Hidden files stay in,
@@ -124,16 +173,20 @@ jobs:
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: eval-gen
+          name: eval-gen-${{ matrix.model }}
           path: gen/
           include-hidden-files: true
           if-no-files-found: warn
           retention-days: 90
 
   score:
-    needs: generate
+    needs: [setup, generate]
     runs-on: ubuntu-latest
     timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      matrix:
+        model: ${{ fromJSON(needs.setup.outputs.models) }}
     # Agent-written code executes in this job (vite build, tsc, the app in Chromium). That is
     # why it has no secrets and read-only contents: the worst it can reach is a throwaway runner.
     permissions:
@@ -164,7 +217,7 @@ jobs:
       - name: Download the sessions
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          name: eval-gen
+          name: eval-gen-${{ matrix.model }}
           path: gen
 
       - name: Score
@@ -177,7 +230,7 @@ jobs:
       - name: Upload the results
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: eval-results
+          name: eval-results-${{ matrix.model }}
           path: results.json
           if-no-files-found: error
           retention-days: 90
@@ -205,16 +258,29 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
+      # One directory per shard: results/eval-results-<model>/results.json.
       - name: Download the results
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          name: eval-results
+          pattern: eval-results-*
+          merge-multiple: false
           path: results
 
-      # Exits non-zero on an incomplete or invalid run, which fails the job before any branch
-      # exists, so no PR is opened for it.
+      # Each shard's file is published in turn (sorted, so the output is deterministic); Task 8's
+      # publish merges the latest valid run per model into evals.json and the report. It exits
+      # non-zero on an incomplete or invalid run, which fails the job before any branch exists,
+      # so no PR is opened if any shard is bad.
       - name: Write the results files
-        run: pnpm --filter bench-agent eval publish --results "$GITHUB_WORKSPACE/results/results.json"
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          files=("$GITHUB_WORKSPACE"/results/eval-results-*/results.json)
+          if (( ${#files[@]} == 0 )); then echo "::error::no shard results were downloaded"; exit 1; fi
+          # The glob expands in sorted order; sort again so it does not depend on the shell's locale.
+          mapfile -t files < <(printf '%s\n' "${files[@]}" | LC_ALL=C sort)
+          for file in "${files[@]}"; do
+            pnpm --filter bench-agent eval publish --results "$file"
+          done
 
       - name: Open the results PR
         env:
@@ -235,20 +301,20 @@ jobs:
             exit 1
           fi
 
-          results="$GITHUB_WORKSPACE/results/results.json"
-          total="$(jq '.records | length' "$results")"
-          passed="$(jq '[.records[] | select(.status == "pass")] | length' "$results")"
-          version="$(jq -r '.cascivoVersion' "$results")"
-          spent="$(jq -r '.spentUsd' "$results")"
+          files=("$GITHUB_WORKSPACE"/results/eval-results-*/results.json)
           body="$RUNNER_TEMP/pr-body.md"
           {
-            echo "Results of eval run ${GITHUB_RUN_ID} for cascivo ${version}."
+            echo "Results of eval run ${GITHUB_RUN_ID}, one shard per model."
             echo
-            echo "- Attempts: ${total}, passed: ${passed}"
-            echo "- Spend: \$${spent}"
-            echo "- Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            for file in "${files[@]}"; do
+              jq -r '"- \(.models | join(", ")), cascivo \(.cascivoVersion): \([.records[] | select(.status == "pass")] | length) of \(.records | length) attempts passed, $\(.spentUsd) spent"' "$file"
+            done
+            echo
+            echo "Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
             echo
             echo "Generated by the evals workflow. Review the numbers, then merge."
+            echo
+            echo "This PR was opened with the workflow token, so CI did not run on it. Close and reopen it, or push to it, to run the checks."
           } > "$body"
 
           git commit -m "evals: ${date} run"
