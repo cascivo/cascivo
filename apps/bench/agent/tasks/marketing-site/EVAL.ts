@@ -42,20 +42,48 @@ async function sectionOnPage(page: Page, name: RegExp): Promise<boolean> {
 
 interface TextRun {
   text: string
-  /** Index of the closest section, article, main or region holding it; -1 for none. */
-  block: number
-  inFooter: boolean
+  /** Index of the FAQ block holding it (see `textRuns`); -1 outside every FAQ block. */
+  faqBlock: number
+  /** Part of the FAQ's own heading ("Frequently asked questions"), so never one of its questions. */
+  faqHeading: boolean
 }
 
 /**
  * The text a reader can see right now, in document order. Playwright's visibility treats a
  * 0-height panel as hidden only for the panel itself, not for its text, so a collapsed panel
  * animated by height is checked through its clipping ancestors.
+ *
+ * Each run is placed in the FAQ block that holds it, found the ways `sectionOnPage` finds the
+ * FAQ: the section, article or region around a heading matching /faq|question/, a region so
+ * named, or the in-page target of a link so named.
  */
 function textRuns(page: Page): Promise<TextRun[]> {
   return page.evaluate(() => {
-    const runs: { text: string; block: number; inFooter: boolean }[] = []
-    const blocks = new Map<Element, number>()
+    const faqName = /faq|question/i
+    const all = (selector: string) => Array.from(document.querySelectorAll(selector))
+    const faqHeadings = all('h1, h2, h3, h4, h5, h6, [role="heading"]').filter((h) =>
+      faqName.test(h.textContent ?? ''),
+    )
+    const blocks: Element[] = []
+    const add = (el: Element | null) => {
+      if (el !== null && el !== document.body && !blocks.includes(el)) blocks.push(el)
+    }
+    for (const h of faqHeadings)
+      add(h.closest('section, article, [role="region"]') ?? h.parentElement)
+    for (const region of all('section[aria-label], [role="region"]'))
+      if (faqName.test(region.getAttribute('aria-label') ?? '')) add(region)
+    for (const link of all('a[href^="#"]')) {
+      const name = `${link.textContent ?? ''} ${link.getAttribute('aria-label') ?? ''}`
+      let id = ''
+      try {
+        id = decodeURIComponent((link.getAttribute('href') ?? '').slice(1))
+      } catch {
+        continue
+      }
+      if (faqName.test(name) && id !== '' && !id.startsWith('/')) add(document.getElementById(id))
+    }
+
+    const runs: { text: string; faqBlock: number; faqHeading: boolean }[] = []
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
     for (let node = walker.nextNode(); node !== null; node = walker.nextNode()) {
       const text = (node.textContent ?? '').replace(/\s+/g, ' ').trim()
@@ -71,13 +99,11 @@ function textRuns(page: Page): Promise<TextRun[]> {
         }
       }
       if (clipped) continue
-      const holder = el.closest('section, article, main, [role="region"]')
-      let block = -1
-      if (holder !== null) {
-        block = blocks.get(holder) ?? blocks.size
-        blocks.set(holder, block)
-      }
-      runs.push({ text, block, inFooter: el.closest('footer, [role="contentinfo"]') !== null })
+      runs.push({
+        text,
+        faqBlock: blocks.findIndex((block) => block.contains(el)),
+        faqHeading: faqHeadings.some((h) => h.contains(el)),
+      })
     }
     return runs
   })
@@ -89,21 +115,32 @@ async function visibleText(page: Page): Promise<Set<string>> {
 
 const isQuestion = (text: string) => text.length >= 8 && text.endsWith('?')
 
+/** Two answered questions: an FAQ is plural, and one "?" is a tagline ("Tired of slow deploys?"). */
+const MIN_ANSWERED = 2
+
 /**
- * A static FAQ: a visible question followed, in the same section and before the next question,
- * by enough visible text to be its answer. The prompt asks for "an FAQ", not an accordion.
+ * A static FAQ: inside the FAQ block, at least two visible questions each followed, before the
+ * next question, by enough visible text to be its answer. The FAQ's own heading ("Have
+ * questions?") is not one of its questions. The prompt asks for "an FAQ", not an accordion.
  */
 async function staticAnswerVisible(page: Page): Promise<boolean> {
   const runs = await textRuns(page)
-  return runs.some((run, i) => {
-    if (!isQuestion(run.text) || run.inFooter) return false
-    let answer = ''
-    for (const next of runs.slice(i + 1)) {
-      if (isQuestion(next.text) || next.inFooter || next.block !== run.block) break
-      answer += ` ${next.text}`
-    }
-    return answer.trim().length >= MIN_ANSWER
-  })
+  const blocks = new Set(runs.map((run) => run.faqBlock).filter((block) => block !== -1))
+  for (const block of blocks) {
+    const inBlock = runs.filter((run) => run.faqBlock === block && !run.faqHeading)
+    let answered = 0
+    inBlock.forEach((run, i) => {
+      if (!isQuestion(run.text)) return
+      let answer = ''
+      for (const next of inBlock.slice(i + 1)) {
+        if (isQuestion(next.text)) break
+        answer += ` ${next.text}`
+      }
+      if (answer.trim().length >= MIN_ANSWER) answered += 1
+    })
+    if (answered >= MIN_ANSWERED) return true
+  }
+  return false
 }
 
 /**
@@ -154,15 +191,14 @@ async function anyReveals(page: Page, triggers: ElementHandle[]): Promise<boolea
 }
 
 /**
- * An FAQ whose questions are disclosures must open one to show its answer: a toggle that hides
- * the answer for good is the bug this catches. With no question-named disclosure, the answers
- * must be on screen already. A collapsed control that is not a question (a header menu) is
- * tried, but the FAQ is not judged by it.
+ * An FAQ answers its questions: by opening a question disclosure, or on screen already. A
+ * toggle that hides its answer for good fails both. A collapsed control that is not a question
+ * (a header menu) is tried only when no question is a disclosure.
  */
 async function faqAnswerable(page: Page): Promise<boolean> {
   const { questions, others } = await collapsedDisclosures(page)
-  if (questions.length > 0) return anyReveals(page, questions)
-  if (others.length > 0 && (await anyReveals(page, others))) return true
+  if (questions.length > 0 && (await anyReveals(page, questions))) return true
+  if (questions.length === 0 && others.length > 0 && (await anyReveals(page, others))) return true
   return staticAnswerVisible(page)
 }
 
