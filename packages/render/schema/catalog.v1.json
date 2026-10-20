@@ -1,0 +1,4649 @@
+{
+  "$id": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/render/schema/catalog.v1.json",
+  "version": 1,
+  "components": {
+    "Accordion": {
+      "description": "Vertically stacked, collapsible content sections",
+      "category": "navigation",
+      "intent": {
+        "whenToUse": [
+          "Progressively disclosing sections of related content the user reads top to bottom",
+          "Reducing vertical scroll when most sections stay collapsed (FAQs, settings groups)",
+          "Allowing multiple sections open at once (type=\"multiple\")"
+        ],
+        "whenNotToUse": [
+          "Switching between mutually exclusive, equally important views — use Tabs",
+          "A single show/hide region — a plain disclosure is enough"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "defaultValue": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "The initial value when uncontrolled."
+          },
+          "type": {
+            "type": "string",
+            "enum": ["single", "multiple"],
+            "description": "Whether one or multiple sections can be open at once ('single' | 'multiple').",
+            "default": "single"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "The controlled value."
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        }
+      },
+      "events": {
+        "onValueChange": {
+          "description": "Called with the new value when it changes."
+        }
+      },
+      "omitted": {}
+    },
+    "Alert": {
+      "description": "Highlights a short, important message inline",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Surfacing a persistent, contextual message inline within a view (warning, error, info, success)",
+          "Communicating status that should stay visible until read or resolved",
+          "Offering an inline recovery action tied to the message (action prop)"
+        ],
+        "whenNotToUse": [
+          "Transient confirmation that should auto-dismiss — use Toast",
+          "Blocking the user for a decision — use Modal or AlertDialog"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "dismissible": {
+            "type": "boolean",
+            "description": "When true, shows a control to dismiss the component.",
+            "default": false
+          },
+          "title": {
+            "type": "string",
+            "description": "Title text for the component."
+          },
+          "variant": {
+            "type": "string",
+            "enum": ["default", "info", "success", "warning", "destructive"],
+            "description": "Severity tone: `default` (neutral), `info`, `success`, `warning` or `destructive`. Sets the icon and the accent colour. Unlike Badge/Tag/Notification this is a private union, not `ToneInput` — the canonical `danger`/`neutral` spellings are not accepted here.",
+            "default": "default"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        },
+        "icon": {
+          "arity": "one",
+          "required": false,
+          "description": "Icon element rendered in the component."
+        }
+      },
+      "events": {
+        "onDismiss": {
+          "description": "Called when the component is dismissed."
+        }
+      },
+      "omitted": {
+        "action": {
+          "type": "{ label: string; onClick: () => void }",
+          "reason": "unresolved-type"
+        }
+      }
+    },
+    "AutoGrid": {
+      "description": "Media-query-free responsive grid — columns auto-fill based on available space.",
+      "category": "layout",
+      "intent": {
+        "whenToUse": [
+          "Responsive card or tile grids that auto-fit columns to available width",
+          "Avoiding media queries — tracks wrap based on a minimum track width"
+        ],
+        "whenNotToUse": [
+          "A fixed, known column count — use Grid",
+          "Single-direction stacking — use Stack"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "gap": {
+            "type": "number",
+            "enum": [1, 2, 3, 4, 5, 6, 8, 10, 12],
+            "description": "Spacing token step. Maps to the --cascivo-space-* scale, which intentionally skips 7/9/11 — use 6 or 8.",
+            "default": 4
+          },
+          "min": {
+            "type": "string",
+            "description": "Minimum track width before items wrap to fewer columns",
+            "default": "16rem"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {}
+    },
+    "Avatar": {
+      "description": "Displays a user image with initials fallback",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Representing a person or entity with a thumbnail image and initials fallback",
+          "Showing presence/status alongside an identity (status prop)",
+          "Compactly identifying authors in lists, comments, and headers"
+        ],
+        "whenNotToUse": [
+          "Decorative imagery unrelated to identity — use a plain <img>",
+          "A generic icon or logo with no person/entity meaning"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "alt": {
+            "type": "string",
+            "description": "Alternative text describing the image.",
+            "default": ""
+          },
+          "fallback": {
+            "type": "string",
+            "description": "Explicit fallback text (initials/glyph); overrides initials derived from name."
+          },
+          "name": {
+            "type": "string",
+            "description": "Full name — used to derive initials for the fallback and as the accessible label."
+          },
+          "size": {
+            "type": "string",
+            "enum": ["xs", "sm", "md", "lg", "xl"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          },
+          "src": {
+            "type": "string",
+            "description": "Image source URL."
+          },
+          "status": {
+            "type": "string",
+            "enum": ["online", "offline", "busy"],
+            "description": "Status state."
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {}
+    },
+    "AvatarGroup": {
+      "description": "Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Showing several people compactly as an overlapping stack (collaborators, attendees, reviewers)",
+          "Capping a long list of avatars with a +N overflow chip",
+          "A facepile in a card header, table cell, or activity row"
+        ],
+        "whenNotToUse": [
+          "A single identity with a name — use User or Avatar",
+          "A selectable list of people — use a list/menu with checkboxes"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "isGrid": {
+            "type": "boolean",
+            "description": "When true, lays the avatars out in a grid instead of an overlapping stack.",
+            "default": false
+          },
+          "max": {
+            "type": "number",
+            "description": "Cap the number of visible avatars"
+          },
+          "spacing": {
+            "type": "string",
+            "enum": ["sm", "md", "lg"],
+            "description": "Spacing between items.",
+            "default": "md"
+          },
+          "total": {
+            "type": "number",
+            "description": "Override the total count used for the +N chip"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        }
+      },
+      "events": {},
+      "omitted": {
+        "labels": {
+          "type": "AvatarGroupLabels",
+          "reason": "unresolved-type"
+        }
+      }
+    },
+    "Badge": {
+      "description": "Small status label or category indicator",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Labeling an item with a short, static status or category (e.g. \"New\", \"Beta\")",
+          "Annotating an element with a count or state that is not interactive"
+        ],
+        "whenNotToUse": [
+          "A removable or interactive chip (filters, selections) — use Tag",
+          "A standalone system state with a colored dot — use Status"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          },
+          "variant": {
+            "type": "string",
+            "enum": ["default", "secondary", "success", "warning", "destructive", "outline"],
+            "description": "Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral | info | success | warning | danger`) plus Badge's historical spellings (`default` → neutral, `error`/`destructive` → danger), and two values that carry no tone at all: `secondary` (muted fill) and `outline` (border only).",
+            "default": "default"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "Blockquote": {
+      "description": "Quoted passage with optional attribution footer",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Setting off a quoted passage from another source with visual emphasis",
+          "Attributing a quote to a person or work via the cite footer"
+        ],
+        "whenNotToUse": [
+          "Indenting or emphasizing your own non-quoted text — use Text styling",
+          "Inline quotations within a sentence — use a <q> element"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "cite": {
+            "type": "string",
+            "description": "URL of the quote’s source (sets the HTML cite attribute).",
+            "default": "undefined"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "Breadcrumb": {
+      "description": "Shows the current page location within a navigation hierarchy",
+      "category": "navigation",
+      "intent": {
+        "whenToUse": [
+          "Showing the user where the current page sits in a navigation hierarchy",
+          "Providing one-click navigation back to ancestor pages",
+          "Collapsing deep trails to keep the trail compact (maxVisible)"
+        ],
+        "whenNotToUse": [
+          "Paging through data records — use Pagination",
+          "Switching between sibling views — use Tabs"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "ariaLabel": {
+            "type": "string",
+            "description": "Accessible label for the component.",
+            "default": "Breadcrumb"
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS class names merged onto the root element."
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "href": {
+                  "type": "string"
+                }
+              },
+              "required": ["label"],
+              "additionalProperties": false
+            },
+            "description": "The items to render."
+          },
+          "label": {
+            "type": "string",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated."
+          },
+          "maxVisible": {
+            "type": "number",
+            "description": "When items exceed this count, collapse to the first item, an ellipsis, and the trailing items"
+          }
+        },
+        "required": ["items"],
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {}
+    },
+    "Button": {
+      "description": "Triggers an action or event",
+      "category": "inputs",
+      "intent": {
+        "whenToUse": [
+          "Triggering an action or navigation the user initiates by click/press",
+          "Submitting a form or confirming a decision"
+        ],
+        "whenNotToUse": [
+          "Navigation between pages where a real link is semantically correct — use an anchor",
+          "Toggling a binary setting — use Toggle; persistent selection — use Checkbox/Radio"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "asChild": {
+            "type": "boolean",
+            "description": "When true, renders the child element as the root via Slot, merging props (polymorphic rendering).",
+            "default": false
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "When true, disables the control and removes it from the tab order.",
+            "default": false
+          },
+          "loading": {
+            "type": "boolean",
+            "description": "When true, shows a loading state.",
+            "default": false
+          },
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md", "lg"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          },
+          "variant": {
+            "type": "string",
+            "enum": ["primary", "secondary", "ghost", "destructive"],
+            "description": "`primary` for the main action, `secondary` for a supporting one, `ghost` for a borderless action in dense UI, `destructive` for anything that deletes.",
+            "default": "primary"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        }
+      },
+      "events": {
+        "onClick": {
+          "description": "Called when the element is clicked."
+        }
+      },
+      "omitted": {}
+    },
+    "Card": {
+      "description": "Container for grouping related content",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Grouping related content into a visually distinct surface with border/shadow",
+          "Creating scannable units in a grid or list (dashboard tiles, item summaries)",
+          "Giving a content cluster elevation to separate it from the page background"
+        ],
+        "whenNotToUse": [
+          "Pure semantic/structural grouping with no surface — use a <section>",
+          "Wrapping every element in a card — nesting surfaces flattens visual hierarchy"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "ai": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": ["generating"]
+              },
+              {
+                "type": "boolean"
+              }
+            ],
+            "description": "AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text.",
+            "default": false
+          },
+          "padding": {
+            "type": "string",
+            "enum": ["none", "sm", "md", "lg"],
+            "description": "Inner padding of the CARD BOX. ⚠ `padding=\"none\"` deliberately does NOT strip the padding from CardHeader/CardContent/CardFooter — those keep their own. It means \"let a flush child (a LogViewer, an image, an edge-to-edge table) reach the card's edge\"; zeroing both put the title flush against the border and made the mode unusable with the composition it exists for. For an edge-to-edge table, skip CardContent and pass the table as a direct child.",
+            "default": "md"
+          },
+          "variant": {
+            "type": "string",
+            "enum": ["default", "outlined", "elevated"],
+            "description": "`default` draws a 1px border, `outlined` a heavier one, `elevated` drops the border for a shadow.",
+            "default": "default"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "actions": {
+          "arity": "one",
+          "required": false,
+          "description": "CardHeader only — trailing content pinned to the inline-end (overflow menu, badge, link). The header is a column by default, so `justify-content: space-between` alone does nothing; this is how you get the title-left / action-right dashboard card."
+        },
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "CardContent": {
+      "description": "Part of Card.",
+      "category": "display",
+      "parent": "Card",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "CardFooter": {
+      "description": "Part of Card.",
+      "category": "display",
+      "parent": "Card",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "CardHeader": {
+      "description": "Part of Card.",
+      "category": "display",
+      "parent": "Card",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "CardTitle": {
+      "description": "Part of Card.",
+      "category": "display",
+      "parent": "Card",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "Center": {
+      "description": "Horizontally centered container with a configurable max-width.",
+      "category": "layout",
+      "intent": {
+        "whenToUse": [
+          "Horizontally centering content within a configurable max-width",
+          "Constraining page or section content to a readable measure"
+        ],
+        "whenNotToUse": [
+          "Stacking children with consistent gaps — use Flex",
+          "Multi-column or grid arrangements — use Columns or Grid"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "maxWidth": {
+            "type": "string",
+            "description": "CSS max-width value",
+            "default": "48rem"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {}
+    },
+    "Checkbox": {
+      "description": "Binary toggle for forms, with indeterminate support",
+      "category": "inputs",
+      "intent": {
+        "whenToUse": [
+          "Selecting zero or more options from a list where each choice is independent",
+          "A single opt-in within a form (accept terms, subscribe) submitted alongside other fields",
+          "A \"select all\" control that needs an indeterminate (partial) state"
+        ],
+        "whenNotToUse": [
+          "A binary setting that applies immediately on change — use Toggle",
+          "Choosing exactly one option from a mutually exclusive set — use Radio"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "ariaLabel": {
+            "type": "string",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this."
+          },
+          "checked": {
+            "type": "boolean",
+            "description": "Whether the control is checked (controlled)."
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "When true, disables the control and removes it from the tab order.",
+            "default": false
+          },
+          "indeterminate": {
+            "type": "boolean",
+            "description": "When true, renders the mixed/indeterminate state.",
+            "default": false
+          },
+          "label": {
+            "type": "string",
+            "description": "Text label for the control."
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {
+        "onChange": {
+          "description": "Called when the value changes."
+        }
+      },
+      "omitted": {}
+    },
+    "CheckboxCard": {
+      "description": "Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.",
+      "category": "inputs",
+      "intent": {
+        "whenToUse": [
+          "Multi-select where each option needs a title and supporting description (feature toggles, add-ons)",
+          "Presenting selectable options as larger, scannable click targets rather than a dense checkbox list"
+        ],
+        "whenNotToUse": [
+          "A simple labelled boolean in a form — use Checkbox",
+          "Choosing exactly one option from a set — use RadioCard or Radio"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "checked": {
+            "type": "boolean",
+            "description": "Controlled checked state"
+          },
+          "defaultChecked": {
+            "type": "boolean",
+            "description": "Uncontrolled default"
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "Disables the card"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "description": {
+          "arity": "one",
+          "required": false,
+          "description": "Optional description"
+        },
+        "title": {
+          "arity": "one",
+          "required": true,
+          "description": "Card title"
+        }
+      },
+      "events": {
+        "onCheckedChange": {
+          "description": "Change callback"
+        }
+      },
+      "omitted": {}
+    },
+    "Code": {
+      "description": "Inline code span for identifiers, commands, and short snippets",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Marking up an inline identifier, command, path, or token within prose",
+          "Distinguishing literal code from surrounding text with a monospace span"
+        ],
+        "whenNotToUse": [
+          "Multi-line code blocks with syntax highlighting — use a <pre> block",
+          "Keyboard shortcuts the user should press — use Kbd"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "Columns": {
+      "description": "Equal-width multi-column layout that collapses to single column on narrow viewports.",
+      "category": "layout",
+      "intent": {
+        "whenToUse": [
+          "Equal-width multi-column content that collapses to one column when narrow",
+          "Side-by-side text or content blocks at a fixed column count"
+        ],
+        "whenNotToUse": [
+          "Card grids that auto-fit to width — use AutoGrid",
+          "Single-direction stacking — use Flex"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "number",
+            "enum": [2, 3, 4],
+            "description": "Number of equal columns",
+            "default": 2
+          },
+          "gap": {
+            "type": "number",
+            "enum": [1, 2, 3, 4, 5, 6, 8, 10, 12],
+            "description": "Spacing token step",
+            "default": 4
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "Combobox": {
+      "description": "Filterable single-select with an animated custom listbox, built on the dropdown open/close machine",
+      "category": "inputs",
+      "intent": {
+        "whenToUse": [
+          "Single-select from a long list where type-to-filter makes finding an option faster",
+          "Form fields where the value is one of many known options (country, assignee, repository)"
+        ],
+        "whenNotToUse": [
+          "Short option lists (≈2–7) where filtering adds no value — use Select or SegmentedControl",
+          "Selecting multiple values — use MultiSelect",
+          "Triggering actions or commands — use Dropdown or CommandMenu"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "aria-describedby": {
+            "type": "string",
+            "description": "Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced."
+          },
+          "aria-invalid": {
+            "type": "boolean",
+            "description": "Wired automatically by a wrapping `Field` when it is in an error state."
+          },
+          "aria-labelledby": {
+            "type": "string",
+            "description": "Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it."
+          },
+          "ariaLabel": {
+            "type": "string",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this."
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS class names merged onto the root element."
+          },
+          "clearable": {
+            "type": "boolean",
+            "description": "When true, shows a control to clear the selected value.",
+            "default": false
+          },
+          "creatable": {
+            "type": "boolean",
+            "description": "When true, offers the current search text as a new option.",
+            "default": false
+          },
+          "defaultOpen": {
+            "type": "boolean",
+            "description": "The initial open state when uncontrolled.",
+            "default": false
+          },
+          "defaultValue": {
+            "type": "string",
+            "description": "The initial value when uncontrolled."
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "When true, disables the control and removes it from the tab order.",
+            "default": false
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message shown when the value is invalid."
+          },
+          "hint": {
+            "type": "string",
+            "description": "Supplementary hint text shown with the control."
+          },
+          "id": {
+            "type": "string",
+            "description": "Base id for the input and its listbox/aria wiring; auto-generated when omitted."
+          },
+          "label": {
+            "type": "string",
+            "description": "Text label for the control."
+          },
+          "loading": {
+            "type": "boolean",
+            "description": "When true, the list reports itself as busy and shows a loading row instead of the empty message.",
+            "default": false
+          },
+          "name": {
+            "type": "string",
+            "description": "Submitted with a surrounding form — a hidden input carrying the selected value."
+          },
+          "open": {
+            "type": "boolean",
+            "description": "Controlled open state of the listbox."
+          },
+          "required": {
+            "type": "boolean",
+            "description": "Marks the control as required for assistive technology."
+          },
+          "searchable": {
+            "type": "boolean",
+            "description": "When true the field is a text input that filters the list as the user types (the APG editable combobox). When false it is a button that opens the list, and type-to-select jumps to a matching option (the APG select-only combobox).",
+            "default": true
+          },
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md", "lg"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          },
+          "value": {
+            "type": "string",
+            "description": "The controlled value."
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {
+        "onCreate": {
+          "description": "Called with the typed label when the user picks the \"create\" row."
+        },
+        "onOpenChange": {
+          "description": "Called when the listbox opens or closes."
+        },
+        "onSearchChange": {
+          "description": "Called with the search text on every keystroke. Pair it with filter={() => true} for a server-driven list."
+        },
+        "onValueChange": {
+          "description": "Called with the selected option value (or undefined when cleared)."
+        }
+      },
+      "omitted": {
+        "filter": {
+          "type": "(option: ComboboxOption, query: string) => boolean",
+          "reason": "function"
+        },
+        "labels": {
+          "type": "ComboboxLabels",
+          "reason": "unresolved-type"
+        },
+        "options": {
+          "type": "ComboboxOption[]",
+          "reason": "unresolved-type"
+        }
+      }
+    },
+    "CommandMenu": {
+      "description": "Cmd+K command palette with fuzzy search over grouped commands",
+      "category": "overlay",
+      "intent": {
+        "whenToUse": [
+          "Giving power users a global Cmd/Ctrl+K palette to search and run actions or navigate",
+          "Exposing many commands across grouped categories that benefit from fuzzy search",
+          "Multi-step flows where selecting an item drills into a nested page of further commands"
+        ],
+        "whenNotToUse": [
+          "Picking a form value from a list — use Combobox",
+          "A small set of actions tied to a specific trigger button — use Dropdown"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "ariaLabel": {
+            "type": "string",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated."
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS class names merged onto the root element."
+          },
+          "emptyLabel": {
+            "type": "string",
+            "description": "Text shown when no commands match the query.",
+            "default": "No results found"
+          },
+          "hotkey": {
+            "type": "boolean",
+            "description": "Global Cmd/Ctrl+K toggles the menu via onOpenChange",
+            "default": true
+          },
+          "label": {
+            "type": "string",
+            "description": "Accessible name for the command dialog. Not rendered — screen readers only.",
+            "default": "Command menu"
+          },
+          "loading": {
+            "type": "boolean",
+            "description": "Shows a loading spinner in place of the empty state (for async items)",
+            "default": false
+          },
+          "open": {
+            "type": "boolean",
+            "description": "Whether the component is open (controlled)."
+          },
+          "placeholder": {
+            "type": "string",
+            "description": "Placeholder text shown when the field is empty.",
+            "default": "Type a command or search…"
+          }
+        },
+        "required": ["open"],
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {
+        "onOpenChange": {
+          "description": "Called with the next open state when it changes."
+        },
+        "onQueryChange": {
+          "description": "Fires on every query keystroke — use to fetch async items"
+        }
+      },
+      "omitted": {
+        "groups": {
+          "type": "CommandGroup[]",
+          "reason": "unresolved-type"
+        },
+        "scopes": {
+          "type": "CommandScope[]",
+          "reason": "unresolved-type"
+        }
+      }
+    },
+    "DataTable": {
+      "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Displaying tabular data with columns the user sorts, filters, or pages through",
+          "Selecting rows for batch actions across a dataset",
+          "Rendering large datasets that benefit from row containment and server-side sort/paging"
+        ],
+        "whenNotToUse": [
+          "A simple static list of items — use List",
+          "Layout grids of cards or media — use a Card grid, not a data table"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "ariaLabel": {
+            "type": "string",
+            "description": "Invisible accessible name for the table, used when there is no visible `title`. A table with neither is an unnamed landmark; dev-warns."
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS class names merged onto the root element."
+          },
+          "columnGroups": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "header": {
+                  "type": "string",
+                  "description": "The band label."
+                },
+                "columns": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Column keys in the band. Non-adjacent keys render as separate spans."
+                }
+              },
+              "required": ["header", "columns"],
+              "additionalProperties": false,
+              "description": "A band of columns under one shared header (`columnGroups`)."
+            },
+            "description": "Bands of columns under a shared header, rendered as a row above the column headers. Keep a band's columns adjacent; reordering them apart splits the band."
+          },
+          "columnSettings": {
+            "type": "object",
+            "properties": {
+              "visibility": {
+                "type": "boolean",
+                "description": "A \"Columns\" menu in the toolbar that shows and hides columns."
+              },
+              "resizable": {
+                "type": "boolean",
+                "description": "A drag handle on each header; arrow keys nudge by 16px (Shift: 64px), Home returns to auto, double-click too."
+              },
+              "reorderable": {
+                "type": "boolean",
+                "description": "\"Move left\" / \"Move right\" in each column's header menu (within its pin group)."
+              },
+              "pinnable": {
+                "type": "boolean",
+                "description": "\"Pin to start\" / \"Pin to end\" / \"Unpin\" in each column's header menu."
+              }
+            },
+            "additionalProperties": false,
+            "description": "Which column-layout controls to offer: `visibility` (a \"Columns\" menu in the toolbar), `resizable` (a drag handle per header; arrows nudge, Home resets), `reorderable` (Move left/right in the header menu), `pinnable` (Pin to start/end in the header menu). All off by default."
+          },
+          "columnState": {
+            "type": "object",
+            "properties": {
+              "hidden": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Keys of hidden columns. At least one column always stays visible."
+              },
+              "order": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Display order of column keys; keys not listed follow in definition order."
+              }
+            },
+            "additionalProperties": false,
+            "description": "User-adjustable column layout (controlled): `hidden` keys, display `order`, explicit `widths` in px, and `pinned` sides. One object, so it round-trips through storage or a URL as a unit."
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "description": "Row property this column reads, and the sort key."
+                },
+                "header": {
+                  "type": "string",
+                  "description": "Column header label."
+                },
+                "sortable": {
+                  "type": "boolean",
+                  "description": "When true, the header toggles sort on this column."
+                },
+                "align": {
+                  "type": "string",
+                  "enum": ["start", "end"],
+                  "description": "Cell/text alignment. Use 'end' for numbers and timestamps."
+                },
+                "filter": {
+                  "type": "string",
+                  "enum": ["text", "select", "range"],
+                  "description": "Offer a per-column filter under the header: a substring input, a faceted checklist of distinct values with counts, or a numeric min/max pair. Values surface through the `filters` props."
+                },
+                "editable": {
+                  "type": "boolean",
+                  "description": "Edit cells in place: each renders an Editable (click, Enter or F2 to start; Enter commits, Escape cancels) that commits through `onCellEdit`. Ignored with a custom `render` or without `onCellEdit`."
+                },
+                "minWidth": {
+                  "type": "string",
+                  "description": "Floor for the column width, any CSS length."
+                },
+                "width": {
+                  "type": "string",
+                  "description": "Preferred column width (any CSS length, e.g. `120px`), with an automatic content floor. ⚠ Sizing EVERY column switches the table to `table-layout: fixed`. ⚠ \"Leave one unsized\" is necessary but NOT sufficient: the leftover width is split by content weight, so if the sized columns nearly fill the table the remainder can be narrower than the content needs and long tokens wrap mid-word. Leave the widest free-form column unsized, keep sized columns to ~2/3 of the table, and give the free-form one a `minWidth` when the data has long unbreakable tokens."
+                }
+              },
+              "required": ["key", "header"],
+              "additionalProperties": false,
+              "description": "A single column definition. `render` is the escape hatch for custom cell content — return any ReactNode (a Badge, an icon + link, a formatted value); when omitted the cell shows `String(row[key])`."
+            },
+            "description": "The column definitions describing each table column."
+          },
+          "defaultColumnState": {
+            "type": "object",
+            "properties": {
+              "hidden": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Keys of hidden columns. At least one column always stays visible."
+              },
+              "order": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Display order of column keys; keys not listed follow in definition order."
+              }
+            },
+            "additionalProperties": false,
+            "description": "Initial column layout (uncontrolled)."
+          },
+          "defaultSort": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": "The sorted column key."
+              },
+              "direction": {
+                "type": "string",
+                "enum": ["asc", "desc"],
+                "description": "Sort direction."
+              },
+              "thenBy": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string"
+                    },
+                    "direction": {
+                      "type": "string",
+                      "enum": ["asc", "desc"]
+                    }
+                  },
+                  "required": ["key", "direction"],
+                  "additionalProperties": false
+                },
+                "description": "Secondary columns that break ties, in order (multi-sort)."
+              }
+            },
+            "required": ["key", "direction"],
+            "additionalProperties": false,
+            "description": "The initial sort state when uncontrolled."
+          },
+          "density": {
+            "type": "string",
+            "enum": ["compact", "normal", "relaxed"],
+            "description": "Row density — 'compact', 'normal', or 'relaxed'. ⚠ It sets a row **height floor**, so it is invisible whenever the cell content is already taller: a two-line cell or a Badge stack looks identical at every density. Reported as \"barely distinguishable\" — the prop works, the content is winning. Shrink the cell content, or set `--cascivo-data-table-cell-gap` to tighten the horizontal rhythm too.",
+            "default": "normal"
+          },
+          "description": {
+            "type": "string",
+            "description": "Supporting description text."
+          },
+          "exportable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "filename": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            ],
+            "description": "An \"Export CSV\" button in the toolbar: every row passing the search and filters (all pages; with `server`, the rows given), in the current sort, visible columns as headers, raw cell values as fields (RFC 4180, UTF-8 with BOM). Pass `{ filename }` to name the file; it defaults to the `title`.",
+            "default": false
+          },
+          "groupBy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "Group the rows by one or more columns, in order. Each group is a collapsible row showing its value, its row count and every `aggregate` column's reduction; leaves keep the current sort inside their group. Groups appear in order of first occurrence — sort by the grouped column to order them."
+          },
+          "keyboardNavigation": {
+            "type": "string",
+            "enum": ["row", "grid"],
+            "description": "How the keyboard moves through the table. 'row' keeps every control in the Tab order with the arrows stepping between them. 'grid' is the APG data-grid pattern: one Tab stop, arrows move a focused cell, Home/End within the row, Ctrl+Home/End to the corners, PageUp/PageDown by a screenful, Enter/F2 enters the cell's control, Escape returns to the cell; rows outside the virtualized window are scrolled to.",
+            "default": "row"
+          },
+          "loading": {
+            "type": "boolean",
+            "description": "When true, shows a loading state.",
+            "default": false
+          },
+          "multiSort": {
+            "type": "boolean",
+            "description": "Allow sorting by more than one column: Shift-click a header adds it as a tie-breaker (`SortState.thenBy`); a plain click replaces the whole sort. Sorted headers show their level.",
+            "default": false
+          },
+          "overscan": {
+            "type": "number",
+            "description": "Extra rows rendered above/below the window to smooth scrolling.",
+            "default": 3
+          },
+          "pagination": {
+            "type": "object",
+            "properties": {
+              "pageSize": {
+                "type": "number"
+              },
+              "pageSizeOptions": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              },
+              "page": {
+                "type": "number"
+              }
+            },
+            "required": ["pageSize"],
+            "additionalProperties": false,
+            "description": "Paging config: pageSize, optional pageSizeOptions, and page/onPageChange to control the current page. With `server`, it is the pager for server-side paging."
+          },
+          "pinnedRows": {
+            "type": "object",
+            "properties": {
+              "top": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "bottom": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            },
+            "additionalProperties": false,
+            "description": "Rows kept in view outside sort, search, filters, paging and the virtual window: `top` rows sit under the header (stuck there with `stickyHeader`), `bottom` rows above the totals."
+          },
+          "rowHeight": {
+            "type": "number",
+            "description": "Row height in px for the virtualized window. Measured from the first rendered row when omitted, so the density presets stay correct; set it only for custom-sized rows."
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "The row objects to render — one table row per array element."
+          },
+          "searchable": {
+            "type": "boolean",
+            "description": "When true, shows a search/filter input.",
+            "default": false
+          },
+          "selection": {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "enum": ["single", "multi"]
+              },
+              "selected": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": ["mode"],
+            "additionalProperties": false,
+            "description": "Row-selection configuration (mode and selected ids)."
+          },
+          "sort": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": "The sorted column key."
+              },
+              "direction": {
+                "type": "string",
+                "enum": ["asc", "desc"],
+                "description": "Sort direction."
+              },
+              "thenBy": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string"
+                    },
+                    "direction": {
+                      "type": "string",
+                      "enum": ["asc", "desc"]
+                    }
+                  },
+                  "required": ["key", "direction"],
+                  "additionalProperties": false
+                },
+                "description": "Secondary columns that break ties, in order (multi-sort)."
+              }
+            },
+            "required": ["key", "direction"],
+            "additionalProperties": false,
+            "description": "The controlled sort state."
+          },
+          "sortMode": {
+            "type": "string",
+            "enum": ["client", "server"],
+            "description": "Whether sorting is handled client-side or by the server ('client' | 'server').",
+            "default": "client"
+          },
+          "stateKey": {
+            "type": "string",
+            "description": "Remember the user's column layout and sort across reloads, in local storage under this key. Applies to uncontrolled `columnState`/`sort`; controlled props still win. Tables sharing a key share the preference."
+          },
+          "stickyHeader": {
+            "type": "boolean",
+            "description": "When true, the header stays fixed while the body scrolls.",
+            "default": false
+          },
+          "title": {
+            "type": "string",
+            "description": "Visible caption above the table; it also becomes the table's accessible name."
+          },
+          "totals": {
+            "type": "boolean",
+            "description": "Show a totals row under the body with each `aggregate` column's reduction over every row passing the search and filters (not just the page). Sticks to the bottom of the scroller.",
+            "default": false
+          },
+          "virtualized": {
+            "type": "boolean",
+            "description": "Render only the visible row window for large datasets.",
+            "default": false
+          },
+          "windowSize": {
+            "type": "number",
+            "description": "Rows rendered per window. Derived from the scroller height when omitted; set it only to render a fixed count regardless of height."
+          },
+          "zebra": {
+            "type": "boolean",
+            "description": "When true, applies alternating row striping.",
+            "default": false
+          }
+        },
+        "required": ["columns", "rows"],
+        "additionalProperties": false
+      },
+      "slots": {
+        "emptyState": {
+          "arity": "one",
+          "required": false,
+          "description": "Content shown when there are no rows."
+        },
+        "noResultsState": {
+          "arity": "one",
+          "required": false,
+          "description": "Shown instead of emptyState when there are rows but the search or filters match none of them."
+        },
+        "toolbar": {
+          "arity": "one",
+          "required": false,
+          "description": "Extra controls rendered in the toolbar next to the search box — exports, primary actions."
+        }
+      },
+      "events": {
+        "onCellEdit": {
+          "description": "Commits an inline edit with the row, the column key and the new text. Enables editing for every column marked `editable`; the table does not mutate `rows` itself."
+        },
+        "onColumnStateChange": {
+          "description": "Called with the full column layout whenever the user changes it."
+        },
+        "onFiltersChange": {
+          "description": "Called with the full filter map whenever any column filter changes."
+        },
+        "onSortChange": {
+          "description": "Called with the new sort state when it changes."
+        }
+      },
+      "omitted": {
+        "batchActions": {
+          "type": "{ label: string; onClick: (selectedIds: string[]) => void }[]",
+          "reason": "unresolved-type"
+        },
+        "defaultFilters": {
+          "type": "ColumnFilters",
+          "reason": "unresolved-type"
+        },
+        "filters": {
+          "type": "ColumnFilters",
+          "reason": "unresolved-type"
+        },
+        "getRowId": {
+          "type": "(row: Row) => string",
+          "reason": "function"
+        },
+        "labels": {
+          "type": "DataTableLabels",
+          "reason": "unresolved-type"
+        },
+        "renderExpandedRow": {
+          "type": "(row: Row) => ReactNode",
+          "reason": "function"
+        },
+        "rowActions": {
+          "type": "(row: Row) => RowAction<Row>[]",
+          "reason": "function"
+        },
+        "server": {
+          "type": "DataTableServer",
+          "reason": "unresolved-type"
+        }
+      }
+    },
+    "DatePicker": {
+      "description": "An accessible date-picker with a calendar popover.",
+      "category": "inputs",
+      "intent": {
+        "whenToUse": [
+          "Picking a single calendar date in a form where a visual month grid helps (due dates, bookings)",
+          "Date entry that benefits from min/max constraints and locale-aware formatting and week start"
+        ],
+        "whenNotToUse": [
+          "Selecting a time of day — use TimePicker",
+          "Free-form or approximate dates where a plain Input is faster, or a date already known by typing"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "aria-describedby": {
+            "type": "string",
+            "description": "Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced."
+          },
+          "aria-invalid": {
+            "type": "boolean",
+            "description": "Wired automatically by a wrapping `Field` when it is in an error state."
+          },
+          "aria-labelledby": {
+            "type": "string",
+            "description": "Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it."
+          },
+          "ariaLabel": {
+            "type": "string",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this."
+          },
+          "clearable": {
+            "type": "boolean",
+            "description": "Shows a clear button",
+            "default": false
+          },
+          "defaultValue": {
+            "type": "string",
+            "description": "Uncontrolled default value"
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "Disables the picker",
+            "default": false
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message"
+          },
+          "hint": {
+            "type": "string",
+            "description": "Hint text"
+          },
+          "id": {
+            "type": "string",
+            "description": "Base id for the input and its popover/aria wiring; auto-generated when omitted."
+          },
+          "label": {
+            "type": "string",
+            "description": "Visible field label rendered above the input; it also names the control."
+          },
+          "max": {
+            "type": "string",
+            "description": "Maximum ISO date"
+          },
+          "min": {
+            "type": "string",
+            "description": "Minimum ISO date"
+          },
+          "name": {
+            "type": "string",
+            "description": "Submitted with a surrounding form — a hidden input carrying the ISO value."
+          },
+          "open": {
+            "type": "boolean",
+            "description": "Controlled open state of the calendar popup."
+          },
+          "required": {
+            "type": "boolean",
+            "description": "Marks the control as required for assistive technology."
+          },
+          "showToday": {
+            "type": "boolean",
+            "description": "When true, the calendar offers a button that jumps to the current month.",
+            "default": false
+          },
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md", "lg"],
+            "description": "Field size",
+            "default": "md"
+          },
+          "typeable": {
+            "type": "boolean",
+            "description": "When true, the field accepts a typed date as well as one picked from the calendar.",
+            "default": true
+          },
+          "value": {
+            "type": "string",
+            "description": "Controlled ISO date value (YYYY-MM-DD)"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {
+        "onOpenChange": {
+          "description": "Called when the popup opens or closes."
+        },
+        "onValueChange": {
+          "description": "Called with the selected ISO date string (or undefined when cleared)"
+        }
+      },
+      "omitted": {
+        "disabledDate": {
+          "type": "(date: Date) => boolean",
+          "reason": "function"
+        },
+        "format": {
+          "type": "Intl.DateTimeFormatOptions",
+          "reason": "unresolved-type"
+        },
+        "labels": {
+          "type": "DatePickerLabels",
+          "reason": "unresolved-type"
+        }
+      }
+    },
+    "Dropdown": {
+      "description": "Menu of actions revealed from a trigger",
+      "category": "overlay",
+      "intent": {
+        "whenToUse": [
+          "Revealing a short menu of actions from a trigger button (row actions, \"More\" overflow, account menu)",
+          "Grouping related commands behind one affordance with optional icons and separators"
+        ],
+        "whenNotToUse": [
+          "Selecting a persistent value for a form — use Select or Combobox",
+          "A global searchable command palette — use CommandMenu; right-click context actions — use ContextMenu"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    },
+                    "icon": {
+                      "type": "string"
+                    },
+                    "disabled": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": ["label", "value"],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "enum": ["separator"]
+                    }
+                  },
+                  "required": ["kind"],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "description": "Menu entries. A selectable row is `{ label, value, icon?, disabled? }`; a rule between groups is `{ kind: 'separator' }`, which takes no label or value. The union is tagged on `kind`, so a separator cannot carry data that would be silently discarded."
+          },
+          "open": {
+            "type": "boolean",
+            "description": "Whether the component is open (controlled)."
+          },
+          "placement": {
+            "type": "string",
+            "enum": ["bottom-start", "bottom-end"],
+            "description": "Which trigger edge the menu aligns to. `bottom-start` hangs it from the trigger's start edge, `bottom-end` from its end edge — use `bottom-end` for a trigger near the end of the viewport.",
+            "default": "bottom-start"
+          }
+        },
+        "required": ["items"],
+        "additionalProperties": false
+      },
+      "slots": {
+        "trigger": {
+          "arity": "one",
+          "required": true,
+          "description": "The element that opens the dropdown when activated."
+        }
+      },
+      "events": {
+        "onOpenChange": {
+          "description": "Called with the next open state when it changes."
+        },
+        "onSelect": {
+          "description": "Called with the selected value."
+        }
+      },
+      "omitted": {}
+    },
+    "EmptyState": {
+      "description": "Placeholder for views that have no data to display",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Filling a view that has no data with guidance and a primary next step",
+          "Explaining why a list/table is empty (no results, nothing created yet)",
+          "Offering an action that resolves the empty condition (action prop)"
+        ],
+        "whenNotToUse": [
+          "Content is still loading — use Skeleton or Spinner",
+          "An error occurred — use Alert to explain the failure"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Supporting description text."
+          },
+          "size": {
+            "type": "string",
+            "enum": ["md", "lg"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title text for the component."
+          }
+        },
+        "required": ["title"],
+        "additionalProperties": false
+      },
+      "slots": {
+        "action": {
+          "arity": "one",
+          "required": false,
+          "description": "Primary action shown in the component."
+        },
+        "icon": {
+          "arity": "one",
+          "required": false,
+          "description": "Icon element rendered in the component."
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "FileUploader": {
+      "description": "Drag-and-drop file upload zone with file list and status indicators.",
+      "category": "inputs",
+      "intent": {
+        "whenToUse": [
+          "Letting users attach one or more files via click-to-browse or drag-and-drop",
+          "Showing per-file upload progress and status (uploading, complete, error) in a list",
+          "Enforcing client-side accept/maxSize constraints with a callback for rejected files"
+        ],
+        "whenNotToUse": [
+          "A single short text value — use Input",
+          "Choosing from a fixed set of options rather than supplying a file — use Select or MultiSelect"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "accept": {
+            "type": "string",
+            "description": "Accepted file types (MIME or extension)"
+          },
+          "ariaLabel": {
+            "type": "string",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this."
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "Disables the upload zone",
+            "default": false
+          },
+          "hint": {
+            "type": "string",
+            "description": "Hint text below the drop zone"
+          },
+          "label": {
+            "type": "string",
+            "description": "Visible field label rendered above the drop zone; it also names the control."
+          },
+          "maxSize": {
+            "type": "number",
+            "description": "Maximum file size in bytes"
+          },
+          "multiple": {
+            "type": "boolean",
+            "description": "Allow multiple files",
+            "default": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {
+        "onFilesAdded": {
+          "description": "Called with accepted files"
+        },
+        "onRejected": {
+          "description": "Called with rejected files"
+        },
+        "onRemove": {
+          "description": "Called when a file is removed"
+        }
+      },
+      "omitted": {
+        "files": {
+          "type": "UploaderFile[]",
+          "reason": "unresolved-type"
+        },
+        "labels": {
+          "type": "FileUploaderLabels",
+          "reason": "unresolved-type"
+        }
+      }
+    },
+    "Flex": {
+      "description": "Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction=\"horizontal\"` for a row.",
+      "category": "layout",
+      "intent": {
+        "whenToUse": [
+          "Arranging children vertically or horizontally with a consistent gap",
+          "The default primitive for spacing a small set of elements in one direction"
+        ],
+        "whenNotToUse": [
+          "Two-dimensional layouts — use Grid",
+          "Responsive auto-wrapping card collections — use AutoGrid",
+          "A visual card-pile / overlapping avatars — that is `Stack` in @cascivo/react (an `offset` prop), a different component."
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "align": {
+            "type": "string",
+            "enum": ["start", "center", "end", "stretch"],
+            "description": "align-items"
+          },
+          "basis": {
+            "type": "string",
+            "description": "FlexItem: flex-basis — the child's size before free space is distributed. Any CSS length."
+          },
+          "direction": {
+            "type": "string",
+            "enum": ["vertical", "horizontal"],
+            "description": "Flex direction. ⚠ Defaults to `vertical`, unlike CSS `flex-direction` (and unlike Chakra/MUI/Radix `Flex`, which default to a row) — `<Flex justify=\"between\">` alone produces a centered vertical stack.",
+            "default": "vertical"
+          },
+          "gap": {
+            "type": "number",
+            "enum": [1, 2, 3, 4, 5, 6, 8, 10, 12],
+            "description": "Spacing token step",
+            "default": 4
+          },
+          "justify": {
+            "type": "string",
+            "enum": ["start", "center", "end", "between"],
+            "description": "justify-content"
+          },
+          "size": {
+            "type": "string",
+            "enum": ["auto", "fixed", "grow", "shrink"],
+            "description": "FlexItem: main-axis sizing. 'fixed' (flex: 0 0 auto) is what a fixed-width child like Sparkline needs; 'grow' takes the leftover width without shrinking; 'shrink' gives way but never grows.",
+            "default": "auto"
+          },
+          "truncate": {
+            "type": "boolean",
+            "description": "FlexItem: allow the child to shrink below its content width (releases the flex item's `min-width: auto` floor and ellipsizes). Without it a long unbreakable string pushes its siblings out of the row.",
+            "default": false
+          },
+          "wrap": {
+            "type": "boolean",
+            "description": "Allow wrapping",
+            "default": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {}
+    },
+    "Form": {
+      "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",
+      "category": "inputs",
+      "intent": {
+        "whenToUse": [
+          "Collecting and submitting a set of related field values together",
+          "Running sync or async validation (including Standard Schema like zod/valibot/arktype) before invoking onValid",
+          "Tracking per-field touched state and errors via the signal-based store from useForm/createForm"
+        ],
+        "whenNotToUse": [
+          "A single standalone value with no submission step — render a bare Input",
+          "Inline editing of one read-only value — use Editable"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "className": {
+            "type": "string",
+            "description": "Additional CSS class names merged onto the root element."
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": true,
+          "description": "Content rendered inside the component."
+        }
+      },
+      "events": {
+        "onValid": {
+          "description": "Called with the values when the form passes validation."
+        }
+      },
+      "omitted": {
+        "form": {
+          "type": "FormStore<T>",
+          "reason": "unresolved-type"
+        }
+      }
+    },
+    "Grid": {
+      "description": "CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required.",
+      "category": "layout",
+      "intent": {
+        "whenToUse": [
+          "Two-dimensional layouts with an explicit column count",
+          "Arranging cards or tiles that should align in rows and columns"
+        ],
+        "whenNotToUse": [
+          "Single-direction stacking — use Stack",
+          "Columns that auto-fit to available width — use AutoGrid"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "align": {
+            "type": "string",
+            "enum": ["start", "center", "end", "stretch"],
+            "description": "Block-axis alignment of items within their cells (align-items); default stretch"
+          },
+          "alignRows": {
+            "type": "boolean",
+            "description": "Align the internal bands of adjacent children via CSS subgrid — every CardHeader in a row shares one row track, every CardContent the next, every CardFooter the last. Where subgrid is unsupported the grid renders as it does without this prop.",
+            "default": false
+          },
+          "cols": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "base": {
+                    "type": "number"
+                  },
+                  "sm": {
+                    "type": "number"
+                  },
+                  "md": {
+                    "type": "number"
+                  },
+                  "lg": {
+                    "type": "number"
+                  },
+                  "xl": {
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false
+              }
+            ],
+            "description": "Column count — a number, or a per-breakpoint object (base/sm/md/lg/xl) for responsive columns",
+            "default": 12
+          },
+          "gap": {
+            "type": "number",
+            "enum": [1, 2, 3, 4, 5, 6, 8, 10, 12],
+            "description": "Spacing token step. Maps to the --cascivo-space-* scale, which intentionally skips 7/9/11 — use 6 or 8.",
+            "default": 4
+          },
+          "justify": {
+            "type": "string",
+            "enum": ["start", "center", "end", "stretch"],
+            "description": "Inline-axis alignment of items within their cells (justify-items); default stretch"
+          },
+          "span": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "base": {
+                    "type": "number"
+                  },
+                  "sm": {
+                    "type": "number"
+                  },
+                  "md": {
+                    "type": "number"
+                  },
+                  "lg": {
+                    "type": "number"
+                  },
+                  "xl": {
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false
+              }
+            ],
+            "description": "GridItem: column span — a number, or a per-breakpoint object"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "GridItem": {
+      "description": "Part of Grid.",
+      "category": "layout",
+      "parent": "Grid",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "Header": {
+      "description": "App top bar with brand, primary navigation links, and an actions slot",
+      "category": "navigation",
+      "intent": {
+        "whenToUse": [
+          "Providing a simple marketing or app top bar with brand, links, and actions",
+          "Anchoring primary navigation across pages of a site",
+          "Keeping the bar visible while scrolling (sticky)"
+        ],
+        "whenNotToUse": [
+          "Dense console apps with dropdown nav, global icon actions, and a hamburger — use ShellHeader",
+          "Section headings within page content — use Heading"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "className": {
+            "type": "string",
+            "description": "Additional CSS class names merged onto the root element."
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "href": {
+                  "type": "string"
+                },
+                "active": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["label", "href"],
+              "additionalProperties": false
+            },
+            "description": "Primary navigation links; active link gets aria-current=\"page\""
+          },
+          "sticky": {
+            "type": "boolean",
+            "description": "When true, the header sticks to the top on scroll.",
+            "default": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "actions": {
+          "arity": "one",
+          "required": false,
+          "description": "Right-aligned slot for buttons or an avatar"
+        },
+        "brand": {
+          "arity": "one",
+          "required": false,
+          "description": "Product name or logo area, typically wraps a link"
+        }
+      },
+      "events": {},
+      "omitted": {
+        "labels": {
+          "type": "HeaderLabels",
+          "reason": "unresolved-type"
+        }
+      }
+    },
+    "HeaderPanel": {
+      "description": "Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings",
+      "category": "navigation",
+      "intent": {
+        "whenToUse": [
+          "Hosting a non-modal panel anchored under the shell header (notifications, switcher, settings)",
+          "Showing supplementary content triggered by a ShellHeader icon action",
+          "Light-dismiss content that should not block the rest of the app"
+        ],
+        "whenNotToUse": [
+          "Content that must block interaction until resolved — use Modal",
+          "A small contextual menu attached to a trigger — use Dropdown or Popover"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "className": {
+            "type": "string",
+            "description": "Additional CSS class names merged onto the root element."
+          },
+          "label": {
+            "type": "string",
+            "description": "Accessible label for the region (shown as header title)"
+          },
+          "open": {
+            "type": "boolean",
+            "description": "Controlled open state"
+          }
+        },
+        "required": ["open", "label"],
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": true,
+          "description": "Content rendered inside the component."
+        }
+      },
+      "events": {
+        "onClose": {
+          "description": "Called on close button click or light-dismiss"
+        }
+      },
+      "omitted": {
+        "labels": {
+          "type": "HeaderPanelLabels",
+          "reason": "unresolved-type"
+        }
+      }
+    },
+    "Heading": {
+      "description": "Section heading with semantic level decoupled from visual size",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Titling a page or section as part of the document outline",
+          "Keeping the semantic heading level correct while choosing the visual size independently"
+        ],
+        "whenNotToUse": [
+          "Emphasizing inline or body text — use Text with a weight",
+          "Long-form rendered content — let Prose style its own headings"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "number",
+            "enum": [1, 2, 3, 4, 5, 6],
+            "description": "Heading level (1–6) mapping to h1–h6.",
+            "default": 2
+          },
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md", "lg", "xl", "2xl"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg')."
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "Image": {
+      "description": "Image with load state, blur-up placeholder, graceful fallback, and optional zoom",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Displaying a content image that should show a placeholder while loading and degrade gracefully on error",
+          "Photos, thumbnails, or media that benefit from a blur-up placeholder or hover zoom",
+          "Any image where a broken src should fall back rather than show a broken-image icon"
+        ],
+        "whenNotToUse": [
+          "Identity thumbnails for a person or entity — use Avatar",
+          "Purely decorative shapes or a fixed-ratio layout box with no load behavior — use AspectRatio"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "alt": {
+            "type": "string",
+            "description": "Alternative text describing the image.",
+            "default": ""
+          },
+          "fallbackSrc": {
+            "type": "string",
+            "description": "Image shown if src fails to load"
+          },
+          "height": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "description": "Intrinsic height in px, forwarded to the `<img>`. Pair with `width` to reserve the box and avoid layout shift."
+          },
+          "isBlurred": {
+            "type": "boolean",
+            "description": "When true, renders a blurred backdrop behind the image.",
+            "default": false
+          },
+          "radius": {
+            "type": "string",
+            "enum": ["none", "sm", "md", "lg", "full"],
+            "description": "Corner radius of the image ('none' | 'sm' | 'md' | 'lg' | 'full').",
+            "default": "md"
+          },
+          "removeWrapper": {
+            "type": "boolean",
+            "description": "Render a bare <img> with no wrapper, placeholder, or zoom",
+            "default": false
+          },
+          "src": {
+            "type": "string",
+            "description": "Image source URL."
+          },
+          "width": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "description": "Intrinsic width in px, forwarded to the `<img>`. Set it together with `height` so the browser can reserve the box before the image loads (no layout shift)."
+          },
+          "zoom": {
+            "type": "boolean",
+            "description": "When true, zooms the image on hover.",
+            "default": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {}
+    },
+    "Input": {
+      "description": "Text input field with optional label, hint, and error state",
+      "category": "inputs",
+      "intent": {
+        "whenToUse": [
+          "Collecting a single line of free-form text from the user",
+          "Pairing a labelled field with optional hint and validation error messaging",
+          "As a field control inside a Form, wired via form.field()"
+        ],
+        "whenNotToUse": [
+          "Multi-line text — use Textarea",
+          "Choosing from a fixed list of options — use Select, Combobox, or MultiSelect",
+          "Editing one read-only value in place — use Editable"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "ai": {
+            "type": "boolean",
+            "description": "AI presence: an AI-tinted border and a soft aura, marking a value AI produced or suggested. Visual only — put an AiBadge in the label so the provenance is also text, and clear `ai` once the person edits the value.",
+            "default": false
+          },
+          "ariaLabel": {
+            "type": "string",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this."
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "When true, disables the control and removes it from the tab order.",
+            "default": false
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message shown when the value is invalid."
+          },
+          "hint": {
+            "type": "string",
+            "description": "Supplementary hint text shown with the control."
+          },
+          "label": {
+            "type": "string",
+            "description": "Text label for the control (standalone use). Omit it when wrapping the Input in a Field — the Field owns the label, and setting both double-labels the control."
+          },
+          "placeholder": {
+            "type": "string",
+            "description": "Placeholder text shown when the field is empty."
+          },
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md", "lg"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {}
+    },
+    "InputGroup": {
+      "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; InputGroupButtons collapses adjacent button borders",
+      "category": "inputs",
+      "intent": {
+        "whenToUse": [
+          "Attaching a prefix/suffix addon (protocol, currency, unit) to an Input so it reads as one field",
+          "Placing a leading or trailing inline icon/unit inside the field border via InputGroupAddon",
+          "Grouping adjacent buttons with collapsed shared borders via InputGroupButtons"
+        ],
+        "whenNotToUse": [
+          "A standalone field with no adornment — use Input directly",
+          "Conveying meaning that the user must read via an addon — decorative addons are aria-hidden"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": true,
+          "description": "Content rendered inside the component."
+        },
+        "prefix": {
+          "arity": "one",
+          "required": false,
+          "description": "Content rendered before the input (leading adornment)."
+        },
+        "suffix": {
+          "arity": "one",
+          "required": false,
+          "description": "Content rendered after the input (trailing adornment)."
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "Kbd": {
+      "description": "Displays a keyboard key or shortcut",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Showing a keyboard key or shortcut the user should press",
+          "Documenting hotkeys in menus, tooltips, or help text"
+        ],
+        "whenNotToUse": [
+          "Inline code, commands, or identifiers — use Code",
+          "A short label that is not a key press — use Badge or Text"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "LargeTitleHeader": {
+      "description": "Scrolling region whose large title collapses into a compact sticky bar as it scrolls",
+      "category": "navigation",
+      "intent": {
+        "whenToUse": [
+          "A scrolling screen that should keep its title reachable after the heading scrolls away",
+          "Mobile and tablet layouts following the platform convention of a large title that collapses",
+          "Any page where a persistent back control or actions must stay pinned while content scrolls"
+        ],
+        "whenNotToUse": [
+          "A site-wide navigation bar with links and a brand — use Header",
+          "An application chrome header spanning a sidebar layout — use ShellHeader",
+          "A screen whose scroll container is owned by the app shell or router — this component owns its own"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "className": {
+            "type": "string",
+            "description": "Additional CSS class names merged onto the root element."
+          },
+          "collapseDistance": {
+            "type": "number",
+            "description": "Scroll distance (px) over which the large title collapses into the bar.",
+            "default": 48
+          },
+          "level": {
+            "type": "number",
+            "enum": [1, 2, 3],
+            "description": "Heading level for the title, mapping to h1–h3.",
+            "default": 1
+          },
+          "title": {
+            "type": "string",
+            "description": "The page title, rendered as the large heading and mirrored in the compact bar"
+          }
+        },
+        "required": ["title"],
+        "additionalProperties": false
+      },
+      "slots": {
+        "actions": {
+          "arity": "one",
+          "required": false,
+          "description": "Trailing slot of the compact bar — typically icon buttons"
+        },
+        "children": {
+          "arity": "many",
+          "required": true,
+          "description": "Content rendered inside the component."
+        },
+        "leading": {
+          "arity": "one",
+          "required": false,
+          "description": "Leading slot of the compact bar — typically a back control"
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "Link": {
+      "description": "Styled anchor for navigation, standalone or inline within prose",
+      "category": "navigation",
+      "intent": {
+        "whenToUse": [
+          "Navigating to another page, view, or resource via a real href",
+          "Inline cross-references within prose (variant=\"inline\")",
+          "Linking to an external destination with a clear new-tab indicator (external)"
+        ],
+        "whenNotToUse": [
+          "Triggering an action or mutation with no destination — use Button",
+          "Submitting a form — use a submit Button"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "asChild": {
+            "type": "boolean",
+            "description": "Render the single child element instead of cascivo's own `<a>`, so the link styling lands on your router's Link. ⚠ This — not `setLinkComponent` — is how you style an in-content link in a routed app; `setLinkComponent` only covers the config-driven navs. See https://cascivo.com/docs/using-with-a-router.md.",
+            "default": false
+          },
+          "external": {
+            "type": "boolean",
+            "description": "When true, treats the link as external (opens in a new tab with rel safety).",
+            "default": false
+          },
+          "href": {
+            "type": "string",
+            "description": "The destination URL."
+          },
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md", "lg"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          },
+          "variant": {
+            "type": "string",
+            "enum": ["standalone", "inline"],
+            "description": "`standalone` uses the system's own type and underlines on hover — for a link that stands on its own. `inline` inherits the surrounding prose font and stays underlined — for a link inside a paragraph.",
+            "default": "standalone"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "List": {
+      "description": "Styled unordered or ordered list with ListItem",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Presenting a set of related items as a bulleted or numbered list",
+          "Conveying sequence with an ordered list (as=\"ol\")",
+          "Keeping list semantics while hiding visual markers (marker=\"none\")"
+        ],
+        "whenNotToUse": [
+          "Tabular data with multiple columns — use DataTable",
+          "Interactive navigation items — use SideNav or a menu"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "as": {
+            "type": "string",
+            "enum": ["ul", "ol"],
+            "description": "`ul` for an unordered list, `ol` for a numbered one. Changes the element and its marker, not the styling.",
+            "default": "ul"
+          },
+          "marker": {
+            "type": "string",
+            "enum": ["disc", "decimal", "none"],
+            "description": "List marker style ('disc' | 'decimal' | 'none')."
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "ListItem": {
+      "description": "Part of List.",
+      "category": "display",
+      "parent": "List",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "Modal": {
+      "description": "Accessible dialog overlay using native <dialog> element",
+      "category": "overlay",
+      "intent": {
+        "whenToUse": [
+          "Presenting focused content or a task that must interrupt the current flow",
+          "Confirmations and forms that require the user to act before continuing",
+          "Cases needing a modal backdrop, focus trap, and Escape-to-close from the native <dialog>"
+        ],
+        "whenNotToUse": [
+          "Anchored, non-modal content next to a trigger — use Popover",
+          "A side panel or drawer for secondary content — use Sheet",
+          "A destructive confirmation with a clear yes/no decision — use AlertDialog"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "ai": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": ["generating"]
+              },
+              {
+                "type": "boolean"
+              }
+            ],
+            "description": "AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text.",
+            "default": false
+          },
+          "description": {
+            "type": "string",
+            "description": "Supporting description text."
+          },
+          "draggable": {
+            "type": "boolean",
+            "description": "Allow dragging the dialog by its header",
+            "default": false
+          },
+          "open": {
+            "type": "boolean",
+            "description": "Whether the component is open (controlled).",
+            "default": false
+          },
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md", "lg"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title text for the component."
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        },
+        "footer": {
+          "arity": "one",
+          "required": false,
+          "description": "Dialog actions, rendered in a right-aligned row below the body and separated by a divider."
+        }
+      },
+      "events": {
+        "onClose": {
+          "description": "Called when the component is closed."
+        }
+      },
+      "omitted": {}
+    },
+    "NumberInput": {
+      "description": "Numeric input with stepper buttons, clamping, precision, and locale formatting",
+      "category": "inputs",
+      "intent": {
+        "whenToUse": [
+          "Collecting a bounded numeric value where increment/decrement by a known step is natural (quantity, opacity, count)",
+          "Numeric entry that needs clamping to min/max, fixed precision, or locale-aware display formatting (e.g. currency)",
+          "Inputs where keyboard ArrowUp/ArrowDown stepping speeds up adjustment"
+        ],
+        "whenNotToUse": [
+          "Free-form or non-numeric text — use Input",
+          "Choosing along a continuous range where the exact number matters less than the relative position — use Slider",
+          "Phone numbers, PINs, or codes that are digit strings rather than quantities — use Input or OtpInput"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "ariaLabel": {
+            "type": "string",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this."
+          },
+          "decrementLabel": {
+            "type": "string",
+            "description": "Accessible label for the decrement button.",
+            "default": "Decrement"
+          },
+          "defaultValue": {
+            "type": "number",
+            "description": "The initial value when uncontrolled."
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "When true, disables the control and removes it from the tab order.",
+            "default": false
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message shown when the value is invalid."
+          },
+          "hint": {
+            "type": "string",
+            "description": "Supplementary hint text shown with the control."
+          },
+          "incrementLabel": {
+            "type": "string",
+            "description": "Accessible label for the increment button.",
+            "default": "Increment"
+          },
+          "label": {
+            "type": "string",
+            "description": "Text label for the control."
+          },
+          "max": {
+            "type": "number",
+            "description": "Maximum allowed value."
+          },
+          "min": {
+            "type": "number",
+            "description": "Minimum allowed value."
+          },
+          "precision": {
+            "type": "number",
+            "description": "Decimal places applied on commit"
+          },
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md", "lg"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          },
+          "step": {
+            "type": "number",
+            "description": "Increment between allowed values.",
+            "default": 1
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The controlled value."
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {
+        "onValueChange": {
+          "description": "Fired on commit (blur, Enter, stepping); null when empty or unparseable"
+        }
+      },
+      "omitted": {
+        "formatOptions": {
+          "type": "Intl.NumberFormatOptions",
+          "reason": "unresolved-type"
+        }
+      }
+    },
+    "OverflowMenu": {
+      "description": "Kebab icon button revealing a menu of row-level actions",
+      "category": "overlay",
+      "intent": {
+        "whenToUse": [
+          "Collapsing secondary row-level or item-level actions behind a kebab trigger in dense layouts like tables and lists",
+          "Offering a small set of actions where a destructive option needs visual distinction"
+        ],
+        "whenNotToUse": [
+          "A primary action that should always be visible — use Button",
+          "Selecting a single value from a set rather than triggering actions — use Select or Dropdown",
+          "New code — this component is deprecated in favor of Menu"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "ariaLabel": {
+            "type": "string",
+            "description": "Accessible label for the component.",
+            "default": "More actions"
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS class names merged onto the root element."
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "When true, disables the control and removes it from the tab order.",
+            "default": false
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                },
+                "icon": {
+                  "type": "string"
+                },
+                "disabled": {
+                  "type": "boolean"
+                },
+                "destructive": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["label", "value"],
+              "additionalProperties": false
+            },
+            "description": "The items to render."
+          },
+          "label": {
+            "type": "string",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated."
+          },
+          "placement": {
+            "type": "string",
+            "enum": ["bottom-start", "bottom-end"],
+            "description": "Which trigger edge the menu aligns to. `bottom-end` hangs it from the trigger's end edge (right in LTR), `bottom-start` from its start edge.",
+            "default": "bottom-end"
+          },
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          },
+          "tabIndex": {
+            "type": "number",
+            "description": "Tab-order position of the trigger. Composite widgets that manage their own focus (a DataTable in grid keyboard mode) pass -1 so the menu is reachable by Enter on its cell without being an extra Tab stop."
+          }
+        },
+        "required": ["items"],
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {
+        "onSelect": {
+          "description": "Called with the selected value."
+        }
+      },
+      "omitted": {}
+    },
+    "PageHeader": {
+      "description": "Page-level header with title, description, breadcrumb, and actions slots.",
+      "category": "layout",
+      "intent": {
+        "whenToUse": [
+          "A page-level header with title, description, breadcrumb, and action slots",
+          "Establishing consistent page tops across an application"
+        ],
+        "whenNotToUse": [
+          "A marketing hero with large media — use Hero",
+          "A full app top bar with navigation — use AppShell"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "className": {
+            "type": "string",
+            "description": "Additional CSS class"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "actions": {
+          "arity": "one",
+          "required": false,
+          "description": "Action buttons slot"
+        },
+        "breadcrumb": {
+          "arity": "one",
+          "required": false,
+          "description": "Breadcrumb slot"
+        },
+        "description": {
+          "arity": "one",
+          "required": false,
+          "description": "Supporting line under the title, rendered as a `<p>`. Accepts nodes."
+        },
+        "title": {
+          "arity": "one",
+          "required": true,
+          "description": "Page title, rendered as the `<h1>`. Accepts nodes, not just a string, so you can put a status Badge or a linked domain beside the name — the canonical project-header shape. Keep it inline-level: it is an `<h1>`."
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "Pagination": {
+      "description": "Controls for navigating paged data sets, with page size selection",
+      "category": "navigation",
+      "intent": {
+        "whenToUse": [
+          "Navigating between pages of a paged dataset",
+          "Letting the user change how many items appear per page (onPageSizeChange)",
+          "Pairing with a table or list that loads data in chunks"
+        ],
+        "whenNotToUse": [
+          "Navigating a content hierarchy — use Breadcrumb",
+          "Infinite scroll experiences where pages are not exposed"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "className": {
+            "type": "string",
+            "description": "Additional CSS class names merged onto the root element."
+          },
+          "page": {
+            "type": "number",
+            "description": "Current page (1-based)"
+          },
+          "pageSize": {
+            "type": "number",
+            "description": "Items per page"
+          },
+          "pageSizeOptions": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Options for the page size select",
+            "default": [10, 25, 50, 100]
+          },
+          "totalItems": {
+            "type": "number",
+            "description": "Total number of items"
+          }
+        },
+        "required": ["page", "pageSize", "totalItems"],
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {
+        "onPageChange": {
+          "description": "Called with the new page number when it changes."
+        },
+        "onPageSizeChange": {
+          "description": "Called with the new page size when it changes."
+        }
+      },
+      "omitted": {
+        "labels": {
+          "type": "PaginationLabels",
+          "reason": "unresolved-type"
+        }
+      }
+    },
+    "Progress": {
+      "description": "Horizontal bar showing the completion progress of a tracked operation",
+      "category": "feedback",
+      "intent": {
+        "whenToUse": [
+          "Tracked operations with a known total (file uploads, multi-step imports)",
+          "Showing completion percentage of a long-running task"
+        ],
+        "whenNotToUse": [
+          "Unbounded waits of unknown duration — use Spinner",
+          "Single-action button loading state — use the button's own loading prop"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "aria-describedby": {
+            "type": "string",
+            "description": "Id of an element describing the progress bar."
+          },
+          "aria-label": {
+            "type": "string",
+            "description": "Accessible label when no visible label is present."
+          },
+          "ariaLabel": {
+            "type": "string",
+            "description": "Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles."
+          },
+          "label": {
+            "type": "string",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated."
+          },
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md", "lg"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          },
+          "value": {
+            "type": "number",
+            "description": "0–100. Omit for indeterminate state."
+          },
+          "variant": {
+            "type": "string",
+            "enum": ["primary", "info", "success", "warning", "error"],
+            "description": "Colour of the fill: `primary` (the accent) or a severity tone — `info`, `success`, `warning`, `error`.",
+            "default": "primary"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {}
+    },
+    "ProgressBar": {
+      "description": "Shows determinate or indeterminate progress of a task",
+      "category": "feedback",
+      "intent": {
+        "whenToUse": [
+          "Showing linear determinate progress of a task with a known percentage (value)",
+          "Indicating ongoing work of unknown duration (omit value for indeterminate)",
+          "Reflecting success/error outcome of a tracked operation (status)"
+        ],
+        "whenNotToUse": [
+          "A compact circular indicator is preferred — use ProgressCircle",
+          "Pure indeterminate spinning with no track — use Spinner",
+          "Stepping through a multi-step flow — use ProgressIndicator"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "helperText": {
+            "type": "string",
+            "description": "Supplementary text shown with the progress bar."
+          },
+          "label": {
+            "type": "string",
+            "description": "Visible label above the track, wired via aria-labelledby"
+          },
+          "max": {
+            "type": "number",
+            "description": "Maximum allowed value.",
+            "default": 100
+          },
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "success", "error"],
+            "description": "success/error tint the fill and show a glyph next to the label",
+            "default": "active"
+          },
+          "value": {
+            "type": "number",
+            "description": "Current value from 0 to max; omit for an indeterminate bar"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {}
+    },
+    "ProgressIndicator": {
+      "description": "Shows progress through the steps of a multi-step flow",
+      "category": "navigation",
+      "intent": {
+        "whenToUse": [
+          "Showing progress through the discrete steps of a multi-step flow (wizard, checkout)",
+          "Communicating which step is complete, current, and upcoming",
+          "Laying out steps horizontally or vertically with optional descriptions"
+        ],
+        "whenNotToUse": [
+          "Continuous task progress with a percentage — use ProgressBar or ProgressCircle",
+          "Indeterminate loading — use Spinner"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "className": {
+            "type": "string",
+            "description": "Additional CSS class names merged onto the root element."
+          },
+          "currentIndex": {
+            "type": "number",
+            "description": "Index of the current step (0-based)"
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["label"],
+              "additionalProperties": false
+            },
+            "description": "Ordered list of steps"
+          },
+          "vertical": {
+            "type": "boolean",
+            "description": "When true, lays the steps out vertically.",
+            "default": false
+          }
+        },
+        "required": ["steps", "currentIndex"],
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {}
+    },
+    "Radio": {
+      "description": "Single choice from a set, grouped with RadioGroup",
+      "category": "inputs",
+      "intent": {
+        "whenToUse": [
+          "Choosing exactly one option from a small, mutually exclusive set (roughly 2–6) where all options should stay visible",
+          "Form fields where the choices need plain text labels and a familiar radio affordance"
+        ],
+        "whenNotToUse": [
+          "Selecting one of many options where showing them all is impractical — use Select",
+          "Each option needs a title plus description or richer layout — use RadioCard",
+          "A compact inline switch between a few views or modes — use SegmentedControl"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "ariaLabel": {
+            "type": "string",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this."
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "When true, disables the control and removes it from the tab order.",
+            "default": false
+          },
+          "label": {
+            "type": "string",
+            "description": "Text label for the control."
+          },
+          "name": {
+            "type": "string",
+            "description": "Form field name shared by the radio group."
+          },
+          "value": {
+            "type": "string",
+            "description": "The controlled value."
+          }
+        },
+        "required": ["value"],
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "RadioCard": {
+      "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",
+      "category": "inputs",
+      "intent": {
+        "whenToUse": [
+          "Single-select from a few options where each choice needs a title plus supporting description (plans, tiers, shipping methods)",
+          "Selection UIs where a larger, more prominent click target improves clarity over a plain radio"
+        ],
+        "whenNotToUse": [
+          "Plain text options with no description — use Radio for a lighter footprint",
+          "A compact inline switch between a few modes — use SegmentedControl",
+          "Too many options to render as cards — use Select"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "type": "boolean",
+            "description": "Disables the card"
+          },
+          "hideIndicator": {
+            "type": "boolean",
+            "description": "Hide the radio indicator glyph, showing only the card content."
+          },
+          "value": {
+            "type": "string",
+            "description": "Radio value"
+          }
+        },
+        "required": ["value"],
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        },
+        "description": {
+          "arity": "one",
+          "required": false,
+          "description": "Optional description"
+        },
+        "title": {
+          "arity": "one",
+          "required": true,
+          "description": "Card title"
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "RadioCardGroup": {
+      "description": "Part of RadioCard.",
+      "category": "inputs",
+      "parent": "RadioCard",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "Search": {
+      "description": "Search input with debounced search callback and clear button",
+      "category": "inputs",
+      "intent": {
+        "whenToUse": [
+          "A query field that filters or searches content, with a built-in clear button and debounced onSearch",
+          "Free-text search where results update as the user types (debounced) or on Enter"
+        ],
+        "whenNotToUse": [
+          "General non-search text entry — use Input",
+          "Search that presents an inline list of suggestions/results to pick from — use Combobox",
+          "A bounded numeric value — use NumberInput"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "aria-describedby": {
+            "type": "string",
+            "description": "Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced."
+          },
+          "aria-invalid": {
+            "type": "boolean",
+            "description": "Wired automatically by a wrapping `Field` when it is in an error state."
+          },
+          "aria-labelledby": {
+            "type": "string",
+            "description": "Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it."
+          },
+          "ariaLabel": {
+            "type": "string",
+            "description": "Accessible name set through `aria-label` instead of a rendered `<label>` element. ⚠ On Search **both** props give an invisible name — `label` renders a real `<label>` the stylesheet visually hides. They differ in mechanism, not in what you see: use `ariaLabel` when a visible element outside the component already names the field, `label` otherwise. The raw DOM `aria-label` still wins over this."
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS class names merged onto the root element."
+          },
+          "clearLabel": {
+            "type": "string",
+            "description": "Accessible label for the clear button.",
+            "default": "Clear search"
+          },
+          "debounceMs": {
+            "type": "number",
+            "description": "Debounce delay (ms) before onSearch fires.",
+            "default": 300
+          },
+          "defaultValue": {
+            "type": "string",
+            "description": "The initial value when uncontrolled.",
+            "default": ""
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "When true, disables the control and removes it from the tab order.",
+            "default": false
+          },
+          "id": {
+            "type": "string",
+            "description": "Id for the input, wired to the label. Auto-generated with useId when omitted — SSR-safe and stable across hydration."
+          },
+          "label": {
+            "type": "string",
+            "description": "Accessible name for the control. Rendered as a real `<label>` that is **visually hidden** by design — it changes the accessible name, not the visible UI. If you can see it, the component stylesheet did not load (import `@cascivo/react/styles.css` or the per-component CSS).",
+            "default": "Search"
+          },
+          "placeholder": {
+            "type": "string",
+            "description": "Placeholder text shown when the field is empty.",
+            "default": "Search"
+          },
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md", "lg"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          },
+          "value": {
+            "type": "string",
+            "description": "The controlled value."
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {
+        "onSearch": {
+          "description": "Called with the query, debounced, as the user types."
+        },
+        "onValueChange": {
+          "description": "Called with the current text on every keystroke."
+        }
+      },
+      "omitted": {}
+    },
+    "Select": {
+      "description": "Native select menu styled to match the design system",
+      "category": "inputs",
+      "intent": {
+        "whenToUse": [
+          "Choosing exactly one value from a known, finite list inside a form",
+          "A compact single-value picker where the native OS dropdown UX is acceptable",
+          "You want zero-JS reliability and built-in mobile/keyboard handling from a real <select>"
+        ],
+        "whenNotToUse": [
+          "Users need to filter/search a long list — use Combobox",
+          "Multiple values must be selectable — use MultiSelect",
+          "Triggering actions or commands rather than picking a form value — use Dropdown or Menu"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "ariaLabel": {
+            "type": "string",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this."
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "When true, disables the control and removes it from the tab order.",
+            "default": false
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message shown when the value is invalid."
+          },
+          "hint": {
+            "type": "string",
+            "description": "Supplementary hint text shown with the control."
+          },
+          "label": {
+            "type": "string",
+            "description": "Text label for the control."
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "disabled": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["value", "label"],
+              "additionalProperties": false
+            },
+            "description": "The selectable options."
+          },
+          "placeholder": {
+            "type": "string",
+            "description": "Placeholder text shown when the field is empty."
+          },
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md", "lg"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          }
+        },
+        "required": ["options"],
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {}
+    },
+    "Separator": {
+      "description": "Visual or semantic divider between content",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Dividing groups of content within a section or menu",
+          "Adding a vertical rule between inline items (orientation=\"vertical\")",
+          "Marking a meaningful thematic break (decorative=false)"
+        ],
+        "whenNotToUse": [
+          "Adding spacing only — use margin/padding, not a separator",
+          "Bordering a container — use the container border, not a separator"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "decorative": {
+            "type": "boolean",
+            "description": "When true, the separator is purely visual and hidden from assistive tech",
+            "default": false
+          },
+          "orientation": {
+            "type": "string",
+            "enum": ["horizontal", "vertical"],
+            "description": "Direction the rule runs: `horizontal` draws a full-width line, `vertical` a full-height one that stretches to its flex row.",
+            "default": "horizontal"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {}
+    },
+    "ShellHeader": {
+      "description": "Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content",
+      "category": "navigation",
+      "intent": {
+        "whenToUse": [
+          "Building console/admin app chrome with brand, dropdown nav, and global icon actions",
+          "Providing a hamburger that toggles a SideNav and a skip-to-content link",
+          "Hosting global controls (notifications, switcher, user menu) in one top bar"
+        ],
+        "whenNotToUse": [
+          "A simple marketing or app top bar — use Header",
+          "In-page section headings — use Heading"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "actions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Stable key for the action."
+                },
+                "label": {
+                  "type": "string",
+                  "description": "Accessible label (aria-label / tooltip)."
+                },
+                "icon": {
+                  "type": "string",
+                  "description": "Icon node, e.g. an @cascivo/icons glyph."
+                },
+                "active": {
+                  "type": "boolean",
+                  "description": "Renders aria-pressed for a toggle action."
+                }
+              },
+              "required": ["id", "label", "icon"],
+              "additionalProperties": false,
+              "description": "A right-aligned global icon action. `actions` is a typed array of these — pass an `icon` node per item, not free-form JSX. For non-action trailing content (user menu, theme switcher) use the `end` slot instead."
+            },
+            "description": "Right-aligned global icon actions with aria-pressed"
+          },
+          "menuExpanded": {
+            "type": "boolean",
+            "description": "aria-expanded for the hamburger button"
+          },
+          "nav": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "description": "Visible nav label."
+                },
+                "href": {
+                  "type": "string",
+                  "description": "Link target (link items). Routed via setLinkComponent."
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "label": {
+                        "type": "string"
+                      },
+                      "href": {
+                        "type": "string"
+                      },
+                      "active": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": ["label", "href"],
+                    "additionalProperties": false
+                  },
+                  "description": "Dropdown menu entries (menu items)."
+                },
+                "active": {
+                  "type": "boolean",
+                  "description": "Marks the current nav entry (aria-current)."
+                }
+              },
+              "required": ["label"],
+              "additionalProperties": false,
+              "description": "A top-nav entry: either a link (`{ label, href, active?, onClick? }`) or a dropdown menu (`{ label, items: { label, href, active? }[] }`)."
+            },
+            "description": "Top nav: links ({ label, href, active?, onClick? }) or dropdown menus ({ label, items })"
+          },
+          "skipToContentHref": {
+            "anyOf": [
+              {
+                "type": "boolean",
+                "enum": [false]
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "description": "Skip-link target; false disables the link",
+            "default": "#cascade-main"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "brand": {
+          "arity": "one",
+          "required": false,
+          "description": "Brand: { prefix?, name, href? } or free-form node"
+        },
+        "center": {
+          "arity": "one",
+          "required": false,
+          "description": "Free-form slot between the nav and the right-hand cluster, taking the header’s spare width — where a command-palette or search trigger belongs"
+        },
+        "end": {
+          "arity": "one",
+          "required": false,
+          "description": "Free-form trailing slot (user menu, theme switcher)"
+        }
+      },
+      "events": {
+        "onMenuClick": {
+          "description": "Renders the hamburger button; call shell.toggleSideNav"
+        }
+      },
+      "omitted": {
+        "labels": {
+          "type": "ShellHeaderLabels",
+          "reason": "unresolved-type"
+        }
+      }
+    },
+    "SideNav": {
+      "description": "Collapsible sidebar navigation with optional icons and one level of grouping",
+      "category": "navigation",
+      "intent": {
+        "whenToUse": [
+          "Persistent primary navigation along the side of an app shell",
+          "Grouping nav items one level deep with collapsible groups",
+          "Saving space with a collapsible icon rail (collapsed / expandOnHover)"
+        ],
+        "whenNotToUse": [
+          "Top-level horizontal navigation — use Header or ShellHeader nav",
+          "A transient contextual menu — use Dropdown"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "ariaLabel": {
+            "type": "string",
+            "description": "Accessible label for the component.",
+            "default": "Side navigation"
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS class names merged onto the root element."
+          },
+          "collapseLabel": {
+            "type": "string",
+            "description": "Accessible label for the collapse control.",
+            "default": "Collapse navigation"
+          },
+          "collapsed": {
+            "type": "boolean",
+            "description": "Controlled collapsed state (rail mode)"
+          },
+          "defaultCollapsed": {
+            "type": "boolean",
+            "description": "Whether the rail is collapsed on first render (uncontrolled).",
+            "default": false
+          },
+          "expandLabel": {
+            "type": "string",
+            "description": "Accessible label for the expand control.",
+            "default": "Expand navigation"
+          },
+          "expandOnHover": {
+            "type": "boolean",
+            "description": "Widens the rail as an overlay on hover/focus-within; suppresses tooltips/flyouts",
+            "default": false
+          },
+          "label": {
+            "type": "string",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated."
+          },
+          "showCollapseToggle": {
+            "type": "boolean",
+            "description": "Show the collapse/expand toggle control.",
+            "default": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "footer": {
+          "arity": "one",
+          "required": false,
+          "description": "Content rendered above the collapse toggle, inside the item padding context so it lines up with the nav items (e.g. version string, user info). Pass a `({ collapsed }) => …` function to shrink it to a rail icon."
+        },
+        "header": {
+          "arity": "one",
+          "required": false,
+          "description": "Content rendered above the items, inside the item padding context (e.g. app-context pickers). Pass a `({ collapsed }) => …` function to shrink it to a rail icon."
+        }
+      },
+      "events": {
+        "onCollapsedChange": {
+          "description": "Called with the new collapsed state when it changes."
+        }
+      },
+      "omitted": {
+        "groups": {
+          "type": "SideNavGroup[]",
+          "reason": "unresolved-type"
+        },
+        "items": {
+          "type": "SideNavItem[]",
+          "reason": "unresolved-type"
+        }
+      }
+    },
+    "Skeleton": {
+      "description": "Animated loading placeholder that mirrors the shape of pending content",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Indicating loading by mirroring the shape of the content that will appear",
+          "Reducing layout shift while data for a known structure is fetching",
+          "Loading larger content regions where shape preview reassures the user",
+          "Holding the place of a response an AI is still generating — set `ai`"
+        ],
+        "whenNotToUse": [
+          "Indeterminate work with no known content shape — use Spinner",
+          "A view that is empty rather than loading — use EmptyState"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "ai": {
+            "type": "boolean",
+            "description": "Tints the placeholder and its sheen with the AI hue, marking content that an AI is generating (Carbon’s AI skeleton).",
+            "default": false
+          },
+          "height": {
+            "type": "string",
+            "description": "CSS length applied as an inline custom property"
+          },
+          "lines": {
+            "type": "number",
+            "description": "Number of bars for the text variant; the last bar renders shorter",
+            "default": 1
+          },
+          "variant": {
+            "type": "string",
+            "enum": ["text", "circle", "rect"],
+            "description": "Shape of the placeholder: `text` (stacked lines), `circle` (an avatar), `rect` (a block).",
+            "default": "text"
+          },
+          "width": {
+            "type": "string",
+            "description": "CSS length applied as an inline custom property"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {}
+    },
+    "Slider": {
+      "description": "Range input for selecting a value within bounds",
+      "category": "inputs",
+      "intent": {
+        "whenToUse": [
+          "Selecting a value within a continuous or stepped numeric range where approximate adjustment is fine",
+          "Settings like volume, brightness, or opacity where dragging gives instant feedback",
+          "When the bounds (min/max) matter more than entering an exact figure"
+        ],
+        "whenNotToUse": [
+          "A precise numeric value must be typed — use NumberInput",
+          "Picking a discrete rating on a small scale where stars/icons read better — use RatingGroup"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "ariaLabel": {
+            "type": "string",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this."
+          },
+          "defaultValue": {
+            "type": "number",
+            "description": "The initial value when uncontrolled."
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "When true, disables the control and removes it from the tab order.",
+            "default": false
+          },
+          "label": {
+            "type": "string",
+            "description": "Text label for the control."
+          },
+          "max": {
+            "type": "number",
+            "description": "Maximum allowed value.",
+            "default": 100
+          },
+          "min": {
+            "type": "number",
+            "description": "Minimum allowed value.",
+            "default": 0
+          },
+          "step": {
+            "type": "number",
+            "description": "Increment between allowed values.",
+            "default": 1
+          },
+          "value": {
+            "type": "number",
+            "description": "The controlled value."
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {}
+    },
+    "Spacer": {
+      "description": "Fixed-height spacing block using design token steps.",
+      "category": "layout",
+      "intent": {
+        "whenToUse": [
+          "Inserting a fixed vertical gap between blocks using spacing token steps",
+          "Adding deliberate breathing room where margins are awkward"
+        ],
+        "whenNotToUse": [
+          "Spacing a series of siblings — use Flex with a gap instead",
+          "Arbitrary one-off spacing — prefer token-based gap props"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "number",
+            "enum": [1, 2, 3, 4, 5, 6, 8, 10, 12],
+            "description": "Spacing token step",
+            "default": 4
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {}
+    },
+    "Spinner": {
+      "description": "Indeterminate loading indicator",
+      "category": "feedback",
+      "intent": {
+        "whenToUse": [
+          "Indicating indeterminate work where duration and progress are unknown",
+          "Loading a small region or inline control where a shape preview is unnecessary",
+          "Showing busy state in buttons or compact UI"
+        ],
+        "whenNotToUse": [
+          "Progress with a known percentage — use ProgressBar or ProgressCircle",
+          "Loading content with a known structure — use Skeleton"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "ariaLabel": {
+            "type": "string",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated."
+          },
+          "label": {
+            "type": "string",
+            "description": "Accessible label announced by screen readers",
+            "default": "Loading"
+          },
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md", "lg"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {}
+    },
+    "Stat": {
+      "description": "Displays a key metric with optional delta, trend direction and help text",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Highlighting a single key metric with a clear label",
+          "Showing change over time with a delta and trend direction",
+          "Annotating a metric with methodology or time-range help text"
+        ],
+        "whenNotToUse": [
+          "Multiple comparable rows of data — use DataTable",
+          "A non-numeric status label — use Badge or Status"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "card": {
+            "type": "boolean",
+            "description": "Wrap the tile in the same card chrome `@cascivo/charts`' `Kpi` ships (surface, border, radius, padding), so a `Stat` row and a `Kpi` row in one dashboard read as one system. Off by default: `Stat` is layout-only so it can sit inside a `Card` you control.",
+            "default": false
+          },
+          "delta": {
+            "type": "string",
+            "description": "Change indicator rendered next to the trend arrow"
+          },
+          "goodDirection": {
+            "type": "string",
+            "enum": ["up", "down", "neutral"],
+            "description": "Which direction is *good* for this metric — the colour, independent of the arrow. 'up' (default) is the classic revenue tile; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour.",
+            "default": "up"
+          },
+          "helpText": {
+            "type": "string",
+            "description": "Fine print below the value (methodology, time range)"
+          },
+          "label": {
+            "type": "string",
+            "description": "What the metric measures — rendered visibly above the value."
+          },
+          "trend": {
+            "type": "string",
+            "enum": ["up", "down", "flat"],
+            "description": "Direction of the trend indicator ('up' | 'down' | 'flat').",
+            "default": "flat"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "description": "The metric value"
+          }
+        },
+        "required": ["label", "value"],
+        "additionalProperties": false
+      },
+      "slots": {
+        "visual": {
+          "arity": "one",
+          "required": false,
+          "description": "Trailing decorative visual, e.g. a Sparkline from the separate @cascivo/charts package (not exported from @cascivo/react), rendered below the value/delta/helpText"
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "Status": {
+      "description": "Colored dot with a label communicating the state of a system or entity",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Communicating the live state of a system or entity (operational, deploying, down)",
+          "Pairing a colored dot with a text label for an at-a-glance state",
+          "Drawing attention to an active/changing state with an optional pulse"
+        ],
+        "whenNotToUse": [
+          "A static category or count label — use Badge",
+          "An identity thumbnail with presence — use Avatar with its status prop"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "pulse": {
+            "type": "boolean",
+            "description": "Pulses the dot — gated behind prefers-reduced-motion: no-preference",
+            "default": false
+          },
+          "status": {
+            "type": "string",
+            "enum": ["success", "warning", "error", "info", "neutral"],
+            "description": "Status state.",
+            "default": "neutral"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "Steps": {
+      "description": "Visual progress indicator for multi-step flows with horizontal and vertical orientations",
+      "category": "navigation",
+      "intent": {
+        "whenToUse": [
+          "Checkout flows where the user moves through a fixed sequence of screens",
+          "Onboarding wizards with a known number of steps",
+          "Multi-step forms where showing overall progress reduces abandonment"
+        ],
+        "whenNotToUse": [
+          "General section navigation — use Tabs instead",
+          "Simple back/next controls without step labels — use Pagination instead",
+          "More than 7 steps where the connector lines become unreadable on mobile"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "activeStep": {
+            "type": "number",
+            "description": "Index of the currently active step (0-based)",
+            "default": 0
+          },
+          "ariaLabel": {
+            "type": "string",
+            "description": "Accessible label for the steps navigation; defaults to the built-in i18n string."
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS class names merged onto the root element."
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "description": "Visible step label."
+                },
+                "id": {
+                  "type": "string",
+                  "description": "Stable identity, used as the React key so reordering keeps DOM nodes."
+                }
+              },
+              "required": ["label"],
+              "additionalProperties": false,
+              "description": "Shape of an entry in `steps` / `items`."
+            },
+            "description": "Alias of `steps` — the catalog-wide name for a config-driven collection. Exactly one of the two is required."
+          },
+          "label": {
+            "type": "string",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated."
+          },
+          "orientation": {
+            "type": "string",
+            "enum": ["horizontal", "vertical"],
+            "description": "Axis the steps flow along: `horizontal` runs them across with connectors between, `vertical` stacks them down the page.",
+            "default": "horizontal"
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "description": "Visible step label."
+                },
+                "id": {
+                  "type": "string",
+                  "description": "Stable identity, used as the React key so reordering keeps DOM nodes."
+                }
+              },
+              "required": ["label"],
+              "additionalProperties": false,
+              "description": "Shape of an entry in `steps` / `items`."
+            },
+            "description": "Array of step objects with label and optional explicit state"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {}
+    },
+    "Switcher": {
+      "description": "Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown.",
+      "category": "navigation",
+      "intent": {
+        "whenToUse": [
+          "Listing sibling apps/products the user can switch between",
+          "Rendering switch destinations inside a HeaderPanel opened from the shell header",
+          "Grouping switch targets with dividers and marking the active one"
+        ],
+        "whenNotToUse": [
+          "Primary in-app navigation — use SideNav",
+          "A small action menu attached to a control — use Dropdown",
+          "A COLLAPSED workspace/team switcher with one visible row and a menu on click — use Dropdown. Switcher renders every entry, permanently: it is an always-visible list, not a collapsing control, and the name misleads (2026-08-21 report item 5)"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "ariaLabel": {
+            "type": "string",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated."
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS class names merged onto the root element."
+          },
+          "label": {
+            "type": "string",
+            "description": "Accessible name for the switcher list. Not rendered — screen readers only.",
+            "default": "Switch application"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {
+        "items": {
+          "type": "SwitcherEntry[]",
+          "reason": "unresolved-type"
+        }
+      }
+    },
+    "Tabs": {
+      "description": "Switch between related panels of content",
+      "category": "navigation",
+      "intent": {
+        "whenToUse": [
+          "Switching between peer panels of related content in the same context",
+          "Showing one section at a time when all sections are equally important"
+        ],
+        "whenNotToUse": [
+          "Stacked sequential content the user reads top to bottom — use Accordion",
+          "Changing a setting or view parameter — use a SegmentedControl",
+          "Navigating between pages — use links"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "defaultValue": {
+            "type": "string",
+            "description": "The initial value when uncontrolled."
+          },
+          "value": {
+            "type": "string",
+            "description": "The controlled value."
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        }
+      },
+      "events": {
+        "onValueChange": {
+          "description": "Called with the new value when it changes."
+        }
+      },
+      "omitted": {}
+    },
+    "Tag": {
+      "description": "Compact chip for labeling, categorizing, or filtering content",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Labeling, categorizing, or filtering content with a compact chip",
+          "Representing a removable selection or active filter (onDismiss)",
+          "Showing a set of keywords or attributes on an item"
+        ],
+        "whenNotToUse": [
+          "A static, non-interactive status label — use Badge",
+          "A live system state with a dot — use Status"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "dismissLabel": {
+            "type": "string",
+            "description": "Accessible label for the dismiss button.",
+            "default": "Remove"
+          },
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          },
+          "variant": {
+            "type": "string",
+            "enum": ["default", "info", "success", "warning", "error"],
+            "description": "Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral | info | success | warning | danger`) plus Tag's historical spellings (`default` → neutral, `error`/`destructive` → danger).",
+            "default": "default"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        }
+      },
+      "events": {
+        "onDismiss": {
+          "description": "When provided, renders a trailing remove button inside the chip"
+        }
+      },
+      "omitted": {}
+    },
+    "Text": {
+      "description": "Body text with size, weight, and muted variants",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Rendering body copy, paragraphs, and inline text in app UI",
+          "Applying size/weight/muted treatment to secondary or emphasized text",
+          "Inline emphasis inside flow content (as=\"span\")"
+        ],
+        "whenNotToUse": [
+          "Section or page titles — use Heading for the document outline",
+          "Long-form authored/markdown content — use Prose"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "as": {
+            "type": "string",
+            "enum": ["p", "span", "div"],
+            "description": "`p` for a paragraph, `span` for inline text, `div` for a block that imposes no semantics of its own.",
+            "default": "p"
+          },
+          "muted": {
+            "type": "boolean",
+            "description": "When true, renders in a muted/subtle color. `Text` has no `tone` prop: `tone` is the severity vocabulary (Status, Badge, Timeline, SideNav); text emphasis is `muted`.",
+            "default": false
+          },
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md", "lg"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          },
+          "weight": {
+            "type": "string",
+            "enum": ["normal", "medium", "semibold"],
+            "description": "Font weight ('normal' | 'medium' | 'semibold').",
+            "default": "normal"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "Textarea": {
+      "description": "Multi-line text input with optional label, hint, and error state",
+      "category": "inputs",
+      "intent": {
+        "whenToUse": [
+          "Capturing multi-line free text such as messages, descriptions, or comments",
+          "Input where line breaks are meaningful and the content may wrap to several rows",
+          "Form fields that benefit from a visible hint or validation error beneath the control"
+        ],
+        "whenNotToUse": [
+          "A single short value like a name or email — use Input",
+          "A constrained numeric value — use NumberInput"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "ai": {
+            "type": "boolean",
+            "description": "AI presence: an AI-tinted border and a soft aura, marking a value AI produced or suggested. Visual only — put an AiBadge in the label so the provenance is also text, and clear `ai` once the person edits the value.",
+            "default": false
+          },
+          "ariaLabel": {
+            "type": "string",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this."
+          },
+          "autosize": {
+            "type": "boolean",
+            "description": "Grow the control with its content instead of holding the fixed rows height. rows becomes the minimum and --cascivo-textarea-max-block-size (default 20lh) the ceiling. Pure CSS (field-sizing: content) — no measurement and no listener; where unsupported the fixed rows height is kept.",
+            "default": false
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "When true, disables the control and removes it from the tab order.",
+            "default": false
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message shown when the value is invalid."
+          },
+          "hint": {
+            "type": "string",
+            "description": "Supplementary hint text shown with the control."
+          },
+          "label": {
+            "type": "string",
+            "description": "Text label for the control (standalone use). Omit it when wrapping the Textarea in a Field — the Field owns the label, and setting both double-labels the control."
+          },
+          "resize": {
+            "type": "string",
+            "enum": ["none", "vertical", "both"],
+            "description": "Which directions the textarea can be resized ('none' | 'vertical' | 'both').",
+            "default": "vertical"
+          },
+          "rows": {
+            "type": "number",
+            "description": "Number of visible text rows.",
+            "default": 4
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {}
+    },
+    "TimePicker": {
+      "description": "Native time input wrapper with label, hint, error, and size variants",
+      "category": "inputs",
+      "intent": {
+        "whenToUse": [
+          "Capturing a time of day (HH:mm) in a form, such as a meeting or reminder time",
+          "You want the native OS time entry UX with built-in formatting and validation",
+          "A time field that needs a label, hint, error, or min/max bounds"
+        ],
+        "whenNotToUse": [
+          "Picking a calendar date — use DatePicker",
+          "A free-form or non-time text value — use Input"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "ariaLabel": {
+            "type": "string",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this."
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS class names merged onto the root element."
+          },
+          "defaultValue": {
+            "type": "string",
+            "description": "The initial value when uncontrolled."
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "When true, disables the control and removes it from the tab order."
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message shown when the value is invalid."
+          },
+          "hint": {
+            "type": "string",
+            "description": "Supplementary hint text shown with the control."
+          },
+          "label": {
+            "type": "string",
+            "description": "Text label for the control."
+          },
+          "max": {
+            "type": "string",
+            "description": "Maximum allowed value."
+          },
+          "min": {
+            "type": "string",
+            "description": "Minimum allowed value."
+          },
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md", "lg"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          },
+          "step": {
+            "type": "number",
+            "description": "Increment between allowed values."
+          },
+          "value": {
+            "type": "string",
+            "description": "Controlled value (HH:mm)"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {
+        "onValueChange": {
+          "description": "Called with the new HH:MM time string when the value changes."
+        }
+      },
+      "omitted": {}
+    },
+    "Timeline": {
+      "description": "Ordered sequence of events with status markers and a connector line",
+      "category": "display",
+      "intent": {
+        "whenToUse": [
+          "Showing an ordered sequence of events over time (activity feeds, order tracking)",
+          "Communicating progress through discrete stages with complete/current/upcoming status",
+          "Presenting a chronological history where order is meaningful"
+        ],
+        "whenNotToUse": [
+          "Interactive multi-step navigation the user controls — use Tabs or a Stepper",
+          "Unordered lists where sequence carries no meaning — use List"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "time": {
+                  "type": "string"
+                },
+                "icon": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string",
+                  "enum": ["complete", "current", "upcoming"]
+                },
+                "tone": {
+                  "type": "string",
+                  "enum": ["neutral", "info", "success", "warning", "danger"]
+                }
+              },
+              "required": ["id", "title"],
+              "additionalProperties": false
+            },
+            "description": "The items to render."
+          },
+          "orientation": {
+            "type": "string",
+            "enum": ["vertical", "horizontal"],
+            "description": "Axis the entries flow along: `vertical` stacks them down the page (the usual reading order), `horizontal` runs them across.",
+            "default": "vertical"
+          }
+        },
+        "required": ["items"],
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {},
+      "omitted": {}
+    },
+    "Toast": {
+      "description": "Transient notification surfaced via the useToast hook",
+      "category": "overlay",
+      "intent": {
+        "whenToUse": [
+          "Confirming that a background or just-completed action succeeded or failed (e.g. \"Saved\")",
+          "Brief, transient feedback that should auto-dismiss without interrupting the task",
+          "Non-blocking notifications that can stack and disappear on their own"
+        ],
+        "whenNotToUse": [
+          "A persistent, inline message tied to a specific region of the page — use Alert",
+          "Feedback that requires the user to acknowledge or decide before continuing — use Modal or AlertDialog"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Supporting description text."
+          },
+          "duration": {
+            "type": "number",
+            "description": "How long (ms) the toast stays visible before auto-dismiss.",
+            "default": 5000
+          },
+          "title": {
+            "type": "string",
+            "description": "Title text for the component."
+          },
+          "variant": {
+            "type": "string",
+            "enum": ["default", "success", "warning", "destructive"],
+            "description": "Severity tone: `default` (neutral), `success`, `warning` or `destructive`. Sets the icon and the accent colour. Unlike Badge/Tag/Notification this is a private union, not `ToneInput` — the canonical `danger`/`neutral` spellings are not accepted here.",
+            "default": "default"
+          }
+        },
+        "required": ["title"],
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "implicit": true
+        }
+      },
+      "events": {},
+      "omitted": {}
+    },
+    "Toggle": {
+      "description": "On/off switch built as an accessible button",
+      "category": "inputs",
+      "intent": {
+        "whenToUse": [
+          "Flipping a single binary setting that takes effect immediately (e.g. notifications on/off)",
+          "On/off state where a physical switch metaphor reads better than a checkmark",
+          "Settings screens where the change applies live without a separate submit"
+        ],
+        "whenNotToUse": [
+          "Selecting items in a form that is submitted later — use Checkbox",
+          "Choosing one option among several mutually exclusive labels — use SegmentedControl or Radio"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "ariaLabel": {
+            "type": "string",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this."
+          },
+          "checked": {
+            "type": "boolean",
+            "description": "Whether the control is checked (controlled)."
+          },
+          "defaultChecked": {
+            "type": "boolean",
+            "description": "Whether the control is checked on first render (uncontrolled).",
+            "default": false
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "When true, disables the control and removes it from the tab order.",
+            "default": false
+          },
+          "label": {
+            "type": "string",
+            "description": "Visible text label beside the switch; it also becomes the accessible name. When a heading already labels the control, omit this and pass aria-label instead to avoid duplicated text."
+          },
+          "size": {
+            "type": "string",
+            "enum": ["sm", "md"],
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "default": "md"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {},
+      "events": {
+        "onValueChange": {
+          "description": "Called with the new checked state when the switch is toggled."
+        }
+      },
+      "omitted": {}
+    },
+    "Tooltip": {
+      "description": "Contextual label shown on hover or focus",
+      "category": "overlay",
+      "intent": {
+        "whenToUse": [
+          "Labeling an icon-only control or clarifying a terse element on hover or focus",
+          "Showing brief, supplementary text that is non-essential to completing the task",
+          "Progressive disclosure of a short hint anchored to a trigger element"
+        ],
+        "whenNotToUse": [
+          "The content is interactive (links, buttons, inputs) — use Popover",
+          "Richer non-interactive preview content is needed — use HoverCard",
+          "The information is essential and must always be visible — render it inline instead"
+        ]
+      },
+      "props": {
+        "type": "object",
+        "properties": {
+          "delay": {
+            "type": "number",
+            "description": "Milliseconds to wait before showing",
+            "default": 200
+          },
+          "placement": {
+            "type": "string",
+            "enum": ["top", "right", "bottom", "left"],
+            "description": "Side of the trigger the tip opens on: `top`, `right`, `bottom` or `left`.",
+            "default": "top"
+          }
+        },
+        "additionalProperties": false
+      },
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": true,
+          "description": "Content rendered inside the component."
+        },
+        "content": {
+          "arity": "one",
+          "required": true,
+          "description": "The tooltip content shown on hover/focus."
+        }
+      },
+      "events": {},
+      "omitted": {}
+    }
+  }
+}

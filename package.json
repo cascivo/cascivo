@@ -105,7 +105,7 @@
     "migration:generate": "node scripts/migration/generate.ts",
     "simplicity:generate": "node scripts/simplicity/generate.ts",
     "specs:generate": "node scripts/specs/generate.ts",
-    "schema:generate": "node scripts/schema/generate.ts",
+    "schema:generate": "node scripts/schema/generate.ts && node scripts/schema/generate-catalog.ts",
     "tokens:generate": "node scripts/tokens/generate-manifest.mjs",
     "tokens:dtcg:generate": "node scripts/tokens/generate-dtcg.ts",
     "design-md:generate": "node scripts/design-md/generate.ts",

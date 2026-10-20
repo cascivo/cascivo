@@ -271,3 +271,271 @@ export function parseDefault(raw: string, schema: JsonSchema): { value: unknown 
       return undefined
   }
 }
+
+// ---------------------------------------------------------------------------
+// Catalog
+// ---------------------------------------------------------------------------
+
+export interface CatalogComponent {
+  description: string
+  category: string
+  parent?: string
+  intent?: { whenToUse?: unknown; whenNotToUse?: unknown }
+  props: {
+    type: 'object'
+    properties: Record<string, JsonSchema>
+    required?: string[]
+    additionalProperties: false
+  }
+  slots: Record<
+    string,
+    { arity: 'one' | 'many'; required: boolean; description?: string; implicit?: true }
+  >
+  events: Record<string, { description?: string }>
+  omitted: Record<string, { type: string; reason: string }>
+}
+
+export interface Catalog {
+  $id: string
+  version: 1
+  components: Record<string, CatalogComponent>
+}
+
+export const CATALOG_ID =
+  'https://raw.githubusercontent.com/cascivo/cascivo/main/packages/render/schema/catalog.v1.json'
+
+/** Renderable names that have no registry entry of their own. A new one fails regen until listed here. */
+export const SUBCOMPONENT_PARENT: Readonly<Record<string, string>> = {
+  CardContent: 'Card',
+  CardFooter: 'Card',
+  CardHeader: 'Card',
+  CardTitle: 'Card',
+  GridItem: 'Grid',
+  ListItem: 'List',
+  RadioCardGroup: 'RadioCard',
+}
+
+/** Prefer the node-usable `component` entry when a meta.name is shared (AppShell/Stack). */
+const TYPE_RANK: Record<string, number> = {
+  component: 0,
+  block: 1,
+  chart: 2,
+  section: 3,
+  layout: 4,
+}
+
+export interface CatalogEntry {
+  type: string
+  files: string[]
+  meta: {
+    name: string
+    description: string
+    category: string
+    props: PropMeta[]
+    typeDefs: TypeDefMeta[] | undefined
+    intent: { whenToUse?: unknown; whenNotToUse?: unknown } | undefined
+  }
+}
+
+const isRecord = (v: unknown): v is Record<string, unknown> =>
+  typeof v === 'object' && v !== null && !Array.isArray(v)
+
+function str(v: unknown, path: string): string {
+  if (typeof v !== 'string') throw new Error(`${path}: expected a string`)
+  return v
+}
+
+function optStr(v: unknown, path: string): string | undefined {
+  return v === undefined ? undefined : str(v, path)
+}
+
+function narrowProps(v: unknown, path: string): PropMeta[] {
+  if (v === undefined) return []
+  if (!Array.isArray(v)) throw new Error(`${path}: expected an array`)
+  return v.map((p: unknown, i) => {
+    const at = `${path}[${i}]`
+    if (!isRecord(p)) throw new Error(`${at}: expected an object`)
+    const description = optStr(p['description'], `${at}.description`)
+    const def = optStr(p['default'], `${at}.default`)
+    return {
+      name: str(p['name'], `${at}.name`),
+      type: str(p['type'], `${at}.type`),
+      ...(p['required'] === true ? { required: true } : {}),
+      ...(def !== undefined ? { default: def } : {}),
+      ...(description !== undefined ? { description } : {}),
+    }
+  })
+}
+
+function narrowTypeDefs(v: unknown, path: string): TypeDefMeta[] | undefined {
+  if (v === undefined) return undefined
+  if (!Array.isArray(v)) throw new Error(`${path}: expected an array`)
+  return v.map((d: unknown, i) => {
+    const at = `${path}[${i}]`
+    if (!isRecord(d)) throw new Error(`${at}: expected an object`)
+    const description = optStr(d['description'], `${at}.description`)
+    const fields = d['fields']
+    if (!Array.isArray(fields)) throw new Error(`${at}.fields: expected an array`)
+    return {
+      name: str(d['name'], `${at}.name`),
+      ...(description !== undefined ? { description } : {}),
+      fields: fields.map((f: unknown, j) => {
+        const fa = `${at}.fields[${j}]`
+        if (!isRecord(f)) throw new Error(`${fa}: expected an object`)
+        const fd = optStr(f['description'], `${fa}.description`)
+        return {
+          name: str(f['name'], `${fa}.name`),
+          type: str(f['type'], `${fa}.type`),
+          ...(f['required'] === true ? { required: true } : {}),
+          ...(fd !== undefined ? { description: fd } : {}),
+        }
+      }),
+    }
+  })
+}
+
+function narrowEntry(e: unknown, path: string): CatalogEntry {
+  if (!isRecord(e)) throw new Error(`${path}: expected an object`)
+  const meta = e['meta']
+  if (!isRecord(meta)) throw new Error(`${path}.meta: expected an object`)
+  const intent = meta['intent']
+  if (intent !== undefined && !isRecord(intent))
+    throw new Error(`${path}.meta.intent: expected an object`)
+  return {
+    type: typeof e['type'] === 'string' ? e['type'] : '',
+    files: Array.isArray(e['files'])
+      ? e['files'].filter((f: unknown): f is string => typeof f === 'string')
+      : [],
+    meta: {
+      name: str(meta['name'], `${path}.meta.name`),
+      description: str(meta['description'], `${path}.meta.description`),
+      category: str(meta['category'], `${path}.meta.category`),
+      props: narrowProps(meta['props'], `${path}.meta.props`),
+      typeDefs: narrowTypeDefs(meta['typeDefs'], `${path}.meta.typeDefs`),
+      intent:
+        intent === undefined
+          ? undefined
+          : {
+              ...(intent['whenToUse'] !== undefined ? { whenToUse: intent['whenToUse'] } : {}),
+              ...(intent['whenNotToUse'] !== undefined
+                ? { whenNotToUse: intent['whenNotToUse'] }
+                : {}),
+            },
+    },
+  }
+}
+
+/** One entry per meta.name, ranked by TYPE_RANK (ties keep the first). Narrows each entry, throwing with its path. */
+export function pickCanonical(entries: readonly unknown[]): Map<string, CatalogEntry> {
+  const canonical = new Map<string, CatalogEntry>()
+  entries.forEach((raw, i) => {
+    const entry = narrowEntry(raw, `components[${i}]`)
+    const cur = canonical.get(entry.meta.name)
+    if (!cur || (TYPE_RANK[entry.type] ?? 9) < (TYPE_RANK[cur.type] ?? 9)) {
+      canonical.set(entry.meta.name, entry)
+    }
+  })
+  return canonical
+}
+
+const sortKeys = <T>(o: Record<string, T>): Record<string, T> =>
+  Object.fromEntries(Object.entries(o).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)))
+
+function buildComponent(entry: CatalogEntry, implicitChildren: boolean): CatalogComponent {
+  const ctx = contextFor(entry.meta.typeDefs)
+  const properties: Record<string, JsonSchema> = {}
+  const required: string[] = []
+  const slots: CatalogComponent['slots'] = {}
+  const events: CatalogComponent['events'] = {}
+  const omitted: CatalogComponent['omitted'] = {}
+  for (const prop of entry.meta.props) {
+    const c = classifyProp(prop, ctx)
+    const isRequired = prop.required === true && prop.default === undefined
+    switch (c.kind) {
+      case 'data':
+        properties[prop.name] = {
+          ...c.schema,
+          ...(c.description ? { description: c.description } : {}),
+          ...(c.default !== undefined ? { default: c.default } : {}),
+        }
+        if (isRequired) required.push(prop.name)
+        break
+      case 'slot':
+        slots[prop.name] = {
+          arity: c.arity,
+          required: isRequired,
+          ...(prop.description ? { description: prop.description } : {}),
+        }
+        break
+      case 'event':
+        events[prop.name] = prop.description ? { description: prop.description } : {}
+        break
+      case 'omitted':
+        omitted[prop.name] = { type: prop.type, reason: c.reason }
+        break
+    }
+  }
+  // Many components render children without declaring the prop; the generator detects that from source.
+  if (implicitChildren && !('children' in slots) && !('children' in properties)) {
+    slots['children'] = { arity: 'many', required: false, implicit: true }
+  }
+  return {
+    description: entry.meta.description,
+    category: entry.meta.category,
+    ...(entry.meta.intent ? { intent: entry.meta.intent } : {}),
+    props: {
+      type: 'object',
+      properties: sortKeys(properties),
+      ...(required.length > 0 ? { required } : {}),
+      additionalProperties: false,
+    },
+    slots: sortKeys(slots),
+    events: sortKeys(events),
+    omitted: sortKeys(omitted),
+  }
+}
+
+/** Registry file URLs of each canonical entry, for callers that need to read sources (no I/O here). */
+export function canonicalFiles(registry: unknown): Map<string, string[]> {
+  if (!isRecord(registry) || !Array.isArray(registry['components'])) {
+    throw new Error('registry.components: expected an array')
+  }
+  return new Map(
+    [...pickCanonical(registry['components'])].map(([name, e]) => [name, e.files] as const),
+  )
+}
+
+/** `implicitChildren`: names whose source renders `children` although the manifest has no such prop. */
+export function buildCatalog(
+  registry: unknown,
+  renderable: ReadonlySet<string>,
+  implicitChildren: ReadonlySet<string> = new Set(),
+): Catalog {
+  if (!isRecord(registry) || !Array.isArray(registry['components'])) {
+    throw new Error('registry.components: expected an array')
+  }
+  const canonical = pickCanonical(registry['components'])
+  const components: Record<string, CatalogComponent> = {}
+  for (const name of [...renderable].sort()) {
+    const entry = canonical.get(name)
+    if (entry) {
+      components[name] = buildComponent(entry, implicitChildren.has(name))
+      continue
+    }
+    const parent = SUBCOMPONENT_PARENT[name]
+    const parentEntry = parent ? canonical.get(parent) : undefined
+    if (!parent || !parentEntry) {
+      throw new Error(`${name}: renderable but not in the registry or SUBCOMPONENT_PARENT`)
+    }
+    components[name] = {
+      description: `Part of ${parent}.`,
+      category: parentEntry.meta.category,
+      parent,
+      props: { type: 'object', properties: {}, additionalProperties: false },
+      slots: { children: { arity: 'many', required: false } },
+      events: {},
+      omitted: {},
+    }
+  }
+  return { $id: CATALOG_ID, version: 1, components }
+}
