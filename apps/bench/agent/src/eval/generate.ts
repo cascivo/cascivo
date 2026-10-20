@@ -4,6 +4,9 @@
  * installs or executes what a session wrote; scoring is a separate job that never sees the key.
  * A session whose output holds the key aborts the run (its directory is uploaded as an artifact).
  *
+ * The cascivo arm also gets its scaffold's `AGENTS.md` appended to the system prompt, from a copy
+ * outside the attempt (see cascivoContext).
+ *
  * Layout, which `scoreAll` walks: `<outDir>/<model>/<arm>/<task>/<attempt>/` holds the app, the
  * `transcript.jsonl` and a `meta.json` of `{ usage, infra, infraDetail? }`, and `<outDir>/run.json`
  * holds the run's metadata.
@@ -12,6 +15,7 @@ import { execFileSync, spawn } from 'node:child_process'
 import {
   cpSync,
   createWriteStream,
+  existsSync,
   mkdirSync,
   mkdtempSync,
   readdirSync,
@@ -332,6 +336,19 @@ function removeNodeModules(dir: string): void {
   }
 }
 
+/**
+ * The cascivo arm's AI context as an adopter's Claude Code loads it: the scaffold's `CLAUDE.md`
+ * is `@AGENTS.md`, which the CLI expands into the system prompt. `--bare` skips that discovery,
+ * so the harness appends the same text itself (`--append-system-prompt-file`). cascivo-bare's
+ * starter has neither file, and shadcn's has no context of this kind.
+ */
+function cascivoContext(starter: Starter | undefined): string {
+  const file = starter?.template == null ? null : join(starter.template, 'AGENTS.md')
+  if (file === null || !existsSync(file))
+    throw new Error('the cascivo starter has no AGENTS.md: its AI context would be missing')
+  return readFileSync(file, 'utf8')
+}
+
 function cascivoVersion(): string {
   const manifest: unknown = JSON.parse(
     readFileSync(join(REPO, 'packages/react/package.json'), 'utf8'),
@@ -345,6 +362,16 @@ const commit = (): string =>
   execFileSync('git', ['rev-parse', 'HEAD'], { cwd: REPO, encoding: 'utf8' }).trim()
 
 function validate(opts: GenerateOptions): PublishedArmId[] {
+  // A repeated id would be run and paid for twice, and weighted twice in the headline.
+  const lists: [string, readonly string[]][] = [
+    ['models', opts.models],
+    ['arms', opts.arms],
+    ['tasks', opts.tasks],
+  ]
+  for (const [name, ids] of lists) {
+    const twice = ids.find((id, i) => ids.indexOf(id) !== i)
+    if (twice !== undefined) throw new Error(`${name} lists ${twice} twice`)
+  }
   const arms = opts.arms.map((arm) => {
     if (!isPublishedArm(arm)) throw new Error(`arm ${arm} is not published; use ${PUBLISHED_ARMS}`)
     return arm
@@ -392,6 +419,9 @@ export async function generate(
     arms.map((arm) => [arm, projectFiles(starters.get(arm)?.template ?? null)]),
   )
 
+  // Read before any directory is made, so a starter without it fails the run with nothing to clean.
+  const context = arms.includes('cascivo') ? cascivoContext(starters.get('cascivo')) : null
+
   // Outside outDir: that directory is uploaded and walked as `<model>/<arm>/…` only.
   const configDir = mkdtempSync(join(tmpdir(), 'eval-mcp-'))
   const configs: Record<PublishedArmId, string | null> = {
@@ -399,6 +429,10 @@ export async function generate(
     'cascivo-bare': null,
     shadcn: shadcnMcpConfig(join(configDir, 'shadcn.json')),
   }
+  // A copy outside every attempt: `--restricted` keeps a session's Read and Edit inside its own
+  // directory, so no session can change what a later one is told.
+  const contextFile = join(configDir, 'cascivo-AGENTS.md')
+  if (context !== null) writeFileSync(contextFile, context)
 
   mkdirSync(opts.outDir, { recursive: true })
   let spentUsd = 0
@@ -451,7 +485,12 @@ export async function generate(
             const args = [
               '-p',
               `${task.prompt}\n\n${instructionsFor(arm)}\n\n${fileLists.get(arm) ?? ''}`,
-              ...claudeArgs(arm, configs[arm], model, { stream: true }),
+              ...claudeArgs(arm, configs[arm], model, {
+                stream: true,
+                ...(arm === 'cascivo' && context !== null
+                  ? { appendSystemPrompt: contextFile }
+                  : {}),
+              }),
             ]
             let session: Session
             try {

@@ -6,6 +6,7 @@ import {
   readdirSync,
   readFileSync,
   rmSync,
+  symlinkSync,
   utimesSync,
   writeFileSync,
 } from 'node:fs'
@@ -78,8 +79,21 @@ describe('shadcn MCP config', () => {
         )
           throw new Error('no shadcn server in the config')
         // Stdin closed: the server loads its env files, starts, and exits.
-        spawnSync(command, args, { cwd: session, input: '', timeout: 120_000 })
+        const ran = spawnSync(command, args, { cwd: session, input: '', timeout: 120_000 })
+        // Positive controls: the server really started (an npx that could not fetch shadcn
+        // would also leave no marker), and without `--cwd` the same .env does run.
+        expect(ran.status, String(ran.stderr)).toBe(0)
         expect(existsSync(marker)).toBe(false)
+        const cwd = args.indexOf('--cwd')
+        expect(cwd).toBeGreaterThan(-1)
+        const withoutCwd = [...args.slice(0, cwd), ...args.slice(cwd + 2)]
+        const control = spawnSync(command, withoutCwd, {
+          cwd: session,
+          input: '',
+          timeout: 120_000,
+        })
+        expect(control.status, String(control.stderr)).toBe(0)
+        expect(existsSync(marker)).toBe(true)
       } finally {
         rmSync(dir, { recursive: true, force: true })
       }
@@ -190,6 +204,23 @@ describe('cache builds', () => {
       utimesSync(join(dir, 'deps'), twoHoursAgo, twoHoursAgo)
       removeStaleBuilds(dir, 'scaffold-')
       expect(readdirSync(dir).sort()).toEqual(['deps', 'scaffold', 'scaffold-new'])
+    } finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
+  })
+
+  // Under EVAL_SLOW several test workers prepare starters at once: another worker's
+  // renameIntoPlace can remove a listed scaffold-* before it is stat'ed. A dangling link is
+  // that state on demand: listed, then ENOENT.
+  it('skips a build directory that is gone by the time it is checked', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'cache-race-'))
+    try {
+      symlinkSync(join(dir, 'nowhere'), join(dir, 'scaffold-gone'))
+      mkdirSync(join(dir, 'scaffold-old'))
+      const twoHoursAgo = new Date(Date.now() - 2 * 3_600_000)
+      utimesSync(join(dir, 'scaffold-old'), twoHoursAgo, twoHoursAgo)
+      expect(() => removeStaleBuilds(dir, 'scaffold-')).not.toThrow()
+      expect(readdirSync(dir)).toEqual(['scaffold-gone'])
     } finally {
       rmSync(dir, { recursive: true, force: true })
     }

@@ -12,7 +12,7 @@ import { argv, env, exit, stderr, stdout } from 'node:process'
 import { isArm, PUBLISHED_ARMS, type ArmId } from './arms.ts'
 import { REPO } from './env.ts'
 import { MODELS } from './models.ts'
-import { parseEvalRun } from './eval/results.ts'
+import { parseEvalRun, parseRunMeta } from './eval/results.ts'
 import { TASK_IDS } from './eval/tasks.ts'
 
 const HELP = `Usage: eval <subcommand> [options]
@@ -26,10 +26,12 @@ Subcommands:
       Build, type-check and drive what generate left in <dir>; write the results file.
   dry [--tasks a,b]
       Score the canary apps with no model, to check the hidden EVALs.
-  publish --results <file> [--expect-model id]
+  publish --results <file> [--expect-model id] [--run <run.json>] [--partial]
       Write the results file, apps/site/public/evals.json and docs/AGENT-BENCHMARKS.md from a
-      scored run. Refuses an incomplete or invalid run, and with --expect-model, a run whose
-      models are not exactly that one.
+      scored run. Refuses an incomplete or invalid run, a run dated in the future, and a run
+      that is not every published task and arm (unless --partial, for local use). With
+      --expect-model, refuses a run whose models are not exactly that one; with --run, one whose
+      run metadata differs from that run.json (the one generate wrote).
 
   -h, --help          Show this message`
 
@@ -37,11 +39,19 @@ class UsageError extends Error {}
 
 type Flags = Map<string, string>
 
-/** `--name value` pairs only; every option of every subcommand takes a value. */
-function flags(args: string[], allowed: readonly string[]): Flags {
+/** `--name value` pairs, and `--name` alone for a name in `switches` (its value is `true`). */
+function flags(
+  args: string[],
+  allowed: readonly string[],
+  switches: readonly string[] = [],
+): Flags {
   const found: Flags = new Map()
   for (let i = 0; i < args.length; i += 1) {
     const arg = args[i] ?? ''
+    if (switches.includes(arg.slice(2)) && arg.startsWith('--')) {
+      found.set(arg.slice(2), 'true')
+      continue
+    }
     if (!arg.startsWith('--') || !allowed.includes(arg.slice(2)))
       throw new UsageError(`unknown option ${arg}`)
     const v = args[(i += 1)]
@@ -60,8 +70,12 @@ function number(flags: Flags, name: string, fallback: number, integer: boolean):
   return n
 }
 
+/** A comma-separated list of ids; a repeated one would be run, paid for and weighted twice. */
 function list(flags: Flags, name: string): string[] | undefined {
-  return flags.get(name)?.split(',')
+  const ids = flags.get(name)?.split(',')
+  const twice = ids?.find((id, i) => ids.indexOf(id) !== i)
+  if (twice !== undefined) throw new UsageError(`--${name} lists ${twice} twice`)
+  return ids
 }
 
 function required(flags: Flags, name: string): string {
@@ -121,11 +135,12 @@ async function scoreCommand(args: string[]): Promise<void> {
   const inDir = required(f, 'in')
   const out = required(f, 'out')
   const concurrency = number(f, 'concurrency', 2, true)
-  // Read first: a missing run.json should fail before minutes of scoring.
+  // Read first: a missing or malformed run.json should fail before minutes of scoring.
   const meta: unknown = JSON.parse(readFileSync(join(inDir, 'run.json'), 'utf8'))
   if (!isRecord(meta)) throw new Error(`${join(inDir, 'run.json')} is not an object`)
+  const planned = parseRunMeta(meta).tasks
   const { scoreAll } = await import('./eval/evaluate.ts')
-  const records = await scoreAll(inDir, { concurrency })
+  const records = await scoreAll(inDir, { concurrency, tasks: planned })
   // Validated before anything is written, so a malformed run never reaches the results file.
   const run = parseEvalRun({ ...meta, records })
   mkdirSync(dirname(out), { recursive: true })
@@ -142,11 +157,16 @@ async function dryCommand(args: string[]): Promise<void> {
 }
 
 async function publishCommand(args: string[]): Promise<void> {
-  const f = flags(args, ['results', 'expect-model'])
+  const f = flags(args, ['results', 'expect-model', 'run'], ['partial'])
   const results = required(f, 'results')
   const expectModel = f.get('expect-model')
+  const runFile = f.get('run')
   const { publish } = await import('./eval/publish.ts')
-  const opts = expectModel === undefined ? {} : { expectModel }
+  const opts = {
+    ...(expectModel === undefined ? {} : { expectModel }),
+    ...(runFile === undefined ? {} : { runFile }),
+    partial: f.has('partial'),
+  }
   for (const file of publish(results, REPO, opts).written) log(`wrote ${file}`)
 }
 

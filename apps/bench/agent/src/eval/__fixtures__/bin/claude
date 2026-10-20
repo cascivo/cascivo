@@ -4,7 +4,8 @@
 #   leak: a normal session that also prints ANTHROPIC_API_KEY and writes it into src/
 # FAKE_CLAUDE_SEQUENCE: comma-separated modes, one per session in order (needs FAKE_CLAUDE_COUNTER)
 # FAKE_CLAUDE_COST: total_cost_usd of the result line (default 0.10)
-# FAKE_CLAUDE_LOG: appended with the cwd and every argument of each session
+# FAKE_CLAUDE_LOG: appended with the cwd and every argument of each session, then the content of
+#   an --append-system-prompt-file (CONTEXT <content>)
 # FAKE_CLAUDE_PIDFILE: hang and escape modes write the pid of the process they leave running
 # FAKE_CLAUDE_WRITE: a path, relative to the session's directory, that the session also writes
 # FAKE_CLAUDE_STDERR: appended to the crash message on stderr
@@ -12,6 +13,18 @@ if [ -n "$FAKE_CLAUDE_LOG" ]; then
   printf 'SESSION cwd=%s\n' "$PWD" >> "$FAKE_CLAUDE_LOG"
   for arg in "$@"; do printf 'ARG %s\n' "$arg" >> "$FAKE_CLAUDE_LOG"; done
 fi
+# Like CLI 2.1.304: the file is read at start, and a missing one is an error.
+prev=''
+for arg in "$@"; do
+  if [ "$prev" = '--append-system-prompt-file' ]; then
+    if [ ! -f "$arg" ]; then
+      echo "Error: Append system prompt file not found: $arg" >&2
+      exit 1
+    fi
+    [ -n "$FAKE_CLAUDE_LOG" ] && printf 'CONTEXT %s\n' "$(cat "$arg")" >> "$FAKE_CLAUDE_LOG"
+  fi
+  prev="$arg"
+done
 mode="${FAKE_CLAUDE_MODE:-normal}"
 if [ -n "$FAKE_CLAUDE_SEQUENCE" ]; then
   echo x >> "$FAKE_CLAUDE_COUNTER"

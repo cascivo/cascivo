@@ -12,8 +12,12 @@ name: Evals
 #             servers load no code or .env from the session's directory (src/eval/starters.ts).
 #             Any process in this job could read the key from /proc, so those are the boundary.
 #             The sessions are scanned for the key before they are uploaded.
-#   score     (one per model) builds and drives what generate wrote. No secrets, read-only contents.
+#   score     (one per model) builds and drives what generate wrote. No secrets, read-only contents,
+#             but agent code runs here and can tamper with its own shard's scoring (see the job).
 #   publish   holds the write token, runs no generated code, opens one PR for a valid run only.
+#             It runs on a release, or on a dispatch with `publish` ticked: a pilot or a test
+#             dispatch leaves it unticked and opens no PR. It also refuses a run that is not every
+#             task and arm, so only a full run can become the headline.
 #
 # Sharding: a run is 8 tasks x 3 arms x attempts x models sessions, one after another, and at the
 # defaults that is longer than the 6 h a hosted job may run. So each model is its own generate
@@ -48,6 +52,10 @@ on:
       tasks:
         description: Comma-separated task ids (empty = all)
         default: ''
+      publish:
+        description: Open a results PR (tick for a full run; leave unticked for a pilot)
+        type: boolean
+        default: false
   release:
     types: [published]
 
@@ -96,9 +104,13 @@ jobs:
           [[ "$attempts" =~ $int_re ]] || { echo "::error::attempts must be a whole number"; exit 2; }
           [[ "$max_usd" =~ $usd_re ]] || { echo "::error::max_usd must be a number"; exit 2; }
 
-          # One artifact per model, so a repeated model would collide.
+          # One artifact per model, so a repeated model would collide; a repeated task would be
+          # paid for twice (the CLI refuses both as well).
           if [[ -n "$(tr ',' '\n' <<< "$models" | sort | uniq -d)" ]]; then
             echo "::error::models lists a model twice"; exit 2
+          fi
+          if [[ -n "$tasks" && -n "$(tr ',' '\n' <<< "$tasks" | sort | uniq -d)" ]]; then
+            echo "::error::tasks lists a task twice"; exit 2
           fi
           count="$(tr ',' '\n' <<< "$models" | wc -l)"
           # Rounded down to the cent: the shards together must not exceed max_usd.
@@ -224,16 +236,38 @@ jobs:
           if-no-files-found: warn
           retention-days: 90
 
+      # The run metadata again, on its own: publish cross-checks each shard's results against it.
+      # This job is the one no agent code runs in, so its run.json says what was really run and
+      # spent; score runs agent code and could rewrite the results file it uploads. Same scan gate.
+      - name: Upload the run metadata
+        if: ${{ always() && steps.scan.outputs.clean == 'true' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: eval-run-${{ matrix.model }}
+          path: gen/run.json
+          if-no-files-found: warn
+          retention-days: 90
+
   score:
     needs: [setup, generate]
     runs-on: ubuntu-latest
+    # Headroom: an attempt can take about 10 minutes at worst (build 180 s, tsc 120 s, EVAL 120 s,
+    # audit 120 s, then axe), so 72 attempts at concurrency 2 can outlast 240 minutes. A shard
+    # that times out uploads no results and the run is not published; "Re-run failed jobs"
+    # scores it again from the kept eval-gen artifact, with no model spend.
     timeout-minutes: 240
     strategy:
       fail-fast: false
       matrix:
         model: ${{ fromJSON(needs.setup.outputs.models) }}
-    # Agent-written code executes in this job (vite build, tsc, the app in Chromium). That is
-    # why it has no secrets and read-only contents: the worst it can reach is a throwaway runner.
+    # Agent-written code executes in this job (vite build with the agent's vite.config.ts and
+    # PostCSS config, tsc, the app in Chromium), as the runner user with the checkout writable.
+    # It has no secrets and read-only contents, so it cannot reach the key or the repository. It
+    # can tamper with this shard's scoring: rewrite other attempts before they build, the shared
+    # dependency trees, or results.json before the upload (a process can outlive its group with
+    # setsid). Every EVAL is imported before the first build, and publish checks the shape, the
+    # model, the scope, the date and the run metadata against generate's run.json, but not the
+    # statuses: the human review of the results PR is the integrity gate (spec §9).
     permissions:
       contents: read
     steps:
@@ -281,6 +315,8 @@ jobs:
 
   publish:
     needs: [setup, score]
+    # A release always publishes; a dispatch only when `publish` is ticked (a pilot leaves it off).
+    if: github.event_name == 'release' || inputs.publish
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
@@ -314,11 +350,22 @@ jobs:
           merge-multiple: false
           path: results
 
+      # generate's run.json per shard: runs/eval-run-<model>/run.json. Read as data by publish
+      # (--run), never executed. The next step checks the set as it does for the results.
+      - name: Download the run metadata
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: eval-run-*
+          merge-multiple: false
+          path: runs
+
       # Each shard's file is published in turn (sorted by model, so the output is deterministic);
       # publish merges the latest valid run per model into evals.json and the report. It exits
-      # non-zero on an incomplete or invalid run, or one that is not that shard's model
-      # (--expect-model), which fails the job before any branch exists, so no PR is opened if any
-      # shard is bad. A downloaded artifact this run did not plan fails it too.
+      # non-zero on an incomplete or invalid run, a run that is not every task and arm, a date in
+      # the future, one that is not that shard's model (--expect-model), or one whose run
+      # metadata differs from what generate recorded (--run), which fails the job before any
+      # branch exists, so no PR is opened if any shard is bad. A downloaded artifact this run did
+      # not plan fails it too: each shard's two files are read by their exact names.
       - name: Write the results files
         env:
           MODELS: ${{ needs.setup.outputs.models }}
@@ -332,9 +379,16 @@ jobs:
             echo "::error::the downloaded results are not exactly one per planned model"
             exit 1
           fi
+          expected_runs="$(printf 'eval-run-%s\n' "${models[@]}")"
+          downloaded_runs="$(find "$GITHUB_WORKSPACE/runs" -mindepth 1 -maxdepth 1 -printf '%f\n' | LC_ALL=C sort)"
+          if [[ "$downloaded_runs" != "$expected_runs" ]]; then
+            echo "::error::the downloaded run metadata is not exactly one per planned model"
+            exit 1
+          fi
           for model in "${models[@]}"; do
             pnpm --filter bench-agent eval publish \
               --results "$GITHUB_WORKSPACE/results/eval-results-$model/results.json" \
+              --run "$GITHUB_WORKSPACE/runs/eval-run-$model/run.json" \
               --expect-model "$model"
           done
 
@@ -372,6 +426,8 @@ jobs:
             echo "Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
             echo
             echo "Generated by the evals workflow. Review the numbers, then merge."
+            echo
+            echo "This review is the integrity gate. The score job runs the agents' code, which could tamper with its own shard's results. publish checked the shape, the model, the scope, the date and the run metadata against generate's run.json, but it cannot check the statuses. If a number looks wrong, read the transcripts in the eval-gen artifacts before merging."
             echo
             echo "This PR was opened with the workflow token, so CI did not run on it. Close and reopen it, or push to it, to run the checks."
           } > "$body"

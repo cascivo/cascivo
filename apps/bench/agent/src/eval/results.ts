@@ -119,6 +119,19 @@ function strings(obj: Record<string, unknown>, key: string, path: string): strin
   )
 }
 
+/**
+ * Model, arm and task ids: a repeated one would make aggregate() emit its rows twice and weight
+ * it twice in the headline, and generate() pay for it twice.
+ */
+function ids(obj: Record<string, unknown>, key: string, path: string): string[] {
+  const list = strings(obj, key, path)
+  list.forEach((id, i) => {
+    if (list.indexOf(id) !== i)
+      fail(`${path}${key}[${i}]`, `unique (${JSON.stringify(id)} is listed twice)`)
+  })
+  return list
+}
+
 /** A nullable measurement: absent is a malformed file, null is a real "not measured". */
 function orNull<T>(
   obj: Record<string, unknown>,
@@ -190,27 +203,42 @@ function parseRecord(raw: unknown, index: number): AttemptRecord {
   }
 }
 
-/** Reads a results file at the boundary; throws naming the first bad field, e.g. `records[3].status`. */
-export function parseEvalRun(raw: unknown): EvalRun {
-  if (!isRecord(raw)) return fail('the document', 'an object')
+export type RunMeta = Omit<EvalRun, 'records'>
+
+function meta(raw: Record<string, unknown>): RunMeta {
   if (field(raw, 'schemaVersion', '') !== SCHEMA_VERSION) {
     fail('schemaVersion', `${SCHEMA_VERSION}`)
   }
-  const records = field(raw, 'records', '')
-  if (!Array.isArray(records)) return fail('records', 'an array')
   return {
     schemaVersion: SCHEMA_VERSION,
     date: str(raw, 'date', ''),
     cascivoVersion: str(raw, 'cascivoVersion', ''),
     commit: str(raw, 'commit', ''),
-    models: strings(raw, 'models', ''),
-    arms: strings(raw, 'arms', ''),
-    tasks: strings(raw, 'tasks', ''),
+    models: ids(raw, 'models', ''),
+    arms: ids(raw, 'arms', ''),
+    tasks: ids(raw, 'tasks', ''),
     attempts: int(raw, 'attempts', '', 1),
     maxUsd: num(raw, 'maxUsd', ''),
     spentUsd: num(raw, 'spentUsd', ''),
     budgetExhausted: bool(raw, 'budgetExhausted', ''),
     shadcnVersion: str(raw, 'shadcnVersion', ''),
-    records: records.map((r: unknown, i) => parseRecord(r, i)),
   }
+}
+
+/**
+ * Reads the `run.json` that `generate` writes (a results file without its records) at the
+ * boundary: `publish` reads it back from a workflow artifact.
+ */
+export function parseRunMeta(raw: unknown): RunMeta {
+  if (!isRecord(raw)) return fail('the document', 'an object')
+  return meta(raw)
+}
+
+/** Reads a results file at the boundary; throws naming the first bad field, e.g. `records[3].status`. */
+export function parseEvalRun(raw: unknown): EvalRun {
+  if (!isRecord(raw)) return fail('the document', 'an object')
+  const run = meta(raw)
+  const records = field(raw, 'records', '')
+  if (!Array.isArray(records)) return fail('records', 'an array')
+  return { ...run, records: records.map((r: unknown, i) => parseRecord(r, i)) }
 }

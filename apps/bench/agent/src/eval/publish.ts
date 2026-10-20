@@ -7,16 +7,19 @@
  */
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join, resolve, sep } from 'node:path'
+import { PUBLISHED_ARMS } from '../arms.ts'
 import { MODELS } from '../models.ts'
 import { evalDoc, type EvalDocRun } from '../report.ts'
 import { aggregate, INFRA_THRESHOLD, validity, type AggregateRow } from './aggregate.ts'
-import { parseEvalRun, type EvalRun } from './results.ts'
+import { parseEvalRun, parseRunMeta, type EvalRun, type RunMeta } from './results.ts'
+import { TASK_IDS } from './tasks.ts'
 
 export interface EvalsLatest {
   /** YYYY-MM-DD of the newest run that makes up `latest`. */
   date: string
   cascivoVersion: string
-  models: { model: string; date: string; attempts: number }[]
+  /** Each model's own run: a model carried over from an older run keeps that run's version. */
+  models: { model: string; date: string; cascivoVersion: string; attempts: number }[]
   rows: AggregateRow[]
   /** The full `spentUsd` of every run that contributes a model, even if it also holds a superseded one. */
   costUsd: number
@@ -26,6 +29,7 @@ export interface EvalsJson {
   schemaVersion: 1
   /** Null only when evals.json is rebuilt from a results directory with no valid run. */
   latest: EvalsLatest | null
+  /** One entry per published run: the shards of one run (same day, version and commit) merge. */
   history: {
     date: string
     cascivoVersion: string
@@ -178,17 +182,41 @@ export function buildEvalsJson(entries: EvalEntry[]): EvalsJson {
             models: picked.map((p) => ({
               model: p.model,
               date: p.entry.day,
+              cascivoVersion: p.entry.run.cascivoVersion,
               attempts: p.entry.run.attempts,
             })),
             rows: latest.rows,
             costUsd: latest.run.spentUsd,
           },
-    history: [...entries].sort(oldestFirst).map((e) => ({
-      date: e.day,
-      cascivoVersion: e.run.cascivoVersion,
-      passAt1: passAt1(e.run),
-    })),
+    history: history(entries),
   }
+}
+
+/**
+ * Oldest first, one entry per run: the workflow publishes each model's shard as its own results
+ * file, and the shards of one run share its day, cascivo version and commit. A later shard's
+ * model replaces an earlier one's (a re-run of that shard).
+ */
+function history(entries: EvalEntry[]): EvalsJson['history'] {
+  const runs = new Map<
+    string,
+    { date: string; cascivoVersion: string; passAt1: Map<string, Record<string, number>> }
+  >()
+  for (const e of [...entries].sort(oldestFirst)) {
+    const key = JSON.stringify([e.day, e.run.cascivoVersion, e.run.commit])
+    let run = runs.get(key)
+    if (run === undefined) {
+      run = { date: e.day, cascivoVersion: e.run.cascivoVersion, passAt1: new Map() }
+      runs.set(key, run)
+    }
+    // A Map, then fromEntries: model ids come from the file, and `__proto__` must stay a key.
+    for (const [model, arms] of Object.entries(passAt1(e.run))) run.passAt1.set(model, arms)
+  }
+  return [...runs.values()].map((r) => ({
+    date: r.date,
+    cascivoVersion: r.cascivoVersion,
+    passAt1: Object.fromEntries(r.passAt1),
+  }))
 }
 
 /** Valid runs already committed. Anything else in the directory (legacy bench output) is skipped. */
@@ -251,19 +279,70 @@ function freeName(dir: string, run: EvalRun): string {
   throw new Error(`eval results: no free file name for ${base}`)
 }
 
+export interface PublishOptions {
+  /** Refuse the run unless its models are exactly this one (a workflow shard). */
+  expectModel?: string
+  /**
+   * Also publish a run that is not every published task and arm (a pilot, a `--tasks` subset).
+   * For local use: such a run would replace the headline with the mean over its own tasks.
+   */
+  partial?: boolean
+  /**
+   * The `run.json` the generate job wrote for this shard. The score job runs agent-written code,
+   * which can rewrite the results file; the run metadata must still match what the keyed job,
+   * where no agent code runs, recorded. Only read: nothing in it is executed.
+   */
+  runFile?: string
+  /** The current time, for the future-date check. */
+  now?: Date
+}
+
+/** How far a run's date may be ahead of this machine's clock. */
+export const CLOCK_SKEW_MS = 5 * 60_000
+
+/** The run metadata a results file must share with generate's run.json. */
+const CROSS_CHECKED = [
+  'date',
+  'commit',
+  'models',
+  'tasks',
+  'arms',
+  'attempts',
+  'spentUsd',
+  'budgetExhausted',
+] as const satisfies readonly (keyof RunMeta)[]
+
+function checkAgainstRun(run: EvalRun, runFile: string): void {
+  const recorded = parseRunMeta(JSON.parse(readFileSync(runFile, 'utf8')))
+  const differs = CROSS_CHECKED.filter(
+    (key) => JSON.stringify(run[key]) !== JSON.stringify(recorded[key]),
+  )
+  if (differs.length > 0)
+    throw new Error(
+      `eval results do not match the run.json generate wrote (${runFile}): ${differs.join(', ')} differ`,
+    )
+}
+
+const sameSet = (a: readonly string[], b: readonly string[]) =>
+  a.length === b.length && a.every((id) => b.includes(id))
+
 /**
  * Writes the results file, `evals.json` and `AGENT-BENCHMARKS.md` for a valid run. Throws before
- * writing anything when the run is incomplete or invalid, or names an unsafe file. The three
- * writes are not atomic; a crash between them is recovered by running publish again.
+ * writing anything when the run is not that shard's (`expectModel`, `runFile`), covers fewer than
+ * every published task and arm (unless `partial`), is dated in the future, is incomplete or
+ * invalid, or names an unsafe file. The three writes are not atomic; a crash between them is
+ * recovered by running publish again.
+ *
+ * What it cannot catch: statuses forged by agent code in the score job. The human review of the
+ * results PR is the integrity gate (spec §9).
  *
  * @param resultsFile The scored `results.json`.
  * @param repo The repository root.
- * @param opts.expectModel Refuse the run unless its models are exactly this one (a workflow shard).
  */
 export function publish(
   resultsFile: string,
   repo: string,
-  opts: { expectModel?: string } = {},
+  opts: PublishOptions = {},
 ): { written: string[] } {
   const raw: unknown = JSON.parse(readFileSync(resultsFile, 'utf8'))
   const run = parseEvalRun(raw)
@@ -273,6 +352,21 @@ export function publish(
   )
     throw new Error(
       `eval results are for ${JSON.stringify(run.models)}, not ${JSON.stringify([opts.expectModel])}`,
+    )
+  if (opts.runFile !== undefined) checkAgainstRun(run, opts.runFile)
+  if (
+    opts.partial !== true &&
+    (!sameSet(run.tasks, TASK_IDS) || !sameSet(run.arms, PUBLISHED_ARMS))
+  )
+    throw new Error(
+      `eval results cover tasks ${JSON.stringify(run.tasks)} and arms ${JSON.stringify(run.arms)}, ` +
+        'not every published task and arm: a pilot or subset run would replace the headline, so it ' +
+        'is not published (--partial publishes it locally)',
+    )
+  const now = (opts.now ?? new Date()).getTime()
+  if (Date.parse(run.date) > now + CLOCK_SKEW_MS)
+    throw new Error(
+      `eval results: date ${JSON.stringify(run.date)} is in the future, so it would stay latest`,
     )
   const state = validity(run)
   if (state !== 'valid')

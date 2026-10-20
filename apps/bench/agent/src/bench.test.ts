@@ -166,6 +166,22 @@ describe('arms', () => {
     ])
   })
 
+  it('appends a system prompt file only when given one', () => {
+    const args = claudeArgs('cascivo', 'mcp.json', 'claude-x', { appendSystemPrompt: 'ctx.md' })
+    const i = args.indexOf('--append-system-prompt-file')
+    expect(args.slice(i, i + 2)).toEqual(['--append-system-prompt-file', 'ctx.md'])
+    // Never `--add-dir`: it would widen what `--restricted` lets the file tools reach.
+    expect(args).not.toContain('--add-dir')
+    expect(args.filter((a) => a !== '--append-system-prompt-file' && a !== 'ctx.md')).toEqual(
+      claudeArgs('cascivo', 'mcp.json', 'claude-x'),
+    )
+    for (const arm of ARMS)
+      expect(
+        claudeArgs(arm, arm === 'cascivo-bare' ? null : 'mcp.json', null).join(' '),
+        arm,
+      ).not.toMatch(/system-prompt|add-dir/)
+  })
+
   it('takes the blueprint tools from today, in the eval and in the legacy bench', () => {
     for (const executingTools of [false, true]) {
       const today = claudeArgs('today', 'mcp.json', null, { executingTools })

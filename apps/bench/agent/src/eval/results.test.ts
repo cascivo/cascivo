@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { SCHEMA_VERSION, classify, parseEvalRun } from './results.ts'
+import { SCHEMA_VERSION, classify, parseEvalRun, parseRunMeta } from './results.ts'
 import { record, run } from './fixtures.ts'
 
 describe('classify', () => {
@@ -78,5 +78,26 @@ describe('parseEvalRun', () => {
     expect(() => parse(run({ records: [record({ detail: 'x'.repeat(501) })] }))).toThrow(
       /records\[0\]\.detail/,
     )
+  })
+
+  // A repeated id doubles its rows in aggregate() and its weight in the headline.
+  it.each(['models', 'arms', 'tasks'] as const)('rejects %s that lists an id twice', (key) => {
+    const r = run({ models: ['m1', 'm2'], arms: ['cascivo', 'shadcn'], tasks: ['a', 'b'] })
+    const twice = { ...r, [key]: [...r[key], r[key][0]] }
+    expect(() => parse(twice)).toThrow(new RegExp(`${key}\\[2\\] is not unique`))
+    expect(() => parseRunMeta(twice)).toThrow(new RegExp(`${key}\\[2\\]`))
+  })
+})
+
+describe('parseRunMeta', () => {
+  it('reads the run.json generate writes, which has no records', () => {
+    const { records: _records, ...meta } = run()
+    expect(parseRunMeta(JSON.parse(JSON.stringify(meta)))).toEqual(meta)
+  })
+
+  it('names the bad field', () => {
+    const { records: _records, ...meta } = run()
+    expect(() => parseRunMeta({ ...meta, attempts: 0 })).toThrow(/attempts/)
+    expect(() => parseRunMeta([])).toThrow(/eval results/)
   })
 })

@@ -1,4 +1,5 @@
 import { spawnSync } from 'node:child_process'
+import { createHash } from 'node:crypto'
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
@@ -62,6 +63,30 @@ describe('plain node', () => {
   })
 })
 
+// The workflow is not run by any test; these pin the lines the final review's fixes depend on.
+describe('evals.yml', () => {
+  const yml = readFileSync(join(PKG, '..', '..', '..', '.github', 'workflows', 'evals.yml'), 'utf8')
+  /** The text of one top-level job, up to the next. */
+  const job = (name: string) => yml.split(`\n  ${name}:\n`)[1]?.split(/\n {2}[a-z-]+:\n/)[0] ?? ''
+
+  it('opens a results PR on a release, or on a dispatch that ticks publish', () => {
+    expect(yml).toMatch(/\n {6}publish:\n(?: {8}.*\n)*? {8}type: boolean\n {8}default: false\n/)
+    // Not `!= false`: an unticked dispatch must not publish, and neither must a missing input.
+    expect(job('publish')).toContain("\n    if: github.event_name == 'release' || inputs.publish\n")
+    expect(yml).not.toMatch(/inputs\.publish\s*!=/)
+  })
+
+  it('cross-checks each shard against the run.json generate uploaded', () => {
+    expect(job('generate')).toContain(
+      'name: eval-run-${{ matrix.model }}\n          path: gen/run.json',
+    )
+    expect(job('publish')).toContain('pattern: eval-run-*')
+    expect(job('publish')).toContain('--run "$GITHUB_WORKSPACE/runs/eval-run-$model/run.json"')
+    expect(job('publish')).toContain('--expect-model "$model"')
+    expect(job('publish')).not.toContain('--partial')
+  })
+})
+
 describe('legacy bench', () => {
   it('rejects --publish and points to eval publish', () => {
     const ran = node([join(PKG, 'src', 'cli.ts'), '--publish'])
@@ -97,6 +122,22 @@ describe('eval-cli', () => {
       })
       expect(ran.status, args.join(' ')).toBe(2)
     }
+  })
+
+  // A repeated id would be run and paid for twice, and weighted twice in the headline.
+  it('exits 2 for a model, arm or task listed twice', () => {
+    for (const [flag, value] of [
+      ['--models', 'claude-haiku-5-5,claude-haiku-5-5'],
+      ['--arms', 'cascivo,shadcn,cascivo'],
+      ['--tasks', 'admin-console,admin-console'],
+    ]) {
+      const ran = node([CLI, 'generate', '--out', join(root, 'twice'), flag!, value!], {
+        ANTHROPIC_API_KEY: 'x',
+      })
+      expect(ran.status, flag).toBe(2)
+      expect(ran.stderr, flag).toContain('twice')
+    }
+    expect(existsSync(join(root, 'twice'))).toBe(false)
   })
 
   it('exits 2 for a model that is not in the list', () => {
@@ -136,15 +177,58 @@ describe('eval-cli', () => {
       expect(node([CLI, 'publish']).status).toBe(2)
     })
 
+    /** What is on disk, or null for a missing file: a refused publish must change neither. */
+    const hash = (path: string) =>
+      existsSync(path) ? createHash('sha256').update(readFileSync(path)).digest('hex') : null
+
     it('exits 1 with the reason for a run that is not valid, and writes nothing', () => {
-      const before = [existsSync(evalsJson), existsSync(doc)]
+      const before = [hash(evalsJson), hash(doc)]
       const file = join(root, 'incomplete.json')
       const incomplete = { ...scoredMeta, budgetExhausted: true, records: [] }
       writeFileSync(file, JSON.stringify(incomplete))
-      const ran = node([CLI, 'publish', '--results', file])
+      const ran = node([CLI, 'publish', '--results', file, '--partial'])
       expect(ran.status).toBe(1)
       expect(ran.stderr).toMatch(/incomplete/)
-      expect([existsSync(evalsJson), existsSync(doc)]).toEqual(before)
+      expect([hash(evalsJson), hash(doc)]).toEqual(before)
+    })
+
+    // The workflow's pilot (one task, one attempt) is complete and valid, but not the headline.
+    it('refuses a partial run unless --partial, and writes nothing', () => {
+      const before = [hash(evalsJson), hash(doc)]
+      const file = join(root, 'pilot.json')
+      const pilot = {
+        ...scoredMeta,
+        records: [
+          {
+            task: 'admin-console',
+            arm: 'cascivo',
+            model: 'claude-haiku-5-5',
+            attempt: 1,
+            status: 'pass',
+            detail: null,
+            usage: null,
+            tscErrors: 0,
+            axe: null,
+            auditErrors: 0,
+            auditWarnings: 0,
+          },
+        ],
+      }
+      writeFileSync(file, JSON.stringify(pilot))
+      const ran = node([CLI, 'publish', '--results', file])
+      expect(ran.status).toBe(1)
+      expect(ran.stderr).toMatch(/not every published task and arm/)
+      expect([hash(evalsJson), hash(doc)]).toEqual(before)
+    })
+
+    it("refuses results whose run metadata differs from --run's run.json", () => {
+      const file = join(root, 'cross.json')
+      writeFileSync(file, JSON.stringify({ ...scoredMeta, records: [] }))
+      const runJson = join(root, 'cross-run.json')
+      writeFileSync(runJson, JSON.stringify({ ...scoredMeta, spentUsd: 12.5 }))
+      const ran = node([CLI, 'publish', '--results', file, '--run', runJson, '--partial'])
+      expect(ran.status).toBe(1)
+      expect(ran.stderr).toMatch(/do not match the run\.json.*spentUsd/)
     })
 
     // The workflow publishes one shard per model: a shard must hold that model's run and no other.
@@ -167,7 +251,15 @@ describe('eval-cli', () => {
       expect(extra.stderr).not.toMatch(/incomplete/)
 
       // The model it holds passes this check and reaches the validity one.
-      const same = node([CLI, 'publish', '--results', file, '--expect-model', 'claude-haiku-5-5'])
+      const same = node([
+        CLI,
+        'publish',
+        '--results',
+        file,
+        '--expect-model',
+        'claude-haiku-5-5',
+        '--partial',
+      ])
       expect(same.status).toBe(1)
       expect(same.stderr).toMatch(/incomplete/)
     })

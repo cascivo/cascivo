@@ -15,7 +15,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { runBounded, scoreAll, scoreAttempt } from './evaluate.ts'
-import type { EvalTask } from './tasks.ts'
+import { TASK_IDS, type EvalTask } from './tasks.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const FIXTURES = join(HERE, '__fixtures__')
@@ -134,6 +134,45 @@ describe('scoreAll', () => {
     expect(records[2]?.usage).toMatchObject({ costUsd: 0.25, turns: 3, inputTokens: 10 })
     expect(records[3]?.detail).toMatch(/claude result/)
     expect(records[3]?.usage).toBeNull()
+  })
+
+  // Agent code runs during a build (vite.config.ts, PostCSS) with the checkout writable: every
+  // EVAL is imported before the first attempt builds, so none can be rewritten before it loads.
+  it("imports every planned task's EVAL before scoring, even tasks with no attempt", async () => {
+    const inDir = join(root, 'score-all-preload')
+    attemptDir(inDir, 'cascivo', '1', { usage: null, infra: true, infraDetail: 'timed out' })
+    const loaded: string[] = []
+    const records = await scoreAll(
+      inDir,
+      { concurrency: 1, tasks: [...TASK_IDS] },
+      {
+        loadEval: async (path) => {
+          loaded.push(path)
+          return async () => undefined
+        },
+      },
+    )
+    expect(records).toHaveLength(1)
+    expect(loaded.map((p) => p.split('/').slice(-2).join('/'))).toEqual(
+      TASK_IDS.map((id) => `${id}/EVAL.ts`),
+    )
+
+    // A planned EVAL that cannot load fails the run before any attempt is scored.
+    await expect(
+      scoreAll(
+        inDir,
+        { concurrency: 1, tasks: ['admin-console', 'crud-table'] },
+        {
+          loadEval: async (path) => {
+            if (path.includes('crud-table')) throw new Error('crud-table EVAL is broken')
+            return async () => undefined
+          },
+        },
+      ),
+    ).rejects.toThrow(/crud-table EVAL is broken/)
+    await expect(scoreAll(inDir, { concurrency: 1, tasks: ['no-such-task'] })).rejects.toThrow(
+      /Unknown task/,
+    )
   })
 
   it('rejects a directory that is not a published arm', async () => {

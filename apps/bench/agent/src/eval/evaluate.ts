@@ -50,6 +50,8 @@ export interface ScoreInput {
   usage: AgentUsage | null
   infra: boolean
   infraDetail?: string
+  /** The task's EVAL, already imported (scoreAll imports every one before anything builds). */
+  evaluate?: Evaluate
 }
 
 const isRecord = (v: unknown): v is Record<string, unknown> =>
@@ -225,7 +227,7 @@ async function typesStep(
   }
 }
 
-type Evaluate = (page: Page, baseUrl: string) => Promise<unknown>
+export type Evaluate = (page: Page, baseUrl: string) => Promise<unknown>
 
 async function loadEval(path: string): Promise<Evaluate> {
   const mod: unknown = await import(pathToFileURL(path).href)
@@ -455,7 +457,7 @@ export async function scoreAttempt(input: ScoreInput): Promise<AttemptRecord> {
     }
   }
   // Loaded first so a broken EVAL fails the run before minutes of building.
-  const evaluate = await loadEval(input.task.evalPath)
+  const evaluate = input.evaluate ?? (await loadEval(input.task.evalPath))
   const app = findApp(input.attemptDir)
   if (app === null) return { ...base, ...unmeasured, status: 'fail-build', detail: 'no app found' }
 
@@ -584,7 +586,12 @@ function walk(inDir: string): AttemptRef[] {
 /** Score every attempt under `inDir`, `concurrency` at a time, each on its own port and browser. */
 export async function scoreAll(
   inDir: string,
-  opts: { concurrency?: number } = {},
+  opts: {
+    concurrency?: number
+    /** The run's planned tasks (run.json): their EVALs are imported even with no attempt. */
+    tasks?: readonly string[]
+  } = {},
+  deps: { loadEval?: (path: string) => Promise<Evaluate> } = {},
 ): Promise<AttemptRecord[]> {
   const concurrency = opts.concurrency ?? 2
   if (!Number.isInteger(concurrency) || concurrency < 1) {
@@ -592,6 +599,15 @@ export async function scoreAll(
   }
   const refs = walk(inDir)
   const metas = refs.map((ref) => readMeta(ref.dir))
+  const tasks = new Map<string, EvalTask>()
+  for (const task of loadTasks([...new Set([...(opts.tasks ?? []), ...refs.map((r) => r.task)])]))
+    tasks.set(task.id, task)
+  // Every EVAL and its _lib.ts, imported before anything an agent wrote runs: a vite.config.ts or
+  // PostCSS config runs with the checkout writable, and could otherwise rewrite an EVAL that a
+  // later attempt imports. Node caches an imported module, so a later write cannot reach it.
+  const load = deps.loadEval ?? loadEval
+  const evals = new Map<string, Evaluate>()
+  for (const task of tasks.values()) evals.set(task.id, await load(task.evalPath))
   // Prepared before any scoring starts: preparing is synchronous and can take minutes, which
   // would stall a concurrent attempt's preview and browser mid-EVAL. Only arms with something
   // to build are prepared, so a run of only infra errors needs no install.
@@ -604,8 +620,6 @@ export async function scoreAll(
       )
     }
   })
-  const tasks = new Map<string, EvalTask>()
-  for (const task of loadTasks([...new Set(refs.map((r) => r.task))])) tasks.set(task.id, task)
 
   const records: AttemptRecord[] = []
   let next = 0
@@ -616,6 +630,7 @@ export async function scoreAll(
       const meta = metas[index]
       const task = ref === undefined ? undefined : tasks.get(ref.task)
       if (ref === undefined || meta === undefined || task === undefined) continue
+      const evaluate = evals.get(task.id)
       records[index] = await scoreAttempt({
         attemptDir: ref.dir,
         task,
@@ -626,6 +641,7 @@ export async function scoreAll(
         usage: meta.usage,
         infra: meta.infra,
         ...(meta.infraDetail === undefined ? {} : { infraDetail: meta.infraDetail }),
+        ...(evaluate === undefined ? {} : { evaluate }),
       })
     }
   }

@@ -1,4 +1,4 @@
-import type { ArmId } from './arms.ts'
+import { CASCIVO_SAFE_TOOLS, SHADCN_SAFE_TOOLS, type ArmId } from './arms.ts'
 import { aggregate, INFRA_THRESHOLD, type AggregateRow } from './eval/aggregate.ts'
 import type { EvalRun } from './eval/results.ts'
 import type { AgentUsage } from './result.ts'
@@ -92,11 +92,12 @@ export interface EvalDocRun {
 const percent = (n: number | null) => (n === null ? '—' : `${Math.round(n * 100)}%`)
 const usd = (n: number | null) => (n === null ? '—' : `$${n.toFixed(2)}`)
 
+/** The README's arm table, in prose. Tools that run a process are never offered (spec §2). */
 const ARM_NOTES: Record<string, string> = {
-  cascivo:
-    'a cascivo starter app and the cascivo MCP server (`create_app`, `list_blocks`, `compose_app`)',
-  'cascivo-bare': 'a cascivo starter app and no MCP server: the gap to `cascivo` is the AI context',
-  shadcn: "a shadcn/ui + Tailwind starter and shadcn's official MCP server, the control",
+  cascivo: `the cascivo scaffold with its AI context files (\`AGENTS.md\`, \`CLAUDE.md\`), \`AGENTS.md\` preloaded in the system prompt, and the ${CASCIVO_SAFE_TOOLS.length} read-only tools of the cascivo MCP server built from this checkout`,
+  'cascivo-bare':
+    'the same scaffold without `AGENTS.md`, `CLAUDE.md` and `.mcp.json`, and no MCP server: the gap to `cascivo` is the value of the AI context',
+  shadcn: `the shadcn Vite starter (the shadcn CLI version is in the table above) with every component added, and the ${SHADCN_SAFE_TOOLS.length} read-only tools of the shadcn MCP server: the control`,
 }
 
 function mean(values: number[]): number | null {
@@ -231,8 +232,9 @@ export function evalDoc(
 > \`apps/bench/agent/README.md\`. Raw results: \`${code(source)}\`.
 
 How well an agent builds a working, accessible app from a plain-language brief with cascivo, against
-the same brief with shadcn/ui. Every attempt starts from an empty starter project, runs \`claude -p\`
-headless with only file tools, and is scored on what it leaves behind.
+the same brief with shadcn/ui. Every attempt starts from its arm's starter project (see Arms) and
+runs \`claude -p --bare --restricted\` headless: the \`Read\` and \`Edit\` file tools inside its own
+directory, no shell, and only MCP tools that start no process. It is scored on what it leaves behind.
 
 ${sourceTable}
 ${totalSpend}

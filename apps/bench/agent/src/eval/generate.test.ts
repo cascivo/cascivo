@@ -24,6 +24,9 @@ const FAKE_BIN = join(HERE, '__fixtures__', 'bin')
 
 let root: string
 let template: string
+/** The cascivo arm's starter: the plain one plus the AGENTS.md generate preloads. */
+let cascivoTemplate: string
+const CONTEXT = 'cascivo context: use the layer contract'
 const realPath = process.env['PATH']
 const FAKE_VARS = [
   'FAKE_CLAUDE_MODE',
@@ -44,6 +47,11 @@ beforeAll(() => {
   mkdirSync(join(template, 'node_modules', 'dep'), { recursive: true })
   writeFileSync(join(template, 'package.json'), '{"name":"starter"}')
   writeFileSync(join(template, 'node_modules', 'dep', 'index.js'), '')
+  cascivoTemplate = join(root, 'cascivo-template')
+  mkdirSync(cascivoTemplate)
+  writeFileSync(join(cascivoTemplate, 'package.json'), '{"name":"starter"}')
+  writeFileSync(join(cascivoTemplate, 'AGENTS.md'), CONTEXT)
+  writeFileSync(join(cascivoTemplate, 'CLAUDE.md'), '@AGENTS.md')
 })
 
 afterEach(() => {
@@ -57,7 +65,10 @@ afterAll(() => {
 
 // Preparing a starter installs a dependency tree; the tests only need its shape.
 const deps = {
-  prepareStarter: (): Starter => ({ template, nodeModules: join(root, 'unused') }),
+  prepareStarter: (arm: string): Starter => ({
+    template: arm === 'cascivo' ? cascivoTemplate : template,
+    nodeModules: join(root, 'unused'),
+  }),
   log: () => {},
 }
 
@@ -146,6 +157,46 @@ describe('generate', () => {
     rmSync(log)
   })
 
+  // `--bare` skips CLAUDE.md discovery: the cascivo arm gets its AGENTS.md as an adopter's
+  // Claude Code would preload it, and no other arm gets any.
+  it("appends the cascivo starter's AGENTS.md to the cascivo arm's system prompt only", async () => {
+    const outDir = out()
+    const log = join(root, 'context.log')
+    process.env['FAKE_CLAUDE_LOG'] = log
+    await generate({ ...base(outDir), arms: ['cascivo', 'cascivo-bare', 'shadcn'] }, deps)
+    const sessions = readFileSync(log, 'utf8').split('SESSION ').slice(1)
+    rmSync(log)
+    expect(sessions).toHaveLength(3)
+    const [cascivo = '', bare = '', shadcn = ''] = sessions
+    expect(cascivo).toContain(`cwd=${attemptDir(outDir, 'cascivo')}`)
+    const flag = cascivo.split('\n').indexOf('ARG --append-system-prompt-file')
+    expect(flag).toBeGreaterThan(-1)
+    // Outside the attempt, so the session's own Edit of AGENTS.md cannot reach it.
+    const file = cascivo.split('\n')[flag + 1]?.slice('ARG '.length) ?? ''
+    expect(file.startsWith(outDir)).toBe(false)
+    expect(cascivo).toContain(`\nCONTEXT ${CONTEXT}\n`)
+    for (const other of [bare, shadcn]) {
+      expect(other).not.toContain('--append-system-prompt')
+      expect(other).not.toContain('CONTEXT')
+    }
+  })
+
+  it('refuses a cascivo starter without AGENTS.md before any session runs', async () => {
+    const outDir = out()
+    const log = join(root, 'no-context.log')
+    process.env['FAKE_CLAUDE_LOG'] = log
+    await expect(
+      generate(
+        { ...base(outDir), arms: ['cascivo-bare', 'cascivo'] },
+        {
+          ...deps,
+          prepareStarter: () => ({ template, nodeModules: '' }),
+        },
+      ),
+    ).rejects.toThrow(/cascivo starter has no AGENTS\.md/)
+    expect(existsSync(log)).toBe(false)
+  })
+
   // No arm can list a directory (`--bare --restricted`), so each is told what its starter holds.
   describe('the project file list', () => {
     const header = 'Project files (the working directory):'
@@ -216,10 +267,7 @@ describe('generate', () => {
 
   it('leaves no node_modules in a cascivo attempt', async () => {
     const outDir = out()
-    await generate(
-      { ...base(outDir), arms: ['cascivo'] },
-      { ...deps, prepareStarter: () => ({ template: null, nodeModules: '' }) },
-    )
+    await generate({ ...base(outDir), arms: ['cascivo'] }, deps)
 
     const dir = attemptDir(outDir, 'cascivo')
     expect(existsSync(join(dir, 'src', 'main.tsx'))).toBe(true)
@@ -234,10 +282,7 @@ describe('generate', () => {
     const cli = join(REPO, 'packages', 'cli')
     process.env['FAKE_CLAUDE_WRITE'] = join('node_modules', 'cascivo', name)
     try {
-      await generate(
-        { ...base(outDir), arms: ['cascivo'] },
-        { ...deps, prepareStarter: () => ({ template: null, nodeModules: '' }) },
-      )
+      await generate({ ...base(outDir), arms: ['cascivo'] }, deps)
       expect(existsSync(join(cli, name))).toBe(false)
     } finally {
       rmSync(join(cli, name), { force: true })
@@ -535,6 +580,18 @@ await generate(${JSON.stringify(base(outDir))}, {
           // Already gone.
         }
       }
+    }
+  })
+
+  it('rejects a model, arm or task listed twice before running anything', async () => {
+    for (const over of [
+      { models: ['claude-haiku-5-5', 'claude-haiku-5-5'] },
+      { arms: ['cascivo-bare', 'cascivo-bare'] as GenerateOptions['arms'] },
+      { tasks: ['admin-console', 'admin-console'] },
+    ]) {
+      const outDir = out()
+      await expect(generate({ ...base(outDir), ...over }, deps)).rejects.toThrow(/twice/)
+      expect(existsSync(outDir)).toBe(false)
     }
   })
 

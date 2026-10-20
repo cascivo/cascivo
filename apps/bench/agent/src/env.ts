@@ -106,9 +106,17 @@ export function removeStaleBuilds(dir: string, prefix: string): void {
   if (!existsSync(dir)) return
   const cutoff = Date.now() - 3_600_000
   for (const name of readdirSync(dir)) {
+    if (!name.startsWith(prefix)) continue
     const path = join(dir, name)
-    if (name.startsWith(prefix) && statSync(path).mtimeMs < cutoff)
-      rmSync(path, { recursive: true, force: true })
+    let mtimeMs: number
+    try {
+      mtimeMs = statSync(path).mtimeMs
+    } catch (error) {
+      // Another process's renameIntoPlace removed it since readdirSync listed it.
+      if (error instanceof Error && 'code' in error && error.code === 'ENOENT') continue
+      throw error
+    }
+    if (mtimeMs < cutoff) rmSync(path, { recursive: true, force: true })
   }
 }
 

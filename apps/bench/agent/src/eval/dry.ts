@@ -97,16 +97,25 @@ export async function dryRunCanaries(
   }
   await Promise.all(Array.from({ length: Math.min(CONCURRENCY, jobs.length) }, worker))
 
-  const wrong = results.filter((r) =>
-    r.fixture === 'broken' ? r.status === 'pass' : r.status !== 'pass',
-  )
-  if (wrong.length > 0) {
-    const lines = wrong.map((r) =>
-      r.fixture === 'broken'
-        ? `${r.task}/broken passed: the EVAL cannot see the behaviour it removes`
-        : `${r.task}/${r.fixture} is ${r.status}: ${r.detail}`,
-    )
-    throw new Error(`Canaries disagree with their EVALs:\n${lines.join('\n')}`)
-  }
+  const lines = disagreements(results)
+  if (lines.length > 0) throw new Error(`Canaries disagree with their EVALs:\n${lines.join('\n')}`)
   return results.map(({ task, fixture, status }) => ({ task, fixture, status }))
+}
+
+/**
+ * Why each canary disagrees with its EVAL, if it does. A good fixture must pass. A broken one
+ * must fail in the EVAL itself: one that fails to build or type-check proves nothing about the
+ * EVAL, which never ran.
+ */
+export function disagreements(results: readonly (CanaryResult & { detail: string })[]): string[] {
+  return results.flatMap((r) => {
+    if (r.fixture !== 'broken')
+      return r.status === 'pass' ? [] : [`${r.task}/${r.fixture} is ${r.status}: ${r.detail}`]
+    if (r.status === 'fail-eval') return []
+    return [
+      r.status === 'pass'
+        ? `${r.task}/broken passed: the EVAL cannot see the behaviour it removes`
+        : `${r.task}/broken is ${r.status}, not fail-eval: its EVAL never judged it (${r.detail})`,
+    ]
+  })
 }

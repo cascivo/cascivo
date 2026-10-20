@@ -6,8 +6,9 @@
  *   how an agent built an app with cascivo before blueprints. Internal comparison only.
  * - `cascivo`: the cascivo MCP server. In the legacy `bench` the agent also has `compose_app`
  *   and can describe the app as pages of registry blocks (the old `blueprints` arm); in the
- *   published eval it starts from the cascivo scaffold with its AI context files, has only the
- *   server's read tools (CASCIVO_SAFE_TOOLS), and extends the app itself.
+ *   published eval it starts from the cascivo scaffold with its AI context files, gets the
+ *   scaffold's `AGENTS.md` preloaded in its system prompt, has only the server's read tools
+ *   (CASCIVO_SAFE_TOOLS), and extends the app itself.
  * - `cascivo-bare`: a cascivo starter app and no MCP server, so the gap to `cascivo` is the
  *   value of cascivo's AI context.
  * - `shadcn`: a shadcn/ui + Tailwind starter and shadcn's official MCP server, the control.
@@ -145,12 +146,16 @@ function mcpTools(arm: ArmId, executingTools: boolean): { allow: string[]; deny:
  * @param opts.executingTools Also allow the cascivo tools that run the cascivo CLI
  *   (`create_app`, `compose_app`, …). Only the legacy local `bench` sets it: its arms are built
  *   on those tools, and it never runs in the eval's `generate` job.
+ * @param opts.appendSystemPrompt A file whose text is appended to the system prompt. `--bare`
+ *   skips CLAUDE.md discovery, so this is how the eval's cascivo arm gets the scaffold's
+ *   `AGENTS.md` preloaded, as an adopter's Claude Code would through `CLAUDE.md` → `@AGENTS.md`.
+ *   Not `--add-dir`, which would widen what `--restricted` lets the file tools reach.
  */
 export function claudeArgs(
   arm: ArmId,
   mcpConfig: string | null,
   model: string | null,
-  opts?: { stream?: boolean; executingTools?: boolean },
+  opts?: { stream?: boolean; executingTools?: boolean; appendSystemPrompt?: string },
 ): string[] {
   if (arm !== 'cascivo-bare' && mcpConfig === null)
     throw new Error(`arm ${arm} needs an MCP config`)
@@ -169,6 +174,11 @@ export function claudeArgs(
     // Without a config, strict mode is what keeps ambient servers out of cascivo-bare.
     '--strict-mcp-config',
     ...(arm === 'cascivo-bare' || mcpConfig === null ? [] : ['--mcp-config', mcpConfig]),
+    // CLI 2.1.304 names this flag in `--bare`'s help, reads the file at start and refuses a
+    // missing one ("Append system prompt file not found").
+    ...(opts?.appendSystemPrompt === undefined
+      ? []
+      : ['--append-system-prompt-file', opts.appendSystemPrompt]),
     '--permission-mode',
     'acceptEdits',
     '--allowedTools',
