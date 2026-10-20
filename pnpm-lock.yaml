@@ -327,6 +327,12 @@ importers:
 
   apps/bench/agent:
     devDependencies:
+      '@axe-core/playwright':
+        specifier: 'catalog:'
+        version: 4.11.3(playwright-core@1.61.0)
+      '@playwright/test':
+        specifier: 'catalog:'
+        version: 1.61.0
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.2
