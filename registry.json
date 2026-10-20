@@ -24450,7 +24450,7 @@
         "flex.tsx": "sha256-5e7b831f678ef3ff6c3652ef9db9dd21d5927f3f6440773e54ce30d8ffe971d2",
         "index.ts": "sha256-866e136d307ce28ddd698039d7c2234f14aeadeaa877ec2afaaf40b9634bed94",
         "flex.module.css": "sha256-cb5c86471738605bfa5fc3e043e84b4ac8f93bc9f4096e7a3542d4c72130d5df",
-        "flex.meta.ts": "sha256-37254f812ae44fe7c0cd3bc988c917bbb55be9283d2862e22d57ef5af2cbffae"
+        "flex.meta.ts": "sha256-69cfd77dab8eda96700a9d571f5b65997c583ae44adc3e72a18d5559992eac41"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {

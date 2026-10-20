@@ -16817,6 +16817,15 @@
       },
       "props": [
         {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Grid items",
+          "schema": {
+            "kind": "node"
+          }
+        },
+        {
           "name": "min",
           "type": "string",
           "required": false,
@@ -16870,6 +16879,15 @@
         "flexibility": []
       },
       "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Content to center",
+          "schema": {
+            "kind": "node"
+          }
+        },
         {
           "name": "maxWidth",
           "default": "48rem",
@@ -17041,6 +17059,15 @@
         "flexibility": []
       },
       "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Items laid out along the flex axis",
+          "schema": {
+            "kind": "node"
+          }
+        },
         {
           "name": "direction",
           "default": "vertical",
@@ -19585,7 +19612,7 @@
         {
           "name": "items",
           "description": "The items to render.",
-          "type": "{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]",
+          "type": "{ label: string; value?: string; id?: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]",
           "required": true,
           "schema": {
             "kind": "node"
