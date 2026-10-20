@@ -7,6 +7,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { classifyProp, contextFor, pickCanonical, type JsonSchema } from './catalog-model.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = join(HERE, '..', '..')
@@ -33,35 +34,33 @@ interface Registry {
   components: RegistryEntry[]
 }
 
-function parseUnionLiterals(typeStr: string): string[] | null {
-  const branches = typeStr.split('|').map((s) => s.trim())
-  const literals: string[] = []
-  for (const branch of branches) {
-    const quoted = branch.match(/^['"](.+)['"]$/)
-    if (quoted?.[1] !== undefined) {
-      literals.push(quoted[1])
-      continue
-    }
-    if (/^[a-zA-Z_$][\w$-]*$/.test(branch)) {
-      literals.push(branch)
-      continue
-    }
-    return null
+const TRANSLATION_REF = { $ref: '#/$defs/TranslationRef' }
+
+/**
+ * `validateView` accepts a `{ $t }` TranslationRef for any top-level prop, and strings nested in
+ * data props are translatable too, so view.v1 widens both. Enums stay exact (a `$t` there is not
+ * a literal). Specific to view.v1: catalog.v1 and the A2UI catalog keep the strict schema.
+ */
+function allowTranslationRefs(node: unknown): unknown {
+  if (Array.isArray(node)) return node.map(allowTranslationRefs)
+  if (typeof node !== 'object' || node === null) return node
+  const o = node as Record<string, unknown>
+  if (o['type'] === 'string' && !('enum' in o) && !('const' in o)) {
+    return { anyOf: [o, TRANSLATION_REF] }
   }
-  return literals
+  return Object.fromEntries(Object.entries(o).map(([k, v]) => [k, allowTranslationRefs(v)]))
 }
 
-function propTypeToSchema(typeStr: string): Record<string, unknown> | null {
-  const t = typeStr.trim()
-  if (t === 'string') return { type: 'string' }
-  if (t === 'number') return { type: 'number' }
-  if (t === 'boolean') return { type: 'boolean' }
-  const literals = parseUnionLiterals(t)
-  if (literals) return { type: 'string', enum: literals }
-  return null // complex type — no constraint
+/** A top-level prop schema: the nested widening, then the whole value may be a TranslationRef. */
+function viewPropSchema(schema: JsonSchema): JsonSchema {
+  const { description: _description, ...rest } = schema
+  const inner = rest['type'] === 'string' && !('enum' in rest) ? rest : allowTranslationRefs(rest)
+  return { anyOf: [inner as JsonSchema, TRANSLATION_REF] }
 }
 
 const registry: Registry = JSON.parse(readFileSync(REGISTRY_PATH, 'utf-8'))
+// One entry per meta.name, node-usable `component` entry first (AppShell/Stack share names).
+const canonical = pickCanonical(registry.components)
 
 const componentNames = registry.components.map((c) => c.meta.name).sort()
 
@@ -83,7 +82,8 @@ const eventRefPattern = '^\\$actions\\.|^\\$state\\.(set|toggle)\\.'
 
 const propValue = {
   $anchor: 'PropValue',
-  oneOf: [
+  // anyOf, not oneOf: a { $t } TranslationRef is also a plain object, so exactly-one never held.
+  anyOf: [
     { type: 'string' },
     { type: 'number' },
     { type: 'boolean' },
@@ -95,14 +95,16 @@ const propValue = {
 }
 
 // Per-component anyOf branches constraining props
-const componentBranches = registry.components.map((entry) => {
+const componentBranches = [...canonical.values()].map((entry) => {
   const name = entry.meta.name
+  const ctx = contextFor(entry.meta.typeDefs)
   const props: Record<string, unknown> = {}
   const required: string[] = []
 
-  for (const prop of entry.meta.props ?? []) {
-    const schema = propTypeToSchema(prop.type)
-    if (schema) props[prop.name] = schema
+  for (const prop of entry.meta.props) {
+    // Slots, events and omitted props get no constraint: children is a node field, not a prop.
+    const c = classifyProp(prop, ctx)
+    if (c.kind === 'data') props[prop.name] = viewPropSchema(c.schema)
     if (prop.required && prop.default === undefined) required.push(prop.name)
   }
 
@@ -227,28 +229,10 @@ function classifyPropType(typeStr: string): { enum?: string[]; primitives?: Prim
   return { enum: values }
 }
 
-// Prefer the node-usable `component` entry when a meta.name is shared (AppShell/Stack).
-const TYPE_RANK: Record<string, number> = {
-  component: 0,
-  block: 1,
-  chart: 2,
-  section: 3,
-  layout: 4,
-}
-const canonical = new Map<string, RegistryEntry>()
-for (const entry of registry.components) {
-  const e = entry as RegistryEntry & { name?: string; type?: string }
-  const key = e.meta.name
-  const current = canonical.get(key) as (RegistryEntry & { type?: string }) | undefined
-  if (!current || (TYPE_RANK[e.type ?? ''] ?? 9) < (TYPE_RANK[current.type ?? ''] ?? 9)) {
-    canonical.set(key, entry)
-  }
-}
-
 const propSchemas: Record<string, unknown[]> = {}
 for (const name of [...canonical.keys()].sort()) {
   const entry = canonical.get(name)!
-  propSchemas[name] = (entry.meta.props ?? []).map((p) => {
+  propSchemas[name] = entry.meta.props.map((p) => {
     const { enum: enumValues, primitives } = classifyPropType(p.type)
     return {
       name: p.name,

@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import Ajv2020 from 'ajv/dist/2020'
 import { describe, expect, it } from 'vitest'
 import { componentNames } from './component-names.ts'
+import { TS_TYPE_NAME, enums } from './test-utils/enum-walk.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const CATALOG_PATH = join(HERE, '..', 'schema', 'catalog.v1.json')
@@ -25,17 +26,6 @@ const catalog = JSON.parse(readFileSync(CATALOG_PATH, 'utf-8')) as {
 }
 const registry = JSON.parse(readFileSync(REGISTRY_PATH, 'utf-8')) as {
   components: { type?: string; meta: { name: string; props?: { name: string }[] } }[]
-}
-
-function enums(node: unknown, out: unknown[][] = []): unknown[][] {
-  if (Array.isArray(node)) node.forEach((n) => enums(n, out))
-  else if (typeof node === 'object' && node !== null) {
-    for (const [k, v] of Object.entries(node)) {
-      if (k === 'enum' && Array.isArray(v)) out.push(v)
-      else enums(v, out)
-    }
-  }
-  return out
 }
 
 describe('catalog.v1.json', () => {
@@ -88,9 +78,8 @@ describe('catalog.v1.json', () => {
   })
 
   it('never leaks TS type names into an enum', () => {
-    const bad = /^(React\.)?React(Node|Element)$|^boolean$|^string$|^number$/
     for (const e of enums(catalog)) {
-      for (const m of e) expect(typeof m === 'string' && bad.test(m)).toBe(false)
+      for (const m of e) expect(typeof m === 'string' && TS_TYPE_NAME.test(m)).toBe(false)
     }
   })
 
