@@ -104,7 +104,8 @@ const componentBranches = [...canonical.values()].map((entry) => {
   for (const prop of entry.meta.props) {
     // Slots, events and omitted props get no constraint: children is a node field, not a prop.
     const c = classifyProp(prop, ctx)
-    if (c.kind === 'data') props[prop.name] = viewPropSchema(c.schema)
+    if (c.kind !== 'data') continue
+    props[prop.name] = viewPropSchema(c.schema)
     if (prop.required && prop.default === undefined) required.push(prop.name)
   }
 
@@ -117,12 +118,19 @@ const componentBranches = [...canonical.values()].map((entry) => {
   // eslint-disable-next-line unicorn/no-thenable -- JSON Schema uses 'then' as a standard keyword
   branch['then'] = {
     properties: {
-      props: {
-        type: 'object',
-        properties: props,
-        ...(required.length > 0 ? { required } : {}),
-      },
+      props: { type: 'object', properties: props },
     },
+    // A required data prop may arrive through `props` or `bind`; only data props can be required.
+    ...(required.length > 0
+      ? {
+          allOf: required.map((n) => ({
+            anyOf: [
+              { properties: { props: { required: [n] } }, required: ['props'] },
+              { properties: { bind: { required: [n] } }, required: ['bind'] },
+            ],
+          })),
+        }
+      : {}),
   }
   return branch
 })

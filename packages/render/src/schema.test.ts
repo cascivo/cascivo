@@ -147,6 +147,35 @@ describe('view.v1.json schema artifact', () => {
       expect(validate(config), JSON.stringify(validate.errors)).toBe(true)
     })
 
+    const node = (n: Record<string, unknown>) => ({
+      version: 1,
+      view: { regions: { main: [n] } },
+    })
+
+    it('does not require slot props (AppShell with node children and no props.header)', () => {
+      const validate = validator()
+      const cfg = node({ component: 'AppShell', children: [{ component: 'Separator' }] })
+      expect(validate(cfg), JSON.stringify(validate.errors)).toBe(true)
+    })
+
+    it('satisfies a required data prop via bind (Select.options)', () => {
+      const validate = validator()
+      const cfg = node({ component: 'Select', bind: { options: '$data.opts' } })
+      expect(validate(cfg), JSON.stringify(validate.errors)).toBe(true)
+    })
+
+    it('satisfies a required data prop via props (Select.options)', () => {
+      const validate = validator()
+      const cfg = node({ component: 'Select', props: { options: [{ value: 'a', label: 'A' }] } })
+      expect(validate(cfg), JSON.stringify(validate.errors)).toBe(true)
+    })
+
+    it('rejects a node with neither props nor bind for a required data prop', () => {
+      const validate = validator()
+      expect(validate(node({ component: 'Select', props: { label: 'x' } }))).toBe(false)
+      expect(validate(node({ component: 'Select' }))).toBe(false)
+    })
+
     it('still rejects a wrong-typed prop', () => {
       const validate = validator()
       const config = {
