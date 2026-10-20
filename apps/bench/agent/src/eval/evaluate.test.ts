@@ -238,6 +238,17 @@ describe('scoreAttempt', () => {
     },
   )
 
+  // `/`, its `#/` redirect and an in-page `#details` anchor are one page; `#/about` is another.
+  it(
+    'scans each page once however many URLs the eval reached it by',
+    { skip: slow, timeout: SLOW_MS },
+    async () => {
+      const record = await score(attempt('hash-router'), 'anchor-and-redirect')
+      expect(record.status, record.detail ?? '').toBe('pass')
+      expect(record.axe).toEqual({ critical: 2, serious: 0, moderate: 0, minor: 0 })
+    },
+  )
+
   it('finds an app in a subdirectory', { skip: slow, timeout: SLOW_MS }, async () => {
     const record = await score(attempt('pass', 'my-app'), 'visits-two-pages')
     expect(record.status, record.detail ?? '').toBe('pass')

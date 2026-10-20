@@ -21,6 +21,7 @@ import { PUBLISHED_ARMS, type PublishedArmId } from '../arms.ts'
 import { CLI } from '../env.ts'
 import { parseClaudeResult, type AgentUsage } from '../result.ts'
 import { countAudit, countTscErrors, findApp } from '../score.ts'
+import { pageKey } from '../../tasks/_lib.ts'
 import { classify, DETAIL_MAX, type AttemptRecord, type AxeCounts } from './results.ts'
 import { prepareStarter, type Starter } from './starters.ts'
 import { loadTasks, TASK_IDS, type EvalTask } from './tasks.ts'
@@ -310,12 +311,16 @@ async function launchChromium(): Promise<Browser> {
   return chromium.launch(executablePath === undefined ? {} : { executablePath })
 }
 
-/** Null when the EVAL passed; otherwise its message. Every same-origin URL it reached goes in `visited`. */
+/**
+ * Null when the EVAL passed; otherwise its message. Each same-origin page it reached goes in
+ * `visited`, keyed as `findOnAnyPage` keys pages: an anchor, a `#/` redirect or a trailing slash
+ * is the same page, and scanning it again would count its violations twice.
+ */
 async function runEval(
   browser: Browser,
   evaluate: Evaluate,
   baseUrl: string,
-  visited: Set<string>,
+  visited: Map<string, string>,
 ): Promise<string | null> {
   const origin = new URL(baseUrl).origin
   const context = await browser.newContext()
@@ -323,7 +328,9 @@ async function runEval(
     page.on('framenavigated', (frame) => {
       if (frame !== page.mainFrame()) return
       const url = frame.url()
-      if (url.startsWith('http') && new URL(url).origin === origin) visited.add(url)
+      if (!url.startsWith('http') || new URL(url).origin !== origin) return
+      const key = pageKey(url)
+      if (!visited.has(key)) visited.set(key, url)
     })
   }
   // Popups and extra tabs are pages the EVAL visited too.
@@ -344,7 +351,7 @@ async function runEval(
 }
 
 /**
- * Axe on a fresh load of each visited URL, summed by impact; null when nothing was scanned.
+ * Axe on a fresh load of each visited page, summed by impact; null when nothing was scanned.
  * Counts violated rules per page, as the runner's a11y suite does.
  */
 async function runAxe(browser: Browser, urls: string[]): Promise<AxeCounts | null> {
@@ -403,9 +410,9 @@ async function evalStep(
     const notReady = await waitForPreview(baseUrl, preview, () => output)
     if (notReady !== null) return { failure: notReady, axe: null }
     browser = await launchChromium()
-    const visited = new Set<string>()
+    const visited = new Map<string, string>()
     const failure = await runEval(browser, evaluate, baseUrl, visited)
-    return { failure, axe: await runAxe(browser, [...visited]) }
+    return { failure, axe: await runAxe(browser, [...visited.values()]) }
   } finally {
     await browser?.close().catch(() => {})
     killGroup(preview)
