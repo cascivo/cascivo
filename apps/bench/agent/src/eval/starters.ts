@@ -15,7 +15,16 @@ import {
 } from 'node:fs'
 import { dirname, join } from 'node:path'
 import type { PublishedArmId } from '../arms.ts'
-import { CACHE, CLI, pinToTarballs, prepare, run, WITHOUT_API_KEY } from '../env.ts'
+import {
+  CACHE,
+  CLI,
+  pinToTarballs,
+  prepare,
+  removeStaleBuilds,
+  renameIntoPlace,
+  run,
+  WITHOUT_API_KEY,
+} from '../env.ts'
 
 /**
  * Pinned so the control stays comparable between runs (`npm view shadcn version`, 2026-10-20).
@@ -34,8 +43,13 @@ export const SHADCN_VERSION = '4.22.1'
  *
  * `--prefix` is the config's own directory: npx otherwise resolves `shadcn` from the session's
  * directory first, so a `node_modules/shadcn` the agent wrote there would run whenever the CLI
- * restarts the server (it restarts a server that exits mid-session). The server still runs in
- * the session's directory and reads its components.json.
+ * restarts the server (it restarts a server that exits mid-session).
+ *
+ * `--cwd` is the same directory. In 4.22.1 `shadcn mcp` uses it only to load `.env`,
+ * `.env.local`, `.env.development` and `.env.development.local` through dotenvx, which runs a
+ * `$(…)` in a value: from the session's directory, an agent-written `.env` would run when the
+ * server starts. The tools read components.json from the process's working directory, which is
+ * still the session's.
  */
 export function shadcnMcpConfig(path: string): string {
   writeFileSync(
@@ -53,6 +67,8 @@ export function shadcnMcpConfig(path: string): string {
               '-y',
               `shadcn@${SHADCN_VERSION}`,
               'mcp',
+              '--cwd',
+              dirname(path),
             ],
           },
         },
@@ -106,6 +122,7 @@ function cascivoScaffold(log: (line: string) => void): { full: string; bare: str
   if (existsSync(dir)) return { full, bare }
 
   log('scaffolding the cascivo starters…')
+  removeStaleBuilds(CACHE, 'scaffold-')
   const build = mkdtempSync(join(CACHE, 'scaffold-'))
   try {
     run('node', [CLI, 'create', 'app', '--yes'], build)
@@ -116,7 +133,7 @@ function cascivoScaffold(log: (line: string) => void): { full: string; bare: str
     renameSync(app, join(build, 'bare'))
     for (const file of ['AGENTS.md', 'CLAUDE.md'])
       rmSync(join(build, 'bare', file), { force: true })
-    renameSync(build, dir)
+    renameIntoPlace(build, dir)
   } catch (error) {
     rmSync(build, { recursive: true, force: true })
     throw error

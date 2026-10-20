@@ -8,9 +8,10 @@ name: Evals
 #   generate  (one per model) holds ANTHROPIC_API_KEY and runs the `claude -p` sessions. It never builds,
 #             installs or executes anything a session wrote, and a session cannot run anything
 #             either: `--restricted` keeps Read and Edit inside the session's directory and removes
-#             Bash, and only MCP tools that start no process are allowed (src/arms.ts). Any process
-#             in this job could read the key from /proc, so that allowlist is the boundary. The
-#             sessions are scanned for the key before they are uploaded.
+#             Bash, and only MCP tools that start no process are allowed (src/arms.ts). The MCP
+#             servers load no code or .env from the session's directory (src/eval/starters.ts).
+#             Any process in this job could read the key from /proc, so those are the boundary.
+#             The sessions are scanned for the key before they are uploaded.
 #   score     (one per model) builds and drives what generate wrote. No secrets, read-only contents.
 #   publish   holds the write token, runs no generated code, opens one PR for a valid run only.
 #

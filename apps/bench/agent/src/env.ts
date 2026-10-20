@@ -10,7 +10,16 @@
  * blueprint app imports (`@cascivo/charts` included).
  */
 import { execFileSync } from 'node:child_process'
-import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  renameSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -89,6 +98,34 @@ export function pinToTarballs(manifestPath: string): void {
   writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n')
 }
 
+/**
+ * Removes the `<prefix>*` build directories under `dir` that are over an hour old: a build that
+ * died left them, and none takes that long. A younger one may be another process's build.
+ */
+export function removeStaleBuilds(dir: string, prefix: string): void {
+  if (!existsSync(dir)) return
+  const cutoff = Date.now() - 3_600_000
+  for (const name of readdirSync(dir)) {
+    const path = join(dir, name)
+    if (name.startsWith(prefix) && statSync(path).mtimeMs < cutoff)
+      rmSync(path, { recursive: true, force: true })
+  }
+}
+
+/**
+ * Renames a finished build to `target`. If another build got there first, its result is just as
+ * complete (only a rename creates `target`), so it is kept and this one removed.
+ */
+export function renameIntoPlace(build: string, target: string): void {
+  try {
+    renameSync(build, target)
+  } catch (error) {
+    const code = isRecord(error) ? error['code'] : undefined
+    if ((code !== 'ENOTEMPTY' && code !== 'EEXIST') || !existsSync(target)) throw error
+    rmSync(build, { recursive: true, force: true })
+  }
+}
+
 /** The installed `node_modules` every run links. Built on first use, or again with `fresh`. */
 export function prepare(fresh: boolean, log: (line: string) => void): string {
   for (const file of [CLI, MCP, join(REPO, 'packages/react/dist')]) {
@@ -102,6 +139,7 @@ export function prepare(fresh: boolean, log: (line: string) => void): string {
   // where it was cached before.
   for (const stale of ['tarballs', 'deps', 'scaffold', 'bare'])
     rmSync(join(CACHE, stale), { recursive: true, force: true })
+  removeStaleBuilds(CACHE, 'scaffold-')
   const tarballs = join(CACHE, 'tarballs')
   mkdirSync(tarballs, { recursive: true })
   log(`packing ${PACKAGES.length} packages…`)

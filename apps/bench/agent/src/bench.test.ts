@@ -139,6 +139,8 @@ describe('arms', () => {
     for (const arm of ARMS) {
       const args = claudeArgs(arm, arm === 'cascivo-bare' ? null : 'mcp.json', null)
       expect(args, arm).toContain('--restricted')
+      // The transcript can hold anything the session read; nothing is kept under ~/.claude.
+      expect(args, arm).toContain('--no-session-persistence')
       expect(args, arm).toEqual(expect.arrayContaining(['--bare', '--strict-mcp-config']))
     }
   })
@@ -149,6 +151,7 @@ describe('arms', () => {
       'json',
       '--bare',
       '--restricted',
+      '--no-session-persistence',
       '--strict-mcp-config',
       '--mcp-config',
       'mcp.json',

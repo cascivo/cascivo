@@ -163,6 +163,9 @@ export function claudeArgs(
     // Read and Edit only inside the working directory, never through a symlink out of it, and no
     // Bash (CLI 2.1.304, checked against a scripted API).
     '--restricted',
+    // The transcript can hold anything the session read: the harness keeps its own copy, and
+    // nothing is saved under ~/.claude.
+    '--no-session-persistence',
     // Without a config, strict mode is what keeps ambient servers out of cascivo-bare.
     '--strict-mcp-config',
     ...(arm === 'cascivo-bare' || mcpConfig === null ? [] : ['--mcp-config', mcpConfig]),

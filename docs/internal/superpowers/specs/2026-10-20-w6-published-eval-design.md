@@ -209,7 +209,9 @@ It never runs on `pull_request` or `push`. All actions are SHA-pinned, as in
      started in this job can read the key from `/proc`, so a session cannot start one either: no
      Bash, `Read` and `Edit` confined to the attempt directory by `--restricted` (no symlink out of
      it; nothing is linked into it during generate), and only MCP tools that start no process
-     (§2). MCP servers start without the key.
+     (§2). MCP servers start without the key, and neither loads code or `.env` files from the
+     session's directory: shadcn's runs with `npx --prefix` and `--cwd` set to the harness's
+     config directory, because it loads `.env` through dotenvx, which runs `$(…)` in a value.
    - Scans every attempt for the key after its session: a hit removes the attempt's files and
      aborts the run. A separate step scans the whole output again, whatever happened to the run,
      and the artifact is uploaded only when that scan is clean.

@@ -625,7 +625,17 @@ describe('MCP configs', () => {
             command: 'env',
             // A harness prefix: npx would otherwise run a `shadcn` the agent wrote into its
             // own node_modules whenever the CLI restarts the server.
-            args: [...strip, 'npx', '--prefix', dir, '-y', `shadcn@${SHADCN_VERSION}`, 'mcp'],
+            args: [
+              ...strip,
+              'npx',
+              '--prefix',
+              dir,
+              '-y',
+              `shadcn@${SHADCN_VERSION}`,
+              'mcp',
+              '--cwd',
+              dir,
+            ],
           },
         },
       })
