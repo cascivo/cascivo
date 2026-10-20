@@ -49,6 +49,14 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/cascivo-sans</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/cascivo-sans/specimen</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/highlights</loc>
     <priority>0.8</priority>
   </url>

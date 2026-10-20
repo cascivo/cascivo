@@ -36,6 +36,7 @@ import { join, extname, normalize } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { gzipSync } from 'node:zlib'
 import { chromium } from '@playwright/test'
+import { FONT_FILES } from '../../apps/site/src/marketing/pages/cascivo-sans/data.ts'
 
 const root = fileURLToPath(new URL('../..', import.meta.url))
 const distDir = join(root, 'apps/site/dist')
@@ -202,9 +203,13 @@ const initial = totals(initialPaths)
 const total = totals(perFile.keys())
 
 // Fonts stay a dist-wide invariant: cascivo self-hosts none, and one appearing anywhere in
-// the build is a regression regardless of which route pulls it.
+// the build is a regression regardless of which route pulls it. The one exception is the
+// Cascivo Sans downloads, by exact name: /cascivo-sans offers them, its CSS is the only one
+// that loads a face, and no other route requests them (scripts/quality/cascivo-sans-page.ts).
+const sanctionedFonts = new Set(FONT_FILES.map((f) => join(distDir, 'fonts/cascivo-sans', f.name)))
 let fontFiles = 0
 for (const f of walkDir(distDir)) {
+  if (sanctionedFonts.has(f)) continue
   if (['.woff', '.woff2', '.ttf', '.otf', '.eot'].includes(extname(f))) {
     fontFiles++
     console.error(`FAIL font in dist: ${f}`)

@@ -1,0 +1,57 @@
+name: Fonts
+
+# Cascivo Sans is built by a Python script, not by the pnpm graph, so ci.yml never sees it:
+# its quality gate, tests and Font Bakery used to run only when someone ran them by hand, and
+# a regressed or stale font passed CI because `regen` only copies whatever is committed.
+
+on:
+  pull_request:
+    paths:
+      - 'fonts/cascivo-sans/**'
+      - 'apps/site/public/fonts/cascivo-sans/**'
+      - 'apps/site/src/marketing/pages/cascivo-sans/**'
+      - '.github/workflows/fonts.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'fonts/cascivo-sans/**'
+      - 'apps/site/public/fonts/cascivo-sans/**'
+      - '.github/workflows/fonts.yml'
+
+concurrency:
+  group: fonts-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cascivo-sans:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: fonts/cascivo-sans
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: fonts/cascivo-sans/requirements.txt
+
+      - name: Install
+        run: pip install -r requirements.txt
+
+      # The build is deterministic, so the committed fonts must be exactly what the source makes
+      - name: Build, and check the committed fonts match the source
+        run: |
+          python3 -I src/build.py
+          git diff --exit-code --stat -- fonts/
+
+      # Strict by default: any quality failure fails the job
+      - name: Lint and quality checks
+        run: python3 -I src/lint.py
+
+      - name: Tests (budgets, interpolation, kerning, comparison data)
+        run: python3 -I -m unittest discover -s src
+
+      - name: Font Bakery
+        run: fontbakery check-universal "fonts/CascivoSans[opsz,wght].ttf" "fonts/CascivoSans-Italic[opsz,wght].ttf"

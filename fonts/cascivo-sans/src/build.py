@@ -1,0 +1,1265 @@
+"""Build Cascivo Sans: six masters -> one variable TTF -> WOFF2 (+ Latin subset, static instances).
+
+    python3 -I src/build.py            # from fonts/cascivo-sans/
+
+Deterministic: same source, same bytes.
+"""
+
+import io
+import math
+import os
+import sys
+import unicodedata
+
+# Reproducible bytes: fontTools stamps head.created/modified from this when it is set.
+os.environ.setdefault('SOURCE_DATE_EPOCH', '1791331200')  # 2026-10-07
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+
+from fontTools import subset  # noqa: E402
+from fontTools.cu2qu import curves_to_quadratic  # noqa: E402
+from fontTools.designspaceLib import AxisDescriptor, DesignSpaceDocument, SourceDescriptor  # noqa: E402
+from fontTools.feaLib.builder import addOpenTypeFeaturesFromString  # noqa: E402
+from fontTools.fontBuilder import FontBuilder  # noqa: E402
+from fontTools.otlLib.builder import buildStatTable  # noqa: E402
+from fontTools.pens.ttGlyphPen import TTGlyphPen  # noqa: E402
+from fontTools.ttLib import TTFont, newTable  # noqa: E402
+from fontTools.ttLib.tables import ttProgram  # noqa: E402
+from fontTools.ttLib.tables.TupleVariation import TupleVariation  # noqa: E402
+from fontTools import varLib  # noqa: E402
+from fontTools.varLib import instancer  # noqa: E402
+import ttfautohint  # noqa: E402
+
+import glyphs as GL  # noqa: E402
+import cyrillic  # noqa: E402  (also registers the Cyrillic drawings)
+import greek  # noqa: E402  (also registers the Greek drawings)
+GEORGIAN = os.environ.get('CASCIVO_GEORGIAN') == '1'  # a draft, not yet shipped (RESEARCH.md section 27)
+if GEORGIAN:
+    import georgian  # noqa: E402,F401  (registers the Georgian drawings)
+ARMENIAN = os.environ.get('CASCIVO_ARMENIAN') == '1'  # a draft, not yet shipped (RESEARCH.md section 33)
+if ARMENIAN:
+    import armenian  # noqa: E402,F401  (registers the Armenian drawings)
+HEBREW = os.environ.get('CASCIVO_HEBREW') == '1'  # a draft, not yet shipped (RESEARCH.md section 34)
+if HEBREW:
+    import hebrew  # noqa: E402,F401  (registers the Hebrew drawings)
+from composites import ALIAS, BOTTOM, CYR_EXT, CYR_LOCL, GREEK_ACCENTED, GREEK_POLY, ITALIC_ONLY, POLY_MARK, SPECIAL, accented_chars, glyph_name, is_cap  # noqa: E402
+from geom import contour_bounds, expand, transform_contour  # noqa: E402
+import kern  # noqa: E402
+from kern import kern_fea  # noqa: E402
+from fontTools.varLib.models import VariationModel  # noqa: E402
+from params import MID_WGHT, BLACK_STEM, THIN_STEM, ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, P  # noqa: E402
+
+FAMILY = 'Cascivo Sans'
+PS = 'CascivoSans'
+VERSION = '0.6.1'
+DIST = os.path.join(HERE, '..', 'fonts')  # not dist/: the repo ignores dist/, and these files ship
+MAX_ERR = 1.5  # cu2qu tolerance in font units: 1.5/1000 em is sub-pixel below ~700px
+IUP_TOLERANCE = 2.0  # gvar deltas the rasterizer can re-infer within 2 units are dropped (section 25)
+
+
+# ---------------------------------------------------------------------------------------------
+# per-master drawing
+# ---------------------------------------------------------------------------------------------
+
+
+class Out:
+    """One master's glyph data: outlines, advances, anchors, composites."""
+
+    def __init__(self, p):
+        self.p = p
+        self.contours = {}
+        self.adv = {}
+        self.anchors = {}
+        self.comps = {}
+        self.cmap = {}
+        self.bounds = {}
+        self.topleft = {}
+        self.shift = {}  # Bold only: how far each letter's outline moved from the interpolated one
+        self.kind = {}  # name -> 'fixed' (own advance), 'mark' or 'tab': glyphs whose spacing is not sidebearings round the ink
+
+
+def italicize(strokes, p):
+    """Slant centerlines around mid-x-height *before* the pen expands them, with the pen's stress
+    axis leaning by the same angle: a drawn italic's curves, not a sheared upright's."""
+    if not p.slant:
+        return strokes
+    yc = p.xh / 2
+    out = []
+    for st in strokes:
+        it = st.transformed(lambda q: (q[0] + (q[1] - yc) * p.slant, q[1]), slant=p.slant)
+        # A square cut on a slanted stem dips below the baseline and pokes above the x-height
+        # (7 units at Regular). Upright vertical stems are cut flat instead, as in any drawn italic.
+        # Decided by segment type, never by value, so every master gets the same structure.
+        if not st.closed:
+            ends = (st.segs[0], st.segs[-1])
+            it.caps = tuple('h' if c == 'b' and e[0] == 'L' and e[1][0] == e[-1][0] else c for c, e in zip(st.caps, ends))
+        out.append(it)
+    return out
+
+
+def italicize_raw(contours, p):
+    """Outlines drawn directly (not as strokes) are sheared around mid-x-height, like strokes."""
+    if not p.slant:
+        return contours
+    yc = p.xh / 2
+    return [transform_contour(c, lambda q: (q[0] + (q[1] - yc) * p.slant, q[1])) for c in contours]
+
+
+def draw_master(p):
+    o = Out(p)
+    for name in GL.ORDER:
+        cps, fn = GL.GLYPHS[name]
+        g = GL.G(p)
+        fn(g, p)
+        cs = []
+        for s in g.strokes:
+            cs += expand(s, p.V, p.H)
+        cs += g.raw
+        # Spacing is measured on the upright drawing; the italic outlines replace it afterwards,
+        # slanted around mid-x-height so that spacing carries over.
+        italic_cs = [c for s in italicize(g.strokes, p) for c in expand(s, p.V, p.H)] + italicize_raw(g.raw, p) if p.slant else None
+        for cp in cps:
+            o.cmap[cp] = name
+        if g.adv_fixed is not None:
+            o.contours[name], o.adv[name] = [], g.adv_fixed
+            o.kind[name] = 'fixed'
+            continue
+        bx = [contour_bounds(c) for c in cs]
+        xmin, ymin = min(b[0] for b in bx), min(b[1] for b in bx)
+        xmax, ymax = max(b[2] for b in bx), max(b[3] for b in bx)
+        top = [q[0] for c in cs for sg in c for q in sg[1:] if q[1] > p.cap * 0.7]
+        if g.mark:
+            dx, adv = 0.0, 0
+            o.kind[name] = 'mark'
+        elif g.tab:
+            o.kind[name] = 'tab'
+            adv = p.fig_adv
+            dx = (adv - (xmax - xmin)) / 2 - xmin
+        else:
+            unit = p.Sc if is_cap(name) else p.S
+            l, r = g.sb[0] * unit, g.sb[1] * unit
+            dx = l - xmin
+            if p.heavy:
+                # A whole unit, so the heavy outlines round the same way whatever the spacing: a counter tip a few units
+                # long moved by 6 degrees with the fraction. The italic's half unit over is the phase its s tip was fitted
+                # at (27.3 / 35.8 / 47.8 / 58.4 at 750-900); the upright's ae tip would read 30.3 against 28.6 at 800 there.
+                dx = round(dx) + (0.5 if p.italic else 0)
+            adv = l + (xmax - xmin) + r
+        cs = [transform_contour(c, lambda q, dx=dx: (q[0] + dx, q[1])) for c in (italic_cs if italic_cs is not None else cs)]
+        o.contours[name] = cs
+        o.adv[name] = round(adv)
+        o.bounds[name] = (xmin + dx, ymin, xmax + dx, ymax)
+        o.topleft[name] = (min(top) if top else xmin) + dx  # leftmost ink in the top 30% (Ά's tonos)
+        # capitals' accents clear the letter by 0.10 cap height, as Inter's, Geist's and Plex's (0.06 was cramped)
+        top_y = {'x': p.xh, 'c': p.cap, 'a': p.asc}[g.ht] + {'x': 68, 'c': 70, 'a': 42}[g.ht]
+        cx = (xmin + xmax) / 2 + dx
+        a = {
+            'top': (g.anchors.get('top_x', cx - dx) + dx, top_y),
+            'bottom': ((g.anchors['bottom_x'] + dx) if 'bottom_x' in g.anchors else cx, 0),
+            'ogonek': (xmax + dx - 70 - p.V * 0.3, 0),
+            'topright': ((g.anchors['topright_x'] + dx) if 'topright_x' in g.anchors else xmax + dx + p.S * 0.35, g.anchors.get('topright_y', p.asc if g.ht == 'a' else p.cap)),
+        }
+        if 'horn_x' in g.anchors:
+            a['horn'] = (g.anchors['horn_x'] + dx, g.anchors['horn_y'])
+        a.update({k: (v[0] + dx, v[1]) for k, v in g.anchors.items() if k.startswith('mk_')})  # traced scripts' marks
+        o.anchors[name] = a
+    add_composites(o)
+    return o
+
+
+def _dialytika_tonos(p):
+    """How far ΐ's and ΰ's dots sit left and right of the tonos's centre: each clears the leaning
+    tonos (greek.m_tonos: from (-28, 0) to (28, 160)) by 22 units at the dot's own height."""
+    d, hw = p.dot * 0.95, p.mt * 0.55
+    return 28 + hw + 22 + d / 2, -28 + 56 * d / 160 + hw + 22 + d / 2
+
+
+def _poly_group(o, p, marks):
+    """Polytonic marks laid out around (0, 0), the anchor: a breathing beside an acute or grave
+    (breathing first, as read), a perispomeni above a breathing or dialytika, an acute or grave
+    between dialytika's dots (as ΐ), anything else alone and centred. Returns parts and bounds."""
+    bd = lambda m: o.bounds[m]  # noqa: E731
+    cen = lambda m: -(bd(m)[0] + bd(m)[2]) / 2  # noqa: E731
+    if len(marks) == 1:
+        parts = [(marks[0], cen(marks[0]), 0)]
+    else:
+        first, second = marks
+        if first == 'dieresiscomb' and second in ('tonoscomb', 'gravecomb'):
+            dl, dr = _dialytika_tonos(p)
+            if second == 'gravecomb':
+                dl, dr = dr, dl
+            parts = [('dotaccentcomb', -dl, 0), ('dotaccentcomb', dr, 0), (second, cen(second), 10)]
+        elif second == 'perispomenicomb':
+            parts = [(first, cen(first), 0), (second, cen(second), bd(first)[3] + p.mt * 0.4 - bd(second)[1])]
+        else:  # breathing + acute or grave, side by side
+            wf, ws, gap = bd(first)[2] - bd(first)[0], bd(second)[2] - bd(second)[0], 20 + p.mt * 0.2
+            x0 = -(wf + gap + ws) / 2
+            parts = [(first, x0 - bd(first)[0], 0), (second, x0 + wf + gap - bd(second)[0], 0)]
+    xs = [b for g, x, y in parts for b in (o.bounds.get(g, (0, 0, 0, 0))[0] + x, o.bounds.get(g, (0, 0, 0, 0))[2] + x)]
+    ys = [o.bounds.get(g, (0, 0, 0, 0))[1] + y for g, x, y in parts]
+    return parts, (min(xs), min(ys), max(xs))
+
+
+def _spacing_group(o, comp, name, marks, cp):
+    """A spacing accent: the mark group at the x-height, with the spacing accents' sidebearings
+    either side of its ink (a fixed width left ΅'s dots hanging out of it)."""
+    p = o.p
+    parts, (x0, _, x1) = _poly_group(o, p, marks)
+    sb = p.S * 0.6
+    comp(name, [(g, sb - x0 + x, p.xh + 68 + y, 1) for g, x, y in parts], sb * 2 + (x1 - x0), cp)
+
+
+def add_polytonic(o, comp, at, tw):
+    """Greek Extended. A lowercase takes its marks above; a capital takes them before it at the cap
+    height (the letter moving right, as for the tonos). Both take the iota subscript below, as
+    Inter and Plex set even the capitals (ᾼ). The spacing forms (᾿ ῾ ῀ ΅ ...) centre their marks in an accent's
+    width."""
+    p, S = o.p, o.p.S
+    for cp in GREEK_POLY:
+        ch = chr(cp)
+        d = unicodedata.normalize('NFD', ch)
+        name = 'uni%04X' % cp
+        if d == '\u03b9':  # ι prosgegrammeni is the iota
+            comp(name, [('uni03B9', 0, 0, 1)], o.adv['uni03B9'], cp)
+            continue
+        if d[0] in POLY_MARK:  # a spacing accent
+            _spacing_group(o, comp, name, [POLY_MARK[m] for m in d][:2], cp)
+            continue
+        base = ALIAS.get(ord(d[0]), 'uni%04X' % ord(d[0]))
+        isub = '\u0345' in d
+        ms = [POLY_MARK[m] for m in d[1:] if m != '\u0345']
+        if ch.isupper() or ch.istitle():
+            shift, parts = 0.0, []
+            if ms:
+                grp, (gx0, gy0, gx1) = _poly_group(o, p, ms)
+                ox = S * 0.15 - gx0
+                shift = max(0.0, S * 0.15 + (gx1 - gx0) + S * 0.55 - o.topleft.get(base, o.bounds[base][0]))
+                parts = [(g, ox + x, p.cap - 150 - gy0 + y, 1) for g, x, y in grp]
+            parts.insert(0, (base, shift, 0, 1))
+            if isub:
+                m, bx, by, a_ = at(base, 'ypogegrammenicomb', 'bottom')
+                parts.append((m, bx + shift, by, a_))
+            comp(name, parts, o.adv[base] + shift, cp)
+            o.anchors[name] = {k: (v[0] + shift, v[1]) for k, v in o.anchors[base].items()}
+            continue
+        parts = [(base, 0, 0, 1)]
+        if ms:
+            bx, by = o.anchors[base]['top']
+            grp, _ = _poly_group(o, p, ms)
+            parts += [(g, bx + x, by + y, 1) for g, x, y in grp]
+        if isub:
+            parts.append(at(base, 'ypogegrammenicomb', 'bottom'))
+        comp(name, parts, o.adv[base], cp)
+        o.anchors[name] = o.anchors[base]
+
+
+def add_composites(o):
+    p = o.p
+    C = o.comps
+
+    def comp(name, parts, adv, cp=None):
+        C[name] = parts  # [(glyph, dx, dy, scale)]
+        o.adv[name] = round(adv)
+        if cp is not None:
+            o.cmap[cp] = name
+
+    def at(base, mark, anchor):
+        bx, by = o.anchors[base][anchor]
+        return (mark, bx, by, 1)
+
+    # i and j are dotless + dot so every accent on them is consistent
+    # (the i and j dots keep their own height: the dot accent's lift is for ż, ė, ċ)
+    def dot_ij(base):
+        m, bx, by, a = at(base, 'dotaccentcomb', 'top')
+        return (m, bx, by - GL.lift_dots(p), a)
+
+    comp('i', [('dotlessi', 0, 0, 1), dot_ij('dotlessi')], o.adv['dotlessi'], ord('i'))
+    comp('j', [('dotlessj', 0, 0, 1), dot_ij('dotlessj')], o.adv['dotlessj'], ord('j'))
+    o.anchors['i'] = o.anchors['dotlessi']
+    o.anchors['j'] = o.anchors['dotlessj']
+    # turned comma above (ģ)
+    cadv = o.adv['comma']
+    comp('commaturnedabovecomb', [('commaaccentcomb', 0, -40, -1)], 0)
+
+    # Every accented I and l also gets a plain variant, so ss02 switches Í and ľ along with I
+    # and l instead of leaving a mixed word.
+    accents = accented_chars()
+    accents += [(ch, base, marks, '.ss02') for ch, base, marks in accents if base in 'Il']
+    for ch, base, marks, *alt in accents:
+        sfx = alt[0] if alt else ''
+        # an accent above replaces the dot; one below (į) keeps it
+        above = any(m not in BOTTOM for m in marks)
+        b = ({'i': 'dotlessi', 'j': 'dotlessj'}.get(base, base) if above else base) + sfx
+        parts = [(b, 0, 0, 1)]
+        prev = None  # the last top mark placed: (glyph, x, y)
+        for m in marks:
+            if m == 'caroncomb.alt':
+                bx, by = o.anchors[b]['topright']
+                parts.append((m, bx, by, 1))
+            elif m == 'horncomb':
+                bx, by = o.anchors[b]['horn']
+                parts.append((m, bx, by, 1))
+            elif m in BOTTOM:
+                parts.append(at(b, m, BOTTOM[m]))
+            elif m == 'commaturnedabovecomb':
+                parts.append(at(b, m, 'top'))
+            else:
+                mk = m + '.case' if ch.isupper() else m
+                bx, by = o.anchors[b]['top']
+                if prev is not None:
+                    # Vietnamese stacks: acute, grave and hook sit beside a circumflex, to its
+                    # right as in Inter and Plex; anything else stacks above the first mark
+                    pm, px, py = prev
+                    pb, mb = o.bounds[pm], o.bounds[mk]
+                    if pm.startswith('circumflexcomb') and m in ('acutecomb', 'gravecomb', 'hookabovecomb'):
+                        bx, by = px + pb[2] - mb[0] - p.mt * 0.35, py + (pb[3] - pb[1]) * 0.45 - mb[1]
+                    else:
+                        bx, by = px, py + pb[3] + p.mt * 0.45 - mb[1]
+                parts.append((mk, bx, by, 1))
+                prev = (mk, bx, by)
+        comp(glyph_name(ch) + sfx, parts, o.adv[b], None if sfx else ord(ch))
+        o.anchors[glyph_name(ch) + sfx] = o.anchors[b]
+
+    S = p.S
+    ov = lambda name: o.adv[name]  # noqa: E731
+    comp('colon', [('period', 0, 0, 1), ('period', 0, p.xh - p.dot, 1)], ov('period'), ord(':'))
+    comp('semicolon', [('comma', 0, 0, 1), ('period', 0, p.xh - p.dot, 1)], ov('comma'), ord(';'))
+    comp('exclamdown', [('exclam', ov('exclam'), p.xh, -1)], ov('exclam'), 0xA1)
+    comp('questiondown', [('question', ov('question'), p.xh + 10, -1)], ov('question'), 0xBF)
+    d = p.dot
+    # a turned comma: its tail tip (the comma's depth below its head) reaches the cap height
+    lq = p.cap - (GL.comma_depth(p) - 0.05) * d
+    comp('quoteright', [('comma', 0, p.cap - d, 1)], cadv, 0x2019)
+    comp('quoteleft', [('comma', cadv, lq, -1)], cadv, 0x2018)
+    comp('quotesinglbase', [('comma', 0, 0, 1)], cadv, 0x201A)
+    # the marks stand apart by their own width again at Thin (Inter's double quote is 2.9 marks wide there, 2.2 at Regular and Black: gaps of 1.9, 1.24 and 1.18 marks)
+    cb = o.bounds['comma']
+    gap = max(d + S * 0.55, (cb[2] - cb[0]) * (1.75 - 0.55 * GL.thin_blend(p) - 0.02 * p.heavy))
+    comp('quotedblright', [('comma', 0, p.cap - d, 1), ('comma', gap, p.cap - d, 1)], cadv + gap, 0x201D)
+    comp('quotedblleft', [('comma', cadv, lq, -1), ('comma', cadv + gap, lq, -1)], cadv + gap, 0x201C)
+    comp('quotedblbase', [('comma', 0, 0, 1), ('comma', gap, 0, 1)], cadv + gap, 0x201E)
+
+    # stroked / combined letters
+    comp('Eth', [('D', 0, 0, 1), ('barcomp.D', 0, 0, 1)], ov('D'), 0xD0)
+    comp('Dcroat', [('D', 0, 0, 1), ('barcomp.D', 0, 0, 1)], ov('D'), 0x110)
+    comp('dcroat', [('d', 0, 0, 1), ('barcomp.d', o.bounds['d'][0], 0, 1)], ov('d'), 0x111)
+    comp('Hbar', [('H', 0, 0, 1), ('barcomp.H', o.bounds['H'][0], 0, 1)], ov('H'), 0x126)
+    comp('hbar', [('h', 0, 0, 1), ('barcomp.h', o.bounds['h'][0], 0, 1)], ov('h'), 0x127)
+    b = o.bounds['T']
+    comp('Tbar', [('T', 0, 0, 1), ('barcomp.T', (b[0] + b[2]) / 2, 0, 1)], ov('T'), 0x166)
+    tx = o.bounds['t'][0] + p.nw * 0.6 * 0.24 + p.V * 0.12 + p.V / 2  # mirrors _t's stem position
+    comp('tbar', [('t', 0, 0, 1), ('barcomp.t', tx, 0, 1)], ov('t'), 0x167)
+    stem = o.bounds['L'][0] + p.V / 2
+    comp('Lslash', [('L', S * 0.5, 0, 1), ('lslash.comp', stem + S * 0.5, 0, 1)], ov('L') + S * 0.5, 0x141)
+    for sfx in ('', '.ss02'):
+        stem = o.bounds['l' + sfx][0] + p.V / 2
+        comp('lslash' + sfx, [('l' + sfx, S * 0.6, 0, 1), ('lslash.comp', stem + S * 0.6, 0, 1)], ov('l' + sfx) + S * 1.2, None if sfx else 0x142)
+    comp('Ldot', [('L', 0, 0, 1), ('periodcentered', o.bounds['L'][0] + p.V + S * 0.5 - S * 0.9, p.cap * 0.5 - p.xh * 0.5, 1)], ov('L'), 0x13F)
+    for sfx in ('', '.ss02'):
+        comp('ldot' + sfx, [('l' + sfx, 0, 0, 1), ('periodcentered', ov('l' + sfx) - S * 0.6, 0, 1)], ov('l' + sfx) + ov('periodcentered') - S * 0.6, None if sfx else 0x140)
+    comp('Oslash', [('O', 0, 0, 1), ('slashcomp.cap', o.bounds['O'][0], 0, 1)], ov('O'), 0xD8)
+    comp('oslash', [('o', 0, 0, 1), ('slashcomp.lc', o.bounds['o'][0], 0, 1)], ov('o'), 0xF8)
+    ox = o.bounds['O'][2] - p.V * 1.15 - o.bounds['E'][0]
+    comp('OE', [('O', 0, 0, 1), ('E', ox, 0, 1)], ox + ov('E'), 0x152)
+    ox = o.bounds['o'][2] - p.V * 1.2 - o.bounds['e'][0]
+    comp('oe', [('o', 0, 0, 1), ('e', ox, 0, 1)], ox + ov('e'), 0x153)
+    for sfx in ('', '.ss02'):
+        comp('IJ' + sfx, [('I' + sfx, 0, 0, 1), ('J', ov('I' + sfx) - S * 0.4, 0, 1)], ov('I' + sfx) + ov('J') - S * 0.4, None if sfx else 0x132)
+    comp('ij', [('i', 0, 0, 1), ('j', ov('i') - S * 0.4, 0, 1)], ov('i') + ov('j') - S * 0.4, 0x133)
+    # Croatian digraphs (old Yugoslav encodings): two letters set at their normal spacing
+    for cp, a, b in ((0x1C4, 'D', 'uni017D'), (0x1C5, 'D', 'uni017E'), (0x1C6, 'd', 'uni017E'), (0x1C7, 'L', 'J'), (0x1C8, 'L', 'j'),
+                     (0x1C9, 'l', 'j'), (0x1CA, 'N', 'J'), (0x1CB, 'N', 'j'), (0x1CC, 'n', 'j')):
+        gap = S * 0.35 if a == 'l' else 0  # a composite is never kerned: the tailed l keeps clear of j itself
+        comp('uni%04X' % cp, [(a, 0, 0, 1), (b, ov(a) + gap, 0, 1)], ov(a) + gap + ov(b), cp)
+    comp('napostrophe', [('quoteright', 0, 0, 1), ('n', cadv - S * 0.4, 0, 1)], cadv - S * 0.4 + ov('n'), 0x149)
+
+    # spacing accents
+    for name, cp in ((n, sp) for n, _c, _f, sp in GL.MARKS if sp):
+        b = name in GL.TOP_MARKS
+        w = 170 + p.V * 0.5 + 2 * S * 0.6
+        comp(name.replace('comb', '') if name != 'dotaccentcomb' else 'dotaccent', [(name, w / 2 - GL.MARK_DX.get(name, 0), p.xh + 68 if b else 0, 1)], w, cp)
+
+    # figures: proportional, superior/inferior, numerator/denominator — all from the same outlines
+    figs = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
+    # figures keep their untightened sidebearing: Black's tighter S closed '13' into a clot (their advances are tabular-fixed)
+    k = 0.6
+    sup_y = p.cap - p.cap * k
+    for f in figs:
+        b = o.bounds[f]
+        tight = {'one': 0.9}.get(f, 0.62)
+        l = p.Sfig * tight
+        comp(f + '.pnum', [(f, l - b[0], 0, 1)], l + (b[2] - b[0]) + p.Sfig * tight)
+        sw = o.adv[f] * k * 0.92
+        lx = (sw - o.adv[f] * k) / 2
+        comp(f + '.sups', [(f, lx, sup_y, k)], sw)
+        comp(f + '.sinf', [(f, lx, -p.cap * 0.14, k)], sw)
+        comp(f + '.numr', [(f, lx, sup_y, k)], sw)
+        comp(f + '.dnom', [(f, lx, 0, k)], sw)
+    comp('zero.zero.pnum', [('zero.slash', p.Sfig * 0.62 - o.bounds['zero.slash'][0], 0, 1)], o.adv['zero.pnum'])
+    # the dotted zero (ss01): zero.dot.tf is drawn at the tabular advance, zero.dot is the proportional one, set as zero.pnum is
+    comp('zero.dot', [('zero.dot.tf', p.Sfig * 0.62 - o.bounds['zero.dot.tf'][0], 0, 1)], o.adv['zero.pnum'])
+    # old-style figures: 0 1 2 drawn short (glyphs.py), 3 4 5 7 9 the lining figure hung below
+    # the line so its top meets the short ones', tabular and proportional
+    drop = p.cap - p.xh * GL.OSF_HEIGHT
+    for f in OSF:
+        if f + '.osf' not in o.bounds:
+            comp(f + '.osf', [(f, 0, -drop, 1)], o.adv[f])
+        src, dy = (f + '.osf', 0) if f + '.osf' in o.bounds else (f, -drop)
+        b = o.bounds[src]
+        tight = {'one': 0.9}.get(f, 0.62)
+        comp(f + '.osf.pnum', [(src, p.Sfig * tight - b[0], dy, 1)], p.Sfig * tight + (b[2] - b[0]) + p.Sfig * tight)
+    # 1. Proportional figures by default: running text is the common case, and a tabular "1"
+    # in a sentence leaves a hole ("$1, 117"). Tables opt in with font-variant-numeric:
+    # tabular-nums, which cascivo's own table components already set.
+    for f in figs:
+        o.cmap[ord('0') + figs.index(f)] = f + '.pnum'
+    o.cmap[0xB9] = 'one.sups'
+    o.cmap[0xB2] = 'two.sups'
+    o.cmap[0xB3] = 'three.sups'
+    fw = o.adv['one.sups']
+    fr = o.adv['fraction']
+    for cp, a, b in ((0xBC, 'one', 'four'), (0xBD, 'one', 'two'), (0xBE, 'three', 'four')):
+        comp(f'{a}{b}frac', [(a + '.numr', 0, 0, 1), ('fraction', fw - fr * 0.5 - S * 0.2, 0, 1), (b + '.dnom', fw + fr * 0.2, 0, 1)], 2 * fw + fr * 0.2, cp)
+    # ordinals larger than the superior figures, tops at the cap height: at 0.6 they were 0.75x
+    # Inter's and Geist's size and sat 0.14 x-height low
+    ko = 0.7
+    oy = p.cap - p.xh * ko
+    comp('ordfeminine', [('a', 0, oy, ko)], o.adv['a'] * ko + S * 0.3, 0xAA)
+    comp('ordmasculine', [('o', 0, oy, ko)], o.adv['o'] * ko + S * 0.3, 0xBA)
+    tk = 0.5
+    comp('trademark', [('T', 0, p.cap * (1 - tk), tk), ('M', o.adv['T'] * tk, p.cap * (1 - tk), tk)], (o.adv['T'] + o.adv['M']) * tk + S, 0x2122)
+    # (R) is a raised mark, about two thirds of (C), as in Inter and Geist: drawn as large as
+    # (C), it stood 1.44x their size and sat below the cap height's middle
+    for name, cp, letter, ring in (('copyright', 0xA9, 'C', 'ring.circle'), ('registered', 0xAE, 'R', 'ring.circle.small')):
+        rb = o.bounds[ring]
+        s = 0.5 * (rb[3] - rb[1]) / (o.bounds['ring.circle'][3] - o.bounds['ring.circle'][1])
+        lw = o.bounds[letter][2] - o.bounds[letter][0]
+        lx = (rb[0] + rb[2]) / 2 - (o.bounds[letter][0] + lw / 2) * s
+        ly = (rb[1] + rb[3]) / 2 - p.cap * s / 2
+        comp(name, [(ring, 0, 0, 1), (letter, lx, ly, s)], o.adv[ring], cp)
+
+    # case-sensitive forms: punctuation centred on capitals instead of lowercase
+    lift = (p.cap - p.xh) / 2
+    for n in ('hyphen', 'endash', 'emdash', 'guilsinglleft', 'guilsinglright', 'guillemotleft', 'guillemotright', 'periodcentered', 'bullet'):
+        comp(n + '.case', [(n, 0, lift, 1)], o.adv[n])
+    # each is lifted so its ink centres on the cap height (350): they were lifted a fixed 36 and sat 19 units low
+    for n in ('parenleft', 'parenright', 'bracketleft', 'bracketright', 'braceleft', 'braceright'):
+        comp(n + '.case', [(n, 0, p.cap / 2 - (o.bounds[n][1] + o.bounds[n][3]) / 2, 1)], o.adv[n])
+    comp('at.case', [('at', 0, 50, 1)], o.adv['at'])
+    o.cmap.pop(0xAD, None)  # soft hyphen should never render; leave it unmapped
+
+    # Cyrillic and Greek letters that are a Latin shape are that glyph, by reference (ss02 included)
+    for cp, latin in ALIAS.items():
+        n = 'uni%04X' % cp
+        comp(n, [(latin, 0, 0, 1)], o.adv[latin], cp)
+        o.anchors[n] = o.anchors.get(latin) or o.anchors.get({'hbar': 'h'}.get(latin, latin), {})  # ; and · carry none
+        if latin + '.ss02' in o.adv:
+            comp(n + '.ss02', [(latin + '.ss02', 0, 0, 1)], o.adv[latin + '.ss02'])
+    for cp, latin in (armenian.ALIAS if ARMENIAN else {}).items():  # ։ and ֊: the colon and hyphen
+        comp('uni%04X' % cp, [(latin, 0, 0, 1)], o.adv[latin], cp)
+    for cp, latin in (hebrew.ALIAS if HEBREW else {}).items():  # ׃: the colon
+        comp('uni%04X' % cp, [(latin, 0, 0, 1)], o.adv[latin], cp)
+    for script in ([armenian] if ARMENIAN else []) + ([hebrew] if HEBREW else []):  # pairs of letters
+        for cp, pair in script.LIGATURES.items():
+            a, b = ('uni%04X' % c for c in (reversed(pair) if script.RTL else pair))  # left one first
+            comp('uni%04X' % cp, [(a, 0, 0, 1), (b, o.adv[a], 0, 1)], o.adv[a] + o.adv[b], cp)
+    for cp, (base, piece, where) in CYR_EXT.items():
+        n = 'uni%04X' % cp
+        xmin, _, xmax, _ = o.bounds[base]
+        unit = p.Sc if is_cap(n) else p.S
+        adv, shift = o.adv[base], 0
+        if where == 'bottom':
+            parts = [(base, 0, 0, 1), at(base, piece, 'bottom')]
+        else:
+            if where == 'stem':
+                x = xmax - p.V / 2
+                adv += cyrillic.stem_tail_reach(p) - 0.65 * unit  # spaced as Ц
+            elif where == 'left':
+                # the bar reaches left of the stem; the letter moves right until 0.35 of its
+                # sidebearing is left
+                shift = max(0, p.V * 0.45 + 30 - 0.65 * unit)
+                x = xmin
+            else:
+                x = {'foot': xmax, 'centre': (xmin + xmax) / 2, 'arm': xmin + (xmax - xmin) * 0.42, 'bowl': (xmin + xmax) / 2 - p.V * 0.25}[where]
+            parts = [(base, shift, 0, 1), (piece, x + shift, 0, 1)]
+        comp(n, parts, adv + shift, cp)
+        o.anchors[n] = {k: (v[0] + shift, v[1]) for k, v in o.anchors[base].items()}
+    # Greek tonos and dialytika. A lowercase takes its tonos above, between dialytika's dots when
+    # it has both (ΐ ΰ); a capital takes it before the letter at the cap height, the letter moving
+    # right to make room, as in Inter and Plex.
+    for cp in GREEK_ACCENTED:
+        ch = chr(cp)
+        d = unicodedata.normalize('NFD', ch)
+        base = 'uni%04X' % ord(d[0]) if ord(d[0]) not in ALIAS else ALIAS[ord(d[0])]
+        tonos, dial = '\u0301' in d, '\u0308' in d
+        if ch.isupper() and tonos:
+            tx = S * 0.15 + 28 + p.mt / 2
+            shift = max(0.0, tx + 28 + p.mt / 2 + S * 0.55 - o.topleft.get(base, o.bounds.get(base, (0,))[0]))
+            parts = [(base, shift, 0, 1), ('tonoscomb', tx, p.cap - 150, 1)]
+            comp('uni%04X' % cp, parts, o.adv[base] + shift, cp)
+            o.anchors['uni%04X' % cp] = {k: (v[0] + shift, v[1]) for k, v in o.anchors[base].items()}
+            continue
+        parts = [(base, 0, 0, 1)]
+        if dial and tonos:
+            # ΐ ΰ: the tonos stands between two dots set wide enough to hold it, and the letter
+            # widens by however far the dots overhang its ink (ι is narrower than its accents)
+            m, bx, by, a_ = at(base, 'tonoscomb', 'top')
+            dl, dr = _dialytika_tonos(p)
+            half = p.dot / 2
+            xmin, _, xmax, _ = o.bounds[base]
+            sl = max(0.0, xmin - (bx - dl - half))
+            sr = max(0.0, (bx + dr + half) - xmax)
+            parts = [(base, sl, 0, 1), ('dotaccentcomb', bx - dl + sl, by, 1), ('dotaccentcomb', bx + dr + sl, by, 1), (m, bx + sl, by + 10, a_)]
+            comp('uni%04X' % cp, parts, o.adv[base] + sl + sr, cp)
+            o.anchors['uni%04X' % cp] = {k: (v[0] + sl, v[1]) for k, v in o.anchors[base].items()}
+            continue
+        elif dial:
+            parts.append(at(base, 'dieresiscomb.case' if ch.isupper() else 'dieresiscomb', 'top'))
+        elif tonos:
+            parts.append(at(base, 'tonoscomb', 'top'))
+        comp('uni%04X' % cp, parts, o.adv[base], cp)
+        o.anchors['uni%04X' % cp] = o.anchors[base]
+    tw = 170 + p.V * 0.5 + 2 * S * 0.6
+    comp('tonos', [('tonoscomb', tw / 2, p.xh + 68, 1)], tw, 0x384)
+    _spacing_group(o, comp, 'dieresistonos', ['dieresiscomb', 'tonoscomb'], 0x385)
+    # ano teleia: the colon's upper dot, at the x-height as in Inter and Plex (· sat mid-height)
+    comp('anoteleia', [('period', 0, p.xh - p.dot, 1)], o.adv['period'], 0x387)
+
+    add_polytonic(o, comp, at, tw)
+
+    for n, (base, piece) in CYR_LOCL.items():
+        if n in ITALIC_ONLY and not p.italic:
+            continue
+        parts = [(base, 0, 0, 1)]
+        if piece == 'cyrtail.foot':
+            parts.append((piece, o.bounds[base][2], 0, 1))
+        elif piece:
+            parts.append(at(base, piece, 'top'))
+        comp(n, parts, o.adv[base])
+        o.anchors[n] = o.anchors[base]
+
+    # flatten: a composite of composites is resolved to outline components only (some
+    # rasterizers and validators reject nesting, and it saves an indirection per glyph)
+    def flat(parts):
+        out = []
+        for g, ox, oy, a in parts:
+            if g in C:
+                out += [(g2, ox + a * x2, oy + a * y2, a * a2) for g2, x2, y2, a2 in flat(C[g])]
+            else:
+                out.append((g, ox, oy, a))
+        return out
+
+    for n in list(C):
+        C[n] = flat(C[n])
+    del C['commaturnedabovecomb'], o.adv['commaturnedabovecomb']  # build-time helper only
+
+
+# ---------------------------------------------------------------------------------------------
+# slant: skew outlines, re-place composites so the skew stays affine-consistent
+# ---------------------------------------------------------------------------------------------
+
+
+def _lerp_contours(a, b, t):
+    return [[(sa[0],) + tuple((pa[0] + (pb[0] - pa[0]) * t, pa[1] + (pb[1] - pa[1]) * t) for pa, pb in zip(sa[1:], sb[1:])) for sa, sb in zip(ca, cb)] for ca, cb in zip(a, b)]
+
+
+BOLD_OWN = {'minus'}  # the minus is 0.456 em at 700 and the plus's bar at Black; the straight line would put Bold at 0.52 em, as long as the en dash
+
+
+def mid_master(reg, black, nat):
+    """The Bold master: Regular's and Black's outlines, anchors and composites interpolated, then each letter moved
+    half the way its advance shortens, so the sidebearings stay as even as `nat`'s own. Interpolating Regular and
+    Black puts every weight on a straight line between their sidebearings; Bold bends that line so 700 keeps its
+    width (+-2% of Regular) while Black's text stays open. Every delta the master carries is a shift of a whole
+    glyph and its advance (a point or two per contour, with no change of shape or kerning)."""
+    p = nat.p
+    t = (p.wght - reg.p.wght) / (black.p.wght - reg.p.wght)
+    lerp = lambda a, b: a + (b - a) * t  # noqa: E731
+    o = Out(p)
+    o.cmap = dict(nat.cmap)
+    o.kind = dict(nat.kind)
+    # Only letters bend: a figure, mark or sign keeps the interpolated advance, which leaves no delta to store for it
+    letters = {n for cp, n in nat.cmap.items() if unicodedata.category(chr(cp)).startswith('L')}
+    shift = {}  # glyph -> how far its outline moved
+    for name, rc in reg.contours.items():
+        kind = nat.kind.get(name)
+        if name.split('.')[0] not in letters:
+            kind = kind or 'lerp'
+        if kind == 'fixed' or name not in black.contours:
+            o.contours[name], o.adv[name] = [], nat.adv[name]
+            continue
+        rb, bb, nb = reg.bounds[name], black.bounds[name], nat.bounds[name]
+        x1, x0 = lerp(rb[2], bb[2]), lerp(rb[0], bb[0])  # the upright ink's edges, where the italic's spacing is measured too
+        lerp_adv = lerp(reg.adv[name], black.adv[name])
+        if kind in ('mark', 'tab'):
+            adv, dx = nat.adv[name], 0.0
+        elif kind == 'lerp':
+            adv, dx = lerp_adv, 0.0
+        else:
+            adv = x1 + (nat.adv[name] - nb[2]) - (x0 - nb[0])
+            dx = round((adv - lerp_adv) / 2)  # a whole unit: a half one moves a counter tip (the ae's at 750) by a degree or two
+        shift[name] = dx
+        o.shift[name] = dx
+        o.contours[name] = [transform_contour(c, lambda q, dx=dx: (q[0] + dx, q[1])) for c in _lerp_contours(rc, black.contours[name], t)]
+        if name in BOLD_OWN:  # a shape whose Bold is not on the line between Regular's and Black's
+            o.contours[name] = nat.contours[name]
+        o.adv[name] = round(adv)
+        o.bounds[name] = tuple(lerp(a, b) for a, b in zip(rb, bb))
+        o.bounds[name] = (o.bounds[name][0] + dx, o.bounds[name][1], o.bounds[name][2] + dx, o.bounds[name][3])
+        o.topleft[name] = lerp(reg.topleft[name], black.topleft[name]) + dx
+        ra, ba = reg.anchors.get(name, {}), black.anchors.get(name, {})
+        o.anchors[name] = {k: (lerp(ra[k][0], ba[k][0]) + dx, lerp(ra[k][1], ba[k][1])) for k in ra}
+    add_composites(o)
+    for name, parts in reg.comps.items():  # offsets interpolate too: a rounded one per master would be a delta of its own
+        base = shift.get(parts[0][0], 0.0)  # the letter the marks sit on moved with its outline
+        out = []
+        for i, ((g, ox, oy, a), (_, bx, by, ba_)) in enumerate(zip(parts, black.comps[name])):
+            x = lerp(ox, bx)
+            if i and o.kind.get(g) == 'mark':  # a mark follows its base
+                x += base
+            elif i:  # a second letter follows the first one's advance
+                x += 2 * base
+            out.append((g, x, lerp(oy, by), lerp(a, ba_)))
+        o.comps[name] = out
+    return o
+
+
+def apply_slant(o):
+    """Outlines are already slanted (draw_master); anchors and composite offsets follow here."""
+    s = o.p.slant
+    if not s:
+        return
+    yc = o.p.xh / 2
+    sk = lambda q: (q[0] + (q[1] - yc) * s, q[1])  # noqa: E731
+    for n, a in o.anchors.items():
+        o.anchors[n] = {k: sk(v) for k, v in a.items()}
+    for n, parts in o.comps.items():
+        # final = Sk(a*q + off): component data is Sk(q), so off' = off + (oy - yc)s + a*yc*s
+        o.comps[n] = [(g, ox + (oy - yc) * s + a * yc * s, oy, a) for g, ox, oy, a in parts]
+    o.mark_origin = (-yc * s, 0)
+
+
+# ---------------------------------------------------------------------------------------------
+# font assembly
+# ---------------------------------------------------------------------------------------------
+
+
+def _black_corners(outs, wght=900):
+    """The heavy corner of each optical-size master: what the variable font draws at wght 900 and
+    that optical size, Black's and that master's changes from Regular added together (kern.py
+    keeps opening pairs clear there). With wght=100, the light corners (traced.py's kerning)."""
+    at = {(o.loc['wght'], o.loc['opsz']): o for o in outs}
+    reg, black = at[400, 14], at[wght, 14]
+    add = lambda b, m, r: (b[0] + m[0] - r[0], b[1] + m[1] - r[1])  # noqa: E731
+    corners = {}
+    for (w, z), m in at.items():
+        if w != 400 or z == 14:
+            continue
+        c = Out(black.p)  # only its spacing units are read; P() has no Black at other sizes
+        for n, cs in reg.contours.items():
+            c.contours[n] = [[(sr[0],) + tuple(add(b, q, r) for b, q, r in zip(sb[1:], sm[1:], sr[1:])) for sb, sm, sr in zip(cb, cm, cr)] for cb, cm, cr in zip(black.contours[n], m.contours[n], cs)]
+        for n, parts in reg.comps.items():
+            c.comps[n] = [(g, bx + mx - rx, by + my - ry, a) for (g, rx, ry, a), (_, bx, by, _a), (_, mx, my, _m) in zip(parts, black.comps[n], m.comps[n])]
+        c.adv = {n: black.adv[n] + m.adv[n] - reg.adv[n] for n in reg.adv}
+        corners[m.name] = c
+    return corners
+
+
+def glyph_order(o):
+    order = ['.notdef'] + [n for n in GL.ORDER] + [n for n in o.comps if n not in GL.GLYPHS]
+    return order
+
+
+def build_glyf(outs, order):
+    """Convert every master's cubic outlines to quadratic *jointly* so the masters stay compatible."""
+    per_master = [dict() for _ in outs]
+    mids = {m for m, o in enumerate(outs) if o.name.startswith('Bold')}
+    black = next(m for m, o in enumerate(outs) if o.name.startswith('Black'))
+
+    def bold_pt(m, pts, name=None):
+        """Bold's point from Regular's (pts[0]) and Black's (pts[black] or pts[1]), each rounded to the unit it is stored
+        at: the variable font then draws Bold from the same integers, and the delta the model stores for it is zero."""
+        if name in BOLD_OWN and len(pts) == len(outs):  # drawn for Bold itself: the one shape whose delta this master stores
+            return pts[m]
+        t = (outs[m].p.wght - outs[0].p.wght) / (outs[black].p.wght - outs[0].p.wght)
+        pr, pb = pts[0], pts[black] if len(pts) > black else pts[1]
+        x, y = (round(a) + (round(b) - round(a)) * t for a, b in zip(pr, pb))
+        return (x + outs[m].shift.get(name, 0.0), y)
+    for name in order:
+        if name == '.notdef':
+            for m, o in enumerate(outs):
+                pen = TTGlyphPen(None)
+                w, h = 500, 700
+                for (x0, y0, x1, y1), rev in (((50, 0, w - 50, h), False), ((100, 50, w - 100, h - 50), True)):
+                    pts = [(x0, y0), (x0, y1), (x1, y1), (x1, y0)]
+                    if rev:
+                        pts.reverse()
+                    pen.moveTo(pts[0])
+                    for q in pts[1:]:
+                        pen.lineTo(q)
+                    pen.closePath()
+                per_master[m][name] = pen.glyph()
+            continue
+        if name in outs[0].comps:
+            for m, o in enumerate(outs):
+                pen = TTGlyphPen(set(order))
+                for g, ox, oy, a in o.comps[name]:
+                    pen.addComponent(g, (a, 0, 0, a, round(ox), round(oy)))
+                per_master[m][name] = pen.glyph()
+            continue
+        pens = [TTGlyphPen(None) for _ in outs]
+        ncont = len(outs[0].contours[name])
+        for o in outs:
+            assert len(o.contours[name]) == ncont, f'{name}: contour count differs between masters'
+        for ci in range(ncont):
+            segs_m = [o.contours[name][ci] for o in outs]
+            n = len(segs_m[0])
+            assert all(len(s) == n for s in segs_m), f'{name}: segment count differs'
+            for m, (pen, segs) in enumerate(zip(pens, segs_m)):
+                pen.moveTo(bold_pt(m, [s[0][1] for s in segs_m], name) if m in mids else segs[0][1])
+            for si in range(n):
+                kinds = {s[si][0] for s in segs_m}
+                assert len(kinds) == 1, f'{name}: segment kind differs'
+                kind = kinds.pop()
+                last = si == n - 1
+                if kind == 'L':
+                    if last:
+                        continue  # closePath draws it
+                    for m, (pen, segs) in enumerate(zip(pens, segs_m)):
+                        pen.lineTo(bold_pt(m, [s[si][2] for s in segs_m], name) if m in mids else segs[si][2])
+                else:
+                    curves = [s[si][1:] for s in segs_m]
+                    if last:  # close exactly on the start point in every master
+                        curves = [c[:3] + (s[0][1],) for c, s in zip(curves, segs_m)]
+                    # Bold takes no part in the conversion: its quadratics are Regular's and Black's interpolated, as
+                    # the variable font will draw it, so it stores no outline delta (converted on its own, it differs
+                    # from that line by a unit or two, which blunts a counter tip between Bold and Black)
+                    quads = curves_to_quadratic([c for m, c in enumerate(curves) if m not in mids], [MAX_ERR] * (len(curves) - len(mids)))
+                    for m in sorted(mids):
+                        qr, qb = quads[0], quads[black - sum(1 for x in mids if x < black)]
+                        quads.insert(m, tuple(bold_pt(m, [pr, pb], name) for pr, pb in zip(qr, qb)))
+                    for pen, q in zip(pens, quads):
+                        pen.qCurveTo(*q[1:])
+            for pen in pens:
+                pen.closePath()
+        for m, pen in enumerate(pens):
+            per_master[m][name] = pen.glyph()
+    return per_master
+
+
+def mark_fea(o):
+    """GPOS mark attachment for decomposed text (base + combining mark)."""
+    mo = getattr(o, 'mark_origin', (0, 0))
+    top = sorted(GL.TOP_MARKS) + greek.GREEK_TOP_MARKS
+    bot = ['cedillacomb', 'commaaccentcomb', 'dotbelowcomb', 'ypogegrammenicomb']
+    lines = [
+        f'markClass [{" ".join(top)}] <anchor {round(mo[0])} {round(mo[1])}> @MC_top;',
+        f'markClass [{" ".join(bot)}] <anchor {round(mo[0])} {round(mo[1])}> @MC_bottom;',
+        f'markClass [ogonekcomb] <anchor {round(mo[0])} {round(mo[1])}> @MC_ogonek;',
+        f'markClass [horncomb] <anchor {round(mo[0])} {round(mo[1])}> @MC_horn;',
+        'feature mark {',
+    ]
+    cyr = [n for n in o.anchors if n[:5] in ('uni03', 'uni04') and len(n) == 7 and 'top' in o.anchors[n]]  # Cyrillic, Greek letters
+    bases = [n for n in o.anchors if n in GL.GLYPHS and not GL.GLYPHS[n][0] == [] and n.isalpha() and len(n) == 1] + ['dotlessi', 'dotlessj'] + sorted(set(cyr))
+    for b in bases:
+        a = o.anchors[b]
+        horn = f' <anchor {round(a["horn"][0])} {round(a["horn"][1])}> mark @MC_horn' if 'horn' in a else ''
+        lines.append(f'  pos base {b} <anchor {round(a["top"][0])} {round(a["top"][1])}> mark @MC_top <anchor {round(a["bottom"][0])} {round(a["bottom"][1])}> mark @MC_bottom <anchor {round(a["ogonek"][0])} {round(a["ogonek"][1])}> mark @MC_ogonek{horn};')
+    lines.append('} mark;')
+    # Mark-to-mark, so decomposed text stacks as the precomposed letters do: acute, grave and
+    # hook beside a circumflex (Vietnamese), anything else above the previous mark. The side
+    # lookup runs second, so its attachment replaces the stacked one.
+    p, s, yc = o.p, o.p.slant, o.p.xh / 2
+    sk = lambda x, y: f'<anchor {round(x + (y - yc) * s)} {round(y)}>'  # noqa: E731
+    stack = [m + c for m in sorted(GL.TOP_MARKS) for c in ('', '.case')] + greek.GREEK_TOP_MARKS
+    side = [m + c for m in ('acutecomb', 'gravecomb', 'hookabovecomb') for c in ('', '.case')]
+    for m in stack:
+        lines.append(f'markClass {m} {sk(0, o.bounds[m][1])} @MK_above;')
+    for m in side:
+        lines.append(f'markClass {m} {sk(o.bounds[m][0], o.bounds[m][1])} @MK_side;')
+    lines.append('feature mkmk {\n  lookup MKMK_ABOVE {')
+    for m in stack:
+        lines.append(f'    pos mark {m} {sk(0, o.bounds[m][3] + p.mt * 0.45)} mark @MK_above;')
+    lines.append('  } MKMK_ABOVE;\n  lookup MKMK_SIDE {')
+    for m in ('circumflexcomb', 'circumflexcomb.case'):
+        b = o.bounds[m]
+        lines.append(f'    pos mark {m} {sk(b[2] - p.mt * 0.35, (b[3] - b[1]) * 0.45)} mark @MK_side;')
+    for m in ('psilicomb', 'dasiacomb'):  # Greek: an acute or grave beside the breathing, as ἄ
+        b = o.bounds[m]
+        lines.append(f'    pos mark {m} {sk(b[2] + 20 + p.mt * 0.2, b[1])} mark @MK_side;')
+    lines.append('  } MKMK_SIDE;\n} mkmk;')
+    return '\n'.join(lines)
+
+
+OSF = ['zero', 'one', 'two', 'three', 'four', 'five', 'seven', 'nine']  # 6 and 8 are lining-height already
+
+GSUB_FEA = """
+languagesystem DFLT dflt;
+languagesystem latn dflt;
+languagesystem latn ROM;
+languagesystem latn MOL;
+languagesystem cyrl dflt;
+languagesystem cyrl BGR;
+languagesystem cyrl SRB;
+languagesystem cyrl MKD;
+languagesystem grek dflt;
+{hebr}
+@figs = [zero one two three four five six seven eight nine];
+@pnum = [zero.pnum one.pnum two.pnum three.pnum four.pnum five.pnum six.pnum seven.pnum eight.pnum nine.pnum];
+@sups = [zero.sups one.sups two.sups three.sups four.sups five.sups six.sups seven.sups eight.sups nine.sups];
+@sinf = [zero.sinf one.sinf two.sinf three.sinf four.sinf five.sinf six.sinf seven.sinf eight.sinf nine.sinf];
+@numr = [zero.numr one.numr two.numr three.numr four.numr five.numr six.numr seven.numr eight.numr nine.numr];
+@dnom = [zero.dnom one.dnom two.dnom three.dnom four.dnom five.dnom six.dnom seven.dnom eight.dnom nine.dnom];
+@topmarks = [gravecomb acutecomb circumflexcomb tildecomb macroncomb brevecomb dotaccentcomb dieresiscomb ringcomb hungarumlautcomb caroncomb hookabovecomb];
+@case_in = [hyphen endash emdash guilsinglleft guilsinglright guillemotleft guillemotright periodcentered bullet parenleft parenright bracketleft bracketright braceleft braceright at];
+@case_out = [hyphen.case endash.case emdash.case guilsinglleft.case guilsinglright.case guillemotleft.case guillemotright.case periodcentered.case bullet.case parenleft.case parenright.case bracketleft.case bracketright.case braceleft.case braceright.case at.case];
+
+lookup DOTLESS { sub i by dotlessi; sub j by dotlessj; sub uni0456 by dotlessi; sub uni0458 by dotlessj; } DOTLESS;
+feature ccmp { sub [i j uni0456 uni0458]' lookup DOTLESS @topmarks; } ccmp;
+
+feature locl {
+  script latn;
+  language ROM; sub uni015E by uni0218; sub uni015F by uni0219; sub uni0162 by uni021A; sub uni0163 by uni021B;
+  language MOL; sub uni015E by uni0218; sub uni015F by uni0219; sub uni0162 by uni021A; sub uni0163 by uni021B;
+} locl;
+
+@osf_l = [zero one two three four five seven nine];
+@osf_lp = [zero.pnum one.pnum two.pnum three.pnum four.pnum five.pnum seven.pnum nine.pnum];
+@osf = [zero.osf one.osf two.osf three.osf four.osf five.osf seven.osf nine.osf];
+@osf_p = [zero.osf.pnum one.osf.pnum two.osf.pnum three.osf.pnum four.osf.pnum five.osf.pnum seven.osf.pnum nine.osf.pnum];
+
+feature onum { sub @osf_l by @osf; sub @osf_lp by @osf_p; } onum;
+feature lnum { sub @osf by @osf_l; sub @osf_p by @osf_lp; } lnum;
+feature pnum { sub @figs by @pnum; sub zero.slash by zero.zero.pnum; sub @osf by @osf_p; } pnum;
+feature tnum { sub @pnum by @figs; sub zero.zero.pnum by zero.slash; sub @osf_p by @osf; } tnum;
+feature zero { sub zero by zero.slash; sub zero.pnum by zero.zero.pnum; } zero;
+feature sups { sub @figs by @sups; sub @pnum by @sups; } sups;
+feature sinf { sub @figs by @sinf; sub @pnum by @sinf; } sinf;
+feature subs { sub @figs by @sinf; sub @pnum by @sinf; } subs;
+feature numr { sub @figs by @numr; sub @pnum by @numr; } numr;
+feature dnom { sub @figs by @dnom; sub @pnum by @dnom; } dnom;
+# Only the figures either side of a slash become a fraction, as in Inter: browsers apply
+# `diagonal-fractions` to a whole run, so "7/16 of 100" must leave the 100 alone.
+@fdig = [@figs @pnum zero.slash zero.zero.pnum @osf @osf_p];
+@fnumr = [@numr @numr zero.numr zero.numr zero.numr one.numr two.numr three.numr four.numr five.numr seven.numr nine.numr zero.numr one.numr two.numr three.numr four.numr five.numr seven.numr nine.numr];
+@fdnom = [@dnom @dnom zero.dnom zero.dnom zero.dnom one.dnom two.dnom three.dnom four.dnom five.dnom seven.dnom nine.dnom zero.dnom one.dnom two.dnom three.dnom four.dnom five.dnom seven.dnom nine.dnom];
+feature frac {
+  lookup FRAC_SLASH { sub @fdig slash' @fdig by fraction; } FRAC_SLASH;
+  lookup FRAC_NUMR { rsub @fdig' fraction by @fnumr; rsub @fdig' @numr by @fnumr; } FRAC_NUMR;
+  lookup FRAC_DNOM { sub [fraction @dnom] @fdig' by @fdnom; } FRAC_DNOM;
+} frac;
+feature ordn { sub [@figs @pnum] [a o]' by [ordfeminine ordmasculine]; } ordn;
+feature case { sub @case_in by @case_out; } case;
+
+"""
+
+
+def cyrl_locl(o):
+    """Bulgarian, Serbian and Macedonian forms, by the text's language."""
+    have = set(o.contours) | set(o.comps)
+    bgr = sorted(n for n in have if n.endswith('.loclBGR'))
+    srb = sorted(n for n in have if n.endswith('.loclSRB'))
+    lines = ['feature locl {', '  script cyrl;', '  language BGR;']
+    lines += [f'  sub {n[:7]} by {n};' for n in bgr]
+    for lang in ('SRB', 'MKD'):
+        lines.append(f'  language {lang};')
+        lines += [f'  sub {n[:7]} by {n};' for n in srb]
+    lines.append('} locl;')
+    return '\n'.join(lines)
+
+
+def build_master_font(o, glyf, order):
+    p = o.p
+    fb = FontBuilder(1000, isTTF=True)
+    fb.setupGlyphOrder(order)
+    fb.setupCharacterMap(dict(o.cmap))
+    fb.setupGlyf(glyf)
+    gtab = fb.font['glyf']
+    metrics = {}
+    for n in order:
+        g = gtab[n]
+        g.recalcBounds(gtab)
+        adv = 500 if n == '.notdef' else o.adv[n]
+        metrics[n] = (adv, getattr(g, 'xMin', 0))
+    fb.setupHorizontalMetrics(metrics)
+    # 1.30 em default line box (Geist and Plex: 1.30). The space sits in ascent/descent rather
+    # than lineGap, so it is split evenly above and below the text in every engine.
+    fb.setupHorizontalHeader(ascent=1000, descent=-300, lineGap=0)
+    fb.setupNameTable({
+        'familyName': FAMILY,
+        'styleName': 'Italic' if p.italic else 'Regular',
+        'uniqueFontIdentifier': f'{VERSION};CSCV;{PS}',
+        'fullName': f'{FAMILY} Italic' if p.italic else f'{FAMILY} Regular',
+        'psName': f'{PS}-Italic' if p.italic else f'{PS}-Regular',
+        'version': f'Version {VERSION}',
+        # the Georgian centre lines are traced from Noto Sans Georgian, whose notice the OFL keeps
+        'copyright': 'Copyright 2026 The Cascivo Sans Project Authors' + ('; Georgian derived from Noto Sans Georgian, Copyright 2022 The Noto Project Authors (https://github.com/notofonts/georgian)' if GEORGIAN else '')
+        + ('; Armenian derived from Noto Sans Armenian, Copyright 2022 The Noto Project Authors (https://github.com/notofonts/armenian)' if ARMENIAN else '')
+        + ('; Hebrew derived from Noto Sans Hebrew, Copyright 2024 The Noto Project Authors (https://github.com/notofonts/hebrew)' if HEBREW else ''),
+        'licenseDescription': 'This Font Software is licensed under the SIL Open Font License, Version 1.1.',
+        'licenseInfoURL': 'https://openfontlicense.org',
+        'manufacturer': 'cascivo',
+        'designer': 'cascivo (generated from parametric source)',
+    }, mac=False)
+    fb.setupOS2(version=4,
+        sTypoAscender=1000, sTypoDescender=-300, sTypoLineGap=0,
+        usWinAscent=1000, usWinDescent=300,  # set to the real extremes once the variable font exists
+        sxHeight=round(p.xh), sCapHeight=p.cap,
+        usWeightClass=p.wght, achVendID='CSCV', fsType=0, fsSelection=0x40 | 0x80,
+        # Basic Latin, Latin-1, Latin Extended-A and -B, Greek, Cyrillic, Latin Extended Additional;
+        # code pages 1252, 1250, 1251 and 1253
+        ulUnicodeRange1=(1 << 0) | (1 << 1) | (1 << 2) | (1 << 3) | (1 << 7) | (1 << 9) | (1 << 29), ulCodePageRange1=(1 << 0) | (1 << 1) | (1 << 2) | (1 << 3),
+        yStrikeoutPosition=round(p.xh * 0.5), yStrikeoutSize=round(p.H),
+        ySubscriptYOffset=140, ySuperscriptYOffset=round(p.cap * 0.4),
+    )
+    fb.setupPost(keepGlyphNames=True, underlinePosition=-110, underlineThickness=round(p.H))
+    ss02 = sorted(n[:-5] for n in o.comps.keys() | o.contours.keys() if n.endswith('.ss02') and n[:-5] in o.adv)
+    # a right-to-left run takes no kerning from DFLT's record in HarfBuzz, only from its own script's
+    fea = GSUB_FEA.replace('{hebr}', 'languagesystem hebr dflt;\n' if HEBREW else '')
+    # ss01 follows `zero` and `tnum`, so the slashed zero wins when both are on and the dotted one lands on the spacing tnum chose
+    fea += '\nfeature ss01 {\n  featureNames { name "Dotted zero"; };\n  sub zero by zero.dot.tf;\n  sub zero.pnum by zero.dot;\n} ss01;\n'
+    fea += '\nfeature ss02 {\n  featureNames { name "Plain I and l (as in Helvetica)"; };\n'
+    fea += ''.join(f'  sub {n} by {n}.ss02;\n' for n in ss02) + '} ss02;\n'
+    fea += '\n' + cyrl_locl(o) + '\n' + kern_fea(o) + '\n' + mark_fea(o)
+    if GEORGIAN:
+        fea += '\n' + georgian.kern_fea(o)
+    if ARMENIAN:
+        fea += '\n' + armenian.kern_fea(o)
+    if HEBREW:
+        fea += '\n' + hebrew.kern_fea(o) + '\n' + hebrew.mark_fea(o)
+    addOpenTypeFeaturesFromString(fb.font, fea)
+    # smart dropout control: keeps thin strokes from vanishing in unhinted rasterization
+    prep = newTable('prep')
+    prep.program = ttProgram.Program()
+    prep.program.fromBytecode(bytes([0xB8, 0x01, 0xFF, 0x85, 0xB0, 0x04, 0x8D]))
+    fb.font['prep'] = prep
+    gasp = newTable('gasp')
+    gasp.version = 1
+    gasp.gaspRange = {0xFFFF: 0x000F}
+    fb.font['gasp'] = gasp
+    return fb.font
+
+
+# Stem at each named weight (Regular 84 and Black are the masters). Every step is 20-22 units,
+# as in Inter (19-26): the old light half held equal stem *ratios* (13 units from Thin to
+# ExtraLight, 31 from Light to Regular), which read as a stall then a jump. Thin starts at 24, a
+# touch above the old Thin master (22), so it stays a legible stroke and the first step is a full 20;
+# the heavy half still front-loads weight as Geist and Inter do (Bold reads clearly bold).
+NAMED_STEMS = [(100, THIN_STEM), (200, 44), (300, 64), (400, 84), (500, 104), (600, 124), (700, 146), (800, 168), (900, BLACK_STEM)]
+
+
+def _wght_map():
+    """avar segments: user weight -> the design coordinate whose linear master stem is the target."""
+    out = []
+    for w, stem in NAMED_STEMS:
+        if stem <= 84:
+            d = 100 + (stem - THIN_STEM) / (84 - THIN_STEM) * 300
+        else:
+            d = 400 + (stem - 84) / (BLACK_STEM - 84) * 500
+        out.append((w, round(d, 1)))
+    return out
+
+
+WGHT_MAP = _wght_map()
+
+
+def _bold_after_black(sort_key):
+    """Order the masters Regular, Black, then Bold. Black then keeps its tent from the default (a delta of
+    Black minus Regular, as with no Bold at all) and Bold, which is Regular and Black interpolated plus a
+    shift of each glyph, stores only that shift: a point or two per contour, where ordered the other way
+    round it would store its whole distance from Regular and Black's tent would start at Bold."""
+    bold = (MID_WGHT - 400) / 500
+
+    def make(locations, axisOrder=[]):
+        key = sort_key(locations, axisOrder=axisOrder)
+
+        def after(loc):
+            k = key(loc)
+            if set(loc) == {'wght'} and abs(loc['wght'] - bold) < 1e-6:
+                return k[:-1] + ((2.0,),)
+            return k
+
+        return after
+
+    return make
+
+
+def build(italic=False):
+    os.makedirs(DIST, exist_ok=True)
+    kern.reset()
+    outs = []
+    for name, loc in ITALIC_MASTERS if italic else MASTERS:
+        p = P(**loc)
+        o = draw_master(p)
+        o.name, o.loc = name, loc
+        outs.append(o)
+    black = next(o for o in outs if o.name.startswith('Black'))
+    for i, o in enumerate(outs):
+        if o.name.startswith('Bold'):  # Regular's and Black's outlines, set with Bold's own spacing
+            m = mid_master(outs[0], black, o)
+            m.name, m.loc = o.name, o.loc
+            outs[i] = m
+    for o in outs:
+        apply_slant(o)
+    corners = _black_corners(outs)
+    black = next(o for o in outs if (o.loc['wght'], o.loc['opsz']) == (900, 14))
+    kern.set_corners(corners, black)
+    # the optical-size masters open own-shape pairs as they did before Black's spacing tightened (Display Regular
+    # kerns as it always has); the extra opening Black's tighter corner needs goes on the Black master (kern._values)
+    loose = draw_master(P(wght=900, opsz=14, italic=italic, loose=True))
+    loose.name, loose.loc = black.name, black.loc
+    apply_slant(loose)
+    kern.set_reference(loose, _black_corners([loose if o is black else o for o in outs]))
+    for script in ([armenian] if ARMENIAN else []) + ([hebrew] if HEBREW else []):  # their kerning's pair sets
+        script.MASTERS[:] = outs
+        script.CORNERS.clear()
+        script.CORNERS.update({n: (corners[n], c) for n, c in _black_corners(outs, 100).items()})
+    order = glyph_order(outs[0])
+    glyfs = build_glyf(outs, order)
+    ds = DesignSpaceDocument()
+    for tag, name, lo, df, hi in (('wght', 'Weight', 100, 400, 900), ('opsz', 'Optical size', 8, 14, 48)):
+        a = AxisDescriptor()
+        a.tag, a.name, a.minimum, a.default, a.maximum = tag, name, lo, df, hi
+        if tag == 'wght':
+            a.map = WGHT_MAP
+        ds.addAxis(a)
+    for o, glyf in zip(outs, glyfs):
+        s = SourceDescriptor()
+        s.font = build_master_font(o, glyf, order)
+        s.location = {'Weight': o.loc['wght'], 'Optical size': o.loc['opsz']}
+        s.name = o.name
+        ds.addSource(s)
+    add_gvar, optimize = varLib._add_gvar, TupleVariation.optimize
+
+    def exact_optimize(self, orig, end_pts, tolerance=0.5, **k):
+        """IUP may drop what a rasterizer re-infers within the tolerance, but two kinds of delta must stay exact:
+        a composite's component offsets (a dropped one moved a mark by up to the tolerance, so the decomposed
+        stack stood 3 units off its mkmk anchors; fontTools gives each component a one-point contour) and every
+        glyph's four phantom points (a dropped advance delta left Gcircumflex a unit off G in the static Bold,
+        and gvar off HVAR)."""
+        phantoms = list(self.coordinates)[-4:]
+        composite = list(end_pts) == list(range(len(end_pts)))
+        optimize(self, orig, end_pts, 0 if composite else tolerance, **k)
+        self.coordinates = list(self.coordinates)[:-4] + phantoms
+
+    varLib._add_gvar = lambda *a, **k: add_gvar(*a, **{**k, 'tolerance': IUP_TOLERANCE})
+    TupleVariation.optimize = exact_optimize
+    sort_key = VariationModel.getMasterLocationsSortKeyFunc
+    VariationModel.getMasterLocationsSortKeyFunc = staticmethod(_bold_after_black(sort_key))
+    try:
+        vf, _, _ = varLib.build(ds, exclude=['STAT'], optimize=True)
+    finally:
+        varLib._add_gvar, TupleVariation.optimize = add_gvar, optimize
+        VariationModel.getMasterLocationsSortKeyFunc = staticmethod(sort_key)
+    _sparse_zero_deltas(vf)
+    finish(vf, italic)
+    return vf
+
+
+WEIGHTS = [(100, 'Thin'), (200, 'ExtraLight'), (300, 'Light'), (400, 'Regular'), (500, 'Medium'), (600, 'SemiBold'), (700, 'Bold'), (800, 'ExtraBold'), (900, 'Black')]
+
+
+def _sparse_zero_deltas(vf):
+    """Store zero deltas as absent where absent already means zero: every point of a composite,
+    and the four phantom (advance) points of any glyph. IUP infers only a simple glyph's outline
+    points, so those zeros stay. Lossless: the gvar writer then picks sparse point lists where
+    they are smaller (9,400 zeros were stored explicitly), and a variation left empty is dropped."""
+    glyf, gvar = vf['glyf'], vf['gvar']
+    for name, variations in gvar.variations.items():
+        composite = glyf[name].isComposite()
+        kept = []
+        for v in variations:
+            n = len(v.coordinates)
+            # a variation whose outline points are all zero (Bold's, which only moves advances) keeps none of them:
+            # a contour with no touched point moves nothing
+            flat = not composite and all(d is None or d == (0, 0) for d in v.coordinates[:n - 4])
+            v.coordinates = [None if d is not None and d == (0, 0) and (composite or flat or i >= n - 4) else d for i, d in enumerate(v.coordinates)]
+            if any(d is not None for d in v.coordinates):
+                kept.append(v)
+        gvar.variations[name] = kept
+
+
+def finish(vf, italic=False):
+    from fontTools.ttLib.tables._f_v_a_r import NamedInstance
+    from fontTools.ttLib.tables._g_l_y_f import OVERLAP_COMPOUND, flagOverlapSimple
+
+    # Stroke-built glyphs overlap by design. These flags tell rasterizers so (CoreText needs them
+    # to anti-alias overlaps without seams); fontmake sets them on variable fonts for the same reason.
+    glyf = vf['glyf']
+    for gn in vf.getGlyphOrder():
+        g = glyf[gn]
+        if g.isComposite():
+            g.components[0].flags |= OVERLAP_COMPOUND
+        elif g.numberOfContours > 0:
+            g.flags[0] |= flagOverlapSimple
+
+    name = vf['name']
+    fvar = vf['fvar']
+    fvar.instances = []
+    for w, wn in WEIGHTS:
+        if italic:
+            sub = 'Italic' if wn == 'Regular' else f'{wn} Italic'
+        else:
+            sub = wn
+        inst = NamedInstance()
+        inst.subfamilyNameID = name.addMultilingualName({'en': sub}, minNameID=256, mac=False)
+        inst.postscriptNameID = name.addMultilingualName({'en': f'{PS}-{sub.replace(" ", "")}'}, minNameID=256, mac=False)
+        inst.coordinates = {'wght': w, 'opsz': 14}
+        fvar.instances.append(inst)
+    buildStatTable(vf, [
+        dict(tag='wght', name='Weight', values=[dict(value=w, name=n, flags=0x2 if w == 400 else 0, **({'linkedValue': 700} if w == 400 else {})) for w, n in WEIGHTS]),
+        # opsz is applied automatically by CSS (font-optical-sizing: auto), so it never needs
+        # to be part of a style name: every value is elidable
+        dict(tag='opsz', name='Optical size', values=[dict(value=8, name='Caption', flags=0x2), dict(value=14, name='Text', flags=0x2), dict(value=48, name='Display', flags=0x2)]),
+        # ital is a STAT-only axis: it links the two files so apps group them as one family
+        dict(tag='ital', name='Italic', values=[dict(value=1, name='Italic')] if italic else [dict(value=0, name='Roman', flags=0x2, linkedValue=1)]),
+    ], elidedFallbackName='Regular', macNames=False)
+    name.removeNames(platformID=1)
+    # post v3: glyph names are build-time only; dropping them saves ~2 KB in the shipped file
+    vf['post'].formatType = 3.0
+    vf['head'].fontRevision = float(VERSION.rsplit('.', 1)[0])
+    vf['head'].flags |= 1 << 3  # integer ppem scaling
+    vf['OS/2'].fsSelection |= 1 << 7  # USE_TYPO_METRICS
+    # (usWinAscent/Descent are set in save_all, once for the family: Windows clips to them, so they
+    # cover the tallest and deepest instance of either font. Line spacing comes from the typo metrics.)
+    if italic:
+        vf['OS/2'].fsSelection = (vf['OS/2'].fsSelection | 1) & ~(1 << 6)  # ITALIC, not REGULAR
+        vf['head'].macStyle |= 1 << 1
+        vf['post'].italicAngle = -float(ITALIC_ANGLE)
+        vf['hhea'].caretSlopeRise, vf['hhea'].caretSlopeRun = 1000, round(1000 * math.tan(math.radians(ITALIC_ANGLE)))
+
+
+LATIN = 'U+0020-007E,U+00A0-00FF,U+0131,U+0152-0153,U+02C6,U+02DA,U+02DC,U+2013-2014,U+2018-201A,U+201C-201E,U+2022,U+2026,U+2039-203A,U+20AC,U+2122,U+2212'
+
+
+def _roundtrip(font):
+    """Instancer output keeps lazy tables the subsetter trips over; a save/load normalizes it."""
+    buf = io.BytesIO()
+    font.save(buf)
+    buf.seek(0)
+    return TTFont(buf)
+
+
+# the Georgian and Armenian slices, for a page to load only where its text has them (Google
+# Fonts' ranges)
+GEORGIAN_RANGE = 'U+10A0-10FF,U+1C90-1CBF,U+2D00-2D2F'
+ARMENIAN_RANGE = 'U+0530-058F,U+FB13-FB17'
+HEBREW_RANGE = 'U+0590-05FF,U+20AA,U+FB1D-FB4F'
+
+
+def _subset_latin(font, unicodes=LATIN):
+    font = _roundtrip(font)
+    opts = subset.Options()
+    opts.layout_features = ['*']
+    opts.name_IDs = ['*']
+    opts.notdef_outline = True
+    s = subset.Subsetter(opts)
+    s.populate(unicodes=subset.parse_unicodes(unicodes))
+    s.subset(font)
+    return font
+
+
+def _save_woff2(font, fn):
+    font.flavor = 'woff2'
+    font.save(os.path.join(DIST, fn))
+
+
+def _win_extent(vf):
+    """(usWinAscent, usWinDescent) covering every corner of the design space."""
+    buf = io.BytesIO()
+    vf.save(buf)
+    hi, lo = 1000, 300
+    # interpolation is piecewise linear between masters, so the extremes sit at master locations
+    for w in (100, 400, 900):
+        for o in (8, 14, 48):
+            buf.seek(0)
+            glyf = instancer.instantiateVariableFont(TTFont(buf), {'wght': w, 'opsz': o})['glyf']
+            for name in glyf.keys():
+                g = glyf[name]
+                if g.numberOfContours:
+                    g.recalcBounds(glyf)
+                    hi, lo = max(hi, math.ceil(g.yMax)), max(lo, math.ceil(-g.yMin))
+    return hi, lo
+
+
+def _flatten_transformed(font):
+    """Hinted fonts must not carry scaled or rotated components (TM, turned commas): draw those
+    glyphs out as plain outlines."""
+    from fontTools.pens.recordingPen import DecomposingRecordingPen
+    from fontTools.pens.ttGlyphPen import TTGlyphPen
+    glyf, gs = font['glyf'], font.getGlyphSet()
+    for name in font.getGlyphOrder():
+        g = glyf[name]
+        if g.isComposite() and any(getattr(c, 'transform', None) is not None and [list(r) for r in c.transform] != [[1, 0], [0, 1]] for c in g.components):
+            rec = DecomposingRecordingPen(gs)
+            gs[name].draw(rec)
+            pen = TTGlyphPen(None)
+            rec.replay(pen)
+            glyf[name] = pen.glyph()
+    return font
+
+
+def _save_static(vf, style, wght):
+    under = (vf['post'].underlinePosition, vf['post'].underlineThickness)  # one underline for the family
+    font = instancer.instantiateVariableFont(vf, {'wght': wght, 'opsz': 14})
+    font['post'].underlinePosition, font['post'].underlineThickness = under
+    bold, italic = 'Bold' in style, 'Italic' in style
+    ps = f'{PS}-{style.replace(" ", "")}'
+    name = font['name']
+    for nid in (16, 17, 25):
+        name.removeNames(nameID=nid)
+    for nid, value in ((1, FAMILY), (2, style), (3, f'{VERSION};CSCV;{ps}'), (4, f'{FAMILY} {style}' if style != 'Regular' else f'{FAMILY} Regular'), (6, ps)):
+        name.setName(value, nid, 3, 1, 0x409)
+    font['OS/2'].usWeightClass = wght
+    font['OS/2'].fsSelection = (font['OS/2'].fsSelection & ~0b1100001) | (0x20 if bold else 0) | (0x01 if italic else 0) | (0x40 if not (bold or italic) else 0)
+    font['head'].macStyle = (1 if bold else 0) | (2 if italic else 0)
+    _flatten_transformed(font)
+    # drop the component-only glyphs flattening left unreferenced (the (R) ring)
+    opts = subset.Options()
+    opts.layout_features, opts.name_IDs, opts.name_languages, opts.notdef_outline = ['*'], ['*'], ['*'], True
+    opts.glyph_names, opts.hinting, opts.legacy_kern = True, False, True
+    sub = subset.Subsetter(opts)
+    sub.populate(unicodes=font.getBestCmap().keys())
+    sub.subset(font)
+    font.flavor = None
+    path = os.path.join(DIST, f'{ps}.ttf')
+    font.save(path)
+    # Static desktop files are hinted (ttfautohint): Windows at 100% scaling snaps unhinted stems
+    # unevenly. The variable fonts stay unhinted, as Inter's and Geist's web fonts are.
+    # no_info keeps ttfautohint's own version out of the name table, so builds stay reproducible.
+    ttfautohint.ttfautohint(in_file=path, out_file=path, no_info=True)
+
+
+def save_all(upright, italic):
+    # one clipping extent for the whole family (Windows checks it across styles)
+    win = tuple(max(a, b) for a, b in zip(_win_extent(upright), _win_extent(italic)))
+    for vf in (upright, italic):
+        vf['OS/2'].usWinAscent, vf['OS/2'].usWinDescent = win
+    for fn in os.listdir(DIST):  # outputs are fully regenerated; stale names must not linger
+        os.remove(os.path.join(DIST, fn))
+    for vf, stem in ((upright, PS), (italic, f'{PS}-Italic')):
+        path = os.path.join(DIST, f'{stem}[opsz,wght].ttf')
+        vf.flavor = None
+        vf.save(path)
+        load = lambda path=path: TTFont(path)  # noqa: E731
+        _save_woff2(load(), f'{stem}[opsz,wght].woff2')
+        # Latin slices: the files a website actually serves (unicode-range splits the rest off)
+        _save_woff2(_subset_latin(load()), f'{stem}-Latin[opsz,wght].woff2')
+        _save_woff2(_subset_latin(instancer.instantiateVariableFont(load(), {'opsz': 14})), f'{stem}-Latin[wght].woff2')
+        if GEORGIAN:
+            _save_woff2(_subset_latin(load(), GEORGIAN_RANGE), f'{stem}-Georgian[opsz,wght].woff2')
+        if ARMENIAN:
+            _save_woff2(_subset_latin(load(), ARMENIAN_RANGE), f'{stem}-Armenian[opsz,wght].woff2')
+        if HEBREW:
+            _save_woff2(_subset_latin(load(), HEBREW_RANGE), f'{stem}-Hebrew[opsz,wght].woff2')
+    # static Regular, full character set: the static-vs-static comparison
+    _save_woff2(instancer.instantiateVariableFont(TTFont(os.path.join(DIST, f'{PS}[opsz,wght].ttf')), {'wght': 400, 'opsz': 14}), f'{PS}-Regular.woff2')
+    # static desktop styles: the four that style-linking apps (word processors) expect
+    for style, src, wght in (('Regular', PS, 400), ('Bold', PS, 700), ('Italic', f'{PS}-Italic', 400), ('Bold Italic', f'{PS}-Italic', 700)):
+        _save_static(TTFont(os.path.join(DIST, f'{src}[opsz,wght].ttf')), style, wght)
+    for fn in sorted(os.listdir(DIST)):
+        print(f'{os.path.getsize(os.path.join(DIST, fn)):>8}  {fn}')
+
+
+if __name__ == '__main__':
+    save_all(build(), build(italic=True))

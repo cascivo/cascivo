@@ -1,0 +1,444 @@
+/* /cascivo-sans/specimen — imported only by CascivoSansSpecimenPage, next to font.css, so only
+   these two routes download the font. Sizes follow the QA brief, in rem. */
+@layer cascivo.component {
+  .cs-specimen {
+    & .sp-wrap {
+      max-inline-size: 1040px;
+      margin-inline: auto;
+      padding: var(--cascivo-space-12) var(--cascivo-space-6) var(--cascivo-space-24);
+      display: flex;
+      flex-direction: column;
+      gap: 4.5rem;
+      container-type: inline-size;
+    }
+
+    & .sp-intro {
+      display: flex;
+      flex-direction: column;
+      gap: var(--cascivo-space-3);
+      padding-block-end: var(--cascivo-space-5);
+      border-block-end: 2px solid var(--cascivo-color-text);
+
+      & h1 {
+        margin: 0;
+        max-inline-size: none;
+        font-size: clamp(2rem, 9vw, 2.75rem);
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        line-height: 1.1;
+        /* The site's h1 style uppercases; a specimen shows the lowercase too. */
+        text-transform: none;
+      }
+
+      & p {
+        margin: 0;
+      }
+    }
+
+    & .sp-lede {
+      max-inline-size: 40rem;
+      font-size: var(--cascivo-text-base);
+      line-height: 1.5;
+      text-wrap: pretty;
+    }
+
+    & .sp-label {
+      margin: 0;
+      font-family: var(--cascivo-font-mono);
+      font-size: var(--cascivo-text-xs);
+      font-weight: 500;
+      line-height: 1.3;
+      color: var(--cascivo-color-text-subtle);
+      overflow-wrap: anywhere;
+    }
+
+    & .sp-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--cascivo-space-5);
+      min-inline-size: 0;
+    }
+
+    & .sp-head {
+      display: flex;
+      flex-direction: column;
+      gap: 0.375rem;
+
+      & h2 {
+        margin: 0;
+        font-size: 1.375rem;
+        font-weight: 700;
+        line-height: 1.25;
+        text-wrap: balance;
+      }
+    }
+
+    & .sp-note {
+      margin: 0;
+      max-inline-size: 40rem;
+      font-size: var(--cascivo-text-sm);
+      line-height: 1.5;
+      color: var(--cascivo-color-text-subtle);
+    }
+
+    /* A line that must not wrap scrolls inside its own box, never the page. */
+    & .sp-scroll {
+      overflow-x: auto;
+      max-inline-size: 100%;
+    }
+
+    & .sp-scroll:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+    }
+
+    /* 01: weight rows. Narrow: the name sits on its own line, then stems, the meter and the sample stack under it. */
+    & .sp-weights {
+      display: flex;
+      flex-direction: column;
+    }
+
+    & .sp-weights-head {
+      display: none;
+    }
+
+    & .sp-weight {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: var(--cascivo-space-2) var(--cascivo-space-5);
+      padding-block: var(--cascivo-space-3);
+      border-block-end: 1px solid var(--cascivo-color-border);
+    }
+
+    & .sp-weight-name {
+      font-family: var(--cascivo-font-mono);
+      font-size: var(--cascivo-text-xs);
+      line-height: 1.3;
+    }
+
+    & .sp-weight-note {
+      display: block;
+      color: var(--cascivo-color-text-subtle);
+    }
+
+    & .sp-stems {
+      grid-column: 1 / -1;
+      font-size: 2.5rem;
+      line-height: 1;
+    }
+
+    & .sp-sample-wrap {
+      grid-column: 1 / -1;
+    }
+
+    & .sp-sample {
+      display: block;
+      inline-size: max-content;
+      font-size: 1.375rem;
+      line-height: 1.3;
+      white-space: nowrap;
+    }
+
+    & .sp-meter {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: var(--cascivo-space-2);
+    }
+
+    & .sp-track {
+      position: relative;
+      flex: none;
+      inline-size: 5rem;
+      block-size: 0.375rem;
+      /* A tint of the text colour, not the border token: poster themes set the border to the
+         ink colour, which would hide a same-coloured fill. */
+      background-color: color-mix(in oklch, var(--cascivo-color-text) 15%, transparent);
+    }
+
+    & .sp-tick {
+      position: absolute;
+      inset-block: -0.1875rem;
+      inset-inline-start: 50%;
+      inline-size: 1px;
+      background-color: var(--cascivo-color-text);
+    }
+
+    & .sp-fill {
+      position: absolute;
+      inset-block: 0;
+      background-color: var(--cascivo-color-text);
+    }
+
+    & .sp-weight[data-over] .sp-fill {
+      /* The -foreground step is the one that keeps 3:1 against the page and the track. */
+      background-color: var(--cascivo-color-warning-foreground);
+    }
+
+    & .sp-delta {
+      min-inline-size: 3.5rem;
+      font-family: var(--cascivo-font-mono);
+      font-size: var(--cascivo-text-xs);
+      font-weight: 500;
+      text-align: end;
+      font-variant-numeric: tabular-nums;
+    }
+
+    & .sp-weight[data-over] .sp-delta {
+      font-weight: 700;
+    }
+
+    & .sp-sr {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    /* 02: a row sized to its content, so its box width is the sum of its tabs. */
+    & .sp-toggle {
+      display: flex;
+      gap: var(--cascivo-space-3);
+      align-items: center;
+    }
+
+    & .sp-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: var(--cascivo-space-2);
+    }
+
+    & .sp-tabrow {
+      display: flex;
+      inline-size: max-content;
+      gap: 1.75rem;
+      padding-block-end: var(--cascivo-space-3);
+      border-block-end: 1px solid var(--cascivo-color-text);
+      font-size: 0.9375rem;
+    }
+
+    & .sp-tab {
+      color: inherit;
+      text-decoration: none;
+      white-space: nowrap;
+      /* The target is the whole padded box, not the word, on a touch screen. */
+      @media (pointer: coarse) {
+        display: inline-flex;
+        align-items: center;
+        min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+      }
+    }
+
+    & .sp-tabrow-hover .sp-tab:hover,
+    & .sp-tabrow-hover .sp-tab:focus-visible {
+      font-weight: 700;
+    }
+
+    & .sp-tab:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+    }
+
+    /* 03 to 06 */
+    & .sp-two,
+    & .sp-cards {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--cascivo-space-6);
+    }
+
+    & .sp-cell {
+      display: flex;
+      flex-direction: column;
+      gap: var(--cascivo-space-3);
+      min-inline-size: 0;
+      padding-block-start: var(--cascivo-space-3);
+      border-block-start: 1px solid var(--cascivo-color-text);
+
+      & p {
+        margin: 0;
+      }
+    }
+
+    & .sp-afegky {
+      font-size: 5.5rem;
+      line-height: 1.1;
+      overflow-wrap: anywhere;
+    }
+
+    & .sp-italic {
+      font-style: italic;
+    }
+
+    & .sp-color {
+      font-size: var(--cascivo-text-base);
+      line-height: 1.6;
+
+      & p {
+        margin: 0;
+      }
+    }
+
+    /* Rules are outlines, not a filled grid gap, so an unfilled last row stays empty. */
+    & .sp-pairs {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.375rem), 1fr));
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      & li {
+        display: flex;
+        flex-direction: column;
+        gap: var(--cascivo-space-3);
+        min-inline-size: 0;
+        padding: var(--cascivo-space-4);
+        outline: 1px solid var(--cascivo-color-text);
+        outline-offset: -0.5px;
+      }
+    }
+
+    & .sp-pair-glyphs {
+      font-size: 3.5rem;
+      line-height: 1;
+      overflow-wrap: anywhere;
+    }
+
+    & .sp-variants .sp-pair-glyphs {
+      font-size: 2.25rem;
+    }
+
+    & .sp-line {
+      display: flex;
+      flex-direction: column;
+      gap: var(--cascivo-space-3);
+
+      & p {
+        margin: 0;
+      }
+    }
+
+    & .sp-context {
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    & .sp-dashes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--cascivo-space-6);
+      font-size: 4rem;
+      line-height: 1;
+    }
+
+    & .sp-quotes {
+      font-size: 4rem;
+      line-height: 1;
+    }
+
+    & .sp-brackets {
+      font-size: 3rem;
+      line-height: 1.2;
+    }
+
+    & .sp-dots {
+      font-size: 2rem;
+      line-height: 1.2;
+    }
+
+    & .sp-controls {
+      display: flex;
+      flex-direction: column;
+      gap: var(--cascivo-space-1);
+      font-size: 2.75rem;
+      line-height: 1.25;
+
+      & p {
+        margin: 0;
+        overflow-wrap: anywhere;
+      }
+    }
+
+    /* 07: Light and Regular stack on a phone and sit side by side from 40rem. */
+    & .sp-small {
+      display: flex;
+      flex-direction: column;
+    }
+
+    & .sp-small-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--cascivo-space-2);
+      padding-block: var(--cascivo-space-3) var(--cascivo-space-4);
+      border-block-start: 1px solid var(--cascivo-color-text);
+
+      & p {
+        margin: 0;
+        line-height: 1.45;
+      }
+    }
+
+    @container (min-width: 40rem) {
+      & .sp-weights-head,
+      & .sp-weight {
+        grid-template-columns: 7.5rem 7.5rem minmax(0, 1fr) 9.375rem;
+        gap: 0 var(--cascivo-space-5);
+      }
+
+      & .sp-weights-head {
+        display: grid;
+        padding-block-end: var(--cascivo-space-2);
+        border-block-end: 1px solid var(--cascivo-color-text);
+        font-family: var(--cascivo-font-mono);
+        font-size: var(--cascivo-text-xs);
+        font-weight: 500;
+        color: var(--cascivo-color-text-subtle);
+
+        & span:last-child {
+          grid-column: 4;
+          text-align: end;
+        }
+      }
+
+      & .sp-stems {
+        grid-column: auto;
+      }
+
+      & .sp-meter {
+        grid-column: 4;
+        grid-row: 1;
+      }
+
+      & .sp-sample-wrap {
+        grid-row: 2;
+        padding-block-start: var(--cascivo-space-2);
+      }
+
+      & .sp-two,
+      & .sp-cards {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 18.75rem), 1fr));
+      }
+
+      & .sp-small-row {
+        grid-template-columns: 5rem minmax(0, 1fr) minmax(0, 1fr);
+        gap: var(--cascivo-space-6);
+        align-items: baseline;
+      }
+    }
+
+    @media (forced-colors: active) {
+      & .sp-fill,
+      & .sp-tick {
+        background-color: CanvasText;
+      }
+
+      & .sp-weight[data-over] .sp-fill {
+        background-color: Highlight;
+      }
+    }
+  }
+}
