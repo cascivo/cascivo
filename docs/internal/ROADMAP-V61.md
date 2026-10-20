@@ -1,7 +1,7 @@
 # cascivo — Roadmap v61: A2UI Study — Be the Best Design System to Render Agent UI
 
 **Last updated:** 2026-10-20
-**Status:** 🟡 Study + recommendation. Nothing built yet.
+**Status:** 🟡 Approved. T1 planned: `docs/superpowers/plans/2026-10-20-v61-t1-component-catalog.md`.
 **Builds on:** ROADMAP-V40 (OpenUI study: bounded vocabulary + prop conformance, shipped), `@cascivo/render`
 (`ViewConfig` + `CascivoView`), `@cascivo/mcp` (`get_view_grammar`, `validate_view`), `@cascivo/data`
 (`parseSSE`), `starters/cloudflare-agent`.
@@ -193,8 +193,8 @@ whether `@a2ui/react` exposes a clean component-override hook. If it does, also 
 
 - Whether the npm package names `@a2ui/react` and `@a2ui/web-core` are correct, and how extensible they are
   (the study read docs only, not the packages).
-- The exact literal `action` message and catalog-definition JSON in v0.9.1. Check them against the raw schema
-  files in the repo, not the rendered docs.
+- The exact literal `action` message in v0.9.1. (The catalog-definition format was verified against
+  `https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json` and `common_types.json` on 2026-10-20.)
 - The release cadence and the v1.0 timeline.
 
 ## Decision log
@@ -202,3 +202,4 @@ whether `@a2ui/react` exposes a clean component-override hook. If it does, also 
 | Date | Decision |
 |---|---|
 | 2026-10-20 | Proposed (awaiting maintainer decision): A2UI support as an adapter over existing manifests and validator; `ViewConfig` stays. Order: T1 → T2 → T3 → T4. Pin to v0.9.1. |
+| 2026-10-20 | Approved by maintainer. T1 implementation plan written. |
