@@ -16,7 +16,7 @@ export interface AggregateRow {
 }
 
 /** More than this share of infra errors means the numbers measure our infrastructure, not the arms. */
-const INFRA_THRESHOLD = 0.1
+export const INFRA_THRESHOLD = 0.1
 
 // NUL cannot appear in a task, arm or model id, so the joined key is unambiguous.
 const cellKey = (task: string, arm: string, model: string, attempt?: number): string =>

@@ -17,6 +17,21 @@ function node(args: string[], env: Record<string, string | undefined> = {}) {
   return spawnSync(process.execPath, args, { cwd: PKG, encoding: 'utf8', env: merged })
 }
 
+const scoredMeta = {
+  schemaVersion: 1,
+  date: '2026-10-20T00:00:00.000Z',
+  cascivoVersion: '1.0.0',
+  commit: 'a'.repeat(40),
+  models: ['claude-haiku-5-5'],
+  arms: ['cascivo'],
+  tasks: ['admin-console'],
+  attempts: 1,
+  maxUsd: 50,
+  spentUsd: 0,
+  budgetExhausted: false,
+  shadcnVersion: '4.22.1',
+}
+
 let root: string
 beforeAll(() => {
   root = mkdtempSync(join(tmpdir(), 'eval-cli-test-'))
@@ -105,28 +120,35 @@ describe('eval-cli', () => {
     expect(existsSync(join(root, 'nokey'))).toBe(false)
   })
 
-  it('leaves publish to a later task', () => {
-    const ran = node([CLI, 'publish', '--results', 'x.json'])
-    expect(ran.status).toBe(2)
-    expect(ran.stderr).toMatch(/not implemented/)
+  describe('publish', () => {
+    const evalsJson = join(PKG, '..', '..', 'site', 'public', 'evals.json')
+    const doc = join(PKG, '..', '..', '..', 'docs', 'AGENT-BENCHMARKS.md')
+
+    it('needs --results', () => {
+      expect(node([CLI, 'publish']).status).toBe(2)
+    })
+
+    it('exits 1 with the reason for a run that is not valid, and writes nothing', () => {
+      const before = [existsSync(evalsJson), existsSync(doc)]
+      const file = join(root, 'incomplete.json')
+      const incomplete = { ...scoredMeta, budgetExhausted: true, records: [] }
+      writeFileSync(file, JSON.stringify(incomplete))
+      const ran = node([CLI, 'publish', '--results', file])
+      expect(ran.status).toBe(1)
+      expect(ran.stderr).toMatch(/incomplete/)
+      expect([existsSync(evalsJson), existsSync(doc)]).toEqual(before)
+    })
+
+    it('exits 1 naming the field of a malformed results file', () => {
+      const file = join(root, 'malformed.json')
+      writeFileSync(file, JSON.stringify({ ...scoredMeta, records: [{ status: 'ok' }] }))
+      const ran = node([CLI, 'publish', '--results', file])
+      expect(ran.status).toBe(1)
+      expect(ran.stderr).toContain('records[0]')
+    })
   })
 
   describe('score', () => {
-    const runMeta = {
-      schemaVersion: 1,
-      date: '2026-10-20T00:00:00.000Z',
-      cascivoVersion: '1.0.0',
-      commit: 'a'.repeat(40),
-      models: ['claude-haiku-5-5'],
-      arms: ['cascivo'],
-      tasks: ['admin-console'],
-      attempts: 1,
-      maxUsd: 50,
-      spentUsd: 0,
-      budgetExhausted: false,
-      shadcnVersion: '4.22.1',
-    }
-
     function inDir(name: string, run: unknown): string {
       const dir = join(root, name)
       const attempt = join(dir, 'claude-haiku-5-5', 'cascivo', 'admin-console', '1')
@@ -140,7 +162,7 @@ describe('eval-cli', () => {
     }
 
     it('merges run.json with the records into a valid EvalRun', () => {
-      const dir = inDir('score-ok', runMeta)
+      const dir = inDir('score-ok', scoredMeta)
       const resultsPath = join(root, 'nested', 'results.json')
       const ran = node([CLI, 'score', '--in', dir, '--out', resultsPath, '--concurrency', '1'])
       expect(ran.status, ran.stderr).toBe(0)
@@ -151,7 +173,7 @@ describe('eval-cli', () => {
     })
 
     it('writes nothing when the merged run is malformed', () => {
-      const { commit: _commit, ...broken } = runMeta
+      const { commit: _commit, ...broken } = scoredMeta
       const dir = inDir('score-bad', broken)
       const resultsPath = join(root, 'bad-results.json')
       const ran = node([CLI, 'score', '--in', dir, '--out', resultsPath])

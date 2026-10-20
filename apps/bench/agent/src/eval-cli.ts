@@ -10,6 +10,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { argv, env, exit, stderr, stdout } from 'node:process'
 import { isArm, PUBLISHED_ARMS, type ArmId } from './arms.ts'
+import { REPO } from './env.ts'
 import { MODELS } from './models.ts'
 import { parseEvalRun } from './eval/results.ts'
 import { TASK_IDS } from './eval/tasks.ts'
@@ -26,7 +27,8 @@ Subcommands:
   dry [--tasks a,b]
       Score the canary apps with no model, to check the hidden EVALs.
   publish --results <file>
-      Not implemented yet.
+      Write the results file, apps/site/public/evals.json and docs/AGENT-BENCHMARKS.md from a
+      scored run. Refuses an incomplete or invalid run.
 
   -h, --help          Show this message`
 
@@ -138,6 +140,12 @@ async function dryCommand(args: string[]): Promise<void> {
   log(`${results.length} canaries agree with their EVALs`)
 }
 
+async function publishCommand(args: string[]): Promise<void> {
+  const results = required(flags(args, ['results']), 'results')
+  const { publish } = await import('./eval/publish.ts')
+  for (const file of publish(results, REPO).written) log(`wrote ${file}`)
+}
+
 const [command, ...rest] = argv.slice(2)
 try {
   if (command === '-h' || command === '--help' || rest.includes('-h') || rest.includes('--help')) {
@@ -155,8 +163,7 @@ try {
       await dryCommand(rest)
       break
     case 'publish':
-      stderr.write('bench-agent: publish is not implemented yet.\n')
-      exit(2)
+      await publishCommand(rest)
       break
     default:
       throw new UsageError(
