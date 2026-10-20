@@ -40,25 +40,27 @@ function snapshot(dir: string, prefix = ''): Record<string, string> {
   return out
 }
 
-/** A complete run: 2 tasks x 2 arms, every cell `attempts` times, for the given models. */
-function fullRun(model: string, over: Partial<EvalRun> = {}): EvalRun {
+/** A complete run: 2 tasks x 2 arms, every cell `attempts` times, for the given model(s). */
+function fullRun(model: string | string[], over: Partial<EvalRun> = {}): EvalRun {
+  const models = Array.isArray(model) ? model : [model]
   const attempts = over.attempts ?? 3
-  const tasks = ['admin-console', 'crud-table']
-  const arms = ['cascivo', 'shadcn']
+  const tasks = over.tasks ?? ['admin-console', 'crud-table']
+  const arms = over.arms ?? ['cascivo', 'shadcn']
   const records: AttemptRecord[] = []
-  for (const task of tasks)
-    for (const arm of arms)
-      for (let attempt = 1; attempt <= attempts; attempt++)
-        records.push(
-          record({
-            task,
-            arm,
-            model,
-            attempt,
-            status: arm === 'shadcn' && attempt > 1 ? 'fail-eval' : 'pass',
-          }),
-        )
-  return run({ models: [model], tasks, arms, attempts, records, ...over })
+  for (const m of models)
+    for (const task of tasks)
+      for (const arm of arms)
+        for (let attempt = 1; attempt <= attempts; attempt++)
+          records.push(
+            record({
+              task,
+              arm,
+              model: m,
+              attempt,
+              status: arm === 'shadcn' && attempt > 1 ? 'fail-eval' : 'pass',
+            }),
+          )
+  return run({ models, tasks, arms, attempts, records, ...over })
 }
 
 function write(name: string, value: unknown): string {
@@ -268,6 +270,148 @@ describe('publish', () => {
       expect(snapshot(repo)).toEqual(before)
     },
   )
+})
+
+describe('publish, fix round 1', () => {
+  const files = () => readdirSync(join(repo, 'apps/bench/agent/results')).sort()
+
+  it('keeps two different runs of the same day and version in separate files', () => {
+    const base = { date: '2026-10-05T01:00:00.000Z', cascivoVersion: '1.0.0' }
+    const sonnet = fullRun('claude-sonnet-5-5', { ...base, commit: 'aaa1111', spentUsd: 20 })
+    const haiku = fullRun('claude-haiku-5-5', {
+      ...base,
+      date: '2026-10-05T09:00:00.000Z',
+      commit: 'bbb2222',
+      attempts: 1,
+      spentUsd: 5,
+    })
+    publish(write('s.json', sonnet), repo)
+    const second = publish(write('h.json', haiku), repo)
+
+    expect(files()).toEqual(['2026-10-05-1.0.0-2.json', '2026-10-05-1.0.0.json'])
+    expect(second.written[0]).toBe('apps/bench/agent/results/2026-10-05-1.0.0-2.json')
+    expect(evalsJson().history).toHaveLength(2)
+    expect(evalsJson().latest?.models.map((m) => m.model)).toEqual([
+      'claude-sonnet-5-5',
+      'claude-haiku-5-5',
+    ])
+    expect(evalsJson().latest?.costUsd).toBe(25)
+  })
+
+  it('republishing either of two same-day runs rewrites its own file', () => {
+    const base = { date: '2026-10-05T01:00:00.000Z', cascivoVersion: '1.0.0' }
+    const a = write('a.json', fullRun('claude-sonnet-5-5', { ...base, commit: 'aaa1111' }))
+    const b = write('b.json', fullRun('claude-haiku-5-5', { ...base, commit: 'bbb2222' }))
+    publish(a, repo)
+    publish(b, repo)
+    const once = snapshot(repo)
+    publish(b, repo)
+    publish(a, repo)
+    expect(snapshot(repo)).toEqual(once)
+    expect(files()).toHaveLength(2)
+  })
+
+  it('does not overwrite a file that is not a results file', () => {
+    const squatter = join(repo, 'apps/bench/agent/results/2026-10-20-1.0.0.json')
+    writeFileSync(squatter, '{"legacy":true}')
+    publish(write('r.json', fullRun('claude-sonnet-5-5')), repo)
+    expect(readFileSync(squatter, 'utf8')).toBe('{"legacy":true}')
+    expect(files()).toContain('2026-10-20-1.0.0-2.json')
+  })
+
+  it('does not count a run twice when it is committed under another file name', () => {
+    const valid = fullRun('claude-sonnet-5-5')
+    publish(write('r.json', valid), repo)
+    writeFileSync(join(repo, 'apps/bench/agent/results/copy.json'), JSON.stringify(valid))
+    publish(write('r2.json', valid), repo)
+    expect(evalsJson().history).toHaveLength(1)
+    expect(evalsJson().latest?.rows).toEqual(aggregate(valid))
+  })
+
+  it('takes each model from its newest run when a later run covers only one of them', () => {
+    const a = fullRun(['claude-sonnet-5-5', 'claude-haiku-5-5'], {
+      date: '2026-10-01T00:00:00.000Z',
+      cascivoVersion: '1.0.0',
+      spentUsd: 30,
+    })
+    const b = fullRun('claude-haiku-5-5', {
+      date: '2026-10-08T00:00:00.000Z',
+      cascivoVersion: '1.1.0',
+      spentUsd: 4,
+    })
+    publish(write('a.json', a), repo)
+    publish(write('b.json', b), repo)
+
+    const { latest } = evalsJson()
+    expect(latest?.models).toEqual([
+      { model: 'claude-sonnet-5-5', date: '2026-10-01', attempts: 3 },
+      { model: 'claude-haiku-5-5', date: '2026-10-08', attempts: 3 },
+    ])
+    expect(latest?.rows).toEqual([
+      ...aggregate(a).filter((r) => r.model === 'claude-sonnet-5-5'),
+      ...aggregate(b),
+    ])
+    expect(latest?.costUsd).toBe(34)
+  })
+
+  it('describes each source run in the Markdown and uses the same rows as evals.json', () => {
+    const sonnet = fullRun('claude-sonnet-5-5', {
+      date: '2026-10-01T00:00:00.000Z',
+      cascivoVersion: '1.0.0',
+      commit: 'aaa1111',
+      shadcnVersion: '4.0.0',
+      spentUsd: 20,
+      maxUsd: 50,
+      tasks: ['admin-console'],
+    })
+    const haiku = fullRun('claude-haiku-5-5', {
+      date: '2026-10-05T00:00:00.000Z',
+      cascivoVersion: '1.0.1',
+      commit: 'bbb2222',
+      shadcnVersion: '4.1.0',
+      spentUsd: 5,
+      maxUsd: 10,
+      attempts: 1,
+    })
+    publish(write('s.json', sonnet), repo)
+    publish(write('h.json', haiku), repo)
+    const doc = readFileSync(join(repo, 'docs/AGENT-BENCHMARKS.md'), 'utf8')
+
+    expect(doc).toContain('claude-sonnet-5-5 (2026-10-01, 3 attempts)')
+    expect(doc).toContain('claude-haiku-5-5 (2026-10-05, 1 attempt)')
+    for (const piece of ['1.0.0', 'aaa1111', '4.0.0', '1.0.1', 'bbb2222', '4.1.0'])
+      expect(doc).toContain(piece)
+    expect(doc).toContain('$20.00 of $50.00')
+    expect(doc).toContain('$5.00 of $10.00')
+    expect(doc).toContain('$25.00')
+    // Sonnet never ran crud-table, so the per-task table has no empty row for it.
+    expect(doc).not.toMatch(/\| crud-table \| \w+ \| claude-sonnet-5-5 \|/)
+    const rows = evalsJson().latest?.rows ?? []
+    expect(rows.some((r) => r.attempts === 0)).toBe(false)
+    const perTask = doc.split('## By task')[1]!.split('\n## ')[0]!
+    expect(
+      perTask.split('\n').filter((l) => /^\| (admin-console|crud-table) \| /.test(l)),
+    ).toHaveLength(rows.length)
+  })
+
+  it('treats ids like constructor and __proto__ as plain strings', () => {
+    const hostile = fullRun('__proto__', { arms: ['constructor', 'shadcn'] })
+    publish(write('r.json', hostile), repo)
+    const history = evalsJson().history[0]!.passAt1
+    expect(Object.keys(history)).toEqual(['__proto__'])
+    expect(Object.keys(Object.getOwnPropertyDescriptor(history, '__proto__')?.value)).toEqual([
+      'constructor',
+      'shadcn',
+    ])
+    const doc = readFileSync(join(repo, 'docs/AGENT-BENCHMARKS.md'), 'utf8')
+    expect(doc).not.toMatch(/native code|function Object/)
+    expect(doc).toContain('**constructor**: see the method')
+  })
+
+  it('keeps the source path readable inside its code span', () => {
+    const text = evalDoc(fullRun('claude-sonnet-5-5'), 'results/a_b|c\n`d`.json')
+    expect(text).toContain('`results/a_b|c d.json`')
+  })
 })
 
 describe('buildEvalsJson', () => {

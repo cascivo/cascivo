@@ -6,7 +6,7 @@ blueprint work (`docs/plans/app-blueprints-and-workbench-research.md`, §6).
 ```sh
 pnpm build                                        # at the repo root: the CLI and MCP under test
 pnpm --filter bench-agent bench --dry-run         # check the harness: no model, no key
-ANTHROPIC_API_KEY=… pnpm --filter bench-agent bench --runs 3 --publish
+ANTHROPIC_API_KEY=… pnpm --filter bench-agent bench --runs 3
 ```
 
 ## Method
@@ -25,8 +25,8 @@ ANTHROPIC_API_KEY=… pnpm --filter bench-agent bench --runs 3 --publish
   time and turns, from the CLI's own JSON; then `tsc --noEmit` errors and `cascivo audit --ai`
   errors and warnings on the app the run left. The app links one dependency tree installed
   once from this checkout's packed packages (`src/env.ts`), so no run pays for an install.
-- **Reported:** the median of each prompt and arm. `--publish` writes
-  `docs/AGENT-BENCHMARKS.md`.
+- **Reported:** the median of each prompt and arm, printed and saved under `results/`.
+  `docs/AGENT-BENCHMARKS.md` comes from the scored eval: `pnpm --filter bench-agent eval publish`.
 
 A dry run replays a scripted tool call per arm (`src/dry-run.ts`) through the same scaffold,
 link, `tsc` and audit, so it proves the pipeline and measures nothing about a model. Its

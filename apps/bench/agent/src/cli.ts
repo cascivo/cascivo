@@ -20,7 +20,7 @@ import type { ArmId } from './arms.ts'
 import { dryRun } from './dry-run.ts'
 import { CLI, mcpConfig, prepare, REPO, runDirectory } from './env.ts'
 import { INSTRUCTIONS, PROMPTS } from './prompts.ts'
-import { markdownTable, publishedDoc } from './report.ts'
+import { markdownTable } from './report.ts'
 import type { BenchResults, RunRecord } from './report.ts'
 import { parseClaudeResult } from './result.ts'
 import { score } from './score.ts'
@@ -36,7 +36,6 @@ Options:
   --dry-run           No model: a scripted tool call per arm, to check the harness
   --fresh             Rebuild the packed packages and the shared dependency tree
   --keep              Keep each run's directory (printed) for inspection
-  --publish           Also write docs/AGENT-BENCHMARKS.md from this run (not with --dry-run)
   -h, --help          Show this message`
 
 interface Options {
@@ -48,7 +47,6 @@ interface Options {
   dryRun: boolean
   fresh: boolean
   keep: boolean
-  publish: boolean
 }
 
 function parse(args: string[]): Options | 'help' {
@@ -61,7 +59,6 @@ function parse(args: string[]): Options | 'help' {
     dryRun: false,
     fresh: false,
     keep: false,
-    publish: false,
   }
   for (let i = 0; i < args.length; i += 1) {
     const arg = args[i]
@@ -83,12 +80,12 @@ function parse(args: string[]): Options | 'help' {
     else if (arg === '--dry-run') o.dryRun = true
     else if (arg === '--fresh') o.fresh = true
     else if (arg === '--keep') o.keep = true
-    else if (arg === '--publish') o.publish = true
+    else if (arg === '--publish')
+      // The published doc now comes from the scored eval, not from this internal comparison.
+      throw new Error('bench --publish is superseded by `pnpm --filter bench-agent eval publish`')
     else throw new Error(`unknown option ${arg}`)
   }
   if (!Number.isInteger(o.runs) || o.runs < 1) throw new Error('--runs needs a positive integer')
-  if (o.publish && o.dryRun)
-    throw new Error('--publish needs a real run: a dry run measures no model')
   const unknown = o.prompts.filter((p) => !PROMPTS.some((x) => x.id === p))
   if (unknown.length > 0) throw new Error(`unknown prompt ${unknown.join(', ')}`)
   return o
@@ -164,8 +161,3 @@ const out = join(
 writeFileSync(out, `${JSON.stringify(results, null, 2)}\n`)
 if (!options.keep) rmSync(root, { recursive: true, force: true })
 log(`\n${markdownTable(results)}\n\nwrote ${out}`)
-if (options.publish) {
-  const doc = join(REPO, 'docs/AGENT-BENCHMARKS.md')
-  writeFileSync(doc, publishedDoc(results, out.slice(REPO.length + 1)))
-  log(`wrote ${doc}`)
-}

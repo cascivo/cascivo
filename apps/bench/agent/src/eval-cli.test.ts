@@ -62,6 +62,14 @@ describe('plain node', () => {
   })
 })
 
+describe('legacy bench', () => {
+  it('rejects --publish and points to eval publish', () => {
+    const ran = node([join(PKG, 'src', 'cli.ts'), '--publish'])
+    expect(ran.status).toBe(2)
+    expect(ran.stderr).toContain('superseded by `pnpm --filter bench-agent eval publish`')
+  })
+})
+
 describe('eval-cli', () => {
   it('prints the usage and exits 0 for --help', () => {
     const ran = node([CLI, '--help'])

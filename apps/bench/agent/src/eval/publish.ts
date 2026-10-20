@@ -5,10 +5,10 @@
  * agents wrote, so it is data this process did not produce: it is parsed once, and the two
  * strings that name the output file are checked before any path is built.
  */
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join, resolve, sep } from 'node:path'
 import { MODELS } from '../models.ts'
-import { evalDoc } from '../report.ts'
+import { evalDoc, type EvalDocRun } from '../report.ts'
 import { aggregate, INFRA_THRESHOLD, validity, type AggregateRow } from './aggregate.ts'
 import { parseEvalRun, type EvalRun } from './results.ts'
 
@@ -18,7 +18,7 @@ export interface EvalsLatest {
   cascivoVersion: string
   models: { model: string; date: string; attempts: number }[]
   rows: AggregateRow[]
-  /** Spend of the runs that make up `latest`. */
+  /** The full `spentUsd` of every run that contributes a model, even if it also holds a superseded one. */
   costUsd: number
 }
 
@@ -102,10 +102,17 @@ function newestPerModel(entries: EvalEntry[]): { model: string; entry: EvalEntry
 const round = (n: number) => Math.round(n * 1e6) / 1e6
 
 /**
- * The run `latest` and the Markdown describe: each model's newest records under the newest
- * run's metadata. Null when there is no valid run.
+ * What `latest` and the Markdown both describe, built once so they cannot differ: each model's
+ * rows come from its newest run only. `run` carries the newest run's metadata over the merged
+ * records, for the tables that need them. Null when there is no valid run.
  */
-function latestRun(entries: EvalEntry[]): { run: EvalRun; files: string[]; day: string } | null {
+function latestRun(entries: EvalEntry[]): {
+  run: EvalRun
+  files: string[]
+  day: string
+  rows: AggregateRow[]
+  sources: EvalDocRun[]
+} | null {
   const picked = newestPerModel(entries)
   const newest = picked
     .map((p) => p.entry)
@@ -128,23 +135,32 @@ function latestRun(entries: EvalEntry[]): { run: EvalRun; files: string[]; day: 
     },
     day: newest.day,
     files: distinct.map((e) => `${RESULTS_DIR}/${e.file}`),
+    rows: picked.flatMap((p) => aggregate(p.entry.run).filter((r) => r.model === p.model)),
+    sources: distinct.map((e) => ({
+      file: `${RESULTS_DIR}/${e.file}`,
+      run: e.run,
+      models: picked.filter((p) => p.entry === e).map((p) => p.model),
+    })),
   }
 }
 
 /** Mean pass@1 per model and arm over a run's tasks. */
 function passAt1(run: EvalRun): Record<string, Record<string, number>> {
   const rows = aggregate(run)
-  const out: Record<string, Record<string, number>> = {}
-  for (const model of run.models) {
-    const byArm: Record<string, number> = {}
-    for (const arm of run.arms) {
-      const cells = rows.filter((r) => r.model === model && r.arm === arm && r.attempts > 0)
-      if (cells.length > 0)
-        byArm[arm] = round(cells.reduce((sum, r) => sum + r.passAt1, 0) / cells.length)
-    }
-    out[model] = byArm
-  }
-  return out
+  // Ids come from the file: `fromEntries` defines own properties, so `__proto__` stays a key.
+  return Object.fromEntries(
+    run.models.map((model) => [
+      model,
+      Object.fromEntries(
+        run.arms.flatMap((arm) => {
+          const cells = rows.filter((r) => r.model === model && r.arm === arm && r.attempts > 0)
+          return cells.length === 0
+            ? []
+            : [[arm, round(cells.reduce((sum, r) => sum + r.passAt1, 0) / cells.length)]]
+        }),
+      ),
+    ]),
+  )
 }
 
 /** `evals.json` for a set of valid runs. */
@@ -164,7 +180,7 @@ export function buildEvalsJson(entries: EvalEntry[]): EvalsJson {
               date: p.entry.day,
               attempts: p.entry.run.attempts,
             })),
-            rows: picked.flatMap((p) => aggregate(p.entry.run).filter((r) => r.model === p.model)),
+            rows: latest.rows,
             costUsd: latest.run.spentUsd,
           },
     history: [...entries].sort(oldestFirst).map((e) => ({
@@ -182,6 +198,7 @@ function committedRuns(dir: string): EvalEntry[] {
     names = readdirSync(dir, { withFileTypes: true })
       .filter((d) => d.isFile() && d.name.endsWith('.json'))
       .map((d) => d.name)
+      .sort()
   } catch {
     return []
   }
@@ -199,9 +216,45 @@ function committedRuns(dir: string): EvalEntry[] {
   return entries
 }
 
+/** The same run, whatever file it sits in: when it started, what it ran on and which models. */
+const identity = (run: EvalRun) =>
+  JSON.stringify([run.date, run.commit, run.cascivoVersion, run.models])
+
+function withoutDuplicates(entries: EvalEntry[]): EvalEntry[] {
+  const seen = new Set<string>()
+  return entries.filter((e) => {
+    const id = identity(e.run)
+    if (seen.has(id)) return false
+    seen.add(id)
+    return true
+  })
+}
+
+/**
+ * `<date>-<version>.json`, or `-2`, `-3`, … when that name holds a different run: the budget
+ * fallback publishes Sonnet and Haiku as two runs of the same day. The first name that is free
+ * or already holds this very run wins, so republishing is idempotent and nothing else is clobbered.
+ */
+function freeName(dir: string, run: EvalRun): string {
+  const base = resultsFileName(run)
+  for (let n = 1; n < 1000; n += 1) {
+    const name = n === 1 ? base : `${base.slice(0, -'.json'.length)}-${n}.json`
+    const path = assertInside(dir, join(dir, name))
+    if (!existsSync(path)) return name
+    try {
+      if (identity(parseEvalRun(JSON.parse(readFileSync(path, 'utf8')))) === identity(run))
+        return name
+    } catch {
+      // Not a results file: leave it where it is and try the next name.
+    }
+  }
+  throw new Error(`eval results: no free file name for ${base}`)
+}
+
 /**
  * Writes the results file, `evals.json` and `AGENT-BENCHMARKS.md` for a valid run. Throws before
- * writing anything when the run is incomplete or invalid, or names an unsafe file.
+ * writing anything when the run is incomplete or invalid, or names an unsafe file. The three
+ * writes are not atomic; a crash between them is recovered by running publish again.
  *
  * @param resultsFile The scored `results.json`.
  * @param repo The repository root.
@@ -213,12 +266,14 @@ export function publish(resultsFile: string, repo: string): { written: string[] 
   if (state !== 'valid')
     throw new Error(`eval results are ${state}, not published: ${whyNotValid(run)}`)
 
-  const name = resultsFileName(run)
   const resultsDir = resolve(repo, RESULTS_DIR)
+  const name = freeName(resultsDir, run)
   const resultsPath = assertInside(resultsDir, join(resultsDir, name))
 
-  // This run replaces a committed file of the same name, so a re-publish is idempotent.
-  const entries = committedRuns(resultsDir).filter((e) => e.file !== name)
+  // Dropped by identity, not file name, so a re-publish never counts the run twice.
+  const entries = withoutDuplicates(committedRuns(resultsDir)).filter(
+    (e) => identity(e.run) !== identity(run),
+  )
   entries.push({ file: name, run, day: name.slice(0, 10) })
 
   const latest = latestRun(entries)
@@ -226,7 +281,10 @@ export function publish(resultsFile: string, repo: string): { written: string[] 
   const files = [
     [resultsPath, `${JSON.stringify(run, null, 2)}\n`],
     [join(repo, EVALS_JSON), `${JSON.stringify(buildEvalsJson(entries), null, 2)}\n`],
-    [join(repo, DOC), evalDoc(latest.run, latest.files.join(', '))],
+    [
+      join(repo, DOC),
+      evalDoc(latest.run, latest.files.join(', '), { rows: latest.rows, sources: latest.sources }),
+    ],
   ] as const
 
   for (const [path, content] of files) {
