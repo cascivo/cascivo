@@ -6,8 +6,8 @@
  *   how an agent built an app with cascivo before blueprints. Internal comparison only.
  * - `cascivo`: the cascivo MCP server. In the legacy `bench` the agent also has `compose_app`
  *   and can describe the app as pages of registry blocks (the old `blueprints` arm); in the
- *   published eval it has only the server's read tools (CASCIVO_SAFE_TOOLS) and writes the app
- *   itself.
+ *   published eval it starts from the cascivo scaffold with its AI context files, has only the
+ *   server's read tools (CASCIVO_SAFE_TOOLS), and extends the app itself.
  * - `cascivo-bare`: a cascivo starter app and no MCP server, so the gap to `cascivo` is the
  *   value of cascivo's AI context.
  * - `shadcn`: a shadcn/ui + Tailwind starter and shadcn's official MCP server, the control.

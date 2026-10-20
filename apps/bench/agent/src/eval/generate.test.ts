@@ -146,6 +146,74 @@ describe('generate', () => {
     rmSync(log)
   })
 
+  // No arm can list a directory (`--bare --restricted`), so each is told what its starter holds.
+  describe('the project file list', () => {
+    const header = 'Project files (the working directory):'
+    const prompts = (log: string) =>
+      readFileSync(log, 'utf8')
+        .split('SESSION ')
+        .slice(1)
+        .map((session) => session.slice(session.indexOf('ARG -p\nARG ') + 'ARG -p\nARG '.length))
+        .map((rest) => rest.slice(0, rest.indexOf('\nARG --output-format')))
+
+    it('appends the same sorted list of the starter to every arm', async () => {
+      const starter = join(root, 'listed-starter')
+      for (const file of [
+        'package.json',
+        'src/App.tsx',
+        'src/a/b.ts',
+        'AGENTS.md',
+        '.gitignore',
+        'node_modules/dep/index.js',
+        '.git/HEAD',
+        'pnpm-lock.yaml',
+        'package-lock.json',
+        'yarn.lock',
+      ]) {
+        mkdirSync(dirname(join(starter, file)), { recursive: true })
+        writeFileSync(join(starter, file), '')
+      }
+      const outDir = out()
+      const log = join(root, 'list.log')
+      process.env['FAKE_CLAUDE_LOG'] = log
+      await generate(
+        { ...base(outDir), arms: ['cascivo', 'cascivo-bare', 'shadcn'] },
+        { ...deps, prepareStarter: () => ({ template: starter, nodeModules: '' }) },
+      )
+      const sent = prompts(log)
+      rmSync(log)
+      expect(sent).toHaveLength(3)
+      const list = [header, '.gitignore', 'AGENTS.md', 'package.json', 'src/App.tsx', 'src/a/b.ts']
+      for (const prompt of sent) {
+        expect(prompt.endsWith(`\n\n${list.join('\n')}`), prompt).toBe(true)
+        expect(prompt).not.toMatch(/node_modules|\.git\/|lock|EVAL|fixtures/)
+      }
+      // Only the design-system line differs between arms.
+      const tails = sent.map((p) => p.slice(p.indexOf(header)))
+      expect(new Set(tails).size).toBe(1)
+    })
+
+    it('stops at 200 files and says how many it left out', async () => {
+      const starter = join(root, 'big-starter')
+      mkdirSync(join(starter, 'src'), { recursive: true })
+      for (let i = 0; i < 205; i += 1)
+        writeFileSync(join(starter, 'src', `f${String(i).padStart(3, '0')}.ts`), '')
+      const outDir = out()
+      const log = join(root, 'big.log')
+      process.env['FAKE_CLAUDE_LOG'] = log
+      await generate(base(outDir), {
+        ...deps,
+        prepareStarter: () => ({ template: starter, nodeModules: '' }),
+      })
+      const [prompt = ''] = prompts(log)
+      rmSync(log)
+      const lines = prompt.slice(prompt.indexOf(header)).split('\n')
+      expect(lines).toHaveLength(1 + 200 + 1)
+      expect(lines[200]).toBe('src/f199.ts')
+      expect(lines[201]).toBe('…and 5 more')
+    })
+  })
+
   it('leaves no node_modules in a cascivo attempt', async () => {
     const outDir = out()
     await generate(

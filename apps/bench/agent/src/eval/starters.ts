@@ -3,7 +3,16 @@
  * (spec §2). A starter is a `template` directory copied into each attempt's working directory
  * plus the installed `nodeModules` the attempt links, so no attempt pays for an install.
  */
-import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs'
+import {
+  cpSync,
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  renameSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs'
 import { dirname, join } from 'node:path'
 import type { PublishedArmId } from '../arms.ts'
 import { CACHE, CLI, pinToTarballs, prepare, run, WITHOUT_API_KEY } from '../env.ts'
@@ -69,33 +78,50 @@ export interface Starter {
 export function prepareStarter(arm: PublishedArmId, log: (line: string) => void): Starter {
   switch (arm) {
     case 'cascivo':
-      return { template: null, nodeModules: prepare(false, log) }
+      return { template: cascivoScaffold(log).full, nodeModules: prepare(false, log) }
     case 'cascivo-bare':
-      return bareStarter(log)
+      return { template: cascivoScaffold(log).bare, nodeModules: prepare(false, log) }
     case 'shadcn':
       return shadcnStarter(log)
   }
 }
 
 /**
- * The app `cascivo create app --yes` writes, on this checkout's packed packages. The scaffold
- * also writes AGENTS.md, CLAUDE.md and .mcp.json, which are cascivo's AI context: leaving
- * them would hand this arm what it is meant to lack, so they are removed.
+ * The app `cascivo create app --yes` writes, on this checkout's packed packages, in two copies:
+ *
+ * - `full`, for the cascivo arm, keeps the scaffold's AI context (AGENTS.md, and CLAUDE.md that
+ *   imports it). Its .mcp.json goes: it names the published server, and the harness passes the
+ *   one built from this checkout with `--mcp-config`.
+ * - `bare`, for cascivo-bare, has none of the three: the arm measures the model without
+ *   cascivo's AI context.
+ *
+ * One scaffold, so the two arms start from the same app and differ only in that context. Built
+ * in a temporary directory and renamed into place, so a build that dies halfway is never reused.
  */
-function bareStarter(log: (line: string) => void): Starter {
-  const nodeModules = prepare(false, log)
-  const dir = join(CACHE, 'bare')
-  const template = join(dir, 'app')
-  if (!existsSync(join(template, 'package.json'))) {
-    log('scaffolding the cascivo-bare starter…')
-    rmSync(dir, { recursive: true, force: true })
-    mkdirSync(dir, { recursive: true })
-    run('node', [CLI, 'create', 'app', '--yes'], dir)
-    pinToTarballs(join(template, 'package.json'))
-    for (const file of ['AGENTS.md', 'CLAUDE.md', '.mcp.json'])
-      rmSync(join(template, file), { force: true })
+function cascivoScaffold(log: (line: string) => void): { full: string; bare: string } {
+  prepare(false, log)
+  const dir = join(CACHE, 'scaffold')
+  const full = join(dir, 'full')
+  const bare = join(dir, 'bare')
+  if (existsSync(dir)) return { full, bare }
+
+  log('scaffolding the cascivo starters…')
+  const build = mkdtempSync(join(CACHE, 'scaffold-'))
+  try {
+    run('node', [CLI, 'create', 'app', '--yes'], build)
+    const app = join(build, 'app')
+    pinToTarballs(join(app, 'package.json'))
+    rmSync(join(app, '.mcp.json'), { force: true })
+    cpSync(app, join(build, 'full'), { recursive: true })
+    renameSync(app, join(build, 'bare'))
+    for (const file of ['AGENTS.md', 'CLAUDE.md'])
+      rmSync(join(build, 'bare', file), { force: true })
+    renameSync(build, dir)
+  } catch (error) {
+    rmSync(build, { recursive: true, force: true })
+    throw error
   }
-  return { template, nodeModules }
+  return { full, bare }
 }
 
 /**

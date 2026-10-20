@@ -98,8 +98,9 @@ export function prepare(fresh: boolean, log: (line: string) => void): string {
   const nodeModules = join(CACHE, 'deps', 'node_modules')
   if (!fresh && existsSync(nodeModules)) return nodeModules
   // Not the whole cache: `.cache/shadcn` is built from the network and independent of this checkout.
-  // `bare` is scaffolded on these tarballs, so it goes with them.
-  for (const stale of ['tarballs', 'deps', 'bare'])
+  // `scaffold` (the cascivo starters) is pinned to these tarballs, so it goes with them; `bare` is
+  // where it was cached before.
+  for (const stale of ['tarballs', 'deps', 'scaffold', 'bare'])
     rmSync(join(CACHE, stale), { recursive: true, force: true })
   const tarballs = join(CACHE, 'tarballs')
   mkdirSync(tarballs, { recursive: true })

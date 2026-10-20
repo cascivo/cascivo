@@ -60,11 +60,29 @@ describe('prepareStarter', () => {
     },
   )
 
-  it('cascivo: no template, the shared tree', { skip: slow, timeout: SLOW_MS }, () => {
-    const { template, nodeModules } = prepareStarter('cascivo', log)
-    expect(template).toBeNull()
-    expect(existsSync(join(nodeModules, '@cascivo/react'))).toBe(true)
-  })
+  it(
+    'cascivo: the create-app scaffold with its AI context, minus the published MCP config',
+    { skip: slow, timeout: SLOW_MS },
+    () => {
+      const { template, nodeModules } = prepareStarter('cascivo', log)
+      if (template === null) throw new Error('cascivo needs a template')
+      expect(existsSync(join(template, 'AGENTS.md'))).toBe(true)
+      expect(existsSync(join(template, 'CLAUDE.md'))).toBe(true)
+      expect(existsSync(join(template, '.mcp.json'))).toBe(false)
+      expect(existsSync(join(template, 'src/App.tsx'))).toBe(true)
+      const manifest: unknown = JSON.parse(readFileSync(join(template, 'package.json'), 'utf8'))
+      expect(manifest).toMatchObject({
+        dependencies: { '@cascivo/react': expect.stringMatching(/^file:.*cascivo-react-/) },
+      })
+      expect(existsSync(join(nodeModules, '@cascivo/react'))).toBe(true)
+      // The same scaffold as cascivo-bare: the arms differ only in the AI context.
+      const bare = prepareStarter('cascivo-bare', log).template
+      if (bare === null) throw new Error('cascivo-bare needs a template')
+      expect(readFileSync(join(bare, 'src/App.tsx'), 'utf8')).toBe(
+        readFileSync(join(template, 'src/App.tsx'), 'utf8'),
+      )
+    },
+  )
 
   it(
     'cascivo-bare: the create-app scaffold on packed tarballs, without the AI context',

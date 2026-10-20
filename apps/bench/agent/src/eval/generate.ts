@@ -21,7 +21,7 @@ import {
   writeFileSync,
 } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { basename, join } from 'node:path'
+import { basename, join, relative } from 'node:path'
 import { StringDecoder } from 'node:string_decoder'
 import { stripVTControlCharacters } from 'node:util'
 import { claudeArgs, PUBLISHED_ARMS, type ArmId, type PublishedArmId } from '../arms.ts'
@@ -268,6 +268,41 @@ class CostEstimator {
   }
 }
 
+/** Lockfiles say nothing about the app, and the shadcn starter's would fill the list. */
+const LOCKFILES = new Set([
+  'package-lock.json',
+  'npm-shrinkwrap.json',
+  'pnpm-lock.yaml',
+  'yarn.lock',
+  'bun.lock',
+  'bun.lockb',
+])
+const FILE_LIST_MAX = 200
+
+/** Paths of the files under `dir`, relative to `root`, without node_modules, .git or lockfiles. */
+function starterFiles(root: string, dir = root): string[] {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const path = join(dir, entry.name)
+    if (entry.name === 'node_modules' || entry.name === '.git') return []
+    if (entry.isDirectory()) return starterFiles(root, path)
+    return LOCKFILES.has(entry.name) ? [] : [relative(root, path)]
+  })
+}
+
+/**
+ * The prompt's last block, worded the same for every arm. Sessions cannot list a directory
+ * (`--bare --restricted` leave only Read and Edit), so each is told what its starter holds.
+ */
+function projectFiles(template: string | null): string {
+  const files = template === null ? [] : starterFiles(template).sort()
+  const shown = files.slice(0, FILE_LIST_MAX)
+  return [
+    'Project files (the working directory):',
+    ...shown,
+    ...(files.length > shown.length ? [`…and ${files.length - shown.length} more`] : []),
+  ].join('\n')
+}
+
 /** What an attempt's meta.json says when its output held the API key. */
 const SECRET_FOUND = 'secret found in output'
 
@@ -353,6 +388,9 @@ export async function generate(
   // Prepared up front: an arm that cannot start fails the run before any money is spent.
   const starters = new Map<PublishedArmId, Starter>()
   for (const arm of arms) starters.set(arm, prepare(arm, log))
+  const fileLists = new Map(
+    arms.map((arm) => [arm, projectFiles(starters.get(arm)?.template ?? null)]),
+  )
 
   // Outside outDir: that directory is uploaded and walked as `<model>/<arm>/…` only.
   const configDir = mkdtempSync(join(tmpdir(), 'eval-mcp-'))
@@ -412,7 +450,7 @@ export async function generate(
 
             const args = [
               '-p',
-              `${task.prompt}\n\n${instructionsFor(arm)}`,
+              `${task.prompt}\n\n${instructionsFor(arm)}\n\n${fileLists.get(arm) ?? ''}`,
               ...claudeArgs(arm, configs[arm], model, { stream: true }),
             ]
             let session: Session

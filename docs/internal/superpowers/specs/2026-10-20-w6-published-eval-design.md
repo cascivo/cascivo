@@ -41,29 +41,38 @@
    - the per-task table;
    - accessibility and cost columns;
    - the method and the reproduction steps.
-4. A change that breaks cascivo's MCP lowers the `cascivo` arm's score on the next run.
+4. A change that breaks cascivo's MCP lowers the `cascivo` arm's score on the next run (its read
+   tools are what the arm uses; see §2).
 
 ## 2. Arms
 
-Every arm gets the same task text, the same file tools and its starting directory. Each runs
-through `claude -p --bare --restricted --strict-mcp-config` with `--permission-mode acceptEdits`
-and an explicit tool allowlist (`src/arms.ts`). With `--bare`, the pinned CLI (2.1.304) offers only
-`Read` and `Edit` as file tools (`Write`, `Glob` and `Grep` are allowed but not offered), plus Bash.
-`--restricted` removes Bash, keeps `Read` and `Edit` inside the working directory and refuses a
-path that resolves through a symlink out of it. The agent cannot list a directory; it reads and
-edits paths it knows or learns from its MCP tools.
+Every arm gets the same task text, the same file tools and a starter project the harness copies
+into its working directory. Each runs through `claude -p --bare --restricted --strict-mcp-config`
+with `--permission-mode acceptEdits` and an explicit tool allowlist (`src/arms.ts`).
+
+- **File tools:** `Read` and `Edit`, the same for every arm. With `--bare`, the pinned CLI
+  (2.1.304) offers no others (`Write`, `Glob` and `Grep` are allowed but not offered), plus Bash.
+  `--restricted` removes Bash, keeps `Read` and `Edit` inside the working directory and refuses a
+  path that resolves through a symlink out of it.
+- **Project file list:** the agent cannot list a directory, so the prompt ends with a block the
+  harness generates from the starter, worded the same for every arm: `Project files (the working
+  directory):` and the sorted relative paths, without `node_modules`, `.git` or lockfiles, at most
+  200 (then `…and N more`).
+- **No tool that runs a process.** The `generate` job holds the API key, and any process started
+  there could read it, so each MCP server is limited to the tools that start none (§6). Both MCP
+  arms lose their executing tools.
 
 | Arm id | Starting point | Tools beyond files | Measures |
 | --- | --- | --- | --- |
-| `cascivo` | empty directory | the 21 read-only tools of the cascivo MCP server built from this checkout (`CASCIVO_SAFE_TOOLS`: registry, components, blocks, templates, tokens, icons, guides, context, view grammar and validators). Not the 7 that run a process (`compose_app`, `create_app`, `add_to_project`, `add_template`, `deploy_preview`, `lint_email`, `render_view_as_markdown`), so the agent writes every file itself, importing from the installed `@cascivo/*` packages; no tool returns component source | cascivo's AI context, without the tools that scaffold or install |
-| `cascivo-bare` | Vite + React app with `@cascivo/react` and a theme installed | none | what the model already knows about cascivo; the gap to `cascivo` is the value of the AI context |
-| `shadcn` | shadcn's Vite starter with every component added | shadcn's official MCP server, pinned, with its 3 tools that start no process (`SHADCN_SAFE_TOOLS`). Its 4 item tools (`list_`, `search_`, `view_items_in_registries`, `get_item_examples_from_registries`) run `git` or `gh` for a GitHub-sourced registry, so they are not allowed; every component's source is already in the starter | the market default, each side with what it can use safely |
+| `cascivo` | the cascivo scaffold (`cascivo create app --yes` on this checkout's packages) with its AI context files, `AGENTS.md` and `CLAUDE.md`; its `.mcp.json` is removed because the harness passes the server | the 21 read-only tools of the cascivo MCP server built from this checkout (`CASCIVO_SAFE_TOOLS`: registry, components, blocks, templates, tokens, icons, guides, context, view grammar and validators). Not `compose_app`, `create_app`, `add_to_project`, `add_template`, `deploy_preview`, `lint_email` or `render_view_as_markdown`: they run the CLI, an install, a deploy or project code in the keyed job. The agent extends the scaffold itself; no tool returns component source | cascivo with its AI context, without the tools that scaffold or install |
+| `cascivo-bare` | the same scaffold without `AGENTS.md`, `CLAUDE.md` and `.mcp.json` | none | what the model already knows about cascivo; the gap to `cascivo` is the value of the AI context (the MCP server and the context files) |
+| `shadcn` | shadcn's Vite starter with every component added | shadcn's official MCP server, pinned, with the 3 tools that start no process (`SHADCN_SAFE_TOOLS`): `get_project_registries`, `get_add_command_for_items`, `get_audit_checklist`. Not its 4 item tools (`list_items_in_registries`, `search_items_in_registries`, `view_items_in_registries`, `get_item_examples_from_registries`): for a GitHub-sourced registry or item, which the agent can name or put in `components.json`, they run `git ls-remote` or `gh api` in the agent's directory. Every component's source is already in the starter | the market default, each side with what it can use safely |
 
 - **The `today` arm** stays in the code for internal comparison but is not published.
 - **Verify the shadcn MCP invocation during implementation.** It is currently `npx shadcn@latest mcp`.
   Pin the shadcn CLI version in the harness so the control stays comparable between runs.
-- **Starter projects** for `cascivo-bare` and `shadcn` are produced by the harness (the cascivo
-  scaffold, or the shadcn init for a Vite app), not by the agent.
+- **Starter projects** for every arm are produced by the harness (the cascivo scaffold, or the
+  shadcn init for a Vite app), not by the agent. Both cascivo arms copy one scaffold.
 - **Dependencies:** each arm's dependency tree is installed once per run and linked into each
   attempt by the score job. During generate nothing is linked into an attempt, so a session's
   writes cannot reach a shared tree or the checkout.
@@ -73,6 +82,8 @@ arm-specific line naming its design system:
 
 - "Use the cascivo design system" for both cascivo arms;
 - "Use shadcn/ui with Tailwind" for `shadcn`.
+
+The project file list follows them. It is generated from the starter, not written per arm.
 
 ## 3. Tasks
 
