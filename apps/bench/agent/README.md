@@ -20,14 +20,18 @@ Defined in `src/arms.ts`. Every arm runs `claude -p --bare --restricted --strict
 only the `Read` and `Edit` file tools, confined to its own directory, and gets the same arm-neutral
 task text, one sentence naming its design system, and the same kind of project file list.
 
-| Arm            | Starting point                                                            | MCP tools                                                                 |
-| -------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| `cascivo`      | the cascivo scaffold with its AI context files (`AGENTS.md`, `CLAUDE.md`) | the 21 read-only tools of the cascivo MCP server built from this checkout |
-| `cascivo-bare` | the same scaffold without `AGENTS.md`, `CLAUDE.md` and `.mcp.json`        | none                                                                      |
-| `shadcn`       | the shadcn 4.22.1 Vite starter with every component added                 | the 3 read-only tools of the shadcn MCP server                            |
+| Arm            | Starting point                                                                                                        | MCP tools                                                                 |
+| -------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `cascivo`      | the cascivo scaffold with its AI context files (`AGENTS.md`, `CLAUDE.md`), `AGENTS.md` preloaded in the system prompt | the 21 read-only tools of the cascivo MCP server built from this checkout |
+| `cascivo-bare` | the same scaffold without `AGENTS.md`, `CLAUDE.md` and `.mcp.json`; nothing preloaded                                 | none                                                                      |
+| `shadcn`       | the shadcn 4.22.1 Vite starter with every component added                                                             | the 3 read-only tools of the shadcn MCP server                            |
 
-The gap between `cascivo` and `cascivo-bare` is the value of cascivo's AI context. A `today` arm
-stays in the code for internal comparison and is not published.
+`--bare` skips `CLAUDE.md` discovery, so the harness preloads the cascivo arm's context the way an
+adopter's Claude Code does through `CLAUDE.md` → `@AGENTS.md`: `--append-system-prompt-file` with a
+copy of the scaffold's `AGENTS.md` kept outside the attempt (never `--add-dir`, which would widen
+what `--restricted` lets the file tools reach). The gap between `cascivo` and `cascivo-bare` is the
+value of cascivo's AI context: the MCP server and the preloaded `AGENTS.md`. A `today` arm stays in
+the code for internal comparison and is not published.
 
 ### Tasks
 
@@ -48,18 +52,19 @@ passes against the app served by `vite preview`. Its status is the first that ap
 - **Axe** violations (`@axe-core/playwright`) and **cost** are secondary and never decide pass or
   fail.
 - A run is **incomplete** once spend reaches `--max-usd` and **invalid** when more than 10% of its
-  attempts are `infra-error`. Neither is published.
+  attempts are `infra-error`. Neither is published, and nor is a **partial** run (fewer than every
+  task or arm, such as the pilot): it would replace the headline with the mean over its own tasks.
 
 ### Subcommands
 
 `pnpm --filter bench-agent eval <subcommand>` (`src/eval-cli.ts`):
 
-| Subcommand                                                                                                    | What it does                                                                                                                                                                                        |
-| ------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `generate --out <dir> [--models a,b] [--arms a,b] [--tasks a,b] [--attempts n] [--max-usd n] [--timeout min]` | Runs the `claude -p` sessions into `<dir>`. Needs `ANTHROPIC_API_KEY`. Defaults: both models, the three arms, all tasks, 3 attempts, `$50`, 10 minutes. It builds and runs nothing a session wrote. |
-| `score --in <dir> --out <results.json> [--concurrency n]`                                                     | Builds, type-checks and drives what `generate` left, with axe, and writes the results file. Needs Chromium; no key.                                                                                 |
-| `publish --results <file> [--expect-model id]`                                                                | Writes `results/<date>-<version>.json`, `apps/site/public/evals.json` and `docs/AGENT-BENCHMARKS.md` from a scored run. Refuses an incomplete or invalid run.                                       |
-| `dry [--tasks a,b]`                                                                                           | No model, no key (needs Chromium, like `score`): scores a scripted good cascivo app, a good shadcn app and a broken app per task, to prove each `EVAL.ts` can pass and fail.                        |
+| Subcommand                                                                                                    | What it does                                                                                                                                                                                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `generate --out <dir> [--models a,b] [--arms a,b] [--tasks a,b] [--attempts n] [--max-usd n] [--timeout min]` | Runs the `claude -p` sessions into `<dir>`. Needs `ANTHROPIC_API_KEY`. Defaults: both models, the three arms, all tasks, 3 attempts, `$50`, 10 minutes. It builds and runs nothing a session wrote.                                                                                                                                             |
+| `score --in <dir> --out <results.json> [--concurrency n]`                                                     | Builds, type-checks and drives what `generate` left, with axe, and writes the results file. Needs Chromium; no key.                                                                                                                                                                                                                             |
+| `publish --results <file> [--expect-model id] [--run <run.json>] [--partial]`                                 | Writes `results/<date>-<version>.json`, `apps/site/public/evals.json` and `docs/AGENT-BENCHMARKS.md` from a scored run. Refuses an incomplete, invalid or partial run (`--partial` allows the last, for local use), a run dated in the future, and with `--run`, results whose run metadata differs from that `run.json` written by `generate`. |
+| `dry [--tasks a,b]`                                                                                           | No model, no key (needs Chromium, like `score`): scores a scripted good cascivo app, a good shadcn app and a broken app per task, to prove each `EVAL.ts` can pass and fail.                                                                                                                                                                    |
 
 `bench --publish` is retired: `docs/AGENT-BENCHMARKS.md` comes from `eval publish` only.
 
@@ -80,7 +85,7 @@ pnpm --filter bench-agent eval dry          # no key: check the hidden EVALs fir
 export ANTHROPIC_API_KEY=…
 pnpm --filter bench-agent eval generate --out ./gen --models claude-sonnet-5-5 --attempts 3 --max-usd 20
 pnpm --filter bench-agent eval score --in ./gen --out results.json
-pnpm --filter bench-agent eval publish --results results.json
+pnpm --filter bench-agent eval publish --results results.json   # add --partial for a run of fewer tasks or arms
 ```
 
 `generate` refuses a non-empty `--out` directory. `publish` changes tracked files
@@ -102,20 +107,29 @@ allowed are the ones that start no process. `generate` scans every attempt for t
 on a hit; `score` runs the agents' code with no secrets and read-only contents; `publish` holds the
 write token and runs no generated code.
 
+`score` is the trust limit. The agents' code (a `vite.config.ts`, a PostCSS config, the app) runs
+there with the checkout writable, so it could tamper with its own shard's scoring: rewrite other
+attempts before they build, or `results.json` before the upload. `score` imports every `EVAL.ts`
+before the first build, and `publish` checks the shape, the model, the full scope, the date and the
+run metadata against the `run.json` that `generate` uploaded, but it cannot check the statuses. The
+human review of the results PR is the integrity gate; the PR body says so.
+
 ### Owner steps
 
 These need the repository owner's API key, so they are not part of the code.
 
 1. **Add the secret.** Add the `ANTHROPIC_API_KEY` repository secret, from a dedicated key with a
    low spend limit.
-2. **Pilot.** Dispatch `evals.yml` with `tasks=admin-console`, `attempts=1`, `max_usd=10`. Read the
-   per-session cost from the `generate` log; expect about $0.10 to $0.60. A pilot is a complete,
-   valid run, so `publish` opens a results PR for it: close that PR without merging.
-3. **Full run, or the fallback.**
+2. **Pilot.** Dispatch `evals.yml` with `tasks=admin-console`, `attempts=1`, `max_usd=10`, and
+   `publish` left unticked (the default): the run generates and scores, and opens no results PR.
+   Read the per-session cost from the `generate` log; expect about $0.10 to $0.60.
+3. **Full run, or the fallback.** Tick `publish` on each of these dispatches, or no results PR is
+   opened. (A published release always publishes.)
    - If 144 times the observed mean cost is over $50, dispatch two runs: Sonnet with
      `attempts=3`, then Haiku with `attempts=1`. Haiku then reports pass@1 only, and `/evals` says so.
    - Otherwise dispatch both models with `attempts=3`.
-4. **Review and merge the results PR.** `/evals` then shows the run.
+4. **Review and merge the results PR.** The review is the integrity gate (see the security model):
+   check that the numbers are plausible before merging. `/evals` then shows the run.
 
 ## Legacy: the surface benchmark
 
