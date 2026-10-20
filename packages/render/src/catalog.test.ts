@@ -176,3 +176,17 @@ describe('A2UI v0.9 catalog', () => {
     expect(v({ ...base, columns: [{ header: 'A' }] })).toBe(false)
   })
 })
+
+describe('package exports', () => {
+  const pkg = JSON.parse(readFileSync(join(HERE, '..', 'package.json'), 'utf-8')) as {
+    exports: Record<string, string>
+  }
+  it.each(['./schema/catalog.v1.json', './schema/a2ui/v0_9/catalog.json'])(
+    'exports %s and the file exists',
+    (key) => {
+      const target = pkg.exports[key]
+      expect(target).toBe(key)
+      expect(() => readFileSync(join(HERE, '..', target ?? ''), 'utf-8')).not.toThrow()
+    },
+  )
+})

@@ -83,3 +83,30 @@ const { valid, errors } = validateView(modelOutput)
 `cascivo create --framework cloudflare --example agent` builds an assistant around exactly this: the Worker validates each view the model produces, and the page renders it with `<CascivoView>`.
 
 Pair it with the MCP server's bound-vocabulary grammar (`get_view_grammar`) and `scaffold_view` for the full anti-hallucination loop: the model can only emit components and props that exist, and `validateView` is the enforcement backstop. `cascivo generate <config.json>` converts a validated `ViewConfig` into owned TSX when you want to graduate from JSON to source.
+
+## Component catalog
+
+The renderable vocabulary is also published as data, generated from the same manifests the validator uses, so other tools can target cascivo without importing React:
+
+```ts
+import catalog from '@cascivo/render/schema/catalog.v1.json' with { type: 'json' }
+import a2ui from '@cascivo/render/schema/a2ui/v0_9/catalog.json' with { type: 'json' }
+```
+
+- `schema/catalog.v1.json` is the protocol-neutral catalog: one entry per renderable component (74).
+- `schema/a2ui/v0_9/catalog.json` is the same catalog as an [A2UI](https://a2ui.org) v0.9 custom catalog. Its `catalogId` is `https://cascivo.com/a2ui/v0_9/catalog.json`, and the file is served there.
+
+Every prop of a component is sorted into one of four kinds:
+
+| Kind      | Meaning                                                                                |
+| --------- | -------------------------------------------------------------------------------------- |
+| `props`   | Data props, each with a JSON Schema                                                    |
+| `slots`   | Child content, with arity `one` or `many` (`implicit: true` when inferred from source) |
+| `events`  | Callbacks an agent can wire to an action                                               |
+| `omitted` | Props that cannot cross the wire (functions, DOM refs), with the reason                |
+
+`validateView` also checks the shape of object and array props, such as `DataTable` `columns`.
+
+Rendering A2UI messages is not shipped yet. This release only publishes the catalogs.
+
+Regenerate both files with `pnpm schema:generate`; `pnpm schema:check` fails on drift.

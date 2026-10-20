@@ -1,7 +1,7 @@
 # cascivo — Roadmap v61: A2UI Study — Be the Best Design System to Render Agent UI
 
 **Last updated:** 2026-10-20
-**Status:** 🟡 Approved. T1 planned: `docs/superpowers/plans/2026-10-20-v61-t1-component-catalog.md`.
+**Status:** 🟢 T1 shipped. T2 to plan.
 **Builds on:** ROADMAP-V40 (OpenUI study: bounded vocabulary + prop conformance, shipped), `@cascivo/render`
 (`ViewConfig` + `CascivoView`), `@cascivo/mcp` (`get_view_grammar`, `validate_view`), `@cascivo/data`
 (`parseSSE`), `starters/cloudflare-agent`.
@@ -164,6 +164,13 @@ validator and security posture, and no extra runtime dependency for a package ad
 whether `@a2ui/react` exposes a clean component-override hook. If it does, also ship a small
 `cascivo → @a2ui/react` catalog binding, which is cheap and helps teams already standardised on it.
 
+**T2 prerequisites found during T1:**
+
+1. 24 renderable manifests omit `children` although the component renders children. T1 infers an implicit
+   slot from source; the principled fix is declaring `children` in those manifests.
+2. Input/Textarea manifests declare no `value`/`onValueChange` (HTML passthrough), so A2UI two-way binding
+   has nothing to bind until they do.
+
 ### T3 — Transport glue and the dogfood path
 
 - Add `a2uiFromSSE(response)` and `a2uiFromJsonl(stream)` helpers on top of `@cascivo/data`'s `parseSSE`.
@@ -203,3 +210,4 @@ whether `@a2ui/react` exposes a clean component-override hook. If it does, also 
 |---|---|
 | 2026-10-20 | Proposed (awaiting maintainer decision): A2UI support as an adapter over existing manifests and validator; `ViewConfig` stays. Order: T1 → T2 → T3 → T4. Pin to v0.9.1. |
 | 2026-10-20 | Approved by maintainer. T1 implementation plan written. |
+| 2026-10-20 | T1 shipped: catalog.v1.json + A2UI v0.9 catalog + view.v1 fixes + deep shape validation |
