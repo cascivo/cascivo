@@ -300,16 +300,25 @@ export interface PublishOptions {
 /** How far a run's date may be ahead of this machine's clock. */
 export const CLOCK_SKEW_MS = 5 * 60_000
 
-/** The run metadata a results file must share with generate's run.json. */
-const CROSS_CHECKED = [
+/**
+ * Every field of generate's run.json: the results file is `{ ...run.json, records }`, so a
+ * legitimate run matches it field for field, and a forged `cascivoVersion` (which names the
+ * results file and is printed on /evals), `shadcnVersion` or `maxUsd` is as wrong as a forged
+ * spend.
+ */
+export const CROSS_CHECKED = [
+  'schemaVersion',
   'date',
+  'cascivoVersion',
   'commit',
   'models',
-  'tasks',
   'arms',
+  'tasks',
   'attempts',
+  'maxUsd',
   'spentUsd',
   'budgetExhausted',
+  'shadcnVersion',
 ] as const satisfies readonly (keyof RunMeta)[]
 
 function checkAgainstRun(run: EvalRun, runFile: string): void {

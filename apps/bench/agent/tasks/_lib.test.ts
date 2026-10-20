@@ -42,7 +42,19 @@ const MOUSEDOWN_NOISE = shell(
    <p id="t">untouched</p>`,
 )
 
+// A header account button and a nav link share a name, and the button comes first in the DOM.
+const SAME_NAME = shell(
+  `<header><button id="acct">Settings</button></header>
+   <nav><a href="#/settings">Settings</a></nav>
+   <main id="out"><h1>Home</h1></main>`,
+  `
+  const out = document.getElementById('out')
+  document.getElementById('acct').onclick = () => { out.insertAdjacentHTML('beforeend', '<ul role="menu"><li role="menuitem">Sign out</li></ul>') }
+  addEventListener('hashchange', () => { out.innerHTML = '<h1>Settings page</h1>' })`,
+)
+
 const pages: Record<string, string> = {
+  '/same-name': SAME_NAME,
   '/mousedown-noise': MOUSEDOWN_NOISE,
   '/': HOME,
   '/about': shell('<h1>About</h1><button>Contact us</button>'),
@@ -91,12 +103,30 @@ slow('tasks/_lib', () => {
     )
   })
 
+  // Opt-in: a destination prefers the navigation's link, an action keeps the first match.
+  it('goTo prefers a link inside a navigation landmark only with preferNav', async () => {
+    page = await browser.newPage()
+    await page.goto(`${baseUrl}same-name`)
+    await goTo(page, baseUrl, /^settings$/i, { preferNav: true })
+    await page.getByRole('heading', { name: 'Settings page' }).waitFor({ timeout: 5000 })
+    await expect(page.getByRole('menu').count()).resolves.toBe(0)
+
+    await page.goto(`${baseUrl}same-name`)
+    await goTo(page, baseUrl, /^settings$/i)
+    await page.getByRole('menu').waitFor({ timeout: 5000 })
+    await expect(page.getByRole('heading', { name: 'Home' }).isVisible()).resolves.toBe(true)
+  })
+
   it('goTo follows a hash-route link', async () => {
     await fresh()
     await goTo(page, baseUrl, /^profile$/i)
-    await expect(page.getByRole('heading', { name: 'Profile page' }).isVisible()).resolves.toBe(
-      true,
-    )
+    // goTo returns once the URL has changed, which can be a frame before the app's hashchange
+    // handler renders: wait for the heading, as every EVAL does after goTo, rather than read it once.
+    await expect(
+      page
+        .getByRole('heading', { name: 'Profile page' })
+        .waitFor({ state: 'visible', timeout: 5000 }),
+    ).resolves.toBeUndefined()
   })
 
   it('goTo follows a plain link that loads a new document', async () => {

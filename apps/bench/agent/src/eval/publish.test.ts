@@ -17,11 +17,12 @@ import { record, run } from './fixtures.ts'
 import {
   buildEvalsJson,
   CLOCK_SKEW_MS,
+  CROSS_CHECKED,
   publish,
   type EvalsJson,
   type PublishOptions,
 } from './publish.ts'
-import { parseEvalRun, type AttemptRecord, type EvalRun } from './results.ts'
+import { parseEvalRun, parseRunMeta, type AttemptRecord, type EvalRun } from './results.ts'
 import { TASK_IDS } from './tasks.ts'
 
 let repo: string
@@ -510,6 +511,9 @@ describe('publish, final review', () => {
     ['attempts', 2],
     ['spentUsd', 0.25],
     ['budgetExhausted', true],
+    ['cascivoVersion', '9.9.9'],
+    ['shadcnVersion', '4.0.0'],
+    ['maxUsd', 999],
   ] as const)("refuses results whose %s differs from generate's run.json", (key, value) => {
     const run = scoped()
     const before = snapshot(repo)
@@ -517,6 +521,12 @@ describe('publish, final review', () => {
       strict(write('r.json', run), { runFile: runJson(run, { [key]: value }), partial: true }),
     ).toThrow(new RegExp(`do not match the run.json.*${key}`))
     expect(snapshot(repo)).toEqual(before)
+  })
+
+  // The results file is `{ ...run.json, records }`: every field of run.json is compared.
+  it('cross-checks every field run.json has', () => {
+    const { records: _records, ...meta } = scoped()
+    expect([...CROSS_CHECKED].sort()).toEqual(Object.keys(parseRunMeta(meta)).sort())
   })
 
   it('names the bad field of a malformed run.json', () => {

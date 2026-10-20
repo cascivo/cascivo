@@ -12,14 +12,21 @@ export interface GoToOptions {
   expectNavigation?: boolean
   /** How long to wait for the click to have any effect. Default 5 s. */
   timeoutMs?: number
+  /**
+   * Prefer a match inside a navigation landmark (`<nav>`, `role="navigation"`) over the first
+   * match on the page. For callers whose target is a page the app navigates to: a header
+   * "Settings" or "Profile" button that opens an account menu changes the DOM, so it would pass
+   * the effect check and leave the page where it was. Off by default: for an action button
+   * (create, delete, clear, submit) a later nav (a footer "What's new" or "Add-ons" link, a
+   * pagination or breadcrumb nav) must not win over the button in the content. Default false.
+   */
+  preferNav?: boolean
 }
 
 /**
- * Click the first visible link or button whose name matches, preferring one inside a navigation
- * landmark (`<nav>`, `role="navigation"`), then wait until the click had an observable effect,
- * and throw if it had none. The preference matters when the page also has a same-named control
- * outside the navigation: a header "Settings" or "Profile" button that opens an account menu
- * changes the DOM, so it would pass the effect check and leave the page where it was.
+ * Click the first visible link or button whose name matches (with `preferNav`, one inside a
+ * navigation landmark first), then wait until the click had an observable effect, and throw if it
+ * had none.
  *
  * Agents pick history routing or hash routing freely, and a hash change fires no load event, so
  * there is no single "navigation finished" signal. We wait for any evidence of an effect instead:
@@ -34,7 +41,7 @@ export async function goTo(
   name: RegExp,
   opts: GoToOptions = {},
 ): Promise<void> {
-  const { expectNavigation = true, timeoutMs = SETTLE_MS } = opts
+  const { expectNavigation = true, timeoutMs = SETTLE_MS, preferNav = false } = opts
   // A prior step may have left the browser on a blank page or another origin.
   if (!sameOrigin(page.url(), baseUrl)) await page.goto(baseUrl)
   const matches = (scope: Page | Locator) =>
@@ -46,7 +53,7 @@ export async function goTo(
   const anywhere = matches(page)
   await anywhere.waitFor({ state: 'visible', timeout: timeoutMs })
   const inNav = matches(page.getByRole('navigation'))
-  const target = (await inNav.count()) > 0 ? inNav : anywhere
+  const target = preferNav && (await inNav.count()) > 0 ? inNav : anywhere
   const handle = await target.elementHandle({ timeout: timeoutMs })
   if (handle === null) throw new Error(`goTo: "${String(name)}" vanished before the click`)
   const before = page.url()

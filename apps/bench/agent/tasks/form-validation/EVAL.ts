@@ -29,12 +29,14 @@ import { eventually, firstVisible, goTo } from '../_lib.ts'
 /**
  * A success message: thank, sent, success, received, submitted, got it, be in touch. Word-bounded,
  * so "consent", "essential" or "present" in a hint or an error is not success. Not when a
- * negation (not, cannot, n't, couldn't, unable, failed) comes before the word in the same
- * sentence: "Your message was not sent" and "could not be sent" are refusals, and reading them
- * as success would fail a correct app on its invalid submit. A sentence ends at `.`, `!` or `?`.
+ * negation (not, cannot, n't, couldn't, unable, failed) is one of the three words right before it,
+ * within the sentence: "Your message was not sent", "could not be sent" and "Failed: nothing was
+ * submitted" are refusals, and reading them as success would fail a correct app on its invalid
+ * submit. Only that close: "Don't worry, your message was sent." is a success. A sentence ends at
+ * `.`, `!` or `?`.
  */
 const SUCCESS =
-  /(?<!(?:\bnot|\bcannot|n['’]t|\bunable|\bfailed)\b[^.!?]*)(?:\bthank|\bsent\b|\bsuccess|\breceived\b|\bsubmitted\b|\bgot it\b|\bbe in touch\b)/i
+  /(?<!(?:\bnot|\bcannot|n['’]t|\bunable|\bfailed)\b[^\w.!?]+(?:\w+[^\w.!?]+){0,2})(?:\bthank|\bsent\b|\bsuccess|\breceived\b|\bsubmitted\b|\bgot it\b|\bbe in touch\b)/i
 
 type FieldKey = 'name' | 'email' | 'message'
 

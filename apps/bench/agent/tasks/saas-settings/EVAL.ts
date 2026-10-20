@@ -70,7 +70,8 @@ export default async function evaluate(page: Page, baseUrl: string): Promise<voi
       (await eventually(() => anyVisible(headingOf), 1000)) &&
       (await eventually(() => labelledControl(page, actionsCount)))
     if (!here) {
-      await goTo(page, baseUrl, heading)
+      // A page of its own, so a navigation link: a header "Profile" account button is not it.
+      await goTo(page, baseUrl, heading, { preferNav: true })
       navigations += 1
       if (!(await eventually(() => anyVisible(headingOf))))
         throw new Error(`${label}: navigating to it showed no heading matching ${String(heading)}`)

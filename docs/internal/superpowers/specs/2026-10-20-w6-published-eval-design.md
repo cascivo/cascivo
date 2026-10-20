@@ -107,7 +107,7 @@ The project file list follows them. It is generated from the starter, not writte
 | `marketing-site` | existing | hero heading, features, pricing, testimonials, FAQ (a question disclosure, if there is one, expands to show its answer; otherwise an answer is visible under its question), footer (`contentinfo` or a page `<footer>`); a section is a heading or named region, or the in-page target of a link of that name (`#features`, or `/#features` from `/`; a malformed `%` escape is no target) |
 | `crud-table` | existing | table of projects; search narrows rows; pagination moves pages; "create" adds a row |
 | `auth-flow` | existing | a sign-in form with fields named email/user and password (label, `aria-label` or placeholder); a sign-up page reached by a link, button or tab; submitting sign-in with plausible credentials replaces the form with a dashboard heading (if sign-in refuses an unknown account, the same credentials are registered through sign-up, ticking required checkboxes, then used to sign in again; if sign-up itself lands on the dashboard and the app offers a sign-out that keeps the page, the EVAL signs out, answering a sign-out confirmation dialog, and signs in again without reloading; a sign-out that leaves the dashboard up, or a sign-in form only a reload would reach, is accepted) |
-| `form-validation` | new | submitting empty shows an error next to each of the three fields (in an element the field names in `aria-describedby`/`aria-errormessage`, in the field's own wrapper, or right after it); an invalid email gets an email error and no success; a valid submit shows a success message and no field errors; browser-native validation alone (a bubble, not in the page) is not an error next to a field; success words are matched whole (thank, sent, success, received, submitted, got it, be in touch; not "consent"), and not when a negation (not, cannot, n't, couldn't, unable, failed) precedes the word in the same sentence ("could not be sent" is a refusal); residual: an error inside or after the success block is not detected on valid submit |
+| `form-validation` | new | submitting empty shows an error next to each of the three fields (in an element the field names in `aria-describedby`/`aria-errormessage`, in the field's own wrapper, or right after it); an invalid email gets an email error and no success; a valid submit shows a success message and no field errors; browser-native validation alone (a bubble, not in the page) is not an error next to a field; success words are matched whole (thank, sent, success, received, submitted, got it, be in touch; not "consent"), and not when a negation (not, cannot, n't, couldn't, unable, failed) is one of the three words right before it in the same sentence ("could not be sent" is a refusal; "Don't worry, your message was sent" is a success); residual: an error inside or after the success block is not detected on valid submit |
 | `delete-confirm` | new | three projects, each with a Delete button; Delete opens a `dialog` or `alertdialog` with a title (an accessible name, or a visible heading inside it); Cancel closes it and all three remain; Confirm removes that project and two remain |
 | `filter-empty-state` | new | a filter that matches nothing hides the members and shows a "nothing matched" message; a clear/reset/show-all button or link restores the full list |
 
@@ -120,9 +120,12 @@ The project file list follows them. It is generated from the starter, not writte
 - Assertions tolerate reasonable variation:
   - case-insensitive text matching;
   - the target may be on any route reachable from `/` by visible navigation;
-  - helper functions in a shared `tasks/_lib.ts` find a link or button by accessible name,
-    preferring one inside a navigation landmark over a same-named control elsewhere (a header
-    account button named "Settings" or "Profile").
+  - helper functions in a shared `tasks/_lib.ts` find a link or button by accessible name. When
+    the target is a page of the app (admin-console's overview, users and settings, saas-settings'
+    three pages), a match inside a navigation landmark wins over a same-named control elsewhere (a
+    header account button named "Settings" or "Profile"). For an action (create, delete, clear,
+    submit), the first match on the page wins, so a later nav (a footer "What's new" link) cannot
+    take it.
 
 **Out of v1:** multi-turn edit tasks (an agent extends its own app across turns). Report 02 §5
 says these are where models fail most, so they are first for v2.

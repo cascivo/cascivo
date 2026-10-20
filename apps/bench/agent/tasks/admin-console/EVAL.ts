@@ -61,7 +61,7 @@ export default async function evaluate(page: Page, baseUrl: string): Promise<voi
   await page.goto(baseUrl)
   if (!(await eventually(() => kpiVisible(page)))) {
     // The prompt asks for an overview page, not for it to be `/`: it may be a nav item of its own.
-    await goTo(page, baseUrl, OVERVIEW_NAV).catch(() => {})
+    await goTo(page, baseUrl, OVERVIEW_NAV, { preferNav: true }).catch(() => {})
     if (!(await eventually(() => kpiVisible(page))))
       throw new Error(
         'overview: no KPI figure (a number in a heading, region or stat) on / or behind an overview/dashboard/home link',
@@ -69,16 +69,17 @@ export default async function evaluate(page: Page, baseUrl: string): Promise<voi
   }
 
   if (!(await eventually(() => usersTable(page), 2000))) {
-    await goTo(page, baseUrl, USERS_NAV)
+    await goTo(page, baseUrl, USERS_NAV, { preferNav: true })
     if (!(await eventually(() => usersTable(page))))
       throw new Error('users: no table with a column header and a data row')
   }
 
   await page.goto(baseUrl)
-  await goTo(page, baseUrl, /settings/i)
+  // The side navigation's pages: a header account button of the same name is not one.
+  await goTo(page, baseUrl, /settings/i, { preferNav: true })
   await expectVisible(page, 'heading', /settings/i)
 
-  await goTo(page, baseUrl, OVERVIEW_NAV)
+  await goTo(page, baseUrl, OVERVIEW_NAV, { preferNav: true })
   if (!(await eventually(() => kpiVisible(page))))
     throw new Error('navigating back from settings to the overview did not show its KPIs again')
 }
