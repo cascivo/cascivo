@@ -35,17 +35,15 @@ const HOME = shell(
   })`,
 )
 
-// Mutates text for the first 300 ms and then goes quiet, standing in for a widget that was
-// already updating when the click happened.
-const NOISY = shell(
-  '<a href="#">Dead</a><p id="tick">0</p>',
-  `let n = 0
-   const id = setInterval(() => { document.getElementById('tick').textContent = String(++n) }, 50)
-   setTimeout(() => clearInterval(id), 300)`,
+// The mutation lands on mousedown: after goTo has armed its observer, before the click event
+// fires. An observer that counted from arm time would take it for the link's effect.
+const MOUSEDOWN_NOISE = shell(
+  `<a href="#" onmousedown="document.getElementById('t').textContent = 'touched'">Dead</a>
+   <p id="t">untouched</p>`,
 )
 
 const pages: Record<string, string> = {
-  '/noisy': NOISY,
+  '/mousedown-noise': MOUSEDOWN_NOISE,
   '/': HOME,
   '/about': shell('<h1>About</h1><button>Contact us</button>'),
 }
@@ -114,13 +112,14 @@ slow('tasks/_lib', () => {
     await expect(page.getByText('Swapped view').isVisible()).resolves.toBe(true)
   })
 
-  it('goTo ignores page mutations that happened before the click', async () => {
+  it('goTo ignores a mutation that lands before the click event', async () => {
     page = await browser.newPage()
-    await page.goto(`${baseUrl}noisy`)
-    await page.waitForTimeout(600)
+    await page.goto(`${baseUrl}mousedown-noise`)
     await expect(goTo(page, baseUrl, /^dead$/i, { timeoutMs: 500 })).rejects.toThrow(
       /did not navigate or change the page/,
     )
+    // Guards the premise: the mutation did happen, it just must not count.
+    await expect(page.getByText('touched').isVisible()).resolves.toBe(true)
   })
 
   it('goTo throws on a dead link that changes nothing', async () => {
