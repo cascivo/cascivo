@@ -25,9 +25,10 @@ const TASKS = [
   'filter-empty-state',
 ]
 const ARMS = ['cascivo', 'cascivo-bare', 'shadcn']
+// Sonnet carried over from an older run, on an older cascivo than the newest (Haiku's) run.
 const MODELS = [
-  { model: 'claude-sonnet-5-5', date: '2026-11-02', attempts: 3 },
-  { model: 'claude-haiku-5-5', date: '2026-11-03', attempts: 1 },
+  { model: 'claude-sonnet-5-5', date: '2026-11-02', cascivoVersion: '1.2.2', attempts: 3 },
+  { model: 'claude-haiku-5-5', date: '2026-11-03', cascivoVersion: '1.2.3', attempts: 1 },
 ]
 
 /** Raw, as JSON.parse would hand it over: the page must not need a typed document. */
@@ -101,6 +102,32 @@ describe('EvalsPage', () => {
     expect(haiku?.querySelector('[data-cell="cascivo:pass3"]')?.textContent).toBe('—')
     expect(sonnet?.querySelector('[data-cell="cascivo:pass3"]')?.textContent).toBe('yes')
     expect(page.textContent).toContain('1 attempt per task')
+  })
+
+  // A model carried over from an older run keeps that run's version, not the newest run's.
+  it("shows each model's own run date and cascivo version", () => {
+    const page = mount(fixture())
+    expect(page.querySelector('[data-model-run="claude-sonnet-5-5"]')?.textContent).toContain(
+      'run 2026-11-02, cascivo 1.2.2,',
+    )
+    expect(page.querySelector('[data-model-run="claude-haiku-5-5"]')?.textContent).toContain(
+      'run 2026-11-03, cascivo 1.2.3,',
+    )
+  })
+
+  it('shows two runs of the same day and version as two history rows', () => {
+    const data = fixture()
+    const second = { ...data.history[0]!, passAt1: { 'claude-sonnet-5-5': { cascivo: 0.25 } } }
+    const page = mount({ ...data, history: [...data.history, second] })
+    const rows = page.querySelectorAll('table[data-eval-history] tbody tr')
+    expect(rows).toHaveLength(2)
+    expect(rows[1]?.textContent).toContain('25%')
+  })
+
+  it('says the cascivo arm gets AGENTS.md preloaded and the bare arm does not', () => {
+    const text = mount(fixture()).textContent ?? ''
+    expect(text).toContain('AGENTS.md preloaded into the system prompt')
+    expect(text).toContain('nothing is preloaded')
   })
 
   it('shows the empty state and the reproduction command when nothing is published', () => {

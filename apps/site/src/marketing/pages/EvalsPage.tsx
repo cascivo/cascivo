@@ -57,11 +57,11 @@ const TASKS: readonly { id: string; what: string }[] = [
 const ARMS: readonly { id: string; what: string }[] = [
   {
     id: 'cascivo',
-    what: 'The cascivo scaffold with its AI context files (AGENTS.md and CLAUDE.md), plus the 21 read-only tools of the cascivo MCP server.',
+    what: 'The cascivo scaffold with its AI context files (AGENTS.md and CLAUDE.md), with AGENTS.md preloaded into the system prompt as Claude Code loads it through CLAUDE.md, plus the 21 read-only tools of the cascivo MCP server.',
   },
   {
     id: 'cascivo-bare',
-    what: 'The same scaffold without the AI context files and without MCP. The gap to cascivo is the value of that context.',
+    what: 'The same scaffold without the AI context files: nothing is preloaded, and there is no MCP server. The gap to cascivo is the value of that context.',
   },
   {
     id: 'shadcn',
@@ -141,17 +141,17 @@ function HeadlineSection({ latest }: { latest: EvalLatest | null }) {
     <section className="section" data-reveal="">
       <h2>Latest run</h2>
       <p className="section-sub">
-        pass@1 is the mean of the attempt outcomes over the tasks, per arm and model. cascivo{' '}
-        {latest.cascivoVersion}, run {latest.date}. The runs behind these numbers cost{' '}
-        {dollars(latest.costUsd)} in total.
+        pass@1 is the mean of the attempt outcomes over the tasks, per arm and model. Each model
+        shows its own run: its date and the cascivo version it ran on. The runs behind these numbers
+        cost {dollars(latest.costUsd)} in total.
       </p>
       {latest.models.map((m) => (
         <div key={m.model} className="evals-model">
           <h3>
             <code>{m.model}</code>
-            <span className="evals-model-meta">
+            <span className="evals-model-meta" data-model-run={m.model}>
               {' '}
-              run {m.date}, {attemptsLabel(m.attempts)} per task and arm
+              run {m.date}, cascivo {m.cascivoVersion}, {attemptsLabel(m.attempts)} per task and arm
             </span>
           </h3>
           <ul className="evals-headline" aria-label={`pass@1 per arm, ${m.model}`}>
@@ -289,10 +289,12 @@ function MethodSection() {
         Every arm runs the same <code>claude -p</code> session with only the <code>Read</code> and{' '}
         <code>Edit</code> file tools, confined to its own directory (
         <code>--bare --restricted</code>
-        ); no arm has a shell. Each gets the same task text, one sentence naming its design system,
-        and the same kind of list of the project&apos;s files. The MCP tools left out are the ones
-        that start a process, because the job that holds the API key must not run anything an agent
-        chose.
+        ); no arm has a shell. <code>--bare</code> loads no <code>CLAUDE.md</code> by itself, so the
+        harness appends the cascivo scaffold&apos;s <code>AGENTS.md</code> to the cascivo arm&apos;s
+        system prompt; the other arms get no preloaded context. Each gets the same task text, one
+        sentence naming its design system, and the same kind of list of the project&apos;s files.
+        The MCP tools left out are the ones that start a process, because the job that holds the API
+        key must not run anything an agent chose.
       </p>
 
       <h3>Tasks</h3>
@@ -412,8 +414,9 @@ function HistorySection({ history }: { history: EvalHistoryEntry[] }) {
             </tr>
           </thead>
           <tbody>
-            {history.map((entry) => (
-              <tr key={`${entry.date}:${entry.cascivoVersion}`}>
+            {/* Two runs can share a day and a version (another commit), so the index keeps keys unique. */}
+            {history.map((entry, i) => (
+              <tr key={`${entry.date}:${entry.cascivoVersion}:${i}`}>
                 <th scope="row">{entry.date}</th>
                 <td>{entry.cascivoVersion}</td>
                 {columns.map(([model, arm]) => {

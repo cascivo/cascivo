@@ -22,7 +22,9 @@ const doc = (latest: Record<string, unknown> | null = null, history: unknown = [
 const latest = (over: Record<string, unknown> = {}) => ({
   date: '2026-11-03',
   cascivoVersion: '1.2.3',
-  models: [{ model: 'claude-sonnet-5-5', date: '2026-11-03', attempts: 3 }],
+  models: [
+    { model: 'claude-sonnet-5-5', date: '2026-11-03', cascivoVersion: '1.2.3', attempts: 3 },
+  ],
   rows: [row()],
   costUsd: 12.5,
   ...over,
@@ -44,6 +46,7 @@ describe('parseEvals', () => {
       ]),
     )
     expect(parsed.latest?.rows).toHaveLength(1)
+    expect(parsed.latest?.models[0]?.cascivoVersion).toBe('1.2.3')
     expect(parsed.history[0]?.passAt1.get('claude-sonnet-5-5')?.get('cascivo')).toBe(0.5)
   })
 
@@ -61,6 +64,20 @@ describe('parseEvals', () => {
     ['a bad date', doc(latest({ date: 'yesterday' }))],
     ['a non-numeric cost', doc(latest({ costUsd: '12' }))],
     ['history that is not an array', doc(null, {})],
+    [
+      'a model without its own cascivo version',
+      doc(latest({ models: [{ model: 'claude-sonnet-5-5', date: '2026-11-03', attempts: 3 }] })),
+    ],
+    [
+      'a model with a version that is not semver',
+      doc(
+        latest({
+          models: [
+            { model: 'claude-sonnet-5-5', date: '2026-11-03', cascivoVersion: 'v1', attempts: 3 },
+          ],
+        }),
+      ),
+    ],
     [
       'a history share above 1',
       doc(null, [{ date: '2026-11-03', cascivoVersion: '1.0.0', passAt1: { m: { a: 3 } } }]),

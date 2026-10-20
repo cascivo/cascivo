@@ -22,6 +22,8 @@ export interface EvalRow {
 export interface EvalModel {
   model: string
   date: string
+  /** The version of this model's own run, which can be older than `latest.cascivoVersion`. */
+  cascivoVersion: string
   attempts: number
 }
 
@@ -78,9 +80,9 @@ function parseRow(raw: unknown): EvalRow | null {
 
 function parseModel(raw: unknown): EvalModel | null {
   if (!isRecord(raw)) return null
-  const { model, date, attempts } = raw
-  if (!isId(model) || !isDay(date) || !isCount(attempts)) return null
-  return { model, date, attempts }
+  const { model, date, cascivoVersion, attempts } = raw
+  if (!isId(model) || !isDay(date) || !isVersion(cascivoVersion) || !isCount(attempts)) return null
+  return { model, date, cascivoVersion, attempts }
 }
 
 /** Every element must parse: one bad row would make a table quietly wrong. */
