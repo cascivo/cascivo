@@ -36,8 +36,9 @@ const catalog: Catalog = {
         },
       },
       slots: {
-        children: { arity: 'many', required: false },
+        children: { arity: 'many', required: false, text: true },
         icon: { arity: 'one', required: true },
+        items: { arity: 'many', required: false, description: 'Rows.' },
       },
       events: { onClick: { description: 'click' } },
     }),
@@ -63,8 +64,15 @@ describe('toA2uiCatalog', () => {
     })
   })
   it('maps slots and events', () => {
-    assert.deepEqual(p.children, { $ref: C + 'ChildList' })
-    assert.deepEqual(p.icon, { $ref: C + 'ComponentId' })
+    assert.deepEqual(p.children, {
+      oneOf: [{ $ref: C + 'ChildList' }, { $ref: C + 'DynamicString' }],
+      description: 'IDs of child components, a template, or text.',
+    })
+    assert.deepEqual(p.icon, { $ref: C + 'ComponentId', description: 'ID of a child component.' })
+    assert.deepEqual(p.items, {
+      $ref: C + 'ChildList',
+      description: 'IDs of child components, or a template. Rows.',
+    })
     assert.deepEqual(p.onClick, { $ref: C + 'Action', description: 'click' })
   })
   it('omits reserved names and records them', () => {

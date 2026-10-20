@@ -163,6 +163,15 @@ describe('A2UI v0.9 catalog', () => {
     expect(v({ ...ok, foo: 1 })).toBe(false)
   })
 
+  it('accepts text, a binding or child ids for children (R13)', () => {
+    const text = validator('Text')
+    expect(text({ id: 't', component: 'Text', children: 'Hello' })).toBe(true)
+    expect(text({ id: 't', component: 'Text', children: { path: '/greeting' } })).toBe(true)
+    expect(text({ id: 't', component: 'Text', children: ['t1'] })).toBe(true)
+    expect(validator('Button')({ id: 'b', component: 'Button', children: 'Save' })).toBe(true)
+    expect(text({ id: 't', component: 'Text', children: 1 })).toBe(false)
+  })
+
   it('validates Input data bindings', () => {
     const v = validator('Input')
     expect(v({ id: 'i', component: 'Input', label: { path: '/form/label' } })).toBe(true)

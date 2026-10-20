@@ -77,8 +77,17 @@ function toComponent(name: string, c: CatalogComponent): JsonSchema {
     put(k, dataSchema(s), c.props.required?.includes(k) ?? false)
   }
   for (const [k, s] of Object.entries(c.slots)) {
-    const base = ref(s.arity === 'many' ? 'ChildList' : 'ComponentId')
-    put(k, s.description ? { ...base, description: s.description } : base, s.required)
+    // A slot value is an id (or ids) of other components, which a bare ComponentId string hides.
+    const [base, lead]: [JsonSchema, string] = s.text
+      ? [
+          { oneOf: [ref('ChildList'), ref('DynamicString')] },
+          'IDs of child components, a template, or text.',
+        ]
+      : s.arity === 'many'
+        ? [ref('ChildList'), 'IDs of child components, or a template.']
+        : [ref('ComponentId'), 'ID of a child component.']
+    const description = s.description ? `${lead} ${s.description}` : lead
+    put(k, { ...base, description }, s.required)
   }
   for (const [k, e] of Object.entries(c.events)) {
     const base = ref('Action')

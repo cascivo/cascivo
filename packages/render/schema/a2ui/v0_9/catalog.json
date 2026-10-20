@@ -67,7 +67,15 @@
               ]
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             },
             "onValueChange": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
@@ -108,11 +116,19 @@
               "default": "default"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             },
             "icon": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Icon element rendered in the component."
+              "description": "ID of a child component. Icon element rendered in the component."
             },
             "onDismiss": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
@@ -234,7 +250,15 @@
               "description": "Override the total count used for the +N chip"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -268,7 +292,15 @@
               "default": "default"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -294,7 +326,15 @@
               "description": "URL of the quote’s source (sets the HTML cite attribute)."
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -403,7 +443,15 @@
               "default": "primary"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             },
             "onClick": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
@@ -462,10 +510,18 @@
             },
             "actions": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "CardHeader only — trailing content pinned to the inline-end (overflow menu, badge, link). The header is a column by default, so `justify-content: space-between` alone does nothing; this is how you get the title-left / action-right dashboard card."
+              "description": "ID of a child component. CardHeader only — trailing content pinned to the inline-end (overflow menu, badge, link). The header is a column by default, so `justify-content: space-between` alone does nothing; this is how you get the title-left / action-right dashboard card."
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -487,7 +543,15 @@
               "const": "CardContent"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -509,7 +573,15 @@
               "const": "CardFooter"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -531,7 +603,15 @@
               "const": "CardHeader"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -553,7 +633,15 @@
               "const": "CardTitle"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -657,11 +745,11 @@
             },
             "description": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Optional description"
+              "description": "ID of a child component. Optional description"
             },
             "title": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Card title"
+              "description": "ID of a child component. Card title"
             },
             "onCheckedChange": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
@@ -693,7 +781,15 @@
               "default": "md"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -727,7 +823,15 @@
               "default": 4
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -1414,15 +1518,15 @@
             },
             "emptyState": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Content shown when there are no rows."
+              "description": "ID of a child component. Content shown when there are no rows."
             },
             "noResultsState": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Shown instead of emptyState when there are rows but the search or filters match none of them."
+              "description": "ID of a child component. Shown instead of emptyState when there are rows but the search or filters match none of them."
             },
             "toolbar": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Extra controls rendered in the toolbar next to the search box — exports, primary actions."
+              "description": "ID of a child component. Extra controls rendered in the toolbar next to the search box — exports, primary actions."
             },
             "onCellEdit": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
@@ -1630,7 +1734,7 @@
             },
             "trigger": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "The element that opens the dropdown when activated."
+              "description": "ID of a child component. The element that opens the dropdown when activated."
             },
             "onOpenChange": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
@@ -1675,11 +1779,11 @@
             },
             "action": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Primary action shown in the component."
+              "description": "ID of a child component. Primary action shown in the component."
             },
             "icon": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Icon element rendered in the component."
+              "description": "ID of a child component. Icon element rendered in the component."
             }
           },
           "required": ["component", "title"]
@@ -1827,8 +1931,15 @@
               "description": "Additional CSS class names merged onto the root element."
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList",
-              "description": "Content rendered inside the component."
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text. Content rendered inside the component."
             },
             "onValid": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
@@ -1948,7 +2059,15 @@
               ]
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -1970,7 +2089,15 @@
               "const": "GridItem"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -2029,11 +2156,11 @@
             },
             "actions": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Right-aligned slot for buttons or an avatar"
+              "description": "ID of a child component. Right-aligned slot for buttons or an avatar"
             },
             "brand": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Product name or logo area, typically wraps a link"
+              "description": "ID of a child component. Product name or logo area, typically wraps a link"
             }
           },
           "required": ["component"]
@@ -2067,8 +2194,15 @@
               "description": "Controlled open state"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList",
-              "description": "Content rendered inside the component."
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text. Content rendered inside the component."
             },
             "onClose": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
@@ -2105,7 +2239,15 @@
               "description": "Visual size of the component (e.g. 'sm', 'md', 'lg')."
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -2271,16 +2413,23 @@
               "const": "InputGroup"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList",
-              "description": "Content rendered inside the component."
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text. Content rendered inside the component."
             },
             "prefix": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Content rendered before the input (leading adornment)."
+              "description": "ID of a child component. Content rendered before the input (leading adornment)."
             },
             "suffix": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Content rendered after the input (trailing adornment)."
+              "description": "ID of a child component. Content rendered after the input (trailing adornment)."
             }
           },
           "required": ["component", "children"]
@@ -2308,7 +2457,15 @@
               "default": "md"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -2350,15 +2507,22 @@
             },
             "actions": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Trailing slot of the compact bar — typically icon buttons"
+              "description": "ID of a child component. Trailing slot of the compact bar — typically icon buttons"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList",
-              "description": "Content rendered inside the component."
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text. Content rendered inside the component."
             },
             "leading": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Leading slot of the compact bar — typically a back control"
+              "description": "ID of a child component. Leading slot of the compact bar — typically a back control"
             }
           },
           "required": ["component", "children", "title"]
@@ -2406,7 +2570,15 @@
               "default": "standalone"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -2439,7 +2611,15 @@
               "description": "List marker style ('disc' | 'decimal' | 'none')."
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -2461,7 +2641,15 @@
               "const": "ListItem"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -2527,11 +2715,19 @@
               "description": "Title text for the component."
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             },
             "footer": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Dialog actions, rendered in a right-aligned row below the body and separated by a divider."
+              "description": "ID of a child component. Dialog actions, rendered in a right-aligned row below the body and separated by a divider."
             },
             "onClose": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
@@ -2754,19 +2950,19 @@
             },
             "actions": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Action buttons slot"
+              "description": "ID of a child component. Action buttons slot"
             },
             "breadcrumb": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Breadcrumb slot"
+              "description": "ID of a child component. Breadcrumb slot"
             },
             "description": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Supporting line under the title, rendered as a `<p>`. Accepts nodes."
+              "description": "ID of a child component. Supporting line under the title, rendered as a `<p>`. Accepts nodes."
             },
             "title": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Page title, rendered as the `<h1>`. Accepts nodes, not just a string, so you can put a status Badge or a linked domain beside the name — the canonical project-header shape. Keep it inline-level: it is an `<h1>`."
+              "description": "ID of a child component. Page title, rendered as the `<h1>`. Accepts nodes, not just a string, so you can put a status Badge or a linked domain beside the name — the canonical project-header shape. Keep it inline-level: it is an `<h1>`."
             }
           },
           "required": ["component", "title"]
@@ -3054,11 +3250,11 @@
             },
             "description": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Optional description"
+              "description": "ID of a child component. Optional description"
             },
             "title": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Card title"
+              "description": "ID of a child component. Card title"
             }
           },
           "required": ["component", "title", "value"]
@@ -3080,7 +3276,15 @@
               "const": "RadioCardGroup"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -3410,15 +3614,15 @@
             },
             "brand": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Brand: { prefix?, name, href? } or free-form node"
+              "description": "ID of a child component. Brand: { prefix?, name, href? } or free-form node"
             },
             "center": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Free-form slot between the nav and the right-hand cluster, taking the header’s spare width — where a command-palette or search trigger belongs"
+              "description": "ID of a child component. Free-form slot between the nav and the right-hand cluster, taking the header’s spare width — where a command-palette or search trigger belongs"
             },
             "end": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Free-form trailing slot (user menu, theme switcher)"
+              "description": "ID of a child component. Free-form trailing slot (user menu, theme switcher)"
             },
             "onMenuClick": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
@@ -3487,11 +3691,11 @@
             },
             "footer": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Content rendered above the collapse toggle, inside the item padding context so it lines up with the nav items (e.g. version string, user info). Pass a `({ collapsed }) => …` function to shrink it to a rail icon."
+              "description": "ID of a child component. Content rendered above the collapse toggle, inside the item padding context so it lines up with the nav items (e.g. version string, user info). Pass a `({ collapsed }) => …` function to shrink it to a rail icon."
             },
             "header": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Content rendered above the items, inside the item padding context (e.g. app-context pickers). Pass a `({ collapsed }) => …` function to shrink it to a rail icon."
+              "description": "ID of a child component. Content rendered above the items, inside the item padding context (e.g. app-context pickers). Pass a `({ collapsed }) => …` function to shrink it to a rail icon."
             },
             "onCollapsedChange": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
@@ -3722,7 +3926,7 @@
             },
             "visual": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "Trailing decorative visual, e.g. a Sparkline from the separate @cascivo/charts package (not exported from @cascivo/react), rendered below the value/delta/helpText"
+              "description": "ID of a child component. Trailing decorative visual, e.g. a Sparkline from the separate @cascivo/charts package (not exported from @cascivo/react), rendered below the value/delta/helpText"
             }
           },
           "required": ["component", "label", "value"]
@@ -3755,7 +3959,15 @@
               "default": "neutral"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -3911,7 +4123,15 @@
               "description": "The controlled value."
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             },
             "onValueChange": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
@@ -3954,7 +4174,15 @@
               "default": "default"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             },
             "onDismiss": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
@@ -4003,7 +4231,15 @@
               "default": "normal"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text."
             }
           },
           "required": ["component"]
@@ -4325,12 +4561,19 @@
               "default": "top"
             },
             "children": {
-              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList",
-              "description": "Content rendered inside the component."
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text. Content rendered inside the component."
             },
             "content": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
-              "description": "The tooltip content shown on hover/focus."
+              "description": "ID of a child component. The tooltip content shown on hover/focus."
             }
           },
           "required": ["component", "children", "content"]

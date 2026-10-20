@@ -318,8 +318,30 @@ describe('buildCatalog', () => {
     assert.deepEqual(cat.components['A']?.slots['children'], {
       arity: 'many',
       required: false,
+      text: true,
       implicit: true,
     })
     assert.equal(cat.components['B']?.slots['children'], undefined)
+  })
+  it('marks every children slot as accepting text, and no other slot', () => {
+    const reg = {
+      components: [
+        entry('A', [
+          { name: 'children', type: 'ReactNode' },
+          { name: 'icon', type: 'ReactNode' },
+        ]),
+        entry('Card', []),
+      ],
+    }
+    const cat = buildCatalog(reg, new Set(['A', 'CardTitle']))
+    assert.deepEqual(cat.components['A']?.slots, {
+      children: { arity: 'many', required: false, text: true },
+      icon: { arity: 'one', required: false },
+    })
+    assert.deepEqual(cat.components['CardTitle']?.slots['children'], {
+      arity: 'many',
+      required: false,
+      text: true,
+    })
   })
 })

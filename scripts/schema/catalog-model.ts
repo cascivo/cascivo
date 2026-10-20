@@ -295,9 +295,19 @@ export interface CatalogComponent {
     required?: string[]
     additionalProperties: false
   }
+  /**
+   * `text`: the slot also takes plain text (ViewConfig's `children: string | TranslationRef`).
+   * `implicit`: the source renders the slot although the manifest does not declare it.
+   */
   slots: Record<
     string,
-    { arity: 'one' | 'many'; required: boolean; description?: string; implicit?: true }
+    {
+      arity: 'one' | 'many'
+      required: boolean
+      description?: string
+      text?: true
+      implicit?: true
+    }
   >
   events: Record<string, { description?: string }>
   omitted: Record<string, { type: string; reason: string }>
@@ -473,6 +483,8 @@ function buildComponent(entry: CatalogEntry, implicitChildren: boolean): Catalog
           arity: c.arity,
           required: isRequired,
           ...(prop.description ? { description: prop.description } : {}),
+          // Any node's children may be a string (packages/render/src/types.ts ComponentNode).
+          ...(prop.name === 'children' ? { text: true as const } : {}),
         }
         break
       case 'event':
@@ -485,7 +497,7 @@ function buildComponent(entry: CatalogEntry, implicitChildren: boolean): Catalog
   }
   // Many components render children without declaring the prop; the generator detects that from source.
   if (implicitChildren && !('children' in slots) && !('children' in properties)) {
-    slots['children'] = { arity: 'many', required: false, implicit: true }
+    slots['children'] = { arity: 'many', required: false, text: true, implicit: true }
   }
   return {
     description: entry.meta.description,
@@ -540,7 +552,7 @@ export function buildCatalog(
       category: parentEntry.meta.category,
       parent,
       props: { type: 'object', properties: {}, additionalProperties: false },
-      slots: { children: { arity: 'many', required: false } },
+      slots: { children: { arity: 'many', required: false, text: true } },
       events: {},
       omitted: {},
     }

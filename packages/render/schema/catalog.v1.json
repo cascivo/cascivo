@@ -60,6 +60,7 @@
         "children": {
           "arity": "many",
           "required": false,
+          "text": true,
           "implicit": true
         }
       },
@@ -109,6 +110,7 @@
         "children": {
           "arity": "many",
           "required": false,
+          "text": true,
           "implicit": true
         },
         "icon": {
@@ -258,6 +260,7 @@
         "children": {
           "arity": "many",
           "required": false,
+          "text": true,
           "implicit": true
         }
       },
@@ -304,6 +307,7 @@
         "children": {
           "arity": "many",
           "required": false,
+          "text": true,
           "implicit": true
         }
       },
@@ -337,6 +341,7 @@
         "children": {
           "arity": "many",
           "required": false,
+          "text": true,
           "implicit": true
         }
       },
@@ -452,6 +457,7 @@
         "children": {
           "arity": "many",
           "required": false,
+          "text": true,
           "implicit": true
         }
       },
@@ -516,6 +522,7 @@
         "children": {
           "arity": "many",
           "required": false,
+          "text": true,
           "implicit": true
         }
       },
@@ -534,7 +541,8 @@
       "slots": {
         "children": {
           "arity": "many",
-          "required": false
+          "required": false,
+          "text": true
         }
       },
       "events": {},
@@ -552,7 +560,8 @@
       "slots": {
         "children": {
           "arity": "many",
-          "required": false
+          "required": false,
+          "text": true
         }
       },
       "events": {},
@@ -570,7 +579,8 @@
       "slots": {
         "children": {
           "arity": "many",
-          "required": false
+          "required": false,
+          "text": true
         }
       },
       "events": {},
@@ -588,7 +598,8 @@
       "slots": {
         "children": {
           "arity": "many",
-          "required": false
+          "required": false,
+          "text": true
         }
       },
       "events": {},
@@ -751,6 +762,7 @@
         "children": {
           "arity": "many",
           "required": false,
+          "text": true,
           "implicit": true
         }
       },
@@ -792,6 +804,7 @@
         "children": {
           "arity": "many",
           "required": false,
+          "text": true,
           "implicit": true
         }
       },
@@ -1917,7 +1930,8 @@
         "children": {
           "arity": "many",
           "required": true,
-          "description": "Content rendered inside the component."
+          "description": "Content rendered inside the component.",
+          "text": true
         }
       },
       "events": {
@@ -2035,6 +2049,7 @@
         "children": {
           "arity": "many",
           "required": false,
+          "text": true,
           "implicit": true
         }
       },
@@ -2053,7 +2068,8 @@
       "slots": {
         "children": {
           "arity": "many",
-          "required": false
+          "required": false,
+          "text": true
         }
       },
       "events": {},
@@ -2165,7 +2181,8 @@
         "children": {
           "arity": "many",
           "required": true,
-          "description": "Content rendered inside the component."
+          "description": "Content rendered inside the component.",
+          "text": true
         }
       },
       "events": {
@@ -2214,6 +2231,7 @@
         "children": {
           "arity": "many",
           "required": false,
+          "text": true,
           "implicit": true
         }
       },
@@ -2384,7 +2402,8 @@
         "children": {
           "arity": "many",
           "required": true,
-          "description": "Content rendered inside the component."
+          "description": "Content rendered inside the component.",
+          "text": true
         },
         "prefix": {
           "arity": "one",
@@ -2429,6 +2448,7 @@
         "children": {
           "arity": "many",
           "required": false,
+          "text": true,
           "implicit": true
         }
       },
@@ -2485,7 +2505,8 @@
         "children": {
           "arity": "many",
           "required": true,
-          "description": "Content rendered inside the component."
+          "description": "Content rendered inside the component.",
+          "text": true
         },
         "leading": {
           "arity": "one",
@@ -2546,6 +2567,7 @@
         "children": {
           "arity": "many",
           "required": false,
+          "text": true,
           "implicit": true
         }
       },
@@ -2587,6 +2609,7 @@
         "children": {
           "arity": "many",
           "required": false,
+          "text": true,
           "implicit": true
         }
       },
@@ -2605,7 +2628,8 @@
       "slots": {
         "children": {
           "arity": "many",
-          "required": false
+          "required": false,
+          "text": true
         }
       },
       "events": {},
@@ -2673,6 +2697,7 @@
         "children": {
           "arity": "many",
           "required": false,
+          "text": true,
           "implicit": true
         },
         "footer": {
@@ -3262,7 +3287,8 @@
       "slots": {
         "children": {
           "arity": "many",
-          "required": false
+          "required": false,
+          "text": true
         }
       },
       "events": {},
@@ -3984,6 +4010,7 @@
         "children": {
           "arity": "many",
           "required": false,
+          "text": true,
           "implicit": true
         }
       },
@@ -4151,6 +4178,7 @@
         "children": {
           "arity": "many",
           "required": false,
+          "text": true,
           "implicit": true
         }
       },
@@ -4202,6 +4230,7 @@
         "children": {
           "arity": "many",
           "required": false,
+          "text": true,
           "implicit": true
         }
       },
@@ -4259,6 +4288,7 @@
         "children": {
           "arity": "many",
           "required": false,
+          "text": true,
           "implicit": true
         }
       },
@@ -4610,7 +4640,8 @@
         "children": {
           "arity": "many",
           "required": true,
-          "description": "Content rendered inside the component."
+          "description": "Content rendered inside the component.",
+          "text": true
         },
         "content": {
           "arity": "one",
