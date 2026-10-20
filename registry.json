@@ -24086,7 +24086,7 @@
         "auto-grid.tsx": "sha256-eec15cbad7e4f3dce0856caa7a356ceb18afe5b80df61fcde82a8bfa7e77c9e7",
         "index.ts": "sha256-40c91b2a311dc816749ccf4b196cefdf65f775abf12e41d14869581461626120",
         "auto-grid.module.css": "sha256-c4ddabc261c6f0ae4292d463dd92647c5bb91a67bc137bf56cfcfd47e9603082",
-        "auto-grid.meta.ts": "sha256-32e6b36b3d4c4b9c9280420d19e5d99dff4d51ab66dcd3c215f3a0f7d4d8d46a"
+        "auto-grid.meta.ts": "sha256-5b8be7182a27faa4c3481effee85d8d437a07b06e0823dc66c23ec7646320e67"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -24102,6 +24102,12 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Grid items"
+          },
           {
             "name": "min",
             "type": "string",
@@ -24171,7 +24177,7 @@
         "center.tsx": "sha256-4249debc191fd25381bc529b746fe1bc33e12f213e2304cc4e9f0e3e6784e9b6",
         "index.ts": "sha256-bba794649e15e7705b1c1fd800e7a1a9fc39af4383018c5f385b1c83a3711156",
         "center.module.css": "sha256-179d9de5d56624bc88d2a8218f297d75501842258032767fe1c289fc38522a7f",
-        "center.meta.ts": "sha256-187dd45985c8b17d88d806eb16dddc0fa7731e4a65d42bfff9562c9baa080f5a"
+        "center.meta.ts": "sha256-dc37cd34ab549cd5f77b4bc3943c98223a5fa534dac5bcd3c14f11df5f9e2190"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -24187,6 +24193,12 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Content to center"
+          },
           {
             "name": "maxWidth",
             "default": "48rem",
@@ -24438,7 +24450,7 @@
         "flex.tsx": "sha256-5e7b831f678ef3ff6c3652ef9db9dd21d5927f3f6440773e54ce30d8ffe971d2",
         "index.ts": "sha256-866e136d307ce28ddd698039d7c2234f14aeadeaa877ec2afaaf40b9634bed94",
         "flex.module.css": "sha256-cb5c86471738605bfa5fc3e043e84b4ac8f93bc9f4096e7a3542d4c72130d5df",
-        "flex.meta.ts": "sha256-168c20bf24c63ec1036a88043dbe2b3cc6ab62b844f0972107a1ab2a1b0bd90a"
+        "flex.meta.ts": "sha256-37254f812ae44fe7c0cd3bc988c917bbb55be9283d2862e22d57ef5af2cbffae"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -24454,6 +24466,12 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Items laid out along the flex axis"
+          },
           {
             "name": "direction",
             "default": "vertical",

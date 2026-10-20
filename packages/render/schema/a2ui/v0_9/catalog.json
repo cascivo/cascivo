@@ -163,6 +163,17 @@
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
               "description": "Minimum track width before items wrap to fewer columns",
               "default": "16rem"
+            },
+            "children": {
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text. Grid items"
             }
           },
           "required": ["component"]
@@ -666,6 +677,17 @@
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
               "description": "CSS max-width value",
               "default": "48rem"
+            },
+            "children": {
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text. Content to center"
             }
           },
           "required": ["component"]
@@ -1906,6 +1928,17 @@
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicBoolean",
               "description": "Allow wrapping",
               "default": false
+            },
+            "children": {
+              "oneOf": [
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList"
+                },
+                {
+                  "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
+                }
+              ],
+              "description": "IDs of child components, a template, or text. Items laid out along the flex axis"
             }
           },
           "required": ["component"]

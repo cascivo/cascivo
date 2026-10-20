@@ -161,7 +161,14 @@
         },
         "additionalProperties": false
       },
-      "slots": {},
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "description": "Grid items",
+          "text": true
+        }
+      },
       "events": {},
       "omitted": {}
     },
@@ -629,7 +636,14 @@
         },
         "additionalProperties": false
       },
-      "slots": {},
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "description": "Content to center",
+          "text": true
+        }
+      },
       "events": {},
       "omitted": {}
     },
@@ -1898,7 +1912,14 @@
         },
         "additionalProperties": false
       },
-      "slots": {},
+      "slots": {
+        "children": {
+          "arity": "many",
+          "required": false,
+          "description": "Items laid out along the flex axis",
+          "text": true
+        }
+      },
       "events": {},
       "omitted": {}
     },

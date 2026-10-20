@@ -458,6 +458,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   AutoGrid: [
     {
+      name: 'children',
+      required: false,
+    },
+    {
       name: 'min',
       required: false,
       primitives: ['string'],
@@ -1269,6 +1273,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Center: [
+    {
+      name: 'children',
+      required: false,
+    },
     {
       name: 'maxWidth',
       required: false,
@@ -3151,6 +3159,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Flex: [
+    {
+      name: 'children',
+      required: false,
+    },
     {
       name: 'direction',
       required: false,

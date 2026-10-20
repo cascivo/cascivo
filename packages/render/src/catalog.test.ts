@@ -15,7 +15,7 @@ interface Comp {
   props: {
     properties: Record<string, { enum?: unknown[]; items?: { required?: string[] } }>
   }
-  slots: Record<string, { arity: string; implicit?: boolean }>
+  slots: Record<string, { arity: string; text?: boolean; implicit?: boolean }>
   events: Record<string, unknown>
   omitted: Record<string, unknown>
 }
@@ -51,6 +51,14 @@ describe('catalog.v1.json', () => {
       'key',
       'header',
     ])
+  })
+
+  it('declares children on layout containers that pass them through a props spread (R14)', () => {
+    for (const name of ['Flex', 'Center', 'AutoGrid']) {
+      const children = catalog.components[name]!.slots['children']
+      expect(children, name).toMatchObject({ arity: 'many', text: true })
+      expect(children?.implicit, name).toBeUndefined()
+    }
   })
 
   it('does not infer children from sibling components in the same file', () => {

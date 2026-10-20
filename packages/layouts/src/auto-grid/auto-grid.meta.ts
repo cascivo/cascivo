@@ -9,6 +9,7 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
+    { name: 'children', type: 'ReactNode', required: false, description: 'Grid items' },
     {
       name: 'min',
       type: 'string',

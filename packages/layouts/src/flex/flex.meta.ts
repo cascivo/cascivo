@@ -11,6 +11,12 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     {
+      name: 'children',
+      type: 'ReactNode',
+      required: false,
+      description: 'Items laid out along the flex axis',
+    },
+    {
       name: 'direction',
       default: 'vertical',
       type: "'vertical' | 'horizontal'",

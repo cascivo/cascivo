@@ -18314,6 +18314,12 @@
         "sizes": [],
         "props": [
           {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Grid items"
+          },
+          {
             "name": "min",
             "type": "string",
             "required": false,
@@ -18391,6 +18397,12 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Content to center"
+          },
           {
             "name": "maxWidth",
             "default": "48rem",
@@ -18637,6 +18649,12 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Items laid out along the flex axis"
+          },
           {
             "name": "direction",
             "default": "vertical",
