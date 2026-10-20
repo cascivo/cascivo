@@ -103,6 +103,29 @@ export async function goTo(
   await page.waitForLoadState('domcontentloaded')
 }
 
+/**
+ * Whether `check` comes true within `timeoutMs`, polling. For conditions no single locator can
+ * wait on (one of several shapes, a count that should drop): an SPA renders after load, so a
+ * one-shot read would fail a correct app that is merely a frame behind.
+ */
+export async function eventually(
+  check: () => Promise<boolean>,
+  timeoutMs: number = SETTLE_MS,
+): Promise<boolean> {
+  const deadline = Date.now() + timeoutMs
+  for (;;) {
+    if (await check()) return true
+    if (Date.now() >= deadline) return false
+    await new Promise((done) => setTimeout(done, 200))
+  }
+}
+
+/** Whether any match is visible now. `.first()` alone would miss a visible match after a hidden one. */
+export async function anyVisible(locator: Locator): Promise<boolean> {
+  for (const el of await locator.all()) if (await el.isVisible()) return true
+  return false
+}
+
 /** Throws (via the web-first assertion's own message) unless a matching element is visible. */
 export async function expectVisible(page: Page, role: AriaRole, name: RegExp): Promise<void> {
   await page.getByRole(role, { name }).first().waitFor({ state: 'visible', timeout: SETTLE_MS })

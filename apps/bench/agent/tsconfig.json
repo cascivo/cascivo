@@ -13,6 +13,7 @@
     "types": ["node"]
   },
   "include": ["src", "tasks"],
-  // Built and type-checked by the score-phase tests themselves; one fails tsc on purpose.
-  "exclude": ["src/eval/__fixtures__/apps"]
+  // Built and type-checked by the score-phase tests themselves; one fails tsc on purpose. Task
+  // canaries are apps for their starters (cascivo or shadcn), checked against those, not here.
+  "exclude": ["src/eval/__fixtures__/apps", "tasks/*/fixtures"]
 }

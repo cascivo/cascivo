@@ -3,7 +3,7 @@ import type { AddressInfo } from 'node:net'
 import { chromium, type Browser, type Page } from '@playwright/test'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { chromiumNote, resolveChromium } from '../../../../scripts/checks/lib/chromium.ts'
-import { findOnAnyPage, goTo } from './_lib.ts'
+import { anyVisible, eventually, findOnAnyPage, goTo } from './_lib.ts'
 
 // Needs a real Chromium, so it stays out of the default run: EVAL_SLOW=1 enables it.
 const slow = process.env['EVAL_SLOW'] ? describe : describe.skip
@@ -148,5 +148,35 @@ slow('tasks/_lib', () => {
   it('findOnAnyPage throws when nothing matches', async () => {
     await fresh()
     await expect(findOnAnyPage(page, baseUrl, 'button', /nope/i)).rejects.toThrow(/No visible/)
+  })
+
+  it('anyVisible finds a visible match behind a hidden one', async () => {
+    page = await browser.newPage()
+    // Text locators, unlike role locators, also match hidden elements: the case `.first()` misses.
+    await page.setContent('<p hidden>Go</p><p>Go</p><p hidden>Away</p>')
+    await expect(page.getByText('Go').first().isVisible()).resolves.toBe(false)
+    await expect(anyVisible(page.getByText('Go'))).resolves.toBe(true)
+    await expect(anyVisible(page.getByText('Away'))).resolves.toBe(false)
+  })
+})
+
+describe('eventually', () => {
+  it('resolves true once the check comes true', async () => {
+    let calls = 0
+    await expect(eventually(async () => ++calls >= 3, 5000)).resolves.toBe(true)
+    expect(calls).toBe(3)
+  })
+
+  it('resolves false after the timeout, having checked at least once', async () => {
+    let calls = 0
+    const started = Date.now()
+    await expect(
+      eventually(async () => {
+        calls += 1
+        return false
+      }, 300),
+    ).resolves.toBe(false)
+    expect(calls).toBeGreaterThan(0)
+    expect(Date.now() - started).toBeGreaterThanOrEqual(300)
   })
 })
