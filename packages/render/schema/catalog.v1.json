@@ -35,10 +35,7 @@
           },
           "type": {
             "type": "string",
-            "enum": [
-              "single",
-              "multiple"
-            ],
+            "enum": ["single", "multiple"],
             "description": "Whether one or multiple sections can be open at once ('single' | 'multiple').",
             "default": "single"
           },
@@ -101,13 +98,7 @@
           },
           "variant": {
             "type": "string",
-            "enum": [
-              "default",
-              "info",
-              "success",
-              "warning",
-              "destructive"
-            ],
+            "enum": ["default", "info", "success", "warning", "destructive"],
             "description": "Severity tone: `default` (neutral), `info`, `success`, `warning` or `destructive`. Sets the icon and the accent colour. Unlike Badge/Tag/Notification this is a private union, not `ToneInput` — the canonical `danger`/`neutral` spellings are not accepted here.",
             "default": "default"
           }
@@ -156,17 +147,7 @@
         "properties": {
           "gap": {
             "type": "number",
-            "enum": [
-              1,
-              2,
-              3,
-              4,
-              5,
-              6,
-              8,
-              10,
-              12
-            ],
+            "enum": [1, 2, 3, 4, 5, 6, 8, 10, 12],
             "description": "Spacing token step. Maps to the --cascivo-space-* scale, which intentionally skips 7/9/11 — use 6 or 8.",
             "default": 4
           },
@@ -214,13 +195,7 @@
           },
           "size": {
             "type": "string",
-            "enum": [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl"
-            ],
+            "enum": ["xs", "sm", "md", "lg", "xl"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           },
@@ -230,11 +205,7 @@
           },
           "status": {
             "type": "string",
-            "enum": [
-              "online",
-              "offline",
-              "busy"
-            ],
+            "enum": ["online", "offline", "busy"],
             "description": "Status state."
           }
         },
@@ -272,11 +243,7 @@
           },
           "spacing": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md",
-              "lg"
-            ],
+            "enum": ["sm", "md", "lg"],
             "description": "Spacing between items.",
             "default": "md"
           },
@@ -320,23 +287,13 @@
         "properties": {
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md"
-            ],
+            "enum": ["sm", "md"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           },
           "variant": {
             "type": "string",
-            "enum": [
-              "default",
-              "secondary",
-              "success",
-              "warning",
-              "destructive",
-              "outline"
-            ],
+            "enum": ["default", "secondary", "success", "warning", "destructive", "outline"],
             "description": "Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral | info | success | warning | danger`) plus Badge's historical spellings (`default` → neutral, `error`/`destructive` → danger), and two values that carry no tone at all: `secondary` (muted fill) and `outline` (border only).",
             "default": "default"
           }
@@ -424,9 +381,7 @@
                   "type": "string"
                 }
               },
-              "required": [
-                "label"
-              ],
+              "required": ["label"],
               "additionalProperties": false
             },
             "description": "The items to render."
@@ -440,9 +395,7 @@
             "description": "When items exceed this count, collapse to the first item, an ellipsis, and the trailing items"
           }
         },
-        "required": [
-          "items"
-        ],
+        "required": ["items"],
         "additionalProperties": false
       },
       "slots": {},
@@ -482,22 +435,13 @@
           },
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md",
-              "lg"
-            ],
+            "enum": ["sm", "md", "lg"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           },
           "variant": {
             "type": "string",
-            "enum": [
-              "primary",
-              "secondary",
-              "ghost",
-              "destructive"
-            ],
+            "enum": ["primary", "secondary", "ghost", "destructive"],
             "description": "`primary` for the main action, `secondary` for a supporting one, `ghost` for a borderless action in dense UI, `destructive` for anything that deletes.",
             "default": "primary"
           }
@@ -539,9 +483,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "enum": [
-                  "generating"
-                ]
+                "enum": ["generating"]
               },
               {
                 "type": "boolean"
@@ -552,22 +494,13 @@
           },
           "padding": {
             "type": "string",
-            "enum": [
-              "none",
-              "sm",
-              "md",
-              "lg"
-            ],
+            "enum": ["none", "sm", "md", "lg"],
             "description": "Inner padding of the CARD BOX. ⚠ `padding=\"none\"` deliberately does NOT strip the padding from CardHeader/CardContent/CardFooter — those keep their own. It means \"let a flush child (a LogViewer, an image, an edge-to-edge table) reach the card's edge\"; zeroing both put the title flush against the border and made the mode unusable with the composition it exists for. For an edge-to-edge table, skip CardContent and pass the table as a direct child.",
             "default": "md"
           },
           "variant": {
             "type": "string",
-            "enum": [
-              "default",
-              "outlined",
-              "elevated"
-            ],
+            "enum": ["default", "outlined", "elevated"],
             "description": "`default` draws a 1px border, `outlined` a heavier one, `elevated` drops the border for a shadow.",
             "default": "default"
           }
@@ -807,10 +740,7 @@
         "properties": {
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md"
-            ],
+            "enum": ["sm", "md"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           }
@@ -845,27 +775,13 @@
         "properties": {
           "count": {
             "type": "number",
-            "enum": [
-              2,
-              3,
-              4
-            ],
+            "enum": [2, 3, 4],
             "description": "Number of equal columns",
             "default": 2
           },
           "gap": {
             "type": "number",
-            "enum": [
-              1,
-              2,
-              3,
-              4,
-              5,
-              6,
-              8,
-              10,
-              12
-            ],
+            "enum": [1, 2, 3, 4, 5, 6, 8, 10, 12],
             "description": "Spacing token step",
             "default": 4
           }
@@ -983,11 +899,7 @@
           },
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md",
-              "lg"
-            ],
+            "enum": ["sm", "md", "lg"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           },
@@ -1083,9 +995,7 @@
             "default": "Type a command or search…"
           }
         },
-        "required": [
-          "open"
-        ],
+        "required": ["open"],
         "additionalProperties": false
       },
       "slots": {},
@@ -1150,10 +1060,7 @@
                   "description": "Column keys in the band. Non-adjacent keys render as separate spans."
                 }
               },
-              "required": [
-                "header",
-                "columns"
-              ],
+              "required": ["header", "columns"],
               "additionalProperties": false,
               "description": "A band of columns under one shared header (`columnGroups`)."
             },
@@ -1222,19 +1129,12 @@
                 },
                 "align": {
                   "type": "string",
-                  "enum": [
-                    "start",
-                    "end"
-                  ],
+                  "enum": ["start", "end"],
                   "description": "Cell/text alignment. Use 'end' for numbers and timestamps."
                 },
                 "filter": {
                   "type": "string",
-                  "enum": [
-                    "text",
-                    "select",
-                    "range"
-                  ],
+                  "enum": ["text", "select", "range"],
                   "description": "Offer a per-column filter under the header: a substring input, a faceted checklist of distinct values with counts, or a numeric min/max pair. Values surface through the `filters` props."
                 },
                 "editable": {
@@ -1250,10 +1150,7 @@
                   "description": "Preferred column width (any CSS length, e.g. `120px`), with an automatic content floor. ⚠ Sizing EVERY column switches the table to `table-layout: fixed`. ⚠ \"Leave one unsized\" is necessary but NOT sufficient: the leftover width is split by content weight, so if the sized columns nearly fill the table the remainder can be narrower than the content needs and long tokens wrap mid-word. Leave the widest free-form column unsized, keep sized columns to ~2/3 of the table, and give the free-form one a `minWidth` when the data has long unbreakable tokens."
                 }
               },
-              "required": [
-                "key",
-                "header"
-              ],
+              "required": ["key", "header"],
               "additionalProperties": false,
               "description": "A single column definition. `render` is the escape hatch for custom cell content — return any ReactNode (a Badge, an icon + link, a formatted value); when omitted the cell shows `String(row[key])`."
             },
@@ -1289,10 +1186,7 @@
               },
               "direction": {
                 "type": "string",
-                "enum": [
-                  "asc",
-                  "desc"
-                ],
+                "enum": ["asc", "desc"],
                 "description": "Sort direction."
               },
               "thenBy": {
@@ -1305,35 +1199,22 @@
                     },
                     "direction": {
                       "type": "string",
-                      "enum": [
-                        "asc",
-                        "desc"
-                      ]
+                      "enum": ["asc", "desc"]
                     }
                   },
-                  "required": [
-                    "key",
-                    "direction"
-                  ],
+                  "required": ["key", "direction"],
                   "additionalProperties": false
                 },
                 "description": "Secondary columns that break ties, in order (multi-sort)."
               }
             },
-            "required": [
-              "key",
-              "direction"
-            ],
+            "required": ["key", "direction"],
             "additionalProperties": false,
             "description": "The initial sort state when uncontrolled."
           },
           "density": {
             "type": "string",
-            "enum": [
-              "compact",
-              "normal",
-              "relaxed"
-            ],
+            "enum": ["compact", "normal", "relaxed"],
             "description": "Row density — 'compact', 'normal', or 'relaxed'. ⚠ It sets a row **height floor**, so it is invisible whenever the cell content is already taller: a two-line cell or a Badge stack looks identical at every density. Reported as \"barely distinguishable\" — the prop works, the content is winning. Shrink the cell content, or set `--cascivo-data-table-cell-gap` to tighten the horizontal rhythm too.",
             "default": "normal"
           },
@@ -1375,10 +1256,7 @@
           },
           "keyboardNavigation": {
             "type": "string",
-            "enum": [
-              "row",
-              "grid"
-            ],
+            "enum": ["row", "grid"],
             "description": "How the keyboard moves through the table. 'row' keeps every control in the Tab order with the arrows stepping between them. 'grid' is the APG data-grid pattern: one Tab stop, arrows move a focused cell, Home/End within the row, Ctrl+Home/End to the corners, PageUp/PageDown by a screenful, Enter/F2 enters the cell's control, Escape returns to the cell; rows outside the virtualized window are scrolled to.",
             "default": "row"
           },
@@ -1413,9 +1291,7 @@
                 "type": "number"
               }
             },
-            "required": [
-              "pageSize"
-            ],
+            "required": ["pageSize"],
             "additionalProperties": false,
             "description": "Paging config: pageSize, optional pageSizeOptions, and page/onPageChange to control the current page. With `server`, it is the pager for server-side paging."
           },
@@ -1459,10 +1335,7 @@
             "properties": {
               "mode": {
                 "type": "string",
-                "enum": [
-                  "single",
-                  "multi"
-                ]
+                "enum": ["single", "multi"]
               },
               "selected": {
                 "type": "array",
@@ -1471,9 +1344,7 @@
                 }
               }
             },
-            "required": [
-              "mode"
-            ],
+            "required": ["mode"],
             "additionalProperties": false,
             "description": "Row-selection configuration (mode and selected ids)."
           },
@@ -1486,10 +1357,7 @@
               },
               "direction": {
                 "type": "string",
-                "enum": [
-                  "asc",
-                  "desc"
-                ],
+                "enum": ["asc", "desc"],
                 "description": "Sort direction."
               },
               "thenBy": {
@@ -1502,34 +1370,22 @@
                     },
                     "direction": {
                       "type": "string",
-                      "enum": [
-                        "asc",
-                        "desc"
-                      ]
+                      "enum": ["asc", "desc"]
                     }
                   },
-                  "required": [
-                    "key",
-                    "direction"
-                  ],
+                  "required": ["key", "direction"],
                   "additionalProperties": false
                 },
                 "description": "Secondary columns that break ties, in order (multi-sort)."
               }
             },
-            "required": [
-              "key",
-              "direction"
-            ],
+            "required": ["key", "direction"],
             "additionalProperties": false,
             "description": "The controlled sort state."
           },
           "sortMode": {
             "type": "string",
-            "enum": [
-              "client",
-              "server"
-            ],
+            "enum": ["client", "server"],
             "description": "Whether sorting is handled client-side or by the server ('client' | 'server').",
             "default": "client"
           },
@@ -1566,10 +1422,7 @@
             "default": false
           }
         },
-        "required": [
-          "columns",
-          "rows"
-        ],
+        "required": ["columns", "rows"],
         "additionalProperties": false
       },
       "slots": {
@@ -1727,11 +1580,7 @@
           },
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md",
-              "lg"
-            ],
+            "enum": ["sm", "md", "lg"],
             "description": "Field size",
             "default": "md"
           },
@@ -1807,10 +1656,7 @@
                       "type": "boolean"
                     }
                   },
-                  "required": [
-                    "label",
-                    "value"
-                  ],
+                  "required": ["label", "value"],
                   "additionalProperties": false
                 },
                 {
@@ -1818,14 +1664,10 @@
                   "properties": {
                     "kind": {
                       "type": "string",
-                      "enum": [
-                        "separator"
-                      ]
+                      "enum": ["separator"]
                     }
                   },
-                  "required": [
-                    "kind"
-                  ],
+                  "required": ["kind"],
                   "additionalProperties": false
                 }
               ]
@@ -1838,17 +1680,12 @@
           },
           "placement": {
             "type": "string",
-            "enum": [
-              "bottom-start",
-              "bottom-end"
-            ],
+            "enum": ["bottom-start", "bottom-end"],
             "description": "Which trigger edge the menu aligns to. `bottom-start` hangs it from the trigger's start edge, `bottom-end` from its end edge — use `bottom-end` for a trigger near the end of the viewport.",
             "default": "bottom-start"
           }
         },
-        "required": [
-          "items"
-        ],
+        "required": ["items"],
         "additionalProperties": false
       },
       "slots": {
@@ -1891,10 +1728,7 @@
           },
           "size": {
             "type": "string",
-            "enum": [
-              "md",
-              "lg"
-            ],
+            "enum": ["md", "lg"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           },
@@ -1903,9 +1737,7 @@
             "description": "Title text for the component."
           }
         },
-        "required": [
-          "title"
-        ],
+        "required": ["title"],
         "additionalProperties": false
       },
       "slots": {
@@ -2015,12 +1847,7 @@
         "properties": {
           "align": {
             "type": "string",
-            "enum": [
-              "start",
-              "center",
-              "end",
-              "stretch"
-            ],
+            "enum": ["start", "center", "end", "stretch"],
             "description": "align-items"
           },
           "basis": {
@@ -2029,47 +1856,24 @@
           },
           "direction": {
             "type": "string",
-            "enum": [
-              "vertical",
-              "horizontal"
-            ],
+            "enum": ["vertical", "horizontal"],
             "description": "Flex direction. ⚠ Defaults to `vertical`, unlike CSS `flex-direction` (and unlike Chakra/MUI/Radix `Flex`, which default to a row) — `<Flex justify=\"between\">` alone produces a centered vertical stack.",
             "default": "vertical"
           },
           "gap": {
             "type": "number",
-            "enum": [
-              1,
-              2,
-              3,
-              4,
-              5,
-              6,
-              8,
-              10,
-              12
-            ],
+            "enum": [1, 2, 3, 4, 5, 6, 8, 10, 12],
             "description": "Spacing token step",
             "default": 4
           },
           "justify": {
             "type": "string",
-            "enum": [
-              "start",
-              "center",
-              "end",
-              "between"
-            ],
+            "enum": ["start", "center", "end", "between"],
             "description": "justify-content"
           },
           "size": {
             "type": "string",
-            "enum": [
-              "auto",
-              "fixed",
-              "grow",
-              "shrink"
-            ],
+            "enum": ["auto", "fixed", "grow", "shrink"],
             "description": "FlexItem: main-axis sizing. 'fixed' (flex: 0 0 auto) is what a fixed-width child like Sparkline needs; 'grow' takes the leftover width without shrinking; 'shrink' gives way but never grows.",
             "default": "auto"
           },
@@ -2151,12 +1955,7 @@
         "properties": {
           "align": {
             "type": "string",
-            "enum": [
-              "start",
-              "center",
-              "end",
-              "stretch"
-            ],
+            "enum": ["start", "center", "end", "stretch"],
             "description": "Block-axis alignment of items within their cells (align-items); default stretch"
           },
           "alignRows": {
@@ -2196,28 +1995,13 @@
           },
           "gap": {
             "type": "number",
-            "enum": [
-              1,
-              2,
-              3,
-              4,
-              5,
-              6,
-              8,
-              10,
-              12
-            ],
+            "enum": [1, 2, 3, 4, 5, 6, 8, 10, 12],
             "description": "Spacing token step. Maps to the --cascivo-space-* scale, which intentionally skips 7/9/11 — use 6 or 8.",
             "default": 4
           },
           "justify": {
             "type": "string",
-            "enum": [
-              "start",
-              "center",
-              "end",
-              "stretch"
-            ],
+            "enum": ["start", "center", "end", "stretch"],
             "description": "Inline-axis alignment of items within their cells (justify-items); default stretch"
           },
           "span": {
@@ -2316,10 +2100,7 @@
                   "type": "boolean"
                 }
               },
-              "required": [
-                "label",
-                "href"
-              ],
+              "required": ["label", "href"],
               "additionalProperties": false
             },
             "description": "Primary navigation links; active link gets aria-current=\"page\""
@@ -2382,10 +2163,7 @@
             "description": "Controlled open state"
           }
         },
-        "required": [
-          "open",
-          "label"
-        ],
+        "required": ["open", "label"],
         "additionalProperties": false
       },
       "slots": {
@@ -2425,26 +2203,13 @@
         "properties": {
           "level": {
             "type": "number",
-            "enum": [
-              1,
-              2,
-              3,
-              4,
-              5,
-              6
-            ],
+            "enum": [1, 2, 3, 4, 5, 6],
             "description": "Heading level (1–6) mapping to h1–h6.",
             "default": 2
           },
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md",
-              "lg",
-              "xl",
-              "2xl"
-            ],
+            "enum": ["sm", "md", "lg", "xl", "2xl"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg')."
           }
         },
@@ -2504,13 +2269,7 @@
           },
           "radius": {
             "type": "string",
-            "enum": [
-              "none",
-              "sm",
-              "md",
-              "lg",
-              "full"
-            ],
+            "enum": ["none", "sm", "md", "lg", "full"],
             "description": "Corner radius of the image ('none' | 'sm' | 'md' | 'lg' | 'full').",
             "default": "md"
           },
@@ -2596,11 +2355,7 @@
           },
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md",
-              "lg"
-            ],
+            "enum": ["sm", "md", "lg"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           }
@@ -2668,10 +2423,7 @@
         "properties": {
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md"
-            ],
+            "enum": ["sm", "md"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           }
@@ -2717,11 +2469,7 @@
           },
           "level": {
             "type": "number",
-            "enum": [
-              1,
-              2,
-              3
-            ],
+            "enum": [1, 2, 3],
             "description": "Heading level for the title, mapping to h1–h3.",
             "default": 1
           },
@@ -2730,9 +2478,7 @@
             "description": "The page title, rendered as the large heading and mirrored in the compact bar"
           }
         },
-        "required": [
-          "title"
-        ],
+        "required": ["title"],
         "additionalProperties": false
       },
       "slots": {
@@ -2788,20 +2534,13 @@
           },
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md",
-              "lg"
-            ],
+            "enum": ["sm", "md", "lg"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           },
           "variant": {
             "type": "string",
-            "enum": [
-              "standalone",
-              "inline"
-            ],
+            "enum": ["standalone", "inline"],
             "description": "`standalone` uses the system's own type and underlines on hover — for a link that stands on its own. `inline` inherits the surrounding prose font and stays underlined — for a link inside a paragraph.",
             "default": "standalone"
           }
@@ -2837,20 +2576,13 @@
         "properties": {
           "as": {
             "type": "string",
-            "enum": [
-              "ul",
-              "ol"
-            ],
+            "enum": ["ul", "ol"],
             "description": "`ul` for an unordered list, `ol` for a numbered one. Changes the element and its marker, not the styling.",
             "default": "ul"
           },
           "marker": {
             "type": "string",
-            "enum": [
-              "disc",
-              "decimal",
-              "none"
-            ],
+            "enum": ["disc", "decimal", "none"],
             "description": "List marker style ('disc' | 'decimal' | 'none')."
           }
         },
@@ -2906,9 +2638,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "enum": [
-                  "generating"
-                ]
+                "enum": ["generating"]
               },
               {
                 "type": "boolean"
@@ -2933,11 +2663,7 @@
           },
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md",
-              "lg"
-            ],
+            "enum": ["sm", "md", "lg"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           },
@@ -3034,11 +2760,7 @@
           },
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md",
-              "lg"
-            ],
+            "enum": ["sm", "md", "lg"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           },
@@ -3126,10 +2848,7 @@
                   "type": "boolean"
                 }
               },
-              "required": [
-                "label",
-                "value"
-              ],
+              "required": ["label", "value"],
               "additionalProperties": false
             },
             "description": "The items to render."
@@ -3140,19 +2859,13 @@
           },
           "placement": {
             "type": "string",
-            "enum": [
-              "bottom-start",
-              "bottom-end"
-            ],
+            "enum": ["bottom-start", "bottom-end"],
             "description": "Which trigger edge the menu aligns to. `bottom-end` hangs it from the trigger's end edge (right in LTR), `bottom-start` from its start edge.",
             "default": "bottom-end"
           },
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md"
-            ],
+            "enum": ["sm", "md"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           },
@@ -3161,9 +2874,7 @@
             "description": "Tab-order position of the trigger. Composite widgets that manage their own focus (a DataTable in grid keyboard mode) pass -1 so the menu is reachable by Enter on its cell without being an extra Tab stop."
           }
         },
-        "required": [
-          "items"
-        ],
+        "required": ["items"],
         "additionalProperties": false
       },
       "slots": {},
@@ -3257,23 +2968,14 @@
               "type": "number"
             },
             "description": "Options for the page size select",
-            "default": [
-              10,
-              25,
-              50,
-              100
-            ]
+            "default": [10, 25, 50, 100]
           },
           "totalItems": {
             "type": "number",
             "description": "Total number of items"
           }
         },
-        "required": [
-          "page",
-          "pageSize",
-          "totalItems"
-        ],
+        "required": ["page", "pageSize", "totalItems"],
         "additionalProperties": false
       },
       "slots": {},
@@ -3326,11 +3028,7 @@
           },
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md",
-              "lg"
-            ],
+            "enum": ["sm", "md", "lg"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           },
@@ -3340,13 +3038,7 @@
           },
           "variant": {
             "type": "string",
-            "enum": [
-              "primary",
-              "info",
-              "success",
-              "warning",
-              "error"
-            ],
+            "enum": ["primary", "info", "success", "warning", "error"],
             "description": "Colour of the fill: `primary` (the accent) or a severity tone — `info`, `success`, `warning`, `error`.",
             "default": "primary"
           }
@@ -3390,20 +3082,13 @@
           },
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md"
-            ],
+            "enum": ["sm", "md"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           },
           "status": {
             "type": "string",
-            "enum": [
-              "active",
-              "success",
-              "error"
-            ],
+            "enum": ["active", "success", "error"],
             "description": "success/error tint the fill and show a glyph next to the label",
             "default": "active"
           },
@@ -3455,9 +3140,7 @@
                   "type": "string"
                 }
               },
-              "required": [
-                "label"
-              ],
+              "required": ["label"],
               "additionalProperties": false
             },
             "description": "Ordered list of steps"
@@ -3468,10 +3151,7 @@
             "default": false
           }
         },
-        "required": [
-          "steps",
-          "currentIndex"
-        ],
+        "required": ["steps", "currentIndex"],
         "additionalProperties": false
       },
       "slots": {},
@@ -3517,9 +3197,7 @@
             "description": "The controlled value."
           }
         },
-        "required": [
-          "value"
-        ],
+        "required": ["value"],
         "additionalProperties": false
       },
       "slots": {},
@@ -3556,9 +3234,7 @@
             "description": "Radio value"
           }
         },
-        "required": [
-          "value"
-        ],
+        "required": ["value"],
         "additionalProperties": false
       },
       "slots": {
@@ -3667,11 +3343,7 @@
           },
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md",
-              "lg"
-            ],
+            "enum": ["sm", "md", "lg"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           },
@@ -3747,10 +3419,7 @@
                   "type": "boolean"
                 }
               },
-              "required": [
-                "value",
-                "label"
-              ],
+              "required": ["value", "label"],
               "additionalProperties": false
             },
             "description": "The selectable options."
@@ -3761,18 +3430,12 @@
           },
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md",
-              "lg"
-            ],
+            "enum": ["sm", "md", "lg"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           }
         },
-        "required": [
-          "options"
-        ],
+        "required": ["options"],
         "additionalProperties": false
       },
       "slots": {},
@@ -3803,10 +3466,7 @@
           },
           "orientation": {
             "type": "string",
-            "enum": [
-              "horizontal",
-              "vertical"
-            ],
+            "enum": ["horizontal", "vertical"],
             "description": "Direction the rule runs: `horizontal` draws a full-width line, `vertical` a full-height one that stretches to its flex row.",
             "default": "horizontal"
           }
@@ -3856,11 +3516,7 @@
                   "description": "Renders aria-pressed for a toggle action."
                 }
               },
-              "required": [
-                "id",
-                "label",
-                "icon"
-              ],
+              "required": ["id", "label", "icon"],
               "additionalProperties": false,
               "description": "A right-aligned global icon action. `actions` is a typed array of these — pass an `icon` node per item, not free-form JSX. For non-action trailing content (user menu, theme switcher) use the `end` slot instead."
             },
@@ -3898,10 +3554,7 @@
                         "type": "boolean"
                       }
                     },
-                    "required": [
-                      "label",
-                      "href"
-                    ],
+                    "required": ["label", "href"],
                     "additionalProperties": false
                   },
                   "description": "Dropdown menu entries (menu items)."
@@ -3911,9 +3564,7 @@
                   "description": "Marks the current nav entry (aria-current)."
                 }
               },
-              "required": [
-                "label"
-              ],
+              "required": ["label"],
               "additionalProperties": false,
               "description": "A top-nav entry: either a link (`{ label, href, active?, onClick? }`) or a dropdown menu (`{ label, items: { label, href, active? }[] }`)."
             },
@@ -3923,9 +3574,7 @@
             "anyOf": [
               {
                 "type": "boolean",
-                "enum": [
-                  false
-                ]
+                "enum": [false]
               },
               {
                 "type": "string"
@@ -4090,11 +3739,7 @@
           },
           "variant": {
             "type": "string",
-            "enum": [
-              "text",
-              "circle",
-              "rect"
-            ],
+            "enum": ["text", "circle", "rect"],
             "description": "Shape of the placeholder: `text` (stacked lines), `circle` (an avatar), `rect` (a block).",
             "default": "text"
           },
@@ -4187,17 +3832,7 @@
         "properties": {
           "size": {
             "type": "number",
-            "enum": [
-              1,
-              2,
-              3,
-              4,
-              5,
-              6,
-              8,
-              10,
-              12
-            ],
+            "enum": [1, 2, 3, 4, 5, 6, 8, 10, 12],
             "description": "Spacing token step",
             "default": 4
           }
@@ -4236,11 +3871,7 @@
           },
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md",
-              "lg"
-            ],
+            "enum": ["sm", "md", "lg"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           }
@@ -4279,11 +3910,7 @@
           },
           "goodDirection": {
             "type": "string",
-            "enum": [
-              "up",
-              "down",
-              "neutral"
-            ],
+            "enum": ["up", "down", "neutral"],
             "description": "Which direction is *good* for this metric — the colour, independent of the arrow. 'up' (default) is the classic revenue tile; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour.",
             "default": "up"
           },
@@ -4297,11 +3924,7 @@
           },
           "trend": {
             "type": "string",
-            "enum": [
-              "up",
-              "down",
-              "flat"
-            ],
+            "enum": ["up", "down", "flat"],
             "description": "Direction of the trend indicator ('up' | 'down' | 'flat').",
             "default": "flat"
           },
@@ -4317,10 +3940,7 @@
             "description": "The metric value"
           }
         },
-        "required": [
-          "label",
-          "value"
-        ],
+        "required": ["label", "value"],
         "additionalProperties": false
       },
       "slots": {
@@ -4357,13 +3977,7 @@
           },
           "status": {
             "type": "string",
-            "enum": [
-              "success",
-              "warning",
-              "error",
-              "info",
-              "neutral"
-            ],
+            "enum": ["success", "warning", "error", "info", "neutral"],
             "description": "Status state.",
             "default": "neutral"
           }
@@ -4425,9 +4039,7 @@
                   "description": "Stable identity, used as the React key so reordering keeps DOM nodes."
                 }
               },
-              "required": [
-                "label"
-              ],
+              "required": ["label"],
               "additionalProperties": false,
               "description": "Shape of an entry in `steps` / `items`."
             },
@@ -4439,10 +4051,7 @@
           },
           "orientation": {
             "type": "string",
-            "enum": [
-              "horizontal",
-              "vertical"
-            ],
+            "enum": ["horizontal", "vertical"],
             "description": "Axis the steps flow along: `horizontal` runs them across with connectors between, `vertical` stacks them down the page.",
             "default": "horizontal"
           },
@@ -4460,9 +4069,7 @@
                   "description": "Stable identity, used as the React key so reordering keeps DOM nodes."
                 }
               },
-              "required": [
-                "label"
-              ],
+              "required": ["label"],
               "additionalProperties": false,
               "description": "Shape of an entry in `steps` / `items`."
             },
@@ -4584,22 +4191,13 @@
           },
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md"
-            ],
+            "enum": ["sm", "md"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           },
           "variant": {
             "type": "string",
-            "enum": [
-              "default",
-              "info",
-              "success",
-              "warning",
-              "error"
-            ],
+            "enum": ["default", "info", "success", "warning", "error"],
             "description": "Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral | info | success | warning | danger`) plus Tag's historical spellings (`default` → neutral, `error`/`destructive` → danger).",
             "default": "default"
           }
@@ -4639,11 +4237,7 @@
         "properties": {
           "as": {
             "type": "string",
-            "enum": [
-              "p",
-              "span",
-              "div"
-            ],
+            "enum": ["p", "span", "div"],
             "description": "`p` for a paragraph, `span` for inline text, `div` for a block that imposes no semantics of its own.",
             "default": "p"
           },
@@ -4654,21 +4248,13 @@
           },
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md",
-              "lg"
-            ],
+            "enum": ["sm", "md", "lg"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           },
           "weight": {
             "type": "string",
-            "enum": [
-              "normal",
-              "medium",
-              "semibold"
-            ],
+            "enum": ["normal", "medium", "semibold"],
             "description": "Font weight ('normal' | 'medium' | 'semibold').",
             "default": "normal"
           }
@@ -4735,11 +4321,7 @@
           },
           "resize": {
             "type": "string",
-            "enum": [
-              "none",
-              "vertical",
-              "both"
-            ],
+            "enum": ["none", "vertical", "both"],
             "description": "Which directions the textarea can be resized ('none' | 'vertical' | 'both').",
             "default": "vertical"
           },
@@ -4810,11 +4392,7 @@
           },
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md",
-              "lg"
-            ],
+            "enum": ["sm", "md", "lg"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           },
@@ -4876,44 +4454,26 @@
                 },
                 "status": {
                   "type": "string",
-                  "enum": [
-                    "complete",
-                    "current",
-                    "upcoming"
-                  ]
+                  "enum": ["complete", "current", "upcoming"]
                 },
                 "tone": {
                   "type": "string",
-                  "enum": [
-                    "neutral",
-                    "info",
-                    "success",
-                    "warning",
-                    "danger"
-                  ]
+                  "enum": ["neutral", "info", "success", "warning", "danger"]
                 }
               },
-              "required": [
-                "id",
-                "title"
-              ],
+              "required": ["id", "title"],
               "additionalProperties": false
             },
             "description": "The items to render."
           },
           "orientation": {
             "type": "string",
-            "enum": [
-              "vertical",
-              "horizontal"
-            ],
+            "enum": ["vertical", "horizontal"],
             "description": "Axis the entries flow along: `vertical` stacks them down the page (the usual reading order), `horizontal` runs them across.",
             "default": "vertical"
           }
         },
-        "required": [
-          "items"
-        ],
+        "required": ["items"],
         "additionalProperties": false
       },
       "slots": {},
@@ -4952,19 +4512,12 @@
           },
           "variant": {
             "type": "string",
-            "enum": [
-              "default",
-              "success",
-              "warning",
-              "destructive"
-            ],
+            "enum": ["default", "success", "warning", "destructive"],
             "description": "Severity tone: `default` (neutral), `success`, `warning` or `destructive`. Sets the icon and the accent colour. Unlike Badge/Tag/Notification this is a private union, not `ToneInput` — the canonical `danger`/`neutral` spellings are not accepted here.",
             "default": "default"
           }
         },
-        "required": [
-          "title"
-        ],
+        "required": ["title"],
         "additionalProperties": false
       },
       "slots": {},
@@ -5012,10 +4565,7 @@
           },
           "size": {
             "type": "string",
-            "enum": [
-              "sm",
-              "md"
-            ],
+            "enum": ["sm", "md"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
           }
@@ -5055,12 +4605,7 @@
           },
           "placement": {
             "type": "string",
-            "enum": [
-              "top",
-              "right",
-              "bottom",
-              "left"
-            ],
+            "enum": ["top", "right", "bottom", "left"],
             "description": "Side of the trigger the tip opens on: `top`, `right`, `bottom` or `left`.",
             "default": "top"
           }

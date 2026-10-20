@@ -14,6 +14,10 @@ const OUT = join(REPO_ROOT, 'packages', 'render', 'schema', 'catalog.v1.json')
 const registry: unknown = JSON.parse(readFileSync(join(REPO_ROOT, 'registry.json'), 'utf-8'))
 const RAW = 'https://raw.githubusercontent.com/cascivo/cascivo/main/'
 
+// Manifest names with no same-named declaration: componentMap maps Toast to ToastProvider
+// (packages/render/src/component-map.ts:157), so there is no `Toast` function to scan.
+const NO_DECLARATION = new Set(['Toast'])
+
 const implicitChildren = new Set<string>()
 for (const [name, files] of canonicalFiles(registry)) {
   const sources = files
@@ -29,7 +33,7 @@ for (const [name, files] of canonicalFiles(registry)) {
     found = true
     if (uses) implicitChildren.add(name)
   }
-  if (!found && componentNames.has(name)) {
+  if (!found && componentNames.has(name) && !NO_DECLARATION.has(name)) {
     console.warn(`  warning: no declaration of ${name} found in its files; no implicit children`)
   }
 }
