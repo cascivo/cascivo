@@ -147,6 +147,31 @@ describe('eval-cli', () => {
       expect([existsSync(evalsJson), existsSync(doc)]).toEqual(before)
     })
 
+    // The workflow publishes one shard per model: a shard must hold that model's run and no other.
+    it('refuses a run that is not exactly the --expect-model one, before any other check', () => {
+      const incomplete = { ...scoredMeta, budgetExhausted: true, records: [] }
+      const file = join(root, 'shard.json')
+      writeFileSync(file, JSON.stringify(incomplete))
+      const other = node([CLI, 'publish', '--results', file, '--expect-model', 'claude-sonnet-5-5'])
+      expect(other.status).toBe(1)
+      expect(other.stderr).toContain('claude-sonnet-5-5')
+      expect(other.stderr).not.toMatch(/incomplete/)
+
+      const both = join(root, 'shard-two-models.json')
+      writeFileSync(
+        both,
+        JSON.stringify({ ...incomplete, models: ['claude-haiku-5-5', 'claude-sonnet-5-5'] }),
+      )
+      const extra = node([CLI, 'publish', '--results', both, '--expect-model', 'claude-haiku-5-5'])
+      expect(extra.status).toBe(1)
+      expect(extra.stderr).not.toMatch(/incomplete/)
+
+      // The model it holds passes this check and reaches the validity one.
+      const same = node([CLI, 'publish', '--results', file, '--expect-model', 'claude-haiku-5-5'])
+      expect(same.status).toBe(1)
+      expect(same.stderr).toMatch(/incomplete/)
+    })
+
     it('exits 1 naming the field of a malformed results file', () => {
       const file = join(root, 'malformed.json')
       writeFileSync(file, JSON.stringify({ ...scoredMeta, records: [{ status: 'ok' }] }))

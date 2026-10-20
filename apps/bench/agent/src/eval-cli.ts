@@ -26,9 +26,10 @@ Subcommands:
       Build, type-check and drive what generate left in <dir>; write the results file.
   dry [--tasks a,b]
       Score the canary apps with no model, to check the hidden EVALs.
-  publish --results <file>
+  publish --results <file> [--expect-model id]
       Write the results file, apps/site/public/evals.json and docs/AGENT-BENCHMARKS.md from a
-      scored run. Refuses an incomplete or invalid run.
+      scored run. Refuses an incomplete or invalid run, and with --expect-model, a run whose
+      models are not exactly that one.
 
   -h, --help          Show this message`
 
@@ -141,9 +142,12 @@ async function dryCommand(args: string[]): Promise<void> {
 }
 
 async function publishCommand(args: string[]): Promise<void> {
-  const results = required(flags(args, ['results']), 'results')
+  const f = flags(args, ['results', 'expect-model'])
+  const results = required(f, 'results')
+  const expectModel = f.get('expect-model')
   const { publish } = await import('./eval/publish.ts')
-  for (const file of publish(results, REPO).written) log(`wrote ${file}`)
+  const opts = expectModel === undefined ? {} : { expectModel }
+  for (const file of publish(results, REPO, opts).written) log(`wrote ${file}`)
 }
 
 const [command, ...rest] = argv.slice(2)

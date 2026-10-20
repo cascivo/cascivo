@@ -16,7 +16,16 @@ describe('shadcn MCP config', () => {
         mcpServers: {
           shadcn: {
             command: 'env',
-            args: ['-u', 'ANTHROPIC_API_KEY', 'npx', '-y', `shadcn@${SHADCN_VERSION}`, 'mcp'],
+            args: [
+              '-u',
+              'ANTHROPIC_API_KEY',
+              'npx',
+              '--prefix',
+              dir,
+              '-y',
+              `shadcn@${SHADCN_VERSION}`,
+              'mcp',
+            ],
           },
         },
       })

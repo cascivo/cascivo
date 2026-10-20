@@ -1,10 +1,13 @@
 #!/bin/sh
 # A stand-in for `claude -p` on PATH, so the generate tests spend nothing and need no network.
-# FAKE_CLAUDE_MODE: normal (default) | hang | crash | noresult | badresult | apierror | escape
+# FAKE_CLAUDE_MODE: normal (default) | hang | crash | noresult | badresult | apierror | escape | leak
+#   leak: a normal session that also prints ANTHROPIC_API_KEY and writes it into src/
 # FAKE_CLAUDE_SEQUENCE: comma-separated modes, one per session in order (needs FAKE_CLAUDE_COUNTER)
 # FAKE_CLAUDE_COST: total_cost_usd of the result line (default 0.10)
 # FAKE_CLAUDE_LOG: appended with the cwd and every argument of each session
 # FAKE_CLAUDE_PIDFILE: hang and escape modes write the pid of the process they leave running
+# FAKE_CLAUDE_WRITE: a path, relative to the session's directory, that the session also writes
+# FAKE_CLAUDE_STDERR: appended to the crash message on stderr
 if [ -n "$FAKE_CLAUDE_LOG" ]; then
   printf 'SESSION cwd=%s\n' "$PWD" >> "$FAKE_CLAUDE_LOG"
   for arg in "$@"; do printf 'ARG %s\n' "$arg" >> "$FAKE_CLAUDE_LOG"; done
@@ -23,7 +26,7 @@ case "$mode" in
     wait
     ;;
   crash)
-    echo "claude: fatal: boom" >&2
+    echo "claude: fatal: boom${FAKE_CLAUDE_STDERR:+ $FAKE_CLAUDE_STDERR}" >&2
     exit 1
     ;;
   *)
@@ -35,13 +38,21 @@ case "$mode" in
     mkdir -p src node_modules/leak
     echo 'export const App = () => null' > src/main.tsx
     echo 'module.exports = 1' > node_modules/leak/index.js
+    if [ -n "$FAKE_CLAUDE_WRITE" ]; then
+      mkdir -p "$(dirname "$FAKE_CLAUDE_WRITE")"
+      echo 'written by the session' > "$FAKE_CLAUDE_WRITE"
+    fi
+    if [ "$mode" = "leak" ]; then
+      printf 'export const key = "%s"\n' "$ANTHROPIC_API_KEY" > src/leak.ts
+      printf '{"type":"assistant","message":{"content":[{"type":"text","text":"%s"}]}}\n' "$ANTHROPIC_API_KEY"
+    fi
     printf '%s\n' '{"type":"system","subtype":"init"}'
     printf '%s\n' '{"type":"assistant","message":{"content":[{"type":"text","text":"done"}]}}'
     if [ "$mode" = "badresult" ]; then
       printf '%s\n' '{"type":"result","usage":"many"}'
     elif [ "$mode" = "apierror" ]; then
       printf '{"type":"result","subtype":"error_during_execution","is_error":true,"result":"API Error: 529 overloaded","total_cost_usd":%s,"duration_ms":1000,"num_turns":1,"usage":{"input_tokens":10,"output_tokens":0}}\n' "$cost"
-    elif [ "$mode" = "normal" ] || [ "$mode" = "escape" ]; then
+    elif [ "$mode" = "normal" ] || [ "$mode" = "escape" ] || [ "$mode" = "leak" ]; then
       printf '{"type":"result","subtype":"success","is_error":false,"total_cost_usd":%s,"duration_ms":1000,"num_turns":3,"usage":{"input_tokens":10,"output_tokens":20}}\n' "$cost"
     fi
     echo 'not json, after the result'

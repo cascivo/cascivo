@@ -1,5 +1,16 @@
 import { describe, expect, it } from 'vitest'
-import { claudeArgs, PUBLISHED_ARMS } from './arms.ts'
+import { readFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import {
+  ARMS,
+  CASCIVO_EXECUTING_TOOLS,
+  CASCIVO_SAFE_TOOLS,
+  claudeArgs,
+  PUBLISHED_ARMS,
+  SHADCN_EXECUTING_TOOLS,
+  SHADCN_SAFE_TOOLS,
+} from './arms.ts'
 import { MODELS } from './models.ts'
 import { instructionsFor, PROMPTS } from './prompts.ts'
 import { markdownTable } from './report.ts'
@@ -67,36 +78,121 @@ describe('scoring', () => {
 })
 
 describe('arms', () => {
-  it('differ only in the blueprint tools', () => {
-    const today = claudeArgs('today', 'mcp.json', null)
-    const cascivo = claudeArgs('cascivo', 'mcp.json', null)
-    expect(today).toContain('mcp__cascivo__compose_app,mcp__cascivo__list_blocks')
-    expect(cascivo.join(' ')).not.toContain('--disallowedTools')
-    expect(today.slice(0, cascivo.length)).toEqual(cascivo)
+  const SERVER_TS = join(
+    dirname(fileURLToPath(import.meta.url)),
+    '../../../../packages/mcp/src/server.ts',
+  )
+  const option = (args: string[], name: string): string[] => {
+    const i = args.indexOf(name)
+    return i === -1 ? [] : (args[i + 1] ?? '').split(',')
+  }
+  const cascivo = (tools: readonly string[]) => tools.map((t) => `mcp__cascivo__${t}`)
+  const shadcn = (tools: readonly string[]) => tools.map((t) => `mcp__shadcn__${t}`)
+  const FILES = ['Read', 'Write', 'Edit', 'Glob', 'Grep']
+
+  it('classifies every tool the cascivo MCP server registers, once', () => {
+    const registered = [
+      ...readFileSync(SERVER_TS, 'utf8').matchAll(/registerTool\(\s*'([a-z_]+)'/g),
+    ].map((m) => m[1])
+    const classified = [...CASCIVO_SAFE_TOOLS, ...CASCIVO_EXECUTING_TOOLS]
+    expect(registered).toHaveLength(28)
+    expect([...classified].sort()).toEqual([...registered].sort())
+    expect(new Set(classified).size).toBe(classified.length)
+    const shadcnTools = [...SHADCN_SAFE_TOOLS, ...SHADCN_EXECUTING_TOOLS]
+    expect(new Set(shadcnTools).size).toBe(7)
   })
 
-  it('keeps the cascivo arm as the legacy blueprints arm was', () => {
+  // The generate job holds the API key: nothing the agent reaches may run a process.
+  it('allows each published arm an explicit list of tools that execute nothing', () => {
+    const expected: Record<(typeof PUBLISHED_ARMS)[number], string[]> = {
+      cascivo: [...cascivo(CASCIVO_SAFE_TOOLS), ...FILES],
+      'cascivo-bare': FILES,
+      shadcn: [...shadcn(SHADCN_SAFE_TOOLS), ...FILES],
+    }
+    const executing = [
+      ...cascivo(CASCIVO_EXECUTING_TOOLS),
+      ...shadcn(SHADCN_EXECUTING_TOOLS),
+      'Bash',
+    ]
+    for (const arm of PUBLISHED_ARMS) {
+      const args = claudeArgs(arm, arm === 'cascivo-bare' ? null : 'mcp.json', 'claude-x', {
+        stream: true,
+      })
+      const allowed = option(args, '--allowedTools')
+      expect(allowed, arm).toEqual(expected[arm])
+      expect(
+        allowed.filter((t) => t.includes('*')),
+        arm,
+      ).toEqual([])
+      for (const tool of executing) expect(allowed, `${arm} ${tool}`).not.toContain(tool)
+      // Denied as well, so the model is never offered them (a deny rule beats any allow).
+      const denied = option(args, '--disallowedTools')
+      expect(denied, arm).toContain('Bash')
+      if (arm === 'cascivo')
+        for (const tool of cascivo(CASCIVO_EXECUTING_TOOLS)) expect(denied).toContain(tool)
+      if (arm === 'shadcn')
+        for (const tool of shadcn(SHADCN_EXECUTING_TOOLS)) expect(denied).toContain(tool)
+    }
+  })
+
+  it('confines the file tools to the working directory in every arm', () => {
+    for (const arm of ARMS) {
+      const args = claudeArgs(arm, arm === 'cascivo-bare' ? null : 'mcp.json', null)
+      expect(args, arm).toContain('--restricted')
+      expect(args, arm).toEqual(expect.arrayContaining(['--bare', '--strict-mcp-config']))
+    }
+  })
+
+  it('keeps the cascivo arm as the eval runs it', () => {
     expect(claudeArgs('cascivo', 'mcp.json', 'claude-x')).toEqual([
       '--output-format',
       'json',
       '--bare',
+      '--restricted',
       '--strict-mcp-config',
       '--mcp-config',
       'mcp.json',
       '--permission-mode',
       'acceptEdits',
       '--allowedTools',
-      'mcp__cascivo__*,Read,Write,Edit,Glob,Grep',
+      [...cascivo(CASCIVO_SAFE_TOOLS), ...FILES].join(','),
+      '--disallowedTools',
+      [...cascivo(CASCIVO_EXECUTING_TOOLS), 'Bash'].join(','),
       '--model',
       'claude-x',
     ])
+  })
+
+  it('takes the blueprint tools from today, in the eval and in the legacy bench', () => {
+    for (const executingTools of [false, true]) {
+      const today = claudeArgs('today', 'mcp.json', null, { executingTools })
+      const full = claudeArgs('cascivo', 'mcp.json', null, { executingTools })
+      const blueprint = ['mcp__cascivo__compose_app', 'mcp__cascivo__list_blocks']
+      for (const tool of blueprint) {
+        expect(option(today, '--allowedTools')).not.toContain(tool)
+        expect(option(today, '--disallowedTools')).toContain(tool)
+      }
+      expect(option(today, '--allowedTools')).toEqual(
+        option(full, '--allowedTools').filter((t) => !blueprint.includes(t)),
+      )
+    }
+  })
+
+  it('lets only the legacy bench reach the tools that run the cascivo CLI', () => {
+    const legacy = claudeArgs('cascivo', 'mcp.json', null, { executingTools: true })
+    expect(option(legacy, '--allowedTools')).toEqual([
+      ...cascivo(CASCIVO_SAFE_TOOLS),
+      ...cascivo(CASCIVO_EXECUTING_TOOLS),
+      ...FILES,
+    ])
+    expect(option(legacy, '--disallowedTools')).toEqual(['Bash'])
   })
 
   it('gives cascivo-bare no MCP server at all', () => {
     const args = claudeArgs('cascivo-bare', null, null)
     expect(args).toContain('--strict-mcp-config')
     expect(args).not.toContain('--mcp-config')
-    expect(args).not.toContain('--disallowedTools')
+    expect(option(args, '--disallowedTools')).toEqual(['Bash'])
     expect(args.join(' ')).not.toContain('mcp__')
   })
 
@@ -106,8 +202,7 @@ describe('arms', () => {
       '--mcp-config',
       'shadcn.json',
     ])
-    expect(args).not.toContain('--disallowedTools')
-    expect(args.join(' ')).toContain('mcp__shadcn__*')
+    expect(option(args, '--allowedTools')).toEqual([...shadcn(SHADCN_SAFE_TOOLS), ...FILES])
     expect(args.join(' ')).not.toContain('mcp__cascivo__')
   })
 

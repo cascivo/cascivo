@@ -5,8 +5,12 @@ name: Evals
 # published release triggers it. Four jobs, split by what each may see:
 #
 #   setup     validates the inputs and fans the run out into one shard per model.
-#   generate  (one per model) holds ANTHROPIC_API_KEY, runs the `claude -p` sessions, and never builds, installs
-#             or executes anything a session wrote.
+#   generate  (one per model) holds ANTHROPIC_API_KEY and runs the `claude -p` sessions. It never builds,
+#             installs or executes anything a session wrote, and a session cannot run anything
+#             either: `--restricted` keeps Read and Edit inside the session's directory and removes
+#             Bash, and only MCP tools that start no process are allowed (src/arms.ts). Any process
+#             in this job could read the key from /proc, so that allowlist is the boundary. The
+#             sessions are scanned for the key before they are uploaded.
 #   score     (one per model) builds and drives what generate wrote. No secrets, read-only contents.
 #   publish   holds the write token, runs no generated code, opens one PR for a valid run only.
 #
@@ -19,8 +23,10 @@ name: Evals
 # Workflow hygiene: no `${{ }}` inside a `run:` script. Inputs and context values reach scripts
 # through `env:` only, are validated in the script, and are passed as quoted arguments.
 #
-# No setup-node package-manager cache: a cache a pull request wrote must not reach the job that holds the
-# key or the write token, and a cold install is minutes against a run of hours.
+# No setup-node `cache:` on purpose: a cache a pull request wrote must not reach the job that holds the
+# key or the write token, and a cold install is minutes against a run of hours. setup-node v4
+# caches only with `cache:` (it has no `package-manager-cache` input; that and caching by default
+# came with v5), so zizmor's cache-poisoning finding on each setup-node is ignored inline.
 #
 # Every action is pinned to a commit SHA. checkout, pnpm and setup-node reuse the SHAs of
 # framework-latest.yml; upload/download-artifact were not pinned anywhere yet, so their SHAs
@@ -78,13 +84,14 @@ jobs:
           max_usd="${MAX_USD_IN:-50}"
           tasks="${TASKS_IN:-}"
 
-          models_re='^[a-z0-9.-]+(,[a-z0-9.-]+)*$'
-          tasks_re='^[a-z0-9.,-]*$'
+          # Each id starts with a letter or digit, so none reads as an option or a relative path.
+          models_re='^[a-z0-9][a-z0-9.-]*(,[a-z0-9][a-z0-9.-]*)*$'
+          tasks_re='^([a-z0-9][a-z0-9.-]*(,[a-z0-9][a-z0-9.-]*)*)?$'
           int_re='^[0-9]+$'
           usd_re='^[0-9]+([.][0-9]+)?$'
           # The rejected value is not echoed: it is untrusted and the log interprets `::`.
-          [[ "$models" =~ $models_re ]] || { echo "::error::models must be comma-separated ids matching [a-z0-9.-]+"; exit 2; }
-          [[ "$tasks" =~ $tasks_re ]] || { echo "::error::tasks must match ^[a-z0-9.,-]*$"; exit 2; }
+          [[ "$models" =~ $models_re ]] || { echo "::error::models must be comma-separated ids matching [a-z0-9][a-z0-9.-]*"; exit 2; }
+          [[ "$tasks" =~ $tasks_re ]] || { echo "::error::tasks must be empty or comma-separated ids matching [a-z0-9][a-z0-9.-]*"; exit 2; }
           [[ "$attempts" =~ $int_re ]] || { echo "::error::attempts must be a whole number"; exit 2; }
           [[ "$max_usd" =~ $usd_re ]] || { echo "::error::max_usd must be a number"; exit 2; }
 
@@ -93,8 +100,10 @@ jobs:
             echo "::error::models lists a model twice"; exit 2
           fi
           count="$(tr ',' '\n' <<< "$models" | wc -l)"
-          shard_usd="$(awk -v total="$max_usd" -v n="$count" 'BEGIN { printf "%.2f", total / n }')"
+          # Rounded down to the cent: the shards together must not exceed max_usd.
+          shard_usd="$(awk -v total="$max_usd" -v n="$count" 'BEGIN { printf "%.2f", int(total * 100 / n) / 100 }')"
           [[ "$shard_usd" =~ $usd_re ]] || { echo "::error::could not split max_usd"; exit 2; }
+          awk -v usd="$shard_usd" 'BEGIN { exit !(usd > 0) }' || { echo "::error::max_usd is less than a cent per model"; exit 2; }
 
           {
             echo "models=$(jq -Rc 'split(",")' <<< "$models")"
@@ -124,10 +133,9 @@ jobs:
 
       # The eval CLI is a `.ts` file run by `node src/eval-cli.ts`, which needs Node's type
       # stripping on by default (22.18 and later). `22` resolves to the newest 22.x.
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0 # zizmor: ignore[cache-poisoning]
         with:
           node-version: 22
-          package-manager-cache: false
 
       - name: Install
         run: pnpm install --frozen-lockfile
@@ -153,8 +161,11 @@ jobs:
           for (const arm of PUBLISHED_ARMS) prepareStarter(arm, (line) => console.log(line));
           "
 
-      # The key is on this step only, not job-wide: install and build scripts never see it.
+      # The key is on this step and the scan only, not job-wide: install and build scripts never see
+      # it. The step ends 20 minutes before the job does, so the scan and the upload still run and
+      # the transcripts and spend of a run that ran out of time are kept.
       - name: Run the eval sessions
+        timeout-minutes: 330
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           MODEL: ${{ matrix.model }}
@@ -167,10 +178,43 @@ jobs:
           if [[ -n "$TASKS" ]]; then args+=(--tasks "$TASKS"); fi
           pnpm --filter bench-agent eval "${args[@]}"
 
-      # Kept on failure too: the transcripts say why a session died. Hidden files stay in,
-      # so score sees the app exactly as the session left it.
+      # The artifact is readable by anyone who can read the repository. generate already aborts on
+      # a session whose output holds the key; this checks everything it left, whatever happened
+      # to that step (a failed or timed-out step skips any command after its own failure, so the
+      # check is a step of its own). It only reads files: nothing a session wrote runs here.
+      - name: Check the sessions for the key
+        id: scan
+        if: ${{ always() }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set -uo pipefail
+          gen="$GITHUB_WORKSPACE/gen"
+          if [[ ! -d "$gen" ]]; then echo "clean=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          if [[ -z "$ANTHROPIC_API_KEY" ]]; then echo "::error::ANTHROPIC_API_KEY is empty"; exit 1; fi
+          # File contents, then every path and link target. grep exits 0 when it finds the key, 1
+          # when it does not, and 2 when it could not read something, which is not clean either.
+          grep -rqF -e "$ANTHROPIC_API_KEY" -- "$gen"
+          contents=$?
+          # Through a file, not a pipe: `grep -q` stops at the first match and find's broken pipe
+          # would hide which of them failed.
+          paths="$RUNNER_TEMP/gen-paths"
+          find "$gen" -printf '%p\0%l\0' > "$paths"
+          listed=$?
+          grep -zqF -e "$ANTHROPIC_API_KEY" -- "$paths"
+          names=$?
+          rm -f -- "$paths"
+          if (( contents == 0 || names == 0 )); then
+            echo "::error::the API key is in the session output; nothing is uploaded. Rotate the key."
+            exit 1
+          fi
+          if (( contents != 1 || listed != 0 || names != 1 )); then echo "::error::the session output could not be scanned"; exit 1; fi
+          echo "clean=true" >> "$GITHUB_OUTPUT"
+
+      # Kept on failure and timeout too: the transcripts say why a session died. Hidden files stay
+      # in, so score sees the app exactly as the session left it. Only a clean scan uploads.
       - name: Upload the sessions
-        if: ${{ !cancelled() }}
+        if: ${{ always() && steps.scan.outputs.clean == 'true' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: eval-gen-${{ matrix.model }}
@@ -199,10 +243,9 @@ jobs:
       - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
 
       # Node 22.18 or later, for the same type-stripping reason as in generate.
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0 # zizmor: ignore[cache-poisoning]
         with:
           node-version: 22
-          package-manager-cache: false
 
       - name: Install
         run: pnpm install --frozen-lockfile
@@ -236,29 +279,33 @@ jobs:
           retention-days: 90
 
   publish:
-    needs: score
+    needs: [setup, score]
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
       contents: write
       pull-requests: write
     steps:
-      # The one checkout that keeps its credentials: the push below needs them.
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0 # zizmor: ignore[artipacked]
+      # The results PR targets the default branch, whatever ref the run was dispatched from. No
+      # credentials are kept: only the last step, which pushes, sets git up with the token.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
 
       - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
 
       # Node 22.18 or later, for the same type-stripping reason as in generate.
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0 # zizmor: ignore[cache-poisoning]
         with:
           node-version: 22
-          package-manager-cache: false
 
       # No build: publish only reads the results file and writes three others.
       - name: Install
         run: pnpm install --frozen-lockfile
 
-      # One directory per shard: results/eval-results-<model>/results.json.
+      # One directory per shard: results/eval-results-<model>/results.json. The next step checks
+      # that the set is exactly the models this run planned.
       - name: Download the results
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
@@ -266,25 +313,34 @@ jobs:
           merge-multiple: false
           path: results
 
-      # Each shard's file is published in turn (sorted, so the output is deterministic); Task 8's
+      # Each shard's file is published in turn (sorted by model, so the output is deterministic);
       # publish merges the latest valid run per model into evals.json and the report. It exits
-      # non-zero on an incomplete or invalid run, which fails the job before any branch exists,
-      # so no PR is opened if any shard is bad.
+      # non-zero on an incomplete or invalid run, or one that is not that shard's model
+      # (--expect-model), which fails the job before any branch exists, so no PR is opened if any
+      # shard is bad. A downloaded artifact this run did not plan fails it too.
       - name: Write the results files
+        env:
+          MODELS: ${{ needs.setup.outputs.models }}
         run: |
           set -euo pipefail
-          shopt -s nullglob
-          files=("$GITHUB_WORKSPACE"/results/eval-results-*/results.json)
-          if (( ${#files[@]} == 0 )); then echo "::error::no shard results were downloaded"; exit 1; fi
-          # The glob expands in sorted order; sort again so it does not depend on the shell's locale.
-          mapfile -t files < <(printf '%s\n' "${files[@]}" | LC_ALL=C sort)
-          for file in "${files[@]}"; do
-            pnpm --filter bench-agent eval publish --results "$file"
+          mapfile -t models < <(jq -r '.[]' <<< "$MODELS" | LC_ALL=C sort)
+          if (( ${#models[@]} == 0 )); then echo "::error::no models were planned"; exit 1; fi
+          expected="$(printf 'eval-results-%s\n' "${models[@]}")"
+          downloaded="$(find "$GITHUB_WORKSPACE/results" -mindepth 1 -maxdepth 1 -printf '%f\n' | LC_ALL=C sort)"
+          if [[ "$downloaded" != "$expected" ]]; then
+            echo "::error::the downloaded results are not exactly one per planned model"
+            exit 1
+          fi
+          for model in "${models[@]}"; do
+            pnpm --filter bench-agent eval publish \
+              --results "$GITHUB_WORKSPACE/results/eval-results-$model/results.json" \
+              --expect-model "$model"
           done
 
       - name: Open the results PR
         env:
           GH_TOKEN: ${{ github.token }}
+          MODELS: ${{ needs.setup.outputs.models }}
         run: |
           set -euo pipefail
           date="$(date -u +%F)"
@@ -301,12 +357,14 @@ jobs:
             exit 1
           fi
 
-          files=("$GITHUB_WORKSPACE"/results/eval-results-*/results.json)
+          # The same models in the same order as the step that wrote the results.
+          mapfile -t models < <(jq -r '.[]' <<< "$MODELS" | LC_ALL=C sort)
           body="$RUNNER_TEMP/pr-body.md"
           {
             echo "Results of eval run ${GITHUB_RUN_ID}, one shard per model."
             echo
-            for file in "${files[@]}"; do
+            for model in "${models[@]}"; do
+              file="$GITHUB_WORKSPACE/results/eval-results-$model/results.json"
               jq -r '"- \(.models | join(", ")), cascivo \(.cascivoVersion): \([.records[] | select(.status == "pass")] | length) of \(.records | length) attempts passed, $\(.spentUsd) spent"' "$file"
             done
             echo
@@ -318,5 +376,7 @@ jobs:
           } > "$body"
 
           git commit -m "evals: ${date} run"
+          # The checkout kept no credentials; this sets git up with GH_TOKEN for the push.
+          gh auth setup-git
           git push origin "$branch"
           gh pr create --title "evals: ${date} run" --body-file "$body"

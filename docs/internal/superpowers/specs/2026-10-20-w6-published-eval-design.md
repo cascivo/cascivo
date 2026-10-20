@@ -45,15 +45,19 @@
 
 ## 2. Arms
 
-Every arm gets the same task text, the same file tools (`Read`, `Write`, `Edit`, `Glob`, `Grep`;
-no Bash) and an empty working directory. Each runs through `claude -p --bare --strict-mcp-config`
-with `--permission-mode acceptEdits`, as the harness does today.
+Every arm gets the same task text, the same file tools and its starting directory. Each runs
+through `claude -p --bare --restricted --strict-mcp-config` with `--permission-mode acceptEdits`
+and an explicit tool allowlist (`src/arms.ts`). With `--bare`, the pinned CLI (2.1.304) offers only
+`Read` and `Edit` as file tools (`Write`, `Glob` and `Grep` are allowed but not offered), plus Bash.
+`--restricted` removes Bash, keeps `Read` and `Edit` inside the working directory and refuses a
+path that resolves through a symlink out of it. The agent cannot list a directory; it reads and
+edits paths it knows or learns from its MCP tools.
 
 | Arm id | Starting point | Tools beyond files | Measures |
 | --- | --- | --- | --- |
-| `cascivo` | empty directory | cascivo MCP server built from this checkout, including `compose_app` and `list_blocks` (today's `blueprints` arm) | cascivo as recommended |
+| `cascivo` | empty directory | the 21 read-only tools of the cascivo MCP server built from this checkout (`CASCIVO_SAFE_TOOLS`: registry, components, blocks, templates, tokens, icons, guides, context, view grammar and validators). Not the 7 that run a process (`compose_app`, `create_app`, `add_to_project`, `add_template`, `deploy_preview`, `lint_email`, `render_view_as_markdown`), so the agent writes every file itself, importing from the installed `@cascivo/*` packages; no tool returns component source | cascivo's AI context, without the tools that scaffold or install |
 | `cascivo-bare` | Vite + React app with `@cascivo/react` and a theme installed | none | what the model already knows about cascivo; the gap to `cascivo` is the value of the AI context |
-| `shadcn` | empty directory | shadcn's official MCP server | the market default, each side at its best |
+| `shadcn` | shadcn's Vite starter with every component added | shadcn's official MCP server, pinned, with its 3 tools that start no process (`SHADCN_SAFE_TOOLS`). Its 4 item tools (`list_`, `search_`, `view_items_in_registries`, `get_item_examples_from_registries`) run `git` or `gh` for a GitHub-sourced registry, so they are not allowed; every component's source is already in the starter | the market default, each side with what it can use safely |
 
 - **The `today` arm** stays in the code for internal comparison but is not published.
 - **Verify the shadcn MCP invocation during implementation.** It is currently `npx shadcn@latest mcp`.
@@ -61,7 +65,8 @@ with `--permission-mode acceptEdits`, as the harness does today.
 - **Starter projects** for `cascivo-bare` and `shadcn` are produced by the harness (the cascivo
   scaffold, or the shadcn init for a Vite app), not by the agent.
 - **Dependencies:** each arm's dependency tree is installed once per run and linked into each
-  attempt, as `src/env.ts` does today.
+  attempt by the score job. During generate nothing is linked into an attempt, so a session's
+  writes cannot reach a shared tree or the checkout.
 
 **Instructions:** each arm gets one shared, arm-neutral instruction, plus a one-sentence
 arm-specific line naming its design system:
@@ -187,9 +192,16 @@ It never runs on `pull_request` or `push`. All actions are SHA-pinned, as in
 
 1. **`generate`**
    - Secret: `ANTHROPIC_API_KEY`. Permissions: `contents: read`.
-   - Builds and packs this checkout, prepares the starter projects and dependency trees, and runs
-     the `claude -p` sessions.
-   - Runs nothing the agent wrote: no build, install, or execution of generated code.
+   - Builds and packs this checkout and prepares the starter projects and dependency trees before
+     the key is in any environment, then runs the `claude -p` sessions.
+   - Runs nothing the agent wrote: no build, install, or execution of generated code. Any process
+     started in this job can read the key from `/proc`, so a session cannot start one either: no
+     Bash, `Read` and `Edit` confined to the attempt directory by `--restricted` (no symlink out of
+     it; nothing is linked into it during generate), and only MCP tools that start no process
+     (§2). MCP servers start without the key.
+   - Scans every attempt for the key after its session: a hit removes the attempt's files and
+     aborts the run. A separate step scans the whole output again, whatever happened to the run,
+     and the artifact is uploaded only when that scan is clean.
    - Uploads every attempt directory and the CLI's JSON as an artifact.
 2. **`score`**
    - No secrets, `contents: read`.
@@ -213,7 +225,7 @@ hidden from the agent because the harness never copies them into its working dir
 | `apps/bench/agent/results/<date>-<cascivo-version>.json` | versioned schema; run metadata (date, cascivo version, commit, models, attempts, validity) plus one record per attempt (task, arm, model, status, metrics) | yes, via the results PR |
 | transcripts | full CLI output per attempt | no; workflow artifact, 90 days |
 | `apps/site/public/evals.json` | latest valid run plus history (pass@1 per arm and model per run) | yes, generated |
-| `docs/AGENT-BENCHMARKS.md` | generated from the JSON by the extended `--publish` path | yes, generated |
+| `docs/AGENT-BENCHMARKS.md` | generated from the JSON by `eval publish` | yes, generated |
 
 **Schema and parsing:**
 
@@ -264,7 +276,7 @@ The page follows the site's existing layout, theming and accessibility conventio
 | --- | --- |
 | Assertions favour one design system | role, label and text locators only; each task's dry-run canary has a good cascivo app and a good shadcn app, and both must pass (§7) |
 | Cost overrun | `--max-usd` cap, pilot first, documented fallback |
-| Generated code exfiltrating the key | key confined to `generate`, which never executes generated code |
+| Generated code exfiltrating the key | key only in `generate`, which never executes generated code; sessions there cannot start a process (no Bash, an allowlist of MCP tools that start none, `--restricted` file tools that cannot reach code a tool runs); the output is scanned for the key before upload. Use a dedicated Anthropic workspace key with a low spend limit, so a leak is cheap to rotate |
 | shadcn control drifts between runs | pin the shadcn CLI version; record it in the run metadata |
 | Non-determinism | 3 attempts, pass@1 as the mean; results labelled with exact model ids and dates |
 

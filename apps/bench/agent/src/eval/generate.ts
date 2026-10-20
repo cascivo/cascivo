@@ -2,6 +2,7 @@
  * The generate phase (spec §2, §6): one headless `claude -p` session per model × arm × task ×
  * attempt, run sequentially so the spend cap is checked before each one. Nothing here builds,
  * installs or executes what a session wrote; scoring is a separate job that never sees the key.
+ * A session whose output holds the key aborts the run (its directory is uploaded as an artifact).
  *
  * Layout, which `scoreAll` walks: `<outDir>/<model>/<arm>/<task>/<attempt>/` holds the app, the
  * `transcript.jsonl` and a `meta.json` of `{ usage, infra, infraDetail? }`, and `<outDir>/run.json`
@@ -15,6 +16,7 @@ import {
   mkdtempSync,
   readdirSync,
   readFileSync,
+  readlinkSync,
   rmSync,
   writeFileSync,
 } from 'node:fs'
@@ -23,7 +25,7 @@ import { basename, join } from 'node:path'
 import { StringDecoder } from 'node:string_decoder'
 import { stripVTControlCharacters } from 'node:util'
 import { claudeArgs, PUBLISHED_ARMS, type ArmId, type PublishedArmId } from '../arms.ts'
-import { mcpConfig, REPO, runDirectory } from '../env.ts'
+import { mcpConfig, REPO } from '../env.ts'
 import { ESTIMATED_MAX_SESSION_USD } from '../models.ts'
 import { instructionsFor } from '../prompts.ts'
 import { parseClaudeResult, type AgentUsage } from '../result.ts'
@@ -266,6 +268,26 @@ class CostEstimator {
   }
 }
 
+/** What an attempt's meta.json says when its output held the API key. */
+const SECRET_FOUND = 'secret found in output'
+
+/**
+ * Whether any file under `dir` holds `secret`: its bytes, its name, or a link's target. Links
+ * are not followed: what they point at is not uploaded with the directory.
+ */
+function holdsSecret(dir: string, secret: string): boolean {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const path = join(dir, entry.name)
+    if (entry.name.includes(secret)) return true
+    if (entry.isSymbolicLink()) {
+      if (readlinkSync(path).includes(secret)) return true
+    } else if (entry.isDirectory()) {
+      if (holdsSecret(path, secret)) return true
+    } else if (entry.isFile() && readFileSync(path).includes(secret)) return true
+  }
+  return false
+}
+
 /** Every `node_modules` under `dir`, links included, without following any of them. */
 function removeNodeModules(dir: string): void {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
@@ -325,6 +347,7 @@ export async function generate(
   const prepare = deps.prepareStarter ?? prepareStarter
   const arms = validate(opts)
   const tasks = loadTasks(opts.tasks)
+  const secret = process.env['ANTHROPIC_API_KEY']
   assertFreshOutDir(opts.outDir)
 
   // Prepared up front: an arm that cannot start fails the run before any money is spent.
@@ -375,12 +398,11 @@ export async function generate(
               budgetExhausted = true
               break sessions
             }
-            const taskDir = join(opts.outDir, model, arm, task.id)
-            const dir = join(taskDir, String(attempt))
+            const dir = join(opts.outDir, model, arm, task.id, String(attempt))
             rmSync(dir, { recursive: true, force: true })
-            // The cascivo arm's MCP server runs `npx cascivo`, which must find this checkout's CLI.
-            if (arm === 'cascivo') runDirectory(taskDir, String(attempt))
-            else mkdirSync(dir, { recursive: true })
+            // Nothing is linked in: no tool a session may call runs `npx cascivo`, and a link
+            // would let the session's writes reach the checkout's code.
+            mkdirSync(dir, { recursive: true })
             if (starter.template !== null) {
               cpSync(starter.template, dir, {
                 recursive: true,
@@ -426,6 +448,18 @@ export async function generate(
             }
             writeFileSync(join(dir, 'meta.json'), `${JSON.stringify(meta, null, 2)}\n`)
             spentUsd += costUsd
+            // After meta.json, which can carry the session's stderr.
+            if (secret !== undefined && secret !== '' && holdsSecret(dir, secret)) {
+              rmSync(dir, { recursive: true, force: true })
+              mkdirSync(dir)
+              const leaked: Meta = { usage: null, infra: true, infraDetail: SECRET_FOUND }
+              writeFileSync(join(dir, 'meta.json'), `${JSON.stringify(leaked, null, 2)}\n`)
+              writeRun()
+              throw new Error(
+                `${model} ${arm} ${task.id} #${attempt}: ${SECRET_FOUND}, so the run is aborted ` +
+                  'and the attempt removed. Rotate the key.',
+              )
+            }
             writeRun()
             log(
               `${model} ${arm} ${task.id} #${attempt}: ` +

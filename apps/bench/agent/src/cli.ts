@@ -125,7 +125,13 @@ for (const prompt of PROMPTS.filter((p) => options.prompts.includes(p.id))) {
       } else {
         const result = spawnSync(
           'claude',
-          ['-p', `${prompt.text}\n\n${INSTRUCTIONS}`, ...claudeArgs(arm, config, options.model)],
+          [
+            '-p',
+            `${prompt.text}\n\n${INSTRUCTIONS}`,
+            // Both arms are built on tools that run the cascivo CLI. This bench runs locally with
+            // the developer's own key; the published eval never allows those tools.
+            ...claudeArgs(arm, config, options.model, { executingTools: true }),
+          ],
           { cwd: dir, encoding: 'utf8', timeout: options.timeoutMin * 60_000, maxBuffer: 64 << 20 },
         )
         try {

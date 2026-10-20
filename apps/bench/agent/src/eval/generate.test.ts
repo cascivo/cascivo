@@ -12,9 +12,9 @@ import {
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { generate, type GenerateOptions } from './generate.ts'
-import { MCP, mcpConfig } from '../env.ts'
+import { MCP, mcpConfig, REPO } from '../env.ts'
 import { ESTIMATED_MAX_SESSION_USD } from '../models.ts'
 import { parseClaudeResult } from '../result.ts'
 import { SHADCN_VERSION, shadcnMcpConfig, type Starter } from './starters.ts'
@@ -32,6 +32,8 @@ const FAKE_VARS = [
   'FAKE_CLAUDE_PIDFILE',
   'FAKE_CLAUDE_SEQUENCE',
   'FAKE_CLAUDE_COUNTER',
+  'FAKE_CLAUDE_WRITE',
+  'FAKE_CLAUDE_STDERR',
 ]
 
 beforeAll(() => {
@@ -144,7 +146,7 @@ describe('generate', () => {
     rmSync(log)
   })
 
-  it('removes the node_modules the cascivo arm links for npx, and never copies EVAL or fixtures', async () => {
+  it('leaves no node_modules in a cascivo attempt', async () => {
     const outDir = out()
     await generate(
       { ...base(outDir), arms: ['cascivo'] },
@@ -154,10 +156,24 @@ describe('generate', () => {
     const dir = attemptDir(outDir, 'cascivo')
     expect(existsSync(join(dir, 'src', 'main.tsx'))).toBe(true)
     expect(allDirNames(dir)).not.toContain('node_modules')
-    // The link pointed at the checkout's CLI; removing it must not have removed the CLI.
-    expect(
-      existsSync(join(dirname(HERE), '..', '..', '..', '..', 'packages/cli/bin/cascivo.mjs')),
-    ).toBe(true)
+  })
+
+  // The checkout's CLI is code the cascivo tools run: a session that writes under its own
+  // node_modules must not reach it through a link.
+  it('links nothing out of a cascivo attempt, so a write under node_modules stays inside', async () => {
+    const outDir = out()
+    const name = `written-by-session-${process.pid}-${counter}`
+    const cli = join(REPO, 'packages', 'cli')
+    process.env['FAKE_CLAUDE_WRITE'] = join('node_modules', 'cascivo', name)
+    try {
+      await generate(
+        { ...base(outDir), arms: ['cascivo'] },
+        { ...deps, prepareStarter: () => ({ template: null, nodeModules: '' }) },
+      )
+      expect(existsSync(join(cli, name))).toBe(false)
+    } finally {
+      rmSync(join(cli, name), { force: true })
+    }
   })
 
   it('never puts an EVAL.ts or fixtures in an attempt directory', async () => {
@@ -462,6 +478,66 @@ await generate(${JSON.stringify(base(outDir))}, {
   })
 })
 
+// The transcripts are uploaded as a workflow artifact anyone with read access can download.
+describe('a session output that holds the API key', () => {
+  const key = `sk-ant-test-${'k'.repeat(32)}`
+  let saved: string | undefined
+  beforeEach(() => {
+    saved = process.env['ANTHROPIC_API_KEY']
+    process.env['ANTHROPIC_API_KEY'] = key
+  })
+  afterEach(() => {
+    if (saved === undefined) delete process.env['ANTHROPIC_API_KEY']
+    else process.env['ANTHROPIC_API_KEY'] = saved
+  })
+
+  const holdingKey = (dir: string) => allFiles(dir).filter((f) => readFileSync(f).includes(key))
+  const failure = (run: Promise<unknown>): Promise<Error> =>
+    run.then(
+      () => {
+        throw new Error('expected generate to abort')
+      },
+      (error: unknown) => (error instanceof Error ? error : new Error(String(error))),
+    )
+
+  it('aborts the run and keeps only a meta.json that says why', async () => {
+    const outDir = out()
+    process.env['FAKE_CLAUDE_MODE'] = 'leak'
+    const lines: string[] = []
+    const error = await failure(
+      generate({ ...base(outDir), attempts: 2 }, { ...deps, log: (l) => lines.push(l) }),
+    )
+
+    expect(error.message).toMatch(/secret found in output/)
+    expect(error.message).not.toContain(key)
+    expect(lines.join('\n')).not.toContain(key)
+    const dir = attemptDir(outDir)
+    expect(readdirSync(dir)).toEqual(['meta.json'])
+    expect(meta(dir)).toEqual({ usage: null, infra: true, infraDetail: 'secret found in output' })
+    expect(holdingKey(outDir)).toEqual([])
+    // No session starts after it, and the spend so far is kept.
+    expect(existsSync(attemptDir(outDir, 'cascivo-bare', 2))).toBe(false)
+    const run: unknown = JSON.parse(readFileSync(join(outDir, 'run.json'), 'utf8'))
+    expect(isRecord(run) ? run['spentUsd'] : undefined).toBeCloseTo(0.1)
+  })
+
+  it('also catches the key in what the harness wrote from stderr', async () => {
+    const outDir = out()
+    process.env['FAKE_CLAUDE_MODE'] = 'crash'
+    process.env['FAKE_CLAUDE_STDERR'] = `env dump ${key}`
+    const error = await failure(generate(base(outDir), deps))
+    expect(error.message).toMatch(/secret found in output/)
+    expect(holdingKey(outDir)).toEqual([])
+  })
+
+  it('leaves a session that never printed the key alone', async () => {
+    const outDir = out()
+    await generate(base(outDir), deps)
+    expect(existsSync(join(attemptDir(outDir), 'transcript.jsonl'))).toBe(true)
+    expect(meta(attemptDir(outDir))).toMatchObject({ infra: false })
+  })
+})
+
 // The key is for the claude session alone: an MCP server (and anything it spawns, as
 // `npx cascivo` and `npx shadcn` do) has no use for it, and agent-written code can reach both.
 describe('MCP configs', () => {
@@ -479,7 +555,9 @@ describe('MCP configs', () => {
         mcpServers: {
           shadcn: {
             command: 'env',
-            args: [...strip, 'npx', '-y', `shadcn@${SHADCN_VERSION}`, 'mcp'],
+            // A harness prefix: npx would otherwise run a `shadcn` the agent wrote into its
+            // own node_modules whenever the CLI restarts the server.
+            args: [...strip, 'npx', '--prefix', dir, '-y', `shadcn@${SHADCN_VERSION}`, 'mcp'],
           },
         },
       })

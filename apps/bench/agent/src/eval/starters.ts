@@ -4,7 +4,7 @@
  * plus the installed `nodeModules` the attempt links, so no attempt pays for an install.
  */
 import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
 import type { PublishedArmId } from '../arms.ts'
 import { CACHE, CLI, pinToTarballs, prepare, run, WITHOUT_API_KEY } from '../env.ts'
 
@@ -21,7 +21,12 @@ export const SHADCN_VERSION = '4.22.1'
  * server and configuration commands", and `shadcn mcp --help` lists only `init` (it writes a
  * client's config file). `shadcn mcp` with no subcommand starts the stdio server: it answered
  * an MCP `initialize` as `serverInfo.name: "shadcn"` and `tools/list` with its registry tools.
- * That name is why the arm allows `mcp__shadcn__*`.
+ * That name is the `mcp__shadcn__` prefix of the tools the arm allows (SHADCN_SAFE_TOOLS).
+ *
+ * `--prefix` is the config's own directory: npx otherwise resolves `shadcn` from the session's
+ * directory first, so a `node_modules/shadcn` the agent wrote there would run whenever the CLI
+ * restarts the server (it restarts a server that exits mid-session). The server still runs in
+ * the session's directory and reads its components.json.
  */
 export function shadcnMcpConfig(path: string): string {
   writeFileSync(
@@ -31,7 +36,15 @@ export function shadcnMcpConfig(path: string): string {
         mcpServers: {
           shadcn: {
             command: 'env',
-            args: [...WITHOUT_API_KEY, 'npx', '-y', `shadcn@${SHADCN_VERSION}`, 'mcp'],
+            args: [
+              ...WITHOUT_API_KEY,
+              'npx',
+              '--prefix',
+              dirname(path),
+              '-y',
+              `shadcn@${SHADCN_VERSION}`,
+              'mcp',
+            ],
           },
         },
       },

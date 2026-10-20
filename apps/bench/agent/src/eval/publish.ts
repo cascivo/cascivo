@@ -258,10 +258,22 @@ function freeName(dir: string, run: EvalRun): string {
  *
  * @param resultsFile The scored `results.json`.
  * @param repo The repository root.
+ * @param opts.expectModel Refuse the run unless its models are exactly this one (a workflow shard).
  */
-export function publish(resultsFile: string, repo: string): { written: string[] } {
+export function publish(
+  resultsFile: string,
+  repo: string,
+  opts: { expectModel?: string } = {},
+): { written: string[] } {
   const raw: unknown = JSON.parse(readFileSync(resultsFile, 'utf8'))
   const run = parseEvalRun(raw)
+  if (
+    opts.expectModel !== undefined &&
+    (run.models.length !== 1 || run.models[0] !== opts.expectModel)
+  )
+    throw new Error(
+      `eval results are for ${JSON.stringify(run.models)}, not ${JSON.stringify([opts.expectModel])}`,
+    )
   const state = validity(run)
   if (state !== 'valid')
     throw new Error(`eval results are ${state}, not published: ${whyNotValid(run)}`)
