@@ -1,0 +1,36 @@
+#!/bin/sh
+# A stand-in for `claude -p` on PATH, so the generate tests spend nothing and need no network.
+# FAKE_CLAUDE_MODE: normal (default) | hang | crash | noresult | badresult
+# FAKE_CLAUDE_COST: total_cost_usd of the result line (default 0.10)
+# FAKE_CLAUDE_LOG: appended with the cwd and every argument of each session
+# FAKE_CLAUDE_PIDFILE: hang mode writes the pid of the process it leaves running
+if [ -n "$FAKE_CLAUDE_LOG" ]; then
+  printf 'SESSION cwd=%s\n' "$PWD" >> "$FAKE_CLAUDE_LOG"
+  for arg in "$@"; do printf 'ARG %s\n' "$arg" >> "$FAKE_CLAUDE_LOG"; done
+fi
+mode="${FAKE_CLAUDE_MODE:-normal}"
+cost="${FAKE_CLAUDE_COST:-0.10}"
+case "$mode" in
+  hang)
+    sleep 600 &
+    [ -n "$FAKE_CLAUDE_PIDFILE" ] && echo $! > "$FAKE_CLAUDE_PIDFILE"
+    wait
+    ;;
+  crash)
+    echo "claude: fatal: boom" >&2
+    exit 1
+    ;;
+  *)
+    mkdir -p src node_modules/leak
+    echo 'export const App = () => null' > src/main.tsx
+    echo 'module.exports = 1' > node_modules/leak/index.js
+    printf '%s\n' '{"type":"system","subtype":"init"}'
+    printf '%s\n' '{"type":"assistant","message":{"content":[{"type":"text","text":"done"}]}}'
+    if [ "$mode" = "badresult" ]; then
+      printf '%s\n' '{"type":"result","usage":"many"}'
+    elif [ "$mode" = "normal" ]; then
+      printf '{"type":"result","subtype":"success","is_error":false,"total_cost_usd":%s,"duration_ms":1000,"num_turns":3,"usage":{"input_tokens":10,"output_tokens":20}}\n' "$cost"
+    fi
+    echo 'not json, after the result'
+    ;;
+esac
