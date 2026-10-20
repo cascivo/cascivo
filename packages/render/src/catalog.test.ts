@@ -62,6 +62,26 @@ describe('catalog.v1.json', () => {
     ])
   })
 
+  it('does not infer children from sibling components in the same file', () => {
+    expect(catalog.components['Toast']!.slots['children']).toBeUndefined()
+    expect(catalog.components['Radio']!.slots['children']).toBeUndefined()
+    expect(catalog.components['Button']!.slots['children']?.arity).toBe('many')
+  })
+
+  it('never emits the string "undefined" as a default', () => {
+    const defaults = (n: unknown, out: unknown[] = []): unknown[] => {
+      if (Array.isArray(n)) n.forEach((x) => defaults(x, out))
+      else if (typeof n === 'object' && n !== null) {
+        for (const [k, v] of Object.entries(n)) {
+          if (k === 'default') out.push(v)
+          defaults(v, out)
+        }
+      }
+      return out
+    }
+    expect(defaults(catalog)).not.toContain('undefined')
+  })
+
   it('records sub-component parents', () => {
     expect(catalog.components['CardHeader']?.parent).toBe('Card')
   })

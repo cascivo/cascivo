@@ -6,21 +6,32 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { componentNames } from '../../packages/render/src/component-names.ts'
-import { buildCatalog, canonicalFiles } from './catalog-model.ts'
+import { buildCatalog, canonicalFiles, componentUsesChildren } from './catalog-model.ts'
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const OUT = join(REPO_ROOT, 'packages', 'render', 'schema', 'catalog.v1.json')
 
 const registry: unknown = JSON.parse(readFileSync(join(REPO_ROOT, 'registry.json'), 'utf-8'))
 const RAW = 'https://raw.githubusercontent.com/cascivo/cascivo/main/'
-const CHILDREN = /^\s*children,?\s*$|[{,]\s*children\s*[,}]|\.\.\.\{?children|props\.children/m
 
 const implicitChildren = new Set<string>()
 for (const [name, files] of canonicalFiles(registry)) {
   const sources = files
-    .filter((f) => f.startsWith(RAW) && f.endsWith('.tsx') && !/\.(test|stories)\.tsx$/.test(f))
-    .map((f) => join(REPO_ROOT, f.slice(RAW.length)))
-  if (sources.some((p) => CHILDREN.test(readFileSync(p, 'utf-8')))) implicitChildren.add(name)
+    .filter((f) => f.endsWith('.tsx') && !/\.(test|stories)\.tsx$/.test(f))
+    .map((f) => {
+      if (!f.startsWith(RAW)) throw new Error(`${name}: unexpected file URL ${f}`)
+      return join(REPO_ROOT, f.slice(RAW.length))
+    })
+  let found = false
+  for (const p of sources) {
+    const uses = componentUsesChildren(readFileSync(p, 'utf-8'), name)
+    if (uses === null) continue
+    found = true
+    if (uses) implicitChildren.add(name)
+  }
+  if (!found && componentNames.has(name)) {
+    console.warn(`  warning: no declaration of ${name} found in its files; no implicit children`)
+  }
 }
 
 const catalog = buildCatalog(registry, componentNames, implicitChildren)

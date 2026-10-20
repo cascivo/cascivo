@@ -1,6 +1,13 @@
 import assert from 'node:assert/strict'
 import { describe, it } from 'node:test'
-import { classifyProp, contextFor, parseDefault, toJsonSchema } from './catalog-model.ts'
+import {
+  buildCatalog,
+  classifyProp,
+  componentUsesChildren,
+  contextFor,
+  parseDefault,
+  toJsonSchema,
+} from './catalog-model.ts'
 import type { PropMeta, TypeDefMeta } from './catalog-model.ts'
 import { parseTsType } from './ts-type.ts'
 
@@ -227,5 +234,70 @@ describe('parseDefault', () => {
     assert.deepEqual(parseDefault('{"a":1}', { type: 'object' }), { value: { a: 1 } })
     assert.equal(parseDefault('{}', { type: 'array' }), undefined)
     assert.equal(parseDefault('nope', { type: 'array' }), undefined)
+  })
+})
+
+describe('parseDefault literals', () => {
+  it('never treats raw undefined as a value', () => {
+    assert.equal(parseDefault('undefined', { type: 'string' }), undefined)
+    assert.equal(
+      parseDefault('undefined', { anyOf: [{ type: 'string' }, { type: 'null' }] }),
+      undefined,
+    )
+  })
+  it('accepts raw null only for a null branch', () => {
+    assert.equal(parseDefault('null', { type: 'string' }), undefined)
+    assert.deepEqual(parseDefault('null', { type: 'null' }), { value: null })
+  })
+})
+
+describe('componentUsesChildren', () => {
+  const src = `export function ToastProvider({ children }) {\n  return children\n}\n\nexport function Toast({ a }) {\n  return a\n}\n\nexport function Box({ a, children }) {\n  return children\n}\n`
+  it('scopes to the named declaration', () => {
+    assert.equal(componentUsesChildren(src, 'Toast'), false)
+    assert.equal(componentUsesChildren(src, 'Box'), true)
+    assert.equal(componentUsesChildren(src, 'Nope'), null)
+  })
+})
+
+describe('buildCatalog', () => {
+  const entry = (name: string, props: unknown[]) => ({
+    type: 'component',
+    files: [],
+    meta: { name, description: 'd', category: 'c', props },
+  })
+  it('throws for a renderable name that is neither registered nor a sub-component', () => {
+    assert.throws(() => buildCatalog({ components: [] }, new Set(['Mystery'])), /Mystery/)
+  })
+  it('names the offending path for a bad-shape registry', () => {
+    assert.throws(
+      () => buildCatalog({ components: [{ meta: { name: 'A', description: 1 } }] }, new Set(['A'])),
+      /components\[0\]\.meta\.description/,
+    )
+    assert.throws(() => buildCatalog({}, new Set()), /registry\.components/)
+  })
+  it('does not require a prop that has a default', () => {
+    const cat = buildCatalog(
+      {
+        components: [
+          entry('A', [
+            { name: 'x', type: 'string', required: true, default: "'a'" },
+            { name: 'y', type: 'string', required: true },
+          ]),
+        ],
+      },
+      new Set(['A']),
+    )
+    assert.deepEqual(cat.components['A']?.props.required, ['y'])
+  })
+  it('adds an implicit children slot only for names in the set', () => {
+    const reg = { components: [entry('A', []), entry('B', [])] }
+    const cat = buildCatalog(reg, new Set(['A', 'B']), new Set(['A']))
+    assert.deepEqual(cat.components['A']?.slots['children'], {
+      arity: 'many',
+      required: false,
+      implicit: true,
+    })
+    assert.equal(cat.components['B']?.slots['children'], undefined)
   })
 })

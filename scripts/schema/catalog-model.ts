@@ -226,6 +226,8 @@ function unquote(raw: string): string {
 /** undefined when the manifest's default text isn't a literal valid for the schema (e.g. '16 / 9'). */
 export function parseDefault(raw: string, schema: JsonSchema): { value: unknown } | undefined {
   const text = raw.trim()
+  // The manifest writes `undefined` for "no default"; it is never a value.
+  if (text === 'undefined') return undefined
   const branches = schema['anyOf']
   if (Array.isArray(branches)) {
     // Plain strings accept anything, so they go last or 'false' / '12' / 'null' would be swallowed.
@@ -253,7 +255,8 @@ export function parseDefault(raw: string, schema: JsonSchema): { value: unknown 
       return text !== '' && Number.isFinite(n) ? allowed(n) : undefined
     }
     case 'string':
-      return allowed(unquote(text))
+      // Unquoted null is the JS value, not the string "null".
+      return text === 'null' ? undefined : allowed(unquote(text))
     case 'array':
     case 'object': {
       let v: unknown
@@ -538,4 +541,32 @@ export function buildCatalog(
     }
   }
   return { $id: CATALOG_ID, version: 1, components }
+}
+
+const CHILDREN_USE = /^\s*children,?\s*$|[{,]\s*children\s*[,}]|\.\.\.\{?children|props\.children/m
+const NEXT_DECL = /\n(?:export\s+)?(?:default\s+)?(?:function|const|interface|type|class)\s/
+
+/** Source text from `start` up to the next top-level declaration. */
+function declarationBody(source: string, start: number): string {
+  const rest = source.slice(start + 1)
+  const next = NEXT_DECL.exec(rest)
+  return next ? rest.slice(0, next.index + 1) : rest
+}
+
+/**
+ * Whether component `name`'s own declaration (or its `<name>Props` type) uses `children`.
+ * Scoped so a sibling in the same file (a Provider, a Group) can't leak its children into `name`.
+ * null when the declaration isn't found, so the caller can warn.
+ */
+export function componentUsesChildren(source: string, name: string): boolean | null {
+  const decl = new RegExp(
+    `(?:^|\\n)(?:export\\s+)?(?:default\\s+)?(?:function\\s+${name}\\b|const\\s+${name}\\b)`,
+  ).exec(source)
+  if (!decl) return null
+  const parts = [declarationBody(source, decl.index)]
+  const props = new RegExp(`(?:^|\\n)(?:export\\s+)?(?:interface|type)\\s+${name}Props\\b`).exec(
+    source,
+  )
+  if (props) parts.push(declarationBody(source, props.index))
+  return parts.some((t) => CHILDREN_USE.test(t))
 }
