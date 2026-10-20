@@ -237,16 +237,43 @@ function classifyPropType(typeStr: string): { enum?: string[]; primitives?: Prim
   return { enum: values }
 }
 
+/** Drops annotation keys, which the render-time checker never reads, to keep prop-schemas.ts small. */
+function stripAnnotations(node: unknown): unknown {
+  if (Array.isArray(node)) return node.map(stripAnnotations)
+  if (typeof node !== 'object' || node === null) return node
+  return Object.fromEntries(
+    Object.entries(node)
+      .filter(([k]) => k !== 'description' && k !== 'default')
+      // `properties` maps field names to schemas, so a field named "default" must survive.
+      .map(([k, v]) => [
+        k,
+        k === 'properties' && typeof v === 'object' && v !== null
+          ? Object.fromEntries(Object.entries(v).map(([f, sub]) => [f, stripAnnotations(sub)]))
+          : stripAnnotations(v),
+      ]),
+  )
+}
+
+/** The data schema for props whose structure `validateView` can check: objects, arrays and anyOf. */
+function shapeOf(schema: JsonSchema): JsonSchema | undefined {
+  const structured = schema['type'] === 'object' || schema['type'] === 'array' || 'anyOf' in schema
+  return structured ? (stripAnnotations(schema) as JsonSchema) : undefined
+}
+
 const propSchemas: Record<string, unknown[]> = {}
 for (const name of [...canonical.keys()].sort()) {
   const entry = canonical.get(name)!
+  const ctx = contextFor(entry.meta.typeDefs)
   propSchemas[name] = entry.meta.props.map((p) => {
     const { enum: enumValues, primitives } = classifyPropType(p.type)
+    const c = classifyProp(p, ctx)
+    const shape = c.kind === 'data' ? shapeOf(c.schema) : undefined
     return {
       name: p.name,
       required: p.required === true,
       ...(enumValues ? { enum: enumValues } : {}),
       ...(primitives ? { primitives } : {}),
+      ...(shape ? { shape } : {}),
     }
   })
 }
@@ -256,6 +283,9 @@ const propSchemasFile = `// generated — do not edit (scripts/schema/generate.t
 
 export type PropPrimitive = 'string' | 'number' | 'boolean' | 'null'
 
+/** A data-prop JSON Schema subset: type, enum, properties, required, additionalProperties, items, anyOf. */
+export type ShapeSchema = Record<string, unknown>
+
 export interface PropSchema {
   name: string
   required: boolean
@@ -263,6 +293,8 @@ export interface PropSchema {
   enum?: string[]
   /** Allowed primitive \`typeof\`s when the prop is a primitive (union). */
   primitives?: PropPrimitive[]
+  /** Structure of an object, array or union prop, checked recursively by the validator. */
+  shape?: ShapeSchema
 }
 
 export const propSchemas: Record<string, PropSchema[]> = ${JSON.stringify(propSchemas, null, 2)}
