@@ -108,11 +108,13 @@ function objectSchema(
 ): JsonSchema | null {
   const properties: Record<string, JsonSchema> = {}
   const required: string[] = []
+  let dropped = false
   for (const f of fields) {
     const s = f.type ? convert(f.type, ctx, inData, seen) : null
     if (!s) {
       // An unrepresentable required field would make every instance invalid, so the whole object goes.
       if (f.required) return null
+      dropped = true
       continue
     }
     properties[f.name] = f.description ? { ...s, description: f.description } : s
@@ -122,7 +124,8 @@ function objectSchema(
     type: 'object',
     properties,
     ...(required.length > 0 ? { required } : {}),
-    additionalProperties: false,
+    // A dropped optional field is legal but undescribable, so the object must stay open for it.
+    ...(dropped ? {} : { additionalProperties: false }),
   }
 }
 

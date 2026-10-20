@@ -1107,7 +1107,6 @@
                 "description": "Display order of column keys; keys not listed follow in definition order."
               }
             },
-            "additionalProperties": false,
             "description": "User-adjustable column layout (controlled): `hidden` keys, display `order`, explicit `widths` in px, and `pinned` sides. One object, so it round-trips through storage or a URL as a unit."
           },
           "columns": {
@@ -1151,7 +1150,6 @@
                 }
               },
               "required": ["key", "header"],
-              "additionalProperties": false,
               "description": "A single column definition. `render` is the escape hatch for custom cell content — return any ReactNode (a Badge, an icon + link, a formatted value); when omitted the cell shows `String(row[key])`."
             },
             "description": "The column definitions describing each table column."
@@ -1174,7 +1172,6 @@
                 "description": "Display order of column keys; keys not listed follow in definition order."
               }
             },
-            "additionalProperties": false,
             "description": "Initial column layout (uncontrolled)."
           },
           "defaultSort": {
@@ -1292,7 +1289,6 @@
               }
             },
             "required": ["pageSize"],
-            "additionalProperties": false,
             "description": "Paging config: pageSize, optional pageSizeOptions, and page/onPageChange to control the current page. With `server`, it is the pager for server-side paging."
           },
           "pinnedRows": {
@@ -1345,7 +1341,6 @@
               }
             },
             "required": ["mode"],
-            "additionalProperties": false,
             "description": "Row-selection configuration (mode and selected ids)."
           },
           "sort": {
@@ -3517,7 +3512,6 @@
                 }
               },
               "required": ["id", "label", "icon"],
-              "additionalProperties": false,
               "description": "A right-aligned global icon action. `actions` is a typed array of these — pass an `icon` node per item, not free-form JSX. For non-action trailing content (user menu, theme switcher) use the `end` slot instead."
             },
             "description": "Right-aligned global icon actions with aria-pressed"
@@ -3565,7 +3559,6 @@
                 }
               },
               "required": ["label"],
-              "additionalProperties": false,
               "description": "A top-nav entry: either a link (`{ label, href, active?, onClick? }`) or a dropdown menu (`{ label, items: { label, href, active? }[] }`)."
             },
             "description": "Top nav: links ({ label, href, active?, onClick? }) or dropdown menus ({ label, items })"
@@ -4040,7 +4033,6 @@
                 }
               },
               "required": ["label"],
-              "additionalProperties": false,
               "description": "Shape of an entry in `steps` / `items`."
             },
             "description": "Alias of `steps` — the catalog-wide name for a config-driven collection. Exactly one of the two is required."
@@ -4070,7 +4062,6 @@
                 }
               },
               "required": ["label"],
-              "additionalProperties": false,
               "description": "Shape of an entry in `steps` / `items`."
             },
             "description": "Array of step objects with label and optional explicit state"

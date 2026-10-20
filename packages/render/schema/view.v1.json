@@ -1953,7 +1953,6 @@
                             }
                           },
                           "required": ["id", "title"],
-                          "additionalProperties": false,
                           "description": "One step in the chain."
                         }
                       },
@@ -3478,7 +3477,6 @@
                             }
                           },
                           "required": ["key", "header"],
-                          "additionalProperties": false,
                           "description": "A single column definition. `render` is the escape hatch for custom cell content — return any ReactNode (a Badge, an icon + link, a formatted value); when omitted the cell shows `String(row[key])`."
                         }
                       },
@@ -3649,8 +3647,7 @@
                             "type": "number"
                           }
                         },
-                        "required": ["pageSize"],
-                        "additionalProperties": false
+                        "required": ["pageSize"]
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -3680,8 +3677,7 @@
                             }
                           }
                         },
-                        "required": ["mode"],
-                        "additionalProperties": false
+                        "required": ["mode"]
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -3721,8 +3717,7 @@
                             },
                             "description": "Display order of column keys; keys not listed follow in definition order."
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -3762,8 +3757,7 @@
                             },
                             "description": "Display order of column keys; keys not listed follow in definition order."
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -10285,8 +10279,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -10475,7 +10468,6 @@
                             }
                           },
                           "required": ["label"],
-                          "additionalProperties": false,
                           "description": "A top-nav entry: either a link (`{ label, href, active?, onClick? }`) or a dropdown menu (`{ label, items: { label, href, active? }[] }`)."
                         }
                       },
@@ -10530,7 +10522,6 @@
                             }
                           },
                           "required": ["id", "label", "icon"],
-                          "additionalProperties": false,
                           "description": "A right-aligned global icon action. `actions` is a typed array of these — pass an `icon` node per item, not free-form JSX. For non-action trailing content (user menu, theme switcher) use the `end` slot instead."
                         }
                       },
@@ -11405,7 +11396,6 @@
                             }
                           },
                           "required": ["label"],
-                          "additionalProperties": false,
                           "description": "Shape of an entry in `steps` / `items`."
                         }
                       },
@@ -11445,7 +11435,6 @@
                             }
                           },
                           "required": ["label"],
-                          "additionalProperties": false,
                           "description": "Shape of an entry in `steps` / `items`."
                         }
                       },
@@ -13668,8 +13657,7 @@
                               ]
                             }
                           },
-                          "required": ["id", "label"],
-                          "additionalProperties": false
+                          "required": ["id", "label"]
                         }
                       },
                       {
@@ -15271,8 +15259,7 @@
                                   }
                                 ]
                               }
-                            },
-                            "additionalProperties": false
+                            }
                           }
                         ]
                       },
@@ -15374,8 +15361,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -15585,8 +15571,7 @@
                                   }
                                 ]
                               }
-                            },
-                            "additionalProperties": false
+                            }
                           }
                         ]
                       },
@@ -16291,8 +16276,7 @@
                             "description": "Bucket count for `piecewise` (default 5)."
                           }
                         },
-                        "required": ["min", "max"],
-                        "additionalProperties": false
+                        "required": ["min", "max"]
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -17383,8 +17367,7 @@
                             "description": "Bucket count for `piecewise` (default 5)."
                           }
                         },
-                        "required": ["min", "max"],
-                        "additionalProperties": false
+                        "required": ["min", "max"]
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -17916,8 +17899,7 @@
                                   }
                                 ]
                               }
-                            },
-                            "additionalProperties": false
+                            }
                           }
                         ]
                       },
@@ -18075,8 +18057,7 @@
                               }
                             ]
                           }
-                        },
-                        "additionalProperties": false
+                        }
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -18488,8 +18469,7 @@
                                   }
                                 ]
                               }
-                            },
-                            "additionalProperties": false
+                            }
                           }
                         ]
                       },
@@ -19598,8 +19578,7 @@
                             "description": "Bucket count for `piecewise` (default 5)."
                           }
                         },
-                        "required": ["min", "max"],
-                        "additionalProperties": false
+                        "required": ["min", "max"]
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -20054,8 +20033,7 @@
                             ]
                           }
                         },
-                        "required": ["label"],
-                        "additionalProperties": false
+                        "required": ["label"]
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
@@ -20547,7 +20525,6 @@
                             }
                           },
                           "required": ["id", "label"],
-                          "additionalProperties": false,
                           "description": "A slash-command entry."
                         }
                       },
@@ -21028,7 +21005,6 @@
                             }
                           },
                           "required": ["id", "source", "target"],
-                          "additionalProperties": false,
                           "description": "A directed connection between two nodes' handles."
                         }
                       },
@@ -22051,7 +22027,6 @@
                             }
                           },
                           "required": ["id", "source", "target"],
-                          "additionalProperties": false,
                           "description": "A directed connection between two nodes' handles."
                         }
                       },

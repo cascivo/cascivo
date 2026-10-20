@@ -110,7 +110,6 @@ describe('classifyProp', () => {
             sortable: { type: 'boolean' },
           },
           required: ['key', 'header'],
-          additionalProperties: false,
         },
       },
     })
@@ -182,9 +181,18 @@ describe('toJsonSchema', () => {
       type: 'object',
       properties: { a: { type: 'string' }, b: { type: 'number' } },
       required: ['a'],
-      additionalProperties: false,
     })
     assert.equal(to('{ a: () => void }'), null)
+  })
+  it('keeps additionalProperties:false only when every field is representable', () => {
+    assert.deepEqual(to('{ a: string; b?: number }'), {
+      type: 'object',
+      properties: { a: { type: 'string' }, b: { type: 'number' } },
+      required: ['a'],
+      additionalProperties: false,
+    })
+    const open = to('{ a: string; b?: () => void }') as Record<string, unknown>
+    assert.ok(!('additionalProperties' in open))
   })
   it('maps x | null to anyOf with a null branch', () => {
     assert.deepEqual(to('string | null'), { anyOf: [{ type: 'string' }, { type: 'null' }] })

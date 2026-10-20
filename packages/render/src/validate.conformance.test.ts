@@ -78,9 +78,15 @@ describe('validateView() deep prop shapes (v61 T6)', () => {
 
   it('flags an unknown field on a column', () => {
     const result = validateView(
-      view({ component: 'DataTable', props: { columns: [{ key: 'a', header: 'A', bogus: 1 }] } }),
+      view({ component: 'Breadcrumb', props: { items: [{ label: 'Home', bogus: 1 }] } }),
     )
     expect(result.errors.some((e) => e.path.endsWith('.bogus'))).toBe(true)
+    // DataTable's Column drops its optional `render` function field, so its object stays open (R11).
+    expect(
+      validateView(
+        view({ component: 'DataTable', props: { columns: [{ key: 'a', header: 'A', extra: 1 }] } }),
+      ).valid,
+    ).toBe(true)
   })
 
   it('accepts a TranslationRef where a string is expected', () => {
@@ -106,12 +112,12 @@ describe('validateView() deep prop shapes (v61 T6)', () => {
   it('does not let prototype keys bypass additionalProperties:false', () => {
     const result = validateView(
       view({
-        component: 'DataTable',
-        props: { columns: [{ key: 'a', header: 'A', constructor: 1 }] },
+        component: 'Breadcrumb',
+        props: { items: [{ label: 'Home', constructor: 1 }] },
       }),
     )
     expect(result.errors).toHaveLength(1)
-    expect(result.errors[0]!.path).toMatch(/columns\[0\]\.constructor$/)
+    expect(result.errors[0]!.path).toMatch(/items\[0\]\.constructor$/)
   })
 
   it('does not treat inherited keys as present required fields', () => {
@@ -169,7 +175,7 @@ describe('validateView() deep prop shapes (v61 T6)', () => {
       validateView(
         view({
           component: 'Steps',
-          props: { items: [{ label: 'One', id: 'a' }, { label: 'Two' }], activeStep: 1 },
+          props: { items: [{ label: 'One', state: 'complete' }, { label: 'Two' }], activeStep: 1 },
         }),
       ),
     ).toEqual({ valid: true, errors: [] })
