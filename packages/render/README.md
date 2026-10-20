@@ -110,23 +110,23 @@ import catalog from '@cascivo/render/schema/catalog.v1.json' with { type: 'json'
 import a2ui from '@cascivo/render/schema/a2ui/v0_9/catalog.json' with { type: 'json' }
 ```
 
-- `schema/catalog.v1.json` is the protocol-neutral catalog: one entry per renderable component (74).
+- `schema/catalog.v1.json` is the protocol-neutral catalog: one entry per renderable component.
 - `schema/a2ui/v0_9/catalog.json` is the same catalog as an [A2UI](https://a2ui.org) v0.9 custom catalog. Its `catalogId` is `https://cascivo.com/a2ui/v0_9/catalog.json`, and the file is served there.
 
 Every prop of a component is sorted into one of four kinds:
 
-| Kind      | Meaning                                                                                |
-| --------- | -------------------------------------------------------------------------------------- |
-| `props`   | Data props, each with a JSON Schema                                                    |
-| `slots`   | Child content, with arity `one` or `many` (`implicit: true` when inferred from source) |
-| `events`  | Callbacks an agent can wire to an action                                               |
-| `omitted` | Props that cannot cross the wire (functions, DOM refs), with the reason                |
+| Kind      | Meaning                                                                                                                                              |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `props`   | Data props, each with a JSON Schema                                                                                                                  |
+| `slots`   | Child content, with arity `one` or `many` (`text: true` when it also takes a string, as `children` does; `implicit: true` when inferred from source) |
+| `events`  | Callbacks an agent can wire to an action                                                                                                             |
+| `omitted` | Props that cannot cross the wire (functions, DOM refs), with the reason                                                                              |
 
-`validateView` also checks the shape of object and array props, such as `DataTable` `columns`.
+`validateView` also checks the shape of object and array props, such as `DataTable` `columns`: nested fields by presence and type, so an unknown nested field is allowed.
 
 Rendering A2UI messages is not shipped yet. This release only publishes the catalogs.
 
-Regenerate both files with `pnpm schema:generate`; `pnpm schema:check` fails on drift.
+Regenerate both files with `pnpm regen` (or `pnpm schema:generate && vp check --fix`); CI fails when the committed files drift from the manifests. `pnpm schema:check` runs the generator unit tests.
 
 ## Install
 
