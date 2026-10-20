@@ -14,9 +14,9 @@ import { eventually, firstVisible, goTo } from '../_lib.ts'
  * - the siblings that follow that wrapper, up to the next field, the next field's label or a
  *   button (flat markup: `<label>Name <input></label><span>error</span>`). A sibling that
  *   holds an inline success message ("Message sent", new since the submit) is the form's
- *   verdict, not an error, and is left out of the zone whole, whatever its markup (ruling R16).
- *   Residual: an error kept inside the same block as the success message is not detected on a
- *   valid submit.
+ *   verdict, not an error, and ends the zone, whatever its markup: the body text that follows
+ *   an unwrapped "Thank you!" heading belongs to the verdict too (rulings R16, R19). Residual:
+ *   an error inside or after the success block is not detected on valid submit.
  *
  * ARIA is accepted but not required: the prompt asks for an error beside its field, not for an
  * association, and requiring one would fail a plain-markup app the prompt is satisfied by. A
@@ -26,7 +26,8 @@ import { eventually, firstVisible, goTo } from '../_lib.ts'
  * shows no error next to any field: the bubble names one field at a time and is gone on the next
  * click, and an invalid email never reaches the app's own submit handler.
  */
-const SUCCESS = /thank|sent|success|received/i
+/** Word-bounded, so "consent", "essential" or "present" in a hint or an error is not success. */
+const SUCCESS = /\bthank|\bsent\b|\bsuccess|\breceived\b/i
 
 type FieldKey = 'name' | 'email' | 'message'
 
@@ -140,10 +141,11 @@ async function zones(page: Page, known: string[]): Promise<(Zone | null)[]> {
           if (holdsOther(sib) || labelsOther(sib)) break
           if (sib.matches('button, input[type="submit"]') || sib.querySelector('button')) break
           // The form's verdict ("Message sent" and its body text) is not this field's error, so
-          // a block holding success text new since before the submit is skipped whole, with or
-          // without a live-region role (R16). Only new success text marks it, and the walk goes
-          // on past it: a static hint saying "received" must not hide an error after it.
-          if (runs(sib).some((run) => verdict.test(run.text) && !old.has(run.text))) continue
+          // the zone ends at a sibling holding success text new since before the submit, with or
+          // without a live-region role, and its body may follow as further siblings (R16, R19).
+          // Only new success text ends it: a static hint saying "received" is walked past, so it
+          // cannot hide an error after it.
+          if (runs(sib).some((run) => verdict.test(run.text) && !old.has(run.text))) break
           collect(sib, field, out)
         }
         return { texts: [...out], invalid: field.getAttribute('aria-invalid') === 'true' }

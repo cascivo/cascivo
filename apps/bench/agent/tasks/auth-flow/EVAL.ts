@@ -12,7 +12,9 @@ import { eventually, firstVisible, goTo } from '../_lib.ts'
  * Residual (ruling R17): when sign-up itself lands on the dashboard, sign-in is re-checked only
  * after a sign-out that keeps the page. A sign-out that navigates to another document (a server
  * logout page) looks the same as a reload that lost an in-memory account, so the re-check is
- * skipped and the sign-up's dashboard is accepted; a broken sign-in can pass that way.
+ * skipped and the sign-up's dashboard is accepted; a broken sign-in can pass that way. The same
+ * holds (ruling R18) when the sign-out does not visibly leave the dashboard (an unanswered
+ * confirmation), or when the sign-in form cannot be reached afterwards without a reload.
  */
 const IDENTITY_VALUE = 'canary.user@example.com'
 const PASSWORD_VALUE = 'Canary-Pass-7391!'
@@ -157,8 +159,8 @@ async function submitFrom(page: Page, field: Locator, name: RegExp): Promise<voi
   await submit?.click({ timeout: 5000 }).catch(() => {})
 }
 
-async function signIn(page: Page, baseUrl: string, fresh: boolean): Promise<boolean> {
-  await openSignIn(page, baseUrl, fresh)
+/** Fill and submit the sign-in form already on the page; whether the dashboard follows. */
+async function submitSignIn(page: Page): Promise<boolean> {
   const identity = await identityField(page)
   const password = await passwordField(page)
   if (identity === null || password === null) throw new Error('sign-in: the form vanished')
@@ -166,6 +168,11 @@ async function signIn(page: Page, baseUrl: string, fresh: boolean): Promise<bool
   await password.fill(PASSWORD_VALUE)
   await submitFrom(page, password, /sign\s*in|log\s*in|login|continue|submit/i)
   return eventually(() => onDashboard(page), 8000)
+}
+
+async function signIn(page: Page, baseUrl: string, fresh: boolean): Promise<boolean> {
+  await openSignIn(page, baseUrl, fresh)
+  return submitSignIn(page)
 }
 
 /**
@@ -207,7 +214,9 @@ async function register(page: Page, baseUrl: string): Promise<void> {
  * Sign-up landed on the dashboard (ruling R15). That shows sign-up logs in, not that sign-in
  * does: if the app offers a sign-out, sign out and sign in with the same values. A sign-out
  * that reloads the page loses an in-memory account, so then the sign-up's dashboard stands, as
- * it does when there is no sign-out at all.
+ * it does when there is no sign-out at all. Nothing here reloads (ruling R18): a sign-out that
+ * leaves the dashboard up even after its confirmation, or a sign-in form that only a reload
+ * would reach, is accepted the same way.
  */
 async function signInAgainAfterSignOut(page: Page, baseUrl: string): Promise<boolean> {
   const name = /sign\s*out|log\s*out/i
@@ -219,12 +228,30 @@ async function signInAgainAfterSignOut(page: Page, baseUrl: string): Promise<boo
     ;(window as unknown as { __evalNoReload?: boolean }).__evalNoReload = true
   })
   await out.click({ timeout: 5000 }).catch(() => {})
-  await eventually(async () => !(await onDashboard(page)), 3000)
+  const left = () => eventually(async () => !(await onDashboard(page)), 3000)
+  if (!(await left())) {
+    // "Are you sure you want to sign out?": answer it, as the user who asked to sign out would.
+    const yes = /sign\s*out|log\s*out|yes|confirm/i
+    const confirm = await firstVisible(
+      page.getByRole('dialog').or(page.getByRole('alertdialog')).getByRole('button', { name: yes }),
+    )
+    await confirm?.click({ timeout: 5000 }).catch(() => {})
+    if (confirm === null || !(await left())) return true
+  }
   await page.waitForLoadState('domcontentloaded')
-  const kept = await page
-    .evaluate(() => (window as unknown as { __evalNoReload?: boolean }).__evalNoReload === true)
-    .catch(() => false)
-  return !kept || signIn(page, baseUrl, false)
+  const kept = () =>
+    page
+      .evaluate(() => (window as unknown as { __evalNoReload?: boolean }).__evalNoReload === true)
+      .catch(() => false)
+  if (!(await kept())) return true
+  // In-page only: the form as the sign-out left it, or one link or button away.
+  if (!(await eventually(() => onSignIn(page), 1000))) {
+    if (!(await follow(page, baseUrl, SIGN_IN))) return true
+    await page.waitForLoadState('domcontentloaded')
+    // A sign-in link that loads another document has lost an in-memory account too.
+    if (!(await kept()) || !(await eventually(() => onSignIn(page)))) return true
+  }
+  return submitSignIn(page)
 }
 
 /**
