@@ -25,6 +25,7 @@ export default function App() {
   const [page, setPage] = useSignalState<Page>('sign-in')
   const [user, setUser] = useSignalState('')
   const [error, setError] = useSignalState('')
+  const [notice, setNotice] = useSignalState('')
 
   const signIn = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -38,10 +39,11 @@ export default function App() {
     setPage('dashboard')
   }
 
+  // Registering does not log in: the new user signs in, as in many real apps.
   const signUp = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setUser(fieldValue(event, 'email'))
-    setPage('dashboard')
+    setNotice(`Account created for ${fieldValue(event, 'email')}. Sign in to continue.`)
+    setPage('sign-in')
   }
 
   return (
@@ -51,6 +53,7 @@ export default function App() {
           <Card>
             <Flex gap={4}>
               <Heading level={1}>Sign in</Heading>
+              {notice.value !== '' && <Text role="status">{notice.value}</Text>}
               <form noValidate onSubmit={signIn}>
                 <Flex gap={4}>
                   <Input label="Email" name="email" type="email" autoComplete="email" />

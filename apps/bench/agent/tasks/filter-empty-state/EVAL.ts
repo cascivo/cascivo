@@ -10,8 +10,9 @@ import { eventually, fillUntil, firstVisible, goTo } from '../_lib.ts'
  * Emptying the box by hand is the user clearing the filter, not the app offering a way to, so it
  * does not count; the box's own clear button (cascivo's Search has one) does.
  */
-const NO_MATCH = 'zzqx-no-such-member'
-const EMPTY =
+/** Must not itself read as an empty-state message: a "Filter: …" chip echoes it (EVAL.test.ts). */
+export const NO_MATCH = 'zzqx-7391'
+export const EMPTY =
   /no\b.*\b(match|result|member|one|people|teammate)|nothing|nobody|not found|\b0 (results|members|matches)\b/i
 const CLEAR = /clear|reset|show all|remove filter/i
 /** A box that names itself as the filter; failing that, the page's only text box. */
@@ -52,8 +53,12 @@ async function openList(page: Page, baseUrl: string): Promise<Locator> {
 export default async function evaluate(page: Page, baseUrl: string): Promise<void> {
   const box = await openList(page, baseUrl)
   const before = await lines(page)
+  // The query is cut out first, so a line that only echoes it is no message, while a message
+  // that quotes it ("No members match “…”") still is one.
   const message = async () =>
-    (await lines(page)).find((l) => EMPTY.test(l) && !before.includes(l)) ?? null
+    (await lines(page)).find(
+      (l) => EMPTY.test(l.replaceAll(NO_MATCH, '')) && !before.includes(l),
+    ) ?? null
 
   if (!(await fillUntil(box, NO_MATCH, async () => (await message()) !== null)))
     throw new Error(`empty state: filtering "${NO_MATCH}" showed no message saying nothing matched`)
@@ -68,30 +73,39 @@ export default async function evaluate(page: Page, baseUrl: string): Promise<voi
     return before.every((l) => after.includes(l))
   }
   // Each offered control is tried until one works: a box's own ✕ that only empties the text of
-  // an Enter-to-filter box must not hide the message's working "Show all" button.
-  const tried = new Set<string>()
-  for (;;) {
+  // an Enter-to-filter box must not hide the message's working "Show all" button. Tried
+  // controls are remembered by element, not name: the ✕ and the message's button may both be
+  // called "Clear". Bounded, in case a dead control re-renders as a new element on each click.
+  await page.evaluate(() => {
+    ;(window as unknown as { __evalTried?: WeakSet<Element> }).__evalTried = new WeakSet()
+  })
+  let clicked = 0
+  while (clicked < 5) {
     let clear: Locator | null = null
-    let name = ''
     for (const el of await page
       .getByRole('button', { name: CLEAR })
       .or(page.getByRole('link', { name: CLEAR }))
       .all()) {
       if (!(await el.isVisible())) continue
-      name = (await el.getAttribute('aria-label')) ?? (await el.innerText())
-      if (!tried.has(name)) {
+      const fresh = await el.evaluate((node) => {
+        const tried = (window as unknown as { __evalTried?: WeakSet<Element> }).__evalTried
+        if (tried === undefined || tried.has(node)) return false
+        tried.add(node)
+        return true
+      })
+      if (fresh) {
         clear = el
         break
       }
     }
-    if (clear === null)
-      throw new Error(
-        tried.size === 0
-          ? 'clear: no clear/reset/show all button or link once nothing matched'
-          : 'clear: no clear control brought the full member list back',
-      )
-    tried.add(name)
+    if (clear === null) break
+    clicked += 1
     await clear.click({ timeout: 5000 })
     if (await eventually(restored, 3000)) return
   }
+  throw new Error(
+    clicked === 0
+      ? 'clear: no clear/reset/show all button or link once nothing matched'
+      : 'clear: no clear control brought the full member list back',
+  )
 }

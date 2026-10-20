@@ -75,12 +75,21 @@ async function follow(page: Page, baseUrl: string, name: RegExp): Promise<boolea
   }
 }
 
-/** Land on the sign-in form: on `/` itself, or one click away from it. */
-async function openSignIn(page: Page, baseUrl: string): Promise<void> {
-  await page.goto(baseUrl)
-  if (await eventually(() => onSignIn(page), 3000)) return
-  if (!(await follow(page, baseUrl, SIGN_IN)))
-    throw new Error('sign-in: no sign-in form on / and no link, button or tab named sign in/log in')
+/**
+ * Land on the sign-in form: on `/` itself, or one click away from it. `fresh: false` first tries
+ * the page as it is and the click from there, because an app that keeps accounts in memory loses
+ * the one just registered on a reload.
+ */
+async function openSignIn(page: Page, baseUrl: string, fresh = true): Promise<void> {
+  if (!fresh && (await eventually(() => onSignIn(page), 1000))) return
+  if (fresh || !(await follow(page, baseUrl, SIGN_IN))) {
+    await page.goto(baseUrl)
+    if (await eventually(() => onSignIn(page), 3000)) return
+    if (!(await follow(page, baseUrl, SIGN_IN)))
+      throw new Error(
+        'sign-in: no sign-in form on / and no link, button or tab named sign in/log in',
+      )
+  }
   if (!(await eventually(() => onSignIn(page))))
     throw new Error(
       'sign-in: no form with a textbox named email/user and one named password (by label, ' +
@@ -104,32 +113,97 @@ async function signUpReachable(page: Page, baseUrl: string): Promise<void> {
     )
 }
 
-async function signInReachesDashboard(page: Page, baseUrl: string): Promise<void> {
-  await openSignIn(page, baseUrl)
+/** The dashboard must replace the form: a "Dashboard" heading beside a still-open sign-in form
+ * (a nav item, a product screenshot's caption) is not having logged in. */
+async function onDashboard(page: Page): Promise<boolean> {
+  return (
+    (await firstVisible(page.getByRole('heading', { name: DASHBOARD }))) !== null &&
+    (await passwordField(page)) === null
+  )
+}
+
+/**
+ * Submit the form `field` belongs to: Enter first, as a user would. A form that only listens to
+ * its button gets the click instead: the first matching button after the field, in document
+ * order, which is the form's own and not a header link before it or a "Continue with Google"
+ * after it.
+ */
+async function submitFrom(page: Page, field: Locator, name: RegExp): Promise<void> {
+  await field.press('Enter')
+  if (await eventually(() => onDashboard(page), 2000)) return
+  // The press may already have moved the app on (sign-up done, back to sign-in): no second click.
+  if (!(await field.isVisible())) return
+  const handle = await field.elementHandle()
+  let submit: Locator | null = null
+  for (const button of await page.getByRole('button', { name }).all()) {
+    if (!(await button.isVisible())) continue
+    const after = await button.evaluate(
+      (el, from) =>
+        from !== null &&
+        (from.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0,
+      handle,
+    )
+    if (after) {
+      submit = button
+      break
+    }
+    submit ??= button
+  }
+  await submit?.click({ timeout: 5000 }).catch(() => {})
+}
+
+async function signIn(page: Page, baseUrl: string, fresh: boolean): Promise<boolean> {
+  await openSignIn(page, baseUrl, fresh)
   const identity = await identityField(page)
   const password = await passwordField(page)
   if (identity === null || password === null) throw new Error('sign-in: the form vanished')
   await identity.fill(IDENTITY_VALUE)
   await password.fill(PASSWORD_VALUE)
-  // The dashboard must replace the form: a "Dashboard" heading beside a still-open sign-in form
-  // (a nav item, a product screenshot's caption) is not having logged in.
-  const arrived = async () =>
-    (await firstVisible(page.getByRole('heading', { name: DASHBOARD }))) !== null &&
-    (await passwordField(page)) === null
-  await password.press('Enter')
-  if (await eventually(arrived, 2000)) return
-  // A form that only listens to its button gets the click instead. The last visible match is the
-  // form's own button: it follows the fields and any header "Sign in" link.
-  let submit: Locator | null = null
-  for (const button of await page
-    .getByRole('button', { name: /sign\s*in|log\s*in|login|continue|submit/i })
-    .all())
-    if (await button.isVisible()) submit = button
-  await submit?.click({ timeout: 5000 }).catch(() => {})
-  if (!(await eventually(arrived, 8000)))
-    throw new Error(
-      'dashboard: submitting sign-in with an email and password showed no heading named dashboard',
-    )
+  await submitFrom(page, password, /sign\s*in|log\s*in|login|continue|submit/i)
+  return eventually(() => onDashboard(page), 8000)
+}
+
+/**
+ * Register IDENTITY_VALUE / PASSWORD_VALUE through the sign-up form, filling every other empty
+ * text box (name, confirm password) too. Best effort: whether the dashboard follows decides.
+ */
+async function register(page: Page, baseUrl: string): Promise<void> {
+  if (!(await follow(page, baseUrl, SIGN_UP))) {
+    await page.goto(baseUrl)
+    if (!(await follow(page, baseUrl, SIGN_UP))) return
+  }
+  if (!(await eventually(() => onSignUp(page)))) return
+  // By accessible name, like the sign-in fields; whatever is left empty (a name) gets a name.
+  let last: Locator | null = null
+  const plan: [Locator, string][] = [
+    [page.getByRole('textbox', { name: PASSWORD }), PASSWORD_VALUE],
+    [page.getByRole('textbox', { name: IDENTITY }), IDENTITY_VALUE],
+    [page.getByRole('textbox'), 'Canary Tester'],
+  ]
+  for (const [boxes, value] of plan)
+    for (const box of await boxes.all()) {
+      if (!(await box.isVisible()) || (await box.inputValue().catch(() => 'x')) !== '') continue
+      await box.fill(value, { timeout: 2000 }).catch(() => {})
+      last = box
+    }
+  if (last !== null)
+    await submitFrom(page, last, new RegExp(`${SIGN_UP.source}|continue|submit`, 'i'))
+}
+
+/**
+ * The prompt names no account, so the EVAL signs in with plausible values. An app that only
+ * admits registered users gets what a user would do next: sign up with the same values, then
+ * (unless sign-up itself lands on the dashboard) sign in again, without reloading.
+ */
+async function signInReachesDashboard(page: Page, baseUrl: string): Promise<void> {
+  if (await signIn(page, baseUrl, true)) return
+  await register(page, baseUrl)
+  if (await eventually(() => onDashboard(page), 3000)) return
+  if (await signIn(page, baseUrl, false)) return
+  throw new Error(
+    'dashboard: submitting sign-in with an email and password (also after signing up with them) ' +
+      'showed no heading named dashboard',
+  )
 }
 
 export default async function evaluate(page: Page, baseUrl: string): Promise<void> {

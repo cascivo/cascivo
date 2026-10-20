@@ -6,9 +6,11 @@ import { anyVisible, eventually, firstVisible, goTo } from '../_lib.ts'
  * confirmation in a dialog; Cancel keeps the project and Confirm removes it."
  *
  * A dialog is the `dialog` or `alertdialog` role (cascivo's and shadcn's AlertDialog are the
- * latter) and must have an accessible name, its title: a design system's dialog gets one, and
- * an unnamed dialog is announced as just "dialog". The dialog is opened with a plain click, not
- * goTo: a native `<dialog>` opening only flips an attribute, which goTo does not count (R10).
+ * latter) and must have a title: an accessible name, or a visible heading inside it (ruling R13:
+ * a plain `<dialog>` with an `<h2>` and no `aria-labelledby` has a title a user can read). A
+ * dialog with neither is just "dialog" to a screen reader and a bare question to everyone. The
+ * dialog is opened with a plain click, not goTo: a native `<dialog>` opening only flips an
+ * attribute, which goTo does not count (R10).
  */
 const DELETE = /delete|remove|trash/i
 /** A bulk action is not one project's Delete button. */
@@ -68,8 +70,10 @@ async function openDialogFor(page: Page, index: number): Promise<Locator> {
   const named = await firstVisible(
     page.getByRole('dialog', { name: /\S/ }).or(page.getByRole('alertdialog', { name: /\S/ })),
   )
-  if (named === null) throw new Error('delete: the confirmation dialog has no accessible name')
-  return named
+  if (named !== null) return named
+  for (const dialog of await dialogs(page).all())
+    if ((await dialog.isVisible()) && (await anyVisible(dialog.getByRole('heading')))) return dialog
+  throw new Error('delete: the confirmation dialog has no title (no accessible name, no heading)')
 }
 
 /** The last matching visible button in the dialog: dialogs put the primary action last. */

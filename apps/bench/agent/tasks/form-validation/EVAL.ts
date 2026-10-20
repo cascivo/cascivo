@@ -11,13 +11,17 @@ import { eventually, firstVisible, goTo } from '../_lib.ts'
  * - an element the field names in `aria-describedby` or `aria-errormessage` (the accessible
  *   association: wherever it sits, it belongs to that field);
  * - the field's own wrapper: its highest ancestor that holds no other of the three fields;
- * - the siblings that follow that wrapper, up to the next field, the next field's label or a
- *   button (flat markup: `<label>Name <input></label><span>error</span>`).
+ * - the siblings that follow that wrapper, up to the next field, the next field's label, a
+ *   button or a success message (flat markup: `<label>Name <input></label><span>error</span>`;
+ *   an inline "Message sent" alert after the last field is the form's verdict, not an error).
  *
  * ARIA is accepted but not required: the prompt asks for an error beside its field, not for an
  * association, and requiring one would fail a plain-markup app the prompt is satisfied by. A
  * single summary above or below the form ("Please fix 3 errors") is in no field's zone, so it
  * does not count, and neither does a native validation bubble, which is not in the page at all.
+ * So an app that leaves validation to the browser (`required`, `type="email"`, no `noValidate`)
+ * shows no error next to any field: the bubble names one field at a time and is gone on the next
+ * click, and an invalid email never reaches the app's own submit handler.
  */
 const SUCCESS = /thank|sent|success|received/i
 
@@ -62,53 +66,58 @@ async function fieldHandles(page: Page): Promise<(ElementHandle<Node> | null)[]>
 /** Each field's zone texts, in FIELDS order. See the header comment for what a zone is. */
 async function zones(page: Page): Promise<(Zone | null)[]> {
   const handles = await fieldHandles(page)
-  return page.evaluate((fields) => {
-    const present = fields.filter((f): f is Element => f instanceof Element)
-    // Rendered and bigger than a visually-hidden (sr-only) clip: an error must be seen.
-    const visible = (el: Element) => {
-      if (!el.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })) return false
-      const box = el.getBoundingClientRect()
-      return box.width > 2 && box.height > 2
-    }
-    const collect = (root: Element, field: Element, out: Set<string>) => {
-      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
-      for (let node = walker.nextNode(); node !== null; node = walker.nextNode()) {
-        const text = (node.nodeValue ?? '').replace(/\s+/g, ' ').trim()
-        const parent = node.parentElement
-        if (text === '' || parent === null || field.contains(node) || !visible(parent)) continue
-        out.add(text)
+  return page.evaluate(
+    ({ fields, success }) => {
+      const verdict = new RegExp(success, 'i')
+      const present = fields.filter((f): f is Element => f instanceof Element)
+      // Rendered and bigger than a visually-hidden (sr-only) clip: an error must be seen.
+      const visible = (el: Element) => {
+        if (!el.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })) return false
+        const box = el.getBoundingClientRect()
+        return box.width > 2 && box.height > 2
       }
-    }
-    return fields.map((field) => {
-      if (!(field instanceof Element)) return null
-      const others = present.filter((o) => o !== field)
-      const holdsOther = (el: Element) => others.some((o) => el.contains(o))
-      const labelsOther = (el: Element) =>
-        [...(el.matches('label') ? [el] : []), ...Array.from(el.querySelectorAll('label'))].some(
-          (label) => label instanceof HTMLLabelElement && others.some((o) => label.control === o),
-        )
-      const out = new Set<string>()
-      for (const attr of ['aria-describedby', 'aria-errormessage'])
-        for (const id of (field.getAttribute(attr) ?? '').split(/\s+/)) {
-          const target = id === '' ? null : document.getElementById(id)
-          if (target !== null) collect(target, field, out)
+      const collect = (root: Element, field: Element, out: Set<string>) => {
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
+        for (let node = walker.nextNode(); node !== null; node = walker.nextNode()) {
+          const text = (node.nodeValue ?? '').replace(/\s+/g, ' ').trim()
+          const parent = node.parentElement
+          if (text === '' || parent === null || field.contains(node) || !visible(parent)) continue
+          out.add(text)
         }
-      let box: Element = field
-      for (
-        let up = box.parentElement;
-        up !== null && up !== document.body && !holdsOther(up);
-        up = up.parentElement
-      )
-        box = up
-      collect(box, field, out)
-      for (let sib = box.nextElementSibling; sib !== null; sib = sib.nextElementSibling) {
-        if (holdsOther(sib) || labelsOther(sib)) break
-        if (sib.matches('button, input[type="submit"]') || sib.querySelector('button')) break
-        collect(sib, field, out)
       }
-      return { texts: [...out], invalid: field.getAttribute('aria-invalid') === 'true' }
-    })
-  }, handles)
+      return fields.map((field) => {
+        if (!(field instanceof Element)) return null
+        const others = present.filter((o) => o !== field)
+        const holdsOther = (el: Element) => others.some((o) => el.contains(o))
+        const labelsOther = (el: Element) =>
+          [...(el.matches('label') ? [el] : []), ...Array.from(el.querySelectorAll('label'))].some(
+            (label) => label instanceof HTMLLabelElement && others.some((o) => label.control === o),
+          )
+        const out = new Set<string>()
+        for (const attr of ['aria-describedby', 'aria-errormessage'])
+          for (const id of (field.getAttribute(attr) ?? '').split(/\s+/)) {
+            const target = id === '' ? null : document.getElementById(id)
+            if (target !== null) collect(target, field, out)
+          }
+        let box: Element = field
+        for (
+          let up = box.parentElement;
+          up !== null && up !== document.body && !holdsOther(up);
+          up = up.parentElement
+        )
+          box = up
+        collect(box, field, out)
+        for (let sib = box.nextElementSibling; sib !== null; sib = sib.nextElementSibling) {
+          if (holdsOther(sib) || labelsOther(sib)) break
+          if (sib.matches('button, input[type="submit"]') || sib.querySelector('button')) break
+          if (sib instanceof HTMLElement && verdict.test(sib.innerText)) break
+          collect(sib, field, out)
+        }
+        return { texts: [...out], invalid: field.getAttribute('aria-invalid') === 'true' }
+      })
+    },
+    { fields: handles, success: SUCCESS.source },
+  )
 }
 
 /** Zone texts in `after` that no baseline had: what the submit made appear beside the field. */
