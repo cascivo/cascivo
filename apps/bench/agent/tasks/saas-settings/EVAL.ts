@@ -1,10 +1,15 @@
 import type { Locator, Page } from '@playwright/test'
 import { anyVisible, eventually, goTo, type AriaRole } from '../_lib.ts'
 
-const PAGES: { label: string; heading: RegExp }[] = [
-  { label: 'profile', heading: /profile/i },
-  { label: 'billing', heading: /billing/i },
-  { label: 'notifications', heading: /notification/i },
+/**
+ * Profile and notification preferences are settings, so each needs a control. A billing page
+ * can be a plan summary with "Upgrade" and "Manage payment" actions, or an invoice table, and
+ * the prompt asks for nothing more, so a named action or a table counts there too.
+ */
+const PAGES: { label: string; heading: RegExp; actionsCount: boolean }[] = [
+  { label: 'profile', heading: /profile/i, actionsCount: false },
+  { label: 'billing', heading: /billing/i, actionsCount: true },
+  { label: 'notifications', heading: /notification/i, actionsCount: false },
 ]
 
 /** Every role a settings control can take; a button is an action, not a setting. */
@@ -29,11 +34,23 @@ async function content(page: Page): Promise<Page | Locator> {
   return (await main.count()) === 1 && (await main.isVisible()) ? main : page
 }
 
-async function labelledControl(page: Page): Promise<boolean> {
+async function labelledControl(page: Page, actionsCount: boolean): Promise<boolean> {
   const scope = await content(page)
   for (const role of CONTROL_ROLES)
     if (await anyVisible(scope.getByRole(role, { name: /\S/ }))) return true
-  return false
+  if (!actionsCount) return false
+  const actions = scope
+    .getByRole('button', { name: /\S/ })
+    .or(scope.getByRole('link', { name: /\S/ }))
+    .or(scope.getByRole('table'))
+  // Without a single `main`, the scope is the whole page: its nav buttons are not billing actions.
+  return actions.evaluateAll((els) =>
+    els.some(
+      (el) =>
+        el.checkVisibility() &&
+        el.closest('nav, header, [role="navigation"], [role="banner"]') === null,
+    ),
+  )
 }
 
 export default async function evaluate(page: Page, baseUrl: string): Promise<void> {
@@ -43,7 +60,7 @@ export default async function evaluate(page: Page, baseUrl: string): Promise<voi
   await eventually(() => anyVisible(page.getByRole('heading')))
   // The landing page may already be one of the three; the other two must each take a click.
   let navigations = 0
-  for (const { label, heading } of PAGES) {
+  for (const { label, heading, actionsCount } of PAGES) {
     const headingOf = page.getByRole('heading', { name: heading })
     if (!(await eventually(() => anyVisible(headingOf), 1000))) {
       await goTo(page, baseUrl, heading)
@@ -51,8 +68,12 @@ export default async function evaluate(page: Page, baseUrl: string): Promise<voi
       if (!(await eventually(() => anyVisible(headingOf))))
         throw new Error(`${label}: navigating to it showed no heading matching ${String(heading)}`)
     }
-    if (!(await eventually(() => labelledControl(page))))
-      throw new Error(`${label}: no form control with an accessible name on the page`)
+    if (!(await eventually(() => labelledControl(page, actionsCount))))
+      throw new Error(
+        actionsCount
+          ? `${label}: no labelled control, named button or link, or table on the page`
+          : `${label}: no form control with an accessible name on the page`,
+      )
   }
   if (navigations < 2)
     throw new Error('profile, billing and notifications are not each on a page of their own')

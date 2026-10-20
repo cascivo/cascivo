@@ -53,17 +53,32 @@ async function queryFromFirstRow(page: Page, rows: string[]): Promise<string> {
   return NO_MATCH
 }
 
+/**
+ * Type into the box and wait until `settled`. A search that runs on Enter (a search form, a
+ * "press Enter to search" box) gets the Enter it waits for.
+ */
+async function search(
+  box: Locator,
+  text: string,
+  settled: () => Promise<boolean>,
+): Promise<boolean> {
+  await box.fill(text)
+  if (await eventually(settled, 2000)) return true
+  await box.press('Enter')
+  return eventually(settled)
+}
+
+const rowCount = async (page: Page) => (await rowTexts(page)).length
+
 async function searchNarrows(page: Page): Promise<void> {
   const box = await searchBox(page)
   if (box === null) throw new Error('search: no searchbox or textbox labelled search/filter')
   const before = await rowTexts(page)
   if (before.length < 2) throw new Error('search: fewer than two rows to narrow')
   const query = await queryFromFirstRow(page, before)
-  await box.fill(query)
-  if (!(await eventually(async () => (await rowTexts(page)).length < before.length)))
-    throw new Error(`search: typing "${query}" did not reduce the ${before.length} visible rows`)
-  await box.fill('')
-  await eventually(async () => (await rowTexts(page)).length === before.length)
+  if (!(await search(box, query, async () => (await rowCount(page)) < before.length)))
+    throw new Error(`search: searching "${query}" did not reduce the ${before.length} visible rows`)
+  await search(box, '', async () => (await rowCount(page)) === before.length)
 }
 
 async function paginationMoves(page: Page): Promise<void> {
@@ -86,30 +101,77 @@ async function nameInTable(page: Page): Promise<boolean> {
   return anyVisible(tables(page).getByRole('row').filter({ hasText: NEW_NAME }))
 }
 
-/** Fill the name, and any other required text field so validation cannot block the submit. */
-async function fillForm(scope: Page | Locator): Promise<Locator> {
-  const named = scope.getByRole('textbox', { name: /name|title/i })
-  let nameField: Locator | null = null
-  await eventually(() => anyVisible(named))
-  for (const el of await named.all()) {
-    if (!(await el.isVisible())) continue
-    // An inline form shares the page with the search box; "Filter by name" is not the field.
-    if (/search|filter/i.test((await el.getAttribute('aria-label')) ?? '')) continue
-    if (/search|filter/i.test((await el.getAttribute('placeholder')) ?? '')) continue
-    nameField = el
-    break
+/** An accessible name that is not a search or filter box's ("Search by name" is no name field). */
+const NOT_SEARCH = /^(?!.*(search|filter))/i
+const NAME_FIELD = /^(?!.*(search|filter)).*(name|title)/i
+
+const TEXT_BY_TYPE: Record<string, string> = {
+  email: 'canary@example.com',
+  url: 'https://example.com',
+  tel: '5550100',
+  date: '2026-01-15',
+  'datetime-local': '2026-01-15T10:00',
+  month: '2026-01',
+  week: '2026-W03',
+  time: '10:00',
+}
+
+async function firstVisibleOf(locator: Locator): Promise<Locator | null> {
+  await eventually(() => anyVisible(locator))
+  return firstVisible(locator)
+}
+
+/**
+ * Give an empty field a valid value, whatever its kind, so a form whose other fields are
+ * required (owner, status, due date) can still be submitted. Best effort: a field this cannot
+ * fill is left for the app's validation to report.
+ */
+async function fillField(page: Page, field: Locator): Promise<void> {
+  const kind = await field.evaluate((el) => ({
+    tag: el.tagName,
+    type: el.getAttribute('type') ?? '',
+    value: 'value' in el && typeof el.value === 'string' ? el.value : null,
+  }))
+  try {
+    if (kind.tag === 'SELECT') {
+      if (kind.value !== '') return
+      const value = await field.evaluate((el) =>
+        el instanceof HTMLSelectElement
+          ? (Array.from(el.options).find((o) => o.value !== '' && !o.disabled)?.value ?? null)
+          : null,
+      )
+      if (value !== null) await field.selectOption(value, { timeout: 2000 })
+    } else if (kind.tag === 'INPUT' || kind.tag === 'TEXTAREA') {
+      if (kind.value !== '') return
+      const number = kind.type === 'number' || kind.type === 'range'
+      await field.fill(number ? '1' : (TEXT_BY_TYPE[kind.type] ?? 'Canary'), { timeout: 2000 })
+    } else {
+      // A custom combobox (a button that opens a listbox): pick its first option.
+      await field.click({ timeout: 2000 })
+      const option = await firstVisibleOf(page.getByRole('option'))
+      if (option === null) await page.keyboard.press('Escape')
+      else await option.click({ timeout: 2000 })
+    }
+  } catch {
+    // Left empty: if the app requires it, the submit fails and the check reports that.
   }
-  if (nameField === null) throw new Error('create: the form has no textbox labelled name/title')
+}
+
+/** Fill the name, then every other empty field in the form, skipping search and filter boxes. */
+async function fillForm(page: Page, scope: Page | Locator): Promise<Locator> {
+  const nameField =
+    (await firstVisibleOf(scope.getByRole('textbox', { name: NAME_FIELD }))) ??
+    (await firstVisible(scope.getByRole('textbox', { name: NOT_SEARCH })))
+  if (nameField === null) throw new Error('create: the form has no text field for a name')
   await nameField.fill(NEW_NAME)
-  for (const field of await scope.getByRole('textbox').all()) {
-    if (!(await field.isVisible()) || (await field.inputValue()) !== '') continue
-    const required =
-      (await field.getAttribute('required')) !== null ||
-      (await field.getAttribute('aria-required')) === 'true'
-    if (!required) continue
-    const email = (await field.getAttribute('type')) === 'email'
-    await field.fill(email ? 'canary@example.com' : 'Canary')
-  }
+  const fields = scope
+    .getByRole('textbox', { name: NOT_SEARCH })
+    .or(scope.getByRole('spinbutton', { name: NOT_SEARCH }))
+    .or(scope.getByRole('combobox', { name: NOT_SEARCH }))
+    // Date and time inputs have no ARIA role to find them by.
+    .or(scope.locator('input[type="date"], input[type="datetime-local"], input[type="month"]'))
+    .or(scope.locator('input[type="week"], input[type="time"]'))
+  for (const field of await fields.all()) if (await field.isVisible()) await fillField(page, field)
   return nameField
 }
 
@@ -120,7 +182,7 @@ async function createAddsRow(page: Page, baseUrl: string): Promise<void> {
   const dialog = page.getByRole('dialog')
   const inDialog = await eventually(() => anyVisible(dialog), 2000)
   const scope = inDialog ? dialog : page
-  const nameField = await fillForm(scope)
+  const nameField = await fillForm(page, scope)
   // Enter submits a real form; a form that only listens to its button gets the click instead.
   await nameField.press('Enter')
   const submitted = await eventually(
@@ -128,17 +190,18 @@ async function createAddsRow(page: Page, baseUrl: string): Promise<void> {
     2000,
   )
   if (!submitted) {
-    const submit = scope.getByRole('button', { name: /create|save|add|submit|done/i }).last()
-    await submit.click({ timeout: 5000 })
+    // The last visible one: the form's own button follows its fields and any page-level trigger.
+    const buttons = scope.getByRole('button', { name: /create|save|add|submit|done/i })
+    let submit: Locator | null = null
+    for (const button of await buttons.all()) if (await button.isVisible()) submit = button
+    // A click that cannot land is not the verdict; whether the row appears is.
+    await submit?.click({ timeout: 5000 }).catch(() => {})
   }
   if (await eventually(() => nameInTable(page), 3000)) return
   // The new row may land on another page of the table: search for it.
   const found = await eventually(async () => (await searchBox(page)) !== null)
   const box = found ? await searchBox(page) : null
-  if (box !== null) {
-    await box.fill(NEW_NAME)
-    if (await eventually(() => nameInTable(page))) return
-  }
+  if (box !== null && (await search(box, NEW_NAME, () => nameInTable(page)))) return
   throw new Error(`create: "${NEW_NAME}" was submitted but never appeared in the table`)
 }
 

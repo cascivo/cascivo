@@ -1,4 +1,4 @@
-import { Flex, Heading, Text } from '@cascivo/react'
+import { Button, Flex, Heading, Text, useSignalState } from '@cascivo/react'
 
 const QUESTIONS = [
   {
@@ -16,6 +16,7 @@ const QUESTIONS = [
 ]
 
 export function Faq() {
+  const [open, setOpen] = useSignalState<string | null>(null)
   return (
     <section id="faq" aria-labelledby="faq-title">
       <Heading level={2} id="faq-title">
@@ -24,8 +25,15 @@ export function Faq() {
       <Flex gap={4}>
         {QUESTIONS.map((item) => (
           <div key={item.q}>
-            <Heading level={3}>{item.q}</Heading>
-            <Text>{item.a}</Text>
+            <Button
+              variant="ghost"
+              aria-expanded={open.value === item.q}
+              onClick={() => setOpen(open.value === item.q ? null : item.q)}
+            >
+              {item.q}
+            </Button>
+            {/* The defect: the answer's visibility never follows the toggle. */}
+            <Text hidden>{item.a}</Text>
           </div>
         ))}
       </Flex>

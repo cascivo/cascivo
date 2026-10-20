@@ -1,5 +1,6 @@
-// BROKEN canary: removes the FAQ disclosure. Every question and answer is printed open, so there
-// is nothing to expand and no hidden answer to reveal. Everything else matches the cascivo canary.
+// BROKEN canary: removes the FAQ answers. Each question is a toggle whose aria-expanded flips,
+// but its answer stays hidden whatever the state, so expanding reveals nothing. Everything else
+// matches the cascivo canary.
 import { Button, Flex, Link, Text } from '@cascivo/react'
 import '@cascivo/themes/light.css'
 import { Faq } from './sections/Faq'

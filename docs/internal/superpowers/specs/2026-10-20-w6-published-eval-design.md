@@ -84,8 +84,8 @@ arm-specific line naming its design system:
 | id | Source | Behaviour the hidden test checks (examples) |
 | --- | --- | --- |
 | `admin-console` | existing prompt | overview with KPI figures, a users table, a settings page, navigation between them |
-| `saas-settings` | existing | profile, billing and notification pages reachable and labelled |
-| `marketing-site` | existing | hero heading, features, pricing, testimonials, FAQ (disclosure expands), footer |
+| `saas-settings` | existing | profile, billing and notification pages, each reached by navigation; profile and notifications each have a labelled form control, billing has a labelled control or a named action or table |
+| `marketing-site` | existing | hero heading, features, pricing, testimonials, FAQ (a question disclosure, if there is one, expands to show its answer; otherwise an answer is visible under its question), footer (`contentinfo` or a page `<footer>`) |
 | `crud-table` | existing | table of projects; search narrows rows; pagination moves pages; "create" adds a row |
 | `auth-flow` | existing | sign-in and sign-up forms with labelled fields; submitting sign-in reaches a dashboard |
 | `form-validation` | new | submitting an empty required field shows an error tied to the field (`aria-describedby` or `aria-invalid`); a valid submit clears it |
