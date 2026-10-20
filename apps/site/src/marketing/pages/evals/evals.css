@@ -1,0 +1,123 @@
+/* /evals — imported only by EvalsPage. Table, note and hero styling come from the shared
+   .perf-table / .perf-note / .proof-hero rules; this file adds what only this page has. */
+@layer cascivo.component {
+  .evals-page {
+    & .evals-model {
+      margin-block-start: var(--cascivo-space-6);
+    }
+
+    & .evals-model h3 {
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+
+    & .evals-model-meta {
+      font-size: var(--cascivo-text-sm);
+      font-weight: var(--cascivo-font-normal, 400);
+      color: var(--cascivo-color-text-subtle);
+    }
+
+    /* Three arms side by side once there is room, stacked on a phone. */
+    & .evals-headline {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+      gap: var(--cascivo-space-4);
+      margin: var(--cascivo-space-3) 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    & .evals-stat {
+      display: grid;
+      gap: var(--cascivo-space-1);
+      padding: var(--cascivo-space-4);
+      border: 1px solid var(--cascivo-color-border);
+      border-radius: var(--cascivo-radius-lg);
+      background: var(--cascivo-color-bg-subtle);
+    }
+
+    & .evals-stat-arm {
+      font-family: var(--cascivo-font-mono);
+      font-size: var(--cascivo-text-sm);
+      overflow-wrap: anywhere;
+    }
+
+    & .evals-stat-value {
+      font-size: var(--cascivo-text-3xl, 2rem);
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    & .evals-stat-meta {
+      font-size: var(--cascivo-text-xs);
+      color: var(--cascivo-color-text-subtle);
+    }
+
+    & .evals-table {
+      min-inline-size: max-content;
+    }
+
+    & .evals-table .evals-arm-head {
+      text-align: center;
+      border-inline-start: 1px solid var(--cascivo-color-border);
+    }
+
+    & .evals-table tbody th {
+      white-space: nowrap;
+    }
+
+    /* A row header's link is not inline in a sentence, so it gets the full touch target. */
+    @media (pointer: coarse) {
+      & .evals-table tbody th a {
+        display: inline-flex;
+        align-items: center;
+        min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+      }
+    }
+
+    & .evals-defs {
+      display: grid;
+      gap: var(--cascivo-space-3);
+      max-inline-size: 48rem;
+      margin: var(--cascivo-space-3) 0 0;
+    }
+
+    & .evals-defs dt {
+      font-weight: var(--cascivo-font-bold);
+    }
+
+    & .evals-defs dd {
+      margin: var(--cascivo-space-1) 0 0;
+    }
+
+    & .evals-prose,
+    & .evals-prose-list,
+    & .evals-tasks {
+      max-inline-size: 48rem;
+      margin: var(--cascivo-space-3) 0 0;
+    }
+
+    & .evals-prose-list,
+    & .evals-tasks {
+      display: grid;
+      gap: var(--cascivo-space-2);
+      padding-inline-start: var(--cascivo-space-5);
+    }
+
+    & .evals-page h3 {
+      margin-block: var(--cascivo-space-6) 0;
+    }
+
+    & .evals-code {
+      margin: var(--cascivo-space-3) 0 0;
+      padding: var(--cascivo-space-4);
+      border: 1px solid var(--cascivo-color-border);
+      border-radius: var(--cascivo-radius-lg);
+      background: var(--cascivo-color-bg-subtle);
+      font-family: var(--cascivo-font-mono);
+      font-size: var(--cascivo-text-sm);
+      /* Long commands scroll inside the box (the .pg-scroll wrapper), never the page. */
+      white-space: pre;
+    }
+  }
+}

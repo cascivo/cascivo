@@ -51,6 +51,7 @@ const AccessibleComponentPage = lazy(() =>
 const PerformancePage = lazy(() =>
   import('./pages/PerformancePage').then((m) => ({ default: m.PerformancePage })),
 )
+const EvalsPage = lazy(() => import('./pages/EvalsPage').then((m) => ({ default: m.EvalsPage })))
 const EnterprisePage = lazy(() =>
   import('./pages/EnterprisePage').then((m) => ({ default: m.EnterprisePage })),
 )
@@ -243,6 +244,7 @@ const ROUTES: Record<string, Route> = {
     title: ROUTE_HEAD['/accessibility']?.title ?? 'cascivo',
   },
   '/performance': { Page: PerformancePage, title: ROUTE_HEAD['/performance']?.title ?? 'cascivo' },
+  '/evals': { Page: EvalsPage, title: ROUTE_HEAD['/evals']?.title ?? 'cascivo' },
   '/enterprise': { Page: EnterprisePage, title: ROUTE_HEAD['/enterprise']?.title ?? 'cascivo' },
   '/guides': { Page: GuidesPage, title: ROUTE_HEAD['/guides']?.title ?? 'cascivo' },
   '/blog': { Page: BlogIndexPage, title: ROUTE_HEAD['/blog']?.title ?? 'cascivo' },

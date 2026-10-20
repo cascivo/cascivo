@@ -1349,6 +1349,9 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.2
+      jsdom:
+        specifier: 'catalog:'
+        version: 29.1.1
       shiki:
         specifier: 'catalog:'
         version: 4.2.0

@@ -51,6 +51,7 @@
     "@playwright/test": "catalog:",
     "@shikijs/rehype": "catalog:",
     "@types/node": "catalog:",
+    "jsdom": "catalog:",
     "shiki": "catalog:",
     "typescript": "catalog:",
     "vite-imagetools": "catalog:",
