@@ -6,7 +6,7 @@
 import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { PublishedArmId } from '../arms.ts'
-import { CACHE, CLI, pinToTarballs, prepare, run } from '../env.ts'
+import { CACHE, CLI, pinToTarballs, prepare, run, WITHOUT_API_KEY } from '../env.ts'
 
 /**
  * Pinned so the control stays comparable between runs (`npm view shadcn version`, 2026-10-20).
@@ -28,7 +28,12 @@ export function shadcnMcpConfig(path: string): string {
     path,
     JSON.stringify(
       {
-        mcpServers: { shadcn: { command: 'npx', args: ['-y', `shadcn@${SHADCN_VERSION}`, 'mcp'] } },
+        mcpServers: {
+          shadcn: {
+            command: 'env',
+            args: [...WITHOUT_API_KEY, 'npx', '-y', `shadcn@${SHADCN_VERSION}`, 'mcp'],
+          },
+        },
       },
       null,
       2,

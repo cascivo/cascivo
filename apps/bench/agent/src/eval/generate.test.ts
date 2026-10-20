@@ -14,8 +14,10 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
 import { generate, type GenerateOptions } from './generate.ts'
+import { MCP, mcpConfig } from '../env.ts'
+import { ESTIMATED_MAX_SESSION_USD } from '../models.ts'
 import { parseClaudeResult } from '../result.ts'
-import type { Starter } from './starters.ts'
+import { SHADCN_VERSION, shadcnMcpConfig, type Starter } from './starters.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const FAKE_BIN = join(HERE, '__fixtures__', 'bin')
@@ -23,7 +25,14 @@ const FAKE_BIN = join(HERE, '__fixtures__', 'bin')
 let root: string
 let template: string
 const realPath = process.env['PATH']
-const FAKE_VARS = ['FAKE_CLAUDE_MODE', 'FAKE_CLAUDE_COST', 'FAKE_CLAUDE_LOG', 'FAKE_CLAUDE_PIDFILE']
+const FAKE_VARS = [
+  'FAKE_CLAUDE_MODE',
+  'FAKE_CLAUDE_COST',
+  'FAKE_CLAUDE_LOG',
+  'FAKE_CLAUDE_PIDFILE',
+  'FAKE_CLAUDE_SEQUENCE',
+  'FAKE_CLAUDE_COUNTER',
+]
 
 beforeAll(() => {
   chmodSync(join(FAKE_BIN, 'claude'), 0o755)
@@ -87,6 +96,9 @@ function running(pid: number): boolean {
   }).stdout.trim()
   return state !== '' && !state.startsWith('Z')
 }
+
+const isRecord = (v: unknown): v is Record<string, unknown> =>
+  typeof v === 'object' && v !== null && !Array.isArray(v)
 
 describe('generate', () => {
   it('runs one session per attempt and leaves meta, transcript and no node_modules', async () => {
@@ -227,14 +239,18 @@ describe('generate', () => {
     const m = meta(attemptDir(outDir)) as { infra: boolean; infraDetail: string }
     expect(m.infra).toBe(true)
     expect(m.infraDetail).toMatch(/claude result/)
-    expect(result.spentUsd).toBe(0)
+    // No parseable result means no known cost, so the session is charged an estimate.
+    expect(result.spentUsd).toBe(ESTIMATED_MAX_SESSION_USD['claude-haiku-5-5'])
   })
 
-  it('trims a long infra detail to DETAIL_MAX', async () => {
+  it('trims a long crash detail to DETAIL_MAX, keeping the end of stderr', async () => {
     const { DETAIL_MAX } = await import('./results.ts')
     const dir = mkdtempSync(join(tmpdir(), 'long-stderr-'))
     const script = join(dir, 'claude')
-    writeFileSync(script, '#!/bin/sh\nhead -c 5000 /dev/zero | tr "\\0" x >&2\nexit 1\n')
+    writeFileSync(
+      script,
+      '#!/bin/sh\necho START-MARKER >&2\nhead -c 5000 /dev/zero | tr "\\0" x >&2\necho END-MARKER >&2\nexit 1\n',
+    )
     chmodSync(script, 0o755)
     const saved = process.env['PATH']
     process.env['PATH'] = `${dir}:${saved}`
@@ -243,10 +259,88 @@ describe('generate', () => {
       await generate(base(outDir), deps)
       const m = meta(attemptDir(outDir)) as { infraDetail: string }
       expect(m.infraDetail.length).toBeLessThanOrEqual(DETAIL_MAX)
+      expect(m.infraDetail).toContain('END-MARKER')
+      expect(m.infraDetail).not.toContain('START-MARKER')
     } finally {
       process.env['PATH'] = saved
       rmSync(dir, { recursive: true, force: true })
     }
+  })
+
+  it('records an API error result as infra and still charges its cost', async () => {
+    const outDir = out()
+    process.env['FAKE_CLAUDE_MODE'] = 'apierror'
+    process.env['FAKE_CLAUDE_COST'] = '0.05'
+    const result = await generate(base(outDir), deps)
+
+    const m = meta(attemptDir(outDir)) as { infra: boolean; infraDetail: string; usage: unknown }
+    expect(m.infra).toBe(true)
+    expect(m.infraDetail).toContain('API Error: 529 overloaded')
+    expect(m.infraDetail).toContain('error_during_execution')
+    expect(parseClaudeResult(m.usage).costUsd).toBe(0.05)
+    expect(result.spentUsd).toBeCloseTo(0.05)
+  })
+
+  describe('a session with no result is charged an estimate', () => {
+    const sequence = (modes: string) => {
+      process.env['FAKE_CLAUDE_SEQUENCE'] = modes
+      process.env['FAKE_CLAUDE_COUNTER'] = join(root, `counter-${counter}`)
+    }
+
+    it('uses the highest cost seen for that model, and the cap counts it', async () => {
+      const outDir = out()
+      sequence('normal,hang,normal')
+      process.env['FAKE_CLAUDE_COST'] = '0.30'
+      const result = await generate(
+        { ...base(outDir), attempts: 3, maxUsd: 0.5, timeoutMin: 0.02 },
+        deps,
+      )
+
+      // 0.30 real + 0.30 estimated reaches the cap, so the third session never starts.
+      expect(result.spentUsd).toBeCloseTo(0.6)
+      expect(result.budgetExhausted).toBe(true)
+      expect(existsSync(attemptDir(outDir, 'cascivo-bare', 3))).toBe(false)
+      const m = meta(attemptDir(outDir, 'cascivo-bare', 2)) as { infraDetail: string }
+      expect(m.infraDetail).toMatch(/timed out/)
+      expect(m.infraDetail).toContain('(cost estimated at $0.30)')
+    })
+
+    it('falls back to the highest cost of any model, then to the per-model ceiling', async () => {
+      const outDir = out()
+      sequence('normal,hang')
+      process.env['FAKE_CLAUDE_COST'] = '0.30'
+      const lines: string[] = []
+      const result = await generate(
+        {
+          ...base(outDir),
+          models: ['claude-sonnet-5-5', 'claude-haiku-5-5'],
+          timeoutMin: 0.02,
+        },
+        { ...deps, log: (l) => lines.push(l) },
+      )
+      expect(result.spentUsd).toBeCloseTo(0.6)
+      expect(lines.join('\n')).toContain('cost estimated at $0.30')
+
+      const first = out()
+      sequence('hang')
+      const cold = await generate(
+        { ...base(first), models: ['claude-haiku-5-5'], timeoutMin: 0.02 },
+        deps,
+      )
+      expect(cold.spentUsd).toBe(ESTIMATED_MAX_SESSION_USD['claude-haiku-5-5'])
+    })
+
+    it('charges a crash too, and fits the estimate inside DETAIL_MAX', async () => {
+      const { DETAIL_MAX } = await import('./results.ts')
+      const outDir = out()
+      sequence('normal,crash')
+      process.env['FAKE_CLAUDE_COST'] = '0.30'
+      const result = await generate({ ...base(outDir), attempts: 2 }, deps)
+      expect(result.spentUsd).toBeCloseTo(0.6)
+      const m = meta(attemptDir(outDir, 'cascivo-bare', 2)) as { infraDetail: string }
+      expect(m.infraDetail.length).toBeLessThanOrEqual(DETAIL_MAX)
+      expect(m.infraDetail).toMatch(/estimated at \$0\.30\)$/)
+    })
   })
 
   it('stops before a session once spend reaches the cap', async () => {
@@ -295,10 +389,128 @@ describe('generate', () => {
     expect(run).not.toHaveProperty('records')
   })
 
+  it('writes run.json after every session, so an aborted run keeps its spend', async () => {
+    const outDir = out()
+    const seen: unknown[] = []
+    await generate(
+      { ...base(outDir), attempts: 2 },
+      {
+        ...deps,
+        log: () => {
+          const run: unknown = JSON.parse(readFileSync(join(outDir, 'run.json'), 'utf8'))
+          seen.push(isRecord(run) ? run['spentUsd'] : undefined)
+        },
+      },
+    )
+    expect(seen).toEqual([0.1, 0.2])
+  })
+
+  it('refuses an output directory that already holds files', async () => {
+    const outDir = out()
+    mkdirSync(outDir, { recursive: true })
+    writeFileSync(join(outDir, 'stale.txt'), '')
+    await expect(generate(base(outDir), deps)).rejects.toThrow(/not empty/)
+    // An existing empty directory is fine.
+    const empty = out()
+    mkdirSync(empty, { recursive: true })
+    await expect(generate(base(empty), deps)).resolves.toBeDefined()
+  })
+
+  it('does not hold the process open through a process that escaped the session', async (ctx) => {
+    if (spawnSync('which', ['setsid']).status !== 0) return ctx.skip()
+    const outDir = out()
+    const pidfile = join(root, 'escape.pid')
+    const script = join(root, 'escape-run.mjs')
+    writeFileSync(
+      script,
+      `import { generate } from ${JSON.stringify(new URL('./generate.ts', import.meta.url).href)}
+await generate(${JSON.stringify(base(outDir))}, {
+  prepareStarter: () => ({ template: null, nodeModules: '' }),
+  log: () => {},
+})
+`,
+    )
+    try {
+      const ran = spawnSync(process.execPath, [script], {
+        encoding: 'utf8',
+        timeout: 20_000,
+        env: {
+          ...process.env,
+          FAKE_CLAUDE_MODE: 'escape',
+          FAKE_CLAUDE_PIDFILE: pidfile,
+        },
+      })
+      // A process held open by the escaped child's pipes would be killed by the timeout instead.
+      expect(ran.error).toBeUndefined()
+      expect(ran.status, ran.stderr).toBe(0)
+    } finally {
+      if (existsSync(pidfile)) {
+        try {
+          process.kill(Number(readFileSync(pidfile, 'utf8')), 'SIGKILL')
+        } catch {
+          // Already gone.
+        }
+      }
+    }
+  })
+
   it('rejects the unpublished arm and an unknown task before running anything', async () => {
     await expect(generate({ ...base(out()), arms: ['today'] }, deps)).rejects.toThrow(/today/)
     await expect(generate({ ...base(out()), tasks: ['nope'] }, deps)).rejects.toThrow(
       /Unknown task/,
     )
+  })
+})
+
+// The key is for the claude session alone: an MCP server (and anything it spawns, as
+// `npx cascivo` and `npx shadcn` do) has no use for it, and agent-written code can reach both.
+describe('MCP configs', () => {
+  const strip = ['-u', 'ANTHROPIC_API_KEY']
+
+  it('launch the cascivo server and the pinned shadcn server without the API key', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'mcp-config-'))
+    try {
+      const cascivo: unknown = JSON.parse(readFileSync(mcpConfig(join(dir, 'c.json')), 'utf8'))
+      const shadcn: unknown = JSON.parse(readFileSync(shadcnMcpConfig(join(dir, 's.json')), 'utf8'))
+      expect(cascivo).toMatchObject({
+        mcpServers: { cascivo: { command: 'env', args: [...strip, 'node', MCP] } },
+      })
+      expect(shadcn).toMatchObject({
+        mcpServers: {
+          shadcn: {
+            command: 'env',
+            args: [...strip, 'npx', '-y', `shadcn@${SHADCN_VERSION}`, 'mcp'],
+          },
+        },
+      })
+    } finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
+  })
+
+  it('actually remove the key from the server process', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'mcp-config-run-'))
+    try {
+      const parsed: unknown = JSON.parse(readFileSync(mcpConfig(join(dir, 'c.json')), 'utf8'))
+      const server =
+        isRecord(parsed) && isRecord(parsed['mcpServers']) ? parsed['mcpServers']['cascivo'] : null
+      if (
+        !isRecord(server) ||
+        typeof server['command'] !== 'string' ||
+        !Array.isArray(server['args'])
+      )
+        throw new Error('unexpected config')
+      // Same launcher, a different program: `node -p` instead of the MCP server.
+      const args = server['args']
+        .slice(0, -2)
+        .concat(['node', '-p', 'String(process.env.ANTHROPIC_API_KEY)'])
+      const ran = spawnSync(server['command'], args, {
+        encoding: 'utf8',
+        env: { ...process.env, ANTHROPIC_API_KEY: 'sk-secret' },
+      })
+      expect(ran.stdout.trim()).toBe('undefined')
+    } finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
   })
 })

@@ -76,6 +76,26 @@ describe('eval-cli', () => {
     }
   })
 
+  it('exits 2 for a model that is not in the list', () => {
+    const ran = node(
+      [CLI, 'generate', '--out', join(root, 'm'), '--models', 'claude-sonnet-5-5,gpt-9'],
+      {
+        ANTHROPIC_API_KEY: 'x',
+      },
+    )
+    expect(ran.status).toBe(2)
+    expect(ran.stderr).toContain('gpt-9')
+  })
+
+  it('exits 2 for an output directory that already holds files', () => {
+    const dir = join(root, 'stale')
+    mkdirSync(dir, { recursive: true })
+    writeFileSync(join(dir, 'old.txt'), '')
+    const ran = node([CLI, 'generate', '--out', dir], { ANTHROPIC_API_KEY: 'x' })
+    expect(ran.status).toBe(2)
+    expect(ran.stderr).toMatch(/not empty/)
+  })
+
   it('refuses to generate without ANTHROPIC_API_KEY', () => {
     const ran = node([CLI, 'generate', '--out', join(root, 'nokey')], {
       ANTHROPIC_API_KEY: undefined,

@@ -81,9 +81,13 @@ async function generateCommand(args: string[]): Promise<void> {
   const tasks = list(f, 'tasks') ?? [...TASK_IDS]
   const unknown = tasks.filter((t) => !TASK_IDS.includes(t))
   if (unknown.length > 0) throw new UsageError(`unknown task ${unknown.join(', ')}`)
+  const models = list(f, 'models') ?? [...MODELS]
+  const badModels = models.filter((m) => !(MODELS as readonly string[]).includes(m))
+  if (badModels.length > 0)
+    throw new UsageError(`unknown model ${badModels.join(', ')} (known: ${MODELS.join(', ')})`)
   const options = {
     outDir,
-    models: list(f, 'models') ?? [...MODELS],
+    models,
     arms: arms.filter((a): a is ArmId => isArm(a)),
     tasks,
     attempts: number(f, 'attempts', 3, true),
@@ -96,7 +100,12 @@ async function generateCommand(args: string[]): Promise<void> {
     )
     exit(2)
   }
-  const { generate } = await import('./eval/generate.ts')
+  const { assertFreshOutDir, generate } = await import('./eval/generate.ts')
+  try {
+    assertFreshOutDir(outDir)
+  } catch (error) {
+    throw new UsageError(error instanceof Error ? error.message : String(error))
+  }
   const { spentUsd, budgetExhausted } = await generate(options)
   log(
     `\nspent $${spentUsd.toFixed(2)} of $${options.maxUsd}` +

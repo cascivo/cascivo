@@ -143,10 +143,20 @@ export function runDirectory(root: string, name: string): string {
   return dir
 }
 
+/**
+ * Prefixes an MCP server's command so it starts without the API key: only the `claude` session
+ * needs it, and agent-written code can reach a server and whatever it spawns (`npx cascivo`).
+ */
+export const WITHOUT_API_KEY = ['-u', 'ANTHROPIC_API_KEY']
+
 export function mcpConfig(path: string): string {
   writeFileSync(
     path,
-    JSON.stringify({ mcpServers: { cascivo: { command: 'node', args: [MCP] } } }, null, 2),
+    JSON.stringify(
+      { mcpServers: { cascivo: { command: 'env', args: [...WITHOUT_API_KEY, 'node', MCP] } } },
+      null,
+      2,
+    ),
   )
   return path
 }

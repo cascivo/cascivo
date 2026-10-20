@@ -14,7 +14,10 @@ describe('shadcn MCP config', () => {
       const path = shadcnMcpConfig(join(dir, 'shadcn.json'))
       expect(JSON.parse(readFileSync(path, 'utf8'))).toEqual({
         mcpServers: {
-          shadcn: { command: 'npx', args: ['-y', `shadcn@${SHADCN_VERSION}`, 'mcp'] },
+          shadcn: {
+            command: 'env',
+            args: ['-u', 'ANTHROPIC_API_KEY', 'npx', '-y', `shadcn@${SHADCN_VERSION}`, 'mcp'],
+          },
         },
       })
     } finally {
