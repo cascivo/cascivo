@@ -12,5 +12,7 @@
     "lib": ["ES2023", "DOM"],
     "types": ["node"]
   },
-  "include": ["src", "tasks"]
+  "include": ["src", "tasks"],
+  // Built and type-checked by the score-phase tests themselves; one fails tsc on purpose.
+  "exclude": ["src/eval/__fixtures__/apps"]
 }
