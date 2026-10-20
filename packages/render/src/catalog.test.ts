@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import Ajv2020 from 'ajv/dist/2020'
 import { describe, expect, it } from 'vitest'
 import { componentNames } from './component-names.ts'
 
@@ -109,5 +110,72 @@ describe('catalog.v1.json', () => {
         expect(hits.length, `${name}.${p.name}`).toBe(1)
       }
     }
+  })
+})
+
+describe('A2UI v0.9 catalog', () => {
+  const A2UI_PATH = join(HERE, '..', 'schema', 'a2ui', 'v0_9', 'catalog.json')
+  const SITE_PATH = join(
+    HERE,
+    '..',
+    '..',
+    '..',
+    'apps',
+    'site',
+    'public',
+    'a2ui',
+    'v0_9',
+    'catalog.json',
+  )
+  const ID = 'https://cascivo.com/a2ui/v0_9/catalog.json'
+  const a2ui = JSON.parse(readFileSync(A2UI_PATH, 'utf-8')) as Record<string, unknown> & {
+    components: Record<string, { allOf: { properties?: Record<string, unknown> }[] }>
+  }
+  const common: unknown = JSON.parse(
+    readFileSync(join(HERE, '__fixtures__', 'a2ui', 'v0_9', 'common_types.json'), 'utf-8'),
+  )
+  const ajv = new Ajv2020({ strict: false })
+  ajv.addSchema(common as object)
+  // common_types resolves `catalog.json#/$defs/anyFunction` against whichever catalog is in use; stub it.
+  ajv.addSchema({
+    $id: 'https://a2ui.org/specification/v0_9/catalog.json',
+    $defs: { anyFunction: { type: 'object' } },
+  })
+  const validator = (name: string) => ajv.compile({ $ref: `${ID}#/components/${name}` })
+  ajv.addSchema(a2ui as object)
+
+  it('packaged and site copies are byte-identical with the expected ids', () => {
+    expect(readFileSync(SITE_PATH, 'utf-8')).toBe(readFileSync(A2UI_PATH, 'utf-8'))
+    expect(a2ui['catalogId']).toBe(ID)
+    expect(a2ui['$id']).toBe(ID)
+  })
+
+  it('omits reserved-name props, recording them', () => {
+    const search = a2ui.components['Search'] as unknown as {
+      allOf: { properties?: Record<string, unknown> }[]
+      'x-cascivo-omitted': Record<string, { reason: string }>
+    }
+    expect(search.allOf[1]?.properties?.['id']).toBeUndefined()
+    expect(search['x-cascivo-omitted']['id']?.reason).toBe('reserved-name')
+  })
+
+  it('validates Button', () => {
+    const v = validator('Button')
+    const ok = { id: 'b', component: 'Button', children: ['t'], onClick: { event: { name: 'go' } } }
+    expect(v(ok)).toBe(true)
+    expect(v({ ...ok, foo: 1 })).toBe(false)
+  })
+
+  it('validates Input data bindings', () => {
+    const v = validator('Input')
+    expect(v({ id: 'i', component: 'Input', label: { path: '/form/label' } })).toBe(true)
+  })
+
+  it('validates DataTable columns', () => {
+    const v = validator('DataTable')
+    const base = { id: 'd', component: 'DataTable', rows: { path: '/rows' } }
+    expect(v({ ...base, columns: [{ key: 'a', header: 'A' }] })).toBe(true)
+    expect(v({ ...base, columns: { path: '/cols' } })).toBe(true)
+    expect(v({ ...base, columns: [{ header: 'A' }] })).toBe(false)
   })
 })

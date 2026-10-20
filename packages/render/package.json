@@ -64,6 +64,7 @@
     "@cascivo/text": "workspace:^"
   },
   "devDependencies": {
+    "ajv": "catalog:",
     "@testing-library/react": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",

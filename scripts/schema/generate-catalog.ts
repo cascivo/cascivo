@@ -6,6 +6,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { componentNames } from '../../packages/render/src/component-names.ts'
+import { toA2uiCatalog } from './a2ui.ts'
 import { buildCatalog, canonicalFiles, componentUsesChildren } from './catalog-model.ts'
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
@@ -42,6 +43,16 @@ const catalog = buildCatalog(registry, componentNames, implicitChildren)
 
 mkdirSync(dirname(OUT), { recursive: true })
 writeFileSync(OUT, JSON.stringify(catalog, null, 2) + '\n', 'utf-8')
+
+// Identical bytes in the package and the site, so the catalogId URL resolves to the published file.
+const a2ui = JSON.stringify(toA2uiCatalog(catalog), null, 2) + '\n'
+for (const p of [
+  join(REPO_ROOT, 'packages', 'render', 'schema', 'a2ui', 'v0_9', 'catalog.json'),
+  join(REPO_ROOT, 'apps', 'site', 'public', 'a2ui', 'v0_9', 'catalog.json'),
+]) {
+  mkdirSync(dirname(p), { recursive: true })
+  writeFileSync(p, a2ui, 'utf-8')
+}
 
 let data = 0
 let slots = 0
