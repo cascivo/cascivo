@@ -1,6 +1,6 @@
 # cascivo — Roadmap v61: A2UI Study — Be the Best Design System to Render Agent UI
 
-**Last updated:** 2026-10-20
+**Last updated:** 2026-10-21
 **Status:** 🟢 T1 and T2 shipped (`@cascivo/render/a2ui/v0_9`). T3 and T4 next.
 **Builds on:** ROADMAP-V40 (OpenUI study: bounded vocabulary + prop conformance, shipped), `@cascivo/render`
 (`ViewConfig` + `CascivoView`), `@cascivo/mcp` (`get_view_grammar`, `validate_view`), `@cascivo/data`
