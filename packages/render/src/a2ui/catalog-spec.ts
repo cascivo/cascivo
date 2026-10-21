@@ -64,8 +64,11 @@ export function hasTranslationRef(value: unknown): boolean {
   return false
 }
 
-// `${openUrl(` inside a string that may reach formatString.
+// `${openUrl(` inside a string that may reach formatString. Tested with every backslash
+// removed: a quoted formatString argument is unescaped (`\{` → `{`, `\p` → `p`) before it
+// runs as a template, so an escape can hide the call from a scan of the raw text.
 const OPEN_URL_TEMPLATE = /\$\{\s*openUrl\s*\(/
+const hidesOpenUrl = (text: string): boolean => OPEN_URL_TEMPLATE.test(text.replaceAll('\\', ''))
 
 /**
  * Why `value` may not carry openUrl, or undefined. openUrl needs a user gesture, so it may only
@@ -82,7 +85,7 @@ export function checkOpenUrl(value: unknown, isAction: boolean): string | undefi
   const stack: unknown[] = [rest]
   while (stack.length > 0) {
     const cur = stack.pop()
-    if (typeof cur === 'string' && OPEN_URL_TEMPLATE.test(cur)) {
+    if (typeof cur === 'string' && hidesOpenUrl(cur)) {
       return 'openUrl may only be the functionCall of an action'
     }
     if (typeof cur !== 'object' || cur === null) continue

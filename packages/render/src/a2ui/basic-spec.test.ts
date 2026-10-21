@@ -109,6 +109,18 @@ describe('basicCatalogSpec', () => {
     expect(
       spec
         .validate(
+          c('Text', {
+            text: {
+              call: 'formatString',
+              args: { value: '${formatString(value:\'$\\{openUrl(url:"x")}\')}' },
+            },
+          }),
+        )
+        .map((i) => i.prop),
+    ).toEqual(['text'])
+    expect(
+      spec
+        .validate(
           c('Button', {
             child: 'l',
             action: { event: { name: 'go' } },

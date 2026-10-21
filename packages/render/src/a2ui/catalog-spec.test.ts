@@ -45,6 +45,17 @@ describe('cascivoCatalogSpec', () => {
         )
         .map((i) => i.prop),
     ).toEqual(['checks'])
+    // A quoted argument is unescaped before formatString runs it, so `\{` and `\p` hide nothing.
+    for (const value of [
+      '${formatString(value:\'$\\{openUrl(url:"https://evil.example/")}\')}',
+      '${formatString(value:\'\\${o\\penUrl(url:"https://evil.example/")}\')}',
+    ]) {
+      expect(
+        spec
+          .validate(c('Text', { children: { call: 'formatString', args: { value } } }))
+          .map((i) => i.prop),
+      ).toEqual(['children'])
+    }
     expect(spec.validate(c('Button', { onClick: { functionCall: open } }))).toEqual([])
     expect(
       spec
