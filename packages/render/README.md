@@ -124,9 +124,48 @@ Every prop of a component is sorted into one of four kinds:
 
 `validateView` also checks the shape of object and array props, such as `DataTable` `columns`: nested fields by presence and type, so an unknown nested field is allowed.
 
-Rendering A2UI messages is not shipped yet. This release only publishes the catalogs.
-
 Regenerate both files with `pnpm regen` (or `pnpm schema:generate && vp check --fix`); CI fails when the committed files drift from the manifests. `pnpm schema:check` runs the generator unit tests.
+
+## Render A2UI
+
+`@cascivo/render/a2ui/v0_9` renders [A2UI](https://a2ui.org) v0.9 messages with cascivo components. It is our own renderer, not `@a2ui/react`: that package brings lit, zod, a second signals store and custom elements. The store holds messages as signals, so a data change re-renders only the nodes bound to it.
+
+```tsx
+import {
+  A2uiSurface,
+  createA2uiStore,
+  defaultCatalogs,
+  defaultCatalogSpecs,
+} from '@cascivo/render/a2ui/v0_9'
+
+const store = createA2uiStore({ catalogs: defaultCatalogSpecs })
+
+// Feed it each message the agent sends, already parsed from JSON. `apply` never throws and
+// returns the errors to send back to the agent.
+export const feed = (raw: unknown) => store.apply(raw)
+
+export function Agent({ send }: { send: (action: unknown) => void }) {
+  return <A2uiSurface store={store} surfaceId="main" catalogs={defaultCatalogs} onAction={send} />
+}
+```
+
+### Catalogs
+
+- The **cascivo catalog** (`cascivoCatalog`, spec `cascivoCatalogSpec`, id `A2UI_CATALOG_ID`) lets an agent target real cascivo components, the same vocabulary `validateView` checks.
+- The **basic catalog** (`basicCatalog`, spec `basicCatalogSpec`, id `BASIC_CATALOG_ID`) is A2UI's standard set, drawn with cascivo components.
+
+A surface uses the catalog its `createSurface` message names; the store only knows the catalogs passed to `createA2uiStore`, so inline catalogs are refused.
+
+### Security and limits
+
+- Every message is validated against the catalog spec before it reaches state; a bad one becomes an `A2uiErrorMessage`, never an exception.
+- URLs that reach `href`, `src` or `window.open` are checked, and unsafe ones are dropped.
+- `createA2uiStore({ limits })` overrides `DEFAULT_A2UI_LIMITS`: surfaces, components, id length, data nodes, render depth and `maxRenderNodes` (default 20000, so shared ids cannot fan a tree out exponentially).
+- The `regex` function refuses patterns with more than 2 quantifiers, repeat counts above 99, backreferences, nested quantifiers, and values over 256 characters.
+
+### Custom adapters
+
+An `A2uiAdapter` receives an `AdapterInput` (`prop`, `slot`, `children`, `resolve`, `typeOf`, `writer`, `action`, `failingChecks`, `report`). Call `slot()` and `children()` at most once each, synchronously while the adapter runs, and place each returned node once. Later calls render nothing, because the render-node budget counts every node.
 
 ## Install
 

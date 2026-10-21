@@ -224,6 +224,14 @@ describe('package exports', () => {
       expect(() => readFileSync(join(HERE, '..', target ?? ''), 'utf-8')).not.toThrow()
     },
   )
+  it('exports ./a2ui/v0_9 from the built entry', () => {
+    const entry = pkg.exports['./a2ui/v0_9'] as unknown as Record<string, string>
+    expect(entry).toEqual({
+      types: './dist/a2ui-v0_9.d.ts',
+      import: './dist/a2ui-v0_9.js',
+      default: './dist/a2ui-v0_9.js',
+    })
+  })
 })
 
 describe('a2uiComponents', () => {

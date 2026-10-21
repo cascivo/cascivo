@@ -169,6 +169,12 @@ import {
 import { CascivoView, type ViewConfig } from '@cascivo/render'
 import { viewToMarkdown } from '@cascivo/render/text'
 import { validateView, type ValidationError } from '@cascivo/render/validate'
+import {
+  createA2uiStore,
+  A2uiSurface,
+  defaultCatalogs,
+  defaultCatalogSpecs,
+} from '@cascivo/render/a2ui/v0_9'
 // @cascivo/data — framework-free SSE primitives; typed against lib.dom's fetch/stream types
 // only, so this is the check that it needs no @types of any kind from the consumer.
 import { fetchSSE, formatSSE, HttpError, parseSSE, type ServerSentEvent } from '@cascivo/data'
@@ -404,6 +410,16 @@ const VIEW: ViewConfig = {
 export const viewText: string = viewToMarkdown(VIEW, { data: {} })
 export const viewElement = <CascivoView config={VIEW} onInvalid="render" />
 export const viewErrors: ValidationError[] = validateView(VIEW).errors
+// The A2UI subpath ships its own flattened .d.ts too: store + surface typed against the adopter's React.
+export const a2uiStore = createA2uiStore({ catalogs: defaultCatalogSpecs })
+export const a2uiElement = (
+  <A2uiSurface
+    store={a2uiStore}
+    surfaceId="main"
+    catalogs={defaultCatalogs}
+    onAction={(message) => void message}
+  />
+)
 
 // The assignability that makes the subpath worth having: a Tone named here must satisfy the
 // main entry's prop types. Two separate entry points declaring the same nominal type is

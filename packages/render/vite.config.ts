@@ -14,6 +14,7 @@ export default defineConfig({
         index: './src/index.ts',
         'view-text': './src/view-text.ts',
         validate: './src/validate.ts',
+        'a2ui-v0_9': './src/a2ui-v0_9.ts',
       },
       formats: ['es'],
       fileName: (_format, entryName) => `${entryName}.js`,
