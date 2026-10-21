@@ -1,0 +1,377 @@
+'use client'
+// Renders one A2UI surface from an `A2uiStore`. Every component is its own `A2uiNode`, which
+// subscribes only to the signals it reads, so a data change re-renders the nodes bound to it
+// and not their siblings. Everything a node reads (ids, props, data) came from an agent.
+import { useSignals } from '@cascivo/core'
+import { Skeleton } from '@cascivo/react'
+import React from 'react'
+import type { ComponentType, ReactNode } from 'react'
+import { a2uiComponents } from '../a2ui-catalog-data'
+import { componentMap } from '../component-map'
+import { checkUrls, isSafeUrl, URL_KEYS } from '../prop-check'
+import type { ValidationError } from '../prop-check'
+import { propSchemas } from '../prop-schemas'
+import { isBinding, isDynamicRef, isFunctionCall } from './catalog-spec'
+import { resolveDynamic } from './functions'
+import type { ResolveContext } from './functions'
+import { A2UI_CATALOG_ID, actionMessage, errorMessage, isRecord } from './messages'
+import type { A2uiActionMessage, A2uiComponent, A2uiErrorMessage } from './messages'
+import { A2uiPathError, resolvePath } from './pointer'
+import type { A2uiStore, A2uiSurfaceState } from './store'
+import { TWO_WAY, twoWayValue } from './two-way'
+
+export interface AdapterInput {
+  readonly component: A2uiComponent
+  /** The resolved value; a URL key that fails `isSafeUrl` is `undefined`. */
+  prop(name: string): unknown
+  /** Renders another node; a Skeleton while that id has not arrived. */
+  child(id: string): ReactNode
+  /** A child list, a component id or text, by the shape of the slot's value. */
+  slot(name: string): ReactNode
+  /** Set only when `prop` is a `{path}` binding: writes to the bound path. */
+  writer(prop: string): ((value: unknown) => void) | undefined
+  /** Set only when `prop` holds an Action: dispatches it. */
+  action(prop: string): (() => void) | undefined
+  /** Messages of the `checks` whose condition is not true. */
+  failingChecks(): readonly string[]
+}
+
+export type A2uiAdapter = (input: AdapterInput) => ReactNode
+
+export interface A2uiRenderCatalog {
+  readonly id: string
+  adapter(component: string): A2uiAdapter | undefined
+}
+
+export interface A2uiSurfaceProps {
+  store: A2uiStore
+  surfaceId: string
+  catalogs: readonly A2uiRenderCatalog[]
+  onAction?: (
+    message: A2uiActionMessage,
+    metadata: { a2uiClientDataModel?: ReturnType<A2uiStore['clientDataModel']> },
+  ) => void
+  onError?: (message: A2uiErrorMessage) => void
+  openUrl?: (url: string) => void
+  locale?: string
+  fallback?: ReactNode
+}
+
+interface Env {
+  readonly store: A2uiStore
+  readonly surface: A2uiSurfaceState
+  readonly catalog: A2uiRenderCatalog
+  readonly locale: string
+  readonly onAction: A2uiSurfaceProps['onAction']
+  readonly openUrl: (url: string) => void
+  report(e: A2uiErrorMessage): void
+  renderError(id: string, message: string): void
+}
+
+// Per surface, the ids already reported as RENDER_ERROR. Keyed by the surface object so the
+// set lives exactly as long as the surface (a re-created surface starts clean) and survives
+// re-mounts of <A2uiSurface>, which a component-local ref would not.
+const reportedRenderErrors = new WeakMap<A2uiSurfaceState, Set<string>>()
+
+function defaultOpenUrl(url: string): void {
+  if (isSafeUrl(url)) window.open(url, '_blank', 'noopener,noreferrer')
+}
+
+const hasOwn = (record: object, key: string): boolean => Object.hasOwn(record, key)
+
+function isTemplate(value: unknown): value is { componentId: string; path: string } {
+  return (
+    isRecord(value) && typeof value['componentId'] === 'string' && typeof value['path'] === 'string'
+  )
+}
+
+function makeInput(
+  component: A2uiComponent,
+  scope: string,
+  path: readonly string[],
+  env: Env,
+): AdapterInput {
+  const { data, id: surfaceId } = env.surface
+  const ctx: ResolveContext = {
+    data,
+    scope,
+    locale: env.locale,
+    openUrl: env.openUrl,
+    report: env.report,
+    surfaceId,
+  }
+  const raw = (name: string): unknown =>
+    hasOwn(component.props, name) ? component.props[name] : undefined
+  const resolve = (value: unknown): unknown => resolveDynamic(value, ctx)
+  const pathError = (e: unknown, at: string): void => {
+    if (!(e instanceof A2uiPathError)) throw e
+    env.report(errorMessage('INVALID_PATH', surfaceId, e.message, at))
+  }
+
+  const child = (id: string): ReactNode => (
+    <A2uiNode key={id} id={id} scope={scope} ancestors={path} env={env} />
+  )
+
+  const template = (componentId: string, at: string): ReactNode => {
+    let abs: string
+    let items: unknown
+    try {
+      abs = resolvePath(at, scope)
+      items = data.read(abs).value
+    } catch (e) {
+      pathError(e, at)
+      return null
+    }
+    if (!Array.isArray(items)) return null
+    const base = abs.replace(/\/$/, '')
+    return items.map((_, i) => (
+      <A2uiNode
+        key={`${componentId}#${i}`}
+        id={componentId}
+        scope={`${base}/${i}`}
+        ancestors={path}
+        env={env}
+      />
+    ))
+  }
+
+  return {
+    component,
+    prop(name) {
+      const value = raw(name)
+      if (name === 'accessibility' && isRecord(value)) {
+        // fromEntries defines own properties, so an agent's `__proto__` key stays a plain key.
+        return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, resolve(v)]))
+      }
+      const resolved = resolve(value)
+      if (URL_KEYS.has(name)) {
+        return typeof resolved === 'string' && isSafeUrl(resolved) ? resolved : undefined
+      }
+      // Literals were URL-checked by the store; data the agent bound in was not.
+      if (isDynamicRef(value) && typeof resolved === 'object' && resolved !== null) {
+        const unsafe: ValidationError[] = []
+        checkUrls(resolved, name, name, unsafe)
+        if (unsafe.length > 0) return undefined
+      }
+      return resolved
+    },
+    child,
+    slot(name) {
+      const value = raw(name)
+      if (value === undefined) return undefined
+      if (Array.isArray(value)) {
+        return value.filter((id): id is string => typeof id === 'string').map(child)
+      }
+      if (isTemplate(value)) return template(value.componentId, value.path)
+      const info = hasOwn(a2uiComponents, component.component)
+        ? a2uiComponents[component.component]
+        : undefined
+      const arity =
+        info !== undefined && hasOwn(info.slots, name) ? info.slots[name]?.arity : undefined
+      if (typeof value === 'string' && arity === 'one') return child(value)
+      // Only a string or number is text; an object bound in from the data model would crash React.
+      const text = resolve(value)
+      return typeof text === 'string' || typeof text === 'number' ? text : undefined
+    },
+    writer(prop) {
+      const value = raw(prop)
+      if (!isBinding(value) || !isRecord(value)) return undefined
+      const at = value['path']
+      if (typeof at !== 'string') return undefined
+      return (next) => {
+        try {
+          data.write(resolvePath(at, scope), next)
+        } catch (e) {
+          pathError(e, at)
+        }
+      }
+    },
+    action(prop) {
+      const value = raw(prop)
+      if (!isRecord(value)) return undefined
+      const event = value['event']
+      if (isRecord(event) && typeof event['name'] === 'string') {
+        const name = event['name']
+        const context = isRecord(event['context']) ? event['context'] : {}
+        return () => {
+          // Resolved at dispatch, so the context carries what the user sees now.
+          const resolved = Object.fromEntries(
+            Object.entries(context).map(([k, v]) => [k, resolve(v)]),
+          )
+          const message = actionMessage({
+            name,
+            surfaceId,
+            sourceComponentId: component.id,
+            context: resolved,
+          })
+          const model = env.surface.sendDataModel ? env.store.clientDataModel() : undefined
+          env.onAction?.(message, model === undefined ? {} : { a2uiClientDataModel: model })
+        }
+      }
+      const call = value['functionCall']
+      // resolveDynamic resolves the call's args and runs it through callFunction.
+      if (isFunctionCall(call)) return () => void resolve(call)
+      return undefined
+    },
+    failingChecks() {
+      const checks = raw('checks')
+      if (!Array.isArray(checks)) return []
+      return checks.flatMap((rule: unknown) =>
+        isRecord(rule) && typeof rule['message'] === 'string' && resolve(rule['condition']) !== true
+          ? [rule['message']]
+          : [],
+      )
+    },
+  }
+}
+
+interface NodeProps {
+  readonly id: string
+  readonly scope: string
+  /** Ids on the path from the root to this node, excluding it. */
+  readonly ancestors: readonly string[]
+  readonly env: Env
+}
+
+function A2uiNode({ id, scope, ancestors, env }: NodeProps): ReactNode {
+  useSignals()
+  if (ancestors.includes(id)) {
+    env.renderError(id, `Component "${id}" is its own ancestor; the cycle is not rendered.`)
+    return null
+  }
+  const max = env.store.limits.maxRenderDepth
+  if (ancestors.length >= max) {
+    env.renderError(id, `Component "${id}" is nested deeper than maxRenderDepth (${max}).`)
+    return null
+  }
+  const component = env.surface.component(id).value
+  if (component === undefined) return <Skeleton />
+  const adapter = env.catalog.adapter(component.component)
+  if (adapter === undefined) {
+    env.renderError(
+      id,
+      `Catalog "${env.catalog.id}" cannot render "${component.component}" (component "${id}").`,
+    )
+    return null
+  }
+  return adapter(makeInput(component, scope, [...ancestors, id], env))
+}
+
+/** Renders the surface `surfaceId` of `store`, drawing components through `catalogs`. */
+export function A2uiSurface({
+  store,
+  surfaceId,
+  catalogs,
+  onAction,
+  onError,
+  openUrl,
+  locale = '',
+  fallback,
+}: A2uiSurfaceProps): ReactNode {
+  useSignals()
+  // Read so a surface created after mount re-renders this component.
+  void store.surfaceIds.value
+  const surface = store.surface(surfaceId)
+  if (surface === undefined || !surface.hasRoot.value) return fallback ?? null
+
+  // Deferred: errors are found while rendering, and a host that sets state in `onError`
+  // must not update another component mid-render.
+  const report = (e: A2uiErrorMessage): void => {
+    if (onError !== undefined) queueMicrotask(() => onError(e))
+  }
+  const renderError = (id: string, message: string): void => {
+    let seen = reportedRenderErrors.get(surface)
+    if (seen === undefined) {
+      seen = new Set()
+      reportedRenderErrors.set(surface, seen)
+    }
+    if (seen.has(id)) return
+    seen.add(id)
+    report(errorMessage('RENDER_ERROR', surface.id, message))
+  }
+
+  const catalog = catalogs.find((c) => c.id === surface.catalogId)
+  if (catalog === undefined) {
+    // '' is never a component id, so it marks the surface-level error.
+    renderError('', `No render catalog for "${surface.catalogId}".`)
+    return fallback ?? null
+  }
+
+  const env: Env = {
+    store,
+    surface,
+    catalog,
+    locale,
+    onAction,
+    openUrl: openUrl ?? defaultOpenUrl,
+    report,
+    renderError,
+  }
+  return <A2uiNode id="root" scope="" ancestors={[]} env={env} />
+}
+
+// ---- The cascivo catalog --------------------------------------------------------------------
+
+function renderGeneric(
+  name: string,
+  Comp: ComponentType<Record<string, unknown>>,
+  input: AdapterInput,
+): ReactNode {
+  const info = hasOwn(a2uiComponents, name) ? a2uiComponents[name] : undefined
+  const slots = info?.slots ?? {}
+  const events = info?.events ?? []
+  const schemas = hasOwn(propSchemas, name) ? (propSchemas[name] ?? []) : []
+  const declares = (prop: string): boolean => schemas.some((s) => s.name === prop)
+
+  const props: Record<string, unknown> = {}
+  for (const key of Object.keys(input.component.props)) {
+    if (key === 'checks' || key === 'accessibility') continue
+    // Slots and events win over a same-named data prop, as in the catalog spec.
+    if (hasOwn(slots, key)) props[key] = input.slot(key)
+    else if (events.includes(key)) {
+      const handler = input.action(key)
+      if (handler !== undefined) props[key] = handler
+    } else if (declares(key)) props[key] = input.prop(key)
+  }
+
+  const twoWay = hasOwn(TWO_WAY, name) ? TWO_WAY[name] : undefined
+  const write = twoWay === undefined ? undefined : input.writer(twoWay.prop)
+  if (twoWay !== undefined && write !== undefined) {
+    const dispatch = input.action(twoWay.event)
+    // Write first, so an Action on the same event resolves its context against the new value.
+    props[twoWay.event] = (arg: unknown) => {
+      write(twoWayValue(name, arg))
+      dispatch?.()
+    }
+  }
+
+  const failing = input.failingChecks()[0]
+  if (failing !== undefined) {
+    if (name === 'Button') props['disabled'] = true
+    if (declares('error') && (props['error'] === undefined || props['error'] === '')) {
+      props['error'] = failing
+    }
+  }
+
+  const a11y = input.prop('accessibility')
+  if (
+    isRecord(a11y) &&
+    typeof a11y['label'] === 'string' &&
+    declares('ariaLabel') &&
+    props['ariaLabel'] === undefined
+  ) {
+    props['ariaLabel'] = a11y['label']
+  }
+
+  return React.createElement(Comp, props)
+}
+
+/** Draws every cascivo component through its manifest: data props, slots, events, checks. */
+export const cascivoCatalog: A2uiRenderCatalog = {
+  id: A2UI_CATALOG_ID,
+  adapter(component) {
+    const Comp = hasOwn(componentMap, component) ? componentMap[component] : undefined
+    if (Comp === undefined) return undefined
+    return (input) => renderGeneric(component, Comp, input)
+  },
+}
