@@ -13,7 +13,8 @@ import type { ValidationError } from '../prop-check'
 import { propSchemas } from '../prop-schemas'
 import { hasTranslationRef, isBinding, isDynamicRef, isFunctionCall } from './catalog-spec'
 import { A2uiDataError } from './data-model'
-import { resolveDynamic } from './functions'
+import { isTrustedGesture } from './gesture'
+import { callFunction, resolveDynamic } from './functions'
 import type { ResolveContext } from './functions'
 import { A2UI_CATALOG_ID, actionMessage, errorMessage, isRecord } from './messages'
 import type { A2uiActionMessage, A2uiComponent, A2uiErrorMessage } from './messages'
@@ -52,8 +53,12 @@ export interface AdapterInput {
   componentOf(id: string): A2uiComponent | undefined
   /** Set only when `prop` is a `{path}` binding: writes to the bound path. */
   writer(prop: string): ((value: unknown) => void) | undefined
-  /** Set only when `prop` holds an Action: dispatches it. */
-  action(prop: string): (() => void) | undefined
+  /**
+   * Set only when `prop` holds an Action: dispatches it. Hand it the event that triggered it
+   * (pass it as the handler itself): an action whose functionCall is `openUrl` opens only for
+   * a trusted click, key or pointerup event.
+   */
+  action(prop: string): ((event?: unknown) => void) | undefined
   /** Messages of the `checks` whose condition is not true. */
   failingChecks(): readonly string[]
   /**
@@ -174,18 +179,40 @@ function makeInput(
       reportOnce(errorMessage('FUNCTION_ERROR', surfaceId, 'openUrl only runs from an action.')),
     report: reportOnce,
   }
-  // An action also dispatches without a click: closing a Modal by writing its bound `open`
-  // fires onClose. So openUrl proceeds only under transient user activation. Without the
-  // User Activation API (older browsers, jsdom) it is allowed: a click handler is then the
-  // only path besides such programmatic closes.
+  // openUrl at dispatch: only an action's top-level `functionCall` gets the opener, and only
+  // when its handler got a trusted gesture on the control. Anything else resolved at dispatch
+  // (an event's context, another call's args, a formatString expansion that composes the call
+  // at run time, past any text scan) is refused. An action also dispatches without a click:
+  // closing a Modal by writing its bound `open` fires onClose with no event, while transient
+  // activation from an earlier click may still be live. Errors are reported once: such a
+  // dispatch is the agent's doing and can repeat.
   const dispatchCtx: ResolveContext = {
     ...base,
-    openUrl: (url) => {
-      if (hasUserActivation()) return env.openUrl(url)
-      reportOnce(errorMessage('FUNCTION_ERROR', surfaceId, 'openUrl needs a user gesture.'))
-    },
+    openUrl: () =>
+      reportOnce(
+        errorMessage(
+          'FUNCTION_ERROR',
+          surfaceId,
+          "openUrl only runs as an action's top-level functionCall.",
+        ),
+      ),
     report: env.report,
   }
+  // Activation is an extra gate where the API exists; without it (older browsers, jsdom) the
+  // trusted event is the gate.
+  const openerCtx = (event: unknown): ResolveContext => ({
+    ...base,
+    openUrl: (url) => {
+      const refusal = !isTrustedGesture(event)
+        ? 'openUrl needs a user gesture on the control.'
+        : !hasUserActivation()
+          ? 'openUrl needs a user gesture.'
+          : undefined
+      if (refusal === undefined) return env.openUrl(url)
+      reportOnce(errorMessage('FUNCTION_ERROR', surfaceId, refusal))
+    },
+    report: env.report,
+  })
   const raw = (name: string): unknown =>
     hasOwn(component.props, name) ? component.props[name] : undefined
   const resolve = (value: unknown): unknown => resolveDynamic(value, renderCtx)
@@ -408,9 +435,17 @@ function makeInput(
         }
       }
       const call = value['functionCall']
+      if (!isFunctionCall(call) || !isRecord(call)) return undefined
+      if (call['call'] === 'openUrl') {
+        const args = isRecord(call['args']) ? call['args'] : {}
+        return (event) => {
+          // Its args resolve without the opener, so a call nested in them cannot open.
+          const url = resolveNow(args['url'])
+          callFunction('openUrl', { url }, openerCtx(event))
+        }
+      }
       // resolveDynamic resolves the call's args and runs it through callFunction.
-      if (isFunctionCall(call)) return () => void resolveNow(call)
-      return undefined
+      return () => void resolveNow(call)
     },
     failingChecks() {
       const checks = raw('checks')

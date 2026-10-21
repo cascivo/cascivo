@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { a2uiComponents } from '../a2ui-catalog-data'
 import { propSchemas } from '../prop-schemas'
 import { cascivoCatalogSpec } from './catalog-spec'
+import { isTrustedGesture } from './gesture'
 import type { A2uiCatalogSpec } from './catalog-spec'
 import { A2UI_CATALOG_ID } from './messages'
 import type { A2uiActionMessage, A2uiErrorMessage } from './messages'
@@ -13,7 +14,15 @@ import { A2uiSurface, cascivoCatalog } from './surface'
 import type { A2uiRenderCatalog } from './surface'
 import { TWO_WAY, twoWayValue } from './two-way'
 
-afterEach(() => cleanup())
+// jsdom marks every dispatched event untrusted (fireEvent and user-event alike), so a test
+// that stands for a real click on the control says so with `trustGestures()`.
+vi.mock('./gesture', { spy: true })
+const trustGestures = () => vi.mocked(isTrustedGesture).mockReturnValue(true)
+
+afterEach(() => {
+  cleanup()
+  vi.mocked(isTrustedGesture).mockReset()
+})
 
 // Test-only catalog: the cascivo catalog plus `Spy` (counts its own renders), `Reporter`
 // (reports through the adapter input on every render) and `Hooked` (an adapter using a hook).
@@ -445,6 +454,7 @@ describe('<A2uiSurface>', () => {
   })
 
   it('a functionCall action runs the function (openUrl through the host callback)', () => {
+    trustGestures()
     const openUrl = vi.fn<(url: string) => void>()
     const { store } = setup([
       {
@@ -508,8 +518,9 @@ describe('<A2uiSurface>', () => {
       Reflect.deleteProperty(dialog, 'close')
     })
 
-    it('a Modal closed by the agent does not open its onClose openUrl, and reports once', async () => {
+    it('without activation, even a trusted handler call does not open, and reports once', async () => {
       activation(false)
+      trustGestures()
       stubDialog()
       const openUrl = vi.fn<(url: string) => void>()
       const onError = vi.fn<(m: A2uiErrorMessage) => void>()
@@ -540,6 +551,7 @@ describe('<A2uiSurface>', () => {
 
     it('a Button click with transient activation opens the url', () => {
       activation(true)
+      trustGestures()
       const openUrl = vi.fn<(url: string) => void>()
       const { store } = setup([
         {
@@ -552,6 +564,129 @@ describe('<A2uiSurface>', () => {
       mount(store, { openUrl })
       fireEvent.click(screen.getByRole('button', { name: 'Open' }))
       expect(openUrl).toHaveBeenCalledWith('https://example.com')
+    })
+  })
+
+  describe('R41: only a top-level openUrl functionCall opens, and only from a trusted event', () => {
+    const activation = (isActive: boolean) =>
+      Object.defineProperty(navigator, 'userActivation', {
+        value: { isActive },
+        configurable: true,
+      })
+    const dialog = HTMLDialogElement.prototype
+    afterEach(() => {
+      Reflect.deleteProperty(navigator, 'userActivation')
+      Reflect.deleteProperty(dialog, 'showModal')
+      Reflect.deleteProperty(dialog, 'close')
+    })
+    // Nested formatString calls spell `${openUrl(` only once they run: no text scan sees it.
+    const composed =
+      '${formatString(value:${formatString(value:\'$${formatString(value:"{open")}Url(url:"https://evil.example/")}\')})}'
+    const topLevelOnly = {
+      code: 'FUNCTION_ERROR',
+      surfaceId: SID,
+      message: "openUrl only runs as an action's top-level functionCall.",
+    }
+    const clickOpen = async (onClick: unknown) => {
+      activation(true)
+      trustGestures()
+      const openUrl = vi.fn<(url: string) => void>()
+      const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+      const { store, errors } = setup([
+        { id: 'root', component: 'Button', children: 'Open', onClick },
+      ])
+      expect(errors).toEqual([])
+      mount(store, { openUrl, onError })
+      fireEvent.click(screen.getByRole('button', { name: 'Open' }))
+      await act(async () => {})
+      return { openUrl, errors: onError.mock.calls.map(([m]) => m.error) }
+    }
+
+    it('an openUrl composed in an event context does not open', async () => {
+      const { openUrl, errors } = await clickOpen({
+        event: {
+          name: 'go',
+          context: { u: { call: 'formatString', args: { value: composed } } },
+        },
+      })
+      expect(openUrl).not.toHaveBeenCalled()
+      expect(errors).toEqual([topLevelOnly])
+    })
+
+    it("an openUrl composed in another functionCall, or in openUrl's own args, does not open", async () => {
+      const first = await clickOpen({
+        functionCall: { call: 'formatString', args: { value: composed } },
+      })
+      expect(first.openUrl).not.toHaveBeenCalled()
+      expect(first.errors).toEqual([topLevelOnly])
+      cleanup()
+      const second = await clickOpen({
+        functionCall: {
+          call: 'openUrl',
+          args: { url: { call: 'formatString', args: { value: composed } } },
+        },
+      })
+      // The inner call is refused; the outer one opens only what formatString made of that.
+      expect(second.openUrl).not.toHaveBeenCalledWith('https://evil.example/')
+      expect(second.errors).toContainEqual(topLevelOnly)
+    })
+
+    it('a Modal closed by the agent while activation is still active does not open', async () => {
+      activation(true)
+      Object.defineProperty(dialog, 'showModal', {
+        configurable: true,
+        value(this: HTMLDialogElement) {
+          this.setAttribute('open', '')
+        },
+      })
+      Object.defineProperty(dialog, 'close', {
+        configurable: true,
+        value(this: HTMLDialogElement) {
+          this.removeAttribute('open')
+          this.dispatchEvent(new Event('close'))
+        },
+      })
+      const openUrl = vi.fn<(url: string) => void>()
+      const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+      const { store, errors, data } = setup([
+        {
+          id: 'root',
+          component: 'Modal',
+          title: 'Hi',
+          open: { path: '/open' },
+          onClose: { functionCall: { call: 'openUrl', args: { url: 'https://evil.example/' } } },
+          children: 'Body',
+        },
+      ])
+      expect(errors).toEqual([])
+      mount(store, { openUrl, onError })
+      await act(async () => data('/open', true))
+      await act(async () => data('/open', false))
+      await act(async () => {})
+      expect(openUrl).not.toHaveBeenCalled()
+      expect(onError.mock.calls.map(([m]) => m.error)).toEqual([
+        {
+          code: 'FUNCTION_ERROR',
+          surfaceId: SID,
+          message: 'openUrl needs a user gesture on the control.',
+        },
+      ])
+    })
+
+    it('an untrusted click does not open', () => {
+      activation(true)
+      const openUrl = vi.fn<(url: string) => void>()
+      const { store } = setup([
+        {
+          id: 'root',
+          component: 'Button',
+          children: 'Open',
+          onClick: { functionCall: { call: 'openUrl', args: { url: 'https://example.com' } } },
+        },
+      ])
+      mount(store, { openUrl })
+      fireEvent.click(screen.getByRole('button', { name: 'Open' }))
+      expect(openUrl).not.toHaveBeenCalled()
     })
   })
 
