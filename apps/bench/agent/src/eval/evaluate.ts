@@ -335,17 +335,28 @@ async function runEval(
       if (!visited.has(key)) visited.set(key, url)
     })
   }
+  // An app that throws while rendering leaves a blank page, and the EVAL then fails on whatever
+  // it looked for first ("no KPI figure"). The page's own error says why, so a failure names it.
+  const thrown: string[] = []
   // Popups and extra tabs are pages the EVAL visited too.
-  context.on('page', track)
+  context.on('page', (page) => {
+    track(page)
+    page.on('pageerror', (error) => thrown.push(error.message))
+  })
+  const withThrown = (failure: string): string =>
+    thrown.length === 0
+      ? failure
+      : `${failure}; the page threw: ${thrown[0]}${thrown.length > 1 ? ` (+${thrown.length - 1} more)` : ''}`
   try {
     const page = await context.newPage()
     const outcome = await within(
       evaluate(page, baseUrl).then(() => null),
       EVAL_MS,
     )
-    return outcome === TIMED_OUT ? `EVAL timed out after ${EVAL_MS / 1000} s` : outcome
+    if (outcome === null) return null
+    return withThrown(outcome === TIMED_OUT ? `EVAL timed out after ${EVAL_MS / 1000} s` : outcome)
   } catch (error) {
-    return message(error)
+    return withThrown(message(error))
   } finally {
     // Closing the context also aborts whatever a timed-out EVAL is still waiting on.
     await context.close().catch(() => {})

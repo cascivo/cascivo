@@ -333,6 +333,17 @@ describe('scoreAttempt', () => {
     },
   )
 
+  // A blank page fails the EVAL on whatever it looked for first; the crash says why.
+  it(
+    'a page that throws on load is fail-eval naming the error it threw',
+    { skip: slow, timeout: SLOW_MS },
+    async () => {
+      const record = await score(attempt('crashes'), 'visits-two-pages')
+      expect(record.status).toBe('fail-eval')
+      expect(record.detail).toMatch(/the page threw: .*must be used within `TooltipProvider`/)
+    },
+  )
+
   it(
     'a preview that never listens is fail-eval within the readiness timeout, and is killed',
     { skip: slow, timeout: SLOW_MS },
