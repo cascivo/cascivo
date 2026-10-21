@@ -128,14 +128,15 @@ describe('validators', () => {
     expect(call('regex', { value: 'a'.repeat(256), pattern: '(a)*(a)*b' })).toBe(false)
     expect(Date.now() - started).toBeLessThan(200)
   })
-  it('regex stays fast on bounded-quantifier worst shapes', () => {
-    const started = Date.now()
-    expect(call('regex', { value: `${'a'.repeat(1000)}`, pattern: '^a{0,1000}a{0,1000}b' })).toBe(
-      false,
-    )
-    expect(call('regex', { value: `${'a'.repeat(999)}c`, pattern: 'a{0,1000}a{0,1000}b' })).toBe(
-      false,
-    )
+  it('regex stays fast on the worst accepted bounded-quantifier shapes', () => {
+    // Assert acceptance first: if these were refused, the timing below would never run the engine.
+    expect(isSafeRegexPattern('a{0,99}a{0,99}b')).toBe(true)
+    expect(isSafeRegexPattern('\\d{0,99}\\d{0,99}x')).toBe(true)
+    let started = Date.now()
+    expect(call('regex', { value: 'a'.repeat(256), pattern: 'a{0,99}a{0,99}b' })).toBe(false)
+    expect(Date.now() - started).toBeLessThan(200)
+    started = Date.now()
+    expect(call('regex', { value: '1'.repeat(256), pattern: '\\d{0,99}\\d{0,99}x' })).toBe(false)
     expect(Date.now() - started).toBeLessThan(200)
   })
   it('regex refuses long patterns, long values and invalid patterns', () => {
