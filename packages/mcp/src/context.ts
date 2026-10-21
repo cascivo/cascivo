@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { CASCIVO_HOST } from './host.js'
+import { isSlug } from './slug.js'
 
 export interface ContextRelated {
   name: string
@@ -73,6 +74,7 @@ export async function loadComponentMarkdown(
   fetchFn?: FetchFn,
 ): Promise<string | null> {
   const slug = name.toLowerCase().replace(/\s+/g, '-')
+  if (!isSlug(slug)) return null
   const localPaths = [
     join(HERE, '..', '..', '..', 'apps', 'site', 'public', 'context', `${slug}.md`),
     join(HERE, 'context', `${slug}.md`),

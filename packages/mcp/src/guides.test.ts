@@ -23,4 +23,23 @@ describe('guides loader', () => {
     const md = await loadGuide('no-such-guide-xyz', failFetch)
     expect(md).toBeNull()
   })
+
+  // A slug is agent input. `../` used to reach any .md the server process could read (the repo
+  // README, an adopter's notes) and shaped the fallback URL.
+  it.each([
+    '../../../../README',
+    '../../../packages/mcp/README',
+    'theming/../../index',
+    '/etc/x',
+    'a b',
+    '',
+  ])('refuses the slug %j without reading a file or the network', async (slug) => {
+    let fetched = false
+    const spyFetch = async () => {
+      fetched = true
+      return { ok: true, status: 200, text: async () => '# leaked' } as Response
+    }
+    expect(await loadGuide(slug, spyFetch)).toBeNull()
+    expect(fetched).toBe(false)
+  })
 })

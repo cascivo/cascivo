@@ -3,6 +3,7 @@ import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { CASCIVO_HOST } from './host.js'
+import { isSlug } from './slug.js'
 
 /**
  * Concept-guide loader for the MCP server. Guides (getting-started, theming,
@@ -49,6 +50,7 @@ export function listGuides(): string[] {
 /** Load one guide's markdown by slug, or null if it can't be found. */
 export async function loadGuide(slug: string, fetchFn?: FetchFn): Promise<string | null> {
   const s = slug.toLowerCase().replace(/\.md$/, '')
+  if (!isSlug(s)) return null
   const dir = guidesDir()
   if (dir) {
     const p = join(dir, `${s}.md`)
