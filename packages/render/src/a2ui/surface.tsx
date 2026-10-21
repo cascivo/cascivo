@@ -115,6 +115,13 @@ function defaultOpenUrl(url: string): void {
 
 const hasOwn = (record: object, key: string): boolean => Object.hasOwn(record, key)
 
+/** Whether the page has transient user activation; true where the API is missing. */
+function hasUserActivation(): boolean {
+  return typeof navigator !== 'undefined' && navigator.userActivation
+    ? navigator.userActivation.isActive
+    : true
+}
+
 function isTemplate(value: unknown): value is { componentId: string; path: string } {
   return (
     isRecord(value) && typeof value['componentId'] === 'string' && typeof value['path'] === 'string'
@@ -167,7 +174,18 @@ function makeInput(
       reportOnce(errorMessage('FUNCTION_ERROR', surfaceId, 'openUrl only runs from an action.')),
     report: reportOnce,
   }
-  const dispatchCtx: ResolveContext = { ...base, report: env.report }
+  // An action also dispatches without a click: closing a Modal by writing its bound `open`
+  // fires onClose. So openUrl proceeds only under transient user activation. Without the
+  // User Activation API (older browsers, jsdom) it is allowed: a click handler is then the
+  // only path besides such programmatic closes.
+  const dispatchCtx: ResolveContext = {
+    ...base,
+    openUrl: (url) => {
+      if (hasUserActivation()) return env.openUrl(url)
+      reportOnce(errorMessage('FUNCTION_ERROR', surfaceId, 'openUrl needs a user gesture.'))
+    },
+    report: env.report,
+  }
   const raw = (name: string): unknown =>
     hasOwn(component.props, name) ? component.props[name] : undefined
   const resolve = (value: unknown): unknown => resolveDynamic(value, renderCtx)

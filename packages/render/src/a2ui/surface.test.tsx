@@ -479,6 +479,82 @@ describe('<A2uiSurface>', () => {
     ])
   })
 
+  describe('R2: openUrl at dispatch needs transient user activation', () => {
+    const activation = (isActive: boolean) =>
+      Object.defineProperty(navigator, 'userActivation', {
+        value: { isActive },
+        configurable: true,
+      })
+    // jsdom's <dialog> has no showModal/close; stand in as the Modal tests do.
+    const dialog = HTMLDialogElement.prototype
+    const stubDialog = () => {
+      Object.defineProperty(dialog, 'showModal', {
+        configurable: true,
+        value(this: HTMLDialogElement) {
+          this.setAttribute('open', '')
+        },
+      })
+      Object.defineProperty(dialog, 'close', {
+        configurable: true,
+        value(this: HTMLDialogElement) {
+          this.removeAttribute('open')
+          this.dispatchEvent(new Event('close'))
+        },
+      })
+    }
+    afterEach(() => {
+      Reflect.deleteProperty(navigator, 'userActivation')
+      Reflect.deleteProperty(dialog, 'showModal')
+      Reflect.deleteProperty(dialog, 'close')
+    })
+
+    it('a Modal closed by the agent does not open its onClose openUrl, and reports once', async () => {
+      activation(false)
+      stubDialog()
+      const openUrl = vi.fn<(url: string) => void>()
+      const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+      const { store, errors, data } = setup([
+        {
+          id: 'root',
+          component: 'Modal',
+          title: 'Hi',
+          open: { path: '/open' },
+          onClose: { functionCall: { call: 'openUrl', args: { url: 'https://evil.example/' } } },
+          children: 'Body',
+        },
+      ])
+      expect(errors).toEqual([])
+      const { container } = mount(store, { openUrl, onError })
+      // Modal mirrors its `open` prop in a microtask, so each write is awaited.
+      for (let i = 0; i < 2; i++) {
+        await act(async () => data('/open', true))
+        expect(container.querySelector('dialog[open]')).not.toBeNull()
+        await act(async () => data('/open', false))
+      }
+      await act(async () => {})
+      expect(openUrl).not.toHaveBeenCalled()
+      expect(onError.mock.calls.map(([m]) => m.error)).toEqual([
+        { code: 'FUNCTION_ERROR', surfaceId: SID, message: 'openUrl needs a user gesture.' },
+      ])
+    })
+
+    it('a Button click with transient activation opens the url', () => {
+      activation(true)
+      const openUrl = vi.fn<(url: string) => void>()
+      const { store } = setup([
+        {
+          id: 'root',
+          component: 'Button',
+          children: 'Open',
+          onClick: { functionCall: { call: 'openUrl', args: { url: 'https://example.com' } } },
+        },
+      ])
+      mount(store, { openUrl })
+      fireEvent.click(screen.getByRole('button', { name: 'Open' }))
+      expect(openUrl).toHaveBeenCalledWith('https://example.com')
+    })
+  })
+
   it('R30: the store refuses an openUrl call in a rendered prop', () => {
     const { errors } = setup([
       {
