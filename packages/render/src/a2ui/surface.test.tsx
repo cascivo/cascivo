@@ -27,6 +27,7 @@ const TEST_COMPONENTS: ReadonlySet<string> = new Set([
   'Twice',
   'SlotTwice',
   'Column',
+  'Throws',
 ])
 // The string ids of a component's raw `children` prop, as a basic-catalog adapter reads them.
 const idsOf = (value: unknown): string[] =>
@@ -87,6 +88,12 @@ const spyCatalog: A2uiRenderCatalog = {
           <div data-second="">{input.slot('children')}</div>
         </div>
       )
+    }
+    // An adopter's adapter with a bug: it throws while rendering.
+    if (c === 'Throws') {
+      return () => {
+        throw new Error('adapter bug')
+      }
     }
     // A basic-catalog style Column: an id list through `children()`, a template through `slot()`.
     if (c === 'Column') {
@@ -888,6 +895,131 @@ describe('<A2uiSurface>', () => {
     expect(screen.getByText('Head')).toBeTruthy()
     expect(screen.getByText('Foot')).toBeTruthy()
     expect(onError).not.toHaveBeenCalled()
+  })
+
+  describe('C1: bound values are type-checked; a crashing node does not unmount the host', () => {
+    const renderErrors = (onError: { mock: { calls: [A2uiErrorMessage][] } }) =>
+      onError.mock.calls.map(([m]) => m.error).filter((e) => e.code === 'RENDER_ERROR')
+
+    it('Alert.title bound to an object renders without it and reports the prop', async () => {
+      const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+      const { store, errors, data } = setup([
+        { id: 'root', component: 'Flex', children: ['alert', 'ok'] },
+        { id: 'alert', component: 'Alert', title: { path: '/t' }, children: 'Body' },
+        { id: 'ok', component: 'Text', children: 'Sibling' },
+      ])
+      data('/t', { a: 1 })
+      expect(errors).toEqual([])
+      const { container } = mount(store, { onError })
+      await act(async () => {})
+      expect(container.textContent).toContain('Body')
+      expect(container.textContent).toContain('Sibling')
+      expect(renderErrors(onError)).toEqual([
+        {
+          code: 'RENDER_ERROR',
+          surfaceId: SID,
+          message: expect.stringMatching(/"alert".*"title".*expected string/),
+        },
+      ])
+    })
+
+    it('Breadcrumb.items bound to a string, or computed by a call, is dropped and reported', async () => {
+      const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+      const { store, errors, data } = setup([
+        { id: 'root', component: 'Flex', children: ['b1', 'b2', 'ok'] },
+        { id: 'b1', component: 'Breadcrumb', items: { path: '/t' } },
+        {
+          id: 'b2',
+          component: 'Breadcrumb',
+          items: { call: 'formatString', args: { value: 'x' } },
+        },
+        { id: 'ok', component: 'Text', children: 'Sibling' },
+      ])
+      data('/t', 'x')
+      expect(errors).toEqual([])
+      const { container } = mount(store, { onError })
+      await act(async () => {})
+      expect(container.textContent).toContain('Sibling')
+      const messages = renderErrors(onError).map((e) => e.message)
+      expect(messages.some((m) => m.includes('"b1"') && m.includes('"items"'))).toBe(true)
+      expect(messages.some((m) => m.includes('"b2"') && m.includes('"items"'))).toBe(true)
+    })
+
+    it('a bound {$t} or an object in an untyped prop is dropped and reported', async () => {
+      const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+      const { store, errors, data } = setup([
+        { id: 'root', component: 'Flex', children: ['a1', 'a2', 'ok'] },
+        { id: 'a1', component: 'Alert', title: { path: '/ref' }, children: 'One' },
+        { id: 'a2', component: 'Alert', action: { path: '/obj' }, children: 'Two' },
+        { id: 'ok', component: 'Text', children: 'Sibling' },
+      ])
+      data('/ref', { $t: 'nope' })
+      data('/obj', { a: 1 })
+      expect(errors).toEqual([])
+      const { container } = mount(store, { onError })
+      await act(async () => {})
+      expect(container.textContent).toContain('One')
+      expect(container.textContent).toContain('Two')
+      // The dropped action renders no action button.
+      expect(container.querySelector('button')).toBeNull()
+      expect(container.textContent).toContain('Sibling')
+      const messages = renderErrors(onError).map((e) => e.message)
+      expect(messages.some((m) => m.includes('"a1"') && m.includes('"title"'))).toBe(true)
+      expect(messages.some((m) => m.includes('"a2"') && m.includes('"action"'))).toBe(true)
+    })
+
+    it('a bound string or number in an untyped prop still renders', () => {
+      const { store, data } = setup([
+        { id: 'root', component: 'Heading', level: { path: '/n' }, children: 'Title' },
+      ])
+      data('/n', 3)
+      const { container } = mount(store)
+      expect(container.querySelector('h3')?.textContent).toBe('Title')
+    })
+
+    it('the cascivo spec refuses a literal {$t}: agents cannot know host i18n keys', () => {
+      const { errors } = setup([
+        { id: 'root', component: 'Alert', title: { $t: 'nope' }, children: 'Body' },
+      ])
+      expect(errors.map((e) => e.error)).toEqual([
+        {
+          code: 'VALIDATION_FAILED',
+          surfaceId: SID,
+          path: '/components/0/title',
+          message: expect.stringContaining('$t'),
+        },
+      ])
+    })
+
+    it('a throwing adapter renders nothing, reports once, and leaves its siblings rendered', async () => {
+      const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+      const quiet = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const { store } = setup(
+        [
+          { id: 'root', component: 'Box', children: ['bad', 'ok'] },
+          { id: 'bad', component: 'Throws' },
+          { id: 'ok', component: 'Text', children: 'Sibling' },
+        ],
+        { catalogId: SPY_CATALOG_ID },
+      )
+      const { container } = render(
+        <div>
+          <span>Host</span>
+          <A2uiSurface store={store} surfaceId={SID} catalogs={[spyCatalog]} onError={onError} />
+        </div>,
+      )
+      await act(async () => {})
+      quiet.mockRestore()
+      expect(container.textContent).toContain('Host')
+      expect(container.textContent).toContain('Sibling')
+      expect(renderErrors(onError)).toEqual([
+        {
+          code: 'RENDER_ERROR',
+          surfaceId: SID,
+          message: 'Component "bad" failed to render: adapter bug',
+        },
+      ])
+    })
   })
 
   it('fix 7: changing the component type of an id remounts it, so adapter hooks stay safe', () => {

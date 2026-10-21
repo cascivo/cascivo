@@ -48,6 +48,22 @@ export function isFunctionCall(value: unknown): boolean {
   return true
 }
 
+/**
+ * Whether `value` holds a `{$t}` translation ref at any depth. Refs name the host's i18n keys,
+ * which an agent cannot know, and nothing in the A2UI path resolves them, so React would get
+ * the object itself.
+ */
+export function hasTranslationRef(value: unknown): boolean {
+  const stack: unknown[] = [value]
+  while (stack.length > 0) {
+    const cur = stack.pop()
+    if (typeof cur !== 'object' || cur === null) continue
+    if (!Array.isArray(cur) && Object.hasOwn(cur, '$t')) return true
+    for (const child of Object.values(cur)) stack.push(child)
+  }
+  return false
+}
+
 /** A binding or a function call: resolved at render time, so only its shape is checked. */
 export const isDynamicRef = (value: unknown): boolean => isBinding(value) || isFunctionCall(value)
 
@@ -234,6 +250,13 @@ export const cascivoCatalogSpec: A2uiCatalogSpec = {
       const prop = data.find((p) => p.name === key)
       if (prop !== undefined) {
         if (isDynamicRef(value)) continue
+        if (hasTranslationRef(value)) {
+          issues.push({
+            prop: key,
+            message: `Invalid "${key}": a {$t} translation ref names a host i18n key; send the text itself.`,
+          })
+          continue
+        }
         const errors: ValidationError[] = []
         checkPropValue(prop, value, key, key, errors)
         checkUrls(value, key, key, errors)

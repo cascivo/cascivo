@@ -16,6 +16,15 @@ describe('cascivoCatalogSpec', () => {
     expect(spec.has('Nope')).toBe(false)
   })
 
+  it('R29: refuses a {$t} literal at any depth', () => {
+    expect(spec.validate(c('Alert', { title: { $t: 'nope' } })).map((i) => i.prop)).toEqual([
+      'title',
+    ])
+    expect(spec.validate(c('Breadcrumb', { items: [{ label: { $t: 'x' }, href: '/a' }] }))).toEqual(
+      [{ prop: 'items', message: expect.stringContaining('{$t}') }],
+    )
+  })
+
   it('accepts a button with a slot and an action', () => {
     expect(
       spec.validate(c('Button', { children: 'Save', onClick: { event: { name: 'save' } } })),

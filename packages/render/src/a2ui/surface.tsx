@@ -8,10 +8,10 @@ import React from 'react'
 import type { ComponentType, ReactNode } from 'react'
 import { a2uiComponents } from '../a2ui-catalog-data'
 import { componentMap } from '../component-map'
-import { checkUrls, isSafeUrl, URL_KEYS } from '../prop-check'
+import { checkPropValue, checkUrls, isSafeUrl, URL_KEYS } from '../prop-check'
 import type { ValidationError } from '../prop-check'
 import { propSchemas } from '../prop-schemas'
-import { isBinding, isDynamicRef, isFunctionCall } from './catalog-spec'
+import { hasTranslationRef, isBinding, isDynamicRef, isFunctionCall } from './catalog-spec'
 import { A2uiDataError } from './data-model'
 import { resolveDynamic } from './functions'
 import type { ResolveContext } from './functions'
@@ -169,6 +169,36 @@ function makeInput(
   const info = hasOwn(a2uiComponents, component.component)
     ? a2uiComponents[component.component]
     : undefined
+  // The prop schemas that validated this surface's literals type its bound values too; only a
+  // surface of the cascivo catalog has them (a basic `Text` is not a cascivo `Text`).
+  const schemas =
+    env.surface.catalogId === A2UI_CATALOG_ID && hasOwn(propSchemas, component.component)
+      ? (propSchemas[component.component] ?? [])
+      : []
+  /** Why a resolved bound value does not fit data prop `name`, or undefined when it does. */
+  const boundMismatch = (name: string, resolved: unknown): string | undefined => {
+    if (info !== undefined && (hasOwn(info.slots, name) || info.events.includes(name))) {
+      return undefined
+    }
+    const schema = schemas.find((p) => p.name === name)
+    if (schema === undefined) return undefined
+    if (hasTranslationRef(resolved)) {
+      return `Invalid value for "${name}": a {$t} translation ref is not resolved from data.`
+    }
+    if (
+      schema.enum === undefined &&
+      schema.primitives === undefined &&
+      schema.shape === undefined
+    ) {
+      // Untyped (a ReactNode, a callback): only text is safe to hand to React.
+      return typeof resolved === 'string' || typeof resolved === 'number'
+        ? undefined
+        : `Invalid type for "${name}" — expected string | number, got ${resolved === null ? 'null' : Array.isArray(resolved) ? 'array' : typeof resolved}.`
+    }
+    const errors: ValidationError[] = []
+    checkPropValue(schema, resolved, name, name, errors)
+    return errors[0]?.message
+  }
   const arityOf = (name: string): 'one' | 'many' | undefined =>
     info !== undefined && hasOwn(info.slots, name) ? info.slots[name]?.arity : undefined
   const holdsChildren = (name: string, value: unknown): boolean =>
@@ -260,13 +290,23 @@ function makeInput(
       if (URL_KEYS.has(name)) {
         return typeof resolved === 'string' && isSafeUrl(resolved) ? resolved : undefined
       }
-      // Literals were URL-checked by the store; data the agent bound in was not.
-      if (isDynamicRef(value) && typeof resolved === 'object' && resolved !== null) {
+      // Literals were checked by the store; data the agent bound in, or a call computed, was not.
+      if (!isDynamicRef(value) || resolved === undefined) return resolved
+      if (typeof resolved === 'object' && resolved !== null) {
         const unsafe: ValidationError[] = []
         checkUrls(resolved, name, name, unsafe)
         if (unsafe.length > 0) return undefined
       }
-      return resolved
+      const reason = boundMismatch(name, resolved)
+      if (reason === undefined) return resolved
+      reportOnce(
+        errorMessage(
+          'RENDER_ERROR',
+          surfaceId,
+          `Component "${component.id}": bound value dropped. ${reason}`,
+        ),
+      )
+      return undefined
     },
     children(ids) {
       if (!take('children()', childrenCalled)) return ids.map(() => null)
@@ -426,15 +466,71 @@ function A2uiNode({ id, scope, ancestors, env, budget }: NodeProps): ReactNode {
   // Keyed by component type: when an agent swaps the type behind an id the body remounts, so
   // an adapter that calls hooks never sees another adapter's hook order.
   return (
-    <A2uiBody
-      key={`${id}:${component.component}`}
-      component={component}
-      scope={scope}
-      path={[...ancestors, { id, scope }]}
-      env={env}
-      budget={nodes}
-    />
+    <A2uiBoundary key={`${id}:${component.component}`} component={component} env={env}>
+      <A2uiBody
+        component={component}
+        scope={scope}
+        path={[...ancestors, { id, scope }]}
+        env={env}
+        budget={nodes}
+      />
+    </A2uiBoundary>
   )
+}
+
+interface BoundaryProps {
+  readonly component: A2uiComponent
+  readonly env: Env
+  readonly children: ReactNode
+}
+
+/**
+ * Catches a throw while one node renders (a catalog adapter, an adopter's custom adapter or a
+ * component handed data it cannot take), so it renders nothing instead of unmounting the
+ * host's tree, and its siblings keep rendering. A class, because only a class can be an error
+ * boundary; its only state is whether the current component failed.
+ */
+interface BoundaryState {
+  readonly failed: boolean
+  /** The component the state is about; an update of it from the agent retries the render. */
+  readonly of: A2uiComponent
+}
+
+class A2uiBoundary extends React.Component<BoundaryProps, BoundaryState> {
+  override state: BoundaryState = { failed: false, of: this.props.component }
+
+  static getDerivedStateFromError(): Partial<BoundaryState> {
+    return { failed: true }
+  }
+
+  static getDerivedStateFromProps(
+    props: BoundaryProps,
+    state: BoundaryState,
+  ): BoundaryState | null {
+    return state.of === props.component ? null : { failed: false, of: props.component }
+  }
+
+  override componentDidCatch(error: unknown): void {
+    const { component, env } = this.props
+    let text = 'unexpected error'
+    try {
+      if (error instanceof Error && typeof error.message === 'string') text = error.message
+    } catch {
+      // A hostile thrown value must not escape the boundary.
+    }
+    env.reportOnce(
+      `RENDER_ERROR|${component.id}|#crash`,
+      errorMessage(
+        'RENDER_ERROR',
+        env.surface.id,
+        `Component "${component.id}" failed to render: ${text}`,
+      ),
+    )
+  }
+
+  override render(): ReactNode {
+    return this.state.failed ? null : this.props.children
+  }
 }
 
 interface BodyProps {
