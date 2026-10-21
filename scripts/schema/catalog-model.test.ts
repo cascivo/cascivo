@@ -331,6 +331,7 @@ describe('buildCatalog', () => {
     }
     const g = buildCatalog(reg, new Set(['RadioCardGroup'])).components['RadioCardGroup']
     assert.deepEqual(Object.keys(g?.props.properties ?? {}), [
+      'className',
       'defaultValue',
       'label',
       'name',
