@@ -47,6 +47,28 @@ describe('isSafeRegexPattern', () => {
       expect(isSafeRegexPattern(p)).toBe(false)
     }
   })
+  it('refuses polynomial backtracking by counting unbounded quantifiers', () => {
+    for (const p of [
+      'a*a*a*a*a*b',
+      '\\d+\\d+\\d+\\d+\\d+\\d+$',
+      '(a*)(a*)(a*)(a*)(a*)(a*)b',
+      '.*.*.*.*=',
+      '\\d+\\d+\\d+$',
+      'a*?a*?a*?b',
+      'a{1,}a{2,}a{3,}b',
+    ]) {
+      expect(isSafeRegexPattern(p)).toBe(false)
+    }
+  })
+  it('documents the conservative refusals', () => {
+    expect(isSafeRegexPattern('(a|b)+')).toBe(false)
+    expect(isSafeRegexPattern('(\\d{3})+')).toBe(false)
+  })
+  it('accepts patterns with at most two unbounded quantifiers', () => {
+    for (const p of ['^\\d{3}-\\d{4}$', '^[A-Z][a-z]*$', '^\\S+@\\S+$', '^[a-z]{2,5}\\d+$']) {
+      expect(isSafeRegexPattern(p)).toBe(true)
+    }
+  })
   it('accepts ordinary patterns', () => {
     for (const p of ['^[a-z]+$', '\\d{3}-\\d{4}', '[(+*]+', '(ab)?c', '\\(a+\\)+']) {
       expect(isSafeRegexPattern(p)).toBe(true)
@@ -70,10 +92,15 @@ describe('validators', () => {
     expect(Date.now() - started).toBeLessThan(100)
     expect(c.errors[0]?.error).toMatchObject({ code: 'VALIDATION_FAILED', path: '/args/pattern' })
   })
+  it('regex stays fast on the worst accepted shape', () => {
+    const started = Date.now()
+    expect(call('regex', { value: `${'1'.repeat(1000)}x`, pattern: '^\\d+\\d+$' })).toBe(false)
+    expect(Date.now() - started).toBeLessThan(200)
+  })
   it('regex refuses long patterns, long values and invalid patterns', () => {
     const c = make()
     expect(call('regex', { value: 'a', pattern: 'a'.repeat(300) }, c)).toBe(false)
-    expect(call('regex', { value: 'a'.repeat(10_001), pattern: 'a' }, c)).toBe(false)
+    expect(call('regex', { value: 'a'.repeat(1_001), pattern: 'a' }, c)).toBe(false)
     expect(call('regex', { value: 'a', pattern: '[' }, c)).toBe(false)
     expect(c.errors).toHaveLength(3)
   })
@@ -203,6 +230,20 @@ describe('formatString', () => {
     const { ctx, errors } = make()
     expect(formatString('${nope(a:1)}', ctx)).toBe('')
     expect(errors[0]?.error.code).toBe('UNKNOWN_FUNCTION')
+  })
+  it('formats a 10,000-char hostile template to itself, quickly', () => {
+    const { ctx } = make()
+    const t = '${'.repeat(5000)
+    const started = Date.now()
+    expect(formatString(t, ctx)).toBe(t)
+    expect(Date.now() - started).toBeLessThan(100)
+  })
+  it('returns a 10,001-char template verbatim and reports it', () => {
+    const { ctx, errors } = make({ a: 1 })
+    const t = 'x'.repeat(9_991) + '${/a}' + '!!!!!'
+    expect(t.length).toBe(10_001)
+    expect(formatString(t, ctx)).toBe(t)
+    expect(errors[0]?.error).toMatchObject({ code: 'VALIDATION_FAILED', path: '/args/value' })
   })
   it('stays fast on hostile nesting', () => {
     const { ctx } = make()

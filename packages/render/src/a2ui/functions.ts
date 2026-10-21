@@ -38,20 +38,28 @@ export const BASIC_FUNCTIONS: readonly string[] = [
 
 const MAX_DEPTH = 16
 const MAX_REGEX_PATTERN = 256
-const MAX_REGEX_INPUT = 10_000
+const MAX_REGEX_INPUT = 1_000
+const MAX_UNBOUNDED_QUANTIFIERS = 2
+const MAX_TEMPLATE = 10_000
 
 // ---- Regex safety -------------------------------------------------------------------------
 
 /**
  * JS has no linear-time regex engine, so the shapes that backtrack exponentially are refused
  * before they run: backreferences, and a group holding a quantifier or an alternation that is
- * itself repeated. Conservative on purpose (`(a|b)+` is refused too).
+ * itself repeated. Conservative on purpose (`(a|b)+` and `(\d{3})+` are refused too).
+ *
+ * Adjacent overlapping quantifiers (`a*a*a*b`) backtrack polynomially, with the degree equal to
+ * their count, so more than two unbounded quantifiers (`*`, `+`, `{n,}`, greedy or lazy) are
+ * refused. Residual risk: two overlapping quantifiers on at most 1,000 characters is O(n^2) at
+ * worst, which is acceptable; patterns that need more are deliberately refused.
  */
 export function isSafeRegexPattern(pattern: string): boolean {
   if (pattern.length > MAX_REGEX_PATTERN) return false
   // One flag per open group: does it contain a quantifier or an alternation?
   const stack: boolean[] = []
   let inClass = false
+  let unbounded = 0
   for (let i = 0; i < pattern.length; i++) {
     const ch = pattern[i]!
     if (ch === '\\') {
@@ -66,6 +74,11 @@ export function isSafeRegexPattern(pattern: string): boolean {
       if (ch === ']') inClass = false
       continue
     }
+    if (
+      (ch === '*' || ch === '+' || (ch === '{' && /^\{\d+,\}/.test(pattern.slice(i, i + 24)))) &&
+      ++unbounded > MAX_UNBOUNDED_QUANTIFIERS
+    )
+      return false
     if (ch === '[') inClass = true
     else if (ch === '(') stack.push(false)
     else if (ch === '+' || ch === '*' || ch === '{' || ch === '|') {
@@ -385,6 +398,18 @@ export function resolveDynamic(value: unknown, ctx: ResolveContext): unknown {
 
 type Parsed = { value: unknown; end: number }
 
+/** next[i] = first index >= i holding one of `chars`, or the string length; built once, O(n). */
+function nextIndex(s: string, chars: string): Int32Array {
+  const next = new Int32Array(s.length + 1)
+  next[s.length] = s.length
+  for (let i = s.length - 1; i >= 0; i--) next[i] = chars.includes(s[i]!) ? i : next[i + 1]!
+  return next
+}
+interface Scan {
+  readonly open: Int32Array // next `}` or `(`
+  readonly arg: Int32Array // next `,` or `)`
+}
+
 const isIdent = (c: string | undefined): boolean => c !== undefined && /[A-Za-z0-9_]/.test(c)
 const skipWs = (s: string, i: number): number => {
   while (s[i] === ' ' || s[i] === '\t' || s[i] === '\n') i++
@@ -397,11 +422,11 @@ function parseInterpolation(
   start: number,
   ctx: ResolveContext,
   depth: number,
+  scan: Scan,
 ): Parsed | null {
   if (depth > 8) return null
   let i = skipWs(s, start)
-  let j = i
-  while (j < s.length && s[j] !== '}' && s[j] !== '(') j++
+  const j = scan.open[i]!
   if (j >= s.length) return null
 
   if (s[j] === '}') {
@@ -426,7 +451,7 @@ function parseInterpolation(
     k = skipWs(s, k)
     if (s[k] !== ':') return null
     k = skipWs(s, k + 1)
-    const arg = parseArg(s, k, ctx, depth)
+    const arg = parseArg(s, k, ctx, depth, scan)
     if (arg === null) return null
     args[key] = arg.value
     i = skipWs(s, arg.end)
@@ -438,9 +463,15 @@ function parseInterpolation(
   return { value: callFunction(name, args, ctx), end: i + 1 }
 }
 
-function parseArg(s: string, i: number, ctx: ResolveContext, depth: number): Parsed | null {
+function parseArg(
+  s: string,
+  i: number,
+  ctx: ResolveContext,
+  depth: number,
+  scan: Scan,
+): Parsed | null {
   const ch = s[i]
-  if (ch === '$' && s[i + 1] === '{') return parseInterpolation(s, i + 2, ctx, depth + 1)
+  if (ch === '$' && s[i + 1] === '{') return parseInterpolation(s, i + 2, ctx, depth + 1, scan)
   if (ch === "'" || ch === '"') {
     let out = ''
     for (let j = i + 1; j < s.length; j++) {
@@ -453,8 +484,7 @@ function parseArg(s: string, i: number, ctx: ResolveContext, depth: number): Par
     }
     return null
   }
-  let j = i
-  while (j < s.length && s[j] !== ',' && s[j] !== ')') j++
+  const j = scan.arg[i]!
   if (j >= s.length) return null
   const word = s.slice(i, j).trim()
   if (word === 'true') return { value: true, end: j }
@@ -478,6 +508,18 @@ function stringify(v: unknown): string {
 
 /** Hand-written scanner: agent text never reaches eval, Function or a backtracking parser. */
 export function formatString(template: string, ctx: ResolveContext): string {
+  if (template.length > MAX_TEMPLATE) {
+    ctx.report(
+      errorMessage(
+        'VALIDATION_FAILED',
+        ctx.surfaceId,
+        `formatString template exceeds ${MAX_TEMPLATE} characters.`,
+        '/args/value',
+      ),
+    )
+    return template
+  }
+  const scan: Scan = { open: nextIndex(template, '}('), arg: nextIndex(template, ',)') }
   let out = ''
   let i = 0
   while (i < template.length) {
@@ -485,7 +527,7 @@ export function formatString(template: string, ctx: ResolveContext): string {
       out += '${'
       i += 3
     } else if (template[i] === '$' && template[i + 1] === '{') {
-      const parsed = parseInterpolation(template, i + 2, ctx, 0)
+      const parsed = parseInterpolation(template, i + 2, ctx, 0, scan)
       if (parsed === null) {
         out += '${'
         i += 2
