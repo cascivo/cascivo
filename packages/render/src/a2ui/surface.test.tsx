@@ -28,6 +28,7 @@ const TEST_COMPONENTS: ReadonlySet<string> = new Set([
   'SlotTwice',
   'Column',
   'Throws',
+  'ThrowsWhen',
 ])
 // The string ids of a component's raw `children` prop, as a basic-catalog adapter reads them.
 const idsOf = (value: unknown): string[] =>
@@ -93,6 +94,13 @@ const spyCatalog: A2uiRenderCatalog = {
     if (c === 'Throws') {
       return () => {
         throw new Error('adapter bug')
+      }
+    }
+    // Throws while its bound `when` is true, so a crash can depend on data.
+    if (c === 'ThrowsWhen') {
+      return (input) => {
+        if (input.prop('when') === true) throw new Error('flag is set')
+        return <span>recovered</span>
       }
     }
     // A basic-catalog style Column: an id list through `children()`, a template through `slot()`.
@@ -1050,6 +1058,92 @@ describe('<A2uiSurface>', () => {
           code: 'RENDER_ERROR',
           surfaceId: SID,
           message: 'Component "bad" failed to render: adapter bug',
+        },
+      ])
+    })
+  })
+
+  describe('R1: a node waits for its required data and recovers after a crash', () => {
+    const renderErrors = (onError: { mock: { calls: [A2uiErrorMessage][] } }) =>
+      onError.mock.calls.map(([m]) => m.error).filter((e) => e.code === 'RENDER_ERROR')
+    const skeleton = (container: HTMLElement) =>
+      container.querySelector('[aria-hidden="true"][data-variant="text"]')
+
+    it('a required prop bound before its data renders a Skeleton, then the component', async () => {
+      const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+      const quiet = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const { store, errors, data } = setup([
+        { id: 'root', component: 'Flex', children: ['crumbs', 'alert'] },
+        { id: 'crumbs', component: 'Breadcrumb', items: { path: '/s' } },
+        { id: 'alert', component: 'Alert', title: { path: '/t' }, children: 'Body' },
+      ])
+      expect(errors).toEqual([])
+      const { container } = mount(store, { onError })
+      await act(async () => {})
+      expect(skeleton(container)).not.toBeNull()
+      act(() => data('/s', [{ label: 'Home', href: '/' }, { label: 'Docs' }]))
+      act(() => data('/t', 'Title'))
+      await act(async () => {})
+      quiet.mockRestore()
+      expect(skeleton(container)).toBeNull()
+      expect(container.textContent).toContain('Home')
+      expect(container.textContent).toContain('Docs')
+      expect(container.textContent).toContain('Title')
+      expect(renderErrors(onError)).toEqual([])
+    })
+
+    it('a required prop dropped on a type mismatch is a Skeleton with one report, not a crash', async () => {
+      const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+      const quiet = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const { store, errors, data } = setup([
+        { id: 'root', component: 'Breadcrumb', items: { path: '/s' } },
+      ])
+      data('/s', 'x')
+      expect(errors).toEqual([])
+      const { container } = mount(store, { onError })
+      await act(async () => {})
+      quiet.mockRestore()
+      expect(skeleton(container)).not.toBeNull()
+      expect(renderErrors(onError)).toEqual([
+        {
+          code: 'RENDER_ERROR',
+          surfaceId: SID,
+          message: expect.stringMatching(/"root".*bound value dropped.*"items"/),
+        },
+      ])
+      act(() => data('/s', [{ label: 'Fixed' }]))
+      expect(container.textContent).toContain('Fixed')
+    })
+
+    it('a crashed node renders again after the next data write; a re-crash is not re-reported', async () => {
+      const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+      const quiet = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const { store, data } = setup(
+        [
+          { id: 'root', component: 'Box', children: ['bad', 'ok'] },
+          { id: 'bad', component: 'ThrowsWhen', when: { path: '/flag' } },
+          { id: 'ok', component: 'Text', children: 'Sibling' },
+        ],
+        { catalogId: SPY_CATALOG_ID },
+      )
+      data('/flag', true)
+      const { container } = mount(store, { onError })
+      await act(async () => {})
+      expect(container.textContent).not.toContain('recovered')
+      act(() => data('/flag', false))
+      expect(container.textContent).toContain('recovered')
+      act(() => data('/flag', true))
+      expect(container.textContent).not.toContain('recovered')
+      act(() => data('/flag', false))
+      await act(async () => {})
+      quiet.mockRestore()
+      expect(container.textContent).toContain('recovered')
+      expect(container.textContent).toContain('Sibling')
+      expect(renderErrors(onError)).toEqual([
+        {
+          code: 'RENDER_ERROR',
+          surfaceId: SID,
+          message: 'Component "bad" failed to render: flag is set',
         },
       ])
     })

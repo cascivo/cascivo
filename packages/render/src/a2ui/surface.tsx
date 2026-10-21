@@ -513,6 +513,20 @@ interface BoundaryState {
 
 class A2uiBoundary extends React.Component<BoundaryProps, BoundaryState> {
   override state: BoundaryState = { failed: false, of: this.props.component }
+  /** Set while failed: stops watching the data model for the write that retries the render. */
+  private unwatch: (() => void) | undefined
+
+  override componentDidUpdate(): void {
+    // An update of the component from the agent cleared the failure first.
+    if (this.state.failed || this.unwatch === undefined) return
+    this.unwatch()
+    this.unwatch = undefined
+  }
+
+  override componentWillUnmount(): void {
+    this.unwatch?.()
+    this.unwatch = undefined
+  }
 
   static getDerivedStateFromError(): Partial<BoundaryState> {
     return { failed: true }
@@ -527,6 +541,18 @@ class A2uiBoundary extends React.Component<BoundaryProps, BoundaryState> {
 
   override componentDidCatch(error: unknown): void {
     const { component, env } = this.props
+    // The crash may come from data (a value the component cannot take), so retry after the
+    // next write to the surface's model. Watched only while failed: a healthy node subscribes
+    // to the paths it reads, not to every write.
+    this.unwatch?.()
+    const root = env.surface.data.root
+    const at = root.peek()
+    this.unwatch = root.subscribe((value) => {
+      if (value === at) return
+      this.unwatch?.()
+      this.unwatch = undefined
+      this.setState({ failed: false })
+    })
     let text = 'unexpected error'
     try {
       if (error instanceof Error && typeof error.message === 'string') text = error.message
@@ -652,6 +678,22 @@ function renderGeneric(
   const schemas = hasOwn(propSchemas, name) ? (propSchemas[name] ?? []) : []
   const declares = (prop: string): boolean => schemas.some((s) => s.name === prop)
 
+  const twoWay = hasOwn(TWO_WAY, name) ? TWO_WAY[name] : undefined
+  const write = twoWay === undefined ? undefined : input.writer(twoWay.prop)
+
+  // A required data prop that resolves to undefined (its binding has no data yet, or a type
+  // mismatch dropped it, already reported) would crash the component; wait for it instead.
+  // Read reactively, so the component renders once the data arrives. Before any slot() call,
+  // so a placeholder takes no render budget. A bound two-way prop gets its empty value below.
+  const data = new Map<string, unknown>()
+  for (const s of schemas) {
+    if (!s.required || hasOwn(slots, s.name) || events.includes(s.name)) continue
+    if (twoWay !== undefined && write !== undefined && s.name === twoWay.prop) continue
+    const value = input.prop(s.name)
+    if (value === undefined) return <Skeleton />
+    data.set(s.name, value)
+  }
+
   const props: Record<string, unknown> = {}
   for (const key of Object.keys(input.component.props)) {
     if (key === 'checks' || key === 'accessibility') continue
@@ -660,11 +702,9 @@ function renderGeneric(
     else if (events.includes(key)) {
       const handler = input.action(key)
       if (handler !== undefined) props[key] = handler
-    } else if (declares(key)) props[key] = input.prop(key)
+    } else if (declares(key)) props[key] = data.has(key) ? data.get(key) : input.prop(key)
   }
 
-  const twoWay = hasOwn(TWO_WAY, name) ? TWO_WAY[name] : undefined
-  const write = twoWay === undefined ? undefined : input.writer(twoWay.prop)
   if (twoWay !== undefined && write !== undefined) {
     if (props[twoWay.prop] === undefined) props[twoWay.prop] = twoWayEmpty(name, props)
     const dispatch = input.action(twoWay.event)
