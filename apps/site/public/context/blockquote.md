@@ -31,9 +31,10 @@ Renders a native <blockquote> with the attribution in <footer><cite>, so the quo
 
 ## Props
 
-| Name   | Type     | Required | Default   | Description                                               |
-| ------ | -------- | -------- | --------- | --------------------------------------------------------- |
-| `cite` | `string` | No       | undefined | URL of the quote’s source (sets the HTML cite attribute). |
+| Name       | Type        | Required | Default   | Description                                               |
+| ---------- | ----------- | -------- | --------- | --------------------------------------------------------- |
+| `cite`     | `string`    | No       | undefined | URL of the quote’s source (sets the HTML cite attribute). |
+| `children` | `ReactNode` | No       | —         | The quoted content                                        |
 
 ## Tokens
 

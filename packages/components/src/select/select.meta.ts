@@ -55,6 +55,24 @@ export const meta: ComponentMeta = {
       default: 'false',
     },
     {
+      name: 'value',
+      description: 'The controlled value.',
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'defaultValue',
+      description: 'The initial value when uncontrolled.',
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'onChange',
+      description: 'Called with the change event; read the new value from `event.target.value`.',
+      type: 'React.ChangeEventHandler<HTMLSelectElement>',
+      required: false,
+    },
+    {
       name: 'ariaLabel',
       description:
         'Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.',

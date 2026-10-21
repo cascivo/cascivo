@@ -56,6 +56,12 @@
         "type": "string",
         "required": false,
         "default": "Remove"
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Tag label"
       }
     ],
     "tokens": [

@@ -48,6 +48,7 @@ import { Button } from '@cascivo/react'
 | `disabled` | `boolean`                                              | no       | `false`   | When true, disables the control and removes it from the tab order.                                                                                     |
 | `asChild`  | `boolean`                                              | no       | `false`   | When true, renders the child element as the root via Slot, merging props (polymorphic rendering).                                                      |
 | `onClick`  | `React.MouseEventHandler<HTMLButtonElement>`           | no       | —         | Called when the element is clicked.                                                                                                                    |
+| `children` | `ReactNode`                                            | no       | —         | Button label                                                                                                                                           |
 
 ## Examples
 

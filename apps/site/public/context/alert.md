@@ -41,6 +41,7 @@ role="alert" makes assistive tech announce the message when it appears; the dism
 | `dismissible` | `boolean`                                                        | No       | false   | When true, shows a control to dismiss the component.                                                                                                                                                                                                               |
 | `onDismiss`   | `() => void`                                                     | No       | —       | Called when the component is dismissed.                                                                                                                                                                                                                            |
 | `action`      | `{ label: string; onClick: () => void }`                         | No       | —       | Primary action shown in the component.                                                                                                                                                                                                                             |
+| `children`    | `ReactNode`                                                      | No       | —       | Alert body content                                                                                                                                                                                                                                                 |
 
 ## Tokens
 

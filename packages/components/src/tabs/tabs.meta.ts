@@ -23,6 +23,12 @@ export const meta: ComponentMeta = {
       type: '(value: string) => void',
       required: false,
     },
+    {
+      name: 'children',
+      type: 'ReactNode',
+      required: true,
+      description: 'TabsList and TabsContent elements',
+    },
   ],
   tokens: [
     '--cascivo-color-accent',

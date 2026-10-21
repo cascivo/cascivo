@@ -16,6 +16,12 @@ export const meta: ComponentMeta = {
       required: false,
       default: 'md',
     },
+    {
+      name: 'children',
+      type: 'ReactNode',
+      required: false,
+      description: 'The code text',
+    },
   ],
   tokens: [
     '--cascivo-font-mono',

@@ -3,6 +3,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import Ajv2020 from 'ajv/dist/2020'
 import { describe, expect, it } from 'vitest'
+import { a2uiComponents } from './a2ui-catalog-data.ts'
 import { componentNames } from './component-names.ts'
 import { TS_TYPE_NAME, enums } from './test-utils/enum-walk.ts'
 
@@ -15,7 +16,7 @@ interface Comp {
   props: {
     properties: Record<string, { enum?: unknown[]; items?: { required?: string[] } }>
   }
-  slots: Record<string, { arity: string; text?: boolean; implicit?: boolean }>
+  slots: Record<string, { arity: string; text?: boolean }>
   events: Record<string, unknown>
   omitted: Record<string, unknown>
 }
@@ -43,7 +44,6 @@ describe('catalog.v1.json', () => {
   it('classifies Button and DataTable props', () => {
     const button = catalog.components['Button']!
     expect(button.slots['children']?.arity).toBe('many')
-    expect(button.slots['children']?.implicit).toBe(true)
     expect(catalog.components['Input']!.slots['children']).toBeUndefined()
     expect('onClick' in button.events).toBe(true)
     expect(button.props.properties['variant']?.enum).toContain('primary')
@@ -57,8 +57,22 @@ describe('catalog.v1.json', () => {
     for (const name of ['Flex', 'Center', 'AutoGrid']) {
       const children = catalog.components[name]!.slots['children']
       expect(children, name).toMatchObject({ arity: 'many', text: true })
-      expect(children?.implicit, name).toBeUndefined()
     }
+  })
+
+  it('has no implicit marker anywhere', () => {
+    expect(JSON.stringify(catalog)).not.toContain('implicit')
+  })
+
+  it('declares value and change handlers on input components', () => {
+    const props = (n: string) => catalog.components[n]!.props.properties
+    for (const n of ['Input', 'Textarea', 'Select']) {
+      expect((props(n)['value'] as { type?: string }).type, n).toBe('string')
+      expect((props(n)['defaultValue'] as { type?: string }).type, n).toBe('string')
+      expect('onChange' in catalog.components[n]!.events, n).toBe(true)
+    }
+    expect('onChange' in catalog.components['Slider']!.events).toBe(true)
+    expect('onValueChange' in catalog.components['RadioCardGroup']!.events).toBe(true)
   })
 
   it('does not infer children from sibling components in the same file', () => {
@@ -206,4 +220,13 @@ describe('package exports', () => {
       expect(() => readFileSync(join(HERE, '..', target ?? ''), 'utf-8')).not.toThrow()
     },
   )
+})
+
+describe('a2uiComponents', () => {
+  it('carries slots and events for renderable components', () => {
+    expect(a2uiComponents['Button']!.slots['children']).toEqual({ arity: 'many', text: true })
+    expect(a2uiComponents['Button']!.events).toContain('onClick')
+    expect(Object.keys(a2uiComponents).sort()).toEqual(Object.keys(a2uiComponents))
+    expect(Object.keys(a2uiComponents)).toEqual(Object.keys(catalog.components).sort())
+  })
 })

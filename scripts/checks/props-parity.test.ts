@@ -60,6 +60,9 @@ const ALLOWLIST: Record<string, string> = {
   'card.actions':
     'lives on CardHeaderProps, not CardProps; the manifest covers the ' +
     'Card/CardHeader/CardTitle/CardContent/CardFooter compound under one entry',
+  'radio-card.onValueChange':
+    'lives on RadioCardGroupProps, not RadioCardProps; the manifest covers the ' +
+    'RadioCard/RadioCardGroup compound under one entry, and the A2UI catalog reads it for the group',
 }
 
 /** Own props never required in a manifest (framework passthrough / DOM). */

@@ -62,6 +62,12 @@
         "description": "Overrides for the component’s user-visible strings (i18n).",
         "type": "AvatarGroupLabels",
         "required": false
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Avatar elements to stack"
       }
     ],
     "tokens": [

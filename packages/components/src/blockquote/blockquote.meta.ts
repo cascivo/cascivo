@@ -16,6 +16,12 @@ export const meta: ComponentMeta = {
       required: false,
       default: 'undefined',
     },
+    {
+      name: 'children',
+      type: 'ReactNode',
+      required: false,
+      description: 'The quoted content',
+    },
   ],
   tokens: [
     '--cascivo-color-border-strong',

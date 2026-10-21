@@ -40,6 +40,7 @@ import { Link } from '@cascivo/react'
 | `external` | `boolean`                  | no       | `false`      | When true, treats the link as external (opens in a new tab with rel safety).                                                                                                                                                                                                                                        |
 | `href`     | `string`                   | no       | —            | The destination URL.                                                                                                                                                                                                                                                                                                |
 | `asChild`  | `boolean`                  | no       | `false`      | Render the single child element instead of cascivo's own `<a>`, so the link styling lands on your router's Link. ⚠ This — not `setLinkComponent` — is how you style an in-content link in a routed app; `setLinkComponent` only covers the config-driven navs. See https://cascivo.com/docs/using-with-a-router.md. |
+| `children` | `ReactNode`                | no       | —            | Link text                                                                                                                                                                                                                                                                                                           |
 
 ## Examples
 

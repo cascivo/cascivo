@@ -23,6 +23,12 @@ export const meta: ComponentMeta = {
       required: false,
       default: 'derived from level (1→2xl, 2→xl, 3→lg, 4→md, 5→sm, 6→sm)',
     },
+    {
+      name: 'children',
+      type: 'ReactNode',
+      required: false,
+      description: 'Heading text',
+    },
   ],
   tokens: [
     '--cascivo-font-display',

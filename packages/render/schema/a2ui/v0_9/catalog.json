@@ -75,14 +75,14 @@
                   "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
                 }
               ],
-              "description": "IDs of child components, a template, or text."
+              "description": "IDs of child components, a template, or text. AccordionItem elements"
             },
             "onValueChange": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
               "description": "Called with the new value when it changes."
             }
           },
-          "required": ["component"]
+          "required": ["component", "children"]
         }
       ],
       "unevaluatedProperties": false
@@ -124,7 +124,7 @@
                   "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
                 }
               ],
-              "description": "IDs of child components, a template, or text."
+              "description": "IDs of child components, a template, or text. Alert body content"
             },
             "icon": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
@@ -269,7 +269,7 @@
                   "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
                 }
               ],
-              "description": "IDs of child components, a template, or text."
+              "description": "IDs of child components, a template, or text. Avatar elements to stack"
             }
           },
           "required": ["component"]
@@ -311,7 +311,7 @@
                   "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
                 }
               ],
-              "description": "IDs of child components, a template, or text."
+              "description": "IDs of child components, a template, or text. Badge label"
             }
           },
           "required": ["component"]
@@ -345,7 +345,7 @@
                   "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
                 }
               ],
-              "description": "IDs of child components, a template, or text."
+              "description": "IDs of child components, a template, or text. The quoted content"
             }
           },
           "required": ["component"]
@@ -462,7 +462,7 @@
                   "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
                 }
               ],
-              "description": "IDs of child components, a template, or text."
+              "description": "IDs of child components, a template, or text. Button label"
             },
             "onClick": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
@@ -532,7 +532,7 @@
                   "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
                 }
               ],
-              "description": "IDs of child components, a template, or text."
+              "description": "IDs of child components, a template, or text. Card content; compose with CardHeader, CardTitle, CardContent and CardFooter"
             }
           },
           "required": ["component"]
@@ -811,7 +811,7 @@
                   "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
                 }
               ],
-              "description": "IDs of child components, a template, or text."
+              "description": "IDs of child components, a template, or text. The code text"
             }
           },
           "required": ["component"]
@@ -853,7 +853,7 @@
                   "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
                 }
               ],
-              "description": "IDs of child components, a template, or text."
+              "description": "IDs of child components, a template, or text. Column content"
             }
           },
           "required": ["component"]
@@ -2100,7 +2100,7 @@
                   "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
                 }
               ],
-              "description": "IDs of child components, a template, or text."
+              "description": "IDs of child components, a template, or text. GridItem elements or any grid children"
             }
           },
           "required": ["component"]
@@ -2280,7 +2280,7 @@
                   "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
                 }
               ],
-              "description": "IDs of child components, a template, or text."
+              "description": "IDs of child components, a template, or text. Heading text"
             }
           },
           "required": ["component"]
@@ -2399,6 +2399,10 @@
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
               "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this."
             },
+            "defaultValue": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
+              "description": "The initial value when uncontrolled."
+            },
             "disabled": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicBoolean",
               "description": "When true, disables the control and removes it from the tab order.",
@@ -2425,6 +2429,14 @@
               "enum": ["sm", "md", "lg"],
               "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
               "default": "md"
+            },
+            "value": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
+              "description": "The controlled value."
+            },
+            "onChange": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
+              "description": "Called with the change event; read the new value from `event.target.value`."
             }
           },
           "required": ["component"]
@@ -2498,7 +2510,7 @@
                   "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
                 }
               ],
-              "description": "IDs of child components, a template, or text."
+              "description": "IDs of child components, a template, or text. The key label"
             }
           },
           "required": ["component"]
@@ -2611,7 +2623,7 @@
                   "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
                 }
               ],
-              "description": "IDs of child components, a template, or text."
+              "description": "IDs of child components, a template, or text. Link text"
             }
           },
           "required": ["component"]
@@ -2652,7 +2664,7 @@
                   "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
                 }
               ],
-              "description": "IDs of child components, a template, or text."
+              "description": "IDs of child components, a template, or text. ListItem elements"
             }
           },
           "required": ["component"]
@@ -2756,7 +2768,7 @@
                   "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
                 }
               ],
-              "description": "IDs of child components, a template, or text."
+              "description": "IDs of child components, a template, or text. Modal body content"
             },
             "footer": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
@@ -3269,6 +3281,10 @@
             "component": {
               "const": "RadioCard"
             },
+            "defaultValue": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
+              "description": "RadioCardGroup: the initially selected value when uncontrolled"
+            },
             "disabled": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicBoolean",
               "description": "Disables the card"
@@ -3279,7 +3295,7 @@
             },
             "value": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
-              "description": "Radio value"
+              "description": "Radio value; on RadioCardGroup, the controlled selected value"
             },
             "description": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
@@ -3288,6 +3304,10 @@
             "title": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
               "description": "ID of a child component. Card title"
+            },
+            "onValueChange": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
+              "description": "RadioCardGroup: called with the value of the card the person selects"
             }
           },
           "required": ["component", "title", "value"]
@@ -3308,6 +3328,14 @@
             "component": {
               "const": "RadioCardGroup"
             },
+            "defaultValue": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
+              "description": "RadioCardGroup: the initially selected value when uncontrolled"
+            },
+            "value": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
+              "description": "Radio value; on RadioCardGroup, the controlled selected value"
+            },
             "children": {
               "oneOf": [
                 {
@@ -3318,6 +3346,10 @@
                 }
               ],
               "description": "IDs of child components, a template, or text."
+            },
+            "onValueChange": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
+              "description": "RadioCardGroup: called with the value of the card the person selects"
             }
           },
           "required": ["component"]
@@ -3434,6 +3466,10 @@
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
               "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this."
             },
+            "defaultValue": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
+              "description": "The initial value when uncontrolled."
+            },
             "disabled": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicBoolean",
               "description": "When true, disables the control and removes it from the tab order.",
@@ -3487,6 +3523,14 @@
               "enum": ["sm", "md", "lg"],
               "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
               "default": "md"
+            },
+            "value": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
+              "description": "The controlled value."
+            },
+            "onChange": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
+              "description": "Called with the change event; read the new value from `event.target.value`."
             }
           },
           "required": ["component", "options"]
@@ -3831,6 +3875,10 @@
             "value": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicNumber",
               "description": "The controlled value."
+            },
+            "onChange": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
+              "description": "Called with the change event; read the new value from `event.target.value`."
             }
           },
           "required": ["component"]
@@ -4000,7 +4048,7 @@
                   "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
                 }
               ],
-              "description": "IDs of child components, a template, or text."
+              "description": "IDs of child components, a template, or text. Status label"
             }
           },
           "required": ["component"]
@@ -4164,14 +4212,14 @@
                   "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
                 }
               ],
-              "description": "IDs of child components, a template, or text."
+              "description": "IDs of child components, a template, or text. TabsList and TabsContent elements"
             },
             "onValueChange": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
               "description": "Called with the new value when it changes."
             }
           },
-          "required": ["component"]
+          "required": ["component", "children"]
         }
       ],
       "unevaluatedProperties": false
@@ -4215,7 +4263,7 @@
                   "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
                 }
               ],
-              "description": "IDs of child components, a template, or text."
+              "description": "IDs of child components, a template, or text. Tag label"
             },
             "onDismiss": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
@@ -4272,7 +4320,7 @@
                   "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString"
                 }
               ],
-              "description": "IDs of child components, a template, or text."
+              "description": "IDs of child components, a template, or text. Text content"
             }
           },
           "required": ["component"]
@@ -4307,6 +4355,10 @@
               "description": "Grow the control with its content instead of holding the fixed rows height. rows becomes the minimum and --cascivo-textarea-max-block-size (default 20lh) the ceiling. Pure CSS (field-sizing: content) — no measurement and no listener; where unsupported the fixed rows height is kept.",
               "default": false
             },
+            "defaultValue": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
+              "description": "The initial value when uncontrolled."
+            },
             "disabled": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicBoolean",
               "description": "When true, disables the control and removes it from the tab order.",
@@ -4334,6 +4386,14 @@
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicNumber",
               "description": "Number of visible text rows.",
               "default": 4
+            },
+            "value": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
+              "description": "The controlled value."
+            },
+            "onChange": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
+              "description": "Called with the change event; read the new value from `event.target.value`."
             }
           },
           "required": ["component"]

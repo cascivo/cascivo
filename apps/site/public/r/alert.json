@@ -67,6 +67,12 @@
         "description": "Primary action shown in the component.",
         "type": "{ label: string; onClick: () => void }",
         "required": false
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Alert body content"
       }
     ],
     "tokens": [

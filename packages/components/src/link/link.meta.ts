@@ -40,6 +40,12 @@ export const meta: ComponentMeta = {
       required: false,
       default: 'false',
     },
+    {
+      name: 'children',
+      type: 'ReactNode',
+      required: false,
+      description: 'Link text',
+    },
   ],
   tokens: [
     '--cascivo-color-accent-text',

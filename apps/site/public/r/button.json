@@ -71,6 +71,12 @@
         "description": "Called when the element is clicked.",
         "type": "React.MouseEventHandler<HTMLButtonElement>",
         "required": false
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Button label"
       }
     ],
     "tokens": [

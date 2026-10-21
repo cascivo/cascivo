@@ -32,6 +32,7 @@ Pure layout primitive with no semantic role; does not affect the accessibility t
 | `justify`   | `'start' \| 'center' \| 'end' \| 'stretch'`                                       | No       | —       | Inline-axis alignment of items within their cells (justify-items); default stretch                                                                                                                                                                 |
 | `alignRows` | `boolean`                                                                         | No       | false   | Align the internal bands of adjacent children via CSS subgrid — every CardHeader in a row shares one row track, every CardContent the next, every CardFooter the last. Where subgrid is unsupported the grid renders as it does without this prop. |
 | `span`      | `number \| { base?: number; sm?: number; md?: number; lg?: number; xl?: number }` | No       | —       | GridItem: column span — a number, or a per-breakpoint object                                                                                                                                                                                       |
+| `children`  | `ReactNode`                                                                       | No       | —       | GridItem elements or any grid children                                                                                                                                                                                                             |
 
 ## Tokens
 

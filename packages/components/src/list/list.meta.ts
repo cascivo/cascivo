@@ -24,6 +24,12 @@ export const meta: ComponentMeta = {
       required: false,
       default: 'derived from as (ul→disc, ol→decimal)',
     },
+    {
+      name: 'children',
+      type: 'ReactNode',
+      required: false,
+      description: 'ListItem elements',
+    },
   ],
   tokens: [
     '--cascivo-font-sans',

@@ -22,9 +22,10 @@ import { Blockquote } from '@cascivo/react'
 
 ## Props
 
-| Prop   | Type     | Required | Default     | Description                                               |
-| ------ | -------- | -------- | ----------- | --------------------------------------------------------- |
-| `cite` | `string` | no       | `undefined` | URL of the quote’s source (sets the HTML cite attribute). |
+| Prop       | Type        | Required | Default     | Description                                               |
+| ---------- | ----------- | -------- | ----------- | --------------------------------------------------------- |
+| `cite`     | `string`    | no       | `undefined` | URL of the quote’s source (sets the HTML cite attribute). |
+| `children` | `ReactNode` | no       | —           | The quoted content                                        |
 
 ## Examples
 
