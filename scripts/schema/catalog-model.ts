@@ -334,7 +334,7 @@ export const SUBCOMPONENT_PARENT: Readonly<Record<string, string>> = {
  * nameVisibility parity guard (it reads the whole file) and the group's real behaviour
  * (an invisible aria-label).
  */
-const SUBCOMPONENT_PROPS: Readonly<
+export const SUBCOMPONENT_PROPS: Readonly<
   Record<string, { optional: readonly string[]; extra: readonly PropMeta[] }>
 > = {
   RadioCardGroup: {
@@ -544,6 +544,35 @@ export function canonicalFiles(registry: unknown): Map<string, string[]> {
   )
 }
 
+/**
+ * The registry-shaped entry of a sub-component (a part with no manifest of its own): the
+ * parent's entry with the part's props. Shared by the catalog and the render-time prop schemas
+ * so both see the same props. undefined when `name` is not a part or its parent is missing.
+ */
+export function subcomponentEntry(
+  name: string,
+  canonical: ReadonlyMap<string, CatalogEntry>,
+): CatalogEntry | undefined {
+  const parent = SUBCOMPONENT_PARENT[name]
+  const parentEntry = parent ? canonical.get(parent) : undefined
+  if (!parentEntry) return undefined
+  const shared = SUBCOMPONENT_PROPS[name] ?? { optional: [], extra: [] }
+  return {
+    ...parentEntry,
+    meta: {
+      ...parentEntry.meta,
+      intent: undefined,
+      props: [
+        ...parentEntry.meta.props
+          .filter((p) => shared.optional.includes(p.name))
+          .map(({ required: _required, ...p }) => p),
+        ...shared.extra,
+        { name: 'children', type: 'ReactNode' },
+      ],
+    },
+  }
+}
+
 export function buildCatalog(registry: unknown, renderable: ReadonlySet<string>): Catalog {
   if (!isRecord(registry) || !Array.isArray(registry['components'])) {
     throw new Error('registry.components: expected an array')
@@ -557,25 +586,12 @@ export function buildCatalog(registry: unknown, renderable: ReadonlySet<string>)
       continue
     }
     const parent = SUBCOMPONENT_PARENT[name]
-    const parentEntry = parent ? canonical.get(parent) : undefined
-    if (!parent || !parentEntry) {
+    const partEntry = subcomponentEntry(name, canonical)
+    if (!parent || !partEntry) {
       throw new Error(`${name}: renderable but not in the registry or SUBCOMPONENT_PARENT`)
     }
-    const shared = SUBCOMPONENT_PROPS[name] ?? { optional: [], extra: [] }
-    const part = buildComponent({
-      ...parentEntry,
-      meta: {
-        ...parentEntry.meta,
-        intent: undefined,
-        props: [
-          ...parentEntry.meta.props
-            .filter((p) => shared.optional.includes(p.name))
-            .map(({ required: _required, ...p }) => p),
-          ...shared.extra,
-          { name: 'children', type: 'ReactNode' },
-        ],
-      },
-    })
+    const parentEntry = canonical.get(parent)!
+    const part = buildComponent(partEntry)
     components[name] = {
       ...part,
       description: `Part of ${parent}.`,

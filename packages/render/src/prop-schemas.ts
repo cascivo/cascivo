@@ -6348,6 +6348,36 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
   ],
+  RadioCardGroup: [
+    {
+      name: 'value',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'defaultValue',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'onValueChange',
+      required: false,
+    },
+    {
+      name: 'name',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'label',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'children',
+      required: false,
+    },
+  ],
   RatingGroup: [
     {
       name: 'value',
