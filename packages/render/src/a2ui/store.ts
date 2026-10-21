@@ -2,7 +2,7 @@
 // every wire message into state or into error messages. `apply` never throws, because the
 // input comes from an agent over the network.
 import { batch, computed, signal } from '@cascivo/core'
-import type { ReadonlySignal } from '@cascivo/core'
+import type { ReadonlySignal, Signal } from '@cascivo/core'
 import type { A2uiCatalogSpec } from './catalog-spec'
 import { createDataModel } from './data-model'
 import type { DataModel } from './data-model'
@@ -68,14 +68,27 @@ export function createA2uiStore(options: {
     sendDataModel: boolean
     theme: Readonly<Record<string, unknown>> | undefined
   }): Surface {
-    const signals = new Map<string, ReturnType<typeof signal<A2uiComponent | undefined>>>()
-    // Shared by every id a renderer asks about that can never be stored (see `component`).
-    const detached = signal<A2uiComponent | undefined>(undefined)
+    // Shared by every over-long id; a computed, so writing it throws.
+    const detached = computed<A2uiComponent | undefined>(() => undefined)
+    const signals = new Map<string, Signal<A2uiComponent | undefined>>()
+    // Read-only views, so a caller cannot write the slot a stored component lives in.
+    const views = new Map<string, ReadonlySignal<A2uiComponent | undefined>>()
+    // Bumped when an id is stored for the first time, so views handed out beyond the lookup
+    // budget (not kept in the maps) still notice the component arriving.
+    const arrivals = signal(0)
     const slot = (id: string) => {
       const hit = signals.get(id)
       if (hit) return hit
       const made = signal<A2uiComponent | undefined>(undefined)
       signals.set(id, made)
+      return made
+    }
+    const view = (id: string) => {
+      const hit = views.get(id)
+      if (hit) return hit
+      const slotSignal = slot(id)
+      const made = computed(() => slotSignal.value)
+      views.set(id, made)
       return made
     }
     const root = slot('root')
@@ -88,20 +101,26 @@ export function createA2uiStore(options: {
       // Empty on purpose: every change goes through `write`, so the node limit always applies.
       data: createDataModel(undefined, { maxNodes: limits.maxDataNodes }),
       // Ids come from an agent: an over-long id can never be stored, and lookups of unknown ids
-      // are capped so a hostile tree cannot grow the map without bound. Stored components always
-      // get a real signal via `set`.
+      // are budgeted so a hostile tree cannot grow the maps without bound. Beyond the budget a
+      // handle is a throwaway view that still follows the id once it is stored.
       component: (id) => {
-        const hit = signals.get(id)
+        const hit = views.get(id)
         if (hit) return hit
-        if (id.length > limits.maxIdLength || signals.size >= limits.maxComponents * 2) {
-          return detached
+        if (id.length > limits.maxIdLength) return detached
+        if (signals.size >= limits.maxComponents * 2) {
+          return computed(() => {
+            void arrivals.value
+            return signals.get(id)?.value
+          })
         }
-        return slot(id)
+        return view(id)
       },
       hasRoot: computed(() => root.value !== undefined),
       stored: new Set(),
       set(component) {
+        const isNew = !signals.get(component.id)?.peek()
         slot(component.id).value = component
+        if (isNew) arrivals.value++
       },
     }
   }

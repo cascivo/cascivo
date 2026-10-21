@@ -279,7 +279,7 @@ describe('createA2uiStore', () => {
     ])
   })
 
-  it('does not allocate signals for over-long ids', () => {
+  it('gives over-long ids one shared read-only signal', () => {
     const store = make({ maxIdLength: 4 })
     store.apply(create('s'))
     const s = store.surface('s')
@@ -287,18 +287,31 @@ describe('createA2uiStore', () => {
     expect(a?.value).toBeUndefined()
     expect(s?.component('another-long')).toBe(a)
     expect(s?.component('ok')).toBe(s?.component('ok'))
+    expect(() => {
+      // @ts-expect-error read-only at the type level and at runtime
+      if (a) a.value = undefined
+    }).toThrow(TypeError)
   })
 
-  it('caps signals for unknown ids but still stores real components', () => {
+  it('keeps handles obtained beyond the lookup budget live', () => {
     const store = make({ maxComponents: 2 })
     store.apply(create('s'))
     const s = store.surface('s')
-    // 'root' already holds one entry; fill the rest of the 2 * maxComponents allowance.
-    const known = ['a', 'b', 'c'].map((id) => s?.component(id))
-    const over = s?.component('d')
-    expect(over).not.toBe(known[0])
-    expect(s?.component('e')).toBe(over)
-    expect(store.apply(comps('s', [{ id: 'd', component: 'T' }])).length).toBe(0)
-    expect(s?.component('d').value?.id).toBe('d')
+    for (const id of ['a', 'b', 'c', 'd', 'e']) s?.component(id)
+    const held = s?.component('late')
+    expect(held?.value).toBeUndefined()
+    expect(store.apply(comps('s', [{ id: 'late', component: 'T' }])).length).toBe(0)
+    expect(held?.value?.id).toBe('late')
+    expect(s?.component('late').value?.id).toBe('late')
+  })
+
+  it('exposes read-only signals within the budget', () => {
+    const store = make()
+    store.apply(create('s'))
+    const x = store.surface('s')?.component('x')
+    expect(() => {
+      // @ts-expect-error read-only at the type level and at runtime
+      if (x) x.value = undefined
+    }).toThrow(TypeError)
   })
 })
