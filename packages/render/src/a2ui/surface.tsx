@@ -45,6 +45,11 @@ export interface AdapterInput {
   resolve(value: unknown): unknown
   /** The `component` type of node `id`, or undefined until it arrives; reactive. */
   typeOf(id: string): string | undefined
+  /**
+   * Node `id` as the agent sent it (validated by the store), or undefined until it arrives;
+   * reactive. Its values are raw: read them through `resolve`.
+   */
+  componentOf(id: string): A2uiComponent | undefined
   /** Set only when `prop` is a `{path}` binding: writes to the bound path. */
   writer(prop: string): ((value: unknown) => void) | undefined
   /** Set only when `prop` holds an Action: dispatches it. */
@@ -325,6 +330,9 @@ function makeInput(
     },
     typeOf(id) {
       return env.surface.component(id).value?.component
+    },
+    componentOf(id) {
+      return env.surface.component(id).value
     },
     slot(name) {
       const value = raw(name)

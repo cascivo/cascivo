@@ -31,6 +31,7 @@ import {
   Text,
   Textarea,
   TimePicker,
+  VisuallyHidden,
 } from '@cascivo/react'
 import type { ButtonProps, FlexProps, HeadingLevel } from '@cascivo/react'
 import type { ReactNode } from 'react'
@@ -91,11 +92,18 @@ const text: A2uiAdapter = (input) => {
   return <Text>{value}</Text>
 }
 
+/** The resolved `accessibility.label`, when it is text. */
+function a11yLabel(input: AdapterInput): string | undefined {
+  const a11y = input.prop('accessibility')
+  return isRecord(a11y) ? str(a11y['label']) : undefined
+}
+
 const image: A2uiAdapter = (input) => {
   const url = urlOf(input)
   if (url === undefined) return null
-  // `fit` and `variant` have no cascivo equivalent yet; an image without a description is decorative.
-  return <Image src={url} alt={str(input.prop('description')) ?? ''} />
+  // `fit` and `variant` have no cascivo equivalent yet; an image with neither an accessibility
+  // label nor a description is decorative.
+  return <Image src={url} alt={a11yLabel(input) ?? str(input.prop('description')) ?? ''} />
 }
 
 const icon: A2uiAdapter = (input) => {
@@ -188,9 +196,8 @@ function ModalAdapter(input: AdapterInput): ReactNode {
   const open = useSignal(false)
   const triggerId = idOf(input, 'trigger')
   const [trigger, content] = input.children([...triggerId, ...idOf(input, 'content')])
-  const a11y = input.prop('accessibility')
   // A dialog needs a name (WCAG 4.1.2), and Modal is named only through its title.
-  const title = (isRecord(a11y) ? str(a11y['label']) : undefined) ?? t(builtin.a2ui.dialog)
+  const title = a11yLabel(input) ?? t(builtin.a2ui.dialog)
   const show = (): void => {
     open.value = true
   }
@@ -245,15 +252,30 @@ const BUTTON_VARIANTS: Readonly<Record<string, NonNullable<ButtonProps['variant'
   borderless: 'ghost',
 }
 
+/**
+ * The text an icon-only button is named by (WCAG 4.1.2): Icons render nothing here, so the
+ * icon's name, split into words (`shoppingCart` → "shopping cart").
+ */
+function iconName(input: AdapterInput, id: string | undefined): string | undefined {
+  if (id === undefined || input.typeOf(id) !== 'Icon') return undefined
+  const name = str(input.resolve(input.componentOf(id)?.props['name']))
+  return name?.replace(/([a-z0-9])([A-Z])/g, '$1 $2').toLowerCase()
+}
+
 const button: A2uiAdapter = (input) => {
-  const [label] = input.children(idOf(input, 'child'))
+  const childId = idOf(input, 'child')
+  const [label] = input.children(childId)
+  const ariaLabel = a11yLabel(input)
+  const hidden = ariaLabel === undefined ? iconName(input, childId[0]) : undefined
   return (
     <Button
       variant={lookup(BUTTON_VARIANTS, input.prop('variant')) ?? 'secondary'}
       disabled={input.failingChecks().length > 0}
+      {...opt('aria-label', ariaLabel)}
       {...opt('onClick', input.action('action'))}
     >
       {label}
+      {hidden !== undefined && <VisuallyHidden>{hidden}</VisuallyHidden>}
     </Button>
   )
 }
@@ -374,7 +396,14 @@ function ChoicePickerAdapter(input: AdapterInput): ReactNode {
       </Flex>
     )
   }
-  const common = { ...opt('label', label), ...opt('error', error), options }
+  // With nothing selected a controlled `value=""` matches no option, so the browser shows the
+  // first one as chosen and it cannot be picked; the placeholder is the empty option instead.
+  const common = {
+    ...opt('label', label),
+    ...opt('error', error),
+    ...opt('placeholder', selected[0] === undefined ? t(builtin.a2ui.choose) : undefined),
+    options,
+  }
   return write === undefined ? (
     <Select {...common} defaultValue={selected[0] ?? ''} />
   ) : (
@@ -449,8 +478,14 @@ const dateTimeInput: A2uiAdapter = (input) => {
   )
   const timePicker = (
     <TimePicker
-      // Beside a DatePicker the visible label is the DatePicker's; this one is named by it too.
-      {...(withDate ? opt('ariaLabel', label) : opt('label', label))}
+      // Beside a DatePicker the visible label is the DatePicker's; this one gets its own name,
+      // the label and "Time", so the two fields do not announce alike.
+      {...(withDate
+        ? opt(
+            'ariaLabel',
+            label === undefined ? t(builtin.a2ui.time) : `${label}, ${t(builtin.a2ui.time)}`,
+          )
+        : opt('label', label))}
       {...(withDate ? {} : opt('error', error))}
       {...opt('min', min.time)}
       {...opt('max', max.time)}

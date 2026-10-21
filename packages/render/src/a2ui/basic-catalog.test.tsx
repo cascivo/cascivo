@@ -202,6 +202,31 @@ describe('basicCatalog', () => {
     expect(img.getAttribute('src')).toBe('https://example.com/a.png')
   })
 
+  it('R33: Image alt prefers accessibility.label over description', () => {
+    const { store } = setup(
+      column(
+        ['i', 'j'],
+        {
+          id: 'i',
+          component: 'Image',
+          url: 'https://example.com/a.png',
+          description: 'A dish',
+          accessibility: { label: 'Pasta of the day' },
+        },
+        {
+          id: 'j',
+          component: 'Image',
+          url: 'https://example.com/b.png',
+          accessibility: { label: { path: '/alt' } },
+        },
+      ),
+      { alt: 'Dessert' },
+    )
+    mount(store)
+    expect(screen.getByRole('img', { name: 'Pasta of the day' })).toBeTruthy()
+    expect(screen.getByRole('img', { name: 'Dessert' })).toBeTruthy()
+  })
+
   it('Icon renders nothing and reports UNSUPPORTED_COMPONENT once', async () => {
     const onError = vi.fn<(e: A2uiErrorMessage) => void>()
     const { store, errors, setData } = setup(
@@ -485,6 +510,36 @@ describe('basicCatalog', () => {
       expect(screen.getByRole('button', { name: 'Go' }).getAttribute('data-variant')).toBe(expected)
     })
 
+    it('R33: accessibility.label names the button', () => {
+      const { store } = setup(
+        column(
+          ['b'],
+          {
+            id: 'b',
+            component: 'Button',
+            child: 'i',
+            action: { event: { name: 'close' } },
+            accessibility: { label: 'Close dialog' },
+          },
+          { id: 'i', component: 'Icon', name: 'close' },
+        ),
+      )
+      mount(store)
+      expect(screen.getByRole('button', { name: 'Close dialog' })).toBeTruthy()
+    })
+
+    it('R33: an icon-only button without a label is named by the icon name', () => {
+      const { store } = setup(
+        column(
+          ['b'],
+          { id: 'b', component: 'Button', child: 'i', action: { event: { name: 'pay' } } },
+          { id: 'i', component: 'Icon', name: 'shoppingCart' },
+        ),
+      )
+      mount(store)
+      expect(screen.getByRole('button', { name: 'shopping cart' })).toBeTruthy()
+    })
+
     it('a failing check disables it', () => {
       const { store, setData } = setup(
         column(
@@ -617,6 +672,26 @@ describe('basicCatalog', () => {
       expect(snapshot()).toMatchObject({ g: ['4'] })
     })
 
+    it('R34: with nothing selected a single choice shows the placeholder, and the first option can be chosen', () => {
+      const { store, snapshot } = setup(
+        column(['p'], {
+          id: 'p',
+          component: 'ChoicePicker',
+          label: 'Guests',
+          variant: 'mutuallyExclusive',
+          options,
+          value: { path: '/g' },
+        }),
+        { g: [], fourLabel: 'Four' },
+      )
+      mount(store)
+      const select = screen.getByRole('combobox', { name: 'Guests' }) as HTMLSelectElement
+      expect(select.value).toBe('')
+      expect(select.selectedOptions[0]?.textContent).toBe('Choose…')
+      fireEvent.change(select, { target: { value: '2' } })
+      expect(snapshot()).toMatchObject({ g: ['2'] })
+    })
+
     it('multipleSelection renders a Checkbox per option and writes the selected list', () => {
       const { store, snapshot } = setup(
         column(['p'], {
@@ -697,6 +772,8 @@ describe('basicCatalog', () => {
       const time = container.querySelector<HTMLInputElement>('input[type="time"]')!
       expect(time.value).toBe('18:00')
       expect(time.closest('[data-direction="horizontal"]')).not.toBeNull()
+      // T8: the TimePicker has its own name, not the DatePicker's.
+      expect(time.getAttribute('aria-label')).toBe('When, Time')
       fireEvent.change(time, { target: { value: '19:30' } })
       expect(snapshot()).toEqual({ d: '2026-10-21T19:30' })
     })
