@@ -429,6 +429,10 @@ export const builtin = {
     commandMenu: 'Command menu',
     commandMenuEmpty: 'No commands',
   }),
+  a2ui: defineMessages('cascade.a2ui', {
+    openMedia: 'Open media',
+    invalid: 'Invalid value',
+  }),
 }
 
 defineCatalog(builtin.pagination, 'de', {
@@ -853,4 +857,8 @@ defineCatalog(builtin.editor, 'de', {
   findCount: '{current} von {total}',
   commandMenu: 'Befehlsmenü',
   commandMenuEmpty: 'Keine Befehle',
+})
+defineCatalog(builtin.a2ui, 'de', {
+  openMedia: 'Medien öffnen',
+  invalid: 'Ungültiger Wert',
 })

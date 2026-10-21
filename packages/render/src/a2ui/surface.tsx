@@ -25,12 +25,22 @@ export interface AdapterInput {
   /** The resolved value; a URL key that fails `isSafeUrl` is `undefined`. */
   prop(name: string): unknown
   /**
-   * Renders other nodes, a Skeleton for each id that has not arrived. Call it at most once per
-   * render with every id the adapter needs; a second call renders nothing (see `split`).
+   * Renders other nodes, a Skeleton for each id that has not arrived. Call it at most once, while
+   * the adapter runs, with every id the adapter needs; place each returned node once. A second or
+   * later call renders nothing (see `split`).
    */
   children(ids: readonly string[]): ReactNode[]
-  /** A child list, a component id or text, by the shape of the slot's value. */
+  /**
+   * A child list, a component id or text, by the shape of the slot's value. Call it at most once
+   * per name, while the adapter runs; place each returned node once (see `split`).
+   */
   slot(name: string): ReactNode
+  /**
+   * Resolves a dynamic value nested inside a prop (a `{path}` binding or a function call, such as
+   * a Tabs title), as `prop` does for a top-level one; errors are reported once per surface.
+   * Unlike `prop` it runs no URL check, so use it only for values rendered as text.
+   */
+  resolve(value: unknown): unknown
   /** Set only when `prop` is a `{path}` binding: writes to the bound path. */
   writer(prop: string): ((value: unknown) => void) | undefined
   /** Set only when `prop` holds an Action: dispatches it. */
@@ -115,7 +125,8 @@ function isTemplate(value: unknown): value is { componentId: string; path: strin
  *    call after the adapter has returned takes no share; it renders nothing and reports one
  *    RENDER_ERROR. The shares are fixed when the adapter returns (children render after it),
  *    so a level never hands out more than R and the total is at most `maxRenderNodes` for any
- *    adapter, however many times it calls these.
+ *    adapter that places each returned node at most once, however many times it calls these.
+ *    A node placed twice renders its subtree twice on one share, which the bound cannot see.
  *
  * `split(total, n, i)` is `floor(total / n)` plus 1 for the first `total mod n` children, so a
  * long list is truncated at its end rather than dropped whole. A node rendered with budget < 1
@@ -253,6 +264,9 @@ function makeInput(
       if (!take('children()', childrenCalled)) return ids.map(() => null)
       childrenCalled = true
       return ids.map((id, i) => child(id, i, () => split(shareOf(null), ids.length, i)))
+    },
+    resolve(value) {
+      return resolve(value)
     },
     slot(name) {
       const value = raw(name)
