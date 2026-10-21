@@ -48,9 +48,11 @@ const MAX_TEMPLATE = 10_000
  * JS has no linear-time regex engine, so the shapes that backtrack badly are refused before they
  * run: backreferences, a group holding a quantifier or an alternation that is itself repeated
  * (`(a+)+`, `(a|aa){2,}`; `(a|b)+` and `(\d{3})+` are refused too), and any pattern with more
- * than two quantifier tokens. Every quantifier counts (`?`, `*`, `+`, `{n}`, `{n,}`, `{n,m}`,
- * greedy or lazy), because bounded ones such as `a{1,1000}` and optional ones such as `a?a?a?aaa`
- * backtrack just like `*`: n adjacent overlapping quantifiers cost up to O(len^n).
+ * than two quantifier tokens. Every quantifier that can match more than one way counts (`?`, `*`,
+ * `+`, `{n,}`, `{n,m}`, greedy or lazy), because bounded ones such as `a{1,1000}` and optional
+ * ones such as `a?a?a?aaa` backtrack just like `*`: n adjacent overlapping quantifiers cost up to
+ * O(len^n). An exact `{n}` matches one way only, adds no choice point and is not counted (so
+ * `^\d{3}-\d{3}-\d{4}$` is accepted); it still marks its group, so `(\d{3})+` stays refused.
  *
  * A repeat count above 99 (`a{0,1000}`) is refused for the same reason.
  *
@@ -98,6 +100,8 @@ export function isSafeRegexPattern(pattern: string): boolean {
       continue
     }
     let isQuantifier = false
+    // An exact `{n}` matches one way only, so it adds no choice point and is not counted.
+    let exact = false
     if (ch === '*' || ch === '+' || (ch === '?' && !wasQuantifier)) isQuantifier = true
     else if (ch === '{') {
       const m = /^\{\d+(?:,\d*)?\}/.exec(pattern.slice(i, i + 24))
@@ -105,11 +109,12 @@ export function isSafeRegexPattern(pattern: string): boolean {
         // Unanchored, two `{0,1000}` cost ~400 ms on 1,000 characters; 100 keeps them near 30 ms.
         if (/\d{4,}|[1-9]\d{2,}/.test(m[0])) return false
         isQuantifier = true
+        exact = !m[0].includes(',')
         i += m[0].length - 1
       }
     }
     if (isQuantifier) {
-      if (++quantifiers > MAX_QUANTIFIERS) return false
+      if (!exact && ++quantifiers > MAX_QUANTIFIERS) return false
       afterQuantifier = true
       if (stack.length > 0) stack[stack.length - 1] = true
       continue
@@ -286,8 +291,10 @@ export function callFunction(
   args: Readonly<Record<string, unknown>>,
   ctx: ResolveContext,
 ): unknown {
-  const invalid = (message: string, name: string): void =>
-    ctx.report(errorMessage('VALIDATION_FAILED', ctx.surfaceId, message, `/args/${name}`))
+  // FUNCTION_ERROR, not VALIDATION_FAILED: the fault is found while resolving, and
+  // VALIDATION_FAILED needs a pointer into a message the agent sent, which an arg is not.
+  const invalid = (message: string): void =>
+    ctx.report(errorMessage('FUNCTION_ERROR', ctx.surfaceId, message))
 
   switch (call) {
     case 'required': {
@@ -298,20 +305,19 @@ export function callFunction(
       const { value, pattern } = args
       if (typeof pattern !== 'string' || !isSafeRegexPattern(pattern)) {
         invalid(
-          'Regex pattern refused: missing, too long, a backreference, a nested quantifier, more than 2 quantifiers, or a repeat count above 99.',
-          'pattern',
+          'Regex pattern refused: missing, too long, a backreference, a nested quantifier, more than 2 non-exact quantifiers, or a repeat count above 99.',
         )
         return false
       }
       if (typeof value !== 'string') return false
       if (value.length > MAX_REGEX_INPUT) {
-        invalid(`Regex input exceeds ${MAX_REGEX_INPUT} characters.`, 'value')
+        invalid(`Regex input exceeds ${MAX_REGEX_INPUT} characters.`)
         return false
       }
       try {
         return new RegExp(pattern, 'u').test(value)
       } catch {
-        invalid('Regex pattern is invalid.', 'pattern')
+        invalid('Regex pattern is invalid.')
         return false
       }
     }
@@ -360,7 +366,7 @@ export function callFunction(
     case 'pluralize': {
       const other = args['other']
       if (typeof other !== 'string') {
-        invalid('pluralize requires an "other" form.', 'other')
+        invalid('pluralize requires an "other" form.')
         return ''
       }
       const n = toNumber(args['value'])
@@ -376,8 +382,12 @@ export function callFunction(
     }
     case 'openUrl': {
       const url = args['url']
-      if (typeof url === 'string' && isSafeUrl(url)) ctx.openUrl(url)
-      else invalid('openUrl refused a missing or unsafe URL.', 'url')
+      // An unescaped `${` is an interpolation the agent meant to resolve (the spec's own example
+      // passes "${/url}" as a plain string); opening it literally would follow the wrong URL.
+      if (typeof url === 'string' && /(^|[^\\])\$\{/.test(url)) {
+        invalid('openUrl refused a URL holding an unresolved "${"; pass a {path} binding instead.')
+      } else if (typeof url === 'string' && isSafeUrl(url)) ctx.openUrl(url)
+      else invalid('openUrl refused a missing or unsafe URL.')
       return undefined
     }
     default:
@@ -403,9 +413,7 @@ function resolveAt(value: unknown, ctx: ResolveContext, depth: number): unknown 
   }
   if (isFunctionCall(value) && isRecord(value)) {
     if (depth >= MAX_DEPTH) {
-      ctx.report(
-        errorMessage('VALIDATION_FAILED', ctx.surfaceId, 'Function calls nest too deeply.'),
-      )
+      ctx.report(errorMessage('FUNCTION_ERROR', ctx.surfaceId, 'Function calls nest too deeply.'))
       return undefined
     }
     const raw = isRecord(value['args']) ? value['args'] : {}
@@ -542,10 +550,9 @@ export function formatString(template: string, ctx: ResolveContext): string {
   if (template.length > MAX_TEMPLATE) {
     ctx.report(
       errorMessage(
-        'VALIDATION_FAILED',
+        'FUNCTION_ERROR',
         ctx.surfaceId,
         `formatString template exceeds ${MAX_TEMPLATE} characters.`,
-        '/args/value',
       ),
     )
     return template

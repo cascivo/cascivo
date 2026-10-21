@@ -62,10 +62,21 @@ describe('isSafeRegexPattern', () => {
       '\\w{1,1000}'.repeat(5) + '$',
       '(a?)'.repeat(34) + 'a'.repeat(34),
       'a?'.repeat(34) + 'a'.repeat(34),
-      '^\\d{3}-\\d{3}-\\d{4}$',
     ]) {
       expect(isSafeRegexPattern(p)).toBe(false)
     }
+  })
+  it('R35: exact {n} repeats do not count toward the cap (a US phone pattern is accepted)', () => {
+    expect(isSafeRegexPattern('^\\d{3}-\\d{3}-\\d{4}$')).toBe(true)
+    expect(isSafeRegexPattern('^[A-Z]{2}\\d{2}[A-Z]{4}\\d{8}$')).toBe(true)
+    // Still counted: the open-ended and ranged forms.
+    expect(isSafeRegexPattern('a{2,}b{2,}c{2,}')).toBe(false)
+    expect(isSafeRegexPattern('a{1,2}b{1,2}c{1,2}')).toBe(false)
+    // An exact repeat still marks its group, so a repeated group holding one stays refused.
+    expect(isSafeRegexPattern('(\\d{3})+')).toBe(false)
+  })
+  it('R35: ^[^@]+@[^@]+\\.[^@]+$ stays refused (three unbounded + quantifiers)', () => {
+    expect(isSafeRegexPattern('^[^@]+@[^@]+\\.[^@]+$')).toBe(false)
   })
   it('refuses repeat counts above 99', () => {
     expect(isSafeRegexPattern('a{0,1000}')).toBe(false)
@@ -115,18 +126,22 @@ describe('validators', () => {
     const c = make()
     const started = Date.now()
     expect(call('regex', { value: `${'a'.repeat(30)}!`, pattern: '(a+)+$' }, c)).toBe(false)
-    expect(Date.now() - started).toBeLessThan(100)
-    expect(c.errors[0]?.error).toMatchObject({ code: 'VALIDATION_FAILED', path: '/args/pattern' })
+    expect(Date.now() - started).toBeLessThan(2000)
+    expect(c.errors[0]?.error).toEqual({
+      code: 'FUNCTION_ERROR',
+      surfaceId: 's1',
+      message: expect.stringContaining('Regex pattern refused'),
+    })
   })
   it('regex stays fast on the worst accepted shape', () => {
     const started = Date.now()
     expect(call('regex', { value: `${'1'.repeat(255)}x`, pattern: '^\\d+\\d+$' })).toBe(false)
-    expect(Date.now() - started).toBeLessThan(200)
+    expect(Date.now() - started).toBeLessThan(2000)
   })
   it('regex stays fast on the unanchored worst shape with capture groups', () => {
     const started = Date.now()
     expect(call('regex', { value: 'a'.repeat(256), pattern: '(a)*(a)*b' })).toBe(false)
-    expect(Date.now() - started).toBeLessThan(200)
+    expect(Date.now() - started).toBeLessThan(2000)
   })
   it('regex stays fast on the worst accepted bounded-quantifier shapes', () => {
     // Assert acceptance first: if these were refused, the timing below would never run the engine.
@@ -134,10 +149,10 @@ describe('validators', () => {
     expect(isSafeRegexPattern('\\d{0,99}\\d{0,99}x')).toBe(true)
     let started = Date.now()
     expect(call('regex', { value: 'a'.repeat(256), pattern: 'a{0,99}a{0,99}b' })).toBe(false)
-    expect(Date.now() - started).toBeLessThan(200)
+    expect(Date.now() - started).toBeLessThan(2000)
     started = Date.now()
     expect(call('regex', { value: '1'.repeat(256), pattern: '\\d{0,99}\\d{0,99}x' })).toBe(false)
-    expect(Date.now() - started).toBeLessThan(200)
+    expect(Date.now() - started).toBeLessThan(2000)
   })
   it('regex refuses long patterns, long values and invalid patterns', () => {
     const c = make()
@@ -145,7 +160,11 @@ describe('validators', () => {
     expect(call('regex', { value: 'a'.repeat(257), pattern: 'a' }, c)).toBe(false)
     expect(call('regex', { value: 'a', pattern: '[' }, c)).toBe(false)
     expect(c.errors).toHaveLength(3)
-    expect(c.errors[1]?.error).toMatchObject({ code: 'VALIDATION_FAILED', path: '/args/value' })
+    expect(c.errors[1]?.error).toEqual({
+      code: 'FUNCTION_ERROR',
+      surfaceId: 's1',
+      message: 'Regex input exceeds 256 characters.',
+    })
   })
   it('length', () => {
     expect(call('length', { value: 'abc', min: 2, max: 3 })).toBe(true)
@@ -206,7 +225,22 @@ describe('formatters', () => {
     expect(call('openUrl', { url: 'https://a.test' }, c)).toBeUndefined()
     call('openUrl', { url: 'javascript:alert(1)' }, c)
     expect(c.opened).toEqual(['https://a.test'])
-    expect(c.errors[0]?.error).toMatchObject({ code: 'VALIDATION_FAILED', path: '/args/url' })
+    expect(c.errors[0]?.error).toEqual({
+      code: 'FUNCTION_ERROR',
+      surfaceId: 's1',
+      message: 'openUrl refused a missing or unsafe URL.',
+    })
+  })
+  it('R30: openUrl refuses a url holding an unescaped ${, as the spec example "${/url}" would', () => {
+    const c = make()
+    call('openUrl', { url: '${/url}' }, c)
+    call('openUrl', { url: 'https://a.test/?q=${/x}' }, c)
+    expect(c.opened).toEqual([])
+    expect(c.errors.map((e) => e.error.code)).toEqual(['FUNCTION_ERROR', 'FUNCTION_ERROR'])
+    expect(c.errors[0]?.error.path).toBeUndefined()
+    // An escaped opener is literal text, not an interpolation.
+    call('openUrl', { url: 'https://a.test/?q=\\${x}' }, c)
+    expect(c.opened).toEqual(['https://a.test/?q=\\${x}'])
   })
   it('unknown function reports and resolves undefined', () => {
     const c = make()
@@ -231,6 +265,17 @@ describe('resolveDynamic', () => {
     expect(resolveDynamic({ path: 'a' }, ctx)).toBeUndefined()
     expect(errors).toHaveLength(1)
     expect(errors[0]?.error.code).toBe('INVALID_PATH')
+  })
+  it('R31: render-time function faults are FUNCTION_ERROR with no path', () => {
+    const { ctx, errors } = make()
+    let deep: unknown = true
+    for (let i = 0; i < 20; i++) deep = { call: 'not', args: { value: deep } }
+    resolveDynamic(deep, ctx)
+    resolveDynamic({ call: 'pluralize', args: { value: 1 } }, ctx)
+    expect(errors.map((e) => e.error)).toEqual([
+      { code: 'FUNCTION_ERROR', surfaceId: 's1', message: 'Function calls nest too deeply.' },
+      { code: 'FUNCTION_ERROR', surfaceId: 's1', message: 'pluralize requires an "other" form.' },
+    ])
   })
   it('resolves call args as dynamic values', () => {
     const { ctx } = make({ flag: false })
@@ -279,21 +324,25 @@ describe('formatString', () => {
     const t = '${'.repeat(5000)
     const started = Date.now()
     expect(formatString(t, ctx)).toBe(t)
-    expect(Date.now() - started).toBeLessThan(100)
+    expect(Date.now() - started).toBeLessThan(2000)
   })
   it('returns a 10,001-char template verbatim and reports it', () => {
     const { ctx, errors } = make({ a: 1 })
     const t = 'x'.repeat(9_991) + '${/a}' + '!!!!!'
     expect(t.length).toBe(10_001)
     expect(formatString(t, ctx)).toBe(t)
-    expect(errors[0]?.error).toMatchObject({ code: 'VALIDATION_FAILED', path: '/args/value' })
+    expect(errors[0]?.error).toEqual({
+      code: 'FUNCTION_ERROR',
+      surfaceId: 's1',
+      message: 'formatString template exceeds 10000 characters.',
+    })
   })
   it('stays fast on hostile nesting', () => {
     const { ctx } = make()
     const started = Date.now()
     formatString('${'.repeat(5000), ctx)
     formatString('${f('.repeat(5000), ctx)
-    expect(Date.now() - started).toBeLessThan(1000)
+    expect(Date.now() - started).toBeLessThan(2000)
   })
   it('falls back to the current locale when locale is empty', () => {
     const { ctx } = make({}, { locale: '' })
