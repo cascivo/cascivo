@@ -96,11 +96,31 @@ function isTemplate(value: unknown): value is { componentId: string; path: strin
   )
 }
 
+/**
+ * How a node's render budget is shared (maxRenderNodes, R19). The surface root gets
+ * `maxRenderNodes`; a node spends 1 and splits the remaining R = budget - 1 among its children
+ * without any shared counter, so the bound holds however React schedules the renders:
+ *
+ * 1. Across slots: the props holding children (a child id list, a template, or a component id
+ *    in an arity-one slot; text excluded) are counted up front, in prop order. Slot k of K gets
+ *    `split(R, K, k)`.
+ * 2. Within a slot: its m children (list entries or template items) get `split(share, m, i)`.
+ * 3. A direct `child(id)` call from an adapter gets one slot's share, `split(R, max(K, 1), 0)`.
+ *
+ * `split(total, n, i)` is `floor(total / n)` plus 1 for the first `total mod n` children, so a
+ * level never hands out more than it has and a long list is truncated at its end rather than
+ * dropped whole. A node rendered with budget < 1 renders nothing.
+ */
+function split(total: number, n: number, i: number): number {
+  return Math.floor(total / n) + (i < total % n ? 1 : 0)
+}
+
 function makeInput(
   component: A2uiComponent,
   scope: string,
   path: readonly Ancestor[],
   env: Env,
+  budget: number,
 ): AdapterInput {
   const { data, id: surfaceId } = env.surface
   // Render-time resolution reports once per error; dispatch-time (a click) reports each time.
@@ -117,12 +137,37 @@ function makeInput(
     report(errorMessage('INVALID_PATH', surfaceId, e.message, at))
   }
 
+  const info = hasOwn(a2uiComponents, component.component)
+    ? a2uiComponents[component.component]
+    : undefined
+  const arityOf = (name: string): 'one' | 'many' | undefined =>
+    info !== undefined && hasOwn(info.slots, name) ? info.slots[name]?.arity : undefined
+  const holdsChildren = (name: string, value: unknown): boolean =>
+    Array.isArray(value) ||
+    isTemplate(value) ||
+    (typeof value === 'string' && arityOf(name) === 'one')
+  const childSlots = Object.keys(component.props).filter((k) =>
+    holdsChildren(k, component.props[k]),
+  )
+  const remaining = budget - 1
+  const slotShare = (name: string): number => {
+    const k = childSlots.indexOf(name)
+    return split(remaining, Math.max(childSlots.length, 1), Math.max(k, 0))
+  }
+
   // Keyed by position too, so an agent listing an id twice does not collide React keys.
-  const child = (id: string, index = 0): ReactNode => (
-    <A2uiNode key={`${id}#${index}`} id={id} scope={scope} ancestors={path} env={env} />
+  const child = (id: string, index: number, share: number): ReactNode => (
+    <A2uiNode
+      key={`${id}#${index}`}
+      id={id}
+      scope={scope}
+      ancestors={path}
+      env={env}
+      budget={share}
+    />
   )
 
-  const template = (componentId: string, at: string): ReactNode => {
+  const template = (componentId: string, at: string, share: number): ReactNode => {
     let abs: string
     let items: unknown
     try {
@@ -141,6 +186,7 @@ function makeInput(
         scope={`${prefix}/${i}`}
         ancestors={path}
         env={env}
+        budget={split(share, items.length, i)}
       />
     ))
   }
@@ -165,22 +211,19 @@ function makeInput(
       }
       return resolved
     },
-    child: (id) => child(id),
+    child: (id) => child(id, 0, split(remaining, Math.max(childSlots.length, 1), 0)),
     slot(name) {
       const value = raw(name)
       if (value === undefined) return undefined
       if (Array.isArray(value)) {
-        return value
-          .filter((id): id is string => typeof id === 'string')
-          .map((id, i) => child(id, i))
+        const share = slotShare(name)
+        const ids = value.filter((id): id is string => typeof id === 'string')
+        return ids.map((id, i) => child(id, i, split(share, ids.length, i)))
       }
-      if (isTemplate(value)) return template(value.componentId, value.path)
-      const info = hasOwn(a2uiComponents, component.component)
-        ? a2uiComponents[component.component]
-        : undefined
-      const arity =
-        info !== undefined && hasOwn(info.slots, name) ? info.slots[name]?.arity : undefined
-      if (typeof value === 'string' && arity === 'one') return child(value)
+      if (isTemplate(value)) return template(value.componentId, value.path, slotShare(name))
+      if (typeof value === 'string' && arityOf(name) === 'one') {
+        return child(value, 0, slotShare(name))
+      }
       // Only a string or number is text; an object bound in from the data model would crash React.
       const text = resolve(value)
       return typeof text === 'string' || typeof text === 'number' ? text : undefined
@@ -246,6 +289,8 @@ interface NodeProps {
   /** Every node from the root to this one, excluding it. */
   readonly ancestors: readonly Ancestor[]
   readonly env: Env
+  /** Nodes this subtree may render, itself included; see `split`. */
+  readonly budget: number
 }
 
 interface Ancestor {
@@ -272,7 +317,7 @@ function isCycle(id: string, scope: string, ancestors: readonly Ancestor[]): boo
   return false
 }
 
-function A2uiNode({ id, scope, ancestors, env }: NodeProps): ReactNode {
+function A2uiNode({ id, scope, ancestors, env, budget }: NodeProps): ReactNode {
   useSignals()
   if (isCycle(id, scope, ancestors)) {
     env.renderError(id, `Component "${id}" is its own ancestor; the cycle is not rendered.`)
@@ -281,6 +326,19 @@ function A2uiNode({ id, scope, ancestors, env }: NodeProps): ReactNode {
   const max = env.store.limits.maxRenderDepth
   if (ancestors.length >= max) {
     env.renderError(id, `Component "${id}" is nested deeper than maxRenderDepth (${max}).`)
+    return null
+  }
+  if (budget < 1) {
+    const limit = env.store.limits.maxRenderNodes
+    // One report per surface, whichever ids run out.
+    env.reportOnce(
+      'RENDER_ERROR|#maxRenderNodes',
+      errorMessage(
+        'RENDER_ERROR',
+        env.surface.id,
+        `The surface exceeds the render-node limit (maxRenderNodes ${limit}); the rest is not rendered.`,
+      ),
+    )
     return null
   }
   const component = env.surface.component(id).value
@@ -294,6 +352,7 @@ function A2uiNode({ id, scope, ancestors, env }: NodeProps): ReactNode {
       scope={scope}
       path={[...ancestors, { id, scope }]}
       env={env}
+      budget={budget}
     />
   )
 }
@@ -303,10 +362,11 @@ interface BodyProps {
   readonly scope: string
   readonly path: readonly Ancestor[]
   readonly env: Env
+  readonly budget: number
 }
 
 /** Runs the adapter; its own component so the signals the adapter reads re-render only it. */
-function A2uiBody({ component, scope, path, env }: BodyProps): ReactNode {
+function A2uiBody({ component, scope, path, env, budget }: BodyProps): ReactNode {
   useSignals()
   const adapter = env.catalog.adapter(component.component)
   if (adapter === undefined) {
@@ -316,7 +376,7 @@ function A2uiBody({ component, scope, path, env }: BodyProps): ReactNode {
     )
     return null
   }
-  return adapter(makeInput(component, scope, path, env))
+  return adapter(makeInput(component, scope, path, env, budget))
 }
 
 /** Renders the surface `surfaceId` of `store`, drawing components through `catalogs`. */
@@ -373,7 +433,9 @@ export function A2uiSurface({
     reportOnce,
     renderError,
   }
-  return <A2uiNode id="root" scope="" ancestors={[]} env={env} />
+  return (
+    <A2uiNode id="root" scope="" ancestors={[]} env={env} budget={store.limits.maxRenderNodes} />
+  )
 }
 
 // ---- The cascivo catalog --------------------------------------------------------------------

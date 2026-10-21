@@ -8,7 +8,7 @@ import type { A2uiCatalogSpec } from './catalog-spec'
 import { A2UI_CATALOG_ID } from './messages'
 import type { A2uiActionMessage, A2uiErrorMessage } from './messages'
 import { createA2uiStore } from './store'
-import type { A2uiStore } from './store'
+import type { A2uiLimits, A2uiStore } from './store'
 import { A2uiSurface, cascivoCatalog } from './surface'
 import type { A2uiRenderCatalog } from './surface'
 import { TWO_WAY, twoWayValue } from './two-way'
@@ -56,9 +56,12 @@ const SID = 's1'
 
 function setup(
   components: unknown[],
-  options: { catalogId?: string; sendDataModel?: boolean } = {},
+  options: { catalogId?: string; sendDataModel?: boolean; limits?: Partial<A2uiLimits> } = {},
 ) {
-  const store = createA2uiStore({ catalogs: [cascivoCatalogSpec, spySpec] })
+  const store = createA2uiStore({
+    catalogs: [cascivoCatalogSpec, spySpec],
+    ...(options.limits === undefined ? {} : { limits: options.limits }),
+  })
   const errors: A2uiErrorMessage[] = []
   const send = (msg: Record<string, unknown>) => {
     errors.push(...store.apply({ version: 'v0.9', ...msg }))
@@ -626,6 +629,86 @@ describe('<A2uiSurface>', () => {
     // its nearest b, a cycle. Polynomial, not n!.
     expect(container.querySelectorAll('[data-box="b"]')).toHaveLength(10)
     expect(container.querySelectorAll('[data-box="a"]')).toHaveLength(101)
+    expect(renderErrorsOf(onError)).toHaveLength(1)
+  })
+
+  const ten = (id: string) => Array.from({ length: 10 }, () => id)
+  const rows = (n: number) => Array.from({ length: n }, (_, i) => ({ n: i }))
+
+  it('R19 (a): a static fan-out DAG stops at maxRenderNodes with one RENDER_ERROR', async () => {
+    const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+    const ids = ['root', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6']
+    const { store, errors } = setup(
+      ids.map((id, i) =>
+        i < ids.length - 1
+          ? { id, component: 'Box', children: ten(ids[i + 1]!) }
+          : { id, component: 'Box' },
+      ),
+      { catalogId: SPY_CATALOG_ID },
+    )
+    expect(errors).toEqual([])
+    const { container } = mount(store, { onError })
+    await act(async () => {})
+    expect(container.querySelectorAll('[data-box]').length).toBeLessThanOrEqual(5000)
+    const limit = renderErrorsOf(onError)
+    expect(limit).toHaveLength(1)
+    expect(limit[0]!.message).toContain('maxRenderNodes')
+  })
+
+  it('R19 (b): a template fan-out DAG over one absolute list is bounded', async () => {
+    const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+    const ids = ['root', 'c1', 'c2', 'c3', 'c4']
+    const { store, data } = setup(
+      ids.map((id, i) =>
+        i < ids.length - 1
+          ? { id, component: 'Box', children: { componentId: ids[i + 1], path: '/list' } }
+          : { id, component: 'Box' },
+      ),
+      { catalogId: SPY_CATALOG_ID },
+    )
+    data('/list', rows(10))
+    const { container } = mount(store, { onError })
+    await act(async () => {})
+    expect(container.querySelectorAll('[data-box]').length).toBeLessThanOrEqual(5000)
+    expect(renderErrorsOf(onError)).toHaveLength(1)
+  })
+
+  it('R19 (c): a 1,000-row template beside two siblings renders every row', async () => {
+    const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+    const { store, errors, data } = setup(
+      [
+        { id: 'root', component: 'Flex', children: ['head', 'list', 'foot'] },
+        { id: 'head', component: 'Text', children: 'Head' },
+        { id: 'list', component: 'Box', children: { componentId: 'row', path: '/rows' } },
+        { id: 'row', component: 'Box' },
+        { id: 'foot', component: 'Text', children: 'Foot' },
+      ],
+      { catalogId: SPY_CATALOG_ID },
+    )
+    data('/rows', rows(1000))
+    expect(errors).toEqual([])
+    const { container } = mount(store, { onError })
+    await act(async () => {})
+    expect(container.querySelectorAll('[data-box="row"]')).toHaveLength(1000)
+    expect(screen.getByText('Head')).toBeTruthy()
+    expect(screen.getByText('Foot')).toBeTruthy()
+    expect(onError).not.toHaveBeenCalled()
+  })
+
+  it('R19 (d): maxRenderNodes 10 truncates a 20-row list with one error', async () => {
+    const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+    const { store, data } = setup(
+      [
+        { id: 'root', component: 'Box', children: { componentId: 'row', path: '/rows' } },
+        { id: 'row', component: 'Box' },
+      ],
+      { catalogId: SPY_CATALOG_ID, limits: { maxRenderNodes: 10 } },
+    )
+    data('/rows', rows(20))
+    const { container } = mount(store, { onError })
+    await act(async () => {})
+    // The root takes 1; the remaining 9 go to the first 9 rows.
+    expect(container.querySelectorAll('[data-box="row"]')).toHaveLength(9)
     expect(renderErrorsOf(onError)).toHaveLength(1)
   })
 

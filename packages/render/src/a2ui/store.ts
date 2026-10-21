@@ -16,6 +16,8 @@ export interface A2uiLimits {
   maxIdLength: number
   maxDataNodes: number
   maxRenderDepth: number
+  /** Nodes one surface may render; a tree of shared ids can otherwise fan out exponentially. */
+  maxRenderNodes: number
 }
 
 export const DEFAULT_A2UI_LIMITS: A2uiLimits = {
@@ -24,6 +26,7 @@ export const DEFAULT_A2UI_LIMITS: A2uiLimits = {
   maxIdLength: 256,
   maxDataNodes: 10000,
   maxRenderDepth: 64,
+  maxRenderNodes: 5000,
 }
 
 export interface A2uiSurfaceState {
