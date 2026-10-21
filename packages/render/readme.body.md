@@ -143,9 +143,13 @@ A surface uses the catalog its `createSurface` message names; the store only kno
 
 - Every message is validated against the catalog spec before it reaches state; a bad one becomes an `A2uiErrorMessage`, never an exception.
 - URLs that reach `href`, `src` or `window.open` are checked, and unsafe ones are dropped.
+- A value bound in from the data model, or computed by a function, is checked against the prop's schema when it renders; one that does not fit is dropped and reported as `RENDER_ERROR`. `{$t}` translation refs are refused: an agent cannot know the host's i18n keys.
+- `openUrl` runs only as an action's `functionCall`, from a user's click; anywhere else the spec refuses it.
+- Each component renders inside an error boundary: one that throws (an adapter of your own too) renders nothing and reports `RENDER_ERROR`, and the rest of the surface and the host keep rendering.
+- An action's `a2uiClientDataModel` carries only the acting surface's data model, never another agent's.
 - `createA2uiStore({ limits })` overrides `DEFAULT_A2UI_LIMITS`: surfaces, components, id length, data nodes, render depth and `maxRenderNodes` (default 20000, so shared ids cannot fan a tree out exponentially).
-- The `regex` function refuses patterns with more than 2 quantifiers, repeat counts above 99, backreferences, nested quantifiers, and values over 256 characters.
+- The `regex` function refuses patterns with more than 2 quantifiers (an exact `{n}` does not count), repeat counts above 99, backreferences, nested quantifiers, and values over 256 characters.
 
 ### Custom adapters
 
-An `A2uiAdapter` receives an `AdapterInput` (`prop`, `slot`, `children`, `resolve`, `typeOf`, `writer`, `action`, `failingChecks`, `report`). Call `slot()` and `children()` at most once each, synchronously while the adapter runs, and place each returned node once. Later calls render nothing, because the render-node budget counts every node.
+An `A2uiAdapter` receives an `AdapterInput` (`component`, `prop`, `slot`, `children`, `resolve`, `typeOf`, `componentOf`, `writer`, `action`, `failingChecks`, `report`). Call `slot()` and `children()` at most once each, synchronously while the adapter runs, and place each returned node once. Later calls render nothing, because the render-node budget counts every node.
