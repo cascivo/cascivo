@@ -4,7 +4,7 @@
 import { batch, computed, signal } from '@cascivo/core'
 import type { ReadonlySignal, Signal } from '@cascivo/core'
 import type { A2uiCatalogSpec } from './catalog-spec'
-import { createDataModel } from './data-model'
+import { A2uiDataError, createDataModel } from './data-model'
 import type { DataModel } from './data-model'
 import { A2UI_VERSION, errorMessage, parseComponent, parseServerMessage } from './messages'
 import type { A2uiComponent, A2uiErrorMessage } from './messages'
@@ -20,14 +20,15 @@ export interface A2uiLimits {
   maxRenderNodes: number
 }
 
-export const DEFAULT_A2UI_LIMITS: A2uiLimits = {
+// Frozen: it is exported, and a caller mutating it would change every later store's limits.
+export const DEFAULT_A2UI_LIMITS: Readonly<A2uiLimits> = Object.freeze({
   maxSurfaces: 16,
   maxComponents: 1000,
   maxIdLength: 256,
   maxDataNodes: 10000,
   maxRenderDepth: 64,
   maxRenderNodes: 20000,
-}
+})
 
 export interface A2uiSurfaceState {
   readonly id: string
@@ -46,7 +47,14 @@ export interface A2uiStore {
   readonly surfaceIds: ReadonlySignal<readonly string[]>
   surface(id: string): A2uiSurfaceState | undefined
   capabilities(): { 'v0.9': { supportedCatalogIds: string[] } }
-  clientDataModel(): { version: 'v0.9'; surfaces: Record<string, unknown> } | undefined
+  /**
+   * The data models to send with an action: of `surfaceId` alone when given (the spec sends a
+   * model only to the server that created its surface), else of every sendDataModel surface.
+   * `undefined` when none qualifies.
+   */
+  clientDataModel(
+    surfaceId?: string,
+  ): { version: 'v0.9'; surfaces: Record<string, unknown> } | undefined
   readonly limits: A2uiLimits
 }
 
@@ -128,11 +136,15 @@ export function createA2uiStore(options: {
     }
   }
 
+  // The surface of the message being applied, for the catch-all error in `apply`.
+  let applying = ''
+
   function applyMessage(raw: unknown): A2uiErrorMessage[] {
     const parsed = parseServerMessage(raw)
     if (!parsed.ok) return [parsed.error]
     const message = parsed.message
     const sid = message.surfaceId
+    applying = sid
 
     if (message.kind === 'createSurface') {
       if (surfaces.has(sid)) {
@@ -188,6 +200,7 @@ export function createA2uiStore(options: {
         if (error instanceof A2uiPathError) {
           return [errorMessage('INVALID_PATH', sid, error.message)]
         }
+        if (error instanceof A2uiDataError) return [errorMessage(error.code, sid, error.message)]
         throw error
       }
       return []
@@ -232,6 +245,7 @@ export function createA2uiStore(options: {
 
   return {
     apply(raw) {
+      applying = ''
       try {
         return applyMessage(raw)
       } catch (error) {
@@ -241,7 +255,7 @@ export function createA2uiStore(options: {
         } catch {
           // A hostile thrown value (throwing getter, revoked Proxy) must not escape `apply`.
         }
-        return [errorMessage('INVALID_MESSAGE', '', `Could not apply message: ${text}`)]
+        return [errorMessage('INVALID_MESSAGE', applying, `Could not apply message: ${text}`)]
       }
     },
     surfaceIds: ids,
@@ -249,11 +263,11 @@ export function createA2uiStore(options: {
     capabilities: () => ({
       [A2UI_VERSION]: { supportedCatalogIds: options.catalogs.map((c) => c.id) },
     }),
-    clientDataModel() {
+    clientDataModel(surfaceId) {
       const out: Record<string, unknown> = {}
       let any = false
       for (const [id, surface] of surfaces) {
-        if (!surface.sendDataModel) continue
+        if (!surface.sendDataModel || (surfaceId !== undefined && id !== surfaceId)) continue
         out[id] = surface.data.snapshot()
         any = true
       }

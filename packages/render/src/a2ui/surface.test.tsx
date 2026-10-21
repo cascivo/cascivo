@@ -226,6 +226,43 @@ describe('<A2uiSurface>', () => {
     })
   })
 
+  it('R38: an action carries only the acting surface model, not other sendDataModel surfaces', () => {
+    const onAction = vi.fn<(m: A2uiActionMessage, meta: Record<string, unknown>) => void>()
+    const { store, data } = setup(
+      [{ id: 'root', component: 'Button', children: 'Go', onClick: { event: { name: 'go' } } }],
+      { sendDataModel: true },
+    )
+    store.apply({
+      version: 'v0.9',
+      createSurface: { surfaceId: 'other', catalogId: A2UI_CATALOG_ID, sendDataModel: true },
+    })
+    store.apply({
+      version: 'v0.9',
+      updateDataModel: { surfaceId: 'other', path: '/secret', value: 'of another agent' },
+    })
+    data('/x', 1)
+    mount(store, { onAction })
+    fireEvent.click(screen.getByRole('button', { name: 'Go' }))
+    expect(onAction.mock.calls[0]![1]).toEqual({
+      a2uiClientDataModel: { version: 'v0.9', surfaces: { [SID]: { x: 1 } } },
+    })
+  })
+
+  it('R32: a two-way write over the node limit reports LIMIT_EXCEEDED', async () => {
+    const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+    // The limit counts the written value; 0 leaves no room for even one string.
+    const { store } = setup(
+      [{ id: 'root', component: 'Input', label: 'Name', value: { path: '/name' } }],
+      { limits: { maxDataNodes: 0 } },
+    )
+    mount(store, { onError })
+    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'x' } })
+    await act(async () => {})
+    expect(onError.mock.calls.map(([m]) => m.error)).toEqual([
+      { code: 'LIMIT_EXCEEDED', surfaceId: SID, message: 'At most 0 JSON nodes per value.' },
+    ])
+  })
+
   it('two-way binding: a bound Input fires its own onChange action after writing', () => {
     const onAction = vi.fn<(m: A2uiActionMessage) => void>()
     const { store, data } = setup([

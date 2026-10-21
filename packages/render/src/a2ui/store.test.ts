@@ -224,7 +224,62 @@ describe('createA2uiStore', () => {
     const store = make({ maxDataNodes: 3 })
     store.apply(create('s'))
     const errs = store.apply(data('s', '/a', [1, 2, 3, 4, 5]))
-    expect(errs.map((e) => e.error.code)).toEqual(['INVALID_PATH'])
+    // R32: a node-limit breach is LIMIT_EXCEEDED, not INVALID_PATH "limit".
+    expect(errs.map((e) => e.error)).toEqual([
+      { code: 'LIMIT_EXCEEDED', surfaceId: 's', message: 'At most 3 JSON nodes per value.' },
+    ])
+  })
+
+  it('R39 M1: a non-object root write is INVALID_VALUE; an empty model snapshots as {}', () => {
+    const store = make()
+    store.apply(create('s', { sendDataModel: true }))
+    expect(store.clientDataModel()).toEqual({ version: 'v0.9', surfaces: { s: {} } })
+    for (const value of [5, 'x', [1], true]) {
+      for (const path of ['/', '']) {
+        expect(store.apply(data('s', path, value)).map((e) => e.error.code)).toEqual([
+          'INVALID_VALUE',
+        ])
+      }
+    }
+    store.apply(data('s', '/', { a: 1 }))
+    store.apply(data('s', '/'))
+    expect(store.clientDataModel()).toEqual({ version: 'v0.9', surfaces: { s: {} } })
+  })
+
+  it('R38: clientDataModel(surfaceId) carries only that surface', () => {
+    const store = make()
+    store.apply(create('a', { sendDataModel: true }))
+    store.apply(create('b', { sendDataModel: true }))
+    store.apply(create('c'))
+    store.apply(data('a', '/k', 1))
+    store.apply(data('b', '/k', 2))
+    expect(store.clientDataModel('a')).toEqual({ version: 'v0.9', surfaces: { a: { k: 1 } } })
+    expect(store.clientDataModel('c')).toBeUndefined()
+    expect(store.clientDataModel('missing')).toBeUndefined()
+    expect(store.clientDataModel()).toEqual({
+      version: 'v0.9',
+      surfaces: { a: { k: 1 }, b: { k: 2 } },
+    })
+  })
+
+  it('R39 M3: DEFAULT_A2UI_LIMITS is frozen', () => {
+    expect(Object.isFrozen(DEFAULT_A2UI_LIMITS)).toBe(true)
+  })
+
+  it('R39 M4: the catch-all INVALID_MESSAGE keeps the surfaceId when known', () => {
+    const boom: A2uiCatalogSpec = {
+      id: 'boom',
+      has: () => true,
+      validate: () => {
+        throw new Error('kaboom')
+      },
+    }
+    const store = createA2uiStore({ catalogs: [boom] })
+    store.apply(create('s', {}, 'boom'))
+    const errs = store.apply(comps('s', [{ id: 'a', component: 'T' }]))
+    expect(errs.map((e) => e.error)).toEqual([
+      { code: 'INVALID_MESSAGE', surfaceId: 's', message: 'Could not apply message: kaboom' },
+    ])
   })
 
   it('never throws on malformed input', () => {

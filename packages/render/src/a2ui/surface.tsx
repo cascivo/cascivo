@@ -12,6 +12,7 @@ import { checkUrls, isSafeUrl, URL_KEYS } from '../prop-check'
 import type { ValidationError } from '../prop-check'
 import { propSchemas } from '../prop-schemas'
 import { isBinding, isDynamicRef, isFunctionCall } from './catalog-spec'
+import { A2uiDataError } from './data-model'
 import { resolveDynamic } from './functions'
 import type { ResolveContext } from './functions'
 import { A2UI_CATALOG_ID, actionMessage, errorMessage, isRecord } from './messages'
@@ -160,6 +161,7 @@ function makeInput(
   const resolve = (value: unknown): unknown => resolveDynamic(value, renderCtx)
   const resolveNow = (value: unknown): unknown => resolveDynamic(value, dispatchCtx)
   const pathError = (e: unknown, at: string, report: (e: A2uiErrorMessage) => void): void => {
+    if (e instanceof A2uiDataError) return report(errorMessage(e.code, surfaceId, e.message))
     if (!(e instanceof A2uiPathError)) throw e
     report(errorMessage('INVALID_PATH', surfaceId, e.message, at))
   }
@@ -327,7 +329,8 @@ function makeInput(
             sourceComponentId: component.id,
             context: resolved,
           })
-          const model = env.surface.sendDataModel ? env.store.clientDataModel() : undefined
+          // Only this surface's model: the spec sends a model only to the server that made it.
+          const model = env.surface.sendDataModel ? env.store.clientDataModel(surfaceId) : undefined
           env.onAction?.(message, model === undefined ? {} : { a2uiClientDataModel: model })
         }
       }

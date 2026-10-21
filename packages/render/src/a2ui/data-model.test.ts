@@ -1,6 +1,6 @@
 import { effect } from '@cascivo/core'
 import { describe, expect, it } from 'vitest'
-import { createDataModel } from './data-model'
+import { A2uiDataError, createDataModel } from './data-model'
 import { A2uiPathError } from './pointer'
 
 describe('createDataModel', () => {
@@ -72,9 +72,26 @@ describe('createDataModel', () => {
   it('enforces the node limit', () => {
     const m = createDataModel({})
     const big = Array.from({ length: 10_001 }, () => 1)
-    expect(() => m.write('/big', big)).toThrow(A2uiPathError)
+    expect(() => m.write('/big', big)).toThrow(A2uiDataError)
     expect(() => m.write('/ok', big.slice(0, 9_000))).not.toThrow()
     const small = createDataModel({}, { maxNodes: 2 })
-    expect(() => small.write('/a', { x: 1, y: 2 })).toThrow('limit')
+    expect(() => small.write('/a', { x: 1, y: 2 })).toThrow(A2uiDataError)
+    expect(() => small.write('/a', { x: 1, y: 2 })).toThrow('At most 2 JSON nodes per value.')
+    try {
+      small.write('/a', { x: 1, y: 2 })
+    } catch (e) {
+      expect(e instanceof A2uiDataError && e.code).toBe('LIMIT_EXCEEDED')
+    }
+  })
+
+  it('refuses a non-object root and snapshots an empty model as {}', () => {
+    const m = createDataModel()
+    expect(m.snapshot()).toEqual({})
+    for (const value of [5, 'x', [1], false]) {
+      expect(() => m.write('/', value)).toThrow(A2uiDataError)
+    }
+    m.write('/', { a: 1 })
+    m.write('', undefined)
+    expect(m.snapshot()).toEqual({})
   })
 })
