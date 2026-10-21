@@ -6721,7 +6721,7 @@
             "typeOf": "(id: string): string | undefined",
             "componentOf": "(id: string): A2uiComponent | undefined",
             "writer": "(prop: string): ((value: unknown) => void) | undefined",
-            "action": "(prop: string): (() => void) | undefined",
+            "action": "(prop: string): ((event?: unknown) => void) | undefined",
             "failingChecks": "(): readonly string[]",
             "report": "(code: string, message: string): void"
           },
