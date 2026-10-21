@@ -99,7 +99,7 @@ function isTemplate(value: unknown): value is { componentId: string; path: strin
 function makeInput(
   component: A2uiComponent,
   scope: string,
-  path: readonly string[],
+  path: readonly Ancestor[],
   env: Env,
 ): AdapterInput {
   const { data, id: surfaceId } = env.surface
@@ -243,20 +243,38 @@ function makeInput(
 interface NodeProps {
   readonly id: string
   readonly scope: string
-  /**
-   * `id@scope` of every node from the root to this one, excluding it. A cycle is the same id
-   * in the same scope; a template recursing over tree data repeats an id in deeper scopes,
-   * which is bounded by the data and by maxRenderDepth.
-   */
-  readonly ancestors: readonly string[]
+  /** Every node from the root to this one, excluding it. */
+  readonly ancestors: readonly Ancestor[]
   readonly env: Env
 }
 
-const nodeKey = (id: string, scope: string): string => `${id}@${scope}`
+interface Ancestor {
+  readonly id: string
+  readonly scope: string
+}
+
+/**
+ * Whether rendering `id` in `scope` under `ancestors` is a cycle. Take the nearest ancestor
+ * with the same id, in scope S0. The node is legitimate recursion only when `scope` strictly
+ * descends S0: `scope` starts with `S0 + '/'`, or S0 is the root scope '' and `scope` is not.
+ * That is a template walking tree data (`children` of each item), bounded by the data.
+ * Anything else repeats the id at the same depth of the data, or at a sibling or unrelated
+ * path (a template over an ABSOLUTE path re-entering itself), which would otherwise render
+ * every ordering of the list's items; it is a cycle. maxRenderDepth stays the backstop.
+ */
+function isCycle(id: string, scope: string, ancestors: readonly Ancestor[]): boolean {
+  for (let i = ancestors.length - 1; i >= 0; i--) {
+    const a = ancestors[i]!
+    if (a.id !== id) continue
+    const descends = a.scope === '' ? scope !== '' : scope.startsWith(`${a.scope}/`)
+    return !descends
+  }
+  return false
+}
 
 function A2uiNode({ id, scope, ancestors, env }: NodeProps): ReactNode {
   useSignals()
-  if (ancestors.includes(nodeKey(id, scope))) {
+  if (isCycle(id, scope, ancestors)) {
     env.renderError(id, `Component "${id}" is its own ancestor; the cycle is not rendered.`)
     return null
   }
@@ -274,7 +292,7 @@ function A2uiNode({ id, scope, ancestors, env }: NodeProps): ReactNode {
       key={`${id}:${component.component}`}
       component={component}
       scope={scope}
-      path={[...ancestors, nodeKey(id, scope)]}
+      path={[...ancestors, { id, scope }]}
       env={env}
     />
   )
@@ -283,7 +301,7 @@ function A2uiNode({ id, scope, ancestors, env }: NodeProps): ReactNode {
 interface BodyProps {
   readonly component: A2uiComponent
   readonly scope: string
-  readonly path: readonly string[]
+  readonly path: readonly Ancestor[]
   readonly env: Env
 }
 

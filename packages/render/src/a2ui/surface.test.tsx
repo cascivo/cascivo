@@ -18,7 +18,7 @@ afterEach(() => cleanup())
 // Test-only catalog: the cascivo catalog plus `Spy` (counts its own renders), `Reporter`
 // (reports through the adapter input on every render) and `Hooked` (an adapter using a hook).
 const SPY_CATALOG_ID = 'test:spy-catalog'
-const TEST_COMPONENTS: ReadonlySet<string> = new Set(['Spy', 'Reporter', 'Hooked'])
+const TEST_COMPONENTS: ReadonlySet<string> = new Set(['Spy', 'Reporter', 'Hooked', 'Box'])
 let spyRenders = 0
 const spySpec: A2uiCatalogSpec = {
   id: SPY_CATALOG_ID,
@@ -45,6 +45,9 @@ const spyCatalog: A2uiRenderCatalog = {
     }
     // Calls a hook in the adapter itself, as a catalog adapter may.
     if (c === 'Hooked') return () => <HookedId key={React.useId()} />
+    // A countable container: every rendered Box is one `[data-box]` element.
+    if (c === 'Box')
+      return (input) => <div data-box={input.component.id}>{input.slot('children')}</div>
     return cascivoCatalog.adapter(c)
   },
 }
@@ -563,6 +566,67 @@ describe('<A2uiSurface>', () => {
     expect(screen.getByText('A1')).toBeTruthy()
     expect(screen.getByText('B')).toBeTruthy()
     expect(onError).not.toHaveBeenCalled()
+  })
+
+  const list10 = Array.from({ length: 10 }, (_, i) => ({ n: i }))
+  const renderErrorsOf = (onError: { mock: { calls: [A2uiErrorMessage][] } }) =>
+    onError.mock.calls.map(([m]) => m.error).filter((e) => e.code === 'RENDER_ERROR')
+
+  it('R18 (a): a self-template over an absolute list renders one level and reports once', async () => {
+    const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+    const { store, errors, data } = setup(
+      [
+        { id: 'root', component: 'Box', children: ['a'] },
+        { id: 'a', component: 'Box', children: { componentId: 'a', path: '/list' } },
+      ],
+      { catalogId: SPY_CATALOG_ID },
+    )
+    data('/list', list10)
+    expect(errors).toEqual([])
+    const { container } = mount(store, { onError })
+    await act(async () => {})
+    // The top `a` plus one `a` per item; their own self-templates are cycles.
+    expect(container.querySelectorAll('[data-box="a"]')).toHaveLength(11)
+    expect(renderErrorsOf(onError)).toHaveLength(1)
+  })
+
+  it('R18 (c): a↔b and root→root are still flagged', async () => {
+    const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+    const { store } = setup(
+      [
+        { id: 'root', component: 'Box', children: ['a', 'root'] },
+        { id: 'a', component: 'Box', children: ['b'] },
+        { id: 'b', component: 'Box', children: ['a'] },
+      ],
+      { catalogId: SPY_CATALOG_ID },
+    )
+    const { container } = mount(store, { onError })
+    await act(async () => {})
+    expect(container.querySelectorAll('[data-box]')).toHaveLength(3)
+    expect(renderErrorsOf(onError).map((e) => e.message)).toEqual([
+      expect.stringContaining('"a"'),
+      expect.stringContaining('"root"'),
+    ])
+  })
+
+  it('R18 (d): a↔b alternating over one absolute list is flagged and bounded', async () => {
+    const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+    const { store, data } = setup(
+      [
+        { id: 'root', component: 'Box', children: ['a'] },
+        { id: 'a', component: 'Box', children: { componentId: 'b', path: '/list' } },
+        { id: 'b', component: 'Box', children: { componentId: 'a', path: '/list' } },
+      ],
+      { catalogId: SPY_CATALOG_ID },
+    )
+    data('/list', list10)
+    const { container } = mount(store, { onError })
+    await act(async () => {})
+    // a@'' → b@/list/i (10) → a@/list/j (100, they descend ''); the next b is a sibling item of
+    // its nearest b, a cycle. Polynomial, not n!.
+    expect(container.querySelectorAll('[data-box="b"]')).toHaveLength(10)
+    expect(container.querySelectorAll('[data-box="a"]')).toHaveLength(101)
+    expect(renderErrorsOf(onError)).toHaveLength(1)
   })
 
   it('fix 7: changing the component type of an id remounts it, so adapter hooks stay safe', () => {
