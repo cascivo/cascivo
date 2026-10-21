@@ -11,6 +11,8 @@ import {
   unknownProperty,
 } from './catalog-spec'
 import type { A2uiCatalogSpec, A2uiIssue } from './catalog-spec'
+import { checkUrls } from '../prop-check'
+import type { ValidationError } from '../prop-check'
 import { BASIC_CATALOG_ID, isRecord } from './messages'
 
 type Kind =
@@ -203,7 +205,16 @@ export const basicCatalogSpec: A2uiCatalogSpec = {
         continue
       }
       const reason = checkKind(kind, value)
-      if (reason !== undefined) issues.push({ prop: key, message: `Invalid "${key}": ${reason}.` })
+      if (reason !== undefined) {
+        issues.push({ prop: key, message: `Invalid "${key}": ${reason}.` })
+        continue
+      }
+      // A literal URL (`url`) is refused here; a bound one is checked when it is read.
+      if (typeof value === 'string') {
+        const unsafe: ValidationError[] = []
+        checkUrls(value, key, key, unsafe)
+        for (const error of unsafe) issues.push({ prop: key, message: error.message })
+      }
     }
     for (const name of spec.required) {
       if (!Object.hasOwn(c.props, name)) {

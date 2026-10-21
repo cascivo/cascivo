@@ -20,6 +20,8 @@ export const URL_KEYS = new Set([
   'skipToContentHref',
   'formAction',
   'poster',
+  // A2UI basic Image/Video/AudioPlayer, and ShareMenu: the page links to or loads it.
+  'url',
 ])
 const SAFE_SCHEMES = new Set(['http', 'https', 'mailto', 'tel'])
 

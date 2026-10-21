@@ -38,16 +38,22 @@ export interface AdapterInput {
   /**
    * Resolves a dynamic value nested inside a prop (a `{path}` binding or a function call, such as
    * a Tabs title), as `prop` does for a top-level one; errors are reported once per surface.
-   * Unlike `prop` it runs no URL check, so use it only for values rendered as text.
+   * It does NOT URL-check: use it only for values rendered as text, and `prop()` or
+   * `isSafeUrl` for anything that reaches a URL sink (href, src, window.open).
    */
   resolve(value: unknown): unknown
+  /** The `component` type of node `id`, or undefined until it arrives; reactive. */
+  typeOf(id: string): string | undefined
   /** Set only when `prop` is a `{path}` binding: writes to the bound path. */
   writer(prop: string): ((value: unknown) => void) | undefined
   /** Set only when `prop` holds an Action: dispatches it. */
   action(prop: string): (() => void) | undefined
   /** Messages of the `checks` whose condition is not true. */
   failingChecks(): readonly string[]
-  /** Reports an error for this component, once per code and message for the surface. */
+  /**
+   * Reports an error, once per code and message for the surface; put the component id in
+   * `message` for one report per component.
+   */
   report(code: string, message: string): void
 }
 
@@ -268,6 +274,9 @@ function makeInput(
     resolve(value) {
       return resolve(value)
     },
+    typeOf(id) {
+      return env.surface.component(id).value?.component
+    },
     slot(name) {
       const value = raw(name)
       if (value === undefined) return undefined
@@ -337,7 +346,9 @@ function makeInput(
       )
     },
     report(code, message) {
-      reportOnce(errorMessage(code, surfaceId, message))
+      // Keyed by code and message only, as documented: an adapter that wants one report per
+      // component puts the id in its message.
+      env.reportOnce(`${code}|#report|${message}`, errorMessage(code, surfaceId, message))
     },
   }
   return {

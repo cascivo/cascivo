@@ -9,6 +9,7 @@ import type { A2uiActionMessage, A2uiErrorMessage } from './messages'
 import { createA2uiStore } from './store'
 import type { A2uiStore } from './store'
 import { A2uiSurface } from './surface'
+import type { A2uiRenderCatalog } from './surface'
 
 // jsdom has no top layer; Modal opens through showModal().
 beforeAll(() => {
@@ -205,15 +206,16 @@ describe('basicCatalog', () => {
     const onError = vi.fn<(e: A2uiErrorMessage) => void>()
     const { store, errors, setData } = setup(
       column(
-        ['i', 'label'],
+        ['i', 'j', 'label'],
         { id: 'i', component: 'Icon', name: 'star' },
+        { id: 'j', component: 'Icon', name: 'home' },
         text('label', { path: '/n' }),
       ),
       { n: 'a' },
     )
     expect(errors).toEqual([])
     const { container } = mount(store, { onError })
-    // A data change re-renders the surface; the Icon must not report again.
+    // Once per surface: neither the second Icon nor a re-render reports again.
     act(() => setData('/n', 'b'))
     await act(flush)
     expect(container.querySelector('svg')).toBeNull()
@@ -259,18 +261,49 @@ describe('basicCatalog', () => {
       expect(link.getAttribute('href')).toBe('https://example.com/a.mp3')
     })
 
-    it('an unsafe url, bound or literal, renders no link or image', () => {
+    it('a bound unsafe url renders no link or image', () => {
       const { store } = setup(
         column(
           ['v', 'a', 'i'],
           { id: 'v', component: 'Video', url: { path: '/u' } },
-          { id: 'a', component: 'AudioPlayer', url: 'javascript:alert(1)' },
-          { id: 'i', component: 'Image', url: 'javascript:alert(1)' },
+          { id: 'a', component: 'AudioPlayer', url: { path: '/u' } },
+          { id: 'i', component: 'Image', url: { path: '/u' } },
         ),
         { u: 'javascript:alert(1)' },
       )
       const { container } = mount(store)
       expect(container.querySelector('a, img')).toBeNull()
+    })
+
+    it('the store refuses an unsafe literal url', () => {
+      const { errors } = setup([
+        { id: 'root', component: 'Column', children: ['i'] },
+        { id: 'i', component: 'Image', url: 'javascript:x' },
+        { id: 'v', component: 'Video', url: 'https://example.com/ok.mp4' },
+      ])
+      expect(errors).toHaveLength(1)
+      expect(errors[0]!.error.code).toBe('VALIDATION_FAILED')
+      expect(errors[0]!.error.path).toBe('/components/1/url')
+    })
+
+    it("prop('url') returns undefined for a bound unsafe url", () => {
+      const seen: unknown[] = []
+      const probe: A2uiRenderCatalog = {
+        id: BASIC_CATALOG_ID,
+        adapter: (c) =>
+          c === 'Image'
+            ? (input) => {
+                seen.push(input.prop('url'))
+                return null
+              }
+            : basicCatalog.adapter(c),
+      }
+      const { store } = setup(column(['i'], { id: 'i', component: 'Image', url: { path: '/u' } }), {
+        u: 'javascript:alert(1)',
+      })
+      render(<A2uiSurface store={store} surfaceId={SID} catalogs={[probe]} />)
+      expect(seen.length).toBeGreaterThan(0)
+      expect(seen.every((v) => v === undefined)).toBe(true)
     })
   })
 
@@ -666,6 +699,132 @@ describe('basicCatalog', () => {
       expect(time.closest('[data-direction="horizontal"]')).not.toBeNull()
       fireEvent.change(time, { target: { value: '19:30' } })
       expect(snapshot()).toEqual({ d: '2026-10-21T19:30' })
+    })
+  })
+
+  describe('Modal accessibility', () => {
+    // Testing Library computes no name for a closed <dialog>, so follow aria-labelledby.
+    const dialogName = (container: HTMLElement): string | null | undefined => {
+      const id = container.querySelector('dialog')?.getAttribute('aria-labelledby')
+      return id ? document.getElementById(id)?.textContent : null
+    }
+    const modal = (trigger: unknown, extra: Record<string, unknown> = {}) =>
+      column(
+        ['m'],
+        { id: 'm', component: 'Modal', trigger: 'open', content: 'body', ...extra },
+        trigger,
+        text('body', 'Inside the modal'),
+      )
+
+    it('a Modal without accessibility.label is named by the localized title', () => {
+      const { store } = setup(modal(text('open', 'More')))
+      const { container } = mount(store)
+      expect(dialogName(container)).toBe('Dialog')
+    })
+
+    it('accessibility.label names the Modal', () => {
+      const { store } = setup(modal(text('open', 'More'), { accessibility: { label: 'Menu' } }))
+      const { container } = mount(store)
+      expect(dialogName(container)).toBe('Menu')
+    })
+
+    it.each([
+      ['Enter', 'Enter'],
+      ['Space', ' '],
+    ])('a Text trigger is focusable and opens on %s', async (_, key) => {
+      const { store } = setup(modal(text('open', 'More')))
+      const { container } = mount(store)
+      const wrapper = screen.getByRole('button', { name: 'More' })
+      expect(wrapper.tabIndex).toBe(0)
+      expect(wrapper.getAttribute('aria-haspopup')).toBe('dialog')
+      wrapper.focus()
+      expect(document.activeElement).toBe(wrapper)
+      fireEvent.keyDown(wrapper, { key })
+      await act(flush)
+      expect(container.querySelector('dialog')!.hasAttribute('open')).toBe(true)
+    })
+
+    it('a Button trigger opens on click with no extra role=button wrapper', async () => {
+      const { store } = setup(
+        modal({ id: 'open', component: 'Button', child: 'l', action: { event: { name: 'x' } } }),
+      )
+      // The Button's label.
+      store.apply({
+        version: 'v0.9',
+        updateComponents: { surfaceId: SID, components: [text('l', 'Details')] },
+      })
+      const { container } = mount(store)
+      expect(container.querySelector('[role="button"]')).toBeNull()
+      fireEvent.click(screen.getByRole('button', { name: 'Details' }))
+      await act(flush)
+      expect(container.querySelector('dialog')!.hasAttribute('open')).toBe(true)
+    })
+  })
+
+  it('ChoicePicker multipleSelection shows a failing check on the group', () => {
+    const { store } = setup(
+      column(['p'], {
+        id: 'p',
+        component: 'ChoicePicker',
+        label: 'Diet',
+        variant: 'multipleSelection',
+        options: [{ label: 'Vegan', value: 'v' }],
+        value: { path: '/d' },
+        checks: [
+          { condition: { call: 'required', args: { value: { path: '/d' } } }, message: 'Pick one' },
+        ],
+      }),
+      { d: [] },
+    )
+    mount(store)
+    const alert = screen.getByRole('alert')
+    expect(alert.textContent).toBe('Pick one')
+    const group = screen.getByRole('group', { name: 'Diet' })
+    expect(group.getAttribute('aria-describedby')).toBe(alert.id)
+  })
+
+  describe('DateTimeInput writes', () => {
+    const dt = (props: Record<string, unknown>) =>
+      column(['d'], { id: 'd', component: 'DateTimeInput', label: 'When', ...props })
+    const typeDate = (value: string) => {
+      const field = screen.getByRole('combobox', { name: 'When' })
+      fireEvent.change(field, { target: { value } })
+      fireEvent.blur(field)
+    }
+
+    it('date only writes YYYY-MM-DD', () => {
+      const { store, snapshot } = setup(dt({ value: { path: '/d' }, enableDate: true }), { d: '' })
+      mount(store)
+      typeDate('2026-10-22')
+      expect(snapshot()).toEqual({ d: '2026-10-22' })
+    })
+
+    it('the DatePicker half of a combined value keeps the time', () => {
+      const { store, snapshot } = setup(
+        dt({ value: { path: '/d' }, enableDate: true, enableTime: true }),
+        { d: '2026-10-21T18:00' },
+      )
+      mount(store)
+      typeDate('2026-10-23')
+      expect(snapshot()).toEqual({ d: '2026-10-23T18:00' })
+    })
+
+    it('neither flag set renders a DatePicker only', () => {
+      const { store } = setup(dt({ value: { path: '/d' } }), { d: '' })
+      const { container } = mount(store)
+      expect(screen.getByRole('combobox', { name: 'When' })).toBeTruthy()
+      expect(container.querySelector('input[type="time"]')).toBeNull()
+    })
+
+    it('the DatePicker empties when the model clears the date', () => {
+      const { store, setData } = setup(dt({ value: { path: '/d' }, enableDate: true }), {
+        d: '2026-10-21',
+      })
+      mount(store)
+      const field = screen.getByRole('combobox', { name: 'When' }) as HTMLInputElement
+      expect(field.value).toContain('2026')
+      act(() => setData('/d', ''))
+      expect(field.value).toBe('')
     })
   })
 

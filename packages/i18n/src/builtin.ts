@@ -432,6 +432,7 @@ export const builtin = {
   a2ui: defineMessages('cascade.a2ui', {
     openMedia: 'Open media',
     invalid: 'Invalid value',
+    dialog: 'Dialog',
   }),
 }
 
@@ -861,4 +862,5 @@ defineCatalog(builtin.editor, 'de', {
 defineCatalog(builtin.a2ui, 'de', {
   openMedia: 'Medien öffnen',
   invalid: 'Ungültiger Wert',
+  dialog: 'Dialog',
 })

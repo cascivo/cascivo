@@ -52,8 +52,8 @@ function str(value: unknown): string | undefined {
 }
 
 /**
- * A media URL. Basic `url` is not one of the cascivo URL keys `prop` checks, so it is checked
- * here, for literals and bound data alike.
+ * A media URL. `prop('url')` already drops an unsafe one and the store refuses unsafe literals;
+ * checked again here because this is the sink.
  */
 function urlOf(input: AdapterInput): string | undefined {
   const url = input.prop('url')
@@ -99,10 +99,10 @@ const image: A2uiAdapter = (input) => {
 }
 
 const icon: A2uiAdapter = (input) => {
-  // Stable message: the surface dedups by code, component and message, so one report per Icon.
+  // The same message for every Icon, so the surface reports it once, however many there are.
   input.report(
     'UNSUPPORTED_COMPONENT',
-    `Component "${input.component.id}": Icon is not supported by the cascivo renderer; it is not rendered.`,
+    'Icon is not supported by the cascivo renderer; Icons are not rendered.',
   )
   return null
 }
@@ -186,27 +186,46 @@ const tabs: A2uiAdapter = (input) => {
 /** Holds its open state in a signal; a hook, so it runs in the node's own component. */
 function ModalAdapter(input: AdapterInput): ReactNode {
   const open = useSignal(false)
-  const [trigger, content] = input.children([...idOf(input, 'trigger'), ...idOf(input, 'content')])
+  const triggerId = idOf(input, 'trigger')
+  const [trigger, content] = input.children([...triggerId, ...idOf(input, 'content')])
   const a11y = input.prop('accessibility')
-  const title = isRecord(a11y) ? str(a11y['label']) : undefined
+  // A dialog needs a name (WCAG 4.1.2), and Modal is named only through its title.
+  const title = (isRecord(a11y) ? str(a11y['label']) : undefined) ?? t(builtin.a2ui.dialog)
+  const show = (): void => {
+    open.value = true
+  }
+  const isButton = triggerId[0] !== undefined && input.typeOf(triggerId[0]) === 'Button'
   return (
     <>
-      {/* A click bubbling from the trigger (a Button's click, also from Enter or Space) opens
-          it; `display: contents` keeps the wrapper out of the layout. */}
-      <div
-        style={{ display: 'contents' }}
-        onClick={() => {
-          open.value = true
-        }}
-      >
-        {trigger}
-      </div>
+      {isButton ? (
+        // The Button's click bubbles here, from a pointer or from Enter and Space alike;
+        // `display: contents` keeps the wrapper out of the layout.
+        <div style={{ display: 'contents' }} onClick={show}>
+          {trigger}
+        </div>
+      ) : (
+        // Anything else is not operable from the keyboard (WCAG 2.1.1), so the wrapper is the
+        // button. No `display: contents` here: it can drop the element from the focus order.
+        <div
+          role="button"
+          tabIndex={0}
+          aria-haspopup="dialog"
+          onClick={show}
+          onKeyDown={(e) => {
+            if (e.target !== e.currentTarget || (e.key !== 'Enter' && e.key !== ' ')) return
+            e.preventDefault()
+            show()
+          }}
+        >
+          {trigger}
+        </div>
+      )}
       <Modal
         open={open.value}
         onClose={() => {
           open.value = false
         }}
-        {...opt('title', title)}
+        title={title}
       >
         {content}
       </Modal>
@@ -246,6 +265,7 @@ function fieldError(input: AdapterInput, value: string): string | undefined {
   const pattern = input.component.props['validationRegexp']
   if (typeof pattern !== 'string' || value === '') return undefined
   // Through the `regex` function, so a pattern gets the same safety checks and caps as a check's.
+  // A refused pattern returns false: it fails closed, every non-empty value reads as invalid.
   const ok = input.resolve({ call: 'regex', args: { value, pattern } })
   return ok === true ? undefined : t(builtin.a2ui.invalid)
 }
@@ -322,6 +342,7 @@ function ChoicePickerAdapter(input: AdapterInput): ReactNode {
         direction="vertical"
         role="group"
         {...opt('aria-labelledby', label ? labelId : undefined)}
+        {...opt('aria-describedby', error === undefined ? undefined : `${labelId}-error`)}
       >
         {label !== undefined && (
           <Text as="span" id={labelId}>
@@ -344,6 +365,12 @@ function ChoicePickerAdapter(input: AdapterInput): ReactNode {
             />
           )
         })}
+        {/* No group error part in cascivo: announced the way its field errors are. */}
+        {error !== undefined && (
+          <Text as="span" size="sm" role="alert" id={`${labelId}-error`}>
+            {error}
+          </Text>
+        )}
       </Flex>
     )
   }
@@ -413,7 +440,8 @@ const dateTimeInput: A2uiAdapter = (input) => {
       {...(write === undefined
         ? opt('defaultValue', date)
         : {
-            ...opt('value', date),
+            // '' and not undefined: undefined would turn the picker uncontrolled, keeping a stale date.
+            value: date ?? '',
             onValueChange: (next: string | undefined) =>
               write(combine(next, withTime ? time : undefined)),
           })}
