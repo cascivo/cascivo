@@ -64,6 +64,7 @@ const PAGE_SECTIONS: SearchItem[] = [
     type: 'page',
   },
   { id: 'page-perf', title: 'Performance', section: 'Landing', href: '/performance', type: 'page' },
+  { id: 'page-evals', title: 'Agent evals', section: 'Landing', href: '/evals', type: 'page' },
   { id: 'page-guides', title: 'Guides', section: 'Landing', href: '/guides', type: 'page' },
   { id: 'page-examples', title: 'Examples', section: 'Landing', href: '/examples', type: 'page' },
   {

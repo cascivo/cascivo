@@ -9,8 +9,11 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "lib": ["ES2023"],
+    "lib": ["ES2023", "DOM"],
     "types": ["node"]
   },
-  "include": ["src"]
+  "include": ["src", "tasks"],
+  // Built and type-checked by the score-phase tests themselves; one fails tsc on purpose. Task
+  // canaries are apps for their starters (cascivo or shadcn), checked against those, not here.
+  "exclude": ["src/eval/__fixtures__/apps", "tasks/*/fixtures"]
 }

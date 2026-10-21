@@ -52,6 +52,7 @@ const COLUMNS: { label: string; links: NavLink[] }[] = [
       { label: 'Upgrading', href: '/docs/upgrading' },
       { label: 'Accessibility', href: '/accessibility' },
       { label: 'Performance', href: '/performance' },
+      { label: 'Agent evals', href: '/evals' },
       { label: 'Benchmarks', href: '/docs/benchmarks' },
       { label: 'Methodology', href: `${REPO}/blob/main/apps/bench/METHODOLOGY.md` },
     ],

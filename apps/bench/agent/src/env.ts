@@ -10,14 +10,23 @@
  * blueprint app imports (`@cascivo/charts` included).
  */
 import { execFileSync } from 'node:child_process'
-import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  renameSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 export const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..', '..')
 export const CLI = join(REPO, 'packages/cli/bin/cascivo.mjs')
 export const MCP = join(REPO, 'packages/mcp/dist/index.mjs')
-const CACHE = join(REPO, 'apps/bench/agent/.cache')
+export const CACHE = join(REPO, 'apps/bench/agent/.cache')
 
 /** The packages a scaffold reaches, as `framework-install.test.ts` packs them. */
 const PACKAGES = [
@@ -36,9 +45,9 @@ const PACKAGES = [
   'email',
 ]
 
-function run(cmd: string, args: string[], cwd: string): void {
+export function run(cmd: string, args: string[], cwd: string, env?: NodeJS.ProcessEnv): void {
   try {
-    execFileSync(cmd, args, { cwd, stdio: 'pipe' })
+    execFileSync(cmd, args, { cwd, stdio: 'pipe', ...(env ? { env } : {}) })
   } catch (error) {
     const e = error as { stdout?: Buffer; stderr?: Buffer }
     throw new Error(
@@ -54,6 +63,77 @@ export function blockNames(): string[] {
     .sort()
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+/** The `file:` spec of the packed `@cascivo/<pkg>` tarball `prepare()` wrote. */
+function tarball(pkg: string): string {
+  const dir = join(CACHE, 'tarballs')
+  const file = existsSync(dir)
+    ? readdirSync(dir).find((f) => f.startsWith(`cascivo-${pkg}-`))
+    : undefined
+  if (!file) throw new Error(`no tarball for @cascivo/${pkg}`)
+  return `file:${join(dir, file)}`
+}
+
+/**
+ * Point a scaffolded app's `@cascivo/*` dependencies at this checkout's packed tarballs, since
+ * the published packages predate it. Needs `prepare()` to have run.
+ */
+export function pinToTarballs(manifestPath: string): void {
+  const manifest: unknown = JSON.parse(readFileSync(manifestPath, 'utf8'))
+  if (
+    !isRecord(manifest) ||
+    !isRecord(manifest.dependencies) ||
+    !isRecord(manifest.devDependencies)
+  )
+    throw new Error(`${manifestPath} has no dependencies and devDependencies objects`)
+  for (const dep of Object.keys(manifest.dependencies)) {
+    if (dep.startsWith('@cascivo/'))
+      manifest.dependencies[dep] = tarball(dep.slice('@cascivo/'.length))
+  }
+  // Lint is not scored, and this one would install a published copy of this repo.
+  delete manifest.devDependencies['@cascivo/eslint-config']
+  writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n')
+}
+
+/**
+ * Removes the `<prefix>*` build directories under `dir` that are over an hour old: a build that
+ * died left them, and none takes that long. A younger one may be another process's build.
+ */
+export function removeStaleBuilds(dir: string, prefix: string): void {
+  if (!existsSync(dir)) return
+  const cutoff = Date.now() - 3_600_000
+  for (const name of readdirSync(dir)) {
+    if (!name.startsWith(prefix)) continue
+    const path = join(dir, name)
+    let mtimeMs: number
+    try {
+      mtimeMs = statSync(path).mtimeMs
+    } catch (error) {
+      // Another process's renameIntoPlace removed it since readdirSync listed it.
+      if (error instanceof Error && 'code' in error && error.code === 'ENOENT') continue
+      throw error
+    }
+    if (mtimeMs < cutoff) rmSync(path, { recursive: true, force: true })
+  }
+}
+
+/**
+ * Renames a finished build to `target`. If another build got there first, its result is just as
+ * complete (only a rename creates `target`), so it is kept and this one removed.
+ */
+export function renameIntoPlace(build: string, target: string): void {
+  try {
+    renameSync(build, target)
+  } catch (error) {
+    const code = isRecord(error) ? error['code'] : undefined
+    if ((code !== 'ENOTEMPTY' && code !== 'EEXIST') || !existsSync(target)) throw error
+    rmSync(build, { recursive: true, force: true })
+  }
+}
+
 /** The installed `node_modules` every run links. Built on first use, or again with `fresh`. */
 export function prepare(fresh: boolean, log: (line: string) => void): string {
   for (const file of [CLI, MCP, join(REPO, 'packages/react/dist')]) {
@@ -62,19 +142,18 @@ export function prepare(fresh: boolean, log: (line: string) => void): string {
   }
   const nodeModules = join(CACHE, 'deps', 'node_modules')
   if (!fresh && existsSync(nodeModules)) return nodeModules
-  rmSync(CACHE, { recursive: true, force: true })
+  // Not the whole cache: `.cache/shadcn` is built from the network and independent of this checkout.
+  // `scaffold` (the cascivo starters) is pinned to these tarballs, so it goes with them; `bare` is
+  // where it was cached before.
+  for (const stale of ['tarballs', 'deps', 'scaffold', 'bare'])
+    rmSync(join(CACHE, stale), { recursive: true, force: true })
+  removeStaleBuilds(CACHE, 'scaffold-')
   const tarballs = join(CACHE, 'tarballs')
   mkdirSync(tarballs, { recursive: true })
   log(`packing ${PACKAGES.length} packages…`)
   for (const pkg of PACKAGES) {
     run('pnpm', ['pack', '--pack-destination', tarballs], join(REPO, 'packages', pkg))
   }
-  const tarball = (pkg: string) => {
-    const file = readdirSync(tarballs).find((f) => f.startsWith(`cascivo-${pkg}-`))
-    if (!file) throw new Error(`no tarball for @cascivo/${pkg}`)
-    return `file:${join(tarballs, file)}`
-  }
-
   log('installing the shared dependency tree…')
   writeFileSync(
     join(CACHE, 'cascivo.app.json'),
@@ -85,18 +164,7 @@ export function prepare(fresh: boolean, log: (line: string) => void): string {
   )
   run('node', [CLI, 'create', '--from', 'cascivo.app.json', '--pm', 'pnpm'], CACHE)
   const app = join(CACHE, 'deps')
-  const manifestPath = join(app, 'package.json')
-  const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')) as {
-    dependencies: Record<string, string>
-    devDependencies: Record<string, string>
-  }
-  for (const dep of Object.keys(manifest.dependencies)) {
-    if (dep.startsWith('@cascivo/'))
-      manifest.dependencies[dep] = tarball(dep.slice('@cascivo/'.length))
-  }
-  // Lint is not scored, and this one would install a published copy of this repo.
-  delete manifest.devDependencies['@cascivo/eslint-config']
-  writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n')
+  pinToTarballs(join(app, 'package.json'))
   // Overrides in pnpm-workspace.yaml, as framework-install.test.ts explains: the packed
   // packages ask the registry for each other otherwise.
   writeFileSync(
@@ -122,10 +190,20 @@ export function runDirectory(root: string, name: string): string {
   return dir
 }
 
+/**
+ * Prefixes an MCP server's command so it starts without the API key: only the `claude` session
+ * needs it, and agent-written code can reach a server and whatever it spawns (`npx cascivo`).
+ */
+export const WITHOUT_API_KEY = ['-u', 'ANTHROPIC_API_KEY']
+
 export function mcpConfig(path: string): string {
   writeFileSync(
     path,
-    JSON.stringify({ mcpServers: { cascivo: { command: 'node', args: [MCP] } } }, null, 2),
+    JSON.stringify(
+      { mcpServers: { cascivo: { command: 'env', args: [...WITHOUT_API_KEY, 'node', MCP] } } },
+      null,
+      2,
+    ),
   )
   return path
 }

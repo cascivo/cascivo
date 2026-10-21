@@ -37,6 +37,11 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
       'cascivo performance: signal-driven fine-grained updates, per-component CSS, and measured benchmarks against popular React UI libraries — fewer re-renders, smaller bundles.',
     ogImage: '/og/performance.png',
   },
+  '/evals': {
+    title: 'Agent evals — cascivo',
+    description:
+      'A published, re-runnable eval of how often Claude builds a working app with cascivo, with cascivo without its AI context, and with shadcn/ui: hidden Playwright tests, method and reproduction steps.',
+  },
   '/charts': {
     title: 'Charts — cascivo',
     description:
@@ -189,6 +194,7 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
 export const PRERENDER_ROUTES = [
   'accessibility',
   'performance',
+  'evals',
   'enterprise',
   'guides',
   'guides/coming-from-shadcn',

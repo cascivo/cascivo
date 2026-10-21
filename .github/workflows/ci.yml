@@ -256,6 +256,18 @@ jobs:
       - name: Install Chromium (for the computed-style canary)
         run: pnpm --filter @cascivo/site exec playwright install chromium --with-deps
 
+      # The published LLM eval (evals.yml) runs rarely and costs money, so a harness that broke
+      # in between would only show up mid-run. This is the model-free half: 24 canary apps
+      # (a good cascivo app, a good shadcn app and a broken one per task) built and driven
+      # against the hidden EVALs, plus the slow `_lib` tests. It reuses the Chromium installed
+      # above: the harness resolves it through scripts/checks/lib/chromium.ts, and both use
+      # the one @playwright/test version from the workspace catalog. The `dry` run is only a
+      # smoke test of the CLI path on one task; the full canary pass already ran in the test.
+      - name: Eval harness dry run
+        run: |
+          EVAL_SLOW=1 pnpm --filter bench-agent test
+          pnpm --filter bench-agent eval dry --tasks admin-console
+
       # Also AFTER the build, and for the same reason: it renders the SHIPPED dist through a
       # real browser. Two of the 2026-07-26 adopter defects (an asChild button rendering
       # underlined, a card zeroing its header's padding) were computed-style facts that jsdom

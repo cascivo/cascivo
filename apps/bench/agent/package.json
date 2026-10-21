@@ -4,10 +4,13 @@
   "type": "module",
   "scripts": {
     "bench": "node src/cli.ts",
+    "eval": "node src/eval-cli.ts",
     "test": "vp test",
     "check": "tsc --noEmit"
   },
   "devDependencies": {
+    "@axe-core/playwright": "catalog:",
+    "@playwright/test": "catalog:",
     "@types/node": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:",

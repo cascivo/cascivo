@@ -1,0 +1,439 @@
+name: Evals
+
+# The published LLM x cascivo eval (docs/internal/superpowers/specs/2026-10-20-w6-published-eval-design.md).
+# It spends real money, so it never runs on pull_request or push: a person dispatches it, or a
+# published release triggers it. Four jobs, split by what each may see:
+#
+#   setup     validates the inputs and fans the run out into one shard per model.
+#   generate  (one per model) holds ANTHROPIC_API_KEY and runs the `claude -p` sessions. It never builds,
+#             installs or executes anything a session wrote, and a session cannot run anything
+#             either: `--restricted` keeps Read and Edit inside the session's directory and removes
+#             Bash, and only MCP tools that start no process are allowed (src/arms.ts). The MCP
+#             servers load no code or .env from the session's directory (src/eval/starters.ts).
+#             Any process in this job could read the key from /proc, so those are the boundary.
+#             The sessions are scanned for the key before they are uploaded.
+#   score     (one per model) builds and drives what generate wrote. No secrets, read-only contents,
+#             but agent code runs here and can tamper with its own shard's scoring (see the job).
+#   publish   holds the write token, runs no generated code, opens one PR for a valid run only.
+#             It runs on a release, or on a dispatch with `publish` ticked: a pilot or a test
+#             dispatch leaves it unticked and opens no PR. It also refuses a run that is not every
+#             task and arm, so only a full run can become the headline.
+#
+# Sharding: a run is 8 tasks x 3 arms x attempts x models sessions, one after another, and at the
+# defaults that is longer than the 6 h a hosted job may run. So each model is its own generate
+# and score shard (`fail-fast: false`: one shard dying does not cancel the others, whose
+# transcripts are kept). The spend cap is split evenly (`max_usd` / number of models) so the shards
+# together never exceed what the dispatcher set, and no shard needs to know the others' spend.
+#
+# Workflow hygiene: no `${{ }}` inside a `run:` script. Inputs and context values reach scripts
+# through `env:` only, are validated in the script, and are passed as quoted arguments.
+#
+# No setup-node `cache:` on purpose: a cache a pull request wrote must not reach the job that holds the
+# key or the write token, and a cold install is minutes against a run of hours. setup-node v4
+# caches only with `cache:` (it has no `package-manager-cache` input; that and caching by default
+# came with v5), so zizmor's cache-poisoning finding on each setup-node is ignored inline.
+#
+# Every action is pinned to a commit SHA. checkout, pnpm and setup-node reuse the SHAs of
+# framework-latest.yml; upload/download-artifact were not pinned anywhere yet, so their SHAs
+# were resolved from the upstream tags with `git ls-remote` (tag comments below).
+
+on:
+  workflow_dispatch:
+    inputs:
+      models:
+        description: Comma-separated model ids
+        default: claude-sonnet-5-5,claude-haiku-5-5
+      attempts:
+        description: Attempts per task x arm x model
+        default: '3'
+      max_usd:
+        description: Spend cap in USD; no session starts once it is reached
+        default: '50'
+      tasks:
+        description: Comma-separated task ids (empty = all)
+        default: ''
+      publish:
+        description: Open a results PR (tick for a full run; leave unticked for a pilot)
+        type: boolean
+        default: false
+  release:
+    types: [published]
+
+permissions: {}
+
+concurrency:
+  group: evals
+  cancel-in-progress: false
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions: {}
+    outputs:
+      models: ${{ steps.plan.outputs.models }}
+      attempts: ${{ steps.plan.outputs.attempts }}
+      shard_usd: ${{ steps.plan.outputs.shard_usd }}
+      tasks: ${{ steps.plan.outputs.tasks }}
+    steps:
+      # Validated once, here: the shards read these outputs, never the raw inputs, and a value
+      # that gets past this step is safe to hand to a script as a quoted argument.
+      - name: Validate the inputs and plan the shards
+        id: plan
+        env:
+          MODELS_IN: ${{ inputs.models }}
+          ATTEMPTS_IN: ${{ inputs.attempts }}
+          MAX_USD_IN: ${{ inputs.max_usd }}
+          TASKS_IN: ${{ inputs.tasks }}
+        run: |
+          set -euo pipefail
+          # A release event has no inputs: they arrive empty, so the defaults live here too.
+          models="${MODELS_IN:-claude-sonnet-5-5,claude-haiku-5-5}"
+          attempts="${ATTEMPTS_IN:-3}"
+          max_usd="${MAX_USD_IN:-50}"
+          tasks="${TASKS_IN:-}"
+
+          # Each id starts with a letter or digit, so none reads as an option or a relative path.
+          models_re='^[a-z0-9][a-z0-9.-]*(,[a-z0-9][a-z0-9.-]*)*$'
+          tasks_re='^([a-z0-9][a-z0-9.-]*(,[a-z0-9][a-z0-9.-]*)*)?$'
+          int_re='^[0-9]+$'
+          usd_re='^[0-9]+([.][0-9]+)?$'
+          # The rejected value is not echoed: it is untrusted and the log interprets `::`.
+          [[ "$models" =~ $models_re ]] || { echo "::error::models must be comma-separated ids matching [a-z0-9][a-z0-9.-]*"; exit 2; }
+          [[ "$tasks" =~ $tasks_re ]] || { echo "::error::tasks must be empty or comma-separated ids matching [a-z0-9][a-z0-9.-]*"; exit 2; }
+          [[ "$attempts" =~ $int_re ]] || { echo "::error::attempts must be a whole number"; exit 2; }
+          [[ "$max_usd" =~ $usd_re ]] || { echo "::error::max_usd must be a number"; exit 2; }
+
+          # One artifact per model, so a repeated model would collide; a repeated task would be
+          # paid for twice (the CLI refuses both as well).
+          if [[ -n "$(tr ',' '\n' <<< "$models" | sort | uniq -d)" ]]; then
+            echo "::error::models lists a model twice"; exit 2
+          fi
+          if [[ -n "$tasks" && -n "$(tr ',' '\n' <<< "$tasks" | sort | uniq -d)" ]]; then
+            echo "::error::tasks lists a task twice"; exit 2
+          fi
+          count="$(tr ',' '\n' <<< "$models" | wc -l)"
+          # Rounded down to the cent: the shards together must not exceed max_usd.
+          shard_usd="$(awk -v total="$max_usd" -v n="$count" 'BEGIN { printf "%.2f", int(total * 100 / n) / 100 }')"
+          [[ "$shard_usd" =~ $usd_re ]] || { echo "::error::could not split max_usd"; exit 2; }
+          awk -v usd="$shard_usd" 'BEGIN { exit !(usd > 0) }' || { echo "::error::max_usd is less than a cent per model"; exit 2; }
+
+          {
+            echo "models=$(jq -Rc 'split(",")' <<< "$models")"
+            echo "attempts=$attempts"
+            echo "shard_usd=$shard_usd"
+            echo "tasks=$tasks"
+          } >> "$GITHUB_OUTPUT"
+
+  generate:
+    needs: setup
+    runs-on: ubuntu-latest
+    # One model's sessions: 72 at the defaults, about 4 h. Within the 6 h hosted ceiling; a
+    # shard that does not finish by then is incomplete and is not published.
+    timeout-minutes: 350
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        model: ${{ fromJSON(needs.setup.outputs.models) }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+
+      # The eval CLI is a `.ts` file run by `node src/eval-cli.ts`, which needs Node's type
+      # stripping on by default (22.18 and later). `22` resolves to the newest 22.x.
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0 # zizmor: ignore[cache-poisoning]
+        with:
+          node-version: 22
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # The cascivo starters pack this checkout, and the CLI and MCP server it runs are built
+      # from it (the published ones predate the arm under test).
+      - name: Build (vp run -r build)
+        run: pnpm exec vp run -r --no-cache build
+
+      # Pinned: a CLI that changes between runs changes the measurement. 2.1.304 is the
+      # current release at the time of writing (`npm view @anthropic-ai/claude-code version`).
+      - name: Install the claude CLI
+        run: npm i -g @anthropic-ai/claude-code@2.1.304
+
+      # The starters install third-party packages (shadcn, and the lifecycle scripts of every
+      # dependency). Doing it here, before the key exists in any environment, keeps that code
+      # away from the key; the run step below finds the cache warm.
+      - name: Prepare the starters (no key)
+        run: >
+          node --input-type=module -e "
+          import { PUBLISHED_ARMS } from './apps/bench/agent/src/arms.ts';
+          import { prepareStarter } from './apps/bench/agent/src/eval/starters.ts';
+          for (const arm of PUBLISHED_ARMS) prepareStarter(arm, (line) => console.log(line));
+          "
+
+      # The key is on this step and the scan only, not job-wide: install and build scripts never see
+      # it. The step ends 20 minutes before the job does, so the scan and the upload still run and
+      # the transcripts and spend of a run that ran out of time are kept.
+      - name: Run the eval sessions
+        timeout-minutes: 330
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          MODEL: ${{ matrix.model }}
+          ATTEMPTS: ${{ needs.setup.outputs.attempts }}
+          SHARD_USD: ${{ needs.setup.outputs.shard_usd }}
+          TASKS: ${{ needs.setup.outputs.tasks }}
+        run: |
+          set -euo pipefail
+          args=(generate --out "$GITHUB_WORKSPACE/gen" --models "$MODEL" --attempts "$ATTEMPTS" --max-usd "$SHARD_USD")
+          if [[ -n "$TASKS" ]]; then args+=(--tasks "$TASKS"); fi
+          pnpm --filter bench-agent eval "${args[@]}"
+
+      # The artifact is readable by anyone who can read the repository. generate already aborts on
+      # a session whose output holds the key; this checks everything it left, whatever happened
+      # to that step (a failed or timed-out step skips any command after its own failure, so the
+      # check is a step of its own). It only reads files: nothing a session wrote runs here.
+      - name: Check the sessions for the key
+        id: scan
+        if: ${{ always() }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set -uo pipefail
+          gen="$GITHUB_WORKSPACE/gen"
+          if [[ ! -d "$gen" ]]; then echo "clean=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          if [[ -z "$ANTHROPIC_API_KEY" ]]; then echo "::error::ANTHROPIC_API_KEY is empty"; exit 1; fi
+          # File contents, then every path and link target. grep exits 0 when it finds the key, 1
+          # when it does not, and 2 when it could not read something, which is not clean either.
+          grep -rqF -e "$ANTHROPIC_API_KEY" -- "$gen"
+          contents=$?
+          # Through a file, not a pipe: `grep -q` stops at the first match and find's broken pipe
+          # would hide which of them failed.
+          paths="$RUNNER_TEMP/gen-paths"
+          find "$gen" -printf '%p\0%l\0' > "$paths"
+          listed=$?
+          grep -zqF -e "$ANTHROPIC_API_KEY" -- "$paths"
+          names=$?
+          rm -f -- "$paths"
+          if (( contents == 0 || names == 0 )); then
+            echo "::error::the API key is in the session output; nothing is uploaded. Rotate the key."
+            exit 1
+          fi
+          if (( contents != 1 || listed != 0 || names != 1 )); then echo "::error::the session output could not be scanned"; exit 1; fi
+          echo "clean=true" >> "$GITHUB_OUTPUT"
+
+      # Kept on failure and timeout too: the transcripts say why a session died. Hidden files stay
+      # in, so score sees the app exactly as the session left it. Only a clean scan uploads.
+      - name: Upload the sessions
+        if: ${{ always() && steps.scan.outputs.clean == 'true' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: eval-gen-${{ matrix.model }}
+          path: gen/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 90
+
+      # The run metadata again, on its own: publish cross-checks each shard's results against it.
+      # This job is the one no agent code runs in, so its run.json says what was really run and
+      # spent; score runs agent code and could rewrite the results file it uploads. Same scan gate.
+      - name: Upload the run metadata
+        if: ${{ always() && steps.scan.outputs.clean == 'true' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: eval-run-${{ matrix.model }}
+          path: gen/run.json
+          if-no-files-found: warn
+          retention-days: 90
+
+  score:
+    needs: [setup, generate]
+    runs-on: ubuntu-latest
+    # Headroom: an attempt can take about 10 minutes at worst (build 180 s, tsc 120 s, EVAL 120 s,
+    # audit 120 s, then axe), so 72 attempts at concurrency 2 can outlast 240 minutes. A shard
+    # that times out uploads no results and the run is not published; "Re-run failed jobs"
+    # scores it again from the kept eval-gen artifact, with no model spend.
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      matrix:
+        model: ${{ fromJSON(needs.setup.outputs.models) }}
+    # Agent-written code executes in this job (vite build with the agent's vite.config.ts and
+    # PostCSS config, tsc, the app in Chromium), as the runner user with the checkout writable.
+    # It has no secrets and read-only contents, so it cannot reach the key or the repository. It
+    # can tamper with this shard's scoring: rewrite other attempts before they build, the shared
+    # dependency trees, or results.json before the upload (a process can outlive its group with
+    # setsid). Every EVAL is imported before the first build, and publish checks the shape, the
+    # model, the scope, the date and the run metadata against generate's run.json, but not the
+    # statuses: the human review of the results PR is the integrity gate (spec §9).
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+
+      # Node 22.18 or later, for the same type-stripping reason as in generate.
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0 # zizmor: ignore[cache-poisoning]
+        with:
+          node-version: 22
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # The cascivo starters pack this checkout.
+      - name: Build (vp run -r build)
+        run: pnpm exec vp run -r --no-cache build
+
+      - name: Install Chromium
+        run: pnpm --filter @cascivo/site exec playwright install chromium --with-deps
+
+      - name: Download the sessions
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: eval-gen-${{ matrix.model }}
+          path: gen
+
+      - name: Score
+        run: >
+          pnpm --filter bench-agent eval score
+          --in "$GITHUB_WORKSPACE/gen"
+          --out "$GITHUB_WORKSPACE/results.json"
+          --concurrency 2
+
+      - name: Upload the results
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: eval-results-${{ matrix.model }}
+          path: results.json
+          if-no-files-found: error
+          retention-days: 90
+
+  publish:
+    needs: [setup, score]
+    # A release always publishes; a dispatch only when `publish` is ticked (a pilot leaves it off).
+    if: github.event_name == 'release' || inputs.publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      # The results PR targets the default branch, whatever ref the run was dispatched from. No
+      # credentials are kept: only the last step, which pushes, sets git up with the token.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+
+      # Node 22.18 or later, for the same type-stripping reason as in generate.
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0 # zizmor: ignore[cache-poisoning]
+        with:
+          node-version: 22
+
+      # No build: publish only reads the results file and writes three others.
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # One directory per shard: results/eval-results-<model>/results.json. The next step checks
+      # that the set is exactly the models this run planned.
+      - name: Download the results
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: eval-results-*
+          merge-multiple: false
+          path: results
+
+      # generate's run.json per shard: runs/eval-run-<model>/run.json. Read as data by publish
+      # (--run), never executed. The next step checks the set as it does for the results.
+      - name: Download the run metadata
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: eval-run-*
+          merge-multiple: false
+          path: runs
+
+      # Each shard's file is published in turn (sorted by model, so the output is deterministic);
+      # publish merges the latest valid run per model into evals.json and the report. It exits
+      # non-zero on an incomplete or invalid run, a run that is not every task and arm, a date in
+      # the future, one that is not that shard's model (--expect-model), or one whose run
+      # metadata differs from what generate recorded (--run), which fails the job before any
+      # branch exists, so no PR is opened if any shard is bad. A downloaded artifact this run did
+      # not plan fails it too: each shard's two files are read by their exact names.
+      - name: Write the results files
+        env:
+          MODELS: ${{ needs.setup.outputs.models }}
+        run: |
+          set -euo pipefail
+          mapfile -t models < <(jq -r '.[]' <<< "$MODELS" | LC_ALL=C sort)
+          if (( ${#models[@]} == 0 )); then echo "::error::no models were planned"; exit 1; fi
+          expected="$(printf 'eval-results-%s\n' "${models[@]}")"
+          downloaded="$(find "$GITHUB_WORKSPACE/results" -mindepth 1 -maxdepth 1 -printf '%f\n' | LC_ALL=C sort)"
+          if [[ "$downloaded" != "$expected" ]]; then
+            echo "::error::the downloaded results are not exactly one per planned model"
+            exit 1
+          fi
+          expected_runs="$(printf 'eval-run-%s\n' "${models[@]}")"
+          downloaded_runs="$(find "$GITHUB_WORKSPACE/runs" -mindepth 1 -maxdepth 1 -printf '%f\n' | LC_ALL=C sort)"
+          if [[ "$downloaded_runs" != "$expected_runs" ]]; then
+            echo "::error::the downloaded run metadata is not exactly one per planned model"
+            exit 1
+          fi
+          for model in "${models[@]}"; do
+            pnpm --filter bench-agent eval publish \
+              --results "$GITHUB_WORKSPACE/results/eval-results-$model/results.json" \
+              --run "$GITHUB_WORKSPACE/runs/eval-run-$model/run.json" \
+              --expect-model "$model"
+          done
+
+      - name: Open the results PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MODELS: ${{ needs.setup.outputs.models }}
+        run: |
+          set -euo pipefail
+          date="$(date -u +%F)"
+          # The run id and attempt keep a re-run on the same day from colliding with its branch.
+          branch="evals/${date}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "$branch"
+          # Exactly the three outputs: nothing else the job touched (lockfile churn, caches).
+          git add apps/bench/agent/results/ apps/site/public/evals.json docs/AGENT-BENCHMARKS.md
+          if git diff --cached --quiet; then
+            echo "::error::publish wrote nothing to commit"
+            exit 1
+          fi
+
+          # The same models in the same order as the step that wrote the results.
+          mapfile -t models < <(jq -r '.[]' <<< "$MODELS" | LC_ALL=C sort)
+          body="$RUNNER_TEMP/pr-body.md"
+          {
+            echo "Results of eval run ${GITHUB_RUN_ID}, one shard per model."
+            echo
+            for model in "${models[@]}"; do
+              file="$GITHUB_WORKSPACE/results/eval-results-$model/results.json"
+              jq -r '"- \(.models | join(", ")), cascivo \(.cascivoVersion): \([.records[] | select(.status == "pass")] | length) of \(.records | length) attempts passed, $\(.spentUsd) spent"' "$file"
+            done
+            echo
+            echo "Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            echo
+            echo "Generated by the evals workflow. Review the numbers, then merge."
+            echo
+            echo "This review is the integrity gate. The score job runs the agents' code, which could tamper with its own shard's results. publish checked the shape, the model, the scope, the date and the run metadata against generate's run.json, but it cannot check the statuses. If a number looks wrong, read the transcripts in the eval-gen artifacts before merging."
+            echo
+            echo "This PR was opened with the workflow token, so CI did not run on it. Close and reopen it, or push to it, to run the checks."
+          } > "$body"
+
+          git commit -m "evals: ${date} run"
+          # The checkout kept no credentials; this sets git up with GH_TOKEN for the push.
+          gh auth setup-git
+          git push origin "$branch"
+          gh pr create --title "evals: ${date} run" --body-file "$body"

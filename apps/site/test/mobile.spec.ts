@@ -7,6 +7,7 @@ const PAGES = [
   { path: '/docs/components/button', name: 'button' },
   { path: '/charts', name: 'charts' },
   { path: '/benchmarks', name: 'benchmarks' },
+  { path: '/evals', name: 'evals' },
 ]
 
 for (const width of WIDTHS) {

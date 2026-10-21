@@ -1,3 +1,5 @@
+import type { ArmId } from './arms.ts'
+
 /**
  * The five fixed tasks (2026-10-07 research, §6). Each names a whole screen an adopter would
  * ask an agent for, not a component, because the claim under test is about building apps.
@@ -48,3 +50,20 @@ export const INSTRUCTIONS =
   'Use the cascivo design system. Create a React + Vite app in this directory with the ' +
   'cascivo MCP tools, then write whatever else the task needs. Do not install dependencies ' +
   'and do not start a dev server. Stop when the app is complete.'
+
+/** What every published-eval arm is told, so the only variable is the design system and tools. */
+const SHARED_INSTRUCTIONS =
+  'Build it as a React + Vite app in this directory, extending any starter app already ' +
+  'there. Do not install dependencies and do not start a dev server. Stop when the app ' +
+  'is complete.'
+
+const ARM_LINES: Record<Exclude<ArmId, 'today'>, string> = {
+  cascivo: 'Use the cascivo design system.',
+  'cascivo-bare': 'Use the cascivo design system.',
+  shadcn: 'Use shadcn/ui with Tailwind.',
+}
+
+/** The instruction after the task text: the shared one plus a line naming the arm's system. */
+export function instructionsFor(arm: ArmId): string {
+  return arm === 'today' ? INSTRUCTIONS : `${ARM_LINES[arm]} ${SHARED_INSTRUCTIONS}`
+}

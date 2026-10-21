@@ -1,0 +1,1 @@
+Build a contact form with name, email and message fields. All three are required and the email must be valid; show an error next to each invalid field when the form is submitted, and a success message when it is valid.

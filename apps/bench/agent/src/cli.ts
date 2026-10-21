@@ -15,12 +15,12 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { argv, env, exit, stderr, stdout } from 'node:process'
-import { ARMS, claudeArgs, isArm } from './arms.ts'
+import { claudeArgs, isLegacyArm, LEGACY_ARMS } from './arms.ts'
 import type { ArmId } from './arms.ts'
 import { dryRun } from './dry-run.ts'
 import { CLI, mcpConfig, prepare, REPO, runDirectory } from './env.ts'
 import { INSTRUCTIONS, PROMPTS } from './prompts.ts'
-import { markdownTable, publishedDoc } from './report.ts'
+import { markdownTable } from './report.ts'
 import type { BenchResults, RunRecord } from './report.ts'
 import { parseClaudeResult } from './result.ts'
 import { score } from './score.ts'
@@ -30,13 +30,12 @@ const HELP = `bench-agent — what an agent spends to build an app with cascivo,
 Options:
   --runs <n>          Runs per prompt and arm (default 3; medians are reported)
   --prompts <ids>     Comma-separated prompt ids (default: all five)
-  --arms <ids>        today, blueprints, or both (default)
+  --arms <ids>        today, cascivo, or both (default)
   --model <id>        Model for claude -p (default: the CLI's default)
   --timeout <min>     Minutes per run before it is stopped (default 20)
   --dry-run           No model: a scripted tool call per arm, to check the harness
   --fresh             Rebuild the packed packages and the shared dependency tree
   --keep              Keep each run's directory (printed) for inspection
-  --publish           Also write docs/AGENT-BENCHMARKS.md from this run (not with --dry-run)
   -h, --help          Show this message`
 
 interface Options {
@@ -48,20 +47,18 @@ interface Options {
   dryRun: boolean
   fresh: boolean
   keep: boolean
-  publish: boolean
 }
 
 function parse(args: string[]): Options | 'help' {
   const o: Options = {
     runs: 3,
     prompts: PROMPTS.map((p) => p.id),
-    arms: [...ARMS],
+    arms: [...LEGACY_ARMS],
     model: null,
     timeoutMin: 20,
     dryRun: false,
     fresh: false,
     keep: false,
-    publish: false,
   }
   for (let i = 0; i < args.length; i += 1) {
     const arg = args[i]
@@ -75,20 +72,20 @@ function parse(args: string[]): Options | 'help' {
     else if (arg === '--prompts') o.prompts = value().split(',')
     else if (arg === '--arms') {
       const arms = value().split(',')
-      const bad = arms.filter((a) => !isArm(a))
+      const bad = arms.filter((a) => !isLegacyArm(a))
       if (bad.length > 0) throw new Error(`unknown arm ${bad.join(', ')}`)
-      o.arms = arms.filter(isArm)
+      o.arms = arms.filter(isLegacyArm)
     } else if (arg === '--model') o.model = value()
     else if (arg === '--timeout') o.timeoutMin = Number(value())
     else if (arg === '--dry-run') o.dryRun = true
     else if (arg === '--fresh') o.fresh = true
     else if (arg === '--keep') o.keep = true
-    else if (arg === '--publish') o.publish = true
+    else if (arg === '--publish')
+      // The published doc now comes from the scored eval, not from this internal comparison.
+      throw new Error('bench --publish is superseded by `pnpm --filter bench-agent eval publish`')
     else throw new Error(`unknown option ${arg}`)
   }
   if (!Number.isInteger(o.runs) || o.runs < 1) throw new Error('--runs needs a positive integer')
-  if (o.publish && o.dryRun)
-    throw new Error('--publish needs a real run: a dry run measures no model')
   const unknown = o.prompts.filter((p) => !PROMPTS.some((x) => x.id === p))
   if (unknown.length > 0) throw new Error(`unknown prompt ${unknown.join(', ')}`)
   return o
@@ -128,7 +125,13 @@ for (const prompt of PROMPTS.filter((p) => options.prompts.includes(p.id))) {
       } else {
         const result = spawnSync(
           'claude',
-          ['-p', `${prompt.text}\n\n${INSTRUCTIONS}`, ...claudeArgs(arm, config, options.model)],
+          [
+            '-p',
+            `${prompt.text}\n\n${INSTRUCTIONS}`,
+            // Both arms are built on tools that run the cascivo CLI. This bench runs locally with
+            // the developer's own key; the published eval never allows those tools.
+            ...claudeArgs(arm, config, options.model, { executingTools: true }),
+          ],
           { cwd: dir, encoding: 'utf8', timeout: options.timeoutMin * 60_000, maxBuffer: 64 << 20 },
         )
         try {
@@ -164,8 +167,3 @@ const out = join(
 writeFileSync(out, `${JSON.stringify(results, null, 2)}\n`)
 if (!options.keep) rmSync(root, { recursive: true, force: true })
 log(`\n${markdownTable(results)}\n\nwrote ${out}`)
-if (options.publish) {
-  const doc = join(REPO, 'docs/AGENT-BENCHMARKS.md')
-  writeFileSync(doc, publishedDoc(results, out.slice(REPO.length + 1)))
-  log(`wrote ${doc}`)
-}
