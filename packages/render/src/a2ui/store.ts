@@ -26,7 +26,7 @@ export const DEFAULT_A2UI_LIMITS: A2uiLimits = {
   maxIdLength: 256,
   maxDataNodes: 10000,
   maxRenderDepth: 64,
-  maxRenderNodes: 5000,
+  maxRenderNodes: 20000,
 }
 
 export interface A2uiSurfaceState {

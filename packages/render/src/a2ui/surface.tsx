@@ -24,8 +24,11 @@ export interface AdapterInput {
   readonly component: A2uiComponent
   /** The resolved value; a URL key that fails `isSafeUrl` is `undefined`. */
   prop(name: string): unknown
-  /** Renders another node; a Skeleton while that id has not arrived. */
-  child(id: string): ReactNode
+  /**
+   * Renders other nodes, a Skeleton for each id that has not arrived. Call it at most once per
+   * render with every id the adapter needs; a second call renders nothing (see `split`).
+   */
+  children(ids: readonly string[]): ReactNode[]
   /** A child list, a component id or text, by the shape of the slot's value. */
   slot(name: string): ReactNode
   /** Set only when `prop` is a `{path}` binding: writes to the bound path. */
@@ -97,19 +100,26 @@ function isTemplate(value: unknown): value is { componentId: string; path: strin
 }
 
 /**
- * How a node's render budget is shared (maxRenderNodes, R19). The surface root gets
+ * How a node's render budget is shared (maxRenderNodes, R19/R20). The surface root gets
  * `maxRenderNodes`; a node spends 1 and splits the remaining R = budget - 1 among its children
  * without any shared counter, so the bound holds however React schedules the renders:
  *
- * 1. Across slots: the props holding children (a child id list, a template, or a component id
- *    in an arity-one slot; text excluded) are counted up front, in prop order. Slot k of K gets
- *    `split(R, K, k)`.
- * 2. Within a slot: its m children (list entries or template items) get `split(share, m, i)`.
- * 3. A direct `child(id)` call from an adapter gets one slot's share, `split(R, max(K, 1), 0)`.
+ * 1. Takers: during one adapter call, each `slot(name)` call on a prop holding children (a
+ *    child id list, a template, or a component id in an arity-one slot; text excluded) is one
+ *    taker, and one `children(ids)` call is one taker. Taker k of the T actually used gets
+ *    `split(R, T, k)`, ordered as the slots' props, then `children()` last. Nothing is reserved
+ *    for a call the adapter does not make.
+ * 2. Within a taker: its m children (list entries, template items, or `children()` ids) get
+ *    `split(share, m, i)`.
+ * 3. Once per render: a second `slot(name)` for the same name, a second `children()`, or either
+ *    call after the adapter has returned takes no share; it renders nothing and reports one
+ *    RENDER_ERROR. The shares are fixed when the adapter returns (children render after it),
+ *    so a level never hands out more than R and the total is at most `maxRenderNodes` for any
+ *    adapter, however many times it calls these.
  *
  * `split(total, n, i)` is `floor(total / n)` plus 1 for the first `total mod n` children, so a
- * level never hands out more than it has and a long list is truncated at its end rather than
- * dropped whole. A node rendered with budget < 1 renders nothing.
+ * long list is truncated at its end rather than dropped whole. A node rendered with budget < 1
+ * renders nothing and reports one RENDER_ERROR for the surface.
  */
 function split(total: number, n: number, i: number): number {
   return Math.floor(total / n) + (i < total % n ? 1 : 0)
@@ -121,7 +131,7 @@ function makeInput(
   path: readonly Ancestor[],
   env: Env,
   budget: number,
-): AdapterInput {
+): { readonly input: AdapterInput; seal(): void } {
   const { data, id: surfaceId } = env.surface
   // Render-time resolution reports once per error; dispatch-time (a click) reports each time.
   const reportOnce = (e: A2uiErrorMessage): void => env.reportOnce(errorKey(e, component.id), e)
@@ -149,14 +159,42 @@ function makeInput(
   const childSlots = Object.keys(component.props).filter((k) =>
     holdsChildren(k, component.props[k]),
   )
+  // The share-takers this render used: child-holding slots by name, and one children() call.
+  // Local to this render's input, so nothing is carried across renders.
   const remaining = budget - 1
-  const slotShare = (name: string): number => {
-    const k = childSlots.indexOf(name)
-    return split(remaining, Math.max(childSlots.length, 1), Math.max(k, 0))
+  const slotsCalled = new Set<string>()
+  let childrenCalled = false
+  let sealed = false
+  let takers: readonly (string | null)[] | undefined
+  /** The share of taker `key` (a slot name, or null for children()); fixes the takers. */
+  const shareOf = (key: string | null): number => {
+    sealed = true
+    takers ??= [...childSlots.filter((k) => slotsCalled.has(k)), ...(childrenCalled ? [null] : [])]
+    return split(remaining, takers.length, takers.indexOf(key))
+  }
+  const refuse = (key: string, message: string): void =>
+    env.reportOnce(
+      `RENDER_ERROR|#${key}`,
+      errorMessage('RENDER_ERROR', surfaceId, `Component "${component.id}": ${message}`),
+    )
+  /** Whether a slot or children() call may take a share; reports why not. */
+  const take = (what: string, taken: boolean): boolean => {
+    if (sealed) {
+      refuse(`late:${what}`, `${what} must be called while the adapter renders.`)
+      return false
+    }
+    if (taken) {
+      refuse(
+        `once:${what}`,
+        `${what} may be called once per render; the second call renders nothing.`,
+      )
+      return false
+    }
+    return true
   }
 
   // Keyed by position too, so an agent listing an id twice does not collide React keys.
-  const child = (id: string, index: number, share: number): ReactNode => (
+  const child = (id: string, index: number, share: () => number): ReactNode => (
     <A2uiNode
       key={`${id}#${index}`}
       id={id}
@@ -167,7 +205,7 @@ function makeInput(
     />
   )
 
-  const template = (componentId: string, at: string, share: number): ReactNode => {
+  const template = (componentId: string, at: string, share: () => number): ReactNode => {
     let abs: string
     let items: unknown
     try {
@@ -186,12 +224,12 @@ function makeInput(
         scope={`${prefix}/${i}`}
         ancestors={path}
         env={env}
-        budget={split(share, items.length, i)}
+        budget={() => split(share(), items.length, i)}
       />
     ))
   }
 
-  return {
+  const input: AdapterInput = {
     component,
     prop(name) {
       const value = raw(name)
@@ -211,18 +249,25 @@ function makeInput(
       }
       return resolved
     },
-    child: (id) => child(id, 0, split(remaining, Math.max(childSlots.length, 1), 0)),
+    children(ids) {
+      if (!take('children()', childrenCalled)) return ids.map(() => null)
+      childrenCalled = true
+      return ids.map((id, i) => child(id, i, () => split(shareOf(null), ids.length, i)))
+    },
     slot(name) {
       const value = raw(name)
       if (value === undefined) return undefined
-      if (Array.isArray(value)) {
-        const share = slotShare(name)
-        const ids = value.filter((id): id is string => typeof id === 'string')
-        return ids.map((id, i) => child(id, i, split(share, ids.length, i)))
-      }
-      if (isTemplate(value)) return template(value.componentId, value.path, slotShare(name))
-      if (typeof value === 'string' && arityOf(name) === 'one') {
-        return child(value, 0, slotShare(name))
+      if (holdsChildren(name, value)) {
+        if (!take(`slot("${name}")`, slotsCalled.has(name))) return null
+        slotsCalled.add(name)
+        const share = (): number => shareOf(name)
+        if (isTemplate(value)) return template(value.componentId, value.path, share)
+        if (Array.isArray(value)) {
+          const ids = value.filter((id): id is string => typeof id === 'string')
+          return ids.map((id, i) => child(id, i, () => split(share(), ids.length, i)))
+        }
+        // holdsChildren left only a component id in an arity-one slot.
+        return typeof value === 'string' ? child(value, 0, share) : null
       }
       // Only a string or number is text; an object bound in from the data model would crash React.
       const text = resolve(value)
@@ -281,6 +326,12 @@ function makeInput(
       reportOnce(errorMessage(code, surfaceId, message))
     },
   }
+  return {
+    input,
+    seal() {
+      sealed = true
+    },
+  }
 }
 
 interface NodeProps {
@@ -289,8 +340,8 @@ interface NodeProps {
   /** Every node from the root to this one, excluding it. */
   readonly ancestors: readonly Ancestor[]
   readonly env: Env
-  /** Nodes this subtree may render, itself included; see `split`. */
-  readonly budget: number
+  /** Nodes this subtree may render, itself included; read when the node renders (see `split`). */
+  readonly budget: () => number
 }
 
 interface Ancestor {
@@ -328,7 +379,8 @@ function A2uiNode({ id, scope, ancestors, env, budget }: NodeProps): ReactNode {
     env.renderError(id, `Component "${id}" is nested deeper than maxRenderDepth (${max}).`)
     return null
   }
-  if (budget < 1) {
+  const nodes = budget()
+  if (nodes < 1) {
     const limit = env.store.limits.maxRenderNodes
     // One report per surface, whichever ids run out.
     env.reportOnce(
@@ -352,7 +404,7 @@ function A2uiNode({ id, scope, ancestors, env, budget }: NodeProps): ReactNode {
       scope={scope}
       path={[...ancestors, { id, scope }]}
       env={env}
-      budget={budget}
+      budget={nodes}
     />
   )
 }
@@ -376,7 +428,11 @@ function A2uiBody({ component, scope, path, env, budget }: BodyProps): ReactNode
     )
     return null
   }
-  return adapter(makeInput(component, scope, path, env, budget))
+  const { input, seal } = makeInput(component, scope, path, env, budget)
+  const out = adapter(input)
+  // Children render after this returns, so every share is fixed by the calls made above.
+  seal()
+  return out
 }
 
 /** Renders the surface `surfaceId` of `store`, drawing components through `catalogs`. */
@@ -434,7 +490,13 @@ export function A2uiSurface({
     renderError,
   }
   return (
-    <A2uiNode id="root" scope="" ancestors={[]} env={env} budget={store.limits.maxRenderNodes} />
+    <A2uiNode
+      id="root"
+      scope=""
+      ancestors={[]}
+      env={env}
+      budget={() => store.limits.maxRenderNodes}
+    />
   )
 }
 

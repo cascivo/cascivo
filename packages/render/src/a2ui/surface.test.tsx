@@ -18,7 +18,19 @@ afterEach(() => cleanup())
 // Test-only catalog: the cascivo catalog plus `Spy` (counts its own renders), `Reporter`
 // (reports through the adapter input on every render) and `Hooked` (an adapter using a hook).
 const SPY_CATALOG_ID = 'test:spy-catalog'
-const TEST_COMPONENTS: ReadonlySet<string> = new Set(['Spy', 'Reporter', 'Hooked', 'Box'])
+const TEST_COMPONENTS: ReadonlySet<string> = new Set([
+  'Spy',
+  'Reporter',
+  'Hooked',
+  'Box',
+  'Fan',
+  'Twice',
+  'SlotTwice',
+  'Column',
+])
+// The string ids of a component's raw `children` prop, as a basic-catalog adapter reads them.
+const idsOf = (value: unknown): string[] =>
+  Array.isArray(value) ? value.filter((id): id is string => typeof id === 'string') : []
 let spyRenders = 0
 const spySpec: A2uiCatalogSpec = {
   id: SPY_CATALOG_ID,
@@ -48,6 +60,43 @@ const spyCatalog: A2uiRenderCatalog = {
     // A countable container: every rendered Box is one `[data-box]` element.
     if (c === 'Box')
       return (input) => <div data-box={input.component.id}>{input.slot('children')}</div>
+    // Renders its `children` ids through one `children()` call, as Task 8's adapters will.
+    if (c === 'Fan') {
+      return (input) => (
+        <div data-box={input.component.id}>
+          {input.children(idsOf(input.component.props['children']))}
+        </div>
+      )
+    }
+    // Breaks the once-per-render rule: the second batch must render nothing.
+    if (c === 'Twice') {
+      return (input) => {
+        const ids = idsOf(input.component.props['children'])
+        return (
+          <div data-box={input.component.id}>
+            {input.children(ids)}
+            <div data-second="">{input.children(ids)}</div>
+          </div>
+        )
+      }
+    }
+    if (c === 'SlotTwice') {
+      return (input) => (
+        <div data-box={input.component.id}>
+          {input.slot('children')}
+          <div data-second="">{input.slot('children')}</div>
+        </div>
+      )
+    }
+    // A basic-catalog style Column: an id list through `children()`, a template through `slot()`.
+    if (c === 'Column') {
+      return (input) => {
+        const value = input.component.props['children']
+        return (
+          <div>{Array.isArray(value) ? input.children(idsOf(value)) : input.slot('children')}</div>
+        )
+      }
+    }
     return cascivoCatalog.adapter(c)
   },
 }
@@ -644,7 +693,8 @@ describe('<A2uiSurface>', () => {
           ? { id, component: 'Box', children: ten(ids[i + 1]!) }
           : { id, component: 'Box' },
       ),
-      { catalogId: SPY_CATALOG_ID },
+      // An explicit limit below the default keeps the fan-out fast in jsdom and still overflowing.
+      { catalogId: SPY_CATALOG_ID, limits: { maxRenderNodes: 5000 } },
     )
     expect(errors).toEqual([])
     const { container } = mount(store, { onError })
@@ -664,7 +714,8 @@ describe('<A2uiSurface>', () => {
           ? { id, component: 'Box', children: { componentId: ids[i + 1], path: '/list' } }
           : { id, component: 'Box' },
       ),
-      { catalogId: SPY_CATALOG_ID },
+      // An explicit limit below the default keeps the fan-out fast in jsdom and still overflowing.
+      { catalogId: SPY_CATALOG_ID, limits: { maxRenderNodes: 5000 } },
     )
     data('/list', rows(10))
     const { container } = mount(store, { onError })
@@ -710,6 +761,96 @@ describe('<A2uiSurface>', () => {
     // The root takes 1; the remaining 9 go to the first 9 rows.
     expect(container.querySelectorAll('[data-box="row"]')).toHaveLength(9)
     expect(renderErrorsOf(onError)).toHaveLength(1)
+  })
+
+  it('R20 (a): children() with 10 ids on a 6-level fan-out stays within maxRenderNodes', async () => {
+    const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+    const ids = ['root', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6']
+    const { store, errors } = setup(
+      ids.map((id, i) =>
+        i < ids.length - 1
+          ? { id, component: 'Fan', children: ten(ids[i + 1]!) }
+          : { id, component: 'Fan' },
+      ),
+      // An explicit limit below the default keeps the fan-out fast in jsdom and still overflowing.
+      { catalogId: SPY_CATALOG_ID, limits: { maxRenderNodes: 5000 } },
+    )
+    expect(errors).toEqual([])
+    const { container } = mount(store, { onError })
+    await act(async () => {})
+    const rendered = container.querySelectorAll('[data-box]').length
+    expect(rendered).toBeGreaterThan(1000)
+    expect(rendered).toBeLessThanOrEqual(5000)
+    const limit = renderErrorsOf(onError)
+    expect(limit).toHaveLength(1)
+    expect(limit[0]!.message).toContain('maxRenderNodes')
+  })
+
+  it('R20 (b): a second children() call in one render renders nothing and reports once', async () => {
+    const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+    const { store } = setup(
+      [
+        { id: 'root', component: 'Twice', children: ['x', 'y'] },
+        { id: 'x', component: 'Box' },
+        { id: 'y', component: 'Box' },
+      ],
+      { catalogId: SPY_CATALOG_ID },
+    )
+    const { container } = mount(store, { onError })
+    await act(async () => {})
+    expect(container.querySelectorAll('[data-box="x"]')).toHaveLength(1)
+    expect(container.querySelectorAll('[data-box="y"]')).toHaveLength(1)
+    expect(container.querySelector('[data-second]')!.childElementCount).toBe(0)
+    const errs = renderErrorsOf(onError)
+    expect(errs).toHaveLength(1)
+    expect(errs[0]!.message).toContain('children() may be called once per render')
+  })
+
+  it("R20 (c): a second slot('children') call in one render renders nothing", async () => {
+    const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+    const { store } = setup(
+      [
+        { id: 'root', component: 'SlotTwice', children: ['x'] },
+        { id: 'x', component: 'Box' },
+      ],
+      { catalogId: SPY_CATALOG_ID },
+    )
+    const { container } = mount(store, { onError })
+    await act(async () => {})
+    expect(container.querySelectorAll('[data-box="x"]')).toHaveLength(1)
+    expect(container.querySelector('[data-second]')!.childElementCount).toBe(0)
+    const errs = renderErrorsOf(onError)
+    expect(errs).toHaveLength(1)
+    expect(errs[0]!.message).toContain('may be called once per render')
+  })
+
+  it('R20 (d): 1,000 Flex rows of two Texts beside two Texts fully render at the default limit', async () => {
+    const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+    const { store, errors, data } = setup(
+      [
+        { id: 'root', component: 'Column', children: ['head', 'list', 'foot'] },
+        { id: 'head', component: 'Text', children: 'Head' },
+        { id: 'list', component: 'Column', children: { componentId: 'row', path: '/rows' } },
+        { id: 'row', component: 'Flex', children: ['label', 'value'] },
+        { id: 'label', component: 'Text', children: { path: 'a' } },
+        { id: 'value', component: 'Text', children: { path: 'b' } },
+        { id: 'foot', component: 'Text', children: 'Foot' },
+      ],
+      { catalogId: SPY_CATALOG_ID },
+    )
+    data(
+      '/rows',
+      Array.from({ length: 1000 }, (_, i) => ({ a: `a${i}`, b: `b${i}` })),
+    )
+    expect(errors).toEqual([])
+    mount(store, { onError })
+    await act(async () => {})
+    expect(screen.getAllByText(/^a\d+$/)).toHaveLength(1000)
+    expect(screen.getAllByText(/^b\d+$/)).toHaveLength(1000)
+    expect(screen.getByText('b999')).toBeTruthy()
+    expect(screen.getByText('Head')).toBeTruthy()
+    expect(screen.getByText('Foot')).toBeTruthy()
+    expect(onError).not.toHaveBeenCalled()
   })
 
   it('fix 7: changing the component type of an id remounts it, so adapter hooks stay safe', () => {
