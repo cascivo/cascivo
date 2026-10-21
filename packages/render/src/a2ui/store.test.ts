@@ -247,4 +247,58 @@ describe('createA2uiStore', () => {
     const errs = store.apply(comps('s', [{ id: 'a', component: 'T' }]))
     expect(errs.map((e) => e.error.code)).toEqual(['INVALID_MESSAGE'])
   })
+
+  it('survives hostile thrown values', () => {
+    const hostile = new Error('x')
+    Object.defineProperty(hostile, 'message', {
+      get() {
+        throw new Error('nested')
+      },
+    })
+    const raw = {
+      get version(): string {
+        throw hostile
+      },
+    }
+    const store = make()
+    expect(store.apply(raw).map((e) => e.error.code)).toEqual(['INVALID_MESSAGE'])
+
+    const { proxy, revoke } = Proxy.revocable({}, {})
+    revoke()
+    const spec: A2uiCatalogSpec = {
+      id: 'rev',
+      has: () => true,
+      validate: () => {
+        throw proxy
+      },
+    }
+    const s2 = createA2uiStore({ catalogs: [spec] })
+    s2.apply(create('s', {}, 'rev'))
+    expect(s2.apply(comps('s', [{ id: 'a', component: 'T' }])).map((e) => e.error.code)).toEqual([
+      'INVALID_MESSAGE',
+    ])
+  })
+
+  it('does not allocate signals for over-long ids', () => {
+    const store = make({ maxIdLength: 4 })
+    store.apply(create('s'))
+    const s = store.surface('s')
+    const a = s?.component('toolong')
+    expect(a?.value).toBeUndefined()
+    expect(s?.component('another-long')).toBe(a)
+    expect(s?.component('ok')).toBe(s?.component('ok'))
+  })
+
+  it('caps signals for unknown ids but still stores real components', () => {
+    const store = make({ maxComponents: 2 })
+    store.apply(create('s'))
+    const s = store.surface('s')
+    // 'root' already holds one entry; fill the rest of the 2 * maxComponents allowance.
+    const known = ['a', 'b', 'c'].map((id) => s?.component(id))
+    const over = s?.component('d')
+    expect(over).not.toBe(known[0])
+    expect(s?.component('e')).toBe(over)
+    expect(store.apply(comps('s', [{ id: 'd', component: 'T' }])).length).toBe(0)
+    expect(s?.component('d').value?.id).toBe('d')
+  })
 })

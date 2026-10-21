@@ -69,6 +69,8 @@ export function createA2uiStore(options: {
     theme: Readonly<Record<string, unknown>> | undefined
   }): Surface {
     const signals = new Map<string, ReturnType<typeof signal<A2uiComponent | undefined>>>()
+    // Shared by every id a renderer asks about that can never be stored (see `component`).
+    const detached = signal<A2uiComponent | undefined>(undefined)
     const slot = (id: string) => {
       const hit = signals.get(id)
       if (hit) return hit
@@ -85,7 +87,17 @@ export function createA2uiStore(options: {
       theme: input.theme,
       // Empty on purpose: every change goes through `write`, so the node limit always applies.
       data: createDataModel(undefined, { maxNodes: limits.maxDataNodes }),
-      component: (id) => slot(id),
+      // Ids come from an agent: an over-long id can never be stored, and lookups of unknown ids
+      // are capped so a hostile tree cannot grow the map without bound. Stored components always
+      // get a real signal via `set`.
+      component: (id) => {
+        const hit = signals.get(id)
+        if (hit) return hit
+        if (id.length > limits.maxIdLength || signals.size >= limits.maxComponents * 2) {
+          return detached
+        }
+        return slot(id)
+      },
       hasRoot: computed(() => root.value !== undefined),
       stored: new Set(),
       set(component) {
@@ -159,6 +171,8 @@ export function createA2uiStore(options: {
       return []
     }
 
+    // A throw mid-batch discards `errors` in favour of INVALID_MESSAGE; components applied
+    // earlier in this message stay applied.
     const errors: A2uiErrorMessage[] = []
     batch(() => {
       for (const [index, raw] of message.components.entries()) {
@@ -199,7 +213,12 @@ export function createA2uiStore(options: {
       try {
         return applyMessage(raw)
       } catch (error) {
-        const text = error instanceof Error ? error.message : 'unknown error'
+        let text = 'unexpected error'
+        try {
+          if (error instanceof Error && typeof error.message === 'string') text = error.message
+        } catch {
+          // A hostile thrown value (throwing getter, revoked Proxy) must not escape `apply`.
+        }
         return [errorMessage('INVALID_MESSAGE', '', `Could not apply message: ${text}`)]
       }
     },
