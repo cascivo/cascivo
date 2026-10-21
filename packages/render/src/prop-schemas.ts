@@ -6374,6 +6374,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
     {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'children',
       required: false,
     },

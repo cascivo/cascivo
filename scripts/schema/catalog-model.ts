@@ -352,6 +352,12 @@ export const SUBCOMPONENT_PROPS: Readonly<
         required: true,
         description: 'Accessible name of the group, applied as aria-label and not painted',
       },
+      {
+        name: 'className',
+        type: 'string',
+        required: false,
+        description: 'Class name for the group element, as RadioCardGroupProps declares',
+      },
     ],
   },
 }

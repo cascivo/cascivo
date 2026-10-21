@@ -3328,6 +3328,10 @@
             "component": {
               "const": "RadioCardGroup"
             },
+            "className": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
+              "description": "Class name for the group element, as RadioCardGroupProps declares"
+            },
             "defaultValue": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
               "description": "RadioCardGroup only: the initially selected value when uncontrolled"

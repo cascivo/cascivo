@@ -3322,6 +3322,10 @@
       "props": {
         "type": "object",
         "properties": {
+          "className": {
+            "type": "string",
+            "description": "Class name for the group element, as RadioCardGroupProps declares"
+          },
           "defaultValue": {
             "type": "string",
             "description": "RadioCardGroup only: the initially selected value when uncontrolled"
