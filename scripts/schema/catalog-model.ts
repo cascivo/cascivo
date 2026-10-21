@@ -325,11 +325,35 @@ export const SUBCOMPONENT_PARENT: Readonly<Record<string, string>> = {
 }
 
 /**
- * Parent manifest props a sub-component takes too (the manifest has no per-part section).
- * They become optional on the sub-component: the parent's `value` is the card's own, required.
+ * Parent manifest props a sub-component takes too (the manifest has no per-part section), and
+ * props only the part has. A parent prop becomes optional on the part (the
+ * parent's `value` is the card's own, and required).
+ *
+ * `extra` props are declared here, not in the manifest, on purpose: RadioCard's source paints
+ * a `<label>` element, so a `label` prop in that manifest cannot satisfy both the
+ * nameVisibility parity guard (it reads the whole file) and the group's real behaviour
+ * (an invisible aria-label).
  */
-const SUBCOMPONENT_PROPS: Readonly<Record<string, readonly string[]>> = {
-  RadioCardGroup: ['defaultValue', 'onValueChange', 'value'],
+const SUBCOMPONENT_PROPS: Readonly<
+  Record<string, { optional: readonly string[]; extra: readonly PropMeta[] }>
+> = {
+  RadioCardGroup: {
+    optional: ['defaultValue', 'onValueChange', 'value'],
+    extra: [
+      {
+        name: 'name',
+        type: 'string',
+        required: true,
+        description: 'The radio group name shared by its cards',
+      },
+      {
+        name: 'label',
+        type: 'string',
+        required: true,
+        description: 'Accessible name of the group, applied as aria-label and not painted',
+      },
+    ],
+  },
 }
 
 /** Prefer the node-usable `component` entry when a meta.name is shared (AppShell/Stack). */
@@ -537,7 +561,7 @@ export function buildCatalog(registry: unknown, renderable: ReadonlySet<string>)
     if (!parent || !parentEntry) {
       throw new Error(`${name}: renderable but not in the registry or SUBCOMPONENT_PARENT`)
     }
-    const shared = SUBCOMPONENT_PROPS[name] ?? []
+    const shared = SUBCOMPONENT_PROPS[name] ?? { optional: [], extra: [] }
     const part = buildComponent({
       ...parentEntry,
       meta: {
@@ -545,8 +569,9 @@ export function buildCatalog(registry: unknown, renderable: ReadonlySet<string>)
         intent: undefined,
         props: [
           ...parentEntry.meta.props
-            .filter((p) => shared.includes(p.name))
+            .filter((p) => shared.optional.includes(p.name))
             .map(({ required: _required, ...p }) => p),
+          ...shared.extra,
           { name: 'children', type: 'ReactNode' },
         ],
       },

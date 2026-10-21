@@ -15763,7 +15763,7 @@
         "radio-card.tsx": "sha256-cd2f0c9509267d5bac6a9528dea6e8ab188eb67181bdb2dbdb6b0b1c5a8d02b5",
         "index.ts": "sha256-e4dd5ba5cd66d32e10c4578c2972a64decc5ce79f4f78a78d9eefe00248d6eb9",
         "radio-card.module.css": "sha256-6a959571c4a30f1f92c68a3909bfd474e69ad3b4b2b47af28b3dbf1e3e1576c2",
-        "radio-card.meta.ts": "sha256-d1462c9adb309df7dfcd308340e3e5ddf143415fe6ad6e0c688395d6b97ae088"
+        "radio-card.meta.ts": "sha256-4c5b86259c06b4d50923e2846515d720afc801b623a919954ecd62c091b50c63"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -15789,7 +15789,7 @@
             "name": "value",
             "type": "string",
             "required": true,
-            "description": "Radio value; on RadioCardGroup, the controlled selected value"
+            "description": "Radio value. On RadioCardGroup: the controlled selected value"
           },
           {
             "name": "title",
@@ -15813,13 +15813,13 @@
             "name": "defaultValue",
             "type": "string",
             "required": false,
-            "description": "RadioCardGroup: the initially selected value when uncontrolled"
+            "description": "RadioCardGroup only: the initially selected value when uncontrolled"
           },
           {
             "name": "onValueChange",
             "type": "(value: string) => void",
             "required": false,
-            "description": "RadioCardGroup: called with the value of the card the person selects"
+            "description": "RadioCardGroup only: called with the value of the card the person selects"
           }
         ],
         "tokens": [

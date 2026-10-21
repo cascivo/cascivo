@@ -28,15 +28,15 @@ import { RadioCard } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                      | Required | Default | Description                                                          |
-| --------------- | ------------------------- | -------- | ------- | -------------------------------------------------------------------- |
-| `hideIndicator` | `boolean`                 | no       | —       | Hide the radio indicator glyph, showing only the card content.       |
-| `value`         | `string`                  | yes      | —       | Radio value; on RadioCardGroup, the controlled selected value        |
-| `title`         | `ReactNode`               | yes      | —       | Card title                                                           |
-| `description`   | `ReactNode`               | no       | —       | Optional description                                                 |
-| `disabled`      | `boolean`                 | no       | —       | Disables the card                                                    |
-| `defaultValue`  | `string`                  | no       | —       | RadioCardGroup: the initially selected value when uncontrolled       |
-| `onValueChange` | `(value: string) => void` | no       | —       | RadioCardGroup: called with the value of the card the person selects |
+| Prop            | Type                      | Required | Default | Description                                                               |
+| --------------- | ------------------------- | -------- | ------- | ------------------------------------------------------------------------- |
+| `hideIndicator` | `boolean`                 | no       | —       | Hide the radio indicator glyph, showing only the card content.            |
+| `value`         | `string`                  | yes      | —       | Radio value. On RadioCardGroup: the controlled selected value             |
+| `title`         | `ReactNode`               | yes      | —       | Card title                                                                |
+| `description`   | `ReactNode`               | no       | —       | Optional description                                                      |
+| `disabled`      | `boolean`                 | no       | —       | Disables the card                                                         |
+| `defaultValue`  | `string`                  | no       | —       | RadioCardGroup only: the initially selected value when uncontrolled       |
+| `onValueChange` | `(value: string) => void` | no       | —       | RadioCardGroup only: called with the value of the card the person selects |
 
 ## Examples
 

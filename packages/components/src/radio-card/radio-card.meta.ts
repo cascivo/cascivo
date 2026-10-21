@@ -21,7 +21,7 @@ export const meta: ComponentMeta = {
       name: 'value',
       type: 'string',
       required: true,
-      description: 'Radio value; on RadioCardGroup, the controlled selected value',
+      description: 'Radio value. On RadioCardGroup: the controlled selected value',
     },
     { name: 'title', type: 'ReactNode', required: true, description: 'Card title' },
     {
@@ -35,13 +35,13 @@ export const meta: ComponentMeta = {
       name: 'defaultValue',
       type: 'string',
       required: false,
-      description: 'RadioCardGroup: the initially selected value when uncontrolled',
+      description: 'RadioCardGroup only: the initially selected value when uncontrolled',
     },
     {
       name: 'onValueChange',
       type: '(value: string) => void',
       required: false,
-      description: 'RadioCardGroup: called with the value of the card the person selects',
+      description: 'RadioCardGroup only: called with the value of the card the person selects',
     },
   ],
   tokens: [

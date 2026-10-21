@@ -330,8 +330,13 @@ describe('buildCatalog', () => {
       ],
     }
     const g = buildCatalog(reg, new Set(['RadioCardGroup'])).components['RadioCardGroup']
-    assert.deepEqual(Object.keys(g?.props.properties ?? {}), ['defaultValue', 'value'])
-    assert.equal(g?.props.required, undefined)
+    assert.deepEqual(Object.keys(g?.props.properties ?? {}), [
+      'defaultValue',
+      'label',
+      'name',
+      'value',
+    ])
+    assert.deepEqual([...(g?.props.required ?? [])].sort(), ['label', 'name'])
     assert.ok('onValueChange' in (g?.events ?? {}))
     assert.equal(g?.slots['children']?.arity, 'many')
   })

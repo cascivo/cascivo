@@ -15,6 +15,7 @@ interface Comp {
   parent?: string
   props: {
     properties: Record<string, { enum?: unknown[]; items?: { required?: string[] } }>
+    required?: string[]
   }
   slots: Record<string, { arity: string; text?: boolean }>
   events: Record<string, unknown>
@@ -73,6 +74,9 @@ describe('catalog.v1.json', () => {
     }
     expect('onChange' in catalog.components['Slider']!.events).toBe(true)
     expect('onValueChange' in catalog.components['RadioCardGroup']!.events).toBe(true)
+    expect(catalog.components['RadioCardGroup']!.props.required).toEqual(
+      expect.arrayContaining(['name', 'label']),
+    )
   })
 
   it('does not infer children from sibling components in the same file', () => {

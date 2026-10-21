@@ -3283,7 +3283,7 @@
             },
             "defaultValue": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
-              "description": "RadioCardGroup: the initially selected value when uncontrolled"
+              "description": "RadioCardGroup only: the initially selected value when uncontrolled"
             },
             "disabled": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicBoolean",
@@ -3295,7 +3295,7 @@
             },
             "value": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
-              "description": "Radio value; on RadioCardGroup, the controlled selected value"
+              "description": "Radio value. On RadioCardGroup: the controlled selected value"
             },
             "description": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
@@ -3307,7 +3307,7 @@
             },
             "onValueChange": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
-              "description": "RadioCardGroup: called with the value of the card the person selects"
+              "description": "RadioCardGroup only: called with the value of the card the person selects"
             }
           },
           "required": ["component", "title", "value"]
@@ -3330,11 +3330,19 @@
             },
             "defaultValue": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
-              "description": "RadioCardGroup: the initially selected value when uncontrolled"
+              "description": "RadioCardGroup only: the initially selected value when uncontrolled"
+            },
+            "label": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
+              "description": "Accessible name of the group, applied as aria-label and not painted"
+            },
+            "name": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
+              "description": "The radio group name shared by its cards"
             },
             "value": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
-              "description": "Radio value; on RadioCardGroup, the controlled selected value"
+              "description": "Radio value. On RadioCardGroup: the controlled selected value"
             },
             "children": {
               "oneOf": [
@@ -3349,10 +3357,10 @@
             },
             "onValueChange": {
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action",
-              "description": "RadioCardGroup: called with the value of the card the person selects"
+              "description": "RadioCardGroup only: called with the value of the card the person selects"
             }
           },
-          "required": ["component"]
+          "required": ["component", "label", "name"]
         }
       ],
       "unevaluatedProperties": false
