@@ -120,7 +120,12 @@ describe('validators', () => {
   })
   it('regex stays fast on the worst accepted shape', () => {
     const started = Date.now()
-    expect(call('regex', { value: `${'1'.repeat(1000)}x`, pattern: '^\\d+\\d+$' })).toBe(false)
+    expect(call('regex', { value: `${'1'.repeat(255)}x`, pattern: '^\\d+\\d+$' })).toBe(false)
+    expect(Date.now() - started).toBeLessThan(200)
+  })
+  it('regex stays fast on the unanchored worst shape with capture groups', () => {
+    const started = Date.now()
+    expect(call('regex', { value: 'a'.repeat(256), pattern: '(a)*(a)*b' })).toBe(false)
     expect(Date.now() - started).toBeLessThan(200)
   })
   it('regex stays fast on bounded-quantifier worst shapes', () => {
@@ -136,9 +141,10 @@ describe('validators', () => {
   it('regex refuses long patterns, long values and invalid patterns', () => {
     const c = make()
     expect(call('regex', { value: 'a', pattern: 'a'.repeat(300) }, c)).toBe(false)
-    expect(call('regex', { value: 'a'.repeat(1_001), pattern: 'a' }, c)).toBe(false)
+    expect(call('regex', { value: 'a'.repeat(257), pattern: 'a' }, c)).toBe(false)
     expect(call('regex', { value: 'a', pattern: '[' }, c)).toBe(false)
     expect(c.errors).toHaveLength(3)
+    expect(c.errors[1]?.error).toMatchObject({ code: 'VALIDATION_FAILED', path: '/args/value' })
   })
   it('length', () => {
     expect(call('length', { value: 'abc', min: 2, max: 3 })).toBe(true)

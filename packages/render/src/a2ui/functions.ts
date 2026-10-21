@@ -38,7 +38,7 @@ export const BASIC_FUNCTIONS: readonly string[] = [
 
 const MAX_DEPTH = 16
 const MAX_REGEX_PATTERN = 256
-const MAX_REGEX_INPUT = 1_000
+const MAX_REGEX_INPUT = 256
 const MAX_QUANTIFIERS = 2
 const MAX_TEMPLATE = 10_000
 
@@ -55,9 +55,9 @@ const MAX_TEMPLATE = 10_000
  * A repeat count above 99 (`a{0,1000}`) is refused for the same reason.
  *
  * Residual risk: with at most two quantifiers and no quantified group, an unanchored pattern
- * costs roughly O(len^3) at worst (measured about 150 ms for `\d+\d+x` on 1,000 characters),
- * which is acceptable on the 1,000-character input cap. Patterns that need
- * more quantifiers (`^\d{3}-\d{3}-\d{4}$`) are deliberately refused.
+ * costs roughly O(len^3) at worst. V8 runs a regex cold (first execution, interpreted) about
+ * 10x slower than warm. Measured cold: `(a)*(a)*b` 90 ms at 300 characters, 274 ms at 400,
+ * 512 ms at 500, hence the 256-character input cap (about 60 ms cold).
  */
 export function isSafeRegexPattern(pattern: string): boolean {
   if (pattern.length > MAX_REGEX_PATTERN) return false
@@ -298,7 +298,7 @@ export function callFunction(
       const { value, pattern } = args
       if (typeof pattern !== 'string' || !isSafeRegexPattern(pattern)) {
         invalid(
-          'Regex pattern is missing or unsafe (too long, backreference or nested quantifier).',
+          'Regex pattern refused: missing, too long, a backreference, a nested quantifier, more than 2 quantifiers, or a repeat count above 99.',
           'pattern',
         )
         return false
