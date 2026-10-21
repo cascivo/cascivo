@@ -559,6 +559,8 @@ class A2uiBoundary extends React.Component<BoundaryProps, BoundaryState> {
     } catch {
       // A hostile thrown value must not escape the boundary.
     }
+    // Keyed without the message by design: a node that crashes again after a retry, with the
+    // same or another error, is not re-reported, so a crash loop cannot flood `onError`.
     env.reportOnce(
       `RENDER_ERROR|${component.id}|#crash`,
       errorMessage(
