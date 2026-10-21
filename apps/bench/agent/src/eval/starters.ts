@@ -155,26 +155,37 @@ function shadcnStarter(log: (line: string) => void): Starter {
   const built = existsSync(marker) && readFileSync(marker, 'utf8').trim() === SHADCN_VERSION
   if (built && existsSync(template) && existsSync(nodeModules)) return { template, nodeModules }
 
-  rmSync(dir, { recursive: true, force: true })
-  const build = join(dir, 'build')
+  // A cache for another shadcn version (or a half-written one from before builds were atomic).
+  if (existsSync(dir)) rmSync(dir, { recursive: true, force: true })
+  // Built in a private directory and renamed into place: test workers and parallel runs prepare
+  // concurrently on a cold cache, and a shared `build/` was deleted under a running `shadcn init`.
+  mkdirSync(CACHE, { recursive: true })
+  removeStaleBuilds(CACHE, 'shadcn-build-')
+  const staging = mkdtempSync(join(CACHE, 'shadcn-build-'))
+  const build = join(staging, 'build')
   const app = join(build, 'app')
-  mkdirSync(build, { recursive: true })
   const env = { ...process.env, CI: '1' }
   const shadcn = ['-y', `shadcn@${SHADCN_VERSION}`]
   log(`creating the shadcn starter (shadcn@${SHADCN_VERSION})…`)
-  run(
-    'npx',
-    [...shadcn, 'init', '-t', 'vite', '-b', 'radix', '-d', '-y', '--no-monorepo', '-n', 'app'],
-    build,
-    env,
-  )
-  log('adding every shadcn component…')
-  run('npx', [...shadcn, 'add', '--all', '-y', '-o'], app, env)
-
-  renameSync(join(app, 'node_modules'), nodeModules)
-  rmSync(join(app, 'dist'), { recursive: true, force: true })
-  renameSync(app, template)
-  rmSync(build, { recursive: true, force: true })
-  writeFileSync(marker, `${SHADCN_VERSION}\n`)
+  try {
+    mkdirSync(build, { recursive: true })
+    run(
+      'npx',
+      [...shadcn, 'init', '-t', 'vite', '-b', 'radix', '-d', '-y', '--no-monorepo', '-n', 'app'],
+      build,
+      env,
+    )
+    log('adding every shadcn component…')
+    run('npx', [...shadcn, 'add', '--all', '-y', '-o'], app, env)
+    renameSync(join(app, 'node_modules'), join(staging, 'node_modules'))
+    rmSync(join(app, 'dist'), { recursive: true, force: true })
+    renameSync(app, join(staging, 'template'))
+    rmSync(build, { recursive: true, force: true })
+    writeFileSync(join(staging, '.version'), `${SHADCN_VERSION}\n`)
+    renameIntoPlace(staging, dir)
+  } catch (error) {
+    rmSync(staging, { recursive: true, force: true })
+    throw error
+  }
   return { template, nodeModules }
 }
