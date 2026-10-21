@@ -7,6 +7,15 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { componentNames as renderableNames } from '../../packages/render/src/component-names.ts'
+import {
+  classifyProp,
+  contextFor,
+  pickCanonical,
+  type JsonSchema,
+  type ResolveContext,
+  type TypeDefMeta,
+} from './catalog-model.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = join(HERE, '..', '..')
@@ -33,35 +42,65 @@ interface Registry {
   components: RegistryEntry[]
 }
 
-function parseUnionLiterals(typeStr: string): string[] | null {
-  const branches = typeStr.split('|').map((s) => s.trim())
-  const literals: string[] = []
-  for (const branch of branches) {
-    const quoted = branch.match(/^['"](.+)['"]$/)
-    if (quoted?.[1] !== undefined) {
-      literals.push(quoted[1])
-      continue
-    }
-    if (/^[a-zA-Z_$][\w$-]*$/.test(branch)) {
-      literals.push(branch)
-      continue
-    }
-    return null
+const TRANSLATION_REF = { $ref: '#/$defs/TranslationRef' }
+
+/**
+ * `validateView` accepts a `{ $t }` TranslationRef for any top-level prop, and strings nested in
+ * data props are translatable too, so view.v1 widens both. Enums stay exact (a `$t` there is not
+ * a literal). Specific to view.v1: catalog.v1 and the A2UI catalog keep the strict schema.
+ */
+function allowTranslationRefs(node: unknown): unknown {
+  if (Array.isArray(node)) return node.map(allowTranslationRefs)
+  if (typeof node !== 'object' || node === null) return node
+  const o = node as Record<string, unknown>
+  if (o['type'] === 'string' && !('enum' in o) && !('const' in o)) {
+    return { anyOf: [o, TRANSLATION_REF] }
   }
-  return literals
+  return Object.fromEntries(Object.entries(o).map(([k, v]) => [k, allowTranslationRefs(v)]))
 }
 
-function propTypeToSchema(typeStr: string): Record<string, unknown> | null {
-  const t = typeStr.trim()
-  if (t === 'string') return { type: 'string' }
-  if (t === 'number') return { type: 'number' }
-  if (t === 'boolean') return { type: 'boolean' }
-  const literals = parseUnionLiterals(t)
-  if (literals) return { type: 'string', enum: literals }
-  return null // complex type — no constraint
+/** A top-level prop schema: the nested widening, then the whole value may be a TranslationRef. */
+function viewPropSchema(schema: JsonSchema): JsonSchema {
+  const { description: _description, ...rest } = schema
+  const inner = rest['type'] === 'string' && !('enum' in rest) ? rest : allowTranslationRefs(rest)
+  return { anyOf: [inner as JsonSchema, TRANSLATION_REF] }
+}
+
+/**
+ * Manifest type strings drift from source (an optional `id` the manifest omits, a status input
+ * the source also accepts), and these two outputs gate rendering, so nested fields are checked
+ * for presence and type only. catalog.v1 and the A2UI catalog keep the strict schema (R12).
+ */
+function lenientContext(typeDefs: readonly TypeDefMeta[] | undefined): ResolveContext {
+  // A ReactNode in data renders numbers as well as strings.
+  return {
+    ...contextFor(typeDefs),
+    nodeInData: { anyOf: [{ type: 'string' }, { type: 'number' }] },
+  }
+}
+
+/** Drops `additionalProperties: false` everywhere and `enum` below the prop's own value. */
+function lenient(node: JsonSchema, nested = false): JsonSchema {
+  const out: JsonSchema = {}
+  for (const [k, v] of Object.entries(node)) {
+    if ((k === 'additionalProperties' && v === false) || (nested && k === 'enum')) continue
+    if (k === 'properties' && typeof v === 'object' && v !== null) {
+      out[k] = Object.fromEntries(
+        Object.entries(v).map(([f, sub]) => [f, lenient(sub as JsonSchema, true)]),
+      )
+    } else if (k === 'items' && typeof v === 'object' && v !== null) {
+      out[k] = lenient(v as JsonSchema, true)
+    } else if (k === 'anyOf' && Array.isArray(v)) {
+      // Branches of the prop's own value are still top level: a top-level enum stays exact.
+      out[k] = v.map((b: JsonSchema) => lenient(b, nested))
+    } else out[k] = v
+  }
+  return out
 }
 
 const registry: Registry = JSON.parse(readFileSync(REGISTRY_PATH, 'utf-8'))
+// One entry per meta.name, node-usable `component` entry first (AppShell/Stack share names).
+const canonical = pickCanonical(registry.components)
 
 const componentNames = registry.components.map((c) => c.meta.name).sort()
 
@@ -83,7 +122,8 @@ const eventRefPattern = '^\\$actions\\.|^\\$state\\.(set|toggle)\\.'
 
 const propValue = {
   $anchor: 'PropValue',
-  oneOf: [
+  // anyOf, not oneOf: a { $t } TranslationRef is also a plain object, so exactly-one never held.
+  anyOf: [
     { type: 'string' },
     { type: 'number' },
     { type: 'boolean' },
@@ -95,14 +135,17 @@ const propValue = {
 }
 
 // Per-component anyOf branches constraining props
-const componentBranches = registry.components.map((entry) => {
+const componentBranches = [...canonical.values()].map((entry) => {
   const name = entry.meta.name
+  const ctx = lenientContext(entry.meta.typeDefs)
   const props: Record<string, unknown> = {}
   const required: string[] = []
 
-  for (const prop of entry.meta.props ?? []) {
-    const schema = propTypeToSchema(prop.type)
-    if (schema) props[prop.name] = schema
+  for (const prop of entry.meta.props) {
+    // Slots, events and omitted props get no constraint: children is a node field, not a prop.
+    const c = classifyProp(prop, ctx)
+    if (c.kind !== 'data') continue
+    props[prop.name] = viewPropSchema(lenient(c.schema))
     if (prop.required && prop.default === undefined) required.push(prop.name)
   }
 
@@ -115,12 +158,19 @@ const componentBranches = registry.components.map((entry) => {
   // eslint-disable-next-line unicorn/no-thenable -- JSON Schema uses 'then' as a standard keyword
   branch['then'] = {
     properties: {
-      props: {
-        type: 'object',
-        properties: props,
-        ...(required.length > 0 ? { required } : {}),
-      },
+      props: { type: 'object', properties: props },
     },
+    // A required data prop may arrive through `props` or `bind`; only data props can be required.
+    ...(required.length > 0
+      ? {
+          allOf: required.map((n) => ({
+            anyOf: [
+              { properties: { props: { required: [n] } }, required: ['props'] },
+              { properties: { bind: { required: [n] } }, required: ['bind'] },
+            ],
+          })),
+        }
+      : {}),
   }
   return branch
 })
@@ -227,34 +277,45 @@ function classifyPropType(typeStr: string): { enum?: string[]; primitives?: Prim
   return { enum: values }
 }
 
-// Prefer the node-usable `component` entry when a meta.name is shared (AppShell/Stack).
-const TYPE_RANK: Record<string, number> = {
-  component: 0,
-  block: 1,
-  chart: 2,
-  section: 3,
-  layout: 4,
+/** Drops annotation keys, which the render-time checker never reads, to keep prop-schemas.ts small. */
+function stripAnnotations(node: unknown): unknown {
+  if (Array.isArray(node)) return node.map(stripAnnotations)
+  if (typeof node !== 'object' || node === null) return node
+  return Object.fromEntries(
+    Object.entries(node)
+      .filter(([k]) => k !== 'description' && k !== 'default')
+      // `properties` maps field names to schemas, so a field named "default" must survive.
+      .map(([k, v]) => [
+        k,
+        k === 'properties' && typeof v === 'object' && v !== null
+          ? Object.fromEntries(Object.entries(v).map(([f, sub]) => [f, stripAnnotations(sub)]))
+          : stripAnnotations(v),
+      ]),
+  )
 }
-const canonical = new Map<string, RegistryEntry>()
-for (const entry of registry.components) {
-  const e = entry as RegistryEntry & { name?: string; type?: string }
-  const key = e.meta.name
-  const current = canonical.get(key) as (RegistryEntry & { type?: string }) | undefined
-  if (!current || (TYPE_RANK[e.type ?? ''] ?? 9) < (TYPE_RANK[current.type ?? ''] ?? 9)) {
-    canonical.set(key, entry)
-  }
+
+/** The data schema for props whose structure `validateView` can check: objects, arrays and anyOf. */
+function shapeOf(schema: JsonSchema): JsonSchema | undefined {
+  const structured = schema['type'] === 'object' || schema['type'] === 'array' || 'anyOf' in schema
+  return structured ? (stripAnnotations(schema) as JsonSchema) : undefined
 }
 
 const propSchemas: Record<string, unknown[]> = {}
 for (const name of [...canonical.keys()].sort()) {
   const entry = canonical.get(name)!
-  propSchemas[name] = (entry.meta.props ?? []).map((p) => {
+  const ctx = lenientContext(entry.meta.typeDefs)
+  propSchemas[name] = entry.meta.props.map((p) => {
     const { enum: enumValues, primitives } = classifyPropType(p.type)
+    const c = classifyProp(p, ctx)
+    // validateView only checks props of components the renderer can build; other shapes are dead bytes.
+    const shape =
+      c.kind === 'data' && renderableNames.has(name) ? shapeOf(lenient(c.schema)) : undefined
     return {
       name: p.name,
       required: p.required === true,
       ...(enumValues ? { enum: enumValues } : {}),
       ...(primitives ? { primitives } : {}),
+      ...(shape ? { shape } : {}),
     }
   })
 }
@@ -264,6 +325,9 @@ const propSchemasFile = `// generated — do not edit (scripts/schema/generate.t
 
 export type PropPrimitive = 'string' | 'number' | 'boolean' | 'null'
 
+/** A data-prop JSON Schema subset: type, enum, properties, required, additionalProperties, items, anyOf. */
+export type ShapeSchema = Record<string, unknown>
+
 export interface PropSchema {
   name: string
   required: boolean
@@ -271,6 +335,8 @@ export interface PropSchema {
   enum?: string[]
   /** Allowed primitive \`typeof\`s when the prop is a primitive (union). */
   primitives?: PropPrimitive[]
+  /** Structure of an object, array or union prop, checked recursively by the validator. */
+  shape?: ShapeSchema
 }
 
 export const propSchemas: Record<string, PropSchema[]> = ${JSON.stringify(propSchemas, null, 2)}

@@ -419,6 +419,10 @@ jobs:
       - name: Regen determinism guard (no wall-clock reads in generators)
         run: pnpm run regen:check
 
+      # Unit tests for the view/catalog schema generators (scripts/schema/*.test.ts).
+      - name: Schema generator tests
+        run: pnpm run schema:check
+
       - name: Regenerate generated artifacts
         run: |
           pnpm run regen

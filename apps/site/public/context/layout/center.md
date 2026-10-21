@@ -24,9 +24,10 @@ Pure layout wrapper with no semantic role; does not affect the accessibility tre
 
 ## Props
 
-| Name       | Type     | Required | Default | Description         |
-| ---------- | -------- | -------- | ------- | ------------------- |
-| `maxWidth` | `string` | No       | 48rem   | CSS max-width value |
+| Name       | Type        | Required | Default | Description         |
+| ---------- | ----------- | -------- | ------- | ------------------- |
+| `children` | `ReactNode` | No       | —       | Content to center   |
+| `maxWidth` | `string`    | No       | 48rem   | CSS max-width value |
 
 ## Tokens
 

@@ -9,6 +9,7 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
+    { name: 'children', type: 'ReactNode', required: false, description: 'Content to center' },
     {
       name: 'maxWidth',
       default: '48rem',

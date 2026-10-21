@@ -12974,6 +12974,7 @@ import { AutoGrid } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `children` | `ReactNode` | no | — | Grid items |
 | `min` | `string` | no | `"16rem"` | Minimum track width before items wrap to fewer columns |
 | `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | `4` | Spacing token step. Maps to the --cascivo-space-* scale, which intentionally skips 7/9/11 — use 6 or 8. |
 
@@ -13040,6 +13041,7 @@ import { Center } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `children` | `ReactNode` | no | — | Content to center |
 | `maxWidth` | `string` | no | `48rem` | CSS max-width value |
 
 ## Examples
@@ -13239,6 +13241,7 @@ import { Flex } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `children` | `ReactNode` | no | — | Items laid out along the flex axis |
 | `direction` | `'vertical' \| 'horizontal'` | no | `vertical` | Flex direction. ⚠ Defaults to `vertical`, unlike CSS `flex-direction` (and unlike Chakra/MUI/Radix `Flex`, which default to a row) — `<Flex justify="between">` alone produces a centered vertical stack. |
 | `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | `4` | Spacing token step |
 | `align` | `'start'\|'center'\|'end'\|'stretch'` | no | — | align-items |
@@ -15254,7 +15257,7 @@ import { OverflowMenu } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `items` | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]` | yes | — | The items to render. |
+| `items` | `{ label: string; value?: string; id?: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]` | yes | — | The items to render. |
 | `onSelect` | `(value: string) => void` | no | — | Called with the selected value. |
 | `placement` | `'bottom-start' \| 'bottom-end'` | no | `bottom-end` | Which trigger edge the menu aligns to. `bottom-end` hangs it from the trigger's end edge (right in LTR), `bottom-start` from its start edge. |
 | `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |

@@ -1,6 +1,6 @@
 import type { ComponentNode } from './types'
 import { componentNames } from './component-names'
-import { propSchemas, type PropPrimitive, type PropSchema } from './prop-schemas'
+import { propSchemas, type PropPrimitive, type PropSchema, type ShapeSchema } from './prop-schemas'
 
 export interface ValidationError {
   path: string
@@ -74,6 +74,136 @@ function primitiveOf(value: unknown): PropPrimitive | 'object' {
   return 'object'
 }
 
+const typeOf = (value: unknown): string =>
+  value === null ? 'null' : Array.isArray(value) ? 'array' : typeof value
+
+/** The field that tells an object branch apart: a single-value field, else the first required one. */
+function objectDiscriminator(shape: ShapeSchema): string | undefined {
+  const properties = shape['properties']
+  if (typeof properties === 'object' && properties !== null) {
+    for (const [field, sub] of Object.entries(properties as Record<string, ShapeSchema>)) {
+      const only = 'const' in sub ? [sub['const']] : sub['enum']
+      if (Array.isArray(only) && only.length === 1) return `${field}: ${JSON.stringify(only[0])}`
+    }
+  }
+  const required = shape['required']
+  return Array.isArray(required) && typeof required[0] === 'string' ? required[0] : undefined
+}
+
+/** Short name of what a shape expects, for an anyOf error. */
+function describeShape(shape: ShapeSchema): string {
+  const { enum: values, type } = shape
+  if (Array.isArray(values)) return values.map((v) => JSON.stringify(v)).join(' | ')
+  if (type === 'object') {
+    // "object or object" says nothing; name what each branch needs.
+    const key = objectDiscriminator(shape)
+    return key ? `object with ${key}` : 'object'
+  }
+  if (typeof type === 'string') return type
+  return 'anyOf' in shape ? 'a union' : 'any'
+}
+
+/** JSON for an error message, cut short so a large payload is not repeated in every error. */
+function preview(value: unknown): string {
+  const json = JSON.stringify(value) ?? 'undefined'
+  return json.length > 80 ? `${json.slice(0, 80)}…` : json
+}
+
+/**
+ * Check `value` against the JSON Schema subset the generator emits (type, enum, properties,
+ * required, additionalProperties:false, items, anyOf); other keywords are ignored. `path` is
+ * the error path, `label` the prop name with its index/field suffix for the message.
+ */
+function checkShape(
+  value: unknown,
+  shape: ShapeSchema,
+  path: string,
+  errors: ValidationError[],
+  label: string = path.slice(path.lastIndexOf('.props.') + '.props.'.length),
+): void {
+  const fail = (reason: string) =>
+    errors.push({
+      path,
+      message: `Invalid value ${preview(value)} for "${label}" — ${reason}.`,
+    })
+
+  const branches = shape['anyOf']
+  if (Array.isArray(branches)) {
+    const passes = branches.some((branch) => {
+      const trial: ValidationError[] = []
+      checkShape(value, branch as ShapeSchema, path, trial, label)
+      return trial.length === 0
+    })
+    if (!passes) {
+      fail(`expected ${branches.map((b) => describeShape(b as ShapeSchema)).join(' or ')}`)
+    }
+    return
+  }
+
+  const values = shape['enum']
+  if (Array.isArray(values) && !values.includes(value)) {
+    fail(`expected one of: ${values.join(', ')}`)
+    return
+  }
+
+  switch (shape['type']) {
+    case 'null':
+      if (value !== null) fail(`expected null, got ${typeOf(value)}`)
+      break
+    case 'string':
+      // A TranslationRef resolves to a string at render time.
+      if (typeof value !== 'string' && !isTranslationRef(value)) {
+        fail(`expected string, got ${typeOf(value)}`)
+      }
+      break
+    case 'number':
+    case 'boolean':
+      if (typeof value !== shape['type']) fail(`expected ${shape['type']}, got ${typeOf(value)}`)
+      break
+    case 'array': {
+      if (!Array.isArray(value)) {
+        fail(`expected array, got ${typeOf(value)}`)
+        return
+      }
+      const items = shape['items']
+      if (typeof items === 'object' && items !== null) {
+        value.forEach((item, i) =>
+          checkShape(item, items as ShapeSchema, `${path}[${i}]`, errors, `${label}[${i}]`),
+        )
+      }
+      break
+    }
+    case 'object': {
+      if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+        fail(`expected object, got ${typeOf(value)}`)
+        return
+      }
+      const record = value as Record<string, unknown>
+      const properties = (shape['properties'] ?? {}) as Record<string, ShapeSchema>
+      const required = Array.isArray(shape['required']) ? (shape['required'] as string[]) : []
+      for (const field of required) {
+        if (!Object.hasOwn(record, field)) {
+          errors.push({
+            path: `${path}.${field}`,
+            message: `Missing required field "${field}" for "${label}".`,
+          })
+        }
+      }
+      for (const [field, fieldValue] of Object.entries(record)) {
+        const sub = Object.hasOwn(properties, field) ? properties[field] : undefined
+        if (sub) checkShape(fieldValue, sub, `${path}.${field}`, errors, `${label}.${field}`)
+        else if (shape['additionalProperties'] === false) {
+          errors.push({
+            path: `${path}.${field}`,
+            message: `Unknown field "${field}" for "${label}".`,
+          })
+        }
+      }
+      break
+    }
+  }
+}
+
 /**
  * Validate a node's `props` against its component's manifest schema: unknown
  * prop (with a Levenshtein "did you mean"), out-of-enum value, and primitive
@@ -104,7 +234,9 @@ function validateProps(
       continue
     }
     if (isTranslationRef(value)) continue
-    if (prop.enum) {
+    if (prop.shape) {
+      checkShape(value, prop.shape, `${path}.props.${key}`, errors)
+    } else if (prop.enum) {
       if (typeof value !== 'string' || !prop.enum.includes(value)) {
         errors.push({
           path: `${path}.props.${key}`,

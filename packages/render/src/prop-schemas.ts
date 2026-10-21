@@ -3,6 +3,9 @@
 
 export type PropPrimitive = 'string' | 'number' | 'boolean' | 'null'
 
+/** A data-prop JSON Schema subset: type, enum, properties, required, additionalProperties, items, anyOf. */
+export type ShapeSchema = Record<string, unknown>
+
 export interface PropSchema {
   name: string
   required: boolean
@@ -10,6 +13,8 @@ export interface PropSchema {
   enum?: string[]
   /** Allowed primitive `typeof`s when the prop is a primitive (union). */
   primitives?: PropPrimitive[]
+  /** Structure of an object, array or union prop, checked recursively by the validator. */
+  shape?: ShapeSchema
 }
 
 export const propSchemas: Record<string, PropSchema[]> = {
@@ -22,10 +27,36 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'defaultValue',
       required: false,
+      shape: {
+        anyOf: [
+          {
+            type: 'string',
+          },
+          {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
+        ],
+      },
     },
     {
       name: 'value',
       required: false,
+      shape: {
+        anyOf: [
+          {
+            type: 'string',
+          },
+          {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
+        ],
+      },
     },
     {
       name: 'onValueChange',
@@ -427,6 +458,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   AutoGrid: [
     {
+      name: 'children',
+      required: false,
+    },
+    {
       name: 'min',
       required: false,
       primitives: ['string'],
@@ -726,6 +761,21 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'items',
       required: true,
+      shape: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            label: {
+              type: 'string',
+            },
+            href: {
+              type: 'string',
+            },
+          },
+          required: ['label'],
+        },
+      },
     },
     {
       name: 'maxVisible',
@@ -1171,6 +1221,17 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'ai',
       required: false,
+      shape: {
+        anyOf: [
+          {
+            type: 'string',
+            enum: ['generating'],
+          },
+          {
+            type: 'boolean',
+          },
+        ],
+      },
     },
   ],
   Carousel: [
@@ -1212,6 +1273,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Center: [
+    {
+      name: 'children',
+      required: false,
+    },
     {
       name: 'maxWidth',
       required: false,
@@ -2061,10 +2126,49 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'columns',
       required: true,
+      shape: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            key: {
+              type: 'string',
+            },
+            header: {
+              type: 'string',
+            },
+            sortable: {
+              type: 'boolean',
+            },
+            align: {
+              type: 'string',
+            },
+            filter: {
+              type: 'string',
+            },
+            editable: {
+              type: 'boolean',
+            },
+            minWidth: {
+              type: 'string',
+            },
+            width: {
+              type: 'string',
+            },
+          },
+          required: ['key', 'header'],
+        },
+      },
     },
     {
       name: 'rows',
       required: true,
+      shape: {
+        type: 'array',
+        items: {
+          type: 'object',
+        },
+      },
     },
     {
       name: 'getRowId',
@@ -2073,10 +2177,64 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'sort',
       required: false,
+      shape: {
+        type: 'object',
+        properties: {
+          key: {
+            type: 'string',
+          },
+          direction: {
+            type: 'string',
+          },
+          thenBy: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                key: {
+                  type: 'string',
+                },
+                direction: {
+                  type: 'string',
+                },
+              },
+              required: ['key', 'direction'],
+            },
+          },
+        },
+        required: ['key', 'direction'],
+      },
     },
     {
       name: 'defaultSort',
       required: false,
+      shape: {
+        type: 'object',
+        properties: {
+          key: {
+            type: 'string',
+          },
+          direction: {
+            type: 'string',
+          },
+          thenBy: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                key: {
+                  type: 'string',
+                },
+                direction: {
+                  type: 'string',
+                },
+              },
+              required: ['key', 'direction'],
+            },
+          },
+        },
+        required: ['key', 'direction'],
+      },
     },
     {
       name: 'sortMode',
@@ -2095,10 +2253,43 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'pagination',
       required: false,
+      shape: {
+        type: 'object',
+        properties: {
+          pageSize: {
+            type: 'number',
+          },
+          pageSizeOptions: {
+            type: 'array',
+            items: {
+              type: 'number',
+            },
+          },
+          page: {
+            type: 'number',
+          },
+        },
+        required: ['pageSize'],
+      },
     },
     {
       name: 'selection',
       required: false,
+      shape: {
+        type: 'object',
+        properties: {
+          mode: {
+            type: 'string',
+          },
+          selected: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
+        },
+        required: ['mode'],
+      },
     },
     {
       name: 'batchActions',
@@ -2131,10 +2322,44 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'columnState',
       required: false,
+      shape: {
+        type: 'object',
+        properties: {
+          hidden: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
+          order: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
+        },
+      },
     },
     {
       name: 'defaultColumnState',
       required: false,
+      shape: {
+        type: 'object',
+        properties: {
+          hidden: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
+          order: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
+        },
+      },
     },
     {
       name: 'onColumnStateChange',
@@ -2143,6 +2368,23 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'columnSettings',
       required: false,
+      shape: {
+        type: 'object',
+        properties: {
+          visibility: {
+            type: 'boolean',
+          },
+          resizable: {
+            type: 'boolean',
+          },
+          reorderable: {
+            type: 'boolean',
+          },
+          pinnable: {
+            type: 'boolean',
+          },
+        },
+      },
     },
     {
       name: 'server',
@@ -2170,6 +2412,19 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'groupBy',
       required: false,
+      shape: {
+        anyOf: [
+          {
+            type: 'string',
+          },
+          {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
+        ],
+      },
     },
     {
       name: 'totals',
@@ -2179,14 +2434,64 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'pinnedRows',
       required: false,
+      shape: {
+        type: 'object',
+        properties: {
+          top: {
+            type: 'array',
+            items: {
+              type: 'object',
+            },
+          },
+          bottom: {
+            type: 'array',
+            items: {
+              type: 'object',
+            },
+          },
+        },
+      },
     },
     {
       name: 'columnGroups',
       required: false,
+      shape: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            header: {
+              type: 'string',
+            },
+            columns: {
+              type: 'array',
+              items: {
+                type: 'string',
+              },
+            },
+          },
+          required: ['header', 'columns'],
+        },
+      },
     },
     {
       name: 'exportable',
       required: false,
+      shape: {
+        anyOf: [
+          {
+            type: 'boolean',
+          },
+          {
+            type: 'object',
+            properties: {
+              filename: {
+                type: 'string',
+              },
+            },
+          },
+        ],
+      },
     },
     {
       name: 'renderExpandedRow',
@@ -2498,6 +2803,47 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'items',
       required: true,
+      shape: {
+        type: 'array',
+        items: {
+          anyOf: [
+            {
+              type: 'object',
+              properties: {
+                label: {
+                  type: 'string',
+                },
+                value: {
+                  type: 'string',
+                },
+                icon: {
+                  anyOf: [
+                    {
+                      type: 'string',
+                    },
+                    {
+                      type: 'number',
+                    },
+                  ],
+                },
+                disabled: {
+                  type: 'boolean',
+                },
+              },
+              required: ['label', 'value'],
+            },
+            {
+              type: 'object',
+              properties: {
+                kind: {
+                  type: 'string',
+                },
+              },
+              required: ['kind'],
+            },
+          ],
+        },
+      },
     },
     {
       name: 'onSelect',
@@ -2813,6 +3159,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Flex: [
+    {
+      name: 'children',
+      required: false,
+    },
     {
       name: 'direction',
       required: false,
@@ -3499,6 +3849,33 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'cols',
       required: false,
+      shape: {
+        anyOf: [
+          {
+            type: 'number',
+          },
+          {
+            type: 'object',
+            properties: {
+              base: {
+                type: 'number',
+              },
+              sm: {
+                type: 'number',
+              },
+              md: {
+                type: 'number',
+              },
+              lg: {
+                type: 'number',
+              },
+              xl: {
+                type: 'number',
+              },
+            },
+          },
+        ],
+      },
     },
     {
       name: 'gap',
@@ -3522,6 +3899,33 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'span',
       required: false,
+      shape: {
+        anyOf: [
+          {
+            type: 'number',
+          },
+          {
+            type: 'object',
+            properties: {
+              base: {
+                type: 'number',
+              },
+              sm: {
+                type: 'number',
+              },
+              md: {
+                type: 'number',
+              },
+              lg: {
+                type: 'number',
+              },
+              xl: {
+                type: 'number',
+              },
+            },
+          },
+        ],
+      },
     },
   ],
   Header: [
@@ -3536,6 +3940,24 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'links',
       required: false,
+      shape: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            label: {
+              type: 'string',
+            },
+            href: {
+              type: 'string',
+            },
+            active: {
+              type: 'boolean',
+            },
+          },
+          required: ['label', 'href'],
+        },
+      },
     },
     {
       name: 'actions',
@@ -3847,11 +4269,31 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'width',
       required: false,
       primitives: ['string', 'number'],
+      shape: {
+        anyOf: [
+          {
+            type: 'string',
+          },
+          {
+            type: 'number',
+          },
+        ],
+      },
     },
     {
       name: 'height',
       required: false,
       primitives: ['string', 'number'],
+      shape: {
+        anyOf: [
+          {
+            type: 'string',
+          },
+          {
+            type: 'number',
+          },
+        ],
+      },
     },
     {
       name: 'radius',
@@ -4615,6 +5057,17 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'ai',
       required: false,
+      shape: {
+        anyOf: [
+          {
+            type: 'string',
+            enum: ['generating'],
+          },
+          {
+            type: 'boolean',
+          },
+        ],
+      },
     },
   ],
   MultiSelect: [
@@ -4877,6 +5330,16 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'value',
       required: false,
       primitives: ['number', 'null'],
+      shape: {
+        anyOf: [
+          {
+            type: 'number',
+          },
+          {
+            type: 'null',
+          },
+        ],
+      },
     },
     {
       name: 'defaultValue',
@@ -4982,6 +5445,40 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'items',
       required: true,
+      shape: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            label: {
+              type: 'string',
+            },
+            value: {
+              type: 'string',
+            },
+            id: {
+              type: 'string',
+            },
+            icon: {
+              anyOf: [
+                {
+                  type: 'string',
+                },
+                {
+                  type: 'number',
+                },
+              ],
+            },
+            disabled: {
+              type: 'boolean',
+            },
+            destructive: {
+              type: 'boolean',
+            },
+          },
+          required: ['label'],
+        },
+      },
     },
     {
       name: 'onSelect',
@@ -5088,6 +5585,12 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'pageSizeOptions',
       required: false,
+      shape: {
+        type: 'array',
+        items: {
+          type: 'number',
+        },
+      },
     },
     {
       name: 'labels',
@@ -5417,6 +5920,21 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'steps',
       required: true,
+      shape: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            label: {
+              type: 'string',
+            },
+            description: {
+              type: 'string',
+            },
+          },
+          required: ['label'],
+        },
+      },
     },
     {
       name: 'currentIndex',
@@ -6205,6 +6723,24 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'options',
       required: true,
+      shape: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            value: {
+              type: 'string',
+            },
+            label: {
+              type: 'string',
+            },
+            disabled: {
+              type: 'boolean',
+            },
+          },
+          required: ['value', 'label'],
+        },
+      },
     },
     {
       name: 'size',
@@ -6308,6 +6844,42 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'nav',
       required: false,
+      shape: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            label: {
+              type: 'string',
+            },
+            href: {
+              type: 'string',
+            },
+            items: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  label: {
+                    type: 'string',
+                  },
+                  href: {
+                    type: 'string',
+                  },
+                  active: {
+                    type: 'boolean',
+                  },
+                },
+                required: ['label', 'href'],
+              },
+            },
+            active: {
+              type: 'boolean',
+            },
+          },
+          required: ['label'],
+        },
+      },
     },
     {
       name: 'center',
@@ -6316,6 +6888,34 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'actions',
       required: false,
+      shape: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+            },
+            label: {
+              type: 'string',
+            },
+            icon: {
+              anyOf: [
+                {
+                  type: 'string',
+                },
+                {
+                  type: 'number',
+                },
+              ],
+            },
+            active: {
+              type: 'boolean',
+            },
+          },
+          required: ['id', 'label', 'icon'],
+        },
+      },
     },
     {
       name: 'end',
@@ -6334,6 +6934,17 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'skipToContentHref',
       required: false,
       primitives: ['string', 'boolean'],
+      shape: {
+        anyOf: [
+          {
+            type: 'boolean',
+            enum: [false],
+          },
+          {
+            type: 'string',
+          },
+        ],
+      },
     },
     {
       name: 'labels',
@@ -6644,6 +7255,16 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'value',
       required: true,
       primitives: ['string', 'number'],
+      shape: {
+        anyOf: [
+          {
+            type: 'string',
+          },
+          {
+            type: 'number',
+          },
+        ],
+      },
     },
     {
       name: 'delta',
@@ -6723,10 +7344,40 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'items',
       required: false,
+      shape: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            label: {
+              type: 'string',
+            },
+            id: {
+              type: 'string',
+            },
+          },
+          required: ['label'],
+        },
+      },
     },
     {
       name: 'steps',
       required: false,
+      shape: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            label: {
+              type: 'string',
+            },
+            id: {
+              type: 'string',
+            },
+          },
+          required: ['label'],
+        },
+      },
     },
     {
       name: 'activeStep',
@@ -7290,6 +7941,57 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'items',
       required: true,
+      shape: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+            },
+            title: {
+              anyOf: [
+                {
+                  type: 'string',
+                },
+                {
+                  type: 'number',
+                },
+              ],
+            },
+            description: {
+              anyOf: [
+                {
+                  type: 'string',
+                },
+                {
+                  type: 'number',
+                },
+              ],
+            },
+            time: {
+              type: 'string',
+            },
+            icon: {
+              anyOf: [
+                {
+                  type: 'string',
+                },
+                {
+                  type: 'number',
+                },
+              ],
+            },
+            status: {
+              type: 'string',
+            },
+            tone: {
+              type: 'string',
+            },
+          },
+          required: ['id', 'title'],
+        },
+      },
     },
     {
       name: 'orientation',

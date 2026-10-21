@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import { validateView } from './validate'
+import { componentNames } from './component-names'
+import { propSchemas } from './prop-schemas'
+// Source of truth for the json-playground demo; type-only import there, so a relative path is clean.
+import { exampleConfig } from '../../../apps/examples/json-playground/src/example-config.ts'
 
 /** Build a single-node view for terse assertions. */
 function view(node: Record<string, unknown>) {
@@ -60,5 +64,314 @@ describe('validateView() prop conformance (v40 T2)', () => {
     )
     expect(result.valid).toBe(false)
     expect(result.errors[0]?.path).toBe('view.regions.main[0].children[0].props.variant')
+  })
+})
+
+describe('validateView() deep prop shapes (v61 T6)', () => {
+  it('flags a column missing its required key', () => {
+    const result = validateView(
+      view({ component: 'DataTable', props: { columns: [{ header: 'A' }] } }),
+    )
+    expect(result.errors).toHaveLength(1)
+    expect(result.errors[0]!.path).toMatch(/\.props\.columns\[0\]\.key$/)
+  })
+
+  it('accepts unknown nested fields: manifests drift from source (R12)', () => {
+    expect(
+      validateView(
+        view({ component: 'Breadcrumb', props: { items: [{ label: 'Home', bogus: 1 }] } }),
+      ),
+    ).toEqual({ valid: true, errors: [] })
+    expect(
+      validateView(
+        view({ component: 'DataTable', props: { columns: [{ key: 'a', header: 'A', extra: 1 }] } }),
+      ).valid,
+    ).toBe(true)
+  })
+
+  it('accepts a TranslationRef where a string is expected', () => {
+    const result = validateView(
+      view({
+        component: 'DataTable',
+        props: { columns: [{ key: 'a', header: { $t: 'cols.a' } }] },
+      }),
+    )
+    expect(result).toEqual({ valid: true, errors: [] })
+  })
+
+  it('flags a wrong-typed field and a non-array', () => {
+    expect(
+      validateView(view({ component: 'DataTable', props: { columns: [{ key: 1, header: 'A' }] } }))
+        .valid,
+    ).toBe(false)
+    expect(validateView(view({ component: 'DataTable', props: { columns: 'x' } })).valid).toBe(
+      false,
+    )
+  })
+
+  it('does not let a prototype key satisfy a required nested field', () => {
+    const result = validateView(
+      view({ component: 'Breadcrumb', props: { items: [Object.create({ label: 'Home' })] } }),
+    )
+    expect(result.errors).toHaveLength(1)
+    expect(result.errors[0]!.path).toMatch(/items\[0\]\.label$/)
+    // A field named like an Object.prototype key is an ordinary (unknown) field, not a schema.
+    expect(
+      validateView(
+        view({ component: 'Breadcrumb', props: { items: [{ label: 'Home', constructor: 1 }] } }),
+      ),
+    ).toEqual({ valid: true, errors: [] })
+  })
+
+  it('does not treat inherited keys as present required fields', () => {
+    const result = validateView(
+      view({
+        component: 'DataTable',
+        props: { columns: [Object.create({ key: 'a', header: 'A' })] },
+      }),
+    )
+    expect(result.errors.map((e) => e.path.slice(-4))).toEqual(['.key', 'ader'])
+  })
+
+  it('truncates large values in error messages', () => {
+    const big = 'x'.repeat(500)
+    const result = validateView(
+      view({ component: 'DataTable', props: { columns: [{ key: 1, header: big }] } }),
+    )
+    expect(result.errors[0]!.message.length).toBeLessThan(200)
+    const long = validateView(view({ component: 'DataTable', props: { columns: big } }))
+    expect(long.errors[0]!.message).toContain('…')
+    expect(long.errors[0]!.message.length).toBeLessThan(200)
+  })
+
+  // Each row rendered before shapes were checked; the manifest type strings lag the source (R12).
+  it.each([
+    [
+      'Header.links[].id',
+      { component: 'Header', props: { links: [{ id: 'h', label: 'Home', href: '/' }] } },
+    ],
+    [
+      'Breadcrumb.items[].id',
+      { component: 'Breadcrumb', props: { items: [{ id: 'b', label: 'Home', href: '/' }] } },
+    ],
+    [
+      'ProgressIndicator.steps[].id',
+      { component: 'ProgressIndicator', props: { steps: [{ id: 's', label: 'One' }] } },
+    ],
+    [
+      'OverflowMenu.items[] id alias of value',
+      { component: 'OverflowMenu', props: { items: [{ label: 'Edit', id: 'edit' }] } },
+    ],
+    [
+      'Timeline.items[] status/tone inputs',
+      {
+        component: 'Timeline',
+        props: { items: [{ id: 't', title: 'Launch', status: 'active', tone: 'error' }] },
+      },
+    ],
+    [
+      'Timeline.items[].title as a number',
+      { component: 'Timeline', props: { items: [{ id: 't', title: 2024 }] } },
+    ],
+    [
+      'ShellHeader.nav[].items[].id',
+      {
+        component: 'ShellHeader',
+        props: { nav: [{ label: 'Docs', items: [{ id: 'a', label: 'A', href: '/a' }] }] },
+      },
+    ],
+  ])('accepts a config that renders: %s', (_name, node) => {
+    expect(validateView(view(node))).toEqual({ valid: true, errors: [] })
+  })
+
+  it('still rejects a missing required nested field', () => {
+    const result = validateView(view({ component: 'Timeline', props: { items: [{ title: 'x' }] } }))
+    expect(result.errors.map((e) => e.path)).toEqual(['view.regions.main[0].props.items[0].id'])
+  })
+
+  it('still rejects a wrong-typed nested field', () => {
+    const result = validateView(
+      view({
+        component: 'Header',
+        props: { links: [{ label: 'Home', href: '/', active: 'yes' }] },
+      }),
+    )
+    expect(result.errors.map((e) => e.path)).toEqual(['view.regions.main[0].props.links[0].active'])
+  })
+
+  it('names object/array in anyOf messages', () => {
+    const anyOf = Object.values(propSchemas)
+      .flat()
+      .find((p) => p.shape && 'anyOf' in p.shape)
+    expect(anyOf).toBeDefined()
+  })
+
+  it('tells anyOf object branches apart by a required key', () => {
+    const result = validateView(view({ component: 'Dropdown', props: { items: [5] } }))
+    expect(result.errors[0]!.message).toContain('expected object with label or object with kind')
+  })
+
+  it('emits shapes only for components the renderer can build', () => {
+    const dead = Object.entries(propSchemas)
+      .filter(([name]) => !componentNames.has(name))
+      .filter(([, props]) => props.some((p) => p.shape !== undefined))
+      .map(([name]) => name)
+    expect(dead).toEqual([])
+  })
+
+  it('accepts valid shape-bearing props', () => {
+    expect(
+      validateView(
+        view({
+          component: 'DataTable',
+          props: {
+            columns: [
+              { key: 'a', header: 'A' },
+              { key: 'b', header: { $t: 'cols.b' } },
+            ],
+            rows: [{ a: 1, b: 2 }],
+          },
+        }),
+      ),
+    ).toEqual({ valid: true, errors: [] })
+    expect(
+      validateView(
+        view({
+          component: 'Steps',
+          props: { items: [{ label: 'One', state: 'complete' }, { label: 'Two' }], activeStep: 1 },
+        }),
+      ),
+    ).toEqual({ valid: true, errors: [] })
+  })
+
+  // Configs committed elsewhere (and the richer ones from cascivo-view.test.tsx) must keep validating.
+  const dashboard = {
+    view: {
+      regions: {
+        main: [
+          { component: 'PageHeader', props: { title: 'Overview', description: 'This week' } },
+          { component: 'Heading', props: { level: 2 }, children: 'Revenue' },
+          {
+            component: 'Stat',
+            props: { label: 'MRR', value: '$48,295', delta: '+12%', trend: 'up' },
+          },
+          {
+            component: 'Card',
+            children: [
+              {
+                component: 'CardHeader',
+                children: [{ component: 'CardTitle', children: 'Plan' }],
+              },
+              { component: 'CardContent', children: [{ component: 'Text', children: 'Pro' }] },
+            ],
+          },
+        ],
+      },
+    },
+  }
+  const stateful = {
+    state: { query: '', off: false },
+    view: {
+      regions: {
+        main: [
+          {
+            component: 'Input',
+            bind: { value: '$state.query' },
+            events: { onChange: '$state.set.query' },
+          },
+          {
+            component: 'Button',
+            bind: { disabled: '$state.off' },
+            events: { onClick: '$state.toggle.off' },
+            children: 'Toggle',
+          },
+        ],
+      },
+    },
+  }
+  // Re-declared from packages/cli/recipes/agent/worker/scripted-model.ts (same file in starters/cloudflare-agent).
+  const scripted = {
+    view: {
+      regions: {
+        main: [
+          {
+            component: 'Flex',
+            props: { direction: 'vertical', gap: 3 },
+            children: [
+              {
+                component: 'Alert',
+                props: { variant: 'info', title: 'Scripted reply' },
+                children: 'x',
+              },
+              {
+                component: 'Grid',
+                props: { cols: 3, gap: 3 },
+                children: [
+                  {
+                    component: 'Card',
+                    props: { padding: 'md' },
+                    children: [
+                      {
+                        component: 'Badge',
+                        props: { variant: 'success' },
+                        children: 'API healthy',
+                      },
+                    ],
+                  },
+                  {
+                    component: 'Card',
+                    props: { padding: 'md' },
+                    children: [{ component: 'Badge' }],
+                  },
+                ],
+              },
+              { component: 'ProgressBar', props: { value: 72, label: 'Sprint progress' } },
+            ],
+          },
+        ],
+      },
+    },
+  }
+  // Re-declared from packages/cli/recipes/publish/src/routes/publish.tsx (EXAMPLE).
+  const published = {
+    view: {
+      regions: {
+        main: [
+          {
+            component: 'Card',
+            props: { padding: 'lg' },
+            children: [
+              {
+                component: 'Flex',
+                props: { gap: 3 },
+                children: [
+                  { component: 'Badge', props: { variant: 'success' }, children: 'Live' },
+                  { component: 'ProgressBar', props: { value: 3, max: 5, label: 'Steps done' } },
+                  {
+                    component: 'Alert',
+                    props: { variant: 'info', title: 'Published from a view' },
+                    children: 'x',
+                  },
+                  {
+                    component: 'Link',
+                    props: { href: 'https://developers.cloudflare.com/workers/' },
+                    children: 'Docs',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    },
+  }
+  it.each([
+    ['json-playground example-config', exampleConfig],
+    ['cascivo-view dashboard', dashboard],
+    ['cascivo-view state bindings', stateful],
+    ['agent recipe scripted view', scripted],
+    ['publish recipe example', published],
+  ])('still validates existing config: %s', (_name, config) => {
+    expect(validateView(config)).toEqual({ valid: true, errors: [] })
   })
 })

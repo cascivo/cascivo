@@ -42,8 +42,8 @@ function regenEntryFiles(): string[] {
     const name = step.trim().replace(/^pnpm\s+/, '')
     const command = pkg.scripts[name]
     assert.ok(command, `regen step \`${name}\` is not a package.json script`)
-    const file = command.match(/\S+\.(?:ts|mjs)\b/)?.[0]
-    if (file) entries.push(join(REPO_ROOT, file))
+    // A step may chain several scripts (`a.ts && b.ts`); every one of them is an entry.
+    for (const [file] of command.matchAll(/\S+\.(?:ts|mjs)\b/g)) entries.push(join(REPO_ROOT, file))
   }
   return entries
 }
@@ -82,6 +82,13 @@ describe('regen determinism', () => {
         `Use registryGeneratedAt() from scripts/registry/generated-at.ts instead:\n` +
         offenders.map((f) => `  - ${f}`).join('\n'),
     )
+  })
+
+  it('scans every script a regen step chains, not just the first', () => {
+    // schema:generate runs generate.ts && generate-catalog.ts; the second one used to go unscanned.
+    const entries = regenEntryFiles().map((file) => relative(REPO_ROOT, file))
+    assert.ok(entries.includes('scripts/schema/generate.ts'))
+    assert.ok(entries.includes('scripts/schema/generate-catalog.ts'))
   })
 
   it('keeps the committed stamp while the registry version is unchanged', () => {
