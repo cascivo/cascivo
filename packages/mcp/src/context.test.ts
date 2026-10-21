@@ -103,3 +103,25 @@ describe('context bundle filtering (via fixture)', () => {
     expect(availableNames).toContain('Toast')
   })
 })
+
+// The name comes from the context bundle, which is fetched from the network when no local copy
+// exists: a crafted name must not turn into a path or URL outside the context directory.
+describe('loadComponentMarkdown slug safety', () => {
+  it.each(['../../../../README', '../docs/theming', 'a/b'])(
+    'refuses the name %j without reading a file or the network',
+    async (name) => {
+      let fetched = false
+      const spyFetch = async () => {
+        fetched = true
+        return { ok: true, status: 200, text: async () => '# leaked' } as Response
+      }
+      expect(await loadComponentMarkdown(name, spyFetch)).toBeNull()
+      expect(fetched).toBe(false)
+    },
+  )
+
+  it('still loads a multi-word component name', async () => {
+    const md = await loadComponentMarkdown('Button')
+    expect(typeof md).toBe('string')
+  })
+})
