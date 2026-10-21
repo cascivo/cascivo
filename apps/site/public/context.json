@@ -2188,6 +2188,15 @@
           "schema": {
             "kind": "function"
           }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "description": "AccordionItem elements",
+          "schema": {
+            "kind": "node"
+          }
         }
       ],
       "contextUrl": "/context/accordion.md",
@@ -2722,6 +2731,15 @@
           "schema": {
             "kind": "function"
           }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Alert body content",
+          "schema": {
+            "kind": "node"
+          }
         }
       ],
       "contextUrl": "/context/alert.md",
@@ -3247,6 +3265,15 @@
           "schema": {
             "kind": "other"
           }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Avatar elements to stack",
+          "schema": {
+            "kind": "node"
+          }
         }
       ],
       "contextUrl": "/context/avatar-group.md",
@@ -3319,6 +3346,15 @@
           "schema": {
             "kind": "enum",
             "values": ["sm", "md"]
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Badge label",
+          "schema": {
+            "kind": "node"
           }
         }
       ],
@@ -3771,6 +3807,15 @@
           "default": "undefined",
           "schema": {
             "kind": "string"
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "The quoted content",
+          "schema": {
+            "kind": "node"
           }
         }
       ],
@@ -4239,6 +4284,15 @@
           "schema": {
             "kind": "other"
           }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Button label",
+          "schema": {
+            "kind": "node"
+          }
         }
       ],
       "contextUrl": "/context/button.md",
@@ -4693,6 +4747,15 @@
           "description": "AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text.",
           "schema": {
             "kind": "other"
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Card content; compose with CardHeader, CardTitle, CardContent and CardFooter",
+          "schema": {
+            "kind": "node"
           }
         }
       ],
@@ -9272,6 +9335,15 @@
           "schema": {
             "kind": "enum",
             "values": ["sm", "md"]
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "The code text",
+          "schema": {
+            "kind": "node"
           }
         }
       ],
@@ -15212,6 +15284,15 @@
             "kind": "enum",
             "values": ["sm", "md", "lg", "xl", "2xl"]
           }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Heading text",
+          "schema": {
+            "kind": "node"
+          }
         }
       ],
       "contextUrl": "/context/heading.md",
@@ -16056,6 +16137,33 @@
           }
         },
         {
+          "name": "value",
+          "description": "The controlled value.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "defaultValue",
+          "description": "The initial value when uncontrolled.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "onChange",
+          "description": "Called with the change event; read the new value from `event.target.value`.",
+          "type": "React.ChangeEventHandler<HTMLInputElement>",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
           "name": "ariaLabel",
           "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
           "type": "string",
@@ -16367,6 +16475,15 @@
           "schema": {
             "kind": "enum",
             "values": ["sm", "md"]
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "The key label",
+          "schema": {
+            "kind": "node"
           }
         }
       ],
@@ -16951,6 +17068,15 @@
           "schema": {
             "kind": "other"
           }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Column content",
+          "schema": {
+            "kind": "node"
+          }
         }
       ],
       "contextUrl": "/context/layout/columns.md",
@@ -17240,6 +17366,15 @@
           "description": "GridItem: column span — a number, or a per-breakpoint object",
           "schema": {
             "kind": "other"
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "GridItem elements or any grid children",
+          "schema": {
+            "kind": "node"
           }
         }
       ],
@@ -17728,6 +17863,15 @@
           "schema": {
             "kind": "boolean"
           }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Link text",
+          "schema": {
+            "kind": "node"
+          }
         }
       ],
       "contextUrl": "/context/link.md",
@@ -17796,6 +17940,15 @@
           "schema": {
             "kind": "enum",
             "values": ["disc", "decimal", "none"]
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "ListItem elements",
+          "schema": {
+            "kind": "node"
           }
         }
       ],
@@ -18504,6 +18657,15 @@
           "description": "AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text.",
           "schema": {
             "kind": "other"
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Modal body content",
+          "schema": {
+            "kind": "node"
           }
         }
       ],
@@ -21190,7 +21352,7 @@
           "name": "value",
           "type": "string",
           "required": true,
-          "description": "Radio value",
+          "description": "Radio value. On RadioCardGroup: the controlled selected value",
           "schema": {
             "kind": "string"
           }
@@ -21220,6 +21382,24 @@
           "description": "Disables the card",
           "schema": {
             "kind": "boolean"
+          }
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "description": "RadioCardGroup only: the initially selected value when uncontrolled",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": false,
+          "description": "RadioCardGroup only: called with the value of the card the person selects",
+          "schema": {
+            "kind": "function"
           }
         }
       ],
@@ -22806,6 +22986,33 @@
           }
         },
         {
+          "name": "value",
+          "description": "The controlled value.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "defaultValue",
+          "description": "The initial value when uncontrolled.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "onChange",
+          "description": "Called with the change event; read the new value from `event.target.value`.",
+          "type": "React.ChangeEventHandler<HTMLSelectElement>",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
           "name": "ariaLabel",
           "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
           "type": "string",
@@ -23789,6 +23996,15 @@
           }
         },
         {
+          "name": "onChange",
+          "description": "Called with the change event; read the new value from `event.target.value`.",
+          "type": "React.ChangeEventHandler<HTMLInputElement>",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
           "name": "ariaLabel",
           "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
           "type": "string",
@@ -24238,6 +24454,15 @@
           "description": "Pulses the dot — gated behind prefers-reduced-motion: no-preference",
           "schema": {
             "kind": "boolean"
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Status label",
+          "schema": {
+            "kind": "node"
           }
         }
       ],
@@ -24970,6 +25195,15 @@
           "schema": {
             "kind": "function"
           }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "description": "TabsList and TabsContent elements",
+          "schema": {
+            "kind": "node"
+          }
         }
       ],
       "contextUrl": "/context/tabs.md",
@@ -25066,6 +25300,15 @@
           "default": "Remove",
           "schema": {
             "kind": "string"
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Tag label",
+          "schema": {
+            "kind": "node"
           }
         }
       ],
@@ -25400,6 +25643,15 @@
           "schema": {
             "kind": "boolean"
           }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Text content",
+          "schema": {
+            "kind": "node"
+          }
         }
       ],
       "contextUrl": "/context/text.md",
@@ -25524,6 +25776,33 @@
           "default": "false",
           "schema": {
             "kind": "boolean"
+          }
+        },
+        {
+          "name": "value",
+          "description": "The controlled value.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "defaultValue",
+          "description": "The initial value when uncontrolled.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "onChange",
+          "description": "Called with the change event; read the new value from `event.target.value`.",
+          "type": "React.ChangeEventHandler<HTMLTextAreaElement>",
+          "required": false,
+          "schema": {
+            "kind": "other"
           }
         },
         {

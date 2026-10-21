@@ -43,6 +43,12 @@
         "type": "'sm' | 'md'",
         "required": false,
         "default": "md"
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Badge label"
       }
     ],
     "tokens": [

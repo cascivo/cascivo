@@ -12,6 +12,9 @@ import {
   classifyProp,
   contextFor,
   pickCanonical,
+  SUBCOMPONENT_PROPS,
+  subcomponentEntry,
+  type CatalogEntry,
   type JsonSchema,
   type ResolveContext,
   type TypeDefMeta,
@@ -300,9 +303,17 @@ function shapeOf(schema: JsonSchema): JsonSchema | undefined {
   return structured ? (stripAnnotations(schema) as JsonSchema) : undefined
 }
 
+// Parts with props of their own (RadioCardGroup) get a schema too, or every prop they take is
+// refused as unknown by the A2UI catalog spec.
+const schemaEntries = new Map<string, CatalogEntry>(canonical)
+for (const name of Object.keys(SUBCOMPONENT_PROPS)) {
+  const part = subcomponentEntry(name, canonical)
+  if (part && !schemaEntries.has(name)) schemaEntries.set(name, part)
+}
+
 const propSchemas: Record<string, unknown[]> = {}
-for (const name of [...canonical.keys()].sort()) {
-  const entry = canonical.get(name)!
+for (const name of [...schemaEntries.keys()].sort()) {
+  const entry = schemaEntries.get(name)!
   const ctx = lenientContext(entry.meta.typeDefs)
   propSchemas[name] = entry.meta.props.map((p) => {
     const { enum: enumValues, primitives } = classifyPropType(p.type)

@@ -18,7 +18,7 @@
         "accordion.tsx": "sha256-7a766e5cfd72d7ec01df415f0266907f4bc8e7fdebcdc5890ff32c8874249c09",
         "index.ts": "sha256-4e44786f6a7d08d54dcaad59e3c423ec89a6248852ddaa13e133cdbaa9e83cea",
         "accordion.module.css": "sha256-d559585cd5a3803d10319a19e7d62ccc0a4efc1a3d1ba569af28c9fdbd4f0a4c",
-        "accordion.meta.ts": "sha256-d4afc595c542209b79c911c3bd7a1091f8c2d58f4ddccccfe48daa9eea174760"
+        "accordion.meta.ts": "sha256-01b5d0e17bd7c355a73892c9107516cc3eba15064692e46759ea0658887c89aa"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -58,6 +58,12 @@
             "description": "Called with the new value when it changes.",
             "type": "(value: string | string[]) => void",
             "required": false
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "description": "AccordionItem elements"
           }
         ],
         "tokens": [
@@ -743,7 +749,7 @@
         "alert.tsx": "sha256-efa3d6322171fff06b4e410c3c79006dbf00dc3f7c8548f9b68ffeb899c39b07",
         "index.ts": "sha256-9dc074958383f841fd75ca7eb7c9172cbf7841de2e8a01b71699ec2360a3a8a1",
         "alert.module.css": "sha256-9a375ffec7f759af5edf0a2c067e84edcd77590bdf080ee71fb2381adde159b0",
-        "alert.meta.ts": "sha256-eeacbc5f06c9b98a3a1d9497b28641afc9c39e5451640cca13e23de2ec1ea714"
+        "alert.meta.ts": "sha256-ad1d62628cdc51318b73db9a0d72144896ece6e15fb2aecd9a04724b642660e1"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -797,6 +803,12 @@
             "description": "Primary action shown in the component.",
             "type": "{ label: string; onClick: () => void }",
             "required": false
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Alert body content"
           }
         ],
         "tokens": [
@@ -1465,7 +1477,7 @@
         "avatar-group.tsx": "sha256-9f37862c28bf567516492685881d8288302ccb23f2f3e59e0854f4a3876fb822",
         "index.ts": "sha256-860e0752b38c410c3d6647a864bf1e602b41159be1b7c369bf91416815913855",
         "avatar-group.module.css": "sha256-6a3367c2fa054dc6d0ff0ca768f0162a5c9f4de52f539c0d3f4090c39924c810",
-        "avatar-group.meta.ts": "sha256-db8948fe002d477e453ea90069dd55ad85a66ce1c9df6361266c89616c829eda"
+        "avatar-group.meta.ts": "sha256-2be48c5382eb23ae2b92e0a059036bdf86d0bb659bc2c3c0a450f0dd4014eb8e"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -1514,6 +1526,12 @@
             "description": "Overrides for the component’s user-visible strings (i18n).",
             "type": "AvatarGroupLabels",
             "required": false
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Avatar elements to stack"
           }
         ],
         "tokens": [
@@ -1607,7 +1625,7 @@
         "badge.tsx": "sha256-ff710455d38c01f10b237958eb84eaddf2ac1403daab4fcf9079f5974c3db180",
         "index.ts": "sha256-99f606cb9765238a88c7adcff6c4dd017be53641d16d394da96fcf9196be2e8b",
         "badge.module.css": "sha256-bb304c5e6e2464f9e80255b587281b5b654bc9020c9dfa6e77d189afd6cef1e0",
-        "badge.meta.ts": "sha256-2675a6bcd43680fc12fb424a8f7d0a60c5b8d6506f376fd805c77feaa478d7e1"
+        "badge.meta.ts": "sha256-cfe0ba34e0155caccaac4d21737ec335216599804c0666774b9a16fdef8861c2"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -1636,6 +1654,12 @@
             "type": "'sm' | 'md'",
             "required": false,
             "default": "md"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Badge label"
           }
         ],
         "tokens": [
@@ -1749,7 +1773,7 @@
         "blockquote.tsx": "sha256-bb95f2d7b170b0777c2ab28a72157060e33b4d1ec61c55de293cd3cb7f8634b9",
         "index.ts": "sha256-3205191e66d8e5bfe52a1abb153bf7c6f208b72e59f802ac098da8f11eb92a58",
         "blockquote.module.css": "sha256-2d67d6719167f6bed6857a2be2ea7041d70b29e0124c7e1d536a16ac9d956bfb",
-        "blockquote.meta.ts": "sha256-49313690503fd9971495fd8c516d5da0a69993223488c9ea75fe82770b06f74b"
+        "blockquote.meta.ts": "sha256-664af8dd6363520b3a552820460f8bf0b59d062c2001efc13451fcf0c706a9db"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -1771,6 +1795,12 @@
             "type": "string",
             "required": false,
             "default": "undefined"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "The quoted content"
           }
         ],
         "tokens": [
@@ -2187,7 +2217,7 @@
         "button.tsx": "sha256-b030a070e63464a0c099f418b240f579484974e48bdc0dc3ff35fc7d4f47f2e7",
         "index.ts": "sha256-7979b137663ece5f57327ba1c8f891ed0d3882d1da13d9424d6d8bfdc1d1aeaf",
         "button.module.css": "sha256-77bf1cb5537e72e4f36f0ee5add12c8437a9db73cec2ad725ebf2b809c6976ee",
-        "button.meta.ts": "sha256-8b71a1f2a06ca22c2108ee1697cf32fcf2fceabc40f5bfc8418cdcc040050c3e"
+        "button.meta.ts": "sha256-9d92161f5d693889b658f115f6ec283f9a8dd15630622879c1777f594e7d3632"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -2243,6 +2273,12 @@
             "description": "Called when the element is clicked.",
             "type": "React.MouseEventHandler<HTMLButtonElement>",
             "required": false
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Button label"
           }
         ],
         "tokens": [
@@ -2769,7 +2805,7 @@
         "card.tsx": "sha256-935015ad6252ba67e57162e8acaa090d8c33d3369b3ded62240ba21575e4a7bb",
         "index.ts": "sha256-27d4f144329873a2f2124423ec77094366cc0854d2a9312796078391fb9eee34",
         "card.module.css": "sha256-0aa255f27145ecc215a5c5f28c5a71cb9f6522364c8b7169499f31b2b991dcdb",
-        "card.meta.ts": "sha256-c02d78e3f3765743600bd14c6893606ba775ea2f7e7354d9961599a345398da8"
+        "card.meta.ts": "sha256-a977033f9254e94d5c717b43c36b31971d91aeb81817a69ff80689d71dd030dd"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -2811,6 +2847,12 @@
             "required": false,
             "default": "false",
             "description": "AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text."
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Card content; compose with CardHeader, CardTitle, CardContent and CardFooter"
           }
         ],
         "tokens": [
@@ -3670,7 +3712,7 @@
         "code.tsx": "sha256-b8534658238f4f64a85159e93b055590571c09ec4e6ea925dfecb5fa93940dae",
         "index.ts": "sha256-fa4497ee221826e42b0ba97dc9076a2a17463fde2508cd8e71393a89fab45d62",
         "code.module.css": "sha256-795e9e62fcedbf7f83b8548fc99d7f2b392e5eca7ce3ee1dcdc98005b69340ae",
-        "code.meta.ts": "sha256-ee869e6a7d13fc93202ba4155c4cd795fbfaf37b262869788947fcdfe3bd33fd"
+        "code.meta.ts": "sha256-8d66785bd192fb68a3a5a33f95cbe0dfd660798d4af26ea2e031d07150e7b061"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -3692,6 +3734,12 @@
             "type": "'sm' | 'md'",
             "required": false,
             "default": "md"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "The code text"
           }
         ],
         "tokens": [
@@ -8987,7 +9035,7 @@
         "heading.tsx": "sha256-605008ea4ccca86e6b2268227a1c5c48279536544685e79ac49f675867940d5e",
         "index.ts": "sha256-8b10c70f2daf8fa5199445e0d9fbf4e080d224937f68bde022963deb2c2a4361",
         "heading.module.css": "sha256-59d9e1ed9471ef9fb413e534cc55569a150f5c07c3fdfc04b51a425a634a6a67",
-        "heading.meta.ts": "sha256-36b11661e102f5ce5f15adba6c84c53578aeaff3dbfc1962db8137208cf5bb06"
+        "heading.meta.ts": "sha256-98bd7fb22d1a3472b69c1d4a913f67f6190af23a89fd2787cf32dbce1c47cf12"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -9016,6 +9064,12 @@
             "type": "'sm' | 'md' | 'lg' | 'xl' | '2xl'",
             "required": false,
             "default": "derived from level (1→2xl, 2→xl, 3→lg, 4→md, 5→sm, 6→sm)"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Heading text"
           }
         ],
         "tokens": [
@@ -10159,7 +10213,7 @@
         "input.tsx": "sha256-ffd0af802fc2fd35a94cff62657f5bcec130b6a4fecfe70a712412cda7312ea3",
         "index.ts": "sha256-0b253c54e1bd068a63c392ef39758a06cceba48aa5aa357034faaa6e926cd001",
         "input.module.css": "sha256-1452820e3da40a3252f214e16f9ecd11dd7626317748a2d643d879d046a1f526",
-        "input.meta.ts": "sha256-3ef2cf0bff1d5765f63c2d2122fb4e6fafb2cb9e95be545fd87c3631207e5e64"
+        "input.meta.ts": "sha256-90fecedb40c8c055d939bf9dedc35a0024c0d33b7d959bb0453b773018595f83"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -10213,6 +10267,24 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "value",
+            "description": "The controlled value.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "defaultValue",
+            "description": "The initial value when uncontrolled.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "onChange",
+            "description": "Called with the change event; read the new value from `event.target.value`.",
+            "type": "React.ChangeEventHandler<HTMLInputElement>",
+            "required": false
           },
           {
             "name": "ariaLabel",
@@ -10702,7 +10774,7 @@
         "kbd.tsx": "sha256-ec78b098e53fc3fd838bfae57be04d47ceecce7abaab2921cace2f7aa71d8c90",
         "index.ts": "sha256-03d4a6758d2b8134dded93b60640d709bfb69e9c183a0482993597fc27756e67",
         "kbd.module.css": "sha256-ab0c35cd53062ef3f521534cf8de9b3ecd55e4abb538b3200dfff073f7fe2205",
-        "kbd.meta.ts": "sha256-baa3e4c806dab456db02c02476ac43a8576c94fb5414289932250c2a60a593c2"
+        "kbd.meta.ts": "sha256-4fb546027e58a124be602458f7f1e6a4d5cba2d3ee8f3b8c2be890679f5bb592"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -10724,6 +10796,12 @@
             "type": "'sm' | 'md'",
             "required": false,
             "default": "md"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "The key label"
           }
         ],
         "tokens": [
@@ -11148,7 +11226,7 @@
         "link.tsx": "sha256-9deef687fc6b08e66d1ddf6229a3a37320d7d3a440a059bc7a13f58933930247",
         "index.ts": "sha256-b38bcec272a5dd95d54c6621068a03373bdbc5fbeb9a987638bcf011b8edc12f",
         "link.module.css": "sha256-e3e38b4be3a0b01c8808782768f50c9386f804984d5f315be06736e0c621c641",
-        "link.meta.ts": "sha256-9a1d4904cde6d82d94b170685c8013e57ba2ffc2eb3310750e2fdd90bef15283"
+        "link.meta.ts": "sha256-c119ba905255cdd71c9d6bda5166148c5f1b735bb00157ad1074ecc78de22ecc"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -11197,6 +11275,12 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Link text"
           }
         ],
         "tokens": [
@@ -11290,7 +11374,7 @@
         "list.tsx": "sha256-719e49867ca9589144ccc6c68f54f2506f4b402dc40bdada914bad7c5281d4f8",
         "index.ts": "sha256-5208a9e9f2a1f5a7bd4c191a837048189909030343bc840145fc61341eb3c1e5",
         "list.module.css": "sha256-04cff38d1581297fbc1bf783c65c2f3525bd2ad12986a45fd173004173186fae",
-        "list.meta.ts": "sha256-1b4e0c503c3a1cf307b1544d8ced77c8207664294c0357adfb02ab14ba8fe0e8"
+        "list.meta.ts": "sha256-02314c5cde19b197965112605428a64a1bc50dde330313b526fcbf7a1e500c67"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -11319,6 +11403,12 @@
             "type": "'disc' | 'decimal' | 'none'",
             "required": false,
             "default": "derived from as (ul→disc, ol→decimal)"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "ListItem elements"
           }
         ],
         "tokens": [
@@ -12186,7 +12276,7 @@
         "modal.tsx": "sha256-451337b9a2bdeaae12b9b31887cfd4db8dedd01ec26bab366a1fed77b126079d",
         "index.ts": "sha256-fc11e823800f2d698fdd37dae08bdbb90f3b48d439f4c8ac37e5e3f2b9b48566",
         "modal.module.css": "sha256-a80cbf1f8f5ad4ace7d6f9df9daeaf25300e27c902a39fd0d0e92198c7052e2c",
-        "modal.meta.ts": "sha256-6cad807aed53d704cc7314b217982c747b24215cfbc38161276d55e678ebd5f4"
+        "modal.meta.ts": "sha256-4f79e514311981c5ba3330ae00a2ee27bb182d8eb2022707a1888fc7cd5d036b"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -12255,6 +12345,12 @@
             "required": false,
             "default": "false",
             "description": "AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text."
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Modal body content"
           }
         ],
         "tokens": [
@@ -15667,7 +15763,7 @@
         "radio-card.tsx": "sha256-cd2f0c9509267d5bac6a9528dea6e8ab188eb67181bdb2dbdb6b0b1c5a8d02b5",
         "index.ts": "sha256-e4dd5ba5cd66d32e10c4578c2972a64decc5ce79f4f78a78d9eefe00248d6eb9",
         "radio-card.module.css": "sha256-6a959571c4a30f1f92c68a3909bfd474e69ad3b4b2b47af28b3dbf1e3e1576c2",
-        "radio-card.meta.ts": "sha256-8f95278419eb3a09562590f7fbf5fa83fee43fb9016ee2bac53276d5c07076fa"
+        "radio-card.meta.ts": "sha256-4c5b86259c06b4d50923e2846515d720afc801b623a919954ecd62c091b50c63"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -15693,7 +15789,7 @@
             "name": "value",
             "type": "string",
             "required": true,
-            "description": "Radio value"
+            "description": "Radio value. On RadioCardGroup: the controlled selected value"
           },
           {
             "name": "title",
@@ -15712,6 +15808,18 @@
             "type": "boolean",
             "required": false,
             "description": "Disables the card"
+          },
+          {
+            "name": "defaultValue",
+            "type": "string",
+            "required": false,
+            "description": "RadioCardGroup only: the initially selected value when uncontrolled"
+          },
+          {
+            "name": "onValueChange",
+            "type": "(value: string) => void",
+            "required": false,
+            "description": "RadioCardGroup only: called with the value of the card the person selects"
           }
         ],
         "tokens": [
@@ -17080,7 +17188,7 @@
         "select.tsx": "sha256-adadade2900bcd1442ec0654a386561d6fac8938634273da9022f5f18ebd40c5",
         "index.ts": "sha256-235ea0185749f2cb4189ae1b24a38d86a81db4eb78c313421322a99dd6f6fb56",
         "select.module.css": "sha256-8ca4c52fb34be14d6c8fbe1d6e7f7eb5732117eabffef18f0967b942f0eac7f8",
-        "select.meta.ts": "sha256-789adcce3d5e98e6c49557a90bbcf63ff482646fb7b0b30ff0a94a534857e737"
+        "select.meta.ts": "sha256-ed0cc7ca1877d95dbaf345eaf74d0958668da4f393614e3004fa86248ce0292a"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -17140,6 +17248,24 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "value",
+            "description": "The controlled value.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "defaultValue",
+            "description": "The initial value when uncontrolled.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "onChange",
+            "description": "Called with the change event; read the new value from `event.target.value`.",
+            "type": "React.ChangeEventHandler<HTMLSelectElement>",
+            "required": false
           },
           {
             "name": "ariaLabel",
@@ -18556,7 +18682,7 @@
         "slider.tsx": "sha256-c49476378ead6c842e27d4ae0078cc8900de23b4f66f7239fe88fb17a38a3e72",
         "index.ts": "sha256-8dc2b339ea4246a3740ab8294c12e2b5405113ee0bae262e794ffb0771157b6f",
         "slider.module.css": "sha256-4bff460e358e21d6595f9e3d4472642bcd9f9ee2826b810c76387c712d5c8632",
-        "slider.meta.ts": "sha256-b8e99df6ba7abbb3b714150b42d78b560c30c32bf2f9973629289fdef9811c8b"
+        "slider.meta.ts": "sha256-393e37ee13e8bce23d22e24c4e0b5e75217a01078872aa7466c926c1dc833076"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -18618,6 +18744,12 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "onChange",
+            "description": "Called with the change event; read the new value from `event.target.value`.",
+            "type": "React.ChangeEventHandler<HTMLInputElement>",
+            "required": false
           },
           {
             "name": "ariaLabel",
@@ -19258,7 +19390,7 @@
         "status.tsx": "sha256-989cb60e66eb3f639d5c6bc6fe89ac268b574f23b1047d775020b9453c44daac",
         "index.ts": "sha256-4a631f54851ecd0f6a6ad2a844e14127cd568d53945c871e40f070c16029c05e",
         "status.module.css": "sha256-d8657ec17a1e9cb339d8b86ebda034bae0de7cd591a15a859fc5853d2665c54a",
-        "status.meta.ts": "sha256-7b0cd3e428ff1f8399215004d0dc4dbe433ea5cabd509eb4055507310239517b"
+        "status.meta.ts": "sha256-4c398ab5c08abcf28035a4898583b504fd11673a70fc4d193a5a7c8f3a8a8030"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -19287,6 +19419,12 @@
             "required": false,
             "default": "false",
             "description": "Pulses the dot — gated behind prefers-reduced-motion: no-preference"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Status label"
           }
         ],
         "tokens": [
@@ -20274,7 +20412,7 @@
         "tabs.tsx": "sha256-0626acd8cee309bdef946633e23d040a0b1a81206e3a27b3de62d4ef87c71fe5",
         "index.ts": "sha256-9dd19a218ef88f01cab5cbe7d82fa98b8b6e87ed5992b3eb6cb25735f2d94cc1",
         "tabs.module.css": "sha256-fac5d943843ba4a6f4843370aae9d570e1cf4425a0e29bc4e9553e0599d1e2d5",
-        "tabs.meta.ts": "sha256-8bd1686ed20b636a1649e45e0bda1dcde1385d48858385bf8bc9476c0b3d0339"
+        "tabs.meta.ts": "sha256-442fa643bafc94f12f6534054fb6ba25ac56ef9cba692304cce63feee831c1a1"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -20307,6 +20445,12 @@
             "description": "Called with the new value when it changes.",
             "type": "(value: string) => void",
             "required": false
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "description": "TabsList and TabsContent elements"
           }
         ],
         "tokens": [
@@ -20394,7 +20538,7 @@
         "tag.tsx": "sha256-d5181e4992515c8db248ac404fe4d52c0d1e6a9db8571955e302f0e62bc157bb",
         "index.ts": "sha256-ea279eb14cb03c2a5e50f0ce5ece93f82b2f0a64ec522aebdfd908b10aabfcfe",
         "tag.module.css": "sha256-b675515cee8562e789a8943932f256280fe06abb235bf9cdfa68e0bf3447cb4b",
-        "tag.meta.ts": "sha256-47defe7f99b34e11665bfe35f42a8c683aaa306add7dee698ce6e6c7e6208542"
+        "tag.meta.ts": "sha256-eea701f2f980f107c143c68a4634f5661b5634d82fbe80fcaaa696a3df2c6b67"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -20438,6 +20582,12 @@
             "type": "string",
             "required": false,
             "default": "Remove"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Tag label"
           }
         ],
         "tokens": [
@@ -20874,7 +21024,7 @@
         "text.tsx": "sha256-efd00d23f509cf7152cd5ce71a5638abd34341a2f8363428016fdbb4752a0ed5",
         "index.ts": "sha256-f95252720c83969d779056af603457df6ee0ebf5aaf9707cede576035ddcf3e4",
         "text.module.css": "sha256-f1cccbe7e621fc0592d3e07553d7ae2bba6c35e694ef74822b1c19b75d61a6ce",
-        "text.meta.ts": "sha256-356f388ce6d571543c17953539da7170ba65a2ad48223565ddffa02326296b96"
+        "text.meta.ts": "sha256-1e31c8b3994322e2b4b04c657b5ce49968ed53bbaa0eba22378d6b8e0fe03d61"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -20917,6 +21067,12 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Text content"
           }
         ],
         "tokens": [
@@ -21020,7 +21176,7 @@
         "textarea.tsx": "sha256-74f851b2888d4f8691effa629663ef65a5579f74f43c26da7225c6a2b36772b2",
         "index.ts": "sha256-faa6e1544725eaeb285606e523d371b45b46d79cf0ab71ab9d5fe4e09ef244b7",
         "textarea.module.css": "sha256-a9ab00f28d9c14d5024b89fa25dab5a8ca13991ec1fe0a3bd68ce12cf01c8f63",
-        "textarea.meta.ts": "sha256-66065f71f59f70a16e8e71670ebf5e838e36ed8e10c15429130772acb6cb41a7"
+        "textarea.meta.ts": "sha256-e0abf6da4cb7c56c4ee8d1ec06ffed2283e261f63e6bd7158df6d50e87f7e1f3"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -21082,6 +21238,24 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "value",
+            "description": "The controlled value.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "defaultValue",
+            "description": "The initial value when uncontrolled.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "onChange",
+            "description": "Called with the change event; read the new value from `event.target.value`.",
+            "type": "React.ChangeEventHandler<HTMLTextAreaElement>",
+            "required": false
           },
           {
             "name": "ariaLabel",
@@ -24266,7 +24440,7 @@
         "columns.tsx": "sha256-baa9f6e95ab46188587f2d1e57d0228cb2e99e7bef14f98bd8405ab0b9321704",
         "index.ts": "sha256-50393c929c531bafea79b38c0c6f0c113439fddaf17c973ddb45df0ebeb9db1d",
         "columns.module.css": "sha256-b13c6d5993a498e14b560c09bcc02cb2139deadf3ef47ff44bb83f0cfcef2ad1",
-        "columns.meta.ts": "sha256-e2d87456f8b317eb7562042e9b2b4d456777e5014d5df8dac57ea4c8faad81dd"
+        "columns.meta.ts": "sha256-5286836b1dfecb6857b42860c282a360a3c60db4074cc6186bf2e0f4b8170b3a"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -24295,6 +24469,12 @@
             "type": "1|2|3|4|5|6|8|10|12",
             "required": false,
             "description": "Spacing token step"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Column content"
           }
         ],
         "tokens": ["--cascivo-space-*"],
@@ -24612,7 +24792,7 @@
         "grid.tsx": "sha256-3e207a75575d4c265c1e07db335913e0f33f26c37215fbfdda2905c7d5ee5b18",
         "index.ts": "sha256-21d70762c13307b349141181d6df3e8f53a4015d21a169fcb559c7b7ada19b99",
         "grid.module.css": "sha256-9ade6558652f06b75760f19832bac02eee37e255d0fe78de2665a987adba01e3",
-        "grid.meta.ts": "sha256-60c9b4ce20595f0073a3c59a07b21c430ee688b44e99626e480bdc645970880e"
+        "grid.meta.ts": "sha256-c4a6fbbae7806b9faab013616464a486c36972e91af55a6a34ca896575294d42"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -24666,6 +24846,12 @@
             "type": "number | { base?: number; sm?: number; md?: number; lg?: number; xl?: number }",
             "required": false,
             "description": "GridItem: column span — a number, or a per-breakpoint object"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "GridItem elements or any grid children"
           }
         ],
         "tokens": ["--cascivo-space-*"],

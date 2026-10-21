@@ -38,6 +38,12 @@ export const meta: ComponentMeta = {
       required: false,
       default: 'Remove',
     },
+    {
+      name: 'children',
+      type: 'ReactNode',
+      required: false,
+      description: 'Tag label',
+    },
   ],
   tokens: [
     '--cascivo-color-bg-subtle',

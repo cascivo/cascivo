@@ -295,19 +295,10 @@ export interface CatalogComponent {
     required?: string[]
     additionalProperties: false
   }
-  /**
-   * `text`: the slot also takes plain text (ViewConfig's `children: string | TranslationRef`).
-   * `implicit`: the source renders the slot although the manifest does not declare it.
-   */
+  /** `text`: the slot also takes plain text (ViewConfig's `children: string | TranslationRef`). */
   slots: Record<
     string,
-    {
-      arity: 'one' | 'many'
-      required: boolean
-      description?: string
-      text?: true
-      implicit?: true
-    }
+    { arity: 'one' | 'many'; required: boolean; description?: string; text?: true }
   >
   events: Record<string, { description?: string }>
   omitted: Record<string, { type: string; reason: string }>
@@ -331,6 +322,44 @@ export const SUBCOMPONENT_PARENT: Readonly<Record<string, string>> = {
   GridItem: 'Grid',
   ListItem: 'List',
   RadioCardGroup: 'RadioCard',
+}
+
+/**
+ * Parent manifest props a sub-component takes too (the manifest has no per-part section), and
+ * props only the part has. A parent prop becomes optional on the part (the
+ * parent's `value` is the card's own, and required).
+ *
+ * `extra` props are declared here, not in the manifest, on purpose: RadioCard's source paints
+ * a `<label>` element, so a `label` prop in that manifest cannot satisfy both the
+ * nameVisibility parity guard (it reads the whole file) and the group's real behaviour
+ * (an invisible aria-label).
+ */
+export const SUBCOMPONENT_PROPS: Readonly<
+  Record<string, { optional: readonly string[]; extra: readonly PropMeta[] }>
+> = {
+  RadioCardGroup: {
+    optional: ['defaultValue', 'onValueChange', 'value'],
+    extra: [
+      {
+        name: 'name',
+        type: 'string',
+        required: true,
+        description: 'The radio group name shared by its cards',
+      },
+      {
+        name: 'label',
+        type: 'string',
+        required: true,
+        description: 'Accessible name of the group, applied as aria-label and not painted',
+      },
+      {
+        name: 'className',
+        type: 'string',
+        required: false,
+        description: 'Class name for the group element, as RadioCardGroupProps declares',
+      },
+    ],
+  },
 }
 
 /** Prefer the node-usable `component` entry when a meta.name is shared (AppShell/Stack). */
@@ -459,7 +488,7 @@ export function pickCanonical(entries: readonly unknown[]): Map<string, CatalogE
 const sortKeys = <T>(o: Record<string, T>): Record<string, T> =>
   Object.fromEntries(Object.entries(o).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)))
 
-function buildComponent(entry: CatalogEntry, implicitChildren: boolean): CatalogComponent {
+function buildComponent(entry: CatalogEntry): CatalogComponent {
   const ctx = contextFor(entry.meta.typeDefs)
   const properties: Record<string, JsonSchema> = {}
   const required: string[] = []
@@ -495,10 +524,6 @@ function buildComponent(entry: CatalogEntry, implicitChildren: boolean): Catalog
         break
     }
   }
-  // Many components render children without declaring the prop; the generator detects that from source.
-  if (implicitChildren && !('children' in slots) && !('children' in properties)) {
-    slots['children'] = { arity: 'many', required: false, text: true, implicit: true }
-  }
   return {
     description: entry.meta.description,
     category: entry.meta.category,
@@ -525,12 +550,36 @@ export function canonicalFiles(registry: unknown): Map<string, string[]> {
   )
 }
 
-/** `implicitChildren`: names whose source renders `children` although the manifest has no such prop. */
-export function buildCatalog(
-  registry: unknown,
-  renderable: ReadonlySet<string>,
-  implicitChildren: ReadonlySet<string> = new Set(),
-): Catalog {
+/**
+ * The registry-shaped entry of a sub-component (a part with no manifest of its own): the
+ * parent's entry with the part's props. Shared by the catalog and the render-time prop schemas
+ * so both see the same props. undefined when `name` is not a part or its parent is missing.
+ */
+export function subcomponentEntry(
+  name: string,
+  canonical: ReadonlyMap<string, CatalogEntry>,
+): CatalogEntry | undefined {
+  const parent = SUBCOMPONENT_PARENT[name]
+  const parentEntry = parent ? canonical.get(parent) : undefined
+  if (!parentEntry) return undefined
+  const shared = SUBCOMPONENT_PROPS[name] ?? { optional: [], extra: [] }
+  return {
+    ...parentEntry,
+    meta: {
+      ...parentEntry.meta,
+      intent: undefined,
+      props: [
+        ...parentEntry.meta.props
+          .filter((p) => shared.optional.includes(p.name))
+          .map(({ required: _required, ...p }) => p),
+        ...shared.extra,
+        { name: 'children', type: 'ReactNode' },
+      ],
+    },
+  }
+}
+
+export function buildCatalog(registry: unknown, renderable: ReadonlySet<string>): Catalog {
   if (!isRecord(registry) || !Array.isArray(registry['components'])) {
     throw new Error('registry.components: expected an array')
   }
@@ -539,22 +588,21 @@ export function buildCatalog(
   for (const name of [...renderable].sort()) {
     const entry = canonical.get(name)
     if (entry) {
-      components[name] = buildComponent(entry, implicitChildren.has(name))
+      components[name] = buildComponent(entry)
       continue
     }
     const parent = SUBCOMPONENT_PARENT[name]
-    const parentEntry = parent ? canonical.get(parent) : undefined
-    if (!parent || !parentEntry) {
+    const partEntry = subcomponentEntry(name, canonical)
+    if (!parent || !partEntry) {
       throw new Error(`${name}: renderable but not in the registry or SUBCOMPONENT_PARENT`)
     }
+    const parentEntry = canonical.get(parent)!
+    const part = buildComponent(partEntry)
     components[name] = {
+      ...part,
       description: `Part of ${parent}.`,
       category: parentEntry.meta.category,
       parent,
-      props: { type: 'object', properties: {}, additionalProperties: false },
-      slots: { children: { arity: 'many', required: false, text: true } },
-      events: {},
-      omitted: {},
     }
   }
   return { $id: CATALOG_ID, version: 1, components }
@@ -587,3 +635,21 @@ export function componentUsesChildren(source: string, name: string): boolean | n
   if (props) parts.push(declarationBody(source, props.index))
   return parts.some((t) => CHILDREN_USE.test(t))
 }
+
+/**
+ * Manifests are the source of truth for slots. A component whose source renders `children`
+ * must declare it, or the catalog (and every renderer built on it) silently drops its content.
+ * `sourceUsesChildren` is null when no declaration was found; that case warns elsewhere.
+ */
+export function assertChildrenDeclared(
+  name: string,
+  manifestHasChildren: boolean,
+  sourceUsesChildren: boolean | null,
+): void {
+  if (manifestHasChildren || sourceUsesChildren !== true) return
+  throw new Error(
+    `${name}: renders children but its manifest does not declare \`children\` — add it to ${kebab(name)}.meta.ts`,
+  )
+}
+
+const kebab = (name: string): string => name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()

@@ -34,6 +34,12 @@ export const meta: ComponentMeta = {
       type: '(value: string | string[]) => void',
       required: false,
     },
+    {
+      name: 'children',
+      type: 'ReactNode',
+      required: true,
+      description: 'AccordionItem elements',
+    },
   ],
   tokens: [
     '--cascivo-color-border',

@@ -18,6 +18,7 @@ const ENTRIES = [
   { name: 'index', src: 'src/index.ts' },
   { name: 'view-text', src: 'src/view-text.ts' },
   { name: 'validate', src: 'src/validate.ts' },
+  { name: 'a2ui-v0_9', src: 'src/a2ui-v0_9.ts' },
 ]
 
 try {

@@ -965,6 +965,7 @@ import { Accordion } from '@cascivo/react'
 | `defaultValue` | `string \| string[]` | no | — | The initial value when uncontrolled. |
 | `value` | `string \| string[]` | no | — | The controlled value. |
 | `onValueChange` | `(value: string \| string[]) => void` | no | — | Called with the new value when it changes. |
+| `children` | `ReactNode` | yes | — | AccordionItem elements |
 
 ## Examples
 
@@ -1415,6 +1416,7 @@ import { Alert } from '@cascivo/react'
 | `dismissible` | `boolean` | no | `false` | When true, shows a control to dismiss the component. |
 | `onDismiss` | `() => void` | no | — | Called when the component is dismissed. |
 | `action` | `{ label: string; onClick: () => void }` | no | — | Primary action shown in the component. |
+| `children` | `ReactNode` | no | — | Alert body content |
 
 ## Examples
 
@@ -1890,6 +1892,7 @@ import { AvatarGroup } from '@cascivo/react'
 | `spacing` | `'sm' \| 'md' \| 'lg'` | no | `md` | Spacing between items. |
 | `isGrid` | `boolean` | no | `false` | When true, lays the avatars out in a grid instead of an overlapping stack. |
 | `labels` | `AvatarGroupLabels` | no | — | Overrides for the component’s user-visible strings (i18n). |
+| `children` | `ReactNode` | no | — | Avatar elements to stack |
 
 ## Examples
 
@@ -1984,6 +1987,7 @@ import { Badge } from '@cascivo/react'
 |------|------|----------|---------|-------------|
 | `variant` | `'default' \| 'secondary' \| 'success' \| 'warning' \| 'destructive' \| 'outline'` | no | `default` | Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral \| info \| success \| warning \| danger`) plus Badge's historical spellings (`default` → neutral, `error`/`destructive` → danger), and two values that carry no tone at all: `secondary` (muted fill) and `outline` (border only). |
 | `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `children` | `ReactNode` | no | — | Badge label |
 
 ## Examples
 
@@ -3096,6 +3100,7 @@ import { Blockquote } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `cite` | `string` | no | `undefined` | URL of the quote’s source (sets the HTML cite attribute). |
+| `children` | `ReactNode` | no | — | The quoted content |
 
 ## Examples
 
@@ -3480,6 +3485,7 @@ import { Button } from '@cascivo/react'
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 | `asChild` | `boolean` | no | `false` | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
 | `onClick` | `React.MouseEventHandler<HTMLButtonElement>` | no | — | Called when the element is clicked. |
+| `children` | `ReactNode` | no | — | Button label |
 
 ## Examples
 
@@ -3801,6 +3807,7 @@ import { Card } from '@cascivo/react'
 | `variant` | `'default' \| 'outlined' \| 'elevated'` | no | `default` | `default` draws a 1px border, `outlined` a heavier one, `elevated` drops the border for a shadow. |
 | `padding` | `'none' \| 'sm' \| 'md' \| 'lg'` | no | `md` | Inner padding of the CARD BOX. ⚠ `padding="none"` deliberately does NOT strip the padding from CardHeader/CardContent/CardFooter — those keep their own. It means "let a flush child (a LogViewer, an image, an edge-to-edge table) reach the card's edge"; zeroing both put the title flush against the border and made the mode unusable with the composition it exists for. For an edge-to-edge table, skip CardContent and pass the table as a direct child. |
 | `ai` | `boolean \| 'generating'` | no | `false` | AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text. |
+| `children` | `ReactNode` | no | — | Card content; compose with CardHeader, CardTitle, CardContent and CardFooter |
 
 ## Examples
 
@@ -7002,6 +7009,7 @@ import { Code } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `children` | `ReactNode` | no | — | The code text |
 
 ## Examples
 
@@ -11421,6 +11429,7 @@ import { Heading } from '@cascivo/react'
 |------|------|----------|---------|-------------|
 | `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | no | `2` | Heading level (1–6) mapping to h1–h6. |
 | `size` | `'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl'` | no | `derived from level (1→2xl, 2→xl, 3→lg, 4→md, 5→sm, 6→sm)` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `children` | `ReactNode` | no | — | Heading text |
 
 ## Examples
 
@@ -12179,6 +12188,9 @@ import { Input } from '@cascivo/react'
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `placeholder` | `string` | no | — | Placeholder text shown when the field is empty. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `value` | `string` | no | — | The controlled value. |
+| `defaultValue` | `string` | no | — | The initial value when uncontrolled. |
+| `onChange` | `React.ChangeEventHandler<HTMLInputElement>` | no | — | Called with the change event; read the new value from `event.target.value`. |
 | `ariaLabel` | `string` | no | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 | `ai` | `boolean` | no | `false` | AI presence: an AI-tinted border and a soft aura, marking a value AI produced or suggested. Visual only — put an AiBadge in the label so the provenance is also text, and clear `ai` once the person edits the value. |
 
@@ -12524,6 +12536,7 @@ import { Kbd } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `children` | `ReactNode` | no | — | The key label |
 
 ## Examples
 
@@ -13109,6 +13122,7 @@ import { Columns } from '@cascivo/react'
 |------|------|----------|---------|-------------|
 | `count` | `2\|3\|4` | no | `2` | Number of equal columns |
 | `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | `4` | Spacing token step |
+| `children` | `ReactNode` | no | — | Column content |
 
 ## Examples
 
@@ -13350,6 +13364,7 @@ import { Grid } from '@cascivo/react'
 | `justify` | `'start' \| 'center' \| 'end' \| 'stretch'` | no | — | Inline-axis alignment of items within their cells (justify-items); default stretch |
 | `alignRows` | `boolean` | no | `false` | Align the internal bands of adjacent children via CSS subgrid — every CardHeader in a row shares one row track, every CardContent the next, every CardFooter the last. Where subgrid is unsupported the grid renders as it does without this prop. |
 | `span` | `number \| { base?: number; sm?: number; md?: number; lg?: number; xl?: number }` | no | — | GridItem: column span — a number, or a per-breakpoint object |
+| `children` | `ReactNode` | no | — | GridItem elements or any grid children |
 
 ## Examples
 
@@ -13847,6 +13862,7 @@ import { Link } from '@cascivo/react'
 | `external` | `boolean` | no | `false` | When true, treats the link as external (opens in a new tab with rel safety). |
 | `href` | `string` | no | — | The destination URL. |
 | `asChild` | `boolean` | no | `false` | Render the single child element instead of cascivo's own `<a>`, so the link styling lands on your router's Link. ⚠ This — not `setLinkComponent` — is how you style an in-content link in a routed app; `setLinkComponent` only covers the config-driven navs. See https://cascivo.com/docs/using-with-a-router.md. |
+| `children` | `ReactNode` | no | — | Link text |
 
 ## Examples
 
@@ -13938,6 +13954,7 @@ import { List } from '@cascivo/react'
 |------|------|----------|---------|-------------|
 | `as` | `'ul' \| 'ol'` | no | `ul` | `ul` for an unordered list, `ol` for a numbered one. Changes the element and its marker, not the styling. |
 | `marker` | `'disc' \| 'decimal' \| 'none'` | no | `derived from as (ul→disc, ol→decimal)` | List marker style ('disc' \| 'decimal' \| 'none'). |
+| `children` | `ReactNode` | no | — | ListItem elements |
 
 ## Examples
 
@@ -14525,6 +14542,7 @@ import { Modal } from '@cascivo/react'
 | `footer` | `ReactNode` | no | — | Dialog actions, rendered in a right-aligned row below the body and separated by a divider. |
 | `draggable` | `boolean` | no | `false` | Allow dragging the dialog by its header |
 | `ai` | `boolean \| 'generating'` | no | `false` | AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text. |
+| `children` | `ReactNode` | no | — | Modal body content |
 
 ## Examples
 
@@ -16547,10 +16565,12 @@ import { RadioCard } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `hideIndicator` | `boolean` | no | — | Hide the radio indicator glyph, showing only the card content. |
-| `value` | `string` | yes | — | Radio value |
+| `value` | `string` | yes | — | Radio value. On RadioCardGroup: the controlled selected value |
 | `title` | `ReactNode` | yes | — | Card title |
 | `description` | `ReactNode` | no | — | Optional description |
 | `disabled` | `boolean` | no | — | Disables the card |
+| `defaultValue` | `string` | no | — | RadioCardGroup only: the initially selected value when uncontrolled |
+| `onValueChange` | `(value: string) => void` | no | — | RadioCardGroup only: called with the value of the card the person selects |
 
 ## Examples
 
@@ -17852,6 +17872,9 @@ import { Select } from '@cascivo/react'
 | `options` | `{ value: string; label: string; disabled?: boolean }[]` | yes | — | The selectable options. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `value` | `string` | no | — | The controlled value. |
+| `defaultValue` | `string` | no | — | The initial value when uncontrolled. |
+| `onChange` | `React.ChangeEventHandler<HTMLSelectElement>` | no | — | Called with the change event; read the new value from `event.target.value`. |
 | `ariaLabel` | `string` | no | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
 ## Examples
@@ -18735,6 +18758,7 @@ import { Slider } from '@cascivo/react'
 | `value` | `number` | no | — | The controlled value. |
 | `defaultValue` | `number` | no | — | The initial value when uncontrolled. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `onChange` | `React.ChangeEventHandler<HTMLInputElement>` | no | — | Called with the change event; read the new value from `event.target.value`. |
 | `ariaLabel` | `string` | no | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
 ## Examples
@@ -19145,6 +19169,7 @@ import { Status } from '@cascivo/react'
 |------|------|----------|---------|-------------|
 | `status` | `'success' \| 'warning' \| 'error' \| 'info' \| 'neutral'` | no | `neutral` | Status state. |
 | `pulse` | `boolean` | no | `false` | Pulses the dot — gated behind prefers-reduced-motion: no-preference |
+| `children` | `ReactNode` | no | — | Status label |
 
 ## Examples
 
@@ -19814,6 +19839,7 @@ import { Tabs } from '@cascivo/react'
 | `defaultValue` | `string` | no | — | The initial value when uncontrolled. |
 | `value` | `string` | no | — | The controlled value. |
 | `onValueChange` | `(value: string) => void` | no | — | Called with the new value when it changes. |
+| `children` | `ReactNode` | yes | — | TabsList and TabsContent elements |
 
 ## Examples
 
@@ -19898,6 +19924,7 @@ import { Tag } from '@cascivo/react'
 | `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `onDismiss` | `() => void` | no | — | When provided, renders a trailing remove button inside the chip |
 | `dismissLabel` | `string` | no | `Remove` | Accessible label for the dismiss button. |
+| `children` | `ReactNode` | no | — | Tag label |
 
 ## Examples
 
@@ -20184,6 +20211,7 @@ import { Text } from '@cascivo/react'
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `weight` | `'normal' \| 'medium' \| 'semibold'` | no | `normal` | Font weight ('normal' \| 'medium' \| 'semibold'). |
 | `muted` | `boolean` | no | `false` | When true, renders in a muted/subtle color. `Text` has no `tone` prop: `tone` is the severity vocabulary (Status, Badge, Timeline, SideNav); text emphasis is `muted`. |
+| `children` | `ReactNode` | no | — | Text content |
 
 ## Examples
 
@@ -20293,6 +20321,9 @@ import { Textarea } from '@cascivo/react'
 | `resize` | `'none' \| 'vertical' \| 'both'` | no | `vertical` | Which directions the textarea can be resized ('none' \| 'vertical' \| 'both'). |
 | `autosize` | `boolean` | no | `false` | Grow the control with its content instead of holding the fixed rows height. rows becomes the minimum and --cascivo-textarea-max-block-size (default 20lh) the ceiling. Pure CSS (field-sizing: content) — no measurement and no listener; where unsupported the fixed rows height is kept. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `value` | `string` | no | — | The controlled value. |
+| `defaultValue` | `string` | no | — | The initial value when uncontrolled. |
+| `onChange` | `React.ChangeEventHandler<HTMLTextAreaElement>` | no | — | Called with the change event; read the new value from `event.target.value`. |
 | `ariaLabel` | `string` | no | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 | `ai` | `boolean` | no | `false` | AI presence: an AI-tinted border and a soft aura, marking a value AI produced or suggested. Visual only — put an AiBadge in the label so the provenance is also text, and clear `ai` once the person edits the value. |
 

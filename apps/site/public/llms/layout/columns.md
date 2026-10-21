@@ -22,10 +22,11 @@ import { Columns } from '@cascivo/react'
 
 ## Props
 
-| Prop    | Type                          | Required | Default | Description             |
-| ------- | ----------------------------- | -------- | ------- | ----------------------- |
-| `count` | `2\|3\|4`                     | no       | `2`     | Number of equal columns |
-| `gap`   | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no       | `4`     | Spacing token step      |
+| Prop       | Type                          | Required | Default | Description             |
+| ---------- | ----------------------------- | -------- | ------- | ----------------------- |
+| `count`    | `2\|3\|4`                     | no       | `2`     | Number of equal columns |
+| `gap`      | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no       | `4`     | Spacing token step      |
+| `children` | `ReactNode`                   | no       | —       | Column content          |
 
 ## Examples
 

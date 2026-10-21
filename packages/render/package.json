@@ -45,6 +45,11 @@
       "import": "./dist/validate.js",
       "default": "./dist/validate.js"
     },
+    "./a2ui/v0_9": {
+      "types": "./dist/a2ui-v0_9.d.ts",
+      "import": "./dist/a2ui-v0_9.js",
+      "default": "./dist/a2ui-v0_9.js"
+    },
     "./schema/view.v1.json": "./schema/view.v1.json",
     "./schema/catalog.v1.json": "./schema/catalog.v1.json",
     "./schema/a2ui/v0_9/catalog.json": "./schema/a2ui/v0_9/catalog.json"

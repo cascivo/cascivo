@@ -1,0 +1,278 @@
+// React-free A2UI surface store: owns surfaces, their components and data models, and turns
+// every wire message into state or into error messages. `apply` never throws, because the
+// input comes from an agent over the network.
+import { batch, computed, signal } from '@cascivo/core'
+import type { ReadonlySignal, Signal } from '@cascivo/core'
+import type { A2uiCatalogSpec } from './catalog-spec'
+import { A2uiDataError, createDataModel } from './data-model'
+import type { DataModel } from './data-model'
+import { A2UI_VERSION, errorMessage, parseComponent, parseServerMessage } from './messages'
+import type { A2uiComponent, A2uiErrorMessage } from './messages'
+import { A2uiPathError } from './pointer'
+
+export interface A2uiLimits {
+  maxSurfaces: number
+  maxComponents: number
+  maxIdLength: number
+  maxDataNodes: number
+  maxRenderDepth: number
+  /** Nodes one surface may render; a tree of shared ids can otherwise fan out exponentially. */
+  maxRenderNodes: number
+}
+
+// Frozen: it is exported, and a caller mutating it would change every later store's limits.
+export const DEFAULT_A2UI_LIMITS: Readonly<A2uiLimits> = Object.freeze({
+  maxSurfaces: 16,
+  maxComponents: 1000,
+  maxIdLength: 256,
+  maxDataNodes: 10000,
+  maxRenderDepth: 64,
+  maxRenderNodes: 20000,
+})
+
+export interface A2uiSurfaceState {
+  readonly id: string
+  readonly catalogId: string
+  readonly sendDataModel: boolean
+  readonly theme: Readonly<Record<string, unknown>> | undefined
+  readonly data: DataModel
+  /** One stable signal per id, so a renderer can subscribe before the component arrives. */
+  component(id: string): ReadonlySignal<A2uiComponent | undefined>
+  readonly hasRoot: ReadonlySignal<boolean>
+}
+
+export interface A2uiStore {
+  /** Applies one server message. Never throws; returns the errors to report, in input order. */
+  apply(raw: unknown): A2uiErrorMessage[]
+  readonly surfaceIds: ReadonlySignal<readonly string[]>
+  surface(id: string): A2uiSurfaceState | undefined
+  capabilities(): { 'v0.9': { supportedCatalogIds: string[] } }
+  /**
+   * The data models to send with an action: of `surfaceId` alone when given (the spec sends a
+   * model only to the server that created its surface), else of every sendDataModel surface.
+   * `undefined` when none qualifies.
+   */
+  clientDataModel(
+    surfaceId?: string,
+  ): { version: 'v0.9'; surfaces: Record<string, unknown> } | undefined
+  readonly limits: A2uiLimits
+}
+
+interface Surface extends A2uiSurfaceState {
+  readonly catalog: A2uiCatalogSpec
+  /** Ids that hold a component, for the maxComponents limit. */
+  readonly stored: Set<string>
+  set(component: A2uiComponent): void
+}
+
+export function createA2uiStore(options: {
+  catalogs: readonly A2uiCatalogSpec[]
+  limits?: Partial<A2uiLimits>
+}): A2uiStore {
+  const limits: A2uiLimits = { ...DEFAULT_A2UI_LIMITS, ...options.limits }
+  const surfaces = new Map<string, Surface>()
+  const ids = signal<readonly string[]>([])
+
+  function makeSurface(input: {
+    id: string
+    catalog: A2uiCatalogSpec
+    sendDataModel: boolean
+    theme: Readonly<Record<string, unknown>> | undefined
+  }): Surface {
+    // Shared by every over-long id; a computed, so writing it throws.
+    const detached = computed<A2uiComponent | undefined>(() => undefined)
+    const signals = new Map<string, Signal<A2uiComponent | undefined>>()
+    // Read-only views, so a caller cannot write the slot a stored component lives in.
+    const views = new Map<string, ReadonlySignal<A2uiComponent | undefined>>()
+    // Bumped when an id is stored for the first time, so views handed out beyond the lookup
+    // budget (not kept in the maps) still notice the component arriving.
+    const arrivals = signal(0)
+    const slot = (id: string) => {
+      const hit = signals.get(id)
+      if (hit) return hit
+      const made = signal<A2uiComponent | undefined>(undefined)
+      signals.set(id, made)
+      return made
+    }
+    const view = (id: string) => {
+      const hit = views.get(id)
+      if (hit) return hit
+      const slotSignal = slot(id)
+      const made = computed(() => slotSignal.value)
+      views.set(id, made)
+      return made
+    }
+    const root = slot('root')
+    return {
+      id: input.id,
+      catalogId: input.catalog.id,
+      catalog: input.catalog,
+      sendDataModel: input.sendDataModel,
+      theme: input.theme,
+      // Empty on purpose: every change goes through `write`, so the node limit always applies.
+      data: createDataModel(undefined, { maxNodes: limits.maxDataNodes }),
+      // Ids come from an agent: an over-long id can never be stored, and lookups of unknown ids
+      // are budgeted so a hostile tree cannot grow the maps without bound. Beyond the budget a
+      // handle is a throwaway view that still follows the id once it is stored.
+      component: (id) => {
+        const hit = views.get(id)
+        if (hit) return hit
+        if (id.length > limits.maxIdLength) return detached
+        if (signals.size >= limits.maxComponents * 2) {
+          return computed(() => {
+            void arrivals.value
+            return signals.get(id)?.value
+          })
+        }
+        return view(id)
+      },
+      hasRoot: computed(() => root.value !== undefined),
+      stored: new Set(),
+      set(component) {
+        const isNew = !signals.get(component.id)?.peek()
+        slot(component.id).value = component
+        if (isNew) arrivals.value++
+      },
+    }
+  }
+
+  // The surface of the message being applied, for the catch-all error in `apply`.
+  let applying = ''
+
+  function applyMessage(raw: unknown): A2uiErrorMessage[] {
+    const parsed = parseServerMessage(raw)
+    if (!parsed.ok) return [parsed.error]
+    const message = parsed.message
+    const sid = message.surfaceId
+    applying = sid
+
+    if (message.kind === 'createSurface') {
+      if (surfaces.has(sid)) {
+        return [errorMessage('SURFACE_EXISTS', sid, `Surface "${sid}" already exists.`)]
+      }
+      const catalog = options.catalogs.find((c) => c.id === message.catalogId)
+      if (catalog === undefined) {
+        return [
+          errorMessage(
+            'UNSUPPORTED_CATALOG',
+            sid,
+            `Catalog "${message.catalogId}" is not supported.`,
+          ),
+        ]
+      }
+      if (surfaces.size >= limits.maxSurfaces) {
+        return [
+          errorMessage(
+            'LIMIT_EXCEEDED',
+            sid,
+            `At most ${limits.maxSurfaces} surfaces are allowed.`,
+          ),
+        ]
+      }
+      surfaces.set(
+        sid,
+        makeSurface({
+          id: sid,
+          catalog,
+          sendDataModel: message.sendDataModel,
+          theme: message.theme,
+        }),
+      )
+      ids.value = [...ids.peek(), sid]
+      return []
+    }
+
+    const surface = surfaces.get(sid)
+    if (surface === undefined) {
+      return [errorMessage('SURFACE_NOT_FOUND', sid, `Surface "${sid}" does not exist.`)]
+    }
+
+    if (message.kind === 'deleteSurface') {
+      surfaces.delete(sid)
+      ids.value = ids.peek().filter((id) => id !== sid)
+      return []
+    }
+
+    if (message.kind === 'updateDataModel') {
+      try {
+        surface.data.write(message.path, message.value)
+      } catch (error) {
+        if (error instanceof A2uiPathError) {
+          return [errorMessage('INVALID_PATH', sid, error.message)]
+        }
+        if (error instanceof A2uiDataError) return [errorMessage(error.code, sid, error.message)]
+        throw error
+      }
+      return []
+    }
+
+    // A throw mid-batch discards `errors` in favour of INVALID_MESSAGE; components applied
+    // earlier in this message stay applied.
+    const errors: A2uiErrorMessage[] = []
+    batch(() => {
+      for (const [index, raw] of message.components.entries()) {
+        const result = parseComponent(raw, index, sid, limits.maxIdLength)
+        if (!result.ok) {
+          errors.push(result.error)
+          continue
+        }
+        const component = result.component
+        const issues = surface.catalog.validate(component)
+        if (issues.length > 0) {
+          for (const issue of issues) {
+            const path =
+              issue.prop === '' ? `/components/${index}` : `/components/${index}/${issue.prop}`
+            errors.push(errorMessage('VALIDATION_FAILED', sid, issue.message, path))
+          }
+          continue
+        }
+        if (!surface.stored.has(component.id) && surface.stored.size >= limits.maxComponents) {
+          errors.push(
+            errorMessage(
+              'LIMIT_EXCEEDED',
+              sid,
+              `At most ${limits.maxComponents} components are allowed per surface.`,
+            ),
+          )
+          break
+        }
+        surface.stored.add(component.id)
+        surface.set(component)
+      }
+    })
+    return errors
+  }
+
+  return {
+    apply(raw) {
+      applying = ''
+      try {
+        return applyMessage(raw)
+      } catch (error) {
+        let text = 'unexpected error'
+        try {
+          if (error instanceof Error && typeof error.message === 'string') text = error.message
+        } catch {
+          // A hostile thrown value (throwing getter, revoked Proxy) must not escape `apply`.
+        }
+        return [errorMessage('INVALID_MESSAGE', applying, `Could not apply message: ${text}`)]
+      }
+    },
+    surfaceIds: ids,
+    surface: (id) => surfaces.get(id),
+    capabilities: () => ({
+      [A2UI_VERSION]: { supportedCatalogIds: options.catalogs.map((c) => c.id) },
+    }),
+    clientDataModel(surfaceId) {
+      const out: Record<string, unknown> = {}
+      let any = false
+      for (const [id, surface] of surfaces) {
+        if (!surface.sendDataModel || (surfaceId !== undefined && id !== surfaceId)) continue
+        out[id] = surface.data.snapshot()
+        any = true
+      }
+      return any ? { version: A2UI_VERSION, surfaces: out } : undefined
+    },
+    limits,
+  }
+}

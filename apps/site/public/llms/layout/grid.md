@@ -30,6 +30,7 @@ import { Grid } from '@cascivo/react'
 | `justify`   | `'start' \| 'center' \| 'end' \| 'stretch'`                                       | no       | —       | Inline-axis alignment of items within their cells (justify-items); default stretch                                                                                                                                                                 |
 | `alignRows` | `boolean`                                                                         | no       | `false` | Align the internal bands of adjacent children via CSS subgrid — every CardHeader in a row shares one row track, every CardContent the next, every CardFooter the last. Where subgrid is unsupported the grid renders as it does without this prop. |
 | `span`      | `number \| { base?: number; sm?: number; md?: number; lg?: number; xl?: number }` | no       | —       | GridItem: column span — a number, or a per-breakpoint object                                                                                                                                                                                       |
+| `children`  | `ReactNode`                                                                       | no       | —       | GridItem elements or any grid children                                                                                                                                                                                                             |
 
 ## Examples
 

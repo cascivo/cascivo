@@ -59,6 +59,12 @@
             "description": "Called with the new value when it changes.",
             "type": "(value: string | string[]) => void",
             "required": false
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "description": "AccordionItem elements"
           }
         ],
         "tokens": [
@@ -727,6 +733,12 @@
             "description": "Primary action shown in the component.",
             "type": "{ label: string; onClick: () => void }",
             "required": false
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Alert body content"
           }
         ],
         "tokens": [
@@ -1376,6 +1388,12 @@
             "description": "Overrides for the component’s user-visible strings (i18n).",
             "type": "AvatarGroupLabels",
             "required": false
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Avatar elements to stack"
           }
         ],
         "tokens": [
@@ -1483,6 +1501,12 @@
             "type": "'sm' | 'md'",
             "required": false,
             "default": "md"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Badge label"
           }
         ],
         "tokens": [
@@ -2504,6 +2528,12 @@
             "type": "string",
             "required": false,
             "default": "undefined"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "The quoted content"
           }
         ],
         "tokens": [
@@ -3055,6 +3085,12 @@
             "description": "Called when the element is clicked.",
             "type": "React.MouseEventHandler<HTMLButtonElement>",
             "required": false
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Button label"
           }
         ],
         "tokens": [
@@ -3576,6 +3612,12 @@
             "required": false,
             "default": "false",
             "description": "AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text."
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Card content; compose with CardHeader, CardTitle, CardContent and CardFooter"
           }
         ],
         "tokens": [
@@ -8963,6 +9005,12 @@
             "type": "'sm' | 'md'",
             "required": false,
             "default": "md"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "The code text"
           }
         ],
         "tokens": [
@@ -16152,6 +16200,12 @@
             "type": "'sm' | 'md' | 'lg' | 'xl' | '2xl'",
             "required": false,
             "default": "derived from level (1→2xl, 2→xl, 3→lg, 4→md, 5→sm, 6→sm)"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Heading text"
           }
         ],
         "tokens": [
@@ -17238,6 +17292,24 @@
             "default": "false"
           },
           {
+            "name": "value",
+            "description": "The controlled value.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "defaultValue",
+            "description": "The initial value when uncontrolled.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "onChange",
+            "description": "Called with the change event; read the new value from `event.target.value`.",
+            "type": "React.ChangeEventHandler<HTMLInputElement>",
+            "required": false
+          },
+          {
             "name": "ariaLabel",
             "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
             "type": "string",
@@ -17691,6 +17763,12 @@
             "type": "'sm' | 'md'",
             "required": false,
             "default": "md"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "The key label"
           }
         ],
         "tokens": [
@@ -18492,6 +18570,12 @@
             "type": "1|2|3|4|5|6|8|10|12",
             "required": false,
             "description": "Spacing token step"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Column content"
           }
         ],
         "tokens": ["--cascivo-space-*"],
@@ -18827,6 +18911,12 @@
             "type": "number | { base?: number; sm?: number; md?: number; lg?: number; xl?: number }",
             "required": false,
             "description": "GridItem: column span — a number, or a per-breakpoint object"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "GridItem elements or any grid children"
           }
         ],
         "tokens": ["--cascivo-space-*"],
@@ -19472,6 +19562,12 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Link text"
           }
         ],
         "tokens": [
@@ -19578,6 +19674,12 @@
             "type": "'disc' | 'decimal' | 'none'",
             "required": false,
             "default": "derived from as (ul→disc, ol→decimal)"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "ListItem elements"
           }
         ],
         "tokens": [
@@ -20436,6 +20538,12 @@
             "required": false,
             "default": "false",
             "description": "AI presence: `true` gives the surface an AI-tinted edge and a soft aura, marking AI-generated content; `'generating'` adds a pulsing inner glow while AI is still producing it (stops under reduced motion). Visual only — pair it with an AiBadge so the provenance is also text."
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Modal body content"
           }
         ],
         "tokens": [
@@ -23606,7 +23714,7 @@
             "name": "value",
             "type": "string",
             "required": true,
-            "description": "Radio value"
+            "description": "Radio value. On RadioCardGroup: the controlled selected value"
           },
           {
             "name": "title",
@@ -23625,6 +23733,18 @@
             "type": "boolean",
             "required": false,
             "description": "Disables the card"
+          },
+          {
+            "name": "defaultValue",
+            "type": "string",
+            "required": false,
+            "description": "RadioCardGroup only: the initially selected value when uncontrolled"
+          },
+          {
+            "name": "onValueChange",
+            "type": "(value: string) => void",
+            "required": false,
+            "description": "RadioCardGroup only: called with the value of the card the person selects"
           }
         ],
         "tokens": [
@@ -25582,6 +25702,24 @@
             "default": "false"
           },
           {
+            "name": "value",
+            "description": "The controlled value.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "defaultValue",
+            "description": "The initial value when uncontrolled.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "onChange",
+            "description": "Called with the change event; read the new value from `event.target.value`.",
+            "type": "React.ChangeEventHandler<HTMLSelectElement>",
+            "required": false
+          },
+          {
             "name": "ariaLabel",
             "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
             "type": "string",
@@ -26928,6 +27066,12 @@
             "default": "false"
           },
           {
+            "name": "onChange",
+            "description": "Called with the change event; read the new value from `event.target.value`.",
+            "type": "React.ChangeEventHandler<HTMLInputElement>",
+            "required": false
+          },
+          {
             "name": "ariaLabel",
             "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
             "type": "string",
@@ -27537,6 +27681,12 @@
             "required": false,
             "default": "false",
             "description": "Pulses the dot — gated behind prefers-reduced-motion: no-preference"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Status label"
           }
         ],
         "tokens": [
@@ -28477,6 +28627,12 @@
             "description": "Called with the new value when it changes.",
             "type": "(value: string) => void",
             "required": false
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "description": "TabsList and TabsContent elements"
           }
         ],
         "tokens": [
@@ -28600,6 +28756,12 @@
             "type": "string",
             "required": false,
             "default": "Remove"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Tag label"
           }
         ],
         "tokens": [
@@ -29048,6 +29210,12 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Text content"
           }
         ],
         "tokens": [
@@ -29193,6 +29361,24 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "value",
+            "description": "The controlled value.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "defaultValue",
+            "description": "The initial value when uncontrolled.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "onChange",
+            "description": "Called with the change event; read the new value from `event.target.value`.",
+            "type": "React.ChangeEventHandler<HTMLTextAreaElement>",
+            "required": false
           },
           {
             "name": "ariaLabel",

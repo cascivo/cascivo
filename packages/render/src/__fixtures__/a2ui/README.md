@@ -6,3 +6,8 @@ source; whitespace was normalised by the repo formatter (oxfmt via `vp check --f
 tests compile the generated A2UI catalog offline.
 
 The A2UI specification is licensed under Apache-2.0; copyright the A2UI authors.
+
+`v0_9/basic_catalog.json` is the A2UI v0.9 basic catalog, downloaded verbatim from
+<https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json> on 2026-10-21 (whitespace may have been
+normalised by the repo formatter). `src/a2ui/basic-spec.test.ts` compares it with the hand table in
+`src/a2ui/basic-spec.ts`.

@@ -1,7 +1,7 @@
 # cascivo — Roadmap v61: A2UI Study — Be the Best Design System to Render Agent UI
 
-**Last updated:** 2026-10-20
-**Status:** 🟢 T1 shipped. T2 to plan.
+**Last updated:** 2026-10-21
+**Status:** 🟢 T1 and T2 shipped (`@cascivo/render/a2ui/v0_9`). T3 and T4 next.
 **Builds on:** ROADMAP-V40 (OpenUI study: bounded vocabulary + prop conformance, shipped), `@cascivo/render`
 (`ViewConfig` + `CascivoView`), `@cascivo/mcp` (`get_view_grammar`, `validate_view`), `@cascivo/data`
 (`parseSSE`), `starters/cloudflare-agent`.
@@ -167,9 +167,15 @@ whether `@a2ui/react` exposes a clean component-override hook. If it does, also 
 **T2 prerequisites found during T1:**
 
 1. 24 renderable manifests omit `children` although the component renders children. T1 infers an implicit
-   slot from source; the principled fix is declaring `children` in those manifests.
+   slot from source; the principled fix is declaring `children` in those manifests. — done in T2
 2. Input/Textarea manifests declare no `value`/`onValueChange` (HTML passthrough), so A2UI two-way binding
-   has nothing to bind until they do.
+   has nothing to bind until they do. — done in T2
+
+**Follow-ups found during T2:**
+
+1. DatePicker logs "Cannot update a component while rendering a different component" when its controlled value changes (pre-existing component bug).
+2. RadioCardGroup shares RadioCard's manifest; a separate manifest would let docs list its name and label.
+3. A2UI Modal triggers that are links or inputs nest interactive content inside the keyboard wrapper.
 
 ### T3 — Transport glue and the dogfood path
 
@@ -211,3 +217,4 @@ whether `@a2ui/react` exposes a clean component-override hook. If it does, also 
 | 2026-10-20 | Proposed (awaiting maintainer decision): A2UI support as an adapter over existing manifests and validator; `ViewConfig` stays. Order: T1 → T2 → T3 → T4. Pin to v0.9.1. |
 | 2026-10-20 | Approved by maintainer. T1 implementation plan written. |
 | 2026-10-20 | T1 shipped: catalog.v1.json + A2UI v0.9 catalog + view.v1 fixes + deep shape validation |
+| 2026-10-21 | T2 shipped: @cascivo/render/a2ui/v0_9 — own renderer (not @a2ui/react: lit/zod/second signals store/custom elements), store + surface + cascivo and basic catalogs |

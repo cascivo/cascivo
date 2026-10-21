@@ -40,6 +40,7 @@ Renders a native <button> so Enter/Space activation, focus, and role come from t
 | `disabled` | `boolean`                                              | No       | false   | When true, disables the control and removes it from the tab order.                                                                                     |
 | `asChild`  | `boolean`                                              | No       | false   | When true, renders the child element as the root via Slot, merging props (polymorphic rendering).                                                      |
 | `onClick`  | `React.MouseEventHandler<HTMLButtonElement>`           | No       | —       | Called when the element is clicked.                                                                                                                    |
+| `children` | `ReactNode`                                            | No       | —       | Button label                                                                                                                                           |
 
 ## Tokens
 

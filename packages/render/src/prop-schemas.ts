@@ -62,6 +62,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'onValueChange',
       required: false,
     },
+    {
+      name: 'children',
+      required: true,
+    },
   ],
   ActionSheet: [
     {
@@ -179,6 +183,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'action',
+      required: false,
+    },
+    {
+      name: 'children',
       required: false,
     },
   ],
@@ -528,6 +536,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'labels',
       required: false,
     },
+    {
+      name: 'children',
+      required: false,
+    },
   ],
   Badge: [
     {
@@ -539,6 +551,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'size',
       required: false,
       enum: ['sm', 'md'],
+    },
+    {
+      name: 'children',
+      required: false,
     },
   ],
   BarChart: [
@@ -660,6 +676,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'cite',
       required: false,
       primitives: ['string'],
+    },
+    {
+      name: 'children',
+      required: false,
     },
   ],
   BottomSheet: [
@@ -921,6 +941,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'onClick',
+      required: false,
+    },
+    {
+      name: 'children',
       required: false,
     },
   ],
@@ -1233,6 +1257,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
         ],
       },
     },
+    {
+      name: 'children',
+      required: false,
+    },
   ],
   Carousel: [
     {
@@ -1388,6 +1416,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'size',
       required: false,
       enum: ['sm', 'md'],
+    },
+    {
+      name: 'children',
+      required: false,
     },
   ],
   CodeEditor: [
@@ -1661,6 +1693,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'gap',
+      required: false,
+    },
+    {
+      name: 'children',
       required: false,
     },
   ],
@@ -3927,6 +3963,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
         ],
       },
     },
+    {
+      name: 'children',
+      required: false,
+    },
   ],
   Header: [
     {
@@ -4012,6 +4052,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'size',
       required: false,
       enum: ['sm', 'md', 'lg', 'xl', '2xl'],
+    },
+    {
+      name: 'children',
+      required: false,
     },
   ],
   Heatmap: [
@@ -4423,6 +4467,20 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['boolean'],
     },
     {
+      name: 'value',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'defaultValue',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'onChange',
+      required: false,
+    },
+    {
       name: 'ariaLabel',
       required: false,
       primitives: ['string'],
@@ -4485,6 +4543,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'size',
       required: false,
       enum: ['sm', 'md'],
+    },
+    {
+      name: 'children',
+      required: false,
     },
   ],
   Kpi: [
@@ -4773,6 +4835,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['boolean'],
     },
+    {
+      name: 'children',
+      required: false,
+    },
   ],
   List: [
     {
@@ -4784,6 +4850,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'marker',
       required: false,
       enum: ['disc', 'decimal', 'none'],
+    },
+    {
+      name: 'children',
+      required: false,
     },
   ],
   LogViewer: [
@@ -5068,6 +5138,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
           },
         ],
       },
+    },
+    {
+      name: 'children',
+      required: false,
     },
   ],
   MultiSelect: [
@@ -6264,6 +6338,50 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['boolean'],
     },
+    {
+      name: 'defaultValue',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'onValueChange',
+      required: false,
+    },
+  ],
+  RadioCardGroup: [
+    {
+      name: 'value',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'defaultValue',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'onValueChange',
+      required: false,
+    },
+    {
+      name: 'name',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'label',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'children',
+      required: false,
+    },
   ],
   RatingGroup: [
     {
@@ -6753,6 +6871,20 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['boolean'],
     },
     {
+      name: 'value',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'defaultValue',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'onChange',
+      required: false,
+    },
+    {
       name: 'ariaLabel',
       required: false,
       primitives: ['string'],
@@ -7110,6 +7242,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['boolean'],
     },
     {
+      name: 'onChange',
+      required: false,
+    },
+    {
       name: 'ariaLabel',
       required: false,
       primitives: ['string'],
@@ -7328,6 +7464,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'pulse',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'children',
+      required: false,
     },
   ],
   Steps: [
@@ -7663,6 +7803,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'onValueChange',
       required: false,
     },
+    {
+      name: 'children',
+      required: true,
+    },
   ],
   Tag: [
     {
@@ -7683,6 +7827,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'dismissLabel',
       required: false,
       primitives: ['string'],
+    },
+    {
+      name: 'children',
+      required: false,
     },
   ],
   TagsInput: [
@@ -7774,6 +7922,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['boolean'],
     },
+    {
+      name: 'children',
+      required: false,
+    },
   ],
   Textarea: [
     {
@@ -7810,6 +7962,20 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'disabled',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'value',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'defaultValue',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'onChange',
+      required: false,
     },
     {
       name: 'ariaLabel',

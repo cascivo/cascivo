@@ -32,6 +32,7 @@ import { Tabs } from '@cascivo/react'
 | `defaultValue`  | `string`                  | no       | —       | The initial value when uncontrolled.       |
 | `value`         | `string`                  | no       | —       | The controlled value.                      |
 | `onValueChange` | `(value: string) => void` | no       | —       | Called with the new value when it changes. |
+| `children`      | `ReactNode`               | yes      | —       | TabsList and TabsContent elements          |
 
 ## Examples
 

@@ -429,6 +429,15 @@ export const builtin = {
     commandMenu: 'Command menu',
     commandMenuEmpty: 'No commands',
   }),
+  a2ui: defineMessages('cascade.a2ui', {
+    openMedia: 'Open media',
+    invalid: 'Invalid value',
+    dialog: 'Dialog',
+    /** Placeholder of a single-choice picker with nothing selected. */
+    choose: 'Choose…',
+    /** Names the time half of a date-and-time input, after its label. */
+    time: 'Time',
+  }),
 }
 
 defineCatalog(builtin.pagination, 'de', {
@@ -853,4 +862,11 @@ defineCatalog(builtin.editor, 'de', {
   findCount: '{current} von {total}',
   commandMenu: 'Befehlsmenü',
   commandMenuEmpty: 'Keine Befehle',
+})
+defineCatalog(builtin.a2ui, 'de', {
+  openMedia: 'Medien öffnen',
+  invalid: 'Ungültiger Wert',
+  dialog: 'Dialog',
+  choose: 'Bitte wählen…',
+  time: 'Uhrzeit',
 })

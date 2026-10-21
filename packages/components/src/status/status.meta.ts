@@ -23,6 +23,12 @@ export const meta: ComponentMeta = {
       default: 'false',
       description: 'Pulses the dot — gated behind prefers-reduced-motion: no-preference',
     },
+    {
+      name: 'children',
+      type: 'ReactNode',
+      required: false,
+      description: 'Status label',
+    },
   ],
   tokens: [
     '--cascivo-color-success',

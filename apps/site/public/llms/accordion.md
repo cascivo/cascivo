@@ -33,6 +33,7 @@ import { Accordion } from '@cascivo/react'
 | `defaultValue`  | `string \| string[]`                  | no       | —        | The initial value when uncontrolled.                                           |
 | `value`         | `string \| string[]`                  | no       | —        | The controlled value.                                                          |
 | `onValueChange` | `(value: string \| string[]) => void` | no       | —        | Called with the new value when it changes.                                     |
+| `children`      | `ReactNode`                           | yes      | —        | AccordionItem elements                                                         |
 
 ## Examples
 

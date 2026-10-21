@@ -68,6 +68,12 @@
         "type": "number | { base?: number; sm?: number; md?: number; lg?: number; xl?: number }",
         "required": false,
         "description": "GridItem: column span — a number, or a per-breakpoint object"
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": false,
+        "description": "GridItem elements or any grid children"
       }
     ],
     "tokens": ["--cascivo-space-*"],

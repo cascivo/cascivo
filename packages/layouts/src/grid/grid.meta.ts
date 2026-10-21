@@ -54,6 +54,12 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'GridItem: column span — a number, or a per-breakpoint object',
     },
+    {
+      name: 'children',
+      type: 'ReactNode',
+      required: false,
+      description: 'GridItem elements or any grid children',
+    },
   ],
   tokens: ['--cascivo-space-*'],
   accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },

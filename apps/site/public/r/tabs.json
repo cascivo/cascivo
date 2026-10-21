@@ -47,6 +47,12 @@
         "description": "Called with the new value when it changes.",
         "type": "(value: string) => void",
         "required": false
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": true,
+        "description": "TabsList and TabsContent elements"
       }
     ],
     "tokens": [

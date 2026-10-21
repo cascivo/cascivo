@@ -38,6 +38,7 @@ Each item is a native <details> and each trigger its <summary>, so the button ro
 | `defaultValue`  | `string \| string[]`                  | No       | —       | The initial value when uncontrolled.                                           |
 | `value`         | `string \| string[]`                  | No       | —       | The controlled value.                                                          |
 | `onValueChange` | `(value: string \| string[]) => void` | No       | —       | Called with the new value when it changes.                                     |
+| `children`      | `ReactNode`                           | Yes      | —       | AccordionItem elements                                                         |
 
 ## Tokens
 

@@ -17,7 +17,12 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Hide the radio indicator glyph, showing only the card content.',
     },
-    { name: 'value', type: 'string', required: true, description: 'Radio value' },
+    {
+      name: 'value',
+      type: 'string',
+      required: true,
+      description: 'Radio value. On RadioCardGroup: the controlled selected value',
+    },
     { name: 'title', type: 'ReactNode', required: true, description: 'Card title' },
     {
       name: 'description',
@@ -26,6 +31,18 @@ export const meta: ComponentMeta = {
       description: 'Optional description',
     },
     { name: 'disabled', type: 'boolean', required: false, description: 'Disables the card' },
+    {
+      name: 'defaultValue',
+      type: 'string',
+      required: false,
+      description: 'RadioCardGroup only: the initially selected value when uncontrolled',
+    },
+    {
+      name: 'onValueChange',
+      type: '(value: string) => void',
+      required: false,
+      description: 'RadioCardGroup only: called with the value of the card the person selects',
+    },
   ],
   tokens: [
     '--cascivo-color-accent',

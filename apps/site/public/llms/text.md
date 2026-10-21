@@ -34,12 +34,13 @@ import { Text } from '@cascivo/react'
 
 ## Props
 
-| Prop     | Type                                 | Required | Default  | Description                                                                                                                                                            |
-| -------- | ------------------------------------ | -------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `as`     | `'p' \| 'span' \| 'div'`             | no       | `p`      | `p` for a paragraph, `span` for inline text, `div` for a block that imposes no semantics of its own.                                                                   |
-| `size`   | `'sm' \| 'md' \| 'lg'`               | no       | `md`     | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                  |
-| `weight` | `'normal' \| 'medium' \| 'semibold'` | no       | `normal` | Font weight ('normal' \| 'medium' \| 'semibold').                                                                                                                      |
-| `muted`  | `boolean`                            | no       | `false`  | When true, renders in a muted/subtle color. `Text` has no `tone` prop: `tone` is the severity vocabulary (Status, Badge, Timeline, SideNav); text emphasis is `muted`. |
+| Prop       | Type                                 | Required | Default  | Description                                                                                                                                                            |
+| ---------- | ------------------------------------ | -------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `as`       | `'p' \| 'span' \| 'div'`             | no       | `p`      | `p` for a paragraph, `span` for inline text, `div` for a block that imposes no semantics of its own.                                                                   |
+| `size`     | `'sm' \| 'md' \| 'lg'`               | no       | `md`     | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                  |
+| `weight`   | `'normal' \| 'medium' \| 'semibold'` | no       | `normal` | Font weight ('normal' \| 'medium' \| 'semibold').                                                                                                                      |
+| `muted`    | `boolean`                            | no       | `false`  | When true, renders in a muted/subtle color. `Text` has no `tone` prop: `tone` is the severity vocabulary (Status, Badge, Timeline, SideNav); text emphasis is `muted`. |
+| `children` | `ReactNode`                          | no       | —        | Text content                                                                                                                                                           |
 
 ## Examples
 

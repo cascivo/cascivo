@@ -27,9 +27,10 @@ import { Code } from '@cascivo/react'
 
 ## Props
 
-| Prop   | Type           | Required | Default | Description                                           |
-| ------ | -------------- | -------- | ------- | ----------------------------------------------------- |
-| `size` | `'sm' \| 'md'` | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| Prop       | Type           | Required | Default | Description                                           |
+| ---------- | -------------- | -------- | ------- | ----------------------------------------------------- |
+| `size`     | `'sm' \| 'md'` | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `children` | `ReactNode`    | no       | —       | The code text                                         |
 
 ## Examples
 

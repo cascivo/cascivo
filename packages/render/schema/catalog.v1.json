@@ -59,9 +59,9 @@
       "slots": {
         "children": {
           "arity": "many",
-          "required": false,
-          "text": true,
-          "implicit": true
+          "required": true,
+          "description": "AccordionItem elements",
+          "text": true
         }
       },
       "events": {
@@ -110,8 +110,8 @@
         "children": {
           "arity": "many",
           "required": false,
-          "text": true,
-          "implicit": true
+          "description": "Alert body content",
+          "text": true
         },
         "icon": {
           "arity": "one",
@@ -267,8 +267,8 @@
         "children": {
           "arity": "many",
           "required": false,
-          "text": true,
-          "implicit": true
+          "description": "Avatar elements to stack",
+          "text": true
         }
       },
       "events": {},
@@ -314,8 +314,8 @@
         "children": {
           "arity": "many",
           "required": false,
-          "text": true,
-          "implicit": true
+          "description": "Badge label",
+          "text": true
         }
       },
       "events": {},
@@ -348,8 +348,8 @@
         "children": {
           "arity": "many",
           "required": false,
-          "text": true,
-          "implicit": true
+          "description": "The quoted content",
+          "text": true
         }
       },
       "events": {},
@@ -464,8 +464,8 @@
         "children": {
           "arity": "many",
           "required": false,
-          "text": true,
-          "implicit": true
+          "description": "Button label",
+          "text": true
         }
       },
       "events": {
@@ -529,8 +529,8 @@
         "children": {
           "arity": "many",
           "required": false,
-          "text": true,
-          "implicit": true
+          "description": "Card content; compose with CardHeader, CardTitle, CardContent and CardFooter",
+          "text": true
         }
       },
       "events": {},
@@ -539,7 +539,6 @@
     "CardContent": {
       "description": "Part of Card.",
       "category": "display",
-      "parent": "Card",
       "props": {
         "type": "object",
         "properties": {},
@@ -553,12 +552,12 @@
         }
       },
       "events": {},
-      "omitted": {}
+      "omitted": {},
+      "parent": "Card"
     },
     "CardFooter": {
       "description": "Part of Card.",
       "category": "display",
-      "parent": "Card",
       "props": {
         "type": "object",
         "properties": {},
@@ -572,12 +571,12 @@
         }
       },
       "events": {},
-      "omitted": {}
+      "omitted": {},
+      "parent": "Card"
     },
     "CardHeader": {
       "description": "Part of Card.",
       "category": "display",
-      "parent": "Card",
       "props": {
         "type": "object",
         "properties": {},
@@ -591,12 +590,12 @@
         }
       },
       "events": {},
-      "omitted": {}
+      "omitted": {},
+      "parent": "Card"
     },
     "CardTitle": {
       "description": "Part of Card.",
       "category": "display",
-      "parent": "Card",
       "props": {
         "type": "object",
         "properties": {},
@@ -610,7 +609,8 @@
         }
       },
       "events": {},
-      "omitted": {}
+      "omitted": {},
+      "parent": "Card"
     },
     "Center": {
       "description": "Horizontally centered container with a configurable max-width.",
@@ -776,8 +776,8 @@
         "children": {
           "arity": "many",
           "required": false,
-          "text": true,
-          "implicit": true
+          "description": "The code text",
+          "text": true
         }
       },
       "events": {},
@@ -818,8 +818,8 @@
         "children": {
           "arity": "many",
           "required": false,
-          "text": true,
-          "implicit": true
+          "description": "Column content",
+          "text": true
         }
       },
       "events": {},
@@ -2070,8 +2070,8 @@
         "children": {
           "arity": "many",
           "required": false,
-          "text": true,
-          "implicit": true
+          "description": "GridItem elements or any grid children",
+          "text": true
         }
       },
       "events": {},
@@ -2080,7 +2080,6 @@
     "GridItem": {
       "description": "Part of Grid.",
       "category": "layout",
-      "parent": "Grid",
       "props": {
         "type": "object",
         "properties": {},
@@ -2094,7 +2093,8 @@
         }
       },
       "events": {},
-      "omitted": {}
+      "omitted": {},
+      "parent": "Grid"
     },
     "Header": {
       "description": "App top bar with brand, primary navigation links, and an actions slot",
@@ -2252,8 +2252,8 @@
         "children": {
           "arity": "many",
           "required": false,
-          "text": true,
-          "implicit": true
+          "description": "Heading text",
+          "text": true
         }
       },
       "events": {},
@@ -2366,6 +2366,10 @@
             "type": "string",
             "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this."
           },
+          "defaultValue": {
+            "type": "string",
+            "description": "The initial value when uncontrolled."
+          },
           "disabled": {
             "type": "boolean",
             "description": "When true, disables the control and removes it from the tab order.",
@@ -2392,12 +2396,20 @@
             "enum": ["sm", "md", "lg"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
+          },
+          "value": {
+            "type": "string",
+            "description": "The controlled value."
           }
         },
         "additionalProperties": false
       },
       "slots": {},
-      "events": {},
+      "events": {
+        "onChange": {
+          "description": "Called with the change event; read the new value from `event.target.value`."
+        }
+      },
       "omitted": {}
     },
     "InputGroup": {
@@ -2469,8 +2481,8 @@
         "children": {
           "arity": "many",
           "required": false,
-          "text": true,
-          "implicit": true
+          "description": "The key label",
+          "text": true
         }
       },
       "events": {},
@@ -2588,8 +2600,8 @@
         "children": {
           "arity": "many",
           "required": false,
-          "text": true,
-          "implicit": true
+          "description": "Link text",
+          "text": true
         }
       },
       "events": {},
@@ -2630,8 +2642,8 @@
         "children": {
           "arity": "many",
           "required": false,
-          "text": true,
-          "implicit": true
+          "description": "ListItem elements",
+          "text": true
         }
       },
       "events": {},
@@ -2640,7 +2652,6 @@
     "ListItem": {
       "description": "Part of List.",
       "category": "display",
-      "parent": "List",
       "props": {
         "type": "object",
         "properties": {},
@@ -2654,7 +2665,8 @@
         }
       },
       "events": {},
-      "omitted": {}
+      "omitted": {},
+      "parent": "List"
     },
     "Modal": {
       "description": "Accessible dialog overlay using native <dialog> element",
@@ -2718,8 +2730,8 @@
         "children": {
           "arity": "many",
           "required": false,
-          "text": true,
-          "implicit": true
+          "description": "Modal body content",
+          "text": true
         },
         "footer": {
           "arity": "one",
@@ -3265,6 +3277,10 @@
       "props": {
         "type": "object",
         "properties": {
+          "defaultValue": {
+            "type": "string",
+            "description": "RadioCardGroup only: the initially selected value when uncontrolled"
+          },
           "disabled": {
             "type": "boolean",
             "description": "Disables the card"
@@ -3275,7 +3291,7 @@
           },
           "value": {
             "type": "string",
-            "description": "Radio value"
+            "description": "Radio value. On RadioCardGroup: the controlled selected value"
           }
         },
         "required": ["value"],
@@ -3293,16 +3309,41 @@
           "description": "Card title"
         }
       },
-      "events": {},
+      "events": {
+        "onValueChange": {
+          "description": "RadioCardGroup only: called with the value of the card the person selects"
+        }
+      },
       "omitted": {}
     },
     "RadioCardGroup": {
       "description": "Part of RadioCard.",
       "category": "inputs",
-      "parent": "RadioCard",
       "props": {
         "type": "object",
-        "properties": {},
+        "properties": {
+          "className": {
+            "type": "string",
+            "description": "Class name for the group element, as RadioCardGroupProps declares"
+          },
+          "defaultValue": {
+            "type": "string",
+            "description": "RadioCardGroup only: the initially selected value when uncontrolled"
+          },
+          "label": {
+            "type": "string",
+            "description": "Accessible name of the group, applied as aria-label and not painted"
+          },
+          "name": {
+            "type": "string",
+            "description": "The radio group name shared by its cards"
+          },
+          "value": {
+            "type": "string",
+            "description": "Radio value. On RadioCardGroup: the controlled selected value"
+          }
+        },
+        "required": ["name", "label"],
         "additionalProperties": false
       },
       "slots": {
@@ -3312,8 +3353,13 @@
           "text": true
         }
       },
-      "events": {},
-      "omitted": {}
+      "events": {
+        "onValueChange": {
+          "description": "RadioCardGroup only: called with the value of the card the person selects"
+        }
+      },
+      "omitted": {},
+      "parent": "RadioCard"
     },
     "Search": {
       "description": "Search input with debounced search callback and clear button",
@@ -3432,6 +3478,10 @@
             "type": "string",
             "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this."
           },
+          "defaultValue": {
+            "type": "string",
+            "description": "The initial value when uncontrolled."
+          },
           "disabled": {
             "type": "boolean",
             "description": "When true, disables the control and removes it from the tab order.",
@@ -3478,13 +3528,21 @@
             "enum": ["sm", "md", "lg"],
             "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "default": "md"
+          },
+          "value": {
+            "type": "string",
+            "description": "The controlled value."
           }
         },
         "required": ["options"],
         "additionalProperties": false
       },
       "slots": {},
-      "events": {},
+      "events": {
+        "onChange": {
+          "description": "Called with the change event; read the new value from `event.target.value`."
+        }
+      },
       "omitted": {}
     },
     "Separator": {
@@ -3854,7 +3912,11 @@
         "additionalProperties": false
       },
       "slots": {},
-      "events": {},
+      "events": {
+        "onChange": {
+          "description": "Called with the change event; read the new value from `event.target.value`."
+        }
+      },
       "omitted": {}
     },
     "Spacer": {
@@ -4031,8 +4093,8 @@
         "children": {
           "arity": "many",
           "required": false,
-          "text": true,
-          "implicit": true
+          "description": "Status label",
+          "text": true
         }
       },
       "events": {},
@@ -4198,9 +4260,9 @@
       "slots": {
         "children": {
           "arity": "many",
-          "required": false,
-          "text": true,
-          "implicit": true
+          "required": true,
+          "description": "TabsList and TabsContent elements",
+          "text": true
         }
       },
       "events": {
@@ -4251,8 +4313,8 @@
         "children": {
           "arity": "many",
           "required": false,
-          "text": true,
-          "implicit": true
+          "description": "Tag label",
+          "text": true
         }
       },
       "events": {
@@ -4309,8 +4371,8 @@
         "children": {
           "arity": "many",
           "required": false,
-          "text": true,
-          "implicit": true
+          "description": "Text content",
+          "text": true
         }
       },
       "events": {},
@@ -4347,6 +4409,10 @@
             "description": "Grow the control with its content instead of holding the fixed rows height. rows becomes the minimum and --cascivo-textarea-max-block-size (default 20lh) the ceiling. Pure CSS (field-sizing: content) — no measurement and no listener; where unsupported the fixed rows height is kept.",
             "default": false
           },
+          "defaultValue": {
+            "type": "string",
+            "description": "The initial value when uncontrolled."
+          },
           "disabled": {
             "type": "boolean",
             "description": "When true, disables the control and removes it from the tab order.",
@@ -4374,12 +4440,20 @@
             "type": "number",
             "description": "Number of visible text rows.",
             "default": 4
+          },
+          "value": {
+            "type": "string",
+            "description": "The controlled value."
           }
         },
         "additionalProperties": false
       },
       "slots": {},
-      "events": {},
+      "events": {
+        "onChange": {
+          "description": "Called with the change event; read the new value from `event.target.value`."
+        }
+      },
       "omitted": {}
     },
     "TimePicker": {

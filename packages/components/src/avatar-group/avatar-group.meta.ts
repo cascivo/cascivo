@@ -41,6 +41,12 @@ export const meta: ComponentMeta = {
       type: 'AvatarGroupLabels',
       required: false,
     },
+    {
+      name: 'children',
+      type: 'ReactNode',
+      required: false,
+      description: 'Avatar elements to stack',
+    },
   ],
   tokens: [
     '--cascivo-color-surface',

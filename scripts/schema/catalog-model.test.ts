@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import { describe, it } from 'node:test'
 import {
+  assertChildrenDeclared,
   buildCatalog,
   classifyProp,
   componentUsesChildren,
@@ -312,16 +313,33 @@ describe('buildCatalog', () => {
     )
     assert.deepEqual(cat.components['A']?.props.required, ['y'])
   })
-  it('adds an implicit children slot only for names in the set', () => {
-    const reg = { components: [entry('A', []), entry('B', [])] }
-    const cat = buildCatalog(reg, new Set(['A', 'B']), new Set(['A']))
-    assert.deepEqual(cat.components['A']?.slots['children'], {
-      arity: 'many',
-      required: false,
-      text: true,
-      implicit: true,
-    })
-    assert.equal(cat.components['B']?.slots['children'], undefined)
+  it('emits no implicit children slot: only a declared prop makes a slot', () => {
+    const cat = buildCatalog({ components: [entry('A', [])] }, new Set(['A']))
+    assert.equal(cat.components['A']?.slots['children'], undefined)
+    assert.ok(!JSON.stringify(cat).includes('implicit'))
+  })
+  it('builds a sub-component group from the listed parent props, optional', () => {
+    const reg = {
+      components: [
+        entry('RadioCard', [
+          prop('value', 'string', { required: true }),
+          prop('title', 'ReactNode'),
+          prop('defaultValue', 'string'),
+          prop('onValueChange', '(value: string) => void'),
+        ]),
+      ],
+    }
+    const g = buildCatalog(reg, new Set(['RadioCardGroup'])).components['RadioCardGroup']
+    assert.deepEqual(Object.keys(g?.props.properties ?? {}), [
+      'className',
+      'defaultValue',
+      'label',
+      'name',
+      'value',
+    ])
+    assert.deepEqual([...(g?.props.required ?? [])].sort(), ['label', 'name'])
+    assert.ok('onValueChange' in (g?.events ?? {}))
+    assert.equal(g?.slots['children']?.arity, 'many')
   })
   it('marks every children slot as accepting text, and no other slot', () => {
     const reg = {
@@ -343,5 +361,19 @@ describe('buildCatalog', () => {
       required: false,
       text: true,
     })
+  })
+})
+
+describe('assertChildrenDeclared', () => {
+  it('throws when the source renders children but the manifest omits them', () => {
+    assert.throws(
+      () => assertChildrenDeclared('Button', false, true),
+      /Button: renders children but its manifest does not declare `children` — add it to button\.meta\.ts/,
+    )
+  })
+  it('is a no-op for every other combination', () => {
+    assert.doesNotThrow(() => assertChildrenDeclared('X', true, true))
+    assert.doesNotThrow(() => assertChildrenDeclared('X', false, false))
+    assert.doesNotThrow(() => assertChildrenDeclared('X', false, null))
   })
 })

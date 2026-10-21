@@ -14,6 +14,23 @@ describe('validateView()', () => {
     expect(result.errors).toHaveLength(0)
   })
 
+  it('R37: accepts the className RadioCardGroup declares', () => {
+    const result = validateView({
+      view: {
+        regions: {
+          main: [
+            {
+              component: 'RadioCardGroup',
+              props: { name: 'plan', label: 'Plan', className: 'my-plans' },
+            },
+          ],
+        },
+      },
+    })
+    expect(result.errors).toEqual([])
+    expect(result.valid).toBe(true)
+  })
+
   it('flags unknown components with the path', () => {
     const result = validateView({
       view: { regions: { main: [{ component: 'NoSuchThing' }] } },

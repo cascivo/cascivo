@@ -36,6 +36,12 @@
         "type": "string",
         "required": false,
         "default": "undefined"
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": false,
+        "description": "The quoted content"
       }
     ],
     "tokens": [

@@ -24,6 +24,12 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Spacing token step',
     },
+    {
+      name: 'children',
+      type: 'ReactNode',
+      required: false,
+      description: 'Column content',
+    },
   ],
   tokens: ['--cascivo-space-*'],
   accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },

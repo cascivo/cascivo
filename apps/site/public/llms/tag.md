@@ -41,6 +41,7 @@ import { Tag } from '@cascivo/react'
 | `size`         | `'sm' \| 'md'`                                             | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                                |
 | `onDismiss`    | `() => void`                                               | no       | —         | When provided, renders a trailing remove button inside the chip                                                                                                                                      |
 | `dismissLabel` | `string`                                                   | no       | `Remove`  | Accessible label for the dismiss button.                                                                                                                                                             |
+| `children`     | `ReactNode`                                                | no       | —         | Tag label                                                                                                                                                                                            |
 
 ## Examples
 

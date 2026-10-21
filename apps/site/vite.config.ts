@@ -1089,6 +1089,7 @@ export default defineConfig({
       // prefix, so without these '@cascivo/render/text' resolves to 'index.ts/text'.
       '@cascivo/render/text': resolve(root, 'packages/render/src/view-text.ts'),
       '@cascivo/render/validate': resolve(root, 'packages/render/src/validate.ts'),
+      '@cascivo/render/a2ui/v0_9': resolve(root, 'packages/render/src/a2ui-v0_9.ts'),
       '@cascivo/render': resolve(root, 'packages/render/src/index.ts'),
       // Subpath first, for the same prefix-replacement reason as '@cascivo/core/pure'.
       '@cascivo/text/react': resolve(root, 'packages/text/src/react.tsx'),

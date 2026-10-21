@@ -38,6 +38,7 @@ Implements the WAI-ARIA tabs pattern: tablist/tab/tabpanel roles with arrow-key 
 | `defaultValue`  | `string`                  | No       | —       | The initial value when uncontrolled.       |
 | `value`         | `string`                  | No       | —       | The controlled value.                      |
 | `onValueChange` | `(value: string) => void` | No       | —       | Called with the new value when it changes. |
+| `children`      | `ReactNode`               | Yes      | —       | TabsList and TabsContent elements          |
 
 ## Tokens
 

@@ -24,6 +24,12 @@ export const meta: ComponentMeta = {
       required: false,
       default: 'md',
     },
+    {
+      name: 'children',
+      type: 'ReactNode',
+      required: false,
+      description: 'Badge label',
+    },
   ],
   tokens: [
     '--cascivo-font-sans',

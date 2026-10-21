@@ -64,7 +64,7 @@ describe('formatGrammar() / buildGenerationPrompt()', () => {
   it('formats a small subset deterministically', () => {
     const text = formatGrammar(buildGrammar(registry, ['Badge', 'Separator']))
     expect(text).toMatchInlineSnapshot(`
-      "Badge(size: sm|md, variant: default|secondary|success|warning|destructive|outline)
+      "Badge(children: ReactNode, size: sm|md, variant: default|secondary|success|warning|destructive|outline)
       Separator(decorative: boolean, orientation: horizontal|vertical)"
     `)
   })

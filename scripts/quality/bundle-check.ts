@@ -85,7 +85,9 @@ const BUDGETS: Record<string, number> = {
   '@cascivo/text': 10,
   // Measured ~10.5 across the entry + its shared chunk. Most of it is the generated prop-schema
   // table the validator checks every view against; components come from @cascivo/react.
-  '@cascivo/render': 16,
+  // Raised 16 → 30 for the A2UI v0.9 entry (store, surface, two catalogs): measured 27.3 across
+  // 7 chunks, of which the entry itself is ~14 KB (the planned 24 / 8 KB did not hold).
+  '@cascivo/render': 30,
   '@cascivo/vite-plugin': 5, // measured 0.6
   '@cascivo/astro': 5, // measured 0.5 — runs in Astro's config process, never in a browser
   '@cascivo/eslint-config': 5, // measured 2.0 — plain config data, but still worth a ceiling

@@ -52,6 +52,12 @@ export const meta: ComponentMeta = {
       type: 'React.MouseEventHandler<HTMLButtonElement>',
       required: false,
     },
+    {
+      name: 'children',
+      type: 'ReactNode',
+      required: false,
+      description: 'Button label',
+    },
   ],
   tokens: [
     // Per-variant background knobs. Re-point one of these to restyle a button family

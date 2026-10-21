@@ -38,6 +38,7 @@ import { Alert } from '@cascivo/react'
 | `dismissible` | `boolean`                                                        | no       | `false`   | When true, shows a control to dismiss the component.                                                                                                                                                                                                               |
 | `onDismiss`   | `() => void`                                                     | no       | —         | Called when the component is dismissed.                                                                                                                                                                                                                            |
 | `action`      | `{ label: string; onClick: () => void }`                         | no       | —         | Primary action shown in the component.                                                                                                                                                                                                                             |
+| `children`    | `ReactNode`                                                      | no       | —         | Alert body content                                                                                                                                                                                                                                                 |
 
 ## Examples
 

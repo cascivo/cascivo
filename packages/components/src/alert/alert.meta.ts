@@ -49,6 +49,12 @@ export const meta: ComponentMeta = {
       type: '{ label: string; onClick: () => void }',
       required: false,
     },
+    {
+      name: 'children',
+      type: 'ReactNode',
+      required: false,
+      description: 'Alert body content',
+    },
   ],
   tokens: [
     '--cascivo-color-info',
