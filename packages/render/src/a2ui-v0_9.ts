@@ -1,4 +1,3 @@
-'use client'
 // Public entry for `@cascivo/render/a2ui/v0_9`: the A2UI v0.9 store, surface and catalogs.
 import { basicCatalog } from './a2ui/basic-catalog'
 import { basicCatalogSpec } from './a2ui/basic-spec'
