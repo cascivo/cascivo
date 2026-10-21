@@ -450,7 +450,7 @@ export const BASIC_FUNCTIONS: readonly string[]   // the 14 names
   export interface AdapterInput {
     readonly component: A2uiComponent
     prop(name: string): unknown                          // resolved value; URL keys pass isSafeUrl or are undefined
-    child(id: string): ReactNode                         // renders another node; placeholder when missing
+    children(ids: readonly string[]): ReactNode[]       // renders other nodes; placeholder when missing. Call at most ONCE per adapter render, while the adapter runs; place each returned node once
     slot(name: string): ReactNode                        // ChildList / ComponentId / text per the value's shape
     writer(prop: string): ((value: unknown) => void) | undefined    // set when prop is bound {path}
     action(prop: string): (() => void) | undefined                 // Action → dispatch
