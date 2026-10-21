@@ -18,7 +18,7 @@ import { A2UI_CATALOG_ID, actionMessage, errorMessage, isRecord } from './messag
 import type { A2uiActionMessage, A2uiComponent, A2uiErrorMessage } from './messages'
 import { A2uiPathError, resolvePath } from './pointer'
 import type { A2uiStore, A2uiSurfaceState } from './store'
-import { TWO_WAY, twoWayValue } from './two-way'
+import { TWO_WAY, twoWayEmpty, twoWayValue } from './two-way'
 
 export interface AdapterInput {
   readonly component: A2uiComponent
@@ -34,6 +34,8 @@ export interface AdapterInput {
   action(prop: string): (() => void) | undefined
   /** Messages of the `checks` whose condition is not true. */
   failingChecks(): readonly string[]
+  /** Reports an error for this component, once per code and message for the surface. */
+  report(code: string, message: string): void
 }
 
 export type A2uiAdapter = (input: AdapterInput) => ReactNode
@@ -64,14 +66,23 @@ interface Env {
   readonly locale: string
   readonly onAction: A2uiSurfaceProps['onAction']
   readonly openUrl: (url: string) => void
+  /** Every call reaches `onError`: for errors raised by a user's action. */
   report(e: A2uiErrorMessage): void
+  /** Reaches `onError` once per `key` for the surface: for errors found while rendering. */
+  reportOnce(key: string, e: A2uiErrorMessage): void
   renderError(id: string, message: string): void
 }
 
-// Per surface, the ids already reported as RENDER_ERROR. Keyed by the surface object so the
+// Per surface, the keys of the render-time errors already reported. A render can run any
+// number of times (and a host that sets state in `onError` causes another), so an error found
+// while rendering must reach `onError` once, or it loops. Keyed by the surface object so the
 // set lives exactly as long as the surface (a re-created surface starts clean) and survives
 // re-mounts of <A2uiSurface>, which a component-local ref would not.
 const reportedRenderErrors = new WeakMap<A2uiSurfaceState, Set<string>>()
+
+/** Identifies one render-time error: its code, the component it concerns, and where. */
+const errorKey = (e: A2uiErrorMessage, componentId: string): string =>
+  `${e.error.code}|${componentId}|${e.error.path ?? e.error.message}`
 
 function defaultOpenUrl(url: string): void {
   if (isSafeUrl(url)) window.open(url, '_blank', 'noopener,noreferrer')
@@ -92,24 +103,23 @@ function makeInput(
   env: Env,
 ): AdapterInput {
   const { data, id: surfaceId } = env.surface
-  const ctx: ResolveContext = {
-    data,
-    scope,
-    locale: env.locale,
-    openUrl: env.openUrl,
-    report: env.report,
-    surfaceId,
-  }
+  // Render-time resolution reports once per error; dispatch-time (a click) reports each time.
+  const reportOnce = (e: A2uiErrorMessage): void => env.reportOnce(errorKey(e, component.id), e)
+  const base = { data, scope, locale: env.locale, openUrl: env.openUrl, surfaceId }
+  const renderCtx: ResolveContext = { ...base, report: reportOnce }
+  const dispatchCtx: ResolveContext = { ...base, report: env.report }
   const raw = (name: string): unknown =>
     hasOwn(component.props, name) ? component.props[name] : undefined
-  const resolve = (value: unknown): unknown => resolveDynamic(value, ctx)
-  const pathError = (e: unknown, at: string): void => {
+  const resolve = (value: unknown): unknown => resolveDynamic(value, renderCtx)
+  const resolveNow = (value: unknown): unknown => resolveDynamic(value, dispatchCtx)
+  const pathError = (e: unknown, at: string, report: (e: A2uiErrorMessage) => void): void => {
     if (!(e instanceof A2uiPathError)) throw e
-    env.report(errorMessage('INVALID_PATH', surfaceId, e.message, at))
+    report(errorMessage('INVALID_PATH', surfaceId, e.message, at))
   }
 
-  const child = (id: string): ReactNode => (
-    <A2uiNode key={id} id={id} scope={scope} ancestors={path} env={env} />
+  // Keyed by position too, so an agent listing an id twice does not collide React keys.
+  const child = (id: string, index = 0): ReactNode => (
+    <A2uiNode key={`${id}#${index}`} id={id} scope={scope} ancestors={path} env={env} />
   )
 
   const template = (componentId: string, at: string): ReactNode => {
@@ -119,16 +129,16 @@ function makeInput(
       abs = resolvePath(at, scope)
       items = data.read(abs).value
     } catch (e) {
-      pathError(e, at)
+      pathError(e, at, reportOnce)
       return null
     }
     if (!Array.isArray(items)) return null
-    const base = abs.replace(/\/$/, '')
+    const prefix = abs.replace(/\/$/, '')
     return items.map((_, i) => (
       <A2uiNode
         key={`${componentId}#${i}`}
         id={componentId}
-        scope={`${base}/${i}`}
+        scope={`${prefix}/${i}`}
         ancestors={path}
         env={env}
       />
@@ -155,12 +165,14 @@ function makeInput(
       }
       return resolved
     },
-    child,
+    child: (id) => child(id),
     slot(name) {
       const value = raw(name)
       if (value === undefined) return undefined
       if (Array.isArray(value)) {
-        return value.filter((id): id is string => typeof id === 'string').map(child)
+        return value
+          .filter((id): id is string => typeof id === 'string')
+          .map((id, i) => child(id, i))
       }
       if (isTemplate(value)) return template(value.componentId, value.path)
       const info = hasOwn(a2uiComponents, component.component)
@@ -182,7 +194,7 @@ function makeInput(
         try {
           data.write(resolvePath(at, scope), next)
         } catch (e) {
-          pathError(e, at)
+          pathError(e, at, env.report)
         }
       }
     },
@@ -196,7 +208,7 @@ function makeInput(
         return () => {
           // Resolved at dispatch, so the context carries what the user sees now.
           const resolved = Object.fromEntries(
-            Object.entries(context).map(([k, v]) => [k, resolve(v)]),
+            Object.entries(context).map(([k, v]) => [k, resolveNow(v)]),
           )
           const message = actionMessage({
             name,
@@ -210,7 +222,7 @@ function makeInput(
       }
       const call = value['functionCall']
       // resolveDynamic resolves the call's args and runs it through callFunction.
-      if (isFunctionCall(call)) return () => void resolve(call)
+      if (isFunctionCall(call)) return () => void resolveNow(call)
       return undefined
     },
     failingChecks() {
@@ -222,20 +234,29 @@ function makeInput(
           : [],
       )
     },
+    report(code, message) {
+      reportOnce(errorMessage(code, surfaceId, message))
+    },
   }
 }
 
 interface NodeProps {
   readonly id: string
   readonly scope: string
-  /** Ids on the path from the root to this node, excluding it. */
+  /**
+   * `id@scope` of every node from the root to this one, excluding it. A cycle is the same id
+   * in the same scope; a template recursing over tree data repeats an id in deeper scopes,
+   * which is bounded by the data and by maxRenderDepth.
+   */
   readonly ancestors: readonly string[]
   readonly env: Env
 }
 
+const nodeKey = (id: string, scope: string): string => `${id}@${scope}`
+
 function A2uiNode({ id, scope, ancestors, env }: NodeProps): ReactNode {
   useSignals()
-  if (ancestors.includes(id)) {
+  if (ancestors.includes(nodeKey(id, scope))) {
     env.renderError(id, `Component "${id}" is its own ancestor; the cycle is not rendered.`)
     return null
   }
@@ -246,15 +267,38 @@ function A2uiNode({ id, scope, ancestors, env }: NodeProps): ReactNode {
   }
   const component = env.surface.component(id).value
   if (component === undefined) return <Skeleton />
+  // Keyed by component type: when an agent swaps the type behind an id the body remounts, so
+  // an adapter that calls hooks never sees another adapter's hook order.
+  return (
+    <A2uiBody
+      key={`${id}:${component.component}`}
+      component={component}
+      scope={scope}
+      path={[...ancestors, nodeKey(id, scope)]}
+      env={env}
+    />
+  )
+}
+
+interface BodyProps {
+  readonly component: A2uiComponent
+  readonly scope: string
+  readonly path: readonly string[]
+  readonly env: Env
+}
+
+/** Runs the adapter; its own component so the signals the adapter reads re-render only it. */
+function A2uiBody({ component, scope, path, env }: BodyProps): ReactNode {
+  useSignals()
   const adapter = env.catalog.adapter(component.component)
   if (adapter === undefined) {
     env.renderError(
-      id,
-      `Catalog "${env.catalog.id}" cannot render "${component.component}" (component "${id}").`,
+      component.id,
+      `Catalog "${env.catalog.id}" cannot render "${component.component}" (component "${component.id}").`,
     )
     return null
   }
-  return adapter(makeInput(component, scope, [...ancestors, id], env))
+  return adapter(makeInput(component, scope, path, env))
 }
 
 /** Renders the surface `surfaceId` of `store`, drawing components through `catalogs`. */
@@ -279,16 +323,19 @@ export function A2uiSurface({
   const report = (e: A2uiErrorMessage): void => {
     if (onError !== undefined) queueMicrotask(() => onError(e))
   }
-  const renderError = (id: string, message: string): void => {
+  const reportOnce = (key: string, e: A2uiErrorMessage): void => {
     let seen = reportedRenderErrors.get(surface)
     if (seen === undefined) {
       seen = new Set()
       reportedRenderErrors.set(surface, seen)
     }
-    if (seen.has(id)) return
-    seen.add(id)
-    report(errorMessage('RENDER_ERROR', surface.id, message))
+    if (seen.has(key)) return
+    seen.add(key)
+    report(e)
   }
+  // Once per id, whatever the reason (a cycle, too deep, no adapter).
+  const renderError = (id: string, message: string): void =>
+    reportOnce(`RENDER_ERROR|${id}`, errorMessage('RENDER_ERROR', surface.id, message))
 
   const catalog = catalogs.find((c) => c.id === surface.catalogId)
   if (catalog === undefined) {
@@ -305,6 +352,7 @@ export function A2uiSurface({
     onAction,
     openUrl: openUrl ?? defaultOpenUrl,
     report,
+    reportOnce,
     renderError,
   }
   return <A2uiNode id="root" scope="" ancestors={[]} env={env} />
@@ -337,6 +385,7 @@ function renderGeneric(
   const twoWay = hasOwn(TWO_WAY, name) ? TWO_WAY[name] : undefined
   const write = twoWay === undefined ? undefined : input.writer(twoWay.prop)
   if (twoWay !== undefined && write !== undefined) {
+    if (props[twoWay.prop] === undefined) props[twoWay.prop] = twoWayEmpty(name, props)
     const dispatch = input.action(twoWay.event)
     // Write first, so an Action on the same event resolves its context against the new value.
     props[twoWay.event] = (arg: unknown) => {

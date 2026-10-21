@@ -32,3 +32,32 @@ export function twoWayValue(component: string, arg: unknown): unknown {
   // A native range input reports its value as a string.
   return component === 'Slider' ? Number(value) : value
 }
+
+const EMPTY_STRING: ReadonlySet<string> = new Set([
+  'Input',
+  'Textarea',
+  'Select',
+  'TimePicker',
+  'Search',
+  'Tabs',
+  'Accordion',
+  'RadioCardGroup',
+])
+const EMPTY_FALSE: ReadonlySet<string> = new Set(['Checkbox', 'Toggle', 'CheckboxCard', 'Modal'])
+
+/**
+ * What a bound two-way prop shows while its path holds nothing. A native control that gets
+ * `undefined` first and a value later is switched from uncontrolled to controlled, which React
+ * warns about, so it gets the empty value of its type instead. `undefined` means "pass it on":
+ * NumberInput always renders a formatted string, and DatePicker and Combobox keep their own
+ * field text, where `''` would read as a selection and show the clear button.
+ */
+export function twoWayEmpty(component: string, props: Readonly<Record<string, unknown>>): unknown {
+  if (EMPTY_STRING.has(component)) return ''
+  if (EMPTY_FALSE.has(component)) return false
+  // A range input clamps to its min, so start there.
+  if (component === 'Slider') return typeof props['min'] === 'number' ? props['min'] : 0
+  // Pages are 1-based; an undefined page makes Pagination compute NaN.
+  if (component === 'Pagination') return 1
+  return undefined
+}

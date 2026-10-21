@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { a2uiComponents } from '../a2ui-catalog-data'
@@ -15,23 +15,38 @@ import { TWO_WAY, twoWayValue } from './two-way'
 
 afterEach(() => cleanup())
 
-// Test-only catalog: the cascivo catalog plus a `Spy` that counts its own renders.
+// Test-only catalog: the cascivo catalog plus `Spy` (counts its own renders), `Reporter`
+// (reports through the adapter input on every render) and `Hooked` (an adapter using a hook).
 const SPY_CATALOG_ID = 'test:spy-catalog'
+const TEST_COMPONENTS: ReadonlySet<string> = new Set(['Spy', 'Reporter', 'Hooked'])
 let spyRenders = 0
 const spySpec: A2uiCatalogSpec = {
   id: SPY_CATALOG_ID,
-  has: (c) => c === 'Spy' || cascivoCatalogSpec.has(c),
-  validate: (c) => (c.component === 'Spy' ? [] : cascivoCatalogSpec.validate(c)),
+  has: (c) => TEST_COMPONENTS.has(c) || cascivoCatalogSpec.has(c),
+  validate: (c) => (TEST_COMPONENTS.has(c.component) ? [] : cascivoCatalogSpec.validate(c)),
+}
+function HookedId(): React.ReactNode {
+  return <span data-testid="hooked">{React.useId()}</span>
 }
 const spyCatalog: A2uiRenderCatalog = {
   id: SPY_CATALOG_ID,
-  adapter: (c) =>
-    c === 'Spy'
-      ? () => {
-          spyRenders++
-          return <span data-testid="spy">spy</span>
-        }
-      : cascivoCatalog.adapter(c),
+  adapter: (c) => {
+    if (c === 'Spy') {
+      return () => {
+        spyRenders++
+        return <span data-testid="spy">spy</span>
+      }
+    }
+    if (c === 'Reporter') {
+      return (input) => {
+        input.report('UNSUPPORTED_COMPONENT', 'Reporter is not supported.')
+        return <span>reporter</span>
+      }
+    }
+    // Calls a hook in the adapter itself, as a catalog adapter may.
+    if (c === 'Hooked') return () => <HookedId key={React.useId()} />
+    return cascivoCatalog.adapter(c)
+  },
 }
 
 const SID = 's1'
@@ -99,7 +114,7 @@ describe('<A2uiSurface>', () => {
     expect(screen.getByTestId('spy')).toBeTruthy()
     const before = spyRenders
     expect(before).toBeGreaterThan(0)
-    React.act(() => data('/greeting', 'Hello again'))
+    act(() => data('/greeting', 'Hello again'))
     expect(container.textContent).toContain('Hello again')
     expect(spyRenders).toBe(before)
   })
@@ -186,7 +201,7 @@ describe('<A2uiSurface>', () => {
     expect(screen.getByText('Ada')).toBeTruthy()
     expect(screen.getByText('Grace')).toBeTruthy()
     expect(screen.getByText('Edsger')).toBeTruthy()
-    React.act(() => data('/items', [{ name: 'Only' }]))
+    act(() => data('/items', [{ name: 'Only' }]))
     expect(container.textContent).toBe('Only')
   })
 
@@ -194,12 +209,12 @@ describe('<A2uiSurface>', () => {
     const { store, errors, update } = setup([{ id: 'title', component: 'Text', children: 'Title' }])
     const { container } = mount(store, { fallback: <span>loading</span> })
     expect(container.textContent).toBe('loading')
-    React.act(() => update([{ id: 'root', component: 'Flex', children: ['title', 'later'] }]))
+    act(() => update([{ id: 'root', component: 'Flex', children: ['title', 'later'] }]))
     expect(errors).toEqual([])
     expect(screen.getByText('Title')).toBeTruthy()
     expect(container.textContent).not.toContain('loading')
     expect(container.querySelector('[aria-hidden="true"][data-variant="text"]')).not.toBeNull()
-    React.act(() => update([{ id: 'later', component: 'Text', children: 'Later' }]))
+    act(() => update([{ id: 'later', component: 'Text', children: 'Later' }]))
     expect(screen.getByText('Later')).toBeTruthy()
     expect(container.querySelector('[aria-hidden="true"][data-variant="text"]')).toBeNull()
   })
@@ -216,8 +231,8 @@ describe('<A2uiSurface>', () => {
     expect(errors).toEqual([])
     expect(() => mount(store, { onError })).not.toThrow()
     // Re-render the whole tree (a re-sent root) and one leaf: still one report per id.
-    React.act(() => update([{ ...root }]))
-    React.act(() => data('/t', 'again'))
+    act(() => update([{ ...root }]))
+    act(() => data('/t', 'again'))
     await Promise.resolve()
     const renderErrors = onError.mock.calls
       .map(([m]) => m.error)
@@ -341,7 +356,7 @@ describe('<A2uiSurface>', () => {
     const store = createA2uiStore({ catalogs: [cascivoCatalogSpec] })
     const { container } = mount(store, { fallback: <span>wait</span> })
     expect(container.textContent).toBe('wait')
-    React.act(() => {
+    act(() => {
       store.apply({
         version: 'v0.9',
         createSurface: { surfaceId: SID, catalogId: A2UI_CATALOG_ID },
@@ -355,6 +370,209 @@ describe('<A2uiSurface>', () => {
       })
     })
     expect(container.textContent).toBe('Up')
+  })
+
+  it('fix 1: a render-time error is reported once even when onError re-renders the host', async () => {
+    const { store, errors } = setup([{ id: 'root', component: 'Text', children: { path: 'rel' } }])
+    expect(errors).toEqual([])
+    let calls = 0
+    function Host(): React.ReactNode {
+      const [count, setCount] = React.useState(0)
+      return (
+        <>
+          <span data-testid="count">{count}</span>
+          <A2uiSurface
+            store={store}
+            surfaceId={SID}
+            catalogs={[cascivoCatalog]}
+            onError={() => {
+              calls++
+              setCount((n) => n + 1)
+            }}
+          />
+        </>
+      )
+    }
+    render(<Host />)
+    for (let i = 0; i < 10; i++) await act(async () => {})
+    expect(calls).toBe(1)
+    expect(screen.getByTestId('count').textContent).toBe('1')
+  })
+
+  it('fix 1: an error at dispatch time is reported every time', async () => {
+    const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+    const { store } = setup([
+      {
+        id: 'root',
+        component: 'Button',
+        children: 'Open',
+        onClick: { functionCall: { call: 'openUrl', args: { url: 'javascript:x' } } },
+      },
+    ])
+    mount(store, { onError })
+    fireEvent.click(screen.getByRole('button', { name: 'Open' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Open' }))
+    await act(async () => {})
+    expect(onError).toHaveBeenCalledTimes(2)
+  })
+
+  it('fix 2: a RadioCardGroup binds value; selecting a card writes the path', () => {
+    const { store, errors, data } = setup([
+      {
+        id: 'root',
+        component: 'RadioCardGroup',
+        name: 'plan',
+        label: 'Plan',
+        value: { path: '/plan' },
+        children: ['basic', 'pro'],
+      },
+      { id: 'basic', component: 'RadioCard', value: 'basic', title: 'basicTitle' },
+      { id: 'pro', component: 'RadioCard', value: 'pro', title: 'proTitle' },
+      { id: 'basicTitle', component: 'Text', children: 'Basic' },
+      { id: 'proTitle', component: 'Text', children: 'Pro' },
+    ])
+    data('/plan', 'basic')
+    expect(errors).toEqual([])
+    const { container } = mount(store)
+    const pro = container.querySelector<HTMLInputElement>('input[value="pro"]')!
+    fireEvent.click(pro)
+    expect(store.surface(SID)?.data.snapshot()).toEqual({ plan: 'pro' })
+    expect(pro.checked).toBe(true)
+  })
+
+  // DatePicker is left out: it logs "Cannot update a component while rendering" on any change
+  // of its controlled value, bound or not (a component bug, outside the renderer).
+  it('fix 3: two-way components bound to a missing path log no React error', () => {
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {})
+    try {
+      const { store, errors, data } = setup([
+        {
+          id: 'root',
+          component: 'Flex',
+          children: ['in', 'ta', 'cb', 'sl', 'ni', 'cc', 'tg', 'rg', 'tp', 'pg'],
+        },
+        { id: 'in', component: 'Input', label: 'In', value: { path: '/in' } },
+        { id: 'ta', component: 'Textarea', label: 'Ta', value: { path: '/ta' } },
+        { id: 'cb', component: 'Checkbox', label: 'Cb', checked: { path: '/cb' } },
+        { id: 'sl', component: 'Slider', label: 'Sl', value: { path: '/sl' } },
+        { id: 'ni', component: 'NumberInput', label: 'Ni', value: { path: '/ni' } },
+        { id: 'cc', component: 'CheckboxCard', title: 'ccTitle', checked: { path: '/cc' } },
+        { id: 'ccTitle', component: 'Text', children: 'Cc' },
+        { id: 'tg', component: 'Toggle', label: 'Tg', checked: { path: '/tg' } },
+        {
+          id: 'rg',
+          component: 'RadioCardGroup',
+          name: 'rg',
+          label: 'Rg',
+          value: { path: '/rg' },
+          children: ['rgA'],
+        },
+        { id: 'rgA', component: 'RadioCard', value: 'a', title: 'ccTitle' },
+        {
+          id: 'pg',
+          component: 'Pagination',
+          page: { path: '/pg' },
+          pageSize: 10,
+          totalItems: 50,
+          onPageChange: { event: { name: 'page' } },
+        },
+        { id: 'tp', component: 'TimePicker', label: 'Tp', value: { path: '/tp' } },
+      ])
+      expect(errors).toEqual([])
+      mount(store)
+      act(() => {
+        data('/in', 'x')
+        data('/ta', 'y')
+        data('/cb', true)
+        data('/sl', 40)
+        data('/ni', 3)
+        data('/cc', true)
+        data('/tg', true)
+        data('/rg', 'a')
+        data('/pg', 2)
+        data('/tp', '10:30')
+      })
+      expect((screen.getByLabelText('In') as HTMLInputElement).value).toBe('x')
+      expect(error).not.toHaveBeenCalled()
+    } finally {
+      error.mockRestore()
+    }
+  })
+
+  it('fix 4: duplicate child ids render without a React key warning', () => {
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {})
+    try {
+      const { store } = setup([
+        { id: 'root', component: 'Flex', children: ['a', 'a'] },
+        { id: 'a', component: 'Text', children: 'twice' },
+      ])
+      mount(store)
+      expect(screen.getAllByText('twice')).toHaveLength(2)
+      expect(error).not.toHaveBeenCalled()
+    } finally {
+      error.mockRestore()
+    }
+  })
+
+  it('fix 5: AdapterInput.report reports once per component, with its code', async () => {
+    const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+    const { store, data } = setup(
+      [
+        { id: 'root', component: 'Flex', children: ['r', 'label'] },
+        { id: 'r', component: 'Reporter' },
+        { id: 'label', component: 'Text', children: { path: '/t' } },
+      ],
+      { catalogId: SPY_CATALOG_ID },
+    )
+    mount(store, { onError })
+    act(() => data('/t', 'again'))
+    act(() =>
+      store.apply({
+        version: 'v0.9',
+        updateComponents: {
+          surfaceId: SID,
+          components: [{ id: 'root', component: 'Flex', children: ['r', 'label'] }],
+        },
+      }),
+    )
+    await act(async () => {})
+    expect(onError).toHaveBeenCalledTimes(1)
+    expect(onError.mock.calls[0]![0].error).toEqual({
+      code: 'UNSUPPORTED_COMPONENT',
+      surfaceId: SID,
+      message: 'Reporter is not supported.',
+    })
+  })
+
+  it('fix 6: a recursive template over tree data renders every level without RENDER_ERROR', async () => {
+    const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+    const { store, errors, data } = setup([
+      { id: 'root', component: 'List', children: { componentId: 'row', path: '/tree' } },
+      { id: 'row', component: 'Flex', children: ['name', 'sub'] },
+      { id: 'name', component: 'Text', children: { path: 'name' } },
+      { id: 'sub', component: 'List', children: { componentId: 'row', path: 'children' } },
+    ])
+    data('/tree', [
+      { name: 'A', children: [{ name: 'A1', children: [] }] },
+      { name: 'B', children: [] },
+    ])
+    expect(errors).toEqual([])
+    mount(store, { onError })
+    await act(async () => {})
+    expect(screen.getByText('A')).toBeTruthy()
+    expect(screen.getByText('A1')).toBeTruthy()
+    expect(screen.getByText('B')).toBeTruthy()
+    expect(onError).not.toHaveBeenCalled()
+  })
+
+  it('fix 7: changing the component type of an id remounts it, so adapter hooks stay safe', () => {
+    const { store, update } = setup([{ id: 'root', component: 'Hooked' }], {
+      catalogId: SPY_CATALOG_ID,
+    })
+    mount(store)
+    expect(screen.getByTestId('hooked')).toBeTruthy()
+    act(() => update([{ id: 'root', component: 'Text', children: 'Plain' }]))
+    expect(screen.getByText('Plain')).toBeTruthy()
   })
 })
 
