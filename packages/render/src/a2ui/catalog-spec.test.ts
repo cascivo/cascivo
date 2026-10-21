@@ -25,6 +25,34 @@ describe('cascivoCatalogSpec', () => {
     )
   })
 
+  it('R30: openUrl is refused anywhere but an action functionCall', () => {
+    const open = { call: 'openUrl', args: { url: 'https://evil.example/' } }
+    expect(spec.validate(c('Text', { children: open })).map((i) => i.prop)).toEqual(['children'])
+    expect(spec.validate(c('Alert', { title: open })).map((i) => i.prop)).toEqual(['title'])
+    expect(
+      spec
+        .validate(
+          c('Text', { children: { call: 'formatString', args: { value: '${openUrl(url:"x")}' } } }),
+        )
+        .map((i) => i.prop),
+    ).toEqual(['children'])
+    expect(
+      spec
+        .validate(
+          c('Input', {
+            checks: [{ condition: { call: 'and', args: { values: [open] } }, message: 'm' }],
+          }),
+        )
+        .map((i) => i.prop),
+    ).toEqual(['checks'])
+    expect(spec.validate(c('Button', { onClick: { functionCall: open } }))).toEqual([])
+    expect(
+      spec
+        .validate(c('Button', { onClick: { event: { name: 'go', context: { u: open } } } }))
+        .map((i) => i.prop),
+    ).toEqual(['onClick'])
+  })
+
   it('accepts a button with a slot and an action', () => {
     expect(
       spec.validate(c('Button', { children: 'Save', onClick: { event: { name: 'save' } } })),

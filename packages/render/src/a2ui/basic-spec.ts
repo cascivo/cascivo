@@ -7,6 +7,7 @@ import {
   checkDynNumber,
   checkDynString,
   checkDynStringList,
+  checkOpenUrl,
   unknownComponent,
   unknownProperty,
 } from './catalog-spec'
@@ -194,6 +195,14 @@ export const basicCatalogSpec: A2uiCatalogSpec = {
     if (spec.checkable) known.push('checks')
 
     for (const [key, value] of Object.entries(c.props)) {
+      const gesture = checkOpenUrl(
+        value,
+        Object.hasOwn(spec.props, key) && spec.props[key] === 'action',
+      )
+      if (gesture !== undefined) {
+        issues.push({ prop: key, message: `Invalid "${key}": ${gesture}.` })
+        continue
+      }
       const common = checkCommonKey(key, value, { checks: spec.checkable, weight: true })
       if (common !== undefined) {
         if (common !== null) issues.push({ prop: key, message: `Invalid "${key}": ${common}.` })

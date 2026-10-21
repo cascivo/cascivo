@@ -154,7 +154,14 @@ function makeInput(
   // Render-time resolution reports once per error; dispatch-time (a click) reports each time.
   const reportOnce = (e: A2uiErrorMessage): void => env.reportOnce(errorKey(e, component.id), e)
   const base = { data, scope, locale: env.locale, openUrl: env.openUrl, surfaceId }
-  const renderCtx: ResolveContext = { ...base, report: reportOnce }
+  // openUrl needs a user gesture: while rendering it only reports (validation refuses it
+  // outside an action, but a bound formatString template can still name it).
+  const renderCtx: ResolveContext = {
+    ...base,
+    openUrl: () =>
+      reportOnce(errorMessage('FUNCTION_ERROR', surfaceId, 'openUrl only runs from an action.')),
+    report: reportOnce,
+  }
   const dispatchCtx: ResolveContext = { ...base, report: env.report }
   const raw = (name: string): unknown =>
     hasOwn(component.props, name) ? component.props[name] : undefined

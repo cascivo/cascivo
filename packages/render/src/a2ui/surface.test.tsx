@@ -451,6 +451,39 @@ describe('<A2uiSurface>', () => {
     expect(openUrl).toHaveBeenCalledWith('https://example.com')
   })
 
+  it('R30: openUrl never runs while rendering, even from bound formatString text', async () => {
+    const openUrl = vi.fn<(url: string) => void>()
+    const onError = vi.fn<(m: A2uiErrorMessage) => void>()
+    const { store, errors, data } = setup([
+      {
+        id: 'root',
+        component: 'Text',
+        children: { call: 'formatString', args: { value: { path: '/t' } } },
+      },
+    ])
+    data('/t', "${openUrl(url:'https://evil.example/')}")
+    expect(errors).toEqual([])
+    mount(store, { openUrl, onError })
+    await act(async () => {})
+    expect(openUrl).not.toHaveBeenCalled()
+    expect(onError.mock.calls.map(([m]) => m.error)).toEqual([
+      { code: 'FUNCTION_ERROR', surfaceId: SID, message: 'openUrl only runs from an action.' },
+    ])
+  })
+
+  it('R30: the store refuses an openUrl call in a rendered prop', () => {
+    const { errors } = setup([
+      {
+        id: 'root',
+        component: 'Text',
+        children: { call: 'openUrl', args: { url: 'https://evil.example/' } },
+      },
+    ])
+    expect(errors.map((e) => [e.error.code, e.error.path])).toEqual([
+      ['VALIDATION_FAILED', '/components/0/children'],
+    ])
+  })
+
   it('renders the fallback when the surface does not exist yet', () => {
     const store = createA2uiStore({ catalogs: [cascivoCatalogSpec] })
     const { container } = mount(store, { fallback: <span>wait</span> })

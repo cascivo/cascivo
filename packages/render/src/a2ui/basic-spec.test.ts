@@ -96,6 +96,37 @@ describe('basicCatalogSpec', () => {
     expect(spec.validate(c('Nope', {}))[0]?.prop).toBe('')
   })
 
+  it('R30: openUrl is refused anywhere but an action functionCall', () => {
+    const open = { call: 'openUrl', args: { url: 'https://evil.example/' } }
+    expect(spec.validate(c('Text', { text: open })).map((i) => i.prop)).toEqual(['text'])
+    expect(
+      spec
+        .validate(
+          c('Text', { text: { call: 'formatString', args: { value: "${openUrl(url:'x')}" } } }),
+        )
+        .map((i) => i.prop),
+    ).toEqual(['text'])
+    expect(
+      spec
+        .validate(
+          c('Button', {
+            child: 'l',
+            action: { event: { name: 'go' } },
+            checks: [{ condition: { call: 'not', args: { value: open } }, message: 'm' }],
+          }),
+        )
+        .map((i) => i.prop),
+    ).toEqual(['checks'])
+    expect(
+      spec
+        .validate(
+          c('Button', { child: 'l', action: { event: { name: 'go', context: { u: open } } } }),
+        )
+        .map((i) => i.prop),
+    ).toEqual(['action'])
+    expect(spec.validate(c('Button', { child: 'l', action: { functionCall: open } }))).toEqual([])
+  })
+
   it('only allows checks on Checkable components', () => {
     const checks = [{ condition: true, message: 'm' }]
     expect(spec.validate(c('Text', { text: 'x', checks }))[0]?.prop).toBe('checks')

@@ -64,6 +64,36 @@ export function hasTranslationRef(value: unknown): boolean {
   return false
 }
 
+// `${openUrl(` inside a string that may reach formatString.
+const OPEN_URL_TEMPLATE = /\$\{\s*openUrl\s*\(/
+
+/**
+ * Why `value` may not carry openUrl, or undefined. openUrl needs a user gesture, so it may only
+ * be the `functionCall` of an action (`isAction`), which runs on a click; anywhere else (a
+ * rendered prop, a check, an event's context, a formatString template) it would run on every
+ * render or be smuggled into one.
+ */
+export function checkOpenUrl(value: unknown, isAction: boolean): string | undefined {
+  let rest = value
+  if (isAction && isRecord(value) && isRecord(value['functionCall'])) {
+    const call = value['functionCall']
+    if (call['call'] === 'openUrl') rest = call['args']
+  }
+  const stack: unknown[] = [rest]
+  while (stack.length > 0) {
+    const cur = stack.pop()
+    if (typeof cur === 'string' && OPEN_URL_TEMPLATE.test(cur)) {
+      return 'openUrl may only be the functionCall of an action'
+    }
+    if (typeof cur !== 'object' || cur === null) continue
+    if (isRecord(cur) && cur['call'] === 'openUrl') {
+      return 'openUrl may only be the functionCall of an action'
+    }
+    for (const child of Object.values(cur)) stack.push(child)
+  }
+  return undefined
+}
+
 /** A binding or a function call: resolved at render time, so only its shape is checked. */
 export const isDynamicRef = (value: unknown): boolean => isBinding(value) || isFunctionCall(value)
 
@@ -223,6 +253,11 @@ export const cascivoCatalogSpec: A2uiCatalogSpec = {
     ]
 
     for (const [key, value] of Object.entries(c.props)) {
+      const gesture = checkOpenUrl(value, events.includes(key) && !hasOwn(slots, key))
+      if (gesture !== undefined) {
+        issues.push({ prop: key, message: `Invalid "${key}": ${gesture}.` })
+        continue
+      }
       const common = checkCommonKey(key, value, { checks: true, weight: false })
       if (common !== undefined) {
         if (common !== null) issues.push({ prop: key, message: `Invalid "${key}": ${common}.` })
