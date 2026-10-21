@@ -47,7 +47,7 @@ describe('isSafeRegexPattern', () => {
       expect(isSafeRegexPattern(p)).toBe(false)
     }
   })
-  it('refuses polynomial backtracking by counting unbounded quantifiers', () => {
+  it('refuses polynomial and exponential backtracking by counting every quantifier', () => {
     for (const p of [
       'a*a*a*a*a*b',
       '\\d+\\d+\\d+\\d+\\d+\\d+$',
@@ -56,16 +56,42 @@ describe('isSafeRegexPattern', () => {
       '\\d+\\d+\\d+$',
       'a*?a*?a*?b',
       'a{1,}a{2,}a{3,}b',
+      'a{1,1000}a{1,1000}a{1,1000}a{1,1000}b',
+      'a{0,1000}a{0,1000}a{0,1000}b',
+      '\\d{1,999}\\d{1,999}\\d{1,999}x',
+      '\\w{1,1000}'.repeat(5) + '$',
+      '(a?)'.repeat(34) + 'a'.repeat(34),
+      'a?'.repeat(34) + 'a'.repeat(34),
+      '^\\d{3}-\\d{3}-\\d{4}$',
     ]) {
       expect(isSafeRegexPattern(p)).toBe(false)
     }
+  })
+  it('refuses repeat counts above 99', () => {
+    expect(isSafeRegexPattern('a{0,1000}')).toBe(false)
+    expect(isSafeRegexPattern('a{100}')).toBe(false)
+    expect(isSafeRegexPattern('a{0,99}')).toBe(true)
   })
   it('documents the conservative refusals', () => {
     expect(isSafeRegexPattern('(a|b)+')).toBe(false)
     expect(isSafeRegexPattern('(\\d{3})+')).toBe(false)
   })
-  it('accepts patterns with at most two unbounded quantifiers', () => {
-    for (const p of ['^\\d{3}-\\d{4}$', '^[A-Z][a-z]*$', '^\\S+@\\S+$', '^[a-z]{2,5}\\d+$']) {
+  it('does not count group prefixes, counts a lazy quantifier once', () => {
+    expect(isSafeRegexPattern('^(?:ab)$')).toBe(true)
+    expect(isSafeRegexPattern('a(?=x)b(?!y)c+d*')).toBe(true)
+    expect(isSafeRegexPattern('(?<=x)a(?<!y)(?<n>b)c+d*')).toBe(true)
+    expect(isSafeRegexPattern('a+?b+?')).toBe(true)
+    expect(isSafeRegexPattern('a+?b+?c+?')).toBe(false)
+  })
+  it('accepts patterns with at most two quantifiers', () => {
+    for (const p of [
+      '^\\d{3}-\\d{4}$',
+      '^[A-Z][a-z]*$',
+      '^\\S+@\\S+$',
+      '^\\+?\\d{1,15}$',
+      '^(yes|no)$',
+      '^[a-z]{2,5}\\d+$',
+    ]) {
       expect(isSafeRegexPattern(p)).toBe(true)
     }
   })
@@ -95,6 +121,16 @@ describe('validators', () => {
   it('regex stays fast on the worst accepted shape', () => {
     const started = Date.now()
     expect(call('regex', { value: `${'1'.repeat(1000)}x`, pattern: '^\\d+\\d+$' })).toBe(false)
+    expect(Date.now() - started).toBeLessThan(200)
+  })
+  it('regex stays fast on bounded-quantifier worst shapes', () => {
+    const started = Date.now()
+    expect(call('regex', { value: `${'a'.repeat(1000)}`, pattern: '^a{0,1000}a{0,1000}b' })).toBe(
+      false,
+    )
+    expect(call('regex', { value: `${'a'.repeat(999)}c`, pattern: 'a{0,1000}a{0,1000}b' })).toBe(
+      false,
+    )
     expect(Date.now() - started).toBeLessThan(200)
   })
   it('regex refuses long patterns, long values and invalid patterns', () => {

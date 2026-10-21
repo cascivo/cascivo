@@ -39,29 +39,38 @@ export const BASIC_FUNCTIONS: readonly string[] = [
 const MAX_DEPTH = 16
 const MAX_REGEX_PATTERN = 256
 const MAX_REGEX_INPUT = 1_000
-const MAX_UNBOUNDED_QUANTIFIERS = 2
+const MAX_QUANTIFIERS = 2
 const MAX_TEMPLATE = 10_000
 
 // ---- Regex safety -------------------------------------------------------------------------
 
 /**
- * JS has no linear-time regex engine, so the shapes that backtrack exponentially are refused
- * before they run: backreferences, and a group holding a quantifier or an alternation that is
- * itself repeated. Conservative on purpose (`(a|b)+` and `(\d{3})+` are refused too).
+ * JS has no linear-time regex engine, so the shapes that backtrack badly are refused before they
+ * run: backreferences, a group holding a quantifier or an alternation that is itself repeated
+ * (`(a+)+`, `(a|aa){2,}`; `(a|b)+` and `(\d{3})+` are refused too), and any pattern with more
+ * than two quantifier tokens. Every quantifier counts (`?`, `*`, `+`, `{n}`, `{n,}`, `{n,m}`,
+ * greedy or lazy), because bounded ones such as `a{1,1000}` and optional ones such as `a?a?a?aaa`
+ * backtrack just like `*`: n adjacent overlapping quantifiers cost up to O(len^n).
  *
- * Adjacent overlapping quantifiers (`a*a*a*b`) backtrack polynomially, with the degree equal to
- * their count, so more than two unbounded quantifiers (`*`, `+`, `{n,}`, greedy or lazy) are
- * refused. Residual risk: two overlapping quantifiers on at most 1,000 characters is O(n^2) at
- * worst, which is acceptable; patterns that need more are deliberately refused.
+ * A repeat count above 99 (`a{0,1000}`) is refused for the same reason.
+ *
+ * Residual risk: with at most two quantifiers and no quantified group, an unanchored pattern
+ * costs roughly O(len^3) at worst (measured about 150 ms for `\d+\d+x` on 1,000 characters),
+ * which is acceptable on the 1,000-character input cap. Patterns that need
+ * more quantifiers (`^\d{3}-\d{3}-\d{4}$`) are deliberately refused.
  */
 export function isSafeRegexPattern(pattern: string): boolean {
   if (pattern.length > MAX_REGEX_PATTERN) return false
   // One flag per open group: does it contain a quantifier or an alternation?
   const stack: boolean[] = []
   let inClass = false
-  let unbounded = 0
+  let quantifiers = 0
+  // True right after a quantifier token, where a `?` is its lazy suffix, not another quantifier.
+  let afterQuantifier = false
   for (let i = 0; i < pattern.length; i++) {
     const ch = pattern[i]!
+    const wasQuantifier = afterQuantifier
+    afterQuantifier = false
     if (ch === '\\') {
       const next = pattern[i + 1]
       if (!inClass && next !== undefined && ((next >= '1' && next <= '9') || next === 'k')) {
@@ -74,16 +83,38 @@ export function isSafeRegexPattern(pattern: string): boolean {
       if (ch === ']') inClass = false
       continue
     }
-    if (
-      (ch === '*' || ch === '+' || (ch === '{' && /^\{\d+,\}/.test(pattern.slice(i, i + 24)))) &&
-      ++unbounded > MAX_UNBOUNDED_QUANTIFIERS
-    )
-      return false
-    if (ch === '[') inClass = true
-    else if (ch === '(') stack.push(false)
-    else if (ch === '+' || ch === '*' || ch === '{' || ch === '|') {
+    if (ch === '[') {
+      inClass = true
+      continue
+    }
+    if (ch === '(') {
+      stack.push(false)
+      // `(?:`, `(?=`, `(?!`, `(?<…` are group prefixes; their `?` is not a quantifier.
+      if (pattern[i + 1] === '?') i++
+      continue
+    }
+    if (ch === '|') {
       if (stack.length > 0) stack[stack.length - 1] = true
-    } else if (ch === ')') {
+      continue
+    }
+    let isQuantifier = false
+    if (ch === '*' || ch === '+' || (ch === '?' && !wasQuantifier)) isQuantifier = true
+    else if (ch === '{') {
+      const m = /^\{\d+(?:,\d*)?\}/.exec(pattern.slice(i, i + 24))
+      if (m !== null) {
+        // Unanchored, two `{0,1000}` cost ~400 ms on 1,000 characters; 100 keeps them near 30 ms.
+        if (/\d{4,}|[1-9]\d{2,}/.test(m[0])) return false
+        isQuantifier = true
+        i += m[0].length - 1
+      }
+    }
+    if (isQuantifier) {
+      if (++quantifiers > MAX_QUANTIFIERS) return false
+      afterQuantifier = true
+      if (stack.length > 0) stack[stack.length - 1] = true
+      continue
+    }
+    if (ch === ')') {
       const holds = stack.pop() ?? false
       if (holds) {
         const after = pattern[i + 1]
