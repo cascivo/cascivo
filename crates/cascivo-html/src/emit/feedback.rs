@@ -1,6 +1,6 @@
 //! Feedback emitters. Each mirrors the DOM of `packages/components/src/<unit>/<unit>.tsx`
 //! (`meter` mirrors `packages/charts/src/charts/meter/meter.tsx`) so the shared CSS applies
-//! unchanged. Dismiss buttons are emitted as markup only: with no JS they do nothing.
+//! unchanged. No dismiss button: with no JS it would do nothing (an a11y trap), so `dismissible` is accepted but ignored.
 
 use super::{NodeExt, emit_children};
 use crate::ast::Node;
@@ -52,14 +52,6 @@ fn non_empty(s: Option<String>) -> Option<String> {
     s.filter(|s| !s.is_empty())
 }
 
-fn dismiss_button(out: &mut String, class: &str) {
-    out.push_str("<button");
-    attr(out, "type", "button");
-    attr(out, "class", class);
-    attr(out, "aria-label", "Dismiss");
-    out.push_str(">\u{2715}</button>");
-}
-
 fn icon_span(out: &mut String, class: &str, icon: &str) {
     out.push_str("<span");
     attr(out, "class", class);
@@ -94,9 +86,6 @@ fn alert(node: &Node, out: &mut String) {
         el(out, "div", "cv-alert-content", t);
     }
     out.push_str("</div>");
-    if node.prop_bool("dismissible") {
-        dismiss_button(out, "cv-alert-dismiss");
-    }
     out.push_str("</div>");
 }
 
@@ -179,9 +168,6 @@ fn notification(node: &Node, out: &mut String) {
         el(out, "div", "cv-notification-actions", &a);
     }
     out.push_str("</div>");
-    if node.prop_bool("dismissible") {
-        dismiss_button(out, "cv-notification-dismiss");
-    }
     out.push_str("</div>");
 }
 
@@ -340,7 +326,8 @@ fn progress_circle(node: &Node, out: &mut String) {
 
 /// Two-decimal rounding the chart engine applies to trig-derived coordinates.
 fn quantize(n: f64) -> f64 {
-    (n * 100.0).round() / 100.0
+    // JS `Math.round` rounds halves toward +inf, unlike `f64::round`.
+    (n * 100.0 + 0.5).floor() / 100.0
 }
 
 /// Port of the charts engine `arcPath` for a sweep of at most half a turn (all a meter needs).
@@ -352,6 +339,11 @@ fn arc_path(cx: f64, cy: f64, outer: f64, inner: f64, start: f64, end: f64) -> S
     let (ox1, oy1) = point(outer, end);
     let (ix0, iy0) = point(inner, end);
     let (ix1, iy1) = point(inner, start);
+    if inner <= 0.0 {
+        let [cx, cy, ox0, oy0, ox1, oy1] =
+            [quantize(cx), quantize(cy), ox0, oy0, ox1, oy1].map(js_num);
+        return format!("M{cx},{cy}L{ox0},{oy0}A{o_r},{o_r} 0 {large} 1 {ox1},{oy1}Z");
+    }
     let [ox0, oy0, ox1, oy1, ix0, iy0, ix1, iy1] =
         [ox0, oy0, ox1, oy1, ix0, iy0, ix1, iy1].map(js_num);
     format!(

@@ -1,3 +1,3 @@
 import { Notification } from '../../src/notification/notification'
 
-export default <Notification title="T" variant="error" dismissible />
+export default <Notification title="T" variant="error" />
