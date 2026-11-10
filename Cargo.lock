@@ -5,3 +5,10 @@ version = 4
 [[package]]
 name = "cascivo-html"
 version = "0.0.0"
+
+[[package]]
+name = "cascivo-html-cli"
+version = "0.0.0"
+dependencies = [
+ "cascivo-html",
+]

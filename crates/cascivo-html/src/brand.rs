@@ -224,6 +224,13 @@ pub fn parse_brand(items: &[BrandItem]) -> Result<Brand, Vec<Diagnostic>> {
     parse_brand_at(items.iter().map(|i| (i, 1)))
 }
 
+/// Parses the text of a brand file (the same keys as `@brand`, one or more per line).
+/// Diagnostic lines refer to lines of that file.
+pub fn parse_brand_file(text: &str) -> Result<Brand, Vec<Diagnostic>> {
+    let items = file_items(text);
+    parse_brand_at(items.iter().map(|(i, l)| (i, *l)))
+}
+
 fn parse_brand_at<'a>(
     items: impl Iterator<Item = (&'a BrandItem, u32)>,
 ) -> Result<Brand, Vec<Diagnostic>> {

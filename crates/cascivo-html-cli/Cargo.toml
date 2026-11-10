@@ -1,0 +1,13 @@
+[package]
+name = "cascivo-html-cli"
+version = "0.0.0"
+edition.workspace = true
+rust-version.workspace = true
+description = "cascivo-html command line: render .cv to one static HTML file"
+
+[[bin]]
+name = "cascivo-html"
+path = "src/main.rs"
+
+[dependencies]
+cascivo-html = { path = "../cascivo-html" }
