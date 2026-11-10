@@ -37,7 +37,11 @@ impl Cx {
 }
 
 /// CSS that only some emitters need beyond the per-component module (inside `@layer cascivo.component`).
-const EXTRA_CSS: &[(&str, &str)] = &[("tabs", include_str!("../assets/extra/tabs.css"))];
+// Static output has no load handler, so the image must not stay hidden behind its placeholder.
+const EXTRA_CSS: &[(&str, &str)] = &[
+    ("image", include_str!("../assets/extra/image.css")),
+    ("tabs", include_str!("../assets/extra/tabs.css")),
+];
 
 /// Inline scripts, keyed by the name emitters put in `Cx::scripts`.
 const SCRIPTS: &[(&str, &str)] = &[("table-sort", include_str!("../assets/extra/table-sort.js"))];

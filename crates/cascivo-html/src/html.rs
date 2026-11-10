@@ -74,6 +74,32 @@ pub fn css_len(s: &str) -> Option<String> {
     Some(s.to_string())
 }
 
+/// A URL safe to put in `href`/`src`: http(s), relative, and (for non-images) mailto/tel;
+/// images also allow raster `data:image/*`. Everything else (`javascript:`, `data:text/html`…) is dropped.
+pub fn safe_url(s: &str, img: bool) -> Option<String> {
+    // Browsers ignore tab/CR/LF inside a scheme (`java\tscript:`), so judge the stripped form.
+    let n: String = s.trim().chars().filter(|c| !c.is_ascii_control()).collect();
+    let l = n.to_ascii_lowercase();
+    let scheme = l
+        .find([':', '/', '?', '#'])
+        .filter(|&i| l.as_bytes().get(i) == Some(&b':'));
+    let ok = match scheme {
+        None => true,
+        Some(i) => match l.get(..i) {
+            Some("http" | "https") => true,
+            Some("mailto" | "tel") => !img,
+            Some("data") => {
+                img && ["png", "jpeg", "gif", "webp"].iter().any(|m| {
+                    l.starts_with(&format!("data:image/{m};"))
+                        || l.starts_with(&format!("data:image/{m},"))
+                })
+            }
+            _ => false,
+        },
+    };
+    ok.then_some(n)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -104,6 +130,30 @@ mod tests {
         ] {
             assert_eq!(css_len(bad), None, "{bad}");
         }
+    }
+
+    #[test]
+    fn safe_url_filters_schemes() {
+        for ok in [
+            "https://a.b/c?d=e:f",
+            "/x:y",
+            "#top",
+            "page.html",
+            "mailto:a@b.c",
+        ] {
+            assert!(safe_url(ok, false).is_some(), "{ok}");
+        }
+        for bad in [
+            "javascript:alert(1)",
+            " JaVa\tScript:x",
+            "data:text/html,x",
+            "vbscript:x",
+            "mailto:a@b.c",
+        ] {
+            assert!(safe_url(bad, bad.starts_with("mailto")).is_none(), "{bad}");
+        }
+        assert!(safe_url("data:image/png;base64,AAA", true).is_some());
+        assert!(safe_url("data:image/svg+xml,<svg>", true).is_none());
     }
 
     #[test]

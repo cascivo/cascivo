@@ -5,7 +5,7 @@
 
 use super::{NodeExt, emit_children};
 use crate::ast::Node;
-use crate::html::{attr, esc, flag, num};
+use crate::html::{attr, css_len, esc, flag, num, safe_url};
 use crate::render::Cx;
 
 pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
@@ -71,7 +71,8 @@ fn simple_text(node: &Node, out: &mut String, tag: &str, class: &str) {
 fn heading(node: &Node, out: &mut String) {
     let level = node
         .prop_num("level")
-        .map_or(2, |n| n.clamp(1.0, 6.0) as u8);
+        .filter(|n| n.is_finite())
+        .map_or(2, |n| n.round().clamp(1.0, 6.0) as u8);
     // The catalog default for `size` is prose ("derived from level"), so only an explicit
     // value counts; otherwise derive it exactly as the component does.
     let size = if node.prop_set("size") {
@@ -453,7 +454,9 @@ fn avatar_view(out: &mut String, v: &AvatarView) {
         let alt = [v.alt, v.name].into_iter().find(|s| !s.is_empty());
         out.push_str("<img");
         attr(out, "class", "cv-avatar-image");
-        attr(out, "src", v.src);
+        if let Some(u) = safe_url(v.src, true) {
+            attr(out, "src", &u);
+        }
         attr(out, "alt", alt.unwrap_or(""));
         out.push('>');
     } else {
@@ -499,8 +502,10 @@ fn avatar_group(node: &Node, cx: &mut Cx, out: &mut String) {
     let items = node.children.len();
     let max = node.prop_num("max").map(|m| m.max(0.0) as usize);
     let visible = max.map_or(items, |m| m.min(items));
-    let count = node.prop_num("total").map_or(items as i64, |t| t as i64);
-    let overflow = count - visible as i64;
+    let count = node
+        .prop_num("total")
+        .map_or(items as i64, |t| (t.clamp(0.0, 1e9)) as i64);
+    let overflow = count.saturating_sub(visible as i64);
     out.push_str("<div");
     attr(out, "role", "group");
     attr(out, "data-spacing", &prop_or(node, "spacing", "md"));
@@ -531,22 +536,29 @@ fn avatar_group(node: &Node, cx: &mut Cx, out: &mut String) {
 }
 
 /// A bare number is pixels (as in the catalog's prop docs); anything else is a CSS length.
-fn length(v: &str) -> String {
+fn length(v: &str) -> Option<String> {
     match v.trim().parse::<f64>() {
-        Ok(n) if n.is_finite() => format!("{}px", num(n)),
-        _ => v.to_string(),
+        Ok(n) if n.is_finite() => Some(format!("{}px", num(n))),
+        _ => css_len(v),
     }
 }
 
 fn image(node: &Node, out: &mut String) {
-    let src = node.arg_str(0).unwrap_or_default();
+    let src = node
+        .arg_str(0)
+        .and_then(|u| safe_url(&u, true))
+        .unwrap_or_default();
     let alt = node.arg_str(1).unwrap_or_default();
     let mut style = Vec::new();
     if let Some(w) = node.prop_str("width") {
-        style.push(format!("inline-size:{}", length(&w)));
+        if let Some(l) = length(&w) {
+            style.push(format!("inline-size:{l}"));
+        }
     }
     if let Some(h) = node.prop_str("height") {
-        style.push(format!("block-size:{}", length(&h)));
+        if let Some(l) = length(&h) {
+            style.push(format!("block-size:{l}"));
+        }
     }
     let style = style.join(";");
     // `fallbackSrc` only matters after a load error, which static HTML cannot observe.
@@ -918,7 +930,8 @@ fn link(node: &Node, out: &mut String) {
         attr(out, "target", "_blank");
         attr(out, "rel", "noreferrer");
     }
-    attr(out, "href", &node.arg_str(0).unwrap_or_default());
+    let href = node.arg_str(0).and_then(|u| safe_url(&u, false));
+    attr(out, "href", href.as_deref().unwrap_or("#"));
     out.push('>');
     esc(out, raw_text(node));
     out.push_str("</a>");

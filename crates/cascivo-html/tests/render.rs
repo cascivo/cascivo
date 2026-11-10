@@ -89,3 +89,19 @@ fn user_text_is_escaped() {
     assert!(h.contains("&lt;script&gt;x&lt;/script&gt;"));
     assert!(h.contains("a &amp; &quot;b&quot; &lt;i&gt;"));
 }
+
+#[test]
+fn dangerous_urls_are_dropped() {
+    let h = cascivo_html::render_fragment("link \"javascript:alert(1)\" \"x\"\n").unwrap();
+    assert!(!h.contains("javascript"), "{h}");
+    let h = cascivo_html::render_fragment("image \"data:text/html,x\"\n").unwrap();
+    assert!(!h.contains("data:text"), "{h}");
+    let h = cascivo_html::render_fragment("image x.png width=\"1px;background:red\"\n").unwrap();
+    assert!(!h.contains("background"), "{h}");
+}
+
+#[test]
+fn heading_level_nan_is_safe() {
+    let h = cascivo_html::render_fragment("heading level=nan \"x\"\n").unwrap_or_default();
+    assert!(!h.contains("<h0"), "{h}");
+}
