@@ -153,6 +153,7 @@
     "@changesets/cli": "catalog:",
     "@playwright/test": "catalog:",
     "docspack": "catalog:",
+    "lightningcss": "catalog:",
     "publint": "catalog:",
     "ts-morph": "catalog:",
     "vite-plus": "catalog:"
