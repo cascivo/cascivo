@@ -1,0 +1,3 @@
+flex
+  flex grow basis=10rem truncate
+    separator
