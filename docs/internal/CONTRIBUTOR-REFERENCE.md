@@ -69,6 +69,15 @@ pnpm ready
 
 This runs: `pnpm regen` → `vp check --fix` → both host-lint gates (`lint:host-strict`, `lint:host-eslint`, `lint:host-eslint:test`) → the pre-build guard suite (brand, claims, recurrence, release, regen, meta, i18n, docs-routes, llms, layers, unlayered, reset, popover, dead-props, doc-urls, primitives, apg, visual-baselines) → build → the post-build guard suite (scaffold, audit:bundle, ssr, css-contract, sparkline:size, rsc, dts-tsdoc, api, shims, docspack, type-exports, computed, rtl) → type check → tests → the React Compiler leg (`compiler:check`).
 
+**Rust (`crates/cascivo-html`, `crates/cascivo-html-cli`) is not in `pnpm ready`.** Its own gates run
+in `.github/workflows/rust.yml` and must pass locally before you commit Rust changes:
+`cargo fmt --check`, `cargo clippy --all-targets -- -D warnings`, `cargo test --workspace`
+(parser, emitters, byte-compared `examples/*.html` snapshots, determinism, CLI). The generated
+sources (`catalog_gen.rs`, `css_gen.rs`, `guide_gen.rs`, `assets/`) come from
+`pnpm html-kit:generate` (inside `pnpm regen`); `pnpm html-kit:check` is in `ready`. `GUIDE` is capped
+at 6,000 chars by `tests/guide.rs`. After an intended emitter change, refresh snapshots with
+`UPDATE_SNAPSHOTS=1 cargo test --test examples`.
+
 The post-build half needs `dist/`, which is why it sits after the build: `api:check` diffs the
 published `.d.ts` surface against `api-surface.json`, `shims:check` regenerates
 `apps/site/src/shims` from the built types and fails on a diff, and `css-contract:check`

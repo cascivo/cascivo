@@ -1,0 +1,16 @@
+@title "Usage report"
+@lang en
+h1 "Usage report"
+p "Findings from a survey of 200 users."
+progress-bar 72
+gauge 64
+h2 "Weekly activity"
+bar Mon:4 Tue:7 Wed:3 Thu:9 Fri:6
+h2 "Scores"
+table Name,Score | Ann,31 | Bob,42
+tabs
+  section "Method"
+    text "Survey of 200 users over two weeks."
+  section "Notes"
+    blockquote "Great tool."
+breadcrumb Home,/ | Reports,/reports | Usage

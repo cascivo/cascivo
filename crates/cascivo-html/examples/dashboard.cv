@@ -1,0 +1,14 @@
+@title "Sales dashboard"
+@brand #5b5bd6 r8 gap4 dark
+page-header "Sales" "Q3 overview"
+cols 3
+  stat Revenue "$48k" "+12%"
+  stat Users 1204 "+3%"
+  stat Churn "2.1%" "-0.4%"
+cols 2
+  card "Revenue by quarter"
+    bar Q1:12 Q2:18 Q3:9 Q4:21
+  card "Active users"
+    line 3 5 8 13 9 14
+card "Top accounts"
+  table sort Account,Plan,MRR | Acme,Pro,4200 | Globex,Team,1800 | Initech,Pro,2600
