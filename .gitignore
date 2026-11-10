@@ -51,3 +51,5 @@ pw.local.config.ts
 
 # Vendored at pack time from scripts/email/vendor — see packages/email-preview/scripts/copy-caniemail.mjs
 packages/email-preview/vendor/
+
+target/
