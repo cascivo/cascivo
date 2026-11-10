@@ -3,7 +3,7 @@
 use crate::ast::{Node, Value};
 use crate::render::Cx;
 
-mod chart;
+pub mod chart;
 mod display;
 mod feedback;
 mod layout;

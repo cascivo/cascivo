@@ -1,0 +1,28 @@
+/* Add to your project CSS after importing the base theme: */
+/* @import '@cascivo/themes/light.css'; */
+/* @import './theme.css'; */
+
+@layer cascivo.theme {
+  [data-theme="create-custom"] {
+    /* ── Accent ─────────────────────────────────── */
+    --cascivo-color-accent: oklch(0.52 0.184 278.285);
+    --cascivo-color-accent-foreground: oklch(1 0 0);
+    --cascivo-color-accent-hover: oklch(0.45 0.184 278.285);
+    --cascivo-color-accent-active: oklch(0.373 0.155 278.285);
+    --cascivo-color-accent-subtle: oklch(0.97 0.025 278.285);
+    --cascivo-color-accent-muted: oklch(0.932 0.055 278.285);
+
+    /* ── Radius ─────────────────────────────────── */
+    --cascivo-radius-base: 0.375rem;
+    --cascivo-radius-control: var(--cascivo-radius-base);
+    --cascivo-radius-surface: calc(var(--cascivo-radius-base) * 1.66);
+    --cascivo-radius-indicator: calc(var(--cascivo-radius-base) / 2);
+    --cascivo-radius-full: 9999px;
+    --cascivo-radius-component: var(--cascivo-radius-base);
+    --cascivo-radius-button: var(--cascivo-radius-base);
+    --cascivo-radius-input: var(--cascivo-radius-base);
+    --cascivo-radius-card: calc(var(--cascivo-radius-base) * 1.66);
+    --cascivo-radius-badge: var(--cascivo-radius-full);
+    --cascivo-radius-modal: calc(var(--cascivo-radius-base) * 2);
+  }
+}
