@@ -73,3 +73,19 @@ fn threads_agree() {
         assert_eq!(h.join().unwrap(), want);
     }
 }
+
+#[test]
+fn hostile_css_values_fall_back() {
+    let h = cascivo_html::render_fragment("flex basis=\"0;display:none\"\n").unwrap();
+    assert!(!h.contains("display:none"), "{h}");
+    let h = cascivo_html::render_fragment("auto-grid min=\"1px;position:fixed\"\n").unwrap();
+    assert!(!h.contains("position:fixed"), "{h}");
+}
+
+#[test]
+fn user_text_is_escaped() {
+    let h = doc("card \"<script>x</script>\"\n  text \"a & \\\"b\\\" <i>\"\n");
+    assert!(!h.contains("<script>"), "{h}");
+    assert!(h.contains("&lt;script&gt;x&lt;/script&gt;"));
+    assert!(h.contains("a &amp; &quot;b&quot; &lt;i&gt;"));
+}

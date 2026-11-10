@@ -1,0 +1,3 @@
+list
+  text "One" as=span
+  text "Two" as=span

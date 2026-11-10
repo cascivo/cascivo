@@ -1,0 +1,3 @@
+import { Avatar } from '../../src/avatar/avatar'
+
+export default <Avatar name="Ada Lovelace" src="/a.png" alt="Ada" status="busy" size="lg" />

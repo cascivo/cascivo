@@ -1,2 +1,2 @@
-auto-grid min="<b>&\"x" gap=10
+auto-grid min="calc(10rem + 2px)" gap=10
   spacer

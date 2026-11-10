@@ -1,0 +1,2 @@
+card "Hdr" actions="Edit" variant=outlined padding=none
+  text "x"
