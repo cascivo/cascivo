@@ -46,7 +46,18 @@ export default defineConfig({
           globals: true,
           setupFiles: ['./src/setup.ts'],
           include: ['**/*.{test,spec}.?(c|m)[jt]s?(x)'],
-          exclude: ['**/node_modules/**', `**/${PREACT_TEST}`],
+          exclude: ['**/node_modules/**', `**/${PREACT_TEST}`, '**/html-conformance.test.tsx'],
+        },
+      },
+      {
+        // Class names stay as authored so Rust's fixed `cv-<unit>-<local>` names can be
+        // compared after stripping the prefix (crates/cascivo-html conformance).
+        extends: true,
+        test: {
+          name: 'html-conformance',
+          environment: 'node',
+          css: { include: /.+/, modules: { classNameStrategy: 'non-scoped' } },
+          include: ['test/html-conformance.test.tsx'],
         },
       },
       {
