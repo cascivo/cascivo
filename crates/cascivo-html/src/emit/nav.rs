@@ -194,12 +194,17 @@ fn collapsible(node: &Node, cx: &mut Cx, out: &mut String) {
     out.push_str("</div></details>");
 }
 
-/// A child's label (first arg, else `fallback`) and whether its own children are the content.
-/// `section` and `collapsible` are label-carrying wrappers, so their children are unwrapped;
-/// any other node is emitted whole as the content.
+/// A child's label and whether its own children are the content. `section` and `collapsible`
+/// are label-carrying wrappers: their first arg is the label and their children the content.
+/// Any other node is emitted whole as the content, so its args are content, not a label
+/// (else `text "hi"` would print "hi" in both the header and the panel); it gets `fallback`.
 fn label_of(child: &Node, fallback: &str) -> (String, bool) {
-    let title = child.arg_str(0).filter(|t| !t.is_empty());
     let unwrap = matches!(child.spec.name, "section" | "collapsible");
+    let title = if unwrap {
+        child.arg_str(0).filter(|t| !t.is_empty())
+    } else {
+        None
+    };
     (title.unwrap_or_else(|| fallback.to_string()), unwrap)
 }
 
@@ -322,8 +327,8 @@ fn table(node: &Node, cx: &mut Cx, out: &mut String) {
         .split_first()
         .map_or((&[][..], &[][..]), |(h, b)| (h.as_slice(), b));
     let ncols = all.iter().map(Vec::len).max().unwrap_or(0);
-    // `sort` is not a catalog prop yet; an explicit `sortMode=client` (or a future `sort`)
-    // opts in. The default `client` alone must not pull in a script.
+    // `sort` opts in; so does an explicit `sortMode=client`. The default `client` alone
+    // must not pull in a script.
     let sortable = node.prop_bool("sort")
         || (node.prop_set("sortMode") && node.prop_str("sortMode").as_deref() == Some("client"));
     if sortable {

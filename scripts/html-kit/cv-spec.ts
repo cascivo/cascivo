@@ -13,6 +13,8 @@ export type CvEntry = {
   children: 'none' | 'text' | 'nodes'
   /** CSS units inlined when this component is used (its own plus those its markup renders). */
   css: string[]
+  /** `.cv`-only props the React manifest cannot express (its type is not a literal union). */
+  extraProps?: { name: string; type: 'boolean'; summary: string }[]
 }
 
 const a = (name: string, kind: ArgKind, required = false) => ({ name, kind, required })
@@ -24,6 +26,7 @@ const e = (component: string, o: Partial<Omit<CvEntry, 'component'>> = {}): CvEn
   args: o.args ?? [],
   children: o.children ?? 'none',
   css: o.css ?? [component],
+  ...(o.extraProps ? { extraProps: o.extraProps } : {}),
 })
 
 // Charts draw inline SVG; only the legend chrome has CSS.
@@ -81,7 +84,14 @@ export const CV_SPEC: readonly CvEntry[] = [
   e('collapsible', { children: 'nodes', args: [a('title', 'str', true)] }),
   e('tabs', { children: 'nodes' }),
   // data
-  e('data-table', { cv: 'table', args: [a('rows', 'rows', true)] }),
+  e('data-table', {
+    cv: 'table',
+    args: [a('rows', 'rows', true)],
+    // React's `sort` is a SortState object; in `.cv` it is the switch that adds click-to-sort.
+    extraProps: [
+      { name: 'sort', type: 'boolean', summary: 'Click a header to sort (inlines a tiny script)' },
+    ],
+  }),
   // charts
   e('bar-chart', { cv: 'bar', args: [a('data', 'pairs', true)], css: [chart] }),
   e('line-chart', { cv: 'line', args: [a('data', 'nums', true)], css: [chart] }),

@@ -32,7 +32,7 @@ fn tabs_structure_and_ids() {
             "id=\"cv-1-{i}-panel\" aria-labelledby=\"cv-1-{i}-label\""
         )));
     }
-    assert!(h.contains(">Overview</label>") && h.contains(">Third</label>"));
+    assert!(h.contains(">Overview</label>") && h.contains(">Tab 3</label>"));
     // sections are unwrapped (no duplicate heading); a card is emitted whole
     assert!(!h.contains("cv-section"));
     assert!(h.contains("cv-card"));
@@ -204,4 +204,26 @@ fn sort_script_is_small_single_iife() {
     assert!(js.len() < 1024, "{} bytes", js.len());
     assert!(js.starts_with("(()=>{") && js.trim_end().ends_with("})();"));
     assert!(!js.contains("window.") && !js.contains("var "));
+}
+
+#[test]
+fn non_wrapper_children_do_not_duplicate_their_text() {
+    for src in [
+        "accordion\n  text \"unique-needle\"\n",
+        "tabs\n  text \"unique-needle\"\n",
+        "tabs\n  card \"unique-needle\"\n",
+    ] {
+        let h = frag(src);
+        assert_eq!(count(&h, "unique-needle"), 1, "{src}: {h}");
+    }
+}
+
+#[test]
+fn table_sort_prop_opts_into_sorting_script() {
+    let on = render("table sort A,B | 1,2", &Options::default()).unwrap();
+    assert!(on.contains("data-sortable") && on.contains("<script>"));
+    let on = render("table sortMode=client A,B | 1,2", &Options::default()).unwrap();
+    assert!(on.contains("data-sortable"));
+    let off = render("table A,B | 1,2", &Options::default()).unwrap();
+    assert!(!off.contains("data-sortable") && !off.contains("<script>"));
 }

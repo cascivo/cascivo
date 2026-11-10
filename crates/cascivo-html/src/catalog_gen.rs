@@ -870,6 +870,7 @@ pub static CATALOG: &[CompSpec] = &[
             PropSpec { name: "ariaLabel", kind: PropKind::Str, default: None, summary: "Invisible accessible name for the table, used when there is no visible title" },
             PropSpec { name: "title", kind: PropKind::Str, default: None, summary: "Visible caption above the table; it also becomes the table's accessible name" },
             PropSpec { name: "description", kind: PropKind::Str, default: None, summary: "Supporting description text" },
+            PropSpec { name: "sort", kind: PropKind::Bool, default: None, summary: "Click a header to sort (inlines a tiny script)" },
         ],
         children: Children::None,
         client_js: ClientJs::Enhancement,
