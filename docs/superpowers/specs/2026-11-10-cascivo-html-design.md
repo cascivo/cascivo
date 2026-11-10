@@ -85,7 +85,7 @@ with static oklch values (no relative color syntax needed).
 Rejected: calling Node/React from Rust (slow, heavy runtime); generating markup templates from
 React output (prop combinations explode).
 
-## v1 components (50)
+## v1 components (51)
 
 - Layout (10): flex, grid, columns, auto-grid, center, section, page-header, dashboard-layout, separator, spacer
 - Display (21): heading, text, prose, card, stat, kpi, badge, tag, avatar, avatar-group, image,
@@ -93,7 +93,7 @@ React output (prop combinations explode).
 - Feedback (7): alert, notification, progress-bar, progress-circle, meter, skeleton, spinner
 - Navigation/disclosure (5): breadcrumb, steps, accordion, collapsible, tabs (CSS-only)
 - Data (1): table (static `data-table`, optional sort script)
-- Charts (6): bar, line, area, pie, sparkline, gauge
+- Charts (7): bar, line, area, pie (+donut), scatter, sparkline, gauge
 
 Short aliases in `.cv`: `cols`=columns, `row`=flex horizontal, `col`=flex vertical, `h1..h3`=heading, `p`=text.
 
