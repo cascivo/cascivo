@@ -1,4 +1,4 @@
-button Save huge
-alert danger
-button Save primary ghost
-cols 2 3
+button "Save" huge
+flex center
+button "Save" primary ghost
+progress-bar 5 6

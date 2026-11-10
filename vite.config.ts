@@ -15,6 +15,8 @@ export default defineConfig({
       'docs/**',
       'starters/**',
       'packages/cli/recipes/**',
+      'crates/cascivo-html/assets/**',
+      'crates/cascivo-html/src/*_gen.rs',
     ],
   },
   fmt: {
@@ -30,6 +32,8 @@ export default defineConfig({
       '**/comparison.generated.ts',
       'starters/**',
       'packages/cli/recipes/**',
+      'crates/cascivo-html/assets/**',
+      'crates/cascivo-html/src/*_gen.rs',
     ],
   },
   staged: {

@@ -3,6 +3,8 @@
 pub mod ast;
 pub mod catalog;
 mod catalog_gen;
+#[allow(dead_code)] // consumed by the renderer in S3
+mod css_gen;
 pub mod diag;
 mod lex;
 mod parse;

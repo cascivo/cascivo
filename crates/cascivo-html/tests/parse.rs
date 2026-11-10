@@ -108,8 +108,8 @@ fn data_args() {
         vec![Value::Nums(vec![3.0, 5.0, 8.0])]
     );
     // Rows are raw: quotes and escapes are not tokenized, flags before rows still apply.
-    let t = one("table striped \"A ,B\\x | 1, 2 ");
-    assert_eq!(prop(&t, "striped"), Some(&Value::Bool(true)));
+    let t = one("table zebra \"A ,B\\x | 1, 2 ");
+    assert_eq!(prop(&t, "zebra"), Some(&Value::Bool(true)));
     assert_eq!(
         t.args,
         vec![Value::Rows(vec![
@@ -140,28 +140,29 @@ fn aliases_apply_defaults() {
     let h = one("h2 \"X\"");
     assert_eq!((h.spec.name, prop(&h, "level")), ("heading", Some(&s("2"))));
     // Explicit prop beats alias default; non-alias name gets no default.
-    assert_eq!(prop(&one("h1 X level=4"), "level"), Some(&s("4")));
+    assert_eq!(prop(&one("h1 \"X\" level=4"), "level"), Some(&s("4")));
     assert_eq!(prop(&one("flex"), "direction"), None);
     assert!(one("p \"x\"").props.is_empty());
 }
 
 #[test]
 fn flags_and_props() {
-    let b = one("button Save primary");
-    assert_eq!(b.args, vec![s("Save")]);
+    let b = one("button \"Save\" primary");
+    assert!(b.args.is_empty());
+    assert_eq!(b.text.as_deref(), Some("Save"));
     assert_eq!(prop(&b, "variant"), Some(&s("primary")));
     // Props come out in catalog order regardless of source order.
-    let b = one("button disabled size=lg \"Go now\" ghost \"more\"");
+    let b = one("button disabled size=lg ghost \"Go now\"");
     let names: Vec<&str> = b.props.iter().map(|(k, _)| *k).collect();
     assert_eq!(names, ["variant", "size", "disabled"]);
     assert_eq!(prop(&b, "disabled"), Some(&Value::Bool(true)));
-    assert_eq!(b.text.as_deref(), Some("more"));
+    assert_eq!(b.text.as_deref(), Some("Go now"));
     assert_eq!(
-        prop(&one("card padding=4"), "padding"),
-        Some(&Value::Num(4.0))
+        prop(&one("bar Q1:1 height=200"), "height"),
+        Some(&Value::Num(200.0))
     );
     assert_eq!(
-        prop(&one("table sortable=false A"), "sortable"),
+        prop(&one("table zebra=false A"), "zebra"),
         Some(&Value::Bool(false))
     );
     assert_eq!(
@@ -169,12 +170,12 @@ fn flags_and_props() {
         Some(&s("ghost"))
     );
     assert_eq!(
-        errs("alert danger"),
-        ["1:7: ambiguous flag 'danger' for alert; use variant=danger or tone=danger"]
+        errs("flex center"),
+        ["1:6: ambiguous flag 'center' for flex; use align=center or justify=center"]
     );
     assert_eq!(
-        prop(&one("alert variant=danger"), "variant"),
-        Some(&s("danger"))
+        prop(&one("flex justify=center"), "justify"),
+        Some(&s("center"))
     );
 }
 
@@ -260,7 +261,7 @@ const VALID: &[&str] = &[
     "    line 3 5 8 13",
     "  3x stat \"Users\" \"1,204\" \"+3%\" up",
     "  table sortable Name,Age | Ann,31",
-    "  button Save primary \"go\"",
+    "  button \"Save\" primary",
     "  h2 \"Title\"",
 ];
 

@@ -1,4 +1,4 @@
 3:3: unknown component 'crad'; did you mean 'card'?
-5:12: invalid value 'huge' for card variant; expected one of: outlined, elevated, filled
+5:12: invalid value 'huge' for card variant; expected one of: default, outlined, elevated
 6:1: indentation must be multiples of 2 spaces
 7:3: missing value; expected: stat <label> <value> [delta]

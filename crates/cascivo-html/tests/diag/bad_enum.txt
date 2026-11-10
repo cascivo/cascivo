@@ -1,3 +1,4 @@
-1:13: invalid value 'huge' for button variant; expected one of: primary, secondary, ghost, danger
-2:7: invalid value 'yes' for table sortable; expected true or false
-3:6: invalid value 'wide' for card padding; expected a number
+1:15: invalid value 'huge' for button variant; expected one of: primary, secondary, ghost, destructive
+2:7: invalid value 'yes' for table zebra; expected true or false
+3:6: invalid value 'wide' for card padding; expected one of: none, sm, md, lg
+4:10: invalid value 'wide' for bar height; expected a number
