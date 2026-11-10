@@ -1,1 +1,12 @@
-@layer cascivo.component{}
+@layer cascivo.component{
+.cv-tabs-tabs[data-radio]{position:relative;flex-flow:row wrap;gap:0 var(--cascivo-space-1);align-items:flex-end}
+.cv-tabs-tabs[data-radio]::after{content:"";order:2;flex:1 1 0;min-inline-size:0;align-self:stretch;border-block-end:1px solid var(--cascivo-color-border)}
+.cv-tabs-input{position:absolute;inline-size:1px;block-size:1px;margin:0;opacity:0;pointer-events:none}
+.cv-tabs-tabs[data-radio]>.cv-tabs-trigger{order:1;flex:none;border-block-end:1px solid var(--cascivo-color-border)}
+.cv-tabs-tabs[data-radio]>.cv-tabs-content{order:3;flex:0 0 100%;margin-block-start:var(--cascivo-space-4)}
+.cv-tabs-input:checked+.cv-tabs-trigger{color:var(--cascivo-color-text)}
+.cv-tabs-input:checked+.cv-tabs-trigger::after{scale:1}
+.cv-tabs-input:focus-visible+.cv-tabs-trigger{box-shadow:var(--cascivo-focus-ring);border-radius:var(--cascivo-radius-control)}
+.cv-tabs-input:not(:checked)+.cv-tabs-trigger+.cv-tabs-content{display:none}
+}
+@media (forced-colors:active){.cv-tabs-input:checked+.cv-tabs-trigger{border-block-end:2px solid highlight}.cv-tabs-input:focus-visible+.cv-tabs-trigger{outline:2px solid highlight;outline-offset:2px}}

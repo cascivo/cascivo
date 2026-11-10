@@ -44,7 +44,6 @@ pub fn emit_children(node: &Node, cx: &mut Cx, out: &mut String) {
 }
 
 /// Accessors that hide the `Value` plumbing from emitters.
-#[allow(dead_code)] // used by the group emitters
 pub trait NodeExt {
     /// Positional arg `i` as a string (numbers are formatted).
     fn arg_str(&self, i: usize) -> Option<String>;

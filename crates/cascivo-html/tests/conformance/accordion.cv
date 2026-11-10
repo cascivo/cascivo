@@ -1,0 +1,5 @@
+accordion
+  collapsible "One"
+    text "First"
+  collapsible "Two" defaultOpen
+    text "Second"
