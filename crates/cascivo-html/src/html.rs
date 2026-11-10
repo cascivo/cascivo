@@ -49,6 +49,31 @@ pub fn num(n: f64) -> String {
     if s == "-0" { "0".to_string() } else { s }
 }
 
+/// Accepts a user-supplied CSS length/expression only if it cannot add declarations or
+/// escape its value: a conservative charset with balanced parentheses (`calc(100% - 2rem)`).
+pub fn css_len(s: &str) -> Option<String> {
+    let s = s.trim();
+    let mut depth = 0i32;
+    for c in s.chars() {
+        match c {
+            '(' => depth += 1,
+            ')' => {
+                depth -= 1;
+                if depth < 0 {
+                    return None;
+                }
+            }
+            c if c.is_ascii_alphanumeric() || " .%+-*/".contains(c) => {}
+            _ => return None,
+        }
+    }
+    let lower = s.to_ascii_lowercase();
+    if s.is_empty() || depth != 0 || lower.contains("url") || lower.contains("expression") {
+        return None;
+    }
+    Some(s.to_string())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -58,6 +83,27 @@ mod tests {
         let mut o = String::new();
         esc(&mut o, "<a href=\"x\">&'</a>");
         assert_eq!(o, "&lt;a href=&quot;x&quot;&gt;&amp;&#x27;&lt;/a&gt;");
+    }
+
+    #[test]
+    fn css_len_rejects_injection() {
+        assert_eq!(
+            css_len("calc(100% - 2rem)").as_deref(),
+            Some("calc(100% - 2rem)")
+        );
+        assert_eq!(css_len("16rem").as_deref(), Some("16rem"));
+        for bad in [
+            "1px;background:red",
+            "1px}",
+            "a)",
+            "(a",
+            "url(x)",
+            "1\\",
+            "\"x\"",
+            "",
+        ] {
+            assert_eq!(css_len(bad), None, "{bad}");
+        }
     }
 
     #[test]

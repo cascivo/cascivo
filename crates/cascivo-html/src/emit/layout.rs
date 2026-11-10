@@ -3,7 +3,7 @@
 
 use super::{NodeExt, emit_children};
 use crate::ast::Node;
-use crate::html::{attr, esc, flag, num};
+use crate::html::{attr, css_len, esc, flag, num};
 use crate::render::Cx;
 
 pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
@@ -40,7 +40,7 @@ fn flex(node: &Node, cx: &mut Cx, out: &mut String) {
         if node.prop_bool("truncate") {
             flag(out, "data-truncate");
         }
-        if let Some(b) = node.prop_str("basis") {
+        if let Some(b) = node.prop_str("basis").and_then(|b| css_len(&b)) {
             attr(out, "style", &format!("flex-basis:{b}"));
         }
         out.push('>');
@@ -132,7 +132,10 @@ fn columns(node: &Node, cx: &mut Cx, out: &mut String) {
 }
 
 fn auto_grid(node: &Node, cx: &mut Cx, out: &mut String) {
-    let min = node.prop_str("min").unwrap_or_else(|| "16rem".into());
+    let min = node
+        .prop_str("min")
+        .and_then(|v| css_len(&v))
+        .unwrap_or_else(|| "16rem".into());
     let style = format!("--_min:{min};--_gap:{}", space(&gap_of(node, "gap", "4")));
     out.push_str("<div");
     attr(out, "class", "cv-auto-grid-auto-grid");
@@ -143,7 +146,10 @@ fn auto_grid(node: &Node, cx: &mut Cx, out: &mut String) {
 }
 
 fn center(node: &Node, cx: &mut Cx, out: &mut String) {
-    let max = node.prop_str("maxWidth").unwrap_or_else(|| "48rem".into());
+    let max = node
+        .prop_str("maxWidth")
+        .and_then(|v| css_len(&v))
+        .unwrap_or_else(|| "48rem".into());
     out.push_str("<div");
     attr(out, "class", "cv-center-center");
     attr(out, "style", &format!("--_center-max:{max}"));
