@@ -49,7 +49,9 @@ function normTag(tag: string, strip: boolean): string {
 export function normalize(html: string, opts: { rust: boolean }): string {
   // React 19 hoists a preload <link> before any <img src>; Rust emits none (no head to hoist to).
   let s = html.replace(/<!--.*?-->/gs, '').replace(/<link rel="preload"[^>]*>/g, '')
-  s = s.replace(/<[^>]+>/g, (t) => (t.startsWith('</') ? t.replace(/\s+/g, '') : normTag(t, opts.rust)))
+  s = s.replace(/<[^>]+>/g, (t) =>
+    t.startsWith('</') ? t.replace(/\s+/g, '') : normTag(t, opts.rust),
+  )
   s = s.replace(/>\s+</g, '><').replace(/\s+/g, ' ').trim()
   const seen = new Map<string, number>()
   return s.replace(ID, (id) => {
