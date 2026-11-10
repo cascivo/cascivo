@@ -206,6 +206,13 @@ fn directive_between_nodes_closes_tree() {
 fn repeat_expansion_is_bounded() {
     let e = errs("1000x card\n  1000x card\n");
     assert_eq!(e, ["1:1: document expands to more than 100000 nodes"]);
+    // Few nodes but large payload: 1000 × 40 × 20 KB would be ~800 MB of clones.
+    let big = format!(
+        "1000x flex\n  40x flex\n    text \"{}\"\n",
+        "x".repeat(20_000)
+    );
+    let e = errs(&big);
+    assert_eq!(e, ["1:1: document expands to more than 16 MiB of content"]);
 }
 
 #[test]

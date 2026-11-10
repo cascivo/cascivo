@@ -1,4 +1,4 @@
-//! Parser diagnostics and did-you-mean hints.
+//! Parser diagnostics.
 
 use std::fmt;
 
@@ -27,33 +27,3 @@ impl fmt::Display for Diagnostic {
 }
 
 impl std::error::Error for Diagnostic {}
-
-/// Closest candidate within edit distance 2; ties go to the alphabetically first.
-/// Mirrors `catalog::suggest` for lists that are not component names (props, directives).
-pub(crate) fn closest<'a>(
-    name: &str,
-    candidates: impl IntoIterator<Item = &'a str>,
-) -> Option<&'a str> {
-    let mut best: Option<(usize, &'a str)> = None;
-    for cand in candidates {
-        let d = levenshtein(name, cand);
-        if d <= 2 && best.is_none_or(|(bd, bs)| d < bd || (d == bd && cand < bs)) {
-            best = Some((d, cand));
-        }
-    }
-    best.map(|(_, s)| s)
-}
-
-fn levenshtein(a: &str, b: &str) -> usize {
-    let b: Vec<char> = b.chars().collect();
-    let mut prev: Vec<usize> = (0..=b.len()).collect();
-    for (i, ca) in a.chars().enumerate() {
-        let mut cur = vec![i + 1];
-        for (j, &cb) in b.iter().enumerate() {
-            let sub = prev[j] + usize::from(ca != cb);
-            cur.push(sub.min(prev[j + 1] + 1).min(cur[j] + 1));
-        }
-        prev = cur;
-    }
-    prev[b.len()]
-}

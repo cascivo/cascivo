@@ -72,20 +72,24 @@ pub fn lookup(name: &str) -> Option<&'static CompSpec> {
 /// alphabetically first candidate. Returns the matched string itself (an
 /// alias stays an alias) so the hint is something the author can type as-is.
 pub fn suggest(name: &str) -> Option<&'static str> {
-    let mut best: Option<(usize, &'static str)> = None;
-    for c in CATALOG {
-        for cand in std::iter::once(c.name).chain(c.aliases.iter().copied()) {
-            let d = levenshtein(name, cand);
-            if d > 2 {
-                continue;
-            }
-            let better = match best {
-                None => true,
-                Some((bd, bs)) => d < bd || (d == bd && cand < bs),
-            };
-            if better {
-                best = Some((d, cand));
-            }
+    closest(
+        name,
+        CATALOG
+            .iter()
+            .flat_map(|c| std::iter::once(c.name).chain(c.aliases.iter().copied())),
+    )
+}
+
+/// Closest candidate within edit distance 2; ties go to the alphabetically first.
+pub(crate) fn closest<'a>(
+    name: &str,
+    candidates: impl IntoIterator<Item = &'a str>,
+) -> Option<&'a str> {
+    let mut best: Option<(usize, &'a str)> = None;
+    for cand in candidates {
+        let d = levenshtein(name, cand);
+        if d <= 2 && best.is_none_or(|(bd, bs)| d < bd || (d == bd && cand < bs)) {
+            best = Some((d, cand));
         }
     }
     best.map(|(_, s)| s)

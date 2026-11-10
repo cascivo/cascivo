@@ -10,17 +10,19 @@
 //!   is label=Save, variant=primary; quote a label that collides with a flag (`badge "new"`).
 //!   For `Num`/`Pairs`/`Nums` args the numeric reading wins over a flag.
 //! - `Rows` swallows the rest of the line raw, so table props/flags go before the rows.
-//! - Limits keep hostile input cheap: repeat ≤ 1000, nesting < 64, ≤ 100 000 nodes after repeats.
+//! - Limits keep hostile input cheap: repeat ≤ 1000, nesting < 64, and after repeats ≤ 100 000
+//!   nodes and ≤ 16 MiB of string/number payload (both checked before any clone).
 
 use crate::ast::{BrandItem, Directive, Doc, Node, Value};
-use crate::catalog::{self, ArgKind, Children, CompSpec, PropKind, PropSpec};
-use crate::diag::{Diagnostic, closest};
+use crate::catalog::{self, ArgKind, Children, CompSpec, PropKind, PropSpec, closest};
+use crate::diag::Diagnostic;
 use crate::lex::{Lexed, Tok, Token, col, lex};
 
 const INDENT_MSG: &str = "indentation must be multiples of 2 spaces";
 const MAX_REPEAT: u32 = 1000;
 const MAX_DEPTH: usize = 64;
 const MAX_NODES: u64 = 100_000;
+const MAX_BYTES: u64 = 16 << 20;
 const DIRECTIVES: &[&str] = &["brand", "brand-file", "title", "lang"];
 
 /// Props an alias implies. Catalog types have no field for this; applied only when the spec has
@@ -55,8 +57,8 @@ struct Frame {
     node: Option<Node>,
     repeat: u32,
     keep: bool,
-    /// Node count of this subtree (one copy), to bound repeat expansion before cloning.
-    size: u64,
+    /// Cost of this subtree (one copy), to bound repeat expansion before cloning.
+    cost: Cost,
     col: u32,
 }
 
@@ -65,7 +67,45 @@ struct Parser {
     doc: Doc,
     diags: Vec<Diagnostic>,
     stack: Vec<Frame>,
-    total: u64,
+    total: Cost,
+}
+
+/// Nodes and payload bytes a subtree will hold once expanded.
+#[derive(Default, Clone, Copy)]
+struct Cost {
+    nodes: u64,
+    bytes: u64,
+}
+
+impl Cost {
+    fn of(node: &Node) -> Self {
+        let str_len = |s: &str| s.len() as u64;
+        let value = |v: &Value| match v {
+            Value::Str(s) => str_len(s),
+            Value::Num(_) | Value::Bool(_) => 8,
+            Value::Pairs(ps) => ps.iter().map(|(l, _)| str_len(l) + 8).sum(),
+            Value::Nums(ns) => 8 * ns.len() as u64,
+            Value::Rows(rs) => rs.iter().flatten().map(|c| str_len(c)).sum(),
+        };
+        let bytes = node.args.iter().map(value).sum::<u64>()
+            + node.props.iter().map(|(_, v)| value(v)).sum::<u64>()
+            + node.text.as_deref().map_or(0, str_len);
+        Self { nodes: 1, bytes }
+    }
+
+    fn times(self, n: u32) -> Self {
+        Self {
+            nodes: self.nodes.saturating_mul(u64::from(n)),
+            bytes: self.bytes.saturating_mul(u64::from(n)),
+        }
+    }
+
+    fn plus(self, o: Self) -> Self {
+        Self {
+            nodes: self.nodes.saturating_add(o.nodes),
+            bytes: self.bytes.saturating_add(o.bytes),
+        }
+    }
 }
 
 impl Parser {
@@ -138,10 +178,10 @@ impl Parser {
         }
         match self.node(ln, line, lexed) {
             Some((node, repeat)) => self.stack.push(Frame {
+                cost: Cost::of(&node),
                 node: Some(node),
                 repeat,
                 keep,
-                size: 1,
                 col: col(indent),
             }),
             None => self.placeholder(depth),
@@ -154,7 +194,7 @@ impl Parser {
             node: None,
             repeat: 1,
             keep: false,
-            size: 0,
+            cost: Cost::default(),
             col: 1,
         });
     }
@@ -166,26 +206,36 @@ impl Parser {
             let Some(node) = f.node.filter(|_| f.keep) else {
                 continue;
             };
-            let size = f.size.saturating_mul(u64::from(f.repeat));
-            let budget = match self.stack.last() {
-                Some(p) => p.size,
+            let cost = f.cost.times(f.repeat);
+            let after = match self.stack.last() {
+                Some(p) => p.cost,
                 None => self.total,
+            }
+            .plus(cost);
+            let over = if after.nodes > MAX_NODES {
+                Some(format!("document expands to more than {MAX_NODES} nodes"))
+            } else if after.bytes > MAX_BYTES {
+                Some(format!(
+                    "document expands to more than {} MiB of content",
+                    MAX_BYTES >> 20
+                ))
+            } else {
+                None
             };
-            if budget.saturating_add(size) > MAX_NODES {
-                let msg = format!("document expands to more than {MAX_NODES} nodes");
+            if let Some(msg) = over {
                 self.err(node.line, f.col, msg);
                 continue;
             }
             let siblings = match self.stack.last_mut() {
                 Some(p) => {
-                    p.size += size;
+                    p.cost = after;
                     match &mut p.node {
                         Some(n) => &mut n.children,
                         None => continue,
                     }
                 }
                 None => {
-                    self.total += size;
+                    self.total = after;
                     &mut self.doc.nodes
                 }
             };
