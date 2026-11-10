@@ -1,0 +1,7 @@
+@brand #5b5bd6
+cols 2
+  crad "A"
+    line 1 2
+  card "B" variant=huge
+	stat "x"
+  stat "only"

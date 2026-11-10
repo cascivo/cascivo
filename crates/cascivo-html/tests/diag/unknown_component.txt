@@ -1,0 +1,2 @@
+1:1: unknown component 'crad'; did you mean 'card'?
+2:1: unknown component 'zzzzzz'

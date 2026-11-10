@@ -1,0 +1,4 @@
+1:13: unknown flag 'huge' for button; expected one of: primary, secondary, ghost, danger, sm, md, lg, disabled
+2:7: ambiguous flag 'danger' for alert; use variant=danger or tone=danger
+3:21: duplicate prop 'variant' for button
+4:8: unexpected argument '3' for columns

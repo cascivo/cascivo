@@ -1,0 +1,2 @@
+1:8: unknown escape '\q'
+2:9: expected a space after the closing quote

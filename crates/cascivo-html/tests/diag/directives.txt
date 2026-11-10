@@ -1,0 +1,5 @@
+1:1: unknown directive '@brnd'; did you mean '@brand'?
+2:1: @title needs a value
+3:10: unexpected argument
+4:3: directives must not be indented
+5:1: unknown directive '@foo'; expected one of: @brand, @brand-file, @title, @lang
