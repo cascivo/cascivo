@@ -69,6 +69,24 @@ pnpm ready
 
 This runs: `pnpm regen` → `vp check --fix` → both host-lint gates (`lint:host-strict`, `lint:host-eslint`, `lint:host-eslint:test`) → the pre-build guard suite (brand, claims, recurrence, release, regen, meta, i18n, docs-routes, llms, layers, unlayered, reset, popover, dead-props, doc-urls, primitives, apg, visual-baselines) → build → the post-build guard suite (scaffold, audit:bundle, ssr, css-contract, sparkline:size, rsc, dts-tsdoc, api, shims, docspack, type-exports, computed, rtl) → type check → tests → the React Compiler leg (`compiler:check`).
 
+**Rust (`crates/cascivo-html`, `crates/cascivo-html-cli`) is not in `pnpm ready`.** Its own gates run
+in `.github/workflows/rust.yml` and must pass locally before you commit Rust changes:
+`cargo fmt --check`, `cargo clippy --all-targets -- -D warnings`, `cargo test --workspace`
+(parser, emitters, byte-compared `examples/*.html` snapshots, determinism, CLI). The generated
+sources (`catalog_gen.rs`, `css_gen.rs`, `guide_gen.rs`, `assets/`) come from
+`pnpm html-kit:generate` (inside `pnpm regen`); `pnpm html-kit:check` is in `ready`. `GUIDE` is capped
+at 6,000 chars by `tests/guide.rs`. After an intended emitter change, refresh snapshots with
+`UPDATE_SNAPSHOTS=1 cargo test --test examples`.
+
+**Rust releases** use `.changeset-rust/` (same format as `.changeset/`), driven by
+`scripts/rust-release/cli.ts` (`pnpm changeset:rust add|status|version|publish-plan|coverage`;
+pure logic and tests in `scripts/rust-release/lib*.ts`, run by `pnpm release:check`). A PR touching
+`crates/*/src/**` or non-version `Cargo.toml` lines needs a `.changeset-rust/*.md` (non-interactive:
+`pnpm changeset:rust add --crate cascivo-html --bump minor --summary "…"`) or the
+`no-rust-changeset` label (`rust-changeset.yml`). `rust-release.yml` opens the "Version Rust
+crates" PR and publishes; its filename and the `crates-io` environment are registered with
+crates.io trusted publishing, so never rename them. Runbook: `docs/RELEASING.md`.
+
 The post-build half needs `dist/`, which is why it sits after the build: `api:check` diffs the
 published `.d.ts` surface against `api-surface.json`, `shims:check` regenerates
 `apps/site/src/shims` from the built types and fails on a diff, and `css-contract:check`

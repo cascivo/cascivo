@@ -1,0 +1,2 @@
+1:1: missing value; expected: stat <label> <value> [delta]
+2:1: missing data; expected: bar <data>

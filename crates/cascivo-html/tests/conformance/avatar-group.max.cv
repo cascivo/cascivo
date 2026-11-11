@@ -1,0 +1,5 @@
+avatar-group max=2 spacing=lg isGrid
+  avatar "A B"
+  avatar "C D"
+  avatar "E F"
+  avatar "G H"

@@ -1,0 +1,25 @@
+[package]
+name = "cascivo-html-cli"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+description = "cascivo-html command line: render .cv to one static HTML file"
+license = "MIT"
+repository = "https://github.com/cascivo/cascivo"
+homepage = "https://github.com/cascivo/cascivo/tree/main/crates/cascivo-html"
+readme = "../cascivo-html/README.md"
+keywords = ["html", "design-system", "static-site", "dashboard", "cascivo"]
+categories = ["command-line-utilities"]
+
+[[bin]]
+name = "cascivo-html"
+path = "src/main.rs"
+
+[dependencies]
+cascivo-html = { path = "../cascivo-html", version = "0.1.0" }
+ureq = { version = "3", default-features = false, features = ["rustls"], optional = true }
+
+[features]
+default = ["fetch"]
+# `--fetch`: embed http(s) images over the network. Off: URLs stay plain references.
+fetch = ["dep:ureq"]

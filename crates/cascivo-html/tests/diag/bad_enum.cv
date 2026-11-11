@@ -1,0 +1,4 @@
+button "Save" variant=huge
+table zebra=yes A
+card padding=wide
+bar Q1:1 height=wide

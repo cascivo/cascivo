@@ -1,0 +1,5 @@
+accordion type=multiple
+  collapsible "One"
+    text "First"
+  collapsible "Two"
+    text "Second"

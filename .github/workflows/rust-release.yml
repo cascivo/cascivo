@@ -1,0 +1,187 @@
+name: Rust release (cascivo-html)
+
+# Changesets-style release flow for the Rust crates, mirroring release.yml (JS):
+#   * a push to main that touches `.changeset-rust/**` with staged changesets opens/updates the
+#     "Version Rust crates" PR (branch `changeset-release/rust`);
+#   * merging it changes `crates/**/Cargo.toml`, which re-triggers this workflow; it then finds
+#     versions that are not on crates.io and publishes them (trusted publishing, OIDC).
+# One-time setup is in crates/cascivo-html/README.md ("Releasing"). crates.io trusts THIS file
+# name and the `crates-io` environment on the publish job — do not rename either.
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.changeset-rust/**'
+      - 'crates/**/Cargo.toml'
+  # Resume a release that failed part-way: its version bump is on main, nothing re-triggers.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rust-release
+  cancel-in-progress: false
+
+env:
+  CLI: node --experimental-strip-types --no-warnings scripts/rust-release/cli.ts
+
+jobs:
+  # Opens or refreshes the Version PR. No environment: it needs no crates.io credentials.
+  version:
+    name: Version PR
+    if: github.ref == 'refs/heads/main' # workflow_dispatch can pick any branch
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push changeset-release/rust
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Toolchain
+        run: rustup show active-toolchain || rustup toolchain install
+      - name: Detect staged changesets
+        id: staged
+        run: |
+          count=$(find .changeset-rust -maxdepth 1 -name '*.md' ! -name 'README.md' | wc -l)
+          echo "$count rust changeset(s) staged"
+          echo "any=$([ "$count" -gt 0 ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+      - name: Version the crates
+        if: steps.staged.outputs.any == 'true'
+        run: |
+          $CLI status --markdown > "$RUNNER_TEMP/pr-table.md"
+          $CLI version
+      - name: Create or update the "Version Rust crates" PR
+        if: steps.staged.outputs.any == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: changeset-release/rust
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout -B "$BRANCH"
+          git add -A
+          git commit -m 'chore: version Rust crates'
+          # The branch is derived state, rebuilt from main on every run.
+          git push --force origin "$BRANCH"
+          {
+            echo 'Consumes the staged `.changeset-rust/` changesets. Merging publishes to crates.io.'
+            echo
+            cat "$RUNNER_TEMP/pr-table.md"
+          } > "$RUNNER_TEMP/pr-body.md"
+          number=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+          if [ -n "$number" ]; then
+            gh pr edit "$number" --body-file "$RUNNER_TEMP/pr-body.md"
+          else
+            gh pr create --base main --head "$BRANCH" --title 'Version Rust crates' --body-file "$RUNNER_TEMP/pr-body.md"
+          fi
+
+  # Which crate versions on main are not on crates.io? Runs even while changesets are staged:
+  # a stranded release (bump merged, publish failed) is masked by the next changeset exactly as
+  # in release.yml, so this must not depend on the staged count. Its own job so the no-op case
+  # does not wait on the `crates-io` environment's approval.
+  plan:
+    name: Publish plan
+    if: github.ref == 'refs/heads/main' # workflow_dispatch can pick any branch
+    runs-on: ubuntu-latest
+    outputs:
+      plan: ${{ steps.plan.outputs.plan }}
+      any: ${{ steps.plan.outputs.any }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Toolchain
+        run: rustup show active-toolchain || rustup toolchain install
+      - id: plan
+        run: |
+          plan=$($CLI publish-plan)
+          echo "$plan"
+          echo "plan=$plan" >> "$GITHUB_OUTPUT"
+          echo "any=$([ "$plan" != '[]' ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+  publish:
+    name: Publish to crates.io
+    needs: plan
+    if: github.ref == 'refs/heads/main' && needs.plan.outputs.any == 'true'
+    runs-on: ubuntu-latest
+    environment: crates-io
+    permissions:
+      contents: read
+      id-token: write # crates-io-auth-action exchanges the OIDC token for a short-lived publish token
+    env:
+      PLAN: ${{ needs.plan.outputs.plan }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Toolchain
+        run: rustup show active-toolchain || rustup toolchain install
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            target
+          key: cargo-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
+      - run: cargo fmt --check
+      - run: cargo clippy --workspace --all-targets -- -D warnings
+      - run: cargo test --workspace
+      - uses: rust-lang/crates-io-auth-action@v1
+        id: auth
+      # Dependency order, waiting for the sparse index between crates: a dependent resolves its
+      # sibling from the registry index, which lags the upload. Skips versions already present,
+      # so a re-run after a partial failure resumes where it stopped.
+      - name: Publish each crate
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
+        run: |
+          set -euo pipefail
+          while read -r item; do
+            crate=$(echo "$item" | jq -r .crate)
+            version=$(echo "$item" | jq -r .version)
+            cargo publish -p "$crate"
+            for i in $(seq 1 30); do
+              if [ "$($CLI publish-plan | jq --arg c "$crate" '[.[] | select(.crate==$c)] | length')" = 0 ]; then break; fi
+              [ "$i" = 30 ] && { echo "$crate $version not in the index after 5 minutes"; exit 1; }
+              sleep 10
+            done
+          done < <(jq -c '.[]' <<< "$PLAN")
+
+  # Tags + GitHub releases for every crate version that is on crates.io but has no release yet.
+  # Its own job, derived from crates.io state rather than from what `publish` just did: if the
+  # publish succeeded and the release step failed, a re-run finds nothing to publish, so a
+  # release made inside `publish` would never be retried. Also backfills 0.1.0.
+  releases:
+    name: Tags and GitHub releases
+    needs: [plan, publish]
+    if: always() && github.ref == 'refs/heads/main' && needs.plan.result == 'success' && needs.publish.result != 'failure' && needs.publish.result != 'cancelled'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Toolchain
+        run: rustup show active-toolchain || rustup toolchain install
+      - name: Create missing releases
+        run: |
+          set -euo pipefail
+          unpublished=$($CLI publish-plan | jq -r '.[].crate')
+          cargo metadata --no-deps --format-version 1 \
+            | jq -r '.packages[] | select(.publish == null or (.publish | length) > 0) | "\(.name) \(.version)"' \
+            | while read -r crate version; do
+                if grep -qx "$crate" <<< "$unpublished"; then echo "$crate $version not on crates.io yet"; continue; fi
+                tag="$crate@$version"
+                if gh release view "$tag" > /dev/null 2>&1; then echo "release $tag exists"; continue; fi
+                $CLI changelog-section --crate "$crate" --version "$version" > "$RUNNER_TEMP/notes.md"
+                gh release create "$tag" --target "$GITHUB_SHA" --title "$tag" --notes-file "$RUNNER_TEMP/notes.md"
+              done

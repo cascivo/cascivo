@@ -1,0 +1,4 @@
+1:15: unknown flag 'huge' for button; expected one of: primary, secondary, ghost, destructive, sm, md, lg, loading, disabled
+2:6: ambiguous flag 'center' for flex; use align=center or justify=center
+3:23: duplicate prop 'variant' for button
+4:16: unexpected argument '6' for progress-bar

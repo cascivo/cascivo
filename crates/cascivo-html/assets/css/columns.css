@@ -1,0 +1,1 @@
+@layer cascivo.component{.cv-columns-columns-container{display:grid;container-type:inline-size}.cv-columns-columns{grid-template-columns:repeat(var(--_cols,2), minmax(0, 1fr));gap:var(--_gap,var(--cascivo-space-4));min-inline-size:0;display:grid;@container (width<=40rem){grid-template-columns:1fr}}}

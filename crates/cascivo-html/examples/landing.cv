@@ -1,0 +1,18 @@
+@title "Acme: ship faster"
+@brand #e8590c accent=#2b8a3e r12 font=Inter light
+center
+  h1 "Ship faster"
+  p "One file. No build step. Branded in a line."
+  row gap=3
+    button "Get started" primary
+    button "Read the docs"
+  separator
+  auto-grid
+    3x card "Feature"
+      p "Short description of the feature."
+  alert "Beta" "Invitations roll out weekly."
+  accordion
+    section "Is it free?"
+      text "Yes, while in beta."
+    section "Can I self-host?"
+      text "It is one static HTML file."
