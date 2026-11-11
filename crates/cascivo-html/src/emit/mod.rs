@@ -20,8 +20,8 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
         "flex" | "grid" | "columns" | "auto-grid" | "center" | "section" | "page-header"
         | "dashboard-layout" | "separator" | "spacer" => layout::emit(node, cx, out),
         "heading" | "text" | "prose" | "card" | "stat" | "kpi" | "badge" | "tag" | "avatar"
-        | "avatar-group" | "image" | "list" | "data-list" | "structured-list" | "timeline"
-        | "empty-state" | "blockquote" | "code" | "kbd" | "link" | "button" => {
+        | "avatar-group" | "image" | "svg" | "list" | "data-list" | "structured-list"
+        | "timeline" | "empty-state" | "blockquote" | "code" | "kbd" | "link" | "button" => {
             display::emit(node, cx, out);
         }
         "alert" | "notification" | "progress-bar" | "progress-circle" | "meter" | "skeleton"

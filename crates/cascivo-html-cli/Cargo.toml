@@ -17,3 +17,9 @@ path = "src/main.rs"
 
 [dependencies]
 cascivo-html = { path = "../cascivo-html", version = "0.1.0" }
+ureq = { version = "3", default-features = false, features = ["rustls"], optional = true }
+
+[features]
+default = ["fetch"]
+# `--fetch`: embed http(s) images over the network. Off: URLs stay plain references.
+fetch = ["dep:ureq"]

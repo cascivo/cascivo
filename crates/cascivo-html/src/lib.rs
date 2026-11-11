@@ -1,5 +1,6 @@
 //! Renders agent-written `.cv` text into deterministic cascivo HTML.
 
+pub mod asset;
 pub mod ast;
 pub mod brand;
 pub mod catalog;
@@ -22,7 +23,7 @@ pub use catalog::{
 pub use diag::Diagnostic;
 pub use guide::{GUIDE, guide_for};
 pub use parse::parse;
-pub use render::{BrandResolver, Cx, Options, render, render_fragment};
+pub use render::{AssetResolver, BrandResolver, Cx, Options, render, render_fragment};
 
 /// Parse-only validation: every diagnostic in `src`, empty when it is valid.
 /// Brand files need a resolver, so they are checked by `render` instead.

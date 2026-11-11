@@ -34,6 +34,7 @@ pub struct Node {
     pub text: Option<String>,
     pub children: Vec<Node>,
     pub line: u32,
+    pub col: u32,
 }
 
 #[derive(Debug, Clone, PartialEq)]

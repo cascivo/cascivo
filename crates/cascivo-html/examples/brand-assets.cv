@@ -1,0 +1,9 @@
+@title "Brand assets"
+@brand #5b5bd6 r8 dark
+page-header "Brand assets" "Images and SVG embedded into one file"
+card "Logo"
+  image brand-mark.png "Brand mark" w=64 h=64
+card "Icon follows the theme (currentColor)"
+  svg chart-icon.svg "Bar chart icon" w=48
+card "Inline markup"
+  svg "<svg viewBox='0 0 10 10'><circle cx='5' cy='5' r='4' fill='currentColor'/></svg>" "Dot" w=24

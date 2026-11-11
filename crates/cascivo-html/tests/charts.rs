@@ -2,7 +2,7 @@ use cascivo_html::emit::chart::emit_chart;
 use cascivo_html::render::Cx;
 use cascivo_html::{Doc, Node, Value, lookup, parse};
 
-fn render_node(n: &Node) -> (String, Cx) {
+fn render_node(n: &Node) -> (String, Cx<'static>) {
     let mut cx = Cx::default();
     let mut out = String::new();
     emit_chart(n, &mut cx, &mut out);
@@ -22,6 +22,7 @@ fn node(name: &str, args: Vec<Value>) -> Node {
         text: None,
         children: vec![],
         line: 1,
+        col: 1,
     }
 }
 

@@ -3,7 +3,7 @@ import { test } from 'node:test'
 import { buildAll, buildCss, moduleFiles } from './build-css.ts'
 import { CV_SPEC } from './cv-spec.ts'
 
-test('v1 has 51 components', () => assert.equal(CV_SPEC.length, 51))
+test('v1 has 52 components', () => assert.equal(CV_SPEC.length, 52))
 
 test('cv names and aliases are unique', () => {
   const all = CV_SPEC.flatMap((e) => [e.cv, ...e.aliases])

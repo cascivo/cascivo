@@ -23,8 +23,27 @@ fn cases() -> Vec<(String, String)> {
     v
 }
 
+/// Pictures next to the examples, keyed by file name, as `Options::assets` (the library does no IO).
+fn assets() -> Vec<(String, Vec<u8>)> {
+    let mut v: Vec<_> = std::fs::read_dir(dir())
+        .unwrap()
+        .map(|e| e.unwrap().path())
+        .filter(|p| p.extension().is_some_and(|x| x == "png" || x == "svg"))
+        .map(|p| {
+            let name = p.file_name().unwrap().to_string_lossy().into_owned();
+            (name, std::fs::read(p).unwrap())
+        })
+        .collect();
+    v.sort();
+    v
+}
+
 fn html(src: &str) -> String {
-    render(src, &Options::default()).unwrap_or_else(|e| panic!("{e:?}"))
+    let opts = Options {
+        assets: assets(),
+        ..Options::default()
+    };
+    render(src, &opts).unwrap_or_else(|e| panic!("{e:?}"))
 }
 
 #[test]

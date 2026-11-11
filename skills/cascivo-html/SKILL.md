@@ -34,6 +34,25 @@ table Name,Age | Ann,31 | Bob,42
 One node per line, two-space indent for children, `"quoted"` strings, `key=value` props, bare flags,
 `3x node` to repeat. Only two-space indents (no tabs).
 
+## Images and SVG
+
+Give a file path or URL; the output stays one self-contained file.
+
+```cv
+image logo.png "Acme logo" w=64 h=64
+svg icons/chart.svg "Revenue chart icon" w=48 fit=contain
+svg "<svg viewBox='0 0 8 8'><circle cx='4' cy='4' r='3' fill='currentColor'/></svg>" "Dot"
+```
+
+- `image` embeds the file as a base64 data URI; `svg` inlines sanitized markup, so `currentColor`
+  follows the theme. Pass alt text; an svg without it is hidden from assistive tech.
+- Paths are relative to the `.cv` file (current directory for stdin). Other folders:
+  `--assets <dir>` (repeatable). `..` and paths outside those roots are rejected.
+- `https://` sources stay plain links unless you pass `--fetch` (then they are downloaded and
+  embedded; 15 s timeout). `svg` needs a file, inline markup or `--fetch`.
+- Assets over 2 MiB are refused; raise with `--max-asset <bytes>`.
+- `render` fails with `file:line:col` when a file is missing, has an unknown type or an svg cannot be sanitized.
+
 ## Rules
 
 - Never guess a component or prop name; run `guide <name>`.
