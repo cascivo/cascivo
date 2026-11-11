@@ -16,7 +16,8 @@ Write `.cv` text, validate it, render one `.html` file. Static output only: no f
    signature or a did-you-mean; fix and re-run until it exits 0.
 4. Render: `cascivo-html render page.cv -o page.html`. Pass `--brand brand.cv` to apply a reusable brand file.
 
-If the binary is missing: `cargo install --path crates/cascivo-html-cli` from the cascivo repo.
+If the binary is missing: `cargo install cascivo-html-cli` (or `cargo install --path crates/cascivo-html-cli` from the cascivo repo).
+Full guide: <https://cascivo.com/docs/guides/using-cascivo-html>.
 
 ## Format in 10 lines
 

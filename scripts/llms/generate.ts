@@ -1264,6 +1264,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(
     `- Email client support matrix (what the conformance lint enforces): ${SITE}/docs/email-client-support.md`,
   )
+  lines.push(
+    `- Static HTML from .cv text (cascivo-html Rust crate + CLI, no React): ${SITE}/docs/using-cascivo-html.md`,
+  )
   lines.push(`- Compatibility & support matrix: ${SITE}/docs/compatibility.md`)
   lines.push(`- Migrating from shadcn/ui: ${SITE}/docs/migrating-from-shadcn.md`)
   lines.push(`- Token reference: ${SITE}/docs/tokens.md`)

@@ -152,6 +152,10 @@ The cascivo registry model is open — anyone can publish components and host th
 - **Install from any registry:** `cascivo add owner/repo/component-name`.
 - **Migrating from shadcn/ui?** See [docs/MIGRATING-FROM-SHADCN.md](docs/MIGRATING-FROM-SHADCN.md).
 
+### Static HTML from Rust (`cascivo-html`)
+
+[`cascivo-html`](crates/cascivo-html) is a Rust library and CLI that turns agent-written `.cv` text into one deterministic, self-contained HTML file styled by real cascivo CSS (51 elements, seven SVG charts, `@brand` theming, embedded images and SVG). No React, no build step. Install: `cargo install cascivo-html-cli` (binary `cascivo-html`) or `cargo add cascivo-html`. Guide: [docs/USING-CASCIVO-HTML.md](docs/USING-CASCIVO-HTML.md); agent skill: [`skills/cascivo-html`](skills/cascivo-html/SKILL.md).
+
 ### Templates & marketplace
 
 Templates are whole-page compositions — a working page, the components it composes (`registryDependencies`), and its fixtures — that install through the same registry transport and that you own and adapt. The marketplace is a backend-free, GitHub-hosted, community catalog: registries are listed by PR, a CI job bakes a static `marketplace.json`, and a gallery renders it. A template is just a registry item with `type: "template"` — no parallel system.
@@ -185,6 +189,7 @@ cascivo/
 │   ├── search/       # registry search index
 │   ├── cli/          # cascivo CLI — init / add / list / update / audit
 │   └── mcp/          # @cascivo/mcp     — MCP server over the registry
+├── crates/           # Rust workspace — cascivo-html (.cv text → one static HTML file) + its CLI
 ├── apps/
 │   ├── site/         # cascivo.com — landing + docs, generated from manifests (dogfood)
 │   ├── storybook/    # storybook.cascivo.com — stories from manifests

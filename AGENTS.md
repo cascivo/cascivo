@@ -27,7 +27,9 @@ CSS-in-JS** — and made reactive with Preact Signals via `@cascivo/core` — **
 - **`component.meta.ts`** — per-component manifest beside each component in
   `packages/components/src/<name>/`.
 - **`skills/`** — Claude Code skills (`cascivo-add`, `cascivo-design-page`,
-  `cascivo-create-theme`, `cascivo-extend`).
+  `cascivo-create-theme`, `cascivo-extend`, `cascivo-html`).
+- **`crates/`** — Rust workspace: `cascivo-html` (library) and `cascivo-html-cli`
+  (binary `cascivo-html`). Run `cascivo-html guide` for the agent cheat sheet.
 
 ## Generating UI from JSON
 
@@ -35,6 +37,12 @@ CSS-in-JS** — and made reactive with Preact Signals via `@cascivo/core` — **
 one reliably: call `get_view_grammar` for the system prompt + allowed vocabulary,
 emit JSON bounded to that vocabulary, then `validate_view` it (checks component
 names, prop types/enums, and `$data.`/`$actions.` refs) before rendering.
+
+## Generating a static HTML page
+
+For one self-contained HTML file (report, dashboard, landing page) with no React, write `.cv`
+text and run `cascivo-html check page.cv` then `cascivo-html render page.cv -o page.html`
+(`cargo install cascivo-html-cli`). Guide: `docs/USING-CASCIVO-HTML.md`.
 
 ## Non-negotiable rules when writing components
 

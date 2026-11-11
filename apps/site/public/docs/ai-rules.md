@@ -597,6 +597,12 @@ live DOM, so it reports what someone has actually typed, checked and opened.
 
 See [MACHINE-MODE.md](/docs/machine-mode.md).
 
+## Static HTML instead of React
+
+If the output is one static file (report, dashboard, landing page) and no React app is needed,
+write `.cv` text and render it with the `cascivo-html` CLI (`cargo install cascivo-html-cli`).
+Run `cascivo-html guide` for the syntax. See [USING-CASCIVO-HTML.md](/docs/using-cascivo-html.md).
+
 ## See also
 
 - [`@cascivo/docspack`](https://github.com/cascivo/cascivo/tree/main/packages/docspack) —
@@ -610,3 +616,4 @@ See [MACHINE-MODE.md](/docs/machine-mode.md).
   existing Tailwind v4 setup.
 - [TOKENS.md](/docs/tokens.md) — the full token catalog.
 - [MACHINE-MODE.md](/docs/machine-mode.md) — a rendered UI as a Markdown document.
+- [USING-CASCIVO-HTML.md](/docs/using-cascivo-html.md) — one static HTML file from `.cv` text.
