@@ -1,5 +1,12 @@
 # @cascivo/text
 
+## 1.10.0
+
+### Patch Changes
+
+- Updated dependencies [1af31ab]
+  - @cascivo/core@1.10.0
+
 ## 1.9.0
 
 ### Patch Changes

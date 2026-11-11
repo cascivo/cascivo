@@ -1,5 +1,37 @@
 # @cascivo/render
 
+## 1.10.0
+
+### Minor Changes
+
+- 33732bc: Add `@cascivo/render/a2ui/v0_9`: an A2UI v0.9 renderer. `createA2uiStore` validates and holds
+  server messages as signals, `A2uiSurface` renders a surface with cascivo components, and two
+  catalogs ship with it (the cascivo catalog and A2UI's basic catalog). Limits, URL checks and a
+  safe `regex` function protect against hostile agents.
+
+  `./validate` changes too: a prop named `url` is now URL-checked at any depth (as `href` and `src`
+  already were), and `RadioCardGroup` props are now validated against the props it declares (an unknown prop is an
+  error) instead of accepting any prop.
+
+- b3fb29c: Generated component catalog (`@cascivo/render/schema/catalog.v1.json`) and an A2UI v0.9 custom
+  catalog (`@cascivo/render/schema/a2ui/v0_9/catalog.json`), both derived from the component
+  manifests. `validateView` now checks the shape of object and array props (required nested fields and their
+  types; unknown nested fields and values are still accepted), and `view.v1.json` no longer rejects
+  valid translation refs or lists TypeScript type names as enums.
+
+### Patch Changes
+
+- Updated dependencies [1af31ab]
+- Updated dependencies [1af31ab]
+- Updated dependencies [33732bc]
+- Updated dependencies [1af31ab]
+- Updated dependencies [1af31ab]
+- Updated dependencies [1af31ab]
+  - @cascivo/react@1.10.0
+  - @cascivo/i18n@1.10.0
+  - @cascivo/core@1.10.0
+  - @cascivo/text@1.10.0
+
 ## 1.9.0
 
 ### Minor Changes

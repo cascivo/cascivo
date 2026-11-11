@@ -1,5 +1,56 @@
 # @cascivo/react
 
+## 1.10.0
+
+### Minor Changes
+
+- 1af31ab: `TabsList`, `TabsTrigger`, `TabsContent`, `AccordionItem`, `AccordionTrigger` and
+  `AccordionContent` now throw a guidance error when rendered outside their root instead of
+  silently rendering nothing. Astro renders every `.astro` child separately, so React context cannot
+  reach a compound part there; the message says to compose the parts in one `.tsx` island and hydrate
+  that island, matching `PopoverTrigger` and `MenuTrigger`.
+- 1af31ab: The theme runtime is now safe under SSR, hydration and soft navigation.
+
+  - **Behaviour change:** during SSR and the hydration render, `useTheme()` returns the constant
+    `'light'`. It moves to the persisted or controlled value in the render right after hydration
+    (as `next-themes` does). Before, it returned the persisted client value during hydration, so
+    any page whose visitor had picked another theme failed hydration with React #418. The
+    `data-theme` attribute is still right on first paint, because `themePreloadScript()` and the
+    controlled `ThemeProvider` script set it. This is a regression for controlled SSR: a Next.js
+    `<ThemeProvider value="dark">` with a component that prints `useTheme()[0]` now renders `light`
+    until hydration. Express theme-dependent visuals in CSS (`[data-theme='dark'] &`).
+  - On the server, `ThemeProvider` no longer writes the module theme store, so a `value` from one
+    request no longer leaks into the next.
+  - `themePreloadScript({ reapplyOn })` re-runs the script on the named document events. Pass
+    `'astro:after-swap'` so Astro's `<ClientRouter>` keeps the theme across soft navigations.
+    Without the option the script is byte-identical to before.
+  - `themePreloadScript` is also exported from `@cascivo/core/pure`.
+  - `useToast().toast()` called during a server render is now a no-op instead of queueing a toast
+    for the next visitor.
+
+### Patch Changes
+
+- 1af31ab: Server-rendered islands now render styled under a plain Astro config. Astro externalizes npm
+  dependencies in its server build, so it never walked the CSS imports of these packages; they now
+  carry the `astro-component` keyword, which makes Astro inline them. `vite.resolve.noExternal` is
+  no longer required.
+- 1af31ab: An open `Modal` or popover now survives being re-inserted into the document. Astro's
+  `transition:persist` in browsers without `Element.moveBefore` (Safari, Firefox) re-inserts the
+  persisted island by moving an ancestor. That dropped an open modal out of the top layer while it
+  still counted as open, so Escape and the backdrop did nothing, and it hid an open popover without a
+  `toggle` event. While open, `Modal` and `usePopover` (Popover, HoverCard, Menu and the other
+  components built on it) now watch for re-insertion and show the overlay again, without firing
+  `close` or `onClose`. Closed overlays do not watch.
+- 1af31ab: Every component stylesheet now opens with the canonical `@layer` order statement. A sheet that
+  started `@layer cascivo.component{…}` fixed the layer order by being loaded first, so a page
+  that loaded it before the tokens (Astro dev with an MDX layout) ended up with `cascivo.component`
+  below `cascivo.reset`. Identical statements are idempotent, so nothing changes where the order was
+  already declared; the cost is about 120 bytes per file before gzip.
+- Updated dependencies [33732bc]
+- Updated dependencies [1af31ab]
+  - @cascivo/i18n@1.10.0
+  - @cascivo/core@1.10.0
+
 ## 1.9.0
 
 ### Minor Changes

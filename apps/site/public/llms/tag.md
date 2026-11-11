@@ -101,4 +101,4 @@ chip, label, filter, category
 
 ---
 
-_Generated from registry v1.9.0 on 2026-10-09. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.10.0 on 2026-11-11. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
