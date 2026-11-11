@@ -110,7 +110,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: crates-io
     permissions:
-      contents: write # tags + GitHub releases
+      contents: read
       id-token: write # crates-io-auth-action exchanges the OIDC token for a short-lived publish token
     env:
       PLAN: ${{ needs.plan.outputs.plan }}
@@ -136,7 +136,7 @@ jobs:
       # Dependency order, waiting for the sparse index between crates: a dependent resolves its
       # sibling from the registry index, which lags the upload. Skips versions already present,
       # so a re-run after a partial failure resumes where it stopped.
-      - name: Publish, tag and release each crate
+      - name: Publish each crate
         env:
           CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
         run: |
@@ -150,11 +150,38 @@ jobs:
               [ "$i" = 30 ] && { echo "$crate $version not in the index after 5 minutes"; exit 1; }
               sleep 10
             done
-            tag="$crate@$version"
-            if gh release view "$tag" > /dev/null 2>&1; then
-              echo "release $tag exists"
-            else
-              $CLI changelog-section --crate "$crate" --version "$version" > "$RUNNER_TEMP/notes.md"
-              gh release create "$tag" --target "$GITHUB_SHA" --title "$tag" --notes-file "$RUNNER_TEMP/notes.md"
-            fi
           done < <(jq -c '.[]' <<< "$PLAN")
+
+  # Tags + GitHub releases for every crate version that is on crates.io but has no release yet.
+  # Its own job, derived from crates.io state rather than from what `publish` just did: if the
+  # publish succeeded and the release step failed, a re-run finds nothing to publish, so a
+  # release made inside `publish` would never be retried. Also backfills 0.1.0.
+  releases:
+    name: Tags and GitHub releases
+    needs: [plan, publish]
+    if: always() && github.ref == 'refs/heads/main' && needs.plan.result == 'success' && needs.publish.result != 'failure' && needs.publish.result != 'cancelled'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Toolchain
+        run: rustup show active-toolchain || rustup toolchain install
+      - name: Create missing releases
+        run: |
+          set -euo pipefail
+          unpublished=$($CLI publish-plan | jq -r '.[].crate')
+          cargo metadata --no-deps --format-version 1 \
+            | jq -r '.packages[] | select(.publish == null or (.publish | length) > 0) | "\(.name) \(.version)"' \
+            | while read -r crate version; do
+                if grep -qx "$crate" <<< "$unpublished"; then echo "$crate $version not on crates.io yet"; continue; fi
+                tag="$crate@$version"
+                if gh release view "$tag" > /dev/null 2>&1; then echo "release $tag exists"; continue; fi
+                $CLI changelog-section --crate "$crate" --version "$version" > "$RUNNER_TEMP/notes.md"
+                gh release create "$tag" --target "$GITHUB_SHA" --title "$tag" --notes-file "$RUNNER_TEMP/notes.md"
+              done
