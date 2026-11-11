@@ -14,6 +14,7 @@ Turborepo). TypeScript 5 strict with `noUncheckedIndexedAccess` + `exactOptional
   copied by the CLI. `packages/react/` is the prebuilt npm distribution.
 - `packages/core` (micro-FSM + signals primitives), `tokens`, `themes` (twelve themes), `i18n`,
   `storage`, `icons`, `charts`, `render`, `cli` (`cascivo`), `mcp`, and more: `ls packages`.
+- `crates/`: Rust workspace. `cascivo-html` (`.cv` text → one static HTML file) and `cascivo-html-cli` (binary `cascivo-html`); guide `docs/USING-CASCIVO-HTML.md`, skill `skills/cascivo-html`.
 - `apps/site` (Preact, docs + marketing, data-driven from `registry.json`), `apps/storybook`,
   `apps/live`, `apps/examples/*` (React demos), `apps/bench/*`.
 - `registry.json` is the source of truth for CLI, MCP and docs; `skills/` holds Claude Code skills;

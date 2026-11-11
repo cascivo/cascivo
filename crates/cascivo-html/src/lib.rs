@@ -1,4 +1,18 @@
-//! Renders agent-written `.cv` text into deterministic cascivo HTML.
+//! Renders agent-written `.cv` text into one deterministic, self-contained cascivo HTML file.
+//!
+//! The library has no dependencies and does no file I/O: pass images and brand files through
+//! [`Options`]. The `cascivo-html` CLI (crate `cascivo-html-cli`) wires files for you.
+//!
+//! ```
+//! use cascivo_html::{render, Options};
+//!
+//! let html = render("@title \"Hi\"\ncard \"Hello\"\n", &Options::default()).unwrap();
+//! assert!(html.starts_with("<!doctype html>") || html.contains("<html"));
+//! assert!(html.contains("Hello"));
+//! ```
+//!
+//! [`GUIDE`] and [`guide_for`] return the agent cheat sheet. Full guide:
+//! <https://cascivo.com/docs/guides/using-cascivo-html>.
 
 pub mod asset;
 pub mod ast;

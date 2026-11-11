@@ -12,6 +12,7 @@ Claude Code skills for working with the cascivo design system.
 | `cascivo-create-theme`        | `skills/cascivo-create-theme/SKILL.md`        | Brand colors → semantic token overrides → WCAG AA contrast check                                           |
 | `cascivo-extend`              | `skills/cascivo-extend/SKILL.md`              | Scaffold a new component following cascivo authoring rules (signals, CSS tokens)                           |
 | `cascivo-email`               | `skills/cascivo-email/SKILL.md`               | Build a transactional email — table-based primitives, themed tokens, byte budget                           |
+| `cascivo-html`                | `skills/cascivo-html/SKILL.md`                | `.cv` text → one static, branded HTML file with the `cascivo-html` CLI (Rust), no React or build step      |
 | `cascivo-migrate-from-shadcn` | `skills/cascivo-migrate-from-shadcn/SKILL.md` | Move a shadcn/ui app to cascivo one file at a time, each file proven with `audit --ai`                     |
 | `cascivo-share-preview`       | `skills/cascivo-share-preview/SKILL.md`       | Put an app on a public URL with no Cloudflare account — temporary account + claim link, or Cloudflare Drop |
 

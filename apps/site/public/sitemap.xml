@@ -1849,6 +1849,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/guides/using-cascivo-html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/guides/styling-internals</loc>
     <priority>0.6</priority>
   </url>

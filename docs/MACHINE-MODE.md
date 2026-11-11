@@ -7,6 +7,9 @@ package, `@cascivo/text`, with three entry points depending on where the UI is.
 pnpm add @cascivo/text
 ```
 
+> Going the other way — an agent *writing* a static page? Use `cascivo-html`
+> ([USING-CASCIVO-HTML.md](./USING-CASCIVO-HTML.md)): `.cv` text in, one HTML file out.
+
 ## The one rule
 
 **Machine mode is the accessibility tree, serialized.** Every decision the serializer makes
