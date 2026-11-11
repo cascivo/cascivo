@@ -144,6 +144,38 @@ appears from the next CI publish onward.
    path: `changeset publish` runs, packages are published to npm with provenance,
    git tags are created, and GitHub release notes are generated.
 
+## Rust crates (crates.io)
+
+`cascivo-html` and `cascivo-html-cli` release through the same flow, with a zero-dependency
+tool (`scripts/rust-release/cli.ts`, `pnpm changeset:rust`) because the `@changesets` CLI rejects
+non-npm package names. Changeset files live in `.changeset-rust/` and use the same format.
+
+1. **Record** — `pnpm changeset:rust` (or `add --crate … --bump patch|minor|major --summary "…"`).
+   `status` shows pending bumps and the versions they produce.
+2. **Version PR** — a push to `main` touching `.changeset-rust/**` runs `rust-release.yml`; its
+   `version` job runs `changeset:rust version` (highest bump per crate, fixed groups share one
+   version, `Cargo.toml` versions, the sibling dependency requirement, `Cargo.lock` and
+   `CHANGELOG.md` updated, changesets deleted) and force-pushes `changeset-release/rust` as the
+   "Version Rust crates" PR. Like `changesets/action`, pushes made with `GITHUB_TOKEN` do not start
+   other workflows, so CI does not run on that PR by itself.
+3. **Publish** — merging it changes `crates/**/Cargo.toml`, re-triggering the workflow. The `plan`
+   job runs `publish-plan` (local versions missing from the crates.io sparse index, dependency
+   order). If non-empty, the `publish` job (`environment: crates-io`, OIDC) runs fmt/clippy/test,
+   `cargo publish -p` per crate waiting for the index between them, then tags `<crate>@<version>`
+   and creates a GitHub release from the CHANGELOG section. Nothing to publish is a no-op.
+
+`plan` runs whether or not changesets are staged, for the same reason as the JS flow: a bump that
+merged but failed to publish would otherwise be masked by the next changeset. Re-run by hand with
+**Actions → Rust release → Run workflow** on `main`; already-published versions are skipped.
+
+The PR gate (`rust-changeset.yml`) fails a PR that changes `crates/*/src/**` or a non-version line
+of `crates/*/Cargo.toml` without a `.changeset-rust/*.md`. Add the `no-rust-changeset` label when
+the change reaches no adopter. The Version PR is exempt (it deletes changesets).
+
+crates.io trusts workflow filename `rust-release.yml` and environment `crates-io`; renaming either
+breaks publishing until the trusted publisher is reconfigured. A new crate name needs one manual
+first publish (see `crates/cascivo-html/README.md`).
+
 ## Release cadence is a correctness property, not a preference
 
 A fix that is merged but unpublished does not exist for an adopter. This is not a

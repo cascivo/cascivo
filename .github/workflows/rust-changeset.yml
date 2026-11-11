@@ -1,0 +1,35 @@
+name: Rust changeset
+
+# PR gate mirroring the JS changeset-coverage guard: a change to a crate's src/ or to a
+# non-version line of its Cargo.toml must carry a `.changeset-rust/*.md`, or the PR must be
+# labelled `no-rust-changeset`. A separate workflow so labelling re-runs only this check, not
+# the Rust build in rust.yml. The Version PR is exempt: it deletes the changesets it consumes.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+    paths:
+      - 'crates/**'
+      - '.changeset-rust/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rust-changeset-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  coverage:
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'no-rust-changeset') }}
+    runs-on: ubuntu-latest
+    steps:
+      # Full history: the guard diffs against the merge base; without one it fails by design.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - env:
+          BASE: ${{ github.base_ref }}
+        run: node --experimental-strip-types --no-warnings scripts/rust-release/cli.ts coverage --base "origin/$BASE"

@@ -38,8 +38,7 @@ See `examples/brand-assets.cv`.
 ## Releasing
 
 Crates: `cascivo-html` (library), then `cascivo-html-cli` (binary `cascivo-html`; depends on the
-library, so it goes second). Both share one version; bump both `Cargo.toml`s, including the
-CLI's `version =` on its `cascivo-html` dependency.
+library, so it goes second). Both share one version (a fixed group in `.changeset-rust/config.json`).
 
 1. **First release, manual.** crates.io only allows trusted publishing for crates that already
    exist. Log in with a token scoped to `publish-new`, then `cargo publish -p cascivo-html` and,
@@ -50,5 +49,13 @@ CLI's `version =` on its `cascivo-html` dependency.
    GitHub: repository `cascivo/cascivo`, workflow `rust-release.yml`, environment `crates-io`.
    Create the `crates-io` environment in the repo's Settings → Environments (add required
    reviewers if wanted). Revoke the manual token.
-3. **Later releases.** Bump versions, merge, then `git tag cascivo-html-v0.1.1 && git push origin cascivo-html-v0.1.1`.
-   `rust-release.yml` runs fmt/clippy/test, checks the tag matches both versions, and publishes.
+3. **Later releases (changesets).** Record the change with
+   `pnpm changeset:rust add --crate cascivo-html --bump minor --summary "…"` (or run
+   `pnpm changeset:rust` for the prompt) and commit the `.changeset-rust/*.md` with your PR.
+   After it lands on `main`, `rust-release.yml` opens a "Version Rust crates" PR that bumps both
+   crates (they are a fixed group, one shared version), the `cascivo-html` dependency requirement,
+   `Cargo.lock` and each `CHANGELOG.md`. Merging that PR publishes whatever is not yet on
+   crates.io, in dependency order, then tags `<crate>@<version>` and creates a GitHub release.
+   A PR changing `crates/*/src/**` or non-version `Cargo.toml` lines needs a changeset or the
+   `no-rust-changeset` label. A failed publish is resumed with **Actions → Rust release → Run
+   workflow** on `main`. See `docs/RELEASING.md`.

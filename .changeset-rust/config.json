@@ -1,0 +1,4 @@
+{
+  "fixed": [["cascivo-html", "cascivo-html-cli"]],
+  "baseBranch": "main"
+}
