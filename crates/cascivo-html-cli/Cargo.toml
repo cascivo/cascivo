@@ -1,6 +1,6 @@
 [package]
 name = "cascivo-html-cli"
-version = "0.1.0"
+version = "0.1.1"
 edition.workspace = true
 rust-version.workspace = true
 description = "cascivo-html command line: render .cv to one static HTML file"
@@ -16,7 +16,7 @@ name = "cascivo-html"
 path = "src/main.rs"
 
 [dependencies]
-cascivo-html = { path = "../cascivo-html", version = "0.1.0" }
+cascivo-html = { path = "../cascivo-html", version = "0.1.1" }
 ureq = { version = "3", default-features = false, features = ["rustls"], optional = true }
 
 [features]
