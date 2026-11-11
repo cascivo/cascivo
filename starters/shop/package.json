@@ -15,8 +15,8 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@cascivo/app": "1.9.0",
-    "@cascivo/react": "1.9.0",
+    "@cascivo/app": "1.10.0",
+    "@cascivo/react": "1.10.0",
     "@cascivo/themes": "1.0.3",
     "@preact/signals-react": ">=3.0.0",
     "preact": "^10.29.0",
