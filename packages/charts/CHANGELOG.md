@@ -1,5 +1,23 @@
 # @cascivo/charts
 
+## 1.10.0
+
+### Patch Changes
+
+- 1af31ab: Server-rendered islands now render styled under a plain Astro config. Astro externalizes npm
+  dependencies in its server build, so it never walked the CSS imports of these packages; they now
+  carry the `astro-component` keyword, which makes Astro inline them. `vite.resolve.noExternal` is
+  no longer required.
+- 1af31ab: Every component stylesheet now opens with the canonical `@layer` order statement. A sheet that
+  started `@layer cascivo.component{…}` fixed the layer order by being loaded first, so a page
+  that loaded it before the tokens (Astro dev with an MDX layout) ended up with `cascivo.component`
+  below `cascivo.reset`. Identical statements are idempotent, so nothing changes where the order was
+  already declared; the cost is about 120 bytes per file before gzip.
+- Updated dependencies [33732bc]
+- Updated dependencies [1af31ab]
+  - @cascivo/i18n@1.10.0
+  - @cascivo/core@1.10.0
+
 ## 1.9.0
 
 ### Patch Changes

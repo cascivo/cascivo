@@ -1,5 +1,12 @@
 # @cascivo/i18n
 
+## 1.10.0
+
+### Minor Changes
+
+- 33732bc: Add the `cascade.a2ui.*` built-in messages (`openMedia`, `invalid`, `dialog`, `choose`, `time`)
+  used by the `@cascivo/render/a2ui/v0_9` basic catalog, in English and German.
+
 ## 1.9.0
 
 ## 1.8.0

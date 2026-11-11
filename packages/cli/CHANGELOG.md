@@ -1,5 +1,23 @@
 # cascivo
 
+## 1.8.1
+
+### Patch Changes
+
+- 1af31ab: `cascivo create --framework astro` wires `@cascivo/astro` into `astro.config.mjs`. The
+  integration injects the layer order and the chosen theme ahead of any other CSS on every page,
+  and inlines a no-flash theme script that survives `<ClientRouter />` swaps. The scaffold passes
+  its theme to both the stylesheet and the script, so a `midnight` app is not repainted light or
+  dark. `src/layouts/Layout.astro` no longer imports the theme itself.
+- 1af31ab: `cascivo create --framework astro` now pins `@astrojs/react` `^7.1.0` next to `astro` `^7`. The
+  previous `^5` pairing installed two Vite majors and printed 21 esbuild deprecation warnings on
+  every build.
+- 1af31ab: `cascivo init` prints Astro-shaped next steps when an `astro.config.*` exists
+  (`npx astro add @cascivo/astro`, compose compound components in a `.tsx` island, hydrate only the
+  interactive islands). `cascivo doctor` warns on an Astro project that has neither the
+  `@cascivo/astro` integration, `vite.resolve.noExternal`, nor an installed `@cascivo/react` that
+  declares `astro-component`. It no longer accepts `ssr.noExternal` there, which Astro ignores.
+
 ## 1.8.0
 
 ### Minor Changes
