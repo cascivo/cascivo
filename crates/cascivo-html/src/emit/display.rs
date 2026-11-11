@@ -201,8 +201,22 @@ fn arrow(trend: &str) -> &'static str {
     }
 }
 
+/// `trend` unset: read the direction off the delta's sign, so `+12%` shows ▲ instead of a stray "–".
+fn infer_trend(delta: &str) -> &'static str {
+    match delta.trim_start().chars().next() {
+        Some('+') => "up",
+        Some('-' | '\u{2212}') if delta.chars().any(|c| matches!(c, '1'..='9')) => "down",
+        _ => "flat",
+    }
+}
+
 fn stat(node: &Node, out: &mut String) {
-    let trend = prop_or(node, "trend", "flat");
+    let delta_arg = node.arg_str(2).filter(|d| !d.is_empty());
+    let trend = if node.prop_set("trend") {
+        prop_or(node, "trend", "flat")
+    } else {
+        infer_trend(delta_arg.as_deref().unwrap_or_default()).to_string()
+    };
     let good = prop_or(node, "goodDirection", "up");
     out.push_str("<div");
     if node.prop_bool("card") {
@@ -223,7 +237,7 @@ fn stat(node: &Node, out: &mut String) {
         "cv-stat-value",
         &node.arg_str(1).unwrap_or_default(),
     );
-    if let Some(delta) = node.arg_str(2).filter(|d| !d.is_empty()) {
+    if let Some(delta) = delta_arg {
         out.push_str("<span");
         attr(out, "data-trend", &trend);
         attr(out, "data-sentiment", sentiment(&trend, &good));

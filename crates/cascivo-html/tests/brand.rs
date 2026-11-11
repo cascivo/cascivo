@@ -201,3 +201,16 @@ fn dark_theme_picks_dark_scale() {
     let b = parse_brand(&items("#5b5bd6 theme=midnight")).unwrap();
     assert!(brand_css(&b).contains("oklch(0.65 "));
 }
+
+#[test]
+fn chart_scale_follows_brand_only_when_given() {
+    let branded = css("#5b5bd6 light");
+    assert!(branded.contains("--cascivo-chart-8:"));
+    // Series 1 carries the brand hue.
+    let o = hex_to_oklch("#5b5bd6").expect("hex");
+    let c = o.c.clamp(0.1, 0.16);
+    assert!(branded.contains(&format!("--cascivo-chart-1:oklch(0.62 {c:.3} {}", o.h)));
+    assert!(css("dark").is_empty() || !css("dark").contains("--cascivo-chart-"));
+    // Dark mode lifts lightness.
+    assert!(css("#5b5bd6 dark").contains("--cascivo-chart-1:oklch(0.74 "));
+}

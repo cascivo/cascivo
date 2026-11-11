@@ -380,7 +380,29 @@ fn colors(b: &Brand, light: bool) -> String {
     if let Some(p) = b.primary {
         scale(&mut s, "primary", p, light, false);
     }
+    // Charts follow the brand: series 1 is the brand hue, the rest rotate around it.
+    if let Some(a) = b.accent.or(b.primary) {
+        chart_scale(&mut s, a, light);
+    }
     s
+}
+
+/// Hue offsets (degrees) for `--cascivo-chart-1..8`, spread so neighbours stay distinguishable.
+const CHART_HUES: [f64; 8] = [0.0, 150.0, 300.0, 75.0, 225.0, 30.0, 180.0, 330.0];
+
+fn chart_scale(out: &mut String, o: Oklch, light: bool) {
+    let l = if light { "0.62" } else { "0.74" };
+    // Gray brands would make a gray chart; keep series tellable apart.
+    let c = o.c.clamp(0.1, 0.16);
+    for (i, off) in CHART_HUES.iter().enumerate() {
+        let hue = (o.h + off).rem_euclid(360.0);
+        let _ = write!(
+            out,
+            "--cascivo-chart-{}:oklch({l} {c:.3} {});",
+            i + 1,
+            num(hue)
+        );
+    }
 }
 
 /// `brand_css` is public and `Options::brand` is caller-built, so re-check what `parse_item` checks.

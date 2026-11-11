@@ -46,6 +46,10 @@ const EXTRA_CSS: &[(&str, &str)] = &[
 /// Inline scripts, keyed by the name emitters put in `Cx::scripts`.
 const SCRIPTS: &[(&str, &str)] = &[("table-sort", include_str!("../assets/extra/table-sort.js"))];
 
+/// Page shell: inline padding and a vertical rhythm from the brand's `gap` (default space-4).
+/// Mobile-first, no max-width: the document fills the viewport like a dashboard.
+const DOC_CSS: &str = "@layer cascivo.component{.cv-doc{display:flex;flex-direction:column;gap:var(--cascivo-gap-default,var(--cascivo-space-4));padding:var(--cascivo-space-4);min-inline-size:0}@media (min-width:40rem){.cv-doc{padding:var(--cascivo-space-6)}}@media (min-width:64rem){.cv-doc{padding:var(--cascivo-space-8)}}}";
+
 fn emit_body(doc: &Doc, cx: &mut Cx) -> String {
     let mut body = String::new();
     for node in &doc.nodes {
@@ -82,6 +86,7 @@ pub fn render(src: &str, opts: &Options) -> Result<String, Vec<Diagnostic>> {
         css.push_str(c);
     }
     css.push_str(&brand_css);
+    css.push_str(DOC_CSS);
     for (unit, c) in COMPONENT_CSS {
         if cx.used.contains(unit) {
             css.push_str(c);
@@ -107,9 +112,9 @@ pub fn render(src: &str, opts: &Options) -> Result<String, Vec<Diagnostic>> {
     out.push_str(&css);
     out.push_str("</style></head>");
     out.push_str(nl);
-    out.push_str("<body>");
+    out.push_str("<body><main class=\"cv-doc\">");
     out.push_str(&body);
-    out.push_str("</body>");
+    out.push_str("</main></body>");
     for (name, js) in SCRIPTS {
         if cx.scripts.contains(name) {
             out.push_str("<script>");

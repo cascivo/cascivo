@@ -13,3 +13,21 @@ let html = cascivo_html::render("card \"Hi\"\n", &cascivo_html::Options::default
   `pnpm html-kit:generate` (part of `pnpm regen`); do not edit them.
 - `examples/*.cv` have byte-compared `.html` snapshots: `UPDATE_SNAPSHOTS=1 cargo test --test examples`.
 - Gates: `cargo fmt --check`, `cargo clippy --all-targets -- -D warnings`, `cargo test`.
+
+## Releasing
+
+Crates: `cascivo-html` (library), then `cascivo-html-cli` (binary `cascivo-html`; depends on the
+library, so it goes second). Both share one version; bump both `Cargo.toml`s, including the
+CLI's `version =` on its `cascivo-html` dependency.
+
+1. **First release, manual.** crates.io only allows trusted publishing for crates that already
+   exist. Log in with a token scoped to `publish-new`, then `cargo publish -p cascivo-html` and,
+   once the index has it, `cargo publish -p cascivo-html-cli`. Dry run:
+   `cargo package --workspace` (`cargo package -p cascivo-html-cli` alone fails until the library
+   is on crates.io; `--no-verify` skips the build).
+2. **Trusted publishing.** On crates.io, for each crate: Settings → Trusted Publishing → add
+   GitHub: repository `cascivo/cascivo`, workflow `rust-release.yml`, environment `crates-io`.
+   Create the `crates-io` environment in the repo's Settings → Environments (add required
+   reviewers if wanted). Revoke the manual token.
+3. **Later releases.** Bump versions, merge, then `git tag cascivo-html-v0.1.1 && git push origin cascivo-html-v0.1.1`.
+   `rust-release.yml` runs fmt/clippy/test, checks the tag matches both versions, and publishes.
