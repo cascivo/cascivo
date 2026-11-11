@@ -39,6 +39,7 @@ name [args] [key=value] [flag] ["text"]
 - Data: bar Q1:12 Q2:18 | line 3 5 8 | table Name,Age | Ann,31 | Bob,42 (first row = header; props go BEFORE the rows).
 - 3x card "x" repeats a node. # comment lines. Only two-space indents.
 - Directives: @title "T" @lang de @brand … @brand-file brand.cv
+- Pictures: image logo.png "Alt" w=64 | svg icons/a.svg "Alt" fit=cover | svg "<svg …>". Paths are relative to the .cv file (CLI: --assets <dir> adds roots, --fetch embeds https URLs); files are embedded, svg inlined so currentColor follows the theme.
 - Aliases: cols=columns, row/col=flex, h1..h3=heading, p=text.
 - @brand keys: #hex primary, accent=#hex, theme=<name>, light|dark|auto, r8 radius px, gap4, density=compact|normal|comfy, font=Inter, mono=…
 - Errors print line:col and the expected signature. Run \`cascivo-html check\`.`

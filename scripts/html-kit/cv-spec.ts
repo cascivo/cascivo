@@ -14,8 +14,13 @@ export type CvEntry = {
   /** CSS units inlined when this component is used (its own plus those its markup renders). */
   css: string[]
   /** `.cv`-only props the React manifest cannot express (its type is not a literal union). */
-  extraProps?: { name: string; type: 'boolean'; summary: string }[]
+  extraProps?: ExtraProp[]
+  /** No React component behind it: the summary lives here and there is no manifest to load. */
+  synthetic?: string
 }
+export type ExtraProp =
+  | { name: string; type: 'boolean' | 'string'; summary: string }
+  | { name: string; type: 'enum'; values: string[]; summary: string }
 
 const a = (name: string, kind: ArgKind, required = false) => ({ name, kind, required })
 
@@ -27,7 +32,15 @@ const e = (component: string, o: Partial<Omit<CvEntry, 'component'>> = {}): CvEn
   children: o.children ?? 'none',
   css: o.css ?? [component],
   ...(o.extraProps ? { extraProps: o.extraProps } : {}),
+  ...(o.synthetic ? { synthetic: o.synthetic } : {}),
 })
+
+// Shared by `image` and `svg`: embedded assets are sized and fitted the same way.
+const assetProps: ExtraProp[] = [
+  { name: 'w', type: 'string', summary: 'Width: px number or CSS length' },
+  { name: 'h', type: 'string', summary: 'Height: px number or CSS length' },
+  { name: 'fit', type: 'enum', values: ['contain', 'cover'], summary: 'How the picture fills w/h' },
+]
 
 // Charts draw inline SVG; only the legend chrome has CSS.
 const chart = 'chart-legend'
@@ -58,7 +71,13 @@ export const CV_SPEC: readonly CvEntry[] = [
   e('tag', { children: 'text' }),
   e('avatar', { args: [a('name', 'str')] }),
   e('avatar-group', { children: 'nodes', css: ['avatar-group', 'avatar'] }),
-  e('image', { args: [a('src', 'str', true), a('alt', 'str')] }),
+  e('image', { args: [a('src', 'str', true), a('alt', 'str')], extraProps: assetProps }),
+  e('svg', {
+    args: [a('src', 'str', true), a('alt', 'str')],
+    css: [],
+    extraProps: assetProps,
+    synthetic: 'Inline SVG from a file, URL or markup, sanitized; currentColor follows the theme',
+  }),
   e('list', { children: 'nodes' }),
   e('data-list', { args: [a('rows', 'rows', true)] }),
   e('structured-list', { args: [a('rows', 'rows', true)] }),

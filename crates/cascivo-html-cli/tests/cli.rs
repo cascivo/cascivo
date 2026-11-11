@@ -154,3 +154,187 @@ fn guide_and_help() {
             .starts_with("cascivo-html ")
     );
 }
+
+const PNG: &[u8] = b"\x89PNG\r\n\x1a\n\0\0\0\rIHDR";
+const SVG: &str =
+    "<svg viewBox=\"0 0 2 2\"><rect width=\"2\" height=\"2\" fill=\"currentColor\"/></svg>";
+
+fn site(name: &str) -> PathBuf {
+    let d = tmp(name);
+    std::fs::write(d.join("logo.png"), PNG).unwrap();
+    std::fs::write(d.join("icon.svg"), SVG).unwrap();
+    d
+}
+
+#[test]
+fn assets_relative_to_the_input_file() {
+    let d = site("assets-rel");
+    std::fs::write(
+        d.join("p.cv"),
+        "image logo.png \"Logo\" w=40\nsvg icon.svg \"Icon\"\n",
+    )
+    .unwrap();
+    let o = run(&["render", d.join("p.cv").to_str().unwrap()], "", None);
+    assert_eq!(o.code, 0, "{}", o.stderr);
+    assert!(o.stdout.contains("data:image/png;base64,iVBORw0KGgo"));
+    assert!(
+        o.stdout
+            .contains("<svg viewBox=\"0 0 2 2\" role=\"img\" aria-label=\"Icon\"")
+    );
+    // Stdin reads from the current directory.
+    let s = run(&["render"], "image logo.png x\n", Some(&d));
+    assert_eq!(s.code, 0, "{}", s.stderr);
+    assert!(s.stdout.contains("data:image/png;base64,"));
+}
+
+#[test]
+fn extra_assets_root_and_escapes() {
+    let d = tmp("assets-roots");
+    let shared = site("assets-shared");
+    std::fs::write(d.join("p.cv"), "image logo.png x\n").unwrap();
+    let p = d.join("p.cv");
+    let p = p.to_str().unwrap();
+    // Not in the input dir: error naming the file, with line:col.
+    let miss = run(&["render", p], "", None);
+    assert_eq!(miss.code, 1);
+    assert!(
+        miss.stderr.contains(":1:1: cannot load 'logo.png'"),
+        "{}",
+        miss.stderr
+    );
+    let ok = run(
+        &["render", p, "--assets", shared.to_str().unwrap()],
+        "",
+        None,
+    );
+    assert_eq!(ok.code, 0, "{}", ok.stderr);
+
+    // `..` and absolute paths never escape the roots, even when the target exists.
+    for bad in [
+        "../x.png",
+        "/etc/hostname",
+        &format!("{}/logo.png", shared.display()),
+    ] {
+        let cv = d.join("e.cv");
+        std::fs::write(&cv, format!("image \"{bad}\" x\n")).unwrap();
+        let o = run(&["render", cv.to_str().unwrap()], "", None);
+        assert_eq!(o.code, 1, "{bad}");
+        assert!(o.stderr.contains("relative path"), "{bad}: {}", o.stderr);
+    }
+    assert_eq!(
+        run(&["render", p, "--assets", "/nonexistent-dir"], "", None).code,
+        2
+    );
+}
+
+#[test]
+fn asset_symlink_escape_is_rejected() {
+    #[cfg(unix)]
+    {
+        let d = site("assets-link");
+        let out = tmp("assets-link-out");
+        std::fs::write(out.join("secret.png"), PNG).unwrap();
+        std::os::unix::fs::symlink(out.join("secret.png"), d.join("s.png")).unwrap();
+        std::fs::write(d.join("p.cv"), "image s.png x\n").unwrap();
+        let o = run(&["render", d.join("p.cv").to_str().unwrap()], "", None);
+        assert_eq!(o.code, 1);
+        assert!(o.stderr.contains("outside"), "{}", o.stderr);
+    }
+}
+
+#[test]
+fn size_limit_and_max_asset_flag() {
+    let d = site("assets-size");
+    let mut big = PNG.to_vec();
+    big.extend(vec![0u8; 5000]);
+    std::fs::write(d.join("big.png"), &big).unwrap();
+    std::fs::write(d.join("p.cv"), "image big.png x\n").unwrap();
+    let p = d.join("p.cv");
+    let p = p.to_str().unwrap();
+    let o = run(&["render", p, "--max-asset", "1000"], "", None);
+    assert_eq!(o.code, 1);
+    assert!(o.stderr.contains("embed limit"), "{}", o.stderr);
+    assert_eq!(run(&["render", p, "--max-asset", "9000"], "", None).code, 0);
+    assert_eq!(run(&["render", p, "--max-asset", "lots"], "", None).code, 2);
+}
+
+#[test]
+fn urls_stay_references_without_fetch() {
+    let o = run(&["render"], "image https://a.example/x.png x\n", None);
+    assert_eq!(o.code, 0, "{}", o.stderr);
+    assert!(o.stdout.contains("src=\"https://a.example/x.png\""));
+}
+
+#[test]
+fn same_input_same_bytes() {
+    let d = site("assets-det");
+    std::fs::write(d.join("p.cv"), "image logo.png x\nsvg icon.svg y\n").unwrap();
+    let p = d.join("p.cv");
+    let p = p.to_str().unwrap();
+    assert_eq!(
+        run(&["render", p], "", None).stdout,
+        run(&["render", p], "", None).stdout
+    );
+}
+
+#[cfg(feature = "fetch")]
+#[test]
+fn fetch_embeds_urls_with_a_size_cap() {
+    use std::io::Read;
+    use std::net::TcpListener;
+    let l = TcpListener::bind("127.0.0.1:0").unwrap();
+    let port = l.local_addr().unwrap().port();
+    std::thread::spawn(move || {
+        for s in l.incoming().take(2) {
+            let mut s = s.unwrap();
+            let mut buf = [0u8; 2048];
+            let _ = s.read(&mut buf);
+            let head = format!(
+                "HTTP/1.1 200 OK\r\ncontent-type: image/png\r\ncontent-length: {}\r\nconnection: close\r\n\r\n",
+                PNG.len()
+            );
+            let _ = s.write_all(head.as_bytes());
+            let _ = s.write_all(PNG);
+        }
+    });
+    let src = format!("image http://127.0.0.1:{port}/x.png x\n");
+    let mut c = Command::new(BIN);
+    c.args(["render", "--fetch"])
+        .env_remove("HTTP_PROXY")
+        .env_remove("http_proxy")
+        .env_remove("ALL_PROXY")
+        .env_remove("all_proxy")
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped());
+    let mut child = c.spawn().unwrap();
+    child
+        .stdin
+        .take()
+        .unwrap()
+        .write_all(src.as_bytes())
+        .unwrap();
+    let o = child.wait_with_output().unwrap();
+    let out = String::from_utf8(o.stdout).unwrap();
+    assert!(o.status.success(), "{}", String::from_utf8_lossy(&o.stderr));
+    assert!(out.contains("data:image/png;base64,iVBORw0KGgo"), "{out}");
+    // Over the cap: refused, not truncated.
+    let mut c = Command::new(BIN);
+    c.args(["render", "--fetch", "--max-asset", "5"])
+        .env_remove("HTTP_PROXY")
+        .env_remove("http_proxy")
+        .env_remove("ALL_PROXY")
+        .env_remove("all_proxy")
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped());
+    let mut child = c.spawn().unwrap();
+    child
+        .stdin
+        .take()
+        .unwrap()
+        .write_all(src.as_bytes())
+        .unwrap();
+    let o = child.wait_with_output().unwrap();
+    assert_eq!(o.status.code(), Some(1));
+}

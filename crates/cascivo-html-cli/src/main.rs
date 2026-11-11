@@ -11,14 +11,21 @@ const USAGE: &str = "\
 cascivo-html: render agent-written .cv text into one static HTML file
 
 usage:
-  cascivo-html render [in.cv|-] [-o out.html] [--brand brand.cv]
-  cascivo-html check [in.cv|-] [--brand brand.cv]
+  cascivo-html render [in.cv|-] [-o out.html] [--brand brand.cv] [asset options]
+  cascivo-html check [in.cv|-] [--brand brand.cv] [asset options]
   cascivo-html guide [component]
   cascivo-html --help | --version
 
 `-` or no input reads stdin. Without -o, HTML goes to stdout.
 Brand files (--brand, @brand-file) are read only from the input file's directory
 (the current directory for stdin); absolute paths and `..` are rejected.
+Images and SVG (`image logo.png`, `svg icon.svg`) are embedded as base64 / inlined so the
+output stays one file. Local paths are read from the input file's directory (the current
+directory for stdin) and any --assets roots; `..` and paths outside the roots are rejected.
+asset options:
+  --assets <dir>       extra directory to read assets from (repeatable)
+  --fetch              also download http(s) images and embed them (default: URLs stay links)
+  --max-asset <bytes>  largest embedded asset (default 2097152)
 exit: 0 ok, 1 invalid .cv, 2 usage or I/O error";
 
 /// `Err` carries a message and the exit code.
@@ -87,6 +94,9 @@ struct BuildArgs {
     input: Option<String>,
     output: Option<String>,
     brand: Option<String>,
+    assets: Vec<String>,
+    fetch: bool,
+    max_asset: Option<usize>,
 }
 
 fn parse_build_args(args: &[String], render: bool) -> Result<BuildArgs, Fail> {
@@ -94,6 +104,9 @@ fn parse_build_args(args: &[String], render: bool) -> Result<BuildArgs, Fail> {
         input: None,
         output: None,
         brand: None,
+        assets: Vec::new(),
+        fetch: false,
+        max_asset: None,
     };
     let mut it = args.iter();
     while let Some(arg) = it.next() {
@@ -110,6 +123,21 @@ fn parse_build_args(args: &[String], render: bool) -> Result<BuildArgs, Fail> {
                     it.next()
                         .ok_or_else(|| usage_err("--brand needs a file name"))?
                         .clone(),
+                );
+            }
+            "--assets" => {
+                a.assets.push(
+                    it.next()
+                        .ok_or_else(|| usage_err("--assets needs a directory"))?
+                        .clone(),
+                );
+            }
+            "--fetch" => a.fetch = true,
+            "--max-asset" => {
+                a.max_asset = Some(
+                    it.next()
+                        .and_then(|n| n.parse().ok())
+                        .ok_or_else(|| usage_err("--max-asset needs a byte count"))?,
                 );
             }
             "-" => set_input(&mut a, "-")?,
@@ -149,6 +177,50 @@ fn confined(dir: &Path, rel: &str) -> Result<PathBuf, String> {
     Ok(real)
 }
 
+/// Reads an asset from the first root that holds it. Same confinement as brand files, but over
+/// several roots; `max` bounds the read so a huge file never fills memory.
+fn read_asset(roots: &[PathBuf], rel: &str, max: usize) -> Result<Vec<u8>, String> {
+    let mut last = format!("'{rel}' not found in the input directory or any --assets root");
+    for root in roots {
+        match confined(root, rel) {
+            Ok(path) => {
+                let file = std::fs::File::open(&path).map_err(|e| format!("{rel}: {e}"))?;
+                let mut buf = Vec::new();
+                file.take(max as u64 + 1)
+                    .read_to_end(&mut buf)
+                    .map_err(|e| format!("{rel}: {e}"))?;
+                return Ok(buf);
+            }
+            // A path that escapes is an error on its own; a merely missing file tries the next root.
+            Err(e) if e.contains("must be a relative path") || e.contains("outside") => {
+                return Err(e);
+            }
+            Err(e) => last = e,
+        }
+    }
+    Err(last)
+}
+
+#[cfg(feature = "fetch")]
+fn fetch(url: &str, max: usize) -> Result<Vec<u8>, String> {
+    use std::time::Duration;
+    let agent: ureq::Agent = ureq::Agent::config_builder()
+        .timeout_global(Some(Duration::from_secs(15)))
+        .build()
+        .into();
+    let mut resp = agent.get(url).call().map_err(|e| e.to_string())?;
+    resp.body_mut()
+        .with_config()
+        .limit(max as u64 + 1)
+        .read_to_vec()
+        .map_err(|e| e.to_string())
+}
+
+#[cfg(not(feature = "fetch"))]
+fn fetch(_: &str, _: usize) -> Result<Vec<u8>, String> {
+    Err("this build has no network support (cargo feature `fetch`)".into())
+}
+
 fn read_brand(dir: &Path, rel: &str) -> Result<String, String> {
     let path = confined(dir, rel)?;
     std::fs::read_to_string(&path).map_err(|e| format!("{rel}: {e}"))
@@ -183,8 +255,33 @@ fn build(args: &[String], render: bool) -> Result<(), Fail> {
     let base = dir.clone();
     let resolver: &'static dyn Fn(&str) -> Result<String, String> =
         Box::leak(Box::new(move |p: &str| read_brand(&base, p)));
+    if a.fetch && !cfg!(feature = "fetch") {
+        return Err(usage_err("--fetch needs a build with the `fetch` feature"));
+    }
+    let max = a
+        .max_asset
+        .unwrap_or(cascivo_html::asset::DEFAULT_MAX_ASSET_BYTES);
+    let mut roots = vec![dir.clone()];
+    for r in &a.assets {
+        if !Path::new(r).is_dir() {
+            return Err(usage_err(format!("--assets {r}: not a directory")));
+        }
+        roots.push(PathBuf::from(r));
+    }
+    let asset_resolver: &'static dyn Fn(&str) -> Result<Vec<u8>, String> =
+        Box::leak(Box::new(move |p: &str| {
+            let l = p.to_ascii_lowercase();
+            if l.starts_with("http://") || l.starts_with("https://") {
+                fetch(p, max)
+            } else {
+                read_asset(&roots, p, max)
+            }
+        }));
     let mut opts = Options {
         brand_resolver: Some(resolver),
+        asset_resolver: Some(asset_resolver),
+        embed_urls: a.fetch,
+        max_asset_bytes: a.max_asset,
         ..Options::default()
     };
     if let Some(b) = &a.brand {

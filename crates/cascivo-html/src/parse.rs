@@ -697,6 +697,7 @@ impl Build<'_> {
             text: self.text,
             children: Vec::new(),
             line: self.ln,
+            col,
         }
     }
 }

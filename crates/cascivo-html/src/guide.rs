@@ -61,6 +61,20 @@ pub fn guide_for(name: &str) -> Option<String> {
         }
         let _ = writeln!(out, " – {}", p.summary);
     }
+    if matches!(spec.name, "image" | "svg") {
+        out.push_str(
+            "src: a file path (relative to the .cv file; the CLI's --assets <dir> adds roots), an https URL \
+             (embedded only with --fetch, else left as a link) or a data: URI. Files are embedded as base64 \
+             (limit 2 MiB, --max-asset raises it).\n",
+        );
+    }
+    if spec.name == "svg" {
+        out.push_str(
+            "svg is inlined after sanitizing (no script, foreignObject, on* handlers or external links), \
+             so currentColor and theme tokens work. Inline markup works too: svg \"<svg viewBox='0 0 8 8'>…</svg>\". \
+             Give alt, or the svg is hidden from assistive tech.\n",
+        );
+    }
     let _ = writeln!(out, "example: {}", example(spec));
     Some(out)
 }

@@ -70,7 +70,9 @@ export function rs(s: string): string {
 const strip = (s: string) => s.replace(/^['"]|['"]$/g, '')
 const pascal = (s: string) => s[0]!.toUpperCase() + s.slice(1)
 
-async function loadMeta(component: string): Promise<Meta> {
+async function loadMeta(e: CvEntry): Promise<Meta> {
+  if (e.synthetic) return { description: e.synthetic, props: [] }
+  const component = e.component
   for (const d of unitDirs(component)) {
     const file = fileURLToPath(new URL(`${d}/${component}.meta.ts`, packagesRoot))
     if (existsSync(file)) return ((await import(file)) as { meta: Meta }).meta
@@ -119,7 +121,11 @@ function genEntry(e: CvEntry, meta: Meta): string {
       ),
       ...extra.map(
         (x) =>
-          `            PropSpec { name: ${rs(x.name)}, kind: PropKind::Bool, default: None, summary: ${rs(x.summary)} },`,
+          `            PropSpec { name: ${rs(x.name)}, kind: ${
+            x.type === 'enum'
+              ? kind({ t: 'Enum', values: x.values })
+              : `PropKind::${x.type === 'string' ? 'Str' : 'Bool'}`
+          }, default: None, summary: ${rs(x.summary)} },`,
       ),
     ]),
     `        children: Children::${pascal(e.children)},`,
@@ -135,7 +141,7 @@ function genEntry(e: CvEntry, meta: Meta): string {
 export async function generateAll(): Promise<Map<string, string>> {
   const out = buildAll()
   const sorted = [...CV_SPEC].sort((a, b) => (a.cv < b.cv ? -1 : a.cv > b.cv ? 1 : 0))
-  const metas = await Promise.all(sorted.map((e) => loadMeta(e.component)))
+  const metas = await Promise.all(sorted.map((e) => loadMeta(e)))
   const entries = sorted.map((e, i) => genEntry(e, metas[i]!))
   const guide = genGuide(
     sorted.map((entry, i) => ({ entry, summary: summarize(metas[i]!.description) })),

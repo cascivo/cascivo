@@ -4,9 +4,10 @@
 //! changes) is not emitted; the markup is the server-rendered first paint.
 
 use super::{NodeExt, emit_children};
+use crate::asset::{SvgOpts, data_uri, sanitize_svg};
 use crate::ast::Node;
 use crate::html::{attr, css_len, esc, flag, num, safe_url};
-use crate::render::Cx;
+use crate::render::{Asset, Cx};
 
 pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
     match node.spec.name {
@@ -20,7 +21,8 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
         "tag" => tag(node, out),
         "avatar" => avatar_node(node, out),
         "avatar-group" => avatar_group(node, cx, out),
-        "image" => image(node, out),
+        "image" => image(node, cx, out),
+        "svg" => svg(node, cx, out),
         "list" => list(node, cx, out),
         "data-list" => data_list(node, out),
         "structured-list" => structured_list(node, cx, out),
@@ -543,32 +545,44 @@ fn length(v: &str) -> Option<String> {
     }
 }
 
-fn image(node: &Node, out: &mut String) {
-    let src = node
-        .arg_str(0)
-        .and_then(|u| safe_url(&u, true))
-        .unwrap_or_default();
+fn image(node: &Node, cx: &mut Cx<'_>, out: &mut String) {
+    let src = node.arg_str(0).unwrap_or_default();
+    let src = match cx.load_asset(node, &src, true) {
+        Some(Asset::Bytes { mime, bytes }) => data_uri(mime, &bytes),
+        Some(Asset::Passthrough(u)) => safe_url(&u, true).unwrap_or_default(),
+        None => String::new(),
+    };
     let alt = node.arg_str(1).unwrap_or_default();
     let mut style = Vec::new();
-    if let Some(w) = node.prop_str("width") {
+    if let Some(w) = node.prop_str("w").or_else(|| node.prop_str("width")) {
         if let Some(l) = length(&w) {
             style.push(format!("inline-size:{l}"));
         }
     }
-    if let Some(h) = node.prop_str("height") {
+    if let Some(h) = node.prop_str("h").or_else(|| node.prop_str("height")) {
         if let Some(l) = length(&h) {
             style.push(format!("block-size:{l}"));
         }
     }
     let style = style.join(";");
+    let img_style = match node.prop_str("fit").as_deref() {
+        Some(f @ ("contain" | "cover")) => format!("object-fit:{f}"),
+        _ => String::new(),
+    };
     // `fallbackSrc` only matters after a load error, which static HTML cannot observe.
     if node.prop_bool("removeWrapper") {
         out.push_str("<img");
         attr(out, "class", "cv-image-image");
         attr(out, "src", &src);
         attr(out, "alt", &alt);
-        if !style.is_empty() {
-            attr(out, "style", &style);
+        let both = [style.as_str(), img_style.as_str()]
+            .iter()
+            .filter(|x| !x.is_empty())
+            .copied()
+            .collect::<Vec<_>>()
+            .join(";");
+        if !both.is_empty() {
+            attr(out, "style", &both);
         }
         out.push('>');
         return;
@@ -593,7 +607,60 @@ fn image(node: &Node, out: &mut String) {
     attr(out, "class", "cv-image-image");
     attr(out, "src", &src);
     attr(out, "alt", &alt);
+    if !img_style.is_empty() {
+        attr(out, "style", &img_style);
+    }
     out.push_str("></span>");
+}
+
+/// Inlines an SVG (file, URL via the resolver, or literal markup) after sanitizing it.
+fn svg(node: &Node, cx: &mut Cx<'_>, out: &mut String) {
+    let arg = node.arg_str(0).unwrap_or_default();
+    let markup = if arg.trim_start().starts_with('<') {
+        arg
+    } else {
+        match cx.load_asset(node, &arg, false) {
+            Some(Asset::Bytes {
+                mime: "image/svg+xml",
+                bytes,
+            }) => match String::from_utf8(bytes) {
+                Ok(t) => t,
+                Err(_) => {
+                    cx.error(node, format!("'{arg}' is not valid UTF-8 text"));
+                    return;
+                }
+            },
+            Some(_) => {
+                cx.error(
+                    node,
+                    format!("'{arg}' is not an SVG; use `image` for raster pictures"),
+                );
+                return;
+            }
+            None => return,
+        }
+    };
+    let mut style = Vec::new();
+    if let Some(l) = node.prop_str("w").and_then(|w| length(&w)) {
+        style.push(format!("inline-size:{l}"));
+    }
+    if let Some(l) = node.prop_str("h").and_then(|h| length(&h)) {
+        style.push(format!("block-size:{l}"));
+    }
+    let prefix = format!("{}-", cx.id());
+    let alt = node.arg_str(1);
+    let fit = node.prop_str("fit");
+    let style = style.join(";");
+    let opts = SvgOpts {
+        alt: alt.as_deref(),
+        style: &style,
+        fit: fit.as_deref(),
+        id_prefix: &prefix,
+    };
+    match sanitize_svg(&markup, &opts) {
+        Ok(clean) => out.push_str(&clean),
+        Err(e) => cx.error(node, format!("svg rejected: {e}")),
+    }
 }
 
 /// Each child node becomes a `ListItem` (`<li>`).

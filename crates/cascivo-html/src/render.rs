@@ -13,22 +13,35 @@ use crate::parse::parse;
 /// Resolves `@brand-file` paths. The library itself never touches the filesystem.
 pub type BrandResolver = &'static dyn Fn(&str) -> Result<String, String>;
 
+/// Loads the bytes of an image/SVG source (a path or URL). Never called for `data:` URIs.
+pub type AssetResolver = &'static dyn Fn(&str) -> Result<Vec<u8>, String>;
+
 #[derive(Clone, Default)]
 pub struct Options {
     pub brand: Option<Brand>,
     pub brand_resolver: Option<BrandResolver>,
     pub minify_html: bool,
+    /// Pre-supplied bytes keyed by the exact `src` written in the `.cv`; looked up first, so a
+    /// web server can pass uploads without a `'static` resolver.
+    pub assets: Vec<(String, Vec<u8>)>,
+    pub asset_resolver: Option<AssetResolver>,
+    /// Also send `http(s)://` sources to `asset_resolver`; otherwise they stay plain references.
+    pub embed_urls: bool,
+    /// Largest embeddable asset in bytes (default 2 MiB).
+    pub max_asset_bytes: Option<usize>,
 }
 
 /// Per-document emit state. Ids come from a counter so output is deterministic.
 #[derive(Default)]
-pub struct Cx {
+pub struct Cx<'a> {
     next_id: u32,
+    pub(crate) opts: Option<&'a Options>,
+    pub(crate) diags: Vec<Diagnostic>,
     pub used: BTreeSet<&'static str>,
     pub scripts: BTreeSet<&'static str>,
 }
 
-impl Cx {
+impl Cx<'_> {
     /// `cv-1`, `cv-2`, …
     pub fn id(&mut self) -> String {
         self.next_id += 1;
@@ -46,7 +59,7 @@ const EXTRA_CSS: &[(&str, &str)] = &[
 /// Inline scripts, keyed by the name emitters put in `Cx::scripts`.
 const SCRIPTS: &[(&str, &str)] = &[("table-sort", include_str!("../assets/extra/table-sort.js"))];
 
-fn emit_body(doc: &Doc, cx: &mut Cx) -> String {
+fn emit_body(doc: &Doc, cx: &mut Cx<'_>) -> String {
     let mut body = String::new();
     for node in &doc.nodes {
         emit(node, cx, &mut body);
@@ -57,14 +70,26 @@ fn emit_body(doc: &Doc, cx: &mut Cx) -> String {
 /// Body markup only (no document shell); used by conformance snapshots.
 pub fn render_fragment(src: &str) -> Result<String, Vec<Diagnostic>> {
     let doc = parse(src)?;
-    Ok(emit_body(&doc, &mut Cx::default()))
+    let mut cx = Cx::default();
+    let body = emit_body(&doc, &mut cx);
+    if cx.diags.is_empty() {
+        Ok(body)
+    } else {
+        Err(cx.diags)
+    }
 }
 
 pub fn render(src: &str, opts: &Options) -> Result<String, Vec<Diagnostic>> {
     let doc = parse(src)?;
     let (theme, brand_css) = document_brand(&doc, opts)?;
-    let mut cx = Cx::default();
+    let mut cx = Cx {
+        opts: Some(opts),
+        ..Cx::default()
+    };
     let body = emit_body(&doc, &mut cx);
+    if !cx.diags.is_empty() {
+        return Err(cx.diags);
+    }
 
     let mut title = "";
     let mut lang = "en";
@@ -120,4 +145,103 @@ pub fn render(src: &str, opts: &Options) -> Result<String, Vec<Diagnostic>> {
     out.push_str("</html>");
     out.push_str(nl);
     Ok(out)
+}
+
+/// A resolved `src`: bytes to embed, or a string to use as-is.
+pub(crate) enum Asset {
+    Bytes {
+        mime: &'static str,
+        bytes: Vec<u8>,
+    },
+    /// A `data:` URI or an `http(s)` URL left as a reference.
+    Passthrough(String),
+}
+
+impl Cx<'_> {
+    pub(crate) fn error(&mut self, node: &crate::ast::Node, msg: impl Into<String>) {
+        self.diags.push(Diagnostic::new(node.line, node.col, msg));
+    }
+
+    /// Turns a `src` into bytes or a passthrough string; on failure records a diagnostic.
+    /// `allow_ref` lets an unfetched `http(s)` URL stay a plain reference (images only).
+    pub(crate) fn load_asset(
+        &mut self,
+        node: &crate::ast::Node,
+        src: &str,
+        allow_ref: bool,
+    ) -> Option<Asset> {
+        let src = src.trim();
+        let opts = self.opts;
+        // Fragment mode (no Options) is the conformance path: sources stay untouched references.
+        if opts.is_none() && allow_ref {
+            return Some(Asset::Passthrough(src.to_string()));
+        }
+        let lower = src.to_ascii_lowercase();
+        if lower.starts_with("data:") {
+            // Only inert image types; `data:image/svg+xml` is safe in <img>, never inlined.
+            let ok = ["png", "jpeg", "gif", "webp", "avif", "svg+xml", "x-icon"]
+                .iter()
+                .any(|m| {
+                    lower.starts_with(&format!("data:image/{m};"))
+                        || lower.starts_with(&format!("data:image/{m},"))
+                });
+            if ok && allow_ref {
+                return Some(Asset::Passthrough(src.to_string()));
+            }
+            self.error(node, "data: URIs are only accepted for raster/svg images in `image`; give `svg` a file path or inline markup");
+            return None;
+        }
+        let is_url = lower.starts_with("http://") || lower.starts_with("https://");
+        let found = opts.and_then(|o| {
+            o.assets
+                .iter()
+                .find(|(k, _)| k == src)
+                .map(|(_, b)| b.clone())
+        });
+        let bytes = match found {
+            Some(b) => b,
+            None => {
+                let resolver = opts
+                    .and_then(|o| o.asset_resolver)
+                    .filter(|_| !is_url || opts.is_some_and(|o| o.embed_urls));
+                match resolver {
+                    Some(r) => match r(src) {
+                        Ok(b) => b,
+                        Err(e) => {
+                            self.error(node, format!("cannot load '{src}': {e}"));
+                            return None;
+                        }
+                    },
+                    None if is_url && allow_ref => {
+                        return Some(Asset::Passthrough(src.to_string()));
+                    }
+                    None if is_url => {
+                        self.error(node, format!("cannot inline '{src}': URLs are fetched only with the CLI's --fetch (or Options::assets); give `svg` a file path or inline markup"));
+                        return None;
+                    }
+                    None => {
+                        self.error(node, format!("cannot load '{src}': no asset source configured; use the cascivo-html CLI (paths relative to the .cv file, more roots via --assets) or pass the bytes in Options::assets"));
+                        return None;
+                    }
+                }
+            }
+        };
+        let max = opts
+            .and_then(|o| o.max_asset_bytes)
+            .unwrap_or(crate::asset::DEFAULT_MAX_ASSET_BYTES);
+        if bytes.len() > max {
+            self.error(node, format!("'{src}' is {} bytes, over the {max}-byte embed limit (raise it with --max-asset or Options::max_asset_bytes)", bytes.len()));
+            return None;
+        }
+        let Some(mime) = crate::asset::sniff_mime(&bytes, src) else {
+            self.error(
+                node,
+                format!(
+                    "'{src}': unknown image type (expected png, jpeg, gif, webp, avif, svg or ico)"
+                ),
+            );
+            return None;
+        };
+        Some(Asset::Bytes { mime, bytes })
+    }
 }
