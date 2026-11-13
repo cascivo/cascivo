@@ -6635,7 +6635,8 @@
           "createA2uiStore",
           "defaultCatalogSpecs",
           "defaultCatalogs",
-          "parseServerMessage"
+          "parseServerMessage",
+          "registerViewTools"
         ],
         "types": [
           "A2uiActionMessage",
@@ -6648,7 +6649,11 @@
           "A2uiStore",
           "A2uiSurfaceProps",
           "A2uiSurfaceState",
-          "AdapterInput"
+          "AdapterInput",
+          "ViewChange",
+          "ViewGate",
+          "ViewStep",
+          "ViewToolsOptions"
         ],
         "declarations": {
           "A2UI_CATALOG_ID": "declare const A2UI_CATALOG_ID = \"https://cascivo.com/a2ui/v0_9/catalog.json\"",
@@ -6734,7 +6739,19 @@
           "DEFAULT_A2UI_LIMITS": "declare const DEFAULT_A2UI_LIMITS: Readonly<A2uiLimits>",
           "defaultCatalogs": "declare const defaultCatalogs: readonly [A2uiRenderCatalog, A2uiRenderCatalog]",
           "defaultCatalogSpecs": "declare const defaultCatalogSpecs: readonly [A2uiCatalogSpec, A2uiCatalogSpec]",
-          "parseServerMessage": "declare function parseServerMessage(raw: unknown): Parsed"
+          "parseServerMessage": "declare function parseServerMessage(raw: unknown): Parsed",
+          "registerViewTools": "declare function registerViewTools(store: A2uiStore, options: ViewToolsOptions): (() => void) | undefined",
+          "ViewChange": {
+            "step": "number",
+            "kind": "ViewStep['kind']",
+            "target": "string"
+          },
+          "ViewGate": "type = { tool: 'view_snapshot'; surfaceId: string } | { tool: 'view_act'; surfaceId: string; step: ViewStep; index: number }",
+          "ViewStep": "type = { kind: 'setValue'; path: string; value: unknown } | { kind: 'action'; componentId: string; name: string; context: Record<string, unknown> }",
+          "ViewToolsOptions": {
+            "allow": "(request: ViewGate) => boolean | Promise<boolean>",
+            "onAction?": "(message: A2uiActionMessage, metadata: { a2uiClientDataModel?: ReturnType<A2uiStore['clientDataModel']> }) => void"
+          }
         }
       }
     },

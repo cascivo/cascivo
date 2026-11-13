@@ -19,6 +19,7 @@ describe('a2ui-v0_9 entry', () => {
     'A2UI_CATALOG_ID',
     'DEFAULT_A2UI_LIMITS',
     'parseServerMessage',
+    'registerViewTools',
   ])('exports %s', (name) => {
     expect((entry as Record<string, unknown>)[name]).toBeDefined()
   })
