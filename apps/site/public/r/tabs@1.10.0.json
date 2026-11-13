@@ -29,6 +29,15 @@
     "states": ["active", "inactive"],
     "variants": [],
     "sizes": [],
+    "agent": {
+      "actions": [
+        {
+          "name": "select",
+          "prop": "value",
+          "args": "string"
+        }
+      ]
+    },
     "props": [
       {
         "name": "defaultValue",

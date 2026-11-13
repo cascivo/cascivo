@@ -8721,6 +8721,15 @@
         "states": ["unchecked", "checked", "indeterminate"],
         "variants": [],
         "sizes": [],
+        "agent": {
+          "actions": [
+            {
+              "name": "setChecked",
+              "prop": "checked",
+              "args": "boolean"
+            }
+          ]
+        },
         "props": [
           {
             "name": "label",
@@ -17251,6 +17260,19 @@
         "states": ["idle", "focused", "error"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
+        "agent": {
+          "actions": [
+            {
+              "name": "setValue",
+              "prop": "value",
+              "args": "string"
+            },
+            {
+              "name": "clear",
+              "prop": "value"
+            }
+          ]
+        },
         "props": [
           {
             "name": "label",
@@ -20486,6 +20508,18 @@
         "states": ["closed", "open"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
+        "agent": {
+          "actions": [
+            {
+              "name": "open",
+              "prop": "open"
+            },
+            {
+              "name": "close",
+              "prop": "onClose"
+            }
+          ]
+        },
         "props": [
           {
             "name": "open",
@@ -25655,6 +25689,15 @@
         "states": ["idle", "focused", "error"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
+        "agent": {
+          "actions": [
+            {
+              "name": "select",
+              "prop": "value",
+              "args": "string"
+            }
+          ]
+        },
         "props": [
           {
             "name": "label",
@@ -28609,6 +28652,15 @@
         "states": ["active", "inactive"],
         "variants": [],
         "sizes": [],
+        "agent": {
+          "actions": [
+            {
+              "name": "select",
+              "prop": "value",
+              "args": "string"
+            }
+          ]
+        },
         "props": [
           {
             "name": "defaultValue",
@@ -30204,6 +30256,15 @@
         "states": ["off", "on"],
         "variants": [],
         "sizes": ["sm", "md"],
+        "agent": {
+          "actions": [
+            {
+              "name": "setChecked",
+              "prop": "checked",
+              "args": "boolean"
+            }
+          ]
+        },
         "props": [
           {
             "name": "checked",

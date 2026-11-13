@@ -15,6 +15,8 @@ export type {
   Machine,
   MachineConfig,
   StateConfig,
+  AgentActionMeta,
+  AgentMeta,
   ComponentMeta,
   PropMeta,
   TypeFieldMeta,

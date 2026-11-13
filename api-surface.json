@@ -3048,6 +3048,8 @@
         ],
         "types": [
           "AccessibilityMeta",
+          "AgentActionMeta",
+          "AgentMeta",
           "AnchorAlign",
           "AnchorPlacement",
           "AnchorSide",
@@ -3128,6 +3130,16 @@
             "forcedColors?": "boolean",
             "reducedMotion?": "boolean"
           },
+          "AgentActionMeta": {
+            "name": "string",
+            "prop": "string",
+            "args?": "string"
+          },
+          "AgentMeta": {
+            "actions": "AgentActionMeta[]",
+            "secret?": "boolean",
+            "confirm?": "boolean"
+          },
           "AnchorAlign": "type = 'start' | 'center' | 'end'",
           "AnchorPlacement": "type = AnchorSide | `${AnchorSide}-${'start' | 'end'}`",
           "AnchorSide": "type = 'top' | 'bottom' | 'left' | 'right'",
@@ -3158,6 +3170,7 @@
             "variants": "string[]",
             "sizes": "string[]",
             "props": "PropMeta[]",
+            "agent?": "AgentMeta",
             "typeDefs?": "TypeDefMeta[]",
             "tokens": "string[]",
             "accessibility": "AccessibilityMeta",

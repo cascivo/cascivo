@@ -8,6 +8,8 @@ export const meta: ComponentMeta = {
   states: ['idle', 'focused', 'error'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],
+  // Actions an agent may take, each mapped onto an existing prop (checked by agent-manifest.test.ts).
+  agent: { actions: [{ name: 'select', prop: 'value', args: 'string' }] },
   props: [
     {
       name: 'label',
