@@ -53,6 +53,29 @@ This reads control *properties*, not attributes — the value someone typed, the
 checked, the disclosure they opened. An HTML string only ever carries the state the UI was
 rendered with.
 
+## Structured snapshot: operable nodes as JSON
+
+```ts
+import { snapshot } from '@cascivo/text'
+
+const { nodes, truncated } = snapshot(document.querySelector('main')!)
+// [{ ref: 'e1', role: 'textbox', label: 'Name', value: 'Ada', actions: ['setValue', 'clear'] }, ...]
+```
+
+Where `elementToMarkdown` is prose to read, `snapshot` is a list to act on: each node carries a
+`ref`, `role`, `label`, and (when they apply) `value`, `checked`, `expanded`, `disabled`,
+`options`, `confirm` and the `actions` that fit its role (`textbox` → `setValue`/`clear`,
+`button` → `press`, `combobox`/`listbox` → `select`, `dialog` → `close`). It is read-only; the
+caller performs and gates any act.
+
+- **Stable refs.** A `WeakMap<Element, string>` hands the same ref to the same element across
+  calls and re-renders.
+- **`data-agent-hidden`** drops the element and its subtree.
+- **`data-agent-secret`**, password, one-time-code and card fields report `"[redacted]"` instead
+  of the value.
+- **`data-agent-confirm`** surfaces as `confirm: true`, so a caller can require approval.
+- **Cap.** At most 200 nodes; `truncated` is `true` when the cap cut the list.
+
 ## As a component
 
 ```tsx
