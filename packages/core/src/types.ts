@@ -96,6 +96,25 @@ export interface ExampleMeta {
   description?: string
 }
 
+/** One operation an agent can perform on a component, mapped onto an existing prop. */
+export interface AgentActionMeta {
+  /** Verb an agent calls: `setValue`, `open`, `select`. */
+  name: string
+  /** The `props[]` entry that carries the action (`onValueChange`, `open`). Must exist. */
+  prop: string
+  /** Type of the action argument, e.g. `string` or `boolean`; absent when it takes none. */
+  args?: string
+}
+
+/** How an agent operates a component: actions mapped to props, plus safety flags. */
+export interface AgentMeta {
+  actions: AgentActionMeta[]
+  /** The value is sensitive: snapshots must redact it. */
+  secret?: boolean
+  /** Acting requires explicit confirmation before it runs. */
+  confirm?: boolean
+}
+
 export interface ComponentMeta {
   name: string
   description: string
@@ -134,6 +153,8 @@ export interface ComponentMeta {
   variants: string[]
   sizes: string[]
   props: PropMeta[]
+  /** How an agent drives this component; generated into `registry.json` and `llms/<name>.md`. */
+  agent?: AgentMeta
   /** Field shapes for object-valued props (datums, series, callback args). */
   typeDefs?: TypeDefMeta[]
   tokens: string[]

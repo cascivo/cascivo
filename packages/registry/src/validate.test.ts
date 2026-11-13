@@ -228,3 +228,36 @@ describe('parseItem', () => {
     expect(() => parseItem('not json', 'https://e/r.json')).toThrow(/must be an object/)
   })
 })
+
+describe('validateItem meta.agent', () => {
+  const withAgent = (agent: unknown) => ({ ...VALID_ITEM, meta: { agent } })
+
+  it('accepts a well-formed agent section', () => {
+    const r = validateItem(
+      withAgent({
+        actions: [{ name: 'setValue', prop: 'onValueChange', args: 'string' }],
+        secret: true,
+      }),
+    )
+    expect(r.ok).toBe(true)
+  })
+
+  it.each([
+    ['non-object', 'x'],
+    ['no actions', {}],
+    ['actions not array', { actions: 'x' }],
+    ['action not object', { actions: ['x'] }],
+    ['action missing prop', { actions: [{ name: 'a', args: 'string' }] }],
+    ['action bad args', { actions: [{ name: 'a', prop: 'p', args: 3 }] }],
+    ['secret not boolean', { actions: [], secret: 'yes' }],
+    ['confirm not boolean', { actions: [], confirm: 1 }],
+  ])('rejects a malformed section: %s', (_label, agent) => {
+    expect(validateItem(withAgent(agent)).ok).toBe(false)
+  })
+
+  it('parseItem throws on an untrusted malformed agent payload', () => {
+    expect(() => parseItem(withAgent({ actions: [{ name: '__proto__' }] }), 'evil')).toThrow(
+      /meta\.agent/,
+    )
+  })
+})

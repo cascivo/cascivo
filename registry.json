@@ -3418,7 +3418,7 @@
         "checkbox.tsx": "sha256-bc72ae387239b76d7636213c6cdddd091b314fdb19aa3a297266338d1488bd7c",
         "index.ts": "sha256-cb76713df13a750d36ce3458f7b9b829986de64e69802681e0e66ea302612b84",
         "checkbox.module.css": "sha256-40acb3223bd3d3f176aba0803625cc7d2df7a461ef339194e8816d26d4c36ec8",
-        "checkbox.meta.ts": "sha256-dd62d573edaf22291418ac454b746ff5378e533d991704fc3b68de1d2d927e5e"
+        "checkbox.meta.ts": "sha256-0c55eae79717c219528d386b052e7a14ee8e030bdd5481f69567459db13f76a2"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -3433,6 +3433,15 @@
         "states": ["unchecked", "checked", "indeterminate"],
         "variants": [],
         "sizes": [],
+        "agent": {
+          "actions": [
+            {
+              "name": "setChecked",
+              "prop": "checked",
+              "args": "boolean"
+            }
+          ]
+        },
         "props": [
           {
             "name": "label",
@@ -10213,7 +10222,7 @@
         "input.tsx": "sha256-ffd0af802fc2fd35a94cff62657f5bcec130b6a4fecfe70a712412cda7312ea3",
         "index.ts": "sha256-0b253c54e1bd068a63c392ef39758a06cceba48aa5aa357034faaa6e926cd001",
         "input.module.css": "sha256-1452820e3da40a3252f214e16f9ecd11dd7626317748a2d643d879d046a1f526",
-        "input.meta.ts": "sha256-90fecedb40c8c055d939bf9dedc35a0024c0d33b7d959bb0453b773018595f83"
+        "input.meta.ts": "sha256-e7c8f743fc3bb2814fe52be025fa184efde74ef58d839b88c88c1af1d17161c5"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -10228,6 +10237,19 @@
         "states": ["idle", "focused", "error"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
+        "agent": {
+          "actions": [
+            {
+              "name": "setValue",
+              "prop": "value",
+              "args": "string"
+            },
+            {
+              "name": "clear",
+              "prop": "value"
+            }
+          ]
+        },
         "props": [
           {
             "name": "label",
@@ -12276,7 +12298,7 @@
         "modal.tsx": "sha256-451337b9a2bdeaae12b9b31887cfd4db8dedd01ec26bab366a1fed77b126079d",
         "index.ts": "sha256-fc11e823800f2d698fdd37dae08bdbb90f3b48d439f4c8ac37e5e3f2b9b48566",
         "modal.module.css": "sha256-a80cbf1f8f5ad4ace7d6f9df9daeaf25300e27c902a39fd0d0e92198c7052e2c",
-        "modal.meta.ts": "sha256-4f79e514311981c5ba3330ae00a2ee27bb182d8eb2022707a1888fc7cd5d036b"
+        "modal.meta.ts": "sha256-ed2cdef8c07a0e4cd815185a3ab389c165566eaa2b09c02ea2dc7c5059d48599"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -12293,6 +12315,18 @@
         "states": ["closed", "open"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
+        "agent": {
+          "actions": [
+            {
+              "name": "open",
+              "prop": "open"
+            },
+            {
+              "name": "close",
+              "prop": "onClose"
+            }
+          ]
+        },
         "props": [
           {
             "name": "open",
@@ -17188,7 +17222,7 @@
         "select.tsx": "sha256-adadade2900bcd1442ec0654a386561d6fac8938634273da9022f5f18ebd40c5",
         "index.ts": "sha256-235ea0185749f2cb4189ae1b24a38d86a81db4eb78c313421322a99dd6f6fb56",
         "select.module.css": "sha256-8ca4c52fb34be14d6c8fbe1d6e7f7eb5732117eabffef18f0967b942f0eac7f8",
-        "select.meta.ts": "sha256-ed0cc7ca1877d95dbaf345eaf74d0958668da4f393614e3004fa86248ce0292a"
+        "select.meta.ts": "sha256-76312b69dea1c53c1114fcb17f97cc2f57b2e79a9a6d74837b63641a44c84c7b"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -17203,6 +17237,15 @@
         "states": ["idle", "focused", "error"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
+        "agent": {
+          "actions": [
+            {
+              "name": "select",
+              "prop": "value",
+              "args": "string"
+            }
+          ]
+        },
         "props": [
           {
             "name": "label",
@@ -20412,7 +20455,7 @@
         "tabs.tsx": "sha256-0626acd8cee309bdef946633e23d040a0b1a81206e3a27b3de62d4ef87c71fe5",
         "index.ts": "sha256-9dd19a218ef88f01cab5cbe7d82fa98b8b6e87ed5992b3eb6cb25735f2d94cc1",
         "tabs.module.css": "sha256-fac5d943843ba4a6f4843370aae9d570e1cf4425a0e29bc4e9553e0599d1e2d5",
-        "tabs.meta.ts": "sha256-442fa643bafc94f12f6534054fb6ba25ac56ef9cba692304cce63feee831c1a1"
+        "tabs.meta.ts": "sha256-febfa577b445507b9dc3afa411f90777bc8ab7445bb24a5990e4dffcf1572068"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -20427,6 +20470,15 @@
         "states": ["active", "inactive"],
         "variants": [],
         "sizes": [],
+        "agent": {
+          "actions": [
+            {
+              "name": "select",
+              "prop": "value",
+              "args": "string"
+            }
+          ]
+        },
         "props": [
           {
             "name": "defaultValue",
@@ -22130,7 +22182,7 @@
         "toggle.tsx": "sha256-bd245f7bca569b26f79f65ae6b9215cf2d2d3cf65ebe1c0f2cdae40680782c13",
         "index.ts": "sha256-8463627930eb060c1e8f834f86d9ff94171978a893046b6f9c28fe7b76ba25fe",
         "toggle.module.css": "sha256-9c452a066e05bdcf11ffe10f5245ec08d99a4eb36d00bada9fa53de0460572bf",
-        "toggle.meta.ts": "sha256-f5012ab4698cbe5f6b0acbfe7d202ff164f16f98c27103ffcd0faa9637deaaf4"
+        "toggle.meta.ts": "sha256-c6539a6c6acd96152ab72d756220caee561ecb36a21cb3578586106bad489901"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -22146,6 +22198,15 @@
         "states": ["off", "on"],
         "variants": [],
         "sizes": ["sm", "md"],
+        "agent": {
+          "actions": [
+            {
+              "name": "setChecked",
+              "prop": "checked",
+              "args": "boolean"
+            }
+          ]
+        },
         "props": [
           {
             "name": "checked",

@@ -48,6 +48,11 @@ import { Input } from '@cascivo/react'
 | `ariaLabel`    | `string`                                     | no       | —       | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 | `ai`           | `boolean`                                    | no       | `false` | AI presence: an AI-tinted border and a soft aura, marking a value AI produced or suggested. Visual only — put an AiBadge in the label so the provenance is also text, and clear `ai` once the person edits the value.                                                                                                                                                                                |
 
+## Agent actions
+
+- `setValue(string)` → `value`
+- `clear()` → `value`
+
 ## Examples
 
 ### With label
