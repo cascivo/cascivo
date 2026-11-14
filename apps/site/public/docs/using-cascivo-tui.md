@@ -3,6 +3,7 @@
   Canonical: https://cascivo.com/docs/using-cascivo-tui.md
   registry v1.10.0 · generated 2026-11-11
 -->
+
 # Using cascivo-tui
 
 `cascivo-tui` is the cascivo design system for the terminal: a small widget toolkit on
@@ -96,32 +97,32 @@ not classes. Conflicting tokens resolve last-wins (`w-4 w-8` is width 8); text m
 below: `text-accent_fg`, `bg-surface2`, `border-border_strong`. This table is checked against
 `cascivo_tui::class::VOCABULARY` by `tests/docs.rs`.
 
-| Class | Meaning |
-| ----- | ------- |
-| `gap-N` | Cells between children. |
-| `p-N` `px-N` `py-N` `pt-N` `pr-N` `pb-N` `pl-N` | Padding in cells: all, horizontal, vertical, top, right, bottom, left. |
-| `w-N` `h-N` | Fixed width / height in cells. |
-| `w-full` `h-full` | Fill the parent along that axis. |
-| `w-1/2` `w-1/3` `w-2/3` `w-1/4` `w-3/4` | Fraction of the parent width. |
-| `h-1/2` `h-1/3` `h-2/3` `h-1/4` `h-3/4` | Fraction of the parent height. |
-| `min-w-N` `min-h-N` `max-w-N` `max-h-N` | Lower / upper bounds in cells. |
-| `grow` `grow-N` | Share leftover main-axis space (`grow` is `grow-1`). |
-| `shrink-0` | Keep the intrinsic size. |
-| `justify-start` `justify-center` `justify-end` `justify-between` `justify-around` `justify-evenly` | Main-axis distribution (default `justify-start`). |
-| `items-start` `items-center` `items-end` `items-stretch` | Cross-axis alignment (default `items-stretch`). |
-| `border` | Border on all sides. |
-| `border-none` | Clear all border sides. |
-| `border-t` `border-r` `border-b` `border-l` `border-x` `border-y` | Individual sides; they accumulate. |
-| `rounded` | Rounded corner style; combine with `border`. |
-| `border-double` `border-thick` `border-plain` | Border line style. |
-| `border-bg` `border-surface` `border-surface2` `border-border` `border-border_strong` `border-fg` `border-muted` `border-accent` `border-accent_fg` `border-success` `border-warning` `border-danger` `border-info` `border-focus` `border-selection` | Border colour from a theme role. |
-| `text-fg` `text-muted` `text-accent` `text-accent_fg` `text-success` `text-warning` `text-danger` `text-info` | Text colour from a theme role. |
-| `bg-bg` `bg-surface` `bg-surface2` `bg-accent` `bg-selection` `bg-success` `bg-warning` `bg-danger` `bg-info` | Background colour from a theme role. |
-| `bold` `italic` `underline` `strike` `dim` `reverse` | Text modifiers; they accumulate. |
-| `text-left` `text-center` `text-right` | Text alignment. |
-| `truncate` `wrap` `nowrap` | Overflow handling for text. |
-| `scroll-y` `clip` | Scroll or clip overflowing content vertically. |
-| `hidden` | Skip the node entirely. |
+| Class                                                                                                                                                                                                                                                 | Meaning                                                                |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `gap-N`                                                                                                                                                                                                                                               | Cells between children.                                                |
+| `p-N` `px-N` `py-N` `pt-N` `pr-N` `pb-N` `pl-N`                                                                                                                                                                                                       | Padding in cells: all, horizontal, vertical, top, right, bottom, left. |
+| `w-N` `h-N`                                                                                                                                                                                                                                           | Fixed width / height in cells.                                         |
+| `w-full` `h-full`                                                                                                                                                                                                                                     | Fill the parent along that axis.                                       |
+| `w-1/2` `w-1/3` `w-2/3` `w-1/4` `w-3/4`                                                                                                                                                                                                               | Fraction of the parent width.                                          |
+| `h-1/2` `h-1/3` `h-2/3` `h-1/4` `h-3/4`                                                                                                                                                                                                               | Fraction of the parent height.                                         |
+| `min-w-N` `min-h-N` `max-w-N` `max-h-N`                                                                                                                                                                                                               | Lower / upper bounds in cells.                                         |
+| `grow` `grow-N`                                                                                                                                                                                                                                       | Share leftover main-axis space (`grow` is `grow-1`).                   |
+| `shrink-0`                                                                                                                                                                                                                                            | Keep the intrinsic size.                                               |
+| `justify-start` `justify-center` `justify-end` `justify-between` `justify-around` `justify-evenly`                                                                                                                                                    | Main-axis distribution (default `justify-start`).                      |
+| `items-start` `items-center` `items-end` `items-stretch`                                                                                                                                                                                              | Cross-axis alignment (default `items-stretch`).                        |
+| `border`                                                                                                                                                                                                                                              | Border on all sides.                                                   |
+| `border-none`                                                                                                                                                                                                                                         | Clear all border sides.                                                |
+| `border-t` `border-r` `border-b` `border-l` `border-x` `border-y`                                                                                                                                                                                     | Individual sides; they accumulate.                                     |
+| `rounded`                                                                                                                                                                                                                                             | Rounded corner style; combine with `border`.                           |
+| `border-double` `border-thick` `border-plain`                                                                                                                                                                                                         | Border line style.                                                     |
+| `border-bg` `border-surface` `border-surface2` `border-border` `border-border_strong` `border-fg` `border-muted` `border-accent` `border-accent_fg` `border-success` `border-warning` `border-danger` `border-info` `border-focus` `border-selection` | Border colour from a theme role.                                       |
+| `text-fg` `text-muted` `text-accent` `text-accent_fg` `text-success` `text-warning` `text-danger` `text-info`                                                                                                                                         | Text colour from a theme role.                                         |
+| `bg-bg` `bg-surface` `bg-surface2` `bg-accent` `bg-selection` `bg-success` `bg-warning` `bg-danger` `bg-info`                                                                                                                                         | Background colour from a theme role.                                   |
+| `bold` `italic` `underline` `strike` `dim` `reverse`                                                                                                                                                                                                  | Text modifiers; they accumulate.                                       |
+| `text-left` `text-center` `text-right`                                                                                                                                                                                                                | Text alignment.                                                        |
+| `truncate` `wrap` `nowrap`                                                                                                                                                                                                                            | Overflow handling for text.                                            |
+| `scroll-y` `clip`                                                                                                                                                                                                                                     | Scroll or clip overflowing content vertically.                         |
+| `hidden`                                                                                                                                                                                                                                              | Skip the node entirely.                                                |
 
 Variants prefix any colour, modifier or layout token: `focus:`, `selected:`, `disabled:` (state
 variants, colour and modifier tokens only) and `narrow:` (frames under 80 columns). Example:
@@ -422,13 +423,13 @@ assert!(t.is_quit());
 
 ## Common errors
 
-| Message | Cause and fix |
-| ------- | ------------- |
+| Message                                                 | Cause and fix                                                                                                                        |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | `unknown class "bg-primary": did you mean "bg-accent"?` | Not a cascivo class. Use the suggestion; aliases such as `primary`, `destructive`, `error`, `foreground`, `background` map to roles. |
-| `out of range "gap-99": did you mean "gap-64"?` | A number above the limit (0..=64, `grow-N` 0..=16). |
-| `variant not allowed "focus:p-1"` | `focus:`, `selected:` and `disabled:` take only colour and modifier tokens. Use `narrow:` for layout. |
-| `invalid key "ctrl+"` | A `Keymap` chord that does not parse. Use `ctrl+`, `alt+`, `shift+` plus one key or a name (`tab`, `esc`, `enter`, `f5`). |
-| red error panel at runtime | A class error, bad chord or message loop in the view. The panel names it. Fix and rerun; `q` or `ctrl+c` quits. |
-| a widget never gets focus | It has no `.id(..)`. |
-| a modal paints under the page | It is not the last child of the root. |
-| `render_to_string` returns `Err(TuiError::Class(..))` | A class string in the tree is invalid; the error carries the token and suggestion. |
+| `out of range "gap-99": did you mean "gap-64"?`         | A number above the limit (0..=64, `grow-N` 0..=16).                                                                                  |
+| `variant not allowed "focus:p-1"`                       | `focus:`, `selected:` and `disabled:` take only colour and modifier tokens. Use `narrow:` for layout.                                |
+| `invalid key "ctrl+"`                                   | A `Keymap` chord that does not parse. Use `ctrl+`, `alt+`, `shift+` plus one key or a name (`tab`, `esc`, `enter`, `f5`).            |
+| red error panel at runtime                              | A class error, bad chord or message loop in the view. The panel names it. Fix and rerun; `q` or `ctrl+c` quits.                      |
+| a widget never gets focus                               | It has no `.id(..)`.                                                                                                                 |
+| a modal paints under the page                           | It is not the last child of the root.                                                                                                |
+| `render_to_string` returns `Err(TuiError::Class(..))`   | A class string in the tree is invalid; the error carries the token and suggestion.                                                   |
