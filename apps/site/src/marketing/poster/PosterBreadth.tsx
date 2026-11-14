@@ -48,9 +48,9 @@ const TILES: Tile[] = [
     href: '/docs/parity',
   },
   {
-    title: 'Machine mode',
-    body: 'Render any view as Markdown, so an agent reads what a user sees — charts included, through their data tables.',
-    tag: 'machine mode',
+    title: 'Agents operate the UI',
+    body: 'Render any view as Markdown or a JSON snapshot, then let an agent act on it through WebMCP tools you gate with allow.',
+    tag: 'machine mode · registerViewTools',
     href: '/docs/machine-mode.md',
   },
   {
