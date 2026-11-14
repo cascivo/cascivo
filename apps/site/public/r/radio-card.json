@@ -3,7 +3,7 @@
   "name": "radio-card",
   "type": "component",
   "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio-card/radio-card.tsx"

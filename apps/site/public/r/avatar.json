@@ -3,7 +3,7 @@
   "name": "avatar",
   "type": "component",
   "description": "Displays a user image with initials fallback",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar/avatar.tsx"
