@@ -78,6 +78,15 @@ theme switching. Run it with `cargo run -p cascivo-tui --example dashboard`.
 - **`Cmd`.** `Cmd::none()`, `Cmd::Quit`, `Cmd::Msg(m)` (feed back straight away, depth-limited),
   `Cmd::tick(ms, m)` (deliver once after a delay), `Cmd::batch([..])`, `Cmd::SetTheme(name)`.
   `App::init` runs once before the first draw and may return a `Cmd` too.
+  - Focus: `Cmd::focus(id)`, `Cmd::FocusNext`, `Cmd::FocusPrev`. They apply after the next
+    `view`, so `update` can show a field and focus it in one step. An id not in the ring is ignored.
+  - Async: `Cmd::task(|| Msg::Loaded(fetch()))` runs the closure on a worker thread and sends its
+    result to `update`. `run`/`run_with` therefore need `Msg: Send`. `TestApp` runs tasks inline.
+    `Cmd` is not `Clone` because a task closure cannot be cloned.
+  - Themes: `Cmd::NextTheme` / `Cmd::PrevTheme` cycle `Theme::names()` order. Override
+    `App::theme_changed(&mut self, name) -> Cmd<Msg>` (default no-op) to learn the active theme:
+    it runs before `init` with the starting theme (`RunOptions::theme` or `CASCIVO_THEME`), and
+    after every theme command.
 - **Layout.** `col` stacks children top to bottom, `row` left to right, using ratatui's `Layout`.
   A leaf takes its intrinsic size, a container fills the remaining space, `grow` shares leftover
   space, `w-N`/`h-N` fix a size in cells. Children that do not fit are clipped, never overlapped.

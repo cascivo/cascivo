@@ -83,6 +83,9 @@ Space-separated tokens, last wins, unknown tokens are errors. `N` = 0..=64.
 - `modal(title, body, on_close)` (only while a flag is set, last child) `toasts(&[(Kind, String)])` last child, expire with `Cmd::tick`
 - Focusable widgets need `.id(..)`. Keep `Scroll` and `Cursor` handles in the app.
 - Cmds: `Cmd::none() Cmd::Quit Cmd::Msg(m) Cmd::tick(ms, m) Cmd::batch([..]) Cmd::SetTheme("dark".into())`
+  `Cmd::NextTheme Cmd::PrevTheme` `Cmd::focus("id") Cmd::FocusNext Cmd::FocusPrev` (after next view)
+  `Cmd::task(|| Msg::Done(work()))` (worker thread; `run` needs `Msg: Send`; TestApp runs inline; `Cmd` is not Clone)
+  Active theme: override `fn theme_changed(&mut self, name: &str) -> Cmd<Msg>` (called before init, then per switch).
 - Themes: arcade brutalist corporate cyberpunk dark flat light midnight minimal pastel terminal warm.
 
 ## Common errors
