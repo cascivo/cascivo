@@ -612,6 +612,8 @@ nothing and returns `undefined` when WebMCP is absent.
 If the output is one static file (report, dashboard, landing page) and no React app is needed,
 write `.cv` text and render it with the `cascivo-html` CLI (`cargo install cascivo-html-cli`).
 Run `cascivo-html guide` for the syntax. See [USING-CASCIVO-HTML.md](./USING-CASCIVO-HTML.md).
+For a terminal UI, use the `cascivo-tui` crate (ratatui + class strings + the same themes);
+see [USING-CASCIVO-TUI.md](./USING-CASCIVO-TUI.md).
 
 ## See also
 
@@ -627,3 +629,4 @@ Run `cascivo-html guide` for the syntax. See [USING-CASCIVO-HTML.md](./USING-CAS
 - [TOKENS.md](./TOKENS.md) — the full token catalog.
 - [MACHINE-MODE.md](./MACHINE-MODE.md) — a rendered UI as a Markdown document.
 - [USING-CASCIVO-HTML.md](./USING-CASCIVO-HTML.md) — one static HTML file from `.cv` text.
+- [USING-CASCIVO-TUI.md](./USING-CASCIVO-TUI.md) — a terminal UI in Rust with cascivo themes.

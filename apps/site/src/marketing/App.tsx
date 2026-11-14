@@ -29,6 +29,9 @@ const PosterAiLayer = lazy(() =>
 const PosterBreadth = lazy(() =>
   import('./poster/PosterBreadth').then((m) => ({ default: m.PosterBreadth })),
 )
+const PosterTerminal = lazy(() =>
+  import('./poster/PosterTerminal').then((m) => ({ default: m.PosterTerminal })),
+)
 const PosterQuickStart = lazy(() =>
   import('./poster/PosterQuickStart').then((m) => ({ default: m.PosterQuickStart })),
 )
@@ -208,6 +211,9 @@ function HomePage() {
           </Suspense>
           <Suspense fallback={<SectionFallback height={520} />}>
             <PosterBreadth />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={420} />}>
+            <PosterTerminal />
           </Suspense>
           <Suspense fallback={<SectionFallback height={480} />}>
             <PosterQuickStart />
