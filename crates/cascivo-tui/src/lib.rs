@@ -25,7 +25,10 @@ pub use keys::{Chord, Dispatch, Keymap, dispatch};
 pub use node::{Node, col, row, spacer, text};
 pub use runtime::{RunOptions, Runtime, StepOut, run, run_with};
 pub use testing::{CellView, TestApp, render_to_string};
-pub use widgets::{card, heading, progress, sparkline, statusbar};
+pub use widgets::{
+    Col, Cursor, Scroll, button, card, heading, input, list, progress, sparkline, statusbar, table,
+    tabs,
+};
 
 /// Convenient re-exports for application code.
 pub mod prelude {
@@ -39,5 +42,8 @@ pub mod prelude {
     pub use crate::runtime::{RunOptions, Runtime, StepOut, run, run_with};
     pub use crate::testing::{CellView, TestApp, render_to_string};
     pub use crate::theme::{ColorDepth, StateFlags, Theme};
-    pub use crate::widgets::{card, heading, progress, sparkline, statusbar};
+    pub use crate::widgets::{
+        Col, Cursor, Scroll, button, card, heading, input, list, progress, sparkline, statusbar,
+        table, tabs,
+    };
 }
