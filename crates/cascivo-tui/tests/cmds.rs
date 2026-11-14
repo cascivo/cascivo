@@ -7,11 +7,14 @@ use ratatui::layout::Rect;
 #[derive(Clone, Debug)]
 enum Msg {
     Open,
+    Load,
+    Loaded(u32),
 }
 
 #[derive(Default)]
 struct Form {
     open: bool,
+    loaded: Vec<u32>,
 }
 
 struct Field;
@@ -30,6 +33,15 @@ impl App for Form {
                 self.open = true;
                 Cmd::focus("name")
             }
+            Msg::Load => Cmd::task(|| Msg::Loaded(42)),
+            Msg::Loaded(n) => {
+                self.loaded.push(n);
+                if n == 42 {
+                    // A task result may start another task; TestApp runs it too.
+                    return Cmd::batch([Cmd::task(|| Msg::Loaded(1)), Cmd::focus("name")]);
+                }
+                Cmd::None
+            }
         }
     }
     fn view(&self) -> Node<Msg> {
@@ -40,7 +52,9 @@ impl App for Form {
         col("", kids)
     }
     fn keys(&self) -> Keymap<Msg> {
-        Keymap::new().bind("o", "open", Msg::Open)
+        Keymap::new()
+            .bind("o", "open", Msg::Open)
+            .bind("l", "load", Msg::Load)
     }
 }
 
@@ -50,4 +64,11 @@ fn focus_cmd_reaches_id_added_by_update() {
     assert_eq!(t.focused(), Some("first"));
     t.press("o");
     assert_eq!(t.focused(), Some("name"));
+}
+
+#[test]
+fn task_result_reaches_update_inline() {
+    let mut t = TestApp::new(Form::default(), 20, 3);
+    t.press("l");
+    assert_eq!(t.app().loaded, vec![42, 1]);
 }

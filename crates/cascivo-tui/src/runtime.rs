@@ -3,6 +3,7 @@
 //! Time is a `Duration` since an arbitrary start the caller chooses (the loop uses
 //! `Instant::elapsed`), so tick behaviour is deterministic in tests.
 
+use std::sync::mpsc;
 use std::time::{Duration, Instant};
 
 use ratatui::buffer::Buffer;
@@ -11,7 +12,7 @@ use ratatui::layout::Rect;
 use ratatui::style::{Color, Style};
 use ratatui::widgets::{Paragraph, Widget as _, Wrap};
 
-use crate::app::{App, Cmd};
+use crate::app::{App, Cmd, Task};
 use crate::error::TuiError;
 use crate::focus::Focus;
 use crate::keys::{Dispatch, dispatch};
@@ -62,6 +63,7 @@ pub struct Runtime<A: App> {
     ring: Vec<String>,
     ticks: Vec<(Duration, A::Msg)>,
     focus_req: Vec<FocusReq>,
+    tasks: Vec<Task<A::Msg>>,
     fault: Option<String>,
     view_error: Option<TuiError>,
     quit: bool,
@@ -78,6 +80,7 @@ impl<A: App> Runtime<A> {
             ring: Vec::new(),
             ticks: Vec::new(),
             focus_req: Vec::new(),
+            tasks: Vec::new(),
             fault: None,
             view_error: None,
             quit: false,
@@ -129,6 +132,13 @@ impl<A: App> Runtime<A> {
     /// `draw` paints the panel and returns `Ok`; test helpers use this to fail instead.
     pub fn view_error(&self) -> Option<&TuiError> {
         self.view_error.as_ref()
+    }
+
+    /// Takes the [`Cmd::Task`] closures queued since the last call. The caller runs each one
+    /// (on a worker thread, or inline in tests) and feeds the result back with
+    /// `apply(Cmd::Msg(result), now)`.
+    pub fn take_tasks(&mut self) -> Vec<Task<A::Msg>> {
+        std::mem::take(&mut self.tasks)
     }
 
     /// Earliest pending tick deadline.
@@ -272,6 +282,7 @@ impl<A: App> Runtime<A> {
                     self.focus_req.push(FocusReq::Prev);
                     redraw = true;
                 }
+                Cmd::Task(f) => self.tasks.push(f),
                 Cmd::Batch(v) => stack.extend(v.into_iter().rev().map(|c| (c, depth))),
                 Cmd::Msg(m) => {
                     redraw = true;
@@ -370,9 +381,14 @@ fn error_panel(msg: &str, area: Rect, buf: &mut Buffer) {
 
 /// Runs `app` full-screen with default options.
 ///
+/// `A::Msg: Send` because [`Cmd::Task`] results come back from a worker thread.
+///
 /// # Errors
 /// Terminal I/O failures. The terminal is restored on every exit path.
-pub fn run<A: App>(app: A) -> Result<(), TuiError> {
+pub fn run<A: App>(app: A) -> Result<(), TuiError>
+where
+    A::Msg: Send,
+{
     run_with(app, RunOptions::default())
 }
 
@@ -381,7 +397,10 @@ pub fn run<A: App>(app: A) -> Result<(), TuiError> {
 ///
 /// # Errors
 /// Terminal I/O failures, or an unknown theme name (as an I/O error).
-pub fn run_with<A: App>(app: A, opts: RunOptions) -> Result<(), TuiError> {
+pub fn run_with<A: App>(app: A, opts: RunOptions) -> Result<(), TuiError>
+where
+    A::Msg: Send,
+{
     let name = opts
         .theme
         .clone()
@@ -402,18 +421,38 @@ pub fn run_with<A: App>(app: A, opts: RunOptions) -> Result<(), TuiError> {
     res.and(restored.map_err(Into::into))
 }
 
+/// Runs `task` on a new thread and sends its result to `tx`.
+fn spawn_task<M: Send + 'static>(task: Task<M>, tx: mpsc::Sender<M>) {
+    // A send fails only once the loop has exited; the result is then unwanted.
+    std::thread::spawn(move || {
+        let _ = tx.send(task());
+    });
+}
+
+/// How often the loop checks for finished tasks while any are running.
+const TASK_POLL: Duration = Duration::from_millis(16);
+
 fn event_loop<A: App>(
     term: &mut ratatui::DefaultTerminal,
     app: A,
     theme: Theme,
     tick_rate: Option<Duration>,
-) -> Result<(), TuiError> {
+) -> Result<(), TuiError>
+where
+    A::Msg: Send,
+{
     let clock = Instant::now();
     let sz = term.size()?;
+    let (tx, rx) = mpsc::channel::<A::Msg>();
+    let mut running = 0usize;
     let mut rt = Runtime::new(app, theme, sz.width, sz.height);
     let mut out = rt.start(clock.elapsed());
     let mut redraw = true;
     while !out.quit {
+        for task in rt.take_tasks() {
+            running += 1;
+            spawn_task(task, tx.clone());
+        }
         if redraw {
             term.draw(|f| {
                 let area = f.area();
@@ -422,11 +461,15 @@ fn event_loop<A: App>(
             })?;
         }
         let now = clock.elapsed();
-        let wait = [rt.next_deadline().map(|d| d.saturating_sub(now)), tick_rate]
-            .into_iter()
-            .flatten()
-            .min()
-            .unwrap_or(Duration::from_secs(3600));
+        let wait = [
+            rt.next_deadline().map(|d| d.saturating_sub(now)),
+            tick_rate,
+            (running > 0).then_some(TASK_POLL),
+        ]
+        .into_iter()
+        .flatten()
+        .min()
+        .unwrap_or(Duration::from_secs(3600));
         out = if event::poll(wait)? {
             rt.step(event::read()?, clock.elapsed())
         } else {
@@ -437,6 +480,12 @@ fn event_loop<A: App>(
             }
         };
         redraw = out.redraw;
+        while !out.quit {
+            let Ok(m) = rx.try_recv() else { break };
+            running -= 1;
+            out = rt.apply(Cmd::Msg(m), clock.elapsed());
+            redraw |= out.redraw;
+        }
     }
     Ok(())
 }
@@ -714,6 +763,44 @@ mod tests {
         r.apply(Cmd::Msg(M::Prev), T0);
         drawn(&mut r);
         assert_eq!(r.focused(), Some("a"));
+    }
+
+    #[test]
+    fn task_cmd_is_queued_not_run() {
+        let mut r = rt(Rec::default());
+        let o = r.apply(
+            Cmd::batch([Cmd::task(|| M::Log(9)), Cmd::Msg(M::Log(1))]),
+            T0,
+        );
+        assert!(o.redraw);
+        assert_eq!(r.app().seen, vec![1]);
+        let tasks = r.take_tasks();
+        assert_eq!(tasks.len(), 1);
+        assert!(r.take_tasks().is_empty());
+        for t in tasks {
+            r.apply(Cmd::Msg(t()), T0);
+        }
+        assert_eq!(r.app().seen, vec![1, 9]);
+    }
+
+    #[test]
+    fn spawn_task_runs_off_the_calling_thread() {
+        let (tx, rx) = mpsc::channel();
+        let here = std::thread::current().id();
+        spawn_task(Box::new(move || std::thread::current().id() != here), tx);
+        assert!(rx.recv_timeout(Duration::from_secs(5)).unwrap());
+    }
+
+    #[test]
+    fn cmd_debug_and_eq_handle_tasks() {
+        let t: Cmd<u8> = Cmd::task(|| 1);
+        assert_eq!(format!("{t:?}"), "Task(..)");
+        assert_ne!(t, Cmd::task(|| 1));
+        assert_eq!(Cmd::<u8>::focus("a"), Cmd::Focus("a".into()));
+        assert_eq!(
+            format!("{:?}", Cmd::batch([Cmd::Msg(2u8)])),
+            "Batch([Msg(2)])"
+        );
     }
 
     #[test]

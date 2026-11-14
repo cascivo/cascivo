@@ -20,7 +20,7 @@ use crate::class::Role;
 use crate::error::TuiError;
 use crate::keys::Chord;
 use crate::node::Node;
-use crate::runtime::Runtime;
+use crate::runtime::{MAX_CHAIN, Runtime};
 use crate::theme::Theme;
 
 /// One screen cell with its style and, when it matches the theme, role names.
@@ -188,7 +188,23 @@ impl<A: App> TestApp<A> {
         self
     }
 
+    /// Runs queued [`Cmd::Task`](crate::Cmd::Task) closures inline, feeding each result to
+    /// `update`, until none are left (at most [`MAX_CHAIN`] rounds, so a task that always
+    /// schedules another cannot hang a test).
+    fn run_tasks(&mut self) {
+        for _ in 0..MAX_CHAIN {
+            let tasks = self.rt.take_tasks();
+            if tasks.is_empty() || self.rt.quit_requested() {
+                return;
+            }
+            for task in tasks {
+                self.rt.apply(crate::Cmd::Msg(task()), self.now);
+            }
+        }
+    }
+
     fn redraw(&mut self) {
+        self.run_tasks();
         let (w, h) = self.rt.size();
         let area = Rect::new(0, 0, w, h);
         let mut buf = Buffer::empty(area);

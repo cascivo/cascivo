@@ -23,7 +23,7 @@ pub mod widgets;
 #[doc = include_str!("../../../docs/USING-CASCIVO-TUI.md")]
 mod guide_doctests {}
 
-pub use app::{App, Cmd};
+pub use app::{App, Cmd, Task};
 pub use class::{ClassCache, ClassStyle, Role, Size};
 pub use error::{ClassError, TuiError};
 pub use focus::Focus;
