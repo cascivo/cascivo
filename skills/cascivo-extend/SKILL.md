@@ -27,7 +27,7 @@ Read the reference component's `/llms/<name>.md` file for its structure, then fe
 
 - `<name>.tsx` — component + export
 - `<name>.module.css` — CSS custom properties + layer rules
-- `<name>.meta.ts` — ComponentMeta manifest
+- `<name>.meta.ts` — ComponentMeta manifest (optional `agent` section: actions mapped to props, `secret`, `confirm`)
 - `<name>.test.tsx` — unit + interaction tests
 
 ### 3. Clarify the component spec

@@ -78,7 +78,7 @@ for pasting into an agent's context window.
 | [CONTRIBUTING-REGISTRY.md](CONTRIBUTING-REGISTRY.md) | Publish and host a third-party component registry. |
 | [CONTRIBUTING-TEMPLATES.md](CONTRIBUTING-TEMPLATES.md) | Author a template and submit it to the marketplace. |
 | [USING-CASCIVO-HTML.md](USING-CASCIVO-HTML.md) | `cascivo-html` (Rust crate + CLI) — write `.cv` text, get one static, branded, self-contained HTML file. For agents and for people. |
-| [MACHINE-MODE.md](MACHINE-MODE.md) | Render a UI as a Markdown document with `@cascivo/text` — for agents, no CSS or interactivity. |
+| [MACHINE-MODE.md](MACHINE-MODE.md) | Render a UI as Markdown, or list its operable nodes with `snapshot()`, with `@cascivo/text` — for agents. |
 | [CHART-LIBRARIES.md](CHART-LIBRARIES.md) | `@cascivo/charts` compared to Chart.js and Apache ECharts. |
 | [RECIPE-SOCIAL.md](RECIPE-SOCIAL.md) | Sign in with GitHub, Google or LinkedIn; connect Bluesky, Mastodon, LinkedIn, Threads and Buffer; post now or scheduled; a Share button for readers. |
 | [RECIPE-EMAIL.md](RECIPE-EMAIL.md) | Send transactional email with `@cascivo/email` — themed, table-based, plain-text part included. |

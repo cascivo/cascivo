@@ -142,6 +142,12 @@ export function AiPage() {
             back what it says (needs <code>@cascivo/render</code> in the project)
           </li>
           <li>
+            Runtime: <code>snapshot()</code> in <code>@cascivo/text</code> lists a page&apos;s
+            operable nodes; <code>registerViewTools</code> in <code>@cascivo/render</code> exposes
+            A2UI views over WebMCP; components declare an optional manifest <code>agent</code>{' '}
+            section
+          </li>
+          <li>
             <code>get_tokens</code> / <code>get_context</code> / <code>create_theme</code> — tokens,
             intent/boundaries, and brand themes
           </li>

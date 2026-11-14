@@ -1,4 +1,4 @@
-Machine mode for cascivo: serialize a rendered UI to Markdown, for agents that need to know
+Machine mode for cascivo: serialize a rendered UI to Markdown or a structured snapshot, for agents that need to know
 what a page **says** rather than what its source says. No CSS, no hydration, nothing to click.
 
 > **Docs offline?** The full cascivo reference ships as an npm package — `npx -y @cascivo/docs`, no website needed.
@@ -32,14 +32,18 @@ Email [input = "ada@example.com"]
 [button: Save changes] [button: Cancel (disabled)]
 ```
 
-## Four entry points
+## Five entry points
 
-| Where the UI is                      | Use                                                                                            |
-| ------------------------------------ | ---------------------------------------------------------------------------------------------- |
-| A server or agent process, as HTML   | `toMarkdown(html, options?)`                                                                   |
-| The browser, as a live DOM subtree   | `elementToMarkdown(element, options?)` — reads typed values, checked boxes, opened disclosures |
-| A React tree you want shown as text  | `<TextView>` from `@cascivo/text/react`                                                        |
-| A React tree shown _beside_ its text | `useLiveMarkdown(ref)` from `@cascivo/text/react`                                              |
+| Where the UI is                              | Use                                                                                            |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| A server or agent process, as HTML           | `toMarkdown(html, options?)`                                                                   |
+| The browser, as a live DOM subtree           | `elementToMarkdown(element, options?)` — reads typed values, checked boxes, opened disclosures |
+| A live DOM subtree an agent should _operate_ | `snapshot(root)` — operable nodes with stable refs, actions and options, capped at 200         |
+| A React tree you want shown as text          | `<TextView>` from `@cascivo/text/react`                                                        |
+| A React tree shown _beside_ its text         | `useLiveMarkdown(ref)` from `@cascivo/text/react`                                              |
+
+`snapshot(root)` marks are honored: `data-agent-hidden` drops a node, `data-agent-secret` redacts its value,
+`data-agent-confirm` flags actions that need a person. See [MACHINE-MODE.md](https://github.com/cascivo/cascivo/blob/main/docs/MACHINE-MODE.md).
 
 ## The one rule
 

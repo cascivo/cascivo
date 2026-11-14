@@ -158,6 +158,12 @@ The entry has no `'use client'`; in React Server Components apps import `A2uiSur
 
 A surface uses the catalog its `createSurface` message names; the store only knows the catalogs passed to `createA2uiStore`, so inline catalogs are refused.
 
+### Letting an agent operate a view (WebMCP)
+
+`registerViewTools(store, { allow, onAction? })` from `@cascivo/render/a2ui/v0_9` registers `view_snapshot` and
+`view_act` on `document.modelContext` for the store's surfaces and returns an unregister function (`undefined` when
+WebMCP is absent). `allow` is required and runs per call: there is no default-open mode.
+
 ### Security and limits
 
 - Every message is validated against the catalog spec before it reaches state; a bad one becomes an `A2uiErrorMessage`, never an exception.
