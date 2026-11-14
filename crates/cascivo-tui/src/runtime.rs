@@ -30,6 +30,14 @@ pub struct StepOut {
     pub quit: bool,
 }
 
+/// A focus move requested by a [`Cmd`], applied once the next view has built the ring.
+#[derive(Debug, Clone, PartialEq, Eq)]
+enum FocusReq {
+    Id(String),
+    Next,
+    Prev,
+}
+
 /// Options for [`run_with`].
 #[derive(Debug, Clone, Default)]
 pub struct RunOptions {
@@ -53,6 +61,7 @@ pub struct Runtime<A: App> {
     size: (u16, u16),
     ring: Vec<String>,
     ticks: Vec<(Duration, A::Msg)>,
+    focus_req: Vec<FocusReq>,
     fault: Option<String>,
     view_error: Option<TuiError>,
     quit: bool,
@@ -68,6 +77,7 @@ impl<A: App> Runtime<A> {
             size: (cols, rows),
             ring: Vec::new(),
             ticks: Vec::new(),
+            focus_req: Vec::new(),
             fault: None,
             view_error: None,
             quit: false,
@@ -250,6 +260,18 @@ impl<A: App> Runtime<A> {
                         break;
                     }
                 },
+                Cmd::Focus(id) => {
+                    self.focus_req.push(FocusReq::Id(id));
+                    redraw = true;
+                }
+                Cmd::FocusNext => {
+                    self.focus_req.push(FocusReq::Next);
+                    redraw = true;
+                }
+                Cmd::FocusPrev => {
+                    self.focus_req.push(FocusReq::Prev);
+                    redraw = true;
+                }
                 Cmd::Batch(v) => stack.extend(v.into_iter().rev().map(|c| (c, depth))),
                 Cmd::Msg(m) => {
                     redraw = true;
@@ -306,6 +328,18 @@ impl<A: App> Runtime<A> {
             .collect();
         let before = self.focus.current().map(str::to_owned);
         self.focus.sync(&self.ring);
+        for req in std::mem::take(&mut self.focus_req) {
+            match req {
+                FocusReq::Id(id) if self.ring.contains(&id) => self.focus.set(&id),
+                FocusReq::Id(_) => {}
+                FocusReq::Next => {
+                    self.focus.next(&self.ring);
+                }
+                FocusReq::Prev => {
+                    self.focus.prev(&self.ring);
+                }
+            }
+        }
         if self.focus.current() != before.as_deref() {
             buf.reset();
             if let Err(e) = render(&view, area, buf, &self.theme, self.focus.current()) {
@@ -426,6 +460,10 @@ mod tests {
         Loop,
         Later(u32),
         Schedule,
+        Show,
+        FocusC,
+        Next,
+        Prev,
     }
 
     #[derive(Default)]
@@ -433,6 +471,7 @@ mod tests {
         seen: Vec<u32>,
         bad_class: bool,
         btns: bool,
+        extra: bool,
     }
 
     struct Btn(&'static str);
@@ -460,6 +499,13 @@ mod tests {
                     Cmd::Msg(M::Log(4)),
                 ]),
                 M::Loop => Cmd::Msg(M::Loop),
+                M::Show => {
+                    self.extra = true;
+                    Cmd::focus("c")
+                }
+                M::FocusC => Cmd::focus("c"),
+                M::Next => Cmd::FocusNext,
+                M::Prev => Cmd::FocusPrev,
                 M::Schedule => {
                     Cmd::batch([Cmd::tick(100, M::Later(1)), Cmd::tick(50, M::Later(2))])
                 }
@@ -470,13 +516,14 @@ mod tests {
                 return col("bg-primry", []);
             }
             if self.btns {
-                return col(
-                    "",
-                    [
-                        Node::leaf("h-1", Btn("one")).id("a"),
-                        Node::leaf("h-1", Btn("two")).id("b"),
-                    ],
-                );
+                let mut kids = vec![
+                    Node::leaf("h-1", Btn("one")).id("a"),
+                    Node::leaf("h-1", Btn("two")).id("b"),
+                ];
+                if self.extra {
+                    kids.push(Node::leaf("h-1", Btn("three")).id("c"));
+                }
+                return col("", kids);
             }
             col("", [text("hi").into()])
         }
@@ -624,6 +671,49 @@ mod tests {
         assert_eq!(r.focused(), Some("a"));
         r.step(special(KeyCode::BackTab, KeyModifiers::SHIFT), T0);
         assert_eq!(r.focused(), Some("b"));
+    }
+
+    fn btns() -> Runtime<Rec> {
+        rt(Rec {
+            btns: true,
+            ..Rec::default()
+        })
+    }
+
+    #[test]
+    fn focus_cmd_targets_id_added_by_the_next_view() {
+        let mut r = btns();
+        drawn(&mut r);
+        let o = r.apply(Cmd::Msg(M::Show), T0);
+        assert!(o.redraw);
+        // Not applied until the view that contains "c" has been drawn.
+        assert_eq!(r.focused(), Some("a"));
+        drawn(&mut r);
+        assert_eq!(r.focused(), Some("c"));
+    }
+
+    #[test]
+    fn focus_cmd_ignores_unknown_id() {
+        let mut r = btns();
+        drawn(&mut r);
+        r.apply(Cmd::Msg(M::FocusC), T0);
+        drawn(&mut r);
+        assert_eq!(r.focused(), Some("a"));
+    }
+
+    #[test]
+    fn focus_next_and_prev_cmds_wrap() {
+        let mut r = btns();
+        drawn(&mut r);
+        r.apply(Cmd::Msg(M::Next), T0);
+        drawn(&mut r);
+        assert_eq!(r.focused(), Some("b"));
+        r.apply(Cmd::batch([Cmd::FocusNext, Cmd::FocusNext]), T0);
+        drawn(&mut r);
+        assert_eq!(r.focused(), Some("b"));
+        r.apply(Cmd::Msg(M::Prev), T0);
+        drawn(&mut r);
+        assert_eq!(r.focused(), Some("a"));
     }
 
     #[test]

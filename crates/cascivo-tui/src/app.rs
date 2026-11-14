@@ -28,6 +28,13 @@ pub enum Cmd<M> {
     /// Switch to the named theme on the next draw (keeps the terminal's colour depth). An
     /// unknown name is a runtime fault that paints the error panel, so typos are loud.
     SetTheme(String),
+    /// Focus the widget with this id after the next view, so an id that view adds can be
+    /// focused. An id not in the new focus ring is ignored.
+    Focus(String),
+    /// Move focus to the next id of the ring after the next view (like Tab).
+    FocusNext,
+    /// Move focus to the previous id of the ring after the next view (like Shift-Tab).
+    FocusPrev,
 }
 
 impl<M> Cmd<M> {
@@ -39,6 +46,11 @@ impl<M> Cmd<M> {
     /// [`Cmd::Tick`] with milliseconds.
     pub fn tick(ms: u64, msg: M) -> Self {
         Self::Tick(Duration::from_millis(ms), msg)
+    }
+
+    /// [`Cmd::Focus`] from anything string-like.
+    pub fn focus(id: impl Into<String>) -> Self {
+        Self::Focus(id.into())
     }
 
     /// [`Cmd::Batch`] from any iterator.
