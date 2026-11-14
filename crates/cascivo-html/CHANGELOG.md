@@ -1,5 +1,11 @@
 # cascivo-html
 
+## 0.1.2
+
+### Patch Changes
+
+- Crate README and docs.rs introduction: install steps, a quick example, the CLI and links to the full guide. No code changes.
+
 ## 0.1.1
 
 ### Patch Changes
