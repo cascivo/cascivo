@@ -35,7 +35,7 @@ Text.js (anomalyco/textjs): declarative tree, class-string flex layout, one inpu
 
 ## Constraints
 
-- Lives in `crates/cascivo-tui` in the existing Cargo workspace (edition 2024, rust 1.85).
+- Lives in `crates/cascivo-tui` in the existing Cargo workspace (edition 2024, rust 1.85 workspace-wide; this crate's MSRV is 1.88 because ratatui 0.30 requires it).
 - `cargo clippy -D warnings`, `cargo fmt --check`, `cargo test` clean. Latest stable ratatui/crossterm.
 - Deterministic tests (TestBackend snapshots).
 
