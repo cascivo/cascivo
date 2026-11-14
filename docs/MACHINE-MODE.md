@@ -8,7 +8,8 @@ pnpm add @cascivo/text
 ```
 
 > Going the other way — an agent *writing* a static page? Use `cascivo-html`
-> ([USING-CASCIVO-HTML.md](./USING-CASCIVO-HTML.md)): `.cv` text in, one HTML file out.
+> ([USING-CASCIVO-HTML.md](./USING-CASCIVO-HTML.md)): `.cv` text in, one HTML file out. For a
+> terminal UI, use `cascivo-tui` ([USING-CASCIVO-TUI.md](./USING-CASCIVO-TUI.md)).
 
 ## The one rule
 

@@ -1280,6 +1280,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(
     `- Static HTML from .cv text (cascivo-html Rust crate + CLI, no React): ${SITE}/docs/using-cascivo-html.md`,
   )
+  lines.push(
+    `- Terminal UIs in Rust (cascivo-tui ratatui toolkit, class strings + themes): ${SITE}/docs/using-cascivo-tui.md`,
+  )
   lines.push(`- Compatibility & support matrix: ${SITE}/docs/compatibility.md`)
   lines.push(`- Migrating from shadcn/ui: ${SITE}/docs/migrating-from-shadcn.md`)
   lines.push(`- Token reference: ${SITE}/docs/tokens.md`)

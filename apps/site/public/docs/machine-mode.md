@@ -14,7 +14,8 @@ pnpm add @cascivo/text
 ```
 
 > Going the other way — an agent _writing_ a static page? Use `cascivo-html`
-> ([USING-CASCIVO-HTML.md](/docs/using-cascivo-html.md)): `.cv` text in, one HTML file out.
+> ([USING-CASCIVO-HTML.md](/docs/using-cascivo-html.md)): `.cv` text in, one HTML file out. For a
+> terminal UI, use `cascivo-tui` ([USING-CASCIVO-TUI.md](/docs/using-cascivo-tui.md)).
 
 ## The one rule
 
