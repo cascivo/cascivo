@@ -31,6 +31,7 @@ pub use keys::{Chord, Dispatch, Keymap, dispatch};
 pub use node::{Node, Placement, col, row, spacer, text};
 pub use runtime::{RunOptions, Runtime, StepOut, run, run_with};
 pub use testing::{CellView, TestApp, render_to_string};
+pub use theme::Theme;
 pub use widgets::{
     Col, Cursor, Kind, Scroll, button, card, heading, input, keyhints, list, modal, progress,
     sparkline, statusbar, table, tabs, toast, toasts,

@@ -5,7 +5,9 @@
 //!    `Percentage(100)`, `a/b` → `Ratio(a, b)`;
 //! 2. `grow-N` → `Fill(N)`;
 //! 3. `min-*` → `Min`, then `max-*` → `Max`;
-//! 4. `shrink-0` or a leaf → `Length(intrinsic)`; a container → `Fill(1)`.
+//! 4. `shrink-0`, a leaf, or a container with no growing content → `Length(intrinsic)` (text
+//!    wraps at the width on offer); a container whose children grow or are sized `full`/`a/b`
+//!    → `Fill(1)`.
 //!
 //! Cross axis: `items-stretch` (default) fills; `items-start/center/end` use the size class or
 //! the intrinsic size, then `min-*`/`max-*` clamp. `gap-N` is `Layout::spacing`, `justify-*`
@@ -137,7 +139,10 @@ impl Walk<'_> {
         })
     }
 
-    fn intrinsic<M>(&self, node: &Node<M>, cs: &ClassStyle, axis: Direction) -> u16 {
+    /// Natural size along `axis`. `avail_w` is the outer width on offer (`u16::MAX` when
+    /// unconstrained); it only matters for the vertical axis, where wrapping text grows taller
+    /// as it narrows.
+    fn intrinsic<M>(&self, node: &Node<M>, cs: &ClassStyle, axis: Direction, avail_w: u16) -> u16 {
         let size = match axis {
             Direction::Horizontal => cs.width,
             Direction::Vertical => cs.height,
@@ -150,8 +155,13 @@ impl Walk<'_> {
             Direction::Vertical => cs.padding.top.unwrap_or(0) + cs.padding.bottom.unwrap_or(0),
         };
         let chrome = pad.saturating_add(sides(cs.borders.unwrap_or(Borders::NONE), axis));
+        let own_w = match cs.width {
+            Some(Size::Cells(n)) => n,
+            _ => avail_w,
+        };
+        let inner_w = own_w.saturating_sub(self.hchrome(cs));
         let content = match node.kind() {
-            NodeKind::Leaf(w) => w.intrinsic(axis),
+            NodeKind::Leaf(w) => w.intrinsic_in(axis, inner_w, cs),
             NodeKind::Col(ch) | NodeKind::Row(ch) => {
                 let main = if matches!(node.kind(), NodeKind::Row(_)) {
                     Direction::Horizontal
@@ -163,7 +173,7 @@ impl Walk<'_> {
                     .filter(|c| c.placement().is_none())
                     .filter_map(|c| {
                         let ccs = self.effective(c)?;
-                        (!ccs.hidden).then(|| self.intrinsic(c, &ccs, axis))
+                        (!ccs.hidden).then(|| self.intrinsic(c, &ccs, axis, inner_w))
                     });
                 if main == axis {
                     let (n, sum) = sizes.fold((0u16, 0u16), |(n, s), v| {
@@ -182,6 +192,39 @@ impl Walk<'_> {
             _ => 0,
         };
         content.saturating_add(chrome).max(title)
+    }
+
+    fn hchrome(&self, cs: &ClassStyle) -> u16 {
+        let pad = cs.padding.left.unwrap_or(0) + cs.padding.right.unwrap_or(0);
+        pad.saturating_add(sides(
+            cs.borders.unwrap_or(Borders::NONE),
+            Direction::Horizontal,
+        ))
+    }
+
+    /// Whether a container wants the free space along `dir`: a flow child that grows or is
+    /// sized by `full`/`a/b` on the main axis, or a nested container that does.
+    fn wants_fill<M>(&self, node: &Node<M>, dir: Direction) -> bool {
+        let main = if matches!(node.kind(), NodeKind::Row(_)) {
+            Direction::Horizontal
+        } else {
+            Direction::Vertical
+        };
+        node.children()
+            .iter()
+            .filter(|c| c.placement().is_none())
+            .filter_map(|c| self.effective(c).map(|s| (c, s)))
+            .filter(|(_, s)| !s.hidden)
+            .any(|(c, s)| {
+                let size = if dir == Direction::Horizontal {
+                    s.width
+                } else {
+                    s.height
+                };
+                let fills = main == dir
+                    && (s.grow.is_some() || matches!(size, Some(Size::Full | Size::Ratio(..))));
+                fills || (!matches!(c.kind(), NodeKind::Leaf(_)) && self.wants_fill(c, dir))
+            })
     }
 
     fn draw<M>(&mut self, node: &Node<M>, cs: &ClassStyle, area: Rect, buf: &mut Buffer) {
@@ -283,7 +326,7 @@ impl Walk<'_> {
             };
             match sz {
                 Some(sz) => cells(sz, avail),
-                None => self.intrinsic(node, cs, axis),
+                None => self.intrinsic(node, cs, axis, host.width),
             }
             .min(avail)
         };
@@ -321,7 +364,7 @@ impl Walk<'_> {
         let row = dir == Direction::Horizontal;
         let constraints: Vec<Constraint> = visible
             .iter()
-            .map(|(c, s)| self.main_constraint(c, s, dir))
+            .map(|(c, s)| self.main_constraint(c, s, dir, inner.width))
             .collect();
         let flex = match cs.justify {
             None | Some(Justify::Start) => Flex::Start,
@@ -351,7 +394,7 @@ impl Walk<'_> {
             let mut want = match (size, items) {
                 (Some(sz), _) => cells(sz, avail),
                 (None, Items::Stretch) => avail,
-                (None, _) => self.intrinsic(c, s, cross),
+                (None, _) => self.intrinsic(c, s, cross, r.width.min(inner.width)),
             };
             if let Some(m) = min {
                 want = want.max(cells(m, avail));
@@ -374,7 +417,13 @@ impl Walk<'_> {
         }
     }
 
-    fn main_constraint<M>(&self, node: &Node<M>, cs: &ClassStyle, dir: Direction) -> Constraint {
+    fn main_constraint<M>(
+        &self,
+        node: &Node<M>,
+        cs: &ClassStyle,
+        dir: Direction,
+        avail_w: u16,
+    ) -> Constraint {
         let (size, min, max) = match dir {
             Direction::Horizontal => (cs.width, cs.min_w, cs.max_w),
             Direction::Vertical => (cs.height, cs.min_h, cs.max_h),
@@ -387,8 +436,11 @@ impl Walk<'_> {
             (None, None, Some(m), _) => Constraint::Min(cells(m, 0)),
             (None, None, None, Some(m)) => Constraint::Max(cells(m, u16::MAX)),
             (None, None, None, None) => {
-                if cs.shrink0 || matches!(node.kind(), NodeKind::Leaf(_)) {
-                    Constraint::Length(self.intrinsic(node, cs, dir))
+                // A container with no size and no growing content takes its natural size,
+                // not a share of the free space.
+                let leaf = matches!(node.kind(), NodeKind::Leaf(_));
+                if cs.shrink0 || leaf || !self.wants_fill(node, dir) {
+                    Constraint::Length(self.intrinsic(node, cs, dir, avail_w))
                 } else {
                     Constraint::Fill(1)
                 }
@@ -622,5 +674,89 @@ mod tests {
         assert_eq!(snap(&n, 6, 1), "hello…");
         let n: Node = col("", [text("abc").class("text-right").into()]);
         assert_eq!(snap(&n, 6, 1), "   abc");
+    }
+
+    #[test]
+    fn wrapped_text_reports_wrapped_height() {
+        let n: Node = col("", [text("one two three four").into(), text("x").into()]);
+        assert_eq!(snap(&n, 6, 6), "one\ntwo\nthree\nfour\nx");
+        // Truncate and nowrap stay one row.
+        let n: Node = col(
+            "",
+            [
+                text("one two three").class("truncate").into(),
+                text("x").into(),
+            ],
+        );
+        assert_eq!(snap(&n, 6, 4), "one t…\nx");
+        // Border and padding narrow the width on offer.
+        let n: Node = col(
+            "",
+            [col("border", [text("aa bb cc").into()]), text("x").into()],
+        );
+        assert_eq!(snap(&n, 7, 8), "┌─────┐\n│aa bb│\n│cc   │\n└─────┘\nx");
+    }
+
+    #[test]
+    fn wrap_measure_matches_paragraph() {
+        use ratatui::widgets::{Paragraph, Wrap};
+        for t in [
+            "one two three four",
+            "a  b   c",
+            "supercalifragilistic",
+            "ab supercalifragilistic cd",
+            "x\ny z w",
+        ] {
+            for w in 2..14u16 {
+                let mut buf = Buffer::empty(Rect::new(0, 0, w, 40));
+                Paragraph::new(t)
+                    .wrap(Wrap { trim: true })
+                    .render(buf.area, &mut buf);
+                let drawn = (0..40u16)
+                    .rev()
+                    .find(|y| (0..w).any(|x| buf[(x, *y)].symbol() != " "))
+                    .map_or(1, |y| usize::from(y) + 1);
+                assert_eq!(
+                    crate::node::wrapped_lines(t, usize::from(w)),
+                    drawn,
+                    "{t:?} @ {w}"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn container_without_size_takes_intrinsic_height() {
+        // A one-line row between a header and a growing body keeps one line.
+        let n: Node = col(
+            "",
+            [
+                text("tabs").into(),
+                row("", [text("a").into(), text("b").into()]),
+                col("grow border", [text("body").into()]),
+            ],
+        );
+        let s = snap(&n, 8, 6);
+        assert_eq!(s.lines().nth(1), Some("ab"));
+        assert_eq!(s.lines().nth(2), Some("┌──────┐"));
+        assert_eq!(s.lines().last(), Some("└──────┘"));
+        // gap counts in a col's intrinsic height.
+        let n: Node = col(
+            "",
+            [
+                col("gap-1", [text("1").into(), text("2").into()]),
+                text("z").into(),
+            ],
+        );
+        assert_eq!(snap(&n, 4, 6), "1\n\n2\nz");
+    }
+
+    #[test]
+    fn container_with_growing_content_still_fills() {
+        let n: Node = col(
+            "",
+            [col("", [spacer(), text("end").into()]), text("z").into()],
+        );
+        assert_eq!(snap(&n, 4, 4), "\n\nend\nz");
     }
 }

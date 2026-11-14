@@ -173,11 +173,49 @@ fn bad_class_is_err_not_panel() {
 fn resize_and_theme() {
     let mut t = TestApp::new(Demo::default(), 30, 3).theme("dark");
     t.resize(10, 2);
-    assert_eq!(t.render().unwrap(), "n=0 typed=");
+    assert_eq!(t.render().unwrap(), "n=0 typed=\nfired=0");
 }
 
 #[test]
 fn render_to_string_stateless() {
     let n: Node<()> = col("", [text("a").into(), text("").into(), text("b").into()]);
     assert_eq!(render_to_string(&n, 5, 6).unwrap(), "a\n\nb");
+}
+
+#[test]
+fn snapshot_matches_and_survives_trailing_newline() {
+    // The committed file holds the initial screen.
+    TestApp::new(Demo::default(), 40, 3).assert_snapshot("demo_initial");
+}
+
+#[test]
+#[should_panic(expected = "-n=0 typed= fired=0\n+n=1 typed= fired=0")]
+fn snapshot_mismatch_panics_with_diff() {
+    TestApp::new(Demo::default(), 40, 3)
+        .press("+")
+        .assert_snapshot("demo_initial");
+}
+
+#[test]
+fn snapshot_written_when_missing_then_compared() {
+    let name = format!("tmp_missing_{}", std::process::id());
+    let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("tests/snapshots")
+        .join(format!("{name}.txt"));
+    let mut t = TestApp::new(Demo::default(), 40, 3);
+    t.assert_snapshot(&name);
+    assert_eq!(std::fs::read_to_string(&path).unwrap(), t.render().unwrap());
+    t.assert_snapshot(&name);
+    std::fs::remove_file(path).unwrap();
+}
+
+#[test]
+#[should_panic(expected = "invalid name")]
+fn snapshot_rejects_path_names() {
+    TestApp::new(Demo::default(), 10, 2).assert_snapshot("../x");
+}
+
+#[test]
+fn theme_is_exported_at_the_root() {
+    assert!(cascivo_tui::Theme::by_name("dark").is_some());
 }

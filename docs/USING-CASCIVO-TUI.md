@@ -88,9 +88,31 @@ theme switching. Run it with `cargo run -p cascivo-tui --example dashboard`.
     it runs before `init` with the starting theme (`RunOptions::theme` or `CASCIVO_THEME`), and
     after every theme command.
 - **Layout.** `col` stacks children top to bottom, `row` left to right, using ratatui's `Layout`.
-  A leaf takes its intrinsic size, a container fills the remaining space, `grow` shares leftover
-  space, `w-N`/`h-N` fix a size in cells. Children that do not fit are clipped, never overlapped.
-  Frames narrower than 80 columns apply `narrow:` classes.
+  A leaf takes its intrinsic size; a container with no size class takes its intrinsic size too
+  (a `row` is as tall as its tallest child, a `col` as tall as its children plus gaps) unless a
+  child grows or is sized `full`/`a/b`, in which case it takes the free space. `grow` shares
+  leftover space, `w-N`/`h-N` fix a size in cells. Wrapping `text` measures its height at the
+  width on offer (`truncate`/`nowrap` stay one row per line). Children that do not fit are
+  clipped, never overlapped. Frames narrower than 80 columns apply `narrow:` classes.
+
+```rust
+use cascivo_tui::prelude::*;
+
+// The one-line row keeps one line; only the body grows. Wrapped text keeps its tail.
+let n: Node = col(
+    "",
+    [
+        text("tabs").into(),
+        row("gap-1", [text("a").into(), text("b").into()]),
+        col("grow border", [text("one two three four").into()]),
+    ],
+);
+let screen = render_to_string(&n, 8, 6).unwrap();
+assert_eq!(screen.lines().nth(1), Some("a b"));
+assert_eq!(screen.lines().nth(2), Some("┌──────┐"));
+let wrapped: Node = col("", [text("one two three four").into(), text("x").into()]);
+assert_eq!(render_to_string(&wrapped, 6, 6).unwrap(), "one\ntwo\nthree\nfour\nx");
+```
 
 ## Class table
 
@@ -199,13 +221,14 @@ assert_eq!(render_to_string(&n, 10, 1).unwrap(), " Save");
 `input(value: &str, placeholder: &str, on_change: impl Fn(String) -> M) -> Input<M>`. Builder
 methods: `.on_submit(msg)`, `.cursor(&Cursor)`, `.class(..)`, `.id(..)`. Typing, Backspace, Delete,
 Left, Right, Home and End all emit `on_change(new_value)`; store whatever it gives you. Keep one
-`Cursor` in the app and pass it on every build, otherwise the cursor stays at the end.
+`Cursor` in the app and pass it on every build, otherwise the cursor stays at the end. The input
+has no built-in padding: add `.class("px-1")` for an inset, so a label and `gap-1` read `Name: Ada`.
 
 ```rust
 use cascivo_tui::prelude::*;
 
 let n: Node<String> = input("héllo", "name", |s| s).id("name");
-assert_eq!(render_to_string(&n, 10, 1).unwrap(), " héllo");
+assert_eq!(render_to_string(&n, 10, 1).unwrap(), "héllo");
 
 let cursor = Cursor::default();
 cursor.set(2);
@@ -418,6 +441,17 @@ assert_eq!(t.render().unwrap(), "count: 2");
 assert!(!t.is_quit());
 t.press("q");
 assert!(t.is_quit());
+```
+
+`assert_snapshot(name)` compares the screen with `tests/snapshots/<name>.txt` (in the crate
+running the test). The file is written when it is missing or when `UPDATE_SNAPSHOTS=1` is set;
+otherwise a mismatch panics with a `-expected` / `+actual` line diff. Commit the files and review
+them like code.
+
+```rust,ignore
+let mut t = TestApp::new(Counter(0), 20, 3);
+t.press("+").assert_snapshot("counter_one");
+// UPDATE_SNAPSHOTS=1 cargo test   # rewrite after an intended change
 ```
 
 `TestApp::press` panics on a chord that does not parse and `TestApp::theme` on an unknown theme

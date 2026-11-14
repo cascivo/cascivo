@@ -6,7 +6,8 @@
 //! *empty* lines are dropped (so a blank screen is `""`). Leading and interior blank lines
 //! stay, so row positions in the string match screen rows.
 //!
-//! Snapshots are plain `assert_eq!` against inline strings; no snapshot crate is needed.
+//! Snapshots are plain `assert_eq!` against inline strings, or file snapshots through
+//! [`TestApp::assert_snapshot`]; no snapshot crate is needed.
 
 use std::time::Duration;
 
@@ -115,6 +116,22 @@ pub fn render_to_string<M>(node: &Node<M>, cols: u16, rows: u16) -> Result<Strin
     let mut buf = Buffer::empty(area);
     crate::layout::render(node, area, &mut buf, &Theme::default(), None)?;
     Ok(buffer_text(&buf))
+}
+
+/// `-expected` / `+actual` per differing line, with unchanged lines as context.
+fn line_diff(want: &str, got: &str) -> String {
+    let (w, g): (Vec<&str>, Vec<&str>) = (want.lines().collect(), got.lines().collect());
+    (0..w.len().max(g.len()))
+        .flat_map(|i| match (w.get(i), g.get(i)) {
+            (Some(a), Some(b)) if a == b => vec![format!("  {a}")],
+            (a, b) => a
+                .map(|a| format!("-{a}"))
+                .into_iter()
+                .chain(b.map(|b| format!("+{b}")))
+                .collect(),
+        })
+        .collect::<Vec<_>>()
+        .join("\n")
 }
 
 /// A headless harness: an [`App`] in a [`Runtime`] on a fixed grid with a virtual clock.
@@ -264,6 +281,47 @@ impl<A: App> TestApp<A> {
             Some(TuiError::Key(k)) => Err(TuiError::Key(k.clone())),
             _ => Ok(buffer_text(&self.buf)),
         }
+    }
+
+    /// Compares the screen text with `tests/snapshots/<name>.txt` under the running crate's
+    /// manifest directory. The file is written when it is missing or when `UPDATE_SNAPSHOTS=1`
+    /// is set; otherwise a mismatch panics with a line diff (`-` expected, `+` actual).
+    ///
+    /// # Panics
+    /// On a mismatch, an unreadable or unwritable snapshot, an invalid `name` (it must be a
+    /// plain file stem), or a view error (like [`render`](Self::render)).
+    pub fn assert_snapshot(&mut self, name: &str) -> &mut Self {
+        assert!(
+            !name.is_empty() && !name.contains(['/', '\\']) && !name.starts_with('.'),
+            "TestApp::assert_snapshot: invalid name \"{name}\""
+        );
+        let screen = self
+            .render()
+            .unwrap_or_else(|e| panic!("TestApp::assert_snapshot(\"{name}\"): {e}"));
+        let dir = std::path::PathBuf::from(
+            std::env::var_os("CARGO_MANIFEST_DIR").unwrap_or_else(|| ".".into()),
+        )
+        .join("tests")
+        .join("snapshots");
+        let path = dir.join(format!("{name}.txt"));
+        let update = std::env::var("UPDATE_SNAPSHOTS").is_ok_and(|v| v == "1");
+        if update || !path.exists() {
+            std::fs::create_dir_all(&dir)
+                .and_then(|()| std::fs::write(&path, &screen))
+                .unwrap_or_else(|e| panic!("cannot write snapshot {}: {e}", path.display()));
+            return self;
+        }
+        let want = std::fs::read_to_string(&path)
+            .unwrap_or_else(|e| panic!("cannot read snapshot {}: {e}", path.display()));
+        // Files get a trailing newline from editors; the screen text has none.
+        let want = want.trim_end_matches('\n');
+        assert!(
+            want == screen,
+            "snapshot \"{name}\" differs ({}); rerun with UPDATE_SNAPSHOTS=1 to accept\n{}",
+            path.display(),
+            line_diff(want, &screen)
+        );
+        self
     }
 
     /// The cell at column `x`, row `y` of a fresh draw.
