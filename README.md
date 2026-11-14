@@ -156,6 +156,10 @@ The cascivo registry model is open — anyone can publish components and host th
 
 [`cascivo-html`](crates/cascivo-html) is a Rust library and CLI that turns agent-written `.cv` text into one deterministic, self-contained HTML file styled by real cascivo CSS (51 elements, seven SVG charts, `@brand` theming, embedded images and SVG). No React, no build step. Install: `cargo install cascivo-html-cli` (binary `cascivo-html`) or `cargo add cascivo-html`. Guide: [docs/USING-CASCIVO-HTML.md](docs/USING-CASCIVO-HTML.md); agent skill: [`skills/cascivo-html`](skills/cascivo-html/SKILL.md).
 
+### Terminal UIs from Rust (`cascivo-tui`)
+
+[`cascivo-tui`](crates/cascivo-tui) is a ratatui toolkit: build a terminal UI from a node tree styled with cascivo class strings (`"col gap-1 p-1 border rounded text-accent"`), eleven widgets (table, list, tabs, input, modal, toasts, ...) and the twelve cascivo themes, and test it headless with `TestApp`. Install: `cargo add cascivo-tui` (Rust 1.88+). Guide: [docs/USING-CASCIVO-TUI.md](docs/USING-CASCIVO-TUI.md); agent skill: [`skills/cascivo-tui`](skills/cascivo-tui/SKILL.md).
+
 ### Templates & marketplace
 
 Templates are whole-page compositions — a working page, the components it composes (`registryDependencies`), and its fixtures — that install through the same registry transport and that you own and adapt. The marketplace is a backend-free, GitHub-hosted, community catalog: registries are listed by PR, a CI job bakes a static `marketplace.json`, and a gallery renders it. A template is just a registry item with `type: "template"` — no parallel system.
@@ -189,7 +193,7 @@ cascivo/
 │   ├── search/       # registry search index
 │   ├── cli/          # cascivo CLI — init / add / list / update / audit
 │   └── mcp/          # @cascivo/mcp     — MCP server over the registry
-├── crates/           # Rust workspace — cascivo-html (.cv text → one static HTML file) + its CLI
+├── crates/           # Rust workspace — cascivo-html (.cv text → one static HTML file) + its CLI, cascivo-tui (ratatui toolkit)
 ├── apps/
 │   ├── site/         # cascivo.com — landing + docs, generated from manifests (dogfood)
 │   ├── storybook/    # storybook.cascivo.com — stories from manifests

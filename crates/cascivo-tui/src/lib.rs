@@ -17,6 +17,12 @@ pub mod theme;
 mod theme_gen;
 pub mod widgets;
 
+// Compiles every Rust block in the guide (`cargo test --doc`), so it cannot rot. Test-only:
+// the path is outside the crate, so it is never part of the published docs.
+#[cfg(doctest)]
+#[doc = include_str!("../../../docs/USING-CASCIVO-TUI.md")]
+mod guide_doctests {}
+
 pub use app::{App, Cmd};
 pub use class::{ClassCache, ClassStyle, Role, Size};
 pub use error::{ClassError, TuiError};

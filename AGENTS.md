@@ -29,7 +29,8 @@ CSS-in-JS** — and made reactive with Preact Signals via `@cascivo/core` — **
 - **`skills/`** — Claude Code skills (`cascivo-add`, `cascivo-design-page`,
   `cascivo-create-theme`, `cascivo-extend`, `cascivo-html`).
 - **`crates/`** — Rust workspace: `cascivo-html` (library) and `cascivo-html-cli`
-  (binary `cascivo-html`). Run `cascivo-html guide` for the agent cheat sheet.
+  (binary `cascivo-html`). Run `cascivo-html guide` for the agent cheat sheet. `cascivo-tui` builds terminal UIs on
+  ratatui; guide `docs/USING-CASCIVO-TUI.md`.
 
 ## Generating UI from JSON
 
