@@ -8,6 +8,13 @@ export const meta: ComponentMeta = {
   states: ['closed', 'open'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],
+  // Actions an agent may take, each mapped onto an existing prop (checked by agent-manifest.test.ts).
+  agent: {
+    actions: [
+      { name: 'open', prop: 'open' },
+      { name: 'close', prop: 'onClose' },
+    ],
+  },
   props: [
     {
       name: 'open',

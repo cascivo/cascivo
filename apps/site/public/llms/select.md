@@ -48,6 +48,10 @@ import { Select } from '@cascivo/react'
 | `onChange`     | `React.ChangeEventHandler<HTMLSelectElement>`            | no       | —       | Called with the change event; read the new value from `event.target.value`.                                                                                                                                                                                                                                                                                                                          |
 | `ariaLabel`    | `string`                                                 | no       | —       | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
+## Agent actions
+
+- `select(string)` → `value`
+
 ## Examples
 
 ### Basic

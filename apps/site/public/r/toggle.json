@@ -29,6 +29,15 @@
     "states": ["off", "on"],
     "variants": [],
     "sizes": ["sm", "md"],
+    "agent": {
+      "actions": [
+        {
+          "name": "setChecked",
+          "prop": "checked",
+          "args": "boolean"
+        }
+      ]
+    },
     "props": [
       {
         "name": "checked",

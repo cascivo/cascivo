@@ -8,6 +8,8 @@ export const meta: ComponentMeta = {
   states: ['unchecked', 'checked', 'indeterminate'],
   variants: [],
   sizes: [],
+  // Actions an agent may take, each mapped onto an existing prop (checked by agent-manifest.test.ts).
+  agent: { actions: [{ name: 'setChecked', prop: 'checked', args: 'boolean' }] },
   props: [
     {
       name: 'label',

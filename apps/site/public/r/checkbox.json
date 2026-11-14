@@ -29,6 +29,15 @@
     "states": ["unchecked", "checked", "indeterminate"],
     "variants": [],
     "sizes": [],
+    "agent": {
+      "actions": [
+        {
+          "name": "setChecked",
+          "prop": "checked",
+          "args": "boolean"
+        }
+      ]
+    },
     "props": [
       {
         "name": "label",

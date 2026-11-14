@@ -134,6 +134,11 @@ export function validateItem(raw: unknown): ValidationResult {
     }
   }
 
+  if (typeof obj['meta'] === 'object' && obj['meta'] !== null) {
+    const agent = (obj['meta'] as Record<string, unknown>)['agent']
+    if (agent !== undefined) errors.push(...validateAgentMeta(agent))
+  }
+
   const knownKeys = new Set([
     'schemaVersion',
     'name',
@@ -161,6 +166,40 @@ export function validateItem(raw: unknown): ValidationResult {
   }
 
   return errors.length > 0 ? fail(errors, warnings) : ok(warnings)
+}
+
+/** Check a manifest `meta.agent` section from an untrusted payload; returns error messages. */
+function validateAgentMeta(raw: unknown): string[] {
+  if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) {
+    return ['meta.agent must be an object']
+  }
+  const agent = raw as Record<string, unknown>
+  const errors: string[] = []
+  if (!Array.isArray(agent['actions'])) {
+    errors.push('meta.agent.actions is required and must be an array')
+  } else {
+    agent['actions'].forEach((entry: unknown, i) => {
+      if (typeof entry !== 'object' || entry === null) {
+        errors.push(`meta.agent.actions[${i}] must be an object`)
+        return
+      }
+      const a = entry as Record<string, unknown>
+      for (const key of ['name', 'prop']) {
+        if (typeof a[key] !== 'string' || !a[key]) {
+          errors.push(`meta.agent.actions[${i}].${key} is required and must be a non-empty string`)
+        }
+      }
+      if (a['args'] !== undefined && typeof a['args'] !== 'string') {
+        errors.push(`meta.agent.actions[${i}].args must be a string`)
+      }
+    })
+  }
+  for (const flag of ['secret', 'confirm']) {
+    if (agent[flag] !== undefined && typeof agent[flag] !== 'boolean') {
+      errors.push(`meta.agent.${flag} must be a boolean`)
+    }
+  }
+  return errors
 }
 
 /**

@@ -29,6 +29,18 @@
     "states": ["closed", "open"],
     "variants": [],
     "sizes": ["sm", "md", "lg"],
+    "agent": {
+      "actions": [
+        {
+          "name": "open",
+          "prop": "open"
+        },
+        {
+          "name": "close",
+          "prop": "onClose"
+        }
+      ]
+    },
     "props": [
       {
         "name": "open",

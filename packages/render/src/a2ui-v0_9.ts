@@ -6,6 +6,8 @@ import { cascivoCatalog } from './a2ui/surface'
 
 export { createA2uiStore, DEFAULT_A2UI_LIMITS } from './a2ui/store'
 export type { A2uiStore, A2uiLimits, A2uiSurfaceState } from './a2ui/store'
+export { registerViewTools } from './a2ui/webmcp'
+export type { ViewStep, ViewGate, ViewToolsOptions, ViewChange } from './a2ui/webmcp'
 export { A2uiSurface, cascivoCatalog } from './a2ui/surface'
 export type { A2uiSurfaceProps, A2uiRenderCatalog, A2uiAdapter, AdapterInput } from './a2ui/surface'
 export { basicCatalog } from './a2ui/basic-catalog'

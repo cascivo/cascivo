@@ -43,7 +43,7 @@ my-registry/
     └── my-component/
         ├── my-component.tsx
         ├── my-component.css
-        └── my-component.meta.ts   # optional but recommended
+        └── my-component.meta.ts   # optional but recommended (may carry an `agent` section)
 ```
 
 ### Component rules
@@ -95,6 +95,10 @@ export function Callout({ type = 'info', title, children }: CalloutProps) {
 ---
 
 ## 3. Write the registry manifest
+
+A component's `.meta.ts` may declare an optional `agent: { actions: [{ name, prop, args? }], secret?, confirm? }`
+section: each action maps onto an existing prop. `packages/registry/src/validate.ts` checks it, and it is emitted into
+`registry.json` and `llms/<name>.md` for agents (`snapshot()` in `@cascivo/text`, `registerViewTools` in `@cascivo/render`).
 
 `cascivo-registry.json` is a `RegistryIndex` at schema version 2:
 

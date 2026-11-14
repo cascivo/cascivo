@@ -597,6 +597,23 @@ live DOM, so it reports what someone has actually typed, checked and opened.
 
 See [MACHINE-MODE.md](/docs/machine-mode.md).
 
+## Letting an agent operate a view
+
+`registerViewTools(store, { allow, onAction? })` from `@cascivo/render/a2ui/v0_9` registers
+`view_snapshot` and `view_act` on `document.modelContext` (WebMCP) for an A2UI surface. It does
+nothing and returns `undefined` when WebMCP is absent.
+
+- `allow` is **required** and throws if missing: there is no default-open mode. It runs before
+  every `view_snapshot` and before every `view_act` step, and may be async. Return `true` to let
+  that one thing through; anything else (or a throw) denies it.
+- `view_act` takes `{ surfaceId, steps }`. A step is `{ kind: 'setValue', path, value }` (an
+  absolute JSON pointer, written through the data model) or
+  `{ kind: 'action', componentId, name, context? }` (only an action the component declares;
+  it goes to `onAction` like a click would).
+- Steps run in order and stop at the first failure. The result is
+  `{ ok, error?: { step, message }, changes }`.
+- Arguments are untrusted: parsed once, capped at 64 steps, and `DEFAULT_A2UI_LIMITS` apply.
+
 ## Static HTML instead of React
 
 If the output is one static file (report, dashboard, landing page) and no React app is needed,

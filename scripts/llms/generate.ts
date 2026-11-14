@@ -464,6 +464,19 @@ function componentMarkdown(
   lines.push('')
   lines.push(propsTable(meta?.props ?? []))
 
+  if (meta?.agent && meta.agent.actions.length > 0) {
+    lines.push('## Agent actions')
+    lines.push('')
+    lines.push(
+      meta.agent.actions
+        .map((a) => `- \`${a.name}${a.args ? `(${a.args})` : '()'}\` → \`${a.prop}\``)
+        .join('\n'),
+    )
+    if (meta.agent.secret) lines.push('', 'Value is secret: redact it in snapshots.')
+    if (meta.agent.confirm) lines.push('', 'Requires confirmation before acting.')
+    lines.push('')
+  }
+
   if (meta?.typeDefs && meta.typeDefs.length > 0) {
     lines.push('## Object types')
     lines.push('')

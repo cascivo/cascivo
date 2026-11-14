@@ -34,6 +34,10 @@ import { Tabs } from '@cascivo/react'
 | `onValueChange` | `(value: string) => void` | no       | —       | Called with the new value when it changes. |
 | `children`      | `ReactNode`               | yes      | —       | TabsList and TabsContent elements          |
 
+## Agent actions
+
+- `select(string)` → `value`
+
 ## Examples
 
 ### Basic

@@ -29,6 +29,15 @@
     "states": ["idle", "focused", "error"],
     "variants": [],
     "sizes": ["sm", "md", "lg"],
+    "agent": {
+      "actions": [
+        {
+          "name": "select",
+          "prop": "value",
+          "args": "string"
+        }
+      ]
+    },
     "props": [
       {
         "name": "label",

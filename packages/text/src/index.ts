@@ -16,3 +16,5 @@
 export { toMarkdown } from './to-markdown.ts'
 export { elementToMarkdown } from './element-to-markdown.ts'
 export type { TextOptions } from './options.ts'
+export { snapshot } from './snapshot.ts'
+export type { Snapshot, SnapshotNode, SnapshotAction, SnapshotOption } from './snapshot.ts'
