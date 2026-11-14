@@ -15,6 +15,7 @@ pub mod runtime;
 pub mod testing;
 pub mod theme;
 mod theme_gen;
+pub mod widgets;
 
 pub use app::{App, Cmd};
 pub use class::{ClassCache, ClassStyle, Role, Size};
@@ -24,6 +25,7 @@ pub use keys::{Chord, Dispatch, Keymap, dispatch};
 pub use node::{Node, col, row, spacer, text};
 pub use runtime::{RunOptions, Runtime, StepOut, run, run_with};
 pub use testing::{CellView, TestApp, render_to_string};
+pub use widgets::{card, heading, progress, sparkline, statusbar};
 
 /// Convenient re-exports for application code.
 pub mod prelude {
@@ -37,4 +39,5 @@ pub mod prelude {
     pub use crate::runtime::{RunOptions, Runtime, StepOut, run, run_with};
     pub use crate::testing::{CellView, TestApp, render_to_string};
     pub use crate::theme::{ColorDepth, StateFlags, Theme};
+    pub use crate::widgets::{card, heading, progress, sparkline, statusbar};
 }

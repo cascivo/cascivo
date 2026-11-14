@@ -17,10 +17,11 @@ use std::borrow::Cow;
 
 use ratatui::buffer::Buffer;
 use ratatui::layout::{Constraint, Direction, Flex, Layout, Rect};
-use ratatui::style::Style;
+use ratatui::style::{Modifier, Style};
+use ratatui::text::Line;
 use ratatui::widgets::{Block, BorderType, Borders, Widget as _};
 
-use crate::class::{ClassStyle, Items, Justify, Size};
+use crate::class::{ClassStyle, Items, Justify, Role, Size};
 use crate::error::{ClassError, TuiError};
 use crate::node::{Node, NodeKind};
 use crate::theme::{StateFlags, Theme};
@@ -197,6 +198,17 @@ impl Walk<'_> {
                 block = block
                     .border_type(cs.border_type.unwrap_or(BorderType::Plain))
                     .border_style(self.theme.border_style(cs, state));
+                if let (Some(t), true) = (node.border_title(), borders.contains(Borders::TOP)) {
+                    // Two corner cells and one space each side of the title.
+                    let max = usize::from(area.width.saturating_sub(4));
+                    let t = crate::node::truncate(t, max);
+                    block = block.title(Line::styled(
+                        format!(" {t} "),
+                        Style::new()
+                            .fg(self.theme.color(Role::Accent))
+                            .add_modifier(Modifier::BOLD),
+                    ));
+                }
             }
             (&block).render(area, buf);
             let b = block.inner(area);

@@ -88,6 +88,7 @@ pub struct Node<M = ()> {
     classes: String,
     style: Result<Rc<ClassStyle>, ClassError>,
     id: Option<String>,
+    title: Option<String>,
 }
 
 impl<M> fmt::Debug for Node<M> {
@@ -111,6 +112,7 @@ impl<M> Node<M> {
             classes: classes.to_owned(),
             style: parse_cached(classes),
             id: None,
+            title: None,
         }
     }
 
@@ -152,6 +154,18 @@ impl<M> Node<M> {
     pub fn id(mut self, id: &str) -> Self {
         self.id = Some(id.to_owned());
         self
+    }
+
+    /// Sets a title drawn on the top border (needs a `border` class to show).
+    #[must_use]
+    pub fn title(mut self, title: &str) -> Self {
+        self.title = Some(title.to_owned());
+        self
+    }
+
+    /// The border title, if any.
+    pub fn border_title(&self) -> Option<&str> {
+        self.title.as_deref()
     }
 
     /// The node's kind.
@@ -319,12 +333,12 @@ impl<M> From<Text> for Node<M> {
 
 struct TextWidget(String);
 
-fn str_width(s: &str) -> usize {
+pub(crate) fn str_width(s: &str) -> usize {
     Span::raw(s).width()
 }
 
 /// Cuts `line` to `max` columns, ending in `…` when anything was cut.
-fn truncate(line: &str, max: usize) -> String {
+pub(crate) fn truncate(line: &str, max: usize) -> String {
     if str_width(line) <= max {
         return line.to_owned();
     }

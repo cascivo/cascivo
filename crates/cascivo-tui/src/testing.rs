@@ -73,7 +73,19 @@ fn role_of(theme: &Theme, c: Color) -> Option<Role> {
 pub(crate) fn buffer_text(buf: &Buffer) -> String {
     let mut lines: Vec<String> = (0..buf.area.height)
         .map(|y| {
-            let s: String = (0..buf.area.width).map(|x| buf[(x, y)].symbol()).collect();
+            // A wide glyph's trailing cells hold blanks; skip them so the text is not
+            // padded between characters.
+            let mut s = String::new();
+            let mut skip = 0;
+            for x in 0..buf.area.width {
+                if skip > 0 {
+                    skip -= 1;
+                    continue;
+                }
+                let sym = buf[(x, y)].symbol();
+                skip = ratatui::text::Span::raw(sym).width().saturating_sub(1);
+                s.push_str(sym);
+            }
             s.trim_end().to_owned()
         })
         .collect();
