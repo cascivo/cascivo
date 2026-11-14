@@ -59,6 +59,12 @@ pub trait Widget<M> {
         false
     }
 
+    /// Whether a node holding this widget is a modal: while it is in the tree, focus and
+    /// keys are confined to its subtree (see [`Node::active_modal`]).
+    fn traps_focus(&self) -> bool {
+        false
+    }
+
     /// Handles a key while focused; `Some(msg)` consumes the key.
     fn on_key(&self, key: &KeyEvent) -> Option<M> {
         let _ = key;
@@ -192,6 +198,18 @@ impl<M> Node<M> {
             return Some(self);
         }
         self.children().iter().find_map(|c| c.find(id))
+    }
+
+    /// The active modal: the last node in tree (pre-order) order whose leaf widget
+    /// [`traps_focus`](Widget::traps_focus). Descendants follow their ancestors, so a modal
+    /// opened inside another wins; among siblings the later one wins. The modal widget's
+    /// node is the subtree root (its own `id`, if any, joins the trapped ring).
+    pub fn active_modal(&self) -> Option<&Self> {
+        let inner = self.children().iter().rev().find_map(Self::active_modal);
+        inner.or_else(|| match &self.kind {
+            NodeKind::Leaf(w) if w.traps_focus() => Some(self),
+            _ => None,
+        })
     }
 
     /// Routes a key to this node's widget ([`Widget::on_key`]); `None` for containers.
