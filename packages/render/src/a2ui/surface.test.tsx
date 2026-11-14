@@ -990,12 +990,12 @@ describe('<A2uiSurface>', () => {
           : { id, component: 'Box' },
       ),
       // An explicit limit below the default keeps the fan-out fast in jsdom and still overflowing.
-      { catalogId: SPY_CATALOG_ID, limits: { maxRenderNodes: 5000 } },
+      { catalogId: SPY_CATALOG_ID, limits: { maxRenderNodes: 500 } },
     )
     expect(errors).toEqual([])
     const { container } = mount(store, { onError })
     await act(async () => {})
-    expect(container.querySelectorAll('[data-box]').length).toBeLessThanOrEqual(5000)
+    expect(container.querySelectorAll('[data-box]').length).toBeLessThanOrEqual(500)
     const limit = renderErrorsOf(onError)
     expect(limit).toHaveLength(1)
     expect(limit[0]!.message).toContain('maxRenderNodes')
@@ -1011,12 +1011,12 @@ describe('<A2uiSurface>', () => {
           : { id, component: 'Box' },
       ),
       // An explicit limit below the default keeps the fan-out fast in jsdom and still overflowing.
-      { catalogId: SPY_CATALOG_ID, limits: { maxRenderNodes: 5000 } },
+      { catalogId: SPY_CATALOG_ID, limits: { maxRenderNodes: 500 } },
     )
     data('/list', rows(10))
     const { container } = mount(store, { onError })
     await act(async () => {})
-    expect(container.querySelectorAll('[data-box]').length).toBeLessThanOrEqual(5000)
+    expect(container.querySelectorAll('[data-box]').length).toBeLessThanOrEqual(500)
     expect(renderErrorsOf(onError)).toHaveLength(1)
   })
 
