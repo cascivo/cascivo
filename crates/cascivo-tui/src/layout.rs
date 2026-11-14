@@ -19,11 +19,11 @@ use ratatui::buffer::Buffer;
 use ratatui::layout::{Constraint, Direction, Flex, Layout, Rect};
 use ratatui::style::{Modifier, Style};
 use ratatui::text::Line;
-use ratatui::widgets::{Block, BorderType, Borders, Widget as _};
+use ratatui::widgets::{Block, BorderType, Borders, Clear, Widget as _};
 
 use crate::class::{ClassStyle, Items, Justify, Role, Size};
 use crate::error::{ClassError, TuiError};
-use crate::node::{Node, NodeKind};
+use crate::node::{Node, NodeKind, Placement};
 use crate::theme::{StateFlags, Theme};
 
 /// Frames narrower than this many columns apply `narrow:` classes.
@@ -158,10 +158,13 @@ impl Walk<'_> {
                 } else {
                     Direction::Vertical
                 };
-                let sizes = ch.iter().filter_map(|c| {
-                    let ccs = self.effective(c)?;
-                    (!ccs.hidden).then(|| self.intrinsic(c, &ccs, axis))
-                });
+                let sizes = ch
+                    .iter()
+                    .filter(|c| c.placement().is_none())
+                    .filter_map(|c| {
+                        let ccs = self.effective(c)?;
+                        (!ccs.hidden).then(|| self.intrinsic(c, &ccs, axis))
+                    });
                 if main == axis {
                     let (n, sum) = sizes.fold((0u16, 0u16), |(n, s), v| {
                         (n.saturating_add(1), s.saturating_add(v))
@@ -172,7 +175,13 @@ impl Walk<'_> {
                 }
             }
         };
-        content.saturating_add(chrome)
+        let title = match (axis, node.border_title()) {
+            (Direction::Horizontal, Some(t)) => {
+                u16::try_from(crate::node::str_width(t) + 4).unwrap_or(u16::MAX)
+            }
+            _ => 0,
+        };
+        content.saturating_add(chrome).max(title)
     }
 
     fn draw<M>(&mut self, node: &Node<M>, cs: &ClassStyle, area: Rect, buf: &mut Buffer) {
@@ -248,18 +257,64 @@ impl Walk<'_> {
         inner: Rect,
         buf: &mut Buffer,
     ) {
-        let visible: Vec<(&Node<M>, Cow<'_, ClassStyle>)> = children
+        let all: Vec<(&Node<M>, Cow<'_, ClassStyle>)> = children
             .iter()
             .filter_map(|c| self.effective(c).map(|s| (c, s)))
             .filter(|(_, s)| !s.hidden)
             .collect();
+        let (floating, visible): (Vec<_>, Vec<_>) =
+            all.into_iter().partition(|(c, _)| c.placement().is_some());
+        self.stack_flow(&visible, dir, cs, inner, buf);
+        // Painted last so they sit over the flow, in tree order (later wins).
+        for (c, s) in &floating {
+            self.float(c, s, inner, buf);
+        }
+    }
+
+    /// Draws an overlay node: natural size clamped to `host`, placed, cleared, then drawn.
+    fn float<M>(&mut self, node: &Node<M>, cs: &ClassStyle, host: Rect, buf: &mut Buffer) {
+        if host.is_empty() {
+            return;
+        }
+        let size = |axis, avail: u16| {
+            let sz = match axis {
+                Direction::Horizontal => cs.width,
+                Direction::Vertical => cs.height,
+            };
+            match sz {
+                Some(sz) => cells(sz, avail),
+                None => self.intrinsic(node, cs, axis),
+            }
+            .min(avail)
+        };
+        let (w, h) = (
+            size(Direction::Horizontal, host.width),
+            size(Direction::Vertical, host.height),
+        );
+        let (dx, dy) = match node.placement() {
+            Some(Placement::BottomRight) => (host.width - w, host.height - h),
+            _ => ((host.width - w) / 2, (host.height - h) / 2),
+        };
+        let rect = Rect::new(host.x + dx, host.y + dy, w, h);
+        Clear.render(rect, buf);
+        self.draw(node, cs, rect, buf);
+    }
+
+    fn stack_flow<M>(
+        &mut self,
+        visible: &[(&Node<M>, Cow<'_, ClassStyle>)],
+        dir: Direction,
+        cs: &ClassStyle,
+        inner: Rect,
+        buf: &mut Buffer,
+    ) {
         if visible.is_empty() {
             return;
         }
         if inner.is_empty() {
             let zero = Rect::new(inner.x, inner.y, 0, 0);
-            for (c, s) in &visible {
-                self.draw(*c, s, zero, buf);
+            for (c, s) in visible {
+                self.draw(c, s, zero, buf);
             }
             return;
         }

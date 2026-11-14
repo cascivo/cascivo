@@ -82,6 +82,18 @@ pub enum NodeKind<M> {
     Leaf(Box<dyn Widget<M>>),
 }
 
+/// Where an [`overlay`](Node::overlay) node sits inside its parent's inner rect.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Placement {
+    /// Centered.
+    Center,
+    /// Against the bottom-right corner.
+    BottomRight,
+}
+
+/// Key handler of a trapping container (see [`Node::trap`]).
+pub(crate) type KeyFn<M> = Rc<dyn Fn(&KeyEvent) -> Option<M>>;
+
 /// A view-tree node: a container or a leaf widget, its classes and an optional focus id.
 pub struct Node<M = ()> {
     kind: NodeKind<M>,
@@ -89,6 +101,8 @@ pub struct Node<M = ()> {
     style: Result<Rc<ClassStyle>, ClassError>,
     id: Option<String>,
     title: Option<String>,
+    overlay: Option<Placement>,
+    trap: Option<KeyFn<M>>,
 }
 
 impl<M> fmt::Debug for Node<M> {
@@ -113,6 +127,8 @@ impl<M> Node<M> {
             style: parse_cached(classes),
             id: None,
             title: None,
+            overlay: None,
+            trap: None,
         }
     }
 
@@ -160,6 +176,31 @@ impl<M> Node<M> {
     #[must_use]
     pub fn title(mut self, title: &str) -> Self {
         self.title = Some(title.to_owned());
+        self
+    }
+
+    /// Takes this node out of its parent's flow and paints it after the parent's other
+    /// children, over them, in the parent's inner rect at `placement`. It is cleared first,
+    /// sized to its natural size (or `w-*`/`h-*`), and shrunk to fit; it never joins the
+    /// parent's layout, so the rest of the tree is laid out as if it were absent.
+    #[must_use]
+    pub fn overlay(mut self, placement: Placement) -> Self {
+        self.overlay = Some(placement);
+        self
+    }
+
+    /// The overlay placement, if this node is an overlay.
+    pub fn placement(&self) -> Option<Placement> {
+        self.overlay
+    }
+
+    /// Makes this node a modal root (like a leaf whose widget
+    /// [`traps_focus`](Widget::traps_focus), but its whole subtree joins the trapped ring).
+    /// `on_key` runs for keys the focused widget did not take, before the app keymap is
+    /// skipped (see [`dispatch`](crate::keys::dispatch)).
+    #[must_use]
+    pub fn trap(mut self, on_key: impl Fn(&KeyEvent) -> Option<M> + 'static) -> Self {
+        self.trap = Some(Rc::new(on_key));
         self
     }
 
@@ -221,13 +262,18 @@ impl<M> Node<M> {
     pub fn active_modal(&self) -> Option<&Self> {
         let inner = self.children().iter().rev().find_map(Self::active_modal);
         inner.or_else(|| match &self.kind {
+            _ if self.trap.is_some() => Some(self),
             NodeKind::Leaf(w) if w.traps_focus() => Some(self),
             _ => None,
         })
     }
 
-    /// Routes a key to this node's widget ([`Widget::on_key`]); `None` for containers.
+    /// Routes a key to this node's widget ([`Widget::on_key`]) or, for a [`trap`](Self::trap)
+    /// root, its handler; `None` for other containers.
     pub fn on_key(&self, key: &KeyEvent) -> Option<M> {
+        if let Some(f) = &self.trap {
+            return f(key);
+        }
         match &self.kind {
             NodeKind::Leaf(w) => w.on_key(key),
             _ => None,

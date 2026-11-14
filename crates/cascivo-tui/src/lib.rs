@@ -22,12 +22,12 @@ pub use class::{ClassCache, ClassStyle, Role, Size};
 pub use error::{ClassError, TuiError};
 pub use focus::Focus;
 pub use keys::{Chord, Dispatch, Keymap, dispatch};
-pub use node::{Node, col, row, spacer, text};
+pub use node::{Node, Placement, col, row, spacer, text};
 pub use runtime::{RunOptions, Runtime, StepOut, run, run_with};
 pub use testing::{CellView, TestApp, render_to_string};
 pub use widgets::{
-    Col, Cursor, Scroll, button, card, heading, input, list, progress, sparkline, statusbar, table,
-    tabs,
+    Col, Cursor, Kind, Scroll, button, card, heading, input, keyhints, list, modal, progress,
+    sparkline, statusbar, table, tabs, toast, toasts,
 };
 
 /// Convenient re-exports for application code.
@@ -38,12 +38,12 @@ pub mod prelude {
     pub use crate::focus::Focus;
     pub use crate::keys::{Chord, Dispatch, Keymap, dispatch};
     pub use crate::layout::{LayoutOut, NARROW_COLS, RenderCx, render};
-    pub use crate::node::{Node, NodeKind, Text, Widget, col, row, spacer, text};
+    pub use crate::node::{Node, NodeKind, Placement, Text, Widget, col, row, spacer, text};
     pub use crate::runtime::{RunOptions, Runtime, StepOut, run, run_with};
     pub use crate::testing::{CellView, TestApp, render_to_string};
     pub use crate::theme::{ColorDepth, StateFlags, Theme};
     pub use crate::widgets::{
-        Col, Cursor, Scroll, button, card, heading, input, list, progress, sparkline, statusbar,
-        table, tabs,
+        Col, Cursor, Kind, Scroll, button, card, heading, input, keyhints, list, modal, progress,
+        sparkline, statusbar, table, tabs, toast, toasts,
     };
 }
