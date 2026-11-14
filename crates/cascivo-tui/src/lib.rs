@@ -6,6 +6,8 @@
 
 pub mod class;
 pub mod error;
+pub mod theme;
+mod theme_gen;
 
 pub use class::{ClassCache, ClassStyle, Role, Size};
 pub use error::{ClassError, TuiError};
@@ -14,4 +16,5 @@ pub use error::{ClassError, TuiError};
 pub mod prelude {
     pub use crate::class::{ClassCache, ClassStyle, Role, Size};
     pub use crate::error::{ClassError, TuiError};
+    pub use crate::theme::{ColorDepth, StateFlags, Theme};
 }
