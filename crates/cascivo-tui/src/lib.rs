@@ -12,6 +12,7 @@ pub mod keys;
 pub mod layout;
 pub mod node;
 pub mod runtime;
+pub mod testing;
 pub mod theme;
 mod theme_gen;
 
@@ -22,6 +23,7 @@ pub use focus::Focus;
 pub use keys::{Chord, Dispatch, Keymap, dispatch};
 pub use node::{Node, col, row, spacer, text};
 pub use runtime::{RunOptions, Runtime, StepOut, run, run_with};
+pub use testing::{CellView, TestApp, render_to_string};
 
 /// Convenient re-exports for application code.
 pub mod prelude {
@@ -33,5 +35,6 @@ pub mod prelude {
     pub use crate::layout::{LayoutOut, NARROW_COLS, RenderCx, render};
     pub use crate::node::{Node, NodeKind, Text, Widget, col, row, spacer, text};
     pub use crate::runtime::{RunOptions, Runtime, StepOut, run, run_with};
+    pub use crate::testing::{CellView, TestApp, render_to_string};
     pub use crate::theme::{ColorDepth, StateFlags, Theme};
 }

@@ -54,6 +54,7 @@ pub struct Runtime<A: App> {
     ring: Vec<String>,
     ticks: Vec<(Duration, A::Msg)>,
     fault: Option<String>,
+    view_error: Option<TuiError>,
     quit: bool,
 }
 
@@ -68,6 +69,7 @@ impl<A: App> Runtime<A> {
             ring: Vec::new(),
             ticks: Vec::new(),
             fault: None,
+            view_error: None,
             quit: false,
         }
     }
@@ -110,6 +112,13 @@ impl<A: App> Runtime<A> {
     /// The runtime fault (e.g. chain too deep), if any.
     pub fn fault(&self) -> Option<&str> {
         self.fault.as_deref()
+    }
+
+    /// The class or keymap error behind the last [`draw`](Self::draw)'s error panel, if any.
+    ///
+    /// `draw` paints the panel and returns `Ok`; test helpers use this to fail instead.
+    pub fn view_error(&self) -> Option<&TuiError> {
+        self.view_error.as_ref()
     }
 
     /// Earliest pending tick deadline.
@@ -254,6 +263,7 @@ impl<A: App> Runtime<A> {
     /// style shows. Errors (class, keymap, fault) become a full-area error panel and `Ok`.
     pub fn draw(&mut self, area: Rect, buf: &mut Buffer) -> Result<(), TuiError> {
         self.size = (area.width, area.height);
+        self.view_error = None;
         let msg = self.fault.clone().or_else(|| self.try_draw(area, buf));
         if let Some(m) = msg {
             self.ring.clear();
@@ -265,11 +275,14 @@ impl<A: App> Runtime<A> {
     fn try_draw(&mut self, area: Rect, buf: &mut Buffer) -> Option<String> {
         let view = self.app.view();
         if let Some(e) = self.app.keys().error() {
+            if let TuiError::Key(k) = e {
+                self.view_error = Some(TuiError::Key(k.clone()));
+            }
             return Some(e.to_string());
         }
         let out = match render(&view, area, buf, &self.theme, self.focus.current()) {
             Ok(o) => o,
-            Err(e) => return Some(e.to_string()),
+            Err(e) => return Some(self.keep(e)),
         };
         let modal = view.active_modal();
         self.ring = out
@@ -283,10 +296,18 @@ impl<A: App> Runtime<A> {
         if self.focus.current() != before.as_deref() {
             buf.reset();
             if let Err(e) = render(&view, area, buf, &self.theme, self.focus.current()) {
-                return Some(e.to_string());
+                return Some(self.keep(e));
             }
         }
         None
+    }
+
+    fn keep(&mut self, e: TuiError) -> String {
+        let msg = e.to_string();
+        if let TuiError::Class(c) = e {
+            self.view_error = Some(TuiError::Class(c));
+        }
+        msg
     }
 }
 

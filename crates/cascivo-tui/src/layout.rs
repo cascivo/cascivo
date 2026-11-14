@@ -355,16 +355,8 @@ pub(crate) fn render_test<M>(
     }
     let out = res?;
     let buf = term.backend().buffer().clone();
-    let mut lines: Vec<String> = (0..buf.area.height)
-        .map(|y| {
-            let s: String = (0..buf.area.width).map(|x| buf[(x, y)].symbol()).collect();
-            s.trim_end().to_owned()
-        })
-        .collect();
-    while lines.last().is_some_and(String::is_empty) {
-        lines.pop();
-    }
-    Ok((lines.join("\n"), buf, out))
+    let text = crate::testing::buffer_text(&buf);
+    Ok((text, buf, out))
 }
 
 #[cfg(test)]
