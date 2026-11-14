@@ -237,6 +237,19 @@ impl<A: App> Runtime<A> {
                     break;
                 }
                 Cmd::Tick(d, m) => self.ticks.push((now + d, m)),
+                Cmd::SetTheme(name) => match Theme::by_name(&name) {
+                    Some(t) => {
+                        self.theme = t.quantize(self.theme.depth());
+                        redraw = true;
+                    }
+                    None => {
+                        self.fault = Some(format!(
+                            "unknown theme \"{name}\"; available: {}",
+                            Theme::names().join(", ")
+                        ));
+                        break;
+                    }
+                },
                 Cmd::Batch(v) => stack.extend(v.into_iter().rev().map(|c| (c, depth))),
                 Cmd::Msg(m) => {
                     redraw = true;
@@ -526,6 +539,19 @@ mod tests {
             assert_eq!(o, StepOut::default());
         }
         assert_eq!(r.app().seen, vec![7]);
+    }
+
+    #[test]
+    fn set_theme_cmd_switches_or_faults() {
+        let mut r = rt(Rec::default());
+        let o = r.apply(Cmd::SetTheme("light".into()), T0);
+        assert!(o.redraw && r.fault().is_none());
+        assert_eq!(r.theme().name(), "light");
+        r.apply(Cmd::SetTheme("nope".into()), T0);
+        assert!(
+            r.fault()
+                .is_some_and(|f| f.contains("unknown theme \"nope\""))
+        );
     }
 
     #[test]

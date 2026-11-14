@@ -25,6 +25,9 @@ pub enum Cmd<M> {
     Batch(Vec<Cmd<M>>),
     /// Deliver `M` to `update` once, after the duration.
     Tick(Duration, M),
+    /// Switch to the named theme on the next draw (keeps the terminal's colour depth). An
+    /// unknown name is a runtime fault that paints the error panel, so typos are loud.
+    SetTheme(String),
 }
 
 impl<M> Cmd<M> {
