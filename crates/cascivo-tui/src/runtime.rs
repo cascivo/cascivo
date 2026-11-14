@@ -3,6 +3,7 @@
 //! Time is a `Duration` since an arbitrary start the caller chooses (the loop uses
 //! `Instant::elapsed`), so tick behaviour is deterministic in tests.
 
+use std::sync::mpsc;
 use std::time::{Duration, Instant};
 
 use ratatui::buffer::Buffer;
@@ -11,7 +12,7 @@ use ratatui::layout::Rect;
 use ratatui::style::{Color, Style};
 use ratatui::widgets::{Paragraph, Widget as _, Wrap};
 
-use crate::app::{App, Cmd};
+use crate::app::{App, Cmd, Task};
 use crate::error::TuiError;
 use crate::focus::Focus;
 use crate::keys::{Dispatch, dispatch};
@@ -28,6 +29,14 @@ pub struct StepOut {
     pub redraw: bool,
     /// The app asked to quit (or `ctrl+c`).
     pub quit: bool,
+}
+
+/// A focus move requested by a [`Cmd`], applied once the next view has built the ring.
+#[derive(Debug, Clone, PartialEq, Eq)]
+enum FocusReq {
+    Id(String),
+    Next,
+    Prev,
 }
 
 /// Options for [`run_with`].
@@ -53,6 +62,8 @@ pub struct Runtime<A: App> {
     size: (u16, u16),
     ring: Vec<String>,
     ticks: Vec<(Duration, A::Msg)>,
+    focus_req: Vec<FocusReq>,
+    tasks: Vec<Task<A::Msg>>,
     fault: Option<String>,
     view_error: Option<TuiError>,
     quit: bool,
@@ -68,6 +79,8 @@ impl<A: App> Runtime<A> {
             size: (cols, rows),
             ring: Vec::new(),
             ticks: Vec::new(),
+            focus_req: Vec::new(),
+            tasks: Vec::new(),
             fault: None,
             view_error: None,
             quit: false,
@@ -94,7 +107,8 @@ impl<A: App> Runtime<A> {
         &self.theme
     }
 
-    /// Switches theme (takes effect on the next draw).
+    /// Switches theme (takes effect on the next draw). Unlike the theme commands this does not
+    /// call [`App::theme_changed`].
     pub fn set_theme(&mut self, theme: Theme) {
         self.theme = theme;
     }
@@ -121,15 +135,23 @@ impl<A: App> Runtime<A> {
         self.view_error.as_ref()
     }
 
+    /// Takes the [`Cmd::Task`] closures queued since the last call. The caller runs each one
+    /// (on a worker thread, or inline in tests) and feeds the result back with
+    /// `apply(Cmd::Msg(result), now)`.
+    pub fn take_tasks(&mut self) -> Vec<Task<A::Msg>> {
+        std::mem::take(&mut self.tasks)
+    }
+
     /// Earliest pending tick deadline.
     pub fn next_deadline(&self) -> Option<Duration> {
         self.ticks.iter().map(|(d, _)| *d).min()
     }
 
-    /// Runs [`App::init`] at time `now`.
+    /// Runs [`App::theme_changed`] with the starting theme, then [`App::init`], at time `now`.
     pub fn start(&mut self, now: Duration) -> StepOut {
-        let cmd = self.app.init();
-        self.apply(cmd, now)
+        let told = self.app.theme_changed(self.theme.name());
+        let init = self.app.init();
+        self.apply(Cmd::Batch(vec![told, init]), now)
     }
 
     /// Feeds one terminal event at time `now`.
@@ -239,8 +261,9 @@ impl<A: App> Runtime<A> {
                 Cmd::Tick(d, m) => self.ticks.push((now + d, m)),
                 Cmd::SetTheme(name) => match Theme::by_name(&name) {
                     Some(t) => {
-                        self.theme = t.quantize(self.theme.depth());
                         redraw = true;
+                        let next = self.switch_theme(t);
+                        stack.push((next, depth + 1));
                     }
                     None => {
                         self.fault = Some(format!(
@@ -250,6 +273,33 @@ impl<A: App> Runtime<A> {
                         break;
                     }
                 },
+                Cmd::NextTheme | Cmd::PrevTheme => {
+                    let names = Theme::names();
+                    let at = names.iter().position(|n| *n == self.theme.name());
+                    let i = match (at, matches!(c, Cmd::NextTheme)) {
+                        (Some(i), true) => (i + 1) % names.len(),
+                        (Some(i), false) => (i + names.len() - 1) % names.len(),
+                        (None, _) => 0,
+                    };
+                    if let Some(t) = names.get(i).and_then(|n| Theme::by_name(n)) {
+                        redraw = true;
+                        let next = self.switch_theme(t);
+                        stack.push((next, depth + 1));
+                    }
+                }
+                Cmd::Focus(id) => {
+                    self.focus_req.push(FocusReq::Id(id));
+                    redraw = true;
+                }
+                Cmd::FocusNext => {
+                    self.focus_req.push(FocusReq::Next);
+                    redraw = true;
+                }
+                Cmd::FocusPrev => {
+                    self.focus_req.push(FocusReq::Prev);
+                    redraw = true;
+                }
+                Cmd::Task(f) => self.tasks.push(f),
                 Cmd::Batch(v) => stack.extend(v.into_iter().rev().map(|c| (c, depth))),
                 Cmd::Msg(m) => {
                     redraw = true;
@@ -268,6 +318,12 @@ impl<A: App> Runtime<A> {
             redraw,
             quit: self.quit,
         }
+    }
+
+    /// Installs `t` at the current colour depth and tells the app.
+    fn switch_theme(&mut self, t: &Theme) -> Cmd<A::Msg> {
+        self.theme = t.quantize(self.theme.depth());
+        self.app.theme_changed(t.name())
     }
 
     /// Renders the view into `buf` over `area`, then reconciles focus with the new ring.
@@ -306,6 +362,18 @@ impl<A: App> Runtime<A> {
             .collect();
         let before = self.focus.current().map(str::to_owned);
         self.focus.sync(&self.ring);
+        for req in std::mem::take(&mut self.focus_req) {
+            match req {
+                FocusReq::Id(id) if self.ring.contains(&id) => self.focus.set(&id),
+                FocusReq::Id(_) => {}
+                FocusReq::Next => {
+                    self.focus.next(&self.ring);
+                }
+                FocusReq::Prev => {
+                    self.focus.prev(&self.ring);
+                }
+            }
+        }
         if self.focus.current() != before.as_deref() {
             buf.reset();
             if let Err(e) = render(&view, area, buf, &self.theme, self.focus.current()) {
@@ -336,9 +404,14 @@ fn error_panel(msg: &str, area: Rect, buf: &mut Buffer) {
 
 /// Runs `app` full-screen with default options.
 ///
+/// `A::Msg: Send` because [`Cmd::Task`] results come back from a worker thread.
+///
 /// # Errors
 /// Terminal I/O failures. The terminal is restored on every exit path.
-pub fn run<A: App>(app: A) -> Result<(), TuiError> {
+pub fn run<A: App>(app: A) -> Result<(), TuiError>
+where
+    A::Msg: Send,
+{
     run_with(app, RunOptions::default())
 }
 
@@ -347,7 +420,10 @@ pub fn run<A: App>(app: A) -> Result<(), TuiError> {
 ///
 /// # Errors
 /// Terminal I/O failures, or an unknown theme name (as an I/O error).
-pub fn run_with<A: App>(app: A, opts: RunOptions) -> Result<(), TuiError> {
+pub fn run_with<A: App>(app: A, opts: RunOptions) -> Result<(), TuiError>
+where
+    A::Msg: Send,
+{
     let name = opts
         .theme
         .clone()
@@ -368,18 +444,38 @@ pub fn run_with<A: App>(app: A, opts: RunOptions) -> Result<(), TuiError> {
     res.and(restored.map_err(Into::into))
 }
 
+/// Runs `task` on a new thread and sends its result to `tx`.
+fn spawn_task<M: Send + 'static>(task: Task<M>, tx: mpsc::Sender<M>) {
+    // A send fails only once the loop has exited; the result is then unwanted.
+    std::thread::spawn(move || {
+        let _ = tx.send(task());
+    });
+}
+
+/// How often the loop checks for finished tasks while any are running.
+const TASK_POLL: Duration = Duration::from_millis(16);
+
 fn event_loop<A: App>(
     term: &mut ratatui::DefaultTerminal,
     app: A,
     theme: Theme,
     tick_rate: Option<Duration>,
-) -> Result<(), TuiError> {
+) -> Result<(), TuiError>
+where
+    A::Msg: Send,
+{
     let clock = Instant::now();
     let sz = term.size()?;
+    let (tx, rx) = mpsc::channel::<A::Msg>();
+    let mut running = 0usize;
     let mut rt = Runtime::new(app, theme, sz.width, sz.height);
     let mut out = rt.start(clock.elapsed());
     let mut redraw = true;
     while !out.quit {
+        for task in rt.take_tasks() {
+            running += 1;
+            spawn_task(task, tx.clone());
+        }
         if redraw {
             term.draw(|f| {
                 let area = f.area();
@@ -388,11 +484,15 @@ fn event_loop<A: App>(
             })?;
         }
         let now = clock.elapsed();
-        let wait = [rt.next_deadline().map(|d| d.saturating_sub(now)), tick_rate]
-            .into_iter()
-            .flatten()
-            .min()
-            .unwrap_or(Duration::from_secs(3600));
+        let wait = [
+            rt.next_deadline().map(|d| d.saturating_sub(now)),
+            tick_rate,
+            (running > 0).then_some(TASK_POLL),
+        ]
+        .into_iter()
+        .flatten()
+        .min()
+        .unwrap_or(Duration::from_secs(3600));
         out = if event::poll(wait)? {
             rt.step(event::read()?, clock.elapsed())
         } else {
@@ -403,6 +503,12 @@ fn event_loop<A: App>(
             }
         };
         redraw = out.redraw;
+        while !out.quit {
+            let Ok(m) = rx.try_recv() else { break };
+            running -= 1;
+            out = rt.apply(Cmd::Msg(m), clock.elapsed());
+            redraw |= out.redraw;
+        }
     }
     Ok(())
 }
@@ -426,6 +532,10 @@ mod tests {
         Loop,
         Later(u32),
         Schedule,
+        Show,
+        FocusC,
+        Next,
+        Prev,
     }
 
     #[derive(Default)]
@@ -433,6 +543,7 @@ mod tests {
         seen: Vec<u32>,
         bad_class: bool,
         btns: bool,
+        extra: bool,
     }
 
     struct Btn(&'static str);
@@ -460,6 +571,13 @@ mod tests {
                     Cmd::Msg(M::Log(4)),
                 ]),
                 M::Loop => Cmd::Msg(M::Loop),
+                M::Show => {
+                    self.extra = true;
+                    Cmd::focus("c")
+                }
+                M::FocusC => Cmd::focus("c"),
+                M::Next => Cmd::FocusNext,
+                M::Prev => Cmd::FocusPrev,
                 M::Schedule => {
                     Cmd::batch([Cmd::tick(100, M::Later(1)), Cmd::tick(50, M::Later(2))])
                 }
@@ -470,13 +588,14 @@ mod tests {
                 return col("bg-primry", []);
             }
             if self.btns {
-                return col(
-                    "",
-                    [
-                        Node::leaf("h-1", Btn("one")).id("a"),
-                        Node::leaf("h-1", Btn("two")).id("b"),
-                    ],
-                );
+                let mut kids = vec![
+                    Node::leaf("h-1", Btn("one")).id("a"),
+                    Node::leaf("h-1", Btn("two")).id("b"),
+                ];
+                if self.extra {
+                    kids.push(Node::leaf("h-1", Btn("three")).id("c"));
+                }
+                return col("", kids);
             }
             col("", [text("hi").into()])
         }
@@ -555,6 +674,46 @@ mod tests {
     }
 
     #[test]
+    fn next_and_prev_theme_cycle_built_in_order() {
+        let names = Theme::names();
+        let mut r = rt(Rec::default());
+        r.apply(Cmd::SetTheme(names[0].into()), T0);
+        assert!(r.apply(Cmd::NextTheme, T0).redraw);
+        assert_eq!(r.theme().name(), names[1]);
+        r.apply(Cmd::batch([Cmd::PrevTheme, Cmd::PrevTheme]), T0);
+        assert_eq!(r.theme().name(), names[names.len() - 1]);
+        r.apply(Cmd::NextTheme, T0);
+        assert_eq!(r.theme().name(), names[0]);
+    }
+
+    #[test]
+    fn theme_changed_hook_sees_start_and_every_switch() {
+        #[derive(Default)]
+        struct Tm(Vec<String>);
+        impl App for Tm {
+            type Msg = ();
+            fn update(&mut self, (): ()) -> Cmd<()> {
+                Cmd::None
+            }
+            fn view(&self) -> Node<()> {
+                col("", [])
+            }
+            fn theme_changed(&mut self, name: &str) -> Cmd<()> {
+                self.0.push(name.to_owned());
+                Cmd::None
+            }
+        }
+        let start = Theme::by_name("light").unwrap().clone();
+        let mut r = Runtime::new(Tm::default(), start, 10, 4);
+        r.start(T0);
+        r.apply(Cmd::SetTheme("dark".into()), T0);
+        r.apply(Cmd::NextTheme, T0);
+        let after_dark = r.theme().name().to_owned();
+        r.apply(Cmd::SetTheme("nope".into()), T0);
+        assert_eq!(r.app().0, ["light", "dark", after_dark.as_str()]);
+    }
+
+    #[test]
     fn resize_redraws_and_records_size() {
         let mut r = rt(Rec::default());
         let o = r.step(Event::Resize(30, 9), T0);
@@ -624,6 +783,87 @@ mod tests {
         assert_eq!(r.focused(), Some("a"));
         r.step(special(KeyCode::BackTab, KeyModifiers::SHIFT), T0);
         assert_eq!(r.focused(), Some("b"));
+    }
+
+    fn btns() -> Runtime<Rec> {
+        rt(Rec {
+            btns: true,
+            ..Rec::default()
+        })
+    }
+
+    #[test]
+    fn focus_cmd_targets_id_added_by_the_next_view() {
+        let mut r = btns();
+        drawn(&mut r);
+        let o = r.apply(Cmd::Msg(M::Show), T0);
+        assert!(o.redraw);
+        // Not applied until the view that contains "c" has been drawn.
+        assert_eq!(r.focused(), Some("a"));
+        drawn(&mut r);
+        assert_eq!(r.focused(), Some("c"));
+    }
+
+    #[test]
+    fn focus_cmd_ignores_unknown_id() {
+        let mut r = btns();
+        drawn(&mut r);
+        r.apply(Cmd::Msg(M::FocusC), T0);
+        drawn(&mut r);
+        assert_eq!(r.focused(), Some("a"));
+    }
+
+    #[test]
+    fn focus_next_and_prev_cmds_wrap() {
+        let mut r = btns();
+        drawn(&mut r);
+        r.apply(Cmd::Msg(M::Next), T0);
+        drawn(&mut r);
+        assert_eq!(r.focused(), Some("b"));
+        r.apply(Cmd::batch([Cmd::FocusNext, Cmd::FocusNext]), T0);
+        drawn(&mut r);
+        assert_eq!(r.focused(), Some("b"));
+        r.apply(Cmd::Msg(M::Prev), T0);
+        drawn(&mut r);
+        assert_eq!(r.focused(), Some("a"));
+    }
+
+    #[test]
+    fn task_cmd_is_queued_not_run() {
+        let mut r = rt(Rec::default());
+        let o = r.apply(
+            Cmd::batch([Cmd::task(|| M::Log(9)), Cmd::Msg(M::Log(1))]),
+            T0,
+        );
+        assert!(o.redraw);
+        assert_eq!(r.app().seen, vec![1]);
+        let tasks = r.take_tasks();
+        assert_eq!(tasks.len(), 1);
+        assert!(r.take_tasks().is_empty());
+        for t in tasks {
+            r.apply(Cmd::Msg(t()), T0);
+        }
+        assert_eq!(r.app().seen, vec![1, 9]);
+    }
+
+    #[test]
+    fn spawn_task_runs_off_the_calling_thread() {
+        let (tx, rx) = mpsc::channel();
+        let here = std::thread::current().id();
+        spawn_task(Box::new(move || std::thread::current().id() != here), tx);
+        assert!(rx.recv_timeout(Duration::from_secs(5)).unwrap());
+    }
+
+    #[test]
+    fn cmd_debug_and_eq_handle_tasks() {
+        let t: Cmd<u8> = Cmd::task(|| 1);
+        assert_eq!(format!("{t:?}"), "Task(..)");
+        assert_ne!(t, Cmd::task(|| 1));
+        assert_eq!(Cmd::<u8>::focus("a"), Cmd::Focus("a".into()));
+        assert_eq!(
+            format!("{:?}", Cmd::batch([Cmd::Msg(2u8)])),
+            "Batch([Msg(2)])"
+        );
     }
 
     #[test]
