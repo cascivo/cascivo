@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/tokens.md
-  registry v1.10.0 · generated 2026-11-11
+  registry v1.11.0 · generated 2026-11-14
 -->
 
 # cascivo Design Tokens

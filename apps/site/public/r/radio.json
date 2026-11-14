@@ -3,7 +3,7 @@
   "name": "radio",
   "type": "component",
   "description": "Single choice from a set, grouped with RadioGroup",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio/radio.tsx"

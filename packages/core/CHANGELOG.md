@@ -1,5 +1,12 @@
 # @cascivo/core
 
+## 1.11.0
+
+### Minor Changes
+
+- 9302aa3: Component manifests gain an optional `agent` section (`AgentMeta`) that maps agent actions onto
+  existing props. `@cascivo/registry` validates it in `validateItem`/`parseItem`.
+
 ## 1.10.0
 
 ### Minor Changes

@@ -69,4 +69,4 @@ stack, pile, overlap, layered, z-axis, card-pile, layout
 
 ---
 
-_Generated from registry v1.10.0 on 2026-11-11. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.11.0 on 2026-11-14. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

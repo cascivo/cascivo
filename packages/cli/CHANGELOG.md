@@ -1,5 +1,12 @@
 # cascivo
 
+## 1.8.2
+
+### Patch Changes
+
+- Updated dependencies [9302aa3]
+  - @cascivo/registry@0.3.0
+
 ## 1.8.1
 
 ### Patch Changes
