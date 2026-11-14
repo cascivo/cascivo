@@ -53,6 +53,13 @@ pub trait Widget<M> {
         0
     }
 
+    /// Like [`intrinsic`](Self::intrinsic), for a leaf that has `width` cells on offer and the
+    /// node's classes `cs`. Override when the height depends on the width (wrapping).
+    fn intrinsic_in(&self, axis: Direction, width: u16, cs: &ClassStyle) -> u16 {
+        let _ = (width, cs);
+        self.intrinsic(axis)
+    }
+
     /// Whether a node holding this widget joins the focus ring when it has an
     /// [`id`](Node::id).
     fn focusable(&self) -> bool {
@@ -405,6 +412,66 @@ pub(crate) fn truncate(line: &str, max: usize) -> String {
     out
 }
 
+/// Rows `text` takes when word-wrapped to `width` cells, matching `Paragraph` with
+/// `Wrap { trim: true }`: whitespace runs stay between words on a line and are dropped at a
+/// break; a word wider than the line is split. At least 1 (an empty text still takes a row).
+pub(crate) fn wrapped_lines(text: &str, width: usize) -> usize {
+    if width == 0 || width == usize::from(u16::MAX) {
+        return text.lines().count().max(1);
+    }
+    let mut rows = 0;
+    for line in text.lines() {
+        rows += 1;
+        let mut used = 0;
+        let mut pending_ws = 0;
+        let mut chars = line.chars().peekable();
+        while chars.peek().is_some() {
+            let ws = chars.clone().take_while(|c| c.is_whitespace()).count();
+            if ws > 0 {
+                // Ratatui keeps a line's leading whitespace until it has to break.
+                let w: usize = chars
+                    .by_ref()
+                    .take(ws)
+                    .map(|c| str_width(c.encode_utf8(&mut [0; 4])))
+                    .sum();
+                // Leading whitespace is ignored (ratatui's handling of it varies with width).
+                if used > 0 {
+                    pending_ws += w;
+                }
+                continue;
+            }
+            let word: Vec<usize> = chars
+                .clone()
+                .take_while(|c| !c.is_whitespace())
+                .map(|c| str_width(c.encode_utf8(&mut [0; 4])))
+                .collect();
+            chars.by_ref().take(word.len()).for_each(drop);
+            let ww: usize = word.iter().sum();
+            if used + pending_ws + ww <= width {
+                used += pending_ws + ww;
+            } else if ww <= width {
+                rows += 1;
+                used = ww;
+            } else {
+                // Overlong word: fills rows of `width`, remainder starts the last one.
+                if used > 0 {
+                    rows += 1;
+                }
+                used = 0;
+                for cw in word {
+                    if used + cw > width {
+                        rows += 1;
+                        used = 0;
+                    }
+                    used += cw;
+                }
+            }
+            pending_ws = 0;
+        }
+    }
+    rows.max(1)
+}
+
 impl<M> Widget<M> for TextWidget {
     fn render(&self, area: Rect, buf: &mut Buffer, cx: &RenderCx<'_>) {
         let align = match cx.class.align {
@@ -429,6 +496,14 @@ impl<M> Widget<M> for TextWidget {
             p
         };
         p.style(cx.style()).alignment(align).render(area, buf);
+    }
+
+    fn intrinsic_in(&self, axis: Direction, width: u16, cs: &ClassStyle) -> u16 {
+        if axis == Direction::Vertical && cs.flow.unwrap_or(Flow::Wrap) == Flow::Wrap {
+            let n = wrapped_lines(&self.0, usize::from(width));
+            return u16::try_from(n).unwrap_or(u16::MAX);
+        }
+        Widget::<M>::intrinsic(self, axis)
     }
 
     fn intrinsic(&self, axis: Direction) -> u16 {

@@ -69,7 +69,7 @@ pub struct Input<M> {
 /// use cascivo_tui::prelude::*;
 ///
 /// let n: Node<String> = input("héllo", "name", |s| s).id("name");
-/// assert_eq!(render_to_string(&n, 10, 1).unwrap(), " héllo");
+/// assert_eq!(render_to_string(&n, 10, 1).unwrap(), "héllo");
 /// ```
 pub fn input<M>(
     value: &str,
@@ -120,7 +120,7 @@ impl<M> Input<M> {
 
 impl<M: Clone + 'static> From<Input<M>> for Node<M> {
     fn from(i: Input<M>) -> Self {
-        let class = format!("h-1 px-1 bg-surface2 focus:bg-surface {}", i.class);
+        let class = format!("h-1 bg-surface2 focus:bg-surface {}", i.class);
         Node::leaf(
             class.trim(),
             InputW {

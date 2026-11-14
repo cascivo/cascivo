@@ -160,10 +160,10 @@ fn button_ignores_keys_when_not_focused() {
 #[test]
 fn input_types_and_edits() {
     let mut t = app(Kind::Input, 20, 2);
-    assert_eq!(t.render().unwrap(), " type");
+    assert_eq!(t.render().unwrap(), "type");
     t.type_text("abc");
     assert_eq!(t.app().value, "abc");
-    assert_eq!(t.render().unwrap(), " abc");
+    assert_eq!(t.render().unwrap(), "abc");
     t.press("backspace");
     assert_eq!(t.app().value, "ab");
     t.press("left").press("left").type_text("X");
@@ -192,15 +192,15 @@ fn input_unicode_boundaries() {
     assert_eq!(t.app().value, "aé");
     t.press("end").press("left").type_text("ü");
     assert_eq!(t.app().value, "aüé");
-    assert_eq!(t.render().unwrap(), " aüé");
+    assert_eq!(t.render().unwrap(), "aüé");
 }
 
 #[test]
 fn input_cursor_cell_is_reversed_when_focused() {
     let mut t = app(Kind::Input, 20, 2);
     t.type_text("ab").press("left");
-    assert!(t.cell(2, 0).modifiers.contains(Modifier::REVERSED)); // px-1 offset + index 1
-    assert!(!t.cell(1, 0).modifiers.contains(Modifier::REVERSED));
+    assert!(t.cell(1, 0).modifiers.contains(Modifier::REVERSED)); // cursor at index 1
+    assert!(!t.cell(0, 0).modifiers.contains(Modifier::REVERSED));
 }
 
 #[test]

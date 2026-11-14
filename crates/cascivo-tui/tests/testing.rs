@@ -173,7 +173,7 @@ fn bad_class_is_err_not_panel() {
 fn resize_and_theme() {
     let mut t = TestApp::new(Demo::default(), 30, 3).theme("dark");
     t.resize(10, 2);
-    assert_eq!(t.render().unwrap(), "n=0 typed=");
+    assert_eq!(t.render().unwrap(), "n=0 typed=\nfired=0");
 }
 
 #[test]
