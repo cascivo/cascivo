@@ -177,13 +177,15 @@ impl<A: App> TestApp<A> {
     /// On an unknown theme name (test-only API); the message lists the valid names.
     #[must_use]
     pub fn theme(mut self, name: &str) -> Self {
-        let Some(theme) = Theme::by_name(name).cloned() else {
+        if Theme::by_name(name).is_none() {
             panic!(
                 "TestApp::theme: unknown theme \"{name}\"; available: {}",
                 Theme::names().join(", ")
             );
-        };
-        self.rt.set_theme(theme);
+        }
+        // Through the command so the app's `theme_changed` hook fires as it does at runtime.
+        self.rt
+            .apply(crate::Cmd::SetTheme(name.to_owned()), self.now);
         self.redraw();
         self
     }

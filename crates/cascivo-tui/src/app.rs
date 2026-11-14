@@ -27,6 +27,11 @@ pub enum Cmd<M> {
     /// Switch to the named theme on the next draw (keeps the terminal's colour depth). An
     /// unknown name is a runtime fault that paints the error panel, so typos are loud.
     SetTheme(String),
+    /// Switch to the next built-in theme, in [`Theme::names`](crate::Theme::names) order,
+    /// wrapping.
+    NextTheme,
+    /// Switch to the previous built-in theme, wrapping.
+    PrevTheme,
     /// Focus the widget with this id after the next view, so an id that view adds can be
     /// focused. An id not in the new focus ring is ignored.
     Focus(String),
@@ -53,6 +58,8 @@ impl<M: std::fmt::Debug> std::fmt::Debug for Cmd<M> {
             Self::Batch(v) => f.debug_tuple("Batch").field(v).finish(),
             Self::Tick(d, m) => f.debug_tuple("Tick").field(d).field(m).finish(),
             Self::SetTheme(n) => f.debug_tuple("SetTheme").field(n).finish(),
+            Self::NextTheme => f.write_str("NextTheme"),
+            Self::PrevTheme => f.write_str("PrevTheme"),
             Self::Focus(id) => f.debug_tuple("Focus").field(id).finish(),
             Self::FocusNext => f.write_str("FocusNext"),
             Self::FocusPrev => f.write_str("FocusPrev"),
@@ -67,6 +74,8 @@ impl<M: PartialEq> PartialEq for Cmd<M> {
         match (self, other) {
             (Self::None, Self::None)
             | (Self::Quit, Self::Quit)
+            | (Self::NextTheme, Self::NextTheme)
+            | (Self::PrevTheme, Self::PrevTheme)
             | (Self::FocusNext, Self::FocusNext)
             | (Self::FocusPrev, Self::FocusPrev) => true,
             (Self::Msg(a), Self::Msg(b)) => a == b,
@@ -153,6 +162,14 @@ pub trait App {
 
     /// Runs once before the first draw.
     fn init(&mut self) -> Cmd<Self::Msg> {
+        Cmd::None
+    }
+
+    /// Told the active theme's name: once before [`init`](Self::init) (the theme from
+    /// `RunOptions` or `CASCIVO_THEME`), then after every switch by [`Cmd::SetTheme`],
+    /// [`Cmd::NextTheme`] or [`Cmd::PrevTheme`]. The returned command runs like `update`'s.
+    fn theme_changed(&mut self, name: &str) -> Cmd<Self::Msg> {
+        let _ = name;
         Cmd::None
     }
 

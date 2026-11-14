@@ -107,7 +107,8 @@ impl<A: App> Runtime<A> {
         &self.theme
     }
 
-    /// Switches theme (takes effect on the next draw).
+    /// Switches theme (takes effect on the next draw). Unlike the theme commands this does not
+    /// call [`App::theme_changed`].
     pub fn set_theme(&mut self, theme: Theme) {
         self.theme = theme;
     }
@@ -146,10 +147,11 @@ impl<A: App> Runtime<A> {
         self.ticks.iter().map(|(d, _)| *d).min()
     }
 
-    /// Runs [`App::init`] at time `now`.
+    /// Runs [`App::theme_changed`] with the starting theme, then [`App::init`], at time `now`.
     pub fn start(&mut self, now: Duration) -> StepOut {
-        let cmd = self.app.init();
-        self.apply(cmd, now)
+        let told = self.app.theme_changed(self.theme.name());
+        let init = self.app.init();
+        self.apply(Cmd::Batch(vec![told, init]), now)
     }
 
     /// Feeds one terminal event at time `now`.
@@ -259,8 +261,9 @@ impl<A: App> Runtime<A> {
                 Cmd::Tick(d, m) => self.ticks.push((now + d, m)),
                 Cmd::SetTheme(name) => match Theme::by_name(&name) {
                     Some(t) => {
-                        self.theme = t.quantize(self.theme.depth());
                         redraw = true;
+                        let next = self.switch_theme(t);
+                        stack.push((next, depth + 1));
                     }
                     None => {
                         self.fault = Some(format!(
@@ -270,6 +273,20 @@ impl<A: App> Runtime<A> {
                         break;
                     }
                 },
+                Cmd::NextTheme | Cmd::PrevTheme => {
+                    let names = Theme::names();
+                    let at = names.iter().position(|n| *n == self.theme.name());
+                    let i = match (at, matches!(c, Cmd::NextTheme)) {
+                        (Some(i), true) => (i + 1) % names.len(),
+                        (Some(i), false) => (i + names.len() - 1) % names.len(),
+                        (None, _) => 0,
+                    };
+                    if let Some(t) = names.get(i).and_then(|n| Theme::by_name(n)) {
+                        redraw = true;
+                        let next = self.switch_theme(t);
+                        stack.push((next, depth + 1));
+                    }
+                }
                 Cmd::Focus(id) => {
                     self.focus_req.push(FocusReq::Id(id));
                     redraw = true;
@@ -301,6 +318,12 @@ impl<A: App> Runtime<A> {
             redraw,
             quit: self.quit,
         }
+    }
+
+    /// Installs `t` at the current colour depth and tells the app.
+    fn switch_theme(&mut self, t: &Theme) -> Cmd<A::Msg> {
+        self.theme = t.quantize(self.theme.depth());
+        self.app.theme_changed(t.name())
     }
 
     /// Renders the view into `buf` over `area`, then reconciles focus with the new ring.
@@ -648,6 +671,46 @@ mod tests {
             r.fault()
                 .is_some_and(|f| f.contains("unknown theme \"nope\""))
         );
+    }
+
+    #[test]
+    fn next_and_prev_theme_cycle_built_in_order() {
+        let names = Theme::names();
+        let mut r = rt(Rec::default());
+        r.apply(Cmd::SetTheme(names[0].into()), T0);
+        assert!(r.apply(Cmd::NextTheme, T0).redraw);
+        assert_eq!(r.theme().name(), names[1]);
+        r.apply(Cmd::batch([Cmd::PrevTheme, Cmd::PrevTheme]), T0);
+        assert_eq!(r.theme().name(), names[names.len() - 1]);
+        r.apply(Cmd::NextTheme, T0);
+        assert_eq!(r.theme().name(), names[0]);
+    }
+
+    #[test]
+    fn theme_changed_hook_sees_start_and_every_switch() {
+        #[derive(Default)]
+        struct Tm(Vec<String>);
+        impl App for Tm {
+            type Msg = ();
+            fn update(&mut self, (): ()) -> Cmd<()> {
+                Cmd::None
+            }
+            fn view(&self) -> Node<()> {
+                col("", [])
+            }
+            fn theme_changed(&mut self, name: &str) -> Cmd<()> {
+                self.0.push(name.to_owned());
+                Cmd::None
+            }
+        }
+        let start = Theme::by_name("light").unwrap().clone();
+        let mut r = Runtime::new(Tm::default(), start, 10, 4);
+        r.start(T0);
+        r.apply(Cmd::SetTheme("dark".into()), T0);
+        r.apply(Cmd::NextTheme, T0);
+        let after_dark = r.theme().name().to_owned();
+        r.apply(Cmd::SetTheme("nope".into()), T0);
+        assert_eq!(r.app().0, ["light", "dark", after_dark.as_str()]);
     }
 
     #[test]
