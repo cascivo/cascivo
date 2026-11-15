@@ -76,3 +76,15 @@ fn sparkline_cases() {
     assert_eq!(r(&s, 4, 1), "▁▁▁█");
     assert_eq!(r(&s, 2, 1), "▁█");
 }
+
+#[test]
+fn input_has_no_built_in_padding() {
+    let n: Node<String> = row(
+        "gap-1",
+        [text("Name:").into(), input("Ada", "name", |s| s).id("n")],
+    );
+    assert_eq!(render_to_string(&n, 20, 1).unwrap(), "Name: Ada");
+    // Classes add padding back when wanted.
+    let n: Node<String> = input("Ada", "", |s| s).class("px-1").id("n");
+    assert_eq!(render_to_string(&n, 10, 1).unwrap(), " Ada");
+}

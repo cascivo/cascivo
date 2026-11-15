@@ -76,13 +76,17 @@ Space-separated tokens, last wins, unknown tokens are errors. `N` = 0..=64.
 
 - `col(class, [..])` `row(class, [..])` `spacer()` `text(s).bold().muted().class(..)` (then `.into()`)
 - `heading(s)` `card(title, class, [..])` `statusbar(left, right)` `keyhints(&keymap)`
-- `button(label, msg).id(..)` `input(value, placeholder, |s| Msg::Name(s)).on_submit(msg).cursor(&c).id(..)`
+- `button(label, msg).id(..)` `input(value, placeholder, |s| Msg::Name(s)).on_submit(msg).cursor(&c).id(..)` (no built-in padding; add `.class("px-1")`)
 - `list(Vec<String>, selected, |i| Msg).on_activate(|i| ..).scroll(&Scroll).id(..)`
 - `table(&[headers], rows, &[Col], selected, |i| Msg)` (same builder) `tabs(&[titles], active, |i| Msg).id(..)`
 - `progress(0.5, "cpu")` `sparkline(&[u64])`
 - `modal(title, body, on_close)` (only while a flag is set, last child) `toasts(&[(Kind, String)])` last child, expire with `Cmd::tick`
+- Layout: a container with no size and no growing child takes its intrinsic size (a one-line `row` is one line); wrapping `text` is measured at the width on offer.
 - Focusable widgets need `.id(..)`. Keep `Scroll` and `Cursor` handles in the app.
 - Cmds: `Cmd::none() Cmd::Quit Cmd::Msg(m) Cmd::tick(ms, m) Cmd::batch([..]) Cmd::SetTheme("dark".into())`
+  `Cmd::NextTheme Cmd::PrevTheme` `Cmd::focus("id") Cmd::FocusNext Cmd::FocusPrev` (after next view)
+  `Cmd::task(|| Msg::Done(work()))` (worker thread; `run` needs `Msg: Send`; TestApp runs inline; `Cmd` is not Clone)
+  Active theme: override `fn theme_changed(&mut self, name: &str) -> Cmd<Msg>` (called before init, then per switch).
 - Themes: arcade brutalist corporate cyberpunk dark flat light midnight minimal pastel terminal warm.
 
 ## Common errors
@@ -108,4 +112,4 @@ assert!(!t.app().confirm);
 
 `render()` returns the screen as text; `cell(x, y)` gives symbol, colour roles and modifiers;
 `render_to_string(&node, cols, rows)` renders one node. A `class` typo makes `render_to_string`
-return `Err`. Run `cargo test` and fix until it passes, then run the app.
+return `Err`. `t.assert_snapshot("name")` compares the screen with `tests/snapshots/name.txt`, writing it when missing or when `UPDATE_SNAPSHOTS=1`, and panics with a line diff otherwise. Run `cargo test` and fix until it passes, then run the app.
