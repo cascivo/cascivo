@@ -1,6 +1,6 @@
 [package]
 name = "cascivo-tui"
-version = "0.1.0"
+version = "0.2.0"
 edition.workspace = true
 # ratatui 0.30 requires 1.88, higher than the workspace default.
 rust-version = "1.88"
