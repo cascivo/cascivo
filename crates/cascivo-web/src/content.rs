@@ -55,6 +55,8 @@ pub struct Collection {
     pub schema: Schema,
     /// Sorted by slug, so output never depends on directory order.
     pub entries: Vec<Entry>,
+    /// Translations: `content/<name>/<locale>/*.md`, keyed by locale, each sorted by slug.
+    pub locales: BTreeMap<String, Vec<Entry>>,
 }
 
 impl Collection {
@@ -197,6 +199,36 @@ fn read(path: &Path, rel: &str) -> Result<String> {
     std::fs::read_to_string(path).map_err(|e| Errors::one(rel, None, e.to_string()))
 }
 
+/// Every `*.md` entry directly inside `dir`; `rel` is its site-relative path for diagnostics.
+fn load_entries(dir: &Path, rel: &str, schema: &Schema, errs: &mut Vec<Error>) -> Vec<Entry> {
+    let mut files: Vec<_> = std::fs::read_dir(dir)
+        .map(|r| r.flatten().map(|e| e.path()).collect())
+        .unwrap_or_default();
+    files.retain(|p| p.is_file() && p.extension().is_some_and(|x| x == "md"));
+    files.sort();
+    let mut entries = Vec::new();
+    for p in files {
+        let stem = p
+            .file_stem()
+            .map(|s| s.to_string_lossy().into_owned())
+            .unwrap_or_default();
+        let file = format!("{rel}/{stem}.md");
+        if !valid_slug(&stem) {
+            errs.push(Error::new(
+                &file,
+                None,
+                "file name must be a slug: lowercase a-z, 0-9 and '-'",
+            ));
+            continue;
+        }
+        match read(&p, &file).and_then(|src| parse_entry(schema, &file, &stem, &src)) {
+            Ok(e) => entries.push(e),
+            Err(e) => errs.extend(e.0),
+        }
+    }
+    entries
+}
+
 /// Loads every collection under `root/content`. A missing `content/` is no collections.
 pub fn load(root: &Path) -> Result<BTreeMap<String, Collection>> {
     let dir = root.join("content");
@@ -229,30 +261,17 @@ pub fn load(root: &Path) -> Result<BTreeMap<String, Collection>> {
                 continue;
             }
         };
-        let mut files: Vec<_> = std::fs::read_dir(d.path())
-            .map(|r| r.flatten().map(|e| e.path()).collect())
+        let entries = load_entries(&d.path(), &format!("content/{name}"), &schema, &mut errs);
+        // Each subdirectory holds one locale's translations (`content/posts/de/hello.md`).
+        let mut locales = BTreeMap::new();
+        let mut subs: Vec<_> = std::fs::read_dir(d.path())
+            .map(|r| r.flatten().filter(|e| e.path().is_dir()).collect())
             .unwrap_or_default();
-        files.retain(|p| p.extension().is_some_and(|x| x == "md"));
-        files.sort();
-        let mut entries = Vec::new();
-        for p in files {
-            let stem = p
-                .file_stem()
-                .map(|s| s.to_string_lossy().into_owned())
-                .unwrap_or_default();
-            let rel = format!("content/{name}/{stem}.md");
-            if !valid_slug(&stem) {
-                errs.push(Error::new(
-                    &rel,
-                    None,
-                    "file name must be a slug: lowercase a-z, 0-9 and '-'",
-                ));
-                continue;
-            }
-            match read(&p, &rel).and_then(|src| parse_entry(&schema, &rel, &stem, &src)) {
-                Ok(e) => entries.push(e),
-                Err(e) => errs.extend(e.0),
-            }
+        subs.sort_by_key(std::fs::DirEntry::file_name);
+        for s in subs {
+            let loc = s.file_name().to_string_lossy().into_owned();
+            let rel = format!("content/{name}/{loc}");
+            locales.insert(loc, load_entries(&s.path(), &rel, &schema, &mut errs));
         }
         out.insert(
             name.clone(),
@@ -260,6 +279,7 @@ pub fn load(root: &Path) -> Result<BTreeMap<String, Collection>> {
                 name,
                 schema,
                 entries,
+                locales,
             },
         );
     }
@@ -347,6 +367,7 @@ mod tests {
             entries: vec![
                 parse_entry(&schema(), "p.md", "p", "+++\ntitle = \"T\"\n+++\n").unwrap(),
             ],
+            locales: BTreeMap::new(),
         };
         assert_eq!(c.parse_as::<Post>().unwrap()[0].title, "T");
     }

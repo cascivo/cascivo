@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="{{ site.lang }}" data-theme="{{ site.theme }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ page.title }} · {{ site.title }}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" href="/rss.xml" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/about/">About</a>
+        <a href="/blog/">Blog</a>
+      </nav>
+    </header>
+    <main>{% block body %}{{ content }}{% endblock %}</main>
+  </body>
+</html>

@@ -97,6 +97,11 @@ jobs:
       - run: pnpm run build:landing-demos
         env:
           VITE_CASCIVO_LIVE_URL: ${{ vars.CASCIVO_LIVE_URL }}
+      # W4 landing pilot (docs/plans/rust-html-stack-results-w4.md): when the repo variable
+      # CASCIVO_WEB_HOME is '1', "/" is the static cascivo-web build of apps/site/web laid over
+      # the Vite output; every other route (and the 404.html SPA fallback) is unchanged.
+      - if: vars.CASCIVO_WEB_HOME == '1'
+        run: pnpm --filter @cascivo/site build:web
       # Deploy from apps/site so Wrangler picks up apps/site/functions/ (it resolves
       # the Functions directory relative to its working directory, not the assets arg).
       # The Functions serve machine-readable 404s for /llms/*, /context/*, /r/*.

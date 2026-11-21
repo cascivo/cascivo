@@ -69,7 +69,7 @@ cascivo-web needs a binary there.
 
 | # | Criterion | Result |
 |---|---|---|
-| 4 | Content or template edit → rendered page in < 1 s, with no `cargo` rebuild | **PASS.** Median 22 ms, max 39 ms over HTTP. The `tests/dev.rs` test asserts < 1 s on every CI run. |
+| 4 | Content or template edit → rendered page in < 1 s, with no `cargo` rebuild | **PASS.** Median 22 ms, max 39 ms over HTTP. `tests/dev.rs` asserts only that the edit becomes visible without a rebuild (30 s liveness bound); the latency is reported by `apps/bench/static-compare/measure.mjs`, not gated in CI. |
 | 5 | Simpler than Astro + cascivo, with the same site measured both ways | **PASS, with caveats.** Build is about 460× faster, dev edits about 11× faster, output is 5.6× smaller, there is half the authored code, 1/46 of the dependencies and no stray JS. |
 
 Caveats on criterion 5:

@@ -1,0 +1,57 @@
+{% macro snippet(code, lang, variant, cls="") %}<div data-variant="{{ variant }}" class="{{ m("code-snippet", "root") }}{% if cls %} {{ cls }}{% endif %}"><pre class="{{ m("code-snippet", "pre") }}">{{ code | highlight(lang) }}</pre><button type="button" aria-label="Copy code" data-state="idle" data-copy="{{ code }}" class="{{ m("code-snippet", "copy") }}"><svg aria-hidden="true" viewBox="0 0 16 16" class="{{ m("code-snippet", "icon") }}"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg></button></div>{% endmacro %}
+
+
+
+{% set mcp_config = '{\n  "mcpServers": {\n    "cascivo": { "command": "npx",\n      "args": ["-y", "@cascivo/mcp"] }\n  }\n}' %}
+{% set ai_tags = ["llms.txt", "per-component manifests", "tokens.catalog.json", "cascivo audit --ai", "@cascivo/mcp", "claude code skills"] %}
+<section class="pg-section pg-cols" id="ai" aria-label="The AI loop">
+  <div class="pg-pad pg-invert">
+    <p class="pg-eyebrow pg-eyebrow--quiet">06 / the ai loop</p>
+    <h2 class="pg-display pg-display--section pg-ai-head">Your agent's code,<br>checked</h2>
+    <p class="pg-body pg-ai-body">Most design systems now give agents docs. cascivo also checks what the agent wrote: <code>cascivo audit --ai</code> knows every real prop, required prop and token, and says what to use instead.</p>
+    <p class="pg-ai-caption pg-mono">what the agent wrote</p>
+    <pre class="pg-pre pg-pre--tight"><code>&lt;Card className="deploy-card"&gt;
+  &lt;Badge tone="success"&gt;Ready&lt;/Badge&gt;
+  &lt;Tooltip&gt;Redeploy the latest commit&lt;/Tooltip&gt;
+  &lt;Button variant="primary"&gt;Redeploy&lt;/Button&gt;
+&lt;/Card&gt;
+
+.deploy-card {
+  background: oklch(0.623 0.214 250);
+}</code></pre>
+    <p class="pg-ai-caption pg-mono">$ cascivo audit --ai src</p>
+    <pre class="pg-pre pg-pre--tight"><code>DeployCard.tsx:7   error  unknown-prop     &lt;Badge tone&gt;
+DeployCard.tsx:8   error  missing-prop     &lt;Tooltip&gt; requires "content"
+DeployCard.tsx:8   warn   raw-string       "Redeploy the latest commit"
+                                           → use labels prop / i18n
+deploy-card.css:2  info   hardcoded-value  oklch(0.623 0.214 250)
+                                           → --cascivo-blue-500
+                                             | --cascivo-color-focus-ring
+deploy-card.css:1  warn   unlayered-css    .deploy-card { … }
+                                           → wrap in @layer
+---
+2 errors, 2 warnings, 1 info</code></pre>
+  </div>
+  <div class="pg-pad">
+    <p class="pg-eyebrow">after one round</p>
+    <h2 class="pg-display pg-display--section pg-ai-head">Fixed from<br>the output</h2>
+    <p class="pg-ai-caption pg-mono">what the agent wrote next</p>
+    <pre class="pg-pre pg-pre--tight"><code>&lt;Card className="deploy-card"&gt;
+  &lt;Badge variant="success"&gt;Ready&lt;/Badge&gt;
+  &lt;Tooltip content={hint}&gt;
+    &lt;Button variant="primary"&gt;Redeploy&lt;/Button&gt;
+  &lt;/Tooltip&gt;
+&lt;/Card&gt;
+
+@layer cascivo.override {
+  .deploy-card {
+    background: var(--cascivo-color-accent);
+  }
+}</code></pre>
+    <p class="pg-ai-caption pg-mono">$ cascivo audit --ai src → no findings</p>
+    <p class="pg-body pg-ai-body">The agent gets the same closed sets up front: an MCP server with tools to select, scaffold and validate, a manifest per component, and a token catalog.</p>
+    {{ snippet(mcp_config, "ts", "multi", "pg-ai-code") }}
+    <p class="pg-ai-tags">{% for tag in ai_tags %}<span data-variant="default" data-size="md" class="{{ m("tag", "tag") }} pg-ai-tag">{{ tag }}</span>{% endfor %}</p>
+    <a class="pg-link" href="/ai">See the AI layer →</a> <a class="pg-link" href="/ai#ai-components">See the AI components →</a>
+  </div>
+</section>

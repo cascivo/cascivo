@@ -1,0 +1,91 @@
+//! `cascivo-web deploy`: plans the `wrangler deploy` invocation (Cloudflare Workers Static Assets).
+
+use std::path::{Path, PathBuf};
+
+const CONFIGS: &[&str] = &["wrangler.jsonc", "wrangler.json", "wrangler.toml"];
+
+/// A command to run after the site is built.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Plan {
+    pub cwd: PathBuf,
+    pub program: String,
+    pub args: Vec<String>,
+}
+
+impl Plan {
+    /// Shell-ish rendering, e.g. `npx wrangler deploy --dry-run`.
+    pub fn display(&self) -> String {
+        std::iter::once(&self.program)
+            .chain(&self.args)
+            .map(|a| {
+                if a.is_empty() || a.contains(char::is_whitespace) {
+                    format!("'{a}'")
+                } else {
+                    a.clone()
+                }
+            })
+            .collect::<Vec<_>>()
+            .join(" ")
+    }
+}
+
+/// Requires a wrangler config in `root`; `extra` args are appended after `wrangler deploy`.
+pub fn plan(root: &Path, extra: &[String]) -> Result<Plan, String> {
+    if !CONFIGS.iter().any(|c| root.join(c).is_file()) {
+        return Err(format!(
+            "no wrangler.jsonc, wrangler.json or wrangler.toml in {}\n\
+             run `cascivo-web new <dir>` for a starter, or add a wrangler.jsonc:\n\
+             {{ \"name\": \"my-site\", \"compatibility_date\": \"2026-11-01\", \"assets\": {{ \"directory\": \"./dist\" }} }}",
+            root.display()
+        ));
+    }
+    let mut args = vec!["wrangler".to_string(), "deploy".to_string()];
+    args.extend(extra.iter().cloned());
+    Ok(Plan {
+        cwd: root.to_path_buf(),
+        program: "npx".into(),
+        args,
+    })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn tmp(tag: &str) -> PathBuf {
+        let d = std::env::temp_dir().join(format!("cvweb-deploy-{tag}-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&d);
+        std::fs::create_dir_all(&d).unwrap();
+        d
+    }
+
+    #[test]
+    fn requires_config() {
+        let d = tmp("none");
+        let e = plan(&d, &[]).unwrap_err();
+        assert!(e.contains("cascivo-web new") && e.contains("\"assets\""));
+        let _ = std::fs::remove_dir_all(&d);
+    }
+
+    #[test]
+    fn plans_with_each_config_and_extra_args() {
+        for c in CONFIGS {
+            let d = tmp(c);
+            std::fs::write(d.join(c), "").unwrap();
+            let p = plan(&d, &["--env".into(), "prod".into()]).unwrap();
+            assert_eq!(p.cwd, d);
+            assert_eq!(p.display(), "npx wrangler deploy --env prod");
+            let _ = std::fs::remove_dir_all(&d);
+        }
+    }
+
+    #[test]
+    fn display_quotes_spaces() {
+        let p = Plan {
+            cwd: ".".into(),
+            program: "npx".into(),
+            args: vec!["a b".into()],
+        };
+        assert_eq!(p.display(), "npx 'a b'");
+    }
+}

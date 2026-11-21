@@ -1,0 +1,8 @@
+/* Static home only (not imported by the SPA). Below-the-fold bands skip style and layout until
+   they near the viewport: on a mobile CPU the whole 22k-px page otherwise delays first paint by
+   ~0.5 s after the stylesheet arrives. `auto` remembers the real height once a band has rendered,
+   so scrolling back does not jump; the first two bands (hero, signals) are never skipped. */
+.pg > .pg-section:nth-child(n + 3) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 60rem;
+}

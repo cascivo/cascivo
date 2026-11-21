@@ -8,6 +8,7 @@ dist/
 /starters/*/pnpm-lock.yaml
 /starters/*/package-lock.json
 dist-matrix/
+dist-web*/
 # Astro's generated type shims — build output, regenerated on every `astro build`.
 .astro/
 .lighthouseci/

@@ -42,6 +42,7 @@ export default defineConfig({
       // the formatter understands (it split a `cv('…')` string literal across lines).
       'crates/cascivo-web/tests/fixtures/**',
       'apps/bench/static-compare/rust/**',
+      'apps/site/web/**',
     ],
   },
   staged: {

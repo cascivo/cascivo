@@ -1,0 +1,21 @@
+{% extends "home.html" %}
+{% block body %}
+{% include "sections/header.html" %}
+<div id="cascade-skip-target" tabindex="-1">
+  <main class="pg">
+    {% include "sections/hero.html" %}
+    {% include "sections/signals.html" %}
+    {% include "sections/proof.html" %}
+    {% include "sections/compare.html" %}
+    {% include "sections/themes.html" %}
+    {% include "sections/ai.html" %}
+    {% include "sections/beyond.html" %}
+    {% include "sections/terminal.html" %}
+    {% include "sections/quickstart.html" %}
+    {% include "sections/ship.html" %}
+    {% include "sections/showcase.html" %}
+    {% include "sections/cta.html" %}
+  </main>
+</div>
+{% include "sections/footer.html" %}
+{% endblock %}
