@@ -1,5 +1,11 @@
 # cascivo-html
 
+## 0.2.0
+
+### Minor Changes
+
+- Library API for cascivo-web: `render_parts`, `stylesheet`, `script` and the `path` module (safe relative paths).
+
 ## 0.1.2
 
 ### Patch Changes
