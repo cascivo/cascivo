@@ -94,4 +94,17 @@
     margin-block: var(--cascivo-space-1);
     background: var(--cascivo-color-border);
   }
+
+  /* Coarse pointers get the 44px effective target the repo mandates; the 24px trigger only
+     met WCAG 2.5.8's minimum (found by the @cascivo/elements touch sweep). */
+  @media (pointer: coarse) {
+    .trigger {
+      min-inline-size: var(--cascivo-target-min-coarse, 2.75rem);
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+
+    .item {
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
 }

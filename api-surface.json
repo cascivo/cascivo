@@ -3021,6 +3021,7 @@
           "signal",
           "themePreloadScript",
           "themeSignal",
+          "transition",
           "useAnchorPosition",
           "useClipboard",
           "useComputed",
@@ -3399,6 +3400,7 @@
           "Tone": "type = 'neutral' | 'info' | 'success' | 'warning' | 'danger'",
           "ToneAlias": "type = 'destructive' | 'error' | 'default'",
           "ToneInput": "type = Tone | ToneAlias",
+          "transition": "declare function transition<S extends string>(machine: Machine<S>, state: S, event: string): S",
           "TypeDefMeta": {
             "name": "string",
             "description?": "string",
@@ -3550,15 +3552,19 @@
           "Slot",
           "cn",
           "composeRefs",
+          "createMachine",
           "mergeProps",
           "normalizeProgress",
           "normalizeTone",
           "sentimentOf",
           "themePreloadScript",
+          "transition",
           "useId"
         ],
         "types": [
           "GoodDirection",
+          "Machine",
+          "MachineConfig",
           "Progress",
           "ProgressInput",
           "Sentiment",
@@ -3571,7 +3577,18 @@
         "declarations": {
           "cn": "declare function cn(...classes: (string | undefined | null | false | 0)[]): string",
           "composeRefs": "declare function composeRefs<T>(...refs: (Ref<T> | undefined)[]): RefCallback<T>",
+          "createMachine": "declare function createMachine<S extends string, I extends S = S>(config: MachineConfig<S, I>): Machine<S>",
           "GoodDirection": "type = 'up' | 'down' | 'neutral'",
+          "Machine": {
+            "(extends)": "<S extends string = string>",
+            "initial": "S",
+            "states": "Record<S, StateConfig>"
+          },
+          "MachineConfig": {
+            "(extends)": "<S extends string = string, I extends S = S>",
+            "initial": "I",
+            "states": "Record<S, StateConfig>"
+          },
           "mergeProps": "declare function mergeProps<T extends Record<string, unknown>>(...propsList: Partial<T>[]): T",
           "normalizeProgress": "declare function normalizeProgress(value: ProgressInput): Progress",
           "normalizeTone": "declare function normalizeTone<T extends string>(value: T): T | Tone",
@@ -3590,6 +3607,7 @@
           "themePreloadScript": "declare function themePreloadScript(options?: { storageKey?: string; attribute?: string; defaultTheme?: string; reapplyOn?: string | readonly string[] }): string",
           "Tone": "type = 'neutral' | 'info' | 'success' | 'warning' | 'danger'",
           "ToneInput": "type = Tone | ToneAlias",
+          "transition": "declare function transition<S extends string>(machine: Machine<S>, state: S, event: string): S",
           "Trend": "type = 'up' | 'down' | 'flat'",
           "useId": "declare function useId(prefix?: string): string"
         }

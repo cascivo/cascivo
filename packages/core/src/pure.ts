@@ -40,6 +40,10 @@ export type {
 } from './tone.ts'
 export type { SpaceStep } from './space.ts'
 export { useId } from './use-id.ts'
+// Framework-free FSM: the transition table `useMachine` runs, usable without React
+// (`@cascivo/elements`).
+export { createMachine, transition } from './fsm.ts'
+export type { Machine, MachineConfig } from './types.ts'
 // Import-free, so Node can build the preload script with no DOM (an Astro integration does,
 // in its config process).
 export { themePreloadScript } from './theme-script.ts'

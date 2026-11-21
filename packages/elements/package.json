@@ -1,0 +1,37 @@
+{
+  "name": "@cascivo/elements",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Light-DOM custom elements (cv-menu, cv-combobox, cv-date-picker) that enhance cascivo's server-rendered markup: no React, behaviour on @cascivo/core/pure",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    "./package.json": "./package.json",
+    "./menu": "./dist/menu.js",
+    "./combobox": "./dist/combobox.js",
+    "./date-picker": "./dist/date-picker.js",
+    "./elements.css": "./dist/elements.css",
+    "./custom-elements.json": "./dist/custom-elements.json"
+  },
+  "scripts": {
+    "build": "vp build && node --experimental-strip-types scripts/build-assets.ts",
+    "check": "tsc --noEmit",
+    "test": "vp test"
+  },
+  "dependencies": {
+    "@cascivo/core": "workspace:*",
+    "@cascivo/i18n": "workspace:*",
+    "@preact/signals-core": "^1.14.3"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "axe-core": "4.11.4",
+    "idiomorph": "^0.8.0",
+    "jsdom": "catalog:",
+    "playwright": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "customElements": "./dist/custom-elements.json"
+}
