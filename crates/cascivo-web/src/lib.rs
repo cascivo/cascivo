@@ -15,20 +15,29 @@
 //! that `build` writes to `dist/`, `dev` serves with live reload, and (feature `axum`)
 //! [`router`] serves from an `axum::Router`.
 
+pub mod assets;
 #[cfg(feature = "axum")]
 mod axum;
 pub mod config;
 pub mod content;
+pub mod data;
 pub mod deploy;
 pub mod dev;
 pub mod error;
+pub mod head;
+pub mod highlight;
 pub mod i18n;
+pub mod images;
+pub mod islands;
 pub mod markdown;
 pub mod out;
 pub mod routes;
 pub mod rss;
 pub mod site;
 pub mod starter;
+pub mod theme;
+pub mod vite;
+pub mod web;
 
 #[cfg(feature = "axum")]
 pub use crate::axum::router;

@@ -111,24 +111,28 @@ impl Site {
         // One accumulator across locales: the shared stylesheet covers every locale's components.
         let acc = Arc::new(Mutex::new(Rendered::default()));
         let mut pages = Vec::new();
+        let mut files = BTreeMap::new();
         let mut errs = Vec::new();
         for v in &views {
             match Renderer::new(&v.site, Arc::clone(&acc), &v.locale, Arc::clone(&alts))
                 .and_then(Renderer::run)
             {
-                Ok(p) => pages.extend(p),
+                Ok((p, f)) => {
+                    pages.extend(p);
+                    files.extend(f);
+                }
                 Err(e) => errs.extend(e.0),
             }
         }
         if !errs.is_empty() {
             return Err(Errors(errs));
         }
-        finish(self, &views, &pages, &acc, &alts)
+        finish(self, &views, &pages, &files, &acc, &alts)
     }
 }
 
 /// TOML → template value; dates become ISO strings so templates can print and sort them.
-fn to_value(v: &toml::Value) -> Value {
+pub(crate) fn to_value(v: &toml::Value) -> Value {
     match v {
         toml::Value::String(s) => Value::from(s.as_str()),
         toml::Value::Integer(i) => Value::from(*i),
@@ -148,6 +152,11 @@ fn table_value<const N: usize>(t: &toml::Table, extra: [(&str, Value); N]) -> Va
     Value::from(m)
 }
 
+/// (URL, HTML) per page.
+type Pages = Vec<(String, String)>;
+/// Output path → bytes emitted by template functions (`asset()`, `img()`).
+type Files = BTreeMap<String, Vec<u8>>;
+
 struct Renderer<'a> {
     site: &'a Site,
     env: Environment<'static>,
@@ -157,6 +166,7 @@ struct Renderer<'a> {
     locale: String,
     /// URL → its translations, from [`i18n::alternates`].
     alts: Arc<BTreeMap<String, Vec<(String, String)>>>,
+    web: Arc<crate::web::WebState>,
 }
 
 fn tpl_err(file: &str, e: &minijinja::Error) -> Error {
@@ -210,11 +220,13 @@ impl<'a> Renderer<'a> {
                     })
             },
         );
+        let web = crate::web::register(&mut env, site, &mut errs);
 
         let mut r = Renderer {
             site,
             env,
             acc,
+            web,
             collections: Value::UNDEFINED,
             locale: locale.to_string(),
             alts,
@@ -287,8 +299,8 @@ impl<'a> Renderer<'a> {
         t.render(ctx).map_err(|e| Errors(vec![tpl_err(file, &e)]))
     }
 
-    /// Renders this view's pages: (URL, HTML).
-    fn run(self) -> Result<Vec<(String, String)>> {
+    /// Renders this view's pages, (URL, HTML), and the files its template functions emitted.
+    fn run(self) -> Result<(Pages, Files)> {
         let mut pages: Vec<(String, String)> = Vec::new();
         let mut errs = Vec::new();
         for r in &self.site.routes {
@@ -316,7 +328,7 @@ impl<'a> Renderer<'a> {
         if !errs.is_empty() {
             return Err(Errors(errs));
         }
-        Ok(pages)
+        Ok((pages, self.web.take_files()))
     }
 
     fn md_page(&self, r: &Route, file: &str, src: &str) -> Result<String> {
@@ -361,6 +373,7 @@ fn finish(
     site: &Site,
     views: &[View],
     pages: &[(String, String)],
+    files: &BTreeMap<String, Vec<u8>>,
     acc: &Mutex<Rendered>,
     alts: &BTreeMap<String, Vec<(String, String)>>,
 ) -> Result<Output> {
@@ -376,14 +389,20 @@ fn finish(
         .filter_map(|s| cascivo_html::script(s))
         .map(|js| format!("<script>{js}</script>"))
         .collect();
+    let css = site.config.build.cascivo_css;
     for (url, html) in pages {
         let rel = format!("{}index.html", url.trim_start_matches('/'));
-        put(rel, finish_html(html, &scripts).into_bytes())?;
+        put(rel, finish_html(html, &scripts, css).into_bytes())?;
     }
-    put(
-        "cascivo.css".into(),
-        cascivo_html::stylesheet(&site.config.theme, &acc.used).into_bytes(),
-    )?;
+    if css {
+        put(
+            "cascivo.css".into(),
+            cascivo_html::stylesheet(&site.config.theme, &acc.used).into_bytes(),
+        )?;
+    }
+    for (rel, bytes) in files {
+        put(rel.clone(), bytes.clone())?;
+    }
     for (rel, bytes) in &site.public {
         put(rel.clone(), bytes.clone())?;
     }
@@ -432,8 +451,12 @@ fn config_value(c: &Config) -> Value {
 }
 
 /// Links the shared stylesheet and appends component scripts, so layouts need neither.
-fn finish_html(html: &str, scripts: &str) -> String {
-    let link = "<link rel=\"stylesheet\" href=\"/cascivo.css\">";
+fn finish_html(html: &str, scripts: &str, css: bool) -> String {
+    let link = if css {
+        "<link rel=\"stylesheet\" href=\"/cascivo.css\">"
+    } else {
+        ""
+    };
     let mut s = match html.find("</head>") {
         Some(i) => format!("{}{link}{}", &html[..i], &html[i..]),
         None => format!("{link}{html}"),
@@ -487,11 +510,18 @@ mod tests {
         let h = finish_html(
             "<html><head></head><body>x</body></html>",
             "<script>1</script>",
+            true,
         );
         assert_eq!(
             h,
             "<html><head><link rel=\"stylesheet\" href=\"/cascivo.css\"></head><body>x<script>1</script></body></html>"
         );
+    }
+
+    #[test]
+    fn finish_without_cascivo_css_adds_no_link() {
+        let h = finish_html("<html><head></head><body></body></html>", "", false);
+        assert_eq!(h, "<html><head></head><body></body></html>");
     }
 
     #[test]

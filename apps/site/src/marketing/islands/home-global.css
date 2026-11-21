@@ -1,0 +1,7 @@
+/* Global stylesheets of the static home (cascivo-web), in src/main.tsx order: app.css first, since
+   it carries the authoritative @layer order statement. A CSS-only Vite entry, so its output is
+   one predictable file in the manifest rather than CSS attached to a shared JS chunk. */
+@import '../../app.css';
+@import '../landing.css';
+@import '../poster.css';
+@import '../poster-sections.css';

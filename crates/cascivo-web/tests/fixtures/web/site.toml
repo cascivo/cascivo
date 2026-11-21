@@ -1,0 +1,15 @@
+title = "Web"
+base_url = "https://web.example"
+
+[build]
+cascivo_css = false
+
+[images]
+dir = "img"
+
+[vite]
+manifest = "vite/manifest.json"
+css_modules = "vite/css-modules.json"
+
+[data]
+web = "data/web.json"
