@@ -149,7 +149,7 @@ band**; both pass.
 
 In `.github/workflows/cf-pages.yml` this step runs on every site deploy (enabled 2026-11-21).
 Kill switch: set the repository variable `CASCIVO_WEB_HOME` to `'0'` and redeploy to restore the
-Preact home.
+Preact home. (First enable attempt skipped the step: GitHub coerced an unset variable to 0.)
 
 `public/_headers` marks `/_cw/*` as immutable.
 
