@@ -78,7 +78,13 @@ for (const [vpName, viewport] of Object.entries(VIEWPORTS)) {
     const entries = await page.evaluate(() =>
       performance
         .getEntriesByType('resource')
-        .filter((e) => e.initiatorType === 'script' || e.initiatorType === 'link' || e.name.endsWith('.js') || e.name.endsWith('.css'))
+        .filter(
+          (e) =>
+            e.initiatorType === 'script' ||
+            e.initiatorType === 'link' ||
+            e.name.endsWith('.js') ||
+            e.name.endsWith('.css'),
+        )
         .map((e) => ({ url: e.name, start: e.startTime })),
     )
     const bytes = new Map()

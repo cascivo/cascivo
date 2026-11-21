@@ -1096,6 +1096,14 @@ function collectCssModule(cssFileName: string, json: Record<string, string>) {
   cssModuleMap.set(path.relative(root, cssFileName).split(path.sep).join('/'), { ...json })
 }
 
+/**
+ * `CASCIVO_SITE_PASS=home` builds the static home's islands and CSS entries (read by cascivo-web
+ * via dist/.vite/manifest.json) as a second, separate pass. Sharing one Rollup graph with
+ * index.html re-chunked the SPA's CSS so component sheets were linked before the global one,
+ * which registers `cascivo.component` ahead of `cascivo.base` (scripts/checks/site-layer-order).
+ */
+const HOME_PASS = process.env['CASCIVO_SITE_PASS'] === 'home'
+
 export default defineConfig({
   test: {
     // test/*.spec.ts are Playwright specs (their own scripts); unit tests live beside the code.
@@ -1105,15 +1113,16 @@ export default defineConfig({
     // EvalsPage.test.tsx is the exception: it renders with Preact itself into jsdom, so the alias helps.
     include: ['src/**/*.test.ts', 'src/marketing/pages/EvalsPage.test.tsx'],
   },
-  plugins: [
-    imagetools(),
-    injectCounts(),
-    guidesData(),
-    prerenderPages(),
-    benchData(),
-    webArtifacts(cssModuleMap),
-    serveExampleDemos(),
-  ],
+  plugins: HOME_PASS
+    ? [imagetools(), injectCounts(), guidesData(), benchData(), webArtifacts(cssModuleMap)]
+    : [
+        imagetools(),
+        injectCounts(),
+        guidesData(),
+        prerenderPages(),
+        benchData(),
+        serveExampleDemos(),
+      ],
   define: {
     __CASCIVO_COMPONENT_COUNT__: componentCount(),
     __CASCIVO_THEME_COUNT__: themeCount(),
@@ -1124,28 +1133,29 @@ export default defineConfig({
   // audit needs them to map the large first-party JS back to source.
   // generateScopedName stays Vite's default so existing hashes do not change.
   css: { modules: { getJSON: collectCssModule } },
-  build: {
-    sourcemap: true,
-    // dist/.vite/manifest.json: how cascivo-web finds each island's hashed JS + CSS.
-    manifest: true,
-    rollupOptions: {
-      // Vite app builds drop entry exports; the island loader calls each island's default export.
-      preserveEntrySignatures: 'exports-only',
-      // Extra entries beside index.html: the home page's islands and its CSS-only entry.
-      // index.html keeps loading only its own entry chunk; these are separate graphs
-      // (shared code is split into common chunks, which the manifest lists as `imports`).
-      input: {
-        index: resolve(__dirname, 'index.html'),
-        'home-global': resolve(__dirname, 'src/marketing/islands/home-global.css'),
-        'island-header': resolve(__dirname, 'src/marketing/islands/header.tsx'),
-        'island-hero-frames': resolve(__dirname, 'src/marketing/islands/hero-frames.tsx'),
-        'island-signals': resolve(__dirname, 'src/marketing/islands/signals.tsx'),
-        'island-themes': resolve(__dirname, 'src/marketing/islands/themes.tsx'),
-        'island-app-builder': resolve(__dirname, 'src/marketing/islands/app-builder.tsx'),
-        'home-css': resolve(__dirname, 'src/marketing/islands/home.css.ts'),
-      },
-    },
-  },
+  build: HOME_PASS
+    ? {
+        sourcemap: true,
+        // Second pass into the same dist/: the SPA pass already wrote it.
+        outDir: 'dist',
+        emptyOutDir: false,
+        // dist/.vite/manifest.json: how cascivo-web finds each island's hashed JS + CSS.
+        manifest: true,
+        rollupOptions: {
+          // Vite app builds drop entry exports; the island loader calls each island's default export.
+          preserveEntrySignatures: 'exports-only',
+          input: {
+            'home-global': resolve(__dirname, 'src/marketing/islands/home-global.css'),
+            'home-css': resolve(__dirname, 'src/marketing/islands/home.css.ts'),
+            'island-header': resolve(__dirname, 'src/marketing/islands/header.tsx'),
+            'island-hero-frames': resolve(__dirname, 'src/marketing/islands/hero-frames.tsx'),
+            'island-signals': resolve(__dirname, 'src/marketing/islands/signals.tsx'),
+            'island-themes': resolve(__dirname, 'src/marketing/islands/themes.tsx'),
+            'island-app-builder': resolve(__dirname, 'src/marketing/islands/app-builder.tsx'),
+          },
+        },
+      }
+    : { sourcemap: true },
   preview: { port: 4180, strictPort: true },
   server: {
     port: 4180,
