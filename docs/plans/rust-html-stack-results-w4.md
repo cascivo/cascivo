@@ -147,8 +147,9 @@ band**; both pass.
 3. The merge step replaces only `dist/index.html` and adds `dist/_cw/**`.
 4. It also fails the build if any island chunk lost its `default` export.
 
-In `.github/workflows/cf-pages.yml` this step runs only when the repository variable
-`CASCIVO_WEB_HOME` is `'1'`. Until that is set, deploys are unchanged.
+In `.github/workflows/cf-pages.yml` this step runs on every site deploy (enabled 2026-11-21).
+Kill switch: set the repository variable `CASCIVO_WEB_HOME` to `'0'` and redeploy to restore the
+Preact home.
 
 `public/_headers` marks `/_cw/*` as immutable.
 
